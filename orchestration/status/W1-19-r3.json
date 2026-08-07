@@ -3,15 +3,33 @@
   "role": "builder",
   "item": "W1-19",
   "round": 3,
-  "state": "reading",
+  "state": "running",
   "started_at": "2026-08-07",
-  "headline": "PENDING - reconciling W1-19-r2 40/40 chain completion against W1-VIABILITY-SPLIT 40/40 stall at Q-MAIN-06",
-  "next_step": "read W1-VIABILITY-SPLIT.json, W1-19-r2 verdict, INDEX.md; then diff the two instruments",
+  "headline": "PENDING - W1-VIABILITY-SPLIT is right and W1-19-r2's 40/40 is an artefact of hand-feeding. The defect is 8x larger than dispatched: 116 of 121 (quest,reveal) demands have NO producing route in play, across 8 of 9 channels.",
+  "next_step": "reconcile mainline-chain-floor.mjs (find the hand-feed); prove a single reveal route end-to-end from play before authoring any at scale",
   "files_touched": [
     "orchestration/status/W1-19-r3.json"
   ],
   "files_claimed": [
-    "orchestration/status/W1-19-r3.json"
+    "orchestration/status/W1-19-r3.json",
+    "game/data/quests/hooks.json",
+    "game/src/sim/quest/machine.js",
+    "tools/quests/reveal-route-audit.mjs",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
   ],
-  "notes": []
+  "redundant_with": [
+    "W1-VIABILITY-SPLIT",
+    "W1-SOULS-r3",
+    "W1-13-r3",
+    "W1-22-r2"
+  ],
+  "notes": [
+    "reports/blog-feed.jsonl and docs/shots/ are shared by every piece by protocol (rule 27); declared redundant, not a collision.",
+    "AUDIT RESULT (static, over game/data/quests/**, 120 quests): 121 distinct (quest,reveal) pairs are demanded by a resolution's requires_knowing. 5 are producible in play. 116 are not.",
+    "The 5 producible are ALL channel=book, and they work only because W1-LIBRARY round 2 built _bookKnowledgeIndex() -> ctx.knowledge. That is the ONE channel with a route.",
+    "Channels with ZERO producing route: ledger 28, talk_to_target 28, rival_npc 23, environment 18, eavesdrop 9, letter 6, later_quest 3, corpse 1.",
+    "9 quests have every resolution blocked: Q-MAIN-06,07,08,10,11,15,26,29,30. All mainline. Q-MAIN-06 is the first, which is exactly where the viability walk stops.",
+    "hooks.json: 0 of 139 rows (18 hooks + 121 entry_topics) carry a quest+reveal pair."
+  ]
 }

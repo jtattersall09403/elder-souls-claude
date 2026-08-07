@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `5c4c5b0`: 460 tools, 153 reference
+so it cannot drift. Generated at `07f8b75`: 460 tools, 153 reference
 items, 24 pieces in flight.
 
 Its purpose is to stop 24+ concurrent agents each paying separately to discover the
@@ -738,11 +738,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-19-r3` | running | reconcile mainline-chain-floor.mjs (find the hand-feed); prove a single reveal route end-t | `orchestration/status/W1-19-r3.json` |
+| `critic-w1-21` | running | read RULES/INDEX, W1-21.json, PLAN 3, ARBITRATION AR-2, seam S35 | `orchestration/status/critic-w1-21.json` |
+| `critic-w1-23` | researching | read RI-LOR04, canon-facts.json disputes, run census/consumption, check hash absence, 336/ | — |
 | `critic-w1-17-act5` | ? | read W1-17-act5-argument.json handover, main-quest-argument.json, RI-DLG items; re-measure | — |
 | `critic-w1-11` | running | read INDEX.md, RULES.md done; then W1-11 status + PLAN §3 + ARBITRATION S22 | `orchestration/status/critic-w1-11.json` |
 | `critic-w1-04` | running | read INDEX.md, RULES.md done; then W1-04.json, reports/w1-04-survey.md, docs/PLAN.md S3 W1 | `orchestration/status/critic-w1-04.json` |
-| `W1-22-r2` | building | HANDOFF. (1) root-cause street/well render non-reproducibility - it breaks R3 and would co | `game/src/audio/ambience.js` `game/src/audio/synth.js` `game/src/engine.js` `game/src/harness/api.js` `game/data/audio/ambience/*.json` `game/data/audio/ambience/interiors/*.json` |
-| `W1-19-r3` | reading | read W1-VIABILITY-SPLIT.json, W1-19-r2 verdict, INDEX.md; then diff the two instruments | `orchestration/status/W1-19-r3.json` |
 | `critic-w1-13-r3` | running | read RULES, INDEX, W1-13-r2 verdict, W1-13-r3 status | — |
 | `W1-VIABILITY-SPLIT` | done | none -- hand to a tool critic. Do NOT let the critic grade this piece against the screen f | `orchestration/status/W1-VIABILITY-SPLIT.json` `tools/analysis/impossibility-screen.mjs` `tools/quests/viability-walk.mjs` `tools/quests/viability-split-shot.mjs` `corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md` `corpus/22-character/RI-CHR01-character-creation.md` |
 | `W1-SOULS-r3` | running | browser: run souls-ledger-oracle (invariant over 463 routes) + its --self-break; then soul | `orchestration/status/W1-SOULS-r3.json` `game/src/sim/souls.js` `game/src/engine.js` `game/src/world/population.js` `tools/progression/derive-soul-values.mjs` `tools/check-souls-corpus.mjs` |
@@ -752,7 +753,6 @@ work is the difference between resuming and starting over.
 | `judge-prose-r4` | researching | read t01-books A.txt and B.txt; answer; then t02..t15 | — |
 | `W1-06-r2` | researching | instrument in bare Node (camera.js imports only rng.js + collision.js) to confirm before c | — |
 | `W1-06` | partial | HIGHEST VALUE FOR THE NEXT AGENT, in order: (1) THE PITCH PIN. In a lock-on against cam_bo | — |
-| `critic-w1-23` | researching | read TOOL-LOOP, ARBITRATION §3, RI-LOR01/04/06, builder report | — |
 | `W1-FACTIONS-r3` | researching | patch faction-probe to travelToGiver; then prose, records_belief, template break, browser  | — |
 | `critic-w1-souls` | researching | run the -DELETED counterpart, then write the verdict md+json, blog line | — |
 | `critic-w1-08-r2` | researching | probe 3: redo CONSUMPTION with action/x/y; check whether touch still works during a stuck  | — |

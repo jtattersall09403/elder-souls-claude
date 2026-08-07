@@ -97,6 +97,28 @@ Whoever picks this up owns the rename, the "may never report viable" fence, and 
 The five rebuild lists in `corpus/80-methods/TOOL-COVERAGE-R1..R4` stay on the record; most of
 their individual findings remain true of the screen.
 
+
+## S. Referred for a seam ruling: RI-WPN02 §B against RI-WPN05 §E.2
+
+Raised by the W1-MASS builder, which refused to decide it and was right to. **107 of 2,689 weapon
+slots cannot satisfy both items at any tuning** — worst case 4.81× over — in the curved-sword,
+curved-greatsword and whip families. Another ~538 are reachable, at a median cost of five extra
+active `f@60` or by keeping 75% of the declared arc.
+
+One item governs the arc a weapon must sweep; the other caps how fast its tip may travel. For those
+107, honouring the arc requires a tip speed the other item forbids, and honouring the speed requires
+an arc the first one forbids. That is not a builder's edit — whichever gives way, some declared
+figure in a shipped item becomes wrong, and the corpus is supposed to be the thing that does not
+quietly move.
+
+`reports/W1-MASS-guard.json` names every affected slot with the frames it would need and the arc it
+would then be allowed, so the ruling can be made against real numbers rather than in principle.
+**Do not let a builder resolve this by tuning; refer it.**
+
+Also recorded there and not fixed: the bow's null ceiling and a 20.56 m blade capsule; the `plunge`
+family dominating arc nonconformance; and a flat-rate lever that would fix one row by likely
+breaking another that has no instrument at all.
+
 ## 0a. The level-up screen is refused everywhere — ULTRACODE
 
 `engine.js:2011` gates levelling on `this.hearths.atHearth(...)`; **`HearthSystem` has no such

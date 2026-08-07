@@ -1,0 +1,217 @@
+{
+  "width": 1280,
+  "height": 720,
+  "errors": [],
+  "boot": {
+    "actors_drawn": 1,
+    "player_built": true,
+    "player_rigged": true,
+    "player_visible": true,
+    "bones_drawn": 20,
+    "weapon_key": "ssw_garrison_sword|SSW|1.518|0.95|1.418|wpn_guard|wpn_tip|0.07"
+  },
+  "tip": [
+    {
+      "weapon": "ssw_garrison_sword",
+      "class": "SSW",
+      "samples": 60,
+      "tip_err_mm_max": 0.000815927494896386,
+      "tip_err_mm_mean": 0.0004905736766190931,
+      "guard_err_mm_max": 0.0008302626224554958,
+      "drawn_length_m": 1.518,
+      "declared_reach_m": 1.95,
+      "active_frames": 10
+    },
+    {
+      "weapon": "hlb_garrison_bill",
+      "class": "HLB",
+      "samples": 60,
+      "tip_err_mm_max": 0.0007406207219636762,
+      "tip_err_mm_mean": 0.00048317011703762877,
+      "guard_err_mm_max": 0.0006983886641269879,
+      "drawn_length_m": 2.908,
+      "declared_reach_m": 2.85,
+      "active_frames": 14
+    },
+    {
+      "weapon": "cgs_drowned_reaper",
+      "class": "CGS",
+      "samples": 60,
+      "tip_err_mm_max": 0.0007885855106039991,
+      "tip_err_mm_mean": 0.0004748124593171902,
+      "guard_err_mm_max": 0.0008193305367414991,
+      "drawn_length_m": 3.098,
+      "declared_reach_m": 2.75,
+      "active_frames": 10
+    }
+  ],
+  "motion": [
+    {
+      "weapon": "ssw_garrison_sword",
+      "class": "SSW",
+      "box_diag_m": 1.7261203027843708,
+      "mean_bone_pct_of_box": 8.875196966308474,
+      "max_bone_pct_of_box": 33.55398296709355,
+      "hand_r_pct_of_box": 33.55398296709355,
+      "weapon_tip_travel_m": 2.539660893079752,
+      "weapon_tip_pct_of_box": 147.13116397409118,
+      "top_bones": [
+        {
+          "bone": "hand_r",
+          "max_travel_m": 0.5791821123878115,
+          "pct_of_box": 33.55398296709355
+        },
+        {
+          "bone": "hand_l",
+          "max_travel_m": 0.33978585022913205,
+          "pct_of_box": 19.68494604234885
+        },
+        {
+          "bone": "foot_l",
+          "max_travel_m": 0.31484871838533557,
+          "pct_of_box": 18.240253467702065
+        },
+        {
+          "bone": "lowerarm_r",
+          "max_travel_m": 0.31282185060964296,
+          "pct_of_box": 18.12283014718245
+        },
+        {
+          "bone": "foot_r",
+          "max_travel_m": 0.2397574522374646,
+          "pct_of_box": 13.889961890299105
+        }
+      ]
+    },
+    {
+      "weapon": "hlb_garrison_bill",
+      "class": "HLB",
+      "box_diag_m": 1.7261203027843708,
+      "mean_bone_pct_of_box": 13.94141562427522,
+      "max_bone_pct_of_box": 44.0943800900155,
+      "hand_r_pct_of_box": 41.1511800739687,
+      "weapon_tip_travel_m": 5.5126539688567195,
+      "weapon_tip_pct_of_box": 319.3667301151818,
+      "top_bones": [
+        {
+          "bone": "hand_l",
+          "max_travel_m": 0.7611220471206669,
+          "pct_of_box": 44.0943800900155
+        },
+        {
+          "bone": "hand_r",
+          "max_travel_m": 0.7103188740921302,
+          "pct_of_box": 41.1511800739687
+        },
+        {
+          "bone": "lowerarm_l",
+          "max_travel_m": 0.4400818561068373,
+          "pct_of_box": 25.495433626320825
+        },
+        {
+          "bone": "foot_l",
+          "max_travel_m": 0.3906416739813818,
+          "pct_of_box": 22.631196293285317
+        },
+        {
+          "bone": "upperarm_r",
+          "max_travel_m": 0.3716034651527539,
+          "pct_of_box": 21.528248323904634
+        }
+      ]
+    },
+    {
+      "weapon": "cgs_drowned_reaper",
+      "class": "CGS",
+      "box_diag_m": 1.7261203027843708,
+      "mean_bone_pct_of_box": 16.035121033242312,
+      "max_bone_pct_of_box": 46.76090004195983,
+      "hand_r_pct_of_box": 44.386674906203666,
+      "weapon_tip_travel_m": 5.426134781015116,
+      "weapon_tip_pct_of_box": 314.3543802979621,
+      "top_bones": [
+        {
+          "bone": "hand_l",
+          "max_travel_m": 0.807149389388974,
+          "pct_of_box": 46.76090004195983
+        },
+        {
+          "bone": "hand_r",
+          "max_travel_m": 0.766167407286877,
+          "pct_of_box": 44.386674906203666
+        },
+        {
+          "bone": "lowerarm_r",
+          "max_travel_m": 0.5182132326404844,
+          "pct_of_box": 30.021849103134052
+        },
+        {
+          "bone": "lowerarm_l",
+          "max_travel_m": 0.4971828154911045,
+          "pct_of_box": 28.8034857529402
+        },
+        {
+          "bone": "upperarm_r",
+          "max_travel_m": 0.45000350408937284,
+          "pct_of_box": 26.070228324380462
+        }
+      ]
+    }
+  ],
+  "consume": {
+    "declared": {
+      "ssw_garrison_sword": {
+        "class": "SSW",
+        "reach_m": 1.95
+      },
+      "hlb_garrison_bill": {
+        "class": "HLB",
+        "reach_m": 2.85
+      },
+      "cgs_drowned_reaper": {
+        "class": "CGS",
+        "reach_m": 2.75
+      }
+    },
+    "drawn": {
+      "ssw_garrison_sword": {
+        "key": "ssw_garrison_sword|SSW|1.518|0.95|1.418|wpn_guard|wpn_tip|0.07",
+        "tris": 60,
+        "drawn_length_m": 1.518,
+        "tip_err_mm": 0.00045098599865788826
+      },
+      "hlb_garrison_bill": {
+        "key": "hlb_garrison_bill|HLB|2.908|0.75|2.808|wpn_guard|wpn_tip|0.09",
+        "tris": 72,
+        "drawn_length_m": 2.908,
+        "tip_err_mm": 0.0004297210631348755
+      },
+      "cgs_drowned_reaper": {
+        "key": "cgs_drowned_reaper|CGS|3.098|1.55|2.998|wpn_guard|wpn_tip|0.11",
+        "tris": 132,
+        "drawn_length_m": 3.098,
+        "tip_err_mm": 0.0005760533155928033
+      }
+    }
+  },
+  "shot_md5": {
+    "ssw_garrison_sword": {
+      "md5": "ddc3a027348a4c3adf7317e6c2e0842c",
+      "bytes": 232085,
+      "file": "/home/user/elder-souls-claude/reports/render/frames/ssw_garrison_sword-f8-baseline.png"
+    },
+    "hlb_garrison_bill": {
+      "md5": "90e661b045bf7f67026e27ede60e285a",
+      "bytes": 242585,
+      "file": "/home/user/elder-souls-claude/reports/render/frames/hlb_garrison_bill-f8-baseline.png"
+    },
+    "cgs_drowned_reaper": {
+      "md5": "8083d2656805fbb43f76c343e5462303",
+      "bytes": 226521,
+      "file": "/home/user/elder-souls-claude/reports/render/frames/cgs_drowned_reaper-f8-baseline.png"
+    }
+  },
+  "shots_distinct": 3,
+  "page_errors": null,
+  "page_error_sample": null
+}

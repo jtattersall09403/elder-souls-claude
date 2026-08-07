@@ -17,6 +17,16 @@
 !**/*.md
 !blog-feed.jsonl
 
+# 3. BASELINES. Corrected by the W1-MASS builder, which caught the reasoning above being wrong for
+#    exactly one class of file: "that test is right for a measurement and exactly wrong for a
+#    baseline, whose whole value is being the OLD value." A run artifact can be regenerated
+#    because you want today's number. A baseline exists to be yesterday's, so regenerating it
+#    destroys the only thing it was for. The render-probe baseline had already rotted — all three
+#    of its pixel-exact hashes differ from HEAD, changed eight hours earlier by another piece —
+#    with nothing going red, because no gate re-runs it and git was not holding the old value.
+!**/*baseline*.json
+!**/*-fingerprint*.json
+
 # Still ignored, deliberately: reports/runs/ raw logs (tools/run.mjs writes there by design),
 # every .json artifact, and every capture. Those are reproducible by re-running the tool that
 # made them, which is the test for whether something belongs in history.

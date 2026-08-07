@@ -3,14 +3,25 @@
   "role": "critic, round 1, fresh context",
   "target": "W1-23 canon registry / lore consumption",
   "commit_at_start": "cdb2938b0d8e4529ad3bb3058f90d6d2d9f2179e",
+  "commit_now": "5c4c5b004ec890d6a2e93f864563f0075137e15c",
   "state": "researching",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-23-r1.md",
     "corpus/90-verdicts/wave1/W1-23-r1.json",
     "reports/blog-feed.jsonl (one line)"
   ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-23-r1.md",
+    "corpus/90-verdicts/wave1/W1-23-r1.json",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ],
+  "files_touched": [],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read TOOL-LOOP, ARBITRATION §3, RI-LOR01/04/06, builder report",
-  "notes_for_successor": "Do not commit. Attack order given in brief: (1) 21/21 disputes genuine? (2) hash trick recoverable? (3) 336/336 default? (4) fixed perturbation narrower? (5) census not gated in check-content. (6) deep time. (7) Lease/Blackrose vs slavery - MOST IMPORTANT. (8) missing Argonian tribes."
+  "findings": [
+    "READ: RULES.md, INDEX.md (p1), critic status, builder report, W1-23.json, RI-LOR06, RI-LOR01.",
+    "NOTE: HEAD has moved cdb2938 -> 5c4c5b0 since the builder's status was written. Tribes piece has landed since. Every number I take is stamped at 5c4c5b0."
+  ],
+  "next_step": "read RI-LOR04, canon-facts.json disputes, run census/consumption, check hash absence, 336/336 default, slavery text",
+  "notes_for_successor": "Do not commit. Attack order: (1) 21/21 disputes genuine under the piece's own is-the-case/worth-doing ruling? (2) hash trick recoverable? (3) 336/336 a default? (4) slavery - MOST IMPORTANT, quote text. (5) six new tribes absorbed or appended?"
 }

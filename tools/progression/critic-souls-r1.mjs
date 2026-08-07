@@ -13,17 +13,32 @@
 //   K2  MEASURED TIME-TO-KILL.          The same fight, in fixed frames, which is the number the
 //                                       pace table asserts and never measured. Contention-proof:
 //                                       frames at 60 Hz, not wall clock.
-//   K3  THE HAZARD DEATH PATH.          `sim/hazards.js` kills by writing `ent.hp` on a
-//                                       sim.entities record. Do exactly that and step.
+//   K3  THE MIRROR IS A CACHE.          [REPOLARISED r3] Write `ent.hp = 0` on a sim.entities
+//                                       record — which is what `sim/hazards.js` H9 used to do —
+//                                       and step. It must NOT pay, and the corpse must stand
+//                                       back up, because the combat body is the authority.
 //   K4  THE PLAYER IS AN ENTITY?        Does the player's own death enter the scan.
-//   K5  RE-KILL WITHOUT A REST.         `spawnEncounter` mints DETERMINISTIC eids
-//                                       (`<id>-<role>-<i>`). Kill, despawn, respawn, kill again.
-//   K6  ARM-D VACUITY.                  Replay souls-consumption's arm-D predicate with the
-//                                       dummy spawn throwing. `(!D.kill || delta === 0)` short-
-//                                       circuits, so the arm passes when nothing was measured.
-//   K7  ARM-I / ARM-B VACUITY.          Replay their predicates with zero real kills.
+//   K5  RE-KILL WITHOUT A REST.         [RE-POINTED r3, now an OBSERVATION] Kill, despawn,
+//                                       respawn under the same tag, kill again. S5 itself is
+//                                       asserted by souls-ledger-oracle I3 over every route.
+//   K6  ARM-D VACUITY.                  [RETIRED r3 — the predicate it replays no longer exists]
+//   K7  ARM-I / ARM-B VACUITY.          [RETIRED r3 — same]
 //   K8  INSTRUMENT SELF-BREAK.          Run K1's loop with the attack input REMOVED. If the
 //                                       counter still reports a kill, K1/K2 measure nothing.
+//
+// ---------------------------------------------------------------------------------------------
+// ROUND 3 MAINTENANCE, AND WHY IT WAS DONE HERE RATHER THAN BY DELETING THE FILE
+// ---------------------------------------------------------------------------------------------
+//
+// The W1-SOULS round-2 verdict found this tool reporting 5/8 with THREE FAILURES THAT ARE NOT
+// DEFECTS IN THE BUILD: K3 asserted a code shape round 2 deliberately removed, and K6/K7 replayed
+// predicates round 2 rewrote. "A tool that cannot fail is worse than no probe; so is one that
+// fails for reasons that no longer exist."
+//
+// K1, K2, K4 and K8 are untouched and still the best evidence in this piece that a kill is a real
+// fight. K3 is repolarised into the control its own measurement always was. K5 is re-pointed,
+// because round 3 moved the S5 guarantee out of the reward and into the world. K6 and K7 are
+// retired with their reasons, and their raw observations are still written to the report.
 //
 // Run: node tools/progression/critic-souls-r1.mjs [--out reports/critic-souls-r1.json]
 'use strict';
