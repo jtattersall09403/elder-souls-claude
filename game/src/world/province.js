@@ -265,7 +265,8 @@ export class Province {
     this.coverAt = [x, z];
     if (this.coverGroup) {
       this.group.remove(this.coverGroup);
-      this.coverGroup.traverse((o) => { if (o.geometry) o.geometry.dispose(); });
+      // Nothing to dispose: the cover geometry is one cached object per region, shared with every
+      // future rebuild. Disposing it here re-uploaded it on the next frame, every fourteen metres.
     }
     const f = this.field;
     const g = new THREE.Group();
@@ -535,8 +536,23 @@ export class Province {
         ? { a: noise2(x * 0.9, z * 0.9, 7803) * Math.PI * 2, t: lean * (noise2(x * 1.3, z * 1.3, 7807) - 0.5) * 2 }
         : null;
       if (push('canopy', 'trunk', this.regionMats[ri].trunk, sc, 0, tilt, 7789)) {
-        push('canopy', 'crown', this.regionMats[ri].crown, sc,
-          p.canopy.h * sc * (p.canopy.shape === 'arch' ? 0.5 : 0.86), tilt, 7797);
+        // WHERE THE CROWN SITS. A crown parked at 0.86 of the plant's height is right for a tree
+        // and wrong for a bush: the Clay Moor declares a 4 m dome of 3.2 m radius — wider than it
+        // is tall, which is what clay scrub IS — and lifting it to 3.4 m over a stem sized off the
+        // trunk rule drew a mushroom. Two regions then shared one silhouette, because the Stone
+        // Forest's 12 m petrified column with a 2.2 m cap is also a dark cap on a thin stem, and
+        // under a colour-stripped test a mushroom is a mushroom. A canopy broader than it is tall
+        // sits ON the ground and its stem is inside it.
+        // A `dome` is authored as the UPPER hemisphere with its flat face at y = 0, so a bush
+        // built from one sits on the ground at offset 0; a `sphere` is centred, so it sits at
+        // three quarters of its radius with the bottom quarter buried, which is what a shrub
+        // does. Lifting either to 0.86 of the plant's height — the tree rule — put a 3.2 m cap
+        // on a 0.15 m stem and drew a mushroom.
+        const bushy = p.canopy.r * 2 > p.canopy.h && p.canopy.shape !== 'arch';
+        const crownY = bushy
+          ? (p.canopy.shape === 'dome' ? 0 : p.canopy.r * sc * 0.75)
+          : p.canopy.h * sc * (p.canopy.shape === 'arch' ? 0.5 : 0.86);
+        push('canopy', 'crown', this.regionMats[ri].crown, sc, crownY, tilt, 7797);
       }
     }
     if (rolls[1] < dens.under * cellArea / 100 && depth < Math.max(0.25, p.under.h * 0.80)) {
@@ -567,10 +583,10 @@ export class Province {
     const f = this.field;
     if (this.nearAtPos && Math.hypot(x - this.nearAtPos[0], z - this.nearAtPos[1]) < NEAR_REBUILD_M) return 0;
     this.nearAtPos = [x, z];
-    if (this.nearGroup) {
-      this.group.remove(this.nearGroup);
-      this.nearGroup.traverse((o) => { if (o.geometry && o.geometry.__near) o.geometry.dispose(); });
-    }
+    // The near disc instances the tile scatter's own cached geometry, so removing the group is
+    // the whole of the teardown; disposing here would pull the vertex buffers out from under
+    // every tree in every resident tile.
+    if (this.nearGroup) this.group.remove(this.nearGroup);
     const R = NEAR_RADIUS_M;
     const budget = TILE_M * TILE_M / 100;
     // The deficit each region owes, and the lattice fine enough to place it.
@@ -650,9 +666,18 @@ export class Province {
 
   update(x, z, budget = 2) { this.request(x, z); return this.pump(budget); }
 
+  /**
+   * Drop a tile, disposing ONLY the geometry that tile owns.
+   *
+   * Every prop, ground-cover and signature geometry comes out of `geoCache` and is instanced by
+   * every resident tile and by both camera-following discs. Disposing on release — which is what
+   * this did — threw away the vertex buffers of every tree in the province each time a single
+   * 300 m tile left the ring, and the renderer re-uploaded them on the next frame. What a tile
+   * actually owns is its ground mesh, its per-region water meshes and its deck/pier merges.
+   */
   _release(k, t) {
     this.group.remove(t.group);
-    t.group.traverse((o) => { if (o.geometry) o.geometry.dispose(); });
+    t.group.traverse((o) => { if (o.geometry && !o.geometry.userData.shared) o.geometry.dispose(); });
     this.tiles.delete(k);
   }
 
@@ -927,7 +952,12 @@ export class Province {
 
   _sigGeo(kind) {
     const k = `sig:${kind}`;
-    if (!this.geoCache.has(k)) this.geoCache.set(k, signatureGeometry(kind));
+    if (!this.geoCache.has(k)) {
+      const g = signatureGeometry(kind);
+      if (g.body) g.body.userData.shared = true;
+      if (g.glow) g.glow.userData.shared = true;
+      this.geoCache.set(k, g);
+    }
     return this.geoCache.get(k);
   }
 
@@ -1003,6 +1033,9 @@ export class Province {
       }
       default: geo = new THREE.IcosahedronGeometry(1, 0);
     }
+    // Shared: every tile, the near disc and the cover disc instance the SAME geometry object.
+    // `_release` and the disc rebuilds must not dispose it — see the note there.
+    geo.userData.shared = true;
     this.geoCache.set(key, geo);
     return geo;
   }

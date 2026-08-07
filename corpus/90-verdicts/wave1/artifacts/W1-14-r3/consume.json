@@ -1,0 +1,583 @@
+{
+  "blocks": {
+    "telekinesis": {
+      "cast": {
+        "applied": 1,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "effect_apply",
+          "cast_release"
+        ]
+      },
+      "prop_before": {
+        "taken": true,
+        "reach_m": 2.2
+      },
+      "prop_after_cast": {
+        "taken": false,
+        "reach_m": 27.750000000000004
+      },
+      "take_without_spell": {
+        "eid": "tk_far",
+        "taken": true,
+        "item": "tk_far",
+        "name": "brass censer"
+      },
+      "taken_without_spell": {
+        "taken": true,
+        "reach_m": 2.2
+      },
+      "take_with_spell": {
+        "eid": "tk_far",
+        "taken": true,
+        "item": "tk_far",
+        "name": "brass censer"
+      },
+      "taken_with_spell": {
+        "taken": true
+      },
+      "world_items_taken": [
+        "tk_far"
+      ]
+    },
+    "open_lock_shatter": {
+      "open_lock": {
+        "applied": 0,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "spell_impact"
+        ]
+      },
+      "shatter": {
+        "applied": 0,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "spell_impact"
+        ]
+      },
+      "doors_unlocked_before": [],
+      "doors_unlocked_after": [],
+      "shortcuts_before": [],
+      "shortcuts_after": [],
+      "quest_flags_before": [],
+      "quest_flags_after": [],
+      "quest_offers_before": 37,
+      "quest_offers_after": 37,
+      "resolutions_naming_a_door_or_shortcut": [],
+      "solid_at_breakable": {
+        "before": null,
+        "after": {
+          "solid": false,
+          "distance_m": null
+        }
+      }
+    },
+    "detect_life": {
+      "cast": {
+        "applied": 1,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "effect_apply",
+          "cast_release"
+        ]
+      },
+      "markers_in_magic_register": 1,
+      "ui_markers_before": 0,
+      "ui_markers_after": 0,
+      "ui_state_diff": "IDENTICAL",
+      "world_registers_diff": "see census"
+    },
+    "frenzy": {
+      "cast": {
+        "applied": 5,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "effect_apply",
+          "spell_impact"
+        ]
+      },
+      "before": [
+        {
+          "id": "fa",
+          "hp": 412,
+          "state": "REPOSITION"
+        },
+        {
+          "id": "fb",
+          "hp": 412,
+          "state": "REPOSITION"
+        }
+      ],
+      "status_after_cast": [
+        {
+          "id": "P",
+          "frenzy_target": null
+        },
+        {
+          "id": "fa",
+          "frenzy_target": "fb"
+        },
+        {
+          "id": "fb",
+          "frenzy_target": null
+        }
+      ],
+      "after_900f_treatment": [
+        {
+          "id": "fa",
+          "hp": 412,
+          "state": "REPOSITION"
+        },
+        {
+          "id": "fb",
+          "hp": 412,
+          "state": "REPOSITION"
+        }
+      ],
+      "after_900f_control": [
+        {
+          "id": "fa",
+          "hp": 412,
+          "state": "REPOSITION"
+        },
+        {
+          "id": "fb",
+          "hp": 412,
+          "state": "REPOSITION"
+        }
+      ],
+      "enemy_hp_changed_vs_control": false
+    },
+    "calm_vs_demoralise": {
+      "control": {
+        "effect": "control",
+        "cast": {
+          "control": true
+        },
+        "moved_m": null,
+        "dist_from_player_m": null,
+        "n_enemies_before": 1,
+        "n_enemies_after": 1,
+        "status": [
+          {
+            "id": "P",
+            "yielded": false
+          },
+          {
+            "id": "cb",
+            "yielded": false
+          }
+        ],
+        "enemy_state": "REPOSITION",
+        "player_hp_lost": 0,
+        "in_combat": true,
+        "deaths": 0
+      },
+      "calm_beast": {
+        "effect": "calm_beast",
+        "cast": {
+          "refused": "range"
+        },
+        "moved_m": null,
+        "dist_from_player_m": null,
+        "n_enemies_before": 1,
+        "n_enemies_after": 1,
+        "status": [
+          {
+            "id": "P",
+            "yielded": false
+          },
+          {
+            "id": "cb",
+            "yielded": false
+          }
+        ],
+        "enemy_state": "REPOSITION",
+        "player_hp_lost": 0,
+        "in_combat": true,
+        "deaths": 0
+      },
+      "demoralise": {
+        "effect": "demoralise",
+        "cast": {
+          "applied": 0,
+          "kinds": [
+            "cast_start",
+            "focus_spend",
+            "cast_release",
+            "spell_impact"
+          ]
+        },
+        "moved_m": null,
+        "dist_from_player_m": null,
+        "n_enemies_before": 1,
+        "n_enemies_after": 1,
+        "status": [
+          {
+            "id": "P",
+            "yielded": false
+          },
+          {
+            "id": "cb",
+            "yielded": false
+          }
+        ],
+        "enemy_state": "REPOSITION",
+        "player_hp_lost": 0,
+        "in_combat": true,
+        "deaths": 0
+      }
+    },
+    "sap_ward_disposition": {
+      "npcs": 4,
+      "taint_start": {
+        "band": 4,
+        "rests": 701,
+        "warded": 0,
+        "wardUsesLeft": 3,
+        "immune": false
+      },
+      "taint_after_16_rests": {
+        "band": 4,
+        "rests": 717,
+        "warded": 0,
+        "wardUsesLeft": 3,
+        "immune": false
+      },
+      "taint_after_ward": {
+        "band": 4,
+        "rests": 717,
+        "warded": 1,
+        "wardUsesLeft": 2,
+        "immune": false
+      },
+      "disposition_start": [
+        {
+          "eid": "helstrom-draught-seller",
+          "disp": {
+            "npc": "helstrom-draught-seller",
+            "name": "Ashul-Reeh",
+            "group": "RG-DEEP",
+            "base": 50,
+            "disposition": 46,
+            "band": "neutral",
+            "term": {
+              "race": -14,
+              "upbringing": 10,
+              "total": -4
+            },
+            "player_race": "breton",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "eid": "helstrom-net-mender",
+          "disp": {
+            "npc": "helstrom-net-mender",
+            "name": "Hul-Meesh",
+            "group": "RG-TOWN",
+            "base": 42,
+            "disposition": 38,
+            "band": "neutral",
+            "term": {
+              "race": 0,
+              "upbringing": -4,
+              "total": -4
+            },
+            "player_race": "breton",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "eid": "helstrom-reed-seller",
+          "disp": {
+            "npc": "helstrom-reed-seller",
+            "name": "Perrine Bec",
+            "group": "RG-TOWN",
+            "base": 40,
+            "disposition": 36,
+            "band": "neutral",
+            "term": {
+              "race": 0,
+              "upbringing": -4,
+              "total": -4
+            },
+            "player_race": "breton",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "eid": "helstrom-salt-factor",
+          "disp": {
+            "npc": "helstrom-salt-factor",
+            "name": "Drovas Reln",
+            "group": "RG-DRES",
+            "base": 45,
+            "disposition": 45,
+            "band": "neutral",
+            "term": {
+              "race": 0,
+              "upbringing": 0,
+              "total": 0
+            },
+            "player_race": "breton",
+            "player_upbringing": "interior"
+          }
+        }
+      ],
+      "disposition_at_band": [
+        {
+          "eid": "helstrom-draught-seller",
+          "disp": {
+            "npc": "helstrom-draught-seller",
+            "name": "Ashul-Reeh",
+            "group": "RG-DEEP",
+            "base": 50,
+            "disposition": 46,
+            "band": "neutral",
+            "term": {
+              "race": -14,
+              "upbringing": 10,
+              "total": -4
+            },
+            "player_race": "breton",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "eid": "helstrom-net-mender",
+          "disp": {
+            "npc": "helstrom-net-mender",
+            "name": "Hul-Meesh",
+            "group": "RG-TOWN",
+            "base": 42,
+            "disposition": 38,
+            "band": "neutral",
+            "term": {
+              "race": 0,
+              "upbringing": -4,
+              "total": -4
+            },
+            "player_race": "breton",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "eid": "helstrom-reed-seller",
+          "disp": {
+            "npc": "helstrom-reed-seller",
+            "name": "Perrine Bec",
+            "group": "RG-TOWN",
+            "base": 40,
+            "disposition": 36,
+            "band": "neutral",
+            "term": {
+              "race": 0,
+              "upbringing": -4,
+              "total": -4
+            },
+            "player_race": "breton",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "eid": "helstrom-salt-factor",
+          "disp": {
+            "npc": "helstrom-salt-factor",
+            "name": "Drovas Reln",
+            "group": "RG-DRES",
+            "base": 45,
+            "disposition": 45,
+            "band": "neutral",
+            "term": {
+              "race": 0,
+              "upbringing": 0,
+              "total": 0
+            },
+            "player_race": "breton",
+            "player_upbringing": "interior"
+          }
+        }
+      ],
+      "disposition_after_ward": [
+        {
+          "eid": "helstrom-draught-seller",
+          "disp": {
+            "npc": "helstrom-draught-seller",
+            "name": "Ashul-Reeh",
+            "group": "RG-DEEP",
+            "base": 50,
+            "disposition": 46,
+            "band": "neutral",
+            "term": {
+              "race": -14,
+              "upbringing": 10,
+              "total": -4
+            },
+            "player_race": "breton",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "eid": "helstrom-net-mender",
+          "disp": {
+            "npc": "helstrom-net-mender",
+            "name": "Hul-Meesh",
+            "group": "RG-TOWN",
+            "base": 42,
+            "disposition": 38,
+            "band": "neutral",
+            "term": {
+              "race": 0,
+              "upbringing": -4,
+              "total": -4
+            },
+            "player_race": "breton",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "eid": "helstrom-reed-seller",
+          "disp": {
+            "npc": "helstrom-reed-seller",
+            "name": "Perrine Bec",
+            "group": "RG-TOWN",
+            "base": 40,
+            "disposition": 36,
+            "band": "neutral",
+            "term": {
+              "race": 0,
+              "upbringing": -4,
+              "total": -4
+            },
+            "player_race": "breton",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "eid": "helstrom-salt-factor",
+          "disp": {
+            "npc": "helstrom-salt-factor",
+            "name": "Drovas Reln",
+            "group": "RG-DRES",
+            "base": 45,
+            "disposition": 45,
+            "band": "neutral",
+            "term": {
+              "race": 0,
+              "upbringing": 0,
+              "total": 0
+            },
+            "player_race": "breton",
+            "player_upbringing": "interior"
+          }
+        }
+      ],
+      "disposition_moved_with_band": false,
+      "disposition_moved_with_ward": false,
+      "cast": {
+        "applied": 2,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "effect_apply",
+          "cast_release"
+        ]
+      }
+    },
+    "travel_populated": {
+      "quiet": {
+        "from": [
+          0,
+          0,
+          -3
+        ],
+        "to": [
+          37,
+          0,
+          -23.9
+        ],
+        "moved_m": 42.495,
+        "cast": {
+          "applied": 1,
+          "kinds": [
+            "cast_start",
+            "focus_spend",
+            "teleport",
+            "world_flag",
+            "effect_apply",
+            "cast_release"
+          ]
+        }
+      },
+      "in_fight": {
+        "from": [
+          0,
+          0,
+          -3
+        ],
+        "to": [
+          0,
+          0,
+          -3
+        ],
+        "moved_m": 0,
+        "cast": {
+          "applied": 0,
+          "kinds": []
+        }
+      }
+    },
+    "charm": {
+      "npc": "helstrom-draught-seller",
+      "disposition_before": {
+        "npc": "helstrom-draught-seller",
+        "name": "Ashul-Reeh",
+        "group": "RG-DEEP",
+        "base": 50,
+        "disposition": 46,
+        "band": "neutral",
+        "term": {
+          "race": -14,
+          "upbringing": 10,
+          "total": -4
+        },
+        "player_race": "breton",
+        "player_upbringing": "interior"
+      },
+      "disposition_after": {
+        "npc": "helstrom-draught-seller",
+        "name": "Ashul-Reeh",
+        "group": "RG-DEEP",
+        "base": 50,
+        "disposition": 46,
+        "band": "neutral",
+        "term": {
+          "race": -14,
+          "upbringing": 10,
+          "total": -4
+        },
+        "player_race": "breton",
+        "player_upbringing": "interior"
+      },
+      "quest_dispositions": {},
+      "cast": {
+        "applied": 0,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "spell_impact"
+        ]
+      }
+    }
+  }
+}

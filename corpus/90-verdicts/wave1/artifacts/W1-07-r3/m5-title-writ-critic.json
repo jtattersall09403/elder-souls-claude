@@ -1,0 +1,222 @@
+{
+  "generated_by": "tools/harness/critic-w1-07-r3d.mjs",
+  "m5": [],
+  "m20": {
+    "harness_boot": {
+      "present": true,
+      "shown": false,
+      "page": "root",
+      "options": [
+        {
+          "id": "continue",
+          "label": "Continue",
+          "enabled": false
+        },
+        {
+          "id": "new",
+          "label": "New",
+          "enabled": true
+        },
+        {
+          "id": "load",
+          "label": "Load",
+          "enabled": false
+        },
+        {
+          "id": "settings",
+          "label": "Settings",
+          "enabled": true
+        },
+        {
+          "id": "quit-to-menu",
+          "label": "Quit to menu",
+          "enabled": false
+        }
+      ],
+      "option_ids": [
+        "continue",
+        "new",
+        "load",
+        "settings",
+        "quit-to-menu"
+      ],
+      "selected_index": 0,
+      "selected_id": "continue",
+      "saves": [],
+      "save_count": 0,
+      "continue_available": false,
+      "in_session": false,
+      "inputs_taken": 0,
+      "first_gesture_at_input": null,
+      "shown_at_frame": null,
+      "dismissed_by": null,
+      "look_sensitivity_scale": 1,
+      "unskippable_ms": 0,
+      "world_behind": true
+    },
+    "after_show": {
+      "present": true,
+      "shown": true,
+      "page": "root",
+      "options": [
+        {
+          "id": "continue",
+          "label": "Continue",
+          "enabled": true
+        },
+        {
+          "id": "new",
+          "label": "New",
+          "enabled": true
+        },
+        {
+          "id": "load",
+          "label": "Load",
+          "enabled": true
+        },
+        {
+          "id": "settings",
+          "label": "Settings",
+          "enabled": true
+        },
+        {
+          "id": "quit-to-menu",
+          "label": "Quit to menu",
+          "enabled": false
+        }
+      ],
+      "option_ids": [
+        "continue",
+        "new",
+        "load",
+        "settings",
+        "quit-to-menu"
+      ],
+      "selected_index": 0,
+      "selected_id": "continue",
+      "saves": [
+        {
+          "slot": "slot-a",
+          "header": {
+            "name": "Nameless",
+            "level": 1,
+            "region": "western-rootlands",
+            "journal_entries": 0
+          },
+          "bytes": 3938
+        }
+      ],
+      "save_count": 1,
+      "continue_available": true,
+      "in_session": false,
+      "inputs_taken": 0,
+      "first_gesture_at_input": null,
+      "shown_at_frame": 0,
+      "dismissed_by": null,
+      "look_sensitivity_scale": 1,
+      "unskippable_ms": 0,
+      "world_behind": true
+    },
+    "drawn": [
+      "ELDER SOULS",
+      "ARGONIA",
+      "— Continue",
+      "  New",
+      "  Load",
+      "  Settings",
+      "  Quit to menu",
+      "Nameless"
+    ],
+    "continue_result": {
+      "id": "continue",
+      "slot": "slot-a",
+      "loaded": true,
+      "ok": true,
+      "gen": 1,
+      "degraded": false
+    },
+    "screenshot": "shots/title.png",
+    "play_mode": {
+      "state": {
+        "present": true,
+        "shown": true,
+        "page": "root",
+        "options": [
+          {
+            "id": "continue",
+            "label": "Continue",
+            "enabled": true
+          },
+          {
+            "id": "new",
+            "label": "New",
+            "enabled": true
+          },
+          {
+            "id": "load",
+            "label": "Load",
+            "enabled": true
+          },
+          {
+            "id": "settings",
+            "label": "Settings",
+            "enabled": true
+          },
+          {
+            "id": "quit-to-menu",
+            "label": "Quit to menu",
+            "enabled": false
+          }
+        ],
+        "option_ids": [
+          "continue",
+          "new",
+          "load",
+          "settings",
+          "quit-to-menu"
+        ],
+        "selected_index": 0,
+        "selected_id": "continue",
+        "saves": [
+          {
+            "slot": "slot-a",
+            "header": {
+              "name": "Nameless",
+              "level": 1,
+              "region": "western-rootlands",
+              "journal_entries": 0
+            },
+            "bytes": 3938
+          }
+        ],
+        "save_count": 1,
+        "continue_available": true,
+        "in_session": false,
+        "inputs_taken": 0,
+        "first_gesture_at_input": null,
+        "shown_at_frame": 0,
+        "dismissed_by": null,
+        "look_sensitivity_scale": 1,
+        "unskippable_ms": 0,
+        "world_behind": true
+      },
+      "drawn": [
+        "ELDER SOULS",
+        "ARGONIA",
+        "— Continue",
+        "  New",
+        "  Load",
+        "  Settings",
+        "  Quit to menu",
+        "Nameless"
+      ],
+      "screenshot": "shots/title-play-mode.png"
+    }
+  },
+  "m8": null,
+  "m9": {
+    "accessor": "__HARNESS.getRenderedText({notSurface:[\"dialogue\"]})",
+    "searched": 8,
+    "hits": []
+  }
+}

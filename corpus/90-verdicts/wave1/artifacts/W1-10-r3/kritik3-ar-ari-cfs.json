@@ -1,0 +1,88 @@
+{
+ "generated": "2026-08-07T07:53:59.817Z",
+ "instrument": "kritik3-ar-ari-cfs.mjs (critic-authored)",
+ "AR1": {
+  "rng_references_on_the_weapon_path": [],
+  "determinism_identical": true,
+  "distinct_damage_over_12_identical_hits": [
+   77.88
+  ],
+  "verdict": "PASS"
+ },
+ "AR2": {
+  "procedural_weapon_generation": [],
+  "floating_damage_number_modules": [],
+  "weapons_with_lore_in_description": 87,
+  "verdict": "PASS"
+ },
+ "AR3": {
+  "mace_vs_stone": {
+   "dmg": 64.64,
+   "material": "stone",
+   "hitstop": 16,
+   "deflect": false
+  },
+  "rapier_vs_stone": {
+   "dmg": 0,
+   "material": "stone",
+   "hitstop": 15,
+   "deflect": false
+  },
+  "mace_vs_flesh": {
+   "dmg": 43.09,
+   "material": "flesh",
+   "hitstop": 8,
+   "deflect": false
+  },
+  "rapier_vs_flesh": {
+   "dmg": 114.71,
+   "material": "flesh",
+   "hitstop": 4,
+   "deflect": false
+  },
+  "sword_vs_plant": {
+   "dmg": 88.5,
+   "material": "plant",
+   "hitstop": 4,
+   "deflect": false
+  },
+  "enemies_declaring_material": 22,
+  "seam_sterile": false
+ },
+ "ARI": {
+  "distinct_clips_C": 1150,
+  "total_slots_S": 2689,
+  "ARI": 0.4277,
+  "bands": "PASS 0.42..0.60, HARD FAIL <0.33, FAIL >0.60",
+  "clip_share_histogram": {
+   "1": 332,
+   "2": 241,
+   "3": 433,
+   "4": 144
+  },
+  "max_share": 4,
+  "share_over_4": 0,
+  "UNQ_mean": 3.816,
+  "UNQ_min": 1,
+  "weapons_with_UNQ_0": 0
+ },
+ "CFS": {
+  "cells": 593,
+  "distinct_clip": 593,
+  "distinct_frames": 593,
+  "CFS": 1,
+  "failures": [],
+  "failure_count": 0
+ },
+ "TDV": {
+  "median": 1,
+  "min": 0,
+  "weapons_at_zero": [
+   "bow_chitin_recurve",
+   "bow_horn_sinew",
+   "bow_kings_horn",
+   "bow_marsh_longbow",
+   "bow_reed_shortbow"
+  ]
+ }
+}

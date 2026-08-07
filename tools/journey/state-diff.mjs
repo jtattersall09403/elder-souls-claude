@@ -28,6 +28,7 @@
 //
 // Exit 0 only if every trial is clean. Exit 20 (MEASUREMENT_FAIL) otherwise.
 import path from 'node:path';
+import fs from 'node:fs';
 import crypto from 'node:crypto';
 import { parseArgs, wantsHelp, usage, log, EXIT, writeJson, RUNS_DIR, ensureDir } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
@@ -40,6 +41,8 @@ USAGE
                                     [--frames 600] [--preroll 120] [--json]
 
 OPTIONS
+  --mode <m>        'round-trip' (RI-JRN05, default) or 'across-death' (RI-JRN06 M-D4)
+  --in <dir>        a journey-run output directory to cross-check against (across-death)
   --seeds <a,b,c>   Seeds to sweep (default 4711,1337,90210,2147483647)
   --states <a,b>    Named states to run (default arena_flat,sv1-midquest,sv5-journal-bloodstain)
   --frames <n>      Scripted window after the save point (default 600, the item's own)
@@ -59,6 +62,7 @@ const outDir = args.out ? path.resolve(String(args.out)) : path.join(RUNS_DIR, '
 ensureDir(outDir);
 
 const sha = (s) => crypto.createHash('sha256').update(s).digest('hex');
+const fsExists = (p) => { try { return fs.existsSync(p); } catch { return false; } };
 
 /** Flatten to leaf paths, with array indices collapsed so a field name is a field name. */
 function flat(o, p, acc) {
@@ -112,9 +116,123 @@ function fieldCensus(A, B) {
   return { frames: n, fields, first };
 }
 
+// =================================================================================================
+// --mode across-death — RI-JRN06 M-D4, ADDED by W1-13.
+//
+// RI-JRN06's Comparison method names this file and this flag:
+//     node tools/journey/state-diff.mjs --in reports/journeys/<runId> --mode across-death
+// and says why: "the across-death diff is the same instrument as RI-JRN05's round-trip diff,
+// pointed at a different transition". Neither flag was implemented and both were silently
+// ignored — the run answered the RI-JRN05 question and exited 0, which is a flag that lies
+// (TOOL-LOOP rule 3, question 5).
+//
+// The transition is: state hash + full save blob immediately before the killing blow, and
+// immediately after respawn, with the `death-volatile` group excluded BY NAME. Anything else
+// that moved is HF2 and a seam-S6 failure.
+// =================================================================================================
+const MODE = String(args.mode || 'round-trip');
+if (!['round-trip', 'across-death'].includes(MODE)) {
+  log(`--mode must be 'round-trip' (RI-JRN05, the default) or 'across-death' (RI-JRN06 M-D4); got ${JSON.stringify(MODE)}`);
+  process.exit(EXIT.USAGE);
+}
+
+if (MODE === 'across-death') {
+  const { DEATH_VOLATILE } = await import('./jrn06-death.mjs');
+  const inDir = args.in ? path.resolve(String(args.in)) : null;
+  const handle = await launchGame(args);
+  const rep = {
+    schema: 'elder-souls/state-diff@1', mode: 'across-death',
+    item: 'RI-JRN06 M-D4 (with RI-JRN05 as the instrument)',
+    death_volatile_group: DEATH_VOLATILE, seeds: SEEDS, trials: [],
+  };
+  try {
+    await handle.page.waitForFunction(() => !!(window.__HARNESS && window.__HARNESS.version));
+    await handle.page.evaluate(() => window.__HARNESS.ready());
+    const present = await handle.page.evaluate(() => typeof window.__HARNESS.getDeathState === 'function');
+    if (!present) {
+      log('across-death: __HARNESS.getDeathState() is absent. There is no death loop to diff across.');
+      rep.unmeasurable = 'no death system in the build';
+      writeJson(path.join(outDir, 'state-diff-across-death.json'), rep);
+      await handle.close();
+      process.exit(EXIT.MEASUREMENT_FAIL);
+    }
+    for (const seed of SEEDS) {
+      const t = await handle.page.evaluate(async (o) => {
+        const H = window.__HARNESS;
+        H.setRenderRate(0);
+        H.setSeed(o.seed);
+        H.loadState('default');
+        const hs = H.listHearths();
+        const hr = hs.hearths.find((x) => x.kind === 'settlement') || hs.hearths[0];
+        H.teleport(hr.pos[0], hr.pos[2]); H.stepFrames(2);
+        H.restAt(hr.id);
+        // Real state at the death point: a mutated world, a bank of souls, an entity alive
+        // and one killed. A death diffed over an empty world proves nothing about a death.
+        const b0 = H.saveState();
+        b0.character.souls_held = 4200;
+        b0.world.containers_emptied = ['chest:a', 'chest:b'];
+        b0.world.doors_unlocked = ['door:a'];
+        b0.world.shortcuts_opened = ['short:a'];
+        b0.world.npcs_dead = ['warden-eshi'];
+        b0.world.fog_gates_passed = ['gate-ceyatatar-vault'];
+        b0.flags = Object.assign({}, b0.flags, { 'across-death': true });
+        b0.crime.bounty = { legion: 500 };
+        b0.crime.witnesses = ['w1', 'w2'];
+        b0.factions = Object.assign({}, b0.factions, { legion: { rank: 3, expelled: false } });
+        b0.progression.souls_spent = 11240;
+        H.restoreState(b0);
+        H.teleport(hr.pos[0] + 55, hr.pos[2] + 22); H.stepFrames(6);
+        const hashBefore = H.getStateHash();
+        const before = JSON.parse(JSON.stringify(H.saveState()));
+        H.damagePlayer(1e6, { stagger: false });
+        H.stepFrames(1);
+        H.stepFrames(220);
+        const after = JSON.parse(JSON.stringify(H.saveState()));
+        const hashAfter = H.getStateHash();
+        return { hashBefore, hashAfter, before, after, death: H.getDeathState() };
+      }, { seed });
+
+      const A = flat(t.before, '', {}), B = flat(t.after, '', {});
+      const isVol = (p) => DEATH_VOLATILE.some((v) => p === v || p.startsWith(v + '.') || p.startsWith(v + '[') || (v.endsWith('.') && p.startsWith(v)));
+      const changed = [];
+      for (const k of new Set([...Object.keys(A), ...Object.keys(B)])) {
+        if (JSON.stringify(A[k]) === JSON.stringify(B[k])) continue;
+        changed.push({ path: k.replace(/\[\d+\]/g, '[]'), before: A[k] === undefined ? null : A[k], after: B[k] === undefined ? null : B[k], volatile: isVol(k) });
+      }
+      const offend = changed.filter((c) => !c.volatile);
+      const trial = {
+        seed,
+        hash_before: t.hashBefore, hash_after: t.hashAfter,
+        souls_at_death: 4200,
+        stain: t.death.bloodstain,
+        changed_total: changed.length,
+        changed_volatile: changed.length - offend.length,
+        changed_non_volatile: offend.length,
+        offending_fields: offend.slice(0, 30),
+        pass: offend.length === 0,
+      };
+      rep.trials.push(trial);
+      log(`${trial.pass ? 'PASS' : 'FAIL'} across-death seed ${seed} — ${trial.changed_total} paths moved, ${trial.changed_volatile} of them death-volatile, ${offend.length} NOT: ${offend.slice(0, 6).map((o) => o.path).join(', ') || 'none'}`);
+    }
+    if (inDir && fsExists(path.join(inDir, 'journey.json'))) {
+      rep.cross_check = { journey_run: path.join(inDir, 'journey.json'), note: 'RI-JRN06 M-D4 is also computed inside journey-run; the two must agree.' };
+    }
+  } finally {
+    rep.page_errors = handle.errors;
+    await handle.close();
+  }
+  rep.pass = rep.trials.every((t) => t.pass) && rep.page_errors.length === 0;
+  writeJson(path.join(outDir, 'state-diff-across-death.json'), rep);
+  if (args.json) process.stdout.write(JSON.stringify(rep, null, 2) + '\n');
+  else process.stdout.write(path.join(outDir, 'state-diff-across-death.json') + '\n');
+  log(`${rep.trials.filter((t) => t.pass).length}/${rep.trials.length} deaths lost nothing outside the death-volatile group`);
+  process.exit(rep.pass ? EXIT.OK : EXIT.MEASUREMENT_FAIL);
+}
+
 const handle = await launchGame(args);
 const report = {
   schema: 'elder-souls/state-diff@1',
+  mode: 'round-trip',
   item: 'RI-JRN05 M1/M2/M4/M5',
   seeds: SEEDS, states: STATES, frames: FRAMES, preroll_frames: PREROLL,
   trials: [],

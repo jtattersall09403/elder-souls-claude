@@ -224,7 +224,9 @@ export class TouchInput {
   /** Called once per fixed step, before the latch. Promotes gates and pushes the stick. */
   tick(frame) {
     for (const [action, h] of this.held) {
-      if (h.gate && !h.promoted && frame - h.gateFrom >= (h.gate.frames || 12)) {
+      // Frames HELD, press frame inclusive — the same quantity the pad uses, so T5's promise
+      // that the semantics transfer is true to the frame and not just in spirit.
+      if (h.gate && !h.promoted && (frame - h.gateFrom + 1) >= (h.gate.frames || 12)) {
         h.promoted = true;
         this.pipe.edgeDown(h.gate.hold);
       }

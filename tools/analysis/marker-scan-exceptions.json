@@ -1,0 +1,14 @@
+{
+  "schema": "elder-souls/marker-scan-exceptions@1",
+  "owner": "W1-21",
+  "rule": "A finding may be declared here only when the key is NOT a mount point for a marker and renaming it belongs to another piece. A declaration that stops matching anything fails the run as STALE, so this file cannot rot into a list of excuses. Every entry states what would remove it.",
+  "declared": [
+    {
+      "file": "stealth/detection.json",
+      "jsonpath": "no_meter.hud_elements",
+      "rule": "F1",
+      "reason": "The value is the integer 0 and the key is W1-15's DECLARATION that the stealth system draws no HUD elements — RI-STL01's 'no detection meter' compliance, asserted in data. It is a count of markers, not a coordinate a marker could be drawn from, and F1's `hud_.*` branch has caught the one field in the tree that exists to say there are none.",
+      "removed_by": "W1-15 renaming the key to `hud_element_count` or `meter_elements`, at which point this entry goes STALE and fails the run until it is deleted."
+    }
+  ]
+}

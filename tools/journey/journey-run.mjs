@@ -833,16 +833,16 @@ async function journeyLegs(handle, led, o) {
   }
 
   if (journeyId === 'jrn06-death') {
-    const n = Number(args.deaths || 1);
-    const hashes = [];
-    for (let i = 0; i < Math.min(n, 20); i++) {
-      const h0 = await handle.hOpt('getStateHash');
-      const d = await handle.hOpt('playerDeath');
-      await handle.h('stepFrames', 120);
-      const h1 = await handle.hOpt('getStateHash');
-      hashes.push({ i, before: h0, after: h1, death: d ? true : false, changed: h0 !== h1 });
-    }
-    led.ok('m_deaths', 'deaths driven and state hashed across each', { requested: n, driven: hashes.length, hashes: hashes.slice(0, 5) });
+    // W1-13. What was here drove `playerDeath()` — RI-CRM01's bounty hook, not a death — and
+    // hashed the state around it. It reported "deaths driven" against a build in which the
+    // death loop did not exist, which is the shape TOOL-LOOP rule 1 forbids. RI-JRN06's
+    // Comparison method is M-D1..M-D19 over five scenarios and it now lives in its own file.
+    const { runJrn06 } = await import('./jrn06-death.mjs');
+    const r = await runJrn06(handle, args, led, { outDir, shots });
+    led.ok('m_jrn06_summary', 'RI-JRN06 M-D1..M-D19', {
+      scenarios: r.scenarios, deaths: r.deaths_requested,
+      checks: Object.fromEntries(Object.entries(r.checks).map(([k, v]) => [k, v && v.pass])),
+    });
   }
 
   if (journeyId === 'jrn07-quest') {

@@ -1,0 +1,1465 @@
+{
+  "schema": "elder-souls/critic-w1-14-r3-census@1",
+  "practice": 0,
+  "skills_in_arena": {
+    "sorcery": 25,
+    "root-speech": 5,
+    "warding": 25,
+    "veiling": 15
+  },
+  "control_integrity": {
+    "null_vs_null_empty_room_paths": [],
+    "null_vs_null_aggroed_room_paths": []
+  },
+  "summary": {
+    "total": 55,
+    "not_castable": [
+      {
+        "effect": "absorb_health",
+        "why": "attune"
+      },
+      {
+        "effect": "soul_trap",
+        "why": "attune"
+      },
+      {
+        "effect": "bind_greater",
+        "why": "attune"
+      },
+      {
+        "effect": "cure_paralysis",
+        "why": "attune"
+      },
+      {
+        "effect": "restore_attribute",
+        "why": "attune"
+      },
+      {
+        "effect": "fortify_attribute",
+        "why": "attune"
+      },
+      {
+        "effect": "fortify_skill",
+        "why": "attune"
+      },
+      {
+        "effect": "sap_ward",
+        "why": "attune"
+      },
+      {
+        "effect": "speak_to_the_dead",
+        "why": "attune"
+      },
+      {
+        "effect": "hist_sight",
+        "why": "attune"
+      },
+      {
+        "effect": "mend_item",
+        "why": "attune"
+      },
+      {
+        "effect": "calm_beast",
+        "why": "attune"
+      },
+      {
+        "effect": "levitate",
+        "why": "attune"
+      },
+      {
+        "effect": "wall",
+        "why": "attune"
+      },
+      {
+        "effect": "mark",
+        "why": "attune"
+      },
+      {
+        "effect": "recall",
+        "why": "attune"
+      },
+      {
+        "effect": "invisibility",
+        "why": "attune"
+      },
+      {
+        "effect": "chameleon",
+        "why": "attune"
+      },
+      {
+        "effect": "silence",
+        "why": "attune"
+      },
+      {
+        "effect": "detect_life",
+        "why": "attune"
+      },
+      {
+        "effect": "detect_key",
+        "why": "attune"
+      },
+      {
+        "effect": "paralyse",
+        "why": "attune"
+      },
+      {
+        "effect": "demoralise",
+        "why": "attune"
+      },
+      {
+        "effect": "frenzy",
+        "why": "attune"
+      },
+      {
+        "effect": "false_face",
+        "why": "attune"
+      }
+    ],
+    "not_delivered": [],
+    "threw": [],
+    "moved_anything": 30,
+    "moved_nothing": [],
+    "with_unstable_paths": [],
+    "magnitude_ignored": [
+      "bind_lesser",
+      "cure_disease",
+      "cure_poison",
+      "lock_lock",
+      "ward_trap",
+      "intervention"
+    ],
+    "hi_refused": [],
+    "hi_not_delivered": [],
+    "binary_by_data": [
+      "absorb_health",
+      "soul_trap",
+      "bind_greater",
+      "cure_paralysis",
+      "restore_attribute",
+      "fortify_attribute",
+      "fortify_skill",
+      "sap_ward",
+      "speak_to_the_dead",
+      "hist_sight",
+      "mend_item",
+      "calm_beast",
+      "buoyancy",
+      "breathe_water",
+      "slowfall",
+      "levitate",
+      "wall",
+      "mark",
+      "recall",
+      "invisibility",
+      "chameleon",
+      "silence",
+      "detect_life",
+      "detect_key",
+      "paralyse",
+      "demoralise",
+      "frenzy",
+      "false_face"
+    ],
+    "DISTINCT_VERBS_all": 30,
+    "DISTINCT_VERBS_world": 25,
+    "DISTINCT_VERBS_world_no_wardprobe": 25,
+    "collisions_all": [],
+    "collisions_world": []
+  },
+  "rows": [
+    {
+      "effect": "fire_damage",
+      "school": "sorcery",
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 50,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:enemies.0.dead|w:enemies.0.hp|w:enemies.0.state|w:entities.0.hp|w:status.1.buildup.fire|w:status.1.hp|w:status.1.procs.fire",
+      "signature_world": "w:enemies.0.dead|w:enemies.0.hp|w:enemies.0.state|w:entities.0.hp|w:status.1.buildup.fire|w:status.1.hp|w:status.1.procs.fire",
+      "signature_noward": "w:enemies.0.dead|w:enemies.0.hp|w:enemies.0.state|w:entities.0.hp|w:status.1.buildup.fire|w:status.1.hp|w:status.1.procs.fire",
+      "moved_anything": true,
+      "n_paths": 7,
+      "magnitude_differing_paths": [
+        "w:enemies.0.dead",
+        "w:enemies.0.hp",
+        "w:enemies.0.state",
+        "w:entities.0.hp",
+        "w:status.1.hp",
+        "w:status.1.procs.fire"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "frost_damage",
+      "school": "sorcery",
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 50,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:enemies.0.dead|w:enemies.0.hp|w:enemies.0.state|w:entities.0.hp|w:status.1.buildup.frost|w:status.1.hp|w:status.1.stamina",
+      "signature_world": "w:enemies.0.dead|w:enemies.0.hp|w:enemies.0.state|w:entities.0.hp|w:status.1.buildup.frost|w:status.1.hp|w:status.1.stamina",
+      "signature_noward": "w:enemies.0.dead|w:enemies.0.hp|w:enemies.0.state|w:entities.0.hp|w:status.1.buildup.frost|w:status.1.hp|w:status.1.stamina",
+      "moved_anything": true,
+      "n_paths": 7,
+      "magnitude_differing_paths": [
+        "w:enemies.0.dead",
+        "w:enemies.0.hp",
+        "w:enemies.0.state",
+        "w:entities.0.hp",
+        "w:status.1.hp",
+        "w:status.1.stamina"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "shock_damage",
+      "school": "sorcery",
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 50,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:enemies.0.dead|w:enemies.0.hp|w:enemies.0.state|w:entities.0.hp|w:status.1.buildup.shock|w:status.1.hp|w:status.1.poise_health",
+      "signature_world": "w:enemies.0.dead|w:enemies.0.hp|w:enemies.0.state|w:entities.0.hp|w:status.1.buildup.shock|w:status.1.hp|w:status.1.poise_health",
+      "signature_noward": "w:enemies.0.dead|w:enemies.0.hp|w:enemies.0.state|w:entities.0.hp|w:status.1.buildup.shock|w:status.1.hp|w:status.1.poise_health",
+      "moved_anything": true,
+      "n_paths": 7,
+      "magnitude_differing_paths": [
+        "w:enemies.0.dead",
+        "w:enemies.0.hp",
+        "w:enemies.0.state",
+        "w:entities.0.hp",
+        "w:status.1.hp",
+        "w:status.1.poise_health"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "poison_damage",
+      "school": "sorcery",
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 37,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:enemies.0.hp|w:entities.0.hp|w:status.1.buildup.poison|w:status.1.heal_blocked|w:status.1.hp|w:status.1.procs.poison",
+      "signature_world": "w:enemies.0.hp|w:entities.0.hp|w:status.1.buildup.poison|w:status.1.heal_blocked|w:status.1.hp|w:status.1.procs.poison",
+      "signature_noward": "w:enemies.0.hp|w:entities.0.hp|w:status.1.buildup.poison|w:status.1.heal_blocked|w:status.1.hp|w:status.1.procs.poison",
+      "moved_anything": true,
+      "n_paths": 6,
+      "magnitude_differing_paths": [
+        "w:enemies.0.hp",
+        "w:entities.0.hp",
+        "w:status.1.buildup.poison",
+        "w:status.1.heal_blocked",
+        "w:status.1.hp",
+        "w:status.1.procs.poison"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "damage_health",
+      "school": "sorcery",
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 25,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:enemies.0.hp|w:entities.0.hp|w:status.1.hp",
+      "signature_world": "w:enemies.0.hp|w:entities.0.hp|w:status.1.hp",
+      "signature_noward": "w:enemies.0.hp|w:entities.0.hp|w:status.1.hp",
+      "moved_anything": true,
+      "n_paths": 3,
+      "magnitude_differing_paths": [
+        "w:enemies.0.hp",
+        "w:entities.0.hp",
+        "w:status.1.hp"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "drain_health",
+      "school": "sorcery",
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 50,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:enemies.0.hp|w:entities.0.hp|w:status.1.hp|w:status.1.hp_max",
+      "signature_world": "w:enemies.0.hp|w:entities.0.hp|w:status.1.hp|w:status.1.hp_max",
+      "signature_noward": "w:enemies.0.hp|w:entities.0.hp|w:status.1.hp|w:status.1.hp_max",
+      "moved_anything": true,
+      "n_paths": 4,
+      "magnitude_differing_paths": [
+        "w:enemies.0.hp",
+        "w:entities.0.hp",
+        "w:status.1.hp",
+        "w:status.1.hp_max"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "absorb_health",
+      "school": "sorcery",
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "soul_trap",
+      "school": "sorcery",
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "shatter",
+      "school": "sorcery",
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 30,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [
+        {
+          "kind": "shatter_refused",
+          "reason": null
+        },
+        {
+          "kind": "shatter_refused",
+          "reason": null
+        },
+        {
+          "kind": "shatter_refused",
+          "reason": null
+        },
+        {
+          "kind": "shatter_refused",
+          "reason": null
+        },
+        {
+          "kind": "shatter_refused",
+          "reason": null
+        },
+        {
+          "kind": "shatter_refused",
+          "reason": null
+        },
+        {
+          "kind": "shatter_refused",
+          "reason": null
+        },
+        {
+          "kind": "shatter_refused",
+          "reason": null
+        },
+        {
+          "kind": "shatter_refused",
+          "reason": null
+        },
+        {
+          "kind": "shatter_refused",
+          "reason": null
+        },
+        {
+          "kind": "shatter_refused",
+          "reason": null
+        },
+        {
+          "kind": "shatter_refused",
+          "reason": null
+        },
+        {
+          "kind": "shatter_refused",
+          "reason": null
+        },
+        {
+          "kind": "shatter_refused",
+          "reason": null
+        },
+        {
+          "kind": "shatter_refused",
+          "reason": null
+        }
+      ],
+      "unstable_paths": [],
+      "signature_all": "m:world.breakables.broken#len|m:world.breakables.broken.0|m:world.breakables.broken.1|m:world.breakables.broken.2|m:world.breakables.intact#len|m:world.breakables.intact.0|m:world.breakables.intact.1|m:world.breakables.intact.2|w:quest.flags#len|w:quest.flags.0|w:quest.flags.1|w:quest.flags.2|w:sim_world.shortcuts_opened#len|w:sim_world.shortcuts_opened.0|w:sim_world.shortcuts_opened.1",
+      "signature_world": "w:quest.flags#len|w:quest.flags.0|w:quest.flags.1|w:quest.flags.2|w:sim_world.shortcuts_opened#len|w:sim_world.shortcuts_opened.0|w:sim_world.shortcuts_opened.1",
+      "signature_noward": "w:quest.flags#len|w:quest.flags.0|w:quest.flags.1|w:quest.flags.2|w:sim_world.shortcuts_opened#len|w:sim_world.shortcuts_opened.0|w:sim_world.shortcuts_opened.1",
+      "moved_anything": true,
+      "n_paths": 15,
+      "magnitude_differing_paths": [
+        "m:world.breakables.broken#len",
+        "m:world.breakables.broken.0",
+        "m:world.breakables.broken.1",
+        "m:world.breakables.broken.2",
+        "m:world.breakables.intact#len",
+        "m:world.breakables.intact.0",
+        "m:world.breakables.intact.1",
+        "m:world.breakables.intact.2",
+        "w:quest.flags#len",
+        "w:quest.flags.0",
+        "w:quest.flags.1",
+        "w:quest.flags.2",
+        "w:sim_world.shortcuts_opened#len",
+        "w:sim_world.shortcuts_opened.0",
+        "w:sim_world.shortcuts_opened.1"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "corrode",
+      "school": "sorcery",
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 50,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:status.1.armour_rating",
+      "signature_world": "w:status.1.armour_rating",
+      "signature_noward": "w:status.1.armour_rating",
+      "moved_anything": true,
+      "n_paths": 1,
+      "magnitude_differing_paths": [
+        "w:status.1.armour_rating"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "bind_lesser",
+      "school": "sorcery",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 22,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "m:world.summons#len|m:world.summons.0.eid|m:world.summons.0.expires_f|m:world.summons.0.kind|m:world.summons.0.unfold_f|w:enemies#len|w:enemies.2.dead|w:enemies.2.hp|w:enemies.2.id|w:enemies.2.pos_q|w:enemies.2.state|w:entities#len|w:entities.2.eid|w:entities.2.hp|w:entities.2.kind|w:entities.2.reach_m|w:entities.2.taken|w:entities.3.eid|w:entities.4.eid|w:entities.4.hp|w:entities.4.kind|w:entities.4.reach_m|w:entities.4.taken|w:player.in_combat|w:status#len|w:status.3.armour_rating|w:status.3.concussed|w:status.3.equip_load_pct|w:status.3.frenzy_target|w:status.3.frostbitten|w:status.3.heal_blocked|w:status.3.hp|w:status.3.hp_max|w:status.3.id|w:status.3.move_speed_mult|w:status.3.paralysed|w:status.3.poise_health|w:status.3.poise_health_max|w:status.3.roll_class|w:status.3.shield_flat|w:status.3.silenced|w:status.3.stamina|w:status.3.stamina_max|w:status.3.ward_charges|w:status.3.wards.disease|w:status.3.wards.fire|w:status.3.wards.frost|w:status.3.wards.magic|w:status.3.wards.physical|w:status.3.wards.poison|w:status.3.wards.shock|w:status.3.yielded",
+      "signature_world": "w:enemies#len|w:enemies.2.dead|w:enemies.2.hp|w:enemies.2.id|w:enemies.2.pos_q|w:enemies.2.state|w:entities#len|w:entities.2.eid|w:entities.2.hp|w:entities.2.kind|w:entities.2.reach_m|w:entities.2.taken|w:entities.3.eid|w:entities.4.eid|w:entities.4.hp|w:entities.4.kind|w:entities.4.reach_m|w:entities.4.taken|w:player.in_combat|w:status#len|w:status.3.armour_rating|w:status.3.concussed|w:status.3.equip_load_pct|w:status.3.frenzy_target|w:status.3.frostbitten|w:status.3.heal_blocked|w:status.3.hp|w:status.3.hp_max|w:status.3.id|w:status.3.move_speed_mult|w:status.3.paralysed|w:status.3.poise_health|w:status.3.poise_health_max|w:status.3.roll_class|w:status.3.shield_flat|w:status.3.silenced|w:status.3.stamina|w:status.3.stamina_max|w:status.3.ward_charges|w:status.3.wards.disease|w:status.3.wards.fire|w:status.3.wards.frost|w:status.3.wards.magic|w:status.3.wards.physical|w:status.3.wards.poison|w:status.3.wards.shock|w:status.3.yielded",
+      "signature_noward": "w:enemies#len|w:enemies.2.dead|w:enemies.2.hp|w:enemies.2.id|w:enemies.2.pos_q|w:enemies.2.state|w:entities#len|w:entities.2.eid|w:entities.2.hp|w:entities.2.kind|w:entities.2.reach_m|w:entities.2.taken|w:entities.3.eid|w:entities.4.eid|w:entities.4.hp|w:entities.4.kind|w:entities.4.reach_m|w:entities.4.taken|w:player.in_combat|w:status#len|w:status.3.armour_rating|w:status.3.concussed|w:status.3.equip_load_pct|w:status.3.frenzy_target|w:status.3.frostbitten|w:status.3.heal_blocked|w:status.3.hp|w:status.3.hp_max|w:status.3.id|w:status.3.move_speed_mult|w:status.3.paralysed|w:status.3.poise_health|w:status.3.poise_health_max|w:status.3.roll_class|w:status.3.shield_flat|w:status.3.silenced|w:status.3.stamina|w:status.3.stamina_max|w:status.3.ward_charges|w:status.3.wards.disease|w:status.3.wards.fire|w:status.3.wards.frost|w:status.3.wards.magic|w:status.3.wards.physical|w:status.3.wards.poison|w:status.3.wards.shock|w:status.3.yielded",
+      "moved_anything": true,
+      "n_paths": 52,
+      "magnitude_differing_paths": [],
+      "magnitude_coupling": "MAGNITUDE_IGNORED"
+    },
+    {
+      "effect": "bind_greater",
+      "school": "sorcery",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "bound_weapon",
+      "school": "sorcery",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 37,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "m:world.bound_weapon|m:world.bound_weapon.attack_rating|m:world.bound_weapon.id|m:world.bound_weapon.was",
+      "signature_world": "",
+      "signature_noward": "",
+      "moved_anything": true,
+      "n_paths": 4,
+      "magnitude_differing_paths": [
+        "m:world.bound_weapon.attack_rating"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "telekinesis",
+      "school": "sorcery",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 25,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "m:world.reach_m|w:entities.2.reach_m|w:entities.3.reach_m",
+      "signature_world": "w:entities.2.reach_m|w:entities.3.reach_m",
+      "signature_noward": "w:entities.2.reach_m|w:entities.3.reach_m",
+      "moved_anything": true,
+      "n_paths": 3,
+      "magnitude_differing_paths": [
+        "m:world.reach_m",
+        "w:entities.2.reach_m",
+        "w:entities.3.reach_m"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "restore_health",
+      "school": "root_speech",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 12,
+      "binary_by_data": false,
+      "hi_tier": 1,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:player.hp|w:status.0.hp",
+      "signature_world": "w:player.hp|w:status.0.hp",
+      "signature_noward": "w:player.hp|w:status.0.hp",
+      "moved_anything": true,
+      "n_paths": 2,
+      "magnitude_differing_paths": [
+        "w:player.hp",
+        "w:status.0.hp"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "cure_disease",
+      "school": "root_speech",
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 5,
+      "binary_by_data": false,
+      "hi_tier": 1,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:quest.afflictions#len|w:quest.afflictions.0|w:quest.afflictions.1|w:quest.afflictions.2",
+      "signature_world": "w:quest.afflictions#len|w:quest.afflictions.0|w:quest.afflictions.1|w:quest.afflictions.2",
+      "signature_noward": "w:quest.afflictions#len|w:quest.afflictions.0|w:quest.afflictions.1|w:quest.afflictions.2",
+      "moved_anything": true,
+      "n_paths": 4,
+      "magnitude_differing_paths": [],
+      "magnitude_coupling": "MAGNITUDE_IGNORED"
+    },
+    {
+      "effect": "cure_poison",
+      "school": "root_speech",
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 5,
+      "binary_by_data": false,
+      "hi_tier": 1,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:quest.afflictions#len|w:quest.afflictions.1|w:quest.afflictions.2",
+      "signature_world": "w:quest.afflictions#len|w:quest.afflictions.1|w:quest.afflictions.2",
+      "signature_noward": "w:quest.afflictions#len|w:quest.afflictions.1|w:quest.afflictions.2",
+      "moved_anything": true,
+      "n_paths": 3,
+      "magnitude_differing_paths": [],
+      "magnitude_coupling": "MAGNITUDE_IGNORED"
+    },
+    {
+      "effect": "cure_paralysis",
+      "school": "root_speech",
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "restore_attribute",
+      "school": "root_speech",
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "fortify_attribute",
+      "school": "root_speech",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "fortify_skill",
+      "school": "root_speech",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "resist_element",
+      "school": "root_speech",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 14,
+      "binary_by_data": false,
+      "hi_tier": 1,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:hit.fire|w:hit.frost|w:hit.shock|w:status.0.wards.fire|w:status.0.wards.frost|w:status.0.wards.shock",
+      "signature_world": "w:hit.fire|w:hit.frost|w:hit.shock|w:status.0.wards.fire|w:status.0.wards.frost|w:status.0.wards.shock",
+      "signature_noward": "w:status.0.wards.fire|w:status.0.wards.frost|w:status.0.wards.shock",
+      "moved_anything": true,
+      "n_paths": 6,
+      "magnitude_differing_paths": [
+        "w:hit.fire",
+        "w:hit.frost",
+        "w:hit.shock",
+        "w:status.0.wards.fire",
+        "w:status.0.wards.frost",
+        "w:status.0.wards.shock"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "resist_disease",
+      "school": "root_speech",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 28,
+      "binary_by_data": false,
+      "hi_tier": 1,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:hit.disease|w:hit.poison|w:status.0.wards.disease|w:status.0.wards.poison",
+      "signature_world": "w:hit.disease|w:hit.poison|w:status.0.wards.disease|w:status.0.wards.poison",
+      "signature_noward": "w:status.0.wards.disease|w:status.0.wards.poison",
+      "moved_anything": true,
+      "n_paths": 4,
+      "magnitude_differing_paths": [
+        "w:hit.disease",
+        "w:hit.poison",
+        "w:status.0.wards.disease",
+        "w:status.0.wards.poison"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "sap_ward",
+      "school": "root_speech",
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "speak_to_the_dead",
+      "school": "root_speech",
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "hist_sight",
+      "school": "root_speech",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "mend_item",
+      "school": "root_speech",
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "calm_beast",
+      "school": "root_speech",
+      "range": "target",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "open_lock",
+      "school": "warding",
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 50,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        },
+        {
+          "kind": "lock_refused",
+          "reason": null
+        }
+      ],
+      "unstable_paths": [],
+      "signature_all": "m:world.locks.locked#len|m:world.locks.locked.0|m:world.locks.locked.1|m:world.locks.locked.2|m:world.locks.locked.3|m:world.locks.locked.4|m:world.locks.unlocked#len|m:world.locks.unlocked.0|m:world.locks.unlocked.1|m:world.locks.unlocked.2|m:world.locks.unlocked.3|w:quest.flags#len|w:quest.flags.0|w:quest.flags.1|w:quest.flags.2|w:sim_world.doors_unlocked#len|w:sim_world.doors_unlocked.0|w:sim_world.doors_unlocked.1|w:sim_world.doors_unlocked.2",
+      "signature_world": "w:quest.flags#len|w:quest.flags.0|w:quest.flags.1|w:quest.flags.2|w:sim_world.doors_unlocked#len|w:sim_world.doors_unlocked.0|w:sim_world.doors_unlocked.1|w:sim_world.doors_unlocked.2",
+      "signature_noward": "w:quest.flags#len|w:quest.flags.0|w:quest.flags.1|w:quest.flags.2|w:sim_world.doors_unlocked#len|w:sim_world.doors_unlocked.0|w:sim_world.doors_unlocked.1|w:sim_world.doors_unlocked.2",
+      "moved_anything": true,
+      "n_paths": 19,
+      "magnitude_differing_paths": [
+        "m:world.locks.locked#len",
+        "m:world.locks.locked.0",
+        "m:world.locks.locked.1",
+        "m:world.locks.locked.2",
+        "m:world.locks.locked.3",
+        "m:world.locks.locked.4",
+        "m:world.locks.unlocked#len",
+        "m:world.locks.unlocked.0",
+        "m:world.locks.unlocked.1",
+        "m:world.locks.unlocked.2",
+        "m:world.locks.unlocked.3",
+        "w:quest.flags#len",
+        "w:quest.flags.0",
+        "w:quest.flags.1",
+        "w:quest.flags.2",
+        "w:sim_world.doors_unlocked#len",
+        "w:sim_world.doors_unlocked.0",
+        "w:sim_world.doors_unlocked.1",
+        "w:sim_world.doors_unlocked.2"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "lock_lock",
+      "school": "warding",
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 50,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "m:world.locks.locked#len|m:world.locks.locked.1|m:world.locks.locked.2|m:world.locks.locked.3|m:world.locks.locked.4|m:world.locks.locked.5|m:world.locks.unlocked#len|m:world.locks.unlocked.0|w:quest.flags#len|w:quest.flags.0",
+      "signature_world": "w:quest.flags#len|w:quest.flags.0",
+      "signature_noward": "w:quest.flags#len|w:quest.flags.0",
+      "moved_anything": true,
+      "n_paths": 10,
+      "magnitude_differing_paths": [],
+      "magnitude_coupling": "MAGNITUDE_IGNORED"
+    },
+    {
+      "effect": "ward_trap",
+      "school": "warding",
+      "range": "touch",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 5,
+      "binary_by_data": false,
+      "hi_tier": 1,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "m:world.traps.armed#len|m:world.traps.armed.0|m:world.traps.armed.1|m:world.traps.armed.2|m:world.traps.disarmed#len|m:world.traps.disarmed.0|m:world.traps.disarmed.1|m:world.traps.disarmed.2|w:quest.flags#len|w:quest.flags.0|w:quest.flags.1|w:quest.flags.2",
+      "signature_world": "w:quest.flags#len|w:quest.flags.0|w:quest.flags.1|w:quest.flags.2",
+      "signature_noward": "w:quest.flags#len|w:quest.flags.0|w:quest.flags.1|w:quest.flags.2",
+      "moved_anything": true,
+      "n_paths": 12,
+      "magnitude_differing_paths": [],
+      "magnitude_coupling": "MAGNITUDE_IGNORED"
+    },
+    {
+      "effect": "buoyancy",
+      "school": "warding",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": null,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "m:world.water.buoyant",
+      "signature_world": "",
+      "signature_noward": "",
+      "moved_anything": true,
+      "n_paths": 1,
+      "magnitude_coupling": "N_A_BINARY"
+    },
+    {
+      "effect": "breathe_water",
+      "school": "warding",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": null,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "m:world.water.breathes",
+      "signature_world": "",
+      "signature_noward": "",
+      "moved_anything": true,
+      "n_paths": 1,
+      "magnitude_coupling": "N_A_BINARY"
+    },
+    {
+      "effect": "feather",
+      "school": "warding",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 50,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:player.equip_load_pct|w:player.roll_class|w:status.0.equip_load_pct|w:status.0.roll_class",
+      "signature_world": "w:player.equip_load_pct|w:player.roll_class|w:status.0.equip_load_pct|w:status.0.roll_class",
+      "signature_noward": "w:player.equip_load_pct|w:player.roll_class|w:status.0.equip_load_pct|w:status.0.roll_class",
+      "moved_anything": true,
+      "n_paths": 4,
+      "magnitude_differing_paths": [
+        "w:player.equip_load_pct",
+        "w:player.roll_class",
+        "w:status.0.equip_load_pct",
+        "w:status.0.roll_class"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "burden",
+      "school": "warding",
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 25,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:status.1.equip_load_pct|w:status.1.roll_class",
+      "signature_world": "w:status.1.equip_load_pct|w:status.1.roll_class",
+      "signature_noward": "w:status.1.equip_load_pct|w:status.1.roll_class",
+      "moved_anything": true,
+      "n_paths": 2,
+      "magnitude_differing_paths": [
+        "w:status.1.equip_load_pct",
+        "w:status.1.roll_class"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "slowfall",
+      "school": "warding",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": null,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "m:fall.fall_damage|m:fall.terminal|m:world.fall.damage_enabled|m:world.fall.terminal_mps",
+      "signature_world": "",
+      "signature_noward": "",
+      "moved_anything": true,
+      "n_paths": 4,
+      "magnitude_coupling": "N_A_BINARY"
+    },
+    {
+      "effect": "levitate",
+      "school": "warding",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "leap",
+      "school": "warding",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 20,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "m:fall.jump_apex|m:world.jump_apex_mult",
+      "signature_world": "",
+      "signature_noward": "",
+      "moved_anything": true,
+      "n_paths": 2,
+      "magnitude_differing_paths": [
+        "m:fall.jump_apex",
+        "m:world.jump_apex_mult"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "shield",
+      "school": "warding",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 30,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:hit.physical|w:status.0.shield_flat",
+      "signature_world": "w:hit.physical|w:status.0.shield_flat",
+      "signature_noward": "w:status.0.shield_flat",
+      "moved_anything": true,
+      "n_paths": 2,
+      "magnitude_differing_paths": [
+        "w:hit.physical",
+        "w:status.0.shield_flat"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "wall",
+      "school": "warding",
+      "range": "target",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "mark",
+      "school": "warding",
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "recall",
+      "school": "warding",
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "intervention",
+      "school": "warding",
+      "range": "self",
+      "duration_s": 0,
+      "mag_lo": 1,
+      "mag_hi": 22,
+      "binary_by_data": false,
+      "hi_tier": 2,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:player.pos_m.0|w:player.pos_m.2",
+      "signature_world": "w:player.pos_m.0|w:player.pos_m.2",
+      "signature_noward": "w:player.pos_m.0|w:player.pos_m.2",
+      "moved_anything": true,
+      "n_paths": 2,
+      "magnitude_differing_paths": [],
+      "magnitude_coupling": "MAGNITUDE_IGNORED"
+    },
+    {
+      "effect": "invisibility",
+      "school": "veiling",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "chameleon",
+      "school": "veiling",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "muffle",
+      "school": "veiling",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 15,
+      "binary_by_data": false,
+      "hi_tier": 1,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:stealth.magic.muffle_pct",
+      "signature_world": "w:stealth.magic.muffle_pct",
+      "signature_noward": "w:stealth.magic.muffle_pct",
+      "moved_anything": true,
+      "n_paths": 1,
+      "magnitude_differing_paths": [
+        "w:stealth.magic.muffle_pct"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "silence",
+      "school": "veiling",
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "night_eye",
+      "school": "veiling",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 25,
+      "binary_by_data": false,
+      "hi_tier": 1,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:stealth.magic.night_eye_bonus",
+      "signature_world": "w:stealth.magic.night_eye_bonus",
+      "signature_noward": "w:stealth.magic.night_eye_bonus",
+      "moved_anything": true,
+      "n_paths": 1,
+      "magnitude_differing_paths": [
+        "w:stealth.magic.night_eye_bonus"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "detect_life",
+      "school": "veiling",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "detect_key",
+      "school": "veiling",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "charm",
+      "school": "veiling",
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 8,
+      "binary_by_data": false,
+      "hi_tier": 1,
+      "focus_max": 124,
+      "delivered_lo": true,
+      "delivered_lo_repeat": true,
+      "delivered_hi": true,
+      "refusals_lo": [],
+      "unstable_paths": [],
+      "signature_all": "w:enemies.0.state|w:quest.dispositions.e0|w:quest.flags#len|w:quest.flags.0|w:status.1.yielded",
+      "signature_world": "w:enemies.0.state|w:quest.dispositions.e0|w:quest.flags#len|w:quest.flags.0|w:status.1.yielded",
+      "signature_noward": "w:enemies.0.state|w:quest.dispositions.e0|w:quest.flags#len|w:quest.flags.0|w:status.1.yielded",
+      "moved_anything": true,
+      "n_paths": 5,
+      "magnitude_differing_paths": [
+        "w:quest.dispositions.e0"
+      ],
+      "magnitude_coupling": "COUPLED"
+    },
+    {
+      "effect": "paralyse",
+      "school": "veiling",
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "demoralise",
+      "school": "veiling",
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "frenzy",
+      "school": "veiling",
+      "range": "touch",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    },
+    {
+      "effect": "false_face",
+      "school": "veiling",
+      "range": "self",
+      "duration_s": 20,
+      "mag_lo": 1,
+      "mag_hi": 1,
+      "binary_by_data": true,
+      "hi_tier": null,
+      "focus_max": 124,
+      "class": "NOT_CASTABLE",
+      "note": "attune"
+    }
+  ],
+  "notes": [
+    "null-vs-null drift, empty room: 0 paths",
+    "null-vs-null drift, aggroed room: 0 paths"
+  ]
+}

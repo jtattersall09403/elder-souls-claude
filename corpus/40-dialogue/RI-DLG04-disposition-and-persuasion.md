@@ -231,13 +231,35 @@ Additional binding rules:
 from §B/§C *independently of our code*, then compare against our engine over a randomised
 sweep:
 ```
-node tools/corpus/disposition-oracle.mjs --sweep 100000 --out /tmp/oracle.tsv
+python3 tools/dialogue/disposition-oracle.py --sweep 100000 --out /tmp/oracle.tsv
 # sweeps: Personality 10..100, Luck 10..100, Speechcraft 5..100, Mercantile 5..100,
 #         level 1..40, reputation 0..50, fatigue 0..1, npc stats likewise,
 #         base disposition 0..100, race match {0,1}, faction reaction -4..+4, rank 0..9
-node tools/corpus/dump-engine-disposition.mjs --cases /tmp/oracle.tsv --out /tmp/ours.tsv
-diff <(cut -f9-12 /tmp/oracle.tsv) <(cut -f9-12 /tmp/ours.tsv) | head -50
+node tools/dialogue/dump-engine-disposition.mjs --cases /tmp/oracle.tsv --out /tmp/ours.tsv
+# Columns 31..35 are the OUTPUTS (D, d, target1, target2, target3). Compare NUMERICALLY,
+# never with `diff`: the two sides format signed zero differently (`-0.000000000` vs
+# `0.000000000`), which a textual diff reports as a ~15% mismatch that is not a disagreement.
+python3 - <<'PY'
+import sys
+a=[l.split('\t') for l in open('/tmp/oracle.tsv').read().splitlines()[1:]]
+b=[l.split('\t') for l in open('/tmp/ours.tsv').read().splitlines()[1:]]
+bad=[(x[0],x[30:35],y[30:35]) for x,y in zip(a,b)
+     if any(abs(float(p)-float(q))>1e-3 for p,q in zip(x[30:35],y[30:35]))]
+print(f"{len(bad)} mismatching rows of {len(a)}"); [print(r) for r in bad[:50]]
+sys.exit(1 if bad else 0)
+PY
 ```
+
+> **CORRECTED wave 1 (`TOOL-COVERAGE-R1`, tool critic).** Three defects in this step, all found by
+> running it. (a) Both tools were named under `tools/corpus/` and neither has ever lived there;
+> they are `tools/dialogue/disposition-oracle.py` and `tools/dialogue/dump-engine-disposition.mjs`,
+> and both exist and work — verified agreeing on 2,000 randomised cases. (b) The oracle's
+> extension was given as `.mjs`. It is `.py` **on purpose**: this step's own first sentence
+> demands a reference implemented *"independently of our code"*, and a different language is how
+> that independence is bought. The `.mjs` name must not be honoured. (c) The old command was
+> `diff <(cut -f9-12 …)`. Columns 9–12 are `pLevel pReputation pFatigue pFatigueMax` — **inputs**,
+> which both files echo verbatim, so the check passed identically whether or not the engine
+> agreed. It was a check that could not fail. No threshold in this item changes.
 Required: **exact integer match on `derivedDisposition`** and on `target1/2/3`
 (±0.001 float tolerance), on 100% of cases. Any mismatch is a fail with the offending row
 printed.

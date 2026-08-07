@@ -248,6 +248,12 @@ export function panel(ctx, material, x, y, w, h, s, seed, alpha) {
           ctx.beginPath(); ctx.arc(cx, cy, rr - t * 1.6 * s, 0.6, 4.1); ctx.strokeStyle = Ca('clay', 0.16); ctx.lineWidth = 0.9 * s; ctx.stroke();
         }
       }
+      // Fired clay sits at L 0.13, which is the worst luminance a ground can have: too dark for
+      // ink, too light for bone. A slip of chitin-black is brushed over it — a real thing a
+      // potter does to a vessel — which brings the ground to L 0.06 and puts bone on it at
+      // better than 7:1. The crazing and the thumbprints are still visible through it.
+      ctx.fillStyle = Ca('chitin_dark', 0.55);
+      ctx.fill();
       ctx.restore();
       break;
     }

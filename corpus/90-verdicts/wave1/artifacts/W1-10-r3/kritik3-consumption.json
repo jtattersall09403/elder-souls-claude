@@ -1,0 +1,1103 @@
+{
+ "generated": "2026-08-07T07:25:09.936Z",
+ "instrument": "kritik3-consumption.mjs (critic-authored, round 3, in-memory, behavioural/recorded split)",
+ "tally": {
+  "r2_own_fixture": {
+   "n": 6,
+   "consumed": 3,
+   "echo": 0,
+   "inert": 3
+  },
+  "r2_able_fixture": {
+   "n": 6,
+   "consumed": 6,
+   "echo": 0,
+   "inert": 0
+  },
+  "controls": {
+   "n": 3,
+   "consumed": 0,
+   "echo": 0,
+   "inert": 3
+  },
+  "load_bearing": {
+   "n": 7,
+   "consumed": 6,
+   "echo": 1,
+   "inert": 0
+  }
+ },
+ "r2_pairs": [
+  {
+   "name": "hitstop.attacker.<tier>.flesh 8 -> 40",
+   "on_own_fixture": "CONSUMED",
+   "on_able_fixture": "CONSUMED"
+  },
+  {
+   "name": "hitstop.attacker.<tier>.stone -> 99",
+   "on_own_fixture": "INERT",
+   "on_able_fixture": "CONSUMED"
+  },
+  {
+   "name": "hitstop.attacker.<tier>.metal/chitin/wood/shield -> 99",
+   "on_own_fixture": "INERT",
+   "on_able_fixture": "CONSUMED"
+  },
+  {
+   "name": "materials.multipliers ALL -> 0.01",
+   "on_own_fixture": "CONSUMED",
+   "on_able_fixture": "CONSUMED"
+  },
+  {
+   "name": "hitstop.knockback_m ALL -> 9",
+   "on_own_fixture": "CONSUMED",
+   "on_able_fixture": "CONSUMED"
+  },
+  {
+   "name": "hitstop.deflect.hitstop_multiplier 1.5 -> 20",
+   "on_own_fixture": "INERT",
+   "on_able_fixture": "CONSUMED"
+  }
+ ],
+ "results": [
+  {
+   "name": "hitstop.attacker.<tier>.flesh 8 -> 40",
+   "tag": "r2-own-fixture",
+   "fixture": {
+    "material": "flesh",
+    "weapon": "ssw_garrison_sword"
+   },
+   "verdict": "CONSUMED",
+   "moved_behavioural": [
+    "atk_stall_f"
+   ],
+   "moved_recorded": [
+    "rec_hitstop_f",
+    "rec_victim_hitstop_f"
+   ],
+   "before": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 40,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 40,
+    "rec_victim_hitstop_f": 44,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "hitstop.attacker.<tier>.flesh 8 -> 40",
+   "tag": "r2-able-fixture",
+   "fixture": {
+    "material": "flesh",
+    "weapon": "ssw_garrison_sword"
+   },
+   "verdict": "CONSUMED",
+   "moved_behavioural": [
+    "atk_stall_f"
+   ],
+   "moved_recorded": [
+    "rec_hitstop_f",
+    "rec_victim_hitstop_f"
+   ],
+   "before": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 40,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 40,
+    "rec_victim_hitstop_f": 44,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "hitstop.attacker.<tier>.stone -> 99",
+   "tag": "r2-own-fixture",
+   "fixture": {
+    "material": "flesh",
+    "weapon": "ssw_garrison_sword"
+   },
+   "verdict": "INERT",
+   "moved_behavioural": [],
+   "moved_recorded": [],
+   "before": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "hitstop.attacker.<tier>.stone -> 99",
+   "tag": "r2-able-fixture",
+   "fixture": {
+    "material": "stone",
+    "weapon": "mce_bog_iron_mace"
+   },
+   "verdict": "CONSUMED",
+   "moved_behavioural": [
+    "atk_stall_f"
+   ],
+   "moved_recorded": [
+    "rec_hitstop_f"
+   ],
+   "before": {
+    "dmg": 64.64,
+    "hitF": 40,
+    "atk_stall_f": 16,
+    "victim_stall_f": 0,
+    "victim_dz": 0,
+    "attacker_dz": 0.08,
+    "move_real_total_f": 96,
+    "deflect": false,
+    "rec_material": "stone",
+    "rec_hitstop_f": 16,
+    "rec_victim_hitstop_f": 0,
+    "rec_knockback_m": -0.2,
+    "rec_decal": "spark_dust",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 64.64,
+    "hitF": 40,
+    "atk_stall_f": 99,
+    "victim_stall_f": 0,
+    "victim_dz": 0,
+    "attacker_dz": 0.08,
+    "move_real_total_f": 96,
+    "deflect": false,
+    "rec_material": "stone",
+    "rec_hitstop_f": 99,
+    "rec_victim_hitstop_f": 0,
+    "rec_knockback_m": -0.2,
+    "rec_decal": "spark_dust",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "hitstop.attacker.<tier>.metal/chitin/wood/shield -> 99",
+   "tag": "r2-own-fixture",
+   "fixture": {
+    "material": "flesh",
+    "weapon": "ssw_garrison_sword"
+   },
+   "verdict": "INERT",
+   "moved_behavioural": [],
+   "moved_recorded": [],
+   "before": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "hitstop.attacker.<tier>.metal/chitin/wood/shield -> 99",
+   "tag": "r2-able-fixture",
+   "fixture": {
+    "material": "chitin",
+    "weapon": "ssw_garrison_sword"
+   },
+   "verdict": "CONSUMED",
+   "moved_behavioural": [
+    "atk_stall_f"
+   ],
+   "moved_recorded": [
+    "rec_hitstop_f",
+    "rec_victim_hitstop_f"
+   ],
+   "before": {
+    "dmg": 60.18,
+    "hitF": 30,
+    "atk_stall_f": 6,
+    "victim_stall_f": 0,
+    "victim_dz": 0.03,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "chitin",
+    "rec_hitstop_f": 6,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.03,
+    "rec_decal": "chip",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 60.18,
+    "hitF": 30,
+    "atk_stall_f": 99,
+    "victim_stall_f": 0,
+    "victim_dz": 0.03,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "chitin",
+    "rec_hitstop_f": 99,
+    "rec_victim_hitstop_f": 101,
+    "rec_knockback_m": 0.03,
+    "rec_decal": "chip",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "materials.multipliers ALL -> 0.01",
+   "tag": "r2-own-fixture",
+   "fixture": {
+    "material": "flesh",
+    "weapon": "ssw_garrison_sword"
+   },
+   "verdict": "CONSUMED",
+   "moved_behavioural": [
+    "dmg"
+   ],
+   "moved_recorded": [],
+   "before": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 0.71,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "materials.multipliers ALL -> 0.01",
+   "tag": "r2-able-fixture",
+   "fixture": {
+    "material": "flesh",
+    "weapon": "ssw_garrison_sword"
+   },
+   "verdict": "CONSUMED",
+   "moved_behavioural": [
+    "dmg"
+   ],
+   "moved_recorded": [],
+   "before": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 0.71,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "hitstop.knockback_m ALL -> 9",
+   "tag": "r2-own-fixture",
+   "fixture": {
+    "material": "flesh",
+    "weapon": "ssw_garrison_sword"
+   },
+   "verdict": "CONSUMED",
+   "moved_behavioural": [
+    "victim_dz"
+   ],
+   "moved_recorded": [
+    "rec_knockback_m"
+   ],
+   "before": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 9,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 9,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "hitstop.knockback_m ALL -> 9",
+   "tag": "r2-able-fixture",
+   "fixture": {
+    "material": "flesh",
+    "weapon": "ssw_garrison_sword"
+   },
+   "verdict": "CONSUMED",
+   "moved_behavioural": [
+    "victim_dz"
+   ],
+   "moved_recorded": [
+    "rec_knockback_m"
+   ],
+   "before": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 9,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 9,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "hitstop.deflect.hitstop_multiplier 1.5 -> 20",
+   "tag": "r2-own-fixture",
+   "fixture": {
+    "material": "flesh",
+    "weapon": "ssw_garrison_sword"
+   },
+   "verdict": "INERT",
+   "moved_behavioural": [],
+   "moved_recorded": [],
+   "before": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "hitstop.deflect.hitstop_multiplier 1.5 -> 20",
+   "tag": "r2-able-fixture",
+   "fixture": {
+    "material": "stone",
+    "weapon": "ssw_garrison_sword"
+   },
+   "verdict": "CONSUMED",
+   "moved_behavioural": [
+    "atk_stall_f"
+   ],
+   "moved_recorded": [
+    "rec_hitstop_f"
+   ],
+   "before": {
+    "dmg": 0,
+    "hitF": 30,
+    "atk_stall_f": 15,
+    "victim_stall_f": 0,
+    "victim_dz": 0,
+    "attacker_dz": 0.25,
+    "move_real_total_f": 90,
+    "deflect": true,
+    "rec_material": "stone",
+    "rec_hitstop_f": 15,
+    "rec_victim_hitstop_f": 0,
+    "rec_knockback_m": -0.1,
+    "rec_decal": "spark_dust",
+    "rec_added_recovery_f": 16,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 0,
+    "hitF": 30,
+    "atk_stall_f": 200,
+    "victim_stall_f": 0,
+    "victim_dz": 0,
+    "attacker_dz": 0.25,
+    "move_real_total_f": 90,
+    "deflect": true,
+    "rec_material": "stone",
+    "rec_hitstop_f": 200,
+    "rec_victim_hitstop_f": 0,
+    "rec_knockback_m": -0.1,
+    "rec_decal": "spark_dust",
+    "rec_added_recovery_f": 16,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "victim_hitstop_mode -> \"zzz\" (unknown mode)",
+   "tag": "control",
+   "fixture": {
+    "material": "flesh"
+   },
+   "verdict": "INERT",
+   "moved_behavioural": [],
+   "moved_recorded": [],
+   "before": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "materials.multipliers.water.* -> 99 (vs a FLESH target)",
+   "tag": "control",
+   "fixture": {
+    "material": "flesh"
+   },
+   "verdict": "INERT",
+   "moved_behavioural": [],
+   "moved_recorded": [],
+   "before": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "classes.<all>.parry_class -> \"zzz\" (vs a FLESH target, no shield)",
+   "tag": "control",
+   "fixture": {
+    "material": "flesh"
+   },
+   "verdict": "INERT",
+   "moved_behavioural": [],
+   "moved_recorded": [],
+   "before": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "materials.multipliers.stone.strike 1.35 -> 0.01",
+   "tag": "load",
+   "fixture": {
+    "material": "stone",
+    "weapon": "mce_bog_iron_mace"
+   },
+   "verdict": "CONSUMED",
+   "moved_behavioural": [
+    "dmg"
+   ],
+   "moved_recorded": [],
+   "before": {
+    "dmg": 64.64,
+    "hitF": 40,
+    "atk_stall_f": 16,
+    "victim_stall_f": 0,
+    "victim_dz": 0,
+    "attacker_dz": 0.08,
+    "move_real_total_f": 96,
+    "deflect": false,
+    "rec_material": "stone",
+    "rec_hitstop_f": 16,
+    "rec_victim_hitstop_f": 0,
+    "rec_knockback_m": -0.2,
+    "rec_decal": "spark_dust",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 0.48,
+    "hitF": 40,
+    "atk_stall_f": 16,
+    "victim_stall_f": 0,
+    "victim_dz": 0,
+    "attacker_dz": 0.08,
+    "move_real_total_f": 96,
+    "deflect": false,
+    "rec_material": "stone",
+    "rec_hitstop_f": 16,
+    "rec_victim_hitstop_f": 0,
+    "rec_knockback_m": -0.2,
+    "rec_decal": "spark_dust",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "materials.multipliers.plant.slash 1.25 -> 0.01",
+   "tag": "load",
+   "fixture": {
+    "material": "plant"
+   },
+   "verdict": "CONSUMED",
+   "moved_behavioural": [
+    "dmg"
+   ],
+   "moved_recorded": [],
+   "before": {
+    "dmg": 88.5,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "plant",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "sap",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 0.71,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "plant",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "sap",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "hitstop.deflect.poise_damage_below 30 -> 0 (nothing deflects)",
+   "tag": "load",
+   "fixture": {
+    "material": "stone"
+   },
+   "verdict": "CONSUMED",
+   "moved_behavioural": [
+    "dmg",
+    "atk_stall_f",
+    "move_real_total_f"
+   ],
+   "moved_recorded": [
+    "rec_hitstop_f",
+    "rec_added_recovery_f"
+   ],
+   "before": {
+    "dmg": 0,
+    "hitF": 30,
+    "atk_stall_f": 15,
+    "victim_stall_f": 0,
+    "victim_dz": 0,
+    "attacker_dz": 0.25,
+    "move_real_total_f": 90,
+    "deflect": true,
+    "rec_material": "stone",
+    "rec_hitstop_f": 15,
+    "rec_victim_hitstop_f": 0,
+    "rec_knockback_m": -0.1,
+    "rec_decal": "spark_dust",
+    "rec_added_recovery_f": 16,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 31.86,
+    "hitF": 30,
+    "atk_stall_f": 10,
+    "victim_stall_f": 0,
+    "victim_dz": 0,
+    "attacker_dz": 0.25,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "stone",
+    "rec_hitstop_f": 10,
+    "rec_victim_hitstop_f": 0,
+    "rec_knockback_m": -0.1,
+    "rec_decal": "spark_dust",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "hitstop.deflect.added_recovery_f 16 -> 200",
+   "tag": "load",
+   "fixture": {
+    "material": "stone"
+   },
+   "verdict": "CONSUMED",
+   "moved_behavioural": [
+    "move_real_total_f"
+   ],
+   "moved_recorded": [
+    "rec_added_recovery_f"
+   ],
+   "before": {
+    "dmg": 0,
+    "hitF": 30,
+    "atk_stall_f": 15,
+    "victim_stall_f": 0,
+    "victim_dz": 0,
+    "attacker_dz": 0.25,
+    "move_real_total_f": 90,
+    "deflect": true,
+    "rec_material": "stone",
+    "rec_hitstop_f": 15,
+    "rec_victim_hitstop_f": 0,
+    "rec_knockback_m": -0.1,
+    "rec_decal": "spark_dust",
+    "rec_added_recovery_f": 16,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 0,
+    "hitF": 30,
+    "atk_stall_f": 15,
+    "victim_stall_f": 0,
+    "victim_dz": 0,
+    "attacker_dz": 0.25,
+    "move_real_total_f": 274,
+    "deflect": true,
+    "rec_material": "stone",
+    "rec_hitstop_f": 15,
+    "rec_victim_hitstop_f": 0,
+    "rec_knockback_m": -0.1,
+    "rec_decal": "spark_dust",
+    "rec_added_recovery_f": 200,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "hitstop.victim_delta.flesh 4 -> 60",
+   "tag": "load",
+   "fixture": {
+    "material": "flesh"
+   },
+   "verdict": "ECHO",
+   "moved_behavioural": [],
+   "moved_recorded": [
+    "rec_victim_hitstop_f"
+   ],
+   "before": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 77.88,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "flesh",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 64,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "blood_spray",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "hitstop.knockback_m.<tier>.chitin -> 9",
+   "tag": "load",
+   "fixture": {
+    "material": "chitin"
+   },
+   "verdict": "CONSUMED",
+   "moved_behavioural": [
+    "victim_dz"
+   ],
+   "moved_recorded": [
+    "rec_knockback_m"
+   ],
+   "before": {
+    "dmg": 60.18,
+    "hitF": 30,
+    "atk_stall_f": 6,
+    "victim_stall_f": 0,
+    "victim_dz": 0.03,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "chitin",
+    "rec_hitstop_f": 6,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.03,
+    "rec_decal": "chip",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 60.18,
+    "hitF": 30,
+    "atk_stall_f": 6,
+    "victim_stall_f": 0,
+    "victim_dz": 9,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "chitin",
+    "rec_hitstop_f": 6,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 9,
+    "rec_decal": "chip",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  },
+  {
+   "name": "materials.damage_type_of_shape ALL -> strike",
+   "tag": "load",
+   "fixture": {
+    "material": "plant"
+   },
+   "verdict": "CONSUMED",
+   "moved_behavioural": [
+    "dmg"
+   ],
+   "moved_recorded": [],
+   "before": {
+    "dmg": 88.5,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "plant",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "sap",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   },
+   "after": {
+    "dmg": 60.18,
+    "hitF": 30,
+    "atk_stall_f": 4,
+    "victim_stall_f": 0,
+    "victim_dz": 0.05,
+    "attacker_dz": 0.35,
+    "move_real_total_f": 74,
+    "deflect": false,
+    "rec_material": "plant",
+    "rec_hitstop_f": 4,
+    "rec_victim_hitstop_f": 8,
+    "rec_knockback_m": 0.05,
+    "rec_decal": "sap",
+    "rec_added_recovery_f": 0,
+    "rec_via": "weapon"
+   }
+  }
+ ]
+}

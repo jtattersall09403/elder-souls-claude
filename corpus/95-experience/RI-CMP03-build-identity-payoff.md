@@ -188,7 +188,16 @@ is what makes divergence attributable to the build rather than to the world's ra
 `RI-CMP03.builds.json` is generated from §A by `tools/experience/builds-from-md.mjs` and carries each
 archetype's investment envelope and its refusal list, which the driver enforces.
 
-**Step 2 — viability.** `tools/experience/build-viability.mjs --chains … --out build-viability.json`
+**Step 2 — viability.** `tools/analysis/build-viability.mjs --chains … --out build-viability.json`
+
+> **PATH CORRECTED, CONTRACT STILL OPEN — wave 1 (`TOOL-COVERAGE-R1`, tool critic).** This step
+> named the tool under `tools/experience/`; it was written under `tools/analysis/`, which is where
+> `RI-MTH06` §A and `RI-CHR01` M6 both put it, so the path here was the error. **This does not make
+> the step runnable.** The shipped tool implements `--signatures`/`--signature` over `RI-CHR01`
+> §5's 540-cell grid; it has **no `--chains` mode** and emits no `V-MAIN` / `V-FAC` / `V-BOSS`
+> record and no driver-refusal list. Step 2 therefore remains `corpus_debt` against `RI-MTH06`
+> until `--chains` exists — the C8 warning cleared, the capability did not. Do not read the
+> absence of a C8 line here as coverage.
 records V-MAIN, V-FAC and V-BOSS per build with evidence, plus every driver refusal (an archetype that
 had to violate its envelope to progress is a **hard finding**: a build that cannot finish as itself is
 not a build).

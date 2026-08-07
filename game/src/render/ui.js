@@ -130,6 +130,7 @@ export class UILayer {
     if (!this.model || !this.visible) { this.last = emptyMetrics(); return; }
 
     const m = this.model;
+    if (m.kind === 'death') { this._redrawDeath(m, W, H); return; }
     const s = H / 1080;                                   // one scale factor, so 4K reads the same
     const pad = Math.round(34 * s);
     const bodySize = Math.round(30 * s);
@@ -177,7 +178,8 @@ export class UILayer {
     if (asideLines.length) contentH += Math.round(10 * s) + asideLines.length * Math.round(nameSize * 1.34);
     if (m.input_kind === 'text') contentH += Math.round(18 * s) + Math.round(bodySize * 1.7);
     if (shownOpts.length) contentH += Math.round(16 * s) + shownOpts.length * optH;
-    if (win.to < opts.length || win.from > 0) contentH += Math.round(nameSize * 1.2);
+    // (the scroll note moved into the header row, which is already budgeted, so it no
+    //  longer adds height and can no longer be the line the height cap clips away)
     contentH += pad;
 
     // The panel is capped at 42% of frame height and CLIPS, so anything that would push the
@@ -222,9 +224,19 @@ export class UILayer {
     c.textAlign = 'left';
     const who = [m.speaker_title, m.speaker_name].filter(Boolean).join(' ');
     c.fillText(who.toUpperCase(), x0 + pad, y);
-    if (m.place_name) {
+    // The scroll position rides in the HEADER, not under the last answer.
+    //
+    // W1-26: it used to be drawn after the options, and at `hold.hatch-name` — thirteen
+    // hatch-names, a nine-option window — the panel's height cap clipped it away. The
+    // rendered-text register (`render/text-register.js`) caught it as the one string in the
+    // whole opening that was handed to `fillText` and painted outside its clip: computed,
+    // laid out, drawn, unreadable. That is `RI-JRN09`'s "orphan text" one layer below the
+    // round-2 defect, and the fix is to put the only element that tells a player the list
+    // continues in the one place on the panel that can never be clipped.
+    const scrollNote = (opts.length > shownOpts.length) ? `${sel + 1} of ${opts.length}` : '';
+    if (m.place_name || scrollNote) {
       c.textAlign = 'right';
-      c.fillText(m.place_name.toUpperCase(), x0 + panelW - pad, y);
+      c.fillText([m.place_name ? m.place_name.toUpperCase() : '', scrollNote].filter(Boolean).join('   ·   '), x0 + panelW - pad, y);
       c.textAlign = 'left';
     }
     y += Math.round(10 * s);
@@ -295,11 +307,7 @@ export class UILayer {
         c.fillText(ellipsise(c, label, textW), x0 + pad, y);
         y += optH;
       }
-      if (opts.length > shownOpts.length) {
-        c.font = smallFont(nameSize);
-        c.fillStyle = INK_DIM;
-        c.fillText(`${sel + 1} of ${opts.length}`, x0 + pad, y);
-      }
+      // (the scroll position is drawn in the header — see the note there)
     }
     c.restore();
 
@@ -329,6 +337,62 @@ export class UILayer {
     };
   }
 }
+
+/**
+ * The death surface — W1-13, RI-JRN06 D5/D11/D18.
+ *
+ * It is allowed to be exactly one thing: a word, over a darkened frame, gone in 2.5 s or the
+ * instant any button is pressed. Everything the item forbids is forbidden HERE, in the only
+ * place it could be added: there is no souls-lost figure, no death counter, no time-survived
+ * line, no "try dodging", no retry button and no difficulty offer. RI-JRN06 "How we lose" #9:
+ * "Every one of those numbers is a small act of contempt and none of them are in either
+ * reference game."
+ *
+ * The words are RI-LOR05 §2's: "Everything that dies in Black Marsh goes down. This is not a
+ * belief. In the marsh's own idiom it is plumbing." The world is left VISIBLE behind the
+ * scrim — the marsh you fell in is the last thing you look at — which also keeps
+ * `world_visible_behind` true and the surface inside RI-JRN01 M5's opaque-area budget.
+ */
+UILayer.prototype._redrawDeath = function _redrawDeath(m, W, H) {
+  const c = this.ctx;
+  const s = H / 1080;
+  // A scrim, not a curtain: 0.62 alpha over the live view.
+  c.fillStyle = 'rgba(6, 5, 4, 0.62)';
+  c.fillRect(0, 0, W, H);
+  const size = Math.round(96 * s);
+  c.font = `${size}px Georgia, "Times New Roman", serif`;
+  c.textAlign = 'center';
+  c.textBaseline = 'alphabetic';
+  const line = String(m.line || '');
+  const y = Math.round(H * 0.5 + size * 0.34);
+  c.fillStyle = 'rgba(120, 24, 18, 0.9)';
+  c.fillText(line, W / 2 + Math.round(2 * s), y + Math.round(2 * s));
+  c.fillStyle = '#c9a087';
+  c.fillText(line, W / 2, y);
+  const w = c.measureText(line).width;
+  c.strokeStyle = 'rgba(180, 150, 100, 0.30)';
+  c.lineWidth = Math.max(1, Math.round(1.5 * s));
+  c.beginPath();
+  c.moveTo(W / 2 - w * 0.62, y + size * 0.42);
+  c.lineTo(W / 2 + w * 0.62, y + size * 0.42);
+  c.stroke();
+  c.textAlign = 'left';
+  this.last = {
+    open: true, kind: 'death',
+    panel_px: [W, H], frame_px: [W, H],
+    // A scrim is not opaque UI: the world is legible through it, which is exactly why the
+    // figure reported here is the SCRIM ALPHA and not 1.0. Reporting 1.0 would be honest
+    // about the pixel count and dishonest about what the player can see.
+    opaque_area_frac: 0.62,
+    panel_height_frac: 1.0, uniform_area_frac: 0.62, full_screen_panels: 1,
+    world_visible_behind: true,
+    option_count: 0, options_shown: 0, selected_index: 0,
+    text: [line], text_chars: line.length,
+    // RI-JRN06 M-D9 greps the UI-text stream for these. The surface carries one string and
+    // this is it; the enumeration is here so the grep has a defined place to look.
+    statistics_rendered: 0, tips_rendered: 0, numerals_rendered: 0,
+  };
+};
 
 function emptyMetrics() {
   return {

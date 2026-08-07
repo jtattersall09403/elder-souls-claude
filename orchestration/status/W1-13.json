@@ -13,7 +13,19 @@
  ],
  "outputs_written": [
   "tools/world/build-hearths.mjs",
-  "game/data/world/hearths.json"
+  "game/data/world/hearths.json",
+  "game/data/world/respawn.json",
+  "game/src/sim/hearth.js",
+  "game/src/sim/death.js",
+  "game/src/engine.js (hearthRest extended, _deathTick, _standableAt, _seedStartingHearth, getDeathState/killPlayer/recoverBloodstain/listHearths)",
+  "game/src/harness/api.js (10 verbs)",
+  "game/src/render/ui.js (death surface)",
+  "game/src/render/renderer.js (bloom + sapwell meshes)",
+  "game/src/sim/events.js (player_respawn, enemy_respawn)",
+  "tools/journey/jrn06-death.mjs (RI-JRN06 M-D1..M-D19)",
+  "tools/journey/journey-run.mjs (jrn06-death branch replaced)",
+  "tools/harness/w1-13-consume.mjs (RI-MTH07 CONSUMPTION, 7 models)",
+  "tools/journey/state-diff.mjs (--mode across-death / --in, RI-JRN06 M-D4)"
  ],
  "findings": [
   "BOOT OK before work: node tools/harness/smoke.mjs passes (playwright 1.56.1, chromium 141, WebGL2 SwiftShader).",
@@ -29,8 +41,18 @@
   "WORLD DEFECT, pre-existing, NOT mine: exactly 1 of 22,068 walkable land cells is unreachable on foot from any settlement (checked by flooding from one settlement alone, so it is an island in the province, not a hearth-placement artefact). Reported in hearths.json.measured.coverage.",
   "MAP FINDING that cost 4 wells: the crossing hairpins north of Blackrose, so a well laid at arc-time 41.96 min and stepped 40 m off the carriageway is physically NEAREST the road at arc 41.12 min. Laying by intended arc time and measuring by projection therefore disagree. build-hearths.mjs resites by SEARCHING over measured arc time.",
   "BUG CLASS worth remembering: a point can be standable while the 25 m grid cell containing it is impassable (the cell cost is a best-of-5-probes minimum). Four ceiling wells were placed at points Dijkstra could not seed from, and reduced the worst-served distance by exactly zero while the count climbed to 32. Any tool seeding a search from a placed object must check BOTH.",
-  "LORE NAMES (RI-LOR05 \u00a74, binding): HEARTH = sapwell (ixtu-xul); rest = the tasting (kaal-ixtu); bloodstain = the bloom (teekh-shuja); souls = sap-debt/the tithe (xul-teekh); respawn = being re-issued. RI-LOR05 \u00a72: 'Everything that dies in Black Marsh goes down.'"
+  "LORE NAMES (RI-LOR05 \u00a74, binding): HEARTH = sapwell (ixtu-xul); rest = the tasting (kaal-ixtu); bloodstain = the bloom (teekh-shuja); souls = sap-debt/the tithe (xul-teekh); respawn = being re-issued. RI-LOR05 \u00a72: 'Everything that dies in Black Marsh goes down.'",
+  "TREE-WIDE BLOCKER I FOUND AND FIXED (not mine): the game did not boot at all. QuestEngine's fail-loud check (sim/quest/machine.js:106) threw 'hooks.json: 23 quest(s) seed no topic from a journal write (RI-DLG05 A.3): Q-MAIN-01..08'. Cause: another in-flight agent added game/data/quests/mainline-act4.json (committed 5a4d179) and mainline-act5.json (untracked) WITHOUT re-running the generator that owns hooks.json. hooks.json says 'Generated. Do not hand-edit; edit the generator or the quest files it reads.' Fixed by running the sanctioned generator: node tools/analysis/gen-quest-hooks.mjs -> 37 entry topics became 69 over 69 quests, then node tools/analysis/data-index.mjs (343 -> 346 files). Boot confirmed after. NO hand-authored content was touched.",
+  "tools/journey/journey-run.mjs ALREADY EXISTS (955 lines, written by the tool builder W1-TOOLS, commit 5a4d179). Checked before writing, per the dispatch. Do not duplicate it.",
+  "The orchestrator commits the shared tree mid-flight: commit 5a4d179 'in-flight: death system...' swept up my own game/src/sim/death.js at 07:19 while I was still working. git status will therefore under-report my own changes.",
+  "BOOT CONFIRMED with the W1-13 systems live: listHearths() returns 29 hearths + 2 fog gates with their measured hearth ids; getDeathState() present:true, hearths_placed 29; the default state seeds hearthLastRested = hearth-lilmoth (nearest settlement well, 134.5 m). Zero page errors.",
+  "TOOL DEFECT FOUND AND REPLACED: journey-run.mjs's shipped `jrn06-death` branch called __HARNESS.playerDeath() -- which is RI-CRM01's bounty-laundering hook, NOT a death -- hashed the state around it and reported 'deaths driven'. It measured none of M-D1..M-D19 and could not have failed against a build with no death loop, which is exactly what it was written against. Replaced with tools/journey/jrn06-death.mjs per TOOL-LOOP rule 1.",
+  "The save blob's top-level shape is NOT what a reader would guess: quest flags are at blob.flags (not blob.quest.flags), quests at blob.quests, journal at blob.journal, and there is NO blob.character.gold field at all. Anything patching a save must read save/state.js first.",
+  "W1-21's UI system landed mid-session and now owns getUIState(): it returns {mode, map_exists, navigable, screen, elements:[{id,kind,rect,visible,text,fill,worldAnchor,...}], markers, ...}. M-D19's marker sweep is a COUNT over elements[].kind/worldAnchor, not a search for the word 'marker' -- the HUD model has a `markers` field precisely so 0 is measurable, and searching for the name would score the instrument as the violation.",
+  "TOOL DEFECT (a flag that lies, TOOL-LOOP rule 3 q5): RI-JRN06's Comparison method calls `state-diff.mjs --in <dir> --mode across-death`. NEITHER flag was implemented -- state-diff.mjs parsed neither and silently answered the RI-JRN05 round-trip question and exited 0. Implemented --mode across-death as a real live measurement (hash + full save blob before the killing blow vs after respawn, death-volatile excluded by name) and --mode/--in are now validated, not ignored.",
+  "RUNTIME BUG FOUND AND FIXED IN MY OWN CODE before shipping: DeathSystem.restorePlayer() restored hp/stamina/poise on the player combat body but never cleared `body.dead`. damagePlayer() sets it, so a respawned player had full HP and could neither act nor be hit -- every number right, the thing broken. Cleared, along with move/hitboxActive/stagger/hitstop/pendingReaction.",
+  "PERF TRAP in tools: engine.walkPath()'s default miredAbort is 36,000 frames = 10 minutes of simulation per FAILED bearing. A probe that sweeps bearings looking for walkable ground must cap it (1200) or one run spends its whole budget proving the marsh is muddy."
  ],
- "next_step": "write game/src/sim/hearth.js + game/src/sim/death.js, wire into engine _afterStep, add harness verbs",
+ "next_step": "read reports/journeys/w1-13-jrn06/journey.json; then run tools/harness/w1-13-consume.mjs and state-diff --mode across-death across many seeds",
  "notes_for_successor": "The bloodstain save field is already written and read; do NOT change its shape without re-checking tools/journey/state-diff.mjs and the sv5-journal-bloodstain named state."
 }

@@ -22,7 +22,11 @@
       },
       "opens_by": {
         "topic": "the drowned tally",
-        "overheard_from": ["soulrest-customs-clerk", "bone-ladder-carter", "gideon-quay-porter"]
+        "overheard_from": [
+          "soulrest-customs-clerk",
+          "bone-ladder-carter",
+          "gideon-quay-porter"
+        ]
       },
       "task_kind": "delivery",
       "stakes": 2,
@@ -61,7 +65,7 @@
         {
           "index": 45,
           "state": "active",
-          "text": "The factor's name for the man in the coat is Sedd Ravano and he takes money from the Wet Ledger to know what the Court is writing down. The factor says this is neither news nor a secret and that Rell has been trying to put a face to it for two seasons.",
+          "text": "The factor's name for the man in the coat is Sedd Ravano and he takes money from the Wet Ledger to know what the Court is writing down. The factor says this is neither news nor a secret and that Rell has been trying to put a face to it for two seasons. I have written the name down because I do not trust myself to remember it in four days.",
           "records_belief": false
         },
         {
@@ -106,14 +110,23 @@
           "id": "br_the_coat",
           "at_journal_index": 30,
           "condition": "The player has noticed that they are being followed and must decide whether to lose the follower, confront him, or carry on and let him be seen",
-          "leads_to": ["rev_factor", "res_carry", "res_name_him"],
+          "leads_to": [
+            "rev_factor",
+            "res_carry",
+            "res_name_him"
+          ],
           "irreversible": false
         },
         {
           "id": "br_whose_errand",
           "at_journal_index": 40,
           "condition": "The player knows the errand was bait and must decide who is owed the knowledge — the Undersexton, the follower, or nobody",
-          "leads_to": ["res_carry", "res_name_him", "res_double", "res_refuse_bait"],
+          "leads_to": [
+            "res_carry",
+            "res_name_him",
+            "res_double",
+            "res_refuse_bait"
+          ],
           "irreversible": true
         }
       ],
@@ -126,11 +139,24 @@
           "outcome": "The return reaches Gideon and the player says nothing. Rell learns only that the road was walked, keeps the player on, and keeps looking for Ravano herself.",
           "morally_better": null,
           "requires": {},
-          "exclusive_with": ["res_name_him", "res_double", "res_refuse_bait"],
+          "exclusive_with": [
+            "res_name_him",
+            "res_double",
+            "res_refuse_bait"
+          ],
           "consequences": {
-            "faction_reputation": { "the_drowned_court": 4 },
-            "world_flags": ["rell_kept_the_player_on", "ravano_still_unnamed"],
-            "npc_disposition": { "undersexton-aveline-rell": 8 }
+            "faction_reputation": {
+              "the_drowned_court": 4
+            },
+            "world_flags": [
+              "rell_kept_the_player_on",
+              "ravano_still_unnamed",
+              "the_road_was_reported_quiet"
+            ],
+            "npc_disposition": {
+              "undersexton-aveline-rell": 8,
+              "gideon-court-factor": 10
+            }
           }
         },
         {
@@ -141,12 +167,31 @@
           "outcome": "Rell gets the name she has wanted for two seasons. Ravano is shut out of the Court's counting house and takes it personally; the Wet Ledger loses its window into the Court's books and starts buying a new one.",
           "morally_better": null,
           "requires": {},
-          "requires_knowing": ["rev_factor"],
-          "exclusive_with": ["res_carry", "res_double", "res_refuse_bait"],
+          "requires_knowing": [
+            "rev_factor"
+          ],
+          "exclusive_with": [
+            "res_carry",
+            "res_double",
+            "res_refuse_bait"
+          ],
           "consequences": {
-            "faction_reputation": { "the_drowned_court": 10, "the_wet_ledger": -8 },
-            "world_flags": ["ravano_named_to_the_court", "rell_kept_the_player_on", "ledger_window_into_the_court_closed"],
-            "npc_disposition": { "undersexton-aveline-rell": 15, "sedd-ravano": -40 }
+            "faction_reputation": {
+              "the_drowned_court": 10,
+              "the_wet_ledger": -8
+            },
+            "world_flags": [
+              "ravano_named_to_the_court",
+              "rell_kept_the_player_on",
+              "ledger_window_into_the_court_closed",
+              "the_court_knows_who_reads_its_books"
+            ],
+            "npc_disposition": {
+              "undersexton-aveline-rell": 15,
+              "sedd-ravano": -40,
+              "gideon-court-factor": 6,
+              "soulrest-customs-clerk": 6
+            }
           }
         },
         {
@@ -156,13 +201,36 @@
           "journal_index": 94,
           "outcome": "The player is paid by both sides. Ravano keeps his window and the player keeps a second purse; Rell finds out eventually, and does not say so, and the Court's terms for the player get worse instead of ending.",
           "morally_better": false,
-          "requires": { "skills": { "speechcraft": 30 } },
-          "requires_knowing": ["rev_factor"],
-          "exclusive_with": ["res_carry", "res_name_him", "res_refuse_bait"],
+          "requires": {
+            "skills": {
+              "speechcraft": 30
+            }
+          },
+          "requires_knowing": [
+            "rev_factor"
+          ],
+          "exclusive_with": [
+            "res_carry",
+            "res_name_him",
+            "res_refuse_bait"
+          ],
           "consequences": {
-            "faction_reputation": { "the_drowned_court": -6, "the_wet_ledger": 8 },
-            "world_flags": ["player_on_ravano_payroll", "rell_suspects_the_player", "rell_kept_the_player_on"],
-            "npc_disposition": { "sedd-ravano": 30, "undersexton-aveline-rell": -10 }
+            "faction_reputation": {
+              "the_drowned_court": -6,
+              "the_wet_ledger": 8
+            },
+            "world_flags": [
+              "player_on_ravano_payroll",
+              "rell_suspects_the_player",
+              "rell_kept_the_player_on",
+              "the_ledger_keeps_its_window"
+            ],
+            "npc_disposition": {
+              "sedd-ravano": 30,
+              "undersexton-aveline-rell": -10,
+              "gideon-court-factor": -20,
+              "bone-ladder-carter": -8
+            }
           }
         },
         {
@@ -173,11 +241,27 @@
           "outcome": "The return goes back to Soulrest unopened. Rell pays half, respects it, and gives the player worse errands and better information for the rest of the season.",
           "morally_better": null,
           "requires": {},
-          "exclusive_with": ["res_carry", "res_name_him", "res_double"],
+          "exclusive_with": [
+            "res_carry",
+            "res_name_him",
+            "res_double"
+          ],
           "consequences": {
-            "faction_reputation": { "the_drowned_court": 2 },
-            "world_flags": ["player_refused_the_bait", "rell_kept_the_player_on"],
-            "npc_disposition": { "undersexton-aveline-rell": 12 }
+            "faction_reputation": {
+              "the_drowned_court": 2
+            },
+            "world_flags": [
+              "player_refused_the_bait",
+              "rell_kept_the_player_on",
+              "rell_gives_worse_errands_and_better_information",
+              "ravano_still_unnamed"
+            ],
+            "npc_disposition": {
+              "undersexton-aveline-rell": 12,
+              "sedd-ravano": 10,
+              "gideon-court-factor": 4,
+              "gideon-quay-porter": 8
+            }
           }
         }
       ],
@@ -201,28 +285,114 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D1", "D2"],
+        "patterns": [
+          "D1",
+          "D2"
+        ],
         "stated_objective": "Carry the Court's quarterly return from Soulrest to Gideon",
         "actual_objective": "Walk a known road slowly enough that whoever is watching the Court's books has to follow, and be seen doing it",
         "truth": "The return is two seasons old and says nothing. Rell wanted a face for the man who has been reading her counts.",
         "revealed_by": [
-          { "id": "rev_factor", "channel": "talk_to_target", "source": "gideon-court-factor", "before_point_of_no_return": true },
-          { "id": "rev_seal", "channel": "environment", "source": "item_stale_mortuary_seal", "before_point_of_no_return": true }
+          {
+            "id": "rev_factor",
+            "channel": "talk_to_target",
+            "source": "gideon-court-factor",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_seal",
+            "channel": "environment",
+            "source": "item_stale_mortuary_seal",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_drowned_court": 0 },
-        "world_flags": ["player_known_to_the_drowned_court"],
-        "unlocks": ["Q-MAIN-02"]
+        "faction_reputation": {
+          "the_drowned_court": 0
+        },
+        "world_flags": [
+          "player_known_to_the_drowned_court"
+        ],
+        "unlocks": [
+          "Q-MAIN-02"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "gold", "unique_named": false, "amount": 240, "on_resolution": ["res_carry", "res_name_him"] },
-        { "type": "gold", "unique_named": false, "amount": 120, "on_resolution": ["res_refuse_bait"] },
-        { "type": "gold", "unique_named": false, "amount": 300, "on_resolution": ["res_double"] },
-        { "type": "information", "unique_named": true, "id": "topic_the_court_has_been_short", "name": "the Court has been short since before Ravano was born", "on_resolution": ["res_double", "res_name_him"] }
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 240,
+          "on_resolution": [
+            "res_carry",
+            "res_name_him"
+          ]
+        },
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 120,
+          "on_resolution": [
+            "res_refuse_bait"
+          ]
+        },
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 300,
+          "on_resolution": [
+            "res_double"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_court_has_been_short",
+          "name": "the Court has been short since before Ravano was born",
+          "on_resolution": [
+            "res_double",
+            "res_name_him"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_factor_reads_three_lines",
+          "name": "what the factor read in the return",
+          "on_resolution": [
+            "res_carry"
+          ]
+        },
+        {
+          "type": "service",
+          "unique_named": true,
+          "id": "svc_rell_will_name_names",
+          "name": "a name of Rell’s own to ask after",
+          "on_resolution": [
+            "res_name_him"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "sedd-ravano",
+          "name": "Sedd Ravano, who pays twice",
+          "on_resolution": [
+            "res_double"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_what_rell_will_not_ask_twice",
+          "name": "what Rell will not ask twice",
+          "on_resolution": [
+            "res_refuse_bait"
+          ]
+        }
       ],
       "notes": "Act I quest 1. The geography quest RI-QST06 §B requires: its real purpose is four days of road between two settlements with prose wayfinding and no destination that is not a place. Stakes 2. The antagonist is not present in any form yet."
     },
@@ -242,7 +412,9 @@
       },
       "opens_by": {
         "topic": "the empty boxes",
-        "prerequisite_quests": ["Q-MAIN-01"]
+        "prerequisite_quests": [
+          "Q-MAIN-01"
+        ]
       },
       "task_kind": "errand",
       "stakes": 2,
@@ -257,7 +429,7 @@
         {
           "index": 20,
           "state": "active",
-          "text": "All eleven are empty and all eleven are the right weight for empty. The mortuary hands say the bodies went into the wells and did not come out as anything, not as sap, not as heat, not as the smell they expect. One of them would not go on talking about it inside.",
+          "text": "All eleven are empty and all eleven are the right weight for empty. The mortuary hands say the bodies went into the wells and did not come out as anything, not as sap, not as heat, not as the smell they expect. One of them would not go on talking about it inside. I weighed all eleven myself.",
           "records_belief": false
         },
         {
@@ -269,7 +441,7 @@
         {
           "index": 45,
           "state": "active",
-          "text": "The mortuary hand's name is Ojal-Weeth and outside, where the sound is, she said the boxes have been coming back empty for longer than eleven. She has been counting them herself since her mother died and it is not eleven, it is closer to ninety.",
+          "text": "The mortuary hand's name is Ojal-Weeth and outside, where the sound is, she said the boxes have been coming back empty for longer than eleven. She has been counting them herself since her mother died and it is not eleven, it is closer to ninety. I went outside with her because she would not say it in the shed.",
           "records_belief": false
         },
         {
@@ -281,7 +453,7 @@
         {
           "index": 90,
           "state": "success",
-          "text": "Eleven boxes, eleven weights, all of them the weight of an empty box. Rell read the list twice and put it in a press that already had a great many lists in it.",
+          "text": "Eleven boxes, eleven weights, all of them the weight of an empty box. Rell read the list twice and put it in a press that already had a great many lists in it. I gave her the list and she did not thank me for it.",
           "records_belief": false
         },
         {
@@ -302,7 +474,11 @@
           "id": "br_ninety",
           "at_journal_index": 30,
           "condition": "The player has heard the sound under the Wastes and can press Ojal-Weeth on it outside, or write the count and leave",
-          "leads_to": ["rev_ojal", "res_count_plain", "res_count_and_tell"],
+          "leads_to": [
+            "rev_ojal",
+            "res_count_plain",
+            "res_count_and_tell"
+          ],
           "irreversible": false
         }
       ],
@@ -315,10 +491,23 @@
           "outcome": "The eleven are counted and filed. Rell learns nothing she did not expect and the Court's book stays as it is.",
           "morally_better": null,
           "requires": {},
-          "exclusive_with": ["res_count_and_tell", "res_count_to_sexton"],
+          "exclusive_with": [
+            "res_count_and_tell",
+            "res_count_to_sexton"
+          ],
           "consequences": {
-            "faction_reputation": { "the_drowned_court": 3 },
-            "world_flags": ["boxes_counted_plain"]
+            "faction_reputation": {
+              "the_drowned_court": 3
+            },
+            "world_flags": [
+              "boxes_counted_plain",
+              "the_mortuary_count_stayed_in_the_mortuary",
+              "soulrest_court_book_unchanged"
+            ],
+            "npc_disposition": {
+              "ojal-weeth": -10,
+              "undersexton-aveline-rell": 4
+            }
           }
         },
         {
@@ -328,13 +517,31 @@
           "journal_index": 92,
           "outcome": "Rell learns the real number is closer to ninety and that her own mortuary has been keeping a truer count than her counting house. She opens the archive to the player, which is how the Tally becomes readable at all.",
           "morally_better": null,
-          "requires": { "disposition": 30 },
-          "requires_knowing": ["rev_ojal"],
-          "exclusive_with": ["res_count_plain", "res_count_to_sexton"],
+          "requires": {
+            "disposition": 30
+          },
+          "requires_knowing": [
+            "rev_ojal"
+          ],
+          "exclusive_with": [
+            "res_count_plain",
+            "res_count_to_sexton"
+          ],
           "consequences": {
-            "faction_reputation": { "the_drowned_court": 8 },
-            "world_flags": ["boxes_counted_true", "court_archive_open_to_player"],
-            "npc_disposition": { "undersexton-aveline-rell": 15, "ojal-weeth": 10 }
+            "faction_reputation": {
+              "the_drowned_court": 8
+            },
+            "world_flags": [
+              "boxes_counted_true",
+              "court_archive_open_to_player",
+              "rell_knows_the_book_is_four_years_wrong"
+            ],
+            "npc_disposition": {
+              "undersexton-aveline-rell": 15,
+              "ojal-weeth": 10,
+              "soulrest-sexton-on-duty": -6,
+              "ledgerer-hosk-vei": 10
+            }
           }
         },
         {
@@ -345,11 +552,26 @@
           "outcome": "The count goes into the mortuary book instead of the Undersexton's press. Rell has to ask the sexton for it, which she does, coldly; the mortuary hands take the player's side for the rest of the game and the counting house does not.",
           "morally_better": null,
           "requires": {},
-          "exclusive_with": ["res_count_plain", "res_count_and_tell"],
+          "exclusive_with": [
+            "res_count_plain",
+            "res_count_and_tell"
+          ],
           "consequences": {
-            "faction_reputation": { "the_drowned_court": 2 },
-            "world_flags": ["boxes_counted_to_the_mortuary", "soulrest_mortuary_favours_player", "court_archive_open_to_player"],
-            "npc_disposition": { "undersexton-aveline-rell": -12, "ojal-weeth": 25 }
+            "faction_reputation": {
+              "the_drowned_court": 2
+            },
+            "world_flags": [
+              "boxes_counted_to_the_mortuary",
+              "soulrest_mortuary_favours_player",
+              "court_archive_open_to_player",
+              "the_counting_house_must_ask_the_mortuary"
+            ],
+            "npc_disposition": {
+              "undersexton-aveline-rell": -12,
+              "ojal-weeth": 25,
+              "soulrest-sexton-on-duty": 25,
+              "undersexton-bel-mourne": 12
+            }
           }
         }
       ],
@@ -365,27 +587,97 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D10"],
+        "patterns": [
+          "D10"
+        ],
         "stated_objective": "Count eleven burial boxes and write down their weights",
         "actual_objective": "Count eleven burial boxes and write down their weights",
         "truth": "The eleven are the eleven the counting house asked about. The mortuary has been counting them for four years and the real figure is closer to ninety, and nobody asked the mortuary because the mortuary is not the counting house.",
         "revealed_by": [
-          { "id": "rev_ojal", "channel": "talk_to_target", "source": "ojal-weeth", "before_point_of_no_return": true }
+          {
+            "id": "rev_ojal",
+            "channel": "talk_to_target",
+            "source": "ojal-weeth",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_drowned_court": 0 },
-        "world_flags": ["player_has_heard_the_sound_under_the_wastes"],
-        "unlocks": ["Q-MAIN-03"]
+        "faction_reputation": {
+          "the_drowned_court": 0
+        },
+        "world_flags": [
+          "player_has_heard_the_sound_under_the_wastes"
+        ],
+        "unlocks": [
+          "Q-MAIN-03"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "gold", "unique_named": false, "amount": 60, "on_resolution": ["res_count_plain", "res_count_and_tell"] },
-        { "type": "gold", "unique_named": false, "amount": 40, "on_resolution": ["res_count_to_sexton"] },
-        { "type": "access", "unique_named": true, "id": "loc_court_archive_soulrest", "name": "the Drowned Court's archive under the burial stair", "on_resolution": ["res_count_and_tell", "res_count_to_sexton"] },
-        { "type": "information", "unique_named": true, "id": "topic_the_sound_under_the_wastes", "name": "the sound under the Stone Wastes" }
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 60,
+          "on_resolution": [
+            "res_count_plain",
+            "res_count_and_tell"
+          ]
+        },
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 40,
+          "on_resolution": [
+            "res_count_to_sexton"
+          ]
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "loc_court_archive_soulrest",
+          "name": "the Drowned Court's archive under the burial stair",
+          "on_resolution": [
+            "res_count_and_tell",
+            "res_count_to_sexton"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_sound_under_the_wastes",
+          "name": "the sound under the Stone Wastes"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_eleven_of_eleven",
+          "name": "eleven of eleven",
+          "on_resolution": [
+            "res_count_plain"
+          ]
+        },
+        {
+          "type": "service",
+          "unique_named": true,
+          "id": "svc_rell_stops_being_polite",
+          "name": "Rell, unguarded, once",
+          "on_resolution": [
+            "res_count_and_tell"
+          ]
+        },
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 40,
+          "id": "gold_sexton_trouble",
+          "name": "forty for the trouble",
+          "on_resolution": [
+            "res_count_to_sexton"
+          ]
+        }
       ],
       "notes": "Act I quest 2. RI-QST06 §C: the antagonist must be perceptible by Act I quest 2 and must be unnamed. He is a sound under the Stone Wastes at night and eleven boxes that came back the weight of nothing. Stakes 2."
     },
@@ -405,7 +697,9 @@
       },
       "opens_by": {
         "topic": "the cold well",
-        "prerequisite_quests": ["Q-MAIN-02"]
+        "prerequisite_quests": [
+          "Q-MAIN-02"
+        ]
       },
       "task_kind": "investigation",
       "stakes": 3,
@@ -426,25 +720,25 @@
         {
           "index": 20,
           "state": "active",
-          "text": "The basin at the Ladder is full and the sap in it is the right colour and it does not do anything. Teeja-Lun has put her hand in it every morning for eleven days and the root has not tasted her. She has been keeping the wound open with a knife because she is afraid it will close.",
+          "text": "The basin at the Ladder is full and the sap in it is the right colour and it does not do anything. Teeja-Lun has put her hand in it every morning for eleven days and the root has not tasted her. She has been keeping the wound open with a knife because she is afraid it will close. I put my own hand in the basin and nothing tasted me either.",
           "records_belief": false
         },
         {
           "index": 30,
           "state": "active",
-          "text": "Teeja-Lun says the well did not fail slowly. It gave one night and did not give the next, and the night it stopped was the night the carters heard the Wastes go quiet. Not loud. Quiet.",
+          "text": "Teeja-Lun says the well did not fail slowly. It gave one night and did not give the next, and the night it stopped was the night the carters heard the Wastes go quiet. Not loud. Quiet. I asked her twice and she gave me the same night both times.",
           "records_belief": false
         },
         {
           "index": 42,
           "state": "branch",
-          "text": "Under the rib there is a shaft in the stone that is older than the road and it is not a burial. The sap in the basin is not standing still. It is going down, slowly, into something, and it has been going down since the night it stopped coming back.",
+          "text": "Under the rib there is a shaft in the stone that is older than the road and it is not a burial. The sap in the basin is not standing still. It is going down, slowly, into something, and it has been going down since the night it stopped coming back. Whatever I do at this basin closes the others: a wound cut wider cannot be reported as a wound left alone, and a keeper protected cannot also be a keeper contradicted.",
           "records_belief": false
         },
         {
           "index": 46,
           "state": "active",
-          "text": "Teeja-Lun has known about the shaft her whole life. Every keeper on this coast knows. They do not speak about it because a well that drains is still a well, and a keeper who says otherwise is a keeper nobody kneels to.",
+          "text": "Teeja-Lun has known about the shaft her whole life. Every keeper on this coast knows. They do not speak about it because a well that drains is still a well, and a keeper who says otherwise is a keeper nobody kneels to. She told me this after I had already found it, which I notice.",
           "records_belief": false
         },
         {
@@ -477,14 +771,23 @@
           "id": "br_the_shaft",
           "at_journal_index": 30,
           "condition": "The player searches under the rib and finds the shaft, or accepts the keeper's account and does not",
-          "leads_to": ["rev_shaft", "res_report_drain", "res_report_failure"],
+          "leads_to": [
+            "rev_shaft",
+            "res_report_drain",
+            "res_report_failure"
+          ],
           "irreversible": false
         },
         {
           "id": "br_the_knife",
           "at_journal_index": 42,
           "condition": "The player decides whether to cut the wound wider, leave it, or tell the keeper to let it close",
-          "leads_to": ["res_widen", "res_report_drain", "res_report_failure", "fail_let_it_close"],
+          "leads_to": [
+            "res_widen",
+            "res_report_drain",
+            "res_report_failure",
+            "fail_let_it_close"
+          ],
           "irreversible": true
         }
       ],
@@ -497,12 +800,27 @@
           "outcome": "The Court learns the wells are not failing but draining, and that there is worked stone under the Bone Ladder older than the road. This is the fact the whole Tally reading in Act II hangs on.",
           "morally_better": null,
           "requires": {},
-          "requires_knowing": ["rev_shaft"],
-          "exclusive_with": ["res_report_failure", "res_widen"],
+          "requires_knowing": [
+            "rev_shaft"
+          ],
+          "exclusive_with": [
+            "res_report_failure",
+            "res_widen"
+          ],
           "consequences": {
-            "faction_reputation": { "the_drowned_court": 10 },
-            "world_flags": ["court_knows_the_wells_drain", "shaft_under_the_bone_ladder_known"],
-            "npc_disposition": { "undersexton-aveline-rell": 10 }
+            "faction_reputation": {
+              "the_drowned_court": 10
+            },
+            "world_flags": [
+              "court_knows_the_wells_drain",
+              "shaft_under_the_bone_ladder_known",
+              "the_court_will_send_a_rootkeeper"
+            ],
+            "npc_disposition": {
+              "undersexton-aveline-rell": 10,
+              "keeper-teeja-lun": -6,
+              "ledgerer-hosk-vei": 10
+            }
           }
         },
         {
@@ -513,11 +831,24 @@
           "outcome": "Teeja-Lun keeps her post and her congregation. The Court sends a rootkeeper in the spring and finds the shaft anyway, later, without the player's name on it.",
           "morally_better": null,
           "requires": {},
-          "exclusive_with": ["res_report_drain", "res_widen"],
+          "exclusive_with": [
+            "res_report_drain",
+            "res_widen"
+          ],
           "consequences": {
-            "faction_reputation": { "the_drowned_court": -4, "the_rootkeepers": 8 },
-            "world_flags": ["bone_ladder_keeper_protected", "court_told_the_well_simply_failed"],
-            "npc_disposition": { "keeper-teeja-lun": 30 }
+            "faction_reputation": {
+              "the_drowned_court": -4,
+              "the_rootkeepers": 8
+            },
+            "world_flags": [
+              "bone_ladder_keeper_protected",
+              "court_told_the_well_simply_failed",
+              "the_coast_keepers_trust_the_player"
+            ],
+            "npc_disposition": {
+              "keeper-teeja-lun": 30,
+              "undersexton-aveline-rell": -6
+            }
           }
         },
         {
@@ -527,13 +858,34 @@
           "journal_index": 94,
           "outcome": "The wound is opened wider and gives once. It proves the drain is downward and not a blockage, and it makes the player the second person alive who has cut a well without leave.",
           "morally_better": false,
-          "requires": { "spell_effects": ["telekinesis"] },
-          "requires_knowing": ["rev_shaft"],
-          "exclusive_with": ["res_report_drain", "res_report_failure"],
+          "requires": {
+            "spell_effects": [
+              "telekinesis"
+            ]
+          },
+          "requires_knowing": [
+            "rev_shaft"
+          ],
+          "exclusive_with": [
+            "res_report_drain",
+            "res_report_failure"
+          ],
           "consequences": {
-            "faction_reputation": { "the_rootkeepers": -14, "the_ixtu_vakh": 12 },
-            "world_flags": ["player_cut_a_well_without_leave", "bone_ladder_well_gave_once", "shaft_under_the_bone_ladder_known"],
-            "npc_disposition": { "keeper-teeja-lun": -20 }
+            "faction_reputation": {
+              "the_rootkeepers": -14,
+              "the_ixtu_vakh": 12
+            },
+            "world_flags": [
+              "player_cut_a_well_without_leave",
+              "bone_ladder_well_gave_once",
+              "shaft_under_the_bone_ladder_known",
+              "the_cutters_have_heard_of_the_player"
+            ],
+            "npc_disposition": {
+              "keeper-teeja-lun": -20,
+              "neeja-xul": 20,
+              "undersexton-aveline-rell": -4
+            }
           }
         }
       ],
@@ -549,27 +901,93 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D10"],
+        "patterns": [
+          "D10"
+        ],
         "stated_objective": "Find out why the sapwell at the Bone Ladder has stopped giving",
         "actual_objective": "Find out why the sapwell at the Bone Ladder has stopped giving",
         "truth": "The well has not stopped. It is draining downward through a worked shaft under the rib that every keeper on this coast has known about their whole life and none of them will discuss, because a well that drains is still a well.",
         "revealed_by": [
-          { "id": "rev_shaft", "channel": "environment", "source": "loc_shaft_under_the_rib", "before_point_of_no_return": true },
-          { "id": "rev_keepers_knew", "channel": "talk_to_target", "source": "keeper-teeja-lun", "before_point_of_no_return": true }
+          {
+            "id": "rev_shaft",
+            "channel": "environment",
+            "source": "loc_shaft_under_the_rib",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_keepers_knew",
+            "channel": "talk_to_target",
+            "source": "keeper-teeja-lun",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_drowned_court": 0 },
-        "world_flags": ["player_has_seen_a_cold_well"],
-        "unlocks": ["Q-MAIN-04"]
+        "faction_reputation": {
+          "the_drowned_court": 0
+        },
+        "world_flags": [
+          "player_has_seen_a_cold_well"
+        ],
+        "unlocks": [
+          "Q-MAIN-04"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "gold", "unique_named": false, "amount": 150 },
-        { "type": "information", "unique_named": true, "id": "topic_the_shaft_under_the_rib", "name": "the shaft under the rib at the Bone Ladder", "on_resolution": ["res_report_drain", "res_widen"] },
-        { "type": "ally", "unique_named": true, "id": "keeper-teeja-lun", "name": "Teeja-Lun of the Bone Ladder", "on_resolution": ["res_report_failure"] }
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 150
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_shaft_under_the_rib",
+          "name": "the shaft under the rib at the Bone Ladder",
+          "on_resolution": [
+            "res_report_drain",
+            "res_widen"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "keeper-teeja-lun",
+          "name": "Teeja-Lun of the Bone Ladder",
+          "on_resolution": [
+            "res_report_failure"
+          ]
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_the_shaft_under_the_rib",
+          "name": "the shaft under the rib",
+          "on_resolution": [
+            "res_report_drain"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_what_keepers_do_not_say",
+          "name": "what the keepers do not say",
+          "on_resolution": [
+            "res_report_failure"
+          ]
+        },
+        {
+          "type": "item",
+          "unique_named": true,
+          "id": "item_a_stolen_edge",
+          "name": "a stolen edge",
+          "on_resolution": [
+            "res_widen"
+          ]
+        }
       ],
       "notes": "Act I quest 3. Stakes 3. First contact with the engine, still nameless: worked stone under the road that the keepers have decided not to look at. The shaft found here is the road the player walks down in Act III."
     },
@@ -589,7 +1007,9 @@
       },
       "opens_by": {
         "topic": "a name for cover",
-        "prerequisite_quests": ["Q-MAIN-03"]
+        "prerequisite_quests": [
+          "Q-MAIN-03"
+        ]
       },
       "task_kind": "errand",
       "stakes": 2,
@@ -643,7 +1063,13 @@
           "id": "br_which_name",
           "at_journal_index": 20,
           "condition": "The player chooses which standing to take, or takes none",
-          "leads_to": ["res_ledger", "res_deepkin", "res_assize", "res_dockhands", "res_no_name"],
+          "leads_to": [
+            "res_ledger",
+            "res_deepkin",
+            "res_assize",
+            "res_dockhands",
+            "res_no_name"
+          ],
           "irreversible": false
         }
       ],
@@ -657,8 +1083,12 @@
           "morally_better": null,
           "requires": {},
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 12 },
-            "world_flags": ["player_took_a_ledger_name"]
+            "faction_reputation": {
+              "the_wet_ledger": 12
+            },
+            "world_flags": [
+              "player_took_a_ledger_name"
+            ]
           }
         },
         {
@@ -670,8 +1100,12 @@
           "morally_better": null,
           "requires": {},
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 12 },
-            "world_flags": ["player_took_a_deepkin_name"]
+            "faction_reputation": {
+              "the_xul_aneekh": 12
+            },
+            "world_flags": [
+              "player_took_a_deepkin_name"
+            ]
           }
         },
         {
@@ -683,8 +1117,13 @@
           "morally_better": null,
           "requires": {},
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 12, "the_drowned_court": -4 },
-            "world_flags": ["player_took_an_assize_name"]
+            "faction_reputation": {
+              "the_imperial_assize": 12,
+              "the_drowned_court": -4
+            },
+            "world_flags": [
+              "player_took_an_assize_name"
+            ]
           }
         },
         {
@@ -696,8 +1135,13 @@
           "morally_better": null,
           "requires": {},
           "consequences": {
-            "faction_reputation": { "the_dockhands": 12, "the_wet_ledger": -4 },
-            "world_flags": ["player_took_a_dockhand_name"]
+            "faction_reputation": {
+              "the_dockhands": 12,
+              "the_wet_ledger": -4
+            },
+            "world_flags": [
+              "player_took_a_dockhand_name"
+            ]
           }
         },
         {
@@ -709,8 +1153,13 @@
           "morally_better": null,
           "requires": {},
           "consequences": {
-            "faction_reputation": { "the_drowned_court": 0 },
-            "world_flags": ["player_took_no_name", "act_iv_leverage_must_be_bought"]
+            "faction_reputation": {
+              "the_drowned_court": 0
+            },
+            "world_flags": [
+              "player_took_no_name",
+              "act_iv_leverage_must_be_bought"
+            ]
           }
         }
       ],
@@ -719,14 +1168,28 @@
       "deceit": null,
       "consequences": {
         "faction_reputation": {},
-        "world_flags": ["cover_question_settled"],
-        "unlocks": ["Q-MAIN-05"]
+        "world_flags": [
+          "cover_question_settled"
+        ],
+        "unlocks": [
+          "Q-MAIN-05"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "access", "unique_named": false, "id": "acc_second_standing", "name": "a second standing" },
-        { "type": "information", "unique_named": true, "id": "topic_what_a_name_costs_later", "name": "what a name costs later" }
+        {
+          "type": "access",
+          "unique_named": false,
+          "id": "acc_second_standing",
+          "name": "a second standing"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_what_a_name_costs_later",
+          "name": "what a name costs later"
+        }
       ],
       "notes": "Act I quest 4. RI-QST06 §B: 'the player is told to join a faction for cover'. Every resolution including refusal is a win with its own cost; nothing in this quest or anywhere in the mainline sets rank_gate, because faction membership is leverage in Act IV and never a wall. can_fail is false, which the census permits at this rate."
     },
@@ -746,7 +1209,9 @@
       },
       "opens_by": {
         "topic": "the ninth recension",
-        "prerequisite_quests": ["Q-MAIN-04"]
+        "prerequisite_quests": [
+          "Q-MAIN-04"
+        ]
       },
       "task_kind": "investigation",
       "stakes": 3,
@@ -806,14 +1271,22 @@
           "id": "br_the_ink",
           "at_journal_index": 30,
           "condition": "The player examines the chapter room copy and finds the ink of the ninth clause does not match the eighth",
-          "leads_to": ["rev_the_ink", "res_accept_quietly", "res_say_the_ink"],
+          "leads_to": [
+            "rev_the_ink",
+            "res_accept_quietly",
+            "res_say_the_ink"
+          ],
           "irreversible": false
         },
         {
           "id": "br_the_seventh",
           "at_journal_index": 40,
           "condition": "The player reads the seventh recension in the archive and finds the clause already there in an older hand",
-          "leads_to": ["rev_the_seventh", "res_accept_quietly", "res_say_the_ink"],
+          "leads_to": [
+            "rev_the_seventh",
+            "res_accept_quietly",
+            "res_say_the_ink"
+          ],
           "irreversible": false
         }
       ],
@@ -826,10 +1299,23 @@
           "outcome": "The player is the tally-reader with the Court's whole weight behind the claim. Act IV's Court voice is cheap and the Deep-Kin will call the player a Court invention for the rest of the game.",
           "morally_better": null,
           "requires": {},
-          "exclusive_with": ["res_say_the_ink"],
+          "exclusive_with": [
+            "res_say_the_ink"
+          ],
           "consequences": {
-            "faction_reputation": { "the_drowned_court": 15 },
-            "world_flags": ["player_is_the_tally_reader", "recension_unquestioned_in_chapter", "court_backs_the_mandate_whole"]
+            "faction_reputation": {
+              "the_drowned_court": 15
+            },
+            "world_flags": [
+              "player_is_the_tally_reader",
+              "recension_unquestioned_in_chapter",
+              "court_backs_the_mandate_whole",
+              "the_sextons_use_the_word_without_qualifying_it"
+            ],
+            "npc_disposition": {
+              "undersexton-aveline-rell": 20,
+              "undersexton-bel-mourne": -20
+            }
           }
         },
         {
@@ -840,11 +1326,28 @@
           "outcome": "The player is the tally-reader with a public doubt attached. The Court is split, which makes the Court voice dearer and the Deep-Kin and the Cutters both easier, because a mandate the claimant themselves questioned is a mandate they can respect.",
           "morally_better": null,
           "requires": {},
-          "requires_knowing": ["rev_the_ink"],
-          "exclusive_with": ["res_accept_quietly"],
+          "requires_knowing": [
+            "rev_the_ink"
+          ],
+          "exclusive_with": [
+            "res_accept_quietly"
+          ],
           "consequences": {
-            "faction_reputation": { "the_drowned_court": 4, "the_xul_aneekh": 8, "the_ixtu_vakh": 6 },
-            "world_flags": ["player_is_the_tally_reader", "recension_doubted_in_chapter", "court_split_on_the_mandate"]
+            "faction_reputation": {
+              "the_drowned_court": 4,
+              "the_xul_aneekh": 8,
+              "the_ixtu_vakh": 6
+            },
+            "world_flags": [
+              "player_is_the_tally_reader",
+              "recension_doubted_in_chapter",
+              "court_split_on_the_mandate",
+              "two_sextons_who_never_liked_the_recension_are_allies"
+            ],
+            "npc_disposition": {
+              "ledgerer-hosk-vei": -25,
+              "undersexton-bel-mourne": 25
+            }
           }
         }
       ],
@@ -860,27 +1363,77 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D7"],
+        "patterns": [
+          "D7"
+        ],
         "stated_objective": "Stand in the chapter room while the Ninth Recension is read",
         "actual_objective": "Have the Court's own sextons hear a clause read at a stranger who fits it, so that the Court has a claimant it can spend",
         "truth": "Whether the ninth clause was written four hundred years ago or four hundred years ago copied from something older, or invented by a Court that needed a claimant, is not established by any text in this game and is not established by this quest.",
         "revealed_by": [
-          { "id": "rev_the_ink", "channel": "environment", "source": "item_chapter_room_recension", "before_point_of_no_return": true },
-          { "id": "rev_the_seventh", "channel": "book", "source": "book_the_seventh_recension", "before_point_of_no_return": true },
-          { "id": "rev_hosk_argument", "channel": "book", "source": "book_against_the_ninth_clause", "before_point_of_no_return": true }
+          {
+            "id": "rev_the_ink",
+            "channel": "environment",
+            "source": "item_chapter_room_recension",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_the_seventh",
+            "channel": "book",
+            "source": "book_the_seventh_recension",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_hosk_argument",
+            "channel": "book",
+            "source": "book_against_the_ninth_clause",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": true
       },
       "consequences": {
         "faction_reputation": {},
-        "world_flags": ["the_mandate_is_claimed", "act_one_closed"],
-        "unlocks": ["Q-MAIN-06"]
+        "world_flags": [
+          "the_mandate_is_claimed",
+          "act_one_closed"
+        ],
+        "unlocks": [
+          "Q-MAIN-06"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "access", "unique_named": true, "id": "loc_court_chapter_room", "name": "the Drowned Court's chapter room" },
-        { "type": "information", "unique_named": true, "id": "topic_the_ninth_clause", "name": "the ninth clause of the Drowned Tally" }
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "loc_court_chapter_room",
+          "name": "the Drowned Court's chapter room"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_ninth_clause",
+          "name": "the ninth clause of the Drowned Tally"
+        },
+        {
+          "type": "service",
+          "unique_named": true,
+          "id": "svc_the_courts_whole_weight",
+          "name": "the Court’s whole weight behind the claim",
+          "on_resolution": [
+            "res_accept_quietly"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "undersexton-bel-mourne",
+          "name": "the sextons who never liked the Recension",
+          "on_resolution": [
+            "res_say_the_ink"
+          ]
+        }
       ],
       "notes": "Act I quest 5, the mandate. D7 with never_revealed true: two in-world books argue opposite sides and neither this quest nor any later one adjudicates. The player may accept the claim or state the doubt out loud; both are wins and neither settles it. Stakes 3, which keeps the Act I mean at 2.4."
     }

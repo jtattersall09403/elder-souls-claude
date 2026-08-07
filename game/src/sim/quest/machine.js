@@ -348,6 +348,18 @@ export class QuestEngine {
         }
       }
       if (h.quest && h.fail) { const r = this.fail(h.quest, h.fail); if (r.ok) fired.push({ quest: h.quest, failed: h.fail }); }
+      // W1-19: a quest whose `discovery` is "consequence" is opened by the world, not offered by
+      // a giver — and the only thing that makes a quest offerable is knowing its topic. Without
+      // this branch `discovery: "consequence"` is a value the schema permits and nothing in the
+      // build can produce, so Q-MAIN-30 (seam S10's severance quest) would have been reachable
+      // only from the harness. Additive: a hook with no `adds_topics` behaves exactly as before.
+      for (const t of h.adds_topics || []) {
+        if (!this.sim.quest.topicsKnown.includes(t)) {
+          this.sim.quest.topicsKnown.push(t);
+          this._emit('topic_add', { quest: h.quest || null, flag, topic: t, source: 'WORLD_FLAG' });
+          fired.push({ flag, topic: t });
+        }
+      }
     }
     return { flag, fired };
   }

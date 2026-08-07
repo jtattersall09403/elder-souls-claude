@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 343,
+  "file_count": 348,
   "files": [
     {
       "path": "books/interface-readables.json",
@@ -51,8 +51,8 @@
       "path": "combat/clips.json",
       "schema": "elder-souls/clips@1",
       "id": null,
-      "bytes": 87834,
-      "sha256": "d83ce371b2adfb24"
+      "bytes": 87895,
+      "sha256": "076ae0f52c9f2a62"
     },
     {
       "path": "combat/enemies/beast_slitherfang.json",
@@ -1710,6 +1710,14 @@
       "sha256": "dbd59a220a420611"
     },
     {
+      "path": "npcs/mainline.json",
+      "schema": "elder-souls/npcs@1",
+      "id": null,
+      "bytes": 14070,
+      "sha256": "483928a0d819e975",
+      "declared_incomplete": true
+    },
+    {
       "path": "npcs/named-states.json",
       "schema": "elder-souls/npcs@1",
       "id": null,
@@ -1778,9 +1786,9 @@
     {
       "path": "progression/levels.json",
       "schema": "elder-souls/levels@1",
-      "id": null,
-      "bytes": 667,
-      "sha256": "911c9ce7c43ccd37"
+      "id": "levels",
+      "bytes": 12814,
+      "sha256": "23b50efc501dac86"
     },
     {
       "path": "progression/race-reactions.json",
@@ -1808,8 +1816,8 @@
       "path": "quests/blackmarsh-coast.json",
       "schema": "elder-souls/quests@1",
       "id": "blackmarsh-coast",
-      "bytes": 63587,
-      "sha256": "c2b1957b2ad02350"
+      "bytes": 63895,
+      "sha256": "82d161d1feb7c1c8"
     },
     {
       "path": "quests/blackmarsh-core.json",
@@ -1836,43 +1844,65 @@
       "path": "quests/hooks.json",
       "schema": "elder-souls/quest-hooks@1",
       "id": "quest-hooks",
-      "bytes": 6946,
-      "sha256": "07c075e4c7cdf51d"
+      "bytes": 11765,
+      "sha256": "fe07528a95c9cfb8"
     },
     {
       "path": "quests/magic-utility.json",
       "schema": "elder-souls/quests@1",
       "id": "magic-utility-quests",
-      "bytes": 133208,
-      "sha256": "ff498d91e1c3523d"
+      "bytes": 134052,
+      "sha256": "63bde5ff574b5071"
     },
     {
       "path": "quests/mainline-act1.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-act1",
-      "bytes": 48263,
-      "sha256": "ed0874a807ba92c8"
+      "bytes": 57946,
+      "sha256": "809fb06f6cd5ae04"
     },
     {
       "path": "quests/mainline-act2.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-act2",
-      "bytes": 45113,
-      "sha256": "50e973e2828b4134"
+      "bytes": 53938,
+      "sha256": "63721b342e097ea4"
     },
     {
       "path": "quests/mainline-act3.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-act3",
-      "bytes": 45348,
-      "sha256": "0d6e4fa9d60d760d"
+      "bytes": 54743,
+      "sha256": "635cbf8fb546dc22"
     },
     {
       "path": "quests/mainline-act4.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-act4",
-      "bytes": 66550,
-      "sha256": "ce906d805a05f06f"
+      "bytes": 96249,
+      "sha256": "787871803d641061"
+    },
+    {
+      "path": "quests/mainline-act5.json",
+      "schema": "elder-souls/quest-file@1",
+      "id": "mainline-act5",
+      "bytes": 59052,
+      "sha256": "554a1f4df8bc7c0f"
+    },
+    {
+      "path": "quests/mainline-backpath.json",
+      "schema": "elder-souls/quest-file@1",
+      "id": "mainline-backpath",
+      "bytes": 41847,
+      "sha256": "2a58743bd0f03b03"
+    },
+    {
+      "path": "quests/mainline.json",
+      "schema": "elder-souls/mainline@1",
+      "id": "mainline",
+      "bytes": 13403,
+      "sha256": "f0504a0a33e5c92b",
+      "declared_incomplete": true
     },
     {
       "path": "quests/the-boards.json",
@@ -2085,6 +2115,13 @@
       "id": "thorn-hall",
       "bytes": 530,
       "sha256": "4ab0e0aab53ea8cb"
+    },
+    {
+      "path": "states/ui-journal.json",
+      "schema": "elder-souls/state@1",
+      "id": "ui-journal",
+      "bytes": 17158,
+      "sha256": "8a8928b16c4f5cc4"
     },
     {
       "path": "states/vista_primary.json",

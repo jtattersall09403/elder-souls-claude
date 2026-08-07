@@ -232,11 +232,15 @@ const SURF = [
  * @param {{kind:string, amp_m:number, len_m:number, bearing_deg?:number, tone?:number}} skin
  * @returns {[number, number]} [rise in metres above the graded ground, albedo response in [-1,1]]
  */
-export function skinAt(skin, x, z) {
+const _pair = [0, 0];
+export function skinAt(skin, x, z, out) {
   const k = SKIN_INDEX[skin.kind];
   if (k === undefined) throw new Error(`unknown ground-skin kind "${skin.kind}"`);
-  const [h, t] = SURF[k](x, z, skin.len_m, ((skin.bearing_deg || 0) * Math.PI) / 180);
-  return [h * skin.amp_m, clamp(t, -1, 1) * (skin.tone === undefined ? 1 : skin.tone)];
+  const r = SURF[k](x, z, skin.len_m, ((skin.bearing_deg || 0) * Math.PI) / 180);
+  const o = out || _pair;
+  o[0] = r[0] * skin.amp_m;
+  o[1] = clamp(r[1], -1, 1) * (skin.tone === undefined ? 1 : skin.tone);
+  return o;
 }
 
 /**
@@ -257,29 +261,39 @@ export class SkinField {
     this.regionIndexAt = regionIndexAt;
     this.skins = regions.map((r) => (r.terrain && r.terrain.skin) || null);
     this.any = this.skins.some(Boolean);
+    this._w = new Float64Array(regions.length);
+    this._out = [0, 0];
   }
 
-  /** [rise_m, tone] at a point, blended over ~12 m at a region border. */
+  /**
+   * [rise_m, tone] at a point, blended over ~12 m at a region border.
+   *
+   * Centre tap at weight 2, four cross taps at weight 1 — at worst five surface evaluations, and
+   * exactly one wherever the whole cross lies in a single region, which is everywhere but a
+   * border. Allocation-free on purpose: this is called once per vertex of a 15,625-vertex mesh
+   * every eleven metres of walking, and a Map plus five array literals per call is a quarter of a
+   * million short-lived objects per rebuild.
+   */
   at(x, z) {
-    if (!this.any) return [0, 0];
+    if (!this.any) return this._out;
     const TAP = 6;
-    let h = 0, t = 0, wsum = 0;
-    // Centre tap at weight 2, four cross taps at weight 1 — six evaluations at worst, one when
-    // the whole cross lies in one region, which is the case almost everywhere.
-    const idc = this.regionIndexAt(x, z);
-    const seen = new Map([[idc, 2]]);
-    for (const [dx, dz] of [[-TAP, 0], [TAP, 0], [0, -TAP], [0, TAP]]) {
-      const id = this.regionIndexAt(x + dx, z + dz);
-      seen.set(id, (seen.get(id) || 0) + 1);
-    }
-    for (const [id, w] of seen) {
-      const s = this.skins[id];
-      wsum += w;
+    const w = this._w;
+    w.fill(0);
+    w[this.regionIndexAt(x, z)] += 2;
+    w[this.regionIndexAt(x - TAP, z)] += 1;
+    w[this.regionIndexAt(x + TAP, z)] += 1;
+    w[this.regionIndexAt(x, z - TAP)] += 1;
+    w[this.regionIndexAt(x, z + TAP)] += 1;
+    let h = 0, t = 0;
+    for (let i = 0; i < w.length; i++) {
+      if (w[i] === 0) continue;
+      const s = this.skins[i];
       if (!s) continue;
-      const [hh, tt] = skinAt(s, x, z);
-      h += w * hh; t += w * tt;
+      const p = skinAt(s, x, z);
+      h += w[i] * p[0]; t += w[i] * p[1];
     }
-    return wsum ? [h / wsum, t / wsum] : [0, 0];
+    this._out[0] = h / 6; this._out[1] = t / 6;
+    return this._out;
   }
 
   /** The dominant skin kind here, for probes and the region-axes descriptor. */

@@ -1,0 +1,98 @@
+{
+ "generated": "2026-08-07T07:21:17.479Z",
+ "instrument": "kritik3-setpoint.mjs (critic-authored, round 3)",
+ "T1_residual": {
+  "weapons": 82,
+  "reach_abs_err": {
+   "median": 0.0012,
+   "p90": 0.0503,
+   "max": 0.2154,
+   "within_0_01": 59,
+   "within_0_10": 80
+  },
+  "arc_abs_err_deg": {
+   "median": 0,
+   "p90": 0,
+   "max": 26.07,
+   "within_0_1": 74,
+   "within_1_0": 74
+  }
+ },
+ "T2_animation_blind": {
+  "perturbation": "clip-registry capsule_length_m x0.5 AND profile.arc_deg x0.4 on every clip",
+  "weapons_whose_observed_reach_moved_over_0_02m": 30,
+  "weapons_whose_observed_arc_moved_over_1deg": 0,
+  "max_reach_shift_m": 0.2056,
+  "max_arc_shift_deg": 0.01,
+  "sample": [
+   {
+    "w": "axe_bog_cleaver",
+    "reach_before": 1.795,
+    "reach_after": 1.797,
+    "arc_before": 117.3,
+    "arc_after": 117.3
+   },
+   {
+    "w": "axe_hatchet_pair",
+    "reach_before": 1.7,
+    "reach_after": 1.7959,
+    "arc_before": 153.8,
+    "arc_after": 153.8
+   },
+   {
+    "w": "axe_kings_bite",
+    "reach_before": 1.5634,
+    "reach_after": 1.6406,
+    "arc_before": 164.8,
+    "arc_after": 164.8
+   },
+   {
+    "w": "axe_ridge_axe",
+    "reach_before": 1.9259,
+    "reach_after": 2.0053,
+    "arc_before": 139.8,
+    "arc_after": 139.8
+   }
+  ]
+ },
+ "T3_declaration_bound": {
+  "perturbation": "movesets/*.json reach_m +0.50 m and r1.1 arc_sweep_deg x1.30",
+  "weapons_whose_observed_reach_followed_within_0_05m": 67,
+  "weapons_with_arc_over_5deg": 79,
+  "weapons_whose_observed_arc_followed_within_10pct": 74,
+  "sample": [
+   {
+    "w": "axe_bog_cleaver",
+    "reach_before": 1.795,
+    "reach_after": 2.2948,
+    "arc_before": 117.3,
+    "arc_after": 152.49
+   },
+   {
+    "w": "axe_hatchet_pair",
+    "reach_before": 1.7,
+    "reach_after": 2.2959,
+    "arc_before": 153.8,
+    "arc_after": 199.94
+   },
+   {
+    "w": "axe_kings_bite",
+    "reach_before": 1.5634,
+    "reach_after": 2.043,
+    "arc_before": 164.8,
+    "arc_after": 214.24
+   },
+   {
+    "w": "axe_ridge_axe",
+    "reach_before": 1.9259,
+    "reach_after": 2.5053,
+    "arc_before": 139.8,
+    "arc_after": 181.74
+   }
+  ]
+ },
+ "ruling": {
+  "question": "Is the OBSERVED column of D5/D6 a measurement of the shipping animation, or a readback of the JSON setpoint?",
+  "finding": "residual ~0.0012 m / 0 deg; animation perturbation moved 30/82 reaches; declaration perturbation moved 67/82."
+ }
+}

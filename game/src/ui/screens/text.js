@@ -22,7 +22,7 @@
 'use strict';
 
 import { C, Ca, boneRule, panel, shellInlay, idHash } from '../theme.js';
-import { screen, row, extent, hint, letterRing, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
+import { screen, row, extent, hint, letterRing, ink, inkDim, accent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
 import { drawText, faceOf, measure, wrap, writeLines, ellipsise } from '../type.js';
 import { pageMetrics, paginate, wordsOn } from '../type.js';
 
@@ -60,7 +60,7 @@ export function drawJournal(S, m) {
     id: 'journal.index.head', kind: 'panel_header',
     rect: [ix, iy, idxW, 26 * s], text: 'Quests', opacity: alpha,
   }, (c, r) => {
-    drawText(c, 'Quests', r[0], r[1] + 19 * s, faceOf('bone'), 15 * s, C('ink_soft'));
+    drawText(c, 'Quests', r[0], r[1] + 19 * s, faceOf('bone'), 15 * s, inkDim());
     boneRule(c, r[0], r[1] + 24 * s, r[2], s, 12);
   });
   const idxRows = 16;
@@ -132,8 +132,8 @@ export function drawJournal(S, m) {
         date_text: b.e.dateText, page: onPage ? spread : null,
       },
     }, onPage ? (c, r) => {
-      drawText(c, b.head, r[0], r[1] + dateSize, faceOf('bone'), dateSize, C('blood'));
-      writeLines(c, b.lines, r[0], r[1] + dateSize * 1.5 + size, 'ink', size, lh, C('ink'));
+      drawText(c, b.head, r[0], r[1] + dateSize, faceOf('bone'), dateSize, accent());
+      writeLines(c, b.lines, r[0], r[1] + dateSize * 1.5 + size, 'ink', size, lh, ink());
     } : null);
     if (onPage) drawn[k] += b.h;
   }
@@ -157,7 +157,7 @@ export function drawJournal(S, m) {
     meta: { spread: spread + 1, spreads, entries: m.entries.length },
   }, (c, r) => {
     const f = faceOf('bone'), sz = 14 * s, t = `${spread + 1} of ${spreads}`;
-    drawText(c, t, r[0] + r[2] / 2 - measure(t, f, sz) / 2, r[1] + 16 * s, f, sz, C('ink_soft'));
+    drawText(c, t, r[0] + r[2] / 2 - measure(t, f, sz) / 2, r[1] + 16 * s, f, sz, inkDim());
   });
 
   hint(S, 'journal.hint', ix, iy + ih + 4 * s, iw,
@@ -177,7 +177,7 @@ function drawSearch(S, m, sc, alpha) {
     text: `${m.results.length} found`, opacity: alpha,
     meta: { count: m.results.length, chronological: true },
   }, (c, r) => {
-    drawText(c, `${m.results.length} found`, r[0], r[1] + 19 * s, faceOf('bone'), 15 * s, C('ink_soft'));
+    drawText(c, `${m.results.length} found`, r[0], r[1] + 19 * s, faceOf('bone'), 15 * s, inkDim());
     boneRule(c, r[0], r[1] + 24 * s, r[2], s, 19);
   });
   const size = 15 * s, lh = size * 1.42;
@@ -189,8 +189,8 @@ function drawSearch(S, m, sc, alpha) {
       rect: [rx, y, rw, lh * lines.length + 20 * s], text: res.context, opacity: alpha,
       meta: { journal_id: res.journal_id, index: res.index, day: res.day },
     }, (c, r) => {
-      drawText(c, `${res.index} — ${res.dateText}`, r[0], r[1] + 13 * s, faceOf('bone'), 12 * s, C('blood'));
-      writeLines(c, lines, r[0], r[1] + 16 * s + size, 'ink', size, lh, C('ink'));
+      drawText(c, `${res.index} — ${res.dateText}`, r[0], r[1] + 13 * s, faceOf('bone'), 12 * s, accent());
+      writeLines(c, lines, r[0], r[1] + 16 * s + size, 'ink', size, lh, ink());
     });
     y += lh * lines.length + 22 * s;
     if (y > iy + ih - 30 * s) break;
@@ -210,10 +210,9 @@ export function drawBook(S, m) {
   const s = S.s;
   const alpha = m.inCombat ? COMBAT_ALPHA : CALM_ALPHA;
   const sc = screen(S, 'book', m.book.title, m.book.author ? 'written by ' + m.book.author : null, 'parchment', alpha);
+  const L = bookLayout(S, sc.inner);
   const [ix, iy, iw, ih] = sc.inner;
-  const size = 19 * s, lh = size * 1.48;
-  const colW = (iw - 60 * s) / 2;
-  const linesPerPage = Math.max(4, Math.floor((ih - 40 * s) / lh));
+  const { size, lh, colW, linesPerPage, textTop } = L;
   const lines = wrap(m.book.text, faceOf('ink'), size, colW);
   const pages = paginate(lines, linesPerPage);
   const spreads = Math.max(1, Math.ceil(pages.length / 2));
@@ -222,18 +221,18 @@ export function drawBook(S, m) {
   for (const k of [0, 1]) {
     const pi = spread * 2 + k;
     const pl = pages[pi];
-    const x = ix + k * (colW + 60 * s);
+    const x = ix + L.pad + k * (colW + L.gutter);
     S.el({
       id: 'book.page.' + pi, kind: 'book_page',
-      rect: [x, iy, colW, ih - 26 * s],
+      rect: [x, iy + textTop, colW, linesPerPage * lh],
       visible: !!pl, opacity: pl ? alpha : 0,
       text: pl ? pl.join('\n') : null,
       meta: pl ? { page: pi + 1, ...pageMetrics(pl, 'ink', size, lh, S.H) } : null,
     }, pl ? (c, r) => {
-      writeLines(c, pl, r[0], r[1] + size, 'ink', size, lh, C('ink'));
+      writeLines(c, pl, r[0], r[1] + size, 'ink', size, lh, ink());
     } : null);
   }
-  S.el({ id: 'book.gutter', kind: 'divider', rect: [ix + colW + 22 * s, iy, 16 * s, ih - 26 * s], opacity: alpha },
+  S.el({ id: 'book.gutter', kind: 'divider', rect: [ix + L.pad + colW + L.gutter * 0.35, iy, L.gutter * 0.3, ih - 26 * s], opacity: alpha },
     (c, r) => {
       c.beginPath();
       c.moveTo(r[0] + r[2] / 2, r[1]); c.lineTo(r[0] + r[2] / 2, r[1] + r[3]);
@@ -249,10 +248,36 @@ export function drawBook(S, m) {
   }, (c, r) => {
     const f = faceOf('bone'), sz = 14 * s;
     const t = r0(pages.length, spread);
-    drawText(c, t, r[0] + r[2] / 2 - measure(t, f, sz) / 2, r[1] + 16 * s, f, sz, C('ink_soft'));
+    drawText(c, t, r[0] + r[2] / 2 - measure(t, f, sz) / 2, r[1] + 16 * s, f, sz, inkDim());
   });
   hint(S, 'book.hint', ix, iy + ih + 4 * s, iw,
     'Left and right turn the page. Back closes it. Nobody will summarise this for you.', alpha);
+}
+
+/**
+ * The reading page's measure, and it is the whole of RI-UIX05 §A.
+ *
+ * The numbers are chosen against the bands rather than against the panel: a 708 px column at
+ * 19 px sets 88 characters to the line and 324 words to the page, which is outside B2 (45-75)
+ * and past B1's 320-word HARD FAIL — a page that is beautiful and unreadable, which is exactly
+ * the failure §A's third scope row exists to catch. So the type is set larger (26 px, ~70
+ * characters) and the block is given a book's margins (the text occupies 62% of the panel's
+ * height, not all of it), which lands the page near 150 words.
+ *
+ * One function, used by the screen and by `getUIState().book`, so the pagination a critic reads
+ * is the pagination that was drawn — K1 measures the distribution over EVERY book in the corpus
+ * via `getUIState().book.pages`, and two implementations of this arithmetic would eventually
+ * disagree and make that measurement fiction.
+ */
+export function bookLayout(S, inner) {
+  const s = S.s;
+  const [, , iw, ih] = inner;
+  const size = 26 * s, lh = size * 1.46;         // leading 1.46, inside B3's 1.35-1.65
+  const pad = 34 * s, gutter = 76 * s;
+  const colW = (iw - pad * 2 - gutter) / 2;
+  const textTop = ih * 0.08;
+  const linesPerPage = Math.max(4, Math.floor((ih * 0.80) / lh));
+  return { size, lh, colW, linesPerPage, textTop, pad, gutter };
 }
 
 function r0(total, spread) {
@@ -271,15 +296,13 @@ function windowOf(n, sel, size) {
 /** Pagination of a book without drawing it — `getUIState().book.pages` for RI-UIX05 K1. */
 export function bookPagination(text, S) {
   const s = S.s;
-  const size = 19 * s, lh = size * 1.48;
   const iw = S.W - 2 * (200 * s) - 44 * s;
   const ih = 780 * s - 54 * s - 34 * s;
-  const colW = (iw - 60 * s) / 2;
-  const linesPerPage = Math.max(4, Math.floor((ih - 40 * s) / lh));
-  const pages = paginate(wrap(text, faceOf('ink'), size, colW), linesPerPage);
+  const L = bookLayout(S, [0, 0, iw, ih]);
+  const pages = paginate(wrap(text, faceOf('ink'), L.size, L.colW), L.linesPerPage);
   return {
     pages: pages.length,
     words_per_page: pages.map(wordsOn),
-    metrics: pages.map((p) => pageMetrics(p, 'ink', size, lh, S.H)),
+    metrics: pages.map((p) => pageMetrics(p, 'ink', L.size, L.lh, S.H)),
   };
 }

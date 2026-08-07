@@ -2,14 +2,31 @@
   "task_id": "W1-14-r3-critic",
   "brief": "CRITIC round 3 for wave-1 piece W1-14 (magic, seam S19). Prior: 2.7 (r1), 4.4 (r2).",
   "started": "wave-1 round 3",
-  "state": "researching",
+  "state": "measuring",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-14-r3.json",
     "corpus/90-verdicts/wave1/W1-14-r3.md",
     "corpus/90-verdicts/wave1/artifacts/W1-14-r3/"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "confirm boot with smoke.mjs, then write my OWN RI-MAG06 D census (do not run the builder's)",
+  "findings": [
+    "TREE DOES NOT BOOT at HEAD or in the working tree, for TWO reasons both owned by other pieces: (a) game/data/input/profiles.json (new in commit 12be950) violates its own RI-JRN04 H11 assertion twice - heavy/parry 6.9 px and block/roll 0.11 px against an 8 px minimum, so TouchInput._assertLayout throws on every boot; (b) a concurrent session is mid-build on game/data/quests/mainline-act1..4 and index.json/hooks.json, giving QuestBook/QuestEngine integrity throws that changed 4 times in 20 minutes. smoke.mjs PASSES throughout because it never boots the engine.",
+    "WORKAROUND (declared as a method deviation): all measurement is taken against a PINNED MIRROR of the working tree at scratchpad/pin/game, with exactly two edits, neither in game/src and neither touching magic: touch button radii set to 22 (satisfies H11), and the in-flight mainline-act quest files removed from data/index.json. api-probe 33/33 against the mirror.",
+    "M8 / ARENA AUDIT, THE HEADLINE: the builder's census arena replaced setMagicSkills({...100}) with 700 iterations of {4 x grantSkillUse('cast_effective',{cost:40})} + hearthRest(). MEASURED what that loop leaves behind: sorcery 100, root-speech 99, warding 100, veiling 100. It is setMagicSkills({...100}) with extra steps. RI-MAG06 E/M8 requires the census be RE-RUN WITHOUT the gating call and the delta reported; that was never done for this loop.",
+    "Default shipped sheet in default/arena_flat/dungeon_primary: sorcery 5, root-speech 10, warding 5, veiling 5, focus_max 94. sap-reader chosen at creation: 25/5/25/15, focus_max 56.",
+    "h_fortify_skill (apply.js:216) computes `which = rec.school || 'warding'` and NEVER USES IT: the loop fortifies ALL FOUR schools plus stealth security AND sneak. One fortify_skill cast raises every magic school at once.",
+    "53/55 SURVIVES MY OWN INSTRUMENT. critic-w1-14-r3-census.mjs (written from RI-MAG06 D, never running the builder's) at the builder's arena skill level: DISTINCT-VERBS all-paths 53/55, world-side 43/55, moved_anything 55/55, not_delivered 0, exactly two collision groups [bind_lesser,bind_greater] and [calm_beast,demoralise]. Null-vs-null control drift 0 paths in both an empty and an aggroed room; ZERO effects had an unstable path across the repeat run, so the number is not noise-inflated.",
+    "M8 DELTA, WHICH THE BUILDER NEVER RAN: the same census at practice=0 (a sap-reader straight out of creation, sorcery 25 / root-speech 5 / warding 25 / veiling 15) gives DISTINCT-VERBS 30/55 all-paths, 25/55 world-side, and 25 of 55 effects NOT CASTABLE AT ALL - every one refused at attunement for skill.",
+    "LADDER IS CLIMBABLE (Q5 answered). Real casts only, no grantSkillUse: sorcery 25->45 in 169 casts, ->65 in 365, ->100 in 673 (20.6 min of sim time in the casts alone); veiling 15->45 in 142, ->100 in 689; warding 25->45 in 349, ->65 in 783; root-speech 5->45 in 729. So 17/72 is a gate, not a wall - the skill-100 census is a state a player can reach. fortify_skill CANNOT be used to jump the gate: its min_tier forces tier 3 / skill_req 45, so a starting character cannot attune it.",
+    "CAMERA OVERRIDE IS NOT BROKEN. H.camera({pos,look,fov}) is honoured by the model AND by the renderer: readback exact, survives 24 steps and a full cast, and the pixels change 96.94% (builder's own pose vs the default rig), 96.08% (far/high/fov20), 99.999% (looking the other way). loadState clears it, which is correct. The builder's blocked item rests on a bug that does not exist.",
+    "AP-M3 INDEPENDENTLY CONFIRMED. Turn rate re-derived by me from consecutive heading_deg, fence recomputed as 0.35 x the flight the bolt ACTUALLY had: LIGHT 60 dps before / 0 after / 0 violating frames, HEAVY 45 / 0 / 0, CANTRIP 0 (null control). --break=nocutoff goes red at 72 and 106 violating frames. Against a STATIONARY target every class reads 0 dps even before the fence - the protocol's own point, reproduced.",
+    "NEW DEFECT, FOUND BY MOVING THE TARGET: a spell cannot hit anything that moves. LIGHT bolt at 18 m against a target strafing at 0 m/s -> 80 damage; at 1.5 m/s -> 0; 3 m/s -> 0; 5 m/s -> 0; 7 m/s -> 0. spell_impact fires every time, effect_apply only at 0 m/s. The tracking that AP-M3 proves is fenced is also tracking that never closes on a moving body.",
+    "FRENZY IS DEAD WORLD-SIDE. effect_apply fires, b.frenzyTarget is set to the other body, and after 900 frames both enemies are at 412 hp - byte-identical to the no-cast control. grep: frenzyTarget and ctl.hostileTo are written only by apply.js h_frenzy and read by nothing in the AI.",
+    "DETECT_LIFE / DETECT_KEY move NOTHING world-side. Their entire census signature is m:world.markers.* - magic's own array. HUD marker count 0 before and after (S8-compliant) and getUIState() byte-identical. Nothing in game/src/render reads M.markers, so the effect is invisible to the player.",
+    "SAP_WARD's DISPOSITION CONSUMER IS A DEAD READ. dialogue/disposition.js:167 reads `player.sapTaintBand`; grep over all of game/src shows NOTHING writes that field. Measured at taint band 4 in helstrom-market: all four NPCs' disposition explain-terms are {race, upbringing} only, with no sap_taint term, and the numbers are identical to band 0.",
+    "OPEN_LOCK / SHATTER's 'world-side durable register' has no consumer. sim.world.doorsUnlocked and shortcutsOpened are written only by sim/magic/apply.js and read only by harness/api.js and save/state.js. No door, traversal or quest gate in game/src consults either.",
+    "game/data/magic/wards.json ships its own _placement_note: 'Coordinates are inside arena_flat, within the reach declared in WORLD_REACH_M of a spell cast forward from the origin.' The locks, traps, breakables, keys and shrines the utility verbs act on exist only as a fixture placed for the probe; there is not one lock in helstrom-market, stormhold-street or any populated state."
+  ],
+  "next_step": "finish regress + consume2 + vfx, then write W1-14-r3.json/.md",
   "notes_for_successor": ""
 }

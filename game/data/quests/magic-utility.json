@@ -1,9 +1,9 @@
 {
   "schema": "elder-souls/quests@1",
   "id": "magic-utility-quests",
-  "corpus_item": "RI-MAG04 \u00a7A (the census Q1-Q12), \u00a7C (the eight solution shapes)",
+  "corpus_item": "RI-MAG04 §A (the census Q1-Q12), §C (the eight solution shapes)",
   "element_schema": "corpus/30-quests/quest.schema.json",
-  "note": "Each element of `quests` validates against corpus/30-quests/quest.schema.json. The wrapper exists because that schema is `additionalProperties: false` and HARNESS \u00a77 rule 5 requires a `schema` field on every game/data file; putting the schema id on the container rather than amending someone else's schema for a housekeeping field is the smaller change.",
+  "note": "Each element of `quests` validates against corpus/30-quests/quest.schema.json. The wrapper exists because that schema is `additionalProperties: false` and HARNESS §7 rule 5 requires a `schema` field on every game/data file; putting the schema id on the container rather than amending someone else's schema for a housekeeping field is the smaller change.",
   "generated_by": "tools/analysis/gen-magic-quests.mjs",
   "quests": [
     {
@@ -276,7 +276,7 @@
                 "source": "a ledger, a stone, or somebody who was there"
               }
             ],
-            "note": "Revealed by casting `hist_sight` or `speak_to_the_dead` where it happened. The knowledge that opens the magic route is itself obtained by magic (RI-MAG04 \u00a7E X2) \u2014 and `also_revealed_by` is the mundane door to the identical fact, because RI-MAG04 Q8 forbids a quest completable only by a caster."
+            "note": "Revealed by casting `hist_sight` or `speak_to_the_dead` where it happened. The knowledge that opens the magic route is itself obtained by magic (RI-MAG04 §E X2) — and `also_revealed_by` is the mundane door to the identical fact, because RI-MAG04 Q8 forbids a quest completable only by a caster."
           }
         ]
       },
@@ -425,7 +425,7 @@
           "fence-ashul": 8
         }
       },
-      "notes": "RI-MAG04 shape S1. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one \u2014 combat remains available. Authoring slug: mag_the_barred_window.",
+      "notes": "RI-MAG04 shape S1. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available. Authoring slug: mag_the_barred_window.",
       "branches": [
         {
           "id": "Q-MAG-03__fork",
@@ -587,8 +587,7 @@
     {
       "id": "Q-MAG-05",
       "title": "The Xanmeer Shelf",
-      "category": "main",
-      "act": 2,
+      "category": "side",
       "discovery": "given",
       "giver": {
         "npc_id": "rootkeeper-jeen",
@@ -699,7 +698,7 @@
                 "source": "a ledger, a stone, or somebody who was there"
               }
             ],
-            "note": "Revealed by casting `hist_sight` or `speak_to_the_dead` where it happened. The knowledge that opens the magic route is itself obtained by magic (RI-MAG04 \u00a7E X2) \u2014 and `also_revealed_by` is the mundane door to the identical fact, because RI-MAG04 Q8 forbids a quest completable only by a caster."
+            "note": "Revealed by casting `hist_sight` or `speak_to_the_dead` where it happened. The knowledge that opens the magic route is itself obtained by magic (RI-MAG04 §E X2) — and `also_revealed_by` is the mundane door to the identical fact, because RI-MAG04 Q8 forbids a quest completable only by a caster."
           }
         ]
       },
@@ -719,7 +718,7 @@
           "deep_kin": -6
         }
       },
-      "notes": "RI-MAG04 shape S2. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one \u2014 combat remains available. Authoring slug: mag_the_xanmeer_shelf.",
+      "notes": "RI-MAG04 shape S2. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available. Authoring slug: mag_the_xanmeer_shelf. [W1-19] Recategorised main->side and act:2 dropped. This quest carries no RI-QST06 act structure (stakes 8-9 inside a band whose bar is 3-4, no antagonist, no mandate) and four such quests inflated the Act II census to 9 against a 5+-1 bar. The mainline is Q-MAIN-01..32 in mainline-act1..5.json and mainline-backpath.json.",
       "branches": [
         {
           "id": "Q-MAG-05__fork",
@@ -1717,7 +1716,7 @@
           "the_imperial_assize": -6
         }
       },
-      "notes": "RI-MAG04 shape S4. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one \u2014 combat remains available. Authoring slug: mag_the_two_brothers.",
+      "notes": "RI-MAG04 shape S4. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available. Authoring slug: mag_the_two_brothers.",
       "branches": [
         {
           "id": "Q-MAG-12__fork",
@@ -1734,8 +1733,7 @@
     {
       "id": "Q-MAG-13",
       "title": "Who Paid Him",
-      "category": "main",
-      "act": 2,
+      "category": "side",
       "discovery": "given",
       "giver": {
         "npc_id": "assizer-corvo",
@@ -1845,7 +1843,7 @@
                 "source": "a ledger, a stone, or somebody who was there"
               }
             ],
-            "note": "Revealed by casting `hist_sight` or `speak_to_the_dead` where it happened. The knowledge that opens the magic route is itself obtained by magic (RI-MAG04 \u00a7E X2) \u2014 and `also_revealed_by` is the mundane door to the identical fact, because RI-MAG04 Q8 forbids a quest completable only by a caster."
+            "note": "Revealed by casting `hist_sight` or `speak_to_the_dead` where it happened. The knowledge that opens the magic route is itself obtained by magic (RI-MAG04 §E X2) — and `also_revealed_by` is the mundane door to the identical fact, because RI-MAG04 Q8 forbids a quest completable only by a caster."
           }
         ]
       },
@@ -1865,7 +1863,7 @@
           "the_wet_ledger": -7
         }
       },
-      "notes": "RI-MAG04 shape S5. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one \u2014 combat remains available. Authoring slug: mag_who_paid_him.",
+      "notes": "RI-MAG04 shape S5. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available. Authoring slug: mag_who_paid_him. [W1-19] Recategorised main->side and act:2 dropped. This quest carries no RI-QST06 act structure (stakes 8-9 inside a band whose bar is 3-4, no antagonist, no mandate) and four such quests inflated the Act II census to 9 against a 5+-1 bar. The mainline is Q-MAIN-01..32 in mainline-act1..5.json and mainline-backpath.json.",
       "branches": [
         {
           "id": "Q-MAG-13__fork",
@@ -2577,8 +2575,7 @@
     {
       "id": "Q-MAG-19",
       "title": "Ninety Seconds",
-      "category": "main",
-      "act": 2,
+      "category": "side",
       "discovery": "given",
       "giver": {
         "npc_id": "rootkeeper-jeen",
@@ -2688,7 +2685,7 @@
                 "source": "a ledger, a stone, or somebody who was there"
               }
             ],
-            "note": "Revealed by casting `hist_sight` or `speak_to_the_dead` where it happened. The knowledge that opens the magic route is itself obtained by magic (RI-MAG04 \u00a7E X2) \u2014 and `also_revealed_by` is the mundane door to the identical fact, because RI-MAG04 Q8 forbids a quest completable only by a caster."
+            "note": "Revealed by casting `hist_sight` or `speak_to_the_dead` where it happened. The knowledge that opens the magic route is itself obtained by magic (RI-MAG04 §E X2) — and `also_revealed_by` is the mundane door to the identical fact, because RI-MAG04 Q8 forbids a quest completable only by a caster."
           },
           {
             "id": "what_the_naming_costs",
@@ -2717,7 +2714,7 @@
           "rootkeeper-jeen": 8
         }
       },
-      "notes": "RI-MAG04 shape S7. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one \u2014 combat remains available. Authoring slug: mag_ninety_seconds.",
+      "notes": "RI-MAG04 shape S7. Magic is a ROUTE, never a REQUIREMENT: 2 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available. Authoring slug: mag_ninety_seconds. [W1-19] Recategorised main->side and act:2 dropped. This quest carries no RI-QST06 act structure (stakes 8-9 inside a band whose bar is 3-4, no antagonist, no mandate) and four such quests inflated the Act II census to 9 against a 5+-1 bar. The mainline is Q-MAIN-01..32 in mainline-act1..5.json and mainline-backpath.json.",
       "branches": [
         {
           "id": "Q-MAG-19__fork",
@@ -3024,7 +3021,7 @@
       },
       "task_kind": "moral_dilemma",
       "stakes": 4,
-      "directions": "Ineel keeps the pieces in the chest under her window on the Thornmarsh stilts. The smith who could match the work is in Stormhold, inside the wall, on the smiths\u2019 row.",
+      "directions": "Ineel keeps the pieces in the chest under her window on the Thornmarsh stilts. The smith who could match the work is in Stormhold, inside the wall, on the smiths’ row.",
       "journal": [
         {
           "index": 10,
@@ -3102,7 +3099,7 @@
           "widow-ineel": 8
         }
       },
-      "notes": "RI-MAG04 shape S8. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one \u2014 combat remains available. Authoring slug: mag_the_broken_heirloom.",
+      "notes": "RI-MAG04 shape S8. Magic is a ROUTE, never a REQUIREMENT: 1 non-magic resolution(s) exist, though this is one of the Q6 quests where magic is the only NON-VIOLENT one — combat remains available. Authoring slug: mag_the_broken_heirloom.",
       "branches": [
         {
           "id": "Q-MAG-22__fork",
@@ -3386,7 +3383,7 @@
                 "source": "a ledger, a stone, or somebody who was there"
               }
             ],
-            "note": "Revealed by casting `hist_sight` or `speak_to_the_dead` where it happened. The knowledge that opens the magic route is itself obtained by magic (RI-MAG04 \u00a7E X2) \u2014 and `also_revealed_by` is the mundane door to the identical fact, because RI-MAG04 Q8 forbids a quest completable only by a caster."
+            "note": "Revealed by casting `hist_sight` or `speak_to_the_dead` where it happened. The knowledge that opens the magic route is itself obtained by magic (RI-MAG04 §E X2) — and `also_revealed_by` is the mundane door to the identical fact, because RI-MAG04 Q8 forbids a quest completable only by a caster."
           }
         ]
       },
@@ -3866,6 +3863,6 @@
       ]
     }
   ],
-  "w1_15_r2_note": "W1-15 round 2. Added by the piece that owns the verb: RI-STL01 \u00a79 SNEAK-QUESTS and RI-QST05 both want sneak and steal to be ROUTES rather than flags, and until this round they could not be \u2014 the round-1 verdict recorded that a  resolution was \"a flag rather than a route, because you cannot sneak past the enemy it would route you around\". Each gate below is against a quantity the perception model now actually consumes.",
-  "w1_14_r3_note": "Four quests added by the W1-14 round-3 builder. Commit 54a4145 restored nine hand-authored sneak/steal routes to existing magic quests \u2014 which is right, and they are kept \u2014 but it took RI-MAG04's Q6 (quests where magic is the ONLY non-violent route) from inside its 4-10 band down to 2. These four restore the band by ADDITION rather than by deleting anybody's restored route: in each one the alternative to the spell is breaking something or killing something, which is what makes the spell the only way through that does not cost."
+  "w1_15_r2_note": "W1-15 round 2. Added by the piece that owns the verb: RI-STL01 §9 SNEAK-QUESTS and RI-QST05 both want sneak and steal to be ROUTES rather than flags, and until this round they could not be — the round-1 verdict recorded that a  resolution was \"a flag rather than a route, because you cannot sneak past the enemy it would route you around\". Each gate below is against a quantity the perception model now actually consumes.",
+  "w1_14_r3_note": "Four quests added by the W1-14 round-3 builder. Commit 54a4145 restored nine hand-authored sneak/steal routes to existing magic quests — which is right, and they are kept — but it took RI-MAG04's Q6 (quests where magic is the ONLY non-violent route) from inside its 4-10 band down to 2. These four restore the band by ADDITION rather than by deleting anybody's restored route: in each one the alternative to the spell is breaking something or killing something, which is what makes the spell the only way through that does not cost."
 }

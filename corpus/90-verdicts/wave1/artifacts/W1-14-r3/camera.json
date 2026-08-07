@@ -1,0 +1,293 @@
+{
+  "poses": [
+    {
+      "label": "rig_default",
+      "requested": null,
+      "threw": null,
+      "readback_immediate": null,
+      "readback_after_steps": {
+        "pos": [
+          0.42,
+          2.0066433072790524,
+          -3.967715615975531
+        ],
+        "fov": 50,
+        "mode": "free",
+        "override": false
+      },
+      "stepped": 24,
+      "projected_target_ndc": {
+        "ndc": [
+          -0.05060927666370264,
+          -0.08362926825809759
+        ],
+        "z": 10.010808163432005,
+        "in_front": true,
+        "on_screen": true
+      }
+    },
+    {
+      "label": "builder_pose",
+      "requested": {
+        "pos": [
+          4.4,
+          2.35,
+          -1.6
+        ],
+        "look": [
+          0.6,
+          1.35,
+          4.2
+        ],
+        "fov": 58
+      },
+      "threw": null,
+      "readback_immediate": {
+        "pos": [
+          4.4,
+          2.35,
+          -1.6
+        ],
+        "fov": 58
+      },
+      "readback_after_steps": {
+        "pos": [
+          4.4,
+          2.35,
+          -1.6
+        ],
+        "fov": 58,
+        "mode": "free",
+        "override": false
+      },
+      "stepped": 24,
+      "projected_target_ndc": {
+        "ndc": [
+          0.06588979577559642,
+          0.02044252617003422
+        ],
+        "z": 8.87133247847441,
+        "in_front": true,
+        "on_screen": true
+      }
+    },
+    {
+      "label": "far_high",
+      "requested": {
+        "pos": [
+          0,
+          40,
+          -40
+        ],
+        "look": [
+          0,
+          0,
+          6
+        ],
+        "fov": 20
+      },
+      "threw": null,
+      "readback_immediate": {
+        "pos": [
+          0,
+          40,
+          -40
+        ],
+        "fov": 20
+      },
+      "readback_after_steps": {
+        "pos": [
+          0,
+          40,
+          -40
+        ],
+        "fov": 20,
+        "mode": "free",
+        "override": false
+      },
+      "stepped": 24,
+      "projected_target_ndc": {
+        "ndc": [
+          0,
+          -0.02683550921880023
+        ],
+        "z": 60.30282390029154,
+        "in_front": true,
+        "on_screen": true
+      }
+    },
+    {
+      "label": "behind",
+      "requested": {
+        "pos": [
+          0,
+          1.6,
+          20
+        ],
+        "look": [
+          0,
+          1,
+          0
+        ],
+        "fov": 90
+      },
+      "threw": null,
+      "readback_immediate": {
+        "pos": [
+          0,
+          1.6,
+          20
+        ],
+        "fov": 90
+      },
+      "readback_after_steps": {
+        "pos": [
+          0,
+          1.6,
+          20
+        ],
+        "fov": 90,
+        "mode": "free",
+        "override": false
+      },
+      "stepped": 24,
+      "projected_target_ndc": {
+        "ndc": [
+          1.4760400965856243e-16,
+          0.027536827404796835
+        ],
+        "z": 14.011696154771338,
+        "in_front": true,
+        "on_screen": true
+      }
+    },
+    {
+      "label": "builder_pose_nostep",
+      "requested": {
+        "pos": [
+          4.4,
+          2.35,
+          -1.6
+        ],
+        "look": [
+          0.6,
+          1.35,
+          4.2
+        ],
+        "fov": 58
+      },
+      "threw": null,
+      "readback_immediate": {
+        "pos": [
+          4.4,
+          2.35,
+          -1.6
+        ],
+        "fov": 58
+      },
+      "readback_after_steps": {
+        "pos": [
+          4.4,
+          2.35,
+          -1.6
+        ],
+        "fov": 58,
+        "mode": "free",
+        "override": false
+      },
+      "stepped": 0,
+      "projected_target_ndc": {
+        "ndc": [
+          -0.6880618329190805,
+          0.07760401308256037
+        ],
+        "z": 7.713921008732023,
+        "in_front": true,
+        "on_screen": true
+      }
+    }
+  ],
+  "notes": [],
+  "cast_test": {
+    "pre": {
+      "pos": [
+        4.4,
+        2.35,
+        -1.6
+      ],
+      "fov": 58,
+      "override": false
+    },
+    "post": {
+      "pos": [
+        4.4,
+        2.35,
+        -1.6
+      ],
+      "fov": 58,
+      "override": false
+    },
+    "unchanged": true
+  },
+  "loadstate_test": {
+    "pos": [
+      0.42,
+      2.0066433072790524,
+      -3.967715615975531
+    ],
+    "override": false
+  },
+  "pixel_diffs": {
+    "rig_default vs builder_pose": {
+      "changed_px": 2010206,
+      "total_px": 2073600,
+      "pct": 96.9428
+    },
+    "rig_default vs far_high": {
+      "changed_px": 1992268,
+      "total_px": 2073600,
+      "pct": 96.0777
+    },
+    "rig_default vs behind": {
+      "changed_px": 2073573,
+      "total_px": 2073600,
+      "pct": 99.9987
+    },
+    "builder_pose vs far_high": {
+      "changed_px": 1953247,
+      "total_px": 2073600,
+      "pct": 94.1959
+    },
+    "builder_pose vs builder_pose_nostep": {
+      "changed_px": 0,
+      "total_px": 2073600,
+      "pct": 0
+    }
+  },
+  "files": {
+    "rig_default": {
+      "path": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-14-r3/camera/rig_default.png",
+      "bytes": 255236
+    },
+    "builder_pose": {
+      "path": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-14-r3/camera/builder_pose.png",
+      "bytes": 214879
+    },
+    "far_high": {
+      "path": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-14-r3/camera/far_high.png",
+      "bytes": 117571
+    },
+    "behind": {
+      "path": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-14-r3/camera/behind.png",
+      "bytes": 210503
+    },
+    "builder_pose_nostep": {
+      "path": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-14-r3/camera/builder_pose_nostep.png",
+      "bytes": 214879
+    },
+    "during_cast": {
+      "path": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-14-r3/camera/during_cast.png",
+      "bytes": 221398
+    }
+  }
+}

@@ -1,0 +1,625 @@
+{
+  "telekinesis_via_interact": {
+    "without": {
+      "with_spell": false,
+      "cast": null,
+      "prop_reach_m": 2.2,
+      "prompt": null,
+      "taken_by_interact": false,
+      "inventory": 1
+    },
+    "with": {
+      "with_spell": true,
+      "cast": {
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "effect_apply",
+          "cast_release"
+        ],
+        "refusals": []
+      },
+      "prop_reach_m": 27.750000000000004,
+      "prompt": null,
+      "taken_by_interact": true,
+      "inventory": 2
+    }
+  },
+  "ward_world_shape": "{\"locks\":{\"locked\":[\"cistern_grate\",\"drowned_road_sluice\",\"hall_side_door\",\"ledger_strongbox\",\"warded_ledger_door\"],\"unlocked\":[\"customs_loft_door\"]},\"traps\":{\"armed\":[\"ledger_threshold_ward\",\"sluice_pressure_plate\",\"strongbox_needle\"],\"disarmed\":[]},\"breakables\":{\"intact\":[\"cistern_wall_bricks\",\"ossuary_lid\",\"root_barrier\"],\"broken\":[]},\"items\":{\"marsh_shortsword\":44,\"ward_collar_picks\":61,\"ruined_censer\":4,\"lacquer_shield\":78},\"walls\":{\"walls\":0,\"ids\":[]},\"keys\":3,\"shrines\":[\"rootkeeper_shrine_thornmarsh\",\"chapel_gideon\"],\"markers\":[],\"summons\":[],\"reach_m\":27.75,\"jump_apex_mult\":1,\"bound_we",
+  "world_verbs": [
+    {
+      "effect": "open_lock",
+      "cast_from": [
+        0,
+        6
+      ],
+      "cast": {
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "lock_opened",
+          "world_flag",
+          "effect_apply",
+          "spell_impact"
+        ],
+        "refusals": []
+      },
+      "doors_unlocked": [
+        "cistern_grate",
+        "drowned_road_sluice",
+        "hall_side_door",
+        "ledger_strongbox",
+        "warded_ledger_door"
+      ],
+      "shortcuts_opened": [],
+      "quest_flags_added": [
+        "lock:warded_ledger_door:open",
+        "lock:ledger_strongbox:open",
+        "lock:cistern_grate:open",
+        "lock:hall_side_door:open",
+        "lock:drowned_road_sluice:open"
+      ],
+      "magic_world": {
+        "locks_unlocked": [
+          "cistern_grate",
+          "customs_loft_door",
+          "drowned_road_sluice",
+          "hall_side_door",
+          "ledger_strongbox",
+          "warded_ledger_door"
+        ],
+        "traps_disarmed": [],
+        "breakables_broken": [],
+        "markers": 0
+      }
+    },
+    {
+      "effect": "lock_lock",
+      "cast_from": [
+        0,
+        6
+      ],
+      "cast": {
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "lock_closed",
+          "world_flag",
+          "effect_apply",
+          "spell_impact"
+        ],
+        "refusals": []
+      },
+      "doors_unlocked": [],
+      "shortcuts_opened": [],
+      "quest_flags_added": [
+        "lock:customs_loft_door:sealed"
+      ],
+      "magic_world": {
+        "locks_unlocked": [],
+        "traps_disarmed": [],
+        "breakables_broken": [],
+        "markers": 0
+      }
+    },
+    {
+      "effect": "ward_trap",
+      "cast_from": [
+        0,
+        6
+      ],
+      "cast": {
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "sap_ward",
+          "world_flag",
+          "needle",
+          "collapse",
+          "effect_apply",
+          "spell_impact"
+        ],
+        "refusals": []
+      },
+      "doors_unlocked": [],
+      "shortcuts_opened": [],
+      "quest_flags_added": [
+        "trap:ledger_threshold_ward:disarmed",
+        "trap:strongbox_needle:disarmed",
+        "trap:sluice_pressure_plate:disarmed"
+      ],
+      "magic_world": {
+        "locks_unlocked": [
+          "customs_loft_door"
+        ],
+        "traps_disarmed": [
+          "ledger_threshold_ward",
+          "sluice_pressure_plate",
+          "strongbox_needle"
+        ],
+        "breakables_broken": [],
+        "markers": 0
+      }
+    },
+    {
+      "effect": "shatter",
+      "cast_from": [
+        -2,
+        5
+      ],
+      "cast": {
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "object_shattered",
+          "world_flag",
+          "effect_apply",
+          "spell_impact"
+        ],
+        "refusals": []
+      },
+      "doors_unlocked": [],
+      "shortcuts_opened": [
+        "cistern_shortcut",
+        "root_gallery"
+      ],
+      "quest_flags_added": [
+        "shatter:cistern_wall_bricks",
+        "shatter:root_barrier"
+      ],
+      "magic_world": {
+        "locks_unlocked": [
+          "customs_loft_door"
+        ],
+        "traps_disarmed": [],
+        "breakables_broken": [
+          "cistern_wall_bricks",
+          "root_barrier"
+        ],
+        "markers": 0
+      }
+    },
+    {
+      "effect": "detect_key",
+      "cast_from": [
+        0,
+        0
+      ],
+      "cast": {
+        "refused": "range"
+      },
+      "doors_unlocked": [],
+      "shortcuts_opened": [],
+      "quest_flags_added": [],
+      "magic_world": {
+        "locks_unlocked": [
+          "customs_loft_door"
+        ],
+        "traps_disarmed": [],
+        "breakables_broken": [],
+        "markers": 0
+      }
+    }
+  ],
+  "register_consumers_note": "grep game/src: doorsUnlocked and shortcutsOpened are written only by sim/magic/apply.js and read only by harness/api.js and save/state.js",
+  "control_verbs": [
+    {
+      "effect": "control",
+      "cast": {
+        "control": true,
+        "delivered": null
+      },
+      "moved_m": null,
+      "final_dist_from_player_m": null,
+      "in_combat": true,
+      "seq": [
+        {
+          "f": 450,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        },
+        {
+          "f": 500,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        },
+        {
+          "f": 550,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        },
+        {
+          "f": 600,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        }
+      ],
+      "yielded": false
+    },
+    {
+      "effect": "calm_beast",
+      "cast": {
+        "refused": "range"
+      },
+      "moved_m": null,
+      "final_dist_from_player_m": null,
+      "in_combat": true,
+      "seq": [
+        {
+          "f": 450,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        },
+        {
+          "f": 500,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        },
+        {
+          "f": 550,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        },
+        {
+          "f": 600,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        }
+      ],
+      "yielded": false
+    },
+    {
+      "effect": "demoralise",
+      "cast": {
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "fight_ended",
+          "world_flag",
+          "effect_apply",
+          "spell_impact"
+        ],
+        "refusals": []
+      },
+      "moved_m": null,
+      "final_dist_from_player_m": null,
+      "in_combat": false,
+      "seq": [
+        {
+          "f": 450,
+          "state": "YIELDED",
+          "pos": null,
+          "yielded": true
+        },
+        {
+          "f": 500,
+          "state": "YIELDED",
+          "pos": null,
+          "yielded": true
+        },
+        {
+          "f": 550,
+          "state": "YIELDED",
+          "pos": null,
+          "yielded": true
+        },
+        {
+          "f": 600,
+          "state": "YIELDED",
+          "pos": null,
+          "yielded": true
+        }
+      ],
+      "yielded": true
+    },
+    {
+      "effect": "frenzy",
+      "cast": {
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "effect_apply",
+          "spell_impact"
+        ],
+        "refusals": []
+      },
+      "moved_m": null,
+      "final_dist_from_player_m": null,
+      "in_combat": true,
+      "seq": [
+        {
+          "f": 450,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        },
+        {
+          "f": 500,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        },
+        {
+          "f": 550,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        },
+        {
+          "f": 600,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        }
+      ],
+      "yielded": false
+    },
+    {
+      "effect": "charm",
+      "cast": {
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "fight_ended",
+          "world_flag",
+          "effect_apply",
+          "spell_impact"
+        ],
+        "refusals": []
+      },
+      "moved_m": null,
+      "final_dist_from_player_m": null,
+      "in_combat": false,
+      "seq": [
+        {
+          "f": 450,
+          "state": "YIELDED",
+          "pos": null,
+          "yielded": true
+        },
+        {
+          "f": 500,
+          "state": "YIELDED",
+          "pos": null,
+          "yielded": true
+        },
+        {
+          "f": 550,
+          "state": "YIELDED",
+          "pos": null,
+          "yielded": true
+        },
+        {
+          "f": 600,
+          "state": "YIELDED",
+          "pos": null,
+          "yielded": true
+        }
+      ],
+      "yielded": true
+    },
+    {
+      "effect": "paralyse",
+      "cast": {
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "status_buildup",
+          "effect_apply",
+          "status_proc",
+          "spell_impact"
+        ],
+        "refusals": []
+      },
+      "moved_m": null,
+      "final_dist_from_player_m": null,
+      "in_combat": true,
+      "seq": [
+        {
+          "f": 450,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        },
+        {
+          "f": 500,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        },
+        {
+          "f": 550,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        },
+        {
+          "f": 600,
+          "state": "REPOSITION",
+          "pos": null,
+          "yielded": false
+        }
+      ],
+      "yielded": false
+    }
+  ],
+  "sap_taint": {
+    "band_after_reset": null,
+    "band_after_20_rests": {
+      "band": 4,
+      "rests": 20,
+      "warded": 0,
+      "wardUsesLeft": 3,
+      "immune": false
+    },
+    "disposition_at_band_0": [
+      {
+        "id": "helstrom-draught-seller",
+        "disposition": 46,
+        "terms": {
+          "race": -14,
+          "upbringing": 10,
+          "total": -4
+        }
+      },
+      {
+        "id": "helstrom-net-mender",
+        "disposition": 38,
+        "terms": {
+          "race": 0,
+          "upbringing": -4,
+          "total": -4
+        }
+      },
+      {
+        "id": "helstrom-reed-seller",
+        "disposition": 36,
+        "terms": {
+          "race": 0,
+          "upbringing": -4,
+          "total": -4
+        }
+      },
+      {
+        "id": "helstrom-salt-factor",
+        "disposition": 45,
+        "terms": {
+          "race": 0,
+          "upbringing": 0,
+          "total": 0
+        }
+      }
+    ],
+    "disposition_at_band_n": [
+      {
+        "id": "helstrom-draught-seller",
+        "disposition": 46,
+        "terms": {
+          "race": -14,
+          "upbringing": 10,
+          "total": -4
+        }
+      },
+      {
+        "id": "helstrom-net-mender",
+        "disposition": 38,
+        "terms": {
+          "race": 0,
+          "upbringing": -4,
+          "total": -4
+        }
+      },
+      {
+        "id": "helstrom-reed-seller",
+        "disposition": 36,
+        "terms": {
+          "race": 0,
+          "upbringing": -4,
+          "total": -4
+        }
+      },
+      {
+        "id": "helstrom-salt-factor",
+        "disposition": 45,
+        "terms": {
+          "race": 0,
+          "upbringing": 0,
+          "total": 0
+        }
+      }
+    ],
+    "npc_disposition_moved": false,
+    "quest_resolution_disposition_gates_found": [
+      {
+        "quest": "Q-DOCK-01",
+        "res": "res_book",
+        "req": {
+          "skills": {
+            "speechcraft": 30
+          },
+          "disposition": 40,
+          "requires_knowing": [],
+          "method": "persuade",
+          "journal_index": 90,
+          "violence_required": false
+        }
+      },
+      {
+        "quest": "Q-LEDG-01",
+        "res": "res_expose",
+        "req": {
+          "disposition": 45,
+          "knowledge": [
+            "topic_ledger_assembly_procedure"
+          ],
+          "requires_knowing": [
+            "rev_hand"
+          ],
+          "method": "confess",
+          "journal_index": 92,
+          "violence_required": false
+        }
+      },
+      {
+        "quest": "Q-MAG-01",
+        "res": "mag_the_warded_ledger__bribe",
+        "req": {
+          "gold": 400,
+          "disposition": 45,
+          "requires_knowing": [],
+          "method": "bribe",
+          "journal_index": 91,
+          "violence_required": false
+        }
+      },
+      {
+        "quest": "Q-MAG-02",
+        "res": "mag_the_seized_hull__persuade",
+        "req": {
+          "disposition": 60,
+          "requires_knowing": [],
+          "method": "persuade",
+          "journal_index": 91,
+          "violence_required": false
+        }
+      },
+      {
+        "quest": "Q-MAG-04",
+        "res": "mag_the_drowned_wreck__persuade",
+        "req": {
+          "disposition": 55,
+          "requires_knowing": [],
+          "method": "persuade",
+          "journal_index": 92,
+          "violence_required": false
+        }
+      }
+    ],
+    "note": "dialogue/disposition.js reads player.sapTaintBand; grep shows nothing in game/src writes that field."
+  }
+}

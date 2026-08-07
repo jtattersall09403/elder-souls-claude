@@ -1,0 +1,198 @@
+{
+ "generated": "2026-08-07T07:41:28.344Z",
+ "instrument": "tools/weapons/rvs-matrix.mjs — written by the W1-10 round-3 critic under TOOL-LOOP rule 1",
+ "item": "RI-WPN07 M1/M2 (RVS)",
+ "measurable": false,
+ "matrix_rows_available": 14,
+ "matrix_rows_required": 14,
+ "matrix_cols_available": 2,
+ "matrix_cols_required": 10,
+ "archetypes_present": [
+  "INFANTRY",
+  "CASTER"
+ ],
+ "archetypes_missing": [
+  "TURTLE",
+  "DUELIST",
+  "POISE_MONSTER",
+  "RANGED",
+  "AMBUSHER",
+  "SWARM",
+  "ELITE",
+  "GANK_DUO"
+ ],
+ "archetype_statblocks": {
+  "BEAST": [
+   {
+    "id": "beast_slitherfang",
+    "ai": "scripted",
+    "attacks": 2
+   }
+  ],
+  "DUMMY": [
+   {
+    "id": "cam_boss_great",
+    "ai": "none",
+    "attacks": 0
+   },
+   {
+    "id": "cam_boss_mid",
+    "ai": "none",
+    "attacks": 0
+   },
+   {
+    "id": "cam_elite",
+    "ai": "none",
+    "attacks": 0
+   },
+   {
+    "id": "cam_levy",
+    "ai": "none",
+    "attacks": 0
+   },
+   {
+    "id": "cam_rat",
+    "ai": "none",
+    "attacks": 0
+   },
+   {
+    "id": "dummy_passive",
+    "ai": "none",
+    "attacks": 0
+   },
+   {
+    "id": "mat_chitin",
+    "ai": "none",
+    "attacks": 0
+   },
+   {
+    "id": "mat_flesh",
+    "ai": "none",
+    "attacks": 0
+   },
+   {
+    "id": "mat_metal",
+    "ai": "none",
+    "attacks": 0
+   },
+   {
+    "id": "mat_plant",
+    "ai": "none",
+    "attacks": 0
+   },
+   {
+    "id": "mat_shield",
+    "ai": "none",
+    "attacks": 0
+   },
+   {
+    "id": "mat_stone",
+    "ai": "none",
+    "attacks": 0
+   },
+   {
+    "id": "mat_water",
+    "ai": "none",
+    "attacks": 0
+   },
+   {
+    "id": "mat_wood",
+    "ai": "none",
+    "attacks": 0
+   }
+  ],
+  "INFANTRY": [
+   {
+    "id": "champion_hist_marked",
+    "ai": "scripted",
+    "attacks": 4
+   },
+   {
+    "id": "drowned_greater",
+    "ai": "none",
+    "attacks": 4
+   },
+   {
+    "id": "drowned_lesser",
+    "ai": "none",
+    "attacks": 4
+   },
+   {
+    "id": "guard_legion",
+    "ai": "hold_ground",
+    "attacks": 4
+   },
+   {
+    "id": "inf_trash",
+    "ai": "scripted",
+    "attacks": 4
+   }
+  ],
+  "CASTER": [
+   {
+    "id": "cst_sap_speaker",
+    "ai": "scripted",
+    "attacks": 2
+   }
+  ],
+  "FIXTURE": [
+   {
+    "id": "probe_pulse",
+    "ai": "scripted",
+    "attacks": 1
+   }
+  ]
+ },
+ "policy_file_present": false,
+ "harness_runPolicy_present": false,
+ "scenarios_present": [],
+ "melee_class_baselines": {
+  "AXE": "axe_bog_cleaver",
+  "CGS": "cgs_drowned_reaper",
+  "CSW": "csw_drowned_kris",
+  "DGR": "dgr_bone_awl",
+  "FST": "fst_hist_talon",
+  "GHM": "ghm_bog_maul",
+  "GSW": "gsw_drowned_greatblade",
+  "HLB": "hlb_fen_hook",
+  "MCE": "mce_bog_iron_mace",
+  "SPR": "spr_drowned_harpoon",
+  "SSW": "ssw_barsaebic_warblade",
+  "TSW": "tsw_bog_rapier",
+  "UGS": "ugs_drowned_slab",
+  "WHP": "whp_hide_lash"
+ },
+ "blockers": [
+  {
+   "what": "8 of the 10 RI-AI05 archetypes have no statblock in game/data/combat/enemies/",
+   "missing": [
+    "TURTLE",
+    "DUELIST",
+    "POISE_MONSTER",
+    "RANGED",
+    "AMBUSHER",
+    "SWARM",
+    "ELITE",
+    "GANK_DUO"
+   ],
+   "owner": "W1-12 (enemy roster) / RI-AI05",
+   "consequence": "the advantage matrix can have at most 2 of its 10 columns; SPAN >= 6 and DOM = DUD = 0 are not decidable"
+  },
+  {
+   "what": "corpus/80-methods/policy-competent.json does not exist",
+   "owner": "RI-WPN07 §A / corpus",
+   "consequence": "the play policy M1 fixes is undefined, so every cell would measure the operator"
+  },
+  {
+   "what": "window.__HARNESS.runPolicy(name, opts) is not implemented in game/src/harness/api.js",
+   "owner": "harness (HARNESS.md)",
+   "consequence": "the same behaviour cannot be applied to 14 different weapons; a fixed input list measures the script"
+  },
+  {
+   "what": "no wpn-arena-<archetype> scenarios in game/data/states/",
+   "owner": "W1-12 / harness",
+   "consequence": "no fixture places an archetype at its region-entry statline"
+  }
+ ],
+ "ruling": "RVS is UNMEASURABLE and the cause is the corpus, not this build. TOOL-LOOP rule 1: record as corpus_debt against the named owners, not as a zero against W1-10."
+}

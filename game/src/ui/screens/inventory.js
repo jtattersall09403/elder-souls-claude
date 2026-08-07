@@ -17,7 +17,7 @@
 'use strict';
 
 import { C, Ca, boneRule, bonePip, panel, idHash } from '../theme.js';
-import { screen, column, tagColumn, row, extent, hint, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
+import { screen, column, tagColumn, row, extent, hint, ink, inkDim, accent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
 import { drawText, faceOf, measure, wrap, writeLines, ellipsise } from '../type.js';
 
 export const SORTS = [
@@ -55,8 +55,8 @@ export function drawInventory(S, m) {
   }, (c, r) => {
     boneRule(c, r[0], r[1] + 4 * s, r[2], s, 55);
     const f = faceOf('ink'), sz = 13 * s;
-    drawText(c, 'sorted by', r[0] + 2 * s, r[1] + 22 * s, f, sz, C('ink_soft'));
-    drawText(c, SORTS[m.sortIdx].label, r[0] + 2 * s, r[1] + 38 * s, faceOf('bone'), 14 * s, C('ink'));
+    drawText(c, 'sorted by', r[0] + 2 * s, r[1] + 22 * s, f, sz, inkDim());
+    drawText(c, SORTS[m.sortIdx].label, r[0] + 2 * s, r[1] + 38 * s, faceOf('bone'), 14 * s, ink());
   });
   // C10: gold is a number, never an item with a weight.
   S.el({
@@ -64,9 +64,9 @@ export function drawInventory(S, m) {
     rect: [ix, iy + ih - 34 * s, colW, 30 * s], text: `${m.gold} gold`, opacity: alpha,
   }, (c, r) => {
     boneRule(c, r[0], r[1], r[2], s, 71);
-    drawText(c, String(m.gold), r[0] + 2 * s, r[1] + 24 * s, faceOf('bone'), 19 * s, C('ink'));
+    drawText(c, String(m.gold), r[0] + 2 * s, r[1] + 24 * s, faceOf('bone'), 19 * s, ink());
     drawText(c, 'gold', r[0] + 4 * s + measure(String(m.gold), faceOf('bone'), 19 * s), r[1] + 24 * s,
-      faceOf('ink'), 14 * s, C('ink_soft'));
+      faceOf('ink'), 14 * s, inkDim());
   });
 
   // ---- centre: the list --------------------------------------------------------------------
@@ -119,7 +119,7 @@ export function drawContainer(S, m) {
       id: `container.${side.id}.head`, kind: 'panel_header',
       rect: [side.x, iy, half, 28 * s], text: side.title, opacity: alpha, focused: on,
     }, (c, r) => {
-      drawText(c, side.title, r[0], r[1] + 20 * s, faceOf('bone'), 16 * s, on ? C('ink') : C('ink_soft'));
+      drawText(c, side.title, r[0], r[1] + 20 * s, faceOf('bone'), 16 * s, on ? ink() : inkDim());
       boneRule(c, r[0], r[1] + 26 * s, r[2], s, idHash(side.id));
     });
     const win = windowOf(side.rows.length, side.idx, ROWS);
@@ -154,17 +154,17 @@ function encumbrance(S, x, y, w, m, alpha) {
   }, (c, r) => {
     const f = faceOf('bone'), sz = 17 * s;
     const t = `${fmt(m.load)} / ${fmt(m.loadMax)}`;
-    drawText(c, t, r[0] + 2 * s, r[1] + 18 * s, f, sz, C('ink'));
+    drawText(c, t, r[0] + 2 * s, r[1] + 18 * s, f, sz, ink());
     const by = r[1] + 28 * s, bh = 11 * s;
     c.fillStyle = C('parchment'); c.fillRect(r[0], by, r[2], bh);
     const frac = Math.max(0, Math.min(1, m.loadMax ? m.load / m.loadMax : 0));
     c.fillStyle = C(frac > 1 - 1e-9 ? 'blood' : 'reed_dark');
     c.fillRect(r[0], by, r[2] * frac, bh);
-    for (const b of [0.5, 0.8]) {
+    for (const b of [0.60, 0.85]) {          // the burden tier boundaries, cut into the bone
       c.beginPath(); c.moveTo(r[0] + r[2] * b, by); c.lineTo(r[0] + r[2] * b, by + bh);
       c.strokeStyle = Ca('bone_dim', 0.9); c.lineWidth = 1.6 * s; c.stroke();
     }
-    drawText(c, m.burdenTier, r[0] + 2 * s, r[1] + 55 * s, faceOf('ink'), 13 * s, C('ink_soft'));
+    drawText(c, m.burdenTier, r[0] + 2 * s, r[1] + 55 * s, faceOf('ink'), 13 * s, inkDim());
   });
 }
 
@@ -175,7 +175,7 @@ function listHeader(S, id, x, y, w, alpha) {
     const cols = [['', 330], ['', 46], ['weight', 100], ['gold', 110], ['for weight', 110]];
     let cx = r[0] + 8 * s;
     for (const [t, cw] of cols) {
-      if (t) drawText(c, t, cx + cw * s - 10 * s - measure(t, f, sz), r[1] + 20 * s, f, sz, C('ink_soft'));
+      if (t) drawText(c, t, cx + cw * s - 10 * s - measure(t, f, sz), r[1] + 20 * s, f, sz, inkDim());
       cx += cw * s;
     }
     boneRule(c, r[0], r[1] + 26 * s, r[2], s, 33);
@@ -191,12 +191,12 @@ function detail(S, id, x, y, w, h, it, alpha, focused) {
     meta: it ? { item_id: it.id, weight: it.weight, value_gold: it.value_gold, condition: it.condition } : null,
   }, (c, r) => {
     if (!it) {
-      drawText(c, 'nothing selected', r[0], r[1] + 24 * s, faceOf('ink'), 15 * s, C('ink_soft'));
+      drawText(c, 'nothing selected', r[0], r[1] + 24 * s, faceOf('ink'), 15 * s, inkDim());
       return;
     }
     const f = faceOf('ink'), fb = faceOf('bone');
     let yy = r[1] + 26 * s;
-    drawText(c, it.name, r[0], yy, faceOf('bone'), 20 * s, C('ink'));
+    drawText(c, it.name, r[0], yy, faceOf('bone'), 20 * s, ink());
     yy += 14 * s;
     boneRule(c, r[0], yy, r[2], s, 909);
     yy += 26 * s;
@@ -207,17 +207,17 @@ function detail(S, id, x, y, w, h, it, alpha, focused) {
     if (it.condition !== undefined && it.condition !== null) facts.push(['condition', pct(it.condition)]);
     if (it.stolen) facts.push(['', 'stolen']);
     for (const [k, v] of facts) {
-      if (k) drawText(c, k, r[0], yy, f, 13 * s, C('ink_soft'));
-      drawText(c, v, r[0] + 96 * s, yy, fb, 15 * s, it.stolen && !k ? C('blood') : C('ink'));
+      if (k) drawText(c, k, r[0], yy, f, 13 * s, inkDim());
+      drawText(c, v, r[0] + 96 * s, yy, fb, 15 * s, it.stolen && !k ? accent() : ink());
       yy += 22 * s;
     }
     yy += 10 * s;
     const size = 16 * s, lh = size * 1.48;
     const lines = wrap(it.description, f, size, r[2]);
-    writeLines(c, lines, r[0], yy, 'ink', size, lh, C('ink'));
+    writeLines(c, lines, r[0], yy, 'ink', size, lh, ink());
     yy += lines.length * lh + 16 * s;
-    if (it.readable) drawText(c, 'It can be read.', r[0], yy, f, 14 * s, C('ink_soft'));
-    if (it.equipped) drawText(c, 'In hand.', r[0], yy + 20 * s, f, 14 * s, C('ink_soft'));
+    if (it.readable) drawText(c, 'It can be read.', r[0], yy, f, 14 * s, inkDim());
+    if (it.equipped) drawText(c, 'In hand.', r[0], yy + 20 * s, f, 14 * s, inkDim());
   });
 }
 

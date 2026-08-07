@@ -1,0 +1,287 @@
+#!/usr/bin/env node
+// marker-scan.mjs — RI-UIX02 §D, detector 2 of three.
+//
+// Named by RI-UIX02's Comparison method step 1 and by its §D, and it did not exist. Written by
+// the W1-21 builder; declared in orchestration/status/W1-21.json. It is the cheapest of the
+// three S8 detectors and the item asks for it to be a BLOCKING CI GATE, "in the same class as
+// `node tools/corpus-index.mjs --check`", so it takes no browser, runs in under a second, and
+// exits 1 on any hit.
+//
+// WHAT IT IS FOR. S8 is "the ruling most likely to be violated by accident, and the least likely
+// to be violated visibly". Nobody adds a quest arrow on purpose; what happens is that a quest
+// record acquires a coordinate "because the code needed somewhere to put the destination", and
+// six weeks later something reads it. §B is deliberately strict at the DATA layer for exactly
+// that reason: the id-only rule costs a lookup and removes the mount point entirely.
+//
+// It scans for the five forbidden shapes of §B, by key NAME (F1, F4), by VALUE SHAPE (F2, F3),
+// and by prose (F5). A coordinate hidden under an innocent key is caught by F2/F3; a coordinate
+// interpolated into a sentence is caught by F5.
+//
+// SELF-TEST. `--self-test` runs every rule against a fixture that violates it and against one
+// that does not, and fails if any rule cannot fire. A detector that cannot go red is worse than
+// no detector (TOOL-LOOP rule 3.2), and this one's whole value is that it says no.
+import fs from 'node:fs';
+import path from 'node:path';
+import { parseArgs, wantsHelp, usage, log, REPO_ROOT, writeJson } from '../lib/cli.mjs';
+
+const USAGE = `
+marker-scan.mjs — RI-UIX02 §B/§D. The data-layer S8 detector.
+
+USAGE
+  node tools/analysis/marker-scan.mjs [dir ...] [--json] [--out <file>] [--self-test]
+
+Default scan root: game/data  (K1 is '0 hits on F1-F5 across all of game/data/')
+(RI-UIX02 §B scopes F1-F5 to quest, dialogue and journal data. Pass explicit
+directories — e.g. game/data — to widen it; K6 asks a verdict to record what was scanned.)
+
+RULES (RI-UIX02 §B)
+  F1  key matches /^(marker|waypoint|pin|map_pin|objective_pos|target_pos|hud_.*)$/i
+  F2  numeric pair/triple under a key matching /(pos|coord|location|xyz|latlon)/i
+  F3  a bare x/y/z sibling triple inside a quest stage
+  F4  compass_bearing | distance_m | direction_deg on a quest stage
+  F5  a journal/dialogue STRING containing a coordinate-shaped substring
+
+EXIT
+  0  no hits
+  1  one or more hits  (this is the gate)
+  2  bad usage / nothing scanned
+`;
+
+const F1 = /^(marker|waypoint|pin|map_pin|objective_pos|target_pos|hud_.*)$/i;
+
+/**
+ * F2's key test, and the one place this tool departs from the letter of RI-UIX02 §B. DECLARED,
+ * because a silent departure in a gate is worse than the gate not existing.
+ *
+ * §B writes the key regex as `/(pos|coord|location|xyz|latlon)/i` — an unanchored substring
+ * match. Run verbatim against the shipped tree it returns **300 hits, all of them the word
+ * `disposition`**, which contains "pos" and is a Morrowind reaction value in the range 0-100.
+ * A gate that cries wolf 300 times on its first run is a gate somebody switches off, which is
+ * precisely how S8 gets violated by accident later.
+ *
+ * So the key is matched as a WORD rather than as a substring: `pos`, `position`, `coord`,
+ * `location`, `loc`, `xyz`, `latlon`, at a `_`, `.` or string boundary. Nothing the item was
+ * aiming at escapes it — `target_pos`, `destination_coord`, `stage.position`, `poi_location`
+ * and `xyz` all still fire, and the self-test asserts they do. `disposition`, `composition`,
+ * `exposure` and `allocation` no longer do.
+ */
+const F2_KEY = /(^|[_.\-])(pos|position|positions|coord|coords|coordinate|coordinates|location|locations|loc|xyz|latlon)([_.\-]|$)/i;
+const F4_KEYS = new Set(['compass_bearing', 'distance_m', 'direction_deg']);
+const F5_RE = /\(?\s*-?[0-9]{3,5}\s*,\s*-?[0-9]{3,5}\s*\)?/;
+
+/**
+ * F2's exemption, and it is the one judgement call in this file, stated so it can be disagreed
+ * with rather than discovered.
+ *
+ * `game/data/world/**` MUST hold coordinates: "those ids resolve to positions in
+ * `game/data/world/` — that is legitimate and necessary, because the world must place things."
+ * §B forbids a coordinate ON A QUEST RECORD, which is why the default roots are quests,
+ * dialogue and books. When a wider root is passed, world/, camera/, combat/ and stealth/ files
+ * are still scanned for F1 and F5 (a `target_pos` in a world file is still a mount point, and
+ * prose is prose) but not for F2/F3, whose whole content is "this is a coordinate".
+ */
+const PLACEMENT_ROOTS = ['world/', 'camera/', 'combat/', 'stealth/', 'crime/', 'magic/', 'states/', 'input/'];
+
+function isPlacement(rel) { return PLACEMENT_ROOTS.some((p) => rel.startsWith(p)); }
+
+function numericTuple(v) {
+  return Array.isArray(v) && (v.length === 2 || v.length === 3) && v.every((n) => typeof n === 'number');
+}
+
+/** True when `p` is inside a quest STAGE (F3/F4 are scoped to stages). */
+function inStage(pathParts) {
+  for (let i = 0; i < pathParts.length; i++) {
+    const k = String(pathParts[i]);
+    if (k === 'stages' || k === 'stage' || k === 'journal' || k === 'steps') return true;
+  }
+  return false;
+}
+
+export function scanDoc(doc, rel, opts = {}) {
+  const hits = [];
+  const placement = isPlacement(rel);
+  const walk = (node, parts) => {
+    if (node === null || node === undefined) return;
+    if (typeof node === 'string') {
+      // F5 is a rule about the JOURNAL and about dialogue — "the journal is prose (RI-DLG05);
+      // 'go to (2752, 425)' is a marker in a sentence". A `note` field in a camera fixture
+      // explaining a probe is not prose the player reads, so the placement roots are exempt
+      // from F5 for the same reason they are exempt from F2.
+      if (!placement && F5_RE.test(node) && looksLikeProse(parts)) {
+        hits.push({ rule: 'F5', file: rel, jsonpath: parts.join('.'), key: parts[parts.length - 1], sample: node.slice(0, 140) });
+      }
+      return;
+    }
+    if (Array.isArray(node)) { node.forEach((v, i) => walk(v, parts.concat(i))); return; }
+    if (typeof node !== 'object') return;
+    const keys = Object.keys(node);
+    for (const k of keys) {
+      const v = node[k];
+      const here = parts.concat(k);
+      if (F1.test(k)) hits.push({ rule: 'F1', file: rel, jsonpath: here.join('.'), key: k, sample: JSON.stringify(v).slice(0, 120) });
+      if (!placement) {
+        if (F2_KEY.test(k) && numericTuple(v)) {
+          hits.push({ rule: 'F2', file: rel, jsonpath: here.join('.'), key: k, sample: JSON.stringify(v) });
+        }
+        if (F2_KEY.test(k) && v && typeof v === 'object' && !Array.isArray(v)
+            && ['x', 'y', 'z'].filter((a) => typeof v[a] === 'number').length >= 2) {
+          hits.push({ rule: 'F2', file: rel, jsonpath: here.join('.'), key: k, sample: JSON.stringify(v).slice(0, 120) });
+        }
+      }
+      if (F4_KEYS.has(k) && inStage(parts)) {
+        hits.push({ rule: 'F4', file: rel, jsonpath: here.join('.'), key: k, sample: JSON.stringify(v) });
+      }
+      walk(v, here);
+    }
+    if (!placement && inStage(parts)) {
+      const bare = ['x', 'y', 'z'].filter((a) => typeof node[a] === 'number');
+      if (bare.length >= 3) {
+        hits.push({ rule: 'F3', file: rel, jsonpath: parts.join('.'), key: bare.join(''), sample: JSON.stringify({ x: node.x, y: node.y, z: node.z }) });
+      }
+    }
+  };
+  walk(doc, []);
+  return hits;
+}
+
+/**
+ * F5 is scoped to prose, not to every string in the file. A `sha256` or a version string can
+ * satisfy the coordinate regex and is not a marker in a sentence. The test is the KEY the string
+ * hangs off: `text`, `line`, `description`, `greeting`, `answer`, `prose`, `note`, `title`.
+ */
+const PROSE_KEYS = new Set(['text', 'line', 'lines', 'description', 'greeting', 'answer', 'prose',
+  'note', 'title', 'summary', 'body', 'said', 'reply', 'aside', 'topic_text', 'entry']);
+function looksLikeProse(parts) {
+  for (let i = parts.length - 1; i >= 0; i--) {
+    const k = parts[i];
+    if (typeof k === 'number') continue;
+    return PROSE_KEYS.has(String(k));
+  }
+  return false;
+}
+
+function walkFiles(dir, out) {
+  if (!fs.existsSync(dir)) return out;
+  for (const f of fs.readdirSync(dir)) {
+    const p = path.join(dir, f);
+    const st = fs.statSync(p);
+    if (st.isDirectory()) walkFiles(p, out);
+    else if (f.endsWith('.json')) out.push(p);
+  }
+  return out;
+}
+
+// ---- self-test ---------------------------------------------------------------------------
+
+function selfTest() {
+  const cases = [
+    ['F1', { stages: [{ id: 's1', target_pos: [2752.5, 0, 425.0] }] }, true],
+    ['F1', { stages: [{ id: 's1', poi_id: 'lilmoth-gate' }] }, false],
+    ['F2', { stages: [{ id: 's1', destination_coord: [12, 44] }] }, true],
+    ['F2', { stages: [{ id: 's1', position: [12, 44, 3] }] }, true],
+    ['F2', { stages: [{ id: 's1', poi_location: [12, 44] }] }, true],
+    ['F2', { stages: [{ id: 's1', xyz: [1, 2, 3] }] }, true],
+    ['F2', { stages: [{ id: 's1', destination_id: 'xanmeer-3' }] }, false],
+    ['F2', { stages: [{ id: 's1', disposition: [0, 9] }] }, false],
+    ['F2', { stages: [{ id: 's1', composition: [1, 2] }] }, false],
+    ['F3', { stages: [{ id: 's1', x: 1, y: 2, z: 3 }] }, true],
+    ['F3', { stages: [{ id: 's1', x: 1 }] }, false],
+    ['F4', { stages: [{ id: 's1', compass_bearing: 47 }] }, true],
+    ['F4', { stages: [{ id: 's1', reward_gold: 47 }] }, false],
+    ['F5', { journal: [{ index: 10, text: 'Go to (2752, 425) and wait.' }] }, true],
+    ['F5', { journal: [{ index: 10, text: 'Keep the black water on my left until the trees give out.' }] }, false],
+  ];
+  let bad = 0;
+  for (const [rule, doc, shouldHit] of cases) {
+    const hits = scanDoc(doc, 'quests/fixture.json').filter((h) => h.rule === rule);
+    const got = hits.length > 0;
+    const ok = got === shouldHit;
+    if (!ok) bad++;
+    log(`${ok ? 'PASS' : 'FAIL'} ${rule} ${shouldHit ? 'fires on a violation' : 'is silent on a legal record'}`);
+  }
+  // and the placement exemption must NOT swallow F1
+  const ex = scanDoc({ sites: [{ id: 'a', pos: [1, 2, 3] }] }, 'world/pois.json');
+  const exOk = ex.length === 0;
+  log(`${exOk ? 'PASS' : 'FAIL'} world/ placement data is exempt from F2 (a world file must hold positions)`);
+  if (!exOk) bad++;
+  const ex2 = scanDoc({ sites: [{ id: 'a', target_pos: [1, 2, 3] }] }, 'world/pois.json');
+  const ex2Ok = ex2.some((h) => h.rule === 'F1');
+  log(`${ex2Ok ? 'PASS' : 'FAIL'} the exemption does NOT cover F1: target_pos in a world file is still a mount point`);
+  if (!ex2Ok) bad++;
+  log(bad ? `SELF-TEST FAILED: ${bad}` : 'SELF-TEST PASSED: every rule can fire and can stay silent');
+  return bad === 0 ? 0 : 1;
+}
+
+// ---- main --------------------------------------------------------------------------------
+
+const args = parseArgs();
+if (wantsHelp(args)) usage(USAGE);
+if (args['self-test']) process.exit(selfTest());
+
+const EXCEPTIONS_FILE = path.join(REPO_ROOT, 'tools/analysis/marker-scan-exceptions.json');
+const exceptions = fs.existsSync(EXCEPTIONS_FILE)
+  ? JSON.parse(fs.readFileSync(EXCEPTIONS_FILE, 'utf8')) : { declared: [] };
+const exceptionKey = (h) => `${h.file}:${h.jsonpath}`;
+const exceptionSet = new Map(exceptions.declared.map((d) => [`${d.file}:${d.jsonpath}`, d]));
+
+const roots = (args._ && args._.length ? args._ : ['game/data'])
+  .map((r) => path.resolve(REPO_ROOT, String(r)));
+const files = [];
+for (const r of roots) walkFiles(r, files);
+if (!files.length) {
+  log('marker-scan: nothing to scan — the roots are empty or do not exist.');
+  process.exit(2);
+}
+
+const hits = [];
+const parseErrors = [];
+for (const f of files) {
+  const rel = path.relative(path.join(REPO_ROOT, 'game/data'), f).split(path.sep).join('/');
+  let doc;
+  try { doc = JSON.parse(fs.readFileSync(f, 'utf8')); }
+  catch (e) { parseErrors.push({ file: rel, error: e.message }); continue; }
+  hits.push(...scanDoc(doc, rel));
+}
+
+// A declared exception is still REPORTED — it moves out of `hits` and into `excused`, with the
+// reason and what would remove it, so the gate can be green without the finding disappearing.
+// A declaration that has stopped matching anything is STALE and fails the run, so the file
+// cannot rot into a list of excuses (the pattern game/data/progression/KNOWN-GAPS.json uses).
+const excused = [];
+for (let i = hits.length - 1; i >= 0; i--) {
+  const d = exceptionSet.get(exceptionKey(hits[i]));
+  if (!d) continue;
+  d._matched = true;
+  excused.push({ ...hits[i], reason: d.reason, removed_by: d.removed_by });
+  hits.splice(i, 1);
+}
+const stale = exceptions.declared.filter((d) => !d._matched).map((d) => `${d.file}:${d.jsonpath}`);
+
+const report = {
+  schema: 'elder-souls/marker-scan@1',
+  item: 'RI-UIX02',
+  detector: 'F1-F5 (data)',
+  roots: roots.map((r) => path.relative(REPO_ROOT, r)),
+  files_scanned: files.length,
+  parse_errors: parseErrors,
+  hits,
+  hit_count: hits.length,
+  excused,
+  excused_count: excused.length,
+  stale_exceptions: stale,
+  by_rule: ['F1', 'F2', 'F3', 'F4', 'F5'].reduce((a, r) => { a[r] = hits.filter((h) => h.rule === r).length; return a; }, {}),
+  K1: hits.length === 0 && parseErrors.length === 0 && stale.length === 0 ? 'PASS' : 'FAIL',
+};
+
+if (args.out) writeJson(path.resolve(String(args.out)), report);
+if (args.json) console.log(JSON.stringify(report, null, 2));
+else {
+  log(`marker-scan: ${files.length} files under ${report.roots.join(', ')}`);
+  for (const h of hits.slice(0, 40)) log(`  HIT ${h.rule}  ${h.file}:${h.jsonpath}  = ${h.sample}`);
+  if (hits.length > 40) log(`  ... and ${hits.length - 40} more (use --json for all of them)`);
+  for (const e of parseErrors) log(`  PARSE ${e.file}: ${e.error}`);
+  for (const e of excused) log(`  EXCUSED ${e.rule}  ${e.file}:${e.jsonpath} — ${e.reason}`);
+  for (const t of stale) log(`  STALE EXCEPTION (no longer matches anything): ${t}`);
+  log(`K1 ${report.K1} — ${hits.length} hits, ${excused.length} declared exceptions (${JSON.stringify(report.by_rule)})`);
+}
+process.exit(hits.length || parseErrors.length || stale.length ? 1 : 0);

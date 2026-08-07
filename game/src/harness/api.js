@@ -18,7 +18,8 @@ import { Engine, BUILD } from '../engine.js';
 import { FIXED_HZ } from '../core/loop.js';
 import { violations } from '../core/guards.js';
 import { ACTIONS } from '../input/actions.js';
-import { DEFAULT_BINDINGS, MOVE_BINDINGS, RESERVED_CONTROLS, auditBindings, rolloverAudit } from '../input/bindings.js';
+import { OPENABLE as OPENABLE_MENUS } from '../ui/system.js';
+import { DEFAULT_BINDINGS, MOVE_BINDINGS, RESERVED_CONTROLS, auditBindings, rolloverAudit, setProfiles } from '../input/bindings.js';
 import { canonicalise, stateDiff, leafPaths } from '../core/canonical.js';
 import { VOLATILE_PATHS } from '../save/state.js';
 import { installWeaponsHarness } from './weapons.js';
@@ -152,6 +153,18 @@ export function installHarness(engine, bootPromise) {
     setCameraCell(id) { return engine.setCameraCell(id === undefined ? null : id); },
     uiOpen(id, opts) { return engine.uiOpen(id, opts || {}); },
     uiClose() { return engine.uiClose(); },
+    // W1-21 / RI-UIX03: deterministic menu navigation. Scripted input can open a menu but
+    // cannot reliably navigate to a specific screen, so without these none of RI-UIX03 §A is
+    // measurable. `openMenu('map')` THROWS — see game/src/ui/system.js for why that is the
+    // feature and not an omission.
+    openMenu(name, opts) { return engine.openMenu(name, opts || {}); },
+    closeMenu() { return engine.closeMenu(); },
+    openContainer(name, contents) { return engine.openContainer(name, contents || []); },
+    uiFocus(patch) { return engine.uiFocus(patch || {}); },
+    uiSearch(q) { return engine.uiSearch(q); },
+    setAtHearth(v) { return engine.setAtHearth(v); },
+    getUIPauseReport() { return engine.getUIPauseReport(); },
+    listMenus() { return OPENABLE_MENUS.slice(); },
     fogGate(eid) { return engine.fogGate(eid === undefined ? null : eid); },
     deathCamera() { return engine.deathCamera(); },
     projectPoint(x, y, z) { return engine.projectPoint(x, y, z); },
@@ -337,6 +350,57 @@ export function installHarness(engine, bootPromise) {
     getViewport() {
       if (!engine.real) throw new Error('getViewport(): no real input path on this engine');
       return engine.real.viewport.state();
+    },
+
+    /** The latched movement vector the sim consumed this step — the stick's world-side output. */
+    getMoveVector() { return [engine.input.moveX, engine.input.moveY]; },
+    /** The A-JRN7 edge log: {button, edge, recv_step, attributed_step}. An OBSERVER, not a consumer. */
+    getInputEdges() { return engine.input.edges.slice(); },
+    /** Select a pad profile by name (RI-JRN04 §C). Normally chosen by device class (H2). */
+    setPadProfile(name) { return engine.real && engine.real.pad ? engine.real.pad.setProfile(name) : null; },
+    /**
+     * Push a WHOLE `navigator.getGamepads()` array, so the two-pad case (L6) and a descriptor
+     * with a non-standard button count can both be driven. `null` restores the real navigator.
+     */
+    setSyntheticPads(list) {
+      if (!engine.real) return null;
+      engine.real.syntheticPads = list === undefined || list === null ? null : list;
+      return engine.real.pollGamepad();
+    },
+    /**
+     * RI-MTH07 §B — perturb the INPUT MODEL and watch the world. `path` is dotted into
+     * `game/data/input/profiles.json` as the running game holds it; the change takes effect on
+     * the next poll because every consumer reads the document rather than a copy taken at boot.
+     * This is the call that proves the data file is a model and not paperwork.
+     */
+    perturbInput(spec) {
+      if (!engine.real) throw new Error('perturbInput(): no real input path');
+      if (!engine._inputProfilesPristine) engine._inputProfilesPristine = JSON.parse(JSON.stringify(engine.data.inputProfiles));
+      const parts = String(spec.path).split('.');
+      let o = engine.data.inputProfiles;
+      for (let i = 0; i < parts.length - 1; i++) o = o[parts[i]];
+      const last = parts[parts.length - 1];
+      const before = o[last];
+      o[last] = spec.value;
+      // The desktop table is compiled into a control map, so a desktop edit must recompile.
+      if (parts[0] === 'desktop') { setProfiles(engine.data.inputProfiles); engine.real.rebinder.restoreDefaults('keyboard'); }
+      if (parts[0] === 'touch') engine.real.touch.cfg = engine.data.inputProfiles.touch;
+      return { path: spec.path, before, after: o[last] };
+    },
+    perturbInputReset() {
+      if (!engine.real || !engine._inputProfilesPristine) return false;
+      const fresh = JSON.parse(JSON.stringify(engine._inputProfilesPristine));
+      for (const k of Object.keys(engine.data.inputProfiles)) delete engine.data.inputProfiles[k];
+      Object.assign(engine.data.inputProfiles, fresh);
+      setProfiles(engine.data.inputProfiles);
+      engine.real.rebinder.profiles = engine.data.inputProfiles;
+      engine.real.rebinder.restoreDefaults('keyboard');
+      engine.real.touch.cfg = engine.data.inputProfiles.touch;
+      engine.real.pad.profiles = engine.data.inputProfiles;
+      engine.real.pad.analog = engine.data.inputProfiles.analog;
+      engine.real.pad.setProfile(engine.data.inputProfiles.default_pad_profile);
+      engine.real._rebuildKeyboard();
+      return true;
     },
 
     // ---- RI-JRN03 §E / RI-JRN04 M-P23: the rebinding surface ----------------------------
@@ -677,7 +741,73 @@ export function installHarness(engine, bootPromise) {
      * nowhere else, RI-PRG03 §4 resets the +3-levels-per-rest skill clamp here, and RI-CHR03's
      * Dry Well decides whether the refill happens at all.
      */
-    hearthRest() { return engine.hearthRest(); },
+    hearthRest(opts) { return engine.hearthRest(opts || {}); },
+
+    // ---- W1-13 — death, the bloom and the run back (RI-JRN06, RI-PRG04 §6) ----------------
+    // A-JRN7's `bloodstain_create` / `bloodstain_recover` were in the event vocabulary from
+    // wave 1 and emitted by nothing; A-JRN3's `getStateHash()` already exists. These are the
+    // verbs the item's five scenarios need on top of them.
+
+    /** The 29 sapwells, their two boss fog gates, and the measured spacing they were placed by. */
+    listHearths() { return engine.listHearths(); },
+
+    /**
+     * Rest. Everything RI-PRG04 §1 says a HEARTH does, and it is the ONLY thing in this build
+     * that sets a respawn point. `{at: '<hearth-id>'}` names a well explicitly for a scenario
+     * whose cell has none in it; without it the well the body is standing at is used, and the
+     * return value says which of the two happened.
+     */
+    restAt(id) { return engine.hearthRest(id ? { at: String(id) } : {}); },
+
+    /**
+     * Everything the death loop knows: the surface, the bloom, the souls, the respawn point,
+     * the per-death log, and — for seam S5 — the respawn CLASSIFICATION of every live entity
+     * with the reason it is in or out of scope.
+     */
+    getDeathState() { return engine.getDeathState(); },
+
+    /**
+     * Take the player to 0 HP. The death itself is NOT fired here: it fires from `_afterStep`
+     * on the next `stepFrames(1)`, through exactly the code path a real killing blow takes.
+     * A probe that killed AND respawned in one synchronous call would be measuring itself.
+     */
+    killPlayer(cause) { return engine.killPlayer(cause); },
+
+    /**
+     * Touch the bloom. Recovery is by proximity in the fixed loop (RI-PRG04 §6: "walk into
+     * it"), so this is the same call the loop makes and exists only so a probe can assert the
+     * refusal at range as well as the credit inside it.
+     */
+    recoverBloodstain() { return engine.recoverBloodstain(); },
+
+    /** Skip the death surface (RI-JRN06 D5). Any real input does this; so does this. */
+    skipDeathSurface() {
+      return engine.death ? engine.death.requestSkip(engine.sim.frame) : false;
+    },
+
+    /**
+     * Mark an entity as a named actor, quest actor or merchant — the S5 exemption, applied to
+     * a body that is already in the world. `spawn(id, x, z, {named: true})` does it at spawn
+     * time; this does it after, which is what a quest that recruits a mob needs.
+     */
+    setEntityNamed(eid, flags) {
+      const e = engine.sim.findEntity(String(eid));
+      if (!e) throw new Error(`setEntityNamed('${eid}'): no such entity`);
+      const f = flags === undefined || flags === true ? { named: true } : flags;
+      for (const k of Object.keys(f)) e[k] = !!f[k];
+      return { eid: e.eid, flags: f, respawns: engine.death.respawns(e, null) };
+    },
+
+    /**
+     * The S5 classification table itself, and the ONE knob a CONSUMPTION probe perturbs:
+     * `game/data/world/respawn.json`'s rules, live. Change `respawning_tiers` and an entity
+     * that came back stops coming back — which is the observation `RI-MTH07` §B asks for.
+     */
+    getRespawnRules() { return JSON.parse(JSON.stringify(engine.death.d)); },
+    setRespawnRules(patch) {
+      Object.assign(engine.death.d.rules, patch || {});
+      return JSON.parse(JSON.stringify(engine.death.d.rules));
+    },
 
     /** The catalogue, the shipped shelf and the cast class table, for offline recomputation. */
     getMagicData() {
@@ -905,6 +1035,21 @@ export function installHarness(engine, bootPromise) {
       if (!r) throw new Error(`questResolutionRequirements: ${questId} has no resolution '${resolutionId}'`);
       return { ...(r.requires || {}), requires_knowing: r.requires_knowing || [], method: r.method, journal_index: r.journal_index, violence_required: !!r.violence_required };
     },
+    /**
+     * W1-19. READ and WRITE the disposition register the quest gates read.
+     *
+     * `sim.quest.dispositions` is now seeded at boot and on every reset from the `disposition`
+     * field on every NPC record in `game/data/npcs/**` (`Engine.seedDispositions()`), which is
+     * what makes `giver.disposition_min` reachable at all. This pair exists so that a critic can
+     * (a) see the seeded table and (b) break it on purpose — a probe that cannot make the gate
+     * go red is not measuring the gate.
+     */
+    getDispositions() { return { ...engine.sim.quest.dispositions }; },
+    setDisposition(npcId, v) {
+      engine.sim.quest.dispositions[String(npcId)] = Math.max(0, Math.min(100, Number(v)));
+      return engine.sim.quest.dispositions[String(npcId)];
+    },
+
     /** Seed a dialogue topic. The topic gate on `opens_by` is what makes a quest offerable. */
     learnTopic(topic) {
       const t = String(topic);

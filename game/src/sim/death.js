@@ -231,6 +231,21 @@ export class DeathSystem {
     if (hp > 0 && sim.player.grounded !== false && sim.player.state !== 'FALL') {
       this.lastGrounded = [sim.player.pos[0], sim.player.pos[1], sim.player.pos[2]];
     }
+    // The kill register. `sim.world.enemiesDeadUntilRest` has been in the state model and in
+    // the save since wave 1 and no code path has ever pushed an id into it — so the field the
+    // save carried was always `[]` and the round trip of an empty array proved nothing. It is
+    // written HERE, from the observation loop, rather than at each of the four places a body
+    // can die (the resolver, the hazards, the traversal drown, `killEntity`), because one
+    // observer that cannot be forgotten beats four writers that can.
+    for (let i = 0; i < sim.entities.length; i++) {
+      const e = sim.entities[i];
+      if (e.hp > 0) continue;
+      if (!this.respawns(e, null)) continue;
+      if (!sim.world.enemiesDeadUntilRest.includes(e.eid)) {
+        sim.world.enemiesDeadUntilRest.push(e.eid);
+        sim.world.enemiesDeadUntilRest.sort();
+      }
+    }
 
     if (this.active) {
       const skip = this.skipRequestedAt !== null;
@@ -397,7 +412,18 @@ export class DeathSystem {
    */
   restorePlayer(sim, combat) {
     const b = combat && combat.player;
-    if (b) { b.hp = b.hpMax; b.stamina = b.staminaMax; if (b.poiseMax !== undefined) b.poise = b.poiseMax; }
+    if (b) {
+      b.hp = b.hpMax; b.stamina = b.staminaMax;
+      if (b.poiseMax !== undefined) b.poise = b.poiseMax;
+      // `dead` is the flag the input gate and the resolver read. Leaving it set after a
+      // respawn gives back a body at full HP that cannot act and cannot be hit — the exact
+      // shape of defect this project keeps finding, where every NUMBER is right and the thing
+      // does not work.
+      b.dead = false;
+      b.move = null; b.hitboxActive = false; b.stagger = false; b.hitstop = 0;
+      if (b.pendingReaction !== undefined) b.pendingReaction = null;
+      if (b.hitboxes && b.hitboxes.length !== undefined) b.hitboxes.length = 0;
+    }
     sim.player.hp = b ? b.hp : sim.player.hpMax;
     sim.player.stamina = b ? b.stamina : sim.player.staminaMax;
     sim.player.estus = sim.player.estusMax === undefined ? sim.player.estus : sim.player.estusMax;

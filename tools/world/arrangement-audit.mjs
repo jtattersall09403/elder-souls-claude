@@ -323,6 +323,24 @@ for (const row of rows) {
     + `${String(row.canopy.nn_mean_m ?? '-').padStart(7)} ${String(row.canopy.nn_cv ?? '-').padStart(5)} `
     + `${String(row.canopy.clark_evans_R ?? '-').padStart(5)} | ${String(row.cover.clark_evans_R ?? '-').padStart(5)}\n`);
 }
-const meanErr = rows.map((r) => Math.abs((r.canopy.per100m2 ?? r.canopy.declared_per100m2) - r.canopy.declared_per100m2) / Math.max(1e-6, r.canopy.declared_per100m2));
-process.stdout.write(`\nworst canopy density deviation from declared: ${(Math.max(...meanErr) * 100).toFixed(1)}%\n`);
+// TWO deviations, because they answer different questions and only one of them is about a frame.
+// The TILE figure is the province-wide realised density, which the per-tile instance budget caps
+// at 0.78 canopy per 100 m2 — so a region declaring 5.40 shows an 86% deviation and is not wrong,
+// it is level of detail. The NEAR-FIELD figure is the density inside 90 m of a standing player,
+// where the tile layer and `province.updateNear`'s deficit disc are both drawn, and that is the
+// density every M17 frame is actually made at. Reporting only the first said the world was 86%
+// off its own declaration when the picture was within a few per cent of it.
+const tileErr = rows.map((r) => Math.abs((r.canopy.per100m2 ?? r.canopy.declared_per100m2) - r.canopy.declared_per100m2) / Math.max(1e-6, r.canopy.declared_per100m2));
+// Relative error is meaningless on a region that declares 0.03 canopy per 100 m2 — one instance
+// either way is 100% — so the relative figure is taken over the regions dense enough for it to
+// mean something and the absolute one over all of them.
+const nearErr = rows.filter((r) => r.near_field && r.canopy.declared_per100m2 >= 0.2)
+  .map((r) => Math.abs(r.near_field.canopy_per100m2 - r.canopy.declared_per100m2) / r.canopy.declared_per100m2);
+const nearAbs = rows.filter((r) => r.near_field)
+  .map((r) => Math.abs(r.near_field.canopy_per100m2 - r.canopy.declared_per100m2));
+const closureErr = rows.filter((r) => r.near_field)
+  .map((r) => Math.abs(r.near_field.realised_canopy_closure - r.near_field.declared_canopy_closure));
+process.stdout.write(`\nworst canopy density deviation, TILE layer alone (capped by the per-tile budget): ${(Math.max(...tileErr) * 100).toFixed(1)}%\n`);
+process.stdout.write(`worst canopy density deviation, NEAR FIELD (tile + 90 m deficit disc, what a frame is made of): ${(Math.max(...nearErr) * 100).toFixed(1)}% over the 9 regions declaring >= 0.2 per 100 m2; worst ABSOLUTE over all 13: ${Math.max(...nearAbs).toFixed(3)} per 100 m2\n`);
+process.stdout.write(`worst realised-vs-declared canopy closure gap: ${Math.max(...closureErr).toFixed(3)}\n`);
 process.stdout.write(`  ${outFile}\n`);

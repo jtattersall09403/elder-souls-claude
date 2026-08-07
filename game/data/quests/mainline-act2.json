@@ -22,8 +22,12 @@
       },
       "opens_by": {
         "topic": "the drowned tally",
-        "prerequisite_quests": ["Q-MAIN-05"],
-        "prerequisite_topics": ["the ninth clause of the Drowned Tally"]
+        "prerequisite_quests": [
+          "Q-MAIN-05"
+        ],
+        "prerequisite_topics": [
+          "the ninth clause of the Drowned Tally"
+        ]
       },
       "task_kind": "investigation",
       "stakes": 3,
@@ -38,25 +42,25 @@
         {
           "index": 20,
           "state": "active",
-          "text": "The Tally is a burial book. Every death the Court handled, what was paid, and what the wells gave back afterwards, in the Court's own units, four hundred years without a gap. It is the only continuous record of the tide in the province and nobody outside this room has ever added it up.",
+          "text": "The Tally is a burial book. Every death the Court handled, what was paid, and what the wells gave back afterwards, in the Court's own units, four hundred years without a gap. It is the only continuous record of the tide in the province and nobody outside this room has ever added it up. I have been given the whole of it to read.",
           "records_belief": false
         },
         {
           "index": 30,
           "state": "active",
-          "text": "Adding it up took eleven days. The return per death is flat from the earliest volumes until the year thirty-nine of the third era's fourth century, and from that year it falls, and it has not stopped falling since. It is not a cliff. It is a curve, and the curve is thirty-six years old.",
+          "text": "Adding it up took eleven days. The return per death is flat from the earliest volumes until the year thirty-nine of the third era's fourth century, and from that year it falls, and it has not stopped falling since. It is not a cliff. It is a curve, and the curve is thirty-six years old. I did the addition myself and I checked it twice.",
           "records_belief": false
         },
         {
           "index": 40,
           "state": "branch",
-          "text": "The first licence to cut a sapwell for sale was granted in the year forty-seven. The curve begins in thirty-nine. Whatever the Sap-Cutters have done to this province, and they have done a great deal, the tide was already going before the first of them picked up a knife.",
+          "text": "The first licence to cut a sapwell for sale was granted in the year forty-seven. The curve begins in thirty-nine. Whatever the Sap-Cutters have done to this province, and they have done a great deal, the tide was already going before the first of them picked up a knife. I looked the licence date up before I let myself believe the rest of it.",
           "records_belief": false
         },
         {
           "index": 50,
           "state": "active",
-          "text": "In the older volumes there is a hand that is not a sexton's, entering corrections in the margins, always to the return column and always downward. Hosk-Vei says the Court calls that hand the Steward of the Count, and that it has been appearing in the margins of this book since the fourth volume, and that the fourth volume is three hundred and ten years old.",
+          "text": "In the older volumes there is a hand that is not a sexton's, entering corrections in the margins, always to the return column and always downward. Hosk-Vei says the Court calls that hand the Steward of the Count, and that it has been appearing in the margins of this book since the fourth volume, and that the fourth volume is three hundred and ten years old. Hosk-Vei will let me leave with the sum in my head or with it in his archive under both our names, and not both, because a fair copy is a thing the Court has said and a memory is a thing only I have.",
           "records_belief": false
         },
         {
@@ -89,14 +93,22 @@
           "id": "br_the_dates",
           "at_journal_index": 30,
           "condition": "The player compares the start of the curve against the first cutting licence and finds eight years of daylight between them",
-          "leads_to": ["rev_the_curve_predates", "res_the_number", "res_the_fair_copy"],
+          "leads_to": [
+            "rev_the_curve_predates",
+            "res_the_number",
+            "res_the_fair_copy"
+          ],
           "irreversible": false
         },
         {
           "id": "br_the_margin_hand",
           "at_journal_index": 50,
           "condition": "The player follows the marginal corrections back through the volumes to the fourth and reads the name in it",
-          "leads_to": ["rev_the_steward_named", "res_the_number", "res_the_fair_copy"],
+          "leads_to": [
+            "rev_the_steward_named",
+            "res_the_number",
+            "res_the_fair_copy"
+          ],
           "irreversible": false
         }
       ],
@@ -109,11 +121,24 @@
           "outcome": "The player holds the two dates and the name. Everything in Acts III and V that turns on the curve being older than the cutting turns on this reading.",
           "morally_better": null,
           "requires": {},
-          "requires_knowing": ["rev_the_curve_predates"],
-          "exclusive_with": ["res_the_fair_copy"],
+          "requires_knowing": [
+            "rev_the_curve_predates"
+          ],
+          "exclusive_with": [
+            "res_the_fair_copy"
+          ],
           "consequences": {
-            "faction_reputation": { "the_drowned_court": 6 },
-            "world_flags": ["player_knows_the_curve_is_older", "steward_of_the_count_named"]
+            "faction_reputation": {
+              "the_drowned_court": 6
+            },
+            "world_flags": [
+              "player_knows_the_curve_is_older",
+              "steward_of_the_count_named",
+              "the_sum_exists_only_in_the_players_head"
+            ],
+            "npc_disposition": {
+              "ledgerer-hosk-vei": 10
+            }
           }
         },
         {
@@ -123,13 +148,30 @@
           "journal_index": 92,
           "outcome": "The sum exists as a document in the Court's own archive with the player's name under the archivist's. It can be shown to people who will not take a stranger's word, which is what makes the Ledger and the Assize voices in Act IV arguable rather than purchasable.",
           "morally_better": null,
-          "requires": { "disposition": 40 },
-          "requires_knowing": ["rev_the_curve_predates", "rev_the_steward_named"],
-          "exclusive_with": ["res_the_number"],
+          "requires": {
+            "disposition": 40
+          },
+          "requires_knowing": [
+            "rev_the_curve_predates",
+            "rev_the_steward_named"
+          ],
+          "exclusive_with": [
+            "res_the_number"
+          ],
           "consequences": {
-            "faction_reputation": { "the_drowned_court": 10 },
-            "world_flags": ["player_knows_the_curve_is_older", "steward_of_the_count_named", "the_sum_exists_as_a_document"],
-            "npc_disposition": { "ledgerer-hosk-vei": 25 }
+            "faction_reputation": {
+              "the_drowned_court": 10
+            },
+            "world_flags": [
+              "player_knows_the_curve_is_older",
+              "steward_of_the_count_named",
+              "the_sum_exists_as_a_document",
+              "the_archive_has_cited_an_outlander"
+            ],
+            "npc_disposition": {
+              "ledgerer-hosk-vei": 25,
+              "undersexton-bel-mourne": 10
+            }
           }
         }
       ],
@@ -145,26 +187,72 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D10", "D12"],
+        "patterns": [
+          "D10",
+          "D12"
+        ],
         "stated_objective": "Read the Drowned Tally and produce a number",
         "actual_objective": "Read the Drowned Tally and produce a number",
         "truth": "The Court has held the only continuous record of the tide for four hundred years and has never added it up, and the return column it never added up has been corrected downward in the margins, by the same hand, since the fourth volume.",
         "revealed_by": [
-          { "id": "rev_the_curve_predates", "channel": "ledger", "source": "item_the_drowned_tally", "before_point_of_no_return": true },
-          { "id": "rev_the_steward_named", "channel": "ledger", "source": "item_tally_volume_four", "before_point_of_no_return": true }
+          {
+            "id": "rev_the_curve_predates",
+            "channel": "ledger",
+            "source": "item_the_drowned_tally",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_the_steward_named",
+            "channel": "ledger",
+            "source": "item_tally_volume_four",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
         "faction_reputation": {},
-        "world_flags": ["act_two_opened"],
-        "unlocks": ["Q-MAIN-07", "Q-MAIN-08"]
+        "world_flags": [
+          "act_two_opened"
+        ],
+        "unlocks": [
+          "Q-MAIN-07",
+          "Q-MAIN-08"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "information", "unique_named": true, "id": "topic_the_curve_predates_the_cutting", "name": "the curve is older than the cutting" },
-        { "type": "information", "unique_named": true, "id": "topic_the_steward_of_the_count", "name": "the Steward of the Count" }
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_curve_predates_the_cutting",
+          "name": "the curve is older than the cutting"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_steward_of_the_count",
+          "name": "the Steward of the Count"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_eleven_days_of_addition",
+          "name": "eleven days of addition",
+          "on_resolution": [
+            "res_the_number"
+          ]
+        },
+        {
+          "type": "item",
+          "unique_named": true,
+          "id": "item_the_fair_copy_of_the_sum",
+          "name": "the fair copy of the sum",
+          "on_resolution": [
+            "res_the_fair_copy"
+          ]
+        }
       ],
       "notes": "Act II quest 1. RI-QST06 §C: the antagonist must be named by Act II quest 2, and here he is named in the fourth volume of a book he has been writing in the margins of for three hundred years. Both resolutions are information and nothing else. This is the quest that verifies the antagonist's first Act V claim."
     },
@@ -184,7 +272,9 @@
       },
       "opens_by": {
         "topic": "the cutting yard",
-        "prerequisite_quests": ["Q-MAIN-06"]
+        "prerequisite_quests": [
+          "Q-MAIN-06"
+        ]
       },
       "task_kind": "investigation",
       "stakes": 3,
@@ -205,7 +295,7 @@
         {
           "index": 20,
           "state": "active",
-          "text": "The yard's own ledger goes back twenty-eight years to the first licence. Two hundred and forty wells cut, of which the yard has records of eighty still giving and sixty-one closed. That is a great deal of harm and it is not four hundred years of anything.",
+          "text": "The yard's own ledger goes back twenty-eight years to the first licence. Two hundred and forty wells cut, of which the yard has records of eighty still giving and sixty-one closed. That is a great deal of harm and it is not four hundred years of anything. She let me count the yard's own entries without standing over me.",
           "records_belief": false
         },
         {
@@ -217,7 +307,7 @@
         {
           "index": 44,
           "state": "branch",
-          "text": "Her grandmother's yard book is under the bench and it is older than the licence. The Cutters were cutting before the Empire gave anyone leave to, back into the forties, and the earliest entry in it complains that the wells that year gave less than the year before. Whoever wrote that was not making an excuse for a trade that did not exist yet.",
+          "text": "Her grandmother's yard book is under the bench and it is older than the licence. The Cutters were cutting before the Empire gave anyone leave to, back into the forties, and the earliest entry in it complains that the wells that year gave less than the year before. Whoever wrote that was not making an excuse for a trade that did not exist yet. Either I trade the Court's number for the yard book or I take it, and once it is taken this yard never opens its books to anyone from Soulrest again.",
           "records_belief": false
         },
         {
@@ -244,7 +334,11 @@
           "id": "br_the_grandmother",
           "at_journal_index": 30,
           "condition": "The player finds the older yard book under the bench and must obtain it, either by trading the Court's number for it or by taking it",
-          "leads_to": ["rev_older_cutting", "res_trade_the_number", "res_take_the_book"],
+          "leads_to": [
+            "rev_older_cutting",
+            "res_trade_the_number",
+            "res_take_the_book"
+          ],
           "irreversible": true
         }
       ],
@@ -257,12 +351,27 @@
           "outcome": "The Cutters learn what they are accused of and the player learns the cutting is older than its licence. The Ixtu-Vakh will hear the player out in Act IV instead of spitting.",
           "morally_better": null,
           "requires": {},
-          "requires_knowing": ["rev_older_cutting"],
-          "exclusive_with": ["res_take_the_book"],
+          "requires_knowing": [
+            "rev_older_cutting"
+          ],
+          "exclusive_with": [
+            "res_take_the_book"
+          ],
           "consequences": {
-            "faction_reputation": { "the_ixtu_vakh": 14, "the_rootkeepers": -6 },
-            "world_flags": ["player_knows_the_cutting_predates_its_licence", "cutters_will_hear_the_player"],
-            "npc_disposition": { "neeja-xul": 30 }
+            "faction_reputation": {
+              "the_ixtu_vakh": 14,
+              "the_rootkeepers": -6
+            },
+            "world_flags": [
+              "player_knows_the_cutting_predates_its_licence",
+              "cutters_will_hear_the_player",
+              "the_cutters_know_what_they_are_accused_of"
+            ],
+            "npc_disposition": {
+              "neeja-xul": 30,
+              "ledgerer-hosk-vei": -6,
+              "blackrose-yard-hands": 20
+            }
           }
         },
         {
@@ -272,13 +381,33 @@
           "journal_index": 94,
           "outcome": "The player has the older book and the Cutters have an enemy. The Ixtu-Vakh voice in Act IV must be bought or coerced instead of argued, and Blackrose's yard stops answering the Court.",
           "morally_better": false,
-          "requires": { "skills": { "security": 35 } },
-          "requires_knowing": ["rev_older_cutting"],
-          "exclusive_with": ["res_trade_the_number"],
+          "requires": {
+            "skills": {
+              "security": 35
+            }
+          },
+          "requires_knowing": [
+            "rev_older_cutting"
+          ],
+          "exclusive_with": [
+            "res_trade_the_number"
+          ],
           "consequences": {
-            "faction_reputation": { "the_ixtu_vakh": -20, "the_drowned_court": 6 },
-            "world_flags": ["player_knows_the_cutting_predates_its_licence", "cutters_closed_their_books", "blackrose_yard_hostile_to_player"],
-            "npc_disposition": { "neeja-xul": -50 }
+            "faction_reputation": {
+              "the_ixtu_vakh": -20,
+              "the_drowned_court": 6
+            },
+            "world_flags": [
+              "player_knows_the_cutting_predates_its_licence",
+              "cutters_closed_their_books",
+              "blackrose_yard_hostile_to_player",
+              "the_yard_will_not_answer_the_court"
+            ],
+            "npc_disposition": {
+              "neeja-xul": -50,
+              "ledgerer-hosk-vei": 10,
+              "undersexton-aveline-rell": 8
+            }
           }
         }
       ],
@@ -294,25 +423,68 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D3", "D10"],
+        "patterns": [
+          "D3",
+          "D10"
+        ],
         "stated_objective": "Hear the Cutters' account of what they have done to the wells",
         "actual_objective": "Hear the Cutters' account of what they have done to the wells",
         "truth": "The Cutters are guilty of everything they are accused of and did not start it. Their own yard books go back further than the licence they are blamed for, and the earliest of them already complains that the wells give less than the year before.",
         "revealed_by": [
-          { "id": "rev_older_cutting", "channel": "ledger", "source": "item_the_grandmother_yard_book", "before_point_of_no_return": true },
-          { "id": "rev_fresh_wounds_give", "channel": "talk_to_target", "source": "neeja-xul", "before_point_of_no_return": true }
+          {
+            "id": "rev_older_cutting",
+            "channel": "ledger",
+            "source": "item_the_grandmother_yard_book",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_fresh_wounds_give",
+            "channel": "talk_to_target",
+            "source": "neeja-xul",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
         "faction_reputation": {},
-        "world_flags": ["cutters_account_heard"]
+        "world_flags": [
+          "cutters_account_heard"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "information", "unique_named": true, "id": "topic_the_cutting_is_older_than_its_licence", "name": "the cutting is older than its licence" },
-        { "type": "item", "unique_named": true, "id": "item_the_grandmother_yard_book", "name": "the grandmother's yard book" }
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_cutting_is_older_than_its_licence",
+          "name": "the cutting is older than its licence"
+        },
+        {
+          "type": "item",
+          "unique_named": true,
+          "id": "item_the_grandmother_yard_book",
+          "name": "the grandmother's yard book"
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "neeja-xul",
+          "name": "Neeja-Xul of the Blackrose yard",
+          "on_resolution": [
+            "res_trade_the_number"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_forties_entries",
+          "name": "the entries from the forties",
+          "on_resolution": [
+            "res_take_the_book"
+          ]
+        }
       ],
       "notes": "Act II quest 2. Opens simultaneously with Q-MAIN-08 off Q-MAIN-06. The Cutters' defence is genuinely good, which is RI-LOR05's ruling that cause B is a real aggravation and not the cause. The reward is information and one book."
     },
@@ -332,7 +504,9 @@
       },
       "opens_by": {
         "topic": "the gem shipping",
-        "prerequisite_quests": ["Q-MAIN-06"]
+        "prerequisite_quests": [
+          "Q-MAIN-06"
+        ]
       },
       "task_kind": "investigation",
       "stakes": 4,
@@ -359,19 +533,19 @@
         {
           "index": 30,
           "state": "active",
-          "text": "The bonded store behind the crane has crates in it that are not in any manifest and the seals on them are not Imperial. They are a plain lead disc with a ring pressed into it and nobody on this quay will say whose it is.",
+          "text": "The bonded store behind the crane has crates in it that are not in any manifest and the seals on them are not Imperial. They are a plain lead disc with a ring pressed into it and nobody on this quay will say whose it is. I counted the crates from the crane platform and nobody stopped me.",
           "records_belief": false
         },
         {
           "index": 48,
           "state": "branch",
-          "text": "I have the true tonnage now and it does not do what I expected. Five times over in ten years is a great deal of gem and it is nothing at all against four hundred years of the Court's return column. Whatever is happening at Archon is a crime and a business and it is not the thing that started the curve.",
+          "text": "I have the true tonnage now and it does not do what I expected. Five times over in ten years is a great deal of gem and it is nothing at all against four hundred years of the Court's return column. Whatever is happening at Archon is a crime and a business and it is not the thing that started the curve. Three ways at the true tonnage and each one closes the other two: the crane crew will not talk to a man who has threatened their harbourmaster, and a store entered quietly cannot then be entered loudly.",
           "records_belief": false
         },
         {
           "index": 52,
           "state": "active",
-          "text": "The ring on the lead seals is the same ring the Blackwood Company's factors wear at Lilmoth. They are buying sap and gem both, at prices that only make sense if you believe the trees are dying and you want to be holding the stock when they do.",
+          "text": "The ring on the lead seals is the same ring the Blackwood Company's factors wear at Lilmoth. They are buying sap and gem both, at prices that only make sense if you believe the trees are dying and you want to be holding the stock when they do. I have seen that ring before and it took me two days to remember where.",
           "records_belief": false
         },
         {
@@ -404,14 +578,23 @@
           "id": "br_the_store",
           "at_journal_index": 30,
           "condition": "The player decides how to get the true tonnage: from the crane crew, from inside the bonded store, or from the harbourmaster under threat",
-          "leads_to": ["rev_true_tonnage", "res_ask_the_crane", "res_enter_the_store", "res_lean_on_cuiro"],
+          "leads_to": [
+            "rev_true_tonnage",
+            "res_ask_the_crane",
+            "res_enter_the_store",
+            "res_lean_on_cuiro"
+          ],
           "irreversible": false
         },
         {
           "id": "br_the_seal",
           "at_journal_index": 48,
           "condition": "The player traces the lead ring-seal to the Blackwood Company's factors at Lilmoth",
-          "leads_to": ["rev_the_ring", "res_enter_the_store", "res_lean_on_cuiro"],
+          "leads_to": [
+            "rev_the_ring",
+            "res_enter_the_store",
+            "res_lean_on_cuiro"
+          ],
           "irreversible": false
         }
       ],
@@ -424,11 +607,27 @@
           "outcome": "The true tonnage comes from the men who carry it. The player learns cause A is real and insufficient, and nobody at Archon is exposed.",
           "morally_better": null,
           "requires": {},
-          "requires_knowing": ["rev_true_tonnage"],
-          "exclusive_with": ["res_enter_the_store", "res_lean_on_cuiro"],
+          "requires_knowing": [
+            "rev_true_tonnage"
+          ],
+          "exclusive_with": [
+            "res_enter_the_store",
+            "res_lean_on_cuiro"
+          ],
           "consequences": {
-            "faction_reputation": { "the_dockhands": 8 },
-            "world_flags": ["player_knows_the_gem_trade_cannot_account_for_the_curve", "archon_quay_friendly"]
+            "faction_reputation": {
+              "the_dockhands": 8
+            },
+            "world_flags": [
+              "player_knows_the_gem_trade_cannot_account_for_the_curve",
+              "archon_quay_friendly",
+              "nobody_at_archon_was_exposed"
+            ],
+            "npc_disposition": {
+              "archon-crane-crew": 25,
+              "harbourmaster-cuiro-vaneth": 4,
+              "archon-bond-clerk": 6
+            }
           }
         },
         {
@@ -438,12 +637,32 @@
           "journal_index": 92,
           "outcome": "The player has the tonnage and the ring-seal and Archon does not know it. The Blackwood Company thread opens without anyone at the tide-house being warned.",
           "morally_better": null,
-          "requires": { "skills": { "sneak": 35 } },
-          "requires_knowing": ["rev_true_tonnage", "rev_the_ring"],
-          "exclusive_with": ["res_ask_the_crane", "res_lean_on_cuiro"],
+          "requires": {
+            "skills": {
+              "sneak": 35
+            }
+          },
+          "requires_knowing": [
+            "rev_true_tonnage",
+            "rev_the_ring"
+          ],
+          "exclusive_with": [
+            "res_ask_the_crane",
+            "res_lean_on_cuiro"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": -4 },
-            "world_flags": ["player_knows_the_gem_trade_cannot_account_for_the_curve", "player_knows_the_blackwood_ring", "archon_store_entered_unseen"]
+            "faction_reputation": {
+              "the_wet_ledger": -4
+            },
+            "world_flags": [
+              "player_knows_the_gem_trade_cannot_account_for_the_curve",
+              "player_knows_the_blackwood_ring",
+              "archon_store_entered_unseen",
+              "the_tide_house_does_not_know"
+            ],
+            "npc_disposition": {
+              "archon-crane-crew": -6
+            }
           }
         },
         {
@@ -453,13 +672,37 @@
           "journal_index": 94,
           "outcome": "The harbourmaster hands over his own true book. He becomes the player's asset at Archon and a liability, because the people whose seal it is will eventually ask him what he told and to whom.",
           "morally_better": false,
-          "requires": { "attributes": { "personality": 40 }, "skills": { "speechcraft": 35 } },
-          "requires_knowing": ["rev_true_tonnage"],
-          "exclusive_with": ["res_ask_the_crane", "res_enter_the_store"],
+          "requires": {
+            "attributes": {
+              "personality": 40
+            },
+            "skills": {
+              "speechcraft": 35
+            }
+          },
+          "requires_knowing": [
+            "rev_true_tonnage"
+          ],
+          "exclusive_with": [
+            "res_ask_the_crane",
+            "res_enter_the_store"
+          ],
           "consequences": {
-            "faction_reputation": { "the_imperial_assize": 4, "the_wet_ledger": -8 },
-            "world_flags": ["player_knows_the_gem_trade_cannot_account_for_the_curve", "player_knows_the_blackwood_ring", "cuiro_is_the_players_asset"],
-            "npc_disposition": { "harbourmaster-cuiro-vaneth": -30 }
+            "faction_reputation": {
+              "the_imperial_assize": 4,
+              "the_wet_ledger": -8
+            },
+            "world_flags": [
+              "player_knows_the_gem_trade_cannot_account_for_the_curve",
+              "player_knows_the_blackwood_ring",
+              "cuiro_is_the_players_asset",
+              "the_lead_seal_people_will_ask_cuiro_what_he_told"
+            ],
+            "npc_disposition": {
+              "harbourmaster-cuiro-vaneth": -30,
+              "archon-crane-crew": -10,
+              "prefect-galvus-arn": 6
+            }
           }
         }
       ],
@@ -475,26 +718,84 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D1", "D8"],
+        "patterns": [
+          "D1",
+          "D8"
+        ],
         "stated_objective": "Read the outbound manifests for a fee",
         "actual_objective": "Sell a stranger the short book and find out what the stranger already knows",
         "truth": "Cuiro-Vaneth keeps two books and the fee is for the one that balances. He is not protecting the Empire's revenue; he is protecting the people whose lead seal is on the crates.",
         "revealed_by": [
-          { "id": "rev_true_tonnage", "channel": "ledger", "source": "item_archon_true_manifest", "before_point_of_no_return": true },
-          { "id": "rev_the_ring", "channel": "environment", "source": "item_lead_ring_seal", "before_point_of_no_return": true }
+          {
+            "id": "rev_true_tonnage",
+            "channel": "ledger",
+            "source": "item_archon_true_manifest",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_the_ring",
+            "channel": "environment",
+            "source": "item_lead_ring_seal",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
         "faction_reputation": {},
-        "world_flags": ["gem_trade_measured"],
-        "unlocks": ["Q-MAIN-09"]
+        "world_flags": [
+          "gem_trade_measured"
+        ],
+        "unlocks": [
+          "Q-MAIN-09"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "information", "unique_named": true, "id": "topic_the_gem_trade_is_too_small", "name": "the gem trade is too small to be the cause" },
-        { "type": "information", "unique_named": true, "id": "topic_the_lead_ring_seal", "name": "the lead ring-seal", "on_resolution": ["res_enter_the_store", "res_lean_on_cuiro"] }
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_gem_trade_is_too_small",
+          "name": "the gem trade is too small to be the cause"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_lead_ring_seal",
+          "name": "the lead ring-seal",
+          "on_resolution": [
+            "res_enter_the_store",
+            "res_lean_on_cuiro"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "archon-crane-crew",
+          "name": "the Archon crane crew",
+          "on_resolution": [
+            "res_ask_the_crane"
+          ]
+        },
+        {
+          "type": "item",
+          "unique_named": true,
+          "id": "item_copied_bond_list",
+          "name": "a copied bond list",
+          "on_resolution": [
+            "res_enter_the_store"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "harbourmaster-cuiro-vaneth",
+          "name": "a harbourmaster who is afraid of somebody else",
+          "on_resolution": [
+            "res_lean_on_cuiro"
+          ]
+        }
       ],
       "notes": "Act II quest 3. This is the quest that verifies the antagonist's third Act V claim: the soul-gem interception is real, criminal, growing, and far too small to be the cause. Three exclusive resolutions, all non-violent, one by asking, one by sneaking, one by threat."
     },
@@ -514,8 +815,13 @@
       },
       "opens_by": {
         "topic": "the low chapel",
-        "prerequisite_quests": ["Q-MAIN-08"],
-        "overheard_from": ["ojal-weeth", "soulrest-sexton-on-duty"]
+        "prerequisite_quests": [
+          "Q-MAIN-08"
+        ],
+        "overheard_from": [
+          "ojal-weeth",
+          "soulrest-sexton-on-duty"
+        ]
       },
       "task_kind": "investigation",
       "stakes": 4,
@@ -536,7 +842,7 @@
         {
           "index": 20,
           "state": "active",
-          "text": "Her argument is the ink and the paper stock and a gap of two clauses in three copies she has found in three houses. It is a good argument. She has been making it for eleven years and the Court has been not-answering it for eleven years, which she says is itself the answer.",
+          "text": "Her argument is the ink and the paper stock and a gap of two clauses in three copies she has found in three houses. It is a good argument. She has been making it for eleven years and the Court has been not-answering it for eleven years, which she says is itself the answer. She made the whole argument to me in one morning without notes.",
           "records_belief": true
         },
         {
@@ -575,7 +881,11 @@
           "id": "br_who_to_tell",
           "at_journal_index": 40,
           "condition": "The player decides whether to carry Bel Mourne's argument, keep it, or hand it to Rell",
-          "leads_to": ["res_hold_both", "res_carry_the_copies", "fail_told_rell"],
+          "leads_to": [
+            "res_hold_both",
+            "res_carry_the_copies",
+            "fail_told_rell"
+          ],
           "irreversible": true
         }
       ],
@@ -588,10 +898,20 @@
           "outcome": "The player holds both arguments and neither wins. This is the state the mandate stays in for the rest of the game.",
           "morally_better": null,
           "requires": {},
-          "exclusive_with": ["res_carry_the_copies"],
+          "exclusive_with": [
+            "res_carry_the_copies"
+          ],
           "consequences": {
             "faction_reputation": {},
-            "world_flags": ["player_holds_both_arguments", "mandate_doubted_by_an_ally"]
+            "world_flags": [
+              "player_holds_both_arguments",
+              "mandate_doubted_by_an_ally",
+              "the_argument_lives_only_where_it_was_made"
+            ],
+            "npc_disposition": {
+              "undersexton-bel-mourne": 8,
+              "ledgerer-hosk-vei": 6
+            }
           }
         },
         {
@@ -602,11 +922,23 @@
           "outcome": "The player carries the three gapped copies. They are worth an argument at the Act IV Court voice and they are worth something else entirely in the last conversation, because the antagonist has read the Recension too.",
           "morally_better": null,
           "requires": {},
-          "exclusive_with": ["res_hold_both"],
+          "exclusive_with": [
+            "res_hold_both"
+          ],
           "consequences": {
-            "faction_reputation": { "the_drowned_court": -4 },
-            "world_flags": ["player_holds_both_arguments", "mandate_doubted_by_an_ally", "player_carries_the_gapped_copies"],
-            "npc_disposition": { "undersexton-bel-mourne": 30 }
+            "faction_reputation": {
+              "the_drowned_court": -4
+            },
+            "world_flags": [
+              "player_holds_both_arguments",
+              "mandate_doubted_by_an_ally",
+              "player_carries_the_gapped_copies",
+              "the_gapped_copies_left_the_chapel"
+            ],
+            "npc_disposition": {
+              "undersexton-bel-mourne": 30,
+              "undersexton-aveline-rell": -12
+            }
           }
         }
       ],
@@ -622,27 +954,80 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D3", "D7"],
+        "patterns": [
+          "D3",
+          "D7"
+        ],
         "stated_objective": "Hear the Court's own second opinion on the Recension",
         "actual_objective": "Keep an eleven-year-old argument alive by putting it in the hands of somebody the Court cannot post to Lilmoth",
         "truth": "Bel Mourne is the rival who is telling the truth about the evidence and cannot prove her conclusion. The question of whether the mandate is genuine is not settled by this quest, by any later quest, by any book, or by the ending.",
         "revealed_by": [
-          { "id": "rev_the_gap", "channel": "rival_npc", "source": "undersexton-bel-mourne", "before_point_of_no_return": true },
-          { "id": "rev_rell_knew", "channel": "letter", "source": "item_rell_marginalia", "before_point_of_no_return": true },
-          { "id": "rev_for_the_ninth", "channel": "book", "source": "book_for_the_ninth_clause", "before_point_of_no_return": true }
+          {
+            "id": "rev_the_gap",
+            "channel": "rival_npc",
+            "source": "undersexton-bel-mourne",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_rell_knew",
+            "channel": "letter",
+            "source": "item_rell_marginalia",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_for_the_ninth",
+            "channel": "book",
+            "source": "book_for_the_ninth_clause",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": true
       },
       "consequences": {
         "faction_reputation": {},
-        "world_flags": ["the_mandate_is_contested"],
-        "unlocks": ["Q-MAIN-10"]
+        "world_flags": [
+          "the_mandate_is_contested"
+        ],
+        "unlocks": [
+          "Q-MAIN-10"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "information", "unique_named": true, "id": "topic_the_gapped_copies", "name": "the three copies with the gap in them" },
-        { "type": "ally", "unique_named": true, "id": "undersexton-bel-mourne", "name": "Undersexton Bel Mourne", "on_resolution": ["res_carry_the_copies"] }
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_gapped_copies",
+          "name": "the three copies with the gap in them"
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "undersexton-bel-mourne",
+          "name": "Undersexton Bel Mourne",
+          "on_resolution": [
+            "res_carry_the_copies"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_neither_argument_wins",
+          "name": "neither argument wins",
+          "on_resolution": [
+            "res_hold_both"
+          ]
+        },
+        {
+          "type": "item",
+          "unique_named": true,
+          "id": "item_three_gapped_copies",
+          "name": "three copies with the gap in them",
+          "on_resolution": [
+            "res_carry_the_copies"
+          ]
+        }
       ],
       "notes": "Act II quest 4. RI-QST06 §C: the mandate must first be doubted in dialogue by an ally by Act II quest 4. D7 again, never_revealed true, and D3 because Bel Mourne is hostile-coded within her own house and correct about the evidence. Nothing here or later adjudicates."
     },
@@ -662,7 +1047,9 @@
       },
       "opens_by": {
         "topic": "the root gallery",
-        "prerequisite_quests": ["Q-MAIN-09"]
+        "prerequisite_quests": [
+          "Q-MAIN-09"
+        ]
       },
       "task_kind": "investigation",
       "stakes": 4,
@@ -677,7 +1064,7 @@
         {
           "index": 20,
           "state": "active",
-          "text": "The Deep-Kin's account is short. The coast is a wound. Foreigners drink and do not give back, the wells are being cut for sale by their own people at foreign prices, and the answer is to close the coast and let the interior alone. She says it without heat, the way you would describe a bad tooth.",
+          "text": "The Deep-Kin's account is short. The coast is a wound. Foreigners drink and do not give back, the wells are being cut for sale by their own people at foreign prices, and the answer is to close the coast and let the interior alone. She says it without heat, the way you would describe a bad tooth. She said it to me without heat, the way you would describe a bad tooth.",
           "records_belief": false
         },
         {
@@ -689,13 +1076,13 @@
         {
           "index": 40,
           "state": "branch",
-          "text": "The letter is patient and it is not mad. It thanks the keeper for the year's work, it corrects a figure, and it explains, in three lines, that what is held is held so that the wells will give, and that this arrangement is older than the writer and was not the writer's idea. It signs itself Ixtu-Meer. I have now read the antagonist's case before I have met him and it is better than the Court's.",
+          "text": "The letter is patient and it is not mad. It thanks the keeper for the year's work, it corrects a figure, and it explains, in three lines, that what is held is held so that the wells will give, and that this arrangement is older than the writer and was not the writer's idea. It signs itself Ixtu-Meer. I have now read the antagonist's case before I have met him and it is better than the Court's. She will let me carry the letter out or keep it in the gallery, not both, and once it has left Helstrom it never comes back.",
           "records_belief": false
         },
         {
           "index": 50,
           "state": "active",
-          "text": "Ashul-Tei has known the letter's contents for eleven years and has told nobody outside the gallery, because the Deep-Kin's whole argument is that foreigners are drinking the marsh, and the letter says the marsh has been drinking itself since before there were foreigners to blame.",
+          "text": "Ashul-Tei has known the letter's contents for eleven years and has told nobody outside the gallery, because the Deep-Kin's whole argument is that foreigners are drinking the marsh, and the letter says the marsh has been drinking itself since before there were foreigners to blame. She told me that last, and only after I had read it.",
           "records_belief": false
         },
         {
@@ -722,7 +1109,12 @@
           "id": "br_the_letter",
           "at_journal_index": 30,
           "condition": "The player reads the intercepted letter and must decide whether to memorise it, ask for it, or copy it against the keeper's condition",
-          "leads_to": ["rev_the_letter", "res_hear_it_out", "res_carry_the_letter", "fail_copied_it"],
+          "leads_to": [
+            "rev_the_letter",
+            "res_hear_it_out",
+            "res_carry_the_letter",
+            "fail_copied_it"
+          ],
           "irreversible": true
         }
       ],
@@ -735,11 +1127,24 @@
           "outcome": "The player carries the antagonist's case in their head. It is enough for the Act V conversation and not enough to show anybody else.",
           "morally_better": null,
           "requires": {},
-          "requires_knowing": ["rev_the_letter"],
-          "exclusive_with": ["res_carry_the_letter"],
+          "requires_knowing": [
+            "rev_the_letter"
+          ],
+          "exclusive_with": [
+            "res_carry_the_letter"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 6 },
-            "world_flags": ["player_has_read_the_stewards_letter"]
+            "faction_reputation": {
+              "the_xul_aneekh": 6
+            },
+            "world_flags": [
+              "player_has_read_the_stewards_letter",
+              "the_letter_stayed_in_the_gallery",
+              "the_players_account_of_it_is_the_only_one"
+            ],
+            "npc_disposition": {
+              "rootkeeper-ashul-tei": 8
+            }
           }
         },
         {
@@ -749,13 +1154,29 @@
           "journal_index": 92,
           "outcome": "The player leaves Helstrom with the letter and with a question a rootkeeper wants asked. The letter is an argument that can be shown to the Ledger, the Assize and the Court in Act IV, and the question is one of the twelve things that can be pressed in the last conversation.",
           "morally_better": null,
-          "requires": { "disposition": 45 },
-          "requires_knowing": ["rev_the_letter"],
-          "exclusive_with": ["res_hear_it_out"],
+          "requires": {
+            "disposition": 45
+          },
+          "requires_knowing": [
+            "rev_the_letter"
+          ],
+          "exclusive_with": [
+            "res_hear_it_out"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 12 },
-            "world_flags": ["player_has_read_the_stewards_letter", "player_carries_the_stewards_letter", "player_carries_ashul_teis_question"],
-            "npc_disposition": { "rootkeeper-ashul-tei": 25 }
+            "faction_reputation": {
+              "the_xul_aneekh": 12
+            },
+            "world_flags": [
+              "player_has_read_the_stewards_letter",
+              "player_carries_the_stewards_letter",
+              "player_carries_ashul_teis_question",
+              "the_letter_can_be_shown_to_the_coast"
+            ],
+            "npc_disposition": {
+              "rootkeeper-ashul-tei": 25,
+              "rootkeeper-sesh-anaat": 8
+            }
           }
         }
       ],
@@ -771,26 +1192,75 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D10", "D11"],
+        "patterns": [
+          "D10",
+          "D11"
+        ],
         "stated_objective": "Hear what the interior says about the failing tide",
         "actual_objective": "Hear what the interior says about the failing tide",
         "truth": "The Deep-Kin's account blames foreigners. The letter in their own gallery, which they have held for eleven years and shown to nobody, says the arrangement is older than the writer and was not the writer's idea, and the writer is not a foreigner.",
         "revealed_by": [
-          { "id": "rev_the_letter", "channel": "letter", "source": "item_stewards_letter", "before_point_of_no_return": true },
-          { "id": "rev_ashul_withheld", "channel": "rival_npc", "source": "rootkeeper-ashul-tei", "before_point_of_no_return": true }
+          {
+            "id": "rev_the_letter",
+            "channel": "letter",
+            "source": "item_stewards_letter",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_ashul_withheld",
+            "channel": "rival_npc",
+            "source": "rootkeeper-ashul-tei",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
         "faction_reputation": {},
-        "world_flags": ["act_two_closed", "antagonist_speaks_in_his_own_words"],
-        "unlocks": ["Q-MAIN-11"]
+        "world_flags": [
+          "act_two_closed",
+          "antagonist_speaks_in_his_own_words"
+        ],
+        "unlocks": [
+          "Q-MAIN-11"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "information", "unique_named": true, "id": "topic_the_stewards_letter", "name": "the Steward's letter" },
-        { "type": "information", "unique_named": true, "id": "topic_ashul_teis_question", "name": "the question Ashul-Tei wants asked", "on_resolution": ["res_carry_the_letter"] }
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_stewards_letter",
+          "name": "the Steward's letter"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_ashul_teis_question",
+          "name": "the question Ashul-Tei wants asked",
+          "on_resolution": [
+            "res_carry_the_letter"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_he_writes_like_a_clerk",
+          "name": "he writes like a clerk",
+          "on_resolution": [
+            "res_hear_it_out"
+          ]
+        },
+        {
+          "type": "item",
+          "unique_named": true,
+          "id": "item_the_stewards_letter",
+          "name": "the Steward’s letter",
+          "on_resolution": [
+            "res_carry_the_letter"
+          ]
+        }
       ],
       "notes": "Act II quest 5, and the act's closer. RI-QST06 §B Act II: the antagonist must be named 'by his own followers, in his own words (a captured text, a convert who is not lying)'. The letter is the captured text; the keeper who managed an intake for him is the convert. Five of five Act II quests reward information; three of them reward nothing else."
     }

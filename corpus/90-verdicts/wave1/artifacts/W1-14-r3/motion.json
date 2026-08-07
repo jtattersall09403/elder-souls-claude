@@ -1,0 +1,243 @@
+{
+  "apm3": [
+    {
+      "cls": "LIGHT",
+      "motion": true,
+      "break": false,
+      "flight_frames": 149,
+      "model_travel_f": 149,
+      "fence_f_recomputed": 52.15,
+      "max_dps_before_fence": 60,
+      "max_dps_after_fence": 0,
+      "violating_frames_after_fence": 0,
+      "AP_M3_PASS": true
+    },
+    {
+      "cls": "LIGHT",
+      "motion": false,
+      "break": false,
+      "flight_frames": 109,
+      "model_travel_f": 109,
+      "fence_f_recomputed": 38.15,
+      "max_dps_before_fence": 0,
+      "max_dps_after_fence": 0,
+      "violating_frames_after_fence": 0,
+      "AP_M3_PASS": true
+    },
+    {
+      "cls": "HEAVY",
+      "motion": true,
+      "break": false,
+      "flight_frames": 239,
+      "model_travel_f": 239,
+      "fence_f_recomputed": 83.65,
+      "max_dps_before_fence": 45,
+      "max_dps_after_fence": 0,
+      "violating_frames_after_fence": 0,
+      "AP_M3_PASS": true
+    },
+    {
+      "cls": "HEAVY",
+      "motion": false,
+      "break": false,
+      "flight_frames": 158,
+      "model_travel_f": 158,
+      "fence_f_recomputed": 55.3,
+      "max_dps_before_fence": 0,
+      "max_dps_after_fence": 0,
+      "violating_frames_after_fence": 0,
+      "AP_M3_PASS": true
+    },
+    {
+      "cls": "CANTRIP",
+      "motion": true,
+      "break": false,
+      "flight_frames": 89,
+      "model_travel_f": 89,
+      "fence_f_recomputed": 31.15,
+      "max_dps_before_fence": 0,
+      "max_dps_after_fence": 0,
+      "violating_frames_after_fence": 0,
+      "AP_M3_PASS": true
+    },
+    {
+      "cls": "CANTRIP",
+      "motion": false,
+      "break": false,
+      "flight_frames": 80,
+      "model_travel_f": 80,
+      "fence_f_recomputed": 28,
+      "max_dps_before_fence": 0,
+      "max_dps_after_fence": 0,
+      "violating_frames_after_fence": 0,
+      "AP_M3_PASS": true
+    }
+  ],
+  "apm3_break": [
+    {
+      "cls": "LIGHT",
+      "motion": true,
+      "break": true,
+      "flight_frames": 112,
+      "model_travel_f": 112,
+      "fence_f_recomputed": 39.2,
+      "max_dps_before_fence": 60,
+      "max_dps_after_fence": 60,
+      "violating_frames_after_fence": 72,
+      "AP_M3_PASS": false
+    },
+    {
+      "cls": "HEAVY",
+      "motion": true,
+      "break": true,
+      "flight_frames": 164,
+      "model_travel_f": 164,
+      "fence_f_recomputed": 57.4,
+      "max_dps_before_fence": 45,
+      "max_dps_after_fence": 45,
+      "violating_frames_after_fence": 106,
+      "AP_M3_PASS": false
+    }
+  ],
+  "hit_resolution_vs_speed": [
+    {
+      "speed_mps": 0,
+      "hp_before": 412,
+      "hp_after": 332,
+      "damage": 80,
+      "lateral_travel_m": 0,
+      "events": [
+        "cast_start",
+        "focus_spend",
+        "cast_release",
+        "status_buildup",
+        "effect_apply",
+        "spell_impact"
+      ]
+    },
+    {
+      "speed_mps": 1.5,
+      "hp_before": 412,
+      "hp_after": 412,
+      "damage": 0,
+      "lateral_travel_m": 6.5,
+      "events": [
+        "cast_start",
+        "focus_spend",
+        "cast_release",
+        "spell_impact"
+      ]
+    },
+    {
+      "speed_mps": 3,
+      "hp_before": 412,
+      "hp_after": 412,
+      "damage": 0,
+      "lateral_travel_m": 13,
+      "events": [
+        "cast_start",
+        "focus_spend",
+        "cast_release",
+        "spell_impact"
+      ]
+    },
+    {
+      "speed_mps": 5,
+      "hp_before": 412,
+      "hp_after": 412,
+      "damage": 0,
+      "lateral_travel_m": 21.67,
+      "events": [
+        "cast_start",
+        "focus_spend",
+        "cast_release",
+        "spell_impact"
+      ]
+    },
+    {
+      "speed_mps": 7,
+      "hp_before": 412,
+      "hp_after": 412,
+      "damage": 0,
+      "lateral_travel_m": 30.33,
+      "events": [
+        "cast_start",
+        "focus_spend",
+        "cast_release",
+        "spell_impact"
+      ]
+    }
+  ],
+  "aggro_on_cast": [
+    {
+      "moving": false,
+      "range_m": 8,
+      "state_before": "IDLE",
+      "state_after": "REPOSITION",
+      "V": 0.418,
+      "sound_r_m": 0
+    },
+    {
+      "moving": true,
+      "range_m": 8,
+      "state_before": "IDLE",
+      "state_after": "REPOSITION",
+      "V": 0.418,
+      "sound_r_m": 0
+    },
+    {
+      "moving": false,
+      "range_m": 18,
+      "state_before": "IDLE",
+      "state_after": "IDLE",
+      "V": 0.418,
+      "sound_r_m": 0
+    },
+    {
+      "moving": true,
+      "range_m": 18,
+      "state_before": "IDLE",
+      "state_after": "IDLE",
+      "V": 0.418,
+      "sound_r_m": 0
+    },
+    {
+      "moving": false,
+      "range_m": 30,
+      "state_before": "IDLE",
+      "state_after": "IDLE",
+      "V": 0.418,
+      "sound_r_m": 0
+    },
+    {
+      "moving": true,
+      "range_m": 30,
+      "state_before": "IDLE",
+      "state_after": "IDLE",
+      "V": 0.418,
+      "sound_r_m": 0
+    }
+  ],
+  "touch_reach_vs_retreat": [
+    {
+      "retreat_speed_mps": 0,
+      "final_distance_m": 1.4,
+      "damage": 412
+    },
+    {
+      "retreat_speed_mps": 1,
+      "final_distance_m": 3.4,
+      "damage": 412
+    },
+    {
+      "retreat_speed_mps": 3,
+      "final_distance_m": 7.4,
+      "damage": 0
+    },
+    {
+      "retreat_speed_mps": 6,
+      "final_distance_m": 13.4,
+      "damage": 0
+    }
+  ]
+}

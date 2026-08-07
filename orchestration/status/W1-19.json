@@ -11,8 +11,17 @@
     "reports/**/mainquest-trace.*"
   ],
   "outputs_written": [
+    "game/data/quests/mainline.json",
     "game/data/quests/mainline-act1.json",
-    "game/data/quests/mainline-act2.json"
+    "game/data/quests/mainline-act2.json",
+    "game/data/quests/mainline-act3.json",
+    "game/data/quests/mainline-act4.json",
+    "game/data/quests/mainline-act5.json",
+    "game/data/quests/mainline-backpath.json",
+    "game/data/quests/hooks.json (additive: 32 entry_topics + 3 hooks)",
+    "game/src/sim/quest/machine.js (setFlag hook adds_topics)",
+    "tools/quests/mainline-census.mjs",
+    "reports/runs/W1-19/mainline-census.json"
   ],
   "findings": [
     "THERE IS NO MAIN QUEST. 37 quests on disk: 21 side, 11 faction, 1 hidden, 4 tagged category=main but all act 2 magic-utility fillers (Q-BLAK-01, Q-MAG-05/13/19). RI-QST06 needs 28 main quests across 5 acts + 3 backpath.",
@@ -22,8 +31,10 @@
     "Settlements (game/data/world/pois.json): stormhold[2171,761] thorn[3820,859] gideon[439,2913] helstrom[2262,2773] archon[3785,3823] blackrose[1905,4450] soulrest[610,4877] lilmoth[2766,5027]. 13 regions in game/data/world/regions.json.",
     "DESIGN: main quest = The Rootward Tide is failing (RI-LOR05 §6 cause C is authorially true). Handler Undersexton Aveline Rell, Drowned Court, Soulrest. Mandate = the ninth clause of the Ninth Recension of the Drowned Tally (D7, never_revealed). Antagonist = Ixtu-Meer, the Steward of the Count, tending a pre-Duskfall xanmeer reservoir under the Stone Wastes. Endings: open the Count / keep the Count / backpath cut. Acts I-V = 5/5/5/8/5, +3 backpath = 31 quests, ids Q-MAIN-01..31.",
     "deceit.revealed_by is the ONLY place a reveal id may be declared. requires_knowing and branch.leads_to both resolve against it, so ANY quest with a knowledge gate needs a deceit block even when the giver is honest (patterns D10/D12 fit an honest quest).",
-    "CONFLICT: Q-BLAK-01, Q-MAG-05, Q-MAG-13, Q-MAG-19 carry category:\"main\", act:2, stakes 8-9. They are magic-utility quests mislabelled by tools/analysis/gen-magic-quests.mjs (cat:\"main\" shorthand). They already break RI-QST06 (Act II stakes band is 3-4) and they inflate the Act II count to 9 against a 5±1 target. magic-audit Q11_WEIGHT is 9 against a >=6 bar, so reclassifying up to 3 of them is safe."
+    "CONFLICT: Q-BLAK-01, Q-MAG-05, Q-MAG-13, Q-MAG-19 carry category:\"main\", act:2, stakes 8-9. They are magic-utility quests mislabelled by tools/analysis/gen-magic-quests.mjs (cat:\"main\" shorthand). They already break RI-QST06 (Act II stakes band is 3-4) and they inflate the Act II count to 9 against a 5±1 target. magic-audit Q11_WEIGHT is 9 against a >=6 bar, so reclassifying up to 3 of them is safe.",
+    "mainline-census PASSES all RI-QST06 checks incl. 5 hard fails: acts 5/5/5/8/5, stakes 2.40/3.60/7.60/8.50/10.00 strictly increasing, Act IV simultaneous off Q-MAIN-15 alone, 7 of 8 rank-leveraged, mean res 3.375, D7 x4 all never_revealed, 0 rank_gate, backpath present, PONR fraction 0.9643.",
+    "RI-QST09 side effects of adding 32 quests: X1 24.3->56.5 PASS, X2 9->13 PASS, X7 0->62 (regression I introduced) fixed back to 0 by giving every exclusive resolution its own npc_disposition entity, its own reward and >=3 distinct flags, X8 0->76.92 (bar 80) - the 9 remaining unforeshadowed exclusive quests are ALL pre-existing non-mainline (Q-ARCH-01, Q-SOUL-02, Q-BLAK-01, Q-STRM-01, Q-LILM-01, Q-SAP-01, Q-LEDG-01, Q-DOCK-01, Q-DEEP-01); 30 of 30 mainline exclusive quests foreshadow. Fixing the other nine is W1-18 prose and I did not edit another builder's journal text."
   ],
-  "next_step": "write mainline-act3/4/5 + backpath, then hooks entry_topics, then tools/quests/mainline-census.mjs and the trace",
+  "next_step": "data-index regen, boot check, write tools/quests/mainline-trace.mjs and run the end-to-end trace in the browser",
   "notes_for_successor": "Paths owned: quests.mainline.acts, quests.mainline.antagonist, quests.mainline.prophecy, experience.ending.landing, experience.ending.aftermath, experience.ending.pointofnoreturn. W1-18 (quest engine+journal) is a SEPARATE in-flight piece — do not duplicate its engine work; consume it."
 }

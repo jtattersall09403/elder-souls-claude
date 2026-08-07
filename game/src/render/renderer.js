@@ -18,6 +18,7 @@ import { Province } from '../world/province.js';
 import { SIGNATURE_KINDS } from '../world/signature.js';
 import { SpellVFX } from './spell-vfx.js';
 import { UILayer } from './ui.js';
+import { UISurface } from '../ui/surface.js';
 import { TitleLayer } from './title.js';
 import { textRegister } from './text-register.js';
 
@@ -74,6 +75,14 @@ export class Renderer {
     this.propMeshes = new Map();
     // The dialogue surface. Drawn INTO this canvas, not into the DOM — see render/ui.js.
     this.ui = new UILayer(canvas.width, canvas.height);
+    // W1-21. The HUD and the menus, on a SECOND offscreen 2D canvas composited as a second
+    // textured quad, for exactly the reason the first one exists: `screenshotDataURL()` is
+    // `canvas.toDataURL()`, so anything in the DOM is present for a human and absent from every
+    // frame the harness captures. It is a separate surface from the dialogue one rather than a
+    // shared one because W1-07 owns that file and its layout rules (a bottom-anchored panel
+    // capped at 42% of frame height) are not the HUD's. Composited AFTER it, so a dialogue
+    // panel never covers your health.
+    this.menus = new UISurface(canvas.width, canvas.height);
     this.uiVisible = true;
     // The title surface. Same argument, same canvas — see render/title.js. `RI-JRN01` M20.
     this.title = new TitleLayer(canvas.width, canvas.height);
@@ -135,6 +144,10 @@ export class Renderer {
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     this.ui.setSize(w, h);
+    // The UI canvas is resized to the drawing buffer, never scaled to it. That is the whole of
+    // RI-UIX06 M-F17.2: a fixed-size canvas blitted to a larger buffer is the upscaled-bitmap
+    // signature it exists to catch, and a canvas that tracks the buffer has nothing to upscale.
+    if (this.menus && this.menus.setSize(w, h) && this.uiBuild) this.uiBuild(true);
     if (this.title) this.title.setSize(w, h);
     if (this.vfx) this.vfx.setSize(w, h);
     return { width: w, height: h };
@@ -282,6 +295,98 @@ export class Renderer {
   }
 
   /**
+   * W1-13 — the bloom and the sapwells, as objects in the scene graph.
+   *
+   * RI-JRN06 D14 is a VISIBILITY budget with a number on it: the stain must be findable from
+   * 12 m in daylight and 6 m in a dark interior, "because a stain the player cannot find is a
+   * stain they lose to geometry rather than to a second death". The item's own remedy for a
+   * hard-to-find stain is this budget and never a marker (D19, HF6), so the bloom is built to
+   * be read at distance: a 1.1 m grey fungal knot (RI-LOR05 §4 — "within an hour a grey fungal
+   * knot grows over it, humming faintly") with an unlit, tone-mapping-exempt emissive cap, so
+   * it is legible at 01:00 in a cave without a light being added to the scene.
+   *
+   * The sapwell is the same idea at the other end of the run: a basin of xanmeer stone with
+   * amber sap standing in it, drawn for every well within 160 m so the thing you are running
+   * back from is a place and not a coordinate.
+   */
+  syncDeathMarkers(sim, hearths) {
+    if (!this._marks) {
+      this._marks = { stain: null, wells: new Map(), group: new THREE.Group() };
+      this._marks.group.name = 'w1-13:markers';
+      this.scene.add(this._marks.group);
+    }
+    const M = this._marks;
+    const stain = sim.quest && sim.quest.death ? sim.quest.death.bloodstain : null;
+    if (stain && !M.stain) {
+      const g = new THREE.Group();
+      const knot = new THREE.Mesh(
+        new THREE.SphereGeometry(0.55, 14, 10),
+        new THREE.MeshStandardMaterial({ color: 0x9a9384, roughness: 0.95, metalness: 0.0 }));
+      knot.scale.set(1.0, 0.42, 1.0);
+      knot.position.y = 0.14;
+      knot.castShadow = true;
+      g.add(knot);
+      // The hum, made visible. `toneMapped: false` so the cap keeps its value through ACES and
+      // stays readable in a region whose fog extinction is eating everything else.
+      const cap = new THREE.Mesh(
+        new THREE.SphereGeometry(0.30, 12, 8),
+        new THREE.MeshBasicMaterial({ color: 0xd8b25a, toneMapped: false, transparent: true, opacity: 0.92 }));
+      cap.scale.set(1.0, 0.55, 1.0);
+      cap.position.y = 0.34;
+      g.add(cap);
+      // A ground halo, which is what carries the read at 12 m: a small bright object is a
+      // pixel, a 1.6 m disc on the mud is a shape.
+      const halo = new THREE.Mesh(
+        new THREE.CircleGeometry(0.82, 20),
+        new THREE.MeshBasicMaterial({ color: 0xc79a4a, toneMapped: false, transparent: true, opacity: 0.42, side: THREE.DoubleSide, depthWrite: false }));
+      halo.rotation.x = -Math.PI / 2;
+      halo.position.y = 0.035;
+      g.add(halo);
+      g.name = 'bloom';
+      M.group.add(g);
+      M.stain = g;
+    } else if (!stain && M.stain) {
+      M.group.remove(M.stain);
+      M.stain = null;
+    }
+    if (M.stain && stain) M.stain.position.set(stain.pos[0], stain.pos[1], stain.pos[2]);
+
+    const list = hearths ? hearths.list() : [];
+    const px = sim.player.pos[0], pz = sim.player.pos[2];
+    for (const h of list) {
+      const near = Math.hypot(h.pos[0] - px, h.pos[2] - pz) <= 160;
+      let mesh = M.wells.get(h.id);
+      if (near && !mesh) {
+        const g = new THREE.Group();
+        const basin = new THREE.Mesh(
+          new THREE.CylinderGeometry(1.15, 1.35, 0.62, 12),
+          new THREE.MeshStandardMaterial({ color: 0x6d6455, roughness: 0.92 }));
+        basin.position.y = 0.31; basin.castShadow = true; basin.receiveShadow = true;
+        g.add(basin);
+        const sap = new THREE.Mesh(
+          new THREE.CylinderGeometry(1.02, 1.02, 0.06, 12),
+          new THREE.MeshBasicMaterial({ color: 0xe0a63c, toneMapped: false }));
+        sap.position.y = 0.60;
+        g.add(sap);
+        // The cut root the basin stands on — the wound that was never allowed to close.
+        const root = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.22, 0.30, 1.9, 8),
+          new THREE.MeshStandardMaterial({ color: 0x4a3a26, roughness: 0.96 }));
+        root.position.set(0.95, 0.95, -0.4); root.rotation.z = 0.26;
+        g.add(root);
+        g.position.set(h.pos[0], h.pos[1], h.pos[2]);
+        g.name = 'sapwell:' + h.id;
+        M.group.add(g);
+        M.wells.set(h.id, g);
+      } else if (!near && mesh) {
+        M.group.remove(mesh);
+        M.wells.delete(h.id);
+      }
+    }
+    M.group.visible = true;
+  }
+
+  /**
    * Draw the current simulation state.
    * @param {SimState} sim
    */
@@ -296,6 +401,7 @@ export class Renderer {
     this.syncEntities(sim);
     this.syncNPCs(sim);
     this.syncProps(sim);
+    this.syncDeathMarkers(sim, this.hearths);
 
     this.camera.position.set(c.pos[0], c.pos[1], c.pos[2]);
     this._look.set(c.pivot[0], c.pivot[1], c.pivot[2]);
@@ -357,6 +463,13 @@ export class Renderer {
     };
     this.ui.setVisible(this.uiVisible);
     this.ui.render(this.three);
+    // W1-21. The HUD and the open screen, laid out for THIS frame and composited as a second
+    // textured quad. `uiBuild` is installed by the engine; with no engine attached nothing is
+    // drawn and the frame is byte-identical to what it was before this piece existed, which is
+    // what keeps every pre-W1-21 shot comparable.
+    const uiBefore = info.render.calls;
+    if (this.uiVisible && this.uiBuild) { this.uiBuild(false); this.menus.render(this.three); }
+    this.menuDrawCalls = info.render.calls - uiBefore;
     // The title composites LAST, over the dialogue surface and over the world. It is the
     // only surface allowed above the scene, and it is still a surface with the live world
     // behind it — `RI-JRN01` M1 counts "full-viewport UI states with no 3D world rendered
@@ -369,6 +482,7 @@ export class Renderer {
       lines: world.lines,
       worldDrawCalls: world.calls,
       uiDrawCalls: this.ui.model && this.uiVisible ? info.render.calls : 0,
+      menuDrawCalls: this.menuDrawCalls || 0,
       geometries: info.memory.geometries,
       textures: info.memory.textures,
       programs: (this.three.info.programs || []).length,

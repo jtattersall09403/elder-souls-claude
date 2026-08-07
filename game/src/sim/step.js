@@ -73,6 +73,14 @@ export function stepOnce(sim, input, combat, bus) {
     // surface is open it eats `move`, `interact` and `block`, so walking a birthsign list
     // does not also walk the body across the room.
     if (sim.censusDriver) sim.censusDriver(input);
+    // W1-21: the HUD's screens take their navigation from the SAME latch, inside the step, for
+    // the same two reasons the census surface does — a menu press is a simulation event that
+    // has to land on an exact frame, and the gamepad path has to arrive the way a swing does.
+    // While a screen is open it eats `menu`, `interact` and the movement axes so that walking
+    // an inventory list does not also walk the body across the room. It does NOT eat `roll`,
+    // `block` or `light` while a fight is live: RI-UIX03 P6 is explicit that a menu which
+    // swallows your dodge is a trap rather than a consequence.
+    if (sim.uiDriver) sim.uiDriver(input);
     // W1-07 AR-3: a net that holds you. The restraint is applied to the LATCH, before the
     // fight reads it, so `speed_mps` in the trace really is 0 and the roll really is denied
     // — rather than a `net_behaviour: "capture"` string in an event nobody acts on.

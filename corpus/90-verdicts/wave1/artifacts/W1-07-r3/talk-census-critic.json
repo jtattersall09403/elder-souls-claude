@@ -1,0 +1,306 @@
+{
+  "npcs": 15,
+  "races": 10,
+  "pairs": 150,
+  "mute": [],
+  "by_race": {
+    "saxhleel": {
+      "total": 57,
+      "mute_npcs": 0
+    },
+    "naga": {
+      "total": 57,
+      "mute_npcs": 0
+    },
+    "imperial": {
+      "total": 57,
+      "mute_npcs": 0
+    },
+    "nord": {
+      "total": 57,
+      "mute_npcs": 0
+    },
+    "breton": {
+      "total": 57,
+      "mute_npcs": 0
+    },
+    "redguard": {
+      "total": 57,
+      "mute_npcs": 0
+    },
+    "khajiit": {
+      "total": 57,
+      "mute_npcs": 0
+    },
+    "orsimer": {
+      "total": 57,
+      "mute_npcs": 0
+    },
+    "bosmer": {
+      "total": 57,
+      "mute_npcs": 0
+    },
+    "dunmer": {
+      "total": 56,
+      "mute_npcs": 0
+    }
+  },
+  "by_place": {
+    "helstrom": {
+      "npcs": 4,
+      "worst": "dunmer",
+      "worst_topics": 13,
+      "best": "bosmer",
+      "best_topics": 14,
+      "silent_races": []
+    },
+    "stormhold": {
+      "npcs": 3,
+      "worst": "saxhleel",
+      "worst_topics": 10,
+      "best": "bosmer",
+      "best_topics": 10,
+      "silent_races": []
+    },
+    "rootlands": {
+      "npcs": 3,
+      "worst": "saxhleel",
+      "worst_topics": 12,
+      "best": "bosmer",
+      "best_topics": 12,
+      "silent_races": []
+    },
+    "thorn": {
+      "npcs": 2,
+      "worst": "saxhleel",
+      "worst_topics": 6,
+      "best": "bosmer",
+      "best_topics": 6,
+      "silent_races": []
+    },
+    "tidewrack": {
+      "npcs": 3,
+      "worst": "saxhleel",
+      "worst_topics": 15,
+      "best": "bosmer",
+      "best_topics": 15,
+      "silent_races": []
+    }
+  },
+  "direction": {
+    "pairs": 57,
+    "answered_all": 56,
+    "subtractive": 1,
+    "single_race": 0,
+    "hist": {
+      "9": 1,
+      "10": 56
+    },
+    "examples": [
+      {
+        "npc": "helstrom-net-mender",
+        "topic": "the-old-cages",
+        "answered_for": 9,
+        "races": [
+          "saxhleel",
+          "naga",
+          "imperial",
+          "nord",
+          "breton",
+          "redguard",
+          "khajiit",
+          "orsimer",
+          "bosmer"
+        ]
+      }
+    ]
+  },
+  "depth": {
+    "best": "saxhleel",
+    "best_total": 57,
+    "worst": "dunmer",
+    "worst_total": 56,
+    "ratio": 0.982
+  },
+  "answer_variation": {
+    "varying": 35,
+    "constant": 22,
+    "examples": [
+      {
+        "npc": "helstrom-draught-seller",
+        "topic": "the-draught",
+        "distinct": 2
+      },
+      {
+        "npc": "helstrom-draught-seller",
+        "topic": "the-market",
+        "distinct": 2
+      },
+      {
+        "npc": "helstrom-draught-seller",
+        "topic": "the-surcharge",
+        "distinct": 3
+      },
+      {
+        "npc": "helstrom-salt-factor",
+        "topic": "house-business",
+        "distinct": 3
+      },
+      {
+        "npc": "helstrom-salt-factor",
+        "topic": "the-factor-house",
+        "distinct": 3
+      },
+      {
+        "npc": "helstrom-salt-factor",
+        "topic": "the-wine",
+        "distinct": 3
+      },
+      {
+        "npc": "helstrom-salt-factor",
+        "topic": "the-net-price",
+        "distinct": 2
+      },
+      {
+        "npc": "helstrom-net-mender",
+        "topic": "the-tides",
+        "distinct": 2
+      },
+      {
+        "npc": "helstrom-reed-seller",
+        "topic": "the-market",
+        "distinct": 2
+      },
+      {
+        "npc": "helstrom-reed-seller",
+        "topic": "boots",
+        "distinct": 2
+      },
+      {
+        "npc": "helstrom-reed-seller",
+        "topic": "why-anyone-comes-here",
+        "distinct": 2
+      },
+      {
+        "npc": "stormhold-gate-guard",
+        "topic": "bridge-duty",
+        "distinct": 2
+      },
+      {
+        "npc": "stormhold-gate-guard",
+        "topic": "the-muster-board",
+        "distinct": 2
+      },
+      {
+        "npc": "stormhold-gate-guard",
+        "topic": "citizenship",
+        "distinct": 3
+      },
+      {
+        "npc": "stormhold-second-guard",
+        "topic": "the-muster-board",
+        "distinct": 2
+      },
+      {
+        "npc": "stormhold-second-guard",
+        "topic": "home-leave",
+        "distinct": 2
+      },
+      {
+        "npc": "stormhold-street-sweeper",
+        "topic": "what-the-warmbloods-ask",
+        "distinct": 2
+      },
+      {
+        "npc": "rootlands-keeper",
+        "topic": "the-hist",
+        "distinct": 2
+      },
+      {
+        "npc": "rootlands-keeper",
+        "topic": "root-water",
+        "distinct": 2
+      },
+      {
+        "npc": "rootlands-keeper",
+        "topic": "what-the-sap-says",
+        "distinct": 2
+      },
+      {
+        "npc": "rootlands-keeper",
+        "topic": "hist-debt",
+        "distinct": 2
+      },
+      {
+        "npc": "rootlands-keeper",
+        "topic": "the-hatch-name-list",
+        "distinct": 2
+      },
+      {
+        "npc": "rootlands-drowned-speaker",
+        "topic": "the-drowned-kin",
+        "distinct": 2
+      },
+      {
+        "npc": "rootlands-band-elder",
+        "topic": "the-river-bands",
+        "distinct": 3
+      },
+      {
+        "npc": "rootlands-band-elder",
+        "topic": "bank-law",
+        "distinct": 3
+      },
+      {
+        "npc": "rootlands-band-elder",
+        "topic": "the-boat-tax",
+        "distinct": 3
+      },
+      {
+        "npc": "rootlands-band-elder",
+        "topic": "the-crossing-fee",
+        "distinct": 3
+      },
+      {
+        "npc": "king-hlaalu-teeth",
+        "topic": "my-kingdom",
+        "distinct": 2
+      },
+      {
+        "npc": "warden-eshi",
+        "topic": "the-marsh",
+        "distinct": 2
+      },
+      {
+        "npc": "jeeh-ei",
+        "topic": "the-writ-house",
+        "distinct": 2
+      },
+      {
+        "npc": "jeeh-ei",
+        "topic": "what-they-take-off-you",
+        "distinct": 2
+      },
+      {
+        "npc": "warden-scribe-tuleeh-ma",
+        "topic": "tidewrack",
+        "distinct": 2
+      },
+      {
+        "npc": "warden-scribe-tuleeh-ma",
+        "topic": "the-provincial-office",
+        "distinct": 3
+      },
+      {
+        "npc": "clerk-avelia-doren",
+        "topic": "the-provincial-office",
+        "distinct": 3
+      },
+      {
+        "npc": "clerk-avelia-doren",
+        "topic": "the-fee",
+        "distinct": 3
+      }
+    ]
+  }
+}

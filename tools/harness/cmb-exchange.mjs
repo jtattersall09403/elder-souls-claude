@@ -57,6 +57,8 @@ if (argv.includes('--help')) {
   --enemy <archetype>           default champion_hist_marked
   --samples <n>                 M2 sample count, default 200
   --horizon <f>                 M2 fork horizon in f@60, default 120
+  --clips <path>                judge a CANDIDATE clips.json instead of the shipped one
+  --moves <a,b,...>             M1 only: restrict the census to these attacks
   --out <path>
 `);
   process.exit(0);
@@ -67,6 +69,15 @@ const ENEMY = String(arg('enemy', 'champion_hist_marked'));
 const N = Number(arg('samples', 200));
 const HORIZON = Number(arg('horizon', 120));
 const data = loadCombatData();
+// `--clips` — WHY THIS EXISTS. `anim-author.mjs` solves the attack archetypes against its OWN
+// proxy for §A.1: the pose metric only, measured against the authored idle constant. This
+// instrument's `f_vis` is `min(pose, silhouette)` unless the two disagree by more than
+// DISAGREE_F, in which case the LATER wins — and on `sweep_wide` the silhouette is the binding
+// metric by eight frames. A solver that cannot see that term will keep solving to a number
+// nobody scores. Pointing this flag at a candidate file lets the search be graded by the
+// instrument that grades the build, rather than by a copy of half of it.
+if (arg('clips')) data.clips = JSON.parse(fs.readFileSync(String(arg('clips')), 'utf8'));
+const ONLY_MOVES = arg('moves') ? String(arg('moves')).split(',') : null;
 
 // ---- ES-REACT/1 §A.1 — the six tracked joints, declared, the same six for every actor -------
 const TRACKED = ['hand_r', 'lowerarm_r', 'upperarm_r', 'clavicle_r', 'spine_02', 'head'];
@@ -246,6 +257,7 @@ if (want('react')) {
   const st = data._enemies[ENEMY];
   const rows = [];
   for (const move of Object.keys(st.attacks)) {
+    if (ONLY_MOVES && !ONLY_MOVES.includes(move)) continue;
     for (const entry of ['idle', 'walk']) {
       const r = reactOne(move, entry);
       r.declared_reactable = st.attacks[move].reactable;

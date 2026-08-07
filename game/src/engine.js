@@ -19,6 +19,10 @@ import { QuestBook } from './sim/quest/defs.js';
 import { FactionGates } from './sim/quest/gate.js';
 import { QuestEngine } from './sim/quest/machine.js';
 import { Journal } from './sim/quest/journal.js';
+// W1-21 — the interface. The system owns the mode, the focus and the pause rule; the surface
+// it draws into belongs to the renderer, so everything it draws is inside the harness
+// screenshot (game/src/ui/surface.js explains why that matters more than it looks).
+import { UISystem, OPENABLE } from './ui/system.js';
 import { combatMeta, combatFrame } from './combat/trace.js';
 import { mirror } from './sim/combat-bridge.js';
 import { makeRecord } from './sim/record.js';
@@ -218,8 +222,12 @@ export class Engine {
       groundAt: (x, z) => this.groundInActiveCell(x, z),
     });
     this.renderer.setWorld(this.field, this.data.roads);
+    // W1-13: the renderer draws the wells and the bloom off the same registry the simulation
+    // respawns you at. One source, so a well you can see is a well you can rest at.
+    this.renderer.hearths = this.hearths;
     // The camera's collision set. Built once from game/data/camera/cells.json and then
     // selected per named state; the sim step only ever reads it.
+    this._buildUI();
     this.cells = buildCells(this.data.cameraCells);
     this.sim.cameraTargets = this.data.cameraTargets.heights_m;
     this.sim.cameraTargets._default = this.data.cameraTargets._default;
@@ -261,6 +269,9 @@ export class Engine {
     this.questBook = new QuestBook(this.data.quests);
     this.factionGates = new FactionGates(this.data.quests['faction-gates'] || { factions: [] });
     this.questEngine = new QuestEngine(this.questBook, this.factionGates, this.data.quests['quest-hooks'], this.sim);
+    // W1-19: the authored NPC disposition table, copied into the register the quest gates read.
+    // Without this every `giver.disposition_min` in game/data/quests/** is unreachable.
+    this.seedDispositions();
     this.sim.questEngine = this.questEngine;
     this.real.onTextChar = (ch) => this._censusTypeChar(ch);
     this.applyNamedState(opts.state || 'default');
@@ -805,7 +816,19 @@ export class Engine {
    * items make it responsible for: RI-PRG03 §4's rest clamp resets, and RI-CHR03's Dry Well
    * drawback decides whether Focus comes back.
    */
-  hearthRest() {
+  hearthRest(opts = {}) {
+    // W1-13. WHICH well. `opts.at` names one explicitly (the harness affordance an arena
+    // scenario needs, and it is labelled as such in the return value); otherwise the well the
+    // body is standing at. Resolving to NOTHING is not an error — every W1-14 magic probe in
+    // the tree calls `hearthRest()` in an arena with no well in it and expects the Focus
+    // refill — but a rest with no well behind it does not set a respawn point, does not
+    // re-grow the marsh and does not move the clock, and says so.
+    const hearth = opts.at
+      ? (this.hearths ? this.hearths.get(opts.at) : null)
+      : (this.hearths ? this.hearths.at(this.sim.player.pos[0], this.sim.player.pos[2]) : null);
+    if (opts.at && !hearth) {
+      throw new Error(`hearthRest({at:'${opts.at}'}): no such hearth. ${this.hearths ? this.hearths.count() : 0} are placed in game/data/world/hearths.json.`);
+    }
     for (const k of Object.keys(this.sim.progression.skills)) {
       this.sim.progression.skills[k].levelsSinceRest = 0;
       this.sim.progression.skills[k].restClamped = false;
@@ -832,11 +855,48 @@ export class Engine {
     const taint = taintOf(this.sim);
     const taintBefore = taint.band;
     if (!taint.immune) { taint.rests++; taint.band = bandFromRests(taint); }
+    // ---- W1-13: the four things a HEARTH does that a Focus refill is not ------------------
+    // RI-PRG04 §1 and §2. Every one of these reaches a field that has been in the save since
+    // wave 1 with no writer: `hearthLastRested`, `hearthsDiscovered`, `enemiesDeadUntilRest`.
+    let respawned = null, clockBefore = null, clockAfter = null, diseases = [];
+    if (hearth) {
+      // 1. the root tastes you, and thereafter holds your pattern (RI-LOR05 §4). THE respawn
+      //    point — and the only thing in this build that writes it.
+      this.sim.progression.hearthLastRested = hearth.id;
+      if (!this.sim.progression.hearthsDiscovered.includes(hearth.id)) {
+        this.sim.progression.hearthsDiscovered.push(hearth.id);
+      }
+      // 2. the marsh re-grows what you pruned (S5, and named actors are outside its reach).
+      respawned = this.death
+        ? this.death.respawnOrdinary(this.sim, this.combat, this.bus, 'hearth_rest')
+        : null;
+      // 3. the clock moves six hours, which is the COST of resting and the Morrowind half of
+      //    the checkpoint. Death does NOT do this (RI-PRG04 §6 rule 4).
+      clockBefore = this.sim.env.timeOfDay;
+      const t = clockBefore + REST_HOURS;
+      this.sim.env.timeOfDay = ((t % 24) + 24) % 24;
+      if (t >= 24) this.sim.env.dayCount = (this.sim.env.dayCount || 0) + Math.floor(t / 24);
+      clockAfter = this.sim.env.timeOfDay;
+      // 4. an untreated disease advances one stage. RI-JRN06 "How we lose" #11 is about the
+      //    other direction — death must not CURE one — and both halves are needed for the
+      //    affliction economy to mean anything.
+      for (const a of this.sim.quest.afflictions) {
+        if (a.kind !== 'disease') continue;
+        a.stage = (a.stage || 1) + 1;
+        diseases.push({ id: a.id, stage: a.stage });
+      }
+    }
+
     const ev = this.bus.emit(this.sim.frame, 'bonfire_rest');
     ev.focus_before = focusBefore; ev.focus_after = focusAfter; ev.focus_restored = restores;
     ev.sap_taint_band = taint.band; ev.sap_taint_rests = taint.rests;
     if (taint.band !== taintBefore) ev.sap_taint_rose = true;
+    ev.hearth = hearth ? hearth.id : null;
+    ev.enemies_respawned = respawned ? respawned.respawned.length : 0;
+    ev.named_held_dead = respawned ? respawned.held_dead.length : 0;
+    ev.clock_before = clockBefore; ev.clock_after = clockAfter;
     mirror(this.sim, this.combat);
+    if (this.death) this.death.lastHp = this.combat && this.combat.player ? this.combat.player.hp : this.sim.player.hp;
     quantiseColdState(this.sim);
     return {
       rested: true, focus_restored: restores, focus: focusAfter, focus_max: this.magic ? this.magic.focusMax : null,
@@ -844,6 +904,110 @@ export class Engine {
       rest_clamp_reset: true,
       sap_taint: { band: taint.band, rests: taint.rests, immune: taint.immune, ward_uses_left: taint.wardUsesLeft },
       note: 'RI-MAG01 §A: the reservoir refills here and nowhere else — and for one birthsign in nine, not even here.',
+      // ---- W1-13 -------------------------------------------------------------------------
+      hearth: hearth ? hearth.id : null,
+      hearth_resolved_by: hearth ? (opts.at ? 'explicit' : 'proximity') : 'none',
+      respawn_point_set: hearth ? hearth.id : null,
+      hearths_discovered: [...this.sim.progression.hearthsDiscovered],
+      world_reset: respawned,
+      clock: { before: clockBefore, after: clockAfter, hours: hearth ? REST_HOURS : 0, day: this.sim.env.dayCount },
+      diseases_advanced: diseases,
+      hp: this.combat && this.combat.player ? this.combat.player.hp : this.sim.player.hp,
+      flask_charges: this.sim.player.estus,
+      no_hearth_note: hearth ? null
+        : 'No sapwell within reach, so this was the pools-and-clamp half only: no respawn point '
+          + 'was set, nothing re-grew and the clock did not move. RI-PRG04 §1 needs a well.',
+      // Seam S7, returned rather than asserted: RI-PRG04 method 2 asks that the HEARTH
+      // interaction expose no destination list of any kind.
+      menu: hearth && this.hearths ? this.hearths.menu(hearth.id) : null,
+    };
+  }
+
+  // ---- W1-13: death, the bloom and the run back -------------------------------------------
+
+  /**
+   * One frame of the death loop, run from `_afterStep()`.
+   *
+   * `sim/death.js` owns every rule; what is here is the two things only the engine can supply:
+   * the SKIP (any input, on the surface's first frame — RI-JRN06 D5, RI-JRN01 O2), and the
+   * camera, which is the same rig driven to a different target (RI-CAM06 §H).
+   */
+  _deathTick() {
+    if (!this.death) return null;
+    if (this.death.active && this.input && this.input.pressed) this.death.requestSkip(this.sim.frame);
+    const wasActive = this.death.active;
+    const r = this.death.observe(this.sim, this.combat, this.bus);
+    if (!wasActive && this.death.active) {
+      // The surface has just gone up. RI-CAM05 §F's closed vocabulary already has `death` in it.
+      beginDeathCamera(this.sim);
+      if (this.renderer) this.renderer.ui.setModel(this._deathSurfaceModel());
+    }
+    if (wasActive && !this.death.active) {
+      if (this.renderer && this.renderer.ui.model && this.renderer.ui.model.kind === 'death') {
+        this.renderer.ui.setModel(null);
+      }
+      this.sim.camera.mode = 'free';
+      // Seam S27 and RI-CHR03: waking at the well is the same transaction as resting at it, so
+      // the Dry Well's drawback applies to it. A sign whose cost you can dodge by dying is not
+      // a cost. The reverse — a respawn that refilled Focus for everyone — would also be the
+      // one route S27 says does not exist.
+      const pools = this.sim.character
+        ? applyBirthsignToPools(derivePools(this.sim.progression.attributes), this.sim.character)
+        : null;
+      const restores = !pools || pools.focus_restores_at_hearth;
+      if (this.magic && restores) this.magic.hearthRest();
+      if (r) r.focus_restored = restores;
+      if (this.magic) {
+        this.sim.player.focus = this.magic.focus;
+        this.sim.player.focusMax = this.magic.focusMax;
+      }
+      mirror(this.sim, this.combat);
+      quantiseColdState(this.sim);
+    }
+    return r;
+  }
+
+  /** The one line the death surface carries. RI-JRN06 D5/D18: no statistics, no tips. */
+  _deathSurfaceModel() {
+    return { kind: 'death', line: DEATH_LINE, skippable: true, max_frames: SURFACE_FRAMES };
+  }
+
+  getDeathState() {
+    if (!this.death) return { present: false };
+    return {
+      present: true,
+      ...this.death.report(this.sim),
+      hearths_placed: this.hearths ? this.hearths.count() : 0,
+      respawn_scope: this.death.respawnReport(this.sim),
+    };
+  }
+
+  killPlayer(cause) {
+    const b = this.combat && this.combat.player;
+    if (!b) throw new Error('killPlayer: no combat body');
+    b.hp = 0; b.dead = true;
+    this.sim.player.hp = 0;
+    return { hp: 0, cause: cause || 'combat', note: 'The death itself fires from _afterStep, on the next stepFrames(1).' };
+  }
+
+  recoverBloodstain() {
+    if (!this.death) return null;
+    return this.death.tryRecover(this.sim, this.bus);
+  }
+
+  listHearths() {
+    if (!this.hearths) return { count: 0, hearths: [], fog_gates: [] };
+    const p = this.sim.player;
+    const n = this.hearths.nearest(p.pos[0], p.pos[2]);
+    return {
+      count: this.hearths.count(),
+      hearths: this.hearths.list(),
+      fog_gates: this.hearths.gates.map((g) => ({ ...g })),
+      measured: this.hearths.d.measured || null,
+      standing_at: (() => { const h = this.hearths.at(p.pos[0], p.pos[2]); return h ? h.id : null; })(),
+      nearest: n ? { id: n.hearth.id, dist_m: +n.dist_m.toFixed(2) } : null,
+      last_rested: this.sim.progression.hearthLastRested,
+      discovered: [...this.sim.progression.hearthsDiscovered],
     };
   }
 
@@ -1285,6 +1449,12 @@ export class Engine {
    * frame's events.
    */
   _censusStep(input) {
+    // W1-26: the journey stamps are read HERE, from the input as it was latched for this
+    // step, because `consumeUI()` clears the UI actions before `_afterStep()` runs and a
+    // stamp taken afterwards sees an empty pipeline. `sim.censusDriver` is called every
+    // frame, so this is the one place in the engine that sees every frame's real input.
+    this._inputActiveThisFrame = !!(input.held || input.pressed || input.moveX || input.moveY
+      || input.lookX || input.lookY || (input.edges && input.edges.length));
     // W1-26: the title surface has the buttons before anything else does, on exactly the
     // terms the census has them — the same latched input, the same closed action set, the
     // same "commit is queued out of the fixed step" rule (activating `continue` opens a
@@ -1482,7 +1652,8 @@ export class Engine {
   _journeyStamps() {
     const inp = this.input;
     if (!inp) return;
-    const active = !!(inp.held || inp.pressed || inp.moveX || inp.moveY || inp.lookX || inp.lookY);
+    const active = this._inputActiveThisFrame
+      || !!(inp.held || inp.pressed || inp.moveX || inp.moveY || inp.lookX || inp.lookY);
     if (this._firstInputFrame == null && active) {
       this._firstInputFrame = this.sim.frame;
       const ev = this.bus.emit(this.sim.frame, 'first_input');
@@ -1602,16 +1773,394 @@ export class Engine {
 
   /** What is drawn over the world right now, measured from the layout that drew it. */
   getUIState() {
-    const ui = this.renderer ? this.renderer.ui.metrics() : null;
-    return {
-      surfaces: ui && ui.open ? 1 : 0,
-      full_screen_panels: 0,
-      hud_elements: 0,
-      markers: 0,
-      ...(ui || {}),
-      world_rendered_behind: true,
-      draw_calls: this.renderer ? this.renderer.lastStats.drawCalls : 0,
+    const dlg = this.renderer ? this.renderer.ui.metrics() : null;
+    if (!this.ui) {
+      return {
+        mode: 'world', surfaces: dlg && dlg.open ? 1 : 0, full_screen_panels: 0,
+        hud_elements: 0, markers: 0, ...(dlg || {}), world_rendered_behind: true,
+        draw_calls: this.renderer ? this.renderer.lastStats.drawCalls : 0,
+      };
+    }
+    // Lay out for the CURRENT frame before reporting. Every probe in this project calls
+    // `setRenderRate(0)` before it steps (AGENT-PROTOCOL: a probe that renders one frame per
+    // simulation frame never returns), so `Renderer.render()` may not have run since the last
+    // step. A HUD that only existed during a render would report the frame before last to
+    // every measurement ever taken of it — including RI-UIX01 D1, which is "100% of frames
+    // within ±0.005" and would fail on the instrument rather than on the bar.
+    const ctx = this._uiCtx();
+    this.ui.build(ctx, false);
+    const st = this.ui.state(ctx);
+    st.dialogue_surface = dlg && dlg.open ? {
+      open: true, opaque_area_frac: dlg.opaque_area_frac, panel_height_frac: dlg.panel_height_frac,
+      rendered_text: dlg.text, option_count: dlg.option_count,
+    } : { open: false };
+    // The dialogue surface is a UI surface too, so its area belongs in the non-world total that
+    // RI-JRN01 M5 caps. Reported as a sum of two measured areas rather than as one guess.
+    st.non_world_area_frac = +(st.coveragePct / 100 + (dlg && dlg.open ? dlg.opaque_area_frac : 0)).toFixed(4);
+    st.draw_calls = this.renderer ? this.renderer.lastStats.drawCalls : 0;
+    st.frame = this.sim.frame;
+    return st;
+  }
+
+  // ---- W1-21: the interface ----------------------------------------------------------------
+
+  /**
+   * Build the UI system and hand the renderer the one callback it needs. Called once at boot,
+   * after `this.data` and `this.renderer` exist.
+   */
+  _buildUI() {
+    const items = new Map();
+    for (const group of Object.values(this.data.items || {})) {
+      for (const it of (group.items || [])) items.set(it.id, it);
+    }
+    const books = new Map();
+    for (const doc of Object.values(this.data.books || {})) {
+      if (Array.isArray(doc.books)) for (const b of doc.books) books.set(b.id, b);
+      else if (doc.id) books.set(doc.id, doc);
+    }
+    const attrs = (this.data.progression && this.data.progression.attributes
+      && this.data.progression.attributes.attributes) || [];
+    const skills = (this.data.progression && this.data.progression.skills
+      && (this.data.progression.skills.skills || [])) || [];
+    this.ui = new UISystem(this.renderer.menus, {
+      items, books, attributes: attrs, skills, quests: this.data.quests || {},
+      levels: (this.data.progression && this.data.progression.levels) || null,
+    });
+    this.renderer.uiBuild = (force) => this.ui.build(this._uiCtx(), force);
+    // Inside the fixed step, through the same latch a swing arrives on (sim/step.js runs it
+    // right after `censusDriver`). A menu press is therefore frame-exact and scriptable.
+    this.sim.uiDriver = (input) => {
+      if (this.censusSurface && this.censusSurface.takesInput) return;   // the census has the input
+      const taken = this.ui.step(input, this._uiCtx());
+      if (taken.length) input.consumeUI(taken);
     };
+    this._spentFrom = null;
+    this._lastRegenBlock = 0;
+  }
+
+  /** The read-only view of the world the interface draws from. Assembled fresh, never cached. */
+  _uiCtx() {
+    const p = this.sim.player;
+    const prog = this.sim.progression;
+    const inCombat = this.inCombat();
+    // D2's spend point: the stamina level at the moment the current regen block began. Read off
+    // `regenBlockUntil` changing rather than off a spend event, so it cannot disagree with the
+    // simulation about whether regen is blocked.
+    if ((p.regenBlockUntil || 0) !== this._lastRegenBlock) {
+      if ((p.regenBlockUntil || 0) > this.sim.frame && (this._spentFrom === null || p.stamina > this._spentFrom)) {
+        this._spentFrom = this._spentFromCandidate === undefined ? p.stamina : this._spentFromCandidate;
+      }
+      this._lastRegenBlock = p.regenBlockUntil || 0;
+      this._spentFrom = this._staminaLast === undefined ? p.stamina : this._staminaLast;
+    }
+    if (this.sim.frame >= (p.regenBlockUntil || 0)) this._spentFrom = null;
+    this._staminaLast = p.stamina;
+    const lockEid = p.lockOn || null;
+    let lockScreen = null;
+    if (lockEid) {
+      const e = this.sim.findEntity(lockEid);
+      if (e) {
+        // W1-09 r4b: this call site was written against a signature `projectNDC` has never had.
+        // `camera.js project(c, world, out)` takes a THREE-VECTOR and an out-vector and returns a
+        // BOOLEAN; this passed five scalars, so `world` was a number, `out` was a number, and
+        // `out[0] = …` threw `Cannot create property '0' on number '1.2'` out of `_uiCtx` —
+        // i.e. out of `sim.uiDriver`, i.e. out of the fixed step — on the FIRST FRAME AFTER
+        // LOCK-ON, in the browser build only. `H.lockOn('E1'); H.stepFrames(1)` reproduces it on
+        // a bare `arena_champion`. Found because `RI-MTH07` §D's `--verify` cross-check locks on.
+        // The correct signature is the one `harness/api.js`'s own projection uses at :3089.
+        const nd = [0, 0, 0];
+        if (projectNDC(this.sim.camera, [e.pos[0], e.pos[1] + 1.2, e.pos[2]], nd) && nd[2] > 0) {
+          lockScreen = [(nd[0] * 0.5 + 0.5) * this.renderer.menus.W, (0.5 - nd[1] * 0.5) * this.renderer.menus.H];
+        }
+      }
+    }
+    const cb = this.combat && this.combat.player;
+    return {
+      frame: this.sim.frame,
+      inCombat,
+      atHearth: !!(this.hearths && this.hearths.atHearth && this.hearths.atHearth(this.sim))
+        || !!this.sim._uiForceHearth,
+      hearthName: prog.hearthLastRested || null,
+      player: p,
+      estusMax: (cb && cb.estusMax) || 5,
+      slots: {
+        left: this.sim.loadout ? this.sim.loadout.shield : null,
+        right: this.sim.loadout ? this.sim.loadout.weapon : null,
+        item: this._quickSlotName('item'),
+        spell: (p.attuned && p.attuned.length && p.cast) ? String(p.cast.spell || p.attuned[0]) : (p.attuned && p.attuned[0]) || null,
+        leftActive: !!(cb && cb.blocking), rightActive: !!(p.state === 'ATTACK'),
+      },
+      buildups: (this.sim.quest.afflictions || []).map((a) => ({
+        kind: a.kind || 'disease', value: Number(a.buildup) || 0,
+      })).filter((b) => b.value > 0),
+      lockOn: lockScreen ? { eid: lockEid, screen: lockScreen } : null,
+      boss: this.sim.camera.uiMode === 'fog_gate' && this.sim.camera.fogTarget
+        ? this._bossModel(this.sim.camera.fogTarget) : null,
+      prompt: this._interactPrompt(),
+      inventory: this.sim.inventory,
+      container: this._openContainer ? this._openContainer.contents : [],
+      containerName: this._openContainer ? this._openContainer.name : null,
+      loadMax: this._equipLoadMax(),
+      burdenTier: burdenTierOf(this.sim.player.burdenRatio || 0).id
+        || burdenTierOf(this.sim.player.burdenRatio || 0).name || 'unburdened',
+      gold: (this.sim.loadout && this.sim.loadout.gold) || this.sim.gold || 0,
+      placeName: this.sim.env.interior || this.sim.env.region || null,
+      journal: this.sim.quest.journal,
+      dateLabel: this.sim.quest.journal.length ? this.sim.quest.journal[this.sim.quest.journal.length - 1].date : null,
+      attributes: prog.attributes,
+      skills: prog.skills,
+      spells: this._uiSpells(),
+      level: prog.level, souls: prog.soulsHeld, soulsToNext: this.soulsToNextLevel(),
+      previewFor: (id) => this.attributePreview(id),
+      name: this.sim.identity.name, race: this.sim.identity.race,
+      upbringing: this.sim.character ? this.sim.character.upbringing_id : null,
+      classLabel: this.sim.identity.profession, birthsign: this.sim.identity.sign,
+      reputation: (this.sim.quest.factions && this.sim.quest.factions.reputation) || 0,
+      bounty: Object.values(this.sim.quest.crime.bounty || {}).reduce((a, b) => a + (Number(b) || 0), 0),
+      focusLabel: this.sim.player.focusMax ? `${Math.round(this.sim.player.focus)} of ${Math.round(this.sim.player.focusMax)}` : null,
+      dpr: 1,
+      drawingBufferWidth: this.renderer.canvas.width,
+      spentFrom: this._spentFrom,
+    };
+  }
+
+  /** RI-PRG07's ceiling, from RI-PRG02's own curve on STRENGTH. Never a constant typed here. */
+  _equipLoadMax() {
+    // The number the screen prints and the number the burden ratio divides by are the SAME
+    // number. `equip_load_max` is RI-PRG02's curve on STRENGTH; the ×2.5 is `setBurden`'s own
+    // definition of the ratio (`carried_weight / (max_load * 2.5)`), so the capacity shown is
+    // the point at which you stop moving, and the ticks on the bar are the tier boundaries.
+    return derivePools(this.sim.progression.attributes).equip_load_max * 2.5;
+  }
+
+  /**
+   * C4 — encumbrance is a CONSEQUENCE, not a readout.
+   *
+   * RI-UIX03 predicts the exact failure: "C3 passes, C4 does not: the bar fills, nothing happens
+   * at the threshold, and the player learns to ignore it." That was the state of this build. A
+   * burden model existed — `burdenTierOf`, `_burdenMult()`, and `traversal.step()` consuming the
+   * multiplier every frame — and the ONLY thing that ever set `burdenRatio` was the harness verb
+   * `setBurden()`. Nothing in the running world computed it, so carrying forty-four objects cost
+   * exactly nothing and the number on the inventory screen was decorative.
+   *
+   * This closes it: the same sum the screen prints is the ratio the movement multiplier reads.
+   * Perturbation test: put the shell-scale hauberk (9.1) and the bog-iron maul (11.5) in your
+   * pack and the tier moves UNBURDENED -> LADEN and `_burdenMult()` returns 0.90, which
+   * `sim/traversal.js` applies as a speed. Drop them and it returns.
+   *
+   * Allocation-free and clock-free: it runs once per step, over an array the sim already owns.
+   */
+  _recomputeBurden() {
+    const inv = this.sim.inventory;
+    let w = 0;
+    for (let i = 0; i < inv.length; i++) {
+      const rec = this.ui && this.ui.data.items.get(inv[i].id);
+      if (rec && rec.weight) w += rec.weight * (inv[i].count || 1);
+    }
+    const cap = this._equipLoadMax();
+    this.sim.player.carriedWeight = w;
+    this.sim.player.burdenRatio = cap > 0 ? w / cap : 0;
+    return this.sim.player.burdenRatio;
+  }
+
+  _quickSlotName(kind) {
+    for (const r of this.sim.inventory) if (r.quickSlot === kind) return r.id;
+    return null;
+  }
+
+  _uiSpells() {
+    const M = this.magic;
+    if (!M || !M.d || !M.d.spells) return [];
+    const attuned = (this.sim.player.attuned || []);
+    const out = [];
+    for (const id of attuned) {
+      const s = (M.d.spells.spells || []).find((x) => x.id === id);
+      if (s) out.push({ id: s.id, name: s.name || s.id, cost: Math.round(s.focus_cost || s.cost || 0), school: s.school || '', description: s.description || '' });
+    }
+    return out;
+  }
+
+  _bossModel(eid) {
+    const e = this.sim.findEntity(eid);
+    if (!e) return null;
+    return { name: e.display_name || e.archetype || eid, frac: e.hpMax ? e.hp / e.hpMax : 0 };
+  }
+
+  /** X12: a prompt only for something ACTUALLY in range. The range test is the prompt's cause. */
+  _interactPrompt() {
+    const p = this.sim.player;
+    for (const o of this.sim.props) {
+      if (o.taken) continue;
+      const d = Math.hypot(o.pos[0] - p.pos[0], o.pos[2] - p.pos[2]);
+      if (d <= (o.reach_m || 1.6)) return { text: 'Take ' + (o.name || 'it'), range_m: +d.toFixed(2) };
+    }
+    for (const n of this.sim.npcs) {
+      const d = Math.hypot(n.pos[0] - p.pos[0], n.pos[2] - p.pos[2]);
+      if (d <= 2.2) return { text: 'Speak to ' + (n.name || n.eid), range_m: +d.toFixed(2) };
+    }
+    return null;
+  }
+
+  /** RI-PRG01's curve, read from game/data/progression/levels.json and never re-derived here. */
+  soulsToNextLevel() {
+    const L = this.sim.progression.level;
+    const d = this.data.progression && this.data.progression.levels;
+    if (!d) return 0;
+    const row = (d.levels || []).find((r) => r.level === L + 1);
+    if (row) return row.souls;
+    // Past the shipped table (which runs to 140), RI-PRG01's canonical formula, for the level
+    // BEING PURCHASED. The table and the formula agree on all 139 shipped rows exactly, which
+    // `ui-census.mjs --curve` re-checks on every run rather than trusting this comment.
+    const n = L + 1;
+    return Math.round(0.015 * n * n * n + 2.0 * n * n + 55 * n + 300);
+  }
+
+  /** L6: what one point in `attrId` changes, computed BEFORE anything is spent. */
+  attributePreview(attrId) {
+    const cur = { ...this.sim.progression.attributes };
+    const before = derivePools(cur);
+    cur[attrId] = (cur[attrId] || 10) + 1;
+    const after = derivePools(cur);
+    const rows = [];
+    for (const k of Object.keys(after)) {
+      const a = after[k], b = before[k];
+      if (typeof a !== 'number' || typeof b !== 'number' || a === b) continue;
+      rows.push({ key: k, label: k.replace(/_/g, ' '), from: r4c(b), to: r4c(a) });
+    }
+    return rows;
+  }
+
+  /** RI-UIX03's `openMenu(name)` / `closeMenu()`. `map` is refused, with the reason. */
+  openMenu(name, opts) {
+    const mode = this.ui.open(name, opts || {}, this._uiCtx());
+    // RI-CAM05 §F's closed camera vocabulary: a menu is `menu`, and the camera knows it.
+    cameraOpenUI(this.sim, 'menu');
+    this.ui.build(this._uiCtx(), true);
+    return { ok: true, mode, paused: this.ui.pausesSimulation(this.inCombat()) };
+  }
+
+  closeMenu() {
+    const mode = this.ui.close();
+    cameraCloseUI(this.sim);
+    this.ui.build(this._uiCtx(), true);
+    return { ok: true, mode };
+  }
+
+  /**
+   * Move the focus on the open screen without scripting a stick. Deterministic, and it is what
+   * lets a probe assert a specific row rather than press "down" eleven times and hope.
+   */
+  uiFocus(patch) {
+    const f = this.ui.focus[this.ui.mode];
+    if (!f) throw new Error(`uiFocus: mode '${this.ui.mode}' has no focus state`);
+    for (const k of Object.keys(patch)) {
+      if (!(k in f)) throw new Error(`uiFocus: '${k}' is not a focus field of '${this.ui.mode}' (${Object.keys(f).join(', ')})`);
+      f[k] = patch[k];
+    }
+    this.ui.build(this._uiCtx(), true);
+    return { ok: true, mode: this.ui.mode, focus: { ...f } };
+  }
+
+  /** RI-UIX04 J7. The same search the letter ring drives, addressable without one. */
+  uiSearch(q) {
+    if (this.ui.mode !== 'journal') throw new Error('uiSearch: the journal is not open');
+    this.ui.focus.journal.view = 'search';
+    this.ui.focus.journal.query = String(q === undefined || q === null ? '' : q);
+    this.ui.build(this._uiCtx(), true);
+    const m = this.ui._journalModel(this._uiCtx());
+    return {
+      query: m.query, count: m.results.length,
+      results: m.results.map((r) => ({ journal_id: r.journal_id, index: r.index, day: r.day, date: r.dateText })),
+      chronological: m.results.every((r, i) => i === 0 || r.day > m.results[i - 1].day
+        || (r.day === m.results[i - 1].day && r.index >= m.results[i - 1].index)),
+    };
+  }
+
+  /**
+   * W1-13 owns the hearth registry. Until a well is placed where a probe stands, this is how
+   * RI-UIX03 §E is reachable at all — and it is a declared override, visible in the report, so
+   * nobody mistakes it for a hearth existing in the world.
+   */
+  setAtHearth(v) { this.sim._uiForceHearth = !!v; return { ok: true, at_hearth: !!v, declared_override: !!v }; }
+
+  /** M-P1/M-P2's raw counts. A boolean would hide how total a wrong pause is. */
+  getUIPauseReport() {
+    return {
+      mode: this.ui.mode,
+      in_combat: this.inCombat(),
+      pauses_now: this.ui.pausesSimulation(this.inCombat()),
+      paused_frames_total: this.uiPausedFrames || 0,
+      frame: this.sim.frame,
+    };
+  }
+
+  /** The container screen (RI-UIX03 C8). `contents` is hand-placed, per S12. */
+  openContainer(name, contents) {
+    this._openContainer = { name: String(name), contents: (contents || []).map((c) => ({ ...c })) };
+    return this.openMenu('container', {});
+  }
+
+  /**
+   * P7: an equip during a fight is an animation-committed action of >= 30 frames during which
+   * the player is vulnerable. The swap does not happen at the press; it happens at the end of
+   * the commitment, and `actionableAt` on the combat body is what makes those 30 frames real
+   * rather than cosmetic.
+   */
+  _applyUIPending() {
+    const act = this.ui.pending;
+    if (!act) return;
+    this.ui.pending = null;
+    if (act.kind === 'equip') {
+      const b = this.combat && this.combat.player;
+      const f = this.sim.frame;
+      if (b) { b.actionableAt = Math.max(b.actionableAt || 0, f + 30); b.iframe = false; }
+      this.sim.player.actionableAt = Math.max(this.sim.player.actionableAt || 0, f + 30);
+      this._equipCommit = { item: act.item, at: f + 30 };
+      const ev = this.bus.emit(f, 'equip_start');
+      ev.item = act.item; ev.commit_frames = 30; ev.iframe = false;
+    } else if (act.kind === 'use') {
+      const row = this.sim.inventory.find((r) => r.id === act.item);
+      if (row) { row.count = Math.max(0, (row.count || 1) - 1); if (!row.count) this.sim.inventory.splice(this.sim.inventory.indexOf(row), 1); }
+      const ev = this.bus.emit(this.sim.frame, 'item_used'); ev.item = act.item;
+    } else if (act.kind === 'transfer') {
+      this._transferItem(act.item, act.to);
+    } else if (act.kind === 'level') {
+      this._spendSouls(act.attribute);
+    }
+  }
+
+  _finishEquipCommit() {
+    const c = this._equipCommit;
+    if (!c || this.sim.frame < c.at) return;
+    this._equipCommit = null;
+    for (const r of this.sim.inventory) if (r.slot === 'right') r.slot = null;
+    const row = this.sim.inventory.find((r) => r.id === c.item);
+    if (row) row.slot = 'right';
+    const ev = this.bus.emit(this.sim.frame, 'equip_end'); ev.item = c.item;
+  }
+
+  _transferItem(id, to) {
+    const from = to === 'container' ? this.sim.inventory : (this._openContainer ? this._openContainer.contents : []);
+    const into = to === 'container' ? (this._openContainer ? this._openContainer.contents : []) : this.sim.inventory;
+    const i = from.findIndex((r) => r.id === id);
+    if (i < 0) return;
+    into.push(from.splice(i, 1)[0]);
+    const ev = this.bus.emit(this.sim.frame, 'item_moved'); ev.item = id; ev.to = to;
+  }
+
+  /** S15: souls level you and only level you. Gold is not touched here and is not shown. */
+  _spendSouls(attrId) {
+    const prog = this.sim.progression;
+    const cost = this.soulsToNextLevel();
+    if (prog.soulsHeld < cost) return false;
+    prog.soulsHeld -= cost;
+    prog.soulsSpent += cost;
+    prog.level += 1;
+    prog.attributes[attrId] = (prog.attributes[attrId] || 10) + 1;
+    this.sim._poolsDirty = true;
+    const ev = this.bus.emit(this.sim.frame, 'level_up');
+    ev.attribute = attrId; ev.level = prog.level; ev.souls_spent = cost;
+    return true;
   }
 
   _npcRecord(id) {
@@ -1907,6 +2456,25 @@ export class Engine {
    * and after its timing window has closed.
    */
   _step() {
+    // S14, and it is a ruling about TIME, not about availability (RI-UIX03 §A). The screen is
+    // always openable; what changes at the combat boundary is whether the world moves. Outside a
+    // fight, in a menu, the simulation does not advance — and the input still latches, so the
+    // menu is navigable while it is stopped.
+    //
+    // The failure this shape exists to avoid is `if (menuOpen) return;` at the top of the update
+    // loop: one line, obviously correct, and it deletes S14 by pausing the world in a fight too.
+    // The condition below asks the fight, every frame, and `inCombat()` is ARBITRATION §1's
+    // definition rather than a flag someone remembered to set.
+    if (this.ui && this.ui.pausesSimulation(this.inCombat())) {
+      this.uiPausedFrames = (this.uiPausedFrames || 0) + 1;
+      this._pausedThisStep = true;
+      this.input.latchForStep(this.sim.frame);
+      if (this.sim.uiDriver) this.sim.uiDriver(this.input);
+      return;
+    }
+    this._pausedThisStep = false;
+    {
+    }
     stepOnce(this.sim, this.input, this.combat, this.bus);
   }
 
@@ -1922,10 +2490,35 @@ export class Engine {
     // A census commit latched inside the step is applied here — outside the armed guard, and
     // strictly before the frame record, so its `creation_field` event is in this frame.
     if (this._titlePending) { const t = this._titlePending; this._titlePending = null; this._titleApply(t); }
+    // W1-26: THE CARET HAS TO REACH THE FRAME TOO.
+    //
+    // `buildCensusModel()` snapshots `selected`, `picked` and `typed` off the surface, and
+    // `_censusSync()` — the only thing that rebuilds the model — was called on census STATE
+    // changes only. Moving the caret changes none of those: it changes `censusSurface.sel`,
+    // which nothing re-read. So a player pressing down watched a surface that did not move,
+    // and at a node with more answers than the option window the answers below the ninth were
+    // computed, offered, selectable and never painted at all. That is `RI-JRN09`'s orphan text
+    // with an input attached, and it is the reason `DTR` at `hold.hatch-name` measured 0.67
+    // with thirteen hatch-names in the model. Re-sync outside the fixed step, only when one of
+    // the three actually moved, so a still surface still costs nothing.
+    if (this.census && this.censusSurface && this.censusSurface.takesInput && !this._censusPending) {
+      const s = this.censusSurface;
+      const sig = `${s.sel}|${s.picked.length}|${s.typed}`;
+      if (sig !== this._censusCaretSig) { this._censusCaretSig = sig; this._censusSync(); }
+    }
     if (this._censusPending) this._censusApplyPending();
+    // W1-21: a menu action latched inside the step is applied here, outside the armed guard,
+    // and strictly before the frame record, so its event is in this frame.
+    if (this.ui) { this._applyUIPending(); this._finishEquipCommit(); this._recomputeBurden(); }
     // An earned attribute point changed the sheet; the pools it feeds are re-derived once,
     // here, rather than every frame.
     if (this.sim._poolsDirty) this.applyDerivedPools({ refill: false, why: 'earned_attribute' });
+    // A paused frame is not a frame. The menu action above still applies — that is what the
+    // player pressed a button to do — but nothing that observes the passage of time runs, and
+    // no trace record is written. Otherwise a trace taken over an open menu would carry N
+    // identical records at one frame number, and travel, death and capture would all tick for
+    // however long the player spent reading.
+    if (this._pausedThisStep) return;
     if (this._propPending) this._takePropPending();
     if (this._talkPending) { const w = this._talkPending; this._talkPending = null; try { this.talkTo(w); } catch { /* they walked off */ } }
     if (this._convPending) { const t = this._convPending; this._convPending = null; try { this.conversationSay(t); } catch { /* nothing to say */ } }
@@ -3570,7 +4163,39 @@ export class Engine {
     if (!this.questEngine) return null;
     this.questEngine.sim = this.sim;
     this.questEngine.journal = new Journal(this.sim.quest.journal);
+    this.seedDispositions();
     return true;
+  }
+
+  /**
+   * W1-19. `disposition` is authored on every NPC record in `game/data/npcs/**` and, until this
+   * method existed, **nothing in the build read it**. `gate.js canOffer()` checks
+   * `giver.disposition_min` against `QuestEngine.context().dispositions`, which is
+   * `sim.quest.dispositions`, which started empty and was only ever written by a Charm effect
+   * (`sim/magic/apply.js`) or by a quest's own consequences. The result was that every quest in
+   * the build with a `disposition_min` above zero was unofferable from a cold start — the
+   * eighth shipped-model-with-no-reader in this project, and the one that would have made the
+   * main quest unplayable.
+   *
+   * Seeded at boot and re-seeded on every `reset()`/`loadState()`, because `SimState.reset()`
+   * replaces `sim.quest` wholesale and a disposition table that survived a scenario boundary
+   * would be the contamination bug W1-15 round 2 found in the stealth subsystem.
+   *
+   * Quest consequences apply on top: the table is the world's opinion of you before you have
+   * done anything, not instead of what you do.
+   */
+  seedDispositions() {
+    const q = this.sim && this.sim.quest;
+    if (!q || !this.data || !this.data.npcs) return 0;
+    let n = 0;
+    for (const group of Object.values(this.data.npcs)) {
+      for (const rec of (group && group.npcs) || []) {
+        if (!rec || !rec.id || typeof rec.disposition !== 'number') continue;
+        q.dispositions[rec.id] = rec.disposition;
+        n++;
+      }
+    }
+    return n;
   }
 
   histSightWrite(frame) {

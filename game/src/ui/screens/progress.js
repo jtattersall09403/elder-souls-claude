@@ -17,7 +17,7 @@
 'use strict';
 
 import { C, Ca, boneRule, bonePip, shellInlay, idHash } from '../theme.js';
-import { screen, row, column, hint, extent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
+import { screen, row, column, hint, extent, ink, inkDim, accent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
 import { drawText, faceOf, measure, wrap, writeLines } from '../type.js';
 
 export function drawLevelUp(S, m) {
@@ -32,25 +32,25 @@ export function drawLevelUp(S, m) {
     rect: [ix, iy, 300 * s, 40 * s], text: String(m.level), opacity: alpha,
     meta: { level: m.level },
   }, (c, r) => {
-    drawText(c, 'level', r[0], r[1] + 26 * s, faceOf('ink'), 15 * s, C('ink_soft'));
-    drawText(c, String(m.level), r[0] + 60 * s, r[1] + 30 * s, faceOf('bone'), 26 * s, C('ink'));
+    drawText(c, 'level', r[0], r[1] + 26 * s, faceOf('ink'), 15 * s, inkDim());
+    drawText(c, String(m.level), r[0] + 60 * s, r[1] + 30 * s, faceOf('bone'), 26 * s, ink());
   });
   S.el({
     id: 'levelup.souls', kind: 'souls_held',
     rect: [ix + 320 * s, iy, 300 * s, 40 * s], text: String(m.souls), opacity: alpha,
     meta: { souls_held: m.souls },
   }, (c, r) => {
-    drawText(c, 'souls held', r[0], r[1] + 26 * s, faceOf('ink'), 15 * s, C('ink_soft'));
-    drawText(c, String(m.souls), r[0] + 100 * s, r[1] + 30 * s, faceOf('bone'), 22 * s, C('ink'));
+    drawText(c, 'souls held', r[0], r[1] + 26 * s, faceOf('ink'), 15 * s, inkDim());
+    drawText(c, String(m.souls), r[0] + 100 * s, r[1] + 30 * s, faceOf('bone'), 22 * s, ink());
   });
   S.el({
     id: 'levelup.next', kind: 'souls_to_next',
     rect: [ix + 640 * s, iy, 360 * s, 40 * s], text: String(m.soulsToNext), opacity: alpha,
     meta: { souls_to_next: m.soulsToNext, level_after: m.level + 1, affordable: m.souls >= m.soulsToNext },
   }, (c, r) => {
-    drawText(c, 'to the next', r[0], r[1] + 26 * s, faceOf('ink'), 15 * s, C('ink_soft'));
+    drawText(c, 'to the next', r[0], r[1] + 26 * s, faceOf('ink'), 15 * s, inkDim());
     drawText(c, String(m.soulsToNext), r[0] + 110 * s, r[1] + 30 * s, faceOf('bone'), 22 * s,
-      m.souls >= m.soulsToNext ? C('ink') : C('ink_soft'));
+      m.souls >= m.soulsToNext ? C('ink') : inkDim());
   });
   S.el({ id: 'levelup.rule', kind: 'divider', rect: [ix, iy + 44 * s, iw, 6 * s], opacity: alpha },
     (c, r) => boneRule(c, r[0], r[1] + 3 * s, r[2], s, 4));
@@ -66,8 +66,8 @@ export function drawLevelUp(S, m) {
       meta: { attribute: a.id, value: a.value, soft_cap: a.soft_cap, hard_cap_curve: a.hard_cap_curve },
     }, (c, r) => {
       if (on) shellInlay(c, r[0], r[1], r[2], r[3], s, idHash(a.id));
-      drawText(c, a.name, r[0] + 8 * s, r[1] + 26 * s, faceOf('bone'), 15 * s, C('ink'));
-      drawText(c, String(a.value), r[0] + 210 * s, r[1] + 27 * s, faceOf('bone'), 19 * s, C('ink'));
+      drawText(c, a.name, r[0] + 8 * s, r[1] + 26 * s, faceOf('bone'), 15 * s, ink());
+      drawText(c, String(a.value), r[0] + 210 * s, r[1] + 27 * s, faceOf('bone'), 19 * s, ink());
       // the gauge, with the soft cap cut into it (L8)
       const gx = r[0] + 262 * s, gw = r[2] - 280 * s, gy = r[1] + 16 * s, gh = 10 * s;
       c.fillStyle = C('parchment'); c.fillRect(gx, gy, gw, gh);
@@ -77,7 +77,7 @@ export function drawLevelUp(S, m) {
         const cx = gx + gw * (cap / 99);
         c.beginPath(); c.moveTo(cx, gy - 4 * s); c.lineTo(cx, gy + gh + 4 * s);
         c.strokeStyle = Ca('bone_dim', 0.95); c.lineWidth = 2 * s; c.stroke();
-        drawText(c, label, cx - 10 * s, gy + gh + 16 * s, faceOf('ink'), 10 * s, C('ink_soft'));
+        drawText(c, label, cx - 10 * s, gy + gh + 16 * s, faceOf('ink'), 10 * s, inkDim());
       }
     });
   });
@@ -94,22 +94,22 @@ export function drawLevelUp(S, m) {
   }, (c, r) => {
     if (!a) return;
     let y = r[1] + 24 * s;
-    drawText(c, a.name, r[0], y, faceOf('bone'), 19 * s, C('ink'));
+    drawText(c, a.name, r[0], y, faceOf('bone'), 19 * s, ink());
     y += 10 * s; boneRule(c, r[0], y, r[2], s, 6); y += 26 * s;
-    drawText(c, `${a.value}  to  ${a.value + 1}`, r[0], y, faceOf('bone'), 17 * s, C('ink'));
+    drawText(c, `${a.value}  to  ${a.value + 1}`, r[0], y, faceOf('bone'), 17 * s, ink());
     y += 28 * s;
     for (const d of m.preview) {
-      drawText(c, d.label, r[0], y, faceOf('ink'), 14 * s, C('ink_soft'));
-      drawText(c, `${d.from}  ${d.to}`, r[0] + 190 * s, y, faceOf('bone'), 14 * s, C('ink'));
+      drawText(c, d.label, r[0], y, faceOf('ink'), 14 * s, inkDim());
+      drawText(c, `${d.from}  ${d.to}`, r[0] + 190 * s, y, faceOf('bone'), 14 * s, ink());
       y += 20 * s;
     }
     y += 12 * s;
     const size = 15 * s, lh = size * 1.44;
     const ls = wrap('In a fight: ' + a.in_fight, faceOf('ink'), size, r[2]);
-    y = writeLines(c, ls, r[0], y, 'ink', size, lh, C('ink'));
+    y = writeLines(c, ls, r[0], y, 'ink', size, lh, ink());
     y += 8 * s;
     const ls2 = wrap('Out of one: ' + a.out_of_fight, faceOf('ink'), size, r[2]);
-    writeLines(c, ls2, r[0], y, 'ink', size, lh, C('ink'));
+    writeLines(c, ls2, r[0], y, 'ink', size, lh, ink());
   });
 
   hint(S, 'levelup.hint', ix, iy + ih + 4 * s, iw,
@@ -136,8 +136,8 @@ export function drawSheet(S, m) {
       id: 'sheet.fact.' + k.replace(/\s/g, '_'), kind: 'sheet_row',
       rect: [ix, iy + i * 26 * s, colW, 24 * s], text: `${k} ${v}`, opacity: alpha,
     }, (c, r) => {
-      drawText(c, k, r[0], r[1] + 17 * s, faceOf('ink'), 14 * s, C('ink_soft'));
-      drawText(c, String(v || '—'), r[0] + 140 * s, r[1] + 17 * s, faceOf('bone'), 15 * s, C('ink'));
+      drawText(c, k, r[0], r[1] + 17 * s, faceOf('ink'), 14 * s, inkDim());
+      drawText(c, String(v || '—'), r[0] + 140 * s, r[1] + 17 * s, faceOf('bone'), 15 * s, ink());
     });
   });
 
@@ -149,8 +149,8 @@ export function drawSheet(S, m) {
       rect: [ax, iy + i * 26 * s, colW * 0.8, 24 * s], text: `${a.name} ${a.value}`, opacity: alpha,
       meta: { attribute: a.id, value: a.value, soft_cap: a.soft_cap },
     }, (c, r) => {
-      drawText(c, a.name, r[0], r[1] + 17 * s, faceOf('bone'), 13 * s, C('ink'));
-      drawText(c, String(a.value), r[0] + 180 * s, r[1] + 17 * s, faceOf('bone'), 15 * s, C('ink'));
+      drawText(c, a.name, r[0], r[1] + 17 * s, faceOf('bone'), 13 * s, ink());
+      drawText(c, String(a.value), r[0] + 180 * s, r[1] + 17 * s, faceOf('bone'), 15 * s, ink());
     });
   });
 
@@ -184,8 +184,8 @@ export function drawSpells(S, m) {
   for (let i = win.from; i < win.to; i++) {
     const sp = m.spells[i];
     row(S, 'spells.row.' + sp.id, 'spell_row', ix, iy + (i - win.from) * 30 * s, lw, 30 * s, [
-      { text: sp.name, w: 300, colour: 'parchment' },
-      { text: String(sp.cost), w: 70, align: 'right', face: 'bone', size: 14, colour: 'parchment_dim' },
+      { text: sp.name, w: 300 },
+      { text: String(sp.cost), w: 70, align: 'right', face: 'bone', size: 14 },
     ], i === m.rowIdx, alpha, { spell: sp.id, cost: sp.cost, school: sp.school });
   }
   const dx = ix + lw + 30 * s, dw = iw - lw - 30 * s;
@@ -194,18 +194,18 @@ export function drawSpells(S, m) {
     id: 'spells.detail', kind: 'detail_panel', rect: [dx, iy, dw, ih], opacity: alpha,
     text: sel ? sel.description : null, meta: sel ? { spell: sel.id } : null,
   }, (c, r) => {
-    if (!sel) { drawText(c, 'nothing attuned', r[0], r[1] + 24 * s, faceOf('ink'), 15 * s, C('parchment_dim')); return; }
+    if (!sel) { drawText(c, 'nothing attuned', r[0], r[1] + 24 * s, faceOf('ink'), 15 * s, inkDim()); return; }
     let y = r[1] + 26 * s;
-    drawText(c, sel.name, r[0], y, faceOf('bone'), 19 * s, C('parchment'));
+    drawText(c, sel.name, r[0], y, faceOf('bone'), 19 * s, ink());
     y += 12 * s; boneRule(c, r[0], y, r[2], s, 9); y += 26 * s;
     for (const [k, v] of [['school', sel.school], ['focus', String(sel.cost)]]) {
-      drawText(c, k, r[0], y, faceOf('ink'), 13 * s, C('parchment_dim'));
-      drawText(c, String(v), r[0] + 110 * s, y, faceOf('bone'), 15 * s, C('parchment'));
+      drawText(c, k, r[0], y, faceOf('ink'), 13 * s, inkDim());
+      drawText(c, String(v), r[0] + 110 * s, y, faceOf('bone'), 15 * s, ink());
       y += 22 * s;
     }
     y += 10 * s;
     const size = 16 * s, lh = size * 1.46;
-    writeLines(c, wrap(sel.description || '', faceOf('ink'), size, r[2]), r[0], y, 'ink', size, lh, C('parchment'));
+    writeLines(c, wrap(sel.description || '', faceOf('ink'), size, r[2]), r[0], y, 'ink', size, lh, ink());
   });
   hint(S, 'spells.hint', ix, iy + ih + 4 * s, iw,
     'Attuning is a hearth action. In a fight you cycle what is already attuned, and the fight does not stop for it.', alpha);

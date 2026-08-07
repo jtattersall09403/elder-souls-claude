@@ -108,7 +108,11 @@ try {
   out.checks.fresh_profile = { fresh_browser_context: true, storage_seeded_by: 'writeSave("slot-a") then page.reload()', slots: cold.slots_written };
   if (!cold.slots_written.length) fail('T0 could not write a save, so M20\'s "a save exists" precondition cannot be established');
 
-  await handle.page.reload({ waitUntil: 'load' });
+  // The reload is the point of M20: the save is now in IndexedDB and this page load is a
+  // RETURNING player's. `domcontentloaded` rather than `load` because the software renderer's
+  // first frame can outlast a 30 s `load` on this container, and `__HARNESS.ready()` below is
+  // the readiness gate that actually matters.
+  await handle.page.reload({ waitUntil: 'domcontentloaded', timeout: 120000 });
   const t = await handle.page.evaluate(async () => {
     const H = window.__HARNESS;
     await H.ready();
@@ -263,11 +267,170 @@ try {
   } else pass('no orphan text: every string handed to a draw call landed inside its clip');
 
   // ======================================================================================
+  // D — `RI-JRN09` M1 `DTR`, computed THROUGH THE DRAW CALL rather than through the layout.
+  // ======================================================================================
+  // `RI-JRN09` M1 says the drawn set is read "through the build's rendered-text accessor (the
+  // same accessor `RI-JRN01` M9 requires the critic to name and demonstrate non-empty)". There
+  // are two candidates in this build and they are not equivalent:
+  //
+  //   * `getUIState().text` / `getCensusState().surface.rendered_text` — the LAYOUT's array,
+  //     built from the line lists it just placed. It is honest about what the layout meant to
+  //     draw, and it CANNOT see a line that was placed and then clipped off the vellum. The
+  //     dialogue panel is height-capped and clips, so the two differ exactly where it matters.
+  //   * `getRenderedText()` — the REGISTER, fed by `fillText` and shadowing the clip stack.
+  //
+  // This block computes `DTR` the strong way and reports both, because a `DTR` of 1.00 taken
+  // from the layout while a question was clipped off the panel is the round-2 defect one layer
+  // down, and `RI-JRN09` exists to make exactly that class of thing scoreable.
+  say('D — RI-JRN09 M1: DTR through the draw call');
+  const dtr = await handle.page.evaluate(async () => {
+    const H = window.__HARNESS;
+    const norm = (s) => String(s == null ? '' : s).replace(/\s+/g, ' ').trim().toLowerCase();
+    // Restart the scene so the walk is a whole scene rather than the tail of the last one.
+    await H.titleShow();
+    await H.titleActivate('new');
+    const nodes = [];
+    for (let i = 0; i < 60; i++) {
+      const st = H.getCensusState();
+      if (!st || st.done) break;
+      H.renderedTextClear();
+      H.renderFrame();
+      const model0 = H.getCensusModel() || {};
+      // "Reached the frame AT THAT NODE", not "in one frame of that node". The answer list
+      // scrolls when it is longer than the option window, so the strings a player can read
+      // at this node are the ones the surface paints while they move the caret through it.
+      // The caret is moved with the SAME closed action set a player has, and the register
+      // still only counts a string that `fillText` actually painted inside its clip — this
+      // widens what counts as "at this node" and relaxes nothing about what counts as drawn.
+      // NOT `st.input.options`: at a `text` node (the two name nodes) that is null, and the
+      // ledger of hatch-names lives on the SURFACE. The model is what the panel draws from,
+      // so the model is what says how long the list is.
+      const optCount = ((model0 && model0.options) || []).length;
+      if (optCount > 1) {
+        for (let k = 0; k < optCount + 1; k++) {
+          H.queueInputs([{ f: 0, move: [0, -1] }, { f: 1, move: [0, 0] }]);
+          H.stepFrames(2);
+          H.renderFrame();
+        }
+      }
+      const model = H.getCensusModel() || model0;
+      const reg = H.getRenderedText({ surface: 'dialogue' });
+      const layout = (H.getUIState().text || []);
+      // The authored strings THE MODEL computes for this node, with their role.
+      const authored = [];
+      const add = (role, s) => { if (s && String(s).trim()) authored.push({ role, text: String(s) }); };
+      add('line', model.line);
+      add('preamble', model.preamble);
+      for (const s of (model.spoken || [])) add('spoken', typeof s === 'string' ? s : (s && s.line));
+      add('aside', model.aside);
+      if (model.record && Array.isArray(model.record.lines)) for (const l of model.record.lines) add('record', l);
+      for (const o of (model.options || [])) add('option', o.text);
+      // Distinct, never character counts — the item is explicit that a length check is blind
+      // to the failure it exists to catch.
+      const seen = new Set(); const distinctAuthored = [];
+      for (const a of authored) { const k = norm(a.text); if (!k || seen.has(k)) continue; seen.add(k); distinctAuthored.push(a); }
+      const blobReg = reg.distinct.map(norm).join('  ');
+      const blobLay = layout.map(norm).join('  ');
+      const inBlob = (b, s) => b.indexOf(norm(s)) >= 0;
+      const undrawn = distinctAuthored.filter((a) => !inBlob(blobReg, a.text));
+      const undrawnLayout = distinctAuthored.filter((a) => !inBlob(blobLay, a.text));
+      nodes.push({
+        node: st.node,
+        kind: st.input ? st.input.kind : null,
+        authored: distinctAuthored.length,
+        drawn_register: distinctAuthored.length - undrawn.length,
+        drawn_layout: distinctAuthored.length - undrawnLayout.length,
+        dtr_register: distinctAuthored.length ? +((distinctAuthored.length - undrawn.length) / distinctAuthored.length).toFixed(4) : 1,
+        dtr_layout: distinctAuthored.length ? +((distinctAuthored.length - undrawnLayout.length) / distinctAuthored.length).toFixed(4) : 1,
+        undrawn: undrawn.map((a) => ({ role: a.role, text: a.text.slice(0, 90) })),
+        clipped_here: reg.summary.surfaces.dialogue ? reg.summary.surfaces.dialogue.clipped : 0,
+      });
+      // Answer and move on.
+      const inp = st.input;
+      if (!inp) {
+        // A paused node hands control back and the way onward is a WALK — `hold.out` is the
+        // companionway out of the barge. Drive it with forward input rather than declaring
+        // the scene over, which is what round 1 of this probe did and why it measured DTR
+        // over two nodes and called it a scene.
+        let moved = false;
+        for (let w = 0; w < 40 && !moved; w++) {
+          H.queueInputs([{ f: 0, move: [0, 1] }]);
+          H.stepFrames(10);
+          if (H.getCensusState().node !== st.node) moved = true;
+        }
+        if (!moved) { nodes.push({ node: st.node, stuck: 'forward input for 400 frames did not leave this node' }); break; }
+        continue;
+      }
+      let value;
+      if (inp.kind === 'text') value = (inp.options && inp.options[0] && inp.options[0].id) || 'Ei';
+      else if (inp.kind === 'observed') value = 'correct';
+      else if (inp.kind === 'pick') {
+        const need = st.node === 'writ.class-custom-primary' ? 3 : 2;
+        value = (inp.options || []).slice(0, need).map((o) => o.id);
+      } else value = (inp.options && inp.options[0] && inp.options[0].id) || null;
+      try { H.censusAnswer(value); } catch (e) { nodes.push({ node: st.node, threw: e.message }); break; }
+      H.stepFrames(2);
+    }
+    return nodes;
+  });
+  const qNodes = dtr.filter((n) => /question/i.test(n.node || '') || /class-questions/.test(n.node || ''));
+  const wAuth = dtr.reduce((a, n) => a + (n.authored || 0), 0);
+  const wDrawn = dtr.reduce((a, n) => a + (n.drawn_register || 0), 0);
+  const dtrScene = wAuth ? +(wDrawn / wAuth).toFixed(4) : 0;
+  const worst = dtr.filter((n) => n.authored).sort((a, b) => a.dtr_register - b.dtr_register)[0] || null;
+  out.checks.dtr = {
+    accessor_used: '__HARNESS.getRenderedText() — the register, fed by fillText and clip-aware',
+    accessor_compared_against: '__HARNESS.getUIState().text — the layout\'s own array, which cannot see a clipped line',
+    dtr_scene_register: dtrScene,
+    dtr_scene_layout: wAuth ? +(dtr.reduce((a, n) => a + (n.drawn_layout || 0), 0) / wAuth).toFixed(4) : 0,
+    questionnaire_nodes: qNodes.map((n) => ({ node: n.node, dtr: n.dtr_register })),
+    worst_node: worst,
+    nodes: dtr,
+  };
+  if (dtrScene >= 0.90) pass(`M1: DTR_scene = ${dtrScene} through the draw call (RI-JRN09 wants >= 0.90)`);
+  else fail(`M1: DTR_scene = ${dtrScene} through the draw call (RI-JRN09 wants >= 0.90)`);
+  if (worst && worst.dtr_register < 0.50) hard('HF1', `M1: DTR = ${worst.dtr_register} at '${worst.node}' — the scene computed more than twice what it showed there`);
+  else if (worst) pass(`M1: worst node is '${worst.node}' at DTR ${worst.dtr_register} (HF1 fires below 0.50)`);
+  const layoutOverclaim = dtr.filter((n) => n.drawn_layout > n.drawn_register);
+  out.checks.dtr.layout_overclaims_at = layoutOverclaim.map((n) => n.node);
+  if (layoutOverclaim.length) {
+    fail(`M1: the LAYOUT's accessor claims more delivered than the DRAW CALL does, at ${layoutOverclaim.length} node(s): ${layoutOverclaim.map((n) => n.node).join(', ')}. A DTR taken from getUIState().text would have scored those nodes higher than the player's eyes would.`);
+  } else pass('M1: the layout accessor and the draw-call accessor agree — no node claims a string it clipped away');
+
+  // ======================================================================================
   // C — O6 / M4 clause 1. The interval nobody has ever measured.
   // ======================================================================================
   say('C — O6 / M4 clause 1: control before definition');
-  const stamps = await handle.page.evaluate(() => window.__HARNESS.getJourneyStamps());
+  const stamps = await handle.page.evaluate(async () => {
+    const H = window.__HARNESS;
+    // Start the opening the way a player does and then TRY TO WALK, with real forward input,
+    // for a full second of play. Whether the body moves is the whole of O6: if the scene has
+    // already put a character-defining question up and taken the buttons, it cannot, and
+    // `first_control` never fires — which is the measurement, not a probe failure.
+    await H.titleShow();
+    await H.titleActivate('new');
+    const before = H.getPlayerStats();
+    for (let i = 0; i < 6; i++) {
+      H.queueInputs([{ f: 0, move: [0, 1] }]);
+      H.stepFrames(10);
+    }
+    const after = H.getPlayerStats();
+    const s = H.getJourneyStamps();
+    const cs = H.getCensusState();
+    return {
+      ...s,
+      moved_m: +Math.hypot(after.pos[0] - before.pos[0], after.pos[2] - before.pos[2]).toFixed(3),
+      census_node_at_start: cs ? cs.node : null,
+      census_takes_input: !!(cs && cs.surface && cs.surface.takes_input),
+      forward_input_frames: 60,
+    };
+  });
   out.checks.m4_clause1 = stamps;
+  if (stamps.first_input_frame != null) pass(`M4: \`first_input\` fired at frame ${stamps.first_input_frame} — the A-JRN7 event that had never been emitted`);
+  else fail('M4: `first_input` did not fire even though real input was dispatched');
+  if (stamps.first_control_frame == null && stamps.moved_m === 0) {
+    fail(`M4 clause 1 / O6 = 0 s: sixty frames of forward input moved the body ${stamps.moved_m} m, because '${stamps.census_node_at_start}' — a character-defining node — already had the buttons. The item's own How-we-lose #5: "control arrives after definition". This is now MEASURED rather than blocked.`);
+  }
   if (stamps.first_control_frame == null) {
     fail('M4 clause 1: `first_control` was never emitted in this run — the left end of O6\'s interval does not exist');
   } else if (stamps.available_play_s_before_first_field == null) {
@@ -311,14 +474,27 @@ try {
         H.gamepad({ axes: [0, 0, 0, 0], buttons: [0] }); H.gamepadPoll(); step(2);
         H.gamepad({ axes: [0, 0, 0, 0], buttons: [] }); H.gamepadPoll(); step(2); inputs++;
       } else {
-        // Touch: the on-screen stick and the confirm button, through the real touch layer.
-        const t = (type, id, x, y) => canvas.dispatchEvent(new PointerEvent(type, { pointerId: id, pointerType: 'touch', clientX: x, clientY: y, bubbles: true, cancelable: true, isPrimary: true }));
-        const st = H.getInputState && H.getInputState();
-        t('pointerdown', 1, 200, 800); t('pointermove', 1, 200, 900); step(4); t('pointerup', 1, 200, 900); step(2); inputs++;
-        void st;
-        // Commit with the touch `interact` control if the layer exposes one; otherwise the
-        // leg reports what it could and does NOT claim a pass.
-        t('pointerdown', 2, 1700, 800); step(2); t('pointerup', 2, 1700, 800); step(2); inputs++;
+        // Touch, through the build's OWN touch layer (`RI-JRN04` §G's `touchDown/Move/Up`,
+        // which inject at the same pointer seam the browser delivers to). The control
+        // geometry is READ FROM THE LAYER rather than guessed: a probe that pokes coordinates
+        // it invented and reports a hard fail has measured its own arithmetic.
+        if (typeof H.touchLayout !== 'function' || typeof H.touchDown !== 'function') {
+          return { unmeasurable: 'the build exposes no touch layout accessor', before_selected: before.selected_id, after_selected: before.selected_id, shown_after: before.shown, inputs: 0 };
+        }
+        if (typeof H.setTouchEnabled === 'function') H.setTouchEnabled(true);
+        const lay = H.touchLayout();
+        if (!lay || !Array.isArray(lay.buttons) || !lay.buttons.length) {
+          return { unmeasurable: 'touchLayout() returned no buttons', layout: lay, before_selected: before.selected_id, after_selected: before.selected_id, shown_after: before.shown, inputs: 0 };
+        }
+        const stick = lay.stick || { cx: (lay.stick_cx || 0), cy: (lay.stick_cy || 0), r: 80 };
+        const btn = lay.buttons.find((b) => b.action === 'interact');
+        // Drag the stick DOWN to move the caret, then tap `interact`.
+        H.touchDown(1, stick.cx, stick.cy); step(2);
+        H.touchMove(1, stick.cx, stick.cy + (stick.r || 80)); step(6);
+        H.touchUp(1); step(2); inputs++;
+        if (btn) { H.touchDown(2, btn.cx, btn.cy); step(2); H.touchUp(2); step(2); inputs++; }
+        const after0 = H.getTitleState();
+        return { before_selected: before.selected_id, after_selected: after0.selected_id, shown_after: after0.shown, inputs, inputs_taken: after0.inputs_taken, layout_stick: stick, layout_interact: btn || null };
       }
       const after = H.getTitleState();
       return { before_selected: before.selected_id, after_selected: after.selected_id, shown_after: after.shown, inputs, inputs_taken: after.inputs_taken };
@@ -326,9 +502,10 @@ try {
     const r = parity[leg];
     // "Completed" means the surface acted: either the caret moved or the surface closed.
     const acted = r.shown_after === false || r.after_selected !== r.before_selected;
-    if (acted) pass(`O17 ${leg}: the title responded (${r.before_selected} -> ${r.after_selected}, shown=${r.shown_after})`);
-    else fail(`O17 ${leg}: the title did not respond to any input on this device`);
-    if (!acted) hard('HF5', `the opening's first surface cannot be driven on ${leg}`);
+    if (r.unmeasurable) {
+      fail(`O17 ${leg}: unmeasurable — ${r.unmeasurable}. RI-JRN01 M13 is a hard fail on a leg that cannot COMPLETE; a leg that cannot be DRIVEN by a probe is a tooling gap and is reported as one, not as HF5.`);
+    } else if (acted) pass(`O17 ${leg}: the title responded (${r.before_selected} -> ${r.after_selected}, shown=${r.shown_after})`);
+    else { fail(`O17 ${leg}: the title did not respond to any input on this device`); hard('HF5', `the opening's first surface cannot be driven on ${leg}`); }
   }
   out.checks.o17_parity = parity;
 

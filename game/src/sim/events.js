@@ -38,6 +38,13 @@ export const EVENT_TYPES = new Set([
   'save_read', 'region_stream_in', 'region_stream_out', 'load_boundary_begin',
   'load_boundary_end', 'hitch', 'input_device_change', 'bloodstain_create',
   'bloodstain_recover',
+  // W1-13, by the same amendment clause HARNESS.md §5 grants ("a closed vocabulary, extensible
+  // by amendment"). `bloodstain_create` and `bloodstain_recover` above were declared in wave 1
+  // and emitted by nothing; these are the other two events RI-JRN06 needs to be measurable at
+  // all. `player_respawn` carries the time-dead figure D7/R6 is scored on and the count of what
+  // came back; `enemy_respawn` is per-entity, so M-D5's "0 named actors respawned" is a
+  // countable claim about the trace rather than a promise about the code.
+  'player_respawn', 'enemy_respawn',
   // RI-CMB11 §5
   'input_dropped', 'input_dropped_no_stamina', 'input_dropped_not_actionable',
   'input_buffered', 'input_overflow',

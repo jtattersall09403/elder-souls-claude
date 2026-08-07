@@ -1,7 +1,7 @@
 {
   "schema": "elder-souls/quest-hooks@1",
   "id": "quest-hooks",
-  "corpus_item": "RI-QST04 (behaviour hooks keyed by world_flags), RI-DLG05 \u00a7A.3 (every chain seeds a topic)",
+  "corpus_item": "RI-QST04 (behaviour hooks keyed by world_flags), RI-DLG05 §A.3 (every chain seeds a topic)",
   "generated_by": "tools/analysis/gen-quest-hooks.mjs",
   "note": "Generated. Do not hand-edit; edit the generator or the quest files it reads.",
   "entry_topics": [
@@ -263,6 +263,230 @@
       "adds_topics": [
         "the-netted-calf"
       ]
+    },
+    {
+      "quest": "Q-MAIN-01",
+      "index": 10,
+      "adds_topics": [
+        "the-drowned-tally"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-02",
+      "index": 10,
+      "adds_topics": [
+        "the-empty-boxes"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-03",
+      "index": 10,
+      "adds_topics": [
+        "the-cold-well"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-04",
+      "index": 10,
+      "adds_topics": [
+        "a-name-for-cover"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-05",
+      "index": 10,
+      "adds_topics": [
+        "the-ninth-recension"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-06",
+      "index": 10,
+      "adds_topics": [
+        "the-drowned-tally"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-07",
+      "index": 10,
+      "adds_topics": [
+        "the-cutting-yard"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-08",
+      "index": 10,
+      "adds_topics": [
+        "the-gem-shipping"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-09",
+      "index": 10,
+      "adds_topics": [
+        "the-low-chapel"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-10",
+      "index": 10,
+      "adds_topics": [
+        "the-root-gallery"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-11",
+      "index": 10,
+      "adds_topics": [
+        "the-crypt-road"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-12",
+      "index": 10,
+      "adds_topics": [
+        "the-intakes"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-13",
+      "index": 10,
+      "adds_topics": [
+        "reading-the-count"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-14",
+      "index": 10,
+      "adds_topics": [
+        "the-skei"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-15",
+      "index": 10,
+      "adds_topics": [
+        "the-tree-at-thorn"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-16",
+      "index": 10,
+      "adds_topics": [
+        "the-chapter-s-vote"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-17",
+      "index": 10,
+      "adds_topics": [
+        "the-ledger-s-terms"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-18",
+      "index": 10,
+      "adds_topics": [
+        "the-interior-s-consent"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-19",
+      "index": 10,
+      "adds_topics": [
+        "the-cutters-terms"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-20",
+      "index": 10,
+      "adds_topics": [
+        "the-writ-of-works"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-21",
+      "index": 10,
+      "adds_topics": [
+        "the-hiring-list"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-22",
+      "index": 10,
+      "adds_topics": [
+        "the-keepers-leave"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-23",
+      "index": 10,
+      "adds_topics": [
+        "the-salt-factor"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-24",
+      "index": 10,
+      "adds_topics": [
+        "the-works"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-25",
+      "index": 10,
+      "adds_topics": [
+        "the-ash-gallery"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-26",
+      "index": 10,
+      "adds_topics": [
+        "the-steward-of-the-count"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-27",
+      "index": 10,
+      "adds_topics": [
+        "the-sill"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-28",
+      "index": 10,
+      "adds_topics": [
+        "the-opening-of-the-count"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-29",
+      "index": 10,
+      "adds_topics": [
+        "the-eleven-live-roots"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-30",
+      "index": 10,
+      "adds_topics": [
+        "the-thread-is-cut"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-31",
+      "index": 10,
+      "adds_topics": [
+        "the-root-channels"
+      ]
+    },
+    {
+      "quest": "Q-MAIN-32",
+      "index": 10,
+      "adds_topics": [
+        "what-the-wells-do-now"
+      ]
     }
   ],
   "hooks": [
@@ -337,7 +561,30 @@
       "quest": "Q-MAG-10",
       "journal": 30,
       "note": "raised by the simulation when the spell moves the system; RI-MAG04 M6"
+    },
+    {
+      "flag": "mandate_void",
+      "quest": "Q-MAIN-30",
+      "adds_topics": [
+        "the thread is cut"
+      ],
+      "note": "W1-19: seam S10. Raised when a mandate-critical NPC dies (QuestEngine.npcDied -> the Court cannot read the clause the way it reads it). Seeds the topic that opens the severance quest, which is what discovery:\"consequence\" means."
+    },
+    {
+      "flag": "point_of_no_return_crossed",
+      "quest": "Q-MAIN-27",
+      "journal": 90,
+      "note": "W1-19: RI-EXP05 LH5. The sill is crossed and the flag is irreversible; the four closed threads are read off this flag by the world side."
+    },
+    {
+      "flag": "the_eleven_roots_are_cut",
+      "quest": "Q-MAIN-29",
+      "adds_topics": [
+        "the root channels"
+      ],
+      "note": "W1-19: the backpath route opens when the last live root is cut."
     }
   ],
-  "deadlines": []
+  "deadlines": [],
+  "w1_19_note": "W1-19 appended 33 entry_topics rows (Q-MAIN-01..32) and 3 hooks. Existing rows untouched; this file was edited additively and is NOT regenerated by any tool."
 }

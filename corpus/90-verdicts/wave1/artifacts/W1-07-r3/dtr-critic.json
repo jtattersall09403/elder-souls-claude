@@ -1,0 +1,341 @@
+{
+  "probe": "critic-w1-07-r3a",
+  "nodes": [
+    {
+      "node": "hold.hatch-name",
+      "kind": "text",
+      "questionnaire": false,
+      "question_id": null,
+      "register_rows": 12,
+      "register_rows_incl_clipped": 12,
+      "clipped_strings": [],
+      "surface_metrics_text_rows": 12,
+      "opaque_area_frac": 0.3837,
+      "panel_height_frac": 0.4796,
+      "d_model": {
+        "computed": 15,
+        "drawn": 10,
+        "dtr": 0.6667,
+        "missed": [
+          {
+            "kind": "m.spoken",
+            "s": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+          },
+          {
+            "kind": "m.option",
+            "s": "Sees-The-Ledger-Burning"
+          },
+          {
+            "kind": "m.option",
+            "s": "Left-Hand-Of-The-Hist"
+          },
+          {
+            "kind": "m.option",
+            "s": "Never-Sold-A-Cousin"
+          },
+          {
+            "kind": "m.option",
+            "s": "Say nothing."
+          }
+        ]
+      },
+      "d_state": {
+        "computed": 2,
+        "drawn": 1,
+        "dtr": 0.5,
+        "missed": [
+          {
+            "kind": "s.spoken",
+            "s": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+          }
+        ]
+      },
+      "d_writ": {
+        "computed": 2,
+        "drawn": 1,
+        "dtr": 0.5,
+        "missed": [
+          {
+            "kind": "s.spoken",
+            "s": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+          }
+        ]
+      },
+      "metrics_claims_not_in_register": []
+    },
+    {
+      "node": "hold.out",
+      "kind": null,
+      "questionnaire": false,
+      "question_id": null,
+      "register_rows": 5,
+      "register_rows_incl_clipped": 5,
+      "clipped_strings": [],
+      "surface_metrics_text_rows": 5,
+      "opaque_area_frac": 0.1681,
+      "panel_height_frac": 0.2102,
+      "d_model": {
+        "computed": 3,
+        "drawn": 3,
+        "dtr": 1,
+        "missed": []
+      },
+      "d_state": {
+        "computed": 2,
+        "drawn": 2,
+        "dtr": 1,
+        "missed": []
+      },
+      "d_writ": {
+        "computed": 2,
+        "drawn": 2,
+        "dtr": 1,
+        "missed": []
+      },
+      "metrics_claims_not_in_register": []
+    },
+    {
+      "node": "writ.race-observed",
+      "kind": "observed",
+      "questionnaire": false,
+      "question_id": null,
+      "register_rows": 7,
+      "register_rows_incl_clipped": 7,
+      "clipped_strings": [],
+      "surface_metrics_text_rows": 7,
+      "opaque_area_frac": 0.2356,
+      "panel_height_frac": 0.2944,
+      "d_model": {
+        "computed": 4,
+        "drawn": 4,
+        "dtr": 1,
+        "missed": []
+      },
+      "d_state": {
+        "computed": 4,
+        "drawn": 4,
+        "dtr": 1,
+        "missed": []
+      },
+      "d_writ": {
+        "computed": 4,
+        "drawn": 4,
+        "dtr": 1,
+        "missed": []
+      },
+      "metrics_claims_not_in_register": []
+    },
+    {
+      "node": "writ.sex",
+      "kind": "choice",
+      "questionnaire": false,
+      "question_id": null,
+      "register_rows": 7,
+      "register_rows_incl_clipped": 7,
+      "clipped_strings": [],
+      "surface_metrics_text_rows": 7,
+      "opaque_area_frac": 0.2474,
+      "panel_height_frac": 0.3093,
+      "d_model": {
+        "computed": 4,
+        "drawn": 4,
+        "dtr": 1,
+        "missed": []
+      },
+      "d_state": {
+        "computed": 4,
+        "drawn": 4,
+        "dtr": 1,
+        "missed": []
+      },
+      "d_writ": {
+        "computed": 4,
+        "drawn": 4,
+        "dtr": 1,
+        "missed": []
+      },
+      "metrics_claims_not_in_register": []
+    },
+    {
+      "node": "writ.upbringing",
+      "kind": "choice",
+      "questionnaire": false,
+      "question_id": null,
+      "register_rows": 7,
+      "register_rows_incl_clipped": 7,
+      "clipped_strings": [],
+      "surface_metrics_text_rows": 7,
+      "opaque_area_frac": 0.2496,
+      "panel_height_frac": 0.312,
+      "d_model": {
+        "computed": 5,
+        "drawn": 5,
+        "dtr": 1,
+        "missed": []
+      },
+      "d_state": {
+        "computed": 5,
+        "drawn": 5,
+        "dtr": 1,
+        "missed": []
+      },
+      "d_writ": {
+        "computed": 5,
+        "drawn": 5,
+        "dtr": 1,
+        "missed": []
+      },
+      "metrics_claims_not_in_register": []
+    },
+    {
+      "node": "writ.given-name",
+      "kind": "text",
+      "questionnaire": false,
+      "question_id": null,
+      "register_rows": 11,
+      "register_rows_incl_clipped": 11,
+      "clipped_strings": [],
+      "surface_metrics_text_rows": 11,
+      "opaque_area_frac": 0.3837,
+      "panel_height_frac": 0.4796,
+      "d_model": {
+        "computed": 10,
+        "drawn": 9,
+        "dtr": 0.9,
+        "missed": [
+          {
+            "kind": "m.spoken",
+            "s": "The interior. I will write the marsh. There are people here who will read that and stand up straighter, and pe"
+          }
+        ]
+      },
+      "d_state": {
+        "computed": 2,
+        "drawn": 1,
+        "dtr": 0.5,
+        "missed": [
+          {
+            "kind": "s.spoken",
+            "s": "The interior. I will write the marsh. There are people here who will read that and stand up straighter, and pe"
+          }
+        ]
+      },
+      "d_writ": {
+        "computed": 2,
+        "drawn": 1,
+        "dtr": 0.5,
+        "missed": [
+          {
+            "kind": "s.spoken",
+            "s": "The interior. I will write the marsh. There are people here who will read that and stand up straighter, and pe"
+          }
+        ]
+      },
+      "metrics_claims_not_in_register": []
+    },
+    {
+      "node": "writ.class-routes",
+      "kind": "choice",
+      "questionnaire": false,
+      "question_id": null,
+      "register_rows": 7,
+      "register_rows_incl_clipped": 7,
+      "clipped_strings": [],
+      "surface_metrics_text_rows": 7,
+      "opaque_area_frac": 0.2489,
+      "panel_height_frac": 0.3111,
+      "d_model": {
+        "computed": 5,
+        "drawn": 5,
+        "dtr": 1,
+        "missed": []
+      },
+      "d_state": {
+        "computed": 5,
+        "drawn": 5,
+        "dtr": 1,
+        "missed": []
+      },
+      "d_writ": {
+        "computed": 5,
+        "drawn": 5,
+        "dtr": 1,
+        "missed": []
+      },
+      "metrics_claims_not_in_register": []
+    },
+    {
+      "node": "writ.class-questions",
+      "kind": "questionnaire",
+      "questionnaire": true,
+      "question_id": "q1",
+      "register_rows": 10,
+      "register_rows_incl_clipped": 10,
+      "clipped_strings": [],
+      "surface_metrics_text_rows": 10,
+      "opaque_area_frac": 0.3548,
+      "panel_height_frac": 0.4435,
+      "d_model": {
+        "computed": 6,
+        "drawn": 6,
+        "dtr": 1,
+        "missed": []
+      },
+      "d_state": {
+        "computed": 6,
+        "drawn": 6,
+        "dtr": 1,
+        "missed": []
+      },
+      "d_writ": {
+        "computed": 6,
+        "drawn": 6,
+        "dtr": 1,
+        "missed": []
+      },
+      "metrics_claims_not_in_register": []
+    },
+    {
+      "node": "writ.class-questions",
+      "kind": "questionnaire",
+      "questionnaire": true,
+      "question_id": "q2",
+      "register_rows": 7,
+      "register_rows_incl_clipped": 7,
+      "clipped_strings": [],
+      "surface_metrics_text_rows": 7,
+      "opaque_area_frac": 0.2496,
+      "panel_height_frac": 0.312,
+      "d_model": {
+        "computed": 5,
+        "drawn": 5,
+        "dtr": 1,
+        "missed": []
+      },
+      "d_state": {
+        "computed": 6,
+        "drawn": 5,
+        "dtr": 0.8333,
+        "missed": [
+          {
+            "kind": "s.line",
+            "s": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a"
+          }
+        ]
+      },
+      "d_writ": {
+        "computed": 6,
+        "drawn": 5,
+        "dtr": 0.8333,
+        "missed": [
+          {
+            "kind": "s.line",
+            "s": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a"
+          }
+        ]
+      },
+      "metrics_claims_not_in_register": []
+    }
+  ],
+  "totals": {}
+}

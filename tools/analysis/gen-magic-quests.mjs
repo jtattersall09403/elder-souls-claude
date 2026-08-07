@@ -298,9 +298,14 @@ function build(q, i) {
     id: `Q-MAG-${String(i + 1).padStart(2, '0')}`,
     slugOf: q.id,
     title: q.t,
-    category: q.cat,
+    // W1-19: `cat: 'main'` in the authoring table above meant "the spine of the magic
+    // questline", not `category: "main"` in RI-QST04's sense, and it wrote three quests with
+    // stakes 8-9 into RI-QST06's Act II, whose stakes band is 3-4. The main quest is
+    // Q-MAIN-01..32 in game/data/quests/mainline-act1..5.json and mainline-backpath.json, and
+    // nothing else in the build may claim category "main" with an act. Regenerating this file
+    // must not put the four quests back; MAIN_IS_SPINE_NOT_MAINLINE is the fence.
+    category: q.cat === 'main' ? 'side' : q.cat,
     ...(q.fac ? { faction: q.fac } : {}),
-    ...(q.cat === 'main' ? { act: 2 } : {}),
     discovery: q.cat === 'main' ? 'given' : (i % 4 === 0 ? 'overheard' : 'given'),
     giver: { npc_id: q.giver[0], location: q.giver[1], honest: true },
     opens_by: {

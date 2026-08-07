@@ -1,35 +1,722 @@
 {
   "schema": "elder-souls/levels@1",
-  "provenance": "Souls-side currency and curve (seam S2); Morrowind-side breadth of the stat sheet is owned by RI-PRG*. Wave-1 skeleton: the curve below is the shape only.",
-  "soul_cost_formula": "round(0.02*L^3 + 3.06*L^2 + 105.6*L - 895)",
+  "id": "levels",
+  "owner": "W1-21 — the level-up screen (ui.menu.levelup)",
+  "source": "corpus/20-progression/RI-PRG01-soul-cost-curve.json, transcribed whole",
+  "provenance": "Souls-side currency and curve (seam S2); Morrowind-side breadth of the stat sheet is RI-PRG02, whose ten attributes are named below.",
+  "amendment_note": "REPLACED by W1-21. The previous file carried soul_cost_formula 'round(0.02*L^3 + 3.06*L^2 + 105.6*L - 895)', a five-row table whose values (673, 689, 706, 723) are the DARK SOULS reference column of RI-PRG01's table rather than ours, and a six-name Souls-style attribute list that contradicts game/data/progression/attributes.json's ten. The formula evaluated NEGATIVE below level 9, so the level-up screen displayed a souls-to-next of 0 at level 6 and RI-UIX03 L3 ('a mismatch is a hard fail — the number is decorative') was unpassable by any build. The curve below is RI-PRG01's canonical formula and its own 139-row table, transcribed, not re-derived.",
+  "soul_cost_formula": "cost(n) = round(0.015*n^3 + 2.00*n^2 + 55*n + 300)",
+  "formula_note": "n is the level being PURCHASED (going from n-1 to n). Level 1 is free. Single curve, no piecewise band.",
+  "min_level": 1,
+  "max_level": 140,
   "attributes": [
-    "vigour",
-    "endurance",
     "strength",
-    "dexterity",
-    "intelligence",
-    "faith"
+    "endurance",
+    "agility",
+    "speed",
+    "vigour",
+    "willpower",
+    "intellect",
+    "hist-bond",
+    "personality",
+    "luck"
   ],
+  "attributes_note": "RI-PRG02 §1. Ten, and all ten are on the level-up screen at once (RI-UIX03 L5).",
   "levels": [
     {
-      "level": 1,
-      "souls": 0
-    },
-    {
       "level": 2,
-      "souls": 673
+      "souls": 418,
+      "cumulative": 418
     },
     {
       "level": 3,
-      "souls": 689
+      "souls": 483,
+      "cumulative": 901
     },
     {
       "level": 4,
-      "souls": 706
+      "souls": 553,
+      "cumulative": 1454
     },
     {
       "level": 5,
-      "souls": 723
+      "souls": 627,
+      "cumulative": 2081
+    },
+    {
+      "level": 6,
+      "souls": 705,
+      "cumulative": 2786
+    },
+    {
+      "level": 7,
+      "souls": 788,
+      "cumulative": 3574
+    },
+    {
+      "level": 8,
+      "souls": 876,
+      "cumulative": 4450
+    },
+    {
+      "level": 9,
+      "souls": 968,
+      "cumulative": 5418
+    },
+    {
+      "level": 10,
+      "souls": 1065,
+      "cumulative": 6483
+    },
+    {
+      "level": 11,
+      "souls": 1167,
+      "cumulative": 7650
+    },
+    {
+      "level": 12,
+      "souls": 1274,
+      "cumulative": 8924
+    },
+    {
+      "level": 13,
+      "souls": 1386,
+      "cumulative": 10310
+    },
+    {
+      "level": 14,
+      "souls": 1503,
+      "cumulative": 11813
+    },
+    {
+      "level": 15,
+      "souls": 1626,
+      "cumulative": 13439
+    },
+    {
+      "level": 16,
+      "souls": 1753,
+      "cumulative": 15192
+    },
+    {
+      "level": 17,
+      "souls": 1887,
+      "cumulative": 17079
+    },
+    {
+      "level": 18,
+      "souls": 2025,
+      "cumulative": 19104
+    },
+    {
+      "level": 19,
+      "souls": 2170,
+      "cumulative": 21274
+    },
+    {
+      "level": 20,
+      "souls": 2320,
+      "cumulative": 23594
+    },
+    {
+      "level": 21,
+      "souls": 2476,
+      "cumulative": 26070
+    },
+    {
+      "level": 22,
+      "souls": 2638,
+      "cumulative": 28708
+    },
+    {
+      "level": 23,
+      "souls": 2806,
+      "cumulative": 31514
+    },
+    {
+      "level": 24,
+      "souls": 2979,
+      "cumulative": 34493
+    },
+    {
+      "level": 25,
+      "souls": 3159,
+      "cumulative": 37652
+    },
+    {
+      "level": 26,
+      "souls": 3346,
+      "cumulative": 40998
+    },
+    {
+      "level": 27,
+      "souls": 3538,
+      "cumulative": 44536
+    },
+    {
+      "level": 28,
+      "souls": 3737,
+      "cumulative": 48273
+    },
+    {
+      "level": 29,
+      "souls": 3943,
+      "cumulative": 52216
+    },
+    {
+      "level": 30,
+      "souls": 4155,
+      "cumulative": 56371
+    },
+    {
+      "level": 31,
+      "souls": 4374,
+      "cumulative": 60745
+    },
+    {
+      "level": 32,
+      "souls": 4600,
+      "cumulative": 65345
+    },
+    {
+      "level": 33,
+      "souls": 4832,
+      "cumulative": 70177
+    },
+    {
+      "level": 34,
+      "souls": 5072,
+      "cumulative": 75249
+    },
+    {
+      "level": 35,
+      "souls": 5318,
+      "cumulative": 80567
+    },
+    {
+      "level": 36,
+      "souls": 5572,
+      "cumulative": 86139
+    },
+    {
+      "level": 37,
+      "souls": 5833,
+      "cumulative": 91972
+    },
+    {
+      "level": 38,
+      "souls": 6101,
+      "cumulative": 98073
+    },
+    {
+      "level": 39,
+      "souls": 6377,
+      "cumulative": 104450
+    },
+    {
+      "level": 40,
+      "souls": 6660,
+      "cumulative": 111110
+    },
+    {
+      "level": 41,
+      "souls": 6951,
+      "cumulative": 118061
+    },
+    {
+      "level": 42,
+      "souls": 7249,
+      "cumulative": 125310
+    },
+    {
+      "level": 43,
+      "souls": 7556,
+      "cumulative": 132866
+    },
+    {
+      "level": 44,
+      "souls": 7870,
+      "cumulative": 140736
+    },
+    {
+      "level": 45,
+      "souls": 8192,
+      "cumulative": 148928
+    },
+    {
+      "level": 46,
+      "souls": 8522,
+      "cumulative": 157450
+    },
+    {
+      "level": 47,
+      "souls": 8860,
+      "cumulative": 166310
+    },
+    {
+      "level": 48,
+      "souls": 9207,
+      "cumulative": 175517
+    },
+    {
+      "level": 49,
+      "souls": 9562,
+      "cumulative": 185079
+    },
+    {
+      "level": 50,
+      "souls": 9925,
+      "cumulative": 195004
+    },
+    {
+      "level": 51,
+      "souls": 10297,
+      "cumulative": 205301
+    },
+    {
+      "level": 52,
+      "souls": 10677,
+      "cumulative": 215978
+    },
+    {
+      "level": 53,
+      "souls": 11066,
+      "cumulative": 227044
+    },
+    {
+      "level": 54,
+      "souls": 11464,
+      "cumulative": 238508
+    },
+    {
+      "level": 55,
+      "souls": 11871,
+      "cumulative": 250379
+    },
+    {
+      "level": 56,
+      "souls": 12286,
+      "cumulative": 262665
+    },
+    {
+      "level": 57,
+      "souls": 12711,
+      "cumulative": 275376
+    },
+    {
+      "level": 58,
+      "souls": 13145,
+      "cumulative": 288521
+    },
+    {
+      "level": 59,
+      "souls": 13588,
+      "cumulative": 302109
+    },
+    {
+      "level": 60,
+      "souls": 14040,
+      "cumulative": 316149
+    },
+    {
+      "level": 61,
+      "souls": 14502,
+      "cumulative": 330651
+    },
+    {
+      "level": 62,
+      "souls": 14973,
+      "cumulative": 345624
+    },
+    {
+      "level": 63,
+      "souls": 15454,
+      "cumulative": 361078
+    },
+    {
+      "level": 64,
+      "souls": 15944,
+      "cumulative": 377022
+    },
+    {
+      "level": 65,
+      "souls": 16444,
+      "cumulative": 393466
+    },
+    {
+      "level": 66,
+      "souls": 16954,
+      "cumulative": 410420
+    },
+    {
+      "level": 67,
+      "souls": 17474,
+      "cumulative": 427894
+    },
+    {
+      "level": 68,
+      "souls": 18004,
+      "cumulative": 445898
+    },
+    {
+      "level": 69,
+      "souls": 18545,
+      "cumulative": 464443
+    },
+    {
+      "level": 70,
+      "souls": 19095,
+      "cumulative": 483538
+    },
+    {
+      "level": 71,
+      "souls": 19656,
+      "cumulative": 503194
+    },
+    {
+      "level": 72,
+      "souls": 20227,
+      "cumulative": 523421
+    },
+    {
+      "level": 73,
+      "souls": 20808,
+      "cumulative": 544229
+    },
+    {
+      "level": 74,
+      "souls": 21400,
+      "cumulative": 565629
+    },
+    {
+      "level": 75,
+      "souls": 22003,
+      "cumulative": 587632
+    },
+    {
+      "level": 76,
+      "souls": 22617,
+      "cumulative": 610249
+    },
+    {
+      "level": 77,
+      "souls": 23241,
+      "cumulative": 633490
+    },
+    {
+      "level": 78,
+      "souls": 23876,
+      "cumulative": 657366
+    },
+    {
+      "level": 79,
+      "souls": 24523,
+      "cumulative": 681889
+    },
+    {
+      "level": 80,
+      "souls": 25180,
+      "cumulative": 707069
+    },
+    {
+      "level": 81,
+      "souls": 25849,
+      "cumulative": 732918
+    },
+    {
+      "level": 82,
+      "souls": 26529,
+      "cumulative": 759447
+    },
+    {
+      "level": 83,
+      "souls": 27220,
+      "cumulative": 786667
+    },
+    {
+      "level": 84,
+      "souls": 27923,
+      "cumulative": 814590
+    },
+    {
+      "level": 85,
+      "souls": 28637,
+      "cumulative": 843227
+    },
+    {
+      "level": 86,
+      "souls": 29363,
+      "cumulative": 872590
+    },
+    {
+      "level": 87,
+      "souls": 30101,
+      "cumulative": 902691
+    },
+    {
+      "level": 88,
+      "souls": 30850,
+      "cumulative": 933541
+    },
+    {
+      "level": 89,
+      "souls": 31612,
+      "cumulative": 965153
+    },
+    {
+      "level": 90,
+      "souls": 32385,
+      "cumulative": 997538
+    },
+    {
+      "level": 91,
+      "souls": 33171,
+      "cumulative": 1030709
+    },
+    {
+      "level": 92,
+      "souls": 33968,
+      "cumulative": 1064677
+    },
+    {
+      "level": 93,
+      "souls": 34778,
+      "cumulative": 1099455
+    },
+    {
+      "level": 94,
+      "souls": 35601,
+      "cumulative": 1135056
+    },
+    {
+      "level": 95,
+      "souls": 36436,
+      "cumulative": 1171492
+    },
+    {
+      "level": 96,
+      "souls": 37283,
+      "cumulative": 1208775
+    },
+    {
+      "level": 97,
+      "souls": 38143,
+      "cumulative": 1246918
+    },
+    {
+      "level": 98,
+      "souls": 39016,
+      "cumulative": 1285934
+    },
+    {
+      "level": 99,
+      "souls": 39901,
+      "cumulative": 1325835
+    },
+    {
+      "level": 100,
+      "souls": 40800,
+      "cumulative": 1366635
+    },
+    {
+      "level": 101,
+      "souls": 41712,
+      "cumulative": 1408347
+    },
+    {
+      "level": 102,
+      "souls": 42636,
+      "cumulative": 1450983
+    },
+    {
+      "level": 103,
+      "souls": 43574,
+      "cumulative": 1494557
+    },
+    {
+      "level": 104,
+      "souls": 44525,
+      "cumulative": 1539082
+    },
+    {
+      "level": 105,
+      "souls": 45489,
+      "cumulative": 1584571
+    },
+    {
+      "level": 106,
+      "souls": 46467,
+      "cumulative": 1631038
+    },
+    {
+      "level": 107,
+      "souls": 47459,
+      "cumulative": 1678497
+    },
+    {
+      "level": 108,
+      "souls": 48464,
+      "cumulative": 1726961
+    },
+    {
+      "level": 109,
+      "souls": 49482,
+      "cumulative": 1776443
+    },
+    {
+      "level": 110,
+      "souls": 50515,
+      "cumulative": 1826958
+    },
+    {
+      "level": 111,
+      "souls": 51561,
+      "cumulative": 1878519
+    },
+    {
+      "level": 112,
+      "souls": 52622,
+      "cumulative": 1931141
+    },
+    {
+      "level": 113,
+      "souls": 53696,
+      "cumulative": 1984837
+    },
+    {
+      "level": 114,
+      "souls": 54785,
+      "cumulative": 2039622
+    },
+    {
+      "level": 115,
+      "souls": 55888,
+      "cumulative": 2095510
+    },
+    {
+      "level": 116,
+      "souls": 57005,
+      "cumulative": 2152515
+    },
+    {
+      "level": 117,
+      "souls": 58137,
+      "cumulative": 2210652
+    },
+    {
+      "level": 118,
+      "souls": 59283,
+      "cumulative": 2269935
+    },
+    {
+      "level": 119,
+      "souls": 60444,
+      "cumulative": 2330379
+    },
+    {
+      "level": 120,
+      "souls": 61620,
+      "cumulative": 2391999
+    },
+    {
+      "level": 121,
+      "souls": 62810,
+      "cumulative": 2454809
+    },
+    {
+      "level": 122,
+      "souls": 64016,
+      "cumulative": 2518825
+    },
+    {
+      "level": 123,
+      "souls": 65236,
+      "cumulative": 2584061
+    },
+    {
+      "level": 124,
+      "souls": 66471,
+      "cumulative": 2650532
+    },
+    {
+      "level": 125,
+      "souls": 67722,
+      "cumulative": 2718254
+    },
+    {
+      "level": 126,
+      "souls": 68988,
+      "cumulative": 2787242
+    },
+    {
+      "level": 127,
+      "souls": 70269,
+      "cumulative": 2857511
+    },
+    {
+      "level": 128,
+      "souls": 71565,
+      "cumulative": 2929076
+    },
+    {
+      "level": 129,
+      "souls": 72877,
+      "cumulative": 3001953
+    },
+    {
+      "level": 130,
+      "souls": 74205,
+      "cumulative": 3076158
+    },
+    {
+      "level": 131,
+      "souls": 75548,
+      "cumulative": 3151706
+    },
+    {
+      "level": 132,
+      "souls": 76908,
+      "cumulative": 3228614
+    },
+    {
+      "level": 133,
+      "souls": 78283,
+      "cumulative": 3306897
+    },
+    {
+      "level": 134,
+      "souls": 79674,
+      "cumulative": 3386571
+    },
+    {
+      "level": 135,
+      "souls": 81081,
+      "cumulative": 3467652
+    },
+    {
+      "level": 136,
+      "souls": 82504,
+      "cumulative": 3550156
+    },
+    {
+      "level": 137,
+      "souls": 83943,
+      "cumulative": 3634099
+    },
+    {
+      "level": 138,
+      "souls": 85399,
+      "cumulative": 3719498
+    },
+    {
+      "level": 139,
+      "souls": 86871,
+      "cumulative": 3806369
+    },
+    {
+      "level": 140,
+      "souls": 88360,
+      "cumulative": 3894729
     }
   ]
 }

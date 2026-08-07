@@ -119,6 +119,12 @@ export class GamepadRouter {
     if (!p) throw new Error(`unknown pad profile '${name}'. Known: ${Object.keys(this.profiles.pad_profiles).join(', ')}`);
     this.profileName = name;
     this.profile = p;
+    // A pad adopted before the switch carries its OWN `profileName`, which `_applyButtons`
+    // reads. Without this line a profile change moved the router's default and left every
+    // already-connected pad on the old map — so `souls-handheld` selected on a phone did
+    // nothing at all for the pad already in the player's hands (L1: it is invisible until its
+    // first press, so it is adopted mid-session by definition).
+    for (const st of this.pads.values()) st.profileName = name;
     this._resetPadStates();
     return name;
   }
@@ -395,8 +401,12 @@ export class GamepadRouter {
         // frame until release. Never both, never neither (M-P5).
         const g = st.gate[i] || (st.gate[i] = { pressFrame: -1, promoted: false, holdAction: gate.hold });
         g.holdAction = gate.hold;
+        // §C: "released within 12 frames of press => roll; still held at frame 12 => sprint".
+        // The quantity is FRAMES HELD, which is `frame - pressFrame + 1` — the press frame
+        // counts. M-P5 releases at 4, 8, 11, 12, 13, 20, 60 and requires roll at 11 and sprint
+        // at 12; measured against the raw delta this was off by one and 12 came out as a roll.
         if (downNow && g.pressFrame < 0) { g.pressFrame = frame; g.promoted = false; }
-        else if (downNow && !g.promoted && frame - g.pressFrame >= (gate.frames || 12)) {
+        else if (downNow && !g.promoted && (frame - g.pressFrame + 1) >= (gate.frames || 12)) {
           g.promoted = true;
           this.pipe.edgeDown(gate.hold);
         } else if (!downNow && g.pressFrame >= 0) {

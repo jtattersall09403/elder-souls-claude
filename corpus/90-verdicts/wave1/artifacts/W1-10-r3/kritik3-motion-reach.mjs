@@ -35,7 +35,7 @@ const FULL = process.argv.includes('--full');
 const { NodeArena, loadCombatData } = await import(`${ROOT}/tools/lib/combat-node.mjs`);
 
 const D = loadCombatData();
-const STEP = 0.10, LO = 0.20, HI = 5.00;
+const STEP = 0.20, LO = 0.20, HI = 5.00;
 const WALK = 2.0 / 60;               // locomotion.walk_mps, per frame
 
 const byClass = {};
@@ -69,7 +69,7 @@ function fight(weapon, dist, regime) {
   if (regime === 'M') { script.unshift({ f: 1, move: [0, 1] }); }   // walk forward, then swing
   a.queueInputs(script);
 
-  const total = s.startup_f + s.active_f + s.recovery_f + 40;
+  const total = s.startup_f + s.active_f + s.recovery_f + 10;
   let hit = null, closest = Infinity;
   for (let i = 1; i <= total; i++) {
     if (regime === 'A') e.pos[2] -= WALK;
