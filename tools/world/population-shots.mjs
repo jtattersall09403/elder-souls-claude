@@ -49,7 +49,11 @@ const DATE = new Date().toISOString().slice(0, 10);
 const base = {
   evidence_of: 'composition',
   place: { x: AT[0], z: AT[1] },
-  pose: { yaw_deg: YAW, pitch_deg: 3.0, eye_m: 1.7, fov: 70 },
+  // EYE HEIGHT IS 11 m, NOT 1.7 m, AND THAT IS THE WHOLE LESSON OF THE FIRST PAIR: at standing
+  // height on a road this world scatters with real vegetation, the first frame was 90% the
+  // inside of a bush. The subject here is a STRETCH of road and the spacing of what stands
+  // beside it, which is a thing you have to be above to see at all.
+  pose: { yaw_deg: YAW, pitch_deg: Number(args.pitch === undefined ? 16 : args.pitch), eye_m: Number(args.eye || 11), fov: 70 },
   time: TIME, weather: 'clear',
   width: W, height: H, ui: false,
 };

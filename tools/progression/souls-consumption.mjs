@@ -111,11 +111,25 @@ try {
         delta: stats().souls - before, gold_before: goldBefore, gold_after: gold(), events: evs };
     };
 
-    /** A fresh encounter in front of the player, and the eids it produced. */
+    /**
+     * A fresh encounter in front of the player, and the eids it produced.
+     *
+     * THE TAG IS LOAD-BEARING AND IT WAS NOT THERE IN ROUND 1. `spawnEncounter` mints eids as
+     * `${tag || encounterId}-${role}-${i}`, so an untagged despawn/respawn cycle brings the SAME
+     * SIX EIDS back. Round 1's twelve arms all ran on those six eids and all silently depended on
+     * a corpse being re-payable with no hearth rest in between — which is the exact defect the
+     * verdict charged as HF-3 and which `sim/souls.js`'s rest-epoch gate now refuses. The first
+     * run of this suite after the gate landed scored 8/15 with C, E, F and G1-G3 all reading zero,
+     * and the cause was the instrument, not the world: arm A had already consumed the bodies.
+     *
+     * A "fresh fight" means a DIFFERENT GROUP OF ENEMIES, so it gets a unique tag. Arm M is the
+     * one place the reuse is the point, and it deliberately spawns untagged.
+     */
+    let fightSeq = 0;
     const freshFight = () => {
       for (const e of H.listEntities() || []) { try { H.despawn(e.eid || e.id); } catch { /* gone */ } }
       const p = stats().pos;
-      H.spawnEncounter('dres-raid-party', p[0], p[2]);
+      H.spawnEncounter('dres-raid-party', p[0], p[2], { tag: `probe-fight-${++fightSeq}` });
       // ONE FRAME BEFORE ANYTHING DIES, and it is load-bearing rather than hygiene. The award
       // is a transition scan with lazy seeding: the first time it sees an eid it records
       // whether that body was alive, and a body it has NEVER seen alive is treated as already
@@ -397,18 +411,38 @@ try {
       const h = (HZ.doc.hazards || []).find((x) => x.id === 'the-fall');
       if (!h) return { error: 'hazard the-fall not on disk' };
       const ctx = HZ._context(E.sim);
-      const savedByRegion = HZ.byRegion;
-      // Make the real loop VISIT this hazard: `here = byRegion.get(ctx.region)`. Scaffolding
-      // around the branch under test, not a reimplementation of it.
+      // ---- SCAFFOLDING, DECLARED. Three things stop a hazard firing in an arena, and none of
+      // them is the branch under test:
+      //   `_suppressed()` returns 'camera fixture' for any `sim.cellId`, which every arena has;
+      //   `_inside()` is false because `the-fall` has neither a placed anchor nor a CONDITION
+      //     predicate that a flat arena satisfies;
+      //   `byRegion.get(ctx.region)` is empty because the arena is not one of the 13 regions.
+      // All three are about WHERE THE PLAYER IS. H9 — "hazards hurt everyone" — and
+      // `_hurtEntity` are untouched, and they are the whole subject of this arm. The first run
+      // of this arm seeded `active` without overriding `_inside`, and the hazard-exit branch
+      // deleted the entry before H9 ever read it: the arm reported no damage at all and went red
+      // for the wrong reason.
+      const savedByRegion = HZ.byRegion, savedInside = HZ._inside, savedSuppressed = HZ._suppressed;
       HZ.byRegion = new Map([[ctx.region, [h]]]);
-      HZ.active.set(h.id, { since: E.sim.frame, damageFrom: E.sim.frame, ticks: 0, dealt: 0 });
-      HZ.spent.delete(h.id);
+      HZ._inside = () => true;
+      HZ._suppressed = () => null;
+      HZ.spent.delete(h.id); HZ.active.delete(h.id); HZ.told.delete(h.id);
       const soulsBefore = E.sim.progression.soulsHeld;
       H.traceStart({ events: true }); H.traceDrain();
       let stepError = null;
+      let armed = null, hereCount = 0;
       try {
+        // Pass 1 ARMS the volume through the system's own entry branch.
+        HZ.step(E.sim, E.bus, E.combat.player, withCombat ? E.combat : null);
+        hereCount = (HZ.byRegion.get(ctx.region) || []).length;
+        armed = HZ.active.get(h.id) || null;
+        // Skip the telegraph. `damageFrom = toldAt + lead_s x 60` is H1's business (4 s here);
+        // this arm is about H9's write target, so the wait is elided rather than slept through.
+        if (armed) armed.damageFrom = E.sim.frame;
+        // Pass 2 DAMAGES, through the real H9 loop.
         HZ.step(E.sim, E.bus, E.combat.player, withCombat ? E.combat : null);
       } catch (err) { stepError = String(err.message || err); }
+      HZ._inside = savedInside; HZ._suppressed = savedSuppressed;
       const bodyHpRightAfter = body.hp;
       const entHpRightAfter = ent.hp;
       H.stepFrames(4);                       // mirror() runs, then stepSouls sees the transition
@@ -422,6 +456,8 @@ try {
       HZ.active.delete(h.id);
       return {
         with_combat: !!withCombat, hazard: h.id, step_error: stepError,
+        region: ctx.region, hazards_visited: hereCount, armed: !!armed,
+        declared_damage: h.damage, hp_before_tick: 40,
         body_hp_right_after: bodyHpRightAfter, entity_hp_right_after: entHpRightAfter,
         body_hp_4_frames_later: bodyAfter ? bodyAfter.hp : null,
         entity_hp_4_frames_later: after ? after.hp : null,
@@ -592,7 +628,8 @@ try {
   ok('L  THE HAZARD DEATH PATH PAYS, and the control shows why it did not: the write must reach the body',
     lf.body_dead === true && lf.delta === (probe.K || {}).declared_souls && (lf.events || []).length >= 1
       && lc.delta === 0 && lc.entity_hp_4_frames_later > 0,
-    `FIXED (HazardSystem.step with the CombatSystem): body hp ${lf.body_hp_right_after} right after the tick, `
+    `hazard ${lf.hazard} armed=${lf.armed} in region '${lf.region}'. `
+    + `FIXED (HazardSystem.step with the CombatSystem): body hp ${lf.hp_before_tick} -> ${lf.body_hp_right_after} right after the tick, `
     + `dead ${lf.body_dead}, souls +${lf.delta}, ${(lf.events || []).length} event(s). `
     + `CONTROL (the same step, same hazard, same body, without it — i.e. the pre-fix write to the mirror): `
     + `entity hp ${lc.entity_hp_right_after} right after -> ${lc.entity_hp_4_frames_later} four frames later `

@@ -1144,7 +1144,11 @@ export class Province {
    */
   updateSignatureLights(x, z) {
     const sig = this.field.sig;
-    if (!sig) return 0;
+    // NOT `if (!sig) return 0` any more. The waylamps live in the same pool as the region
+    // signatures but they are not made of them, and a bare-signature world would otherwise have
+    // had lit posts in the data and none in the frame — the orphan shape this piece exists to
+    // stop, arriving through an early return.
+    if (!sig && !(this.field.signs || []).some((s) => s.lamp)) return 0;
     if (!this.sigLights) {
       this.sigLights = [];
       for (let i = 0; i < MAX_SIG_LIGHTS; i++) {
@@ -1156,7 +1160,7 @@ export class Province {
       }
     }
     const near = [];
-    for (const it of sig.items) {
+    for (const it of (sig ? sig.items : [])) {
       const K = SIGNATURE_KINDS[it.kind];
       if (!K.glow) continue;
       const d = Math.hypot(it.x - x, it.z - z);

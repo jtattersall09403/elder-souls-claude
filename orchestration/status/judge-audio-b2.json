@@ -22,8 +22,13 @@
   ],
   "outputs_written": [],
   "findings": [
-    "Contention at start: pgrep -c headless_shell = 30, loadavg 20.28 on 4 cores. Well above the protocol cap of ~8. Doing all offline work first; will not take a browser unless the pack requires one."
+    "Contention at start: pgrep -c headless_shell = 30, loadavg 20.28 on 4 cores. Well above the protocol cap of ~8. Doing all offline work first; will not take a browser unless the pack requires one.",
+    "Pack ALREADY BUILT at reports/w1-22-critic/b2 (pack_id w1-22-b2-78aebc7, 32 trials, seed 22071, commit 78aebc7 dirty). No need to render -- avoids a browser entirely under load 20.",
+    "LEAK 1 (author missed): reports/w1-22-critic/b2/JUDGE.md lives INSIDE the pack directory and states 'separation over the 24 DIFFERENT trials, and false_different_rate over the 8 SAME trials'. PROMPT.md explicitly promises 'You are not told how many of each.' The pack contradicts its own prompt. RI-MTH03 SectionA says the pack contains only the artifacts + PROMPT.md + pack.json; operator notes belong in the reveal sibling.",
+    "LEAK 2 (author missed): audio-pack-b2.mjs hardcodes hard=12, random=12, catch=8, so the class balance is recoverable from the builder source -- which the judge's own brief instructs it to read and audit.",
+    "LEAK 3 (author missed): audio-pack-b2.mjs lines 249-250 print catch-pair proxy distances and hard-stratum distances to STDOUT at build time. Anyone who builds the pack and reads the console sees the numeric separation between the SAME and DIFFERENT strata, which calibrates a threshold exactly. Should be written into the reveal directory, not stdout.",
+    "LEAK CHECKED, CLEAN: crest_factor_db uses the TRUE lufsI() while loudness_lufs is hardcoded -23.0. Crest factor = peak/RMS is scale-invariant, so it does NOT reopen the loudness channel the author closed. Verified algebraically from the source."
   ],
-  "next_step": "read RI-MTH03 blind comparison protocol, then audit tools/blind/audio-pack-b2.mjs for leaks BEFORE rendering",
+  "next_step": "pre-register answering procedure in writing, then read trials.json, answer all 32, hash answers, THEN unblind",
   "notes_for_successor": "Answering procedure must be stated and answers hashed BEFORE unblinding. Reveal key held by a sibling; unblind in the pack's recorded seven-step order."
 }
