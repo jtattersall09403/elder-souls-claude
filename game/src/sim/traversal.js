@@ -32,6 +32,16 @@ const DEG = 180 / Math.PI;
 const BANDS = ['W0', 'W1', 'W2', 'W3', 'W4', 'W5'];
 const BAND_MIN = { W0: 0.00, W1: 0.01, W2: 0.21, W3: 0.51, W4: 0.96, W5: 1.41 };
 
+// RI-WLD10 §3: "RI-CHR02 grants Saxhleel and Naga ... this item makes those three privileges
+// exact." Round 1 of this piece found `races.json` carries the tag (`argonian: true` on both
+// entries) and NOTHING downstream ever read it into this file — `breathesWater`/`buoyant` were
+// set only by two magic effects, and `step()` was never even given the player's race. This is
+// the one place that answer is computed, so a save, a spell and this file cannot each grow a
+// second, disagreeing definition of "amphibious".
+const AMPHIBIOUS_RACES = new Set(['saxhleel', 'naga']);
+export function isAmphibiousRace(race) { return AMPHIBIOUS_RACES.has(String(race || '').toLowerCase()); }
+export const bandIndex = (b) => BANDS.indexOf(b);
+
 /** Band of a depth, with hysteresis about the previous band (RI-WLD10 §1 property 2). */
 export function bandWithHysteresis(depth, prev, hyst) {
   let b = 'W0';
@@ -43,8 +53,6 @@ export function bandWithHysteresis(depth, prev, hyst) {
   if (bi === pi - 1 && depth > BAND_MIN[prev] - hyst) return prev;
   return b;
 }
-
-const bandIndex = (b) => BANDS.indexOf(b);
 
 export class Traversal {
   /**
@@ -71,6 +79,10 @@ export class Traversal {
     // body that has not been enchanted, so a run with no magic in it behaves exactly as before.
     this.breathesWater = false;
     this.buoyant = false;
+    // RI-WLD10 §3's race-conditioned privilege, recomputed every `step()` from whatever race is
+    // passed in — never latched here, so a character composed after `reset()` (chargen can run
+    // after the traversal object already exists) is not stuck with a stale answer.
+    this.amphibious = false;
     this.mire = 0;
     this.mireLastFootfall = 0;
     this.mired = false;
@@ -89,13 +101,26 @@ export class Traversal {
 
   attach(sig) { this.sig = sig; }
 
-  /** Is an action denied by the water the body is standing in? S25: denied, never degraded. */
+  /**
+   * Is an action denied by the water the body is standing in? S25: denied, never degraded.
+   *
+   * RI-WLD10 §5 R2, quoted in full: "sprint above W2; roll above W2; all attacks, blocks and
+   * parries in W5; attacks in W4 for the non-amphibious." The shipped clause only ever tested
+   * `this.band === 'W5'` — W4 (DEEP, "non-amphibious races cannot fight here", §1's own one-line
+   * identity for the band) denied nothing to anybody, because there was no race check anywhere
+   * to hang a "for the non-amphibious" exception off. `this.amphibious` (set in `step()`, below)
+   * is that exception now: W5 is denied to everyone, W4 is denied to everyone EXCEPT an
+   * amphibious body, exactly as §3's third privilege ("stand and act in deep water... W4 only")
+   * promises.
+   */
   denies(action) {
     const c = this.cfg.water;
     const bi = bandIndex(this.band);
     if (action === 'sprint') return bi > bandIndex(c.sprint_denied_above);
     if (action === 'roll') return bi > bandIndex(c.roll_denied_above);
-    if (action === 'attack' || action === 'block' || action === 'parry') return this.band === 'W5';
+    if (action === 'attack' || action === 'block' || action === 'parry') {
+      return this.band === 'W5' || (this.band === 'W4' && !this.amphibious);
+    }
     return false;
   }
 
@@ -108,9 +133,15 @@ export class Traversal {
    * @param {number} pz       the body's z before
    * @param {number} burden   the RI-PRG07 multiplier (1.00 inside a fight, by that item's guard)
    * @param {boolean} moving  did the player request movement this frame
+   * @param {string} [race]   RI-WLD10 §3's amphibious clause. Round 1 found this file was never
+   *                          given the player's race at all — `engine.js`'s one call site passed
+   *                          six arguments and a seventh, this one, did not exist. A Saxhleel and
+   *                          a Nord were mechanically identical because nothing here could tell
+   *                          them apart.
    */
-  step(p, px, pz, burden, moving, body) {
+  step(p, px, pz, burden, moving, body, race) {
     const f = this.field, C = this.cfg;
+    this.amphibious = isAmphibiousRace(race);
     // THE AUTHORITY IS THE COMBAT BODY. `sim/combat-bridge.js mirror()` copies hp, stamina and
     // state OUT of `CombatSystem`'s body and INTO `sim.player` at the bottom of every step, which
     // runs before this does — so a drowning tick or a fall's damage written only to `sim.player`
@@ -273,11 +304,16 @@ export class Traversal {
 
     // ---- 7. what the water costs --------------------------------------------------------------
     const W = C.water;
-    this.regenSuppressedNow = W.regen_suppressed_in.includes(this.band);
+    // RI-WLD10 §3's second privilege: "No swim stamina drain: §3's W5 drain and W5 regen
+    // suppression are both zeroed. W3 and W4 drains still apply at ×0.5." Only W5 is exempted
+    // from the regen suppression list — an amphibious body still pays the W3/W4 costs, just at
+    // half rate, exactly as declared.
+    this.regenSuppressedNow = W.regen_suppressed_in.includes(this.band) && !(this.amphibious && this.band === 'W5');
     let drain = (moving && (dx !== 0 || dz !== 0) ? W.stamina_drain_moving_per_s : W.stamina_drain_still_per_s)[this.band] || 0;
     // Seam S19: `buoyancy` holds you up, so the water stops costing you to be in. Not a frame
     // number and not a denial removed — S25 keeps both — just the stamina the band charges.
     if (this.buoyant) drain = 0;
+    else if (this.amphibious) drain = this.band === 'W5' ? 0 : drain * 0.5;
     if (drain > 0) {
       this._spendStamina(p, drain / 60);
       if (W.regen_delay_rearmed_in.includes(this.band)) {
@@ -294,7 +330,7 @@ export class Traversal {
       if (this.body) this.body.regenBlockUntil = Math.max(this.body.regenBlockUntil || 0, until);
     }
     this.staminaDrainPerS = drain;
-    this.regenSuppressed = W.regen_suppressed_in.includes(this.band);
+    this.regenSuppressed = this.regenSuppressedNow;
 
     // ---- 8. breath ----------------------------------------------------------------------------
     // Submerged = the water surface is above the head of a 1.8 m body standing on the bottom.
@@ -303,7 +339,12 @@ export class Traversal {
     // Seam S19: `breathe_water` is a real answer to a real drown clock (W1-14 round 3). Wave 1's
     // handler wrote a magic-private `M.water.drownF` that nothing here read, so the spell whose
     // entire purpose is "you do not drown" left you drowning on schedule.
-    if (this.submerged && this.breathesWater) {
+    //
+    // RI-WLD10 §3's first privilege, "Unlimited water breathing: `breath_max = ∞`. The meter
+    // does not exist." — folded into the same clause the spell already uses (a submerged body
+    // refilled to max every frame never reaches zero), rather than inventing a second "infinite
+    // breath" mechanism that could disagree with the first.
+    if (this.submerged && (this.breathesWater || this.amphibious)) {
       this.breath = W.breath_max_s;
     } else if (this.submerged) {
       this.breath = Math.max(0, this.breath - 1 / 60);
@@ -455,6 +496,7 @@ export class Traversal {
         submerged: this.submerged, sinking: !!this.sinking, breath_s: +this.breath.toFixed(2),
         breath_max_s: this.cfg.water.breath_max_s,
         breathes_water: !!this.breathesWater, buoyant: !!this.buoyant,
+        amphibious: !!this.amphibious,
         stamina_drain_per_s: this.staminaDrainPerS || 0,
         regen_suppressed: !!this.regenSuppressed,
         mire: this.mire, mired: this.mired, mire_refractory: this.mireRefractory,

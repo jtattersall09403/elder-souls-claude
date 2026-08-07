@@ -1,11 +1,67 @@
 {
   "task_id": "W1-23-r2",
-  "status": "in_progress",
-  "started_at": "2026-08-07T00:00:00Z",
-  "next_step": "read corpus/90-verdicts/wave1/W1-23-r1.md in full, then locate lore registry files and converse.js",
-  "files_touched": [],
-  "files_claimed": [
-    "orchestration/status/W1-23-r2.json"
+  "title": "The lore registry and the province's canon — round 2, against W1-23-r1 (FAIL 5/10)",
+  "status": "complete",
+  "commit": "6b9a4be77cfb69f3227f0415b963d8780f4704dc",
+  "method": "No browser used (RULES #21 — 48 headless_shell / loadavg 33 at start). Every figure below is taken by importing and running game/src/character/converse.js (buildTopicIndex, infoFor) and game/src/world/canon.js (CanonRegistry) directly against the shipped game/data, the same way the round-1 critic's own instruments (tools/lore/critic-w1-23-r1*.mjs) do. Re-verified with node tools/lore/critic-w1-23-r1.mjs, tools/lore/critic-w1-23-r1-ablate.mjs and tools/lore/critic-w1-23-r1-voices.mjs before and after.",
+  "addressed_from_W1-23-r1": [
+    {
+      "gap": "The province's only Argonian voice on slavery was a refusal; both registered positions on the central moral fact (CF-D008) were spoken by colonists (an Imperial clerk and a House Dres factor).",
+      "fix": "Registered a new dispute CF-D028 (does the lease-roll ever release its holder, or is it hereditary?) voiced by two specific, disagreeing Argonian actors — sapcutter ('the roll does not come off') and outlaw ('it came off a man on the number-four gang, once... bought is not free, it is also not never'). Added two generic (non-actor) CF-D008 lines gated by faction (house-dres/wet-ledger vs imperial-assize/provincial-office/ninth-cohort, both already-declared holders) so the systemic admission and the systemic denial each reach dozens of people, not one named archetype apiece. Registered the existing townsman refusal as CF-D008 position C (a claim about what is safe to say in view of an Imperial building, not an argument about what is worth doing).",
+      "evidence": "tools/lore/critic-w1-23-r1-voices.mjs, before -> after: Argonian-race NPCs with ANY answer to slavery 66 -> 111; distinct sentences reachable by an Argonian player 3 -> 8; Argonian-authored distinct sentences 1 -> 4 (the refusal, sapcutter, outlaw, and the Wet-Ledger admission, which now reaches Argonian household dependents of Dres factors, not just the single dres-factor actor)."
+    },
+    {
+      "gap": "Delete-the-fix (RULES #6) showed the register changes 31 of 161,702 (npc,topic) pairs, all silencings, and the two topics the report leads with (the-thinning, slavery) are byte-identical with the register deleted.",
+      "fix": "Ran the ablation myself first (RULES #6) and reproduced 31/0 exactly. Then, because the new content above is gated by FACTION (not just actor-exact-match, which the round-1 verdict showed the register can never influence), re-ran it: the register now changes 209 pairs — 188 silenced, 21 SWAPPED for a different line. The `slavery` topic is no longer byte-identical: with the register a Wet-Ledger household dependent (many of them Argonian) gets the honest admission; with the register deleted, the two now-tied generic lines resolve to the FIRST-AUTHORED one for everyone, so that same person is given the Imperial Assize's denial instead. That is the register causing the province to hold the right position, not merely to fall silent.",
+      "evidence": "tools/lore/critic-w1-23-r1.mjs section B: '161702 (npc,topic) pairs; the register changes 209 (0.129%) — 188 silenced, 21 swapped for a different line'. tools/lore/canon-consumption.mjs PERTURB section shows the same swap directly on `sapcutter`."
+    },
+    {
+      "gap": "9 of 26 sealed rulings were the bare position letter 'A'/'B'/'C', and both leak checks guard only strings >=24 chars, so the seal (sha256 of the ruling) was invertible in three guesses against the position ids the shipped file already publishes. CF-D008 ('the province's central moral fact') was one of the two worst cases.",
+      "fix": "Rewrote CF-D008's authorially_true from the bare letter 'B' into a `partial:` ruling (drops it out of the vulnerable set on its own). For the remaining 8 (structural, not per-fact), salted every seal: tools/lore/build-canon.mjs now hashes `factId|ruling|salt`, where the salt is a new top-level field in corpus/60-lore/data/canon-facts.json (truth_seal_salt) that project() never copies into its shipped output. Added a SEAL-CRACK section to tools/lore/canon-consumption.mjs (the shipped RI-MTH07 gate) that runs the same three-guess attack the round-1 critic ran and asserts it recovers nothing.",
+      "evidence": "RULES #4 break-and-confirm-red, run before landing the fix: unsalted scheme recovered 8/8 remaining bare-letter seals (CF-D003, D004, D006, D009, D010, D020, D021, D023); salted scheme recovers 0/27. tools/lore/critic-w1-23-r1.mjs section A now reads '0 of 27 sealed disputes have their ruling recoverable'. tools/lore/canon-consumption.mjs SEAL-CRACK: 'ok 0 of 27 sealed rulings recoverable by hashing their own position ids'."
+    },
+    {
+      "gap": "CF-C023 (tier: constructed, binding) asserts six tribe names 'ZERO' in the shipped tree; at HEAD they score 53/34/50/26/10/47. RI-LOR06 §3 step 6: a false constructed fact is a hard FAIL, and no gate checks a `measured:` claim on an undisputed fact, so it shipped false and stayed green.",
+      "fix": "Corrected CF-C023's `measured` field to the current true counts. Ported the round-1 critic's own `staleMeasured()` (already self-tested both ways in tools/lore/critic-w1-23-r1.mjs) into the SHIPPED gate, tools/lore/canon-census.mjs, wired into its `ok` result and its own --self-test, so a future re-count going stale fails CI instead of shipping quietly for a wave.",
+      "evidence": "tools/lore/canon-census.mjs new STALE section: 'none — every ZERO-shaped measured claim still holds against the live tree'; --self-test exercises both a falsified and a still-true ZERO claim. tools/lore/critic-w1-23-r1.mjs section E: 'none' (was 6 FALSIFIED lines)."
+    },
+    {
+      "gap": "The six tribes (Agacephs, Paatru, Archein, Sarpa, Dead-Water, Miredancers — ten NPCs total) were appended with a body, a mouth and a registered position each, but no faction record: game/data/factions/ does not exist, RI-LOR01 comparison method §4 counts factions there and cannot, and CF-C023's own condition was 'a faction each, not a mention each.'",
+      "fix": "Created game/data/factions/argonian-tribes.json, one real faction record per people (rank ladder, premise grounded in their actually-registered CF-D02x stances, and an explicit relation to the province's four constructed bodies and the rootkeepers, so the addition reads as absorbed rather than merely mentioned). Deliberately left game/data/progression/factions.json (RI-QST03's quest-rank file) untouched — out of this round's scope and not needed for RI-LOR01 §4, which counts this directory specifically.",
+      "evidence": "game/data/factions/argonian-tribes.json — 6 entries, cross-referenced against tools/lore/tribe-census.mjs --verbose's own `holds:` lists so the premises are not decorative."
+    }
   ],
-  "notes": "Round 2 of W1-23 (lore registry / province canon). r1 verdict was FAIL 5/10. Constraint: no browser (48 headless_shell procs, loadavg 33 > cap). Must import and run game/src/character/converse.js the way the Act V critic did, per instructions."
+  "not_attempted": [
+    "RI-LOR01's full invention-density scoring (borrowed/total ratio) — the tribe NAMES are established Argonian lore on purpose (CF-C023 sources_real), which the item's own borrowed-name rule may count against the ratio; that judgement call belongs to a critic, not to this round, and is flagged in the new file's own note_on_names field.",
+    "C. VOICE vs GATE (20 untagged voiced_by entries pointing at cf-less dialogue infos) — real, pre-existing, not one of the five items this round was scoped to.",
+    "game/data/books/manifest.json and the canon-check.py --claims keyword-triage blindness (verdict section 6) — untouched, out of scope for this round.",
+    "Any browser-based verification (boot-check's actual frame draw, getCanonState() in a live engine) — RULES #21, 48 headless_shell / loadavg 33 at start. Substituted CanonRegistry.resolve() run offline via tools/lore/canon-consumption.mjs's RESOLVE section, which is the same check engine.js._installCanon() makes at boot (199/199 references resolved, 0 unresolved)."
+  ],
+  "gates_run_after_fix": {
+    "node tools/lore/canon-consumption.mjs": "PASS",
+    "node tools/lore/canon-census.mjs": "PASS (was already PASS; STALE section added)",
+    "node tools/lore/canon-census.mjs --self-test": "PASS",
+    "node tools/lore/tribe-census.mjs": "PASS",
+    "node tools/lore/tribe-census.mjs --self-test": "PASS (9/9)",
+    "node tools/lore/critic-w1-23-r1.mjs --self-test": "PASS (6/6)",
+    "node tools/check-data.mjs": "PASS",
+    "node tools/check-quests.mjs": "PASS",
+    "node tools/check-content.mjs": "PASS",
+    "node tools/check-prose.mjs": "PASS on both files this round wrote to (game/data/dialogue/topics/70-disputes.json, 40-race-gated.json); neither appears in the flagged list",
+    "node tools/corpus-index.mjs": "no new findings attributable to this round's edits"
+  },
+  "files_touched": [
+    "corpus/60-lore/data/canon-facts.json",
+    "game/data/lore/canon.json",
+    "game/data/dialogue/topics/40-race-gated.json",
+    "game/data/dialogue/topics/70-disputes.json",
+    "game/data/factions/argonian-tribes.json",
+    "tools/lore/build-canon.mjs",
+    "tools/lore/canon-consumption.mjs",
+    "tools/lore/canon-census.mjs",
+    "orchestration/status/W1-23-r2.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [],
+  "next_step": "none — round complete. A round-3 critic should re-run tools/lore/critic-w1-23-r1.mjs (or a fresh instrument) against this commit; do not re-run this round's fixes."
 }

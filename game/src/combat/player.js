@@ -311,10 +311,15 @@ export class PlayerController {
     if (wd) {
       const name = nameOfBit(bit);
       const mired = wd.mired;
+      // `wd.attack` is `Traversal.denies('attack')` (RI-WLD10 §5 R2): W5 for everyone, and now
+      // also W4 for a non-amphibious body. This used to be re-derived here as a literal
+      // `wd.band === 'W5'`, which quietly dropped R2's second clause — "attacks in W4 for the
+      // non-amphibious" — because there was no amphibious flag anywhere for a local copy of the
+      // rule to consult. One reader of `denies()` instead of two copies of the rule.
       const denied = mired
         || (bit === BIT.roll && wd.roll)
         || (bit === BIT.sprint && wd.sprint)
-        || (wd.band === 'W5' && bit !== BIT.roll);
+        || (wd.attack && bit !== BIT.roll);
       if (denied) {
         const e = emit(frame, 'action_denied_by_water');
         e.button = name; e.band = wd.band || 'W0'; e.mired = !!mired;

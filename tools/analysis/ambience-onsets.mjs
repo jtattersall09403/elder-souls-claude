@@ -26,8 +26,8 @@
 // HOW IT MEASURES, AND WHY THAT SHAPE. The declared numbers cannot answer "how far above the
 // floor does a drip get?", because a noise grain normalised to ±0.9 and then band-passed is not
 // the same loudness as a sine at the same `gain_db`. So this tool never reads a level out of the
-// data. For each region it renders the SAME SEED TWICE — once whole, once with `mute:
-// ['L3','L4','R7']` — and subtracts. The bed cancels to the sample (the continuous voices draw
+// data. For each region it renders the SAME SEED TWICE — once whole, once with the event
+// layers muted (`EVENT_MUTE`) — and subtracts. The bed cancels to the sample (the continuous voices draw
 // from `Rng(h ^ 0x51ed)`, an RNG the event scheduler never touches), and what is left is the
 // event signal alone, at its true rendered level, which can then be put next to the bed's own
 // RMS in the same 50 ms window. That difference is the number §A's band is about.
@@ -73,6 +73,10 @@ GATES
   quiet      the recovered event signal is attenuated 20 dB and re-mixed
   untrimmed  DELETE-THE-FIX: event_gain_db is forced to 0 in the page, reproducing round 1's
              build exactly, on today's tree. Nothing on disk is touched.
+  trimshift  TRACKING CONTROL (O4): every event_gain_db is shifted by --trimshift dB (default -6)
+             in the page, and every bed's measured level must move by the same amount against the
+             baseline report of the last clean run. A level that does not follow its own trim is
+             not a measurement of that level.
 
 Exit 0 = every gate passed. 1 = a gate failed. 2 = the build could not be driven.
 `;
@@ -82,8 +86,31 @@ if (wantsHelp(args)) { usage(USAGE); process.exit(0); }
 const SECONDS = Number(args.seconds || 120);
 const RATE = Number(args.rate || 16000);
 const SABOTAGE = args.sabotage || null;
-if (SABOTAGE && !['silent', 'quiet', 'untrimmed'].includes(SABOTAGE)) {
-  console.error(`ambience-onsets: --sabotage must be 'silent', 'quiet' or 'untrimmed', got ${JSON.stringify(SABOTAGE)}`);
+
+/**
+ * WHAT COUNTS AS "AN EVENT" WHEN THE BED IS SUBTRACTED FROM THE MIX. ROUND 3.
+ *
+ * The bed reference is the same render with these muted, and everything the subtraction leaves
+ * behind is attributed to the event layers — so this list is the definition of the measurement,
+ * not a detail of it. It used to be `['L3','L4','R7']`, and the `R7` in it was wrong: R7 holds two
+ * unlike things. A bell buoy is a discrete strike and belongs on the event side. The Clay Moor's
+ * kiln is a CONTINUOUS roar — §B files it under Clay Moor's L2 as "kiln roar (proximity-driven)" —
+ * and it is part of what standing in the Clay Moor sounds like, i.e. part of the bed.
+ *
+ * Muting it out of the reference while leaving it in the mix put the whole roar into the residual,
+ * so clay-moor's "event level" was the kiln. The symptom was a number that would not move:
+ * `--calibrate` cut clay-moor's L3 trim by 6.91 dB and the measured level changed by 0.05 dB.
+ * `--sabotage trimshift` below now makes that failure a check instead of an accident.
+ */
+const EVENT_MUTE = ['L3', 'L4', 'R7_strike'];
+/** How far `--sabotage trimshift` moves every event trim, and how far the answer may miss by. */
+const TRIMSHIFT_DB = Number(args.trimshift || -6);
+const TRIMSHIFT_TOL_DB = 2;
+/** The clean run `--sabotage trimshift` compares itself against. */
+const BASELINE = join(fileURLToPath(new URL('.', import.meta.url)), '..', '..',
+                     'reports', 'w1-22', 'ambience-onsets.json');
+if (SABOTAGE && !['silent', 'quiet', 'untrimmed', 'trimshift'].includes(SABOTAGE)) {
+  console.error(`ambience-onsets: --sabotage must be 'silent', 'quiet', 'untrimmed' or 'trimshift', got ${JSON.stringify(SABOTAGE)}`);
   process.exit(2);
 }
 
@@ -378,13 +405,13 @@ try {
   // The `mute` option is what makes the bed subtractable. If the engine on this tree does not
   // honour it, every number below would silently become a measurement of the full mix minus
   // itself — zero — and the tool would report a confident, meaningless red. Check it first.
-  const muteWorks = await page.evaluate(async () => {
+  const muteWorks = await page.evaluate(async (mute) => {
     const E = window.__ENGINE;
     const a = await E.ambienceCapture({ region: 'blackwood', seconds: 4, sampleRate: 8000, tod: 'day' });
     const b = await E.ambienceCapture({ region: 'blackwood', seconds: 4, sampleRate: 8000, tod: 'day',
-                                        mute: ['L3', 'L4', 'R7'] });
+                                        mute });
     return { full: (a.fired || []).length, muted: (b.fired || []).length, ok: a.ok && b.ok };
-  });
+  }, EVENT_MUTE);
   out.mute_supported = muteWorks;
   if (!muteWorks.ok || muteWorks.muted !== 0) {
     console.error('ambience-onsets: ambienceCapture({mute}) is not honoured by this build — '
@@ -416,6 +443,45 @@ try {
     }
   }
 
+  // ROUND 3 — DOES THE NUMBER TRACK THE KNOB? `--sabotage trimshift` subtracts a known number of
+  // decibels from every `event_gain_db` in the page and requires every bed's MEASURED event level
+  // to fall by the same amount, against the baseline report the previous clean run wrote.
+  //
+  // This is the check that O3 was missing, and its absence cost a round. O3 asked "is the level in
+  // the band?", which a measurement of the wrong signal can answer correctly by accident: clay-moor
+  // sat 4.9 dB out of band, a calibration pass moved its trim 6.91 dB, and it re-measured 0.05 dB
+  // away from where it started. The band check saw a bed that was still out of band and reported
+  // "calibration has not converged". The right reading was that the number was not connected to the
+  // knob at all — the residual was the kiln, not the clay-cracks. A gate on a level should always
+  // be accompanied by a gate on the level RESPONDING, or a broken instrument reads as a stubborn
+  // bed. (RULES.md rule 4; and rule 8's "a still target hides every steering defect", one layer up.)
+  if (SABOTAGE === 'trimshift') {
+    out.trimshift = await page.evaluate((db) => {
+      let n = 0;
+      for (const bed of Object.values(window.__ENGINE.ambience.beds)) {
+        for (const L of ['L3', 'L4']) {
+          const layer = bed.layers && bed.layers[L];
+          if (layer && layer.events) { layer.event_gain_db = (layer.event_gain_db || 0) + db; n++; }
+        }
+      }
+      return { shift_db: db, layers_shifted: n };
+    }, TRIMSHIFT_DB);
+    if (!out.trimshift.layers_shifted) {
+      console.error('ambience-onsets --sabotage trimshift: no event layer to shift — vacuous.');
+      process.exit(2);
+    }
+    try {
+      const base = JSON.parse(readFileSync(BASELINE, 'utf8'));
+      if (base.seconds !== SECONDS || base.sabotage) throw new Error('baseline was taken differently');
+      out.trimshift.baseline = { path: BASELINE, taken_at: base.taken_at, git: base.git, seconds: base.seconds };
+      out.trimshift._base = base;
+    } catch (e) {
+      console.error(`ambience-onsets --sabotage trimshift: needs a clean baseline at ${BASELINE} `
+        + `taken at the same --seconds (${SECONDS}). ${e.message}. Run without --sabotage first.`);
+      process.exit(2);
+    }
+  }
+
   const allOnsetTotals = [], allCrest = [], allDelta = [], relByLayer = { L3: [], L4: [], R7: [] };
   let firedTotal = 0, onsetTotal = 0;
 
@@ -425,15 +491,15 @@ try {
     for (const tod of ['day', 'night']) {
       const capOpts = { region: r.id, seconds: SECONDS, sampleRate: RATE, tod };
       if (r.listener) capOpts.listener = r.listener;
-      const [full, bedOnly] = await page.evaluate(async ({ o, sab }) => {
+      const [full, bedOnly] = await page.evaluate(async ({ o, sab, mute }) => {
         const E = window.__ENGINE;
         // The sabotage arms operate on the CAPTURE, never on the data on disk — nothing this
         // tool does can leave the tree changed if it is killed halfway.
-        const fullOpts = sab === 'silent' ? { ...o, mute: ['L3', 'L4', 'R7'] } : { ...o };
+        const fullOpts = sab === 'silent' ? { ...o, mute } : { ...o };
         const a = await E.ambienceCapture(fullOpts);
-        const b = await E.ambienceCapture({ ...o, mute: ['L3', 'L4', 'R7'] });
+        const b = await E.ambienceCapture({ ...o, mute });
         return [a, b];
-      }, { o: capOpts, sab: SABOTAGE });
+      }, { o: capOpts, sab: SABOTAGE, mute: EVENT_MUTE });
 
       if (!full.ok || !bedOnly.ok) {
         rec.tod[tod] = { error: full.why || bedOnly.why };
@@ -567,6 +633,36 @@ try {
       + 'rather than over a province median, because an average lets a loud bed and a quiet bed '
       + 'cancel into a green.',
   };
+
+  // O4 — the tracking control. Only computed under `--sabotage trimshift`; see the note above.
+  if (SABOTAGE === 'trimshift' && out.trimshift && out.trimshift._base) {
+    const base = out.trimshift._base, shift = out.trimshift.shift_db;
+    const rows = [], bad = [];
+    for (const [id, rec] of Object.entries(out.regions)) {
+      for (const tod of ['day', 'night']) {
+        const now = rec.tod[tod] && rec.tod[tod].level_rel_bed;
+        const was = base.regions[id] && base.regions[id].tod[tod] && base.regions[id].tod[tod].level_rel_bed;
+        if (!now || !was) continue;
+        for (const L of ['L3', 'L4']) {
+          if (!now[L] || !was[L] || now[L].n < 3 || was[L].n < 3) continue;
+          const moved = +(now[L].median_rel_db - was[L].median_rel_db).toFixed(2);
+          const err = +(moved - shift).toFixed(2);
+          rows.push({ bed: id, tod, layer: L, was: was[L].median_rel_db, now: now[L].median_rel_db, moved, expected: shift, error_db: err });
+          if (Math.abs(err) > TRIMSHIFT_TOL_DB) bad.push(`${id}/${tod}/${L}: trim moved ${shift} dB, level moved ${moved} dB`);
+        }
+      }
+    }
+    delete out.trimshift._base;
+    out.gates.O4_level_tracks_trim = {
+      pass: rows.length > 0 && bad.length === 0,
+      shift_db: shift, compared: rows.length, tolerance_db: TRIMSHIFT_TOL_DB,
+      failures: bad, rows,
+      what: `Every layer's MEASURED event level moves by the same ${shift} dB its event_gain_db was `
+        + 'moved by, within tolerance. A level that does not respond to its own trim is not a '
+        + 'measurement of that level, however plausible the number looks.',
+    };
+    if (!out.gates.O4_level_tracks_trim.pass) exitCode = 1;
+  }
 
   if (pageErrors.length) { out.page_errors = pageErrors; exitCode = 1; }
   for (const g of Object.values(out.gates)) if (!g.pass) exitCode = 1;

@@ -516,6 +516,10 @@
               "before_point_of_no_return": {
                 "type": "boolean",
                 "description": "true if this reveal is reachable while the player can still act on it. At least one reveal per deceitful quest MUST be true."
+              },
+              "journal": {
+                "type": "integer",
+                "description": "OPTIONAL. The journal index the player writes when they learn this truth, i.e. the entry that IS this reveal in prose. ADDED wave 1 by W1-18 round 2 as AM-QST04-W1-18-02. QuestEngine.note() -- the verb that writes the MIDDLE of a journal -- had exactly one caller in game/src/ (the hooks.json journal branch, covering 11 of 120 quests), so for 109 quests nothing a player does could write an entry between opening and closing. A reveal learned in the world is the commonest reason a player writes something down, and the entry is usually ALREADY AUTHORED and unreachable: Q-MAIN-06's journal 40 IS rev_the_curve_predates and 55 IS rev_the_steward_named. Must name a non-terminal ('active' or 'branch') entry of the same quest -- note() refuses 'success'/'failure' -- and is checked by tools/check-quests.mjs. Purely additive: a row without it reveals and writes nothing, exactly as before."
               }
             }
           }

@@ -1,0 +1,23 @@
+{
+  "task_id": "W1-DLG-SHADOWS",
+  "state": "in_progress",
+  "owner": "dialogue-shadow-builder",
+  "started": "2026-08-07",
+  "summary": "Close the live (context-overlapping) topic-id collisions reported by tools/check-dialogue-topics.mjs across game/data/dialogue/topics/**. Do not flatten the intended race-partitioned same-id pattern (41 quiet/partitioned pairs). For each live collision, make the winner structural (retire stub / narrow filter / rename id), not merely score-favoured. Prove each through Conversation.state().said_from on the real converse.js path. Rule 6: restore at least one collision on a copy and confirm the wrong line returns.",
+  "next_step": "Enumerate the 23 live collisions reported by `node tools/check-dialogue-topics.mjs --all`, decide per-id fix, apply, verify with node repro scripts + check-dialogue-topics.mjs + check-prose.mjs, then do the rule-6 revert-and-confirm on one case, then write reports/blog-feed.jsonl line.",
+  "files_claimed": [
+    "game/data/dialogue/topics/00-roots.json",
+    "game/data/dialogue/topics/06-opening-roots.json",
+    "game/data/dialogue/topics/07-root-coverage.json",
+    "game/data/dialogue/topics/10-global.json",
+    "game/data/dialogue/topics/40-race-gated.json",
+    "game/data/dialogue/topics/50-factions.json",
+    "game/data/dialogue/topics/50-mainline.json",
+    "game/data/dialogue/topics/55-utility.json",
+    "game/data/dialogue/topics/70-disputes.json",
+    "game/data/dialogue/topics/22-tier-c.json",
+    "game/data/dialogue/topics/main-quest-argument.json"
+  ],
+  "files_touched": [],
+  "notes": "Tool check-dialogue-topics.mjs currently reports 23 live topic ids (task brief said 22 — investigating whether one of the 23 turns out to be already-partitioned or a near-duplicate of another entry once witness pairs are inspected). W1-17-act5-r1.md's finding (the-steward-of-the-count / the-sill / the-opening-of-the-count shadowed by 50-mainline.json stub vs main-quest-argument.json) is 3 of the 23 and the most consequential (main quest climax entry topic)."
+}

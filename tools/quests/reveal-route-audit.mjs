@@ -24,8 +24,19 @@
 //        1. `hooks.json` row carrying BOTH `quest` and `reveal` — fired from `setFlag()`;
 //        2. `channel: 'book'` with a `source` that is a real book id — `Engine
 //           ._bookKnowledgeIndex()` unions it into `ctx.knowledge` when the book is read.
-//      Every other channel (`ledger`, `talk_to_target`, `rival_npc`, `environment`, `eavesdrop`,
-//      `letter`, `later_quest`, `corpse`) has no reader in `game/src/` at all.
+//        3. `channel: 'talk_to_target' | 'rival_npc'` with a `source` that is a real NPC —
+//           `QuestEngine.learnFrom('person', eid)`, called from `Engine.talkTo()`. ADDED by
+//           W1-18 ROUND 2; see `game/src/sim/quest/reveal-routes.js` for why these two channels
+//           and not the other four.
+//      `ledger`, `letter`, `environment` and `eavesdrop` (and the single `corpse` row) still have
+//      no reader in `game/src/` at all, and the first three cannot get one until their sources
+//      exist: 34 of the 37 `ledger` rows, all 10 `letter` rows and all 27 `environment` rows name
+//      an `item_*`/`loc_*` id — or a sentence — that is not an object anywhere in `game/data/`.
+//
+//      A ROUTE TO NOBODY IS NOT A ROUTE. A `person` row whose `source` is not a row in
+//      `game/data/npcs/**` is counted UNROUTED and listed, because `Engine.talkTo()` throws on
+//      somebody who is not in the world. Ten of the 28 `talk_to_target` sources are in that
+//      state today and the tool says so rather than scoring them green.
 //
 //   B. THE COUPLING TEST (real QuestEngine, bare Node, no grants). Does a world flag raised the
 //      way the WORLD raises it — by playing a resolution whose `consequences.world_flags` names
@@ -36,6 +47,10 @@
 //
 // CONTROLS (a probe that cannot fail is worse than no probe — RULES.md rule 4):
 //
+//   --falsify no-router     empty `QuestEngine.revealRoutes` and re-run section D. Every leg must
+//                           go red. This is the delete-the-fix arm for W1-18 round 2's whole
+//                           change: it separates "the reveals arrive because the router runs"
+//                           from "the reveals were arriving anyway".
 //   --falsify plant-route   plant a synthetic hooks row for a reveal that has no route and
 //                           confirm section A's count moves. If it does not, A is not reading
 //                           the route table it claims to read.

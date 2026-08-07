@@ -35,6 +35,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -239,6 +240,36 @@ export function huntAdjudicators(reg, world) {
   return hits;
 }
 
+/**
+ * STALE. A `measured:` string on an undisputed fact is a claim about the shipped tree at a date.
+ * Where it names terms and asserts ZERO, re-count each term against the live tree — narrow on
+ * purpose, matching the one explicit shape this registry uses ("X, Y and Z ZERO"), which is the
+ * shape CF-C023 shipped with. Before this existed, nothing checked a `measured:` claim on an
+ * UNDISPUTED fact at all: the W1-23 round-1 verdict found CF-C023 asserting six tribe names score
+ * zero when the shipped tree (after a later piece landed) scored them 53/34/50/26/10/47, "ships
+ * false and no gate can see it." This closes that: the gate that runs in CI now re-counts.
+ */
+export function staleMeasured(reg, counter) {
+  const out = [];
+  for (const f of reg.facts) {
+    if (f.disputed || !f.measured) continue;
+    const m = /([A-Z][A-Za-z-]+(?:,\s+[A-Z][A-Za-z-]+)*(?:\s+and\s+[A-Z][A-Za-z-]+))\s+ZERO/.exec(f.measured);
+    if (!m) continue;
+    for (const term of m[1].split(/,\s*|\s+and\s+/).map((s) => s.trim()).filter(Boolean)) {
+      const n = counter(term);
+      if (n > 0) out.push({ id: f.id, term, asserted: 0, observed: n });
+    }
+  }
+  return out;
+}
+
+function countInGameData(term, root = ROOT) {
+  try {
+    const t = term.replace(/s$/, '');
+    return Number(execSync(`grep -rioF ${JSON.stringify(t)} ${JSON.stringify(path.join(root, 'game/data'))} --include=*.json | wc -l`).toString().trim());
+  } catch { return 0; }
+}
+
 function main(argv) {
   const asJson = argv.includes('--json');
   if (argv.includes('--self-test')) return selfTest();
@@ -248,6 +279,7 @@ function main(argv) {
   const voiced = censusVoiced(reg, world);
   const edges = censusEdges(reg, world);
   const adj = huntAdjudicators(reg, world);
+  const stale = staleMeasured(reg, countInGameData);
 
   const fully = voiced.filter((v) => v.fully_voiced);
   const dangling = voiced.flatMap((v) => v.dangling);
@@ -268,12 +300,13 @@ function main(argv) {
     stale_cross_references: edges.filter((e) => e.warnings.length).length,
     dangling_voices: dangling.length,
     adjudicator_hits: adj.length,
+    stale_measured: stale.length,
   };
 
-  const ok = fully.length >= BAR && badEdges.length === 0 && dangling.length === 0;
+  const ok = fully.length >= BAR && badEdges.length === 0 && dangling.length === 0 && stale.length === 0;
 
   if (asJson) {
-    console.log(JSON.stringify({ ok, summary, voiced, bad_edges: badEdges, adjudicators: adj }, null, 2));
+    console.log(JSON.stringify({ ok, summary, voiced, bad_edges: badEdges, adjudicators: adj, stale_measured: stale }, null, 2));
     return ok ? 0 : 1;
   }
 
@@ -316,6 +349,11 @@ function main(argv) {
   console.log(`ADJUDGE  RI-LOR06 method §5 — text that settles a registered dispute. Reported, not graded.`);
   if (!adj.length) console.log('  no hits.');
   for (const h of adj) console.log(`  ${h.where}  [${h.facts.join(',')}]  "${h.phrase}"\n     …${h.excerpt}…`);
+  console.log('');
+
+  console.log(`STALE    a \`measured:\` claim on an undisputed (CF-C) fact that the shipped tree has since falsified.`);
+  if (!stale.length) console.log('  none — every ZERO-shaped measured claim still holds against the live tree.');
+  for (const s of stale) console.log(`  FALSIFIED  ${s.id}: asserts "${s.term}" scores ZERO; the shipped tree scores ${s.observed}`);
   console.log('');
 
   console.log(ok ? 'CANON CENSUS: PASS' : 'CANON CENSUS: FAIL');
@@ -388,6 +426,14 @@ function selfTest() {
 
   const quiet = { ...world, bookText: new Map([['a', 'The sapwell is cut at the turn of the tide.']]) };
   t('the adjudicator hunt is silent on ordinary prose', huntAdjudicators(good, quiet).length === 0);
+
+  const staleReg = { facts: [{ id: 'CF-C1', disputed: false, measured: 'Of the tribes: Agacephs, Paatru and Sarpa ZERO.' }] };
+  const s1 = staleMeasured(staleReg, (term) => (term === 'Paatru' ? 34 : 0));
+  t('a falsified `measured: ... ZERO` claim is caught', s1.length === 1 && s1[0].term === 'Paatru' && s1[0].observed === 34);
+  const s2 = staleMeasured(staleReg, () => 0);
+  t('a still-true `measured: ... ZERO` claim is silent', s2.length === 0);
+  const s3 = staleMeasured({ facts: [{ id: 'CF-D1', disputed: true, measured: 'Of the tribes: Agacephs ZERO.' }] }, () => 99);
+  t('a `measured:` claim on a DISPUTED fact is out of scope (disputes are checked by VOICED, not this)', s3.length === 0);
 
   console.log(fails ? `SELF-TEST: ${fails} FAILED` : 'SELF-TEST: PASS');
   return fails ? 1 : 0;

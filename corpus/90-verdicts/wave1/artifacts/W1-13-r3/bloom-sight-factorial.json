@@ -1,0 +1,1919 @@
+{
+  "schema": "w1-13/r3-bloom-sight@1",
+  "git": {
+    "commit": "5c4c5b004ec890d6a2e93f864563f0075137e15c",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "taken_at": "2026-08-07T21:42:59.507Z",
+  "question": "the bloom reads from 3 of 8 bearings in the aggregation. Is it undrawn, occluded, or outside the frame the probe is shooting?",
+  "arms": {
+    "as-placed": "the journey camera verbatim: eye at [x, stain.pos[1]+1.6, z], look at stain.pos[1]+0.3",
+    "player-eye": "eye at the observer's OWN drawn ground + 1.6 m, aimed at the bloom's DRAWN origin",
+    "no-bloom": "NULL CONTROL — player-eye with the bloom removed from the scene graph",
+    "pre-r3-render": "DELETE THE RENDERER FIX — player-eye with the drawn-ground lift and the hum removed",
+    "aim-only": "the OLD eye with the NEW aim — isolates the aim point",
+    "eye-only": "the NEW eye with the OLD aim — isolates the eye height"
+  },
+  "rows": [
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 0,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.164,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.408,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 45,
+      "px": 695,
+      "control_px": 196,
+      "margin": 499,
+      "visible": true,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.045,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.527,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 90,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 2.908,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.663,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 135,
+      "px": 1900,
+      "control_px": 195,
+      "margin": 1705,
+      "visible": true,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.018,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.554,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 180,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.193,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.378,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 225,
+      "px": 196,
+      "control_px": 195,
+      "margin": 1,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.226,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.346,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 270,
+      "px": 196,
+      "control_px": 195,
+      "margin": 1,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.446,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 315,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.446,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 0,
+      "px": 7450,
+      "control_px": 195,
+      "margin": 7255,
+      "visible": true,
+      "eye_y": 4.572,
+      "observer_ground_y": 2.867,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.705,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 45,
+      "px": 18454,
+      "control_px": 195,
+      "margin": 18259,
+      "visible": true,
+      "eye_y": 4.572,
+      "observer_ground_y": 2.94,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.632,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 90,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.075,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.497,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 135,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.096,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.476,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 180,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.173,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.398,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 225,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.12,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.452,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 270,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.1,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.472,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 315,
+      "px": 24274,
+      "control_px": 195,
+      "margin": 24079,
+      "visible": true,
+      "eye_y": 4.572,
+      "observer_ground_y": 2.975,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.597,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 0,
+      "px": 4460,
+      "control_px": 195,
+      "margin": 4265,
+      "visible": true,
+      "eye_y": 4.764,
+      "observer_ground_y": 3.164,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 45,
+      "px": 2458,
+      "control_px": 195,
+      "margin": 2263,
+      "visible": true,
+      "eye_y": 4.645,
+      "observer_ground_y": 3.045,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 90,
+      "px": 1069,
+      "control_px": 195,
+      "margin": 874,
+      "visible": true,
+      "eye_y": 4.508,
+      "observer_ground_y": 2.908,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 135,
+      "px": 1882,
+      "control_px": 195,
+      "margin": 1687,
+      "visible": true,
+      "eye_y": 4.618,
+      "observer_ground_y": 3.018,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 180,
+      "px": 1754,
+      "control_px": 195,
+      "margin": 1559,
+      "visible": true,
+      "eye_y": 4.793,
+      "observer_ground_y": 3.193,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 225,
+      "px": 4024,
+      "control_px": 195,
+      "margin": 3829,
+      "visible": true,
+      "eye_y": 4.826,
+      "observer_ground_y": 3.226,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 270,
+      "px": 2896,
+      "control_px": 195,
+      "margin": 2701,
+      "visible": true,
+      "eye_y": 4.726,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 315,
+      "px": 5423,
+      "control_px": 195,
+      "margin": 5228,
+      "visible": true,
+      "eye_y": 4.726,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 0,
+      "px": 27329,
+      "control_px": 195,
+      "margin": 27134,
+      "visible": true,
+      "eye_y": 4.467,
+      "observer_ground_y": 2.867,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 45,
+      "px": 22681,
+      "control_px": 195,
+      "margin": 22486,
+      "visible": true,
+      "eye_y": 4.54,
+      "observer_ground_y": 2.94,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 90,
+      "px": 16505,
+      "control_px": 195,
+      "margin": 16310,
+      "visible": true,
+      "eye_y": 4.675,
+      "observer_ground_y": 3.075,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 135,
+      "px": 23297,
+      "control_px": 195,
+      "margin": 23102,
+      "visible": true,
+      "eye_y": 4.696,
+      "observer_ground_y": 3.096,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 180,
+      "px": 23518,
+      "control_px": 195,
+      "margin": 23323,
+      "visible": true,
+      "eye_y": 4.773,
+      "observer_ground_y": 3.173,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 225,
+      "px": 23101,
+      "control_px": 195,
+      "margin": 22906,
+      "visible": true,
+      "eye_y": 4.72,
+      "observer_ground_y": 3.12,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 270,
+      "px": 18186,
+      "control_px": 195,
+      "margin": 17991,
+      "visible": true,
+      "eye_y": 4.7,
+      "observer_ground_y": 3.1,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 315,
+      "px": 23180,
+      "control_px": 195,
+      "margin": 22985,
+      "visible": true,
+      "eye_y": 4.575,
+      "observer_ground_y": 2.975,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 0,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.764,
+      "observer_ground_y": 3.164,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 45,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.645,
+      "observer_ground_y": 3.045,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 90,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.508,
+      "observer_ground_y": 2.908,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 135,
+      "px": 196,
+      "control_px": 195,
+      "margin": 1,
+      "visible": false,
+      "eye_y": 4.618,
+      "observer_ground_y": 3.018,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 180,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.793,
+      "observer_ground_y": 3.193,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 225,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.826,
+      "observer_ground_y": 3.226,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 270,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.726,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 315,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.726,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 0,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.467,
+      "observer_ground_y": 2.867,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 45,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.54,
+      "observer_ground_y": 2.94,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 90,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.675,
+      "observer_ground_y": 3.075,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 135,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.696,
+      "observer_ground_y": 3.096,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 180,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.773,
+      "observer_ground_y": 3.173,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 225,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.72,
+      "observer_ground_y": 3.12,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 270,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.7,
+      "observer_ground_y": 3.1,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 315,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.575,
+      "observer_ground_y": 2.975,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "daylight_12m",
+      "bearing_deg": 0,
+      "px": 1099,
+      "control_px": 195,
+      "margin": 904,
+      "visible": true,
+      "eye_y": 4.764,
+      "observer_ground_y": 3.164,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "daylight_12m",
+      "bearing_deg": 45,
+      "px": 1070,
+      "control_px": 195,
+      "margin": 875,
+      "visible": true,
+      "eye_y": 4.645,
+      "observer_ground_y": 3.045,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "daylight_12m",
+      "bearing_deg": 90,
+      "px": 1078,
+      "control_px": 195,
+      "margin": 883,
+      "visible": true,
+      "eye_y": 4.508,
+      "observer_ground_y": 2.908,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "daylight_12m",
+      "bearing_deg": 135,
+      "px": 1074,
+      "control_px": 195,
+      "margin": 879,
+      "visible": true,
+      "eye_y": 4.618,
+      "observer_ground_y": 3.018,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "daylight_12m",
+      "bearing_deg": 180,
+      "px": 388,
+      "control_px": 195,
+      "margin": 193,
+      "visible": true,
+      "eye_y": 4.793,
+      "observer_ground_y": 3.193,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "daylight_12m",
+      "bearing_deg": 225,
+      "px": 1102,
+      "control_px": 195,
+      "margin": 907,
+      "visible": true,
+      "eye_y": 4.826,
+      "observer_ground_y": 3.226,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "daylight_12m",
+      "bearing_deg": 270,
+      "px": 1096,
+      "control_px": 195,
+      "margin": 901,
+      "visible": true,
+      "eye_y": 4.726,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "daylight_12m",
+      "bearing_deg": 315,
+      "px": 500,
+      "control_px": 195,
+      "margin": 305,
+      "visible": true,
+      "eye_y": 4.726,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "dark_6m",
+      "bearing_deg": 0,
+      "px": 4138,
+      "control_px": 195,
+      "margin": 3943,
+      "visible": true,
+      "eye_y": 4.467,
+      "observer_ground_y": 2.867,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "dark_6m",
+      "bearing_deg": 45,
+      "px": 4162,
+      "control_px": 195,
+      "margin": 3967,
+      "visible": true,
+      "eye_y": 4.54,
+      "observer_ground_y": 2.94,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "dark_6m",
+      "bearing_deg": 90,
+      "px": 4294,
+      "control_px": 195,
+      "margin": 4099,
+      "visible": true,
+      "eye_y": 4.675,
+      "observer_ground_y": 3.075,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "dark_6m",
+      "bearing_deg": 135,
+      "px": 4271,
+      "control_px": 195,
+      "margin": 4076,
+      "visible": true,
+      "eye_y": 4.696,
+      "observer_ground_y": 3.096,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "dark_6m",
+      "bearing_deg": 180,
+      "px": 480,
+      "control_px": 195,
+      "margin": 285,
+      "visible": true,
+      "eye_y": 4.773,
+      "observer_ground_y": 3.173,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "dark_6m",
+      "bearing_deg": 225,
+      "px": 4281,
+      "control_px": 195,
+      "margin": 4086,
+      "visible": true,
+      "eye_y": 4.72,
+      "observer_ground_y": 3.12,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "dark_6m",
+      "bearing_deg": 270,
+      "px": 4295,
+      "control_px": 195,
+      "margin": 4100,
+      "visible": true,
+      "eye_y": 4.7,
+      "observer_ground_y": 3.1,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "pre-r3-render",
+      "condition": "dark_6m",
+      "bearing_deg": 315,
+      "px": 4182,
+      "control_px": 195,
+      "margin": 3987,
+      "visible": true,
+      "eye_y": 4.575,
+      "observer_ground_y": 2.975,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 3,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 0,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.164,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.408,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 45,
+      "px": 678,
+      "control_px": 196,
+      "margin": 482,
+      "visible": true,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.045,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.527,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 90,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 2.908,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.663,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 135,
+      "px": 1861,
+      "control_px": 195,
+      "margin": 1666,
+      "visible": true,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.018,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.554,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 180,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.193,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.378,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 225,
+      "px": 196,
+      "control_px": 195,
+      "margin": 1,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.226,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.346,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 270,
+      "px": 196,
+      "control_px": 195,
+      "margin": 1,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.446,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 315,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.446,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "dark_6m",
+      "bearing_deg": 0,
+      "px": 2487,
+      "control_px": 195,
+      "margin": 2292,
+      "visible": true,
+      "eye_y": 4.572,
+      "observer_ground_y": 2.867,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.705,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "dark_6m",
+      "bearing_deg": 45,
+      "px": 16232,
+      "control_px": 195,
+      "margin": 16037,
+      "visible": true,
+      "eye_y": 4.572,
+      "observer_ground_y": 2.94,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.632,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "dark_6m",
+      "bearing_deg": 90,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.075,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.497,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "dark_6m",
+      "bearing_deg": 135,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.096,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.476,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "dark_6m",
+      "bearing_deg": 180,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.173,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.398,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "dark_6m",
+      "bearing_deg": 225,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.12,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.452,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "dark_6m",
+      "bearing_deg": 270,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.1,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.472,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "aim-only",
+      "condition": "dark_6m",
+      "bearing_deg": 315,
+      "px": 23184,
+      "control_px": 195,
+      "margin": 22989,
+      "visible": true,
+      "eye_y": 4.572,
+      "observer_ground_y": 2.975,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.597,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 0,
+      "px": 4519,
+      "control_px": 195,
+      "margin": 4324,
+      "visible": true,
+      "eye_y": 4.764,
+      "observer_ground_y": 3.164,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 45,
+      "px": 2476,
+      "control_px": 195,
+      "margin": 2281,
+      "visible": true,
+      "eye_y": 4.645,
+      "observer_ground_y": 3.045,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 90,
+      "px": 1070,
+      "control_px": 195,
+      "margin": 875,
+      "visible": true,
+      "eye_y": 4.508,
+      "observer_ground_y": 2.908,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 135,
+      "px": 1917,
+      "control_px": 195,
+      "margin": 1722,
+      "visible": true,
+      "eye_y": 4.618,
+      "observer_ground_y": 3.018,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 180,
+      "px": 1760,
+      "control_px": 195,
+      "margin": 1565,
+      "visible": true,
+      "eye_y": 4.793,
+      "observer_ground_y": 3.193,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 225,
+      "px": 4067,
+      "control_px": 195,
+      "margin": 3872,
+      "visible": true,
+      "eye_y": 4.826,
+      "observer_ground_y": 3.226,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 270,
+      "px": 2971,
+      "control_px": 195,
+      "margin": 2776,
+      "visible": true,
+      "eye_y": 4.726,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "daylight_12m",
+      "bearing_deg": 315,
+      "px": 5496,
+      "control_px": 195,
+      "margin": 5301,
+      "visible": true,
+      "eye_y": 4.726,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "dark_6m",
+      "bearing_deg": 0,
+      "px": 28674,
+      "control_px": 195,
+      "margin": 28479,
+      "visible": true,
+      "eye_y": 4.467,
+      "observer_ground_y": 2.867,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "dark_6m",
+      "bearing_deg": 45,
+      "px": 23859,
+      "control_px": 195,
+      "margin": 23664,
+      "visible": true,
+      "eye_y": 4.54,
+      "observer_ground_y": 2.94,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "dark_6m",
+      "bearing_deg": 90,
+      "px": 17321,
+      "control_px": 195,
+      "margin": 17126,
+      "visible": true,
+      "eye_y": 4.675,
+      "observer_ground_y": 3.075,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "dark_6m",
+      "bearing_deg": 135,
+      "px": 24434,
+      "control_px": 195,
+      "margin": 24239,
+      "visible": true,
+      "eye_y": 4.696,
+      "observer_ground_y": 3.096,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "dark_6m",
+      "bearing_deg": 180,
+      "px": 24546,
+      "control_px": 195,
+      "margin": 24351,
+      "visible": true,
+      "eye_y": 4.773,
+      "observer_ground_y": 3.173,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "dark_6m",
+      "bearing_deg": 225,
+      "px": 24302,
+      "control_px": 195,
+      "margin": 24107,
+      "visible": true,
+      "eye_y": 4.72,
+      "observer_ground_y": 3.12,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "dark_6m",
+      "bearing_deg": 270,
+      "px": 19005,
+      "control_px": 195,
+      "margin": 18810,
+      "visible": true,
+      "eye_y": 4.7,
+      "observer_ground_y": 3.1,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "eye-only",
+      "condition": "dark_6m",
+      "bearing_deg": 315,
+      "px": 24276,
+      "control_px": 195,
+      "margin": 24081,
+      "visible": true,
+      "eye_y": 4.575,
+      "observer_ground_y": 2.975,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    }
+  ],
+  "stain_model_pos": [
+    3834.57,
+    2.971782,
+    3959.5
+  ],
+  "stain_souls": 4200,
+  "summary": {
+    "as-placed/daylight_12m": {
+      "visible": 2,
+      "of": 8
+    },
+    "as-placed/dark_6m": {
+      "visible": 3,
+      "of": 8
+    },
+    "player-eye/daylight_12m": {
+      "visible": 8,
+      "of": 8
+    },
+    "player-eye/dark_6m": {
+      "visible": 8,
+      "of": 8
+    },
+    "no-bloom/daylight_12m": {
+      "visible": 0,
+      "of": 8
+    },
+    "no-bloom/dark_6m": {
+      "visible": 0,
+      "of": 8
+    },
+    "pre-r3-render/daylight_12m": {
+      "visible": 8,
+      "of": 8
+    },
+    "pre-r3-render/dark_6m": {
+      "visible": 8,
+      "of": 8
+    },
+    "aim-only/daylight_12m": {
+      "visible": 2,
+      "of": 8
+    },
+    "aim-only/dark_6m": {
+      "visible": 3,
+      "of": 8
+    },
+    "eye-only/daylight_12m": {
+      "visible": 8,
+      "of": 8
+    },
+    "eye-only/dark_6m": {
+      "visible": 8,
+      "of": 8
+    }
+  },
+  "renderer_fix_earned_its_place": {
+    "player_eye": {
+      "daylight": 8,
+      "dark": 8
+    },
+    "pre_r3_render": {
+      "daylight": 8,
+      "dark": 8
+    },
+    "inert": true
+  },
+  "findings": {
+    "as_placed_rows_with_the_eye_below_head_height": 0,
+    "worst_eye_above_observer_ground_m": 1.346,
+    "null_control_max_margin": 1,
+    "null_control_is_silent": true
+  },
+  "instrument_goes_red": true,
+  "ok": true
+}

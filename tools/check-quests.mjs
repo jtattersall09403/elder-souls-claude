@@ -65,6 +65,29 @@ if (hooks) {
   }
 }
 
+// ---- deceit.revealed_by[].journal (AM-QST04-W1-18-02) -------------------------------------
+//
+// The authored link from "the player learned this truth" to "this is the entry in which they
+// wrote it down". `QuestEngine.learnFrom()` writes it through `note()`, and `note()` throws on an
+// index the quest does not have and refuses a terminal entry — so both mistakes belong here,
+// where they fail the commit, rather than inside a world action every agent's boot-check walks
+// through. Same reasoning as the hooks block above; RULES.md rules 13 and 14.
+function revealJournalProblems(book) {
+  const out = [];
+  for (const q of book) {
+    for (const rev of ((q.deceit && q.deceit.revealed_by) || [])) {
+      if (rev.journal == null) continue;
+      const e = (q.journal || []).find((x) => x.index === Number(rev.journal));
+      if (!e) { out.push(`${q.id}: reveal "${rev.id}" declares journal ${rev.journal}, an entry the file does not contain`); continue; }
+      if (e.state === 'success' || e.state === 'failure') {
+        out.push(`${q.id}: reveal "${rev.id}" declares journal ${rev.journal}, which is state "${e.state}" — note() refuses terminal entries, so the entry would never be written`);
+      }
+    }
+  }
+  return out;
+}
+problems.push(...revealJournalProblems([...quests.values()]));
+
 // ---- self-test ---------------------------------------------------------------------------
 // A check that cannot fail is worse than no check. `--self-test` proves each rule goes red by
 // feeding it a book and a hooks document that violate exactly that rule and nothing else.
@@ -76,6 +99,11 @@ if (process.argv.includes('--self-test')) {
     ['entry topic on a missing index', () => checkAgainst({ entry_topics: [{ quest: 'Q-REAL', index: 4, adds_topics: [] }] }, [{ id: 'Q-REAL', journal: [{ index: 1 }] }])],
     ['a mute quest', () => checkAgainst({ entry_topics: [] }, [{ id: 'Q-REAL', journal: [{ index: 1 }] }])],
     ['a clean book stays clean', () => !checkAgainst({ entry_topics: [{ quest: 'Q-REAL', index: 1, adds_topics: ['t'] }] }, [{ id: 'Q-REAL', journal: [{ index: 1 }] }])],
+    // AM-QST04-W1-18-02
+    ['reveal journal index that does not exist', () => revealJournalProblems([{ id: 'Q-REAL', journal: [{ index: 1, state: 'active' }], deceit: { revealed_by: [{ id: 'r', journal: 9 }] } }]).length > 0],
+    ['reveal journal index that is terminal', () => revealJournalProblems([{ id: 'Q-REAL', journal: [{ index: 90, state: 'success' }], deceit: { revealed_by: [{ id: 'r', journal: 90 }] } }]).length > 0],
+    ['a reveal with no journal index is fine', () => revealJournalProblems([{ id: 'Q-REAL', journal: [{ index: 1, state: 'active' }], deceit: { revealed_by: [{ id: 'r' }] } }]).length === 0],
+    ['a good reveal journal index is fine', () => revealJournalProblems([{ id: 'Q-REAL', journal: [{ index: 1, state: 'active' }], deceit: { revealed_by: [{ id: 'r', journal: 1 }] } }]).length === 0],
   ];
   let bad = 0;
   for (const [name, run] of cases) {

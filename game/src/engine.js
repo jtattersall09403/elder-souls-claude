@@ -58,7 +58,7 @@ import { OpacityRegister } from './world/opacity.js';
 import { CanonRegistry } from './world/canon.js';
 import { Environment } from './sim/environment.js';
 import { BorderField } from './world/borders.js';
-import { Traversal } from './sim/traversal.js';
+import { Traversal, isAmphibiousRace, bandIndex } from './sim/traversal.js';
 import { Hazards } from './sim/hazards.js';
 import { Discovery } from './sim/discovery.js';
 import { SaveStore } from './save/store.js';
@@ -339,6 +339,27 @@ export class Engine {
     // settle, both of which are unsafe inside the armed step and both of which resolve on their
     // own later in the same frame.
     this.sim.placeBody = (x, y, z) => this._placeBody(x, y, z);
+    // THE AUTHORITATIVE CELL SWITCH, and it is the same defect one layer up.
+    //
+    // The body half above was fixed in round 1. The RENDER half was not, and the round-1 verdict
+    // measured it: `renderer.setCell()` has exactly one caller — `_applyCell()` — and
+    // `_applyCell()` was reached from `loadState`, the census staging, the barge reset and the
+    // save-load path and from NEITHER `useDoor()` nor `leaveInterior()`. 115 of 115 interiors
+    // entered; 0 of 115 switched the drawn cell. You walked through a door and the street stayed
+    // on the screen; you walked back out and the room did.
+    //
+    // It is DEFERRED rather than applied where it is requested. `stepSettlement()` runs inside
+    // steps 2-5, which is exactly the window `armSim()` covers, and `_applyCell()`'s province
+    // branch opens a load boundary that reads the wall clock — the guard would throw. So the
+    // hook only marks the cell dirty and `_syncCell()` does the work in `_afterStep()`, the one
+    // slot every way of advancing the world passes through, the same slot `_streamProvince()`
+    // and `_streamPopulation()` already use, and outside the guard.
+    this.sim.applyCell = () => { this._cellDirty = true; };
+    // The key of what is CURRENTLY DRAWN, not of where the player is. `cellFor()` collapses 113
+    // of the 115 interiors onto the one generic `interior` cell, so the cell name alone cannot
+    // say whether the drawn room is the right room — the interior id is part of the key.
+    this._cellDirty = false;
+    this._drawnCellKey = null;
     this.death = new DeathSystem(this.data.respawn, this.hearths, {
       // "Standable" is the same predicate the capsule's own locomotion uses: the province
       // heightfield, the max walkable slope from traversal.json, and water no deeper than the
@@ -4168,7 +4189,17 @@ export class Engine {
     // setWorldSeed() decides what the exterior one IS, and groundAt() must agree with it.
     if (this.sim.worldSeed !== null && this.sim.worldSeed !== undefined) this.renderer.setWorldSeed(this.sim.worldSeed);
     const cell = this.cellFor(this.sim.env);
+    // THE ROOM THE FILE DESCRIBES. `cellFor()` folds 113 of the 115 named interiors onto one
+    // generic `interior` cell, which was `scene.js buildHall()` — 249 triangles and one light,
+    // the same hearth and the same six benches for the Crimson Apothecary in Archon and for
+    // Thorn Hall four kilometres away. `interior.props`, `interior.lights`, `interior.containers`
+    // and `interior.unique_item` had ZERO consumers in `game/src` — 2,000-odd authored props and
+    // 30 unique items that nothing instantiated. `render/interior.js` is the consumer: the shell
+    // comes from `bounds_m`, the lamps from `lights[]`, the furniture from `props[]`.
+    if (cell === 'interior') this.renderer.setInteriorRecord(this.settlements.interior(this.sim.env.interior));
     this.renderer.setCell(cell);
+    this._drawnCellKey = cell === 'interior' ? `interior:${this.sim.env.interior}` : cell;
+    this._cellDirty = false;
     if (cell === 'province' && this.renderer.province) {
       this._boundaryBegin('region');
       this.renderer.province.request(this.sim.player.pos[0], this.sim.player.pos[2]);
@@ -4178,6 +4209,31 @@ export class Engine {
     }
     this.renderer.setProp('npcShowcase', this.sim.stateName === 'npc_showcase');
     this.renderer.setProp('materialShowcase', this.sim.stateName === 'material_showcase');
+  }
+
+  /**
+   * DOES WHAT IS DRAWN AGREE WITH WHERE THE BODY IS? Run from `_afterStep()` and again from
+   * `_render()`, both of which are outside the armed determinism guard.
+   *
+   * It is written as a RECONCILIATION rather than as a handler for the door, deliberately. A
+   * handler bolted to `useDoor()` would fix the two call sites the verdict named and would be
+   * exactly as blind as the code it replaced to the next writer of `sim.env.interior` — and
+   * there are several (`loadState`'s patch, the census staging, a state file, a harness verb).
+   * This asks the only question that matters, every frame, for the cost of a string compare:
+   * the cell the environment says you are in, against the cell the renderer is actually drawing.
+   * `_cellDirty` is the hook's fast path; the key comparison is the safety net behind it, and it
+   * is what makes a probe that never calls a door verb still measure the truth.
+   *
+   * The province branch of `_applyCell()` streams tiles, so this must not fire on a frame where
+   * nothing moved — hence the key, and hence `_applyCell()` stamping it.
+   */
+  _syncCell() {
+    if (!this.renderer) return false;
+    const cell = this.cellFor(this.sim.env);
+    const key = cell === 'interior' ? `interior:${this.sim.env.interior}` : cell;
+    if (!this._cellDirty && key === this._drawnCellKey) return false;
+    this._applyCell();
+    return true;
   }
 
   /**
@@ -4339,10 +4395,16 @@ export class Engine {
     if (!this.field || this.cellFor(this.sim.env) !== 'province' || this.sim.cellId) return null;
     const p = this.sim.player, t = this.traversal;
     if (!t) return null;
+    // RI-WLD10 §3: `t.amphibious` is not itself a saved field (only the race that decides it
+    // is), so it has to be recomputed here too — the same "one frame after every load" gap the
+    // comment above already fixed for `band`/`denyRoll` would otherwise reopen for the
+    // amphibious clause specifically.
+    t.amphibious = isAmphibiousRace(this.sim.character && this.sim.character.race);
     p.frameNow = this.sim.frame;
     p.waterBand = t.band;
     p.denySprint = t.denies('sprint');
     p.denyRoll = t.denies('roll');
+    p.denyAttack = t.denies('attack');
     p.breathS = t.breath;
     p.mired = t.mired;
     return p;
@@ -4539,6 +4601,12 @@ export class Engine {
     // reason the trace record is: `observe()` reads the HP the frame ended on and writes the
     // respawn the next frame starts from, and it must not be inside `stepOnce`'s timing window.
     this._deathTick();
+    // W1-04 r2 — AND WHAT IS DRAWN FOLLOWS THE BODY. Before `_streamProvince()`, because
+    // stepping into an interior must stop the province streamer being asked for tiles under a
+    // room, and stepping back out on to the doorstep must have the exterior selected before the
+    // ring is requested around it. A door taken inside the step reaches the screen on the same
+    // frame, which is the whole of the round-1 blocking gap.
+    this._syncCell();
     // THE PROVINCE FOLLOWS THE PLAYER. After `_deathTick()`, so a respawn is streamed on the
     // frame it happens rather than the next one. See `_streamProvince()`.
     this._streamProvince();
@@ -4961,13 +5029,21 @@ export class Engine {
     this.traversal.escapePressed = !!p.mireStruggle || !!(bodyNow && bodyNow.mireStruggle);
     p.mireStruggle = false;
     if (bodyNow) bodyNow.mireStruggle = false;
-    this.traversal.step(p, px, pz, this._burdenMult(), moving, this.combat && this.combat.player);
+    // RI-WLD10 §3: the player's RACE, so the amphibious clause (infinite breath, half-rate W3/W4
+    // stamina, full attacks in W4) has something to key off. Round 1 of this piece found this
+    // call site passing six arguments and no seventh — `traversal.step()` could not have told a
+    // Saxhleel from a Nord because it was never told which one was swimming.
+    this.traversal.step(p, px, pz, this._burdenMult(), moving, this.combat && this.combat.player,
+      this.sim.character && this.sim.character.race);
     // The band the body is standing in, published where `sim/player.js` reads it, so S25's
     // DENIAL of sprint and roll above knee depth happens at action selection and not as a
     // silent speed reduction. "A denied action is legible; a silently degraded one is not."
     p.waterBand = this.traversal.band;
     p.denySprint = this.traversal.denies('sprint');
     p.denyRoll = this.traversal.denies('roll');
+    // RI-WLD10 §5 R2's third denial clause ("attacks in W4 for the non-amphibious"), published
+    // the same way sprint/roll already are — at the input gate, not as a scaled frame number.
+    p.denyAttack = this.traversal.denies('attack');
     p.breathS = this.traversal.breath;
     p.mired = this.traversal.mired;
     for (const ev of this.traversal.events) {
@@ -4987,7 +5063,15 @@ export class Engine {
       // The world's verdict, published where the LIVE input gate reads it. `sim/player.js` had
       // this logic and is not on the call path; `combat/player.js _tryStart` is. Without this the
       // water denial and the mire struggle were both unreachable code.
-      b.worldDeny = { roll: !!p.denyRoll, sprint: !!p.denySprint, mired: !!p.mired, band: this.traversal.band };
+      //
+      // `attack` is now READ off `Traversal.denies()` rather than re-derived at the input gate:
+      // `combat/player.js` used to test `wd.band === 'W5'` itself, which is exactly the literal
+      // reading of R2's first clause and silently dropped its second ("attacks in W4 for the
+      // non-amphibious") — two independent copies of the same rule is how one of them goes stale.
+      b.worldDeny = {
+        roll: !!p.denyRoll, sprint: !!p.denySprint, attack: !!p.denyAttack,
+        mired: !!p.mired, band: this.traversal.band,
+      };
     }
     this._prevX = p.pos[0]; this._prevZ = p.pos[2];
 
@@ -4996,6 +5080,48 @@ export class Engine {
     // `sim.entities` mirror, which `combat-bridge.js mirror()` overwrites every step — see
     // `HazardSystem._hurtEntity` and W1-SOULS round-1 verdict HF-2.
     if (this.hazards) this.hazards.step(this.sim, this.bus, this.combat && this.combat.player, this.combat);
+    // RI-WLD10 §5 R5/R6 — the enemy half of S25, which round 1 of this piece found had NO
+    // reading code anywhere: `Traversal` was a singleton wired to the player only, so nothing in
+    // the fight ever knew an enemy was standing in water at all. Sampled after the fight and the
+    // hazards, so it reads the positions this frame's own trace reports.
+    this._settleEnemyWater();
+  }
+
+  /**
+   * RI-WLD10 §5 R5/R6, and §11's data contract: "Every enemy statblock ... gains
+   * `water_max_band` and `water_native`. Absent fields are a fail-closed 0 for M53, not a
+   * default." Every combat body but the player is sampled against the SAME water field the
+   * player's own `Traversal` uses, and the verdict is written where `combat/enemy.js` can read
+   * it before it lets a scripted attack start — never as a frame-data change (S25 R1), only as a
+   * denial (R2), the identical shape the player's own `worldDeny` already uses.
+   *
+   * SCOPE, declared rather than implied. This project's combat is a SCRIPTED attack machine
+   * (`combat/enemy.js`'s own header) — there is no enemy chase/pursuit locomotion anywhere in
+   * `game/src` for this to hook into, so "a land enemy holds at the waterline and reacquires"
+   * (R5's pursuit half) is not implemented here and is not claimed. What IS implemented, and is
+   * a real, perturbable behaviour change: an enemy standing beyond its own declared
+   * `water_max_band` may not start an attack there, and a `water_native` archetype (declared
+   * `water_max_band: "W5"`) is never restricted at all — exactly R6's "genuinely dangerous"
+   * requirement, since nothing here touches its frame data (R1) to make it otherwise.
+   */
+  _settleEnemyWater() {
+    if (!this.field || !this.combat || this.cellFor(this.sim.env) !== 'province' || this.sim.cellId) return;
+    const player = this.combat.player;
+    for (const b of this.combat.bodies) {
+      if (b === player || b.dead) continue;
+      const ec = this.combat.enemies.get(b.id);
+      const stat = ec && ec.stat;
+      if (!stat) continue;
+      const w = this.field.waterAt(b.pos[0], b.pos[2]);
+      // Absent fields are a fail-closed 0, i.e. W0 — an archetype that never declared a water
+      // stance may not fight beyond dry ground. This is the item's own rule, not a convenience
+      // default: see RI-WLD10 §11.
+      const maxBand = stat.water_max_band || 'W0';
+      b.waterBand = w.band;
+      b.waterMaxBand = maxBand;
+      b.waterNative = !!stat.water_native;
+      b.waterDeniesAttack = bandIndex(w.band) > bandIndex(maxBand);
+    }
   }
 
   /**
@@ -5298,6 +5424,11 @@ export class Engine {
   }
 
   _render() {
+    // A frame must never draw a cell the world has left. `enterInterior()` is also a harness
+    // verb, and a caller that enters and renders WITHOUT stepping — which is what three of the
+    // critic's four staged captures did — would otherwise photograph the room it just left.
+    // Costs a string compare when nothing has moved.
+    this._syncCell();
     if (this.renderer) this.renderer.render(this.sim);
   }
 

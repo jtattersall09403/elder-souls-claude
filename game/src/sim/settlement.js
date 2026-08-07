@@ -232,6 +232,30 @@ function placeBody(sim, at) {
 }
 
 /**
+ * THE OTHER HALF OF THE SAME DEFECT, and it took a critic to find it.
+ *
+ * `placeBody` above exists because `sim.player.pos` was a mirror and the door wrote the copy
+ * nobody read: the body half. The round-1 verdict measured the RENDER half and it is the same
+ * shape — `renderer.setCell()` has exactly one caller, `Engine._applyCell()`, and `_applyCell()`
+ * was called from `loadState`, the census staging, the barge reset and the save-load path and
+ * from NEITHER door verb. Swept over the shipped list: **115 of 115 interiors entered, 0 of 115
+ * switched the drawn cell**. Walking through a door left the street on screen while the body
+ * stood at the interior spawn; walking back out left the ROOM on screen while the body stood in
+ * the street. `sim.env.interior` was correct throughout, so every census-shaped check passed.
+ *
+ * `sim.applyCell` is an Engine-installed hook of the same family as `sim.placeBody`,
+ * `sim.populate`, `sim.doorVeto` and `sim.censusDriver`, for the same reason: this module must
+ * not know that a renderer exists. The Engine DEFERS the actual switch to `_afterStep()`,
+ * because `_applyCell()` can open a load boundary and a load boundary reads the wall clock,
+ * which the armed determinism guard forbids inside the step this function runs in.
+ *
+ * A bare sim harness with no renderer has no hook and is unaffected.
+ */
+function applyCell(sim) {
+  if (typeof sim.applyCell === 'function') sim.applyCell();
+}
+
+/**
  * Go through a door. RI-WLD13: the exterior door position and the interior spawn are two ends of
  * ONE object, both declared in the interior's `continuity` block, so "the door I came out of is
  * the door I went in by" is arithmetic a probe can check rather than a promise.
@@ -250,6 +274,7 @@ export function useDoor(sim, interiorId, bus) {
   sim.env.interior = interiorId;
   sim.env.settlement = d.settlement;
   placeBody(sim, spawn);
+  applyCell(sim);
   if (bus) {
     const ev = bus.emit(sim.frame, 'interior_enter');
     ev.interior = interiorId; ev.settlement = d.settlement; ev.name = d.name;
@@ -263,10 +288,11 @@ export function leaveInterior(sim, bus) {
   const S = sim.settlements;
   const id = sim.env.interior;
   const d = S.interior(id);
-  if (!d) { sim.env.interior = null; return { left: true, interior: id, pos: null }; }
+  if (!d) { sim.env.interior = null; applyCell(sim); return { left: true, interior: id, pos: null }; }
   const out = (d.continuity && d.continuity.exterior_spawn) || d.exterior_door || [0, 0, 0];
   sim.env.interior = null;
   placeBody(sim, out);
+  applyCell(sim);
   if (bus) {
     const ev = bus.emit(sim.frame, 'interior_exit');
     ev.interior = id; ev.settlement = d.settlement; ev.pos = [out[0], out[1], out[2]];

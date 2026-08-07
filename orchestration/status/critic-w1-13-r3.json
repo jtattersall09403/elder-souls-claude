@@ -38,7 +38,8 @@
     "pre-r3-render (DELETE THE RENDERER FIX: drawn-ground lift + 1.9 m hum both removed) reads 8/8 DAYLIGHT with the corrected camera. The committed renderer change may be INERT for M-D14. Waiting on the dark arm.",
     "pre-r3-render is 8/8 DAYLIGHT and 8/8 DARK. The committed renderer change (0b2d6ef: _drawnGroundY lift + the 1.9 m hum) is INERT for M-D14: with the corrected camera the knot, cap and halo alone read from all eight bearings in both conditions. RULES 6, and the delete-the-fix arm was written by the builder and left switched off.",
     "boot-check PASS (exit 0) on the tree I measured.",
-    "aim-only daylight 2/8 \u2014 IDENTICAL to as-placed. The aim change buys zero bearings across the whole sweep, confirming the 2x2 at scale."
+    "aim-only daylight 2/8 \u2014 IDENTICAL to as-placed. The aim change buys zero bearings across the whole sweep, confirming the 2x2 at scale.",
+    "aim-only dark 3/8 \u2014 identical to as-placed dark. Across the full sweep the 0.8 m aim change buys ZERO bearings in either condition."
   ],
   "contention_note": "36 headless_shell, loadavg 30 at 22:05. Every figure I cite is a pixel count, a soul count, a metre or a boolean and is load-independent. No timing figure is cited as evidence anywhere.",
   "provisional_score": "6/10 FAIL (round 2 was 5). RI-JRN06 native 88 -> ladder 6; RI-PRG04 min-over-axes 6, set by Clock cost, the axis nobody has measured in three rounds.",

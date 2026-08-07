@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `016bd4a`: 478 tools, 153 reference
-items, 25 pieces in flight.
+so it cannot drift. Generated at `6b9a4be`: 478 tools, 153 reference
+items, 26 pieces in flight.
 
-Its purpose is to stop 25+ concurrent agents each paying separately to discover the
+Its purpose is to stop 26+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -756,14 +756,15 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-04-r2` | building | 1. sim.applyCell hook: door verbs reach _applyCell (deferred to _afterStep, outside the ar | — |
+| `W1-23-r2` | ? | none — round complete. A round-3 critic should re-run tools/lore/critic-w1-23-r1.mjs (or a | `corpus/60-lore/data/canon-facts.json` `game/data/lore/canon.json` `game/data/dialogue/topics/40-race-gated.json` `game/data/dialogue/topics/70-disputes.json` `game/data/factions/argonian-tribes.json` `tools/lore/build-canon.mjs` |
 | `critic-w1-13-r3` | writing | waiting on aim-only dark + eye-only x2; then copy the factorial into the verdict artifacts | `orchestration/status/critic-w1-13-r3.json` `tools/harness/critic-w1-13-r3.mjs` `tools/harness/critic-w1-13-r3-shot.mjs` `corpus/90-verdicts/wave1/W1-13-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-13-r3/` |
+| `W1-DLG-SHADOWS` | in_progress | Enumerate the 23 live collisions reported by `node tools/check-dialogue-topics.mjs --all`, | — |
+| `W1-04-r2` | building | 1. sim.applyCell hook: door verbs reach _applyCell (deferred to _afterStep, outside the ar | — |
 | `W1-18-r2` | building | build game/src/sim/quest/reveal-routes.js + QuestEngine.learnFrom(); wire to Engine.talkTo | `orchestration/status/W1-18-r2.json` |
 | `W1-06` | partial | SUPERSEDED by successor4_log below and by orchestration/status/W1-06-r2.json (the live thr | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` `corpus/80-methods/m-cam05-world-camera.mjs` `corpus/80-methods/m-cam06-feel.mjs` |
 | `W1-06-r2` | partial | 1) tools/harness/w1-13-r3-bloom-sight.mjs still has its aim-only/eye-only arms written and | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` `corpus/80-methods/m-cam05-world-camera.mjs` `corpus/80-methods/m-cam06-feel.mjs` |
 | `W1-03` | surveyed | Not fixed yet, in priority order per reports/w1-03-survey.md S9: (1) wire race into game/s | `reports/w1-03-survey.md` `reports/blog-feed.jsonl` `docs/shots/2026-08-07-w1-03-hip-deep-water-no-waterline.png` |
 | `W1-19-r3` | done | hand to a critic. NOT DONE and not faked: Q-MAIN-06 is still blocked and so are 7 other ma | `orchestration/status/W1-19-r3.json` `game/src/sim/quest/machine.js` `game/data/quests/hooks.json` `tools/quests/reveal-route-audit.mjs` `tools/quests/reveal-route-chart.mjs` `tools/quests/mainline-chain-floor.mjs` |
-| `W1-23-r2` | ? | read corpus/90-verdicts/wave1/W1-23-r1.md in full, then locate lore registry files and con | — |
 | `W1-22-r3` | in-progress | (2) ambience-render --calibrate: clay-moor 5.8 LU under its own target, deep-marshes 0.003 | `tools/analysis/ambience-determinism.mjs` `game/src/audio/synth.js` `game/src/audio/ambience.js` `reports/w1-22/` |
 | `critic-w1-17-act5` | ? | none. Successor (round 2, after the fix): re-run corpus/90-verdicts/wave1/artifacts/W1-17- | `corpus/90-verdicts/wave1/W1-17-act5-r1.md` `corpus/90-verdicts/wave1/W1-17-act5-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/converse-node-repro.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/gen-converse-node-repro.mjs` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/opens-by-topic-scan.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/check-prose-output.txt` |
 | `W1-SOULS-r3` | running | re-run full oracle after the idempotence fix; then delete-the-fix legs (souls rec.ref, pop | `orchestration/status/W1-SOULS-r3.json` `game/src/sim/souls.js` `game/src/engine.js` `game/src/world/population.js` `tools/progression/derive-soul-values.mjs` `tools/check-souls-corpus.mjs` |

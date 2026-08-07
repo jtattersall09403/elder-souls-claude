@@ -178,7 +178,18 @@ export class EnemyController {
         // the fight uses.
         if (ev.face !== undefined) { b.yaw = norm360(ev.face); b.yawExempt = true; }
         else if (ctx.player) this._steer(ctx.player, this.d.locomotion ? (this.d.locomotion.turn_rate_stationary_dps || 480) : 480);
-        if (ev.move === 'block') {
+        // RI-WLD10 §5 R2/R5/R6 (S25), the enemy half — absent until now. `waterDeniesAttack` is
+        // written every frame by `Engine._settleEnemyWater()`: true when this body's current
+        // band exceeds its own declared `water_max_band` (fail-closed W0 if the statblock never
+        // declared one, per §11). A `water_native` archetype declares W5, so nothing here ever
+        // catches it — it stays exactly as dangerous in deep water as on land, because R1 means
+        // nothing has touched its frame data either way. `unblock` (lowering guard) is exempt on
+        // purpose: denying it would trap the enemy in a raised guard forever, which is not a
+        // denial, it is a soft-lock.
+        if (b.waterDeniesAttack && ev.move !== 'unblock') {
+          const e = emit(frame, 'action_denied_by_water');
+          e.who = b.id; e.button = ev.move; e.band = b.waterBand || 'W0'; e.water_max_band = b.waterMaxBand || 'W0';
+        } else if (ev.move === 'block') {
           b.guardRaised = true;
           const e = emit(frame, 'GUARD_UP'); e.who = b.id;
         } else if (ev.move === 'unblock') {

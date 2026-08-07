@@ -287,6 +287,16 @@ Checks 2–5 must all return empty output. Check 1's numbers are compared agains
 file with the wave number and rationale, per CORPUS-CONTRACT §5. Ad-hoc fields are rejected by
 `additionalProperties: false` at validation time, which is deliberate.
 
+## Schema amendments
+
+Per the amendment rule above and CORPUS-CONTRACT §5. Both amendments are purely additive: every
+quest file that validated before an amendment still validates after it.
+
+| id | wave | field | rationale |
+|---|---|---|---|
+| `AM-QST04-W1-18-01` | wave 1 | `resolutions[].consequences` | RI-QST09 X7 requires each exclusive pair to differ by ≥ 3 world flags, a reward and ≥ 1 world entity. With consequences declared only at quest level, two exclusive resolutions of the same quest are **identical in the data by construction**, so X7 is unmeasurable and fails closed. |
+| `AM-QST04-W1-18-02` | wave 1, round 2 | `deceit.revealed_by[].journal` (optional integer) | `QuestEngine.note()` — the verb that writes the **middle** of a journal — had one caller in `game/src/`, covering 11 of 120 quests, so for 109 quests nothing a player does could write an entry between opening and closing. Learning a truth in the world is the commonest reason a player writes something down, and in most cases the entry is **already authored and unreachable** (Q-MAIN-06's journal 40 *is* `rev_the_curve_predates`; 55 *is* `rev_the_steward_named`). The field is the authored link between the two, never inferred. It must name a non-terminal (`active`/`branch`) entry of the same quest, which `tools/check-quests.mjs` enforces. |
+
 ## Scoring
 
 | Band | Condition |

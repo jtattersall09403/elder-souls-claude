@@ -680,12 +680,31 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
   // The schedule is `emitterClock()` — the same class, the same phase, the same period the live
   // driver strikes on — not a hand-rolled loop starting at half a period, which is what round 1
   // had and which no live path shared.
-  if (opts.listener && !muted.has('R7')) {
+  //
+  // ROUND 3 — `R7` IS TOO COARSE A MUTE, AND THE COARSENESS WAS MEASURABLY WRONG.
+  //
+  // `emitterMode()` above already splits the emitters into two kinds that behave nothing alike: a
+  // STRIKE is a discrete sound on a period, and a CONTINUOUS emitter (the Clay Moor's kiln) is a
+  // roar that is simply part of what standing there sounds like. The mute vocabulary did not carry
+  // that split, so `mute: ['L3','L4','R7']` — the "bed alone" reference every event-level
+  // measurement subtracts — removed the kiln from the reference while leaving it in the full mix.
+  // The residual was then the kiln, and `tools/analysis/ambience-onsets.mjs` was reading the
+  // Clay Moor's continuous roar as the level of its clay-cracks.
+  //
+  // It was caught by the number refusing to move: a calibration pass cut clay-moor's L3
+  // `event_gain_db` by 6.91 dB and the measured level changed by 0.05 dB. A trim that large moving
+  // nothing means the measured quantity is not a function of the trim, i.e. the measurement was
+  // not measuring the events. `R7_strike` and `R7_continuous` now mute one kind each, and `R7`
+  // still means both.
+  const muteStrike = muted.has('R7') || muted.has('R7_strike');
+  const muteCont = muted.has('R7') || muted.has('R7_continuous');
+  if (opts.listener && !(muteStrike && muteCont)) {
     const ems = bed.emitters || [];
     for (let i = 0; i < ems.length; i++) {
       const e = ems[i];
       const p = emitterPlacement(e, opts.listener[0], opts.listener[1], opts.listener[2] || 0);
       if (!p.audible) continue;
+      if (emitterMode(e) === 'continuous' ? muteCont : muteStrike) continue;
       if (emitterMode(e) === 'continuous') {
         // The listener does not move during an offline capture, so the rolloff and the pan are
         // constants here — the same two numbers the live driver writes every frame.
