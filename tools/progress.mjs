@@ -273,6 +273,20 @@ ${items.map(i => `<tr><td><code>${esc(i.id)}</code></td><td>${esc(i.title)}</td>
 ${verdicts.map(v => `<tr><td>${esc(v.wave)}</td><td>${esc(v.piece || v.piece_id)}</td><td><code>${esc(v.subsystem || v.subsystem_path)}</code></td><td class="${/pass/i.test(String(v.status || v.verdict)) ? 'ok' : 'bad'}">${esc(v.status || v.verdict)}</td><td class="gapq">${esc((v.biggest_gap && (v.biggest_gap.summary || v.biggest_gap.gap)) || v.gap || '')}<div class="rem">${esc((v.biggest_gap && v.biggest_gap.remedy) || '')}</div></td></tr>`).join('\n') || '<tr><td colspan=5 class="empty">no verdicts yet &mdash; nothing has been built to judge</td></tr>'}
 </table>
 
+
+<h2>Verdict staleness <span class="dimtext">(reported, not a gate &mdash; a stale verdict is a fact for the next dispatch, not a downgrade)</span></h2>
+<div class="sub" style="margin-bottom:10px">
+  ${staleness.summary.total} verdict(s) at HEAD ${esc(staleness.head ? staleness.head.slice(0, 7) : '?')} &mdash;
+  <span class="ok">${staleness.summary.fresh} fresh</span>,
+  <span class="bad">${staleness.summary.stale} stale</span>,
+  <span class="dimtext">${staleness.summary.unknown} unknown</span>
+  (unknown = no <code>depends_on</code> declared, no commit stamp, or an unresolvable commit &mdash; not assessed, not assumed fresh).
+  Detail: <code>node tools/verdict-staleness.mjs</code>.
+</div>
+<table><tr><th>Piece</th><th>Status</th><th>Since</th><th>Why</th></tr>
+${staleness.rows.map(r => `<tr><td><code>${esc(r.piece_id || r.file)}</code></td><td class="${r.status === 'fresh' ? 'ok' : r.status === 'stale' ? 'bad' : 'dimtext'}">${esc(r.status)}</td><td class="rem">${r.commit ? esc(r.commit.slice(0, 7)) : '&mdash;'}</td><td class="rem">${esc(r.reason)}${r.status === 'stale' ? ` &mdash; e.g. <code>${esc((r.invalidating_files || [])[0] || '')}</code>` : ''}</td></tr>`).join('\n') || '<tr><td colspan=4 class="empty">no verdicts yet</td></tr>'}
+</table>
+
 <h2>Open gap ledger</h2>
 <table><tr><th>Gap</th><th>Subsystem</th><th>Remedy</th><th>Status</th></tr>
 ${openGaps.map(g => `<tr><td class="gapq">${esc(g.summary || g.gap || g.title)}</td><td><code>${esc(g.subsystem || '')}</code></td><td class="rem">${esc(g.remedy || '')}</td><td class="warn">${esc(g.status || 'open')}</td></tr>`).join('\n') || '<tr><td colspan=4 class="empty">ledger empty</td></tr>'}

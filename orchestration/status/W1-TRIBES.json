@@ -42,6 +42,13 @@
   ],
   "next_step": "none for the builder. Open for a critic: (1) the axis table in tribe-census.mjs is TRANSCRIBED from RI-LOR08 \u00a72, not derived \u2014 a builder who changed \u00a72 and not the table would pass; (2) Paatru/Sarpa/Archein each appear in only one shipped book; (3) Ghost People and Root-House People are left on the table on purpose as the wave-2 additions.",
   "notes_for_successor": "Complete. Browser used once, for boot-check + the deliberate fail-closed perturbation, at loadavg 17 with 24 browsers \u2014 a boolean, not a timing, so contention does not touch it. Did not commit.",
+  "reverified": {
+    "at": "2026-08-07",
+    "commit": "efefea0",
+    "by": "successor agent, no new authorship (files_claimed: [])",
+    "checks": "node tools/lore/canon-census.mjs -> PASS (27/27 voiced, 57/57 edges, 10 stale cross-refs unchanged from report); node tools/lore/canon-consumption.mjs -> PASS (43/43 perturb, 409/409 control, 347/347 reach, 10 contested topics); node tools/lore/tribe-census.mjs -> PASS (6/6 presence, 0-of-5 worst axis overlap); node tools/lore/tribe-census.mjs --self-test -> PASS 9/9; node tools/lore/build-canon.mjs --check -> up to date (83 facts, 27 disputed); node tools/check-data.mjs -> PASS (548 files, 347 NPCs, all settlements resolve, tribes.json indexed at game/data/index.json:2131); node tools/check-prose.mjs -> exit 0, none of 75-tribes.json / the-peoples.json / rumours.json appear in the failure listing (all other listed failures are in pre-existing files this piece never touched, e.g. game/data/quests/*.json, the-occupation.json).",
+    "note": "files_touching in this record names game/data/books/the-tribes.json but the shipped, indexed file is game/data/books/the-peoples.json (outputs_written above has it right) -- a stale filename in one field, not a missing deliverable. game/data/index.json confirms npcs/tribes.json (id: tribes) and books/the-peoples.json are both indexed, so the running game loads them; the brief's premise that tribes.json was 'not yet in index.json' predates this piece landing."
+  },
   "files_touching": [
     "corpus/60-lore/RI-LOR08-argonian-tribes.md",
     "corpus/60-lore/data/canon-facts.json",
