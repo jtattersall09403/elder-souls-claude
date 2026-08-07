@@ -49,23 +49,31 @@ const out = {
 const fail = (m) => { out.failures.push(m); say(`  FAIL  ${m}`); };
 const pass = (m) => say(`  pass  ${m}`);
 
-/** Walk every NPC in the world as every race; return the shape a comparison needs. */
-async function sweep(h, races) {
-  const npcs = await h.h('listNPCs');
-  const rows = [];
-  for (const race of races) {
-    await h.h('setCharacter', { race, upbringing: 'interior' });
-    for (const n of npcs) {
-      const st = await h.h('talkTo', n.eid);
-      const d = await h.h('npcDisposition', n.eid);
-      rows.push({
-        race, npc: n.eid, reaction_group: n.reaction_group || null,
-        disposition: d.disposition,
-        greeting: st.greeting, cell: st.greeting_cell, key: st.greeting_key,
-        topics: st.topics.map((t) => t.id),
-        gated: st.topics.filter((t) => t.gated).map((t) => t.id),
-      });
-      await h.h('conversationClose');
+/**
+ * Walk every NPC in every listed state as every race; return the shape a comparison needs.
+ * States are visited in order and the NPC set is the union, so "every person in the build"
+ * means every person any state puts in a room, not every person one state does.
+ */
+async function sweep(h, races, states = STATES) {
+  const npcs = []; const rows = [];
+  for (const state of states) {
+    await h.h('loadState', state);
+    const here = await h.h('listNPCs');
+    for (const n of here) if (!npcs.some((x) => x.eid === n.eid)) npcs.push({ ...n, state });
+    for (const race of races) {
+      await h.h('setCharacter', { race, upbringing: 'interior' });
+      for (const n of here) {
+        const st = await h.h('talkTo', n.eid);
+        const d = await h.h('npcDisposition', n.eid);
+        rows.push({
+          state, race, npc: n.eid, reaction_group: n.reaction_group || null,
+          disposition: d.disposition,
+          greeting: st.greeting, cell: st.greeting_cell, key: st.greeting_key,
+          topics: st.topics.map((t) => t.id),
+          gated: st.topics.filter((t) => t.gated).map((t) => t.id),
+        });
+        await h.h('conversationClose');
+      }
     }
   }
   return { npcs, rows };
@@ -78,12 +86,12 @@ function restoreAll() { for (const [f, s] of backups) fs.writeFileSync(f, s); ba
 let h = await launchGame(args);
 try {
   await h.h('setSeed', 1337);
-  await h.h('loadState', STATE);
+  await h.h('loadState', STATES[0]);
   const data = await h.h('getCreationData');
   out.races = data.races.races.map((r) => r.id);
 
   // ---- 1. the greeting consumer -----------------------------------------------------------
-  say(`== 1. does greetings.json reach a spoken line? (state ${STATE}) ==`);
+  say(`== 1. does greetings.json reach a spoken line? (states: ${STATES.join(', ')}) ==`);
   const base = await sweep(h, out.races);
   out.npcs = base.npcs.map((n) => ({ eid: n.eid, name: n.name, reaction_group: n.reaction_group, topics: n.topics }));
   out.rows = base.rows;
@@ -148,15 +156,19 @@ try {
   // as every race and count distinct answers.
   say('\n== 2b. does race change the ANSWER, not just the list? ==');
   const answers = [];
-  for (const race of out.races) {
-    await h.h('setCharacter', { race, upbringing: 'interior' });
-    for (const n of base.npcs) {
-      const st = await h.h('talkTo', n.eid);
-      for (const t of st.topics) {
-        const r = await h.h('conversationSay', t.id);
-        answers.push({ race, npc: n.eid, topic: t.id, text: r.said || null });
+  for (const state of STATES) {
+    await h.h('loadState', state);
+    const here = base.npcs.filter((n) => n.state === state);
+    for (const race of out.races) {
+      await h.h('setCharacter', { race, upbringing: 'interior' });
+      for (const n of here) {
+        const st = await h.h('talkTo', n.eid);
+        for (const t of st.topics) {
+          const r = await h.h('conversationSay', t.id);
+          answers.push({ race, npc: n.eid, topic: t.id, text: r.said || null });
+        }
+        await h.h('conversationClose');
       }
-      await h.h('conversationClose');
     }
   }
   const byPair = new Map();
@@ -194,6 +206,7 @@ try {
   // Say a topic and check the text actually comes back.
   const first = base.rows.find((r) => r.topics.length);
   if (first) {
+    await h.h('loadState', first.state);
     await h.h('setCharacter', { race: first.race, upbringing: 'interior' });
     await h.h('talkTo', first.npc);
     const said = await h.h('conversationSay', first.topics[0]);
@@ -221,7 +234,7 @@ try {
 
       await h.close();
       h = await launchGame(args);
-      await h.h('setSeed', 1337); await h.h('loadState', STATE);
+      await h.h('setSeed', 1337); await h.h('loadState', probeRow.state);
       await h.h('setCharacter', { race: probeRow.race, upbringing: 'interior' });
       const after = await h.h('talkTo', probeRow.npc);
       await h.h('conversationClose');
@@ -237,7 +250,7 @@ try {
       restoreAll();
       await h.close();
       h = await launchGame(args);
-      await h.h('setSeed', 1337); await h.h('loadState', STATE);
+      await h.h('setSeed', 1337); await h.h('loadState', probeRow.state);
       await h.h('setCharacter', { race: probeRow.race, upbringing: 'interior' });
       const back = await h.h('talkTo', probeRow.npc);
       await h.h('conversationClose');
@@ -262,7 +275,7 @@ try {
 
     await h.close();
     h = await launchGame(args);
-    await h.h('setSeed', 1337); await h.h('loadState', STATE);
+    await h.h('setSeed', 1337);
     const flat = await sweep(h, out.races);
     const flatByNpc = new Map();
     for (const r of flat.rows) { const a = flatByNpc.get(r.npc) || []; a.push(r); flatByNpc.set(r.npc, a); }
@@ -277,7 +290,7 @@ try {
     restoreAll();
     await h.close();
     h = await launchGame(args);
-    await h.h('setSeed', 1337); await h.h('loadState', STATE);
+    await h.h('setSeed', 1337);
     const again = await sweep(h, out.races);
     const againByNpc = new Map();
     for (const r of again.rows) { const a = againByNpc.get(r.npc) || []; a.push(r); againByNpc.set(r.npc, a); }

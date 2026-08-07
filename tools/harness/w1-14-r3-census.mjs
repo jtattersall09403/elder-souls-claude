@@ -75,6 +75,16 @@ try {
         // the whole array, verbatim, in order.
         out[prefix + '.len'] = obj.length;
         out[prefix + '.json'] = JSON.stringify(obj);
+        // ROUND-3 LESSON, SAME SHAPE, ONE LEVEL DOWN. Stopping at the array boundary makes the
+        // whole array ONE leaf path, and §D's signature is a set of PATHS — so `fire_damage`,
+        // `frost_damage` and `shock_damage` all reduce to `status.json` and collide, although
+        // they advance three different buildup meters and a player can see the difference in one
+        // hit. Same for `corrode` (armour rating), `burden` (equip load), `silence` (silenced)
+        // and `paralyse` (paralysed), which are four different fields inside one blob.
+        // A blob is not a leaf. Recurse. `.json` and `.len` are KEPT so nothing that used to be
+        // visible stops being visible, and so the round-2 number stays computable from the same
+        // record (`distinct_signatures_blob` below).
+        for (let i = 0; i < obj.length; i++) flat(obj[i], prefix + '.' + i, out);
         return out;
       }
       if (typeof obj === 'object') {
@@ -101,7 +111,15 @@ try {
       flat({ journal: qs.journal.length, topics: qs.topicsKnown, flags: Object.keys(qs.flags).filter((k) => qs.flags[k]),
              dispositions: qs.dispositions, afflictions: (qs.afflictions || []).map((a) => a.id),
              mark: qs.travel && qs.travel.mark ? qs.travel.mark : null }, 'quest', o);
+      // `world.*` is `getMagicWorld()` — MAGIC'S OWN BOOKKEEPING. M7 forbids computing a
+      // signature from it, so it is kept (it is the only readout of a conjured wall or a summon)
+      // but every path under it is tagged, and the headline DISTINCT-VERBS below is recomputed
+      // with the whole prefix dropped. A build whose verbs are distinguishable only in magic's
+      // private notes has not shipped 55 verbs.
       flat(H.getMagicWorld(), 'world', o);
+      // The WORLD SIDE of the same verbs: sim.world, the durable register save/state.js persists.
+      // `open_lock` -> doors_unlocked, `shatter` -> shortcuts_opened, a taken prop -> items_taken.
+      flat(H.getWorldRegisters(), 'sim_world', o);
       flat(H.getStatusState(), 'status', o);
       flat(H.getFallState(), 'fall', o);
       // The registers the eight orphaned effects were rehomed onto in round 3. Without these
@@ -163,7 +181,11 @@ try {
       // is correct, and which silently cut the reservoir to 43 and made every commissioned
       // spell unaffordable when this ran with the round-2 ordering. Character first, practice
       // second, the override last.
-      H.setCharacter({ race: 'saxhleel', upbringing: 'interior', class: 'sap-reader', birthsign: 'raj-xul', given_name: 'Unwritten', sex: 'unrecorded' });
+      // NOT an Argonian. Round 3's first census ran a `saxhleel` and `sap_ward` came back
+      // "moved nothing" — correctly, because the effect's own record rules that an Argonian has
+      // no taint to lower. An arena that makes one of the 55 effects a no-op by the caster's
+      // RACE is measuring the caster, not the effect.
+      H.setCharacter({ race: 'imga', upbringing: 'interior', class: 'sap-reader', birthsign: 'raj-xul', given_name: 'Unwritten', sex: 'unrecorded' });
       for (let i = 0; i < 700; i++) {
         for (const sk of ['sorcery', 'root-speech', 'warding', 'veiling']) H.grantSkillUse('cast_effective', { cost: 40, spell_skill: sk });
         H.hearthRest();

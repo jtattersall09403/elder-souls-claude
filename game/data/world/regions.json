@@ -69,6 +69,12 @@
             "rootmat": 0.6,
             "hummock": 0.4
           }
+        },
+        "skin": {
+          "kind": "rootnet",
+          "amp_m": 0.32,
+          "len_m": 2.6,
+          "tone": 0.95
         }
       },
       "props": {
@@ -158,7 +164,7 @@
         "text": "welkynd-lit Ayleid ruins swallowed by living wood: white stone with roots through it, glowing blue in green dark"
       },
       "flora_density_per_100m2": 3.4,
-      "canopy_closure": 0.92,
+      "canopy_closure": 0.96,
       "sightline_m": 18,
       "climate": "heavy rain; light arrives only in shafts",
       "flora_text": "buttressed hardwood, strangler vine, luminous fungus shelves",
@@ -224,6 +230,12 @@
           "weights": {
             "crack": 1
           }
+        },
+        "skin": {
+          "kind": "polygon",
+          "amp_m": 0.16,
+          "len_m": 1.7,
+          "tone": 1
         }
       },
       "props": {
@@ -372,6 +384,13 @@
             "terracette": 0.5,
             "rubble": 0.5
           }
+        },
+        "skin": {
+          "kind": "berm",
+          "amp_m": 0.24,
+          "len_m": 1.4,
+          "tone": 0.85,
+          "bearing_deg": 118
         }
       },
       "props": {
@@ -523,16 +542,22 @@
             "hummock": 0.75,
             "rill": 0.25
           }
+        },
+        "skin": {
+          "kind": "tussock",
+          "amp_m": 0.42,
+          "len_m": 1.15,
+          "tone": 1
         }
       },
       "props": {
         "canopy": {
           "shape": "spire",
           "h": 13,
-          "r": 0.5,
+          "r": 2.4,
           "colour": "#0C0E16",
           "trunk": "#0C0E16",
-          "per100m2": 0.42,
+          "per100m2": 0.85,
           "h_var": 0.45,
           "lean_deg": 11,
           "emergent": null
@@ -671,6 +696,12 @@
             "rill": 0.6,
             "ripple": 0.4
           }
+        },
+        "skin": {
+          "kind": "rillnet",
+          "amp_m": 0.2,
+          "len_m": 2.9,
+          "tone": 0.85
         }
       },
       "props": {
@@ -824,6 +855,12 @@
             "terracette": 0.7,
             "crack": 0.3
           }
+        },
+        "skin": {
+          "kind": "hexcell",
+          "amp_m": 0.22,
+          "len_m": 1.5,
+          "tone": 0.8
         }
       },
       "props": {
@@ -965,6 +1002,13 @@
             "ripple": 0.7,
             "rill": 0.3
           }
+        },
+        "skin": {
+          "kind": "sandripple",
+          "amp_m": 0.09,
+          "len_m": 0.8,
+          "tone": 0.75,
+          "bearing_deg": 24
         }
       },
       "props": {
@@ -1116,6 +1160,12 @@
             "terracette": 0.75,
             "rubble": 0.25
           }
+        },
+        "skin": {
+          "kind": "crustpuff",
+          "amp_m": 0.18,
+          "len_m": 1.3,
+          "tone": 0.8
         }
       },
       "props": {
@@ -1271,13 +1321,19 @@
             "crack": 0.55,
             "rubble": 0.45
           }
+        },
+        "skin": {
+          "kind": "slab",
+          "amp_m": 0.26,
+          "len_m": 2.4,
+          "tone": 0.9
         }
       },
       "props": {
         "canopy": {
           "shape": "column",
           "h": 12,
-          "r": 1.7,
+          "r": 2.2,
           "colour": "#7C8794",
           "trunk": "#78828E",
           "per100m2": 0.55,
@@ -1358,7 +1414,7 @@
         "text": "a forest half turned to stone, where you cannot tell which trees are alive until you put a hand on one"
       },
       "flora_density_per_100m2": 1.1,
-      "canopy_closure": 0.35,
+      "canopy_closure": 0.18,
       "sightline_m": 260,
       "climate": "clear high light; sudden dry thunder with no rain",
       "flora_text": "living trees standing among petrified ones; stone-bark indistinguishable until touched",
@@ -1425,6 +1481,13 @@
             "dune": 0.55,
             "crack": 0.45
           }
+        },
+        "skin": {
+          "kind": "crackfield",
+          "amp_m": 0.12,
+          "len_m": 3.2,
+          "tone": 0.7,
+          "bearing_deg": 36
         }
       },
       "props": {
@@ -1575,13 +1638,19 @@
             "hummock": 0.5,
             "rootmat": 0.5
           }
+        },
+        "skin": {
+          "kind": "hummock",
+          "amp_m": 0.36,
+          "len_m": 2,
+          "tone": 0.85
         }
       },
       "props": {
         "canopy": {
           "shape": "cone",
           "h": 4.2,
-          "r": 0.8,
+          "r": 2,
           "colour": "#2A211C",
           "trunk": "#3A3028",
           "per100m2": 5.4,
@@ -1660,7 +1729,7 @@
         "text": "an ash-dusted thorn labyrinth navigated by knife-marks cut into stems"
       },
       "flora_density_per_100m2": 2.6,
-      "canopy_closure": 0.55,
+      "canopy_closure": 0.49,
       "sightline_m": 30,
       "climate": "grey ash carried south from Morrowind, dusting every surface",
       "flora_text": "black needle-thorn thickets 6 m tall, impenetrable except on cut paths",
@@ -1727,6 +1796,12 @@
             "rubble": 0.7,
             "terracette": 0.3
           }
+        },
+        "skin": {
+          "kind": "blockstep",
+          "amp_m": 0.28,
+          "len_m": 0.95,
+          "tone": 0.95
         }
       },
       "props": {
@@ -1876,6 +1951,13 @@
             "bund": 0.8,
             "ripple": 0.2
           }
+        },
+        "skin": {
+          "kind": "furrow",
+          "amp_m": 0.14,
+          "len_m": 0.62,
+          "tone": 0.8,
+          "bearing_deg": 0
         }
       },
       "props": {
