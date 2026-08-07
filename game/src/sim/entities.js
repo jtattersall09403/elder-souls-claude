@@ -87,6 +87,18 @@ export function makeEntity(stat, eid, x, z, frame) {
     sight_radius_m: stat.sight_radius_m,
     sight_cone_deg: stat.sight_cone_deg,
     hitById: '',
+    // ---- W1-15's perception outputs, declared at their identity values -------------------
+    // `sim/stealth/system.js` writes all five onto the entity during a step, and nothing
+    // created them beforehand — so an entity that had been looked at had five keys an entity
+    // that had not did not, the save carried none of them, and the durable-field census
+    // reported `lkp` (the last known position the whole search behaviour is driven from),
+    // `lastSeenF` and `alertChannel` as lost by every load. Carried by save/state.js
+    // `world.entities[].{alert_channel,percept_dist,percept_los,last_seen_ago_frames,lkp}`.
+    alertChannel: null,
+    percept_dist: null,
+    percept_los: false,
+    lastSeenF: -1,
+    lkp: null,
   };
 }
 

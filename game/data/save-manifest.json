@@ -107,6 +107,8 @@
       "class": "durable",
       "paths": [
         "character.attributes",
+        "character.burden_ratio",
+        "character.carried_weight",
         "character.equip_load_pct",
         "character.estus",
         "character.hp",
@@ -134,6 +136,7 @@
       "group": "Progression",
       "class": "durable",
       "paths": [
+        "progression.gold",
         "progression.hearth_last_rested",
         "progression.hearths_discovered",
         "progression.sap_taint",
@@ -212,7 +215,7 @@
         "crime.witnesses",
         "crime.zones"
       ],
-      "note": "Witness IDENTITIES, not a count — RI-JRN05 M8 and 'How we lose' #4. W1-15 round 2 added `crime.ledger` and `crime.zones`: the four lists above are id PROJECTIONS of a ledger that has to survive a save whole — the crime records with their quotes and jurisdictions (RI-CRM01 §1), the stolen rows with their owners and values (RI-STL02 §2), and seam S-4's per-zone baseline alert, which RI-STL01 §7 requires to survive 'leaving and re-entering the zone, death, and save/load'. Round 1 shipped the four lists and never wrote to them. W1-repair:  was declared as ONE path and the save writes CrimeWorld.toJSON(), which is fourteen. RI-JRN05 M4 read 11 keys in the save that were not on the manifest and 1 on the manifest that was not in the save, on every state including the empty arena_flat. The fourteen are enumerated, and the three maps whose keys are data (per-settlement bounty, bloodprice per family, death flags per settlement) plus the nullable jail term are declared as dynamic containers."
+      "note": "Witness IDENTITIES, not a count — RI-JRN05 M8 and 'How we lose' #4. W1-15 round 2 added `crime.ledger` and `crime.zones`: the four lists above are id PROJECTIONS of a ledger that has to survive a save whole — the crime records with their quotes and jurisdictions (RI-CRM01 §1), the stolen rows with their owners and values (RI-STL02 §2), and seam S-4's per-zone baseline alert, which RI-STL01 §7 requires to survive 'leaving and re-entering the zone, death, and save/load'. Round 1 shipped the four lists and never wrote to them. W1-repair: the path \"crime.ledger\" was declared as ONE path while the save writes CrimeWorld.toJSON(), which is fourteen.  RI-JRN05 M4 read 11 keys in the save that were not on the manifest and 1 on the manifest that was not in the save, on every state including the empty arena_flat. The fourteen are enumerated, and the three maps whose keys are data (per-settlement bounty, bloodprice per family, death flags per settlement) plus the nullable jail term are declared as dynamic containers."
     },
     {
       "group": "World",
@@ -254,7 +257,12 @@
         "anchor",
         "stagger",
         "stagger_in_frames",
-        "state_entered_ago_frames"
+        "state_entered_ago_frames",
+        "alert_channel",
+        "percept_dist_m",
+        "percept_los",
+        "last_seen_ago_frames",
+        "lkp"
       ],
       "entity_field_live_to_save": {
         "id": "id",
@@ -279,7 +287,12 @@
         "anchor": "anchor",
         "stagger": "stagger",
         "staggerUntil": "stagger_in_frames",
-        "stateEnteredF": "state_entered_ago_frames"
+        "stateEnteredF": "state_entered_ago_frames",
+        "alertChannel": "alert_channel",
+        "percept_dist": "percept_dist_m",
+        "percept_los": "percept_los",
+        "lastSeenF": "last_seen_ago_frames",
+        "lkp": "lkp"
       },
       "entity_fields_derived_from_the_archetype": [
         "archetype",
@@ -438,7 +451,7 @@
         "pose.swing_seq",
         "pose.yaw_deg"
       ],
-      "note": "W1-repair: camera_dist_m was the ONLY rig field the save carried, and c.dist is not rig state — sim/camera.js writes  at the bottom of every solve. The save therefore recorded an OUTPUT and restored it into a rig whose input (armLen) still held makeCamera() defaults, and Engine.loadState() then called _settleCamera(), which overwrote armLen/armEased/armDesired/armCast/dist/distTarget with a fresh default. Measured: pose.camera_dist_m 3.546945 -> 3.265980 across a BARE round trip of the empty arena_flat, the single field in M2 diff and 0/N on M1. Every field added here is read before it is written somewhere in the camera step and is therefore durable by §B definition, not by taste."
+      "note": "W1-repair: camera_dist_m was the ONLY rig field the save carried, and camera.dist is not rig state — sim/camera.js assigns camera.dist = camera.armLen at the bottom of every arm solve. The save therefore recorded an OUTPUT and restored it into a rig whose INPUT (armLen) still held makeCamera() defaults, and Engine.loadState() then called _settleCamera(), which overwrote armLen / armEased / armDesired / armCast / dist / distTarget with a freshly computed default. Measured: pose.camera_dist_m 3.546945 -> 3.265980 across a BARE round trip of the empty arena_flat — the single field in RI-JRN05 M2 diff, and 0/N on M1. Every field added here is read before it is written somewhere in the camera step and is durable by §B own definition rather than by taste; the pure per-frame outputs (dist, dist_target, arm_cast, arm_hit, arm_guard, shoulder_*, char_opacity, clip_through, fov) are carried as well so that a screenshot taken straight after a load is the picture the save was taken from."
     },
     {
       "group": "Flags",

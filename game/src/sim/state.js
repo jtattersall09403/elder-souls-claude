@@ -85,6 +85,13 @@ export function makePlayer() {
     // invisible to every instrument that round-tripped an idle world. A monotonic counter
     // has no frame arithmetic in it and therefore no sentinel to collide with.
     swingSeq: 0,
+    // RI-PRG07 §3 encumbrance. Written by Engine.setBurden() and read by getBurden(),
+    // burdenMove() and the frame record; declared HERE at their identity values because a
+    // field that springs into existence when a verb is first called makes the live object's
+    // key set depend on the session's history, and the durable-field census then reports the
+    // field as lost by a save that never had it. Carried by save/state.js `character`.
+    carriedWeight: 0,
+    burdenRatio: 0,
   };
 }
 
@@ -186,6 +193,13 @@ export function makeProgression() {
     hearthsDiscovered: [],
     hearthLastRested: null,
     upgrades: {},
+    // Money. Read by Engine._buildCombat() into `combat.world.gold` (the parley's price) and
+    // by MagicSystem; it had no field in makeProgression and no field in the save, so gold
+    // was undefined until something assigned it and zero after every load.
+    gold: 0,
+    // RI-LOR05 §4a. Assigned by applySave and read by the sap ward; declared here so the
+    // live object's key set does not change the first time a save is loaded into it.
+    sapTaint: null,
   };
 }
 
@@ -262,6 +276,32 @@ export function quantiseSaveGrid(sim) {
   for (let i = 0; i < sim.props.length; i++) {
     const o = sim.props[i];
     o.pos[0] = q6(o.pos[0]); o.pos[1] = q6(o.pos[1]); o.pos[2] = q6(o.pos[2]);
+  }
+  // ---- THE COMBAT BODIES ------------------------------------------------------------------
+  // W1-repair, and it is the same argument the spring arm gets above. `sim.player` and
+  // `sim.entities` are VIEWS; the bodies are the authority (sim/combat-bridge.js), and now
+  // that the save carries them, a body position the save cannot represent exactly is a
+  // post-load trace divergence exactly as an un-gridded `armLen` was. Measured before this
+  // line existed: with everything else clean, RI-JRN05 M5 still reported `player.pos`,
+  // `camera.pivot`, `camera.yaw_deg`, `camera.pos`, `enemies[].dist_m` and
+  // `player.weapon_tip` differing on 1-5 of 120 frames — a 1e-7 m difference at the save
+  // point crossing a 4-dp rounding boundary in the record. RI-JRN05 "how we lose" #6.
+  // Allocation-free: fixed field list, indexed loop, no Object.keys, no closures.
+  const bodies = sim._combat && sim._combat.bodies;
+  if (bodies) {
+    for (let i = 0; i < bodies.length; i++) {
+      const b = bodies[i];
+      b.pos[0] = q6(b.pos[0]); b.pos[1] = q6(b.pos[1]); b.pos[2] = q6(b.pos[2]);
+      b.yaw = q6(b.yaw); b.speedMps = q6(b.speedMps); b.moveDirDeg = q6(b.moveDirDeg);
+      b.hp = q6(b.hp); b.stamina = q6(b.stamina); b.poiseHealth = q6(b.poiseHealth);
+      b.equipLoadPct = q6(b.equipLoadPct);
+      b.socketA[0] = q6(b.socketA[0]); b.socketA[1] = q6(b.socketA[1]); b.socketA[2] = q6(b.socketA[2]);
+      b.socketB[0] = q6(b.socketB[0]); b.socketB[1] = q6(b.socketB[1]); b.socketB[2] = q6(b.socketB[2]);
+      b.prevA[0] = q6(b.prevA[0]); b.prevA[1] = q6(b.prevA[1]); b.prevA[2] = q6(b.prevA[2]);
+      b.prevB[0] = q6(b.prevB[0]); b.prevB[1] = q6(b.prevB[1]); b.prevB[2] = q6(b.prevB[2]);
+      b.rollDirDeg = q6(b.rollDirDeg); b.lastRootDelta = q6(b.lastRootDelta);
+      if (typeof b._lastRootDy === 'number') b._lastRootDy = q6(b._lastRootDy);
+    }
   }
 }
 

@@ -54,7 +54,21 @@ import {
   makeRunId, gitInfo, hashDataTree, ensureDir,
 } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
-import { installShim, PADS, observe as observePads } from './gamepad-shim.mjs';
+// FIXED by W1-08/W1-29 (declared): a tool-builder round replaced the shim's `installShim` +
+// reload with `initScripts` applied before navigation — strictly better, but it removed the
+// export this file imports, and an ESM import of a missing binding is a SyntaxError at load.
+// Every journey in the corpus, all nine, failed to start. Both shapes are handled here.
+import * as SHIM from './gamepad-shim.mjs';
+import { loadQuests } from '../lib/gamedata.mjs';
+const PADS = SHIM.PADS;
+const observePads = SHIM.observe;
+const installShim = SHIM.installShim
+  || (async (page, padId, index = 0) => {
+    const desc = typeof padId === 'string' ? PADS[padId] : padId;
+    if (!desc) throw new Error(`unknown pad preset ${JSON.stringify(padId)}`);
+    await page.addInitScript(SHIM.shimSource(desc, index));
+    return desc;
+  });
 
 const USAGE = `
 journey-run.mjs — A-JRN1: drive a journey with real input and record what a player could see.
@@ -151,6 +165,134 @@ const JOURNEYS = {
 // absent and says the capability is "runner-side"; CDP dispatches `code` and `key` separately,
 // so a layout IS a runner-side table and this is it. `code` is physical, `key` is what the
 // layout produces — which is the whole of what a layout does to a WASD binding.
+// ---------------------------------------------------------------------------------------------
+// RI-JRN07 §B — `ES/QUEST-SET`, the seeded stratified sample. Rule S1 is BINDING: "the five are
+// sampled by seed and RECORDED IN THE VERDICT BEFORE THE RUN. A critic that hand-picks quests
+// has measured the best case and its verdict is void."
+//
+// Round 1 advertised `--sample-quests` and `--stratified` and implemented neither, while the
+// jrn07 leg reported `ok` (TOOL-COVERAGE-R1 §3). They are implemented here.
+//
+// The five strata are RI-JRN07 §B's own, and each predicate names the shipped field it reads:
+// nothing is inferred, so a stratum that cannot be filled is reported as empty with the reason
+// rather than back-filled from a stratum that IS populated.
+// ---------------------------------------------------------------------------------------------
+const QUEST_STRATA = [
+  {
+    id: 'Q1', description: 'a main-quest stage',
+    field: 'category === "main"',
+    pick: (q) => q.category === 'main',
+  },
+  {
+    id: 'Q2', description: 'a faction quest at rank >= 3',
+    field: 'rank_gate.min_rank >= 3',
+    pick: (q) => !!(q.rank_gate && Number(q.rank_gate.min_rank) >= 3),
+  },
+  {
+    id: 'Q3', description: 'a side quest whose giver lies',
+    field: 'category === "side" && giver.honest === false',
+    pick: (q) => q.category === 'side' && !!(q.giver && q.giver.honest === false),
+  },
+  {
+    id: 'Q4', description: 'discovered only by rumour, with no giver in the starting settlement',
+    field: 'discovery === "overheard" && opens_by.overheard_from non-empty && giver.location not in the starting settlement',
+    pick: (q, ctx) => q.discovery === 'overheard'
+      && Array.isArray(q.opens_by && q.opens_by.overheard_from) && q.opens_by.overheard_from.length > 0
+      && !!(q.giver && q.giver.location)
+      && !new RegExp(ctx.startSettlement, 'i').test(String(q.giver.location)),
+  },
+  {
+    id: 'Q5', description: 'destination >= 15 walk-minutes away, crossing a region border',
+    field: 'region set AND giver.location resolving to a DIFFERENT region, with a walk >= 900 s',
+    // Deliberately strict. `q.region` is set on almost no shipped quest and there is no
+    // authored walk time between a giver and a destination, so this predicate will normally
+    // find nothing — and saying so is the point. Widening it to "any quest with a long
+    // `directions` string" would be the substitution TOOL-COVERAGE-R1 §1 ruled illegitimate.
+    pick: (q, ctx) => {
+      if (!q.region || !(q.giver && q.giver.location)) return false;
+      const giverRegion = ctx.regionOfPlace(String(q.giver.location));
+      if (!giverRegion || giverRegion === q.region) return false;
+      const walk = ctx.walkSecondsBetween(giverRegion, q.region);
+      return Number.isFinite(walk) && walk >= 900;
+    },
+  },
+];
+
+/** xorshift32 — a seeded PRNG, so the draw is reproducible from `--seed` alone (Rule S1). */
+function seededRng(seed) {
+  let x = (seed >>> 0) || 0x9e3779b9;
+  return () => {
+    x ^= x << 13; x >>>= 0;
+    x ^= x >> 17;
+    x ^= x << 5; x >>>= 0;
+    return x / 4294967296;
+  };
+}
+
+function sampleQuests({ n = 5, stratified = false, seed = 4711 } = {}) {
+  const all = loadQuests().slice().sort((a, b) => (a.id < b.id ? -1 : 1));   // stable order first
+  const rng = seededRng(seed);
+  const draw = (pool) => (pool.length ? pool[Math.floor(rng() * pool.length)] : null);
+
+  if (!stratified) {
+    const pool = all.slice();
+    const out = [];
+    for (let i = 0; i < n && pool.length; i++) out.push(...pool.splice(Math.floor(rng() * pool.length), 1));
+    return {
+      seed, sample: out, unfilled: [],
+      strata: [{ id: 'ALL', description: 'unstratified seeded draw', candidates: all.length, drawn: out.map((q) => q.id) }],
+      procedure: `xorshift32(seed=${seed}); ${n} drawn without replacement from ${all.length} quests in id order`,
+    };
+  }
+
+  // Context the Q4/Q5 predicates need. Both read the world tables rather than guessing.
+  const regionsDoc = (() => { try { return JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'game/data/world/regions.json'), 'utf8')); } catch { return null; } })();
+  const hearths = (() => { try { return JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'game/data/world/hearths.json'), 'utf8')); } catch { return null; } })();
+  const regionIds = ((regionsDoc && regionsDoc.regions) || []).map((r) => r.id);
+  const ctx = {
+    // RI-JRN01's opening settlement. Named here so the Q4 predicate can be disputed.
+    startSettlement: 'tidewrack',
+    regionOfPlace(place) {
+      const p = place.toLowerCase();
+      for (const id of regionIds) if (p.includes(id)) return id;
+      return null;
+    },
+    walkSecondsBetween(a, b) {
+      // The only authored walk times in the tree are `fog_gates[].hearth_walk_s`. There is no
+      // authored region-to-region walk time, so this returns NaN and Q5 stays empty until one
+      // exists. Reported, not substituted.
+      void a; void b; void hearths;
+      return NaN;
+    },
+  };
+
+  const strata = [];
+  const sample = [];
+  const taken = new Set();
+  for (const s of QUEST_STRATA) {
+    const candidates = all.filter((q) => { try { return s.pick(q, ctx); } catch { return false; } });
+    const pool = candidates.filter((q) => !taken.has(q.id));
+    const chosen = draw(pool);
+    if (chosen) { sample.push(chosen); taken.add(chosen.id); }
+    strata.push({
+      id: s.id, description: s.description, predicate: s.field,
+      candidates: candidates.length,
+      drawn: chosen ? chosen.id : null,
+      why_empty: chosen ? null
+        : (candidates.length
+          ? 'every candidate was already drawn for an earlier stratum'
+          : `no quest in game/data/quests/** satisfies ${s.field}`),
+    });
+  }
+  return {
+    seed, sample,
+    strata,
+    unfilled: strata.filter((s) => !s.drawn),
+    procedure: `xorshift32(seed=${seed}); one quest drawn per RI-JRN07 §B stratum, in Q1..Q5 order, ` +
+               `without replacement, from ${all.length} quests sorted by id`,
+  };
+}
+
 const LAYOUTS = {
   qwerty: { KeyW: 'w', KeyA: 'a', KeyS: 's', KeyD: 'd', KeyE: 'e', KeyQ: 'q', KeyF: 'f', KeyR: 'r' },
   azerty: { KeyW: 'z', KeyA: 'q', KeyS: 's', KeyD: 'd', KeyE: 'e', KeyQ: 'a', KeyF: 'f', KeyR: 'r' },
@@ -324,9 +466,25 @@ async function runJourney() {
   const led = new Ledger();
   const t0 = Date.now();
 
+  // Pads must be injected ABOVE the navigator.getGamepads() seam, which means before the page's
+  // own scripts run. Round 1 launched, installed and RELOADED to get there; that reload hung in
+  // 3 of 3 attempts in gamepad-shim.mjs (TOOL-COVERAGE-R1 §2) and the same hazard was here.
+  // `launchGame({ initScripts })` applies addInitScript before the goto, so there is no reload
+  // and no second `ready()` to lose the renderer to.
+  const padDescriptors = [];
+  const padInitScripts = [];
+  if (args.gamepad) {
+    const ids = String(args.gamepad).split(',').map((s) => s.trim()).filter(Boolean);
+    for (const id of ids) {
+      if (!PADS[id]) die(EXIT.USAGE, `unknown --gamepad ${id}. Known: ${Object.keys(PADS).join(', ')}`);
+    }
+    ids.forEach((id, i) => { padDescriptors.push(PADS[id]); padInitScripts.push(SHIM.shimSource(PADS[id], i)); });
+  }
+
   const handle = await launchGame({
     width: profile.width, height: profile.height,
     chromiumArgs: undefined,
+    initScripts: padInitScripts,
     // ADDED by W1-08/W1-29 (declared): pass --entry / --url through to resolveEntry(), which
     // already supports both. Without it this driver can only ever run the repo's own tree, so
     // a tree that another agent has left mid-write blocks every journey in the corpus at once —
@@ -334,27 +492,14 @@ async function runJourney() {
     entry: args.entry, url: args.url,
   });
 
-  // Pads must be injected above the navigator.getGamepads() seam, which means before the
-  // page's scripts. launchGame has already navigated, so install and reload.
-  let padDescriptors = [];
-  if (args.gamepad) {
-    const ids = String(args.gamepad).split(',').map((s) => s.trim()).filter(Boolean);
-    for (const id of ids) {
-      if (!PADS[id]) { await handle.close(); die(EXIT.USAGE, `unknown --gamepad ${id}. Known: ${Object.keys(PADS).join(', ')}`); }
+  if (padInitScripts.length) {
+    const installed = await handle.page.evaluate(() => !!window.__PAD_SHIM).catch(() => false);
+    if (!installed) {
+      await handle.close();
+      die(EXIT.MEASUREMENT_FAIL,
+        'the pad init script did not survive the navigation — window.__PAD_SHIM is absent after ' +
+        'boot, so no --gamepad leg below would mean anything.');
     }
-    for (const id of ids) padDescriptors.push(await installShim(handle.page, id, padDescriptors.length));
-    await handle.page.reload({ waitUntil: 'load' });
-    await handle.page.waitForFunction(() => !!(window.__HARNESS && window.__HARNESS.version), null, { timeout: 60000 });
-    // FIXED by W1-08/W1-29 (declared): `window.__HARNESS` is installed by the module's top
-    // level, but `engine.renderer` and the whole world are built by `ready()`, which the
-    // reload discards. Waiting only for `__HARNESS.version` therefore returned a page whose
-    // engine had no renderer, and the first `getRenderedText()` threw
-    // `Cannot read properties of null (reading 'textRegister')` — so EVERY --gamepad run,
-    // i.e. every run of RI-JRN04's own Comparison method, aborted at exit 12.
-    await handle.page.evaluate(() => window.__HARNESS.ready({ mode: 'play-instrumented' }));
-    await handle.page.waitForFunction(() => {
-      try { return !!(window.__HARNESS && window.__HARNESS.getRenderedText); } catch { return false; }
-    }, null, { timeout: 60000 });
   }
 
   const capability = (await handle.hOpt('getCapabilityReport')) || null;
@@ -856,8 +1001,69 @@ async function journeyLegs(handle, led, o) {
         'would measure the design document (RI-MTH07).',
         'wave-1 pieces W1-11..W1-13');
     }
+    // ---- RI-JRN07 §B Rule S1: the seeded, stratified, RECORDED sample ---------------------
+    //
+    // TOOL-COVERAGE-R1 §3: in round 1 `--sample-quests` and `--stratified` were read out of the
+    // usage block, echoed into the ledger record, and nothing was sampled — while the leg
+    // reported `ok`. That is `cmb-reach.mjs --verify` again. They are implemented now, and where
+    // the shipped data cannot fill a stratum the leg reports `unmeasurable` with the stratum
+    // named rather than quietly topping the sample up from a stratum that IS populated.
+    const wantSample = args['sample-quests'] !== undefined || !!args.stratified;
+    if (wantSample) {
+      const n = Number(args['sample-quests'] || 5) || 5;
+      const draw = sampleQuests({ n, stratified: !!args.stratified, seed: Number(args.seed || 0) });
+      // Rule S1: recorded BEFORE the run. This row is written first, unconditionally, so the
+      // sample is in the artifact whatever the rest of the leg does.
+      led.ok('m_quest_sample', 'RI-JRN07 §B Rule S1 seeded sample, recorded before the run', {
+        seed: draw.seed, requested: n, stratified: !!args.stratified,
+        drawn: draw.sample.map((q) => q.id),
+        strata: draw.strata,
+        draw_procedure: draw.procedure,
+      });
+      if (draw.unfilled.length) {
+        led.unmeasurable('m_quest_sample_complete', 'a complete stratified ES/QUEST-SET',
+          `RI-JRN07 §B requires one quest per stratum and Rule S1 makes the sample binding. ` +
+          `${draw.unfilled.length} of ${draw.strata.length} strata have no candidate in shipped ` +
+          `data: ${draw.unfilled.map((s) => `${s.id} (${s.description}) — ${s.why_empty}`).join(' | ')}. ` +
+          `The sample is NOT topped up from a populated stratum: a critic that hand-picks quests ` +
+          `has measured the best case and its verdict is void (RI-JRN07 §B / RI-MTH04).`,
+          'whichever piece owns the missing quest stratum');
+      }
+      // The running-world half. A sample drawn from game/data/quests/** and reported on is a
+      // reading of the design document (RI-MTH07); what makes it a measurement is asking the
+      // RUNNING QuestBook whether it carries these ids at all.
+      const book = await handle.hOpt('questBook');
+      if (book === undefined) {
+        led.unmeasurable('m_quest_sample_live', 'the sampled quests exist in the running build',
+          '__HARNESS.questBook() is absent, so the sample cannot be checked against the running ' +
+          'QuestBook and would be a reading of game/data/quests/** alone (RI-MTH07).', 'A-JRN1');
+      } else {
+        const present = draw.sample.filter((q) => book.includes(q.id)).map((q) => q.id);
+        const missing = draw.sample.filter((q) => !book.includes(q.id)).map((q) => q.id);
+        if (missing.length) {
+          led.unmeasurable('m_quest_sample_live', 'the sampled quests exist in the running build',
+            `${missing.length} of ${draw.sample.length} sampled quests are in game/data/quests/** ` +
+            `but NOT in the running QuestBook (${missing.join(', ')}). The sample cannot be walked.`,
+            'whichever piece loads the quest tree');
+        } else {
+          led.ok('m_quest_sample_live', 'the sampled quests exist in the running build',
+            { book_size: book.length, sampled_present: present });
+        }
+      }
+    }
+
     const qs = await handle.hOpt('getQuestState');
-    led.ok('m_quest_state', 'quest state', { sample: Number(args['sample-quests'] || 0), stratified: !!args.stratified, state: qs && qs._declared_incomplete ? { declared_incomplete: qs._declared_incomplete } : qs });
+    if (qs === undefined) {
+      led.unmeasurable('m_quest_state', 'quest state', '__HARNESS.getQuestState() is absent', 'A-JRN1');
+    } else if (qs && qs._declared_incomplete) {
+      led.unmeasurable('m_quest_state', 'quest state',
+        `the build declares the quest runtime incomplete: ${JSON.stringify(qs._declared_incomplete)}. ` +
+        'Quest STATE round-trips; quest PROGRESSION does not exist, so a quest cannot be walked ' +
+        'end to end and RI-JRN07 L1..L6 are not reachable from here.',
+        'wave-1 pieces W1-14..W1-16');
+    } else {
+      led.ok('m_quest_state', 'quest state', { state: qs });
+    }
   }
 
   if (journeyId === 'jrn08-return') {

@@ -46,7 +46,7 @@ import { Traversal } from './sim/traversal.js';
 import { Hazards } from './sim/hazards.js';
 import { SaveStore } from './save/store.js';
 import { buildSave, applySave, applySaveMagic, restoreCameraRig, stateHash, VOLATILE_PATHS, SAVE_SCHEMA_VERSION } from './save/state.js';
-import { loadActor, saveFight } from './save/fight.js';
+import { loadActor, saveActor } from './save/fight.js';
 import { exportSave, importSave } from './save/exchange.js';
 import { canonicalise } from './core/canonical.js';
 // W1-07 — character creation. The engine owns the census SCENE (it is a place in the world,
@@ -2532,6 +2532,27 @@ export class Engine {
    * patching a live system is what makes loadState() reproducible" (`_buildCombat`).
    */
   _restoreFightFromSave(blob) {
+    /**
+     * Restore one actor, then POSE it, then put the pose-derived record back on top.
+     *
+     * `evaluateRig()` recomputes the skeleton and the weapon capsule from the body's current
+     * pose, and it is what the renderer and the next sweep read — so it has to run. But it
+     * runs from the BIND pose, not from the animation frame the save was taken on: the clip
+     * is applied by `advance()` inside a step, which has not happened yet. Restoring the
+     * record and then posing therefore threw away the swept capsule and `_lastRootDy`, and
+     * the census read `fight.player.socketB` coming back at the idle default (0.724, -0.608,
+     * 1.940) instead of the saved (-1.121, 1.313, 2.960) — which is a save that restores the
+     * weapon to the wrong place in the world, on the frame a hitbox is live.
+     */
+    const restoreActor = (body, rec, f, table) => {
+      loadActor(body, rec, f, table);
+      body.evaluateRig(body._lastRootDy || 0);
+      loadActor(body, {
+        socketA: rec.socketA, socketB: rec.socketB, prevA: rec.prevA, prevB: rec.prevB,
+        hasPrev: rec.hasPrev, _lastRootDy: rec._lastRootDy,
+      }, f, table);
+      return body;
+    };
     const sim = this.sim;
     const f = sim.frame;
     const fight = blob.fight;
@@ -2559,9 +2580,8 @@ export class Engine {
 
     const c = this.combat;
     const table = c.player.moves;
-    loadActor(c.player, fight.player, f, table);
+    restoreActor(c.player, fight.player, f, table);
     if (c.playerCtl && fight.player_ctl) loadActor(c.playerCtl, fight.player_ctl, f, table);
-    c.player.evaluateRig(f);
 
     // Every enemy body, spawned from the archetype the entity record already names and then
     // restored field for field. `combat.bodyOf()` returned nothing after a load before this,
@@ -2572,13 +2592,17 @@ export class Engine {
       const stat = this.data.enemies[rec.stat_id || (e && e.id)];
       if (!stat) continue;
       const body = c.spawnEnemy(rec.eid, stat, 0, 0, 0);
-      loadActor(body, rec.body, f, body.moves);
+      restoreActor(body, rec.body, f, body.moves);
       const ctl = c.enemies.get(rec.eid);
       if (ctl && rec.ctl) loadActor(ctl, rec.ctl, f, body.moves);
-      body.evaluateRig(f);
     }
-    if (sim.player.lockOn !== null && sim.player.lockOn !== undefined) c.setLock(sim.player.lockOn);
-    else c.setLock(null);
+    // FROM THE BLOB, not from `sim.player`. `_buildCombat` ends with a `mirror()` of the
+    // freshly built fight, which had already overwritten the `lockOn` `applySave` restored —
+    // so reading the view here read a null the rebuild had just written, the lock was
+    // released by every load, the camera came back in `free` instead of `locked`, and
+    // RI-JRN05 M5 diverged on 24 camera fields for all 120 frames.
+    const lockTarget = blob.pose.locked_on;
+    c.setLock(lockTarget !== undefined && lockTarget !== null && c.bodyOf(lockTarget) ? lockTarget : null);
 
     // And only now is the view true. `mirror()` is the ONLY writer of 26 of these fields and
     // it had never run on this path.
@@ -3757,7 +3781,7 @@ export class Engine {
     // frames ago" would be inventing history), while `state_entered_ago_frames` is a plain
     // difference and re-bases plainly.
     const FRAME_ABSOLUTE_CLAMPED = ['hitstopUntil', 'player.regenBlockUntil', 'player.actionableAt', 'camera.shakeUntil', 'entities[].staggerUntil'];
-    const FRAME_ABSOLUTE_PLAIN = ['entities[].stateEnteredF'];
+    const FRAME_ABSOLUTE_PLAIN = ['entities[].stateEnteredF', 'entities[].lastSeenF'];
     // The manifest declares 6 dp (rules.float_precision_dp). The projection is therefore
     // lossy by construction below that, and the census compares AT the declared precision
     // rather than pretending the loss is not there: what it reports instead is the largest
@@ -3774,12 +3798,43 @@ export class Engine {
     };
 
     const clone = (o) => JSON.parse(JSON.stringify(o));
+    // W1-repair: `character`, `npcs`, `props`, `magic` and THE COMBAT BODIES were not in this
+    // snapshot, and every one of them was carrying a defect the census is built to catch.
+    //   * `sim.character` — `loadCreation()` dropped `powers` and `drawbacks`, so the Focus
+    //     multiplier, the spell absorption and the whole Dry Well drawback (seam S27) were
+    //     lost by every load. The census could not see the sheet, so it never said so.
+    //   * the combat bodies — the AUTHORITY behind `sim.player` (sim/combat-bridge.js).
+    //     Nothing restored them, so 26 player fields were absent after a load and the body's
+    //     frame stamps were never rebased.
+    // A census that walks a subset of the simulation is an instrument that certifies a subset.
+    // `now` is the frame the shot is taken at, so every frame STAMP on a body or a controller
+    // is compared as an offset. This is the same re-basing rule the save itself uses, applied
+    // by the same function, so the census cannot disagree with the save about what a stamp is.
+    const bodyShot = (combat, now) => {
+      if (!combat || !combat.player) return null;
+      const one = (b) => saveActor(b, now);
+      const out = { player: one(combat.player), player_ctl: combat.playerCtl ? one(combat.playerCtl) : null, enemies: {} };
+      for (const b of combat.bodies) if (b !== combat.player) out.enemies[b.id] = one(b);
+      return out;
+    };
+    const magicShot = (M) => (M ? {
+      focus: M.focus, focusMax: M.focusMax, attuned: (M.attuned || []).slice(),
+      catalyst: M.catalyst, hasCatalyst: !!M.hasCatalyst, xulHesh: M.xulHesh,
+      knownEffects: [...(M.knownEffects || [])].sort(),
+      custom: (M.custom || []).map((c) => c.id).sort(),
+      gems: clone(M.gems || []), levitating: !!M.levitating,
+      focusRestoresAtHearth: M.focusRestoresAtHearth !== false,
+    } : null);
     const shot = (sim) => ({
       frame: sim.frame, seed: sim.seed, stateName: sim.stateName, hitstopUntil: sim.hitstopUntil,
       worldSeed: sim.worldSeed,
       player: clone(sim.player), camera: clone(sim.camera), env: clone(sim.env),
       world: clone(sim.world), progression: clone(sim.progression), quest: clone(sim.quest),
       inventory: clone(sim.inventory), identity: clone(sim.identity),
+      character: sim.character ? clone(sim.character) : null,
+      npcs: sim.npcs.map((n) => clone(n)), props: sim.props.map((o) => clone(o)),
+      magic: magicShot(sim.magic),
+      fight: bodyShot(this.combat, sim.frame),
       entities: sim.entities.map((e) => clone(e)),
     });
     const rebase = (s) => {
@@ -3792,7 +3847,11 @@ export class Engine {
       o.player.regenBlockUntil = clamped(o.player.regenBlockUntil);
       o.player.actionableAt = clamped(o.player.actionableAt);
       o.camera.shakeUntil = clamped(o.camera.shakeUntil);
-      for (const e of o.entities) { e.stateEnteredF = plain(e.stateEnteredF); e.staggerUntil = clamped(e.staggerUntil); }
+      for (const e of o.entities) {
+        e.stateEnteredF = plain(e.stateEnteredF);
+        e.lastSeenF = plain(e.lastSeenF);
+        e.staggerUntil = clamped(e.staggerUntil);
+      }
       delete o.camera.override;
       delete o.env.wallClockOffsetMs;
       return o;

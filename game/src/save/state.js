@@ -82,6 +82,10 @@ export function buildSave(sim, build) {
       estus: p.estus,
       equip_load_pct: r6(p.equipLoadPct),
       roll_class: p.rollClass,
+      // RI-PRG07 §3. Both were live fields with no save field at all: a character carrying
+      // forty-four objects reloaded unburdened.
+      carried_weight: r6(p.carriedWeight || 0),
+      burden_ratio: r6(p.burdenRatio || 0),
     },
     inventory: sim.inventory.map((i) => ({
       id: i.id, count: i.count, condition: r6(i.condition), charge: r6(i.charge),
@@ -90,6 +94,9 @@ export function buildSave(sim, build) {
     })).sort(byId),
     progression: {
       souls_spent: sim.progression.soulsSpent,
+      // Money. Read by the parley's price gate and by the spell merchant, written by every
+      // sale, and on no manifest and in no save until this repair.
+      gold: sim.progression.gold || 0,
       hearths_discovered: [...sim.progression.hearthsDiscovered].sort(),
       hearth_last_rested: sim.progression.hearthLastRested,
       upgrades: sortedMap(sim.progression.upgrades),
@@ -208,6 +215,22 @@ export function buildSave(sim, build) {
         anchor: vec(e.anchor),
         stagger: e.stagger, stagger_in_frames: rel(e.staggerUntil, f),
         state_entered_ago_frames: Math.max(0, f - e.stateEnteredF),
+        // W1-15's perception outputs. `lkp` is the last known position the whole search
+        // behaviour is driven from (sim/stealth/system.js searchStart), `last_seen_ago_frames`
+        // is what "lost him" is measured against, and both were written every frame by the
+        // stealth system and carried by nothing. A guard that saw you, then a reload, and the
+        // guard has never seen anyone.
+        alert_channel: e.alertChannel === undefined ? null : e.alertChannel,
+        percept_dist_m: e.percept_dist === undefined || e.percept_dist === null ? null : r6(e.percept_dist),
+        percept_los: !!e.percept_los,
+        // A PLAIN difference with no sentinel. -1 was tried and collided with itself: a save
+        // taken one frame after the guard last saw you gives ago = 1, and rebasing that
+        // against the frame `loadState()` resets to 0 gives lastSeenF = -1, which is exactly
+        // makeEntity()'s "never seen" value. The re-save then wrote -1 and RI-JRN05 M2's diff
+        // was that one field. `lost = frame - lastSeenF` is the only reader and it is a plain
+        // subtraction, so "never" is just a very long time ago and needs no sentinel at all.
+        last_seen_ago_frames: f - (e.lastSeenF === undefined ? -1 : e.lastSeenF),
+        lkp: e.lkp ? vec(e.lkp) : null,
       })).sort((a, b) => (a.eid < b.eid ? -1 : a.eid > b.eid ? 1 : 0)),
     },
     death: { bloodstain: sim.quest.death.bloodstain ? {
@@ -432,6 +455,7 @@ export function applySave(sim, blob, moves, statFor) {
     sim.progression.skills[k] = { value: blob.character.skills[k].value, useProgress: blob.character.skills[k].use_progress };
   }
   sim.progression.soulsSpent = blob.progression.souls_spent;
+  sim.progression.gold = blob.progression.gold;
   sim.progression.hearthsDiscovered = [...blob.progression.hearths_discovered];
   sim.progression.hearthLastRested = blob.progression.hearth_last_rested;
   sim.progression.upgrades = { ...blob.progression.upgrades };
@@ -447,6 +471,8 @@ export function applySave(sim, blob, moves, statFor) {
   p.estus = blob.character.estus;
   p.equipLoadPct = blob.character.equip_load_pct;
   p.rollClass = blob.character.roll_class;
+  p.carriedWeight = blob.character.carried_weight;
+  p.burdenRatio = blob.character.burden_ratio;
 
   sim.inventory = blob.inventory.map((i) => ({
     id: i.id, count: i.count, condition: i.condition, charge: i.charge,
@@ -537,6 +563,11 @@ export function applySave(sim, blob, moves, statFor) {
     e.animPhase0 = es.anim_phase0 === undefined ? -1 : es.anim_phase0;
     e.stagger = es.stagger; e.staggerUntil = f + es.stagger_in_frames;
     e.stateEnteredF = f - es.state_entered_ago_frames;
+    e.alertChannel = es.alert_channel;
+    e.percept_dist = es.percept_dist_m;
+    e.percept_los = es.percept_los;
+    e.lastSeenF = f - es.last_seen_ago_frames;
+    e.lkp = es.lkp ? [...es.lkp] : null;
     sim.addEntity(e);
     const n = parseInt(String(es.eid).replace(/\D+/g, ''), 10);
     if (Number.isFinite(n) && n >= sim.nextEid) sim.nextEid = n + 1;
