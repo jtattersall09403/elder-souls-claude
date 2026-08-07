@@ -136,8 +136,36 @@ original blanket cap did.
 
 | Class | What it does | Cap |
 |---|---|---|
-| **Browser-heavy** | boots the engine, drives probes, captures frames, runs journeys | **6–8 concurrently** |
+| **Browser-heavy** | steps the simulation in a page: probes, journeys, stepping loops | **6–8 concurrently** |
+| **Picture-only** | needs frames but not a stepping loop | **uncapped — go through `tools/capture/`, never your own browser** |
 | **Light** | writes content, edits the corpus, plans, decomposes, audits data, writes prose | **effectively uncapped** — run as many as there is useful work for |
+
+### Do not launch a browser for a photograph
+
+`tools/capture/` pools captures behind one warm browser with a build-keyed cache. A hit is **9 ms
+against a 47.9 s miss**, and four agents through the service left load flat where four direct
+browsers took it from 10.8 to 23.0. It is now also **safe to cite**: the arrival gate went from
+accepting **28 of 30** laundering specs to **0 of 30**, and the cache no longer replays a manifest it
+did not write — a hand-written sidecar that used to be served in 24 ms stamped `arrival: "walked"`
+is refused and falls through to a real render. `--pin-build` if you are testing the cache itself;
+on a busy box the build key changed **four times inside one run**, so an unpinned two-request test
+measures other agents' edit rate, not the cache.
+
+So: if what you need is a picture of somewhere, **ask the service**. Launch your own browser only
+when you are genuinely stepping the simulation, and say in your report which you did.
+
+### Split your piece into a phase that needs a browser and one that does not
+
+This is how the project runs more work at once without measuring under distortion. Most pieces are
+mostly authoring: data, dialogue, quests, corpus text, tools that read JSON. **Do all of that
+first**, with no browser open, and bank it. Then take the browser for the verification pass only.
+Two agents phased this way finish in the wall clock of one, and a stall in the browser phase does
+not cost the authoring.
+
+`tools/lib/combat-node.mjs` runs the combat modules in bare Node — no engine, no browser, ~500×
+faster — and is the right instrument for frame-level geometry. It **diverges from the browser for
+long fights** because the engine's fixed step also runs stealth perception, which is what makes an
+enemy turn. Iterate in node; confirm every behavioural claim in the browser.
 
 **Why the browser cap moved.** It was 6–7 when *every* agent launched its own browser: fourteen
 agents drove load to 44–103 on four cores, a 1280×720 capture went from 25 s to 150–260 s, and a

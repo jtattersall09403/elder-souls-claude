@@ -631,6 +631,54 @@ const INSTALL = () => {
       return { how: 'settle curve at a cold posed eye', shoot_default_settle_frames: 24, poses: out };
     },
 
+    /**
+     * IS `province.tileM` CONSUMED? `RI-MTH07` says perturb the model and watch an entity change.
+     * `radiusTiles` and `skinRadiusM` were both perturbed and both moved the built world. `tileM`
+     * was added in the same commit, is reported by `stats()` as `tileSizeM`, and this asks the
+     * same question of it — by measurement, not by reading the source, because `RI-MTH04` D makes
+     * a `.js` file inadmissible as the basis of a score.
+     *
+     * The observable is the SET OF TILE KEYS actually built. A tile key is `${tx},${tz}` and
+     * `tx = floor(x / <tile size>)`. Halve the tile size and every key must change. If the key set
+     * is identical across the perturbation, nothing read it.
+     */
+    tileMProbe(metres) {
+      const e = E();
+      const pts = this.routePoints('crossing');
+      const run = (tileM) => {
+        const pv = e.renderer.province;
+        // Drop every tile so both arms start cold and neither inherits the other's work.
+        for (const [k, t] of Array.from(pv.tiles)) pv._release(k, t);
+        pv.tileM = tileM;
+        e.teleport(pts[0][0], pts[0][1]);
+        const p = e.sim.player;
+        let idx = 1, d = 0;
+        while (d < metres) {
+          while (idx < pts.length - 1 && Math.hypot(p.pos[0] - pts[idx][0], p.pos[2] - pts[idx][1]) < 4.5) idx++;
+          const x0 = p.pos[0], z0 = p.pos[2];
+          this.drive(pts[idx][0], pts[idx][1], 1);
+          d += Math.hypot(p.pos[0] - x0, p.pos[2] - z0);
+        }
+        const s = pv.stats();
+        return { tileM_set: tileM, reported_tileSizeM: s.tileSizeM,
+          tile_keys: Array.from(pv.tiles.keys()).sort(),
+          tiles_resident: s.tilesResident, walked_m: +d.toFixed(1),
+          at: [+p.pos[0].toFixed(1), +p.pos[2].toFixed(1)] };
+      };
+      const a = run(300);   // the module constant
+      const b = run(150);   // half it
+      const same = JSON.stringify(a.tile_keys) === JSON.stringify(b.tile_keys);
+      return {
+        how: 'perturb province.tileM over two identical walks and compare the BUILT tile key set',
+        control: a, perturbed: b,
+        tile_keys_identical: same,
+        reported_geometry_changed: a.reported_tileSizeM !== b.reported_tileSizeM,
+        verdict: same
+          ? 'ORPHAN: stats() reports the new tile size and the built world is byte-identical. Nothing consumes province.tileM.'
+          : 'CONSUMED: halving tileM changed the built tile key set.',
+      };
+    },
+
     // ---- MODE: posed ---------------------------------------------------------------------
     /**
      * THE `shoot.mjs --direct` PATH. `camera({pos, look})` with NO teleport, then step, then ask
@@ -700,6 +748,8 @@ async function main() {
       report.posed = await handle.page.evaluate(() => window.__CP.posed(600, 220));
     } else if (MODE === 'displace') {
       report.displace = await handle.page.evaluate(() => window.__CP.displace(900));
+    } else if (MODE === 'tilem') {
+      report.tilem = await handle.page.evaluate(() => window.__CP.tileMProbe(400));
     } else if (MODE === 'ride') {
       report.ride = await handle.page.evaluate(() => window.__CP.modalityRide(null));
     } else if (MODE === 'settle') {

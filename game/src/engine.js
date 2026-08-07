@@ -68,7 +68,7 @@ import { DeathSystem, SURFACE_FRAMES, DEATH_LINE } from './sim/death.js';
 const DEFAULT_START = Object.freeze({ race: 'saxhleel', class_id: 'reed-walker' });
 
 import { derivedDisposition, priceQuote, guardTerms, raceTerm, matrixSigma, meanRaceGap, playerRaceClass } from './character/reaction.js';
-import { movableTerms as dlgMovableTerms } from './sim/dialogue/disposition.js';
+import { movableTerms as dlgMovableTerms, persuade, VERBS as PERSUADE_VERBS } from './sim/dialogue/disposition.js';
 import { encounterById, openingFor, defeatOutcome } from './character/encounter.js';
 import { CensusSurface, buildCensusModel, CENSUS_PLACES, CENSUS_CAST, CENSUS_ACTIONS, placeOfNode } from './character/scene.js';
 
@@ -1632,6 +1632,94 @@ export class Engine {
     return this.conversation.state();
   }
 
+  /**
+   * RI-DLG04 §C's four verbs, against the person you are talking to. W1-19 round 2.
+   *
+   * `sim/dialogue/disposition.js persuade()` — Admire, Intimidate, Taunt and the three bribe
+   * tiers, transcribed line for line from the reference, cross-checked by
+   * `tools/dialogue/disposition-oracle.py` over 100,000 cases — had **no world-side caller**.
+   * It was the sixth model in this area that nothing read, and it is the one that matters most,
+   * because it is the only thing in the build that can move a standing UP.
+   *
+   * That absence is what turned the main quest's race handicap into a lockout. A Saxhleel stands
+   * thirty points below an Imperial at a House Dres factor's table; that difference is the
+   * design and it is right. What was missing was the province's own answer to a closed door,
+   * which in Morrowind is a purse and a die, and which seam S15 makes the currency of this game:
+   * **your background sets the price, it does not decide whether there is a price.**
+   *
+   * The die is real and it is thrown here, outside the fight (seam S21 / AR-1): the roll comes
+   * off the seeded PRNG, a failed Admire costs you standing, and a bribe is spent either way.
+   * The change is written into `sim.quest.dispositions` — the REGISTER — so it lands under every
+   * derived term rather than on top of them, and the offer gate reads it through
+   * `_dispositionToward()` like everything else.
+   */
+  conversationPersuade(verb) {
+    const n = this.conversation.npc;
+    if (!n) return { refused: 'no_conversation' };
+    const V = String(verb);
+    if (!PERSUADE_VERBS.includes(V)) throw new Error(`conversationPersuade('${V}'): not one of ${PERSUADE_VERBS.join(', ')}`);
+    const gmst = this.data.persuasionGmst && this.data.persuasionGmst.gmst;
+    if (!gmst) return { refused: 'no_gmst' };
+    const cost = V.startsWith('bribe') ? Number(V.slice(5)) : 0;
+    const purse = this.sim.progression.gold || 0;
+    if (cost > purse) return { refused: 'not_enough_gold', need: cost, have: purse };
+    const rec = this._anyNpcRecord(n.eid) || {};
+    const npcView = {
+      id: n.eid, race: rec.race || n.race, faction: rec.faction || n.faction || null,
+      reaction_group: rec.reaction_group || n.reaction_group || null,
+      baseDisposition: this._dispositionRegister(n.eid),
+      Personality: 40, Luck: 40, level: 3, Speechcraft: 30, Mercantile: 30, fatigue: 100, fatigueMax: 100,
+    };
+    const player = this._talkPersuader();
+    const roll = Math.floor(rng.next() * 100);
+    const r = persuade(npcView, player, V, roll, {
+      gmst, factionReactions: this.data.factionReactions || null,
+      raceReactions: (this.chData && this.chData.reactions) || null,
+    });
+    if (cost) {
+      // One purse. `magic.gold` and `progression.gold` are the same money seen from two places
+      // (`setGold` writes both); a bribe that only debited one of them would be free.
+      this.sim.progression.gold = purse - cost;
+      if (this.magic) this.magic.gold = this.sim.progression.gold;
+    }
+    const before = this._dispositionRegister(n.eid);
+    this.sim.quest.dispositions[n.eid] = Math.max(0, Math.min(100, before + r.permChange));
+    const ev = this.bus.emit(this.sim.frame, 'topic_select');
+    ev.npc = n.eid; ev.topic = V; ev.gated = false;
+    return {
+      npc: n.eid, verb: V, roll, success: r.success,
+      register_before: before, register_after: this.sim.quest.dispositions[n.eid],
+      perm_change: r.permChange, temp_change: r.tempChange,
+      gold_spent: cost, gold_left: this.sim.progression.gold,
+      standing_now: this.questEngine ? this.questEngine.dispositionView()[n.eid] : null,
+      target_used: r.target_used,
+    };
+  }
+
+  /** The register entry for somebody, seeded from their record the first time it is asked for. */
+  _dispositionRegister(npcId) {
+    const q = this.sim.quest;
+    if (q.dispositions[npcId] === undefined) {
+      const rec = this._anyNpcRecord(npcId);
+      q.dispositions[npcId] = rec && rec.disposition != null ? Number(rec.disposition) : 40;
+    }
+    return q.dispositions[npcId];
+  }
+
+  /** The player as RI-DLG04 §C's persuasion ratings read them. */
+  _talkPersuader() {
+    const a = (this.sim.progression && this.sim.progression.attributes) || {};
+    const sk = (this.sim.progression && this.sim.progression.skills) || {};
+    const val = (k) => { const v = sk[k]; return v && v.value != null ? Number(v.value) : Number(v || 0); };
+    return {
+      ...this._questPlayerView(),
+      Personality: Number(a.personality || 0), Luck: Number(a.luck || 0),
+      Reputation: 0, level: Number((this.sim.progression && this.sim.progression.level) || 1),
+      Speechcraft: val('speechcraft'), Mercantile: val('mercantile'),
+      fatigue: 100, fatigueMax: 100,
+    };
+  }
+
   conversationClose() {
     const n = this.conversation.npc;
     this.conversation.close();
@@ -2530,12 +2618,11 @@ export class Engine {
     // extension 3) is the same set, and `getOpacityState()` is where it surfaces.
     if (mode === 'book' && this.ui.bookId) {
       this._booksRead.add(this.ui.bookId);
-      if (this.opacity) {
-        for (const mid of this.opacity.met(`book:${this.ui.bookId}`, 'book')) {
-          const ev = this.bus.emit(this.sim.frame, 'topic_add');
-          ev.npc = null; ev.topic = `opacity:${mid}`; ev.source = 'BOOK';
-        }
-      }
+      // No trace event. `topic_add` is not in HARNESS.md §5's closed vocabulary for this call
+      // site and the bus refuses it, and inventing an event type is an amendment somebody else
+      // owns (HARNESS §10). `getOpacityState()` is the observable; RI-WLD09's requested
+      // `discover` event is listed in the report as an outstanding harness extension.
+      if (this.opacity) this.opacity.met(`book:${this.ui.bookId}`, 'book');
     }
     // RI-CAM05 §F's closed camera vocabulary: a menu is `menu`, and the camera knows it.
     cameraOpenUI(this.sim, 'menu');

@@ -2,7 +2,7 @@
   "task_id": "W1-26-r2",
   "brief": "corpus/90-verdicts/wave1/W1-26-r1.md (FAIL 1.3/10)",
   "started": "wave-1 round 2",
-  "state": "building",
+  "state": "measuring",
   "outputs_expected": [
     "game/src/render/text-register.js \u2014 sees EVERY drawing surface incl. the vector-stroked glyph path; blind surfaces declared, never an empty set masquerading as clean",
     "game/src/ui/glyphs.js \u2014 drawText() reports to the register",
@@ -16,7 +16,21 @@
     "delete-the-fix confirmation for each fix",
     "docs/shots/ image + reports/blog-feed.jsonl line"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "game/src/render/text-register.js \u2014 declare()/coverage() roster; instrument() installs ctx.__esNoteText; noteVector(); _record() shared by both draw paths",
+    "game/src/ui/glyphs.js \u2014 drawText() reports every stroked run to the register",
+    "game/src/render/renderer.js \u2014 all THREE 2D surfaces declared and instrumented (menus was the missing one)",
+    "game/src/harness/api.js \u2014 getRenderedText() derives surfaces from the register and publishes complete/measurable/blind_surfaces; registerSurfaces(); drawSentinels(); drawOnMenus(); censusEnter(by)",
+    "game/src/engine.js \u2014 _interactPrompt() names the object, never commands; censusBegin no longer emits a false dialogue_open at frame 0; censusEnter(by) resumes into the node's own place; talk-to-resume in _censusStep; getUIState().dialogue_surface.sacrificed",
+    "game/src/render/ui.js \u2014 overflow policy: type scale -> option window -> writ block -> her reply LAST; two-column lists; metrics().sacrificed",
+    "game/src/character/census.js \u2014 resume/resume_by (two hand-backs); _nameYou(); %ClassVerdict; writ.class-verdict answer case",
+    "game/data/dialogue/topics/writ-house.json \u2014 hold.come-to (start, paused, resume_by talk); hold.out resume/resume_by; writ.class-verdict with route_lines; all three class routes land on it",
+    "tools/harness/w1-26-r2-diag.mjs \u2014 the before-measurement",
+    "tools/harness/w1-26-r2-scene.mjs \u2014 the round's own instrument (accessor coverage, DTR x3 routes x2 policies, naming coupling, O6, delete-the-fix); exits non-zero",
+    "tools/harness/w1-26-opening.mjs \u2014 fail-closed on an incomplete/empty M9 domain; surfaces_searched read off the register instead of asserted",
+    "tools/harness/jrn09-exchange.mjs + tools/harness/chr-custom-route.mjs \u2014 one-shot `entered` flag replaced by st.paused/resume_by (there are two hand-backs now)",
+    "tools/harness/w1-26-r2-shot.mjs \u2014 blog frames"
+  ],
   "findings": [
     "boot-check PASS at start. loadavg 16.9 (above the ~12 distortion threshold named in AGENT-PROTOCOL).",
     "Choke point confirmed: ALL menus/HUD text goes through ui/glyphs.js drawText() (re-exported by ui/type.js). It strokes vector paths; the register wraps fillText/strokeText only. Hence menus surface = 0 entries even when instrumented.",
@@ -26,8 +40,15 @@
     "MEASURED DTR (own denominator getCensusModel(), on-arrival draw policy, whitespace-stripped match, watermark taken BEFORE the repainting call): worst nodes hold.hatch-name 0.6667 and writ.stamp 0.6667; writ.given-name 0.9000; writ.birthsign 0.9091. Undrawn everywhere = `spoken` rows (hold.wake's opening line, the upbringing reply, the on_match_named_class NAMING LINE, the birthsign scribe_line) plus 4 of 14 hatch-name options outside the 9-option window.",
     "The naming line is `on_match_named_class`/`on_nearest_named_class` on node writ.class-questions; census.js pushes it into `spoken`, and it is displayed at writ.birthsign where 9 birthsign options + the question exceed the 0.48-height cap and ui.js:199 shifts it off. It is never a node's own `line`, which is why it is always the first thing sacrificed.",
     "HF3/AR-2 hit source: engine.js _interactPrompt() built 'Take ' + o.name / 'Speak to ' + n.name. Fixed to name the object only; the verb is carried as a field.",
-    "BLOCKED at 13:1x: boot-check FAILS on the shared tree \u2014 game/data/quests/hooks.json lost 10 Q-MAIN entries relative to HEAD~1 (Q-MAIN-17..23, 30, 31, 32) and the pre-existing RI-DLG05 A.3 guard in sim/quest/machine.js throws at Engine._boot. NOT my change; another agent's live working file. Boot-check PASSED at my start."
+    "BLOCKED at 13:1x: boot-check FAILS on the shared tree \u2014 game/data/quests/hooks.json lost 10 Q-MAIN entries relative to HEAD~1 (Q-MAIN-17..23, 30, 31, 32) and the pre-existing RI-DLG05 A.3 guard in sim/quest/machine.js throws at Engine._boot. NOT my change; another agent's live working file. Boot-check PASSED at my start.",
+    "AFTER: register roster declared[dialogue,title,menus] instrumented[all three] blind[]. Vector sentinel through glyphs.drawText() SEEN; fillText sentinel SEEN. Set equality against UISurface.elements[].text holds. M9 domain = 5 distinct strings incl. 'A tithe-gourd, empty' and 'A knife somebody did not find'; 0 substring hits, 0 imperative-led hits.",
+    "AFTER: DTR arrival 1.0000 on the questionnaire and custom routes; 0.9595 on the named route (writ.class-named, 14 classes, window 11 at the type floor \u2014 the three off-window options ARE reachable and drawn once the caret pages). DTR_q 1.0000. 0 of the scribe's lines sacrificed on any route. Max panel area 0.3822 of M5's 0.55.",
+    "AFTER: jrn09-exchange.mjs (the item's own tool) DTR_q 1.0000, DTR_scene 1.0000, AC 6 of 7.",
+    "AFTER O6: hold opens at hold.come-to, paused, no question on the frame; 60 frames of forward input move 3.2000 m; 61 s of wandering leaves the scene paused; walking over and pressing interact opens it; available_play_s_before_first_field = 63.5 s against O6's >= 60 s.",
+    "AFTER naming: writ.class-verdict is its own beat on all three routes. Coupling 1 \u2014 two answer patterns give Wet-Foot vs Hollow-Hunter, both lines drawn, null control identical.",
+    "Delete-the-fix: 4 of 4 reproduce. Removing ctx.__esNoteText re-blinds the vector path (fillText unaffected); declaring an uninstrumented surface flips complete to false and names it; moving the naming line back into `spoken` under page pressure loses it while the node's own line survives; re-drawing 'Take A tithe-gourd, empty' through the real vector path trips M9's imperative clause.",
+    "THIRD instrument trap, new: UILayer repaints ON DEMAND, so a probe that queues 50 frames of caret movement and calls getUIState() ONCE paints only the last window and reads back as 'scrolling revealed nothing'. Step, repaint, step."
   ],
-  "next_step": "ui.js overflow policy (type scale -> option window -> record -> spoken last); census hold restructure (paused start, ask on interact); writ.class-verdict node for the naming line",
-  "notes_for_successor": "Do NOT re-derive the ui.js wrap() space-dropping bug: a space-joined delivery test invents undrawn text. Strip all whitespace from both sides when matching register rows against authored strings."
+  "next_step": "shots + blog line; re-run w1-26-opening.mjs and the full scene probe on a quiet tree",
+  "notes_for_successor": "Do NOT re-derive the ui.js wrap() space-dropping bug (strip all whitespace both sides). Do NOT take the register watermark after getCensusState()/censusAnswer() \u2014 they repaint and clear dirty. Do NOT queue many caret moves and repaint once \u2014 UILayer repaints on demand and you will measure one window. queueInputs() REPLACES the script: pass the whole array in ONE call or you deliver one frame of input. The scene now has TWO hand-back nodes (hold.come-to resume_by 'talk', hold.out resume_by 'walk'); any walker using a one-shot `entered` flag will stop dead at the second and report zeros. RI-EXP01 is NOT closed: 8 of 15 derived targets are not computable from a trace and the missing input is a dispatchable agent at isolation enforced. I did not read RI-EXP01 so as not to disqualify myself from being that agent."
 }

@@ -14,7 +14,9 @@
   ],
   "outputs_written": [
     "tools/lib/trace-schema.mjs",
-    "tools/analysis/build-viability.mjs"
+    "tools/analysis/build-viability.mjs",
+    "tools/experience/beat-extract.mjs",
+    "tools/journey/journey-run.mjs"
   ],
   "findings": [
     "BUILT tools/lib/trace-schema.mjs \u2014 the versioned single reader R3 called 'the highest-value thing this loop could produce next'. frameOf() returns NULL, never 0, on a missing frame key. requireFrames() is a fail-closed gate. --census over reports/**. --verify a.b,c.d exits 1 on an absent path. self-test 25/25 including an explicit R3 REGRESSION GUARD that demonstrates the old `r.frame ?? 0` reader collapsing a 27-minute gap to 0.",
@@ -28,8 +30,13 @@
     "SEPARATE PRE-EXISTING CRASH FOUND AND FIXED in build-viability, same defect class (a SHAPE assumption), and it was fatal: bestCaseCtx() set `c.topicsKnown = { has: () => true }`, a one-method duck. gate.js moved topic gates to topicsInclude() (core/topics.js) which ITERATES \u2014 `for (const k of it)` \u2014 so every --self-test and every full walk on this tree died with `TypeError: it is not iterable` BEFORE round 4 touched the file. Verified pre-existing by git stash. Replaced with grantAll(): a real Set (iterable, .values(), .has()->true) seeded with every topic/flag the quest book gates on.",
     "Live model attestation is keyed by sha256 over engine.js + quest/machine.js + character/reaction.js. The staleness check FIRED UNPROMPTED during this run: another agent edited engine.js at 13:24:49 mid-session and the tool refused the attestation it had minted minutes earlier rather than trusting it. Not a constructed test \u2014 a real concurrent edit.",
     "The gate IS genuinely race-sensitive on the real tree: 16 of 22 gated givers change their getGateDispositions() number when race goes dunmer->nord with everything else held fixed. 22/22 modelled, so per-giver is not mixed TODAY \u2014 but the shape is now reported, and engine.js:4863 returns null without reaction_group so it can become mixed at any time.",
-    "LOAD WARNING: /proc/loadavg reached 13.7-17.0 during the browser work (other agents active). All build-viability measurements are boolean/structural differentials, not timings, so they are not distorted by load. No timing number is reported from this session."
+    "LOAD WARNING: /proc/loadavg reached 13.7-17.0 during the browser work (other agents active). All build-viability measurements are boolean/structural differentials, not timings, so they are not distorted by load. No timing number is reported from this session.",
+    "beat-extract REBUILT, self-test 17/17 (was 8/8 while never having worked on a real trace). Key demonstrations: a topic 27.8 min before a pickup now yields confidence 0.7 / via 'previously mentioned' / 1 evidence line (R3: confidence 1.0, no via, evidence [2,1] \u2014 fabricated corroboration); the beat is stamped f=100000 t_min=27.78 (R3: f=0 t_min=0, and beat-diff compares BY TIME); the `odd` detector now FIRES when the only quest_stage is 2.7 hours away (R3: could never fire at all); `release` fires on env.region and NOT on the invented player.region; a trace with no frame key is UNMEASURABLE exit 20, not scanned as zeros. Self-test now runs EVERY case in BOTH dialects and asserts they agree, so a fixture can never again certify a reader that agrees only with it.",
+    "journey-run REBUILT (narrow). Extracted findTraceEvent() and m4Clause1() as PURE EXPORTED functions so the falsifications run Node-side \u2014 round 3's version was three inline expressions inside a browser-driving function, which is why a bug making both operands undefined survived two accepting critics. 9 new Node-side checks all pass, including R3's exact shadow-tree case: M4 clause 1 now returns status=measured seconds=81.32 frames 121->5000 where R3 returned status='measured' seconds=null with both frame fields DROPPED by JSON.stringify. Guard is Number.isFinite, and NaN/Infinity are refused.",
+    "BUILD FINDING, not a tool defect, surfaced by journey-run --self-test: 'accessor empty before any surface' now FAILS \u2014 __HARNESS.getRenderedText() returns 3 strings before any surface is opened (first: '5'). Pre-existing; I did not touch sampleUIText or that check. Worth a build critic's attention: RI-JRN01 M9/M15 grep out-of-surface text, and 3 phantom strings pre-surface will contaminate that.",
+    "journey-run --self-test now FLUSHES each line as it runs and degrades gracefully when launchGame fails, so the Node-side battery is still reported on a tree whose engine will not boot. R3 could not re-run decoupling --self-test twice and had to report a falsification on trust.",
+    "CONCURRENCY HAZARD for whoever runs next: other agents are editing game/src and game/data live. During this session engine.js changed at 13:24:49, machine.js at 13:15:48, and game/data/world/opacity.json at 13:32:46 landed with an unresolved reference (book:a-book-that-was-never-written) that made Engine._boot THROW for about a minute. Any browser measurement taken in that window is void."
   ],
-  "next_step": "rebuild tools/experience/beat-extract.mjs on trace-schema",
+  "next_step": "cadence.mjs FLAG_FIELDS provenance; then session-run __ENGINE door; then decoupling verdict field",
   "notes_for_successor": ""
 }

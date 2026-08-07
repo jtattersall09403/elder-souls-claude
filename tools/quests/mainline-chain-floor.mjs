@@ -41,6 +41,17 @@
 //   --sabotage hand-feed      call learnTopic() before every step, the way the round-1 tools
 //                             did. Completion must NOT change — if it does, the forward AddTopic
 //                             graph is not carrying the chain and something else is.
+//   --sabotage no-purse       run with 0 gold and no persuasion. The chain must stop where a
+//                             character who cannot pay stops, which is what shows that the purse
+//                             is what is carrying the low-standing signatures and not the clamp.
+//
+// THE PURSE. Unless `--sabotage no-purse` is given, a signature refused on `giver
+// .disposition_min` does what a player does: stands in front of the giver and tries to talk them
+// round — `RI-DLG04` §C's Admire and the three bribe tiers, through `Engine
+// .conversationPersuade()`, with a real seeded roll and gold spent either way (seam S15). It
+// gets `--attempts` tries per gate and then gives up. This is the difference between a gate that
+// prices a background and a gate that excludes one, and it is why the clamp below does not have
+// to be lowered until every gate is decorative.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -60,7 +71,9 @@ if (wantsHelp(args)) usage(USAGE);
 const outDir = args.out ? path.resolve(String(args.out)) : path.join(RUNS_DIR, 'W1-19-R2-FLOOR');
 ensureDir(outDir);
 const sabotage = args.sabotage ? String(args.sabotage) : null;
-if (sabotage && !['no-bootstrap', 'hand-feed'].includes(sabotage)) usage(USAGE);
+if (sabotage && !['no-bootstrap', 'hand-feed', 'no-purse'].includes(sabotage)) usage(USAGE);
+const PURSE = args.purse === undefined ? 2500 : Number(args.purse);
+const ATTEMPTS = args.attempts === undefined ? 6 : Number(args.attempts);
 
 const QDIR = path.join(process.cwd(), 'game/data/quests');
 const defs = {};
@@ -119,7 +132,7 @@ const STATE = 'soulrest-quay';
 const handle = await launchGame({ ...args, width: 320, height: 240, timeout: Number(args.timeout || 900000) });
 let report;
 try {
-  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, BOOTSTRAP_NPC, STATE }) => {
+  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS }) => {
     const H = window.__HARNESS;
     await H.ready();
     H.setRenderRate(0);
@@ -150,7 +163,31 @@ try {
         // What the gate would say about THIS quest at the moment the chain reaches it, before
         // anything is done about it. This is the number the round-1 clamp never looked at.
         const offer = H.questOffers().find((o) => o.id === step.id) || null;
-        const o = H.questOpen(step.id);
+        let o = H.questOpen(step.id);
+        // Refused on standing? Go and talk to them. This is the only place the trace does
+        // anything a player could not, and what it does is stand in front of the quest giver —
+        // which `questOpen` already assumes, since the gate has never had a proximity term.
+        if (!o.ok && sabotage !== 'no-purse' && /disposition \d/.test(String(o.reason || ''))) {
+          const giver = (H.questDef(step.id).giver || {}).npc_id;
+          if (giver) {
+            try { H.spawnNPC({ from_record: giver, pos: [0, 0, 2] }); } catch (e) { /* already there */ }
+            try {
+              H.talkTo(giver);
+              const attempt = { quest: step.id, npc: giver, tries: [] };
+              for (let k = 0; k < ATTEMPTS && !o.ok; k++) {
+                const gold = H.getGold ? H.getGold() : PURSE;
+                const verb = gold >= 1000 ? 'bribe1000' : gold >= 100 ? 'bribe100' : gold >= 10 ? 'bribe10' : 'admire';
+                const r = H.conversationPersuade(verb);
+                attempt.tries.push({ verb, success: !!r.success, standing: r.standing_now, gold_left: r.gold_left });
+                o = H.questOpen(step.id);
+              }
+              attempt.opened = o.ok;
+              out.persuasion = out.persuasion || [];
+              out.persuasion.push(attempt);
+              H.conversationClose();
+            } catch (e) { out.persuasion_error = String(e && e.message || e); }
+          }
+        }
         if (!o.ok) {
           out.blocked_at = step.id;
           out.why = o.reason;
@@ -190,7 +227,7 @@ try {
         H.setSeed(1337);
         H.loadState(STATE);
         H.setRenderRate(0);
-        H.setGold(0);
+        H.setGold(sabotage === 'no-purse' ? 0 : PURSE);
         H.setCharacter({ race, upbringing, class: 'reed-walker', birthsign: 'raj-xul' });
         // THE ONLY THING GRANTED FROM OUTSIDE THE QUEST GRAPH, and it is not granted, it is
         // done: walk up to a carter on the Soulrest quay and be greeted. Everything after this
@@ -204,7 +241,7 @@ try {
       rows.push(row);
     }
     return { schema: 'elder-souls/mainline-chain-floor@1', harness_version: H.version, gates, rows };
-  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, BOOTSTRAP_NPC, STATE });
+  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS });
 } finally { await handle.close(); }
 
 // ---- reduce ---------------------------------------------------------------------------------

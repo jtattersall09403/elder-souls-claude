@@ -25,6 +25,19 @@
 //                   ARBITRATION §3. If it does not, this tool REPORTS THE ABSENCE AND EXITS 1
 //                   rather than passing — a register nothing reads is a text file.
 //
+//   R5 STRICT LEAK  every sealed answer and every declared leak n-gram, against EVERY string in
+//                   game/data/** and game/src/**, regardless of key — plus a check that the
+//                   sealed half is not reachable from anything the build ships.
+//
+// R5 EXISTS BECAUSE THE PYTHON LEAK SCAN HAS A HOLE, and it is in the worst possible place.
+// `opacity-audit.py` harvests only keys in its TEXT_KEYS list — text|body|line|response|entry|
+// prose|greeting|rumour|description|note|inscription|journal. A dialogue INFO writes its prose
+// under `x`. Measured on this tree: 2,699 strings are inside that list and **4,292 further
+// prose-length strings are outside it, 1,102 of them under `x` alone** — so the entire dialogue
+// layer, which is exactly where a leak would be written, was never being scanned. A CLEAN from
+// the auditor alone is therefore not evidence about dialogue, item names, book titles, quest
+// `outcome`/`truth`/`stated_objective` fields, or anything hard-coded in game/src.
+//
 // It is offline and takes about a second. It is meant to run in CI beside `check-data`.
 //
 //   node tools/world/opacity-resolve.mjs
@@ -157,6 +170,7 @@ if (BREAK) {
     const s = mysteries.find((m) => m.resolution && m.resolution.kind === 'settleable');
     s.resolution.settles = sealed.get(s.id).answer;
   } else if (BREAK === 'consumer') consumers = [];
+  else if (BREAK === 'leak' || BREAK === 'substring') { /* handled at the R5 scan, below */ }
   else { process.stderr.write(`--break: unknown mode ${JSON.stringify(BREAK)}\n`); process.exit(2); }
   process.stderr.write(`[self-test] perturbed in memory: ${BREAK}\n`);
 }
@@ -246,8 +260,99 @@ if (!consumers.length) {
     + 'always undefined.');
 }
 
+// ---- R5 the strict leak scan ------------------------------------------------------------
+// Every string anywhere under game/data/**, plus every string and comment-free literal under
+// game/src/**, plus the deployed entry points. No key filter: if it is a string in the build,
+// it is scanned.
+function everyString(node, file, out) {
+  if (typeof node === 'string') { if (node.trim()) out.push([file, node]); return; }
+  if (Array.isArray(node)) { for (const v of node) everyString(v, file, out); return; }
+  if (node && typeof node === 'object') { for (const k of Object.keys(node)) everyString(node[k], file, out); }
+}
+const strings = [];
+for (const p of walk(DATA)) {
+  let doc; try { doc = readJson(p); } catch { continue; }
+  everyString(doc, path.relative(ROOT, p), strings);
+}
+// `--break leak` plants a declared n-gram, and `--break substring` plants a 60-character run of
+// a real sealed answer, in a synthetic string that the scan cannot tell from a shipped one.
+// Both must go red; a leak scan that has never caught a leak is a scan nobody has tested.
+if (BREAK === 'leak') {
+  const first = [...fs.readFileSync(SEALED, 'utf8').matchAll(/`"([^"]+)"`/g)][0][1];
+  strings.push(['(synthetic)/books/planted.json', `A perfectly ordinary sentence about ${first}, in a book.`]);
+}
+if (BREAK === 'substring') {
+  const a = [...sealed.values()][0].answer;
+  strings.push(['(synthetic)/dialogue/planted.json', `Well, ${a.slice(20, 110)}`]);
+}
+(function srcWalk(d) {
+  for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+    const p = path.join(d, e.name);
+    if (e.isDirectory()) srcWalk(p);
+    else if (/\.(js|html|css)$/.test(e.name)) strings.push([path.relative(ROOT, p), fs.readFileSync(p, 'utf8')]);
+  }
+})(SRC);
+report.strict_scan = { strings: strings.length };
+
+// The declared n-grams live in the corpus half; re-read them here rather than trusting the
+// register, which by design carries no prose from the answers at all.
+const sealedSrc = fs.readFileSync(SEALED, 'utf8');
+const ngramMarks = [...sealedSrc.matchAll(/^### (M-\d+)\s+—/gm)];
+const NGRAMS = new Map();
+for (let i = 0; i < ngramMarks.length; i++) {
+  const body = sealedSrc.slice(ngramMarks[i].index, i + 1 < ngramMarks.length ? ngramMarks[i + 1].index : sealedSrc.length);
+  NGRAMS.set(ngramMarks[i][1], [...body.matchAll(/`"([^"]+)"`/g)].map((x) => x[1]));
+}
+const normedStrings = strings.map(([f, t]) => [f, norm(t)]);
+let ngramCount = 0;
+for (const [mid, list] of NGRAMS) {
+  if (list.length < 5) fail.push(`R5 NGRAMS   ${mid}: ${list.length} declared leak n-grams < 5`);
+  for (const ng of list) {
+    ngramCount++;
+    const n = norm(ng);
+    if (!n) continue;
+    for (const [f, t] of normedStrings) if (t.includes(n)) fail.push(`R5 LEAK     ${mid}: n-gram ${JSON.stringify(ng)} appears in ${f}`);
+  }
+}
+report.strict_scan.ngrams = ngramCount;
+for (const [mid, s] of sealed) {
+  const ag = grams(s.answer);
+  for (const [f, t] of normedStrings) {
+    if (t.length < 40) continue;
+    const j = jaccard(ag, grams(t));
+    if (j >= FUZZY_JACCARD) fail.push(`R5 PARAPHRASE ${mid}: ${f} is ${j.toFixed(2)} similar to the sealed answer`);
+  }
+}
+// The hard version of "the sealed answers file shipped by accident" (RI-WLD09 §How-we-lose):
+// no shipped string may contain a 40-character or longer run of any sealed answer. That is a
+// much lower bar to clear than a declared n-gram and it catches a partial copy-paste, which is
+// how such a file actually escapes — not by being moved wholesale but by somebody quoting a
+// sentence of it into a book because it was good.
+const RUN = 40;
+for (const [mid, sa] of sealed) {
+  const a = norm(sa.answer);
+  const runs = [];
+  for (let i = 0; i + RUN <= a.length; i += 8) runs.push(a.slice(i, i + RUN));
+  for (const [f, t] of normedStrings) {
+    for (const r of runs) if (t.includes(r)) { fail.push(`R5 SUBSTRING ${mid}: a ${RUN}-char run of the sealed answer appears in ${f}`); break; }
+  }
+}
+
+// The SOFT version: a shipped string that names the sealed file by path. This is a warning and
+// not a failure, deliberately. The repo serves its own root in the harness, so a pointer is
+// findable there; a deployed build ships `game/` and not `corpus/`, so it is not findable in
+// production. It is worth a critic's eye and it is not worth a red build, and pretending
+// otherwise would make this tool cry wolf on an accurate authoring note.
+const pointers = [];
+for (const [f, t] of strings) {
+  if (/SEALED-ANSWERS|50-world\/sealed/.test(t) && !f.startsWith('tools' + path.sep)) pointers.push(f);
+}
+report.strict_scan.pointers = [...new Set(pointers)];
+
 // ---------------------------------------------------------------- output
 process.stdout.write(`opacity-resolve — ${mysteries.length} mysteries, ${checked} ids checked against game/data/**\n`);
+process.stdout.write(`  strict leak: ${strings.length} strings (every key, game/data + game/src), ${ngramCount} declared n-grams\n`);
+for (const f of report.strict_scan.pointers) process.stdout.write(`  R5 POINTER  ${f} names the sealed answers file by path (warning, not a failure)\n`);
 process.stdout.write(`  composition: ${JSON.stringify(comp)}\n`);
 process.stdout.write(`  consumers:   ${consumers.join(', ') || '(none)'}\n`);
 process.stdout.write(`  split:       ${comp.settleable} settleable / ${comp.sealed} sealed, max settles-vs-answer Jaccard ${report.split.max_jaccard}\n`);

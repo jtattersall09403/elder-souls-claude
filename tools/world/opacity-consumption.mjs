@@ -58,7 +58,28 @@ const out = { checks: [], failures: [] };
 const fail = (m) => { out.failures.push(m); say(`  FAIL  ${m}`); };
 const pass = (m) => say(`  pass  ${m}`);
 
+// A CRASH-SAFE BACKUP, and why it is not optional. `launchGame` calls `die()` — process.exit —
+// when `ready()` throws, which is exactly what C2 makes happen on purpose. process.exit does not
+// run a `finally`, so the first version of this probe left the PERTURBED register on disk and
+// every subsequent boot in the repo failed. Two defences: a sidecar file restored on the next
+// run, and a `process.on('exit')` hook, which DOES run under process.exit and can do sync IO.
+const BACKUP = REG + '.probe-backup';
+if (fs.existsSync(BACKUP)) {
+  fs.copyFileSync(BACKUP, REG);
+  process.stdout.write('[recovered] a previous run died mid-perturbation; the register was restored from its backup\n');
+}
 const ORIGINAL = fs.readFileSync(REG, 'utf8');
+fs.writeFileSync(BACKUP, ORIGINAL);
+process.on('exit', () => {
+  try {
+    if (fs.readFileSync(REG, 'utf8') !== ORIGINAL) {
+      fs.writeFileSync(REG, ORIGINAL);
+      process.stderr.write('[restored] the register was rewritten on the way out\n');
+    }
+    fs.unlinkSync(BACKUP);
+  } catch { /* nothing left to do at exit */ }
+});
+
 /** Rewrite the register and re-hash the data index, because `check-data` guards the tree. */
 async function writeRegister(text) {
   fs.writeFileSync(REG, text);

@@ -75,9 +75,14 @@ sitting in the repo that hasn't been written about:
 
 ## Where things go
 
-- Posts: `docs/blog/YYYY-MM-DD-slug.md`, with front matter `title`, `date`, `summary`. Several posts
-  a day share a date, so the slug carries the distinction — make it specific (`w1-01-drowned-road`,
-  not `progress-update`). Add `kind: dispatch` or `kind: feature`.
+- Posts: `docs/blog/YYYY-MM-DD-slug.md`, with front matter `title`, `date`, **`time`**, `summary`.
+  Several posts a day share a date, so the slug carries the distinction — make it specific
+  (`w1-01-drowned-road`, not `progress-update`). Add `kind: dispatch` or `kind: feature`.
+- **`time:` is not optional.** Write it as `13:42Z`, in UTC, taken with `date -u +%H:%MZ` when you
+  finish the post. Posts are ordered on the page to the minute, and several a day is now normal —
+  without it the reader gets the day's posts in an order that is not the order they happened. If you
+  omit it the renderer falls back to the commit that added the file, which lumps everything in a
+  batch together.
 - **Append one line to `docs/blog/COVERED.md`** for every post: the slug and, in a few words, the
   fact it covered. Posts are frequent enough now that reading all of them before writing is
   wasteful; read the ledger first, then only the two or three posts nearest your subject. If the

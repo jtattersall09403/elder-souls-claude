@@ -9,7 +9,13 @@
     "reports/packs/prose-tics-r2/ (blind packs for a round-2 judge)"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read W1-LIBRARY-r1 separability section; inventory player-facing text",
+  "findings": [
+    "Player-facing text registers found: BOOKS game/data/books/*.json books[].text (37.7k w); DIALOGUE dialogue/topics/*.json topics[].infos[].x (26.8k) + greetings.json pools[].lines[] (20.6k) + greetings/*.json greetings[].x + rumours.json + race_gated[].x + slavery-lines + npcs[].lines.greeting + world mysteries refusals[].x; JOURNAL game/data/quests/*.json quests[].journal[].text (25.0k w); ITEM items[].description + weapons[].line.",
+    "REFERENCE (journal register) EXISTS and nobody had used it: the vendored UESP extract has 393 Morrowind: quest pages carrying {{Journal Entries|id=...|<stage>|<yes>|<text>}} templates. That gives real Morrowind journal prose to compare quest journal entries against, journal-vs-journal.",
+    "morrowind-dialogue.csv.gz is NPC dialogue only (69,876 rows, 42,258 with empty SpeakerId but still NPC lines/expulsion messages). No journal entries in it.",
+    "Extract namespaces: Morrowind 3513, Online 1151, Lore 982, Bloodmoon 331, Tribunal 295, Stormhold 25, Arena 2.",
+    "PRE-REGISTRATION: 46 rules written to tools/prose/rules.pre-registered.json BEFORE any measurement. sha256=45d4d8f32b3d6f16fed90bb430e77f3b1fe88d98b7e096ea323bd3c4609eef19. Multiple-comparisons count for this run is 46 and all 46 are reported."
+  ],
+  "next_step": "write tools/prose/tic-detector.mjs (--self-test) and run baseline",
   "notes_for_successor": ""
 }

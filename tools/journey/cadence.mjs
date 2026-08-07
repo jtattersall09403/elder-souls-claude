@@ -56,6 +56,9 @@ import {
   REPO_ROOT, parseArgs, wantsHelp, usage, writeJson, readJsonl, quantile, die, EXIT, log,
 } from '../lib/cli.mjs';
 import { ACTIONS } from '../../game/src/input/actions.js';
+// ROUND 4 — the census that replaces this file's false provenance comment. See the note above
+// FLAG_FIELDS and TOOL-COVERAGE-R3 §5.
+import { findArtifacts, censusFields, verifyFields } from '../lib/trace-schema.mjs';
 
 const USAGE = `
 cadence.mjs — RI-JRN02 §B checks C1..C10 over a journey-run trace.
@@ -184,18 +187,42 @@ export const STATE_CHANGING_EVENTS = new Set([
 // C1 clause 3, "changed a flag", read from the WORLD rather than inferred from a button name.
 // A toggle is only a toggle if something toggled: `lock_on` pressed with no target changes
 // `player.locked_on` not at all, and that is the difference between an action and a keystroke.
-// These are fields the shipped trace record actually carries (verified against
-// reports/journeys/**/trace.jsonl), and a CHANGE in any of them between consecutive records is
-// a flag change.
+// ROUND 4 — TOOL-COVERAGE-R3 §5. The line above this list used to read:
+//
+//   "These are fields the shipped trace record actually carries (verified against
+//    reports/journeys/**/trace.jsonl)"
+//
+// The R3 critic ran that verification — 78 artifacts, 164 168 records — and FIVE OF THE TWELVE
+// were written by nothing: `player.two_handed`, `player.crouched`, `ui.menu_open`,
+// `ui.dialogue_open`, `ui.surface`. No trace record in this tree carries a `ui` subtree at all.
+// A false provenance claim, in the file that made "a field nothing writes" the finding of the
+// round. RI-MTH07 §D.3 is the governing line: **a comment asserting a check is not a check.**
+//
+// So the claim is no longer made in a comment. `--self-test` runs the census itself, over every
+// reports/**/*.jsonl, via `tools/lib/trace-schema.mjs --verify`, and FAILS if any field in this
+// list is written by nothing. The list below is now what the trace actually carries:
+//
+//   player.two_handed  -> covered by `player.stance` ("one_hand" | "two_hand"), already present
+//   player.crouched    -> `player.stealth.crouched`, the block sim/record.js:123 emits
+//   ui.*               -> dropped. The menu/dialogue path survives independently through
+//                         `surface_enter` events, which is where it always actually came from.
+//
+// The direction of harm was conservative (these are OR terms for corroboration, so their absence
+// made C1 HARDER to satisfy) — but a claim of verification that was never run is the defect,
+// not the arithmetic.
 export const FLAG_FIELDS = [
   'player.locked_on', 'player.stance', 'player.guard_raised', 'player.weapon_id',
-  'player.attuned', 'player.levitating', 'player.two_handed', 'player.crouched',
-  'player.state', 'ui.menu_open', 'ui.dialogue_open', 'ui.surface',
+  'player.attuned', 'player.levitating', 'player.stealth.crouched',
+  'player.state',
 ];
+/** Arbitrary depth — `player.stealth.crouched` is three segments, not two. */
 function readPath(rec, dotted) {
-  const [a, b] = dotted.split('.');
-  const o = rec && rec[a];
-  return o && typeof o === 'object' ? o[b] : undefined;
+  let o = rec;
+  for (const seg of dotted.split('.')) {
+    if (o === null || typeof o !== 'object') return undefined;
+    o = o[seg];
+  }
+  return o;
 }
 function flagSnapshot(rec) {
   const out = {};
@@ -316,8 +343,11 @@ export function analyse(records, fps = 60) {
     }
     if (r.combat && (r.combat.aggro || r.combat.state === 'COMBAT')) sawCombat = true;
     if (r.enemies && Array.isArray(r.enemies) && r.enemies.some((x) => x && x.alertState === 'AGGRO')) sawCombat = true;
-    if (r.ui && r.ui.dialogue_open) sawDialogue = true;
-    if (r.ui && r.ui.menu_open) sawMenu = true;
+    // ROUND 4: `r.ui.dialogue_open` and `r.ui.menu_open` were read here and NO TRACE RECORD IN
+    // THIS TREE CARRIES A `ui` SUBTREE AT ALL (census: 0 of 164 168 records). Both were dead
+    // reads. The live path is the `dialogue_open` / `surface_enter` events handled above, which
+    // is where every non-zero reading has always come from — C8 measured 0.0003 on the real
+    // trace, not a structural 0, precisely because the event path works.
 
     if (sawCombat) combatFrames++;
     if (sawDialogue) dialogueFrames++;
@@ -566,7 +596,10 @@ function report(r) {
 function selfTest() {
   const lines = [];
   let failed = 0;
-  const ok = (n, pass, d) => { lines.push(`${pass ? 'PASS' : 'FAIL'} ${n} — ${d}`); if (!pass) failed++; };
+  const ok = (n, pass, d) => {
+    lines.push(`${pass ? 'PASS' : 'FAIL'} ${n} — ${d}`); if (!pass) failed++;
+    process.stdout.write(lines[lines.length - 1] + '\n');   // flush as we go
+  };
   const fps = 60;
   const mk = (frame, events = [], extra = {}) => ({ frame, events, ...extra });
 
@@ -771,7 +804,73 @@ function selfTest() {
     `duration ${shippedR.duration_s}s, gap_max ${shippedR.checks.find((c) => c.id === 'C1').value}s ` +
     `from records keyed \`f\`; a tool reading \`frame\` would compute every gap against a constant 0`);
 
-  for (const l of lines) process.stdout.write(l + '\n');
+  // =============================================================================================
+  // ROUND 4 — TOOL-COVERAGE-R3 §5. THE PROVENANCE CLAIM IS NOW A CHECK.
+  //
+  // R3: "I ran that verification. 78 artifacts, 164 168 records: five of twelve, under a claim of
+  // verification, in the file that made 'a field nothing writes' the finding of the round."
+  //
+  // RI-MTH07 §D.3: a comment asserting a check is not a check. So the census runs here, over the
+  // real corpus, every time — and this test FAILS if any field in FLAG_FIELDS is written by
+  // nothing. It cannot rot into a claim again.
+  // =============================================================================================
+  {
+    const files = findArtifacts(path.join(REPO_ROOT, 'reports'), 'trace.jsonl');
+    if (!files.length) {
+      ok('R4: FLAG_FIELDS provenance is CHECKED against the shipped corpus', false,
+        'no trace.jsonl under reports/ — the claim could not be verified, which is itself the ' +
+        'finding R3 charged this file with');
+    } else {
+      const census = censusFields(files);
+      const v = verifyFields(FLAG_FIELDS, census);
+      ok('R4: every field in FLAG_FIELDS is WRITTEN by the shipped corpus (the claim, now run)',
+        v.unwritten.length === 0,
+        v.unwritten.length
+          ? `DEAD FIELDS: ${v.unwritten.map((u) => u.path + (u.hint ? ` (${u.hint})` : '')).join(', ')} ` +
+            `over ${census.artifacts} artifacts / ${census.records} records`
+          : `${v.written.length}/${FLAG_FIELDS.length} verified over ${census.artifacts} artifacts / ` +
+            `${census.records} records: ` +
+            v.written.map((w) => `${w.path}=${w.records}rec`).join(', '));
+
+      // The falsification: the checker must go RED on a field nothing writes. A provenance check
+      // that cannot fail is exactly the comment it replaced.
+      const dead = verifyFields(['ui.menu_open', 'player.two_handed', 'player.crouched'], census);
+      ok('R4: the provenance checker goes RED on the five fields R3 caught (falsification)',
+        dead.unwritten.length === 3 && dead.written.length === 0,
+        `ui.menu_open / player.two_handed / player.crouched -> ${dead.unwritten.length} reported ` +
+        'absent. If this ever passes, the check has gone vacuous.');
+
+      // And the replacements must genuinely be present — otherwise this is a rename, not a fix.
+      const repl = verifyFields(['player.stance', 'player.stealth.crouched'], census);
+      ok('R4: the REPLACEMENT paths carry the same information and are actually written',
+        repl.unwritten.length === 0,
+        repl.written.map((w) => `${w.path}=${w.records}rec/${w.artifacts}art`).join(', ') ||
+        `MISSING: ${repl.unwritten.map((u) => u.path).join(', ')}`);
+    }
+
+    // readPath must handle three segments — `player.stealth.crouched` is the whole point.
+    ok('R4: readPath resolves an arbitrarily deep path (player.stealth.crouched is 3 segments)',
+      readPath({ player: { stealth: { crouched: true } } }, 'player.stealth.crouched') === true &&
+      readPath({ player: {} }, 'player.stealth.crouched') === undefined &&
+      readPath({ player: { locked_on: 'x' } }, 'player.locked_on') === 'x',
+      'the round-3 readPath split on two segments only and would have read undefined forever');
+
+    // And a crouch change must actually register as a flag change end-to-end.
+    const crouchTrace = [
+      { f: 0, events: [], player: { pos: [0, 0, 0], speed_mps: 0, stealth: { crouched: false } } },
+      { f: 60, events: [], player: { pos: [0, 0, 0], speed_mps: 0, stealth: { crouched: true } } },
+    ];
+    const flat = [
+      { f: 0, events: [], player: { pos: [0, 0, 0], speed_mps: 0, stealth: { crouched: false } } },
+      { f: 60, events: [], player: { pos: [0, 0, 0], speed_mps: 0, stealth: { crouched: false } } },
+    ];
+    const fs1 = flagSnapshot(crouchTrace[0]), fs2 = flagSnapshot(crouchTrace[1]);
+    const fl1 = flagSnapshot(flat[0]), fl2 = flagSnapshot(flat[1]);
+    ok('R4: a crouch toggle IS seen as a flag change, and a still crouch is NOT (falsification)',
+      JSON.stringify(fs1) !== JSON.stringify(fs2) && JSON.stringify(fl1) === JSON.stringify(fl2),
+      'player.stealth.crouched now reaches flagSnapshot; player.crouched never could');
+  }
+
   process.stdout.write(`\ncadence self-test: ${failed === 0 ? 'PASS' : 'FAIL'} (${lines.length - failed}/${lines.length})\n`);
   return failed === 0 ? 0 : 1;
 }

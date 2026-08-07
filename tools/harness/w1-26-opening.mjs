@@ -257,25 +257,54 @@ try {
       }
       return found;
     };
+    // M9's second clause: "imperative second-person instruction". A bare imperative verb at the
+    // head of a drawn string is the shape, and it is the clause that fired in round 1 on
+    // `"Take A tithe-gourd, empty"` — which none of the substrings above would have caught.
+    const IMPERATIVE = ['take', 'press', 'hold', 'speak', 'click', 'tap', 'push', 'pull', 'use',
+      'open', 'go', 'walk', 'run', 'jump', 'attack', 'defeat', 'find', 'collect', 'equip', 'talk'];
     return {
       nodes_walked: seen,
       all_distinct: all.distinct.length,
+      all_complete: all.complete,
+      m9_surfaces: nonDialogue.surfaces_instrumented,
+      m9_blind: nonDialogue.blind_surfaces,
+      m9_complete: nonDialogue.complete,
       non_dialogue_distinct: nonDialogue.distinct,
       m9_hits: hit(nonDialogue.distinct, subs, false),
+      m9_imperative: nonDialogue.distinct.filter((s) => IMPERATIVE.indexOf(String(s).toLowerCase().split(/[^a-z]+/)[0]) >= 0),
       m15_hits: hit(all.distinct, words, true),
       summary: all.summary,
       // The clip-aware half: strings handed to fillText that the player could not read.
       clipped: H.getRenderedText({ includeClipped: true }).entries.filter((e) => e.clipped).map((e) => ({ surface: e.surface, text: e.text })),
     };
   }, { subs: M9_SUBSTRINGS, words: M15_WORDS });
-  out.checks.m9 = { instrument: '__HARNESS.getRenderedText({notSurface:["dialogue"]})', surfaces_searched: 'title (the only non-dialogue drawn surface in the build)', distinct_searched: greps.non_dialogue_distinct.length, hits: greps.m9_hits };
-  out.checks.m15 = { instrument: '__HARNESS.getRenderedText()', distinct_searched: greps.all_distinct, hits: greps.m15_hits };
+  // `surfaces_searched` used to be the string "title (the only non-dialogue drawn surface in
+  // the build)". It was false — there were two, and the other one was the HUD, which is where
+  // M9's only hit was — and it was hand-written into the report rather than read off the
+  // instrument. It is now whatever the register says it covered, and the `complete` flag beside
+  // it is what a reader should branch on.
+  out.checks.m9 = {
+    instrument: '__HARNESS.getRenderedText({notSurface:["dialogue"]})',
+    surfaces_searched: greps.m9_surfaces, surfaces_blind: greps.m9_blind, domain_complete: greps.m9_complete,
+    distinct_searched: greps.non_dialogue_distinct.length,
+    strings_searched: greps.non_dialogue_distinct,
+    hits: greps.m9_hits, imperative_hits: greps.m9_imperative,
+  };
+  out.checks.m15 = { instrument: '__HARNESS.getRenderedText()', domain_complete: greps.all_complete, distinct_searched: greps.all_distinct, hits: greps.m15_hits };
   out.checks.orphan_text = { clipped_entries: greps.clipped };
   out.checks.scene_walk = { nodes: greps.nodes_walked };
   if (!live) say('  (M9/M15 not reported: the accessor is blind)');
-  else {
+  else if (!greps.m9_complete) {
+    fail(`M9's domain is INCOMPLETE — the register cannot see ${JSON.stringify(greps.m9_blind)}. unmeasurable ⇒ 0, not a pass.`);
+  } else if (!greps.non_dialogue_distinct.length) {
+    // THE ROUND-1 DEFECT, AS AN ASSERTION. The build's own report recorded M9 as a pass with
+    // `distinct_searched: 0`. Zero strings searched is ignorance about a domain, not evidence
+    // of absence, and a probe that cannot go red on it is worse than no probe at all.
+    fail('M9 searched ZERO strings. A grep over an empty set is not a pass — unmeasurable ⇒ 0.');
+  } else {
     if (greps.m9_hits.length) hard('HF3', `M9: ${greps.m9_hits.length} instruction hit(s) outside a dialogue surface: ${JSON.stringify(greps.m9_hits.slice(0, 4))}`);
-    else pass(`M9: 0 hits over ${greps.non_dialogue_distinct.length} distinct non-dialogue strings, through a demonstrated accessor`);
+    else if (greps.m9_imperative.length) hard('HF3', `M9: imperative second-person instruction drawn outside a dialogue surface: ${JSON.stringify(greps.m9_imperative)}`);
+    else pass(`M9: 0 hits over ${greps.non_dialogue_distinct.length} distinct non-dialogue strings on ${JSON.stringify(greps.m9_surfaces)}, through a demonstrated accessor`);
     if (greps.m15_hits.length) fail(`M15: ${greps.m15_hits.length} prophecy-vocabulary hit(s): ${JSON.stringify(greps.m15_hits.slice(0, 4))}`);
     else pass(`M15: 0 hits over ${greps.all_distinct} distinct strings`);
   }

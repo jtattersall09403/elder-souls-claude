@@ -184,6 +184,24 @@ export class RealInput {
       this.activeDevice = 'keyboard';
       this.onDeviceChange && this.onDeviceChange('keyboard');
       if (this._captureControl(e.code)) { e.preventDefault(); return; }  // RB3
+      // PL3 — THE WAY BACK IN. Escape is also the natural "close the menu" key, and closing the
+      // menu re-requests pointer lock.
+      //
+      // Found by M-K9 the first time that check existed. `pointerlockchange` set `menuOpen` and
+      // NOTHING cleared it except the lock being re-acquired, while `mousedown` refused to
+      // request the lock *because* `menuOpen` was set. So the two guards held each other shut: a
+      // player who pressed Escape got the menu and the cursor, and then a second Escape did
+      // nothing and every subsequent click did nothing, forever. That is HF4 wearing the other
+      // face — not gameplay with no menu, but a menu with no gameplay — and it is worse than the
+      // state the item names, because there is no way out of it at all.
+      //
+      // The rebinding surface is deliberately excluded: it is a genuine cursor-driven surface and
+      // the cursor belongs to it until it closes itself (RB11).
+      if (e.code === 'Escape' && this.menuOpen && !this.rebinder.open) {
+        this.menuOpen = false;
+        this.requestPointerLock();
+        return;
+      }
       const dir = this.moveCodes[e.code];
       if (dir) { this.moveDirs[dir] = true; this._pushMove(); return; }
       const action = this.controlMap[e.code];
@@ -211,9 +229,19 @@ export class RealInput {
       this._down(control, this.controlMap[control]);
       if (this.dragLook) { this.dragLook.dragging = true; this.dragLook.x = e.clientX; this.dragLook.y = e.clientY; }
       // PL1/PL3: the lock is requested on the gesture that starts the game and RE-requested on
-      // the next click after any loss. Never on a "click to play" surface, and never while a
-      // cursor-driven surface is open — that state is the menu and the cursor belongs to it.
-      if (!this.pointerLocked && !this.menuOpen) this.requestPointerLock();
+      // THE NEXT USER CLICK after any loss, because Chrome rejects a re-request made inside its
+      // cooldown after an Escape-triggered exit and the item's ruling is written so it does not
+      // matter whether that cooldown is 1 s or 2 s — the game retries on the click either way.
+      //
+      // The exclusion is the REBINDING SURFACE, not `menuOpen`. Excluding `menuOpen` is what
+      // made the lock-loss menu inescapable (see the Escape handler above): the state Escape
+      // puts you in IS "no lock", so refusing to re-request while in it means never re-
+      // requesting at all. A cursor-driven surface genuinely owns the cursor; the menu the lost
+      // lock opened is the thing this click is supposed to leave.
+      if (!this.pointerLocked && !this.rebinder.open) {
+        this.menuOpen = false;
+        this.requestPointerLock();
+      }
     });
     on(window, 'mouseup', (e) => {
       const control = 'Mouse' + e.button;

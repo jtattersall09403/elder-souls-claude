@@ -1140,7 +1140,13 @@ export function m4Clause1(traceRecords, fcFrame) {
 async function selfTest() {
   const lines = [];
   let failed = 0;
-  const ok = (n, pass, d) => { lines.push(`${pass ? 'PASS' : 'FAIL'} ${n} — ${d}`); if (!pass) failed++; };
+  // Flush as we go. R3 could not re-run `decoupling --self-test` in two attempts and had to
+  // report a falsification on trust; a battery that discards its earlier evidence when a later
+  // stage dies is worth less than one that does not.
+  const ok = (n, pass, d) => {
+    lines.push(`${pass ? 'PASS' : 'FAIL'} ${n} — ${d}`); if (!pass) failed++;
+    process.stdout.write(lines[lines.length - 1] + '\n');
+  };
 
   // =============================================================================================
   // ROUND 4 — the R3 §3 falsifications. Node-side and FIRST, so they run whether or not the
@@ -1215,7 +1221,19 @@ async function selfTest() {
       'swap one hard-coded key for another');
   }
 
-  const handle = await launchGame({ width: 320, height: 240 });
+  // The browser half. If the engine cannot boot — which happens on this tree while other agents
+  // are mid-edit — the Node-side battery above is still reported and the browser half is marked
+  // NOT RUN rather than silently swallowing the eight results already earned.
+  let handle;
+  try {
+    handle = await launchGame({ width: 320, height: 240 });
+  } catch (e) {
+    ok('browser half of the self-test could be run', false,
+      `launchGame failed: ${String((e && e.message) || e).split('\n')[0]}. The ${lines.length - failed} ` +
+      'Node-side falsifications above still stand; the live checks below were NOT RUN.');
+    process.stdout.write(`\njourney-run self-test: FAIL (${lines.length - failed}/${lines.length}) — browser half not run\n`);
+    return 1;
+  }
   try {
     await handle.hOpt('setMode', 'play-instrumented');
     await handle.hOpt('setRenderRate', 0);
@@ -1284,7 +1302,6 @@ async function selfTest() {
     });
   } finally { await handle.close(); }
 
-  for (const l of lines) process.stdout.write(l + '\n');
   process.stdout.write(`\njourney-run self-test: ${failed === 0 ? 'PASS' : 'FAIL'} (${lines.length - failed}/${lines.length})\n`);
   return failed === 0 ? 0 : 1;
 }

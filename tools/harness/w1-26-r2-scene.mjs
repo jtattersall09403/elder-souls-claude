@@ -102,6 +102,24 @@ try {
     r.non_dialogue = { complete: rt.complete, blind: rt.blind_surfaces, in_scope: rt.surfaces_in_scope, distinct: rt.distinct };
     const all = H.getRenderedText({});
     r.all = { complete: all.complete, blind: all.blind_surfaces, distinct_count: all.distinct_count };
+    // THE VERDICT'S ACCEPTANCE, LITERALLY: "on a frame where `UISurface.elements[].text` is
+    // non-empty, `getRenderedText({notSurface:['dialogue']})` returns a set that CONTAINS every
+    // one of those strings (SET EQUALITY, not merely non-empty)". Non-empty is the check that
+    // round 1 passed while being blind to two thirds of the frame; equality against the
+    // element vocabulary is the check that could not have passed.
+    {
+      const eng = window.__ENGINE;
+      const elems = eng.renderer.menus.elements.filter((e) => e.text != null && String(e.text).length);
+      const want = [...new Set(elems.map((e) => String(e.text)))];
+      const got = new Set(H.getRenderedText({ surface: ['menus'] }).distinct);
+      r.set_equality = {
+        element_texts: want,
+        register_has: want.filter((t) => got.has(t)),
+        register_missing: want.filter((t) => !got.has(t)),
+        elements_non_empty: want.length > 0,
+        equal: want.length > 0 && want.every((t) => got.has(t)),
+      };
+    }
     const low = (s) => String(s).toLowerCase();
     r.m9_hits = rt.distinct.filter((s) => lists.subs.some((sub) => s.indexOf(sub) >= 0));
     // The imperative-second-person clause, which is the one that fired in round 1. A bare
@@ -126,6 +144,10 @@ try {
   else pass(`every declared surface is instrumented (${A.roster.instrumented.join(', ')})`);
   if (!A.sentinels.both_seen) fail(`the register misses a draw path: vector seen=${A.sentinels.vector.seen}, fillText seen=${A.sentinels.fill.seen}`);
   else pass('both draw paths falsified: a vector sentinel AND a fillText sentinel are both in the register');
+  say(`  UISurface.elements[].text on this frame: ${JSON.stringify(A.set_equality.element_texts)}`);
+  if (!A.set_equality.elements_non_empty) fail('no HUD element carried text on the measured frame — set equality is untestable, not satisfied');
+  else if (!A.set_equality.equal) fail(`the register is MISSING drawn element text: ${JSON.stringify(A.set_equality.register_missing)}`);
+  else pass(`set equality: the register contains all ${A.set_equality.element_texts.length} strings UISurface.elements[].text carries on that frame`);
   if (!A.non_dialogue.complete) fail(`M9's domain is incomplete (blind: ${JSON.stringify(A.non_dialogue.blind)}) — unmeasurable, not clean`);
   else if (!A.non_dialogue.distinct.length) fail('M9 searched ZERO strings. That is ignorance, not a pass.');
   else {

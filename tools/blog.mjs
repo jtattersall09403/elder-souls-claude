@@ -4,7 +4,8 @@
 // Blog posts are markdown files in docs/blog/ with YAML-ish front matter.
 // Run: node tools/progress.mjs && node tools/blog.mjs
 
-import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, statSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -118,6 +119,43 @@ function frontMatter(text) {
   return [fm, text.slice(m[0].length)];
 }
 
+// ---------- when was this published? ----------
+// Posts used to carry a date and nothing else, so several posts written hours apart on the same
+// day sorted arbitrarily against each other and the reader could not tell what came after what.
+// Order of preference, most trustworthy first:
+//   1. `time:` in the front matter (the writer says so)
+//   2. a `date:` that already carries a time
+//   3. the commit that first added the file — when it actually went out
+//   4. the file's mtime, which is only a guess because editing a post moves it
+const addedAt = new Map();
+try {
+  const log = execFileSync('git', ['log', '--diff-filter=A', '--format=%x00%aI', '--name-only', '--', 'docs/blog'],
+    { cwd: ROOT, encoding: 'utf8' });
+  for (const chunk of log.split('\0').slice(1)) {
+    const lines = chunk.split('\n').filter(Boolean);
+    const when = lines.shift();
+    // git lists newest first, so the FIRST time we see a file is its latest add; keep walking so
+    // the oldest add wins — a file deleted and restored should keep its original publication.
+    for (const path of lines) addedAt.set(basename(path, '.md'), when);
+  }
+} catch { /* no git, or a fresh checkout — fall through to mtime */ }
+
+function publishedAt(slug, fm, file) {
+  const day = fm.date || slug.slice(0, 10);
+  if (fm.time) return `${day}T${String(fm.time).trim()}`;
+  if (/\d\d:\d\d/.test(String(fm.date || ''))) return String(fm.date);
+  if (addedAt.has(slug)) return addedAt.get(slug);
+  try { return new Date(statSync(file).mtime).toISOString(); } catch { return `${day}T00:00:00Z`; }
+}
+
+/** "2026-08-07 13:42" — the day, and enough of the clock to order a busy one. */
+function stamp(iso) {
+  const d = new Date(iso);
+  if (Number.isNaN(+d)) return String(iso).slice(0, 10);
+  const p = (n) => String(n).padStart(2, '0');
+  return `${d.getUTCFullYear()}-${p(d.getUTCMonth() + 1)}-${p(d.getUTCDate())} ${p(d.getUTCHours())}:${p(d.getUTCMinutes())}`;
+}
+
 // ---------- gather ----------
 const posts = [];
 if (existsSync(P('docs', 'blog'))) {
@@ -127,16 +165,20 @@ if (existsSync(P('docs', 'blog'))) {
     // COVERED.md, notes, anything a writing agent leaves behind — has none, and was
     // otherwise being published verbatim as a post of its own.
     if (!fm.title) continue;
+    const slug = basename(f, '.md');
+    const at = publishedAt(slug, fm, P('docs', 'blog', f));
     posts.push({
-      slug: basename(f, '.md'),
-      title: fm.title || basename(f, '.md'),
-      date: fm.date || basename(f, '.md').slice(0, 10),
+      slug,
+      title: fm.title || slug,
+      date: stamp(at),
+      at,
       summary: fm.summary || '',
       html: md(body),
     });
   }
 }
-posts.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+// Newest first, to the minute. Ties break on slug so the order is stable between runs.
+posts.sort((a, b) => (Date.parse(b.at) || 0) - (Date.parse(a.at) || 0) || a.slug.localeCompare(b.slug));
 
 let st = {};
 try { st = JSON.parse(readFileSync(P('docs', 'status.json'), 'utf8')); } catch { }

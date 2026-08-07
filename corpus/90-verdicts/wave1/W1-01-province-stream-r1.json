@@ -1,0 +1,813 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-01-province-stream-pump",
+  "piece_title": "W1-01 \u2014 the province streaming pump (Engine._streamProvince from _afterStep, plus release hysteresis)",
+  "subsystem_paths": [
+    "platform.load.streaming",
+    "platform.load.hitches",
+    "platform.perf.simtime",
+    "world.traversal",
+    "world.region.transition",
+    "journey.death.recovery"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-01-provstream-r1-3c19",
+    "role": "critic.world",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-07T12:55:00Z",
+    "finished_at": "2026-08-07T13:35:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "8734986",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "measured_on": "a shadow tree pinned at HEAD=8734986 (git archive HEAD | tar -x), because the working tree does not boot",
+    "harness_commands": [
+      {
+        "command": "node tools/harness/boot-check.mjs (working tree, /home/user/elder-souls-claude)",
+        "exit_code": 12,
+        "stdout_artifact": "harness ready() failed: TypeError: this._installTopicSupply is not a function at Engine._boot (game/src/engine.js:320). A concurrent agent's in-flight edit; not this piece's."
+      },
+      {
+        "command": "node tools/harness/boot-check.mjs (shadow tree @ 8734986)",
+        "exit_code": 0,
+        "stdout_artifact": "boot-check: PASS - the engine constructed and the harness answers. Run before AND after every measurement below."
+      },
+      {
+        "command": "node tools/world/critic-prov-r1.mjs --mode modality --out <path>",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json"
+      },
+      {
+        "command": "node tools/world/critic-prov-r1.mjs --mode modality --break-fix --out <path>",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality-broken.json"
+      },
+      {
+        "command": "node tools/world/critic-prov-r1.mjs --mode fight --out <path>",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/fight.json"
+      },
+      {
+        "command": "node tools/world/critic-prov-r1.mjs --mode displace --out <path>",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace.json"
+      },
+      {
+        "command": "node tools/world/critic-prov-r1.mjs --mode displace --break-fix --out <path>",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace-broken.json"
+      },
+      {
+        "command": "node tools/world/critic-prov-r1.mjs --mode ride --out <path>",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ride.json"
+      },
+      {
+        "command": "node tools/world/critic-prov-r1.mjs --mode loop --laps 8 --out <path>",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/loop.json"
+      },
+      {
+        "command": "node tools/world/critic-prov-r1.mjs --mode posed --out <path>",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/posed.json"
+      },
+      {
+        "command": "node tools/world/critic-prov-r1.mjs --mode settle --out <path>",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle.json"
+      },
+      {
+        "command": "node tools/world/critic-prov-r1.mjs --mode settle --break-fix --out <path>",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle-broken.json"
+      },
+      {
+        "command": "node tools/world/critic-prov-r1.mjs --mode raf --seconds 25 --out <path>",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/raf.json"
+      },
+      {
+        "command": "node tools/world/critic-prov-r1.mjs --mode raf --seconds 25 --break-fix --out <path>",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/raf-broken.json"
+      },
+      {
+        "command": "node tools/world/critic-prov-shot.mjs --metres 750 --out <png>",
+        "exit_code": 0,
+        "stdout_artifact": "docs/shots/2026-08-07-province-walk-750m-with-pump.png"
+      },
+      {
+        "command": "node tools/world/critic-prov-shot.mjs --metres 750 --break-fix --out <png>",
+        "exit_code": 0,
+        "stdout_artifact": "docs/shots/2026-08-07-province-walk-750m-without-pump.png"
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "This piece is judged on residency, frame cost and arrival behaviour, all of which are counters read off the running world. The two PNGs are illustration for the blog and for \u00a78's falsification, not the basis of any score. RI-MTH01: no FPS claim is made anywhere; every millisecond figure is a per-fixed-step wall-clock measurement taken around loop.stepOnce()+_afterStep() with performance.now(), on SwiftShader, and is used only for comparison against another figure taken the same way in the same session."
+  },
+  "environment_caveat": {
+    "loadavg_at_start": "2.15 4.53 6.75",
+    "loadavg_peak_during": "26.07 19.13 13.17",
+    "consequence": "Absolute milliseconds in the fight, ride and displace runs (loadavg 12-17) are an UPPER BOUND. Rates (fraction of steps over 16.7 ms), counts, residency figures and within-run separations were taken at the same load in the same session and are load-robust. Both screenshots were taken at loadavg 22-26 and cost 47-53 s each."
+  },
+  "reference_items": [
+    {
+      "id": "RI-MTH07",
+      "path": "corpus/80-methods/RI-MTH07-world-coupling.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "coupling 0-1 per shipped model, with a null control",
+      "native_score": 4,
+      "native_max": 5,
+      "native_verdict": "four of five shipped knobs have a demonstrated world-side consumer with an entity-side observable; province.tileM has none",
+      "score_0_10": 6,
+      "measured": "full",
+      "checks": [
+        {
+          "id": "C-radiusTiles",
+          "result": "pass",
+          "value": "radiusTiles 1/2/3 -> ring built 9/25/49 against predicted (2R+1)^2; coupling 1.00",
+          "threshold": "coupling >= 0.8 with an entity-side observable",
+          "note": "Re-derived independently: my look() recomputes the want-ring from stats().residentRadiusTiles and stats().tileSizeM rather than from the module constant, so it cannot agree with the streamer by construction.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle.json"
+          ]
+        },
+        {
+          "id": "C-null-control",
+          "result": "pass",
+          "value": "skinRadiusM 34 -> 17 moved skin vertices 15,625 -> 3,969 (predicted 3,969) and left ring/resident/built-total byte-identical",
+          "threshold": "the null control must move its own observable and nothing else",
+          "note": "Accepted from the builder's artifacts; its value is precisely that it changed nothing in the arm under test.",
+          "evidence": [
+            "reports/world/province-stream/CONSUME-null-skin17.json"
+          ]
+        },
+        {
+          "id": "C-urgent-budget",
+          "result": "pass",
+          "value": "settle curve: 3x3 unbuilt 7 -> 5 -> 1 -> 0 at frames 1, 2, 4, 8 = exactly STREAM_URGENT_TILES (2) per frame",
+          "threshold": "the constant must be observable in the built world",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle.json"
+          ]
+        },
+        {
+          "id": "C-trickle-budget",
+          "result": "pass",
+          "value": "ring closes 10/25 at frame 24 -> 25/25 at frame 384-512, one tile per ~30 frames = STREAM_BUILD_EVERY",
+          "threshold": "as above",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle.json"
+          ]
+        },
+        {
+          "id": "C-tileM",
+          "result": "fail",
+          "value": "province.tileM is reported by stats() as tileSizeM and read by nothing: request() computes tx0/tz0 from the MODULE constant TILE_M",
+          "threshold": "every shipped knob names a world-side consumer",
+          "note": "Introduced in this change, beside radiusTiles and skinRadiusM which do couple. unmeasurable => 0 for this field. Perturbing it would desynchronise the reported geometry from the built geometry and no probe in the tree would notice.",
+          "evidence": [
+            "game/src/world/province.js:200 (const tx0 = Math.floor(x / TILE_M)) vs :1145 (tileSizeM: this.tileM)"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ride.json"
+      ],
+      "why_not_ten": "province.tileM is reported by stats() as tileSizeM and read by nothing. Proven by absence: no call site anywhere computes a tile index from it (game/src/world/province.js, cited in artifacts[]), and every residency figure in corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json is reproducible from the module constant alone.",
+      "path_to_ten": "Delete province.tileM or make request() read it.",
+      "ten_by_wave": 1,
+      "justification": "Four knobs couple with an entity-side observable and a real null control: radiusTiles 1/2/3 -> ring built 9/25/49 against predicted (2R+1)^2 (corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json, corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle.json); STREAM_URGENT_TILES visible as exactly 2 tiles per frame in the settle curve and STREAM_BUILD_EVERY as one per ~30 frames (corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle.json); the null control moved only its own observable (reports/world/province-stream/CONSUME-null-skin17.json). Held at 6 rather than higher because the fifth shipped knob, province.tileM, is an orphan.",
+      "aggregation_note": "RI-MTH07 aggregates min-over-axes across the item's OWN axes (does the piece name a consumer; does it demonstrate consumption by perturbation; is there a null control). C-tileM is not one of those axes \u2014 it is one of the five MODELS the piece ships, and RI-MTH07's rule fixes that MODEL at 0, not the item. All three of the item's axes are measured and pass, so the min is not 0; the orphan model is carried as the reason the item is 6 and not 9."
+    },
+    {
+      "id": "RI-PLT03",
+      "path": "corpus/85-platform/RI-PLT03-load-streaming-and-hitches.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "native 0-100 weighted; hard fails cap at 2",
+      "native_score": 2,
+      "native_max": 100,
+      "native_verdict": "hard-fail capped: HF4 (frames > 100 ms outside a declared boundary, and hitches in combat) and HF6 (a >= 60 ms sim-thread task during streaming)",
+      "score_0_10": 2,
+      "measured": "full",
+      "checks": [
+        {
+          "id": "M-L11 / S4 (walking)",
+          "result": "fail",
+          "value": "walking: p50 0.085 ms, p99 0.28 ms, max 144.23 ms; 38 of 14,689 steps over 50 ms = 4.08 traversal minutes => hitches_per_traversal_minute 9.3",
+          "threshold": "S4: <= 1.0 hitches/traversal minute, fail > 3.0",
+          "note": "This is the one figure the builder DID publish, and it is inside no budget the corpus states. The builder reported it as 0.32% of steps over 16.7 ms, which is true and is not the metric RI-PLT03 uses. Independently reproduced here: one hitch per 10.1 m against SKIN_REBUILD_M = 11.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json"
+          ]
+        },
+        {
+          "id": "M-L11 / S5 (arrival)",
+          "result": "fail",
+          "value": "death respawn: six consecutive frames of 337.01 / 405.43 / 483.96 / 361.98 / 222.64 / 472.46 ms, ~2,283 ms total",
+          "threshold": "S5: 0 hitches > 100 ms outside declared boundaries; fail: any",
+          "note": "The urgent branch pump(STREAM_URGENT_TILES) sits ABOVE `if (discWork) return`, so one fixed step pays a ~30-tile release + updateSkin(15,625 verts) + updateCover + updateNear + two _buildTile calls. Loadavg 11-15; upper bound.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace.json"
+          ]
+        },
+        {
+          "id": "M-L11 / S4+S5 (vehicle)",
+          "result": "fail",
+          "value": "rootspeak ride at 40 m/s: mean 8.06 ms, p99 212.67, p99.9 399.79, max 674.76; 327/4,940 steps over 16.7 ms (6.62%) and 273 over 50 ms in 1.37 traversal minutes => hitches_per_traversal_minute 199",
+          "threshold": "S4 <= 1.0/min and S5 = 0",
+          "note": "3,293.7 m / SKIN_REBUILD_M 11 = 299 predicted skin rebuilds against 327 observed hitches. Every budget constant in _streamProvince is sized for a 2.0 m/s walk; STREAM_REFOCUS_M's own comment says so.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ride.json"
+          ]
+        },
+        {
+          "id": "M-L6 (boundary census)",
+          "result": "fail",
+          "value": "0 load boundaries emitted around a teleport or a respawn; getLoadState().boundaries is unchanged across the 4,142.6 m respawn jump",
+          "threshold": "RI-PLT03 \u00a7B: a streaming stall is a declared boundary of one of four kinds, or it is not allowed to exist",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace.json"
+          ]
+        },
+        {
+          "id": "M-L10 / S2 (sim frames lost)",
+          "result": "fail",
+          "value": "25 s of real-time walking in mode 'play': 8 simulated frames lost, 3 catch-up clamps, 129 ms dropped, against 3 / 1 / 25.9 ms with the pump neutered",
+          "threshold": "S2: 0 sim frames lost; fail >= 1",
+          "note": "FixedLoop.MAX_CATCHUP = 5, so a 2,283 ms arrival burst advances at most 83 ms of world and drops ~2.2 s.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/raf.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/raf-broken.json"
+          ]
+        },
+        {
+          "id": "RI-PLT02-adjacent (residency)",
+          "result": "pass",
+          "value": "8 laps / 834,176 fixed steps: tiles_resident flat at 28-34 (ceiling (2*KEEP+1)^2 = 49), province meshes flat 180-230, heap flat at 109,000,000 B, underfoot built at every lap",
+          "threshold": "no monotone growth over >= 100k frames",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/loop.json"
+          ]
+        },
+        {
+          "id": "M-L13-adjacent (settle before the shutter)",
+          "result": "fail",
+          "value": "at viewpoints-province.json's declared settleFrames: 24, a cold posed eye has underfoot built and the 3x3 complete but the ring at 10 of 25 with 15 still queued; full closure needs 384-512 frames",
+          "threshold": "the ring the streamer declares it wants is resident when the shutter opens",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle.json"
+          ]
+        },
+        {
+          "id": "M-L14 / S9 (off-thread streaming)",
+          "result": "fail",
+          "value": "33 streaming frames in a 9,000-step fight with a p50 of 142.16 ms, all of them synchronous on the sim thread inside Engine._afterStep()",
+          "threshold": "S9: no single >= 60 ms task on the sim thread during streaming",
+          "note": "HF6. The whole design is synchronous: _streamProvince() calls Province.request() and Province.pump() inline in the fixed step. There is no Worker and no 8 ms slicing anywhere in game/src/world/province.js.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/fight.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ride.json"
+          ]
+        },
+        {
+          "id": "M-L11 / S6 (hitches in combat)",
+          "result": "fail",
+          "value": "53 of 9,000 fight frames over 16.7 ms; 29 over 50 ms; worst 448.95 ms, inside ROLL_IFRAME",
+          "threshold": "S6: 0 hitches during COMBAT; fail: any",
+          "note": "HF4's second clause. Loadavg 13.2-15.4; the COUNT is load-robust, the milliseconds are an upper bound.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/fight.json"
+          ]
+        }
+      ],
+      "hard_fails": [
+        {
+          "id": "HF4",
+          "result": "fail",
+          "what": "any frame > 100 ms outside a declared boundary, or any hitch during combat (M-L11, shared with RI-PLT01 HF6/HF5)",
+          "observed": "144.23 ms walking, 483.96 ms on respawn, 674.76 ms on a vehicle, 448.95 ms inside a roll's i-frame window. 0 load boundaries declared anywhere.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ride.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/fight.json"
+          ]
+        },
+        {
+          "id": "HF6",
+          "result": "fail",
+          "what": "a >= 60 ms sim-thread task during streaming (M-L14 / S9)",
+          "observed": "streaming frames have a p50 of 142.16 ms in a fight and 5.53% of a vehicle ride's steps exceed 50 ms; all synchronous inside _afterStep().",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/fight.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ride.json"
+          ]
+        }
+      ],
+      "how_we_lose_hits": [
+        "'the budget was measured on the only motion the builder happened to test' \u2014 every figure in the builder's report is a 2.0 m/s walk",
+        "S4 was never computed: 0.32% of steps over 16.7 ms sounds small and is 9.3 hitches per traversal minute against a budget of 1.0"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ride.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/raf.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/loop.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle.json"
+      ],
+      "why_not_ten": "Two hard fails, and hard fails cap this item at 2 regardless of what else passed. What else passed is real and is recorded in the checks: residency never leaks over 834,176 frames, the ground under the body is never missing on any modality, and the builder published its own residual rather than hiding it.",
+      "path_to_ten": "Move `if (discWork) return` above the urgent branch; budget by metres-since-last-rebuild rather than by frames so 40 m/s gets the throughput it needs; skip the refocus while combat.player.state is ATK_*/ROLL_*; wrap teleport and respawn in _boundaryBegin('province_stream'); and chunk updateSkin across <= 8 ms slices or move it off the sim thread, which is the only route to S9.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-WLD01",
+      "path": "corpus/50-world/RI-WLD01-scale-and-traversal-budget.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "0-100 weighted (scale / terrain / roads / placement / traversal / movement speed)",
+      "native_score": 9,
+      "native_max": 10,
+      "native_verdict": "the traversal axis only: the drawn world follows a walking body on every modality reachable",
+      "score_0_10": 9,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "W-raw-input",
+          "result": "pass",
+          "value": "raw stick + stepFrames(1), 1,500 m, 45,019 frames, 75 checks: 0 samples with no ground underfoot, worst near-3x3 unbuilt 0, ring 25/25, two regions",
+          "threshold": "0 samples with no ground underfoot",
+          "note": "The path a player's hand drives. The builder tested walkRoute/walkPath only.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json"
+          ]
+        },
+        {
+          "id": "W-walked-not-placed",
+          "result": "pass",
+          "value": "walkRoute teleports ONCE to pts[0] on (re)start (engine.js:4586) and never again; the crossing artifact puts 33,074 of 33,078 speed samples in the 1.99-2.01 m/s band, walk.done true, path_m 6615.1, minutes 55.131",
+          "threshold": "ARBITRATION S34(b): arrival must be walked, not placed",
+          "evidence": [
+            "reports/world/province-stream/AFTER-crossing.json"
+          ]
+        },
+        {
+          "id": "W-released-ground-returns",
+          "result": "pass",
+          "value": "4,437.8 m of continued walking over ground released behind the body: 0 of 122 samples with no ground, worst near-3x3 unbuilt 0",
+          "threshold": "0 samples with no ground underfoot",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json"
+          ]
+        },
+        {
+          "id": "W-still-body",
+          "result": "pass",
+          "value": "600 frames of camera orbit with the body still and override null: 0 tiles built, ring stays 25/25. Correct: nothing needed, nothing paid.",
+          "threshold": "no work when no work is needed",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json"
+          ]
+        },
+        {
+          "id": "W-vehicle-residency",
+          "result": "pass",
+          "value": "rootspeak ride 3,293.7 m at 40 m/s: 0 of 82 samples with no ground, worst near-3x3 unbuilt 0, end ring 25/25",
+          "threshold": "0 samples with no ground underfoot",
+          "note": "Residency holds at 20x walking speed. Only the cost fails (see RI-PLT03).",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ride.json"
+          ]
+        },
+        {
+          "id": "W-respawn-hole",
+          "result": "pass",
+          "value": "900 frames sampled across a death and a 4,142.6 m respawn jump: frames_standing_on_no_ground = 0; the 3x3 closes at frame 5",
+          "threshold": "the tile under the body is never missing",
+          "note": "pump() drains a queue sorted nearest-first, so queue[0].d == 0 is the tile you land on.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace.json"
+          ]
+        },
+        {
+          "id": "W-falsification",
+          "result": "pass",
+          "value": "with Engine._streamProvince neutered, the identical runs give 25/75 samples with no ground, near-3x3 unbuilt 9, ring 5/25, underfoot FALSE, 0 tiles built, disc lag 1,083.62 m",
+          "threshold": "the instrument must go red when the thing it measures is broken",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality-broken.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle-broken.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace-broken.json",
+            "docs/shots/2026-08-07-province-walk-750m-without-pump.png"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality-broken.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ride.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace.json"
+      ],
+      "why_not_ten": "Held at 9 rather than 10 because the vehicle modality reaches the same residency at a cost that makes it unplayable (RI-PLT03 above), and because travelRide is fare-gated at a cold start so no probe had ever driven it before this one \u2014 an axis that was untested until today is not an axis anyone had earned a 10 on.",
+      "path_to_ten": "close GAP-W1-provstream-arrival-burst; the residency behaviour itself needs nothing.",
+      "ten_by_wave": 1,
+      "scope_note": "Scored on RI-WLD01's TRAVERSAL axis alone \u2014 'a player can cross the province on foot and the province is there while they do it'. The item's scale, terrain, roads and placement axes are W1-01's own subject and were judged in corpus/90-verdicts/wave1/W1-01-r2.md; this verdict does not restate or re-score them, and the 9 must not be read as a score for the whole item.",
+      "justification": "The claim survives an instrument the builder did not write, on a movement path the builder did not test, and the instrument is proved falsifiable. corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json: raw stick + stepFrames(1), 1,500 m, 45,019 frames, 0 of 75 samples with no ground underfoot. corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality-broken.json: the identical run with Engine._streamProvince neutered gives 25 of 75 samples with no ground, ring 5/25 and underfoot false. docs/shots/2026-08-07-province-walk-1500m-without-pump.png is the same walk photographed with the pump off and the ground gone."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-r1.mjs --mode modality --out <path>",
+      "note": "Six ways of moving in one page: raw stick + stepFrames(1), walkPath, travelRide, teleport-then-walk, continued walking over released ground, and a still body with the camera moving. Reads province.tiles/focus/discs only; never calls request/pump/drain/streamAround.",
+      "sha256": "2360f2a160d1c3abd1d34a32d44d99fadc15511170440c56b54ed0a2eb030dc5"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality-broken.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-r1.mjs --mode modality --break-fix --out <path>",
+      "note": "The falsification control. Engine._streamProvince replaced with an empty function in the page; one call neutered and nothing else. Every residency check inverts.",
+      "sha256": "fba6367e4cf68278917f6bb071e3efa6fd16f2f70d2229a11271095f8c801ddd"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/fight.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-r1.mjs --mode fight --out <path>",
+      "note": "A real fight in the province with the streamer live: 4 aggroed hostiles, 9,000 fixed steps, the body walking the road throughout, light/heavy/roll on coprime periods so every combat phase eventually meets every streaming frame. Each frame is timed and tagged with getCombatState().player.state and .invuln. Taken at loadavg 13.2-15.4.",
+      "sha256": "5d9c73c418e1d3540e0a0f380dca7e305b8fbd34fa347c9c198ea7d35314efb0"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-r1.mjs --mode displace --out <path>",
+      "note": "The body arriving somewhere it did not walk to: a death and respawn (4,142.6 m jump) sampled every frame for 900 frames, and a posed capture camera cleared after a 24-frame settle. Taken at loadavg 11-15.",
+      "sha256": "9c17e6497ead6487b0ab9bedbfc84468b4e49aaf971c2f05101a6040c0006abb"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace-broken.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-r1.mjs --mode displace --break-fix --out <path>",
+      "note": "Falsification control for the displacement run.",
+      "sha256": "2ffe803d5762f7bee8f9a5e07be8ca20ec5ed3426e42c04e0142424b1ee4a0a1"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ride.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-r1.mjs --mode ride --out <path>",
+      "note": "travelRide on svc-065-rootspeak-helstrom-lilmoth at 40 m/s, 3,293.7 m, 4,940 fixed steps, timed. travel.walked granted for all legs to open the fare gate; declared under method_deviations. Taken at loadavg 12.5.",
+      "sha256": "5cf7f32b030fd32f55c235cb83c72105fa265a391630068c30c83280e0d14356"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/loop.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-r1.mjs --mode loop --laps 8 --out <path>",
+      "note": "A closed 1.4 km circuit walked eight times, 834,176 fixed steps, residency/meshes/instances/heap sampled at the end of each lap. The release-hysteresis leak test.",
+      "sha256": "c8a5ed2b5da75b64afd8003d2827e00777c09b0562bcb05aa9f985d20a73d015"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/posed.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-r1.mjs --mode posed --out <path>",
+      "note": "Five camera({pos, look}) poses along the crossing with no teleport - the shoot.mjs --direct path - measured at the EYE and at the LOOK TARGET separately, because the focus follows the eye and the picture is of the target.",
+      "sha256": "3096ebea3cebda9347133e53fcced0e38cb102aa119d10141173541d5b4c499f"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-r1.mjs --mode settle --out <path>",
+      "note": "The settle curve at three cold posed eyes, sampled at 1/2/4/8/16/24/32/48/64/96/128/192/256/384/512/768/1024 frames. 24 is what shoot.mjs actually steps.",
+      "sha256": "8f42a5e1c582fd5ad499b94baf13ad068fa4ffba1872a75dce61c1cb0cda1302"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle-broken.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-r1.mjs --mode settle --break-fix --out <path>",
+      "note": "Falsification control for the settle curve.",
+      "sha256": "e6cafb3f7ee32940dd450074f291b99f626f580442c3d6d7a5b30c82977b7ca5"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/raf.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-r1.mjs --mode raf --seconds 25 --out <path>",
+      "note": "Mode 'play', loop.start(), real wall clock, stick held, rendering off. Reads FixedLoop.stats.catchupClamps / catchupDroppedMs, which no other probe in the tree has read. Taken at loadavg 14-17.",
+      "sha256": "2a87902bcc2fdcdd663f89f7c6328970f54cca168c2a2ee7e61fe5273f1359a4"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/raf-broken.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-r1.mjs --mode raf --seconds 25 --break-fix --out <path>",
+      "note": "The matched control, taken back to back at the same load. The DIFFERENCE between the two is the load-robust part.",
+      "sha256": "62fff8bb13022f7e20a12c8974bacf69f957650f4514d2c04af9fd8ecd78267d"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/walk750-fixed.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-shot.mjs --metres 750 --out <png>",
+      "note": "Metadata for the with-pump screenshot: 750 m walked in 22,519 frames, ring 25/25, skin lag 3 m.",
+      "sha256": "3b0f90cd4c9498c1dce58ce01913bd69565da85e7129a92b83e0dc5cf4e63846"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/walk750-broken.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-shot.mjs --metres 750 --break-fix --out <png>",
+      "note": "Metadata for the without-pump screenshot: identical 750 m walk, ring 15/25, skin/cover disc 559.2 m behind.",
+      "sha256": "60aa592c7b90687e91891aa48f888280c42c8352d94ccbc9224251655260234f"
+    },
+    {
+      "path": "docs/shots/2026-08-07-province-walk-750m-with-pump.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/world/critic-prov-shot.mjs --metres 750 --out <png>",
+      "note": "The same spot, reached by WALKING 750 m from the start of the crossing road (one setup teleport to the road head, then 22,519 fixed steps). Gameplay camera, never a posed override. Taken at loadavg 22.6.",
+      "sha256": "818053a54abf97a355cfa10bb5c09e782c39be0ed7a0a1e08a99663ea5c84f8a",
+      "resolution": "1280x720",
+      "camera_pose": "gameplay third-person camera, no override. Player at [2181.0, 1320.2] in stone-forest after walking 750 m from the crossing road head; camera yaw 74.0 deg, set to the road bearing. Both frames are the same position, the same yaw and the same frame number (22,519) \u2014 the ONLY difference is whether Engine._streamProvince() runs."
+    },
+    {
+      "path": "docs/shots/2026-08-07-province-walk-750m-without-pump.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/world/critic-prov-shot.mjs --metres 750 --break-fix --out <png>",
+      "note": "The identical walk with Engine._streamProvince neutered. Same position, same yaw, same frame count. The ground-cover fringe along the ridge is gone: the skin and cover discs are 559.2 m behind the body. Taken at loadavg 26.1.",
+      "sha256": "869a915ae90e32cccfeee2d5391ed6fc3754f1f3a8950bd7fd6ac33ad2327427",
+      "resolution": "1280x720",
+      "camera_pose": "gameplay third-person camera, no override. Player at [2181.0, 1320.2] in stone-forest after walking 750 m from the crossing road head; camera yaw 74.0 deg, set to the road bearing. Both frames are the same position, the same yaw and the same frame number (22,519) \u2014 the ONLY difference is whether Engine._streamProvince() runs."
+    },
+    {
+      "path": "reports/world/province-stream/AFTER-crossing.json",
+      "kind": "report",
+      "produced_by": "node tools/world/prov-stream.mjs --mode crossing (THE BUILDER'S artifact, re-read not re-run)",
+      "note": "Read by this critic to verify S34(b): walk.done true, path_m 6615.1, minutes 55.131, and a speed histogram putting 33,074 of 33,078 samples in the 1.99-2.01 m/s band. Also the source of the 34-vs-35 sample discrepancy noted in secondary_observations."
+    },
+    {
+      "path": "reports/world/province-stream/CONSUME-null-skin17.json",
+      "kind": "report",
+      "produced_by": "node tools/world/prov-stream.mjs --mode walk --skin-radius 17 (THE BUILDER'S artifact, accepted as a negative control)",
+      "note": "skinRadiusM 34 -> 17 moves skin vertices 15,625 -> 3,969 and leaves ring/resident/built-total byte-identical. Accepted rather than re-run because its entire content is that it changed nothing in the arm under test; the POSITIVE arm was re-derived independently here."
+    },
+    {
+      "path": "game/src/world/province.js",
+      "kind": "source",
+      "produced_by": "read at commit 8734986",
+      "note": "Cited for exactly one structural fact that is not a measurement and cannot be one: request() computes tx0/tz0 from the module constant TILE_M at line 200 while stats() reports tileSizeM: this.tileM at line 1145. RI-MTH04 D forbids source as the BASIS of a score; this supports the orphan-knob observation, which is scored on the absence of any consuming call, not on the reading."
+    },
+    {
+      "path": "game/src/engine.js",
+      "kind": "source",
+      "produced_by": "read at commit 8734986",
+      "note": "Cited for the ordering of `if (queue[0].d <= STREAM_NEAR_D2) { pump(2); return; }` ABOVE `if (discWork) return;` in _streamProvince(), which is the mechanism behind the measured arrival burst. The burst itself is measured (displace.json), not inferred."
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-WLD10",
+      "status": "not_possible",
+      "not_possible_reason": "This piece is judged on counters read off the running world, not on appearance. RI-MTH01 forbids an FPS claim on SwiftShader and no such claim is made; the bifurcation axis is declared not-visual above."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "fail",
+      "checks": [
+        {
+          "id": "AR1-streaming-inside-the-fight",
+          "result": "fail",
+          "observed": "In a 9,000-step fight in the province with the streamer live: 33 frames did streaming work and those 33 have mean 138.39 ms / p50 142.16 ms / max 448.95 ms, against p50 0.125 ms for the 8,967 frames that did none. 17 of 1,040 ROLL_IFRAME frames exceeded 16.7 ms and the worst frame in the run - 448.95 ms, did=5 (ground skin + ground cover disc) - landed INSIDE a roll's i-frame window. A 14-frame i-frame window is 233 ms; the frame is longer than the window it landed in. With MAX_CATCHUP=5 the fight freezes and resumes on one sampled input.",
+          "why_this_is_ar1": "ARBITRATION S1: inside the fight, Souls wins - and S1 as amended says Souls' authority is over how fighting works. A world-streaming subsystem that can stop a roll for a quarter of a second has taken a frame decision away from the fight. S26 forbids diluting AR-1 to cover ordinary defects, and this is not an ordinary defect: it is a Morrowind-side subsystem setting the schedule of a Souls-side frame.",
+          "boundary_ruling": "The builder assigns the ~59 ms rebuild to W1-01's updateSkin calibration. REJECTED as a handoff. updateSkin did not get more expensive in this change; it got CALLED DURING FIGHTS. Before this change request() ran on a teleport. The COST is W1-01's; the SCHEDULE is now _streamProvince's, and a subsystem that owns a schedule owns the frames it lands on.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/fight.json"
+          ]
+        }
+      ]
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "AR2-no-souls-convention-leaked",
+          "result": "pass",
+          "observed": "The change adds no marker, no warp, no procedural loot and no soul-currency purchase. It streams ground. The one Souls-shaped affordance it touches - the death respawn - it only observes.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace.json"
+          ]
+        },
+        {
+          "id": "AR2-no-speed-tax",
+          "result": "pass",
+          "observed": "S17: nothing here slows the player down to buy streaming time. The crossing's own speed histogram puts 33,074 of 33,078 samples in the 1.99-2.01 m/s band, and _streamProvince runs after the step has already decided where the body went.",
+          "evidence": [
+            "reports/world/province-stream/AFTER-crossing.json"
+          ]
+        }
+      ]
+    },
+    "ar3": {
+      "seam_sterile": false,
+      "justification": "The piece carries a boundary-crossing interaction in BOTH directions and both are measured here. The world's streaming schedule now reaches into the fight (a ground-skin rebuild landing inside ROLL_IFRAME), and the fight's own displacement reaches out into the world (the death respawn's 4,142.6 m jump driving the arrival burst). That is the opposite of sterile - and it is exactly why the seam has to be arbitrated rather than admired."
+    }
+  },
+  "consumption": {
+    "rule": "ARBITRATION S3 CONSUMPTION / RI-MTH07",
+    "models_shipped": 5,
+    "models_with_demonstrated_consumer": 4,
+    "orphans": [
+      {
+        "model": "province.tileM",
+        "shape": "orphan field",
+        "measured": "request() computes tx0/tz0 from the module constant TILE_M (world/province.js:200) while stats() reports tileSizeM: this.tileM (:1145). Perturbing it desynchronises the reported geometry from the built geometry and nothing in the tree would notice.",
+        "verdict": "unmeasurable => 0"
+      }
+    ],
+    "note": "The world-side consumer for the four that couple is Engine._afterStep() -> _streamProvince() -> Province.request()/pump(), observed as tiles that exist in province.tiles under a body that WALKED there - never as a harness return value."
+  },
+  "score": {
+    "overall_0_10": 6,
+    "pass_threshold": 7,
+    "aggregation": "mean",
+    "band_label": "Works, and expensive where it was never measured",
+    "aggregation_note": "mean of the three ladder scores: RI-PLT03 2, RI-MTH07 6, RI-WLD01 (traversal axis) 9 => 5.67 -> 6.",
+    "confidence": "high on rates, residency, falsification and the hard-fail triggers; medium on absolute milliseconds (loadavg 12-17)"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "AR-1 fail: a 448.95 ms frame inside a roll's i-frame window, caused by a world-streaming refocus.",
+    "The single worst frame in the build is now the frame after a respawn: 483.96 ms, six consecutive frames totalling ~2,283 ms, and MAX_CATCHUP=5 turns that into ~2.2 s of DROPPED simulation time.",
+    "travelRide at 40 m/s puts 6.62% of steps over one 60 Hz frame and 5.53% over 50 ms, max 674.76 ms. Every budget constant in _streamProvince is sized for a 2.0 m/s walk.",
+    "The urgent branch's pump(2) sits ABOVE `if (discWork) return`, so 'one unit of streaming work per fixed step' is true for the trickle and false for the burst.",
+    "At viewpoints-province.json's declared settleFrames: 24 the ring is 10 of 25 with 15 still queued; full closure needs 384-512 frames.",
+    "province.tileM is an orphan knob introduced by this change.",
+    "AGAINST all of that: the defect the piece was sent to fix is CLOSED on every modality I could reach, verified with an independent instrument that was proved falsifiable, and the crossing is genuinely walked."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-provstream-arrival-burst",
+    "subsystem_path": "platform.load.hitches",
+    "what": "The urgent tile-build branch in Engine._streamProvince() is exempt from the one-unit-of-work-per-step budget AND is evaluated BEFORE it, so any frame on which the body ARRIVES somewhere - a respawn, a teleport, a future fast-travel or cutscene relocation - pays a ~30-tile release plus updateSkin (15,625 vertices) plus updateCover plus updateNear plus two full _buildTile calls in one fixed step.",
+    "why_it_matters": "Measured on a real death in the province, the six frames after the respawn cost 337.01, 405.43, 483.96, 361.98, 222.64 and 472.46 ms - about 2,283 ms in total, against the builder's walking worst case of 133.8 ms. FixedLoop.MAX_CATCHUP is 5, so in mode 'play' the accumulator advances at most 83 ms of world and drops the remaining ~2.2 s into catchupDroppedMs. The world stops for two seconds at the exact moment a Souls player has just died and is looking for their bloodstain, which is the most latency-sensitive moment in the game outside a boss swing. The builder never saw it because every one of its runs was a walk, and a walk never enters this branch.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/raf.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ride.json"
+    ],
+    "severity": "blocking",
+    "remedy": {
+      "action": "Make the urgent budget respect the work the frame has already done, and declare the arrival as a load boundary.",
+      "targets": [
+        "game/src/engine.js _streamProvince(): move `if (discWork) return;` ABOVE the urgent branch, or change pump(STREAM_URGENT_TILES) to pump(discWork ? 1 : STREAM_URGENT_TILES). The tile under the body is queue[0] with d === 0 and one pump(1) places it; the other eight tiles of the 3x3 are 150-450 m away and can wait a frame each.",
+        "game/src/engine.js teleport() and the respawn path: wrap in _boundaryBegin('province_stream') / _boundaryEnd, per RI-PLT03 \u00a7B. A boundary you announce is not a hitch.",
+        "game/src/engine.js: skip the request() refocus while combat.player.state is inside ATK_* or ROLL_*, letting s.since keep counting. This is the AR-1 remedy and it is far cheaper than making updateSkin fast: a roll covers ~5 m against SKIN_REBUILD_M = 11, so nothing visible moves.",
+        "game/src/engine.js STREAM_REFOCUS_M and the disc rebuild distances: budget by METRES SINCE THE LAST REBUILD rather than by frames, so travelRide at 40 m/s gets the throughput it needs instead of a walk's."
+      ],
+      "acceptance": "node tools/world/critic-prov-r1.mjs --mode displace reports worst_step_ms_after_jump <= 120 on a box at loadavg < 4, with frames_standing_on_no_ground still 0 and frames_until_near9_complete <= 16; --mode ride reports over_16_7 <= 1% of steps; --mode fight reports iframe_frames_over_16_7 = 0; --mode loop unchanged.",
+      "ref_item": "RI-PLT03",
+      "estimated_size": "S"
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "The working tree does not boot. node tools/harness/boot-check.mjs exits 12 with 'this._installTopicSupply is not a function' (engine.js:320); a concurrent agent's in-flight edit to engine.js + character/converse.js with sim/quest/topic-supply.js untracked. Every measurement in this verdict was taken on a shadow tree pinned at HEAD=8734986. Any agent that uses smoke.mjs as a boot check will report green against a build no player could launch.",
+      "evidence": [
+        "node tools/harness/boot-check.mjs, exit 12"
+      ],
+      "subsystem_path": "platform.determinism.harness"
+    },
+    {
+      "what": "A posed capture camera demolishes the player's own world. With an override eye 2.4 km from the body and the 24-frame settle shoot.mjs actually uses, at the BODY: underfoot false, near-3x3 9 of 9 unbuilt, ring 0/25, tiles_resident 10. request() releases everything outside KEEP of the EYE. Clearing the pose recovers underfoot on frame 0 and the 3x3 by frame 4, but the ring takes 454 frames. NOT player-reachable - sim.camera.override is written only by Engine.camera() (engine.js:3823/3837/3873) and deathCamera() sets camera.deathFrame instead - but the capture daemon is a pooled warm browser, so any residency or settle read taken at the body between two posed requests sees a demolished province.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json"
+      ],
+      "subsystem_path": "render.process.measurement"
+    },
+    {
+      "what": "walkPath is broken independently of this piece. Fed a 1,200 m slice of the crossing spline it ran to maxFrames=400000, covered 59,873.7 m at a mean 8.98 m/s - 4.5x walking speed - and never arrived, offset_m 686.43, longest_stuck_frames 1. Residency was fine throughout so it does not affect this verdict, but every walkPath-based reachability number in the tree is worth re-reading.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json"
+      ],
+      "subsystem_path": "world.traversal"
+    },
+    {
+      "what": "travelRide is fare-gated at a cold start: boardTravel refuses every service with 'You have not walked the <leg> road. No one sells passage over ground you have not crossed.' That is good design and it bounds the exposure of the vehicle streaming defect - you can only ride a road you have already walked - but it also means the fastest movement modality in the build had never been driven by any probe before this one.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality-broken.json"
+      ],
+      "subsystem_path": "world.traversal.transport"
+    },
+    {
+      "what": "Release hysteresis causes CHURN, not a leak: 36-42 tile builds per 1.4 km lap of a closed circuit, i.e. the same tiles destroyed and rebuilt every time round, ~2.6 s of rebuild work per lap at the ~69 ms the builder attributes to a tile build. KEEP is currently set to the smallest value that stops the edge thrash and no larger.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/loop.json"
+      ],
+      "subsystem_path": "platform.perf.memory"
+    },
+    {
+      "what": "Two small bookkeeping discrepancies in the builder's own report: the status file says the crossing took 35 samples where AFTER-crossing.json's summary.samples says 34; and the crossing artifact was itself taken at loadavg 12.54.",
+      "evidence": [
+        "reports/world/province-stream/AFTER-crossing.json",
+        "orchestration/status/province-stream-pump.json"
+      ],
+      "subsystem_path": "process.verdict.format"
+    },
+    {
+      "what": "All 17 province viewpoints in tools/harness/viewpoints-province.json declare anchor: region_* states that do not exist in game/data/states. Flagged by the builder, not fixed, and not this change's; recorded here so it is not lost.",
+      "evidence": [
+        "tools/harness/viewpoints-province.json"
+      ],
+      "subsystem_path": "render.process.measurement"
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-province-never-streamed",
+      "status": "closed",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality-broken.json",
+        "docs/shots/2026-08-07-province-walk-750m-with-pump.png"
+      ],
+      "note": "Independently verified with an instrument the builder did not write, on a movement path the builder did not test (raw stick + stepFrames(1)), and falsified by neutering the one call and watching every check invert."
+    }
+  ],
+  "corpus_extended": [
+    {
+      "id": "AM-W1-01-PS-01",
+      "path": "orchestration/amendments/AM-W1-01-PS-01-plt03-needs-a-motion-axis.md",
+      "area": "85-platform",
+      "judges": [
+        "platform.load.hitches"
+      ],
+      "reason": "corpus_hole",
+      "note": "RI-PLT03's S4 and S5 are defined 'per minute of continuous WALKING'. This build's fastest movement is a 40 m/s vehicle, at which the same streamer produces 199 hitches per traversal minute against a walk's 9.3, and no check in the item would ever ask. The item needs a motion axis: every streaming budget should be evaluated at the fastest speed the build can actually move a body, not at the walk. Filed rather than worked around; the measurement is in corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ride.json.",
+      "index_regenerated": false
+    }
+  ],
+  "method_deviations": [
+    {
+      "ref_item": "RI-WLD10 / RI-PLT03",
+      "deviation": "Two probes were written by this critic under orchestration/TOOL-LOOP.md rule 1 and are cited as evidence: tools/world/critic-prov-r1.mjs (modes modality, fight, displace, loop, posed, settle, raf, ride, plus a --break-fix falsification control) and tools/world/critic-prov-shot.mjs (photographs the same spot 750 m into a WALKED approach, with and without the pump).",
+      "why": "The only province-streaming probe in the tree is tools/world/prov-stream.mjs, which is the builder's own and which measures a 2.0 m/s walk. Nothing in the tree drives travelRide, the rAF accumulator under real time, a fight with the streamer live, a death respawn, or a long closed loop, and nothing reads FixedLoop.stats.catchupClamps. Both probes read province.tiles/focus/discs only and never call request(), pump(), drain() or __HARNESS.streamAround(). Both were proved falsifiable before being trusted: --break-fix neuters Engine._streamProvince in the page and every residency check inverts (see artifacts modality-broken.json, settle-broken.json, displace-broken.json, raf-broken.json).",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-PLT03",
+      "deviation": "In --mode ride I set engine.travel.walked for every leg before calling boardTravel, and set gold to 100,000.",
+      "why": "boardTravel refuses every service at a cold start ('You have not walked the stormhold-helstrom road'), so the vehicle modality is otherwise unreachable without first walking 23 simulated minutes of road. Granting the walked-road credit is the same class of concession as granting the fare: it opens the fare gate, it does not touch the streamer, and the thing under test - what _streamProvince does when the body moves at 40 m/s - is untouched by it. RI-MTH07's hand-feed prohibition is about feeding the PREDICATE under test, which this is not.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-MTH04",
+      "deviation": "Every measurement was taken on a shadow tree produced by `git archive HEAD | tar -x` rather than on the working tree, with tools/node_modules symlinked.",
+      "why": "The working tree does not boot (exit 12, this._installTopicSupply is not a function) because of a concurrent agent's in-flight edit. boot-check PASSES on the shadow tree before and after every measurement. The shadow tree is byte-identical to commit 8734986, which is stated in build.commit_sha, so every artifact is reproducible from that commit alone.",
+      "affects_scores": false
+    },
+    {
+      "ref_item": "RI-MTH04",
+      "deviation": "The builder's own null control (skinRadiusM 34 -> 17) is accepted from reports/world/province-stream/CONSUME-null-skin17.json rather than re-run.",
+      "why": "It is a NEGATIVE control whose entire content is that it changed nothing in the arm under test, and the positive arm (radiusTiles 1/2/3 -> 9/25/49) was re-derived independently here from stats() rather than from the module constants. Re-running a null control that reports no change adds no discriminating power; re-deriving the positive arm does.",
+      "affects_scores": false
+    }
+  ],
+  "unmeasured": [
+    {
+      "claim": "quiet-box absolute milliseconds for the fight, ride and displace runs",
+      "reason": "taken at loadavg 12-17 with several agents running. Rates, counts, residency figures and within-run separations were taken at the same load and are load-robust; the absolute worst-case figures are stated as upper bounds wherever they appear."
+    },
+    {
+      "claim": "whether the 448.95 ms i-frame frame is visible to a player as a MISSED INPUT",
+      "reason": "that needs the input pipeline's own latency instrument driven through the rAF path, which does not exist in this tree."
+    },
+    {
+      "claim": "the province viewpoints' anchor: region_* states",
+      "reason": "flagged by the builder as absent from game/data/states; not verified here and not this change's."
+    },
+    {
+      "claim": "streaming behaviour on the other travel modes (rootway 7 m/s, packet 6, barge 4, poler 2.8)",
+      "reason": "only the fastest (rootspeak, 40 m/s) was driven. It is the worst case and the others interpolate between it and the walk, but that is arithmetic, not measurement."
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is FALSE and the verdict is provisional on one point. RI-PLT03's Comparison method names tools/platform/load-run.mjs, hitch-census.mjs and stream-audit.mjs. load-run.mjs and hitch-census.mjs exist in the tree; stream-audit.mjs does not, and none of the three drives the province streamer. Under TOOL-LOOP rule 1 I built what the method specifies rather than skipping it \u2014 tools/world/critic-prov-r1.mjs computes S2, S4, S5, S6 and S9 directly, with a --break-fix falsification control \u2014 but it is a tool minted for this occasion and the reader must know that. The Tier-H half of RI-PLT03 (TTFP, device-class load times) refuses to emit without an attested real-GPU manifest and was correctly not attempted. Absolute milliseconds were taken at loadavg 12-17 and are upper bounds; the hard-fail triggers do not depend on them, because S5's threshold is 100 ms and the smallest arrival-burst frame I measured is 222.64 ms."
+  }
+}

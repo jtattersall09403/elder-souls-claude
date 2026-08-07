@@ -191,8 +191,23 @@ export function factionTerm(npc, player, reactions) {
  */
 export const REP_FULL = 40;          // reputation at which a faction's opinion is fully expressed
 export const REACTION_MAX = 4;       // faction-reactions.json `range`
-export const REPUTE_MOD = 12;        // disposition points at full reaction and full reputation
-export const REPUTE_CAP = 20;        // one RI-DLG04 §E band; standing may be moved, never replaced
+export const REPUTE_MOD = 15;        // disposition points at a wholly approved / wholly disliked record
+
+/**
+ * IT IS A WEIGHTED MEAN, NOT A SUM, and that is the whole of the design.
+ *
+ * The first draft summed the contributions and clamped the total. Measured over the chain, that
+ * reproduced the original defect one layer down: a character who has done business with six
+ * factions accumulates six terms, most NPCs dislike most factions, and the total walks to the
+ * negative clamp — so "having played the game" was still a penalty and Q-MAIN-23 still shut for
+ * every Saxhleel (measured: 18/40 signatures finished).
+ *
+ * A mean asks the question that a person actually asks, which is not *"how many of my enemies
+ * have you helped"* but *"on the whole, whose work do you do?"* A player who serves the cutters
+ * as much as the Court reads as mixed; a player who serves only the Court reads as the Court's.
+ * Weighting by |reputation| means a large standing speaks louder than a small one, which is why
+ * one errand does not define you and a whole act does.
+ */
 
 export function reputeTerm(npc, player, reactions) {
   const npcFac = normaliseFactionId(npc.faction, reactions);
@@ -215,21 +230,24 @@ export function reputeTerm(npc, player, reactions) {
     // `xul-aneekh`); the standing is the sum, not the last one seen.
     seen.set(key, (seen.get(key) || 0) + rep);
   }
+  let weight = 0;
   for (const [key, rep] of seen) {
     // An expelled faction's goodwill is spent, but its enemies do not forget you had it. That is
     // a judgement call and it is made in favour of the simpler rule: expulsion is handled on the
     // allegiance side, and reputation is a record of what you did.
     const reaction = key === npcFac ? Number(row[npcFac] ?? REACTION_MAX) : Number(row[key] ?? 0);
-    if (!reaction) continue;
     const w = Math.max(-1, Math.min(1, reaction / REACTION_MAX));
     const r = Math.max(-1, Math.min(1, rep / REP_FULL));
-    const v = REPUTE_MOD * w * r;
-    if (!v) continue;
+    // A faction this NPC is INDIFFERENT to (reaction 0) still counts toward the weight, because
+    // it is part of the record and its neutrality is information: doing a great deal of work
+    // nobody here minds is what dilutes the work they do mind.
+    weight += Math.abs(r);
+    const v = w * r;
     x += v;
-    parts.push([key, Math.round(v * 100) / 100, rep, reaction]);
+    if (v) parts.push([key, Math.round(REPUTE_MOD * v * 100) / 100, rep, reaction]);
   }
-  const total = Math.max(-REPUTE_CAP, Math.min(REPUTE_CAP, x));
-  return { total, parts, uncapped: x };
+  const total = weight > 0 ? REPUTE_MOD * (x / weight) : 0;
+  return { total, parts, weighted_sum: x, weight };
 }
 
 /**

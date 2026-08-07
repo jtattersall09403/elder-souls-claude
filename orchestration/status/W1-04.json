@@ -1,0 +1,33 @@
+{
+  "task_id": "W1-04",
+  "brief": "docs/PLAN.md \u00a73 W1-04 \u2014 Settlements, interiors and the people in them",
+  "started": "wave-1",
+  "state": "researching",
+  "paths": [
+    "world.settlement.anatomy",
+    "world.interior.named",
+    "world.interior.continuity",
+    "world.npc.population",
+    "world.npc.schedule",
+    "world.property.ownership",
+    "world.locks.security",
+    "world.faction.presence",
+    "world.persistence.state"
+  ],
+  "outputs_expected": [
+    "reports/w1-04-survey.md (honest survey of settlements/interiors/property as shipped)",
+    "game/data/world/... settlement + interior + population + schedule + ownership + lock data",
+    "world-side consumers proving RI-MTH07 consumption for each model",
+    "tools/world/w1-04-*.mjs consumption probes",
+    "docs/shots/<dated>.png via tools/capture/",
+    "reports/blog-feed.jsonl line"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "JUDGING SET RECONCILED. PLAN lists 20 items; only 11 of them name any of my 9 dotted paths in judges: front-matter (RI-AI07 npc.population, RI-CAM05 interior.named, RI-CHR02 faction.presence, RI-CRM01 persistence.state, RI-DLG02 settlement.anatomy, RI-DLG03 persistence.state, RI-LOR06 settlement.anatomy, RI-STL02 locks.security+property.ownership, RI-TRV01 settlement.anatomy, RI-WLD08 npc.population+npc.schedule, RI-WLD13 interior.continuity). The other 9 (RI-LOR01/02/04, RI-PRG03, RI-QST03/07/08, RI-WLD03, RI-WLD07) judge COARSE legacy path names: world.settlements, world.interiors, npc.population, npc.services, quest.hubs, world.locks, world.property, world.settlement.content, world.factions. So the item set must be assembled by mapping coarse->fine, not by exact string match. RI-WLD03 (the settlement-anatomy bar, blind_pair:yes) is in the coarse group and is the single most load-bearing item for this piece.",
+    "SURVEY, as shipped: game/data/world/settlements/ contains ONE file (thorn.json). game/data/world/interiors/ contains TWO (thorn-hall.json, writ-house.json). game/data/world/property/ contains EIGHT (all 8 settlements named). So 1 of 8 settlements exists as a settlement record, and 2 interiors exist against a wave-3 floor of 250. thorn.json carries an explicit declared_incomplete block naming W1-04 as owner."
+  ],
+  "files_i_am_editing": [],
+  "next_step": "survey game/data/world/settlements, interiors, property; assemble judging item set from judges: front-matter",
+  "notes_for_successor": "Phase 1 = authoring, no browser. Phase 2 = verification only. Coordinate with W1-FACTIONS on NPC records."
+}

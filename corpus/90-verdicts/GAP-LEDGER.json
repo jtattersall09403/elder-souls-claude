@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "generated": "2026-08-06T22:58:50Z",
+  "generated": "2026-08-07T13:33:56Z",
   "generator": "tools/gap-ledger.mjs",
   "waves_seen": [
     1
   ],
-  "verdicts_read": 13,
+  "verdicts_read": 25,
   "counts": {
-    "total": 13,
-    "open": 13,
+    "total": 25,
+    "open": 25,
     "partially_closed": 0,
     "closed": 0,
     "superseded": 0,
@@ -19,7 +19,8 @@
       "GAP-W1-combat-exemplar-has-no-danger"
     ],
     "journey.chargen.diegesis": [
-      "GAP-W1-creation-is-an-api-not-a-scene"
+      "GAP-W1-creation-is-an-api-not-a-scene",
+      "GAP-W1-the-naming-moment-is-still-orphan-text"
     ],
     "crime.guard.response": [
       "GAP-W1-crime-enforcement-is-a-free-win"
@@ -28,11 +29,26 @@
       "GAP-W1-enemy-attacks-cannot-reach-contact-range",
       "GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage"
     ],
+    "progression.bonfire.function": [
+      "GAP-W1-hearth-levelup-gate-reads-a-method-that-does-not-exist"
+    ],
+    "input.discoverability": [
+      "GAP-W1-input-discoverability-unmeasured"
+    ],
+    "ui.readables": [
+      "GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side"
+    ],
+    "magic.casting.geometry": [
+      "GAP-W1-magic-cannot-hit-a-moving-target"
+    ],
     "magic.effects.utility": [
       "GAP-W1-magic-effects-no-behaviour"
     ],
     "magic.gating.skills": [
       "GAP-W1-magic-skill-frozen"
+    ],
+    "quests.mainline.acts": [
+      "GAP-W1-mainquest-topic-bootstrap"
     ],
     "platform.determinism.harness": [
       "GAP-W1-platform-prng-never-drawn"
@@ -40,8 +56,26 @@
     "platform.save.persistence": [
       "GAP-W1-platform-save-drops-entity-prev-state"
     ],
+    "world.province.streaming": [
+      "GAP-W1-provstream-arrival-burst"
+    ],
+    "character.creation.flow": [
+      "GAP-W1-questionnaire-route-is-unreadable-and-unnamed"
+    ],
+    "journey.opening.legibility": [
+      "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface"
+    ],
+    "journey.save.roundtrip": [
+      "GAP-W1-save-purse-has-no-writer"
+    ],
     "crime.witness.model": [
       "GAP-W1-stealth-crime-model-not-coupled-to-the-world"
+    ],
+    "weapon.animation.reuse": [
+      "GAP-W1-weapon-animation-model-has-no-rendered-consumer"
+    ],
+    "weapon.feel.material": [
+      "GAP-W1-weapon-impact-and-material-model-has-no-consumer"
     ],
     "weapon.moveset.slots": [
       "GAP-W1-weapon-movesets-not-wired-to-the-runtime"
@@ -54,14 +88,35 @@
     ]
   },
   "warnings": [
+    "GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side: remedy.acceptance has no number or observable condition — not re-measurable, verdict should be PROVISIONAL (SCORING.md §4).",
     "corpus/90-verdicts/wave1/W1-00-r2.json: closure of GAP-W1-platform-prng-never-drawn is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-01-province-stream-r1.json: gap_closure references unknown gap_id GAP-W1-province-never-streamed.",
     "corpus/90-verdicts/wave1/W1-01-r2.json: closure of GAP-W1-world-trunk-road-below-the-waterline is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-07-r2.json: closure of GAP-W1-creation-is-an-api-not-a-scene is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-07-r3.json: closure of GAP-W1-questionnaire-route-is-unreadable-and-unnamed is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-07-r3.json: closure of GAP-W1-creation-is-an-api-not-a-scene is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-07-r3.json: gap_closure references unknown gap_id GAP-W1-greetings-and-race-gates-have-no-world-side-consumer.",
+    "corpus/90-verdicts/wave1/W1-07-r3.json: gap_closure references unknown gap_id GAP-W1-the-writ-is-a-return-value.",
+    "corpus/90-verdicts/wave1/W1-07-r3.json: gap_closure references unknown gap_id GAP-W1-no-title-surface.",
     "corpus/90-verdicts/wave1/W1-09-r2.json: closure of GAP-W1-combat-exemplar-has-no-danger is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-09-r3.json: closure of GAP-W1-enemy-attacks-cannot-reach-contact-range is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-09-r3.json: closure of GAP-W1-combat-exemplar-has-no-danger is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-10-r3.json: closure of GAP-W1-weapon-impact-and-material-model-has-no-consumer is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-10-r3.json: gap_closure references unknown gap_id GAP-W1-weapon-hitbox-band-non-contiguous-S26.",
+    "corpus/90-verdicts/wave1/W1-10-r3.json: gap_closure references unknown gap_id GAP-W1-weapon-movesets-unreachable-from-the-running-game.",
+    "corpus/90-verdicts/wave1/W1-10-r2.json: closure of GAP-W1-weapon-movesets-not-wired-to-the-runtime is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-14-r2.json: closure of GAP-W1-magic-effects-no-behaviour is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
     "corpus/90-verdicts/wave1/W1-14-r2.json: gap_closure references unknown gap_id GAP-W1-magic-vfx-nothing-renders.",
-    "corpus/90-verdicts/wave1/W1-15-r2.json: closure of GAP-W1-stealth-crime-model-not-coupled-to-the-world is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored."
+    "corpus/90-verdicts/wave1/W1-14-r3.json: closure of GAP-W1-magic-skill-frozen is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-14-r3.json: gap_closure references unknown gap_id GAP-W1-magic-mitigation-kind-blind.",
+    "corpus/90-verdicts/wave1/W1-14-r3.json: gap_closure references unknown gap_id GAP-W1-magic-teleport-out-of-a-fight.",
+    "corpus/90-verdicts/wave1/W1-14-r3.json: closure of GAP-W1-magic-effects-no-behaviour is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-14-r3.json: gap_closure references unknown gap_id GAP-W1-magic-vfx-flat.",
+    "corpus/90-verdicts/wave1/W1-15-r2.json: closure of GAP-W1-stealth-crime-model-not-coupled-to-the-world is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-26-r1.json: closure of GAP-W1-creation-is-an-api-not-a-scene is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-26-r1.json: closure of GAP-W1-the-naming-moment-is-still-orphan-text is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored.",
+    "corpus/90-verdicts/wave1/W1-LIBRARY-r1.json: gap_closure references unknown gap_id K9-book-item-word-ratio.",
+    "corpus/90-verdicts/wave1/W1-SAVE-r1.json: closure of GAP-W1-platform-save-drops-entity-prev-state is in the same wave (1) that opened it. Closure must come from a later wave's critic. Ignored."
   ],
   "load_errors": [],
   "gaps": [
@@ -279,6 +334,173 @@
       "age_waves": 0
     },
     {
+      "gap_id": "GAP-W1-hearth-levelup-gate-reads-a-method-that-does-not-exist",
+      "subsystem_path": "progression.bonfire.function",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-13-r1-death-hearth",
+      "opened_in": "corpus/90-verdicts/wave1/W1-13-r1.json",
+      "piece_id": "w1-13-death-and-the-hearth-loop",
+      "severity": "blocking",
+      "what": "The level-up screen — which RI-PRG04 §1 makes the hearth's defining affordance and calls 'THE ONLY PLACE LEVELLING IS POSSIBLE' — cannot be opened at any of the 29 shipped sapwells. Measured at hearth-archon, hearth-lilmoth and hearth-gideon: standing on the basin, with the hearth registry itself reporting `standing_at: hearth-<id>` and immediately after a successful `restAt()`, `openMenu('levelup')` is REFUSED 3/3 with \"the level-up screen exists at a HEARTH only (RI-UIX03 L1)\"; with the harness override `setAtHearth(true)` — which has no in-game counterpart — the same call OPENS 1/1. The gate at game/src/engine.js:2011 is `!!(this.hearths && this.hearths.atHearth && this.hearths.atHearth(this.sim)) || !!this.sim._uiForceHearth`, and HearthSystem (game/src/sim/hearth.js) defines list/get/count/nearest/at/gateAt/menu and no `atHearth`. The first disjunct is `undefined` at every well in the province and the only writer of the second is `__HARNESS.setAtHearth()`. `_spendSouls()` is reachable from exactly one producer (game/src/ui/system.js:322, inside `case 'levelup'`), so souls have no sink anywhere in the running build.",
+      "why_it_matters": "The player banks souls, risks them, dies, walks back and recovers exactly 4,200 of them — and then cannot spend one, which makes the entire death economy this piece implements so carefully a loop with nothing at the end of it.",
+      "remedy": {
+        "action": "Add the missing predicate to the hearth registry that already answers the question. In game/src/sim/hearth.js, add to HearthSystem: `atHearth(sim) { return !!this.at(sim.player.pos[0], sim.player.pos[2]); }` — `at(x, z)` already exists and already tests each well's own `interact_radius_m`, and `listHearths().standing_at` is built from it, so the registry is right and only the method name the UI calls is missing. Then demote `sim._uiForceHearth` to a declared test override: keep it (arena scenarios need it) but have `setAtHearth()` set a flag that `getUIState()` reports, so a probe that leans on it is visible in its own output. While in this file, note the same shape elsewhere: `game/data/world/respawn.json` names `engine.spawn(id, x, z, {named: true})` as the producer of the six never-respawn flags and `engine.spawn()` copies only `opts.as` and `opts.yaw` — fix that in the same pass (three lines) so the S5 classifier has a world-side writer and is not reachable only through `setEntityNamed()`.",
+        "targets": [
+          "game/src/sim/hearth.js",
+          "game/src/engine.js",
+          "game/src/ui/system.js",
+          "game/data/world/respawn.json",
+          "tools/harness/critic-w1-13-f.mjs",
+          "tools/journey/jrn06-death.mjs"
+        ],
+        "acceptance": "`node tools/harness/critic-w1-13-f.mjs` reports `levelup_reachable: true` at all three wells with NO `setAtHearth()` call anywhere in the probe, and `false` when the player is teleported 50 m off the basin; a `level_up` trace event fires from a well and from nowhere else in the province; and `soulsHeld` falls by exactly `soulsToNextLevel()` with `level` rising by 1. Separately, `node tools/harness/critic-w1-13-b.mjs` reports `flags_honoured_via_spawn_opts` listing all six flags (it currently lists none) and `protected_that_stood_back_up: []` on both the rest and the death trigger (it currently lists six).",
+        "ref_item": "RI-PRG04",
+        "estimated_size": "S"
+      },
+      "remedy_action": "Add the missing predicate to the hearth registry that already answers the question. In game/src/sim/hearth.js, add to HearthSystem: `atHearth(sim) { return !!this.at(sim.player.pos[0], sim.player.pos[2]); }` — `at(x, z)` already exists and already tests each well's own `interact_radius_m`, and `listHearths().standing_at` is built from it, so the registry is right and only the method name the UI calls is missing. Then demote `sim._uiForceHearth` to a declared test override: keep it (arena scenarios need it) but have `setAtHearth()` set a flag that `getUIState()` reports, so a probe that leans on it is visible in its own output. While in this file, note the same shape elsewhere: `game/data/world/respawn.json` names `engine.spawn(id, x, z, {named: true})` as the producer of the six never-respawn flags and `engine.spawn()` copies only `opts.as` and `opts.yaw` — fix that in the same pass (three lines) so the S5 classifier has a world-side writer and is not reachable only through `setEntityNamed()`.",
+      "remedy_acceptance": "`node tools/harness/critic-w1-13-f.mjs` reports `levelup_reachable: true` at all three wells with NO `setAtHearth()` call anywhere in the probe, and `false` when the player is teleported 50 m off the basin; a `level_up` trace event fires from a well and from nowhere else in the province; and `soulsHeld` falls by exactly `soulsToNextLevel()` with `level` rising by 1. Separately, `node tools/harness/critic-w1-13-b.mjs` reports `flags_honoured_via_spawn_opts` listing all six flags (it currently lists none) and `protected_that_stood_back_up: []` on both the rest and the death trigger (it currently lists six).",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/levelup-at-the-well.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-13-r1/walked-loop.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-input-discoverability-unmeasured",
+      "subsystem_path": "input.discoverability",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-08-29-r1-resume-2",
+      "opened_in": "corpus/90-verdicts/wave1/W1-08-W1-29-r1.json",
+      "piece_id": "w1-08-w1-29-r1",
+      "severity": "major",
+      "what": "RI-JRN03's entire 'Discoverability without instruction' block — 14 of its 100 points, and the home of hard fail HF5 — is unmeasured, and the one check in it that reports a result reports it from an empty buffer. M-K20 searches window.__HARNESS.getRenderedText() for instruction tokens and passed with `frames: 0`. I drove the register in seven named states (arena_flat, helstrom-market, thorn-hall, ui-journal, npc_showcase, default, settlement_primary_street) and through uiOpen('dialogue'), uiOpen('menu') and uiOpen('rest'): entries = 0 and summary.surfaces = {} in every single one, while getUIState() at the same instant reports three HUD elements carrying drawn text ('5', 'LIGHT', 'Spark-Dart'). game/src/render/text-register.js instruments only the 'dialogue' and 'title' surfaces and neither ever writes. M-K21 and M-K22 — the other 8 points of the block, M-K22 being the second half of HF5 — do not exist in tools/journey/input-checks.mjs at all; nor do M-K8 (HF3), M-K9 (HF4), M-N1/M-N2/M-N3/M-N5(HF10)/M-N7, M-P14, M-P20, M-P24 (HF7) or M-P25. That is 13 scored ids returning 0 to `grep -c` over the instrument, 28 of RI-JRN03's 100 points and 12 of RI-JRN04's, and five named hard-fail gates that no instrument can fire. The build's `--self-test` takes 5 instruments red — M-P5, M-P3, M-P1, M-P6, M-P17 — and not one of them is a check in this block.",
+      "why_it_matters": "The measurement floor is the reason the undrawn touch overlay could ship with 41/41 green, and it is why nobody would be able to tell next round whether the overlay was actually drawn or the same orphan text was moved somewhere else: the only instrument that inspects drawn strings is looking at a buffer nothing writes.",
+      "remedy": {
+        "action": "Three steps, in order. (1) MAKE THE REGISTER REAL: game/src/render/text-register.js wraps CanvasRenderingContext2D.fillText but only for the 'dialogue' and 'title' surfaces; route every text-drawing surface through it — HUD, menu, rest, the rebinding screen, and the touch/rotate surfaces once they are drawn — so getRenderedText() returns what is on the glass. (2) GIVE M-K20 A POSITIVE CONTROL IN --self-test: add a leg that draws a known token ('Press E') on a non-settings surface and asserts M-K20 goes red; a leg that asserts the token is NOT found when drawn on the settings surface; and make the check itself report `unmeasurable` rather than `pass` whenever entries === 0, so an empty stream can never again read as a clean bill of health. (3) IMPLEMENT THE MISSING IDS: M-K8, M-K9, M-K21, M-K22, M-P14, M-P20, M-P24 and M-P25 as instrument checks in tools/journey/input-checks.mjs, each with a --self-test perturbation leg; and run the Naive pass (M-N1/N2/N3/N5/N7 for RI-JRN03, M-N1/N3/N5 for RI-JRN04) as the separate fresh-agent protocol its own section specifies, since it is a procedure and not an instrument.",
+        "targets": [
+          "game/src/render/text-register.js",
+          "game/src/render/ui.js",
+          "tools/journey/input-checks.mjs",
+          "corpus/88-journeys/RI-JRN03-desktop-controls.md",
+          "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md"
+        ],
+        "acceptance": "`node tools/journey/input-checks.mjs --group desktop,pad,touch,viewport,rebind --self-test` reports (a) M-K20 with entries > 0 in at least one ordinary gameplay state and 0 instruction-token hits, (b) a --self-test leg that draws 'Press E' outside the settings surface and drives M-K20 red, (c) non-null results for all thirteen ids currently missing, and (d) a --self-test leg for each newly added check that goes red under perturbation with `vacuous: []`. Re-measured by a later critic with `grep -c \"'M-K8'\" tools/journey/input-checks.mjs` returning >= 1 for every id in RI-JRN03 and RI-JRN04's ## Scoring tables.",
+        "ref_item": "RI-JRN03",
+        "estimated_size": "M"
+      },
+      "remedy_action": "Three steps, in order. (1) MAKE THE REGISTER REAL: game/src/render/text-register.js wraps CanvasRenderingContext2D.fillText but only for the 'dialogue' and 'title' surfaces; route every text-drawing surface through it — HUD, menu, rest, the rebinding screen, and the touch/rotate surfaces once they are drawn — so getRenderedText() returns what is on the glass. (2) GIVE M-K20 A POSITIVE CONTROL IN --self-test: add a leg that draws a known token ('Press E') on a non-settings surface and asserts M-K20 goes red; a leg that asserts the token is NOT found when drawn on the settings surface; and make the check itself report `unmeasurable` rather than `pass` whenever entries === 0, so an empty stream can never again read as a clean bill of health. (3) IMPLEMENT THE MISSING IDS: M-K8, M-K9, M-K21, M-K22, M-P14, M-P20, M-P24 and M-P25 as instrument checks in tools/journey/input-checks.mjs, each with a --self-test perturbation leg; and run the Naive pass (M-N1/N2/N3/N5/N7 for RI-JRN03, M-N1/N3/N5 for RI-JRN04) as the separate fresh-agent protocol its own section specifies, since it is a procedure and not an instrument.",
+      "remedy_acceptance": "`node tools/journey/input-checks.mjs --group desktop,pad,touch,viewport,rebind --self-test` reports (a) M-K20 with entries > 0 in at least one ordinary gameplay state and 0 instruction-token hits, (b) a --self-test leg that draws 'Press E' outside the settings surface and drives M-K20 red, (c) non-null results for all thirteen ids currently missing, and (d) a --self-test leg for each newly added check that goes red under perturbation with `vacuous: []`. Re-measured by a later critic with `grep -c \"'M-K8'\" tools/journey/input-checks.mjs` returning >= 1 for every id in RI-JRN03 and RI-JRN04's ## Scoring tables.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-l/critic-checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-k/critic-checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-e/critic-checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side",
+      "subsystem_path": "ui.readables",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-library-r1",
+      "opened_in": "corpus/90-verdicts/wave1/W1-LIBRARY-r1.json",
+      "piece_id": "w1-library-books-and-the-reading-surface",
+      "severity": "critical",
+      "what": "37,819 words in 65 texts open 65/65 in the engine across 324 pages, and the only thing a player can do with any of it is read it. Both mechanical consumers the two items name are dead code. (1) `book.knowledge_key` is read by no file in game/src/; the three non-violent quest resolutions that gate on those keys — Q-SOUL-02 res_seal, Q-LILM-01 res_rootkeepers, Q-DEEP-01 res_broker — are unreachable by any route in the shipped build, and the engine reports the identical refusal before and after the book has been opened and read to the last page. (2) `book.topics_taught` (60 books, 116 topics) is read by nothing; opening all 60 in the engine leaves topicsKnown empty. That field is RI-UIX05 R3's permitted exception and the item's entire declared AR-3 seam crossing.",
+      "why_it_matters": "RI-UIX05 §D's last row exists, in the item's own words, because 'a player who read the right book three regions ago knows a name, and a name is a parley key (S13) or a topic (R3's exception) ... this row owns whether the reading surface is connected to anything.' It reports 17 by reading JSON and 0 by asking the game. Three of the build's non-violent exits are closed, which pushes against the >=45% non-combat resolution bar; and the piece's only route across the Souls/Morrowind seam does not exist. ARBITRATION §3 CONSUMPTION is explicit that a model with no demonstrated consumer scores 0 exactly as a missing model does, because from the player's chair they are the same thing.",
+      "remedy": {
+        "summary": "Fire one callback from the book-open path into the quest engine, so that reading a book writes what the book says it teaches.",
+        "steps": [
+          "In game/src/ui/system.js, in the open('book', {id}) branch that already resolves the book record (around line 129), on FIRST open of a given book id call a new questEngine.readBook(bookRecord).",
+          "readBook(): for each t in book.topics_taught, append through game/src/sim/quest/topic-supply.js's fold-safe appender into sim.quest.topicsKnown — that module exists and is already the correct door, and it dedupes on the folded key.",
+          "readBook(): if book.knowledge_key is set, add it to a new sim.quest.booksRead Set, and union that Set into ctx.knowledge at game/src/sim/quest/machine.js:142. One line at each site; no quest data changes.",
+          "Add sim.quest.booksRead to the save manifest, or a load silently closes the doors again (this is the W1-SAVE lesson: audit the live world after the load, not the bytes).",
+          "Guard against R3/R4: a topic is a NAME, never a destination. Nothing may be written to the journal, no marker may be created, and RI-UIX02's quest-state differential must show no on-screen change outside the book."
+        ],
+        "acceptance_test": "node tools/harness/critic-w1-library-consume.mjs must report available:false in the control and available:true (or a `why` array that no longer contains 'you have not learned book_*') after reading, for all three cases; node tools/harness/critic-w1-library-seam.mjs must report a non-empty topics_gained_by_reading_every_book. Both probes exist and both currently go red.",
+        "owner_item": "RI-UIX05",
+        "estimated_size": "small — two call sites and a save field"
+      },
+      "remedy_action": null,
+      "remedy_acceptance": null,
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-consume.json — control and treatment `why` arrays byte-identical for all three cases",
+        "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/critic-w1-library-seam.json — 60 books opened, 116 topics declared, 0 gained",
+        "game/src/sim/quest/machine.js:142 — ctx.knowledge is built only from per-quest `know:` flags",
+        "game/src/sim/quest/machine.js:321 — reveal() is the sole writer and throws unless the id is in deceit.revealed_by",
+        "grep: `knowledge_key` appears in game/src/ only at engine.js:5536, inside a statistics counter",
+        "grep: `topics_taught` appears nowhere in game/src/"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-magic-cannot-hit-a-moving-target",
+      "subsystem_path": "magic.casting.geometry",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-14-r3-9f2c",
+      "opened_in": "corpus/90-verdicts/wave1/W1-14-r3.json",
+      "piece_id": "W1-14-r3",
+      "severity": "blocking",
+      "what": "A spell does not connect with anything that moves. A LIGHT-class bolt fired at a body 18 m away deals 80 damage when the body is stationary and 0 damage the moment it moves laterally at 1.5 m/s - slower than the walk speed measured in the same arena, 3.17 m/s - and 0 at 3, 5 and 7 m/s. spell_impact fires in every row; effect_apply fires only at 0 m/s. This is not the tracking fence: AP-M3 passes cleanly under an instrument that re-derives the turn rate from consecutive headings (LIGHT 60.00 dps before the fence and 0.00 after, 0 violating frames, --break=nocutoff red at 72 frames), and the arc is real at 21.95 deg on LIGHT and 24.16 deg on HEAVY. The bolt steers and still misses, because it steers toward the position it acquired at release rather than the position the target now occupies, and the 0.35 x journey fence closes before the error is paid off. The comparison that rules out an instrument artefact is touch range, measured the same way with the same setEntityPos calls: a retreating body takes full damage at 0 and 1 m/s and none at 3, so the harness demonstrably drives the same resolver.",
+      "why_it_matters": "Every enemy in this build repositions - the arena's own bodies sit in REPOSITION for the whole of a 900-frame observation - so the offensive half of the catalogue, which is every projectile- and target-range effect and therefore all five damage effects and most of the status verbs, does not work against a live opponent at all. It also explains a structural fact about every census this piece has ever run, mine included: they all pin a body at 1.4 m and use touch range, because that is the only geometry that connects. DISTINCT-VERBS 53/55 is a true statement about a build in which the thing a player actually does with a spell in a fight does not land. And it is the round's own new protocol rule - if the thing being measured responds to motion, the target must move - applied to the one place the round that wrote it did not apply it.",
+      "remedy": {
+        "action": "In sim/magic/system.js's projectile step, re-acquire the target's current position on every frame the projectile is inside its tracking window instead of latching the aim point at release, and derive the cutoff from the predicted intercept rather than from the acquisition-time journey.",
+        "acceptance": "A LIGHT bolt fired at a body 18 m away strafing at 1.5, 3 and 5 m/s deals its full deterministic damage in at least 2 of the 3 rows, measured in headless Chromium with tools/harness/critic-w1-14-r3-motion.mjs; AND AP-M3 still reports 0 violating frames past 0.35 x travel_f on LIGHT, HEAVY and CANTRIP; AND __breakTrackingCutoff() still drives the violating-frame count above 50 on LIGHT.",
+        "targets": [
+          "game/src/sim/magic/system.js (the projectile step: target re-acquisition and the tracking-cutoff derivation)",
+          "game/data/magic/ballistics or cast-classes tracking_cutoff, if the fence needs a second term",
+          "tools/harness/critic-w1-14-r3-motion.mjs (the acceptance instrument, already written)"
+        ]
+      },
+      "remedy_action": "In sim/magic/system.js's projectile step, re-acquire the target's current position on every frame the projectile is inside its tracking window instead of latching the aim point at release, and derive the cutoff from the predicted intercept rather than from the acquisition-time journey.",
+      "remedy_acceptance": "A LIGHT bolt fired at a body 18 m away strafing at 1.5, 3 and 5 m/s deals its full deterministic damage in at least 2 of the 3 rows, measured in headless Chromium with tools/harness/critic-w1-14-r3-motion.mjs; AND AP-M3 still reports 0 violating frames past 0.35 x travel_f on LIGHT, HEAVY and CANTRIP; AND __breakTrackingCutoff() still drives the violating-frame count above 50 on LIGHT.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-14-r3/motion.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
       "gap_id": "GAP-W1-magic-effects-no-behaviour",
       "subsystem_path": "magic.effects.utility",
       "opened_wave": 1,
@@ -354,6 +576,51 @@
         "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skill-gate.json",
         "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-skill-by-use.json",
         "corpus/90-verdicts/wave1/artifacts/W1-14-r2/critic-progression-quest.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-mainquest-topic-bootstrap",
+      "subsystem_path": "quests.mainline.acts",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-19-r1-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/W1-19-r1.json",
+      "piece_id": "w1-19",
+      "severity": "blocking",
+      "what": "The main quest cannot be entered or advanced by playing. Booted cold with nothing granted through the harness, 0 of 32 category:\"main\" quests are offerable and 32 of 32 are refused by gate.js:153 on `opens_by.topic`; `topicsKnown` is length 0 and nothing in the running world can ever add to it in the spelling the gate compares. Of the 32 AddTopic edges W1-19 appended to hooks.json, 23 seed only the topic that opens the very quest firing them (Q-MAIN-nn#10 adds the topic Q-MAIN-nn's own opens_by demands), 5 seed a topic no quest asks for, and only 4 point forward. Separately, 2 of 32 opening topics exist in the world's raw spelling at all, 0 exist as a dialogue topic id, 0 rumour lines anywhere in game/data/dialogue/** name a main-quest noun, and `opens_by.overheard_from` — declared on the three quests that are supposed to be overheard — has zero code consumers. The builder's green 29/29 trace does not contradict this: tools/quests/mainline-trace.mjs calls `H.learnTopic(step.topic)` with the exact string the gate is about to ask for, immediately before asking. Running the builder's own drop-topic sabotage — which the builder framed as a control proving the instrument can fail — is in fact the measurement of the shipping build, and it stops at Q-MAIN-01 with 0 journal entries. MEASURED VALUES BY ARTIFACT: corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-findability.json — live cold boot: main quests offerable 0/32, blocked on the topic gate 32/32, topics known at a cold start 0 || corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-topic-supply.json — supplied only by itself 23, no supplier at all 5, supplied by something else 4 || corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.drop-topic.json — 'Q-MAIN-01: could not open — the topic \"the drowned tally\" has not come up yet', 0/29 and 0/17, 0 journal entries || corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json — coupling 0 on opens_by.topic, opens_by.overheard_from, q.directions and the entry_topics edges || game/src/core/topics.js — landed UNTRACKED during this measurement and states the same finding independently; it is imported by game/src/character/converse.js and NOT by game/src/sim/quest/gate.js or game/src/sim/quest/machine.js, so the fold does not reach the quest gate at commit be17753",
+      "why_it_matters": "A player who boots this build, walks to Soulrest and stands in front of Undersexton Aveline Rell cannot start the main quest, and no sentence anywhere in the world tells them the words that would let them.",
+      "remedy": {
+        "action": "Two edits, in this order. (1) Import `topicKey` from game/src/core/topics.js into game/src/sim/quest/gate.js and fold both sides of the two topic comparisons (line 151 prerequisite_topics, line 153 opens_by.topic) and the topicsKnown set built in machine.js context(). That alone lifts the world-suppliable count from 2/32 to 27/32 in spelling terms. (2) Re-author the AddTopic graph so it points FORWARD: each main quest's opening topic must be granted by an earlier quest's journal entry, a book, or a rumour — never by its own index 10 — and Q-MAIN-01 must have a world-side entry that owes nothing to a prior quest, which means >= 1 rumour line in game/data/dialogue/rumours.json in a settlement other than Soulrest naming the Drowned Tally, plus greeting or topic content on the three NPCs already declared in Q-MAIN-01's opens_by.overheard_from, and a consumer for that field.",
+        "targets": [
+          "game/src/sim/quest/gate.js",
+          "game/src/sim/quest/machine.js",
+          "game/data/quests/hooks.json",
+          "game/data/dialogue/rumours.json",
+          "game/data/dialogue/topics/",
+          "game/data/quests/mainline-act1.json"
+        ],
+        "acceptance": "node tools/quests/mainline-findability.mjs reports `main quests offerable` >= 1 and `blocked on the topic` <= 31 at a cold start with nothing learned through the harness, AND a played run of tools/quests/mainline-trace.mjs with every H.learnTopic() call removed completes 29/29 on the intended chain and 17/17 on the backpath. Equivalently: mainline-topic-supply.json reports supplied_only_by_itself = 0 and no_supplier_at_all <= 1 (Q-MAIN-01, whose supplier must be a rumour rather than a quest).",
+        "ref_item": "RI-MTH07",
+        "estimated_size": "M"
+      },
+      "remedy_action": "Two edits, in this order. (1) Import `topicKey` from game/src/core/topics.js into game/src/sim/quest/gate.js and fold both sides of the two topic comparisons (line 151 prerequisite_topics, line 153 opens_by.topic) and the topicsKnown set built in machine.js context(). That alone lifts the world-suppliable count from 2/32 to 27/32 in spelling terms. (2) Re-author the AddTopic graph so it points FORWARD: each main quest's opening topic must be granted by an earlier quest's journal entry, a book, or a rumour — never by its own index 10 — and Q-MAIN-01 must have a world-side entry that owes nothing to a prior quest, which means >= 1 rumour line in game/data/dialogue/rumours.json in a settlement other than Soulrest naming the Drowned Tally, plus greeting or topic content on the three NPCs already declared in Q-MAIN-01's opens_by.overheard_from, and a consumer for that field.",
+      "remedy_acceptance": "node tools/quests/mainline-findability.mjs reports `main quests offerable` >= 1 and `blocked on the topic` <= 31 at a cold start with nothing learned through the harness, AND a played run of tools/quests/mainline-trace.mjs with every H.learnTopic() call removed completes 29/29 on the intended chain and 17/17 on the backpath. Equivalently: mainline-topic-supply.json reports supplied_only_by_itself = 0 and no_supplier_at_all <= 1 (Q-MAIN-01, whose supplier must be a rumour rather than a quest).",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-findability.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-topic-supply.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.drop-topic.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
       ],
       "status": "open",
       "assigned_to_wave": 2,
@@ -450,6 +717,178 @@
       "age_waves": 0
     },
     {
+      "gap_id": "GAP-W1-provstream-arrival-burst",
+      "subsystem_path": "world.province.streaming",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-01-provstream-r1-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/W1-01-province-stream-r1.json",
+      "piece_id": "w1-01-province-stream-pump",
+      "severity": "blocking",
+      "what": "The urgent tile-build branch in Engine._streamProvince() is exempt from the one-unit-of-work-per-step budget AND is evaluated BEFORE it, so any frame on which the body ARRIVES somewhere - a respawn, a teleport, a future fast-travel or cutscene relocation - pays a ~30-tile release plus updateSkin (15,625 vertices) plus updateCover plus updateNear plus two full _buildTile calls in one fixed step.",
+      "why_it_matters": "Measured on a real death in the province, the six frames after the respawn cost 337.01, 405.43, 483.96, 361.98, 222.64 and 472.46 ms - about 2,283 ms in total, against the builder's walking worst case of 133.8 ms. FixedLoop.MAX_CATCHUP is 5, so in mode 'play' the accumulator advances at most 83 ms of world and drops the remaining ~2.2 s into catchupDroppedMs. The world stops for two seconds at the exact moment a Souls player has just died and is looking for their bloodstain, which is the most latency-sensitive moment in the game outside a boss swing. The builder never saw it because every one of its runs was a walk, and a walk never enters this branch.",
+      "remedy": {
+        "action": "Make the urgent budget respect the work the frame has already done, and declare the arrival as a load boundary.",
+        "targets": [
+          "game/src/engine.js _streamProvince(): move `if (discWork) return;` ABOVE the urgent branch, or change pump(STREAM_URGENT_TILES) to pump(discWork ? 1 : STREAM_URGENT_TILES). The tile under the body is queue[0] with d === 0 and one pump(1) places it; the other eight tiles of the 3x3 are 150-450 m away and can wait a frame each.",
+          "game/src/engine.js teleport() and the respawn path: wrap in _boundaryBegin('province_stream') / _boundaryEnd, per RI-PLT03 §B. A boundary you announce is not a hitch.",
+          "game/src/engine.js: skip the request() refocus while combat.player.state is inside ATK_* or ROLL_*, letting s.since keep counting. This is the AR-1 remedy and it is far cheaper than making updateSkin fast: a roll covers ~5 m against SKIN_REBUILD_M = 11, so nothing visible moves.",
+          "game/src/engine.js STREAM_REFOCUS_M and the disc rebuild distances: budget by METRES SINCE THE LAST REBUILD rather than by frames, so travelRide at 40 m/s gets the throughput it needs instead of a walk's."
+        ],
+        "acceptance": "node tools/world/critic-prov-r1.mjs --mode displace reports worst_step_ms_after_jump <= 120 on a box at loadavg < 4, with frames_standing_on_no_ground still 0 and frames_until_near9_complete <= 16; --mode ride reports over_16_7 <= 1% of steps; --mode fight reports iframe_frames_over_16_7 = 0; --mode loop unchanged.",
+        "ref_item": "RI-PLT03",
+        "estimated_size": "S"
+      },
+      "remedy_action": "Make the urgent budget respect the work the frame has already done, and declare the arrival as a load boundary.",
+      "remedy_acceptance": "node tools/world/critic-prov-r1.mjs --mode displace reports worst_step_ms_after_jump <= 120 on a box at loadavg < 4, with frames_standing_on_no_ground still 0 and frames_until_near9_complete <= 16; --mode ride reports over_16_7 <= 1% of steps; --mode fight reports iframe_frames_over_16_7 = 0; --mode loop unchanged.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/raf.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ride.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-questionnaire-route-is-unreadable-and-unnamed",
+      "subsystem_path": "character.creation.flow",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-07-r2-3e7c",
+      "opened_in": "corpus/90-verdicts/wave1/W1-07-r2.json",
+      "piece_id": "w1-07-r2",
+      "severity": "blocking",
+      "what": "The questionnaire — RI-CHR01 §4 Route C, RI-JRN01 O9's mandatory route — reaches the player with neither its questions nor its answer. (a) buildCensusModel() at game/src/character/scene.js:267 sets `line: state.line` and never reads `state.question.text`, so all ten dilemma nodes draw one identical stock transition line above four unattached answers: 10 distinct question texts in the model, 1 distinct drawn line, 0 of 10 reaching the frame. (b) Across 240 runs covering all 10 races x 4 upbringings x 8 answer permutations with a verified even answer histogram (600 each of a/b/c/d), the route produced a named class 0 times out of 14, against RI-CHR01's pass floor of >= 6 and its 0-band of < 6.",
+      "why_it_matters": "A player taking the route this game's opening is built around is shown forty answers to questions that are never asked, and is never once told what profession they turned out to be — the moment the route exists for does not occur in any configuration.",
+      "remedy": {
+        "action": "1) In buildCensusModel(), when state.input.kind === 'questionnaire', set line: state.question.text and move the scribe's transition line to the aside slot (or to the writ.class-routes answer). The model already carries the text; this is one line. 2) In character/questionnaire.js's scoreAnswers, make the named-class match reachable: compare the resulting 3-primary/2-secondary skill set against classes.json's fourteen with a tolerance (>= 3 of 5 shared skills plus a matching family) rather than requiring an exact set — census.js already has on_match_named_class and %ClassName wired for the moment it succeeds. 3) In CensusSurface.sync(), filter a pick node's options against attributes already taken by earlier pick nodes so writ.class-custom-neglected cannot offer a favoured attribute, and wrap _censusApplyPending() so a refused answer can never throw out of the frame step.",
+        "targets": [
+          "game/src/character/scene.js",
+          "game/src/character/questionnaire.js",
+          "game/src/character/census.js",
+          "game/src/engine.js"
+        ],
+        "acceptance": "getCensusState().surface.rendered_text contains getCensusState().question.text at 10 of 10 questionnaire nodes and the 10 nodes yield 10 distinct drawn lines; a 240-run sweep over all 10 races x 4 upbringings with an even a/b/c/d answer histogram reaches >= 6 distinct named class_id values (>= 10 for the item's 10 band) and the Warden-Scribe's on_match_named_class line fires on every named match; and the full custom-class route completes on gamepad alone with 0 exceptions out of stepFrames.",
+        "ref_item": "RI-CHR01",
+        "estimated_size": "S"
+      },
+      "remedy_action": "1) In buildCensusModel(), when state.input.kind === 'questionnaire', set line: state.question.text and move the scribe's transition line to the aside slot (or to the writ.class-routes answer). The model already carries the text; this is one line. 2) In character/questionnaire.js's scoreAnswers, make the named-class match reachable: compare the resulting 3-primary/2-secondary skill set against classes.json's fourteen with a tolerance (>= 3 of 5 shared skills plus a matching family) rather than requiring an exact set — census.js already has on_match_named_class and %ClassName wired for the moment it succeeds. 3) In CensusSurface.sync(), filter a pick node's options against attributes already taken by earlier pick nodes so writ.class-custom-neglected cannot offer a favoured attribute, and wrap _censusApplyPending() so a refused answer can never throw out of the frame step.",
+      "remedy_acceptance": "getCensusState().surface.rendered_text contains getCensusState().question.text at 10 of 10 questionnaire nodes and the 10 nodes yield 10 distinct drawn lines; a 240-run sweep over all 10 races x 4 upbringings with an even a/b/c/d answer histogram reaches >= 6 distinct named class_id values (>= 10 for the item's 10 band) and the Warden-Scribe's on_match_named_class line fires on every named match; and the full custom-class route completes on gamepad alone with 0 exceptions out of stepFrames.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeC/probeC.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeH/probeH.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/07-writ.class-questions.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeA/shots/16-writ.class-questions.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r2/probeE/probeE.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
+      "subsystem_path": "journey.opening.legibility",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-26-r1-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/W1-26-r1.json",
+      "piece_id": "w1-26-r1",
+      "severity": "blocking",
+      "what": "The build's rendered-text accessor — `__HARNESS.getRenderedText()`, fed by render/text-register.js — is STRUCTURALLY INCAPABLE of seeing the one surface RI-JRN01 M9 and M15 are aimed at, and the build's own report records a pass over an empty set as a result. render/render.js:90 carries the comment 'Every 2D surface this renderer owns is registered against the one rendered-text register' and then instruments two of three: `this.ui` as 'dialogue' and `this.title` as 'title'. The third, `this.menus = new UISurface(...)` at renderer.js:86, is W1-21's HUD and menus — which is precisely M9's domain, 'every string rendered OUTSIDE a dialogue/journal/book surface'. FALSIFIED, not inferred: I instrumented the menus context at runtime through the register's OWN public instrument() and forced a repaint, and got ZERO entries. Then, in the same freshly-instrumented context, I drew one sentinel through ui/glyphs.js drawText() — the path every string in that surface takes — and one through ctx.fillText(). The register saw the fillText sentinel (1 row) and did not see the glyphs sentinel (0 rows). glyphs.js renders every glyph as a stroked Path (moveTo / lineTo / quadraticCurveTo / stroke) and never calls fillText or strokeText, which the register wraps. So the hole cannot be closed by calling instrument() — the register is blind to that surface by construction. Enumerated directly through UISurface.elements[].text, the opening draws five strings the accessor cannot see: '5', '0', 'LIGHT', 'Spark-Dart' and 'Take A tithe-gourd, empty'. reports/journeys/w1-26-opening.json records `m9.surfaces_searched: 'title (the only non-dialogue drawn surface in the build)'` — which is false — with `distinct_searched: 0` and `hits: []`, and the piece reports M9 as scoreable for the first time on that basis.",
+      "why_it_matters": "This is not a missing feature; it is a wrong number that looks right, on the piece's own declared path, in the instrument the whole area was gated on. RI-JRN01 §0.1(a) exists because a canvas-only build returned an empty accessibility tree to the obvious accessor, so a grep over an empty set returned zero hits and read as a clean pass; the amendment's fix was to demand a NAMED accessor demonstrated non-empty. This build supplied one, demonstrated it non-empty ON A DIFFERENT SURFACE, and bought exactly the same false pass one layer down. That is RI-JRN01 How-we-lose #15 reproduced by the fix written to close it — and it is strictly worse than the failure it replaced, because the empty accessibility tree announced its own emptiness while `getRenderedText()` returns twelve confident strings and a summary block. Every future critic of this journey will read it and believe it. The concrete cost this round: M9 (10 points) and M15 (3 points) score 0 of RI-JRN01's 20-point Restraint block; the check that was meant to catch instruction text did not catch the instruction text that is there; and AR-2 fails on a string the build's own sweep reported as absent. The cost next round is larger and less visible — the accessor is now the corpus's only answer to 'what does the frame say?', and it answers for two thirds of the frame.",
+      "remedy": {
+        "action": "Make the register see the third surface, then re-run M9 and M15 over it. Two routes, either acceptable. (a) Give ui/glyphs.js drawText() a register call of its own: it already holds the string, x, y, the face and the size at the top of the function, so one `textRegister.note(ctx, s, x, y, size)` before the glyph loop puts it in the same register with the same clip shadow. (b) Have UISurface.el() route every record carrying `text` through a shim that the register wraps, so the tag stays on the element rather than being inferred. Route (a) is smaller and catches anything that draws glyphs, including surfaces nobody has written yet; route (b) is safer against a future surface that draws text some third way. Whichever is taken, `getRenderedText()` must stop advertising `surfaces_instrumented` as a static array and derive it from the contexts actually wrapped, and tools/harness/w1-26-opening.mjs must FAIL rather than pass when its M9 grep searches zero strings — a probe that cannot go red is worse than no probe. Separately, remove or rewrite the interact prompt so it names the object without commanding the player ('A tithe-gourd, empty' rather than 'Take A tithe-gourd, empty').",
+        "targets": [
+          "game/src/render/text-register.js",
+          "game/src/render/renderer.js",
+          "game/src/ui/glyphs.js",
+          "game/src/ui/surface.js",
+          "game/src/harness/api.js",
+          "tools/harness/w1-26-opening.mjs"
+        ],
+        "acceptance": "On a frame of the opening where UISurface.elements[].text is non-empty, `__HARNESS.getRenderedText({notSurface:['dialogue']})` returns a distinct set that CONTAINS every one of those strings (set equality, not merely non-empty), and the register reports them with a clip flag. Then M9's grep over that set returns 0 hits and M15's returns 0 hits, and tools/harness/w1-26-opening.mjs exits non-zero if `m9.distinct_searched === 0`. Falsification required in the same run: draw a sentinel through ui/glyphs.js drawText() and assert the register sees it, exactly as this verdict's probe asserts it currently does not.",
+        "ref_item": "RI-JRN01",
+        "estimated_size": "S"
+      },
+      "remedy_action": "Make the register see the third surface, then re-run M9 and M15 over it. Two routes, either acceptable. (a) Give ui/glyphs.js drawText() a register call of its own: it already holds the string, x, y, the face and the size at the top of the function, so one `textRegister.note(ctx, s, x, y, size)` before the glyph loop puts it in the same register with the same clip shadow. (b) Have UISurface.el() route every record carrying `text` through a shim that the register wraps, so the tag stays on the element rather than being inferred. Route (a) is smaller and catches anything that draws glyphs, including surfaces nobody has written yet; route (b) is safer against a future surface that draws text some third way. Whichever is taken, `getRenderedText()` must stop advertising `surfaces_instrumented` as a static array and derive it from the contexts actually wrapped, and tools/harness/w1-26-opening.mjs must FAIL rather than pass when its M9 grep searches zero strings — a probe that cannot go red is worse than no probe. Separately, remove or rewrite the interact prompt so it names the object without commanding the player ('A tithe-gourd, empty' rather than 'Take A tithe-gourd, empty').",
+      "remedy_acceptance": "On a frame of the opening where UISurface.elements[].text is non-empty, `__HARNESS.getRenderedText({notSurface:['dialogue']})` returns a distinct set that CONTAINS every one of those strings (set equality, not merely non-empty), and the register reports them with a clip flag. Then M9's grep over that set returns 0 hits and M15's returns 0 hits, and tools/harness/w1-26-opening.mjs exits non-zero if `m9.distinct_searched === 0`. Falsification required in the same run: draw a sentinel through ui/glyphs.js drawText() and assert the register sees it, exactly as this verdict's probe asserts it currently does not.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r1/accessor-hole.log",
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r1/accessor-hole.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r1/ar2-m9-hud.log",
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r1/ar2-m9-hud.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-26-r1/builder-w1-26-opening.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-save-purse-has-no-writer",
+      "subsystem_path": "journey.save.roundtrip",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-save-r1-live-audit",
+      "opened_in": "corpus/90-verdicts/wave1/W1-SAVE-r1.json",
+      "piece_id": "W1-SAVE-r1",
+      "severity": "blocking",
+      "what": "The gold a player can actually spend is held in `combat.world.gold` (rebuilt by `Engine._buildCombat`) and `sim.stealth.p.gold`, and neither is ever written back into `sim.progression.gold` — the only gold register the save carries. On 3 of the 38 shipped named states (helstrom-market, rootlands-well-graph, stormhold-street) a plain save/load destroys 600 gold, on 10 of 10 seeds, and it survives a real cold reload through IndexedDB as well. Every shipped instrument reports clean while it happens: M1 hash equal, M2 diff empty, M4 set difference empty both ways, `getDurableFieldCensus().ok` true, and the M5 trace byte-identical. Falsified with the null control — blanking `progression.gold` and `fight.loadout.gold` out of the blob produces exactly the same world as leaving them alone, which is CONSUMPTION coupling 0 on a field this very repair added to the manifest.",
+      "why_it_matters": "A player who walks into Helstrom market with 600 gold, saves, and comes back a week later has been robbed of it, and the bribe that ARBITRATION §1 guarantees as a non-lethal exit from a fight is refused for want of money they still believe they have.",
+      "remedy": {
+        "action": "Make one register the authority for the purse and give the save that register, then widen the census so the class of defect cannot recur. (a) In `game/src/engine.js`, have `setGold`, `combat/parley.js applyAccept` (`world.gold -= spent`), `travelRide` (`world.gold -= fare`), `fenceSell`/`bribeWitness` (`stealth.p.gold`) and the capture path all write through to `sim.progression.gold`, and have `_buildCombat` read only from it — or, if the three registers must stay, serialise `combat.world.gold` and `sim.stealth.p.gold` as their own manifest paths under Progression with the same rebase discipline the rest of the group uses. (b) Extend `Engine.getDurableFieldCensus()`'s `shot()` to clone `this.combat.world`, `this.travel`, `this.crime`/`sim.stealth`, `this.conversation` and `sim._traversal` — it currently walks a declared subset and its own comment warns that 'a census that walks a subset of the simulation is an instrument that certifies a subset'. (c) Add a save point with money in it to `tools/journey/state-diff.mjs`'s pre-roll, so the sweep can fail.",
+        "targets": [
+          "game/src/engine.js (_buildCombat, setGold, travelRide, getDurableFieldCensus)",
+          "game/src/combat/parley.js (applyAccept)",
+          "game/src/save/state.js (Progression group writers)",
+          "game/src/save/fight.js (loadout.gold)",
+          "game/data/save-manifest.json (Progression group)",
+          "tools/journey/state-diff.mjs (pre-roll)"
+        ],
+        "acceptance": "On helstrom-market, rootlands-well-graph and stormhold-street, at ten seeds: `getTravelState().gold` and `getCombatState().world_knowledge.gold` are unchanged across `saveRoundTrip()` AND across a `writeSave` + page reload + `readSave`; and `node tools/harness/save-break-critic.mjs` reports `no-gold` as `detected_by_any_shipped_instrument: true` — that is, blanking the purse out of the blob now makes at least one of M1, M4 or the census go red.",
+        "ref_item": "RI-JRN05"
+      },
+      "remedy_action": "Make one register the authority for the purse and give the save that register, then widen the census so the class of defect cannot recur. (a) In `game/src/engine.js`, have `setGold`, `combat/parley.js applyAccept` (`world.gold -= spent`), `travelRide` (`world.gold -= fare`), `fenceSell`/`bribeWitness` (`stealth.p.gold`) and the capture path all write through to `sim.progression.gold`, and have `_buildCombat` read only from it — or, if the three registers must stay, serialise `combat.world.gold` and `sim.stealth.p.gold` as their own manifest paths under Progression with the same rebase discipline the rest of the group uses. (b) Extend `Engine.getDurableFieldCensus()`'s `shot()` to clone `this.combat.world`, `this.travel`, `this.crime`/`sim.stealth`, `this.conversation` and `sim._traversal` — it currently walks a declared subset and its own comment warns that 'a census that walks a subset of the simulation is an instrument that certifies a subset'. (c) Add a save point with money in it to `tools/journey/state-diff.mjs`'s pre-roll, so the sweep can fail.",
+      "remedy_acceptance": "On helstrom-market, rootlands-well-graph and stormhold-street, at ten seeds: `getTravelState().gold` and `getCombatState().world_knowledge.gold` are unchanged across `saveRoundTrip()` AND across a `writeSave` + page reload + `readSave`; and `node tools/harness/save-break-critic.mjs` reports `no-gold` as `detected_by_any_shipped_instrument: true` — that is, blanking the purse out of the blob now makes at least one of M1, M4 or the census go red.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/gold-across-38-shipped-states.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-break-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/save-live-audit-sweep-9scenarios-10seeds.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/m3-cold-reload-and-fall.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
       "gap_id": "GAP-W1-stealth-crime-model-not-coupled-to-the-world",
       "subsystem_path": "crime.witness.model",
       "opened_wave": 1,
@@ -477,6 +916,129 @@
       "evidence": [
         "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15.json",
         "corpus/90-verdicts/wave1/artifacts/W1-15/critic-w1-15-run.txt"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-the-naming-moment-is-still-orphan-text",
+      "subsystem_path": "journey.chargen.diegesis",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-07-r3-3c19",
+      "opened_in": "corpus/90-verdicts/wave1/W1-07-r3.json",
+      "piece_id": "w1-07-r3",
+      "severity": "blocking",
+      "what": "RI-CHR01 §4 states the questionnaire's purpose in its own words — the Warden-Scribe says the profession aloud, 'which is the moment the route is for' — and RI-JRN09 M3 requires that line on the frame in 100% of named runs. Measured at the node the line is spoken (writ.birthsign, its only opportunity, because `spoken` carries only the reply to the last answer): 0 of 12 named runs across six races and two upbringings. The mechanism is ui.js's overflow-sacrifice loop — `while (contentH > maxH && spokenLines.length) spokenLines.shift()` — which drops the scribe's previous reply from the front until the panel fits its 48%-of-frame-height budget, and at the birthsign node (nine options plus a two-line naming sentence) the naming line is always what goes. The builder's own instrument reports 100% because it does not test that line: jrn09-exchange.mjs M3 runs `blob.indexOf(norm(c.class_name)) >= 0` over the concatenated drawn text of every node in the walk, and the same round added 'Trade declared: %ClassName' to the writ's drawn identity block at writ.stamp, so the class name is on the frame whatever the scribe did or did not say. Measured side by side on the same twelve runs: the naming LINE 0 of 12; the class NAME substring 12 of 12. The same mechanism eats the upbringing reply ('The interior. I will write the marsh. There are people here who will read that and stand up straighter, and people who will read it and count their doors.') and the birthsign reply ('The tide was in and the root had more than it needed. It gave you a swallow it did not owe you.'), which is why AC = 6 of 7 is evidenced entirely by fields of one printed form.",
+      "why_it_matters": "Morrowind's opening is remembered because a bored functionary looks at your answers and tells you what you apparently are. This build computes that sentence, writes it, carries it through the model, exposes it through the harness — and clips it off the bottom of the panel, then prints the word on a form two nodes later. A player answers ten questions about wounded dogs and toll-houses and is never told anything; they later find a noun on a document. Round 3 closed round 2's orphan-text defect on the questions and opened the same defect on the answer, and the round's own instrument certified it closed. That is the third time in this project a measurement has passed because it tested something adjacent to what the item asked for, and it is the exact failure BAR-CRITIQUE-W1-07-R1 filed RI-JRN09 to prevent.",
+      "remedy": {
+        "action": "Two changes and a test, in this order. (1) Give the naming moment its own beat. The line is the payoff of a ten-node route and it is currently one entry in a `spoken` array that the layout treats as the least important thing on the panel. Add a node between the last question and writ.birthsign whose `line` IS the naming sentence and whose only input is an acknowledgement — the same shape writ.stamp was given this round for exactly this reason — so it occupies the one slot ui.js never sacrifices. Morrowind gives Socucius Ergalla his own beat to say 'you are a Battlemage'; this is that beat. (2) If the sacrifice loop is kept, make it declare what it dropped: have UILayer._redraw record the sacrificed lines in `metrics().sacrificed` so that any probe reading the surface can see the difference between 'not computed' and 'computed and thrown away'. Round 3's own defect is invisible in every instrument the build ships. (3) Fix tools/harness/jrn09-exchange.mjs M3 to test the naming LINE at the node it is spoken, not the class-name substring over the whole walk. The current test cannot go red while the writ draws the class name, which makes it a probe that cannot fail.",
+        "targets": [
+          "game/data/dialogue/topics/writ-house.json (a node between writ.class-questions and writ.birthsign carrying on_match_named_class / on_nearest_named_class as its `line`)",
+          "game/src/character/census.js (case 'writ.class-named' — advance to the new node rather than straight to writ.birthsign)",
+          "game/src/render/ui.js (_redraw: record sacrificed lines into `last.sacrificed`)",
+          "tools/harness/jrn09-exchange.mjs (M3 NAMED_line: assert the line, at its node)"
+        ],
+        "acceptance": "Over >= 240 completions covering all 10 races x 4 upbringings with a published a/b/c/d histogram: the text of on_match_named_class / on_nearest_named_class appears in __HARNESS.getRenderedText() at the node it is spoken in >= 99% of named runs, measured by corpus/90-verdicts/wave1/artifacts/W1-07-r3/critic-w1-07-r3g.mjs unchanged. Separately, deleting the naming line from writ-house.json must take that figure to 0 and restoring it must return it — the delete-the-fix check this round applied to the greeting data and not to this. And AC's drawn evidence must include >= 4 responsive lines rather than 6 fields of the writ.",
+        "ref_item": "RI-JRN09",
+        "estimated_size": "S"
+      },
+      "remedy_action": "Two changes and a test, in this order. (1) Give the naming moment its own beat. The line is the payoff of a ten-node route and it is currently one entry in a `spoken` array that the layout treats as the least important thing on the panel. Add a node between the last question and writ.birthsign whose `line` IS the naming sentence and whose only input is an acknowledgement — the same shape writ.stamp was given this round for exactly this reason — so it occupies the one slot ui.js never sacrifices. Morrowind gives Socucius Ergalla his own beat to say 'you are a Battlemage'; this is that beat. (2) If the sacrifice loop is kept, make it declare what it dropped: have UILayer._redraw record the sacrificed lines in `metrics().sacrificed` so that any probe reading the surface can see the difference between 'not computed' and 'computed and thrown away'. Round 3's own defect is invisible in every instrument the build ships. (3) Fix tools/harness/jrn09-exchange.mjs M3 to test the naming LINE at the node it is spoken, not the class-name substring over the whole walk. The current test cannot go red while the writ draws the class name, which makes it a probe that cannot fail.",
+      "remedy_acceptance": "Over >= 240 completions covering all 10 races x 4 upbringings with a published a/b/c/d histogram: the text of on_match_named_class / on_nearest_named_class appears in __HARNESS.getRenderedText() at the node it is spoken in >= 99% of named runs, measured by corpus/90-verdicts/wave1/artifacts/W1-07-r3/critic-w1-07-r3g.mjs unchanged. Separately, deleting the naming line from writ-house.json must take that figure to 0 and restoring it must return it — the delete-the-fix check this round applied to the greeting data and not to this. And AC's drawn evidence must include >= 4 responsive lines rather than 6 fields of the writ.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-line-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named.log",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr-critic.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-weapon-animation-model-has-no-rendered-consumer",
+      "subsystem_path": "weapon.animation.reuse",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-10-r3-weapons-kritik3",
+      "opened_in": "corpus/90-verdicts/wave1/W1-10-r3.json",
+      "piece_id": "W1-10",
+      "severity": "blocking",
+      "what": "The moveset animation model — 1150 distinct clips over 2689 slots and 87 weapons, the solved arcs, the solved blade lengths, the 25-slot contract — has no renderer. `grep -rn \"weapon\" game/src/render/` returns nothing, `grep -rn \"bone\" game/src/render/` returns nothing, and no SkinnedMesh is constructed anywhere in game/src. `game/src/render/scene.js` makeActor() builds a rigid group of nine primitives — torso, head, snout, hips, two static legs, two static arms — plus `new THREE.BoxGeometry(0.055, 0.95, 0.014)` welded at local (0.40, 1.28, 0.10) as 'the blade', one 0.95 m box for all eighty-seven weapons. `game/src/render/renderer.js:398-399` is the whole of the player's animation: playerMesh.position.set(sim.player.pos) and playerMesh.rotation.y = yaw. Measured in the shipping build: across a full 60-frame r1.1, the character-box pixel change is 0.19% peak for hlb_garrison_bill (2.85 m, a 146.8 deg sweep over 14 active frames) and 0.21% for cgs_drowned_reaper (a `spin` over 18 active frames); ssw_garrison_sword's 2.4% is flat from f030 to f060 and is the root lunge translating a rigid mesh, not a swing. Frame-0 screenshots of ssw_garrison_sword (1.95 m), hlb_garrison_bill (2.85 m) and cgs_drowned_reaper (2.75 m) are byte-identical, md5 9bdb823fbcdb3ba820b2946b05ffa55a.",
+      "why_it_matters": "WEAPON-CRITIC 0 states this role's whole subject: 'the deficit lives entirely in the animation-clip column of the moveset data and in the root tracks the clips produce.' ARBITRATION 3's CONSUMPTION check states the consequence: 'a model with no demonstrated consumer is unmeasurable => 0, exactly as a missing model is — from the player's chair they are the same thing', and it lists 'character creation rendered 20 byte-identical screenshots while returning correct values' as one of the four wave-1 instances. This is that instance again, in the area the check was written for. Round 1 found the 87 movesets unreachable from the running game; round 3 made them reachable to the hitbox solver; they are still unreachable to the screen. The builder demonstrated a consumer for the IMPACT model, correctly and convincingly, and never asked the same question of the ANIMATION model — whose only consumer is the solver that grades it. It is also the mechanism by which every other defect here survived three rounds: the blade points 35-52 degrees into the ground and sits 100% below the floor plane through the entire damaging window of CGS, HLB, TSW and WHP (so a halberd lands nothing at 2.65 m and nothing at all against a retreating target), and that is invisible to a critic who cannot see the swing and unmissable to anyone who can. The builder named the blade inclination as its own biggest remaining defect; this is the reason it was still there to name.",
+      "remedy": {
+        "action": "Pose the rendered actor from the transforms the simulation already computes every frame. CombatBody.rig produces socketA/socketB and a full bone dump and engine.getHitGeometry() already returns both in world space, so nothing new has to be computed — makeActor() must expose its arm and weapon nodes, and the per-frame update must write those nodes' positions and orientations from combat.bodyOf('player') (and from each enemy body) instead of writing only the group's position and yaw. Scale the weapon mesh from the moveset's socket_b distance so a 3.6 m whip is not a 0.95 m box.",
+        "targets": [
+          "game/src/render/scene.js — makeActor(): name and return the two arm meshes and the blade/guard meshes so they can be posed; size the blade from the weapon's socket_b distance",
+          "game/src/render/renderer.js:398 — pose arms and weapon per frame from combat.bodyOf(id).rig (socketA, socketB, bones), not only position and rotation.y",
+          "game/src/engine.js — expose the player's and each enemy's rig to the renderer on the frame path (getHitGeometry() already builds the same data for the harness)"
+        ],
+        "acceptance": "(a) At the mid-active frame of r1.1, screenshots of ssw_garrison_sword, hlb_garrison_bill and whp_hide_lash differ from each other AND from their own frame 0 by >= 5% of character-box pixels; the three frame-0 images are no longer byte-identical. (b) On every active frame of 20 sampled clips the rendered weapon-tip world position is within 0.10 m of getHitGeometry().actors[player].weapon.now[3..5]. (c) With (b) holding, a screenshot of hlb_garrison_bill at its widest active frame shows the blade above the ground plane — which is the same measurement as taking kritik3-tip-height.json's HLB tip_below_floor_frac from 0.821 to 0.",
+        "ref_item": "RI-WPN02",
+        "estimated_size": "medium"
+      },
+      "remedy_action": "Pose the rendered actor from the transforms the simulation already computes every frame. CombatBody.rig produces socketA/socketB and a full bone dump and engine.getHitGeometry() already returns both in world space, so nothing new has to be computed — makeActor() must expose its arm and weapon nodes, and the per-frame update must write those nodes' positions and orientations from combat.bodyOf('player') (and from each enemy body) instead of writing only the group's position and yaw. Scale the weapon mesh from the moveset's socket_b distance so a 3.6 m whip is not a 0.95 m box.",
+      "remedy_acceptance": "(a) At the mid-active frame of r1.1, screenshots of ssw_garrison_sword, hlb_garrison_bill and whp_hide_lash differ from each other AND from their own frame 0 by >= 5% of character-box pixels; the three frame-0 images are no longer byte-identical. (b) On every active frame of 20 sampled clips the rendered weapon-tip world position is within 0.10 m of getHitGeometry().actors[player].weapon.now[3..5]. (c) With (b) holding, a screenshot of hlb_garrison_bill at its widest active frame shows the blade above the ground plane — which is the same measurement as taking kritik3-tip-height.json's HLB tip_below_floor_frac from 0.821 to 0.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-10-r3/frames/hlb_garrison_bill-f048.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-10-r3/frames/ssw_garrison_sword-f030.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-10-r3/frames/cgs_drowned_reaper-f000.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-10-r3/kritik3-browser.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-10-r3/kritik3-tip-height.json"
+      ],
+      "status": "open",
+      "assigned_to_wave": 2,
+      "closure": {
+        "closed_wave": null,
+        "closed_by": null,
+        "measured_value": null,
+        "evidence": [],
+        "note": null
+      },
+      "superseded_by": null,
+      "age_waves": 0
+    },
+    {
+      "gap_id": "GAP-W1-weapon-impact-and-material-model-has-no-consumer",
+      "subsystem_path": "weapon.feel.material",
+      "opened_wave": 1,
+      "opened_by": "crit-w1-10-r2-weapons-kritik",
+      "opened_in": "corpus/90-verdicts/wave1/W1-10-r2.json",
+      "piece_id": "W1-10-r2",
+      "severity": "blocking",
+      "what": "The RI-WPN05 impact and material model is a data island, exactly as the 87 movesets were in round 1. Five of six perturbations of the shipped tables change nothing in the fight: setting every non-flesh cell of the 5x7 attacker hitstop grid to 99 f, setting every material damage multiplier to 0.01, setting every knockback value to 9 m, and setting the deflection multiplier to 20x all produce a byte-identical fight (dmg 118, hit at frame 32, hitstop held 3 frames). Only the flesh column is read, and it is read from a hard-coded `.flesh` lookup at game/src/combat/moves.js:166. MovesetLibrary.materialMultiplier, .deflects, .knockbackFor and .victimHitstopFor are imported by exactly one file in the repository — game/src/harness/weapons.js, the harness. And there is nothing for them to apply to: 0 of the 14 enemy statblocks in game/data/combat/enemies/ declares a material at all. The hard-coded lookup is game/src/combat/moves.js:166 — `hitstop_frames: (s.hitstop_f || lib.classes.hitstop.attacker[moveset.weight_tier] || {}).flesh || 6` — and a grep for materialMultiplier|deflects|knockbackFor|victimHitstopFor across game/src/ returns only game/src/harness/weapons.js.",
+      "why_it_matters": "This is round 1's verdict repeating itself one layer down, and it is invisible for the same reason: the builder fixed the half of the piece the round-1 gap named and the impact half was never examined, so every probe that reads the library reports a healthy 5x7 grid. From the player's chair a mace, an axe and a spear hit a stone golem, a chitin-shelled beast and a Hist-bonded plant creature with identical feedback — same hitstop, same knockback, no deflection, no damage-type advantage. The material system is also this area's ONLY seam crossing under AR-3: a lore fact (root-golems are stone, the Hist-bonded are plant) that is supposed to be a combat answer a merchant can sell you. Unread, the crossing does not exist, and the weapon area becomes internally excellent and externally sterile.",
+      "remedy": {
+        "action": "Make the fight read the material at hit time, and give it a material to read.",
+        "targets": [
+          "game/data/combat/enemies/*.json — add a `material` (one of flesh, chitin, stone, metal, plant, water, wood) to all 14 statblocks; the lore assignment is already written down in RI-WPN05 B.",
+          "game/src/combat/resolve.js — at the frame a hit resolves, look the victim's material up and call MovesetLibrary.hitstopFor / victimHitstopFor / knockbackFor / materialMultiplier / deflects, instead of consuming the pre-baked move.hitstop_frames.",
+          "game/src/combat/moves.js:165-166 — stop collapsing the per-slot hitstop table to its flesh column; pass hitstop_f_table through to the resolver, which currently stores it and never reads it.",
+          "game/src/sim/record.js — expose the resolved material and the resolved hitstop on the impact record so the grid is observable rather than inferred."
+        ],
+        "acceptance": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.mjs reports 6 of 6 CONSUMED; the 5x7 attacker hitstop grid is recoverable from traces against seven material-carrying dummies with every cell differing from the flesh column where RI-WPN05 A says it should; ILS >= 0.80 on the observed column; and AR-3 seam_sterile becomes false with a driven demonstration (a mace beating a stone enemy that a rapier cannot).",
+        "ref_item": "RI-WPN05",
+        "estimated_size": "M"
+      },
+      "remedy_action": "Make the fight read the material at hit time, and give it a material to read.",
+      "remedy_acceptance": "node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.mjs reports 6 of 6 CONSUMED; the 5x7 attacker hitstop grid is recoverable from traces against seven material-carrying dummies with every cell differing from the flesh column where RI-WPN05 A says it should; ILS >= 0.80 on the observed column; and AR-3 seam_sterile becomes false with a driven demonstration (a mace beating a stone enemy that a rapier cannot).",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-ar.json"
       ],
       "status": "open",
       "assigned_to_wave": 2,

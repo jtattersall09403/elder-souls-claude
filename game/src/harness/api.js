@@ -863,13 +863,21 @@ export function installHarness(engine, bootPromise) {
     /** Say a topic. Returns the info, or `{refused:'no_info'}` — never a silent nothing. */
     conversationSay(topic) { return engine.conversationSay(topic); },
     conversationClose() { return engine.conversationClose(); },
+    /**
+     * RI-DLG04 §C's four verbs against the person you are talking to. The world-side caller of
+     * `sim/dialogue/disposition.js persuade()`, which had none until W1-19 round 2 — and which
+     * is the only thing in the build that can move a standing UP, and therefore the only reason
+     * a race handicap on a quest gate is a price rather than a wall. Gold is spent either way
+     * (seam S15) and the roll comes off the seeded PRNG, so a replay says the same thing.
+     */
+    conversationPersuade(verb) { return engine.conversationPersuade(String(verb)); },
     getConversationState() { return engine.getConversationState(); },
 
     /**
      * RI-WLD09 §B1's opacity register, as the running world sees it: which of the twenty-four
      * mysteries the character has met, by which route, and how many times somebody has declined
      * to discuss one. It reports NO answers and there is no call that could — the sealed half
-     * lives in `corpus/50-world/sealed/` and is never shipped.
+     * lives in the corpus, is never shipped, and is not reachable from this process.
      *
      * M-OP2's discovery diff is not computable without this. `getQuestState().booksRead` is the
      * same evidence set seen from the other side.
