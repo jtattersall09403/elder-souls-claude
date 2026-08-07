@@ -410,7 +410,7 @@
       "race": "saxhleel",
       "class": "sap-cutter",
       "faction": "the_ixtu_vakh",
-      "settlement": null,
+      "settlement": "blackrose",
       "disposition": 40,
       "topics": [
         "the cutting yard",
@@ -425,6 +425,38 @@
       },
       "reaction_group": "RG-VAKH",
       "actor": "sapcutter",
+      "post": {
+        "settlement": "blackrose",
+        "at_building": "blackrose-shrine",
+        "at_building_name": "The Lime-Pit Hist-Shrine",
+        "pos": [
+          1885.56,
+          2.68,
+          4436
+        ],
+        "yaw": 234,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from blackrose-shrine's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "blackrose-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "blackrose-inn",
+          "activity": "tavern"
+        }
+      ],
       "home_interior": "blackrose-inn"
     },
     {

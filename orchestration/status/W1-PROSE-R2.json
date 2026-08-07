@@ -13,7 +13,11 @@
   ],
   "outputs_written": [
     "tools/check-prose.mjs (the gate: questions floor, exclamation band, sting cap, Which-fragment cap, And-opener band, contraction band, tic list; warning-only per the check-quests precedent; --self-test passes both directions; --calibrate refuses to loosen a ratchet)",
-    "tools/prose/prose-bars.json (every bar a multiple of the MEASURED reference rate)"
+    "tools/prose/prose-bars.json (every bar a multiple of the MEASURED reference rate)",
+    "tools/prose/apply-info-rewrites.mjs (addresses by topic id + index, refuses on concurrent edit, --self-test)",
+    "game/data/dialogue/topics/55-utility.json — 107 authored rewrites (99 flattening + 8 conjunction)",
+    "reports/prose-tics/rewrites/dialogue-09-flatten-utility.jsonl",
+    "reports/prose-tics/rewrites/dialogue-10-utility-conjunctions.jsonl"
   ],
   "findings": [
     "THE PUNCHLINE IS MEASURABLE AFTER ALL, and the judge said no regex would find it. Operationalised as CLOSING STING on the final sentence of a line: (b) a short (<=14w) closing sentence opening with Which/That is/And that/Nobody/No one, or (c) a trailing `, which/and that` clause or a `which is how/why/what/the` recast. Dialogue: ours 43.50 per 10k vs Morrowind 1.63 = 26.6x. Books 2.45 vs 0.05 = 45x. Journal 35.91 vs 6.06 = 5.9x. This is a bigger separator than `eleven` ever was.",
@@ -22,8 +26,9 @@
     "PRE-REGISTERED, BEFORE ANY LINE WAS REWRITTEN — THE EARNED-STING RULE. An info may close on a reversal, wry qualifier or epigram only if BOTH: (a) the speaker has a personal stake the player has worked for, operationalised as the info carrying a disposition gate (`d` present); AND (b) it is the ONLY such info in its topic. Everything else closes flat: the final sentence states a fact, gives a direction, names a price, or asks the player something. This is auditable from the JSON without reading the prose — 55-utility.json has 5 d-gated infos of 102, so at most 5 of its 34 topics may keep a sting; 50-factions.json has 33 of 106 across 41 topics.",
     "A BAR DERIVED FROM THE CORPUS IT JUDGES CANNOT SAY THE CORPUS IS WRONG. My first calibrator set caps at the 90th percentile of our own files and produced a sting ceiling of 69.65 per 10k against a reference of 2.00 — 35x the thing it measured, red on nothing. Every bar is now a fixed multiple of the measured reference (3x for caps, 0.25x for floors). Recorded because the percentile version LOOKED rigorous and was vacuous.",
     "THE UNDERSHOOT GUARD. \"This file has no exclamation marks\" is evidence only when the file is long enough for the reference rate to predict some. A bar's floor half is skipped unless target*words/1e4 >= 2. Without it the check flags every 400-word file for the absence of a thing that would not be there anyway.",
-    "MY OWN CLEAN CONTROL FAILED FIRST TIME AND THAT IS THE POINT. The self-test's negative control was one flat line repeated 40 times; the line carried one exclamation mark, so at 40 copies the fixture ran at 370 exclamations per 10k and tripped the OVERSHOOT half of the band it existed to pass. A control has to be a distribution, not a sample. Replaced with 26 varied flat service lines."
+    "MY OWN CLEAN CONTROL FAILED FIRST TIME AND THAT IS THE POINT. The self-test's negative control was one flat line repeated 40 times; the line carried one exclamation mark, so at 40 copies the fixture ran at 370 exclamations per 10k and tripped the OVERSHOOT half of the band it existed to pass. A control has to be a distribution, not a sample. Replaced with 26 varied flat service lines.",
+    "55-utility.json AFTER the flattening pass, per 10k (before -> after, reference): sting 66.9 -> 0.00 (ref 2.00); questions 3.3 -> 64.7 (ref 159.2); exclamations 0.0 -> 17.0 (ref 21.3); fragopen 0 -> 0; contractions 62.9 -> 388.2 (ref 328.5); And/But/So 6.8 -> 34.1 (ref 64.0). All tics gone: no -body forms, no filler eleven, no \"that is what/why/all\". The file now clears every bar in check-prose. 107 authored rewrites."
   ],
-  "next_step": "flatten 55-utility.json and 50-factions.json under the earned-sting rule",
+  "next_step": "flatten 50-factions.json (41 topics, 106 infos, 33 d-gated)",
   "notes_for_successor": "Do NOT grade myself. Do not undo round-1 pre-registered rules. Coordinate: W1-LIBRARY-MARTIAL writing ~42 books, lore builder in corpus/60-lore/."
 }

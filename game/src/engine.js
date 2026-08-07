@@ -35,6 +35,9 @@ import { SoulsSystem } from './sim/souls.js';
 // W1-22 — `audio.ambience.region`. RI-AUD03. See the header of game/src/audio/synth.js for the
 // survey that preceded it: before this import there was no audio code in the build at all.
 import { AmbienceDriver, renderBedOffline, emitterPlacement } from './audio/ambience.js';
+// W1-11 — `audio.combat.impact`. RI-AUD01 / RI-AUD02. Imports synth.js's primitives via
+// impact-audio.js and touches nothing of W1-22's ambience path.
+import { ImpactAudio, renderVoiceOffline } from './audio/impact-audio.js';
 import { buildCells, EMPTY_CELL } from './sim/collision.js';
 import {
   CAMERA_CONST, CAMERA_MODES, PERSPECTIVE_MODES, NEAR_CORNER_R, CAMERA_ALPHAS,
@@ -770,6 +773,13 @@ export class Engine {
    */
   _buildCombat(loadout) {
     this.combat = new CombatSystem(this._combatData());
+    // W1-11 — the fight is where impact audio is DECIDED, so the driver is hung on the fight
+    // rather than polled from outside it. `CombatSystem.step`'s `emit` closure calls
+    // `onEvent(frame, kind, e, world)` inside `sweepAndResolve`'s call stack, which is what
+    // makes RI-AUD01 §B's `audio.frame == event.f` a property of the code shape rather than of
+    // the scheduler's luck. The fight is rebuilt by every `loadState()`, so this is re-hung
+    // here for the same reason the stealth handle above is.
+    if (this.impactAudio) this.combat.setAudio(this.impactAudio);
     // W1-15 round-2: the stealth subsystem owns the alert meter and must be able to write it
     // through to the fight's controllers. The fight is rebuilt by every loadState(), so the
     // handle is re-hung here rather than captured once at boot.
@@ -4214,6 +4224,85 @@ export class Engine {
   /** RI-AUD02 §E `audioLog()`, ambience rows. Every row carries `bus`, `region`, `pan`. */
   ambienceLog(limit) { return this.ambience ? this.ambience.audioLog(limit) : []; }
 
+  // ── W1-11 — combat impact audio read-back. `audio.combat.impact` ──────────────────────────
+  //
+  // Three accessors, and the split matters. `impactAudioLog()` is the DECISION stream — what
+  // the fight asked for and on which sim frame, which is what RI-AUD01 M1/M5/M6/M9 join
+  // against the trace. `getImpactAudioState()` is RI-AUD02's `audioStats()` — the platform
+  // contract. `impactAudioCapture()` is the WAVEFORM, and it is the only one of the three that
+  // can answer "is it audible and is it different from that one", because an event count is
+  // not a sound.
+
+  /** RI-AUD01 §Provenance `audioLog()`. Rows carry frame, class, sample_id, gain, pan, bus. */
+  impactAudioLog(opts) {
+    return this.impactAudio ? this.impactAudio.audioLog(opts || {}) : [];
+  }
+
+  /**
+   * RI-AUD02 §Provenance `audioStats()`.
+   *
+   * `available: false` is a real answer and is reported rather than thrown, because
+   * RI-AUD01's scoring rule turns absence into a zero and a critic must be able to read the
+   * absence directly: "Unimplemented audio scores 0, not 'not assessed'."
+   */
+  getImpactAudioState() {
+    if (!this.impactAudio) return { available: false, why: 'no impact audio driver' };
+    const s = this.impactAudio.audioStats();
+    s.attached_to_fight = !!(this.combat && this.combat.audio === this.impactAudio);
+    return s;
+  }
+
+  /**
+   * RENDER ONE IMPACT CLASS VARIANT TO PCM — RI-AUD01's `audioCapture`, the load-bearing one.
+   *
+   * The item's own provenance note explains why this is not optional: "this machine has no
+   * audio device, so without an offline render there is no waveform, and M2/M3/M8 are
+   * permanently unmeasurable." It shares `buildImpactVoice` with the live path, so what is
+   * measured here is what a player would hear and not a second implementation of it.
+   *
+   * `gainOverride: 1` renders the RAW voice with no §C level applied — that is the input the
+   * calibration solves `norm_db` against. Omit it and you get the shipped, levelled voice,
+   * which is what M3's dynamic-range comparison is taken from.
+   */
+  async impactAudioCapture(opts = {}) {
+    const OfflineCtor = (typeof globalThis.OfflineAudioContext === 'function')
+      ? globalThis.OfflineAudioContext
+      : globalThis.webkitOfflineAudioContext;
+    if (typeof OfflineCtor !== 'function') {
+      return { ok: false, why: 'OfflineAudioContext unavailable in this runtime' };
+    }
+    const data = this.data.impactAudio;
+    if (!data || !data.classes) return { ok: false, why: 'no impact audio classes loaded' };
+    const spec = data.classes[opts.class];
+    if (!spec) {
+      return { ok: false, why: `no impact class ${JSON.stringify(opts.class)}`, known: Object.keys(data.classes) };
+    }
+    const variant = opts.sample_id
+      ? spec.variants.find((v) => v.sample_id === opts.sample_id)
+      : spec.variants[0];
+    if (!variant) return { ok: false, why: `no variant ${JSON.stringify(opts.sample_id)} in ${opts.class}` };
+    const row = {
+      class: opts.class, sample_id: variant.sample_id, pan: opts.pan || 0,
+      playAt: 0.05,
+      gain: Math.pow(10, (spec.peak_dbfs + (variant.norm_db || 0)) / 20),
+    };
+    const r = await renderVoiceOffline(OfflineCtor, spec, row, {
+      sampleRate: opts.sampleRate || 48000,
+      seconds: opts.seconds || 1.4,
+      seed: opts.seed === undefined ? 0x51ed : opts.seed,
+      gainOverride: opts.raw ? 1 : undefined,
+      pan: opts.pan || 0,
+    });
+    return {
+      ok: true, class: opts.class, sample_id: variant.sample_id,
+      sampleRate: r.sampleRate, samples: r.length, channels: r.channels,
+      peak: r.peak, peak_dbfs: r.peak_dbfs, rms_dbfs: r.rms_dbfs,
+      declared_peak_dbfs: spec.peak_dbfs, norm_db: variant.norm_db || 0,
+      raw: !!opts.raw,
+      L: Array.from(r.pcm[0]), R: Array.from(r.pcm[1] || r.pcm[0]),
+    };
+  }
+
   /**
    * RENDER THE BED TO PCM. RI-AUD03's comparison method step 1, and the only honest answer to
    * "is it audible?".
@@ -7431,6 +7520,13 @@ async function loadData(onBytes) {
     // fix — 39 audio strings in regions.json that nothing read. Consumed by
     // `Engine.ambience` (an AmbienceDriver, built in the constructor) which is stepped from
     // `_afterStep()`, and read back by `getAmbienceState()` / `ambienceCapture()`.
+    // W1-11. The twelve combat impact classes (RI-AUD01 §A) and their forty-eight variants.
+    // Same rule, same reason: no branch here and the file is fetched, counted, and dropped —
+    // which for an audio file is indistinguishable from the silence the item scores 0 for.
+    // Consumed by `Engine.impactAudio` (an ImpactAudio, built in the constructor), handed to
+    // the fight in `_buildCombat()`, driven from `CombatSystem.step`'s `emit`, and read back
+    // by `getImpactAudioState()` / `impactAudioLog()` / `impactAudioCapture()`.
+    else if (entry.path.startsWith('audio/impact/')) out.impactAudio = doc;
     else if (entry.path.startsWith('audio/ambience/')) {
       out.ambience = out.ambience || {};
       out.ambience[doc.id || entry.path.slice('audio/ambience/'.length).replace(/\.json$/, '')] = doc;

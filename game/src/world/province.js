@@ -163,7 +163,12 @@ export class Province {
    */
   _groundColour(x, z, h, out) {
     const f = this.field;
-    const ri = f.regionIndexAt(x, z);
+    // W1-02 / RI-WLD12 §2. The PALETTE axis, not the raster. Ground and flora cross first — "they
+    // are the terrain" — so inside a border band the ground has already become the far region
+    // while its trees, its buildings and its ONLY-HERE element are still the near one's. This one
+    // substitution is half of what makes a border a transition rather than a line: the material
+    // under your feet changes tens of metres before anything standing on it does.
+    const ri = f.axisRegionIndexAt(x, z, 'palette');
     const r = f.regions[ri];
     out.set(r.ground.albedo);
     const mottle = (noise2(x / 21, z / 21, 4111) - 0.5) * 0.16 + (noise2(x / 5.5, z / 5.5, 4127) - 0.5) * 0.08;
@@ -1192,7 +1197,12 @@ export class Province {
         const jz = noise2(ix * 2.9 + ox, iz * 1.3 + oz, 7723);
         const x = ox + (ix + jx) * (TILE_M / N), z = oz + (iz + jz) * (TILE_M / N);
         if (!f.isLandAt(x, z)) continue;
-        const ri = f.regionIndexAt(x, z);
+        // W1-02 / RI-WLD12 §2. The FLORA axis. It crosses just after the palette and well before
+        // the architecture, so the far region's plants appear over a band rather than at a line —
+        // "the comberry thins before the ash arrives". The site is placed with the axis's region,
+        // which means density, arrangement, shape and colour all come from it together and a
+        // half-crossed border is not a chimera of two prop sets on one lattice.
+        const ri = f.axisRegionIndexAt(x, z, 'flora');
         const p = f.regions[ri].props;
         const y = this._meshY(x, z);
         const cellArea = area / (N * N) * 100;      // m2 per lattice cell

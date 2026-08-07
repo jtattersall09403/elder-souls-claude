@@ -215,6 +215,30 @@ export class WorldField {
 
   regionIndexAt(x, z) { return this.regionU[this._cellIndex(x, z)]; }
   regionAt(x, z) { return this.regions[this.regionIndexAt(x, z)]; }
+
+  /**
+   * W1-02 / `RI-WLD12`. Attach the border field. Everything above stays as it is — `regionAt` is
+   * still the raster's answer and is still the right one for anything that needs A single region
+   * for a point (which region am I in, which machine is running, what does the map say).
+   */
+  setBorders(borders) { this.borders = borders || null; return this; }
+
+  /**
+   * Which region owns ONE AXIS at this point.
+   *
+   * `regionAt` returns an object whose nine `RI-WLD04` axes all change at the same coordinate,
+   * which is `RI-WLD12` M65's automatic fail — the texture swap. Inside a border band this
+   * returns a DIFFERENT region per axis, staggered over the transition in §2's canonical order,
+   * so the ground has already become the Stone Wastes while the buildings are still the Rootlands'.
+   * Away from every border it is exactly `regionIndexAt`, at the cost of one byte read.
+   *
+   * @param {string} axis one of `world/borders.js` BORDER_AXES
+   */
+  axisRegionIndexAt(x, z, axis) {
+    const fb = this.regionU[this._cellIndex(x, z)];
+    return this.borders ? this.borders.axisRegionIndexAt(x, z, axis, fb) : fb;
+  }
+  axisRegionAt(x, z, axis) { return this.regions[this.axisRegionIndexAt(x, z, axis)]; }
   isLandAt(x, z) { const i = this._cellIndex(x, z); return ((this.landBits[i >> 3] >> (i & 7)) & 1) === 1; }
   isOceanAt(x, z) { return this.oceanU[this._cellIndex(x, z)] === 1; }
   coastDistAt(x, z) { return this._bilinear(this.coastI, x, z, 16); }

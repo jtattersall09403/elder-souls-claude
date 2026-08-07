@@ -1,0 +1,17 @@
+{
+  "task_id": "tool-critic-r4",
+  "brief": "inline: critique tools/analysis/build-viability.mjs round 5",
+  "started": "wave-tool-r4",
+  "state": "researching",
+  "commit_at_start": "e29ec21",
+  "outputs_expected": [
+    "corpus/80-methods/TOOL-COVERAGE-R4.md",
+    "corpus/80-methods/TOOL-COVERAGE-R4.json",
+    "reports/blog-feed.jsonl (one line appended)"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read TOOL-LOOP.md, RI-MTH04, TOOL-COVERAGE-R1/R2/R3, tool-build-viability-r5.json",
+  "notes_for_successor": "Box at loadavg 9.85, 6 headless_shell at start. Do node-side work first.",
+  "method_deviations": []
+}

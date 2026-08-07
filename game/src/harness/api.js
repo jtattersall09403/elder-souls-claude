@@ -1888,6 +1888,53 @@ export function installHarness(engine, bootPromise) {
       return engine.ambienceEmitters(Number(x), Number(z), Number(yawDeg || 0), region || null);
     },
 
+    // ================= W1-11 — combat impact audio ============================================
+    // `audio.combat.impact`, RI-AUD01 (design) and RI-AUD02 (platform). These are the exact
+    // three surfaces those two items request by name in their Provenance notes, and RI-AUD01
+    // is explicit about the consequence of their absence: "If `window.__HARNESS.audioLog` is
+    // absent ... this item scores 0 on every check ... A build with no audio does not get a
+    // pass on the grounds that audio was out of scope this wave."
+    //
+    // `audioCapture` is the load-bearing one, for a reason specific to this machine: it has no
+    // audio device, so without an offline render there is no waveform and M2, M3 and M8 are
+    // permanently unmeasurable no matter how good the design is.
+
+    /**
+     * RI-AUD01 §Provenance. The DECISION stream: one row per voice the fight asked for, each
+     * carrying the SIM frame the game decided on — not a timestamp, not a render frame.
+     * `{sinceFrame?, limit?}`.
+     */
+    audioLog(opts) { return engine.impactAudioLog(opts || {}); },
+
+    /** RI-AUD02 §Provenance `audioStats()` — the platform contract, §A/§B/§C/§D/§E. */
+    audioStats() { return engine.getImpactAudioState(); },
+
+    /**
+     * RI-AUD01 §Provenance `audioCapture`. Renders one class variant offline into real PCM.
+     * `{class, sample_id?, pan?, seconds?, sampleRate?, raw?}` -> `{ok, L, R, peak_dbfs, ...}`.
+     * `raw: true` bypasses the §C level, which is what the calibration solves against.
+     */
+    audioCapture(opts) { return engine.impactAudioCapture(opts || {}); },
+
+    /**
+     * The SABOTAGE switch, and it is in the shipped harness on purpose.
+     *
+     * RI-AUD01 §B names one specific way impact audio breaks — firing off the animation event
+     * track instead of off hit resolution — and M7 (`fired_on_anim_start == 0`) is the detector.
+     * A detector that has never been seen going red is not evidence. `setAudioTriggerSource
+     * ('anim')` puts the driver into exactly the defect §B describes; `audioStats()
+     * .trigger_source` reports which mode is live, so a build cannot run the defect quietly.
+     * AGENT-PROTOCOL: "a probe that cannot fail is worse than no probe."
+     */
+    setAudioTriggerSource(mode) {
+      if (mode !== 'resolution' && mode !== 'anim') {
+        return { ok: false, why: `trigger_source must be 'resolution' or 'anim', got ${JSON.stringify(mode)}` };
+      }
+      if (!engine.impactAudio) return { ok: false, why: 'no impact audio driver' };
+      engine.impactAudio.triggerSource = mode;
+      return { ok: true, trigger_source: mode };
+    },
+
     // ================= W1-15 — stealth, theft, crime and justice ==============================
     // The extensions RI-STL01, RI-STL02, RI-CRM01 and RI-CRM02 name in their Comparison
     // methods. Each item says in as many words that without them its checks are unmeasurable
@@ -2189,7 +2236,13 @@ export function installHarness(engine, bootPromise) {
           // `ambienceCapture()`. What remains genuinely unimplemented is listed below, and the
           // list is deliberately specific — "audio" as one undifferentiated absence is how the
           // one part of it that now exists would go on being scored 0 for another three rounds.
-          { what: 'combat impact audio (audio.combat.impact)', owner: 'RI-AUD01 / RI-AUD02 / wave-1 piece W1-11', surfaced_as: 'no hit, parry, block or footstep sound of any kind. RI-AUD01 is unmeasurable and scores 0, fail-closed' },
+          // W1-11 narrowed this. Combat impact audio (RI-AUD01 §A's twelve resolution classes,
+          // RI-AUD02's scheduling and voice budget) is now built, driven from the fight's own
+          // `emit` funnel, and renderable to PCM — see `audioLog()`, `audioStats()` and
+          // `audioCapture()` above. What remains genuinely absent is listed here, and it is
+          // deliberately specific, because "audio" as one undifferentiated absence is how the
+          // build previously reported having none while having some.
+          { what: 'combat FOLEY (footsteps, cloth, armour rattle)', owner: 'RI-AUD01 §D / no wave-1 owner', surfaced_as: 'the §D sparseness budget counts non-combat voices and there are none, so the exploration mix is silence rather than a bed at -26..-22 LUFS-S. §D is a budget approached only from below and RI-AUD01 says so' },
           { what: 'music (audio.music.policy)', owner: 'RI-AUD04 / no wave-1 owner', surfaced_as: 'no music bus, no music. RI-AUD04 unmeasurable, 0 fail-closed' },
           { what: 'voice (audio.voice.policy)', owner: 'RI-AUD05 / no wave-1 owner', surfaced_as: 'no voice bus. RI-AUD05 unmeasurable, 0 fail-closed' },
           { what: 'interior ambience beds (RI-AUD03 R4)', owner: 'W1-22, outstanding', surfaced_as: 'getAmbienceState().suppressed names the cell. Interiors are SILENT rather than the exterior bed low-passed, which R4 forbids; the beds themselves are not written' },

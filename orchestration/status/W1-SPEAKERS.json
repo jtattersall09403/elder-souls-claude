@@ -1,0 +1,17 @@
+{
+  "task_id": "W1-SPEAKERS",
+  "brief": "inline dispatch: root-topic speaker coverage across 336 NPC records",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "game/data/dialogue/** (root-topic coverage for unanswered actor names)",
+    "fix: latest rumors / latest rumours spelling split",
+    "reports/blog-feed.jsonl (one line)"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "start: pgrep -c headless_shell = 18, loadavg 10.59 - ABOVE the cap of 8, authoring phase first, browser verification deferred"
+  ],
+  "next_step": "read RI-DLG01, RI-DLG05, W1-26-r2 status, W1-PROSE-BLIND-r1, W1-PROSE-R2",
+  "notes_for_successor": ""
+}
