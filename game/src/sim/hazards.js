@@ -195,9 +195,12 @@ export class Hazards {
 
   /**
    * One frame. Runs after physics so it reads the position the trace reports on this frame.
+   *
+   * `combat` (optional, additive) is the CombatSystem, and H9 needs it. See `_hurtEntity`.
+   *
    * @returns the per-hazard state, for `getHazardReport()`.
    */
-  step(sim, bus, combatBody) {
+  step(sim, bus, combatBody, combat) {
     this.events.length = 0;
     const f = sim.frame;
     const suppressed = this._suppressed(sim);
@@ -344,7 +347,7 @@ export class Hazards {
           } else inVol = f_regionOf(this.field, ent) === ctx.region;
           if (!inVol) continue;
           const d = this._damageThisFrame(h, { hpMax: ent.hpMax || ent.hp });
-          if (d > 0) ent.hp = Math.max(0, ent.hp - d);
+          if (d > 0) this._hurtEntity(sim, bus, combat, ent, d, h, f);
         }
       }
 
@@ -362,6 +365,52 @@ export class Hazards {
     }
     this.lastReport = report;
     return report;
+  }
+
+  /**
+   * H9's write, and it must land on the AUTHORITY, not on the view.
+   *
+   * ------------------------------------------------------------------------------------------
+   * THE BUG THIS EXISTS TO FIX (W1-SOULS round-1 verdict HF-2, measured)
+   * ------------------------------------------------------------------------------------------
+   *
+   * H9 used to do `ent.hp = Math.max(0, ent.hp - d)` on the `sim.entities` record. That record
+   * is a MIRROR. `sim/combat-bridge.js mirror()` runs at the end of `stepCombat` and does
+   * `e.hp = Math.max(0, eb.hp)` for every entity that has a combat body, so a hazard's write to
+   * `ent.hp` is overwritten from the untouched combat body on the very next step. The verdict
+   * wrote 412 -> 0 on an entity, stepped 31 frames, and read hp back at **412** with the combat
+   * body still at 412 and zero souls awarded: the body never died, the death path never fired,
+   * and the corpse "resurrected".
+   *
+   * It was never confined to souls. Anything downstream of a death — the death loop, respawn,
+   * aggro, quest kill counters — reads the authority or reads the mirror the frame after it is
+   * refreshed, so an NPC could not be killed by the province at all. All nineteen shipped
+   * hazards declare `applies_to_npcs: true` and `voriplasm` is class KILL / `fatal`.
+   *
+   * The player branch above already got this right (line ~310: it damages `combatBody` and
+   * copies down to `p.hp`, and sets `combatBody.state = 'DEATH'`). This is the same rule applied
+   * to the other side of H9's "hazards hurt everyone, no player term".
+   *
+   * Falls back to the entity record when there is no combat body — an entity with no body is
+   * not mirrored, so the write survives, and that is the only case where writing the view is
+   * writing the authority.
+   */
+  _hurtEntity(sim, bus, combat, ent, d, h, f) {
+    const b = combat && combat.bodyOf ? combat.bodyOf(ent.eid) : null;
+    if (!b) { ent.hp = Math.max(0, ent.hp - d); return; }
+    if (b.dead || b.hp <= 0) return;
+    b.hp = Math.max(0, b.hp - d);
+    // Keep the view consistent within this frame too; `mirror()` will re-assert it next step.
+    ent.hp = b.hp;
+    if (b.hp <= 0) {
+      // The same three fields every other death path in the build ends on.
+      b.dead = true; b.state = 'DEAD'; b.move = null; b.hitboxActive = false;
+      ent.state = 'DEAD';
+      if (bus) {
+        const e = bus.emit(f, 'hazard_fired');
+        e.hazard = h.id; e.outcome = 'death'; e.eid = ent.eid; e.archetype = ent.id;
+      }
+    }
   }
 
   /** Every magnitude comes off `hazards.json`. There is no other source and no level term (H6). */

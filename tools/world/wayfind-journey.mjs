@@ -308,6 +308,49 @@ const ablation = (() => {
   try { return journey(); } finally { realField.nearestSign = saveNearest; }
 })();
 
+/**
+ * THE TRACE IS NOT A ROUTE, and handing the body the raw one measured my own recording.
+ *
+ * `plan.path` is the navigator's TRACE — every position it stood at, including the places it
+ * stopped, turned 108° to read a post, and stepped back. Diagnosed on the Soulrest -> Lilmoth run
+ * that walked 17,929 m of a 3,206 m journey and finished 592 m short without ever aborting:
+ * around waypoint 814 the trace runs 4820.1 -> 4823.0 -> 4825.7 -> 4828.6 -> 4824.2 -> 4821.3,
+ * i.e. it doubles back through about 8 m. `Engine.walkPath` advances to the next waypoint only
+ * once the body is within `lookahead_m` (4.5 m) OF THAT WAYPOINT, so a trace that reverses inside
+ * the lookahead makes the follower walk backwards, re-acquire, and walk forwards again — for
+ * 111 simulated minutes, at full speed, with `longest_stuck_frames: 0`. It never looked stuck
+ * because it never was; it was busy.
+ *
+ * That is a defect in what I handed the body, not in the province and not in the road. A player
+ * who pauses at a signpost does not thereby have to walk the pause. So the trace is tidied into a
+ * route before phase B: bounded LOOP REMOVAL — from each kept point, jump to the LAST point
+ * within `loop_r` inside a bounded window, which is exactly the shape a recorded turn-on-the-spot
+ * makes and is not a shape a road makes. The window is bounded so that a route which legitimately
+ * passes near its own earlier self is not short-circuited into a shortcut nobody walked.
+ *
+ * Both lengths are reported. If tidying removed real distance rather than dither, the numbers say
+ * so and the reader can refuse the run.
+ */
+function tidyPath(path, { loop_r = 7, window = 60 } = {}) {
+  if (!Array.isArray(path) || path.length < 3) return path;
+  const out = [];
+  let i = 0;
+  while (i < path.length) {
+    out.push(path[i]);
+    let jump = i + 1;
+    const lim = Math.min(path.length - 1, i + window);
+    for (let k = lim; k > i + 1; k--) {
+      if (Math.hypot(path[k][0] - path[i][0], path[k][1] - path[i][1]) <= loop_r) { jump = k; break; }
+    }
+    i = jump;
+  }
+  const last = path[path.length - 1];
+  const tail = out[out.length - 1];
+  if (tail[0] !== last[0] || tail[1] !== last[1]) out.push(last);
+  return out;
+}
+const pathLen = (p) => p.reduce((a, q, k) => (k ? a + Math.hypot(q[0] - p[k - 1][0], q[1] - p[k - 1][1]) : 0), 0);
+
 const report = {
   tool: 'tools/world/wayfind-journey.mjs',
   owner: 'W1-05',
@@ -401,7 +444,17 @@ if (!PLAN_ONLY && plan.ok) {
       }, { x: s.x, z: s.z, id: junction });
     }
 
-    // B3 — THE BODY. The capsule walks the navigator's OWN waypoints, not roads.json's.
+    // B3 — THE BODY. The capsule walks the navigator's OWN waypoints, not roads.json's — tidied
+    // into a route first (see `tidyPath`), because the raw trace records the navigator's turns on
+    // the spot and a lookahead follower handed those walks them backwards for ever.
+    const route = tidyPath(plan.path);
+    report.phase_b_route = {
+      trace_points: plan.path.length, route_points: route.length,
+      trace_m: +pathLen(plan.path).toFixed(1), route_m: +pathLen(route).toFixed(1),
+      note: 'Loop removal only, bounded window. If route_m is much shorter than trace_m the tidy took real distance, not dither, and the run should be refused.',
+    };
+    console.log(`      route tidied: ${plan.path.length} trace points (${pathLen(plan.path).toFixed(0)} m) -> ${route.length} route points (${pathLen(route).toFixed(0)} m)`);
+
     // The body has to have ground under it: a bare boot with no state and no streamed tiles
     // leaves the capsule stuck against nothing, which cost this probe one whole run reported as
     // `aborted: 'stuck'` at frame 900.
@@ -418,7 +471,7 @@ if (!PLAN_ONLY && plan.ok) {
       H.teleport(path[0][0], path[0][1]);
       H.streamAround(path[0][0], path[0][1]);
       return H.walkPath(path, { speed: 'walk', maxFrames: 400000 });
-    }, { path: plan.path });
+    }, { path: route });
     const endD = Math.hypot(walked.end[0] - dst.pos[0], walked.end[1] - dst.pos[2]);
     report.phase_b_walk = {
       ...walked,

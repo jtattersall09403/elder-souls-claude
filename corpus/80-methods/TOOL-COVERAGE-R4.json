@@ -1,0 +1,113 @@
+{
+  "schema": "elder-souls/tool-coverage@1",
+  "id": "TOOL-COVERAGE-R4",
+  "round": 4,
+  "role": "tool critic",
+  "authority": "orchestration/TOOL-LOOP.md rule 3",
+  "verdict": "NOT_SATISFIED",
+  "commit_under_test": "0b2d6ef",
+  "commit_note": "The predecessor critic worked at e29ec21; ten commits and ~11000 lines landed between, including game/src/engine.js +566 and game/src/sim/quest/{defs,topic-supply}.js. Every number in this verdict is re-stamped at 0b2d6ef.",
+  "summary": "build-viability is rejected for the fifth round running. Round 5 genuinely removed the four synthetic constants and genuinely extracted crossCheckVerdict(), and its six ungrounded requirement tokens and twelve ungrounded ladder flags are real findings that I verified independently. But the class it claims to have removed survives everywhere a COUNT was substituted for a CHECK. I broke the model detector three new ways, the strongest of which resurrects round 3's exact defect: freezing the RI-CHR02 matrix race argument for every giver leaves the 12x10 matrix 100% dead, and --verify-model still reports RACE-SENSITIVE / 4-of-4 anchors AGREE / exit 0, because ONE giver still moves through a second, unmodelled race channel (fDispRaceMod). The full walk on that tree publishes instead of refusing. The advertised grant-dependency guard fires 0 times in 540 rows and is dead code; all 495 abstentions come from criterionThreeFactionsRank5, which abstains on a pure counting argument and never re-runs the compatibility search, so a shadow tree where no three factions can EVER coexist produces output byte-identical to the sound tree. And the self-test, run to completion for the first time, is RED on two checks, one of which is the falsification control for criterion 2 refusing to go red.",
+  "worst_instrument": "tools/analysis/build-viability.mjs",
+  "worst_instrument_why": "Fifth round running. The round's own best lesson — a field census over data cannot prove a read dead, because the loader defines what shapes are legal — was written down and then not applied to its own producer branch, its own grant ledger, its own abstention path or its own model detector. In each case a count stands in for a check: 15 ledger rows counted rather than classified (substitutions_remaining is a filter over a hand-written literal that no code ever labels), factions counted rather than tested for compatibility (line 2044), and gated givers counted as moved without asking WHICH race term moved them (race_sensitive: moved.length > 0, line 3226).",
+  "broke_the_model_detector": true,
+  "broke_the_model_detector_how": "Three distinct one-or-two-line breaks on shadow trees at 0b2d6ef, none of them R3's known one-liner (which I ran as my red control and which the tool does catch, exit 20). D3: freeze the matrix race argument for every giver — matrix 100% dead, detector says RACE-SENSITIVE 1/31, AGREES, exit 0, VALID attestation written, and the full walk publishes 0/540 viable / 45 not viable / 495 UNMEASURABLE identical to the sound tree. D2: swap dunmer<->nord — output identical to the sound control on every reported field, only source_hash differs; 12/12 recorded givers have their arms exactly swapped. D1: freeze the race for 30 of 31 givers — detector says RACE-SENSITIVE 2/31 (sound: 25/31) and the MIXED warning does not even fire.",
+  "harness_state": "node tools/harness/boot-check.mjs PASS before and after every measurement. smoke.mjs never boots the engine and was not used.",
+  "c8": {
+    "count": 26,
+    "errors": 0,
+    "delta_from_r3": 0,
+    "note": "Unchanged, and correctly so: build-viability already exists on disk, so no warning could clear or open. A cleared C8 warning is not a capability."
+  },
+  "self_test": {
+    "ran_to_completion": true,
+    "pass": 40,
+    "fail": 2,
+    "note": "The builder reported with the battery still running and had never finished it. Running it to the end is what found both failures. ~40 minutes: 22 pure checks in seconds, then 23 full 540-cell walks.",
+    "failures": [
+      {
+        "check": "the NUMBER is read, not the presence of a record (monotone ladder, saturating at 0)",
+        "observed": "seed 0 -> 468 fail | 15 -> 252 | 30 -> 99 | 45 -> 45 | 60 -> 27 | 100 -> 27",
+        "why": "The assertion at :2868-2871 requires ladder[last].fail === 0. It cannot be met: the residual 27 stop at Q-XULA-06 [offer] on `the_xul_aneekh rank 4/5`, a RANK gate no disposition seed can move. The builder wrote a saturation guard for TOTAL saturation (:2846, === base.length) and none for PARTIAL."
+      },
+      {
+        "check": "criterion 2 falsifiable (faction ladder)",
+        "observed": "rank-5 attribute floor -> 500: three_factions_rank5 FAIL 0 -> 0",
+        "why": "The red control for criterion 2 will not go red. Setting the rank-5 attribute floor to an impossible 500 produces zero FAILs, because every signature is already UNMEASURABLE through the counting abstention at :2044. Criterion 2 is unfalsifiable on this tree, which is the tool's own confirmation of the `viable = 0 by construction` defect."
+      }
+    ]
+  },
+  "tools": [
+    {
+      "tool": "tools/analysis/build-viability.mjs",
+      "verdict": "REBUILD",
+      "round_rejected": 5,
+      "measures_specified_thing": false,
+      "can_fail": "partly — criterion 2 cannot fail at all on this tree, by the tool's own falsification control",
+      "passes_when_working": false,
+      "reads_running_world": "yes, under --verify-model — but the live differential cannot attribute movement to the term the tool models",
+      "self_blinding": true,
+      "flags_honest": "mostly — --audit-grants exits 0 on a tautology",
+      "findings": [
+        "DEFECT F (headline). shadowD3 freezes the RI-CHR02 matrix race argument for EVERY giver (`race: __matrixRace` with __matrixRace='dunmer') and leaves _questPlayerView() untouched. --verify-model reports RACE-SENSITIVE (1/31 gated givers moved), '31 modelled, 0 unmodelled', 4/4 anchors AGREES, exit 0, and writes a VALID attestation. The full walk then PUBLISHES 0/540 viable, 45 not viable, 495 UNMEASURABLE — byte-identical to the sound tree — instead of refusing. The builder's own acceptance test ('the full walk on that tree must REFUSE') fails.",
+        "WHY F WORKS: race reaches canOffer through TWO independent channels and `moved.length > 0` cannot attribute movement to either. (1) game/src/character/reaction.js raceTerm() — the RI-CHR02 12x10 matrix, which is what the tool models with dispositionCeiling(). (2) game/src/sim/dialogue/disposition.js:297 — `if (npc.race && player.race && npc.race === player.race) x += G.fDispRaceMod`, a flat same-race bonus via dlgMovableTerms. In D3 channel 1 is dead and channel 2 alone moves ONE giver (salt-factor-neloth-vaun, dunmer, delta -5).",
+        "DAMAGE F CERTIFIES AS SOUND, measured by my own Node-side probe importing the shipped raceTerm(): the matrix race term differs dunmer->nord for 25 of 31 gated givers, largest |delta| 24 (RG-DEEP -40 -> -16). That 25/31 independently reproduces shadowS's LIVE 25/31 without booting anything.",
+        "DEFECT G. shadowD2 swaps dunmer<->nord before the matrix read. Output identical to the sound control on every reported field (RACE-SENSITIVE 25/31, 31 modelled 0 unmodelled, 4/4 AGREES, exit 0); only source_hash differs. 12/12 recorded givers have arms exactly swapped (dyer-sallis: sound dunmer 9/nord 31, D2 dunmer 31/nord 9). A race term wired backwards is indistinguishable from a correct one.",
+        "DEFECT H. shadowD1 freezes the matrix race for 30 of 31 givers. Detector: RACE-SENSITIVE 2/31 (sound 25/31), '31 modelled, 0 unmodelled' — the MIXED warning does NOT fire, because `modelled` reports only that the closure returned an object, not that the race term inside it did anything. AGREES, exit 0. race_sensitive: moved.length > 0 (:3226) is a threshold of one.",
+        "DEFECT A. `substitutions_remaining` is rows.filter(r => r.basis === 'SUBSTITUTION').length over a HAND-WRITTEN literal array (:1432-1449). No row is ever labelled 'SUBSTITUTION'. The count is 0 by construction; --self-test asserts it to 0, asserting a tautology. The ledger's own doc comment at :1422 defines player-optimal-bound as 'THE ONE SURVIVING SUBSTITUTION, stated as one', so the file says there are four and reports zero.",
+        "DEFECT B. REPUTATION is not a player-optimal bound but a JOINTLY UNREACHABLE vector. REPUTATION_GIFTS (:1379-1398) takes the max delta PER FACTION INDEPENDENTLY across resolutions and drops every negative. Measured on 121 quests: 64 have their per-faction maxima coming from different, mutually exclusive resolutions; 200 negative deltas summing -3443 are discarded. Q-ASSZ-04 credits imperial_assize +42, xul_aneekh +25 and drowned_court +20 from ONE quest. A real one-resolution-per-quest play optimising the_dockhands reaches dockhands 521 but house_dres -236; the tool holds dockhands 521 AND house_dres 169 simultaneously.",
+        "DEFECT I. The grant-dependency test is DEAD CODE: 0 of 540. I patched a probe copy adding a THIRD arm granting only the quest's own ungrounded tokens instead of full omniscience, and tallied over --signatures all: 'hatch taken 0 times: ATTRIBUTED 0, LAUNDERED 0'. The advertised anti-substitution guard never executes on this tree and cannot be credited. It is also unsound in shape — omniscient:true grants all five collections and the flip is blamed on whichever tokens the quest carries, with nothing checking causation — but that is latent only because the path is dead.",
+        "DEFECT J. All 495 abstentions come from criterionThreeFactionsRank5, which abstains on a pure COUNTING argument (:2044-2045, `qualifying.length + blockedOnlyByAnUngroundedFlag.length >= 3`) and NEVER re-runs the compatibility search over qualifying + blocked. DEMONSTRATED: shadowE rewrites exclusivity.enemy_pairs into 12 pairs making the compatibility graph bipartite K4,4 and therefore triangle-free; my independent probe using the shipping FactionGates confirms 0 mutually compatible triples with ALL 8 ladders granted rank 5. The tool still reports three_factions_rank5 unmeasurable x540 and prints 'held back ONLY by a rank-5 world_state flag', output byte-identical to the sound tree. A total, data-irreparable build failure laundered into an abstention.",
+        "DEFECT C (still live, and grown). PRODUCERS' npcs/** branch is `for (const g of Object.values(d)) if (g && Array.isArray(g.npcs))` — a nested-group shape. At 0b2d6ef game/data/npcs has 15 files, ALL with top-level doc.npcs (what loadNPCs() reads), 0 nested: 347 records and 776 topics under the loader shape, 0 collected by the tool's branch. The grant ledger cites 'npcs[].topics' as a source contributing nothing. The builder's sweep recorded 'npc record fields ... topics 336/336' — a FIELD census — while its own code path reached 0 of those records. Impact measured honestly: exactly one shipped gate names a topic produced only by an npc record (Q-LILM-01.opens_by.prerequisite_topics[0] = 'the rotting quarter'); repairing the branch moves GRANTED_TOPICS 226 -> 227 and no verdict moves, because the dialogue layer separately produces the slug. Dead, cited, and currently harmless — a false red waiting for a topic only an NPC teaches.",
+        "DEFECT D (carried, re-confirmed at 0b2d6ef). `viable` is 0 BY CONSTRUCTION: criterionThreeFactionsRank5 is UNMEASURABLE for 540 of 540 signatures, and evaluateSignature sets viable only when all four criteria PASS. No signature on this tree can be viable whatever the build does. The headline '0 of 540 viable (target 486)' is a number the instrument's shape guarantees — the same class as round 4's 0 of 540 from reputation=100, reached from the restrictive side instead of the permissive one. The tool's own falsification control for this criterion now confirms it (self-test failure 2).",
+        "TWO SURVIVING CROSS-CHECK TAUTOLOGIES. (a) pairs_enumerated is DEFINED as comparedRows.length + unresolvedRows.length (:3309), so accounting_holds (:3332) is identically true and can never fail; the self-test asserts it. (b) the loop at :3412 does `if (engineValue === undefined) continue;`, dropping pairs into NEITHER array, so the why string's claim that N pairs were enumerated under-reports the real enumeration.",
+        "ACCEPTED, and it is real work: the four synthetic constants are genuinely gone (gold summed from real rewards[], ranks from the shipping FactionGates.highestQualifying(), the four collections real Sets that refuse an unproduced token); crossCheckVerdict() is genuinely extracted, the compared array's length is genuinely the count, and a row without a boolean `agrees` genuinely refuses; --verify-model is a genuine advance over source-text anchors and does catch R3's break."
+      ],
+      "rebuild": [
+        "Model detector must measure the MODELLED term, not movement: per gated giver assert explainDisposition(id).race_term under both races equals the shipped raceTerm(chData, group, race, upbringing).race, by value and by sign. That is a 31-row equality check against an already-exposed field and it kills D1, D2 and D3 at once. Name and measure the second race channel (fDispRaceMod) separately.",
+        "Delete substitutions_remaining or make it derivable. A count over a hand-written literal is not an audit: classify each row by a rule the code applies, or state the four surviving player-optimal bounds as the four substitutions the file already calls them.",
+        "Reputation must be a REACHABLE vector: one resolution per quest, negatives carried, bound reported under a single consistent playthrough. If the tool will not solve that, it must report reputation as an upper bound that is NOT jointly attainable and refuse any verdict turning on two factions at once.",
+        "Apply the grant-dependency flip test at :2044 — grant the ungrounded flags, re-run the triple search, abstain only on an ACTUAL flip; otherwise FAIL.",
+        "Attribute the quest-level hatch too (grant only the quest's own ungrounded tokens, not full omniscience) and report that it fires 0 times, so a reader knows it is untested by the tree.",
+        "Fix the npcs/** producer branch to the loader's top-level doc.npcs shape, and re-run the whole sweep against LOADERS rather than field censuses.",
+        "Green the self-test. Give the seed ladder a partial-saturation guard naming the residual non-disposition stop (Q-XULA-06, the_xul_aneekh rank 4/5) the way :2846 already does for total saturation, and make criterion 2's falsification control able to go red.",
+        "Put `0 of 540 viable` in context on the front page: it is guaranteed by criterion 2 being unmeasurable for every signature and must not read as a build verdict.",
+        "Remove the two cross-check tautologies (accounting_holds, pairs_enumerated) and count the `engineValue === undefined` pairs into a third named bucket."
+      ]
+    }
+  ],
+  "content_findings_verified_independently": [
+    {
+      "finding": "12 of 24 faction-ladder world_state.flag rows have no producing resolution anywhere in game/data",
+      "verified": true,
+      "how": "My own recursive scan over all of game/data found 786 produced flags and the same 12 missing (dockhands / drowned_court / ixtu_vakh / rootkeepers, ranks 5/6/7); the 12 grounded controls also match."
+    },
+    {
+      "finding": "6 requirement tokens have no producer anywhere in game/data",
+      "verified": true,
+      "how": "items item_pitch_flask, item_ash_barrow, saltrice_bundle; knowledge topic_the_low_tide_hour, topic_ledger_assembly_procedure, topic_the_barge_schedule."
+    },
+    {
+      "finding": "no three rank-5-capable factions are mutually compatible under exclusivity",
+      "verified": "true for the qualifying set; the stated reasoning is stale",
+      "how": "Using the shipping FactionGates at 0b2d6ef: 8 ladders, exactly 5 incompatible pairs of 28 (drowned_court/imperial_assize hard_group; imperial_assize/wet_ledger enemy_pair; imperial_assize/xul_aneekh, ixtu_vakh/wet_ledger, wet_ledger/xul_aneekh earned locks), and 32 compatible triples once all 8 are granted rank 5. The abstention is defensible TODAY, by luck, not by any check the tool performs."
+    }
+  ],
+  "corrections_to_the_builders_record": [
+    "'only 3 factions reach rank 5 on the shipped tree' — the tool at 0b2d6ef reports 4 qualifying.",
+    "'deep_kin attainable reputation is 5 against a rank-1 demand of 10, so that ladder cannot be entered at all' — --audit-grants prints deep_kin 159 against a rank-1 demand of 10. Stale against the shipped tree."
+  ],
+  "content_finding_the_tool_does_not_surface": "the_xul_aneekh's rank 5/6/7 world_state flags are deepkin_hollow_kept / deepkin_coast_decided / deepkin_speaker_vacant — the SAME three flags as deep_kin's. Two ladders share one flag triple.",
+  "method": {
+    "commit": "0b2d6ef",
+    "boot_check": "PASS before and after",
+    "shadow_trees": "game/ + tools/ copied at 0b2d6ef with node_modules symlinked: shadowS (pristine), shadowR (R3's known break — my red control), shadowD1/D2/D3 (three new breaks), shadowE (triangle-free exclusivity). All under scratchpad/r4b/. Nothing was written into game/ or tools/ on the real tree, and the predecessor's in-repo probe directory tools/analysis/.r4probe/ was removed.",
+    "own_probes": [
+      "scratchpad/r4b/matrix-delta.mjs — the RI-CHR02 matrix term per gated giver, importing the shipped raceTerm()",
+      "scratchpad/r4b/triple.mjs — compatibility triples via the shipping FactionGates class",
+      "scratchpad/r4b/bv-attrib.mjs — the grant-dependency third arm (grant only the quest's own ungrounded tokens) with a tally"
+    ],
+    "instrument_calibration": "Calibrated in both directions before use: shadowS green (RACE-SENSITIVE 25/31, exit 0) and shadowR red (RACE-INVARIANT 0/31, CONTRADICTED, exit 20).",
+    "contention": "pgrep -c headless_shell and /proc/loadavg checked before each browser run (6 -> 12 browsers, loadavg 2.98 -> 11.5); all analysis after that point was Node-side."
+  }
+}

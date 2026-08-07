@@ -30,12 +30,18 @@
         {
           "a": "villager",
           "x": "Whatever the tide leaves and whatever the desk wants. That's most people here. If you're asking who decides which, it's the writ house, and they'll decide it about you too before the week is out.",
-          "to": ["the-writ-house", "the-tides"]
+          "to": [
+            "the-writ-house",
+            "the-tides"
+          ]
         },
         {
           "a": "clerk",
           "x": "Mine are set out on a schedule and the schedule is on the wall behind me. Yours are whatever is written on your writ, and if you have not read it, read it. People come back here angry about a line they signed under.",
-          "to": ["the-writ-house", "the-provincial-office"]
+          "to": [
+            "the-writ-house",
+            "the-provincial-office"
+          ]
         }
       ]
     },
@@ -45,12 +51,18 @@
         {
           "a": "villager",
           "x": "Born here, or near enough that the difference only matters to a clerk. My people worked the sap roads before the roads were the Empire's, and they work them still, and they're paid in a coin the Empire prints.",
-          "to": ["the-cart-roads", "the-sap-cutters"]
+          "to": [
+            "the-cart-roads",
+            "the-sap-cutters"
+          ]
         },
         {
           "a": "clerk",
-          "x": "The Office trained me and the Office posted me, and where I was born is on a form in Gideon that no one has asked to see in nine years. That is the entire answer and it is more than most people give.",
-          "to": ["the-provincial-office", "gideon"]
+          "x": "The Office trained me and the Office posted me, and where I was born is on a form in Gideon that no one has asked to see in nine years. Was there something you actually wanted?",
+          "to": [
+            "the-provincial-office",
+            "gideon"
+          ]
         }
       ]
     },
@@ -60,12 +72,19 @@
         {
           "a": "villager",
           "x": "Name it and I'll tell you if it's worth the walk. Ask me for the way and I'll give you that too, but ask the carters first, because they've been there this season and I haven't.",
-          "to": ["the-cart-roads", "the-drowned-road"]
+          "to": [
+            "the-cart-roads",
+            "the-drowned-road"
+          ]
         },
         {
           "a": "clerk",
           "x": "I know the places that appear in a ledger, which is not the same as knowing them. Soulrest, Gideon, Stormhold. If you want the road rather than the entry, ask a man who has walked it and take the second answer as well as the first.",
-          "to": ["soulrest", "gideon", "stormhold"]
+          "to": [
+            "soulrest",
+            "gideon",
+            "stormhold"
+          ]
         }
       ]
     },
@@ -74,13 +93,18 @@
       "infos": [
         {
           "a": "villager",
-          "x": "There's always someone. Give me the name and I'll tell you if they're still here, and if they're not I'll tell you which way they went, which is usually the same way everyone goes.",
-          "to": ["the-cart-roads"]
+          "x": "There's always someone. Give me the name and I'll tell you if they're still here. And if they're not, I'll tell you which way they went. Who is it?",
+          "to": [
+            "the-cart-roads"
+          ]
         },
         {
           "a": "clerk",
           "x": "If they hold a writ, they exist and I can find them. If they do not, then as far as this desk is concerned there is no such person, and I would think carefully before telling me their name.",
-          "to": ["the-writ-house", "the-manifest"]
+          "to": [
+            "the-writ-house",
+            "the-manifest"
+          ]
         }
       ]
     },
@@ -90,12 +114,17 @@
         {
           "a": "villager",
           "x": "Nothing I sell. Food if you're hungry and a dry board if it rains, and I won't take coin for either, because taking coin for it makes it a trade and then the Office wants its share.",
-          "to": ["the-provincial-office"]
+          "to": [
+            "the-provincial-office"
+          ]
         },
         {
           "a": "clerk",
           "x": "Stamps, copies, amendments and a witness if you need one witnessed. Everything on that list has a fee and the fee is the same for you as it is for the man behind you, whatever he tells you he paid.",
-          "to": ["the-fee", "writ-amendment"]
+          "to": [
+            "the-fee",
+            "writ-amendment"
+          ]
         }
       ]
     },
@@ -105,12 +134,18 @@
         {
           "a": "villager",
           "x": "Sap in the wet season, salvage in the dry, and the writ says one thing and the year says another. They don't check. They only check when there's a reason to check, and then they check everything at once.",
-          "to": ["the-sap-cutters", "the-writ-house"]
+          "to": [
+            "the-sap-cutters",
+            "the-writ-house"
+          ]
         },
         {
           "a": "clerk",
           "x": "I write down what walks through that door. It is not interesting and it is not supposed to be, and the day it becomes interesting is the day something has gone very wrong upriver.",
-          "to": ["the-manifest", "the-catalogue"]
+          "to": [
+            "the-manifest",
+            "the-catalogue"
+          ]
         }
       ]
     },
@@ -120,12 +155,17 @@
         {
           "a": "villager",
           "x": "Ask. That's it, that's the advice. No one in this province tells you a thing you haven't asked for, and the ones who do are selling you something. Walk into a town, ask what people are saying, and you'll know more than the road told you.",
-          "to": ["the-cart-roads"]
+          "to": [
+            "the-cart-roads"
+          ]
         },
         {
           "a": "clerk",
           "x": "Carry your writ where you can reach it and do not let another hand hold it. The second thing: this desk answers what it is asked and nothing beyond it, and every desk in the province is the same desk. Ask badly and you will be told the truth and leave knowing less.",
-          "to": ["the-writ-house", "the-provincial-office"]
+          "to": [
+            "the-writ-house",
+            "the-provincial-office"
+          ]
         }
       ]
     },
@@ -135,12 +175,16 @@
         {
           "a": "villager",
           "x": "You want the town for that, not me. Ask in the square, ask twice, and believe the version you hear from two people who don't like each other.",
-          "to": ["the-cart-roads"]
+          "to": [
+            "the-cart-roads"
+          ]
         },
         {
           "a": "clerk",
           "x": "This desk does not deal in what people are saying. It deals in what people have signed. If you want the other, the door is behind you and the square is past it.",
-          "to": ["the-writ-house"]
+          "to": [
+            "the-writ-house"
+          ]
         }
       ]
     },
@@ -149,13 +193,18 @@
       "infos": [
         {
           "a": "villager",
-          "x": "Not to a stranger with a fresh stamp on his case, no. Come back when the stamp's gone soft and ask me again, and I might have remembered one.",
-          "to": ["the-writ-house"]
+          "x": "Not to a stranger with a fresh stamp on his case, no. Come back when the stamp's gone soft and ask me again. How long are you here?",
+          "to": [
+            "the-writ-house"
+          ]
         },
         {
           "a": "clerk",
           "x": "Everything I know is written down, and everything written down is copied, and the copy goes to Soulrest to be read against the Drowned Tally. So no. But I will tell you this much for free: it has not been read against anything since Second Seed.",
-          "to": ["the-drowned-tally", "soulrest"]
+          "to": [
+            "the-drowned-tally",
+            "soulrest"
+          ]
         }
       ]
     }

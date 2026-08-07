@@ -154,6 +154,33 @@ try {
         ...passed,
       });
 
+    // ---- M6: the geometry survives a tile release ------------------------------------------------
+    // `province.js#_release()` disposes every geometry in a departing tile that is not flagged
+    // `geometry.userData.shared`, and the marker cache is one geometry per TYPE instanced by every
+    // tile. Miss the flag and the first border tile to leave the resident ring frees the vertex
+    // buffers behind all 217 markers while other tiles are still drawing them. Nothing above would
+    // have caught it: M2 teleports and streams, it never walks out of a ring. So this checks the
+    // flag directly AND does a round trip, because a count that survives a release is the claim.
+    const before = countDrawn(best.x, best.z);
+    let flagged = 0, unflagged = [];
+    const p0 = E.renderer && E.renderer.province;
+    if (p0 && p0.group) {
+      p0.group.traverse((o) => {
+        if (!o.name || !/^(threshold|remains):/.test(o.name)) return;
+        if (o.geometry && o.geometry.userData && o.geometry.userData.shared) flagged++;
+        else unflagged.push(o.name);
+      });
+    }
+    countDrawn(Math.max(60, best.x - 2400), Math.max(60, best.z - 2400));   // walk the ring away
+    const after = countDrawn(best.x, best.z);                               // and come back
+    add('M6 the marker geometry is shared, so a tile release does not free it',
+      unflagged.length === 0 && after.instances === before.instances && after.verts === before.verts, {
+        note: 'province.js _release() disposes any tile geometry without userData.shared',
+        meshes_flagged_shared: flagged, meshes_missing_the_flag: unflagged,
+        instances_before: before.instances, instances_after_round_trip: after.instances,
+        verts_before: before.verts, verts_after_round_trip: after.verts,
+      });
+
     return R;
   });
 

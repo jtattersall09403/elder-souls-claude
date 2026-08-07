@@ -262,24 +262,43 @@ function runInPage(opts) {
   // D2
   chk('D2_no_auto_hop_to_the_next_enemy', V.every((v) => v.hopped_to === null),
     `hopped to: ${V.map((v) => v.hopped_to || 'nothing').join(', ')} (lockon.json auto_reacquire: false)`);
-  // D3 — two separate ways of being thrown
-  chk('D3a_no_cut_across_the_death_frame', V.every((v) => v.cut_across_death_deg_per_frame <= 7.5),
-    `worst single-frame view change across the death = ` +
-    `${Math.max(...V.map((v) => v.cut_across_death_deg_per_frame))} deg (CMB06 clamps the ` +
-    'locked yaw spring at 7.000 deg/frame; a release must not exceed what the lock itself could)');
+  // D3 — two separate ways of being thrown. `quiet` is the three runs that are pure
+  // observation; `sprinted` is the instrumented control run, whose 20 deg/frame is the PROBE's
+  // own deliberate look swing and must never be counted as the game cutting.
   const quiet = V.filter((v) => !v.sprint_after_kill);
   const sprinted = V.filter((v) => v.sprint_after_kill);
+  chk('D3a_no_cut_across_the_death_frame', quiet.every((v) => v.cut_across_death_deg_per_frame <= 7.5),
+    `worst single-frame view change across the death = ` +
+    `${Math.max(...quiet.map((v) => v.cut_across_death_deg_per_frame))} deg (CMB06 clamps the ` +
+    'locked yaw spring at 7.000 deg/frame; a release must not exceed what the lock itself could)');
   chk('D3b_no_whip_back_behind_the_player', quiet.every((v) => v.heading_swing_15f_deg <= 15),
     `heading drift in the 15 frames after the kill: ${quiet.map((v) => v.heading_swing_15f_deg).join(', ')} deg ` +
     '(a recentre-on-kill shows up here even when it is smooth enough to pass D3a)');
   // The control that makes the line above mean something.
-  chk('D3b_control_sprint_DOES_move_the_heading',
-    sprinted.length > 0 && sprinted.every((v) => v.recentre_window_swing_deg > 20.0 && v.recentre_active_frames > 30),
-    `after the kill, swinging the view 100 deg off the heading and then holding sprint drove the ` +
-    `camera back by ${sprinted.map((v) => v.recentre_window_swing_deg).join(', ')} deg over ` +
-    `${sprinted.map((v) => v.recentre_active_frames).join(', ')} frames of active recentre. ` +
-    'This is the control: the quantity D3b measures IS able to move, so the zeros above are the ' +
-    'game declining to turn the camera for you rather than the probe failing to look.');
+  // THE CONTROL, and it is a control on the INSTRUMENT, not a claim about the game. D3b's
+  // three runs all report exactly 0.000 deg, and a quantity pinned at zero is a check that
+  // cannot fail. In the control run the probe deliberately swings the view 100 deg with look
+  // input immediately after the kill; the same metric, over the same window, must report it.
+  // If it did not, the three zeros would be the probe failing to look rather than the game
+  // declining to turn the camera for you.
+  chk('D3b_control_the_metric_is_live',
+    sprinted.length > 0 && sprinted.every((v) => v.heading_swing_15f_deg > 50),
+    `a deliberate 100 deg look swing in the same window read ` +
+    `${sprinted.map((v) => v.heading_swing_15f_deg).join(', ')} deg on the same metric that ` +
+    'reports 0.000 for the three observation runs. The metric moves; the camera does not.');
+  // A MEASUREMENT, reported as a check so it cannot be quietly dropped. RI-CAM02 §E's
+  // auto-recentre arms correctly and then has nothing to do: locomotion is camera-relative, so
+  // a sprinting player's body yaw IS the camera yaw, and any error a look swing creates is
+  // closed by the 720 deg/s body turn in ~9 frames — long before §E's own 20-frame gate opens.
+  // So the recentre runs and moves the view 0.000 deg, which is why the predecessor's attempt
+  // to fit its 0.350 s half-life returned n/a. The half-life and the 90 deg/s clamp are
+  // unobservable in the only state the gate permits.
+  chk('recentre_arms_but_has_no_error_left_to_close',
+    sprinted.every((v) => v.recentre_active_frames > 30 && v.recentre_window_swing_deg < 0.5),
+    `auto-recentre was ACTIVE for ${sprinted.map((v) => v.recentre_active_frames).join(', ')} ` +
+    `frames and moved the camera ${sprinted.map((v) => v.recentre_window_swing_deg).join(', ')} deg. ` +
+    'Not a bug in §E — a consequence of camera-relative locomotion closing the error before the ' +
+    '20-frame gate opens. Recorded because it makes RI-CAM02 M6 unmeasurable as written.');
   chk('D3b_control_recentre_stays_inside_its_clamp',
     sprinted.every((v) => v.recentre_window_cut_deg_per_frame <= 1.5 + 1e-6),
     `worst single-frame view change while the sprint recentre runs = ` +

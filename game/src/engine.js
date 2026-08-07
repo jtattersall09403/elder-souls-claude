@@ -4767,7 +4767,10 @@ export class Engine {
     this._prevX = p.pos[0]; this._prevZ = p.pos[2];
 
     // RI-WLD11. After physics, so a hazard reads the position the trace reports on this frame.
-    if (this.hazards) this.hazards.step(this.sim, this.bus, this.combat && this.combat.player);
+    // `this.combat` is passed so H9 can damage the COMBAT BODY of an NPC rather than the
+    // `sim.entities` mirror, which `combat-bridge.js mirror()` overwrites every step — see
+    // `HazardSystem._hurtEntity` and W1-SOULS round-1 verdict HF-2.
+    if (this.hazards) this.hazards.step(this.sim, this.bus, this.combat && this.combat.player, this.combat);
   }
 
   /**

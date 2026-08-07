@@ -1026,11 +1026,24 @@ export class Province {
     }
   }
 
+  /**
+   * One geometry per marker type, built once and instanced by every tile.
+   *
+   * `userData.shared = true` IS NOT OPTIONAL and leaving it off is a live bug rather than an
+   * inefficiency: `_release()` disposes every geometry in a departing tile that is not flagged
+   * shared, so the first time the player walked far enough for a border tile to leave the ring,
+   * the vertex buffers behind all 217 markers would have been freed while other resident tiles
+   * were still instancing them. The same note is on `_sigGeo` for the same reason.
+   */
   _thrGeo(type, remains) {
     this._thrGeoCache = this._thrGeoCache || new Map();
     const k = (remains ? 'r:' : 't:') + type;
     if (!this._thrGeoCache.has(k)) {
-      this._thrGeoCache.set(k, remains ? remainsGeometry(type) : thresholdGeometry(type));
+      const g = remains ? remainsGeometry(type) : thresholdGeometry(type);
+      if (g && g.attributes) g.userData.shared = true;                 // remains: a bare geometry
+      if (g && g.body) g.body.userData.shared = true;                  // threshold: { body, glow }
+      if (g && g.glow) g.glow.userData.shared = true;
+      this._thrGeoCache.set(k, g);
     }
     return this._thrGeoCache.get(k);
   }
