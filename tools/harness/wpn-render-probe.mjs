@@ -38,10 +38,14 @@ const SUBJECTS = [
   { id: 'hlb_garrison_bill', cls: 'HLB', reach: 2.85 },
   { id: 'cgs_drowned_reaper', cls: 'CGS', reach: 2.75 },
 ];
-// One capture pose for all three, so a difference between the shots is a difference in the
-// weapon and nothing else.
-const POSE = { pos: [3.4, 1.55, -1.9], look: [0, 1.05, 0.55], fov: 55 };
-const SHOT_FRAME = 18;
+// ONE capture pose and ONE frame for all three, so any difference between the shots is a
+// difference in the weapon and nothing else. Elevated, off the right shoulder, far enough back
+// to hold the whole character plus about three metres of ground — because for these weapons a
+// good part of the swing is BELOW the ground and a tight portrait crop would hide that.
+const POSE = { pos: [3.3, 1.85, 2.15], look: [0.15, 0.95, 0.25], fov: 55 };
+// Frame 8 of the light attack: the tip is at its widest lateral extent on all three subjects,
+// so the class's silhouette is broadside to camera rather than foreshortened.
+const SHOT_FRAME = 8;
 
 const wide = Number(args.width || (args.shots ? 1280 : 320));
 const high = Number(args.height || (args.shots ? 720 : 240));

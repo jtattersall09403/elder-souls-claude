@@ -31,8 +31,12 @@
     "MEASURED post-fix (browser, 60-frame light attack): drawn tip vs CombatBody.socketB = 0.0000 mm max over 60 frames on all three subjects. Guard vs socketA likewise 0.0000 mm. Identical by construction (weapon rides rig.world[gripIdx]; tip authored at local -Y*socket_b_dist_m).",
     "MEASURED: mean bone travel as % of character box diag (1.73 m): SSW 8.88%, HLB 13.94%, CGS 16.04%. Max bone 33.6/44.1/46.8%. Pre-fix figure was 0.19%.",
     "Solved blade lengths differ from declared reach_m: SSW draws 1.518 m (reach 1.95), HLB 2.908 (2.85), CGS 3.098 (2.75). That is MovesetLibrary._bladeLength's solve, not a render choice - the renderer draws socket_b_dist_m exactly.",
-    "Drawn weapon meshes differ per class: tri counts 60 (SSW) / 72 (HLB) / 132 (CGS), distinct cache keys."
+    "Drawn weapon meshes differ per class: tri counts 60 (SSW) / 72 (HLB) / 132 (CGS), distinct cache keys.",
+    "HEADLINE VISUAL FINDING, only visible because the weapon is now drawn: cgs_drowned_reaper's blade tip is BELOW THE GROUND PLANE FOR EVERY FRAME OF THE SWING. tip y runs -0.83 m at rest to -1.92 m at frame 30; blade inclination runs -36.7 deg at rest to -66.3 deg at frame 30 (worsening THROUGH the swing, not just during it). Character head is at y=1.638, so the tip is up to 1.9 m below its own feet.",
+    "MECHANISM of the underground blade: MovesetLibrary._bladeLength solves CGS to 3.098 m of blade so the tip's horizontal radius equals declared reach_m 2.75. The character is ~1.75 m tall. skeleton.json's rest pose hangs the blade point-down from the hand (blade_axis_local [0,-1,0]). A 3.1 m blade hanging point-down from a hand at ~1.0 m puts the tip at -2.1 m BY ARITHMETIC. The declared reaches cannot be satisfied by a blade that also stays above ground on a 1.75 m body.",
+    "This is a DATA/solver defect, not a render defect: drawn tip == socketB to 0.0000 mm, so the renderer is faithfully drawing what hit resolution uses. Correcting it in the renderer would BREAK the what-you-see-is-what-hits-you invariant and is explicitly out of scope.",
+    "Consistent with (and worse than) the round-3 critic's numbers: they measured 35-41 deg and a tip at -1.88 m; measured here -36.7 to -66.3 deg with tip min -1.92 m and NEVER above ground."
   ],
-  "next_step": "screenshots at 1280x720 for three classes; then delete-the-fix control",
+  "next_step": "baseline shots running; then perturb control and prefix control",
   "notes_for_successor": ""
 }

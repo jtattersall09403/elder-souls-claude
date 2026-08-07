@@ -306,6 +306,61 @@ export class Rig {
     this._hasLastPose = true;
   }
 
+  /**
+   * THE RIG'S DURABLE STATE — RI-JRN05.
+   *
+   * The bone Eulers (`rx/ry/rz`) and the world transforms are re-sampled from the clip every
+   * frame and are derived. These are not: `lastR*` is the pose the actor is HOLDING (what a
+   * future cross-fade will blend out of), `fromR*` + `blendLeft`/`blendLen` are a cross-fade
+   * IN PROGRESS, and the hurtbox / body-capsule `pa`/`pb` are last frame's capsules, which
+   * seam S26's body sweep and RI-CMB04's weapon sweep both read.
+   *
+   * Measured before this existed, with every other field of the save already clean:
+   * RI-JRN05 M5's control and loaded traces differed on `player.weapon_tip` and
+   * `player.weapon_guard` for the first 30 of 600 frames, on 12 of 12 trials across three
+   * states and four seeds. The cause is `_hasLastPose`: a rig rebuilt by a load has no last
+   * pose, so `beginCrossFade()` returns early and the transition the control blended over ten
+   * frames is instantiated in one — which is the exact 152 m/s pose discontinuity
+   * `clips.json §cross_fade` exists to abolish, reintroduced by every load.
+   */
+  saveState() {
+    const arr = (a) => Array.from(a, (v) => Math.round(v * 1e6) / 1e6);
+    const p3 = (v) => [Math.round(v[0] * 1e6) / 1e6, Math.round(v[1] * 1e6) / 1e6, Math.round(v[2] * 1e6) / 1e6];
+    return {
+      last_rx: arr(this.lastRx), last_ry: arr(this.lastRy), last_rz: arr(this.lastRz),
+      from_rx: arr(this.fromRx), from_ry: arr(this.fromRy), from_rz: arr(this.fromRz),
+      blend_left: this.blendLeft, blend_len: this.blendLen,
+      has_last_pose: !!this._hasLastPose, has_prev_hurt: !!this._hasPrevHurt,
+      hurt_prev: this.hurtboxes.map((h) => [p3(h.pa), p3(h.pb)]),
+      body_cap_prev: this.bodyCap ? [p3(this.bodyCap.pa), p3(this.bodyCap.pb)] : null,
+    };
+  }
+
+  loadState(s) {
+    if (!s) return this;
+    this.lastRx.set(s.last_rx); this.lastRy.set(s.last_ry); this.lastRz.set(s.last_rz);
+    // The pose the actor is HOLDING is `lastR*` by construction (applyCrossFade records the
+    // post-blend pose there every frame), so seeding the live Eulers from it is what makes the
+    // forward-kinematics pass after a load produce the pose the save was taken on rather than
+    // the bind pose. Without it a snapshot() or a screenshot taken between a load and the
+    // first step showed a T-pose, and the weapon sockets came back at the idle default.
+    this.rx.set(s.last_rx); this.ry.set(s.last_ry); this.rz.set(s.last_rz);
+    this.fromRx.set(s.from_rx); this.fromRy.set(s.from_ry); this.fromRz.set(s.from_rz);
+    this.blendLeft = s.blend_left; this.blendLen = s.blend_len;
+    this._hasLastPose = s.has_last_pose; this._hasPrevHurt = s.has_prev_hurt;
+    for (let i = 0; i < this.hurtboxes.length && i < s.hurt_prev.length; i++) {
+      const h = this.hurtboxes[i], r = s.hurt_prev[i];
+      h.pa[0] = r[0][0]; h.pa[1] = r[0][1]; h.pa[2] = r[0][2];
+      h.pb[0] = r[1][0]; h.pb[1] = r[1][1]; h.pb[2] = r[1][2];
+    }
+    if (this.bodyCap && s.body_cap_prev) {
+      const r = s.body_cap_prev;
+      this.bodyCap.pa[0] = r[0][0]; this.bodyCap.pa[1] = r[0][1]; this.bodyCap.pa[2] = r[0][2];
+      this.bodyCap.pb[0] = r[1][0]; this.bodyCap.pb[1] = r[1][1]; this.bodyCap.pb[2] = r[1][2];
+    }
+    return this;
+  }
+
   /** Zero every joint — the rest pose. */
   clearPose() {
     this.rx.fill(0); this.ry.fill(0); this.rz.fill(0);

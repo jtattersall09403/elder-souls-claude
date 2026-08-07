@@ -452,7 +452,11 @@ export function applySave(sim, blob, moves, statFor) {
   sim.progression.attributes = { ...blob.character.attributes };
   sim.progression.skills = {};
   for (const k of Object.keys(blob.character.skills)) {
-    sim.progression.skills[k] = { value: blob.character.skills[k].value, useProgress: blob.character.skills[k].use_progress };
+    const sk = blob.character.skills[k];
+    sim.progression.skills[k] = {
+      value: sk.value, useProgress: sk.use_progress,
+      levelsSinceRest: sk.levels_since_rest, restClamped: sk.rest_clamped,
+    };
   }
   sim.progression.soulsSpent = blob.progression.souls_spent;
   sim.progression.gold = blob.progression.gold;
@@ -689,7 +693,19 @@ function sortedMap(m) {
 }
 function sortedSkillMap(m) {
   const out = {};
-  for (const k of Object.keys(m).sort()) out[k] = { value: m[k].value, use_progress: r6(m[k].useProgress) };
+  // `levels_since_rest` and `rest_clamped` are RI-PRG03's per-rest advancement cap, written by
+  // character/derive.js and cleared by a rest (engine.js). Both were live fields on the skill
+  // register with no save field, so a reload emptied the cap: a character who had already taken
+  // the rest's allowance came back able to take it again. The durable-field census reported
+  // `progression.skills.blades.levelsSinceRest` 0 -> absent on every sv5 trial.
+  for (const k of Object.keys(m).sort()) {
+    out[k] = {
+      value: m[k].value,
+      use_progress: r6(m[k].useProgress),
+      levels_since_rest: m[k].levelsSinceRest || 0,
+      rest_clamped: !!m[k].restClamped,
+    };
+  }
   return out;
 }
 function sortedQuestMap(m) {

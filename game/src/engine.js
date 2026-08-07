@@ -660,7 +660,7 @@ export class Engine {
     this.sim.identity.document = writ.text;
     this.sim.progression.attributes = { ...ch.attributes };
     this.sim.progression.skills = {};
-    for (const k of Object.keys(ch.skills)) this.sim.progression.skills[k] = { value: ch.skills[k], useProgress: 0 };
+    for (const k of Object.keys(ch.skills)) this.sim.progression.skills[k] = { value: ch.skills[k], useProgress: 0, levelsSinceRest: 0, restClamped: false };
     if (!this.sim.inventory.some((i) => i.id === 'stamped-writ')) {
       this.sim.inventory.push({ id: 'stamped-writ', count: 1, condition: 1, charge: 0, stolen: false, owner: null, slot: null, quickSlot: null });
     }
@@ -709,7 +709,10 @@ export class Engine {
       const v = cur !== undefined && cur !== null && typeof cur !== 'object'
         ? Number(cur)
         : (seed && seed[d.id] !== undefined ? seed[d.id] : base);
-      reg[d.id] = { value: v, useProgress: 0 };
+      // The per-rest cap fields are declared at their identity values here, with the register
+      // itself, for the same reason every other identity value in this repair is: a record
+      // whose key set depends on whether anyone has levelled a skill yet cannot be diffed.
+      reg[d.id] = { value: v, useProgress: 0, levelsSinceRest: 0, restClamped: false };
     }
     return reg;
   }
@@ -2546,10 +2549,16 @@ export class Engine {
      */
     const restoreActor = (body, rec, f, table) => {
       loadActor(body, rec, f, table);
-      body.evaluateRig(body._lastRootDy || 0);
+      body.evaluateRig(rec._lastRootDy || 0);
+      // `evaluateRig()` is not a pure pose function: it rolls this frame's sockets into
+      // `prev`, it decrements a cross-fade, it rewrites `rig.lastR*` and it stamps
+      // `_blendAnim`. Running it is what builds the world transforms, so it has to run — and
+      // then every field it consumed has to go back, or the load has posed the skeleton by
+      // spending one frame of the animation state it was restoring.
+      if (rec.rig && body.rig && typeof body.rig.loadState === 'function') body.rig.loadState(rec.rig);
       loadActor(body, {
         socketA: rec.socketA, socketB: rec.socketB, prevA: rec.prevA, prevB: rec.prevB,
-        hasPrev: rec.hasPrev, _lastRootDy: rec._lastRootDy,
+        hasPrev: rec.hasPrev, _lastRootDy: rec._lastRootDy, _blendAnim: rec._blendAnim,
       }, f, table);
       return body;
     };
@@ -3743,6 +3752,14 @@ export class Engine {
     const r = await this.store.load(slot);
     if (!r.ok) return r;
     this.loadState(r.state);
+    // `save_read` was declared in the HARNESS.md §5 vocabulary in wave 1 and emitted by
+    // nothing: `writeSave()` emitted `save_write`, and the other half of the pair — the one
+    // RI-JRN05 M17 (slot-list honesty) and M12 (a degraded load must be SURFACED) both need to
+    // see — had no emitter anywhere in `game/src`. `degraded` is the field that matters: it is
+    // true when the digest failed and generation n-1 was loaded instead, and a load that falls
+    // back silently is HF3.
+    const e = this.bus.emit(this.sim.frame, 'save_read');
+    e.slot = slot; e.gen = r.gen; e.degraded = !!r.degraded;
     return { ok: true, gen: r.gen, degraded: r.degraded };
   }
 

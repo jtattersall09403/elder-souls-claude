@@ -110,6 +110,10 @@ export function actorFields(o) {
 
 export function saveActor(o, now) {
   const out = {};
+  // The rig is skipped as an OBJECT (it is rebuilt from skeleton.json) but it carries real
+  // animation state: the pose the actor is holding, a cross-fade in progress, and last
+  // frame's hurtbox capsules. See Rig.saveState() for the measurement that put it here.
+  if (o.rig && typeof o.rig.saveState === 'function') out.rig = o.rig.saveState();
   for (const k of actorFields(o)) {
     const v = o[k];
     if (k === 'move' || k === 'pendingMove') { out[k] = moveId(v); continue; }
@@ -121,7 +125,9 @@ export function saveActor(o, now) {
 }
 
 export function loadActor(o, rec, now, table) {
+  if (rec.rig && o.rig && typeof o.rig.loadState === 'function') o.rig.loadState(rec.rig);
   for (const k of Object.keys(rec)) {
+    if (k === 'rig') continue;
     if (SKIP.has(k)) continue;
     const v = rec[k];
     if (k === 'move' || k === 'pendingMove') { o[k] = v === null ? null : (table[v] || null); continue; }

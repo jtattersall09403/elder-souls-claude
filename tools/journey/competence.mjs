@@ -185,7 +185,37 @@ export function analyse(records, opts = {}) {
     } else {
       const ra = Math.max(...a.map((t) => RANK[t] || 0));
       const rb = Math.max(...b.map((t) => RANK[t] || 0));
-      k7 = { status: rb >= ra ? 'pass' : 'fail', early_tiers: a, late_tiers: b, why: rb >= ra ? null : 'E_late is a WEAKER enemy than E_first' };
+      // TOOL-COVERAGE-R1 §5, secondary: "K7 compares only the three-value tier ladder.
+      // champion_hist_marked (2,876 hp) and cst_sap_speaker (380 hp) are BOTH elite, so a 7.6x
+      // weakening between E_first and E_late rates K7: pass. The tool obeys K7 to the letter and
+      // the letter is thin." The letter is still what gates — moving the threshold is not this
+      // tool's call — but the spread is now reported alongside it so a critic can see what the
+      // tier label is hiding, and a spread beyond `hp_spread_notice` is called out by name.
+      const spreadOf = (ids) => {
+        const rows = ids.map((id) => enemies[id]).filter(Boolean);
+        return {
+          statblocks: ids.slice(),
+          hp: rows.map((r) => r.hp || 0),
+          hp_total: rows.reduce((t, r) => t + (r.hp || 0), 0),
+          armour_rating: rows.map((r) => r.armour_rating || 0),
+          attack_count: rows.map((r) => Object.keys(r.attacks || {}).length),
+        };
+      };
+      const sa = spreadOf(E_first.enemies || []), sb = spreadOf(E_late.enemies || []);
+      const ratio = sa.hp_total > 0 && sb.hp_total > 0 ? +(sb.hp_total / sa.hp_total).toFixed(2) : null;
+      k7 = {
+        status: rb >= ra ? 'pass' : 'fail', early_tiers: a, late_tiers: b,
+        why: rb >= ra ? null : 'E_late is a WEAKER enemy than E_first',
+        spread: {
+          E_first: sa, E_late: sb,
+          late_over_first_hp: ratio,
+          note: ratio !== null && ratio < 0.5
+            ? `E_late's cohort carries ${ratio}x E_first's hit points at the SAME tier label. K7's ` +
+              'three-value ladder cannot see that; the improvement may be an easier fight rather ' +
+              'than a better player. Reported, not enforced — the threshold is RI-JRN02\'s.'
+            : null,
+        },
+      };
       if (rb < ra) {
         blockers.push({
           code: 'K7_WEAKER_LATE',
@@ -196,14 +226,33 @@ export function analyse(records, opts = {}) {
         });
       }
     }
+    // THE GEAR CLAUSE. TOOL-COVERAGE-R1 §5: round 1 read
+    //     if (gear && gear.changed) { blockers.push({ code: 'GEAR_CHANGED', ... }) }
+    // and `compareLoadouts` returns `{ changed: null }` when no trace record carries
+    // `player.loadout`. `null` is falsy, so NO blocker was raised when the clause could not be
+    // checked at all — and the self-test's own fixture never emitted the field, which is why
+    // "a real improvement is recognised" passed with the gear clause silently unchecked. A
+    // competence curve bought entirely with gear was certified whenever the trace omitted the
+    // loadout. An unavailable check is `unmeasurable`, exactly as K7 is when it cannot resolve
+    // a statblock; it is never a pass. The three states are now distinct and all three block
+    // or proceed explicitly.
     gear = compareLoadouts(frames, E_first, E_late);
-    if (gear && gear.changed) {
+    if (gear.changed === true) {
       blockers.push({
         code: 'GEAR_CHANGED',
         why: `the loadout differs between E_first and E_late (${gear.diff.join('; ')}). RI-JRN02 §C ` +
              'requires "no equipment upgrade between them: if the improvement requires better gear, ' +
              'the game taught the player to shop, not to fight."',
         owner: 'the run',
+      });
+    } else if (gear.changed === null) {
+      blockers.push({
+        code: 'GEAR_UNCHECKABLE',
+        why: `${gear.why} RI-JRN02 §C's no-upgrade clause is a REQUIREMENT of the comparison, not ` +
+             'an optional caveat: a competence curve bought entirely with better gear is exactly ' +
+             'what the clause exists to reject, and a trace that cannot show the loadout cannot ' +
+             'distinguish that case from a real one. The comparison is void, not caveated.',
+        owner: 'the trace (needs player.loadout on at least one record at or before each encounter)',
       });
     }
   }

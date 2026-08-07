@@ -160,8 +160,8 @@ const PLAN = {
   spine_00: { to: 'spine_02', r0: 0.170, r1: 0.205, mat: 'cloth', blend: 0.4 },
   spine_02: { to: 'neck', r0: 0.205, r1: 0.135, mat: 'cloth', blend: 0.4 },
   neck: { to: 'head', r0: 0.072, r1: 0.070, mat: 'skin', blend: 0.5 },
-  clavicle_l: { to: 'upperarm_l', r0: 0.098, r1: 0.088, mat: 'cloth', blend: 0.5 },
-  clavicle_r: { to: 'upperarm_r', r0: 0.098, r1: 0.088, mat: 'cloth', blend: 0.5 },
+  clavicle_l: { to: 'upperarm_l', r0: 0.090, r1: 0.078, mat: 'cloth', blend: 0.5 },
+  clavicle_r: { to: 'upperarm_r', r0: 0.090, r1: 0.078, mat: 'cloth', blend: 0.5 },
   upperarm_l: { to: 'lowerarm_l', r0: 0.083, r1: 0.070, mat: 'skin', blend: 0.45 },
   upperarm_r: { to: 'lowerarm_r', r0: 0.083, r1: 0.070, mat: 'skin', blend: 0.45 },
   lowerarm_l: { to: 'hand_l', r0: 0.070, r1: 0.053, mat: 'skin', blend: 0.45 },
@@ -177,14 +177,21 @@ const PLAN = {
   foot_r: { local: [0, -0.045, 0.155], r0: 0.062, r1: 0.048, mat: 'skin', blend: 0 },
 };
 
-/** Joint balls, so a bent elbow reads as a joint rather than two disconnected tubes. */
+/**
+ * Joint balls, so a bent elbow reads as a joint rather than two disconnected tubes.
+ *
+ * Each radius is a HAIR under its segment's radius at that end. Larger reads as a lumpy string
+ * of beads — the first capture had a pelvis ball at 0.190 sitting proud of the 0.185 hip tube
+ * and two 0.114 thigh balls inside it, which at VP07 distance is three overlapping spheres
+ * where a hip should be. The pelvis has no ball at all now: its own tube already spans the
+ * joint, so a ball there could only ever stick out of it.
+ */
 const JOINTS = [
-  ['upperarm_l', 0.086, 'skin'], ['upperarm_r', 0.086, 'skin'],
-  ['lowerarm_l', 0.070, 'skin'], ['lowerarm_r', 0.070, 'skin'],
-  ['hand_l', 0.056, 'skin'], ['hand_r', 0.056, 'skin'],
-  ['thigh_l', 0.114, 'cloth'], ['thigh_r', 0.114, 'cloth'],
-  ['calf_l', 0.091, 'cloth'], ['calf_r', 0.091, 'cloth'],
-  ['pelvis', 0.190, 'cloth'],
+  ['upperarm_l', 0.080, 'skin'], ['upperarm_r', 0.080, 'skin'],
+  ['lowerarm_l', 0.068, 'skin'], ['lowerarm_r', 0.068, 'skin'],
+  ['hand_l', 0.052, 'skin'], ['hand_r', 0.052, 'skin'],
+  ['thigh_l', 0.106, 'cloth'], ['thigh_r', 0.106, 'cloth'],
+  ['calf_l', 0.086, 'cloth'], ['calf_r', 0.086, 'cloth'],
 ];
 
 /**
@@ -255,6 +262,34 @@ function buildSkeleton(rig, mats, tintHex, skinHex) {
       const t = k / 3;
       B.skin.tube(P(0, 0.150 - t * 0.030, 0.030 - t * 0.075),
         P(0, 0.215 - t * 0.055, -0.010 - t * 0.090), 0.030, 0.008, hi, hi, 0, 6, 2);
+    }
+  }
+
+  // ---- the tail ------------------------------------------------------------------------
+  // RI-CAM07 §F2 names the canonical Saxhleel read as "digitigrade stance, head crest/horns,
+  // TAIL", and F1 asks the back silhouette to be distinguishable from the common humanoid
+  // enemies at 32 px. A tail is the single cheapest thing that does both, and the back is the
+  // shot the player looks at for ten hours (§F4).
+  //
+  // DECLARED LIMITATION: skeleton.json has no tail bones, so this is skinned rigidly to the
+  // pelvis and blended into spine_00 at its base. It swings with the hips and it does NOT have
+  // secondary motion — RI-CAM07 §E5 (cloth/secondary lag 3–12 frames) is therefore NOT met by
+  // it, and adding tail bones is a change to the combat rig and belongs with whoever owns
+  // skeleton.json. Written here rather than left for a critic to discover.
+  const pi = index.get('pelvis');
+  const s0 = index.get('spine_00');
+  if (pi !== undefined) {
+    const pm = restWorld[pi];
+    const T = (x, y, z) => new THREE.Vector3(x, y, z).applyMatrix4(pm);
+    const spine = [
+      [T(0, 0.02, -0.13), T(0, -0.10, -0.36), 0.085, 0.068],
+      [T(0, -0.10, -0.36), T(0, -0.30, -0.55), 0.068, 0.048],
+      [T(0, -0.30, -0.55), T(0, -0.50, -0.66), 0.048, 0.030],
+      [T(0, -0.50, -0.66), T(0, -0.66, -0.70), 0.030, 0.012],
+    ];
+    for (let k = 0; k < spine.length; k++) {
+      const [a, b, r0, r1] = spine[k];
+      B.skin.tube(a, b, r0, r1, pi, k === 0 && s0 !== undefined ? s0 : pi, k === 0 ? 0.35 : 0, 8, 2);
     }
   }
 
@@ -343,7 +378,11 @@ function buildWeaponGeo(w) {
         const y0 = haftTop - span * t0, y1 = haftTop - span * t1;
         // the curve: the tip rakes forward, which is what makes a curved sword read as one
         const c0 = span * 0.20 * t0 * t0, c1 = span * 0.20 * t1 * t1;
-        const seg = box(wide * (1 - 0.35 * t0), Math.abs(y1 - y0) * 1.12, R * 0.24,
+        // 1.45, not 1.12: the segments are individually ROTATED to follow the curve, so a
+        // segment only as long as its own step leaves a wedge-shaped gap at every joint and
+        // the blade reads as a chain of loose plates rather than one piece of steel. The
+        // first capture of a curved greatsword showed exactly that.
+        const seg = box(wide * (1 - 0.35 * t0), Math.abs(y1 - y0) * 1.45, R * 0.24,
           (y0 + y1) / 2, (c0 + c1) / 2);
         seg.rotateX(-Math.atan2(c1 - c0, Math.abs(y1 - y0)));
         metal.push(seg);
