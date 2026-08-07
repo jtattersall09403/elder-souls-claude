@@ -644,6 +644,45 @@ async function main() {
     }
   }
 
+  // ---- COVERAGE: which player-facing JSON has prose the collector never reached? --------------
+  // W1-05. `road-directions.json` kept 46 spoken lines at `routes[].answers[].x`, a shape
+  // `ourText()` did not know, so `--file game/data/dialogue/road-directions.json` printed the whole
+  // corpus and NOTHING about the file — not a silent pass, an invisible one. Adding the shape fixed
+  // that file; this catches the next one. It compares words the collector took from each file
+  // against a crude count of every string in it, and names any file where it reached almost none.
+  const covered = new Map();
+  for (const r of ['dialogue', 'books', 'journal']) {
+    for (const d of ours[r] || []) covered.set(d.file, (covered.get(d.file) || 0) + words(d.text));
+  }
+  const uncovered = [];
+  for (const dir of ['game/data/dialogue', 'game/data/books']) {
+    for (const f of walk(path.join(ROOT, dir))) {
+      const rel = path.relative(ROOT, f);
+      const d = readJSON(f); if (!d) continue;
+      // Count only strings under the keys a SPOKEN LINE is written at anywhere in this corpus.
+      // Counting every string instead was the first draft and it named `speakers.json` and
+      // `faction-reactions.json` — two specification documents whose word count is all provenance
+      // notes. A coverage warning that fires on files with no prose in them is noise, and noise is
+      // how a check stops being read; the point of this one is to be believable when it fires.
+      const SPOKEN_KEY = new Set(['x', 'text', 'line', 'lines', 'say', 'greeting']);
+      let raw = 0;
+      const walkVal = (v, key) => {
+        if (typeof v === 'string') { if (SPOKEN_KEY.has(key)) raw += words(v); return; }
+        if (Array.isArray(v)) { for (const q of v) walkVal(q, key); return; }
+        if (v && typeof v === 'object') { for (const [k, q] of Object.entries(v)) walkVal(q, k); }
+      };
+      walkVal(d, '');
+      const got = covered.get(rel) || 0;
+      if (raw >= 300 && got < raw * 0.25) uncovered.push({ file: rel, raw, got });
+    }
+  }
+  if (uncovered.length) {
+    console.warn(`check-prose: COVERAGE — ${uncovered.length} file(s) hold prose this gate cannot see.`);
+    console.warn('  The collector knows a fixed set of JSON shapes. A file in an unknown shape is not');
+    console.warn('  measured at all, which reads as a pass. Teach ourText() the shape, or say why not.');
+    for (const u of uncovered) console.warn(`  ${u.file}  ~${u.raw} authored words, ${u.got} measured`);
+  }
+
   if (regressions) {
     console.warn(`check-prose: WARNING — ${regressions} prose-voice regression(s) past the recorded ratchet.`);
     console.warn('  These are voice defects a reader finds in four lines and no metric in the corpus');

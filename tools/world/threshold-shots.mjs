@@ -28,28 +28,55 @@ const DATE = arg('date', new Date().toISOString().slice(0, 10));
 const W = Number(arg('width', 1280)), H = Number(arg('height', 720));
 const DIST = Number(arg('dist', 6.5));
 const HOUR = Number(arg('hour', 11));
+const EYE = Number(arg('eye', 1.7));
+const PITCH = Number(arg('pitch', -4));
+const ONLY = arg('only', '');
+
+// The province's own raster, so the tool can tell which region a camera position is standing in.
+const terrain = R('game/data/world/terrain.json');
+const COLS = terrain.cols, CELL = terrain.cell_m;
+const rbuf = Buffer.from(terrain.channels.region, 'base64');
+const regionU = new Uint8Array(rbuf.buffer, rbuf.byteOffset, rbuf.byteLength);
+const regionIdAt = (x, z) => bf.regions[regionU[Math.max(0, Math.floor(z / CELL)) * COLS + Math.max(0, Math.floor(x / CELL))]].id;
 
 /**
  * The three markers to photograph, chosen for what each one says rather than at random:
  *   - the Dres gibbet on the province's biggest tier jump — the warning, and the M66 announcement
  *   - the Imperial cairn — the Empire's own boundary, shedding its top block
  *   - the root gate — the same job done by people who grow their marks instead of stacking them
- * The instance picked for each is the one standing in the OPENEST ground of its type, because at a
- * border the props are dense by construction and a frame of a trunk is not a frame of a marker.
+ *
+ * `stand_in` IS NOT COSMETIC and it cost two frames to learn. The first run picked each instance by
+ * marker crowding alone and put the lens 6.5 m off the marker inside Blackwood and the Crimson
+ * Coast — and both frames came back as a wall of canopy with no marker in them at all, because at a
+ * border the FLORA is dense by construction. `docs/shots` has had blank and useless frames cited
+ * before, and the round-1 border tool already carried this warning in its header; this is the same
+ * lesson arriving a second time. So each want now names the side the camera stands on, and the two
+ * that failed are shot from the Hive, which is the one region in the province that declares no
+ * flora at all — nothing between the lens and the thing being photographed.
  */
 const WANT = [
-  { type: 'corpse_in_a_cage', slug: 'dres-gibbet', claim: 'the Dres gibbet at a three-tier jump: the warning you meet before the Deep Marshes' },
-  { type: 'imperial_border_cairn', slug: 'imperial-cairn', claim: "the Empire's border cairn, unmaintained, its top block already down" },
-  { type: 'root_gate', slug: 'root-gate', claim: 'an Argonian root gate: the same boundary, grown rather than built' },
+  {
+    type: 'corpse_in_a_cage', slug: 'dres-gibbet',
+    claim: 'the Dres gibbet at a three-tier jump: the warning you meet before the Deep Marshes',
+  },
+  {
+    type: 'imperial_border_cairn', slug: 'imperial-cairn', border: 'blackwood--hive', stand_in: 'hive',
+    claim: "the Empire's border cairn, unmaintained, its top block already down",
+  },
+  {
+    type: 'root_gate', slug: 'root-gate', border: 'hive--western-rootlands', stand_in: 'hive',
+    claim: 'an Argonian root gate: the same boundary, grown rather than built',
+  },
 ];
 
 const markers = bf.markers();
 const chosen = [];
 for (const w of WANT) {
-  const of = markers.filter((m) => m.type === w.type);
+  let of = markers.filter((m) => m.type === w.type);
+  if (w.border) of = of.filter((m) => m.border === w.border);
   if (!of.length) continue;
-  // Openest: fewest OTHER markers within 30 m, and prefer a border with a real tier jump so the
-  // frame is of a place where crossing means something.
+  // Fewest OTHER markers within 30 m, and prefer a border with a real tier jump so the frame is of
+  // a place where crossing means something.
   let best = null, bestScore = -Infinity;
   for (const m of of) {
     const crowd = markers.filter((o) => o !== m && Math.hypot(o.x - m.x, o.z - m.z) < 30).length;
@@ -66,6 +93,7 @@ const session = new CaptureSession();
 const written = [];
 try {
   for (const c of chosen) {
+    if (ONLY && c.slug !== ONLY) continue;
     const m = c.marker, b = c.border;
     // Stand on the A side of the border and look across it, so the marker is in front of the
     // region it announces rather than in front of the one you are leaving.
@@ -75,13 +103,24 @@ try {
       const g = bf._gradient(m.x, m.z, s.index);
       if (g) { dirX = g[0]; dirZ = g[1]; }
     }
-    const camX = m.x - dirX * DIST, camZ = m.z - dirZ * DIST;
+    // Which way along the gradient puts the camera in the region we want to stand in. The gradient
+    // is signed but its sign is a property of how the border was fitted, not of which region is
+    // which, so the tool asks the raster rather than assuming.
+    let sign = -1;
+    if (c.stand_in) {
+      const plus = regionIdAt(m.x + dirX * DIST, m.z + dirZ * DIST);
+      const minus = regionIdAt(m.x - dirX * DIST, m.z - dirZ * DIST);
+      if (plus === c.stand_in) sign = 1;
+      else if (minus === c.stand_in) sign = -1;
+      else console.warn(`  ! ${c.slug}: neither side at ${DIST} m is ${c.stand_in} (got ${minus} / ${plus})`);
+    }
+    const camX = m.x + sign * dirX * DIST, camZ = m.z + sign * dirZ * DIST;
     const yaw = (Math.atan2(m.x - camX, m.z - camZ) * 180 / Math.PI + 360) % 360;
     const shot = await session.capture({
       evidence_of: 'appearance',
       claim: `W1-02 / RI-WLD12 M64: ${c.claim}`,
       place: { x: +camX.toFixed(1), z: +camZ.toFixed(1) },
-      pose: { yaw_deg: +yaw.toFixed(1), pitch_deg: -4, eye_m: 1.7, fov: 62 },
+      pose: { yaw_deg: +yaw.toFixed(1), pitch_deg: PITCH, eye_m: EYE, fov: 62 },
       time: HOUR,
       width: W, height: H,
       // The larger budget is not a loosened gate: the province streams in around a teleport, so
@@ -96,7 +135,7 @@ try {
       type: m.type, owner: m.owner, border: m.border,
       a: b.a, b: b.b, delta_tier: b.delta_tier, border_kind: b.kind,
       marker: { x: m.x, z: m.z, height_m: +m.h.toFixed(2), solid_r: +m.solid_r.toFixed(2) },
-      camera: { x: +camX.toFixed(1), z: +camZ.toFixed(1), yaw_deg: +yaw.toFixed(1), eye_m: 1.7, dist_m: DIST },
+      camera: { x: +camX.toFixed(1), z: +camZ.toFixed(1), yaw_deg: +yaw.toFixed(1), eye_m: EYE, pitch_deg: PITCH, dist_m: DIST, stood_in: c.stand_in || null },
       settled: shot.settle && shot.settle.settled, cached: shot.cached, source: shot.path,
     });
     console.log(`wrote docs/shots/${name}  (${m.type}, ${b.a} -> ${b.b}, dtier ${b.delta_tier})`);

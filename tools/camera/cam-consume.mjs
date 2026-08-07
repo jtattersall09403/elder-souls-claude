@@ -82,8 +82,12 @@ const PERTURBATIONS = [
     why: 'RI-CAM01 §A — the unobstructed free-camera boom. Shorten it and the camera sits ' +
       'closer to the character\'s back.',
     observable: 'arm_len_m',
-    expect: (b, p) => (near(b, 4.10, 0.02) && near(p, 2.00, 0.02) ? null
-      : `boom went ${b.toFixed(4)} -> ${p.toFixed(4)} m, expected 4.10 -> 2.00`),
+    // A RATIO, because the settled boom is `arm_free_m` times RI-CAM01 §A's pitch/arm scale
+    // at whatever pitch the camera rests at, and that scale is identical on both runs. The
+    // prediction is therefore exact: 2.00/4.10 = 0.4878.
+    expect: (b, p) => (near(p / b, 2.00 / 4.10, 0.02) ? null
+      : `boom went ${b.toFixed(4)} -> ${p.toFixed(4)} m, a ratio of ${(p / b).toFixed(4)}; ` +
+        'shortening arm_free_m from 4.10 to 2.00 predicts 0.4878'),
     holds: ['pivot_y_above_feet_m', 'fov_deg'],
   },
   {
@@ -92,9 +96,12 @@ const PERTURBATIONS = [
     why: 'RI-CAM01 §A — a constant FOV. Widen it and a fixed world point moves toward the ' +
       'middle of the frame. Checked through the PROJECTION, not just the reported field.',
     observable: 'ndc_x_of_fixed_point',
-    expect: (b, p) => (Math.abs(p) < Math.abs(b) * 0.75 ? null
-      : `a point at NDC x ${b.toFixed(4)} moved to ${p.toFixed(4)}; a 50->90 deg widening ` +
-        'must pull it substantially toward centre'),
+    // tan(25 deg)/tan(45 deg) = 0.4663. NDC x is proportional to 1/tan(fov/2) at fixed
+    // aspect, so a 50 -> 90 deg widening must shrink it by exactly that factor.
+    expect: (b, p) => (Math.abs(b) > 0.05 && near(p / b, Math.tan(25 * Math.PI / 180) / Math.tan(45 * Math.PI / 180), 0.03)
+      ? null
+      : `a point at NDC x ${b.toFixed(4)} moved to ${p.toFixed(4)} (ratio ${(p / b).toFixed(4)}); ` +
+        'a 50 -> 90 deg widening predicts tan(25)/tan(45) = 0.4663'),
     holds: ['pivot_y_above_feet_m'],
   },
   {
@@ -115,8 +122,12 @@ const PERTURBATIONS = [
     why: 'RI-CAM06 §H — the death camera eases to a stated pitch. This one is behind a MODE ' +
       'branch, so it proves the file reaches code the free camera never runs.',
     observable: 'death_pitch_deg',
-    expect: (b, p) => (near(b, -22.0, 1.5) && p < -45 ? null
-      : `death pitch settled at ${b.toFixed(2)} then ${p.toFixed(2)}; expected ~-22 then past -45`),
+    // Again a ratio. 120 frames is most but not all of the 45-frame ease plus the orbit, so
+    // the absolute lands short of the target on BOTH runs by the same fraction; the ratio of
+    // the two settled pitches is the ratio of the two targets, -60/-22 = 2.727.
+    expect: (b, p) => (b < -15 && near(p / b, 60 / 22, 0.20) ? null
+      : `death pitch settled at ${b.toFixed(2)} then ${p.toFixed(2)} (ratio ` +
+        `${(p / b).toFixed(3)}); retargeting -22 -> -60 predicts 2.727`),
     holds: [],
   },
 ];
@@ -170,18 +181,27 @@ async function measure() {
   const f = H.getCameraFrame();
   const c = f.camera;
   out.pivot_y_above_feet_m = c.pivot[1] - f.player_pos[1];
+  // The boom, measured as a DISTANCE between two places the camera put itself, not read off
+  // `arm_len_m`. It settles a little under `arm_free_m` because RI-CAM01 §A's pitch/arm scale
+  // shortens the boom at the resting downward pitch — which is why the check below is a RATIO
+  // against the baseline and not an absolute.
   out.arm_len_m = Math.hypot(c.pos[0] - c.pivot[0], c.pos[1] - c.pivot[1], c.pos[2] - c.pivot[2]);
-  out.fov_deg = c.fov;
+  out.fov_deg = c.fov_deg;
 
-  // The projection, not the field. A point 10 m in front of and 3 m to the right of the
-  // pivot: how far across the frame it lands is a function of the FOV the camera actually
-  // built its matrix with.
-  const yaw = c.yaw_deg * Math.PI / 180;
-  const fx = -Math.sin(yaw), fz = -Math.cos(yaw);
-  const rx = -fz, rz = fx;
-  const pt = [c.pivot[0] + fx * 10 + rx * 3, c.pivot[1], c.pivot[2] + fz * 10 + rz * 3];
+  // THE PROJECTION, not the reported field. The basis is derived from the two positions the
+  // camera actually occupies — forward is pivot minus eye — so it does not depend on knowing
+  // the sign convention of `yaw_deg`. A point 10 m down that axis and 3 m to the side lands
+  // further from the frame edge the wider the FOV the camera built its matrix with.
+  const ex = c.pivot[0] - c.pos[0], ey = c.pivot[1] - c.pos[1], ez = c.pivot[2] - c.pos[2];
+  const el = Math.hypot(ex, ey, ez) || 1;
+  const fx = ex / el, fy = ey / el, fz = ez / el;
+  let rx = fz, ry = 0, rz = -fx;                       // forward x world-up, then normalised
+  const rl = Math.hypot(rx, ry, rz) || 1;
+  rx /= rl; ry /= rl; rz /= rl;
+  const pt = [c.pos[0] + fx * 10 + rx * 3, c.pos[1] + fy * 10 + ry * 3, c.pos[2] + fz * 10 + rz * 3];
   const nd = H.projectPoint(pt[0], pt[1], pt[2]);
   out.ndc_x_of_fixed_point = nd.ndc[0];
+  out.ndc_in_front = !!nd.in_front;
 
   // The look curve. A full-deflection right stick for 60 frames; how far the world turned.
   const yaw0 = H.getCameraFrame().camera.yaw_deg;

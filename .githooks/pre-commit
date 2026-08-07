@@ -32,6 +32,21 @@ if git diff --cached --name-only --diff-filter=ACMRD | grep -Eq '^game/data/ques
   node tools/check-quests.mjs || echo "pre-commit: quest integrity problems above — fix before this ships."
 fi
 
+# Prose voice. W1-PROSE-TICS removed 768 `-body` forms from the corpus and other agents' work put
+# 216 back within hours, because nothing ran afterwards. The round-1 blind judge said the same from
+# the other side: a prose constraint fixed once and not enforced by a check that RUNS decays within
+# hours on a busy tree. So it runs here, on the commits that can cause the decay.
+#
+# WARNING, NOT BLOCKING — the precedent and the reasoning are check-quests' attribute-scale audit
+# above. Dialogue, book and journal text belong to a dozen pieces at once; a fail-closed assertion
+# here would turn a shared hook red for every agent on the box over prose none of them owns. It
+# costs ~1.2s, reads only JSON, and needs no browser and no reference corpus.
+# `node tools/check-prose.mjs --verbose` for every file, `--file <path>` for one,
+# `--strict` for a non-zero exit if your piece wants to hold its own line.
+if git diff --cached --name-only --diff-filter=ACMRD | grep -Eq '^game/data/(dialogue|books|quests)/'; then
+  node tools/check-prose.mjs || echo "pre-commit: prose-voice check could not run — see above."
+fi
+
 # Does the game actually come up? smoke.mjs is an environment self-test and says so in
 # its own header — it never touches the engine, so a build whose engine throws during
 # setup passed every boot check on this tree while three agents lost measurement rounds

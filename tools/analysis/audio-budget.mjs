@@ -170,7 +170,7 @@ row('S2', 'refDistance 1 m / maxDistance 40 m / rolloffFactor 1.0',
 row('S3', 'HRTF is NOT used', P.hrtf === false, P.hrtf === false);
 row('S6', 'the listener is at the CHARACTER, not the orbit camera', S.listenerAttachedTo,
     S.listenerAttachedTo === 'character',
-    { note: 'this row is a SELF-REPORT and RI-AUD02 says so: "listenerAttachedTo is a self-report and is therefore only a hint — S6 is scored by the camera-orbit pan measurement, which cannot be self-reported wrongly." The orbit measurement is tools/audio/impact-probe-browser.mjs --orbit.' });
+    { note: 'this row is a SELF-REPORT and RI-AUD02 says so: "listenerAttachedTo is a self-report and is therefore only a hint — S6 is scored by the camera-orbit pan measurement, which cannot be self-reported wrongly." The orbit measurement is tools/audio/impact-browser.mjs, phase P4, which orbits the target around the LIVE player position and reports Pearson r(pan, sin bearing) against a still-target control.' });
 
 // ── hard fails ──────────────────────────────────────────────────────────────────────────────
 const HF = [];

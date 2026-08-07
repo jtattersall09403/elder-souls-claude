@@ -201,12 +201,12 @@ R.checks.M6 = {
   panner: stats.panner || null,
   listener_attached_to: stats.listenerAttachedTo || null,
   // A run in which every source sits dead ahead legitimately reads pan 0 everywhere; the
-  // correlation itself is measured in the browser sweep (`--orbit`), where the target moves.
+  // correlation itself is measured in the browser sweep (impact-browser.mjs P4), where the target moves.
   // What this check can falsify off a static fixture is the ABSENCE of a panner, which is M6's
   // own hard fail, and a driver that reports a constant pan for sources at different bearings.
   pass: spatial.length > 0 && !!stats.panner,
   hard_fail: spatial.length > 0 && !stats.panner,
-  note: 'AGENT-PROTOCOL: a still target hides every steering defect. The correlation of pan against bearing over a MOVING target is measured by tools/audio/impact-probe-browser.mjs --orbit and is reported there, not here.',
+  note: 'AGENT-PROTOCOL: a still target hides every steering defect. The node arena has no perception, so nothing here ever turns and this row can only say a panner EXISTS. The correlation of pan against bearing over a MOVING target is measured by tools/audio/impact-browser.mjs phase P4 and is reported there, not here.',
 };
 
 // ── M9 — determinism ────────────────────────────────────────────────────────────────────────
