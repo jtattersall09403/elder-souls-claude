@@ -42,7 +42,7 @@ try {
       H.loadState('default'); H.setRenderRate(0); H.stepFrames(2);
       if (mk) {
         // The route the game itself uses at the end of the census: a written-down character.
-        try { H.setCharacter({ race: 'saxhleel', class: 'salt-blade', birthsign: 'raj-xul' }); }
+        try { H.setCharacter({ race: 'saxhleel', class: 'salt-blade', birthsign: 'raj-xul', upbringing: 'interior' }); }
         catch (e) { return { label: 'setCharacter failed', why: String(e.message || e) }; }
         H.stepFrames(2);
       }

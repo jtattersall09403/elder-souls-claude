@@ -3,13 +3,28 @@
   "title": "Lore: the registry and the province's canon",
   "started": "wave-1",
   "state": "researching",
-  "outputs_expected": [],
+  "outputs_expected": [
+    "game/data/lore/canon.json (the shipped registry, secret half sealed)",
+    "tools/lore/build-canon.mjs (projector: corpus registry -> game data, strips authorial truth to a sha256)",
+    "game/src/world/canon.js (CanonRegistry: resolve/stanceFor/allows/state)",
+    "game/src/engine.js (_installCanon, throws on dangle; getCanonState harness surface)",
+    "game/src/character/converse.js (behavioural consumer: stance gates which info a speaker offers)",
+    "tools/lore/canon-census.mjs (RI-LOR06 Comparison Method 4, never run: fully-voiced dispute census + unregistered-contradiction scan)",
+    "corpus/60-lore/data/canon-facts.json (new registered disputes from the audit)",
+    "reports/lore/W1-23-registry-report.md"
+  ],
   "outputs_written": [],
   "findings": [
     "canon-facts.json (54 facts) lives ONLY in corpus/60-lore/data/. NOTHING in game/ reads it. Its only consumers are two critic scripts: corpus/80-methods/canon-check.py and book-stats.py. This is the exact RI-MTH07 consumption failure: 'a registry nothing reads is a document'.",
     "opacity.json (game/data/world/) BY CONTRAST is genuinely consumed: game/src/world/opacity.js OpacityRegister, engine.js throws on dangling anchor at boot, character/converse.js returns registered refusals. That is the model to copy.",
-    "W1-19-r1 verdict already prescribed: registry entries for Ixtu-Meer/Drowned Tally/Ninth Recension/Steward of the Count + a provenance block in game/data/quests/mainline.json naming registry ids per act."
+    "W1-19-r1 verdict already prescribed: registry entries for Ixtu-Meer/Drowned Tally/Ninth Recension/Steward of the Count + a provenance block in game/data/quests/mainline.json naming registry ids per act.",
+    "SHIPPED LIBRARY IS NOW 111 BOOKS / 79,675 words / 49 contradiction edges across 20 files (the martial library landed). Brief said 70 books + 42 in flight; both are on disk.",
+    "27 OF THE 49 CONTRADICTION EDGES CARRY NO `cf`. RI-LOR06 s1 is unambiguous: 'Every contradiction in shipped content must be either (a) registered as disputed ... or (b) a bug. There is no third category.' orchestration/status/W1-LIBRARY-MARTIAL.json records the martial builder deciding edges 'DO NOT NEED A REGISTRY FACT ... legal by the checker'. The checker is not the rule; this is RI-LOR06 'How we lose' #3 (the registry goes stale) happening in writing.",
+    "RI-LOR06 Comparison Method 4 sets the bar at '>=8 fully-voiced disputes' and the registry contains SIX disputed facts. The bar is UNREACHABLE BY ARITHMETIC on the current registry: max score 3 of 5 no matter how good the build. Registering the genuine unregistered edges is the only route past it.",
+    "Only 11 distinct CF ids are cited anywhere in the shipped tree (CF-042,060,062,C001,C005,C007,D001,D003,D004,D005,D006). The other 43 registry facts have zero shipped citations.",
+    "game/data/books/manifest.json DOES NOT EXIST, yet RI-LOR06 Comparison Method 1 runs canon-check.py --books-manifest game/data/books/manifest.json. Phantom path in a gate.",
+    "deep-time.json exists: 8 books, 4,969 words (the Stone Nests trilogy, the tally-stones survey, the Oliis bargain, a Ninth Cohort survey fragment, and the two House-Under-the-Wastes readings)."
   ],
-  "next_step": "read RI-LOR06 + RI-LOR01 procedures; audit 28 book contradictions; survey deep-time timeline existence",
+  "next_step": "inspect disputed-subject dialogue topics; then build game/src/world/canon.js + build-canon.mjs",
   "notes_for_successor": "Fresh start 2026-08-07. No predecessor status file existed."
 }

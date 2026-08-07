@@ -1468,6 +1468,10 @@ function grantLedger() {
 function excludedFor(forQuest) {
   return new Set(forQuest ? [forQuest.id, ...(forQuest.mutually_exclusive_with || [])] : []);
 }
+// Memoised by (quest id, fixture scale). Pure function of the quest book and the exclusion set,
+// so the cache cannot change an answer — and without it the walk re-sums ~900 authored deltas on
+// every one of ~260 000 contexts.
+const _repCache = new Map(), _goldCache = new Map();
 function attainableReputation(forQuest) {
   const excluded = excludedFor(forQuest);
   // `reputation_scale` is the falsification handle for the round-4 defect. Round 4 pinned every
@@ -1475,16 +1479,23 @@ function attainableReputation(forQuest) {
   // because there was no number to move. Scaling the derived sum must move rank-gated verdicts,
   // and --self-test asserts that it does.
   const scale = FIXTURE && Number.isFinite(FIXTURE.reputation_scale) ? FIXTURE.reputation_scale : 1;
+  const ck = `${forQuest ? forQuest.id : ''}|${scale}`;
+  if (_repCache.has(ck)) return _repCache.get(ck);
   const out = {};
   for (const [f, list] of REPUTATION_GIFTS) {
     out[f] = Math.round(list.filter((g) => !excluded.has(g.quest)).reduce((a, g) => a + g.delta, 0) * scale);
   }
+  _repCache.set(ck, out);
   return out;
 }
 function attainableGold(forQuest) {
   const excluded = excludedFor(forQuest);
   const scale = FIXTURE && Number.isFinite(FIXTURE.gold_scale) ? FIXTURE.gold_scale : 1;
-  return Math.round(GOLD_GIFTS.filter((g) => !excluded.has(g.quest)).reduce((a, g) => a + g.amount, 0) * scale);
+  const ck = `${forQuest ? forQuest.id : ''}|${scale}`;
+  if (_goldCache.has(ck)) return _goldCache.get(ck);
+  const v = Math.round(GOLD_GIFTS.filter((g) => !excluded.has(g.quest)).reduce((a, g) => a + g.amount, 0) * scale);
+  _goldCache.set(ck, v);
+  return v;
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -1568,11 +1579,16 @@ function bestCaseCtx(sheet, level, want = {}, forQuest = null, { omniscient = fa
   // precisely so that fold is still exercised at gate time: an omniscient collection can never
   // test the comparison it stands in for, which is how `{ has: () => true }` sat here for three
   // rounds without anyone noticing it was answering for an empty set.
-  c.topicsKnown = omniscient ? grantAll(GRANTED_TOPICS) : new Set(GRANTED_TOPICS);
-  c.knowledge = omniscient ? grantAll(GRANTED_KNOWLEDGE) : new Set(GRANTED_KNOWLEDGE);
-  c.items = omniscient ? grantAll(GRANTED_ITEMS) : new Set(GRANTED_ITEMS);
-  c.spellEffects = omniscient ? grantAll(GRANTED_EFFECTS) : new Set(GRANTED_EFFECTS);
-  c.worldFlags = omniscient ? grantAll(GRANTED_FLAGS) : new Set(GRANTED_FLAGS);
+  // The provable arm SHARES the Sets rather than copying them: nothing downstream mutates a
+  // granted collection, and copying ~1 500 entries on each of the ~260 000 contexts a full walk
+  // builds was the single largest cost in the round-5 walk. `--self-test` asserts the sets are
+  // still the right contents and still refuse an unproduced token, which is the property that
+  // matters; identity is not part of the contract.
+  c.topicsKnown = omniscient ? grantAll(GRANTED_TOPICS) : GRANTED_TOPICS;
+  c.knowledge = omniscient ? grantAll(GRANTED_KNOWLEDGE) : GRANTED_KNOWLEDGE;
+  c.items = omniscient ? grantAll(GRANTED_ITEMS) : GRANTED_ITEMS;
+  c.spellEffects = omniscient ? grantAll(GRANTED_EFFECTS) : GRANTED_EFFECTS;
+  c.worldFlags = omniscient ? grantAll(GRANTED_FLAGS) : GRANTED_FLAGS;
 
   // ---- GOLD. Derived, not 1e9. --------------------------------------------------------------
   c.gold = attainableGold(forQuest);
