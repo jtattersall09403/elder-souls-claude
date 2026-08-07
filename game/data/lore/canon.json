@@ -21,17 +21,17 @@
     "voiced_by": "book:<book id> | dialogue:<topic id>#<actor> | npc:<npc id>"
   },
   "counts": {
-    "facts": 83,
+    "facts": 84,
     "by_tier": {
       "hard-canon": 28,
       "soft-canon": 9,
       "apocryphal": 1,
-      "constructed": 45
+      "constructed": 46
     },
-    "disputed": 27,
+    "disputed": 28,
     "deliberately_open": 1,
-    "positions": 66,
-    "voiced_sources": 136,
+    "positions": 69,
+    "voiced_sources": 139,
     "argued_on_topics": 48
   },
   "facts": [
@@ -672,7 +672,7 @@
         "the-quiet-grave"
       ],
       "dispute_kind": "fact",
-      "truth_seal": "2e5c8017f8a037f8e70d2cdcc95b7de0b14ce44ac3804e9cbe66fc7b1c72df5f"
+      "truth_seal": "2615be1e9daa004aa60eb3a8e8cbe0f4a74a9b7bf89e701a0013cc6a037d94b2"
     },
     {
       "id": "CF-D002",
@@ -833,7 +833,7 @@
         "the-old-ground"
       ],
       "dispute_kind": "fact",
-      "truth_seal": "df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"
+      "truth_seal": "cc4783d5f4685b12ae0913e1f611454c016b0505fa83cd1a05fcb1918e782ffc"
     },
     {
       "id": "CF-D004",
@@ -930,7 +930,7 @@
         "the-eleven-wells"
       ],
       "dispute_kind": "fact",
-      "truth_seal": "6b23c0d5f35d1b11f9b683f0b0a617355deb11277d91ae091d399c655b87940d"
+      "truth_seal": "854d2b73c33023c2e82283609ea6a9dad39623d9b1781b66fc297630ed5d7f73"
     },
     {
       "id": "CF-D005",
@@ -1000,7 +1000,7 @@
         "the-thin-years"
       ],
       "dispute_kind": "fact",
-      "truth_seal": "a15e2cd8474313f59559d85510b7630aa0899ccf1ae0e38da70241393043488d"
+      "truth_seal": "75b1c206a354f9705a897fdcdd3de6fe4b29b2a69d80587fe35d29b2ccdae962"
     },
     {
       "id": "CF-D006",
@@ -1092,7 +1092,7 @@
         "the-sapwells"
       ],
       "dispute_kind": "fact",
-      "truth_seal": "6b23c0d5f35d1b11f9b683f0b0a617355deb11277d91ae091d399c655b87940d"
+      "truth_seal": "59bf511a8eebc346c1f8eaf65e03562991404fc040ccf51690f98c1cc113d3c6"
     },
     {
       "id": "CF-C001",
@@ -1361,7 +1361,7 @@
         }
       ],
       "player_discoverable": "late",
-      "truth_seal": "8ea1da0f55dc4b4cca205c5cccc2807942844a0bc7eaa94ec505bbaefeb97429"
+      "truth_seal": "b57849e401394e4070a0e86daf1b1afc54755470b808c3c4ebb5b62146fcf1d7"
     },
     {
       "tier": "constructed",
@@ -1443,10 +1443,31 @@
             "book:marginalia-in-a-borrowed-book",
             "dialogue:slavery#dres-factor"
           ]
+        },
+        {
+          "id": "C",
+          "in_world_source": null,
+          "stance": "It is not answered in sight of that building. Whoever asks there is asking on the record, and the record is not this one's to bring home.",
+          "held_by": [
+            "Argonians of the townside quarters, when an Imperial or Provincial building is in view",
+            "anyone questioned about it within sight of the Assize or the Office"
+          ],
+          "holders": {
+            "actors": [
+              "townsman"
+            ],
+            "races": [
+              "saxhleel",
+              "naga"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:slavery#townsman"
+          ]
         }
       ],
       "player_discoverable": "early",
-      "truth_seal": "df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"
+      "truth_seal": "7e8894698572ab59d3b3d7bacd67ae6f80fd3e1a867d3d58e3e8a58d9ee8b8e0"
     },
     {
       "tier": "constructed",
@@ -1528,7 +1549,7 @@
         }
       ],
       "player_discoverable": "early",
-      "truth_seal": "df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"
+      "truth_seal": "729ff2f233c4a9c1977fddcc0523500ed6aac82adf6484fc871f573711ba5dfb"
     },
     {
       "tier": "constructed",
@@ -1633,7 +1654,7 @@
         }
       ],
       "player_discoverable": "mid",
-      "truth_seal": "6b23c0d5f35d1b11f9b683f0b0a617355deb11277d91ae091d399c655b87940d"
+      "truth_seal": "2033d402091135fe02d05380b73d4330662a9e9a23ce21714abd06285614cc61"
     },
     {
       "tier": "constructed",
@@ -1762,7 +1783,7 @@
         "year": 391,
         "note": "Reman's Ford. Dated in the shipped books and the only dated event any registered dispute turns on."
       },
-      "truth_seal": "0f2b685ba71ab98e949158963d293deecd8b5bac3e4743b4e47c2a76ee8a2044"
+      "truth_seal": "7a143a817327de6b05932749f0f789d1f5fb7c17efb537f91e663c545016a9ca"
     },
     {
       "tier": "constructed",
@@ -1838,7 +1859,7 @@
         }
       ],
       "player_discoverable": "late",
-      "truth_seal": "a927b4cfcce3daff37562235b40ff940508c3579a338097f303aff98c43dde5f"
+      "truth_seal": "d5a67a6a94554358be40cd4a43e65aa5b9da234b32599aeebe1e85692cc4de3a"
     },
     {
       "tier": "constructed",
@@ -1907,7 +1928,7 @@
         }
       ],
       "player_discoverable": "late",
-      "truth_seal": "d410962128e70bf6fac94b0ab5185f05a09394aa10303ddc21596d2552c22cfc"
+      "truth_seal": "af46cec38720327d4b3c6cd519069a9dd67b2d40f14c3bbfe3900b83e3661860"
     },
     {
       "tier": "constructed",
@@ -1978,7 +1999,7 @@
         }
       ],
       "player_discoverable": "mid",
-      "truth_seal": "dad27290bf3501eba7171acb5e725e0d17d3e9e9da1844b1cacb5ba53a7365cc"
+      "truth_seal": "a4243ce935d4ab50e0ad4f42ed9683781c0b5674fc65a964391f5d6211bb5037"
     },
     {
       "tier": "constructed",
@@ -2047,7 +2068,7 @@
         }
       ],
       "player_discoverable": "mid",
-      "truth_seal": "85f538a7279340ff0f89894c44d1ff119105478f7ce9c9eb8536cd59dc9ef393"
+      "truth_seal": "e472d44834c40735da2bc650f6aa930cc10e088c1e550778fd8c1e18244f905b"
     },
     {
       "tier": "constructed",
@@ -2120,7 +2141,7 @@
         }
       ],
       "player_discoverable": "mid",
-      "truth_seal": "88c337d20dfaaeecf30e5767177a15eb86d99f603e50d4c5a06cd11dee10aeec"
+      "truth_seal": "82eec8a83f3edba1be9a3787502b7a3fad8b85f53d040cd46cceb7805023739c"
     },
     {
       "tier": "constructed",
@@ -2194,7 +2215,7 @@
         }
       ],
       "player_discoverable": "mid",
-      "truth_seal": "583dda4585143c1015708c127528f84775eb552705e4fbf461ae33a3d6614008"
+      "truth_seal": "9e94fbe22ebb38161d7dc64a2414a63497a7359606d76493ebe1b78c5f0f792c"
     },
     {
       "tier": "constructed",
@@ -2264,7 +2285,7 @@
         }
       ],
       "player_discoverable": "mid",
-      "truth_seal": "ae1731f4cbd96c4f8d0f8d22e05348c3caad1dd03461ef2ecd050b56b6deb7b9"
+      "truth_seal": "0cd1e99684326580226979bf5d11bb902c943144b605fe65161d9aa3bb6a1449"
     },
     {
       "tier": "constructed",
@@ -2329,7 +2350,7 @@
         }
       ],
       "player_discoverable": "mid",
-      "truth_seal": "09f12d49835292471f9fa5fe01e283a775f7d282a57171ee24bdf7c3297b6f9c"
+      "truth_seal": "40f950fc5ba7eaaa63d6670b2555c909904b69a6cd63b6d79caea4dc9829614d"
     },
     {
       "tier": "constructed",
@@ -2394,7 +2415,7 @@
         }
       ],
       "player_discoverable": "early",
-      "truth_seal": "df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"
+      "truth_seal": "bce23eb26bc197a5ea0d06b3ad897b7b913541356b4df188240d51d9a244aae7"
     },
     {
       "id": "CF-D021",
@@ -2470,7 +2491,7 @@
         "lore.canon.registry",
         "lore.canon.geography"
       ],
-      "truth_seal": "df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"
+      "truth_seal": "9681add0344aba70309bbce20c13ec33edb0d95b3f4a4d14116d8826c14b1dcd"
     },
     {
       "id": "CF-C023",
@@ -2486,7 +2507,7 @@
         "lore.canon.argonian",
         "lore.canon.factions"
       ],
-      "measured": "Counted over all of game/data on 2026-08-07: Deep-Kin 87, Xul-Aneekh 84, Drowned Court 64, Sap-Cutters 53, Wet Ledger 45. Of the tribes canon actually names: Kothringi 22 and Lilmothiit 4 (both extinct in-world, so they appear as history), Horwalli 1, and Agacephs, Paatru, Archein, Sarpa, Dead-Water and Miredancers ZERO. \"Naga\" scores 388 but is a playable race in this build, not a tribe."
+      "measured": "Counted over all of game/data on 2026-08-07 (W1-23 r2; supersedes the earlier count this same fact shipped with, taken before the tribes piece landed): Deep-Kin 87, Xul-Aneekh 84, Drowned Court 64, Sap-Cutters 53, Wet Ledger 45. Of the tribes canon actually names, all six now score non-zero after the tribes piece: Agacephs 53, Paatru 34, Archein 50, Sarpa 26, Dead-Water 10, Miredancers 47. Kothringi 22 and Lilmothiit 4 remain extinct in-world (history, not population); Horwalli remains 1. \"Naga\" scores 388 but is a playable race in this build, not a tribe."
     },
     {
       "id": "CF-C024",
@@ -2610,7 +2631,7 @@
         }
       ],
       "player_discoverable": "mid",
-      "truth_seal": "1ceb5c59567e4b0f00c3741a94d6fcbb0d0451ff0fc3ddf80aa411cc53519ba6"
+      "truth_seal": "884255d0dbcd43c176f75dd15e9c2ec9694f7a98366af0f44faca66524b04b6f"
     },
     {
       "id": "CF-D023",
@@ -2709,7 +2730,7 @@
         }
       ],
       "player_discoverable": "mid",
-      "truth_seal": "6b23c0d5f35d1b11f9b683f0b0a617355deb11277d91ae091d399c655b87940d"
+      "truth_seal": "311f7f8bd0b41a902a5187553f45dfb32795567571d4e591ecbfbc818064bbdc"
     },
     {
       "id": "CF-D024",
@@ -2806,7 +2827,7 @@
         }
       ],
       "player_discoverable": "mid",
-      "truth_seal": "50ce773610762b1fd951193696af9472cfd5c217fd6bb6005291b876af1bbe84"
+      "truth_seal": "94fb183b96c1946e32a88ffa922cfcf368510cf2d9fff1b5faf38d8b13d0b965"
     },
     {
       "id": "CF-D025",
@@ -2905,7 +2926,7 @@
         }
       ],
       "player_discoverable": "late",
-      "truth_seal": "46e4de12b955a1a7686b809fbbe0abd6ce8ffc94ebe781c9da5780b593828a3f"
+      "truth_seal": "b57d0c1725c512c11e396ed41aa00dbff801c1c84e5a16c5cf89933924ce9bec"
     },
     {
       "id": "CF-D026",
@@ -2994,7 +3015,7 @@
         }
       ],
       "player_discoverable": "mid",
-      "truth_seal": "a62151569b1ef70143a92a8d0146d8c75e337cf0bdf3d703b672bb1c4be2c070"
+      "truth_seal": "995a0ef9a969d8f2c24c812facd539ef9fad7d5b5bc0a195a66cd1462db74cec"
     },
     {
       "id": "CF-D027",
@@ -3092,7 +3113,67 @@
         }
       ],
       "player_discoverable": "mid",
-      "truth_seal": "fddf8c7c854b1e5aec9e253ed95034e1749a0bff4f85323692b2852040ff0a5e"
+      "truth_seal": "e5a25bf0affe8cacb065c969f470f072acfd4df7ecbcf0a91a2bd132cbfd958a"
+    },
+    {
+      "tier": "constructed",
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "topics": [
+        "slavery",
+        "the-lease-roll"
+      ],
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "quests.faction.escalation"
+      ],
+      "id": "CF-D028",
+      "claim": "Does the lease-roll ever release the person entered on it, or is the entry hereditary and permanent?",
+      "in_world_sources": [],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": null,
+          "stance": "The roll does not come off. I have watched it move from a mother to her daughter, and nothing on the paper says different.",
+          "held_by": [
+            "the cutters of the Ixtu-Vakh yards",
+            "most who have been on the roll longer than ten years"
+          ],
+          "holders": {
+            "actors": [
+              "sapcutter"
+            ],
+            "factions": [
+              "ixtu-vakh"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:slavery#sapcutter"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": null,
+          "stance": "It came off a man on the number-four gang, once, eleven winters back, bought clear for silver that took his whole house to raise. Bought is not free. It is also not never.",
+          "held_by": [
+            "a handful who have bought clear, and those who knew them"
+          ],
+          "holders": {
+            "actors": [
+              "outlaw"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:slavery#outlaw"
+          ]
+        }
+      ],
+      "player_discoverable": "early",
+      "truth_seal": "516d284dba3fa3fee6f64459d00a7751cf73630dbe11be9b8dda4c4262c5569d"
     },
     {
       "id": "CF-C025",

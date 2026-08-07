@@ -3,11 +3,11 @@
   "role": "builder",
   "item": "W1-18",
   "round": 2,
-  "state": "reading",
+  "state": "building",
   "started_at": "2026-08-07",
   "brief": "Quest engine and journal. Spec is orchestration/status/W1-19-r3.json: the quest machine is barely driven by play. 6 verbs, no caller outside harness/api.js; note() covers 11/120 quests; takeBranch() zero callers; 113 of 121 (quest,reveal) pairs demanded by resolutions have no route in play; 8 channels have no reader in game/src at all.",
   "headline": "WIP",
-  "next_step": "read machine.js verbs, hooks.json, reveal-route-audit.mjs; census the 8 channels against what a player actually does; pick channels; prove ONE end to end before authoring.",
+  "next_step": "build game/src/sim/quest/reveal-routes.js + QuestEngine.learnFrom(); wire to Engine.talkTo(); prove Q-MAIN-26 end to end; only then author the rest.",
   "files_claimed": [
     "orchestration/status/W1-18-r2.json",
     "game/src/sim/quest/machine.js",
@@ -22,6 +22,9 @@
   ],
   "redundant_with": [],
   "notes": [
-    "BOX LOAD AT START: pgrep -c headless_shell = 24, loadavg 17.59. Over RULES.md rule 21 cap (~8). Doing all analysis and authoring browserless; one browser only to prove the end-to-end route."
+    "BOX LOAD AT START: pgrep -c headless_shell = 24, loadavg 17.59. Over RULES.md rule 21 cap (~8). Doing all analysis and authoring browserless; one browser only to prove the end-to-end route.",
+    "CENSUS (mine, over the shipped data at 92378c9). The 9 channels split cleanly into two families by whether their `source` names something that EXISTS in this build. PEOPLE: talk_to_target 18/28 demanded sources are real rows in game/data/npcs/**, rival_npc 22/23, eavesdrop 7/9, corpse 1/1. OBJECTS: ledger 1/28, letter 0/6, environment 0/18 -- their sources are `item_*`/`loc_*` ids and prose phrases that name NO object anywhere in game/data. 22 `item_` ids exist in the whole tree; the ledger channel alone names 34 that do not.",
+    "So the people channels are not blocked on content, they are blocked on a READER. `deceit.revealed_by[].channel` and `.source` -- 186 authored rows -- have ZERO readers in game/src/. That is the model with no reader (RI-MTH07), and building the reader is the fix, not authoring 51 new hooks.json rows.",
+    "The schema itself says so: quest.schema.json line 391, requires_knowing is \"the mechanism by which TALKING TO THE TARGET before killing them opens a door\"."
   ]
 }

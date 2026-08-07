@@ -167,7 +167,7 @@
           }
         }
       ],
-      "event_gain_db": 9.8
+      "event_gain_db": 14.21
     },
     "L4": {
       "id": "l4_something_in_the_bilge",
@@ -210,11 +210,11 @@
           }
         }
       ],
-      "event_gain_db": 5.9
+      "event_gain_db": 2.66
     }
   },
   "emitters": [],
   "provenance": "W1-22 round 2. RI-AUD03 R4 (\"Interiors get their own bed, not the exterior bed at -12 dB\") and RI-WLD08 §6 (\">=13 (one per region) + >=8 settlement beds + >=4 interior beds\"). Round 1 read R4 as permitting silence and shipped `suppressed` for every interior in the build; the round-1 critic ruled that R4 mandates a bed, and this round agrees on the item's own \"How we lose\" wording — the named failure is that a low-passed exterior \"is not wrong, it is just nothing\", and silence is that failure at its limit rather than an escape from it. Cells are `Engine.cellFor()`'s names. This build has no audio assets, so a synth spec IS the asset; parameters constructed here.",
-  "bed_gain_db": -2.35,
+  "bed_gain_db": -2.36,
   "bed_gain_db_note": "Master trim, in dB, that lands this interior bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-onsets.mjs --calibrate), not guessed. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
 }

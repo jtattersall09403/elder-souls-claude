@@ -1703,9 +1703,30 @@
             "book:marginalia-in-a-borrowed-book",
             "dialogue:slavery#dres-factor"
           ]
+        },
+        {
+          "id": "C",
+          "in_world_source": null,
+          "stance": "It is not answered in sight of that building. Whoever asks there is asking on the record, and the record is not this one's to bring home.",
+          "held_by": [
+            "Argonians of the townside quarters, when an Imperial or Provincial building is in view",
+            "anyone questioned about it within sight of the Assize or the Office"
+          ],
+          "holders": {
+            "actors": [
+              "townsman"
+            ],
+            "races": [
+              "saxhleel",
+              "naga"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:slavery#townsman"
+          ]
         }
       ],
-      "authorially_true": "B",
+      "authorially_true": "partial: B is what a book-keeper's audit finds — the House's stock column is the operative fact and the law's word does not reach it. But B is silent on its own terms about whether the roll ever lets go and about who is safe to ask, and both turn out to matter more than the book-keeping. See CF-D028 for the first and C for the second.",
       "player_discoverable": "early",
       "notes": "The province's central moral fact, and it had no registry entry. The two books carried `cf: CF-062`, which records that the Empire abolished slavery in most of Tamriel — true, and not the thing they disagree about. The ruling is B and is sealed out of the shipped build; nothing in the game says so."
     },
@@ -2801,8 +2822,8 @@
         "lore.canon.argonian",
         "lore.canon.factions"
       ],
-      "measured": "Counted over all of game/data on 2026-08-07: Deep-Kin 87, Xul-Aneekh 84, Drowned Court 64, Sap-Cutters 53, Wet Ledger 45. Of the tribes canon actually names: Kothringi 22 and Lilmothiit 4 (both extinct in-world, so they appear as history), Horwalli 1, and Agacephs, Paatru, Archein, Sarpa, Dead-Water and Miredancers ZERO. \"Naga\" scores 388 but is a playable race in this build, not a tribe.",
-      "notes": "Registered so the omission is a DECISION on the record rather than a gap. It is defensible — four bodies a player can tell apart beat nine tribe names they cannot — but it is ours, it is not canon, and the failure mode it guards against is a later agent scattering canonical tribe names through dialogue as texture and thereby claiming a social structure this world does not model. If tribes are wanted, they need a faction each, not a mention each."
+      "measured": "Counted over all of game/data on 2026-08-07 (W1-23 r2; supersedes the earlier count this same fact shipped with, taken before the tribes piece landed): Deep-Kin 87, Xul-Aneekh 84, Drowned Court 64, Sap-Cutters 53, Wet Ledger 45. Of the tribes canon actually names, all six now score non-zero after the tribes piece: Agacephs 53, Paatru 34, Archein 50, Sarpa 26, Dead-Water 10, Miredancers 47. Kothringi 22 and Lilmothiit 4 remain extinct in-world (history, not population); Horwalli remains 1. \"Naga\" scores 388 but is a playable race in this build, not a tribe.",
+      "notes": "Registered so the omission is a DECISION on the record rather than a gap. It is defensible — four bodies a player can tell apart beat nine tribe names they cannot — but it is ours, it is not canon, and the failure mode it guards against is a later agent scattering canonical tribe names through dialogue as texture and thereby claiming a social structure this world does not model. If tribes are wanted, they need a faction each, not a mention each. W1-23 r2: the mention became a faction record — see game/data/factions/ — closing the half of this note the tribes piece had not yet reached. tools/lore/canon-census.mjs now re-checks this field against the live tree so a future re-count cannot go stale unnoticed the way this one did for a wave."
     },
     {
       "id": "CF-C024",
@@ -3443,6 +3464,70 @@
       "notes": "The second pre-Duskfall dispute, and the one a player can settle without being told: walk a high walk, look at what wore it, and look for the fall. RI-LOR06 §8 warns against disputes the player cannot perceive; this is the answer to that warning rather than an exception to it. Nothing in the game states the ruling."
     },
     {
+      "tier": "constructed",
+      "provenance": "constructed",
+      "confidence": "medium",
+      "sources_real": [],
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "topics": [
+        "slavery",
+        "the-lease-roll"
+      ],
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "quests.faction.escalation"
+      ],
+      "id": "CF-D028",
+      "claim": "Does the lease-roll ever release the person entered on it, or is the entry hereditary and permanent?",
+      "in_world_sources": [],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": null,
+          "stance": "The roll does not come off. I have watched it move from a mother to her daughter, and nothing on the paper says different.",
+          "held_by": [
+            "the cutters of the Ixtu-Vakh yards",
+            "most who have been on the roll longer than ten years"
+          ],
+          "holders": {
+            "actors": [
+              "sapcutter"
+            ],
+            "factions": [
+              "ixtu-vakh"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:slavery#sapcutter"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": null,
+          "stance": "It came off a man on the number-four gang, once, eleven winters back, bought clear for silver that took his whole house to raise. Bought is not free. It is also not never.",
+          "held_by": [
+            "a handful who have bought clear, and those who knew them"
+          ],
+          "holders": {
+            "actors": [
+              "outlaw"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:slavery#outlaw"
+          ]
+        }
+      ],
+      "authorially_true": "partial: both witnesses are right about what they saw. Manumission happens — rarely, and priced to keep it rare — so \"never\" and \"not never\" are both true depending which side of the price a person is standing on. The operating reality for almost everyone on the roll is permanence; the exception is real and is not a refutation of it.",
+      "player_discoverable": "early",
+      "notes": "Voiced by dialogue alone, on purpose: this is oral testimony from two people the province does not let write books. Registered so the answer to CF-D008 is not the only thing the roll is ever asked about — a fact can be property and still have its own separate, disputed shape."
+    },
+    {
       "id": "CF-C025",
       "claim": "The Agacephs of the Deep Marshes will not chase an animal, will not eat one that was chased, keep no sapwell, and will not give a direction — they take you, and you still do not learn the way.",
       "tier": "constructed",
@@ -3626,5 +3711,7 @@
         "reason": "The edge is MIS-DECLARED. Read together, the two texts agree: the cutter's manual says the terms are depth and season and that \"whether\" is not in them, and the hollow with one well and nothing else to trade is arguing the same case from the other end. Neither denies what the other asserts. The real opponent is the keepers, who hold that a silence is not a permission, and who had no book — so the dispute is registered as CF-D017 with BOTH of these texts under position A and the keepers voiced in dialogue."
       }
     ]
-  }
+  },
+  "truth_seal_salt": "cd4ced9315d073425e7084ede96a5cd1",
+  "truth_seal_salt_note": "W1-23 r2. Folded into every truth_seal so a bare-letter ruling (\"A\"/\"B\"/\"C\") cannot be recovered by hashing the position ids the shipped file already publishes — see tools/lore/build-canon.mjs. Never shipped: project() builds its own top-level object and does not copy this one."
 }

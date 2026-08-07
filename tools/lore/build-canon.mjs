@@ -44,6 +44,15 @@ const sha = (s) => crypto.createHash('sha256').update(String(s), 'utf8').digest(
 const STRIPPED = new Set(['authorially_true', 'notes', 'sources_real', 'note', 'provenance', 'confidence']);
 
 export function project(reg) {
+  // W1-23 r2. `reg.truth_seal_salt` lives only in the corpus half (this function builds its own
+  // top-level output object below and never spreads `reg` into it, so the salt cannot leak by
+  // accident the way a field would if this just copied the source forward). Sealing on
+  // `authorially_true` alone meant a bare-letter ruling — "A"/"B"/"C" — was invertible in three
+  // guesses against the position ids the shipped file already publishes next to the seal: the W1-23
+  // round-1 verdict recovered 9 of 26 that way. Folding the fact id and an unshipped salt into the
+  // hash input closes that without touching the leak-scan below, which is a different, correctly
+  // scoped check (verbatim prose inclusion, not brute-force seal inversion).
+  const salt = typeof reg.truth_seal_salt === 'string' ? reg.truth_seal_salt : '';
   const facts = [];
   for (const f of reg.facts) {
     const out = {};
@@ -54,7 +63,7 @@ export function project(reg) {
     if (f.disputed) {
       // A deliberately-open dispute has NO answer, so there is nothing to seal and saying so is
       // the honest signal. Anything else carries the hash of its ruling and not the ruling.
-      out.truth_seal = f.deliberately_open ? null : sha(String(f.authorially_true));
+      out.truth_seal = f.deliberately_open ? null : sha(`${f.id}|${String(f.authorially_true)}|${salt}`);
       out.positions = (f.positions || []).map((p) => ({
         id: p.id,
         in_world_source: p.in_world_source || null,

@@ -25,9 +25,12 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { CanonRegistry } from '../../game/src/world/canon.js';
 import { buildTopicIndex, infoFor } from '../../game/src/character/converse.js';
+
+const sha = (s) => crypto.createHash('sha256').update(String(s), 'utf8').digest('hex');
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const read = (p) => JSON.parse(fs.readFileSync(path.join(ROOT, p), 'utf8'));
@@ -119,6 +122,27 @@ function main() {
     .filter((t) => t.length >= 24 && text.includes(t.slice(0, 40)));
   if (leaks.length) bad(`${leaks.length} ruling(s) leaked verbatim into the build`);
   else ok(`${src.facts.filter((f) => f.disputed).length} rulings stay in the corpus; the build carries sha256 seals`);
+
+  // ---------------------------------------------------------------- 2b. the seal resists cracking
+  // W1-23 r2. The verbatim-leak scan above is silent on a bare-letter ruling ("A"/"B"/"C") by
+  // construction — `body.length >= 24` is the right guard against false positives on a common
+  // one-character substring, but it leaves nobody checking whether the SEAL itself is invertible.
+  // The W1-23 round-1 verdict recovered 9 of 26 seals in three guesses each: hash every position
+  // id the fact already publishes and compare to `truth_seal`. This runs the same attack an
+  // outside reader has all the information to run, and it must find nothing.
+  console.log('\nSEAL-CRACK  a bare-letter ruling must not be recoverable from its own published position ids');
+  const disputedFacts = doc.facts.filter((f) => f.disputed && !f.deliberately_open);
+  const recovered = [];
+  for (const f of disputedFacts) {
+    if (typeof f.truth_seal !== 'string') continue;
+    for (const p of (f.positions || [])) {
+      for (const guess of [p.id, `${f.id}|${p.id}`, 'null', 'undefined']) {
+        if (sha(guess) === f.truth_seal) recovered.push(`${f.id}: "${guess}"`);
+      }
+    }
+  }
+  if (recovered.length) bad(`${recovered.length} seal(s) recovered by brute force: ${recovered.join(', ')}`);
+  else ok(`0 of ${disputedFacts.length} sealed rulings recoverable by hashing their own position ids`);
 
   // ---------------------------------------------------------------- 3. THE PROVINCE DISAGREES
   console.log('\nDISAGREE  one topic, two people, two incompatible answers');
