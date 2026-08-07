@@ -474,6 +474,14 @@ export class Engine {
     // state of the procedural exterior until W1-01 publishes collision for it.
     this.setCameraCell(patch.camera_cell || null);
     this._settleCamera();
+    // W1-13. The scenario boundary clears the death runtime for the same reason W1-15's
+    // clears the stealth subsystem: "a scenario boundary that does not clear a subsystem is
+    // not a scenario boundary, and the cost is measured in wrong verdicts rather than in
+    // bugs." The DURABLE half — the bloom itself — lives in `sim.quest.death.bloodstain` and
+    // is reset by `sim.reset()` and then patched by the state, exactly like every other
+    // durable field.
+    if (this.death) this.death.reset();
+    this._seedStartingHearth();
     quantiseColdState(sim);
     return { ok: true, frame: sim.frame, seed: rng.seed };
   }
@@ -1925,6 +1933,10 @@ export class Engine {
     if (this._censusEnterPending) { this._censusEnterPending = false; this.censusEnter(); }
     if (this.sim.captureRequest) this._resolveCapture();
     this._travelTick();
+    // W1-13. Death, the bloom and recovery, observed strictly AFTER the step for the same
+    // reason the trace record is: `observe()` reads the HP the frame ended on and writes the
+    // respawn the next frame starts from, and it must not be inside `stepOnce`'s timing window.
+    this._deathTick();
     if (this.trace) {
       this.trace.records.push(makeRecord(this.sim, this.input, this.bus, this.trace.opts, this.tracePerf ? this._perfBlock() : null));
     }
@@ -2630,6 +2642,56 @@ export class Engine {
   }
 
   /**
+   * Can a body stand here? RI-JRN06 D3: the bloom is clamped to the nearest STANDABLE surface.
+   *
+   * The predicate is the locomotion model's, not a second opinion: the same max walkable slope
+   * `sim/traversal.js` gates on, and water no deeper than the depth at which the same file
+   * stops calling it walking. Outside the province the floor is a plane and everything is
+   * standable, which is true of an arena and an interior and is why the question is asked of
+   * the cell rather than answered globally.
+   */
+  _standableAt(x, z) {
+    if (this.cellFor(this.sim.env) !== 'province' || !this.field) return true;
+    if (x < 0 || z < 0 || x >= this.field.sizeX || z >= this.field.sizeZ) return false;
+    const C = this.data.traversal;
+    const maxSlope = (C && C.slope && C.slope.max_walkable_deg) || 40;
+    if (this.field.slopeAt(x, z, 12) > maxSlope) return false;
+    return this.field.depthAt(x, z) <= 1.35;
+  }
+
+  /**
+   * The well you were issued from.
+   *
+   * RI-JRN06 D6 is exact — respawn is at "the last HEARTH rested at" — but a character who has
+   * never rested still has to wake up somewhere, and "nearest" is the answer the item
+   * explicitly forbids. RI-LOR05 §4 supplies the correct one: you are re-issued by the root
+   * that has tasted you, and the first root to taste you is the one you hatched or landed at.
+   * So the run's opening well is stamped ONCE, at state-apply time, from the settlement well
+   * nearest where the character starts — and from that moment D6 is exact, because every
+   * later change to this field comes from a rest.
+   */
+  _seedStartingHearth() {
+    const sim = this.sim;
+    if (!this.hearths || !this.hearths.count()) return null;
+    if (sim.progression.hearthLastRested && this.hearths.get(sim.progression.hearthLastRested)) {
+      if (!sim.progression.hearthsDiscovered.includes(sim.progression.hearthLastRested)) {
+        sim.progression.hearthsDiscovered.push(sim.progression.hearthLastRested);
+      }
+      return sim.progression.hearthLastRested;
+    }
+    let pick = null;
+    if (this.cellFor(sim.env) === 'province') {
+      const n = this.hearths.nearest(sim.player.pos[0], sim.player.pos[2]);
+      pick = n && n.hearth;
+    }
+    if (!pick) pick = this.hearths.list().find((h) => h.kind === 'settlement') || this.hearths.list()[0];
+    if (!pick) return null;
+    sim.progression.hearthLastRested = pick.id;
+    if (!sim.progression.hearthsDiscovered.includes(pick.id)) sim.progression.hearthsDiscovered.push(pick.id);
+    return pick.id;
+  }
+
+  /**
    * Place an entity, per frame, without going through its AI. RI-CAM03 M3's adversarial
    * target — 300 °/s orbit, a 14→1.5 m charge in 40 frames, a 9 m leap behind the player —
    * is a *scripted* motion the containment law did not choose, which is the only honest way
@@ -2798,6 +2860,10 @@ export class Engine {
     if (arg && typeof arg === 'object' && arg.meta && arg.meta.schema === 'elder-souls/save@1') {
       const r = applySave(this.sim, arg, this.moves, (id, eid, x, z, f) => this.statFor(id, eid, x, z, f));
       this._applyCell();
+      // W1-13. The death observer's HP baseline is a per-session observation, not save state:
+      // a load that restored a body at 40 HP would otherwise read as 460 points of damage on
+      // the next frame and stamp `last_damage_frame`. Cleared, exactly as the input pipeline is.
+      if (this.death) { this.death.lastHp = null; this.death.lastGrounded = null; }
       // The camera rig recomputes pivot and pos INSIDE the step (sim/camera.js), so between
       // a load and the first step they still held makeCamera()'s defaults: a snapshot() taken
       // straight after a load reported a camera at the world origin. One settle costs nothing
