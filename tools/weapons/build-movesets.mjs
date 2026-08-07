@@ -629,7 +629,28 @@ for (const w of ROSTER.weapons) {
     // silently repaired). Everything else is clamped into its shape's band.
     const band = SHAPE_ARC_BAND[POSES.families[famName].shape] || [0, 360];
     const classCell = isR1 && famName === (specs['r1.1'] || specs['bow.draw']).fam;
-    const slotArc = classCell ? rawArc : clamp(rawArc, band[0], band[1]);
+    // ---- THE BAND CLAMPS DOWN ONLY. IT USED TO CLAMP UP, AND THAT MANUFACTURED REVOLUTIONS. --
+    //
+    // RI-WPN02 M5's bands exist to catch MISLABELLED data — "a weapon labelled thrust that sweeps
+    // 140 degrees is mislabelled data, and mislabelled data is how a critic gets lied to without
+    // anyone lying". Enforcing them here made that failure impossible by construction, which is
+    // right. But it was enforced with a two-sided `clamp`, and the lower edge runs the wrong way:
+    // `spin`'s band is [305, 360], so a halberd's `art_whirl` — 145 deg of class arc times the
+    // family's 1.55 scale = 225 — was INFLATED to 305 so that it would match its label.
+    //
+    // The tool was satisfying M5 by bending the ARC to fit the LABEL. Measured across the roster,
+    // that is where 234 near-full revolutions of 2.8-3.8 m weapons came from, and a revolution of
+    // a 3.78 m weapon inside 13-24 active f@60 is 70-160 m/s by arithmetic against RI-WPN05 §E's
+    // widest band ceiling of 40 — the largest single contributor to the 43.4% of clips over the
+    // §E.2 tip-speed ceiling. `whp_hist_bindings/r2` is the worst clip in the game and it is one
+    // of these: a per-weapon `unq` override to `art_whirl` on a 3.78 m whip, 305 deg in 11 active
+    // f@60, 163.34 m/s.
+    //
+    // Clamping DOWN is the half M5 actually asks for and is kept: a `thrust` may not sweep 140.
+    // Clamping UP is a data lie in the other direction and is removed. A family whose scaled arc
+    // lands under its shape's floor now keeps the arc the design computed, and the arc is what
+    // the animation is built from, so the swing is the one the roster describes.
+    const slotArc = classCell ? rawArc : Math.min(rawArc, band[1]);
     // Guard the rule the roster must obey: a weapon's r1.1 may be a different POSE from its
     // class's, but not a different arc BAND. The first light attack is what makes a weapon
     // legible as a member of its class, and a signature weapon that breaks it lands nearer a

@@ -203,6 +203,53 @@ if (beds['marauders-coast']) {
   if (e && e.audible_m !== 600) fail('C8', `the bell buoy is audible from ${e.audible_m} m; regions.json says 600 m, verbatim.`);
 }
 
+// ---- C13: EMITTER RARITY — the check that did not exist, and the one that had gone wrong ------
+//
+// ROUND 2, from the round-1 verdict §4. C8 above checked only that the emitters EXIST. Nothing
+// bounded how often they fire, and `bell_buoy.period_s` was **13 seconds** — 92 rings in a
+// twenty-minute walk. RI-AUD03 §How we lose is explicit about why that is a defect and not a
+// taste question:
+//
+//   "The hide-drum's 90-second beat, the legion horn on the hour, the bell buoy — each is
+//    distinctive BECAUSE IT IS RARE. Someone finds them atmospheric and raises the rate to every
+//    15 seconds. Identity becomes irritation, and the positional emitters stop being
+//    navigational because a landmark you hear constantly carries no position."
+//
+// The item asserts "§A L3/L4 interval bands are checked in B4 for this reason". They are — but
+// moving the hide-drum out of L3 (which round 1 was right to do: §A caps L3 at 8–40 s and §B
+// gives the drum 90) moved the signature out of the only band check the item had. This restores
+// one for the layer the signatures now live in.
+//
+// The bound is §A's L4 rarity floor, 45 s, because that is the item's own number for "a sound
+// that punctuates rather than fills". The legion horn at 3600 s is far above it and that is the
+// point. There is no upper bound: an hourly clock is a legitimate landmark.
+//
+// NOT CHECKED, deliberately: the mean of an L3 band. The round-1 critic found that setting an L3
+// interval to a flat 15 s stays green, and it does — because 15 s is inside §A's own 8–40 s
+// permission for L3. §A and §How-we-lose disagree there, and a builder's census is not the place
+// to overrule the item's published band. What the prose actually names as the wallpaper risk is
+// the SIGNATURE sounds, and those are exactly the R7 emitters this check now covers.
+for (const [id, b] of Object.entries(beds)) {
+  for (const e of b.emitters || []) {
+    const continuous = e.synth && (e.synth.kind === 'noise' || e.synth.kind === 'drone');
+    if (continuous) {
+      if (e.period_s !== undefined) {
+        fail('C13', `${id}/${e.id}: a continuous emitter (synth.kind "${e.synth.kind}") declares period_s ${e.period_s}. A continuous source has no period; the field would be read by nothing and believed by everyone.`);
+      }
+      if (e.mode && e.mode !== 'continuous') fail('C13', `${id}/${e.id}: declares mode "${e.mode}" but its synth kind is "${e.synth.kind}", which is continuous.`);
+      continue;
+    }
+    if (e.period_s === undefined) {
+      fail('C13', `${id}/${e.id}: a struck emitter with no period_s. It would fall through to a hardcoded default, which is a rate nobody chose and no check can see.`);
+    } else if (!(e.period_s >= 45)) {
+      fail('C13', `${id}/${e.id}: period_s ${e.period_s} is under §A's 45 s L4 rarity floor. A landmark you hear constantly carries no position (RI-AUD03 §How we lose).`);
+    }
+    if (e.phase !== undefined && !(e.phase >= 0 && e.phase < 1)) {
+      fail('C13', `${id}/${e.id}: phase ${e.phase} is not a fraction of a period in [0, 1).`);
+    }
+  }
+}
+
 // ---- C9: voice budget (RI-AUD02 V5, ambience ≤ 8) ---------------------------------------------
 //
 // L2's sublayers are NOT all concurrent, and counting them as though they were is the wrong

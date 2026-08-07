@@ -45,6 +45,38 @@ SCHEMA TOLERANCE
 const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
 
+// ---------------------------------------------------------------- --audio (RI-AUD03 B4)
+//
+// THIS FLAG WAS A PHANTOM AND IT SCORED. RI-AUD03's comparison method step 6 names, verbatim:
+//
+//     node tools/analysis/content-stats.mjs --audio game/data/audio/ambience/
+//
+// and says it "asserts per region: four layers declared, L1 asset id unique across regions, L3
+// interval inside 8–40 s, L4 interval inside 45–180 s". Until now this file accepted the flag,
+// IGNORED it and the path, ran the generic content census over game/data, and exited 0. A critic
+// executing the item's method verbatim recorded B4 as PASSING having checked none of B4's four
+// assertions — the `cmb-reach.mjs --verify` precedent, which orchestration/TOOL-LOOP.md rule 3
+// item 5 names as one of the failures that has cost this project a full round.
+//
+// It is now wired to the tool that actually implements B4, `ambience-census.mjs`, and it forwards
+// that tool's exit code. A flag that lies is worse than a missing flag, because a missing flag is
+// noticed.
+if (args.audio !== undefined) {
+  const { spawnSync } = await import('node:child_process');
+  const here = path.dirname(new URL(import.meta.url).pathname);
+  const census = path.join(here, 'ambience-census.mjs');
+  const asked = typeof args.audio === 'string' ? path.resolve(String(args.audio)) : null;
+  const owns = path.resolve(here, '..', '..', 'game', 'data', 'audio', 'ambience');
+  if (asked && asked.replace(/\/$/, '') !== owns) {
+    process.stderr.write(`content-stats --audio: RI-AUD03 B4's census is defined over ${owns};\n` +
+      `  you asked for ${asked}, which this tool does not know how to census. Refusing rather\n` +
+      '  than running the wrong check and exiting 0.\n');
+    process.exit(EXIT.MISSING_GAME);
+  }
+  const r = spawnSync(process.execPath, [census, ...(args.json ? ['--json'] : [])], { stdio: 'inherit' });
+  process.exit(r.status === null ? 1 : r.status);
+}
+
 const dataDir = path.resolve(String(args.data || DATA_DIR));
 if (!fs.existsSync(dataDir)) {
   die(EXIT.MISSING_GAME,
