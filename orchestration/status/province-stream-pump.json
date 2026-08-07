@@ -1,0 +1,17 @@
+{
+  "task_id": "province-stream-pump",
+  "brief": "orchestration/NEXT-DISPATCH.md §0 — province streamer is never pumped from the fixed step",
+  "started": "2026-08-07",
+  "state": "researching",
+  "outputs_expected": [
+    "game/src/... streamer pumped from fixed step",
+    "tools/harness/prov-stream-probe.mjs (baseline + after)",
+    "reports/world/province-stream/*.json"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "load average at start: 24.62 (four cores) — high; measurements taken under load will be flagged"
+  ],
+  "next_step": "read game/src/render/places.js (Province), sim/step.js, engine.js _afterStep, main.js; find request()/update()",
+  "notes_for_successor": "Do NOT fix in the harness. Harness already calls request(); the fix must be driven from the simulation fixed step. Acceptance evidence must be a WALKED crossing (ARBITRATION S34), captured directly, not via the capture service (NOT SATISFIED)."
+}

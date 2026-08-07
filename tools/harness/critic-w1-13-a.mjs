@@ -52,7 +52,9 @@ async function setup(h, souls) {
   await h.h('restAt', well.id);
   // Bank souls through the save path (there is no grant verb); read them back off the live world.
   const blob = await h.h('saveState');
-  blob.progression.souls_held = souls;
+  // The purse is at `blob.character.souls_held` — NOT `blob.progression.*`, which is where a
+  // reader would guess and where this probe first put it, scoring a null run as a total loss.
+  blob.character.souls_held = souls;
   await h.h('restoreState', blob);
   await h.h('stepFrames', 2);
   const st = await h.h('getDeathState');
