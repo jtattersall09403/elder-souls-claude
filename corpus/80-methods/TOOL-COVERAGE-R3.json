@@ -1,0 +1,346 @@
+{
+ "schema": "elder-souls/tool-coverage@1",
+ "id": "TOOL-COVERAGE-R3",
+ "round": 3,
+ "role": "tool critic",
+ "authority": "orchestration/TOOL-LOOP.md rule 3",
+ "verdict": "NOT_SATISFIED",
+ "summary": "Six instruments must be rebuilt. Round 3's headline finding — that cadence and competence read r.frame while every shipped trace numbers frames f — was real and important, and the round fixed those two without asking how many siblings there were. There are two more, both in tools R1 and R2 both accepted, and one of them does not merely mis-stamp a beat: it promotes a hedged confidence-0.7 verdict to confidence 1.0 and cites corroborating evidence the trace does not support. Separately, build-viability's three-anchor model detector — the round's cleverest work — silently MIS-DETECTS: an injected one-line half-wire that leaves all three anchors matched produces byte-identical tool output while the running engine goes from six distinct race-dependent disposition-clause sets to one race-invariant set, and the flagship --cross-check reports its usual 'AGREES on 240 pairs, 0 disagreements' because every row becomes agrees:null and null is not false.",
+ "worst_instrument": "tools/analysis/build-viability.mjs",
+ "worst_instrument_why": "Third round running. The model detector was built to stop the offer model being hard-coded, and it replaced hard-coding with a heuristic over source text whose three anchors all describe PLUMBING and none of which asks whether _questDispositionModel() applies derivedDisposition(). Demonstrated on a full shadow tree: injecting `if (!this.__raceGatesEnabled) return null;` at the top of the model closure leaves all three anchor regexes matching, and the tool reports model='derived', 504/540 viable and the same 36 dunmer FAILs as the unbroken tree — charging the build 36 false failures — while the engine on that same tree emits zero disposition clauses for every signature. Its --cross-check confirms the mis-detection instead of catching it, and the artifact prints model='derived' next to 'RACE-INVARIANT: 1 distinct disposition-clause set' and exits 0 without reconciling them.",
+ "broke_the_model_detector": true,
+ "harness_state": "node tools/harness/boot-check.mjs PASS before and after every measurement. smoke.mjs never boots the engine and was not used.",
+ "c8": {
+  "count": 26,
+  "errors": 0,
+  "delta_from_r2": 0,
+  "note": "Unchanged, and correctly so: all six tools in the rebuild list already exist on disk, so no warning could clear or open. R2's warning is renewed — a cleared C8 warning is not a capability. RI-CMP03 step 2 still carries PATH CORRECTED, CONTRACT STILL OPEN (build-viability has no --chains mode), and the twelve absence reporters measure nothing, correctly and honestly. The Build status page must not read those thirteen as coverage."
+ },
+ "tools": [
+  {
+   "tool": "tools/analysis/build-viability.mjs",
+   "verdict": "REBUILD",
+   "measures_specified_thing": false,
+   "can_fail": true,
+   "passes_when_working": false,
+   "reads_running_world": "partly — only under --cross-check, which is opt-in and cannot fail in the direction that matters",
+   "self_blinding": true,
+   "flags_honest": true,
+   "self_test": "20/20",
+   "findings": [
+    "MIS-DETECTS. Injected half-wire on shadow tree (model installed, consulted, fed to gate, returns null) leaves 3/3 anchors matched. Tool output byte-identical to unbroken tree: model='derived', 504/540 viable, same 36 dunmer FAILs at speaker-teel-ashaan.",
+    "Engine on the same broken tree: 1 distinct disposition-clause set over 6 signatures (RACE-INVARIANT), 0 disposition clauses per signature. Unbroken tree: 6 distinct sets, 3/5/4/1/1/1 clauses. The world changed completely; the instrument did not move.",
+    "Correct answer on the broken tree is 540/540 viable (raw 50 clears the 50-bar, confirmed by the engine emitting no clause). The tool charges 36 FALSE FAILs.",
+    "--cross-check cannot fail in this direction: rows where the engine reports modelled:false get agrees:null, and only agrees===false is pushed to disagreements. rows.push() still runs, so rows_compared still reports 240. Headline 'AGREES on 240 (signature, giver) pairs; 0 disagreement(s)' printed on a tree where zero rows were resolved.",
+    "The artifact holds its own refutation: model='derived' printed alongside cc.race_sensitive=false, unreconciled, exit 0.",
+    "None of the three anchors checks that derivedDisposition is CALLED. All three describe plumbing.",
+    "A single global model string is the wrong shape: _questDispositionModel returns null per-NPC when reaction_group is absent, so the build's real model is per-giver mixed.",
+    "FIXED since R2 and verified: --signatures is now read (accepts 'all', a race id, or a count; an unrecognised value is a usage error)."
+   ],
+   "rebuild": [
+    "Assert cross_check.race_sensitive === (OFFER_MODEL.model === 'derived') and refuse on disagreement. Three lines; the tool already computes both sides.",
+    "Treat agrees:null as unresolved, not agreement. Report rows_resolved/rows_unresolved; make the cross-check unmeasurable when rows_resolved === 0.",
+    "Add a fourth anchor on the arithmetic (derivedDisposition is reached inside _questDispositionModel), not on the plumbing.",
+    "Better: stop treating the model as a global string; explainDisposition().modelled reports it per-giver, live."
+   ],
+   "scoring_consequence": "RI-CHR01 Distinctness and RI-CHR03 Decidability must not be scored from this run — not because the build lacks the mechanism (the offer path IS genuinely race-sensitive on the real tree, 6 distinct clause sets over 6 signatures, which I confirmed) but because the instrument cannot tell a wired race term from a dead one."
+  },
+  {
+   "tool": "tools/experience/beat-extract.mjs",
+   "verdict": "REBUILD",
+   "prior_rounds": "accepted 8/8 by R1 and again by R2",
+   "measures_specified_thing": false,
+   "can_fail": true,
+   "passes_when_working": false,
+   "reads_running_world": true,
+   "self_blinding": true,
+   "flags_honest": true,
+   "self_test": "8/8 — green because the fixture speaks the tool's private dialect",
+   "findings": [
+    "line 111 reads `const f = r.frame ?? 0` from trace.jsonl, whose every record is keyed `f`. Has never worked on a real trace.",
+    "line 244, the self-test's own fixture builder: `const rec = (f, events, extra = {}) => ({ frame: f, … })`. The fixture is written by the same hand that reads it, in a dialect the engine does not speak.",
+    "DEMONSTRATED, same events two dialects (topic at frame 0, item at frame 100000 = 27.8 min later, far outside RI-EXP01's 30 s window): `frame` dialect gives f:100000, t_min:27.78, confidence 0.7, via 'previously mentioned', evidence [2]. `f` dialect (the engine's) gives f:0, t_min:0, confidence 1.0, no via, evidence [2,1].",
+    "So it is not only that every beat in every real session is stamped at minute zero (and beat-diff compares beat logs by time). `f - t.frame <= 30*fps` becomes `0 - 0 <= 1800`, always true, so the hedged verdict is PROMOTED to a confidence-1.0 direct hit that CITES the topic line as corroboration. The tool manufactures evidence for a window it never checked.",
+    "Same constant 0 defeats `Math.abs(qf - a.frame) <= 60*fps` at line 195, so nearStage is always true and the `odd` detector at line 197 can NEVER fire — in a tool whose --self-test advertises 'prove each detector fires on a synthetic positive AND stays silent on a synthetic negative'.",
+    "line 115 reads r.player.region and r.world.region; neither is written by any artifact in the 78-artifact census, so the 'release / area change' signature cannot fire either."
+   ],
+   "rebuild": [
+    "Read `r.f ?? r.frame`, as competence.frameOf() already does.",
+    "Make the self-test fixture emit the engine's dialect, or run both and assert agreement.",
+    "Report unmeasurable rather than 0 when no record carries a frame key.",
+    "Drop or rename the dead player.region / world.region reads."
+   ]
+  },
+  {
+   "tool": "tools/journey/journey-run.mjs",
+   "verdict": "REBUILD (narrow)",
+   "prior_rounds": "R1 rebuild, repaired; R2 accepted and called it 'this round's best work'",
+   "measures_specified_thing": true,
+   "can_fail": true,
+   "passes_when_working": false,
+   "reads_running_world": true,
+   "self_blinding": true,
+   "flags_honest": true,
+   "findings": [
+    "Reads `r.frame ?? e.frame` at lines 612, 648, 649. Trace records are keyed `f` AND event objects are keyed `f` too — a real event: {\"f\":61,\"type\":\"first_input\",\"device\":\"keyboard\"} — so both operands are undefined and the ?? fallback saves nothing.",
+    "Latent on today's tree: no shipped journey emits creation_field, including jrn01-opening, which I ran to confirm. m4_clause1 currently reports unmeasurable.",
+    "DEMONSTRATED on a shadow tree whose engine emits one creation_field, driven through the real jrn01-opening journey: {\"id\":\"m4_clause1\",\"status\":\"measured\",\"value\":{\"seconds\":null,\"threshold_s\":60,\"event\":\"creation_field\"}}.",
+    "The guard is `if (fcFrame !== null && firstDefining)` and `undefined !== null` is true, so led.ok() fires; (undefined - undefined)/60 is NaN; first_control_frame and first_defining_frame vanish from the artifact because JSON.stringify drops undefined.",
+    "In the same run first_control and first_input record {\"source\":\"trace\"} with no frame field at all. On the real tree those numbers come from the driver path, which is why nobody noticed.",
+    "M4 clause 1 is described in the file as 'the >= 60 s bar nobody has ever measured'. It still has not been, and the tool is now positioned to report that it has — it goes green exactly when the bar becomes measurable.",
+    "NOT disturbed: the --sample-quests / --stratified repair R2 verified is genuinely good and is untouched by this."
+   ],
+   "rebuild": [
+    "frameOf() as competence has it, applied to records AND events.",
+    "Guard on Number.isFinite, not !== null.",
+    "led.unmeasurable when the frame cannot be read."
+   ]
+  },
+  {
+   "tool": "tools/experience/session-run.mjs",
+   "verdict": "REBUILD (narrow)",
+   "prior_rounds": "R1 'best of the twelve'; R2 rebuild (six-name list on a growing surface)",
+   "measures_specified_thing": true,
+   "can_fail": true,
+   "passes_when_working": true,
+   "reads_running_world": true,
+   "self_blinding": false,
+   "flags_honest": true,
+   "self_test": "14/14",
+   "what_is_right": [
+    "Surface is now 327 methods; first-hour refuses 108. Verified live, not from the builder's record.",
+    "All ten of TOOL-COVERAGE-R2 §8's bypasses are refused and recorded.",
+    "The fail-closed fuse FIRED FOR ME, unprompted: --audit-surface reports UNCLASSIFIED (refused, fail-closed): 1 — provinceResidency, a method added since the builder's pass.",
+    "--audit-surface publishes the whole classification, which is exactly the reviewable shape rule 3 asks for. Keep all of it."
+   ],
+   "findings": [
+    "Prohibitions are installed on ONE object. game/src/main.js:24 does `window.__ENGINE = engine`, and __HARNESS.spawnNPC is a wrapper over Engine.spawnNPC (engine.js:1179).",
+    "DEMONSTRATED with the first-hour refusal set installed VERBATIM as session-run.mjs:511 installs it: __HARNESS.spawnNPC -> refused, violation recorded, listNPCs stays 0. window.__ENGINE.spawnNPC(...) -> SPAWNED, listNPCs 0 -> 1, violations STILL 1. window.__ENGINE.setTimeOfDay(3) -> SET (a second refused capability class).",
+    "This reproduces R2 §8 exactly — 'the run completes, records no violation, and is certified as a clean first-hour session with an agent-authored NPC standing in it' — through a door the rebuild did not close.",
+    "Round 3 fixed the NAME list where the item meant a capability list. It did not fix that enforcement is a property of one global where RI-EXP01 says 'ANY INVOCATION VOIDS THE RUN'.",
+    "The tool's own check 'cannot be bypassed by calling window.__HARNESS directly' is scoped correctly and passes. The scope is what is wrong.",
+    "Lesser note carried from R2 and still true: a reference captured before install still works."
+   ],
+   "rebuild": [
+    "Enumerate the page's capability-bearing globals (__ENGINE, __ES_THREE, whatever main.js publishes next) and install over all of them.",
+    "Better, and worth asking the harness for: gate the capability at the Engine method so there is one choke point and __HARNESS is merely one caller.",
+    "Fail closed on a global that appears and is not classified, exactly as the method classifier already does."
+   ]
+  },
+  {
+   "tool": "tools/journey/cadence.mjs",
+   "verdict": "REBUILD (narrow — honesty, not measurement)",
+   "measures_specified_thing": true,
+   "can_fail": true,
+   "passes_when_working": true,
+   "reads_running_world": true,
+   "self_blinding": false,
+   "flags_honest": false,
+   "self_test": "16/16",
+   "what_is_right": [
+    "The `f` repair is real and confirmed on the real trace: duration 600s, gap_max 300s from records keyed f.",
+    "C7 traversal now measured from player.speed_mps / player.pos, not the input log.",
+    "The round-2 FLAG_TOGGLE free pass is gone; the twelve-action sweep behaves.",
+    "On reports/journeys/w1-13-jrn06 it fails honestly and reports C4/C9/C10 as N/A with stated reasons."
+   ],
+   "findings": [
+    "FLAG_FIELDS ships the comment 'These are fields the shipped trace record actually carries (verified against reports/journeys/**/trace.jsonl)'. I ran that verification over 78 artifacts and 164168 records.",
+    "5 of 12 are written by NO artifact: player.two_handed, player.crouched, ui.menu_open, ui.dialogue_open, ui.surface. No trace record in this tree carries a `ui` subtree at all.",
+    "The other 7 are real: player.locked_on (131066 recs/51 artifacts), player.stance (78906/20), player.guard_raised (78906/20), player.weapon_id (78906/20), player.attuned (79326/22), player.levitating (79326/22), player.state (131066/51).",
+    "Direction of harm is CONSERVATIVE — these are OR terms for corroboration, so their absence makes C1 harder to satisfy, not easier — and the menu path survives independently through surface_enter events (C8 read 0.0003 on the real trace, not a structural 0). This is a false provenance claim, not a broken measurement, which is why it is narrow.",
+    "RI-MTH07 §D.3 governs and R1 quoted it: a comment asserting a check is not a check. This is the same class the tool just fixed, in the fix."
+   ],
+   "rebuild": [
+    "Correct the provenance claim or wire the fields.",
+    "player.stance already covers two-handing and player.stealth covers crouching, both under names the trace uses."
+   ]
+  },
+  {
+   "tool": "tools/platform/decoupling.mjs",
+   "verdict": "REBUILD (the verdict field only — the instrument is sound)",
+   "measures_specified_thing": true,
+   "can_fail": true,
+   "passes_when_working": true,
+   "reads_running_world": true,
+   "self_blinding": false,
+   "flags_honest": true,
+   "what_is_right": [
+    "The red genuinely goes red. Run directly at --break-decoupling --sim-frames 60: FAIL m6_step_count (rate 0 runs 61 steps vs 60), FAIL m6_trace_hash (892988b1… vs 5b7520b9… at every other rate), FAIL m7_frame_rate_independence.",
+    "Green on the clean build: 600 steps at every rate, 1 distinct hash (25bdd546e519a268…), renders 600/300/150/0.",
+    "renders_observed is read from the engine's own loop.stats.rendersTotal, so the control is engine-side and not the tool's own arithmetic."
+   ],
+   "findings": [
+    "reports/platform/decoupling.json records `pass: true, hard_fails: []` for M6, whose threshold is 'Exactly 3 600 steps at every rate'. It ran sim_frames_per_rate: 300 — 8.3% of the specified duration — on a substituted scenario, with verdict.m6_step_count.expected self-set to 300.",
+    "The shortfall IS declared twice elsewhere (m6_asks_for: 3600 in the artifact, and a console NOTE), which is why this is narrow. But it does not reach the pass field, and TOOL-LOOP rule 4 is the whole point of this loop: a number on that page means something. M6 is 10 points, the largest single entry in the 26-point sim-integrity axis.",
+    "RECORDED, NOT CHARGED: --self-test did not complete in two attempts — once crashing with 'page.evaluate: Target page, context or browser has been closed' at load 19, once still unfinished after ~28 minutes at load 5. It runs eight full browser sweeps. A falsification a critic cannot re-run is a falsification on trust."
+   ],
+   "rebuild": [
+    "Carry the deviation into the verdict: meets_item_duration:false, and a pass that is not true when sim_frames_per_rate < m6_asks_for or the scenario is substituted.",
+    "Publish an M6 figure of record at --sim-frames 3600 on a quiet box.",
+    "Cap the self-test's step count so it is re-runnable."
+   ]
+  },
+  {
+   "tool": "tools/platform/perf-run.mjs",
+   "verdict": "ACCEPT",
+   "measures_specified_thing": true, "can_fail": true, "passes_when_working": true,
+   "reads_running_world": true, "self_blinding": false, "flags_honest": true,
+   "self_test": "11/11 (no browser)",
+   "findings": [
+    "All four TOOL-COVERAGE-R2 §3 strings are now REFUSED (Microsoft Basic Render Driver, WebKit WebGL, Google Inc. (Google), Subzero Device).",
+    "Launch flags read Node-side via handle.chromiumArgs: a page claiming an RTX 4070 is refused when this runner passed --use-angle=swiftshader.",
+    "attestation_contradicts_environment fires when --attest-renderer disagrees with the page.",
+    "Null control: a clean environment with a real GPU does not refuse. The gate discriminates — verdicts [false,false,false,false,true,false].",
+    "Manifest mode (--t1-only without --live) consults no environment but exits NON-ZERO either way, so the declared escape hatch cannot mint a Tier-H pass."
+   ]
+  },
+  {
+   "tool": "tools/journey/competence.mjs",
+   "verdict": "ACCEPT",
+   "measures_specified_thing": true, "can_fail": true, "passes_when_working": true,
+   "reads_running_world": true, "self_blinding": false, "flags_honest": true,
+   "self_test": "13/13",
+   "findings": [
+    "frameOf(r) { return Number((r && (r.f ?? r.frame)) ?? 0); } — handles both dialects. Audited: every other .frame read is on the tool's own constructed objects, not on trace records. Clean.",
+    "loadoutFrom() reads the fields the shipped trace emits, with player.loadout still honoured where present and GEAR_UNCHECKABLE kept as a genuine fallback. R2's cannot-pass defect is fixed.",
+    "On the real trace it blocks at NO_AI and NO_ENCOUNTER_PAIR, both genuine build gaps with named owners."
+   ]
+  },
+  {
+   "tool": "tools/journey/gamepad-shim.mjs",
+   "verdict": "ACCEPT",
+   "measures_specified_thing": true, "can_fail": true, "passes_when_working": true,
+   "reads_running_world": true, "self_blinding": false, "flags_honest": true,
+   "self_test": "12/12",
+   "findings": [
+    "Entity-side check is real: player moved 5.44 m with the stick held forward.",
+    "Null control is real: 0.00 m drift over 120 uncommanded frames with the rAF loop LIVE (mode play-instrumented).",
+    "The router red is exactly R2 §7's scenario: with the axes discarded where the engine reads them, all eight input-layer checks stay green and the player moves 0.00 m."
+   ],
+   "note_not_charged": "The entity check is dist(p0,p1) — a scalar. A router with inverted axes, or one that walks a fixed heading regardless of stick direction, passes both the green and the null control. Assert the DIRECTION, not just the distance."
+  },
+  {
+   "tool": "tools/lib/absence.mjs + 12 reporters",
+   "verdict": "ACCEPT",
+   "measures_specified_thing": true, "can_fail": true, "passes_when_working": true,
+   "reads_running_world": true, "self_blinding": false, "flags_honest": true,
+   "findings": [
+    "needs is validated at load against the live surface AND the amendment register, refusing with EXIT 22 NEEDS_UNVALIDATED and no absence verdict when a name matches nothing.",
+    "not_implemented[].what is parsed as a LIST, exported as parseDeclaredSystems() so a critic can run it on any string.",
+    "ARRIVED now requires a positive-evidence probe; without one the best available state is UNCONFIRMED (fail-closed).",
+    "The invented needs names R2 catalogued are gone; heap-walk/leak-run/stream-audit/asset-budget now declare names traceable to A-JRN9 / A-JRN14 in the register."
+   ],
+   "declared_limit": "I re-ran the reporters and read the library. I did NOT independently reconstruct all six of the builder's falsification cases, and say so rather than implying I did."
+  },
+  {"tool": "tools/journey/beat-extract.mjs", "verdict": "ACCEPT", "self_test": "6/6", "findings": ["No .frame read at all — audited against the census. Still refuses to write the committed reference file."]},
+  {"tool": "tools/experience/beat-diff.mjs", "verdict": "ACCEPT", "self_test": "9/9", "findings": ["No dialect defect. But note: it consumes beat logs whose every timestamp is currently 0 — see the experience/beat-extract entry."]},
+  {"tool": "tools/experience/isolation-check.mjs", "verdict": "ACCEPT", "self_test": "6/6"},
+  {"tool": "tools/experience/log-lint.mjs", "verdict": "ACCEPT", "self_test": "8/8"},
+  {"tool": "corpus/88-journeys/data/mw-open-beats.json", "verdict": "ACCEPT", "findings": ["Unchanged, still committed once."]}
+ ],
+ "field_audit": {
+  "method": "Census of every key path written by every .jsonl under reports/ — 78 artifacts, 164168 records — then every artifact-consuming tool audited against it.",
+  "reads_a_field_nothing_writes": [
+   {"tool": "tools/experience/beat-extract.mjs", "fields": ["r.frame (records are keyed f)", "r.player.region", "r.world.region"], "verdict": "REBUILD"},
+   {"tool": "tools/journey/journey-run.mjs", "fields": ["r.frame and e.frame (records AND events are keyed f)"], "verdict": "REBUILD"},
+   {"tool": "tools/journey/cadence.mjs", "fields": ["player.two_handed", "player.crouched", "ui.menu_open", "ui.dialogue_open", "ui.surface"], "verdict": "REBUILD (narrow)"}
+  ],
+  "clean": [
+   {"tool": "tools/journey/competence.mjs", "why": "frameOf() handles f ?? frame; player.loadout correctly demoted to a fallback"},
+   {"tool": "tools/journey/beat-extract.mjs", "why": "no .frame read"},
+   {"tool": "tools/experience/beat-diff.mjs", "why": "no .frame read"},
+   {"tool": "tools/experience/log-lint.mjs", "why": "no .frame read"},
+   {"tool": "tools/experience/isolation-check.mjs", "why": "no .frame read"}
+  ],
+  "class_does_not_apply": ["perf-run", "decoupling", "session-run", "gamepad-shim", "lib/absence"],
+  "notes_for_the_corpus": [
+   "`frame` DOES appear in the tree — in ui-text.jsonl, never in trace.jsonl — which is how three tools came to read it.",
+   "The trace event vocabulary is narrower than the tools assume: across three real traces the only types emitted are first_input, first_control, surface_enter, input_dropped/INPUT_DROPPED. dialogue_open, creation_field and input_action are all in sim/events.js and all emitted by game/src, but no shipped journey has produced one.",
+   "A single documented, versioned trace-record schema would have prevented four of the six rebuilds in this document. It is worth more than any individual tool fix."
+  ]
+ },
+ "referred_judgements": [
+  {
+   "id": "stance-does-not-void-a-competence-comparison",
+   "ruling": "UPHELD, with two corrections. Not a bar quietly relaxed.",
+   "why": "RI-JRN02 §C line 141 bans an equipment UPGRADE and M-I9 asks for IDENTICAL EQUIPMENT. Two-handing a sword is the same sword — a grip chosen and unchosen many times inside one fight, not a shopping trip. A clause that voided on it would return void on every real fight, which is R2's 'cannot pass' failure in a different coat. The builder flagged it rather than burying it, which is what rule 3 wants.",
+   "corrections": [
+    "As reported the flag is close to meaningless: stance is sampled at ONE record per encounter window and is a fast-varying per-frame value. Diffing two instants of it is noise. Two-handing IS a real competence confound (damage, moveset, poise), so the honest form is a FRACTION over each window — player.stance is on 78906 records across 20 artifacts, so the trace supports it today.",
+    "The item's own remedy is not offered. M-I9 says neither 'void' nor 'proceed' but 're-run E_late with E_first's loadout via loadState'. competence offers neither the re-run nor a note that it is skipping it."
+   ],
+   "filed_as_corpus_conflict": "loadState is classified load-state and is REFUSED by session-run's first-hour, ending and build-identity profiles. One item prescribes a remedy another item prohibits. Somebody must rule on which wins; it is not the tool builder's call and it should not be settled by silence."
+  },
+  {
+   "id": "RI-PLT01-M6-scenario-F3-has-no-file",
+   "ruling": "THE SCENARIO MUST BE AUTHORED. Declared is not discharged.",
+   "why": "F3 is 'boss arena, 1 boss, active fight'; the substitute cmb-duel-infantry is 'player vs one INFANTRY trash enemy on flat ground'. The artifact defends the swap with a bare assertion — 'the property M6 tests is not sensitive to which fight is running' — which is a hypothesis, not a measurement, and the one most likely to be wrong: sim/render coupling surfaces under load and complexity, which a boss arena has and a flat-ground trash duel does not. Substituting the quiet scene is a substitution in the PERMISSIVE direction, and R1 ruled on that shape.",
+   "authorable": "Yes. Ten scenario files, a small schema, and the content exists — build-viability's own tier-5 census names a shipped champion cohort, gate-drowned-xanmeer:1xchampion_hist_marked.",
+   "disposition": "Author F3 from shipped content and re-run M6 against it at --sim-frames 3600. Until then M6 is corpus_debt charged to CONTENT, not to the tool and not to the builder — the declaration was the right thing to do. A declared substitution renewed every round on a 10-point item is how a bar relaxes without anyone deciding to relax it."
+  },
+  {
+   "id": "renderRateHz-two-state-tool-drives-render-cadence",
+   "ruling": "A VALID MEASUREMENT, NOT A TAUTOLOGY — with a limit that must be stated.",
+   "why_not_tautology": "renders_observed is after.rendersTotal - before.rendersTotal, read from the ENGINE's loop.stats.rendersTotal (core/loop.js:165); if the engine failed to render the counter would say so. The perturbation is genuinely four different things — one render every 1, 2, 4 and infinity fixed steps — a real variation in sim/render interleaving applied through the engine's own engine.js:3212 path. The MEASURED quantity is body_sha256 invariance across those interleavings, which is exactly HF2, and the control is not vacuous: the broken build changes both step count (61 vs 60) and hash.",
+   "limit_that_must_be_declared": "Because renderRateHz is two-state on stepFrames, the sweep never exercises the consumer of the rate AS a rate — core/loop.js's rAF loop, which in harness mode neither steps nor draws. M6 as measured covers the INTERLEAVING axis in HARNESS MODE; the shipping render path is not tested at all. The tool says the rAF loop 'neither steps nor draws'; it does not say the consequence, which is that a decoupling defect living in the production scheduler would pass this sweep. Add that sentence to declared_substitutions and the measurement stands."
+  },
+  {
+   "id": "tier-s-halves-not-discharged-is-declaring-enough",
+   "ruling": "SPLIT. Enough for one, not for the other.",
+   "hitch_census_P5_P6_gc": {
+    "ruling": "DECLARING IS ENOUGH.",
+    "why": "It needs __HARNESS.forceGC() and heap access, which are genuinely absent — and, the part that makes the declaration trustworthy, lib/absence's rebuilt needs validation traces that absence to a NAMED AMENDMENT (A-JRN9) in the register rather than to a builder's guess. That is precisely what corpus_debt is for.",
+    "correction": "Owner should be A-JRN9, not 'tool round 4'."
+   },
+   "load_run_P9_body_sha256": {
+    "ruling": "DECLARING IS NOT ENOUGH. Must be measured.",
+    "why": "The measurement is unblocked today and its sibling proves it: decoupling computes body_sha256 itself (hash.digest('hex') over drained trace records) using only traceStart/traceDrain/reset — all live, no absent harness method, no attested hardware. load-run's own why_not_here concedes it: 'The hash comparison needs no attested hardware.' An owner of 'tool round 4' on work that is already unblocked is a deferral, not a debt. It is a small delta on a path that already ships in this repo."
+   }
+  }
+ ],
+ "rebuild_list": [
+  "tools/analysis/build-viability.mjs — reconcile cross_check.race_sensitive against the detected model and refuse on disagreement; agrees:null is unresolved, not agreement; add an anchor on derivedDisposition being CALLED.",
+  "tools/experience/beat-extract.mjs — read r.f ?? r.frame; make the self-test fixture speak the engine's dialect; drop the dead player.region / world.region reads.",
+  "tools/journey/journey-run.mjs — frameOf() on records and events; guard on Number.isFinite, not !== null.",
+  "tools/experience/session-run.mjs — install over every capability-bearing global (__ENGINE at minimum), or move the gate into Engine; fail closed on an unclassified global.",
+  "tools/journey/cadence.mjs — correct the FLAG_FIELDS provenance claim; use player.stance and player.stealth, which the trace writes.",
+  "tools/platform/decoupling.mjs — carry the scenario substitution and the 300-of-3600 shortfall into the pass field; publish an M6 figure at --sim-frames 3600; cap the self-test."
+ ],
+ "do_not_touch": [
+  "tools/platform/perf-run.mjs",
+  "tools/journey/competence.mjs",
+  "tools/journey/gamepad-shim.mjs",
+  "tools/lib/absence.mjs and its reporters",
+  "tools/journey/beat-extract.mjs",
+  "tools/experience/beat-diff.mjs",
+  "tools/experience/isolation-check.mjs",
+  "tools/experience/log-lint.mjs",
+  "corpus/88-journeys/data/mw-open-beats.json",
+  "session-run's capability classifier itself — it is this round's best work; only its installation scope is wrong"
+ ],
+ "best_work_this_round": "tools/experience/lib/capabilities.mjs — a derivation from the live surface, a fuse that fails closed and fired unprompted for me on provinceResidency at 327 methods, and an --audit-surface mode that publishes the whole classification for a critic to attack. It is exactly right, and it is let down by being bolted to one of the page's two doors.",
+ "also_filed": [
+  "CORPUS: no versioned trace-record schema exists. Four of six rebuilds trace to tools guessing the record shape. Highest-value next fix in this loop.",
+  "CORPUS CONFLICT: RI-JRN02 M-I9 prescribes a loadState re-run; RI-EXP01 via session-run prohibits loadState in three of four profiles.",
+  "CONTENT: scenario F3 (boss arena, 1 boss, active fight) does not exist and blocks RI-PLT01 M6 (10 points) from being measured as written."
+ ],
+ "provenance": {
+  "all_measured_this_pass": true,
+  "boot_check": "PASS before and after every measurement",
+  "falsifications_constructed_by_me": [
+   "Injected _questDispositionModel half-wire on a full shadow tree, with the tool run and the engine BOOTED on both trees, using the six-signature disposition-clause-set sweep as the discriminator.",
+   "--cross-check null-row demonstration on the same broken tree (AGREES on 240 pairs, 0 resolved).",
+   "78-artifact / 164168-record key census, and the twelve-field FLAG_FIELDS audit against it.",
+   "Two-dialect beat-extract fixture showing the confidence upgrade from 0.7 to 1.0 with fabricated corroborating evidence.",
+   "Shadow-tree creation_field emission driven through the real jrn01-opening journey, producing status:'measured', seconds:null.",
+   "window.__ENGINE bypass of session-run's first-hour profile with the prohibition block installed verbatim from session-run.mjs:511.",
+   "Live --audit-surface confirmation that the fail-closed fuse refuses provinceResidency at 327 methods.",
+   "Direct --break-decoupling run at 60 steps."
+  ],
+  "declared_limits": [
+   "decoupling --self-test did not complete in two attempts; I quote my own direct --break-decoupling run instead of the builder's 7/7.",
+   "I did not independently reconstruct all six of lib/absence's falsification cases."
+  ],
+  "shadow_trees": "scratchpad/r3/shadow{A,B,C}/ — game/data and game/src on this tree were NOT modified.",
+  "did_not": ["git commit", "tools/publish.mjs", "delete any indexed data file"]
+ }
+}

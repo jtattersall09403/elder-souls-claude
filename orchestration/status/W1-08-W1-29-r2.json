@@ -1,0 +1,24 @@
+{
+  "task_id": "W1-08-W1-29-r2",
+  "brief": "builder round 2 on W1-08 (desktop controls) + W1-29 (mobile/touch/gamepad), after FAIL 5/10",
+  "started": "2026-08-07",
+  "state": "researching",
+  "outputs_expected": [
+    "tools/journey/input-checks.mjs (13 missing check ids implemented + self-test legs)",
+    "game/src/render/text-register.js (register sees all drawn text; empty != clean)",
+    "game/src/render/ui.js (touch overlay + rotate state DRAWN into the composited 2D surface)",
+    "tools/verdict-validate.mjs (typed 'ungated' hard-fail state)",
+    "docs/shots/<dated>-touch-overlay.png",
+    "reports/blog-feed.jsonl (one line)",
+    "reports/W1-08-W1-29-R2.md"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "boot-check PASS before work; load 3.05 at start",
+    "verdict: 13 unimplemented ids = M-K8,M-K9,M-K21,M-K22,M-N1,M-N2,M-N3,M-N5,M-N7 (JRN03) + M-P14,M-P20,M-P24,M-P25 (JRN04)",
+    "M-K20 passes on an empty getRenderedText() register; text-register.js only instruments 'dialogue' and 'title' surfaces",
+    "touch overlay + rotateState have zero renderer consumers; desktop vs handheld framebuffers byte-identical"
+  ],
+  "next_step": "read tools/journey/input-checks.mjs, game/src/render/{ui,text-register}.js, game/src/input/{touch,viewport}.js",
+  "notes_for_successor": ""
+}

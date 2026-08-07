@@ -2,7 +2,7 @@
   "task_id": "province-stream-pump",
   "brief": "orchestration/NEXT-DISPATCH.md §0 — province streamer is never pumped from the fixed step",
   "started": "2026-08-07",
-  "state": "measuring",
+  "state": "complete",
   "outputs_expected": [
     "tools/world/prov-stream.mjs (read-only streaming probe — DONE)",
     "game/src/engine.js _streamProvince() called from _afterStep()",
@@ -20,7 +20,10 @@
     "reports/world/province-stream/AFTER-budget.json",
     "reports/world/province-stream/DELETED-budget.json",
     "reports/world/province-stream/AFTER-crossing.json",
-    "reports/world/province-stream/CONSUME-radius{1,2,3}.json"
+    "reports/world/province-stream/CONSUME-radius{1,2,3}.json",
+    "reports/world/province-stream/CONSUME-null-skin17.json",
+    "reports/world/province-stream/AFTER-night.json",
+    "reports/world/province-stream/AFTER-nightlamp.json"
   ],
   "findings": [
     "load average at start 24.62 on four cores — HIGH. All wall-clock numbers below were taken under that.",
@@ -42,8 +45,18 @@
     "DELETE-THE-FIX (shadow tree, ONLY the this._streamProvince() call site removed, identical 1999.4 m walk): 0 tiles built (vs 30), ring 0/25 (vs 25/25), near 3x3 ring 9 of 9 UNBUILT (vs 0), all four discs 1453 m behind. The tiles go straight back to unbuilt.",
     "FRAME BUDGET, identical 1999.4 m walks, 60,000 steps each, load 4.5-6.7: with fix mean 0.2674 ms, p50 0.05, p99 0.32, p999 66.82, max 133.8, 194 steps over 16.7 ms (0.32%); fix deleted mean 0.0618 ms, p50 0.05, p99 0.185, p999 1.625, max 14.93, 0 steps over 16.7 ms.",
     "COST COMPOSITION per 2 km (attributed by identity-comparing the disc anchor arrays across each step): ground skin + cover disc rebuilt together 145 frames at 59.31 ms mean; near-prop disc 69 frames at 2.71 ms; tile build 30 frames at 69.18 ms. NO frame did a disc rebuild AND a tile build — the one-unit-of-work-per-step guard holds.",
-    "THE SKIN AND THE COVER DISC CANNOT BE SPLIT: updateSkin() sets this.coverAt = null on purpose, because the ground cover stands ON the skin surface and a stale cover disc sits 0.3 m inside a berm. So skin+cover is one indivisible ~59 ms unit, fired every ~13.8 m by SKIN_REBUILD_M = 11. THAT IS THE RESIDUAL COST AND I DID NOT CLOSE IT — it is W1-01 territory (updateSkin builds 15,625 vertices) and reducing it means either making updateSkin cheaper or moving W1-01s calibrated rebuild distance, which moves the picture."
+    "THE SKIN AND THE COVER DISC CANNOT BE SPLIT: updateSkin() sets this.coverAt = null on purpose, because the ground cover stands ON the skin surface and a stale cover disc sits 0.3 m inside a berm. So skin+cover is one indivisible ~59 ms unit, fired every ~13.8 m by SKIN_REBUILD_M = 11. THAT IS THE RESIDUAL COST AND I DID NOT CLOSE IT — it is W1-01 territory (updateSkin builds 15,625 vertices) and reducing it means either making updateSkin cheaper or moving W1-01s calibrated rebuild distance, which moves the picture.",
+    "CROSSING WALKED END TO END (final code): 55.131 min, 6615.1 m integrated path, declared 6816 m, walk.done TRUE. 35 samples. ZERO samples with no ground underfoot. Worst near-3x3 unbuilt 0. Worst outer-ring unbuilt 1 of 25 (the trickle, 600-750 m out). tilesBuiltTotal 50 -> 149: 99 tiles streamed in while walking. tilesResident 25-36. Seven regions: salt-hills, valus-ridge, stone-forest, blackwood, deep-marshes, western-rootlands, eastern-rootlands. Mean 0.369 ms/frame across chunks.",
+    "WHAT ELSE MOVED WITH THE PLAYER, on the crossing: cover-disc instances ranged 0-2651 and near-prop instances 6-1982 across the seven regions (frozen at load values before). Skin lag never exceeded 11.99 m (SKIN_REBUILD_M 11), near 23.56 m (NEAR_REBUILD_M 22), cover 11.99 m. Before the fix these lagged up to 2182 m.",
+    "NIGHT LAMPS: sig_lights_created went 0 -> 2 during a walk, so updateSignatureLights is now called from the step. Walked toward a welkynd pillar at 01:00: 0 lit at 300 / 258.9 / 247.2 / 205.6 m, 1 lit at 155.6 m (SIG_LIGHT_RANGE 160), 1 at 106.7 m, 2 lit at 61.7 m and 20 m. Lamps light and re-point purely by walking.",
+    "The crossing road never passes within the 160 m lamp range of a glowing signature — nearest on the walked route 281 m. Not introduced by me; noted for whoever owns night legibility (RI-WLD04 M17 step 6).",
+    "CONSUMPTION (RI-MTH07 B2), identical 1199.4 m WALKS, radiusTiles perturbed: 1 -> ring_built 9, tilesResident 12, tilesBuiltTotal 43; 2 -> 25 / 30 / 65; 3 -> 49 / 56 / 88. Predicted ring (2R+1)^2 = 9/25/49, observed 9/25/49. coupling = 40/40 = 1.00.",
+    "NULL CONTROL (RI-MTH07 B3): perturbing skinRadiusM 34 -> 17 over the same 1199.4 m walk moved skin_vertices 15625 -> 3969 (predicted 3969 exactly) and left ring_built 25, tilesResident 30, tilesBuiltTotal 65 BYTE-IDENTICAL. The tile change in the radius arms is not an artefact of the perturbation method.",
+    "DETERMINISM: tools/harness/determinism.mjs ladder R1:F R2:P R3:P R4:P R5:F R6:P R7:F R8:F R9:P on my tree, IDENTICAL on a pristine `git archive HEAD` tree. The four failures pre-date me. 0 guard violations.",
+    "boot-check PASS and smoke PASS after the change. tools/capture/settle.mjs G1 reads provinceResidency() queue depth (=== 0), not tilesResident, so the release hysteresis does not disturb the capture service. provinceResidency() reads stats().residentRadiusTiles, which now resolves to this.radiusTiles — same value, still read-only.",
+    "RESIDUAL I DID NOT CLOSE: the ground-skin + cover-disc rebuild costs ~59 ms and fires every ~13.8 m of walking — 194 of 60,000 steps over 16.7 ms (0.32%). W1-01 territory: updateSkin builds 15,625 vertices and SKIN_REBUILD_M = 11 is W1-01 calibration. p50 and p99 are essentially unchanged (0.05 / 0.32 ms with the fix vs 0.05 / 0.185 ms without).",
+    "My changes were swept into commit 0a1b02e by ANOTHER agent. I did not commit anything."
   ],
-  "next_step": "finish consumption arms, night walk, final boot-check",
-  "notes_for_successor": "Probe is tools/world/prov-stream.mjs. It reads window.__ENGINE read-only and NEVER calls request/pump/drain/streamAround — that is deliberate, the harness's own streamAround is why this defect survived. --tile-radius / --skin-radius perturb the streamer for RI-MTH07 consumption."
+  "next_step": "none — complete",
+  "notes_for_successor": "The pump is Engine._streamProvince(), called from _afterStep(). Probe: tools/world/prov-stream.mjs (modes camera3km, walked3km, walk, crossing, budget, nightlamp; flags --tile-radius, --skin-radius, --night). It reads window.__ENGINE read-only and never calls request/pump/drain/streamAround. The one open cost is the 59 ms ground-skin+cover rebuild every 13.8 m — see updateSkin in game/src/world/province.js, and note updateSkin deliberately nulls coverAt so the two cannot be split."
 }
