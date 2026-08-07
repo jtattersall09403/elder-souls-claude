@@ -47,13 +47,16 @@
 //                              the WORLD's to keep, not the reward's.
 //
 // I3's REACH IS DECLARED, because a probe that overstates what it covers is worse than one that
-// covers less. These routes run in `arena_flat`, and `PopulationSystem` is province-cell gated
-// out of every fixture cell by design — so the oracle drives the release/re-materialise mechanism
-// DIRECTLY (`despawn` on every body, then `spawnEncounter` under the same stable tag, which is
-// exactly what `_materialise()` passes) and it does NOT drive the population pump end to end.
-// Instance 3 — the save/load farm — is a province route belonging to W1-POPULATION and is
-// measured in their own suite; what this oracle can say about it is that `applySave` restores a
-// corpse as a corpse in a fixture cell, which it does.
+// covers less. These routes run in `arena_flat`, and `PopulationSystem` is province-cell gated out
+// of every fixture cell by design — so the oracle calls that system's OWN `releasePost()` and
+// `_materialise()` against a synthetic post, rather than walking 260 m. The code executed is the
+// shipped file's. It does not drive the distance pump end to end, and it does not claim to.
+//
+// **It used to carry its own copy of the release, and that cost a delete-the-fix its meaning:**
+// the leg that removed `PopulationSystem`'s register of who was down came back GREEN, because the
+// ablation deleted the world's implementation while the oracle went on running the oracle's. Two
+// parallel implementations of one system, in the instrument this time. `releasePost()` was
+// extracted so there is exactly one, and the leg goes red.
 //
 // I1 and I2 are `game/src/sim/souls.js`'s. **I3 is not**, and separating them is the point of
 // this tool. Round 2's epoch gate was the souls ledger trying to enforce I3 by refusing to pay —

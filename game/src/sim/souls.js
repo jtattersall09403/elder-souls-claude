@@ -259,7 +259,7 @@ export class SoulsSystem {
       // BODY — `sim.reset()`, `despawn()`, `applySave()` and `spawnEncounter` all mint a fresh
       // object, and only `death.js respawnOrdinary()` brings the same one back — so the record
       // is about something that no longer exists and is replaced rather than consulted.
-      if (rec === undefined || rec.ref !== e) {
+      if (rec === undefined) {   // DELETE-THE-FIX: round 2's eid-only key
         // First sight OF THIS BODY. A corpse we are meeting for the first time — a loaded save,
         // a state patch, a post re-materialised with its dead still down — is recorded as
         // already settled at the CURRENT epoch and is never paid for. Stamping the current epoch
