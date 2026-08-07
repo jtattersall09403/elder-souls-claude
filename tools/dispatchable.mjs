@@ -50,8 +50,14 @@ if (existsSync(STATUS)) {
     let j; try { j = JSON.parse(readFileSync(join(STATUS, f), 'utf8')); } catch { continue; }
     const id = j.task_id || basename(f, '.json');
     const state = String(j.state || 'unknown');
-    const key = id.toLowerCase().replace(/-r\d+$/, '').replace(/^critic-/, '');
-    const isCritic = /^(critic|judge)-/.test(id);
+    // Match a status file to a verdict the way verdict ids are actually written: on the
+    // `w1-NN` (or `w1-<name>`) prefix, ignoring round numbers and the descriptive tail agents
+    // append to their task ids. Keying on the whole id reported 91 pieces as unjudged, most of
+    // which had verdicts under a shorter name — a number I published before checking it, which
+    // is exactly the failure this project keeps charging builders for.
+    const key = (id.toLowerCase().match(/^(w\d+-[a-z0-9]+)/) || [, id.toLowerCase()])[1];
+    // A critic, a judge or a fix task is not a *piece*; nothing dispatches a critic against one.
+    const isCritic = /(^|-)(critic|judge)(-|$)/.test(id.toLowerCase()) || /-fix$/.test(id.toLowerCase());
     rows.push({
       id, state, file: `orchestration/status/${f}`,
       next: String(j.next_step || '').slice(0, 80),

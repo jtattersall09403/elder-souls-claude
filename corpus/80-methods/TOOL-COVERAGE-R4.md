@@ -12,11 +12,20 @@
 | | |
 |---|---|
 | Rebuild | **1** — `tools/analysis/build-viability.mjs` |
-| Commit under test | **`0b2d6ef`** (predecessor worked at `e29ec21`; 10 commits and ~11 000 lines landed between, including `game/src/engine.js` +566 — every number below is re-stamped at `0b2d6ef`) |
+| Commit under test | **`0b2d6ef`**, **re-confirmed at `88ee56d`** (predecessor worked at `e29ec21`; 10 commits and ~11 000 lines landed between, including `game/src/engine.js` +566 — every number below is re-stamped at `0b2d6ef`, and §10 re-runs the headline numbers at `88ee56d`) |
 | Worst instrument still standing | **`tools/analysis/build-viability.mjs`**, fifth round |
-| C8 now | **26**, 0 errors (`node tools/corpus-index.mjs`) — unchanged |
-| Harness state | `node tools/harness/boot-check.mjs` **PASS** before and after every measurement. `smoke.mjs` never boots the engine and was not used. |
+| C8 now | **26**, 0 errors (`node tools/corpus-index.mjs`) — unchanged at both `0b2d6ef` and `88ee56d` |
+| Harness state | `node tools/harness/boot-check.mjs` **PASS** before and after every measurement, at both commits. `smoke.mjs` never boots the engine and was not used. |
 | Self-test | **`build-viability self-test: FAIL (49/51)`** — run to completion for the first time (~37 min). The builder never finished it. |
+
+> **Successor pass (#3), at `88ee56d`.** The tool is **byte-identical** to the version this verdict
+> rejects — `git hash-object tools/analysis/build-viability.mjs` is `e3d6790e…` at both `0b2d6ef`
+> and `88ee56d`, and `git diff 0b2d6ef..88ee56d -- tools/analysis/build-viability.mjs` is empty. Every
+> code-shape defect below therefore holds unchanged by construction. What *did* move is the tree, by
+> ten-plus commits including faction-questline and topic work, so the **tree-dependent** numbers were
+> all re-measured: §10. They are unchanged. `tool-build-viability-r6` is still `state: researching`
+> with `outputs_written: []`, so **nothing has yet answered this verdict** — and its own findings
+> independently confirm rebuild items 1, 4 and 6. **The verdict stands: NOT SATISFIED.**
 
 **What round 5 got right, and it is a great deal.** The four synthetic constants are genuinely
 gone: `gold = 1e9` is now a sum over real `rewards[]`, ranks come from the shipping
@@ -311,6 +320,103 @@ compared. Two assertions still cannot fail:
 
 ---
 
+## 10. Successor pass at `88ee56d` — re-baseline, and one more substitution wearing a derivation
+
+The tool did not move (`e3d6790e…` at both commits, empty diff). The **tree** did. Everything
+tree-dependent was re-measured; the box was quiet this time (`pgrep -c headless_shell` = **0**,
+loadavg **0.73**), where both predecessors were capped at 12–32 browsers.
+
+| Number | `0b2d6ef` | `88ee56d` | |
+|---|---|---|---|
+| full walk | 0 viable / 45 not viable / 495 unmeasurable (target 486) | **identical** | unchanged |
+| `three_factions_rank5` | 0 fail / **540 unmeasurable** | **identical** | DEFECT D holds |
+| `no_unpassable_gate` | 45 fail / 495 unmeasurable | **identical** | |
+| `main_quest`, `tier5_survivable` | 540 pass each | **identical** | |
+| exit code | non-zero, attestation STALE | **non-zero, STALE** | correct, and to the tool's credit |
+| C8 | 26 warn, 0 error | **26 warn, 0 error** | |
+| `--audit-grants` | exit 0, "substitutions remaining: 0", 18 ungrounded tokens | **identical** | |
+| `npcs/**` producer branch | 15 files / 347 records / 776 topics via loader, **0** via the tool | **identical** | DEFECT C holds |
+
+**DEFECT A, restated from the tool's own stdout at `88ee56d`.** My predecessor cited the doc
+comment at `:1422`. It is starker than that — the ledger contradicts itself in **three consecutive
+printed lines**:
+
+```
+  completed   player-optimal-bound   every quest except the target and its mutually_exclusive_with
+              caveat: … stated because it is a substitution and it must be visible.
+  …
+  substitutions remaining: 0
+  player-optimal bounds (declared, not hidden): reputation, gold, completed, locked
+```
+
+A row that calls itself "a substitution" in its own caveat, four rows declared as bounds, and a
+counter that reports zero — all in one screen of output, on the mode the help text calls "the mode
+to run first".
+
+### DEFECT L (new) — `worldFlags` is the fifth bound, and it is not declared at all
+
+The brief's first angle: *a derived value computed from an optimistic assumption is a substitution
+wearing a derivation.* Here is one the ledger does not classify as either.
+
+`worldFlags` is labelled **`derived-from-data`**, value **770**, source "quests/** consequences.world_flags".
+It is not in the declared-bounds list. But it is built exactly like `reputation`, which *is*
+declared a `player-optimal-bound`: the union of what **every** resolution of **every** quest
+produces, with no choice ever made. Measured on the shipped book with my own probe
+(`r4c/flags-joint.mjs`, `r4c/contested.mjs`):
+
+- **755** flags are produced anywhere in `game/data`.
+- **91 of 124** quests have more than one mutually exclusive resolution each producing world flags.
+- **601 of 755** flags are **contested** — every producer is one branch of a branching quest, so a
+  player choosing any other branch never gets that flag. Only **154** are uncontested.
+- The granted set is therefore not merely optimistic, it is **self-contradictory**. `Q-SAP-01` alone
+  contributes `ixtu_vakh_trusts_player` *and* `ixtu_vakh_closed_to_player`, and
+  `sap_route_to_archon_open` *and* `sap_route_to_archon_closed`. `Q-ARCH-01` contributes
+  `archon_vats_open` *and* `archon_vats_burned`.
+
+This matters beyond its own row, because `worldFlags` is the **input** to the `ranks` row — the one
+labelled **`shipping-predicate`** and defended as "the same call `QuestEngine.context()` makes". That
+defence is true of the *predicate* and false of the *argument*. A shipped predicate evaluated against
+a world state no player can occupy is not a shipping-predicate measurement; the honest label is
+inherited from the worst input, and the label as printed launders it.
+
+**Impact on this tree, measured honestly, and it is currently nil.** I chased it to the consumers
+rather than asserting damage:
+
+- World flags are read by **exactly one** kind of gate: the 24 `world_state.flag` rows on the faction
+  ladders. **No quest gate demands a world flag at all** — the complete set of resolution requirement
+  keys is `attributes, condition, disposition, faction_rank, gold, items, knowledge, skills,
+  spell_effects`, and `opens_by` offers only `overheard_from, prerequisite_quests,
+  prerequisite_topics, topic`.
+- Of those 24 ladder demands, 12 are ungrounded (already this verdict's finding) and the **12
+  grounded ones are all uncontested** — each is produced by *every* resolution of its quest, so it is
+  reachable whichever branch the player picks. I checked this specifically expecting a collision and
+  did not find one; that is a negative result and it is reported as one.
+
+So DEFECT L is the same species as DEFECT C: **real, undeclared, and currently harmless** — a false
+green armed and waiting for the first faction rank row, or the first quest gate, to ask for a
+contested flag. It costs one line of honesty in the ledger today and a wrong verdict the day the
+content writers add a world-flag prerequisite.
+
+**A smaller reporting defect, same pass.** `reports/viability.json` carries
+`"unmeasurable": 495` beside `"unmeasurable_because": []` — the field that exists to explain the
+abstentions is empty on every run.
+
+### What `tool-build-viability-r6` says
+
+`orchestration/status/tool-build-viability-r6.json` is `state: researching`, `outputs_written: []`.
+No round-6 tool exists, so this verdict is not yet answered. Its findings are worth recording because
+they are the *builder's own* confirmation of three rebuild items, reached independently: item 6 (the
+`npcs` branch collects 0 while citing itself), item 4 (`:2044` abstains on a pure count and never
+re-runs the triple search), and item 1 (`verifyModelLive()` **already fetches**
+`explainDisposition(id).race_term` at `:3196`, stores it, and then never uses it — the fix this
+verdict prescribes is available against an already-exposed field). It also raises the right strategic
+question, with the right evidence: `game/src/harness/api.js:1610-1617` records W1-FACTIONS round 1's
+live in-engine walk failing in this exact class, which is a real argument that a live probe
+**relocates** the substitution rather than removing it. That argument deserves an answer, not a
+reflex rebuild.
+
+---
+
 ## Rebuild list — `tools/analysis/build-viability.mjs`
 
 1. **Model detector must measure the modelled term, not movement.** Per gated giver, assert
@@ -337,12 +443,19 @@ compared. Two assertions still cannot fail:
    unmeasurable for every signature, and must not read as a build verdict.
 9. Remove the two cross-check tautologies (`accounting_holds`, `pairs_enumerated`) and count the
    `engineValue === undefined` pairs into a third named bucket.
+10. **Declare `worldFlags` as the fifth bound, or make it reachable** (DEFECT L). 601 of 755
+    produced flags are contested and the granted set holds directly contradictory pairs
+    (`archon_vats_open` + `archon_vats_burned`). Either pick one resolution per quest and grant only
+    what that play yields, or label the row a `player-optimal-bound` and stop calling the `ranks`
+    row a `shipping-predicate` measurement when its argument is an impossible world. Also fill
+    `unmeasurable_because`, which is `[]` on every run beside `"unmeasurable": 495`.
 
 ---
 
 ## Method
 
-- Commit **`0b2d6ef`** for every number. `boot-check` **PASS** before and after.
+- Commit **`0b2d6ef`** for every number in §1–§9; **`88ee56d`** for §10. `boot-check` **PASS** before
+  and after, at both.
 - Shadow trees: `game/` + `tools/` copied at `0b2d6ef`, `node_modules` symlinked; `shadowS`
   (pristine), `shadowR` (R3's known break — my red control), `shadowD1`/`D2`/`D3` (three new
   breaks), `shadowE` (triangle-free exclusivity). All under
@@ -354,3 +467,11 @@ compared. Two assertions still cannot fail:
 - Instrument calibrated in both directions before use: `shadowS` green / `shadowR` red.
 - Contention: `pgrep -c headless_shell` and `/proc/loadavg` checked before each browser run
   (6 → 12 browsers, loadavg 2.98 → 11.5); all analysis after that point was Node-side.
+- **Successor pass (#3)** at `88ee56d`: box quiet (0 browsers, loadavg 0.73). Re-ran
+  `--audit-grants` and the full 540-signature walk on the real tree (writing its report into the
+  scratchpad, not `reports/`), plus three new probes of my own under `scratchpad/r4c/` —
+  `flags-joint.mjs` (per-quest resolution conflicts in the granted flag set), `contested.mjs`
+  (contested-vs-uncontested flag census and gate-demand cross-check), `gate-flags.mjs` (whether
+  ladder demands collide on one quest — they do not, reported as a negative). No shadow tree was
+  needed for §10: the finding is a census over the shipped book and the tool's own printed ledger.
+  **Nothing was written into `game/` or `tools/`, and nothing was committed.**

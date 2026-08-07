@@ -535,6 +535,40 @@ export function installHarness(engine, bootPromise) {
       return out;
     },
 
+    /**
+     * Where the bloodstain and the sapwell basins are ACTUALLY DRAWN, off the scene graph.
+     *
+     * W1-13 round 3. `GAP-W1-bloodstain-invisible-from-most-bearings` was diagnosed twice from
+     * pixel counts alone and misdiagnosed both times, because a pixel count cannot separate
+     * "the bloom is not drawn" from "the bloom is drawn somewhere the camera is not looking".
+     * `getDeathState().bloodstain.pos` is the MODEL's position — `field.heightAt`, the collision
+     * surface. What the player sees is `renderer._drawnGroundY`, which is two layers above it.
+     * This returns the second number, read off `matrixWorld` rather than recomputed, so a probe
+     * can aim at the thing instead of at where the model thinks it is.
+     *
+     * A pure read: it touches nothing and returns null when the marker group has not been built.
+     */
+    getDrawnMarkers() {
+      const r = engine.renderer;
+      const M = r && r._marks;
+      if (!M) return { present: false, stain: null, wells: [] };
+      const worldPos = (o) => {
+        if (!o) return null;
+        o.updateWorldMatrix(true, false);
+        const e = o.matrixWorld.elements;
+        return [e[12], e[13], e[14]];
+      };
+      const describe = (g) => {
+        if (!g) return null;
+        const parts = [];
+        g.traverse((o) => { if (o.isMesh) parts.push({ name: o.name || o.type, y: +(o.position.y).toFixed(4), visible: !!o.visible }); });
+        return { pos: worldPos(g), visible: !!g.visible, in_scene: !!g.parent, parts, part_count: parts.length };
+      };
+      const wells = [];
+      for (const [id, g] of (M.wells || new Map())) wells.push({ id, ...describe(g) });
+      return { present: true, stain: describe(M.stain), wells };
+    },
+
     renderFrame() { engine.loop.renderNow(); return true; },
     async screenshot() { engine.loop.renderNow(); return engine.renderer.screenshotDataURL(); },
 

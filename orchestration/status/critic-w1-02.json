@@ -1,0 +1,36 @@
+{
+  "task_id": "critic-w1-02",
+  "role": "critic",
+  "judges": "W1-02",
+  "state": "in-progress",
+  "started_at": "2026-08-07",
+  "next_step": "read the ten judging items; pre-register blind procedure; audit wld12 blind pack for leaks; then answer it",
+  "judging_items_assembled_from_front_matter": {
+    "bind_by_current_taxonomy_path": [
+      "RI-AUD03 [audio.ambience.region, world.region.identity]",
+      "RI-TRV01 [... world.time.daynight ...]",
+      "RI-WLD08 [... world.weather.systems, world.time.daynight ...]",
+      "RI-WLD09 [world.strangeness.budget ...]",
+      "RI-WLD11 [... world.weather.systems, world.region.identity]",
+      "RI-WLD12 [world.region.transition] SOLE",
+      "RI-WLD14 [world.strangeness.architecture] SOLE"
+    ],
+    "named_by_plan_but_bind_only_by_legacy_alias": [
+      "RI-PRG04 judges world.time (not world.time.daynight)",
+      "RI-WLD04 judges world.regions/world.weather (not world.region.identity/world.weather.systems)",
+      "RI-WLD05 judges world.strangeness/world.architecture (not world.strangeness.budget/.architecture)"
+    ],
+    "note": "Verified by me from front-matter across all corpus/*/RI-*.md, not from PLAN.md and not from a directory listing. Confirms builder's finding independently. Judged anyway: PLAN §3 names all ten."
+  },
+  "files_touched": [
+    "orchestration/status/critic-w1-02.json"
+  ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-02-r1.md",
+    "corpus/90-verdicts/wave1/W1-02-r1.json",
+    "docs/shots/",
+    "reports/blog-feed.jsonl",
+    "reports/critic-w1-02/"
+  ],
+  "redundant_with": ["W1-02"]
+}
