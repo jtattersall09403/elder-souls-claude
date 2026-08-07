@@ -80,6 +80,13 @@ export class UILayer {
     const W = Math.max(2, w | 0), H = Math.max(2, h | 0);
     if (this.canvas.width === W && this.canvas.height === H) return;
     this.canvas.width = W; this.canvas.height = H;
+    // Writing `canvas.width` resets the backing store to a NEW one of a different size, but
+    // the GPU texture uploaded from the old store is still bound and still the old dimensions.
+    // Without this dispose the layer kept compositing the previous upload — a ghost second
+    // interface, offset up the screen, on any resize and on every DPR-2 capture. Disposing
+    // makes three re-upload at the new size on the next present.
+    this.texture.dispose();
+    this.texture.needsUpdate = true;
     this.dirty = true;
   }
 

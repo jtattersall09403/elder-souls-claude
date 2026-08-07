@@ -112,6 +112,11 @@ export class TitleLayer {
     const W = Math.max(2, w | 0), H = Math.max(2, h | 0);
     if (this.canvas.width === W && this.canvas.height === H) return;
     this.canvas.width = W; this.canvas.height = H;
+    // Same defect, same fix as render/ui.js and ui/surface.js: resizing the canvas orphans the
+    // uploaded texture, and without a dispose the layer composites the previous upload at the
+    // previous size — a ghost title screen on any resize or DPR-2 capture.
+    this.texture.dispose();
+    this.texture.needsUpdate = true;
     this.dirty = true;
   }
 

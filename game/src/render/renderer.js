@@ -13,6 +13,7 @@
 import * as THREE from '../../vendor/three/three.module.js';
 const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 import { buildScene, makeActor, terrainHeight } from './scene.js';
+import { makeRiggedActor, poseFromRig, poseStatic } from './actor.js';
 import { Sky, WEATHER } from './sky.js';
 import { Province } from '../world/province.js';
 import { SIGNATURE_KINDS } from '../world/signature.js';
@@ -211,21 +212,40 @@ export class Renderer {
     return terrainHeight(x, z, seed === undefined ? this.seed : seed);
   }
 
+  /**
+   * Any live rig, borrowed purely as a BONE LIST so an actor with no combat body of its own
+   * (a villager) can still be built as a humanoid. Its pose is never read.
+   */
+  _anyRig(sim) {
+    const C = sim && sim._combat;
+    if (!C) return null;
+    if (C.player && C.player.rig) return C.player.rig;
+    for (const b of C.bodies || []) if (b.rig) return b.rig;
+    return null;
+  }
+
   syncEntities(sim) {
     const seen = new Set();
+    const C = sim._combat;
     for (const e of sim.entities) {
       seen.add(e.eid);
       let mesh = this.enemyMeshes.get(e.eid);
       if (!mesh) {
-        mesh = makeActor(this.mats, e.archetype === 'DUMMY' ? 0x7a6a4a : 0x5d3b2c);
+        mesh = makeRiggedActor(this.mats, e.archetype === 'DUMMY' ? 0x7a6a4a : 0x5d3b2c, 0x7d8460);
         mesh.name = 'enemy:' + e.eid;
         this.scene.add(mesh);
         this.enemyMeshes.set(e.eid, mesh);
       }
-      mesh.position.set(e.pos[0], e.pos[1], e.pos[2]);
-      mesh.rotation.y = (e.yaw * Math.PI) / 180;
+      // An enemy has a combat body too, and it swings a weapon at you — so it is posed from
+      // its OWN rig by the same call the player uses. Before this, the thing hitting you was
+      // a box that never moved, which is why the round-3 critic could not judge an enemy
+      // swing either.
+      const eb = C && C.bodyOf ? C.bodyOf(e.eid) : null;
+      if (!(eb && poseFromRig(mesh, eb))) {
+        poseStatic(mesh, this._anyRig(sim), e.pos, e.yaw);
+        mesh.scale.y = e.state === 'DEAD' ? 0.18 : 1;
+      }
       mesh.visible = true;
-      mesh.scale.y = e.state === 'DEAD' ? 0.18 : 1;
     }
     for (const [eid, mesh] of this.enemyMeshes) {
       if (!seen.has(eid)) { this.scene.remove(mesh); this.enemyMeshes.delete(eid); }
@@ -246,22 +266,18 @@ export class Renderer {
       let mesh = this.npcMeshes.get(n.eid);
       if (!mesh) {
         const tint = RACE_TINT[n.race] || RACE_TINT.saxhleel;
-        mesh = makeActor(this.mats, tint[1]);
-        // The skin material on makeActor is shared; give each person their own so a Dunmer
-        // and an Imperial standing in the same room are not the same colour.
-        for (const child of mesh.children) {
-          if (child.material === this.mats.skin) {
-            child.material = this.mats.skin.clone();
-            child.material.color.setHex(tint[0]);
-          }
-        }
+        // Race tint is now handed to the actor at build time — `makeRiggedActor` clones the
+        // skin and cloth materials per actor, so a Dunmer and an Imperial in the same room are
+        // not the same colour and no caller has to reach into the child list to fix it.
+        mesh = makeRiggedActor(this.mats, tint[1], tint[0]);
         mesh.scale.setScalar(n.height_scale || 1);
         mesh.name = 'npc:' + n.eid;
         this.scene.add(mesh);
         this.npcMeshes.set(n.eid, mesh);
       }
-      mesh.position.set(n.pos[0], n.pos[1], n.pos[2]);
-      mesh.rotation.y = (n.yaw * Math.PI) / 180;
+      // A villager has no combat body, so the rig is borrowed for its bone list only and the
+      // group transform poses it — a proper humanoid standing still, rather than a box.
+      poseStatic(mesh, this._anyRig(sim), n.pos, n.yaw);
       mesh.visible = n.visible !== false;
     }
     for (const [eid, mesh] of this.npcMeshes) {
@@ -395,9 +411,21 @@ export class Renderer {
     // ask the register what the frame said at the node it screenshotted.
     textRegister.setFrame(sim.frame);
     const c = sim.camera;
-    this.playerMesh.position.set(sim.player.pos[0], sim.player.pos[1], sim.player.pos[2]);
-    this.playerMesh.rotation.y = (sim.player.yaw * Math.PI) / 180;
-    this.playerMesh.visible = !c.override;    // a posed camera is usually inside the character
+    // ---- the player, posed from the fight's own rig ----------------------------------------
+    // `sim._combat` is hung on the sim by Engine.loadState (engine.js). The combat body is the
+    // AUTHORITY and `sim.player` is a view (sim/combat-bridge.js) — the view carries a position
+    // and a yaw and nothing else, which is precisely why writing only those two numbers here
+    // drew one static box for every weapon and every frame of every clip.
+    const cb = sim._combat && sim._combat.player;
+    if (!(cb && poseFromRig(this.playerMesh, cb))) {
+      poseStatic(this.playerMesh, this._anyRig(sim), sim.player.pos, sim.player.yaw);
+    }
+    // S18 / RI-CAM07: the character is third-person ALWAYS, so it is drawn always. This line
+    // used to read `!c.override`, which hid the player for every posed-camera capture in the
+    // project — including the three weapon screenshots the round-3 critic found byte-identical,
+    // which contained no character at all. A camera placed inside the head is a camera problem
+    // and is solved by near-plane clipping, not by deleting the subject of the photograph.
+    this.playerMesh.visible = true;
     this.syncEntities(sim);
     this.syncNPCs(sim);
     this.syncProps(sim);

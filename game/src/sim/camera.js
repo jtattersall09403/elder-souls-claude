@@ -315,7 +315,12 @@ export function stepCamera(sim) {
 function resolveMode(sim, c, locked) {
   if (c.uiMode === 'menu') { c.mode = 'menu'; return; }
   if (c.uiMode === 'dialogue') { c.mode = 'dialogue'; return; }
-  if (c.deathFrame >= 0) { c.mode = 'death'; return; }
+  // `!== -1` and not `>= 0`. -1 is the sentinel; every other value is a frame index. A save
+  // taken during the death sequence rebases that index against a frame counter that
+  // `loadState()` resets to 0 (RI-MTH01 A07), so a death that began before the save comes
+  // back NEGATIVE — still a death, and `sim.frame - c.deathFrame` in deathOrientation() is
+  // still the correct elapsed count. `>= 0` silently cancelled it.
+  if (c.deathFrame !== -1) { c.mode = 'death'; return; }
   if (c.fogUntil > sim.frame) { c.mode = 'fog_gate'; return; }
   if (c.uiMode === 'rest') { c.mode = 'rest'; return; }
   c.mode = locked ? 'locked' : 'free';

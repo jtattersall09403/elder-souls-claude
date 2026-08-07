@@ -1,0 +1,583 @@
+// The character and the weapon, drawn from the rig the fight already evaluates.
+//
+// THE DEFECT THIS FILE EXISTS TO CLOSE. Before it, `makeActor()` in scene.js welded a fixed
+// group of primitives — including ONE 0.95 m box for all 87 weapons — and `Renderer.render()`
+// wrote a position and a yaw onto it and nothing else. 1,133 authored clips existed and none
+// of them reached a screen: three weapon classes 1.95 m, 2.85 m and 2.75 m long screenshotted
+// byte-identical, and a full 60-frame attack moved 0.19% of the character box.
+//
+// THE RULE THIS FILE IS BUILT ON. `Rig.evaluate()` (combat/skeleton.js) already computes a
+// world-space 3x4 transform for every one of the twenty bones, every frame, and
+// `CombatBody.evaluateRig()` already double-buffers the two weapon sockets in world space.
+// Hit resolution consumes those sockets today. **So nothing here re-derives a pose.** The
+// bones are written straight into a THREE.Skeleton as world matrices and the weapon is drawn
+// in the grip hand's own world frame. There is no second animation evaluation that could
+// disagree with the first, because there is no second evaluation at all.
+//
+// WHAT YOU SEE IS WHAT HITS YOU — BY CONSTRUCTION, NOT BY CALIBRATION. The weapon mesh is
+// authored in the grip hand's local frame along the blade axis skeleton.json declares
+// (`weapon.blade_axis_local`, which is [0,-1,0]), and its tip vertex sits at exactly
+// `socket_b_dist_m` along that axis. `Rig.evaluate()` places socket B at
+// `hand_world * (blade_axis_local * socketBDist)`. The drawn tip and the hit socket are
+// therefore the same point through the same matrix — not two numbers tuned to agree. If a
+// future edit breaks that, `tools/harness/wpn-render-probe.mjs` §C measures the divergence in
+// millimetres and fails.
+//
+// ALLOCATION. Geometry is built once per weapon id and once per actor, then mutated in place.
+// The per-frame path (`poseFromRig`) allocates nothing.
+'use strict';
+
+import * as THREE from '../../vendor/three/three.module.js';
+
+// ---------------------------------------------------------------------------------------
+// Geometry helpers. Everything is authored directly into typed arrays with skin indices and
+// weights, because the pieces are simple and a full glTF pipeline for twenty capsules would
+// be a great deal of machinery for no additional fidelity.
+// ---------------------------------------------------------------------------------------
+
+/** Scratch, module-level: the builders run at construction time, never per frame. */
+const _v = new THREE.Vector3();
+const _u = new THREE.Vector3();
+const _w = new THREE.Vector3();
+const _m = new THREE.Matrix4();
+
+class MeshBuilder {
+  constructor() {
+    this.pos = [];
+    this.nrm = [];
+    this.si = [];
+    this.sw = [];
+    this.idx = [];
+  }
+
+  get count() { return this.pos.length / 3; }
+
+  vert(p, n, bones, weights) {
+    this.pos.push(p.x, p.y, p.z);
+    this.nrm.push(n.x, n.y, n.z);
+    this.si.push(bones[0], bones[1], 0, 0);
+    this.sw.push(weights[0], weights[1], 0, 0);
+  }
+
+  tri(a, b, c) { this.idx.push(a, b, c); }
+
+  /**
+   * A tapered tube from `a` to `b` in world (rest) space, skinned to `bone` and blended into
+   * `parent` over the first `blend` of its length so an elbow bends rather than shears.
+   */
+  tube(a, b, r0, r1, bone, parent, blend, radial = 10, rings = 4) {
+    _w.copy(b).sub(a);
+    const len = _w.length();
+    if (len < 1e-6) return;
+    _w.multiplyScalar(1 / len);
+    // any stable perpendicular
+    _u.set(0, 0, 1);
+    if (Math.abs(_w.z) > 0.9) _u.set(1, 0, 0);
+    _u.crossVectors(_u, _w).normalize();
+    _v.crossVectors(_w, _u).normalize();
+    const base = this.count;
+    for (let j = 0; j <= rings; j++) {
+      const t = j / rings;
+      const r = r0 + (r1 - r0) * t;
+      // taper the very ends inwards a touch so segments read as limbs, not pipes
+      for (let i = 0; i < radial; i++) {
+        const ang = (i / radial) * Math.PI * 2;
+        const ca = Math.cos(ang), sa = Math.sin(ang);
+        const nx = _u.x * ca + _v.x * sa, ny = _u.y * ca + _v.y * sa, nz = _u.z * ca + _v.z * sa;
+        const p = new THREE.Vector3(
+          a.x + _w.x * len * t + nx * r,
+          a.y + _w.y * len * t + ny * r,
+          a.z + _w.z * len * t + nz * r,
+        );
+        const n = new THREE.Vector3(nx, ny, nz);
+        // Skin weight: at the parent end (t=0) the vertex is shared with the parent bone, so
+        // the joint creases instead of tearing. `blend` 0 gives a rigid segment.
+        let wp = 0;
+        if (blend > 0 && parent >= 0 && t < blend) {
+          const s = t / blend;
+          wp = 0.5 * (1 - s * s * (3 - 2 * s));
+        }
+        this.vert(p, n, [bone, parent < 0 ? bone : parent], [1 - wp, wp]);
+      }
+    }
+    for (let j = 0; j < rings; j++) {
+      for (let i = 0; i < radial; i++) {
+        const i2 = (i + 1) % radial;
+        const A = base + j * radial + i, B = base + j * radial + i2;
+        const C = base + (j + 1) * radial + i, D = base + (j + 1) * radial + i2;
+        this.tri(A, C, B); this.tri(B, C, D);
+      }
+    }
+  }
+
+  /** A ball at a joint, rigidly skinned — shoulders, elbows, knees, skulls. */
+  ball(c, r, bone, seg = 10, squash = 1, fwd = 0) {
+    const base = this.count;
+    for (let j = 0; j <= seg; j++) {
+      const phi = (j / seg) * Math.PI;
+      const sp = Math.sin(phi), cp = Math.cos(phi);
+      for (let i = 0; i < seg * 2; i++) {
+        const th = (i / (seg * 2)) * Math.PI * 2;
+        const nx = sp * Math.cos(th), ny = cp, nz = sp * Math.sin(th);
+        const p = new THREE.Vector3(c.x + nx * r, c.y + ny * r * squash, c.z + nz * r + (nz > 0 ? nz * fwd : 0));
+        this.vert(p, new THREE.Vector3(nx, ny, nz), [bone, bone], [1, 0]);
+      }
+    }
+    const ring = seg * 2;
+    for (let j = 0; j < seg; j++) {
+      for (let i = 0; i < ring; i++) {
+        const i2 = (i + 1) % ring;
+        const A = base + j * ring + i, B = base + j * ring + i2;
+        const C = base + (j + 1) * ring + i, D = base + (j + 1) * ring + i2;
+        this.tri(A, C, B); this.tri(B, C, D);
+      }
+    }
+  }
+
+  build() {
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(this.pos, 3));
+    g.setAttribute('normal', new THREE.Float32BufferAttribute(this.nrm, 3));
+    g.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(this.si, 4));
+    g.setAttribute('skinWeight', new THREE.Float32BufferAttribute(this.sw, 4));
+    g.setIndex(this.idx);
+    return g;
+  }
+}
+
+// ---------------------------------------------------------------------------------------
+// The body plan.
+//
+// Every length here is read from skeleton.json's own bone offsets at build time, never
+// re-declared: a segment runs from its bone's origin to the CHILD bone's origin, so a forearm
+// is exactly as long as the rig says a forearm is and the two cannot drift. Only radii and the
+// few pieces with no child bone (head, hands, feet) carry authored numbers.
+// ---------------------------------------------------------------------------------------
+
+/** bone id -> { to, r0, r1, mat, blend } ; `to` is the child bone whose offset gives length. */
+const PLAN = {
+  pelvis: { to: 'spine_00', r0: 0.185, r1: 0.170, mat: 'cloth', blend: 0 },
+  spine_00: { to: 'spine_02', r0: 0.170, r1: 0.205, mat: 'cloth', blend: 0.4 },
+  spine_02: { to: 'neck', r0: 0.205, r1: 0.135, mat: 'cloth', blend: 0.4 },
+  neck: { to: 'head', r0: 0.072, r1: 0.070, mat: 'skin', blend: 0.5 },
+  clavicle_l: { to: 'upperarm_l', r0: 0.098, r1: 0.088, mat: 'cloth', blend: 0.5 },
+  clavicle_r: { to: 'upperarm_r', r0: 0.098, r1: 0.088, mat: 'cloth', blend: 0.5 },
+  upperarm_l: { to: 'lowerarm_l', r0: 0.083, r1: 0.070, mat: 'skin', blend: 0.45 },
+  upperarm_r: { to: 'lowerarm_r', r0: 0.083, r1: 0.070, mat: 'skin', blend: 0.45 },
+  lowerarm_l: { to: 'hand_l', r0: 0.070, r1: 0.053, mat: 'skin', blend: 0.45 },
+  lowerarm_r: { to: 'hand_r', r0: 0.070, r1: 0.053, mat: 'skin', blend: 0.45 },
+  thigh_l: { to: 'calf_l', r0: 0.113, r1: 0.090, mat: 'cloth', blend: 0.4 },
+  thigh_r: { to: 'calf_r', r0: 0.113, r1: 0.090, mat: 'cloth', blend: 0.4 },
+  calf_l: { to: 'foot_l', r0: 0.090, r1: 0.062, mat: 'cloth', blend: 0.4 },
+  calf_r: { to: 'foot_r', r0: 0.090, r1: 0.062, mat: 'cloth', blend: 0.4 },
+  // Leaf bones: no child to measure against, so these carry an authored local extent.
+  hand_l: { local: [0, -0.095, 0.012], r0: 0.055, r1: 0.042, mat: 'skin', blend: 0.4 },
+  hand_r: { local: [0, -0.095, 0.012], r0: 0.055, r1: 0.042, mat: 'skin', blend: 0.4 },
+  foot_l: { local: [0, -0.045, 0.155], r0: 0.062, r1: 0.048, mat: 'skin', blend: 0 },
+  foot_r: { local: [0, -0.045, 0.155], r0: 0.062, r1: 0.048, mat: 'skin', blend: 0 },
+};
+
+/** Joint balls, so a bent elbow reads as a joint rather than two disconnected tubes. */
+const JOINTS = [
+  ['upperarm_l', 0.086, 'skin'], ['upperarm_r', 0.086, 'skin'],
+  ['lowerarm_l', 0.070, 'skin'], ['lowerarm_r', 0.070, 'skin'],
+  ['hand_l', 0.056, 'skin'], ['hand_r', 0.056, 'skin'],
+  ['thigh_l', 0.114, 'cloth'], ['thigh_r', 0.114, 'cloth'],
+  ['calf_l', 0.091, 'cloth'], ['calf_r', 0.091, 'cloth'],
+  ['pelvis', 0.190, 'cloth'],
+];
+
+/**
+ * Build the two skinned meshes (skin and cloth) plus the bone hierarchy, from a live `Rig`.
+ *
+ * The skeleton is read off `rig.def.bones` rather than re-imported from skeleton.json, so the
+ * drawn character cannot be built against a different bone list than the fight is using — the
+ * arrays are the same length, in the same order, by construction.
+ */
+function buildSkeleton(rig, mats, tintHex, skinHex) {
+  const defs = rig.def.bones;
+  const bones = [];
+  const index = new Map();
+  for (let i = 0; i < defs.length; i++) {
+    const b = new THREE.Bone();
+    b.position.set(defs[i].offset[0], defs[i].offset[1], defs[i].offset[2]);
+    bones.push(b);
+    index.set(defs[i].id, i);
+  }
+  for (let i = 0; i < defs.length; i++) {
+    const p = defs[i].parent;
+    if (p !== null) bones[index.get(p)].add(bones[i]);
+  }
+  const rootBone = bones[0];
+  rootBone.updateMatrixWorld(true);            // the REST pose, in actor-local space
+
+  const restWorld = bones.map((b) => b.matrixWorld.clone());
+  const boneInverses = restWorld.map((m) => m.clone().invert());
+
+  const B = { skin: new MeshBuilder(), cloth: new MeshBuilder() };
+  const originOf = (id) => new THREE.Vector3().setFromMatrixPosition(restWorld[index.get(id)]);
+
+  for (const [id, spec] of Object.entries(PLAN)) {
+    const bi = index.get(id);
+    if (bi === undefined) continue;
+    const a = originOf(id);
+    let b;
+    if (spec.to !== undefined) {
+      if (index.get(spec.to) === undefined) continue;
+      b = originOf(spec.to);
+    } else {
+      b = new THREE.Vector3(spec.local[0], spec.local[1], spec.local[2]).applyMatrix4(restWorld[bi]);
+    }
+    const parent = defs[bi].parent === null ? -1 : index.get(defs[bi].parent);
+    B[spec.mat].tube(a, b, spec.r0, spec.r1, bi, parent, spec.blend);
+  }
+  for (const [id, r, mat] of JOINTS) {
+    const bi = index.get(id);
+    if (bi === undefined) continue;
+    B[mat].ball(originOf(id), r, bi, 8);
+  }
+
+  // ---- the head ------------------------------------------------------------------------
+  // This is Black Marsh and the player is Saxhleel, so the skull is long, the snout carries
+  // forward off it, and a low crest runs back over the neck. Morrowind's own Argonian head is
+  // the art-direction reference (corpus/70-visual/refs/morrowind/); the fidelity reference is
+  // the modern set, which is why it is a shaped skull with a jaw rather than the sphere and
+  // cone the previous actor used.
+  const hi = index.get('head');
+  if (hi !== undefined) {
+    const hm = restWorld[hi];
+    const P = (x, y, z) => new THREE.Vector3(x, y, z).applyMatrix4(hm);
+    B.skin.ball(P(0, 0.085, 0.005), 0.115, hi, 9, 1.06, 0.03);          // skull
+    B.skin.tube(P(0, 0.070, 0.075), P(0, 0.028, 0.235), 0.085, 0.047, hi, hi, 0, 8, 2); // snout
+    B.skin.tube(P(0, 0.035, 0.065), P(0, 0.012, 0.205), 0.062, 0.036, hi, hi, 0, 8, 2); // jaw
+    // the crest: three low spines back over the skull, the silhouette cue that reads at range
+    for (let k = 0; k < 3; k++) {
+      const t = k / 3;
+      B.skin.tube(P(0, 0.150 - t * 0.030, 0.030 - t * 0.075),
+        P(0, 0.215 - t * 0.055, -0.010 - t * 0.090), 0.030, 0.008, hi, hi, 0, 6, 2);
+    }
+  }
+
+  const skeleton = new THREE.Skeleton(bones, boneInverses);
+  const group = new THREE.Group();
+  group.add(rootBone);
+
+  const meshes = [];
+  for (const key of ['cloth', 'skin']) {
+    if (B[key].count === 0) continue;
+    const mat = (key === 'skin' ? mats.skin : mats.cloth).clone();
+    if (key === 'skin' && skinHex !== undefined) mat.color.setHex(skinHex);
+    if (key === 'cloth' && tintHex !== undefined) mat.color.setHex(tintHex);
+    const mesh = new THREE.SkinnedMesh(B[key].build(), mat);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    // The bones are written in WORLD space by `poseFromRig`, so the mesh's own transform must
+    // not be applied twice. Binding with identity and leaving the group at identity makes the
+    // shader's `bindMatrixInverse * boneMatrix * bindMatrix` resolve to `boneWorld * restInv`,
+    // i.e. exactly the rig's own world transform (see the file header).
+    mesh.bind(skeleton, new THREE.Matrix4());
+    // A world-space skeleton defeats the bind-pose bounding sphere, which would cull the
+    // character the moment it walked away from the origin.
+    mesh.frustumCulled = false;
+    group.add(mesh);
+    meshes.push(mesh);
+  }
+
+  return { group, bones, index, skeleton, meshes, rootBone };
+}
+
+// ---------------------------------------------------------------------------------------
+// Weapons.
+//
+// Fifteen classes, fifteen silhouettes, every dimension read from the weapon block the fight
+// itself is holding. Nothing here carries a hardcoded length: `length_m` is the solved blade
+// length (`MovesetLibrary._bladeLength`, the same number that puts socket B where the hitbox
+// is), `hitbox_span_m` is the class's EDGED span, and `radius_m` is the hit capsule radius.
+// Perturb any of the three in the data and the drawn weapon changes shape — which is what
+// `tools/harness/wpn-render-probe.mjs` §D checks, and it is the whole point.
+// ---------------------------------------------------------------------------------------
+
+/** Local frame: the grip hand is the origin and the blade runs along -Y (skeleton.json). */
+function box(w, h, d, y, z = 0, x = 0) {
+  const g = new THREE.BoxGeometry(w, h, d);
+  g.translate(x, y, z);
+  return g;
+}
+
+function buildWeaponGeo(w) {
+  // L: hand -> tip. span: the edged portion, measured back from the tip. Both from data.
+  const L = Math.max(0.15, Number(w.length_m) || 0.95);
+  const rawSpan = Number(w.hitbox_span_m);
+  const span = Math.min(L * 0.98, Math.max(0.06, isFinite(rawSpan) ? rawSpan : L * 0.7));
+  const R = Math.max(0.012, (Number(w.radius_m) || 0.06));
+  const cls = String(w.class || 'SSW');
+  const haftTop = -(L - span);              // where the edged part begins, in -Y
+  const tip = -L;
+  const metal = [], wood = [];
+
+  // The grip: always present, always above the guard, always the same 0.10 m the rig uses.
+  const gripLen = Math.max(0.10, Math.min(0.42, L * 0.13));
+  wood.push(box(R * 0.55, gripLen, R * 0.45, -gripLen * 0.5 + 0.06));
+
+  const haftLen = Math.max(0, -haftTop - 0.06);
+
+  switch (cls) {
+    case 'DGR':
+      metal.push(box(R * 0.9, span, R * 0.30, tip + span / 2));
+      metal.push(box(R * 2.0, 0.028, R * 0.9, haftTop));
+      break;
+    case 'FST': {                                   // claw: three short blades off a knuckle bar
+      metal.push(box(R * 2.6, 0.045, R * 1.1, -0.06));
+      for (let k = -1; k <= 1; k++) {
+        const g = box(R * 0.5, span, R * 0.22, tip + span / 2, 0, k * R * 0.9);
+        g.rotateX(k * 0.10);
+        metal.push(g);
+      }
+      break;
+    }
+    case 'CSW': case 'CGS': {                       // curved: the blade is built as an arc
+      const segs = 9;
+      const wide = cls === 'CGS' ? R * 1.5 : R * 1.05;
+      for (let k = 0; k < segs; k++) {
+        const t0 = k / segs, t1 = (k + 1) / segs;
+        const y0 = haftTop - span * t0, y1 = haftTop - span * t1;
+        // the curve: the tip rakes forward, which is what makes a curved sword read as one
+        const c0 = span * 0.20 * t0 * t0, c1 = span * 0.20 * t1 * t1;
+        const seg = box(wide * (1 - 0.35 * t0), Math.abs(y1 - y0) * 1.12, R * 0.24,
+          (y0 + y1) / 2, (c0 + c1) / 2);
+        seg.rotateX(-Math.atan2(c1 - c0, Math.abs(y1 - y0)));
+        metal.push(seg);
+      }
+      metal.push(box(R * (cls === 'CGS' ? 4.2 : 3.0), 0.035, R * 0.8, haftTop));
+      break;
+    }
+    case 'TSW':                                     // thrusting: narrow, long, a swept guard
+      metal.push(box(R * 0.55, span, R * 0.30, tip + span / 2));
+      metal.push(box(R * 2.2, 0.030, R * 2.2, haftTop));
+      metal.push(box(R * 0.30, 0.16, R * 2.0, haftTop + 0.08));
+      break;
+    case 'SSW': case 'GSW': case 'UGS': {
+      const wide = cls === 'UGS' ? R * 1.9 : cls === 'GSW' ? R * 1.5 : R * 1.0;
+      metal.push(box(wide, span, R * 0.26, tip + span / 2));
+      metal.push(box(wide * 0.55, span * 0.9, R * 0.34, tip + span / 2));   // the fuller ridge
+      metal.push(box(wide * 3.0, 0.042, R * 0.9, haftTop));                 // crossguard
+      metal.push(box(R * 0.9, 0.06, R * 0.9, 0.075));                       // pommel
+      break;
+    }
+    case 'SPR':                                     // long haft, small leaf head at the tip
+      if (haftLen > 0) wood.push(box(R * 0.7, haftLen, R * 0.7, haftTop + haftLen / 2));
+      metal.push(box(R * 1.5, span * 0.55, R * 0.30, tip + span * 0.28));
+      metal.push(box(R * 0.8, span * 0.5, R * 0.5, tip + span * 0.72));
+      break;
+    case 'WHP': {                                   // a segmented cord: span is nearly all of it
+      if (haftLen > 0) wood.push(box(R * 0.9, haftLen, R * 0.9, haftTop + haftLen / 2));
+      const links = 14;
+      for (let k = 0; k < links; k++) {
+        const t = k / links;
+        metal.push(box(R * (0.55 - 0.30 * t), span / links * 0.78, R * (0.55 - 0.30 * t),
+          haftTop - span * (t + 0.5 / links), span * 0.16 * Math.sin(t * 3.1)));
+      }
+      break;
+    }
+    case 'AXE': case 'HLB': {
+      if (haftLen > 0) wood.push(box(R * 0.62, haftLen, R * 0.62, haftTop + haftLen / 2));
+      // the bit hangs off ONE side of the haft — the asymmetry is the class's silhouette
+      const bitH = cls === 'HLB' ? span * 0.42 : span * 0.86;
+      const bitY = cls === 'HLB' ? tip + span * 0.62 : tip + span * 0.48;
+      metal.push(box(R * 0.5, bitH, R * 3.1, bitY, R * 1.7));
+      metal.push(box(R * 0.5, bitH * 0.5, R * 1.2, bitY + bitH * 0.42, R * 0.6));
+      if (cls === 'HLB') {
+        metal.push(box(R * 0.55, span * 0.55, R * 0.55, tip + span * 0.24));   // top spike
+        metal.push(box(R * 0.45, R * 1.4, R * 1.4, bitY - bitH * 0.2, -R * 0.9)); // rear fluke
+      } else {
+        metal.push(box(R * 1.2, 0.035, R * 1.2, haftTop));
+      }
+      break;
+    }
+    case 'MCE': case 'GHM': {
+      if (haftLen > 0) wood.push(box(R * 0.62, haftLen, R * 0.62, haftTop + haftLen / 2));
+      const headH = span * (cls === 'GHM' ? 0.85 : 0.9);
+      const headY = tip + headH / 2;
+      if (cls === 'GHM') {
+        metal.push(box(R * 2.6, headH, R * 2.6, headY));                     // a block hammer
+        metal.push(box(R * 3.0, headH * 0.22, R * 3.0, headY + headH * 0.36));
+      } else {
+        for (let k = 0; k < 4; k++) {                                        // flanges
+          const g = box(R * 0.55, headH, R * 2.1, headY);
+          g.rotateY((k / 4) * Math.PI * 2);
+          metal.push(g);
+        }
+        metal.push(box(R * 1.0, headH * 1.02, R * 1.0, headY));
+      }
+      metal.push(box(R * 1.1, 0.035, R * 1.1, haftTop));
+      break;
+    }
+    case 'BOW': {                                   // limbs and a string, drawn in the hand frame
+      const limb = Math.min(1.0, L * 0.06 + 0.55);
+      for (const s of [1, -1]) {
+        const g = box(R * 0.7, limb, R * 0.35, s * limb * 0.5, R * 1.2 * (1 - Math.abs(s)) );
+        g.translate(0, 0, 0);
+        g.rotateX(s * 0.22);
+        wood.push(g);
+      }
+      metal.push(box(0.006, limb * 1.92, 0.006, 0, -R * 0.9));
+      break;
+    }
+    default:
+      metal.push(box(R * 1.0, span, R * 0.26, tip + span / 2));
+      metal.push(box(R * 2.6, 0.04, R * 0.9, haftTop));
+  }
+  return { metal, wood };
+}
+
+function mergeBoxes(list) {
+  // Hand-rolled merge: the vendored three build carries no BufferGeometryUtils.
+  let vcount = 0, icount = 0;
+  for (const g of list) { vcount += g.attributes.position.count; icount += g.index.count; }
+  const pos = new Float32Array(vcount * 3), nrm = new Float32Array(vcount * 3);
+  const idx = new Uint16Array(icount);
+  let vo = 0, io = 0;
+  for (const g of list) {
+    const p = g.attributes.position.array, n = g.attributes.normal.array;
+    pos.set(p, vo * 3); nrm.set(n, vo * 3);
+    const gi = g.index.array;
+    for (let i = 0; i < gi.length; i++) idx[io + i] = gi[i] + vo;
+    vo += g.attributes.position.count; io += gi.length;
+    g.dispose();
+  }
+  const out = new THREE.BufferGeometry();
+  out.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  out.setAttribute('normal', new THREE.Float32BufferAttribute(nrm, 3));
+  out.setIndex(new THREE.Uint16BufferAttribute(idx, 1));
+  return out;
+}
+
+/**
+ * The drawn weapon, in the grip hand's local frame. Cached per (weapon, length, span, radius)
+ * so that PERTURBING THE DATA REBUILDS THE MESH — a cache keyed on the weapon id alone would
+ * have made this file's own consumption test pass while nothing consumed anything.
+ */
+const _weaponCache = new Map();
+function weaponMesh(w, mats) {
+  const key = [w.weapon_id, w.class, w.length_m, w.hitbox_span_m, w.radius_m].join('|');
+  let entry = _weaponCache.get(key);
+  if (!entry) {
+    const { metal, wood } = buildWeaponGeo(w);
+    entry = { metal: metal.length ? mergeBoxes(metal) : null, wood: wood.length ? mergeBoxes(wood) : null };
+    _weaponCache.set(key, entry);
+  }
+  const g = new THREE.Group();
+  if (entry.metal) { const m = new THREE.Mesh(entry.metal, mats.metal); m.castShadow = true; g.add(m); }
+  if (entry.wood) { const m = new THREE.Mesh(entry.wood, mats.bark); m.castShadow = true; g.add(m); }
+  g.matrixAutoUpdate = false;
+  return g;
+}
+
+// ---------------------------------------------------------------------------------------
+// The public surface.
+// ---------------------------------------------------------------------------------------
+
+/**
+ * An actor that can be posed. Cheap to make and inert until `poseFromRig` is first called
+ * with a live rig — so an NPC that has no combat body still gets a proper humanoid, standing
+ * in the rest pose, driven by the group transform as before.
+ */
+export function makeRiggedActor(mats, tintHex, skinHex) {
+  const g = new THREE.Group();
+  g.userData.actor = { built: null, mats, tintHex, skinHex, weapon: null, weaponKey: null, rigged: false };
+  return g;
+}
+
+/** Does this group have a skinned body yet? */
+export function isBuilt(group) {
+  return !!(group.userData.actor && group.userData.actor.built);
+}
+
+/**
+ * Drive the actor from a live `CombatBody`. This is the whole consumer: it writes the rig's
+ * own world matrices into the skeleton and hangs the weapon off the grip hand's world frame.
+ *
+ * @param {THREE.Group} group  from makeRiggedActor
+ * @param {object} body        a CombatBody — needs `.rig`, `.socketA/B`, `.moves._weapon`
+ */
+export function poseFromRig(group, body) {
+  const A = group.userData.actor;
+  if (!A || !body || !body.rig) return false;
+  const rig = body.rig;
+  if (!A.built) {
+    A.built = buildSkeleton(rig, A.mats, A.tintHex, A.skinHex);
+    group.add(A.built.group);
+  }
+  const S = A.built;
+
+  // ---- the body ------------------------------------------------------------------------
+  // `rig.world[i]` is a 3x4 row-major [m00..m22, tx,ty,tz]; THREE.Matrix4.elements is
+  // COLUMN-major. This is the only place the two conventions meet and it is written out
+  // longhand rather than through `.set()` so the transpose is visible.
+  const bones = S.bones;
+  const n = Math.min(bones.length, rig.world.length);
+  for (let i = 0; i < n; i++) {
+    const s = rig.world[i];
+    const e = bones[i].matrixWorld.elements;
+    e[0] = s[0]; e[1] = s[3]; e[2] = s[6]; e[3] = 0;
+    e[4] = s[1]; e[5] = s[4]; e[6] = s[7]; e[7] = 0;
+    e[8] = s[2]; e[9] = s[5]; e[10] = s[8]; e[11] = 0;
+    e[12] = s[9]; e[13] = s[10]; e[14] = s[11]; e[15] = 1;
+  }
+  if (!A.rigged) {
+    // Stop the scene graph recomputing what we just wrote. Done after the first write so the
+    // rest pose is still available to anything that asked before the fight existed.
+    S.rootBone.matrixAutoUpdate = false;
+    S.rootBone.matrixWorldAutoUpdate = false;
+    group.position.set(0, 0, 0);
+    group.rotation.set(0, 0, 0);
+    group.updateMatrix();
+    A.rigged = true;
+  }
+  S.skeleton.update();
+
+  // ---- the weapon ----------------------------------------------------------------------
+  const w = (body.moves && body.moves._weapon) || null;
+  if (w) {
+    const key = [w.weapon_id, w.class, w.length_m, w.hitbox_span_m, w.radius_m].join('|');
+    if (key !== A.weaponKey) {
+      if (A.weapon) group.remove(A.weapon);
+      A.weapon = weaponMesh(w, A.mats);
+      A.weaponKey = key;
+      group.add(A.weapon);
+    }
+    // The weapon rides the GRIP HAND's world matrix, which is the same matrix
+    // `Rig.evaluate()` puts the sockets on. There is no separate weapon transform to drift.
+    const hm = rig.world[rig.gripIdx];
+    const e = A.weapon.matrix.elements;
+    e[0] = hm[0]; e[1] = hm[3]; e[2] = hm[6]; e[3] = 0;
+    e[4] = hm[1]; e[5] = hm[4]; e[6] = hm[7]; e[7] = 0;
+    e[8] = hm[2]; e[9] = hm[5]; e[10] = hm[8]; e[11] = 0;
+    e[12] = hm[9]; e[13] = hm[10]; e[14] = hm[11]; e[15] = 1;
+    A.weapon.matrixWorld.copy(A.weapon.matrix);
+    A.weapon.matrixWorldNeedsUpdate = false;
+    for (const c of A.weapon.children) c.matrixWorld.copy(A.weapon.matrixWorld);
+    A.weapon.visible = true;
+  } else if (A.weapon) {
+    A.weapon.visible = false;
+  }
+  return true;
+}
+
+/**
+ * The fallback for an actor with no combat body: build the body at the rest pose against a
+ * borrowed rig definition and pose it with the group transform, as before.
+ */
+export function poseStatic(group, rigDefSource, pos, yawDeg) {
+  const A = group.userData.actor;
+  if (!A) return false;
+  if (!A.built) {
+    if (!rigDefSource || !rigDefSource.def) return false;
+    A.built = buildSkeleton(rigDefSource, A.mats, A.tintHex, A.skinHex);
+    group.add(A.built.group);
+  }
+  if (A.rigged) return false;                 // already world-driven; do not fight it
+  group.position.set(pos[0], pos[1], pos[2]);
+  group.rotation.y = (yawDeg * Math.PI) / 180;
+  return true;
+}

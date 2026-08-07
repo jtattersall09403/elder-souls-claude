@@ -28,6 +28,7 @@
 
 import * as THREE from '../../vendor/three/three.module.js';
 import { buildPlaces } from './places.js';
+import { makeRiggedActor } from './actor.js';
 
 // ---- deterministic value noise (integer hash; no PRNG state, no draws) ----------------
 function hash2(x, y, s) {
@@ -301,7 +302,11 @@ export function buildScene(seed) {
   props.materialShowcase.add(junctionWall, junctionPlinth, junctionMoss, junctionPlank);
 
   // ---- the player ------------------------------------------------------------------------------
-  const player = makeActor(mats, 0x8f9aa6);
+  // A RIGGED actor, not a welded silhouette: it grows its skinned body the first frame a live
+  // `Rig` is handed to it (render/actor.js) and is driven bone-by-bone from the same pose the
+  // hit resolution reads. Until W1-RENDER this was `makeActor()`, whose blade was a 0.95 m box
+  // at a fixed offset for all 87 weapons.
+  const player = makeRiggedActor(mats, 0x8f9aa6, 0x8d9a72);
   player.name = 'player';
   scene.add(player);
 

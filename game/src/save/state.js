@@ -235,6 +235,82 @@ export function buildSave(sim, build) {
       camera_pitch_deg: r6(c.pitch),
       camera_dist_m: r6(c.dist),
       camera_mode: c.mode,
+      // ---- THE SPRING ARM AND THE REST OF THE RIG -------------------------------------
+      // W1-repair. `camera_dist_m` above was the ONLY rig field the save carried, and
+      // `c.dist` is not rig state at all — sim/camera.js line 625 writes `c.dist = c.armLen`
+      // at the bottom of every solve. So the save recorded an OUTPUT and restored it into a
+      // rig whose input (`armLen`) was still whatever `makeCamera()` left, and then
+      // `Engine.loadState()` called `_settleCamera()`, which overwrote `armLen`/`armEased`/
+      // `armDesired`/`armCast`/`dist`/`distTarget` with a freshly computed default. Measured:
+      // `pose.camera_dist_m` 3.546945 -> 3.265980 across a BARE round trip on `arena_flat`,
+      // the single field in RI-JRN05 M2's diff, and 0/N on M1.
+      //
+      // Every field below is READ BEFORE IT IS WRITTEN somewhere in sim/camera.js's step and
+      // is therefore durable by RI-JRN05 §B's own definition, not by taste:
+      //   armLen        rate-limited against itself (pull-in 40 m/s, push-out 3 m/s)
+      //   armEased      first-order ease against itself under lock/rest/death/fog
+      //   clearFrames   the 6-frame push-out dwell counter
+      //   pivot         critically damped in Y against its own previous value
+      //   containArm/Pitch  §C's containment integrators, grabbed and released per frame
+      //   lockDist/Height   read by solveArm() and containment() before lockOrientation()
+      //   lookBufX/Y    RI-CAM06 §F — "buffered, never dropped" across hitstop
+      //   recentreFrames/Active  the 20-frame sprint gate
+      //   pos + onscreen.*  lockOrientation() projects LAST frame's pose to decide this one
+      // The rest (`dist`, `distTarget`, `armCast`, `armHit`, `armGuard`, `shoulder*`,
+      // `charOpacity`, `clipThrough`, `fov`) are pure per-frame outputs and are carried so
+      // that a save/load pair is identical at frame 0 as well as at frame 1 — a snapshot()
+      // or a screenshot taken straight after a load is a thing a player sees.
+      camera_pos: vec(c.pos),
+      camera_pivot: vec(c.pivot),
+      camera_pivot_snap: !!c.pivotSnap,
+      camera_arm_len_m: r6(c.armLen),
+      camera_arm_desired_m: r6(c.armDesired),
+      camera_arm_eased_m: r6(c.armEased),
+      camera_arm_cast_m: r6(c.armCast),
+      camera_arm_hit: !!c.armHit,
+      camera_arm_guard: !!c.armGuard,
+      camera_clear_frames: c.clearFrames,
+      camera_dist_target_m: r6(c.distTarget),
+      camera_contain_arm_m: r6(c.containArm),
+      camera_contain_pitch_deg: r6(c.containPitch),
+      camera_lock_dist_m: r6(c.lockDist),
+      camera_lock_height_m: r6(c.lockHeight),
+      camera_yaw_rate_dps: r6(c.yawRate),
+      camera_look_buf: [r6(c.lookBufX), r6(c.lookBufY)],
+      camera_look_active: !!c.lookActive,
+      camera_recentre_frames: c.recentreFrames,
+      camera_recentre_active: !!c.recentreActive,
+      camera_shoulder_r_m: r6(c.shoulderR),
+      camera_shoulder_u_m: r6(c.shoulderU),
+      camera_char_opacity: r6(c.charOpacity),
+      camera_clip_through: !!c.clipThrough,
+      camera_fov_deg: r6(c.fov),
+      camera_hitstop: !!c.hitstop,
+      camera_ui_mode: c.uiMode,
+      // RI-CAM05 §D's dialogue accommodation walks the camera round the pair over many
+      // frames and accumulates its own total; all five persist across frames.
+      camera_dialogue_frames: c.dialogueFrames,
+      camera_dialogue_yaw_step: r6(c.dialogueYawStep),
+      camera_dialogue_arm_step: r6(c.dialogueArmStep),
+      camera_dialogue_arm_m: r6(c.dialogueArm),
+      camera_dialogue_yaw_total: r6(c.dialogueYawTotal),
+      // `deathFrame` is an absolute index with -1 as its "inactive" sentinel, so it is
+      // carried as a PLAIN difference (like `entities[].state_entered_ago_frames`) and -1
+      // is carried through as -1. resolveMode() tests `!== -1` rather than `>= 0` precisely
+      // so that a death that began before the load — and therefore rebases to a negative
+      // index against the reset frame — is still a death.
+      camera_death_frames_ago: c.deathFrame < 0 ? -1 : Math.max(0, f - c.deathFrame),
+      camera_fog_in_frames: rel(c.fogUntil, f),
+      camera_fog_target: c.fogTarget === undefined ? null : c.fogTarget,
+      camera_shake_age: c.shakeAge,
+      camera_onscreen: {
+        p: !!c.onscreen.p, t: !!c.onscreen.t, th: !!c.onscreen.th,
+        p_safe: !!c.onscreen.pSafe, t_safe: !!c.onscreen.tSafe, both: !!c.onscreen.both,
+        t_band: !!c.onscreen.tBand, t_band_y: r6(c.onscreen.tBandY),
+        p_ndc: [r6(c.onscreen.pNdc[0]), r6(c.onscreen.pNdc[1])],
+        t_ndc: [r6(c.onscreen.tNdc[0]), r6(c.onscreen.tNdc[1])],
+        th_ndc: [r6(c.onscreen.thNdc[0]), r6(c.onscreen.thNdc[1])],
+      },
       // Camera shake is rotational, seeded and decaying (sim/camera.js). `shakeYaw` and
       // `shakePitch` are RE-DERIVED every step from these two plus the frame and the PRNG,
       // so carrying the amplitude and the remaining frames restores the whole shake exactly.
@@ -474,9 +550,70 @@ export function applySave(sim, blob, moves, statFor) {
   c.mode = blob.pose.camera_mode;
   c.shakeAmp = blob.pose.camera_shake_amp_deg;
   c.shakeUntil = f + blob.pose.camera_shake_in_frames;
+  restoreCameraRig(c, blob.pose, f);
 
   rng.loadRngState(blob.rng);
   return { ok: true, frame: sim.frame, seed: rng.seed };
+}
+
+/**
+ * Put the spring arm and the rest of the rig back.
+ *
+ * Kept as a named export rather than inlined because `Engine.loadState()` has to be able to
+ * run it AFTER `_settleCamera()`: the settle exists to give the rig a clean base (it clears
+ * the dialogue walk, the containment integrators and the recentre gate that a fresh session
+ * would not have), and this puts the saved rig on top of that base. Doing it in the other
+ * order is the defect this repair fixes.
+ */
+export function restoreCameraRig(c, pose, f) {
+  c.pos[0] = pose.camera_pos[0]; c.pos[1] = pose.camera_pos[1]; c.pos[2] = pose.camera_pos[2];
+  c.pivot[0] = pose.camera_pivot[0]; c.pivot[1] = pose.camera_pivot[1]; c.pivot[2] = pose.camera_pivot[2];
+  c.pivotSnap = pose.camera_pivot_snap;
+  c.armLen = pose.camera_arm_len_m;
+  c.armDesired = pose.camera_arm_desired_m;
+  c.armEased = pose.camera_arm_eased_m;
+  c.armCast = pose.camera_arm_cast_m;
+  c.armHit = pose.camera_arm_hit;
+  c.armGuard = pose.camera_arm_guard;
+  c.clearFrames = pose.camera_clear_frames;
+  c.dist = pose.camera_dist_m;
+  c.distTarget = pose.camera_dist_target_m;
+  c.containArm = pose.camera_contain_arm_m;
+  c.containPitch = pose.camera_contain_pitch_deg;
+  c.lockDist = pose.camera_lock_dist_m;
+  c.lockHeight = pose.camera_lock_height_m;
+  c.yawRate = pose.camera_yaw_rate_dps;
+  c.lookBufX = pose.camera_look_buf[0]; c.lookBufY = pose.camera_look_buf[1];
+  c.lookActive = pose.camera_look_active;
+  c.recentreFrames = pose.camera_recentre_frames;
+  c.recentreActive = pose.camera_recentre_active;
+  c.shoulderR = pose.camera_shoulder_r_m;
+  c.shoulderU = pose.camera_shoulder_u_m;
+  c.charOpacity = pose.camera_char_opacity;
+  c.clipThrough = pose.camera_clip_through;
+  c.fov = pose.camera_fov_deg;
+  c.hitstop = pose.camera_hitstop;
+  c.uiMode = pose.camera_ui_mode;
+  c.mode = pose.camera_mode;
+  c.dialogueFrames = pose.camera_dialogue_frames;
+  c.dialogueYawStep = pose.camera_dialogue_yaw_step;
+  c.dialogueArmStep = pose.camera_dialogue_arm_step;
+  c.dialogueArm = pose.camera_dialogue_arm_m;
+  c.dialogueYawTotal = pose.camera_dialogue_yaw_total;
+  c.deathFrame = pose.camera_death_frames_ago < 0 ? -1 : f - pose.camera_death_frames_ago;
+  c.fogUntil = f + pose.camera_fog_in_frames;
+  c.fogTarget = pose.camera_fog_target;
+  c.shakeAge = pose.camera_shake_age;
+  c.shakeAmp = pose.camera_shake_amp_deg;
+  c.shakeUntil = f + pose.camera_shake_in_frames;
+  const o = pose.camera_onscreen;
+  c.onscreen.p = o.p; c.onscreen.t = o.t; c.onscreen.th = o.th;
+  c.onscreen.pSafe = o.p_safe; c.onscreen.tSafe = o.t_safe; c.onscreen.both = o.both;
+  c.onscreen.tBand = o.t_band; c.onscreen.tBandY = o.t_band_y;
+  c.onscreen.pNdc[0] = o.p_ndc[0]; c.onscreen.pNdc[1] = o.p_ndc[1];
+  c.onscreen.tNdc[0] = o.t_ndc[0]; c.onscreen.tNdc[1] = o.t_ndc[1];
+  c.onscreen.thNdc[0] = o.th_ndc[0]; c.onscreen.thNdc[1] = o.th_ndc[1];
+  return c;
 }
 
 /** The hash input: the save with every declared-volatile path removed. */

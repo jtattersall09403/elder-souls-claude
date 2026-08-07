@@ -2,13 +2,18 @@
   "task_id": "W1-14-r3-critic",
   "brief": "CRITIC round 3 for wave-1 piece W1-14 (magic, seam S19). Prior: 2.7 (r1), 4.4 (r2).",
   "started": "wave-1 round 3",
-  "state": "measuring",
+  "state": "complete",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-14-r3.json",
     "corpus/90-verdicts/wave1/W1-14-r3.md",
     "corpus/90-verdicts/wave1/artifacts/W1-14-r3/"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/W1-14-r3.json (schema-valid, 4 warnings, three answered in native_score_note prose)",
+    "corpus/90-verdicts/wave1/W1-14-r3.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-14-r3/ (16 traces + 19 PNGs)",
+    "tools/harness/critic-w1-14-r3-{recon,census,ladder,camera,motion,consume,consume2,regress,seam,final,s29,qmag,vfx}.mjs"
+  ],
   "findings": [
     "TREE DOES NOT BOOT at HEAD or in the working tree, for TWO reasons both owned by other pieces: (a) game/data/input/profiles.json (new in commit 12be950) violates its own RI-JRN04 H11 assertion twice - heavy/parry 6.9 px and block/roll 0.11 px against an 8 px minimum, so TouchInput._assertLayout throws on every boot; (b) a concurrent session is mid-build on game/data/quests/mainline-act1..4 and index.json/hooks.json, giving QuestBook/QuestEngine integrity throws that changed 4 times in 20 minutes. smoke.mjs PASSES throughout because it never boots the engine.",
     "WORKAROUND (declared as a method deviation): all measurement is taken against a PINNED MIRROR of the working tree at scratchpad/pin/game, with exactly two edits, neither in game/src and neither touching magic: touch button radii set to 22 (satisfies H11), and the in-flight mainline-act quest files removed from data/index.json. api-probe 33/33 against the mirror.",
@@ -35,8 +40,14 @@
     "SUSPECTED REGRESSION - S29's 300-frame hostile cooldown. Recall cast 110 frames after damagePlayer() moved 84.926 m, the same distance as the quiet case and the same as with the fence deliberately broken. Being re-measured across 0/30/60/120/240/299/360/600 frames in final.mjs.",
     "VFX: the camera works, so the frames are judgeable. With a framing I chose (contact at 45 deg FOV from 3.2 m) the impact peak changes 15.36% of a 1920x1080 frame against a same-pose control, impact_f0 10.76%, release 2.47%, residue still 2.08% at 20 s. The builder's 0.083% was a framing artefact, not the art.",
     "RI-MAG05 A-M1 FAILS BADLY. Sampled per the item's own method (release frame, top 2% luminance of effect-only pixels): core renders #FFFFFF and mid #FFF6A9, against a declared sorcery_marshfire core #F0B24E / mid #C86A2A. deltaE76 64.0 (core) and 59.3 (mid) against a bar of <= 12. The authored palette is in vfx.json and does not survive the additive HDR core plus ACES tonemap. A-M3 chroma budget passes at 0.59% (bar 8%) largely BECAUSE the effect is white.",
-    "AT NIGHT THE SPELL LIGHTS NOTHING. A fire burst 1 m off the ground at setTimeOfDay(1) leaves the ground black and the pillars as flat silhouettes: no pool of light, no bounce. V4 as RI-MAG05 defines it (particles RECEIVE scene light) is satisfied; a spell that is a light source is not."
+    "AT NIGHT THE SPELL LIGHTS NOTHING. A fire burst 1 m off the ground at setTimeOfDay(1) leaves the ground black and the pillars as flat silhouettes: no pool of light, no bounce. V4 as RI-MAG05 defines it (particles RECEIVE scene light) is satisfied; a spell that is a light source is not.",
+    "CORRECTED, IMPORTANT: LEVITATION IS FINE. With a `jump` press it climbs 0.400 m per 30 frames while Focus falls 0.60 per 30 frames = exactly 1.5 Focus/m, identical through H.setLevitating and through a commissioned LIGHT levitate spell. My earlier 0 m reading was my own probe never pressing jump. Round 2's pass holds.",
+    "S29's 300-FRAME COOLDOWN IS UNDEMONSTRABLE IN EITHER DIRECTION. sim.lastHostileFrame is stamped only from bus HOSTILE_EVENTS in sim/step.js:45; H.damagePlayer() emits none of them, so the builder's evidence for the clause was measuring inCombat. I could not arm it either, because an aggroed enemy at 1.3 m leaves the player on full health for 600-900 frames in this build. Recorded unmeasured, not broken, and filed as an arbitration question.",
+    "RI-MAG04 M6: casting open_lock + shatter + ward_trap across all 28 Q-MAG quests moves available resolutions 26 -> 27. Exactly ONE magic route opens (Q-MAG-01/mag_the_warded_ledger__magic). Zero quest events, journal 0->0, and questOpen('Q-MAG-01') still refuses on an entry topic. hooks.json's eleven flag->journal mappings all fire the flag and consume nothing.",
+    "RI-MAG05 ART = 0 BY THE ITEM'S OWN 0-BAND. Section A2 names `pure #FFFFFF core` and `additive-white bloom with no hue at all` among the six forbidden anchors; the measured release-frame core is #FFFFFF, separation 0.00. FIDELITY is 6 (9/10 features, V1/V2/V4 present, M8 delta passes - FS_score 0.0145 -> 0.0180, i.e. the spell DE-flattens the frame). min(ART,FID) = 0.",
+    "VERDICT: FAIL 4.6/10 vs a 7.0 gate. RI-MAG01 5, RI-MAG02 6, RI-MAG03 6, RI-MAG04 4, RI-MAG05 0, RI-MAG06 6, RI-PRG03 6, RI-QST05 4. AR-1 pass, AR-2 pass, AR-3 not sterile (one demonstrated crossing), CONSUMPTION partial (4 models with no consumer).",
+    "BIGGEST GAP: GAP-W1-magic-cannot-hit-a-moving-target (magic.casting.geometry). LIGHT bolt at 18 m: 80 damage against a still body, 0 at 1.5/3/5/7 m/s. spell_impact fires every time, effect_apply only at 0 m/s."
   ],
-  "next_step": "write W1-14-r3.json/.md",
-  "notes_for_successor": ""
+  "next_step": "none - verdict emitted and schema-valid",
+  "notes_for_successor": "TWO REPO-WIDE BLOCKERS TO ESCALATE, neither W1-14's:\n1. game/data/input/profiles.json (new at commit 12be950) violates its own RI-JRN04 H11 assertion twice - heavy/parry 6.9 px, block/roll 0.11 px against an 8 px minimum - so TouchInput._assertLayout throws before window.__HARNESS appears. EVERY probe in the project that boots the engine is blocked. smoke.mjs passes anyway because it never boots the engine; that is worth fixing on its own.\n2. The mainline-act quest files, index.json and hooks.json were mutually inconsistent for the whole of this run.\n\nI measured against a pinned mirror at scratchpad/pin/game with only those two things patched. Recreate it with:\n  cp -a game <SCRATCH>/pin/game ; set every touch button r to 22 in data/input/profiles.json ; drop the mainline-act entries from data/index.json\nthen pass --entry <SCRATCH>/pin/game/index.html to any probe.\n\nFOR THE NEXT BUILDER, in value order: (1) the projectile does not re-acquire a moving target - fix sim/magic/system.js's projectile step and re-run tools/harness/critic-w1-14-r3-motion.mjs; (2) clamp the VFX core's emissive so the authored palette survives the ACES tonemap - it renders #FFFFFF, the exact forbidden anchor; (3) enemy casters do not exist on ANY of ten archetypes and have not for three rounds; (4) detect_life, detect_key and frenzy write registers nothing reads, and player.sapTaintBand is read by dialogue and written by nobody; (5) calm_beast/demoralise/charm are one verb (0.00 m displacement on all three).\n\nFOR THE NEXT CRITIC: my census (tools/harness/critic-w1-14-r3-census.mjs) takes --practice N and reports three signatures plus a repeat-stability filter and an empty-empty control. Run it at --practice 0 AND at whatever the ladder says is reachable; publishing only one number is how this metric gets gamed."
 }

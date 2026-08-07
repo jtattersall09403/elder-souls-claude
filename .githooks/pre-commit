@@ -22,6 +22,26 @@ if git diff --cached --name-only --diff-filter=ACMRD | grep -Eq '^game/data/ques
   node tools/check-content.mjs
 fi
 
+# Does the game actually come up? smoke.mjs is an environment self-test and says so in
+# its own header — it never touches the engine, so a build whose engine throws during
+# setup passed every boot check on this tree while three agents lost measurement rounds
+# to it. Only run on commits that touch game/, since it costs ~20s.
+#
+# Deliberately NOT blocking. Committing in-flight work is what survives a container reclaim —
+# it has already saved seven agents' output once — and in-flight work frequently does not boot.
+# Blocking here would trade a real guarantee for a cosmetic one. The orchestration tick treats
+# a red boot as actionable and fixes or reverts the offending hunk; this is the alarm, not the gate.
+if git diff --cached --name-only --diff-filter=ACMRD | grep -Eq '^game/'; then
+  node tools/harness/boot-check.mjs || {
+    echo ""
+    echo "pre-commit: ##############################################################"
+    echo "pre-commit: THE ENGINE DOES NOT CONSTRUCT. Committing anyway to bank work."
+    echo "pre-commit: Every measurement taken against this build is void until fixed."
+    echo "pre-commit: ##############################################################"
+    echo ""
+  }
+fi
+
 # Keep the published page current on EVERY commit. GitHub Pages serves /docs from this
 # branch, so a stale page is a silent lie about where the project is — and gating this on
 # which paths changed is how it went stale in the first place. Both generators are cheap.

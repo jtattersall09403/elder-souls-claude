@@ -246,6 +246,9 @@ export class TouchInput {
       }
     }
     // T7
+    // A `reset()` or a save load rewinds `sim.frame` to 0, which leaves `lastTouchFrame` in the
+    // future and the overlay visible forever. Clamp rather than trust the clock's monotonicity.
+    if (this.lastTouchFrame > frame) this.lastTouchFrame = -1e9;
     if (this.padActive && frame - this.lastTouchFrame > this.hideAfterFrames && !this.pointers.size) this.visible = false;
   }
 

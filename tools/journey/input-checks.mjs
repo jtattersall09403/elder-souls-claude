@@ -93,7 +93,7 @@ const PAGE_HELPERS = `(() => {
       return { held: st.held.slice(), before, frame: H.getFrame(), pressed: window.__IC._pressed() };
     },
     _pressed() { return H.getInputEdges(); },
-    reset() { H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0); },
+    reset() { H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0); },
   };
   return true;
 })()`;
@@ -148,12 +148,12 @@ async function main() {
   // this puts the ones that do not on the same footing.
   const surfaces = await ev(() => {
     const H = window.__HARNESS;
-    const at_boot = { mode: H.getUIState ? H.getUIState().mode : null, census: H.getCensusState ? H.getCensusState() : null };
-    H.reset({ state: 'default' });
+    const at_boot = { mode: H.getUIState ? H.getUIState().mode : null, census_node: H.getCensusState ? H.getCensusState().node : null };
+    H.reset({ state: 'arena_flat' });
     H.setMode('play-instrumented'); H.setRenderRate(0);
     H.stepFrames(2);
-    return { at_boot, after_reset: { mode: H.getUIState ? H.getUIState().mode : null, census: H.getCensusState ? H.getCensusState() : null },
-      consumed_by_an_open_surface: ['interact', 'block', 'light', 'heavy', 'roll', 'move'] };
+    return { at_boot, after_reset: { mode: H.getUIState ? H.getUIState().mode : null, census_node: H.getCensusState ? H.getCensusState().node : null, state: 'arena_flat' },
+      note: "the boot state is the barge hold with RI-JRN01's census open; `_censusStep` -> `consumeUI` clears interact/block/light/heavy/roll AND zeroes moveX/moveY every frame, by design. A controls probe measures in an arena." };
   });
   log(`  [note] surfaces: ${JSON.stringify(surfaces)}`);
 
@@ -280,7 +280,7 @@ async function desktopChecks(page, h, ev) {
   for (const [id, how] of [['M-K6', 'blur'], ['M-K7', 'visibilitychange']]) {
     const r = await ev((kind) => {
       const H = window.__HARNESS;
-      H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+      H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
       for (const c of ['KeyW', 'ShiftLeft', 'Space']) window.dispatchEvent(new KeyboardEvent('keydown', { code: c, bubbles: true }));
       H.stepFrames(6);
       const heldBefore = H.getInputState().held.slice();
@@ -309,7 +309,7 @@ async function desktopChecks(page, h, ev) {
   // M-K10 — pointer-lock loss releases and enters the menu state.
   const pl = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     for (const c of ['KeyW', 'ShiftLeft']) window.dispatchEvent(new KeyboardEvent('keydown', { code: c, bubbles: true }));
     H.stepFrames(4);
     const before = H.getInputState().held.slice();
@@ -354,7 +354,7 @@ async function desktopChecks(page, h, ev) {
     // AGENT-PROTOCOL: a probe that steps ONE frame at a time with the renderer live renders one
     // SwiftShader frame per SIM frame, and 600 of those never return. Eight frames per rate is
     // enough to separate a per-fixed-step transform from a per-rendered-frame one, and cheap.
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     const canvas = document.querySelector('canvas#view');
     Object.defineProperty(document, 'pointerLockElement', { configurable: true, get: () => canvas });
     document.dispatchEvent(new Event('pointerlockchange'));
@@ -385,7 +385,7 @@ async function desktopChecks(page, h, ev) {
   const acc = await ev(() => {
     const H = window.__HARNESS;
     const pts = [];
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     const canvas = document.querySelector('canvas#view');
     Object.defineProperty(document, 'pointerLockElement', { configurable: true, get: () => canvas });
     document.dispatchEvent(new Event('pointerlockchange'));
@@ -432,7 +432,7 @@ async function desktopChecks(page, h, ev) {
   // attack sequence must still complete.
   const roll = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     const isMatrix = (c) => !/^(Shift|Control|Alt|Meta)/.test(c);
     const downMatrix = new Set();
     const fire = (type, code) => {
@@ -469,7 +469,7 @@ async function desktopChecks(page, h, ev) {
   // M-K23 / M-P10 — latency, from the real DOM event to the sim step that consumes it.
   const lat = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     const gaps = [];
     for (let i = 0; i < 200; i++) {
       const f0 = H.getFrame();
@@ -495,7 +495,7 @@ async function desktopChecks(page, h, ev) {
   // M-K24 — dropped inputs over 10 000 scripted inputs through the real path.
   const drop = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     const s0 = H.getInputState();
     const d0 = s0.pipelineDrops, a0 = s0.droppedInputs;
     // `pipelineDrops` counts ONLY inputs the pipeline lost. `droppedInputs` (the aggregate) and
@@ -593,7 +593,7 @@ async function padChecks(page, h, ev) {
     // M-P1 — map completeness. Every index 0..16 driven; the observed map compared with §C.
     const obs = await ev(([pn, prof]) => {
       const H = window.__HARNESS;
-      H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+      H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
       H.getInputState();
       H.setPadProfile(pn);
       const zero = { buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' };
@@ -637,7 +637,7 @@ async function padChecks(page, h, ev) {
   // M-P2 — guide safety, and a descriptor with no index 16.
   const guide = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     const zero = { buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' };
     H.gamepad(zero); H.stepFrames(2);
     const before = H.getInputState().held.slice();
@@ -658,7 +658,7 @@ async function padChecks(page, h, ev) {
   // M-P3 — trigger analog, hysteresis, and the .pressed trap.
   const trig = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     const mk = (v) => { const b = new Array(17).fill(0); b[7] = v; return { buttons: b, axes: [0, 0, 0, 0], mapping: 'standard' }; };
     const fires = [], releases = [];
     let was = false;
@@ -704,7 +704,7 @@ async function padChecks(page, h, ev) {
     const H = window.__HARNESS;
     const mk = (v) => { const b = new Array(17).fill(0); b[7] = v; return { buttons: b, axes: [0, 0, 0, 0], mapping: 'standard' }; };
     const runs = [];
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     for (let r = 0; r < 5; r++) {
       H.gamepad(mk(0)); H.stepFrames(4);
       let atHalf = null, atFull = null;
@@ -726,7 +726,7 @@ async function padChecks(page, h, ev) {
     const on = { buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' };
     on.buttons[1] = 1;
     const out = {};
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     for (const hold of [4, 8, 11, 12, 13, 20, 60]) {
       H.gamepad(zero); H.stepFrames(6);
       const seen = { roll: false, sprint: false };
@@ -759,7 +759,7 @@ async function padChecks(page, h, ev) {
   // M-P6 — the radial deadzone, 36 bearings.
   const dz = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     const out = {};
     for (const m of [0.10, 0.14, 0.20, 0.60, 0.92, 1.00]) {
       const mags = [];
@@ -782,7 +782,7 @@ async function padChecks(page, h, ev) {
   // M-P7 — diagonal fidelity.
   const diag = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     H.gamepad({ buttons: new Array(17).fill(0), axes: [0.707, -0.707, 0, 0], mapping: 'standard' });
     H.stepFrames(1);
     const s = H.getMoveVector();
@@ -798,7 +798,7 @@ async function padChecks(page, h, ev) {
   // reload was the cost. One reset, then eight stepped frames per leg with the rate set.
   const cam = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     const zero = { buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' };
     const out = {};
     const N = 8;
@@ -833,7 +833,7 @@ async function padChecks(page, h, ev) {
   // M-P9 — a sub-frame press. Set a button to 1 and back to 0 between two stepFrames(1).
   const sub = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     const zero = { buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' };
     const on = { buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' };
     on.buttons[5] = 1;
@@ -854,7 +854,7 @@ async function padChecks(page, h, ev) {
   // M-P10 — pad latency, sampler edge to the consuming step.
   const padLat = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     const zero = { buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' };
     const on = { buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' };
     on.buttons[5] = 1;
@@ -878,7 +878,7 @@ async function padChecks(page, h, ev) {
   // M-P11 / M-P12 — disconnect releases every held action on the disconnect frame.
   const dis = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     const on = { buttons: new Array(17).fill(0), axes: [0, 1, 0, 0], mapping: 'standard' };
     on.buttons[1] = 1;                      // held past 12 frames => sprint
     for (let f = 0; f < 30; f++) { H.gamepad(on); H.stepFrames(1); }
@@ -919,7 +919,7 @@ async function padChecks(page, h, ev) {
     const out = {};
     // Known non-standard id: the X2s in its DualSense-like HID mode. Raw HID order — the WEST
     // face button is raw 0 and must arrive as `use_item`, not as `interact`.
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     H.setPadProfile('souls-default');   // M-P1's loop leaves the router on whichever it drove last
     const hid = (i, v) => {
       const b = new Array(18).fill(0); if (i >= 0) b[i] = v === undefined ? 1 : v;
@@ -947,7 +947,7 @@ async function padChecks(page, h, ev) {
 
     // Unknown id, mapping '': the calibration sequence must appear, be completable on the pad
     // alone, and never show a raw index table or refuse to run.
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     H.setPadProfile('souls-default');
     const unk = (i) => { const b = new Array(18).fill(0); if (i >= 0) b[i] = 1; return { buttons: b, axes: new Array(6).fill(0), mapping: '', id: 'Some Unknown Pad 9000', buttons_length: 18, axes_length: 6 }; };
     H.gamepad(unk(-1)); H.stepFrames(2);
@@ -978,7 +978,7 @@ async function padChecks(page, h, ev) {
   // L6 — two pads. The most recently ACTIVE drives the game.
   const two = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     // __HARNESS.gamepad() carries one pad; the two-pad case is driven through the engine's
     // own synthetic list so both are present in the SAME getGamepads() snapshot.
     const mk = (idx, btn) => ({ index: idx, id: 'pad-' + idx, connected: true, mapping: 'standard', timestamp: 0, buttons: Array.from({ length: 17 }, (_, i) => ({ pressed: i === btn, value: i === btn ? 1 : 0 })), axes: [0, 0, 0, 0] });
@@ -1020,7 +1020,7 @@ function expectedMap(prof) {
 async function touchChecks(page, h, ev) {
   const t = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     H.setViewport({ size: { w: 844, h: 390, dpr: 3 }, pointer: 'coarse', orientation: 'landscape', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
     H.setTouchEnabled(true);
     const layout = H.touchLayout();
@@ -1065,7 +1065,7 @@ async function touchChecks(page, h, ev) {
     out.floating_stick = { origin_a: m1, origin_b: m2, same: Math.abs(m1[0] - m2[0]) < 1e-6 && Math.abs(m1[1] - m2[1]) < 1e-6 };
 
     // T9 — MULTI-TOUCH. Stick + camera + two buttons at once, all four registering.
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     H.setViewport({ size: { w: 844, h: 390, dpr: 3 }, pointer: 'coarse', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
     H.setTouchEnabled(true);
     const L = H.touchLayout();
@@ -1129,7 +1129,7 @@ async function touchChecks(page, h, ev) {
 async function viewportChecks(page, h, ev) {
   const v = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     const out = {};
     // M-P16 — portrait produces a rotate state that is an in-world illustration, and recovers.
     H.setViewport({ size: { w: 390, h: 844, dpr: 3 }, pointer: 'coarse', orientation: 'portrait', insets: { top: 47, right: 0, bottom: 34, left: 0 } });
@@ -1198,7 +1198,7 @@ async function viewportChecks(page, h, ev) {
 async function rebindChecks(page, h, ev) {
   const r = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     const out = {};
     // M-K17 — a round trip including a mouse button and one deliberate conflict.
     H.openRebinding('keyboard');
@@ -1246,7 +1246,7 @@ async function rebindChecks(page, h, ev) {
     const H = window.__HARNESS;
     const out = {};
     for (const device of ['keyboard', 'gamepad', 'touch']) {
-      H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+      H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
       H.openRebinding(device);
       const steps = [];
       // Walk down two rows, open a capture, offer a control, commit — using ONLY the closed
@@ -1309,7 +1309,7 @@ async function runSelfTest(page, h, ev) {
       check: async () => {
         const d = await ev(() => {
           const H = window.__HARNESS;
-          H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+          H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
           const zero = { buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' };
           const on = { buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' }; on.buttons[1] = 1;
           H.gamepad(zero); H.stepFrames(3);
@@ -1328,7 +1328,7 @@ async function runSelfTest(page, h, ev) {
         const d = await ev(() => {
           const H = window.__HARNESS;
           const mk = (v) => { const b = new Array(17).fill(0); b[7] = v; return { buttons: b, axes: [0, 0, 0, 0], mapping: 'standard' }; };
-          H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+          H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
           H.gamepad(mk(0)); H.stepFrames(2);
           H.gamepad(mk(0.10)); H.stepFrames(2);
           const fired = H.getInputState().held.includes('heavy');
@@ -1344,7 +1344,7 @@ async function runSelfTest(page, h, ev) {
       check: async () => {
         const d = await ev(() => {
           const H = window.__HARNESS;
-          H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+          H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
           const zero = { buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' };
           const on = { buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' }; on.buttons[5] = 1;
           H.gamepad(zero); H.stepFrames(2);
@@ -1366,7 +1366,7 @@ async function runSelfTest(page, h, ev) {
       check: async () => {
         const d = await ev(() => {
           const H = window.__HARNESS;
-          H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+          H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
           H.gamepad({ buttons: new Array(17).fill(0), axes: [0, -0.6, 0, 0], mapping: 'standard' });
           H.stepFrames(2);
           const m = H.getMoveVector();

@@ -1,15 +1,26 @@
 {
   "task_id": "save-load-repair",
-  "brief": "inline dispatch: repair the save/load round trip (RI-JRN05)",
+  "brief": "inline dispatch: repair the save/load round trip (RI-JRN05), which belongs to no single piece",
   "started": "wave-1 repair",
   "state": "researching",
   "outputs_expected": [
-    "corpus/*/RI-JRN05* (manifest repair)",
-    "game/src/**/save* (writer/mirror repairs)",
-    "tools/... round-trip instrument"
+    "game/src/save/state.js (writers for camera rig, loadout, creation powers/drawbacks)",
+    "game/src/engine.js (loadState restores the fight and re-mirrors; census widened)",
+    "game/data/save-manifest.json (crime.ledger.*, sap_taint, world.npcs, world.props)",
+    "tools/harness/save-break.mjs (delete-the-fix falsifier)"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "confirm boot; locate save/load code and RI-JRN05 manifest",
-  "notes_for_successor": ""
+  "findings": [
+    "BASELINE REPRODUCED. state-diff.mjs --states arena_flat --seeds 4711 --frames 120: 0/1 clean. M1 FAIL, M2 FAIL, M4 FAIL, M5 DIVERGED, census not ok.",
+    "M2 diff is exactly ONE path: pose.camera_dist_m 3.546945 -> 3.26598.",
+    "CAUSE 2 CONFIRMED AND ROOT-CAUSED: Engine.loadState(blob) calls applySave (which sets c.dist = blob.pose.camera_dist_m) and THEN calls this._settleCamera(), which unconditionally overwrites c.armDesired/armEased/armLen/armCast/dist/distTarget with a freshly computed default `want`. engine.js:2523-2524. The save also has NO WRITER for the camera rig's real durable state: armLen, armEased, clearFrames, pivot, pivotSnap, containArm, containPitch, lockDist, lockHeight, recentreFrames/Active, lookBufX/Y, onscreen.* (read back by lockOrientation next frame), dialogue*, uiMode, deathFrame, fogUntil/fogTarget, shakeAge, pos.",
+    "CAUSE 1 CONFIRMED, AND IT IS BIGGER THAN crime.ledger. M4 in_save_not_on_manifest = 14 paths: crime.ledger.{bounty.imperial,bounty.interior,crimes,deaths,favours_owed,hunters,jail,next_crime_id,stolen_registry,witnesses,writs} + progression.sap_taint + world.npcs + world.props. on_manifest_not_in_save = ['crime.ledger'] (declared as a leaf, expanded by pathsOf because it is not in rules.dynamic_containers).",
+    "CAUSE 3 CONFIRMED: 26 live player fields go undefined after a load. applySave calls sim.reset(), which replaces sim.player with makePlayer(); every field mirror() adds (focus, focusMax, attuned, focusRestoresAtHearth, animSlot, weaponId, weaponClass, stance, offhandKind, offhandConfig, rollTier, hitstopF, hitstopHeld, weaponTip, weaponGuard, chargeF, chargeMaxF, chainsTo, blockAngleDeg, blockSuccessF, guardRaised, carriedWeight, burdenRatio ...) is then absent because Engine.loadState(blob) never calls mirror(sim, combat).",
+    "CAUSE 3b, NOT IN THE BRIEF: the combat body is never restored from the save at all, and its ABSOLUTE FRAME INDICES are never re-based. loadState resets sim.frame to 0 but b.regenBlockUntil / b.actionableAt / b.blockSuccessFrame / b._loopFrame stay in the old frame numbering. This is why M5 shows player.stamina differing on 97 of 120 frames and player.stamina_regen_blocked on 49.",
+    "CAUSE 3c: the save carries NO LOADOUT. weapon, weapon class, shield/offhand config, two-handed, endurance, armourPoise, hpMax, estus, flaskLevel are all in the named state's `loadout` block and in the combat body, and in no save field. A cold reload (M3) or readSave() into a session with a different weapon restores the wrong fight.",
+    "CAUSE 4 CONFIRMED: saveCreation() writes 15 of sim.character's fields and drops powers, drawbacks, upbringing_given_as, class_family_fit, invariants. engine.loadState papers over the first two with _recomposeBirthsignTerms().",
+    "INSTRUMENT GAP that let cause 4 live: getDurableFieldCensus()'s shot() clones player/camera/env/world/progression/quest/inventory/identity/entities and NOT sim.character. The character sheet is invisible to the census."
+  ],
+  "next_step": "implement fix 1 (manifest), fix 2 (camera rig), fix 4 (creation), fix 3 (loadout + fight restore + mirror); then sweep",
+  "notes_for_successor": "Baseline artifact: /tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/base1/state-diff.json"
 }

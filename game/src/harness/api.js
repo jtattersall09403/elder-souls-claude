@@ -254,6 +254,71 @@ export function installHarness(engine, bootPromise) {
     },
 
     // ---- rendering ---------------------------------------------------------------------------
+
+    /**
+     * W1-RENDER's debug channel, and the reason the piece is auditable at all.
+     *
+     * RI-CMB04's comparison method already demands that hit geometry be dumpable in world
+     * space, "otherwise the geometry is unauditable and therefore not a bar". The DRAWN
+     * geometry needs the same treatment for the same reason, and it needs it independently:
+     * a renderer that reported the socket it was handed would agree with the fight no matter
+     * what it actually put on the screen.
+     *
+     * So every number here is read back OUT of the live THREE scene graph — the weapon's own
+     * `matrixWorld` and the skinned mesh's bone matrices — never from the CombatBody. The tip
+     * is the weapon mesh's authored tip vertex pushed through the matrix the GPU will use.
+     * `tip_vs_socket_b_mm` is therefore a real comparison of two independently-derived
+     * points, and it is the "what you see is what hits you" bar in one number.
+     */
+    getDrawnGeometry() {
+      const r = engine.renderer;
+      const out = { actors: [] };
+      const read = (id, group, body) => {
+        const A = group && group.userData && group.userData.actor;
+        if (!A) return;
+        const rec = { id, built: !!A.built, rigged: !!A.rigged, visible: !!group.visible, weapon_key: A.weaponKey || null };
+        if (A.built) {
+          // Bone origins straight out of the skeleton three will skin with.
+          rec.bones = {};
+          for (let i = 0; i < A.built.bones.length; i++) {
+            const e = A.built.bones[i].matrixWorld.elements;
+            rec.bones[body && body.rig ? body.rig.def.bones[i].id : String(i)] = [e[12], e[13], e[14]];
+          }
+        }
+        if (A.weapon && A.weapon.visible) {
+          const m = A.weapon.matrixWorld.elements;
+          rec.weapon_origin = [m[12], m[13], m[14]];
+          // The authored tip: local (0, -socket_b_dist_m, 0), the blade axis skeleton.json
+          // declares. Pushed through the drawn matrix, with no reference to the socket.
+          const w = body && body.moves && body.moves._weapon;
+          const move = body && body.move;
+          const L = (move && move.socket_b_dist_m !== undefined) ? move.socket_b_dist_m : (w ? w.socket_b_dist_m : 0);
+          const A0 = (move && move.socket_a_dist_m !== undefined) ? move.socket_a_dist_m : (w ? w.socket_a_dist_m : 0);
+          const at = (d) => [m[0] * 0 + m[4] * -d + m[8] * 0 + m[12],
+            m[1] * 0 + m[5] * -d + m[9] * 0 + m[13],
+            m[2] * 0 + m[6] * -d + m[10] * 0 + m[14]];
+          rec.drawn_tip = at(L);
+          rec.drawn_guard = at(A0);
+          rec.drawn_length_m = L;
+          if (body) {
+            const s = body.socketB, sa = body.socketA;
+            rec.socket_b = [s[0], s[1], s[2]];
+            rec.tip_vs_socket_b_mm = Math.hypot(rec.drawn_tip[0] - s[0], rec.drawn_tip[1] - s[1], rec.drawn_tip[2] - s[2]) * 1000;
+            rec.guard_vs_socket_a_mm = Math.hypot(rec.drawn_guard[0] - sa[0], rec.drawn_guard[1] - sa[1], rec.drawn_guard[2] - sa[2]) * 1000;
+          }
+          // Triangle count of the drawn weapon, so "the mesh actually changed" is checkable.
+          let tris = 0;
+          for (const ch of A.weapon.children) if (ch.geometry && ch.geometry.index) tris += ch.geometry.index.count / 3;
+          rec.weapon_tris = tris;
+        }
+        out.actors.push(rec);
+      };
+      const C = engine.sim && engine.sim._combat;
+      read('player', r.playerMesh, C && C.player);
+      for (const [eid, mesh] of r.enemyMeshes || []) read('enemy:' + eid, mesh, C && C.bodyOf ? C.bodyOf(eid) : null);
+      return out;
+    },
+
     renderFrame() { engine.loop.renderNow(); return true; },
     async screenshot() { engine.loop.renderNow(); return engine.renderer.screenshotDataURL(); },
 

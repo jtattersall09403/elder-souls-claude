@@ -2,13 +2,18 @@
   "task_id": "W1-07-r3-critic",
   "brief": "CRITIC for W1-07 round 3 (character creation and the opening). Score against amended RI-JRN01, new RI-JRN09, RI-CHR01-03, RI-PRG02/03, RI-EXP01. Baseline: round 2 re-reads at 1.3.",
   "started": "wave-1 round 3",
-  "state": "writing",
+  "state": "complete",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-07-r3.json",
     "corpus/90-verdicts/wave1/W1-07-r3.md",
     "corpus/90-verdicts/wave1/artifacts/W1-07-r3/"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/W1-07-r3.json (schema-valid, verdict-validate OK)",
+    "corpus/90-verdicts/wave1/W1-07-r3.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-07-r3/ (7 critic instruments, 9 JSON reports, 7 logs, 9 screenshots)",
+    "tools/harness/critic-w1-07-r3{a,b,c,d,e,f,g}.mjs"
+  ],
   "findings": [
     "smoke.mjs 6/6 PASS at critic session start AND after the tree went down mid-run (chromium 141, SwiftShader).",
     "TREE MOVED UNDER ME. HEAD at dispatch was b3c6f43 (W1-07 r3). I measured a tree that also contains bcc2567 (W1-26: title.js, text-register.js, ui.js scroll-note move) and 227947b (W1-01 r4). The build I scored is NOT the build the W1-07 builder measured; recorded in the verdict.",
@@ -28,6 +33,6 @@
     "NEW O8 DEFECT: the census panel header draws '1 of 13' next to the place name at hold.hatch-name. O8 forbids 'No Step 2 of 4'. It is the option-scroll indicator (W1-26 moved it into the header to stop it being clipped) and it reads as a creation-progress counter. No method in RI-JRN01 owns it: M5 measures area, M9 greps a fixed substring list that does not contain it.",
     "QUESTIONNAIRE ANSWERS ARE ROUNDED AWAY: exact set-equality matches 1 of 240. In 233 named runs the mean overlap between the five skills the player's ten answers derived and the five skills of the class actually adopted is 2.66 of 5; 95 of 233 keep 2 or fewer; one keeps none. census.js sets spec.custom = null and spec.classId = c.id, so the derived shape is discarded. Before round 3 the questionnaire gave the player exactly their derived shape (named_class was null in ~100% of plays)."
   ],
-  "next_step": "write W1-07-r3.json/.md and validate",
-  "notes_for_successor": ""
+  "next_step": "round 4: see W1-07-r3.md section 9 (seven items, in order)",
+  "notes_for_successor": "SCORE 0.9 FAIL. Single biggest gap GAP-W1-the-naming-moment-is-still-orphan-text: the on_match_named_class line is drawn 0 of 12 named runs (ui.js overflow-sacrifice loop eats it at writ.birthsign); the builder probe reports 100% because it greps the class NAME, which the same round put on the drawn writ. SECOND: RI-JRN01 M4 clause 1 measured for the first time ever - 0.17 s of play before the first character-defining question against O6's 60 s, and first_control never fires at all. SURVIVED my instruments: DTR_q 1.0000 and NAMED_distinct 14 of 14. DID NOT: NAMED_line. HF9 does NOT fire (W1-26 built the title; the dispatch brief was wrong about the build though right about the piece). M5 passes on a pixel readback 0.498/0.55 - the panel trade cost ~0.008. CRITIC DEBT I did not discharge: RI-CHR01 Legibility, RI-PRG02 M5, RI-PRG03 M7, RI-EXP01 (its tools now EXIST), RI-PLT03 T_control. Those three unmeasured axes are why CHR01/PRG02/PRG03 report 0 under min-over-axes - MY omission, not the build's. Phantom tools 67 -> 55; the corpus_debt that made this piece unpassable has EXPIRED."
 }

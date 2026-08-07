@@ -1,0 +1,1165 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-07-r3",
+  "piece_title": "W1-07 \u2014 Character creation and the opening \u2014 round 3",
+  "subsystem_paths": [
+    "character.creation.flow",
+    "character.creation.identity",
+    "character.creation.irreversibility",
+    "character.class.custom",
+    "character.race.profile",
+    "character.race.reaction",
+    "character.birthsign.powers",
+    "character.birthsign.drawback",
+    "progression.level.attributes",
+    "progression.skill.usegrowth",
+    "progression.build.identity",
+    "journey.chargen.diegesis"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-07-r3-3c19",
+    "role": "critic.journeys",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-07T07:20:00Z",
+    "finished_at": "2026-08-07T09:10:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "b48859f4b4523274463ac875fc337c15a152e48b",
+    "branch": "main",
+    "harness_commands": [
+      {
+        "command": "node tools/harness/smoke.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07-r3a.mjs --width 640 --height 360 --json corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr-critic.json",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr.log"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07-r3b.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/talk-census-critic.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07-r3c.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-critic.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07-r3d.mjs --part title",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/title.log"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07-r3d.mjs --part m5",
+        "exit_code": 1,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m5.log"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07-r3e.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/acc.log"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07-r3f.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/hole.log"
+      },
+      {
+        "command": "node tools/harness/critic-w1-07-r3g.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-line-critic.json"
+      },
+      {
+        "command": "node tools/analysis/build-viability.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/build-viability-critic.json"
+      },
+      {
+        "command": "node tools/analysis/creation-audit.mjs",
+        "exit_code": 1,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+      },
+      {
+        "command": "node tools/corpus-index.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "Declared before any measurement. Every score below rests on counted strings, counted runs, counted (npc,race) pairs, frames and pixel fractions, not on an impression of how the scene looks. Two screenshots are cited and both are cited for something countable \u2014 the '1 of 13' progress string on the panel header, and the presence of the interlocutor as an untextured capsule. RI-JRN01 M5's opaque-area figure is a pixel readback and is treated as a number, not as an image judgement."
+  },
+  "reference_items": [
+    {
+      "id": "RI-JRN09",
+      "path": "corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "0-100 weighted-sum (M1 45 / M2 30 / M3 20 / M4 5)",
+      "native_score": 57,
+      "native_max": 100,
+      "native_verdict": "45-69 \u2014 recognisably attempting it",
+      "score_0_10": 4,
+      "measured": "full",
+      "checks": [
+        {
+          "id": "M1-DTR",
+          "result": "pass",
+          "value": "DTR_q = 1.0000, DTR_scene = 0.9279 (model denominator, reproduced independently); DTR_q 0.8500 / DTR_scene 0.8673 against the census-state denominator; 0.8288 including the writ's body. Worst node 0.5000, HF1 fires below 0.50.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr-critic.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/08-writ.class-questions.png"
+          ],
+          "note": "33 of 45. Measured with MY instrument, not the builder's: the accessor is __HARNESS.getRenderedText() (W1-26's draw-call register, which wraps fillText and shadows the clip) rather than getCensusState().surface.rendered_text (UILayer.metrics(), a layout echo). The two agree on this scene at every node \u2014 0 strings claimed by metrics().text that the draw register did not see \u2014 so the a-priori objection to the builder's accessor is WITHDRAWN on the evidence. 10 of 10 question texts genuinely reach the frame. The shortfall is the denominator: the builder counts the strings buildCensusModel KEPT, which is the exact layer round 2's defect lived in, and against what the census actually computes for each node the ratio is 0.85/0.87."
+        },
+        {
+          "id": "M2-AC",
+          "result": "partial",
+          "value": "AC = 6 of 7 (threshold >= 6). Six of the six consumed answers are evidenced by lines from ONE template \u2014 the writ's identity block.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr-critic.json"
+          ],
+          "note": "12 of 30. The count passes. The item's one declared judgement call is whether the seven quotes are seven templates, and it instructs the critic to score the axis at its floor if they are. Drawn evidence: 'Name recorded: Silence-Under-Salt' / 'Also called: Silence-Under-Salt' / 'Observed as: Saxhleel' / 'Raised at: black water, no bottom' / 'Trade declared: Xanmeer-Delver' / 'Tide drawn on: ...'. Every one is a field of the same printed form. The RESPONSIVE lines that would make this a conversation \u2014 the upbringing reply 'The interior. I will write the marsh...', the birthsign reply 'The tide was in and the root had more than it needed...', and the naming line itself \u2014 are computed into state.spoken and thrown away by ui.js's overflow-sacrifice loop before fillText. Three of the six survive only as form fields. The item's own How-we-lose: 'a scene that repeats every answer back is a receipt, not a conversation.' Only race carries both a drawn responsive line and a form line."
+        },
+        {
+          "id": "M3-NAMED",
+          "result": "fail",
+          "value": "NAMED_distinct = 14 of 14 (full marks at >= 10), NAMED_rate 96.25%, histogram a/b/c/d 592/539/629/640 (10.17% max deviation, HF4 needs < 15%). NAMED_line = 0 of 12 named runs (0%) against a required 100%.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-critic.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-line-critic.json"
+          ],
+          "note": "10 of 20. NAMED_distinct survives my own sweep with an independent LCG and my own sweep shape. NAMED_line does not. The item defines it as 'sweeps in which on_match_named_class's LINE reached the frame'; the builder's probe tests `blob.indexOf(norm(c.class_name)) >= 0` over the whole scene's drawn text, and the same round put 'Trade declared: %ClassName' on the drawn writ, so the substring is on the frame whatever the scribe did. Measured properly at the node the line is spoken (writ.birthsign, its only chance): 0 of 12, 12 of 12 by the builder's test."
+        },
+        {
+          "id": "M4-citations",
+          "result": "partial",
+          "value": "T_control: RI-PLT03 P1 not run by this critic; getJourneyStamps() reports first_control_frame: null on a play boot, so the build emits no first_control at all. RI-EXP01: its five tools NOW EXIST on disk and were not run.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m4.log"
+          ],
+          "note": "2 of 5. RI-EXP01 is no longer blocked_on RI-MTH06 \u2014 tools/experience/{session-run,beat-extract,beat-diff,beats-from-md,isolation-check}.mjs all landed today. The debt is now a critic's, not the corpus's, and it is declared as mine."
+        }
+      ],
+      "hard_fails": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-line-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-critic.json"
+      ],
+      "why_not_ten": "The moment the questionnaire exists for does not reach the frame. RI-CHR01 \u00a74 calls the Warden-Scribe saying the profession aloud 'the moment the route is for'; measured at the node it is spoken, it is drawn in 0 of 12 named runs, because ui.js drops `spoken` lines from the front until the panel's 48%-of-height budget is met and the naming line is always the line that goes. The scene is legible and it is not yet an exchange: AC = 6 of 7 is carried entirely by a printed form.",
+      "path_to_ten": "Three changes. (1) The naming line must be unclippable at writ.birthsign. Either give it the same protection `line` has in ui.js's sacrifice order (it is the reply that matters most and it is sacrificed first), or hold it as the node's own `line` at a dedicated node between the last question and the birthsign, the way Morrowind gives Ergalla his own beat to say 'you are a Battlemage'. (2) Fix jrn09-exchange.mjs M3 to test the naming LINE, not the class name substring. (3) Raise DTR under the census-state denominator by drawing the scribe's framing line at every questionnaire node or removing it from the state, so that 'computed' and 'kept by the model builder' are the same set. Acceptance: NAMED_line >= 99% over >= 240 completions measured at the node the line is spoken; DTR_scene >= 0.90 against getCensusState(); AC >= 6 of 7 with at least four of the six evidenced by a drawn responsive line rather than a writ field.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-JRN01",
+      "path": "corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "0-100 weighted-sum; reported as raw/runnable per \u00a70.1(b). Runnable-and-measured this round: 60 points (M5 15, M6 8, M7 7, M8 5, M9 10, M15 3, M13 7, M20 5). Earned 40.",
+      "native_score": 40,
+      "native_max": 60,
+      "native_verdict": "loses outright \u2014 capped by a triggered hard fail",
+      "score_0_10": 2,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M4-clause-1",
+          "result": "fail",
+          "value": "Available play before the first character-defining question: 0.17 s (frame 10 at 60 Hz), against O6's >= 60 s. `first_control` never fires at all \u2014 first_control_frame is null after 5,179 frames of a play-mode boot.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m4.log"
+          ],
+          "note": "THE FIRST TIME THIS NUMBER HAS EVER BEEN MEASURED. It was corpus_debt for two rounds because journey-run.mjs and the first_control event did not exist; both landed today. A play-mode boot shows the title, `New` is pressed, and the census is already sitting on hold.hatch-name \u2014 the player is asked their hatch-name before they have ever held the character. This is the item's own How-we-lose #5, 'control arrives after definition', and the bar critic called O6 'the single best idea in the area'."
+        },
+        {
+          "id": "M5",
+          "result": "pass",
+          "value": "Opaque UI area from a PIXEL READBACK: 0.2954-0.4980 of frame area against a 0.55 ceiling. Build self-report over the same nodes: 0.1681-0.3837. World visible at every node (366-527 distinct colours outside the panel). 0 frames with a uniform background.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m5.log",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m5-title-writ-critic-m5.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/01-hold.hatch-name.png"
+          ],
+          "note": "15 of 15. The panel-budget trade did NOT break M5. Round 2's pixel max on the same method was 0.49; PANEL_MAX_FRAC 0.42 -> 0.48 moved it to 0.498, about 0.008 of frame area. But the builder's counter-check reads getCensusState().surface.opaque_area_frac = UILayer.metrics(), which amended M5 explicitly forbids ('never taken from the build's own layout report'), and it understates the readback by 0.114. The claimed headroom of 0.166 is actually 0.052. Method note: the detector is the round-2 critic's verbatim, and it over-reads \u2014 it takes any bottom-anchored dark region, and the Writ House interior is dark, so panel_height_frac reads 0.5537 where PANEL_MAX_FRAC caps the panel at 0.48. It is the safe direction for a critic and it is the same instrument in both rounds, which is what makes the comparison meaningful."
+        },
+        {
+          "id": "M6",
+          "result": "pass",
+          "value": "Every node's line attributed to a person standing in the room; 'JEEH-EI / THE HOLD, TWO DAYS OUT OF GIDEON' and 'TULEEH-MA / THE WRIT HOUSE AT TIDEWRACK' drawn in the panel header at every node of the walk.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/01-hold.hatch-name.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/08-writ.class-questions.png"
+          ],
+          "note": "8 of 8."
+        },
+        {
+          "id": "M7",
+          "result": "pass",
+          "value": "14 of 14 named professions produced by the mandatory questionnaire route in play, over my own 240-completion sweep. Was 0 of 14 over 240 runs in round 2.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-critic.json"
+          ],
+          "note": "7 of 7. HF7 is CLOSED. This is the largest single thing round 3 did and it survives an independent instrument."
+        },
+        {
+          "id": "M8",
+          "result": "pass",
+          "value": "The writ opens through `use_item` and draws 10 rendered rows at the open node, containing 'Name recorded: Silence-Under-Salt', 'Observed as: Saxhleel', 'Trade declared: Xanmeer-Delver'; the document scrolls, '1-9 of 16'. Round 2 measured rendered_text: [].",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr-critic.json"
+          ],
+          "note": "5 of 5. M8's new hard fail ('present only as an API return value') is CLOSED."
+        },
+        {
+          "id": "M9",
+          "result": "unmeasurable",
+          "value": "The named accessor enumerates 2 of the renderer's 3 text surfaces, and cannot see the third even when instrumented. Grep over the 8 strings it does report: 0 hits. Strings on the surface M9 is aimed at, invisible to it: 5, including 'Take A tithe-gourd, empty'.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/accessor-coverage-critic.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/accessor-hole-critic.json"
+          ],
+          "note": "0 of 10, per \u00a70.1(a): a build with no enumerable rendered-text surface over M9's domain scores unmeasurable, never pass. render/renderer.js owns ui, title and menus and instruments dialogue and title; the comment above those two calls claims 'Every 2D surface this renderer owns is registered'. Instrumenting `menus` at runtime yields 0 entries anyway, because game/src/ui/glyphs.js drawText() strokes vector paths and NEVER calls fillText \u2014 the register is structurally blind to W1-21's whole UI system. M9's domain is precisely 'every string rendered OUTSIDE a dialogue surface'. A grep over a partial set reads as a clean pass for the same reason a grep over an empty accessibility tree did in round 2."
+        },
+        {
+          "id": "M15",
+          "result": "unmeasurable",
+          "value": "Same accessor, same hole. Prophecy grep over the 5 invisible strings: 0 hits, but the set searched by the shipped accessor excludes them.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/accessor-hole-critic.json"
+          ],
+          "note": "0 of 3."
+        },
+        {
+          "id": "M20",
+          "result": "pass",
+          "value": "Title surface present and SHOWN on a play-mode boot with no flags. Drawn strings: 'ELDER SOULS', 'ARGONIA', '\u2014 Continue', '  New', '  Load', '  Settings', '  Quit to menu'. titleActivate('continue') returns {slot:'slot-a', loaded:true, ok:true}.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/title.log",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/title-play-mode.png"
+          ],
+          "note": "5 of 5. HF9 DOES NOT FIRE. The dispatch brief instructed me to score it as a hard fail on the ground that it was deliberately not attempted; that instruction was correct about the piece and wrong about the build. game/src/render/title.js was written by W1-26 and landed at bcc2567 while I was measuring. I score the build. The credit is W1-26's and none of it is W1-07's, and that is recorded rather than absorbed."
+        },
+        {
+          "id": "M13",
+          "result": "fail",
+          "value": "2 of 4 reachability legs. Keyboard and gamepad were completed in round 2; mouse+keyboard and touch have never been run by anybody. Not re-run this round and untouched by this piece.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/W1-07-r2.json"
+          ],
+          "note": "0 of 7. HF5 fires, exactly as BAR-CRITIQUE-W1-07-R1 \u00a7R9 predicted it would once M13's reachability legs were released. This is the only cap still standing on this item and it is the cheapest of the four to close."
+        }
+      ],
+      "hard_fails": [
+        "RI-JRN01/HF5-two-of-four-modalities-never-run"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m5.log",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/title.log",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m4.log"
+      ],
+      "why_not_ten": "Three of the four caps BAR-CRITIQUE-W1-07-R1 \u00a7R9 listed are closed this round \u2014 HF7 (0 of 14 professions -> 14 of 14), M8's new hard fail (the writ is drawn and openable), and HF9 (a title surface exists, by W1-26). HF5 is not, and \u00a71.1 caps the item at 2 for it. Underneath the cap the item also fails M4 clause 1 by a factor of about 360 \u2014 0.17 s of play before the first character-defining question against O6's 60 s \u2014 and scores 0 on M9/M15 because the accessor those checks were gated on cannot see the surface they are aimed at.",
+      "path_to_ten": "In this order. (1) Run M13's other two legs \u2014 mouse+keyboard and CDP touch emulation at 390x844 landscape. The census already takes only `interact`/`block`/a direction and the touch layer exists (__HARNESS.touchDown/touchLayout), so this is a probe, not a feature. HF5 lifts and the item's real number becomes visible. (2) Instrument the third surface AND make it enumerable: either route game/src/ui/glyphs.js drawText() through a fillText-shaped shim, or have UISurface.el() push {surface:'menus', text} into the same register, and add 'menus' to surfaces_instrumented. Then M9/M15 become measurable and 'Take A tithe-gourd, empty' can be judged instead of hidden. (3) O6: give the player the barge hold before Jeeh-Ei asks anything \u2014 walkable, with the tithe-gourd takeable and Jeeh-Ei present \u2014 and emit first_control when the character first accepts a movement input. Acceptance: 4/4 modality legs complete; getRenderedText().surfaces_instrumented includes 'menus' and returns >= 5 entries on a HUD frame; getJourneyStamps().available_play_s_before_first_field >= 60 on a play-mode boot.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-CHR01",
+      "path": "corpus/22-character/RI-CHR01-character-creation.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "0-10, min-over-axes over the measurable axes",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "we lose \u2014 one axis has never been measured by any critic, and a min rule means what it says",
+      "score_0_10": 0,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "axis-questionnaire",
+          "result": "pass",
+          "value": "12 questions, 10 asked per character, zero stat tokens, DTR_q = 1.00 verified through the draw-call register. 10 of 10.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr-critic.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/08-writ.class-questions.png"
+          ],
+          "note": "The axis's 0 band was 'the questions are computed and never drawn'. That was round 2. It is now the 10 band."
+        },
+        {
+          "id": "axis-class-roster",
+          "result": "pass",
+          "value": "14 unique classes, 14 of 14 questionnaire-reachable IN PLAY over a 240-completion published-histogram sweep. The axis's 0 band is 'reachable only in principle: 0 in a published-histogram sweep', which is exactly what round 2 was.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-critic.json"
+          ],
+          "note": "10 of 10."
+        },
+        {
+          "id": "axis-distinctness",
+          "result": "pass",
+          "value": "540 of 540 signatures viable against a target of 486. MEASURED FOR THE FIRST TIME \u2014 tools/analysis/build-viability.mjs landed today and the corpus_debt on this axis has expired by its own condition.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/build-viability-critic.json"
+          ],
+          "note": "10 of 10, with a stated dependency: build-viability.mjs was written this round by the tool builder, has not been through a tool critic, and returns a perfect 540/540 with zero failures on all four criteria on its first run. TOOL-LOOP rule 3 question 2 is exactly this shape. I credit it and flag it."
+        },
+        {
+          "id": "axis-inputs",
+          "result": "pass",
+          "value": "All 8 inputs present, diegetic, each with a named asker standing in the room.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr-critic.json"
+          ],
+          "note": "10 of 10."
+        },
+        {
+          "id": "axis-consequence",
+          "result": "pass",
+          "value": "Every input except sex has >= 1 downstream read. The hatch-name is referenced by 3 NPCs against the 10 band's >= 11.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+          ],
+          "note": "6 of 10 \u2014 the pass floor."
+        },
+        {
+          "id": "axis-arithmetic",
+          "result": "pass",
+          "value": "112 attribute points on the custom route across 4 races x 14 nodes; creation-audit CHR01-M8-class-share confirms class contributes 0 of 112.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+          ],
+          "note": "10 of 10."
+        },
+        {
+          "id": "axis-custom-route",
+          "result": "pass",
+          "value": "Present, offered second of three, never labelled advanced, 146,588,400 legal configurations; the route no longer throws out of stepFrames (round 2 it did).",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+          ],
+          "note": "6 of 10."
+        },
+        {
+          "id": "axis-class-never-locks",
+          "result": "pass",
+          "value": "All five prohibitions hold; 0 content gates read class; 3 caste topics keyed on the class string so class stays visible.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+          ],
+          "note": "Binary axis, passes."
+        },
+        {
+          "id": "axis-irreversibility",
+          "result": "pass",
+          "value": "0 data records set an irreversible field; audit clean.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+          ],
+          "note": "Binary axis, passes."
+        },
+        {
+          "id": "axis-legibility",
+          "result": "unmeasurable",
+          "value": "'>= 16/20 at >= 3 of 4' has never been measured on any build, by round 1, round 2 or me.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/W1-07-r2.json"
+          ],
+          "note": "0. This is MY gap, not the build's, and it is declared under method_deviations. \u00a71.1 is binding \u2014 measured: unmeasurable => 0, not skipped, not averaged out \u2014 and min-over-axes makes it the item. I record it as a critic debt rather than a build defect and it is the first thing round 4's critic must run."
+        }
+      ],
+      "hard_fails": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/build-viability-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+      ],
+      "why_not_ten": "The item is 0 because one axis \u2014 Legibility \u2014 has never been measured by anybody, and its aggregation is min-over-axes. That 0 is not a description of the build: nine of the ten axes measure 10/10/10/10/10/6/6 plus two binary passes, which is by a wide margin the best this item has ever recorded. Round 2's two hard fails (questionnaire-route-unreadable, questionnaire-names-no-class) are both closed and neither fires. The honest sentence is that RI-CHR01's measurable half is now good and its unmeasured tenth pins it.",
+      "path_to_ten": "Run the Legibility axis: capture the character at the four \u00a76 distances and count how many of the 20 identity channels are readable at each; the axis wants >= 16/20 at >= 3 of 4. Then close Consequence's 10 band by making the hatch-name referenced by >= 11 NPCs \u2014 items/writ.json already carries `referenced_by_npcs_target: 6` as an inherited contract with 3 of 6 built, and the remaining three are W1-04's and W1-11's. Acceptance: a verdict citing a Legibility figure, and `referenced_by_npcs` >= 11 for the hatch-name.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-CHR02",
+      "path": "corpus/22-character/RI-CHR02-race-and-standing.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "0-10, min-over-axes",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "we lose \u2014 two sub-axes of Dialogue delivery sit at their own 0 and floor bands",
+      "score_0_10": 0,
+      "measured": "full",
+      "checks": [
+        {
+          "id": "dialogue-delivery-volume",
+          "result": "pass",
+          "value": "300 cells x 5 = 1,500 greeting lines, 1,400 distinct; every \u00a74c minimum met; forbids.race records non-zero.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/talk-census-critic.json"
+          ],
+          "note": "6 \u2014 the axis's 10 band was removed by the wave-1 amendment."
+        },
+        {
+          "id": "dialogue-delivery-distribution",
+          "result": "fail",
+          "value": "Cell-size histogram over all 300 pools: {\"5\": 300}. Every cell is exactly five lines.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/talk-census-critic.json"
+          ],
+          "note": "0. The axis's 0 band, added three days ago, reads: 'any cell empty at bands 3-5, or EVERY CELL EXACTLY EQUAL IN SIZE \u2014 a generator's signature.' The builder's own status file reports this as an achievement: 'EVERY one of the 300 cells carries 5 DISTINCT lines... Distribution is flat by construction, not by luck.' Flat by construction is the finding, not the defence. The 10 band asks for per-cell counts that vary with a stated authored reason."
+        },
+        {
+          "id": "dialogue-delivery-consumption",
+          "result": "fail",
+          "value": "53 of 300 greeting cells observed drawn in play against the 6-band's >= 100. The race-gated topic filter IS demonstrated changing a live NPC's list \u2014 once, on one NPC of fifteen.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/talk-census-critic.json"
+          ],
+          "note": "Below the pass floor. Coupling is NOT zero \u2014 the builder's perturbation (rewrite cell 65, reboot, restore byte-for-byte; strip all 153 race gates, 33 race-varying answers -> 0, restore -> exactly 33) is a genuine proof and I accept it. The 0 band does not fire. But 53 cells is a fifth of what the floor asks."
+        },
+        {
+          "id": "mute-pairs-15-npc-scope",
+          "result": "pass",
+          "value": "0 of 150 (npc,race) pairs mute over the 15 NPCs in game/data/npcs/{named-states,writ-house,thorn}.json. Per-race topic totals 56-57 for all ten races. No settlement silent for any race. Of 57 (npc,topic) pairs only 1 is subtractive; 35 of 57 vary the ANSWER by race.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/talk-census-critic.json"
+          ],
+          "note": "Measured with my own data-level census, not chr-talk-probe.mjs and not creation-audit's dialogue section. The Saxhleel finding IS closed at the scope the builder worked in, and the fix runs in the right direction \u2014 the gates almost never subtract, they swap the answer."
+        },
+        {
+          "id": "mute-pairs-build-scope",
+          "result": "fail",
+          "value": "370 of 520 (npc,race) pairs mute over the 52 NPC records the build now ships. 77 dangling (npc,topic) pairs. 15 of 52 NPCs carry an actor row. race-still-changes-the-answer 31/134 = 23.1% against a 30% floor.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+          ],
+          "note": "game/data/npcs/mainline.json (37 NPCs) did not exist at the W1-07 round-3 commit b3c6f43; it landed at 227947b. So this is not the piece's doing, and it IS the state of the build. The architectural point stands and belongs to this piece: converse.js's infoFor() has no working fallback \u2014 0 of 306 topics carries an actorless info, so the `generic` level is dead code, and an NPC without a hand-authored actor row is silent. The round-3 fix was 33 hand-authored topics for 15 known people, not a rule, and it stopped holding the day the world grew."
+        },
+        {
+          "id": "greeting-keying-depth",
+          "result": "pass",
+          "value": "playerRaceClass() is {saxhleel, naga, dunmer, imperial, other-foreign}. Six of the ten playable races collapse into one bucket, so a Nord and a Khajiit receive byte-identical greetings from every NPC in the build.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/talk-census-critic.json"
+          ],
+          "note": "Per RI-CHR02 \u00a74c's own 12 x 5 x 5 design, so not a violation. Recorded because '13 of 13 NPCs greet different races differently' is at most a five-way distinction and the phrase invites a larger reading."
+        }
+      ],
+      "hard_fails": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/talk-census-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+      ],
+      "why_not_ten": "Round 2's `coupling == 0` on greetings and race-gated topics is genuinely closed and proved by perturbation with restore \u2014 that is real work and it is the second-best consumption proof in this corpus. What replaces it is two measured failures: every one of the 300 greeting cells is exactly five lines, which the axis names as a generator's signature and scores 0; and only 53 of the 300 cells have ever been observed drawn, against a floor of 100.",
+      "path_to_ten": "(1) Distribution: give the cells authored counts. A hostile Dres factor greeting a Saxhleel should have more to say than a neutral net-mender greeting a Breton, and the axis's 10 band asks for a stated authored reason for every cell that sits at the floor of five. (2) Consumption: drive >= 250 of 300 cells in a live sweep \u2014 the 12 reaction groups x 5 bands need NPCs at every disposition band, which means moving disposition in play rather than only at spawn. (3) Make infoFor()'s generic level live: author at least one actorless info per topic so a new NPC is never mute by default, and re-run creation-audit's CHR02-nobody-is-mute over the full 52-NPC roster. Acceptance: cell-size histogram with >= 4 distinct sizes; >= 250 cells observed drawn; 0 of 520 mute pairs.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-CHR03",
+      "path": "corpus/22-character/RI-CHR03-birthsigns.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "0-10, min-over-axes",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "we lose \u2014 Decidability measures at its own 0 band the first time it is measured",
+      "score_0_10": 0,
+      "measured": "full",
+      "checks": [
+        {
+          "id": "axis-decidability",
+          "result": "fail",
+          "value": "540 of 540 signatures viable = 10 races x 9 birthsigns x 6 class families, ALL viable on all four criteria. The axis's 0 band: 'every sign viable with all 6 (nine small bonuses)'. The Dry Well is not non-viable with anything.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/build-viability-critic.json"
+          ],
+          "note": "0, and MEASURED FOR THE FIRST TIME. The corpus_debt on this axis expired when build-viability.mjs landed today. The sharp part: the same 540/540 is RI-CHR01's Distinctness axis at its 10 band (>= 486 viable) and RI-CHR03's Decidability axis at its 0 band. The two items read the identical number in opposite directions, and the build sits exactly where one is maximised and the other is zero. A birthsign you can take with any class and any race and lose nothing is a bonus, not a sign."
+        },
+        {
+          "id": "axis-drawback-reality",
+          "result": "fail",
+          "value": "Unchanged from round 2: Focus never falls below max in anything a critic can drive, so the Dry Well's removal of Focus regeneration removes nothing. The builder's own note: 'S27's Focus-spend observability was not reached this round.'",
+          "evidence": [
+            "corpus/90-verdicts/wave1/W1-07-r2.json",
+            "orchestration/status/W1-07-r3.json"
+          ],
+          "note": "0. RI-MTH07 has no `partial`. The cause is cross-piece \u2014 something must spend Focus, and that is W1-14's \u2014 so it is a seam debt against W1-07<->W1-14, not a third disposition invented at the item."
+        },
+        {
+          "id": "axis-cosmology",
+          "result": "pass",
+          "value": "9 Hist-rooted signs, no Imperial names in the roster; creation-audit's S27 assertions pass, including the new CHR03-S27-no-focus-rate sweep over all 9 signs.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+          ],
+          "note": "Binary axis, passes."
+        },
+        {
+          "id": "axis-kaal-kaal",
+          "result": "pass",
+          "value": "Power halved, drawback full; the composition proof (focus_max 74 -> 46 with Kaal-Kaal at exactly half) stands from round 2 and the audit's assertions are green.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+          ],
+          "note": "Passes."
+        }
+      ],
+      "hard_fails": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/build-viability-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+      ],
+      "why_not_ten": "The birthsign is not a decision. Measured for the first time by a tool that landed today, every one of the nine signs is viable with all six class families and all ten races \u2014 540 of 540 \u2014 which is this axis's own definition of nine small bonuses rather than nine choices. And the one sign built to be a real cost, the Dry Well, still costs nothing observable because nothing in the build spends Focus.",
+      "path_to_ten": "(1) Make at least one sign non-viable with at least two class families, as the axis requires of the Dry Well specifically. build-viability.mjs's four criteria (main_quest, three_factions_rank5, no_unpassable_gate, tier5_survivable) are the instrument and they currently return zero failures on all 540, so the tuning target is measurable to the row. (2) Close the Focus-spend seam with W1-14 so the Dry Well's drawback moves a number a player watches. Acceptance: build-viability reports the Dry Well non-viable with >= 2 families and >= 1 other sign non-viable with >= 1; and a live trace showing focus falling below max and failing to regenerate under the Dry Well.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-PRG02",
+      "path": "corpus/20-progression/RI-PRG02-stat-sheet.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "0-10, min-over-axes",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "we lose \u2014 one axis unmeasured, and a min rule means what it says",
+      "score_0_10": 0,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M5-earned-fraction",
+          "result": "unmeasurable",
+          "value": "Unmeasured in round 2 and not re-measured by me. This piece did not touch progression this round.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/W1-07-r2.json"
+          ],
+          "note": "0. \u00a71.2c: min-over-axes with an unmeasurable axis is 0 at the item. Round 2 recorded native 6 with this axis unmeasurable, which the bar critic's new instrument now flags."
+        },
+        {
+          "id": "consumption-hp-pool",
+          "result": "pass",
+          "value": "Round 2's proof stands and is the best in this corpus: hp_max 508 vs 196 for VIGOUR 18 vs 6, AND 11 blows of 50 to fell the Orsimer against 4 to fell the Bosmer. The pool being right and the fight reading the pool are two different claims and both were made.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/W1-07-r2.json"
+          ],
+          "note": "Carried forward unchanged and attributed to round 2. A min rule still takes the minimum."
+        }
+      ],
+      "hard_fails": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-07-r2.json"
+      ],
+      "why_not_ten": "M5's earned fraction has never been measured on any build, and this item takes the minimum over its axes. Nothing about the item regressed this round; nothing about it was measured either.",
+      "path_to_ten": "Measure M5's earned fraction: play or drive a character from level 1 to level 10 and report the fraction of attribute points earned through use rather than granted. Acceptance: a cited figure against the item's band.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-PRG03",
+      "path": "corpus/20-progression/RI-PRG03-skills-by-use.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "0-10, min-over-axes",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "we lose \u2014 two axes unmeasured",
+      "score_0_10": 0,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "M7-skill-scales-damage",
+          "result": "unmeasurable",
+          "value": "Never measured on any build. The only place skill is allowed to touch the fight.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/W1-07-r2.json"
+          ],
+          "note": "0."
+        },
+        {
+          "id": "M-air-swings",
+          "result": "unmeasurable",
+          "value": "Never measured on any build.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/W1-07-r2.json"
+          ],
+          "note": "0."
+        }
+      ],
+      "hard_fails": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/W1-07-r2.json"
+      ],
+      "why_not_ten": "Two axes have never been measured, one of them the only place skill is allowed to touch the fight. Round 2 recorded native 5 with both unmeasurable.",
+      "path_to_ten": "Drive a character at skill 5 and at skill 75 against the same statblock with the same weapon and report the damage ratio; and count swings that connect with nothing against the item's air-swing band. Acceptance: two cited figures.",
+      "ten_by_wave": 2
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/critic-w1-07-r3a.mjs",
+      "kind": "report",
+      "produced_by": "written by this critic. Walks the census through window.__HARNESS and computes DTR against THREE denominators (model / census-state / +writ body) using the draw-call text register, never getCensusState().surface.rendered_text. Does not call jrn09-exchange.mjs.",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/critic-w1-07-r3b.mjs",
+      "kind": "report",
+      "produced_by": "written by this critic. Bare-Node census of every (npc,race) pair over the shipped converse.js and the shipped data. Does not call chr-talk-probe.mjs or creation-audit.mjs.",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/critic-w1-07-r3c.mjs",
+      "kind": "report",
+      "produced_by": "written by this critic. Independent ES-NAMED sweep over the shipped questionnaire.js with my own sweep shape and an independent LCG, plus a floor sweep the builder did not run.",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/critic-w1-07-r3d.mjs",
+      "kind": "report",
+      "produced_by": "written by this critic. RI-JRN01 M5 from a pixel readback using the round-2 critic's detector verbatim, plus M20/HF9 and M8.",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/critic-w1-07-r3e.mjs",
+      "kind": "report",
+      "produced_by": "written by this critic. Perturbation test of the rendered-text accessor's coverage: instruments the third 2D surface at runtime and re-reads the same frames.",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/critic-w1-07-r3f.mjs",
+      "kind": "report",
+      "produced_by": "written by this critic. Enumerates the strings on the surface the accessor cannot see, via UISurface.elements[].text.",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/critic-w1-07-r3g.mjs",
+      "kind": "report",
+      "produced_by": "written by this critic. Measures RI-JRN09 M3's NAMED_line as the item defines it \u2014 the naming LINE at the node it is spoken \u2014 beside the builder's class-name substring test, on the same runs.",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr-critic.json",
+      "kind": "trace",
+      "produced_by": "critic-w1-07-r3a.mjs on commit b48859f",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/talk-census-critic.json",
+      "kind": "report",
+      "produced_by": "critic-w1-07-r3b.mjs on commit b48859f",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-critic.json",
+      "kind": "report",
+      "produced_by": "critic-w1-07-r3c.mjs on commit b48859f",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-line-critic.json",
+      "kind": "report",
+      "produced_by": "critic-w1-07-r3g.mjs on commit b48859f",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/accessor-coverage-critic.json",
+      "kind": "report",
+      "produced_by": "critic-w1-07-r3e.mjs on commit b48859f",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/accessor-hole-critic.json",
+      "kind": "negative-evidence",
+      "produced_by": "critic-w1-07-r3f.mjs on commit b48859f \u2014 the five strings on the frame that the accessor M9/M15 are gated on cannot see",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m5-title-writ-critic-m5.json",
+      "kind": "report",
+      "produced_by": "critic-w1-07-r3d.mjs --part m5 on commit b48859f",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m5-title-writ-critic-title.json",
+      "kind": "report",
+      "produced_by": "critic-w1-07-r3d.mjs --part title on commit b48859f",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/build-viability-critic.json",
+      "kind": "report",
+      "produced_by": "node tools/analysis/build-viability.mjs \u2014 the tool that unblocked RI-CHR01 Distinctness and RI-CHR03 Decidability, run for the first time on this build",
+      "source": "theirs"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log",
+      "kind": "log",
+      "produced_by": "node tools/analysis/creation-audit.mjs at commit b48859f \u2014 90/96 with 5 hard failures, against the builder's 95/96 with 0 at b3c6f43",
+      "source": "theirs"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/01-hold.hatch-name.png",
+      "kind": "screenshot",
+      "produced_by": "critic-w1-07-r3d.mjs \u2014 the hatch-name node. Cited for the '1 of 13' progress string in the panel header and for the interlocutor's facelessness.",
+      "source": "ours",
+      "camera_pose": "barge-hold: player [0.3,0,-1.2] yaw 329; camera yaw 351 pitch -4 (CENSUS_PLACES[\"barge-hold\"])",
+      "resolution": "1920x1080"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/08-writ.class-questions.png",
+      "kind": "screenshot",
+      "produced_by": "critic-w1-07-r3d.mjs \u2014 question 1 of the questionnaire, drawn. Cited as the visual counterpart of DTR_q = 1.00.",
+      "source": "ours",
+      "camera_pose": "writ-house: player [1.9,0,0.3] yaw 320; camera yaw 350 pitch -3 (CENSUS_PLACES[\"writ-house\"])",
+      "resolution": "1920x1080"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/title-play-mode.png",
+      "kind": "screenshot",
+      "produced_by": "critic-w1-07-r3d.mjs --part title \u2014 the title surface on a play-mode boot with no flags. Cited for M20/HF9.",
+      "source": "ours",
+      "camera_pose": "barge-hold default boot pose, title surface composited over the live view; camera not driven by this probe",
+      "resolution": "1920x1080"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/title.png",
+      "kind": "screenshot",
+      "produced_by": "critic-w1-07-r3d.mjs --part title",
+      "source": "ours",
+      "camera_pose": "barge-hold default boot pose, title raised by __HARNESS.titleShow(); camera not driven by this probe",
+      "resolution": "1920x1080"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m4.log",
+      "kind": "log",
+      "produced_by": "this critic \u2014 RI-JRN01 M4 clause 1 on a play-mode boot, the first measurement of O6 in the project's history",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m5.log",
+      "kind": "log",
+      "produced_by": "critic-w1-07-r3d.mjs --part m5",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/hole.log",
+      "kind": "log",
+      "produced_by": "critic-w1-07-r3f.mjs",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named.log",
+      "kind": "log",
+      "produced_by": "critic-w1-07-r3g.mjs",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr.log",
+      "kind": "log",
+      "produced_by": "critic-w1-07-r3a.mjs",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/title.log",
+      "kind": "log",
+      "produced_by": "critic-w1-07-r3d.mjs --part title",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/acc.log",
+      "kind": "log",
+      "produced_by": "critic-w1-07-r3e.mjs",
+      "source": "ours"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-07-r2.json",
+      "kind": "report",
+      "produced_by": "the round-2 critic. Cited only for figures this round did not change and I did not re-run: M13's two completed modality legs, RI-CHR01 Legibility never having been measured, the Dry Well drawback, and RI-PRG02/RI-PRG03's unmeasured axes. Every figure taken from it is attributed to round 2 in the note that cites it.",
+      "source": "ours"
+    },
+    {
+      "path": "orchestration/status/W1-07-r3.json",
+      "kind": "log",
+      "produced_by": "the round-3 builder's own status file, supplied in the dispatch as the list of claims to disprove. Cited once, for the builder's own statement that S27's Focus-spend observability was not reached this round.",
+      "source": "theirs"
+    },
+    {
+      "path": "reports/W1-07-r3/talk-probe.json",
+      "kind": "report",
+      "produced_by": "the round-3 builder (tools/harness/chr-talk-probe.mjs). Cited only for the two disk perturbations with restore, which I did not re-run and which my own independent census at corpus/90-verdicts/wave1/artifacts/W1-07-r3/talk-census-critic.json corroborates on the resulting state.",
+      "source": "theirs"
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-JRN09",
+      "status": "not_possible",
+      "question": "Is our opening's exchange distinguishable from Morrowind's to a non-expert?",
+      "not_possible_reason": "RI-JRN09 declares blind_pair: no and defines no exemplar channel; the corpus holds no captured Morrowind opening to pair against, and \u00a7A is canonical-recall at confidence medium. The comparison in this verdict is made in prose against \u00a7A's recalled beat list and is labelled as such, never scored as a blind result.",
+      "pack_artifacts": [],
+      "assignment_seed": 0
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "checks": [
+        {
+          "id": "AR-1",
+          "result": "not_applicable",
+          "observed": "AR-1 governs the Souls fight. This piece ships no combat surface; the census removes all actions but a direction, `interact` and `block`, and returns them at hold.out. Nothing here touches stamina, roll, poise or hit resolution.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr-critic.json"
+          ],
+          "reason": "AR-1 governs the Souls fight and this piece ships no combat surface. The census takes away every action but a direction, `interact` and `block` (CENSUS_ACTIONS) and returns them at hold.out; nothing in the creation scene touches stamina, roll i-frames, poise or hit resolution, and no probe in this verdict entered combat. Recorded as not_applicable rather than pass because a pass would claim a measurement I did not take."
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr-critic.json"
+      ],
+      "note": "Recorded as not_applicable rather than pass, because a pass would imply a measurement I did not take.",
+      "not_applicable_reason": "AR-1 governs the Souls fight and this piece ships no combat surface. The census takes away every action but a direction, `interact` and `block` (CENSUS_ACTIONS) and returns them at hold.out; nothing in the creation scene touches stamina, roll i-frames, poise or hit resolution, and no probe in this verdict entered combat. Recorded as not_applicable rather than pass because a pass would claim a measurement I did not take.",
+      "reason": "AR-1 governs the Souls fight and this piece ships no combat surface. The census takes away every action but a direction, `interact` and `block` (CENSUS_ACTIONS) and returns them at hold.out; nothing in the creation scene touches stamina, roll i-frames, poise or hit resolution, and no probe in this verdict entered combat. Recorded as not_applicable rather than pass because a pass would claim a measurement I did not take."
+    },
+    "ar2": {
+      "status": "fail",
+      "checks": [
+        {
+          "id": "AR-2-no-markers",
+          "result": "pass",
+          "observed": "No compass, no quest marker, no objective banner and no 'quest added' toast on any frame of the opening. The census panel carries no map and no waypoint.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/08-writ.class-questions.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/accessor-hole-critic.json"
+          ]
+        },
+        {
+          "id": "AR-2-no-instruction",
+          "result": "fail",
+          "observed": "'Take A tithe-gourd, empty' is drawn on the HUD surface during the opening. It is an imperative second-person interaction prompt of exactly the 'press X to Y' family O11 sets to zero, with the button name omitted. It is invisible to the accessor RI-JRN01 M9 is gated on, so M9's grep returns 0 hits over a set that excludes it.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/accessor-hole-critic.json"
+          ]
+        },
+        {
+          "id": "AR-2-no-progress-counter",
+          "result": "fail",
+          "observed": "The census panel header draws '1 of 13' beside the place name at hold.hatch-name: 'THE HOLD, TWO DAYS OUT OF GIDEON  \u00b7  1 of 13'. RI-JRN01 O8 forbids 'No Step 2 of 4'. It is in fact the option-scroll index (W1-26 moved it into the header at bcc2567 so it could not be clipped), which is worse rather than better: in the one place a player reads a progress counter, it is a number that does not mean what it appears to mean.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/01-hold.hatch-name.png"
+          ]
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/01-hold.hatch-name.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/accessor-hole-critic.json"
+      ],
+      "note": "Neither AR-2 failure is caught by any method in RI-JRN01: M5 measures area, M9 greps a fixed substring list containing neither ' of ' nor 'Take ', and the accessor cannot see the surface both strings are on. Two rounds of verdicts have looked at these frames and neither string was ever enumerable."
+    },
+    "ar3": {
+      "status": "pass",
+      "seam_sterile": false,
+      "checks": [
+        {
+          "id": "AR-3-race-crosses-into-dialogue",
+          "result": "pass",
+          "observed": "The player's race, chosen in the creation scene, is read at 60 Hz by converse.js against requires.race / forbids.race and changes what a live NPC will say. Stripping all 153 race gates collapses race-varying answers 33 -> 0 and restoring returns exactly 33; my own independent census finds 35 of 57 (npc,topic) pairs answering races differently, 23 with two variants and 12 with three. That is a real crossing between the creation system and the dialogue system.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/talk-census-critic.json"
+          ]
+        },
+        {
+          "id": "AR-3-class-crosses-into-the-sheet",
+          "result": "pass",
+          "observed": "The named profession is ADOPTED \u2014 census.js sets spec.classId and clears spec.custom \u2014 so the ten answers change the character's skills, not only a label. It crosses in a way the player pays for: over 233 named runs the mean overlap between the five skills the answers derived and the five skills of the class adopted is 2.66 of 5.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-critic.json"
+          ]
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/talk-census-critic.json"
+      ],
+      "note": "AR-3 passes and the seam is not sterile. The crossing is genuine in both directions this piece owns."
+    },
+    "consumption": {
+      "status": "partial",
+      "checks": [
+        {
+          "id": "greetings.json",
+          "result": "pass",
+          "observed": "Rewriting cell 65 on disk and rebooting changes the spoken line; restoring returns it byte for byte. 130 of 130 conversations open with a line, 53 distinct cells reached. Round 2's `coupling == 0` is closed.",
+          "evidence": [
+            "reports/W1-07-r3/talk-probe.json"
+          ]
+        },
+        {
+          "id": "race-gates",
+          "result": "pass",
+          "observed": "Stripping all 153 requires/forbids race clauses collapses race-varying answers 33 -> 0; restoring returns exactly 33. A null control with the gates present returns 33 unchanged.",
+          "evidence": [
+            "reports/W1-07-r3/talk-probe.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/talk-census-critic.json"
+          ]
+        },
+        {
+          "id": "creation-questions.json#nearest_profession_floor",
+          "result": "pass",
+          "observed": "The floor is read at runtime. Moving it 4 -> 0 takes NAMED_rate 96.25% -> 100.0%; 4 -> 10 takes it to 51.7%. The outcome moves with the number, which is what a consumption proof is.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-critic.json"
+          ]
+        },
+        {
+          "id": "on_match_named_class / on_nearest_named_class",
+          "result": "fail",
+          "observed": "ORPHAN TEXT. The line is authored, computed correctly, carried into state.spoken, exposed through the harness, and drawn in 0 of 12 named runs. RI-JRN09's CONSUMPTION section names this fourth shape and this is a clean instance of it, one node further along than round 2's.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-line-critic.json"
+          ]
+        },
+        {
+          "id": "birthsigns.json Dry Well focus regeneration",
+          "result": "fail",
+          "observed": "Unchanged from round 2. The composition model couples (focus_max 74 -> 46) but the drawback removes a refill nothing consumes, so no entity-side or frame-side observable moves. RI-MTH07 has no `partial`.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/W1-07-r2.json"
+          ]
+        },
+        {
+          "id": "converse.js infoFor() generic level",
+          "result": "fail",
+          "observed": "0 of 306 topics carries an actorless info, so the third precedence level is dead code. Over the 52 NPCs the build now ships, 370 of 520 (npc,race) pairs are mute.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+          ]
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-line-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/talk-census-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-critic.json"
+      ],
+      "note": "Three of six models perturb an observable and three do not. The two the round set out to fix are genuinely fixed and proved with restore. The one the round CREATED \u2014 the naming line \u2014 is the new orphan."
+    }
+  },
+  "score": {
+    "overall_0_10": 0.9,
+    "pass_threshold": 7,
+    "aggregation": "mean",
+    "band_label": "Placeholder",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "Overall 0.9 (mean 6/7) against a wave-1 gate of 7.0.",
+    "RI-JRN01 carries a triggered hard fail (HF5 \u2014 two of four input modalities have never been run) and is capped at 2 by SCORING \u00a71.1.",
+    "Five of seven items report native_score 0. Two of those five are real measured failures at the items' own 0 bands, both measured for the first time this round: RI-CHR02's greeting Distribution (all 300 cells exactly five lines) and RI-CHR03's Decidability (540 of 540 signatures viable \u2014 every sign viable with all six class families). Three are axes no critic has ever measured (RI-CHR01 Legibility, RI-PRG02 M5, RI-PRG03 M7/air-swings), and under min-over-axes an unmeasured axis is the item.",
+    "AR-2 fails on two counts, neither of which any method in RI-JRN01 owns: an imperative interaction prompt drawn on the HUD during the opening, and a '1 of 13' counter in the panel header that O8 forbids by name.",
+    "The round's own headline claim that the naming line reached the frame in 100% of named matches does not survive: measured as RI-JRN09 M3 defines it, it is 0 of 12."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-the-naming-moment-is-still-orphan-text",
+    "subsystem_path": "journey.chargen.diegesis",
+    "severity": "blocking",
+    "what": "RI-CHR01 \u00a74 states the questionnaire's purpose in its own words \u2014 the Warden-Scribe says the profession aloud, 'which is the moment the route is for' \u2014 and RI-JRN09 M3 requires that line on the frame in 100% of named runs. Measured at the node the line is spoken (writ.birthsign, its only opportunity, because `spoken` carries only the reply to the last answer): 0 of 12 named runs across six races and two upbringings. The mechanism is ui.js's overflow-sacrifice loop \u2014 `while (contentH > maxH && spokenLines.length) spokenLines.shift()` \u2014 which drops the scribe's previous reply from the front until the panel fits its 48%-of-frame-height budget, and at the birthsign node (nine options plus a two-line naming sentence) the naming line is always what goes. The builder's own instrument reports 100% because it does not test that line: jrn09-exchange.mjs M3 runs `blob.indexOf(norm(c.class_name)) >= 0` over the concatenated drawn text of every node in the walk, and the same round added 'Trade declared: %ClassName' to the writ's drawn identity block at writ.stamp, so the class name is on the frame whatever the scribe did or did not say. Measured side by side on the same twelve runs: the naming LINE 0 of 12; the class NAME substring 12 of 12. The same mechanism eats the upbringing reply ('The interior. I will write the marsh. There are people here who will read that and stand up straighter, and people who will read it and count their doors.') and the birthsign reply ('The tide was in and the root had more than it needed. It gave you a swallow it did not owe you.'), which is why AC = 6 of 7 is evidenced entirely by fields of one printed form.",
+    "why_it_matters": "Morrowind's opening is remembered because a bored functionary looks at your answers and tells you what you apparently are. This build computes that sentence, writes it, carries it through the model, exposes it through the harness \u2014 and clips it off the bottom of the panel, then prints the word on a form two nodes later. A player answers ten questions about wounded dogs and toll-houses and is never told anything; they later find a noun on a document. Round 3 closed round 2's orphan-text defect on the questions and opened the same defect on the answer, and the round's own instrument certified it closed. That is the third time in this project a measurement has passed because it tested something adjacent to what the item asked for, and it is the exact failure BAR-CRITIQUE-W1-07-R1 filed RI-JRN09 to prevent.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-line-critic.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named.log",
+      "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr-critic.json"
+    ],
+    "remedy": {
+      "action": "Two changes and a test, in this order. (1) Give the naming moment its own beat. The line is the payoff of a ten-node route and it is currently one entry in a `spoken` array that the layout treats as the least important thing on the panel. Add a node between the last question and writ.birthsign whose `line` IS the naming sentence and whose only input is an acknowledgement \u2014 the same shape writ.stamp was given this round for exactly this reason \u2014 so it occupies the one slot ui.js never sacrifices. Morrowind gives Socucius Ergalla his own beat to say 'you are a Battlemage'; this is that beat. (2) If the sacrifice loop is kept, make it declare what it dropped: have UILayer._redraw record the sacrificed lines in `metrics().sacrificed` so that any probe reading the surface can see the difference between 'not computed' and 'computed and thrown away'. Round 3's own defect is invisible in every instrument the build ships. (3) Fix tools/harness/jrn09-exchange.mjs M3 to test the naming LINE at the node it is spoken, not the class-name substring over the whole walk. The current test cannot go red while the writ draws the class name, which makes it a probe that cannot fail.",
+      "targets": [
+        "game/data/dialogue/topics/writ-house.json (a node between writ.class-questions and writ.birthsign carrying on_match_named_class / on_nearest_named_class as its `line`)",
+        "game/src/character/census.js (case 'writ.class-named' \u2014 advance to the new node rather than straight to writ.birthsign)",
+        "game/src/render/ui.js (_redraw: record sacrificed lines into `last.sacrificed`)",
+        "tools/harness/jrn09-exchange.mjs (M3 NAMED_line: assert the line, at its node)"
+      ],
+      "acceptance": "Over >= 240 completions covering all 10 races x 4 upbringings with a published a/b/c/d histogram: the text of on_match_named_class / on_nearest_named_class appears in __HARNESS.getRenderedText() at the node it is spoken in >= 99% of named runs, measured by corpus/90-verdicts/wave1/artifacts/W1-07-r3/critic-w1-07-r3g.mjs unchanged. Separately, deleting the naming line from writ-house.json must take that figure to 0 and restoring it must return it \u2014 the delete-the-fix check this round applied to the greeting data and not to this. And AC's drawn evidence must include >= 4 responsive lines rather than 6 fields of the writ.",
+      "ref_item": "RI-JRN09",
+      "estimated_size": "S"
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "THE SECOND-BIGGEST GAP, AND THE ONE THAT DECIDES THE MORROWIND COMPARISON: you are a form before you are a body. RI-JRN01 M4 clause 1 \u2014 O6, '>= 60 s of available play before the first character-defining question' \u2014 was corpus_debt for two rounds because journey-run.mjs and the first_control event did not exist. Both landed today, so I measured it, and it is the first time anyone has. On a play-mode boot: the title appears, `New` is pressed, and the census is already sitting on hold.hatch-name. first_field_frame is 10, i.e. 0.17 s at 60 Hz, against a threshold of 60 s. `first_control` never fires at all \u2014 first_control_frame is still null after 5,179 frames. The player is asked their hatch-name before they have ever moved. Morrowind's whole trick is the other way round: you wake, you walk the length of a ship, you meet Jiub, you climb stairs, you step onto a dock, you walk into an office \u2014 minutes of embodied play \u2014 and only then does anyone ask you anything. This is RI-JRN01's own How-we-lose #5, 'control arrives after definition', and the bar critic called O6 'the single best idea in the area'. It is not the piece's fault that nobody could measure it before today; it is the piece's gap now.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m4.log"
+      ]
+    },
+    {
+      "what": "THE RENDERED-TEXT ACCESSOR IS HONEST AND INCOMPLETE, AND THE INCOMPLETENESS IS STRUCTURAL. render/text-register.js is a genuinely good instrument \u2014 fed by the draw call, clip-aware, explicitly not a second copy of the model \u2014 and it reproduced the builder's DTR numbers exactly when I pointed it at the census. But render/renderer.js owns THREE 2D text surfaces (ui, title, menus) and instruments TWO, under a comment that says 'Every 2D surface this renderer owns is registered against the one rendered-text register'. I instrumented the third at runtime through the register's own public instrument() and got ZERO entries \u2014 because game/src/ui/glyphs.js drawText() renders every glyph as a stroked Path (moveTo / lineTo / quadraticCurveTo / stroke) and never calls fillText. The register wraps fillText and strokeText. It is therefore structurally incapable of seeing W1-21's entire UI system, instrumented or not. Enumerated through UISurface.elements[].text instead, the opening draws five strings the accessor cannot see: '5', '0', 'LIGHT', 'Spark-Dart' and 'Take A tithe-gourd, empty'. M9's domain is 'every string rendered OUTSIDE a dialogue/journal/book surface' \u2014 which is exactly the surface it cannot see. W1-26's own probe records `surfaces_searched: 'title (the only non-dialogue drawn surface in the build)'`, which is false. Per RI-JRN01 \u00a70.1(a) I score M9 and M15 unmeasurable => 0 rather than passing a grep over a set that excludes its own subject, and I note that this is the round-2 failure \u2014 a grep over an empty accessibility tree reading as a clean pass \u2014 reproduced one layer down by the fix written to close it.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/accessor-coverage-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/accessor-hole-critic.json"
+      ]
+    },
+    {
+      "what": "THE PANEL-BUDGET TRADE DID NOT COST M5, AND THE BUILDER'S PROOF THAT IT DIDN'T IS INADMISSIBLE. Round 3 raised PANEL_MAX_FRAC 0.42 -> 0.48 and OPTION_WINDOW 5 -> 9 to buy delivery, and shipped a counter-check reading getCensusState().surface.opaque_area_frac. Amended M5 says the figure is 'measured from a readback of the frame and never taken from the build's own layout report', and that is precisely the number the counter-check reads. Measured properly with the round-2 critic's pixel detector verbatim: 0.2954-0.4980 against the 0.55 ceiling, where the build self-reports 0.1681-0.3837. M5 passes. Round 2's pixel maximum on the same detector was 0.49, so the trade cost about 0.008 of frame area \u2014 a real answer to the question, and one the builder had no admissible evidence for. What it did cost is headroom: the claimed 0.166 is actually 0.052, and the same panel budget is what throws the naming line away. Instinct says a builder that buys one bar by spending another should be caught; here the bar it spent held, and the thing it actually spent was the scribe's voice.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m5.log",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m5-title-writ-critic-m5.json"
+      ]
+    },
+    {
+      "what": "540 OF 540 IS SIMULTANEOUSLY A 10 AND A 0. tools/analysis/build-viability.mjs landed today and unblocked two axes that had been corpus_debt since wave 0. Its first run reports 540 of 540 signatures viable \u2014 10 races x 9 birthsigns x 6 class families, zero failures on all four criteria. RI-CHR01's Distinctness axis wants '540 signatures, >= 486 viable' and scores that 10. RI-CHR03's Decidability axis names 'every sign viable with all 6 (nine small bonuses)' as its 0. The build sits exactly at the point where one axis is maximised and the other is zero, and the two items have been reading the same number in opposite directions for a whole wave without either being measured. Whichever way the project resolves it, one of those two bands has to move, and the resolution is a corpus question rather than a builder's.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/build-viability-critic.json"
+      ]
+    },
+    {
+      "what": "THE MUTE-PAIR FIX WAS DATA, NOT A RULE, AND IT HELD FOR ONE DAY. My own bare-Node census confirms the builder's headline at the scope it was measured in: 0 of 150 (npc,race) pairs mute over the 15 NPCs in game/data/npcs/{named-states,writ-house,thorn}.json, per-race topic totals 56-57 across all ten races, no settlement silent for anyone, and the differentiation running in the right direction \u2014 of 57 (npc,topic) pairs exactly one is subtractive and 35 vary the answer. That is a good fix and the Saxhleel finding that motivated it was the best thing in the round. But game/data/npcs/mainline.json (37 more NPCs) landed at 227947b, after the piece's commit, and creation-audit at my HEAD now reports 370 of 520 (npc,race) pairs mute, 77 dangling (npc,topic) pairs, 15 of 52 NPCs carrying an actor row, and race-still-changes-the-answer at 23.1% against its 30% floor. The new data is not W1-07's; the architecture is. The builder itself measured that 0 of 306 topics carries an actorless info, which makes infoFor()'s third precedence level dead code, and then closed the gap by hand-authoring 33 topics for the fifteen people it knew about rather than by making the fallback work. A consumer whose default for an unknown NPC is silence will go on producing this result every time the world grows.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/talk-census-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+      ]
+    },
+    {
+      "what": "THE TEN ANSWERS ARE ROUNDED AWAY, AND THAT IS NEW THIS ROUND. Exact set-equality matches: 1 of 240. So in 239 of 240 runs the class is assigned by the new nearest-profession fit, and census.js then sets spec.custom = null and spec.classId = c.id \u2014 the character takes the canned class and the shape the answers derived is discarded. Measured over 233 named runs, the mean overlap between the five skills the player's answers produced and the five skills of the class actually adopted is 2.66 of 5; 95 of 233 keep two or fewer; one keeps none at all. Before round 3, named_class was null in essentially every play, so the questionnaire gave the player exactly the shape their answers derived. Closing HF7 therefore made the route name you something and stop listening to you at the same time. This is defensible \u2014 Morrowind's questionnaire also lands you in one of a fixed set of classes \u2014 and it is a real change in what the ten questions do, made to satisfy a bar, and nobody recorded it.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-critic.json"
+      ]
+    },
+    {
+      "what": "THE UNNAMED BAND IS ONE TUNED CONSTANT AND DOES NO OTHER WORK. RI-JRN09's How-we-lose warns that 'NAMED is met by widening the matcher until everything is named'. The build's answer is nearest_profession_floor: 4, chosen from a percentile table to leave about 4% unnamed. I swept it: at floor 0 \u2014 no floor at all \u2014 the matcher still reaches 14 of 14 distinct classes and names 100% of runs; at floor 10 it names 51.7% and reaches 13. So the floor buys the honest 'I do not have a word for what you are' band and buys nothing else. That is not a cheat \u2014 NAMED_distinct is 14 of 14 at every floor from 0 to 8, and the constant is read at runtime from creation-questions.json so it perturbs, which is good practice \u2014 but the band the item explicitly protects exists because of one number somebody picked, not because some answers genuinely resist naming.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-critic.json"
+      ]
+    },
+    {
+      "what": "THE INTERLOCUTORS HAVE NO FACES, AND THAT IS THE REST OF THE MORROWIND ANSWER. Both screenshots this verdict cites show the same thing: a well-lit room with real furniture \u2014 a wall of eleven years of other people's reed-cases behind the desk, beams, a hanging lamp \u2014 and, standing in it, untextured capsules. Jeeh-Ei is a beige blob with a lighter blob for a head. Tuleeh-Ma is a green blob behind the panel. Nobody has eyes, nobody moves while they speak, nobody looks at you. Morrowind's Socucius Ergalla is not a technical achievement either, but he has a face that turns, an idle, and a voice grunt, and the scene depends on the sense of being looked at by a bored official. The builder records this honestly as 'art, not wiring' and it is out of scope for a wiring round. It is in scope for the owner's question, and no bar in this corpus measures it: RI-JRN01 M6 asks only that the speaker resolve to a live NPC record, which it does, 18 of 18.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/01-hold.hatch-name.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/08-writ.class-questions.png"
+      ]
+    },
+    {
+      "what": "THE TREE MOVED UNDER THIS MEASUREMENT AND I AM RECORDING WHAT I SAW RATHER THAN PRETENDING IT DID NOT. The piece was committed at b3c6f43. Between my first probe and my last, bcc2567 (W1-26 \u2014 title.js, text-register.js, and the move of the '1 of 13' scroll note into the panel header) and b48859f (W1-21 \u2014 the interface) landed, and 227947b (37 new NPC records) was already in. My first DTR run recorded one clipped string at hold.hatch-name; my second, twenty minutes later, recorded zero, because W1-26 had fixed exactly that clip in between. Boot broke six times during this session on another piece's half-written quest data ('hooks.json: 23 quest(s) seed no topic from a journal write', then 'this._buildUI is not a function'), and smoke.mjs passed 6/6 before and after. Load reached 37 on four cores with 42 chrome processes, which is the condition AGENT-PROTOCOL now names as the point at which agents stop measuring and start preventing each other from measuring. Every figure in this verdict was taken at b48859f unless it says otherwise, and the figures I attribute to round 2 are quoted, not re-run.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+      ]
+    },
+    {
+      "what": "PHANTOM TOOLS 67 -> 55, AND IT CHANGES THE ARITHMETIC OF THIS PIECE. tools/analysis/build-viability.mjs, tools/journey/{journey-run,beat-extract,gamepad-shim,state-diff}.mjs and all five of RI-EXP01's tools now exist on disk. So the corpus_debt that BAR-CRITIQUE-W1-07-R1 identified as making three of this piece's six items unpassable by construction HAS EXPIRED BY ITS OWN CONDITION, and the bar critic's honest instruction \u2014 'do not dispatch W1-07 round 4 against the old bars' \u2014 no longer applies. Two of those newly-runnable axes I ran, and one of them (RI-CHR03 Decidability) comes back at its 0 band on its first measurement, which is the system working. RI-EXP01 is now a critic's debt rather than the corpus's, and I did not discharge it: session-run.mjs exists and I did not run it, so N_found, T_lie, T_refusal and N_odd remain unmeasured on any build for a fourth round. That is mine and it is the second thing round 4's critic should do.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/creation-audit-at-critic-head.log"
+      ]
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-questionnaire-route-is-unreadable-and-unnamed",
+      "status": "partially-closed",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-critic.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-line-critic.json"
+      ],
+      "note": "The unreadable half is CLOSED and survives my own instrument with a different accessor: 10 of 10 question texts reach the frame, DTR_q = 1.0000, DTR_scene = 0.9279, worst node 0.6667. The unnamed half is closed in the model and not on the frame: 14 of 14 named professions are produced in play (was 0 of 14 over 240 runs), and the line that says the name is drawn 0 of 12 times. Half a gap closed and a new one opened by the same fix."
+    },
+    {
+      "gap_id": "GAP-W1-creation-is-an-api-not-a-scene",
+      "status": "closed",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/08-writ.class-questions.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m5.log"
+      ],
+      "note": "Round 1's twenty byte-identical grey PNGs are a long way behind this. There is a barge hold, a Writ House, two named people, a readable question, four readable answers and a room visible behind all of it at every node."
+    },
+    {
+      "gap_id": "GAP-W1-greetings-and-race-gates-have-no-world-side-consumer",
+      "status": "closed",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/talk-census-critic.json"
+      ],
+      "note": "Closed with a perturbation and a restore in both directions, independently reconfirmed by my own census at the scope it was fixed in. The volume and distribution axes above it still fail, and 370 of 520 pairs are mute over the build's full NPC roster, but the coupling claim itself is proved."
+    },
+    {
+      "gap_id": "GAP-W1-the-writ-is-a-return-value",
+      "status": "closed",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/dtr-critic.json"
+      ],
+      "note": "The writ draws at the node that stamps it and opens as a scrolling document through use_item, 10 rendered rows carrying the player's name, race and profession. Round 2 measured rendered_text: []."
+    },
+    {
+      "gap_id": "GAP-W1-no-title-surface",
+      "status": "closed",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/title.log",
+        "corpus/90-verdicts/wave1/artifacts/W1-07-r3/shots/title-play-mode.png"
+      ],
+      "note": "Closed by W1-26 at bcc2567, not by this piece. HF9 does not fire against this build. The dispatch brief instructed me to score it as a hard fail because W1-07 declined to attempt it in a shared tree; that reasoning was sound as coordination and would have been wrong as measurement, and I am recording both halves."
+    }
+  ],
+  "corpus_extended": [
+    {
+      "kind": "gap-in-the-bars",
+      "what": "No method in RI-JRN01 can see either AR-2 failure this verdict records. M5 measures area, M6 measures attribution, M9 greps a fixed substring list ('Press ', 'Tap ', 'Click ', 'Tutorial', 'Objective', 'Quest added', 'New quest', 'Tip:') that contains neither ' of ' nor 'Take ', and M9's accessor cannot reach the surface both strings are drawn on. O8's 'No Step 2 of 4' and O11's instruction budget are stated as observations and owned by no check. Proposed: M9's grep gains an 'imperative second-person opener' clause with a named verb list, and O8 gains a numerals clause with its own method \u2014 a numeral drawn on any surface during creation that is not part of an authored sentence.",
+      "ref_item": "RI-JRN01"
+    },
+    {
+      "kind": "contradiction-between-items",
+      "what": "RI-CHR01's Distinctness 10 band ('540 signatures, >= 486 viable') and RI-CHR03's Decidability 0 band ('every sign viable with all 6') are satisfied by the same measurement. build-viability.mjs's first run on this build returns 540/540, which is simultaneously the best possible score on one and the worst possible on the other. One of the two bands is wrong and the corpus should decide which before either is used to move a build.",
+      "ref_item": "RI-CHR03"
+    },
+    {
+      "kind": "instrument-defect",
+      "what": "tools/harness/jrn09-exchange.mjs M3 cannot go red on NAMED_line while the writ draws the class name, because it tests `blob.indexOf(norm(c.class_name)) >= 0` over the whole walk instead of testing the naming line at its node. TOOL-LOOP rule 3 question 2 \u2014 'can the tool fail?' \u2014 is unanswered for this check and the answer is no. A tool critic should run over the round-3 harness additions.",
+      "ref_item": "RI-JRN09"
+    }
+  ],
+  "method_deviations": [
+    {
+      "what": "I did not run RI-CHR01's Legibility axis, RI-PRG02's M5 earned fraction, RI-PRG03's M7 skill-scales-damage and air-swings check, RI-EXP01 (whose five tools now exist), RI-PLT03 P1's T_control, or RI-JRN01's M1/M2/M3/M12/M14 through the newly-landed tools/journey/journey-run.mjs. All are scored unmeasurable => 0 per SCORING \u00a71.1, and under min-over-axes that is what makes RI-CHR01, RI-PRG02 and RI-PRG03 report native 0. None of these is a corpus_debt any longer \u2014 every tool they need is on disk as of today \u2014 so each is a CRITIC debt and is recorded as mine rather than charged to the build.",
+      "why": "The box was at load 37 on four cores with 42 chrome processes for most of this session and boot broke six times on another piece's half-written quest data. I spent the browser budget I had on the claims the dispatch asked me to disprove and on the one measurement nobody had ever taken (M4 clause 1), and I would make the same choice again. AGENT-PROTOCOL's new section says to say so rather than ship a number I could not take properly."
+    },
+    {
+      "what": "I wrote seven instruments during this critique: critic-w1-07-r3a.mjs (DTR against three denominators through the draw-call register), r3b (the (npc,race) census in bare Node), r3c (ES-NAMED with my own sweep shape and RNG, plus a floor sweep), r3d (M5 from a pixel readback, M20/HF9, M8), r3e (accessor coverage, with the third surface instrumented as a control), r3f (the strings the accessor cannot see), r3g (NAMED_line as the item defines it, beside the builder's test on the same runs). All are in the artifacts directory and all are declared here per TOOL-LOOP rule 1. None of them is a rename of a builder tool; none calls jrn09-exchange.mjs, chr-talk-probe.mjs or creation-audit.mjs for a headline number.",
+      "why": "The builder wrote the instruments that grade RI-JRN09, and this project has been caught by that repeatedly. Two of the round's four headline claims survive my instruments unchanged (DTR_q = 1.0000 and NAMED_distinct = 14 of 14) and one does not (NAMED_line 100% -> 0%), which is the reason for the rule."
+    },
+    {
+      "what": "I did not attempt a blind pair for RI-JRN09 and recorded not_possible with a reason rather than leaving the field empty.",
+      "why": "The item declares blind_pair: no and there is no captured Morrowind opening in the corpus to pair against."
+    },
+    {
+      "what": "RI-JRN01's native score is reported as raw/runnable over the 60 points I measured rather than as a fraction of 100, per \u00a70.1(b)'s reporting rule, and the checks I did not run are listed explicitly rather than folded into the denominator.",
+      "why": "The runnable weight moved this round when the A-JRN1 tools landed, and reporting a fraction of 100 would silently claim I had measured checks I had not."
+    }
+  ],
+  "arbitration_questions": [
+    {
+      "question": "RI-CHR01's Distinctness 10 band and RI-CHR03's Decidability 0 band are both satisfied by 540/540 viable signatures. Which band moves?",
+      "context": "build-viability.mjs landed today and its first run makes the conflict concrete rather than theoretical. Distinctness is asking 'can you play any of these builds', Decidability is asking 'does the choice cost you anything', and a build that maximises the first necessarily zeroes the second as the two are currently written. Until this is resolved, RI-CHR03 cannot reach 6 without RI-CHR01 dropping below 10.",
+      "ref_items": [
+        "RI-CHR01",
+        "RI-CHR03"
+      ]
+    },
+    {
+      "question": "Does W1-07 own journey.firstlaunch.flow, and if not, who measures O6?",
+      "context": "BAR-CRITIQUE-W1-07-R1 \u00a7R7 found that 45 of RI-JRN01's 100 points measure paths W1-07 does not declare, and that 37 of 38 journey.*/input.*/experience.* paths are owned by nobody. M4 clause 1 is now measurable and it fails by a factor of about 360, and the fix \u2014 give the player the barge hold before anyone asks them anything \u2014 is a boot-flow change that W1-26 is currently the only agent touching. This verdict charges it to W1-07 because W1-07 is the piece under measurement, and that is the wrong answer if the seam has a different owner.",
+      "ref_items": [
+        "RI-JRN01"
+      ]
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "attempted_to_find_a_gap": true,
+    "escalation_applied": true,
+    "self_audit_note": "ran_every_assigned_method is FALSE and it is the most important thing in this block: RI-CHR01's Legibility axis, RI-PRG02's M5 earned fraction, RI-PRG03's M7 and air-swings, RI-EXP01's four beat numbers, RI-PLT03 P1's T_control and RI-JRN01's M1/M2/M3/M12/M14 through the newly-landed journey-run.mjs were not exercised. Every one is scored unmeasurable => 0, and under min-over-axes that is what makes RI-CHR01, RI-PRG02 and RI-PRG03 report native 0. Those three zeros are MY omission, not the build's defect, and they are declared as such at the item, in status_reasons and in method_deviations. They are not load-bearing for the FAIL, which rests on measurements taken: the naming line at 0 of 12, M4 clause 1 at 0.17 s against 60 s, 540/540 at RI-CHR03 Decidability's 0 band, all 300 greeting cells at exactly five lines, and HF5. blind_done_where_required is FALSE: RI-JRN09 declares blind_pair: no and the corpus holds no captured Morrowind opening, so the one comparison is recorded not_possible with a reason and the Morrowind judgement in the prose is labelled as recall, never scored. Escalation ladder as applied. (1) I re-ran the four headline claims with instruments I wrote, and two of them survived intact \u2014 DTR_q = 1.0000 through a different accessor, and NAMED_distinct = 14 of 14 through a different sweep shape and a different RNG. I record those as passes and I withdrew my a-priori objection to the builder's accessor when the draw register agreed with it at every node. (2) Where I could not find a gap by re-measuring, I attacked the definition: NAMED_line is where the builder's instrument and the item's own words diverge, and testing the item's words instead of the builder's test took 100% to 0%. (3) Where I could not find a gap in the build, I attacked the instrument's coverage with a control: I instrumented the third text surface at runtime and, when that returned nothing, traced why, which is how the vector-glyph blindness was found. (4) I ran the one measurement nobody in three rounds had taken, because an unmeasured headline threshold is where a gap is most likely to be hiding, and M4 clause 1 came back at 0.17 s against 60 s. (5) I checked the two claims the dispatch told me to be suspicious of and found the panel-budget trade honest and the mute-pair fix real at the scope it was made \u2014 and then found the scope. The place I am least confident: RI-CHR01, RI-PRG02 and RI-PRG03 report 0 on axes I did not measure, and while \u00a71.1 and min-over-axes make that the correct number, a reader should understand that RI-CHR01's nine measured axes are the best this item has ever recorded and that its 0 is my omission, not the build's defect. I have said so at the item, in status_reasons and in method_deviations rather than only here."
+  }
+}

@@ -797,7 +797,15 @@ function gate(name, list) {
     }
   }
   if (!moves.length) return null;
+  // COLLECT EVERY PASSER, THEN CHOOSE — do not take the first one that clears.
+  // `lie <= 8` and `t_react >= 19` are THRESHOLDS: a clip at lie 6 is not more readable than a
+  // clip at lie 7 in any sense RI-CMB12 scores, they are both inside the budget. `min_axis` is a
+  // CONTINUOUS quality — it is the radius of the dead ring in front of the attacker — so among
+  // candidates that clear the thresholds the smallest dead ring wins, with the larger telegraph
+  // margin only as a tiebreak. Taking the first passer instead shipped `min_axis 0.596` where
+  // `0.547` was two candidates further down the same list.
   let bestGraded = null;
+  const passers = [];
   for (let i = 0; i < list.length; i++) {
     const c = list[i];
     const doc = JSON.parse(fs.readFileSync(clipsPath, 'utf8'));
@@ -814,9 +822,15 @@ function gate(name, list) {
     const ok = lie <= 8 && per.every((p) => p.declared_reactable === false || p.t_react >= 19);
     console.log(`    gate ${name} #${i} swing=${c.swing.toFixed(2)} ext=${c.ext} bury=${c.bury} hf=${c.hitFrac}  proxy lie ${c.m.lie} -> LIVE lie ${lie}, t_react ${react}  ${ok ? 'PASS' : 'reject'}`);
     if (!bestGraded || lie < bestGraded.lie) bestGraded = { lie, react, c };
-    if (ok) { try { fs.unlinkSync(tmp); fs.unlinkSync(tmp + '.out'); } catch (e) { /* */ } return c; }
+    if (ok) passers.push({ lie, react, c });
   }
   try { fs.unlinkSync(tmp); fs.unlinkSync(tmp + '.out'); } catch (e) { /* */ }
+  if (passers.length) {
+    passers.sort((a, b) => (a.c.m.axis - b.c.m.axis) || (a.lie - b.lie) || (b.react - a.react));
+    const w = passers[0];
+    console.log(`    gate ${name}: ${passers.length} of ${list.length} clear RI-CMB12 §A; taking the smallest dead ring — min_axis ${w.c.m.axis.toFixed(3)} m at live lie ${w.lie}, t_react ${w.react}`);
+    return w.c;
+  }
   if (bestGraded) {
     console.log(`    gate ${name}: NO candidate clears RI-CMB12 §A; best live lie ${bestGraded.lie}, t_react ${bestGraded.react}`);
     return bestGraded.c;

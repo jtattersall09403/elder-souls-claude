@@ -1,17 +1,24 @@
 {
   "task_id": "W1-RENDER",
-  "brief": "orchestration/NEXT-DISPATCH.md §1 — character and weapon renderer",
+  "brief": "orchestration/NEXT-DISPATCH.md \u00a71 \u2014 character and weapon renderer",
   "started": "wave-1 round-1",
   "state": "researching",
   "outputs_expected": [
-    "game/src/render/ — skinned character + weapon mesh driven by CombatBody rig sockets",
-    "tools/harness/ — capture probe proving three weapon classes differ",
+    "game/src/render/ \u2014 skinned character + weapon mesh driven by CombatBody rig sockets",
+    "tools/harness/ \u2014 capture probe proving three weapon classes differ",
     "corpus finding notes"
   ],
   "outputs_written": [],
   "findings": [
-    "load average at start: 7.43 (four cores) — capture will be expensive; plan for it"
+    "load average at start: 7.43 (four cores) \u2014 capture expensive; plan for it",
+    "Rig.evaluate() already computes world 3x4 transforms for ALL 20 bones in this.world[] every frame. The renderer needs to CONSUME this, not build a skinning pipeline.",
+    "engine.js:509 `this.sim._combat = this.combat` \u2014 the renderer's render(sim) can reach sim._combat.player (CombatBody, has .rig) and sim._combat.bodies / bodyOf(eid).",
+    "CombatBody.socketA/socketB ARE the hit capsule endpoints in world space. Drawing the blade from socketA to socketB makes the drawn tip identically the hit socket \u2014 not merely tracking it.",
+    "socket dists: a = GRIP_OFFSET_M = 0.10, b = MovesetLibrary._bladeLength(weaponId) solved so tip horizontal radius == class reach_m.",
+    "classes.json reach_m: SSW 1.95, HLB 2.85, CGS 2.75 \u2014 exactly the three the critic screenshotted as byte-identical. hitbox_span_m gives the EDGED span (blade vs haft): SSW 0.95, HLB 0.75, CGS 1.55.",
+    "makeActor() (render/scene.js:387) welds a static Group: capsules at fixed offsets + a 0.95m BoxGeometry blade at (0.40,1.28,0.10). Nothing reads any pose.",
+    "renderer.js render(): playerMesh.position + rotation.y only. syncEntities/syncNPCs likewise."
   ],
-  "next_step": "read game/src/render/renderer.js makeActor + CombatBody.evaluateRig to find the socket buffer",
+  "next_step": "inspect capture harness + ui.js resize texture leak; then build bone-driven actor",
   "notes_for_successor": ""
 }

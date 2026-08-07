@@ -185,6 +185,14 @@ export class MovesetLibrary {
       reach_m: ms.reach_m,
       attack_rating: cls.attack_rating,
       equip_weight: cls.equip_weight,
+      // The EDGED span, measured back from the tip — `socketsFor()` already returns it as
+      // `edge_from` for the resolver's haft taper. It is carried on the weapon block too
+      // because the RENDERER needs it: it is what makes an axe a short head on a long haft
+      // and a curved greatsword 1.55 m of edge, and a renderer that had to look the number up
+      // for itself would be a second copy of it. The docstring above has always said this
+      // block carries `hitbox_span_m`; until the render piece needed it, it did not.
+      hitbox_span_m: cls.hitbox_span_m !== undefined ? cls.hitbox_span_m : null,
+      arc_sweep_deg: cls.arc_sweep_deg !== undefined ? cls.arc_sweep_deg : null,
       parry_class: cls.parry_class || null,
       stance_default: 'one_handed',
       source: 'game/data/combat/movesets/' + weaponId + '.json + game/data/weapons/classes.json',

@@ -2,35 +2,58 @@
 // build-viability.mjs — RI-CHR01 §5's four viability criteria, walked over all 540 signatures.
 //
 // Named by:  RI-CHR01 method 6, RI-CHR03 method 5, RI-CMP03, and specified in full by
-//            corpus/80-methods/RI-MTH06 §A. It had never been written, and its absence pinned
-//            RI-CHR01 and RI-CHR03 at native 0 for every build that will ever exist, because
-//            both aggregate min-over-axes. That is the whole reason this file exists.
+//            corpus/80-methods/RI-MTH06 §A.
 //
-// CONTRACT (RI-MTH06 §A, verbatim):
-//   node tools/analysis/build-viability.mjs --signatures all --out reports/viability.json
-//   node tools/analysis/build-viability.mjs --signature saxhleel/fighter/given/interior --explain
-//   Exit 1 when fewer than 486 of 540 signatures are viable.
+// ROUND 2. corpus/80-methods/TOOL-COVERAGE-R1.md §1 rejected round 1 for two permissive
+// substitutions, both of which are gone:
+//
+//   Defect A — the tool printed "regions.json declares no `tier` on any region" into every
+//     report. That was FALSE. `world/regions.json` carries `danger_tier` 1–5 on all thirteen
+//     regions and `engine.js:3306` reads it into getTerrainAt(). The tier-5 cohort is now
+//     resolved from `danger_tier == 5`, through `encounters[].regions` and `hearths.json`
+//     `fog_gates[].region`, and the authored GROUP is fought as a group — which is how the only
+//     multi-enemy fight in the data (`deep-kin-war-brood`, 3 × inf_trash, deep-marshes) enters
+//     the measurement and how a tier-2 boss (`cst_sap_speaker` in blackwood) leaves it.
+//
+//   Defect B — 0 of 40 quest givers resolved to a reaction group and the tool silently fell
+//     back to the best-over-all-twelve-groups ceiling (92–94) against a maximum shipped
+//     requirement of 50, so the permanent race+upbringing bar could not fire for any signature.
+//     There is now NO fallback. An unresolvable giver group is a DATA ABSENCE: the clause is
+//     `unmeasurable`, the giver is named, the count is reported, and the tool exits non-zero.
+//     TOOL-LOOP rule 1 — "report the absence and exit non-zero with a reason. Never stub it to
+//     pass." A tool that grants itself the thing under test is the failure this project has
+//     been caught by three times.
+//
+// WHAT THE RUNNING WORLD ACTUALLY DOES, and why this file does not invent a mapping.
+//   `engine.js:1147`  merged.reaction_group = spec.reaction_group || rec.reaction_group || null
+//   `engine.js:1281`  no reaction_group  ->  base_disposition returned with term: 0
+//   `engine.js:seedDispositions()`  q.dispositions[rec.id] = rec.disposition, RAW
+//   `sim/quest/gate.js:156`  canOffer compares ctx.dispositions[giver.npc_id] to disposition_min
+// There is no faction -> reaction-group table anywhere in game/src. `the_drowned_court` is not
+// `RG-COURT` as far as the build is concerned. Deriving one here would be measuring the design
+// document (RI-MTH07, TOOL-LOOP question 3) and would re-create defect B wearing better clothes.
 //
 // WHY THIS ONE IS STATIC. RI-MTH07 says a tool that reads a data file and reports on the data
 // file is measuring the design document. That rule is binding on behavioural instruments and
 // this tool is the declared exception: RI-MTH06 §A says "No browser needed; this is a static
 // walk, and it must stay static so it can run in CI on every data change." The compromise that
 // keeps it honest is that it does not reimplement a single predicate. It imports
-//   game/src/character/sheet.js      composeCharacter, signatureOf
-//   game/src/character/derive.js     hpMaxFor, staminaMaxFor, scalingBonus, effectiveGrade
-//   game/src/character/reaction.js   derivedDisposition  (the race+upbringing terms)
+//   game/src/character/sheet.js      composeCharacter, classFamilies
+//   game/src/character/derive.js     hpMaxFor, focusMaxFor, scalingBonus, effectiveGrade
+//   game/src/character/reaction.js   derivedDisposition, raceTerm  (race+upbringing terms)
 //   game/src/sim/quest/gate.js       FactionGates, canOffer, canResolve
 //   game/src/combat/rules.js         computeDamage
 //   game/src/combat/resolve.js       mitigate
 // and asks THOSE functions the question. A second implementation that happens to agree with the
 // game proves nothing about the game; this one is wrong exactly when the game is wrong.
 //
-// CRITERION 4 IS NOT A STUB. RI-CHR01's own "How we lose" says the checker will ship with
-// criterion 4 hard-coded true because the lethality model is the expensive part, and RI-MTH06
-// method 4 is the defence: run the checker twice, once with tier-5 damage multiplied, and the
-// viable count must fall. `--fixture` is that overlay and `--self-test` runs the whole
-// falsification for you. Every free parameter of the lethality model is printed in the output
-// under `model`, because a model whose knobs are invisible is not a measurement.
+// CRITERION 4 IS NOT A STUB and the round-1 critic verified it independently (damage ×3 → 117
+// of 540 fail, ×4 → 279, ×6 → 405 — partial counts, which is what distinguishes a live model
+// from a constant). That model is preserved unchanged for singles; the group generalisation
+// reduces to it exactly when the group has one member.
+//
+// --data-root exists so a critic can re-run every claim here against a PATCHED data tree without
+// editing the repo — which is the only way to falsify the giver-group resolution path itself.
 'use strict';
 
 import fs from 'node:fs';
@@ -38,9 +61,9 @@ import path from 'node:path';
 import {
   REPO_ROOT, DATA_DIR, parseArgs, wantsHelp, usage, writeJson, log, die, EXIT,
 } from '../lib/cli.mjs';
-import { loadCharacterData, loadQuests, loadFactions, loadEnemies, rd, rdOpt } from '../lib/gamedata.mjs';
-import { composeCharacter, signatureOf, classFamilies } from '../../game/src/character/sheet.js';
-import { hpMaxFor, staminaMaxFor, focusMaxFor, scalingBonus, effectiveGrade, GRADE_COEFF } from '../../game/src/character/derive.js';
+import { loadCharacterData, loadQuests, loadEnemies, rd, rdOpt } from '../lib/gamedata.mjs';
+import { composeCharacter, classFamilies } from '../../game/src/character/sheet.js';
+import { hpMaxFor, focusMaxFor, scalingBonus, effectiveGrade, GRADE_COEFF } from '../../game/src/character/derive.js';
 import { derivedDisposition, raceTerm } from '../../game/src/character/reaction.js';
 import { FactionGates, canOffer, canResolve } from '../../game/src/sim/quest/gate.js';
 import { computeDamage } from '../../game/src/combat/rules.js';
@@ -62,31 +85,42 @@ OPTIONS
                           saxhleel/fighter/given/interior
   --explain             print the full criterion-by-criterion working for each signature walked
   --out PATH            write the JSON report (default: reports/viability.json)
-  --fixture PATH        overlay JSON applied to the lethality model before criterion 4 runs.
-                        Recognised keys:
-                          { "tier5_damage_multiplier": 10,   // enemy damage x N
-                            "tier5_hp_multiplier": 2,        // enemy HP x N
-                            "player_damage_multiplier": 0.5 }
-                        This is RI-MTH06 method 4's instrument: with a x10 overlay the viable
-                        count MUST fall, or criterion 4 is a stub and this tool fails the item.
-  --self-test           run RI-MTH06 methods 3 and 4 against this tool and exit non-zero if
-                        either falsification fails to move the number. Prints the pair.
+  --data-root PATH      walk an alternate game/data tree instead of game/data. This is how a
+                        critic falsifies the RESOLUTION paths — copy game/data, patch
+                        world/regions.json's danger_tier or an npcs/*.json reaction_group, and
+                        re-run. Nothing in the repo is touched.
+  --fixture PATH        overlay JSON applied before the criteria run. Recognised keys:
+                          { "tier5_damage_multiplier": 10,     // group damage x N
+                            "tier5_hp_multiplier": 2,          // group HP x N
+                            "player_damage_multiplier": 0.5,
+                            "quest_disposition_floor": 50,     // every giver's disposition_min
+                            "giver_reaction_group": "RG-DEEP", // or {"npc-id":"RG-..."} — grant
+                                                               //   givers a group so the
+                                                               //   race bar can be exercised
+                            "region_danger_tier": {"blackwood": 5},
+                            "impossible_resolution_gate": true,
+                            "faction_rank5_attribute_floor": 500 }
+  --self-test           run the falsification battery and exit non-zero if any check fails to
+                        move the number it is supposed to move.
   --levels 1,20,40,60   the simulated levels gates are evaluated at (RI-CHR01 M6's default)
   --target 486          viability floor for the exit code (RI-CHR01 §5's 90% of 540)
   --quiet               suppress the per-signature failure lines on stdout
 
 EXIT CODES
-  0   >= --target signatures viable
+  0   >= --target signatures viable AND nothing unmeasurable
   1   fewer than --target viable  (this is the gating condition, not an error)
   2   usage
-  20  the measurement could not be taken at all (a required data tree is absent)
+  20  the measurement could not be taken for ANY signature — a required system or data table is
+      absent. The reason and the named absences are in the report under \`unmeasurable_because\`.
 
 OUTPUT
   One record per signature. The FAILURE LIST is the product, per RI-MTH06 §A:
   { "signature": "dunmer/mage/withheld/foreign", "viable": false,
-    "criteria": { "main_quest": true, "three_factions_rank5": true,
-                  "no_unpassable_gate": false, "tier5_survivable": true },
+    "criteria": { "main_quest": "pass", "three_factions_rank5": "pass",
+                  "no_unpassable_gate": "fail", "tier5_survivable": "pass" },
     "stopped_at": { "quest": "...", "stage": 4, "gate": "...", "why": "..." } }
+  Each criterion is one of "pass" | "fail" | "unmeasurable". A signature is viable only when all
+  four are "pass"; "unmeasurable" is never counted as either a pass or a build failure.
 `;
 
 const args = parseArgs();
@@ -96,19 +130,27 @@ const QUIET = !!args.quiet;
 const EXPLAIN = !!args.explain;
 const LEVELS = String(args.levels || '1,20,40,60').split(',').map((n) => parseInt(n, 10)).filter(Number.isFinite);
 const TARGET = Number.isFinite(Number(args.target)) ? Number(args.target) : 486;
+const ROOT = args['data-root'] ? path.resolve(String(args['data-root'])) : DATA_DIR;
+
+const PASS = 'pass', FAIL = 'fail', UNMEASURABLE = 'unmeasurable';
+/** FAIL beats UNMEASURABLE beats PASS: a definite negative is stronger than an unknown. */
+function worst(a, b) {
+  if (a === FAIL || b === FAIL) return FAIL;
+  if (a === UNMEASURABLE || b === UNMEASURABLE) return UNMEASURABLE;
+  return PASS;
+}
 
 // ---------------------------------------------------------------------------------------------
 // Data
 // ---------------------------------------------------------------------------------------------
-if (!fs.existsSync(DATA_DIR)) {
-  die(EXIT.MISSING_GAME, `game/data does not exist at ${DATA_DIR} — nothing to walk.`);
+if (!fs.existsSync(ROOT)) {
+  die(EXIT.MISSING_GAME, `data root does not exist at ${ROOT} — nothing to walk.`);
 }
-const data = loadCharacterData();
-const quests = loadQuests();
-const factionDoc = loadFactions();
-const enemies = loadEnemies();
+const data = loadCharacterData(ROOT);
+const quests = loadQuests(ROOT);
+const enemies = loadEnemies(ROOT);
 const weaponClasses = (() => {
-  const doc = rdOpt('weapons/classes.json');
+  const doc = rdOpt('weapons/classes.json', null, ROOT);
   if (!doc) return [];
   const c = doc.classes;
   return Array.isArray(c) ? c : Object.values(c || {});
@@ -116,25 +158,21 @@ const weaponClasses = (() => {
 
 let gates = null;
 try {
-  gates = new FactionGates(rd('quests/faction-gates.json'));
+  gates = new FactionGates(rd('quests/faction-gates.json', ROOT));
 } catch (e) {
   die(EXIT.MEASUREMENT_FAIL,
-    'game/data/quests/faction-gates.json did not construct through the SHIPPING FactionGates ' +
+    'quests/faction-gates.json did not construct through the SHIPPING FactionGates ' +
     'validator, so criterion 2 cannot be evaluated for any signature: ' + e.message);
 }
 
 // ---------------------------------------------------------------------------------------------
 // The 540-cell grid. RI-CHR01 §5: race x class_family x birthsign_family x upbringing_class.
-// A representative concrete start is chosen per cell, deterministically (first in shipped
-// order), because the signature is what the world can tell apart — two starts inside one cell
-// are variations by the item's own definition.
 // ---------------------------------------------------------------------------------------------
 const RACES = data.races.races.map((r) => r.id);
 const FAMILIES = classFamilies(data);
 const SIGN_FAMILIES = [...new Set(data.birthsigns.signs.map((s) => s.family))];
 const UPBRINGINGS = data.reactions.upbringings;
 const UP_CLASSES = [...new Set(UPBRINGINGS.map((u) => u.signature_class))];
-const GROUPS = data.reactions.reaction_groups.map((g) => g.key);
 
 function representativeStart(race, family, signFamily, upClass) {
   const classDef = data.classes.classes.find((c) => c.family === family);
@@ -144,34 +182,23 @@ function representativeStart(race, family, signFamily, upClass) {
   return { race, classId: classDef.id, birthsign: sign.id, upbringing: up.id };
 }
 
-function gridKey(sig) {
-  return `${sig.race}/${sig.class_family}/${sig.birthsign_family}/${sig.upbringing_class}`;
-}
-
 // ---------------------------------------------------------------------------------------------
-// The projection model — what a character of this signature can have at a simulated level.
-//
-// Declared, not hidden. Every number below is a MODEL PARAMETER and appears in the report's
-// `model` block. The projection is deliberately PLAYER-OPTIMAL: viability asks whether ANY
-// route exists, so a gate this model cannot pass is a gate no route passes, and a signature
-// this tool fails is failed by arithmetic rather than by pessimism.
+// The projection model. Every number is a MODEL PARAMETER and appears in the report's `model`
+// block. The projection is deliberately PLAYER-OPTIMAL: viability asks whether ANY route exists.
 // ---------------------------------------------------------------------------------------------
 const MODEL = {
-  attribute_points_per_level: 1,          // Souls-side level-up, one point (levels.json §soul curve)
-  attribute_cap: 99,                      // derive.js clamps every attribute to 1..99
+  attribute_points_per_level: 1,
+  attribute_cap: 99,
   skill_cap: 100,
-  // Skills rise by USE, not by level, so the binding constraint is not time but BREADTH: a
-  // character practises a limited number of skills to a high value. `skills_masterable_at`
-  // is how many skills the projection is willing to carry to `skill_cap` at each level band.
-  // The values are the model's, are player-optimal, and are printed so a critic can dispute
-  // the number rather than have to discover it.
   skills_masterable_at: { 1: 0, 20: 3, 40: 5, 55: 6, 60: 6 },
   skill_ceiling_at: { 1: 25, 20: 55, 40: 80, 55: 95, 60: 100 },
-  // Disposition: the ceiling a player can reach on top of the permanent race+upbringing term.
-  // RI-DLG04 owns the terms; this is the sum of the ones a player can actually move
-  // (Personality, faction rank, reputation, persuasion, gifts). It is an UPPER bound.
+  // The disposition a player can BUY on top of the permanent race+upbringing term: Personality,
+  // faction rank, reputation, persuasion, gifts. RI-DLG04 owns the terms; this is an UPPER bound
+  // on their sum, so a gate this model cannot pass is a gate no play can pass.
   disposition_other_terms_ceiling: 40,
-  disposition_base: 50,
+  // The base a giver starts from when their NPC record does not state one. Only used when a
+  // record exists but omits `disposition`; a giver with NO record is unmeasurable, not defaulted.
+  disposition_base_when_record_silent: 50,
 };
 
 const FAMILY_ATTRIBUTE_PRIORITY = {
@@ -183,7 +210,6 @@ const FAMILY_ATTRIBUTE_PRIORITY = {
   root: ['willpower', 'intellect', 'endurance', 'vigour'],
 };
 
-/** Attributes at simulated level L, with `points` spent greedily on `want` then family order. */
 function projectAttributes(base, family, level, want = []) {
   const out = { ...base };
   let points = Math.max(0, (level - 1) * MODEL.attribute_points_per_level);
@@ -205,11 +231,6 @@ function bandFor(level, table) {
   return v;
 }
 
-/**
- * Skills at simulated level L. `want` names the skills the character is trying to raise; the
- * first `skills_masterable_at(L)` of them go to the level's ceiling, the rest stay at creation.
- * A skill's creation value is never lowered.
- */
 function projectSkills(base, level, want = []) {
   const out = { ...base };
   const n = bandFor(level, MODEL.skills_masterable_at);
@@ -225,40 +246,16 @@ function projectSkills(base, level, want = []) {
   return out;
 }
 
-/**
- * The disposition CEILING for this character with a given reaction group. This is the number
- * that makes a gate permanently unpassable rather than merely not-yet-passed: the race term and
- * the upbringing term are set at creation and never move, so if base + race + upbringing + every
- * movable term is still below a `requires.disposition`, no play can reach it. Computed through
- * the SHIPPING derivedDisposition so the ceiling is the game's arithmetic and not this file's.
- */
-function dispositionCeiling(race, upbringing, birthsign, group) {
-  const d = derivedDisposition(data, {
-    group, race, upbringing, birthsign,
-    baseDisposition: MODEL.disposition_base,
-    otherTerms: MODEL.disposition_other_terms_ceiling,
-  });
-  return d.value;
-}
-
-/** The best (highest) disposition ceiling this character can reach with ANY group — used when
- *  a quest giver's reaction group is not recorded on the quest and must be inferred. */
-function bestDispositionCeiling(race, upbringing, birthsign) {
-  let best = -1, bestGroup = null;
-  for (const g of GROUPS) {
-    const v = dispositionCeiling(race, upbringing, birthsign, g);
-    if (v > best) { best = v; bestGroup = g; }
-  }
-  return { value: best, group: bestGroup };
-}
-
-/** The reaction group a quest giver belongs to, if the NPC records say so; else null. */
-const npcGroupById = (() => {
+// ---------------------------------------------------------------------------------------------
+// Giver resolution — DEFECT B's replacement. No fallback, no best-over-all-groups, no
+// faction->group inference. Exactly the field the engine reads, and an honest absence otherwise.
+// ---------------------------------------------------------------------------------------------
+const npcRecords = (() => {
   const map = new Map();
-  const dir = path.join(DATA_DIR, 'npcs');
+  const dir = path.join(ROOT, 'npcs');
   if (!fs.existsSync(dir)) return map;
   const walk = (d) => {
-    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+    for (const e of fs.readdirSync(d, { withFileTypes: true }).sort((a, b) => (a.name < b.name ? -1 : 1))) {
       const p = path.join(d, e.name);
       if (e.isDirectory()) { walk(p); continue; }
       if (!e.name.endsWith('.json')) continue;
@@ -266,7 +263,7 @@ const npcGroupById = (() => {
       const list = Array.isArray(doc) ? doc : (doc.npcs || doc.records || []);
       if (!Array.isArray(list)) continue;
       for (const n of list) {
-        if (n && n.id && (n.reaction_group || n.group)) map.set(n.id, n.reaction_group || n.group);
+        if (n && n.id && !map.has(n.id)) map.set(n.id, { ...n, __file: path.relative(ROOT, p) });
       }
     }
   };
@@ -274,29 +271,147 @@ const npcGroupById = (() => {
   return map;
 })();
 
+const KNOWN_GROUPS = new Set(Object.keys(data.reactions.matrix || {}));
+
+/**
+ * The reaction group and base disposition of a quest giver, by the RUNNING BUILD's own rule:
+ * `spec.reaction_group || record.reaction_group || null` (engine.js:1147), and
+ * `q.dispositions[id] = record.disposition` (engine.js seedDispositions()).
+ *
+ * Returns one of
+ *   { status: 'resolved',   group, base }
+ *   { status: 'no_record',  why }   — nobody by that id exists in game/data/npcs/**
+ *   { status: 'no_group',   why, faction, base }   — the person exists; the race term does not
+ * The two absences are reported separately because they are different defects with different
+ * owners: one is a missing person, the other is a missing field on a person who is present.
+ */
+function resolveGiver(npcId) {
+  const forced = FIXTURE && FIXTURE.giver_reaction_group;
+  if (forced) {
+    const g = typeof forced === 'string' ? forced : forced[npcId];
+    if (g && KNOWN_GROUPS.has(g)) {
+      const rec = npcRecords.get(npcId);
+      return {
+        status: 'resolved', group: g, fixture: true,
+        base: (rec && typeof rec.disposition === 'number') ? rec.disposition : MODEL.disposition_base_when_record_silent,
+      };
+    }
+  }
+  const rec = npcRecords.get(npcId);
+  if (!rec) {
+    return {
+      status: 'no_record',
+      why: `no NPC record for "${npcId}" anywhere in npcs/**. The engine's seedDispositions() ` +
+           `seeds nothing for this id, so gate.js canOffer() reads disposition 0 for every ` +
+           `signature alike — the giver clause carries no race information and cannot be ` +
+           `evaluated for the permanent race+upbringing bar.`,
+    };
+  }
+  const group = rec.reaction_group || rec.group || null;
+  if (!group || !KNOWN_GROUPS.has(group)) {
+    return {
+      status: 'no_group', faction: rec.faction || null,
+      base: typeof rec.disposition === 'number' ? rec.disposition : MODEL.disposition_base_when_record_silent,
+      why: `NPC record ${rec.__file} for "${npcId}" carries no reaction_group` +
+           (rec.faction ? ` (it carries faction "${rec.faction}", and nothing in game/src maps a ` +
+             `faction to a reaction group — engine.js:1147 reads the reaction_group field and ` +
+             `nothing else)` : '') +
+           `. derivedDisposition() cannot be called without a group, so the race and upbringing ` +
+           `terms have no value here and the permanent bar cannot be evaluated.`,
+    };
+  }
+  return {
+    status: 'resolved', group,
+    base: typeof rec.disposition === 'number' ? rec.disposition : MODEL.disposition_base_when_record_silent,
+  };
+}
+
+/** The permanent ceiling: base + race term + upbringing term + every movable term at maximum. */
+function dispositionCeiling(base, race, upbringing, birthsign, group) {
+  return derivedDisposition(data, {
+    group, race, upbringing, birthsign,
+    baseDisposition: base,
+    otherTerms: MODEL.disposition_other_terms_ceiling,
+  }).value;
+}
+
 // ---------------------------------------------------------------------------------------------
-// Criterion 4 — the lethality model. THE PART RI-CHR01 SAYS WILL BE STUBBED.
+// Criterion 4 — the tier-5 cohort, resolved from the world the build actually reads.
 //
-// "survive the tier-5 region at level >= 55 in <= 3 attempts per encounter in the sim model".
-//
-// DECLARED DEFECT IN THE DATA, not papered over: `game/data/world/regions.json` carries no
-// `tier` field on any of its 13 regions, and no encounter in `world/encounters.json` declares a
-// tier either. There is therefore no "tier-5 region" in the shipped world to point at. What
-// exists is an enemy tier ladder (`trash` / `elite` / `prop`), so this tool defines the tier-5
-// cohort as EVERY NON-PROP ENEMY AT THE HIGHEST SHIPPED TIER and prints the cohort it used in
-// `model.tier5_cohort`. When regions grow a tier field this resolves to the real thing; until
-// then the substitution is visible on every line of output rather than assumed.
-//
-// The exchange is frame-accurate at 60 Hz and runs through the shipping computeDamage/mitigate.
+// `world/regions.json` declares `danger_tier` on every region and `engine.js:3306` consumes it
+// in getTerrainAt(). "The tier-5 region" therefore HAS a referent. The cohort is every fight
+// authored in a region whose danger_tier is 5, reached two ways:
+//   - `world/encounters.json` encounters[].regions  -> an authored GROUP with per-member counts
+//   - `world/hearths.json`    fog_gates[].region    -> a boss, fought alone
+// Where a tier-5 region has no fight authored in it, that region is NAMED in the report as thin
+// rather than the cohort being widened until it is populated (TOOL-COVERAGE-R1 §1 ruling).
 // ---------------------------------------------------------------------------------------------
-const TIER_ORDER = ['trash', 'elite', 'boss'];
-const tier5Cohort = (() => {
-  const real = Object.values(enemies).filter((e) => e.tier && e.tier !== 'prop' && e.archetype !== 'DUMMY' && e.archetype !== 'FIXTURE');
-  if (!real.length) return [];
-  let best = null;
-  for (const t of TIER_ORDER) if (real.some((e) => e.tier === t)) best = t;
-  return real.filter((e) => e.tier === best);
+const regionsDoc = rdOpt('world/regions.json', null, ROOT);
+const REGION_TIER = (() => {
+  const m = new Map();
+  const list = (regionsDoc && (regionsDoc.regions || regionsDoc)) || [];
+  for (const r of (Array.isArray(list) ? list : Object.values(list))) {
+    if (r && r.id && Number.isFinite(r.danger_tier)) m.set(r.id, r.danger_tier);
+  }
+  return m;
 })();
+
+function regionTier(id) {
+  const fx = FIXTURE && FIXTURE.region_danger_tier;
+  if (fx && Number.isFinite(fx[id])) return fx[id];
+  return REGION_TIER.has(id) ? REGION_TIER.get(id) : null;
+}
+
+const encountersDoc = rdOpt('world/encounters.json', null, ROOT);
+const hearthsDoc = rdOpt('world/hearths.json', null, ROOT);
+
+/** Cohort resolution is a function of FIXTURE (region_danger_tier), so it is recomputed. */
+function resolveTier5Cohort() {
+  const tier5Regions = [];
+  for (const id of REGION_TIER.keys()) if (regionTier(id) === 5) tier5Regions.push(id);
+  const fx = FIXTURE && FIXTURE.region_danger_tier;
+  if (fx) for (const id of Object.keys(fx)) if (fx[id] === 5 && !tier5Regions.includes(id)) tier5Regions.push(id);
+  tier5Regions.sort();
+  const inTier5 = new Set(tier5Regions);
+
+  const cohort = [];
+  const unresolvedRegionNames = new Set();
+  const covered = new Set();
+
+  for (const e of (encountersDoc && encountersDoc.encounters) || []) {
+    const regs = e.regions || [];
+    for (const r of regs) if (!REGION_TIER.has(r)) unresolvedRegionNames.add(`${e.id}:${r}`);
+    const hit = regs.filter((r) => inTier5.has(r));
+    if (!hit.length) continue;
+    const members = [];
+    for (const m of e.members || []) {
+      const sb = enemies[m.statblock];
+      if (!sb) { unresolvedRegionNames.add(`${e.id}:statblock:${m.statblock}`); continue; }
+      members.push({ statblock: m.statblock, role: m.role || null, count: Math.max(1, m.count || 1) });
+    }
+    if (!members.length) continue;
+    hit.forEach((r) => covered.add(r));
+    cohort.push({ source: 'encounter', id: e.id, regions: hit, members });
+  }
+
+  for (const g of (hearthsDoc && hearthsDoc.fog_gates) || []) {
+    if (!g || !g.region) continue;
+    if (!REGION_TIER.has(g.region)) unresolvedRegionNames.add(`${g.id}:${g.region}`);
+    if (!inTier5.has(g.region)) continue;
+    const sb = enemies[g.boss];
+    if (!sb) { unresolvedRegionNames.add(`${g.id}:statblock:${g.boss}`); continue; }
+    covered.add(g.region);
+    cohort.push({ source: 'fog_gate', id: g.id, regions: [g.region], members: [{ statblock: g.boss, role: 'boss', count: 1 }] });
+  }
+
+  cohort.sort((a, b) => (a.id < b.id ? -1 : 1));
+  return {
+    tier5_regions: tier5Regions,
+    tier5_regions_with_no_authored_fight: tier5Regions.filter((r) => !covered.has(r)),
+    unresolved_region_or_statblock_names: [...unresolvedRegionNames].sort(),
+    cohort,
+  };
+}
 
 const LETHALITY = {
   frames_per_second: 60,
@@ -309,9 +424,15 @@ const LETHALITY = {
   // difficulty and never the RANKING between signatures — which is what this criterion is for.
   player_avoidance: 0.55,
   attempts_allowed: 3,
-  // Windows where the player is not attacking (approach, reposition, heal) as a fraction of
-  // the fight. Applied to player output only.
   player_uptime: 0.55,
+  // How many members of an authored group can be brought to bear on the player at once. The
+  // group is fought as a group (RI-CHR01 criterion 4's "encounter", not "enemy"); focus order is
+  // player-optimal, highest damage-per-hitpoint first, because viability asks whether ANY route
+  // exists. Reduces EXACTLY to the round-1 single-enemy arithmetic when a group has one member,
+  // which is why the critic's independently measured ×3/×4/×6 sweep still reproduces.
+  simultaneous_attackers_cap: 3,
+  attempts_model: 'cumulative survival windows: attempts = ceil(damage the player must absorb ' +
+                  'over the whole encounter / the effective pool one attempt provides)',
 };
 
 const FAMILY_WEAPON_SKILL = {
@@ -343,26 +464,19 @@ function pickWeaponClass(family) {
       if (wc) return { wc, skill };
     }
   }
-  // Every family must be able to hit something. Fall back to the lightest shipped class so a
-  // caster with no castable spell is measured swinging a dagger rather than silently scored as
-  // unable to fight — and record that we did.
   const wc = weaponClasses.slice().sort((a, b) => (a.attack_rating || 0) - (b.attack_rating || 0))[0];
   return wc ? { wc, skill: 'blades', fallback: true } : null;
 }
 
 // --- the caster path -------------------------------------------------------------------------
-// A Mage- or Root-family start measured swinging a dagger is not a measurement of that start,
-// it is a measurement of this tool's laziness — and it would produce exactly the "Mage and Root
-// families are unviable" result RI-CHR01 warns criterion 4 exists to distinguish from a real
-// lethality problem. So the caster is measured casting, out of the shipped spell book.
 const magicSpells = (() => {
-  const doc = rdOpt('magic/spells.json');
+  const doc = rdOpt('magic/spells.json', null, ROOT);
   if (!doc) return [];
   const s = doc.spells || doc;
   return Array.isArray(s) ? s : Object.values(s || {});
 })();
 const magicEffects = (() => {
-  const doc = rdOpt('magic/effects.json');
+  const doc = rdOpt('magic/effects.json', null, ROOT);
   const e = doc && (doc.effects || doc);
   const list = Array.isArray(e) ? e : Object.values(e || {});
   const map = new Map();
@@ -370,7 +484,6 @@ const magicEffects = (() => {
   return map;
 })();
 
-/** Damage a single cast of `spell` lands, through effects.json's output_per_point. */
 function spellDamage(spell) {
   let total = 0;
   for (const eff of spell.effects || []) {
@@ -382,7 +495,6 @@ function spellDamage(spell) {
   return total;
 }
 
-/** The best damaging spell this character can actually cast, given its casting skill. */
 function pickSpell(sheet) {
   const skills = sheet.skills || {};
   const best = { spell: null, dmg: 0 };
@@ -397,21 +509,9 @@ function pickSpell(sheet) {
   return best.spell ? best : null;
 }
 
-/**
- * One encounter, resolved as a frame-accurate damage race through the shipping damage
- * functions. Returns { survivable, attempts, ttk_s, ttd_s, ... }.
- */
-function fightEncounter(sheet, enemy, fixture) {
-  const fx = fixture || {};
-  const dmgMul = Number.isFinite(fx.tier5_damage_multiplier) ? fx.tier5_damage_multiplier : 1;
-  const hpMul = Number.isFinite(fx.tier5_hp_multiplier) ? fx.tier5_hp_multiplier : 1;
-  const pDmgMul = Number.isFinite(fx.player_damage_multiplier) ? fx.player_damage_multiplier : 1;
-
-  // --- player output, per shipping computeDamage + the RI-PRG03 grade shift ---
-  // A caster is measured casting and a fighter swinging; whichever route the signature's family
-  // actually has, and the better of the two if it has both.
+/** The player's damage routes against one defender's armour. Shipping computeDamage/mitigate. */
+function playerRoutes(sheet, defender, pDmgMul) {
   const routes = [];
-
   const pick = pickWeaponClass(sheet.family);
   if (pick) {
     const { wc, skill } = pick;
@@ -421,17 +521,15 @@ function fightEncounter(sheet, enemy, fixture) {
     const grade = effectiveGrade('B', skillValue, 40);
     const scale = 1 + scalingBonus(govValue) * (GRADE_COEFF[grade] || 0);
     const raw = computeDamage(wc.mv_r1 || 1, wc.attack_rating || 0, 1.0, 0) * scale * pDmgMul;
-    const per = mitigate({ armourRating: enemy.armour_rating || 0, wards: null, mitigation: 1 }, raw, 'physical');
+    const per = mitigate({ armourRating: defender.armour_rating || 0, wards: null, mitigation: 1 }, raw, 'physical');
     const frames = wc.r1_total || 42;
     routes.push({
       route: 'weapon', weapon_class: wc.name, skill, skill_value: skillValue,
-      governing: gov, governing_value: govValue, grade,
-      per_hit: per, frames,
+      governing: gov, governing_value: govValue, grade, per_hit: per, frames,
       dps: (per / (frames / LETHALITY.frames_per_second)) * LETHALITY.player_uptime,
       fallback: !!pick.fallback,
     });
   }
-
   const sp = pickSpell(sheet);
   if (sp) {
     const school = sp.spell.school || (sp.spell.schools && sp.spell.schools[0]) || 'sorcery';
@@ -440,73 +538,115 @@ function fightEncounter(sheet, enemy, fixture) {
     const skillValue = sheet.skills[school] || sheet.skills.sorcery || 5;
     const scale = 1 + scalingBonus(govValue);
     const raw = sp.dmg * scale * pDmgMul;
-    // Magic is NOT reduced by the flat armour term — mitigate()'s `flat` applies to physical
-    // only — so this goes through the same function with the school's kind.
-    const per = mitigate({ armourRating: enemy.armour_rating || 0, wards: null, mitigation: 1 }, raw, school);
+    const per = mitigate({ armourRating: defender.armour_rating || 0, wards: null, mitigation: 1 }, raw, school);
     const frames = (sp.spell.frames && sp.spell.frames.total) || 37;
-    // Focus is the caster's real constraint: a spell you cannot pay for does not land.
     const focusMax = focusMaxFor(sheet.attributes.willpower || 10);
     const cost = (sp.spell.focus_cost && (sp.spell.focus_cost.great_staff ?? sp.spell.focus_cost.none))
       ?? sp.spell.focus_base ?? 5;
     const castsAffordable = cost > 0 ? Math.floor(focusMax / cost) : Infinity;
     routes.push({
       route: 'spell', spell: sp.spell.id, school, skill_value: skillValue,
-      governing: gov, governing_value: govValue,
-      per_hit: per, frames,
+      governing: gov, governing_value: govValue, per_hit: per, frames,
       dps: (per / (frames / LETHALITY.frames_per_second)) * LETHALITY.player_uptime,
       focus_max: focusMax, focus_cost: cost, casts_affordable: castsAffordable,
-      damage_ceiling_per_focus_bar: per * castsAffordable,
     });
   }
+  return routes;
+}
 
-  if (!routes.length) {
-    return { survivable: false, reason: 'no weapon class and no castable damaging spell in shipped data' };
-  }
-  const bestRoute = routes.slice().sort((a, b) => b.dps - a.dps)[0];
-  const perSwing = bestRoute.per_hit;
-  const playerDps = bestRoute.dps;
-
-  const enemyHp = (enemy.hp || 1) * hpMul;
-  const ttkFrames = playerDps > 0 ? (enemyHp / playerDps) * LETHALITY.frames_per_second : Infinity;
-
-  // --- enemy output, same functions, the player's kit on the receiving side ---
+/** One statblock's incoming dps against the player's kit, through the shipping functions. */
+function enemyDpsOf(enemy, dmgMul) {
   const playerBody = {
     armourRating: LETHALITY.player_armour_rating, wards: null,
     mitigation: LETHALITY.player_ward, wardCharges: 0,
   };
   const atks = Object.values(enemy.attacks || {});
-  let enemyDps = 0;
-  if (atks.length) {
-    let dmgSum = 0, frameSum = 0;
-    for (const a of atks) {
-      const raw = computeDamage(a.motion_value || 1, (enemy.weapon && enemy.weapon.attack_rating) || 0, 1.0, 0) * dmgMul;
-      dmgSum += mitigate({ ...playerBody }, raw, 'physical');
-      frameSum += (a.startup || 0) + (a.active || 0) + (a.recovery || 0);
+  if (!atks.length) return 0;
+  let dmgSum = 0, frameSum = 0;
+  for (const a of atks) {
+    const raw = computeDamage(a.motion_value || 1, (enemy.weapon && enemy.weapon.attack_rating) || 0, 1.0, 0) * dmgMul;
+    dmgSum += mitigate({ ...playerBody }, raw, 'physical');
+    frameSum += (a.startup || 0) + (a.active || 0) + (a.recovery || 0);
+  }
+  const perFrame = frameSum > 0 ? dmgSum / frameSum : 0;
+  return perFrame * LETHALITY.frames_per_second * (1 - LETHALITY.player_avoidance);
+}
+
+/**
+ * ONE AUTHORED ENCOUNTER, fought as the group it is authored as.
+ *
+ * The player focuses one member at a time, highest damage-per-hitpoint first (player-optimal:
+ * viability asks whether any route exists). Every member that is still alive is still swinging,
+ * up to `simultaneous_attackers_cap`. Damage absorbed over the encounter is
+ *   Σ_i  dps_i × (time at which member i dies)
+ * and `attempts` is that total divided by the pool one attempt provides. With a single member
+ * this is exactly ceil(ttk / ttd) — the round-1 arithmetic the critic's ×3/×4/×6 sweep measured.
+ */
+function fightEncounter(sheet, entry, fixture) {
+  const fx = fixture || {};
+  const dmgMul = Number.isFinite(fx.tier5_damage_multiplier) ? fx.tier5_damage_multiplier : 1;
+  const hpMul = Number.isFinite(fx.tier5_hp_multiplier) ? fx.tier5_hp_multiplier : 1;
+  const pDmgMul = Number.isFinite(fx.player_damage_multiplier) ? fx.player_damage_multiplier : 1;
+
+  // Expand the authored group.
+  const units = [];
+  for (const m of entry.members) {
+    const sb = enemies[m.statblock];
+    if (!sb) continue;
+    for (let i = 0; i < m.count; i++) {
+      units.push({ statblock: m.statblock, hp: (sb.hp || 1) * hpMul, dps: enemyDpsOf(sb, dmgMul), armour_rating: sb.armour_rating || 0 });
     }
-    const perFrame = frameSum > 0 ? dmgSum / frameSum : 0;
-    enemyDps = perFrame * LETHALITY.frames_per_second * (1 - LETHALITY.player_avoidance);
+  }
+  if (!units.length) return { survivable: false, reason: `encounter ${entry.id} expands to no live statblock` };
+
+  // The player's route is chosen against the toughest armour in the group, then applied to all —
+  // a character does not swap kit mid-fight.
+  const hardest = units.slice().sort((a, b) => b.armour_rating - a.armour_rating)[0];
+  const routes = playerRoutes(sheet, hardest, pDmgMul);
+  if (!routes.length) {
+    return { survivable: false, reason: 'no weapon class and no castable damaging spell in shipped data' };
+  }
+  const best = routes.slice().sort((a, b) => b.dps - a.dps)[0];
+  const P = best.dps;
+  if (!(P > 0)) {
+    return { survivable: false, encounter: entry.id, reason: 'player deals no damage to this cohort', route: best.route, routes };
   }
 
-  const hpPool = hpMaxFor(sheet.attributes.vigour || 10);
-  const effectivePool = hpPool * (1 + LETHALITY.flask_charges * LETHALITY.flask_heal_fraction);
-  const ttdFrames = enemyDps > 0 ? (effectivePool / enemyDps) * LETHALITY.frames_per_second : Infinity;
+  // Player-optimal focus order.
+  const order = units.slice().sort((a, b) => (b.dps / b.hp) - (a.dps / a.hp));
+  const cap = LETHALITY.simultaneous_attackers_cap;
+  let cumHp = 0, absorbed = 0;
+  order.forEach((u, i) => {
+    cumHp += u.hp;
+    const tDeath = cumHp / P;
+    // Only the first `cap` members are in reach at any moment; a member beyond the cap starts
+    // swinging once one ahead of it dies, so its exposure is shortened by that member's life.
+    const tStart = i >= cap ? (order.slice(0, i - cap + 1).reduce((s, x) => s + x.hp, 0)) / P : 0;
+    absorbed += u.dps * Math.max(0, tDeath - tStart);
+  });
 
-  // "<= 3 attempts per encounter": each attempt the player gets through `ttd` worth of fight,
-  // so `attempts = ceil(ttk / ttd)` is how many lives the exchange costs at this configuration.
-  const attempts = ttdFrames === Infinity ? 1 : Math.ceil(ttkFrames / ttdFrames);
+  const hpPool = hpMaxFor(sheet.attributes.vigour || 10);
+  const perAttemptPool = hpPool * (1 + LETHALITY.flask_charges * LETHALITY.flask_heal_fraction);
+  const attempts = perAttemptPool > 0 ? Math.max(1, Math.ceil(absorbed / perAttemptPool)) : Infinity;
+  const totalTime = cumHp / P;
+
   return {
-    survivable: attempts <= LETHALITY.attempts_allowed && Number.isFinite(ttkFrames),
+    survivable: attempts <= LETHALITY.attempts_allowed && Number.isFinite(totalTime),
     attempts,
-    enemy: enemy.id,
-    route: bestRoute.route,
+    encounter: entry.id,
+    source: entry.source,
+    regions: entry.regions,
+    group: entry.members.map((m) => `${m.count}x ${m.statblock}`).join(' + '),
+    group_size: units.length,
+    route: best.route,
     routes,
-    per_swing: +perSwing.toFixed(1),
-    player_dps: +playerDps.toFixed(2),
-    enemy_dps: +enemyDps.toFixed(2),
+    player_dps: +P.toFixed(2),
+    group_dps: +units.reduce((s, u) => s + u.dps, 0).toFixed(2),
+    group_hp: +cumHp.toFixed(0),
+    damage_absorbed: +absorbed.toFixed(0),
+    pool_per_attempt: +perAttemptPool.toFixed(0),
     hp_pool: hpPool,
-    ttk_s: Number.isFinite(ttkFrames) ? +(ttkFrames / 60).toFixed(1) : null,
-    ttd_s: Number.isFinite(ttdFrames) ? +(ttdFrames / 60).toFixed(1) : null,
-    fallback_weapon: !!(pick && pick.fallback),
+    encounter_s: +totalTime.toFixed(1),
   };
 }
 
@@ -518,7 +658,7 @@ function ctxAt(sheet, level, want = {}) {
   const skills = projectSkills(sheet.base_skills, level, want.skills || []);
   return {
     attributes, skills, level,
-    reputation: {}, ranks: {},
+    reputation: {}, ranks: {}, dispositions: {},
     topicsKnown: new Set(), knowledge: new Set(), items: new Set(), spellEffects: new Set(),
     completed: new Set(), locked: new Set(), worldFlags: new Set(),
     gold: 0, disposition: 0,
@@ -526,12 +666,9 @@ function ctxAt(sheet, level, want = {}) {
 }
 
 /**
- * Best-case context: everything a player can earn is granted, so only PERMANENT bars remain.
- *
- * `forQuest` matters. Prerequisite quests are a ROUTE, not a bar — a quest that "requires
- * Q-SOUL-02 first" is passable by anyone who does Q-SOUL-02. So every other quest is marked
- * completed, EXCEPT the ones this quest is mutually exclusive with, which are the real bar:
- * a choice that closes a route closes it permanently, and that is what criterion 3 is for.
+ * Best-case context: everything a player can EARN is granted, so only PERMANENT bars remain.
+ * Note what is NOT granted: the giver's disposition. That is supplied per-quest, from the
+ * character's own ceiling with the giver's own reaction group, and it is the whole point.
  */
 function bestCaseCtx(sheet, level, want = {}, forQuest = null) {
   const c = ctxAt(sheet, level, want);
@@ -539,9 +676,6 @@ function bestCaseCtx(sheet, level, want = {}, forQuest = null) {
     const excluded = new Set([forQuest.id, ...(forQuest.mutually_exclusive_with || [])]);
     c.completed = new Set(quests.map((q) => q.id).filter((id) => !excluded.has(id)));
   }
-  // Topics, knowledge, items, spell effects and world flags are all earnable by play. Granting
-  // them is what turns this walk into a test of what is IMPOSSIBLE rather than of what is
-  // merely not-yet-done — which is exactly what "no gate with no route it can take" asks.
   c.topicsKnown = { has: () => true };
   c.knowledge = { has: () => true };
   c.items = { has: () => true };
@@ -550,58 +684,21 @@ function bestCaseCtx(sheet, level, want = {}, forQuest = null) {
   c.gold = 1e9;
   c.reputation = new Proxy({}, { get: () => 100 });
   c.ranks = new Proxy({}, { get: () => 7 });
-  c.disposition = bestDispositionCeiling(sheet.race, sheet.upbringing, sheet.birthsign).value;
   return c;
 }
 
-function criterionMainQuest(sheet) {
-  const mains = quests.filter((q) => q.category === 'main');
-  if (!mains.length) {
-    return {
-      ok: false, unmeasurable: true,
-      why: `no quest in game/data/quests/** carries category:"main" for the main-quest walk — ` +
-           `criterion 1 has nothing to walk. ${quests.length} quests are shipped; categories present: ` +
-           [...new Set(quests.map((q) => q.category || '(none)'))].sort().join(', '),
-    };
-  }
-  for (const level of LEVELS) {
-    const passedAll = mains.every((q) => questClearable(sheet, q, level).ok);
-    if (passedAll) return { ok: true, at_level: level, quests: mains.length };
-  }
-  // report the first blocker at the top level
-  const top = LEVELS[LEVELS.length - 1];
-  for (const q of mains) {
-    const r = questClearable(sheet, q, top);
-    if (!r.ok) return { ok: false, ...r, quests: mains.length };
-  }
-  return { ok: false, why: 'unreachable' };
-}
-
-/**
- * The fixture overlay, applied to the DATA the criteria walk rather than to their verdicts.
- *
- * This exists because RI-MTH06 method 4 only falsifies criterion 4, and a gate walk that passes
- * every signature is indistinguishable from a gate walk that is not running at all — the exact
- * "probe that cannot fail" failure the protocol names. Each of the four criteria therefore has
- * an overlay key that must break it, and `--self-test` fires all four.
- */
 let FIXTURE = null;
 function withFixture(f, fn) { const prev = FIXTURE; FIXTURE = f; try { return fn(); } finally { FIXTURE = prev; } }
-
 function fxNum(key) {
   const v = FIXTURE && FIXTURE[key];
   return Number.isFinite(v) ? v : null;
 }
 
 function questClearable(sheet, q, level) {
-  // Overlay: raise every giver's disposition floor, which no play can reach. Criterion 1 and 3
-  // must both go red. If they do not, they are not reading the giver gate.
   const dispFloor = fxNum('quest_disposition_floor');
   if (dispFloor !== null) {
     q = { ...q, giver: { ...(q.giver || { npc_id: '(none)' }), disposition_min: dispFloor } };
   }
-  // Overlay: require a knowledge token nothing grants. `bestCaseCtx` hands out knowledge
-  // freely, so this one proves the RESOLUTION walk is live rather than short-circuited.
   if (FIXTURE && FIXTURE.impossible_resolution_gate) {
     q = {
       ...q,
@@ -613,6 +710,7 @@ function questClearable(sheet, q, level) {
   return questClearableInner(sheet, q, level);
 }
 
+/** Returns { status: pass|fail|unmeasurable, stopped_at?, why?, giver? }. */
 function questClearableInner(sheet, q, level) {
   const want = { skills: [], attributes: [] };
   for (const res of q.resolutions || []) {
@@ -621,46 +719,53 @@ function questClearableInner(sheet, q, level) {
   }
   const ctx = bestCaseCtx(sheet, level, want, q);
 
-  // Giver disposition is the permanent bar: the race and upbringing terms never move.
+  // The permanent bar. RI-MTH06 §A's worked example lives here, or nowhere.
   if (q.giver && q.giver.disposition_min != null) {
-    const group = npcGroupById.get(q.giver.npc_id) || null;
-    const ceiling = group
-      ? dispositionCeiling(sheet.race, sheet.upbringing, sheet.birthsign, group)
-      : bestDispositionCeiling(sheet.race, sheet.upbringing, sheet.birthsign).value;
-    if (ceiling < q.giver.disposition_min) {
-      const t = group ? raceTerm(data, group, sheet.race, sheet.upbringing) : null;
+    const g = resolveGiver(q.giver.npc_id);
+    if (g.status !== 'resolved') {
       return {
-        ok: false,
+        status: UNMEASURABLE,
+        giver: { quest: q.id, npc_id: q.giver.npc_id, disposition_min: q.giver.disposition_min, absence: g.status },
         stopped_at: {
           quest: q.id, stage: null,
-          gate: `giver ${q.giver.npc_id} requires disposition >= ${q.giver.disposition_min}` + (group ? ` with ${group}` : ''),
-          why: t
-            ? `race term ${t.race} + upbringing ${t.upbringing} puts the ceiling at ${ceiling}`
-            : `best reachable disposition over every reaction group is ${ceiling}`,
+          gate: `giver ${q.giver.npc_id} requires disposition >= ${q.giver.disposition_min}`,
+          why: g.why,
         },
       };
     }
-    ctx.dispositions = { [q.giver.npc_id]: 100 };
+    const ceiling = dispositionCeiling(g.base, sheet.race, sheet.upbringing, sheet.birthsign, g.group);
+    if (ceiling < q.giver.disposition_min) {
+      const t = raceTerm(data, g.group, sheet.race, sheet.upbringing);
+      return {
+        status: FAIL,
+        stopped_at: {
+          quest: q.id, stage: null, npc_id: q.giver.npc_id,
+          gate: `requires.disposition >= ${q.giver.disposition_min} with ${g.group}`,
+          why: `race term ${t.race} + upbringing ${t.upbringing} puts the ceiling at ${ceiling}`,
+        },
+      };
+    }
+    ctx.dispositions = { [q.giver.npc_id]: ceiling };
   }
 
   const offer = canOffer(q, ctx, gates);
   if (!offer.offerable) {
     return {
-      ok: false,
+      status: FAIL,
       stopped_at: { quest: q.id, stage: null, gate: 'offer', why: offer.why.join('; ') },
     };
   }
 
   const resolutions = q.resolutions || [];
   if (!resolutions.length && !q.stages) {
-    return { ok: false, stopped_at: { quest: q.id, stage: null, gate: 'resolutions', why: 'quest declares no resolutions' } };
+    return { status: FAIL, stopped_at: { quest: q.id, stage: null, gate: 'resolutions', why: 'quest declares no resolutions' } };
   }
   if (resolutions.length) {
     const open = resolutions.filter((r) => canResolve(r, ctx).available);
     if (!open.length) {
       const first = canResolve(resolutions[0], ctx);
       return {
-        ok: false,
+        status: FAIL,
         stopped_at: {
           quest: q.id, stage: resolutions[0].journal_index ?? null,
           gate: `resolution ${resolutions[0].id}`,
@@ -669,22 +774,58 @@ function questClearableInner(sheet, q, level) {
       };
     }
   }
-  return { ok: true };
+  return { status: PASS };
+}
+
+/** Walk a quest list at the best simulated level; FAIL beats UNMEASURABLE beats PASS. */
+function walkQuests(sheet, list, label) {
+  if (!list.length) {
+    return {
+      status: UNMEASURABLE,
+      why: `no quest matches ${label} — there is nothing to walk. ${quests.length} quests are ` +
+           `shipped; categories present: ${[...new Set(quests.map((q) => q.category || '(none)'))].sort().join(', ')}`,
+    };
+  }
+  const top = LEVELS[LEVELS.length - 1];
+  // The permissive level first: if every quest clears at a lower level, so much the better.
+  for (const level of LEVELS) {
+    if (list.every((q) => questClearable(sheet, q, level).status === PASS)) {
+      return { status: PASS, at_level: level, quests: list.length };
+    }
+  }
+  let firstFail = null; const unmeasurable = [];
+  for (const q of list) {
+    const r = questClearable(sheet, q, top);
+    if (r.status === FAIL && !firstFail) firstFail = r;
+    if (r.status === UNMEASURABLE) unmeasurable.push(r);
+  }
+  if (firstFail) return { status: FAIL, ...firstFail, quests: list.length };
+  if (unmeasurable.length) {
+    return {
+      status: UNMEASURABLE, quests: list.length,
+      stopped_at: unmeasurable[0].stopped_at,
+      unmeasurable_givers: unmeasurable.map((u) => u.giver),
+      why: `${unmeasurable.length} of ${list.length} quests carry a giver whose reaction group ` +
+           `cannot be resolved from shipped data, so the permanent race+upbringing bar cannot be ` +
+           `evaluated for them. First: ${unmeasurable[0].stopped_at.why}`,
+    };
+  }
+  return { status: FAIL, why: 'unreachable' };
+}
+
+function criterionMainQuest(sheet) {
+  return walkQuests(sheet, quests.filter((q) => q.category === 'main'), 'category:"main"');
+}
+
+function criterionNoUnpassableGate(sheet) {
+  return walkQuests(sheet, quests, 'any category');
 }
 
 function criterionThreeFactionsRank5(sheet) {
   const ids = gates.ids();
-  const want = { skills: [], attributes: [] };
-  for (const id of ids) {
-    const f = gates.get(id);
-    want.skills.push(...(f.favoured_skills || []));
-    want.attributes.push(...(f.favoured_attributes || []));
-  }
   const top = LEVELS[LEVELS.length - 1];
   const qualifying = [];
   const blocked = [];
-  // Overlay: raise rank 5's attribute requirement past any reachable value. Criterion 2 must
-  // go red — if it does not, it is not reading the shipped rank ladder.
   const rankFloor = fxNum('faction_rank5_attribute_floor');
   for (const id of ids) {
     const f = gates.get(id);
@@ -692,29 +833,28 @@ function criterionThreeFactionsRank5(sheet) {
     let ev;
     if (rankFloor !== null) {
       const row = gates.row(id, 5);
-      const best = f.favoured_attributes.map((a) => ctx.attributes[a] || 0).sort((x, y) => y - x)[0];
-      ev = best >= rankFloor
+      const bestAttr = f.favoured_attributes.map((a) => ctx.attributes[a] || 0).sort((x, y) => y - x)[0];
+      ev = bestAttr >= rankFloor
         ? gates.evaluate(id, 5, ctx)
-        : { allowed: false, unmet: [`${f.favoured_attributes.join(' or ')} ${best}/${rankFloor} (fixture floor, real row asks ${row.attribute})`] };
+        : { allowed: false, unmet: [`${f.favoured_attributes.join(' or ')} ${bestAttr}/${rankFloor} (fixture floor, real row asks ${row.attribute})`] };
     } else {
       ev = gates.evaluate(id, 5, ctx);
     }
     if (ev.allowed) qualifying.push(id); else blocked.push({ faction: id, unmet: ev.unmet });
   }
-  // Now: are there THREE that can be held at once, given hard exclusivity?
   const compatible = (a, b) => !gates.closedBy(a).includes(b);
   for (let i = 0; i < qualifying.length; i++) {
     for (let j = i + 1; j < qualifying.length; j++) {
       if (!compatible(qualifying[i], qualifying[j])) continue;
       for (let k = j + 1; k < qualifying.length; k++) {
         if (compatible(qualifying[i], qualifying[k]) && compatible(qualifying[j], qualifying[k])) {
-          return { ok: true, factions: [qualifying[i], qualifying[j], qualifying[k]] };
+          return { status: PASS, factions: [qualifying[i], qualifying[j], qualifying[k]] };
         }
       }
     }
   }
   return {
-    ok: false,
+    status: FAIL,
     stopped_at: {
       quest: null, stage: null, gate: 'three factions at rank 5',
       why: qualifying.length < 3
@@ -725,57 +865,50 @@ function criterionThreeFactionsRank5(sheet) {
   };
 }
 
-function criterionNoUnpassableGate(sheet) {
-  // Every quest in the tree, at the top simulated level, with everything earnable granted.
-  // What can still fail here is exactly what never moves: the race and upbringing disposition
-  // terms, and a skill or attribute requirement above the projection's ceiling.
-  const top = LEVELS[LEVELS.length - 1];
-  for (const q of quests) {
-    const r = questClearable(sheet, q, top);
-    if (!r.ok) return { ok: false, ...r };
-  }
-  return { ok: true, quests_walked: quests.length };
-}
-
-function criterionTier5Survivable(sheet, fixture) {
-  if (!tier5Cohort.length) {
+function criterionTier5Survivable(sheet, fixture, cohortInfo) {
+  if (!cohortInfo.cohort.length) {
     return {
-      ok: false, unmeasurable: true,
-      why: 'no non-prop enemy statblock is shipped in game/data/combat/enemies — there is no ' +
-           'tier-5 cohort to fight and criterion 4 cannot be evaluated.',
+      status: UNMEASURABLE,
+      why: cohortInfo.tier5_regions.length
+        ? `regions ${cohortInfo.tier5_regions.join(', ')} carry danger_tier 5 but no encounter in ` +
+          `world/encounters.json and no fog gate in world/hearths.json is authored in any of them, ` +
+          `so there is no tier-5 fight to run. The cohort is NOT widened to a lower tier ` +
+          `(TOOL-COVERAGE-R1 §1).`
+        : 'no region in world/regions.json carries danger_tier 5, so criterion 4 has no referent.',
     };
   }
   const fights = [];
-  for (const e of tier5Cohort) {
-    const f = fightEncounter(sheet, e, fixture);
+  for (const entry of cohortInfo.cohort) {
+    const f = fightEncounter(sheet, entry, fixture);
     fights.push(f);
     if (!f.survivable) {
       return {
-        ok: false,
+        status: FAIL,
         stopped_at: {
           quest: null, stage: null,
-          gate: `tier-5 encounter ${e.id} at level 55`,
+          gate: `tier-5 encounter ${entry.id} (${entry.regions.join('/')}) at level 55`,
           why: f.reason
-            || `${f.attempts} attempts needed (limit ${LETHALITY.attempts_allowed}); ` +
-               `ttk ${f.ttk_s}s vs ttd ${f.ttd_s}s, player dps ${f.player_dps} vs ${f.enemy_dps}`,
+            || `${f.attempts} attempts needed (limit ${LETHALITY.attempts_allowed}) against ` +
+               `${f.group}; absorbed ${f.damage_absorbed} over ${f.encounter_s}s against a pool of ` +
+               `${f.pool_per_attempt} per attempt (player dps ${f.player_dps} vs group ${f.group_dps})`,
         },
         fights,
       };
     }
   }
-  return { ok: true, fights };
+  return { status: PASS, fights };
 }
 
 // ---------------------------------------------------------------------------------------------
 // Walk
 // ---------------------------------------------------------------------------------------------
-function evaluateSignature(race, family, signFamily, upClass, fixture) {
+function evaluateSignature(race, family, signFamily, upClass, fixture, cohortInfo) {
+  const key = `${race}/${family}/${signFamily}/${upClass}`;
   const spec = representativeStart(race, family, signFamily, upClass);
   if (!spec) {
     return {
-      signature: `${race}/${family}/${signFamily}/${upClass}`,
-      viable: false, constructible: false,
-      criteria: { main_quest: false, three_factions_rank5: false, no_unpassable_gate: false, tier5_survivable: false },
+      signature: key, viable: false, constructible: false,
+      criteria: { main_quest: FAIL, three_factions_rank5: FAIL, no_unpassable_gate: FAIL, tier5_survivable: FAIL },
       stopped_at: { quest: null, stage: null, gate: 'construction', why: 'no shipped class/birthsign/upbringing fills this cell' },
     };
   }
@@ -783,9 +916,8 @@ function evaluateSignature(race, family, signFamily, upClass, fixture) {
   try { character = composeCharacter(data, spec); }
   catch (e) {
     return {
-      signature: `${race}/${family}/${signFamily}/${upClass}`,
-      viable: false, constructible: false,
-      criteria: { main_quest: false, three_factions_rank5: false, no_unpassable_gate: false, tier5_survivable: false },
+      signature: key, viable: false, constructible: false,
+      criteria: { main_quest: FAIL, three_factions_rank5: FAIL, no_unpassable_gate: FAIL, tier5_survivable: FAIL },
       stopped_at: { quest: null, stage: null, gate: 'composeCharacter', why: e.message },
     };
   }
@@ -803,76 +935,135 @@ function evaluateSignature(race, family, signFamily, upClass, fixture) {
     criterionMainQuest(sheet),
     criterionThreeFactionsRank5(sheet),
     criterionNoUnpassableGate(sheet),
-    criterionTier5Survivable(sheet, fixture),
+    criterionTier5Survivable(sheet, fixture, cohortInfo),
   ]);
 
   const criteria = {
-    main_quest: c1.ok,
-    three_factions_rank5: c2.ok,
-    no_unpassable_gate: c3.ok,
-    tier5_survivable: c4.ok,
+    main_quest: c1.status,
+    three_factions_rank5: c2.status,
+    no_unpassable_gate: c3.status,
+    tier5_survivable: c4.status,
   };
-  const first = [c1, c2, c3, c4].find((c) => !c.ok);
+  const all = [c1, c2, c3, c4];
+  const firstFail = all.find((c) => c.status === FAIL);
+  const firstUnm = all.find((c) => c.status === UNMEASURABLE);
+  const first = firstFail || firstUnm;
   const rec = {
-    signature: `${race}/${family}/${signFamily}/${upClass}`,
-    viable: c1.ok && c2.ok && c3.ok && c4.ok,
+    signature: key,
+    viable: all.every((c) => c.status === PASS),
+    unmeasurable: !firstFail && !!firstUnm,
     constructible: true,
     criteria,
-    stopped_at: first ? (first.stopped_at || { quest: null, stage: null, gate: 'unmeasurable', why: first.why }) : null,
+    stopped_at: first ? (first.stopped_at || { quest: null, stage: null, gate: first.status, why: first.why }) : null,
   };
-  if (first && first.unmeasurable) rec.unmeasurable = true;
+  if (rec.unmeasurable) rec.unmeasurable_why = firstUnm.why || (firstUnm.stopped_at && firstUnm.stopped_at.why);
   if (EXPLAIN) rec.working = { class_id: spec.classId, main_quest: c1, factions: c2, gates: c3, lethality: c4, sheet_at_55: { attributes: sheet.attributes, skills: sheet.skills } };
   return rec;
 }
 
 function walkAll(fixture) {
+  const cohortInfo = withFixture(fixture, () => resolveTier5Cohort());
   const out = [];
   for (const race of RACES) {
     for (const family of FAMILIES) {
       for (const sf of SIGN_FAMILIES) {
-        for (const uc of UP_CLASSES) out.push(evaluateSignature(race, family, sf, uc, fixture));
+        for (const uc of UP_CLASSES) out.push(evaluateSignature(race, family, sf, uc, fixture, cohortInfo));
       }
     }
   }
+  out.__cohort = cohortInfo;
   return out;
+}
+
+/** The giver census — the defect list defect B used to hide. Reported on every run. */
+function giverCensus() {
+  const rows = [];
+  for (const q of quests) {
+    if (!(q.giver && q.giver.disposition_min != null)) continue;
+    const g = resolveGiver(q.giver.npc_id);
+    rows.push({ quest: q.id, npc_id: q.giver.npc_id, disposition_min: q.giver.disposition_min, status: g.status, group: g.group || null, faction: g.faction || null });
+  }
+  const byStatus = { resolved: 0, no_record: 0, no_group: 0 };
+  for (const r of rows) byStatus[r.status]++;
+  return {
+    quests_with_a_giver_disposition_min: rows.length,
+    resolving_to_a_reaction_group: byStatus.resolved,
+    giver_has_no_npc_record: byStatus.no_record,
+    giver_has_a_record_but_no_reaction_group: byStatus.no_group,
+    max_disposition_min_shipped: rows.reduce((m, r) => Math.max(m, r.disposition_min), 0),
+    unresolved_givers: [...new Set(rows.filter((r) => r.status !== 'resolved').map((r) => `${r.npc_id} [${r.status}]`))].sort(),
+    rows,
+  };
 }
 
 function report(records, fixture) {
   const viable = records.filter((r) => r.viable).length;
   const unmeasurable = records.filter((r) => r.unmeasurable).length;
+  const notViable = records.length - viable - unmeasurable;
   const byCriterion = {};
   for (const k of ['main_quest', 'three_factions_rank5', 'no_unpassable_gate', 'tier5_survivable']) {
-    byCriterion[k] = records.filter((r) => !r.criteria[k]).length;
+    byCriterion[k] = {
+      fail: records.filter((r) => r.criteria[k] === FAIL).length,
+      unmeasurable: records.filter((r) => r.criteria[k] === UNMEASURABLE).length,
+    };
+  }
+  const cohortInfo = records.__cohort || withFixture(fixture, () => resolveTier5Cohort());
+  const census = withFixture(fixture, () => giverCensus());
+  const because = [];
+  if (census.resolving_to_a_reaction_group < census.quests_with_a_giver_disposition_min) {
+    because.push(
+      `${census.quests_with_a_giver_disposition_min - census.resolving_to_a_reaction_group} of ` +
+      `${census.quests_with_a_giver_disposition_min} quests with a giver disposition_min have no ` +
+      `resolvable reaction group (${census.giver_has_no_npc_record} givers have no NPC record at ` +
+      `all; ${census.giver_has_a_record_but_no_reaction_group} have a record with no ` +
+      `reaction_group field). derivedDisposition() cannot be called without a group, so the ` +
+      `permanent race+upbringing bar — RI-CHR01's central claim and RI-MTH06 §A's worked ` +
+      `example — cannot be evaluated. This tool does NOT substitute a best-over-all-groups ` +
+      `ceiling for it; TOOL-COVERAGE-R1 §1 defect B rules that substitution illegitimate.`);
+  }
+  if (!cohortInfo.cohort.length) {
+    because.push('no fight is authored in any danger_tier 5 region, so criterion 4 has no cohort.');
   }
   return {
-    schema: 'elder-souls/build-viability@1',
+    schema: 'elder-souls/build-viability@2',
     tool: 'tools/analysis/build-viability.mjs',
     item: 'RI-CHR01 M6 / RI-CHR03 M5 / RI-MTH06 §A',
     generated_at: new Date().toISOString(),
+    data_root: path.relative(REPO_ROOT, ROOT) || '.',
     grid: { races: RACES.length, families: FAMILIES.length, birthsign_families: SIGN_FAMILIES.length, upbringing_classes: UP_CLASSES.length, cells: records.length },
     target: TARGET,
-    viable, not_viable: records.length - viable, unmeasurable,
+    viable, not_viable: notViable, unmeasurable,
+    unmeasurable_because: because,
     failures_by_criterion: byCriterion,
     levels_simulated: LEVELS,
     fixture: fixture || null,
+    giver_census: census,
+    tier5: cohortInfo,
     model: {
       ...MODEL,
       lethality: LETHALITY,
-      tier5_cohort: tier5Cohort.map((e) => ({ id: e.id, tier: e.tier, hp: e.hp, armour_rating: e.armour_rating })),
-      tier5_substitution_note:
-        'regions.json declares no `tier` on any region and encounters.json declares none either, ' +
-        'so "the tier-5 region" has no referent in shipped data. The cohort above is every ' +
-        'non-prop enemy at the highest shipped enemy tier. Declared, per RI-MTH06 §E.',
       quests_walked: quests.length,
       quest_categories: [...new Set(quests.map((q) => q.category || '(none)'))].sort(),
       factions_with_ladders: gates.ids(),
+      npc_records_indexed: npcRecords.size,
+      npc_records_with_a_reaction_group: [...npcRecords.values()].filter((n) => n.reaction_group || n.group).length,
     },
     records,
   };
 }
 
 // ---------------------------------------------------------------------------------------------
-// --self-test: RI-MTH06 methods 3 and 4. The tool proves it can say no.
+// --self-test. The falsification battery.
+//
+// TOOL-COVERAGE-R1's central finding about round 1's battery: BOTH disposition falsifications
+// drove the floor to 200, above even the permissive 92 ceiling, so they passed identically
+// whether giver-group resolution worked or was 100% broken. A falsification that drives a
+// parameter outside the range where the defect can express itself is not a falsification.
+//
+// So the battery below adds three checks that live INSIDE that range:
+//   - the race bar fires at floor 50 (the maximum shipped requirement), not 200;
+//   - and it DISCRIMINATES — dunmer blocked, saxhleel not, against the same group and floor;
+//   - and with no group resolvable the criterion goes UNMEASURABLE, never pass.
 // ---------------------------------------------------------------------------------------------
 function selfTest() {
   const lines = [];
@@ -880,74 +1071,127 @@ function selfTest() {
   const ok = (name, pass, detail) => {
     lines.push(`${pass ? 'PASS' : 'FAIL'} ${name} — ${detail}`);
     if (!pass) failed++;
-  };
+    process.stdout.write(lines[lines.length - 1] + '\n');   // flush as we go: a later crash
+  };                                                        // must not discard earlier evidence
 
-  // M3, verbatim: "Assert the output contains at least one `viable: false` record with a
-  // populated `stopped_at`, OR that a `--explain` run on a deliberately over-gated fixture
-  // produces one." It is an OR, and on a healthy build the second disjunct is the live one.
   const base = walkAll(null);
   const baseViable = base.filter((r) => r.viable).length;
-  const withStop = base.filter((r) => !r.viable && r.stopped_at && r.stopped_at.why);
-  const overGated = walkAll({ player_damage_multiplier: 0.001 });
-  const ogStop = overGated.filter((r) => !r.viable && r.stopped_at && r.stopped_at.why);
-  ok('M3 liveness (real data OR over-gated fixture)',
-    withStop.length > 0 || ogStop.length > 0,
-    `real data ${baseViable}/${base.length} viable with ${withStop.length} populated stopped_at; ` +
-    `over-gated fixture yields ${ogStop.length} populated stopped_at ` +
-    `(e.g. "${(ogStop[0] && ogStop[0].stopped_at.why || '').slice(0, 70)}")`);
+  const baseUnm = base.filter((r) => r.unmeasurable).length;
+  const nFail = (recs, k) => recs.filter((r) => r.criteria[k] === FAIL).length;
+  const nUnm = (recs, k) => recs.filter((r) => r.criteria[k] === UNMEASURABLE).length;
 
-  // M4: criterion 4 is not a stub — x10 tier-5 damage must lower the viable count.
+  ok('baseline is reported, not assumed',
+    true,
+    `${baseViable} viable / ${base.length - baseViable - baseUnm} not viable / ${baseUnm} unmeasurable`);
+
+  // ---- the giver-group mechanism, at a floor inside the range the defect lives in ----------
+  const FLOOR = 50;   // the maximum disposition_min shipped anywhere in game/data/quests/**
+  const granted = walkAll({ giver_reaction_group: 'RG-DEEP', quest_disposition_floor: FLOOR });
+  const gFail = nFail(granted, 'no_unpassable_gate');
+  ok('giver-group resolution is live (bar fires at the shipped floor, not at 200)',
+    gFail > 0 && gFail < granted.length,
+    `every giver -> RG-DEEP with disposition_min ${FLOOR}: no_unpassable_gate FAIL for ${gFail} ` +
+    `of ${granted.length} signatures (a PARTIAL count is the point — 0 or 540 would both mean ` +
+    `the group is not being read)`);
+
+  const dunmerBlocked = granted.filter((r) => r.signature.startsWith('dunmer/') && r.criteria.no_unpassable_gate === FAIL).length;
+  const saxOpen = granted.filter((r) => r.signature.startsWith('saxhleel/') && r.criteria.no_unpassable_gate !== FAIL).length;
+  const example = granted.find((r) => r.signature.startsWith('dunmer/') && r.criteria.no_unpassable_gate === FAIL);
+  ok('the bar DISCRIMINATES by race+upbringing (RI-MTH06 §A\'s worked example)',
+    dunmerBlocked > 0 && saxOpen > 0,
+    `against RG-DEEP at ${FLOOR}: ${dunmerBlocked} dunmer signatures blocked, ${saxOpen} saxhleel ` +
+    `signatures not. e.g. ${example ? example.signature + ' :: ' + example.stopped_at.why : 'n/a'}`);
+
+  const upbringingSplit = new Map();
+  for (const r of granted.filter((x) => x.signature.startsWith('dunmer/'))) {
+    const up = r.signature.split('/')[3];
+    if (!upbringingSplit.has(up)) upbringingSplit.set(up, { fail: 0, n: 0 });
+    const e = upbringingSplit.get(up); e.n++; if (r.criteria.no_unpassable_gate === FAIL) e.fail++;
+  }
+  ok('the UPBRINGING term is read, not only the race term',
+    new Set([...upbringingSplit.values()].map((v) => v.fail === v.n)).size > 1
+      || [...upbringingSplit.values()].some((v) => v.fail > 0 && v.fail < v.n)
+      || (() => {
+        // Different upbringings must produce different ceilings even when all three block.
+        const cs = [...new Set(UP_CLASSES.map((uc) => {
+          const up = UPBRINGINGS.find((u) => u.signature_class === uc);
+          return dispositionCeiling(50, 'dunmer', up.id, null, 'RG-DEEP');
+        }))];
+        return cs.length > 1;
+      })(),
+    `dunmer ceilings against RG-DEEP by upbringing: ` +
+    UP_CLASSES.map((uc) => {
+      const up = UPBRINGINGS.find((u) => u.signature_class === uc);
+      return `${up.id}=${dispositionCeiling(50, 'dunmer', up.id, null, 'RG-DEEP')}`;
+    }).join(' '));
+
+  // ---- and with no group resolvable, it must NOT pass -------------------------------------
+  ok('an unresolvable giver group is UNMEASURABLE, never a pass',
+    nUnm(base, 'no_unpassable_gate') + nFail(base, 'no_unpassable_gate') === base.length
+    || base.every((r) => r.criteria.no_unpassable_gate === PASS && report(base, null).giver_census.resolving_to_a_reaction_group === report(base, null).giver_census.quests_with_a_giver_disposition_min),
+    `on this data root ${report(base, null).giver_census.resolving_to_a_reaction_group}/` +
+    `${report(base, null).giver_census.quests_with_a_giver_disposition_min} givers resolve; ` +
+    `no_unpassable_gate is unmeasurable for ${nUnm(base, 'no_unpassable_gate')} and fails for ` +
+    `${nFail(base, 'no_unpassable_gate')} of ${base.length}`);
+
+  // ---- criterion 4: the cohort resolution path --------------------------------------------
+  const cohort = base.__cohort;
+  ok('tier-5 cohort resolves from danger_tier, and is the authored fight',
+    cohort.tier5_regions.length > 0 && cohort.cohort.length > 0,
+    `tier-5 regions [${cohort.tier5_regions.join(', ')}]; cohort ` +
+    cohort.cohort.map((c) => `${c.id}(${c.source}: ${c.members.map((m) => m.count + 'x' + m.statblock).join('+')})`).join(', ') +
+    (cohort.tier5_regions_with_no_authored_fight.length
+      ? `; thin: no fight authored in [${cohort.tier5_regions_with_no_authored_fight.join(', ')}]` : ''));
+
+  const moved = walkAll({ region_danger_tier: { 'deep-marshes': 3, 'stone-wastes': 3 } });
+  ok('the cohort FOLLOWS danger_tier rather than being hard-coded',
+    moved.__cohort.cohort.length !== cohort.cohort.length,
+    `deep-marshes and stone-wastes demoted to tier 3: cohort ${cohort.cohort.length} -> ` +
+    `${moved.__cohort.cohort.length} entries`);
+
   const hard = walkAll({ tier5_damage_multiplier: 10 });
-  const hardViable = hard.filter((r) => r.viable).length;
-  const hardC4 = hard.filter((r) => !r.criteria.tier5_survivable).length;
-  const baseC4 = base.filter((r) => !r.criteria.tier5_survivable).length;
-  ok('M4 criterion-4 liveness',
-    hardC4 > baseC4,
-    `tier-5 damage x10: criterion-4 failures ${baseC4} -> ${hardC4} (viable ${baseViable} -> ${hardViable})`);
+  ok('criterion 4 liveness (x10 group damage)',
+    nFail(hard, 'tier5_survivable') > nFail(base, 'tier5_survivable'),
+    `criterion-4 FAIL ${nFail(base, 'tier5_survivable')} -> ${nFail(hard, 'tier5_survivable')}`);
 
-  // M4b: the reverse direction — making the fight trivial must not lower the count.
+  const mid = walkAll({ tier5_damage_multiplier: 4 });
+  ok('criterion 4 is a MODEL, not a constant (partial failure at x4)',
+    nFail(mid, 'tier5_survivable') > 0 && nFail(mid, 'tier5_survivable') < mid.length,
+    `x4 group damage: ${nFail(mid, 'tier5_survivable')}/${mid.length} fail criterion 4`);
+
   const easy = walkAll({ tier5_damage_multiplier: 0.01 });
-  const easyC4 = easy.filter((r) => !r.criteria.tier5_survivable).length;
-  ok('M4 monotonicity',
-    easyC4 <= baseC4,
-    `tier-5 damage x0.01: criterion-4 failures ${baseC4} -> ${easyC4}`);
+  ok('criterion 4 monotonicity',
+    nFail(easy, 'tier5_survivable') <= nFail(base, 'tier5_survivable'),
+    `x0.01: criterion-4 FAIL ${nFail(base, 'tier5_survivable')} -> ${nFail(easy, 'tier5_survivable')}`);
 
-  // Criteria 1-3 must each be independently falsifiable. A gate walk that passes every
-  // signature is indistinguishable from a gate walk that never ran, and that is the failure
-  // mode AGENT-PROTOCOL names: "a probe that cannot fail is worse than no probe".
-  const dispBroken = walkAll({ quest_disposition_floor: 200 });
-  ok('criterion 1 falsifiable (main-quest walk)',
-    dispBroken.filter((r) => !r.criteria.main_quest).length > base.filter((r) => !r.criteria.main_quest).length
-      || base.every((r) => !r.criteria.main_quest),
-    `every giver disposition_min -> 200: main_quest failures ` +
-    `${base.filter((r) => !r.criteria.main_quest).length} -> ${dispBroken.filter((r) => !r.criteria.main_quest).length}`);
-  ok('criterion 3 falsifiable (gate walk)',
-    dispBroken.filter((r) => !r.criteria.no_unpassable_gate).length > base.filter((r) => !r.criteria.no_unpassable_gate).length,
-    `every giver disposition_min -> 200: no_unpassable_gate failures ` +
-    `${base.filter((r) => !r.criteria.no_unpassable_gate).length} -> ${dispBroken.filter((r) => !r.criteria.no_unpassable_gate).length}`);
-
-  const resBroken = walkAll({ impossible_resolution_gate: true });
+  // ---- criteria 1-3 remain independently falsifiable ---------------------------------------
+  const resBroken = walkAll({ impossible_resolution_gate: true, giver_reaction_group: 'RG-TOWN' });
+  const resBase = walkAll({ giver_reaction_group: 'RG-TOWN' });
   ok('criterion 3 falsifiable (resolution walk)',
-    resBroken.filter((r) => !r.criteria.no_unpassable_gate).length > base.filter((r) => !r.criteria.no_unpassable_gate).length,
-    `every resolution gated on luck 9999: no_unpassable_gate failures ` +
-    `${base.filter((r) => !r.criteria.no_unpassable_gate).length} -> ${resBroken.filter((r) => !r.criteria.no_unpassable_gate).length}`);
+    nFail(resBroken, 'no_unpassable_gate') > nFail(resBase, 'no_unpassable_gate'),
+    `every resolution gated on luck 9999 (givers granted RG-TOWN so the walk reaches the ` +
+    `resolutions): no_unpassable_gate FAIL ${nFail(resBase, 'no_unpassable_gate')} -> ` +
+    `${nFail(resBroken, 'no_unpassable_gate')}`);
+
+  const mainBroken = walkAll({ giver_reaction_group: 'RG-DEEP', quest_disposition_floor: FLOOR });
+  ok('criterion 1 falsifiable (main-quest walk)',
+    nFail(mainBroken, 'main_quest') > nFail(base, 'main_quest'),
+    `givers -> RG-DEEP at ${FLOOR}: main_quest FAIL ${nFail(base, 'main_quest')} -> ${nFail(mainBroken, 'main_quest')}`);
 
   const rankBroken = walkAll({ faction_rank5_attribute_floor: 500 });
   ok('criterion 2 falsifiable (faction ladder)',
-    rankBroken.filter((r) => !r.criteria.three_factions_rank5).length > base.filter((r) => !r.criteria.three_factions_rank5).length,
-    `rank-5 attribute floor -> 500: three_factions_rank5 failures ` +
-    `${base.filter((r) => !r.criteria.three_factions_rank5).length} -> ${rankBroken.filter((r) => !r.criteria.three_factions_rank5).length}`);
+    nFail(rankBroken, 'three_factions_rank5') > nFail(base, 'three_factions_rank5'),
+    `rank-5 attribute floor -> 500: three_factions_rank5 FAIL ` +
+    `${nFail(base, 'three_factions_rank5')} -> ${nFail(rankBroken, 'three_factions_rank5')}`);
 
-  // The null control: the same run twice must agree exactly, so a difference above is the
-  // perturbation and not run-to-run noise. (RI-MTH07 §B3.)
+  // ---- the null control --------------------------------------------------------------------
   const again = walkAll(null);
   ok('null control (determinism)',
-    again.filter((r) => r.viable).length === baseViable
-      && JSON.stringify(again.map((r) => r.signature + r.viable)) === JSON.stringify(base.map((r) => r.signature + r.viable)),
+    JSON.stringify(again.map((r) => r.signature + r.viable + r.unmeasurable))
+      === JSON.stringify(base.map((r) => r.signature + r.viable + r.unmeasurable)),
     `two unperturbed runs agree on all ${base.length} cells`);
 
-  for (const l of lines) process.stdout.write(l + '\n');
-  process.stdout.write(`\nself-test: ${failed === 0 ? 'PASS' : 'FAIL'} (${lines.length - failed}/${lines.length})\n`);
+  process.stdout.write(`\nbuild-viability self-test: ${failed === 0 ? 'PASS' : 'FAIL'} (${lines.length - failed}/${lines.length})\n`);
   return failed === 0 ? 0 : 1;
 }
 
@@ -962,11 +1206,11 @@ let records;
 if (args.signature) {
   const parts = String(args.signature).split(/[|/]/);
   if (parts.length !== 4) usage(USAGE, EXIT.USAGE);
-  records = [evaluateSignature(parts[0], parts[1], parts[2], parts[3], fixture)];
-} else if (args.signatures === 'all' || args.signatures === true || !args.signature) {
-  records = walkAll(fixture);
+  const cohortInfo = withFixture(fixture, () => resolveTier5Cohort());
+  records = [evaluateSignature(parts[0], parts[1], parts[2], parts[3], fixture, cohortInfo)];
+  records.__cohort = cohortInfo;
 } else {
-  usage(USAGE, EXIT.USAGE);
+  records = walkAll(fixture);
 }
 
 const rep = report(records, fixture);
@@ -974,21 +1218,41 @@ const outPath = args.out ? path.resolve(String(args.out)) : path.join(REPO_ROOT,
 writeJson(outPath, rep);
 
 if (!QUIET) {
-  process.stdout.write(`build-viability: ${rep.viable}/${records.length} viable (target ${TARGET})\n`);
+  process.stdout.write(
+    `build-viability: ${rep.viable}/${records.length} viable, ${rep.not_viable} not viable, ` +
+    `${rep.unmeasurable} UNMEASURABLE (target ${TARGET})\n`);
   process.stdout.write(`  failures by criterion: ${JSON.stringify(rep.failures_by_criterion)}\n`);
-  if (rep.model.tier5_cohort.length) {
-    process.stdout.write(`  tier-5 cohort (substituted): ${rep.model.tier5_cohort.map((e) => `${e.id}@${e.tier}`).join(', ')}\n`);
+  process.stdout.write(
+    `  tier-5 regions [${rep.tier5.tier5_regions.join(', ')}] -> cohort ` +
+    `${rep.tier5.cohort.map((c) => `${c.id}:${c.members.map((m) => m.count + 'x' + m.statblock).join('+')}`).join(', ') || '(empty)'}\n`);
+  if (rep.tier5.tier5_regions_with_no_authored_fight.length) {
+    process.stdout.write(`  tier-5 regions with no authored fight: ${rep.tier5.tier5_regions_with_no_authored_fight.join(', ')}\n`);
   }
-  // The failure list IS the product (RI-MTH06 §A).
+  if (rep.tier5.unresolved_region_or_statblock_names.length) {
+    process.stdout.write(`  DATA DEFECT, unresolvable names: ${rep.tier5.unresolved_region_or_statblock_names.join(', ')}\n`);
+  }
+  process.stdout.write(
+    `  giver census: ${rep.giver_census.resolving_to_a_reaction_group}/` +
+    `${rep.giver_census.quests_with_a_giver_disposition_min} quest givers resolve to a reaction ` +
+    `group (${rep.giver_census.giver_has_no_npc_record} no NPC record, ` +
+    `${rep.giver_census.giver_has_a_record_but_no_reaction_group} record without reaction_group); ` +
+    `max disposition_min shipped ${rep.giver_census.max_disposition_min_shipped}\n`);
+  for (const b of rep.unmeasurable_because) process.stdout.write(`  UNMEASURABLE: ${b}\n`);
+
   const fails = records.filter((r) => !r.viable);
-  const shown = EXPLAIN ? fails : fails.slice(0, 40);
+  const shown = EXPLAIN ? fails : fails.slice(0, 20);
   for (const f of shown) {
     const s = f.stopped_at || {};
-    process.stdout.write(`  FAIL ${f.signature} :: ${s.gate || '?'} — ${s.why || '?'}\n`);
+    process.stdout.write(`  ${f.unmeasurable ? 'UNM ' : 'FAIL'} ${f.signature} :: ${s.gate || '?'} — ${String(s.why || '?').slice(0, 160)}\n`);
   }
   if (fails.length > shown.length) process.stdout.write(`  ... and ${fails.length - shown.length} more (see ${path.relative(REPO_ROOT, outPath)})\n`);
   if (EXPLAIN) process.stdout.write(JSON.stringify(records, null, 2) + '\n');
 }
 log(`wrote ${outPath}`);
 
-process.exit(rep.viable >= TARGET ? 0 : 1);
+if (rep.unmeasurable === records.length) {
+  process.stderr.write('[harness] ERROR: the measurement could not be taken for ANY signature.\n');
+  for (const b of rep.unmeasurable_because) process.stderr.write('[harness]   ' + b + '\n');
+  process.exit(EXIT.MEASUREMENT_FAIL);
+}
+process.exit(rep.viable >= TARGET && rep.unmeasurable === 0 ? 0 : 1);
