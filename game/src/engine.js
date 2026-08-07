@@ -49,6 +49,7 @@ import { WEATHER } from './render/sky.js';
 import { WorldField } from './world/field.js';
 import { SignatureField, SIGNATURE_KINDS } from './world/signature.js';
 import { OpacityRegister } from './world/opacity.js';
+import { Environment } from './sim/environment.js';
 import { Traversal } from './sim/traversal.js';
 import { Hazards } from './sim/hazards.js';
 import { Discovery } from './sim/discovery.js';
@@ -326,6 +327,26 @@ export class Engine {
     // be a stretch of signed road with nothing standing on it until the player walked away and
     // came back.
     if (this.data.signposts) this.field.setSignposts(this.data.signposts);
+    // W1-02 / RI-WLD08 §1 and §5. THE WORLD CLOCK AND THE THIRTEEN WEATHER MACHINES.
+    //
+    // Hung on the SIM for exactly the reason `sim.discovery` two paragraphs below is: `sim/step.js`
+    // drives it, and a system only the engine can see is a system the fixed step cannot run. Before
+    // this, `sim.env.timeOfDay` and `sim.env.weather` had no world-side writer at all — only
+    // `setTimeOfDay`, `setWeather` and the save loader, all of which are harness or load paths.
+    // The region lookup is passed as a CLOSURE over the field rather than the field itself, so the
+    // environment cannot reach anything spatial except "which region is this point in".
+    if (this.data.weather) {
+      this.environment = new Environment(this.data.weather, (x, z) => {
+        const r = this.field.regionAt(x, z);
+        return r ? r.id : null;
+      });
+      this.sim.environment = this.environment;
+      // Start each region in its own declared initial state rather than the global `clear`, so a
+      // state file that drops the player into the Deep Marshes does not begin in weather the Deep
+      // Marshes cannot produce.
+      const m0 = this.environment.machineFor(this.field.regionAt(this.sim.player.pos[0], this.sim.player.pos[2]).id);
+      this.sim.env.weather = m0.initial;
+    }
     // W1-MAP / ARBITRATION S35. What the player has seen of the province and where they have
     // stood. Hung on the SIM, not just on the engine, because `sim/step.js` drives it and a
     // system only the engine can see is a system the fixed step cannot run — the same reason
@@ -7207,6 +7228,12 @@ async function loadData(onBytes) {
     else if (entry.path.startsWith('crime/')) { out.crime = out.crime || {}; out.crime[entry.path.slice('crime/'.length).replace(/\.json$/, '')] = doc; }
     else if (entry.path.startsWith('world/property/')) { out.property = out.property || {}; out.property[doc.settlement] = doc; }
     else if (entry.path === 'world/hazards.json') out.hazards = doc;
+    // W1-02. The thirteen weather state machines and the 20x clock they run on (RI-WLD08 §1,
+    // §5). Own branch for the reason the `world/signposts.json` comment above gives: a
+    // `world/*.json` matching no branch here is fetched, counted in the byte total, and then
+    // dropped, which is indistinguishable from shipping nothing. Consumed by
+    // `sim/environment.js#Environment`, stepped from `sim/step.js`.
+    else if (entry.path === 'world/weather.json') out.weather = doc;
     // W1-13. The 29 sapwells and their two boss fog gates, and the seam-S5 respawn
     // classification. Both are consumed by game/src/sim/hearth.js and game/src/sim/death.js.
     else if (entry.path === 'world/hearths.json') out.hearths = doc;

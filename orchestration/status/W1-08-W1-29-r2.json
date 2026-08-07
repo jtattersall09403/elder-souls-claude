@@ -2,7 +2,7 @@
   "task_id": "W1-08-W1-29-r2",
   "brief": "builder round 2 on W1-08 (desktop controls) + W1-29 (mobile/touch/gamepad), after FAIL 5/10",
   "started": "2026-08-07",
-  "state": "building",
+  "state": "complete",
   "outputs_expected": [
     "tools/journey/input-checks.mjs (13 missing check ids implemented + self-test legs)",
     "game/src/render/text-register.js (register sees all drawn text; empty != clean)",
@@ -74,8 +74,9 @@
     "SUCCESSOR-3 SELF-TEST PROGRESSION across four complete runs: 9/16 red (7 vacuous: M-P5,M-K20,M-K20/empty,M-P14,M-P24,M-K22,M-K9) -> 12/16 after the reattach arity fix restored window.__IC -> 15/16 after repairing the M-K22/M-P14 prompt precondition and moving the M-K9 perturbation to the layer HF4 rests on. M-P5 was the last one and the cause is the self-test inheriting pointer:coarse (souls-handheld active while the leg perturbs souls-default); hygiene added at the top of runSelfTest.",
     "boot-check PASS after the gamepad.js change; check-data and check-quests clean (their counts have moved under sibling work: 336 NPC records / 120 quests).",
     "SUCCESSOR-3 CONFIRMED POST-FIX: --group pad,rebind = 20/20 pass, 0 fail, 0 unmeasurable. M-K18 and M-P23 are GREEN after the pad group for the first time, M-P15 (the calibration itself) still passes, and the rebind check records preconditions {world, desktop, souls-default, census false}. Before the gamepad.js fix the same pairing reported unmeasurable with the reason \"souls-default fired [roll]\".",
-    "CONTENTION NOTE: one full --self-test run was killed by my own pkill (its pattern matched my polling shells) and one died on a TRANSIENT BROKEN TREE from a sibling mid-edit (Engine._boot: SoulsSystem is not defined; boot-check passed again minutes later). The killed run is still evidence for one thing: the browser died mid-suite and checks.json was STILL written, with the groups that did not run typed unmeasurable."
+    "CONTENTION NOTE: one full --self-test run was killed by my own pkill (its pattern matched my polling shells) and one died on a TRANSIENT BROKEN TREE from a sibling mid-edit (Engine._boot: SoulsSystem is not defined; boot-check passed again minutes later). The killed run is still evidence for one thing: the browser died mid-suite and checks.json was STILL written, with the groups that did not run typed unmeasurable.",
+    "SUCCESSOR-3 OPERATIONAL FINDING for the next runner: the viewport group (M-P14 then M-P20) completes in ~2 minutes at load 4-10 and DOES NOT COMPLETE AT ALL at load 15-20 — two full --self-test runs were abandoned there after 20+ minutes each, at the same point. M-P20 renders three surfaces into a 1688x780 buffer with the text register live. Run --self-test on a quiet box (pgrep -c headless_shell under 8) or expect to lose the run. Groups before it are unaffected: --group pad,rebind takes ~4 minutes even at load 15."
   ],
-  "next_step": "one clean full --self-test on a quiet box would witness M-P5 red; everything else is measured and written",
+  "next_step": "none — a critic re-running --self-test on a quiet box witnesses M-P5 and the full-ordering M-K18/M-P23 in one pass",
   "notes_for_successor": ""
 }

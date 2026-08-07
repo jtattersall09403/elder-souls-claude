@@ -88,6 +88,21 @@ export function stepOnce(sim, input, combat, bus) {
     // fight reads it, so `speed_mps` in the trace really is 0 and the roll really is denied
     // — rather than a `net_behaviour: "capture"` string in an event nobody acts on.
     if (sim.nettedUntil > sim.frame) input.consumeUI(NETTED_DENIED);
+    // W1-02 / RI-WLD08 §1 and §5. THE WORLD CLOCK AND THE REGIONAL WEATHER MACHINE.
+    //
+    // First thing after the latch, and before the player, the fight, the town, the people and
+    // stealth — because every one of those reads the clock this frame and must read THIS frame's
+    // value, not the previous one. `sim/npc.js` picks a schedule slot from `env.timeOfDay`,
+    // `sim/settlement.js` decides whether a door is locked from it, `sim/souls.js` pays a
+    // different award at night, and `sim/stealth/system.js#skyAmbient` turns the hour and the
+    // weather into the outdoor ambient that sets the player's visibility `V`. Running the clock
+    // after them would put every one of those decisions one frame in the past on every frame.
+    //
+    // Before this existed, `sim.env.timeOfDay` was written only by `Engine.setTimeOfDay` and
+    // `sim.env.weather` only by `Engine.setWeather` — both harness verbs — which is the
+    // RI-MTH07 / ARBITRATION §3 failure exactly. It allocates nothing per frame, draws no RNG
+    // and reads no wall clock, so it is safe under the armed guard.
+    if (sim.environment) sim.environment.step(sim, bus);
     // W1-09 owns steps 1-9 of RI-CMB04 §A's per-frame order; the bridge mirrors the result
     // into the W1-00 state the save, the renderer and elder-souls/trace@1 read.
     stepCombat(sim, input, combat, bus);

@@ -878,9 +878,25 @@ const INTERACT_BIT = Math.log2(BIT.interact);
  */
 export function skyAmbient(env) {
   const h = env ? env.timeOfDay : 12;
-  const overcast = env && (env.weather === 'overcast' || env.weather === 'storm' || env.weather === 'rain');
-  const day = overcast ? 0.75 : 1.00;
-  const night = overcast ? 0.09 : 0.22;
+  // W1-02. This used to be `weather === 'overcast' || 'storm' || 'rain'` — three ids out of the
+  // twenty `render/sky.js` already declared, and out of the forty-one `game/data/world/weather.json`
+  // now declares. Every other state, including `heavy_rain`, `salt_storm`, `thick_fog` and
+  // `ash_storm`, was therefore lit as MIDDAY SUN by the stealth model while the renderer drew a
+  // black sky: the two halves of the build were looking at different weather. The class now comes
+  // off the weather table, republished on `env.weatherLight` by `sim/environment.js`, so adding a
+  // state cannot silently reintroduce the mismatch. The three legacy ids are kept as the fallback
+  // for a sim with no environment installed (the arena states), where `env.weather` is still a
+  // bare string.
+  const cls = env && env.weatherLight;
+  const overcast = cls
+    ? (cls === 'overcast' || cls === 'dark')
+    : (env && (env.weather === 'overcast' || env.weather === 'storm' || env.weather === 'rain'));
+  const dark = cls === 'dark';
+  // A storm, a salt-storm or a thick fog at noon is darker than an overcast day and the model has
+  // to be able to say so; RI-STL01 §3's table stops at "overcast day 0.75", so `dark` sits below
+  // it rather than replacing it.
+  const day = dark ? 0.58 : overcast ? 0.75 : 1.00;
+  const night = dark ? 0.06 : overcast ? 0.09 : 0.22;
   if (h >= 8 && h < 17) return day;
   if (h >= 21 || h < 4) return night;
   if (h >= 4 && h < 8) return night + (day - night) * ((h - 4) / 4);      // dawn

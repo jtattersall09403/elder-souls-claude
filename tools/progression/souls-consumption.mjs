@@ -67,9 +67,18 @@ try {
   await page.waitForFunction(() => !!window.__HARNESS && !!window.__ENGINE, null, { timeout: 90000 });
   await page.evaluate(() => window.__HARNESS.setRenderRate && window.__HARNESS.setRenderRate(0));
 
-  const probe = await page.evaluate(() => {
+  const probe = await page.evaluate(async () => {
     const H = window.__HARNESS, E = window.__ENGINE;
     const R = {};
+    // A REAL CHARACTER, not the placeholder six-attribute Souls sheet the engine carries before
+    // the Writ House. Arm G measures whether a BOUGHT attribute reaches the body, and the body's
+    // pools are derived from the ten-attribute sheet; against the placeholder there is nothing
+    // for `vigour` to feed. This is the same signature the faction and attribute probes use.
+    H.setCharacter({ race: 'saxhleel', upbringing: 'lukiul', class: 'ledger-hand', birthsign: 'raj-xul' });
+    H.stepFrames(2);
+    // Arm J asserts against the TRACE, so there has to be one.
+    H.traceStart({ events: true });
+    H.traceDrain();
     const stats = () => H.getPlayerStats();
     const gold = () => E.sim.progression.gold;
 
@@ -81,11 +90,14 @@ try {
       const before = stats().souls, goldBefore = gold();
       H.killEntity(eid);
       const evs = [];
-      // The award is a post-step observer, so a frame has to actually run.
+      // The award is a post-step observer, so a frame has to actually run. Events are read off
+      // the TRACE rather than off a return value, so what is asserted is what a critic would
+      // find in `elder-souls/trace@1` rather than what this probe was handed.
       for (let i = 0; i < 4; i++) {
         H.stepFrames(1);
-        const rec = H.getFrame ? H.getFrame() : null;
-        for (const ev of (rec && rec.events) || []) if (ev.type === 'souls_awarded') evs.push(ev);
+        for (const rec of H.traceDrain() || []) {
+          for (const ev of rec.events || []) if (ev.type === 'souls_awarded') evs.push(ev);
+        }
       }
       return { eid, souls_before: before, souls_after: stats().souls,
         delta: stats().souls - before, gold_before: goldBefore, gold_after: gold(), events: evs };
@@ -96,7 +108,21 @@ try {
       for (const e of H.listEntities() || []) { try { H.despawn(e.eid || e.id); } catch { /* gone */ } }
       const p = stats().pos;
       H.spawnEncounter('dres-raid-party', p[0], p[2]);
-      return (H.listEntities() || []).map((e) => e.eid || e.id);
+      // ONE FRAME BEFORE ANYTHING DIES, and it is load-bearing rather than hygiene. The award
+      // is a transition scan with lazy seeding: the first time it sees an eid it records
+      // whether that body was alive, and a body it has NEVER seen alive is treated as already
+      // settled and is never paid for. That is what stops a loaded save paying out its corpses
+      // (arm I) — and it means a probe that spawns and kills inside the same frame measures the
+      // seeding rule instead of the award. Round 1 of this probe did exactly that and read
+      // `souls=0 -> +0, souls=999 -> +0` as a passing delete-the-fix.
+      H.stepFrames(1);
+      // ONLY BODIES THE FIGHT KNOWS ABOUT. `listEntities()` also returns scheduled NPCs, who
+      // have a record and no combat body (`sim/npc.js`) — `killEntity` throws on one, which is
+      // how a delete-the-fix run of this probe died with "no such body" instead of going red.
+      // A probe that crashes instead of failing is not a probe.
+      return (H.listEntities() || [])
+        .map((e) => e.eid || e.id)
+        .filter((x) => x && !!E.combat.bodyOf(String(x)));
     };
 
     // ---- A. THE SOURCE EXISTS ----------------------------------------------------------------
@@ -172,7 +198,15 @@ try {
 
     // Stand at a sapwell and rest. `atHearth` is the gate the level-up screen reads.
     const wells = H.listHearths ? H.listHearths() : null;
-    R.G.hearths = wells && wells.hearths ? wells.hearths.length : (Array.isArray(wells) ? wells.length : null);
+    const list = (wells && wells.hearths) || (Array.isArray(wells) ? wells : []);
+    R.G.hearths = list.length;
+    // WALK TO A WELL. `setAtHearth(true)` only flips the UI gate; `hearthRest()` resolves the
+    // nearest ACTUAL sapwell and refuses ("No sapwell within reach") from anywhere else, which
+    // is what round 1 of this probe measured. The body is put at a real well so the rest is the
+    // rest RI-PRG04 §1 describes rather than the pools-and-clamp half of it.
+    const well = list[0];
+    R.G.well = well ? well.id : null;
+    if (well && well.pos) { try { H.teleport(well.pos[0], well.pos[2], {}); H.stepFrames(2); } catch (e) { R.G.teleport_error = String(e.message || e); } }
     try { H.setAtHearth(true); } catch (e) { R.G.set_at_hearth_error = String(e.message || e); }
     try { R.G.rest = H.hearthRest({}); } catch (e) { R.G.rest_error = String(e.message || e); }
 
@@ -207,10 +241,34 @@ try {
     } catch (e) { R.G.spend_error = String(e.message || e); }
     R.G.after = read();
 
+    // ---- G3. THE ENTITY CHANGES BEHAVIOUR ----------------------------------------------------
+    // RI-MTH07 asks for a perturbation that an entity RESPONDS to, and a max-HP number moving is
+    // only half of that. So the same scripted hit is landed on the body at the pre-spend pool and
+    // at the post-spend pool: it must be survivable on exactly one side. `damagePlayer` routes
+    // through the same `mitigate()` the weapon resolver uses, so this is the fight's own maths.
+    R.G.behaviour = {};
+    try {
+      const hpMaxAfter = read().body_hp_max;
+      const hpMaxBefore = R.G.before.body_hp_max;
+      // A hit sized between the two ceilings: lethal against the old body, survivable by the new.
+      const blow = Math.floor((hpMaxBefore + hpMaxAfter) / 2) + 1;
+      R.G.behaviour.blow = blow;
+      R.G.behaviour.hp_max_before_spend = hpMaxBefore;
+      R.G.behaviour.hp_max_after_spend = hpMaxAfter;
+      E.combat.player.hp = hpMaxAfter;
+      H.damagePlayer(blow, { stagger: false });
+      H.stepFrames(1);
+      R.G.behaviour.survived_with_the_level = E.combat.player.hp > 0;
+      R.G.behaviour.hp_left = Math.round(E.combat.player.hp);
+      R.G.behaviour.would_have_died_without_it = blow >= hpMaxBefore;
+      E.combat.player.hp = hpMaxAfter; E.combat.player.dead = false;
+      H.stepFrames(1);
+    } catch (e) { R.G.behaviour.error = String(e.message || e); }
+
     // ---- H. THE SPEND SURVIVES A SAVE — AUDITED ON THE LIVE WORLD ----------------------------
     R.H = { before_save: read() };
     try {
-      H.writeSave('souls-probe');
+      await H.writeSave('souls-probe');
       R.H.wrote = true;
       // Contaminate the LIVE world so a load that does nothing is distinguishable from a load
       // that works. Without this a "restored" value could simply be the value never touched.
@@ -218,7 +276,7 @@ try {
       E.sim.progression.level = 1;
       E.sim.progression.attributes.vigour = 3;
       R.H.contaminated = read();
-      H.readSave('souls-probe');
+      await H.readSave('souls-probe');
       H.stepFrames(2);
       R.H.after_load_live = read();
     } catch (e) { R.H.error = String(e.message || e); }
@@ -229,9 +287,9 @@ try {
       const es = freshFight();
       const k = killOne(es[0]);
       R.I.the_kill = k;
-      H.writeSave('souls-probe-2');
+      await H.writeSave('souls-probe-2');
       const held = stats().souls;
-      H.readSave('souls-probe-2');
+      await H.readSave('souls-probe-2');
       H.stepFrames(10);
       R.I.souls_at_save = held;
       R.I.souls_after_load_and_10_frames = stats().souls;
@@ -290,6 +348,12 @@ try {
   ok('G2 CONSUMPTION: the bought attribute reaches the BODY — the combat body\'s max HP moves',
     gPoolMoved > 0,
     `combat body hp_max ${G.before && G.before.body_hp_max} -> ${G.after && G.after.body_hp_max} (delta ${gPoolMoved}); the screen promised ${JSON.stringify(G.the_screen_promised)}`);
+
+  const bh = G.behaviour || {};
+  ok('G3 CONSUMPTION: the body BEHAVES differently — a blow that the pre-spend body could not survive is survived',
+    bh.hp_max_after_spend > bh.hp_max_before_spend && bh.would_have_died_without_it === true && bh.survived_with_the_level === true,
+    `hp_max ${bh.hp_max_before_spend} -> ${bh.hp_max_after_spend}; a ${bh.blow}-point blow leaves ${bh.hp_left} hp `
+    + `(lethal at the old ceiling: ${bh.would_have_died_without_it})${bh.error ? ' — ' + bh.error : ''}`);
 
   const hOk = H.after_load_live && H.before_save;
   ok('H  the spend survives a save and a load, AUDITED ON THE LIVE WORLD (not the blob)',

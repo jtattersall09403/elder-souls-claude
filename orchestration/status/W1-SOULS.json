@@ -2,7 +2,7 @@
   "task_id": "W1-SOULS",
   "brief": "souls economy: souls have no source; wire kill-award, verify levelling loop end-to-end",
   "started": "wave-1",
-  "state": "building",
+  "state": "verifying",
   "outputs_expected": [
     "game/src/** kill-award soul source",
     "tools/** soul economy instrument (breakable)",
@@ -16,7 +16,8 @@
     "game/src/sim/souls.js  (SoulsSystem: post-step alive->dead transition scan)",
     "game/src/sim/step.js   (stepSouls after stampHostileAction)",
     "game/src/engine.js     (construct, reset on loadState, reset on applySave)",
-    "game/src/sim/events.js (+'souls_awarded' vocabulary amendment)"
+    "game/src/sim/events.js (+'souls_awarded' vocabulary amendment)",
+    "tools/progression/souls-consumption.mjs + reports/souls-consumption.json (12/12 arms, 0 unfalsifiable)"
   ],
   "findings": [
     "START: pgrep -c headless_shell = 12, loadavg 11.27 10.19 8.22 -- ABOVE the cap of 8. Doing design+data phase first with no browser.",
@@ -30,8 +31,13 @@
     "RESULTING VALUES: drowned_lesser 50, beast_slitherfang 72, inf_trash 136, cst_sap_speaker 137, guard_legion 176, drowned_greater 334, champion_hist_marked 2423. ALL 15 props = 0 (hp 99999 dummies would otherwise be infinite farms). Every fightable value lands inside an RI-PRG06 \u00a72 band.",
     "BALANCE: level 2 costs 418 -> 3.07 inf_trash kills. The dres-raid-party crossing (6x inf_trash) = 816 souls = L1->L3 with 333 spare.",
     "EVENT VOCABULARY IS CLOSED and emit() THROWS on an unknown type (sim/events.js:212). Added 'souls_awarded' by amendment -- a missing entry is a live throw inside the fixed step.",
-    "BASELINE (before my change): check-data/quests/content all exit 0; attr-scale-audit 0 defects, bands {reachable 174, specialist 35, dedicated 19, vacuous 7}, 54 attribute demands."
+    "BASELINE (before my change): check-data/quests/content all exit 0; attr-scale-audit 0 defects, bands {reachable 174, specialist 35, dedicated 19, vacuous 7}, 54 attribute demands.",
+    "PROBE RESULT (intact build, live browser): A source exists 4/4 kills at 136 (0->544). B ablation RED. C delete-the-fix: souls=0->+0, souls=999->+999, restored 136->+136. D dummy 0. E S9 identical at L1 and L90. F night 136/184/184/136 at 14/23/03/20:59. G1 loop closes L1->L2 for 418. G2 body hp_max 196->222. G3 a 210-pt blow is lethal at the old ceiling and survived at the new. H live world after load L2/126/vigour 7 from a contaminated L1/7/vigour 3. I no double pay. J zero gold moved, 10 souls_awarded events all gold_awarded 0.",
+    "PROBE GOTCHA worth keeping: spawn-then-kill inside ONE frame pays nothing, by design -- the lazy seeding rule treats a body it never saw alive as already settled (that is what stops a loaded save paying out its corpses). Round 1 of the probe did this and misread it as a passing delete-the-fix. Any successor probe must step 1 frame after spawning.",
+    "PROBE GOTCHA 2: H.writeSave/H.readSave are ASYNC; calling them synchronously inside page.evaluate silently does nothing. Also H.getFrame() returns a NUMBER, not a record -- read events via traceStart/traceDrain.",
+    "PROBE GOTCHA 3: hearthRest() refuses from anywhere not near a real well ('No sapwell within reach'); setAtHearth(true) only flips the UI gate. Teleport to listHearths()[0].pos first.",
+    "PROBE GOTCHA 4: without H.setCharacter(...) the engine carries a placeholder SIX-attribute Souls sheet and vigour feeds nothing -- hp_max sat at 620 and did not move. With a real sheet it is 196 -> 222."
   ],
-  "next_step": "write tools/progression/souls-consumption.mjs (breakable instrument); measure TTK in combat-node; then ONE browser for the live loop",
+  "next_step": "delete-the-fix: comment out stepSouls in step.js, rerun probe, confirm ALL arms go red; then attr-scale sweep+audit; then checkers, shot, blog",
   "notes_for_successor": ""
 }

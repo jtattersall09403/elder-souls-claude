@@ -2,7 +2,7 @@
   "task_id": "W1-GIVER-PRESENCE",
   "brief": "dispatch: GAP-W1-quest-givers-not-in-the-world (top open defect, from corpus/90-verdicts/wave1/W1-19-r2.md \u00a72)",
   "started": "wave-1",
-  "state": "built-awaiting-verification",
+  "state": "verifying",
   "outputs_expected": [
     "tools/world/build-giver-posts.mjs (generator: a post in the world for every quest giver)",
     "game/data/npcs/*.json (giver records gain `post` + `schedule`)",
@@ -45,7 +45,14 @@
     "TWO ROOT CAUSES IN populateSettlement(), both found by reading rather than measuring, both now fixed. (1) it read schedule[0].at \u2014 the FIRST row of the day whatever the hour \u2014 so a person whose midnight slot is their house was placed in their house at noon. (2) it derived every position from an INTERIOR's bounds_m, a cell-local frame centred on nothing, and settlements stand at world coordinates (helstrom [2262.5,27.22,2773.5]) \u2014 so it would have heaped every town's people around the world origin, kilometres from the town.",
     "EVERY PRE-EXISTING TOWN STATE IS A SCENE AT THE WORLD ORIGIN. soulrest-quay declares settlement:soulrest and stands the player at [0,0,-4]; Soulrest is at [610.5,7.91,4877]. That is why four state files could hold twelve people between them: a hand-placed scene is exactly as populated as somebody remembered to type. The 8 new town-<id> states stand at the town's own coordinates and declare nobody by hand.",
     "presenceMode has THREE settings deliberately \u2014 on | report | off. `report` exists so the term can be measured against the whole tree before it is allowed to refuse anything; the dispatch's warning that landing it fail-closed early has taken the engine down four times is the reason it is a field and not an if.",
-    "CONTENTION during the build phase: headless_shell went 14 -> 12 -> 30 and loadavg 11.8 -> 9.6 -> 19.35. Browser phase deferred; all of the above is authoring done with no browser open."
+    "CONTENTION during the build phase: headless_shell went 14 -> 12 -> 30 and loadavg 11.8 -> 9.6 -> 19.35. Browser phase deferred; all of the above is authoring done with no browser open.",
+    "HEADLINE, MEASURED: critic-giver-presence.mjs (unmodified questions, derived state list) reports quests_with_a_giver 120, giver_present_in_some_state 120, giver_talkable_in_some_state 120. By category: main 32/32, side 25/25, faction 62/62, hidden 1/1. Verdict acceptance was >=60/94 with side >=20/25. Was 9/94 with side 0/25 and faction 0/36.",
+    "Per state, NPCs in the world: town-gideon 41 (26 giver-quests), town-helstrom 58 (17), town-lilmoth 50 (10), town-soulrest 29 (15), town-stormhold 49 (9), town-thorn 23 (11), town-archon/blackrose likewise. helstrom-market went 4 -> 58 and thorn-hall 0 -> 23 with NO edit to their `npcs:` blocks \u2014 only `env.settlement` and the populate call.",
+    "A NEW STATE FILE IS NOT IN THE BUILD UNTIL game/data/index.json IS REGENERATED. loadState threw `no such named state` for all ten new states until `node tools/analysis/data-index.mjs` was run (525 -> 538 files). Worth knowing: check-data passes on a stale index because the index and the tree were consistent; it is the ADDITION that is invisible.",
+    "THE ORIGINAL --sabotage assume-present CONTROL IS NOW VACUOUS BY CONSTRUCTION and must not be cited as proof: it worked in the verdict because presence went 9 -> 94 while talkable stayed 9. With the world populated both are 120, so the two runs agree. The falsifying control has to be DELETE-THE-FIX on the population instead.",
+    "SIDE ITEM CLOSED, and it corrects the count: of W1-04's `9 NPC topic ids with no body`, only SIX are real. `the chapter's vote`, `the interior's consent` and `the ledger's terms` resolve fine \u2014 game/src/core/topics.js#topicKey folds an apostrophe INTO the word (`the chapters vote`) and 50-mainline.json carries all three as `the-chapters-vote`/`the-interiors-consent`/`the-ledgers-terms`. The audit used its own slug, which split on the apostrophe. An audit that does not use the runtime's own key function reports gaps the runtime does not have.",
+    "SIDE ITEM CLOSED: the six real ones are all on writ-house.json \u2014 the opening cell, the two people you meet before you have a name \u2014 and are now authored in game/data/dialogue/topics/56-writ-house-open.json (the-hold, your-hatch-name, the-writ, my-work, the-list, lukiul), 4 filtered infos each with race requires/forbids and a disposition band, last row ungated. Missing-topic count is now 0 measured with the real topicKey.",
+    "SIDE ITEM CLOSED: VP04-settlement-street repointed from `settlement_primary_street` (camera hardcoded at [4,1.7,-6], the world origin) to `town-thorn` with the camera at Thorn's own coordinates."
   ],
   "files_touched": [
     "game/data/npcs/quest-givers.json",
@@ -63,6 +70,6 @@
     "tools/quests/utility-findability.mjs",
     "tools/quests/critic-giver-presence.mjs"
   ],
-  "next_step": "browser phase when pgrep -c headless_shell < 8: boot-check, then critic-giver-presence (default + --legacy-states + --sabotage assume-present), then delete-the-fix on each number, then the shot",
+  "next_step": "controls: --legacy-states, delete-the-fix on the populate call, CONSUMPTION probe for the presence term, then the shot and the blog line",
   "notes_for_successor": "Both halves or neither. Author the population FIRST, prove the presence term is silent on the shipped tree, THEN arm it. The mechanism to fill a town already exists (Engine.populateSettlement, W1-04) \u2014 the work is (a) making a state load reach it, (b) giving the 39 givers a place to stand, (c) bootable states for the 4 towns that have none."
 }

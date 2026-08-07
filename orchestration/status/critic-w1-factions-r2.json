@@ -15,6 +15,15 @@
       "note": "pgrep -c headless_shell = 11, loadavg 9.83 12.38 11.44 at start. Above the 8-browser rule. Doing read/analyse and node-only work first; will re-check before any browser launch."
     }
   ],
-  "next_step": "prose sample old-vs-new; then re-derive P16 no-reputation-writes independently",
+  "findings2": [
+    "PROSE/TIC: re-ran tools/prose/tic-detector.mjs (pre-registered rules). journal register ours 1005 docs (confirms builder count) / 39819 words vs Morrowind ref 3183 docs. RULE-01 'eleven' ours 29.89 per 10k vs ref 0.00 -> infinite ratio, 40.1% of our 250-word journal bundles contain it.",
+    "PROSE SPLIT r1-vs-r2 faction journals (my own script, pre-registered rules): the NEW material is CLEANER on most tics (round hundreds 0.39x, tricolon 0.78x, contraction-avoidance 0.75x) but WORSE on the one already flagged: eleven 23.55 -> 30.90 per 10k (1.31x). Raw: r1 22 instances/12 quests, r2 27 instances/10 quests. Q-ASSZ-12 alone uses 'eleven' NINE times and one of its journal entries is literally 'she said the number eleven three times'. 'eleven years' 23x across the three lines.",
+    "PROSE QUALITY: honestly, the new two-thirds is NOT worse. Q-LEDG-09 (a stone per coil = a barge nobody accounts for), Q-LEDG-17 ('a man who left in a hurry leaves his things; a man whose things were taken leaves dust on a floor somebody swept first'), Q-XULA-16 (sapwell interval == the coast pump's) are as good as anything in r1.",
+    "VOLUME CONFIRMED INDEPENDENTLY: 18/18/18 per line, mean 2.250 per rank, histograms [0:2 1:2 2:3 3:2 4:3 5:2 6:2 7:2] etc - no longer the flat 1/1/1/1/2/1/1/1 spreadsheet shape. Both RI-QST01 hard fails genuinely cleared.",
+    "GAP: deceit rate FELL 88.0% (r1, 22/25) -> 65.4% (r2, 17/26). 9 of 26 new quests are deceit:null.",
+    "GAP: round-2 material has ZERO violent resolutions - 0 of 87, against r1's 5 of 91. The piece's only seam crossings are still the r1 ones; D6 may have improved by DILUTION rather than by the Q-XULA-01 mouth.",
+    "SUSPECT: records_belief 19.7% (r1) -> 56.8% (r2). Target is >=15%. A 2.9x jump into 57% smells like Goodhart - must check the flag is honest against the text."
+  ],
+  "next_step": "check method vocabulary drift (comply/expose/lie/sabotage/investigate are NEW values); audit records_belief honesty; then P16 no-reputation-writes",
   "notes_for_successor": "The faction r2 work IS COMMITTED at e1661f4. The working tree is dirty from OTHER agents (W1-SOULS on engine.js, api.js). At my first boot-check the build was BROKEN (SoulsSystem referenced with no import, engine.js:375) - a concurrent agent's in-flight edit, not the faction round. It self-repaired ~4 min later and boot-check PASSes. A 11G repo makes `git worktree add` time out (>2 min); do not try."
 }
