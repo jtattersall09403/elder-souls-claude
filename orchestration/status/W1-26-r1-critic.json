@@ -1,0 +1,17 @@
+{
+  "task_id": "W1-26-r1-critic",
+  "brief": "CRITIC of W1-26 — the opening, as a played scene. Judge RI-JRN01, RI-JRN09, RI-EXP01 as amended by BAR-CRITIQUE-W1-07-R1.",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-26-r1.json",
+    "corpus/90-verdicts/wave1/W1-26-r1.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-26-r1/"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "loadavg at start: 11.70 9.86 9.34 on 4 cores - at the ~12 distortion threshold per AGENT-PROTOCOL"
+  ],
+  "next_step": "read ARBITRATION S34, RI-MTH07, TOOL-LOOP, RI-EXP01, BAR-CRITIQUE-W1-07-R1; then find the builder's W1-26 artifacts",
+  "notes_for_successor": ""
+}

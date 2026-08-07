@@ -104,10 +104,37 @@ not publish a number that has only ever been seen outside the browser — and no
 exist**; the flag is silently ignored. Check that a flag you are relying on is implemented before
 you cite it.
 
-## This box has four cores, and browser work does not queue politely
+## Parallelism: run as much as is safe, and the limit is contention, not headcount
 
-**The orchestrator's limit: at most 6–7 agents doing browser work at once.** Beyond that they do
-not merely share the machine, they prevent each other from measuring anything.
+> User direction: *"always be running as much in parallel as you can… always be assessing and
+> pushing how much you can safely and effectively run in parallel."*
+
+**Classify the work, then cap only the contended kind.** An agent authoring dialogue, quests, lore,
+corpus items or a plan costs almost nothing beyond its own thinking. An agent driving a browser
+costs a core. Capping both at one number starves the cheap work for no reason — which is what the
+original blanket cap did.
+
+| Class | What it does | Cap |
+|---|---|---|
+| **Browser-heavy** | boots the engine, drives probes, captures frames, runs journeys | **6–8 concurrently** |
+| **Light** | writes content, edits the corpus, plans, decomposes, audits data, writes prose | **effectively uncapped** — run as many as there is useful work for |
+
+**Why the browser cap moved.** It was 6–7 when *every* agent launched its own browser: fourteen
+agents drove load to 44–103 on four cores, a 1280×720 capture went from 25 s to 150–260 s, and a
+builder's 117-frame region pack managed three frames in twelve minutes and had to be abandoned.
+`tools/capture/` now pools that work behind one warm browser with a build-keyed cache — a cache hit
+is **9 ms against a 47.9 s miss**, and four agents through the service left load flat where four
+direct browsers took it from 10.8 to 23.0. Pooled capture raises the ceiling; it does not remove it,
+because probes that step the simulation still each need a page.
+
+**Check before dispatching, every time:** `cat /proc/loadavg`. Sustained load above ~12 on this box
+means measurements are being distorted, and an agent that reports a number taken under that load
+should say so. If you are near the cap, prefer dispatching light work — there is nearly always
+content or corpus work that needs no browser at all.
+
+**The standing instruction is to keep the pipeline full.** A finished piece with no critic dispatched
+is the loop stalled; an unstarted wave-1 piece is the plan not being executed. Both are worse than a
+busy machine.
 
 Measured during wave 1: with fourteen agents running, load reached **44–103 on four cores**. A
 1280×720 headless capture costs **25 s on a quiet box and 150–260 s under that load**. The W1-01

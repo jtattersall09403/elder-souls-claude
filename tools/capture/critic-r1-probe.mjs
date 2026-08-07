@@ -399,12 +399,50 @@ async function phaseStreamer() {
 }
 
 // =================================================================================================
+// PHASE 6 — THE MIDDLE CASE. What shapes of change does `excess = max(0, d1 - d2)` not see?
+// =================================================================================================
+async function phaseMetric() {
+  const { judge, THRESHOLD, GAP, UnsettledError } = await import('./settle.mjs');
+  const D = (frac) => ({ frac, changed_blocks: Math.round(frac * 5184), total_blocks: 5184, px_changed_frac: frac, max_block_delta: 40, mean_block_delta: 1 });
+  const resid = { queued: 0, built: 0, tiles_queued: 0, tiles_resident: 25 };
+  const run = (name, d1, d2, why, ought) => {
+    let verdict, proof;
+    try { proof = judge({ resid, d1: D(d1), d2: D(d2), threshold: THRESHOLD, gap: GAP, frames: 24 }); verdict = 'SETTLED'; }
+    catch (e) { if (!(e instanceof UnsettledError)) throw e; proof = e.proof; verdict = 'unsettled'; }
+    return { name, d1, d2, excess: proof.gates.G3_stability.excess, verdict, ought, wrong: verdict === 'SETTLED' && ought === 'unsettled', why };
+  };
+  const rows = [
+    run('steady arrival', 0.30, 0.30,
+      '30% of blocks change in A->B and another 30% in B->C: a world arriving at a CONSTANT rate. ' +
+      'd1 - d2 = 0, so the ambient subtraction removes the signal along with the noise.', 'unsettled'),
+    run('slow steady arrival', 0.06, 0.055, 'a slow loader, still arriving across both intervals', 'unsettled'),
+    run('accelerating arrival', 0.02, 0.14,
+      'the frame that SHIPS is B, and the world is still exploding into existence after it. ' +
+      'excess is clamped at 0 by max(), so a d2 fifty-six times the threshold is not looked at.', 'unsettled'),
+    run('the builder\'s streaming population', 0.0293, 0.0174, 'burst-then-stop, which is what was calibrated', 'unsettled'),
+    run('a genuinely settled live scene', 0.087, 0.0865, 'ground cover swaying at a steady rate', 'SETTLED'),
+  ];
+  const wrong = rows.filter((r) => r.wrong);
+  rec({
+    id: 'P6-metric-blind-spots',
+    phase: 'metric',
+    what: 'shapes of change fed to the service\'s own judge() at its own declared threshold',
+    must: 'a world that is still arriving when the picture is taken must not be called settled',
+    beaten: wrong.length > 0,
+    summary: wrong.length
+      ? `${wrong.length} unsettled worlds certified SETTLED: ${wrong.map((w) => w.name).join(', ')}`
+      : 'no blind spot found',
+    evidence: rows,
+  });
+}
+
 const phases = [];
 if (args.gates || args.all) phases.push(['gates', phaseGates]);
 if (args.key || args.all) phases.push(['key', phaseKey]);
 if (args.forge) phases.push(['forge', phaseForge]);
 if (args.sticky) phases.push(['sticky', phaseSticky]);
 if (args.streamer) phases.push(['streamer', phaseStreamer]);
+if (args.metric || args.all) phases.push(['metric', phaseMetric]);
 if (!phases.length) usage(USAGE, EXIT.USAGE);
 
 for (const [name, fn] of phases) {
