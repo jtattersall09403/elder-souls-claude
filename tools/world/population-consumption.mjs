@@ -463,22 +463,47 @@ async function walkCensus(handle, metres, { chunk = 900, label = 'walk' } = {}) 
         res = await handle.page.evaluate(() => window.__POP.resident());
         await handle.page.evaluate(() => window.__POP.topUp());
       }
+      await handle.h('clearInputs');
       const arrival = await handle.page.evaluate(() => window.__POP.look());
-      // Approach the nearest live body so perception has something to work with, then hold.
+      // CLOSE THE DISTANCE. The first run of this arm did not, and it is the single most
+      // instructive failure in this tool: a post materialises at up to `spawn_radius_m` = 170 m,
+      // and the widest `sight_radius_m` on the roster is 20 m. So the arm watched a slitherfang
+      // standing 170.08 m away for 600 frames, recorded `alert 0, speed 0, IDLE`, and filed
+      // "the bodies do not behave". They behaved correctly; the instrument was a hundred and
+      // fifty metres too far away to see it. Suspect the instrument first.
       const target = arrival.bodies.slice().sort((a, b) => a.dist_m - b.dist_m)[0] || null;
       let observed = null;
       if (target) {
+        // Stand 9 m off it, inside every sight radius in the roster and outside every reach.
+        const approach = await handle.page.evaluate((eid) => {
+          const e = window.__ENGINE;
+          const b = e.sim.findEntity(eid);
+          if (!b) return null;
+          const p = e.sim.player.pos;
+          const dx = p[0] - b.pos[0], dz = p[2] - b.pos[2];
+          const d = Math.hypot(dx, dz) || 1;
+          return { x: b.pos[0] + (dx / d) * 9, z: b.pos[2] + (dz / d) * 9, body: [b.pos[0], b.pos[2]] };
+        }, target.eid);
+        await handle.h('teleport', approach.x, approach.z);
+        await handle.h('clearInputs');
         const t0 = await handle.page.evaluate(() => window.__POP.look());
         await handle.h('stepFrames', 600);
         const t1 = await handle.page.evaluate(() => window.__POP.look());
-        // Now MOVE the player laterally: a target that never moves cannot expose a steering
-        // defect. `walkRoute` keeps driving the same locomotion the player's stick drives.
-        await handle.h('walkRoute', { route: ROUTE, speed: SPEED, chunkFrames: 240, stream: false });
+        // Now MOVE the player, in a circle AROUND the body rather than along the road. A still
+        // target hides every steering defect (AGENT-PROTOCOL §4): if the enemy's facing only
+        // ever has to be right about a stationary player, a frozen yaw looks identical to a
+        // tracking one. `walkPath` drives the same locomotion the player's stick drives.
+        const ring = [];
+        for (let i = 1; i <= 8; i++) {
+          const a = (i / 8) * Math.PI * 1.5;
+          ring.push([approach.body[0] + Math.cos(a) * 9, approach.body[1] + Math.sin(a) * 9]);
+        }
+        await handle.h('walkPath', ring, { speed: SPEED, maxFrames: 2400 });
         const t2 = await handle.page.evaluate(() => window.__POP.look());
         const pick = (snap, eid) => snap.bodies.find((b) => b.eid === eid) || null;
         observed = {
-          eid: target.eid,
-          at_arrival: pick(t0, target.eid), after_600_still: pick(t1, target.eid), after_240_moving: pick(t2, target.eid),
+          eid: target.eid, approach_to_m: 9,
+          at_arrival: pick(t0, target.eid), after_600_still: pick(t1, target.eid), after_ring_moving: pick(t2, target.eid),
           all_at_arrival: t0.bodies, all_after_still: t1.bodies, all_after_moving: t2.bodies,
         };
         const noticed = t1.bodies.filter((b) => b.alert > 0.01 || (b.alert_state && b.alert_state !== 'IDLE')).length;
@@ -496,6 +521,11 @@ async function walkCensus(handle, metres, { chunk = 900, label = 'walk' } = {}) 
         (ok ? pass : fail)('A6 the bodies BEHAVE: they notice the player, turn toward him and move', {
           bodies_watched: t1.bodies.length, noticed_count: noticed,
           moved_count: moved, turned_count: turnedBodies.length,
+          dist_at_arrival_m: pick(t0, target.eid) && pick(t0, target.eid).dist_m,
+          dist_after_approach_m: observed.at_arrival && observed.at_arrival.dist_m,
+          alert_still: observed.after_600_still && observed.after_600_still.alert,
+          alert_moving: observed.after_ring_moving && observed.after_ring_moving.alert,
+          yaw_err_after_ring_deg: observed.after_ring_moving && observed.after_ring_moving.yaw_err_deg,
           note: 'measured against a MOVING player as well as a still one — a still target hides steering defects',
         });
       } else {

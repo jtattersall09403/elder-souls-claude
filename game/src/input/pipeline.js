@@ -31,8 +31,17 @@ import { CAMERA_CONST } from '../sim/camera.js';
 
 export const BUFFER_FRAMES = 8;      // f@60 — RI-CMB09 §1, excluded from the S22 rebase.
 
-/** The CLOSED set of keys a HARNESS.md §4 scripted input event may carry. */
-export const QUEUE_INPUT_KEYS = new Set(['f', 'press', 'release', 'move', 'look']);
+/** The CLOSED set of keys a HARNESS.md §4 scripted input event may carry.
+ *
+ *  `look_stick` was MISSING from this set while `_pump()` below has always implemented it,
+ *  so the validator threw on the only key that reaches `shapeLookStick()` and the right-stick
+ *  RESPONSE CURVE — deadzone, saturation, the quadratic on magnitude, the 3.000/2.000 deg
+ *  per frame at full deflection — had no reachable caller from any probe in the project.
+ *  RI-CAM02 M1 measures exactly that curve, so M1 was unrunnable and every claim about the
+ *  stick was really a claim about `look`, which is already in degrees and skips the curve
+ *  entirely. Found by W1-06 while proving `camera/rig.json` is consumed: the constants were
+ *  unread AND the path that would have used them was unreachable. */
+export const QUEUE_INPUT_KEYS = new Set(['f', 'press', 'release', 'move', 'look', 'look_stick']);
 /** Scenario-file sugar, expanded by tools/lib/scenario.mjs. Never reaches queueInputs(). */
 export const SCENARIO_SUGAR_KEYS = new Set(['tap', 'hold', 'until']);
 
@@ -136,6 +145,7 @@ export class InputPipeline {
       for (const b of e.release || []) bitOf(b);
       if (e.move && (!Array.isArray(e.move) || e.move.length !== 2)) throw new Error('queueInputs: move must be [x,y]');
       if (e.look && (!Array.isArray(e.look) || e.look.length !== 2)) throw new Error('queueInputs: look must be [x,y]');
+      if (e.look_stick && (!Array.isArray(e.look_stick) || e.look_stick.length !== 2)) throw new Error('queueInputs: look_stick must be [x,y]');
     }
     this.script = script.slice().sort((a, b) => a.f - b.f);
     this.scriptIdx = 0;

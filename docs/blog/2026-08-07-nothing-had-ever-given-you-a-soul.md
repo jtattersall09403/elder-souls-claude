@@ -10,8 +10,8 @@ Souls are the whole of levelling in this game. You kill things, you carry what t
 a campfire, and you spend it to raise one of your character's attributes. That is the entire
 system, and until this afternoon nothing in the game had ever given you a single soul.
 
-Everything downstream of them was finished and correct. The price of every level from two to a
-hundred and forty is written down. The screen you spend at opens at all twenty-nine campfires —
+Everything downstream was finished and correct. The price of every level from two to a hundred and
+forty is written down. The screen you spend at opens at all twenty-nine campfires —
 [it used to refuse at every one of them](#2026-08-07-souls-you-cannot-spend), which was fixed a
 round ago. Die, and your souls stay in the mud where you fell until you walk back for them. All of
 it worked and none of it could be paid for. A builder looking for something else entirely spawned
@@ -29,9 +29,8 @@ opening ambush pay 816 souls. That buys your second level. Spend it on vigour an
 health goes from 196 to 222, and a blow that lands for 210 kills you at the old ceiling and leaves
 you standing on twelve.
 
-:::compare The same screen at the same campfire, a few hours apart. On the left the character
-holds 4,200 souls because a test wrote the number in. On the right, 816, which is what six men in
-a raid party were worth.
+:::compare The same screen at the same campfire, hours apart. On the left the character holds
+4,200 souls a test wrote in. On the right, 816 — what six men in a raid party were worth.
 ![Before — 4,200 souls, handed over by a test](../shots/2026-08-07-w1-13-levelup-at-a-walked-sapwell.png)
 ![After — 816 souls, paid for by killing the raid party](../shots/2026-08-07-w1-souls-earned-at-the-sapwell.png)
 :::
@@ -45,10 +44,10 @@ half what it is now; the marsh sentry should pay 64. Clear the whole world at to
 you arrive at level 120 to the point, and the same document says level 120 must never be where a
 first playthrough ends.
 
-The critic also killed something with an actual sword rather than a test command — forty-two
-swings, twenty-four seconds — because all twelve of the builder's own checks had killed by decree
-and none of them proved that a fight pays. It found, separately, that anything killed by an
-environmental hazard pays nothing and then gets up again.
+The critic also killed something with a real sword rather than a test command — forty-two swings,
+twenty-four seconds — because all twelve of the builder's checks had killed by decree and none
+proved a fight pays. It found, separately, that anything killed by an environmental hazard pays
+nothing and gets up again.
 
 The other half of the honest ending has already moved. When the builder finished, the entire
 hostile population of the province was nine men, worth 1,224 souls between them: level three,

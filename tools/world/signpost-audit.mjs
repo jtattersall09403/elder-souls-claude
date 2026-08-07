@@ -320,11 +320,56 @@ for (const [name, route] of Object.entries(namedRoutes)) {
       if (d <= LAMP_M) withinGlow++;
     }
   }
-  lit.rows.push({ route: name, nearest_glow_m: +nearestGlow.toFixed(1), nearest_any_m: +nearestAny.toFixed(1), glow_within_lamp: withinGlow, any_within_lamp: withinAny });
-  if (withinGlow === 0) {
-    warn('H', `${name}: NO glowing signature within the ${LAMP_M} m lamp range anywhere along ${(route.metres || 0)} m of road ` +
-      `(nearest lit thing ${nearestGlow.toFixed(0)} m off; ${withinAny} unlit signatures ARE within lamp range, nearest ${nearestAny.toFixed(1)} m). ` +
-      'Cause: imperial_milestone is the only roadside kind and it does not glow.');
+  // The waylamps. W1-05 answers H inside its own furniture rather than by moving RI-WLD04's 840
+  // instances: junction and waystation posts carry a lamp coloured by the region they stand in.
+  // The number that matters is not "is there a lit thing on this route" — one lamp would satisfy
+  // that and tell a walker nothing. It is THE LONGEST STRETCH OF THIS ROUTE WITH NO LIT THING
+  // WITHIN LAMP RANGE, which is how far you walk in the dark with nothing to steer at, and it is
+  // reported whether it improved or not.
+  let cum = [0];
+  for (let i = 1; i < pts.length; i++) {
+    cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+  }
+  const total = cum[cum.length - 1];
+  const litAt = [];
+  for (const s of signs) {
+    if (!s.lamp) continue;
+    let bd = Infinity, bi = 0;
+    for (let i = 0; i < pts.length; i++) {
+      const q = Math.hypot(s.x - pts[i][0], s.z - pts[i][1]);
+      if (q < bd) { bd = q; bi = i; }
+    }
+    if (bd <= LAMP_M) litAt.push({ id: s.id, s: cum[bi], off_m: +bd.toFixed(1) });
+  }
+  litAt.sort((a, b) => a.s - b.s);
+  // A walker is lit while within LAMP_M of a lamp, measured ALONG the road, so each lamp covers
+  // a window either side of where it stands. The dark stretches are what is left between them.
+  let dark = 0, cursor = 0;
+  for (const L of litAt) {
+    const lo = Math.max(0, L.s - LAMP_M);
+    if (lo > cursor) dark = Math.max(dark, lo - cursor);
+    cursor = Math.max(cursor, Math.min(total, L.s + LAMP_M));
+  }
+  dark = Math.max(dark, total - cursor);
+
+  lit.rows.push({
+    route: name,
+    nearest_glow_m: +nearestGlow.toFixed(1),
+    nearest_any_m: +nearestAny.toFixed(1),
+    glow_within_lamp: withinGlow,
+    any_within_lamp: withinAny,
+    waylamps_on_route: litAt.length,
+    longest_dark_stretch_m: Math.round(dark),
+    lit_fraction: +(1 - dark / total).toFixed(3),
+  });
+  if (withinGlow === 0 && litAt.length === 0) {
+    warn('H', `${name}: NO lit thing of any kind within the ${LAMP_M} m lamp range anywhere along ${(route.metres || 0)} m of road ` +
+      `(nearest glowing signature ${nearestGlow.toFixed(0)} m off; ${withinAny} unlit signatures ARE within lamp range, nearest ${nearestAny.toFixed(1)} m). ` +
+      'Cause: imperial_milestone is the only roadside signature kind and it does not glow, and no post on this route carries a waylamp.');
+  } else if (withinGlow === 0) {
+    warn('H', `${name}: no glowing SIGNATURE within ${LAMP_M} m of the road (nearest ${nearestGlow.toFixed(0)} m off) — ` +
+      `${litAt.length} waylamp(s) on the route carry the night signal instead, leaving a longest dark stretch of ${Math.round(dark)} m ` +
+      `over ${Math.round(total)} m. The signature half is RI-WLD04's: imperial_milestone is its only roadside kind and its glow is 0.`);
   }
 }
 

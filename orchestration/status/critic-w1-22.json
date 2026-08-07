@@ -2,10 +2,13 @@
   "task_id": "critic-w1-22",
   "role": "critic",
   "target": "W1-22 (audio / regions)",
-  "state": "researching",
+  "state": "b2-declared-pre-registration",
   "started": "2026-08-07",
   "commit_at_start": "ead0e35",
-  "contention_at_start": {"headless_shell": 12, "loadavg": "17.21 11.65 6.33"},
+  "contention_at_start": {
+    "headless_shell": 12,
+    "loadavg": "17.21 11.65 6.33"
+  },
   "plan": [
     "read AGENT-PROTOCOL, TOOL-LOOP, ARBITRATION s3, RI-MTH03, RI-AUD* items, W1-22.json",
     "declare sampling + unblinding order BEFORE building B2 pack",
@@ -23,6 +26,33 @@
   "outputs_written": [],
   "findings": [],
   "method_deviations": [],
-  "next_step": "read TOOL-LOOP.md, ARBITRATION.md s3, RI-MTH03, W1-22.json",
-  "notes_for_successor": "Box was contended at start (12 browsers, load 17). Offline work first."
+  "next_step": "offline: re-derive B4 census independently; check content-stats.mjs --audio (the tool RI-AUD03 B4 actually names); read region-axes staleness detector; then browser phase when headless_shell < 8",
+  "notes_for_successor": "Box was contended at start (12 browsers, load 17). Offline work first.",
+  "b2_preregistration": {
+    "declared_at": "2026-08-07T18:18:46.281361Z",
+    "declared_before": "any clip was rendered, any pack was built, any judge was dispatched",
+    "why_this_section_exists": "Two earlier blind comparisons in this project were voided because the pack was built by the agent that answered it, and a third because it asked a provenance question where the item specifies a quality one. RI-AUD03 B2 asks a QUALITY/IDENTITY question (same place or different places?) and nothing else. This block is written first so the design cannot be retro-fitted to the result.",
+    "item_spec": "RI-AUD03 B2: 78 fresh judges, two 20 s clips each, prompt verbatim 'Are these two 20-second recordings from the same place in a game world, or different places? Answer SAME or DIFFERENT and give one sentence of reason.' separation = (# correctly answered DIFFERENT)/78. Pass >= 0.80. Hard fail < 0.50.",
+    "stimulus_deviation_declared_up_front": "An LLM judge has no ears and this box has no audio path to a judge. The clip is therefore presented as a MECHANICALLY DERIVED, LABEL-FREE rendering of the actual PCM the engine produced: (a) a log-frequency spectrogram PNG, (b) a numeric acoustic profile (24 log-spaced band levels in dB, LUFS-I, spectral centroid, transient onset times with GENERIC descriptors only). Both members of every pair go through the identical rendering path, so the transformation cannot itself be a tell. This is weaker than listening and is declared as a method_deviation; it is stronger than the builder's separation_proxy because a judge, not a cosine threshold, decides.",
+    "sampling_declared_in_advance": {
+      "design": "STRATIFIED SAMPLE of the 78 unordered pairs, not the full census, plus SAME-pair catch trials the item itself does not specify.",
+      "hard_stratum": "the 12 pairs with the SMALLEST spectral distance in the builder's own reports/w1-22/ambience-render.json closest-pair ordering, extended by re-deriving the full 78-pair distance matrix myself. These are the pairs where a false pass would hide.",
+      "random_stratum": "12 further pairs drawn uniformly without replacement from the remaining 66, seed 22071 (recorded here before drawing).",
+      "catch_stratum": "8 SAME pairs: one region rendered twice at two DIFFERENT capture seeds. RI-AUD03 B2 AS WRITTEN HAS NO SAME CONTROL - all 78 pairs are genuinely different regions, so a judge that answers DIFFERENT to everything scores separation = 1.000. That is a probe that cannot fail, and the item ships it. The catch trials are my addition and are declared as a method_deviation.",
+      "total_trials": 32,
+      "seed_hygiene": "every trial uses a different capture seed for A than for B, drawn from seed 22071, so 'same seed' is never a channel and a SAME pair is never the identical file.",
+      "interpretation_rule_fixed_in_advance": "because the hard stratum is adversarially selected, the sample separation is a LOWER BOUND on the full-78 figure and will be reported as such. It will NOT be quoted as the full-78 B2 number. If false_different_rate on the catch stratum exceeds 0.25 the whole B2 result is declared INADMISSIBLE and the item falls back to non-blind scoring, per RI-MTH03's own scoring band."
+    },
+    "judge_freshness": "Judges are dispatched as separate contexts that receive ONLY the pack directory (A.png, B.png, A.txt, B.txt, PROMPT.md) and are told nothing else. I have read RI-AUD03 SectionB and therefore know what each region is supposed to sound like; I am DISQUALIFIED as a judge and will not answer any trial myself. That disqualification is the exact failure RI-AUD03 names ('The blind test is run by someone who has read this file').",
+    "unblinding_order_declared_in_advance": [
+      "1. re-derive the 78-pair distance matrix and fix the hard stratum",
+      "2. draw the random and catch strata from seed 22071 and write reports/w1-22-critic/b2/manifest.json (trial ids only, NO region names)",
+      "3. write the reveal key to reports/w1-22-critic/b2.reveal/mapping.json - a SIBLING of the pack root, never a child",
+      "4. render every clip, build every pack directory",
+      "5. dispatch judges; every answer lands in <pack>/answer.md",
+      "6. concatenate all answers into answers.jsonl and record its sha256 IN THE VERDICT",
+      "7. ONLY THEN open b2.reveal/mapping.json and score",
+      "I will not read mapping.json before step 7. The sha256 of answers.jsonl is the auditable evidence of that ordering."
+    ]
+  }
 }

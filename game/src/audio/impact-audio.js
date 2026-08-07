@@ -303,7 +303,31 @@ export class ImpactAudio {
     // non-spatialised class (C10 the player's own body, C11 non-diegetic) takes neither pan nor
     // distance attenuation, per S4.
     let pan = 0, dist = 1, dgain = 1;
-    const srcPos = world && world.posOf ? world.posOf(meta.kind === 'WHIFF' ? e.src : (e.src || e.who || e.dst)) : null;
+    //
+    // WHERE THE SOUND IS. An impact happens where the weapon MET THE BODY, which is the
+    // victim's position — not the attacker's, and not where the swing began.
+    //
+    // This line used to read `posOf(e.src || e.who || e.dst)`, i.e. the attacker. For every
+    // blow the PLAYER lands that resolves to the player's own feet, so `distance_m` was 0.0000
+    // and the bearing was `atan2(0,0) - playerYaw` — a pan driven by the player's own facing
+    // and by nothing else. Measured with the enemy orbiting at r = 1.4 m through ±40°: pan sat
+    // at −0.2728 while the target swung through −24°, +18°, −14.5°, +16°, and moved only when
+    // the PLAYER turned. Sword-on-flesh swung across the stereo field when you looked around
+    // and stayed put when the thing you were hitting moved.
+    //
+    // It survived because a still target dead ahead with yaw 0 yields pan 0 and distance 0,
+    // which is indistinguishable from a correct centred impact — AGENT-PROTOCOL's "a still
+    // target hides every steering defect", exactly.
+    //
+    // The victim is preferred; the attacker is the fallback in the two cases where there is no
+    // usable victim — a WHIFF (your own weapon in the air, so your own position is right) and
+    // a blow landed ON the listener, where the sound must come from whoever swung it. The
+    // player-side classes C10/C11 are `spatialised: false` and take neither branch.
+    const victim = e.dst;
+    const srcId = meta.kind === 'WHIFF'
+      ? (e.src || e.who)
+      : ((victim && victim !== this.playerId) ? victim : (e.src || e.who || e.dst));
+    const srcPos = world && world.posOf ? world.posOf(srcId) : null;
     if (spec.spatialised && srcPos && world && world.playerPos) {
       const dx = srcPos[0] - world.playerPos[0];
       const dz = srcPos[2] - world.playerPos[2];
@@ -338,6 +362,10 @@ export class ImpactAudio {
       via: meta.via || null,
       src: e.src || e.who || null,
       dst: e.dst || null,
+      // Which body the voice was POSITIONED at. Distinct from `src` (who swung) on purpose: the
+      // difference between the two is the whole M6 defect above, and a log that records only
+      // the attacker cannot be used to audit the panning at all.
+      pan_src: srcId || null,
       material: e.material || null,
       tier: e.tier || null,
       collapsed: 1,

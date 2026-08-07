@@ -268,16 +268,26 @@ try {
     const R = 1.4;
     const from = H.audioLog().length;
     const world = [];              // independent stream: where the enemy actually was, per frame
-    let theta = -50;
-    for (let k = 0; k < 26; k++) {
+    // The still control is parked DEAD AHEAD (theta 0) — that is the target a probe reaches for
+    // by default, and the one that cannot exhibit the failure. The moving run sweeps the target
+    // through the swing arc so that hits land at a spread of real bearings.
+    // The orbit is anchored to the PLAYER'S LIVE POSITION AND FACING each frame, not to the
+    // world origin. Anchored to the origin the player drifts out from under the circle and
+    // four swings in five miss, which starved M6 of the >= 20 events it asks for. Placing the
+    // target at (player + R at bearing pyaw+theta) keeps it inside the arc and makes `theta`
+    // the relative bearing the pan is supposed to track.
+    let theta = mv ? -40 : 0;
+    for (let k = 0; k < 40; k++) {
       H.queueInputs([{ f: 1, press: ['light'] }, { f: 3, release: ['light'] }]);
       for (let f = 0; f < 46; f++) {
-        if (mv) { theta += 0.9; if (theta > 50) theta = -50; }
-        const rad = (theta * Math.PI) / 180;
-        H.setEntityPos(eid, R * Math.sin(rad), R * Math.cos(rad));
+        if (mv) { theta += 0.9; if (theta > 40) theta = -40; }
+        const cs0 = H.getCombatState();
+        const rad = ((cs0.player.yaw_deg + theta) * Math.PI) / 180;
+        const ex = cs0.player.pos[0] + R * Math.sin(rad), ez = cs0.player.pos[2] + R * Math.cos(rad);
+        H.setEntityPos(eid, ex, ez);
         H.stepFrames(1);
         const cs = H.getCombatState();
-        world.push({ frame: cs.frame, ex: R * Math.sin(rad), ez: R * Math.cos(rad), px: cs.player.pos[0], pz: cs.player.pos[2], pyaw: cs.player.yaw, theta });
+        world.push({ frame: cs.frame, ex, ez, px: cs.player.pos[0], pz: cs.player.pos[2], pyaw: cs.player.yaw_deg, theta });
       }
     }
     const rows = H.audioLog().slice(from);
@@ -302,7 +312,7 @@ try {
       let rel = (Math.atan2(w.ex - w.px, w.ez - w.pz) * 180) / Math.PI - w.pyaw;
       while (rel > 180) rel -= 360;
       while (rel < -180) rel += 360;
-      pts.push({ frame: row.frame, cls: row.class, pan: row.pan, dist: row.distance_m, bearing_deg: +rel.toFixed(2), sinb: Math.sin((rel * Math.PI) / 180) });
+      pts.push({ frame: row.frame, cls: row.class, pan: row.pan, dist: row.distance_m, pan_src: row.pan_src || null, bearing_deg: +rel.toFixed(2), sinb: Math.sin((rel * Math.PI) / 180) });
     }
     const pans = pts.map((p) => p.pan);
     return {
@@ -358,10 +368,22 @@ try {
       const rows = H.audioLog().slice(from);
       // M1: the offset between the frame the GEOMETRY decided and the frame the voice was
       // decided on. The two streams are independent; the join is the measurement.
+      //
+      // The combat trace is COLUMNAR, not an event list: `t:'F'` frame records carrying the
+      // player and enemy state vectors, plus `t:'E'` event records. Filtering it for a row
+      // whose `type` is `'hit'` — which is what a first pass assumed — silently matches
+      // nothing and yields `joined: 0`, i.e. a check that reports neither pass nor fail. The
+      // geometry's own witness of a landed blow is the frame on which an enemy's HP DROPS,
+      // which is read out of the frame records and owes the audio driver nothing. The enemy
+      // vector is `[state, anim, anim_frame, hp, hitbox_active, poise, stamina, yaw, dist]`
+      // (combat/trace.js#combatFrame), so HP is index 3.
       const hitFrames = [];
+      let prevHp = null;
       for (const t of trace) {
-        const ty = t.type || t.kind || t.t;
-        if (ty === 'hit' || ty === 'HIT' || ty === 'impact' || ty === 'IMPACT') hitFrames.push(t.f);
+        if (t.t !== 'F' || !Array.isArray(t.e) || !t.e.length) continue;
+        const hp = t.e[0][3];
+        if (prevHp !== null && hp < prevHp) hitFrames.push(t.f);
+        prevHp = hp;
       }
       const offsets = [];
       for (const r of rows) {
@@ -375,6 +397,7 @@ try {
       const classes = {}; for (const r of rows) classes[r.class] = (classes[r.class] || 0) + 1;
       return {
         mode, voices: rows.length, hit_events: hitFrames.length, joined: offsets.length,
+        via: [...new Set(rows.map((r) => r.via))],
         offset_p50: q(0.5), offset_p99: q(0.99), offset_max: offsets.length ? offsets[offsets.length - 1] : null,
         classes,
         trigger_source: H.audioStats().trigger_source,
@@ -392,6 +415,39 @@ try {
   }
   console.log('P5 sabotage:', JSON.stringify(report.phases.P5_sabotage));
   save();
+  // ── P6 ─ one photograph ───────────────────────────────────────────────────────────────────
+  //
+  // The renderer is off for every phase above (AGENT-PROTOCOL: a stepping loop that renders is
+  // the most expensive thing in this project). It goes on for exactly the frames photographed.
+  if (SHOT) {
+    const shotPath = path.resolve(ROOT, SHOT);
+    fs.mkdirSync(path.dirname(shotPath), { recursive: true });
+    await page.setViewportSize({ width: 1280, height: 720 });
+    report.phases.P6_shot = await page.evaluate(() => {
+      const H = window.__HARNESS;
+      H.setSeed(1337); H.loadState('arena_duel'); H.stepFrames(4);
+      for (const e of H.listEntities()) if (e.kind === 'enemy') H.despawn(e.eid);
+      const eid = H.spawn('mat_flesh', 0, 1.4, { as: 'AUD' });
+      const from = H.audioLog().length;
+      // Walk up to the frame the blow lands on and stop ON it — hitstop means the frame you
+      // were on is the frame you look at, so that is the frame worth photographing.
+      H.queueInputs([{ f: 1, press: ['light'] }, { f: 3, release: ['light'] }]);
+      let hitFrame = null;
+      for (let f = 0; f < 46 && hitFrame === null; f++) {
+        H.setEntityPos(eid, 0.55, 1.15);
+        H.stepFrames(1);
+        if (H.audioLog().length > from) hitFrame = H.getCombatState().frame;
+      }
+      const rows = H.audioLog().slice(from);
+      H.setRenderRate(60); H.renderFrame();
+      return { hitFrame, voices: rows.map((r) => ({ frame: r.frame, class: r.class, pan: r.pan, distance_m: r.distance_m, pan_src: r.pan_src, gain: r.gain })) };
+    });
+    await page.screenshot({ path: shotPath });
+    report.phases.P6_shot.path = path.relative(ROOT, shotPath);
+    await page.evaluate(() => window.__HARNESS.setRenderRate(0));
+    console.log('P6 shot ->', report.phases.P6_shot.path, JSON.stringify(report.phases.P6_shot.voices));
+    save();
+  }
 } catch (e) {
   report.fatal = { where: 'phases', message: String(e && e.message || e), stack: String(e && e.stack || '') };
   save();

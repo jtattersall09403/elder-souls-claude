@@ -19,16 +19,27 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
+// Two address shapes, because the dialogue tree has two. `topic`+`index` addresses a topic info;
+// `greeting` addresses a record in a `greetings` array by its own id — which is stabler than an
+// index, since greetings are appended to and reordered by the generator that feeds some of them.
 export function resolveOne(doc, r) {
-  const t = (doc.topics || []).find((x) => x.id === r.topic);
-  if (!t) return { ok: false, why: `no topic "${r.topic}"` };
-  const inf = (t.infos || [])[r.index];
-  if (!inf) return { ok: false, why: `topic "${r.topic}" has no info #${r.index}` };
+  let inf, label;
+  if (r.greeting != null) {
+    inf = (doc.greetings || []).find((g) => g.id === r.greeting);
+    if (!inf) return { ok: false, why: `no greeting "${r.greeting}"` };
+    label = `greeting ${r.greeting}`;
+  } else {
+    const t = (doc.topics || []).find((x) => x.id === r.topic);
+    if (!t) return { ok: false, why: `no topic "${r.topic}"` };
+    inf = (t.infos || [])[r.index];
+    if (!inf) return { ok: false, why: `topic "${r.topic}" has no info #${r.index}` };
+    label = `${r.topic}#${r.index}`;
+  }
   const on = String(inf.x ?? '');
   if (r.g && !on.startsWith(r.g)) {
-    return { ok: false, why: `guard failed at ${r.topic}#${r.index}: expected a line starting ${JSON.stringify(r.g)}, found ${JSON.stringify(on.slice(0, Math.max(40, r.g.length + 10)))}` };
+    return { ok: false, why: `guard failed at ${label}: expected a line starting ${JSON.stringify(r.g)}, found ${JSON.stringify(on.slice(0, Math.max(40, r.g.length + 10)))}` };
   }
-  if (on === r.after) return { ok: false, why: `${r.topic}#${r.index}: after is identical to what is on disk` };
+  if (on === r.after) return { ok: false, why: `${label}: after is identical to what is on disk` };
   return { ok: true, before: on };
 }
 
@@ -45,6 +56,11 @@ function selfTest() {
   const same = resolveOne(doc, { topic: 'a', index: 0, g: 'Hello', after: 'Hello there, friend.' });
   t(!same.ok && /identical/.test(same.why), 'refuses a no-op rewrite (a table entry that was never edited)');
   t(resolveOne(doc, { topic: 'a', index: 0, after: 'X' }).ok, 'a guardless entry still resolves, for a deliberate override');
+  const gdoc = { greetings: [{ id: 'lil-w1', x: 'Friend, Lilmoth is yours today.' }, { id: 'lil-w2', x: 'It is you, dry-one.' }] };
+  t(resolveOne(gdoc, { greeting: 'lil-w2', g: 'It is you', after: 'X' }).before === 'It is you, dry-one.', 'addresses a greeting by its own id, not by index');
+  const gg = resolveOne(gdoc, { greeting: 'lil-w1', g: 'It is you', after: 'X' });
+  t(!gg.ok && /guard failed at greeting lil-w1/.test(gg.why), 'the guard names the greeting when it refuses');
+  t(!resolveOne(gdoc, { greeting: 'nope', g: 'x', after: 'X' }).ok, 'refuses an unknown greeting id');
   console.log(bad ? `SELF-TEST FAILED (${bad})` : 'self-test passed');
   return bad ? 1 : 0;
 }
@@ -62,12 +78,14 @@ function main() {
   for (const r of table.rewrites) {
     const rel = r.file || table.file;
     if (!docs.has(rel)) docs.set(rel, JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8')));
-    const key = `${rel}|${r.topic}|${r.index}`;
+    const key = `${rel}|${r.greeting ?? r.topic}|${r.index ?? ''}`;
     if (seen.has(key)) { problems.push(`${key}: addressed twice in the same table`); continue; }
     seen.add(key);
     const res = resolveOne(docs.get(rel), r);
     if (!res.ok) { problems.push(res.why); continue; }
-    out.push({ file: rel, topic: r.topic, index: r.index, before: res.before, after: r.after });
+    out.push(r.greeting != null
+      ? { file: rel, greeting: r.greeting, before: res.before, after: r.after }
+      : { file: rel, topic: r.topic, index: r.index, before: res.before, after: r.after });
   }
   if (problems.length) {
     console.error(`mkspec: ${problems.length} problem(s), NOTHING written:`);

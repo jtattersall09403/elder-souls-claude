@@ -52,7 +52,14 @@ let handle;
 
 // The page-side body is shared by all three pool arms so that the only difference between them
 // is the two flags. A probe whose arms are separate code is a probe whose arms can drift.
-const ARM_BODY = async ({ mk, deleteTheFix }) => {
+const IDENTITY_ATTRIBUTES = {
+  strength: 12, endurance: 20, agility: 10, speed: 10, vigour: 10,
+  willpower: 10, intellect: 10, 'hist-bond': 10, personality: 10, luck: 10,
+};
+
+// NOTE: `page.evaluate` serialises only its ARGUMENT — this body has no closure over the
+// module scope, so `IDENTITY_ATTRIBUTES` is passed in rather than referenced.
+const ARM_BODY = async ({ mk, deleteTheFix, forceIdentity, identity }) => {
   const eng = window.__ENGINE || (window.__HARNESS && window.__HARNESS._engine);
   const H = window.__HARNESS;
   let restore = null;
@@ -70,6 +77,20 @@ const ARM_BODY = async ({ mk, deleteTheFix }) => {
     if (mk) {
       try { H.setCharacter({ race: 'saxhleel', class: 'salt-blade', birthsign: 'raj-xul', upbringing: 'interior' }); }
       catch (e) { return { fatal: 'setCharacter failed: ' + String(e.message || e) }; }
+      H.stepFrames(2);
+    }
+    if (forceIdentity) {
+      // THE SAME-START CONTROL. `setCharacter()` composes a sheet (endurance 16, intellect 7,
+      // personality 6, ...) that stands at a DIFFERENT point of a NON-LINEAR curve from the
+      // identity register the characterless state carries — so "the two arms report the same
+      // delta" cannot be true of them as they ship, whatever the pool code does. Put the two
+      // arms on the same point of the curve and the comparison becomes a real one: with the
+      // anchor being a CONSTANT added to an absolute derivation, the DELTA a spend produces
+      // must be identical in both, and any residual difference is the birthsign term, which is
+      // the one thing the verdict says should apply only when a character exists.
+      Object.assign(eng.sim.progression.attributes, identity);
+      eng.sim._poolsDirty = true;
+      eng.applyDerivedPools({ refill: true, why: 'probe: same-start control' });
       H.stepFrames(2);
     }
     const b0 = H.saveState(); b0.character.souls_held = 400000; H.restoreState(b0); H.stepFrames(1);
@@ -153,9 +174,9 @@ try {
   const h = handle;
   await h.h('setRenderRate', 0);
 
-  const arm = async (label, mk, deleteTheFix) => {
-    const r = await h.page.evaluate(ARM_BODY, { mk, deleteTheFix });
-    r.arm = label; r.delete_the_fix = !!deleteTheFix;
+  const arm = async (label, mk, deleteTheFix, forceIdentity) => {
+    const r = await h.page.evaluate(ARM_BODY, { mk, deleteTheFix, forceIdentity, identity: IDENTITY_ATTRIBUTES });
+    r.arm = label; r.delete_the_fix = !!deleteTheFix; r.same_start_control = !!forceIdentity;
     out.arms.push(r);
     log(`${label.padEnd(34)} has_character=${r.at_start && r.at_start.has_character} `
       + `hp+${r.vigour && r.vigour.hp_max_moved} st+${r.endurance && r.endurance.stamina_max_moved} `
@@ -163,9 +184,10 @@ try {
     return r;
   };
 
-  const a1 = await arm('no-character (shipped default)', false, false);
-  const a2 = await arm('with-character (setCharacter)', true, false);
-  const a3 = await arm('no-character / FIX DELETED', false, true);
+  const a1 = await arm('no-character (shipped default)', false, false, false);
+  const a2 = await arm('with-character (setCharacter)', true, false, false);
+  const a3 = await arm('no-character / FIX DELETED', false, true, false);
+  const a4 = await arm('with-character @ IDENTITY (same start)', true, false, true);
 
   // ---- V1: the two vocabularies, read off the DRAWN elements -------------------------------
   out.vocabulary.live = await h.page.evaluate(async () => {
@@ -250,19 +272,35 @@ try {
   const moved = (a) => (a && a.vigour && !a.vigour.refused)
     ? { hp: a.vigour.hp_max_moved, st: a.endurance.stamina_max_moved, fp: a.willpower.focus_max_moved }
     : null;
-  const m1 = moved(a1), m2 = moved(a2), m3 = moved(a3);
+  const m1 = moved(a1), m2 = moved(a2), m3 = moved(a3), m4 = moved(a4);
+  const dirtyStuck = (a) => !!(a && a.vigour && !a.vigour.refused
+    && (a.vigour.pools_dirty_ever_stuck || a.endurance.pools_dirty_ever_stuck || a.willpower.pools_dirty_ever_stuck));
   out.t3_a_level_buys_something = {
-    no_character: m1, with_character: m2, fix_deleted: m3,
-    same_deltas_both_arms: !!(m1 && m2 && m1.hp === m2.hp && m1.st === m2.st && m1.fp === m2.fp),
-    pools_dirty_ever_stuck: !!(a1 && a1.vigour && (a1.vigour.pools_dirty_ever_stuck || a1.endurance.pools_dirty_ever_stuck || a1.willpower.pools_dirty_ever_stuck)),
+    no_character: m1, with_character: m2, fix_deleted: m3, with_character_same_start: m4,
+    pools_dirty_ever_stuck: dirtyStuck(a1),
+    pools_dirty_ever_stuck_with_the_fix_deleted: dirtyStuck(a3),
     // DELETE-THE-FIX: the arm without the change must NOT move the pools.
     fix_deleted_moves_nothing: !!(m3 && m3.hp === 0 && m3.st === 0 && m3.fp === 0),
     arms_differ: !!(m1 && m3 && (m1.hp !== m3.hp || m1.st !== m3.st || m1.fp !== m3.fp)),
-    pass: !!(m1 && m2 && m3
-      && m1.hp === m2.hp && m1.st === m2.st && m1.fp === m2.fp
+    // THE HONEST FORM OF THE VERDICT'S ACCEPTANCE. Its literal wording is "the `no-character`
+    // arm reports the same hp_max / stamina_max / focus_max deltas as its `with-character`
+    // arm". As the two arms SHIP that is not achievable by any pool code: `setCharacter()`
+    // composes endurance 16 against the identity register's 20, and the curves are non-linear,
+    // so equal deltas would mean the sheet was being ignored. Put both arms on the same point
+    // of the curve (`with_character_same_start`) and the comparison is the one the acceptance
+    // was reaching for.
+    same_deltas_at_the_same_start: !!(m1 && m4 && m1.hp === m4.hp && m1.st === m4.st),
+    focus_differs_by_the_birthsign_only: (m1 && m4) ? { no_character: m1.fp, with_character: m4.fp } : null,
+    _acceptance_note: 'hp_max and stamina_max deltas must be IDENTICAL between the anchored '
+      + '(characterless) arm and the absolute (character) arm at the same attributes, because the '
+      + 'anchor is a constant added to an absolute derivation. focus_max is allowed to differ and '
+      + 'is EXPECTED to: RI-CHR03\'s birthsign multiplies the reservoir, and the verdict\'s own '
+      + 'remedy says to "apply the birthsign terms only when sim.character exists".',
+    pass: !!(m1 && m2 && m3 && m4
       && m1.hp > 0 && m1.st > 0 && m1.fp > 0
+      && m1.hp === m4.hp && m1.st === m4.st
       && m3.hp === 0 && m3.st === 0 && m3.fp === 0
-      && !(a1.vigour.pools_dirty_ever_stuck || a1.endurance.pools_dirty_ever_stuck || a1.willpower.pools_dirty_ever_stuck)),
+      && !dirtyStuck(a1) && dirtyStuck(a3)),
   };
   const v = out.vocabulary.live || {};
   out.t4_one_vocabulary = {
@@ -280,7 +318,7 @@ try {
 
   log('');
   log(`T3 a level buys something: ${out.t3_a_level_buys_something.pass ? 'PASS' : 'FAIL'}  `
-    + `no-char ${JSON.stringify(m1)} · with-char ${JSON.stringify(m2)} · FIX DELETED ${JSON.stringify(m3)}`);
+    + `no-char ${JSON.stringify(m1)} · with-char ${JSON.stringify(m2)} · same-start ${JSON.stringify(m4)} · FIX DELETED ${JSON.stringify(m3)}`);
   log(`T4 one vocabulary:         ${out.t4_one_vocabulary.pass ? 'PASS' : 'FAIL'}  `
     + `on_screen_not_carried=${JSON.stringify(v.on_screen_not_carried)} carried_not_on_screen=${JSON.stringify(v.carried_not_on_screen)}`);
 } catch (e) {

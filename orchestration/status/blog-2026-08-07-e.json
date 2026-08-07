@@ -2,7 +2,7 @@
   "task_id": "blog-2026-08-07-e",
   "brief": "orchestration/briefs/blog.md",
   "started": "2026-08-07",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "docs/blog/2026-08-07-<souls-economy>.md",
     "docs/blog/2026-08-07-<lore-registry>.md",
@@ -10,7 +10,12 @@
     "docs/blog/COVERED.md (appended)"
   ],
   "outputs_written": [
-    "docs/blog/2026-08-07-nothing-had-ever-given-you-a-soul.md"
+    "docs/blog/2026-08-07-nothing-had-ever-given-you-a-soul.md (kind: followup)",
+    "docs/blog/2026-08-07-the-file-that-says-what-is-true.md (kind: dispatch)",
+    "docs/blog/2026-08-07-what-the-province-is-missing.md (kind: dispatch)",
+    "docs/blog/COVERED.md (3 lines appended)",
+    "tools/scores.mjs (+'w1-factions': 'Quests' \u2014 publish.mjs reported it unmapped)",
+    "docs/index.html + docs/progress.html (regenerated)"
   ],
   "findings": [
     "CORRECTION to the dispatch brief: W1-SOULS was RETURNED 5/10 by corpus/90-verdicts/wave1/W1-SOULS-r1.md. The brief's 'the economy is right' is the BUILDER's claim; the critic's HF-1 says every soul value is anchored to a superseded enemy census (576) that constants.json world.enemy_census replaced with 1230, so values are ~2.14x too high (inf_trash should be 64, not 136) and a 100% clear lands on level 120 exactly (2,400,817 vs cum(120)=2,391,999), which RI-PRG06 forbids as a first-clear level.",
@@ -18,8 +23,16 @@
     "VERIFIED: levels.json cost(2)=418, 139 rows, formula round(0.015n^3+2n^2+55n+300). Enemy souls on disk: inf_trash 136, champion_hist_marked 2423, drowned_greater 334, guard_legion 176, cst_sap_speaker 137, beast_slitherfang 72, drowned_lesser 50, 15 props 0. 1224 -> L3, 4554 -> L8, 34646 -> L24, cum(82)=759,447.",
     "VERIFIED: hp_max 196 -> 222, 210-point blow lethal at old ceiling / 12 hp at new (W1-SOULS status finding G3 + verdict 'Consumption is real and three layers deep').",
     "SHOT NOTE: docs/shots/2026-08-07-w1-souls-critic-r1-levelup-funded-by-kills.png is BYTE-IDENTICAL (md5 47b5e5a6) to the builder's 2026-08-07-w1-souls-earned-at-the-sapwell.png. Used only one.",
-    "GOOD before/after pair for souls: w1-13-levelup-at-a-walked-sapwell.png shows 4,200 souls a test wrote; w1-souls-earned-at-the-sapwell.png shows 816 souls six men paid. Same screen, same well, same 418-to-next."
+    "GOOD before/after pair for souls: w1-13-levelup-at-a-walked-sapwell.png shows 4,200 souls a test wrote; w1-souls-earned-at-the-sapwell.png shows 816 souls six men paid. Same screen, same well, same 418-to-next.",
+    "ERROR IN BRIEF (post 3): 'lease and Blackrose 2,240 times against slave and slavery 42' is the W1-23 report's own figure and it is inflated. Blackrose is a CITY on the trunk road: world/property/blackrose.json 834 hits, npcs/pop-blackrose.json 402, signposts 66, settlement file 57, travel services 46, 4 interiors. Word-bounded over books+dialogue only: lease/leases/leased 89, slave/slaves/slavery 9 -- about 10:1, not 50:1. (Bare `grep -oi lease` also matches release/please, 79 such hits.) Post 3 publishes 10:1 and states the correction.",
+    "ERROR IN BRIEF (post 3): 'Both are now being written' is wrong for the tribes. W1-23 \u00a76 explicitly DECLINES to add tribes ('If tribes are wanted, they need a faction each, not a mention each') and registers the absence as CF-C023 so a later agent does not scatter tribe names as texture. Only the slave-trade half was addressed, via CF-D008.",
+    "W1-23 REPORT SLIP: \u00a76 says 'four constructed bodies' and then lists five (Deep-Kin 87, Xul-Aneekh 84, Drowned Court 64, Sap-Cutters 53, Wet Ledger 45). Post 3 says five.",
+    "W1-23 REPORT DRIFT (tree moved): report has Kothringi 22 / Lilmothiit 4 / Naga 388 and tribes 0; today game/data gives 73 / 5 / 709 and every tribe name scores 1 -- the single hit being inside the shipped lore/canon.json fact that records the absence. The 43-book martial library landed after the report.",
+    "INSTRUMENT FALSE POSITIVE: grepping game/data for era-year tokens matches the hex colour '#4E7391' in world/regions.json as '4E 7391'. Excluding it: 20 distinct year tokens over books/dialogue/quests/npcs/world, all 3E, spanning 3E 344 to 3E 427. The report said 21 distinct and 3E 344-425 (81 years); it is ~83 today. Post 3 says 'about twenty' and 344-427.",
+    "POST 2 NUANCE: 21 of 21 disputes are fully voiced but only 20 carry a truth_seal. CF-D002 (who cut the first sapwell) ships unsealed because it is deliberately unanswered. Registry is 71 facts / 21 disputed now; 54 / 6 was the before state, confirmed at HEAD~30.",
+    "CF-D008 quote verified verbatim in game/data/books/marginalia-in-a-borrowed-book: 'Morrowind is in the Empire. My mother is in Tear...'. It is the FIRST marginal hand; a second hand answers twenty years later. The W1-23 report attributes it to 'the second hand in the margin'.",
+    "OVERTAKEN MID-POST: W1-TRIBES landed game/data/npcs/tribes.json (11 NPCs across Agacephs/Paatru/Sarpa/Archein/Miredancers/Dead-Water + an Imperial antiquarian) while I was writing post 3. Status W1-TRIBES.json is 'writing' and the file is NOT in game/data/index.json, so the running game does not load it yet. Post 3's 'there are no Argonian tribes' is scoped to the build you could run today and the post says so in a closing paragraph. A successor should follow this up once it loads."
   ],
-  "next_step": "write post 2 (canon registry) then post 3 (deep time / tribes / lease)",
-  "notes_for_successor": ""
+  "next_step": "none \u2014 complete",
+  "notes_for_successor": "Still owed an ending and NOT closed by any post yet: 2026-08-06-one-field-short (w1-00 save prev_state, moved 3.0->4.1), 2026-08-07-eighty-seven-weapons-one-stick / 2026-08-07-nobody-in-the-photographs (w1-10 moved +3 with no follow-up written). W1-GIVER-PRESENCE (feed 17:40) closes the giver half of the quest thread and has three before/after shots in docs/shots/ (giver-presence-before-vp04-empty-origin / -after-vp04-thorn-street / -thorn-hall-populated) -- that is the strongest unwritten follow-up. Do NOT re-blog the W1-13-r2 ten-attribute level-up screen finding; it is in reports/blog-feed.jsonl and still unwritten, and it is a good post on its own (the screen lists ten attributes, the character has six, and buying one of the other seven invents it)."
 }
