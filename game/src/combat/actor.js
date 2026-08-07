@@ -124,6 +124,22 @@ export class CombatBody {
     this.frenzyTarget = null;
     this.jumpApexMult = 1;            // `leap` scales the jump arc's apex
 
+    // ---- fields other systems write onto the body, declared HERE at their identity values ----
+    // W1-repair, and for the same reason the ward table above is declared rather than sprung
+    // into existence. `Engine.stepOnce()` writes `worldDeny` every step from the traversal
+    // band and `mireStruggle` when a roll is pressed in a mire; `begin()` writes `moveOpts`
+    // and `moveStartFrame`. All four therefore came into existence at different moments in
+    // different scenarios, so the body's OWN KEY SET depended on where it was standing and
+    // what it had just done — and a save whose key set is state-dependent cannot be checked
+    // against a manifest by set difference at all (RI-JRN05 M4, "How we lose" #7). Measured:
+    // `fight.player.worldDeny.*` and `fight.player.mireStruggle` were present in the save on
+    // `sv1-midquest` and `endgame-200q` and absent on `arena_flat` and
+    // `sv5-journal-bloodstain`, from the same build, on the same frame.
+    this.worldDeny = { roll: false, sprint: false, mired: false, band: null };
+    this.mireStruggle = false;
+    this.moveOpts = {};
+    this.moveStartFrame = 0;
+
     this._loopFrame = 0;
     this._locomotionMoveDir = 0;
     this.lastRootDelta = 0;

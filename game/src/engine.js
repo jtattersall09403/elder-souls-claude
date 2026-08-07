@@ -45,7 +45,8 @@ import { SignatureField, SIGNATURE_KINDS } from './world/signature.js';
 import { Traversal } from './sim/traversal.js';
 import { Hazards } from './sim/hazards.js';
 import { SaveStore } from './save/store.js';
-import { buildSave, applySave, stateHash, VOLATILE_PATHS, SAVE_SCHEMA_VERSION } from './save/state.js';
+import { buildSave, applySave, applySaveMagic, restoreCameraRig, stateHash, VOLATILE_PATHS, SAVE_SCHEMA_VERSION } from './save/state.js';
+import { loadActor, saveFight } from './save/fight.js';
 import { exportSave, importSave } from './save/exchange.js';
 import { canonicalise } from './core/canonical.js';
 // W1-07 — character creation. The engine owns the census SCENE (it is a place in the world,
@@ -2508,6 +2509,83 @@ export class Engine {
    * and `teleport` among the four events that snap it, and an eased pivot after a teleport
    * is the camera dragging itself across the map over a quarter of a second.
    */
+  /**
+   * Put the FIGHT back — the half of the world `applySave()` cannot reach.
+   *
+   * `sim.player` and `sim.entities` are views of `CombatSystem`'s bodies, and until this
+   * existed a save/load restored the views and left the authority untouched. Three separate
+   * consequences, all measured:
+   *
+   *   1. 26 player fields (`focus`, `attuned`, `weaponId`, `animSlot`, `hitstopF`,
+   *      `weaponTip`, `guardRaised`, `focusRestoresAtHearth`, ...) were *absent* after a
+   *      load, because `sim.reset()` builds a bare `makePlayer()` and only `mirror()` ever
+   *      adds them. `getDurableFieldCensus()` reported all 26 as unaccounted.
+   *   2. The body's frame stamps were never rebased against the frame `loadState()` resets
+   *      to 0, so a stamina regen block of 30 frames came back as a block of 230 — RI-JRN05
+   *      M5 measured `player.stamina` differing on 97 of the 120 frames after a load.
+   *   3. Nothing carried the loadout, so a cold reload (M3) or a `readSave()` into a session
+   *      holding a different weapon rebuilt the wrong fight — with the manifest's
+   *      `inventory[].equipped_slot` having no consumer on the load path at all.
+   *
+   * The fight is rebuilt from the save's own loadout rather than patched, for the same
+   * reason `applyNamedState` rebuilds it from the state file's: "rebuilding here rather than
+   * patching a live system is what makes loadState() reproducible" (`_buildCombat`).
+   */
+  _restoreFightFromSave(blob) {
+    const sim = this.sim;
+    const f = sim.frame;
+    const fight = blob.fight;
+    // A save written before the fight was durable has no `fight` block. There is no silent
+    // partial load here: `applySave` refuses any schema it cannot read whole, so reaching
+    // this line with no block means the block is empty by construction (no combat system).
+    if (!fight || !fight.player) { if (this.combat) mirror(sim, this.combat); return null; }
+
+    const l = fight.loadout || {};
+    this._loadout = Object.assign({}, this._loadout || {}, {
+      weapon: l.weapon, shield: l.shield, offhand: l.offhand, left: l.left,
+      twoHanded: l.two_handed, endurance: l.endurance === null ? undefined : l.endurance,
+      armourPoise: l.armour_poise === null ? undefined : l.armour_poise,
+      equipLoadPct: l.equip_load_pct === null ? undefined : l.equip_load_pct,
+      hpMax: l.hp_max === null ? undefined : l.hp_max,
+      flaskLevel: l.flask_level || 0,
+      gold: l.gold || 0,
+      willpower: l.willpower === null ? undefined : l.willpower,
+    });
+    this._buildCombat(this._loadout);
+    // Seam S19: `_buildCombat` constructs a FRESH MagicSystem, so the spells, gems, known
+    // effects and Focus `applySave` restored a moment ago are now on a discarded object.
+    // Restored again onto the new one — the call is idempotent by construction.
+    applySaveMagic(sim, blob);
+
+    const c = this.combat;
+    const table = c.player.moves;
+    loadActor(c.player, fight.player, f, table);
+    if (c.playerCtl && fight.player_ctl) loadActor(c.playerCtl, fight.player_ctl, f, table);
+    c.player.evaluateRig(f);
+
+    // Every enemy body, spawned from the archetype the entity record already names and then
+    // restored field for field. `combat.bodyOf()` returned nothing after a load before this,
+    // so `mirror()` skipped every enemy and a restored world had entities the fight could
+    // neither hit nor be hit by.
+    for (const rec of fight.enemies || []) {
+      const e = sim.findEntity(rec.eid);
+      const stat = this.data.enemies[rec.stat_id || (e && e.id)];
+      if (!stat) continue;
+      const body = c.spawnEnemy(rec.eid, stat, 0, 0, 0);
+      loadActor(body, rec.body, f, body.moves);
+      const ctl = c.enemies.get(rec.eid);
+      if (ctl && rec.ctl) loadActor(ctl, rec.ctl, f, body.moves);
+      body.evaluateRig(f);
+    }
+    if (sim.player.lockOn !== null && sim.player.lockOn !== undefined) c.setLock(sim.player.lockOn);
+    else c.setLock(null);
+
+    // And only now is the view true. `mirror()` is the ONLY writer of 26 of these fields and
+    // it had never run on this path.
+    mirror(sim, c);
+    return { bodies: c.bodies.length, weapon: c.player.weaponId };
+  }
+
   _settleCamera() {
     const c = this.sim.camera;
     const p = this.sim.player;
@@ -3587,28 +3665,33 @@ export class Engine {
   loadState(arg) {
     if (typeof arg === 'string') return this.applyNamedState(arg);
     if (arg && typeof arg === 'object' && arg.meta && arg.meta.schema === 'elder-souls/save@1') {
-      const r = applySave(this.sim, arg, this.moves, (id, eid, x, z, f) => this.statFor(id, eid, x, z, f));
+      // `this.moves` HAS NEVER EXISTED. It was passed here from the day the save was written
+      // and `applySave` does `moves[blob.pose.move]` with it, so loading any save taken during
+      // a committed move threw `Cannot read properties of undefined`. The move table belongs
+      // to the BODY (one per weapon), so that is what is handed over.
+      const moveTable = (this.combat && this.combat.player && this.combat.player.moves) || {};
+      const r = applySave(this.sim, arg, moveTable, (id, eid, x, z, f) => this.statFor(id, eid, x, z, f));
       this._applyCell();
+      // THE FIGHT. `applySave` restores `sim.*`, which is a VIEW of the combat bodies
+      // (sim/combat-bridge.js). Rebuilding the fight from the save's own loadout and pushing
+      // the saved bodies back into it is what makes the view true after the first step as
+      // well as at frame 0 — before this, `mirror()` overwrote six restored `pose.*` fields
+      // on step 1 and 26 further player fields did not exist at all, because `sim.reset()`
+      // replaces `sim.player` with `makePlayer()` and only `mirror()` ever adds them.
+      this._restoreFightFromSave(arg);
       // W1-13. The death observer's HP baseline is a per-session observation, not save state:
       // a load that restored a body at 40 HP would otherwise read as 460 points of damage on
       // the next frame and stamp `last_damage_frame`. Cleared, exactly as the input pipeline is.
       if (this.death) { this.death.lastHp = null; this.death.lastGrounded = null; }
-      // W1-13, and it is not W1-13's field. `save/state.js loadCreation()` rebuilds the
-      // character from the save WITHOUT `powers` or `drawbacks` — the two arrays every
-      // birthsign term is read out of. So after ANY load, `applyBirthsignToPools()` iterated
-      // two undefined lists and silently returned the base pools: the x1.60 Focus reservoir,
-      // the 55% spell absorption and, most visibly, THE DRY WELL'S WHOLE DRAWBACK were gone,
-      // and a Dry Well character's hearth rest refilled Focus like anyone else's. Found by
-      // W1-13's CONSUMPTION probe on seam S27 — `focus_restores_at_hearth` measured TRUE for
-      // `nu-ixtu` after a save round trip. Recomposed here, from the sign ids the save DOES
-      // carry, because this is the only place holding both the restored character and the
-      // creation data. The deeper fix belongs in saveCreation/loadCreation; this is the seam.
-      this._recomposeBirthsignTerms();
-      // The camera rig recomputes pivot and pos INSIDE the step (sim/camera.js), so between
-      // a load and the first step they still held makeCamera()'s defaults: a snapshot() taken
-      // straight after a load reported a camera at the world origin. One settle costs nothing
-      // and makes the loaded pose true at frame 0 as well as at frame 1.
+      // The rig, then the saved rig on top of it. `_settleCamera()` clears the transients a
+      // fresh session would not have (the dialogue walk, the containment integrators, the
+      // recentre gate); `restoreCameraRig()` then puts back the spring arm and everything
+      // else the save carries. THE ORDER IS THE FIX: before this repair the settle ran LAST
+      // and overwrote `armLen`/`armEased`/`armDesired`/`armCast`/`dist`/`distTarget` with a
+      // freshly computed default, which is why `pose.camera_dist_m` was the one and only
+      // field in RI-JRN05 M2's diff on a bare round trip of the empty `arena_flat`.
       this._settleCamera();
+      restoreCameraRig(this.sim.camera, arg.pose, this.sim.frame);
       quantiseColdState(this.sim);
       return r;
     }

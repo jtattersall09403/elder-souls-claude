@@ -34,7 +34,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs, wantsHelp, usage, die, EXIT, log, writeJson, REPO_ROOT, quantile } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
-import { installShim, PADS } from './gamepad-shim.mjs';
+// The shim's API moved mid-session (a tool-builder round replaced `installShim` + reload with
+// `initScripts` applied before navigation, which is strictly better). Both shapes are handled so
+// this file keeps running against either.
+import * as SHIM from './gamepad-shim.mjs';
+const PADS = SHIM.PADS;
 
 const USAGE = `
 input-checks.mjs — RI-JRN03 M-K1..M-K24 and RI-JRN04 M-P1..M-P25, measured on a live build.
@@ -110,14 +114,14 @@ function pad(buttons = {}, axes = {}, opts = {}) {
 // ---------------------------------------------------------------------------------------------
 
 async function main() {
-  const handle = await launchGame({ width: 320, height: 240, entry: args.entry, url: args.url, shimBefore: null });
+  if (args.shim && !PADS[String(args.shim)]) die(EXIT.USAGE, `unknown --shim ${args.shim}. Known: ${Object.keys(PADS).join(', ')}`);
+  const handle = args.shim
+    ? await launchGame({ width: 320, height: 240, entry: args.entry, url: args.url, initScripts: [SHIM.shimSource(PADS[String(args.shim)], 0)] })
+    : await launchGame({ width: 320, height: 240, entry: args.entry, url: args.url });
   const page = handle.page;
   if (args.shim) {
-    if (!PADS[String(args.shim)]) { await handle.close(); die(EXIT.USAGE, `unknown --shim ${args.shim}`); }
-    await installShim(page, String(args.shim));
-    await page.reload({ waitUntil: 'load' });
-    await page.waitForFunction(() => !!(window.__HARNESS && window.__HARNESS.version), null, { timeout: 60000 });
-    await page.evaluate(() => window.__HARNESS.ready({ mode: 'play-instrumented' }));
+    const installed = await page.evaluate(() => !!window.__PAD_SHIM).catch(() => false);
+    if (!installed) { await handle.close(); die(EXIT.HARNESS_ABSENT, 'the shim init script did not survive navigation; the descriptor leg would measure nothing'); }
   }
   const h = async (m, ...a) => page.evaluate(([mm, aa]) => window.__HARNESS[mm](...aa), [m, a]);
   const ev = (fn, arg) => page.evaluate(fn, arg);
@@ -1056,6 +1060,25 @@ async function touchChecks(page, h, ev) {
     out.reach = reach;
 
     // T2 — the floating stick originates where the thumb lands, anywhere in the left half.
+    // Hygiene first: the reachability sweep above leaves the drawer open and has cycled a lot
+    // of pointer ids. A detach/attach releases every pointer and every held action, and the
+    // drawer is closed with the control that opens it — the same two calls a critic re-running
+    // this file needs, and the reason the legs below were reading a working stick as [0,0].
+    // The sweep above pressed `interact` eleven times. In an arena with anybody in it that
+    // OPENS A CONVERSATION, and `_conversationStep` then calls `consumeUI(CENSUS_ACTIONS)`
+    // every frame — which zeroes `moveX/moveY`. A working virtual stick then measures as
+    // [0, 0] and reads as "touch cannot move the character", which is the single most
+    // expensive wrong conclusion this file could reach. A full state reload is the only thing
+    // that reliably puts the world back; the detach/attach releases the pointers with it.
+    const tidy = () => {
+      H.reset({ state: 'arena_flat' });
+      H.setMode('play-instrumented'); H.setRenderRate(0);
+      H.setViewport({ size: { w: 844, h: 390, dpr: 3 }, pointer: 'coarse', orientation: 'landscape', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
+      H.setTouchEnabled(false); H.setTouchEnabled(true);
+      H.stepFrames(4);
+    };
+    tidy();
+    out.tidied = H.touchState();
     H.touchDown(50, 120, 300); H.touchMove(50, 180, 240); H.stepFrames(2);
     const m1 = H.getMoveVector();
     H.touchUp(50); H.stepFrames(2);
@@ -1068,8 +1091,7 @@ async function touchChecks(page, h, ev) {
     // No `reset()` here: the state is already the arena the run started in, and a reset rewinds
     // `sim.frame` to 0 under a touch overlay whose timers are frame-numbered.
     H.setRenderRate(0);
-    for (const i of [50, 51]) H.touchUp(i);
-    H.stepFrames(4);
+    tidy();
     const L = H.touchLayout();
     const block = L.find((c) => c.action === 'block');
     const light = L.find((c) => c.action === 'light');

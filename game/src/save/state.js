@@ -358,6 +358,36 @@ export function buildSave(sim, build) {
 }
 
 /**
+ * The magic half of a restore, split out because it has to run TWICE on the engine's load
+ * path: once inside `applySave` (so `applySave` alone is still a complete restore for any
+ * caller), and once again after `Engine._restoreFightFromSave()` rebuilds the fight — which
+ * constructs a fresh `MagicSystem`, because the MagicSystem is built with and handed to the
+ * fight (seam S19, `Engine._buildCombat`). Restoring the spells onto a MagicSystem that is
+ * about to be thrown away is how a commissioned spell survives a save and not a load. It is
+ * idempotent: every line is an assignment or a setter over the whole value.
+ */
+export function applySaveMagic(sim, blob) {
+  if (!sim.magic || !blob.magic) return null;
+  const M = sim.magic;
+  M.custom = blob.magic.custom_spells.map((c) => ({
+    ...c, custom: true,
+    schools: [...new Set(c.effects.map((e) => M.effects[e.effect].school))].sort(),
+    school: M.effects[c.effects[0].effect].school,
+    band_tier: c.tier, stamina: M.classes[c.class].stamina,
+    geometry: M._geometryFor({ range: c.range, class: c.class }, { effects: c.effects }),
+    frames: { ...M.classes[c.class], unit: 'f@60' },
+  }));
+  M.knownEffects = new Set(blob.magic.known_effects);
+  M.gems = blob.magic.gems.map((g) => ({ ...g }));
+  M.xulHesh = blob.magic.xul_hesh;
+  M.soulHistory = new Map(blob.magic.soul_history.map((r) => [r.instance, r.traps]));
+  if (blob.magic.catalyst) M.setCatalyst(blob.magic.catalyst); else { M.catalyst = 'none'; M.hasCatalyst = false; }
+  M.setAttuned(blob.magic.attuned);
+  M.focus = blob.magic.focus;
+  return M;
+}
+
+/**
  * Restore. `frame` is reset to 0 (RI-MTH01 A07: "world present, frame reset"), and every
  * frame-relative offset is rebased against it.
  */
@@ -409,24 +439,7 @@ export function applySave(sim, blob, moves, statFor) {
     const t = blob.progression.sap_taint;
     sim.progression.sapTaint = { band: t.band, rests: t.rests, warded: t.warded || 0, wardUsesLeft: t.ward_uses_left, immune: !!t.immune };
   } else sim.progression.sapTaint = null;
-  if (sim.magic && blob.magic) {
-    const M = sim.magic;
-    M.custom = blob.magic.custom_spells.map((c) => ({
-      ...c, custom: true,
-      schools: [...new Set(c.effects.map((e) => M.effects[e.effect].school))].sort(),
-      school: M.effects[c.effects[0].effect].school,
-      band_tier: c.tier, stamina: M.classes[c.class].stamina,
-      geometry: M._geometryFor({ range: c.range, class: c.class }, { effects: c.effects }),
-      frames: { ...M.classes[c.class], unit: 'f@60' },
-    }));
-    M.knownEffects = new Set(blob.magic.known_effects);
-    M.gems = blob.magic.gems.map((g) => ({ ...g }));
-    M.xulHesh = blob.magic.xul_hesh;
-    M.soulHistory = new Map(blob.magic.soul_history.map((r) => [r.instance, r.traps]));
-    if (blob.magic.catalyst) M.setCatalyst(blob.magic.catalyst); else { M.catalyst = 'none'; M.hasCatalyst = false; }
-    M.setAttuned(blob.magic.attuned);
-    M.focus = blob.magic.focus;
-  }
+  applySaveMagic(sim, blob);
 
   p.hp = blob.character.hp; p.hpMax = blob.character.hp_max;
   p.stamina = blob.character.stamina; p.staminaMax = blob.character.stamina_max;

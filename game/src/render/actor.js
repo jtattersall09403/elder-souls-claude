@@ -525,10 +525,21 @@ export function poseFromRig(group, body) {
     e[12] = s[9]; e[13] = s[10]; e[14] = s[11]; e[15] = 1;
   }
   if (!A.rigged) {
-    // Stop the scene graph recomputing what we just wrote. Done after the first write so the
-    // rest pose is still available to anything that asked before the fight existed.
-    S.rootBone.matrixAutoUpdate = false;
-    S.rootBone.matrixWorldAutoUpdate = false;
+    // Stop the scene graph recomputing what we just wrote — on EVERY bone, not only the root.
+    //
+    // This is not defensive tidying, it is the whole thing working. `Object3D.updateMatrixWorld`
+    // clears `matrixWorldAutoUpdate` for the node it is called on and then RECURSES INTO THE
+    // CHILDREN WITH force=true, and each child whose own flag is still true recomputes
+    // `matrixWorld = parent.matrixWorld * matrix` from its REST local offset. Setting the flag
+    // on the root alone therefore threw away all nineteen written poses and rebuilt the rest
+    // pose, rigidly carried by the root — which measured as a swinging weapon (the weapon rides
+    // the hand matrix directly) attached to a body whose every bone moved 0.00% relative to its
+    // own root. That is the pre-fix defect wearing this file's clothes, and it is exactly what
+    // §C of the probe is shaped to catch.
+    for (const b of S.bones) {
+      b.matrixAutoUpdate = false;
+      b.matrixWorldAutoUpdate = false;
+    }
     group.position.set(0, 0, 0);
     group.rotation.set(0, 0, 0);
     group.updateMatrix();
