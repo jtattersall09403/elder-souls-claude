@@ -7,6 +7,7 @@ import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, mkdirSy
 import { join, relative, extname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chartHtml } from './scores.mjs';
+import { computeReport, discoverVerdicts } from './verdict-staleness.mjs';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 const P = (...a) => join(ROOT, ...a);
@@ -70,6 +71,14 @@ for (const f of walk(P('corpus', '90-verdicts')).filter(f => extname(f) === '.js
     if (j && (j.piece || j.piece_id) && scored) verdicts.push({ ...j, _path: relative(ROOT, f) });
   } catch { }
 }
+
+// Which verdicts are still standing on the code at HEAD. Reported, never gating — see
+// tools/verdict-staleness.mjs's own header for why a shared page must not fail on a fact about
+// one piece's commit. Wrapped defensively: a page regenerated every 20s (see the auto-refresh
+// meta tag below) must survive git being briefly unavailable rather than go blank.
+let staleness = { head: null, rows: [], summary: { total: 0, fresh: 0, stale: 0, unknown: 0 } };
+try { staleness = computeReport(discoverVerdicts()); }
+catch (e) { console.error('progress: verdict-staleness could not run —', e.message, '(reported only; page continues without it)'); }
 
 let gaps = [];
 for (const cand of ['corpus/90-verdicts/GAP-LEDGER.json', 'corpus/90-verdicts/gap-ledger.json']) {
@@ -213,6 +222,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
   <div class="card"><div class="n">${judged.size}</div><div class="l">Subsystems judged</div></div>
   <div class="card"><div class="n">${verdicts.length}</div><div class="l">Verdicts filed</div></div>
   <div class="card"><div class="n ${failed ? 'bad' : 'ok'}">${passed}/${verdicts.length || 0}</div><div class="l">Verdicts passing</div></div>
+  <div class="card"><div class="n ${staleness.summary.stale ? 'warn' : 'ok'}">${staleness.summary.fresh}/${staleness.summary.total}</div><div class="l">Verdicts fresh at HEAD</div></div>
   <div class="card"><div class="n ${openGaps.length ? 'warn' : 'ok'}">${openGaps.length}</div><div class="l">Open gaps</div></div>
   <div class="card"><div class="n">${loc.toLocaleString()}</div><div class="l">Game LOC</div></div>
   <div class="card"><div class="n">${dataStats.quests}</div><div class="l">Quests</div></div>
