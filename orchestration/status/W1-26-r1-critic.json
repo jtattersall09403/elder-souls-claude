@@ -2,25 +2,33 @@
   "task_id": "W1-26-r1-critic",
   "brief": "CRITIC of W1-26 — the opening, as a played scene. Judge RI-JRN01, RI-JRN09, RI-EXP01 as amended by BAR-CRITIQUE-W1-07-R1.",
   "started": "wave-1",
-  "state": "measuring",
+  "state": "complete",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-26-r1.json",
     "corpus/90-verdicts/wave1/W1-26-r1.md",
     "corpus/90-verdicts/wave1/artifacts/W1-26-r1/"
   ],
   "outputs_written": [
-    "tools/harness/critic-w1-26-r1a2.mjs (DTR over all 20 census nodes, 3 routes)",
-    "tools/harness/critic-w1-26-r1b.mjs (the accessor blind-spot test, 4 ways)"
+    "corpus/90-verdicts/wave1/W1-26-r1.json (verdict-validate.mjs OK)",
+    "corpus/90-verdicts/wave1/W1-26-r1.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-26-r1/{dtr-all-nodes,accessor-hole,m20-o6-ac-consumption,ar2-m9-hud}.{json,log}",
+    "tools/harness/critic-w1-26-r1a2.mjs (DTR over all 20 census nodes, 3 routes, 2 denominators, 2 draw policies)",
+    "tools/harness/critic-w1-26-r1b.mjs (accessor blind-spot falsification)",
+    "tools/harness/critic-w1-26-r1c.mjs (M20 walked from a fresh profile, O6, AC, naming-line coupling)",
+    "tools/harness/critic-w1-26-r1d.mjs (AR-2 / M11 / M9 over the un-instrumented HUD surface)"
   ],
   "findings": [
-    "loadavg 11.7 at start, 17-22 during measurement on 4 cores. AGENT-PROTOCOL names ~12 as the distortion threshold. Recorded in the verdict.",
-    "boot-check.mjs PASS at HEAD 8744ead.",
-    "THE GRAPH HAS 20 NODES (game/data/dialogue/topics/writ-house.json), not 19. The builder's probe reached 3 node ids (hold.hatch-name, hold.out, writ.race-observed). The sibling W1-07-r3 critic's probe reached 11 (questionnaire route only). NOBODY had ever visited writ.class-named, the four writ.class-custom-* pick nodes, writ.birthsign-second, hold.wake, writ.enter or writ.strange-check.",
-    "STRUCTURAL: renderer.js constructs THREE 2D surfaces — this.ui (UILayer 'dialogue'), this.menus (UISurface, W1-21) and this.title — under a comment saying 'Every 2D surface this renderer owns is registered'. It instruments TWO. game/src/ui/surface.js:68 is the third context; game/src/ui/glyphs.js drawText() strokes vector paths (moveTo/lineTo/quadraticCurveTo/stroke) and NEVER calls fillText/strokeText, so the register is structurally incapable of seeing it even if instrumented. SAME HOLE the sibling found.",
-    "reports/journeys/w1-26-opening.json m9 records distinct_searched: 0 and hits: [] — a grep over an EMPTY set reported as a pass. This is RI-JRN01 How-we-lose #15 reproduced by the fix written to close it.",
-    "The builder's OWN final artifact shows hold.wake's line — 'You are awake. Good...' the first thing anyone says in the game — as undrawn at hold.hatch-name even in the 0.95 run.",
-    "INSTRUMENT TRAP I hit and fixed: UILayer repaints only when dirty, and getCensusState()/censusAnswer() both call metrics() which repaints and clears the flag. A probe that clears the register AFTER reading state measures an empty set and reports DTR 0 for a scene that drew everything. Use a watermark (getRenderedText().next_index) taken BEFORE the repainting call, never renderedTextClear()."
+    "VERDICT: 1.3/10 FAIL. RI-JRN09 2 (HF1), RI-JRN01 2 (HF3+HF5), RI-EXP01 0 (unmeasurable).",
+    "DTR over ALL 17 input-bearing node ids x 3 class routes at HEAD 8744ead: D_model scrolled 0.9585 (DTR_q 1.00) — the builder's 0.95 GENERALISES and the unreached nodes were NOT flattering. D_state scrolled 0.8923, D_state arrival 0.7744, both below the 0.90 bar. Worst node writ.given-name 0.3333 -> HF1 FIRES.",
+    "The undrawn strings are NOT the questions (10 of 10 questions reach the frame). They are the scribe's REPLIES: hold.wake's opening line, both spoken lines at writ.given-name (incl. the race x upbringing strange-check line, different for all 3 races), and the on_match_named_class naming line. ui.js sacrifices `spoken` rows first when the content budget overflows.",
+    "ACCESSOR BLIND SPOT CONFIRMED AND FALSIFIED at HEAD. instrumented={dialogue:true, menus:false, title:true}. Instrumenting menus at runtime through the register's own instrument() yields 0 entries. Same context, two draw paths: glyphs.drawText sentinel NOT seen (0 rows), ctx.fillText sentinel SEEN (1 row). glyphs.js strokes vector paths, never calls fillText. M9 as the build ran it: 0 strings searched, pass. M9 over its real domain: 5 strings, 1 hit ('Take A tithe-gourd, empty').",
+    "O6/M4 clause 1 at HEAD is WORSE than the builder's -0.65 s: first_control_frame is NULL (never fires), so the interval is undefined; 60 frames of real forward input moved the body 0.0000 m because census_takes_input is true at hold.hatch-name.",
+    "AC = 6 of 7, MEETS the bar, and the quotes are real writing not templates. NAMED_distinct 14 of 14 (cited from W1-07-r3's 240-run sweep). NAMED_line 0%, coupling 0 with a passing null control (Wet-Foot vs Sap-Reader, 207 drawn rows each, neither line drawn).",
+    "M20/HF9 CLOSED, verified independently and WALKED (save seeded, page reloaded): exact O3 five, enabled truthful, Continue focused and loaded {loaded:true, ok:true, gen:1}.",
+    "TWO INSTRUMENT TRAPS, both of which caught me and will catch the next critic. (1) UILayer repaints only when dirty and getCensusState()/censusAnswer() both call metrics() which repaints and clears it — a probe that calls renderedTextClear() AFTER reading state reports DTR 0 for a scene that drew everything. Use getRenderedText().next_index as a watermark taken BEFORE the repainting call. (2) ui.js wrap() splits prose on whitespace and DROPS the space, so a space-joined substring delivery test fails on every wrapped string and INVENTS undrawn text — it cost me 0.067 on DTR_scene and 0.133 on DTR_q. Strip all whitespace both sides. The builder's probe, W1-07-r3's probe and my first two drafts all used the space-joined test, so every DTR figure published before this verdict UNDERSTATES.",
+    "NOT MEASURED, named rather than assumed: RI-JRN01 M10 (inscriptions) 0, my omission and cheap to take; M5/M6/240-run NAMED cited from W1-07-r3; M13 touch leg not re-run and scored 0 fail-closed on a builder artifact that contradicts itself (says 'touchLayout() returned no buttons' while carrying a 5-button layout array) — resolving it is a TWO-POINT swing on RI-JRN01.",
+    "Load 17-22 on four cores throughout. No wall-clock timing is cited. Load cost coverage, not accuracy: the first DTR probe rendered a WebGL frame per node and was killed at 900 s."
   ],
-  "next_step": "run critic-w1-26-r1a2 (all-nodes DTR) and critic-w1-26-r1b (accessor hole); then AC/NAMED citation, M4 clause 1, RI-EXP01 disposition; then write the verdict",
-  "notes_for_successor": "Do NOT use renderFrame() in a stepping loop at load>15 — the first version of the DTR probe was killed at 900 s. setRenderRate(0) + getUIState() forces UILayer.metrics() -> _redraw() -> fillText with no WebGL frame and is ~20x cheaper."
+  "next_step": "none — complete. Orchestrator: the biggest gap (GAP-W1-rendered-text-accessor-blind-to-the-hud-surface) is an S and lands on journey.opening.legibility; the touch leg is the cheapest score-moving measurement available.",
+  "notes_for_successor": "Do NOT use renderFrame() in a stepping loop above load ~15 — setRenderRate(0) + getUIState() forces UILayer.metrics() -> _redraw() -> fillText with no WebGL frame and is ~20x cheaper. Four corpus extensions filed: RI-JRN09 HF1's 'node class' is ambiguous (per-node vs per-kind disagree on this build: 0.3333 vs 0.5000 exactly); RI-JRN01 §0.1(a) should require the accessor be demonstrated non-empty ON THE CHECK'S OWN DOMAIN, not merely somewhere; RI-EXP01 has 8 of 15 derived targets no trace can produce; and doctrine does not say whether an interact prompt is an AR-2 instruction leak — two critics have now failed the same string by inference."
 }

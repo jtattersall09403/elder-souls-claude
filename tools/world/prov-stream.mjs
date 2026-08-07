@@ -134,6 +134,7 @@ const INSTALL_INSPECTOR = () => {
         near_lag_m: d(pv.nearAtPos), near_instances: nearInstances,
         cover_lag_m: d(pv.coverAt), cover_instances: coverInstances,
         night_factor: +pv.nightFactor.toFixed(3), lamps_lit: lampsLit, nearest_lamp_m: lampNearest,
+        sig_lights_created: pv.sigLights ? pv.sigLights.length : 0,
       };
     },
     /**

@@ -1,0 +1,837 @@
+{
+  "schema": "elder-souls/state-diff@1",
+  "mode": "across-death",
+  "item": "RI-JRN06 M-D4 (with RI-JRN05 as the instrument)",
+  "death_volatile_group": [
+    "character.souls_held",
+    "character.hp",
+    "character.stamina",
+    "character.poise",
+    "character.estus",
+    "pose.",
+    "world.entities",
+    "world.enemies_dead_until_rest",
+    "death.bloodstain",
+    "volatile.",
+    "magic.focus",
+    "afflictions"
+  ],
+  "seeds": [
+    4711,
+    1337,
+    90210,
+    2147483647
+  ],
+  "trials": [
+    {
+      "seed": 4711,
+      "hash_before": "cbf2b7601ce5bd483f156b306c848121a951828998c67464f18d8114cdab284c",
+      "hash_after": "05d2fadd3229dbb64d94c480fc81ed4cd269fd4f0ce0afc92f0ac69dbfe2d4cc",
+      "souls_at_death": 4200,
+      "stain": {
+        "pos": [
+          3839.57,
+          2.938946,
+          3963.5
+        ],
+        "souls": 4200,
+        "death_index": 1
+      },
+      "changed_total": 135,
+      "changed_volatile": 27,
+      "changed_non_volatile": 108,
+      "offending_fields": [
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": 3.116667,
+          "after": 2.620313,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": 0.037037,
+          "after": 0.158203,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": -12.059259,
+          "after": -12.253125,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": -17.940741,
+          "after": -17.746875,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": 0.025926,
+          "after": 0.110742,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": -0.025926,
+          "after": -0.110742,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_ry[]",
+          "before": -5.914062,
+          "after": -6.326294,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.570005,
+          "after": 3801.070033,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.576512,
+          "after": 4.906592,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.470818,
+          "after": 3948.0752,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.570012,
+          "after": 3801.07008,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.716305,
+          "after": 5.046428,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.463195,
+          "after": 3948.068428,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.276952,
+          "after": 4.606915,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.487052,
+          "after": 3948.089111,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.496631,
+          "after": 4.826688,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.475184,
+          "after": 3948.079129,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.037301,
+          "after": 4.367162,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.5,
+          "after": 3948.1,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.23701,
+          "after": 4.566956,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.48921,
+          "after": 3948.090926,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3.917301,
+          "after": 4.247162,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.5,
+          "after": 3948.1,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.037301,
+          "after": 4.367162,
+          "volatile": false
+        }
+      ],
+      "pass": false
+    },
+    {
+      "seed": 1337,
+      "hash_before": "5eb675aa679cf759680a7ab28fa73ef4540cbc0878b01577a95f5d8eacb68cd4",
+      "hash_after": "29da9592b7bbd25cc7920f1cfbd954f3d64ca1278edc62c7899fc4c9fca3a1d4",
+      "souls_at_death": 4200,
+      "stain": {
+        "pos": [
+          3839.57,
+          2.938946,
+          3963.5
+        ],
+        "souls": 4200,
+        "death_index": 1
+      },
+      "changed_total": 135,
+      "changed_volatile": 27,
+      "changed_non_volatile": 108,
+      "offending_fields": [
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": 3.116667,
+          "after": 2.620313,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": 0.037037,
+          "after": 0.158203,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": -12.059259,
+          "after": -12.253125,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": -17.940741,
+          "after": -17.746875,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": 0.025926,
+          "after": 0.110742,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": -0.025926,
+          "after": -0.110742,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_ry[]",
+          "before": -5.914062,
+          "after": -6.326294,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.570005,
+          "after": 3801.070033,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.576512,
+          "after": 4.906592,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.470818,
+          "after": 3948.0752,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.570012,
+          "after": 3801.07008,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.716305,
+          "after": 5.046428,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.463195,
+          "after": 3948.068428,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.276952,
+          "after": 4.606915,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.487052,
+          "after": 3948.089111,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.496631,
+          "after": 4.826688,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.475184,
+          "after": 3948.079129,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.037301,
+          "after": 4.367162,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.5,
+          "after": 3948.1,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.23701,
+          "after": 4.566956,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.48921,
+          "after": 3948.090926,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3.917301,
+          "after": 4.247162,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.5,
+          "after": 3948.1,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.037301,
+          "after": 4.367162,
+          "volatile": false
+        }
+      ],
+      "pass": false
+    },
+    {
+      "seed": 90210,
+      "hash_before": "4a028d317b41624f47225fcbcf235158740a89bea9e9f1f5211a330681ae0f06",
+      "hash_after": "9ded2e455e9ead840bdca8b201708fc58ca493ef64662d77a644c30407fa6fd3",
+      "souls_at_death": 4200,
+      "stain": {
+        "pos": [
+          3839.57,
+          2.938946,
+          3963.5
+        ],
+        "souls": 4200,
+        "death_index": 1
+      },
+      "changed_total": 135,
+      "changed_volatile": 27,
+      "changed_non_volatile": 108,
+      "offending_fields": [
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": 3.116667,
+          "after": 2.620313,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": 0.037037,
+          "after": 0.158203,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": -12.059259,
+          "after": -12.253125,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": -17.940741,
+          "after": -17.746875,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": 0.025926,
+          "after": 0.110742,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": -0.025926,
+          "after": -0.110742,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_ry[]",
+          "before": -5.914062,
+          "after": -6.326294,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.570005,
+          "after": 3801.070033,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.576512,
+          "after": 4.906592,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.470818,
+          "after": 3948.0752,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.570012,
+          "after": 3801.07008,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.716305,
+          "after": 5.046428,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.463195,
+          "after": 3948.068428,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.276952,
+          "after": 4.606915,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.487052,
+          "after": 3948.089111,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.496631,
+          "after": 4.826688,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.475184,
+          "after": 3948.079129,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.037301,
+          "after": 4.367162,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.5,
+          "after": 3948.1,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.23701,
+          "after": 4.566956,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.48921,
+          "after": 3948.090926,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3.917301,
+          "after": 4.247162,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.5,
+          "after": 3948.1,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.037301,
+          "after": 4.367162,
+          "volatile": false
+        }
+      ],
+      "pass": false
+    },
+    {
+      "seed": 2147483647,
+      "hash_before": "19147c3e53b1436b854cabf76c09eb35fb1fd1d26f1b39ff7b00e881046174ee",
+      "hash_after": "b3d54223d6d133ee7c019f81338b309dcfb487c5efee13999a089b886deb1d8e",
+      "souls_at_death": 4200,
+      "stain": {
+        "pos": [
+          3839.57,
+          2.938946,
+          3963.5
+        ],
+        "souls": 4200,
+        "death_index": 1
+      },
+      "changed_total": 135,
+      "changed_volatile": 27,
+      "changed_non_volatile": 108,
+      "offending_fields": [
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": 3.116667,
+          "after": 2.620313,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": 0.037037,
+          "after": 0.158203,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": -12.059259,
+          "after": -12.253125,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": -17.940741,
+          "after": -17.746875,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": 0.025926,
+          "after": 0.110742,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_rx[]",
+          "before": -0.025926,
+          "after": -0.110742,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.last_ry[]",
+          "before": -5.914062,
+          "after": -6.326294,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.570005,
+          "after": 3801.070033,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.576512,
+          "after": 4.906592,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.470818,
+          "after": 3948.0752,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.570012,
+          "after": 3801.07008,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.716305,
+          "after": 5.046428,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.463195,
+          "after": 3948.068428,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.276952,
+          "after": 4.606915,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.487052,
+          "after": 3948.089111,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.496631,
+          "after": 4.826688,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.475184,
+          "after": 3948.079129,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.037301,
+          "after": 4.367162,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.5,
+          "after": 3948.1,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.23701,
+          "after": 4.566956,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.48921,
+          "after": 3948.090926,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3.917301,
+          "after": 4.247162,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3963.5,
+          "after": 3948.1,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 3839.57,
+          "after": 3801.07,
+          "volatile": false
+        },
+        {
+          "path": "fight.player.rig.hurt_prev[][][]",
+          "before": 4.037301,
+          "after": 4.367162,
+          "volatile": false
+        }
+      ],
+      "pass": false
+    }
+  ],
+  "cross_check": {
+    "journey_run": "/home/user/elder-souls-claude/reports/journeys/w1-13-jrn06/journey.json",
+    "note": "RI-JRN06 M-D4 is also computed inside journey-run; the two must agree."
+  },
+  "page_errors": [],
+  "pass": false
+}
