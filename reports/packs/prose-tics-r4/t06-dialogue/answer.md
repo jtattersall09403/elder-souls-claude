@@ -1,0 +1,10 @@
+PICK: B
+CONFIDENCE: high
+
+- B says the same fact five times in five slightly different sentences: "The [NAME-8] [NAME-9] are known for their brutal disregard for human life." / "The [NAME-8] [NAME-9] has grown powerful and ruthless since the [NAME-12] occupation" / "The [NAME-8] [NAME-9] is [NAME-3]'s native criminal syndicate." / "The [NAME-8] [NAME-9] is the old criminal syndicate here in [NAME-3]." That redundancy is what a shipped dialogue database looks like when twenty NPCs all have an answer to one topic.
+- B's lines are ordered by their opening words rather than by any conversational logic — every "The ..." line together, in near-alphabetical run. Nobody writes a conversation that way; that is a table.
+- B mixes registers that could only coexist in a database: a mine's ownership, a gang war, a recipe note on rat meat ("tough and greasy, with an unpleasant odor and taste... palatable when cooked in a stew and masked by strong, strong spices"), and an end-of-campaign congratulation ("The [NAME-20] is dead, and the [NAME-21] is gone... We offer you our thanks in this happy hour").
+- B also contains a line that only a shipped game writes, an author's opinion voiced by a functionary and then withdrawn: "I think it is a disgrace. But who cares what I think?"
+- A is one continuous person with one grievance, and it never repeats itself. Recorded plainly: A is the better writing. "I was struck off for a persistent irregularity of temper. The finding is public. What the finding does not say is what I was irregular about." and "I lost a daughter to the coast. Everyone here tells me that is why I should want it drowned. It has not yet been explained to me why that is not the reason I do not." are better lines than anything in B — but they are one character's, and a game needs a hundred.
+
+WEAKEST POINT: A's economy — "You will eat here because we do not starve a guest. You will not sleep here. Do not ask me twice." — is exactly the compression a professional dialogue writer works under, and B's flabbiness could be read as the placeholder.

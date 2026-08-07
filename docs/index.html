@@ -69,7 +69,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-07 20:59Z</div>
+  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-07 21:09Z</div>
   <nav role="tablist">
     <button role="tab" id="t-blog" aria-selected="true" aria-controls="p-blog">Blog</button>
     <button role="tab" id="t-prog" aria-selected="false" aria-controls="p-prog">Build status</button>
@@ -637,11 +637,11 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 <div class="grid">
   <div class="card"><div class="n">145</div><div class="l">Reference items</div></div>
   <div class="card"><div class="n">473</div><div class="l">Subsystems judged</div></div>
-  <div class="card"><div class="n">30</div><div class="l">Verdicts filed</div></div>
-  <div class="card"><div class="n bad">0/30</div><div class="l">Verdicts passing</div></div>
-  <div class="card"><div class="n warn">1/33</div><div class="l">Verdicts fresh at HEAD</div></div>
+  <div class="card"><div class="n">31</div><div class="l">Verdicts filed</div></div>
+  <div class="card"><div class="n bad">1/31</div><div class="l">Verdicts passing</div></div>
+  <div class="card"><div class="n warn">2/34</div><div class="l">Verdicts fresh at HEAD</div></div>
   <div class="card"><div class="n warn">25</div><div class="l">Open gaps</div></div>
-  <div class="card"><div class="n">133,176</div><div class="l">Game LOC</div></div>
+  <div class="card"><div class="n">133,260</div><div class="l">Game LOC</div></div>
   <div class="card"><div class="n">59</div><div class="l">Quests</div></div>
   <div class="card"><div class="n">21,029</div><div class="l">Dialogue words</div></div>
   <div class="card"><div class="n ok">0/0</div><div class="l">Bar gates met</div></div>
@@ -675,10 +675,10 @@ table.sc-tbl td.d{color:var(--ink)}
 </style>
 <div class="sc" id="sc">
   <div class="sc-kpi">
-    <div class="card"><div class="n">3.8</div><div class="l">Mean latest score</div></div>
+    <div class="card"><div class="n">3.9</div><div class="l">Mean latest score</div></div>
     <div class="card"><div class="n">0/14</div><div class="l">Domains at the wave-1 gate</div></div>
-    <div class="card"><div class="n">30</div><div class="l">Verdicts filed</div></div>
-    <div class="card"><div class="n">6.2</div><div class="l">Mean distance to 10</div></div>
+    <div class="card"><div class="n">31</div><div class="l">Verdicts filed</div></div>
+    <div class="card"><div class="n">6.1</div><div class="l">Mean distance to 10</div></div>
   </div>
   <div class="sc-bar">
     <button id="sc-b-small" aria-pressed="true">Per domain</button>
@@ -720,13 +720,14 @@ table.sc-tbl td.d{color:var(--ink)}
     <tr><td class="d">Quests</td><td><code>W1-19</code></td><td>1</td><td>08-07 15:40Z</td><td>5</td><td class="bad">FAIL</td></tr>
     <tr><td class="d">Dialogue</td><td><code>W1-PROSE</code></td><td>1</td><td>08-07 17:35Z</td><td>6</td><td class="bad">FAIL</td></tr>
     <tr><td class="d">Controls &amp; interface</td><td><code>W1-08</code></td><td>2</td><td>08-07 17:35Z</td><td>6</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Death &amp; progression</td><td><code>W1-SOULS</code></td><td>2</td><td>08-07 22:05Z</td><td>6</td><td class="ok">PASS</td></tr>
     </tbody></table>
   </div>
   <div class="sc-tip" id="sc-tip"></div>
 </div>
 <script>
 (function(){
-  var D=[{"name":"Audio","colour":"#3987e5","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.5309734513274337,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-22","status":"fail","when":"04:20Z","day":"08-07"}]},{"name":"Character & opening","colour":"#d95926","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.26843657817109146,"y":1.5,"round":1,"raw":1.5,"pieces":1,"piece":"W1-07","status":"fail","when":"20:55Z","day":"08-06"},{"x":0.36578171091445427,"y":3.8,"round":2,"raw":3.8,"pieces":1,"piece":"W1-07","status":"fail","when":"23:40Z","day":"08-06"},{"x":0.7020648967551623,"y":0.9,"round":3,"raw":0.9,"pieces":1,"piece":"W1-07","status":"fail","when":"09:10Z","day":"08-07"}]},{"name":"Combat","colour":"#199e70","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.20353982300884957,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-09","status":"fail","when":"19:05Z","day":"08-06"},{"x":0.2920353982300885,"y":4,"round":2,"raw":4,"pieces":1,"piece":"W1-09","status":"fail","when":"21:35Z","day":"08-06"},{"x":0.3392330383480826,"y":4,"round":3,"raw":4,"pieces":1,"piece":"W1-09","status":"fail","when":"22:55Z","day":"08-06"}]},{"name":"Controls & interface","colour":"#c98500","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.8613569321533924,"y":5,"round":1,"raw":5,"pieces":1,"piece":"W1-08","status":"fail","when":"13:40Z","day":"08-07"},{"x":1,"y":6,"round":2,"raw":6,"pieces":1,"piece":"W1-08","status":"fail","when":"17:35Z","day":"08-07"}]},{"name":"Death & progression","colour":"#d55181","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.8320747295968535,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-13","status":"fail","when":"12:50Z","day":"08-07"}]},{"name":"Dialogue","colour":"#008300","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":1,"y":6,"round":1,"raw":6,"pieces":1,"piece":"W1-PROSE","status":"fail","when":"17:35Z","day":"08-07"}]},{"name":"Engine & harness","colour":"#9085e9","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-00","status":"fail","when":"13:20Z","day":"08-06"},{"x":0.061946902654867256,"y":4.1,"round":2,"raw":4.1,"pieces":1,"piece":"W1-00","status":"fail","when":"15:05Z","day":"08-06"},{"x":0.7699115044247787,"y":3.05,"round":1,"raw":2,"pieces":2,"piece":"W1-SAVE","status":"fail","when":"11:05Z","day":"08-07"}]},{"name":"Lore & the library","colour":"#3987e5","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.8613569321533924,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-LIBRARY","status":"fail","when":"13:40Z","day":"08-07"}]},{"name":"Magic","colour":"#d95926","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.2831858407079646,"y":2.7,"round":1,"raw":2.7,"pieces":1,"piece":"W1-14","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.3805309734513274,"y":4.4,"round":2,"raw":4.4,"pieces":1,"piece":"W1-14","status":"fail","when":"00:05Z","day":"08-07"},{"x":0.6991150442477876,"y":4.6,"round":3,"raw":4.6,"pieces":1,"piece":"W1-14","status":"fail","when":"09:05Z","day":"08-07"}]},{"name":"Quests","colour":"#199e70","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0,"y":5.4,"round":1,"raw":5.4,"pieces":1,"piece":"W1-FACTIONS","status":"fail","when":"","day":""},{"x":0.8141592920353983,"y":4.7,"round":1,"raw":4,"pieces":2,"piece":"W1-19","status":"fail","when":"12:20Z","day":"08-07"},{"x":0.9321533923303835,"y":5.2,"round":1,"raw":5,"pieces":2,"piece":"W1-19","status":"fail","when":"15:40Z","day":"08-07"}]},{"name":"Stealth & crime","colour":"#c98500","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.2831858407079646,"y":2,"round":1,"raw":2,"pieces":1,"piece":"W1-15","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.41887905604719766,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-15","status":"fail","when":"01:10Z","day":"08-07"}]},{"name":"The first hour","colour":"#d55181","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.8495575221238938,"y":1.3,"round":1,"raw":1.3,"pieces":1,"piece":"W1-26","status":"fail","when":"13:20Z","day":"08-07"}]},{"name":"The world","colour":"#008300","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.17699115044247787,"y":3.1,"round":1,"raw":3.1,"pieces":1,"piece":"W1-01","status":"fail","when":"18:20Z","day":"08-06"},{"x":0.2920353982300885,"y":3.5,"round":2,"raw":3.5,"pieces":1,"piece":"W1-01","status":"fail","when":"21:35Z","day":"08-06"},{"x":0.8584070796460177,"y":5,"round":1,"raw":5,"pieces":1,"piece":"W1-01","status":"fail","when":"13:35Z","day":"08-07"}]},{"name":"Weapons","colour":"#9085e9","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.2831858407079646,"y":0,"round":1,"raw":0,"pieces":1,"piece":"W1-10","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.3805309734513274,"y":2,"round":2,"raw":2,"pieces":1,"piece":"W1-10","status":"fail","when":"00:05Z","day":"08-07"},{"x":0.6843657817109144,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-10","status":"fail","when":"08:40Z","day":"08-07"}]}], GATE=7, TARGET=10;
+  var D=[{"name":"Audio","colour":"#3987e5","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.4580152671755725,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-22","status":"fail","when":"04:20Z","day":"08-07"}]},{"name":"Character & opening","colour":"#d95926","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.23155216284987276,"y":1.5,"round":1,"raw":1.5,"pieces":1,"piece":"W1-07","status":"fail","when":"20:55Z","day":"08-06"},{"x":0.3155216284987277,"y":3.8,"round":2,"raw":3.8,"pieces":1,"piece":"W1-07","status":"fail","when":"23:40Z","day":"08-06"},{"x":0.6055979643765903,"y":0.9,"round":3,"raw":0.9,"pieces":1,"piece":"W1-07","status":"fail","when":"09:10Z","day":"08-07"}]},{"name":"Combat","colour":"#199e70","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.17557251908396945,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-09","status":"fail","when":"19:05Z","day":"08-06"},{"x":0.25190839694656486,"y":4,"round":2,"raw":4,"pieces":1,"piece":"W1-09","status":"fail","when":"21:35Z","day":"08-06"},{"x":0.2926208651399491,"y":4,"round":3,"raw":4,"pieces":1,"piece":"W1-09","status":"fail","when":"22:55Z","day":"08-06"}]},{"name":"Controls & interface","colour":"#c98500","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.7430025445292621,"y":5,"round":1,"raw":5,"pieces":1,"piece":"W1-08","status":"fail","when":"13:40Z","day":"08-07"},{"x":0.8625954198473282,"y":6,"round":2,"raw":6,"pieces":1,"piece":"W1-08","status":"fail","when":"17:35Z","day":"08-07"}]},{"name":"Death & progression","colour":"#d55181","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.7177438507209499,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-13","status":"fail","when":"12:50Z","day":"08-07"},{"x":1,"y":5,"round":2,"raw":6,"pieces":2,"piece":"W1-SOULS","status":"pass","when":"22:05Z","day":"08-07"}]},{"name":"Dialogue","colour":"#008300","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.8625954198473282,"y":6,"round":1,"raw":6,"pieces":1,"piece":"W1-PROSE","status":"fail","when":"17:35Z","day":"08-07"}]},{"name":"Engine & harness","colour":"#9085e9","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-00","status":"fail","when":"13:20Z","day":"08-06"},{"x":0.05343511450381679,"y":4.1,"round":2,"raw":4.1,"pieces":1,"piece":"W1-00","status":"fail","when":"15:05Z","day":"08-06"},{"x":0.6641221374045801,"y":3.05,"round":1,"raw":2,"pieces":2,"piece":"W1-SAVE","status":"fail","when":"11:05Z","day":"08-07"}]},{"name":"Lore & the library","colour":"#3987e5","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.7430025445292621,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-LIBRARY","status":"fail","when":"13:40Z","day":"08-07"}]},{"name":"Magic","colour":"#d95926","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.24427480916030533,"y":2.7,"round":1,"raw":2.7,"pieces":1,"piece":"W1-14","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.3282442748091603,"y":4.4,"round":2,"raw":4.4,"pieces":1,"piece":"W1-14","status":"fail","when":"00:05Z","day":"08-07"},{"x":0.6030534351145038,"y":4.6,"round":3,"raw":4.6,"pieces":1,"piece":"W1-14","status":"fail","when":"09:05Z","day":"08-07"}]},{"name":"Quests","colour":"#199e70","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0,"y":5.4,"round":1,"raw":5.4,"pieces":1,"piece":"W1-FACTIONS","status":"fail","when":"","day":""},{"x":0.7022900763358778,"y":4.7,"round":1,"raw":4,"pieces":2,"piece":"W1-19","status":"fail","when":"12:20Z","day":"08-07"},{"x":0.8040712468193384,"y":5.2,"round":1,"raw":5,"pieces":2,"piece":"W1-19","status":"fail","when":"15:40Z","day":"08-07"}]},{"name":"Stealth & crime","colour":"#c98500","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.24427480916030533,"y":2,"round":1,"raw":2,"pieces":1,"piece":"W1-15","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.361323155216285,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-15","status":"fail","when":"01:10Z","day":"08-07"}]},{"name":"The first hour","colour":"#d55181","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.732824427480916,"y":1.3,"round":1,"raw":1.3,"pieces":1,"piece":"W1-26","status":"fail","when":"13:20Z","day":"08-07"}]},{"name":"The world","colour":"#008300","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.15267175572519084,"y":3.1,"round":1,"raw":3.1,"pieces":1,"piece":"W1-01","status":"fail","when":"18:20Z","day":"08-06"},{"x":0.25190839694656486,"y":3.5,"round":2,"raw":3.5,"pieces":1,"piece":"W1-01","status":"fail","when":"21:35Z","day":"08-06"},{"x":0.7404580152671756,"y":5,"round":1,"raw":5,"pieces":1,"piece":"W1-01","status":"fail","when":"13:35Z","day":"08-07"}]},{"name":"Weapons","colour":"#9085e9","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.24427480916030533,"y":0,"round":1,"raw":0,"pieces":1,"piece":"W1-10","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.3282442748091603,"y":2,"round":2,"raw":2,"pieces":1,"piece":"W1-10","status":"fail","when":"00:05Z","day":"08-07"},{"x":0.5903307888040712,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-10","status":"fail","when":"08:40Z","day":"08-07"}]}], GATE=7, TARGET=10;
   var tip=document.getElementById('sc-tip');
   var NS='http://www.w3.org/2000/svg';
   function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e;}
@@ -808,7 +809,7 @@ table.sc-tbl td.d{color:var(--ink)}
     svg.appendChild(tx);
   });
   var xl=el('text',{x:L,y:H-4,fill:'#9a8f79','font-size':10});xl.textContent='08-06 13:20Z';svg.appendChild(xl);
-  var xr=el('text',{x:W-R,y:H-4,fill:'#9a8f79','font-size':10,'text-anchor':'end'});xr.textContent='08-07 17:35Z';svg.appendChild(xr);
+  var xr=el('text',{x:W-R,y:H-4,fill:'#9a8f79','font-size':10,'text-anchor':'end'});xr.textContent='08-07 22:05Z';svg.appendChild(xr);
   big.appendChild(svg);
   var lg=document.createElement('div');lg.className='sc-legend';
   lg.innerHTML=D.map(function(s){return '<span><span class="k" style="background:'+s.colour+'"></span>'+s.name+'</span>';}).join('')+
@@ -1076,13 +1077,14 @@ table.sc-tbl td.d{color:var(--ink)}
 <tr><td>1</td><td>w1-library-books-and-the-reading-surface</td><td><code></code></td><td class="bad">fail</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
 <tr><td>1</td><td>w1-prose-blind-in-world-prose-and-npc-voice</td><td><code></code></td><td class="bad">BELOW BAR</td><td class="gapq"><div class="rem">GATE IT. check-content.mjs: per dialogue file, question marks &gt;= 40 per 10k and -body forms = 0. Loud warning now, hard fail from wave 2. Without a check that RUNS, section 5 happens again within hours — it already has, twice.,FIX THE PACK BEFORE THE NEXT JUDGEMENT. Name-substitute both sides in build-r2-packs.mjs; switch to RI-MTH03 sec D's quality question. One afternoon of tool work, no writing.,AUTHORING, NOT FIND-AND-REPLACE. For every topic with three infos, one info must be the NPC asking the player something and reacting to what they are. This is the only fix for TELL-1 and TELL-2 and it is the work the martial library should be doing now.,DO NOT push SR-01 further. The builder is right that the residue lives in keepers, archivists and the court, calibrated formal on purpose. Moving it means making the game worse to move a number.</div></td></tr>
 <tr><td>1</td><td>W1-SAVE-r1</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
+<tr><td>1</td><td>w1-souls-r2</td><td><code></code></td><td class="ok">PASS</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
 </table>
 
 
 <h2>Verdict staleness <span class="dimtext">(reported, not a gate &mdash; a stale verdict is a fact for the next dispatch, not a downgrade)</span></h2>
 <div class="sub" style="margin-bottom:10px">
-  33 verdict(s) at HEAD c9fad96 &mdash;
-  <span class="ok">1 fresh</span>,
+  34 verdict(s) at HEAD aaa2f1f &mdash;
+  <span class="ok">2 fresh</span>,
   <span class="bad">28 stale</span>,
   <span class="dimtext">4 unknown</span>
   (unknown = no <code>depends_on</code> declared, no commit stamp, or an unresolvable commit &mdash; not assessed, not assumed fresh).
@@ -1122,6 +1124,7 @@ table.sc-tbl td.d{color:var(--ink)}
 <tr><td><code>w1-library-books-and-the-reading-surface</code></td><td class="dimtext">unknown</td><td class="rem">4c90402</td><td class="rem">commit 4c904020 is not resolvable in this repository's history</td></tr>
 <tr><td><code>w1-prose-blind-in-world-prose-and-npc-voice</code></td><td class="bad">stale</td><td class="rem">d750b6c</td><td class="rem">1 of 482 changed file(s) fall inside depends_on &mdash; e.g. <code>tools/prose/judge-fragment-openers.mjs</code></td></tr>
 <tr><td><code>W1-SAVE-r1</code></td><td class="bad">stale</td><td class="rem">b27373f</td><td class="rem">418 of 995 changed file(s) fall inside depends_on &mdash; e.g. <code>corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/tool-save-break-critic.mjs</code></td></tr>
+<tr><td><code>w1-souls-r2</code></td><td class="ok">fresh</td><td class="rem">a5a637d</td><td class="rem">10 file(s) changed since a5a637d, none inside the declared depends_on</td></tr>
 </table>
 
 <h2>Open gap ledger</h2>
@@ -1155,7 +1158,7 @@ table.sc-tbl td.d{color:var(--ink)}
 
 <h2>Content built</h2>
 <table><tr><th>Metric</th><th>Count</th></tr>
-<tr><td>files</td><td>549</td></tr>
+<tr><td>files</td><td>556</td></tr>
 <tr><td>quests</td><td>59</td></tr>
 <tr><td>npcs</td><td>8</td></tr>
 <tr><td>topics</td><td>0</td></tr>

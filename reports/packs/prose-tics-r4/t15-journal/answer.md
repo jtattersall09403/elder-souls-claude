@@ -1,0 +1,10 @@
+PICK: B
+CONFIDENCE: high
+
+- B logs a compound precondition in the exact grammar of a quest flag: "In the event that I become both [NAME-2] of the three [NAME-11] [NAME-12] and [NAME-13] of the four [NAME-14] tribes, [NAME-8] invites me to a private meeting... Once I am [NAME-2] and [NAME-13], I should speak with the healer... to arrange the meeting." Two counted sub-goals, an and-gate, and a named NPC to talk to afterwards.
+- B writes two alternative refusal entries for one beat, differing only in the reason given: "He said it was not in [NAME-4] interests to name an unknown and unreliable outlander" versus "He said I clearly was attempting to use the office of [NAME-2] as a means of advancing my own interests." Same opening sentence, two branches.
+- B carries a live behavioural warning tied to crime state: "I must avoid confrontations with the [NAME-18] at all costs, because spilling the blood of faithful servants of the [NAME-19] will make a reconciliation more difficult", and then "if I am a wanted criminal, they may try to arrest me." A conditional on the player's bounty is engine-facing text.
+- B leaves an untitled setting word unmasked because it happened to sit at the start of a sentence — "The archcanon is in his private quarters" — which tells me the source uses a fixed institutional vocabulary large enough that a capitalisation-based redactor would inevitably miss some of it.
+- A is a set of decisions and their costs, written by someone who lost things: "I refused it on the rim, out loud, with the number in it. Three war-broods walked off with me and the [NAME-3] has not spoken to me since. [NAME-4] has, and she says I have cost the argument four years and won it." That is better than anything in B, and it is not a log.
+
+WEAKEST POINT: A's last paragraph does the one thing a good quest log must do — it tells the player why a faction they may have dismissed is suddenly correct ("Being interested and being right are not the same thing and this time they are both") — and that is a professional writer solving a player-comprehension problem.

@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `c9fad96`: 449 tools, 153 reference
-items, 23 pieces in flight.
+so it cannot drift. Generated at `aaa2f1f`: 454 tools, 153 reference
+items, 22 pieces in flight.
 
-Its purpose is to stop 23+ concurrent agents each paying separately to discover the
+Its purpose is to stop 22+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -60,7 +60,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/verdict-staleness.mjs` — which verdicts are still standing on the code that is actually at HEAD.
 - `tools/verdict-validate.mjs` — **no header comment**
 
-### `tools/analysis/` — 33
+### `tools/analysis/` — 34
 
 - `tools/analysis/ambience-census.mjs` — RI-AUD03 B4 — the layer census.
 - `tools/analysis/ambience-onsets.mjs` — DOES ANYTHING ACTUALLY HAPPEN?
@@ -71,7 +71,6 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/audio-budget.mjs` — RI-AUD02's §A, §B, §C, §D and §E, one boolean per row.
 - `tools/analysis/audio-sync.mjs` — RI-AUD01's M1, M4, M5, M6, M7 and M9, measured off a run.
 - `tools/analysis/book-budget.mjs` — RI-UIX05 §D, the lore-vector budget, with no browser involved.
-- `tools/analysis/build-viability.mjs` — RI-CHR01 §5's four viability criteria, walked over all 540 signatures.
 - `tools/analysis/content-stats.mjs` — static analysis of the game's content data files.
 - `tools/analysis/creation-audit.mjs` — run RI-CHR01 / RI-CHR02 / RI-CHR03 / RI-PRG02 / RI-PRG03's comparison methods over the SHIPPED data, with no browser and no game running.
 - `tools/analysis/crime-audit.mjs` — the static half of W1-15's evidence.
@@ -85,10 +84,12 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/gen-quest-hooks.mjs` — emit game/data/quests/hooks.json, the systems layer RI-QST04 requires.
 - `tools/analysis/gen-quest-knowledge.mjs` — make every `requires.knowledge` key in the magic quests LEARNABLE.
 - `tools/analysis/gen-spells.mjs` — author the shipped spell shelf, price it with the ONE cost formula, and emit game/data/magic/spells.json plus one game/data/combat/movesets/spell-<id>.json per 
+- `tools/analysis/impossibility-screen.mjs` — A SCREEN.
 - `tools/analysis/journal-ui.mjs` — RI-UIX04.
 - `tools/analysis/magic-audit.mjs` — the static half of seam S19's measurement.
 - `tools/analysis/marker-diff.mjs` — RI-UIX02 §E, detector 3 of three, and the item calls it "the important one".
 - `tools/analysis/marker-scan.mjs` — RI-UIX02 §D, detector 2 of three.
+- `tools/analysis/mk-interior-beds.mjs` — Author the interior and settlement ambience beds.
 - `tools/analysis/music-coverage.mjs` — ABSENCE-REPORTER.
 - `tools/analysis/quest-audit.mjs` — The offline quest audit.
 - `tools/analysis/text-metrics.mjs` — RI-UIX05 §A.
@@ -160,7 +161,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/ponr-probe.mjs` — RI-EXP05 "Comparison method" Step 2, executed.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 
-### `tools/harness/` — 173
+### `tools/harness/` — 174
 
 - `tools/harness/anim-author.mjs` — re-author the four attack clip archetypes and the idle base loop, and solve for the one free parameter each archetype has.
 - `tools/harness/anim-tune.mjs` — measure the swing OFF THE ANIMATION SYSTEM, with no browser.
@@ -304,6 +305,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-13-r2-world-runs-gate.mjs` — **no header comment**
 - `tools/harness/w1-13-r3-bloom-shot.mjs` — **no header comment**
 - `tools/harness/w1-13-r3-bloom-sight.mjs` — **no header comment**
+- `tools/harness/w1-13-r3-clock.mjs` — **no header comment**
 - `tools/harness/w1-13-r3-drift.mjs` — **no header comment**
 - `tools/harness/w1-13-r3-levelling.mjs` — **no header comment**
 - `tools/harness/w1-14-r3-apm3.mjs` — RI-MAG01 AP-M3, "the homing orb", made reproducible.
@@ -475,7 +477,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 74
+### `tools/world/` — 77
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -502,6 +504,8 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-camera-relative-probe.mjs` — **no header comment**
 - `tools/world/critic-drowned-road-shots.mjs` — **no header comment**
 - `tools/world/critic-locomotion-probe.mjs` — **no header comment**
+- `tools/world/critic-population-r1-diag.mjs` — **no header comment**
+- `tools/world/critic-population-r1-shot.mjs` — **no header comment**
 - `tools/world/critic-population-r1.mjs` — **no header comment**
 - `tools/world/critic-prov-r1.mjs` — **no header comment**
 - `tools/world/critic-prov-shot.mjs` — **no header comment**
@@ -531,6 +535,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/population-shots.mjs` — **no header comment**
 - `tools/world/prov-stream.mjs` — **no header comment**
 - `tools/world/province-shots.mjs` — **no header comment**
+- `tools/world/rawleg-check.mjs` — **no header comment**
 - `tools/world/reachability-walk.mjs` — **no header comment**
 - `tools/world/region-axes.mjs` — **no header comment**
 - `tools/world/region-dispersion.mjs` — **no header comment**
@@ -553,7 +558,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **105 tools have no header comment**, so nobody can tell what they do without
+> **109 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -727,14 +732,13 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-22-r2` | building | finish event-level calibration; author interior beds (5 interior + 2 settlement); wire _st | `game/src/audio/ambience.js` `game/src/audio/synth.js` `game/src/engine.js` `tools/analysis/ambience-onsets.mjs` |
-| `W1-05` | verifying | SECOND SUCCESSOR IN PROGRESS: regenerating reports/w1-05-journey.json (Soulrest->Lilmoth), | `game/data/world/signposts.json` `tools/world/build-signposts.mjs` `game/src/world/province.js` `game/src/world/field.js` `game/src/engine.js` `game/src/harness/api.js` |
-| `critic-w1-02` | in-progress | RI-WLD08 weather/daynight numbers; ONLY-HERE M19; RI-WLD14 F1-F8; RI-WLD09; then the M68 b | `orchestration/status/critic-w1-02.json` `reports/critic-w1-02/c-m65.json` `reports/critic-w1-02/c-m65b.json` `reports/critic-w1-02/c-m65-sabotage.json` |
-| `W1-VIABILITY-SPLIT` | in_progress | read RULES/INDEX/NEXT-DISPATCH R/TOOL-COVERAGE-R4/r6 objection | `orchestration/status/W1-VIABILITY-SPLIT.json` |
+| `W1-13-r3` | building | bloom-sight null control -> clock.mjs (delete-the-fix + consumption) -> boot-check -> FULL | `orchestration/status/W1-13-r3.json` |
 | `W1-MASS` | verifying | SUCCESSOR-2 RESUMED at git 88ee56d. P1/P2/P3 confirmed COMMITTED and on disk (swing.js:447 | `game/src/combat/swing.js` `tools/weapons/motion-census.mjs` `tools/weapons/build-movesets.mjs` `tools/weapons/mass-browser.mjs` `game/data/combat/movesets/` `game/data/weapons/clip-registry.json` |
-| `critic-w1-population` | running | read RULES/INDEX done; read W1-POPULATION.json, RI-PRG06, RI-AI05, PLAN W1-12/W1-27 | — |
-| `W1-13-r3` | building | Diagnose the three aggregation reds (m_d14 named gap first, then m_d4, then m_d10_d11) and | `orchestration/status/W1-13-r3.json` |
-| `critic-w1-souls-r2` | started | read RULES/INDEX, r1 verdict, W1-SOULS-r2.json status, the item, then run the builder's su | `orchestration/status/critic-w1-souls-r2.json` |
+| `critic-w1-02` | in-progress | Blind M68: pack shipped INCOMPLETE (24 of 48 frames, builder pid 3888 died 20:59:22, no KE | `orchestration/status/critic-w1-02.json` `reports/critic-w1-02/c-m65.json` `reports/critic-w1-02/c-m65b.json` `reports/critic-w1-02/c-m65-sabotage.json` |
+| `critic-w1-population` | running | C1 (crossing walked end to end) still running; re-run C3/C4 with the two instrument bugs f | `orchestration/status/critic-w1-population.json` `tools/world/critic-population-r1.mjs` `reports/world/population/critic-r1.json` |
+| `critic-w1-souls-r2` | writing-deliverables | write corpus/90-verdicts/wave1/W1-SOULS-r2.md + .json + one blog-feed line; do not commit | `orchestration/status/critic-w1-souls-r2.json` `tools/progression/critic-souls-r2.mjs` `reports/critic-souls-r2.json` `reports/critic-souls-r2-offline.json` `reports/critic-r2-souls-consumption-INTACT.json` `reports/critic-r2-souls-r1-rerun.json` |
+| `W1-22-r2` | building | finish event-level calibration; author interior beds (5 interior + 2 settlement); wire _st | `game/src/audio/ambience.js` `game/src/audio/synth.js` `game/src/engine.js` `tools/analysis/ambience-onsets.mjs` |
+| `W1-VIABILITY-SPLIT` | in_progress | read RULES/INDEX/NEXT-DISPATCH R/TOOL-COVERAGE-R4/r6 objection | `orchestration/status/W1-VIABILITY-SPLIT.json` |
 | `tool-build-viability-r6` | researching | choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items | — |
 | `W1-JOURNAL-PROSE` | researching | state the closing-line rule, then rewrite file by file, re-running the FULL gate after eve | — |
 | `judge-prose-r4` | researching | read t01-books A.txt and B.txt; answer; then t02..t15 | — |

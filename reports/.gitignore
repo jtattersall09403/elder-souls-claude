@@ -1,4 +1,23 @@
-# Run artifacts are large, machine-specific and reproducible from the tools.
-# They are evidence for a verdict, not source. Keep the directory, drop the contents.
+# Run artifacts are large, machine-specific and reproducible from the tools. 701 MB of them, and
+# 846 JSON files. They are evidence for a verdict, not source: drop the contents.
 *
 !.gitignore
+
+# EXCEPT the two kinds that are neither large nor reproducible.
+#
+# 1. The written reports. A verdict cites `reports/<piece>-survey.md` as its evidence, and until
+#    now that path was unversioned — so an agent that overwrote one had destroyed the thing a
+#    verdict rests on with no history to recover it from. That happened: the W1-05 builder
+#    overwrote its own journey artifact, restored what it could exactly, and had to flag two
+#    fields it could not recover rather than invent them. 106 files, 800 KB.
+# 2. The blog feed. It is the owner's view of progress and it is append-only by convention, which
+#    is exactly the file a careless `>` destroys.
+# git cannot re-include a file inside an excluded DIRECTORY, so descend first, then pick.
+!*/
+!**/*.md
+!blog-feed.jsonl
+
+# Still ignored, deliberately: reports/runs/ raw logs (tools/run.mjs writes there by design),
+# every .json artifact, and every capture. Those are reproducible by re-running the tool that
+# made them, which is the test for whether something belongs in history.
+reports/runs/
