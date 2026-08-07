@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 538,
+  "file_count": 539,
   "files": [
     {
       "path": "audio/ambience/blackwood.json",
@@ -141,15 +141,15 @@
       "path": "books/the-arms-of-the-province.json",
       "schema": "elder-souls/book@2",
       "id": null,
-      "bytes": 51453,
-      "sha256": "eb3d18b2fe5d77d8"
+      "bytes": 51313,
+      "sha256": "f464c3c59b10535f"
     },
     {
       "path": "books/the-body-and-the-dark.json",
       "schema": "elder-souls/book@2",
       "id": null,
-      "bytes": 41177,
-      "sha256": "cd2a5c8ed1f60b38"
+      "bytes": 40948,
+      "sha256": "2134f9edf186bc8c"
     },
     {
       "path": "books/the-casebook-of-the-assize.json",
@@ -226,8 +226,8 @@
       "path": "books/the-short-arms.json",
       "schema": "elder-souls/book@2",
       "id": null,
-      "bytes": 16882,
-      "sha256": "617cb192cccbab16"
+      "bytes": 16833,
+      "sha256": "f8302fca05eb8649"
     },
     {
       "path": "books/the-short-forms.json",
@@ -1926,6 +1926,13 @@
       "id": null,
       "bytes": 2749,
       "sha256": "d982cecd158822d7"
+    },
+    {
+      "path": "lore/canon.json",
+      "schema": "canon@1",
+      "id": "canon",
+      "bytes": 34317,
+      "sha256": "64f0de558149f801"
     },
     {
       "path": "magic/cast-classes.json",

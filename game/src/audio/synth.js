@@ -87,15 +87,15 @@ export function makeNoiseBuffer(ctx, colour, seconds, rng, width = 0.5) {
 }
 
 function makeColouredGen(colour) {
-  if (colour === 'white') return (rng) => rng.float() * 2 - 1;
+  if (colour === 'white') return (rng) => rng.next() * 2 - 1;
   if (colour === 'brown') {
     let last = 0;
-    return (rng) => { last = (last + 0.02 * (rng.float() * 2 - 1)) / 1.02; return last * 3.5; };
+    return (rng) => { last = (last + 0.02 * (rng.next() * 2 - 1)) / 1.02; return last * 3.5; };
   }
   // pink — Paul Kellet's economical filter, −3 dB/octave.
   let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
   return (rng) => {
-    const white = rng.float() * 2 - 1;
+    const white = rng.next() * 2 - 1;
     b0 = 0.99886 * b0 + white * 0.0555179;
     b1 = 0.99332 * b1 + white * 0.0750759;
     b2 = 0.96900 * b2 + white * 0.1538520;
@@ -229,7 +229,7 @@ export function buildGrain(ctx, ev, dest, rng, t, pan = 0, gainMul = 1) {
 
   let last = t;
   for (let i = 0; i < (reps.n || 1); i++) {
-    const jitter = reps.gap_jitter_s ? (rng.float() * 2 - 1) * reps.gap_jitter_s : 0;
+    const jitter = reps.gap_jitter_s ? (rng.next() * 2 - 1) * reps.gap_jitter_s : 0;
     const at = i === 0 ? t : last + (reps.gap_s || 0) + jitter;
     last = at;
     const g = ctx.createGain();

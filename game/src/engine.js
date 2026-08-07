@@ -32,6 +32,9 @@ import { makeRecord } from './sim/record.js';
 // the build (see "Unblock the engine: a call site landed minutes before its method" and its
 // sequel). One line, the narrowest possible fix, and `sim/souls.js` already exports the name.
 import { SoulsSystem } from './sim/souls.js';
+// W1-22 — `audio.ambience.region`. RI-AUD03. See the header of game/src/audio/synth.js for the
+// survey that preceded it: before this import there was no audio code in the build at all.
+import { AmbienceDriver, renderBedOffline, emitterPlacement } from './audio/ambience.js';
 import { buildCells, EMPTY_CELL } from './sim/collision.js';
 import {
   CAMERA_CONST, CAMERA_MODES, PERSPECTIVE_MODES, NEAR_CORNER_R, CAMERA_ALPHAS,
@@ -266,6 +269,15 @@ export class Engine {
     this.hazards = this.data.hazards
       ? new Hazards(this.data.hazards, this.field, this.signatures, this.data.regions.regions)
       : null;
+    // W1-22 — THE AUDIO BED. `audio.ambience.region`, RI-AUD03.
+    //
+    // Built here, next to the field, because the field is its only input: the bed is a function
+    // of `field.regionAt(x, z)` and nothing else spatial. It is driven from `_afterStep()` (see
+    // the call site there) and it runs whether or not an `AudioContext` exists, because this
+    // box has no speaker and a bed that only exists when a speaker is attached is a bed nobody
+    // can measure. `Engine.ambienceCapture()` renders the identical graph offline into PCM,
+    // which is the evidence path: an event count is not a sound.
+    this.ambience = new AmbienceDriver(this.data.ambience || {}, { seed: 0xa3b1 });
     // W1-13 — the checkpoint and the death loop. Built BEFORE the first named state is
     // applied, because `applyNamedState()` seeds `progression.hearthLastRested` from the
     // hearth registry and a state applied against a null registry would respawn nowhere.
@@ -4032,6 +4044,11 @@ export class Engine {
     // THE PROVINCE FOLLOWS THE PLAYER. After `_deathTick()`, so a respawn is streamed on the
     // frame it happens rather than the next one. See `_streamProvince()`.
     this._streamProvince();
+    // W1-22 — THE BED FOLLOWS THE PLAYER TOO. Immediately after `_streamProvince()` and for the
+    // identical reason: this is the one slot every way the world advances passes through, and
+    // it is outside the armed determinism guard. A respawn or a teleport must change what you
+    // hear on the frame it happens.
+    this._stepAmbience();
     if (this.trace) {
       this.trace.records.push(makeRecord(this.sim, this.input, this.bus, this.trace.opts, this.tracePerf ? this._perfBlock() : null));
     }
@@ -4136,6 +4153,113 @@ export class Engine {
     // to this: a hole in the ground under the player beats any frame-time argument.
     if (discWork) return;
     if (s.since >= STREAM_BUILD_EVERY) { s.built += pv.pump(1); s.since = 0; }
+  }
+
+  /**
+   * W1-22 — THE REGIONAL AMBIENCE BED, DRIVEN FROM THE WORLD. `audio.ambience.region`, RI-AUD03.
+   *
+   * This is the world-side consumer RI-MTH07 asks for, and it is deliberately the smallest thing
+   * that can be one: it reads the player's position, asks the SAME `field.regionAt()` the ground
+   * mesh asks, and hands the answer to the bed. There is no second position model, no second
+   * region model, and no ambience-only notion of where anything is — so a bed that disagrees
+   * with the ground under your feet is not expressible.
+   *
+   * R4 — INTERIORS DO NOT GET THE EXTERIOR BED. RI-AUD03 R4 says a muffled version of outside is
+   * the sound of a hole in the design, and this build has no interior beds yet. The honest
+   * behaviour is therefore to go SILENT and say so (`getAmbienceState().suppressed`), not to
+   * low-pass the region bed and call it a cellar. An absence that is reported is a piece of work
+   * outstanding; an absence that is papered over is a defect nobody will ever find.
+   */
+  _stepAmbience() {
+    if (!this.ambience) return;
+    const p = this.sim.player;
+    const cell = this.cellFor(this.sim.env);
+    if (cell !== 'province' && cell !== 'exterior' && cell !== 'showcase') {
+      this.ambience.suppressed = cell;
+      return;
+    }
+    this.ambience.suppressed = null;
+    const r = this.field ? this.field.regionAt(p.pos[0], p.pos[2]) : null;
+    this.ambience.step({
+      regionId: r ? r.id : null,
+      x: p.pos[0], z: p.pos[2],
+      yawRad: (p.yaw || 0) * Math.PI / 180,
+      timeOfDay: this.sim.env.timeOfDay,
+      weather: this.sim.env.weather,
+      frame: this.sim.frame,
+      dt: STEP_MS / 1000,
+    });
+  }
+
+  /** RI-AUD03 observation surface. What the world is playing, right now, and why. */
+  getAmbienceState() {
+    if (!this.ambience) return { available: false, why: 'no ambience driver' };
+    const s = this.ambience.state();
+    s.available = true;
+    s.suppressed = this.ambience.suppressed || null;
+    s.cell = this.cellFor(this.sim.env);
+    return s;
+  }
+
+  /** RI-AUD02 §E `audioLog()`, ambience rows. Every row carries `bus`, `region`, `pan`. */
+  ambienceLog(limit) { return this.ambience ? this.ambience.audioLog(limit) : []; }
+
+  /**
+   * RENDER THE BED TO PCM. RI-AUD03's comparison method step 1, and the only honest answer to
+   * "is it audible?".
+   *
+   * The important property is that this shares `buildBedContinuous`, `LayerClock` and
+   * `buildGrain` with the live driver rather than reimplementing them. A capture path that is a
+   * second implementation measures the second implementation — which is how a build ends up with
+   * one good model and one broken one, both green.
+   *
+   * Returns interleaved-by-channel Float32 arrays plus the event list that produced them, so a
+   * caller in Node can compute LUFS, a spectrum, or anything else, without trusting a number
+   * this engine chose to report about itself.
+   */
+  async ambienceCapture(opts = {}) {
+    const OfflineCtor = (typeof globalThis.OfflineAudioContext === 'function')
+      ? globalThis.OfflineAudioContext
+      : globalThis.webkitOfflineAudioContext;
+    if (typeof OfflineCtor !== 'function') {
+      return { ok: false, why: 'OfflineAudioContext unavailable in this runtime' };
+    }
+    const id = opts.region || this.ambience.region;
+    const bed = this.ambience.bedFor(id);
+    if (!bed) return { ok: false, why: `no ambience bed for region ${JSON.stringify(id)}` };
+    const seconds = opts.seconds === undefined ? 20 : opts.seconds;
+    const sampleRate = opts.sampleRate === undefined ? 24000 : opts.sampleRate;
+    const buf = await renderBedOffline(OfflineCtor, bed, {
+      seconds, sampleRate, tod: opts.tod || 'day', weather: opts.weather || 'clear',
+      seed: opts.seed === undefined ? 0xa3b1 : opts.seed,
+      listener: opts.listener || null,
+    });
+    const L = Array.from(buf.getChannelData(0));
+    const R = Array.from(buf.getChannelData(1));
+    return {
+      ok: true, region: id, seconds, sampleRate, samples: L.length,
+      fired: buf.__fired || [], L, R,
+      bed_lufs_target: bed.bed_lufs_target,
+      key: bed.key,
+    };
+  }
+
+  /**
+   * B6's instrument. Where the three R7 emitters sit for a listener at (x, z) facing `yawDeg`.
+   * Exposed separately from `getAmbienceState()` so a transect can be walked without stepping
+   * the simulation at all — the emitters are a pure function of position and bearing, and a
+   * probe should be able to prove that.
+   */
+  ambienceEmitters(x, z, yawDeg, regionId) {
+    const id = regionId || (this.field ? (this.field.regionAt(x, z) || {}).id : null);
+    const bed = this.ambience ? this.ambience.bedFor(id) : null;
+    if (!bed) return { region: id, emitters: [] };
+    const yaw = (yawDeg || 0) * Math.PI / 180;
+    return {
+      region: id,
+      emitters: (bed.emitters || []).map((e) => ({ id: e.id, pos_m: e.pos_m, audible_m: e.audible_m,
+                                                   ...emitterPlacement(e, x, z, yaw) })),
+    };
   }
 
   /**
@@ -5999,14 +6123,25 @@ export class Engine {
       skinnedMeshes: census.skinnedMeshes || 0,
       shadowLights: census.shadowLights || 0,
       geometryMB: census.geometryMB || 0,
+      // W1-22. `audioMB` is STILL 0 and that is not a mistake: there is not one sampled audio
+      // asset in this build and there is not going to be one. The regional bed is SYNTHESISED
+      // (game/src/audio/synth.js), so the whole province's ambience costs `ambienceDataKB` of
+      // JSON and no decoded bytes at all. Read `audioMB: 0` alone and you will conclude, as
+      // three previous rounds did, that there is no audio; read the next three fields and you
+      // will know what is actually there. RI-AUD02's budget is measured against the voice caps
+      // and the graph, not against a megabyte count that synthesis makes meaningless.
       audioMB: 0,
+      audioSynthesised: true,
+      ambienceBeds: this.data.ambience ? Object.keys(this.data.ambience).length : 0,
+      ambienceDataKB: this.data.ambience
+        ? Math.round(JSON.stringify(this.data.ambience).length / 1024) : 0,
       atlasCount: 0,
       entitiesLive: this.sim.entities.length,
       region: this.sim.env.region,
       interior: this.sim.env.interior,
       _declared_incomplete: {
         owner: 'wave-1 pieces W1-01..W1-05 (world, regions, settlements, interiors, roads)',
-        note: 'regions/settlements/pois/interiors/npcs are counted from game/data/**, which is the corpus transcription plus one worked settlement. They are real counts of real data files, not the shipped province, and they change with loadState because the data they count does. audioMB is 0 because there is no audio (RI-AUD02 is unmeasurable in this piece and scores 0, fail-closed).',
+        note: 'regions/settlements/pois/interiors/npcs are counted from game/data/**, which is the corpus transcription plus one worked settlement. They are real counts of real data files, not the shipped province, and they change with loadState because the data they count does. audioMB is 0 because the audio is SYNTHESISED, not sampled — see audioSynthesised/ambienceBeds/ambienceDataKB above and getAmbienceState(). Regional ambience (RI-AUD03) exists as of W1-22; combat impact audio (RI-AUD01, W1-11), music (RI-AUD04) and voice (RI-AUD05) do not.',
       },
     };
   }
@@ -7278,6 +7413,18 @@ async function loadData(onBytes) {
     // nothing. Consumed by `sim/discovery.js` (the reveal radius and the standing radii) and by
     // `ui/screens/map.js` (the palette and the local span).
     else if (entry.path === 'ui/map.json') out.mapUI = doc;
+    // W1-22. The thirteen regional ambience beds (RI-AUD03 §B). It MUST have a branch here for
+    // exactly the reason the `world/opacity.json` comment above gives, and the reason is worth
+    // repeating for an audio file specifically: a bed that is fetched, counted in the byte
+    // total and then dropped is INDISTINGUISHABLE FROM SHIPPING NOTHING, and "shipping nothing
+    // while a data file says otherwise" is precisely the defect this piece was dispatched to
+    // fix — 39 audio strings in regions.json that nothing read. Consumed by
+    // `Engine.ambience` (an AmbienceDriver, built in the constructor) which is stepped from
+    // `_afterStep()`, and read back by `getAmbienceState()` / `ambienceCapture()`.
+    else if (entry.path.startsWith('audio/ambience/')) {
+      out.ambience = out.ambience || {};
+      out.ambience[doc.id || entry.path.slice('audio/ambience/'.length).replace(/\.json$/, '')] = doc;
+    }
     else if (entry.path === 'input/profiles.json') out.inputProfiles = doc;
     else if (entry.path === 'input/pad-quirks.json') out.padQuirks = doc;
     else if (entry.path === 'camera/cells.json') out.cameraCells = doc;

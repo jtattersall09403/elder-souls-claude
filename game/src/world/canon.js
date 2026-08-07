@@ -42,6 +42,21 @@
 
 import { topicKey } from '../core/topics.js';
 
+/**
+ * Fold an id the province spells two ways.
+ *
+ * Measured over all 336 shipped NPC records: the Drowned Court appears as `drowned-court` on 17
+ * people and `the_drowned_court` on 11, the Wet Ledger as `wet-ledger` on 23 and `the_wet_ledger`
+ * on 6, the rootkeepers as `rootkeepers` on 22 and `the_rootkeepers` on 4, House Dres as both
+ * `house_dres` and `house-dres`, and the Ninth Cohort as both. Any matcher comparing these
+ * strings exactly sees a fraction of the people it is talking about, and it sees it silently —
+ * the register would simply hand fewer people a stance and nothing would look broken.
+ */
+export function fold(s) {
+  if (!s) return null;
+  return String(s).toLowerCase().replace(/^the[_\s-]+/, '').replace(/[_\s-]+/g, '-');
+}
+
 export class CanonRegistry {
   /**
    * @param {object} doc `game/data/lore/canon.json`. A build without one gets an EMPTY register
@@ -125,20 +140,24 @@ export class CanonRegistry {
   stanceOf(npc, factId) {
     const f = this.byId.get(factId);
     if (!f || !f.disputed || !npc) return null;
-    const actor = npc.actor || (npc.record && npc.record.actor) || null;
-    const race = npc.race || (npc.record && npc.record.race) || null;
-    const faction = npc.faction || (npc.record && npc.record.faction) || null;
+    const rec = npc.record || {};
+    const actor = npc.actor || rec.actor || null;
+    const race = npc.race || rec.race || null;
+    const faction = fold(npc.faction || rec.faction);
+    const settlement = fold(npc.settlement || rec.settlement);
     const hits = [];
     for (const p of (f.positions || [])) {
       const h = p.holders || {};
       const byActor = actor && Array.isArray(h.actors) && h.actors.includes(actor);
-      const byFaction = faction && Array.isArray(h.factions) && h.factions.includes(faction);
+      const byFaction = faction && Array.isArray(h.factions) && h.factions.some((x) => fold(x) === faction);
       const byRace = race && Array.isArray(h.races) && h.races.includes(race);
-      // A `races` list NARROWS an actor or faction match; on its own it is too coarse to be a
-      // stance, because "every Argonian believes X" is a fact about a people and not about a
-      // speaker, and using it alone would give a stance to every person in the province.
+      const bySettlement = settlement && Array.isArray(h.settlements) && h.settlements.some((x) => fold(x) === settlement);
+      // A `races` or `settlements` list NARROWS an actor or faction match; neither is a stance on
+      // its own, because "every Argonian believes X" is a fact about a people and not about a
+      // speaker, and using it alone would hand a stance to every person in the province.
       if (byActor || byFaction) {
         if (Array.isArray(h.races) && h.races.length && !byRace) continue;
+        if (Array.isArray(h.settlements) && h.settlements.length && !bySettlement) continue;
         hits.push(p.id);
       }
     }

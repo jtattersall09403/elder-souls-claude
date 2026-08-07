@@ -24,7 +24,17 @@
     "tools/world/border-traverse.mjs (RI-WLD12 M65 staggered crossover)",
     "docs/shots/ region images + reports/blog-feed.jsonl line"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "tools/world/build-weather.mjs",
+    "game/data/world/weather.json (13 machines, 41 distinct states, tick 400 game-min)",
+    "game/src/sim/environment.js (Environment: integer-frame clock at 20x + regional weather machine + front)",
+    "game/src/sim/step.js (stepEnvironment call, after latch, before combat/town/people/stealth)",
+    "game/src/engine.js (import, data branch world/weather.json, Environment install, getEnvironment(), pauseClock())",
+    "game/src/harness/api.js (getEnvironment, pauseClock)",
+    "game/src/sim/stealth/system.js skyAmbient rewritten off the weather table's light class",
+    "game/src/render/sky.js (+25 named weather states, sightline_m as Beer-Lambert extinction)",
+    "game/src/render/renderer.js (passes sim.env to sky.apply)"
+  ],
   "findings": [
     "Prior round measured RI-WLD04 and found 8/9 axes read strings out of regions.json rather than measuring the world; an audio axis scored 78/78 with audioMB 0. Assume nothing measured.",
     "Blind pack shipped unshuffled: 39/39 answers came off file index. Must shuffle + not self-judge.",
@@ -40,9 +50,11 @@
     "ALREADY BUILT BY W1-01, DO NOT REBUILD: only_here signatures are REAL - game/data/world/signatures.json has 840 instances, 13/13 regions, declared==placed for every region, 13 distinct kinds with real geometry in world/signature.js + signature-geo.js. world.strangeness.architecture EXISTENCE is met; the gap is grammar (RI-WLD14 F1-F8) not existence.",
     "ALREADY BUILT: game/data/world/opacity.json (24 sealed mysteries) consumed by world/opacity.js OpacityRegister. world.strangeness.budget has a spine.",
     "MEASURED CONSUMPTION FAILURE #3 (world.region.transition): field.regionAt(x,z) is a bare raster read - this.regions[this.regionU[cellIndex]]. All nine RI-WLD04 axes are fields of that one object, so ALL NINE CROSS AT EXACTLY THE SAME COORDINATE. stddev(c)=0 by construction, which is RI-WLD12's named AUTOMATIC FAIL ('the texture swap'). There is no border data anywhere in game/data/world.",
-    "RI-WLD08 \u00a71 fixes the numbers I must build to: timescale 20x, full day/night 72 real minutes, 60/40 day-night split, 6-real-minute dawn/dusk, tide 12 real min (already built). \u00a75: each region declares a weather state machine with >=4 STATES on a 20-real-minute tick, and no region shares another's full state set. regions.json currently declares 1-3 states (hive declares exactly one) - below the bar for all 13."
+    "RI-WLD08 \u00a71 fixes the numbers I must build to: timescale 20x, full day/night 72 real minutes, 60/40 day-night split, 6-real-minute dawn/dusk, tide 12 real min (already built). \u00a75: each region declares a weather state machine with >=4 STATES on a 20-real-minute tick, and no region shares another's full state set. regions.json currently declares 1-3 states (hive declares exactly one) - below the bar for all 13.",
+    "DEFECT FOUND AND FIXED in stealth: sim/stealth/system.js skyAmbient() classified only 3 weather ids as overcast ('overcast','storm','rain') out of the 20 render/sky.js already declared. heavy_rain, salt_storm, fever_fog, sea_squall, ashfall and every regional state were lit as MIDDAY SUN (ambient 1.00) by the stealth model while the renderer drew a black sky - the two halves of the build were looking at different weather. Now driven by weather.json's `light` class (sun/overcast/dark) republished on env.weatherLight, with a third 'dark' band (day 0.58 / night 0.06) below RI-STL01 \u00a73's overcast row.",
+    "SHARED TREE WARNING: another agent has commented out `stepSouls(sim, bus);` in game/src/sim/step.js behind a 'DELETE-THE-FIX PROBE - restored immediately after' marker. Left untouched. If it is still commented out at your read, souls awards are OFF and that is not W1-02's doing."
   ],
-  "next_step": "build environment.js (clock+weather) first - two paths, cheapest consumption demo via stealth/npc/souls",
+  "next_step": "node-level test of Environment (clock advances, weather rolls, no RNG); then borders (world.region.transition, sole judge RI-WLD12, currently an automatic fail)",
   "notes_for_successor": "Load was 9.13 / 12 headless_shell at start \u2014 authoring phase first, browser only for verification.",
   "method_deviations": []
 }

@@ -151,7 +151,7 @@ export class Sky {
    * @param {string} weatherId a key of WEATHER
    * @param {THREE.Vector3} focus where the shadow frustum should sit
    */
-  apply(hours, weatherId, focus, regionFog) {
+  apply(hours, weatherId, focus, regionFog, env) {
     const w = WEATHER[weatherId];
     if (!w) throw new Error(`unknown weather '${weatherId}'. Named states: ${Object.keys(WEATHER).join(', ')}`);
 
@@ -222,7 +222,21 @@ export class Sky {
       // tints toward the sky, so "Blackwood in rain" is Blackwood, wetter — not generic rain.
       const rc = new THREE.Color(regionFog.colour);
       this.scene.fog.color.copy(rc).lerp(hor, 0.34 * (1 - night * 0.7)).multiplyScalar(lerp(0.62, 1.0, day));
-      this.scene.fog.density = regionFog.extinction * (1 + w.fogDensity / 0.0026 * 0.22);
+      const base = regionFog.extinction * (1 + w.fogDensity / 0.0026 * 0.22);
+      // ---- W1-02: the weather's SIGHTLINE, made raycastable ------------------------------------
+      //
+      // `RI-WLD08` §5 is explicit that "weather is never purely cosmetic" and M43 says the worst
+      // state's effect must be MEASURED — "measure sightline by raycast". So the declared
+      // `sightline_m` has to be the distance the frame actually stops at, not a number in a file.
+      // Three's `FogExp2` transmits `exp(-(density * d)^2)`, so the density at which 2% of a
+      // silhouette survives at distance S is `sqrt(-ln 0.02) / S = 1.978 / S`.
+      //
+      // It is a MAX against the region's own extinction, not a replacement, and that is S24: the
+      // region owns its haze and its hue, and the weather may only ever make it worse. Blackwood
+      // in a clear spell is still Blackwood's 110 m; a salt-storm in the Stone Wastes overrides the
+      // region's 521 m down to 60 m because that is what a salt-storm is.
+      const sightline = env && Number.isFinite(env.sightlineM) ? env.sightlineM : 0;
+      this.scene.fog.density = sightline > 0 ? Math.max(base, 1.978 / sightline) : base;
     } else {
       this.scene.fog.density = w.fogDensity;
       this.scene.fog.color.copy(hor).multiplyScalar(0.92);

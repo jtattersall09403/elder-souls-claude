@@ -74,14 +74,74 @@ try {
   const governedCount = {};
   for (const s of skillsDoc.skills) governedCount[s.governing] = (governedCount[s.governing] || 0) + 1;
   const POINTS_PER_SKILL = 6;   // 15/30/45/60/75/90 — character/derive.js:359
+
+  // ---- THE SECOND STREAM: BOUGHT POINTS (W1-SOULS) ------------------------------------------
+  //
+  // RI-PRG02 §2 specifies TWO streams of attribute points. The block above is the EARNED one.
+  // The BOUGHT one is one point per level, freely allocated (RI-PRG01 "what a level buys"), and
+  // it was worth exactly zero in every sweep before this because souls had no source: nothing in
+  // `game/src/**` added to `soulsHeld` except recovering a bloodstain, so `soulsToNextLevel()`
+  // could never be paid and the ceilings below were the ceilings of a game with half its
+  // progression missing. `tools/quests/attr-scale-audit.mjs`'s own header says the bands "move
+  // with it" the day somebody wires kill-souls — and they would not have, because this file had
+  // no bought term at all. It has one now.
+  //
+  // The number is DERIVED FROM THE WORLD THAT SHIPS, not from the design budget, and that is
+  // the whole point of computing it here rather than writing it down: sum the `souls` value of
+  // every hand-placed enemy in `game/data/world/encounters.json`, run the total through
+  // RI-PRG01's shipped curve, and the level it reaches is how many points a 100%-clear character
+  // can buy. When the world gains its enemies the number rises on its own and these bands move
+  // with it, which is exactly the property the audit was written to rely on.
+  //
+  // A level buys +1 to ANY attribute, so a character concentrating every purchase in one
+  // attribute adds the whole total to that one ceiling. That is what is added below.
+  const enemyDir = path.join(ROOT, 'game/data/combat/enemies');
+  const soulsOf = {};
+  for (const f of fs.readdirSync(enemyDir)) {
+    if (!f.endsWith('.json')) continue;
+    const doc = JSON.parse(fs.readFileSync(path.join(enemyDir, f), 'utf8'));
+    soulsOf[doc.id] = Number(doc.souls) || 0;
+  }
+  const encounters = JSON.parse(fs.readFileSync(path.join(ROOT, 'game/data/world/encounters.json'), 'utf8'));
+  let worldSouls = 0, placed = 0;
+  for (const enc of encounters.encounters || []) {
+    for (const m of enc.members || []) { worldSouls += (soulsOf[m.statblock] || 0) * (m.count || 0); placed += (m.count || 0); }
+  }
+  const levels = JSON.parse(fs.readFileSync(path.join(ROOT, 'game/data/progression/levels.json'), 'utf8'));
+  let bought = 0, spent = 0;
+  for (const row of levels.levels || []) { if (spent + row.souls > worldSouls) break; spent += row.souls; bought++; }
+  report.bought_stream = {
+    note: 'RI-PRG02 §2 second stream — one attribute point per level, souls-bought, freely allocated. '
+      + 'Derived from the enemies the world actually places, so it rises on its own as the world is populated.',
+    placed_enemies: placed,
+    world_souls: worldSouls,
+    points_from_a_100pc_clear: bought,
+    souls_spent_to_get_them: spent,
+    design_target_for_comparison: {
+      source: 'RI-PRG06 §1 — typical first clear L82, 100% clear L93',
+      points_typical_first_clear: 81,
+      world_souls_designed: 1124285,
+      shortfall_note: 'The world places ' + placed + ' hand-placed enemies against RI-PRG06 §7\'s planning '
+        + 'figure of ~1,230. Until the roster is placed, the bought stream is worth ' + bought + ' point(s), '
+        + 'not 81, and every ceiling below is that much short of the designed one.',
+    },
+  };
+
   for (const a of report.attribute_ids) {
     const vals = ok.map((r) => r.attributes[a] || 0).sort((x, y) => x - y);
     const st = { min: vals[0], p10: vals[Math.floor(vals.length * 0.1)], median: vals[Math.floor(vals.length / 2)], max: vals[vals.length - 1] };
     const g = governedCount[a] || 0;
+    const earned = POINTS_PER_SKILL * g;
     report.per_attribute[a] = {
       at_creation: st,
       skills_that_raise_it: g,
-      reachable_ceiling: { from_p10: st.p10 + POINTS_PER_SKILL * g, from_median: st.median + POINTS_PER_SKILL * g, from_max: st.max + POINTS_PER_SKILL * g },
+      earned_points: earned,
+      bought_points: bought,
+      reachable_ceiling: { from_p10: st.p10 + earned + bought, from_median: st.median + earned + bought, from_max: st.max + earned + bought },
+      // What the ceiling WOULD be once RI-PRG06's roster is placed. Reported, never asserted on:
+      // landing a band on a world that does not exist yet is a fail-closed assertion before its
+      // data, and this project has paid for that twice.
+      ceiling_at_design_budget: { from_p10: st.p10 + earned + 81, from_median: st.median + earned + 81, from_max: st.max + earned + 81 },
     };
   }
 

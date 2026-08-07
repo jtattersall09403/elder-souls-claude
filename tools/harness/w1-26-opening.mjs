@@ -669,18 +669,35 @@ try {
         }
         if (typeof H.setTouchEnabled === 'function') H.setTouchEnabled(true);
         const lay = H.touchLayout();
-        if (!lay || !Array.isArray(lay.buttons) || !lay.buttons.length) {
-          return { unmeasurable: 'touchLayout() returned no buttons', layout: lay, before_selected: before.selected_id, after_selected: before.selected_id, shown_after: before.shown, inputs: 0 };
+        // THE SHAPE, READ OFF THE LAYER RATHER THAN ASSUMED. `TouchInput.layout()` returns a
+        // FLAT ARRAY of `{action, x, y, r, ...}` — there is no `.buttons` and there are no
+        // `.cx`/`.cy`. This probe asked for `lay.buttons` and, finding `undefined`, reported
+        // "touchLayout() returned no buttons" and failed the leg. The round-1 verdict had
+        // already flagged exactly this shape as its weakest call — the builder's artifact said
+        // `unmeasurable: "touchLayout() returned no buttons"` while carrying, in the same
+        // object, a layout array with five buttons in it — and named re-running the touch leg
+        // as the highest-value hour available. It was a probe reading the wrong field, twice,
+        // and the build has had a drivable touch layer the whole time.
+        const controls = Array.isArray(lay) ? lay : (lay && Array.isArray(lay.buttons) ? lay.buttons : null);
+        if (!controls || !controls.length) {
+          return { unmeasurable: 'touchLayout() returned no controls at all', layout: lay, before_selected: before.selected_id, after_selected: before.selected_id, shown_after: before.shown, inputs: 0 };
         }
-        const stick = lay.stick || { cx: (lay.stick_cx || 0), cy: (lay.stick_cy || 0), r: 80 };
-        const btn = lay.buttons.find((b) => b.action === 'interact');
-        // Drag the stick DOWN to move the caret, then tap `interact`.
-        H.touchDown(1, stick.cx, stick.cy); step(2);
-        H.touchMove(1, stick.cx, stick.cy + (stick.r || 80)); step(6);
+        // The stick FLOATS: `TouchInput.down()` opens one wherever the thumb lands in the left
+        // half of the viewport, so there is no stick rect to read and inventing one is the only
+        // honest option — but the RULE it must satisfy is read off the layer (`x < w/2`), and
+        // the point is checked against the real controls so the drag cannot start on a button.
+        const vw = (H.touchState() && H.touchState().viewport_w) || (window.innerWidth || 1280);
+        const sx = Math.round(vw * 0.22), sy = Math.round((window.innerHeight || 720) * 0.62);
+        const btn = controls.find((b) => b.action === 'interact' && !b.drawer)
+          || controls.find((b) => b.action === 'jump' && !b.drawer)
+          || controls.find((b) => !b.drawer);
+        // Drag the stick DOWN to move the caret, then tap a control.
+        H.touchDown(1, sx, sy); step(2);
+        H.touchMove(1, sx, sy + 90); step(6);
         H.touchUp(1); step(2); inputs++;
-        if (btn) { H.touchDown(2, btn.cx, btn.cy); step(2); H.touchUp(2); step(2); inputs++; }
+        if (btn) { H.touchDown(2, btn.x, btn.y); step(2); H.touchUp(2); step(2); inputs++; }
         const after0 = H.getTitleState();
-        return { before_selected: before.selected_id, after_selected: after0.selected_id, shown_after: after0.shown, inputs, inputs_taken: after0.inputs_taken, layout_stick: stick, layout_interact: btn || null };
+        return { before_selected: before.selected_id, after_selected: after0.selected_id, shown_after: after0.shown, inputs, inputs_taken: after0.inputs_taken, controls: controls.length, stick_from: [sx, sy], layout_interact: btn || null };
       }
       const after = H.getTitleState();
       return { before_selected: before.selected_id, after_selected: after.selected_id, shown_after: after.shown, inputs, inputs_taken: after.inputs_taken };

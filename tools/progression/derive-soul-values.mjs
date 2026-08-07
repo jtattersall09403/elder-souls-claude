@@ -162,6 +162,56 @@ function bandOf(souls) {
   return null;
 }
 
+/**
+ * `--pace` — HOW LONG IS A LEVEL, in kills and in minutes, against RI-PRG01's shipped curve.
+ *
+ * Balance is a real question and this is the answer, stated in numbers so it can be argued with.
+ *
+ * MINUTES come from RI-PRG06 §1's own region-1 row and nothing else: 1.8 h across a roster of 93
+ * at the 78% kill rate §1's "typical" column is defined at = 72.5 killed enemies in 108 minutes =
+ * **1.49 minutes per killed enemy**, travel, looting and deaths included. That is deliberately
+ * NOT a time-to-kill measured in the fight: `tools/lib/combat-node.mjs` puts a straight sword
+ * through a Marsh sentry in 21.7-23.4 s of continuous swinging (15 landed hits through
+ * armour_rating 30), but the node arena runs no stealth perception so the enemy never turns, and
+ * a fight figure from there is not a figure about the shipped game. The two are consistent —
+ * 22 s of fighting inside 89 s of being somewhere — and only the corpus figure is used here.
+ */
+function pace(roster, rows) {
+  const levels = JSON.parse(fs.readFileSync(path.join(ROOT, 'game/data/progression/levels.json'), 'utf8')).levels;
+  const anchor = rows.find((r) => r.id === ANCHOR_ID);
+  const S = anchor.souls;
+  const night = Math.round(S * 1.35);
+  const MIN_PER_KILL = 108 / (93 * 0.78);
+  const reach = (souls) => { let s = 0, l = 1; for (const r of levels) { if (s + r.souls > souls) break; s += r.souls; l = r.level; } return { level: l, spare: souls - s }; };
+
+  console.log('');
+  console.log(`--pace  the baseline kill is ${ANCHOR_ID} at ${S} souls (${night} at night)`);
+  console.log(`        minutes use RI-PRG06 §1's own R1 row: 108 min / (93 x 0.78 killed) = ${MIN_PER_KILL.toFixed(2)} min per killed enemy`);
+  console.log('');
+  console.log('  ' + 'level'.padStart(6) + 'souls'.padStart(9) + 'kills'.padStart(8) + 'minutes'.padStart(10) + '   night kills');
+  for (const n of [2, 3, 5, 10, 14, 20]) {
+    const row = levels.find((r) => r.level === n);
+    if (!row) continue;
+    console.log('  ' + String(n).padStart(6) + String(row.souls).padStart(9)
+      + (row.souls / S).toFixed(1).padStart(8) + (row.souls / S * MIN_PER_KILL).toFixed(1).padStart(10)
+      + '   ' + (row.souls / night).toFixed(1));
+  }
+  console.log('');
+  // What the world that SHIPS can actually fund, which is the honest headline.
+  const enc = JSON.parse(fs.readFileSync(path.join(ROOT, 'game/data/world/encounters.json'), 'utf8'));
+  const byId = {}; for (const r of rows) byId[r.id] = r.souls;
+  let worldSouls = 0, placed = 0;
+  for (const e of enc.encounters || []) for (const m of e.members || []) { worldSouls += (byId[m.statblock] || 0) * (m.count || 0); placed += (m.count || 0); }
+  const crossing = (enc.encounters[0].members || []).reduce((a, m) => a + (byId[m.statblock] || 0) * (m.count || 0), 0);
+  const r2 = reach(crossing), r3 = reach(crossing * 1.35), r4 = reach(worldSouls);
+  console.log(`  the crossing (${enc.encounters[0].id}) pays ${crossing} souls -> level ${r2.level}, ${r2.spare} spare toward the next`);
+  console.log(`  the same encounter at night pays ${Math.round(crossing * 1.35)} -> level ${r3.level}`);
+  console.log(`  EVERY hand-placed enemy in the world (${placed}) pays ${worldSouls} -> level ${r4.level}`);
+  console.log(`  RI-PRG06 §7's planning figure is ~1,230 placed enemies for a first clear at L82.`);
+  console.log(`  So the curve, the values and the loop are right and the WORLD IS EMPTY: the`);
+  console.log(`  ceiling is a world-population problem, not a soul-economy one.`);
+}
+
 function main() {
   const roster = loadRoster();
   const K = solveK(roster);
@@ -221,6 +271,8 @@ function main() {
       console.log(`  wrote ${file}: souls=${souls}`);
     }
   }
+
+  if (has('pace')) pace(roster, rows);
 
   if (has('json')) console.log(JSON.stringify({ tool: 'derive-soul-values', K, anchor: ANCHOR_ID, rows }, null, 2));
   process.exit(bad === 0 ? 0 : 1);

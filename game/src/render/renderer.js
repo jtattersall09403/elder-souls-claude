@@ -465,7 +465,10 @@ export class Renderer {
       regionFog = { colour: r.fog.colour, extinction: r.fog.extinction_per_m,
         glow: K && K.glow > 0 ? K.glow_hex : null };
     }
-    this.sky.apply(sim.env.timeOfDay, sim.env.weather, this._focus, regionFog);
+    // W1-02: `sim.env` carries the environment's own derived terms - the blended sightline the
+    // front is currently at, and the weather's light class. The sky reads them off the LIVE
+    // env rather than off weather.json, so what is drawn is what the fixed step computed.
+    this.sky.apply(sim.env.timeOfDay, sim.env.weather, this._focus, regionFog, sim.env);
       // The province's own night lamps, driven off the same sun elevation the sky is: at 01:00 the
       // welkynd pillars, the kiln flues, the comb cells and the drifting jellies are what a region
       // is legible BY. RI-WLD04 M17 step 6: "a region that is only identifiable in clear daylight

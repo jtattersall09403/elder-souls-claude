@@ -168,6 +168,18 @@ export function installHarness(engine, bootPromise) {
         tide,
       };
     },
+    /**
+     * W1-02. The world clock and the regional weather machine, read off the LIVE simulation.
+     *
+     * `getEnvConditions()` above answers "what did the capture pin"; this answers "what is the
+     * world doing" — the integer frame the clock is on, the day, the phase, the machine installed
+     * for the region the body is standing in, the state it rolled, how far through the front it
+     * is, and the sightline that front currently produces. RI-MTH07: every field is derived from
+     * `sim.env` after the fixed step wrote it, never read back out of `weather.json`.
+     */
+    getEnvironment() { return engine.getEnvironment(); },
+    /** Hold the sun still for a comparable screenshot (HARNESS.md §6). Returns the new state. */
+    pauseClock(on) { return engine.pauseClock(on === undefined ? true : on); },
     camera(pose) { return engine.camera(pose === undefined ? null : pose); },
     listAnchors() { return engine.renderer.listAnchors(); },
 
@@ -1850,6 +1862,32 @@ export function installHarness(engine, bootPromise) {
       };
     },
 
+    // ================= W1-22 — the audio bed ==================================================
+    // `audio.ambience.region`, RI-AUD03. Before this piece there was no audio code in the build
+    // at all and `audioMB: 0` (see the note in `getUnimplemented()` below) was literally true —
+    // thirteen regions each declared three audio strings in `regions.json` and nothing read one.
+    //
+    // These four surfaces exist so that ambience can be measured the way it is heard rather than
+    // the way it is declared. `ambienceCapture()` is the important one: it renders the bed into
+    // real PCM through the SAME graph builder the live driver uses, so a critic never has to
+    // take this engine's word for whether a region makes a sound.
+
+    /** What the world is playing right now: region, layers, denied classes, voices, emitters. */
+    getAmbienceState() { return engine.getAmbienceState(); },
+    /** RI-AUD02 §E audioLog rows for the ambience bus: bus, region, layer, id, pan, level_db. */
+    ambienceLog(limit) { return engine.ambienceLog(limit === undefined ? undefined : Number(limit)); },
+    /**
+     * RI-AUD03 method step 1. Render `seconds` of a region's bed offline and hand back the
+     * samples. `{region, seconds, sampleRate, tod, weather, seed, listener:[x,z,yawRad]}`.
+     * Returns `{ok, samples, L, R, fired}` — L and R are plain arrays so the result survives
+     * `page.evaluate()` serialisation.
+     */
+    ambienceCapture(opts) { return engine.ambienceCapture(opts || {}); },
+    /** RI-AUD03 B6. The R7 positional emitters as seen from (x, z) facing yawDeg. Pure. */
+    ambienceEmitters(x, z, yawDeg, region) {
+      return engine.ambienceEmitters(Number(x), Number(z), Number(yawDeg || 0), region || null);
+    },
+
     // ================= W1-15 — stealth, theft, crime and justice ==============================
     // The extensions RI-STL01, RI-STL02, RI-CRM01 and RI-CRM02 name in their Comparison
     // methods. Each item says in as many words that without them its checks are unmeasurable
@@ -2146,7 +2184,15 @@ export function installHarness(engine, bootPromise) {
           { what: 'a quest runtime', owner: 'wave-1 pieces W1-14..W1-16', surfaced_as: 'getQuestState()._declared_incomplete; quest STATE is real and round-trips, quest PROGRESSION does not exist' },
           { what: 'dialogue, topics, journal writing at runtime', owner: 'wave-1 pieces W1-11..W1-13', surfaced_as: 'data files exist and are analysable; getDialogueState() (A-JRN13) is absent' },
           { what: 'the province: 13 regions, 8 settlements, 250 interiors, roads', owner: 'wave-1 pieces W1-01..W1-05', surfaced_as: 'getWorldStats()._declared_incomplete — counts come from game/data/**, which is the corpus transcription plus one worked settlement' },
-          { what: 'audio', owner: 'RI-AUD01..03 / wave-1 piece W1-25', surfaced_as: 'audioMB: 0. RI-AUD02 is unmeasurable in this piece and scores 0, fail-closed' },
+          // W1-22 narrowed this. Regional ambience (RI-AUD03, `audio.ambience.region`) is now
+          // built and driven from `Engine._afterStep()`; see `getAmbienceState()` and
+          // `ambienceCapture()`. What remains genuinely unimplemented is listed below, and the
+          // list is deliberately specific — "audio" as one undifferentiated absence is how the
+          // one part of it that now exists would go on being scored 0 for another three rounds.
+          { what: 'combat impact audio (audio.combat.impact)', owner: 'RI-AUD01 / RI-AUD02 / wave-1 piece W1-11', surfaced_as: 'no hit, parry, block or footstep sound of any kind. RI-AUD01 is unmeasurable and scores 0, fail-closed' },
+          { what: 'music (audio.music.policy)', owner: 'RI-AUD04 / no wave-1 owner', surfaced_as: 'no music bus, no music. RI-AUD04 unmeasurable, 0 fail-closed' },
+          { what: 'voice (audio.voice.policy)', owner: 'RI-AUD05 / no wave-1 owner', surfaced_as: 'no voice bus. RI-AUD05 unmeasurable, 0 fail-closed' },
+          { what: 'interior ambience beds (RI-AUD03 R4)', owner: 'W1-22, outstanding', surfaced_as: 'getAmbienceState().suppressed names the cell. Interiors are SILENT rather than the exterior bed low-passed, which R4 forbids; the beds themselves are not written' },
           { what: 'heap/GC access (A-JRN9), dialogue state (A-JRN13), resource registry (A-JRN14). A-JRN2 (gamepad) and A-JRN4 (viewport/orientation/safe-area) landed with W1-08/W1-29; A-JRN12 (keyboard layout) is driven runner-side through CDP by tools/journey/journey-run.mjs', owner: 'runner-side or later pieces', surfaced_as: 'the methods are absent rather than present-and-lying' },
           { what: 'Tier-H performance numbers (fps, frame time, TTFP wall clock, hitch durations)', owner: 'attested real hardware', surfaced_as: 'getPerfStats()._unmeasurable / getLoadState()._unmeasurable. RI-PLT01 rule T1 forbids emitting these from a SwiftShader run at all' },
         ],

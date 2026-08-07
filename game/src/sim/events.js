@@ -201,6 +201,21 @@ export const EVENT_TYPES = new Set([
   // reason: seam S15 ("souls level you and only level you") and the ablation state of the
   // source are things a critic should be able to read rather than take on trust.
   'souls_awarded',
+  // ---- W1-02's world clock, vocabulary entries added 2026-08-07 by W1-SOULS ------------------
+  // NOT THIS PIECE'S EVENTS. `sim/environment.js` emits `day_phase` (line 153) and
+  // `weather_change` (line 197) and neither name was ever added here, so `Environment.step()` —
+  // which runs FIRST in `stepOnce()`, before the fight — threw inside the fixed step on the
+  // frame the clock rolled. Every stepping probe in the project died with "event type
+  // 'weather_change' is not in the closed vocabulary"; boot does not step, so `boot-check`
+  // stayed green and the breakage was invisible until something walked. This is the same defect
+  // the `npc_schedule` / `npc_presence` block above records, in the same shape, three blocks up.
+  //
+  // Added rather than worked around, because this file already states the rule: "the emit landed
+  // without its vocabulary entry — the mirror image of a fail-closed assertion landing before its
+  // data ... Adding the names is the additive repair; removing another piece's emit would not
+  // be." The owning piece should replace this comment with its own account of what the two
+  // events carry; nothing about their payloads is claimed here.
+  'day_phase', 'weather_change',
 ]);
 
 const POOL_SIZE = 128;

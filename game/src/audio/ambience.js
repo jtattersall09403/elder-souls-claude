@@ -62,7 +62,7 @@ export class LayerClock {
 
   _draw(t, env) {
     const [lo, hi] = this._band(env) || [10, 30];
-    return t + lo + this.rng.float() * (hi - lo);
+    return t + lo + this.rng.next() * (hi - lo);
   }
 
   /** Every event due in [t, t+dt). Returns [] when the layer is null — R1 costs nothing. */
@@ -85,7 +85,7 @@ export class LayerClock {
     if (!pool.length) return null;
     let total = 0;
     for (const e of pool) total += (e.weight || 1);
-    let r = this.rng.float() * total;
+    let r = this.rng.next() * total;
     for (const e of pool) { r -= (e.weight || 1); if (r <= 0) return e; }
     return pool[pool.length - 1];
   }
@@ -226,7 +226,7 @@ export class AmbienceDriver {
       if (!clock) continue;
       for (const { at, ev } of clock.due(this.t, dt, env)) {
         const layer = bed.layers[key];
-        const pan = ev.pan ? ev.pan[0] + this.rng.float() * (ev.pan[1] - ev.pan[0]) : 0;
+        const pan = ev.pan ? ev.pan[0] + this.rng.next() * (ev.pan[1] - ev.pan[0]) : 0;
         this.events++;
         voices += 1;
         this._emit({
@@ -382,7 +382,7 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
   const fired = [];
   for (const key of ['L3', 'L4']) {
     for (const { at, ev } of clocks[key].due(0, seconds, env)) {
-      const pan = ev.pan ? ev.pan[0] + rng.float() * (ev.pan[1] - ev.pan[0]) : 0;
+      const pan = ev.pan ? ev.pan[0] + rng.next() * (ev.pan[1] - ev.pan[0]) : 0;
       buildGrain(ctx, { ...ev, level_db: bed.layers[key].level_db || 0 }, bus, rng, at, pan);
       fired.push({ layer: key, id: ev.id, at_s: Math.round(at * 100) / 100, pan: Math.round(pan * 100) / 100 });
     }
