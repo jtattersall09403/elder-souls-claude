@@ -5,19 +5,32 @@
   "state": "building",
   "outputs_written": [
     "game/src/sim/hearth.js — HearthSystem.atHearth(sim) (the named gap)",
-    "game/src/engine.js — atHearthReal/atHearthOverridden/atHearthId in _uiCtx; getPlayerStats souls_to_next/souls_spent",
+    "game/src/engine.js — _uiCtx atHearthReal/atHearthOverridden/atHearthId; getPlayerStats souls_to_next/souls_spent; _afterRespawnPlacement(); _classifyOnSpawn(); killPlayer honours its cause; post-load death-surface restore + _seedStartingHearth on the blob path; a paused frame that emits an event now writes one trace record",
     "game/src/ui/system.js — state() reports at_hearth / at_hearth_real / at_hearth_overridden",
-    "tools/harness/w1-13-r2-levelling-loop.mjs + reports/runs/W1-13-R2/levelling-loop.json",
-    "reports/runs/W1-13-R2/levelling-loop-delete-the-fix.json"
+    "game/src/sim/death.js — restoreInFlight(); nearest-well respawn FLOOR; _inferCause reads sim.player.lethalCause; lastGrounded requires standable(); fog-gate centre push-out; respawn placement hook",
+    "game/src/sim/traversal.js — writes p.lethalCause on a lethal fall and a drown",
+    "game/src/sim/state.js — makePlayer().lethalCause",
+    "game/src/save/state.js — death.in_flight / deaths_this_session / stains_lost_to_second_death / last_grounded, relative frame stamps; restore hook",
+    "game/data/save-manifest.json — Death state group extended",
+    "game/data/world/respawn.json — the three world-side writers documented",
+    "game/data/combat/enemies/{champion_hist_marked,cst_sap_speaker}.json — boss+unique declared",
+    "game/src/harness/api.js — setFogGateBoss()",
+    "tools/journey/jrn06-death.mjs — M-D1 checks the legs it can instead of dropping six rows; DEATH_VOLATILE gains fight.player.rig. and the death in-flight fields",
+    "tools/harness/w1-13-consume.mjs — new model 2b, the fog-gate/statblock writer of the S5 entity flags",
+    "tools/harness/w1-13-r2-levelling-loop.mjs + reports/runs/W1-13-R2/levelling-loop{,-delete-the-fix}.json",
+    "tools/harness/w1-13-r2-save-moments.mjs + reports/runs/W1-13-R2/save-moments.json",
+    "tools/harness/w1-13-r2-placement.mjs + reports/runs/W1-13-R2/placement.json",
+    "reports/runs/W1-13-R2/mid-death-save-after.json (critic-w1-13-a re-run, 3/3 PASS)"
   ],
   "findings": [
-    "CONFIRMED on HEAD before touching anything: critic-w1-13-f reports levelup REFUSED at all three wells, OPENED under setAtHearth(true).",
-    "FIXED + PROVED: 3/3 wells, walked arrival (58.8 m jog), rest, openMenu('levelup') OPENS, spend through the REAL input path (interact arm + interact confirm), level 1->2, souls 4200->3782 = exactly soulsToNextLevel()=418, endurance 20->21, one level_up event, REFUSED 48.5 m off the basin, and the spend survives a save/load read off the live world. used_setAtHearth=false throughout.",
-    "DELETE-THE-FIX: deleting HearthSystem.prototype.atHearth in the page puts every one of those numbers back to the round-1 values (open=false, level 1->1, souls unchanged).",
-    "A level_up event could NOT reach a trace on any build: it is emitted from _applyUIPending() on a PAUSED frame (S14 stops the world outside a fight while a screen is open) and _afterStep() returned before writing a record; stepOnce() then clears the bus at the top of the next unpaused step. _afterStep() now writes one record for a paused frame that actually emitted something.",
-    "sim.frame does not advance while a menu is open, so a multi-frame queueInputs script never fires — each press has to be its own one-frame script.",
-    "getPlayerStats() had no soulsToNextLevel and no soulsSpent; added."
+    "NAMED GAP CLOSED AND PROVED. 3/3 wells, walked arrival, rest, screen OPENS, spend through the real input path, level 1->2, souls 4200->3782 = exactly soulsToNextLevel()=418, endurance 20->21, one level_up event, REFUSED 48.5 m off the basin, spend survives a save/load audited on the LIVE world. used_setAtHearth=false. Delete-the-fix puts every number back.",
+    "MID-DEATH SAVE FIXED. critic-w1-13-a 3/3 PASS (was 0/4200 on two of three routes). Nine save MOMENTS swept — surface frames 0/1/20/75/149, after the respawn, mid-fall, the lethal-landing frame, and a second death in flight — 9/9 recover in full, deaths_this_session stays 1 and stains_lost_to_second_death stays 0.",
+    "THE FALL RULE FIRES. A real 120 m drop with a 63.6 m lateral offset: cause='fall', rule='last_grounded', bloom 0.00 m from the ledge and 63.64 m from the bottom. No killPlayer(cause) in that path.",
+    "FOG GATE 10/10 including the exact centre: rule='outside_fog_gate_from_centre', bloom at r=29 against a 26 m gate. Round 1 left it at r=0 while the record claimed a push-out.",
+    "sim.player.grounded is written by NOTHING in the build, so observe()'s `grounded !== false` guard was vacuous; the standable() test is what makes the fall anchor real.",
+    "A body that can swim FLOATS with its head out, so an unburdened probe stands in W5 water forever and never drowns — 4,000 frames measured it. RI-WLD10 §3's overloaded route (setBurden past 100%: 'you walk the bottom, with a breath clock') is the world's drowning path.",
+    "A held move axis persists across a death: latchForStep only updates moveX/moveY when a scripted event fires, so the first drift run measured its own thumb (5-12 m at all six wells). The release is the control."
   ],
-  "next_step": "mid-death save durability probe; then M-D5 consumption; then fall/drown, fog centre, respawn drift",
-  "notes_for_successor": "Code changes for the mid-death save (DeathSystem.restoreInFlight + save/state.js death.in_flight + engine post-load surface restore), the respawn placement hook (_afterRespawnPlacement), the nearest-well respawn floor, the fall/drown lethalCause, the fog-gate centre and the S5 world-side classifier (_classifyOnSpawn) are ALL WRITTEN but NOT YET MEASURED."
+  "next_step": "placement re-run; then critic-w1-13-b (S5 both routes), w1-13-consume (model 2b), state-diff --mode across-death, jrn06 journey; then shot + blog line",
+  "notes_for_successor": ""
 }

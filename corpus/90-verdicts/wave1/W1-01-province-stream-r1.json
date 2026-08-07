@@ -6,7 +6,7 @@
     "platform.load.streaming",
     "platform.load.hitches",
     "platform.perf.simtime",
-    "world.traversal",
+    "world.traversal.time",
     "world.region.transition",
     "journey.death.recovery"
   ],
@@ -172,11 +172,11 @@
         {
           "id": "C-tileM",
           "result": "fail",
-          "value": "province.tileM is reported by stats() as tileSizeM and read by nothing: request() computes tx0/tz0 from the MODULE constant TILE_M",
+          "value": "two identical 400 m walks from a cold province with tileM 300 then 150: stats() reports tileSizeM 300 then 150, tiles_resident 30 in both, and the set of tile keys actually built is BYTE-IDENTICAL (['5,0','5,1','5,2','5,3','5,4','5,5',...] in both arms). Halving the tile size must change every key `${tx},${tz}` = floor(x / tileSize); it changed none.",
           "threshold": "every shipped knob names a world-side consumer",
-          "note": "Introduced in this change, beside radiusTiles and skinRadiusM which do couple. unmeasurable => 0 for this field. Perturbing it would desynchronise the reported geometry from the built geometry and no probe in the tree would notice.",
+          "note": "Measured, not read. Introduced in this change beside radiusTiles and skinRadiusM, which both DO move the built world under the same perturbation. unmeasurable => 0 for this model.",
           "evidence": [
-            "game/src/world/province.js:200 (const tx0 = Math.floor(x / TILE_M)) vs :1145 (tileSizeM: this.tileM)"
+            "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/tilem.json"
           ]
         }
       ],
@@ -187,7 +187,7 @@
         "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle.json",
         "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ride.json"
       ],
-      "why_not_ten": "province.tileM is reported by stats() as tileSizeM and read by nothing. Proven by absence: no call site anywhere computes a tile index from it (game/src/world/province.js, cited in artifacts[]), and every residency figure in corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json is reproducible from the module constant alone.",
+      "why_not_ten": "province.tileM is reported by stats() as tileSizeM and consumed by nothing: halving it leaves the built tile key set byte-identical over an identical walk (corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/tilem.json), while the same perturbation applied to radiusTiles moves the ring 9/25/49 (corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json).",
       "path_to_ten": "Delete province.tileM or make request() read it.",
       "ten_by_wave": 1,
       "justification": "Four knobs couple with an entity-side observable and a real null control: radiusTiles 1/2/3 -> ring built 9/25/49 against predicted (2R+1)^2 (corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json, corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle.json); STREAM_URGENT_TILES visible as exactly 2 tiles per frame in the settle curve and STREAM_BUILD_EVERY as one per ~30 frames (corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/settle.json); the null control moved only its own observable (reports/world/province-stream/CONSUME-null-skin17.json). Held at 6 rather than higher because the fifth shipped knob, province.tileM, is an orphan.",
@@ -340,10 +340,10 @@
       "side": "morrowind",
       "kind": "structure",
       "native_scale": "0-100 weighted (scale / terrain / roads / placement / traversal / movement speed)",
-      "native_score": 9,
+      "native_score": 8,
       "native_max": 10,
       "native_verdict": "the traversal axis only: the drawn world follows a walking body on every modality reachable",
-      "score_0_10": 9,
+      "score_0_10": 8,
       "measured": "partial",
       "checks": [
         {
@@ -424,7 +424,7 @@
         "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ride.json",
         "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/displace.json"
       ],
-      "why_not_ten": "Held at 9 rather than 10 because the vehicle modality reaches the same residency at a cost that makes it unplayable (RI-PLT03 above), and because travelRide is fare-gated at a cold start so no probe had ever driven it before this one \u2014 an axis that was untested until today is not an axis anyone had earned a 10 on.",
+      "why_not_ten": "Held at 8 \u2014 meeting the reference, not beating it. The vehicle modality reaches the same residency at a cost that makes it unplayable (RI-PLT03 above); travelRide is fare-gated at a cold start so no probe had ever driven it before this one; and the outer ring at a posed capture's declared 24-frame settle is 10 of 25. The ground under a walking body is never missing, which is the whole of the bar, and that part is not in doubt.",
       "path_to_ten": "close GAP-W1-provstream-arrival-burst; the residency behaviour itself needs nothing.",
       "ten_by_wave": 1,
       "scope_note": "Scored on RI-WLD01's TRAVERSAL axis alone \u2014 'a player can cross the province on foot and the province is there while they do it'. The item's scale, terrain, roads and placement axes are W1-01's own subject and were judged in corpus/90-verdicts/wave1/W1-01-r2.md; this verdict does not restate or re-score them, and the 9 must not be read as a score for the whole item.",
@@ -561,16 +561,43 @@
       "note": "skinRadiusM 34 -> 17 moves skin vertices 15,625 -> 3,969 and leaves ring/resident/built-total byte-identical. Accepted rather than re-run because its entire content is that it changed nothing in the arm under test; the POSITIVE arm was re-derived independently here."
     },
     {
-      "path": "game/src/world/province.js",
-      "kind": "source",
-      "produced_by": "read at commit 8734986",
-      "note": "Cited for exactly one structural fact that is not a measurement and cannot be one: request() computes tx0/tz0 from the module constant TILE_M at line 200 while stats() reports tileSizeM: this.tileM at line 1145. RI-MTH04 D forbids source as the BASIS of a score; this supports the orphan-knob observation, which is scored on the absence of any consuming call, not on the reading."
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/tilem.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-r1.mjs --mode tilem --out <path>",
+      "note": "RI-MTH07 perturbation of province.tileM by MEASUREMENT rather than by reading source: two identical 400 m walks from a cold province, tileM 300 then 150, comparing the set of tile keys actually built. stats() reports 300 then 150; the key set is byte-identical.",
+      "sha256": "32aa65b60a5e32d24f74a6296b1f963ff8f420ef9cbdadf9549d9ef3e03678eb"
     },
     {
-      "path": "game/src/engine.js",
-      "kind": "source",
-      "produced_by": "read at commit 8734986",
-      "note": "Cited for the ordering of `if (queue[0].d <= STREAM_NEAR_D2) { pump(2); return; }` ABOVE `if (discWork) return;` in _streamProvince(), which is the mechanism behind the measured arrival burst. The burst itself is measured (displace.json), not inferred."
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/walk1500-fixed.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-shot.mjs --metres 1500 --out <png>",
+      "note": "Metadata for the 1,500 m with-pump screenshot: ring 25/25, underfoot true, skin lag 9.7 m.",
+      "sha256": "63de6d6b8fefacfe51317060ad646ec1c855502937effb77f8a7dc24ed0dea14"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/walk1500-broken.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-prov-shot.mjs --metres 1500 --break-fix --out <png>",
+      "note": "Metadata for the 1,500 m without-pump screenshot: ring 5/25, underfoot FALSE, skin/cover disc 1,083.6 m behind.",
+      "sha256": "61a155e05065fbc11d56e8b339580147a53490bf8ff381b1f68ff0a49f8d5d81"
+    },
+    {
+      "path": "docs/shots/2026-08-07-province-walk-1500m-with-pump.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/world/critic-prov-shot.mjs --metres 1500 --out <png>",
+      "note": "Reached by WALKING 1,500 m from the crossing road head (one setup teleport to the road head, then 45,019 fixed steps). ring 25/25, ground underfoot built, skin/cover disc 9.7 m behind the body. Taken at loadavg 25.8.",
+      "resolution": "1280x720",
+      "camera_pose": "gameplay third-person camera, no override. Player at the same point 1,500 m along the crossing road, camera yaw set to the road bearing. Both frames are the same position, the same yaw and the same frame number (45,019) \u2014 the ONLY difference is whether Engine._streamProvince() runs.",
+      "sha256": "97dd05f4cfebddcdc8b404ba2f859588f912a2faf0862c86fc574feaf87d1c76"
+    },
+    {
+      "path": "docs/shots/2026-08-07-province-walk-1500m-without-pump.png",
+      "kind": "screenshot",
+      "produced_by": "node tools/world/critic-prov-shot.mjs --metres 1500 --break-fix --out <png>",
+      "note": "Reached by WALKING 1,500 m from the crossing road head (one setup teleport to the road head, then 45,019 fixed steps). ring 5/25, GROUND UNDERFOOT NOT BUILT, skin/cover disc 1,083.6 m behind the body. This is what the defect looked like. Taken at loadavg 25.8.",
+      "resolution": "1280x720",
+      "camera_pose": "gameplay third-person camera, no override. Player at the same point 1,500 m along the crossing road, camera yaw set to the road bearing. Both frames are the same position, the same yaw and the same frame number (45,019) \u2014 the ONLY difference is whether Engine._streamProvince() runs.",
+      "sha256": "fd8b847b04ad537cf3f74297bd29a9ec9b243fd7cb98af3c9f20a04ad77b9d13"
     }
   ],
   "blind_comparisons": [
@@ -637,15 +664,16 @@
     "note": "The world-side consumer for the four that couple is Engine._afterStep() -> _streamProvince() -> Province.request()/pump(), observed as tiles that exist in province.tiles under a body that WALKED there - never as a harness return value."
   },
   "score": {
-    "overall_0_10": 6,
+    "overall_0_10": 5,
     "pass_threshold": 7,
     "aggregation": "mean",
     "band_label": "Works, and expensive where it was never measured",
-    "aggregation_note": "mean of the three ladder scores: RI-PLT03 2, RI-MTH07 6, RI-WLD01 (traversal axis) 9 => 5.67 -> 6.",
+    "aggregation_note": "mean of the three ladder scores: RI-PLT03 2 (hard-fail capped), RI-MTH07 6, RI-WLD01 traversal axis 8 => 5.33 -> 5.",
     "confidence": "high on rates, residency, falsification and the hard-fail triggers; medium on absolute milliseconds (loadavg 12-17)"
   },
   "status": "FAIL",
   "status_reasons": [
+    "RI-PLT03 is capped at 2 by two triggered hard fails (HF4, HF6), and that cap is what moves the mean, not a judgement that the streaming work is bad.",
     "AR-1 fail: a 448.95 ms frame inside a roll's i-frame window, caused by a world-streaming refocus.",
     "The single worst frame in the build is now the frame after a respawn: 483.96 ms, six consecutive frames totalling ~2,283 ms, and MAX_CATCHUP=5 turns that into ~2.2 s of DROPPED simulation time.",
     "travelRide at 40 m/s puts 6.62% of steps over one 60 Hz frame and 5.53% over 50 ms, max 674.76 ms. Every budget constant in _streamProvince is sized for a 2.0 m/s walk.",

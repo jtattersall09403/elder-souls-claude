@@ -161,17 +161,26 @@ try {
     } else {
       out.drown = { found_deep_water_within_420m_of_hearth_archon: true, site };
       await rested();
+      // OVERLOADED. `RI-WLD10` §3: past 100% load "you cannot swim. You walk the bottom, with a
+      // breath clock" — the item cites Hallgerd's Tale for it. A body that can swim floats with
+      // its head out, which costs stamina and not breath, so an unburdened probe stands in W5
+      // water forever and never drowns: that is what 4,000 frames of the first attempt measured.
+      // This is the world's own drowning route and it needs no harness cause.
+      await h.h('setBurden', 3.0);
       // Stand on dry land first so `lastGrounded` is a real ledge, then wade in and drown.
       await h.h('teleport', well.pos[0], well.pos[2]);
       await h.h('stepFrames', 20);
       const dry = await h.h('getPlayerStats');
       await h.h('teleport', site.x, site.z);
       let frames = 0, dead = null;
-      while (frames < 4000 && !dead) {
-        await h.h('stepFrames', 20); frames += 20;
+      while (frames < 16000 && !dead) {
+        await h.h('stepFrames', 60); frames += 60;
         const st = await h.h('getPlayerStats');
         if (st.hp <= 0) dead = st;
       }
+      out.drown.breath_and_hp_at_end = dead ? null : await h.h('getPlayerStats').then((s) => ({
+        hp: s.hp, breath_s: s.breath_s, submerged: s.submerged, band: s.water_band,
+      }));
       await h.h('stepFrames', 2);
       const d = await h.h('getDeathState');
       const rec = (d.log || d.deaths || [])[0] || d.last_death || null;
@@ -238,7 +247,14 @@ try {
       await h.h('stepFrames', 90);                     // running when it dies
       await h.h('killPlayer', 'combat');
       await h.h('stepFrames', 1);
-      await h.h('stepFrames', 155);                    // the surface closes; the respawn lands
+      // LET GO OF THE STICK. `latchForStep` holds `moveX/moveY` until a later scripted event
+      // changes them, so a probe that pushes forward and never releases keeps walking after the
+      // respawn and measures its own thumb. The first run of this file did exactly that and read
+      // 5-12 m of "drift" at all six wells; the release is the control that separates the body's
+      // carried momentum — the thing under test — from a held input.
+      await h.h('queueInputs', [{ f: 0, move: [0, 0] }]);
+      await h.h('stepFrames', 1);
+      await h.h('stepFrames', 154);                    // the surface closes; the respawn lands
       const at0 = await h.h('getPlayerStats');
       await h.h('stepFrames', 220);
       const at220 = await h.h('getPlayerStats');

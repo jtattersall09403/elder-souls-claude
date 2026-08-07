@@ -328,13 +328,25 @@ for (const [mid, s] of sealed) {
 // much lower bar to clear than a declared n-gram and it catches a partial copy-paste, which is
 // how such a file actually escapes — not by being moved wholesale but by somebody quoting a
 // sentence of it into a book because it was good.
+// Implemented as a rolling-window Set lookup rather than the obvious nested `includes`, which
+// is O(strings x runs x length) and took minutes on this tree. Every 40-char window of every
+// answer goes in a Set; every 40-char window of every shipped string is looked up in it. One
+// pass over ~110k strings, about a second.
 const RUN = 40;
+const runIndex = new Map();
 for (const [mid, sa] of sealed) {
   const a = norm(sa.answer);
-  const runs = [];
-  for (let i = 0; i + RUN <= a.length; i += 8) runs.push(a.slice(i, i + RUN));
-  for (const [f, t] of normedStrings) {
-    for (const r of runs) if (t.includes(r)) { fail.push(`R5 SUBSTRING ${mid}: a ${RUN}-char run of the sealed answer appears in ${f}`); break; }
+  for (let i = 0; i + RUN <= a.length; i++) if (!runIndex.has(a.slice(i, i + RUN))) runIndex.set(a.slice(i, i + RUN), mid);
+}
+const hitSub = new Set();
+for (const [f, t] of normedStrings) {
+  if (t.length < RUN) continue;
+  for (let i = 0; i + RUN <= t.length; i++) {
+    const mid = runIndex.get(t.slice(i, i + RUN));
+    if (mid && !hitSub.has(`${mid} ${f}`)) {
+      hitSub.add(`${mid} ${f}`);
+      fail.push(`R5 SUBSTRING ${mid}: a ${RUN}-char run of the sealed answer appears in ${f}`);
+    }
   }
 }
 

@@ -1,19 +1,28 @@
 # Verdict — W1-01 province streaming pump, round 1
 
-**Wave 1 · gate 7.0 · overall 6 / 10 · STATUS: FAIL (narrowly), with the headline claim UPHELD**
+**Wave 1 · gate 7.0 · overall 5 / 10 · STATUS: FAIL, with the headline claim UPHELD**
 Critic run `crit-w1-01-provstream-r1-3c19`, commit `8734986`, 2026-08-07.
 Artifacts: `corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/`.
 
-**AR-1 fail (see §4) · AR-2 pass · AR-3 `seam_sterile: false` · CONSUMPTION demonstrated ·
+| Item | Native | Ladder |
+|---|---|---:|
+| `RI-PLT03` load, streaming and hitches | 2 / 100 — **hard-fail capped (HF4, HF6)** | **2** |
+| `RI-MTH07` world coupling | 4 / 5 shipped models couple | **6** |
+| `RI-WLD01` scale and traversal budget — *traversal axis only* | 8 / 10 | **8** |
+| | | **mean 5.33 → 5** |
+
+**AR-1 fail (see §4) · AR-2 pass · AR-3 `seam_sterile: false` · CONSUMPTION 4 of 5 ·
 round-0 gap CLOSED · a new one named: `GAP-W1-provstream-arrival-burst`.**
+
+`node tools/verdict-validate.mjs corpus/90-verdicts/wave1/W1-01-province-stream-r1.json` → **OK**.
+The `RI-PLT03` cap is doing all the work in that mean: two of its hard fails trigger, and a hard fail
+caps an item at 2 however much else passed. Read §11 before reading the number.
 
 > The world now follows the player. **It does not follow them cheaply, and the frame it is most
 > expensive on is the frame you get up after dying.** The builder measured the walk and shipped it;
 > the walk is the one thing about this that was already fine.
 
 ---
-
-<!-- WIP: §5 (release hysteresis / leak), §6 (rAF accumulator), §8 (falsification table) outstanding -->
 
 ## 0. The tree I measured on, and why it is not the working tree
 
@@ -63,9 +72,7 @@ waves of capture.
 **Two small discrepancies, recorded not weaponised.** The status file says the crossing took *35*
 samples; `AFTER-crossing.json`'s own `summary.samples` says **34**. And the builder's `radiusTiles`
 sweep is honest, but `province.tileM` — added beside `radiusTiles` in the same commit as a
-"consumption knob" — is **dead**: `request()` computes `tx0`/`tz0` from the module constant
-`TILE_M`, while `stats()` reports `tileSizeM: this.tileM`. Perturbing it would desynchronise the
-reported geometry from the built geometry and no probe would notice.
+"consumption knob" — is **dead**, and §9 shows that by perturbing it rather than by reading it.
 
 ---
 
@@ -349,10 +356,17 @@ observed as **tiles that exist in `province.tiles` under a body that walked ther
 | `skinRadiusM` | yes | 34 → 17 moves skin vertices 15,625 → 3,969 and leaves ring/resident/built-total byte-identical (the builder's null control, which I accept: it is a *negative* control and its value is that it changed nothing) |
 | `STREAM_URGENT_TILES` / `STREAM_NEAR_D2` | yes | the settle curve: 3×3 unbuilt 7 → 5 → 1 → 0 over frames 1, 2, 4, 8 — exactly 2 tiles per frame |
 | `STREAM_BUILD_EVERY` | yes | ring closes 10 → 25 over frames 24 → 512, one tile per ~30 frames |
-| **`province.tileM`** | **NO — orphan** | `request()` computes `tx0`/`tz0` from the module constant `TILE_M`; `stats()` reports `tileSizeM: this.tileM`. Perturbing it desynchronises the *reported* geometry from the *built* geometry and nothing would notice. `unmeasurable ⇒ 0` for that one field. |
+| **`province.tileM`** | **NO — orphan, measured** | two identical 400 m walks from a cold province, `tileM` 300 then 150. `stats()` dutifully reports `tileSizeM` 300 then 150. The set of tile keys actually built is **byte-identical** — `['5,0','5,1','5,2','5,3','5,4','5,5', …]` in both arms, `tiles_resident` 30 in both. A tile key is `` `${tx},${tz}` `` with `tx = floor(x / tileSize)`; halving the tile size must change every key, and it changed none. `unmeasurable ⇒ 0` for that field. |
 
-Not a scoring event on its own — four of five knobs couple — but it is the fifth orphan field this
-project has shipped beside a working one, and it was introduced *in this change*, as a knob.
+Note the discipline this cost: `RI-MTH04` §D makes the contents of a `.js` file **inadmissible** as
+the basis of a score, and `tools/verdict-validate.mjs` enforces it — it rejected `kind: "source"`
+artifacts outright when I first tried to cite the two lines. So the orphan is established by
+perturbation and a byte-comparison of the built world, exactly as `RI-MTH07` asks, and the source
+reading is only how I formed the hypothesis.
+
+Not a scoring event on its own — four of five knobs couple, which is the best consumption evidence
+in wave 1 so far — but it is another orphan field shipped beside working ones, and it was introduced
+*in this change*, as a knob.
 
 ---
 
@@ -367,27 +381,52 @@ touching, and where they touch, Souls has to win.
 
 ---
 
-## 11. Score
+## 10b. The picture
 
-| Dimension | Score | Why |
-|---|---:|---|
-| The defect it was sent to fix | **10** | the province follows a walking body on every modality; falsified and re-derived independently |
-| Arrival cost | **2** | 484 ms on respawn; the urgent branch is exempt from the budget it sits above |
-| Steady-state cost while walking | **7** | 0.32 % of steps over one frame; real, bounded, honestly reported by the builder |
-| Cost on a vehicle | **2** | 6.6 % of steps over one frame, max 674.76 ms; every constant sized for 2 m/s |
-| Behaviour inside the fight | **3** | AR-1: a 448.95 ms frame inside a roll's i-frame window |
-| Residency management | **9** | no leak over 834k frames; the hysteresis is correct and well argued |
-| Posed-camera / capture path | **6** | focus follows the eye correctly, but at `settleFrames: 24` the ring is 10/25 |
-| Measurement honesty | **9** | the builder measured and published its own residual rather than hiding it; the crossing is genuinely walked |
+Same road, same spot, same yaw, same frame number — 45,019 fixed steps of **walking** from the
+crossing road head, one setup teleport to the road head and nothing after it (S34(b): arrival is
+walked, never placed). The only difference is whether `Engine._streamProvince()` runs.
 
-**Mean 6.0 → 6 / 10. FAIL against a wave-1 gate of 7.0, with an AR-1 fail on top.**
+| | |
+|---|---|
+| `docs/shots/2026-08-07-province-walk-1500m-with-pump.png` | ring 25/25, ground underfoot built, skin and cover discs 9.7 m behind the body. A stone forest: trees, boulders, flagstones, ground cover. |
+| `docs/shots/2026-08-07-province-walk-1500m-without-pump.png` | ring 5/25, **ground underfoot not built**, skin and cover discs **1,083.6 m** behind the body. A blank grey slope with nothing on it. |
 
-That is a harsh-looking number for a change that unambiguously works, and it should be read the way
-it is meant: **the piece it was asked to fix is fixed, and the piece it created is smaller than the
-one it closed but is not nothing.** A player who walks now has a world. A player who dies, or who
-buys a ticket, or who rolls at the wrong moment, pays for it.
+The 750 m pair (`…-750m-with-pump.png` / `…-750m-without-pump.png`) is the same experiment at the
+distance the dispatch named. It is deliberately less dramatic and it is worth looking at for that
+reason: at 750 m the *ground* is still there — the tiles built by the load teleport have not been
+released, because with the pump neutered nothing ever calls `request()` and therefore nothing ever
+releases either. What has already gone at 750 m is the ground-cover fringe along the ridge, because
+the skin and cover discs are 559.2 m behind. **The defect arrives as missing detail before it
+arrives as missing ground**, which is exactly why it survived so long.
 
 ---
+
+## 11. Score — and what the number does and does not say
+
+| Item | Ladder | Why |
+|---|---:|---|
+| `RI-PLT03` load, streaming and hitches | **2** | **HF4** (frames > 100 ms outside a declared boundary; hitches in combat) and **HF6** (a ≥ 60 ms sim-thread task during streaming) both trigger. Hard fails cap the item at 2. |
+| `RI-MTH07` world coupling | **6** | four of five shipped knobs couple with an entity-side observable and a real null control; `province.tileM` is an orphan, measured (§9) not read |
+| `RI-WLD01` scale and traversal budget — **traversal axis only** | **8** | the drawn world follows a walking body on every modality reachable, verified with an independent falsifiable instrument |
+
+**Mean 5.33 → 5 / 10. FAIL against a wave-1 gate of 7.0, with an AR-1 fail on top.**
+
+Three things that number should not be read as saying.
+
+1. **It is not a judgement that the streaming work is bad.** On its own axis the fix is an 8, and
+   the thing it fixed was the highest-priority defect in the project.
+2. **`RI-PLT03` was already failing before this change** — it had no streamer at all, so S2, S4,
+   S5, S6 and S9 were all unmeasurable and score 0 fail-closed. This change moved that item from
+   *unmeasurable* to *measured and failing*, which is progress that the ladder cannot express.
+3. **The S4 arithmetic is the part the builder genuinely missed**, and it is worth stating on its
+   own because it does not depend on the loaded box. `RI-PLT03` S4 is *frames over 50 ms outside a
+   declared boundary, per minute of continuous walking*, budget **≤ 1.0**, fail **> 3.0**. My walk:
+   38 steps over 50 ms in 14,689 frames = 4.08 traversal minutes → **9.3 per minute**. The builder's
+   own attribution table gives the same answer from the other direction: 145 skin+cover rebuilds per
+   2 km of walking is a rebuild every 13.8 m, which at 2.0 m/s is one every 6.9 s — **8.7 per
+   minute**. "0.32 % of steps" and "9.3 hitches per traversal minute" are the same measurement, and
+   only one of them is in the corpus.
 
 ## 12. `path_to_ten`
 
@@ -418,7 +457,12 @@ buys a ticket, or who rolls at the wrong moment, pays for it.
 | Tool | Why it had to exist |
 |---|---|
 | `tools/world/critic-prov-r1.mjs` | the only province-streaming probe in the tree is the builder's own, and it measures walking. Modes `modality`, `raf`, `fight`, `displace`, `loop`, `posed`, `settle`, `ride`; `--break-fix` is the falsification control. |
-| `tools/world/critic-prov-shot.mjs` | nothing photographs the same spot 750 m into a **walked** approach with and without the pump. Never teleports to the spot (S34(b)). |
+| `tools/world/critic-prov-shot.mjs` | nothing photographs the same spot 750 m (or 1,500 m) into a **walked** approach with and without the pump. Never teleports to the spot (S34(b)). |
+
+`--mode tilem` deserves its own line: `RI-MTH04` §D makes a `.js` file inadmissible as the basis of a
+score and `tools/verdict-validate.mjs` enforces it, so the orphan-knob finding had to become a
+perturbation and a byte-comparison of the built world rather than two cited line numbers. That is the
+rule working.
 
 ---
 
