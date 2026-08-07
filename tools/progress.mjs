@@ -6,6 +6,7 @@
 import { readFileSync, writeFileSync, readdirSync, statSync, existsSync, mkdirSync } from 'node:fs';
 import { join, relative, extname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { chartHtml } from './scores.mjs';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 const P = (...a) => join(ROOT, ...a);
@@ -212,6 +213,8 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
   <div class="card"><div class="n">${dataStats.dialogueWords.toLocaleString()}</div><div class="l">Dialogue words</div></div>
   <div class="card"><div class="n ${critique && /INSUF/i.test(critique.verdict) ? 'bad' : 'ok'}">${critique ? `${gatesMet}/${gates.length}` : '&mdash;'}</div><div class="l">Bar gates met</div></div>
 </div>
+
+${chartHtml()}
 
 ${critique ? `
 <h2>The gate &mdash; is our bar good enough?</h2>

@@ -13,6 +13,7 @@
 
 import { detailAt, noise2, clamp, smoothstep, lerp } from './noise.js';
 import { MicroField } from './microrelief.js';
+import { SkinField } from './groundskin.js';
 
 const BANDS = [
   { id: 'W0', name: 'DRY', min: 0.00 },
@@ -90,6 +91,12 @@ export class WorldField {
     // histogram, the water census and every audit — the same one surface, with a per-region
     // shape in it. See game/src/world/microrelief.js for why this is here and not in a texture.
     this.micro = new MicroField(this.regions, (x, z) => this.regionU[this._cellIndex(x, z)]);
+    // The OTHER half of the ground: the surface material lying on it, at 0.6-3.2 m. Deliberately
+    // NOT in `heightAt` — `game/src/world/groundskin.js` gives the arithmetic (0.42 m of tussock
+    // at 1.15 m spacing is a 51-degree local gradient against a 40-degree walkable gate, so in
+    // the collision surface it would fence the province). It is exposed on the field so the
+    // renderer, the region-axes descriptor and the CONSUMPTION probe all read one function.
+    this.skin = new SkinField(this.regions, (x, z) => this.regionU[this._cellIndex(x, z)]);
     this.roads = null;
     this.roadGrid = null;
     this.sig = null;

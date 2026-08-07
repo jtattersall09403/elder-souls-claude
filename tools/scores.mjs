@@ -1,0 +1,280 @@
+#!/usr/bin/env node
+// Builds the critic-score trajectory chart for the Build status tab.
+//
+// The question this answers, in the project owner's words: "watch the critic scores ticking up
+// over time on each domain ... so I can get a nice sense of how this is progressing at a glance."
+//
+// Form: SMALL MULTIPLES by default — one panel per domain, one series each, so identity is
+// carried by the panel heading rather than by hue, and the seven-domain palette problem does not
+// arise. An overlay view is available for cross-domain comparison; it uses the validated
+// categorical order (dataviz skill, dark steps, checked against this page's #1b1813 surface:
+// worst adjacent CVD dE 8.4, normal-vision 19.3, all seven >= 3:1 contrast) with a legend and
+// direct labels, which the 6-8 CVD band requires as secondary encoding.
+//
+// No dual axes. Score is the only measure; time is the only x. A table view carries the same
+// numbers for anyone the chart does not serve.
+
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { join, extname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+// Piece -> the domain a reader thinks in. Deliberately coarser than the piece list: the owner
+// asked for "sensible grouping", and a chart per piece would be a chart per builder.
+const DOMAIN = {
+  'w1-00': 'Engine & harness',
+  'w1-01': 'The world',
+  'w1-03': 'The world',
+  'w1-05': 'Weapons',
+  'w1-06': 'Camera',
+  'w1-07': 'Character & opening',
+  'w1-09': 'Combat',
+  'w1-10': 'Weapons',
+  'w1-12': 'Enemy behaviour',
+  'w1-14': 'Magic',
+  'w1-15': 'Stealth & crime',
+  'w1-17': 'Dialogue',
+  'w1-18': 'Quests',
+  'w1-21': 'Interface',
+};
+
+// Validated categorical order (dark steps). Used only by the overlay view.
+const SERIES = ['#3987e5', '#d95926', '#199e70', '#c98500', '#d55181', '#008300', '#9085e9'];
+
+export function collect() {
+  const dir = join(ROOT, 'corpus', '90-verdicts');
+  const files = [];
+  const walk = d => {
+    if (!existsSync(d)) return;
+    for (const e of readdirSync(d, { withFileTypes: true })) {
+      const p = join(d, e.name);
+      if (e.isDirectory()) walk(p); else if (extname(p) === '.json') files.push(p);
+    }
+  };
+  walk(dir);
+
+  const rows = [];
+  for (const f of files) {
+    let v; try { v = JSON.parse(readFileSync(f, 'utf8')); } catch { continue; }
+    const piece = String(v.piece_id || v.piece || '');
+    const score = v.score?.overall_0_10 ?? v.score_0_10;
+    if (!piece || typeof score !== 'number') continue;
+    // Piece ids are not uniform — "W1-09", "w1-09-combat-core-r2" and "w1-09-r3" all name the
+    // same piece. Match the wave-and-number prefix rather than stripping a suffix, which silently
+    // dropped a third of the combat series.
+    const m = piece.toLowerCase().match(/^(w\d+-\d+)/);
+    if (!m) continue;
+    const base = m[1];
+    const domain = DOMAIN[base];
+    if (!domain) { console.warn(`scores: no domain mapped for piece "${base}" (${piece})`); continue; }
+    const t = v.critic?.finished_at || v.critic?.started_at;
+    rows.push({
+      domain, piece: base,
+      round: Number((piece.match(/-r(\d+)$/) || [, 1])[1]),
+      score, t: t ? Date.parse(t) : null,
+      status: /pass/i.test(String(v.status || '')) ? 'pass' : 'fail',
+      gap: v.biggest_gap?.gap_id || '',
+    });
+  }
+  rows.sort((a, b) => (a.t ?? 0) - (b.t ?? 0) || a.round - b.round);
+
+  // One series per domain. Where a domain has several pieces, each verdict is still a point —
+  // the line is the domain's story, which is what was asked for.
+  const byDomain = new Map();
+  for (const r of rows) {
+    if (!byDomain.has(r.domain)) byDomain.set(r.domain, []);
+    byDomain.get(r.domain).push(r);
+  }
+  const series = [...byDomain.entries()]
+    .map(([name, pts]) => ({ name, pts }))
+    .filter(s => s.pts.length)
+    .sort((a, b) => a.name.localeCompare(b.name));
+  return { series, rows };
+}
+
+export function chartHtml() {
+  const { series, rows } = collect();
+  if (!series.length) return '';
+
+  const GATE = 7, TARGET = 10;
+  const ts = rows.map(r => r.t).filter(Boolean);
+  const t0 = Math.min(...ts), t1 = Math.max(...ts);
+  const span = Math.max(1, t1 - t0);
+
+  // Latest score per domain, and the distance travelled.
+  const cards = series.map((s, i) => {
+    const first = s.pts[0], last = s.pts[s.pts.length - 1];
+    return {
+      name: s.name, colour: SERIES[i % SERIES.length],
+      first: first.score, last: last.score, delta: +(last.score - first.score).toFixed(1),
+      rounds: s.pts.length,
+    };
+  });
+  const meanLatest = +(cards.reduce((a, c) => a + c.last, 0) / cards.length).toFixed(1);
+  const atGate = cards.filter(c => c.last >= GATE).length;
+
+  const data = JSON.stringify(series.map((s, i) => ({
+    name: s.name, colour: SERIES[i % SERIES.length],
+    pts: s.pts.map(p => ({
+      x: p.t ? (p.t - t0) / span : 0, y: p.score, round: p.round,
+      piece: p.piece.toUpperCase(), status: p.status,
+      when: p.t ? new Date(p.t).toISOString().slice(11, 16) + 'Z' : '',
+      day: p.t ? new Date(p.t).toISOString().slice(5, 10) : '',
+    })),
+  })));
+
+  const fmt = ms => new Date(ms).toISOString().slice(5, 16).replace('T', ' ') + 'Z';
+
+  return `
+<h2>Critic scores by domain</h2>
+<style>
+.sc{--gate:#c8a253;--tgt:#7d9a5a;margin-bottom:26px}
+.sc-kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:18px}
+.sc-kpi .card .n{font-size:26px;color:var(--gold);font-weight:600;line-height:1.1}
+.sc-kpi .card .l{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-top:6px}
+.sc-bar{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.sc-bar button{background:none;border:1px solid var(--line);color:var(--dim);font:inherit;font-size:11px;
+ letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:4px;cursor:pointer}
+.sc-bar button[aria-pressed=true]{color:var(--gold);border-color:var(--gold)}
+.sc-note{color:var(--dim);font-size:11px;line-height:1.6;max-width:70ch}
+.sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.sc-panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px 14px 8px}
+.sc-panel h4{margin:0;font-size:12px;color:var(--ink);font-weight:600;letter-spacing:0;text-transform:none}
+.sc-panel .now{font-size:22px;font-weight:600;line-height:1.15;margin-top:4px}
+.sc-panel .sub{font-size:10px;color:var(--dim);margin-bottom:6px}
+.sc-panel svg,.sc-big svg{display:block;width:100%;overflow:visible}
+.sc-big{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px 18px 10px}
+.sc-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--dim)}
+.sc-legend span.k{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:baseline}
+.sc-tip{position:fixed;pointer-events:none;background:#0d0b09;border:1px solid var(--line);border-radius:5px;
+ padding:7px 10px;font-size:11px;color:var(--ink);opacity:0;transition:opacity .1s;z-index:50;line-height:1.5;max-width:250px}
+.sc-hide{display:none}
+table.sc-tbl td.d{color:var(--ink)}
+</style>
+<div class="sc" id="sc">
+  <div class="sc-kpi">
+    <div class="card"><div class="n">${meanLatest}</div><div class="l">Mean latest score</div></div>
+    <div class="card"><div class="n">${atGate}/${cards.length}</div><div class="l">Domains at the wave-1 gate</div></div>
+    <div class="card"><div class="n">${rows.length}</div><div class="l">Verdicts filed</div></div>
+    <div class="card"><div class="n">${(TARGET - meanLatest).toFixed(1)}</div><div class="l">Mean distance to 10</div></div>
+  </div>
+  <div class="sc-bar">
+    <button id="sc-b-small" aria-pressed="true">Per domain</button>
+    <button id="sc-b-over" aria-pressed="false">All together</button>
+    <button id="sc-b-tbl" aria-pressed="false">Table</button>
+    <span class="sc-note">Each point is one critic verdict. The gold line is the wave-1 pass mark of ${GATE}; the target is ${TARGET} everywhere. Scores can fall as well as rise — a later critic often measures something the earlier one could not.</span>
+  </div>
+  <div id="sc-small" class="sc-grid"></div>
+  <div id="sc-over" class="sc-big sc-hide"></div>
+  <div id="sc-tbl" class="sc-hide">
+    <table class="sc-tbl"><thead><tr><th>Domain</th><th>Piece</th><th>Round</th><th>When</th><th>Score</th><th>Result</th></tr></thead><tbody>
+    ${rows.map(r => `<tr><td class="d">${esc(r.domain)}</td><td><code>${esc(r.piece.toUpperCase())}</code></td><td>${r.round}</td><td>${r.t ? esc(fmt(r.t)) : '—'}</td><td>${r.score}</td><td class="${r.status === 'pass' ? 'ok' : 'bad'}">${r.status.toUpperCase()}</td></tr>`).join('\n    ')}
+    </tbody></table>
+  </div>
+  <div class="sc-tip" id="sc-tip"></div>
+</div>
+<script>
+(function(){
+  var D=${data}, GATE=${GATE}, TARGET=${TARGET};
+  var tip=document.getElementById('sc-tip');
+  var NS='http://www.w3.org/2000/svg';
+  function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  // y is score 0..10 throughout — one axis, always, in every panel and in the overlay.
+  function scaleY(v,h,pad){return pad+(1-v/TARGET)*(h-pad*2);}
+  function scaleX(v,w,l,r){return l+v*(w-l-r);}
+
+  function showTip(e,html){tip.innerHTML=html;tip.style.opacity=1;
+    var x=e.clientX+14,y=e.clientY+14;
+    if(x+250>window.innerWidth)x=e.clientX-250;
+    tip.style.left=x+'px';tip.style.top=y+'px';}
+  function hideTip(){tip.style.opacity=0;}
+
+  function line(s,w,h,pad,l,r,colour,thin){
+    var g=document.createDocumentFragment();
+    // gate + target references, recessive
+    g.appendChild(el('line',{x1:l,x2:w-r,y1:scaleY(GATE,h,pad),y2:scaleY(GATE,h,pad),stroke:'#c8a253','stroke-width':1,'stroke-dasharray':'3 3','opacity':.5}));
+    g.appendChild(el('line',{x1:l,x2:w-r,y1:scaleY(TARGET,h,pad),y2:scaleY(TARGET,h,pad),stroke:'#7d9a5a','stroke-width':1,'opacity':.35}));
+    var pts=s.pts.map(function(p){return [scaleX(s.pts.length>1?p.x:.5,w,l,r),scaleY(p.y,h,pad)];});
+    if(pts.length>1){
+      var d=pts.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1);}).join(' ');
+      g.appendChild(el('path',{d:d,fill:'none',stroke:colour,'stroke-width':thin?2:2.5,'stroke-linejoin':'round','stroke-linecap':'round'}));
+    }
+    s.pts.forEach(function(p,i){
+      var c=el('circle',{cx:pts[i][0],cy:pts[i][1],r:thin?4.5:5,fill:colour,stroke:'#1b1813','stroke-width':2});
+      c.style.cursor='pointer';
+      c.addEventListener('mousemove',function(e){showTip(e,'<b>'+s.name+'</b><br>'+p.piece+' round '+p.round+'<br>score <b>'+p.y+'</b> / 10<br><span style="color:#9a8f79">'+p.day+' '+p.when+'</span>');});
+      c.addEventListener('mouseleave',hideTip);
+      g.appendChild(c);
+    });
+    return g;
+  }
+
+  // ---- small multiples: one domain per panel, single series, identity from the heading ----
+  var host=document.getElementById('sc-small');
+  D.forEach(function(s){
+    var last=s.pts[s.pts.length-1].y, first=s.pts[0].y, dlt=+(last-first).toFixed(1);
+    var div=document.createElement('div');div.className='sc-panel';
+    var col=last>=GATE?'#7d9a5a':(last>=4?'#c8a253':'#b4553f');
+    div.innerHTML='<h4>'+s.name+'</h4><div class="now" style="color:'+col+'">'+last+
+      ' <span style="font-size:11px;color:#9a8f79">/ 10</span></div>'+
+      '<div class="sub">'+(dlt>0?'▲ +'+dlt:(dlt<0?'▼ '+dlt:'no change'))+' over '+s.pts.length+' round'+(s.pts.length>1?'s':'')+'</div>';
+    var w=230,h=76,pad=10,l=2,r=2;
+    var svg=el('svg',{viewBox:'0 0 '+w+' '+h,role:'img','aria-label':s.name+' latest score '+last+' out of 10'});
+    svg.appendChild(line(s,w,h,pad,l,r,col,true));
+    div.appendChild(svg);host.appendChild(div);
+  });
+
+  // ---- overlay: all domains, one axis, legend + direct labels (secondary encoding) ----
+  var big=document.getElementById('sc-over');
+  // R reserves room for the direct labels. The longest is "Character & opening 3.8"; at 11px
+  // that needs ~150px plus the swatch, so 200 keeps it inside the viewBox rather than clipped.
+  var W=980,H=340,PAD=26,L=34,R=200;
+  var svg=el('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':'Critic score by domain over time'});
+  for(var v=0;v<=TARGET;v+=2){
+    svg.appendChild(el('line',{x1:L,x2:W-R,y1:scaleY(v,H,PAD),y2:scaleY(v,H,PAD),stroke:'#332d24','stroke-width':1,opacity:v?.6:1}));
+    var t=el('text',{x:L-8,y:scaleY(v,H,PAD)+4,fill:'#9a8f79','font-size':11,'text-anchor':'end'});t.textContent=v;svg.appendChild(t);
+  }
+  D.forEach(function(s){ svg.appendChild(line(s,W,H,PAD,L,R,s.colour,false)); });
+  // direct labels at the right — required as secondary encoding, and easier to read than a legend hunt
+  var ends=D.map(function(s){return {n:s.name,c:s.colour,y:scaleY(s.pts[s.pts.length-1].y,H,PAD),v:s.pts[s.pts.length-1].y};})
+            .sort(function(a,b){return a.y-b.y;});
+  var minGap=15;
+  for(var i=1;i<ends.length;i++) if(ends[i].y-ends[i-1].y<minGap) ends[i].y=ends[i-1].y+minGap;
+  ends.forEach(function(e){
+    var tx=el('text',{x:W-R+12,y:e.y+4,fill:'#9a8f79','font-size':11});
+    tx.textContent=e.n+' '+e.v;
+    svg.appendChild(el('rect',{x:W-R+1,y:e.y-4,width:7,height:7,rx:2,fill:e.c}));
+    svg.appendChild(tx);
+  });
+  var xl=el('text',{x:L,y:H-4,fill:'#9a8f79','font-size':10});xl.textContent='${esc(fmt(t0))}';svg.appendChild(xl);
+  var xr=el('text',{x:W-R,y:H-4,fill:'#9a8f79','font-size':10,'text-anchor':'end'});xr.textContent='${esc(fmt(t1))}';svg.appendChild(xr);
+  big.appendChild(svg);
+  var lg=document.createElement('div');lg.className='sc-legend';
+  lg.innerHTML=D.map(function(s){return '<span><span class="k" style="background:'+s.colour+'"></span>'+s.name+'</span>';}).join('')+
+    '<span><span class="k" style="background:#c8a253"></span>wave-1 pass mark</span>'+
+    '<span><span class="k" style="background:#7d9a5a"></span>target</span>';
+  big.appendChild(lg);
+
+  // ---- view switch ----
+  var views=[['sc-b-small','sc-small'],['sc-b-over','sc-over'],['sc-b-tbl','sc-tbl']];
+  views.forEach(function(pair){
+    document.getElementById(pair[0]).addEventListener('click',function(){
+      views.forEach(function(p){
+        var on=p[0]===pair[0];
+        document.getElementById(p[0]).setAttribute('aria-pressed',on);
+        document.getElementById(p[1]).classList.toggle('sc-hide',!on);
+      });
+      hideTip();
+    });
+  });
+})();
+</script>`;
+}
+
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const { series, rows } = collect();
+  console.log(`scores: ${rows.length} verdict(s) across ${series.length} domain(s)`);
+  for (const s of series) console.log(`  ${s.name.padEnd(22)} ${s.pts.map(p => p.score).join(' -> ')}`);
+}

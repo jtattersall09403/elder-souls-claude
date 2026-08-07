@@ -244,11 +244,51 @@ a whole wave, which is exactly the false-enforcement pattern §1.2a was written 
 > `verdict-validate.mjs` now **errors** when an item carries a non-empty `hard_fails[]`, or any
 > `checks[].hard_fail === true`, and `score_0_10 > 2`. It also errors when an item's
 > `native_score` is 0 and its `score_0_10` exceeds 4, because §1.2 step 1 makes the item's own
-> band a **ceiling** and a native 0 is never above the "loses outright" band.
+> band a **ceiling** and a native 0 is never above the "loses outright" band — **and, where the
+> item publishes an explicit `Ladder 0 / Native 0` rung under the rule above, it errors on any
+> `score_0_10 > 0`, reading the ceiling off the item's row rather than guessing a generic 4.**
+> The second half is the point: §1.2b's whole instruction is that the translation is *read from
+> the anchor row*, and an instrument that guesses instead has not implemented it.
 
 **Neither rule lowers anything.** Both make existing rules bite where they were being averaged
 away, and both make wave-1 scores *worse* when re-applied: `RI-CHR01` at round 2 goes from 4 to
-**2**, and `RI-CHR02`/`RI-CHR03` from 4 to their true native translation.
+**2**, and `RI-CHR02`/`RI-CHR03` from 4 to their true native translation. Re-run over the whole
+tree at this pass, the two rules fail **`W1-07`, `W1-07-r2` and `W1-10`** and no other verdict.
+
+### 1.2c AMENDED wave 1 — BAR-CRITIQUE-W1-07-R1 §R5.3. **`min-over-axes` has an instrument.**
+
+Twenty-one reference items declare `**Aggregation (a property of this item, not of the critic):**
+min-over-axes`. The parenthesis is the whole point of the line — it exists so a critic cannot
+choose a kinder rule — and **nothing has ever checked that the reported native score is in fact the
+minimum.** In one file, `W1-07` round 2, the rule was applied three different ways:
+
+| Item | Axes marked `unmeasurable` or `fail` in the same verdict | `native_score` recorded | The min |
+|---|---|---:|---:|
+| `RI-CHR02` | 4 | **0** | 0 — correct |
+| `RI-PRG02` | 1 (`M5-earned-fraction`) | **6** | 0 |
+| `RI-PRG03` | 2 (`M-air-swings`, `M7-skill-scales-damage`) | **5** | 0 |
+
+§1.1 already fixes an unmeasurable axis at **0, fail-closed, never "unknown"**. On a min rule that
+is the item. Two of `W1-07`'s six items were therefore carried at 6 and 5 by an aggregation nobody
+performed, and the piece mean moved by **1.8** on that alone.
+
+> `verdict-validate.mjs` **warns** when an item whose published aggregation is `min-over-axes`
+> reports a `native_score` above 0 while any of its `checks[]` is `fail` or `unmeasurable` and is
+> not marked `corpus_debt`.
+>
+> It is a **warning and not an error, for a stated reason rather than a tactical one**: `checks[]`
+> are *methods* and the min is taken over the item's Scoring *axes*, and the two are not always
+> one-to-one. A critic who has mapped them and can show the min is legitimately above 0 says which
+> check maps to which axis, in prose. **It tightens to `error` at wave 2**, by which point items
+> must carry an axis id on each check.
+
+Run over the whole tree at this pass it fires **seven** times across four verdicts — `W1-14-r2` (3),
+`W1-07-r2` (2), `W1-01-r2` (1), `W1-14` (1) — every one of them an item carried above its own
+minimum, and **three pieces beyond the one that found it.** It is silent on the eleven verdicts
+where the min was taken correctly, which is the test of whether an instrument measures anything.
+
+**This lowers nothing.** It makes twenty-one items' own declared aggregation binding for the first
+time, and its effect on every score it touches is downward.
 
 ---
 

@@ -39,6 +39,27 @@ const COVER_RADIUS_M = 70;
 const COVER_LATTICE_M = 1.7;
 const COVER_REBUILD_M = 14;
 const MAX_COVER = 6000;
+// The ground skin: a fine surface mesh that follows the camera. 55 m at 1.0 m is 12,100 quads in
+// ONE draw call — cheaper on the software rasteriser than the 2-5k separate-instance ground
+// cover already is, and it is the only way to get sub-metre relief into the picture at all: the
+// tile mesh is 5.36 m per quad and cannot carry a 1.15 m tussock field. See
+// game/src/world/groundskin.js for what it carries and why it is not in the collision surface.
+const SKIN_RADIUS_M = 55;
+const SKIN_CELL_M = 1.0;
+const SKIN_REBUILD_M = 11;
+const SKIN_FADE_M = 14;
+// The near-field prop disc. `MAX_INSTANCES` is a per-TILE budget, and applying it as a thinning
+// factor (which round 4 correctly changed it to) clamps every region whose declared density
+// exceeds the budget to the SAME realised density: 700 canopy over a 300 m tile is 0.78 per
+// 100 m2, so Blackwood's declared 2.60 and Thornmarsh's 5.40 both rendered as 0.78 and their
+// declared canopy closures of 0.92 and 0.49 both rendered as 0.63 and 0.02. Six of thirteen
+// regions were clamped on the understorey layer and four on the rock layer, in each case exactly
+// the regions that are supposed to be the dense ones. This disc puts the DEFICIT back inside
+// 90 m — full declared density where the frame is made, the tile budget beyond it. It is level
+// of detail, and it is the reason canopy closure is a real axis rather than a JSON field.
+const NEAR_RADIUS_M = 90;
+const NEAR_REBUILD_M = 22;
+const MAX_NEAR = { canopy: 2600, under: 2400, rock: 700 };
 const MAX_SIG_LIGHTS = 2;
 const SIG_LIGHT_RANGE = 160;
 
@@ -152,6 +173,8 @@ export class Province {
   /** Ask for the tiles around (x, z); returns the number still queued. */
   request(x, z) {
     this.focus = [x, z];
+    this.updateSkin(x, z);
+    this.updateNear(x, z);
     this.updateCover(x, z);
     if (this.nightFactor > 0) this.updateSignatureLights(x, z);
     const tx0 = Math.floor(x / TILE_M), tz0 = Math.floor(z / TILE_M);
@@ -295,6 +318,272 @@ export class Province {
     this.coverGroup = g;
     this.coverCount = total;
     this.coverConsidered = considered;
+    return total;
+  }
+
+  /**
+   * THE GROUND SKIN — the ordinary underfoot surface, as geometry, in a patch around the camera.
+   *
+   * This is the layer that decides what the bottom half of every frame is made of, and until it
+   * existed the bottom half of every frame was a smooth untextured plane in all thirteen regions.
+   * Measured over round 4's own 39 day frames, Sobel edge density in the bottom quarter of the
+   * image carried a between-region to within-region ratio of 0.91 — no regional signal at all,
+   * in the part of the picture there is most of.
+   *
+   * Why here and not in the tile mesh: the tile mesh is 5.36 m per quad and a fen's tussocks are
+   * 1.15 m apart. Why here and not in `heightAt`: `groundskin.js` gives the arithmetic — as
+   * collision it would put 51-degree gradients through a 40-degree walkable gate and fence the
+   * province. Why a mesh and not more instances: 12,100 quads in one draw call is cheaper on the
+   * software rasteriser than the two to five thousand separate ground-cover instances already
+   * are, and a continuous surface is what a ground surface is.
+   *
+   * The patch is anchored to a world lattice, not to the camera, so it does not swim when it is
+   * rebuilt; the amplitude and the tone both taper to zero over the last 14 m so there is no
+   * visible rim; and the whole thing sits at `meshY + 0.012 + rise`, where `rise >= 0` by
+   * construction, so it can never z-fight the tile ground it lies on.
+   */
+  updateSkin(x, z) {
+    const f = this.field;
+    if (!f.skin || !f.skin.any) return 0;
+    if (this.skinAtPos && Math.hypot(x - this.skinAtPos[0], z - this.skinAtPos[1]) < SKIN_REBUILD_M) return 0;
+    this.skinAtPos = [x, z];
+    if (this.skinMesh) {
+      this.group.remove(this.skinMesh);
+      this.skinMesh.geometry.dispose();
+      this.skinMesh = null;
+    }
+    const C = SKIN_CELL_M, R = SKIN_RADIUS_M;
+    const x0 = Math.floor((x - R) / C) * C, z0 = Math.floor((z - R) / C) * C;
+    const N = Math.ceil((2 * R) / C);                    // quads per side
+    const V = N + 1;                                     // vertices per side
+    // Base ground colour and water depth are sampled on a COARSE sub-lattice and interpolated:
+    // `_groundColour` calls `slopeAt` (four height queries) and `depthAt`, and running that at
+    // every one of 12,544 vertices is a tenth of a second on its own. Every third vertex is
+    // 1.0 m -> 3.0 m, which is finer than the 5.36 m the tile ground itself is coloured at.
+    const S = 3;
+    const CV = Math.ceil(N / S) + 1;
+    const cc = new Float32Array(CV * CV * 4);
+    const tmp = new THREE.Color();
+    for (let j = 0; j < CV; j++) {
+      for (let i = 0; i < CV; i++) {
+        const px = clamp(x0 + i * S * C, 0, f.sizeX - 0.01), pz = clamp(z0 + j * S * C, 0, f.sizeZ - 0.01);
+        this._groundColour(px, pz, this._meshY(px, pz), tmp);
+        const k = (j * CV + i) * 4;
+        cc[k] = tmp.r; cc[k + 1] = tmp.g; cc[k + 2] = tmp.b; cc[k + 3] = f.depthAt(px, pz);
+      }
+    }
+    const coarse = (px, pz, out) => {
+      const u = (px - x0) / (S * C), v = (pz - z0) / (S * C);
+      const i = Math.min(CV - 2, Math.max(0, Math.floor(u))), j = Math.min(CV - 2, Math.max(0, Math.floor(v)));
+      const tu = Math.min(1, Math.max(0, u - i)), tv = Math.min(1, Math.max(0, v - j));
+      let depth = 0;
+      for (let c = 0; c < 4; c++) {
+        const a = cc[(j * CV + i) * 4 + c] + (cc[(j * CV + i + 1) * 4 + c] - cc[(j * CV + i) * 4 + c]) * tu;
+        const b = cc[((j + 1) * CV + i) * 4 + c] + (cc[((j + 1) * CV + i + 1) * 4 + c] - cc[((j + 1) * CV + i) * 4 + c]) * tu;
+        const val = a + (b - a) * tv;
+        if (c === 3) depth = val; else out[c] = val;
+      }
+      return depth;
+    };
+
+    const pos = new Float32Array(V * V * 3);
+    const col = new Float32Array(V * V * 3);
+    const rgb = [0, 0, 0];
+    const cH = new THREE.Color();
+    let live = 0;
+    for (let j = 0; j < V; j++) {
+      for (let i = 0; i < V; i++) {
+        const px = x0 + i * C, pz = z0 + j * C;
+        const k = (j * V + i) * 3;
+        const cx = clamp(px, 0, f.sizeX - 0.01), cz = clamp(pz, 0, f.sizeZ - 0.01);
+        const d = Math.hypot(px - x, pz - z);
+        // Taper at the rim, and lie flat under water: a tussock under 40 cm of black water is a
+        // shape the water mesh hides, and pushing the skin up through it makes an island.
+        const depth = coarse(cx, cz, rgb);
+        const fade = (1 - smoothstep(R - SKIN_FADE_M, R, d)) * (1 - smoothstep(0.05, 0.45, depth));
+        let rise = 0, tone = 0;
+        if (fade > 0.002) {
+          const [hh, tt] = f.skin.at(cx, cz);
+          rise = hh * fade; tone = tt * fade;
+          if (rise > 0.004) live++;
+        }
+        pos[k] = px; pos[k + 1] = this._meshY(cx, cz) + 0.012 + rise; pos[k + 2] = pz;
+        cH.setRGB(rgb[0], rgb[1], rgb[2]);
+        // The material's own response to its own shape. A normal alone is not enough: 0.2 m over
+        // 1 m under an overcast sky moves Lambert shading by a couple of per cent, which is how
+        // the micro-relief came to be in the collision surface and invisible in the frame.
+        if (tone !== 0) cH.offsetHSL(0, -0.05 * tone, 0.17 * tone);
+        col[k] = cH.r; col[k + 1] = cH.g; col[k + 2] = cH.b;
+      }
+    }
+    if (!live) return 0;
+    const idx = new Uint32Array(N * N * 6);
+    let n = 0;
+    for (let j = 0; j < N; j++) {
+      for (let i = 0; i < N; i++) {
+        const a = j * V + i, b = a + 1, c = a + V, dd = c + 1;
+        idx[n++] = a; idx[n++] = c; idx[n++] = b;
+        idx[n++] = b; idx[n++] = c; idx[n++] = dd;
+      }
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    geo.setIndex(new THREE.BufferAttribute(idx, 1));
+    geo.computeVertexNormals();
+    this.skinMats = this.skinMats || new THREE.MeshStandardMaterial({
+      vertexColors: true, roughness: 0.95, metalness: 0.0,
+      polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1,
+    });
+    const mesh = new THREE.Mesh(geo, this.skinMats);
+    mesh.name = 'ground-skin';
+    mesh.receiveShadow = true;
+    mesh.castShadow = false;
+    this.group.add(mesh);
+    this.skinMesh = mesh;
+    this.skinVerts = V * V;
+    return V * V;
+  }
+
+  /**
+   * Place the three prop layers at ONE site, at the given already-arranged densities.
+   *
+   * Shared by the tile scatter and the near-field disc, so a Blackwood hardwood is the same
+   * hardwood whichever layer drew it — same height variance, same lean, same emergent rule.
+   * `dens` is per 100 m2 AFTER the arrangement field and any thinning; `rolls` are four uniform
+   * draws in [0,1); `cellArea` the square metres this site stands for.
+   */
+  _placeSite(buckets, tag, ri, x, z, y, cellArea, dens, rolls, cap) {
+    const f = this.field;
+    const r = f.regions[ri];
+    const p = r.props;
+    const depth = f.depthAt(x, z);
+    const m = this._m || (this._m = new THREE.Matrix4());
+    const q = this._q || (this._q = new THREE.Quaternion());
+    const qt = this._qt || (this._qt = new THREE.Quaternion());
+    const v = this._v || (this._v = new THREE.Vector3());
+    const s = this._s || (this._s = new THREE.Vector3());
+    const side = this._side || (this._side = new THREE.Vector3());
+    const up = this._up || (this._up = new THREE.Vector3(0, 1, 0));
+    const push = (kind, geoKind, mat, scale, yOff, tilt, rotSeed) => {
+      const key = `${tag}:${kind}:${geoKind}:${ri}`;
+      let b = buckets.get(key);
+      if (!b) { b = { kind, ri, mat, geo: this._geo(geoKind, r), xf: [] }; buckets.set(key, b); }
+      if (b.xf.length >= cap[kind]) return false;
+      q.setFromAxisAngle(up, noise2(x, z, rotSeed) * Math.PI * 2);
+      if (tilt) { side.set(Math.cos(tilt.a), 0, Math.sin(tilt.a)); qt.setFromAxisAngle(side, tilt.t); q.multiply(qt); }
+      v.set(x, y + yOff, z); s.setScalar(scale);
+      m.compose(v, q, s);
+      b.xf.push(m.clone());
+      return true;
+    };
+    if (p.canopy.shape !== 'none' && depth < 0.9 && rolls[0] < dens.canopy * cellArea / 100) {
+      // Height variance and the occasional emergent: the vertical-structure axis, in data.
+      const hv = p.canopy.h_var || 0;
+      let sc = 0.72 + noise2(x * 3.1, z * 3.1, 7793) * 0.66;
+      sc *= 1 + hv * (noise2(x * 1.7, z * 1.7, 7799) - 0.5) * 2;
+      const em = p.canopy.emergent;
+      if (em && rolls[3] < em.share) sc *= em.h_mult;
+      const lean = (p.canopy.lean_deg || 0) * Math.PI / 180;
+      const tilt = lean > 0
+        ? { a: noise2(x * 0.9, z * 0.9, 7803) * Math.PI * 2, t: lean * (noise2(x * 1.3, z * 1.3, 7807) - 0.5) * 2 }
+        : null;
+      if (push('canopy', 'trunk', this.regionMats[ri].trunk, sc, 0, tilt, 7789)) {
+        push('canopy', 'crown', this.regionMats[ri].crown, sc,
+          p.canopy.h * sc * (p.canopy.shape === 'arch' ? 0.5 : 0.86), tilt, 7797);
+      }
+    }
+    if (rolls[1] < dens.under * cellArea / 100 && depth < 0.6) {
+      push('under', 'under', this.regionMats[ri].under, 0.7 + noise2(x * 5, z * 5, 7801) * 0.8, 0, null, 7789);
+    }
+    if (rolls[2] < dens.rock * cellArea / 100) {
+      push('rock', 'rock', this.regionMats[ri].rock, p.rock.scale * (0.5 + noise2(x * 7, z * 7, 7817)), 0.1, null, 7789);
+    }
+  }
+
+  /**
+   * THE NEAR-FIELD PROP DISC — the declared density, where the frame is actually made.
+   *
+   * `MAX_INSTANCES` is a per-tile budget of 700 canopy over a 300 m tile, which is 0.78 per
+   * 100 m2. Every region declaring more than that rendered at exactly 0.78: Blackwood's 2.60 and
+   * Thornmarsh's 5.40 came out identical, and so did their skylines. Six of thirteen regions were
+   * clamped on the understorey and four on rock — in each case the regions whose whole character
+   * is that they are dense. Canopy closure spanned 0.00 to 0.92 in `regions.json` and 0% to 63%
+   * in the picture, most of it bunched under 20%.
+   *
+   * So: the DEFICIT between declared and budgeted density, placed on its own lattice inside 90 m,
+   * rebuilt when the camera has moved 22 m. Beyond 90 m the tile budget stands, which is ordinary
+   * level of detail — a tree at 200 m in a region whose fog e-folds at 55 m is not in the picture.
+   * The lattice spacing is chosen per region from the deficit itself so the roll threshold stays
+   * near a half: a 6.5 m lattice cannot express 4.6 trees per 100 m2 however hard it is asked.
+   */
+  updateNear(x, z) {
+    const f = this.field;
+    if (this.nearAtPos && Math.hypot(x - this.nearAtPos[0], z - this.nearAtPos[1]) < NEAR_REBUILD_M) return 0;
+    this.nearAtPos = [x, z];
+    if (this.nearGroup) {
+      this.group.remove(this.nearGroup);
+      this.nearGroup.traverse((o) => { if (o.geometry && o.geometry.__near) o.geometry.dispose(); });
+    }
+    const R = NEAR_RADIUS_M;
+    const budget = TILE_M * TILE_M / 100;
+    // The deficit each region owes, and the lattice fine enough to place it.
+    const deficits = f.regions.map((r) => {
+      const p = r.props;
+      const d = {
+        canopy: Math.max(0, (p.canopy.shape === 'none' ? 0 : p.canopy.per100m2) - MAX_INSTANCES.canopy / budget),
+        under: Math.max(0, p.under.per100m2 - MAX_INSTANCES.under / budget),
+        rock: Math.max(0, p.rock.per100m2 - MAX_INSTANCES.rock / budget),
+      };
+      d.max = Math.max(d.canopy, d.under, d.rock);
+      return d;
+    });
+    const here = deficits[f.regionIndexAt(x, z)];
+    const g = new THREE.Group();
+    g.name = 'near-props';
+    const buckets = new Map();
+    if (here.max > 0.001) {
+      // Spacing such that the busiest layer rolls at about one site in two.
+      const step = clamp(Math.sqrt(100 / (2 * here.max)), 1.9, 6.5);
+      const cellArea = step * step;
+      const n = Math.ceil(R / step);
+      const gx0 = Math.floor((x - R) / step), gz0 = Math.floor((z - R) / step);
+      for (let iz = 0; iz <= n * 2; iz++) {
+        for (let ix = 0; ix <= n * 2; ix++) {
+          const cx = gx0 + ix, cz = gz0 + iz;
+          const px = (cx + hash2(cx, cz, 8101)) * step;
+          const pz = (cz + hash2(cx, cz, 8103)) * step;
+          if (Math.hypot(px - x, pz - z) > R) continue;
+          if (px < 0 || pz < 0 || px >= f.sizeX || pz >= f.sizeZ) continue;
+          if (!f.isLandAt(px, pz)) continue;
+          const ri = f.regionIndexAt(px, pz);
+          const d = deficits[ri];
+          if (d.max <= 0.001) continue;
+          const r = f.regions[ri];
+          const aTall = arrangeAt(f, px, pz, r.props.arrangement, 1.0);
+          const aLow = arrangeAt(f, px, pz, r.props.arrangement, 0.45);
+          this._placeSite(buckets, 'near', ri, px, pz, this._meshY(px, pz), cellArea,
+            { canopy: d.canopy * aTall, under: d.under * aLow, rock: d.rock * aTall },
+            [hash2(cx, cz, 8111), hash2(cx, cz, 8117), hash2(cx, cz, 8123), hash2(cx, cz, 8129)],
+            MAX_NEAR);
+        }
+      }
+    }
+    let total = 0;
+    for (const b of buckets.values()) {
+      if (!b.xf.length) continue;
+      const im = new THREE.InstancedMesh(b.geo, b.mat, b.xf.length);
+      for (let i = 0; i < b.xf.length; i++) im.setMatrixAt(i, b.xf[i]);
+      im.instanceMatrix.needsUpdate = true;
+      im.castShadow = b.kind !== 'under';
+      im.receiveShadow = true;
+      im.name = `near-${b.kind}:${f.regions[b.ri].id}`;
+      g.add(im);
+      total += b.xf.length;
+    }
+    this.group.add(g);
+    this.nearGroup = g;
+    this.nearCount = total;
     return total;
   }
 
@@ -681,9 +970,6 @@ export class Province {
     const f = this.field;
     const area = TILE_M * TILE_M / 100;      // in units of 100 m2
     const buckets = new Map();
-    const m = new THREE.Matrix4(), q = new THREE.Quaternion(), qt = new THREE.Quaternion();
-    const v = new THREE.Vector3(), s = new THREE.Vector3();
-    const up = new THREE.Vector3(0, 1, 0), side = new THREE.Vector3();
     // One Poisson-ish jittered lattice per tile, sampled at the LOCAL region's density: the same
     // point set feeds every layer, so density is a per-region measurable and not a per-mesh mood.
     const N = 46;
@@ -694,10 +980,8 @@ export class Province {
         const x = ox + (ix + jx) * (TILE_M / N), z = oz + (iz + jz) * (TILE_M / N);
         if (!f.isLandAt(x, z)) continue;
         const ri = f.regionIndexAt(x, z);
-        const r = f.regions[ri];
-        const p = r.props;
+        const p = f.regions[ri].props;
         const y = this._meshY(x, z);
-        const depth = f.depthAt(x, z);
         const cellArea = area / (N * N) * 100;      // m2 per lattice cell
         // UNIFORM rolls, hashed on the lattice cell. These used to be `noise2` of the position,
         // which is smoothstep-interpolated value noise concentrated around 0.5 — so P(roll < t)
@@ -718,42 +1002,11 @@ export class Province {
         // tile, and leaves the rest of it bald. Thornmarsh declares 5.4 canopy per 100 m2, which
         // is 4,860 in a 300 m tile against a budget of 700, so this was visible.
         const cap = (kind, per100) => Math.min(1, MAX_INSTANCES[kind] / Math.max(1e-6, per100 * TILE_M * TILE_M / 100));
-        const push = (kind, mat, geo, scale, yOff, tilt) => {
-          let b = buckets.get(`${kind}:${ri}`);
-          if (!b) { b = { kind, ri, mat, geo, xf: [] }; buckets.set(`${kind}:${ri}`, b); }
-          if (b.xf.length >= MAX_INSTANCES[kind]) return;
-          q.setFromAxisAngle(up, noise2(x, z, 7789) * Math.PI * 2);
-          if (tilt) { side.set(Math.cos(tilt.a), 0, Math.sin(tilt.a)); qt.setFromAxisAngle(side, tilt.t); q.multiply(qt); }
-          v.set(x, y + yOff, z); s.setScalar(scale);
-          m.compose(v, q, s);
-          b.xf.push(m.clone());
-        };
-        if (p.canopy.shape !== 'none' && depth < 0.9 && roll < p.canopy.per100m2 * cap('canopy', p.canopy.per100m2) * aTall * cellArea / 100) {
-          // Height variance and the occasional emergent: the vertical-structure axis, in data.
-          const hv = p.canopy.h_var || 0;
-          let sc = 0.72 + noise2(x * 3.1, z * 3.1, 7793) * 0.66;
-          sc *= 1 + hv * (noise2(x * 1.7, z * 1.7, 7799) - 0.5) * 2;
-          const em = p.canopy.emergent;
-          if (em && roll4 < em.share) sc *= em.h_mult;
-          const lean = (p.canopy.lean_deg || 0) * Math.PI / 180;
-          const tilt = lean > 0
-            ? { a: noise2(x * 0.9, z * 0.9, 7803) * Math.PI * 2, t: lean * (noise2(x * 1.3, z * 1.3, 7807) - 0.5) * 2 }
-            : null;
-          push('canopy', this.regionMats[ri].trunk, this._geo('trunk', r), sc, 0, tilt);
-          const b = buckets.get(`crown:${ri}`) || (buckets.set(`crown:${ri}`, { kind: 'canopy', ri, mat: this.regionMats[ri].crown, geo: this._geo('crown', r), xf: [] }), buckets.get(`crown:${ri}`));
-          if (b.xf.length < MAX_INSTANCES.canopy) {
-            q.setFromAxisAngle(up, noise2(x, z, 7797) * Math.PI * 2);
-            if (tilt) { side.set(Math.cos(tilt.a), 0, Math.sin(tilt.a)); qt.setFromAxisAngle(side, tilt.t); q.multiply(qt); }
-            v.set(x, y + p.canopy.h * sc * (p.canopy.shape === 'arch' ? 0.5 : 0.86), z); s.setScalar(sc);
-            m.compose(v, q, s); b.xf.push(m.clone());
-          }
-        }
-        if (roll2 < p.under.per100m2 * cap('under', p.under.per100m2) * aLow * cellArea / 100 && depth < 0.6) {
-          push('under', this.regionMats[ri].under, this._geo('under', r), 0.7 + noise2(x * 5, z * 5, 7801) * 0.8, 0);
-        }
-        if (roll3 < p.rock.per100m2 * cap('rock', p.rock.per100m2) * aTall * cellArea / 100) {
-          push('rock', this.regionMats[ri].rock, this._geo('rock', r), p.rock.scale * (0.5 + noise2(x * 7, z * 7, 7817)), 0.1);
-        }
+        this._placeSite(buckets, 'tile', ri, x, z, y, cellArea, {
+          canopy: p.canopy.per100m2 * cap('canopy', p.canopy.per100m2) * aTall,
+          under: p.under.per100m2 * cap('under', p.under.per100m2) * aLow,
+          rock: p.rock.per100m2 * cap('rock', p.rock.per100m2) * aTall,
+        }, [roll, roll2, roll3, roll4], MAX_INSTANCES);
       }
     }
     for (const b of buckets.values()) {

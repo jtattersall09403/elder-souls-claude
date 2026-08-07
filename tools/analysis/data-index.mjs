@@ -30,6 +30,12 @@ const walk = (dir, rel = '') => {
     const p = path.join(dir, e.name);
     const r = rel ? `${rel}/${e.name}` : e.name;
     if (e.isDirectory()) walk(p, r);
+    // Dotfiles are not content. `quests/.resolution-baseline.json` is the generator-guard
+    // snapshot written by 54a4145 ("Restore nine quest routes lost to a generator"); it is a
+    // tool's own bookkeeping, carries no `schema`, and has fail-closed this indexer — and so
+    // the HARNESS.md §7 rule 5 manifest it maintains — for every piece since. Skipping the dot
+    // prefix is the narrowest fix that does not weaken the schema rule for real data files.
+    else if (e.name.startsWith('.')) continue;
     else if (e.name.endsWith('.json') && r !== 'index.json') {
       const raw = fs.readFileSync(p);
       let doc;

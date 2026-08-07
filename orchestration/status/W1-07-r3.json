@@ -32,7 +32,15 @@
     "FIXED: census.js _options() now honours inp.excludes via _excluded(); the neglected node offers 8 attributes not 10, secondary offers 16 skills not 19. Pad walk (caret-at-top + interact on every node) completes the custom route with 0 throws and attribute total 112.",
     "FIXED: Engine._censusApplyPending() now catches, emits a `census_refused` event and shows the refusal as the scribe's aside instead of throwing out of the fixed step.",
     "FOUND + FIXED (second-order, same defect class as the headline gap): every REPLY in the census graph was written to the transcript and never drawn \u2014 on_answer, on_refusal, birthsign scribe_line, the writ.strange-check conditional branches, and on_match_named_class itself, which RI-CHR01 SS4 calls 'the moment the route is for'. census.state() now carries `spoken` and ui.js draws it above the rule.",
-    "creation-audit: CHR03-dry-well-removes-focus was stale against ARBITRATION S27 and was the one hard failure at 88/90. Re-pointed to CHR03-dry-well-takes-the-hearth plus a new CHR03-S27-no-focus-rate sweep over all 9 signs. Now 90/91 PASS, 0 hard failures, 1 declared XFAIL (the corpus's own Nord/Orsimer collision)."
+    "creation-audit: CHR03-dry-well-removes-focus was stale against ARBITRATION S27 and was the one hard failure at 88/90. Re-pointed to CHR03-dry-well-takes-the-hearth plus a new CHR03-S27-no-focus-rate sweep over all 9 signs. Now 90/91 PASS, 0 hard failures, 1 declared XFAIL (the corpus's own Nord/Orsimer collision).",
+    "R3-RESUME: converse.js + engine wiring for greetings/topics was ALREADY ON DISK from the killed run (game/src/character/converse.js, engine.js talkTo/conversationSay/conversationClose/_conversationStep, harness api). It was never executed. First live run found it threw.",
+    "BUG FIXED: Engine.conversationSay() emitted 'dialogue_topic', which is NOT in events.js EVENT_TYPES, so every topic utterance threw out of the harness. 'topic_select' was already in the A-JRN7 vocabulary and is exactly this event. Reused it rather than extending the closed vocabulary.",
+    "MEASURED (live, helstrom-market, 4 NPCs x 10 races = 40 conversations): greetings.json DOES now reach the frame. 40/40 conversations open with a line, 31 distinct lines, 16 distinct greetings.json cells reached, and 4/4 NPCs greet different races differently.",
+    "MEASURED (live): race DOES now change the topic list. 4/4 NPCs offer different topics to a Dunmer than to a Saxhleel. The round-2 'byte-identical' finding is closed.",
+    "BUT \u2014 SECOND-ORDER DEFECT the consumer exposed: a Saxhleel (the native race) is offered ZERO topics by 3 of the 4 Helstrom NPCs. 'race changes topics' passes while the native race can talk to nobody. This is exactly the W1-09 'moved the defect somewhere else' failure mode and must be closed before the consumer counts.",
+    "ROOT CAUSE, measured across all 15 NPC records and all 306 topic ids: (a) 13 distinct topic ids referenced by NPC records DO NOT EXIST in dialogue/topics/*.json at all \u2014 including the whole opening: jeeh-ei's the-hold/your-hatch-name/what-they-take-off-you and tuleeh-ma's the-writ/tidewrack/my-work/the-list/lukiul; (b) 22 further topic ids exist but have NO info written for the referencing NPC's actor. 13 of 15 NPC records are affected.",
+    "ROOT CAUSE (b) detail: 0 of 306 topics has a single actorless (generic) info \u2014 every info names an actor in `a`. So infoFor()'s `generic` fallback is dead code for actored NPCs. Separately, 5 of 15 NPC records have actor:null, and infoFor's `if (!generic && !actor) generic = info` hands an actorless NPC ANY actor's line \u2014 a net-mender can speak a fisher's line by accident. The rule is backwards in both directions.",
+    "Actor vocabulary mismatch measured: topic infos are dominated by sapcutter(97)/archivist(96)/rootkeeper(88)/legionary(84)/mudborn(68), while NPC records carry clerk(2)/merchant(2)/villager/outlaw/legionary/dres-factor/townsman/naga-elder and 5 nulls."
   ],
   "outputs_written": [
     "game/src/character/questionnaire.js (nearestProfession, expectedWeights, professionFloor; reachableClasses now reports named reachability too)",
@@ -43,8 +51,9 @@
     "game/data/dialogue/creation-questions.json (#scoring.nearest_profession* incl. the runtime floor)",
     "game/data/dialogue/topics/writ-house.json (on_nearest_named_class)",
     "game/data/progression/birthsigns.json (kaal-kaal detail re-pointed to S27)",
-    "tools/analysis/creation-audit.mjs (S27 assertions)"
+    "tools/analysis/creation-audit.mjs (S27 assertions)",
+    "tools/harness/chr-talk-probe.mjs (greetings + race-gated topic consumer probe, with disk perturbation and restore)"
   ],
-  "next_step": "greetings.json consumer + race-gated topic consumer, with perturbation evidence",
+  "next_step": "close the topic-coverage hole: give every NPC an actor, author the 13 dangling topics (the opening's own), make infoFor principled; then re-run chr-talk-probe and confirm Saxhleel is not mute",
   "notes_for_successor": ""
 }

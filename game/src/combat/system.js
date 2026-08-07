@@ -15,6 +15,34 @@ import { sweepAndResolve } from './resolve.js';
 import { staminaMaxFor } from './rules.js';
 import { bearingDeg, angleDelta, norm360 } from './geometry.js';
 
+/**
+ * `hitgeometry.json` §bodies.separation.driver_carry, the missing half of the formula it
+ * publishes: `push = min(overlap, max_speed/60 + max(0, driver_root_delta · contact_normal))`.
+ *
+ * How much of a DRIVING body's own root translation this frame is aimed along the contact
+ * normal — i.e. how far it is walking INTO the body it overlaps. Only the inward component
+ * counts; a driver moving away is already relieving the overlap and the cap handles that.
+ *
+ * The bearing must match `CombatBody.advance()` exactly or the carry is measured off the wrong
+ * axis: root motion travels along `rollDirDeg` for a roll, a backstep and a cast (all three
+ * latch their direction at frame 1) and along the actor's facing for everything else.
+ *
+ * NOTE: this function was referenced from three call sites and never defined — an unfinished
+ * edit banked at `6e359ab` after a container restart. Every fight in which one body drove its
+ * root into another threw `ReferenceError: advanceAlong is not defined` out of
+ * `CombatSystem.step`, which in the browser kills the frame loop. Found by
+ * `tools/harness/wpn-impact-live.mjs`, which cannot spawn a target at 1.2 m without it firing.
+ */
+function advanceAlong(body, nx, nz) {
+  const d = body.lastRootDelta || 0;
+  if (d === 0) return 0;
+  const m = body.move;
+  const kind = m && m.kind;
+  const bearing = (kind === 'roll' || kind === 'backstep' || kind === 'cast') ? body.rollDirDeg : body.yaw;
+  const rad = bearing * Math.PI / 180;
+  return Math.max(0, d * (Math.sin(rad) * nx + Math.cos(rad) * nz));
+}
+
 export class CombatSystem {
   /** @param {object} data all of game/data/combat/*.json keyed by basename, plus locomotion */
   constructor(data) {

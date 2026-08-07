@@ -130,6 +130,11 @@ The distribution is not uniform, and the shape is the finding:
 | `80-methods`, `87-audio` | 4 each |
 | `15-camera`, `22-character`, `23-stealth-crime` | 1 each |
 
+*The column sums to **74** and the distinct total is **67**: seven tools are named by items in more
+than one area (`dump-dialogue.mjs`, `dump-journal.mjs`, `session-run.mjs`, `isolation-check.mjs`,
+`log-lint.mjs`, `beat-extract.mjs`, `viewpoints.js`). Quote 67 for the corpus and 74 for the
+per-area burden; they are the same sweep counted two ways.*
+
 **Every quality instrument pointed at the opening is in that list** — `session-run.mjs`,
 `beat-diff.mjs`, `beat-extract.mjs`, `isolation-check.mjs`, `log-lint.mjs`, `journey-run.mjs`,
 `gamepad-shim.mjs`, `naive-driver.mjs`, `build-viability.mjs` — while the *correctness* instruments
@@ -143,8 +148,11 @@ good, is 30 of the 67.
 
 **E.1 — The sweep is wired into the gate.** Method 1 becomes a check in
 `node tools/corpus-index.mjs --check` (alongside `RI-MTH05` C6's ladder-anchor check), reported as
-`phantom tools : N/137`, so the debt cannot regrow silently. A sweep run once and never again is
-how 74 accumulated.
+`phantom tools : N`, so the debt cannot regrow silently. A sweep run once and never again is how 67
+accumulated. **The check is `warn` in wave 1 and `error` from wave 2**, deliberately: making it
+blocking on the pass that first counted it would fail the coherence gate for every agent in the
+tree and get the check deleted rather than the debt paid. The number being visible is the change;
+the number being blocking is wave 2's.
 
 **E.2 — A dimension blocked *only* by a phantom tool is `corpus_debt`, not a zero against the
 build.** This is the rule the corpus most needed and did not have, and its absence has cost three
@@ -188,9 +196,10 @@ area, one wave later.
 
 1. **Phantom-command sweep.** Extract every fenced command and every `tools/**` path from every
    `## Comparison method` section in the corpus. **Assert each resolves to a file on disk.**
-   Print the misses with the items that name them. *Run for the first time at wave 1: **74 of 137
-   phantom**. See §E for the result, the distribution and the two rules it forces. This step is
-   now a gate check in `tools/corpus-index.mjs --check` and may not go another wave unrun.*
+   Print the misses with the items that name them. *Run for the first time at wave 1: **67 of the
+   82 distinct tool paths named across all 144 items are phantom** — only 15 exist. See §E for the
+   result, the distribution and the two rules it forces. This step is now check **C8** in
+   `tools/corpus-index.mjs` and may not go another wave unrun.*
 2. **Exit-code contract.** For each resolved tool, run it with `--help`. **Assert exit 0 and a
    usage block.** A tool that cannot describe itself will not be run by a critic under time
    pressure.

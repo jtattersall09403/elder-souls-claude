@@ -138,6 +138,60 @@ function validate(file) {
         if (typeof r.native_score === 'number' && r.native_score === 0 && r.score_0_10 > 4) {
           E(`reference_items ${tag}: native_score is 0 and score_0_10 is ${r.score_0_10}. SCORING.md §1.2 step 1 makes the item's own band a CEILING — a native 0 is the "loses outright" band, ceiling 4 — and §1.2b requires the item's anchor row to carry a 0 rung so this is read off the item rather than guessed.`);
         }
+        // §1.2b, second half: READ the ceiling off the item instead of guessing it. The rule above
+        // is a generic backstop at 4; §1.2b's actual instruction is that an item whose aggregation
+        // can produce a native 0 must publish a 0 rung, and that the translation is then read from
+        // that row. Where the row exists and its first rung is `Ladder 0 / Native 0`, a native 0 is
+        // a ladder 0 and there is nothing left to interpret. Applied narrowly — only when
+        // native_score is exactly 0 AND the item publishes an explicit 0 rung — so it cannot
+        // misfire on an item whose anchor row starts at 4.
+        if (typeof r.native_score === 'number' && r.native_score === 0 && r.score_0_10 > 0 && r.path) {
+          try {
+            const md = readFileSync(join(ROOT, r.path), 'utf8').split('\n');
+            for (let i = 0; i < md.length - 1; i++) {
+              const head = md[i].trim();
+              if (!/^\|\s*Ladder\s*\|/i.test(head)) continue;
+              const nat = (md[i + 2] || '').trim();
+              if (!/^\|\s*Native\s*\|/i.test(nat)) continue;
+              const cells = (s) => s.split('|').slice(1, -1).map((c) => c.trim());
+              const L = cells(head).slice(1);
+              const N = cells(nat).slice(1);
+              if (L[0] !== '0') break;                       // no 0 rung published — backstop only
+              const first = parseFloat((N[0] || '').replace(/[^0-9.].*$/, ''));
+              if (first !== 0) break;                        // 0 rung is not anchored at native 0
+              E(`reference_items ${tag}: native_score is 0 and score_0_10 is ${r.score_0_10}, but ${r.id}'s own anchor row reads \`Ladder 0 = Native ${N[0]}\`. SCORING.md §1.2 step 1: the item's band is a ceiling and the anchor row is where it is read from (§1.2b). A native 0 on an item publishing a 0 rung is a ladder 0.`);
+              break;
+            }
+          } catch { /* unreadable item file is already an error above */ }
+        }
+      }
+      // SCORING.md §1.2c / BAR-CRITIQUE-W1-07-R1 §R5.3 — the aggregation rule has an instrument.
+      // Twenty-one items declare `Aggregation … min-over-axes` and describe it as "a property of
+      // this item, not of the critic", and nothing has ever checked that the reported native score
+      // is in fact the minimum. W1-07 round 2 recorded RI-PRG02 native 6 and RI-PRG03 native 5 while
+      // each carried an axis the same verdict marked `unmeasurable` — which SCORING §1.1 fixes at 0,
+      // fail-closed — so on a min rule both natives were 0. In the same verdict RI-CHR02 with the
+      // same shape was correctly recorded 0. The rule was applied three different ways in one file.
+      //
+      // WARN, not error, and the reason is honest rather than tactical: `checks[]` are METHODS and
+      // the min is taken over the item's Scoring AXES, and the two are not always one-to-one. A
+      // critic who has mapped them and can show the min is legitimately above 0 says so in prose.
+      // Tightens to `error` at wave 2 once items publish an axis id on each check.
+      if (typeof r.native_score === 'number' && r.native_score > 0 && r.path) {
+        try {
+          const md = readFileSync(join(ROOT, r.path), 'utf8');
+          const agg = md.match(/\*\*Aggregation[^*]*\*\*[:\s]*([^\n]*)/);
+          if (agg && /min-over-axes/.test(agg[1])) {
+            const zeroed = (r.checks || []).filter((c) => {
+              const res = String((c && (c.result || c.status)) || '').toLowerCase();
+              if (!['fail', 'unmeasurable'].includes(res)) return false;
+              return !/corpus_debt/i.test(JSON.stringify(c));      // debt is excluded from the min
+            });
+            if (zeroed.length) {
+              W(`reference_items ${tag}: ${r.id} aggregates min-over-axes and native_score is ${r.native_score}, but ${zeroed.length} check(s) are fail/unmeasurable (${zeroed.map((c) => c.id).join(', ')}). SCORING.md §1.1 fixes an unmeasurable axis at 0 fail-closed, so the min is 0 unless the axis is \`corpus_debt\` (RI-MTH06 §E.2) or the check does not map 1:1 to an axis — in which case say which, in prose.`);
+            }
+          }
+        } catch { /* unreadable item file is already an error above */ }
       }
       if (!Array.isArray(r.evidence) || r.evidence.length === 0) E(`reference_items ${tag}: evidence[] required`);
       checkEvidence(r.evidence, `reference_items ${tag}`);

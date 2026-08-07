@@ -13,8 +13,16 @@
     "(pre-restart) edits to corpus/88-journeys/AMENDMENT-PROPOSAL-JRN01-01.md"
   ],
   "findings": [
-    "RESUME: predecessor (me) died before writing the verdict. Amendments are on disk and committed. RI-JRN09 appears to already exist (298 lines added at 6e359ab) - likely the answer to referral 3."
+    "RESUME: predecessor (me) died before writing the verdict. Amendments are on disk and committed. RI-JRN09 exists (298 lines at 6e359ab) - it is the answer to referrals 3 and 4.",
+    "C8 VERIFIED WORKING. `node tools/corpus-index.mjs` reports `phantom tools: 67`, 0 errors, 67 warns. Independently recomputed: 144 items all carry a `## Comparison method`; 82 distinct tool paths named; 15 exist; 67 phantom. Area distribution reproduces RI-MTH06 SE's table EXACTLY (95-experience 30, 86-ui 10, 40-dialogue 9, 85-platform 8, 88-journeys 6, 80-methods 4, 87-audio 4, camera/character/stealth 1 each).",
+    "FIXED my own stale figure: RI-MTH06 method 1 and the C8 code comment said '74 of 137'. 74 is the SUM OF THE PER-AREA COLUMN (7 tools are named in >1 area); the distinct count is 67 and the denominator is 82 named, not 137 items. Corrected in both places and the double-count explained in SE.",
+    "ENFORCEMENT VERIFIED REAL, not claimed: verdict-validate.mjs lines 128-141 do carry the hard-fail cap and native-0 ceiling; corpus-index C6 does accept a widened Ladder row. No false-enforcement claim in SCORING S1.2b.",
+    "REGRESSION PROOF, MEASURED: `node tools/verdict-validate.mjs --all` now FAILS W1-07-r2 (RI-CHR01 hard-fail cap: scored 4 with 2 hard fails) and W1-10 (RI-WPN06 scored 3 with a hard fail). The amendments bite on the historical record; they do not pass the build.",
+    "GAP CLOSED in the instrument: S1.2b says the native->ladder ceiling is READ OFF the item's anchor row, but verdict-validate only enforced a generic ceiling of 4. Added a narrow check that reads the item's own `| Ladder | 0 |` row. It now fires on W1-07 r1 (5 items) and r2 (3 items) and on NO other verdict in the tree.",
+    "DECOMPOSITION MEASURED (alias-resolved, 226 aliases): all six scored W1-07 items do judge a declared path. But TWO items judge a declared path and were never scored - RI-QST03 and RI-DLG04, both on `progression.skill.usegrowth`. And RI-JRN01 judges THREE paths while W1-07 declares one.",
+    "DECOMPOSITION HEADLINE NUMBER: subsystems.json defines 38 journey.* / input.* / experience.* paths. Across all wave-1 verdicts exactly ONE is declared by any piece (`journey.chargen.diegesis`). 37 of 38 are owned by nobody, including both of RI-JRN09's new paths and both of RI-EXP01's.",
+    "CONSUMPTION now present in 15 items across the scope (JRN01-09, CHR01-03, PRG02/03, EXP01). It was 0 of 14 before this pass - the same stalled correction the combat bar critic found at 0 of 18."
   ],
-  "next_step": "verify the phantom-tool detector (C8) in the corpus gate; re-read each amended item; regression-test against round 2's build; write the verdict",
+  "next_step": "write BAR-CRITIQUE-W1-07-R1.md and .json",
   "notes_for_successor": "Do not redo amendments. The deliverable that is missing is only the verdict itself."
 }

@@ -45,12 +45,16 @@ import { NodeArena, loadCombatData, GAME_DATA } from '../lib/combat-node.mjs';
 const argv = process.argv.slice(2);
 const arg = (k, d) => { const i = argv.indexOf('--' + k); return i < 0 ? d : argv[i + 1]; };
 if (argv.includes('--help')) {
-  process.stdout.write(`cmb-reach.mjs — S26 minimum-reaching-distance sweep.
-  --probe <enemy|player|turtle|rootdz|all>   default all
+  process.stdout.write(`cmb-reach.mjs — S26 minimum-reaching-distance sweep (RI-CMB04 M8/M9).
+  --probe <enemy|player|turtle|rootdz|ablate|substep|radius|all>   default all
   --enemy <archetype>                        default champion_hist_marked
   --step <m>                                 default 0.05
   --max <m>                                  default 4.0
   --root-dz <m>                              rootdz probe: override every attack's root_dz_m
+  --ablate <none|body|rootdz|both>           M8.3 two-volume ablation, applied to a DEEP COPY
+  --substeps <n>                             M9, override hitgeometry.sweep.substeps on a copy
+  --verify                                   RI-MTH07 §D: re-run a sample through the BROWSER
+                                             (window.__HARNESS) and fail if node disagrees
   --out <path>                               write JSON here
 `);
   process.exit(0);
@@ -62,9 +66,61 @@ const STEP = Number(arg('step', 0.05));
 const MAXD = Number(arg('max', 4.0));
 const PLAYER_WEAPONS = String(arg('weapons', 'dagger,straight-sword,spear,greatsword,halberd,ultra-greatsword,axe')).split(',');
 
-const ACCEPT = { min_hit_distance_m: 0.35, turtle_damage_fraction: 0.40 };
+// RI-CMB04 M8 acceptance, verbatim from the item:
+//   M8.1  min_hit_distance_m <= 0.35 for every attack WITH THE BODY CORRIDOR ABLATED
+//   M8.2  the connecting set is a single unbroken run — HARD FAIL on an interior gap
+//   M8.3  ablating the corridor may not move min_hit_distance_m by more than 0.35 m;
+//         root_dz == 0 must take body-corridor hits to zero at every distance
+//   M8.4  a via:"body" hit's dmg must be STRICTLY LESS than the same attack's via:"weapon" dmg
+//   M8.5  the hit/push body radius and the world-collision radius differ by <= 0.05 m
+//   M9    the substeps=1 hit set must DIFFER from the shipped one on a non-empty set of pairs
+const ACCEPT = {
+  min_hit_distance_m: 0.35,
+  turtle_damage_fraction: 0.40,
+  ablation_delta_max_m: 0.35,
+  radius_delta_max_m: 0.05,
+};
 
-const data = loadCombatData();
+const BASE = loadCombatData();
+
+/**
+ * M8.3 — the two-volume ablation, done the way the item words it: *"a DEEP COPY of the loaded
+ * data with `§body_hazard` removed"*. Not a flag the resolver reads, not a monkey-patch on the
+ * live object — a copy, so nothing this probe does can leak into another probe in the same
+ * process, and so the ablated run exercises exactly the code path a build without the corridor
+ * would have. `Rig` reads `hitGeometry.body_hazard` in its constructor and sets `bodyCap = null`
+ * when it is absent, which is the whole of the corridor's existence.
+ */
+function variant({ ablate = 'none', substeps, rootDz } = {}) {
+  if (ablate === 'none' && substeps === undefined && rootDz === undefined) return BASE;
+  const d = JSON.parse(JSON.stringify(BASE));
+  if (ablate === 'body' || ablate === 'both') delete d.hitgeometry.body_hazard;
+  if (ablate === 'rootdz' || ablate === 'both') rootDz = 0;
+  if (substeps !== undefined) d.hitgeometry.sweep.substeps = substeps;
+  if (rootDz !== undefined) {
+    for (const id of Object.keys(d._enemies)) {
+      const st = d._enemies[id];
+      for (const k of Object.keys(st.attacks || {})) st.attacks[k].root_dz_m = rootDz;
+    }
+    // The player's own root motion lives in the moveset spine and in W1-10's clip registry, so
+    // zeroing only the enemy side would make "root_dz == 0" a claim about half the game.
+    for (const id of Object.keys(d.movesets || {})) {
+      for (const mv of Object.keys(d.movesets[id].moves || {})) d.movesets[id].moves[mv].root_dz_m = rootDz;
+    }
+    for (const id of Object.keys(d.weaponMovesets || {})) {
+      const doc = d.weaponMovesets[id];
+      for (const k of Object.keys(doc.moves || doc.slots || {})) {
+        const m = (doc.moves || doc.slots)[k];
+        if (m && typeof m === 'object') m.root_dz_m = rootDz;
+      }
+    }
+  }
+  return d;
+}
+
+const ABLATE = String(arg('ablate', 'none'));
+const SUBSTEPS = arg('substeps') === undefined ? undefined : Number(arg('substeps'));
+const data = variant({ ablate: ABLATE, substeps: SUBSTEPS });
 
 /** One fight: stationary player at `d` in front of a stationary enemy that runs `move`. */
 function enemySwing(d, move, rootDzOverride) {
@@ -78,13 +134,22 @@ function enemySwing(d, move, rootDzOverride) {
   const hp0 = P.hp;
   let via = null, minD = Infinity;
   const E = a.cs.bodyOf('E1');
+  // RI-CMB04 M8.4 — ATTRIBUTION. Every connecting distance records `(via, dmg, poise_damage)`,
+  // and for a corridor hit also what the same attack's BLADE would have charged, so the strict
+  // inequality is checked against a number from the same frame rather than from another run.
+  const evs = [];
   for (let i = 0; i < 200; i++) {
     a.step();
     const dd = Math.hypot(E.pos[0] - P.pos[0], E.pos[2] - P.pos[2]);
     if (dd < minD) minD = dd;
-    for (const e of a.drain()) if (e.kind === 'HIT' && e.dst === 'P') via = via || e.via;
+    for (const e of a.drain()) {
+      if (e.kind === 'HIT' && e.dst === 'P') {
+        via = via || e.via;
+        evs.push({ via: e.via, dmg: e.dmg, pd: e.pd, dmg_if_weapon: e.dmg_if_weapon, part: e.part, f: e.f });
+      }
+    }
   }
-  return { hit: P.hp < hp0, dmg: Math.round(hp0 - P.hp), via, closest_m: +minD.toFixed(3) };
+  return { hit: P.hp < hp0, dmg: Math.round(hp0 - P.hp), via, closest_m: +minD.toFixed(3), events: evs };
 }
 
 /** One fight: stationary enemy at `d`, the player swings R1 once from a standstill. */
@@ -97,11 +162,17 @@ function playerSwing(d, weapon) {
   const E = a.cs.bodyOf('E1');
   const hp0 = E.hp;
   let via = null;
+  const evs = [];
   for (let i = 0; i < 180; i++) {
     a.step();
-    for (const e of a.drain()) if (e.kind === 'HIT' && e.dst === 'E1') via = via || e.via;
+    for (const e of a.drain()) {
+      if (e.kind === 'HIT' && e.dst === 'E1') {
+        via = via || e.via;
+        evs.push({ via: e.via, dmg: e.dmg, pd: e.pd, dmg_if_weapon: e.dmg_if_weapon, part: e.part, f: e.f });
+      }
+    }
   }
-  return { hit: E.hp < hp0, dmg: Math.round(hp0 - E.hp), via };
+  return { hit: E.hp < hp0, dmg: Math.round(hp0 - E.hp), via, events: evs };
 }
 
 /** `root_dz_m` override, applied to a COPY of the loaded data — no data file is touched. */
@@ -113,6 +184,45 @@ function cloneWithRootDz(v) {
     for (const k of Object.keys(st.attacks || {})) st.attacks[k].root_dz_m = v;
   }
   return d;
+}
+
+/** Same fight as `enemySwing`, run against an arbitrary data variant (ablation / substeps). */
+function enemySwingWith(dv, d, move) {
+  const a = new NodeArena({ data: dv, loadout: { weapon: 'straight-sword' } });
+  a.player.pos[0] = 0; a.player.pos[2] = d; a.player.yaw = 180; a.player.evaluateRig(0);
+  a.spawn('E1', ENEMY, 0, 0, 0);
+  a.lockOn('E1');
+  a.script('E1', [{ f: 4, move }]);
+  a.queueInputs([{ f: 1, move: [0, 0] }]);
+  const P = a.cs.bodyOf('P');
+  const hp0 = P.hp;
+  let via = null; const evs = [];
+  for (let i = 0; i < 200; i++) {
+    a.step();
+    for (const e of a.drain()) {
+      if (e.kind === 'HIT' && e.dst === 'P') { via = via || e.via; evs.push({ via: e.via, dmg: e.dmg }); }
+    }
+  }
+  return { hit: P.hp < hp0, dmg: Math.round(hp0 - P.hp), via, events: evs };
+}
+
+/** Same for the player side. */
+function playerSwingWith(dv, d, weapon) {
+  const a = new NodeArena({ data: dv, loadout: { weapon } });
+  a.player.pos[0] = 0; a.player.pos[2] = 0; a.player.yaw = 0; a.player.evaluateRig(0);
+  a.spawn('E1', ENEMY, 0, d, 180);
+  a.lockOn('E1');
+  a.queueInputs([{ f: 1, move: [0, 0] }, { f: 4, press: ['light'] }, { f: 6, release: ['light'] }]);
+  const E = a.cs.bodyOf('E1');
+  const hp0 = E.hp;
+  let via = null; const evs = [];
+  for (let i = 0; i < 180; i++) {
+    a.step();
+    for (const e of a.drain()) {
+      if (e.kind === 'HIT' && e.dst === 'E1') { via = via || e.via; evs.push({ via: e.via, dmg: e.dmg }); }
+    }
+  }
+  return { hit: E.hp < hp0, dmg: Math.round(hp0 - E.hp), via, events: evs };
 }
 
 function sweep(runOne) {
@@ -128,15 +238,44 @@ function sweep(runOne) {
   // as `min > 0`; a hole in the middle of the band shows up here.
   const interior = row.filter((r) => min !== null && r.d > min && r.d < max && !r.hit).map((r) => r.d);
   const behind = row.filter((r) => min !== null && r.d < min).map((r) => r.d);
+  // M8.4 attribution roll-up. `body_ge_weapon` is the HARD FAIL set: every corridor event whose
+  // damage was not strictly below what the same attack's blade charged on the same frame.
+  const byVia = {};
+  const bodyGeWeapon = [];
+  for (const r of row) {
+    for (const e of (r.events || [])) {
+      const k = e.via || 'weapon';
+      const s = byVia[k] || (byVia[k] = { events: 0, dmg_min: Infinity, dmg_max: -Infinity, pd: new Set() });
+      s.events++;
+      if (e.dmg < s.dmg_min) s.dmg_min = e.dmg;
+      if (e.dmg > s.dmg_max) s.dmg_max = e.dmg;
+      if (e.pd !== undefined) s.pd.add(e.pd);
+      if (k === 'body' && e.dmg_if_weapon !== undefined && e.dmg >= e.dmg_if_weapon) {
+        bodyGeWeapon.push({ d: r.d, dmg: e.dmg, dmg_if_weapon: e.dmg_if_weapon });
+      }
+    }
+  }
+  for (const k of Object.keys(byVia)) {
+    byVia[k].pd = [...byVia[k].pd].sort((a, b) => a - b);
+    if (byVia[k].dmg_min === Infinity) { byVia[k].dmg_min = null; byVia[k].dmg_max = null; }
+  }
+  // The distances that connect ONLY through the corridor: the reach the weapon is not paying for.
+  const bodyOnly = row.filter((r) => r.hit && (r.events || []).length && (r.events || []).every((e) => e.via === 'body')).map((r) => r.d);
   return {
     min_hit_distance_m: min, max_hit_distance_m: max,
     contiguous: interior.length === 0,
     interior_gaps_m: interior,
     misses_inside_min_m: behind,
     via_at_min: min !== null ? (row.find((r) => r.d === min).via) : null,
+    attribution: byVia,
+    body_only_distances_m: bodyOnly,
+    body_damage_ge_weapon: bodyGeWeapon,
     row,
   };
 }
+
+/** The distance set that connects, as a canonical string — M9 compares these for equality. */
+function hitSetOf(s) { return s.row.filter((r) => r.hit).map((r) => r.d).join(','); }
 
 const R = { schema: 'es-combat-reach/1', ruling: 'ARBITRATION.md S26', enemy: ENEMY, step_m: STEP, max_m: MAXD, acceptance: ACCEPT, probes: {} };
 const want = (n) => WHICH === 'all' || WHICH.split(',').includes(n);
@@ -212,8 +351,176 @@ if (want('rootdz')) {
   }
 }
 
+if (want('ablate')) {
+  // ---- RI-CMB04 M8.3 — THE TWO-VOLUME ABLATION -------------------------------------------
+  // The check that caught round 3. Round 3's champion reached 0.05 m; delete `§body_hazard`
+  // from a copy of the loaded data and it returned to 1.2 / 1.6 / 1.1 / 1.2 m — round 2's
+  // numbers to the decimal, because the weapon volume had never been touched and a corridor
+  // had been laid over the hole. The item's threshold is 0.35 m of movement, and the weapon's
+  // own minimum must still be <= 0.35 m with the corridor gone.
+  const shipped = {}, noBody = {}, noRootDz = {};
+  const dvBody = variant({ ablate: 'body' });
+  const dvRoot = variant({ ablate: 'rootdz' });
+  R.probes.ablate = { enemy: {}, player: {} };
+  for (const move of Object.keys(data._enemies[ENEMY].attacks)) {
+    shipped[move] = sweep((d) => enemySwing(d, move));
+    noBody[move] = sweep((d) => enemySwingWith(dvBody, d, move));
+    noRootDz[move] = sweep((d) => enemySwingWith(dvRoot, d, move));
+    const a = shipped[move].min_hit_distance_m, b = noBody[move].min_hit_distance_m;
+    const bodyHitsAtZeroDz = noRootDz[move].row.reduce((n, r) => n + (r.events || []).filter((e) => e.via === 'body').length, 0);
+    R.probes.ablate.enemy[move] = {
+      shipped_min_m: a, ablated_body_min_m: b,
+      delta_m: (a === null || b === null) ? null : +(b - a).toFixed(3),
+      shipped_contiguous: shipped[move].contiguous, ablated_body_contiguous: noBody[move].contiguous,
+      ablated_body_interior_gaps_m: noBody[move].interior_gaps_m,
+      body_only_distances_m: shipped[move].body_only_distances_m,
+      root_dz_zero_body_hits: bodyHitsAtZeroDz,
+      root_dz_zero_min_m: noRootDz[move].min_hit_distance_m,
+      attribution: shipped[move].attribution,
+      body_damage_ge_weapon: shipped[move].body_damage_ge_weapon,
+    };
+  }
+  for (const w of PLAYER_WEAPONS) {
+    const s = sweep((d) => playerSwing(d, w));
+    const n = sweep((d) => playerSwingWith(dvBody, d, w));
+    const z = sweep((d) => playerSwingWith(dvRoot, d, w));
+    const bodyHitsAtZeroDz = z.row.reduce((k, r) => k + (r.events || []).filter((e) => e.via === 'body').length, 0);
+    R.probes.ablate.player[w] = {
+      shipped_min_m: s.min_hit_distance_m, ablated_body_min_m: n.min_hit_distance_m,
+      delta_m: (s.min_hit_distance_m === null || n.min_hit_distance_m === null) ? null
+        : +(n.min_hit_distance_m - s.min_hit_distance_m).toFixed(3),
+      shipped_contiguous: s.contiguous, ablated_body_contiguous: n.contiguous,
+      ablated_body_interior_gaps_m: n.interior_gaps_m,
+      body_only_distances_m: s.body_only_distances_m,
+      root_dz_zero_body_hits: bodyHitsAtZeroDz,
+      attribution: s.attribution,
+      body_damage_ge_weapon: s.body_damage_ge_weapon,
+    };
+  }
+}
+
+if (want('substep')) {
+  // ---- RI-CMB04 M9 — THE SUBSTEP ABLATION, AS A RESULT ------------------------------------
+  // M2 has always carried the clause; it has never been reported as a number. Round 3's hit set
+  // at `substeps = 1` was byte-identical to the shipped value across 71 distances, which is the
+  // M2 failure the item already defines — "sweeping is not actually implemented and the substep
+  // parameter is decorative". FAIL if the differing set is EMPTY.
+  R.probes.substep = { shipped: BASE.hitgeometry.sweep.substeps, compared: [1], changed: [], per_attack: {} };
+  const dv1 = variant({ substeps: 1 });
+  for (const move of Object.keys(data._enemies[ENEMY].attacks)) {
+    const s = sweep((d) => enemySwing(d, move));
+    const o = sweep((d) => enemySwingWith(dv1, d, move));
+    const diff = [];
+    for (let i = 0; i < s.row.length; i++) if (s.row[i].hit !== o.row[i].hit) diff.push({ d: s.row[i].d, shipped: s.row[i].hit, substeps1: o.row[i].hit });
+    R.probes.substep.per_attack['enemy/' + move] = { changed: diff.length, pairs: diff, identical: hitSetOf(s) === hitSetOf(o) };
+    for (const p of diff) R.probes.substep.changed.push({ attack: 'enemy/' + move, ...p });
+  }
+  for (const w of PLAYER_WEAPONS) {
+    const s = sweep((d) => playerSwing(d, w));
+    const o = sweep((d) => playerSwingWith(dv1, d, w));
+    const diff = [];
+    for (let i = 0; i < s.row.length; i++) if (s.row[i].hit !== o.row[i].hit) diff.push({ d: s.row[i].d, shipped: s.row[i].hit, substeps1: o.row[i].hit });
+    R.probes.substep.per_attack['player/' + w] = { changed: diff.length, pairs: diff, identical: hitSetOf(s) === hitSetOf(o) };
+    for (const p of diff) R.probes.substep.changed.push({ attack: 'player/' + w, ...p });
+  }
+}
+
+if (want('radius')) {
+  // ---- RI-CMB04 M8.5 — ONE BODY, ONE RADIUS ----------------------------------------------
+  // "a player who is 0.30 m wide to a sword and 0.55 m wide to a wall is two different
+  // characters." Read BOTH numbers out of the running code rather than out of the data files,
+  // because the defect this check exists for is a second copy that drifted.
+  const wc = await import('../../game/src/sim/world-collision.js');
+  const a = new NodeArena({ data, loadout: { weapon: 'straight-sword' } });
+  a.spawn('E1', ENEMY, 0, 2, 180);
+  const P = a.cs.bodyOf('P'), E = a.cs.bodyOf('E1');
+  const rows = [
+    { actor: 'player', hit_push_radius_m: P.bodyRadius, world_collision_radius_m: wc.PLAYER_RADIUS_M },
+    { actor: ENEMY, hit_push_radius_m: E.bodyRadius, world_collision_radius_m: wc.worldCollisionRadiusOf ? wc.worldCollisionRadiusOf(E) : null },
+  ];
+  for (const r of rows) {
+    r.delta_m = (r.world_collision_radius_m === null) ? null : +Math.abs(r.hit_push_radius_m - r.world_collision_radius_m).toFixed(3);
+  }
+  R.probes.radius = { rows, threshold_m: ACCEPT.radius_delta_max_m };
+}
+
+if (argv.includes('--verify')) {
+  // ---- RI-MTH07 §D — A PARTIAL-WORLD HARNESS MUST SHIP A WORKING `VERIFY` -----------------
+  //
+  // `tools/lib/combat-node.mjs` runs `game/src/combat/*.js` outside the engine. Its own header
+  // and this file's header BOTH asserted that "`cmb-reach.mjs --verify` runs a sample of rows
+  // through both and fails if they differ". **The flag did not exist.** `arg()` never read it,
+  // no browser was ever launched, and passing it changed nothing — which the round-3 critic
+  // found and which is exactly the shape RI-MTH07 §D was amended to forbid: a partial-world
+  // harness whose cross-check is a sentence.
+  //
+  // It exists now. A sample of (attack, distance) rows is re-run through `window.__HARNESS` in
+  // headless Chromium — the shipping engine, whose fixed step ALSO runs stealth perception and
+  // therefore sets AGGRO, which is the documented reason node and browser diverge on long
+  // fights. These rows are short single-swing fights, well inside the regime where the two are
+  // expected to agree, and any disagreement is a defect in `combat-node.mjs`: the browser wins.
+  const { launchGame, requireMethods } = await import('../lib/browser.mjs');
+  const handle = await launchGame({ width: 320, height: 240 });
+  // AGENT-PROTOCOL: rendering off BEFORE any stepping loop. 600 bare frames cost 71 ms; the
+  // same 600 driven one at a time with the renderer live never returns.
+  await handle.hOpt('setRenderRate', 0);
+  await requireMethods(handle, ['setSeed', 'loadState', 'stepFrames', 'queueInputs',
+    'getCombatState', 'queueEnemyScript', 'teleport', 'spawn', 'despawn', 'lockOn']);
+
+  const moves = Object.keys(data._enemies[ENEMY].attacks);
+  // A sample that spans the interesting band: inside the body, at the separation boundary, at
+  // the old dead ring, and out past the declared reach.
+  const dists = [0.05, 0.35, 0.8, 1.2, 2.0, 3.0];
+  const cases = [];
+  for (const m of moves) for (const d of dists) cases.push({ move: m, d });
+
+  const browser = await handle.page.evaluate((cfg) => {
+    const H = window.__HARNESS;
+    const cs = () => H.getCombatState();
+    const out = [];
+    for (const c of cfg.cases) {
+      H.setSeed(0); H.loadState('arena_champion');
+      try { H.despawn('E1'); } catch (e) { /* already gone */ }
+      H.spawn(cfg.enemy, 0, 0, { as: 'E1', yaw: 0 });
+      H.lockOn('E1');
+      H.teleport(0, c.d, { yaw: 180 });
+      H.queueEnemyScript('E1', [{ f: 4, move: c.move }]);
+      H.queueInputs([{ f: 0, move: [0, 0] }]);
+      const hp0 = cs().player.hp;
+      for (let k = 0; k < 200; k++) H.stepFrames(1);
+      const hp1 = cs().player.hp;
+      out.push({ move: c.move, d: c.d, hit: hp1 < hp0, dmg: Math.round(hp0 - hp1) });
+    }
+    return out;
+  }, { cases, enemy: ENEMY });
+  await handle.close();
+
+  const rows = [];
+  for (const b of browser) {
+    const n = enemySwing(b.d, b.move);
+    rows.push({
+      case: `${b.move} @ ${b.d} m`,
+      node: `${n.hit ? 'hit' : 'miss'} ${n.dmg}`,
+      browser: `${b.hit ? 'hit' : 'miss'} ${b.dmg}`,
+      agree: n.hit === b.hit,
+      damage_agree: n.dmg === b.dmg,
+    });
+  }
+  R.verify = {
+    _source: 'RI-MTH07 §D — a partial-world harness must ship a working VERIFY',
+    rows,
+    disagreements: rows.filter((r) => !r.agree).length,
+    damage_disagreements: rows.filter((r) => !r.damage_agree).length,
+  };
+}
+
 // ---- verdict --------------------------------------------------------------------------------
 const fails = [];
+if (R.verify) {
+  for (const v of R.verify.rows) {
+    if (!v.agree) fails.push(`VERIFY ${v.case}: node says ${v.node}, the browser says ${v.browser} — combat-node.mjs is not the game`);
+  }
+}
 for (const side of ['enemy', 'player']) {
   const p = R.probes[side]; if (!p) continue;
   for (const k of Object.keys(p)) {
@@ -228,6 +535,31 @@ if (R.probes.turtle) {
     if (t.damage_fraction < ACCEPT.turtle_damage_fraction) {
       fails.push(`turtle @ ${t.stand_distance_m} m: took ${t.damage_fraction} of max HP < ${ACCEPT.turtle_damage_fraction}`);
     }
+  }
+}
+if (R.probes.ablate) {
+  for (const side of ['enemy', 'player']) {
+    for (const k of Object.keys(R.probes.ablate[side])) {
+      const v = R.probes.ablate[side][k];
+      const tag = `M8.3 ${side}/${k}`;
+      if (v.ablated_body_min_m === null) { fails.push(`${tag}: with §body_hazard ablated the attack never connects at any distance — the corridor IS the reach`); continue; }
+      if (v.ablated_body_min_m > ACCEPT.min_hit_distance_m) fails.push(`${tag}: weapon-only min reach ${v.ablated_body_min_m} m > ${ACCEPT.min_hit_distance_m} m`);
+      if (v.delta_m !== null && Math.abs(v.delta_m) > ACCEPT.ablation_delta_max_m) fails.push(`${tag}: ablating the corridor moved min reach by ${v.delta_m} m > ${ACCEPT.ablation_delta_max_m} m — that difference IS the hole the corridor covers`);
+      if (!v.ablated_body_contiguous) fails.push(`${tag}: weapon-only band has interior gaps at ${v.ablated_body_interior_gaps_m.join(', ')} m`);
+      if (v.root_dz_zero_body_hits > 0) fails.push(`M8.3 ${side}/${k}: root_dz == 0 still produced ${v.root_dz_zero_body_hits} body-corridor hits — the corridor is a proximity check, AR-1 fires`);
+      if (v.body_damage_ge_weapon.length) fails.push(`M8.4 ${side}/${k}: ${v.body_damage_ge_weapon.length} corridor hits paid >= the blade (${JSON.stringify(v.body_damage_ge_weapon[0])})`);
+    }
+  }
+}
+if (R.probes.substep) {
+  if (!R.probes.substep.changed.length) {
+    fails.push('M9: the hit set at substeps = 1 is identical to the shipped value on every (attack, distance) pair — sweeping is not actually implemented and the substep parameter is decorative');
+  }
+}
+if (R.probes.radius) {
+  for (const r of R.probes.radius.rows) {
+    if (r.delta_m === null) { fails.push(`M8.5 ${r.actor}: world-collision radius not reportable`); continue; }
+    if (r.delta_m > ACCEPT.radius_delta_max_m) fails.push(`M8.5 ${r.actor}: hit/push radius ${r.hit_push_radius_m} m vs world-collision ${r.world_collision_radius_m} m — differ by ${r.delta_m} m > ${ACCEPT.radius_delta_max_m} m`);
   }
 }
 R.acceptance_failures = fails;
@@ -264,6 +596,49 @@ if (R.probes.rootdz) {
   for (const k of Object.keys(R.probes.rootdz)) {
     const row = R.probes.rootdz[k];
     lines.push(`    ${k.padEnd(16)} ` + Object.keys(row).map((m) => `${m}=${row[m].min_hit_distance_m}`).join('  '));
+  }
+}
+if (R.probes.ablate) {
+  lines.push('\n  M8.3 TWO-VOLUME ABLATION — delete §body_hazard from a DEEP COPY of the loaded data');
+  lines.push('    attack                   shipped   weapon-only   delta   contig   body-only distances   root_dz=0 body hits');
+  for (const side of ['enemy', 'player']) {
+    for (const k of Object.keys(R.probes.ablate[side])) {
+      const v = R.probes.ablate[side][k];
+      lines.push(`    ${(side + '/' + k).padEnd(24)} ${String(v.shipped_min_m).padStart(5)}   ${String(v.ablated_body_min_m).padStart(9)}   ${String(v.delta_m).padStart(6)}   ${v.ablated_body_contiguous ? 'yes' : 'NO '}      ${String(v.body_only_distances_m.length).padStart(4)}                  ${v.root_dz_zero_body_hits}`);
+    }
+  }
+  lines.push('\n  M8.4 ATTRIBUTION — what each route charged');
+  lines.push('    attack                   via       events   dmg min..max   poise dmg');
+  for (const side of ['enemy', 'player']) {
+    for (const k of Object.keys(R.probes.ablate[side])) {
+      const at = R.probes.ablate[side][k].attribution;
+      for (const via of Object.keys(at)) {
+        const s = at[via];
+        lines.push(`    ${(side + '/' + k).padEnd(24)} ${via.padEnd(9)} ${String(s.events).padStart(6)}   ${String(s.dmg_min).padStart(5)}..${String(s.dmg_max).padEnd(5)}    ${s.pd.join('/')}`);
+      }
+    }
+  }
+}
+if (R.probes.substep) {
+  lines.push(`\n  M9 SUBSTEP ABLATION — shipped ${R.probes.substep.shipped} vs 1`);
+  lines.push(`    (attack, distance) pairs whose outcome CHANGED: ${R.probes.substep.changed.length}`);
+  for (const k of Object.keys(R.probes.substep.per_attack)) {
+    const v = R.probes.substep.per_attack[k];
+    lines.push(`    ${k.padEnd(24)} changed ${String(v.changed).padStart(3)}   ${v.pairs.slice(0, 6).map((p) => p.d + (p.shipped ? '(lost)' : '(gained)')).join(' ')}`);
+  }
+}
+if (R.probes.radius) {
+  lines.push('\n  M8.5 ONE BODY, ONE RADIUS');
+  lines.push('    actor                  hit/push   world collision   delta');
+  for (const r of R.probes.radius.rows) {
+    lines.push(`    ${r.actor.padEnd(22)} ${String(r.hit_push_radius_m).padStart(6)}   ${String(r.world_collision_radius_m).padStart(15)}   ${r.delta_m}`);
+  }
+}
+if (R.verify) {
+  lines.push(`\n  --verify — RI-MTH07 §D, node arena vs the BROWSER (${R.verify.rows.length} rows)`);
+  lines.push('    attack / distance                node        browser     agree');
+  for (const v of R.verify.rows) {
+    lines.push(`    ${v.case.padEnd(30)} ${String(v.node).padEnd(11)} ${String(v.browser).padEnd(11)} ${v.agree ? 'yes' : 'NO'}`);
   }
 }
 lines.push('');

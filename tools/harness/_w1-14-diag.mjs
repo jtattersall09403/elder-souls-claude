@@ -1,0 +1,26 @@
+import { parseArgs } from '../lib/cli.mjs';
+import { launchGame } from '../lib/browser.mjs';
+const handle = await launchGame(parseArgs());
+const r = await handle.page.evaluate(async () => {
+  const H = window.__HARNESS; await H.ready();
+  H.setSeed(4242); H.loadState('arena_flat'); H.setRenderRate(0); H.resetMagicWorld();
+  const out = {};
+  const t = (n, f) => { try { out[n] = f(); } catch (e) { out[n] = 'THREW: ' + e.message; } };
+  t('traversal_keys', () => Object.keys(H.getTraversalReport()));
+  t('traversal_observed', () => { const x = H.getTraversalReport(); const o = {}; for (const k of Object.keys(x)) if (k !== 'declared') o[k] = JSON.stringify(x[k]).slice(0, 300); return o; });
+  t('worldStats_keys', () => Object.keys(H.getWorldStats()));
+  t('entities', () => H.listEntities().slice(0, 6));
+  t('inventory', () => H.getInventory());
+  t('sapTaint', () => H.getSapTaint());
+  t('mw_locks', () => H.getMagicWorld().locks);
+  t('mw_breakables', () => H.getMagicWorld().breakables);
+  t('mw_shrines', () => H.getMagicWorld().shrines);
+  t('mw_keys', () => H.getMagicWorld().keys);
+  t('quest_travel', () => H.getQuestState().travel);
+  t('quest_keys', () => Object.keys(H.getQuestState()));
+  t('consumerMap', () => { const m = H.getEffectConsumerMap(); return Array.isArray(m) ? m.slice(0, 3) : Object.keys(m).slice(0, 20); });
+  t('creation', () => { const c = H.getCreationData(); return { races: (c.races || []).map((x) => x.id), classes: (c.classes || []).map((x) => x.id) }; });
+  return out;
+});
+console.log(JSON.stringify(r, null, 1).slice(0, 7000));
+await handle.close();

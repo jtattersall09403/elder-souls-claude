@@ -386,6 +386,42 @@ const COVER = {
   'western-rootlands': { shape: 'stubble', h: 0.35, colour: '#7E9052', per100m2: 21, patch_m: 3 },
 };
 
+/**
+ * THE GROUND SKIN — the ordinary underfoot surface, at the scale a standing player reads it.
+ *
+ * `MICRO` above is landform at 11-46 m and lives in `field.heightAt()`. This is the other half,
+ * at 0.6-3.2 m, and it exists because the first half did not show up in a frame. Measured over
+ * the 39 day frames of round 4's own capture, Sobel edge density in the BOTTOM QUARTER of the
+ * image — the ground 2 to 8 m from the eye, which is most of every frame — carried a
+ * between-region to within-region ratio of 0.91. All thirteen near grounds were the same
+ * untextured plane, and stripping colour stripped the whole of the difference.
+ *
+ * `amp_m` is the PEAK rise of the surface above the graded ground; `len_m` its characteristic
+ * length; `bearing_deg` the direction of the three surfaces that have one (a storm beach, a tide
+ * comb and a ploughed field are all lineated, and none of them are lineated at random).
+ * `tone` scales the albedo response: crests drain pale, hollows hold water dark, an open joint
+ * is a shadow line whether or not the sun is in it.
+ *
+ * Read by `game/src/world/groundskin.js`, which explains at length why this layer is drawn and
+ * not collided (0.42 m of tussock at 1.15 m spacing is a 51-degree local gradient against a
+ * 40-degree walkable gate: in the collision surface it would fence the province).
+ */
+const SKIN = {
+  blackwood:           { kind: 'rootnet',    amp_m: 0.32, len_m: 2.60, tone: 0.95 },
+  'clay-moor':         { kind: 'polygon',    amp_m: 0.16, len_m: 1.70, tone: 1.00 },
+  'crimson-coast':     { kind: 'berm',       amp_m: 0.24, len_m: 1.40, tone: 0.85, bearing_deg: 118 },
+  'deep-marshes':      { kind: 'tussock',    amp_m: 0.42, len_m: 1.15, tone: 1.00 },
+  'eastern-rootlands': { kind: 'rillnet',    amp_m: 0.20, len_m: 2.90, tone: 0.85 },
+  hive:                { kind: 'hexcell',    amp_m: 0.22, len_m: 1.50, tone: 0.80 },
+  'marauders-coast':   { kind: 'sandripple', amp_m: 0.09, len_m: 0.80, tone: 0.75, bearing_deg: 24 },
+  'salt-hills':        { kind: 'crustpuff',  amp_m: 0.18, len_m: 1.30, tone: 0.80 },
+  'stone-forest':      { kind: 'slab',       amp_m: 0.26, len_m: 2.40, tone: 0.90 },
+  'stone-wastes':      { kind: 'crackfield', amp_m: 0.12, len_m: 3.20, tone: 0.70, bearing_deg: 36 },
+  thornmarsh:          { kind: 'hummock',    amp_m: 0.36, len_m: 2.00, tone: 0.85 },
+  'valus-ridge':       { kind: 'blockstep',  amp_m: 0.28, len_m: 0.95, tone: 0.95 },
+  'western-rootlands': { kind: 'furrow',     amp_m: 0.14, len_m: 0.62, tone: 0.80, bearing_deg: 0 },
+};
+
 /** Vertical structure: how ragged the skyline is, and what breaks it. */
 const VERTICAL = {
   blackwood:           { h_var: 0.30, lean_deg: 3,  emergent: { h_mult: 1.75, share: 0.06 } },
@@ -448,7 +484,7 @@ for (const [name, c] of Object.entries(corpusRegions.regions)) {
     ground: a.ground,
     fog: a.fog,
     sky: a.sky,
-    terrain: { ...a.terrain, micro: MICRO[id] },
+    terrain: { ...a.terrain, micro: MICRO[id], skin: SKIN[id] },
     props: {
       ...PROPS[id],
       canopy: { ...PROPS[id].canopy, ...VERTICAL[id] },

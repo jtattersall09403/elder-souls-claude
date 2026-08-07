@@ -1075,7 +1075,10 @@ export class Engine {
     const p = this._talkPlayer();
     const info = this.conversation.say(topicId, p);
     if (!info) return { refused: 'no_info', topic: topicId, npc: this.conversation.npc ? this.conversation.npc.eid : null };
-    const ev = this.bus.emit(this.sim.frame, 'dialogue_topic');
+    // `topic_select` is already in HARNESS.md §5's closed vocabulary (A-JRN7) and is exactly
+    // this event; an earlier draft invented `dialogue_topic`, which the bus refused. Reuse the
+    // vocabulary rather than extending it — an amendment is for what the list cannot say.
+    const ev = this.bus.emit(this.sim.frame, 'topic_select');
     ev.npc = this.conversation.npc.eid; ev.topic = topicId; ev.gated = info.gated;
     this._conversationSync();
     return this.conversation.state();

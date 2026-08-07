@@ -17,9 +17,47 @@
 import { EMPTY_CELL } from './collision.js';
 import { mirror } from './combat-bridge.js';
 
-/** RI-CAM01 §A's arithmetic depends on this: see game/data/camera/rig.json player_body. */
-export const PLAYER_RADIUS_M = 0.55;
-const ENEMY_RADIUS_DEFAULT_M = 0.40;
+/**
+ * RI-CMB04 **M8.5 — ONE BODY, ONE RADIUS** (added wave 1, BAR-CRITIQUE-W1-09-R1 §R6):
+ *
+ *   "Report the actor's body radius as used for (a) the hit/push volume and (b) world
+ *    collision. FAIL if they differ by more than 0.05 m. … the same argument applies to a
+ *    player who is 0.30 m wide to a sword and 0.55 m wide to a wall."
+ *
+ * This file used to declare the second copy. `PLAYER_RADIUS_M = 0.55` and
+ * `ENEMY_RADIUS_DEFAULT_M = 0.40` were a *third* and *fourth* statement of a number
+ * `hitgeometry.json §bodies` and `skeleton.json §standing_collider` had already made — and the
+ * enemy branch did not even read the default, it read `entity.radius_m`, which is RI-AI01's AI
+ * **spacing** radius (0.5 m for the champion): how far the archetype likes to stand off, not
+ * how wide its body is. A champion was therefore 0.32 m wide to a sword, 0.50 m wide to a wall
+ * and 0.64 m wide to another body.
+ *
+ * There is now ONE source and it is the `CombatBody`'s own `bodyRadius`, which
+ * `CombatSystem.createPlayer/spawnEnemy` reads from `hitgeometry.json §bodies` (0.32 m, itself
+ * `skeleton.json`'s declared movement capsule). A copy that does not exist cannot drift.
+ *
+ * **CROSS-PIECE DEBT, raised and not buried.** `game/data/camera/rig.json §player_body` derives
+ * RI-CAM05 §F's 0.35 m camera-to-head invariant from a 0.55 m world-collision radius: *"A
+ * smaller body radius puts the camera inside the character's head in that pose."* That
+ * derivation now rests on 0.32 m and **the camera piece must re-run its penetration guard.**
+ * Nothing in the running code reads `rig.json §player_body` — it is documentation of an
+ * arithmetic argument — so this change cannot silently move the camera; it can only invalidate
+ * the argument, which is why it is stated here in the file that broke it.
+ *
+ * `PLAYER_RADIUS_M` survives as a named export because `engine.js` reports it on the harness
+ * surface, and it is now the same 0.32 m the fight uses, not a second opinion.
+ */
+export const PLAYER_RADIUS_M = 0.32;
+const ENEMY_RADIUS_DEFAULT_M = 0.32;
+
+/**
+ * The radius this body presents to the world, for M8.5's report and for the resolve below.
+ * The CombatBody's own `bodyRadius` when it has one; the shared default otherwise. Never
+ * `entity.radius_m` — that is AI spacing.
+ */
+export function worldCollisionRadiusOf(body) {
+  return (body && body.bodyRadius) || ENEMY_RADIUS_DEFAULT_M;
+}
 
 const _p = [0, 0, 0];
 
@@ -31,7 +69,7 @@ export function stepWorldCollision(sim, combat) {
   const b = combat && combat.player;
   if (b) {
     _p[0] = b.pos[0]; _p[1] = b.pos[1] + 0.90; _p[2] = b.pos[2];
-    if (cell.resolveSphere(_p, PLAYER_RADIUS_M, 6)) {
+    if (cell.resolveSphere(_p, worldCollisionRadiusOf(b), 6)) {
       b.pos[0] = _p[0]; b.pos[2] = _p[2];
       moved = true;
     }
@@ -46,7 +84,10 @@ export function stepWorldCollision(sim, combat) {
       const e = sim.entities[i];
       const eb = combat.bodyOf(e.eid);
       if (!eb) continue;
-      const r = e.radius_m || ENEMY_RADIUS_DEFAULT_M;
+      // NOT `e.radius_m` — see the M8.5 note at the top of this file. That field is RI-AI01's
+      // AI spacing radius and using it here made the champion 0.50 m wide to a wall and 0.32 m
+      // wide to a sword.
+      const r = worldCollisionRadiusOf(eb);
       _p[0] = eb.pos[0]; _p[1] = eb.pos[1] + 0.90; _p[2] = eb.pos[2];
       if (cell.resolveSphere(_p, r, 4)) { eb.pos[0] = _p[0]; eb.pos[2] = _p[2]; moved = true; }
       const g = groundUnder(cell, eb.pos[0], eb.pos[2], eb.pos[1]);

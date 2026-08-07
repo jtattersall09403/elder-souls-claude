@@ -69,15 +69,20 @@ const swing = (args) => page.evaluate(async (a) => {
     if (o && o.v) for (const e of o.v) evs.push({ f: o.f, ...e });
     if (o && o.kind) evs.push(o);
   }
-  const imp = evs.find((e) => e.kind === 'IMPACT' || e.k === 'IMPACT');
-  const hit = evs.find((e) => e.kind === 'HIT' || e.k === 'HIT');
-  const def = evs.find((e) => e.kind === 'DEFLECT' || e.k === 'DEFLECT');
+  // The event vocabulary keys the kind on `type`, not `kind` (game/src/sim/events.js
+  // EventBus.emit sets `e.type`). Reading `.kind` returned an empty event set on every probe
+  // in this file — 96 fights with `kinds: []` and every grid cell null — which is the second
+  // probe bug this tool has had and the reason the first run looked like a dead model.
+  const K = (e) => e.type || e.kind || e.k;
+  const imp = evs.find((e) => K(e) === 'IMPACT');
+  const hit = evs.find((e) => K(e) === 'HIT');
+  const def = evs.find((e) => K(e) === 'DEFLECT');
   return {
     weapon: a.weapon, target: a.target, dist: a.dist,
     hp_before: before ? before.hp : null, hp_after: after ? after.hp : null,
     dmg: before && after ? +(before.hp - after.hp).toFixed(2) : null,
     impact: imp || null, hit: hit || null, deflect: !!def,
-    kinds: [...new Set(evs.map((e) => e.kind || e.k))].filter(Boolean),
+    kinds: [...new Set(evs.map(K))].filter(Boolean),
   };
 }, args);
 
@@ -118,7 +123,7 @@ for (const w of ['spr_drowned_harpoon', 'hlb_garrison_bill', 'axe_bog_cleaver'])
   const v = [];
   for (let d = 0.6; d <= 2.6001; d += 0.1) {
     const r = await swing({ weapon: w, target: 'mat_flesh', dist: +d.toFixed(2), frames: 220 });
-    v.push({ d: +d.toFixed(2), hit: !!r.impact });
+    v.push({ d: +d.toFixed(2), hit: !!r.impact || (r.dmg || 0) > 0 });
   }
   const hits = v.filter((x) => x.hit).map((x) => x.d);
   let gaps = [];

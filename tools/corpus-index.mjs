@@ -390,12 +390,12 @@ if (constants) {
 
 // C8 — the phantom-command sweep (RI-MTH06 method 1 / §E.1).
 // Added wave 1 by BAR-CRITIQUE-W1-07-R1. RI-MTH06 method 1 had existed since wave 0 and had
-// never been run; when it was, 74 of 137 tool paths named in `## Comparison method` sections
-// did not exist on disk, including every quality instrument pointed at the opening. A sweep run
-// once and never again is how 74 accumulated, so it lives in the gate now.
+// never been run; when it was, 67 of the 82 distinct tool paths named in `## Comparison method`
+// sections did not exist on disk — only 15 did — including every quality instrument pointed at
+// the opening. A sweep run once and never again is how 67 accumulated, so it lives in the gate now.
 //
 // Level is `warn` in wave 1 and becomes `error` at wave 2 (RI-MTH06 §E.1). It is deliberately
-// not blocking today: 74 pre-existing misses would fail the coherence gate for every agent in
+// not blocking today: 67 pre-existing misses would fail the coherence gate for every agent in
 // the tree on the pass that first counted them, which is a way to get the check deleted rather
 // than paid down. The number being visible is the change.
 const phantomTools = new Map(); // toolPath -> Set(item file)

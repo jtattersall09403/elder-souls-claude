@@ -19,6 +19,46 @@ const _min = [0, 0, 0], _max = [0, 0, 0];
 const _bmin = [0, 0, 0], _bmax = [0, 0, 0];
 
 /**
+ * S26's body corridor prices ITSELF — `hitgeometry.json` §body_hazard.damage, verbatim:
+ *
+ *   "a flat base plus a term in the attacker's own root speed, in hit points, with the weapon
+ *    appearing only as a CEILING"  →  min(base_hp + per_mps × speed, max_hp,
+ *                                        hard_cap_fraction_of_weapon × weapon_damage)
+ *
+ * ARBITRATION S26 as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 §R6), enforced by RI-CMB04 M8.4: a
+ * `via: "body"` hit's damage must be **strictly less** than the same attack's `via: "weapon"`
+ * damage. Round 3 shipped the corridor paying the blade's number — 96 damage whether the
+ * greatsword cut at 3.65 m or the champion's chest arrived at 0.05 m — and a reach you are paid
+ * the same for ignoring is not a reach.
+ *
+ * A motion value would have multiplied the WEAPON's attack rating, so a champion's shoulder
+ * would bruise harder than a caster's because of the sword in its hand; being run over is a
+ * property of mass and closing speed, not of cutlery. The final clamp is what makes M8.4's
+ * strict inequality a property of this function rather than of the tuning: no future edit to
+ * `per_mps` can turn a shove back into a sword.
+ *
+ * `speedMps` is `|root delta this frame| × 60` (`CombatBody.advance`) — the same scalar
+ * §body_hazard.not_a_distance_check gates the corridor's existence on, so a corridor that fires
+ * always has a closing speed and an attack that does not translate is never priced at all.
+ *
+ * NOTE: like `advanceAlong` in `system.js`, this function was referenced and never defined — the
+ * other half of the unfinished edit banked at `6e359ab` after a container restart. Any fight in
+ * which a lunging attacker's trunk corridor reached a target before its blade did threw
+ * `ReferenceError: bodyDamage is not defined` out of `CombatSystem.step`, which in the browser
+ * kills the frame loop. Both halves are restored together because either one alone still kills
+ * the same fight.
+ */
+function bodyDamage(A, dmgWeapon, C) {
+  const cfg = (C.hitgeometry.body_hazard && C.hitgeometry.body_hazard.damage) || {};
+  const base = cfg.base_hp === undefined ? 8 : cfg.base_hp;
+  const per = cfg.per_mps === undefined ? 4 : cfg.per_mps;
+  const max = cfg.max_hp === undefined ? 40 : cfg.max_hp;
+  const frac = cfg.hard_cap_fraction_of_weapon === undefined ? 0.5 : cfg.hard_cap_fraction_of_weapon;
+  const speed = Math.abs(A.speedMps || 0);
+  return Math.min(base + per * speed, max, frac * dmgWeapon);
+}
+
+/**
  * @param {CombatBody[]} bodies in stable id order
  * @param {object} C  {stamina, poise, hitgeometry}
  * @param {number} frame

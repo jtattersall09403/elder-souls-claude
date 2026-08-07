@@ -698,6 +698,28 @@ export class MagicSystem {
       p.target = best;
       p.acquireErrDeg = best ? round2(bestErr) : null;
       p.acquisitionConeDeg = cone;
+      // AP-M3'S FENCE IS THE JOURNEY, NOT THE LIFETIME. `tracking_cutoff` is a FRACTION, and
+      // wave 1 applied it to `lifetime_s` — the time the bolt would fly if it hit nothing at
+      // all. AP-M3's trace signature is `turn_rate_dps > 2 on any frame past 0.35 x travel_f`,
+      // and `travel_f` is the flight the projectile ACTUALLY had. Every projectile that hits
+      // something flies for less than its lifetime, so `0.35 x lifetime` sits PAST `0.35 x
+      // travel_f` and a bolt obeying its own declared cutoff still trips the anti-pattern.
+      // Measured, before this line existed: LIGHT at 30 m against a strafing target flew 149 f,
+      // fence 52.15 f, and was still steering at 9 deg/s on frame 53 — one violating frame,
+      // found only because the probe used a MOVING target. Against a stationary one the arc
+      // closes in 15 f and the defect is invisible.
+      // The cutoff is now the tighter of the two: the declared fraction of the lifetime, and
+      // the same fraction of the journey to the body it just acquired, floored. `CONTACT_M`
+      // is the allowance for the fact that contact happens at the hurtbox, not at the centre —
+      // without it the estimate is long by exactly the radius and the fence is missed by one
+      // frame again.
+      if (best) {
+        const CONTACT_M = p.r + 0.6;
+        const dist = Math.hypot(best.pos[0] - p.pos[0], best.pos[2] - p.pos[2]);
+        const journeyF = Math.max(1, ((dist - CONTACT_M) / p.speed) * 60);
+        p.journeyF = round2(journeyF);
+        p.cutoffF = Math.min(p.cutoffF, Math.floor(g.tracking_cutoff * journeyF));
+      }
     }
     this.projectiles.push(p);
     return p;
@@ -760,7 +782,7 @@ export class MagicSystem {
       // AP-M3 is a projectile still turning past its cutoff and it is an automatic fail.
       p.appliedTurnDps = 0;
       p.prevHeadingDeg = p.yaw;                     // AP-M3: the heading BEFORE this frame's turn
-      if (p.turnRate > 0 && p.travelF < p.cutoffF && p.target) {
+      if (p.turnRate > 0 && (this._cutoffDisabled || p.travelF < p.cutoffF) && p.target) {
         const want = bearing(p.target.pos[0] - p.pos[0], p.target.pos[2] - p.pos[2]);
         const cap = p.turnRate / 60;
         let d = ((want - p.yaw + 540) % 360) - 180;
@@ -1750,6 +1772,7 @@ export class MagicSystem {
         turn_rate_dps: round2(p.appliedTurnDps || 0),
         turn_rate_cap_dps: p.turnRate === undefined ? null : p.turnRate,
         travel_f: p.travelF, tracking_cutoff_f: p.cutoffF === undefined ? null : p.cutoffF,
+        journey_f: p.journeyF === undefined ? null : p.journeyF,
         tracking_live: p.cutoffF === undefined ? null : (p.travelF < p.cutoffF),
         acquisition_cone_deg: p.acquisitionConeDeg === undefined ? null : p.acquisitionConeDeg,
         hits: p.hits.slice(),

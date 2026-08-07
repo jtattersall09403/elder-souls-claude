@@ -69,7 +69,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-07 06:16Z</div>
+  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-07 06:28Z</div>
   <nav role="tablist">
     <button role="tab" id="t-blog" aria-selected="true" aria-controls="p-blog">Blog</button>
     <button role="tab" id="t-prog" aria-selected="false" aria-controls="p-prog">Build status</button>
@@ -232,11 +232,170 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
   <div class="card"><div class="n">27</div><div class="l">Verdicts filed</div></div>
   <div class="card"><div class="n bad">0/27</div><div class="l">Verdicts passing</div></div>
   <div class="card"><div class="n warn">13</div><div class="l">Open gaps</div></div>
-  <div class="card"><div class="n">109,929</div><div class="l">Game LOC</div></div>
+  <div class="card"><div class="n">110,711</div><div class="l">Game LOC</div></div>
   <div class="card"><div class="n">21</div><div class="l">Quests</div></div>
   <div class="card"><div class="n">1,035</div><div class="l">Dialogue words</div></div>
   <div class="card"><div class="n ok">0/0</div><div class="l">Bar gates met</div></div>
 </div>
+
+
+<h2>Critic scores by domain</h2>
+<style>
+.sc{--gate:#c8a253;--tgt:#7d9a5a;margin-bottom:26px}
+.sc-kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:18px}
+.sc-kpi .card .n{font-size:26px;color:var(--gold);font-weight:600;line-height:1.1}
+.sc-kpi .card .l{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;margin-top:6px}
+.sc-bar{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.sc-bar button{background:none;border:1px solid var(--line);color:var(--dim);font:inherit;font-size:11px;
+ letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:4px;cursor:pointer}
+.sc-bar button[aria-pressed=true]{color:var(--gold);border-color:var(--gold)}
+.sc-note{color:var(--dim);font-size:11px;line-height:1.6;max-width:70ch}
+.sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.sc-panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px 14px 8px}
+.sc-panel h4{margin:0;font-size:12px;color:var(--ink);font-weight:600;letter-spacing:0;text-transform:none}
+.sc-panel .now{font-size:22px;font-weight:600;line-height:1.15;margin-top:4px}
+.sc-panel .sub{font-size:10px;color:var(--dim);margin-bottom:6px}
+.sc-panel svg,.sc-big svg{display:block;width:100%;overflow:visible}
+.sc-big{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px 18px 10px}
+.sc-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:var(--dim)}
+.sc-legend span.k{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:baseline}
+.sc-tip{position:fixed;pointer-events:none;background:#0d0b09;border:1px solid var(--line);border-radius:5px;
+ padding:7px 10px;font-size:11px;color:var(--ink);opacity:0;transition:opacity .1s;z-index:50;line-height:1.5;max-width:250px}
+.sc-hide{display:none}
+table.sc-tbl td.d{color:var(--ink)}
+</style>
+<div class="sc" id="sc">
+  <div class="sc-kpi">
+    <div class="card"><div class="n">3.5</div><div class="l">Mean latest score</div></div>
+    <div class="card"><div class="n">0/7</div><div class="l">Domains at the wave-1 gate</div></div>
+    <div class="card"><div class="n">15</div><div class="l">Verdicts filed</div></div>
+    <div class="card"><div class="n">6.5</div><div class="l">Mean distance to 10</div></div>
+  </div>
+  <div class="sc-bar">
+    <button id="sc-b-small" aria-pressed="true">Per domain</button>
+    <button id="sc-b-over" aria-pressed="false">All together</button>
+    <button id="sc-b-tbl" aria-pressed="false">Table</button>
+    <span class="sc-note">Each point is one critic verdict. The gold line is the wave-1 pass mark of 7; the target is 10 everywhere. Scores can fall as well as rise — a later critic often measures something the earlier one could not.</span>
+  </div>
+  <div id="sc-small" class="sc-grid"></div>
+  <div id="sc-over" class="sc-big sc-hide"></div>
+  <div id="sc-tbl" class="sc-hide">
+    <table class="sc-tbl"><thead><tr><th>Domain</th><th>Piece</th><th>Round</th><th>When</th><th>Score</th><th>Result</th></tr></thead><tbody>
+    <tr><td class="d">Engine &amp; harness</td><td><code>W1-00</code></td><td>1</td><td>08-06 13:20Z</td><td>3</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Engine &amp; harness</td><td><code>W1-00</code></td><td>2</td><td>08-06 15:05Z</td><td>4.1</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">The world</td><td><code>W1-01</code></td><td>1</td><td>08-06 18:20Z</td><td>3.1</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Combat</td><td><code>W1-09</code></td><td>1</td><td>08-06 19:05Z</td><td>4</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Character &amp; opening</td><td><code>W1-07</code></td><td>1</td><td>08-06 20:55Z</td><td>1.5</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Weapons</td><td><code>W1-10</code></td><td>1</td><td>08-06 21:20Z</td><td>0</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Magic</td><td><code>W1-14</code></td><td>1</td><td>08-06 21:20Z</td><td>2.7</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Stealth &amp; crime</td><td><code>W1-15</code></td><td>1</td><td>08-06 21:20Z</td><td>2</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">The world</td><td><code>W1-01</code></td><td>2</td><td>08-06 21:35Z</td><td>3.5</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Combat</td><td><code>W1-09</code></td><td>2</td><td>08-06 21:35Z</td><td>4</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Combat</td><td><code>W1-09</code></td><td>3</td><td>08-06 22:55Z</td><td>4</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Character &amp; opening</td><td><code>W1-07</code></td><td>2</td><td>08-06 23:40Z</td><td>3.8</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Weapons</td><td><code>W1-10</code></td><td>2</td><td>08-07 00:05Z</td><td>2</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Magic</td><td><code>W1-14</code></td><td>2</td><td>08-07 00:05Z</td><td>4.4</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Stealth &amp; crime</td><td><code>W1-15</code></td><td>1</td><td>08-07 01:10Z</td><td>3</td><td class="bad">FAIL</td></tr>
+    </tbody></table>
+  </div>
+  <div class="sc-tip" id="sc-tip"></div>
+</div>
+<script>
+(function(){
+  var D=[{"name":"Character & opening","colour":"#3987e5","pts":[{"x":0.6408450704225352,"y":1.5,"round":1,"piece":"W1-07","status":"fail","when":"20:55Z","day":"08-06"},{"x":0.8732394366197183,"y":3.8,"round":2,"piece":"W1-07","status":"fail","when":"23:40Z","day":"08-06"}]},{"name":"Combat","colour":"#d95926","pts":[{"x":0.4859154929577465,"y":4,"round":1,"piece":"W1-09","status":"fail","when":"19:05Z","day":"08-06"},{"x":0.6971830985915493,"y":4,"round":2,"piece":"W1-09","status":"fail","when":"21:35Z","day":"08-06"},{"x":0.8098591549295775,"y":4,"round":3,"piece":"W1-09","status":"fail","when":"22:55Z","day":"08-06"}]},{"name":"Engine & harness","colour":"#199e70","pts":[{"x":0,"y":3,"round":1,"piece":"W1-00","status":"fail","when":"13:20Z","day":"08-06"},{"x":0.14788732394366197,"y":4.1,"round":2,"piece":"W1-00","status":"fail","when":"15:05Z","day":"08-06"}]},{"name":"Magic","colour":"#c98500","pts":[{"x":0.676056338028169,"y":2.7,"round":1,"piece":"W1-14","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.9084507042253521,"y":4.4,"round":2,"piece":"W1-14","status":"fail","when":"00:05Z","day":"08-07"}]},{"name":"Stealth & crime","colour":"#d55181","pts":[{"x":0.676056338028169,"y":2,"round":1,"piece":"W1-15","status":"fail","when":"21:20Z","day":"08-06"},{"x":1,"y":3,"round":1,"piece":"W1-15","status":"fail","when":"01:10Z","day":"08-07"}]},{"name":"The world","colour":"#008300","pts":[{"x":0.4225352112676056,"y":3.1,"round":1,"piece":"W1-01","status":"fail","when":"18:20Z","day":"08-06"},{"x":0.6971830985915493,"y":3.5,"round":2,"piece":"W1-01","status":"fail","when":"21:35Z","day":"08-06"}]},{"name":"Weapons","colour":"#9085e9","pts":[{"x":0.676056338028169,"y":0,"round":1,"piece":"W1-10","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.9084507042253521,"y":2,"round":2,"piece":"W1-10","status":"fail","when":"00:05Z","day":"08-07"}]}], GATE=7, TARGET=10;
+  var tip=document.getElementById('sc-tip');
+  var NS='http://www.w3.org/2000/svg';
+  function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e;}
+  // y is score 0..10 throughout — one axis, always, in every panel and in the overlay.
+  function scaleY(v,h,pad){return pad+(1-v/TARGET)*(h-pad*2);}
+  function scaleX(v,w,l,r){return l+v*(w-l-r);}
+
+  function showTip(e,html){tip.innerHTML=html;tip.style.opacity=1;
+    var x=e.clientX+14,y=e.clientY+14;
+    if(x+250>window.innerWidth)x=e.clientX-250;
+    tip.style.left=x+'px';tip.style.top=y+'px';}
+  function hideTip(){tip.style.opacity=0;}
+
+  function line(s,w,h,pad,l,r,colour,thin){
+    var g=document.createDocumentFragment();
+    // gate + target references, recessive
+    g.appendChild(el('line',{x1:l,x2:w-r,y1:scaleY(GATE,h,pad),y2:scaleY(GATE,h,pad),stroke:'#c8a253','stroke-width':1,'stroke-dasharray':'3 3','opacity':.5}));
+    g.appendChild(el('line',{x1:l,x2:w-r,y1:scaleY(TARGET,h,pad),y2:scaleY(TARGET,h,pad),stroke:'#7d9a5a','stroke-width':1,'opacity':.35}));
+    var pts=s.pts.map(function(p){return [scaleX(s.pts.length>1?p.x:.5,w,l,r),scaleY(p.y,h,pad)];});
+    if(pts.length>1){
+      var d=pts.map(function(p,i){return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1);}).join(' ');
+      g.appendChild(el('path',{d:d,fill:'none',stroke:colour,'stroke-width':thin?2:2.5,'stroke-linejoin':'round','stroke-linecap':'round'}));
+    }
+    s.pts.forEach(function(p,i){
+      var c=el('circle',{cx:pts[i][0],cy:pts[i][1],r:thin?4.5:5,fill:colour,stroke:'#1b1813','stroke-width':2});
+      c.style.cursor='pointer';
+      c.addEventListener('mousemove',function(e){showTip(e,'<b>'+s.name+'</b><br>'+p.piece+' round '+p.round+'<br>score <b>'+p.y+'</b> / 10<br><span style="color:#9a8f79">'+p.day+' '+p.when+'</span>');});
+      c.addEventListener('mouseleave',hideTip);
+      g.appendChild(c);
+    });
+    return g;
+  }
+
+  // ---- small multiples: one domain per panel, single series, identity from the heading ----
+  var host=document.getElementById('sc-small');
+  D.forEach(function(s){
+    var last=s.pts[s.pts.length-1].y, first=s.pts[0].y, dlt=+(last-first).toFixed(1);
+    var div=document.createElement('div');div.className='sc-panel';
+    var col=last>=GATE?'#7d9a5a':(last>=4?'#c8a253':'#b4553f');
+    div.innerHTML='<h4>'+s.name+'</h4><div class="now" style="color:'+col+'">'+last+
+      ' <span style="font-size:11px;color:#9a8f79">/ 10</span></div>'+
+      '<div class="sub">'+(dlt>0?'▲ +'+dlt:(dlt<0?'▼ '+dlt:'no change'))+' over '+s.pts.length+' round'+(s.pts.length>1?'s':'')+'</div>';
+    var w=230,h=76,pad=10,l=2,r=2;
+    var svg=el('svg',{viewBox:'0 0 '+w+' '+h,role:'img','aria-label':s.name+' latest score '+last+' out of 10'});
+    svg.appendChild(line(s,w,h,pad,l,r,col,true));
+    div.appendChild(svg);host.appendChild(div);
+  });
+
+  // ---- overlay: all domains, one axis, legend + direct labels (secondary encoding) ----
+  var big=document.getElementById('sc-over');
+  // R reserves room for the direct labels. The longest is "Character & opening 3.8"; at 11px
+  // that needs ~150px plus the swatch, so 200 keeps it inside the viewBox rather than clipped.
+  var W=980,H=340,PAD=26,L=34,R=200;
+  var svg=el('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':'Critic score by domain over time'});
+  for(var v=0;v<=TARGET;v+=2){
+    svg.appendChild(el('line',{x1:L,x2:W-R,y1:scaleY(v,H,PAD),y2:scaleY(v,H,PAD),stroke:'#332d24','stroke-width':1,opacity:v?.6:1}));
+    var t=el('text',{x:L-8,y:scaleY(v,H,PAD)+4,fill:'#9a8f79','font-size':11,'text-anchor':'end'});t.textContent=v;svg.appendChild(t);
+  }
+  D.forEach(function(s){ svg.appendChild(line(s,W,H,PAD,L,R,s.colour,false)); });
+  // direct labels at the right — required as secondary encoding, and easier to read than a legend hunt
+  var ends=D.map(function(s){return {n:s.name,c:s.colour,y:scaleY(s.pts[s.pts.length-1].y,H,PAD),v:s.pts[s.pts.length-1].y};})
+            .sort(function(a,b){return a.y-b.y;});
+  var minGap=15;
+  for(var i=1;i<ends.length;i++) if(ends[i].y-ends[i-1].y<minGap) ends[i].y=ends[i-1].y+minGap;
+  ends.forEach(function(e){
+    var tx=el('text',{x:W-R+12,y:e.y+4,fill:'#9a8f79','font-size':11});
+    tx.textContent=e.n+' '+e.v;
+    svg.appendChild(el('rect',{x:W-R+1,y:e.y-4,width:7,height:7,rx:2,fill:e.c}));
+    svg.appendChild(tx);
+  });
+  var xl=el('text',{x:L,y:H-4,fill:'#9a8f79','font-size':10});xl.textContent='08-06 13:20Z';svg.appendChild(xl);
+  var xr=el('text',{x:W-R,y:H-4,fill:'#9a8f79','font-size':10,'text-anchor':'end'});xr.textContent='08-07 01:10Z';svg.appendChild(xr);
+  big.appendChild(svg);
+  var lg=document.createElement('div');lg.className='sc-legend';
+  lg.innerHTML=D.map(function(s){return '<span><span class="k" style="background:'+s.colour+'"></span>'+s.name+'</span>';}).join('')+
+    '<span><span class="k" style="background:#c8a253"></span>wave-1 pass mark</span>'+
+    '<span><span class="k" style="background:#7d9a5a"></span>target</span>';
+  big.appendChild(lg);
+
+  // ---- view switch ----
+  var views=[['sc-b-small','sc-small'],['sc-b-over','sc-over'],['sc-b-tbl','sc-tbl']];
+  views.forEach(function(pair){
+    document.getElementById(pair[0]).addEventListener('click',function(){
+      views.forEach(function(p){
+        var on=p[0]===pair[0];
+        document.getElementById(p[0]).setAttribute('aria-pressed',on);
+        document.getElementById(p[1]).classList.toggle('sc-hide',!on);
+      });
+      hideTip();
+    });
+  });
+})();
+</script>
 
 
 <h2>The gate &mdash; is our bar good enough?</h2>
@@ -500,14 +659,14 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 
 <h2>Content built</h2>
 <table><tr><th>Metric</th><th>Count</th></tr>
-<tr><td>files</td><td>334</td></tr>
+<tr><td>files</td><td>335</td></tr>
 <tr><td>quests</td><td>21</td></tr>
 <tr><td>npcs</td><td>8</td></tr>
 <tr><td>topics</td><td>0</td></tr>
 <tr><td>books</td><td>0</td></tr>
 <tr><td>dialogueWords</td><td>1,035</td></tr>
 <tr><td>settlements</td><td>8</td></tr>
-<tr><td>source files</td><td>93</td></tr>
+<tr><td>source files</td><td>94</td></tr>
 </table>
 
 <h2>Latest captures</h2>

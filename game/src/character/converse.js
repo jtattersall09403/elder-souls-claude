@@ -84,6 +84,10 @@ export function buildTopicIndex(topicDocs) {
   for (const doc of topicDocs) {
     if (!doc || !Array.isArray(doc.topics)) continue;
     for (const t of doc.topics) {
+      // `topics/thorn.json` is a different (quest-link) schema whose rows key on `topic`, not
+      // `id`. Indexing those produced a single junk entry under the key `undefined`. Skip
+      // anything that is not a topic record rather than pretending it is one.
+      if (!t || typeof t.id !== 'string') continue;
       const cur = idx.get(t.id) || { id: t.id, infos: [] };
       for (const info of (t.infos || [])) cur.infos.push({ ...info, from: doc.group || null });
       idx.set(t.id, cur);
@@ -109,23 +113,63 @@ export function infoAllowed(info, { race, upbringing }) {
   return true;
 }
 
+/** `the-hatch-name-list` -> `the_hatch_name_list`, the key an NPC record writes a line under. */
+function lineKey(topicId) { return String(topicId).split('-').join('_'); }
+
 /**
  * The info this person would give on this topic, or null if there is nothing they are willing
- * or able to say. Actor preference: an info written for this person's actor role wins over a
- * generic one; among equals, the first written wins (no PRNG).
+ * or able to say.
+ *
+ * PRECEDENCE, most specific first — Morrowind's own order, and the reason it is this order is
+ * that each step down is a wider audience:
+ *
+ *   1. a line written on THIS PERSON'S record (`lines[the_topic_id]`). The opening NPCs each
+ *      carry several, and until this round every one of them was authored and unreachable:
+ *      `jeeh-ei.lines.the_hold`, `tuleeh-ma.lines.the_writ / lukiul / my_work / the_list`. The
+ *      topic ids were in their `topics` arrays, the prose was on their records, and no code
+ *      joined the two — the same "model with no reader" defect as the headline gap, one layer
+ *      down.
+ *   2. an info written for this person's ACTOR row (`a`).
+ *   3. an info written for nobody in particular (no `a`) — anyone may say it.
+ *
+ * What is deliberately NOT here: the previous rule handed an NPC with `actor: null` the FIRST
+ * allowed info of any actor whatsoever, so a net-mender could speak a Dres factor's line. That
+ * is not a fallback, it is a category error, and it also meant "give this person an actor" made
+ * them say strictly less. Every NPC record now carries an actor and the accident is gone.
+ *
+ * Player gates (`requires` / `forbids`) are checked at every level, so a person's own line is
+ * still refusable by race — specificity buys precedence, not an exemption.
  */
 export function infoFor(topicIndex, topicId, npc, player) {
+  const own = npc.lines ? npc.lines[lineKey(topicId)] : null;
+  if (own) return { topic: topicId, actor: npc.actor || null, text: own, gated: false, source: 'npc' };
   const t = topicIndex.get(topicId);
   if (!t) return null;
   const actor = npc.actor || null;
-  let generic = null;
+  let best = null, bestScore = -1;
   for (const info of t.infos) {
     if (!infoAllowed(info, player)) continue;
-    if (actor && info.a === actor) return { topic: topicId, actor: info.a, text: info.x, gated: !!(info.requires || info.forbids) };
-    if (!info.a && !generic) generic = info;
-    if (!generic && !actor) generic = info;
+    const matchesActor = actor && info.a === actor;
+    if (!matchesActor && info.a) continue;         // written for somebody else's mouth
+    // Specificity, high to low: an actor-matched info beats an actorless one, and among those
+    // a GATED info beats the ungated fallback.
+    //
+    // That last clause is not a nicety. `the-tides` carries three fisher infos — an ungated
+    // one, a saxhleel/naga one and a warmblood one — and because the ungated one is written
+    // first, first-match returned it to everybody and BOTH race variants were dead text. Eight
+    // topics were shadowed this way, `the-hist` and `slavery` among them: the two subjects on
+    // which the province's answer most depends on who is asking. The gates were being read and
+    // were still decorative. Specificity ordering is what makes an ungated info mean "when
+    // nothing more particular applies" rather than "always".
+    const score = (matchesActor ? 4 : 0) + (info.requires ? 2 : 0) + (info.forbids ? 1 : 0);
+    if (score > bestScore) { best = info; bestScore = score; }
   }
-  return generic ? { topic: topicId, actor: generic.a || null, text: generic.x, gated: !!(generic.requires || generic.forbids) } : null;
+  if (!best) return null;
+  return {
+    topic: topicId, actor: best.a || null, text: best.x,
+    gated: !!(best.requires || best.forbids),
+    source: best.a ? 'actor' : 'generic',
+  };
 }
 
 /** The topics this person will discuss with THIS player, in the order the record lists them. */

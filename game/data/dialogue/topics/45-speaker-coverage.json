@@ -1,0 +1,458 @@
+{
+  "schema": "elder-souls/topics@1",
+  "id": "speaker-coverage",
+  "group": "speaker-coverage",
+  "owner": "W1-07 — race and standing",
+  "source": "corpus/22-character/RI-CHR02-race-and-standing.md §4c/§5; ARBITRATION §3 (CONSUMPTION); the W1-07 round-2 verdict finding that an NPC's topic list is byte-identical for a Dunmer and a Saxhleel.",
+  "hand_authored": true,
+  "generated_by": null,
+  "note": "DO NOT REGENERATE. Every line here is hand-written. tools/dialogue/gen-*.mjs must not target this file.",
+  "why": [
+    "Round 3 wired the topic consumer up and then measured what it delivered, which is the check the previous rounds skipped. Two holes fell out and both made the win hollow.",
+    "(1) DANGLING: 13 topic ids sat in NPC `topics` arrays with no info written for them anywhere, so the person advertised a subject and had nothing to say on it. Six of those were the OPENING'S OWN and were already written as prose on the NPC records (`jeeh-ei.lines.the_hold`, `tuleeh-ma.lines.the_writ / lukiul / my_work / the_list`) with no code joining `topics[i]` to `lines[i]` — the headline gap's exact defect, one layer down. converse.js infoFor() now reads a person's own record first; this file covers what remained.",
+    "(2) MUTE NATIVES: measured live, a Saxhleel — the province's own race — was offered ZERO topics by three of the four people in Helstrom market, because every authored info on those topics carried `requires.race` naming the eight warmblood races. 'Race changes the topic list' passed while the native race could talk to nobody. That is the defect moving rather than closing.",
+    "The fix is not to delete the gates. It is that a gate must have TWO sides. Where round 2 wrote the warmblood half of a subject and stopped, this file writes the other half — and the other half is usually the better line, because the person is talking to someone who already knows, or refusing to talk at all. A Dres factor declining to discuss house business in front of an Argonian is the race system WORKING, and it is content; silence is not."
+  ],
+  "register_anchor": "RI-CHR02 §4c: the coast calls outsiders warmblood, foreign-raised Argonians lukiul, and Naga in the third person; Argonian self-description is collective.",
+  "topics": [
+    {
+      "id": "what-they-take-off-you",
+      "infos": [
+        {
+          "a": "villager",
+          "x": "Your name, if you let them. Not the writ one — they give you that. The other one. They write it in the ledger next to the one they made up and after a while you stop being able to tell which is which.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        },
+        {
+          "a": "villager",
+          "x": "Nothing you will miss, warmblood. They take a name off us and give us a number; off you they take a fee and give you a stamp. It is the same desk and it is not the same thing at all.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "tidewrack",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "Forty-one buildings, two of them mine, and a bar across the mouth that eats one hull a season. The Office calls it a port. The men who unload it call it a beach with opinions.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        },
+        {
+          "a": "clerk",
+          "x": "You will find it smaller than the map suggested. Everyone does. The map was drawn by a man in Ebonheart who has never smelled it.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "the-tides",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "Twice a day, and the ledger cares about the second one, because that is when the barges can leave and that is when I stop writing and start counting."
+        },
+        {
+          "a": "merchant",
+          "x": "The second one takes the shallows out from under the stalls. If you are still standing where you are standing in four hours you will be standing in it."
+        }
+      ]
+    },
+    {
+      "id": "writ-amendment",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "An amendment is a second line under the first, initialled, and it costs the same as the first because the ink and the hour cost the same. What it is not is an erasure. Nothing on a writ is ever taken off it; things are only ever added below."
+        }
+      ]
+    },
+    {
+      "id": "the-provincial-office",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "It is the Empire's hand with an Argonian glove on it. I am the glove. You will find the hand up the stair and it will not see you today.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        },
+        {
+          "a": "clerk",
+          "x": "Four rooms, nine clerks and a Tribune who signs what we put in front of him. Whatever you came here believing it was, it is four rooms.",
+          "requires": { "race": ["dunmer", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "the-market",
+      "infos": [
+        {
+          "a": "merchant",
+          "x": "Ours since before there was a name for it. You know the days. You know which stalls are lying. I will not insult you by explaining my own market to you.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        },
+        {
+          "a": "merchant",
+          "x": "Open from the first tide to the second. Do not haggle at the salt end; they are Dres money down there and they will smile at you the whole time they are doing it.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        },
+        {
+          "a": "fisher",
+          "x": "It is a market when the barges are in and it is four people and a dog when they are not. Today it is a market. Ask me tomorrow and I will give you a different answer and both will be true."
+        }
+      ]
+    },
+    {
+      "id": "the-draught",
+      "infos": [
+        {
+          "a": "merchant",
+          "x": "Root-water, boiled twice, and a measure of the grey sap. It will not do anything for you that sitting down would not, but it does it faster and you can carry it.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        },
+        {
+          "a": "merchant",
+          "x": "It closes a wound. It tastes like the bottom of a boat. Both of those are the sap and there is no version of it that is only the first thing.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "why-anyone-comes-here",
+      "infos": [
+        {
+          "a": "merchant",
+          "x": "Nobody comes here. We are already here. That is the whole difference between us and everyone else who asks me that question.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        },
+        {
+          "a": "merchant",
+          "x": "Salt, reed and the fact that the Empire cannot tax what it cannot find. Mostly the third one, and nobody says the third one out loud.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "the-surcharge",
+      "infos": [
+        {
+          "a": "merchant",
+          "x": "There is no surcharge on you. There is one on nearly everybody who asks me that, and the fact that you had to ask means you have not been away long enough to be charged it yet.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        },
+        {
+          "a": "merchant",
+          "x": "You noticed. Most do not, and the ones who do not are the ones I would rather sell to. It comes off if you are still buying here in a year.",
+          "requires": { "race": ["imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "boots",
+      "infos": [
+        {
+          "a": "merchant",
+          "x": "You do not wear them and you are right not to. I sell them to people who think the mud is a surface.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        }
+      ]
+    },
+    {
+      "id": "house-business",
+      "infos": [
+        {
+          "a": "dres-factor",
+          "x": "House business is House business. I will not discuss it with you and you would not thank me for it if I did. Ask me about the price of nets.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        },
+        {
+          "a": "dres-factor",
+          "x": "Salt out, coin in, and a ledger in Tear that balances to the gram. You are not Dres, so that is all of it you get.",
+          "requires": { "race": ["imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "the-factor-house",
+      "infos": [
+        {
+          "a": "dres-factor",
+          "x": "The building with the shutters closed at midday. You have walked past it every day of your life and you have never once been inside it, and that is the arrangement.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        },
+        {
+          "a": "dres-factor",
+          "x": "A counting room and a bed above it. It is not a temple and there is nothing in it worth the walk.",
+          "requires": { "race": ["imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "the-wine",
+      "infos": [
+        {
+          "a": "dres-factor",
+          "x": "Not for sale. Not to you, not to the Warden, not to the Tribune. It comes in six bottles a season and it leaves in six bottles a season and I am one of them.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        },
+        {
+          "a": "dres-factor",
+          "x": "Sujamma if you must, and you must not. It is a drink for people who intend to stop being careful, and out here careful is the only thing keeping you dry.",
+          "requires": { "race": ["imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "the-net-price",
+      "infos": [
+        {
+          "a": "dres-factor",
+          "x": "You mended it, so you know what it is worth, and what I pay is not what it is worth. We can both say that out loud and still do the trade.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        }
+      ]
+    },
+    {
+      "id": "citizenship",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "Twenty years in the Legion or a landholding worth two thousand. That is the whole list, and the second one is a joke out here, so it is the first one.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        },
+        {
+          "a": "legionary",
+          "x": "You have it. You were born with it and you have never once had to think about it, which is why you are asking me a question I get asked twice a week by people who cannot get it.",
+          "requires": { "race": ["imperial"] }
+        },
+        {
+          "a": "legionary",
+          "x": "Provincial, which is most of it, and not the part with the vote in it. Nobody out here has the part with the vote in it.",
+          "requires": { "race": ["dunmer", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "bridge-duty",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "Twelve hours on the span counting hulls. It is the best posting on the wall and everybody knows it, which is why I am on it and you are asking about it."
+        }
+      ]
+    },
+    {
+      "id": "home-leave",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "Once in three years, and the sailing takes four months of it each way. Most of us stop asking by the second refusal and start calling this home, which I suspect is the design."
+        }
+      ]
+    },
+    {
+      "id": "the-boards",
+      "infos": [
+        {
+          "a": "townsman",
+          "x": "Muster, tax and the drowned. Three boards, and it is the third one that has a crowd in front of it every morning."
+        }
+      ]
+    },
+    {
+      "id": "the-office",
+      "infos": [
+        {
+          "a": "townsman",
+          "x": "I sweep it. That is the whole of what I know about it and it is more than the men who work in it know about sweeping."
+        }
+      ]
+    },
+    {
+      "id": "what-the-warmbloods-ask",
+      "infos": [
+        {
+          "a": "townsman",
+          "x": "Where the inn is, whether the water is safe, and whether we mind. In that order, every time, and they never wait for the answer to the third one.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        },
+        {
+          "a": "townsman",
+          "x": "You will find out. You have asked me two of them already and there is one left.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "the-drowned-kin",
+      "infos": [
+        {
+          "a": "mudborn",
+          "x": "They are not gone. They are under, which is a different word, and the ones who say it wrong are the ones who never had anybody go under.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        },
+        {
+          "a": "mudborn",
+          "x": "Ours. Not a ghost story and not yours to collect. You may stand here and you may not write it down.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "the-quiet-grave",
+      "infos": [
+        {
+          "a": "mudborn",
+          "x": "No stone, no name, no mound. You put them in the water at the slack and the water does the rest, and in a year there is nowhere to go and be sad, which is the point of it."
+        }
+      ]
+    },
+    {
+      "id": "root-water",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "It is what runs under the Hist and it is not water. You may drink it and it will not kill you, which is the most anyone will promise a warmblood about anything in this province.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "what-the-sap-says",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "To you? Nothing. That is not an insult and it is not a secret being kept from you — there is simply nothing there for you to hear, the way there is nothing in a bell for a deaf man.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "hist-debt",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "Every one of us owes it and none of us was asked. You would call that unjust. We would call it being alive, and neither of us is going to move the other.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "the-hatch-name-list",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "There is a list and you are not on it and you will not see it. I tell you that plainly so you do not spend a month being clever about it.",
+          "requires": { "race": ["imperial"] }
+        }
+      ]
+    },
+    {
+      "id": "the-river-bands",
+      "infos": [
+        {
+          "a": "naga-elder",
+          "x": "Nine on this river. The Elder does not expect you to learn all nine. The Elder expects you to learn which one you are standing on, and you are standing on his.",
+          "requires": { "race": ["saxhleel"] }
+        },
+        {
+          "a": "naga-elder",
+          "x": "The Elder counts nine and the map counts none. Do not take that up with the map-maker; take it up with the man whose water you are in, which is the Elder.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "bank-law",
+      "infos": [
+        {
+          "a": "naga-elder",
+          "x": "The bank is the band's to the height of the flood, not to the height of the water today. Every quarrel on this river is somebody pretending not to know that.",
+          "requires": { "race": ["saxhleel"] }
+        },
+        {
+          "a": "naga-elder",
+          "x": "The Elder will say it once. Above the waterline is not the same as above the flood line, and it is the flood line that is his. Camp above it or pay him.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "the-boat-tax",
+      "infos": [
+        {
+          "a": "naga-elder",
+          "x": "A tenth of what is in the hull, and the Elder does not weigh it, because a band that weighs it is a band at war by the second season.",
+          "requires": { "race": ["saxhleel"] }
+        },
+        {
+          "a": "naga-elder",
+          "x": "A tenth. The Elder is aware the Empire calls this a toll and the Empire's word for it is not the Elder's problem.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "the-crossing-fee",
+      "infos": [
+        {
+          "a": "naga-elder",
+          "x": "Nothing, for you. You would have swum it. The fee is for the ones who would have drowned.",
+          "requires": { "race": ["saxhleel"] }
+        },
+        {
+          "a": "naga-elder",
+          "x": "Two drakes, and the Elder will point out that the alternative is free and has eaten four men this year.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "thorn",
+      "infos": [
+        {
+          "a": "outlaw",
+          "x": "You are in it. It is a hall with the roof half off and eleven people in it who could not stay anywhere else, and I am the one who says what it is called."
+        }
+      ]
+    },
+    {
+      "id": "the-rotted-hall",
+      "infos": [
+        {
+          "a": "outlaw",
+          "x": "It was somebody's before it was mine and there is a stone in the floor with their name on it that I have never had lifted. Bad luck, and also I cannot read it."
+        }
+      ]
+    },
+    {
+      "id": "my-kingdom",
+      "infos": [
+        {
+          "a": "outlaw",
+          "x": "Four rooms, a well that works, and every one of them owes me their life or their teeth. You may laugh. Everyone laughs and then everyone asks whether I am hiring.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        },
+        {
+          "a": "outlaw",
+          "x": "Smaller than the name. Every kingdom is, and the difference between me and a Duke is that I have said so out loud.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    },
+    {
+      "id": "the-marsh",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "It is not terrain. Terrain stays where the map put it. This moves twice a day and it has taken more of the cohort than anything with a weapon has.",
+          "requires": { "race": ["saxhleel", "naga"] }
+        },
+        {
+          "a": "legionary",
+          "x": "You will hate it, then you will respect it, then you will stop noticing it, and the third one is when it kills you. Try to stay on the second one.",
+          "requires": { "race": ["dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"] }
+        }
+      ]
+    }
+  ]
+}

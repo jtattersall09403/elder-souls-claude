@@ -390,6 +390,52 @@ export function installHarness(engine, bootPromise) {
 
     /** Pick up a world object. RI-JRN01 O6/M10's takeables. */
     takeProp(eid) { return engine.takeProp(eid); },
+    /**
+     * Put a takeable object in the world. RI-MAG06 §B judges `telekinesis` by "an object outside
+     * melee reach becomes takeable", and until this line there was NO WAY to put an object into a
+     * probe's arena at all — `sim.props` is populated only by `loadState`, and `arena_flat` ships
+     * none. So the one effect whose whole verb is *reach* was measured in a world with nothing to
+     * reach for, and read as moving nothing.
+     *
+     * This is an ARENA-CONSTRUCTION call of the same class as `spawn()` — it places a subject.
+     * RI-MAG06 §E / M8 audits arena calls that hand the caster a **gate** (a skill, a rank, a
+     * standing, a knowledge flag); a barrel on the floor is not a gate, and the effect still has
+     * to reach it on its own.
+     */
+    spawnProp(spec) { return engine.spawnProp(spec); },
+    clearProps() { return engine.clearProps(); },
+    /**
+     * The durable world-mutation register — `sim.world`, RI-JRN05 §B "World", the one
+     * `save/state.js` persists. This is the WORLD SIDE of the lock, breakable and item verbs:
+     * `open_lock` writes `doorsUnlocked`, `shatter` writes `shortcutsOpened`, taking a prop
+     * writes `itemsTaken`. Exposed because RI-MAG06 M7 forbids computing a signature from the
+     * magic module's own bookkeeping, and `getMagicWorld()` IS the magic module's own
+     * bookkeeping — a census that reads only that cannot tell a verb that changed the world from
+     * a verb that changed magic's private notes about the world.
+     */
+    getWorldRegisters() {
+      const w = engine.sim.world;
+      return {
+        containers_emptied: [...w.containersEmptied].sort(),
+        doors_unlocked: [...w.doorsUnlocked].sort(),
+        shortcuts_opened: [...w.shortcutsOpened].sort(),
+        items_taken: [...w.itemsTaken].sort(),
+        npcs_dead: [...w.npcsDead].sort(),
+        enemies_dead_until_rest: [...w.enemiesDeadUntilRest].sort(),
+        fog_gates_passed: [...w.fogGatesPassed].sort(),
+      };
+    },
+    /**
+     * Seed the Recall destination. A PRECONDITION, in the same class as `damagePlayer()` and
+     * `addAffliction()`: without a wound `restore_health` is unobservable for want of a wound
+     * rather than for want of a handler, and without a mark `recall` is unobservable for want of
+     * a destination. It is not a gate — §E/M8's audit is of skills, ranks, standings and
+     * knowledge flags, and `mark`'s own row still has to overwrite whatever this wrote.
+     */
+    setTravelMark(pos) {
+      engine.sim.quest.travel.mark = pos ? [Number(pos[0]), Number(pos[1] || 0), Number(pos[2])] : null;
+      return engine.sim.quest.travel.mark;
+    },
 
     /**
      * RI-PRG02 §3 and RI-CHR03 §2, read: the pools the attributes and the birthsign produce,
@@ -630,6 +676,12 @@ export function installHarness(engine, bootPromise) {
 
     /** S29 self-test: open the travel fence, so the refusal can be watched not happening. */
     __breakTravelFence() { engine.magic._fenceDisabled = true; return true; },
+    /**
+     * AP-M3's self-test. Removes the tracking cutoff so every projectile keeps steering for its
+     * whole life — the homing orb the anti-pattern names. A probe that cannot produce the
+     * failure it is looking for has not looked.
+     */
+    __breakTrackingCutoff() { engine.magic._cutoffDisabled = true; return true; },
 
     /** Locks, traps, breakables, item condition, keys, shrines, conjured walls, summons, markers. */
     getMagicWorld() { return engine.magic.worldCensus(); },
