@@ -2,7 +2,7 @@
   "task_id": "bar-critic-w1-07",
   "brief": "BAR CRITIC for the opening, character-creation and journey bars (W1-07 scope). Resumed after a container restart killed the first run mid-flight.",
   "started": "wave-3",
-  "state": "resuming",
+  "state": "complete",
   "outputs_expected": [
     "corpus/88-journeys/BAR-CRITIQUE-W1-07-R1.md",
     "corpus/88-journeys/BAR-CRITIQUE-W1-07-R1.json"
@@ -23,6 +23,6 @@
     "DECOMPOSITION HEADLINE NUMBER: subsystems.json defines 38 journey.* / input.* / experience.* paths. Across all wave-1 verdicts exactly ONE is declared by any piece (`journey.chargen.diegesis`). 37 of 38 are owned by nobody, including both of RI-JRN09's new paths and both of RI-EXP01's.",
     "CONSUMPTION now present in 15 items across the scope (JRN01-09, CHR01-03, PRG02/03, EXP01). It was 0 of 14 before this pass - the same stalled correction the combat bar critic found at 0 of 18."
   ],
-  "next_step": "write BAR-CRITIQUE-W1-07-R1.md and .json",
-  "notes_for_successor": "Do not redo amendments. The deliverable that is missing is only the verdict itself."
+  "next_step": "none - verdict delivered. NOT SATISFIED.",
+  "notes_for_successor": "Verdict is at corpus/88-journeys/BAR-CRITIQUE-W1-07-R1.{md,json}. Three of W1-07's six items were unpassable by construction (RI-JRN01 on journey-run.mjs, RI-CHR01 and RI-CHR03 on build-viability.mjs x min-over-axes) - gate 7.0 needed 42 of 60 and the ceiling was 30. All three fixed via corpus_debt. Two NEW findings beyond the referrals: (1) min-over-axes had no instrument at all and was applied three different ways inside one verdict - SCORING S1.2c + a validator warning that fires 7 times across 4 verdicts, 3 of them other people's; (2) S1.2b's ceiling was GUESSED at 4 by the validator instead of READ from the item's anchor row as its own text requires - closed. Referral 5 (greeting headroom) was REFUSED on the arithmetic - 3 of the 5 minimums are exact products the item computes, so 20% headroom only measures willingness to pad - and the axis was replaced with Volume/Distribution/Consumption anyway, which round 2 fails harder. Regression: round 2 re-reads at 1.3, down from 3.8; every amendment lowers it. RI-JRN09 is the new item and it is runnable TODAY by design. UNPAID: RI-EXP01 has never been run on any build, all five of its tools are phantom, and 37 of 38 journey/input/experience paths are owned by no piece."
 }

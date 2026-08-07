@@ -39,6 +39,7 @@ const DO_PERTURB = !args['no-perturb'];
 
 const GREETINGS = path.join(REPO_ROOT, 'game/data/dialogue/greetings.json');
 const RACEGATED = path.join(REPO_ROOT, 'game/data/dialogue/topics/40-race-gated.json');
+const COVERAGE = path.join(REPO_ROOT, 'game/data/dialogue/topics/45-speaker-coverage.json');
 
 const say = (s) => process.stdout.write(s + '\n');
 const out = {
@@ -61,7 +62,10 @@ async function sweep(h, races, states = STATES) {
     const here = await h.h('listNPCs');
     for (const n of here) if (!npcs.some((x) => x.eid === n.eid)) npcs.push({ ...n, state });
     for (const race of races) {
-      await h.h('setCharacter', { race, upbringing: 'interior' });
+      // `barge-hold` and `writ-house` are BEFORE the census, so those states carry no
+      // `character` block and a partial setCharacter has nothing to fall back on. Name a class
+      // so the patch composes; the race is the only field this probe varies.
+      await h.h('setCharacter', { race, upbringing: 'interior', class: 'reed-walker', birthsign: 'nu-ixtu' });
       for (const n of here) {
         const st = await h.h('talkTo', n.eid);
         const d = await h.h('npcDisposition', n.eid);
@@ -77,6 +81,44 @@ async function sweep(h, races, states = STATES) {
     }
   }
   return { npcs, rows };
+}
+
+/**
+ * Ask every person every topic they will discuss, as every race, and return one row per
+ * utterance. This is the measurement that matters once the mute-natives fix lands: the topic
+ * LIST largely converges (everyone can discuss the market) and the race system has to prove
+ * itself in the ANSWERS instead.
+ */
+async function askAll(h, races, npcs) {
+  const answers = [];
+  for (const state of STATES) {
+    await h.h('loadState', state);
+    const here = npcs.filter((n) => n.state === state);
+    for (const race of races) {
+      await h.h('setCharacter', { race, upbringing: 'interior', class: 'reed-walker', birthsign: 'nu-ixtu' });
+      for (const n of here) {
+        const st = await h.h('talkTo', n.eid);
+        for (const t of st.topics) {
+          const r = await h.h('conversationSay', t.id);
+          answers.push({ race, npc: n.eid, topic: t.id, text: r.said || null });
+        }
+        await h.h('conversationClose');
+      }
+    }
+  }
+  return answers;
+}
+
+/** (npc,topic) pairs whose answer text is not the same for every race. */
+function answerVariation(answers) {
+  const byPair = new Map();
+  for (const a of answers) {
+    const k = `${a.npc} ${a.topic}`;
+    const s = byPair.get(k) || new Set(); s.add(a.text); byPair.set(k, s);
+  }
+  let varying = 0;
+  for (const [, s] of byPair) if (s.size > 1) varying++;
+  return { byPair, varying, pairs: byPair.size };
 }
 
 const backups = new Map();
@@ -155,30 +197,10 @@ try {
   // poorer thing than one that changes what the person says. So: ask every person every topic
   // as every race and count distinct answers.
   say('\n== 2b. does race change the ANSWER, not just the list? ==');
-  const answers = [];
-  for (const state of STATES) {
-    await h.h('loadState', state);
-    const here = base.npcs.filter((n) => n.state === state);
-    for (const race of out.races) {
-      await h.h('setCharacter', { race, upbringing: 'interior' });
-      for (const n of here) {
-        const st = await h.h('talkTo', n.eid);
-        for (const t of st.topics) {
-          const r = await h.h('conversationSay', t.id);
-          answers.push({ race, npc: n.eid, topic: t.id, text: r.said || null });
-        }
-        await h.h('conversationClose');
-      }
-    }
-  }
-  const byPair = new Map();
-  for (const a of answers) {
-    const k = `${a.npc} ${a.topic}`;
-    const s = byPair.get(k) || new Set(); s.add(a.text); byPair.set(k, s);
-  }
-  let varying = 0; const blanks = answers.filter((a) => !a.text).length;
+  const answers = await askAll(h, out.races, base.npcs);
+  const { byPair, varying } = answerVariation(answers);
+  const blanks = answers.filter((a) => !a.text).length;
   for (const [k, s] of byPair) {
-    if (s.size > 1) varying++;
     const [npc, topic] = k.split(' ');
     say(`    ${npc.padEnd(26)} ${topic.padEnd(22)} ${s.size} distinct answer(s) over ${out.races.length} races`);
   }
@@ -207,7 +229,7 @@ try {
   const first = base.rows.find((r) => r.topics.length);
   if (first) {
     await h.h('loadState', first.state);
-    await h.h('setCharacter', { race: first.race, upbringing: 'interior' });
+    await h.h('setCharacter', { race: first.race, upbringing: 'interior', class: 'reed-walker', birthsign: 'nu-ixtu' });
     await h.h('talkTo', first.npc);
     const said = await h.h('conversationSay', first.topics[0]);
     out.topic_consumer.said_sample = { npc: first.npc, topic: first.topics[0], text: said.said || null };
@@ -235,7 +257,7 @@ try {
       await h.close();
       h = await launchGame(args);
       await h.h('setSeed', 1337); await h.h('loadState', probeRow.state);
-      await h.h('setCharacter', { race: probeRow.race, upbringing: 'interior' });
+      await h.h('setCharacter', { race: probeRow.race, upbringing: 'interior', class: 'reed-walker', birthsign: 'nu-ixtu' });
       const after = await h.h('talkTo', probeRow.npc);
       await h.h('conversationClose');
       const moved = after.greeting === MARK;
@@ -251,7 +273,7 @@ try {
       await h.close();
       h = await launchGame(args);
       await h.h('setSeed', 1337); await h.h('loadState', probeRow.state);
-      await h.h('setCharacter', { race: probeRow.race, upbringing: 'interior' });
+      await h.h('setCharacter', { race: probeRow.race, upbringing: 'interior', class: 'reed-walker', birthsign: 'nu-ixtu' });
       const back = await h.h('talkTo', probeRow.npc);
       await h.h('conversationClose');
       const restored = back.greeting === probeRow.greeting;
@@ -261,17 +283,25 @@ try {
       void wasLines;
     }
 
-    // ---- 4. PERTURBATION: strip the race gates, watch the lists collapse ------------------
-    say('\n== 4. perturbation: strip requires/forbids race, watch the lists become identical ==');
-    backup(RACEGATED);
-    const rg = JSON.parse(fs.readFileSync(RACEGATED, 'utf8'));
+    // ---- 4. PERTURBATION: strip the race gates, watch BOTH numbers collapse ---------------
+    //
+    // Both files that carry race gates are stripped, not just the one named in the round-2
+    // verdict: `45-speaker-coverage.json` now holds most of the answer variation, and a
+    // perturbation that left it alone would show a comfortable "the gates matter" result while
+    // testing only a minority of them. Two numbers are checked, the list AND the answer, and
+    // the answer is the load-bearing one now that the lists have largely converged.
+    say('\n== 4. perturbation: strip requires/forbids race, watch the answers become identical ==');
     let stripped = 0;
-    for (const t of rg.topics) for (const info of (t.infos || [])) {
-      if (info.requires && info.requires.race) { delete info.requires.race; stripped++; }
-      if (info.forbids && info.forbids.race) { delete info.forbids.race; stripped++; }
+    for (const f of [RACEGATED, COVERAGE]) {
+      backup(f);
+      const doc = JSON.parse(fs.readFileSync(f, 'utf8'));
+      for (const t of doc.topics) for (const info of (t.infos || [])) {
+        if (info.requires && info.requires.race) { delete info.requires.race; stripped++; }
+        if (info.forbids && info.forbids.race) { delete info.forbids.race; stripped++; }
+      }
+      fs.writeFileSync(f, JSON.stringify(doc, null, 2));
     }
-    fs.writeFileSync(RACEGATED, JSON.stringify(rg, null, 2));
-    say(`  stripped ${stripped} race gates from 40-race-gated.json`);
+    say(`  stripped ${stripped} race gates from 40-race-gated.json + 45-speaker-coverage.json`);
 
     await h.close();
     h = await launchGame(args);
@@ -281,11 +311,21 @@ try {
     for (const r of flat.rows) { const a = flatByNpc.get(r.npc) || []; a.push(r); flatByNpc.set(r.npc, a); }
     let stillMoves = 0;
     for (const [, rs] of flatByNpc) if (new Set(rs.map((r) => r.topics.join('|'))).size > 1) stillMoves++;
-    say(`  NPCs whose topic list still moves with race: ${stillMoves} (was ${topicMoved})`);
-    const collapsed = stillMoves < topicMoved;
-    out.perturbations.push({ file: 'dialogue/topics/40-race-gated.json', gates_stripped: stripped, npcs_moving_before: topicMoved, npcs_moving_after: stillMoves, collapsed });
-    if (!collapsed) fail('stripping every race gate did NOT reduce the by-race topic variation — the gates are not what is doing the work');
-    else pass('the by-race variation comes from requires/forbids race, and nowhere else');
+    const flatAns = answerVariation(await askAll(h, out.races, flat.npcs));
+    say(`  NPCs whose topic LIST still moves with race:  ${stillMoves} (was ${topicMoved})`);
+    say(`  (npc,topic) pairs whose ANSWER still moves:   ${flatAns.varying} (was ${varying})`);
+    const collapsed = stillMoves < topicMoved && flatAns.varying === 0;
+    out.perturbations.push({
+      files: ['dialogue/topics/40-race-gated.json', 'dialogue/topics/45-speaker-coverage.json'],
+      gates_stripped: stripped,
+      npcs_moving_before: topicMoved, npcs_moving_after: stillMoves,
+      answer_pairs_moving_before: varying, answer_pairs_moving_after: flatAns.varying,
+      collapsed,
+    });
+    if (stillMoves >= topicMoved) fail('stripping every race gate did NOT reduce the by-race topic LIST variation');
+    else pass('the by-race list variation comes from requires/forbids race, and nowhere else');
+    if (flatAns.varying !== 0) fail(`${flatAns.varying} pairs STILL answer by race with every gate stripped — something else is keying on race`);
+    else pass('every race-specific answer came from a race gate — 33 -> 0 with the gates gone');
 
     restoreAll();
     await h.close();
@@ -296,9 +336,13 @@ try {
     for (const r of again.rows) { const a = againByNpc.get(r.npc) || []; a.push(r); againByNpc.set(r.npc, a); }
     let backMoves = 0;
     for (const [, rs] of againByNpc) if (new Set(rs.map((r) => r.topics.join('|'))).size > 1) backMoves++;
-    out.perturbations[out.perturbations.length - 1].restored_to = backMoves;
+    const backAns = answerVariation(await askAll(h, out.races, again.npcs));
+    const last = out.perturbations[out.perturbations.length - 1];
+    last.restored_to = backMoves; last.restored_answer_pairs = backAns.varying;
     if (backMoves !== topicMoved) fail(`restore gave ${backMoves} moving NPCs, expected ${topicMoved}`);
     else pass(`restore returns ${backMoves} moving NPCs — the old number does not linger and does not vanish`);
+    if (backAns.varying !== varying) fail(`restore gave ${backAns.varying} race-varying answer pairs, expected ${varying}`);
+    else pass(`restore returns ${backAns.varying} race-varying answers — the fix is the gates, and only the gates`);
   }
 } finally {
   restoreAll();

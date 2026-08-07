@@ -30,7 +30,12 @@
   "game/src/combat/swing.js",
   "game/src/combat/geometry.js",
   "tools/weapons/motion-census.mjs (NEW)",
-  "game/src/combat/system.js (advanceAlong \u2014 crash fix)"
+  "game/src/combat/system.js (advanceAlong \u2014 crash fix)",
+  "tools/weapons/fingerprint.mjs (NEW)",
+  "game/src/combat/moveset.js (_bladeLength)",
+  "reports/W1-10-fingerprint.json",
+  "tools/harness/wpn-impact-live.mjs (event-key fix)",
+  "reports/W1-10-impact-live.json"
  ],
  "findings": [
   "BOOT OK at start: node tools/harness/smoke.mjs passes (6/6).",
@@ -62,7 +67,12 @@
   "BROWSER CONFIRMATION OF THE NAMED GAP (reports/W1-10-impact-live.json, 0 page errors): the full 5x7 attacker hitstop grid IS recoverable from browser traces \u2014 light 4/6/15/8/8/4/2, medium 8/10/16/12/14/6/2, heavy 12/16/22/18/20/10/4, ultra 16/20/28/24/26/12/4 over flesh/chitin/stone/metal/shield/wood/water. Victim grid shows RI-WPN05 A's bounce: 0 on stone/metal/shield in every tier.",
   "AR-3 SEAM EXERCISED IN THE BROWSER: against mat_stone, mce_bog_iron_mace deals 215.46 and ghm_bog_maul 341.28; tsw_bog_rapier and ssw_garrison_sword DEFLECT for 0 damage, hitstop 15 f and +16 f added recovery. A mace beats a stone enemy a rapier cannot \u2014 driven, not declared.",
   "PER-REGION MATERIAL LIVE: ssw_garrison_sword on champion_hist_marked struck part forearm_r, material `plant`, multiplier 1.25, dmg 92.5.",
-  "S26 CONTIGUITY LIVE IN THE BROWSER: spr_drowned_harpoon 111111111111110000000 (0.60-1.90 m), hlb_garrison_bill identical, axe_bog_cleaver 11111111111 (0.60-1.60 m) \u2014 interior gaps NONE on all three. The r2 verdict's 1.30-1.60 spear dead band is gone."
+  "S26 CONTIGUITY LIVE IN THE BROWSER: spr_drowned_harpoon 111111111111110000000 (0.60-1.90 m), hlb_garrison_bill identical, axe_bog_cleaver 11111111111 (0.60-1.60 m) \u2014 interior gaps NONE on all three. The r2 verdict's 1.30-1.60 spear dead band is gone.",
+  "SEP HARD FAIL FOUND (my own instrument, tools/weapons/fingerprint.mjs NEW): on the repaired measure the OBSERVED SEP was 0.7205 (B_min 1.3052 / W_max 1.8114) \u2014 under RI-WPN03 D.2's <1.0 hard fail. Decomposed: 80% of W_max came from D5 alone. The five curved greatswords all declare reach_m 2.75 and their r1.1 tips swept 1.30/1.55/1.57/2.11/2.12 m \u2014 an 0.82 m spread INSIDE one class, produced by the animation.",
+  "ROOT CAUSE: socketsFor() took blade length from `clip.capsuleLength`, and clips are SHARED, so a weapon's blade changed length depending on which animation it played. Blade length is a property of the WEAPON.",
+  "FIX: MovesetLibrary._bladeLength(weaponId) solves the socket-B distance ONCE PER WEAPON so the tip's max horizontal radius from the actor's own root over the lead slot's active window equals the declared reach_m (BAR-CRITIQUE R4's blade-reach definition, root suppressed by construction). Closed-form radius(b) from two rig evaluations per frame, 240-step scan for the OUTER crossing + 40-step bisection. Same discipline _yawGain already applies to arc_sweep_deg.",
+  "RESULT (tools/weapons/fingerprint.mjs, OBSERVED column): D_min 1.4932 -> 1.6332 (AXE-MCE) PASSES >=1.6 (r2 measured 1.3934). SEP 0.7205 -> 1.4605 PASSES >=1.4 (r2 NOT RUN; r1's published 1.4469 was read off the broken measure). classes isolated at 1.6: 12/15 -> 15/15 (need 13). Dg_min 1.4242 (SPR-HLB) vs bar 1.0. W_med 0.5391 in band. chain_arc_range>=20 10/14, chain_shape>=2 8/14, both pass.",
+  "STILL BELOW BAR: W_min 0.1525 (bow_chitin_recurve / bow_marsh_longbow) against a 0.20 PASS bar, 0.05 hard fail. Two bows are the closest pair in the game."
  ],
  "next_step": "RESUMED r3 (2nd restart). Order: (1) re-run node impact instruments to confirm banked claims, (2) browser impact/material confirmation, (3) CR connect rate, (4) recompute D_min+SEP+Dg_min on repaired measure, (5) contiguity re-verify, (6) runtime blind pack, (7) RI-WPN07 RVS, (8) deletion test, (9) regression equip/CFS/determinism, (10) amendments + report",
  "notes_for_successor": "Round 3 targets: (1) impact+material model consumption (biggest gap, blocking, AR-3 seam_sterile), (2) S26 contiguity dead bands on 11 weapons (hard fail), (3) measured-vs-declared arc on 28 clips, (4) recovery>active arc 21/28, (5) whp_hide_lash pose teleport 1.026 m, (6) mace-vs-axe grammar not weight, (7) RI-WPN07 weapon character. Do NOT regress r2's wins: CFS_live 1.0, equipped_ok 87/87, moveset consumption 7/7, Dg_min 1.598."

@@ -48,7 +48,7 @@ const R = {
     weather: ['clear', 'cold_rain', 'overcast'],
     hazard: { id: 'ridge-exposure', class: 'ATTRITION' },
     only_here: { id: 'imperial_milestone', instances: 22 },
-    flora_density: 0.30, canopy: 0.0, sightline_m: 900,
+    flora_density: 0.30, sightline_m: 900,
   },
   thornmarsh: {
     terrain: { base_m: 10, amp_m: 11, wavelength_m: 700, relief_m: 2.8, ridge: 0.10, terrace: 0.0, style: 'thicket' },
@@ -62,7 +62,7 @@ const R = {
     weather: ['ashfall', 'overcast', 'cold_rain'],
     hazard: { id: 'the-thicket', class: 'ATTRITION' },
     only_here: { id: 'knife_mark_stem', instances: 60 },
-    flora_density: 2.60, canopy: 0.49, sightline_m: 30,
+    flora_density: 2.60, sightline_m: 30,
   },
   'valus-ridge': {
     terrain: { base_m: 268, amp_m: 286, wavelength_m: 1560, relief_m: 8.0, ridge: 0.86, terrace: 0.03, style: 'mountain' },
@@ -76,7 +76,7 @@ const R = {
     weather: ['cold_rain', 'clear', 'storm'],
     hazard: { id: 'the-fall', class: 'TRAP' },
     only_here: { id: 'rock_flute_spire', instances: 14 },
-    flora_density: 0.45, canopy: 0.10, sightline_m: 2200,
+    flora_density: 0.45, sightline_m: 2200,
   },
   'stone-forest': {
     terrain: { base_m: 31, amp_m: 26, wavelength_m: 940, relief_m: 4.2, ridge: 0.14, terrace: 0.36, style: 'plateau' },
@@ -90,7 +90,7 @@ const R = {
     weather: ['clear', 'dry_thunder', 'overcast'],
     hazard: { id: 'pair-lightning', class: 'TRAP' },
     only_here: { id: 'petrified_bole', instances: 400 },
-    flora_density: 1.10, canopy: 0.18, sightline_m: 260,
+    flora_density: 1.10, sightline_m: 260,
   },
   'clay-moor': {
     terrain: { base_m: 31, amp_m: 15, wavelength_m: 700, relief_m: 2.4, ridge: 0.0, terrace: 0.48, style: 'fired-flat' },
@@ -104,7 +104,7 @@ const R = {
     weather: ['dust_devil', 'clear', 'heat_shimmer'],
     hazard: { id: 'kiln-ground', class: 'ATTRITION' },
     only_here: { id: 'naga_kiln_dome', instances: 26 },
-    flora_density: 0.18, canopy: 0.0, sightline_m: 1100,
+    flora_density: 0.18, sightline_m: 1100,
   },
   'crimson-coast': {
     terrain: { base_m: 10, amp_m: 16, wavelength_m: 560, relief_m: 3.6, ridge: 0.48, terrace: 0.08, style: 'littoral-rock' },
@@ -118,7 +118,7 @@ const R = {
     weather: ['sea_squall', 'overcast', 'clear'],
     hazard: { id: 'dye-fume', class: 'VECTOR' },
     only_here: { id: 'open_dye_vat', instances: 18 },
-    flora_density: 0.55, canopy: 0.0, sightline_m: 700,
+    flora_density: 0.55, sightline_m: 700,
   },
   blackwood: {
     terrain: { base_m: 1.5, amp_m: 3.6, wavelength_m: 700, relief_m: 2.7, ridge: 0.0, terrace: 0.0, style: 'flooded-forest' },
@@ -132,7 +132,7 @@ const R = {
     weather: ['heavy_rain', 'overcast', 'dawn_mist'],
     hazard: { id: 'spore-bloom', class: 'VECTOR' },
     only_here: { id: 'welkynd_pillar', instances: 34 },
-    flora_density: 3.40, canopy: 0.96, sightline_m: 18,
+    flora_density: 3.40, sightline_m: 18,
   },
   hive: {
     terrain: { base_m: 21, amp_m: 17, wavelength_m: 420, relief_m: 5.4, ridge: 0.08, terrace: 0.66, style: 'comb' },
@@ -146,7 +146,7 @@ const R = {
     weather: ['still'],
     hazard: { id: 'comb-collapse', class: 'TRAP' },
     only_here: { id: 'comb_cliff', instances: 30 },
-    flora_density: 0.0, canopy: 0.0, sightline_m: 55,
+    flora_density: 0.0, sightline_m: 55,
   },
   'deep-marshes': {
     terrain: { base_m: 0.9, amp_m: 2.2, wavelength_m: 620, relief_m: 1.9, ridge: 0.0, terrace: 0.0, style: 'drowned' },
@@ -160,7 +160,7 @@ const R = {
     weather: ['fever_fog', 'heavy_rain', 'still'],
     hazard: { id: 'voriplasm', class: 'KILL' },
     only_here: { id: 'voriplasm', instances: 40 },
-    flora_density: 1.60, canopy: 0.30, sightline_m: 22,
+    flora_density: 1.60, sightline_m: 22,
   },
   'marauders-coast': {
     terrain: { base_m: 0.55, amp_m: 2.1, wavelength_m: 500, relief_m: 3.4, ridge: 0.52, terrace: 0.30, style: 'tidal-flat' },
@@ -174,7 +174,7 @@ const R = {
     weather: ['sea_fog', 'overcast', 'clear'],
     hazard: { id: 'the-flats-flood', class: 'STRANDING' },
     only_here: { id: 'beached_hull_house', instances: 12 },
-    flora_density: 0.85, canopy: 0.08, sightline_m: 420,
+    flora_density: 0.85, sightline_m: 420,
   },
   'western-rootlands': {
     terrain: { base_m: 2.0, amp_m: 2.8, wavelength_m: 560, relief_m: 1.15, ridge: 0.0, terrace: 0.30, style: 'paddy' },
@@ -188,7 +188,7 @@ const R = {
     weather: ['warm_rain', 'dawn_mist', 'clear'],
     hazard: { id: 'press-gang-water', class: 'STRANDING' },
     only_here: { id: 'root_arch', instances: 120 },
-    flora_density: 2.10, canopy: 0.40, sightline_m: 120,
+    flora_density: 2.10, sightline_m: 120,
   },
   'eastern-rootlands': {
     terrain: { base_m: 1.3, amp_m: 2.6, wavelength_m: 540, relief_m: 1.05, ridge: 0.0, terrace: 0.0, style: 'delta' },
@@ -202,7 +202,7 @@ const R = {
     weather: ['warm_rain', 'sea_fog', 'clear'],
     hazard: { id: 'cut-off-by-the-tide', class: 'GATE' },
     only_here: { id: 'swamp_jelly_canopy', instances: 48 },
-    flora_density: 1.70, canopy: 0.22, sightline_m: 300,
+    flora_density: 1.70, sightline_m: 300,
   },
   'stone-wastes': {
     terrain: { base_m: 9, amp_m: 10, wavelength_m: 600, relief_m: 2.1, ridge: 0.06, terrace: 0.52, style: 'crater-salt' },
@@ -216,7 +216,7 @@ const R = {
     weather: ['salt_storm', 'clear', 'overcast'],
     hazard: { id: 'salt-storm', class: 'ATTRITION' },
     only_here: { id: 'glassed_crater', instances: 16 },
-    flora_density: 0.12, canopy: 0.0, sightline_m: 1400,
+    flora_density: 0.12, sightline_m: 1400,
   },
 };
 R['clay-moor'].fog.colour = '#C9A87C';
@@ -456,6 +456,22 @@ const WATER = {
   'deep-marshes':      { wci: 0.86, class: 'drowned',          deepest_band: 'W5', tidal: false, sea: null,       k: 4.5,  substrates: ['SUCK', 'SILT'] },
 };
 
+
+/**
+ * Canopy closure as a CONSEQUENCE of what is planted, not as a claim about it.
+ *
+ * Poisson overlap of crown discs: 1 - exp(-n * A), with n the placed density per square metre and
+ * A the plan-view area of one crown. `province._geo('crown', r)` decides A, so this table follows
+ * that switch statement and nothing else.
+ */
+const CROWN_PLAN_FRACTION = { sphere: 1.0, dome: 1.0, cone: 1.0, spire: 0.3025, column: 0.81, arch: 0.30, none: 0 };
+function canopyClosure(c) {
+  const occ = CROWN_PLAN_FRACTION[c.shape];
+  if (occ === undefined) throw new Error(`no crown plan fraction for canopy shape "${c.shape}"`);
+  if (!occ || !c.r || !c.per100m2) return 0;
+  return 1 - Math.exp(-(c.per100m2 / 100) * Math.PI * c.r * c.r * occ);
+}
+
 const NAME_TO_ID = {
   'The Salt Hills': 'salt-hills', Thornmarsh: 'thornmarsh', 'Valus Ridge': 'valus-ridge',
   'The Stone Forest': 'stone-forest', 'The Clay Moor': 'clay-moor', 'Crimson Coast': 'crimson-coast',
@@ -500,7 +516,16 @@ for (const [name, c] of Object.entries(corpusRegions.regions)) {
     hazard: a.hazard,
     only_here: { id: a.only_here.id, instances: a.only_here.instances, text: c.only_here },
     flora_density_per_100m2: a.flora_density,
-    canopy_closure: a.canopy,
+    // DERIVED, not declared. Round 4 found `canopy_closure` authored at 0.92 for Blackwood and
+    // 0.30 for the Deep Marshes while the geometry the renderer actually places closed 63% and
+    // 0% of the sky — a field that described an intention nobody had built. It is now computed
+    // from the thing that makes it: the placed density and the plan-view area of the crown the
+    // region's own canopy shape draws. `occ` is that crown's projected area as a fraction of
+    // pi*r^2 — a sphere, a dome and a cone all project a full disc of radius r; a spire is
+    // ConeGeometry(r*0.55); a column is a cylinder of r*0.9; an arch's foliage is a small mass at
+    // the apex of a torus and covers almost nothing. A region that wants a closed roof has to
+    // plant one.
+    canopy_closure: +canopyClosure(PROPS[id].canopy).toFixed(3),
     sightline_m: a.sightline_m,
     climate: c.weather,
     flora_text: c.flora,

@@ -1,0 +1,309 @@
+{
+  "critic": "bar-critic",
+  "area": "88-journeys",
+  "pass": "W1-07-R1",
+  "date": "2026-08-07",
+  "note_on_this_pass": "A container restart killed this pass between the last amendment and this verdict. The amendments were already on disk and are committed at 6e359ab; this file is the record that was missing, written after re-reading every one of them. Two errors in my own earlier text were found on re-reading and are corrected in the files and disclosed under provenance.corrections_to_own_text.",
+
+  "scope": {
+    "reference_items": [
+      "RI-JRN01", "RI-JRN02", "RI-JRN03", "RI-JRN04", "RI-JRN05", "RI-JRN06",
+      "RI-JRN07", "RI-JRN08", "RI-JRN09",
+      "RI-CHR01", "RI-CHR02", "RI-CHR03",
+      "RI-PRG02", "RI-PRG03",
+      "RI-EXP01", "RI-MTH06"
+    ],
+    "artifacts_read": [
+      "corpus/88-journeys/JOURNEY-CRITIC-FLEET.md",
+      "corpus/88-journeys/paths-requested.json",
+      "corpus/00-doctrine/subsystems.json",
+      "orchestration/status/W1-07-r2-critic.json",
+      "orchestration/status/W1-07-r3.json"
+    ],
+    "doctrine": [
+      "INTENT-AUDIT-CHARTER.md", "ARBITRATION.md", "SCORING.md", "CORPUS-CONTRACT.md",
+      "CRITIC-DOCTRINE.md", "RI-MTH06", "RI-MTH07", "orchestration/EFFORT-POLICY.md"
+    ],
+    "amendments_ruled": ["AMENDMENT-PROPOSAL-JRN01-01"],
+    "worked_example": [
+      "corpus/90-verdicts/wave1/W1-07", "corpus/90-verdicts/wave1/W1-07-r2"
+    ],
+    "predecessors": [
+      "corpus/12-weapons/BAR-CRITIQUE-W1-10-R1.md",
+      "corpus/10-combat/BAR-CRITIQUE-W1-09-R1.md"
+    ]
+  },
+
+  "verdict": "NOT_SATISFIED",
+  "verdict_note": "These bars can prove the room was built. Not one of them could tell whether anybody spoke in it - and three of the six bars W1-07 was scored against could not be passed by any build whatsoever, which is why two rounds of real work scored 1.5 and 3.8. Round 2 held every structural bar in the area - 19 of 19 distinct frames, 18 of 18 speaker resolutions, UI area 0.14-0.34 against a 0.55 ceiling, the whole census completable on a gamepad - while delivering 0 of 10 authored questions to the player, naming 0 of 14 professions in 240 runs, and drawing the writ's text nowhere. Eight defects: three bars unpassable by construction, three binding rules with no instrument, one axis pointed at volume instead of delivery, and one hole where nothing measured whether the opening is any good.",
+
+  "bars_or_build": {
+    "answer": "THE BARS, first and decisively - and then the build, harder than it was charged",
+    "bars_side": "W1-07 could not pass its gate under any build in any round, by arithmetic. Gate 7.0 over six items needs 42. RI-JRN01 was pinned at 0 by tools/journey/journey-run.mjs, which the corpus mandated in RI-MTH06 and assigned to nobody. RI-CHR01 and RI-CHR03 were pinned at native 0 by min-over-axes biting on an axis whose instrument (tools/analysis/build-viability.mjs) has never existed. Three of six items at 0 caps the attainable total at 30, a mean of 5.0; under the native-0 -> ladder-4 translation both wave-1 critics actually used, 6.33. Three rounds were dispatched at a wall with a door painted on it.",
+    "build_side": "And the build should have scored LOWER. Round 2 recorded two triggered hard fails against RI-CHR01 in its own hard_fails[] array and scored it 4, against SCORING 1.1's cap of 2. It recorded native_score 0 on three items and translated all three to 4. It carried RI-PRG02 at 6 and RI-PRG03 at 5 on a min-over-axes rule with an unmeasurable axis in each. Re-read under the amended items round 2 scores 1.3, not 3.8.",
+    "why_it_was_invisible": "Every rule both failures broke was already binding and not one of them had an instrument. That is the finding of this pass and it is the third time a bar critic has written a version of it.",
+    "consequence": "Do not dispatch W1-07 round 4 against the old bars. Round 3 is aimed at the right defects and should be judged against RI-JRN09 and the amended RI-CHR01/RI-CHR02 on evidence. Dispatch build-viability.mjs, journey-run.mjs and session-run.mjs as CORPUS work with a corpus owner - they are not a builder's job and three builders have now been charged for them."
+  },
+
+  "referrals": [
+    {
+      "id": "R1",
+      "subject": "AMENDMENT-PROPOSAL-JRN01-01 - RI-JRN01 scores 0 identically for twenty grey frames and for a rendered scene; it measures the toolchain rather than the journey",
+      "ruling": "GRANTED IN PART and APPLIED, in RI-JRN01 0.1 so builders read amended text",
+      "diagnosis_upheld": "In full. Round 1 produced 20 byte-identical grey PNGs with no room, no person and no text. Round 2 produced 19 distinct nodes with a barge hold, a Writ House, two present NPCs and dialogue two independent critics called better written than Morrowind's own. Both scored 0, for the absence of A-JRN1, which is RI-MTH06's deliverable and has never been anyone's assignment.",
+      "what_replaces_the_fail_closed_clause": "A-JRN1 blocks M1, M2, M3, M12, M14 and M4 clause 1; the isolated naive channel blocks M16-M19; beat-extract.mjs blocks the blind pair. Those score 0 and their weight is corpus_debt - removed from numerator AND denominator, reported raw/runnable, filed against RI-MTH06, never averaged into the build's mean. Everything else is measurable today and the critic MUST name the instrument it used. Runnable weight in wave 1 is 67 of 100 and the bands apply to the runnable FRACTION, so the passing proportion is unchanged.",
+      "refused_in_part": [
+        "M4 SPLIT - the proposal listed M4 as released and round 2 measured only clause 2 (>=1 NPC, >=1 takeable entity). M4's actual threshold is >= 60 s of available play before the first character-defining question, the interval between first_control and the first field-writing dialogue_open, and NEITHER EVENT EXISTS. Releasing it whole would have converted the item's own How-we-lose #5 - 'control arrives after definition', Morrowind's cheapest and best trick - from a timing bar into an entity count. Clause 1 stays blocked. Nobody has ever measured the item's headline number.",
+        "M9/M15 released ONLY against a named, demonstrated rendered-text accessor. Both are greps over 'every string rendered'; this build draws all text into a canvas, document.body.innerText is empty and the accessibility tree has no children, so a grep over an empty set returns 0 hits and reads as a clean pass. Released as proposed, M9 would have been a 10-point check a canvas-only build passes BY BEING UNREADABLE. No accessor now means unmeasurable => 0, never pass.",
+        "M13 SPLIT - reachability legs released (the pushGamepadState -> pollGamepad evidence is good and accepted); the mapping:'' descriptor and hot-plug claims stay blocked on A-JRN2 and stay RI-JRN04's."
+      ],
+      "stiffened_on_grant": [
+        "M8 - as written it was satisfied by a string in readWrit(), which is How-we-lose #10 word for word ('exists in the save file, is never rendered, cannot be read') reproduced by the check written to prevent it. Round 2: the writ is complete and correct in the API and the stamped node draws rendered_text: []. The item's own predicted failure passed its own check. The text must now reach the frame and API-only is a hard fail.",
+        "M5 - the UI-area fraction must come from a pixel readback of the captured frame and never from the build's own layout report. Round 2's 0.136-0.336 was the build's self-report; the critic's independent measurement of the same frames read 0.17-0.49, and the item did not say which it meant. A number the party under measurement computes is a free parameter.",
+        "M20 + HF9 ADDED - a title surface must exist and a save must be reachable from it before control. O1 capped surfaces at 2 from above and NOTHING bounded them from below, so a build that boots straight into the world scores M1 perfectly while offering a returning player no route to their save. Two verdicts recorded it as an observation; no check fired. 5 points taken OUT of the Flow block proportionally (M1 10->8, M2 5->4, M3 5->4, M12 5->4); block and item totals unchanged."
+      ],
+      "proposal_understated_its_own_case": "The proposal said 'it does not weaken the bar'. Applied honestly the amendment makes round 2 fail HARDER: M13 has four reachability legs and round 2 completed two => HF5; M7 produced 0 of 14 professions => HF7; M8's writ is an API string => its new hard fail; and there is no title surface at all => HF9.",
+      "score_movement_disclosed": "RI-JRN01 goes 0 -> 2 for round 2 and that is stated rather than buried. It is not a relaxation: the 0 was charged for a missing corpus tool, the 2 is a hard-fail cap earned by four of the build's own defects, each now named and actionable. An item that says '0, because we never wrote your instrument' teaches a builder nothing."
+    },
+    {
+      "id": "R2",
+      "subject": "RI-MTH06 - two mandated tools that have never existed; audit every item in scope for methods naming absent instruments",
+      "ruling": "AUDITED. It is not two, it is 67. The phantom-tool detector is the answer and the ruling is made explicit here.",
+      "measurement": {
+        "reference_items_scanned": 144,
+        "distinct_tool_paths_named_in_comparison_methods": 82,
+        "resolving_to_a_file_on_disk": 15,
+        "phantom": 67,
+        "reproduce_with": "node tools/corpus-index.mjs   (check C8)"
+      },
+      "distribution": {
+        "95-experience": 30,
+        "86-ui": 10,
+        "40-dialogue": 9,
+        "85-platform": 8,
+        "88-journeys": 6,
+        "80-methods": 4,
+        "87-audio": 4,
+        "15-camera": 1,
+        "22-character": 1,
+        "23-stealth-crime": 1,
+        "note": "The column sums to 74 and the distinct total is 67 because seven tools are named by items in more than one area."
+      },
+      "the_finding": "Every quality instrument pointed at the opening is phantom - session-run.mjs, beat-diff.mjs, beat-extract.mjs, isolation-check.mjs, log-lint.mjs, journey-run.mjs, gamepad-shim.mjs, naive-driver.mjs, build-viability.mjs - while every correctness instrument exists and is run every round: run-headless.mjs, content-stats.mjs, creation-audit.mjs, cmb-reach.mjs, determinism.mjs, smoke.mjs, trace.mjs. THE CORPUS BUILT THE TOOLS THAT CHECK WHETHER THE ARTIFACT IS RIGHT AND DID NOT BUILD THE TOOLS THAT CHECK WHETHER IT IS ANY GOOD. corpus/95-experience/, the area whose entire subject is whether the game is good, is 30 of the 67.",
+      "rule_1_gate": "C8 in tools/corpus-index.mjs prints `phantom tools : N` on every run. VERIFIED WORKING at this pass: 0 errors, 67 warns, and the area table reproduces exactly. warn in wave 1, ERROR from wave 2 - stated as a deliberate choice, because making it blocking on the pass that first counted it would fail the coherence gate for every agent in the tree, which is how a check gets deleted instead of a debt getting paid.",
+      "rule_2_corpus_debt": "A dimension blocked SOLELY by a phantom tool is corpus_debt: unmeasurable, weight removed from numerator and denominator, item reports raw/runnable, debt filed against RI-MTH06, NOT averaged into the piece's mean. This does not soften CRITIC-DOCTRINE 7.3, which governs a harness gap the piece could close. A tool the corpus mandated, assigned to nobody and never wrote is the other case, and 7's own closing paragraph already ruled it. The two clauses have been in tension since wave 0 and every wave-1 critic resolved it the harsher way, against the builder. corpus_debt is not a pass: it is reported on every line, it escalates, and an item carrying it may not score above what its runnable fraction earns.",
+      "caught_immediately_on_wiring": [
+        "tools/platform/load-run.mjs (RI-PLT03)",
+        "tools/platform/perf-run.mjs (RI-PLT01)",
+        "tools/platform/stream-audit.mjs (RI-PLT03)"
+      ],
+      "caught_note": "Those three pin RI-PLT01 and RI-PLT03 - the two items BAR-CRITIQUE-W1-09-R1 just made a mandatory citation in every combat verdict, and the two RI-JRN01 0.2 now makes mandatory here."
+    },
+    {
+      "id": "R3",
+      "subject": "Does anything measure whether the opening is GOOD? The owner's words: 'is the new game flow good enough Vs Morrowind's famously brilliant opening scenes'",
+      "ruling": "NO. Hole filed. RI-JRN09 created - the opening's counterpart to RI-CMB12 on the fight side.",
+      "demonstration": "Not an argument: the build passed distinct-frame counts, UI area fractions, speaker resolution, entity presence, token purity and gamepad reachability while delivering ZERO of ten authored questions to the player. Not one instrument noticed. It was caught by a critic reading M7's parenthesis 'as presented in play (not from the data file)' and taking it seriously. A bar that depends on the critic being cleverer than the bar is not a bar.",
+      "new_item": {
+        "id": "RI-JRN09",
+        "title": "The opening as an exchange - did the scene reach the player, were the answers consumed, and did anyone say what you are",
+        "measures": [
+          "ES-LEGIBLE/1 (DTR, weight 45) - distinct authored strings DRAWN / distinct authored strings COMPUTED, per node. DTR_q = 1.00 required: a question the player cannot read is not a question. DISTINCT counts, never character counts - round 2's own instrument passed this scene because it counted characters and the ANSWERS differed while the QUESTION was the same stock line at all ten nodes.",
+          "ES-ANSWERED/1 (AC, weight 30) - each of RI-CHR01's eight inputs must be used before the player leaves the interior, in a DRAWN line, a visible object or a visible written record. AC >= 6 of 7 (sex exempt). A getCensusState() field is not consumption; RI-MTH07 B1 rules the trace an observer.",
+          "ES-NAMED/1 (NAMED, weight 20) - >= 240 completions with a PUBLISHED a/b/c/d histogram, >= 10 of 14 distinct named classes, and on_match_named_class's line drawn on 100% of named matches. RI-CHR01 4 calls this 'the moment the route is for' and NO method in the corpus asserted that the line fires.",
+          "M4 citations (weight 5) - RI-PLT03's T_control and RI-EXP01's beat numbers, or their debt named."
+        ],
+        "runnable_today": "Deliberately. Every other quality instrument aimed at this journey is blocked on A-JRN1, build-viability.mjs or session-run.mjs; an item that joins that queue measures nothing for another wave. Every number in RI-JRN09 was produced by hand by the round-2 critic with Playwright and window.__HARNESS before the item existed.",
+        "deliberate_non_maximum": "MW/EXCHANGE scores Morrowind itself at 5 of 6, not 6 of 6. The bar is NOT that everything is echoed - a scene that repeats every answer back is a receipt, not a conversation. The bar is that the asker uses what it asked for."
+      },
+      "quiet_scandal": "RI-EXP01 is the corpus's ONLY pre-existing instrument that asks whether the opening is any good. All five of its tools are phantom (session-run.mjs, beat-diff.mjs, beat-extract.mjs, beats-from-md.mjs, isolation-check.mjs), its paths experience.opening.hook and experience.opening.beats are declared by NO wave-1 piece, and it has NEVER BEEN RUN ON ANY BUILD. Nothing in the process would ever have said so out loud."
+    },
+    {
+      "id": "R4",
+      "subject": "Does anything measure that the questions are READABLE? Round 2 reaches the player with 0 of 10 question texts drawn and 0 of 14 named classes across 240 runs and still scored 4/10 on two creation items",
+      "ruling": "UPHELD. The mis-weighting was real and had THREE independent causes, which is why it survived.",
+      "cause_1_no_axis_measured_delivery": "RI-CHR01's Questionnaire axis measured '12 questions, zero stat tokens, all 19 skills >= 5 answers' - every clause a property of the DATA FILE. The Class-roster axis measured '>= 10 questionnaire-reachable' and M4 satisfies it by enumerating 4^10 combinations AGAINST THE DATA FILE. The round-3 builder's own measurement is the proof: reachableClasses() reaches 11 of 14 in principle while a 1,600-run play sweep produces 0, because the matcher requires set equality over 116,280 shapes and exact match is a measure-zero event in play. Both numbers are true at once and only one is a fact about the game a player plays.",
+      "cause_1_fix": "New RI-CHR01 method 11 requires RI-JRN09 M1 and M3 to be run and cited. The Questionnaire axis now requires DTR_q = 1.00 AT ITS PASS FLOOR; the Class-roster axis's 0 band now reads 'reachable only in principle: 0 in a published-histogram sweep'; method 4's in-principle enumeration is declared explicitly NOT SUFFICIENT.",
+      "cause_2_hard_fail_cap_had_no_instrument": "SCORING 1.1 - 'any triggered hard fail caps the whole item at 2' - is binding and fail-closed. Round 2 recorded TWO triggered hard fails against RI-CHR01 in the verdict's own hard_fails[] array and scored it 4. tools/verdict-validate.mjs READ THAT ARRAY, used it to force status FAIL, and never checked the cap. A binding rule with its data already in hand went unenforced for a whole wave.",
+      "cause_3": "The ladder anchor row was silent below 4 - see R5.2.",
+      "enforcement_verified_as_code_not_claimed": "verdict-validate.mjs now errors on both. Run over the whole tree it FAILS W1-07-r2 (RI-CHR01 scored 4 with two hard fails), W1-07, and W1-10 (RI-WPN06 scored 3 with a hard fail) - and no verdict where the rule was applied correctly. That is simultaneously the instrument's falsification test and this amendment's regression test: it makes the historical record score worse, in a second area I was not looking at."
+    },
+    {
+      "id": "R5",
+      "subject": "RI-CHR02 4c's greeting bands - the build passes every floor with 0-7% headroom against a band wanting >= 20%; passing by a whisker on every axis at once is a signature of tuning to the bar",
+      "ruling": "THE REFERRAL'S PREMISE IS REFUSED ON THE EVIDENCE, and the axis is replaced with a strictly harder one anyway.",
+      "why_refused": "I expected to uphold this and the arithmetic does not support it. Three of the five minimums are not floors a builder chose to sit on - they are EXACT PRODUCTS THIS ITEM COMPUTES FOR THEM. Greetings: 4c states 12 groups x 5 bands x 5 classes = 300 cells, 1,500 lines at >= 5 per cell, so 1,500 is simultaneously the floor and the natural exact value; 20% headroom means writing a sixth line into every one of 300 cells for no stated reason, and the only thing it measures is willingness to pad. Rumours: >= 2 per settlement x 8 settlements = 16, and 20% headroom is 19.2, which is not expressible as a per-settlement rule at all. forbids is a sub-count of the topic count, so headroom on it double-counts headroom on its parent. A band asking for 20% more of a number the item itself derives as a product is not a bar; it is an invitation to generate.",
+      "the_real_defect": "The axis was pointed at the wrong property. The round-2 verdict correctly defended the 1,500 lines as a combinatorial expansion of 300 authored stances x 60 authored addresses, and in the SAME VERDICT recorded that greetings.json has zero world-side consumers. From the player's chair 1,500 lines and 0 lines are the same thing. The axis rewarded the count and was blind to the delivery.",
+      "replacement": "'Dialogue volume' becomes 'Dialogue delivery' with three sub-axes - Volume / Distribution / Consumption. Volume keeps EVERY floor verbatim (not one minimum reduced) and loses only its 10 band, which was unearnable honestly. Distribution requires no cell below 5 distinct lines and fails an all-equal cell matrix as a generator's signature. Consumption requires lines observed SELECTED AND DRAWN IN PLAY from >= 250 of 300 cells, and coupling == 0 on greetings or race-gated topics scores 0 whatever the line count.",
+      "effect_on_round_2": "Volume 6, Distribution >= 6, Consumption 0 - the topic list is byte-identical for a Dunmer and a Saxhleel and no harness verb matches /greet/. Under min-over-axes this axis is 0 where it was scored 6. THE AMENDMENT LOWERS ROUND 2'S SCORE, which is how I know it is not a relaxation."
+    },
+    {
+      "id": "R5.2",
+      "subject": "The ladder anchor row was silent below 4, so min-over-axes stopped being dispositive",
+      "ruling": "SCORING 1.2b - rungs 0 and 2 are mandatory on any item that can produce a native below its ladder-4 anchor",
+      "mechanism": "Form A was specified as | Ladder | 4 | 6 | 8 |. On a min-over-axes item - where a SINGLE axis at its 0 band sets the whole native score to 0, which is the entire purpose of a min rule - the mandated row said nothing about the region the item actually lands in. W1-07 round 2 recorded native_score 0 for RI-CHR01, RI-CHR02 AND RI-CHR03 and translated all three to ladder 4. An axis at its 0 band cost these items six ladder points in principle and zero in practice.",
+      "applied_to": ["RI-CHR01", "RI-CHR02", "RI-CHR03", "RI-PRG02", "RI-PRG03"],
+      "checker_defect_found": "C6 previously required the first three cells to be EXACTLY 4, 6, 8 - a mandatory format that quietly forbade the better version of itself. It now accepts any Ladder row whose rungs COVER 4, 6 and 8.",
+      "gap_in_my_own_amendment_closed_here": "1.2b says the ceiling is READ OFF the item's anchor row; verdict-validate.mjs guessed a generic ceiling of 4 instead - which is exactly the score round 2 gave. It now reads the row: where an item publishes `Ladder 0 = Native 0`, a native 0 is a ladder 0. Applied narrowly (exact native 0, only where a 0 rung is published) it fires on W1-07 (5 items) and W1-07-r2 (3 items) and on no other verdict in the tree."
+    },
+    {
+      "id": "R5.3",
+      "subject": "min-over-axes had no instrument at all - a NEW finding beyond the referrals",
+      "ruling": "SCORING 1.2c - the declared aggregation is checked. WARN in wave 1, ERROR at wave 2.",
+      "mechanism": "Twenty-one items declare 'Aggregation (a property of this item, not of the critic): min-over-axes'. The parenthesis exists so a critic cannot choose a kinder rule, and NOTHING has ever checked that the reported native score is the minimum. In one file, W1-07 round 2, the rule was applied three different ways: RI-CHR02 with 4 unmeasurable/failed axes recorded native 0 (correct); RI-PRG02 with 1 recorded native 6; RI-PRG03 with 2 recorded native 5. SCORING 1.1 already fixes an unmeasurable axis at 0 fail-closed, so on a min rule both were 0. Two of six items were carried above their own minimum, moving the piece mean by 1.8.",
+      "warn_not_error_and_why": "Stated rather than tactical: checks[] are METHODS and the min is over the item's Scoring AXES, and the two are not always one-to-one. A critic who has mapped them and can show the min is legitimately above 0 says which check maps to which axis, in prose. Tightens to error at wave 2 once items carry an axis id on each check.",
+      "fires_on": "7 times across 4 verdicts - W1-14-r2 (3), W1-07-r2 (2), W1-01-r2 (1), W1-14 (1). Three of those pieces are not mine. Silent on the eleven verdicts where the min was taken correctly."
+    },
+    {
+      "id": "R6",
+      "subject": "Is CONSUMPTION (RI-MTH07) present in the items in scope?",
+      "ruling": "IT HAD REACHED 0 OF 14. Now written into 15.",
+      "measurement": "grep -cE 'RI-MTH07|CONSUMPTION|world-side consumer' returned 0 for every one of RI-JRN01-08, RI-CHR01-03, RI-PRG02, RI-PRG03 and RI-EXP01. My combat counterpart found the identical stalled correction at 0 of 18, one day earlier, in a different directory. ARBITRATION 3 carries it, which is why critics ran it - the check reached the CRITICS and never reached the ITEMS, so nothing said which models must be enumerated and nothing said what a zero costs. INTENT-AUDIT-CHARTER 6's stalled correction in its purest form.",
+      "applied": "A ### CONSUMPTION block in all fifteen items: exhaustive enumeration, perturb-and-observe with the null control, an ENTITY-SIDE OR FRAME-SIDE observable only, and the binary consequence at the item. For a journey the admissible observable is what the player could see or do - a drawn string, a rendered object, a surface that appears, an input that is accepted. A getCensusState() return value is not an observable; RI-MTH07 B1 rules the trace an observer. There is no `partial`: round 2 recorded 'PARTIAL - unobservable' on RI-CHR03's Dry Well, which is not a disposition this check has.",
+      "fourth_shape_named": "ORPHAN TEXT - a string authored, computed correctly, carried through the model, exposed through the harness, and NEVER DRAWN. From the player's chair it is identical to a string that was never written. greetings.json's 1,500 lines and the ten dilemma questions are the same failure at two different distances from the screen. RI-MTH07 A named orphan model, orphan data and orphan predicate; this is the fourth.",
+      "best_worked_instance_preserved": "RI-PRG02 gets the opposite treatment because it contains the corpus's best instance of this check PASSING and it should be copied: round 1 reported hp_max 620 for VIGOUR 6 and 18 alike; round 2 reported 508 and 196 AND THEN COUNTED HITS - 11 blows of 50 to fell the Orsimer, 4 to fell the Bosmer. The second number is the consumption proof and the first is not, because the pool being right and the fight reading the pool are two different claims."
+    },
+    {
+      "id": "R7",
+      "subject": "Is the decomposition right? Item sets had been assembled by directory rather than by the judges: field",
+      "ruling": "THE SET IS RIGHT AND THE PIECE BOUNDARY IS BADLY WRONG",
+      "direction_1_scored_but_judging_nothing_declared": "CLEAN. All six scored items judge a declared path once the 226-entry alias table resolves progression.attributes -> progression.level.attributes and progression.skills -> progression.skill.usegrowth. This area did not repeat W1-09's mistake; the naive by-directory check that flags RI-PRG02/RI-PRG03 is the checker's error, not the piece's.",
+      "direction_2_judging_a_declared_path_but_never_scored": ["RI-QST03", "RI-DLG04"],
+      "direction_2_note": "Both judge progression.skill.usegrowth and neither has ever appeared on a W1-07 verdict.",
+      "direction_3_charged_for_paths_it_does_not_own": "RI-JRN01 judges THREE paths - journey.firstlaunch.flow, journey.chargen.diegesis, journey.onboarding.explanation - and W1-07 declares only the middle one. The Flow block (25) and the Restraint block (20) - 45 of the item's 100 points - measure paths the piece does not own and are a cross-piece coupling debt owned by the journey.firstlaunch.flow seam.",
+      "headline_number": "subsystems.json defines 38 journey.* / input.* / experience.* paths. Across EVERY verdict in corpus/90-verdicts/wave1/, EXACTLY ONE is declared by any piece: journey.chargen.diegesis. 37 OF 38 ARE OWNED BY NOBODY - including all ten input.* paths, both of RI-EXP01's, and both of RI-JRN09's new ones. That is RI-MTH07 'How we lose' clause 2 at the scale of a whole subsystem family.",
+      "remedy_is_both_halves": "NOT to drop the 45 points - the build ships a boot path and has therefore silently escaped the item that judges it for two rounds. The blocks stay AND journey.firstlaunch.flow must be declared by a piece. Either half alone is a relaxation."
+    },
+    {
+      "id": "R8",
+      "subject": "Are the bars judging the WRITING? The critic found the prose better than Morrowind's and no bar credits or requires it",
+      "ruling": "THEY WERE NOT. One of them now credits it, deliberately narrowly, and the narrowness is on the record.",
+      "why_narrow": "A bar that says 'score the prose' is worse than no bar: unfalsifiable, moves with the critic, and is exactly the sort of check a well-written verdict wins by being well written.",
+      "what_is_credited": "RI-JRN09 M2 only, and as a COUNTABLE property: a line that is responsive to what the player just said is a thing no generator produces and no template survives. Round 2's Warden-Scribe observing the player's race and mis-recording it - 'Altmer. - No, of course not, you are not tall enough and you are not smug enough. Dunmer. I will write Dunmer.' - is a full credit under M2(a) and is a better idea than Morrowind's own. This item exists partly to make that scoreable, because two verdicts have now called this build's writing better than the reference's with no bar that could say so.",
+      "mitigation_against_it_becoming_a_receipt": "Every answer read back verbatim scores 7 of 7 and is WORSE writing. The critic must quote the drawn line for each of the seven, and a verdict whose seven quotes are seven templates must say so in prose and score the axis at its floor. That is the ONE place in the item where a critic exercises judgement, and it is declared there rather than hidden.",
+      "what_i_did_not_do": "I did not add a prose-quality bar to RI-JRN01 or RI-CHR01. The honest position is that the corpus can measure whether the writing was DELIVERED AND USED and cannot measure whether it is GOOD, and pretending otherwise produces a number that means nothing. Delivered-and-consumed is a floor, not a ceiling, and is stated as a floor. RI-DLG06's blind register test is the corpus's one real instrument in this class and it belongs to dialogue."
+    }
+  ],
+
+  "bars_no_build_could_pass": [
+    {
+      "item": "RI-JRN01",
+      "extent": "100 of 100 points",
+      "cause": "fail-closed on tools/journey/journey-run.mjs (A-JRN1), mandated by RI-MTH06 and assigned to nobody",
+      "evidence": "scored 0 in round 1 and round 2, for the same reason, on two completely different builds",
+      "fixed_by": "0.1 - 67 of 100 runnable, 33 corpus_debt, bands applied to the runnable fraction"
+    },
+    {
+      "item": "RI-CHR01",
+      "extent": "the whole item",
+      "cause": "min-over-axes x Distinctness axis blocked on tools/analysis/build-viability.mjs",
+      "evidence": "native 0 for every build that will ever be written; recorded native_score 0 in both rounds",
+      "fixed_by": "method 6 - the axis leaves the min as corpus_debt, keeping its 486/540 target verbatim, and returns the day the tool exists"
+    },
+    {
+      "item": "RI-CHR03",
+      "extent": "the whole item",
+      "cause": "identical mechanism, identical tool, Decidability axis",
+      "evidence": "native 0 in both rounds",
+      "fixed_by": "method 5, identically"
+    },
+    {
+      "item": "RI-EXP01",
+      "extent": "the whole item",
+      "cause": "all five of its tools phantom AND its two paths declared by no wave-1 piece",
+      "evidence": "NEVER RUN ON ANY BUILD",
+      "fixed_by": "NOT FIXED HERE - needs its tools written and its paths owned; both are RI-MTH06's and the orchestrator's, not a builder's"
+    }
+  ],
+
+  "regression_test": {
+    "question": "Does round 2's build still fail under every amended item?",
+    "answer": "YES, and by a wider margin. Re-read using round 2's own measurements and nothing new.",
+    "per_item": [
+      { "item": "RI-CHR01", "as_scored": 4, "re_read": 0, "why": "Distinctness leaves the min as corpus_debt; Questionnaire axis 0 (DTR_q = 0); Class-roster 0 (0 of 14 in play). Native 0 -> the item's own new 0 rung. Two hard fails cap at 2 independently" },
+      { "item": "RI-CHR02", "as_scored": 4, "re_read": 0, "why": "Dialogue-delivery Consumption 0 - coupling == 0 on greetings.json AND race-gated topics AND the guard tables" },
+      { "item": "RI-CHR03", "as_scored": 4, "re_read": 0, "why": "Decidability leaves the min as corpus_debt; Drawback-reality 0 - Focus never fell below max in anything the critic could drive, and RI-MTH07 has no partial. Cross-piece cause => W1-07<->W1-14 seam debt" },
+      { "item": "RI-PRG02", "as_scored": 6, "re_read": 0, "why": "1.2c - min-over-axes with M5-earned-fraction unmeasurable. Its consumption proof is the best in the corpus and it still scores 0, because a min rule means what it says" },
+      { "item": "RI-PRG03", "as_scored": 5, "re_read": 0, "why": "1.2c - two unmeasurable axes, one of them M7-skill-scales-damage, the only place skill is allowed to touch the fight, never measured on any build" },
+      { "item": "RI-JRN01", "as_scored": 0, "re_read": 2, "why": "now measurable; capped at 2 by HF5, HF7, M8's new hard fail and HF9" },
+      { "item": "RI-JRN09", "as_scored": null, "re_read": 2, "why": "HF1 (DTR < 0.50 on the questionnaire node class) and HF3 (NAMED_distinct == 0)" }
+    ],
+    "piece_mean": { "as_scored": 3.8, "re_read_over_six": 1.3, "re_read_over_seven": 1.4 },
+    "the_one_upward_movement": "RI-JRN01 0 -> 2, disclosed and explained: the corpus ceasing to charge a builder for its own missing tool and starting to charge the builder for four defects it can actually fix.",
+    "what_this_test_cannot_cover": "A round-3 builder is working in parallel and its plan targets exactly RI-JRN09 M1 and M3 - it reports questions drawn 10 of 10 and named classes 12 of 14 over the critic's own sweep shape. If that lands, RI-JRN09 will credit it. That is the item working, not the bar bending: the item was written against round 2's measurements before round 3 existed, and its M2 (AC >= 6 of 7, each with the drawn line quoted) is not on that builder's plan. A bar filed on Monday and passed on Tuesday by a fix aimed at the defect that motivated it is the system succeeding."
+  },
+
+  "biggest_weakness": "This corpus measures the room and not the conversation, and it does so systematically. Every instrument that works in this area is pointed at a structural property - how many surfaces, what fraction of the frame, which entity is speaking, how many entities exist, whether a token appears in a data file, whether an input path reaches a poll function. Every one is necessary. Together they scored a build that delivered zero of ten authored questions at 19 of 19, pass, pass, pass. The instruments that would have caught it are the 67 that do not exist, thirty of them in corpus/95-experience/. Three bar critics working independently in three areas have now each written a version of that sentence; it is no longer an observation about an area, it is a fact about the project, and it has a measured number attached to it for the first time.",
+
+  "holes_filed": [
+    { "id": "H1", "what": "Nothing in corpus/88-journeys/ or corpus/22-character/ measured whether the authored text of the opening reached the player, whether the player's answers were consumed inside the scene, or whether the questionnaire's naming moment ever occurred.", "closed_by": "RI-JRN09 (new item)" },
+    { "id": "H2", "what": "RI-MTH06 method 1 - the phantom-command sweep - existed since wave 0 and had never been run. 67 of 82 named tool paths do not exist.", "closed_by": "RI-MTH06 E + check C8 in tools/corpus-index.mjs" },
+    { "id": "H3", "what": "SCORING 1.1's hard-fail cap was binding, fail-closed, had its data in the verdict JSON already, and had no instrument.", "closed_by": "SCORING 1.2b + verdict-validate.mjs" },
+    { "id": "H4", "what": "The mandated ladder anchor row was silent below 4 on items whose aggregation routinely produces a native 0, and C6 actively rejected the wider row.", "closed_by": "SCORING 1.2b + C6 widened + 0/2 rungs on five items" },
+    { "id": "H5", "what": "min-over-axes is declared by 21 items as 'a property of this item, not of the critic' and nothing checked that the reported native score was the minimum.", "closed_by": "SCORING 1.2c + verdict-validate.mjs (warn in wave 1, error at wave 2)" },
+    { "id": "H6", "what": "RI-MTH07 / CONSUMPTION had reached none of the fourteen items judging the opening, creation and the journeys.", "closed_by": "### CONSUMPTION written into 15 items; the orphan-text shape named" },
+    { "id": "H7", "what": "37 of 38 journey.* / input.* / experience.* subsystem paths are declared by no wave-1 piece and have therefore never been measured on any build.", "closed_by": "NOT CLOSED - filed. Needs owners assigned; see conditions_for_satisfied C5" },
+    { "id": "H8", "what": "RI-JRN01 M4's headline threshold - >= 60 s of available play before the first character-defining question, the item's whole claim that you get a body before you get a character - has never been measured by anyone.", "closed_by": "NOT CLOSED - named explicitly in M4 as blocked and unmeasured; expires with A-JRN1" }
+  ],
+
+  "items_amended": [
+    { "item": "RI-JRN01", "sections": ["0.1", "0.2", "M4", "M5", "M8", "M9", "M13", "M15", "M20", "Scoring", "CONSUMPTION", "How we lose"], "referral": "R1, R3, R6, R7" },
+    { "item": "RI-JRN02", "sections": ["CONSUMPTION"], "referral": "R6" },
+    { "item": "RI-JRN03", "sections": ["CONSUMPTION"], "referral": "R6" },
+    { "item": "RI-JRN04", "sections": ["CONSUMPTION"], "referral": "R6" },
+    { "item": "RI-JRN05", "sections": ["CONSUMPTION"], "referral": "R6" },
+    { "item": "RI-JRN06", "sections": ["CONSUMPTION"], "referral": "R6" },
+    { "item": "RI-JRN07", "sections": ["CONSUMPTION"], "referral": "R6" },
+    { "item": "RI-JRN08", "sections": ["CONSUMPTION"], "referral": "R6" },
+    { "item": "RI-CHR01", "sections": ["method 6", "method 11", "Scoring axes", "ladder anchors", "aggregation", "CONSUMPTION", "How we lose"], "referral": "R2, R4, R5.2, R6" },
+    { "item": "RI-CHR02", "sections": ["4c", "Scoring axes", "ladder anchors", "aggregation", "CONSUMPTION"], "referral": "R5, R5.2, R6" },
+    { "item": "RI-CHR03", "sections": ["method 5", "ladder anchors", "aggregation", "CONSUMPTION"], "referral": "R2, R5.2, R6" },
+    { "item": "RI-PRG02", "sections": ["ladder anchors", "aggregation", "CONSUMPTION"], "referral": "R5.2, R6" },
+    { "item": "RI-PRG03", "sections": ["ladder anchors", "aggregation", "CONSUMPTION"], "referral": "R5.2, R6" },
+    { "item": "RI-EXP01", "sections": ["CONSUMPTION"], "referral": "R6" },
+    { "item": "RI-MTH06", "sections": ["E", "E.1", "E.2", "E.3", "method 1"], "referral": "R2" },
+    { "item": "SCORING.md", "sections": ["1.2b", "1.2c"], "referral": "R4, R5.2, R5.3" },
+    { "item": "AMENDMENT-PROPOSAL-JRN01-01", "sections": ["front matter", "ruling block"], "referral": "R1" }
+  ],
+
+  "items_created": ["RI-JRN09"],
+  "subsystem_paths_registered": ["journey.opening.exchange", "journey.opening.legibility"],
+  "tools_changed": [
+    "tools/corpus-index.mjs - C8 phantom-tool sweep (warn wave 1, error wave 2); C6 widened to accept Ladder rows covering 4/6/8 rather than starting exactly at 4",
+    "tools/verdict-validate.mjs - hard-fail cap; native-0 ceiling; ceiling READ OFF the item's published anchor row; min-over-axes aggregation warning"
+  ],
+
+  "thresholds_lowered": [],
+  "thresholds_lowered_note": "NONE. Every re-cut takes points OUT OF existing checks (RI-JRN01's M20 funded by 5 points out of the Flow block proportionally; M13's 10 split 7/3 between the two claims it was already making). Every renormalisation removes weight from numerator and denominator alike and leaves the bands untouched. The one axis that lost a band - RI-CHR02 Volume - lost only its 10, kept every floor VERBATIM, and was replaced by two harder sub-axes. Every amendment in this pass makes round 2 score LOWER, and three of them make verdicts in other people's areas fail.",
+  "thresholds_held": [
+    "RI-JRN01's bands >= 0.90 / 0.70-0.89 / 0.50-0.69 / < 0.50 unchanged, now applied to the runnable fraction",
+    "RI-JRN01 M5's 55% UI-area ceiling and 90% uniform-frame clause unchanged - only the measurement source is fixed",
+    "RI-JRN01 M4 clause 1's >= 60 s unchanged, and named as never measured",
+    "RI-CHR01's Distinctness 540 signatures / >= 486 viable / < 70% floor unchanged while in corpus_debt",
+    "RI-CHR03's Decidability >= 4 of 6, >= 1 / >= 2, and 6/6 => 0 unchanged while in corpus_debt",
+    "RI-CHR02 4c's every shipped-volume minimum unchanged: 1,500 greeting lines, 90 topics, 30 forbids, 16 rumours, 60 slavery lines",
+    "RI-JRN09's NAMED_distinct >= 10 inherited unchanged from RI-CHR01 5 - not a new threshold",
+    "SCORING 1.1's hard-fail cap of 2 unchanged - it is now merely enforced"
+  ],
+
+  "conditions_for_satisfied": [
+    { "id": "C1", "condition": "RI-JRN09 M1, M2 and M3 are run once, with the published a/b/c/d histogram. If DTR_q comes back at 1.00 and AC at 6 of 7 on the same build, that is the most important number this piece has produced.", "owner": "critic.journey / W1-07 round 3+" },
+    { "id": "C2", "condition": "tools/journey/journey-run.mjs, beat-extract.mjs and the A-JRN1 trace events exist, at which point RI-JRN01's 33 points of corpus_debt expire by their own condition and M4 clause 1 - the >= 60 s bar nobody has ever measured - is measured for the first time.", "owner": "RI-MTH06 / a corpus owner, NOT a builder" },
+    { "id": "C3", "condition": "tools/analysis/build-viability.mjs exists, returning RI-CHR01's Distinctness and RI-CHR03's Decidability to their mins at their unchanged thresholds.", "owner": "RI-MTH06 / a corpus owner, NOT a builder" },
+    { "id": "C4", "condition": "RI-EXP01 is run on a build, ever. Needs five phantom tools and an owner for experience.opening.hook / experience.opening.beats. It is the corpus's only pre-existing answer to the owner's actual question and has never produced a number.", "owner": "orchestrator + RI-MTH06" },
+    { "id": "C5", "condition": "W1-07's declared path set is corrected: journey.firstlaunch.flow, journey.onboarding.explanation, journey.opening.exchange and journey.opening.legibility given owners, and RI-QST03/RI-DLG04 either scored or moved to the seam ledger. 37 of 38 journey/input/experience paths are owned by nobody.", "owner": "orchestrator" },
+    { "id": "C6", "condition": "A W1-07 verdict cites RI-PLT03's measured T_control. Two exist with no figure for how long it takes to get a body, in a piece whose first requirement is the time to a controllable body.", "owner": "critic.journey" },
+    { "id": "C7", "condition": "The phantom count goes down from 67. It becomes a blocking error at wave 2 and nothing else in this project has ever paid a debt down without a gate.", "owner": "RI-MTH06" }
+  ],
+
+  "provenance": {
+    "corpus_findings": "constructed, confidence high - direct reads of files in this repository. The phantom census (144 items scanned, 82 distinct paths, 15 present, 67 absent, and the per-area table), the absence of RI-MTH07/CONSUMPTION from all fourteen items before this pass, the 21 min-over-axes items, the alias-resolved judges: comparison, and the count of journey/input/experience paths declared by any wave-1 verdict (1 of 38) are each reproducible by `node tools/corpus-index.mjs`, `node tools/verdict-validate.mjs --all`, or the scripts quoted in the .md.",
+    "build_figures": "MEASURED BY OTHERS AND ATTRIBUTED. This critic did not re-run the build - it judges standards, not code. 19/19 distinct frames, 18/18 speaker resolutions, 0 of 10 questions drawn, 0 of 14 named classes over 240 runs, rendered_text: [] at the stamped node, UI area 0.136-0.336 self-reported against 0.17-0.49 measured, 1500/1500 and 16/16 headroom, hp_max 508 vs 196 with 11 and 4 hits, focus_max 74 -> 46, disposition 6 -> 60 and 92g -> 68g, 28 gamepad presses, 11-of-14 reachable in principle against 0 in 1,600 runs - all quoted from W1-07.md, W1-07-r2.md, their artifacts and orchestration/status/W1-07-r3.json.",
+    "arithmetic": "The unpassability result (gate 7.0 x 6 = 42; three items pinned at 0 => ceiling 30 => mean 5.0; 38/6 = 6.33 under the generous translation) is computed here from SCORING 1.1/1.2 and the two verdicts' own item tables, and is reproducible by hand.",
+    "new_thresholds": "The thresholds introduced in RI-JRN09 - DTR_q = 1.00, DTR_scene >= 0.90, AC >= 6 of 7, the 45/30/20/5 weights and the four hard fails - are CONVENTIONS DEFINED BY THAT ITEM, in the same class as RI-MTH07's [0.95, 1.05] coupling band, and are declared as such in its Provenance note. NAMED_distinct >= 10 is inherited unchanged from RI-CHR01 5. RI-JRN09 A (MW/EXCHANGE) is canonical-recall, confidence medium, and no threshold in that item is derived from a Morrowind timing.",
+    "corrections_to_own_text": [
+      "RI-MTH06 E and the C8 code comment said '74 of 137'. 74 is the SUM OF THE PER-AREA COLUMN (seven tools are named by items in more than one area) and 137 was a stale item count. The distinct figure is 67 of 82 named across 144 items. Both files corrected and the double-count now explained in E.",
+      "SCORING 1.2b said the native->ladder ceiling is READ OFF the item's anchor row; verdict-validate.mjs guessed a generic ceiling of 4 instead, which is exactly the score round 2 gave. The instrument now reads the row. An amendment whose enforcement does not implement its own text is the same class of defect as the ones this pass was filed to find."
+    ]
+  }
+}

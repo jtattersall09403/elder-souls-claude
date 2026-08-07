@@ -85,6 +85,7 @@ export class MovesetLibrary {
     this.hitGeometry = hitGeometry || null;
     this._clipCache = new Map();
     this._gainCache = new Map();
+    this._bladeCache = new Map();
   }
 
   /** Resolve a spine alias or a roster id to a roster weapon id. Throws if neither. */
@@ -110,7 +111,23 @@ export class MovesetLibrary {
   socketsFor(weaponId, slotId) {
     const clip = this.clipFor(weaponId, slotId);
     const cls = this.classes.classes[this.movesets[weaponId].class];
-    const b = clip.capsuleLength;
+    // ---- BLADE LENGTH IS A PROPERTY OF THE WEAPON, NOT OF THE ANIMATION ---------------------
+    //
+    // `clip.capsuleLength` is the CLIP registry's, and clips are SHARED, so before this line a
+    // weapon's blade changed length depending on which animation it happened to be playing.
+    // Measured on the shipped roster: the five curved greatswords all declare `reach_m` 2.75 and
+    // their r1.1 tips swept horizontal radii of 1.30, 1.55, 1.57, 2.11 and 2.12 m — an 0.82 m
+    // spread inside one class, from the animation alone. That is 80% of the `W_max` term that
+    // put `SEP` at 0.72 (a HARD FAIL under RI-WPN03 §D.2), and it is the mechanism behind the
+    // round-2 verdict's "the halberd's blade reaches 1.45 m against a declared 2.865 m".
+    //
+    // `_bladeLength` solves the socket-B distance ONCE PER WEAPON so that the tip's measured
+    // horizontal radius from the actor's own root, over the lead slot's active window, equals
+    // the weapon's declared `reach_m` — `BAR-CRITIQUE-W1-10-R1` §R4's definition of blade reach,
+    // verbatim, root translation suppressed by construction. Same discipline `_yawGain` already
+    // applies to `arc_sweep_deg`: the declaration is the contract and the rig is solved to it,
+    // rather than the declaration being a wish the animation ignores.
+    const b = this._bladeLength(weaponId) ?? clip.capsuleLength;
     const span = cls && cls.hitbox_span_m !== undefined ? cls.hitbox_span_m : b;
     // ---- S26 CONTIGUITY: the hit volume runs from the GRIP to the tip, always ---------------
     //
@@ -216,6 +233,95 @@ export class MovesetLibrary {
       () => new Rig(this.skeleton, this.hitGeometry));
     this._gainCache.set(key, g);
     return g;
+  }
+
+  /**
+   * The solved blade length for one WEAPON, cached — the socket-B distance at which the tip's
+   * horizontal radius from the actor's own root, at its widest over the lead slot's active
+   * window, equals the weapon's declared `reach_m`.
+   *
+   * Why a solve rather than a number in the data. The tip sits at `hand + direction × b`, and
+   * both the hand's position and the direction come out of the pose, so the radius a given `b`
+   * produces is a property of the animation. Writing a blade length into the registry therefore
+   * cannot make two weapons that share a clip reach what they each declare — which is exactly
+   * the defect this replaces. Solving inverts it: the DECLARATION is fixed and the geometry is
+   * fitted to it, so `reach_m` becomes a contract the fight honours instead of a column the
+   * fingerprint reads and the player never feels.
+   *
+   * `r(b)` is `|hand_h + dir_h·b|` maximised over the active frames — a max of convex functions,
+   * so it is convex in `b` and generally increasing over the region of interest, but it is NOT
+   * guaranteed monotone (a pose whose hand is outboard of the tip's axis has a minimum at
+   * positive `b`). So the solve is a coarse scan for the last crossing followed by a bisection,
+   * the same shape `swing.js calibrateYawGain` uses and for the same reason.
+   *
+   * A library built without a skeleton (several offline tools construct one purely to read slot
+   * tables) returns null and `socketsFor` falls back to the clip's own length, declared here
+   * rather than throwing.
+   *
+   * ONE KNOWN APPROXIMATION, stated rather than hidden: `_yawGain` solves the arc against the
+   * clip's registry capsule length, not against this solved one, so the two calibrations are
+   * sequential rather than jointly solved. The arc is a bearing about the root and is therefore
+   * first-order independent of the blade's length; measured, re-solving the gain against the
+   * calibrated blade moves the arc by under a degree on every class baseline.
+   */
+  _bladeLength(weaponId) {
+    if (!this.skeleton || !this.hitGeometry) return null;
+    const hit = this._bladeCache.get(weaponId);
+    if (hit !== undefined) return hit;
+    const ms = this.movesets[weaponId];
+    const target = ms && ms.reach_m;
+    if (!target) { this._bladeCache.set(weaponId, null); return null; }
+    const lead = ms.slots['r1.1'] ? 'r1.1' : Object.keys(ms.slots)[0];
+    const slot = ms.slots[lead];
+    const clip = this.clipFor(weaponId, lead);
+    const rig = new Rig(this.skeleton, this.hitGeometry);
+    const startup = slot.startup_f + (slot.charge_max_f || 0);
+    const last = startup + slot.active_f;
+    const pos = [0, 0, 0];
+    // The pose is independent of `b`, so walk the active window ONCE and keep, per frame, the
+    // hand origin and the unit direction the socket runs along. `radius(b)` is then closed form
+    // and the solve costs no further rig evaluations.
+    const seg = [];
+    for (let f = startup + 1; f <= last && f <= clip.total; f++) {
+      pos[2] = clip.rootForwardAt(f);
+      clip.applyPose(rig, f);
+      rig.evaluate(pos, 0, clip.rootOffsetYAt(f), 0, 1);
+      const o = [rig.socketB[0] - pos[0], rig.socketB[2] - pos[2]];
+      rig.evaluate(pos, 0, clip.rootOffsetYAt(f), 0, 2);
+      const p = [rig.socketB[0] - pos[0], rig.socketB[2] - pos[2]];
+      // socketB(b) is affine in b: socketB(1) + (socketB(2) - socketB(1)) * (b - 1)
+      seg.push({ ox: o[0] - (p[0] - o[0]), oz: o[1] - (p[1] - o[1]), dx: p[0] - o[0], dz: p[1] - o[1] });
+    }
+    if (!seg.length) { this._bladeCache.set(weaponId, null); return null; }
+    const radius = (b) => {
+      let m = 0;
+      for (const s of seg) { const r = Math.hypot(s.ox + s.dx * b, s.oz + s.dz * b); if (r > m) m = r; }
+      return m;
+    };
+    let lo = 0.05, hi = 12.0, found = false;
+    // last crossing: scan down from the top so a convex r(b) with two roots takes the outer one,
+    // which is the one that is a blade rather than a hand held behind the body.
+    const STEPS = 240, step = (hi - lo) / STEPS;
+    for (let i = STEPS; i >= 1; i--) {
+      const b1 = lo + step * (i - 1), b2 = lo + step * i;
+      if ((radius(b1) - target) * (radius(b2) - target) <= 0) { lo = b1; hi = b2; found = true; break; }
+    }
+    let b;
+    if (!found) {
+      // The declaration is out of the rig's range in this pose. Take the end of the range that
+      // gets closest and record it by returning it — a conformance probe then reports the miss
+      // rather than the library silently inventing a length.
+      b = Math.abs(radius(0.05) - target) < Math.abs(radius(12) - target) ? 0.05 : 12;
+    } else {
+      for (let i = 0; i < 40; i++) {
+        const mid = (lo + hi) / 2;
+        if ((radius(lo) - target) * (radius(mid) - target) <= 0) hi = mid; else lo = mid;
+      }
+      b = (lo + hi) / 2;
+    }
+    b = Math.round(b * 1000) / 1000;
+    this._bladeCache.set(weaponId, b);
+    return b;
   }
 
   /** The `Clip` for one slot of one weapon, instantiated at that slot's own frame counts. */

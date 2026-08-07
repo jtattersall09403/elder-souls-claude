@@ -185,7 +185,7 @@ try {
       // "moved nothing" — correctly, because the effect's own record rules that an Argonian has
       // no taint to lower. An arena that makes one of the 55 effects a no-op by the caster's
       // RACE is measuring the caster, not the effect.
-      H.setCharacter({ race: 'imga', upbringing: 'interior', class: 'sap-reader', birthsign: 'raj-xul', given_name: 'Unwritten', sex: 'unrecorded' });
+      H.setCharacter({ race: 'breton', upbringing: 'interior', class: 'sap-reader', birthsign: 'raj-xul', given_name: 'Unwritten', sex: 'unrecorded' });
       for (let i = 0; i < 700; i++) {
         for (const sk of ['sorcery', 'root-speech', 'warding', 'veiling']) H.grantSkillUse('cast_effective', { cost: 40, spell_skill: sk });
         H.hearthRest();
@@ -204,10 +204,35 @@ try {
       H.addAffliction('marsh_rot', 'disease');
       H.addAffliction('sap_blight', 'poison');
       H.addAffliction('stiff_limb', 'paralysis');
+      // A DESTINATION, so `recall` is unobservable for want of a handler if it is unobservable
+      // at all. Round 3's first census read `recall` as moving nothing and the reason was
+      // `recall_refused {reason: no_mark}` — the arena had never marked anywhere.
+      H.setTravelMark([37, 0, -24]);
+      // SOMETHING TO REACH FOR. `telekinesis`'s whole verb is reach and `arena_flat` ships no
+      // props, so it was measured in an empty room. One inside melee reach and one well outside
+      // it: the effect has to be the thing that makes the far one takeable.
+      H.clearProps();
+      H.spawnProp({ eid: 'census_near_bowl', name: 'clay bowl', pos: [0.9, 0, 0.6], reach_m: 2.2 });
+      H.spawnProp({ eid: 'census_far_censer', name: 'brass censer', pos: [0, 0, 6.5], reach_m: 2.2 });
       for (const s of D.spells.spells) H.learnSpell(s.id);
-      H.magicEventsDrain();
       let eid = null;
-      if (withEnemy) { eid = H.spawn('inf_trash', 0, 1.4); H.aggro(eid); }
+      // TWO BODIES, ALWAYS. Round 3's first census spawned an enemy only for non-`self` ranges,
+      // so `detect_life` ran in a world with nothing alive in it and `frenzy` — whose verb is
+      // "it fights the nearest OTHER body instead of you" — ran in a world with no other body.
+      // Both read as moving nothing. They are spawned for every row now; only the AGGRO is
+      // conditional, because S29's travel fence refuses `recall`/`mark`/`intervention` while a
+      // hostile is aggroed, and a census that aggroes for a self-range spell is measuring the
+      // fence rather than the effect.
+      const e0 = H.spawn('inf_trash', 0, 1.4);
+      const e1 = H.spawn('inf_trash', 2.6, 5.2);
+      if (withEnemy) { eid = e0; H.aggro(e0); H.aggro(e1); }
+      // S29'S COOLDOWN, WAITED OUT. `damagePlayer()` above IS a hostile action, and the fence
+      // holds for 300 frames after the last one — so the first census cast `recall` and
+      // `intervention` four frames after being hit for 220 and read the refusal as the effect
+      // doing nothing. 320 frames of quiet, before the paired read starts, in BOTH the control
+      // and the treatment.
+      if (!withEnemy) H.stepFrames(320);
+      H.magicEventsDrain();
       return eid;
     };
 
@@ -260,9 +285,23 @@ try {
         }
         H.stepFrames(4);
         const before = snap(eid);
+        H.magicEventsDrain();
         if (cast) castOnce(sid, 240); else H.stepFrames(240);
         const after = snap(eid);
-        return { before, after, spell: sid, diff: diff(before, after) };
+        // ---- DELIVERY. The check the first census did not make, and the reason four of its
+        // rows lied. `runOne` returned a snapshot pair whether or not the spell was ever
+        // delivered, so a cast refused for Focus, for attunement or by S29's travel fence
+        // produced a perfectly well-formed "the effect moved nothing" — indistinguishable from a
+        // handler that does nothing, which is the exact confusion this whole item exists to
+        // prevent. Worse, it corrupted the magnitude read: a HIGH magnitude whose cast was
+        // refused differs from the LOW one at every path the low cast moved, so the row scored
+        // `COUPLED` on the strength of the high cast NOT HAPPENING.
+        const ev = H.magicEventsDrain();
+        const applied = ev.filter((x) => x.type === 'effect_apply' && (x.effect === undefined || x.effect === e.id));
+        const refusals = ev.filter((x) => /refus|denied|dropped/i.test(String(x.type)))
+          .map((x) => ({ type: x.type, reason: x.reason || x.gate || x.fence || null, effect: x.effect || null }));
+        return { before, after, spell: sid, delivered: cast ? applied.length > 0 : null, refusals,
+                 events: ev.map((x) => x.type) };
       };
 
       let ctl, a, b;
@@ -274,6 +313,11 @@ try {
         row.class = 'THREW'; row.note = String(err && err.message); rows.push(row); continue;
       }
       if (a.refused) { row.class = 'NOT_CASTABLE'; row.note = a.refused; rows.push(row); continue; }
+      row.delivered_lo = a.delivered;
+      row.delivered_hi = b && !b.refused ? b.delivered : null;
+      row.refusals_lo = a.refusals;
+      row.refusals_hi = b && !b.refused ? b.refusals : null;
+      if (!a.delivered) { row.class = 'NOT_DELIVERED'; row.note = JSON.stringify(a.refusals).slice(0, 200); }
 
       // TREATMENT-AFTER vs CONTROL-AFTER. Two runs, same seed, same inputs, same frame count;
       // the ONLY difference is that one of them cast the spell. Everything that differs is the
@@ -286,10 +330,30 @@ try {
 
       row.moved_paths = Object.keys(netA).sort();
       row.moved_paths_hi = netB ? Object.keys(netB).sort() : null;
+      // NOISE THAT IS IN EVERY SIGNATURE IS NOT A SIGNATURE. `gold` moves because commissioning
+      // the spell costs money and `player.pos` moves because casting shifts the body a
+      // centimetre; both appear under all 55 effects and under nothing else. Left in, they made
+      // the first census report `moved_anything: 55/55` while nine effects had moved nothing at
+      // all — a headline of 55 built on the price of the spell. They are dropped from the
+      // signature and reported separately as `commission_only`.
+      const NOISE = (k) => k === 'gold' || k === 'player.pos.json' || k === 'player.pos.len'
+        || /^player\.pos\.\d/.test(k) || k === 'player.stamina';
       // The SIGNATURE is the union over both magnitudes: an effect whose low magnitude is below
       // its own threshold (open_lock at 1 opens no tier-3 collar) still has the verb.
-      const union = new Set([...Object.keys(netA), ...(netB ? Object.keys(netB) : [])]);
+      const unionAll = new Set([...Object.keys(netA), ...(netB && b.delivered ? Object.keys(netB) : [])]);
+      const union = new Set([...unionAll].filter((k) => !NOISE(k)));
+      // THREE SIGNATURES, THREE READINGS OF THE SAME RUN, all reported:
+      //   `signature`       — every non-noise leaf path. The headline.
+      //   `signature_world` — the same with magic's own `world.*` bookkeeping dropped (M7's
+      //                       actual requirement). A verb visible only here is a verb visible
+      //                       only to the module that cast it.
+      //   `signature_blob`  — arrays collapsed back to `.json`, i.e. the round-2 critic's own
+      //                       flattener, so 33 -> N is a like-for-like number and not a
+      //                       redefinition of the metric in the builder's favour.
       row.signature = [...union].sort().join('|');
+      row.signature_world = [...union].filter((k) => !k.startsWith('world.')).sort().join('|');
+      row.signature_blob = [...union].filter((k) => !/\.\d+(\.|$)/.test(k)).sort().join('|');
+      row.commission_only = union.size === 0;
       row.detail_lo = netA;
       if (netB) row.detail_hi = netB;
 
@@ -298,6 +362,11 @@ try {
         row.magnitude_coupling = 'N/A_BINARY';
       } else if (!netB) {
         row.magnitude_coupling = 'HI_REFUSED';
+      } else if (!b.delivered) {
+        // See the delivery note in `runOne`. A high cast that never landed makes every path the
+        // low cast moved "differ between the magnitudes", which is a coupling reading produced
+        // by the absence of the thing being measured.
+        row.magnitude_coupling = 'HI_NOT_DELIVERED';
       } else {
         const differing = [];
         for (const k of union) {
@@ -311,16 +380,24 @@ try {
     }
 
     // ---- distinguishability: group by signature ------------------------------------------
-    const bySig = {};
-    for (const r of rows) {
-      if (!r.signature) continue;
-      (bySig[r.signature] = bySig[r.signature] || []).push(r.effect);
-    }
-    const collisions = Object.entries(bySig).filter(([, v]) => v.length > 1)
-      .map(([sig, v]) => ({ signature: sig, effects: v }));
+    const group = (field) => {
+      const by = {};
+      for (const r of rows) {
+        if (!r[field]) continue;              // an empty signature is `commission_only`, below
+        (by[r[field]] = by[r[field]] || []).push(r.effect);
+      }
+      return {
+        distinct: Object.keys(by).length,
+        collisions: Object.entries(by).filter(([, v]) => v.length > 1)
+          .map(([sig, v]) => ({ signature: sig, effects: v })).sort((x, y) => y.effects.length - x.effects.length),
+      };
+    };
+    const gAll = group('signature');
+    const gWorld = group('signature_world');
+    const gBlob = group('signature_blob');
 
     return {
-      schema: 'elder-souls/w1-14-r3-census@1',
+      schema: 'elder-souls/w1-14-r3-census@2',
       harness_version: H.version,
       focus_max: FOCUS_MAX,
       summary: {
@@ -328,11 +405,19 @@ try {
         moved_anything: rows.filter((r) => r.moved_anything).length,
         moved_nothing: rows.filter((r) => r.moved_anything === false).map((r) => r.effect),
         not_castable: rows.filter((r) => r.class === 'NOT_CASTABLE').map((r) => r.effect),
+        not_delivered: rows.filter((r) => r.class === 'NOT_DELIVERED').map((r) => ({ effect: r.effect, why: r.refusals_lo })),
+        hi_not_delivered: rows.filter((r) => r.magnitude_coupling === 'HI_NOT_DELIVERED').map((r) => r.effect),
         magnitude_ignored: rows.filter((r) => r.magnitude_coupling === 'MAGNITUDE_IGNORED').map((r) => r.effect),
         magnitude_coupled: rows.filter((r) => r.magnitude_coupling === 'COUPLED').length,
         binary_by_data: rows.filter((r) => r.binary_by_data).map((r) => r.effect),
-        distinct_signatures: Object.keys(bySig).length,
-        signature_collisions: collisions,
+        // DISTINCT-VERBS, three ways. `distinct_signatures` is the headline; `_world` is M7's
+        // strict reading (magic's own registers dropped); `_blob` is the round-2 flattener, for
+        // like-for-like comparison against that verdict's 33/55.
+        distinct_signatures: gAll.distinct,
+        distinct_signatures_world_side_only: gWorld.distinct,
+        distinct_signatures_blob: gBlob.distinct,
+        signature_collisions: gAll.collisions,
+        signature_collisions_world_side_only: gWorld.collisions,
       },
       rows, notes,
     };
@@ -342,9 +427,11 @@ try {
 }
 
 const s = report.summary;
-log(`moved_anything ${s.moved_anything}/${s.total}   distinct signatures ${s.distinct_signatures}   magnitude_ignored ${s.magnitude_ignored.length}`);
+log(`moved_anything ${s.moved_anything}/${s.total}   magnitude_ignored ${s.magnitude_ignored.length}   hi_not_delivered ${s.hi_not_delivered.length}`);
+log(`DISTINCT-VERBS  all ${s.distinct_signatures}/${s.total}   world-side-only ${s.distinct_signatures_world_side_only}/${s.total}   blob(round-2 flattener) ${s.distinct_signatures_blob}/${s.total}`);
 log(`moved nothing: ${s.moved_nothing.join(', ') || '(none)'}`);
+log(`not delivered: ${s.not_delivered.map((x) => x.effect).join(', ') || '(none)'}`);
 log(`magnitude ignored: ${s.magnitude_ignored.join(', ') || '(none)'}`);
-for (const c of s.signature_collisions) log(`  COLLISION [${c.effects.join(', ')}] -> ${c.signature.slice(0, 160)}`);
+for (const c of s.signature_collisions) log(`  COLLISION [${c.effects.join(', ')}] -> ${c.signature.slice(0, 150)}`);
 writeJson(path.join(outDir, 'census.json'), report);
 console.log(path.join(outDir, 'census.json'));
