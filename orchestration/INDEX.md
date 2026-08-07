@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `107c1b3`: 489 tools, 153 reference
-items, 28 pieces in flight.
+so it cannot drift. Generated at `fc5e13a`: 491 tools, 153 reference
+items, 29 pieces in flight.
 
-Its purpose is to stop 28+ concurrent agents each paying separately to discover the
+Its purpose is to stop 29+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -62,7 +62,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/verdict-staleness.mjs` — which verdicts are still standing on the code that is actually at HEAD.
 - `tools/verdict-validate.mjs` — **no header comment**
 
-### `tools/analysis/` — 39
+### `tools/analysis/` — 40
 
 - `tools/analysis/ambience-census.mjs` — RI-AUD03 B4 — the layer census.
 - `tools/analysis/ambience-determinism-chart.mjs` — Draw the W1-22 round-3 headline as a picture: which ambience beds render the same sound twice.
@@ -82,6 +82,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/crime-audit.mjs` — the static half of W1-15's evidence.
 - `tools/analysis/critic-w1-07-audit.mjs` — W1-07 CRITIC offline audit.
 - `tools/analysis/critic-w1-22-probe.mjs` — WRITTEN BY THE W1-22 ROUND-1 CRITIC, declared under method_deviations.
+- `tools/analysis/critic-w1-22-r2-determinism.mjs` — WRITTEN BY THE W1-22 ROUND-2 CRITIC (round-3 judgement), declared under method_deviations.
 - `tools/analysis/data-index.mjs` — regenerate game/data/index.json, the manifest HARNESS.md §7 rule 5 requires.
 - `tools/analysis/gen-enchant-services.mjs` — the priced enchanting SHELF, so RI-MAG03 M8 has something to sum.
 - `tools/analysis/gen-faction-gates.mjs` — the rank ladders, in RI-QST03 §B's fixed column format.
@@ -171,7 +172,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/ponr-probe.mjs` — RI-EXP05 "Comparison method" Step 2, executed.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 
-### `tools/harness/` — 181
+### `tools/harness/` — 182
 
 - `tools/harness/anim-author.mjs` — re-author the four attack clip archetypes and the idle base loop, and solve for the one free parameter each archetype has.
 - `tools/harness/anim-tune.mjs` — measure the swing OFF THE ANIMATION SYSTEM, with no browser.
@@ -325,6 +326,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-13-r3-levelling.mjs` — **no header comment**
 - `tools/harness/w1-13-r4-clock-consequences.mjs` — RI-PRG04 COMPARISON METHOD #8, RUN — and the AR-1 arm that running it turned up.
 - `tools/harness/w1-13-r4-input-only.mjs` — NEXT-DISPATCH §P.6 — IS THE LEVEL SPEND REACHABLE BY INPUT ALONE?
+- `tools/harness/w1-13-r4-record-aggregation.mjs` — Wait for the W1-13 round-4 jrn06 aggregation to finish, then record what its method-8 row actually says into `orchestration/status/W1-13-r4.json`.
 - `tools/harness/w1-14-r3-apm3.mjs` — RI-MAG01 AP-M3, "the homing orb", made reproducible.
 - `tools/harness/w1-14-r3-census.mjs` — RI-MAG06 M7 (`DISTINCT-VERBS`) and M8 (the arena audit), re-run.
 - `tools/harness/w1-14-r3-skill.mjs` — GAP-W1-magic-skill-frozen, measured under RI-MAG06 §E.
@@ -767,9 +769,10 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-13-r4` | running | diagnose why m_prg04_m8_clock_consequence FAILS inside the aggregation while the same six  | `orchestration/status/W1-13-r4.json` `game/src/sim/environment.js` `game/src/sim/souls.js` `game/src/render/renderer.js` `tools/journey/jrn06-death.mjs` `tools/harness/w1-13-r4-clock-consequences.mjs` |
+| `W1-16` | surveying | read game/src/sim/state.js, engine.js (setGold/getGold/setAttributes/getDerivedStats/getSk | — |
 | `W1-12` | running | Read RULES/INDEX/PLAN/ARBITRATION; survey enemy AI honestly before building | `orchestration/status/W1-12.json` |
 | `critic-w1-22-r2` | running | read RULES, INDEX, r1 verdict, blind judge verdict, W1-22-r3 status | `orchestration/status/critic-w1-22-r2.json` |
-| `W1-13-r4` | running | diagnose why m_prg04_m8_clock_consequence FAILS inside the aggregation while the same six  | `orchestration/status/W1-13-r4.json` `game/src/sim/environment.js` `game/src/sim/souls.js` `game/src/render/renderer.js` `tools/journey/jrn06-death.mjs` `tools/harness/w1-13-r4-clock-consequences.mjs` |
 | `critic-w1-03` | running | bare-Node probes done (18 checks, 16 pass). Next: look at both shots, then ONE browser ses | `orchestration/status/critic-w1-03.json` |
 | `W1-READABLES` | building | write the mechanism, then the documents | `orchestration/status/W1-READABLES.json` |
 | `W1-03` | fixed | Three severe gaps round 1 diagnosed are now fixed and re-verified (bare Node + one browser | `reports/w1-03-survey.md` `reports/blog-feed.jsonl` `docs/shots/2026-08-07-w1-03-hip-deep-water-no-waterline.png` `docs/shots/2026-08-07-w1-03-round2-hip-deep-water-waterline-now-drawn.png` `game/src/sim/traversal.js` `game/src/engine.js` |

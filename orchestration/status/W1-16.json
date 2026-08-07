@@ -1,0 +1,29 @@
+{
+  "task_id": "W1-16",
+  "brief": "Progression: souls, levels, skills, encumbrance, gold (game/src). Never dispatched before this run.",
+  "started": "2026-08-07",
+  "state": "surveying",
+  "git_at_start": {},
+  "contention_at_start": {
+    "headless_shell": 18,
+    "loadavg": "15.49 10.96 10.59"
+  },
+  "paths": [
+    "progression.souls.economy",
+    "progression.level.curve",
+    "progression.level.attributes",
+    "progression.skill.usegrowth",
+    "progression.skill.gating",
+    "progression.equipment.encumbrance",
+    "progression.gold.economy",
+    "progression.inventory.model",
+    "progression.merchant.barter",
+    "progression.build.identity"
+  ],
+  "judged_by": ["RI-AI05","RI-CHR01","RI-CHR02","RI-CHR03","RI-DLG04","RI-LOR05","RI-PRG01","RI-PRG02","RI-PRG03","RI-PRG05","RI-PRG06","RI-PRG07","RI-QST03","RI-QST08","RI-STL01","RI-STL02","RI-TRV01","RI-TRV02","RI-UIX03"],
+  "notes_on_scope": "souls economy (progression.souls.economy / RI-PRG06) has already been through W1-SOULS r1/r2/r3 (separate task ids, orchestration/status/W1-SOULS-r3.json complete as of this session's start) -- do not redo that work, just confirm it is not regressed. This piece's live-defect brief points at: (1) gold purse split across 4 fields, (2) level-up screen lists 10 attributes vs character's 6 (RI-PRG02 wants a REAL 10, so likely the fix is completing the sheet to 10, not shrinking the UI to 6), (3) skills-by-use coupling (RI-PRG03/S3), (4) encumbrance existence/consumption unmeasured (RI-PRG07, RI-CMB01 i-frames read equip load).",
+  "next_step": "read game/src/sim/state.js, engine.js (setGold/getGold/setAttributes/getDerivedStats/getSkills/setSkills/getBurden/setBurden/setEquipLoad), render/ui.js level-up screen, save/state.js gold fields, game/data for stats.json/skills.json existence.",
+  "files_touched": [],
+  "files_claimed": [],
+  "findings": []
+}

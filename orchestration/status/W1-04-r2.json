@@ -29,6 +29,7 @@
     "schedules": "93 people changed POSITION across a day, 75 changed cell. Round 1 in Thorn: 9 of 24 changed cell, 0 of 24 changed position.",
     "outdoors": "16 outdoors at 03:00, 50 at 09:00, 22 at 20:00 in the loaded towns. Round 1: 0 anywhere in the province at 03:00 and 0 of W1-04's own 260 at any hour.",
     "perturbations_that_moved_the_screen": "bounds_m halved -> drawn shell 13.6x15.6 -> 6.8x7.8, meshes 127 -> 113. props[] stripped -> props_built 18 -> 0, meshes 127 -> 67. lights[] stripped -> lamps 8 -> 1, lit 5 -> 1. All read off renderer.interiorSummary, not off the record.",
+    "unique_items": "tools/world/w1-04-unique-item-probe.mjs: 10 of 10 rooms sampled had their declared unique item as a real prop entity in sim.props at the spot the pedestal is drawn, and 10 of 10 were picked up through takeProp() with the inventory changing. Control: 0 interior props exist in the world before any door is used. barge-hold is reported out of scope (one of W1-07's five hand-built cells, furnished by the census, not by a record).",
     "final": "tools/world/w1-04-consumption.mjs: 20/20 CONSUMED, 9 paths, 0 skipped, 0 page errors. Round 1 was 13/13 on a build where no door had ever shown anyone a room."
   },
   "headline_offline":"All 115 interiors build: 0 failures, 94 distinct scene-graph signatures (was 2), largest identical group 7 (seven byte-identical helstrom dwelling records), 0 props with no table entry, 452 architecture-kit meshes, 504-3444 triangles (was 249 on 113 of 115).",
@@ -36,7 +37,15 @@
   "spec": "corpus/90-verdicts/wave1/W1-04-r1.md",
   "prior_round": "W1-04 (FAIL 3.2/10)",
   "base_commit": "6332ac7",
-  "next_step": "1. sim.applyCell hook: door verbs reach _applyCell (deferred to _afterStep, outside the armed guard). 2. build the interior cell from the record. 3. stepSchedule moves pos. 4. street posts for pop-*. 5. teach w1-04-consumption.mjs to read the renderer. 6. re-run critic-w1-04-r1b/r1c. 7. capture + blog.",
+  "next_step": "Done. For a successor or a critic: the pixel sweep (tools/world/w1-04-interior-sweep.mjs --control) is the one acceptance number I did not land - see open_at_handoff. Everything else is measured and reported above.",
+  "open_at_handoff": "The verdict's second acceptance number - a pixel-hash sweep over one fixed camera pose in all 115 returning >= 100 distinct images - has a tool (tools/world/w1-04-interior-sweep.mjs, with a --control arm that cuts the room builder and must come out worse) and the tool was still running when I finished. Re-run it; it needs no argument beyond --control. The renderer-side equivalent IS landed and reported: 92 of 115 distinct scene-graph signatures against 2 in round 1. If the pixel number comes back below 100, the honest reading is that the scene-graph signature is coarser than the picture, not that the picture is the same.",
+  "instruments_for_the_critic": [
+    "tools/world/w1-04-consumption.mjs            (20/20 CONSUMED; --self-test gives 7/7 GOES-RED)",
+    "tools/world/w1-04-interior-sweep.mjs --control (the pixel sweep; NOT LANDED, see open_at_handoff)",
+    "tools/world/w1-04-unique-item-probe.mjs      (10/10 taken, control 0)",
+    "tools/world/build-street-life.mjs --check    (regenerates and diffs the population files)",
+    "tools/world/critic-w1-04-r1c.mjs             (the verdict's own acceptance instrument; I ran it twice against stale trees and killed both, and did not land a run against the shipped tree - my consumption tool section 10a is the same measurement with a control, and reports 115/115 against a cut arm of 0/115)"
+  ],
   "the_finding_i_am_fixing": "renderer.setCell() has one caller, Engine._applyCell(), and useDoor()/leaveInterior() never reach it: 115 of 115 interiors entered, 0 of 115 switched the drawn cell. And 113 of 115 resolve to one 249-triangle generic hall.",
   "objectives": [
     "P-blocker: door verbs must reach the renderer cell setter; entering and leaving must change what is drawn",

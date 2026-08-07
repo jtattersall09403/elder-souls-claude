@@ -14,7 +14,12 @@
     "game/src/render/renderer.js",
     "reports/runs/W1-13-R4/",
     "docs/shots/",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "tools/harness/w1-13-r4-record-aggregation.mjs",
+    "reports/journeys/w1-13-r4-jrn06/",
+    "tools/harness/w1-13-r4-input-only.mjs",
+    "tools/harness/w1-13-r3-clock.mjs",
+    "tools/analysis/w1-13-r4-chart.mjs"
   ],
   "files_touched": [
     "orchestration/status/W1-13-r4.json",
@@ -30,7 +35,9 @@
     "reports/runs/W1-13-R4/input-only.json",
     "reports/runs/W1-13-R3/clock.json",
     "docs/shots/2026-08-07-w1-13-r4-dying-must-not-change-the-price.png",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "tools/harness/w1-13-r4-record-aggregation.mjs",
+    "reports/journeys/w1-13-r4-jrn06/"
   ],
   "notes": [
     "souls.js is claimed by W1-SOULS-r3 (state: complete). ONE line changed: awardFor() reads env.awardTimeOfDay instead of env.timeOfDay, plus one extra field on the souls_awarded event. Declared redundant_with rather than left to read as a collision (RULES.md 16).",
@@ -60,5 +67,14 @@
     "GOLD PURSE (path_to_ten item 8) DELIBERATELY UNTOUCHED, per the dispatch. Item 9 corpus_debt untouched. Item 7s clamped_within_2m and the M-D10 active-window fixture were not reached this round.",
     "CONTENTION, declared under RULES.md 26: pgrep -c headless_shell ran 18-24 and /proc/loadavg 8.5-12.9 on four cores for the whole run. Every figure in this round is a soul count, an hour, a frame count, a shop count, a person count or a boolean, and every one is frame-based and load-independent. NO TIMING FIGURE APPEARS ANYWHERE and none is claimed."
   ],
-  "aggregation_note": "not re-run this round - see notes"
+  "aggregation_note": "not re-run this round - see notes",
+  "gates": {
+    "boot_check": "PASS",
+    "check-data": "PASS",
+    "check-quests": "PASS",
+    "check-content": "PASS",
+    "check-prose": "PASS",
+    "corpus-index": "PASS",
+    "publish": "PASS"
+  }
 }
