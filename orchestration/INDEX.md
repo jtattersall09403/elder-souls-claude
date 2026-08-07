@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `703d846`: 444 tools, 153 reference
-items, 19 pieces in flight.
+so it cannot drift. Generated at `88ee56d`: 444 tools, 153 reference
+items, 21 pieces in flight.
 
-Its purpose is to stop 19+ concurrent agents each paying separately to discover the
+Its purpose is to stop 21+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -722,15 +722,17 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `tool-critic-r4` | in-progress (successor #3: re-baselining verdict at HEAD) | re-baseline tree-dependent numbers at 88ee56d; assess r6 status file; re-stamp deliverable | `corpus/80-methods/TOOL-COVERAGE-R4.md` `corpus/80-methods/TOOL-COVERAGE-R4.json` `reports/blog-feed.jsonl` `orchestration/status/tool-critic-r4.json` |
+| `W1-13-r3` | building | Diagnose the three aggregation reds (m_d14 named gap first, then m_d4, then m_d10_d11) and | `orchestration/status/W1-13-r3.json` |
+| `W1-MASS` | verifying | SUCCESSOR-2 RESUMED at git 88ee56d. P1/P2/P3 confirmed COMMITTED and on disk (swing.js:447 | `game/src/combat/swing.js` `tools/weapons/motion-census.mjs` `tools/weapons/build-movesets.mjs` `tools/weapons/mass-browser.mjs` `game/data/combat/movesets/` `game/data/weapons/clip-registry.json` |
+| `W1-22-r2` | building | interior beds (R4 + RI-WLD08 §6), then night rendering, then the browser verification pass | — |
+| `critic-w1-souls-r2` | started | read RULES/INDEX, r1 verdict, W1-SOULS-r2.json status, the item, then run the builder's su | `orchestration/status/critic-w1-souls-r2.json` |
 | `tool-build-viability-r6` | researching | choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items | — |
 | `W1-JOURNAL-PROSE` | researching | state the closing-line rule, then rewrite file by file, re-running the FULL gate after eve | — |
-| `W1-MASS` | verifying | browser CONSUMPTION with a MOVING target + delete-the-fix; then shot, blog line, reconcili | — |
 | `judge-prose-r4` | researching | read t01-books A.txt and B.txt; answer; then t02..t15 | — |
-| `W1-22-r2` | building | interior beds (R4 + RI-WLD08 §6), then night rendering, then the browser verification pass | — |
 | `W1-05` | verifying | RUN WHEN QUIET: (1) node tools/world/waylamp-probe.mjs — the CONSUMPTION proof for the way | — |
 | `W1-06-r2` | researching | instrument in bare Node (camera.js imports only rng.js + collision.js) to confirm before c | — |
 | `W1-06` | partial | HIGHEST VALUE FOR THE NEXT AGENT, in order: (1) THE PITCH PIN. In a lock-on against cam_bo | — |
-| `W1-13-r3` | building | full jrn06-death aggregation, then shot + blog line + report. | — |
 | `critic-w1-23` | researching | read TOOL-LOOP, ARBITRATION §3, RI-LOR01/04/06, builder report | — |
 | `W1-FACTIONS-r3` | researching | patch faction-probe to travelToGiver; then prose, records_belief, template break, browser  | — |
 | `critic-w1-souls` | researching | run the -DELETED counterpart, then write the verdict md+json, blog line | — |

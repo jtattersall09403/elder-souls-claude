@@ -47,6 +47,23 @@ if (existsSync(pageForLint)) {
   }
 }
 
+// How many verdicts are still standing on the code at HEAD, reported as a NUMBER — never a gate.
+// The precedent is tools/check-quests.mjs's own header comment: content checks used to throw
+// from inside the engine constructor, so ANY agent's dangling reference took down every OTHER
+// agent's measurement, on content none of them touched. Staleness has the identical shape: on
+// any given day some other piece's commit will invalidate somebody's verdict, and if that failed
+// `publish` for everybody, a dozen concurrent agents would spend their round fighting a check
+// that is honestly reporting a fact about a piece they do not own. So this never sets
+// process.exitCode — a stale verdict is not wrong and is not downgraded, it is information for
+// whoever dispatches the next round (see tools/verdict-staleness.mjs's own header).
+try {
+  const { computeReport, discoverVerdicts } = await import('./verdict-staleness.mjs');
+  const { summary } = computeReport(discoverVerdicts());
+  console.log(`publish: verdict-staleness — ${summary.fresh}/${summary.total} fresh, ${summary.stale}/${summary.total} stale, ${summary.unknown}/${summary.total} unknown (reported only; not a gate — run \`node tools/verdict-staleness.mjs\` for the detail).`);
+} catch (e) {
+  console.error('publish: verdict-staleness could not run —', e.message, '(reported only; not a gate, so this does not fail the build).');
+}
+
 const page = join(ROOT, 'docs', 'index.html');
 if (existsSync(page)) {
   const html = readFileSync(page, 'utf8');

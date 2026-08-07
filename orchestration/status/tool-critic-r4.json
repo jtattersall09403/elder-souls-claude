@@ -2,8 +2,8 @@
   "task_id": "tool-critic-r4",
   "brief": "inline: critique tools/analysis/build-viability.mjs round 5",
   "started": "wave-tool-r4",
-  "state": "complete",
-  "commit_at_start": "0b2d6ef (predecessor worked at e29ec21; tree moved)",
+  "state": "in-progress (successor #3: re-baselining verdict at HEAD)",
+  "commit_at_start": "0b2d6ef (predecessor worked at e29ec21; tree moved) | successor#3 resumed at 88ee56d",
   "outputs_expected": [
     "corpus/80-methods/TOOL-COVERAGE-R4.md",
     "corpus/80-methods/TOOL-COVERAGE-R4.json",
@@ -50,10 +50,23 @@
     "boot-check PASS after all work. C8 = 26 unchanged. HEAD moved 0b2d6ef -> e54a18a during the run (other agents committing continuously); ALL my numbers are stamped 0b2d6ef and the deliverables say so. I did NOT commit; another agent's `git add -A` staged my two deliverables, same as happened to the round-5 builder.",
     "CLEANUP DONE: predecessor's in-repo probe dir tools/analysis/.r4probe/ REMOVED. My shadow trees deleted after extracting evidence (disk was at 98%). Evidence kept at scratchpad/r4b/evidence/ (6 attestations + 3 criteria tallies), plus selftest-full.txt, d3-walk.txt, and my three probes (matrix-delta.mjs, triple.mjs, bv-attrib.mjs)."
   ],
-  "next_step": "none \u2014 verdict delivered: NOT SATISFIED, rebuild tools/analysis/build-viability.mjs (9-item rebuild list in TOOL-COVERAGE-R4.json)",
+  "next_step": "re-baseline tree-dependent numbers at 88ee56d; assess r6 status file; re-stamp deliverables",
   "notes_for_successor": "Verdict NOT SATISFIED is written and complete. If a round 6 builder responds, the two checks that matter most are: (1) the model detector must compare explainDisposition(id).race_term against the shipped raceTerm() PER GIVER, by value AND sign \u2014 my shadowD1/D2/D3 breaks are the acceptance tests and all three currently pass as sound; (2) the abstention at :2044 must re-run the triple search after granting the flags \u2014 shadowE (enemy_pairs rewritten to a bipartite K4,4) is the acceptance test and currently produces output identical to the sound tree. Reproduce shadows by copying game/+tools at the commit under test and symlinking tools/node_modules. Disk runs at ~98%; delete shadows when done.",
   "method_deviations": [
     "No tool was written mid-critique (TOOL-LOOP rule 1 not triggered): every instrument I needed already existed. My three probes are critic-side measurement only and live outside the repo, in the scratchpad.",
     "Browser work was capped by contention: I ran 5 --verify-model boots while headless_shell was 6-12 and loadavg 2.98-11.5, then moved all remaining measurement Node-side per the brief's above-8-browsers rule. The matrix-delta cross-check was therefore done by importing the shipped raceTerm() rather than by a sixth boot \u2014 and it independently reproduced the live 25/31."
+  ],
+  "files_touched": [
+    "corpus/80-methods/TOOL-COVERAGE-R4.md",
+    "corpus/80-methods/TOOL-COVERAGE-R4.json",
+    "reports/blog-feed.jsonl",
+    "orchestration/status/tool-critic-r4.json"
+  ],
+  "files_claimed": [
+    "corpus/80-methods/TOOL-COVERAGE-R4.md",
+    "corpus/80-methods/TOOL-COVERAGE-R4.json"
+  ],
+  "redundant_with": [
+    "tool-build-viability-r6"
   ]
 }

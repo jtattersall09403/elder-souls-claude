@@ -1,0 +1,24 @@
+{
+  "task_id": "critic-w1-souls-r2",
+  "role": "critic",
+  "item": "W1-SOULS",
+  "round": 2,
+  "state": "started",
+  "started_at": "2026-08-07T20:40:00Z",
+  "next_step": "read RULES/INDEX, r1 verdict, W1-SOULS-r2.json status, the item, then run the builder's suite and my own probes",
+  "files_touched": [
+    "orchestration/status/critic-w1-souls-r2.json"
+  ],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-SOULS-r2.md",
+    "corpus/90-verdicts/wave1/W1-SOULS-r2.json",
+    "reports/blog-feed.jsonl",
+    "docs/shots/",
+    "tools/progression/"
+  ],
+  "redundant_with": [],
+  "notes": [
+    "Critic with fresh context. Did not write what I judge.",
+    "Leads from the brief: (a) is the r2 band re-anchor DERIVED or RE-FITTED, and what happens when the population builder lands more bodies; (b) the epoch-gate hole is a CLASS bug - any probe that recycles an encounter has it; did r2 fix the class or its own instance?"
+  ]
+}

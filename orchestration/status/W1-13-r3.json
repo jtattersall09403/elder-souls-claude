@@ -1,6 +1,6 @@
 {
   "task_id": "W1-13-r3",
-  "brief": "death, recovery, hearth loop, levelling \u2014 round 3 after FAIL 5/10",
+  "brief": "death, recovery, hearth loop, levelling — round 3 after FAIL 5/10",
   "started": "wave-1 round 3",
   "state": "building",
   "outputs_expected": [
@@ -47,13 +47,27 @@
     "SURFACE_FRAMES = 150 (game/src/sim/death.js:28). The r2 critic's `at_respawn_m` was sampled at deathFrame+201, i.e. **51 frames AFTER the body stood up**, with move:[0,1] still queued and never released. 51 frames x ~0.044 m/frame = 2.26 m; the reported figure was 2.24 m. Its `after_220f_m` is 271 frames of held forward = 9.78 m / 13.97 m = WALKING PACE. So the drift claim needs re-framing, not a fix: measure respawn_pos (the world's own record, written in DeathSystem.respawn()) and control for carried momentum.",
     "CONTENTION at the code phase: pgrep -c headless_shell = 18, loadavg 11.31. Browser work deferred.",
     "MEASURED 19706e7 (browsers 24, loadavg ~14; all figures are integers and load-independent). LEVELLING, four arms one browser: no-character (the SHIPPED default) hp_max +208, stamina_max +20, focus_max +7 over 8+8+8 points. Round 2 measured 0/0/0 on this exact arm. FIX DELETED (applyDerivedPools monkeypatched back to `if(!sim.character) return null`) goes to EXACTLY 0/0/0 and _poolsDirty sticks TRUE on all 24 spends. THE ARMS DIFFER. The fix is not inert.",
-    "The verdict's literal acceptance ('the no-character arm reports the SAME deltas as its with-character arm') is not achievable by any pool code: setCharacter() composes endurance 16 against the identity register's 20 and the curves are non-linear, so equal deltas would mean the sheet was being ignored. SAME-START CONTROL added (arm 4: with-character, register forced to IDENTITY_ATTRIBUTES): hp +208 == +208 and stamina +20 == +20, IDENTICAL to the anchored arm, and focus 26 vs 7 \u2014 the birthsign term, which the verdict's own remedy says should apply only when sim.character exists. The anchor is a constant added to an absolute derivation, so the DELTA is arm-independent, which is exactly what this shows.",
+    "The verdict's literal acceptance ('the no-character arm reports the SAME deltas as its with-character arm') is not achievable by any pool code: setCharacter() composes endurance 16 against the identity register's 20 and the curves are non-linear, so equal deltas would mean the sheet was being ignored. SAME-START CONTROL added (arm 4: with-character, register forced to IDENTITY_ATTRIBUTES): hp +208 == +208 and stamina +20 == +20, IDENTICAL to the anchored arm, and focus 26 vs 7 — the birthsign term, which the verdict's own remedy says should apply only when sim.character exists. The anchor is a constant added to an absolute derivation, so the DELTA is arm-independent, which is exactly what this shows.",
     "VOCABULARY (T4) PASS: 10 drawn rows == 10 carried attributes, on_screen_not_carried=[] and carried_not_on_screen=[]; _spendSouls('dexterity') refused with the purse UNMOVED and no key minted; and with the stale six forced back into the live register openMenu('levelup') THROWS 'speaking different languages' at the same basin that opened one statement earlier.",
     "DRIFT ANSWERED, six wells, axis HELD (commit 95d62da). T1: the world's own `respawn_pos` (written inside DeathSystem.respawn(), not sampled later) is 0.000 m from the named basin at 24 of 24 well x mode combinations, INCLUDING every held arm. THE RESPAWN FRAME IS EXACT.",
     "T2a, the decisive momentum test: `held-then-released` (walking, axis released ON the killing blow) lands at 0.000 m, IDENTICAL to `released` (never pressed), at 6 of 6 wells, from bodies that were demonstrably moving before the death (moved_6f_before_death 0.19-0.32 m). Nothing of the BODY is carried across a respawn.",
     "T2b: `held-through` runs 0.32-0.53 m ahead of `held-after-only` in the first 10 frames and then travels at IDENTICAL terminal speed - 2.240 vs 2.240, 3.200 vs 3.200 (x3), 3.198 vs 3.198 over frames 160-220. The gap is the ANALOG AXIS ALREADY BEING AT FULL DEFLECTION, which is a true statement about a held stick, not carried momentum. The sixth well (ceyatatar-vault) has walked into geometry: both arms terminal speed ~0 and both at 5.455 m, the stronger agreement.",
-    "So the r2 verdict's 9.78 m / 13.97 m 'drift' is a player walking: 3.2 m per 60 frames = 3.2 m/s. THE ANSWER IS 'carrying a HELD INPUT through a respawn is intended'; nothing of the body is carried, and the respawn frame itself is exact. Two probe bugs of my OWN were found and fixed on the way (a flat stepFrames(155) that gave one arm a 5-frame head start; a distance predicate over a window containing a ramp)."
+    "So the r2 verdict's 9.78 m / 13.97 m 'drift' is a player walking: 3.2 m per 60 frames = 3.2 m/s. THE ANSWER IS 'carrying a HELD INPUT through a respawn is intended'; nothing of the body is carried, and the respawn frame itself is exact. Two probe bugs of my OWN were found and fixed on the way (a flat stepFrames(155) that gave one arm a 5-frame head start; a distance predicate over a window containing a ramp).",
+    "SUCCESSOR NOTE (r3 restart 4): a FULL AGGREGATION WAS ALREADY RUN and never recorded. reports/journeys/w1-13-r3-jrn06/journey.json, run 20260807T184828Z-jrn06-death-s4711-b1de6a, commit de4756c, dirty=true, wall 666136ms, page_errors 0, 41 instruments, ok:false. GREEN at last: m_d8_second_death TRUE (path_to_ten 2), m_d2_stain_placement TRUE + m_d2b_placement_rules_exercised TRUE + m_d10b_death_legibility_world_caused TRUE (path_to_ten 7). STILL RED: m_d14_stain_visibility FALSE (the NAMED GAP), m_d4_across_death_diff FALSE, m_d10_d11_preserved FALSE. STILL UNMEASURABLE: control_observed / first_control / m4_clause1 (path_to_ten 6 NOT closed)."
   ],
-  "next_step": "full jrn06-death aggregation, then shot + blog line + report.",
-  "notes_for_successor": "Round 2 FAILED 5/10. path_to_ten in corpus/90-verdicts/wave1/W1-13-r2.md is the spec. Items 1,3,4 of path_to_ten are CODE-COMPLETE and UNVERIFIED IN A BROWSER. Do not re-do them; verify them."
+  "next_step": "Diagnose the three aggregation reds (m_d14 named gap first, then m_d4, then m_d10_d11) and the still-unmeasurable control_observed; fix; re-run the FULL aggregation; then shot + blog line.",
+  "notes_for_successor": "Round 2 FAILED 5/10. path_to_ten in corpus/90-verdicts/wave1/W1-13-r2.md is the spec. Items 1,3,4 of path_to_ten are CODE-COMPLETE and UNVERIFIED IN A BROWSER. Do not re-do them; verify them.",
+  "files_touched": [
+    "orchestration/status/W1-13-r3.json"
+  ],
+  "files_claimed": [
+    "game/src/render/renderer.js",
+    "tools/journey/jrn06-death.mjs",
+    "tools/journey/journey-run.mjs",
+    "tools/journey/world-runs-gate.mjs",
+    "tools/harness/w1-13-r3-stain-vis.mjs",
+    "reports/runs/W1-13-R3/",
+    "reports/journeys/w1-13-r3-jrn06/",
+    "docs/shots/"
+  ]
 }

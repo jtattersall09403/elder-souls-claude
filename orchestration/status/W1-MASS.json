@@ -47,6 +47,21 @@
     "THE ONE REMAINING CODE LEVER, MEASURED AND DELIBERATELY NOT LANDED. K = 1.5 is smoothstep's peak/mean ratio, so a FLAT angular rate across the active window would buy a uniform 1.5x of headroom for free, moving no declaration. It would rescue exactly three of the six impossible classes (SSW 1.35 -> 0.90, HLB 1.43 -> 0.95, GSW 1.12 -> 0.75) and leave CSW 1.13, CGS 1.36, WHP 2.32 still impossible. NOT LANDED, for a stated reason: it changes the interpolation of every attack clip in the game, and \u00a7E's DECELERATION RATIO row (tip speed at impact+hitstop / peak <= 0.30-0.45) would very likely inflate toward 1.0 as a direct consequence \u2014 a flat active window is fast at its end by construction. Fixing one \u00a7E row by breaking another that has no instrument is the trade the corpus exists to prevent. Recorded with the numbers so a successor or an arbiter can take it deliberately.",
     "P3 LANDED \u2014 THE CONTRADICTION IS NOW LOUD. build-movesets computes peak = 1.5 * arc_rad * reach_m * 60 / active_f per slot and writes `peak_tip_speed_mps_implied` ONLY on slots over \u00a7E.2's ceiling, so absence is the pass condition and a violating slot carries its own indictment into every downstream tool. 645 of 2,689 slots (23.99%) carry it. `--gate` exits non-zero. reports/W1-MASS-guard.json lists every violation with, for each, the active_f it would need AND the arc it would be allowed \u2014 the shape of the choice, not an answer."
   ],
-  "next_step": "browser CONSUMPTION with a MOVING target + delete-the-fix; then shot, blog line, reconciliation report",
+  "next_step": "SUCCESSOR-2 RESUMED at git 88ee56d. P1/P2/P3 confirmed COMMITTED and on disk (swing.js:447 band comment, build-movesets SHAPE_ARC_BAND, reports/W1-MASS-guard.json 204kB). reports/w1-mass/ is EMPTY -- tools/weapons/mass-browser.mjs was written but NEVER RUN. Contention at resume: 0 headless_shell, loadavg 1.02 -- browser window is open, take it. Remaining: run mass-browser (moving + still + delete-the-fix), shot, blog line, baselines-moved reconciliation.",
+  "files_touched": [
+    "game/src/combat/swing.js",
+    "tools/weapons/motion-census.mjs",
+    "tools/weapons/build-movesets.mjs",
+    "tools/weapons/mass-browser.mjs",
+    "game/data/combat/movesets/",
+    "game/data/weapons/clip-registry.json",
+    "corpus/12-weapons/moveset.schema.json",
+    "reports/W1-MASS-guard.json"
+  ],
+  "files_claimed": [
+    "reports/w1-mass/",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
   "notes_for_successor": "Frame convention is BINDING: Souls tick data is 1/30 s, ours 60 Hz, so every Souls figure doubles. Write f@60 and t@30, never a bare frame count. See ARBITRATION.md S22."
 }
