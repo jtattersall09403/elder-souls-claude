@@ -162,35 +162,24 @@ try {
       } catch (e) { out.errors.push('swing ' + s.id + ': ' + String(e.message).slice(0, 200)); }
     }
 
-    // ---- D. CONSUMPTION ------------------------------------------------------------------
-    // Perturb the DECLARED geometry of one weapon's class and show the drawn weapon changes.
-    // The declared numbers are read live out of the moveset library the fight is holding, so
-    // this is a perturbation of the real source and not of a copy.
+    // ---- D. the DECLARED side of the consumption test -------------------------------------
+    // What this build believes each subject's geometry is, read from the weapon data surface,
+    // paired with what it actually DREW. The perturbation itself happens on disk between two
+    // runs of this probe (see --tag), because patching an in-page object would only prove that
+    // the library reaches the renderer — not that the DATA FILE does.
     try {
-      const probe = (wid) => {
-        H.loadState('arena_flat'); H.setLoadout({ weapon: wid }); H.setRenderRate(0);
+      out.consume = { declared: {}, drawn: {} };
+      const listed = H.weapons.listWeapons();
+      for (const s of SUBJ) {
+        const rec = listed.find((x) => x.weapon_id === s.id);
+        out.consume.declared[s.id] = rec ? { class: rec.class, reach_m: rec.reach_m } : null;
+        H.loadState('arena_flat'); H.setLoadout({ weapon: s.id }); H.setRenderRate(0);
         H.stepFrames(3); H.renderFrame();
         const P = H.getDrawnGeometry().actors.find((a) => a.id === 'player');
-        return { key: P.weapon_key, tris: P.weapon_tris, len: P.drawn_length_m,
-          tip: P.drawn_tip, err_mm: P.tip_vs_socket_b_mm };
-      };
-      const before = probe('cgs_drowned_reaper');
-      // reach 2.75 -> 1.20, edged span 1.55 -> 0.30. Both are class-level declarations.
-      const lib = H._movesetLibrary ? H._movesetLibrary() : null;
-      out.consume = { note: 'see node-side perturbation', before };
-      if (lib) {
-        const cls = lib.classes.classes.CGS;
-        cls.reach_m = 1.20; cls.hitbox_span_m = 0.30;
-        lib._clipCache.clear(); if (lib._bladeCache) lib._bladeCache.clear();
-        const after = probe('cgs_drowned_reaper');
-        cls.reach_m = 2.75; cls.hitbox_span_m = 1.55;
-        lib._clipCache.clear(); if (lib._bladeCache) lib._bladeCache.clear();
-        const restored = probe('cgs_drowned_reaper');
-        out.consume = { before, after, restored,
-          key_changed: before.key !== after.key,
-          length_changed_m: Math.abs((after.len || 0) - (before.len || 0)),
-          tris_changed: before.tris !== after.tris,
-          restored_ok: restored.key === before.key };
+        out.consume.drawn[s.id] = P
+          ? { key: P.weapon_key, tris: P.weapon_tris, drawn_length_m: P.drawn_length_m,
+            tip_err_mm: P.tip_vs_socket_b_mm }
+          : null;
       }
     } catch (e) { out.errors.push('consume: ' + String(e.message).slice(0, 200)); }
 
@@ -225,7 +214,7 @@ try {
 report.shot_md5 = {};
 for (const [id, png] of Object.entries(shots)) {
   const buf = Buffer.from(String(png).replace(/^data:image\/png;base64,/, ''), 'base64');
-  const file = path.join(outDir, 'frames', `${id}-f${SHOT_FRAME}.png`);
+  const file = path.join(outDir, 'frames', `${id}-f${SHOT_FRAME}${args.tag ? '-' + args.tag : ''}.png`);
   fs.writeFileSync(file, buf);
   report.shot_md5[id] = { md5: crypto.createHash('md5').update(buf).digest('hex'), bytes: buf.length, file };
 }
@@ -234,7 +223,8 @@ report.shots_distinct = md5s.length ? new Set(md5s).size : null;
 report.page_errors = handle.pageErrors ? handle.pageErrors.length : null;
 report.page_error_sample = handle.pageErrors ? handle.pageErrors.slice(0, 5) : null;
 
-writeJson(path.join(outDir, 'render-probe.json'), report);
+const tag = args.tag ? '-' + String(args.tag) : '';
+writeJson(path.join(outDir, `render-probe${tag}.json`), report);
 
 console.log('--- A boot ---');
 console.log(JSON.stringify(report.boot));

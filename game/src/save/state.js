@@ -24,6 +24,7 @@
 import { rng } from '../core/rng.js';
 import { canonicalise } from '../core/canonical.js';
 import { sha256 } from '../core/sha256.js';
+import { saveFight } from './fight.js';
 
 export const SAVE_SCHEMA_VERSION = 1;
 
@@ -338,6 +339,11 @@ export function buildSave(sim, build) {
       // hit-dedupe key survive a load together. See sim/state.js for what this replaced.
       swing_seq: p.swingSeq,
     },
+    // THE FIGHT. See save/fight.js for why it is here and what it retires. Without it the
+    // save had no writer at all for the equipped weapon, the shield, the offhand
+    // configuration, the flask, or any combat body — and `mirror()` overwrote six `pose.*`
+    // fields the save had just restored on the first step after every load.
+    fight: saveFight(sim, sim._combat, sim.magic, f),
     rng: rng.saveRngState(),
     flags: sortedMap(sim.quest.flags),
     volatile: {
@@ -662,17 +668,51 @@ function sortedQuestMap(m) {
 // anything down yet — so the block is always present and always the same shape. A save whose
 // key set changes with a game state is a save whose manifest cannot be a set difference.
 
+// W1-repair. `powers` and `drawbacks` are the two arrays EVERY birthsign term is read out of
+// (`character/derive.js` iterates both; `sheet.js focusRegenAllowed()` is a scan of the second).
+// They were composed by `composeCharacter()`, never written here, and never rebuilt by
+// `loadCreation()` — so after any load `applyBirthsignToPools()` iterated two `undefined` lists
+// and silently returned the base pools: the Warrior's x1.60 Focus reservoir, the 55% spell
+// absorption, and the whole of the DRY WELL DRAWBACK (seam S27 — its bearer's hearth rest does
+// not return Focus) were gone, and a `nu-ixtu` character measured `focus_restores_at_hearth ==
+// true` after a round trip. W1-13 patched it at the seam, in `Engine.loadState()`, by
+// recomposing the terms from the sign ids; the defect was here, and so is the fix.
+//
+// `upbringing_given_as`, `class_family_fit` and `invariants` were dropped by the same omission.
+// They are derived, but a save that drops a derived field is a save whose load is not the
+// inverse of its write, and the durable-field census now walks `sim.character` and says so.
+//
+// The key set is IDENTICAL in both branches — including `invariants`, whose keys are listed
+// rather than left to an empty object. A save whose key set changes with a game state is a
+// save whose manifest cannot be a set difference (RI-JRN05 M4).
+const INVARIANT_KEYS = [
+  'attribute_total', 'attribute_total_ok', 'race_delta_sum', 'class_delta_sum',
+  'skills_above_baseline', 'skills_above_baseline_ok', 'max_skill', 'max_skill_ok',
+];
+function saveInvariants(inv) {
+  const out = {};
+  for (const k of INVARIANT_KEYS) out[k] = inv && inv[k] !== undefined ? inv[k] : null;
+  return out;
+}
+
 export function saveCreation(ch) {
   if (!ch) {
     return {
       created: false, given_name: '', hatch_name: '', hatch_name_refused: false, sex: '',
-      race: '', upbringing: '', class_id: '', class_name: '', class_family: '', class_route: '',
+      race: '', upbringing: '', upbringing_given_as: '', class_id: '', class_name: '',
+      class_family: '', class_family_fit: null, class_route: '',
       birthsign: '', birthsign_second: '', signature_key: '', writ_text: '',
       attributes: {}, skills: {}, flags: [],
+      powers: [], drawbacks: [], invariants: saveInvariants(null),
     };
   }
   return {
     created: true,
+    upbringing_given_as: ch.upbringing_given_as || '',
+    class_family_fit: ch.class_family_fit === undefined ? null : ch.class_family_fit,
+    powers: deepCopy(ch.powers || []),
+    drawbacks: deepCopy(ch.drawbacks || []),
+    invariants: saveInvariants(ch.invariants),
     given_name: ch.given_name || '',
     hatch_name: ch.hatch_name || '',
     hatch_name_refused: !!ch.hatch_name_refused,
@@ -703,6 +743,12 @@ export function loadCreation(blob) {
     sex: blob.sex,
     race: blob.race,
     upbringing: blob.upbringing,
+    upbringing_given_as: blob.upbringing_given_as,
+    // The two arrays every birthsign term is read out of. See saveCreation() above.
+    powers: deepCopy(blob.powers || []),
+    drawbacks: deepCopy(blob.drawbacks || []),
+    class_family_fit: blob.class_family_fit,
+    invariants: deepCopy(blob.invariants || {}),
     class_id: blob.class_id,
     class_name: blob.class_name,
     class_family: blob.class_family,

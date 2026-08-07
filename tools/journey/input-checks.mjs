@@ -1065,9 +1065,11 @@ async function touchChecks(page, h, ev) {
     out.floating_stick = { origin_a: m1, origin_b: m2, same: Math.abs(m1[0] - m2[0]) < 1e-6 && Math.abs(m1[1] - m2[1]) < 1e-6 };
 
     // T9 — MULTI-TOUCH. Stick + camera + two buttons at once, all four registering.
-    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
-    H.setViewport({ size: { w: 844, h: 390, dpr: 3 }, pointer: 'coarse', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
-    H.setTouchEnabled(true);
+    // No `reset()` here: the state is already the arena the run started in, and a reset rewinds
+    // `sim.frame` to 0 under a touch overlay whose timers are frame-numbered.
+    H.setRenderRate(0);
+    for (const i of [50, 51]) H.touchUp(i);
+    H.stepFrames(4);
     const L = H.touchLayout();
     const block = L.find((c) => c.action === 'block');
     const light = L.find((c) => c.action === 'light');

@@ -113,6 +113,16 @@ export async function launchGame(args = {}) {
     window.__HARNESS_ENV = { headless: true, fixedStepHz: 60 };
   });
 
+  // `args.initScripts` — source strings installed BEFORE the goto, so they are in place before
+  // the game's own scripts run. Added in tool round 2: gamepad-shim.mjs needs to replace
+  // `navigator.getGamepads` above the seam `RealInput.pollGamepad()` reads, and the previous
+  // way of getting there — launch, install, then `page.reload({ waitUntil: 'load' })` — hung on
+  // the reload in 3 of 3 attempts and killed the tool (TOOL-COVERAGE-R1 §2). A pre-goto hook
+  // has no reload in it at all. Optional and additive: callers that pass nothing are unchanged.
+  for (const src of (Array.isArray(args.initScripts) ? args.initScripts : [])) {
+    await page.addInitScript(String(src));
+  }
+
   const handle = {
     page, browser, context, server, url,
     console: consoleLog, errors,
