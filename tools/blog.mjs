@@ -44,7 +44,7 @@ function joinWrappedImages(src) {
 function md(src) {
   const lines = joinWrappedImages(src).split('\n');
   let out = '', inCode = false, inList = false, inQuote = false;
-  let para = [];
+  let para = [], quote = [];
   const flushPara = () => { if (para.length) { out += `<p>${inline(para.join(' '))}</p>\n`; para = []; } };
   const inline = t => esc(t)
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) =>
@@ -58,7 +58,8 @@ function md(src) {
   let liBuf = null;
   const flushLi = () => { if (liBuf) { out += `<li>${inline(liBuf.join(' '))}</li>\n`; liBuf = null; } };
   const closeList = () => { flushLi(); if (inList) { out += '</ul>\n'; inList = false; } };
-  const closeQuote = () => { if (inQuote) { out += '</blockquote>\n'; inQuote = false; } };
+  const flushQuote = () => { if (quote.length) { out += `<p>${inline(quote.join(' '))}</p>\n`; quote = []; } };
+  const closeQuote = () => { if (inQuote) { flushQuote(); out += '</blockquote>\n'; inQuote = false; } };
   // ::: compare blocks — a labelled side-by-side row of images with one shared caption.
   // Used for critic comparisons (ours vs the reference it lost to), before/after fixes, and
   // region contrast sets. Any number of images; two or three read best.
@@ -89,7 +90,17 @@ function md(src) {
       continue;
     }
     if (/^\s*$/.test(l)) { flushPara(); closeList(); closeQuote(); continue; }
-    if (l.startsWith('> ')) { flushPara(); if (!inQuote) { out += '<blockquote>\n'; inQuote = true; } out += `<p>${inline(l.slice(2))}</p>\n`; continue; }
+    // Blockquotes are buffered exactly like paragraphs. They used to emit one <p> per source
+    // line, which broke twice over on a hard-wrapped quote: the reader got a paragraph per line,
+    // and any *emphasis* spanning a line break published as literal asterisks, because the
+    // opening and closing markers were never in the same string to match. Both symptoms, one
+    // cause. A blank line ends the quote, as it always did.
+    if (l.startsWith('>')) {
+      flushPara();
+      if (!inQuote) { out += '<blockquote>\n'; inQuote = true; }
+      quote.push(l.replace(/^>\s?/, ''));
+      continue;
+    }
     closeQuote();
     const h = l.match(/^(#{1,4})\s+(.*)$/);
     if (h) { flushPara(); closeList(); out += `<h${h[1].length + 1}>${inline(h[2])}</h${h[1].length + 1}>\n`; continue; }

@@ -28,6 +28,8 @@ USAGE
 
 OPTIONS
   --out <dir>   where to copy the PNGs (default docs/shots)
+  --direct      drive one browser here instead of the pooled capture service, and REFUSE to
+                write a frame whose map is empty when the claim says it is not
   --width/--height  capture size (default 1280x720)
   --help
 `;
@@ -36,39 +38,62 @@ const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
 const outDir = path.resolve(String(args.out || path.join(REPO_ROOT, 'docs/shots')));
 fs.mkdirSync(outDir, { recursive: true });
-// 960x540 rather than 1280x720, and sixteen stops rather than forty. Both are contention
-// decisions and are recorded as such: this ran with `pgrep -c headless_shell` at 36 against the
-// protocol's working rule of ~8, and the first attempt at forty stops and 1280x720 never
-// returned — each `teleport` drains 25 province tiles, and the shared browser was dropped twice
-// mid-job by other agents' edits changing the build key. The map is a flat 2D panel, so the
-// smaller frame costs it almost nothing; the stop count is what the picture is actually about
-// and sixteen is still enough to cross five regions.
+// 960x540 rather than 1280x720, and fourteen stops rather than forty. Both were contention
+// decisions and are recorded as such: an earlier run of this file went out with
+// `pgrep -c headless_shell` at 36 against the protocol's working rule of ~8, and its first
+// attempt at forty stops and 1280x720 never returned — each `teleport` drains 25 province tiles,
+// and the shared browser was dropped twice mid-job by other agents' edits changing the build
+// key. The map is a flat 2D panel, so the smaller frame costs it almost nothing; the stop count
+// is what the picture is actually about and fourteen still crosses the province.
 const W = Number(args.width || 960), Hh = Number(args.height || 540);
 const stamp = new Date().toISOString().slice(0, 10);
 
 /** One leg of the route: stand somewhere, and let the fixed step's `stepDiscovery` see it. */
 const stand = (x, z) => [['teleport', x, z, {}], ['stepFrames', 3]];
 
+// THE ROUTE IS READ OFF THE PROVINCE, NOT TYPED HERE — and that is a correctness matter, not
+// tidiness. A place is discovered by standing inside its own built pad (`terrain.json sites[]`
+// `r_flat`), so hand-typed coordinates that merely look like settlements discover NOTHING: the
+// first version of this file used sixteen such coordinates and every frame it produced showed an
+// empty map and the line "I have not written anything down yet". Standing on the world's own
+// site centres is the only way the squares appear, and it cannot drift from the province.
+const terrain = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'game/data/world/terrain.json'), 'utf8'));
+const poiIds = new Set(JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'game/data/world/pois.json'), 'utf8'))
+  .pois.map((p) => p.id));
+// Only sites that are also POIs can name themselves on the map, so only those are worth walking
+// to for a picture of named places.
+const named = terrain.sites.filter((s) => poiIds.has(s.id));
+
+// Spread the stops across the province by farthest-point selection rather than by picking the
+// first N, which would cluster wherever the file happens to be ordered. Deterministic: it starts
+// from the first site in file order and never uses a random number.
+function spread(list, n) {
+  const out = [list[0]];
+  while (out.length < n && out.length < list.length) {
+    let best = null, bestD = -1;
+    for (const c of list) {
+      if (out.includes(c)) continue;
+      let d = Infinity;
+      for (const o of out) d = Math.min(d, (c.x - o.x) ** 2 + (c.z - o.z) ** 2);
+      if (d > bestD) { bestD = d; best = c; }
+    }
+    out.push(best);
+  }
+  return out;
+}
+
 // EARLY. One settlement and the ground around it — a character who has been out of Stormhold
 // once. The point of this frame is how much of the province is NOT there.
-const early = [
-  ...stand(2171.5, 761),
-  ...stand(2280, 900),
-  ...stand(2400, 1000),
-];
+const home = named.find((s) => s.id === 'stormhold') || named[0];
+const early = [...stand(home.x, home.z)];
 
-// WELL-TRAVELLED. A long circuit through the province touching several settlements. The regions
-// differ in how much they show of themselves — `sightline_m` in `regions.json` is the reveal
-// radius — so the trail is broad across the open salt hills and narrow through the marshes, and
+// WELL-TRAVELLED. Fourteen of the province's own places, spread across it. The regions differ in
+// how much they show of themselves — `sightline_m` in `regions.json` is the reveal radius — so
+// the revealed ground is broad across the open salt hills and narrow through the marshes, and
 // that difference is the thing worth photographing.
+const legs = spread(named, 14);
 const route = [];
-const legs = [
-  [2171.5, 761], [2674.8, 751.6], [3200, 820], [3820, 859],
-  [3400, 1600], [2800, 2100], [2200, 2600], [1600, 2850],
-  [1000, 2950], [439, 2913.5], [900, 3400], [1500, 3700],
-  [2100, 3900], [2700, 3700], [3300, 3300], [3600, 2700],
-];
-for (const [x, z] of legs) route.push(...stand(x, z));
+for (const s of legs) route.push(...stand(s.x, s.z));
 
 // The claims below are worded to say what the frame SHOWS and nothing more. The arrival gate's
 // layer C refuses a spec whose free text asserts a journey, and it is right to: these frames are
@@ -77,12 +102,14 @@ for (const [x, z] of legs) route.push(...stand(x, z));
 const shots = [
   {
     name: `${stamp}-map-early`,
+    wantPlaces: true,
     claim: 'The discovery map screen after the body has stood in one settlement: what the screen looks like when almost nothing has been discovered. Undiscovered ground is unrendered under ARBITRATION S35, so this frame is mostly the screen s own colour.',
     ops: early,
   },
   {
     name: `${stamp}-map-explored`,
-    claim: 'The discovery map screen after the body has stood at sixteen coordinates spread across the province: the revealed ground is broad in the open regions and narrow in the marshes, because the reveal radius is each region s own declared sightline_m in regions.json.',
+    wantPlaces: true,
+    claim: 'The discovery map screen after the body has stood in fourteen of the province s own places, spread across it: the revealed ground is broad in the open regions and narrow in the marshes, because the reveal radius is each region s own declared sightline_m in regions.json.',
     ops: route,
   },
   {
@@ -108,6 +135,65 @@ const shots = [
     noMenu: true,
   },
 ];
+
+// ---- --direct: one browser, and the frame is CHECKED before it is kept -----------------------
+//
+// This mode exists because the pooled service produced three frames of an EMPTY map — black
+// panel, "I have not written anything down yet." — from a route that this same build discovers
+// fourteen places on when the identical `loadState -> teleport/stepFrames -> openMenu` sequence
+// is run in a browser here. Ops are executed by the daemon (a spec naming a method that cannot
+// exist is correctly refused), the daemon had already dropped and rebooted its browser on the
+// build change that carried the fix, and the discrepancy is NOT yet explained. It is recorded in
+// orchestration/status/W1-MAP.json rather than papered over.
+//
+// The lesson that outlives the discrepancy is the assertion below. The earlier empty frames were
+// shipped and filed as evidence because NOTHING CHECKED THAT THE PICTURE CONTAINED ITS SUBJECT —
+// a photograph of a blank map and a photograph of a working map are both "a PNG arrived". So
+// this mode reads `getUIState().map` on the very page it photographs and refuses to write a
+// frame whose map is empty when the claim says it is full. A shot tool that cannot fail is worth
+// as little as a probe that cannot.
+if (args.direct) {
+  const { launchGame } = await import('../lib/browser.mjs');
+  const h = await launchGame({ width: W, height: Hh });
+  let bad = 0;
+  try {
+    for (const s of shots) {
+      const r = await h.page.evaluate(async ({ ops, wantPlaces }) => {
+        const H = window.__HARNESS;
+        await H.ready();
+        await H.loadState('default');
+        // CLOSE ANY MENU THE PREVIOUS SHOT LEFT OPEN, BEFORE STEPPING ANYTHING. A menu pauses
+        // the world, and the paused branch of `engine._step()` never calls `stepOnce()` — so
+        // `stepFrames` below would move the body by teleport and simulate NOTHING, and the map
+        // would record nothing at all. `loadState` does not close the menu. This is exactly how
+        // shots 2 and 3 of this file came back with `revealed=0` while shot 1, running on a
+        // freshly booted page with no menu open, came back with 1015 cells.
+        await H.closeMenu();
+        if (H.setUIVisible) await H.setUIVisible(true);
+        for (const op of ops) await H[op[0]](...op.slice(1));
+        if (!ops.some((o) => o[0] === 'openMenu')) await H.openMenu('map', {});
+        const st = H.getUIState();
+        const m = st.map;
+        const png = await H.screenshot();
+        return { png, view: m.view, drawn_cells: m.drawn_cells, places_drawn: m.places_drawn,
+          revealed_cells: m.revealed_cells, places_discovered: m.places_discovered, wantPlaces };
+      }, { ops: s.ops, wantPlaces: !!s.wantPlaces });
+      // The gate. A frame claiming discovered ground must contain some.
+      if (r.drawn_cells === 0 || (r.wantPlaces && r.places_drawn === 0)) {
+        log(`REFUSED ${s.name}: the map is empty (drawn_cells=${r.drawn_cells}, ` +
+          `places_drawn=${r.places_drawn}, model revealed=${r.revealed_cells}, ` +
+          `model places=${r.places_discovered}, view=${r.view}) but the claim says it is ` +
+          'not. Frame not written.');
+        bad++;
+        continue;
+      }
+      const dest = path.join(outDir, `${s.name}.png`);
+      fs.writeFileSync(dest, Buffer.from(String(r.png).split(',')[1], 'base64'));
+      log(`${dest}  (direct; view=${r.view} cells=${r.drawn_cells} places=${r.places_drawn})`);
+    }
+  } finally { await h.close(); }
+  process.exit(bad ? EXIT.FAIL : EXIT.OK);
+}
 
 // Retried, because on a box this busy the two ways a request dies are both transient: the daemon
 // drops its browser whenever another agent's edit changes the build key, and a frame can come

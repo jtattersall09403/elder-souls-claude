@@ -448,7 +448,7 @@
           "morally_better": null,
           "requires": {
             "skills": {
-              "scribing": 40
+              "mercantile": 40
             },
             "knowledge": [
               "book_the_court_and_the_tide"
@@ -478,7 +478,8 @@
             "npc_disposition": {
               "undertaker-vaskh": 30
             }
-          }
+          },
+          "skill_id_note": "W1-ATTR-SCALE. Was `scribing: 40`, and there is no such skill — the register has nineteen and none of them is scribing. The gate looked the key up verbatim, found nothing, and reported `scribing 0/40` for as long as the game ran, so this non-violent exit was shut by a typo rather than by a difficulty. Re-pointed at `mercantile`, the register's ledger skill, which keeps this a clerk's route rather than converting it into a thief's."
         },
         {
           "id": "res_prefect",
@@ -756,7 +757,7 @@
           "morally_better": false,
           "requires": {
             "skills": {
-              "scribing": 35
+              "mercantile": 35
             }
           },
           "exclusive_with": [
@@ -780,7 +781,8 @@
               "prefect-hallow": 35,
               "clerk-meno": -30
             }
-          }
+          },
+          "skill_id_note": "W1-ATTR-SCALE. Was `scribing: 35`, and there is no such skill — the register has nineteen and none of them is scribing. The gate looked the key up verbatim, found nothing, and reported `scribing 0/35` for as long as the game ran, so this non-violent exit was shut by a typo rather than by a difficulty. Re-pointed at `mercantile`, the register's ledger skill, which keeps this a clerk's route rather than converting it into a thief's."
         },
         {
           "id": "res_smuggle",
@@ -837,7 +839,7 @@
           "morally_better": false,
           "requires": {
             "attributes": {
-              "personality": 45
+              "personality": 16
             }
           },
           "requires_knowing": [
@@ -865,7 +867,8 @@
               "prefect-hallow": -20,
               "clerk-meno": 20
             }
-          }
+          },
+          "attribute_scale_note": "W1-ATTR-SCALE. Was `personality: 45`. W1-ATTR-SCALE. Re-set from the MEASURED ceiling with reserve, not clamped to it. Attributes are earned only at +1 per multiple of 15 crossed in a governing skill (character/derive.js:359); the bought stream exists in engine.js _spendSouls() and is unfundable, because nothing in the build awards souls. So an attribute is worth `creation + 6 per governing skill` and no more, measured over 240 signatures in reports/faction-signature-sweep.json. The new value sits at or under `median ceiling - 2`; clamping to the ceiling itself is the zero-margin defect that shut Act IV for 11 of 40 signatures one point lower. Checked by tools/quests/attr-scale-audit.mjs."
         },
         {
           "id": "q_blak_01__sneak",
@@ -1388,7 +1391,7 @@
           "morally_better": null,
           "requires": {
             "skills": {
-              "root_speech": 45
+              "root-speech": 45
             },
             "knowledge": [
               "book_the_rootless_egg"

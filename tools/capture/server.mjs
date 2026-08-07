@@ -447,6 +447,18 @@ async function performCapture(spec, raw, outPng) {
     loadedState = spec.state; worldDirty = false;
     envDirty.time = envDirty.weather = envDirty.tide = false;
   }
+  // A MENU LEFT OPEN BY THE PREVIOUS JOB PAUSES THE WORLD, AND THE NEXT JOB'S `ops` THEN
+  // SIMULATE NOTHING. Found by W1-MAP after three map captures in a row came back showing an
+  // empty map: `loadState` does not close a menu, a menu pauses the simulation outside combat,
+  // and `engine._step()`'s paused branch latches input WITHOUT calling `stepOnce()`. So every
+  // `['stepFrames', n]` in `spec.ops` advanced nothing, while `teleport` still moved the body —
+  // the body was placed and no frame was ever simulated there. The first capture after a browser
+  // boot looked right and every one after it was quietly unsimulated, which is the worst shape a
+  // defect can have in a service that other agents cite as evidence.
+  //
+  // Closed unconditionally and before placement: a menu opened by a previous spec is never part
+  // of this spec's declaration, and a spec that wants one opens it after `ops` below.
+  await hxOpt(h, 'closeMenu');
   await hxOpt(h, 'setUIVisible', !!spec.ui);
   tick('setup_ms', t);
 

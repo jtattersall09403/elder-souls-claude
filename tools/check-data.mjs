@@ -10,7 +10,7 @@
 //
 // Run: node tools/check-data.mjs   (wired into .githooks/pre-commit)
 
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -75,7 +75,6 @@ console.log(`check-data: ${refs.length} indexed data files, all present.`);
 // for the place they claim?
 const NPCS = join(ROOT, 'game', 'data', 'npcs');
 if (existsSync(NPCS)) {
-  const { readdirSync } = await import('node:fs');
   const known = new Set();
   const SETTLEMENTS = join(ROOT, 'game', 'data', 'world', 'settlements');
   if (existsSync(SETTLEMENTS)) {

@@ -67,6 +67,7 @@ import { composeCharacter, classFamilies } from '../../game/src/character/sheet.
 import { hpMaxFor, focusMaxFor, scalingBonus, effectiveGrade, GRADE_COEFF } from '../../game/src/character/derive.js';
 import { derivedDisposition, raceTerm } from '../../game/src/character/reaction.js';
 import { FactionGates, canOffer, canResolve } from '../../game/src/sim/quest/gate.js';
+import { sameTopic } from '../../game/src/core/topics.js';
 import { computeDamage } from '../../game/src/combat/rules.js';
 import { mitigate } from '../../game/src/combat/resolve.js';
 
@@ -100,7 +101,9 @@ OPTIONS
                                                                //   race bar can be exercised
                             "region_danger_tier": {"blackwood": 5},
                             "impossible_resolution_gate": true,
-                            "faction_rank5_attribute_floor": 500 }
+                            "faction_rank5_attribute_floor": 500,
+                            "reputation_scale": 0,   // scale the DERIVED attainable reputation
+                            "gold_scale": 0 }        // scale the DERIVED attainable gold
   --self-test           run the falsification battery and exit non-zero if any check fails to
                         move the number it is supposed to move.
   --levels 1,20,40,60   the simulated levels gates are evaluated at (RI-CHR01 M6's default)
@@ -338,7 +341,12 @@ function resolveGiver(npcId) {
            `evaluated for the permanent race+upbringing bar.`,
     };
   }
-  const group = rec.reaction_group || rec.group || null;
+  // ROUND 5. This was `rec.reaction_group || rec.group`. `group` is carried by 0 of the 336 npc
+  // records in the tree AND is not read by the engine — `engine.js:1147` merges
+  // `spec.reaction_group || rec.reaction_group` and nothing else. A fallback onto a field the
+  // engine ignores would have resolved a giver the running build leaves unresolved, which is a
+  // permissive substitution of exactly the kind defect B was. Gone.
+  const group = rec.reaction_group || null;
   if (!group || !KNOWN_GROUPS.has(group)) {
     return {
       status: 'no_group', faction: rec.faction || null,
@@ -1103,14 +1111,335 @@ function fightEncounter(sheet, entry, fixture) {
   };
 }
 
+// =============================================================================================
+// ROUND 5 — THE ATTAINMENT LEDGER. Every value the synthetic character is handed, and where it
+// came from.
+//
+// WHY THIS SECTION EXISTS. This tool has been rejected four rounds running for the same shape:
+// a check that reports a confident number while measuring nothing. Round 4's instance was
+// `c.reputation = new Proxy({}, { get: () => 100 })` — a literal left over from an older rank
+// ladder — sitting three lines from `c.gold = 1e9` and `c.ranks = Proxy(7)`. The tool's headline
+// `0 of 540 viable` and the three quests it called unreachable by anyone were the tool colliding
+// with its own stub; the faction critic settled it in the running engine (W1-FACTIONS-r1 §1),
+// where the rank-7 offer row carries "reputation 111/112" at 111 and drops the term at 112.
+//
+// The lesson generalises past line 1191. A best-case walk is a legitimate design — RI-CHR01 §5
+// criterion 3 asks whether ANY route exists, so the character must be granted everything a
+// player could earn. What is NOT legitimate is granting something the shipped world cannot
+// produce, because then the walk is reporting on a world that does not exist. So:
+//
+//   RULE 1. Every granted value is DERIVED FROM SHIPPED DATA — the sum of the best deltas the
+//           quest book actually authors, the flags some resolution actually sets, the topics
+//           some dialogue file actually carries. No constants, no Proxies, no infinities.
+//   RULE 2. Where a requirement names a token NOTHING in the tree produces, the tool does not
+//           grant it and does not fail on it either. It runs the gate a second time with the
+//           token granted; if the verdict flips, the verdict DEPENDED on an ungrounded grant and
+//           is reported `unmeasurable` with the token named. TOOL-LOOP rule 1: report the
+//           absence, exit non-zero, never stub it to pass.
+//   RULE 3. Everything in this ledger is published — `--audit-grants` prints the whole table,
+//           and `grant_ledger` is on every artifact — so a critic attacks the derivation rather
+//           than having to find it.
+//
+// The one substitution that survives is stated in the ledger as `player-optimal-upper-bound`:
+// each faction's reputation, each pot of gold and each rank is taken at its own maximum
+// independently, so the character is richer and better-connected than any single playthrough.
+// That direction is deliberate and it is the direction criterion 3 requires (a gate this bound
+// cannot clear is a gate no play can clear). It is recorded, not hidden.
+// =============================================================================================
+
+/** Every JSON file under the (possibly patched) data root, so `--data-root` reaches all of this. */
+function readDataTree(root) {
+  const out = [];
+  const walk = (dir) => {
+    let ents;
+    try { ents = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
+    for (const e of ents) {
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (e.name.endsWith('.json')) {
+        try { out.push([path.relative(root, p).split(path.sep).join('/'), JSON.parse(fs.readFileSync(p, 'utf8'))]); }
+        catch { /* a malformed file is the loader's problem, not this census's */ }
+      }
+    }
+  };
+  walk(root);
+  return out;
+}
+const DATA_FILES = readDataTree(ROOT);
+
+/**
+ * WHO CAN PRODUCE THIS TOKEN? One map per gate vocabulary: token -> the data path that produces
+ * it. A token with no entry here is a token no play can obtain, and that is a finding rather
+ * than something to paper over.
+ */
+const PRODUCERS = (() => {
+  const topics = new Map(), flags = new Map(), knowledge = new Map(), items = new Map(), effects = new Map();
+  const add = (m, k, src) => { if (k != null && k !== '' && typeof k === 'string' && !m.has(k)) m.set(k, src); };
+
+  for (const [rel, d] of DATA_FILES) {
+    if (rel.startsWith('dialogue/topics/')) {
+      for (const t of d.topics || []) {
+        add(topics, t.id, `${rel} topics[].id`);
+        for (const i of t.infos || []) for (const to of i.to || []) add(topics, to, `${rel} infos[].to`);
+      }
+    }
+    if (rel.startsWith('books/')) {
+      const list = Array.isArray(d.books) ? d.books : (d.id ? [d] : []);
+      for (const b of list) {
+        // `Engine._bookKnowledgeIndex()` — reading a book confers its knowledge_key and every
+        // reveal id the book is the declared source of.
+        add(knowledge, b.knowledge_key, `${rel} books[].knowledge_key`);
+        for (const t of b.topics_taught || []) add(topics, t, `${rel} books[].topics_taught`);
+      }
+    }
+    if (rel.startsWith('items/')) {
+      for (const k of Object.keys(d)) if (Array.isArray(d[k])) for (const it of d[k]) if (it && it.id) add(items, it.id, `${rel} ${k}[].id`);
+    }
+    if (rel.startsWith('npcs/')) {
+      for (const g of Object.values(d)) if (g && Array.isArray(g.npcs)) for (const n of g.npcs) for (const t of n.topics || []) add(topics, t, `${rel} npcs[].topics`);
+    }
+    if (rel.startsWith('magic/')) {
+      for (const e of d.effects || []) add(effects, e.id, `${rel} effects[].id`);
+      for (const s of d.spells || []) for (const e of s.effects || []) add(effects, e.effect, `${rel} spells[].effects[].effect`);
+    }
+    if (rel === 'quests/hooks.json') {
+      for (const h of d.hooks || []) add(flags, h.flag, `${rel} hooks[].flag`);
+      for (const t of d.entry_topics || []) add(topics, typeof t === 'string' ? t : (t && (t.topic || t.id)), `${rel} entry_topics`);
+    }
+  }
+  for (const q of quests) {
+    if (q.opens_by && q.opens_by.topic) add(topics, q.opens_by.topic, `quests/** ${q.id} opens_by.topic`);
+    for (const r of q.rewards || []) {
+      if (r.type === 'information' && r.id) { add(topics, r.id, `quests/** ${q.id} rewards[information].id`); add(knowledge, r.id, `quests/** ${q.id} rewards[information].id`); }
+      if (r.name) add(topics, String(r.name), `quests/** ${q.id} rewards[].name`);
+      if (r.id) add(items, r.id, `quests/** ${q.id} rewards[${r.type}].id`);
+    }
+    const flagsFrom = (c, where) => { for (const f of (c && c.world_flags) || []) add(flags, f, `quests/** ${q.id} ${where}.world_flags`); };
+    flagsFrom(q.consequences, 'consequences');
+    for (const r of q.resolutions || []) flagsFrom(r.consequences, `${r.id}.consequences`);
+    // The stage-shaped quest document raises flags from `stages[].flags` and declares them on
+    // `flags[]`. Both are producers, and missing them would have made those flags look
+    // ungrounded the moment a rank ladder started asking for one.
+    for (const st of q.stages || []) for (const f of st.flags || []) add(flags, f, `quests/** ${q.id} stages[].flags`);
+    for (const f of Array.isArray(q.flags) ? q.flags : []) add(flags, f, `quests/** ${q.id} flags[]`);
+    for (const rev of (q.deceit && q.deceit.revealed_by) || []) add(knowledge, rev.id, `quests/** ${q.id} deceit.revealed_by[].id`);
+  }
+  return { topics, flags, knowledge, items, effects };
+})();
+
+/**
+ * WHAT DOES THE BUILD ASK FOR? The other half of the ledger. Every token any shipped gate can
+ * demand, with the quest that demands it.
+ */
+const REQUIREMENTS = (() => {
+  const topics = new Map(), flags = new Map(), knowledge = new Map(), items = new Map(), effects = new Map();
+  const add = (m, k, where) => { if (k == null || k === '') return; if (!m.has(k)) m.set(k, []); m.get(k).push(where); };
+  for (const q of quests) {
+    const ob = q.opens_by || {};
+    if (ob.topic) add(topics, ob.topic, `${q.id} opens_by.topic`);
+    for (const t of ob.prerequisite_topics || []) add(topics, t, `${q.id} opens_by.prerequisite_topics`);
+    for (const r of q.resolutions || []) {
+      const rq = r.requires || {};
+      for (const i of rq.items || []) add(items, i, `${q.id}/${r.id} requires.items`);
+      for (const k of rq.knowledge || []) add(knowledge, k, `${q.id}/${r.id} requires.knowledge`);
+      for (const e of rq.spell_effects || []) add(effects, e, `${q.id}/${r.id} requires.spell_effects`);
+      for (const k of r.requires_knowing || []) add(knowledge, k, `${q.id}/${r.id} requires_knowing`);
+    }
+  }
+  for (const fid of gates.ids()) {
+    const f = gates.get(fid);
+    for (const row of f.ranks || []) {
+      if (row.world_state && row.world_state.flag) add(flags, row.world_state.flag, `faction-gates ${fid} rank ${row.rank}.world_state.flag`);
+    }
+  }
+  return { topics, flags, knowledge, items, effects };
+})();
+
+/**
+ * The requirement tokens NOTHING in the tree produces. These are the only places the walk is
+ * allowed to be uncertain, and every one of them is named on every artifact.
+ *
+ * Topics fold through the SHIPPING `sameTopic()` rather than through a local slugifier, because
+ * the dialogue layer writes `the-tolls` and the quest layer writes `"the tolls"` and a
+ * hand-rolled comparison here would re-create exactly the bug `core/topics.js` exists to fix.
+ */
+const UNSOURCED = (() => {
+  const topicProducers = [...PRODUCERS.topics.keys()];
+  const out = {
+    topics: [...REQUIREMENTS.topics.keys()].filter((t) => !topicProducers.some((p) => sameTopic(p, t))),
+    world_flags: [...REQUIREMENTS.flags.keys()].filter((f) => !PRODUCERS.flags.has(f)),
+    knowledge: [...REQUIREMENTS.knowledge.keys()].filter((k) => !PRODUCERS.knowledge.has(k)),
+    items: [...REQUIREMENTS.items.keys()].filter((i) => !PRODUCERS.items.has(i)),
+    spell_effects: [...REQUIREMENTS.effects.keys()].filter((e) => !PRODUCERS.effects.has(e)),
+  };
+  out.total = out.topics.length + out.world_flags.length + out.knowledge.length + out.items.length + out.spell_effects.length;
+  out.where = {};
+  for (const [k, list] of Object.entries(out)) {
+    if (!Array.isArray(list)) continue;
+    const src = { topics: REQUIREMENTS.topics, world_flags: REQUIREMENTS.flags, knowledge: REQUIREMENTS.knowledge, items: REQUIREMENTS.items, spell_effects: REQUIREMENTS.effects }[k];
+    for (const t of list) out.where[t] = src.get(t);
+  }
+  return out;
+})();
+const UNSOURCED_SETS = {
+  topics: new Set(UNSOURCED.topics),
+  world_flags: new Set(UNSOURCED.world_flags),
+  knowledge: new Set(UNSOURCED.knowledge),
+  items: new Set(UNSOURCED.items),
+  spell_effects: new Set(UNSOURCED.spell_effects),
+};
+
+/**
+ * The topic collection the granted character carries.
+ *
+ * The RAW producer spellings are kept — `the-tolls` from the dialogue layer, not a pre-folded
+ * key — so that `canOffer`'s `topicsInclude()` still has to do the slug/prose fold at gate time.
+ * A pre-folded set would pass a folding bug silently, which is the trap `bestCaseCtx`'s
+ * `has: () => true` duck fell into: an omniscient collection can never exercise the comparison
+ * it is standing in for. Restricted to the producers that some gate can actually ask for, so the
+ * per-call scan stays O(101) rather than O(814).
+ */
+const GRANTED_TOPICS = (() => {
+  const needed = [...REQUIREMENTS.topics.keys()];
+  return new Set([...PRODUCERS.topics.keys()].filter((p) => needed.some((n) => sameTopic(p, n))));
+})();
+const GRANTED_FLAGS = new Set(PRODUCERS.flags.keys());
+const GRANTED_KNOWLEDGE = new Set(PRODUCERS.knowledge.keys());
+const GRANTED_ITEMS = new Set(PRODUCERS.items.keys());
+const GRANTED_EFFECTS = new Set(PRODUCERS.effects.keys());
+
+/**
+ * Best-per-quest faction reputation, the way the faction critic computed it in the running
+ * engine (W1-FACTIONS-r1 §1): for each quest, the largest positive delta any single route
+ * through it can put on this faction; summed over the book.
+ *
+ * This replaces `new Proxy({}, { get: () => 100 })`. The old literal was the top row of a rank
+ * ladder that had since moved to 112, so the tool reported three quests as unreachable by anyone
+ * while the engine offers them at 112. Nothing here is a constant: change a
+ * `consequences.faction_reputation` in the data and this number moves.
+ */
+const REPUTATION_GIFTS = (() => {
+  const m = new Map();   // faction -> [{ quest, delta }]
+  for (const q of quests) {
+    const per = new Map();
+    const take = (c) => {
+      for (const [f, d] of Object.entries((c && c.faction_reputation) || {})) {
+        if (!Number.isFinite(d)) continue;
+        per.set(f, Math.max(per.get(f) ?? -Infinity, d));
+      }
+    };
+    take(q.consequences);
+    for (const r of q.resolutions || []) take(r.consequences);
+    for (const [f, d] of per) {
+      if (d <= 0) continue;
+      if (!m.has(f)) m.set(f, []);
+      m.get(f).push({ quest: q.id, delta: d });
+    }
+  }
+  return m;
+})();
+
+/** Gold the book can pay out: per quest, the largest single reward, summed. */
+const GOLD_GIFTS = (() => {
+  const rows = [];
+  for (const q of quests) {
+    let best = 0, from = null;
+    for (const r of q.rewards || []) {
+      if (r.type !== 'gold' || !Number.isFinite(r.amount)) continue;
+      if (r.amount > best) { best = r.amount; from = (r.on_resolution || []).join('|') || '(any resolution)'; }
+    }
+    if (best > 0) rows.push({ quest: q.id, amount: best, on_resolution: from });
+  }
+  return rows;
+})();
+
+/**
+ * THE GRANT LEDGER — published on every artifact and printed in full by `--audit-grants`.
+ *
+ * One row per field the synthetic character is handed. `basis` is the only column that matters:
+ *
+ *   derived-from-data        computed from shipped content; change the content and it moves.
+ *   shipping-predicate       computed by calling the game's own function on derived inputs.
+ *   model-parameter          a number declared in MODEL and reported there; NOT content.
+ *   player-optimal-bound     derived, then taken at its independent maximum. The one surviving
+ *                            substitution, stated as one.
+ *   SUBSTITUTION             a value not derived from anything. There must be none of these.
+ *
+ * `session-run --audit-surface` is the model for this: publish the whole classification so a
+ * critic attacks the derivation rather than having to reconstruct it (TOOL-COVERAGE-R3, "this
+ * round's best work ... a derivation from the live surface").
+ */
+function grantLedger() {
+  const repSample = attainableReputation(null);
+  const rows = [
+    { field: 'attributes', basis: 'model-parameter', value: `projectAttributes(): base + ${MODEL.attribute_points_per_level}/level, cap ${MODEL.attribute_cap}, spent on the gate's own columns first`, source: 'MODEL.attribute_points_per_level / attribute_cap; base from composeCharacter()' },
+    { field: 'skills', basis: 'model-parameter', value: `projectSkills(): ${JSON.stringify(MODEL.skills_masterable_at)} skills raised to ${JSON.stringify(MODEL.skill_ceiling_at)}`, source: 'MODEL.skills_masterable_at / skill_ceiling_at; base from composeCharacter()' },
+    { field: 'reputation', basis: 'player-optimal-bound', was_round4: 'new Proxy({}, { get: () => 100 })  — A CONSTANT, and a stale one: the ladder had moved to 112', value: repSample, source: 'quests/** resolutions[].consequences.faction_reputation, best per quest, summed; the target quest and its mutually_exclusive_with excluded as circular', per_faction_gifts: Object.fromEntries([...REPUTATION_GIFTS].map(([f, l]) => [f, l.length])) },
+    { field: 'ranks', basis: 'shipping-predicate', was_round4: 'new Proxy({}, { get: () => 7 })  — A CONSTANT', value: 'FactionGates.highestQualifying(f, {reputation, attributes, skills, worldFlags}) per faction — the same call QuestEngine.context() makes, because nothing in the build writes q.factions[f].rank', source: 'game/src/sim/quest/gate.js' },
+    { field: 'gold', basis: 'player-optimal-bound', was_round4: '1e9  — AN INFINITY', value: attainableGold(null), source: `quests/** rewards[type=gold].amount, best per quest over ${GOLD_GIFTS.length} paying quests, summed` },
+    { field: 'topicsKnown', basis: 'derived-from-data', was_round4: 'grantAll(): has() => true for any string', value: GRANTED_TOPICS.size, source: 'dialogue/topics/** ids and infos[].to, books topics_taught, npcs[].topics, quests opens_by.topic, hooks entry_topics — RAW spellings, so canOffer\'s topicsInclude() still performs the slug/prose fold', of_producers: PRODUCERS.topics.size },
+    { field: 'knowledge', basis: 'derived-from-data', was_round4: 'grantAll(new Set())  — has() => true over an EMPTY set', value: GRANTED_KNOWLEDGE.size, source: 'quests deceit.revealed_by[].id, books knowledge_key, quest rewards[information].id' },
+    { field: 'items', basis: 'derived-from-data', was_round4: 'grantAll(new Set())  — has() => true over an EMPTY set', value: GRANTED_ITEMS.size, source: 'items/** ids and quest rewards[].id' },
+    { field: 'spellEffects', basis: 'derived-from-data', was_round4: 'grantAll(new Set())  — has() => true over an EMPTY set', value: GRANTED_EFFECTS.size, source: 'magic/** effects[].id and spells[].effects[].effect' },
+    { field: 'worldFlags', basis: 'derived-from-data', was_round4: 'grantAll(): has() => true for any flag', value: GRANTED_FLAGS.size, source: 'quests/** consequences.world_flags (quest and resolution level) and hooks[].flag' },
+    { field: 'disposition (scalar)', basis: 'derived-from-data', was_round4: '0, and never raised — so all 28 shipped requires.disposition resolutions were silently unavailable', value: 'achievableDisposition(giver) run through the detected offer model', source: 'npcs/** disposition + quests consequences.npc_disposition' },
+    { field: 'dispositions (per npc)', basis: 'derived-from-data', value: 'seedDispositions() reproduced, plus the best positive npc_disposition consequence any non-circular quest can add, through the detected model', source: 'npcs/**, quests/** consequences.npc_disposition' },
+    { field: 'completed', basis: 'player-optimal-bound', value: 'every quest except the target and its mutually_exclusive_with', source: 'quests/** ids', caveat: 'mutually exclusive pairs elsewhere in the book are not resolved into a consistent playthrough; canOffer only reads completed for prerequisite_quests and the target\'s own exclusions, so the looseness cannot manufacture a pass on this build — stated because it is a substitution and it must be visible.' },
+    { field: 'locked', basis: 'player-optimal-bound', value: 'empty — nothing closed by an earlier choice', source: 'n/a', caveat: 'a rivalry lock the player would really carry is not modelled here; criterion 2 applies exclusivity explicitly instead, including exclusivity.earned.' },
+    { field: 'level', basis: 'model-parameter', value: LEVELS, source: '--levels' },
+  ];
+  const substitutions = rows.filter((r) => r.basis === 'SUBSTITUTION');
+  return {
+    note: 'Every value the synthetic character is handed, and where it came from. A row whose ' +
+          '`basis` is SUBSTITUTION is a place this tool can report on a world that does not ' +
+          'exist; there must be none, and `substitutions_remaining` is asserted to 0 by ' +
+          '--self-test.',
+    rows,
+    substitutions_remaining: substitutions.length,
+    player_optimal_bounds: rows.filter((r) => r.basis === 'player-optimal-bound').map((r) => r.field),
+    ungrounded_requirements: UNSOURCED,
+    ungrounded_note:
+      `${UNSOURCED.total} requirement token(s) named by a shipped gate have NO producer anywhere ` +
+      `under ${path.relative(REPO_ROOT, ROOT) || 'game/data'}. They are NOT granted and they are ` +
+      `NOT failed on: any quest whose verdict flips when they are granted is reported ` +
+      `\`unmeasurable\` with the token named (the grant-dependency test).`,
+  };
+}
+
+/** Same circularity convention as `achievableDisposition`: a quest cannot pay for its own gate. */
+function excludedFor(forQuest) {
+  return new Set(forQuest ? [forQuest.id, ...(forQuest.mutually_exclusive_with || [])] : []);
+}
+function attainableReputation(forQuest) {
+  const excluded = excludedFor(forQuest);
+  // `reputation_scale` is the falsification handle for the round-4 defect. Round 4 pinned every
+  // faction at the literal 100 and the battery could not tell — no fixture moved the number,
+  // because there was no number to move. Scaling the derived sum must move rank-gated verdicts,
+  // and --self-test asserts that it does.
+  const scale = FIXTURE && Number.isFinite(FIXTURE.reputation_scale) ? FIXTURE.reputation_scale : 1;
+  const out = {};
+  for (const [f, list] of REPUTATION_GIFTS) {
+    out[f] = Math.round(list.filter((g) => !excluded.has(g.quest)).reduce((a, g) => a + g.delta, 0) * scale);
+  }
+  return out;
+}
+function attainableGold(forQuest) {
+  const excluded = excludedFor(forQuest);
+  const scale = FIXTURE && Number.isFinite(FIXTURE.gold_scale) ? FIXTURE.gold_scale : 1;
+  return Math.round(GOLD_GIFTS.filter((g) => !excluded.has(g.quest)).reduce((a, g) => a + g.amount, 0) * scale);
+}
+
 // ---------------------------------------------------------------------------------------------
 // The four criteria
 /**
- * An "everything is known" collection that is a REAL Set — iterable, `.values()`-bearing,
- * `.has()`-bearing — rather than a one-method duck. See the note in bestCaseCtx().
+ * The OMNISCIENT collection — `has()` answers true for anything.
  *
- * `has()` answers true for anything, which is what "best case" means; iteration yields the real
- * authored contents, which is what `topicsInclude()` needs and what a duck could not supply.
+ * ROUND 5: this is no longer what the walk runs on. It is the SECOND ARM of the grant-dependency
+ * test and nothing else. When the provable walk refuses a quest, the same quest is re-run with
+ * these collections; if the verdict flips, the verdict was a function of a token the shipped
+ * world cannot produce, and it is reported `unmeasurable` with the token named instead of being
+ * published as a fail. Round 4 ran the whole walk on this and could therefore never see a
+ * requirement nothing satisfies.
  */
 function grantAll(contents) {
   const s = new Set(contents);
@@ -1137,60 +1466,100 @@ function ctxAt(sheet, level, want = {}) {
 }
 
 /**
- * Best-case context: everything a player can EARN is granted, so only PERMANENT bars remain.
- * Note what is NOT granted: the giver's disposition. That is supplied per-quest, from the
- * character's own ceiling with the giver's own reaction group, and it is the whole point.
+ * BEST-CASE CONTEXT — ROUND 5. Everything a player can EARN, at the maximum the SHIPPED DATA
+ * proves is earnable, so only PERMANENT bars remain.
+ *
+ * What round 4 handed the gate here, and what each of those is now:
+ *
+ *   field         round 4                              round 5
+ *   ------------  -----------------------------------  ------------------------------------------
+ *   reputation    Proxy({}, get: () => 100)   CONST     sum of best-per-quest faction_reputation
+ *   ranks         Proxy({}, get: () => 7)     CONST     gates.highestQualifying(), the SHIPPING
+ *                                                       predicate the engine itself now uses
+ *   gold          1e9                         INFINITY  sum of best-per-quest gold reward
+ *   topicsKnown   has:()=>true over 76 topics UNIVERSAL producible topics, raw spellings
+ *   knowledge     has:()=>true over EMPTY     UNIVERSAL reveal ids + book knowledge_keys
+ *   items         has:()=>true over EMPTY     UNIVERSAL items/** ids + quest reward ids
+ *   spellEffects  has:()=>true over EMPTY     UNIVERSAL magic/** effect ids
+ *   worldFlags    has:()=>true over authored  UNIVERSAL flags some resolution actually sets
+ *   disposition   0, never raised             SILENT    the achievable value toward this giver
+ *   completed     every quest but the target and its exclusives — unchanged, and declared
+ *   locked        empty — unchanged, and declared
+ *
+ * The three constants were not neutral. `reputation = 100` was the top row of a rank ladder that
+ * had moved to 112, so the tool published `0 of 540 viable` and named three quests unreachable
+ * by anybody; the running engine offers them at 112 (W1-FACTIONS-r1 §1). The four universal
+ * `has: () => true` collections were worse in the other direction: they answer yes to a token
+ * nothing in the tree produces, so six shipped requirements that no play can satisfy were
+ * invisible to every previous round of this tool.
+ *
+ * `omniscient: true` restores the round-4 behaviour for the SECOND ARM of the grant-dependency
+ * test only. It never produces a criterion verdict.
  */
-function bestCaseCtx(sheet, level, want = {}, forQuest = null) {
+function bestCaseCtx(sheet, level, want = {}, forQuest = null, { omniscient = false } = {}) {
   const c = ctxAt(sheet, level, want);
   if (forQuest) {
-    const excluded = new Set([forQuest.id, ...(forQuest.mutually_exclusive_with || [])]);
+    const excluded = excludedFor(forQuest);
     c.completed = new Set(quests.map((q) => q.id).filter((id) => !excluded.has(id)));
   }
-  // ---- ROUND 4: A SHAPE ASSUMPTION THAT HAD BECOME A CRASH ----------------------------------
-  //
-  // These were `{ has: () => true }` — a duck-typed Set stand-in carrying ONE method. That was
-  // sound while `gate.js` tested membership with `Set.has`. It stopped being sound when gate.js
-  // moved the topic gates to `topicsInclude()` (core/topics.js), which ITERATES:
-  //
-  //     const it = typeof known.values === 'function' ? known.values() : known;
-  //     for (const k of it) ...                  // TypeError: it is not iterable
-  //
-  // A plain object has no `.values` method and is not iterable, so every `--self-test` and every
-  // full walk on this tree crashed with `TypeError: it is not iterable` before this round
-  // touched the file. Same class as the `r.frame` bug the R3 verdict is built on — a tool
-  // assuming a SHAPE that the thing it measures does not have — but louder, because it throws
-  // instead of quietly returning 0.
-  //
-  // The repair is to grant the real thing rather than a stand-in: an actual Set containing every
-  // topic and flag the quest book can gate on. `topicsInclude` folds both spellings, so a real
-  // Set is also the only form that exercises the fold the way the running gate does. An
-  // omniscient duck could never have caught a folding bug; this can.
-  const allTopics = new Set();
-  for (const q of quests) {
-    const ob = q.opens_by || {};
-    if (ob.topic) allTopics.add(ob.topic);
-    for (const t of ob.prerequisite_topics || []) allTopics.add(t);
-    for (const s of q.stages || []) for (const t of (s.requires && s.requires.topics) || []) allTopics.add(t);
-  }
-  const allFlags = new Set();
-  for (const q of quests) {
-    for (const s of q.stages || []) for (const f of (s.requires && s.requires.world_flags) || []) allFlags.add(f);
-    for (const f of (q.opens_by && q.opens_by.world_flags) || []) allFlags.add(f);
-  }
-  // `has: () => true` is KEPT ALONGSIDE the iterable contents, so a consumer that still calls
-  // `.has()` for a token the book never names (knowledge ids, item ids, spell effects — open
-  // vocabularies, unlike topics) is answered "yes" as before. Both contracts are honoured; only
-  // the iterable half was missing, and only the iterable half was ever going to crash.
-  c.topicsKnown = grantAll(allTopics);
-  c.knowledge = grantAll(new Set());
-  c.items = grantAll(new Set());
-  c.spellEffects = grantAll(new Set());
-  c.worldFlags = grantAll(allFlags);
-  c.gold = 1e9;
-  c.reputation = new Proxy({}, { get: () => 100 });
-  c.ranks = new Proxy({}, { get: () => 7 });
+
+  // ---- THE FOUR TOKEN VOCABULARIES -----------------------------------------------------------
+  // Real Sets of the tokens the shipped tree can produce. `gate.js` reads three of them with
+  // `Set.has` and one — topicsKnown — through `topicsInclude()`, which ITERATES and folds the
+  // dialogue layer's slug against the quest layer's prose. The raw producer spellings are kept
+  // precisely so that fold is still exercised at gate time: an omniscient collection can never
+  // test the comparison it stands in for, which is how `{ has: () => true }` sat here for three
+  // rounds without anyone noticing it was answering for an empty set.
+  c.topicsKnown = omniscient ? grantAll(GRANTED_TOPICS) : new Set(GRANTED_TOPICS);
+  c.knowledge = omniscient ? grantAll(GRANTED_KNOWLEDGE) : new Set(GRANTED_KNOWLEDGE);
+  c.items = omniscient ? grantAll(GRANTED_ITEMS) : new Set(GRANTED_ITEMS);
+  c.spellEffects = omniscient ? grantAll(GRANTED_EFFECTS) : new Set(GRANTED_EFFECTS);
+  c.worldFlags = omniscient ? grantAll(GRANTED_FLAGS) : new Set(GRANTED_FLAGS);
+
+  // ---- GOLD. Derived, not 1e9. --------------------------------------------------------------
+  c.gold = attainableGold(forQuest);
+
+  // ---- REPUTATION. Derived, not 100. --------------------------------------------------------
+  c.reputation = attainableReputation(forQuest);
+
+  // ---- RANK. Derived through the SHIPPING ladder, not 7. ------------------------------------
+  // `QuestEngine.context()` (machine.js) computes rank exactly this way — `gates
+  // .highestQualifying(f, {reputation, attributes, skills, worldFlags})` — because nothing in
+  // the build ever writes `q.factions[f].rank`. Granting 7 was not merely a constant; it
+  // contradicted the shipping derivation, and it hid the fact that every faction's rank 5 row
+  // carries a `world_state.flag` (faction-gates.json), twelve of which no quest sets.
+  const lite = { reputation: c.reputation, attributes: c.attributes, skills: c.skills, worldFlags: c.worldFlags };
+  c.ranks = {};
+  for (const fid of gates.ids()) c.ranks[fid] = gates.highestQualifying(fid, lite);
+  // A faction with no ladder row can still be named by a `requires.faction_rank`; those read 0
+  // through `gate.js num()`, which is what the engine does, so nothing is invented for them.
+
   return c;
+}
+
+/**
+ * Which ungrounded tokens could this quest's verdict possibly turn on? Used to name them when
+ * the grant-dependency test fires. Cheap, and it never decides anything on its own.
+ */
+function unsourcedTokensFor(q) {
+  const hit = [];
+  const ob = q.opens_by || {};
+  for (const t of [ob.topic, ...(ob.prerequisite_topics || [])]) {
+    if (t && UNSOURCED_SETS.topics.has(t)) hit.push(`topic ${JSON.stringify(t)}`);
+  }
+  if (q.rank_gate && q.rank_gate.faction && gates.ids().includes(q.rank_gate.faction)) {
+    const row = gates.get(q.rank_gate.faction).ranks[Math.max(0, Math.min(7, q.rank_gate.min_rank))];
+    if (row && row.world_state && UNSOURCED_SETS.world_flags.has(row.world_state.flag)) {
+      hit.push(`world flag ${JSON.stringify(row.world_state.flag)} (${q.rank_gate.faction} rank ${row.rank})`);
+    }
+  }
+  for (const r of q.resolutions || []) {
+    const rq = r.requires || {};
+    for (const i of rq.items || []) if (UNSOURCED_SETS.items.has(i)) hit.push(`${r.id} requires item ${JSON.stringify(i)}`);
+    for (const k of [...(rq.knowledge || []), ...(r.requires_knowing || [])]) if (UNSOURCED_SETS.knowledge.has(k)) hit.push(`${r.id} requires knowledge ${JSON.stringify(k)}`);
+    for (const e of rq.spell_effects || []) if (UNSOURCED_SETS.spell_effects.has(e)) hit.push(`${r.id} requires spell effect ${JSON.stringify(e)}`);
+  }
+  return [...new Set(hit)];
 }
 
 let FIXTURE = null;
@@ -1213,17 +1582,70 @@ function questClearable(sheet, q, level) {
       })),
     };
   }
-  return questClearableInner(sheet, q, level);
+  // ---- THE GRANT-DEPENDENCY TEST. ROUND 5. --------------------------------------------------
+  //
+  // The provable walk is the verdict. But six shipped requirements name tokens NOTHING in the
+  // tree produces (three items, three knowledge keys), and twelve `world_state` flags on the
+  // rank ladders have no producing resolution. A tool that grants those anyway reports on a
+  // world that does not exist — that is exactly the `reputation = 100` defect wearing different
+  // clothes. A tool that fails on them charges the build for something this instrument cannot
+  // prove is a defect rather than a census gap of its own.
+  //
+  // So: when the provable arm refuses, re-run the SAME shipping predicates with the omniscient
+  // collections. If the verdict flips, the refusal turned on a token with no producer and the
+  // quest is `unmeasurable`, with the token named. Neither a false red nor a silent pass, and
+  // the flip is measured through `canOffer`/`canResolve` rather than asserted.
+  const first = questClearableInner(sheet, q, level, { omniscient: false });
+  if (first.status === PASS) return first;
+  const tokens = unsourcedTokensFor(q);
+  if (!tokens.length) return first;
+  const second = questClearableInner(sheet, q, level, { omniscient: true });
+  if (second.status !== PASS) return first;
+  return {
+    status: UNMEASURABLE,
+    giver: q.giver && q.giver.npc_id,
+    stopped_at: {
+      quest: q.id, stage: first.stopped_at ? first.stopped_at.stage : null,
+      gate: 'ungrounded requirement',
+      why: `this quest is refused on the shipped tree (${String(first.stopped_at && first.stopped_at.why).slice(0, 200)}) ` +
+           `and clears the moment tokens with NO PRODUCER anywhere in game/data are granted: ` +
+           `${tokens.join('; ')}. The verdict therefore depends on a substitution rather than on ` +
+           `the build, so it is UNMEASURABLE rather than a fail. Either the token is authored ` +
+           `somewhere this census cannot see — in which case the census is the defect — or no ` +
+           `play can satisfy the requirement, in which case the data is.`,
+      ungrounded_tokens: tokens,
+    },
+    why: `${q.id}: verdict depends on ${tokens.length} requirement token(s) with no producer in shipped data`,
+  };
 }
 
 /** Returns { status: pass|fail|unmeasurable, stopped_at?, why?, giver? }. */
-function questClearableInner(sheet, q, level) {
+function questClearableInner(sheet, q, level, { omniscient = false } = {}) {
   const want = { skills: [], attributes: [] };
   for (const res of q.resolutions || []) {
     for (const s of Object.keys((res.requires || {}).skills || {})) want.skills.push(s);
     for (const a of Object.keys((res.requires || {}).attributes || {})) want.attributes.push(a);
   }
-  const ctx = bestCaseCtx(sheet, level, want, q);
+  // ROUND 5. A quest with a `rank_gate` is gated on the FACTION LADDER's favoured skills and
+  // attributes, and rank is now derived through `gates.highestQualifying()` instead of granted
+  // as the constant 7. If the projection is not allowed to invest in the ladder's own columns
+  // the derived rank is an artificially low number, and a restrictive substitution buys a false
+  // red exactly as readily as a permissive one buys a false pass (TOOL-COVERAGE-R2 §1).
+  // The masterable-skill budget (6 at level 55) still binds, so this is player-optimal within a
+  // real constraint rather than a grant.
+  const ladderFactions = new Set();
+  if (q.rank_gate && q.rank_gate.faction) ladderFactions.add(q.rank_gate.faction);
+  for (const res of q.resolutions || []) {
+    const fr = (res.requires || {}).faction_rank;
+    if (fr && fr.faction) ladderFactions.add(fr.faction);
+  }
+  for (const fid of ladderFactions) {
+    if (!gates.ids().includes(fid)) continue;
+    const f = gates.get(fid);
+    want.attributes.push(...f.favoured_attributes);
+    want.skills.push(...f.favoured_skills);
+  }
+  const ctx = bestCaseCtx(sheet, level, want, q, { omniscient });
 
   // THE OFFER GATE, exactly as the build runs it. `ctx.dispositions` is the seeded table, not a
   // derived ceiling; the giver's entry is the player-optimal upper bound from quest gifts. The
@@ -1233,6 +1655,15 @@ function questClearableInner(sheet, q, level) {
   if (q.giver && q.giver.disposition_min != null) {
     reach = achievableDisposition(q.giver.npc_id, q);
     ctx.dispositions = offerDispositionCtx(sheet, q.giver.npc_id, reach);
+    // ROUND 5. `canResolve` reads the SCALAR `ctx.disposition` — a different field from the
+    // per-npc table — for the 28 shipped resolutions carrying `requires.disposition` (20..70).
+    // `ctxAt` set it to 0 and nothing ever raised it, so every one of those routes was silently
+    // unavailable in every previous round. It is the same number the offer path just computed
+    // for this giver, run through the same model.
+    ctx.disposition = Number(ctx.dispositions[q.giver.npc_id]) || 0;
+  } else if (q.giver && q.giver.npc_id) {
+    const r2 = achievableDisposition(q.giver.npc_id, q);
+    ctx.disposition = Number(offerDispositionCtx(sheet, q.giver.npc_id, r2)[q.giver.npc_id]) || 0;
   }
 
   const offer = canOffer(q, ctx, gates);
@@ -1284,24 +1715,67 @@ function questClearableInner(sheet, q, level) {
   }
 
   const resolutions = q.resolutions || [];
-  if (!resolutions.length && !q.stages) {
+
+  // ---- THE SECOND QUEST SHAPE. ROUND 5, AND A CORRECTION TO THIS ROUND'S OWN FIRST ANSWER. ---
+  //
+  // `loadQuests()` admits two shapes: `doc.quests[]` (resolution-shaped) and a bare
+  // `doc.stages && doc.id` document (stage-shaped). I audited `q.stages` against the shipped
+  // tree, measured 0 of 94 quests carrying it, and cut it as a dead read of exactly the
+  // `r.frame` kind. **That was wrong, and the tree proved it inside the hour**: a stage-shaped
+  // quest (`quests/the-boards.json`) landed mid-run and the cut turned it into 495 signatures
+  // FAILing on "quest declares no resolutions" — a tool defect published as a build defect.
+  //
+  // The lesson is worth more than the line: a field census over shipped DATA cannot establish
+  // that a read is dead, because the LOADER defines what shapes are legal and data catches up
+  // later. Read the loader.
+  //
+  // What this tool can honestly say about a stage-shaped quest is nothing. Its gate vocabulary
+  // is different — `outcomes[].requires` is a flat array of world-flag ids, not the `requires`
+  // object `canResolve()` consumes, and `stages[].flags` GRANTS flags rather than demanding
+  // them. Running `canResolve` over it would be inventing a predicate. So it is `unmeasurable`,
+  // named, with the file's own `declared_incomplete` note carried through.
+  if (!resolutions.length && Array.isArray(q.stages) && q.stages.length) {
+    const inc = q.declared_incomplete;
+    return {
+      status: UNMEASURABLE,
+      stopped_at: {
+        quest: q.id, stage: null, gate: 'quest shape not modelled',
+        why: `"${q.id}" is a STAGE-SHAPED quest (${q.stages.length} stages, ` +
+             `${(q.outcomes || []).length} outcomes) admitted by loadQuests() via ` +
+             `\`doc.stages && doc.id\`. Its gate vocabulary is outcomes[].requires — a flat list ` +
+             `of world-flag ids — which is not the shape canOffer()/canResolve() consume, so this ` +
+             `tool has no predicate for it and refuses rather than inventing one.` +
+             (inc ? ` The file declares itself incomplete: ${JSON.stringify(inc.missing || inc)} ` +
+                    `(owner: ${inc.owner || 'unstated'}).` : ''),
+      },
+      why: `${q.id}: stage-shaped quest, no predicate in this tool`,
+    };
+  }
+  if (!resolutions.length) {
     return { status: FAIL, stopped_at: { quest: q.id, stage: null, gate: 'resolutions', why: 'quest declares no resolutions' } };
   }
-  if (resolutions.length) {
-    const open = resolutions.filter((r) => canResolve(r, ctx).available);
-    if (!open.length) {
-      const first = canResolve(resolutions[0], ctx);
-      return {
-        status: FAIL,
-        stopped_at: {
-          quest: q.id, stage: resolutions[0].journal_index ?? null,
-          gate: `resolution ${resolutions[0].id}`,
-          why: first.why.join('; ') || 'no resolution available',
-        },
-      };
-    }
+  // ROUND 5. Every resolution is evaluated and the verdict names the CLOSEST one, not
+  // `resolutions[0]`. The old line ran `canResolve(resolutions[0])` and published its reasons as
+  // the stop, so the artifact stated a blocker for a route the character may not have needed
+  // while a different route was one point short. Same family as `rows_compared: 240` beside zero
+  // comparisons: a specific claim reported over a row the walk did not single out.
+  const evaluated = resolutions.map((r) => ({ id: r.id, stage: r.journal_index ?? null, r: canResolve(r, ctx) }));
+  const open = evaluated.filter((e) => e.r.available);
+  if (!open.length) {
+    const closest = evaluated.slice().sort((a, b) => a.r.why.length - b.r.why.length)[0];
+    return {
+      status: FAIL,
+      stopped_at: {
+        quest: q.id, stage: closest.stage,
+        gate: `resolution ${closest.id}`,
+        why: closest.r.why.join('; ') || 'no resolution available',
+        resolutions_evaluated: evaluated.length,
+        resolutions_open: 0,
+        all_blocked: evaluated.map((e) => `${e.id}: ${e.r.why.join('; ')}`),
+      },
+    };
   }
-  return { status: PASS };
+  return { status: PASS, resolutions_evaluated: evaluated.length, resolutions_open: open.length };
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -1367,13 +1841,25 @@ function walkQuests(sheet, list, label) {
   }
   if (firstFail) return { status: FAIL, ...firstFail, quests: list.length };
   if (unmeasurable.length) {
+    // ROUND 5. The old wording asserted ONE cause — an unresolvable giver reaction group — for
+    // every unmeasurable quest in the list. There are now two, and the second (a requirement
+    // token with no producer in shipped data) is the more common one on this tree. Reporting a
+    // cause the walk did not establish is the same defect as reporting a count it did not
+    // compare, so the reason is now taken from the record rather than written into it.
+    const byGate = {};
+    for (const u of unmeasurable) {
+      const g = (u.stopped_at && u.stopped_at.gate) || 'unstated';
+      byGate[g] = (byGate[g] || 0) + 1;
+    }
     return {
       status: UNMEASURABLE, quests: list.length,
       stopped_at: unmeasurable[0].stopped_at,
-      unmeasurable_givers: unmeasurable.map((u) => u.giver),
-      why: `${unmeasurable.length} of ${list.length} quests carry a giver whose reaction group ` +
-           `cannot be resolved from shipped data, so the permanent race+upbringing bar cannot be ` +
-           `evaluated for them. First: ${unmeasurable[0].stopped_at.why}`,
+      unmeasurable_givers: unmeasurable.map((u) => u.giver).filter(Boolean),
+      unmeasurable_by_gate: byGate,
+      unmeasurable_quests: unmeasurable.map((u) => u.stopped_at && u.stopped_at.quest).filter(Boolean),
+      why: `${unmeasurable.length} of ${list.length} quests could not be decided on this tree ` +
+           `(${Object.entries(byGate).map(([g, n]) => `${n}x ${g}`).join(', ')}). ` +
+           `First: ${unmeasurable[0].stopped_at.why}`,
     };
   }
   return { status: FAIL, why: 'unreachable' };
@@ -1385,6 +1871,37 @@ function criterionMainQuest(sheet) {
 
 function criterionNoUnpassableGate(sheet) {
   return walkQuests(sheet, quests, 'any category');
+}
+
+/**
+ * CRITERION 2 — three factions at rank 5, ROUND 5.
+ *
+ * Round 4 evaluated this against `reputation = Proxy(100)` and `worldFlags.has() = true`, so
+ * every rank-5 row's reputation term (70) and world-state term passed for free and the criterion
+ * could only ever fail on an attribute or skill projection. It reported `pass` for all 540.
+ *
+ * Both of those terms are now measured. The reputation is the book's own best-per-quest sum, and
+ * the world flag is checked against the flags a resolution actually sets — which matters,
+ * because EVERY faction's rank-5 row carries one (`faction-gates.json`), and twelve of the
+ * twenty-four ladder flags have no producing resolution anywhere in game/data.
+ *
+ * Exclusivity is now the full shipped model, not half of it. `gates.closedBy()` covers
+ * `hard_groups` and `enemy_pairs`; `exclusivity.earned` — the rank-triggered rivalry lock that
+ * `QuestEngine.context()` applies through `rivalry_locked` — was ignored, so a triple containing
+ * two factions that lock each other at rank 2/3 was being counted as compatible at rank 5.
+ */
+function earnedLockConflict(a, b) {
+  const ex = (gates.exclusivity && gates.exclusivity.earned) || [];
+  for (const e of ex) {
+    const pair = (e.a === a && e.b === b) || (e.a === b && e.b === a);
+    if (!pair) continue;
+    // Both locks bite at or below rank 5, so holding rank 5 in both is not a state this build
+    // can be in. `escape` is authored per line and is recorded, not silently honoured.
+    const aLocks = Number.isFinite(e.a_locks_b_at_rank) ? e.a_locks_b_at_rank : Infinity;
+    const bLocks = Number.isFinite(e.b_locks_a_at_rank) ? e.b_locks_a_at_rank : Infinity;
+    if (aLocks <= 5 || bLocks <= 5) return { a: e.a, b: e.b, a_locks_b_at_rank: e.a_locks_b_at_rank, b_locks_a_at_rank: e.b_locks_a_at_rank, why: e.why || null, escape: e.escape || null };
+  }
+  return null;
 }
 
 function criterionThreeFactionsRank5(sheet) {
@@ -1406,28 +1923,67 @@ function criterionThreeFactionsRank5(sheet) {
     } else {
       ev = gates.evaluate(id, 5, ctx);
     }
-    if (ev.allowed) qualifying.push(id); else blocked.push({ faction: id, unmet: ev.unmet });
+    if (ev.allowed) qualifying.push(id);
+    else {
+      const row = gates.row(id, 5);
+      const flag = row.world_state && row.world_state.flag;
+      blocked.push({
+        faction: id, unmet: ev.unmet,
+        attainable_reputation: ctx.reputation[id] ?? 0,
+        rank5_requires_reputation: row.reputation,
+        // Named because it is the difference between "the build is short" and "the data cannot
+        // express this at all", and only one of those is chargeable to a signature.
+        rank5_world_flag: flag || null,
+        rank5_world_flag_has_a_producer: flag ? PRODUCERS.flags.has(flag) : null,
+      });
+    }
   }
-  const compatible = (a, b) => !gates.closedBy(a).includes(b);
+  // A rank-5 row whose world flag NOTHING sets is not a failure this signature can be charged
+  // with: no character in the grid can differ on it. It is a data absence, reported as one.
+  const blockedOnlyByAnUngroundedFlag = blocked.filter(
+    (b) => b.rank5_world_flag && b.rank5_world_flag_has_a_producer === false
+      && b.unmet.length === 1);
+  const compatible = (a, b) => !gates.closedBy(a).includes(b) && !earnedLockConflict(a, b);
+  const conflicts = [];
   for (let i = 0; i < qualifying.length; i++) {
     for (let j = i + 1; j < qualifying.length; j++) {
-      if (!compatible(qualifying[i], qualifying[j])) continue;
+      if (!compatible(qualifying[i], qualifying[j])) { conflicts.push([qualifying[i], qualifying[j]]); continue; }
       for (let k = j + 1; k < qualifying.length; k++) {
         if (compatible(qualifying[i], qualifying[k]) && compatible(qualifying[j], qualifying[k])) {
-          return { status: PASS, factions: [qualifying[i], qualifying[j], qualifying[k]] };
+          return { status: PASS, factions: [qualifying[i], qualifying[j], qualifying[k]], qualifying, blocked };
         }
       }
     }
+  }
+  if (blockedOnlyByAnUngroundedFlag.length
+      && qualifying.length + blockedOnlyByAnUngroundedFlag.length >= 3) {
+    return {
+      status: UNMEASURABLE,
+      qualifying, blocked,
+      stopped_at: {
+        quest: null, stage: null, gate: 'ungrounded requirement',
+        why: `${qualifying.length} faction(s) reach rank 5 on the shipped tree, and ` +
+             `${blockedOnlyByAnUngroundedFlag.length} more are held back ONLY by a rank-5 ` +
+             `world_state flag that no resolution anywhere in game/data sets ` +
+             `(${blockedOnlyByAnUngroundedFlag.map((b) => `${b.faction}:${b.rank5_world_flag}`).join(', ')}). ` +
+             `Three-at-rank-5 therefore turns on a token this instrument cannot ground, so it is ` +
+             `UNMEASURABLE rather than a fail against the signature.`,
+        ungrounded_tokens: blockedOnlyByAnUngroundedFlag.map((b) => `world flag ${JSON.stringify(b.rank5_world_flag)} (${b.faction} rank 5)`),
+      },
+      why: 'three-at-rank-5 depends on rank-5 world_state flags with no producer in shipped data',
+    };
   }
   return {
     status: FAIL,
     stopped_at: {
       quest: null, stage: null, gate: 'three factions at rank 5',
       why: qualifying.length < 3
-        ? `only ${qualifying.length} of ${ids.length} factions reach rank 5 (${blocked.slice(0, 2).map((b) => `${b.faction}: ${b.unmet.join(', ')}`).join(' | ')})`
-        : `${qualifying.length} factions reach rank 5 but no three are mutually compatible under exclusivity`,
+        ? `only ${qualifying.length} of ${ids.length} factions reach rank 5 (${blocked.slice(0, 3).map((b) => `${b.faction}: ${b.unmet.join(', ')}`).join(' | ')})`
+        : `${qualifying.length} factions reach rank 5 but no three are mutually compatible under ` +
+          `exclusivity (hard_groups + enemy_pairs + earned rivalry locks). Conflicting pairs: ` +
+          `${conflicts.slice(0, 4).map((c) => c.join('/')).join(', ')}`,
     },
-    qualifying,
+    qualifying, blocked,
   };
 }
 
@@ -1748,6 +2304,11 @@ function report(records, fixture) {
         'regression that leaves every source anchor matched while the race term is dead — the ' +
         'tool printed byte-identical output and charged the build 36 false FAILs.',
     },
+    // ROUND 5. Everything the synthetic character was handed, and where each value came from.
+    // Four rounds of rejection all had the same root: a value invented in the middle of this
+    // file, reported as if it were measured. `substitutions_remaining` must be 0 and
+    // `--self-test` asserts it.
+    grant_ledger: grantLedger(),
     giver_census: census,
     // ROUND 3. The build failure round 2 reported as `unmeasurable` and thereby charged to the
     // corpus. `unmeasurable` routes to corpus_debt and charges nobody; `fail` charges the build.
@@ -1792,7 +2353,7 @@ function report(records, fixture) {
       quest_categories: [...new Set(quests.map((q) => q.category || '(none)'))].sort(),
       factions_with_ladders: gates.ids(),
       npc_records_indexed: npcRecords.size,
-      npc_records_with_a_reaction_group: [...npcRecords.values()].filter((n) => n.reaction_group || n.group).length,
+      npc_records_with_a_reaction_group: [...npcRecords.values()].filter((n) => n.reaction_group).length,
     },
     records,
   };
@@ -1820,7 +2381,32 @@ function selfTest() {
     process.stdout.write(lines[lines.length - 1] + '\n');   // flush as we go: a later crash
   };                                                        // must not discard earlier evidence
 
-  const base = walkAll(null);
+  // ---- PROGRESS. TOOL-COVERAGE round 4's carried complaint: this battery does not finish
+  // inside ten minutes on a loaded box, and the previous builder flagged rather than capped it
+  // because THE EXPENSIVE PART IS THE FALSIFICATION — each fixture below is a full 540-cell walk
+  // and shrinking the grid would shrink the evidence. That judgement stands. What was missing is
+  // that a critic watching a silent terminal cannot tell slow from hung, so every walk now
+  // announces itself, times itself, and projects the remainder from walks already done.
+  const SEED_LADDER = [0, 15, 30, 45, 60, 100];
+  const WALKS_EXPECTED = 13 + SEED_LADDER.length;
+  let walkN = 0;
+  const T0 = Date.now();
+  const secs = (ms) => (ms / 1000).toFixed(1);
+  const walk = (fixture, label) => {
+    walkN++;
+    const a = Date.now();
+    process.stdout.write(
+      `[self-test] walk ${walkN}/${WALKS_EXPECTED} "${label}" starting (elapsed ${secs(a - T0)}s)\n`);
+    const r = walkAll(fixture);
+    const dt = Date.now() - a, el = Date.now() - T0;
+    const projected = (el / walkN) * WALKS_EXPECTED;
+    process.stdout.write(
+      `[self-test] walk ${walkN}/${WALKS_EXPECTED} "${label}" done in ${secs(dt)}s; ` +
+      `elapsed ${secs(el)}s of a projected ${secs(projected)}s\n`);
+    return r;
+  };
+
+  const base = walk(null, "baseline");
   const baseViable = base.filter((r) => r.viable).length;
   const baseUnm = base.filter((r) => r.unmeasurable).length;
   const nFail = (recs, k) => recs.filter((r) => r.criteria[k] === FAIL).length;
@@ -1860,7 +2446,7 @@ function selfTest() {
   // RED. Reproduce the defect this tree shipped at the start of tool round 3: givers with no NPC
   // record, so `seedDispositions()` writes nothing and `gate.js num(undefined)` reads 0.
   const fxUnseed = { unseed_givers: true };
-  const unseeded = walkAll(fxUnseed);
+  const unseeded = walk(fxUnseed, "unseed every giver");
   const unseededRep = report(unseeded, fxUnseed);
   // ===============================================================================================
   // ROUND 4, SUCCESSOR PASS — THIS RED CONTROL ASSERTED ON A SATURATED COUNTER, AND ON THIS TREE
@@ -1915,9 +2501,9 @@ function selfTest() {
   // The NUMBER is read: sweep the register and require a monotone, saturating response. A
   // presence check would give a step; a threshold gives a ladder.
   const ladder = [];
-  for (const s of [0, 15, 30, 45, 60, 100]) {
+  for (const s of SEED_LADDER) {
     const fx = { unseed_givers: true, seed_disposition: s };
-    ladder.push({ seed: s, fail: nFail(walkAll(fx), 'no_unpassable_gate') });
+    ladder.push({ seed: s, fail: nFail(walk(fx, `seed ladder ${s}`), 'no_unpassable_gate') });
   }
   const monotone = ladder.every((r, i) => i === 0 || r.fail <= ladder[i - 1].fail);
   ok('the NUMBER is read, not the presence of a record (monotone ladder, saturating at 0)',
@@ -1946,7 +2532,7 @@ function selfTest() {
     `("${base[0].counterfactual_race_gate.hypothesis.slice(0, 70)}…") and the four criteria are ` +
     `computed without it`);
 
-  const granted = walkAll({ giver_reaction_group: 'RG-DEEP', quest_disposition_floor: FLOOR });
+  const granted = walk({ giver_reaction_group: 'RG-DEEP', quest_disposition_floor: FLOOR }, "grant RG-DEEP + disposition floor");
   const cfBlocked = granted.filter((r) => r.counterfactual_race_gate.would_block).length;
   const cfDunmer = granted.filter((r) => r.signature.startsWith('dunmer/') && r.counterfactual_race_gate.would_block).length;
   const cfSax = granted.filter((r) => r.signature.startsWith('saxhleel/') && !r.counterfactual_race_gate.would_block).length;
@@ -1986,23 +2572,23 @@ function selfTest() {
     (cohort.tier5_regions_with_no_authored_fight.length
       ? `; thin: no fight authored in [${cohort.tier5_regions_with_no_authored_fight.join(', ')}]` : ''));
 
-  const moved = walkAll({ region_danger_tier: { 'deep-marshes': 3, 'stone-wastes': 3 } });
+  const moved = walk({ region_danger_tier: { 'deep-marshes': 3, 'stone-wastes': 3 } }, "region danger_tier -> 3");
   ok('the cohort FOLLOWS danger_tier rather than being hard-coded',
     moved.__cohort.cohort.length !== cohort.cohort.length,
     `deep-marshes and stone-wastes demoted to tier 3: cohort ${cohort.cohort.length} -> ` +
     `${moved.__cohort.cohort.length} entries`);
 
-  const hard = walkAll({ tier5_damage_multiplier: 10 });
+  const hard = walk({ tier5_damage_multiplier: 10 }, "tier-5 damage x10");
   ok('criterion 4 liveness (x10 group damage)',
     nFail(hard, 'tier5_survivable') > nFail(base, 'tier5_survivable'),
     `criterion-4 FAIL ${nFail(base, 'tier5_survivable')} -> ${nFail(hard, 'tier5_survivable')}`);
 
-  const mid = walkAll({ tier5_damage_multiplier: 4 });
+  const mid = walk({ tier5_damage_multiplier: 4 }, "tier-5 damage x4");
   ok('criterion 4 is a MODEL, not a constant (partial failure at x4)',
     nFail(mid, 'tier5_survivable') > 0 && nFail(mid, 'tier5_survivable') < mid.length,
     `x4 group damage: ${nFail(mid, 'tier5_survivable')}/${mid.length} fail criterion 4`);
 
-  const easy = walkAll({ tier5_damage_multiplier: 0.01 });
+  const easy = walk({ tier5_damage_multiplier: 0.01 }, "tier-5 damage x0.01");
   ok('criterion 4 monotonicity',
     nFail(easy, 'tier5_survivable') <= nFail(base, 'tier5_survivable'),
     `x0.01: criterion-4 FAIL ${nFail(base, 'tier5_survivable')} -> ${nFail(easy, 'tier5_survivable')}`);
@@ -2011,29 +2597,29 @@ function selfTest() {
   // Both run on top of `seed_disposition: 100`, so the offer gate is OPEN and the walk actually
   // reaches the clause under test. Perturbing a criterion that is already red at an earlier gate
   // proves nothing — that was round 1's "floor 200" mistake in a different coat.
-  const resBroken = walkAll({ impossible_resolution_gate: true, seed_disposition: 100 });
-  const resBase = walkAll({ seed_disposition: 100 });
+  const resBroken = walk({ impossible_resolution_gate: true, seed_disposition: 100 }, "impossible resolution gate");
+  const resBase = walk({ seed_disposition: 100 }, "resolution baseline, seed 100");
   ok('criterion 3 falsifiable at the RESOLUTION clause (offer gate held open)',
     nFail(resBroken, 'no_unpassable_gate') > nFail(resBase, 'no_unpassable_gate'),
     `every resolution gated on luck 9999, givers seeded 100 so the walk reaches them: ` +
     `no_unpassable_gate FAIL ${nFail(resBase, 'no_unpassable_gate')} -> ` +
     `${nFail(resBroken, 'no_unpassable_gate')}`);
 
-  const mainBase = walkAll({ seed_disposition: 100 });
-  const mainBroken = walkAll({ seed_disposition: 100, quest_disposition_floor: 101 });
+  const mainBase = walk({ seed_disposition: 100 }, "main-quest baseline, seed 100");
+  const mainBroken = walk({ seed_disposition: 100, quest_disposition_floor: 101 }, "main-quest disposition floor 101");
   ok('criterion 1 falsifiable (main-quest walk)',
     nFail(mainBroken, 'main_quest') > nFail(mainBase, 'main_quest'),
     `givers seeded 100, every disposition_min raised to 101: main_quest FAIL ` +
     `${nFail(mainBase, 'main_quest')} -> ${nFail(mainBroken, 'main_quest')}`);
 
-  const rankBroken = walkAll({ faction_rank5_attribute_floor: 500 });
+  const rankBroken = walk({ faction_rank5_attribute_floor: 500 }, "rank-5 attribute floor 500");
   ok('criterion 2 falsifiable (faction ladder)',
     nFail(rankBroken, 'three_factions_rank5') > nFail(base, 'three_factions_rank5'),
     `rank-5 attribute floor -> 500: three_factions_rank5 FAIL ` +
     `${nFail(base, 'three_factions_rank5')} -> ${nFail(rankBroken, 'three_factions_rank5')}`);
 
   // ---- the null control --------------------------------------------------------------------
-  const again = walkAll(null);
+  const again = walk(null, "null control (determinism)");
   ok('null control (determinism)',
     JSON.stringify(again.map((r) => r.signature + r.viable + r.unmeasurable))
       === JSON.stringify(base.map((r) => r.signature + r.viable + r.unmeasurable)),
@@ -2043,31 +2629,45 @@ function selfTest() {
   // ROUND 4 — THE R3 §1 FALSIFICATIONS. Every one of these is a check the round-3 tool failed.
   // =============================================================================================
 
-  // R4-1. The cross-check's row accounting. This is R3's headline defect reproduced in-process:
-  // when the engine stops modelling, every row's `agrees` is null, `null !== false`, and the
-  // round-3 tool printed "AGREES on 240 pairs; 0 disagreements" having compared nothing.
+  // R5-1. The cross-check's row accounting, exercised through THE SHIPPING FUNCTION.
+  //
+  // Round 4's version of this check re-implemented the accounting inline, so it proved a
+  // property of the battery rather than of `crossCheck()`. It now calls `crossCheckVerdict()`,
+  // which is the same function the live mode calls, and the fixtures are shaped the way the
+  // push site shapes them: an unresolved row is not a row with `agrees: null`, it is a row in a
+  // DIFFERENT ARRAY that no count named "compared" can reach.
   {
-    const mkRows = (n, agrees) => Array.from({ length: n }, (_, i) => ({ quest: 'q' + i, agrees }));
-    const verdict = (rows) => {
-      const resolved = rows.filter((r) => r.agrees !== null);
-      const dis = rows.filter((r) => r.agrees === false);
-      const allUnresolved = rows.length > 0 && resolved.length === 0;
-      return { agrees: allUnresolved ? false : dis.length === 0, unmeasurable: allUnresolved,
-        rows_compared: rows.length, rows_resolved: resolved.length, rows_unresolved: rows.length - resolved.length };
-    };
-    const dead = verdict(mkRows(240, null));       // the broken tree: nothing modelled
-    const live = verdict(mkRows(240, true));       // the sound tree: everything modelled
-    const bad = verdict([...mkRows(239, true), ...mkRows(1, false)]);
-    ok('R4: 240 unresolved rows are UNMEASURABLE, never "AGREES on 240 pairs"',
-      dead.unmeasurable === true && dead.agrees === false && dead.rows_resolved === 0,
-      `240 null rows -> agrees=${dead.agrees}, unmeasurable=${dead.unmeasurable}, ` +
-      `resolved=${dead.rows_resolved}/${dead.rows_compared}. R3 printed "AGREES on 240 pairs".`);
-    ok('R4: the same accounting still passes 240 genuinely-resolved rows (null control)',
-      live.agrees === true && live.unmeasurable === false && live.rows_resolved === 240,
-      `resolved=${live.rows_resolved}, agrees=${live.agrees} — the fix does not make the check vacuous`);
-    ok('R4: one real disagreement still goes red among 239 agreements',
-      bad.agrees === false && bad.unmeasurable === false && bad.rows_resolved === 240,
+    const cmp = (n, agrees) => Array.from({ length: n }, (_, i) => ({ quest: 'q' + i, agrees }));
+    const unres = (n) => Array.from({ length: n }, (_, i) => ({ quest: 'u' + i, why_unresolved: 'modelled:false' }));
+
+    const dead = crossCheckVerdict([], unres(240));            // R3's broken tree: nothing modelled
+    const live = crossCheckVerdict(cmp(240, true), []);        // the sound tree
+    const bad = crossCheckVerdict([...cmp(239, true), ...cmp(1, false)], []);
+    const mixed = crossCheckVerdict(cmp(12, true), unres(228));
+
+    ok('R5: 240 unresolved rows are UNMEASURABLE, never "AGREES on 240 pairs"',
+      dead.unmeasurable === true && dead.agrees === false && dead.rows_compared === 0
+        && dead.pairs_enumerated === 240,
+      `240 unresolved -> agrees=${dead.agrees}, unmeasurable=${dead.unmeasurable}, ` +
+      `rows_compared=${dead.rows_compared}, pairs_enumerated=${dead.pairs_enumerated}. ` +
+      'R3 printed "AGREES on 240 pairs".');
+    ok('R5: the same accounting still passes 240 genuinely-compared rows (null control)',
+      live.agrees === true && live.unmeasurable === false && live.rows_compared === 240,
+      `rows_compared=${live.rows_compared}, agrees=${live.agrees} — the fix is not vacuous`);
+    ok('R5: one real disagreement still goes red among 239 agreements',
+      bad.agrees === false && bad.unmeasurable === false && bad.rows_compared === 240,
       `agrees=${bad.agrees}, unmeasurable=${bad.unmeasurable}`);
+    ok('R5: a partly-modelled sweep reports 12 compared and 228 unresolved, not 240 of anything',
+      mixed.rows_compared === 12 && mixed.rows_unresolved === 228 && mixed.pairs_enumerated === 240
+        && mixed.accounting_holds === true,
+      `rows_compared=${mixed.rows_compared}, rows_unresolved=${mixed.rows_unresolved}, ` +
+      `pairs_enumerated=${mixed.pairs_enumerated}`);
+    // The fuse. A row without a boolean verdict must not be countable as compared.
+    const smuggled = crossCheckVerdict([...cmp(239, true), { quest: 'x', agrees: null }], []);
+    ok('R5: a row with agrees:null cannot enter a count called "compared" — the tool REFUSES',
+      smuggled.refused === true && smuggled.rows_compared === 0 && smuggled.agrees === false,
+      `refused=${smuggled.refused}, rows_compared=${smuggled.rows_compared} — 239 real agreements ` +
+      'are discarded rather than published beside one uncomparable row');
   }
 
   // R4-2. The reconciliation. `model="derived"` and a RACE-INVARIANT running gate is the
@@ -2168,6 +2768,36 @@ function selfTest() {
 // ---------------------------------------------------------------------------------------------
 if (args['self-test']) process.exit(selfTest());
 
+// ---------------------------------------------------------------------------------------------
+// --audit-grants. ROUND 5. The whole grant table, on stdout, with no walk.
+//
+// This is the mode a tool critic runs first. Four rounds of this tool have been rejected for
+// reporting a confident number while measuring nothing, and every one of those defects was a
+// value handed to the synthetic character somewhere in the middle of a 2 700-line file. Now
+// there is one table, it is printed, and it is asserted.
+// ---------------------------------------------------------------------------------------------
+if (args['audit-grants']) {
+  const gl = grantLedger();
+  process.stdout.write(`grant ledger for data root ${path.relative(REPO_ROOT, ROOT) || 'game/data'}\n`);
+  for (const r of gl.rows) {
+    process.stdout.write(`  ${r.field.padEnd(24)} ${String(r.basis).padEnd(22)} ${typeof r.value === 'object' ? JSON.stringify(r.value) : String(r.value)}\n`);
+    process.stdout.write(`  ${''.padEnd(24)} from: ${r.source}\n`);
+    if (r.was_round4) process.stdout.write(`  ${''.padEnd(24)} ROUND 4 HANDED THE GATE: ${r.was_round4}\n`);
+    if (r.caveat) process.stdout.write(`  ${''.padEnd(24)} caveat: ${r.caveat}\n`);
+  }
+  process.stdout.write(`  substitutions remaining: ${gl.substitutions_remaining}\n`);
+  process.stdout.write(`  player-optimal bounds (declared, not hidden): ${gl.player_optimal_bounds.join(', ')}\n`);
+  process.stdout.write(`  ungrounded requirement tokens: ${UNSOURCED.total}\n`);
+  for (const k of ['topics', 'world_flags', 'knowledge', 'items', 'spell_effects']) {
+    if (!UNSOURCED[k].length) continue;
+    process.stdout.write(`    ${k}: ${UNSOURCED[k].map((t) => `${t} (asked by ${(UNSOURCED.where[t] || []).join(', ')})`).join('\n              ')}\n`);
+  }
+  if (args.out) writeJson(path.resolve(String(args.out)), gl);
+  // A ledger with a bare SUBSTITUTION row is the failure this whole mode exists to make
+  // impossible to ship quietly.
+  process.exit(gl.substitutions_remaining === 0 ? 0 : EXIT.MEASUREMENT_FAIL);
+}
+
 const fixture = args.fixture ? JSON.parse(fs.readFileSync(path.resolve(String(args.fixture)), 'utf8')) : null;
 
 // `--signatures` — advertised since round 1, in RI-CHR01 M6's own contract line, and never read
@@ -2187,25 +2817,80 @@ if (args.signatures !== undefined) {
   }
 }
 
-let records;
-if (args.signature) {
-  const parts = String(args.signature).split(/[|/]/);
-  if (parts.length !== 4) usage(USAGE, EXIT.USAGE);
-  const cohortInfo = withFixture(fixture, () => resolveTier5Cohort());
-  records = [evaluateSignature(parts[0], parts[1], parts[2], parts[3], fixture, cohortInfo)];
-  records.__cohort = cohortInfo;
-} else {
-  records = walkAll(fixture);
-  if (SIGNATURE_SUBSET) {
-    const cohort = records.__cohort;
-    const filtered = SIGNATURE_SUBSET.race
-      ? records.filter((r) => r.signature.startsWith(SIGNATURE_SUBSET.race + '/'))
-      : records.slice(0, SIGNATURE_SUBSET.first);
-    filtered.__cohort = cohort;
-    records = filtered;
-    log(`--signatures ${args.signatures}: walking ${records.length} of 540 cells`);
+function produceRecords({ quiet = false } = {}) {
+  if (args.signature) {
+    const parts = String(args.signature).split(/[|/]/);
+    if (parts.length !== 4) usage(USAGE, EXIT.USAGE);
+    const cohortInfo = withFixture(fixture, () => resolveTier5Cohort());
+    const one = [evaluateSignature(parts[0], parts[1], parts[2], parts[3], fixture, cohortInfo)];
+    one.__cohort = cohortInfo;
+    return one;
   }
+  let out = walkAll(fixture);
+  if (SIGNATURE_SUBSET) {
+    const cohort = out.__cohort;
+    const filtered = SIGNATURE_SUBSET.race
+      ? out.filter((r) => r.signature.startsWith(SIGNATURE_SUBSET.race + '/'))
+      : out.slice(0, SIGNATURE_SUBSET.first);
+    filtered.__cohort = cohort;
+    out = filtered;
+    if (!quiet) log(`--signatures ${args.signatures}: walking ${out.length} of 540 cells`);
+  }
+  return out;
 }
+
+const records = produceRecords();
+
+// ---------------------------------------------------------------------------------------------
+// ROUND 5 — MODEL DEPENDENCE IS MEASURED, NOT INFERRED FROM "DID A DISPOSITION STOP HAPPEN".
+//
+// Round 4 gated the exit code on `records.filter(r => r.stopped_at.offer_model !== undefined)` —
+// i.e. on whether any signature happened to STOP at a disposition gate. That is not the same
+// question. A signature that PASSES because the derived model lifted a giver over the bar is
+// just as dependent on the model as one that fails, and it contributes nothing to that count;
+// and on a tree where some other gate stops everyone first, the count is 0 and the run exits
+// with a clean bill on a model it never looked at.
+//
+// The honest predicate is a differential: walk the same grid under the OTHER offer model and
+// count the signatures whose verdict moves. If none move, the model is not load-bearing for this
+// run and the run may stand without a live attestation. If any move, the run's numbers are a
+// function of a hypothesis about source text, and TOOL-COVERAGE-R3 §1 proved that hypothesis can
+// be wrong while every anchor matches.
+//
+// `--no-model-sensitivity` skips the second walk. It costs one extra walk (~40 s on 540 cells),
+// and the flag stamps the artifact so a reader knows the gate was not evaluated.
+// ---------------------------------------------------------------------------------------------
+const MODEL_SENSITIVITY = (() => {
+  if (args['no-model-sensitivity']) {
+    return { measured: false, why: '--no-model-sensitivity: the differential walk was skipped, so ' +
+      'this run cannot say whether its verdicts depend on the offer model.' };
+  }
+  const detected = OFFER_MODEL.model;
+  const other = detected === 'derived' ? 'raw' : 'derived';
+  const key = (r) => `${r.signature}|${r.viable}|${r.unmeasurable}|${JSON.stringify(r.criteria)}|${r.stopped_at ? r.stopped_at.gate + '::' + r.stopped_at.why : ''}`;
+  let alt;
+  const saved = OFFER_MODEL.model;
+  try { OFFER_MODEL.model = other; alt = produceRecords({ quiet: true }); }
+  finally { OFFER_MODEL.model = saved; }
+  const byKey = new Map(alt.map((r) => [r.signature, key(r)]));
+  const moved = records.filter((r) => byKey.get(r.signature) !== key(r));
+  return {
+    measured: true,
+    method: `the same grid walked twice, once under the detected offer model ("${detected}") and ` +
+            `once under "${other}", comparing each signature's viability, four criteria and stop.`,
+    detected_model: detected, compared_against: other,
+    signatures_whose_verdict_moves: moved.length,
+    signatures_walked: records.length,
+    model_is_load_bearing: moved.length > 0,
+    examples: moved.slice(0, 5).map((r) => ({ signature: r.signature, under_detected: r.stopped_at && r.stopped_at.why, criteria: r.criteria })),
+    why: moved.length
+      ? `${moved.length} of ${records.length} signature verdicts change when the offer model ` +
+        `changes, so every number in this artifact is conditional on the model being right. ` +
+        `Source anchors cannot establish that (TOOL-COVERAGE-R3 §1); only --verify-model can.`
+      : `no signature's verdict changes between the two offer models on this tree, so these ` +
+        `numbers do not depend on which one the build implements.`,
+  };
+})();
 
 // ---------------------------------------------------------------------------------------------
 // --verify-model — THE DEFINITIONAL TEST, and the thing R3 §1 proved the anchors cannot do.
@@ -2354,6 +3039,68 @@ if (args['verify-model']) process.exit(await verifyModelMode());
 // exactly what happened to this file mid-round-3, when another agent wired the reaction matrix
 // into the quest path and every hard-coded model in the tree became wrong overnight.
 // ---------------------------------------------------------------------------------------------
+/**
+ * THE CROSS-CHECK ROW ACCOUNTING, as a function the `--self-test` can actually call.
+ *
+ * ROUND 5. Round 4's battery "tested" this by re-implementing it inline inside `selfTest()` —
+ * a fixture written by the same hand that reads it, in a dialect the shipping path does not
+ * have to speak. That is precisely the defect TOOL-COVERAGE-R3 §2 charged `beat-extract` with,
+ * and it means the round-4 battery would have gone green over an accounting bug in `crossCheck`.
+ * The accounting now lives here, `crossCheck()` calls it, and the battery calls the same
+ * function. There is one implementation.
+ *
+ * `comparedRows` may contain ONLY rows that carry a boolean `agrees`. Anything else is refused
+ * rather than counted: an uncompared row that reaches a count called "compared" is the exact
+ * defect this tool is known for.
+ */
+function crossCheckVerdict(comparedRows, unresolvedRows) {
+  const pairsEnumerated = comparedRows.length + unresolvedRows.length;
+  const badRows = comparedRows.filter((r) => typeof r.agrees !== 'boolean');
+  if (badRows.length) {
+    return {
+      agrees: false, unmeasurable: true, refused: true,
+      rows_compared: 0, rows_unresolved: unresolvedRows.length, pairs_enumerated: pairsEnumerated,
+      rows: [], unresolved_rows: unresolvedRows.slice(0, 40), disagreements: [],
+      accounting_invariant: 'rows_compared + rows_unresolved === pairs_enumerated',
+      accounting_holds: false,
+      why: `INTERNAL: ${badRows.length} row(s) reached the compared array without a boolean ` +
+           'verdict. Refusing rather than counting them.',
+    };
+  }
+  const disagreements = comparedRows.filter((r) => r.agrees === false);
+  const nothingCompared = pairsEnumerated > 0 && comparedRows.length === 0;
+  return {
+    // `rows_compared` is the length of the array of rows that WERE compared — nothing else can
+    // be assigned to it. The count of pairs merely walked past is `pairs_enumerated` and is
+    // never called "compared", because R3's false headline was that word over that number.
+    rows_compared: comparedRows.length,
+    rows_unresolved: unresolvedRows.length,
+    pairs_enumerated: pairsEnumerated,
+    accounting_invariant: 'rows_compared + rows_unresolved === pairs_enumerated',
+    accounting_holds: comparedRows.length + unresolvedRows.length === pairsEnumerated,
+    rows: comparedRows,
+    unresolved_rows: unresolvedRows.slice(0, 40),
+    disagreements,
+    // FALSE, not true, when nothing was compared. A comparison of zero pairs is not a pass.
+    agrees: nothingCompared ? false : disagreements.length === 0,
+    unmeasurable: nothingCompared,
+    refused: false,
+    unresolved_reason: unresolvedRows.length
+      ? 'explainDisposition().modelled was false (the engine did not model this giver) or the ' +
+        'giver did not resolve to a reaction group. An unresolved row compares NOTHING; it is ' +
+        'not in `rows` and cannot reach any count named "compared".'
+      : null,
+    why: nothingCompared
+      ? `CROSS-CHECK UNMEASURABLE: ${pairsEnumerated} (signature, giver) pairs were enumerated ` +
+        `and ZERO were compared — every one came back \`modelled: false\` from the running ` +
+        `engine. Nothing was compared, so nothing agrees. This is the exact state ` +
+        `TOOL-COVERAGE-R3 §1 constructed by killing the race term behind an intact set of source ` +
+        `anchors, and the round-3 tool reported it as "AGREES on ${pairsEnumerated} pairs; 0 ` +
+        `disagreements".`
+      : null,
+  };
+}
+
 async function crossCheck() {
   const { launchGame } = await import('../lib/browser.mjs');
   const handle = await launchGame({ ...args, width: 320, height: 240, timeout: Number(args.timeout || 120000) });
@@ -2377,7 +3124,8 @@ async function crossCheck() {
     const classId = (data.classes.classes[0] || {}).id;
     const signId = (data.birthsigns.signs[0] || {}).id;
 
-    const rows = [], disagreements = [], perSignature = [];
+    // Two arrays, not one filtered later. See the ROUND 5 note at the push site.
+    const comparedRows = [], unresolvedRows = [], disagreements = [], perSignature = [];
     for (const sig of sigsArg) {
       const [race, upbringing] = sig.split('/');
       const live = await handle.page.evaluate((o) => {
@@ -2431,26 +3179,40 @@ async function crossCheck() {
           engine_terms: ex ? { base: ex.base, race: ex.race_term, upbringing: ex.upbringing_term, birthsign: ex.birthsign_term, other: ex.other_terms, modelled: ex.modelled } : null,
           tool_same_terms: toolAtEngineTerms,
           tool_player_optimal_ceiling: toolValue,
-          agrees: toolAtEngineTerms === null ? null : toolAtEngineTerms === engineValue,
         };
-        rows.push(row);
-        if (row.agrees === false) disagreements.push(row);
+        // ---- ROUND 5. AN UNCOMPARED ROW CANNOT ENTER THE COMPARED ARRAY. --------------------
+        //
+        // Round 4 fixed the arithmetic of this accounting — it counted `agrees: null` as
+        // unresolved and refused to print "AGREES" for zero resolved rows — but it left
+        // `rows_compared: rows.length`, i.e. the ENUMERATED count, sitting in the artifact next
+        // to `rows_resolved`. The number that made R3's headline false is still the number a
+        // reader's eye lands on, and it is still produced by a `push` that happens whether or
+        // not anything was compared.
+        //
+        // So the arithmetic is replaced by a shape: there is no single array any more. A row
+        // with nothing to compare goes into `unresolvedRows` and is not reachable from any
+        // count called "compared". `rows_compared` is `comparedRows.length` and every element of
+        // `comparedRows` carries a BOOLEAN `agrees`, asserted below. Miscounting now requires
+        // pushing to the wrong array, not forgetting a filter.
+        if (toolAtEngineTerms === null) {
+          unresolvedRows.push({
+            ...row,
+            why_unresolved: ex && !ex.modelled
+              ? 'the running engine returned modelled:false for this giver — it did not apply the reaction matrix, so there is no arithmetic to agree with'
+              : `giver did not resolve to a reaction group (${g.status})`,
+          });
+        } else {
+          const agrees = toolAtEngineTerms === engineValue;
+          comparedRows.push({ ...row, agrees });
+          if (!agrees) disagreements.push({ ...row, agrees });
+        }
       }
     }
     const distinct = new Set(perSignature.map((s) => JSON.stringify(s.disposition_clauses))).size;
 
-    // ---- ROW ACCOUNTING. TOOL-COVERAGE-R3 §1, second rebuild bullet. -------------------------
-    // The R3 headline was "AGREES on 240 (signature, giver) pairs; 0 disagreements" — printed
-    // unchanged on a tree whose race term was dead. The reason was three lines: when the engine
-    // stops modelling, `explainDisposition()` returns `modelled: false`, every row becomes
-    // `agrees: null`, and `null` is not `false`, so ZERO rows were actually compared while
-    // `rows.push(row)` still ran and `rows_compared` still said 240.
-    //
-    // `agrees: null` is UNRESOLVED, not agreement. It is counted as such, reported as such, and
-    // an all-unresolved cross-check is `unmeasurable` — never a green.
-    const resolved = rows.filter((r) => r.agrees !== null);
-    const unresolved = rows.filter((r) => r.agrees === null);
-    const allUnresolved = rows.length > 0 && resolved.length === 0;
+    // ---- ROW ACCOUNTING. R3 §1 second bullet, closed by SHAPE in round 5. --------------------
+    // One implementation, shared with --self-test. See crossCheckVerdict() above.
+    const acc = crossCheckVerdict(comparedRows, unresolvedRows);
 
     // ---- MODEL RECONCILIATION. R3 §1, first rebuild bullet. -----------------------------------
     // The artifact used to print `model="derived"` and `RACE-INVARIANT: 1 distinct clause set`
@@ -2461,7 +3223,7 @@ async function crossCheck() {
       evidence: {
         distinct_disposition_clause_sets: distinct,
         signatures: perSignature.map((s) => ({ signature: s.signature, clauses: s.disposition_clauses.length })),
-        rows_resolved: resolved.length, rows_unresolved: unresolved.length,
+        rows_compared: acc.rows_compared, rows_unresolved: acc.rows_unresolved,
       },
     };
     const reconciliation = reconcileModel(liveFromSweep, { fatal: false });
@@ -2472,28 +3234,7 @@ async function crossCheck() {
       signatures_swept: perSignature,
       distinct_disposition_clause_sets: distinct,
       race_sensitive: distinct > 1,
-      // Three separate numbers, because R3 proved one number cannot carry this.
-      rows_compared: rows.length,
-      rows_resolved: resolved.length,
-      rows_unresolved: unresolved.length,
-      unresolved_reason: unresolved.length
-        ? 'explainDisposition().modelled was false (the engine did not model this giver) or the ' +
-          'giver did not resolve to a reaction group. An unresolved row compares NOTHING and is ' +
-          'never counted as agreement.'
-        : null,
-      rows,
-      disagreements,
-      // agrees is FALSE, not true, when nothing was resolved. A comparison of zero pairs is not
-      // a pass.
-      agrees: allUnresolved ? false : disagreements.length === 0,
-      unmeasurable: allUnresolved,
-      why: allUnresolved
-        ? `CROSS-CHECK UNMEASURABLE: ${rows.length} (signature, giver) pairs were enumerated and ` +
-          `ZERO were resolved — every one came back \`modelled: false\` from the running engine. ` +
-          `Nothing was compared, so nothing agrees. This is the exact state TOOL-COVERAGE-R3 §1 ` +
-          `constructed by killing the race term behind an intact set of source anchors, and the ` +
-          `round-3 tool reported it as "AGREES on ${rows.length} pairs; 0 disagreements".`
-        : null,
+      ...acc,
       model_reconciliation: reconciliation,
       note: 'Agreement is checked on the PERMANENT terms: the tool recomputes the engine\'s own ' +
             'value from the engine\'s own base and movable total through the same shipping ' +
@@ -2505,6 +3246,7 @@ async function crossCheck() {
 }
 
 const rep = report(records, fixture);
+rep.model_sensitivity = MODEL_SENSITIVITY;
 if (args['cross-check']) {
   rep.cross_check = await crossCheck();
   const cc = rep.cross_check;
@@ -2512,10 +3254,10 @@ if (args['cross-check']) {
     process.stdout.write(`cross-check: UNMEASURABLE — ${cc.why}\n`);
   } else {
     // NEVER "AGREES on N pairs" when N is the enumerated count. The verdict is stated over
-    // RESOLVED rows, and the unresolved count is printed alongside it whether or not it is 0.
+    // COMPARED rows, and the unresolved count is printed alongside it whether or not it is 0.
     process.stdout.write(
       `cross-check against the running gate: ${cc.agrees ? 'AGREES' : 'DISAGREES'} ` +
-      `on ${cc.rows_resolved} RESOLVED of ${cc.rows_compared} enumerated (signature, giver) pairs ` +
+      `on ${cc.rows_compared} COMPARED of ${cc.pairs_enumerated} enumerated (signature, giver) pairs ` +
       `(${cc.rows_unresolved} unresolved — nothing compared); ${cc.disagreements.length} disagreement(s). ` +
       `The offer path is ${cc.race_sensitive ? 'RACE-SENSITIVE' : 'RACE-INVARIANT'}: ` +
       `${cc.distinct_disposition_clause_sets} distinct disposition-clause set(s) over ` +
@@ -2553,7 +3295,7 @@ if (args['cross-check']) {
       at: new Date().toISOString(),
       source_hash: OFFER_MODEL.source_hash, source_files: MODEL_SOURCE_FILES,
       static_claim: { model: OFFER_MODEL.model, anchors: OFFER_MODEL.anchors, matched: OFFER_MODEL.anchors_matched },
-      live: { race_sensitive: cc.race_sensitive, evidence: { via: '--cross-check clause-set sweep', distinct_disposition_clause_sets: cc.distinct_disposition_clause_sets, rows_resolved: cc.rows_resolved } },
+      live: { race_sensitive: cc.race_sensitive, evidence: { via: '--cross-check clause-set sweep', distinct_disposition_clause_sets: cc.distinct_disposition_clause_sets, rows_compared: cc.rows_compared, rows_unresolved: cc.rows_unresolved } },
       reconciliation: mr,
     });
   }
@@ -2639,15 +3381,26 @@ log(`wrote ${outPath}`);
 // between those two trees is only observable live, so a run that never looked at the running
 // build must not close with a clean exit while it is charging signatures a disposition FAIL.
 // ---------------------------------------------------------------------------------------------
-const modelDependentVerdicts = records.filter(
-  (r) => r.stopped_at && r.stopped_at.offer_model !== undefined).length;
+// ROUND 5. The dependence is MEASURED (the two-model differential above), not inferred from
+// whether a disposition stop happened to occur. `--no-model-sensitivity` leaves it unmeasured,
+// which is itself a reason to refuse a clean exit rather than to assume independence.
+const modelDependentVerdicts = MODEL_SENSITIVITY.measured
+  ? MODEL_SENSITIVITY.signatures_whose_verdict_moves
+  : records.length;
 const modelUnverified = rep.model_attestation.status !== 'VALID';
 
+if (!QUIET) {
+  process.stdout.write(
+    `  model sensitivity: ${MODEL_SENSITIVITY.measured
+      ? `${MODEL_SENSITIVITY.signatures_whose_verdict_moves}/${records.length} verdicts move when the ` +
+        `offer model is swapped "${MODEL_SENSITIVITY.detected_model}" -> "${MODEL_SENSITIVITY.compared_against}"`
+      : 'NOT MEASURED (--no-model-sensitivity)'}\n`);
+}
 if (modelUnverified && modelDependentVerdicts > 0 && !QUIET) {
   process.stdout.write(
     `  MODEL UNVERIFIED (${rep.model_attestation.status}) — ${modelDependentVerdicts} of ` +
-    `${records.length} signature verdicts stopped at a disposition gate, and every one of them ` +
-    `is a function of an offer model this run never observed on the running build.\n` +
+    `${records.length} signature verdicts MOVE when the offer model changes, and this run never ` +
+    `observed which model the running build implements.\n` +
     `    ${rep.model_attestation.why}\n` +
     `    RI-CHR01 Distinctness and RI-CHR03 Decidability MUST NOT be scored from this run.\n`);
 }
@@ -2659,7 +3412,8 @@ if (rep.unmeasurable === records.length) {
 }
 if (modelUnverified && modelDependentVerdicts > 0) {
   process.stderr.write(
-    `[harness] ERROR: ${modelDependentVerdicts} verdicts depend on an UNVERIFIED offer model ` +
+    `[harness] ERROR: ${modelDependentVerdicts} verdicts MOVE with the offer model and it is ` +
+    `UNVERIFIED ` +
     `(attestation ${rep.model_attestation.status}). Run --verify-model or --cross-check first.\n`);
   process.exit(EXIT.MEASUREMENT_FAIL);
 }

@@ -426,7 +426,7 @@
       "speaker": "warden-scribe-tuleeh-ma",
       "place": "writ-house",
       "beat": "B03",
-      "line": "%PCName. %Race. %Upbringing. %ClassName. %Birthsign. — Reed-case, stamped, and it is the only thing in this province that says you are a person rather than a shape that was seen. Do not lose it. The door behind me is the one you want.",
+      "line": "%PCName. %Race. %Upbringing. %ClassName. %Birthsign. — Reed-case, stamped, and it is the only thing in this province that says you are a person rather than a shape that was seen. Do not lose it. The door behind me is the one you want. Past it, no one tells you a thing you have not asked for. So ask them what they do, and what is being said here. It is the only part of this province that is free.",
       "grants_item": "stamped-writ",
       "terminates_creation": true,
       "input": {
@@ -438,7 +438,8 @@
           }
         ]
       },
-      "next": null
+      "next": null,
+      "note": "The last thing said in the opening, and the beat where RI-DLG01 §A's nine root topics are actually put in the player's hands (`Engine._censusFinish()` -> `learnTopics`). The line teaches the VERB and nothing else: no place is named, no direction is given beyond the door in the room, and no surface is pointed at. ARBITRATION S35 permits a map that records where you have been and forbids one that instructs you where to go, and closes with the clause this line is written to satisfy — 'wayfinding must still work without opening the map at all: signposts, spoken directions and landmarks are unaffected, because a map that shows only where you have already been cannot get you anywhere new.' Measured before this round: the opening's 22 nodes contained no sentence telling the player that asking is a thing you do, and the nine words you would ask with were held by nobody and answerable by nobody in the room."
     }
   ],
   "greetings_race_conditioned": {

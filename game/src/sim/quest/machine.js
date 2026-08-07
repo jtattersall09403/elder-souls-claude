@@ -263,6 +263,31 @@ export class QuestEngine {
     // so the refusal arrives through the same path as every other one and reads the same way.
     const locked = new Set(Object.keys(q.flags).filter((k) => k.startsWith('locked:') && q.flags[k]).map((k) => k.slice(7)));
     const lockedReason = new Map();
+
+    // ---- EXPULSION — RI-QST03 §D, absent in round 1 ------------------------------------------
+    // A faction throws you out for something you did to it while you were inside it. It arrives
+    // through `locked`, exactly as a rivalry lock does, so `canOffer()` speaks the sentence a
+    // giver would speak and no second refusal path had to be invented. `discipline` is
+    // game/data/progression/faction-discipline.json, installed by the engine; left uninstalled
+    // this loop does nothing, which is what keeps it out of the fail-closed-before-its-data trap.
+    //
+    // NEVER a refusal. RI-QST02 D4 says a refusal must be a way to win, and round 1 already had
+    // refusals capping the ladder at rank six; making them expel as well would ship the same
+    // defect twice. Every declared cause is an act against the house from inside it.
+    this.expelled = new Map();
+    for (const row of (this.discipline && this.discipline.factions) || []) {
+      const readmitted = row.readmission && q.flags[row.readmission.flag];
+      if (readmitted) continue;
+      const hit = (row.expelled_by || []).find((c) => q.flags[c.flag]);
+      if (!hit) continue;
+      this.expelled.set(row.faction, { reason: hit.reason, on_flag: hit.flag, readmission: row.readmission || null });
+      for (const def of this.book.all()) {
+        const fid = def.faction || (def.rank_gate && def.rank_gate.faction);
+        if (fid !== row.faction || q.completed.includes(def.id)) continue;
+        locked.add(def.id);
+        lockedReason.set(def.id, hit.reason);
+      }
+    }
     if (rivalryLocked.size) {
       for (const def of this.book.all()) {
         const fid = def.faction || (def.rank_gate && def.rank_gate.faction);
@@ -556,6 +581,36 @@ export class QuestEngine {
   }
 
   // ---- the systems layer ---------------------------------------------------------------------
+
+  /**
+   * READMISSION — RI-QST03 §D's other half, and it is a price rather than a timer.
+   *
+   * Each house asks for the thing it deals in: the Ledger lodges a bond in coin, the Assize takes
+   * an amended filing and the standing that goes with it, the Xul-Aneekh takes a blood-price under
+   * the ku-vastei. The refusal names its own shortfall, because `RI-CRM01`'s rule about a
+   * greyed-out option that does not explain itself applies here too.
+   *
+   * `spend` is the purse, handed in by the engine, so this module still owns no gold.
+   */
+  readmit(factionId, { gold = 0, spend = null } = {}) {
+    const q = this.sim.quest;
+    this.context();                                   // refresh this.expelled
+    const e = this.expelled.get(factionId);
+    if (!e) return { ok: false, reason: `${factionId} has not expelled you` };
+    const r = e.readmission;
+    if (!r) return { ok: false, reason: `${factionId} has no way back and says so` };
+    const rep = (q.factions[factionId] && q.factions[factionId].reputation) || 0;
+    if (rep < r.reputation_floor) return { ok: false, reason: `${factionId} reputation ${rep}/${r.reputation_floor}`, line: r.line };
+    if (gold < r.price_gold) {
+      return { ok: false, reason: `${r.price_gold - gold} gold short`, shortfall_g: r.price_gold - gold,
+        line: String(r.refusal_line_no_gold || '').replace('{shortfall}', `${r.price_gold - gold}`) };
+    }
+    if (spend) spend(r.price_gold);
+    this.setFlag(r.flag, true);
+    if (q.factions[factionId]) q.factions[factionId].reputation = Math.max(0, rep - (r.costs_reputation || 0));
+    this._emit('faction_readmit', { faction: factionId, paid_g: r.price_gold, reputation_cost: r.costs_reputation || 0, cleared: e.on_flag });
+    return { ok: true, faction: factionId, paid_g: r.price_gold, reputation_after: q.factions[factionId] ? q.factions[factionId].reputation : null, line: r.line };
+  }
 
   /**
    * Set a world flag. This is the ONLY coupling between quest content and the rest of the

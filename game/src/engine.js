@@ -84,7 +84,7 @@ const WRIT_WINDOW = 9;
 // same order as the 2.2 m an NPC is talked to at, so one press of `interact` never has to
 // choose between a person and a board it could equally have meant.
 const SIGN_REACH_M = 2.6;
-import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, topicsFor, greetingBand } from './character/converse.js';
+import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, topicsFor, greetingBand, rootTopicIds } from './character/converse.js';
 import { topicKey } from './core/topics.js';
 import { buildOverheardIndex, buildDirectionsIndex, RumourBook, RoadBook, learnTopics } from './sim/quest/topic-supply.js';
 import { makeNPC } from './sim/npc.js';
@@ -411,6 +411,10 @@ export class Engine {
     // W1-07 round 4: the race/upbringing/faction term on the offer gate. Installed before the
     // first seed so no window exists in which a gate is evaluated on the raw register.
     this.questEngine.dispositionModel = this._questDispositionModel();
+    // RI-QST03 §D. Expulsion and readmission, which round 1 scored 0 — absent. Installed here
+    // rather than constructed inside QuestEngine so that an engine built without the file still
+    // boots and simply has no discipline, per the rule about arming an assertion before its data.
+    this.questEngine.discipline = (this.data.progression && this.data.progression['faction-discipline']) || null;
     // W1-LIBRARY round 2: what each book teaches a quest gate, installed before the first gate
     // is ever evaluated. FAIL-LOUD on a dangling key, in the same spirit as `_installOpacity`:
     // a `knowledge_key` no quest asks for is a book that thinks it opens a door that is not
@@ -1290,6 +1294,29 @@ export class Engine {
 
   censusBegin(opts = {}) {
     this.census.reset();
+    // O6'S THREE STAMPS BELONG TO ONE OPENING, AND UNTIL NOW THEY BELONGED TO THE PAGE.
+    //
+    // `_firstInputFrame`, `_firstControlFrame` and `_firstFieldFrame` latch once each and were
+    // reset by nothing — not by `censusBegin`, not by `titleActivate('new')`, not by a load. So
+    // the second opening played in a browser inherited the first one's stamps, and
+    // `getJourneyStamps()` cheerfully subtracted two numbers belonging to different scenes.
+    //
+    // MEASURED: `w1-26-opening.mjs` walks the whole scene for DTR in section D and then plays
+    // the opening again for O6 in section C. It came back `first_field_frame: 2`,
+    // `first_control_frame: 35`, interval **-0.55 s** — a question answered two frames before
+    // the player could move — while reporting, in the same object, `census_node_at_start:
+    // "hold.come-to"`, `opened_paused: true` and `moved_m: 3.2`. The scene was demonstrably
+    // waiting and the stamp said it had already asked. The piece's other probe, which plays the
+    // opening once in a fresh page, read the same build at +63.5 s. A 64-second disagreement
+    // between two of this piece's own instruments, and the negative one is the artefact.
+    //
+    // A stamp that survives the scene it stamps is not a measurement of the scene. Cleared here,
+    // where the opening begins, so the interval is always taken within one playing of it.
+    this._firstInputFrame = null;
+    this._firstControlFrame = null;
+    this._firstFieldFrame = null;
+    this._firstFieldNode = null;
+    this._journeyPrevPose = null;
     if (opts.race) this.census.observe(opts.race);
     if (opts.at) { this.census.nodeId = opts.at; this.census.paused = false; this.census._autoAdvance(); }
     // THE SCENE. Round 1 opened the census as a pure state machine and left the camera
@@ -1627,8 +1654,14 @@ export class Engine {
     // permanently closed. Read from `sim.quest.flags` directly, so it is the same register the
     // quest gates read and there is no second source of truth about what the player knows.
     const knows = this._knownFlags();
-    if (ch) return { race: ch.race, upbringing: ch.upbringing, birthsign: ch.birthsign, knows };
-    return { race: this.sim.identity.race || null, upbringing: this.sim.identity.upbringing || null, birthsign: this.sim.identity.sign || null, knows };
+    // The WORDS the character holds, as against the world flags they have earned. `topicsFor()`
+    // offers a root topic only to a player who has been given it, and the giving happens at the
+    // desk (`_censusFinish`), so a body wandering the hold before the writ is stamped has the
+    // person's own subjects and nothing else. Read live off `sim.quest.topicsKnown` for the same
+    // reason `knows` is read live: a word learned from a rumour must reach the next list.
+    const topicsHeld = (this.sim.quest && this.sim.quest.topicsKnown) || [];
+    if (ch) return { race: ch.race, upbringing: ch.upbringing, birthsign: ch.birthsign, knows, topics_known: topicsHeld };
+    return { race: this.sim.identity.race || null, upbringing: this.sim.identity.upbringing || null, birthsign: this.sim.identity.sign || null, knows, topics_known: topicsHeld };
   }
 
   /** Every world flag currently set, as a Set. The knowledge half of a dialogue filter. */
@@ -3346,6 +3379,25 @@ export class Engine {
     ev.item = 'stamped-writ'; ev.how = 'granted at the desk';
     const ev2 = this.bus.emit(this.sim.frame, 'dialogue_close');
     ev2.npc = 'warden-scribe-tuleeh-ma'; ev2.scene = 'census';
+    // RI-DLG01 §A — "the player begins with exactly nine topics, granted at character creation".
+    // This is character creation, and until now it granted none: `sim/state.js` initialises
+    // `topicsKnown: []` and nothing between there and the door put a word in it. The nine come
+    // off the topic index (`root: true` in `topics/00-roots.json`) rather than out of a list
+    // written here, so the roster has one home. `learnTopics` dedupes on the folded key, so a
+    // save loaded into a fresh engine and re-stamped does not grow a second copy.
+    //
+    // The event is `topic`, which is already in `sim/events.js`'s closed vocabulary. An earlier
+    // draft of this block invented `topics_learned` and the bus would have thrown inside the
+    // fixed step — which is exactly how six emits shipped broken earlier in this round. Reuse
+    // the vocabulary; an amendment is for what the list cannot say, and it can say this.
+    const rootIds = rootTopicIds(this.topicIndex);
+    const granted = learnTopics(this.sim.quest.topicsKnown, rootIds);
+    if (granted.length) {
+      this.sim.quest.topicsKnown.sort();
+      for (const t of granted) this.questEngine.noteTopicLearned(t, 'CREATION', 'warden-scribe-tuleeh-ma');
+      const ev3 = this.bus.emit(this.sim.frame, 'topic');
+      ev3.topics = granted.slice(); ev3.how = 'granted at the desk'; ev3.count = granted.length;
+    }
     // What she wrote down is now what you are made of. RI-PRG02 §3 and RI-CHR03 §2.
     this.applyDerivedPools({ refill: true, why: 'census' });
     quantiseColdState(this.sim);
@@ -3815,8 +3867,45 @@ export class Engine {
    * `stepOnce`'s timing window, so `perf.lastSimMs` and every allocation profile taken over
    * `stepFrames` describe the simulation and not the instrument.
    */
+  /**
+   * THE AR-3 CROSSING, W1-FACTIONS round 2. `RI-CRM02` §5's `factionLawFactor` — the guard who
+   * sheathes his sword because of your rank — was implemented in `sim/crime/justice.js` and
+   * `sim/crime/sanction.js` the whole time, and it read `sim.stealth.p.standings`, which is
+   * initialised `{}` and had **exactly one writer in the entire build**: the harness method
+   * `setFactionStandings()`. So the arrest threshold moved for a probe and never for a player.
+   * A character could hold rank 7 in the Wet Ledger, earned across eighteen quests, and every
+   * guard in Gideon would arrest them on exactly the same bounty as a stranger off the boat.
+   *
+   * This is the writer. It derives standings from the quest system's own ranks — the same
+   * `context().ranks` that `canOffer()` gates on — through the id map in `sanction.json`, so
+   * the crime side and the quest side cannot drift. Membership is required, exactly as
+   * `heldRank()` requires it: reputation paid sideways by a favour is not a career.
+   */
+  syncFactionStandings() {
+    const st = this.sim && this.sim.stealth;
+    if (!st || !this.questEngine) return null;
+    const map = ((st.d.sanction.faction_law_factor || {}).standing_ids) || {};
+    const ctx = this.questEngine.context();
+    const q = this.sim.quest;
+    const out = {};
+    for (const [questId, standingId] of Object.entries(map)) {
+      if (standingId === undefined || questId.startsWith('_')) continue;
+      const row = q.factions[questId];
+      if (!row || !row.member) continue;
+      const rank = Math.max(ctx.ranks[questId] || 0, 1);
+      if (rank > (out[standingId] || 0)) out[standingId] = rank;
+    }
+    for (const k of Object.keys(st.p.standings)) if (!(k in out)) delete st.p.standings[k];
+    Object.assign(st.p.standings, out);
+    return { ...st.p.standings };
+  }
+
   _afterStep() {
     if (this.firstControlAt === null && this.sim.frame > 0) this.firstControlAt = wallNow();
+    // Cheap — at most nine map lookups — and it has to run every step rather than on resolve,
+    // because reputation and therefore derived rank also move through `setFlag` and through a
+    // load, and a standing that is only correct on the frame a quest closed is not a standing.
+    this.syncFactionStandings();
     this._journeyStamps();
     // A census commit latched inside the step is applied here — outside the armed guard, and
     // strictly before the frame record, so its `creation_field` event is in this frame.

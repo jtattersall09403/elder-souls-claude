@@ -4,13 +4,19 @@
   "target": "W1-19 round 2 (quest + dialogue join)",
   "branch": "claude/morrowind-souls-threejs-game-mou39v",
   "started": "2026-08-07",
-  "state": "measuring",
+  "state": "complete",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-19-r2.md",
     "corpus/90-verdicts/wave1/W1-19-r2.json",
     "reports/blog-feed.jsonl (one line appended)"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/W1-19-r2.md",
+    "corpus/90-verdicts/wave1/W1-19-r2.json",
+    "reports/blog-feed.jsonl (one line appended)",
+    "tools/quests/critic-giver-presence.mjs",
+    "tools/quests/critic-ar3-endtoend.mjs"
+  ],
   "contention_at_start": {
     "headless_shell": 6,
     "loadavg": "1.80 5.13 4.87"
@@ -19,9 +25,54 @@
     "BOOT-CHECK PASS before work (rendered_a_frame true).",
     "STATIC (my own supply-graph script, scratchpad/supply.mjs, topicKey folded, multi-hop over info.to): of the 35 subject quests, only 18 have their opening keyword supplied in a settlement that HAS a bootable named state. 16 are supplied ONLY in gideon(9)/lilmoth(5)/blackrose(3) -- settlements with NO state file in game/data/states/. Q-MAG-18 'the voriplasm' has NO supplier anywhere, 1-hop or closure.",
     "Bootable town states: helstrom-market, stormhold-street, soulrest-quay, thorn-hall. The builder's headline ran only THREE of the four; thorn-hall (6 quests keyed there) was NOT run.",
-    "Builder claim '32 rumour rows keyed to each giver's settlement' is not exactly true: Q-MAG-25 giver widow-ineel stands at THORN but its keyword is only rumoured at GIDEON; Q-MAG-27 giver scribe-hulen stands at STORMHOLD, keyword only rumoured at GIDEON. Giver warden-eshi (Q-MAG-06/18/28) has no matching NPC record; xul-aneekh-speaker and potter-mek have an EMPTY settlement string."
+    "Builder claim '32 rumour rows keyed to each giver's settlement' is not exactly true: Q-MAG-25 giver widow-ineel stands at THORN but its keyword is only rumoured at GIDEON; Q-MAG-27 giver scribe-hulen stands at STORMHOLD, keyword only rumoured at GIDEON. Giver warden-eshi (Q-MAG-06/18/28) has no matching NPC record; xul-aneekh-speaker and potter-mek have an EMPTY settlement string.",
+    "REPRODUCED EXACTLY: utility-findability default = 10 newly offerable (helstrom 4, stormhold 6, soulrest 0), keywords 4/4/1, cold 0/0/0 with 35/35/35 blocked-on-topic.",
+    "TOOL FLAG THAT LIES (TOOL-LOOP rule 5): utility-findability.mjs advertises `--state <id>` and CRASHES on every use -- line 49 calls .split(',') on the array String(args.state).split(',') already produced. The tool has only ever run on its three hardcoded default states.",
+    "*** BIGGEST GAP, MEASURED LIVE (critic-giver-presence.mjs): 9 of 94 quest givers are present in ANY bootable state, and 9 of 94 are talkable. main 9/32 (all Q-MAIN-01/02/03/04/05/11/12/16/24 at soulrest-quay), side 0/25, faction 0/36, hidden 0/1. ZERO of the 35 subject quests behind the '10 of 35' headline has a giver anywhere in the world. The world contains 12 NPCs across 3 inhabited states; thorn-hall has 0 NPCs.",
+    "mainline-chain-floor.mjs line 198 conjures the giver when a gate refuses: H.spawnNPC({from_record: giver, pos:[0,0,2]}). The tool's own comment concedes 'the gate has never had a proximity term'.",
+    "REPRODUCED: mainline-chain-floor default AND --sabotage no-purse both = 40/40 both chains, 0/31 arrived short, 0 bought, 0 violent. Numbers are honest.",
+    "BUT: 8 of the 31 main-quest gates now have disposition_min = 0. Standing is FLOOR-CLAMPED AT 0 (24,960 samples across 40 signatures x 2 chains: min ever seen 0, negative samples 0, exactly-zero samples 546), so a min of 0 is a gate that CANNOT REFUSE. Q-MAIN-10/15/18/22/26/27/28/32. Four carry the round-2 re-clamp note; the fix for round 1's 'margin exactly zero' was to lower the gate until the margin cannot be negative.",
+    "TIGHTEST REAL MARGIN (min>0): Q-MAIN-08 harbourmaster-cuiro-vaneth, min 20, worst arrival 20.643 (naga/interior) = margin 0.643. Identical with and without the purse. Round 1's defect was margin 0; round 2's tightest is 0.64 of a disposition point.",
+    "Q-MAIN-30 (ledgerer-hosk-vei, min 15) is a main quest NEITHER chain ever visits: arrival null. The '0 of 31 gates arrived short' headline counts an unmeasured gate as passing.",
+    "ATTRIBUTE RESCALE reproduces: --sheet max = 3 endings out of reach, all other pieces' (Q-BLAK-01, Q-LEDG-01, Q-MAG-10). Ceiling personality p10 18 / median 22 / max 31 read from reports/faction-signature-sweep.json -- which carries NO measured_at and is a cached report, not a live sheet.",
+    "RESCALE DISCRIMINATION: of the three rescaled endings, only Q-MAIN-23 res_turn_the_writ (personality 20) still fails a p10 sheet's ceiling of 18. Q-MAIN-08 res_lean_on_cuiro (17) and Q-MAIN-13 res_make_him_say_it (willpower 20 vs p10 ceiling 22) are inside every sheet's reachable ceiling.",
+    "PROSE SAMPLE (rule declared in advance: sorted ids, positions 1/8/15/22/29 = the-barred-window, the-far-exit, the-hollowed-scribe, the-phial, the-tally-of-the-dead). The WRITING IS GENUINELY GOOD -- 'Ashul in the low market buys things that came out of buildings. He is polite about it, which is worse.' Not scaffolding.",
+    "BUT THE STRUCTURE IS MECHANICAL: all 34 topics have EXACTLY 3 infos (102/34 = 3.0, histogram {3:34}); and 0 of 102 infos carries ANY condition -- no speaker, race, faction, rank, disposition or requires. Every NPC in the world says the identical three lines in the identical order. Morrowind's dialogue system is filtered infos; this uses none of it.",
+    "Topic id at sorted position 10 is literally 'the-four-hundred-and-eleven' -- the 'eleven' tic the prose-tics sweep is chasing.",
+    "AR-3 STANDS, and stronger than the builder demonstrated it: the crossing survives being driven by a played resolution rather than a hand-set flag. Credit due.",
+    "BUT res_sign_the_clause carries requires_knowing ['rev_why_the_clause']. mainline-chain-floor's PREFER map does not name Q-MAIN-23, so its 40 signatures take the first available non-violent branch. Worth checking whether any signature in the 40/40 run ever signs the clause -- i.e. whether the AR-3 crossing is on the path the headline instrument walks.",
+    "SELF-LOOP REPAIR IS MECHANICAL: 28 of the 35 repaired hooks.json rows hand you back to the SAME PERSON. Tarjan over the entry_topics graph: 11 non-trivial cycles, ALL 11 closed on a single quest giver, covering 28 quests. Round 1's 1-cycle became a 2- or 3-cycle on one NPC (fence-ashul 3<->8, assizer-corvo 10<->13, rootkeeper-jeen 05<->15<->19, herbwife-ossa 11<->17<->23, widow-ineel 04<->22<->25, ...). Only 3 of 35 repaired edges cross a town.",
+    "MACHINE TIC CONFIRMED IN THE NEW PROSE: 'eleven' occurs 31 times in 8,626 words of round-2 dialogue = 35.94 per 10k words, against Morrowind's 39 in 1,866,989 words = 0.21 per 10k. 171x. Only 3 are the proper noun 'four hundred and eleven'; 26 are free-standing and in 20 distinct unrelated records -- eleven gold a week, eleven years, eleven thousand names, eleven boxes, eleven sextons, eleven names short, eleven live roots, eleven families, eleven entries. 'eleven' is the SECOND most common number-word in the new prose after 'one', ahead of 'two' and 'three'. 'four hundred' 15.07 vs 0.01 per 10k; 'has stopped' 6.96 vs 0.01.",
+    "CONTROL REPRODUCED: utility-findability --sabotage no-rumours = 10 -> 0 newly offerable, keywords 0/0/0, blocked-on-topic back to 35/35/35. The rumour layer is genuinely load-bearing.",
+    "ROUND-1 ORPHANS CLOSED, verified live: opens_by.overheard_from -- greeting the three NPCs Q-MAIN-01 names takes topics 0 -> 3. q.directions -- the giver offers the topic 'the way to reading of the count' and speaking it sets the flag directions_heard:Q-MAIN-01.",
+    "INSTRUMENT NOTE on my own presence probe: listNPCs() does not expose the record id under record/from_record/id, so the `present` set undercounts. The TALKABLE number is instrument-independent: under --sabotage assume-present all 94 givers get a real talkTo() attempt by record id and exactly 9 succeed. 9/94 stands.",
+    "Aveline Rell offers 'the road to Blackrose' and 'the road to Gideon' as topics. Neither Blackrose nor Gideon has a bootable state. The world gives directions to places that do not exist."
   ],
-  "method_deviations": [],
-  "next_step": "check whether gideon/lilmoth/blackrose are reachable in the running world; then run utility-findability myself incl thorn-hall",
-  "notes_for_successor": "Attack order given in brief: (1) cold-start findability 10/35 honesty, (2) 34 topic body prose quality + machine tics, (3) self-loop repair designedness, (4) 40/40 signature margins, (5) attribute rescale ceiling, (6) AR-3 perturbation, (7) CONSUMPTION world-side consumers."
+  "method_deviations": [
+    {
+      "tool": "tools/quests/critic-giver-presence.mjs",
+      "why": "round-2's two headline instruments decide findability from QuestEngine.open(), which has no presence or proximity term. Nothing in the tree asks whether the person a quest names is in the world.",
+      "control": "--sabotage assume-present flips giver_present 9 -> 94; talkable stays 9 because talkTo() genuinely fails for an absent record. Instrument reads the world."
+    },
+    {
+      "tool": "tools/quests/critic-ar3-endtoend.mjs",
+      "why": "encounter-seam-probe.mjs hand-sets the flag with H.questSetFlag and confirms the quest->flag half by reading the shipped quest FILE. That is the design document, not the world.",
+      "result": "AR-3 VERIFIES END TO END: playing the intended chain to Q-MAIN-23 and taking res_sign_the_clause sets the_sixty_are_protected false->true in getQuestState().flags and the dres-raid-party spawns 4 bodies {infantry:4}; the sibling branch res_buy_the_water leaves the flag false and spawns 6 {infantry:4, net-thrower:2}. statblocks/hp_max[412]/poise_max[32] identical. Control is a real sibling branch of the same quest."
+    }
+  ],
+  "next_step": "none \u2014 verdict delivered. Nothing committed.",
+  "notes_for_successor": "Verdict FAIL 5/10. Round 2 genuinely closed three of round 1's four orphan models (overheard_from, q.directions, opens_by.topic), the 40/40 and no-purse headlines reproduce to the digit, and AR-3 survives a harder end-to-end test than the builder applied (all 40 signatures take res_sign_the_clause). The gap is that findability was measured at QuestEngine.open(), which has no presence term: 9 of 94 quest givers are talkable anywhere and 0 of the 35 quests in the headline has a giver in the world. Also: 8 of 31 gates now carry disposition_min 0 and cannot refuse (standing floor-clamps at 0 over 24,960 samples); tightest real margin 0.643 at Q-MAIN-08 for naga/interior; 11 of 11 entry_topics cycles close on one NPC over 28 quests; \"eleven\" at 171x the Morrowind rate in the new prose. Two tools minted and declared, both with red controls. utility-findability.mjs --state is broken and should be fixed before anyone cites a per-state number.",
+  "verdict": {
+    "score": 5,
+    "of": 10,
+    "gate": 7.0,
+    "status": "FAIL",
+    "round_1_was": 4,
+    "biggest_gap": "GAP-W1-quest-givers-not-in-the-world"
+  },
+  "contention_at_end": {
+    "headless_shell": 14,
+    "loadavg": "11.85 9.13 7.17",
+    "note": "rose after my browser work finished; all my measurements are counts/rates/booleans and were taken with pgrep <= 6"
+  }
 }

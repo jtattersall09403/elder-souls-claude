@@ -1,11 +1,33 @@
 {
   "task_id": "W1-LIBRARY-MARTIAL",
-  "brief": "Author ~42 martial texts to close RI-LOR03 §2 gap (70 of 112), weighted long, covering axes/maces, greatweapons, shieldcraft and other zero-scoring skills.",
-  "started": "wave-1 round-3",
-  "state": "researching",
-  "outputs_expected": [],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read RI-LOR03, RI-UIX05, W1-LIBRARY-r1 verdict, W1-LIBRARY-r2 status, W1-PROSE-TICS rules",
-  "notes_for_successor": ""
+  "brief": "Author ~42 martial texts to close RI-LOR03 §2's L8 gap (70 of 112), weighted long (p75-p90), covering axes-maces / greatweapons / shieldcraft and the other zero-scoring skills.",
+  "started": "wave-1 round 3",
+  "state": "writing",
+  "outputs_expected": [
+    "game/data/books/the-drill-book.json",
+    "game/data/books/the-arms-of-the-province.json",
+    "game/data/books/the-ford-arguments.json",
+    "game/data/books/the-schools-and-the-quarrels.json",
+    "game/data/books/the-short-arms.json",
+    "game/data/books/the-body-and-the-dark.json",
+    "game/data/index.json (regenerated)",
+    "reports/blog-feed.jsonl (one line)"
+  ],
+  "outputs_written": [
+    "game/data/books/the-drill-book.json — 5 texts, 5,867 w (Imperial instructional spine; 2 declared contradictions)",
+    "game/data/books/the-arms-of-the-province.json — 7 texts, 7,282 w (6 Argonian-authored; 3 declared contradictions)",
+    "game/data/books/the-ford-arguments.json — 6 texts, 4,562 w (one engagement, six irreconcilable accounts)"
+  ],
+  "findings": [
+    "BASELINE MEASURED AT START (not inherited): book-budget 70 books / 42,770 words; L8 FAIL 70 vs bar 112; every other row PASS. book-stats p10 122 / p25 235.8 / median 614.5 / p75 837.8 / p90 1317.3 / max 1525. Morrowind's own measured shape (RI-LOR03 §1, 241 books): p10 165 / p25 299 / median 535 / p75 1125 / p90 1673 / max 4090. Our gap to Morrowind is at BOTH ends: too many scraps under 150 (15.7% vs 8.7%) AND nothing above 1525 against their 4090. The middle is over-full.",
+    "SKILL TAG CENSUS (re-derived, agrees with r2): 32 tags on 10 skills — speechcraft 7, root-speech 6, mercantile 6, survival 4, athletics 3, alchemy 2, acrobatics 1, security 1, warding 1, blades 1. NINE skills have ZERO tagged books: axes-maces, greatweapons, shieldcraft, polearms, marksman, claw-fang, sneak, veiling, sorcery.",
+    "L7b IS A RANK TEST AND THE RANK MOVES WITH CORPUS SIZE. Top third of 70 is rank <= 24; at 112 it is rank <= 38. Adding 42 books LOOSENS the bar proportionally, so existing tags are not at risk from dilution — but a new book that heavily uses another skill's vocabulary can displace an existing tagged book. SKILL_TERMS shares 'parry' between blades and shieldcraft, and 'keeper'/'tree'/'root' between root-speech and everything set in the marsh.",
+    "SOURCE MATERIAL FOR MARTIAL PROSE IS ALREADY ON DISK AND NOBODY HAD WRITTEN ABOUT IT: game/data/weapons/roster.json is 87 named weapons in 15 classes with 28 named LINEAGES each carrying a one-line mechanical character (splitter vs hatchet: 'they hook a shield rim rather than splitting it'; flail: 'cannot be stopped once started'; zwei: 'held further up the ricasso, so it turns over faster'). classes.json carries reach_m, arc_sweep_deg, r1_startup, poise_dmg and a per-class `problem` string. offhand.json has five shields, and the Xanmeer door greatshield CANNOT PARRY EVER by design, with a guard-angle rule that makes an out-of-angle hit unblocked at full damage. That is a whole martial argument the library can have without inventing a fact.",
+    "CONTRADICTION EDGES DO NOT NEED A REGISTRY FACT. book-stats S4 only requires `contradicts[].book` to resolve and S9 requires the `on` subject's content words to appear in BOTH texts. So a martial dispute can be built without touching canon-facts.json (another piece's file). All 37 existing edges carry `cf`; mine will not, and that is legal by the checker and cleaner by ownership.",
+    "S8 REQUIRES topics_taught SLUG WORDS TO APPEAR STEMMED IN THE BOOK'S OWN PROSE. Topics must be phrases the text actually uses.",
+    "PROSE TICS TO AVOID, measured live on this build's books register (tools/prose/tic-detector.mjs): RULE-18 'that is what/why/all/not/the' 20.1x (top separator), RULE-17 ', which is/was' 9.8x, RULE-44 'is not a <noun>' 14.7x, RULE-24 mid-sentence colon 5.6x, RULE-28 sentence-final ', which ...' aside 5.8x, RULE-06 spelled counts four..twenty 4.9x, RULE-36 contraction avoidance 6.8x, RULE-42 'there is no' 9.0x, RULE-08 round hundreds 20.1x, RULE-01 eleven. Em dash is a CONFOUND not a tic (Morrowind writes '--'), normalised 1.0x — do not chase it.",
+    "THE FORD ALREADY HAD A CANON AND IT IS BETTER THAN THE ONE I WAS GOING TO INVENT. a-short-account-of-the-pacification gives 3E 391, a relief column of the Ninth, 200 at muster / 49 at the far bank, cause a flood surge, plus an appendix of arithmetic on the weir ponds; the-account-the-marsh-keeps answers it with 151-in-their-books against a-dozen-in-ours and names a woman at Lilmoth who says the loss was the carts; the-drowned-ford is a 72-word Argonian scrap about a woman who understood water. So the martial history writes itself INTO an existing argument instead of beside one, and the sixth issue of my drill regulation now rests its most dangerous rule on an engagement the Office's own returns cannot find."
+  ],
+  "next_step": "write file 4 (the-schools-and-the-quarrels.json, 8 texts incl. the two outstanding contradiction partners the-buckler-and-the-hand and the-harvest-edge-is-a-farm-tool)",
+  "notes_for_successor": "Plan: 42 texts across 6 new files, weighted to p75-p90 — roughly 8 short (170-450 w), 13 mid (550-950), 12 upper (1,000-1,500), 7 long (1,600-2,100), 2 very long (2,400-3,200). Target after landing: p25 ~450, median ~680, p75 ~1,100, p90 ~1,600, max ~3,200, short-tail 11/112 = 9.8%. Cover the nine empty skills with ~20 new tags (each tag is a free level of that skill on first read, so do not spray them)."
 }

@@ -104,45 +104,64 @@ function checkAgainst(hooksDoc, book) {
   return out.length > 0;
 }
 
-// ---- a resolution that gates on a skill nobody has ------------------------------------------
+// ---- a resolution nobody can reach: the attribute scale, and skills that do not exist ---------
 //
-// W1-LIBRARY round 2, found while proving that reading a book opens the three non-violent lore
-// resolutions. It does — but two of the three ALSO gate on a skill id that does not exist:
+// Two shapes of the same defect, and the second one was found three separate times by three
+// builders who were each looking for something else.
 //
-//   Q-SOUL-02 res_seal        requires `scribing`     — there is no such skill. The register has
-//                                                       nineteen and none of them is scribing.
-//   Q-LILM-01 res_rootkeepers requires `root_speech`  — the skill is `root-speech`, with a hyphen
-//                             (blackmarsh-coast.json:1391, blackmarsh-core.json:864)
+// 1. A SKILL ID THAT DOES NOT EXIST. Found by W1-LIBRARY round 2 while proving that reading a
+//    book opens the three non-violent lore resolutions. It does — and two of the three then
+//    gated on `scribing` (no such skill; the register has nineteen and none is scribing) and
+//    `root_speech` (the skill is `root-speech`, with a hyphen — `root_speech` is the *school*
+//    id in game/data/magic/effects.json, one underscore away). `gate.js canResolve()` looks the
+//    key up verbatim, finds nothing, and reports `root_speech 0/45` forever.
+//    The class turned out to be **eleven**, not two, and nine of them came from one identity
+//    entry in `tools/analysis/gen-magic-quests.mjs`'s school->skill map.
 //
-// The gate looks the key up verbatim in `sim.progression.skills`, finds nothing, and reports
-// `root_speech 0/45` for as long as the game runs. No amount of play moves it, so those two
-// non-violent exits are shut by a typo rather than by a difficulty. Q-DEEP-01's `speechcraft`
-// floor is spelled correctly and behaves correctly, which is what makes this a defect and not a
-// misreading of the gate.
+// 2. AN ATTRIBUTE DEMAND ON THE WRONG SCALE. Quest demands were authored on Morrowind's 0-100
+//    attribute scale. Attributes here are worth `creation + 6 per governing skill` and no more
+//    (`character/derive.js:359`), so personality tops out at 18/22/31 across the p10, median and
+//    best of 240 measured signatures. `personality: 45` is not hard; it is unreachable by every
+//    character the game can create. And clamping such a demand TO the ceiling is the same defect
+//    one point lower — W1-19 round 1 did exactly that and shut Act IV for 11 of 40 signatures.
+//
+// `tools/quests/attr-scale-audit.mjs` owns both, computes its bands from the measured sweep
+// rather than from any written-down number, and has a `--self-test` that goes red on each rule.
 //
 // WARNING, NOT AN ERROR, AND DELIBERATELY SO. The quest data is another item's to change, and a
-// fail-closed assertion landed here would turn `check-quests` red for every agent on the box
-// over content none of them owns — the exact failure this project has already paid for twice.
-// It prints loudly and exits 0. Promote it to a `problems.push()` once the two ids are fixed;
-// the check is written so that is a one-line change.
+// fail-closed assertion landed here would turn `check-quests` red for every agent on the box over
+// content none of them owns — the exact failure this project has already paid for twice. It
+// prints loudly and exits 0. Run the audit directly for the full table and a non-zero exit.
 {
+  const sweepPath = join(ROOT, 'reports', 'faction-signature-sweep.json');
   const skillsPath = join(ROOT, 'game', 'data', 'progression', 'skills.json');
-  if (existsSync(skillsPath)) {
-    const real = new Set((readJSON(skillsPath).skills || []).map((s) => s.id));
-    const dangling = [];
-    for (const [id, q] of quests) {
-      for (const r of (q.resolutions || [])) {
-        for (const k of Object.keys((r.requires && r.requires.skills) || {})) {
-          if (real.has(k)) continue;
-          const near = [...real].find((x) => x.replace(/[-_]/g, '') === k.replace(/[-_]/g, ''));
-          dangling.push(`${sourceOf.get(id)}: ${id} ${r.id} requires skill '${k}'` + (near ? ` — did you mean '${near}'?` : ' — no skill of that name exists'));
+  if (existsSync(sweepPath) && existsSync(skillsPath)) {
+    try {
+      const { audit } = await import('./quests/attr-scale-audit.mjs');
+      const book = [];
+      for (const [id, q] of quests) book.push({ file: sourceOf.get(id), quest: q });
+      const rep = audit(book, readJSON(sweepPath), readJSON(skillsPath), 'p10');
+      if (rep.defects.length) {
+        console.warn(`check-quests: WARNING — ${rep.defects.length} quest demand(s) sit outside a band any real character reaches.`);
+        console.warn('  A gate nobody can meet is a resolution no player can ever take; run');
+        console.warn('  `node tools/quests/attr-scale-audit.mjs` for the bands and the reserve.');
+        for (const d of rep.defects) {
+          const why = d.kind === 'skill'
+            ? (d.near ? `did you mean '${d.near}'?` : 'no skill of that name exists in progression/skills.json')
+            : `measured ceiling ${d.caps.no_reserve} on a median sheet / ${d.caps.max_only} on the best of 240; hard cap ${d.caps.dedicated}`;
+          console.warn(`  [${d.band}] ${d.file}: ${d.quest} ${d.resolution} requires ${d.key} ${d.need} — ${why}`);
         }
       }
-    }
-    if (dangling.length) {
-      console.warn(`check-quests: WARNING — ${dangling.length} resolution requirement(s) name a skill that is not in progression/skills.json.`);
-      console.warn('  A gate on a skill nobody can have is a resolution no player can ever reach.');
-      for (const d of dangling) console.warn(`  ${d}`);
+      if (rep.non_combat.nonviolent_resolutions_shut_by_defect) {
+        console.warn(`check-quests: WARNING — ${rep.non_combat.nonviolent_resolutions_shut_by_defect} non-violent resolution(s) are shut for EVERY character by one of the above.`);
+        console.warn('  ARBITRATION.md requires a non-lethal exit from any fight with a person; each of these');
+        console.warn('  silently converts a talkable quest into a violent one.');
+      }
+      for (const l of rep.ladders.filter((x) => !x.monotone)) {
+        console.warn(`check-quests: WARNING — ${l.line}'s ${l.attribute} ladder is not ordered: ${l.inversions.join('; ')}`);
+      }
+    } catch (e) {
+      console.warn(`check-quests: could not run the attribute-scale audit — ${e.message}`);
     }
   }
 }

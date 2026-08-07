@@ -97,9 +97,22 @@ export function buildTopicIndex(topicDocs) {
       const key = topicKey(t.id);
       const cur = idx.get(key) || { id: t.id, infos: [] };
       for (const info of (t.infos || [])) cur.infos.push({ ...info, from: doc.group || null });
+      // `root: true` is RI-DLG01 §A's nine — the words the player is given at creation and may
+      // put to anyone, as against a subject a particular person advertises. It is authored in
+      // `topics/00-roots.json` and was read by NOTHING: `topicsFor()` iterated `npc.topics`
+      // alone, and measured over all 336 NPC records SEVEN OF THE NINE were listed by zero
+      // speakers in the province. The flag is carried onto the merged record here so the roster
+      // has one source, and a file that adds an actor's half of a root (`06-opening-roots.json`)
+      // does not have to re-declare the flag to stay in it.
+      if (t.root) cur.root = true;
       idx.set(key, cur);
     }
   }
+  // The roster, in authored order, keyed the same way the index is. Attached to the Map rather
+  // than returned alongside it because every existing caller passes this value around as one
+  // thing, and a second return value would have to be threaded through all of them.
+  idx.roots = [];
+  for (const [key, t] of idx) if (t.root) idx.roots.push({ key, id: t.id });
   return idx;
 }
 
@@ -221,14 +234,63 @@ export function infoFor(topicIndex, topicId, npc, player) {
   };
 }
 
-/** The topics this person will discuss with THIS player, in the order the record lists them. */
+/**
+ * The topics this person will discuss with THIS player: the subjects their own record
+ * advertises, in the order the record lists them, and then the ROOT topics the player has been
+ * given and this person can answer.
+ *
+ * WHY THE SECOND HALF EXISTS. RI-DLG01 §A — *"the player begins with exactly nine topics,
+ * granted at character creation"* — and until now the player began with none and no speaker
+ * advertised them. Measured over all 336 NPC records carrying a `topics` array: `duties`,
+ * `specific-place`, `someone-in-particular`, `services`, `my-trade`, `latest-rumors` and
+ * `little-secret` were listed by ZERO people, while 79 speakers could have answered each of
+ * them. The nine words that ARE the verb "ask" were unreachable, which is why the opening could
+ * not teach it: `jeeh-ei` and `warden-scribe-tuleeh-ma` returned nine nulls apiece.
+ *
+ * Two gates, and both matter:
+ *
+ *   1. `player.topics_known` — a root is offered only once the player HOLDS the word. It is
+ *      granted by `Engine._censusFinish()` when the writ is stamped, which is what "granted at
+ *      character creation" means. A caller that supplies no `topics_known` (every bare unit
+ *      test, and the world before the census) gets exactly the behaviour it had before this
+ *      existed: the person's own subjects and nothing else. Fail-closed, and closed is the
+ *      pre-existing answer rather than a new refusal.
+ *   2. `infoFor` — the person must actually have something to say. A root the speaker cannot
+ *      answer is not listed, because a topic list that offers a word and then produces silence
+ *      is the "advertised a subject and had nothing to say on it" defect this file has already
+ *      been through once.
+ *
+ * The person's own subjects come first. Specific before general is the order the scene reads in
+ * and the order Morrowind's own list resolves to.
+ */
 export function topicsFor(topicIndex, npc, player) {
   const out = [];
+  const seen = new Set();
   for (const id of (npc.topics || [])) {
     const info = infoFor(topicIndex, id, npc, player);
-    if (info) out.push({ id, text: topicLabel(id), gated: info.gated });
+    if (info) { out.push({ id, text: topicLabel(id), gated: info.gated }); seen.add(topicKey(id)); }
+  }
+  const known = player && player.topics_known;
+  if (known && known.length && Array.isArray(topicIndex.roots)) {
+    const heldKeys = new Set(known.map(topicKey));
+    for (const r of topicIndex.roots) {
+      if (seen.has(r.key) || !heldKeys.has(r.key)) continue;
+      const info = infoFor(topicIndex, r.id, npc, player);
+      if (!info) continue;
+      out.push({ id: r.id, text: topicLabel(r.id), gated: info.gated, root: true });
+      seen.add(r.key);
+    }
   }
   return out;
+}
+
+/**
+ * The nine words a character is given when the Warden-Scribe stamps their writ. Read off the
+ * index rather than hardcoded, so `topics/00-roots.json` stays the one place the roster is
+ * declared and a tenth root becomes a data change.
+ */
+export function rootTopicIds(topicIndex) {
+  return Array.isArray(topicIndex && topicIndex.roots) ? topicIndex.roots.map((r) => r.id) : [];
 }
 
 /** A topic id is a slug; the player sees it as the words they would say. */

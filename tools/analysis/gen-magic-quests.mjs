@@ -247,7 +247,21 @@ const Q = [
     ] },
 ];
 
-const SCHOOL_SKILL = { sorcery: 'sorcery', root_speech: 'root_speech', warding: 'warding', veiling: 'veiling' };
+// THE ONE ENTRY THAT IS NOT AN IDENTITY, AND IT IS WHY THIS MAP EXISTS.
+//
+// `root_speech` is the SCHOOL id — that is what `game/data/magic/effects.json` writes on every
+// Hist effect. `root-speech`, with a hyphen, is the SKILL id in `game/data/progression/skills.json`.
+// Two adjacent registers, one underscore apart. The identity entry that used to sit here emitted
+// `requires.skills.root_speech` into NINE generated resolutions, and `gate.js canResolve()` looks
+// a skill key up verbatim in `sim.progression.skills` — so those nine reported `root_speech 0/45`
+// for as long as the game ran and no amount of play could move the number. Measured live:
+// setting `root-speech` to 100, the maximum any player can reach, left the refusal string
+// byte-identical to the same refusal at 5 (reports/attr-scale-consumption-before.json, trial A2).
+//
+// If you add a school, check its id against the SKILL register, not against the school register.
+// `tools/quests/attr-scale-audit.mjs` fails on any demand naming a skill that is not in
+// progression/skills.json, and `node tools/check-quests.mjs` warns on it.
+const SCHOOL_SKILL = { sorcery: 'sorcery', root_speech: 'root-speech', warding: 'warding', veiling: 'veiling' };
 
 function build(q, i) {
   // W1-18: the journal index bands are RI-QST04 §B and they are binding — 10 accepted,

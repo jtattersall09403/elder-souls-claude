@@ -73,6 +73,41 @@ sitting in the repo that hasn't been written about:
 - **Something that is still bad.** Post these deliberately. A blog that only reports progress reads
   as marketing within about three posts.
 
+### Follow-ups: close the loop on what you already told the reader
+
+**Owner instruction, and this is a standing requirement, not an option.** *"Some of the future blogs
+should talk about how issues, limitations and flaws described in earlier blogs have since been
+fixed, with screenshot evidence."*
+
+A reader who was told the blade sweeps underground, the movesets never reach the screen, the purse
+empties on save, or the level-up screen is refused at every well, is owed the ending. Without it the
+blog is a list of complaints and the reader has no way to tell a project that fixes things from one
+that only notices them.
+
+**The rule: at least one post in every four is a follow-up.** Write it as `kind: followup`, and:
+
+1. **Name the earlier post and link it** — `[the post where we found it](#slug)`. The slug is the
+   post's anchor on the page.
+2. **Restate the original defect in one sentence**, in the reader's terms, so the post stands alone.
+3. **Show it fixed, with a picture.** A before-and-after pair through `:::compare` is the strongest
+   form this blog has, and both shots must be of *the same thing* — same weapon, same spot, same
+   time of day. Pull the old shot from `docs/shots/` (they are dated, so the old one is still
+   there) and the new one from what the builders have saved since.
+4. **Give the number both ways.** "Above ground on 0 of 40 frames" → "92 of 100" is the whole story
+   in nine words.
+5. **Say what is still not right.** Almost every fix in this project has left a residue, and the
+   builder's own report usually names it. A follow-up that claims a clean win is usually wrong and
+   the next critic will say so in public.
+
+**Where to find the material.** `reports/blog-feed.jsonl` lines carry `kind: "fix"`;
+`docs/blog/COVERED.md` says what was already told to the reader. **Run
+`node tools/blog-threads.mjs`** — it lists every defect the blog has reported against the fixes that
+have landed since, so you can see at a glance which stories are owed an ending.
+
+Do not manufacture one. If nothing that was blogged has actually been fixed since, say so in a
+regular post — that is also information, and it is more honest than a follow-up about a defect that
+is still open.
+
 ## Where things go
 
 - Posts: `docs/blog/YYYY-MM-DD-slug.md`, with front matter `title`, `date`, **`time`**, `summary`.

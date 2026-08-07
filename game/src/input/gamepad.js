@@ -383,7 +383,17 @@ export class GamepadRouter {
     const prof = this.profiles.pad_profiles[st.profileName] || this.profile;
     const gates = prof.hold_gate || {};
     const analogB = prof.analog_buttons || {};
-    const perm = this.calibrationResult && this.calibrationResult.map;
+    // A CALIBRATION BELONGS TO THE PAD IT WAS LEARNED ON, AND ONLY TO THAT PAD.
+    // `_adoptPad` already refuses to hand a new pad the old one's profile and quirk map — "A
+    // DIFFERENT pad at the same index is a different pad" — but `calibrationResult` is instance
+    // state, set when a calibration completes and only ever REPLACED when a remembered id comes
+    // back. So the permutation a player taught an unrecognised pad went on being applied after
+    // that pad was unplugged and a standard-mapping one was plugged in: on the new pad, A opened
+    // nothing and rolled instead. Found by M-K18/M-P23, which sat red for a whole round while the
+    // rebinding surface they blamed was working — the check pressed `interact` and the pad fired
+    // `roll`, and nothing in either check's output could say so until it was made to prove the
+    // mapping before measuring.
+    const perm = this.calibrationResult && this.calibrationResult.id === st.id ? this.calibrationResult.map : null;
 
     const actionFor = (idx) => {
       if (perm && perm[idx]) return perm[idx];

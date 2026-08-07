@@ -67,6 +67,25 @@ const out = {
   failures: [],
   passes: [],
 };
+// RED TEAM, hoisted to module scope. It was declared `const` INSIDE the try block and read
+// again at the bottom of the file, so every red-team run this round died on
+// `ReferenceError: redTeam is not defined` AFTER printing its results and BEFORE inverting its
+// exit code — which means the facility written to prove the instrument can go red had never
+// once completed. Found by running it. That is the whole lesson of this piece twice over.
+const redTeam = args['red-team'] ? String(args['red-team']) : null;
+
+// WHICH failure each mode must produce. A red-team run that goes red for an unrelated reason
+// proves nothing at all: `--red-team=empty` sabotages the M9 domain, so if the run "went red"
+// only because O6's interval is short or K1's coupling is zero, the sabotage was never
+// detected and the inversion is vacuous. Each mode therefore names a SIGNATURE, and the mode
+// passes only when a failure matching it is present. This is the same rule the piece applies
+// to the build — a control that cannot exhibit the failure is not a control.
+const RED_TEAM_SIGNATURE = {
+  empty: { needle: 'M9 searched ZERO strings', what: 'the M9 grep must notice its domain is empty' },
+  blind: { needle: "M9's domain is INCOMPLETE", what: 'the accessor must name the surface it cannot see' },
+  plant: { needle: 'imperative second-person instruction', what: 'HF3 must fire on a planted HUD instruction' },
+};
+
 const fail = (m) => { out.failures.push(m); say(`  FAIL  ${m}`); };
 const pass = (m) => { out.passes.push(m); say(`  pass  ${m}`); };
 const hard = (id, m) => { out.hard_fails.push({ id, why: m }); say(`  HARD FAIL ${id}  ${m}`); };
@@ -177,7 +196,6 @@ try {
   //   blind  — a surface is declared and never instrumented. Must trip the §0.1(a) blind clause.
   //   plant  — an imperative HUD string is drawn through the real vector path. Must fire HF3.
   // A red-team run that PASSES is itself a failure, and is reported as one.
-  const redTeam = args['red-team'] ? String(args['red-team']) : null;
   if (redTeam) {
     say(`RED TEAM: '${redTeam}' — the probe is expected to FAIL. A pass here means the instrument cannot go red.`);
     await handle.page.evaluate((mode) => {
@@ -505,6 +523,41 @@ try {
     const s60 = []; for (let i = 0; i < 60; i++) s60.push({ f: i, move: [0, 1] });
     H.queueInputs(s60); H.stepFrames(60);
     const after = H.getPlayerStats();
+    // O6 ASKS WHAT IS AVAILABLE, NOT WHAT THIS PROBE HAD THE PATIENCE FOR.
+    //
+    // The previous shape of this section walked forward for one second and then went straight
+    // over and asked her to start, so the interval it reported was a property of the probe's
+    // impatience. On a scene that WAITS, that is not the measurement: "available play before
+    // the first character-defining question" is how long the player may be a body if they
+    // choose to be, and the scene only asks when asked.
+    //
+    // So: wander for the item's own threshold, in real input, and watch two things every
+    // second — that the body is still moving, and that no field-writing node has arrived. The
+    // check can still go red, and goes red exactly where round 1 did: if the scene puts a
+    // question up on its own, `census_takes_input` is true within the window, the body stops
+    // moving because the surface has the buttons, and `first_field_frame` lands inside it.
+    const WANDER_S = 60;
+    const wander = { samples: [], asked_during_window_at: null, frozen_at: null, distance_m: 0 };
+    let prev = after.pos.slice();
+    for (let sec = 0; sec < WANDER_S; sec++) {
+      // Turn as well as walk. A still target hides every steering defect, and a body that only
+      // ever walks in one line can be a body that is being slid rather than driven.
+      const step = [];
+      for (let i = 0; i < 60; i++) step.push({ f: i, move: [Math.sin(sec * 0.7), Math.cos(sec * 0.7)], look: [sec % 2 ? 3 : -3, 0] });
+      H.queueInputs(step); H.stepFrames(60);
+      const now = H.getPlayerStats();
+      const d = Math.hypot(now.pos[0] - prev[0], now.pos[2] - prev[2]);
+      wander.distance_m += d;
+      prev = now.pos.slice();
+      const cst = H.getCensusState() || {};
+      const takes = !!(cst.surface && cst.surface.takes_input);
+      if (takes && wander.asked_during_window_at == null) wander.asked_during_window_at = sec + 1;
+      if (d < 1e-3 && wander.frozen_at == null) wander.frozen_at = sec + 1;
+      if (sec % 10 === 9) wander.samples.push({ at_s: sec + 1, moved_m: +d.toFixed(3), node: cst.node || null, paused: !!cst.paused, takes_input: takes });
+    }
+    wander.distance_m = +wander.distance_m.toFixed(2);
+    wander.survived_s = wander.asked_during_window_at == null ? WANDER_S : wander.asked_during_window_at;
+    wander.threshold_s = WANDER_S;
     // O6's RIGHT end. The scene no longer puts a question up on its own — it waits, which is the
     // whole repair — so a probe that only walks forward will never reach a field node and will
     // report the interval as undefined forever. Being a body is the first half of the check; the
@@ -532,6 +585,7 @@ try {
     const cs = H.getCensusState();
     return {
       ...s,
+      wander,
       moved_m: +Math.hypot(after.pos[0] - before.pos[0], after.pos[2] - before.pos[2]).toFixed(3),
       census_node_at_start: node_at_start,
       census_node_after_talking: cs ? cs.node : null,
@@ -555,6 +609,16 @@ try {
     out.checks.m4_clause1.threshold_s = 60;
     if (s >= 60) pass(`M4 clause 1: ${s} s of available play before the first character-defining question (O6 wants >= 60)`);
     else fail(`M4 clause 1: ${s} s of available play before the first character-defining question at '${stamps.first_field_node}'. O6 wants >= 60 — "you get a body before you get a character" is the item's own best idea and this build asks first.`);
+  }
+  // O6 AS AVAILABILITY, which is what the item actually asks and what the stamp interval above
+  // cannot express on a scene that waits: the stamp measures when THIS PROBE chose to ask.
+  const w = stamps.wander || {};
+  if (w.asked_during_window_at != null) {
+    fail(`O6: the scene put a character-defining question up on its own after ${w.asked_during_window_at} s of wandering. O6 wants >= ${w.threshold_s} s of being a body first.`);
+  } else if (w.frozen_at != null) {
+    fail(`O6: the body stopped responding to input at ${w.frozen_at} s — a surface has the buttons. Sixty seconds of "available play" in which the player cannot move is not available play.`);
+  } else {
+    pass(`O6: ${w.threshold_s} s of real wandering (${w.distance_m} m walked and turned) and the scene never asked — it waits to be asked`);
   }
 
   // ======================================================================================
@@ -702,10 +766,29 @@ const red = out.hard_fails.length || out.failures.length;
 // green run means the instrument cannot see the thing it is scored on, which is the round-1
 // defect itself, so it exits non-zero and says which mode slipped past.
 if (redTeam) {
-  out.red_team = { mode: redTeam, went_red: !!red, verdict: red ? 'INSTRUMENT WENT RED (good)' : 'INSTRUMENT STAYED GREEN UNDER SABOTAGE (bad)' };
+  const sig = RED_TEAM_SIGNATURE[redTeam] || null;
+  const all = [...out.failures, ...out.hard_fails.map((h) => `${h.id} ${h.why}`)];
+  const matched = sig ? all.filter((m) => m.indexOf(sig.needle) >= 0) : [];
+  const ok = !!sig && matched.length > 0;
+  out.red_team = {
+    mode: redTeam,
+    signature: sig ? sig.needle : null,
+    expected: sig ? sig.what : 'UNKNOWN MODE — no signature registered',
+    went_red: !!red,
+    signature_matched: matched,
+    unrelated_failures: all.filter((m) => !sig || m.indexOf(sig.needle) < 0),
+    verdict: ok
+      ? 'INSTRUMENT WENT RED ON THE SABOTAGED CHECK (good)'
+      : red
+        ? 'RED, BUT NOT ON THE SABOTAGED CHECK — the sabotage went undetected and the other failures are the build (bad)'
+        : 'INSTRUMENT STAYED GREEN UNDER SABOTAGE (bad)',
+  };
   say(`RED TEAM '${redTeam}': ${out.red_team.verdict}`);
+  if (out.red_team.unrelated_failures.length) {
+    say(`  (${out.red_team.unrelated_failures.length} failure(s) unrelated to this sabotage — they are the BUILD, not the red team, and are listed in the artifact)`);
+  }
   writeJson(jsonPath, out);
-  process.exit(red ? 0 : 1);
+  process.exit(ok ? 0 : 1);
 }
 writeJson(jsonPath, out);
 log(`wrote ${path.relative(REPO_ROOT, jsonPath)}`);

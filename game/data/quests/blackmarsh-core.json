@@ -217,7 +217,7 @@
           "morally_better": false,
           "requires": {
             "attributes": {
-              "personality": 40
+              "personality": 14
             },
             "skills": {
               "speechcraft": 35
@@ -247,7 +247,8 @@
             "npc_disposition": {
               "factor-belliene": 20
             }
-          }
+          },
+          "attribute_scale_note": "W1-ATTR-SCALE. Was `personality: 40`. W1-ATTR-SCALE. Re-set from the MEASURED ceiling with reserve, not clamped to it. Attributes are earned only at +1 per multiple of 15 crossed in a governing skill (character/derive.js:359); the bought stream exists in engine.js _spendSouls() and is unfundable, because nothing in the build awards souls. So an attribute is worth `creation + 6 per governing skill` and no more, measured over 240 signatures in reports/faction-signature-sweep.json. The new value sits at or under `median ceiling - 2`; clamping to the ceiling itself is the zero-margin defect that shut Act IV for 11 of 40 signatures one point lower. Checked by tools/quests/attr-scale-audit.mjs."
         },
         {
           "id": "res_warn_anse",
@@ -861,7 +862,7 @@
           "requires": {
             "skills": {
               "speechcraft": 45,
-              "root_speech": 30
+              "root-speech": 30
             },
             "knowledge": [
               "book_the_sap_and_the_knife"

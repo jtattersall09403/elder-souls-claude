@@ -21,7 +21,12 @@
     "tools/quests/faction-probe.mjs (chooser plays for the ladder flag; flag poke deleted; questOpen returns checked; P12-P16 added)",
     "reports/faction-probe-the_wet_ledger.json",
     "reports/faction-probe-the_imperial_assize.json",
-    "reports/faction-probe-the_xul_aneekh.json"
+    "reports/faction-probe-the_xul_aneekh.json",
+    "game/data/quests/faction-wet-ledger.json (+9 quests: Q-LEDG-09..17)",
+    "game/data/quests/faction-imperial-assize.json (+8: Q-ASSZ-09..16)",
+    "game/data/quests/faction-xul-aneekh.json (+9: Q-XULA-02 and Q-XULA-09..16)",
+    "game/data/dialogue/topics/50-factions.json (+9 topic bodies)",
+    "game/data/quests/hooks.json (+26 entry_topics, +3 refusal consequence edges)"
   ],
   "findings": [
     "contention at start: pgrep headless_shell=12, loadavg 12.36 - authoring/code phase first, browser later",
@@ -31,8 +36,11 @@
     "check-data 503 files PASS, check-quests 94 quests PASS, check-content 295 resolutions PASS after the engine change.",
     "THE SEAT IS NOW VACATED BY PLAY ON ALL THREE LINES, and the verdict's two jointly-untested claims hold together. 16/16 on each line. Ledger: rank 7 at rep 176 via res_show_the_returns; Assize: rank 7 at rep 230 via res_resignation; Xul-Aneekh: rank 7 at rep 238 via res_put_it_to_the_hollow. All non-violent, 0 world flags poked, and P16: the walk wrote NO reputation at all - 176/230/238 were paid entirely by the quests' own consequences.",
     "WHY ROUND 1 ALWAYS REFUSED: the chooser's cost function ranked 'available' above everything, and a refusal requires nothing, so it was always cheapest. New order: never violence (100000), then an ending that raises a ladder world_state flag not yet up (20000), then availability, then cost. Reading which ending raises which flag needs questResolutionConsequences(), which did not exist.",
-    "P16 is the surprise: the reputation grant in the walk NEVER FIRES now. Round 1's setFactionStanding calls were only ever needed because the walk was refusing quests (and refusals pay little). Playing for the seat pays the ladder by itself."
+    "P16 is the surprise: the reputation grant in the walk NEVER FIRES now. Round 1's setFactionStanding calls were only ever needed because the walk was refusing quests (and refusals pay little). Playing for the seat pays the ladder by itself.",
+    "VOLUME: all three lines are now 18 quests, mean 2.250 per rank, 2 hidden (found/overheard) each. Both RI-QST01 hard fails (quests-per-line < 18, mean-per-rank < 2.0) are cleared. Q-XULA-02, which did not exist anywhere, is written.",
+    "THE REFUSAL NO LONGER CAPS THE LADDER. res_refuse / res_refuse_hulen / res_tell_the_hollow now each raise a *_refused flag; a hooks.json adds_topics edge turns it into a topic; the topic opens a NEW rank-6 quest (Q-LEDG-14 / Q-ASSZ-14 / Q-XULA-13) that vacates the same seat by a different mechanism - a two-house clause in the articles, an expired prefect's commission, four unasked fourth-days. All three routes are non-violent and none needs the player to have said yes.",
+    "check-data 505 files, check-quests 120 quests, check-content 382 resolutions, boot-check PASS after all of it."
   ],
-  "next_step": "volume: 9 -> 18+ per line (RI-QST01 two hard fails); Q-XULA-01 mouth; refusal must not cap the ladder; expulsion/readmission; RI-CRM02 second authority + factionLawFactor",
+  "next_step": "Q-XULA-01 mouth (D6), rank-7 deceit on Q-LEDG-08/Q-XULA-08, D6 game-wide count, factionLawFactor, expulsion/readmission, re-run probes",
   "notes_for_successor": ""
 }

@@ -2019,6 +2019,15 @@ export function installHarness(engine, bootPromise) {
     /** RI-CRM02: writs, jurisdictional legality, interception, and the AR-3 numbers. */
     getSanctionState() { return engine.getSanctionState(); },
     setFactionStandings(patch) { Object.assign(engine.sim.stealth.p.standings, patch || {}); return { ...engine.sim.stealth.p.standings }; },
+    /**
+     * W1-FACTIONS r2. Run the WORLD's writer for `sim.stealth.p.standings` — the one that derives
+     * the guard ladder's faction term from the quest system's own ranks — so a probe can show that
+     * playing a questline moves an arrest threshold. `setFactionStandings()` above is a poke and
+     * always was; this is the thing a player does. `_afterStep()` calls the same method, so a
+     * probe that steps a frame gets it for free; this exists so a probe that steps NO frames can
+     * still ask for it explicitly rather than inferring it.
+     */
+    syncFactionStandings() { return engine.syncFactionStandings(); },
     resolveKilling(q) { return engine.resolveKilling(q || {}); },
     canJoinFaction(factionId, rank) { return engine.canJoinFaction(String(factionId), Number(rank)); },
     warbroodShift() { return engine.warbroodShift(); },

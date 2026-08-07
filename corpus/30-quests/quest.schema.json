@@ -294,12 +294,14 @@
             "properties": {
               "skills": {
                 "type": "object",
+                "description": "Keys must be skill ids from game/data/progression/skills.json. gate.js canResolve() looks the key up VERBATIM in sim.progression.skills, so a key that is not in the register reports `0/N` for as long as the game runs and no amount of play can move it. Note the two adjacent registers one underscore apart: `root-speech` is the SKILL, `root_speech` is the SCHOOL in game/data/magic/effects.json. Checked by tools/quests/attr-scale-audit.mjs; warned by tools/check-quests.mjs.",
                 "additionalProperties": {
                   "type": "integer"
                 }
               },
               "attributes": {
                 "type": "object",
+                "description": "Attribute demands are declared on the DERIVED scale, NOT Morrowind's 0-100 one. An attribute is worth `creation value + 6 per skill that governs it` and no more: character/derive.js grants +1 per multiple of 15 crossed in a governing skill, and the bought stream in engine.js _spendSouls() has no funding source because nothing in the build awards souls. Measured over 240 signatures (reports/faction-signature-sweep.json) personality tops out at 18/22/31 on a p10/median/best sheet, so `personality: 40` is not a hard check - it is unreachable by every character the game can create. Set a demand from the measured ceiling WITH RESERVE, at or under `median ceiling - 2`; clamping to the ceiling itself is the same defect one point lower and shut Act IV for 11 of 40 signatures. Checked by tools/quests/attr-scale-audit.mjs; warned by tools/check-quests.mjs.",
                 "additionalProperties": {
                   "type": "integer"
                 }
@@ -353,6 +355,14 @@
           },
           "journal_index": {
             "type": "integer"
+          },
+          "attribute_scale_note": {
+            "type": "string",
+            "description": "Why an attribute demand on this resolution was re-scaled: the old value, the measured ceiling it was set from, and the reserve left under it. Present so a later author reads the number as derived rather than arbitrary, and does not 'restore' it. This object is additionalProperties:false and the field was already in the shipped data before it was declared here."
+          },
+          "skill_id_note": {
+            "type": "string",
+            "description": "Why a skill demand on this resolution was re-pointed at a different skill id: the old key, why no skill of that name exists, and why this one was chosen."
           },
           "outcome": {
             "type": "string",

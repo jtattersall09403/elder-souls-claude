@@ -2290,14 +2290,46 @@ async function rebindChecks(page, h, ev) {
       const profileName = leg.split(':')[1] || null;
       H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
       if (profileName) H.setPadProfile(profileName);
-      H.openRebinding(device);
       const steps = [];
+      let connectedBeforeDrive = null;
       // Walk down two rows, open a capture, offer a control, commit — using ONLY the closed
       // action set, which is what every modality has.
-      const drive = (fn) => { fn(); H.stepFrames(1); steps.push(H.rebindStep()); };
       const zero = { buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' };
       const padMove = (y) => ({ buttons: new Array(17).fill(0), axes: [0, y, 0, 0], mapping: 'standard' });
       const padBtn = (i) => { const b = new Array(17).fill(0); b[i] = 1; return { buttons: b, axes: [0, 0, 0, 0], mapping: 'standard' }; };
+      // THE PAD THIS CHECK IS HANDED IS NOT THE PAD IT MEANS TO DRIVE, AND IT HAS TO SAY SO.
+      // The pad group ends on `M-P15`, which plugs in "Some Unknown Pad 9000" with `mapping: ''`
+      // and completes the diegetic CALIBRATION on it — deliberately, that is the check. What it
+      // leaves behind is a router holding a learned map in which raw 0 is the action the first
+      // prompt claimed ("Swing.") and not `interact`. This check then pressed the profile's
+      // `interact` index, got a swing, saw no `begin`, and reported HF9 — "rebinding is not
+      // completable on a pad" — against a surface that was never sent the press it was waiting
+      // for. `connected` was not enough to catch it and neither was "an edge appeared": the
+      // precondition is that THE INDEX THIS PROFILE GIVES `interact` PRODUCES `interact`.
+      // So the pad is unplugged, a standard-mapping one is presented, and the mapping is proved
+      // in the world before the surface is opened at all.
+      if (device === 'gamepad') {
+        const prof0 = padProfiles[profileName] || {};
+        const idx0 = (prof0.buttons || {}).interact;
+        const gate0 = (prof0.hold_gate || {})[String(idx0)];
+        const tap0 = !!(gate0 && gate0.tap === 'interact');
+        H.gamepad(null); H.stepFrames(3);                       // drop M-P15's calibrated stranger
+        for (let f = 0; f < 12 && !((H.getInputState().gamepad || {}).connected); f++) { H.gamepad(zero); H.stepFrames(1); }
+        H.gamepad(zero); H.stepFrames(2);
+        connectedBeforeDrive = { connected: !!((H.getInputState().gamepad || {}).connected), fires_interact: false, attempts: 0, observed: null };
+        for (let a = 0; a < 6 && !connectedBeforeDrive.fires_interact; a++) {
+          const e0 = H.getInputEdges().length;
+          H.gamepad(padBtn(idx0)); H.stepFrames(tap0 ? 2 : 1);
+          H.gamepad(zero); H.stepFrames(3);
+          const fired = H.getInputEdges().slice(e0).map((e) => e.button).filter(Boolean);
+          connectedBeforeDrive.attempts++;
+          connectedBeforeDrive.observed = fired;
+          if (fired.includes('interact')) connectedBeforeDrive.fires_interact = true;
+          else { H.gamepad(null); H.stepFrames(3); H.gamepad(zero); H.stepFrames(3); }
+        }
+      }
+      H.openRebinding(device);
+      const drive = (fn) => { fn(); H.stepFrames(1); steps.push(H.rebindStep()); };
       if (device === 'gamepad') {
         const prof = padProfiles[profileName] || {};
         const idx = (prof.buttons || {}).interact;
@@ -2309,12 +2341,20 @@ async function rebindChecks(page, h, ev) {
         const isTap = !!(gate && gate.tap === 'interact');
         H.gamepad(padMove(1)); H.stepFrames(1); steps.push(H.rebindStep());      // stick DOWN -> move_y -1
         H.gamepad(zero); H.stepFrames(1); steps.push(H.rebindStep());
-        if (isTap) {
-          H.gamepad(padBtn(idx)); H.stepFrames(2);
-          H.gamepad(zero); H.stepFrames(1); steps.push(H.rebindStep());          // the tap fires on release
-        } else {
-          H.gamepad(padBtn(idx)); H.stepFrames(1); steps.push(H.rebindStep());
-          H.gamepad(zero); H.stepFrames(1);
+        // READ THE SURFACE OVER A WINDOW, NOT ON ONE NOMINATED FRAME.
+        // The old shape sampled `rebindStep()` exactly one frame after the press and called the
+        // surface uncompletable if `begin` was not on that frame. It is a check about REACH, not
+        // about latency — M-K23 owns latency and measures p100 = 1 frame — and the single-frame
+        // read made it fail after the pad group while passing after the viewport group, on the
+        // same build, for a reason no field of its output could show. A tap fires on release, a
+        // press fires on press, and both land inside the same short window.
+        H.gamepad(padBtn(idx)); H.stepFrames(isTap ? 2 : 1);
+        H.gamepad(zero);
+        for (let f = 0; f < 8; f++) {
+          const s = H.rebindStep();
+          if (s) steps.push(s);
+          if (s && s.did === 'begin') break;
+          H.stepFrames(1);
         }
       } else if (device === 'touch') {
         H.setViewport({ size: { w: 844, h: 390, dpr: 3 }, pointer: 'coarse', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
@@ -2333,7 +2373,14 @@ async function rebindChecks(page, h, ev) {
       const began = steps.some((s) => s && s.did === 'begin');
       const offered = H.rebindOffer(device === 'gamepad' ? 'Pad5' : device === 'touch' ? 'Touch:light' : 'KeyJ');
       const committed = H.rebindCommit(true);
-      const result = { began, offered, committed, steps: steps.filter(Boolean).map((s) => s.did), profile: profileName };
+      const padObs = (H.getInputState().gamepad || {});
+      const result = {
+        began, offered, committed, steps: steps.filter(Boolean).map((s) => s.did), profile: profileName,
+        // What the ROUTER thought it was running while the leg drove it. A leg that presses the
+        // right index on the wrong profile, or into an open calibration, fails for a reason that
+        // has nothing to do with the surface, and that reason has to be visible in the artifact.
+        pad_observed: { profile: padObs.profile || null, calibrating: !!padObs.calibrating, connected: !!padObs.connected, quirk: padObs.quirk || null, connected_before_drive: connectedBeforeDrive },
+      };
       if (profileName) {
         out.gamepad_profiles[profileName] = result;
         // `out.gamepad` stays the shipped default, so the field a reader already knows means
@@ -2357,6 +2404,15 @@ async function rebindChecks(page, h, ev) {
   // all, and a red M-K18 would name the wrong defect — HF9, "rebinding is not completable on some
   // modality", against a surface nobody managed to press a key at. Same rule the empty text
   // register is held to.
+  const deadPad = Object.entries(modal.gamepad_profiles || {})
+    .filter(([, v]) => v.pad_observed && v.pad_observed.connected_before_drive && !v.pad_observed.connected_before_drive.fires_interact)
+    .map(([k, v]) => `${k} (fired ${JSON.stringify(v.pad_observed.connected_before_drive.observed)})`);
+  if (deadPad.length) {
+    const why = { reason: `the profile's own interact index did not produce interact on the pad in front of this check — ${deadPad.join('; ')} — so no press could reach the rebinding surface`, preconditions: modal.preconditions, modal };
+    record('M-K18', 'RI-JRN03', 'the rebinding surface is completable on keyboard only, gamepad only and touch only', null, why, '3/3 (HF9 / RB10)');
+    record('M-P23', 'RI-JRN04', 'a pad-only rebind commits and index 16 is refused in fiction', null, why, 'pad-only completable; index 16 never offered');
+    return;
+  }
   if (modal.preconditions && modal.preconditions.census_takes_input) {
     const why = { reason: 'the census surface still had the keyboard when this check ran, so no key press could reach the rebinding surface', preconditions: modal.preconditions, modal };
     record('M-K18', 'RI-JRN03', 'the rebinding surface is completable on keyboard only, gamepad only and touch only', null, why, '3/3 (HF9 / RB10)');
