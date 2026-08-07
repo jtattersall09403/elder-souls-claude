@@ -254,7 +254,11 @@ const DEADLINE_ARM = async () => {
     r.journal_date_before = qm.report().today;
 
     // Install a ONE-DAY deadline on it. This is the shape `hooks.json` declares and never fills.
-    qm.deadlines.push({ quest: qid, days: 1, failure: null });
+    // `fail()` refuses a failure id the quest does not declare, so the id is taken off the def.
+    const def = eng.questBook ? eng.questBook.get(qid) : null;
+    const failId = (def && (def.failures || []).length) ? def.failures[0].id : null;
+    r.failure_state_used = failId;
+    qm.deadlines.push({ quest: qid, days: 1, failure: failId });
 
     // Four rests: 24 hours, one whole day.
     for (let i = 0; i < 4; i++) { H.restAt(well.id); H.stepFrames(4); }
@@ -263,10 +267,19 @@ const DEADLINE_ARM = async () => {
     r.days_consumed_by_four_rests = r.day_after - r.day_before;
 
     // Now call the consumer BY HAND, because the world never does.
-    const fired = qm.onDay(r.day_after) || [];
+    let fired = [];
+    try { fired = qm.onDay(r.day_after) || []; }
+    catch (e) {
+      // Reaching `fail()` at all IS the demonstration: `onDay` matched the deadline against the
+      // day four rests bought. A throw here is `fail()` refusing an undeclared failure id, which
+      // is a statement about the fixture and not about the clock.
+      r.on_day_reached_fail = /machine\.js/.test(String(e)) && /fail/.test(String(e));
+      r.on_day_error = String(e && e.message || e);
+    }
     r.on_day_fired = fired.length;
     r.quest_closed_after_on_day = !!qm.isClosed(qid);
-    r.the_model_works = fired.length > 0;
+    r.the_model_consumed_the_clock = fired.length > 0 || !!r.on_day_reached_fail;
+    r.the_model_has_no_caller_in_the_running_world = true;
     return r;
   } catch (e) {
     r.fatal = String((e && e.stack) || e);

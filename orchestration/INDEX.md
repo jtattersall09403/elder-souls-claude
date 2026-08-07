@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `ef81471`: 486 tools, 153 reference
-items, 27 pieces in flight.
+so it cannot drift. Generated at `ef5b4c4`: 486 tools, 153 reference
+items, 28 pieces in flight.
 
-Its purpose is to stop 27+ concurrent agents each paying separately to discover the
+Its purpose is to stop 28+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -764,6 +764,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-03` | running | read RULES, INDEX, w1-03 survey, W1-03.json, RI-WLD10/11, RI-VIS02/04, ARBITRATION S25 | `orchestration/status/critic-w1-03.json` |
 | `W1-03` | fixed | Three severe gaps round 1 diagnosed are now fixed and re-verified (bare Node + one browser | `reports/w1-03-survey.md` `reports/blog-feed.jsonl` `docs/shots/2026-08-07-w1-03-hip-deep-water-no-waterline.png` `docs/shots/2026-08-07-w1-03-round2-hip-deep-water-waterline-now-drawn.png` `game/src/sim/traversal.js` `game/src/engine.js` |
 | `W1-READABLES` | ? | read orchestration/INDEX.md and orchestration/status/W1-18-r2.json; run tools/quests/revea | `orchestration/status/W1-READABLES.json` |
 | `W1-04-r2` | measuring | 1. sim.applyCell hook: door verbs reach _applyCell (deferred to _afterStep, outside the ar | `game/src/sim/settlement.js` `game/src/engine.js` `game/src/render/interior.js` `game/src/render/renderer.js` `game/src/harness/api.js` `game/src/sim/npc.js` |

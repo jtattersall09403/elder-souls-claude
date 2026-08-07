@@ -4196,7 +4196,12 @@ export class Engine {
     // and `interior.unique_item` had ZERO consumers in `game/src` — 2,000-odd authored props and
     // 30 unique items that nothing instantiated. `render/interior.js` is the consumer: the shell
     // comes from `bounds_m`, the lamps from `lights[]`, the furniture from `props[]`.
-    if (cell === 'interior') this.renderer.setInteriorRecord(this.settlements.interior(this.sim.env.interior));
+    if (cell === 'interior') {
+      const summary = this.renderer.setInteriorRecord(this.settlements.interior(this.sim.env.interior));
+      this._furnishInterior(summary);
+    } else if (this._interiorProps && this._interiorProps.length) {
+      this._furnishInterior(null);
+    }
     this.renderer.setCell(cell);
     this._drawnCellKey = cell === 'interior' ? `interior:${this.sim.env.interior}` : cell;
     this._cellDirty = false;
@@ -4227,6 +4232,47 @@ export class Engine {
    * The province branch of `_applyCell()` streams tiles, so this must not fire on a frame where
    * nothing moved — hence the key, and hence `_applyCell()` stamping it.
    */
+  /**
+   * THE TAKEABLE HALF OF THE ROOM. RI-QST08, whose round-1 line was "30 unique items declared,
+   * none reachable through a door".
+   *
+   * A mesh on a pedestal is not an item; `sim.props` is what `takeProp()`, the reach prompt and
+   * the readable surface all read, so the thing the renderer drew has to exist there too. The
+   * position comes from `renderer.interiorSummary.placements` rather than being recomputed here,
+   * so the item is picked up from exactly where it is seen — two derivations of one position is
+   * how this project got a body and a camera in different rooms in the first place.
+   *
+   * Only props THIS function spawned are removed. `clearProps()` would take the census's knife
+   * and gourd out of the barge hold with them, and the opening needs those.
+   */
+  _furnishInterior(summary) {
+    const mine = this._interiorProps || (this._interiorProps = []);
+    if (mine.length) {
+      const dead = new Set(mine);
+      for (let i = this.sim.props.length - 1; i >= 0; i--) if (dead.has(this.sim.props[i].eid)) this.sim.props.splice(i, 1);
+      mine.length = 0;
+    }
+    const p = summary && summary.placements;
+    if (!p) return mine;
+    if (p.unique) {
+      const eid = `interior-unique:${p.unique.id}`;
+      this.spawnProp({
+        eid, name: p.unique.name, item: p.unique.id, pos: p.unique.pos, yaw: 0,
+        material: 'metal', shape: 'small', reach_m: 2.0,
+      });
+      mine.push(eid);
+    }
+    if (p.readable) {
+      const eid = `interior-readable:${p.readable.id}`;
+      this.spawnProp({
+        eid, name: p.readable.title, item: p.readable.id, pos: p.readable.pos, yaw: 0,
+        material: 'reed', shape: 'flat', reach_m: 2.0, readable: p.readable.id,
+      });
+      mine.push(eid);
+    }
+    return mine;
+  }
+
   _syncCell() {
     if (!this.renderer) return false;
     const cell = this.cellFor(this.sim.env);

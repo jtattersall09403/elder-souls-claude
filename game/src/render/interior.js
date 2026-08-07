@@ -437,6 +437,11 @@ export function buildInterior(root, rec) {
     kit_meshes: 0, lights_declared: 0, lights_lit: 0, lamps_built: 0,
     containers: 0, unique_item: false, readable: false,
     windows: 0, storeys: 1, back_room: false, meshes: 0, triangles: 0,
+    // WHERE THE TAKEABLE THINGS ARE. Published so `Engine._furnishInterior()` can put a real
+    // prop entity at the exact spot the pedestal and the book were drawn — RI-QST08's "thirty
+    // unique items declared, none reachable through a door" needs a body AND a position, and a
+    // body the world cannot reach is the same orphan wearing a mesh.
+    placements: { unique: null, readable: null },
   };
   if (!rec) { summary.error = 'no record'; return summary; }
 
@@ -648,6 +653,13 @@ export function buildInterior(root, rec) {
     g.position.set(s.x, by[0], s.z);
     root.add(g);
     summary.unique_item = true;
+    summary.placements.unique = {
+      id: rec.unique_item.id || `${rec.id}-unique`,
+      name: rec.unique_item.name || 'something nobody has named',
+      owner: rec.unique_item.owner || null,
+      // On top of the pedestal, which is 0.89 m of plinth plus the cap.
+      pos: [s.x, by[0] + 1.02, s.z],
+    };
   }
   if (rec.readable) {
     const g = new THREE.Group();
@@ -655,9 +667,15 @@ export function buildInterior(root, rec) {
     const bk = box(0.3, 0.07, 0.22, P.cloth);
     part(g, bk, 0, 0.04, 0);
     const s = wSlots[(wi + 3) % wSlots.length];
-    g.position.set(s.x + Math.cos(s.yaw) * 0.25, by[0] + 1.06, s.z + Math.sin(s.yaw) * 0.25);
+    const px = s.x + Math.cos(s.yaw) * 0.25, pz = s.z + Math.sin(s.yaw) * 0.25;
+    g.position.set(px, by[0] + 1.06, pz);
     root.add(g);
     summary.readable = true;
+    summary.placements.readable = {
+      id: rec.readable.id || `${rec.id}-readable`,
+      title: rec.readable.title || 'a page somebody left',
+      pos: [px, by[0] + 1.1, pz],
+    };
   }
 
   // ---- what got built --------------------------------------------------------------------------
