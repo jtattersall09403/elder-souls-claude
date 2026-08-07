@@ -76,7 +76,16 @@ try {
       await h.h('stepFrames', 1);
       await h.h('stepFrames', 200);
       const s = await h.h('snapshot');
-      return { pos: s.player.pos, region: await h.h('getRegionAt', s.player.pos[0], s.player.pos[2]) };
+      const d = await h.h('getDeathState');
+      return {
+        pos: s.player.pos, region: await h.h('getRegionAt', s.player.pos[0], s.player.pos[2]),
+        // Diagnostics, in the artifact rather than in a console: an ORPHAN verdict that cannot
+        // be told apart from a probe that never killed anybody is not a finding.
+        hearth_pos: hr.pos, hearth_last_rested: d.hearth_last_rested,
+        deaths_this_session: d.deaths_this_session,
+        respawned_at: d.last_respawn ? d.last_respawn.at : null,
+        offset_from_hearth_m: +Math.hypot(s.player.pos[0] - hr.pos[0], s.player.pos[2] - hr.pos[2]).toFixed(2),
+      };
     };
     const vA = await dieAt(A.id);
     const vB = await dieAt(B.id);
@@ -92,7 +101,9 @@ try {
     const before = (await h.h('snapshot')).player.pos;
     await h.h('damagePlayer', 1e6, { stagger: false });
     await h.h('stepFrames', 1);
+    const onSurface = await h.h('getDeathState');
     await h.h('stepFrames', 200);
+    const nullState = await h.h('getDeathState');
     const nullPos = (await h.h('snapshot')).player.pos;
 
     const sep = Math.hypot(vA.pos[0] - vB.pos[0], vA.pos[2] - vB.pos[2]);
@@ -104,7 +115,9 @@ try {
       value_b: { hearth: B.id, respawned_at: vB.pos.map((v) => +v.toFixed(2)), region: vB.region },
       separation_m: +sep.toFixed(2),
       null_control: { hearth_last_rested: null, died_at: before.map((v) => +v.toFixed(2)), respawned_at: nullPos.map((v) => +v.toFixed(2)),
-        moved_m: +Math.hypot(nullPos[0] - before[0], nullPos[2] - before[2]).toFixed(2) },
+        moved_m: +Math.hypot(nullPos[0] - before[0], nullPos[2] - before[2]).toFixed(2),
+        surface_went_up: onSurface.surface_active, deaths: nullState.deaths_this_session,
+        respawn_target: nullState.last_respawn ? nullState.last_respawn.at : null },
       coupling: sep > 100 && Math.hypot(nullPos[0] - before[0], nullPos[2] - before[2]) < 5 ? 1 : 0,
       note: 'Two wells hundreds of metres apart put the body in two different regions. With the '
         + 'respawn point emptied the body does not move at all, which is the direction that '
