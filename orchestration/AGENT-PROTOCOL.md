@@ -104,6 +104,22 @@ not publish a number that has only ever been seen outside the browser — and no
 exist**; the flag is silently ignored. Check that a flag you are relying on is implemented before
 you cite it.
 
+## This box has four cores, and browser work does not queue politely
+
+**The orchestrator's limit: at most 6–7 agents doing browser work at once.** Beyond that they do
+not merely share the machine, they prevent each other from measuring anything.
+
+Measured during wave 1: with fourteen agents running, load reached **44–103 on four cores**. A
+1280×720 headless capture costs **25 s on a quiet box and 150–260 s under that load**. The W1-01
+round-4 builder's 117-frame region pack managed **three frames in twelve minutes** and had to be
+abandoned, so the piece's headline number — the one the whole round existed to move — went
+unmeasured. That was an orchestration failure, not a builder's.
+
+If you are an agent and the box is loaded, say so in your report rather than shipping a number you
+could not take properly. Check with `cat /proc/loadavg`. Prefer `--width 320 --height 240` and
+`__HARNESS.setRenderRate(0)` for anything that is not a screenshot; a stepping loop that renders is
+the single most expensive thing in this project.
+
 ## If a method names a tool that does not exist, build it
 
 Binding on builders and critics alike. See `orchestration/TOOL-LOOP.md` for the full rule.

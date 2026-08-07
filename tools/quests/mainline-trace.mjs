@@ -194,7 +194,11 @@ for (const name of ['intended', 'backpath']) {
   assert(`${name}.problems`, `${name} chain problems`, c.problems, c.problems.length === 0, 'none');
   const violent = c.steps.filter((s) => s.resolution && s.resolution.violent).map((s) => s.quest);
   assert(`${name}.nonlethal`, `${name} chain quests resolved with violence`, violent, violent.length === 0, '0');
-  assert(`${name}.journal`, `${name} chain journal entries written`, c.journal.length, c.journal.length >= 100, '>= 100');
+  // RI-QST04 §D's journal floor is a MEAN of >= 5 entries per quest, so the bar scales with the
+  // chain rather than being a flat number that happens to fit the longer of the two.
+  assert(`${name}.journal`, `${name} chain journal entries written`,
+    `${c.journal.length} over ${want.length} quests (${(c.journal.length / want.length).toFixed(2)}/quest)`,
+    c.journal.length >= 5 * want.length, '>= 5 per quest');
   const firstPerson = c.journal.filter((e) => /\b(I|my|me)\b/.test(e.text)).length;
   assert(`${name}.firstperson`, `${name} journal entries in first person`, `${firstPerson}/${c.journal.length}`,
     c.journal.length > 0 && firstPerson === c.journal.length, '100%');
