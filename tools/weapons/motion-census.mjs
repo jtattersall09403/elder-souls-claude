@@ -36,6 +36,10 @@ const lib = new MovesetLibrary(
 
 /** RI-WPN05 §E peak tip speed bands (m/s). §E.2's ceiling is 1.25x the band's top. */
 const BAND_TOP = { light: 20, medium: 26, heavy: 32, ultra: 40, ranged: 20 };
+/** RI-WPN05 §E anticipation-fraction floors, by tier. `ranged` has no §E row; use light's. */
+const ANTI_MIN = { light: 0.08, medium: 0.15, heavy: 0.25, ultra: 0.30, ranged: 0.08 };
+/** RI-WPN05 §E follow-through-fraction floors, by tier. */
+const FOLLOW_MIN = { light: 0.20, medium: 0.20, heavy: 0.25, ultra: 0.30, ranged: 0.20 };
 const POSE_CEIL = 0.25;      // §E.2 pose discontinuity, metres per frame at 60 Hz
 const POSE_HARD = 1.00;      // §E.2 HARD FAIL: a teleport with a sword attached
 const ARC_TOL = 10;          // §E.2 arc conformance
@@ -126,8 +130,60 @@ function analyse(t) {
     if (pv) { const dot = u[0] * pv[0] + u[1] * pv[1] + u[2] * pv[2]; if (dot < 0.99) keys++; }
     pv = u;
   }
+  // ---- RI-WPN05 §E ANTICIPATION and FOLLOW-THROUGH, per clip. -------------------------------
+  //
+  // §E defines both as fractions along "the swing direction", and the swing direction is not a
+  // world axis — it is the direction the tip is travelling while the hitbox is live. So it is
+  // taken here as the mean unit tip velocity over the ACTIVE window, and the two rows are:
+  //
+  //   anticipation  fraction of STARTUP frames whose tip velocity has a NEGATIVE component
+  //                 along that direction (the weapon travelling back before it travels forward)
+  //   follow        fraction of RECOVERY frames, BEFORE the first reversal, whose tip velocity
+  //                 still has a POSITIVE component along it ("the tip continues along the swing
+  //                 arc for >=20% of recovery frames before reversing")
+  //
+  // §E's own bands are per tier and are applied by the caller. Neither row had an instrument
+  // anywhere in the tree before this: M5 names `corpus/80-methods/m-wpn05-impact.mjs`, which does
+  // not exist, so §E's follow-through row has never been measured on any build. Added by W1-MASS
+  // because it is the row the calibrateExcursion off-by-two was silently failing.
+  //
+  // THE SWING DIRECTION IS TAKEN AT THE BOUNDARY, NOT AS A MEAN, and the difference is not
+  // cosmetic. A first cut of this used the MEAN unit tip velocity over the whole active window,
+  // and on a wide arc that is wrong by construction: the tangent of a 300-degree sweep rotates
+  // most of the way round, so its mean points somewhere the tip is never actually going, and the
+  // last active frame's true direction can sit at 150 degrees to it. Measured that way the fix
+  // to `calibrateExcursion` appeared to make the follow-through row WORSE (64.4% against 59.4%)
+  // while `follow_scale` had gone from 122 clips pinned at zero to none — the instrument, not
+  // the build. §E says "continues along the swing ARC", so the reference is the instantaneous
+  // direction at the boundary: the FIRST active frame for anticipation, the LAST for follow.
+  const vel = [];
+  for (let i = 1; i < rows.length; i++) {
+    vel.push({ f: rows[i].f, v: [rows[i].B[0] - rows[i - 1].B[0], rows[i].B[1] - rows[i - 1].B[1], rows[i].B[2] - rows[i - 1].B[2]] });
+  }
+  const unitAt = (f) => {
+    const e = vel.find((x) => x.f === f);
+    if (!e) return null;
+    const n = Math.hypot(e.v[0], e.v[1], e.v[2]);
+    return n > 1e-9 ? [e.v[0] / n, e.v[1] / n, e.v[2] / n] : null;
+  };
+  const dirIn = unitAt(startup + 2);              // the swing direction as the hitbox opens
+  const dirOut = unitAt(startup + active);        // the swing direction as the hitbox closes
+  const dot = (e, u) => e.v[0] * u[0] + e.v[1] * u[1] + e.v[2] * u[2];
+  let antiN = 0, antiD = 0, folN = 0, folD = 0;
+  if (dirIn) for (const e of vel) if (e.f <= startup) { antiD++; if (dot(e, dirIn) < 0) antiN++; }
+  // "before reversing": count forward recovery frames up to the FIRST frame that reverses.
+  if (dirOut) {
+    for (const e of vel) {
+      if (e.f <= startup + active) continue;
+      folD++;
+      if (folN === folD - 1 && dot(e, dirOut) > 0) folN++;
+    }
+  }
+
   const act = bearingTravel(isAct), rec = bearingTravel(isRec);
   return {
+    anticipation_frac: antiD ? +(antiN / antiD).toFixed(3) : null,
+    follow_through_frac: folD ? +(folN / folD).toFixed(3) : null,
     arc_active: act.deg,
     arc_recovery: rec.deg,
     recovery_near_axis_frac: rec.near_frac,
@@ -171,6 +227,8 @@ for (const j of jobs) {
     pose_hard: a.pose_step_socket_m > POSE_HARD,
     tip_ok: a.tip_speed_mps <= BAND_TOP[j.tier] * 1.25,
     keys_ok: a.distinct_keyframes >= 3,
+    anti_ok: a.anticipation_frac === null ? null : a.anticipation_frac >= ANTI_MIN[j.tier],
+    follow_ok: a.follow_through_frac === null ? null : a.follow_through_frac >= FOLLOW_MIN[j.tier],
     rec_gt_act_bearing: a.arc_recovery > a.arc_active,
     rec_gt_act_path: a.path_recovery_m > a.path_active_m,
   });
@@ -192,6 +250,12 @@ const out = {
   pose_socket_hard_fail: rows.filter((r) => r.pose_hard).map((r) => `${r.wid}/${r.slotId} ${r.pose_step_socket_m} m`),
   pose_socket_worst: worst('pose_step_socket_m'),
   tip_speed: { pct_violating: pct('tip_ok'), worst: worst('tip_speed_mps') },
+  anticipation: { pct_violating: pct('anti_ok'), worst: worst('anticipation_frac', 1) },
+  follow_through: {
+    pct_violating: pct('follow_ok'),
+    dead: rows.filter((r) => r.follow_through_frac !== null && r.follow_through_frac <= 0.02).length,
+    worst: worst('follow_through_frac', 1),
+  },
   keyframes: { pct_violating: pct('keys_ok'), worst: worst('distinct_keyframes', 1) },
   recovery_exceeds_active: {
     by_bearing: rows.filter((r) => r.rec_gt_act_bearing).length,
@@ -209,6 +273,8 @@ console.log(`pose step > 1.00 m, SOCKET     ${out.pose_socket_hard_fail.length} 
 console.log(`   worst socket step           ${out.pose_socket_worst[0]}`);
 console.log(`tip speed over 1.25x band      ${out.tip_speed.pct_violating}%   worst ${out.tip_speed.worst[0]}`);
 console.log(`distinct keyframes < 3         ${out.keyframes.pct_violating}%  (E.2 HARD FAIL above 5%)`);
+console.log(`§E anticipation under band     ${out.anticipation.pct_violating}%`);
+console.log(`§E follow-through under band   ${out.follow_through.pct_violating}%   DEAD (<=0.02): ${out.follow_through.dead}`);
 console.log(`recovery > active, by bearing  ${out.recovery_exceeds_active.by_bearing}/${n}  (${out.recovery_exceeds_active.bearing_offenders_mostly_near_axis} of them near-axis artefacts)`);
 console.log(`recovery > active, by tip path ${out.recovery_exceeds_active.by_tip_path}/${n}`);
 if (process.argv.includes('--gate') && (out.arc.pct_violating > 2 || out.pose_socket_hard_fail.length || out.keyframes.pct_violating > 5)) process.exit(1);

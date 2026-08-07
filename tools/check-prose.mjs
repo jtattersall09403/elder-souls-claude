@@ -126,6 +126,17 @@ export function stingKinds(text) {
   const s = sentences(text);
   if (!s.length) return [];
   const L = s[s.length - 1].trim();
+  // AN INTERROGATIVE CLOSING SENTENCE IS NEVER A STING, IN ANY OF THE THREE KINDS.
+  //
+  // Round 2 excluded the interrogative from `fragment-close` and from countFragOpen, for the right
+  // reason — a gate that charges a file for asking the player something aims the next writer at
+  // the exact defect the round exists to remove. It did not carry the exclusion to `trailing-clause`
+  // and `recast`, and the hole surfaced the moment the corpus got good enough for the tightened
+  // ceiling to bite: "You've asked me two of them already. Which is the one you haven't?" was
+  // charged as a `recast`, because STING_RECAST matches "which is the". That line is a speaker
+  // turning the conversation back on the player — the fix, scored as the defect, for the third
+  // time in this piece. The guard now sits above all three kinds instead of inside one of them.
+  if (L.endsWith('?')) return [];
   const out = [];
   if (STING_TRAILING.test(L)) out.push('trailing-clause');
   if (STING_RECAST.test(L)) out.push('recast');
@@ -133,7 +144,7 @@ export function stingKinds(text) {
   // fair question — is it?" are a speaker turning the conversation back on the player, which is
   // the opposite of a closing sting and the thing this round is trying to add. Charging a line for
   // it would aim the next writer at exactly the wrong target.
-  if (s.length >= 2 && words(L) <= 14 && !L.endsWith('?') && STING_OPENERS.test(L)) out.push('fragment-close');
+  if (s.length >= 2 && words(L) <= 14 && STING_OPENERS.test(L)) out.push('fragment-close');
   return out;
 }
 export function countSting(t) { return stingKinds(t).length ? 1 : 0; }
@@ -456,6 +467,9 @@ function selfTest() {
   t(countSting('The road runs east. Take the second bridge.') === 0, 'sting: QUIET on a flat directions line');
   t(countSting('He is a bookworm. Try a bookseller.') === 0, 'sting: QUIET on real reference prose');
   t(countSting('It is white and wet. What more can I tell you?') === 0, 'sting: QUIET on a flat reference line that ends in a question');
+  t(countSting("You've asked me two of them already. Which is the one you haven't?") === 0, 'sting: QUIET on an interrogative RECAST — a speaker putting the question back is the fix, not the defect');
+  t(countSting('He pays on the ninth, and that is the whole of it, is it not?') === 0, 'sting: QUIET on an interrogative TRAILING clause too');
+  t(countSting('He pays on the ninth, which is how everyone else came to know it.') === 1, 'sting: still RED on the declarative trailing clause');
 
   // the falsification, asserted so nobody silently re-gates it
   t(countEpigramEcho('That is not a mistake. A mistake happens once.') === 1, 'epigram-echo: detected');

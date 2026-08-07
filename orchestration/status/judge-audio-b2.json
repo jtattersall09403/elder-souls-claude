@@ -29,6 +29,24 @@
     "LEAK 3 (author missed): audio-pack-b2.mjs lines 249-250 print catch-pair proxy distances and hard-stratum distances to STDOUT at build time. Anyone who builds the pack and reads the console sees the numeric separation between the SAME and DIFFERENT strata, which calibrates a threshold exactly. Should be written into the reveal directory, not stdout.",
     "LEAK CHECKED, CLEAN: crest_factor_db uses the TRUE lufsI() while loudness_lufs is hardcoded -23.0. Crest factor = peak/RMS is scale-invariant, so it does NOT reopen the loudness channel the author closed. Verified algebraically from the source."
   ],
-  "next_step": "pre-register answering procedure in writing, then read trials.json, answer all 32, hash answers, THEN unblind",
+  "answers_committed": {
+    "file": "reports/w1-22-critic/b2/answer.md",
+    "sha256": "fc40b46e6051d0574d066e76f329a8bd8dcff352116113bc20b8c55269ba734d",
+    "committed_at_utc": "2026-08-07T18:49:20Z",
+    "procedure_sha256": "59e49482efb20dd1455a03451ae4053376b446964cc79cb2bc703a6eefe04bac",
+    "reveal_opened": false,
+    "called_SAME": ["T02","T04","T12","T17","T19","T21","T25","T30"],
+    "called_DIFFERENT_count": 24
+  },
+  "findings_2": [
+    "PACK INTEGRITY DEFECT: pack.json trials_sha256=3ab1e3b8... does NOT match trials.json on disk (recomputed 14684a7c...). Cause identified: trials.json contains the literal token -23.0 sixty-four times, a form JSON.stringify cannot emit (it emits -23). The file was text-substituted after the tool wrote it, so the declared hash is the hash of the ORIGINAL leaky build. Blinding is intact (all 64 values are the same constant, no residual variance) but RI-MTH03 M3's auditability claim is broken for this pack.",
+    "RESULT IS ROBUST: two independent metrics agree exactly. Mean absolute band difference puts 8 trials at 0.14-0.95 dB and the next at 4.39 dB (4.6x gap). Cosine distance on linear band power puts the SAME 8 at 0.00001-0.00105 and the next at 0.15185 (145x gap). Identical partition, no threshold tuning possible.",
+    "ZERO transient onsets across all 64 recordings in the pack. One of the four channels the pack advertises carries no information anywhere. Corroborated detector-free by crest factor, which spans only 10.0-17.4 dB across all clips - consistent with steady noise/drone beds, not with discrete one-shot events (which push crest above ~20 dB).",
+    "13 acoustic identities recovered by clustering the 24 distinct band-vectors (11 regions present at both capture seeds, 2 at one). 13 regions gives C(13,2)=78 pairs, matching the tool docstring's '78 pairs'.",
+    "NO TWO REGIONS ARE INDISTINGUISHABLE. The closest distinct-region pair in the pack (T22) is 4.39 dB mean / 0.152 cosine apart, still 145x further than the closest same-region re-roll.",
+    "Stereo correlation spans 0.001 to 0.999 across the 24 distinct clips; 7 of 24 sit above 0.989, i.e. effectively mono with no stereo image at all, while others are fully decorrelated. Spatial treatment is inconsistent between regions.",
+    "Tree moved: pack built at commit 78aebc7, HEAD at judging time 72baa12 (dirty). The pack is a frozen artifact so this does not affect the judgement, but both are recorded."
+  ],
+  "next_step": "UNBLIND in the recorded seven-step order, score separation and false_different_rate, write verdict md+json and blog line",
   "notes_for_successor": "Answering procedure must be stated and answers hashed BEFORE unblinding. Reveal key held by a sibling; unblind in the pack's recorded seven-step order."
 }

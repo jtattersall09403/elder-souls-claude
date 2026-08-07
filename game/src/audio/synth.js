@@ -174,7 +174,7 @@ function attachMod(ctx, mod, targets, t0) {
  * Build one CONTINUOUS layer (L1, or an L2 sublayer) and connect it to `dest`.
  * Returns a handle whose `gain` node is the layer's fader — the crossfade in `ambience.js`
  * ramps that and nothing else, so a region change is one automatable parameter per layer.
- */
+ *
  * `gainMul` is every STATIC factor the caller wants applied to this layer — `level_db` and the
  * bed's master trim — and it must be passed here rather than multiplied into `gain` afterwards,
  * because `attachMod()` below splits `out.gain.value` into a biased static term and an absolute

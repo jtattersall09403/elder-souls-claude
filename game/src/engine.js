@@ -4650,10 +4650,21 @@ export class Engine {
     if (!bed) return { ok: false, why: `no ambience bed for region ${JSON.stringify(id)}` };
     const seconds = opts.seconds === undefined ? 20 : opts.seconds;
     const sampleRate = opts.sampleRate === undefined ? 24000 : opts.sampleRate;
+    // ROUND 2 — THE LISTENER IS PLACED BY DEFAULT, and the default is the reason the R7 emitters
+    // were silent in every render this project had ever taken. `renderBedOffline()` only sounds
+    // an emitter when a listener exists, and round 1 passed `opts.listener || null` with no
+    // caller anywhere in the tree supplying one. The emitters are part of the region's sound —
+    // RI-AUD03 §C separates four of the thirteen regions by the bell buoy and the hide-drum — so
+    // the honest default is where the player is standing. `listener: null` is still available and
+    // still means "the region bed with no landmarks"; it now has to be asked for.
+    const p = this.sim.player;
+    const listener = opts.listener === undefined
+      ? [p.pos[0], p.pos[2], (p.yaw || 0) * Math.PI / 180]
+      : opts.listener;
     const buf = await renderBedOffline(OfflineCtor, bed, {
       seconds, sampleRate, tod: opts.tod || 'day', weather: opts.weather || 'clear',
       seed: opts.seed === undefined ? 0xa3b1 : opts.seed,
-      listener: opts.listener || null,
+      listener,
     });
     const cl = buf.getChannelData(0), cr = buf.getChannelData(1);
     const res = {

@@ -133,6 +133,54 @@ export function emitterPlacement(e, x, z, yawRad) {
 }
 
 /**
+ * The clock an R7 emitter strikes on. ROUND 2 — this is the piece that was missing.
+ *
+ * An emitter is a metronome, not a seeded event stream: §B gives the hide-drum "a 90-second
+ * beat" and the legion horn "on the hour", and the whole navigational claim depends on the
+ * player being able to LEARN the interval. So the pseudo-layer handed to `LayerClock` has a
+ * degenerate interval band `[period, period]` and the PRNG draw inside `_draw` contributes
+ * exactly nothing — deliberately, so that the live driver and the offline renderer can share one
+ * scheduler class rather than each rolling its own loop. A measurement path that schedules
+ * differently from the live path measures itself; that is this file's founding rule and round 1
+ * broke it here, with `renderBedOffline()` running `for (t = period*0.5; ...)` by hand.
+ *
+ * `phase` is the fraction of a period at which the first strike lands in a capture. It is DATA
+ * rather than a constant because of a real weakness round 1 found in RI-AUD03's own method: with
+ * emitter periods at 45–180 s, a 20-second §C clip contains a signature strike only if the
+ * capture is phased to include one, and §C's grading key leans on exactly those strikes — the
+ * four (wet, open, living) regions "are separated by Q3 instead (bell buoy / hide-drum / oars /
+ * lichen-scream)". A capture that cannot contain the bell cannot separate Marauder's Coast.
+ */
+/**
+ * An R7 emitter is one of two things, and round 1 had code for only one of them.
+ *
+ * `strike` — the bell buoy, the legion horn, the hide-drum. A one-shot grain on a period. These
+ * are the metronomes §B describes and the things a player counts.
+ *
+ * `continuous` — the Clay Moor's kiln. §B files it under Clay Moor's **L2** as "kiln roar
+ * (proximity-driven)" while R7 names it a positional emitter; both are true, and what it means
+ * is a continuous source whose level and pan are functions of where you are standing. It is the
+ * only one of the four you can steer by continuously rather than by waiting.
+ *
+ * This distinction is not cosmetic. Round 1 gave the kiln a `kind: "noise"` synth, no `period_s`,
+ * and the only code path that could ever have sounded it was `buildGrain()` — which, handed a
+ * spec with no `source: "noise"` and no `partials_hz`, falls through to `[s.freq_hz || 440]` and
+ * renders a brown-noise industrial roar as a **440 Hz sine blip**. The emitter was silent, so
+ * nobody heard it; had the silence been fixed without this, the fix would have shipped the blip.
+ */
+export function emitterMode(e) {
+  const k = e.synth && e.synth.kind;
+  return (k === 'noise' || k === 'drone') ? 'continuous' : 'strike';
+}
+
+export function emitterClock(e, rng) {
+  const period = e.period_s || 60;
+  const clock = new LayerClock({ interval_s: [period, period], events: [e] }, rng, 'emitter');
+  clock.next = period * (e.phase === undefined ? 0.15 : e.phase);
+  return clock;
+}
+
+/**
  * The Hive's L1 is the only gradient in the game: the chord flattens as you approach the
  * queen. Returns the detune, in cents, to apply to every partial.
  */
@@ -171,6 +219,10 @@ export class AmbienceDriver {
     this.live = null;
     this.lastEnv = null;
     this.emitterState = [];
+    this.emitterClocks = [];
+    this.emitterLogged = [];
+    this.emitterStrikes = 0;        // emitter grains actually scheduled/logged as sounded
+    this.emitterSilentStrikes = 0;  // struck while the player was out of `audible_m`
   }
 
   bedFor(id) { return this.beds[id] || null; }
@@ -185,6 +237,9 @@ export class AmbienceDriver {
       L3: new LayerClock(bed.layers.L3, this.rng, 'L3'),
       L4: new LayerClock(bed.layers.L4, this.rng, 'L4'),
     };
+    this.emitterClocks = (bed.emitters || EMPTY).map(
+      (e) => (emitterMode(e) === 'strike' ? emitterClock(e, this.rng) : null));
+    this.emitterLogged = (bed.emitters || EMPTY).map(() => null);
   }
 
   /**
@@ -246,10 +301,28 @@ export class AmbienceDriver {
 
     // R7 emitters. Recomputed every frame — this is the thing a player steers by.
     //
-    // In place, into a reused array. `_afterStep()` is outside `stepOnce()`'s timing window so
-    // this is not charged to the simulation, but it runs on every frame of every probe in the
-    // project and nine of the thirteen regions have no emitter at all; allocating a fresh array
-    // and a fresh object per frame to describe nothing is a cost with no reader.
+    // ROUND 2. WHAT THIS BLOCK USED TO BE, AND WHY IT WAS THE PIECE'S BIGGEST DEFECT.
+    //
+    // Round 1 computed `emitterPlacement()` here every frame, wrote `audible: true` with a gain
+    // and a pan into `emitterState`, charged the voice budget for it — and scheduled no audio at
+    // all. The only code in the tree that ever sounded an emitter was `renderBedOffline()`'s
+    // `opts.listener` branch, and nothing anywhere passed `listener`. The round-1 critic proved
+    // it from outside: `bell_buoy.level_db + 40` left the live render BIT-IDENTICAL
+    // (0.4197283983230591 both runs) while the same +40 dB on L1 drove the output into clipping.
+    // A model computed every frame into a trace nothing consumes is not a model; RI-MTH07 scores
+    // it exactly as a missing one, "because from the player's chair they are the same thing".
+    //
+    // It also cost the piece its strongest seam claim. RI-AUD03 AR-3 seam #1 is that ambience is
+    // the S8 wayfinding instrument — "a player who has learned the bell can locate themselves in
+    // fog". A landmark that makes no sound carries no position.
+    //
+    // So the block now does three things instead of one: it places the emitter (as before), it
+    // STRIKES it on its own clock into the live bus, and it writes an `ambience_emitter` row so
+    // that B6's stated instrument — `audioLog.pan` — exists to be asserted on.
+    //
+    // Still in place, into a reused array: `_afterStep()` is outside `stepOnce()`'s timing window
+    // so this is not charged to the simulation, but it runs on every frame of every probe in the
+    // project and nine of the thirteen regions have no emitter at all.
     const ems = bed.emitters || EMPTY;
     if (this.emitterState.length !== ems.length) this.emitterState.length = ems.length;
     for (let i = 0; i < ems.length; i++) {
@@ -260,6 +333,44 @@ export class AmbienceDriver {
       slot.audible = pl.audible; slot.distance_m = pl.distance_m; slot.gain = pl.gain;
       slot.gain_db = pl.gain_db; slot.pan = pl.pan; slot.bearing_deg = pl.bearing_deg;
       if (pl.audible) voices += 1;
+
+      // CONTINUOUS emitters (the kiln): the live graph is built once on the region swap and the
+      // rolloff node follows the player every frame. This is the consumption — move, and the
+      // roar moves in the mix. Stand still and nothing is recomputed into the graph at all.
+      const lv = this.live && this.live.emitters ? this.live.emitters[i] : null;
+      if (lv) {
+        lv.gain.gain.value = pl.audible ? pl.gain : 0;
+        if (lv.panner) lv.panner.pan.value = Math.max(-1, Math.min(1, pl.pan));
+      }
+
+      // STRIKE emitters (bell, horn, drum): a grain per period, scheduled into the live bus.
+      const clock = this.emitterClocks[i];
+      if (clock) {
+        for (const d of clock.due(this.t, dt, env)) {
+          // A strike out of range is still a strike — the buoy rings whether or not you are
+          // there to hear it — but it is not scheduled and not logged as sounded. `audible_m`
+          // is where the emitter stops, not where it fades ("audible from 600 m").
+          if (!pl.audible) { this.emitterSilentStrikes++; continue; }
+          this.events++;
+          this.emitterStrikes++;
+          this._emitPlacement(s.frame, e, pl, true);
+          if (this.ctx && this.live) {
+            buildGrain(this.ctx, { ...e, level_db: (e.level_db || 0) + bedTrimDb(bed) },
+                       this.live.bus, this.rng, this.ctx.currentTime + Math.max(0, d.at - this.t),
+                       pl.pan, pl.gain);
+          }
+        }
+      }
+      // A placement row whenever the emitter has MOVED in the mix. B6 walks a 200 m transect and
+      // asserts pan and gain vary monotonically with bearing and distance; if rows appeared only
+      // on strikes, a 200 m walk past a 90-second drum would produce one row and B6 would have
+      // nothing to be monotonic about. Emitting on change rather than per frame keeps a probe
+      // that stands still from filling the log with 4000 identical rows.
+      const prev = this.emitterLogged[i];
+      if (pl.audible && (!prev || Math.abs(prev.pan - pl.pan) >= 0.01 || Math.abs(prev.gain_db - pl.gain_db) >= 0.5)) {
+        this._emitPlacement(s.frame, e, pl, false);
+        this.emitterLogged[i] = { pan: pl.pan, gain_db: pl.gain_db };
+      } else if (!pl.audible) this.emitterLogged[i] = null;
     }
 
     this.voicesActive = voices;
@@ -270,6 +381,21 @@ export class AmbienceDriver {
   _emit(rec) {
     this.log.push(rec);
     if (this.log.length > this.logCap) this.log.splice(0, this.log.length - this.logCap);
+  }
+
+  /** One `ambience_emitter` row. B6 reads `pan`, `gain` and `distance_m` off these. */
+  _emitPlacement(frame, e, pl, sounded) {
+    this._emit({
+      frame, type: 'ambience_emitter', bus: 'ambience', region: this.region,
+      layer: 'R7', id: e.id, sounded,
+      pan: Math.round(pl.pan * 10000) / 10000,
+      gain: Math.round(pl.gain * 10000) / 10000,
+      gain_db: pl.gain_db === -Infinity ? null : Math.round(pl.gain_db * 100) / 100,
+      distance_m: Math.round(pl.distance_m * 100) / 100,
+      bearing_deg: Math.round(pl.bearing_deg * 100) / 100,
+      period_s: e.period_s === undefined ? null : e.period_s,
+      level_db: e.level_db || 0,
+    });
   }
 
   /** RI-AUD02 §E `audioLog()` shape, ambience rows only. */
@@ -295,6 +421,11 @@ export class AmbienceDriver {
       denies: bed ? (bed.denies || []).map((d) => d.class) : [],
       bed_lufs_target: bed ? bed.bed_lufs_target : null,
       emitters: this.emitterState,
+      // ROUND 2. These two exist so that "the emitters are reported audible" and "the emitters
+      // made a sound" are separately readable numbers. Round 1 had only the first, and the first
+      // was true while the second was false for every render this project had ever taken.
+      emitter_strikes: this.emitterStrikes,
+      emitter_strikes_out_of_range: this.emitterSilentStrikes,
       events: this.events,
       // RI-WLD08's bar is ">= 4 ambient events per 10 minutes anywhere in the world", and it is
       // one of the two items that judge `audio.ambience.region`. The L3 and L4 clocks are an
@@ -321,7 +452,7 @@ export class AmbienceDriver {
     const bus = ctx.createGain();
     bus.gain.value = 1;
     bus.connect(ctx.destination);
-    this.live = { bus, layers: [] };
+    this.live = { bus, layers: [], emitters: [] };
     const bed = this.bedFor(this.region);
     if (bed) this._swapLive(bed);
     return true;
@@ -336,10 +467,15 @@ export class AmbienceDriver {
     }
     this.live.layers = buildBedContinuous(ctx, bed, this.live.bus, new Rng(this.seed ^ 0x51ed),
                                           this.lastEnv || { tod: 'day', weather: 'clear' }, now, CROSSFADE_S);
+    for (const old of this.live.emitters) if (old) old.handle.stop(now + CROSSFADE_S + 0.05);
+    this.live.emitters = buildEmitterVoices(ctx, bed, this.live.bus, new Rng(this.seed ^ 0x7e17), now);
   }
 
   detach() {
-    if (this.live) { for (const l of this.live.layers) l.stop(this.ctx.currentTime); }
+    if (this.live) {
+      for (const l of this.live.layers) l.stop(this.ctx.currentTime);
+      for (const e of this.live.emitters || []) if (e) e.handle.stop(this.ctx.currentTime);
+    }
     this.ctx = null; this.live = null;
   }
 }
@@ -365,13 +501,48 @@ export class AmbienceDriver {
  */
 export function bedTrimDb(bed) { return bed && bed.bed_gain_db ? bed.bed_gain_db : 0; }
 
+/**
+ * The live graph for every CONTINUOUS R7 emitter in a bed — one per emitter slot, `null` for the
+ * strike emitters so the array indexes 1:1 with `bed.emitters` and the driver can address it by
+ * position without a lookup on the hot path.
+ *
+ * The chain is `source → level/trim (inside buildContinuous) → rolloff gain → panner → bus`. The
+ * rolloff gain and the panner are the two parameters the driver writes every frame from
+ * `emitterPlacement()`; everything upstream of them is built once. That split is what makes the
+ * kiln steerable without rebuilding an audio graph sixty times a second.
+ *
+ * The rolloff gain starts at 0. Nothing is audible until the driver has placed the player once,
+ * which is correct: an emitter's level is a fact about where you are standing, and before the
+ * first `step()` the driver does not know.
+ */
+export function buildEmitterVoices(ctx, bed, dest, rng, t0 = 0) {
+  const out = [];
+  for (const e of bed.emitters || EMPTY) {
+    if (emitterMode(e) !== 'continuous') { out.push(null); continue; }
+    const rolloff = ctx.createGain();
+    rolloff.gain.value = 0;
+    const panner = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+    if (panner) { rolloff.connect(panner); panner.connect(dest); } else rolloff.connect(dest);
+    const handle = buildContinuous(ctx, e.synth, rolloff, rng, t0,
+                                   dbToGain((e.level_db || 0) + bedTrimDb(bed)));
+    out.push({ id: e.id, gain: rolloff, panner, handle });
+  }
+  return out;
+}
+
 /** Every continuous voice a bed has in this environment, faded in over `fadeIn` seconds. */
 export function buildBedContinuous(ctx, bed, dest, rng, env, t0 = 0, fadeIn = 0, gradientPos = null) {
   const out = [];
   const trim = dbToGain(bedTrimDb(bed));
   const mk = (synth, levelDb, gradient) => {
-    const h = buildContinuous(ctx, synth, dest, rng, t0);
-    const target = h.gain.gain.value * dbToGain(levelDb || 0) * trim;
+    // ROUND 2 — `level_db` and the bed trim go IN, they are not multiplied on afterwards.
+    // Round 1 built the layer at unit level and then scaled `h.gain.gain.value`, which reached
+    // only the static half of a gain-modulated layer and left the LFO's absolute swing at its
+    // untrimmed size. See the `attachMod` header in synth.js: that is what made `bed_gain_db`
+    // non-scalar, moved a spectral centroid under a pure output gain, and ran Valus Ridge's
+    // declared 42 % tremolo at an effective 155 % with a negative gain at every trough.
+    const h = buildContinuous(ctx, synth, dest, rng, t0, dbToGain(levelDb || 0) * trim);
+    const target = h.gain.gain.value;
     if (fadeIn > 0) {
       h.gain.gain.setValueAtTime(0.0001, t0);
       h.gain.gain.linearRampToValueAtTime(target, t0 + fadeIn);
@@ -426,16 +597,46 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
       fired.push({ layer: key, id: ev.id, at_s: Math.round(at * 100) / 100, pan: Math.round(pan * 100) / 100 });
     }
   }
-  // Emitters, if the caller placed a listener. `null` listener = the region bed alone, which
-  // is what §C's blind clip wants: no landmarks, so the judge cannot navigate, only describe.
+  // Emitters, if the caller placed a listener.
+  //
+  // ROUND 2 — THE DEFAULT WAS BACKWARDS, and it is worth being explicit about why. Round 1's
+  // comment here read "`null` listener = the region bed alone, which is what §C's blind clip
+  // wants: no landmarks, so the judge cannot navigate, only describe." §C says the opposite. Its
+  // grading key has one duplicate triple — (wet, open, living), shared by FOUR regions — and the
+  // item's own note on it is: "those four are separated by Q3 instead (bell buoy / hide-drum /
+  // oars / lichen-scream), which is why R7's positional emitters and each region's signature L3
+  // are load-bearing rather than decorative." A clip with no bell cannot separate Marauder's
+  // Coast from Western Rootlands, which is precisely what the blind test is for. So
+  // `ambienceCapture()` now places the listener at the player by default and a caller must ask
+  // for `listener: null` to get the landmark-free bed.
+  //
+  // The schedule is `emitterClock()` — the same class, the same phase, the same period the live
+  // driver strikes on — not a hand-rolled loop starting at half a period, which is what round 1
+  // had and which no live path shared.
   if (opts.listener) {
-    for (const e of bed.emitters || []) {
+    const ems = bed.emitters || [];
+    for (let i = 0; i < ems.length; i++) {
+      const e = ems[i];
       const p = emitterPlacement(e, opts.listener[0], opts.listener[1], opts.listener[2] || 0);
       if (!p.audible) continue;
-      const period = e.period_s || 20;
-      for (let t = period * 0.5; t < seconds; t += period) {
-        buildGrain(ctx, { ...e, level_db: (e.level_db || 0) + bedTrimDb(bed) }, bus, rng, t, p.pan, p.gain);
-        fired.push({ layer: 'emitter', id: e.id, at_s: Math.round(t * 100) / 100,
+      if (emitterMode(e) === 'continuous') {
+        // The listener does not move during an offline capture, so the rolloff and the pan are
+        // constants here — the same two numbers the live driver writes every frame.
+        const rolloff = ctx.createGain();
+        rolloff.gain.value = p.gain;
+        const panner = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+        if (panner) { panner.pan.value = Math.max(-1, Math.min(1, p.pan)); rolloff.connect(panner); panner.connect(bus); }
+        else rolloff.connect(bus);
+        buildContinuous(ctx, e.synth, rolloff, rng, 0, dbToGain((e.level_db || 0) + bedTrimDb(bed)));
+        fired.push({ layer: 'emitter', id: e.id, mode: 'continuous', at_s: 0,
+                     pan: Math.round(p.pan * 1000) / 1000, gain: Math.round(p.gain * 1000) / 1000,
+                     distance_m: Math.round(p.distance_m) });
+        continue;
+      }
+      const clock = emitterClock(e, rng);
+      for (const { at } of clock.due(0, seconds, env)) {
+        buildGrain(ctx, { ...e, level_db: (e.level_db || 0) + bedTrimDb(bed) }, bus, rng, at, p.pan, p.gain);
+        fired.push({ layer: 'emitter', id: e.id, at_s: Math.round(at * 100) / 100,
                      pan: Math.round(p.pan * 1000) / 1000, gain: Math.round(p.gain * 1000) / 1000,
                      distance_m: Math.round(p.distance_m) });
       }

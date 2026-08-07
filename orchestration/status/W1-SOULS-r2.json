@@ -2,7 +2,7 @@
   "task_id": "W1-SOULS-r2",
   "brief": "corpus/90-verdicts/wave1/W1-SOULS-r1.md (verdict is the spec)",
   "started": "wave-1 round 2",
-  "state": "building",
+  "state": "complete",
   "git_at_start": {
     "commit": "19706e7",
     "dirty_paths": 13
@@ -36,7 +36,13 @@
     "game/data/combat/enemies/*.json (22 files, re-derived souls)",
     "game/src/sim/hazards.js (_hurtEntity: H9 damages the combat body)",
     "game/src/engine.js (hazards.step gets this.combat; SoulsSystem gets the rest-epoch supplier)",
-    "game/src/sim/souls.js (rest-epoch respawn gate; death-path list rewritten from the step order)"
+    "game/src/sim/souls.js (rest-epoch respawn gate; death-path list rewritten from the step order)",
+    "tools/progression/souls-consumption.mjs (arms B/D/I de-vacuumed; new arms K real fight, L hazard, M respawn gate; four new unfalsifiability tripwires)",
+    "corpus/20-progression/RI-PRG06-souls-yield-and-pace.md (\u00a78: the TTK tension, filed not absorbed)",
+    "reports/souls-consumption.json (15/15, 0 unfalsifiable)",
+    "reports/souls-consumption-DELETED.json (3/15, 4 unfalsifiable)",
+    "docs/shots/2026-08-07-w1-souls-r2-a-fight-pays.png",
+    "reports/blog-feed.jsonl (one line)"
   ],
   "findings": [
     "NEIGHBOUR MID-RUN, DO NOT MEASURE AGAINST THE WORKING TREE: game/data/world/population-posts.json on disk right now is a PERTURBED placement left by W1-POPULATION's A-arm \u2014 report.perturbations {encounters_per_tm: 1.7}, 253 posts / 507 bodies / 64,408 souls. The canonical placement is at git HEAD: 144 posts / 267 bodies / 34,646 souls, perturbations null. Every census number I take reads the committed file, not the tree.",
@@ -49,8 +55,26 @@
     "F-5 CLOSED, AND IT IMMEDIATELY FOUND FOUR THINGS: --check now binds each value to the band of (its own tier row) x (the LOWEST danger_tier region it is actually placed in). Four ROSTER GAPS reported: guard_legion 83 placed from t3 wants R3 155-585; drowned_greater 157 from t4 wants R4 356-1218; cst_sap_speaker 286 from t2 wants R2 miniboss 937-1124; champion_hist_marked 5043 from t5 wants R5 miniboss 6088-7493. The shipped roster is five R1-MASS trash statblocks and two under-massed fog-gate bosses, and no tier-appropriate archetype exists above danger tier 1. Hard-fails at tier 1 (where K is anchored), reported above it, fatal everywhere under --strict. Exit: --check 0, --check --strict 1, --census 1.",
     "HAZARD DEATH PATH FIXED (HF-2). hazards.js H9 wrote ent.hp on the sim.entities MIRROR; combat-bridge.js mirror() overwrites e.hp from the combat body at the end of every stepCombat. New HazardSystem._hurtEntity() damages combat.bodyOf(ent.eid) - the authority - and sets dead/state/move/hitboxActive plus a hazard_fired outcome:death event, falling back to ent.hp only when there is no combat body. engine.js passes this.combat as an additive 4th arg. The player branch of the same hazard already did it correctly at line ~310.",
     "RESPAWN RE-ARM GATED ON THE S5 REST EPOCH (HF-3). souls.js _alive is now eid -> {alive, paidEpoch}; a dead->alive transition re-arms only when death.ordinaryRespawnEpoch has moved past the epoch the body was paid at. Engine supplies the counter as a function (DeathSystem hangs off the engine, not sim). refusedRearms is exposed for the instrument. With no supplier the gate degrades to epoch 0 = everything settled = the safe direction.",
-    "STALE, FOR W1-POPULATION: game/data/world/population-posts.json caches a per-post `souls` from the statblocks at generation time, so its 34,646 is now stale against the re-derived values (16,335 for the same 267 bodies). Nothing in the fight reads it - game/src/world/population.js:203 uses it for a diagnostic total only - but their generator wants a re-run. I did not touch their file."
+    "STALE, FOR W1-POPULATION: game/data/world/population-posts.json caches a per-post `souls` from the statblocks at generation time, so its 34,646 is now stale against the re-derived values (16,335 for the same 267 bodies). Nothing in the fight reads it - game/src/world/population.js:203 uses it for a diagnostic total only - but their generator wants a re-run. I did not touch their file.",
+    "CONSUMPTION, INTACT at 72baa12: 15/15 arms, 0 unfalsifiable. DELETE-THE-FIX (stepSouls commented out of sim/step.js, restored byte-for-byte after): 3/15, 4 unfalsifiable - A,C,E,F,G1,G2,G3,I,J,K,L,M all red. Round 1's number was 4/12 with 2 unfalsifiable; arm I now goes red where it used to pass vacuously.",
+    "THE VERDICT'S CENTRAL CHARGE IS ANSWERED BY ARM K: 42 latched `light` swings, no harness kill verb anywhere in the arm, the sentry dies on FRAME 1421 (23.68 s @60), souls 0 -> 64, exactly one souls_awarded event. Self-break control - the identical loop with the input removed - never kills and pays 0. 1421 is the same frame count the round-1 critic measured, so the fight is unchanged by the re-derivation and only the payout moved.",
+    "ARM L IS THE HAZARD FIX AND ITS OWN CONTROL, SAME FUNCTION, SAME HAZARD, SAME BODY: HazardSystem.step() called WITH the CombatSystem - body hp 40 -> 0, dead true, souls +64, 1 event. Called WITHOUT it (which is byte-for-byte the pre-fix write to the mirror) - entity hp 0 right after the tick, back to 40 four frames later, souls +0. The corpse resurrecting is now a live control rather than a description.",
+    "ARM M: first kill +192; the SAME EIDS reused; two despawn/respawn cycles with no rest paid +0 and +0 (round 1 paid +816 on every one); one rest bumped the epoch 0 -> 1 and the same bodies paid +192 again. 12 re-arms refused.",
+    "THE GATE IMMEDIATELY BROKE THE SUITE, AND THAT IS THE STRONGEST EVIDENCE IT IS REAL. First run after the epoch gate landed: 8/15, with C, E, F and G1-G3 all reading zero. The cause was the instrument. souls-consumption's freshFight() despawns and re-spawns `dres-raid-party` UNTAGGED, so all twelve round-1 arms ran on the same six eids and every one of them silently depended on a corpse being re-payable with no hearth rest - exactly HF-3. Fixed by passing a unique opts.tag per fight (W1-POPULATION's field). ANY probe in this tree that recycles an encounter is doing the same thing.",
+    "ARM L FAILED ITS FIRST RUN AND THE INSTRUMENT WAS WRONG, NOT THE WORLD. Seeding HazardSystem.active without also forcing _inside() meant the hazard-EXIT branch deleted the seeded entry before H9 ever read it, so no damage was dealt in either half and the arm read as 'the fix does nothing'. Three things stop a hazard firing in an arena and none of them is the branch under test: _suppressed() returns 'camera fixture' for any sim.cellId; _inside() is false because `the-fall` has neither a placed anchor nor a CONDITION predicate a flat arena satisfies; byRegion has no entry for an arena. All three are about where the PLAYER is. Overridden and declared in the tool.",
+    "THE INDEX MOVED UNDER ME MID-RUN, a new shape of the AGENT-PROTOCOL warning: a neighbour ran `git add` while my temporary DELETE-THE-FIX edit to sim/step.js was on disk, and STAGED IT. Restoring the working tree left a staged deletion of the soul source. Caught by `git diff` showing the deleted line as the MINUS side. `git restore --staged`; step.js is now byte-identical to HEAD with nothing staged. A delete-the-fix run on a shared tree needs the index checked as well as the file.",
+    "GATES AFTER, at 72baa12 (pgrep 24, loadavg 12.2 - booleans only): check-data 0, check-quests 0, check-content 0, boot-check PASS, derive-soul-values --check 0. --check --strict exits 1 (four roster gaps) and --census exits 1 (fail-closed at 269 of 891); both are deliberate and neither is wired into a project gate.",
+    "THE PICTURE IS THE CENSUS CORRECTION: six marsh sentries used to pay 816 souls - level 2 with change. The shot shows the sapwell screen after killing the same six: 384 souls held, 418 to the next level, 'Not enough souls yet. Come back.'"
   ],
-  "next_step": "de-vacuum consumption arms B/D/I, land a real-fight arm with no harness kill verb, file the TTK tension in RI-PRG06 \u00a78, then ONE browser (42 headless_shell at this point, loadavg 17.7 - waiting)",
-  "notes_for_successor": "Browser contention 19 at start \u2014 do all derivation/data first, take browser last. Do NOT self-grade."
+  "next_step": "none - complete",
+  "notes_for_successor": "I did not commit; a neighbour swept my files into 72baa12. The soul values are regenerated by `node tools/progression/derive-soul-values.mjs --write` and nothing in them is typed by hand any more - the census, the budget and the bands are all read out of corpus/00-doctrine/constants.json and corpus/20-progression/RI-PRG06-souls-yield.json at run time, so a census amendment moves the roster by re-running the tool. Four modes: --bands (published vs scaled), --check (green today), --check --strict (red: four roster gaps), --census (red: fail-closed under-population). THE OPEN ITEM IS NOT MINE: the shipped roster is five R1-mass trash statblocks and two under-massed fog-gate bosses, with no tier-appropriate archetype above danger tier 1, so the placed world pays L19 where RI-PRG06 wants L93 for a full census clear. That is bodies that have not been built, not souls that are mispriced - see the ROSTER GAP block --check prints. Also: game/data/world/population-posts.json caches a per-post `souls` from the statblocks and its 34,646 is now stale (16,335 for the same 267 bodies); W1-POPULATION should re-run their generator. DO NOT self-grade.",
+  "git_at_finish": {
+    "commit": "72baa12",
+    "note": "a neighbour swept my working files into 72baa12; I did not commit"
+  },
+  "contention": {
+    "headless_shell": "19 at start, 26-42 through the derivation phase, 24-26 during the browser phase",
+    "loadavg": "12.2 - 20.9 throughout",
+    "declared": "well above the protocol cap of 8. NO wall-clock figure is published. Every number below is a frame count at a fixed 60 Hz, a soul count, a level, a boolean or arithmetic on files."
+  }
 }

@@ -420,6 +420,9 @@ export function calibrateExcursion(arch, frames, sockA, sockB, makeRig, declared
   };
   const S = frames.startup, A = frames.active, T = frames.total;
   const solve = (band, apply) => {
+    // A band with no frame in it constrains nothing. Return the full excursion rather than
+    // bisecting against a peak of 0, which would be indistinguishable from "already fits".
+    if (band[0] > band[1]) return 1;
     // 1.0 is always tried first: a clip that already fits keeps its full excursion.
     if (peakIn(apply(1), band[0], band[1]) <= declaredMps) return 1;
     let lo = 0, hi = 1;
@@ -429,8 +432,37 @@ export function calibrateExcursion(arch, frames, sockA, sockB, makeRig, declared
     }
     return lo;
   };
+  // ---- THE BANDS MUST CONTAIN ONLY FRAMES THE SCALE BEING SOLVED CAN ACTUALLY REACH. --------
+  //
+  // `Clip.phaseAt` puts phase 1.0 on the FIRST active frame (f = S+1) and phase 2.0 on the FIRST
+  // RECOVERY frame (f = S+A+1); the active window therefore occupies phases [1.0, 2 - 1/A].
+  // `dampExcursion` pivots the windup about the phase-1.0 value and the follow about the
+  // phase-2.0 value, so:
+  //
+  //   * WINDUP, band [1, S+1]. Frame S sits at phase (S-1)/S < 1 and IS scaled; frame S+1 is the
+  //     pivot. The step S -> S+1 therefore shrinks with the scale, and the band is correct.
+  //   * FOLLOW. The band was `[S+A, T]`, and f = S+A is the LAST ACTIVE FRAME. The step it
+  //     measures (S+A-1 -> S+A) lies WHOLLY INSIDE the active window, where this function changes
+  //     nothing at all. Frame S+A+1 is the pivot and is equally immovable. So the first step the
+  //     follow scale can reach is S+A+1 -> S+A+2, and the band must start at S+A+2.
+  //
+  // The consequence of the old band was not a small error. On any clip whose ACTIVE window is
+  // over-speed — and the active window is owned by `arc_sweep_deg`, not by this damper — that
+  // unreachable frame exceeded `declaredMps` for EVERY value of `follow`, the bisection ran to
+  // its floor, and the follow-through was DELETED to fix a frame it could not touch. Measured
+  // over the 606-clip census: `follow_scale` was bimodal, 483 clips at 1.0 and 122 at exactly 0,
+  // and 99 of those 122 were also tip-speed violators. `whp_hist_bindings/r2` is the extreme
+  // case: its frame S+A = 74 moves at 67.69 m/s at follow = 1 and at 67.69 m/s at follow = 0 —
+  // byte-identical, because the scale cannot reach it — against a declared 24.0. Its recovery was
+  // left with the tip frozen for 80 consecutive f@60 while its registry profile declared a
+  // healthy follow_frac of 0.407. That is RI-WPN05 §E's follow-through row failing for a reason
+  // that has nothing to do with the follow-through.
+  //
+  // Frames the damper cannot reach are now simply UNCONSTRAINED here, which is honest: they
+  // belong to the active window, they are owned by the arc declaration, and
+  // `tools/weapons/motion-census.mjs` is what judges them.
   const w = solve([1, S + 1], (x) => dampExcursion(arch, x, 1));
-  const f = solve([S + A, T], (x) => dampExcursion(arch, w, x));
+  const f = solve([S + A + 2, T], (x) => dampExcursion(arch, w, x));
   return dampExcursion(arch, w, f);
 }
 

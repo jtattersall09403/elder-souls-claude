@@ -1,0 +1,21 @@
+{
+  "task_id": "W1-06-r2",
+  "brief": "camera, round 2",
+  "started": "2026-08-07",
+  "state": "researching",
+  "contention_at_start": {
+    "headless_shell": 30,
+    "loadavg": "12.99 16.07 15.71"
+  },
+  "outputs_expected": [
+    "camera fix",
+    "docs/shots/*.png x2-3",
+    "reports/blog-feed.jsonl line"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "*** ROOT CAUSE CANDIDATE (source, not yet instrumented): camera.js basisAt() builds the up vector as up = right x fwd. At yaw=0,pitch=0 that is (1,0,0)x(0,0,1) = (0,-1,0) -- it points DOWN. In general up.y = -cos(pitch), negative for the whole legal pitch band. The correct handedness is fwd x right. Consequence 1: project() computes yu = d.up, so EVERY sim-side NDC y is SIGN-INVERTED. Consequence 2: containment() reads tY and steers `(tY>0 ? 1 : -1)*contain_pitch_deg_per_frame` -- with the sign flipped it drives the pitch AWAY from the target, a positive feedback loop that runs to the containPitch floor and pins the view down. Consequence 3: |ndc|<=1 is sign-symmetric, which is exactly WHY every on-screen check passes while the frame is unreadable. Consequence 4: measureOnScreen's tBandY = (1-tNdc[1])*0.5 is inverted, matching round 1's 0.005-0.23 in-band fraction. Consequence 5: desiredPoint adds _up*shoulder_up, so the +0.10 m shoulder rise is applied DOWNWARD (and round 1's census measured it by dotting the same inverted vector, so it self-cancelled and read 0.10)."
+  ],
+  "next_step": "instrument in bare Node (camera.js imports only rng.js + collision.js) to confirm before changing anything",
+  "notes_for_successor": "Box above browser cap at start; doing source+instrumentation phase first."
+}
