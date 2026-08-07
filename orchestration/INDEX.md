@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `dc713e4`: 476 tools, 153 reference
+so it cannot drift. Generated at `b2ac587`: 477 tools, 153 reference
 items, 25 pieces in flight.
 
 Its purpose is to stop 25+ concurrent agents each paying separately to discover the
@@ -428,7 +428,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 28
+### `tools/quests/` — 29
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -453,6 +453,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/method-guard-control.mjs` — W1-FACTIONS round 3.
 - `tools/quests/resolution-reachability.mjs` — can the player ACTUALLY take any of the endings a quest offers?
 - `tools/quests/reveal-route-audit.mjs` — is there a route in PLAY that produces each reveal a resolution demands, and does the hook table that is supposed to carry them actually fire?
+- `tools/quests/reveal-route-chart.mjs` — Draw the W1-19 round-3 headline as a picture: which reveal channels a player can actually walk, and what one line of a measuring tool was worth.
 - `tools/quests/topic-supply-audit.mjs` — can a player be OFFERED each quest by playing?
 - `tools/quests/utility-findability.mjs` — can a player be OFFERED the quests that are NOT the main quest?
 - `tools/quests/viability-split-shot.mjs` — one picture of the two instruments, drawn from their own artifacts.
@@ -754,12 +755,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-23-r2` | ? | read corpus/90-verdicts/wave1/W1-23-r1.md in full, then locate lore registry files and con | — |
 | `critic-w1-13-r3` | running | two browser runs in flight in parallel under loadavg ~28 / 54 headless_shell: the 6-arm bl | `orchestration/status/critic-w1-13-r3.json` `tools/harness/critic-w1-13-r3.mjs` `tools/harness/critic-w1-13-r3-shot.mjs` `corpus/90-verdicts/wave1/W1-13-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-13-r3/` |
 | `W1-22-r3` | in-progress | (2) ambience-render --calibrate: clay-moor 5.8 LU under its own target, deep-marshes 0.003 | `tools/analysis/ambience-determinism.mjs` `game/src/audio/synth.js` `game/src/audio/ambience.js` `reports/w1-22/` |
 | `critic-w1-11` | writing-verdict | write corpus/90-verdicts/wave1/W1-11-r1.{md,json}, validate, blog line | `orchestration/status/critic-w1-11.json` `tools/audio/critic-m6-fixture-sweep.mjs` `corpus/90-verdicts/wave1/artifacts/W1-11-r1/` `docs/shots/2026-08-07-W1-11-r1-critic-m6-passes-on-the-broken-panner.png` |
 | `critic-w1-17-act5` | ? | none. Successor (round 2, after the fix): re-run corpus/90-verdicts/wave1/artifacts/W1-17- | `corpus/90-verdicts/wave1/W1-17-act5-r1.md` `corpus/90-verdicts/wave1/W1-17-act5-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/converse-node-repro.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/gen-converse-node-repro.mjs` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/opens-by-topic-scan.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/check-prose-output.txt` |
 | `critic-w1-04` | running | write corpus/90-verdicts/wave1/W1-04-r1.{md,json}, copy shot to docs/shots, blog line, ver | `orchestration/status/critic-w1-04.json` |
-| `critic-w1-21` | running | run critic-w1-21-r1.mjs (A..E), then ui-metrics/ui-forbidden/marker-diff/journal-ui, then  | `orchestration/status/critic-w1-21.json` `tools/harness/critic-w1-21-r1.mjs` |
 | `W1-SOULS-r3` | running | re-run full oracle after the idempotence fix; then delete-the-fix legs (souls rec.ref, pop | `orchestration/status/W1-SOULS-r3.json` `game/src/sim/souls.js` `game/src/engine.js` `game/src/world/population.js` `tools/progression/derive-soul-values.mjs` `tools/check-souls-corpus.mjs` |
 | `W1-19-r3` | running | land the _applyConsequences -> setFlag mechanism fix; delete-the-fix; prove one reveal fir | `orchestration/status/W1-19-r3.json` `tools/quests/reveal-route-audit.mjs` `reports/runs/W1-19-R3/reveal-route-audit.json` |
 | `W1-06-r2` | partial | 1) confirm the pitch-pin fix live in the browser (cam-probe.mjs --probe pitchlaw,lock, and | — |

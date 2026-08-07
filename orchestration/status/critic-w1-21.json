@@ -2,34 +2,56 @@
   "task_id": "critic-w1-21",
   "role": "critic",
   "judges": "W1-21",
-  "state": "running",
+  "state": "complete",
+  "round": 1,
   "started": "2026-08-07",
-  "next_step": "run critic-w1-21-r1.mjs (A..E), then ui-metrics/ui-forbidden/marker-diff/journal-ui, then captures",
+  "commit": "07f8b75",
+  "verdict": "FAIL — 2/10, AR-2 FAIL",
+  "next_step": "none — complete. The orchestrator banks the tree; nothing is committed (RULES 28).",
   "files_touched": [
     "orchestration/status/critic-w1-21.json",
-    "tools/harness/critic-w1-21-r1.mjs"
-  ],
-  "findings_so_far": [
-    "MARKER ON THE MAP: YES. Through the ordinary save door. saveState() -> set world.discovery.cells to an all-ones raster and world.discovery.places to all 42 poi ids -> loadState(). ZERO dropped by the load audit; the map then draws 42 place squares, 35 of them for places the body never stood in, and the whole province rendered (painted_frac 1.0). map-probe L3 forges only the PLACE LIST and leaves the raster honest, so its corroboration check passes; the raster is in the same blob an attacker controls, so the corroboration is a fixed-point test on its own input. Evidence: reports/runs/CRITIC-W1-21-R1B/critic-w1-21-r1b.json F1/F2/F3, map-forged-save.png.",
-    "REGISTER-NOT-PICTURE: getUIState().map.mutator_arities — the exact evidence AMENDMENT-W1-MAP-01 §3b tells a critic to read from the running object — is a hand-written literal {observe, suspend, resume}. The object's prototype carries a FOURTH mutator, restore(blob), arity 1, which names places. The compliance report is built from a list, so it cannot report the one thing it exists to detect. G1/G2.",
-    "PAUSED SCREEN STILL DOES NOT REDRAW ON A MODEL CHANGE. W1-MAP fixed the FOCUS half (focusSignature in the build() cache key). Engine._afterStep() applies ui.pending on PAUSED frames, so using an item changes sim.inventory while the frame, the mode, the touch signature and the focus are all unchanged. Measured in PIXELS with a working control: focus move = 55,656 px change; use a black-water draught (model 3 -> 2) = 0 px change; close and reopen the screen = 102 px change. H0/H2/H3."
-  ],
-  "verified_neighbour_findings": [
-    "Book over-run: FIXED. _clampSpread caps on the way in and on the way out. My first D1 was my own error - getUIState().book.page is the LEFT PAGE NUMBER (spread*2+1), not a spread index.",
-    "Paused-screen redraw: HALF fixed - see above.",
-    "Rendered-text register: not W1-21's; the equivalent shape here is G1/G2."
-  ],
-  "old_findings_so_far": [
-    "marker-scan (RI-UIX02 K1) is RED at HEAD: exit 1, 42 F2 hits, all game/data/npcs/quest-givers.json npcs[].post.pos. W1-21 reported K1 PASS/0 hits; the data arrived after that measurement.",
-    "journal-ui.mjs JU8 still asserts the PRE-S35 clause ('map unreachable AND non-existent'). A map now exists, so W1-21's own RI-UIX04 instrument must now go red; AMENDMENT-W1-MAP-01 amended the ITEM and nobody amended the INSTRUMENT.",
-    "None of ui-layer (8 viewpoints), ui-metrics (6 screens), ui-forbidden (4 menus), ui-census or marker-diff ever opens the map screen."
-  ],
-  "files_claimed": [
     "tools/harness/critic-w1-21-r1.mjs",
+    "tools/harness/critic-w1-21-r1b.mjs",
+    "tools/harness/critic-w1-21-r1-shots.mjs",
     "corpus/90-verdicts/wave1/W1-21-r1.md",
     "corpus/90-verdicts/wave1/W1-21-r1.json",
-    "docs/shots/",
-    "reports/blog-feed.jsonl"
+    "docs/shots/2026-08-07-w1-21-critic-map-forged-save.png",
+    "reports/blog-feed.jsonl",
+    "reports/runs/CRITIC-W1-21-R1/",
+    "reports/runs/CRITIC-W1-21-R1B/",
+    "reports/runs/CRITIC-W1-21-R1-UIX06/"
   ],
-  "notes": []
+  "files_claimed": [],
+  "redundant_with": [],
+  "load_declaration": "loadavg 8.1 -> 31.9 and 12 -> 40 concurrent headless browsers on four cores for the entire session. Every figure produced is a count, a boolean or a pixel difference; NO timing figure is published. One browser launched and kept per pass; the honest map frame came from the pooled capture daemon and the forged one from my own stepping browser, declared in the tool header.",
+  "headline_findings": [
+    "THE ANSWER TO 'CAN YOU GET A MARKER ONTO THE MAP' IS YES. Through the ordinary save door: saveState() -> world.discovery.cells := an all-ones raster, world.discovery.places := all 42 poi ids -> loadState(). ZERO dropped by the live-world load audit. The map then draws 42 place squares, 35 of them for places the body never stood in, over a FULLY RENDERED province. AMENDMENT-W1-MAP-01 §3a makes 'a square for a place the player has not stood in' and 'terrain rendered where the player has not been' hard fails in one sentence. map-probe.mjs L3 is the check built to catch this and it forges only the PLACE LIST while leaving the raster honest — but the raster is in the same blob, so the corroboration is a fixed-point test on its own input.",
+    "THE API EXISTS AND THE FILE SAYS IT DOES NOT. Discovery has FOUR state-writing methods (observe/0, suspend/0, resume/0, restore/1). restore(blob) rebuilds the place list from ids the caller supplies. The header's 'observe() ... the only mutator' and 'every mutating method on this object has arity 0' are both false as written, and restore is the one route the builder's own tryPlaceMapMarker never tries.",
+    "THE REGISTER-NOT-THE-PICTURE SHAPE, TWICE. (1) getUIState().map.mutator_arities — the exact field AMENDMENT §3b tells a critic to read from the running object instead of trusting the source — is a hand-written literal {observe, suspend, resume} and omits restore. (2) ui-metrics.mjs picks its stem-measurement region from a four-kind whitelist, so `sheet` and `spells` return 0 samples in every completed configuration, and the grader FILTERS THEM OUT of the median and reports PASS.",
+    "NO W1-21 DETECTOR OPENS THE MAP. ui-layer (8 viewpoints), ui-metrics (6 screens), ui-forbidden (4 menus), marker-diff (no menu open), ui-census (world/combat/levelup). Five detectors, zero visits, on the surface S35 defines by its refusals.",
+    "THE PAUSED SCREEN STILL DOES NOT REDRAW ON A MODEL CHANGE. W1-MAP fixed the FOCUS half with focusSignature in build()'s cache key — real, re-confirmed, 55,656 px. Engine._afterStep() applies ui.pending (use/transfer/level/equip) on PAUSED frames and none of those touches focus[mode]. Measured in pixels with the control run first: use a black-water draught, model goes 3 -> 2, ZERO pixels change; close and reopen, 102 pixels change.",
+    "RI-UIX02 K1 IS RED AT HEAD. marker-scan exits 1 with 42 F2 hits, all game/data/npcs/quest-givers.json npcs[N].post.pos, added by W1-07 r4 after W1-21 measured. W1-21's 'K1 PASS, 0 hits' carries no commit stamp (RULES 12).",
+    "journal-ui.mjs JU8 still implements the PRE-S35 clause (map_exists === false). The amendment amended the ITEM and filed a NOTICE; nobody amended the INSTRUMENT. W1-21's 'RI-UIX04 11/11' cannot hold at HEAD."
+  ],
+  "verified_neighbour_findings": [
+    "Paused screen never redrew: HALF fixed. Focus half works; model half does not. Measured in pixels with a control.",
+    "Books ran off their own end (page 25 of 11, resolution-dependent): FIXED, properly — _clampSpread caps on the way in AND out, recomputed from the current surface, fails open when no screen exists. My first falsification attempt was MY error (book.page is the LEFT PAGE NUMBER, spread*2+1, not a spread index) and is recorded in the verdict rather than deleted.",
+    "A hard-fail check searching a register that returns zero everywhere: the same shape is present here twice — see headline finding 3."
+  ],
+  "my_own_instrument_errors_recorded_not_deleted": [
+    "Pass A ran on the ui-journal state, which sets env.interior='thorn-hall'; Discovery is SUSPENDED in interiors BY DESIGN, so A0 went red against a correctly-behaving build. Rerun on 'default'.",
+    "teleport(x, z, opts) takes TWO coordinates and an options object. I passed (x, y, z) and silently teleported the body to z = the ground height. Cost a full browser run.",
+    "Pass D compared getUIState().book.page against a spread index. Corrected in pass I."
+  ],
+  "not_done": [
+    "tools/analysis/ui-forbidden.mjs — still never run by anyone, and not run by me either. Said plainly in the verdict rather than implied as covered.",
+    "tools/analysis/marker-diff.mjs K3/K4 — still has never completed a run on any build. Recorded as an UNGATED hard fail (RI-UIX02/K3) in status_reasons.",
+    "AR-1 was NOT independently re-measured; it is recorded on the builder's ui-pause artifact and flagged in method_deviations. A later critic should re-run tools/harness/ui-pause.mjs.",
+    "RI-UIX01 not scored — I did not run ui-census or ui-forbidden and will not score an item I did not measure.",
+    "Both blind pairs (RI-UIX04 JU12, RI-UIX03 step 8) recorded not_possible under RULES 25 — I am the only critic on this piece and a pack I built and then judged would be void.",
+    "RI-UIX06 §G art bootstrap (six fresh judges, world blacked) — never run by anyone; shoot.mjs --blank-world does not exist.",
+    "The ui-metrics re-run completed 3 of its 4 capture configurations before write-up (the 4th is a 3840x2160 buffer at loadavg 31). Recorded as PARTIAL; the coverage finding reproduces in all three that finished."
+  ],
+  "biggest_gap": "GAP-W1-ui-map-outside-the-ar2-detectors (blocking, ui.hud.minimalism)",
+  "notes_for_successor": "The verdict validates: `node tools/verdict-validate.mjs corpus/90-verdicts/wave1/W1-21-r1.json` exits 0 with one informational warning (RI-UIX02/K3 ungated, which IS named in status_reasons).\nTo reproduce the headline in one command: `node tools/harness/critic-w1-21-r1b.mjs` — F1/F2/F3 are the forged-save marker, G1/G2 are the arity register, H0/H2/H3 are the stale paused screen with its control. It exits 1 today and should exit 0 when the gap is closed.\nTwo arbitration questions are filed in the verdict and someone should answer them: (a) does a forged SAVE count as an AR-2 route or only a quest/hook route — the score does not move either way, but the label does; (b) are marker-scan's 42 NPC-post hits true positives or do they need a declared exception. A permanently red gate teaches agents to ignore it.\nNOTHING IS COMMITTED (RULES 28)."
 }

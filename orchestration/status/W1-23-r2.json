@@ -1,0 +1,11 @@
+{
+  "task_id": "W1-23-r2",
+  "status": "in_progress",
+  "started_at": "2026-08-07T00:00:00Z",
+  "next_step": "read corpus/90-verdicts/wave1/W1-23-r1.md in full, then locate lore registry files and converse.js",
+  "files_touched": [],
+  "files_claimed": [
+    "orchestration/status/W1-23-r2.json"
+  ],
+  "notes": "Round 2 of W1-23 (lore registry / province canon). r1 verdict was FAIL 5/10. Constraint: no browser (48 headless_shell procs, loadavg 33 > cap). Must import and run game/src/character/converse.js the way the Act V critic did, per instructions."
+}
