@@ -36,7 +36,8 @@
     "dispute_kind": "fact | judgment — only `fact` disputes belong in this registry; see `not_disputes`",
     "topics": "dialogue topic ids this dispute is argued on, resolved against the build at boot",
     "holders": "{actors[], factions[], races[], settlements[]} — the machine half of `held_by`. game/src/world/canon.js#stanceOf reads it; races and settlements NARROW an actor/faction match and are never a stance on their own.",
-    "voiced_by": "book:<id> | dialogue:<topic>#<actor> | npc:<id> — shipped sources that actually say this. Resolved against the build at boot; a dangle throws."
+    "voiced_by": "book:<id> | dialogue:<topic>#<actor> | npc:<id> — shipped sources that actually say this. Resolved against the build at boot; a dangle throws.",
+    "when": "{era, year, ends, note} — where a fact sits in the province's history. `year: null` with a note is a first-class answer: several of the oldest facts are undated IN WORLD and saying so is the fact."
   },
   "facts": [
     {
@@ -421,7 +422,12 @@
       "judges": [
         "lore.history",
         "world.ruins"
-      ]
+      ],
+      "when": {
+        "era": "pre-1E",
+        "year": null,
+        "note": "The Duskfall. Undated in every in-world source and deliberately so: no book in this build gives it a year, and the three that try give three different spans."
+      }
     },
     {
       "id": "CF-041",
@@ -443,7 +449,12 @@
         "lore.history",
         "world.ruins",
         "visual.architecture"
-      ]
+      ],
+      "when": {
+        "era": "pre-1E",
+        "year": null,
+        "note": "The xanmeers were raised before the Duskfall, over an interval the chronology does not attempt."
+      }
     },
     {
       "id": "CF-042",
@@ -464,7 +475,12 @@
         "world.ruins",
         "quests.main"
       ],
-      "notes": "Direct anchor for CF-C010, the soul-reservoir below the Stone Wastes."
+      "notes": "Direct anchor for CF-C010, the soul-reservoir below the Stone Wastes.",
+      "when": {
+        "era": "pre-1E",
+        "year": null,
+        "note": "Same horizon as CF-041. Argued in-world as CF-D007."
+      }
     },
     {
       "id": "CF-043",
@@ -502,7 +518,12 @@
       "judges": [
         "lore.history"
       ],
-      "notes": "DO NOT build load-bearing plot on this until verified. Low confidence; may be misremembered."
+      "notes": "DO NOT build load-bearing plot on this until verified. Low confidence; may be misremembered.",
+      "when": {
+        "era": "pre-1E",
+        "year": null,
+        "note": "The Ruddy Man belongs to the same undated horizon and is the only figure in it with a name."
+      }
     },
     {
       "id": "CF-045",
@@ -521,7 +542,13 @@
       "judges": [
         "lore.history",
         "world.settlements"
-      ]
+      ],
+      "when": {
+        "era": "2E",
+        "year": 560,
+        "ends": 601,
+        "note": "The Knahaten Flu. The one deep-time event in this registry with a real date, and the only pre-Third-Era year that appears anywhere in the shipped tree."
+      }
     },
     {
       "id": "CF-046",
@@ -539,7 +566,12 @@
       "player_discoverable": "early",
       "judges": [
         "lore.history"
-      ]
+      ],
+      "when": {
+        "era": "2E",
+        "year": 601,
+        "note": "Consequence of CF-045."
+      }
     },
     {
       "id": "CF-047",
@@ -578,7 +610,12 @@
         "lore.history",
         "npc.unique"
       ],
-      "notes": "OPEN HOOK: one living Kothringi in 3E 427 is canon-legal and exactly the kind of impossible person Morrowind would have placed."
+      "notes": "OPEN HOOK: one living Kothringi in 3E 427 is canon-legal and exactly the kind of impossible person Morrowind would have placed.",
+      "when": {
+        "era": "2E",
+        "year": 601,
+        "note": "Consequence of CF-045."
+      }
     },
     {
       "id": "CF-050",
@@ -620,7 +657,12 @@
         "lore.politics",
         "world.settlements",
         "quests.factions"
-      ]
+      ],
+      "when": {
+        "era": "3E",
+        "year": null,
+        "note": "The present arrangement. The harbour agreements that produced it span roughly a century and no source gives a year for any of them."
+      }
     },
     {
       "id": "CF-062",
@@ -645,7 +687,12 @@
         "quests.factions",
         "dialogue.claims"
       ],
-      "notes": "The era's central grievance. Must be depicted as CURRENT, never as history."
+      "notes": "The era's central grievance. Must be depicted as CURRENT, never as history.",
+      "when": {
+        "era": "spans",
+        "year": null,
+        "note": "House Dres has raided for centuries; no in-world source in this build dates the first raid."
+      }
     },
     {
       "id": "CF-064",
@@ -1357,7 +1404,12 @@
         "lore.factions",
         "lore.religion",
         "quests.main"
-      ]
+      ],
+      "when": {
+        "era": "3E",
+        "year": 27,
+        "note": "The Drowned Court, four centuries old at 3E 427."
+      }
     },
     {
       "id": "CF-C007",
@@ -1490,7 +1542,12 @@
         "lore.era",
         "dialogue.voice"
       ],
-      "notes": "An NPC who gives you an Imperial date is telling you something about themselves."
+      "notes": "An NPC who gives you an Imperial date is telling you something about themselves.",
+      "when": {
+        "era": "3E",
+        "year": 427,
+        "note": "The present. Interior reckoning: the Ninth Sap-Fall since the Rootless Egg."
+      }
     },
     {
       "tier": "constructed",
@@ -1973,7 +2030,12 @@
       ],
       "authorially_true": "partial:The gates were opened deliberately and there was no engagement. Vell is right that no enemy fought and wrong that it was an accident. The prefect has found men who died with wounds and has not considered that a column drowning in armour in a weir race wounds itself. The song is a song.",
       "player_discoverable": "mid",
-      "notes": "Five shipped books argue this, across four positions, and every one of the edges between them carried no `cf` or a `cf` naming a fact rather than a dispute. It is the province's founding grievance and it was the largest unregistered contradiction in the build."
+      "notes": "Five shipped books argue this, across four positions, and every one of the edges between them carried no `cf` or a `cf` naming a fact rather than a dispute. It is the province's founding grievance and it was the largest unregistered contradiction in the build.",
+      "when": {
+        "era": "3E",
+        "year": 391,
+        "note": "Reman's Ford. Dated in the shipped books and the only dated event any registered dispute turns on."
+      }
     },
     {
       "tier": "constructed",

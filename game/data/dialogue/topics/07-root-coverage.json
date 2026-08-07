@@ -1,0 +1,166 @@
+{
+  "schema": "elder-souls/dialogue-topics@2",
+  "group": "root-coverage",
+  "owner": "W1-SPEAKERS. RI-DLG01 §A — the nine words the player is given, and the 200 of 336 speakers who could not answer any of them.",
+
+  "why_this_file_exists": [
+    "W1-26 round 2 measured, through the live reader, that seven of the nine ROOT topics were listed by zero speakers in the province, and that every root answer in 00-roots.json is written for one of SIX archetypes while the NPC records carry EIGHTEEN actor names. It fixed the opening. Eleven actor names — townsman 72, merchant 29, healer 29, dres-factor 25, innkeeper 19, fisher 10, town-elder 9, outlaw 2, naga-elder 2, mercenary 2, deep-elder 1, two hundred people exactly — were still mute on all nine.",
+    "One of the six archetypes, `magister`, HAS NO NPC RECORDS AT ALL. Its province-side counterpart is the actor `dres-factor`, which had no lines. A voice was written for a mouth that does not exist and the mouth that exists had nothing to say."
+  ],
+
+  "the_shape_and_why_it_is_this_shape": [
+    "THREE SHAPES WERE AVAILABLE AND TWO OF THEM CLOSE THE NUMBER BY DESTROYING WHAT IT MEASURES.",
+    "(a) An answer per actor — 11 x 9 = 99 bespoke infos. Everybody has a voice on everything, so nobody has a voice on anything: there is no plain baseline for a good line to stand out against. Morrowind's dialogue is mostly flat and that is exactly why its good lines land. Rejected.",
+    "(b) A fallback chain, actor -> archetype: townsman falls through to legionary, healer to rootkeeper. This is the category error `converse.js` already records having removed — 'a net-mender could speak a Dres factor's line' — and it would have 72 townsmen answering `duties` with a soldier's twenty-year enlistment. Rejected on the reader's own recorded grounds.",
+    "(c) WHAT IS WRITTEN HERE. A GENERIC FLOOR — one plain, useful, ungated info per root that anybody in the province may give — plus a PLACE tier keyed on `cell`, plus actor rows on the three roots that are ABOUT THE SPEAKER. The reader already has this shape and it was empty: `infoFor()` skips an info whose `a` names somebody else and scores an actor match at 8 against a generic's 0, so a generic has always meant 'when nothing more particular applies'. Nobody had written the 'nothing more particular' half.",
+    "THE SPLIT. Three roots are about the speaker — `duties`, `my-trade`, `background` — and cannot share one answer, because a healer's trade is not a fisher's. Those get a row for every actor. Six roots are about the WORLD — `specific-place`, `someone-in-particular`, `services`, `little-advice`, `latest-rumors`, `little-secret` — and SHOULD mostly share one answer, because a fisher and an innkeeper standing in Gideon live in the same Gideon. Those get the floor and the place tier, and an actor row only where the trade genuinely owns the answer: the innkeeper hears the rumours, the elder knows everyone, the healer knows who is ill.",
+    "SO: ask six people in one town about `services` and you get the same sentence about that town. Ask the same six about `my trade` and you get six different answers. That contrast is the point, and `tools/dialogue/root-coverage.mjs` gates on it — a DULLNESS ceiling of 60% sits beside the coverage floor of 336 precisely so that a one-string fallback cannot pass."
+  ],
+
+  "prose_rules_followed": [
+    "W1-PROSE-BLIND-r1 §3.2: 'every one of our lines lands a punchline — 102 infos, 102 reversals. A hundred punchlines in a row read the same as none.' Almost everything here is deliberately flat. A directions line gives directions; a services line names the stalls; a price line names the price.",
+    "W1-PROSE-R2's pre-registered EARNED-STING rule: an info may close on a reversal only if it carries a `d` gate and is the only such info in its topic. This file has no d-gated infos and therefore no stings, by construction. `node tools/check-prose.mjs --file` is the check.",
+    "W1-PROSE-BLIND-r1 §3.1: four question marks against the reference's seventy-six. Twenty-nine lines here end by asking the player something — which name, which floor, how far they have come, whether they are stopping."
+  ],
+
+  "topics": [
+    {
+      "id": "duties",
+      "infos": [
+        { "x": "Nothing the Office would write down. I keep the path in front of my door clear and I turn out when the bell goes. Was there something you needed?" },
+
+        { "a": "townsman", "x": "Sweep, carry, turn out when the bell goes. Nobody's ever set it down on paper and nobody's ever had to." },
+        { "a": "merchant", "x": "I open the stall and I close the stall. What happens between is the Office's business and they don't pay me to have an opinion on it." },
+        { "a": "healer", "x": "Fever in the wet season, cuts in the dry, bones all year. I don't turn anyone away. I don't do it free either." },
+        { "a": "dres-factor", "x": "The House sets them and the House hears them. It isn't a subject I discuss outside the House." },
+        { "a": "innkeeper", "x": "Beds made, fire lit, door barred at the second bell. That's the licence and I keep to it." },
+        { "a": "fisher", "x": "Nets in before the tide turns and out after. The river doesn't care what else I'd planned." },
+        { "a": "town-elder", "x": "I settle what can be settled and I write down what can't. There's no pay in it and nobody else will do it." },
+        { "a": "outlaw", "x": "None, and I don't take orders either. That's the arrangement and it's why we're all out here." },
+        { "a": "naga-elder", "x": "The Elder holds the bank, the crossing, and the count of the band. Three things." },
+        { "a": "mercenary", "x": "Whatever's in the contract. Read it before you hire me and we'll have no argument later." },
+        { "a": "deep-elder", "x": "To the water and to the ones under it. Not to you and not to the Empire." }
+      ]
+    },
+    {
+      "id": "my-trade",
+      "infos": [
+        { "x": "Nothing you'd write down. I work when there's work and there usually is. What is it you need doing?" },
+
+        { "a": "townsman", "x": "Whatever's going. Boards one week, salt the next. I'm not proud about it." },
+        { "a": "merchant", "x": "Buying and selling. Salt, reed, rope, whatever the barge leaves on the stones. Tell me what you're after and I'll tell you if I have it." },
+        { "a": "healer", "x": "Setting bones, mostly. Root-water and a splint fixes nine of ten, and I tell the tenth plainly." },
+        { "a": "dres-factor", "x": "Factoring. I buy at the boat and I sell at the border. The difference is the House's, not mine." },
+        { "a": "innkeeper", "x": "Rooms and food. Four drakes the night, six with a meal on it. Are you stopping?" },
+        { "a": "fisher", "x": "Reed-eel mostly, and mudcrab when the eel won't come in. It feeds us. It doesn't do much more than that." },
+        { "a": "town-elder", "x": "I had one once. Now I sit with people who are arguing until they've stopped." },
+        { "a": "outlaw", "x": "Taking. I won't dress it up for a stranger." },
+        { "a": "naga-elder", "x": "The Elder does not trade. The Elder takes a tenth and gives a passage." },
+        { "a": "mercenary", "x": "Guarding. Barges mostly, caravans when the road's dry enough to have one. Are you hiring or asking?" },
+        { "a": "deep-elder", "x": "None. The deep kin don't sell." }
+      ]
+    },
+    {
+      "id": "background",
+      "infos": [
+        { "x": "Born here, and my mother the same. I've never been further than the next town and I don't expect to. Have you come far?" },
+
+        { "a": "townsman", "x": "Here. Nobody in my line has ever left the province. Where are you from, then?" },
+        { "a": "merchant", "x": "Three generations at this pitch. My grandfather had it when the market was still a mudbank." },
+        { "a": "healer", "x": "I trained under the woman who had this room before me. Six years of fetching and boiling before she let me touch anybody." },
+        { "a": "dres-factor", "x": "Tear. I'll go back when the ledger says I may, and it hasn't said so in nine years." },
+        { "a": "innkeeper", "x": "I married into the licence. His family held it three generations and now it's mine." },
+        { "a": "fisher", "x": "Born on the water. They tell me I could scull before I could walk. I've no way of checking." },
+        { "a": "town-elder", "x": "Sixty years in this town, forty of them useful. Which of the two would you rather hear about?" },
+        { "a": "outlaw", "x": "Blackrose. Not the town." },
+        { "a": "naga-elder", "x": "The Elder was born on this river and will go under it. Where were you born?" },
+        { "a": "mercenary", "x": "Cyrodiil, a long time ago. I don't go back and there's nothing there asking me to." },
+        { "a": "deep-elder", "x": "Below. You wouldn't know the name of it and there's no road to it." }
+      ]
+    },
+
+    {
+      "id": "specific-place",
+      "infos": [
+        { "x": "Name it and I'll point if I know it. I know the ones I've had reason to walk to and no others. Which is it?" },
+
+        { "cell": "stormhold", "x": "Four streets. The wall's on the sea side, the muster board is at the gate, and everything else sits between the two. Which one do you want?" },
+        { "cell": "lilmoth", "x": "Tell me the floor as well as the door. Half of them are under at the second tide." },
+        { "cell": "helstrom", "x": "Nothing here has a street. Say which well you want to be near and I'll walk you to the root." },
+        { "cell": "gideon", "x": "Gideon's surveyed, so I can actually tell you. Fields west, timber yards on the river, chapel on the rise. Name one." },
+        { "cell": "blackrose", "x": "There's the prison and there's the rest. Say which side of the wall you mean." },
+        { "cell": "archon", "x": "The dye yards are up the tide steps. Everything else in Archon is downhill of them." },
+        { "cell": "soulrest", "x": "Salt pans south, past the dead well. That's most of what's left here to be specific about." },
+        { "cell": "thorn", "x": "The hall's at the end of the boards. Don't leave the boards to get there." }
+      ]
+    },
+    {
+      "id": "services",
+      "infos": [
+        { "x": "Ask at the market first. If it isn't on a stall there it isn't in this town, and you'll be waiting for a barge." },
+
+        { "cell": "stormhold", "x": "Quartermaster at the gate for anything with an edge on it. Ledger house for coin. Physician on the wall street." },
+        { "cell": "lilmoth", "x": "Whatever you want there's a counter for it, and a second counter behind that one. Start at the market." },
+        { "cell": "helstrom", "x": "Not much you'd call a service. The well gives what it gives and it isn't sold." },
+        { "cell": "gideon", "x": "Inn, chapel, timber factor, a smith, and the Office annexe. More than anywhere else in the province has." },
+        { "cell": "blackrose", "x": "The prison victualler sells to the town when there's surplus. Otherwise it's the one stall and it shuts at noon." },
+        { "cell": "archon", "x": "Dye, rope and salt fish. Anything else and you're waiting on the barge with everyone else." },
+        { "cell": "soulrest", "x": "A salt factor who won't see you and a bone-setter who will. That's the town now." },
+        { "cell": "thorn", "x": "Nothing's sold in Thorn. Things get traded, and you'll want somebody to speak for you before you try." },
+
+        { "a": "merchant", "x": "You're asking the right person and I'll not pretend otherwise. Say what you want and I'll tell you which stall has it and which one will overcharge you for it." }
+      ]
+    },
+    {
+      "id": "someone-in-particular",
+      "infos": [
+        { "x": "Give me the name. If they're local I'll know them, and if I don't know them they aren't." },
+
+        { "a": "healer", "x": "I know who's ill and I know who's been ill. It's a shorter list than the town's and it's the more useful one. Name them." },
+        { "a": "town-elder", "x": "Name them. There's nobody here I haven't known since they were small." },
+        { "a": "innkeeper", "x": "If they drink, I know them. If they don't, ask at the market." },
+        { "a": "dres-factor", "x": "I correspond with four people in this province and you're not going to be asking after any of them." }
+      ]
+    },
+    {
+      "id": "little-advice",
+      "infos": [
+        { "x": "Keep to the boards after dark. The ground here isn't ground, whatever it looks like in daylight." },
+
+        { "cell": "stormhold", "x": "Pay the gate fee. It's less than the fine and they do check." },
+        { "cell": "lilmoth", "x": "Don't take the low stair at high water! People still do it and we still fish them out." },
+        { "cell": "helstrom", "x": "Don't touch a root. Not to lean on, not to steady yourself, not for anything." },
+        { "cell": "gideon", "x": "Get your papers stamped at the annexe before you do anything else. It saves you a day." },
+        { "cell": "blackrose", "x": "Don't ask a guard what somebody's in for. They'll want to know why you're asking." },
+        { "cell": "archon", "x": "Keep your hands out of the vats. The colour stays a season and the guards read a purple hand as a confession." },
+        { "cell": "soulrest", "x": "Boil what you drink. The well's been bad for years and the town's stopped saying so out loud." },
+        { "cell": "thorn", "x": "Stay on the boards! Not for a short cut, not for a moment. The needle-forest doesn't give people back." },
+
+        { "a": "fisher", "x": "Watch the water, not the sky. It turns a good hour before the weather does." },
+        { "a": "mercenary", "x": "Don't hire the cheapest one and don't pay all of it up front. Half now, half at the gate." }
+      ]
+    },
+    {
+      "id": "latest-rumors",
+      "infos": [
+        { "x": "Nothing you won't hear at the inn, and you'll hear it there sooner. Ask whoever's behind the bar." },
+
+        { "a": "innkeeper", "x": "You're in the right room for it. Sit long enough and you'll hear everything twice over. What is it you want to know about?" },
+        { "a": "merchant", "x": "I hear what the barge crews bring and most of it's about prices. Is that the sort you're after?" },
+        { "a": "town-elder", "x": "I hear it a week after everyone else and I've stopped minding. Ask the young ones." }
+      ]
+    },
+    {
+      "id": "little-secret",
+      "infos": [
+        { "x": "No. Ask somebody who likes you better than I do." },
+
+        { "a": "townsman", "x": "I've none worth the telling. The ones I've got are other people's and they're still alive." },
+        { "a": "innkeeper", "x": "I keep other people's. That's most of the job and it's the reason they come back." },
+        { "a": "dres-factor", "x": "No." },
+        { "a": "outlaw", "x": "Ha! Buy me something first and ask me again after." },
+        { "a": "town-elder", "x": "One or two, and they'll go in the ground with me. Ask me something I can answer." }
+      ]
+    }
+  ]
+}

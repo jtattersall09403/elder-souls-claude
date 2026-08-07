@@ -239,11 +239,13 @@ function runFixture(fx, audioData, opts) {
     a.step();
     if (fx.guard && e && !e.dead) {
       e.guardRaised = true;                                  // hold the guard up all run
-      // C05 `guard_break` is "the block timbre failing". Holding the shield's stamina near
-      // empty is what a long exchange against a heavy weapon does to it; pinning it here
-      // reaches the same branch of `resolveBlock` in a fixture instead of in ninety seconds.
-      // The break itself is the game's, not the probe's.
-      if (e.stamina > 10) e.stamina = 10;
+      // C05 `guard_break` is "the block timbre failing". A measured block against this
+      // defender costs 0.6 stamina, so a guard held from full breaks after roughly 160 blocked
+      // blows — which is a ninety-second fixture for one event. The stamina is pinned BELOW one
+      // block's cost instead, so the very next blocked blow takes `resolveBlock` down the same
+      // `guard_broken` branch a long exchange reaches. The break is the game's; only the
+      // arrival time is the probe's, and that is stated rather than hidden.
+      if (e.stamina > 0.4) e.stamina = 0.4;
     }
     for (const ev of a.drain()) trace.push({ ...ev, fixture: fx.name });
   }

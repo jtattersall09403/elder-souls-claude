@@ -228,6 +228,36 @@ non-zero; never stub it to pass. A critic that writes a tool mid-run must declar
 Run `node tools/corpus-index.mjs` and read the C8 warnings to see what is missing. C8 is a warning
 in wave 1 and a hard error from wave 2.
 
+## Your numbers expire, and the tree moves under you
+
+Fifteen agents edit this repository at once. A measurement is a claim about a **commit**, not about
+the project, and a neighbour landing an hour later can make it false without anyone touching your
+files.
+
+This has now happened for real. A faction round reported **16 of 16**, with its proudest claim being
+*"the walk wrote no reputation at all — 398 was paid entirely by the quests' own consequences."* A
+critic re-ran the same probe with the same command line eighty minutes later and got **8 of 16**,
+with the walk writing reputation at every rank. Nothing in the faction files had changed. A
+different agent had given the quest offer gate a giver-presence term, and neither faction probe
+stands the player in a populated world — so `open()` refused, so the probe's own fallback fired, so
+the reputation the walk was supposed not to write got written. **The headline was never independent
+of a gate that did not exist when it was measured.**
+
+So, binding on builders and critics alike:
+
+1. **Stamp the commit on every number you report** — `git rev-parse --short HEAD` at the moment you
+   take it, not at the moment you write it up. `git.dirty` is worth recording too; it usually is.
+2. **Re-run your headline measurement immediately before you finish.** If it moved, that is your
+   most interesting finding, not an inconvenience.
+3. **Read the status files of agents working nearby before you start**, and list in your own which
+   files you are touching. Their `next_step` tells you what is about to land on you.
+4. **A critic re-running a builder's probe unchanged is doing the single highest-value thing
+   available**, and should do it before writing anything else.
+5. **When your instrument disagrees with the world, suspect the instrument first.** The same critic's
+   first run said *"0 of 17 givers, 53 quests given by nobody"* and it was one paragraph from filing
+   *"the content is unreachable"* — when another critic's tool, written for another piece, showed 62
+   of 62 present. The content was placed; the probe was not standing in the world.
+
 ## Two failure modes that have each cost a full round
 
 1. **The verdict may name a dead call site.** The W1-15 round-1 verdict named `sim/entities.js`

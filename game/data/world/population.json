@@ -1,0 +1,154 @@
+{
+  "schema": "elder-souls/population@1",
+  "id": "population",
+  "owner": "W1-POPULATION — the hostile population of the province",
+  "source": "RI-AI07 §D (density budget), RI-AI05 §C/§D (composition, the introduction rule, the legal pairings), RI-WLD02 D9/D10 (hostile groups per minute), RI-PRG06 §7 (the ≈1,230 census), ARBITRATION S5 (respawn), S9 (no level scaling), S17 (2.0 m·s⁻¹).",
+  "provenance": "constructed",
+
+  "_why_this_file_exists": "Before it, the entire hostile population of Black Marsh was two rows in encounters.json with no coordinates — nine bodies, one statblock, worth 1,224 souls between them, which is level 3 against a plan of level 82. Placement lived in hand-written state files: `applyNamedState` spawned `patch.encounters` and nothing else, so the world was exactly as populated as somebody had remembered to type. This file is the MODEL — density, falloff and composition — and it is read at runtime by `game/src/world/population.js`, not merely by the generator. Perturb a number here and bodies appear, disappear or change archetype on the next walk; `tools/world/population-consumption.mjs` does exactly that.",
+
+  "budget": {
+    "traversal_minute_m": 120,
+    "walk_speed_mps": 2.0,
+    "_speed_note": "ARBITRATION S17 / RI-WLD01. A traversal minute is 120 m, which is why RI-AI07 §D's per-TM figures and RI-WLD02 D9's per-minute figures are the same density in two units.",
+    "encounters_per_tm": 0.88,
+    "encounters_per_tm_band": [0.59, 1.29],
+    "enemies_per_tm": 1.65,
+    "enemies_per_tm_band": [1.05, 2.45],
+    "enemies_per_encounter_target": 1.9,
+    "enemies_per_encounter_band": [1.4, 2.6],
+    "solo_grouped_ratio": [55, 45],
+    "_grouped_size_derivation": "0.55×1 + 0.45×G = 1.9 ⇒ G = 3.0. Grouped encounters must average three bodies. Every tier's composition table below is weighted to hit that, and build-population.mjs reports the realised mean per tier so the claim is checkable rather than asserted.",
+    "d9_groups_per_minute_band": [0.7, 1.2],
+    "d9_fail_below": 0.4,
+    "d9_fail_above": 2.0
+  },
+
+  "tier_multiplier": {
+    "1": 0.85,
+    "2": 1.0,
+    "3": 1.05,
+    "4": 1.1,
+    "5": 1.0,
+    "_note": "RI-AI07 §D region modifiers, applied to enemies-per-TM. Tier 5 returning to baseline is deliberate and is RI-AI05's whole thesis: late difficulty comes from which questions are asked at once, not from more bodies. `danger_tier` is already declared per region in game/data/world/regions.json and this is the first thing in the build that consumes it for anything."
+  },
+
+  "safety": {
+    "_model": "Density is zero on top of a place of safety and ramps to full over `ramp_m`. This is the second axis the brief asks for — distance from safety, not only region tier — and it is what makes a road out of a town legible: you get a hundred metres to look at the country before the country looks back.",
+    "settlement_clear_m": 70,
+    "minor_settlement_clear_m": 45,
+    "hearth_clear_m": 45,
+    "ramp_m": 150,
+    "_ramp_note": "Linear from 0 at `clear_m` to 1.0 at `clear_m + ramp_m`. At a settlement that puts the first encounter roughly 90–170 m out — inside RI-AI07 §D's ≤1.70 TM (204 m) longest-zero-enemy stretch, which a bigger clear radius would breach.",
+    "deep_bonus_at_m": 700,
+    "deep_bonus": 1.15,
+    "_deep_note": "Beyond `deep_bonus_at_m` from any safety the multiplier rises to `deep_bonus` — a mild 15%, because RI-WLD02 D9's ceiling is 1.2 groups/min and the tier multiplier already spends most of the headroom. Going off the road is supposed to feel less safe; it is not supposed to be a different game.",
+    "fog_gate_corridor_m": 130,
+    "_fog_gate_note": "RI-PRG04 §5 / RI-AI06: the hearth serving a fog gate must be 60–110 s from it with NO respawning enemy in between. 110 s at 2.0 m·s⁻¹ is 220 m; the two shipped corridors are 84 s and shorter. No post is generated inside a capsule of this radius around the segment from a fog-gate hearth to its gate."
+  },
+
+  "road_corridor": {
+    "_model": "Encounters are placed ALONG the trunk road, offset to one side, because RI-AI07 §B's sightline rule is about the player's approach and the road is the approach. Offsets alternate sides deterministically.",
+    "offset_min_m": 5.0,
+    "offset_max_m": 14.0,
+    "min_separation_m": 26.0,
+    "_separation_note": "RI-AI07 §B SL8 wants ≥18 m between encounter VOLUMES. A volume here is at most ~5 m of members plus the rule's 6 m skirt, so 26 m between post centres clears 18 m between volumes with margin.",
+    "settlement_leg_end_taper_m": 40
+  },
+
+  "poi_garrison": {
+    "_model": "A ruin is not a road. RI-WLD02 D10 puts a Souls-loop dungeon at 2.0–3.5 hostile groups per minute — roughly triple the road — and the ten `landmark` POIs are the exterior end of that. Each landmark that is not a fog gate gets a garrison ring: posts on a circle around it, at the region's own tier.",
+    "kinds": ["landmark"],
+    "ring_radius_m": 46,
+    "ring_posts_by_tier": { "1": 2, "2": 3, "3": 3, "4": 4, "5": 4 },
+    "skip_fog_gate_landmarks": true,
+    "_skip_note": "the-drowned-xanmeer and ceyatatar-zel-ayleid-vault ARE the two fog gates. Their bosses are content behind a gate; a garrison outside them would sit inside the fog-gate corridor above and would be farmed from the hearth."
+  },
+
+  "composition": {
+    "_model": "The lever RI-AI05 §D ranks first and second — a new archetype, then a new COMBINATION of existing archetypes — and never levers 5–8 (more damage, more HP, faster attacks, level scaling). Every weight below selects a TEMPLATE from game/data/world/encounters.json; no template changes a stat. Weights are per danger_tier and sum to 1.0.",
+    "1": {
+      "wl-fen-sentry": 0.22,
+      "wl-drowned-straggler": 0.24,
+      "wl-slitherfang-lone": 0.12,
+      "wl-drowned-pair": 0.2,
+      "wl-slitherfang-pack": 0.14,
+      "wl-sentry-and-pack": 0.08
+    },
+    "2": {
+      "wl-fen-sentry": 0.25,
+      "wl-drowned-straggler": 0.18,
+      "wl-slitherfang-lone": 0.12,
+      "wl-drowned-pair": 0.15,
+      "wl-slitherfang-pack": 0.16,
+      "wl-sentry-and-pack": 0.09,
+      "dres-raid-party": 0.05
+    },
+    "3": {
+      "wl-fen-sentry": 0.18,
+      "wl-legion-picket": 0.22,
+      "wl-slitherfang-lone": 0.12,
+      "wl-legion-patrol": 0.14,
+      "wl-slitherfang-pack": 0.12,
+      "wl-legion-and-levy": 0.12,
+      "wl-slitherfang-swarm": 0.06,
+      "deep-kin-war-brood": 0.04
+    },
+    "4": {
+      "wl-legion-picket": 0.2,
+      "wl-deep-drowned-anchor": 0.18,
+      "wl-fen-sentry": 0.12,
+      "wl-legion-patrol": 0.12,
+      "wl-legion-and-levy": 0.12,
+      "wl-deep-drowned-and-pack": 0.1,
+      "wl-legion-line": 0.08,
+      "wl-slitherfang-swarm": 0.08
+    },
+    "5": {
+      "wl-deep-drowned-anchor": 0.28,
+      "wl-legion-picket": 0.1,
+      "wl-fen-sentry": 0.1,
+      "wl-deep-drowned-and-pack": 0.16,
+      "wl-drowned-host": 0.14,
+      "wl-legion-line": 0.1,
+      "deep-kin-war-brood": 0.08,
+      "wl-slitherfang-swarm": 0.04
+    }
+  },
+
+  "introduction_rule": {
+    "enabled": true,
+    "_rule": "RI-AI05 §D, and it is a hard fail there rather than a preference: the first instance of any archetype in the game must be presented SOLO, in a lit, open, non-ambush position, with retreat available. The generator walks the province in canonical order — the crossing first, then the remaining legs, then the garrisons — and the first post that would introduce a statblock the player has not met is replaced by that statblock's solo template. The order it produces is written into population-posts.json as `introduction_order` so a critic can read it without re-running the build.",
+    "solo_template_for": {
+      "inf_trash": "wl-fen-sentry",
+      "drowned_lesser": "wl-drowned-straggler",
+      "beast_slitherfang": "wl-slitherfang-lone",
+      "guard_legion": "wl-legion-picket",
+      "drowned_greater": "wl-deep-drowned-anchor"
+    }
+  },
+
+  "stream": {
+    "_model": "THE WORLD-SIDE CONSUMER. `game/src/world/population.js` holds every post in a coarse grid and is pumped from `Engine._streamPopulation()`, which runs from `Engine._afterStep()` beside `_streamProvince()` — the one slot every way the world advances passes through (stepFrames, the rAF accumulator, walkRoute, walkPath, travelRide). A post within `spawn_radius_m` of the player becomes bodies; beyond `release_radius_m` its living bodies are removed again. Nothing here slows the player down (S17) and nothing reads player level (S9).",
+    "spawn_radius_m": 170,
+    "release_radius_m": 260,
+    "_hysteresis_note": "90 m of hysteresis between the two, for the reason the province streamer needed one tile of it: a body standing on the boundary otherwise spawns and releases on alternate frames. 170 m also sits comfortably outside the widest aggro radius in the roster (20 m) and outside RI-AI07 §B SL2's 12 m sightline floor, so nothing is ever born inside its own aggro range.",
+    "max_resident_posts": 14,
+    "refocus_m": 8.0,
+    "_refocus_note": "The candidate set is only recomputed after the player has moved this far. At 2.0 m·s⁻¹ that is once per 4 s of walking.",
+    "spawn_per_step": 1,
+    "_budget_note": "One post materialises per fixed step at most. A four-body post costs four `engine.spawn()` calls, each of which builds a combat body and evaluates a rig, so they are spread exactly as the province streamer spreads tile builds."
+  },
+
+  "respawn": {
+    "_binding": "ARBITRATION S5, and game/data/world/respawn.json is the authority — this file adds nothing to it and takes nothing away. A post that has been cleared stays cleared until an ordinary respawn happens; on a hearth rest or a player death, DeathSystem.respawnOrdinary() revives every resident ordinary body AND bumps `ordinaryRespawnEpoch`, which is what tells the population system that cleared posts far from the player may stand up again.",
+    "clears_on": ["hearth_rest", "player_death"],
+    "never_respawns": "Nothing in this file can respawn a named NPC, a merchant, a trainer, a quest actor or a boss. Those live in `sim.npcs` (a different array, which no code path here iterates) or carry a never-respawn flag that `DeathSystem.respawns()` already refuses. The population system spawns ONLY through `Engine.spawnEncounter()` → `Engine.spawn()`, so `_classifyOnSpawn` runs on every body it makes and the existing classification is what decides."
+  },
+
+  "declared_incomplete": {
+    "interiors": "RI-WLD07 §2–3 wants ≈849 hostiles inside 8 Souls-loop dungeons and 82 Morrowind interiors. This file places the EXTERIOR population only — trunk-road corridor and landmark garrisons. Interiors are 115 files in game/data/world/interiors/ and are a separate placement problem with a separate density bar (RI-WLD02 D10, 2.0–3.5 groups/min). Not attempted, not faked, not counted.",
+    "archetypes": "See encounters.json `absent_roles_declared`. Five of RI-AI05's ten roles have no shipped statblock, so the mix is INFANTRY/BEAST only.",
+    "ambushes": "RI-AI07 §C's fair-ambush rule needs an AMBUSHER statblock and an authored environmental cue per position. Neither exists. No post in this build is an ambush, which is legal (AM1 is a ceiling, not a floor) and is why `ambushes per loop` reads 0."
+  }
+}

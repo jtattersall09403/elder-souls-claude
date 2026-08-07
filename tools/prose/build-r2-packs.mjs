@@ -52,6 +52,109 @@ export function pick(rng, arr, n) {
   return a.slice(0, n);
 }
 
+// ---------------------------------------------------------------------------------------------
+// §2 OF THE ROUND-1 VERDICT: THE LEAK, AND THE FIX
+//
+// RI-MTH03 §B says text artifacts have setting names replaced with `[REDACTED]`. The stripping was
+// never applied — there was not one redaction token in any of the 40 files — and the judge measured
+// the consequence after answering:
+//
+//   > Count Tamriel setting proper nouns — Vvardenfell, Ebonheart, Vivec, Balmora, Septim, Tamriel,
+//   > Cyrodiil, Skyrim, Ashlander, Dunmer, Telvanni, Hlaalu, Khajiit, Hircine — plus un-stripped
+//   > wiki template residue. The side with more is the reference.
+//   > **That rule scores 17 of 20, with 3 ties: 17/17 on every decidable trial, without reading a
+//   > word.**
+//
+// THE FIX IS NOT A LIST OF NAMES. An enumerated table is the obvious approach and it is the wrong
+// one, because *I* would be writing it, and I know our setting's vocabulary far better than the
+// reference's. A table I enumerate is guaranteed to mask our names more thoroughly than theirs —
+// which converts a leak that favours the judge into a leak that favours us. That is worse.
+//
+// So the masker is GENERIC AND SYMMETRIC, and it works out what a proper noun is from the passage
+// itself:
+//
+//   1. Find every token that appears capitalised at a position that is NOT sentence-initial. A
+//      capital in the middle of a sentence is a proper noun; a capital after a full stop is not
+//      evidence of anything. This needs no lexicon of English common words and therefore cannot be
+//      biased by whoever writes the lexicon.
+//   2. Mask every occurrence of those tokens — including their sentence-initial ones and their
+//      possessives — as `[NAME-n]`, numbered by order of first appearance WITHIN ONE SIDE, so both
+//      sides come out in identical form.
+//   3. A small backstop list catches the handful of setting words that are lower-case or that
+//      happen to appear only sentence-initially. It is applied to BOTH sides and holds names from
+//      BOTH settings, so it cannot tilt.
+//
+// The builder then RE-RUNS THE JUDGE'S OWN RULE over the finished pack and refuses to write it if
+// either side still carries a recognisable setting noun or wiki residue. A fix that is not checked
+// by the thing that found the bug is a fix nobody can trust twice.
+
+// Applied to both sides. Half of these are ours and half are the reference's, on purpose.
+export const BACKSTOP = [
+  // reference setting
+  'vvardenfell', 'morrowind', 'ebonheart', 'balmora', 'vivec', 'septim', 'tamriel', 'cyrodiil',
+  'skyrim', 'ashlander', 'ashlanders', 'dunmer', 'telvanni', 'hlaalu', 'redoran', 'khajiit',
+  'hircine', 'dwemer', 'daedra', 'daedric', 'argonian', 'argonians', 'altmer', 'bosmer', 'orsimer',
+  'imperials', 'nords', 'bretons', 'sadrith', 'mournhold', 'solstheim', 'nerevar', 'almsivi',
+  // ours
+  'helstrom', 'lilmoth', 'gideon', 'blackrose', 'soulrest', 'stormhold', 'archon', 'thornmarsh',
+  'blackmarsh', 'argonia', 'xul-aneekh', 'ixtu-vakh', 'saxhleel', 'lukiul', 'mudborn', 'deep-kin',
+  'rootkeeper', 'sapcutter', 'naga', 'xanmeer', 'vakh',
+];
+
+// Residue that means the wiki stripper missed something. Any of these in a chosen passage is a
+// hard stop, not a warning: the judge found `MWlink=Morrowind:Dagoth Ur (god)` sitting in a pack.
+export const RESIDUE = /\{\{|\}\}|\[\[|\]\]|(?:MW|OB|SR|ON|TR|LO)link=|<\/?[a-z]+[ >]|\|\s*\w+=/i;
+
+const SENT_SPLIT = /(?<=[.!?])["'”’)\]]*\s+/;
+
+export function properNouns(text) {
+  const found = new Set();
+  for (const sent of text.split(SENT_SPLIT)) {
+    // token stream with offsets; index 0 of a sentence is the sentence-initial slot
+    const toks = sent.match(/[\p{L}][\p{L}\p{M}'’-]*/gu) || [];
+    for (let i = 0; i < toks.length; i++) {
+      const t = toks[i];
+      if (i === 0) continue;                        // sentence-initial capital proves nothing
+      if (!/^\p{Lu}/u.test(t)) continue;
+      if (t.length < 3) continue;
+      if (/^(I|I'm|I'd|I'll|I've)$/.test(t)) continue;
+      found.add(t.replace(/['’]s$/, ''));
+    }
+  }
+  for (const w of text.match(/[\p{L}][\p{L}\p{M}'’-]*/gu) || []) {
+    if (BACKSTOP.includes(w.toLowerCase().replace(/['’]s$/, ''))) found.add(w.replace(/['’]s$/, ''));
+  }
+  return found;
+}
+
+// Mask one side. Numbering restarts per side so the two files are indistinguishable in form.
+export function maskNames(text) {
+  const names = [...properNouns(text)].sort((a, b) => b.length - a.length); // longest first
+  if (!names.length) return { text, map: {} };
+  const map = new Map();
+  let next = 1;
+  const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  let out = text;
+  for (const n of names) {
+    const re = new RegExp(`(?<![\\p{L}])${esc(n)}(?![\\p{L}])`, 'gu');
+    if (!re.test(out)) continue;
+    if (!map.has(n.toLowerCase())) map.set(n.toLowerCase(), `[NAME-${next++}]`);
+    out = out.replace(re, map.get(n.toLowerCase()));
+  }
+  // possessives survive as `[NAME-1]'s`, which is fine and reads naturally
+  return { text: out, map: Object.fromEntries(map) };
+}
+
+// The judge's own rule, re-run over the finished artifact. Returns the surviving setting nouns.
+export function leakAudit(text) {
+  const hits = [];
+  for (const w of text.match(/[\p{L}][\p{L}\p{M}'’-]*/gu) || []) {
+    if (BACKSTOP.includes(w.toLowerCase().replace(/['’]s$/, ''))) hits.push(w);
+  }
+  if (RESIDUE.test(text)) hits.push('<wiki-residue>');
+  return hits;
+}
+
 // Nearest-length partner, so the judge cannot win on word count alone.
 export function matchLength(target, pool, used) {
   let best = null;
@@ -64,12 +167,39 @@ export function matchLength(target, pool, used) {
   return best;
 }
 
+// ---------------------------------------------------------------------------------------------
+// THE QUESTION. Round 1's packs asked "Which of these two is the imitation?" — a PROVENANCE
+// question — and the blind judge scored 20 of 20 and then explained why that number was worthless:
+//
+//   > Under a provenance question, picking ours is always "correct", so §E's `picked-reference` /
+//   > `picked-ours` rows are not both reachable and the protocol's sharpest rule — *if the critic
+//   > picks ours, distrust the critic* — is inoperative.
+//
+// It also could not record what the judge actually found, which was that on four of the five books
+// trials OUR side was the better piece of writing. A pack that cannot record that answers "are we
+// different?" when the thing worth knowing is "are we worse?".
+//
+// So the question is now RI-MTH03 §D's, verbatim for the dialogue row and adapted in register for
+// the other two: a QUALITY question, whose two answers are both reachable, and which makes §E's
+// `picked-ours` row — and with it the mandatory M5 second pass — live for the first time.
+const QUESTION = {
+  books: 'Which of these two is the work of a game writer for a shipped RPG, and which is placeholder? Quote the lines that decided it.',
+  dialogue: 'Which set of lines was written by a game writer for a shipped RPG, and which is placeholder? Quote the lines that decided it.',
+  journal: 'Which set of quest-journal entries was written by a game writer for a shipped RPG, and which is placeholder? Quote the entries that decided it.',
+};
+
 const PROMPT = (kind, n) => `# Blind comparison — W1-PROSE-TICS round 2, trial ${n} (${kind})
 
 You are judging two passages of ${kind === 'books' ? 'in-world book prose' : kind === 'dialogue' ? 'spoken NPC dialogue' : 'quest-journal entries'}.
-One comes from a shipped commercial RPG. One was written for a project imitating that RPG.
-You do **not** know which is which and you must not try to find out from anything but the words:
-file size, encoding, formatting and metadata are not evidence and using them is cheating.
+You do **not** know where either came from and you must not try to find out from anything but the
+words: file size, encoding, formatting and metadata are not evidence and using them is cheating.
+
+**Every proper noun on both sides has been replaced with \`[NAME-n]\`, consistently within a
+passage.** That is deliberate and it is not a defect in the artifact. A previous round of this
+comparison left the setting's place and race names intact, and a rule that did nothing but count
+them — *Vvardenfell, Dunmer, Septim* — scored 17 out of 17 without reading a word. Do not try to
+reconstruct the names, and do not treat the masking itself as evidence: it was applied identically
+to both sides by the same code.
 
 **Artifacts**
 - \`A.txt\`
@@ -80,7 +210,10 @@ file size, encoding, formatting and metadata are not evidence and using them is 
 
 ## The question
 
-Which of these two is the imitation? Answer A or B and quote the lines that decided it.
+${QUESTION[kind]}
+
+Answer **A** or **B**. Judge the writing, not its origin — if the passage you think is placeholder
+is also the better-written one, say so plainly in your evidence; that is a finding, not a mistake.
 
 ## How to answer
 
@@ -187,17 +320,45 @@ function main() {
     }
     if (only && kind !== only) continue;
     const theirs = getRef(ref);
+    // Passages carrying wiki residue are dropped BEFORE selection rather than masked after it.
+    // `stripWiki` handles positional templates and misses named-parameter ones — the round-1 pack
+    // shipped `he first volume|OBlink=OB:Brief History of the Empire, v 1|SRlink=…` as its opening
+    // line. Rather than grow the regex zoo and hope, anything still showing residue is simply not
+    // eligible; the reference corpus has 242 book candidates and can afford to lose a few.
+    const cleanTheirs = theirs.filter((d) => !RESIDUE.test(d.text));
+    const droppedResidue = theirs.length - cleanTheirs.length;
+    if (droppedResidue) console.log(`  ${kind}: dropped ${droppedResidue} reference passage(s) still carrying wiki markup`);
+
     const chosen = pick(rng, mine, 5);
     const used = new Set();
     for (const m of chosen) {
       n++;
-      const partner = matchLength(words(m.text), theirs, used);
+      const partner = matchLength(words(m.text), cleanTheirs, used);
       used.add(partner.id);
       const oursIsA = rng() < 0.5;
       const dir = path.join(out, `t${String(n).padStart(2, '0')}-${kind}`);
       fs.mkdirSync(dir, { recursive: true });
-      fs.writeFileSync(path.join(dir, 'A.txt'), (oursIsA ? m.text : partner.text) + '\n');
-      fs.writeFileSync(path.join(dir, 'B.txt'), (oursIsA ? partner.text : m.text) + '\n');
+
+      // MASK BOTH SIDES, with the same function, before either is written.
+      const mineMasked = maskNames(m.text);
+      const theirsMasked = maskNames(partner.text);
+      const aText = oursIsA ? mineMasked.text : theirsMasked.text;
+      const bText = oursIsA ? theirsMasked.text : mineMasked.text;
+
+      // …and then re-run the judge's own leak rule over what we are about to write. A pack that
+      // fails this is not written at all — the whole point of §2 is that a leak the builder does
+      // not check for is a leak that ships.
+      for (const [label, txt] of [['A', aText], ['B', bText]]) {
+        const leaks = leakAudit(txt);
+        if (leaks.length) {
+          console.error(`build-r2-packs: REFUSING to write trial ${n} — ${label}.txt still carries ${leaks.length} setting noun(s) or markup residue after masking:`);
+          console.error('  ' + [...new Set(leaks)].slice(0, 12).join(', '));
+          console.error('  This is exactly the defect the round-1 verdict scored 0/2 for. Fix the masker, do not lower the audit.');
+          process.exit(3);
+        }
+      }
+      fs.writeFileSync(path.join(dir, 'A.txt'), aText + '\n');
+      fs.writeFileSync(path.join(dir, 'B.txt'), bText + '\n');
       fs.writeFileSync(path.join(dir, 'PROMPT.md'), PROMPT(kind, n));
       fs.writeFileSync(path.join(dir, 'pack.json'), JSON.stringify({
         schema: 'elder-souls/blind-pack@1',

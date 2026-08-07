@@ -495,8 +495,16 @@ try {
     for (let i = 1; i < rows.length; i++) {
       if (Math.sign(rows[i].pan - rows[i - 1].pan) !== dir) { mono = false; break; }
     }
+    // Count the crossing, not the arithmetic. The first version compared `Math.sign()` of
+    // consecutive pans, and the transect happens to sample the buoy at exactly abeam — pan 0.
+    // `sign` goes +1 → 0 → −1, which is two sign changes and one crossing, so a textbook-perfect
+    // sweep (+0.894 through 0 to −0.894, strictly monotonic, gain peaking at closest approach)
+    // was reported as a failure. A strict sign product plus an exact-zero count is the honest
+    // form. This is the second time in this piece that the probe was wrong and the model was
+    // right, which is worth leaving on the record next to the check itself.
     let crossings = 0;
-    for (let i = 1; i < rows.length; i++) if (Math.sign(rows[i].pan) !== Math.sign(rows[i - 1].pan)) crossings++;
+    for (let i = 1; i < rows.length; i++) if (rows[i - 1].pan * rows[i].pan < 0) crossings++;
+    crossings += rows.filter((r) => r.pan === 0).length;
     const gains = rows.map((r) => r.gain);
     const gMaxAt = gains.indexOf(Math.max(...gains));
     const nearestAt = rows.map((r) => r.distance_m).indexOf(Math.min(...rows.map((r) => r.distance_m)));
