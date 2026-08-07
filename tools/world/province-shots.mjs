@@ -40,6 +40,8 @@ const USAGE = `province-shots.mjs — RI-WLD04 M17 unlabelled region frames.
   --resume          keep any capture-NNN.png already on disk that clears its pass's luma floor
   --width/--height  default 1280 x 720
   --direct          boot a private browser instead of using the shared capture daemon
+  --no-pin          let the daemon follow game/ changes mid-pack (default: pin the build, so all
+                    117 frames are drawn by one game rather than by however many land mid-run)
 
 BY DEFAULT THIS ROUTES THROUGH THE SHARED CAPTURE DAEMON (tools/capture/server.mjs), per
 ARBITRATION.md S34. These are PLACED captures of APPEARANCE — M17 asks what a region looks like,
@@ -114,8 +116,12 @@ const CAP = DIRECT ? await (async () => {
     async close() { await handle.close(); },
   };
 })() : await (async () => {
-  session = new CaptureSession();
+  // A 117-frame pack must be drawn by ONE build or it is a mixture of games, so the daemon
+  // is asked to pin unless told otherwise. If a daemon is already up it keeps whatever mode it
+  // has; the status read below records which, so ANSWERS.json never guesses.
+  session = new CaptureSession({ pinBuild: !args['no-pin'] });
   await session.connect();
+  const dstat = await session.status();
   return {
     kind: 'service',
     async sample(pts) {
@@ -138,6 +144,7 @@ const CAP = DIRECT ? await (async () => {
       fs.copyFileSync(res.path, file);
       return { settle: res.settle, cached: res.cached, provenance: res.provenance };
     },
+    daemon: { pid: dstat.pid, build: dstat.build, settle: dstat.settle },
     async close() { session.close(); },
   };
 })();
@@ -327,6 +334,8 @@ fs.writeFileSync(path.join(outDir, 'ANSWERS.json'), JSON.stringify({
       'A verdict citing this pack for an ARRIVAL claim (reachability, traversal, the crossing, RI-JRN*) is VOID.',
     arrival: 'placed',
     unsettled_frames: unsettled,
+    daemon: CAP.daemon || null,
+    build_keys_in_this_pack: [...new Set(shots.map((s0) => s0.build_key).filter(Boolean))],
   },
   seed: SEED, shuffle_seed: SHUFFLE_SEED, per_region: PER, passes: PASSES,
   night: PASSES.includes('night'), worst_weather: PASSES.includes('worst'),

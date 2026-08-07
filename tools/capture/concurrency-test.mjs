@@ -82,11 +82,21 @@ const results = {};
 
   // Half the agents ask for the SAME picture, half for distinct ones — so the run tests both
   // sharing and queueing at once.
+  //
+  // No `--no-cache` on the shared half, deliberately: the claim under test is that an overlapping
+  // request is RENDERED ONCE AND SHARED, and `--no-cache` would make every one of them render and
+  // then pass the sha256 check for the wrong reason (the renders are deterministic). Instead the
+  // yaw carries a per-run nonce so the picture is not already in the cache, and the assertion is
+  // that exactly ONE of the overlapping agents rendered it and the rest were served it.
+  const NONCE = Math.floor(Math.random() * 100000);
+  const sharedYaw = String((NONCE % 360));
   const shared = pt(regions[0], 0);
   const argvs = [];
   for (let i = 0; i < N; i++) {
-    const p = i % 2 === 0 ? shared : pt(regions[i % regions.length], i);
-    argvs.push(['--at', `${p.x},${p.z}`, '--yaw', String(i % 2 === 0 ? 15 : 40 + i), '--time', '11', '--weather', 'clear', '--width', '960', '--height', '540', '--no-cache']);
+    const same = i % 2 === 0;
+    const p = same ? shared : pt(regions[i % regions.length], i);
+    argvs.push(['--at', `${p.x},${p.z}`, '--yaw', same ? sharedYaw : String((NONCE + 40 + i) % 360),
+      '--time', '11', '--weather', 'clear', '--width', '960', '--height', '540']);
   }
   // A sampler that watches the box while the agents run.
   let peak = before.n, samples = 0;
@@ -98,6 +108,8 @@ const results = {};
 
   const sameSpec = out.filter((_, i) => i % 2 === 0);
   const shas = new Set(sameSpec.map((r) => r.manifest && r.manifest.sha256).filter(Boolean));
+  const rendered = sameSpec.filter((r) => r.manifest && r.manifest.cached === false).length;
+  const served = sameSpec.filter((r) => r.manifest && r.manifest.cached === true).length;
 
   results.n_agents_one_browser = {
     what: `${N} separate client processes, ${Math.ceil(N / 2)} of them asking for the SAME capture, all started at once against a cold daemon`,
@@ -111,10 +123,13 @@ const results = {};
     all_succeeded: out.every((r) => r.ok),
     per_agent_ms: out.map((r) => r.ms),
     overlapping_requests: sameSpec.length,
+    overlapping_rendered: rendered,
+    overlapping_served_from_cache: served,
     distinct_sha256_among_overlapping: shas.size,
-    pass: peak <= 1 && out.every((r) => r.ok) && shas.size === 1,
+    pass: peak <= 1 && out.every((r) => r.ok) && shas.size === 1 && rendered === 1 && served === sameSpec.length - 1,
   };
-  log(`N=${N} agents: peak browsers=${peak} (before ${before.n}), all ok=${out.every((r) => r.ok)}, distinct sha among overlapping=${shas.size}`);
+  log(`N=${N} agents: peak browsers=${peak} (before ${before.n}), all ok=${out.every((r) => r.ok)}; ` +
+    `overlapping: ${rendered} rendered + ${served} served from cache, ${shas.size} distinct sha256`);
 }
 
 // -------------------------------------------------------------------------------------------

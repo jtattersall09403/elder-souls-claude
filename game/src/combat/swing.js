@@ -179,14 +179,50 @@ export function buildSwing(p, opts) {
   // locked elbow (a thrust), 0 is a chop with the elbow tucked. This is what moves the weapon
   // SOCKET, so it is what moves the hitbox capsule, so it is what T4 of RI-WPN04 §D measures.
   const e = p.extend;
-  const upperKeys = [
-    [0.0, -14], [cockP, -34 - 30 * (1 - e)], [1.0, -30 - 24 * (1 - e)],
-    [2.0, -8 - 46 * (1 - e)], [2.0 + folP, 2 - 40 * (1 - e)], [3.0, -2 - 38 * (1 - e)],
-  ];
+  // ---- THE ARM LINE. THE ELBOW EXTENDS; THE SHOULDER HOLDS THE WEAPON UP. ------------------
+  //
+  // ### The defect
+  //
+  // The weapon runs along the grip hand's local axis (`skeleton.json §weapon.blade_axis_local`),
+  // so where it points is the sum of the rx of every bone from pelvis to hand — about -90 deg
+  // presents it horizontally, 0 hangs it straight down. The shoulder and elbow carry almost all
+  // of that sum, and before this block they summed at CONTACT to `-132 + 120·e`. So `extend`,
+  // whose declared job is "how straight is the arm", silently decided WHICH WAY THE WEAPON
+  // POINTED — and it decided it backwards:
+  //
+  //   * `e = 1` is a THRUST. It put the shoulder at -8 deg and the elbow at -4: a straight arm
+  //     hanging at the side, with the point driven into the floor. Every spear and every
+  //     thrusting sword in the roster declares `extend` 0.95-1.00.
+  //   * `e = 0` is a tucked chop. It summed to -132, cocking the weapon 42 deg ABOVE horizontal
+  //     at the moment of contact.
+  //   * The only value that presented a level blade was e ~ 0.28, which no clip declares.
+  //
+  // Measured after the grip was corrected, the thrusting classes were still the worst on the
+  // roster: SPR's lead slot had its tip **underground on 31 of 56 active frames** at up to
+  // -1.74 m, TSW on 16 of 40, with blade inclinations of -55 to -70 deg on clips declaring a
+  // `plane_deg` of -3 to -9. A spear that points at the dirt while it lunges is the defect this
+  // whole round exists to remove, in the one class that is nothing but a lunge.
+  //
+  // ### The lever
+  //
+  // `ARM_LINE` is the shoulder-plus-elbow angle at each of the six phase anchors — the arm's
+  // vertical action, cocked high through the windup, level at contact, dropping through the
+  // follow-through. The ELBOW keeps its own curve unchanged, because the elbow is what `extend`
+  // means and what moves the socket that `RI-WPN04` §D T4 measures; the SHOULDER takes the
+  // remainder. Extension now redistributes the arm between two joints instead of dropping the
+  // whole arm, which is what an arm does.
+  //
+  // This is closed form and it is INSIDE `buildSwing`, so it is inside `calibrateYawGain`'s
+  // measurement loop and the gain re-solves against the pose it produces. That is the difference
+  // between it and round 3's reverted `calibrateBladePitch`, which was a per-clip SOLVE bolted
+  // on outside and cost 40.4% arc nonconformance fighting the gain solver
+  // (`reports/W1-10-ROUND3.md` §4). There is no second solver here.
+  const ARM_LINE = [-28,-102,-86,-78,-68,-54];
   const lowerKeys = [
     [0.0, -32], [cockP, -68 + 30 * e], [1.0, -58 + 40 * e],
     [2.0, -78 + 74 * e], [2.0 + folP, -62 + 58 * e], [3.0, -66 + 52 * e],
   ];
+  const upperKeys = lowerKeys.map(([ph, v], i) => [ph, r2(ARM_LINE[i] - v)]);
   tracks.upperarm_r.rx = tracks.upperarm_r.rx.map(([ph, v], i) => [ph, r2(v + upperKeys[i][1])]);
   put('lowerarm_r', 'rx', lowerKeys.map(([ph, v]) => [ph, r2(v)]));
 
