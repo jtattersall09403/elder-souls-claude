@@ -5,7 +5,7 @@
 import { rng } from './core/rng.js';
 import { installGuards, wallNow, violations } from './core/guards.js';
 import { FixedLoop, FIXED_HZ, STEP_MS } from './core/loop.js';
-import { SimState, quantiseColdState, PLAYER_CONST } from './sim/state.js';
+import { SimState, quantiseColdState, PLAYER_CONST, IDENTITY_ATTRIBUTES, LEGACY_ATTRIBUTE_ALIASES } from './sim/state.js';
 import { EventBus } from './sim/events.js';
 import { stepOnce } from './sim/step.js';
 import { CombatSystem } from './combat/system.js';
@@ -87,6 +87,12 @@ import { DeathSystem, SURFACE_FRAMES, DEATH_LINE } from './sim/death.js';
  */
 const DEFAULT_START = Object.freeze({ race: 'saxhleel', class_id: 'reed-walker' });
 
+// W1-13 round 3. The pools the IDENTITY attribute register derives to — the origin the declared
+// statblock of a characterless state is pinned to. See `applyDerivedPools()`.
+const IDENTITY_POOLS = Object.freeze(derivePools(IDENTITY_ATTRIBUTES));
+const ZERO_POOL_ANCHOR = Object.freeze({ hp_max: 0, stamina_max: 0, willpower: 0 });
+const num10 = (v) => (Number.isFinite(Number(v)) ? Number(v) : 10);
+
 import { derivedDisposition, priceQuote, guardTerms, raceTerm, matrixSigma, meanRaceGap, playerRaceClass } from './character/reaction.js';
 import { movableTerms as dlgMovableTerms, persuade, VERBS as PERSUADE_VERBS } from './sim/dialogue/disposition.js';
 import { encounterById, openingFor, defeatOutcome } from './character/encounter.js';
@@ -101,10 +107,11 @@ const WRIT_WINDOW = 9;
 const SIGN_REACH_M = 2.6;
 import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, topicsFor, greetingBand, rootTopicIds } from './character/converse.js';
 import { topicKey } from './core/topics.js';
-import { buildOverheardIndex, buildDirectionsIndex, RumourBook, RoadBook, learnTopics } from './sim/quest/topic-supply.js';
+import { buildOverheardIndex, buildDirectionsIndex, RumourBook, RoadBook, learnTopics, RUMOUR_TOPIC } from './sim/quest/topic-supply.js';
 import { makeNPC, normaliseSchedule, slotAt } from './sim/npc.js';
 import { derivePools, applyBirthsignToPools, hpMaxFor, staminaMaxFor as staminaMaxForVig, progressToNext, bankProgress, USE_EVENTS } from './character/derive.js';
 import { grantUse, governingMap } from './character/skilluse.js';
+import { PopulationSystem } from './world/population.js';
 
 /** Pre-allocated depth of the sim-time ring in `Engine.perf`. */
 const PERF_SAMPLES = 20000;
@@ -350,6 +357,11 @@ export class Engine {
       // a probe dying in `arena_flat` three kilometres across the map.
       inProvince: () => this.cellFor(this.sim.env) === 'province',
     });
+    // W1-POPULATION — the hostile population of the province, streamed from the fixed step.
+    // Built AFTER the death system because it reads `death.ordinaryRespawnEpoch` to know when
+    // S5 says a cleared post may stand up again, and that field must exist before the first
+    // step. See game/src/world/population.js for what it may and may not do.
+    this.population = new PopulationSystem(this.data.population, this.data.populationPosts);
     // The save needs to reach the death system: `RI-JRN06`'s bloom is durable but the DEATH
     // was not, and a save taken with the surface up reloaded into a fresh `die()` that
     // destroyed 4,200 souls. `sim._traversal` set the precedent for this handle.
@@ -676,6 +688,12 @@ export class Engine {
     // travels on the new one's map. `restore(null)` is the save path run with no save — it is the
     // arity-1 loader, not a mutator that can name a place, so clearing costs no guarantee.
     if (sim.discovery) sim.discovery.restore(null);
+    // W1-POPULATION, and for the same reason as the three lines above: a scenario boundary that
+    // does not clear a subsystem is not a scenario boundary. `sim.reset()` empties `sim.entities`,
+    // so every eid the population system was holding is already gone; leaving the post state
+    // behind would mean a post the previous run cleared stays cleared in a world where it was
+    // never fought, and a post it thought RESIDENT never spawns again.
+    if (this.population) this.population.reset();
     if (patch.env) Object.assign(sim.env, {
       timeOfDay: patch.env.timeOfDay ?? sim.env.timeOfDay,
       weather: patch.env.weather ?? sim.env.weather,
@@ -723,6 +741,12 @@ export class Engine {
     // every state that did not declare a `character` block, which meant magic had to keep a
     // private copy — and the private copy was the defect. Seed it, so there is exactly one.
     this._ensureSkillRegister();
+    // W1-13 round 3, GAP-W1-levelup-screen-and-character-speak-different-languages. The exact
+    // twin of the line above, for the ATTRIBUTE register, and left behind when that one landed:
+    // the level-up screen draws the data file's ten and `makeProgression()` seeded six, three of
+    // which were not in the declared world at all. Reconciled here, on the same call, so a state
+    // file that hand-writes a `progression.attributes` block cannot reintroduce the split.
+    this._ensureAttributeRegister();
     // W1-07: the people and the things. A state file that names an interior and puts nobody
     // in it is the round-1 failure in data form.
     this.censusPlace = null;
@@ -848,6 +872,20 @@ export class Engine {
       dispositions: this.sim.quest.dispositions,
       factions: this.sim.quest.factions,
       topicsKnown: this.sim.quest.topicsKnown,
+    };
+    // W1-13 round 3. THE POOL ANCHOR. Captured here, from the body the loadout actually asked
+    // for, before anything derives a pool from the sheet — so it is a property of the STATE and
+    // not of how many levels have since been spent, and it survives a save/load unchanged
+    // because `_buildCombat` runs again on the other side with the same loadout.
+    //
+    // With a character, `applyDerivedPools()` ignores it entirely and the sheet is absolute.
+    // Without one, the sheet's identity register lands exactly here and every spend moves from
+    // here — which is how a level can buy something on a state with no character without moving
+    // `arena_champion`'s 620 HP body by a single point. Read the long note on `applyDerivedPools`.
+    this._poolAnchor = {
+      hp_max: b.hpMax - IDENTITY_POOLS.hp_max,
+      stamina_max: b.staminaMax - IDENTITY_POOLS.stamina_max,
+      willpower: (this.magic ? this.magic.wil : IDENTITY_ATTRIBUTES.willpower) - IDENTITY_ATTRIBUTES.willpower,
     };
     b.evaluateRig(0);
     mirror(this.sim, this.combat);
@@ -1010,6 +1048,79 @@ export class Engine {
     return reg;
   }
 
+  /** The ids `game/data/progression/attributes.json` declares — the one vocabulary. */
+  attributeIds() {
+    const decl = (this.data.progression && this.data.progression.attributes
+      && this.data.progression.attributes.attributes) || [];
+    return decl.map((a) => a.id);
+  }
+
+  /**
+   * Make `sim.progression.attributes` carry **exactly** the attributes the game declares.
+   *
+   * W1-13 round 3, and the twin of `_ensureSkillRegister()` above. The round-2 verdict measured
+   * the split from the drawn elements rather than from the data: the level-up screen listed ten
+   * rows (`levelup.attr.<id>`) and the character carried six, they were *different* six, and
+   * `_spendSouls()` — which had no validation of any kind — **minted a fictitious attribute at
+   * 11** on the first confirm. Two of the round-2 builder's own three headline spends bought
+   * attributes that do not exist.
+   *
+   * Three things happen here and nothing else:
+   *
+   *   1. an old six-id register's `dexterity` / `intelligence` / `faith` points are carried over
+   *      to `agility` / `intellect` / `hist-bond` (`LEGACY_ATTRIBUTE_ALIASES`), so a save written
+   *      before this round does not lose what it recorded;
+   *   2. every declared id that is absent gets the data file's `base_value` — except the three
+   *      the shipped fight is calibrated against, which take `IDENTITY_ATTRIBUTES` so that
+   *      `derivePools()` returns *exactly* what it returned before this change on a fresh state;
+   *   3. every id that is **not** declared is deleted, because the screen cannot show it, the
+   *      curves cannot read it and `_spendSouls` now refuses it.
+   *
+   * Returns the reconciliation so a probe can assert on it rather than infer it.
+   */
+  _ensureAttributeRegister() {
+    const prog = this.sim.progression;
+    if (!prog.attributes || typeof prog.attributes !== 'object') prog.attributes = {};
+    const A = prog.attributes;
+    const decl = this.attributeIds();
+    // No data (a bare unit-test engine): leave the identity register alone rather than empty it.
+    if (!decl.length) return { declared: 0, migrated: [], seeded: [], dropped: [] };
+    const base = (this.data.progression.attributes.base_value === undefined)
+      ? 10 : this.data.progression.attributes.base_value;
+    const declSet = new Set(decl);
+    const migrated = [], seeded = [], dropped = [];
+    for (const [from, to] of Object.entries(LEGACY_ATTRIBUTE_ALIASES)) {
+      if (A[from] === undefined) continue;
+      if (declSet.has(to) && A[to] === undefined) { A[to] = Number(A[from]); migrated.push(`${from}->${to}`); }
+    }
+    for (const id of decl) {
+      if (A[id] !== undefined && Number.isFinite(Number(A[id]))) { A[id] = Number(A[id]); continue; }
+      A[id] = IDENTITY_ATTRIBUTES[id] === undefined ? base : IDENTITY_ATTRIBUTES[id];
+      seeded.push(id);
+    }
+    for (const k of Object.keys(A)) if (!declSet.has(k)) { delete A[k]; dropped.push(k); }
+    return { declared: decl.length, migrated, seeded, dropped };
+  }
+
+  /**
+   * Is the level-up screen speaking the character's language? Measurable, not inferable.
+   *
+   * `ok: false` is what `openMenu('levelup')` refuses on and what `_spendSouls()` refuses an id
+   * against. Break the register on purpose and this goes red — that is the point of it.
+   */
+  attributeVocabulary() {
+    const declared = this.attributeIds();
+    const live = Object.keys((this.sim.progression && this.sim.progression.attributes) || {});
+    const d = new Set(declared), l = new Set(live);
+    const on_screen_not_carried = declared.filter((k) => !l.has(k));
+    const carried_not_on_screen = live.filter((k) => !d.has(k));
+    return {
+      declared, live: live.slice().sort(),
+      on_screen_not_carried, carried_not_on_screen,
+      ok: declared.length > 0 && on_screen_not_carried.length === 0 && carried_not_on_screen.length === 0,
+    };
+  }
+
   /**
    * The sheet, read.
    *
@@ -1024,8 +1135,46 @@ export class Engine {
    */
   applyDerivedPools(opts = {}) {
     const ch = this.sim.character;
-    if (!ch) return null;
-    const pools = applyBirthsignToPools(derivePools(this.sim.progression.attributes), ch);
+    // W1-13 round 3. This method used to open `if (!ch) return null;` and that single line is
+    // why 37,652 souls across 24 levels moved `hp_max` 620 -> 620, `stamina_max` 120 -> 120 and
+    // `focus_max` 94 -> 94 on the shipped `default` state, with `_poolsDirty` stuck true
+    // forever. `sim.character` is null in every named state, so a player who is not walked
+    // through the Writ House could spend souls for the rest of their life and get nothing.
+    //
+    // It was not an oversight. `character/derive.js`'s own header declares it: *"a loadout with
+    // no character behind it keeps RI-CMB03's [pool], so every existing W1-09 scenario measures
+    // exactly what it measured before. Nothing in the fight changes."* Deriving ABSOLUTELY here
+    // would honour W1-13 and break that promise in the same stroke — `arena_champion`'s player
+    // goes 620 -> 300 HP and 94 -> 30 Focus, and `tools/harness/cmb-poise.mjs` uses `hp >= 620`
+    // as its own VACUITY detector, so it would stop being able to tell a missed hit from a
+    // landed one. Half the wave's combat calibration is anchored on that body.
+    //
+    // So both are kept, by making the declared body the sheet's ORIGIN rather than its rival:
+    //
+    //   * with a character, the pools are ABSOLUTE, exactly as before;
+    //   * without one, the declared statblock (`_poolAnchor`, captured in `_buildCombat` from
+    //     the loadout the state actually asked for) is where the identity register lands, and
+    //     the sheet supplies **every movement away from it**. At `IDENTITY_ATTRIBUTES` the
+    //     numbers are bit-for-bit what they were before this change; one point of VIGOUR moves
+    //     `hp_max` by exactly what the curve says it moves, which is the whole complaint.
+    //
+    // The acceptance the verdict set is a DELTA test — "the `no-character` arm reports the same
+    // hp_max / stamina_max / focus_max deltas as its `with-character` arm" — and this is the
+    // reading of it that does not cost another piece its instruments.
+    const anchored = !ch;
+    const A = this.sim.progression.attributes;
+    const anc = anchored ? (this._poolAnchor || ZERO_POOL_ANCHOR) : null;
+    // WILLPOWER is anchored in ATTRIBUTE space, not pool space, so that `spell_slots` and the
+    // caster's own `wil` move with a spend too — a Focus ceiling that grows while the slot count
+    // does not would be a second, quieter version of the same defect.
+    const pools = applyBirthsignToPools(
+      derivePools(anchored ? { ...A, willpower: num10(A.willpower) + anc.willpower } : A), ch);
+    if (anchored) {
+      pools.hp_max = Math.max(1, Math.round(pools.hp_max + anc.hp_max));
+      pools.stamina_max = Math.max(1, Math.round(pools.stamina_max + anc.stamina_max));
+      pools.focus_max_base = pools.focus_max;
+      pools.anchored_to_loadout = { ...anc };
+    }
     const b = this.combat && this.combat.player;
     if (b) {
       const hpFrac = b.hpMax > 0 ? b.hp / b.hpMax : 1;
@@ -1854,7 +2003,10 @@ export class Engine {
       rumourFor: (npc, player, nth) => {
         const settlement = npc.settlement || (npc.record && npc.record.settlement) || this.sim.env.settlement || null;
         const r = this.rumourBook.pick(settlement, player, npc.eid, nth);
-        return r ? { ...r, id: 'latest rumours', rumour_id: r.id || null } : null;
+        // W1-SPEAKERS. Was the literal 'latest rumours' — a second, unfoldable spelling of the
+        // root topic `latest-rumors`, so the same subject reached the player as two keywords.
+        // `RUMOUR_TOPIC` is now the one place the gossip keyword is spelt.
+        return r ? { ...r, id: RUMOUR_TOPIC, rumour_id: r.id || null } : null;
       },
     });
     return { overheard: this.overheardIndex.size, directions: this.directionsIndex.size, rumours: this.rumourBook.size, roads: this.roadBook.size };
@@ -2999,6 +3151,10 @@ export class Engine {
       atHearthOverridden: !!this.sim._uiForceHearth,
       atHearthId: this.hearths ? ((this.hearths.at(this.sim.player.pos[0], this.sim.player.pos[2]) || {}).id || null) : null,
       hearthName: prog.hearthLastRested || null,
+      // W1-13 round 3. The level-up screen may not open onto a vocabulary the character does not
+      // speak. This is the falsifiable half of the fix: break `sim.progression.attributes` on
+      // purpose and the door refuses rather than quietly listing rows nobody carries.
+      attrVocabulary: this.attributeVocabulary(),
       // W1-MAP / ARBITRATION S35. Everything the map screen is allowed to know, assembled here
       // so that the screen's argument is a closed list rather than a door onto the engine.
       //
@@ -3229,12 +3385,28 @@ export class Engine {
     return Math.round(0.015 * n * n * n + 2.0 * n * n + 55 * n + 300);
   }
 
+  /**
+   * The pools a given attribute register would produce **on this state** — the same reading
+   * `applyDerivedPools()` applies, anchor and all, so the level-up screen's preview cannot
+   * promise a number the spend then fails to deliver. W1-13 round 3.
+   */
+  _poolsFor(attributes) {
+    const ch = this.sim.character;
+    if (ch) return applyBirthsignToPools(derivePools(attributes), ch);
+    const anc = this._poolAnchor || ZERO_POOL_ANCHOR;
+    const p = applyBirthsignToPools(
+      derivePools({ ...attributes, willpower: num10(attributes.willpower) + anc.willpower }), null);
+    p.hp_max = Math.max(1, Math.round(p.hp_max + anc.hp_max));
+    p.stamina_max = Math.max(1, Math.round(p.stamina_max + anc.stamina_max));
+    return p;
+  }
+
   /** L6: what one point in `attrId` changes, computed BEFORE anything is spent. */
   attributePreview(attrId) {
     const cur = { ...this.sim.progression.attributes };
-    const before = derivePools(cur);
-    cur[attrId] = (cur[attrId] || 10) + 1;
-    const after = derivePools(cur);
+    const before = this._poolsFor(cur);
+    cur[attrId] = num10(cur[attrId]) + 1;
+    const after = this._poolsFor(cur);
     const rows = [];
     for (const k of Object.keys(after)) {
       const a = after[k], b = before[k];
@@ -3524,12 +3696,27 @@ export class Engine {
   /** S15: souls level you and only level you. Gold is not touched here and is not shown. */
   _spendSouls(attrId) {
     const prog = this.sim.progression;
+    // W1-13 round 3. This line used to be
+    //   `prog.attributes[attrId] = (prog.attributes[attrId] || 10) + 1;`
+    // with no validation of any kind, so confirming a row for an attribute nobody carries MINTED
+    // it at 11 — seven of the level-up screen's ten rows did exactly that, and two of the
+    // round-2 builder's own three headline spends were among them. The souls left the purse, a
+    // level was awarded, and the key it wrote is read by no pool, no gate and no quest.
+    //
+    // Refused, and refused BEFORE the purse is debited: a spend that cannot buy anything must
+    // not cost anything either.
+    const declared = this.attributeIds();
+    if (declared.length && !declared.includes(attrId)) {
+      this._lastSpendRefusal = { attribute: attrId, why: 'not a declared attribute', declared };
+      return false;
+    }
     const cost = this.soulsToNextLevel();
-    if (prog.soulsHeld < cost) return false;
+    if (prog.soulsHeld < cost) { this._lastSpendRefusal = { attribute: attrId, why: 'not enough souls', cost, held: prog.soulsHeld }; return false; }
+    this._lastSpendRefusal = null;
     prog.soulsHeld -= cost;
     prog.soulsSpent += cost;
     prog.level += 1;
-    prog.attributes[attrId] = (prog.attributes[attrId] || 10) + 1;
+    prog.attributes[attrId] = num10(prog.attributes[attrId]) + 1;
     this.sim._poolsDirty = true;
     const ev = this.bus.emit(this.sim.frame, 'level_up');
     ev.attribute = attrId; ev.level = prog.level; ev.souls_spent = cost;
@@ -3661,7 +3848,15 @@ export class Engine {
       if (m.absent_when_flag && this.sim.quest && this.sim.quest.flags[m.absent_when_flag]) continue;
       for (let i = 0; i < m.count; i++) {
         const off = m.spawn_offsets_m[i] || [0, 0, 0];
-        const eid = this.spawn(m.statblock, Number(x) + off[0], Number(z) + off[2], { as: `${id}-${m.role}-${i}` });
+        // `opts.tag` — W1-POPULATION, additive and defaulting to the previous behaviour
+        // exactly. The eid was `${encounterId}-${role}-${i}` and `spawn()` THROWS on a duplicate,
+        // so two instances of the same encounter alive at once was an uncaught crash: fine while
+        // the whole world held nine hand-placed bodies, fatal the moment a road carries two
+        // marsh sentries. The population streamer passes the post id, which is unique by
+        // construction. `opts.yaw` likewise: a post that knows which way the road runs should be
+        // able to face it, and `spawn()` has honoured `opts.yaw` since W1-15.
+        const tag = opts.tag || id;
+        const eid = this.spawn(m.statblock, Number(x) + off[0], Number(z) + off[2], { as: `${tag}-${m.role}-${i}`, yaw: opts.yaw });
         const e = this.sim.findEntity(eid);
         e.encounterId = id;
         e.encounterRole = m.role;
@@ -3895,13 +4090,19 @@ export class Engine {
     // the terms were restored and nothing read them, which is the ninth orphan model this
     // project has found rather than the end of one.
     //
-    // `refill: false`, so a load does not heal you, and ONLY when a character exists: W1-13
-    // recorded that deriving from `sim.progression.attributes` on a state with no character
-    // yields no WILLPOWER, `focus_max` comes out 0, and the load clamps a restored reservoir
-    // of 94 Focus to nothing. `applySaveMagic` below then puts the saved Focus back on top of
-    // the correctly derived ceiling.
-    if (sim.character) this.applyDerivedPools({ refill: false, why: 'loadState' });
-    else sim.pools = null;
+    // `refill: false`, so a load does not heal you.
+    //
+    // This used to be `if (sim.character)`, because "deriving from `sim.progression.attributes`
+    // on a state with no character yields no WILLPOWER, `focus_max` comes out 0, and the load
+    // clamps a restored reservoir of 94 Focus to nothing". **Both halves of that are now fixed
+    // at their source**, so the guard has gone with them: `_ensureAttributeRegister()` gives the
+    // register the WILLPOWER the declared vocabulary always had, and `applyDerivedPools()`
+    // anchors a characterless state's pools to its own loadout, so the identity register derives
+    // to 94 Focus rather than to 0. A level bought without a character has to survive a load, and
+    // with this line guarded it could not. `applySaveMagic` below then puts the saved Focus back
+    // on top of the correctly derived ceiling.
+    this._ensureAttributeRegister();
+    this.applyDerivedPools({ refill: false, why: 'loadState' });
     // Seam S19: `_buildCombat` constructs a FRESH MagicSystem, so the spells, gems, known
     // effects and Focus `applySave` restored a moment ago are now on a discarded object.
     // Restored again onto the new one — the call is idempotent by construction.
@@ -4152,6 +4353,11 @@ export class Engine {
     // THE PROVINCE FOLLOWS THE PLAYER. After `_deathTick()`, so a respawn is streamed on the
     // frame it happens rather than the next one. See `_streamProvince()`.
     this._streamProvince();
+    // W1-POPULATION — AND THE COUNTRY IS INHABITED. Immediately after `_streamProvince()` and
+    // for the identical reason: this is the one slot every way the world advances passes
+    // through, and it is outside the armed determinism guard. Ground that streams in under an
+    // empty province is a diorama.
+    this._streamPopulation();
     // W1-22 — THE BED FOLLOWS THE PLAYER TOO. Immediately after `_streamProvince()` and for the
     // identical reason: this is the one slot every way the world advances passes through, and
     // it is outside the armed determinism guard. A respawn or a teleport must change what you
@@ -4210,6 +4416,20 @@ export class Engine {
    * streaming time, and nothing here touches locomotion — this runs after the step has already
    * decided where the body went.
    */
+  /**
+   * THE POPULATION, PUMPED FROM THE FIXED STEP. One call, and it is the whole world-side
+   * consumer of `game/data/world/population.json` — perturb a number in that file and bodies
+   * appear, disappear or change archetype on the next walk. `tools/world/population-consumption.mjs`
+   * does exactly that and watches entities change behaviour, per RI-MTH07.
+   *
+   * Deliberately thin: the decisions live in `game/src/world/population.js` so that the
+   * gating, the S5 respawn coupling and the release hysteresis are one readable object rather
+   * than a condition buried in the engine's largest method.
+   */
+  _streamPopulation() {
+    if (this.population) this.population.step(this);
+  }
+
   _streamProvince() {
     const pv = this.renderer && this.renderer.province;
     if (!pv) return;
@@ -4288,15 +4508,16 @@ export class Engine {
     }
     this.ambience.suppressed = null;
     const r = this.field ? this.field.regionAt(p.pos[0], p.pos[2]) : null;
-    this.ambience.step({
-      regionId: r ? r.id : null,
-      x: p.pos[0], z: p.pos[2],
-      yawRad: (p.yaw || 0) * Math.PI / 180,
-      timeOfDay: this.sim.env.timeOfDay,
-      weather: this.sim.env.weather,
-      frame: this.sim.frame,
-      dt: STEP_MS / 1000,
-    });
+    // One reused argument object. This runs on every frame of every probe in the project, and a
+    // fresh object literal per frame is an allocation charged to nothing anybody reads.
+    const a = this._ambienceArg || (this._ambienceArg = { regionId: null, x: 0, z: 0, yawRad: 0, timeOfDay: 12, weather: 'clear', frame: 0, dt: STEP_MS / 1000 });
+    a.regionId = r ? r.id : null;
+    a.x = p.pos[0]; a.z = p.pos[2];
+    a.yawRad = (p.yaw || 0) * Math.PI / 180;
+    a.timeOfDay = this.sim.env.timeOfDay;
+    a.weather = this.sim.env.weather;
+    a.frame = this.sim.frame;
+    this.ambience.step(a);
   }
 
   /** RI-AUD03 observation surface. What the world is playing, right now, and why. */
@@ -5641,6 +5862,12 @@ export class Engine {
       // already settled and is never paid for. (`applySave` restores `soulsHeld` itself; this
       // clears only the observer, so souls banked before the save survive the load.)
       if (this.sim.souls) this.sim.souls.reset();
+    // W1-POPULATION. Same class of per-session observation. `applySave` restores the world's
+    // durable flags but the population system's post table is a live index of eids that the
+    // restore has just invalidated; re-seeding it lets the streamer re-materialise the posts
+    // around wherever the save put the player. Nothing durable is lost, because nothing here is
+    // durable: which ordinary mobs are dead is exactly what S5 says a rest restores anyway.
+      if (this.population) this.population.reset();
       // W1-13. The death observer's HP baseline is a per-session observation, not save state:
       // a load that restored a body at 40 HP would otherwise read as 460 points of damage on
       // the next frame and stamp `last_damage_frame`. Cleared, exactly as the input pipeline is.
@@ -7665,6 +7892,11 @@ async function loadData(onBytes) {
     else if (entry.path === 'world/hearths.json') out.hearths = doc;
     else if (entry.path === 'world/respawn.json') out.respawn = doc;
     else if (entry.path === 'world/landmask.json') out.landmask = doc;
+    // W1-POPULATION. The MODEL (density, safety falloff, composition) and the PLACEMENT it
+    // generates. Both must have a branch here for the same reason `world/opacity.json` says so
+    // three lines down: a world/*.json that matches nothing is fetched and then dropped.
+    else if (entry.path === 'world/population.json') out.population = doc;
+    else if (entry.path === 'world/population-posts.json') out.populationPosts = doc;
     // W1-OPACITY. RI-WLD09 §B1's register of the 24 things this world refuses to explain.
     // It MUST have a branch here: a world/*.json that matches nothing is fetched and then
     // dropped on the floor, which is exactly how `dialogue/persuasion-gmst.json` and

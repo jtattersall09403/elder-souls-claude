@@ -430,7 +430,26 @@ export class Conversation {
       const r = this.supply.rumourFor(npc, this.player, nth || 0);
       if (r) this.extra.push({ id: r.id, text: r.id, gated: !!(r.requires || r.forbids), kind: 'rumour', x: r.x, to: r.adds_topics || [] });
     }
-    for (const e of this.extra) this.list.push({ id: e.id, text: e.text, gated: e.gated });
+    // W1-SPEAKERS. The extras are pushed as list entries, and one of them — the settlement
+    // rumour — now names the SAME keyword as a root topic. Until this round it did not: the
+    // supply spelt it `latest rumours` and the root is `latest-rumors`, two keys that
+    // `topicKey()` deliberately never folds, so a speaker with a rumour listed the same subject
+    // TWICE under two spellings and the root's own info was unreachable. Folding the spelling
+    // makes the duplicate visible instead of merely wasteful, so it is removed here.
+    //
+    // The extra REPLACES the root entry rather than being dropped, because `say()` resolves
+    // extras first: what the town is actually saying beats the province-wide "ask at the inn",
+    // and a list that offered the word but resolved to the generic would be the worse half of
+    // both. A speaker with no rumour keeps the root entry and answers it out of the topic file.
+    const listKeys = new Map();
+    this.list.forEach((t, i) => listKeys.set(topicKey(t.id), i));
+    for (const e of this.extra) {
+      const k = topicKey(e.id);
+      const at = listKeys.get(k);
+      const row = { id: e.id, text: e.text, gated: e.gated };
+      if (at === undefined) { listKeys.set(k, this.list.length); this.list.push(row); }
+      else this.list[at] = { ...this.list[at], ...row };
+    }
     return this;
   }
 

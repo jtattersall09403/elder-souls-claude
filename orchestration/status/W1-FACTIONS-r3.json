@@ -1,0 +1,30 @@
+{
+  "task_id": "W1-FACTIONS-r3",
+  "brief": "corpus/90-verdicts/wave1/W1-FACTIONS-r2.md",
+  "started": "wave-1 round 3",
+  "state": "researching",
+  "commit_at_start": "1002cd1",
+  "box_at_start": {"headless_shell": 24, "loadavg": "14.41 13.81 13.51"},
+  "files_i_am_touching": [],
+  "outputs_expected": [
+    "faction probe standing in a populated world",
+    "RES_METHODS_NONVIOLENT extended + guard re-armed (GAP-FCT-02)",
+    "standing_ids map repaired incl. Imperial Assize (AR-3)",
+    "eleven fingerprint + punchline density fixed in new prose",
+    "records_belief validator",
+    "Q-LEDG-14 / Q-ASSZ-14 de-duplicated",
+    "refusing walk measured",
+    "multi-signature sweep measured"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "GAP-FCT-03 fix is already available in the build: game/src/harness/api.js:2100 `travelToGiver(questId)` looks up the giver's record, calls populateSettlement/populateSite, and returns {present, went_to, why}. faction-probe.mjs never calls it. That is the two-line fix the r2 verdict asked for, and it is HONEST (goes red for a giver with no place) unlike spawnNPC.",
+    "QuestEngine.presenceMode default 'on' (machine.js:93); harness questPresenceGate(mode) returns {mode,misses,missed} — usable to assert zero misses rather than suspending the gate."
+  ],
+  "done": [
+    "GAP-FCT-02 CLOSED at commit 1002cd1(dirty). defs.js vocabulary is now CLOSED (RES_METHODS_KNOWN); an unrecognised method is a problem in its own right. New permanent control tools/quests/method-guard-control.mjs: 8/8 (CONTROL refuse RED, 5 round-2 methods RED, VOCAB gaslight RED, NEGATIVE unmutated comply GREEN), baseline clean. DELETE-THE-FIX: reverting defs.js -> 2/8, the five go GREEN again. check-quests.mjs also enforces the vocabulary.",
+    "AR-3 CLOSED. sanction.json: added imperial-assize:1-3/4+ (1.45/2.20), ixtu-vakh:1-3/4+ (0.70/0.50), dockhands:any (0.90); standingKey() gained 5 branches; standing_ids 2->5 joinable factions mapped. spread_claim is now {over_all_rows 5.33, reachable_by_play 4.89} and check-data.mjs RECOMPUTES both. Reachable spread 3.89x -> 4.89x. DELETE-THE-FIX: removing the_imperial_assize reproduces the r2 verdict's 3.89 exactly and fails check-data."
+  ],
+  "next_step": "patch faction-probe to travelToGiver; then prose, records_belief, template break, browser phase",
+  "notes_for_successor": "Box is contended at start (24 browsers). Doing all data/code/prose work first, browser phase last."
+}

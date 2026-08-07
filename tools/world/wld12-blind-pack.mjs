@@ -24,7 +24,7 @@
 // Captures go through `tools/capture/` — one warm browser for the box, never our own.
 'use strict';
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { CaptureSession } from '../capture/client.mjs';
@@ -103,8 +103,16 @@ try {
       pose: { yaw_deg: +s.yaw.toFixed(1), pitch_deg: -2, eye_m: 1.7, fov: 70 },
       time: s.hour,
       width: W, height: H,
-      out: resolve(dir, name),
+      // The default 24/12 settle budget refused these frames outright: the province streams in
+      // around a teleport, so |A-C| accumulates across both intervals and G3c fires. That refusal
+      // is correct and is the reason blank and half-built frames have nearly been cited in this
+      // project before. The answer is to give the streamer time, not to lower the gate.
+      settle_frames: 90, settle_gap: 45,
     });
+    // The daemon writes into its own build-keyed cache and hands back a path; it does not take an
+    // output name, and it must not — a caller-chosen filename is how a cache gets poisoned. So the
+    // frame is COPIED under its opaque pack name and the real one is recorded in the key.
+    copyFileSync(shot.path, resolve(dir, name));
     key.push({
       frame: name, border: s.border, kind: s.kind, facing: s.facing,
       x: +s.x.toFixed(1), z: +s.z.toFixed(1), yaw: +s.yaw.toFixed(1), hour: s.hour,

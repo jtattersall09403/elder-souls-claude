@@ -2781,6 +2781,52 @@
         "lore.canon.geography"
       ],
       "notes": "Registered by W1-23 roughly four minutes after the pair landed on disk, mid-wave, from another piece still writing. That is the finding, not the fact: with no gate, the registry falls out of date with the shipped tree within MINUTES on a busy tree. tools/lore/canon-census.mjs should run in the same place check-content does."
+    },
+    {
+      "id": "CF-C023",
+      "claim": "This build has no Argonian tribes. The province is organised by four constructed bodies — the Deep-Kin, the Drowned Court, the Wet Ledger and the Xul-Aneekh — and by the rootkeepers.",
+      "tier": "constructed",
+      "provenance": "constructed",
+      "confidence": "high",
+      "sources_real": [
+        "UESP Lore:Argonian tribes (Agacephs, Paatru, Archein, Sarpa, Dead-Water, Miredancers)"
+      ],
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "n-a",
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.argonian",
+        "lore.canon.factions"
+      ],
+      "measured": "Counted over all of game/data on 2026-08-07: Deep-Kin 87, Xul-Aneekh 84, Drowned Court 64, Sap-Cutters 53, Wet Ledger 45. Of the tribes canon actually names: Kothringi 22 and Lilmothiit 4 (both extinct in-world, so they appear as history), Horwalli 1, and Agacephs, Paatru, Archein, Sarpa, Dead-Water and Miredancers ZERO. \"Naga\" scores 388 but is a playable race in this build, not a tribe.",
+      "notes": "Registered so the omission is a DECISION on the record rather than a gap. It is defensible — four bodies a player can tell apart beat nine tribe names they cannot — but it is ours, it is not canon, and the failure mode it guards against is a later agent scattering canonical tribe names through dialogue as texture and thereby claiming a social structure this world does not model. If tribes are wanted, they need a faction each, not a mention each."
+    },
+    {
+      "id": "CF-C024",
+      "claim": "In this build the slave trade is present chiefly as the Empire's euphemism for it. The word \"lease\" outnumbers the word \"slave\" by roughly fifty to one.",
+      "tier": "constructed",
+      "provenance": "constructed",
+      "confidence": "high",
+      "sources_real": [],
+      "in_world_sources": [
+        "Of the Labour-Lease at Blackrose",
+        "The Blessings of the Coast",
+        "Ledger and Journal of Andrel Vorin"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "n-a",
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.history"
+      ],
+      "measured": "Counted over all of game/data on 2026-08-07: lease/Blackrose 2,240 hits; House Dres 245; slave/slavery 42; soul-gem or soul trade 15.",
+      "notes": "This is an effect worth having and a risk worth naming. CF-062 is hard canon: House Dres has raided Black Marsh for slaves for centuries and slavery is legal in Morrowind. A province that only ever says \"lease\" has adopted the Provincial Office's vocabulary as narration, which is precisely the move RI-LOR06 §1.2 forbids at the authorial level. The correction is not to add the word everywhere; it is that the euphemism must be somebody's POSITION and not the world's voice, which is why CF-D008 exists and why the Blessings of the Coast is registered as holding it rather than stating it."
     }
   ],
   "not_disputes": {

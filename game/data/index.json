@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 542,
+  "file_count": 545,
   "files": [
     {
       "path": "audio/ambience/blackwood.json",
@@ -85,8 +85,8 @@
       "path": "audio/ambience/valus-ridge.json",
       "schema": "elder-souls/ambience-bed@1",
       "id": "valus-ridge",
-      "bytes": 4777,
-      "sha256": "8f9d91e7c68e6dc1"
+      "bytes": 5089,
+      "sha256": "4f7ad268976e0a66"
     },
     {
       "path": "audio/ambience/western-rootlands.json",
@@ -1696,8 +1696,8 @@
       "path": "crime/sanction.json",
       "schema": "elder-souls/crime-sanction@1",
       "id": "sanction",
-      "bytes": 13023,
-      "sha256": "b24ba3e64ebec3aa"
+      "bytes": 18119,
+      "sha256": "18a37b5589c0cc5b"
     },
     {
       "path": "dialogue/creation-names.json",
@@ -1731,15 +1731,15 @@
       "path": "dialogue/greetings/20-tier-a.json",
       "schema": "elder-souls/greetings@2",
       "id": null,
-      "bytes": 22291,
-      "sha256": "6e96c8ddde29d8ae"
+      "bytes": 28101,
+      "sha256": "ce9a51e1a24d3e38"
     },
     {
       "path": "dialogue/greetings.json",
       "schema": "elder-souls/greetings@2",
       "id": "greetings",
-      "bytes": 186217,
-      "sha256": "4aebd4c28a9fd947"
+      "bytes": 186097,
+      "sha256": "0d80d54995d5c8c6"
     },
     {
       "path": "dialogue/persuasion-gmst.json",
@@ -1760,7 +1760,7 @@
       "schema": "elder-souls/rumours@1",
       "id": null,
       "bytes": 23705,
-      "sha256": "0645a1d04a3b87c4",
+      "sha256": "efe335909ee004b1",
       "declared_incomplete": true
     },
     {
@@ -1793,6 +1793,13 @@
       "declared_incomplete": true
     },
     {
+      "path": "dialogue/topics/07-root-coverage.json",
+      "schema": "elder-souls/dialogue-topics@2",
+      "id": null,
+      "bytes": 15072,
+      "sha256": "092a89521a6bfac3"
+    },
+    {
       "path": "dialogue/topics/10-global.json",
       "schema": "elder-souls/dialogue-topics@2",
       "id": null,
@@ -1817,22 +1824,22 @@
       "path": "dialogue/topics/22-tier-c.json",
       "schema": "elder-souls/dialogue-topics@2",
       "id": null,
-      "bytes": 10270,
-      "sha256": "a68c623bf41d64d0"
+      "bytes": 13777,
+      "sha256": "6f79227575722210"
     },
     {
       "path": "dialogue/topics/30-texture.json",
       "schema": "elder-souls/dialogue-topics@2",
       "id": null,
-      "bytes": 22913,
-      "sha256": "f5b2cfcae505843b"
+      "bytes": 31231,
+      "sha256": "cd573ba989a3d12f"
     },
     {
       "path": "dialogue/topics/40-race-gated.json",
       "schema": "elder-souls/topics@1",
       "id": null,
-      "bytes": 39882,
-      "sha256": "3f70a2ef6c3651d0"
+      "bytes": 39866,
+      "sha256": "84d6ce0429f82057"
     },
     {
       "path": "dialogue/topics/45-speaker-coverage.json",
@@ -1945,8 +1952,8 @@
       "path": "lore/canon.json",
       "schema": "canon@1",
       "id": "canon",
-      "bytes": 75327,
-      "sha256": "710325649955425b"
+      "bytes": 81813,
+      "sha256": "029d263489c82bba"
     },
     {
       "path": "magic/cast-classes.json",
@@ -2281,8 +2288,8 @@
       "path": "quests/mainline-act4.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-act4",
-      "bytes": 109200,
-      "sha256": "e990f76edf504e07"
+      "bytes": 109197,
+      "sha256": "82efe32354f66d11"
     },
     {
       "path": "quests/mainline-act5.json",
@@ -2760,8 +2767,8 @@
       "path": "world/encounters.json",
       "schema": "elder-souls/encounters@1",
       "id": "encounters",
-      "bytes": 8322,
-      "sha256": "2833088808a783bd"
+      "bytes": 28632,
+      "sha256": "bcb7b1193e5a54c4"
     },
     {
       "path": "world/hazards.json",
@@ -3611,6 +3618,21 @@
       "id": null,
       "bytes": 16110,
       "sha256": "56d039ae14c0bb16",
+      "declared_incomplete": true
+    },
+    {
+      "path": "world/population-posts.json",
+      "schema": "elder-souls/population-posts@1",
+      "id": null,
+      "bytes": 45569,
+      "sha256": "351f96430d297158"
+    },
+    {
+      "path": "world/population.json",
+      "schema": "elder-souls/population@1",
+      "id": "population",
+      "bytes": 12040,
+      "sha256": "96b09256afa640f1",
       "declared_incomplete": true
     },
     {

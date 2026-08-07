@@ -166,6 +166,28 @@ function checkAgainst(hooksDoc, book) {
   }
 }
 
+// ---- GAP-FCT-02: the resolution `method` vocabulary is closed -----------------------------
+// The build's only violence-consistency guard (`sim/quest/defs.js`) works by membership in
+// `RES_METHODS_NONVIOLENT`, so a method value it has never heard of used to be waved through
+// silently — which blinded it to 38 of 383 resolutions. The engine now reports an unknown method
+// as a problem in its own right; this repeats it here so a drift fails the commit and not just
+// the boot. `tools/quests/method-guard-control.mjs` breaks the guard on purpose and proves it
+// still goes red.
+{
+  const { RES_METHODS_KNOWN } = await import('../game/src/sim/quest/defs.js');
+  const unknown = new Map();
+  for (const [id, q] of quests) {
+    for (const r of q.resolutions || []) {
+      if (r.method == null || RES_METHODS_KNOWN.has(r.method)) continue;
+      if (!unknown.has(r.method)) unknown.set(r.method, []);
+      unknown.get(r.method).push(`${id}.${r.id}`);
+    }
+  }
+  for (const [m, where] of [...unknown].sort()) {
+    problems.push(`resolution method ${JSON.stringify(m)} is not in the declared vocabulary (${where.length} resolution(s), e.g. ${where[0]}) — the violence guard cannot see it. Declare it in RES_METHODS_NONVIOLENT or RES_METHODS_VIOLENT in game/src/sim/quest/defs.js (GAP-FCT-02).`);
+  }
+}
+
 // ---- report ------------------------------------------------------------------------------
 if (problems.length) {
   console.error(`check-quests: ${problems.length} problem(s) across ${quests.size} quests:`);

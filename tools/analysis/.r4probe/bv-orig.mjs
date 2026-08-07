@@ -1254,8 +1254,6 @@ const PRODUCERS = (() => {
       for (const k of Object.keys(d)) if (Array.isArray(d[k])) for (const it of d[k]) if (it && it.id) add(items, it.id, `${rel} ${k}[].id`);
     }
     if (rel.startsWith('npcs/')) {
-      const list = Array.isArray(d) ? d : (d.npcs || d.records || []);
-      for (const n of list) for (const t of (n && n.topics) || []) add(topics, t, `${rel} npcs[].topics`);
       for (const g of Object.values(d)) if (g && Array.isArray(g.npcs)) for (const n of g.npcs) for (const t of n.topics || []) add(topics, t, `${rel} npcs[].topics`);
     }
     if (rel.startsWith('magic/')) {
@@ -1364,23 +1362,6 @@ const GRANTED_TOPICS = (() => {
   return new Set([...PRODUCERS.topics.keys()].filter((p) => needed.some((n) => sameTopic(p, n))));
 })();
 const GRANTED_FLAGS = new Set(PRODUCERS.flags.keys());
-if (process.env.R4_PROBE) {
-  const npcTop = [];
-  for (const [rel, d] of DATA_FILES) if (rel.startsWith('npcs/')) for (const n of (Array.isArray(d.npcs) ? d.npcs : [])) for (const t of (n.topics || [])) npcTop.push(t);
-  const viaToolBranch = [];
-  for (const [rel, d] of DATA_FILES) if (rel.startsWith('npcs/')) for (const g of Object.values(d)) if (g && Array.isArray(g.npcs)) for (const n of g.npcs) for (const t of (n.topics || [])) viaToolBranch.push(t);
-  const lost = [...new Set(npcTop)].filter((t) => !GRANTED_TOPICS.has(t));
-  console.log('R4_PROBE GRANTED_TOPICS.size =', GRANTED_TOPICS.size);
-  console.log('R4_PROBE npcs/** files seen by DATA_FILES =', [...DATA_FILES].map(x=>x[0]).filter(r=>String(r).startsWith('npcs/')).length);
-  console.log('R4_PROBE npc topic mentions via the tool branch (Object.values(d).npcs) =', viaToolBranch.length);
-  console.log('R4_PROBE npc topic mentions via loadNPCs() shape (d.npcs)              =', npcTop.length);
-  console.log('R4_PROBE distinct npc topics NOT in GRANTED_TOPICS =', lost.length, JSON.stringify(lost));
-  console.log('R4_PROBE GRANTED_TOPICS.has("the rotting quarter") =', GRANTED_TOPICS.has('the rotting quarter'));
-  const q = quests.find((x) => x.id === 'Q-LILM-01');
-  console.log('R4_PROBE Q-LILM-01 opens_by =', JSON.stringify(q && q.opens_by));
-  process.exit(0);
-}
-
 const GRANTED_KNOWLEDGE = new Set(PRODUCERS.knowledge.keys());
 const GRANTED_ITEMS = new Set(PRODUCERS.items.keys());
 const GRANTED_EFFECTS = new Set(PRODUCERS.effects.keys());
@@ -2187,6 +2168,23 @@ function evaluateSignature(race, family, signFamily, upClass, fixture, cohortInf
   rec.counterfactual_race_gate = withFixture(fixture, () => counterfactualRaceGate(sheet));
   if (EXPLAIN) rec.working ={ class_id: spec.classId, main_quest: c1, factions: c2, gates: c3, lethality: c4, sheet_at_55: { attributes: sheet.attributes, skills: sheet.skills } };
   return rec;
+}
+
+
+if (process.env.R4_LILM) {
+  const q = quests.find((x) => x.id === 'Q-LILM-01');
+  console.log('required "the rotting quarter"? ', REQUIREMENTS.topics.has('the rotting quarter'));
+  console.log('PRODUCERS.topics has exact?      ', PRODUCERS.topics.has('the rotting quarter'));
+  console.log('GRANTED_TOPICS exact?            ', GRANTED_TOPICS.has('the rotting quarter'));
+  console.log('any granted topic folds to it?   ', [...GRANTED_TOPICS].filter((t) => sameTopic(t, 'the rotting quarter')));
+  console.log('UNSOURCED topics:                ', JSON.stringify(UNSOURCED.topics || UNSOURCED));
+  const sheets = { race: 'saxhleel', family: 'fighter', birthsign: null, upbringing: 'interior' };
+  const sp = representativeStart('saxhleel', 'fighter', 'given', 'interior');
+  const ch = composeCharacter(data, sp);
+  const sheet = { race: 'saxhleel', family: 'fighter', birthsign: sp.birthsign, upbringing: sp.upbringing, class_id: sp.classId, base_attributes: ch.attributes, base_skills: ch.skills };
+  const r = questClearable(sheet, q, 60);
+  console.log('Q-LILM-01 verdict at level 60:', r.status, JSON.stringify(r.stopped_at || {}).slice(0, 400));
+  process.exit(0);
 }
 
 function walkAll(fixture) {

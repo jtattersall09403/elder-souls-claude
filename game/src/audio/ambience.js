@@ -26,6 +26,7 @@ export const AMBIENCE_VOICE_CAP = 8;
 /** RI-AUD03 §A — the region crossfade. */
 export const CROSSFADE_S = 4.0;
 
+const EMPTY = Object.freeze([]);
 const DAY_START = 6, DAY_END = 20;
 export function todBand(hours) { return (hours >= DAY_START && hours < DAY_END) ? 'day' : 'night'; }
 
@@ -244,11 +245,21 @@ export class AmbienceDriver {
     }
 
     // R7 emitters. Recomputed every frame — this is the thing a player steers by.
-    this.emitterState = [];
-    for (const e of bed.emitters || []) {
-      const p = emitterPlacement(e, s.x || 0, s.z || 0, s.yawRad || 0);
-      this.emitterState.push({ id: e.id, ...p, pos_m: e.pos_m, audible_m: e.audible_m });
-      if (p.audible) voices += 1;
+    //
+    // In place, into a reused array. `_afterStep()` is outside `stepOnce()`'s timing window so
+    // this is not charged to the simulation, but it runs on every frame of every probe in the
+    // project and nine of the thirteen regions have no emitter at all; allocating a fresh array
+    // and a fresh object per frame to describe nothing is a cost with no reader.
+    const ems = bed.emitters || EMPTY;
+    if (this.emitterState.length !== ems.length) this.emitterState.length = ems.length;
+    for (let i = 0; i < ems.length; i++) {
+      const e = ems[i];
+      const pl = emitterPlacement(e, s.x || 0, s.z || 0, s.yawRad || 0);
+      let slot = this.emitterState[i];
+      if (!slot || slot.id !== e.id) slot = this.emitterState[i] = { id: e.id, pos_m: e.pos_m, audible_m: e.audible_m };
+      slot.audible = pl.audible; slot.distance_m = pl.distance_m; slot.gain = pl.gain;
+      slot.gain_db = pl.gain_db; slot.pan = pl.pan; slot.bearing_deg = pl.bearing_deg;
+      if (pl.audible) voices += 1;
     }
 
     this.voicesActive = voices;

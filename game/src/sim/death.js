@@ -71,6 +71,7 @@ export class DeathSystem {
     this.lastRecovery = null;
     this.skipRequestedAt = null;
     this.respawnFallbacks = 0;        // times the nearest-well FLOOR caught a null respawn point
+    this.ordinaryRespawnEpoch = 0;    // W1-POPULATION: bumped by respawnOrdinary(); see there
     this.log = [];                    // per-death records, for the journey tool
   }
 
@@ -193,7 +194,20 @@ export class DeathSystem {
     }
     // The kill register the save has carried since wave 1 and nothing has ever cleared.
     sim.world.enemiesDeadUntilRest.length = 0;
-    return { respawned: back, held_dead: held, why };
+    // W1-POPULATION. THE HALF OF S5 THAT LIVES OUTSIDE `sim.entities`.
+    //
+    // The loop above brings back every ordinary hostile that is still an entity — which, in a
+    // world the player walks across in 55 minutes, means the ones within about 260 m. RI-PRG04
+    // §1 says "every non-unique hostile in the world returns, INCLUDING ONES KILLED HOURS AGO",
+    // and a mob cleared two kilometres back is not in this array to be revived: the population
+    // streamer released it when the player walked away, and remembers only that its post is
+    // CLEARED. This counter is the whole coupling — `PopulationSystem.step()` compares it and
+    // un-clears every distant post when it moves. It is deliberately a number rather than a
+    // callback: nothing here may reach into the population system, because this function's
+    // guarantee is that the ONLY collections it can touch are `sim.entities` and the combat
+    // bodies, and that is what keeps seams S5 and S6 structural rather than careful.
+    this.ordinaryRespawnEpoch = (this.ordinaryRespawnEpoch || 0) + 1;
+    return { respawned: back, held_dead: held, why, epoch: this.ordinaryRespawnEpoch };
   }
 
   // ---- placement (D3, D4, RI-PRG04 §6 bloodstain rules) -------------------------------------

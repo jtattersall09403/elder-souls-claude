@@ -24,10 +24,37 @@ export const BANDS = {
   closed: [100, 100],
 };
 
+// GAP-FCT-02, W1-FACTIONS round 3. This set used to be the ONLY thing the violence guard below
+// consulted, and it worked by membership — so a `method` value it had never heard of was silently
+// waved through. Round 2 introduced five (`comply`, `expose`, `lie`, `sabotage`, `investigate`)
+// covering 38 of the build's 383 resolutions, and the round-2 critic demonstrated the blindness
+// with a control: mutating a `refuse` resolution to `violence_required: true` went RED, the same
+// mutation on a `comply` resolution went GREEN.
+//
+// Adding the five would fix today and fail again the next time the vocabulary drifts. So the
+// vocabulary is now CLOSED: every method must be declared either non-violent or violent, and a
+// method in neither set is a problem in its own right. A drifting vocabulary now fails loud at
+// boot instead of quietly disarming the guard.
 const RES_METHODS_NONVIOLENT = new Set([
   'persuade', 'intimidate', 'bribe', 'sneak', 'steal', 'lore_knowledge', 'trade',
   'alchemy', 'magic_utility', 'refuse', 'betray', 'confess', 'wait',
+  // round 2's five, all non-violent: you do the thing, you tell someone, you say the untrue
+  // thing, you break the machine, you go and look.
+  'comply', 'expose', 'lie', 'sabotage', 'investigate',
 ]);
+
+/** Methods that may legitimately demand violence. `combat` is the only one that must. */
+const RES_METHODS_VIOLENT = new Set(['combat']);
+
+/**
+ * `betray` and `steal` are non-violent by default and are the two the guard has always allowed to
+ * carry `violence_required: true` — a betrayal that ends in a knife and a theft that goes wrong
+ * are both authored in this build. Everything else in RES_METHODS_NONVIOLENT means it.
+ */
+const RES_METHODS_MAY_TURN_VIOLENT = new Set(['betray', 'steal']);
+
+/** The whole declared vocabulary. Anything outside it is a problem, not a pass. */
+export const RES_METHODS_KNOWN = new Set([...RES_METHODS_NONVIOLENT, ...RES_METHODS_VIOLENT]);
 
 export class QuestBook {
   /**
@@ -110,7 +137,13 @@ export class QuestBook {
         const je = (q.journal || []).find((e) => e.index === r.journal_index);
         if (je && je.state !== 'success') P.push(at(`resolution ${r.id} points at journal ${r.journal_index}, which is state ${je.state}`));
         if (r.violence_required === false && r.method === 'combat') P.push(at(`resolution ${r.id} is method combat and violence_required false`));
-        if (r.violence_required === true && RES_METHODS_NONVIOLENT.has(r.method) && r.method !== 'betray' && r.method !== 'steal') {
+        // GAP-FCT-02: the vocabulary is closed. An unrecognised method is reported HERE, before
+        // the membership test below, because a membership test cannot say no to a word it does
+        // not know — which is exactly how 38 resolutions became invisible to this guard.
+        if (r.method != null && !RES_METHODS_KNOWN.has(r.method)) {
+          P.push(at(`resolution ${r.id} has method ${JSON.stringify(r.method)}, which is not in the declared method vocabulary — the violence guard cannot see it (GAP-FCT-02). Declare it in RES_METHODS_NONVIOLENT or RES_METHODS_VIOLENT in sim/quest/defs.js.`));
+        }
+        if (r.violence_required === true && RES_METHODS_NONVIOLENT.has(r.method) && !RES_METHODS_MAY_TURN_VIOLENT.has(r.method)) {
           P.push(at(`resolution ${r.id} is method ${r.method} and violence_required true`));
         }
       }

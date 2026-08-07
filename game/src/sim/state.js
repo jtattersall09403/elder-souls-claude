@@ -206,12 +206,51 @@ export function makeWorldMutation() {
   };
 }
 
+/**
+ * The identity attribute register: **the ten ids `game/data/progression/attributes.json`
+ * declares**, at the declared `base_value` of 10, except for the three the shipped fight was
+ * calibrated against (VIGOUR 10 / ENDURANCE 20 / STRENGTH 12 — RI-CMB07's exemplar build).
+ *
+ * W1-13 round 3, `GAP-W1-levelup-screen-and-character-speak-different-languages`. This object
+ * used to read
+ *
+ *   `{ vigour: 10, endurance: 20, strength: 12, dexterity: 12, intelligence: 10, faith: 10 }`
+ *
+ * — **six** ids, three of which (`dexterity`, `intelligence`, `faith`) are Dark Souls' names and
+ * appear nowhere in this game's declared world. The level-up screen draws its rows from the data
+ * file's **ten** (`ui/system.js _attributes()`), so the screen and the character were two
+ * different vocabularies: seven rows the character did not carry (each drawn at a constant 10 and
+ * **minted at 11** by the first confirm, because `_spendSouls` had no validation), and three the
+ * character did carry that could not be raised at all.
+ *
+ * It also cost the build a second, unrelated defect that is written up at
+ * `Engine._recomposeBirthsignTerms`: the register **did not carry WILLPOWER**, so
+ * `derivePools()` read 0 for it and a load clamped a restored 94-Focus reservoir to nothing.
+ *
+ * `Engine._ensureAttributeRegister()` is the authority — it reconciles this object against the
+ * data file on every `loadState()`, exactly as `_ensureSkillRegister()` does for skills. This
+ * literal exists so that a bare `makeSim()` with no engine and no data behind it already has the
+ * right key set, because a register whose keys depend on who has booted cannot be diffed.
+ */
+export const IDENTITY_ATTRIBUTES = Object.freeze({
+  strength: 12, endurance: 20, agility: 10, speed: 10, vigour: 10,
+  willpower: 10, intellect: 10, 'hist-bond': 10, personality: 10, luck: 10,
+});
+
+/**
+ * Old six-id registers, mapped onto the declared ten so a save written before round 3 does not
+ * silently lose the points it recorded. Read by `Engine._ensureAttributeRegister()`.
+ */
+export const LEGACY_ATTRIBUTE_ALIASES = Object.freeze({
+  dexterity: 'agility', intelligence: 'intellect', faith: 'hist-bond',
+});
+
 export function makeProgression() {
   return {
     level: 1,
     soulsHeld: 0,
     soulsSpent: 0,
-    attributes: { vigour: 10, endurance: 20, strength: 12, dexterity: 12, intelligence: 10, faith: 10 },
+    attributes: { ...IDENTITY_ATTRIBUTES },
     skills: {},                 // id -> {value, useProgress}
     hearthsDiscovered: [],
     hearthLastRested: null,

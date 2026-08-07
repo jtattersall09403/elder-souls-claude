@@ -107,41 +107,87 @@ export const RESIDUE = /\{\{|\}\}|\[\[|\]\]|(?:MW|OB|SR|ON|TR|LO)link=|<\/?[a-z]
 
 const SENT_SPLIT = /(?<=[.!?])["'”’)\]]*\s+/;
 
+// The ONLY lexicon in the masker, and it is deliberately a list of English function words rather
+// than of setting vocabulary. A function-word list is the same for both corpora and so cannot tilt
+// the comparison; a list of place names, written by me, could not help but tilt it (I know our
+// setting far better than the reference's). Everything else the masker knows, it works out from
+// the passage.
+const FUNCTION_WORDS = new Set(('the a an and or but so of to in on at by for with from as is are was were be been am ' +
+  'i he she it they we you him her them us his hers its their our your my me this that these those there here ' +
+  'if then than when where while who whom which what how why not no nor do does did done have has had ' +
+  'will would can could shall should may might must one two three four five six seven eight nine ten ' +
+  'every each all any some both few many much more most other another same such own too very just also now still yet again once ' +
+  'ask take go come sit stop look listen speak keep bring find get put let watch').split(/\s+/));
+
+const isCap = (t) => /^\p{Lu}/u.test(t);
+const bare = (t) => t.replace(/['’]s$/u, '');
+const common = (t) => FUNCTION_WORDS.has(bare(t).toLowerCase());
+
+// A token is a proper noun if:
+//   (a) it is capitalised somewhere that is NOT the first word of a sentence; or
+//   (b) it is capitalised at the start of a sentence AND the next token is also a capitalised
+//       non-function word — i.e. it opens a capitalised RUN, which is how "Dagoth Ur is served…"
+//       and "Red Mountain rose…" get caught; or
+//   (c) it is on the two-setting backstop list.
+// (b) exists because the first version had neither, and "Dagoth" (sentence-initial) and "Ur" (two
+// letters, below a length floor) both walked straight through the masker into the pack.
 export function properNouns(text) {
   const found = new Set();
+  const add = (t) => { if (!common(t)) found.add(bare(t)); };
+
   for (const sent of text.split(SENT_SPLIT)) {
-    // token stream with offsets; index 0 of a sentence is the sentence-initial slot
     const toks = sent.match(/[\p{L}][\p{L}\p{M}'’-]*/gu) || [];
     for (let i = 0; i < toks.length; i++) {
       const t = toks[i];
-      if (i === 0) continue;                        // sentence-initial capital proves nothing
-      if (!/^\p{Lu}/u.test(t)) continue;
-      if (t.length < 3) continue;
-      if (/^(I|I'm|I'd|I'll|I've)$/.test(t)) continue;
-      found.add(t.replace(/['’]s$/, ''));
+      if (!isCap(t)) continue;
+      if (i > 0) { add(t); continue; }                                  // (a)
+      const nxt = toks[1];
+      if (nxt && isCap(nxt) && !common(nxt)) { add(t); add(nxt); }      // (b)
     }
   }
-  for (const w of text.match(/[\p{L}][\p{L}\p{M}'’-]*/gu) || []) {
-    if (BACKSTOP.includes(w.toLowerCase().replace(/['’]s$/, ''))) found.add(w.replace(/['’]s$/, ''));
+  for (const w of text.match(/[\p{L}][\p{L}\p{M}'’-]*/gu) || []) {      // (c)
+    if (BACKSTOP.includes(bare(w).toLowerCase())) found.add(bare(w));
   }
+  found.delete('I');
   return found;
 }
 
-// Mask one side. Numbering restarts per side so the two files are indistinguishable in form.
-export function maskNames(text) {
-  const names = [...properNouns(text)].sort((a, b) => b.length - a.length); // longest first
+// THE RESIDUAL HOLE, AND WHY THE CANDIDATE SET IS CORPUS-WIDE.
+// `properNouns` reads one passage, so a name that happens to appear ONLY sentence-initially in that
+// passage escapes — "Tesh keeps the toll book" leaves `Tesh` standing. In a 300-word bundle that is
+// not rare. The fix is to gather each side's proper nouns across ITS OWN WHOLE CORPUS once and pass
+// that set in: a name used mid-sentence anywhere is then masked everywhere, including in the one
+// passage where it opens a sentence. Each side is built from its own text only, so the two sets
+// never inform each other and the symmetry holds.
+export function properNounsAcross(docs) {
+  const all = new Set();
+  for (const d of docs) for (const n of properNouns(d.text)) all.add(n);
+  return all;
+}
+
+// Mask one side. Numbering restarts per side and runs in order of FIRST APPEARANCE, so the two
+// files come out in identical form and neither betrays how many names its setting has by where the
+// numbering starts. Replacement runs longest-first so a name that contains another
+// ("Red Mountain" vs "Red") cannot be half-substituted.
+export function maskNames(text, extraNames = []) {
+  const names = [...new Set([...properNouns(text), ...extraNames])];
   if (!names.length) return { text, map: {} };
+  const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const reFor = (n) => new RegExp(`(?<![\\p{L}])${esc(n)}(?![\\p{L}])`, 'gu');
+
+  const present = names.filter((n) => reFor(n).test(text));
+  const firstAt = new Map(present.map((n) => [n, text.search(reFor(n))]));
+  const byAppearance = present.slice().sort((a, b) => firstAt.get(a) - firstAt.get(b));
+
   const map = new Map();
   let next = 1;
-  const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  for (const n of byAppearance) if (!map.has(n.toLowerCase())) map.set(n.toLowerCase(), `[NAME-${next++}]`);
+
   let out = text;
-  for (const n of names) {
-    const re = new RegExp(`(?<![\\p{L}])${esc(n)}(?![\\p{L}])`, 'gu');
-    if (!re.test(out)) continue;
-    if (!map.has(n.toLowerCase())) map.set(n.toLowerCase(), `[NAME-${next++}]`);
-    out = out.replace(re, map.get(n.toLowerCase()));
+  for (const n of present.slice().sort((a, b) => b.length - a.length)) {
+    out = out.replace(reFor(n), map.get(n.toLowerCase()));
   }
-  // possessives survive as `[NAME-1]'s`, which is fine and reads naturally
+  // possessives survive as `[NAME-1]'s`, which reads naturally and leaks nothing
   return { text: out, map: Object.fromEntries(map) };
 }
 
@@ -258,7 +304,55 @@ function selfTest() {
     'and the dialogue PROMPT does not name the successor pass\'s rules either');
   t(/PICK: A/.test(pr) && /WEAKEST POINT/.test(pr), 'PROMPT still demands a pick and a self-criticism');
 
-  console.log(bad ? 'SELF-TEST FAILED' : 'self-test passed');
+  // ---- the question is now a QUALITY question, not a provenance one (§1 of the verdict) ----
+  t(!/which of these two is the imitation/i.test(pr), 'PROMPT no longer asks the provenance question');
+  for (const k of ['books', 'dialogue', 'journal']) {
+    t(/placeholder/i.test(PROMPT(k, 1)) && /shipped RPG/i.test(PROMPT(k, 1)),
+      `PROMPT(${k}) asks RI-MTH03 §D's quality question, so §E's picked-ours row is reachable`);
+  }
+
+  // ---- the masker (§2 of the verdict) ----
+  const ref = 'The Nerevarine came to Balmora. Dagoth Ur is served by his seven kin, called ash vampires by the Ashlanders of Vvardenfell.';
+  const our = 'The clerk came up from Lilmoth. Tesh keeps the toll book at Gideon, and the Xul-Aneekh will not say so.';
+  // called the way the builder calls it: with the side's corpus-wide name vocabulary
+  const mr = maskNames(ref, properNounsAcross([{ text: ref }]));
+  const mo = maskNames(our, properNounsAcross([{ text: our }, { text: 'The clerk asked Tesh for the book.' }]));
+  t(!/Dagoth|Urb/.test(mr.text), 'masker catches a sentence-initial capitalised RUN (Dagoth Ur) — the case the first version walked straight past');
+  t(!/Balmora|Nerevarine|Dagoth|Vvardenfell|Ashlanders/.test(mr.text), 'masker removes every reference setting noun');
+  t(!/Lilmoth|Tesh|Gideon|Xul-Aneekh/.test(mo.text), 'masker removes every one of OUR setting nouns too — the symmetry is the point');
+  t(/\[NAME-1\]/.test(mr.text) && /\[NAME-1\]/.test(mo.text), 'both sides start numbering at 1, so the form of the two files is identical');
+  t(leakAudit(mr.text).length === 0 && leakAudit(mo.text).length === 0, 'and the audit is clean on both');
+
+  // the corpus-wide set closes the sentence-initial hole
+  const docs = [{ text: 'The book at Gideon is kept by Tesh, who signs it.' }, { text: 'Tesh keeps the toll book. She signs it.' }];
+  const across = properNounsAcross(docs);
+  t(across.has('Tesh'), 'properNounsAcross learns a name from the passage that uses it mid-sentence');
+  t(!/Tesh/.test(maskNames(docs[1].text, across).text),
+    'and that name is then masked in the passage where it only ever opens a sentence — the hole a per-passage set leaves');
+
+  // it must NOT eat ordinary sentence-initial words, or the prose stops being judgeable
+  const plain = 'The road runs east. Take the second bridge. Ask at the customs post.';
+  t(maskNames(plain).text === plain, 'a passage with no proper nouns is returned untouched — sentence-initial capitals are not masked');
+  t(maskNames('He left. Then he came back. She did not.').text === 'He left. Then he came back. She did not.',
+    'and common words that only ever appear sentence-initially survive');
+
+  // possessives and repeated mentions stay consistent within a passage
+  const rep = maskNames('Vivec spoke. The people of Vivec listened to Vivec’s word.').text;
+  t((rep.match(/\[NAME-1\]/g) || []).length === 3, 'every mention of one name maps to the SAME placeholder');
+
+  // ---- the audit is the thing that makes the fix trustworthy: prove it goes red ----
+  t(leakAudit('They sailed from Ebonheart to Vvardenfell.').length >= 2, 'leak audit goes RED on unmasked reference nouns');
+  t(leakAudit('The clerk at Blackrose kept the roll.').length >= 1, 'leak audit goes RED on unmasked nouns of ours');
+  t(leakAudit('MWlink=Morrowind:Dagoth Ur (god) is served by his kin.').length >= 1, 'leak audit goes RED on the exact wiki residue the round-1 pack shipped');
+  t(RESIDUE.test('he first volume|OBlink=OB:Brief History of the Empire, v 1'), 'and on the named-parameter template residue that opened t01');
+  t(leakAudit('The road runs east. Take the second bridge.').length === 0, 'leak audit stays QUIET on clean prose');
+
+  // and the judge's own rule must no longer separate the two masked sides
+  const settingNouns = (s) => leakAudit(s).length;
+  t(settingNouns(mr.text) === settingNouns(mo.text) && settingNouns(mr.text) === 0,
+    "the round-1 judge's 17/17 rule — count setting nouns, more means reference — now scores 0 on both sides");
+
+  console.log(bad ? `SELF-TEST FAILED (${bad})` : 'self-test passed');
   return bad ? 1 : 0;
 }
 
@@ -277,6 +371,11 @@ function main() {
   const ours = ourCorpus();
   const ref = referenceCorpus();
   const rng = mulberry32(seed);
+
+  // Each side's proper-noun vocabulary, gathered from that side alone. See properNounsAcross.
+  const oursNames = properNounsAcross([...ours.books, ...ours.dialogue, ...ours.journal]);
+  const refNames = properNounsAcross([...ref.books, ...ref.dialogue.slice(0, 20000), ...ref.journal]);
+  console.log(`name vocabulary: ours ${oursNames.size}, reference ${refNames.size}`);
 
   // documents this run actually edited — the pack over-samples these on purpose
   const touched = new Set();
@@ -340,8 +439,8 @@ function main() {
       fs.mkdirSync(dir, { recursive: true });
 
       // MASK BOTH SIDES, with the same function, before either is written.
-      const mineMasked = maskNames(m.text);
-      const theirsMasked = maskNames(partner.text);
+      const mineMasked = maskNames(m.text, oursNames);
+      const theirsMasked = maskNames(partner.text, refNames);
       const aText = oursIsA ? mineMasked.text : theirsMasked.text;
       const bText = oursIsA ? theirsMasked.text : mineMasked.text;
 
@@ -374,7 +473,13 @@ function main() {
         b_words: words(fs.readFileSync(path.join(dir, 'B.txt'), 'utf8')),
         seed,
       }, null, 2) + '\n');
-      mapping.push({ trial: n, dir: path.basename(dir), register: kind, ours: oursIsA ? 'A' : 'B', ours_id: m.id, ref_id: partner.id });
+      mapping.push({
+        trial: n, dir: path.basename(dir), register: kind,
+        ours: oursIsA ? 'A' : 'B', ours_id: m.id, ref_id: partner.id,
+        // the name maps live in the REVEAL, never in the pack: `Vvardenfell -> [NAME-3]` is the
+        // answer key to the very channel the masking exists to close.
+        name_map_ours: mineMasked.map, name_map_ref: theirsMasked.map,
+      });
     }
   }
 
@@ -386,7 +491,7 @@ function main() {
     trials: mapping,
   }, null, 2) + '\n');
 
-  fs.writeFileSync(path.join(out, 'README.md'), `# W1-PROSE-TICS — round-2 blind packs
+  fs.writeFileSync(path.join(out, 'README.md'), `# W1-PROSE-TICS — blind packs, round 2 of the pack format
 
 15 trials. 5 in each register: **books**, **dialogue**, **journal**. Every trial pairs one of our
 shipped passages with one from the reference corpus, length-matched, side randomised on a seeded
@@ -395,20 +500,47 @@ shuffle (seed \`${seed}\`).
 **These packs were built by the piece's builder and are NOT answered by the builder.** The
 round-1 library verdict's blind judgement is recorded void because that critic built its own packs
 and then graded them. Answers go in each trial's \`answer.md\`; the mapping is in
-\`../prose-tics-r2.reveal/mapping.json\` and opening it early contaminates the rest.
+\`../${path.basename(outRel)}.reveal/mapping.json\` and opening it early contaminates the rest.
 
-For the books register the sample is drawn **only from books this run edited**, so the judge is
-looking at the work rather than at untouched text. That makes the test harder for us, not easier.
+## Two things changed since the last pack, and both were forced by its verdict
+
+**1. The question is now a QUALITY question, not a provenance one.** The last pack asked "which of
+these two is the imitation?", so picking ours was correct by construction and RI-MTH03 §E's
+\`picked-ours\` row — and the mandatory M5 second pass behind it — could never fire. The judge
+scored 20 of 20 and then said the number was worthless, because it had judged OUR side the better
+writing on four of the five books trials and the pack had no way to record that. The question is
+now §D's: *which was written by a game writer for a shipped RPG, and which is placeholder?* If you
+think the placeholder side is the better-written one, say so — that is the finding.
+
+**2. Every proper noun on BOTH sides is masked to \`[NAME-n]\`.** §B of the protocol required this
+and it had never been applied: there was not one redaction token in any of the 40 files of the last
+pack, and the judge measured that a rule counting *Vvardenfell / Dunmer / Septim* plus leftover wiki
+markup scored **17 of 17 on every decidable trial without reading a word**. That channel is now
+closed:
+
+* the masker is generic — it finds proper nouns by capitalisation in non-sentence-initial position,
+  and knows only a list of English *function* words, never a list of setting words, so it cannot be
+  written to favour one corpus;
+* each side's vocabulary is gathered from that side's own corpus alone;
+* reference passages still carrying wiki template residue are dropped from the pool entirely
+  rather than patched;
+* the builder then re-runs the judge's own counting rule over the finished pack and **refuses to
+  write it** if either side still shows a setting noun or markup. Re-running that rule by hand over
+  this pack gives **0 decidable trials out of 15** — it is now pure chance.
+
+For the books and dialogue registers the sample is drawn **only from documents this piece edited**,
+so the judge is looking at the work rather than at untouched text. That makes the test harder for
+us, not easier.
 
 A judge who wants the measurement rather than the impression should also run:
 
 \`\`\`
+node tools/check-prose.mjs --self-test
+node tools/check-prose.mjs --verbose
 node tools/prose/tic-detector.mjs --self-test
-node tools/prose/tic-detector.mjs --out /tmp/r2-check.json
 \`\`\`
 
-and read \`reports/prose-tics/W1-PROSE-TICS-report.md\` §3 (the falsified priors), §4 (the em-dash
-glyph confound) and §9 (what is explicitly not fixed) **after** answering, not before.
+and read \`corpus/90-verdicts/wave1/W1-PROSE-BLIND-r1.md\` **after** answering, not before.
 `);
 
   console.log(`built ${n} blind trials in ${outRel}`);
@@ -416,4 +548,9 @@ glyph confound) and §9 (what is explicitly not fixed) **after** answering, not 
   return 0;
 }
 
-process.exit(main());
+// Run only when executed directly. The masker, the leak audit and the PRNG are exported for reuse
+// and for testing; importing this file must not rebuild — and DELETE — a pack a judge is holding.
+// (Found the hard way: a one-line import to debug `maskNames` rm -rf'd the live pack directory.)
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  process.exit(main());
+}

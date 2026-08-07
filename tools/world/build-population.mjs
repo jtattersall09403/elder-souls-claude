@@ -1,241 +1,426 @@
 #!/usr/bin/env node
-// build-population.mjs — promote the property roster into real NPC records with 24-hour schedules.
-//
-// THE POINT. `game/data/world/property/*.json` already names 280 people: fourteen heads of
-// household per settlement plus their partners, elders, siblings, lodgers and children, each with
-// a trade, a faction, a quarter and a set of rooms. They own 1,878 objects between them and the
-// crime system already enforces that ownership. What they did NOT have was existence: no record in
-// `game/data/npcs/`, nobody in `sim.npcs`, nowhere to be at three in the morning.
-//
-// So this does not invent a population. It gives the population that already owns the world a body
-// and a day.
-//
-//   AUTHORED here: the trade -> actor / behaviour / topic mapping, the day-shape each trade keeps,
-//                  and the disposition each trade opens at.
-//   TAKEN from the property roster: who exists, what they are called, what they do, whose house
-//                  they are in, and which rooms are theirs.
-//   TAKEN from the settlement records: which interior is their home and which is their work.
-//
-// Every `at:` in every schedule slot is an interior id that exists on disk, and every topic id is
-// checked against game/data/dialogue/topics/ before this file will write anything.
+/**
+ * build-population.mjs — place the hostile population of Black Marsh.
+ *
+ * Reads   game/data/world/population.json   (the MODEL: density, falloff, composition)
+ *         game/data/world/encounters.json   (the TEMPLATES: who stands in a post)
+ *         game/data/world/roads.json        (the trunk-road polylines)
+ *         game/data/world/regions.json      (danger_tier 1..5)
+ *         game/data/world/terrain.json      (the 25 m region + land rasters)
+ *         game/data/world/pois.json, hearths.json (the places of safety, and the ruins)
+ * Writes  game/data/world/population-posts.json
+ *
+ * DETERMINISTIC. One mulberry32 seeded from the model's own numbers; no Math.random, no clock.
+ * Re-running with the same inputs produces a byte-identical file, which is what makes
+ * `--check` meaningful.
+ *
+ *   node tools/world/build-population.mjs            # report only
+ *   node tools/world/build-population.mjs --write    # write population-posts.json
+ *   node tools/world/build-population.mjs --check    # non-zero if the file has drifted from the model
+ *
+ * Perturbation flags, for the consumption probe and for anybody asking "does this number do
+ * anything": --tier-mult 5=2.0  --encounters-per-tm 1.6  --no-safety
+ */
 import fs from 'node:fs';
 import path from 'node:path';
 
-const ROOT = path.resolve(new URL('../..', import.meta.url).pathname);
-const OUT = path.join(ROOT, 'game/data/npcs');
-const TEMPLATE = JSON.parse(fs.readFileSync(path.join(ROOT, 'corpus/50-world/settlements.json'), 'utf8')).tier_template;
+const ROOT = path.resolve(new URL('.', import.meta.url).pathname, '../..');
+const W = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'game/data/world', f), 'utf8'));
 
-function mix(s) { let h = 2166136261 >>> 0; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h >>> 0; }
+const argv = process.argv.slice(2);
+const has = (f) => argv.includes(f);
+const val = (f, d) => { const i = argv.indexOf(f); return i >= 0 ? argv[i + 1] : d; };
 
-// The topics that exist. A topic id on an NPC that has no body is the defect that kept the
-// dialogue and quest layers unjoined for weeks, so this is a hard gate, not a warning.
-const TOPICS = new Set();
-for (const f of fs.readdirSync(path.join(ROOT, 'game/data/dialogue/topics'))) {
-  for (const t of JSON.parse(fs.readFileSync(path.join(ROOT, 'game/data/dialogue/topics', f), 'utf8')).topics || []) {
-    if (t && t.id) TOPICS.add(t.id);
+const model = W('population.json');
+const encDoc = W('encounters.json');
+const roads = W('roads.json');
+const regionsDoc = W('regions.json');
+const terrain = W('terrain.json');
+const pois = W('pois.json');
+const hearths = W('hearths.json');
+
+// ---- perturbations (declared in the output, so a report can never silently be a perturbed run)
+const perturb = {};
+for (const t of argv.filter((_, i) => argv[i - 1] === '--tier-mult')) {
+  const [k, v] = t.split('=');
+  model.tier_multiplier[k] = Number(v);
+  perturb.tier_mult = { ...(perturb.tier_mult || {}), [k]: Number(v) };
+}
+if (has('--encounters-per-tm')) {
+  model.budget.encounters_per_tm = Number(val('--encounters-per-tm'));
+  perturb.encounters_per_tm = model.budget.encounters_per_tm;
+}
+if (has('--no-safety')) perturb.no_safety = true;
+
+// ---- the rasters -----------------------------------------------------------------------------
+function unb64(str, Type) {
+  const bytes = Buffer.from(str, 'base64');
+  return new Type(bytes.buffer, bytes.byteOffset, bytes.byteLength / Type.BYTES_PER_ELEMENT);
+}
+const COLS = terrain.cols, ROWS = terrain.rows, CELL = terrain.cell_m;
+const regionU = unb64(terrain.channels.region, Uint8Array);
+const landBits = unb64(terrain.channels.land, Uint8Array);
+const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
+const cellIndex = (x, z) =>
+  clamp(Math.floor(z / CELL), 0, ROWS - 1) * COLS + clamp(Math.floor(x / CELL), 0, COLS - 1);
+const regionAt = (x, z) => regionsDoc.regions[regionU[cellIndex(x, z)]];
+const isLandAt = (x, z) => { const i = cellIndex(x, z); return ((landBits[i >> 3] >> (i & 7)) & 1) === 1; };
+
+// ---- deterministic noise ---------------------------------------------------------------------
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const SEED = 0x504f5055; // 'POPU'
+const rnd = mulberry32(SEED);
+
+// ---- places of safety ------------------------------------------------------------------------
+const S = model.safety;
+const safeties = [];
+for (const p of pois.pois) {
+  const k = S.kinds[p.kind];
+  if (k) safeties.push({ id: p.id, x: p.pos[0], z: p.pos[2], clear: k.clear_m, ramp: k.ramp_m });
+}
+for (const h of hearths.hearths) safeties.push({ id: h.id, x: h.pos[0], z: h.pos[2], clear: S.kinds.hearth.clear_m, ramp: S.kinds.hearth.ramp_m });
+
+/**
+ * 0 on top of a place of safety, ramping to 1, then to `deep_bonus` in true wilderness.
+ * The minimum is taken over every safety's OWN ramp, so a settlement's long apron and a
+ * hearth's short one do not have to share a number.
+ */
+function safetyFactor(x, z) {
+  if (perturb.no_safety) return 1;
+  let f = Infinity, nearest = Infinity;
+  for (const s of safeties) {
+    const d = Math.hypot(x - s.x, z - s.z);
+    if (d < nearest) nearest = d;
+    const local = d <= s.clear ? 0 : Math.min(1, (d - s.clear) / s.ramp);
+    if (local < f) f = local;
+    if (f === 0) break;
   }
+  if (f === Infinity) return S.deep_bonus;
+  if (nearest <= S.deep_bonus_at_m) return f;
+  return Math.min(S.deep_bonus, f * S.deep_bonus);
 }
 
-// ---- AUTHORED: what each trade is, in the world's own vocabulary ------------------------------
-// `actor` must be one of the `a` rows the topic book answers with; `behaviour` one of the four
-// sim/npc.js knows. `day` is the shape of this person's twenty-four hours.
-const TRADE = {
-  cook:       { actor: 'townsman',    behaviour: 'tend',   disp: 45, rg: 'RG-COMMON', day: 'early',   service: null },
-  trader:     { actor: 'merchant',    behaviour: 'tend',   disp: 42, rg: 'RG-COMMON', day: 'shop',    service: 'barter' },
-  smith:      { actor: 'townsman',    behaviour: 'tend',   disp: 40, rg: 'RG-COMMON', day: 'shop',    service: 'repair' },
-  apothecary: { actor: 'healer',      behaviour: 'tend',   disp: 48, rg: 'RG-COMMON', day: 'shop',    service: 'heal' },
-  boatwright: { actor: 'fisher',      behaviour: 'tend',   disp: 44, rg: 'RG-COMMON', day: 'early',   service: 'repair' },
-  publican:   { actor: 'innkeeper',   behaviour: 'tend',   disp: 55, rg: 'RG-COMMON', day: 'late',    service: 'bed' },
-  scribe:     { actor: 'clerk',       behaviour: 'stand',  disp: 38, rg: 'RG-COMMON', day: 'shop',    service: null },
-  fisher:     { actor: 'fisher',      behaviour: 'tend',   disp: 46, rg: 'RG-COMMON', day: 'early',   service: null },
-  weaver:     { actor: 'townsman',    behaviour: 'tend',   disp: 44, rg: 'RG-COMMON', day: 'shop',    service: 'barter' },
-  rootkeeper: { actor: 'rootkeeper',  behaviour: 'stand',  disp: 52, rg: 'RG-DEEP',   day: 'temple',  service: 'travel' },
-  priest:     { actor: 'healer',      behaviour: 'stand',  disp: 50, rg: 'RG-DEEP',   day: 'temple',  service: 'heal' },
-  legionary:  { actor: 'legionary',   behaviour: 'post',   disp: 30, rg: 'RG-IMP',    day: 'watch',   service: null },
-  factor:     { actor: 'dres-factor', behaviour: 'stand',  disp: 32, rg: 'RG-IMP',    day: 'shop',    service: 'barter' },
-  warder:     { actor: 'legionary',   behaviour: 'post',   disp: 28, rg: 'RG-IMP',    day: 'watch',   service: null },
-};
-const KIN = {
-  partner:    { actor: 'townsman', behaviour: 'stand', disp: 44, day: 'home' },
-  lodger:     { actor: 'villager', behaviour: 'stand', disp: 38, day: 'late' },
-  apprentice: { actor: 'townsman', behaviour: 'tend',  disp: 46, day: 'shop' },
-  elder:      { actor: 'town-elder', behaviour: 'stand', disp: 50, day: 'home' },
-  sibling:    { actor: 'villager', behaviour: 'stand', disp: 42, day: 'early' },
-  child:      { actor: 'villager', behaviour: 'attend', disp: 55, day: 'child' },
-};
-
-// ---- AUTHORED: the day shapes. Hours are [from, to) on a 24-hour clock, and every shape covers
-// all 24 hours with no gap, because a person with a gap in their day is a person who vanishes.
-const DAY = {
-  early:  [[4, 8, 'work'], [8, 13, 'work'], [13, 14, 'tavern'], [14, 19, 'work'], [19, 22, 'tavern'], [22, 4, 'home']],
-  shop:   [[0, 7, 'home'], [7, 8, 'home'], [8, 13, 'work'], [13, 14, 'tavern'], [14, 19, 'work'], [19, 22, 'tavern'], [22, 24, 'home']],
-  late:   [[0, 2, 'work'], [2, 10, 'home'], [10, 24, 'work']],
-  temple: [[0, 6, 'home'], [6, 12, 'work'], [12, 13, 'home'], [13, 20, 'work'], [20, 24, 'home']],
-  watch:  [[0, 6, 'work'], [6, 10, 'home'], [10, 18, 'work'], [18, 21, 'tavern'], [21, 24, 'home']],
-  home:   [[0, 9, 'home'], [9, 12, 'work'], [12, 18, 'home'], [18, 21, 'tavern'], [21, 24, 'home']],
-  child:  [[0, 8, 'home'], [8, 17, 'home'], [17, 19, 'shrine'], [19, 24, 'home']],
-};
-
-const hhmm = (h) => `${String(Math.floor(h % 24)).padStart(2, '0')}:00`;
-
-const races = { imperial: ['argonian', 'argonian', 'argonian', 'imperial', 'dunmer'], settlement: ['argonian', 'argonian', 'argonian', 'argonian', 'khajiit'], interior: ['argonian', 'argonian', 'argonian', 'argonian', 'nord'] };
-
-// ---- AUTHORED: who keeps a civic building ----------------------------------------------------
-// A town where the inn has no innkeeper and the gaol has no warder is a town of doors. Every
-// non-dwelling interior gets one named keeper who works there all day and goes home at night —
-// home being a room in that same building, which is R2's "back room the merchant lives in".
-const KEEPER = {
-  hall:   { title: 'Steward',      trade: 'scribe' },
-  temple: { title: 'Sexton',       trade: 'priest' },
-  shrine: { title: 'Rootkeeper',   trade: 'rootkeeper' },
-  guild:  { title: 'Clerk',        trade: 'factor' },
-  travel: { title: 'Postmaster',   trade: 'rootkeeper' },
-  tavern: { title: 'Publican',     trade: 'publican' },
-  prison: { title: 'Warder',       trade: 'warder' },
-  shop:   { title: 'Keeper',       trade: 'trader' },
-};
-const KEEPER_BY_SERVICE = { smith: 'Smith', alchemist: 'Apothecary', bookseller: 'Scribe', fence: 'Pawnbroker', trader: 'Trader', healer: 'Healer', inn: 'Publican', travel: 'Postmaster', boatwright: 'Boatwright' };
-const KEEPER_TRADE_BY_SERVICE = { smith: 'smith', alchemist: 'apothecary', bookseller: 'scribe', fence: 'trader', trader: 'trader', healer: 'priest', inn: 'publican', travel: 'rootkeeper', boatwright: 'boatwright' };
-const GIVEN = ['Deek', 'Heem', 'Wanan', 'Ocheeva', 'Tul', 'Neetrenaza', 'Chun', 'Weel', 'Jaraleet', 'Ahnassi', 'Sedura', 'Meesei', 'Jeelus-Tei', 'Okan', 'Beem-Kiune', 'Haj-Ei', 'Ten-Tongues', 'Ruut', 'Sees-All-Colours', 'Hides-His-Foot', 'Marks-The-Ledger', 'Counts-The-Tide', 'Onwen', 'Veek', 'Ashen', 'Ranaso', 'Tuls', 'Falura', 'Nartise', 'Sondaale'];
-const EPITHET = ['the Elder', 'Salt-Hand', 'Quick-Tally', 'Reed-Cutter', 'of Nine Debts', 'Bone-Setter', 'Wet-Foot', 'the Patient', 'Dark-Water', 'Rope-Maker', 'Half-Moon', 'the Younger', 'Nine-Teeth', 'the Quiet', 'Slow-Rain', 'Cold-Ash', 'Two-Skins', 'the Shorter', 'Sings-At-Dusk', 'Deep-Root'];
-const keeperName = (k) => `${GIVEN[mix(k + ':g') % GIVEN.length]} ${EPITHET[mix(k + ':e') % EPITHET.length]}`;
-
-let total = 0;
-const perSettlement = [];
-const badTopics = [];
-const badAt = [];
-const perSettlementKeepers = {};
-
-for (const file of fs.readdirSync(path.join(ROOT, 'game/data/world/property'))) {
-  const prop = JSON.parse(fs.readFileSync(path.join(ROOT, 'game/data/world/property', file), 'utf8'));
-  const sid = prop.settlement;
-  const sett = JSON.parse(fs.readFileSync(path.join(ROOT, `game/data/world/settlements/${sid}.json`), 'utf8'));
-  const target = TEMPLATE[sett.tier].named_npcs;
-  const interiors = sett.buildings.filter((b) => b.kind === 'interior');
-  const byZone = new Map();
-  for (const b of interiors) {
-    const doc = JSON.parse(fs.readFileSync(path.join(ROOT, `game/data/world/interiors/${b.interior}.json`), 'utf8'));
-    for (const z of doc.property_zones) byZone.set(z, doc.id);
+// ---- the fog-gate corridors ------------------------------------------------------------------
+const corridors = [];
+for (const g of hearths.fog_gates || []) {
+  const h = hearths.hearths.find((x) => x.id === g.hearth);
+  if (h) corridors.push({ gate: g.id, ax: h.pos[0], az: h.pos[2], bx: g.pos[0], bz: g.pos[2] });
+}
+function inFogCorridor(x, z) {
+  const r = S.fog_gate_corridor_m;
+  for (const c of corridors) {
+    const dx = c.bx - c.ax, dz = c.bz - c.az;
+    const L2 = dx * dx + dz * dz || 1;
+    const t = clamp(((x - c.ax) * dx + (z - c.az) * dz) / L2, 0, 1);
+    if (Math.hypot(x - (c.ax + t * dx), z - (c.az + t * dz)) <= r) return c.gate;
   }
-  // Which interior sells what — a trade's workplace is the town's building for that trade, and
-  // if the town has none, the person works out of their own house, which is also just true.
-  const workFor = (trade) => {
-    const want = { trader: 'shop', weaver: 'shop', factor: 'guild', smith: 'shop', apothecary: 'shop', scribe: 'shop', publican: 'tavern', rootkeeper: 'shrine', priest: 'temple', legionary: 'guild', warder: 'prison', boatwright: 'shop', fisher: 'shop', cook: 'tavern' }[trade];
-    const hit = interiors.find((b) => b.building_kind === want);
-    return hit ? hit.interior : null;
-  };
-  const tavern = (interiors.find((b) => b.building_kind === 'tavern') || interiors.find((b) => b.building_kind === 'hall') || interiors[0]).interior;
-  const shrine = (interiors.find((b) => b.building_kind === 'shrine') || interiors.find((b) => b.building_kind === 'temple') || interiors[0]).interior;
+  return null;
+}
 
-  // Everyone the property roster names, heads first so a truncated tier keeps its shopkeepers.
-  const people = [];
-  for (const h of prop.households) {
-    people.push({ npc: h.npc, name: h.name, trade: h.trade, faction: h.faction, quarter: h.quarter, zones: h.zones, role: 'head' });
-    for (const r of h.residents) {
-      if (r.npc === h.npc) continue;
-      people.push({ npc: r.npc, name: r.name, trade: h.trade, faction: h.faction, quarter: h.quarter, zones: h.zones, role: r.role });
+// ---- composition -----------------------------------------------------------------------------
+const templates = new Map(encDoc.encounters.map((e) => [e.id, e]));
+const bodyCount = (id) => templates.get(id).members.reduce((a, m) => a + m.count, 0);
+const soulsOf = (() => {
+  const cache = new Map();
+  return (sb) => {
+    if (!cache.has(sb)) {
+      const f = path.join(ROOT, 'game/data/combat/enemies', `${sb}.json`);
+      cache.set(sb, fs.existsSync(f) ? (JSON.parse(fs.readFileSync(f, 'utf8')).souls || 0) : 0);
+    }
+    return cache.get(sb);
+  };
+})();
+const soulsOfTemplate = (id) =>
+  templates.get(id).members.reduce((a, m) => a + m.count * soulsOf(m.statblock), 0);
+
+function pickTemplate(tier, r) {
+  const table = model.composition[String(tier)];
+  let acc = 0;
+  for (const [id, w] of Object.entries(table)) { acc += w; if (r <= acc) return id; }
+  return Object.keys(table)[Object.keys(table).length - 1];
+}
+
+const distToSafety = (x, z) => {
+  let best = Infinity;
+  for (const s of safeties) { const d = Math.hypot(x - s.x, z - s.z); if (d < best) best = d; }
+  return best;
+};
+
+// ---- walk the roads --------------------------------------------------------------------------
+const TM_M = model.budget.traversal_minute_m;
+const RC = model.road_corridor;
+const posts = [];
+const rejected = { water: 0, in_settlement: 0, fog_corridor: 0, too_close: 0 };
+let sideFlip = 0;
+/** Road metres by tier, and the subset that is true wilderness (safety at full). */
+const roadMetres = { total: 0, wilderness: 0, by_tier: {}, wilderness_by_tier: {} };
+const legMetres = {};
+
+/** Canonical order: the crossing's legs first (it is the journey the game is about), then the rest. */
+const crossingLegs = roads.named_routes.crossing.legs;
+const legOrder = [...crossingLegs, ...roads.legs.map((l) => l.id).filter((id) => !crossingLegs.includes(id))];
+
+function segmentsOf(leg) {
+  const pts = leg.points;
+  const out = [];
+  let acc = 0;
+  for (let i = 1; i < pts.length; i++) {
+    const [x0, z0] = pts[i - 1], [x1, z1] = pts[i];
+    const d = Math.hypot(x1 - x0, z1 - z0);
+    out.push({ x0, z0, x1, z1, d, s0: acc });
+    acc += d;
+  }
+  return { segs: out, length: acc };
+}
+
+function pointAt(segs, s) {
+  for (const g of segs) {
+    if (s <= g.s0 + g.d) {
+      const t = g.d ? (s - g.s0) / g.d : 0;
+      const nx = (g.z1 - g.z0) / (g.d || 1), nz = -(g.x1 - g.x0) / (g.d || 1);
+      return { x: g.x0 + (g.x1 - g.x0) * t, z: g.z0 + (g.z1 - g.z0) * t, nx, nz };
     }
   }
-  const heads = people.filter((p) => p.role === 'head');
-  const rest = people.filter((p) => p.role !== 'head');
-  const chosen = [...heads, ...rest].slice(0, target);
-
-  const npcs = [];
-  const seenName = new Map();
-  for (const p of chosen) {
-    const id = p.npc.replace(/^npc:/, '');
-    const spec = p.role === 'head' ? TRADE[p.trade] : KIN[p.role];
-    const shape = DAY[spec.day] || DAY.home;
-    const home = byZone.get(p.zones[0]) || null;
-    const work = p.role === 'head' ? (workFor(p.trade) || home) : (spec.day === 'shop' ? (workFor(p.trade) || home) : home);
-    if (!home) throw new Error(`${id}: no home interior for zone ${p.zones[0]}`);
-    const where = { home, work: work || home, tavern, shrine };
-    const schedule = shape.map(([a, b, act]) => ({ from: hhmm(a), to: hhmm(b), at: where[act] || home, activity: act }));
-    for (const s of schedule) if (!byZone.has(s.at) && !interiors.some((b) => b.interior === s.at)) badAt.push(`${id} -> ${s.at}`);
-    // A name that repeats inside one town is a different person with the same name, and that is
-    // fine in a marsh village and confusing in a capital, so the second one gets their quarter.
-    const n = (seenName.get(p.name) || 0) + 1; seenName.set(p.name, n);
-    const displayName = n === 1 ? p.name : `${p.name} of ${p.quarter.replace(/-/g, ' ')}`;
-    const topics = [sid, 'background'];
-    for (const t of topics) if (!TOPICS.has(t)) badTopics.push(`${id} -> ${t}`);
-    npcs.push({
-      id, name: displayName,
-      race: races[prop.jurisdiction][mix(id) % 5],
-      class: p.role === 'head' ? p.trade : p.role,
-      actor: spec.actor,
-      faction: p.faction || null,
-      settlement: sid,
-      quarter: p.quarter,
-      household: p.npc.replace(/^npc:/, '').replace(/-(partner|lodger|apprentice|elder|sibling|child)\d+$/, ''),
-      role: p.role,
-      disposition: spec.disp + (mix(id + ':d') % 9) - 4,
-      interior: home,
-      home_interior: home,
-      work_interior: work || home,
-      // The rooms this person owns. `Engine.takeObject()` reads the same ids off the property
-      // file, so "whose crate is this" and "whose house is this" are the same question.
-      owns_zones: p.role === 'head' ? p.zones : [],
-      behaviour: spec.behaviour,
-      schedule,
-      topics,
-      services: spec.service ? [spec.service] : [],
-      reaction_group: spec.rg || 'RG-COMMON',
-    });
-  }
-  // ---- the keepers. One named person behind every civic door. ------------------------------
-  let keepers = 0;
-  for (const b of interiors) {
-    if (b.building_kind === 'dwelling') continue;
-    const k = KEEPER[b.building_kind] || KEEPER.shop;
-    const title = b.service ? (KEEPER_BY_SERVICE[b.service] || k.title) : k.title;
-    const trade = b.service ? (KEEPER_TRADE_BY_SERVICE[b.service] || k.trade) : k.trade;
-    const spec = TRADE[trade];
-    const id = `${sid}-keeper-${b.interior.replace(new RegExp(`^${sid}-`), '')}`;
-    const shape = DAY[spec.day] || DAY.shop;
-    // A keeper's home IS the back room. R2: "a back room or upper floor the merchant lives in."
-    const where = { home: b.interior, work: b.interior, tavern, shrine };
-    const schedule = shape.map(([a, c, act]) => ({ from: hhmm(a), to: hhmm(c), at: where[act] || b.interior, activity: act }));
-    const nm = keeperName(id);
-    npcs.push({
-      id, name: nm, title,
-      race: races[prop.jurisdiction][mix(id) % 5],
-      class: trade,
-      actor: spec.actor,
-      faction: b.faction || null,
-      settlement: sid,
-      quarter: b.quarter,
-      household: id,
-      role: 'keeper',
-      disposition: spec.disp + (mix(id + ':d') % 9) - 4,
-      interior: b.interior,
-      home_interior: b.interior,
-      work_interior: b.interior,
-      owns_zones: [],
-      behaviour: spec.behaviour,
-      schedule,
-      topics: [sid, 'background'],
-      services: spec.service ? [spec.service] : [],
-      reaction_group: spec.rg || 'RG-COMMON',
-    });
-    keepers++;
-  }
-  perSettlementKeepers[sid] = keepers;
-
-  const doc = {
-    schema: 'elder-souls/npc-group@1',
-    group: `pop-${sid}`,
-    id: `pop-${sid}`,
-    settlement: sid,
-    generated_by: 'tools/world/build-population.mjs',
-    source: 'the household roster in game/data/world/property/' + sid + '.json — these are the people who already owned the objects',
-    npcs,
-  };
-  fs.writeFileSync(path.join(OUT, `pop-${sid}.json`), JSON.stringify(doc, null, 1) + '\n');
-  total += npcs.length;
-  perSettlement.push({ settlement: sid, tier: sett.tier, roster: npcs.length - perSettlementKeepers[sid], keepers: perSettlementKeepers[sid], total: npcs.length, target, scheduled: npcs.filter((n) => n.schedule.length).length });
+  const g = segs[segs.length - 1];
+  return { x: g.x1, z: g.z1, nx: 0, nz: 1 };
 }
 
-if (badTopics.length) { console.error('TOPIC IDS THAT DO NOT EXIST:', badTopics.slice(0, 20)); process.exit(1); }
-if (badAt.length) { console.error('SCHEDULE SLOTS POINTING AT INTERIORS THAT DO NOT EXIST:', badAt.slice(0, 20)); process.exit(1); }
-console.table(perSettlement);
-console.log(`wrote ${total} NPC records, all with 24-hour schedules, every topic id and every schedule target verified to exist`);
+let postSeq = 0;
+for (const legId of legOrder) {
+  const leg = roads.legs.find((l) => l.id === legId);
+  const { segs, length } = segmentsOf(leg);
+  // Density is a rate along the road: walk it in 5 m steps, accumulate expected encounters,
+  // and drop a post each time the accumulator passes 1. That makes density a genuine function
+  // of position rather than a fixed spacing with a label on it.
+  const STEP = 5;
+  let acc = 0, lastPost = null;
+  for (let s = 0; s < length; s += STEP) {
+    const p = pointAt(segs, s);
+    const reg = regionAt(p.x, p.z);
+    const tier = reg.danger_tier;
+    const mult = model.tier_multiplier[String(tier)] ?? 1;
+    const safe = safetyFactor(p.x, p.z);
+    const perM = (model.budget.encounters_per_tm / TM_M) * mult * safe;
+    roadMetres.total += STEP;
+    roadMetres.by_tier[tier] = (roadMetres.by_tier[tier] || 0) + STEP;
+    (legMetres[legId] ||= { total: 0, wilderness: 0 }).total += STEP;
+    if (safe >= 0.999) {
+      roadMetres.wilderness += STEP;
+      roadMetres.wilderness_by_tier[tier] = (roadMetres.wilderness_by_tier[tier] || 0) + STEP;
+      legMetres[legId].wilderness += STEP;
+    }
+    acc += perM * STEP;
+    // Rejections put their unit back (a stretch of open water must not cost the road its
+    // density), but the credit is capped so that a long causeway does not empty its whole
+    // budget into a pile-up on the first patch of dry land the other side.
+    if (acc > 1.5) acc = 1.5;
+    if (acc < 1) continue;
+    acc -= 1;
+
+    // offset to one side of the road
+    sideFlip++;
+    const side = sideFlip % 2 === 0 ? 1 : -1;
+    const off = RC.offset_min_m + rnd() * (RC.offset_max_m - RC.offset_min_m);
+    const x = p.x + p.nx * off * side;
+    const z = p.z + p.nz * off * side;
+
+    if (!isLandAt(x, z)) { rejected.water++; acc += 1; continue; }
+    if (safetyFactor(x, z) <= 0) { rejected.in_settlement++; acc += 1; continue; }
+    const fg = inFogCorridor(x, z);
+    if (fg) { rejected.fog_corridor++; acc += 1; continue; }
+    if (lastPost && Math.hypot(x - lastPost.x, z - lastPost.z) < RC.min_separation_m) { rejected.too_close++; acc += 1; continue; }
+
+    const post = {
+      id: `pop-${String(++postSeq).padStart(4, '0')}`,
+      kind: 'road',
+      leg: legId,
+      at_m: Math.round(s),
+      x: Math.round(x * 100) / 100,
+      z: Math.round(z * 100) / 100,
+      region: reg.id,
+      tier,
+      safety: Math.round(safe * 1000) / 1000,
+    };
+    post.encounter = pickTemplate(tier, rnd());
+    post.d_safety = Math.round(distToSafety(post.x, post.z) * 10) / 10;
+    posts.push(post);
+    lastPost = post;
+  }
+}
+
+// ---- landmark garrisons ----------------------------------------------------------------------
+const PG = model.poi_garrison;
+const fogGateAt = new Set((hearths.fog_gates || []).map((g) => `${g.pos[0]},${g.pos[2]}`));
+for (const p of pois.pois) {
+  if (!PG.kinds.includes(p.kind)) continue;
+  if (PG.skip_fog_gate_landmarks && fogGateAt.has(`${p.pos[0]},${p.pos[2]}`)) continue;
+  const reg = regionAt(p.pos[0], p.pos[2]);
+  const tier = reg.danger_tier;
+  const n = PG.ring_posts_by_tier[String(tier)] ?? 3;
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * 2 * Math.PI + rnd() * 0.6;
+    const x = p.pos[0] + Math.cos(a) * PG.ring_radius_m;
+    const z = p.pos[2] + Math.sin(a) * PG.ring_radius_m;
+    if (!isLandAt(x, z)) { rejected.water++; continue; }
+    if (inFogCorridor(x, z)) { rejected.fog_corridor++; continue; }
+    const post = {
+      id: `pop-${String(++postSeq).padStart(4, '0')}`,
+      kind: 'garrison',
+      poi: p.id,
+      x: Math.round(x * 100) / 100,
+      z: Math.round(z * 100) / 100,
+      region: reg.id,
+      tier,
+      safety: Math.round(safetyFactor(x, z) * 1000) / 1000,
+    };
+    post.encounter = pickTemplate(tier, rnd());
+    post.d_safety = Math.round(distToSafety(post.x, post.z) * 10) / 10;
+    posts.push(post);
+  }
+}
+
+// ---- the introduction rule, as a pass over the finished placement ----------------------------
+// RI-AI05 §D: the first instance of any archetype must be presented SOLO, in a lit, open,
+// non-ambush position, with retreat available — and it is a hard fail there, not a preference.
+// Running it inline along the road introduced inf_trash in a tier-4 region because that is
+// simply where the first leg of the crossing starts; the rule is about what the PLAYER meets
+// first, and a player meets the lowest-tier, closest-to-safety instance first whatever route
+// they take. So the pass runs over the finished placement, ordered by (tier, distance from the
+// nearest place of safety), and the first post that would introduce a statblock becomes that
+// statblock's solo template.
+const introductionOrder = [];
+if (model.introduction_rule.enabled) {
+  const solos = model.introduction_rule.solo_template_for;
+  const seen = new Set();
+  const order = posts.slice().sort((a, b) => (a.tier - b.tier) || (a.d_safety - b.d_safety) || (a.id < b.id ? -1 : 1));
+  for (const q of order) {
+    const news = [...new Set(templates.get(q.encounter).members.map((m) => m.statblock))].filter((sb) => !seen.has(sb));
+    if (!news.length) continue;
+    const first = news[0];
+    const solo = solos[first];
+    if (!solo) { news.forEach((sb) => seen.add(sb)); continue; }
+    seen.add(first);
+    q.encounter = solo;
+    q.introduces = first;
+    introductionOrder.push({ statblock: first, template: solo, post: q.id, region: q.region, tier: q.tier, d_safety_m: q.d_safety, x: q.x, z: q.z });
+  }
+}
+for (const q of posts) { q.bodies = bodyCount(q.encounter); q.souls = soulsOfTemplate(q.encounter); }
+
+// ---- report ----------------------------------------------------------------------------------
+const byRegion = {}, byTier = {}, byTemplate = {};
+let bodies = 0, souls = 0, solo = 0, grouped = 0, groupedBodies = 0, gankDuos = 0;
+for (const q of posts) {
+  bodies += q.bodies; souls += q.souls;
+  byTemplate[q.encounter] = (byTemplate[q.encounter] || 0) + 1;
+  const r = (byRegion[q.region] ||= { tier: q.tier, posts: 0, bodies: 0, souls: 0 });
+  r.posts++; r.bodies += q.bodies; r.souls += q.souls;
+  const t = (byTier[q.tier] ||= { posts: 0, bodies: 0, souls: 0 });
+  t.posts++; t.bodies += q.bodies; t.souls += q.souls;
+  if (q.bodies === 1) solo++; else { grouped++; groupedBodies += q.bodies; }
+  if (templates.get(q.encounter).gank_duo) gankDuos++;
+}
+const roadPosts = posts.filter((q) => q.kind === 'road');
+const roadBodies = roadPosts.reduce((a, q) => a + q.bodies, 0);
+const roadM = roadMetres.total;
+const roadTM = roadM / TM_M;
+// D9 names "wilderness road walking", so the band belongs on the wilderness stretches. The
+// approach to a town is deliberately empty and averaging it in would hide both numbers.
+const wildPosts = roadPosts.filter((q) => q.safety >= 0.999);
+const wildBodies = wildPosts.reduce((a, q) => a + q.bodies, 0);
+const wildTM = roadMetres.wilderness / TM_M;
+
+// THE CROSSING. The journey the brief is about: Stormhold south gate to Lilmoth harbour steps.
+const crossPosts = posts.filter((q) => crossingLegs.includes(q.leg));
+const crossBodies = crossPosts.reduce((a, q) => a + q.bodies, 0);
+const crossSouls = crossPosts.reduce((a, q) => a + q.souls, 0);
+const crossM = crossingLegs.reduce((a, id) => a + (legMetres[id] ? legMetres[id].total : 0), 0);
+// RI-PRG01's shipped curve, so "what level does the crossing pay for" is not an estimate.
+const levels = JSON.parse(fs.readFileSync(path.join(ROOT, 'game/data/progression/levels.json'), 'utf8'));
+const levelRows = levels.levels;
+function levelForSouls(total) {
+  let lvl = 1;
+  for (const r of levelRows) { if (r.cumulative > total) break; lvl = r.level; }
+  return lvl;
+}
+
+const report = {
+  seed: SEED,
+  perturbations: Object.keys(perturb).length ? perturb : null,
+  posts: posts.length,
+  bodies,
+  souls,
+  road: {
+    trunk_m: Math.round(roadM),
+    traversal_minutes: Math.round(roadTM * 10) / 10,
+    posts: roadPosts.length,
+    bodies: roadBodies,
+    encounters_per_tm_all_road: Math.round((roadPosts.length / roadTM) * 1000) / 1000,
+    enemies_per_tm_all_road: Math.round((roadBodies / roadTM) * 1000) / 1000,
+    wilderness_m: roadMetres.wilderness,
+    wilderness_traversal_minutes: Math.round(wildTM * 10) / 10,
+    wilderness_posts: wildPosts.length,
+    wilderness_bodies: wildBodies,
+    encounters_per_tm_wilderness: Math.round((wildPosts.length / wildTM) * 1000) / 1000,
+    enemies_per_tm_wilderness: Math.round((wildBodies / wildTM) * 1000) / 1000,
+    band_encounters: model.budget.encounters_per_tm_band,
+    band_enemies: model.budget.enemies_per_tm_band,
+    d9_band: model.budget.d9_groups_per_minute_band,
+    _which_number_is_the_bar: 'RI-WLD02 D9 says "per minute of WILDERNESS road walking", so encounters_per_tm_wilderness is the figure the band applies to. The all-road figure includes the deliberately empty aprons around 24 settlements and 29 hearths and is lower by construction.',
+  },
+  crossing: {
+    legs: crossingLegs,
+    metres: Math.round(crossM),
+    walk_minutes: Math.round((crossM / model.budget.walk_speed_mps / 60) * 10) / 10,
+    posts: crossPosts.length,
+    bodies: crossBodies,
+    souls: crossSouls,
+    level_if_fully_cleared: levelForSouls(crossSouls),
+    encounters_per_tm: Math.round((crossPosts.length / (crossM / TM_M)) * 1000) / 1000,
+    wilderness_m: crossingLegs.reduce((a, id) => a + (legMetres[id] ? legMetres[id].wilderness : 0), 0),
+    encounters_per_tm_wilderness: Math.round((crossPosts.filter((q) => q.safety >= 0.999).length
+      / (crossingLegs.reduce((a, id) => a + (legMetres[id] ? legMetres[id].wilderness : 0), 0) / TM_M)) * 1000) / 1000,
+    regions: [...new Set(crossPosts.map((q) => `${q.region}(t${q.tier})`))],
+  },
+  enemies_per_encounter: Math.round((bodies / posts.length) * 1000) / 1000,
+  enemies_per_encounter_band: model.budget.enemies_per_encounter_band,
+  solo_grouped: [Math.round((solo / posts.length) * 1000) / 10, Math.round((grouped / posts.length) * 1000) / 10],
+  grouped_mean_bodies: Math.round((groupedBodies / (grouped || 1)) * 1000) / 1000,
+  gank_duo_posts: gankDuos,
+  by_tier: byTier,
+  by_region: byRegion,
+  by_template: byTemplate,
+  road_metres_by_tier: roadMetres.by_tier,
+  rejected,
+  introduction_order: introductionOrder,
+};
+
+const out = {
+  schema: 'elder-souls/population-posts@1',
+  generator: 'tools/world/build-population.mjs',
+  model: 'game/data/world/population.json',
+  note: 'GENERATED — do not hand-edit. Every post names a template in game/data/world/encounters.json and a coordinate on land. Read at runtime by game/src/world/population.js, pumped from Engine._streamPopulation().',
+  report,
+  posts,
+};
+
+if (has('--write')) {
+  fs.writeFileSync(path.join(ROOT, 'game/data/world/population-posts.json'), JSON.stringify(out, null, 1) + '\n');
+  console.log('wrote game/data/world/population-posts.json');
+}
+if (has('--check')) {
+  const p = path.join(ROOT, 'game/data/world/population-posts.json');
+  if (!fs.existsSync(p)) { console.error('population-posts.json missing — run --write'); process.exit(2); }
+  const cur = fs.readFileSync(p, 'utf8');
+  const want = JSON.stringify(out, null, 1) + '\n';
+  if (cur !== want) { console.error('DRIFT: population-posts.json does not match the model. Re-run --write.'); process.exit(1); }
+  console.log('population-posts.json matches the model');
+}
+console.log(JSON.stringify(report, null, 1));

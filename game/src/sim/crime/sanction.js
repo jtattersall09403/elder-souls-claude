@@ -133,14 +133,35 @@ function parseStanding(s) {
   return [m[1], m[2] === undefined ? null : Number(m[2])];
 }
 
-/** The standing key the faction_law_factor table is indexed by. */
+/**
+ * The standing key the `faction_law_factor` table is indexed by.
+ *
+ * The ORDER is the design and not an accident: a player can hold two standings at once, and the
+ * guard reads the one that changes their behaviour most. Declared allegiances to the Empire come
+ * first (they buy the most rope), then the interior kin (they cost the most), then the trades.
+ *
+ * W1-FACTIONS round 3, AR-3. Three joinable factions were missing entirely. `the_imperial_assize`
+ * — eighteen quests ending with a court's seal in the player's hand — was in no branch here and
+ * no entry of `standing_ids`, so the whole line moved no guard in the province by one point. So
+ * were `the_ixtu_vakh` and `the_dockhands`, both joinable through the mainline. Only 2 of the 5
+ * joinable factions reached this function at all.
+ *
+ * `tools/check-data.mjs` now asserts BOTH directions — every row of the table must be returnable
+ * by this function, and every faction with a `joins_faction` anywhere in the quest book must have
+ * a `standing_ids` entry — so the next faction to ship cannot quietly miss the crossing.
+ */
 export function standingKey(standings) {
   if ((standings['ninth-cohort'] || 0) >= 4) return 'ninth-cohort:4+';
   if ((standings['ninth-cohort'] || 0) >= 1) return 'ninth-cohort:1-3';
+  if ((standings['imperial-assize'] || 0) >= 4) return 'imperial-assize:4+';
+  if ((standings['imperial-assize'] || 0) >= 1) return 'imperial-assize:1-3';
   if ((standings['xul-aneekh'] || 0) >= 4) return 'xul-aneekh:4+';
   if ((standings['xul-aneekh'] || 0) >= 1) return 'xul-aneekh:1-3';
+  if ((standings['ixtu-vakh'] || 0) >= 4) return 'ixtu-vakh:4+';
+  if ((standings['ixtu-vakh'] || 0) >= 1) return 'ixtu-vakh:1-3';
   if ((standings['wet-ledger'] || 0) >= 3) return 'wet-ledger:3+';
   if ((standings['wet-ledger'] || 0) >= 1) return 'wet-ledger:1-2';
+  if (standings['dockhands']) return 'dockhands:any';
   if (standings['sap-cutters']) return 'sap-cutters:any';
   if (standings['morag-tong']) return 'morag-tong:known';
   if (standings['ku-vastei']) return 'ku-vastei:petitioner';

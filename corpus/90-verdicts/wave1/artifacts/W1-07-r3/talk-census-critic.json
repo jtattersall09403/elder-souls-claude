@@ -1,68 +1,284 @@
 {
-  "npcs": 15,
+  "npcs": 336,
   "races": 10,
-  "pairs": 150,
-  "mute": [],
+  "pairs": 3360,
+  "mute": [
+    {
+      "npc": "ku-vastei-ixakh",
+      "race": "saxhleel",
+      "place": null,
+      "file": "faction-givers.json",
+      "listed_topics": 3
+    },
+    {
+      "npc": "ku-vastei-ixakh",
+      "race": "naga",
+      "place": null,
+      "file": "faction-givers.json",
+      "listed_topics": 3
+    },
+    {
+      "npc": "ku-vastei-ixakh",
+      "race": "dunmer",
+      "place": null,
+      "file": "faction-givers.json",
+      "listed_topics": 3
+    },
+    {
+      "npc": "ku-vastei-ixakh",
+      "race": "imperial",
+      "place": null,
+      "file": "faction-givers.json",
+      "listed_topics": 3
+    },
+    {
+      "npc": "ku-vastei-ixakh",
+      "race": "nord",
+      "place": null,
+      "file": "faction-givers.json",
+      "listed_topics": 3
+    },
+    {
+      "npc": "ku-vastei-ixakh",
+      "race": "breton",
+      "place": null,
+      "file": "faction-givers.json",
+      "listed_topics": 3
+    },
+    {
+      "npc": "ku-vastei-ixakh",
+      "race": "redguard",
+      "place": null,
+      "file": "faction-givers.json",
+      "listed_topics": 3
+    },
+    {
+      "npc": "ku-vastei-ixakh",
+      "race": "khajiit",
+      "place": null,
+      "file": "faction-givers.json",
+      "listed_topics": 3
+    },
+    {
+      "npc": "ku-vastei-ixakh",
+      "race": "orsimer",
+      "place": null,
+      "file": "faction-givers.json",
+      "listed_topics": 3
+    },
+    {
+      "npc": "ku-vastei-ixakh",
+      "race": "bosmer",
+      "place": null,
+      "file": "faction-givers.json",
+      "listed_topics": 3
+    },
+    {
+      "npc": "npc-the-thing-in-the-third-bay",
+      "race": "saxhleel",
+      "place": null,
+      "file": "mainline.json",
+      "listed_topics": 0
+    },
+    {
+      "npc": "npc-the-thing-in-the-third-bay",
+      "race": "naga",
+      "place": null,
+      "file": "mainline.json",
+      "listed_topics": 0
+    },
+    {
+      "npc": "npc-the-thing-in-the-third-bay",
+      "race": "dunmer",
+      "place": null,
+      "file": "mainline.json",
+      "listed_topics": 0
+    },
+    {
+      "npc": "npc-the-thing-in-the-third-bay",
+      "race": "imperial",
+      "place": null,
+      "file": "mainline.json",
+      "listed_topics": 0
+    },
+    {
+      "npc": "npc-the-thing-in-the-third-bay",
+      "race": "nord",
+      "place": null,
+      "file": "mainline.json",
+      "listed_topics": 0
+    },
+    {
+      "npc": "npc-the-thing-in-the-third-bay",
+      "race": "breton",
+      "place": null,
+      "file": "mainline.json",
+      "listed_topics": 0
+    },
+    {
+      "npc": "npc-the-thing-in-the-third-bay",
+      "race": "redguard",
+      "place": null,
+      "file": "mainline.json",
+      "listed_topics": 0
+    },
+    {
+      "npc": "npc-the-thing-in-the-third-bay",
+      "race": "khajiit",
+      "place": null,
+      "file": "mainline.json",
+      "listed_topics": 0
+    },
+    {
+      "npc": "npc-the-thing-in-the-third-bay",
+      "race": "orsimer",
+      "place": null,
+      "file": "mainline.json",
+      "listed_topics": 0
+    },
+    {
+      "npc": "npc-the-thing-in-the-third-bay",
+      "race": "bosmer",
+      "place": null,
+      "file": "mainline.json",
+      "listed_topics": 0
+    }
+  ],
   "by_race": {
     "saxhleel": {
-      "total": 57,
-      "mute_npcs": 0
+      "total": 508,
+      "mute_npcs": 2
     },
     "naga": {
-      "total": 57,
-      "mute_npcs": 0
+      "total": 508,
+      "mute_npcs": 2
     },
     "imperial": {
-      "total": 57,
-      "mute_npcs": 0
+      "total": 508,
+      "mute_npcs": 2
     },
     "nord": {
-      "total": 57,
-      "mute_npcs": 0
+      "total": 508,
+      "mute_npcs": 2
     },
     "breton": {
-      "total": 57,
-      "mute_npcs": 0
+      "total": 508,
+      "mute_npcs": 2
     },
     "redguard": {
-      "total": 57,
-      "mute_npcs": 0
+      "total": 508,
+      "mute_npcs": 2
     },
     "khajiit": {
-      "total": 57,
-      "mute_npcs": 0
+      "total": 508,
+      "mute_npcs": 2
     },
     "orsimer": {
-      "total": 57,
-      "mute_npcs": 0
+      "total": 508,
+      "mute_npcs": 2
     },
     "bosmer": {
-      "total": 57,
-      "mute_npcs": 0
+      "total": 508,
+      "mute_npcs": 2
     },
     "dunmer": {
-      "total": 56,
-      "mute_npcs": 0
+      "total": 507,
+      "mute_npcs": 2
     }
   },
   "by_place": {
-    "helstrom": {
-      "npcs": 4,
-      "worst": "dunmer",
-      "worst_topics": 13,
+    "gideon": {
+      "npcs": 41,
+      "worst": "saxhleel",
+      "worst_topics": 53,
       "best": "bosmer",
-      "best_topics": 14,
+      "best_topics": 53,
+      "silent_races": []
+    },
+    "blackrose": {
+      "npcs": 34,
+      "worst": "saxhleel",
+      "worst_topics": 50,
+      "best": "bosmer",
+      "best_topics": 50,
+      "silent_races": []
+    },
+    "helstrom": {
+      "npcs": 58,
+      "worst": "dunmer",
+      "worst_topics": 92,
+      "best": "bosmer",
+      "best_topics": 93,
+      "silent_races": []
+    },
+    "faction-givers.json": {
+      "npcs": 1,
+      "worst": "saxhleel",
+      "worst_topics": 0,
+      "best": "bosmer",
+      "best_topics": 0,
+      "silent_races": [
+        "saxhleel",
+        "naga",
+        "dunmer",
+        "imperial",
+        "nord",
+        "breton",
+        "redguard",
+        "khajiit",
+        "orsimer",
+        "bosmer"
+      ]
+    },
+    "soulrest": {
+      "npcs": 29,
+      "worst": "saxhleel",
+      "worst_topics": 58,
+      "best": "bosmer",
+      "best_topics": 58,
+      "silent_races": []
+    },
+    "mainline.json": {
+      "npcs": 9,
+      "worst": "saxhleel",
+      "worst_topics": 25,
+      "best": "bosmer",
+      "best_topics": 25,
+      "silent_races": []
+    },
+    "archon": {
+      "npcs": 34,
+      "worst": "saxhleel",
+      "worst_topics": 42,
+      "best": "bosmer",
+      "best_topics": 42,
+      "silent_races": []
+    },
+    "thorn": {
+      "npcs": 23,
+      "worst": "saxhleel",
+      "worst_topics": 32,
+      "best": "bosmer",
+      "best_topics": 32,
       "silent_races": []
     },
     "stormhold": {
-      "npcs": 3,
+      "npcs": 49,
       "worst": "saxhleel",
-      "worst_topics": 10,
+      "worst_topics": 64,
       "best": "bosmer",
-      "best_topics": 10,
+      "best_topics": 64,
       "silent_races": []
     },
-    "rootlands": {
+    "lilmoth": {
+      "npcs": 50,
+      "worst": "saxhleel",
+      "worst_topics": 60,
+      "best": "bosmer",
+      "best_topics": 60,
+      "silent_races": []
+    },
+    "named-states.json": {
       "npcs": 3,
       "worst": "saxhleel",
       "worst_topics": 12,
@@ -70,12 +286,12 @@
       "best_topics": 12,
       "silent_races": []
     },
-    "thorn": {
+    "quest-givers.json": {
       "npcs": 2,
       "worst": "saxhleel",
-      "worst_topics": 6,
+      "worst_topics": 4,
       "best": "bosmer",
-      "best_topics": 6,
+      "best_topics": 4,
       "silent_races": []
     },
     "tidewrack": {
@@ -88,15 +304,82 @@
     }
   },
   "direction": {
-    "pairs": 57,
-    "answered_all": 56,
-    "subtractive": 1,
-    "single_race": 0,
+    "pairs": 719,
+    "answered_all": 507,
+    "subtractive": 212,
+    "single_race": 211,
     "hist": {
+      "0": 211,
       "9": 1,
-      "10": 56
+      "10": 507
     },
     "examples": [
+      {
+        "npc": "npc-wuleen-kus",
+        "topic": "the-wharf-debt",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "npc-wuleen-kus",
+        "topic": "the-water-call",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "master-anse",
+        "topic": "the-second-set-of-weights",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "master-anse",
+        "topic": "the-short-weight",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "notary-sedda-vell",
+        "topic": "the-lease-roll",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "ee-vashum",
+        "topic": "the-coast-wound",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "ee-vashum",
+        "topic": "the-taking-below",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "ee-vashum",
+        "topic": "the-consensus",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "ku-vastei-ixakh",
+        "topic": "the-ku-vastei",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "ku-vastei-ixakh",
+        "topic": "the-taking-below",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "ku-vastei-ixakh",
+        "topic": "the-consensus",
+        "answered_for": 0,
+        "races": []
+      },
       {
         "npc": "helstrom-net-mender",
         "topic": "the-old-cages",
@@ -112,20 +395,338 @@
           "orsimer",
           "bosmer"
         ]
+      },
+      {
+        "npc": "archon-priest-0",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-weaver-1",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-smith-2",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-priest-3",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-priest-4",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-cook-5",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-scribe-6",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-factor-7",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-scribe-8",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-factor-9",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-apothecary-10",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-apothecary-11",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-priest-0-elder0",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-priest-0-sibling1",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-weaver-1-apprentice0",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-smith-2-child0",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-smith-2-partner1",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-priest-3-sibling0",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-keeper-guild-office",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-keeper-vat-house",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-keeper-market",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-keeper-apothecary",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-keeper-inn",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-keeper-ward",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "archon-keeper-kiln-house",
+        "topic": "archon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-trader-0",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-publican-1",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-publican-6",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-trader-8",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-apothecary-9",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-factor-10",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-boatwright-11",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-smith-12",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-weaver-13",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-trader-0-partner0",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-publican-1-elder0",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-publican-1-sibling1",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-legionary-2-sibling0",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-legionary-3-elder0",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-legionary-3-sibling1",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-keeper-inn",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-keeper-warders-hall",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-keeper-market",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-keeper-smithy",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-keeper-pawn",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "blackrose-keeper-clerk",
+        "topic": "blackrose",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "gideon-fisher-0",
+        "topic": "gideon",
+        "answered_for": 0,
+        "races": []
+      },
+      {
+        "npc": "gideon-apothecary-1",
+        "topic": "gideon",
+        "answered_for": 0,
+        "races": []
       }
     ]
   },
   "depth": {
     "best": "saxhleel",
-    "best_total": 57,
+    "best_total": 508,
     "worst": "dunmer",
-    "worst_total": 56,
-    "ratio": 0.982
+    "worst_total": 507,
+    "ratio": 0.998
   },
   "answer_variation": {
-    "varying": 35,
-    "constant": 22,
+    "varying": 82,
+    "constant": 637,
     "examples": [
+      {
+        "npc": "gideon-quay-porter",
+        "topic": "the drowned tally",
+        "distinct": 2
+      },
+      {
+        "npc": "bone-ladder-carter",
+        "topic": "the drowned tally",
+        "distinct": 2
+      },
+      {
+        "npc": "salt-factor-neloth-vaun",
+        "topic": "the salt factor",
+        "distinct": 2
+      },
+      {
+        "npc": "ixtu-meer",
+        "topic": "the steward of the count",
+        "distinct": 3
+      },
+      {
+        "npc": "ixtu-meer",
+        "topic": "the count itself",
+        "distinct": 2
+      },
+      {
+        "npc": "ixtu-meer",
+        "topic": "whose count are you",
+        "distinct": 3
+      },
       {
         "npc": "helstrom-draught-seller",
         "topic": "the-draught",
@@ -262,43 +863,38 @@
         "distinct": 3
       },
       {
-        "npc": "king-hlaalu-teeth",
-        "topic": "my-kingdom",
-        "distinct": 2
-      },
-      {
-        "npc": "warden-eshi",
-        "topic": "the-marsh",
-        "distinct": 2
-      },
-      {
-        "npc": "jeeh-ei",
-        "topic": "the-writ-house",
-        "distinct": 2
-      },
-      {
-        "npc": "jeeh-ei",
-        "topic": "what-they-take-off-you",
-        "distinct": 2
-      },
-      {
-        "npc": "warden-scribe-tuleeh-ma",
-        "topic": "tidewrack",
-        "distinct": 2
-      },
-      {
-        "npc": "warden-scribe-tuleeh-ma",
-        "topic": "the-provincial-office",
+        "npc": "helstrom-weaver-11",
+        "topic": "helstrom",
         "distinct": 3
       },
       {
-        "npc": "clerk-avelia-doren",
-        "topic": "the-provincial-office",
+        "npc": "helstrom-warder-0-apprentice0",
+        "topic": "helstrom",
         "distinct": 3
       },
       {
-        "npc": "clerk-avelia-doren",
-        "topic": "the-fee",
+        "npc": "helstrom-warder-1-apprentice1",
+        "topic": "helstrom",
+        "distinct": 3
+      },
+      {
+        "npc": "helstrom-legionary-2-apprentice0",
+        "topic": "helstrom",
+        "distinct": 3
+      },
+      {
+        "npc": "helstrom-fisher-3-partner1",
+        "topic": "helstrom",
+        "distinct": 3
+      },
+      {
+        "npc": "helstrom-apothecary-5-partner1",
+        "topic": "helstrom",
+        "distinct": 3
+      },
+      {
+        "npc": "helstrom-legionary-7-apprentice1",
+        "topic": "helstrom",
         "distinct": 3
       }
     ]

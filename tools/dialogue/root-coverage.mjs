@@ -38,8 +38,9 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { buildTopicIndex, infoFor, topicsFor } from '../../game/src/character/converse.js';
+import { buildTopicIndex, infoFor, topicsFor, rootTopicIds, Conversation } from '../../game/src/character/converse.js';
 import { topicKey } from '../../game/src/core/topics.js';
+import { RumourBook, RUMOUR_TOPIC } from '../../game/src/sim/quest/topic-supply.js';
 
 const ROOT = path.resolve(import.meta.dirname, '../..');
 const say = (s) => process.stdout.write(s + '\n');
@@ -216,8 +217,15 @@ function selfTest() {
     const d = clone(docs);
     for (const doc of d) for (const t of (doc.topics || [])) if (isRoot(t)) t.infos = (t.infos || []).filter((i) => i.a);
     const r = run(buildTopicIndex(d), npcs, { quiet: true });
+    // `answering_any` is the weak half of this: the actor rows on the three SELF-roots keep
+    // almost everybody above zero, so stripping the floor moves it 336 -> 333 and a reader
+    // could mistake a 3-person shift for the fix barely mattering. `answering_all` is the
+    // measurement that matches the claim — the floor is what makes a person able to answer
+    // ALL NINE words rather than only the three about themselves.
     check('M1 removing every generic info lowers coverage', r.answering_any < base.answering_any,
-      `${base.answering_any} -> ${r.answering_any}`);
+      `any: ${base.answering_any} -> ${r.answering_any}`);
+    check('M1 removing every generic info collapses FULL coverage', r.answering_all < base.answering_all / 2,
+      `all nine: ${base.answering_all} -> ${r.answering_all}`);
   }
   // M2 — strip the actor tier.
   {
@@ -254,6 +262,59 @@ function selfTest() {
     } else {
       check('M4 moving everybody out of their town raises MISPLACED', r.place.misplaced > base.place.misplaced,
         `${base.place.misplaced} -> ${r.place.misplaced}`);
+    }
+  }
+  // M5 — THE SPELLING SPLIT, through a real `Conversation` rather than through `infoFor`.
+  //
+  // The gossip keyword was spelt `latest rumours` by the rumour supply and `latest-rumors` by
+  // the root topic. `topicKey()` never folds those, so a speaker with a settlement rumour
+  // offered the same subject under two keywords and the root's authored info was unreachable
+  // text. This drives `Conversation.start()` with the shipped `RumourBook` and asserts the
+  // list contains the keyword EXACTLY ONCE and that asking it produces the town's rumour, not
+  // the province-wide fallback. Re-splitting the spelling must make the count 2.
+  {
+    const idx = buildTopicIndex(clone(docs));
+    const data = { greetings: D('dialogue/greetings.json') };
+    const book = new RumourBook(D('dialogue/rumours.json'));
+    const roots = rootTopicIds(idx);
+    const player = { race: RACE, upbringing: UPB, topics_known: roots };
+
+    // Somebody who has a settlement rumour to tell. Tidewrack is the opening's town and is the
+    // one place a rumour is guaranteed to exist (`tidewrack-tally`).
+    const speaker = npcs.find((n) => n.settlement && book.pick(n.settlement, player, n.id, 0));
+    if (!speaker) {
+      check('M5 a speaker with a settlement rumour exists', false, 'no NPC in the build can be given a rumour — M5 is vacuous');
+    } else {
+      const mk = (spelling) => {
+        const conv = new Conversation(data, idx);
+        conv.setSupply({
+          directionsFor: () => [],
+          roadsFor: () => [],
+          rumourFor: (npc, p, nth) => {
+            const r = book.pick(npc.settlement, p, npc.eid, nth);
+            return r ? { ...r, id: spelling, rumour_id: r.id || null } : null;
+          },
+        });
+        conv.start({ ...speaker, eid: speaker.id }, player, speaker.disposition == null ? 50 : speaker.disposition, 0);
+        return conv;
+      };
+      const good = mk(RUMOUR_TOPIC);
+      const n = good.state().topics.filter((t) => topicKey(t.id) === topicKey(RUMOUR_TOPIC)).length;
+      check('M5 the gossip keyword is offered exactly once', n === 1, `${speaker.id} lists it ${n} time(s)`);
+
+      const said = good.say(RUMOUR_TOPIC);
+      check('M5 asking it speaks the TOWN\'s rumour, not the province fallback',
+        !!said && said.source === 'rumour', said ? `source=${said.source}` : 'nothing said');
+
+      // Put the split back and confirm the instrument goes red on it.
+      const split = mk('latest rumours');
+      // Fold BEFORE matching. The first version of this line tested the raw id against
+      // /latest rumou?rs/i and scored 1 instead of 2, because the root spelling is DASHED
+      // (`latest-rumors`) and only the supply's is spaced — the control missed the very
+      // spelling difference it exists to detect and read exactly like the fix working.
+      const m = split.state().topics.filter((t) => /^latest rumou?rs$/.test(topicKey(t.id))).length;
+      check('M5 restoring the second spelling splits it back into two keywords', m === 2,
+        `${speaker.id} lists ${m} gossip keyword(s) when the supply spells it the old way`);
     }
   }
   say('');

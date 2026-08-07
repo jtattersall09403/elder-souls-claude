@@ -168,8 +168,24 @@ export class RumourBook {
   get size() { return this.rows.length; }
 }
 
-/** The topic a player says to ask for gossip. Morrowind's own words. */
-export const RUMOUR_TOPIC = 'latest rumours';
+/**
+ * The topic a player says to ask for gossip.
+ *
+ * W1-SPEAKERS — THE SPELLING SPLIT, and why it is spelt this way. This constant read
+ * `latest rumours` and the ROOT topic in `dialogue/topics/00-roots.json` is `latest-rumors`.
+ * `core/topics.js topicKey()` folds case, dashes and apostrophes and deliberately does NOT fold
+ * dialect spellings — its own rule is "never merge two keywords an author meant to keep apart" —
+ * so the province carried TWO gossip keywords that could never meet. A speaker with a settlement
+ * rumour listed both, the root one's authored info was unreachable text, and any quest gate
+ * seeded from one spelling could not be satisfied by the other.
+ *
+ * The root spelling wins because it is the one with provenance: Morrowind's own `defaultTopics`
+ * table, which RI-DLG01 §A cites as the source of the nine, is US-spelled. This constant was the
+ * deviation. Changing it here is the whole of the fix in the model; `Conversation.start()` also
+ * had to stop pushing the rumour as a SECOND list entry, because once the two spellings fold
+ * together the duplicate becomes visible instead of merely being wasteful.
+ */
+export const RUMOUR_TOPIC = 'latest rumors';
 
 /**
  * Fold-safe append into the live `sim.quest.topicsKnown` array.

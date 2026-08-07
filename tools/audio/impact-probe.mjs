@@ -203,9 +203,37 @@ for (const tier of ['light', 'medium', 'heavy', 'ultra']) {
 
 // ── the run ─────────────────────────────────────────────────────────────────────────────────
 
-function runFixture(fx, audioData, opts) {
+function runFixture(fx, audioData, opts, sharedAudio) {
   const a = new NodeArena({ data: D, loadout: { weapon: fx.weapon } });
-  const audio = new ImpactAudio(audioData, {
+
+  // ── TWO INSTRUMENT DEFECTS FOUND HERE, BOTH WORTH RECORDING ────────────────────────────────
+  //
+  // 1. `NodeArena`'s bus is `{ emit: (f, kind) => ({ f, kind }) }` — it stores the event TYPE in
+  //    a field called `kind`. The engine's real bus (`sim/events.js#emit`) stores it in `type`
+  //    and leaves `kind` free. `PlayerController._critDamage` then writes `e.kind = m.id`, which
+  //    is correct against the engine and CLOBBERS THE EVENT'S OWN TYPE against the node arena:
+  //    every CRIT_HIT disappears from the node trace and reappears as an event of kind
+  //    `riposte`/`backstab`. The first audio-sync run reported six orphan audio rows for exactly
+  //    this reason. The type is captured out-of-band below so the arena's trace says what the
+  //    engine's would.
+  //
+  // 2. A REAL DEFECT IN THE SHIPPED BUILD, not in the arena, found by the same six orphans and
+  //    NOT fixed here because fixing it moves trace bytes other pieces hold determinism
+  //    baselines against: `system.js`'s `LEGACY_ALIAS.CRIT_HIT` is
+  //    `(e) => (e.kind === 'riposte' ? 'riposte' : 'backstab')`, and it is evaluated INSIDE the
+  //    `emit` closure, one line after `bus.emit()` — before `_critDamage` has written `e.kind`.
+  //    The engine's pooled event has just had every field but `f` and `type` deleted, so
+  //    `e.kind` is `undefined` there and the ternary takes the else branch every single time.
+  //    **Every riposte in the game is mirrored into the lower_snake trace stream as
+  //    `backstab`.** RI-AUD01 §A makes C07 and C08 two separate mandatory classes whose whole
+  //    distinction is that a riposte is slower and wetter than a backstab, so a stream that
+  //    calls them all backstabs cannot score them. This driver reads `e.kind` at FLUSH time,
+  //    after `_critDamage` has written it, and classifies both correctly — which is how the
+  //    disagreement became visible at all.
+  const typed = [];
+  a.bus = { emit: (f, kind) => { const e = { f }; typed.push([e, kind]); return e; } };
+
+  const audio = sharedAudio || new ImpactAudio(audioData, {
     // The player body's id is `P` (CombatSystem.createPlayer), not `'player'`. It matters:
     // C10 `player_hurt` is selected by `e.dst === playerId`, so a wrong id voices every blow
     // the player TAKES as a blow the player LANDS — the same class of mislabel as playing the
@@ -235,6 +263,11 @@ function runFixture(fx, audioData, opts) {
   a.queueInputs(fx.inputs);
 
   const trace = [];
+  // The shared driver does not know which fixture it is in; the fixture stamps its own slice of
+  // the log so audio-sync can join per (fixture, frame) rather than on a frame number that
+  // repeats across twenty-odd fixtures.
+  const logMark = audio.log.length;
+  const drainTyped = () => { const out = typed.map(([e, k]) => ({ ...e, kind: k, fixture: fx.name })); typed.length = 0; return out; };
   for (let i = 0; i < fx.frames; i++) {
     a.step();
     if (fx.guard && e && !e.dead) {
@@ -247,9 +280,10 @@ function runFixture(fx, audioData, opts) {
       // arrival time is the probe's, and that is stated rather than hidden.
       if (e.stamina > 0.4) e.stamina = 0.4;
     }
-    for (const ev of a.drain()) trace.push({ ...ev, fixture: fx.name });
+    for (const ev of drainTyped()) trace.push(ev);
   }
-  return { trace, log: audio.audioLog({}), stats: audio.audioStats(), audio };
+  for (let i = logMark; i < audio.log.length; i++) audio.log[i].fixture = fx.name;
+  return { trace, log: audio.log.slice(logMark), stats: audio.audioStats(), audio };
 }
 
 const audioData = SABOTAGE && SABOTAGE !== 'anim' && SABOTAGE !== 'silent'
@@ -260,14 +294,29 @@ const allLog = [];
 let lastStats = null;
 let voicesPeak = 0, stolen = 0, dropped = 0, scheduleMisses = 0;
 
+// ONE driver for the whole run, because one SESSION has one driver.
+//
+// The first version built a fresh `ImpactAudio` per fixture and audio-sync reported 28 immediate
+// variant repeats — M5's failure condition — because every fixture restarted the same seeded
+// stream and re-picked the same first variant. That was a fixture artifact, not a build defect,
+// and the distinction matters: `Engine.impactAudio` is constructed once and survives every
+// `loadState()`, so the shipped game has exactly the continuity this now models. A probe whose
+// own construction manufactures the failure it is looking for is worse than no probe.
+const sharedAudio = new ImpactAudio(audioData, {
+  seed: SEED, playerId: 'P',
+  trigger_source: SABOTAGE === 'anim' ? 'anim' : 'resolution',
+});
+
 for (const fx of FIXTURES) {
-  const r = runFixture(fx, audioData, { seed: SEED, sabotage: SABOTAGE });
+  const r = runFixture(fx, audioData, { seed: SEED, sabotage: SABOTAGE },
+    SABOTAGE === 'silent' ? null : sharedAudio);
   for (const t of r.trace) allTrace.push(t);
-  for (const l of r.log) allLog.push({ ...l, fixture: fx.name });
   lastStats = r.stats;
-  voicesPeak = Math.max(voicesPeak, r.stats.voicesPeak);
-  stolen += r.stats.stolen; dropped += r.stats.dropped; scheduleMisses += r.stats.scheduleMisses;
 }
+for (const l of sharedAudio.audioLog({})) allLog.push(l);
+voicesPeak = Math.max(voicesPeak, sharedAudio.voicesPeak);
+stolen += sharedAudio.stolen; dropped += sharedAudio.dropped; scheduleMisses += sharedAudio.scheduleMisses;
+lastStats = sharedAudio.audioStats();
 
 // One crowded fixture for RI-AUD02 V7 — six attackers, so the impact bus goes over its cap of
 // eight and the steal policy has to choose. V7 is a CORRECTNESS rule: a footstep must never

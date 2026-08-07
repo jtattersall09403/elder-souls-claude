@@ -660,10 +660,10 @@ const doc = {
   note: 'Replaces region-axes@1, in which 8 of 9 axes were string or hex comparisons against '
       + 'game/data/world/regions.json (verdict W1-01 §4d). Every axis here names its source; '
       + `${AXES.length} are measured off built geometry or replicated renderer placement and `
-      + `${RENDERED_AXES.length} off rendered pixels. Unmeasurable axes are dropped, not scored.`,
+      + `${RENDERED_AXES.length} off rendered pixels`      + (AUDIO_AXES.length ? ', and 1 off RENDERED SOUND (W1-22: the audio axis was dropped as unmeasurable while audioMB was 0; it is now the spectrum of PCM the engine actually rendered)' : '')      + '. Unmeasurable axes are dropped, not scored.',
   measured_at: new Date().toISOString(),
-  axes: [...AXES, ...RENDERED_AXES].map((a) => ({ id: a.id, source: a.source, threshold: a.min,
-    measured: AXES.includes(a) ? true : !!rendered })),
+  axes: [...AXES, ...RENDERED_AXES, ...AUDIO_AXES].map((a) => ({ id: a.id, source: a.source, threshold: a.min,
+    measured: (AXES.includes(a) || AUDIO_AXES.includes(a)) ? true : !!rendered })),
   dropped_axes: DROPPED,
   bar: { axes_available: available, must_differ_on: BAR },
   per_region: measured,
@@ -679,8 +679,8 @@ mkdirSync(dirname(join(ROOT, outFile)), { recursive: true });
 writeFileSync(join(ROOT, outFile), JSON.stringify(doc, null, 1) + '\n');
 
 process.stdout.write(`RI-WLD04 M18 — ${pairs.length} pairs, ${available} MEASURED axes (bar: >= ${BAR})\n`);
-for (const a of [...AXES, ...RENDERED_AXES]) {
-  const has = AXES.includes(a) || rendered;
+for (const a of [...AXES, ...RENDERED_AXES, ...AUDIO_AXES]) {
+  const has = AXES.includes(a) || AUDIO_AXES.includes(a) || rendered;
   process.stdout.write(`  ${a.id.padEnd(30)} ${has ? String(axisCounts[a.id]).padStart(3) : ' --'}/${pairs.length}   ${a.source}\n`);
 }
 for (const d of DROPPED) process.stdout.write(`  ${d.axis.padEnd(30)} DROPPED\n`);

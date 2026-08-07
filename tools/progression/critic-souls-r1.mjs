@@ -162,10 +162,12 @@ try {
     try {
       const D = { declared_souls: E.data.enemies.dummy_passive.souls, hp: E.data.enemies.dummy_passive.hp };
       // Make the spawn throw the way a real failure would, without touching any source file:
-      // `Engine.spawn` refuses an eid that is already in use.
-      const existing = (H.listEntities() || [])[0];
+      // `Engine.spawn` refuses an eid that is already in use. `D.kill` is left UNSET, exactly
+      // as souls-consumption.mjs leaves it when its own `H.spawn` throws.
+      H.spawn('inf_trash', 0, 6, { as: 'critic-marker' });
+      H.stepFrames(1);
       try {
-        const d = H.spawn('dummy_passive', 0, 4, { as: existing ? existing.eid : 'player' });
+        const d = H.spawn('dummy_passive', 0, 4, { as: 'critic-marker' });
         D.kill = { delta: 0, eid: d };
       } catch (err) { D.error = String(err.message || err); }
       // souls-consumption.mjs line 333-335, verbatim:

@@ -556,6 +556,52 @@ try {
     what: 'RI-MTH07. Tripling one L1\'s partials must move the rendered spectrum, and restoring them must return it EXACTLY. The second half is what rules out a coincidence: a render that is not a function of the data cannot come back to the same place.',
   };
 
+  // ---- G9: THE LIVE PATH, EXERCISED ---------------------------------------------------------
+  // Everything above measures the OFFLINE render. The code a player actually hears is
+  // `AmbienceDriver.attach()` → `_swapLive()` → `buildBedContinuous`, and automated runs never
+  // reach it (`main.js` only attaches on a real gesture, and `--mute-audio` is in the
+  // deterministic flag list). Untested code on the one path that reaches a person is exactly how
+  // a subsystem ships correct and silent, so the live path is driven here against an
+  // `OfflineAudioContext` — same `BaseAudioContext` interface, no sound card required.
+  const liveCheck = await page.evaluate(async () => {
+    const E = window.__ENGINE, H = window.__HARNESS;
+    const ctx = new OfflineAudioContext(2, 48000, 24000);
+    try {
+      E.ambience.attach(ctx);
+      const afterAttach = E.ambience.live ? E.ambience.live.layers.length : 0;
+      // Cross a border with the context attached: `_swapLive` must run without throwing and
+      // must replace the layer set.
+      const f = E.field;
+      const A = E.data.regions.regions.find((r) => r.id === 'stone-forest');
+      const B = E.data.regions.regions.find((r) => r.id === 'valus-ridge');
+      let moved = null;
+      for (let i = 1; i <= 400; i++) {
+        const t = i / 400;
+        const x = A.centroid_m[0] + (B.centroid_m[0] - A.centroid_m[0]) * t;
+        const z = A.centroid_m[1] + (B.centroid_m[1] - A.centroid_m[1]) * t;
+        if (f.regionAt(x, z).id !== E.ambience.region) { moved = [x, z]; break; }
+      }
+      if (moved) { H.teleport(moved[0], moved[1], {}); H.stepFrames(30); }
+      const afterCross = E.ambience.live ? E.ambience.live.layers.length : 0;
+      // Force a scheduled grain through the live path too, so buildGrain is exercised live.
+      H.stepFrames(3600);
+      const events = E.ambience.events;
+      const rendered = await ctx.startRendering();
+      let p = 0; const d = rendered.getChannelData(0);
+      for (let i = 0; i < d.length; i++) p = Math.max(p, Math.abs(d[i]));
+      E.ambience.detach();
+      return { ok: true, layers_after_attach: afterAttach, layers_after_crossing: afterCross,
+               events, live_peak: p, crossed: !!moved };
+    } catch (e) { try { E.ambience.detach(); } catch { /* */ } return { ok: false, error: String(e).slice(0, 300) }; }
+  });
+  out.live_path = liveCheck;
+  out.gates.G9_live_path = {
+    pass: !!(liveCheck.ok && liveCheck.layers_after_attach > 0 && liveCheck.crossed
+             && liveCheck.layers_after_crossing > 0 && liveCheck.live_peak > 1e-4),
+    what: 'AmbienceDriver.attach() → _swapLive() → buildBedContinuous, driven from the fixed step across a real border, into a context that renders. This is the code a player hears; nothing else in this tool touches it.',
+    value: liveCheck.ok ? `peak ${liveCheck.live_peak.toFixed(5)}, layers ${liveCheck.layers_after_attach}→${liveCheck.layers_after_crossing}` : liveCheck.error,
+  };
+
   out.page_errors = pageErrors;
   const failed = Object.entries(out.gates).filter(([, g]) => !g.pass).map(([k]) => k);
   out.pass = failed.length === 0;

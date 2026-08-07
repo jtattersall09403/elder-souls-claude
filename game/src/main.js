@@ -37,6 +37,40 @@ const boot = engine.boot({ mode, state: stateName }).catch((e) => {
 // ready() rather than poll for the object's existence.
 installHarness(engine, boot);
 
+// W1-22 — THE BED HAS TO REACH A PLAYER'S EARS, NOT ONLY A PROBE'S REPORT.
+//
+// `Engine.ambience` runs every frame in every mode, because a model that only exists when a
+// speaker is attached cannot be measured on a headless box. But a model that is only ever
+// measured is the defect this piece was dispatched against, so here is the other half: in PLAY
+// mode, on the first real gesture, build an `AudioContext` and attach it.
+//
+// It has to be a gesture rather than boot. Every browser blocks audio until the user has
+// interacted, and an `AudioContext` created at load starts `suspended` and stays that way — so
+// wiring it at boot is the version of this that looks correct in code and is silent in fact.
+// Automated runs are excluded outright: `--mute-audio` is in `DETERMINISTIC_CHROMIUM_ARGS`, an
+// output context on a machine with no sound card is a source of stalls, and every measurement
+// goes through `ambienceCapture()`'s OfflineAudioContext instead, which needs neither.
+if (!automated) {
+  const enable = () => {
+    window.removeEventListener('pointerdown', enable);
+    window.removeEventListener('keydown', enable);
+    try {
+      const Ctor = window.AudioContext || window.webkitAudioContext;
+      if (!Ctor || !engine.ambience) return;
+      const ctx = new Ctor({ latencyHint: 'interactive' });
+      ctx.resume && ctx.resume();
+      engine.ambience.attach(ctx);
+      engine.audioContext = ctx;
+    } catch (e) {
+      // Never take the game down for the sake of ambience. A silent world is playable; a
+      // world that will not boot is not.
+      console.warn('ambience: could not open an AudioContext —', e && e.message);
+    }
+  };
+  window.addEventListener('pointerdown', enable, { once: false });
+  window.addEventListener('keydown', enable, { once: false });
+}
+
 // Resize: the canvas backing store is authoritative for screenshots, so it is only ever
 // changed by the harness or by a real window resize in play mode.
 if (!automated) {

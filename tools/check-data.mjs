@@ -125,3 +125,111 @@ if (existsSync(NPCS)) {
     console.log(`check-data: ${seen} NPC records, every settlement resolves (${known.size} known places).`);
   }
 }
+
+// ---------------------------------------------------------------------------
+// AR-3: a faction a player can JOIN must reach the guard. W1-FACTIONS round 3.
+//
+// `Engine.syncFactionStandings()` walks `sanction.json`'s `faction_law_factor.standing_ids` —
+// quest-book faction id -> the key `standingKey()` tests — and that is the entire crossing
+// between eighteen quests of faction fiction and whether a guard in Gideon arrests you sooner.
+// The map had seven entries. FOUR named factions that appear in zero quest files and have no
+// `joins_faction` anywhere in the build, and `the_imperial_assize` — eighteen quests, ending
+// with a court's seal — was not in it at all. So a third of the faction content crossed the
+// seam nowhere, and the file's `spread_claim` counted rows no player can stand in.
+//
+// Nothing caught it because nothing checked it. Three assertions, and each is a class:
+//
+//   A. every faction the quest book lets you JOIN has a standing_ids entry;
+//   B. every standing_ids entry names a faction you can join, and a row that exists;
+//   C. `standingKey()` can actually return every row of the table — a row nothing can select
+//      is priced, published in the spread, and dead.
+//
+// Plus: the published spread is RECOMPUTED here from the table and the join paths, so a claim
+// cannot drift away from the data again.
+{
+  const SANCTION = join(ROOT, 'game', 'data', 'crime', 'sanction.json');
+  const QDIR = join(ROOT, 'game', 'data', 'quests');
+  if (existsSync(SANCTION) && existsSync(QDIR)) {
+    let doc = null;
+    try { doc = JSON.parse(readFileSync(SANCTION, 'utf8')); } catch { /* shape checked elsewhere */ }
+    const flf = doc && doc.faction_law_factor;
+    if (flf && Array.isArray(flf.rows)) {
+      const bad = [];
+      // Every faction id the quest book grants membership in, from anywhere in any quest file.
+      const joinable = new Set();
+      const walk = (o) => {
+        if (!o || typeof o !== 'object') return;
+        if (Array.isArray(o)) { for (const x of o) walk(x); return; }
+        if (Array.isArray(o.joins_faction)) for (const f of o.joins_faction) joinable.add(f);
+        for (const v of Object.values(o)) walk(v);
+      };
+      for (const f of readdirSync(QDIR).filter((f) => f.endsWith('.json') && f !== 'hooks.json')) {
+        try { walk(JSON.parse(readFileSync(join(QDIR, f), 'utf8'))); } catch { /* check-quests owns JSON validity */ }
+      }
+      const ids = flf.standing_ids || {};
+      const dead = flf.standing_ids_unreachable || {};
+      const mapped = Object.keys(ids).filter((k) => !k.startsWith('_'));
+      const rowKeys = new Set(flf.rows.map((r) => r.standing));
+
+      // A. joinable -> mapped
+      for (const f of [...joinable].sort()) {
+        if (!mapped.includes(f)) {
+          bad.push(`${f} can be JOINED by a quest resolution but has no faction_law_factor.standing_ids entry — the whole line crosses to the crime system nowhere. Add a standing key and a row, or say in standing_ids_unreachable why it does not deserve one.`);
+        }
+      }
+      // B. mapped -> joinable, and mapped -> a row that exists
+      for (const f of mapped) {
+        if (!joinable.has(f)) {
+          bad.push(`standing_ids maps ${f}, which no quest resolution joins — Engine.syncFactionStandings() can never write its standing. Move it to standing_ids_unreachable or give it a join path.`);
+        }
+        const key = ids[f];
+        if (![...rowKeys].some((k) => k.split(':')[0] === String(key).split(':')[0])) {
+          bad.push(`standing_ids maps ${f} -> "${key}", for which faction_law_factor.rows has no row.`);
+        }
+      }
+      for (const f of Object.keys(dead).filter((k) => !k.startsWith('_'))) {
+        if (joinable.has(f)) bad.push(`${f} is listed in standing_ids_unreachable but a quest resolution DOES join it — move it back into standing_ids.`);
+      }
+
+      // C. every row must be selectable by standingKey().
+      try {
+        const { standingKey } = await import('../game/src/sim/crime/sanction.js');
+        const reachableKeys = new Set();
+        for (const r of flf.rows) {
+          if (r.standing === 'none') { reachableKeys.add('none'); continue; }
+          const [fac, band] = String(r.standing).split(':');
+          const rank = /^\d/.test(band || '') ? Number(String(band).match(/\d+/)[0]) : 1;
+          const got = standingKey({ [fac]: /4\+|3\+/.test(band || '') ? rank + 1 : rank });
+          if (got === r.standing) reachableKeys.add(r.standing);
+          else bad.push(`faction_law_factor row "${r.standing}" is priced but standingKey() never returns it (it returned "${got}") — nothing can select this row.`);
+        }
+        // The published spread, recomputed. Reachable = rows whose faction is in standing_ids.
+        const liveFacs = new Set(mapped.map((f) => String(ids[f]).split(':')[0]));
+        const all = flf.rows.map((r) => r.imperial_law).filter((x) => typeof x === 'number');
+        const live = flf.rows.filter((r) => r.standing === 'none' || liveFacs.has(String(r.standing).split(':')[0])).map((r) => r.imperial_law);
+        const spread = (xs) => Math.round((Math.max(...xs) / Math.min(...xs)) * 100) / 100;
+        const claim = flf.spread_claim;
+        const declared = (claim && typeof claim === 'object') ? claim.over_all_rows : claim;
+        const reach = (claim && typeof claim === 'object') ? claim.reachable_by_play : null;
+        const near = (a, b) => a != null && Math.abs(a - b) <= 0.02;
+        if (!near(declared, spread(all))) bad.push(`faction_law_factor.spread_claim.over_all_rows says ${declared}; the table computes ${spread(all)}.`);
+        if (reach == null) bad.push('faction_law_factor.spread_claim declares no reachable_by_play figure. A spread over rows nobody can stand in is not a claim about the shipped game.');
+        else if (!near(reach, spread(live))) bad.push(`faction_law_factor.spread_claim.reachable_by_play says ${reach}; the rows a player can actually reach compute ${spread(live)}.`);
+        if (!bad.length) {
+          console.log(`check-data: faction_law_factor — ${mapped.length} joinable factions mapped, ${reachableKeys.size}/${flf.rows.length} rows selectable, spread ${spread(all)}x declared / ${spread(live)}x reachable.`);
+        }
+      } catch (e) {
+        bad.push(`could not import standingKey() to check row selectability — ${e.message}`);
+      }
+
+      if (bad.length) {
+        console.error(`check-data: ${bad.length} problem(s) in game/data/crime/sanction.json faction_law_factor:`);
+        for (const b of bad) console.error(`  ${b}`);
+        console.error('\nThis table is the ONLY crossing between a faction questline and whether a guard');
+        console.error('arrests you sooner (AR-3). A faction that is missing from it has no effect on the');
+        console.error('world outside its own journal, however many quests it ships.');
+        process.exit(1);
+      }
+    }
+  }
+}

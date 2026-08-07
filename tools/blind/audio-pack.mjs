@@ -61,18 +61,37 @@ const exit = await reportAbsence({
   tool: 'tools/blind/audio-pack.mjs',
   items: ["RI-AUD01 (combat impact audio)", "RI-AUD03 (regional ambience)"],
   system: 'audio',
-  owner: 'RI-AUD01..03 / wave-1 piece W1-25',
+  owner: 'RI-AUD01/02 -> W1-11 (combat impact); RI-AUD03 -> W1-22 (regional ambience, BUILT)',
   measures: 'a blind A/B pack of loudness-normalised, metadata-stripped audio clips from our build and from the reference, in one form, per RI-MTH03',
   needs: ['getWorldStats'],
-  // The live signal, read from the running build rather than asserted: the engine reports
-  // audioMB: 0 and getCapabilityReport() declares "audio" not_implemented (owner W1-25). The
-  // day either changes, this reporter stops saying ABSENT.
+  // The live signal, read from the running build rather than asserted.
+  //
+  // W1-22 CHANGED WHAT THIS MUST LOOK AT. `audioMB === 0` was the marker, and it is still 0 and
+  // always will be: the regional bed is SYNTHESISED, so there are no decoded audio bytes to
+  // count and a megabyte total is not evidence of anything either way. Keeping `audioMB === 0`
+  // as the sole marker would have this tool reporting ABSENT over a province that makes thirteen
+  // distinct sounds — the mirror image of the defect the audio axes were scored on.
+  //
+  // So the marker is now `getAmbienceState()`. Regional ambience (RI-AUD03) exists when the
+  // driver answers with a region and a bed; combat impact audio (RI-AUD01) does not exist at
+  // all, and this tool covers both items, so it still reports ABSENT — but for the honest half.
   probe: async ({ handle }) => {
     const ws = await handle.hOpt('getWorldStats');
+    const amb = await handle.hOpt('getAmbienceState');
     const markers = [];
-    if (ws && Number(ws.audioMB) === 0) markers.push('getWorldStats().audioMB === 0');
+    const ambienceLive = !!(amb && amb.available && amb.beds_loaded > 0);
+    if (!ambienceLive) markers.push('getAmbienceState() reports no beds (RI-AUD03 unbuilt)');
+    markers.push('no combat impact audio: RI-AUD01 has no hit, parry, block or footstep sound (owner W1-11)');
     if (ws && ws._declared_incomplete) markers.push('getWorldStats()._declared_incomplete');
-    return { audioMB: ws ? ws.audioMB : null, _unmeasurable_markers: markers };
+    return {
+      audioMB: ws ? ws.audioMB : null,
+      audio_synthesised: ws ? ws.audioSynthesised === true : null,
+      ambience_beds: ws ? ws.ambienceBeds : null,
+      ambience_data_kb: ws ? ws.ambienceDataKB : null,
+      ri_aud03_regional_ambience: ambienceLive ? 'BUILT (W1-22) — capture with __HARNESS.ambienceCapture()' : 'ABSENT',
+      ri_aud01_combat_impact: 'ABSENT (W1-11)',
+      _unmeasurable_markers: markers,
+    };
   },
 }, args);
 

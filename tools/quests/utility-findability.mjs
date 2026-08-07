@@ -127,7 +127,7 @@ try {
             try { st = H.talkTo(eid); } catch (e) { break; }
             const heard = [];
             for (const t of (st.topics || [])) {
-              const isRumour = /latest rumours/i.test(t.id);
+              const isRumour = /latest rumou?rs/i.test(t.id);
               if (isRumour && sabotage === 'no-rumours') continue;
               try {
                 const said = H.conversationSay(t.id);

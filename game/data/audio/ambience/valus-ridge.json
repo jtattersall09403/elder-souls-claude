@@ -31,7 +31,7 @@
   "layers": {
     "L1": {
       "id": "l1_rock_flute_chord",
-      "text": "wind through rock flutes — a REAL AUDIBLE CHORD. The only tonal L1 with a defined pitch set: D3 F3 A3 C4, a D-minor seventh, blown rather than played.",
+      "text": "wind through rock flutes — a REAL AUDIBLE CHORD. The only tonal L1 with a defined pitch set: D3 F3 A3 C4, a D-minor seventh, blown rather than played. Raised 4 dB over its own L2 in W1-22 round 1: measured against the Salt Hills the two were the only pair in the province below the separation floor (0.086), because the chord was buried under the altitude wind and both regions read as broadband wind. A tonal L1 nobody can hear is not a tonal L1.",
       "level_db": 0,
       "voices": 1,
       "classes": [
@@ -53,7 +53,7 @@
           -17
         ],
         "detune_cents": 9,
-        "gain_db": -6,
+        "gain_db": -2,
         "filter": {
           "type": "bandpass",
           "hz": 240,
@@ -69,7 +69,7 @@
     "L2": {
       "id": "l2_altitude_wind",
       "text": "high thin altitude wind",
-      "level_db": -4,
+      "level_db": -10,
       "voices": 2,
       "sublayers": [
         {
@@ -85,7 +85,7 @@
               "hz": 2400,
               "q": 0.6
             },
-            "gain_db": -10,
+            "gain_db": -14,
             "width": 0.85,
             "mod": {
               "target": "filter_hz",
@@ -184,6 +184,6 @@
   },
   "emitters": [],
   "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
-  "bed_gain_db": -9.43,
+  "bed_gain_db": -13.24,
   "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
 }

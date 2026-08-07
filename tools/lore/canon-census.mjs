@@ -296,6 +296,23 @@ function main(argv) {
   for (const e of edges.filter((x) => x.warnings.length)) console.log(`    warn  ${e.from} -> ${e.to}: ${e.warnings.join('; ')}`);
   console.log('');
 
+  console.log(`DEPTH    how far back the province's registered history goes, and how much of it the build voices.`);
+  {
+    const dated = reg.facts.filter((f) => f.when);
+    const pre3E = dated.filter((f) => f.when.era !== '3E');
+    const eraHits = new Map();
+    const scan = (t) => { for (const m of String(t).matchAll(/\b([123])E\s?(\d{2,4})\b/g)) eraHits.set(`${m[1]}E ${m[2]}`, (eraHits.get(`${m[1]}E ${m[2]}`) || 0) + 1); };
+    for (const [, t] of world.bookText) scan(t);
+    for (const [, rows] of world.topics) for (const r of rows) scan(r.x);
+    const yrs = [...eraHits.keys()];
+    const third = yrs.filter((y) => y.startsWith('3E')).map((y) => Number(y.slice(3)));
+    console.log(`  registered facts carrying a date or an explicit undated horizon: ${dated.length}, of which ${pre3E.length} sit before the Third Era`);
+    console.log(`  distinct years named in shipped books and dialogue: ${yrs.length} — ${yrs.filter((y) => !y.startsWith('3E')).length} of them outside the Third Era`);
+    if (third.length) console.log(`  the shipped tree's dated history runs 3E ${Math.min(...third)} to 3E ${Math.max(...third)} — ${Math.max(...third) - Math.min(...third)} years, all of it in living memory`);
+    console.log(`  disputes about the pre-Duskfall horizon: ${reg.facts.filter((f) => f.disputed && (f.topics || []).some((t) => /xanmeer|stone|old-ground|house-under|count/.test(t))).map((f) => f.id).join(', ') || 'none'}`);
+  }
+  console.log('');
+
   console.log(`ADJUDGE  RI-LOR06 method §5 — text that settles a registered dispute. Reported, not graded.`);
   if (!adj.length) console.log('  no hits.');
   for (const h of adj) console.log(`  ${h.where}  [${h.facts.join(',')}]  "${h.phrase}"\n     …${h.excerpt}…`);

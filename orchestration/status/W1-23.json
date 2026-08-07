@@ -2,7 +2,7 @@
   "task_id": "W1-23",
   "title": "Lore: the registry and the province's canon",
   "started": "wave-1",
-  "state": "building",
+  "state": "complete",
   "outputs_expected": [
     "game/data/lore/canon.json (the shipped registry, secret half sealed)",
     "tools/lore/build-canon.mjs (projector: corpus registry -> game data, strips authorial truth to a sha256)",
@@ -22,7 +22,12 @@
     "game/data/dialogue/topics/70-disputes.json (18 position-bearing infos, each tagged cf+pos)",
     "tools/lore/canon-consumption.mjs (RI-MTH07 demonstration; PASS)",
     "game/src/engine.js (_installCanon, _canonWorldIndex, getCanonState, lore/canon.json loader branch, topics_offered threads the register)",
-    "game/src/character/converse.js (infoFor/topicsFor take the register; setCanon; say() notes what was heard; cf/pos carried out)"
+    "game/src/character/converse.js (infoFor/topicsFor take the register; setCanon; say() notes what was heard; cf/pos carried out)",
+    "game/src/harness/api.js (getCanonState surface)",
+    "tools/lore/canon-in-page.mjs (one page, no stepping loop; PASS)",
+    "reports/lore/W1-23-registry-report.md",
+    "reports/lore/canon-census.txt, reports/lore/canon-consumption.txt",
+    "reports/blog-feed.jsonl (one line)"
   ],
   "findings": [
     "canon-facts.json (54 facts) lives ONLY in corpus/60-lore/data/. NOTHING in game/ reads it. Its only consumers are two critic scripts: corpus/80-methods/canon-check.py and book-stats.py. This is the exact RI-MTH07 consumption failure: 'a registry nothing reads is a document'.",
@@ -42,8 +47,13 @@
     "FACTION IDS ARE SPELLED TWO WAYS ON NPC RECORDS: drowned-court 17 / the_drowned_court 11, wet-ledger 23 / the_wet_ledger 6, rootkeepers 22 / the_rootkeepers 4, ninth-cohort 44 / ninth_cohort 1, house_dres 1 / house-dres 1. Any matcher comparing exactly sees a fraction of the population and sees it silently. game/src/world/canon.js#fold() normalises; other pieces should check whether they do.",
     "CONSUMPTION DEMONSTRATED (tools/lore/canon-consumption.mjs, PASS): 141 references resolve; a voiced_by naming a book nobody wrote goes red; a position with no holders goes red; 4 topics on which two REAL shipped people give incompatible registered answers (the-thinning 3 sides, the-weeping-ford, slavery, the-count-itself); 11/11 registered lines VANISH when the speaker is struck out of the register; 409 untagged answers byte-identical with and without it (the control); 336/336 people hold at least one registered position.",
     "MY OWN PERTURBATION WAS WRONG FIRST TIME and its output told me: removing the actor alone left 4 of 11 lines standing because the speaker also matched by faction. A perturbation that leaves a second route open measures the route it forgot.",
-    "The shipped register carries NO ruling: 0 facts with authorially_true, 19 sha256 seals, 1 deliberately-open dispute unsealed. The game cannot adjudicate because the answer is not in the binary."
+    "The shipped register carries NO ruling: 0 facts with authorially_true, 19 sha256 seals, 1 deliberately-open dispute unsealed. The game cannot adjudicate because the answer is not in the binary.",
+    "DEEP TIME, MEASURED: 21 distinct years are named across all shipped books and dialogue and ZERO are outside the Third Era. The dated history runs 3E 344 to 3E 425 - 81 years, all in living memory. 'four hundred' appears 121 times as a span phrase and 'four thousand' 18: the world gestures at depth constantly and dates nothing. The registry knew better (8 pre-3E facts) and none had a date field or a dispute attached. Now 12 facts carry a `when` spine (4 of them honestly `year: null` - the Duskfall is undated IN WORLD) and 5 of the 21 disputes are about the pre-Duskfall horizon.",
+    "NO ARGONIAN TRIBES IN THIS BUILD. Agacephs, Paatru, Archein, Sarpa, Dead-Water, Miredancers: all ZERO. Kothringi 22 and Lilmothiit 4 (both extinct in-world). 'Naga' 388 is a playable race here, not a tribe. The province runs on four constructed bodies instead: Deep-Kin 87, Xul-Aneekh 84, Drowned Court 64, Sap-Cutters 53, Wet Ledger 45. Registered as CF-C023 so the omission is a decision on the record.",
+    "THE SLAVE TRADE IS PRESENT MOSTLY AS THE EMPIRE'S EUPHEMISM FOR IT: lease/Blackrose 2,240 hits, House Dres 245, slave/slavery 42, soul-gem/soul-trade 15 - about fifty to one. CF-062 is hard canon that Dres has raided for centuries. A world that only says 'lease' has taken the Provincial Office's vocabulary as NARRATION, which RI-LOR06 s1.2 forbids at the authorial level. Registered as CF-C024, and CF-D008 now makes the euphemism somebody's POSITION rather than the world's voice.",
+    "THE REGISTRY WENT STALE DURING THIS RUN: CF-D021 was registered about four minutes after its two books landed from a piece still writing, and the census flipped PASS->FAIL->PASS inside one session. tools/lore/canon-census.mjs exits non-zero and should run where check-content.mjs runs. NOT wired in here on purpose - a hard gate landed mid-wave would fail another builder's in-flight book.",
+    "IN-PAGE VERIFICATION taken under contention (24 headless_shell, loadavg 21.07). Every figure from it is a count or a boolean, which survive contention; no timing figure was taken."
   ],
-  "next_step": "deep-time audit; Hist/tribes/Empire/Dres check; report; blog line; browser verification when load drops",
-  "notes_for_successor": "Fresh start 2026-08-07. No predecessor status file existed."
+  "next_step": "none for the builder.",
+  "notes_for_successor": "The four things left, in order of value:\n(1) WIRE tools/lore/canon-census.mjs INTO check-content.mjs once the wave's library work has landed. Without a gate the registry falls behind the shipped tree within MINUTES - it did so during this run.\n(2) Ten stale cross-references remain: ten `contradicts[].cf` fields in books name a registry FACT rather than the DISPUTE that now registers them (CF-042->CF-D007, CF-062->CF-D008, CF-060/C001->CF-D010, CF-C007->CF-D009). Registration is by coverage so these are warnings, not failures. Not fixed because those files were being written by another agent throughout.\n(3) game/data/books/manifest.json DOES NOT EXIST and RI-LOR06 comparison method 1 invokes canon-check.py --books-manifest against it. Phantom path inside a gate.\n(4) Faction ids are spelled two ways on NPC records (drowned-court/the_drowned_court etc). world/canon.js#fold() normalises; other pieces matching on faction exactly are seeing a fraction of the population silently.\nDO NOT register more disputes for volume. 21 is comfortably past RI-LOR06's bar of 8 and its 'How we lose' #8 is about a registry full of things a player cannot perceive. The next registration should come from a book pair that actually landed, the way CF-D021 did."
 }

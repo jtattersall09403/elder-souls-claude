@@ -250,6 +250,12 @@ export class ImpactAudio {
    * @param {object} world  {playerPos:[x,y,z], playerYawDeg, posOf(id)->[x,y,z]|null}
    */
   onEvent(frame, kind, e, world) {
+    // V9's collapse map holds ONE frame at a time. It was a map over the whole run, which is
+    // both an unbounded leak and, in a probe that runs many fixtures through one driver, an
+    // actual wrong answer: fixture A's hit on frame 79 and fixture B's hit on frame 79 are not
+    // "the same class twice on the same frame" and must not collapse into one voice. Seventeen
+    // voices went missing that way before this line existed.
+    if (frame !== this.frame) this.frameClass.clear();
     this.frame = frame;
     // The sabotage switch. In `'anim'` mode the driver ignores resolution entirely and fires off
     // the animation start, which is RI-AUD01 §B's named failure. Kept, documented, off.

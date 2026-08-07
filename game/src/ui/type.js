@@ -111,6 +111,24 @@ export const TAIL_FLOOR_WORDS = 80;
  * and orphan rules above still run — there is one paginator, not two.
  *
  * A one-page book has no tail to balance and is returned untouched.
+ *
+ * WHERE THE SAME-COUNT PASS CANNOT REACH, and why there is a second one (W1-LIBRARY-MARTIAL).
+ * The loop above stops at the first `cap` whose page count differs, and for a LONG book that is
+ * `linesPerPage - 1` — a sixteen-page book gains a seventeenth the moment you take one line off
+ * every page, so the loop breaks on its first iteration and the tail is left exactly as
+ * `paginate` dropped it. That is invisible on a 600-word book and it is not invisible on a
+ * 2,000-word one: measured over the 113-text library, `the-duelling-pick-and-the-bog-rapier`
+ * ended on a page of **one word**, with `standing-instruction-for-auxiliaries` on 18 and
+ * `the-articles-of-the-wet-ledger` on 21. A one-word page is the precise thing RI-UIX05 §A B8
+ * forbids, and the same-count rule — which exists so that this stays a balancing pass rather
+ * than a re-flow — is what prevents the remedy.
+ *
+ * So: when the same-count search has FAILED to clear the floor, allow exactly one extra page and
+ * take the candidate with the largest tail. That is what a compositor does with a widow they
+ * cannot pull back — the book runs a page longer. It is guarded three ways: it only runs when the
+ * first pass has already failed, it never accepts more than one extra page, and it only returns
+ * the alternative when its tail is strictly larger than the tail we already had. A book whose
+ * tail already clears the floor never reaches this code and cannot be changed by it.
  */
 export function paginateBook(lines, linesPerPage, floorWords = TAIL_FLOOR_WORDS) {
   const first = paginate(lines, linesPerPage);
@@ -121,6 +139,43 @@ export function paginateBook(lines, linesPerPage, floorWords = TAIL_FLOOR_WORDS)
     const cand = paginate(lines, cap);
     if (cand.length !== first.length) break;      // never add or drop a page
     best = cand;
+  }
+  const bestTail = wordsOn(best[best.length - 1]);
+  if (bestTail >= floorWords) return best;
+
+  let alt = null, altTail = -1;
+  for (let cap = linesPerPage - 1; cap >= 2; cap--) {
+    const cand = paginate(lines, cap);
+    if (cand.length > first.length + 1) break;    // never accept two extra pages
+    if (cand.length !== first.length + 1) continue;
+    const t = wordsOn(cand[cand.length - 1]);
+    if (t > altTail) { alt = cand; altTail = t; }
+    if (t >= floorWords) break;
+  }
+  if (alt && altTail > bestTail) { best = alt; }
+  if (wordsOn(best[best.length - 1]) >= floorWords) return best;
+
+  // THIRD AND LAST: split the final spread evenly between its two pages.
+  //
+  // Both passes above move the boundary of EVERY page, and for some books neither can help:
+  // `the-duelling-pick-and-the-bog-rapier` goes from 16 pages to 18 the moment one line comes off
+  // each page, so there is no 17-page candidate to take, and the same-count pass has nowhere to
+  // go. It was left ending on a page of ONE WORD. The remedy a compositor uses on a last spread
+  // they cannot pull back is to balance the spread itself: the penultimate page gives up half its
+  // lines so that the two read as a pair. The page COUNT does not change, which is what keeps
+  // this inside the balancing pass. The split prefers a paragraph boundary within two lines of
+  // the middle so the pair does not break mid-paragraph when it does not have to.
+  const n = best.length;
+  const spread = best[n - 2].concat(best[n - 1]);
+  if (spread.length >= 2) {
+    let cut = Math.ceil(spread.length / 2);
+    for (let d = 0; d <= 2; d++) {
+      if (spread[cut - 1 + d] === '') { cut = cut + d; break; }
+      if (spread[cut - 1 - d] === '') { cut = cut - d; break; }
+    }
+    cut = Math.max(1, Math.min(spread.length - 1, cut));
+    const a = spread.slice(0, cut), b = spread.slice(cut);
+    if (wordsOn(b) > wordsOn(best[n - 1])) return best.slice(0, n - 2).concat([a, b]);
   }
   return best;
 }

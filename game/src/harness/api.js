@@ -990,6 +990,10 @@ export function installHarness(engine, bootPromise) {
      * same evidence set seen from the other side.
      */
     getOpacityState() { return engine.getOpacityState(); },
+    // W1-23. RI-LOR06's texture from the running world: which registered disputes this
+    // playthrough has heard argued and from how many sides. Carries no rulings and cannot —
+    // `authorially_true` is replaced by a sha256 before the file is shipped.
+    getCanonState() { return engine.getCanonState(); },
 
     /** Put a person in the world (a state file's `npcs` array uses the same path). */
     spawnNPC(spec) { return engine.spawnNPC(spec || {}); },
@@ -1138,6 +1142,31 @@ export function installHarness(engine, bootPromise) {
     spawnEncounter(id, x, z, opts) { return engine.spawnEncounter(id, Number(x), Number(z), opts || {}); },
     /** AR-3. What this encounter is doing, and what it would do to a different race. */
     getEncounterState(id) { return engine.getEncounterState(id); },
+
+    /**
+     * W1-POPULATION. What the hostile population is doing right now: how many posts exist, how
+     * many are resident, how many the player has cleared, and which bodies belong to which post.
+     * READ ONLY — it never spawns, releases or re-focuses anything, so a probe that calls it
+     * every frame is measuring the world rather than driving it.
+     */
+    populationReport() { return engine.population ? engine.population.report(engine.sim) : null; },
+
+    /**
+     * The ablation switch, and the reason it exists in the API rather than in a probe's own
+     * monkey-patch: RI-MTH07 wants the consumption arm to be a thing the WORLD can be told to
+     * stop doing, so that a control run differs from the live one by one boolean and not by a
+     * different code path. `setPopulation({enabled:false})` and the province is empty again.
+     */
+    setPopulation(opts) {
+      if (!engine.population) return null;
+      const o = opts || {};
+      if (o.enabled !== undefined) engine.population.enabled = !!o.enabled;
+      for (const k of ['spawn_radius_m', 'release_radius_m', 'max_resident_posts', 'refocus_m', 'spawn_per_step']) {
+        if (o[k] !== undefined) engine.population.d[k] = Number(o[k]);
+      }
+      if (o.reset) engine.population.reset();
+      return engine.population.report(engine.sim);
+    },
 
     /** The whole creation data set, for a critic who wants to recompute rather than trust. */
     getCreationData() {

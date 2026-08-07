@@ -156,6 +156,20 @@ export class UISystem {
       throw new Error("openMenu('levelup'): the level-up screen exists at a HEARTH only (RI-UIX03 L1). " +
         'It is not on the pause menu and it is not available in the world.');
     }
+    // W1-13 round 3, GAP-W1-levelup-screen-and-character-speak-different-languages. The screen
+    // draws its rows from `game/data/progression/attributes.json`; the character carries
+    // `sim.progression.attributes`. When those were two different vocabularies the room still
+    // opened and still took the money — seven rows for attributes nobody had, three attributes
+    // that could not be raised at all. A door that opens is not the same thing as a room that
+    // sells you something, so it is refused rather than drawn.
+    if (n === 'levelup' && ctx && ctx.attrVocabulary && ctx.attrVocabulary.ok === false) {
+      const v = ctx.attrVocabulary;
+      throw new Error("openMenu('levelup'): the screen and the character are speaking different " +
+        `languages. On screen but not carried: [${v.on_screen_not_carried.join(', ') || '-'}]; ` +
+        `carried but not on screen: [${v.carried_not_on_screen.join(', ') || '-'}]. ` +
+        'game/data/progression/attributes.json is the vocabulary; Engine._ensureAttributeRegister() ' +
+        'reconciles the register against it on every loadState().');
+    }
     if (n === 'book') {
       const id = opts && opts.id;
       const b = this.data.books && this.data.books.get(String(id));

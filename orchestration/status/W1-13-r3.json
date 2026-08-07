@@ -1,8 +1,8 @@
 {
   "task_id": "W1-13-r3",
-  "brief": "death, recovery, hearth loop, levelling — round 3 after FAIL 5/10",
+  "brief": "death, recovery, hearth loop, levelling \u2014 round 3 after FAIL 5/10",
   "started": "wave-1 round 3",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "fix: applyDerivedPools works without sim.character",
     "fix: level-up screen attribute vocabulary == character attributes",
@@ -13,8 +13,26 @@
     "docs/shots/<image>.png",
     "reports/blog-feed.jsonl line"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read r2 status file, NEXT-DISPATCH §P, check contention",
+  "outputs_written": [
+    "game/src/sim/state.js - IDENTITY_ATTRIBUTES (the declared TEN) + LEGACY_ATTRIBUTE_ALIASES; makeProgression() no longer seeds the stale six",
+    "game/src/engine.js - attributeIds(), _ensureAttributeRegister() (called from loadState, twin of _ensureSkillRegister), attributeVocabulary()",
+    "game/src/engine.js - applyDerivedPools() no longer bails on !sim.character; ANCHORED derivation via _poolAnchor captured in _buildCombat",
+    "game/src/engine.js - _spendSouls refuses an undeclared attribute BEFORE debiting the purse",
+    "game/src/engine.js - _poolsFor()/attributePreview anchored so the preview matches the spend",
+    "game/src/engine.js - loadState blob path derives unconditionally",
+    "game/src/ui/system.js - openMenu('levelup') refuses when the two vocabularies disagree",
+    "game/src/sim/magic/apply.js - ATTRS read off the live register instead of the stale six"
+  ],
+  "findings": [
+    "ROOT CAUSE 1 (levelling buys nothing): engine.js applyDerivedPools() opens `const ch=this.sim.character; if(!ch) return null;`. character/derive.js's own header DECLARES this as a deliberate W1-07 reconciliation: 'a loadout with no character behind it keeps RI-CMB03's, so every existing W1-09 scenario measures exactly what it measured before.' So it is not an oversight - it is a cross-piece promise. Fixing it by absolute derivation would move arena hp_max 620->300 and focus 94->30 and break cmb-poise.mjs (hard-codes `hpEnd >= 620` as its VACUITY detector) and every W1-09/W1-14 arena calibration.",
+    "combat/system.js:207 `hpMax: loadout.hpMax !== undefined ? loadout.hpMax : 620` - 620 is a hard-coded literal, not data. derivePools({vigour:10,endurance:20,strength:12}) = {hp_max:300, stamina_max:120, focus_max:30}. stamina_max ALREADY agrees exactly (120); only hp and focus disagree.",
+    "ROOT CAUSE 2 (vocabulary): sim/state.js:214 makeProgression() seeds SIX Dark-Souls attribute ids {vigour,endurance,strength,dexterity,intelligence,faith}. The DECLARED vocabulary is game/data/progression/attributes.json's TEN {strength,endurance,agility,speed,vigour,willpower,intellect,hist-bond,personality,luck}, which is what character/sheet.js composeAttributes() produces and what ui/system.js _attributes(ctx) draws. dexterity/intelligence/faith exist NOWHERE else in the declared world.",
+    "The exact twin of this bug was already fixed once for SKILLS: engine.js _ensureSkillRegister() (W1-14 round 3, GAP-W1-magic-skill-frozen), called from loadState at engine.js:725. The attribute register was left behind.",
+    "sim/magic/apply.js:184 hard-codes the same stale six as `const ATTRS`; h_fortify_attribute would write NaN into the register if the keys change. Must be derived from the live register.",
+    "_spendSouls (engine.js:3525) is `prog.attributes[attrId] = (prog.attributes[attrId] || 10) + 1` with NO validation - that is what mints the seven fictitious rows at 11.",
+    "DESIGN DECISION, declared: absolute derivation on a characterless state would move arena_champion 620->300 HP and 94->30 Focus and break cmb-poise.mjs's own vacuity detector (hpEnd >= 620) plus every W1-09/W1-14 arena calibration. Instead the DECLARED STATBLOCK IS THE ORIGIN: _poolAnchor = {hp_max: b.hpMax - IDENTITY_POOLS.hp_max, stamina_max: ..., willpower: magic.wil - 10} captured in _buildCombat, and the sheet supplies every movement from it. At IDENTITY_ATTRIBUTES the numbers are bit-for-bit unchanged; a VIGOUR point moves hp_max by exactly the curve. The verdict's acceptance is a DELTA test, which this satisfies.",
+    "BONUS: hazards.js drains dr.attribute (e.g. 10 AGILITY from the droops) and A['agility'] was undefined in the old six-id register, so the affliction drain silently never fired. It can now."
+  ],
+  "next_step": "bloodstain visibility (syncDeathMarkers); then second-death stain; then central world-runs gate; then browser verification",
   "notes_for_successor": "Round 2 FAILED 5/10. Verdict corpus/90-verdicts/wave1/W1-13-r2.md path_to_ten is the spec. DO NOT claim the respawn drift fix again without a held-axis delete-the-fix comparison."
 }

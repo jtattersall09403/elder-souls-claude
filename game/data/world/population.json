@@ -35,11 +35,13 @@
 
   "safety": {
     "_model": "Density is zero on top of a place of safety and ramps to full over `ramp_m`. This is the second axis the brief asks for — distance from safety, not only region tier — and it is what makes a road out of a town legible: you get a hundred metres to look at the country before the country looks back.",
-    "settlement_clear_m": 70,
-    "minor_settlement_clear_m": 45,
-    "hearth_clear_m": 45,
-    "ramp_m": 150,
+    "kinds": {
+      "settlement": { "clear_m": 70, "ramp_m": 150 },
+      "minor-settlement": { "clear_m": 45, "ramp_m": 110 },
+      "hearth": { "clear_m": 22, "ramp_m": 40 }
+    },
     "_ramp_note": "Linear from 0 at `clear_m` to 1.0 at `clear_m + ramp_m`. At a settlement that puts the first encounter roughly 90–170 m out — inside RI-AI07 §D's ≤1.70 TM (204 m) longest-zero-enemy stretch, which a bigger clear radius would breach.",
+    "_hearth_apron_note": "A HEARTH IS A CHECKPOINT, NOT A SAFE ZONE, and getting that wrong is what the first run of the generator did: at a 45 m clear and a 150 m ramp the thirteen critical-path hearths strung along the crossing suppressed 390 m out of every 500 m of it, and the road that the whole game is about came out at 0.43 encounters per traversal minute against a floor of 0.59. In a Souls game an enemy stands twenty metres from the bonfire, in sight of it, and that is the point: the apron is 22 m and full density is back by 62 m. RI-PRG04's only protected corridor is the one from a fog-gate hearth to its gate, and that has its own rule below.",
     "deep_bonus_at_m": 700,
     "deep_bonus": 1.15,
     "_deep_note": "Beyond `deep_bonus_at_m` from any safety the multiplier rises to `deep_bonus` — a mild 15%, because RI-WLD02 D9's ceiling is 1.2 groups/min and the tier multiplier already spends most of the headroom. Going off the road is supposed to feel less safe; it is not supposed to be a different game.",

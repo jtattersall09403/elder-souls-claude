@@ -21,12 +21,12 @@
     "voiced_by": "book:<book id> | dialogue:<topic id>#<actor> | npc:<npc id>"
   },
   "counts": {
-    "facts": 69,
+    "facts": 71,
     "by_tier": {
       "hard-canon": 28,
       "soft-canon": 9,
       "apocryphal": 1,
-      "constructed": 31
+      "constructed": 33
     },
     "disputed": 21,
     "deliberately_open": 1,
@@ -316,7 +316,12 @@
       "judges": [
         "lore.history",
         "world.ruins"
-      ]
+      ],
+      "when": {
+        "era": "pre-1E",
+        "year": null,
+        "note": "The Duskfall. Undated in every in-world source and deliberately so: no book in this build gives it a year, and the three that try give three different spans."
+      }
     },
     {
       "id": "CF-041",
@@ -333,7 +338,12 @@
         "lore.history",
         "world.ruins",
         "visual.architecture"
-      ]
+      ],
+      "when": {
+        "era": "pre-1E",
+        "year": null,
+        "note": "The xanmeers were raised before the Duskfall, over an interval the chronology does not attempt."
+      }
     },
     {
       "id": "CF-042",
@@ -348,7 +358,12 @@
         "lore.religion",
         "world.ruins",
         "quests.main"
-      ]
+      ],
+      "when": {
+        "era": "pre-1E",
+        "year": null,
+        "note": "Same horizon as CF-041. Argued in-world as CF-D007."
+      }
     },
     {
       "id": "CF-043",
@@ -375,7 +390,12 @@
       "player_discoverable": "never",
       "judges": [
         "lore.history"
-      ]
+      ],
+      "when": {
+        "era": "pre-1E",
+        "year": null,
+        "note": "The Ruddy Man belongs to the same undated horizon and is the only figure in it with a name."
+      }
     },
     {
       "id": "CF-045",
@@ -389,7 +409,13 @@
       "judges": [
         "lore.history",
         "world.settlements"
-      ]
+      ],
+      "when": {
+        "era": "2E",
+        "year": 560,
+        "ends": 601,
+        "note": "The Knahaten Flu. The one deep-time event in this registry with a real date, and the only pre-Third-Era year that appears anywhere in the shipped tree."
+      }
     },
     {
       "id": "CF-046",
@@ -402,7 +428,12 @@
       "player_discoverable": "early",
       "judges": [
         "lore.history"
-      ]
+      ],
+      "when": {
+        "era": "2E",
+        "year": 601,
+        "note": "Consequence of CF-045."
+      }
     },
     {
       "id": "CF-047",
@@ -430,7 +461,12 @@
       "judges": [
         "lore.history",
         "npc.unique"
-      ]
+      ],
+      "when": {
+        "era": "2E",
+        "year": 601,
+        "note": "Consequence of CF-045."
+      }
     },
     {
       "id": "CF-050",
@@ -461,7 +497,12 @@
         "lore.politics",
         "world.settlements",
         "quests.factions"
-      ]
+      ],
+      "when": {
+        "era": "3E",
+        "year": null,
+        "note": "The present arrangement. The harbour agreements that produced it span roughly a century and no source gives a year for any of them."
+      }
     },
     {
       "id": "CF-062",
@@ -480,7 +521,12 @@
         "lore.politics",
         "quests.factions",
         "dialogue.claims"
-      ]
+      ],
+      "when": {
+        "era": "spans",
+        "year": null,
+        "note": "House Dres has raided for centuries; no in-world source in this build dates the first raid."
+      }
     },
     {
       "id": "CF-064",
@@ -1128,7 +1174,12 @@
         "lore.factions",
         "lore.religion",
         "quests.main"
-      ]
+      ],
+      "when": {
+        "era": "3E",
+        "year": 27,
+        "note": "The Drowned Court, four centuries old at 3E 427."
+      }
     },
     {
       "id": "CF-C007",
@@ -1238,7 +1289,12 @@
       "judges": [
         "lore.era",
         "dialogue.voice"
-      ]
+      ],
+      "when": {
+        "era": "3E",
+        "year": 427,
+        "note": "The present. Interior reckoning: the Ninth Sap-Fall since the Rootless Egg."
+      }
     },
     {
       "tier": "constructed",
@@ -1701,6 +1757,11 @@
         }
       ],
       "player_discoverable": "mid",
+      "when": {
+        "era": "3E",
+        "year": 391,
+        "note": "Reman's Ford. Dated in the shipped books and the only dated event any registered dispute turns on."
+      },
       "truth_seal": "0f2b685ba71ab98e949158963d293deecd8b5bac3e4743b4e47c2a76ee8a2044"
     },
     {
@@ -2410,6 +2471,42 @@
         "lore.canon.geography"
       ],
       "truth_seal": "df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"
+    },
+    {
+      "id": "CF-C023",
+      "claim": "This build has no Argonian tribes. The province is organised by four constructed bodies — the Deep-Kin, the Drowned Court, the Wet Ledger and the Xul-Aneekh — and by the rootkeepers.",
+      "tier": "constructed",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "n-a",
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.argonian",
+        "lore.canon.factions"
+      ],
+      "measured": "Counted over all of game/data on 2026-08-07: Deep-Kin 87, Xul-Aneekh 84, Drowned Court 64, Sap-Cutters 53, Wet Ledger 45. Of the tribes canon actually names: Kothringi 22 and Lilmothiit 4 (both extinct in-world, so they appear as history), Horwalli 1, and Agacephs, Paatru, Archein, Sarpa, Dead-Water and Miredancers ZERO. \"Naga\" scores 388 but is a playable race in this build, not a tribe."
+    },
+    {
+      "id": "CF-C024",
+      "claim": "In this build the slave trade is present chiefly as the Empire's euphemism for it. The word \"lease\" outnumbers the word \"slave\" by roughly fifty to one.",
+      "tier": "constructed",
+      "in_world_sources": [
+        "Of the Labour-Lease at Blackrose",
+        "The Blessings of the Coast",
+        "Ledger and Journal of Andrel Vorin"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "n-a",
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.history"
+      ],
+      "measured": "Counted over all of game/data on 2026-08-07: lease/Blackrose 2,240 hits; House Dres 245; slave/slavery 42; soul-gem or soul trade 15."
     }
   ]
 }

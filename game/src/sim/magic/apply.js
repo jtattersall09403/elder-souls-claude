@@ -181,11 +181,24 @@ function h_restore_health(M, frame, rec, target) {
 
 // ---- attributes and skills -------------------------------------------------------------------
 
-const ATTRS = ['vigour', 'endurance', 'strength', 'dexterity', 'intelligence', 'faith'];
+/**
+ * The attributes a spell may drain, fortify or restore — **read off the live register**, not off
+ * a list written here.
+ *
+ * W1-13 round 3. This was the literal
+ *   `['vigour', 'endurance', 'strength', 'dexterity', 'intelligence', 'faith']`
+ * — the same stale six-id Dark Souls vocabulary `sim/state.js makeProgression()` used to seed,
+ * three of which (`dexterity`, `intelligence`, `faith`) are declared nowhere in this game. The
+ * register now carries the ten ids `game/data/progression/attributes.json` declares, and against
+ * those a hard-coded list would have made `h_fortify_attribute` sort on `undefined - undefined`
+ * and write `NaN` into the sheet. Sorted so the choice stays deterministic.
+ */
+const attrsOf = (A) => Object.keys(A).sort();
 
 function h_restore_attribute(M, frame, rec) {
   const A = M.w && M.w.sim ? M.w.sim.progression.attributes : null;
   if (!A) return moved('progression.attributes', null, null);
+  const ATTRS = attrsOf(A);
   const before = { ...A };
   // Restore what has been drained, never past the base. `M.attrBase` is captured the first time
   // anything drains or fortifies, so "restore" has a ceiling that is not simply "add points".
@@ -206,8 +219,8 @@ function h_fortify_attribute(M, frame, rec) {
   const before = { ...A };
   const pts = Math.round(rec.magnitude);
   // One attribute, chosen by the spell if it names one, else the caster's lowest — deterministic
-  // either way. Never spread across six, because a gate reads one number.
-  const which = rec.attribute || ATTRS.slice().sort((a, b) => A[a] - A[b] || (a < b ? -1 : 1))[0];
+  // either way. Never spread across the register, because a gate reads one number.
+  const which = rec.attribute || attrsOf(A).sort((a, b) => A[a] - A[b] || (a < b ? -1 : 1))[0];
   A[which] += pts;
   rec._undo = () => { A[which] -= pts; };
   return moved('progression.attributes', before, { ...A }, { attribute: which, points: pts });
