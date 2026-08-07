@@ -328,13 +328,6 @@ export class Engine {
     // The player object and `sim.env` are CAPTURED here and never passed again: `observe()`
     // takes no arguments, which is the whole of the "a quest cannot place a marker" guarantee.
     // See game/src/sim/discovery.js's header and AMENDMENT-W1-MAP-01 §3b.
-    this._discDebug = {
-      mapUI: !!this.data.mapUI,
-      mapUI_reveal: this.data.mapUI && this.data.mapUI.reveal ? [this.data.mapUI.reveal.min_m, this.data.mapUI.reveal.max_m] : null,
-      pois: !!this.data.pois,
-      pois_count: this.data.pois && this.data.pois.pois ? this.data.pois.pois.length : null,
-      field_sites: this.field && this.field.sites ? this.field.sites.length : null,
-    };
     this.sim.discovery = new Discovery({
       field: this.field,
       player: this.sim.player,
@@ -6130,8 +6123,13 @@ export class Engine {
       if (ref.index <= last) continue;
       const e = qe.journal.write(q, ref.index, this.sim.env.dayCount, {});
       if (e) {
-        if (!this.sim.quest.quests[q.id]) this.sim.quest.quests[q.id] = { stage: ref.index, flags: {}, branch: null, failed: false };
-        else this.sim.quest.quests[q.id].stage = Math.max(this.sim.quest.quests[q.id].stage, ref.index);
+        // GAP-FCT-01: historical sight WRITES the quest's opening journal entry, so the quest is
+        // genuinely open and must say so — `resolve()` now gates on `opened`.
+        if (!this.sim.quest.quests[q.id]) this.sim.quest.quests[q.id] = { stage: ref.index, flags: {}, branch: null, failed: false, opened: true };
+        else {
+          this.sim.quest.quests[q.id].stage = Math.max(this.sim.quest.quests[q.id].stage, ref.index);
+          this.sim.quest.quests[q.id].opened = true;
+        }
         this.sim.quest.flags[`hist_sight:${q.id}`] = true;
         return { quest: q.id, n: ref.index };
       }

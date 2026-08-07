@@ -169,11 +169,16 @@ export class QuestEngine {
 
   rec(id, create = false) {
     const m = this.sim.quest.quests;
-    if (!m[id] && create) m[id] = { stage: 0, branch: null, failed: false, giverDispositionDelta: 0, timeLimitInFrames: null, flags: {} };
+    if (!m[id] && create) m[id] = { stage: 0, branch: null, failed: false, opened: false, giverDispositionDelta: 0, timeLimitInFrames: null, flags: {} };
     return m[id] || null;
   }
 
-  isOpen(id) { const r = this.rec(id); return !!r && !r.failed && !this.sim.quest.completed.includes(id); }
+  /**
+   * GAP-FCT-01. `opened` is set by `open()` alone. A row minted by `reveal()` (foreknowledge) or
+   * by `fail()` (a severed thread you never accepted) is NOT an open quest and may not be
+   * resolved, noted or branched. Old saves have no `opened`; the loader derives it from `stage`.
+   */
+  isOpen(id) { const r = this.rec(id); return !!r && !!r.opened && !r.failed && !this.sim.quest.completed.includes(id); }
   isClosed(id) { const r = this.rec(id); return !!r && (!!r.failed || this.sim.quest.completed.includes(id)); }
 
   /** Everything the gate functions need, assembled from live sim state. */
@@ -397,14 +402,23 @@ export class QuestEngine {
 
   // ---- transitions ---------------------------------------------------------------------------
 
-  /** Accept the quest. Writes the lowest `active` index >= 10 the file declares. */
+  /**
+   * Accept the quest. Writes the lowest `active` index >= 10 the file declares.
+   *
+   * GAP-FCT-01 (W1-FACTIONS r1 §5): the test used to be "does a record exist", which conflated
+   * *a quest you are doing* with *a quest the machine happens to have a row for*. `reveal()` and
+   * `fail()` both mint rows with `rec(id, true)`, so foreknowledge of a quest silently made it
+   * unopenable forever. The row is now a container; `opened` is the state.
+   */
   open(id) {
     const def = this.book.get(id);
-    if (this.rec(id)) return { ok: false, reason: 'already opened' };
+    const existing = this.rec(id);
+    if (existing && existing.opened) return { ok: false, reason: 'already opened' };
+    if (this.isClosed(id)) return { ok: false, reason: 'quest is closed' };
     const ctx = this.context();
     const c = canOffer(def, ctx, this.gates);
     if (!c.offerable) return { ok: false, reason: c.why.join('; '), gate: c.gate };
-    this.rec(id, true);
+    this.rec(id, true).opened = true;
     const first = (def.journal || []).filter((e) => e.state === 'active' && e.index >= 10).map((e) => e.index).sort((a, b) => a - b)[0];
     if (first == null) throw new Error(`${id}: no active journal entry at index >= 10 to open with (RI-QST04 §B)`);
     this._write(def, first, {});
@@ -416,7 +430,7 @@ export class QuestEngine {
   note(id, index) {
     const def = this.book.get(id);
     const r = this.rec(id);
-    if (!r) return { ok: false, reason: 'quest not open' };
+    if (!r || !r.opened) return { ok: false, reason: 'quest not open' };
     if (this.isClosed(id)) return { ok: false, reason: 'quest is closed' };
     const e = (def.journal || []).find((x) => x.index === index);
     if (!e) throw new Error(`${id}: no journal entry ${index}`);
@@ -446,7 +460,7 @@ export class QuestEngine {
   takeBranch(id, branchId) {
     const def = this.book.get(id);
     const r = this.rec(id);
-    if (!r) return { ok: false, reason: 'quest not open' };
+    if (!r || !r.opened) return { ok: false, reason: 'quest not open' };
     const b = (def.branches || []).find((x) => x.id === branchId);
     if (!b) throw new Error(`${id}: no branch ${branchId}`);
     if (r.flags[`branch:${branchId}`]) return { ok: false, reason: 'branch already taken' };
@@ -458,15 +472,34 @@ export class QuestEngine {
     return { ok: true, quest: id, branch: branchId, irreversible: !!b.irreversible, leads_to: b.leads_to.slice() };
   }
 
-  /** Close the quest through one of its declared resolutions, and apply its consequences. */
+  /**
+   * Close the quest through one of its declared resolutions, and apply its consequences.
+   *
+   * GAP-FCT-01, W1-FACTIONS r1 §5. This used to gate on `rec(id)` alone — "is there a row" — and
+   * `reveal()` mints a row. So a character who had joined nothing, held reputation 0 and whom
+   * `canOffer` refused BY NAME could call `questReveal` once and then apply a rank-7 succession
+   * ending in full: four world flags, an unlocked rank-7 quest, and +40 reputation with the rival
+   * it is excluded from. The offer gate was enforced at `open()` and nowhere else, so every route
+   * into the machine that did not go through `open()` was outside every gate this system has.
+   *
+   * Two gates now, and they answer different questions:
+   *   1. `r.opened` — did you ACCEPT this quest? (structural; closes the minted-row hole)
+   *   2. `canOffer` — would the world still offer it to you? (substantive; means a rivalry lock,
+   *      an expulsion or a lost rank reaches a quest already in your journal, instead of only
+   *      the ones you have not started)
+   * The refusal carries the gate's own sentences, so the reason a resolve is refused is the same
+   * reason a giver would speak.
+   */
   resolve(id, resolutionId) {
     const def = this.book.get(id);
     const r = this.rec(id);
-    if (!r) return { ok: false, reason: 'quest not open' };
+    if (!r || !r.opened) return { ok: false, reason: 'quest not open' };
     if (this.isClosed(id)) return { ok: false, reason: 'quest is closed' };
     const res = (def.resolutions || []).find((x) => x.id === resolutionId);
     if (!res) throw new Error(`${id}: no resolution ${resolutionId}`);
     const ctx = this.context();
+    const gate = canOffer(def, ctx, this.gates);
+    if (!gate.offerable) return { ok: false, reason: gate.why.join('; '), gate: gate.gate, refused_by: 'offer_gate' };
     ctx.disposition = this._dispositionToward(def.giver && def.giver.npc_id);
     const c = canResolve(res, ctx);
     if (!c.available) return { ok: false, reason: c.why.join('; ') };
@@ -537,7 +570,11 @@ export class QuestEngine {
     const fired = [];
     for (const h of this.flagHooks.get(flag) || []) {
       if (h.requires_flag && !this.sim.quest.flags[h.requires_flag]) continue;
-      if (h.quest && h.reveal) { const r = this.reveal(h.quest, h.reveal); if (r.ok) fired.push({ reveal: h.reveal, quest: h.quest }); }
+      // GAP-FCT-01: guarded exactly as the journal branch below it already was. Unguarded, a world
+      // flag could mint a quest row for a quest nobody had accepted — the world-side half of the
+      // same hole. 0 of 110 hooks.json rows carry a quest+reveal pair today, so this was latent
+      // rather than live; the schema permits it and this line already read it.
+      if (h.quest && h.reveal && this.rec(h.quest) && !this.isClosed(h.quest)) { const r = this.reveal(h.quest, h.reveal); if (r.ok) fired.push({ reveal: h.reveal, quest: h.quest }); }
       if (h.quest && h.journal != null && this.rec(h.quest) && !this.isClosed(h.quest)) {
         const e = (this.book.get(h.quest).journal || []).find((x) => x.index === h.journal);
         if (e && e.state !== 'success' && e.state !== 'failure') {

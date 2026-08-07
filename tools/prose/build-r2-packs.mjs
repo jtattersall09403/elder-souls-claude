@@ -119,8 +119,10 @@ function selfTest() {
 
   // the pack must not leak the answer: PROMPT must not name a side or a rule
   const pr = PROMPT('books', 1);
-  t(!/eleven|nobody|em dash|elder-souls|Morrowind/.test(pr),
+  t(!/eleven|nobody|em dash|elder-souls|Morrowind|contraction|don't|exclamation/.test(pr),
     'PROMPT names neither the rule, the tell, nor the two corpora by name');
+  t(!/contraction|spoken register|conjunction/i.test(PROMPT('dialogue', 1)),
+    'and the dialogue PROMPT does not name the successor pass\'s rules either');
   t(/PICK: A/.test(pr) && /WEAKEST POINT/.test(pr), 'PROMPT still demands a pick and a self-criticism');
 
   console.log(bad ? 'SELF-TEST FAILED' : 'self-test passed');
@@ -132,6 +134,10 @@ function main() {
   if (argv.includes('--self-test')) return selfTest();
   const seed = Number(argv[argv.indexOf('--seed') + 1]) || 20260807;
   const outRel = argv.includes('--out') ? argv[argv.indexOf('--out') + 1] : 'reports/packs/prose-tics-r2';
+  // --register lets a later pass build a pack for the register IT changed without destroying a
+  // pack an earlier pass already handed to a judge. The builder rm -rf's its own output directory,
+  // so re-running it over an unanswered pack would silently discard the judge's trials.
+  const only = argv.includes('--register') ? argv[argv.indexOf('--register') + 1] : null;
   const out = path.join(ROOT, outRel);
   const reveal = path.join(ROOT, outRel + '.reveal');
 
@@ -150,9 +156,19 @@ function main() {
     }
   }
 
+  // OVER-SAMPLING THE WORK, IN EVERY REGISTER THE RUN ACTUALLY EDITED.
+  // The first version of this file over-sampled `touched` for the BOOKS register only, because the
+  // predecessor's pass was mostly a books pass. The successor pass was a dialogue-voice pass, and
+  // with books-only over-sampling the judge would have been shown a dialogue bundle assembled
+  // mostly from lines nobody edited — i.e. graded the untouched corpus and called it the work.
+  // Dialogue is now filtered to lines from edited FILES *before* bundling, so a dialogue trial is
+  // built from the pass's output. Journal is unchanged: neither pass rewrote journal entries.
   const REG = [
     ['books', (o) => o.books.filter((d) => words(d.text) >= 250), (r) => r.books.filter((d) => words(d.text) >= 250)],
-    ['dialogue', (o) => bundle(o.dialogue, 260), (r) => bundle(r.dialogue, 260)],
+    ['dialogue', (o) => {
+      const hit = o.dialogue.filter((d) => touched.has(d.file));
+      return bundle(hit.length >= 400 ? hit : o.dialogue, 260);
+    }, (r) => bundle(r.dialogue, 260)],
     ['journal', (o) => bundle(o.journal, 260), (r) => bundle(r.journal, 260)],
   ];
 
@@ -169,6 +185,7 @@ function main() {
       const hit = mine.filter((d) => touched.has(d.file));
       if (hit.length >= 5) mine = hit;
     }
+    if (only && kind !== only) continue;
     const theirs = getRef(ref);
     const chosen = pick(rng, mine, 5);
     const used = new Set();
@@ -189,9 +206,9 @@ function main() {
         kind: 'text',
         piece: 'W1-PROSE-TICS',
         built_by: 'the BUILDER of W1-PROSE-TICS, who does not answer these',
-        sampling_note: kind === 'books'
-          ? 'ours is drawn only from books this run edited, so the judge sees the work'
-          : 'ours is a length-matched bundle of shipped lines, sampled seeded',
+        sampling_note: kind === 'journal'
+          ? 'ours is a length-matched bundle of shipped journal entries, sampled seeded'
+          : `ours is drawn only from ${kind} this run edited, so the judge sees the work and not the untouched corpus`,
         a_words: words(fs.readFileSync(path.join(dir, 'A.txt'), 'utf8')),
         b_words: words(fs.readFileSync(path.join(dir, 'B.txt'), 'utf8')),
         seed,

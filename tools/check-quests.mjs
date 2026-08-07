@@ -104,6 +104,49 @@ function checkAgainst(hooksDoc, book) {
   return out.length > 0;
 }
 
+// ---- a resolution that gates on a skill nobody has ------------------------------------------
+//
+// W1-LIBRARY round 2, found while proving that reading a book opens the three non-violent lore
+// resolutions. It does — but two of the three ALSO gate on a skill id that does not exist:
+//
+//   Q-SOUL-02 res_seal        requires `scribing`     — there is no such skill. The register has
+//                                                       nineteen and none of them is scribing.
+//   Q-LILM-01 res_rootkeepers requires `root_speech`  — the skill is `root-speech`, with a hyphen
+//                             (blackmarsh-coast.json:1391, blackmarsh-core.json:864)
+//
+// The gate looks the key up verbatim in `sim.progression.skills`, finds nothing, and reports
+// `root_speech 0/45` for as long as the game runs. No amount of play moves it, so those two
+// non-violent exits are shut by a typo rather than by a difficulty. Q-DEEP-01's `speechcraft`
+// floor is spelled correctly and behaves correctly, which is what makes this a defect and not a
+// misreading of the gate.
+//
+// WARNING, NOT AN ERROR, AND DELIBERATELY SO. The quest data is another item's to change, and a
+// fail-closed assertion landed here would turn `check-quests` red for every agent on the box
+// over content none of them owns — the exact failure this project has already paid for twice.
+// It prints loudly and exits 0. Promote it to a `problems.push()` once the two ids are fixed;
+// the check is written so that is a one-line change.
+{
+  const skillsPath = join(ROOT, 'game', 'data', 'progression', 'skills.json');
+  if (existsSync(skillsPath)) {
+    const real = new Set((readJSON(skillsPath).skills || []).map((s) => s.id));
+    const dangling = [];
+    for (const [id, q] of quests) {
+      for (const r of (q.resolutions || [])) {
+        for (const k of Object.keys((r.requires && r.requires.skills) || {})) {
+          if (real.has(k)) continue;
+          const near = [...real].find((x) => x.replace(/[-_]/g, '') === k.replace(/[-_]/g, ''));
+          dangling.push(`${sourceOf.get(id)}: ${id} ${r.id} requires skill '${k}'` + (near ? ` — did you mean '${near}'?` : ' — no skill of that name exists'));
+        }
+      }
+    }
+    if (dangling.length) {
+      console.warn(`check-quests: WARNING — ${dangling.length} resolution requirement(s) name a skill that is not in progression/skills.json.`);
+      console.warn('  A gate on a skill nobody can have is a resolution no player can ever reach.');
+      for (const d of dangling) console.warn(`  ${d}`);
+    }
+  }
+}
+
 // ---- report ------------------------------------------------------------------------------
 if (problems.length) {
   console.error(`check-quests: ${problems.length} problem(s) across ${quests.size} quests:`);

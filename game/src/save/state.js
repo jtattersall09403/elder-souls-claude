@@ -614,6 +614,9 @@ export function applySave(sim, blob, moves, statFor) {
       stage: q.stage,
       branch: q.branch,
       failed: !!q.failed,
+      // Saves written before GAP-FCT-01 carry no `opened`; a stage above 0 means `open()` had
+      // written a journal entry, so those characters keep every quest they were doing.
+      opened: q.opened === undefined ? q.stage > 0 : !!q.opened,
       giverDispositionDelta: q.giver_disposition_delta,
       timeLimitInFrames: q.time_limit_in_frames,
       flags: { ...q.flags },
@@ -891,6 +894,11 @@ function sortedQuestMap(m) {
     const q = m[k];
     out[k] = {
       stage: q.stage, branch: q.branch === undefined ? null : q.branch,
+      // GAP-FCT-01. `opened` is the difference between a quest you accepted and a row the machine
+      // minted for foreknowledge, and `resolve()` now gates on it. If it did not round-trip, every
+      // in-progress quest would become unresolvable across a save — the field would be written and
+      // never read back, which is exactly the fixed-point trap W1-00's critic found.
+      opened: q.opened === undefined ? q.stage > 0 : !!q.opened,
       failed: !!q.failed, giver_disposition_delta: q.giverDispositionDelta || 0,
       time_limit_in_frames: q.timeLimitInFrames === undefined ? null : q.timeLimitInFrames,
       flags: sortedMap(q.flags || {}),

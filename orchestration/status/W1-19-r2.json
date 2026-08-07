@@ -2,7 +2,7 @@
   "task_id": "W1-19-r2",
   "brief": "corpus/90-verdicts/wave1/W1-19-r1.md",
   "started": "wave-1 round 2",
-  "state": "verifying",
+  "state": "complete",
   "successor_generation": 3,
   "files_i_am_editing": [
     "game/data/quests/hooks.json",
@@ -36,7 +36,16 @@
     "game/data/states/soulrest-quay.json (new: the place a player can walk to)",
     "tools/dialogue/build-graph.mjs (unblocked)",
     "game/src/sim/dialogue/disposition.js (factionTerm membership split; reputeTerm weighted mean)",
-    "tools/quests/mainline-chain-floor.mjs (new: chain floor + hand-feed-free completion)"
+    "tools/quests/mainline-chain-floor.mjs (new: chain floor + hand-feed-free completion)",
+    "game/data/dialogue/topics/55-utility.json (new: 34 topic bodies, ~100 infos)",
+    "game/data/dialogue/rumours.json (+32 rows with adds_topics, one per quest, settlement-keyed)",
+    "game/data/quests/hooks.json (35 self-loop entry_topics rows -> forward-pointing)",
+    "game/data/quests/mainline-act2/3/4.json (the three unreachable resolution attribute demands, re-scaled with provenance notes)",
+    "game/data/npcs/quest-givers.json (settlement 'thornmarsh' -> 'thorn' on two records)",
+    "game/data/world/encounters.json (absent_when_flag on dres-raid-party net-throwers \u2014 the AR-3 crossing)",
+    "game/src/engine.js (spawnEncounter reads absent_when_flag)",
+    "tools/quests/utility-findability.mjs (new)",
+    "tools/quests/encounter-seam-probe.mjs (new)"
   ],
   "findings": [
     "REPRO gen-1: cold-boot offerability 0/32; gate margins all exactly 0 at 9 clamped gates; Q-MAIN-01/res_carry drives faction 0 -> -12.",
@@ -56,14 +65,16 @@
     "--sabotage no-bootstrap": "0/40, all blocked at Q-MAIN-01 on the topic \u2014 the instrument goes red",
     "--sabotage hand-feed": "40/40, IDENTICAL to the unfed run \u2014 the forward AddTopic graph, not the hand-feed, is carrying the chain",
     "--sabotage no-purse (before the re-clamp)": "36/40; exactly ONE gate in 31 arrived-at short: Q-MAIN-23 by 1.96, for all four saxhleel signatures",
-    "--sabotage no-purse (AFTER the re-clamp)": "40/40, 0 gates arrived short, 0 gate-openings bought, 0 violent resolutions. Every race and upbringing finishes both chains with NO money at all and NO topic hand-fed."
+    "--sabotage no-purse (AFTER the re-clamp)": "40/40, 0 gates arrived short, 0 gate-openings bought, 0 violent resolutions. Every race and upbringing finishes both chains with NO money at all and NO topic hand-fed.",
+    "--sabotage no-rumours (utility-findability)": "10 -> 0 newly offerable; quest keywords learned 9 -> 0; blocked-on-topic back to 35/35/35 in all three towns",
+    "encounter-seam-probe flag clear": "6 bodies with net-throwers \u2014 the pre-change behaviour, so the control is inside the measurement"
   },
   "findings_2": [
     "GEN-2 NEW METRIC `arrival_floor`: the standing the worst signature walks up to a gate WITH, as opposed to `chain_floor` (min over all steps) or the round-1 cold start. chain_floor called 8 gates 'priced'; only 1 of those 31 is actually arrived-at short. A gate has to be passable when you reach it, not at every instant.",
     "GEN-2 CLAMP DECISION: Q-MAIN-23 giver.disposition_min 12 -> 8, set from the measured worst arrival 10.04 (saxhleel, no purse, nothing hand-fed), reserve 2.04. Round 1 set it from the cold start (margin 0); the round-2 pass set it from chain_floor (still 1.96 short). disposition_min_race_blind is read by NO engine code \u2014 it is provenance only, and the note used to overclaim that it carried the discrimination. Corrected in place."
   ],
-  "next_step": "delete-the-fix on the three resolution numbers in the browser, re-run chain-floor, boot-check, blog",
-  "notes_for_successor": "gen-1 died mid-run; it had ALREADY landed the factionTerm split and written mainline-chain-floor.mjs even though its next_step said otherwise. Read the code before redoing anything. S35: a map exists but no quest may put anything on it \u2014 findability must NOT route through the map.",
+  "next_step": "none \u2014 a fresh critic should re-measure. Outstanding and NOT mine: Q-BLAK-01 res_hold (personality 45), Q-LEDG-01 res_blackmail (40) and Q-MAG-10 mag_the_witness__intimidate (strength 45) are still unreachable by every sheet; three NPC records still carry settlement \"rootlands\", which is not a settlement.",
+  "notes_for_successor": "gen-1 died mid-run; it had ALREADY landed the factionTerm split and written mainline-chain-floor.mjs even though its next_step said otherwise. Read the code before redoing anything. S35: a map exists but no quest may put anything on it \u2014 findability must NOT route through the map. GEN-3: everything in the round-1 verdict's sections 2, 3, 4 and 5 now has a live instrument and a red control. The four checkers plus boot-check are clean. Do not re-run the authoring; run the probes.",
   "findings_3": [
     "GEN-3 START 2026-08-07: container restarted twice; picking up from gen-2 next_step. Tree at 2623123.",
     "GEN-3 CONFIRMED (re-run of gen-2's headline, this container): mainline-chain-floor default = 40/40 both chains, 0/31 gates arrived short, 0 gate-openings bought, 0 violent. --sabotage no-purse = 40/40, 0/31 short, 0 bought, 0 violent. --sabotage no-bootstrap = 0/40, every signature blocked at Q-MAIN-01 on 'the topic \"the drowned tally\" has not come up yet'. The instrument still goes red on demand.",
@@ -79,6 +90,9 @@
     "GEN-3 CONTROL (--sabotage no-rumours: greet, but do not ask what the town is saying): 10 -> 0 newly offerable, quest keywords learned 4+4+1 -> 0+0+0, blocked-on-topic back to 35/35/35. The rumour layer is exactly what carries the supply; the instrument goes red on demand.",
     "GEN-3 FOUND AND FIXED: widow-ineel and herbwife-ossa carried settlement 'thornmarsh', which is not one of the eight settlements in game/data/world/settlements/. RumourBook.pick() and RoadBook.forNpc() both key on that string, so those two could never tell you what the town was saying or the way out of it. Set to 'thorn'. THREE MORE REMAIN and are not mine: rootlands-keeper, rootlands-drowned-speaker, rootlands-band-elder carry settlement 'rootlands', also not a settlement.",
     "GEN-3 NOTE: Q-SOUL-02 is still not offerable at Soulrest after the topic is learned, and correctly so \u2014 it is refused on 'the_drowned_court rank 0/2; reputation 0/22', a faction ladder gate, not a topic gate. Its keyword IS now supplied (blocked-on-topic at soulrest 35 -> 34).",
-    "GEN-3 CONSUMPTION PROOF for `resolutions[].requires.attributes` (the model whose numbers I moved). Live, soulrest-quay, perturbing the character's attribute across the authored threshold and reading the gate's own refusal string: Q-MAIN-08 res_lean_on_cuiro at personality 16 refuses with 'personality 16/17', at 17 that term is GONE from the refusal (only the unsatisfied reveal remains); Q-MAIN-13 at willpower 19 refuses 'willpower 19/20', at 20 the term is gone; Q-MAIN-23 at personality 19 refuses 'personality 19/20', at 20 gone. The number is read by gate.js:197 and the boundary is exactly where it is authored \u2014 at the old values (40/35/45) that term was in the refusal for every sheet the character builder can produce."
+    "GEN-3 CONSUMPTION PROOF for `resolutions[].requires.attributes` (the model whose numbers I moved). Live, soulrest-quay, perturbing the character's attribute across the authored threshold and reading the gate's own refusal string: Q-MAIN-08 res_lean_on_cuiro at personality 16 refuses with 'personality 16/17', at 17 that term is GONE from the refusal (only the unsatisfied reveal remains); Q-MAIN-13 at willpower 19 refuses 'willpower 19/20', at 20 the term is gone; Q-MAIN-23 at personality 19 refuses 'personality 19/20', at 20 gone. The number is read by gate.js:197 and the boundary is exactly where it is authored \u2014 at the old values (40/35/45) that term was in the refusal for every sheet the character builder can produce.",
+    "GEN-3 CONFIRMED after all gen-3 edits: mainline-chain-floor default 40/40 both chains, 0/31 gates arrived short, 0 bought, 0 violent. mainline-findability --state soulrest-quay unchanged: cold 0 topics / 0 offerable / 32 blocked; after listening 31 topics, Q-MAIN-01 offerable, 13 blocked; directions spoken verbatim; ACCEPTANCE supplied_only_by_itself 0/32 and no_supplier_at_all 0/32.",
+    "GEN-3 AR-3 \u2014 the verdict's `seam_sterile: true` is now false, with one crossing and an instrument for it. Q-MAIN-23 res_sign_the_clause sets `the_sixty_are_protected`; dres-raid-party's net-throwers (the capture arm: net_behaviour capture, on_player_defeat capture-transport-archon) now carry `absent_when_flag` and Engine.spawnEncounter reads it. MEASURED: 6 bodies {infantry 4, net-thrower 2} unsigned -> 4 bodies {infantry 4} signed, with statblocks ['inf_trash'], hp_max [412], poise_max [32] IDENTICAL across both \u2014 composition is the lever, no stat moves, nothing keyed on race. tools/quests/encounter-seam-probe.mjs. creation-audit --section ar3 still 9/9 PASS.",
+    "GEN-3 TOOL BUG FOUND IN MY OWN PROBE: encounter-seam-probe first asked H.questDef() whether the resolution declares the flag and got NO \u2014 the harness projection deliberately drops resolutions[].consequences. The coupling was working and the probe was asking the wrong witness. It reads the shipped quest file now. Same shape as the round-2 fold-transcription bug: a tool that asks a projection instead of the source."
   ]
 }

@@ -28,16 +28,37 @@ delivering a quest hint in an omniscient voice.**
 
 ### 1. Length statistics — Morrowind + Tribunal + Bloodmoon readable books
 
-| Statistic | Value (words) |
-|---|---|
-| Unique readable texts | ~330 |
-| p10 | ~90 |
-| p25 | ~210 |
-| **Median** | **~520** |
-| p75 | ~960 |
-| p90 | ~1,700 |
-| Max (single volume) | ~4,500 |
-| Mean | ~700 (skewed by the long tail) |
+**MEASURED 2026-08-07, as the provenance note below asked for.** The vendored UESP extract
+(`corpus/uesp_morrowind_blackmarsh_extract.jsonl.xz`) does contain the `BOOK` records, and
+`tools/uesp/mw-book-stats.py` recovers **241 Morrowind/Tribunal/Bloodmoon books with full text**
+out of 483 shipped book pages. The recalled figures are kept struck through, per the note.
+Percentiles are linear interpolation between order statistics; on this sample the floor-index
+convention happens to agree to the word, which is not true of our own 70-book corpus and is why
+`book-stats.py` and `book-budget.mjs` were both moved to interpolation.
+
+| Statistic | ~~Recalled~~ | **Measured (241 books)** | Recall was |
+|---|---|---|---|
+| Unique readable texts | ~~~330~~ | **241 with recoverable text** (483 book pages) | — |
+| p10 | ~~~90~~ | **165** | 45% low |
+| p25 | ~~~210~~ | **299** | 30% low |
+| **Median** | ~~~520~~ | **535** | good |
+| p75 | ~~~960~~ | **1,125** | 15% low |
+| p90 | ~~~1,700~~ | **1,673** | good |
+| Max (single volume) | ~~~4,500~~ | **4,090** | good |
+| Mean | ~~~700~~ | **770** (skewed by the long tail) | good |
+| under 150 words | — | **8.7%** | (ours is 15.7%) |
+
+**The short tail was the thing recall got wrong.** p10 and p25 were both badly under — Morrowind's
+books are *less* front-loaded with scraps than they are remembered as being, and a corpus that
+imitates the remembered distribution ships roughly twice as many very short items as the real one.
+Our 15.7% under 150 words against Morrowind's 8.7% is the live consequence, and it is inside
+RI-LOR03's own ≤20% cap only because that cap was written against the recalled figure.
+
+**The numeral tic, measured on the same 241 books**, because the round-1 critic's one-token
+separator needs its reference published rather than asserted: `eleven` appears in **2.9%** of
+Morrowind's books (7 occurrences), against 75.4% of ours at the time of that verdict. The full
+distribution is in the tool's output; the shape is a smooth decay from `one` at 68.0% to
+`thirteen` at 2.9%, with no number in it carrying a bump. Ours had a bump.
 
 Shape facts that matter more than the numbers:
 
@@ -582,12 +603,22 @@ Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own 
 
 ## Provenance note
 
-- **§1 length statistics are `canonical-recall`, confidence medium.** They are reconstructed from
+- ~~**§1 length statistics are `canonical-recall`, confidence medium.** They are reconstructed from
   familiarity with Morrowind's book corpus, not measured against extracted game text. Direct verification
   was attempted and blocked (see RI-LOR01 provenance note; UESP and Imperial Library both refused at the
   proxy). **These numbers are binding as a constructed bar regardless** — per CORPUS-CONTRACT §3, a
   constructed bar we can measure beats a real number we cannot. If a later agent can extract Morrowind's
-  `BOOK` records, re-measure and amend this section, keeping the old figures struck through.
+  `BOOK` records, re-measure and amend this section, keeping the old figures struck through.~~
+  **DISCHARGED 2026-08-07 (W1-LIBRARY round 2).** The extraction the note asked for exists:
+  `tools/uesp/mw-book-stats.py` over `corpus/uesp_morrowind_blackmarsh_extract.jsonl.xz` recovers 241
+  books with full text, and §1 now carries the measured figures with the recalled ones struck through.
+  §1 is therefore **`community-data`, confidence high**, and re-runnable — the extract is vendored, so
+  the number does not depend on a network that was 403ing when the note was written.
+  **The §2 targets below have NOT been re-derived from it and are still constructed.** They were set
+  against the recalled distribution, and the two places that matters are named in §1: the ≤20% cap on
+  very short books was written against a p10 that was 45% low, and the p90 target of 1,600 sits just
+  under a measured 1,673. Whoever next owns §2 should decide those two deliberately rather than inherit
+  them.
 - The multi-volume examples (*2920* at 12 volumes, *The Real Barenziah*, *The Poison Song*) and the
   Barenziah contradiction are `canonical-recall`, confidence high — these are well-known features of the
   shipped game.

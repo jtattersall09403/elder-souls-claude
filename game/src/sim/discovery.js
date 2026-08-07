@@ -11,13 +11,27 @@
 // object has arity 0.** Not "no quest currently calls one" — there is no parameter in which a
 // caller could name a place.
 //
-//   observe()            length 0   the only mutator. Reads the player captured at construction.
+//   observe()            length 0   the only mutator. Reads the body off the captured SIM.
 //   suspend() / resume() length 0   the interior gate; they take no place either.
 //
-// `observe()` closes over the player object handed to the constructor and reads that body's
-// position and nothing else. A quest holding `this.sim` can reach `sim.discovery` and call
-// `observe()`; the effect is to reveal the ground the player is already standing on, which is
-// already revealed. That is the whole attack surface and it is inert.
+// `observe()` reads `sim.player`'s position and `sim.env.interior` and nothing else. A quest
+// holding `this.sim` can reach `sim.discovery` and call `observe()`; the effect is to reveal the
+// ground the player is already standing on, which is already revealed. That is the whole attack
+// surface and it is inert.
+//
+// IT CAPTURES THE SIM, NOT THE PLAYER, AND THAT DISTINCTION WAS A SHIPPED BUG.
+// The first version captured `sim.player` and `sim.env` directly, which reads as the tighter
+// choice and is in fact the broken one: `SimState.reset()` does `this.player = makePlayer()` and
+// `this.env = makeEnvironment()`, so EVERY state load and every save load replaces both objects.
+// A model holding the old ones observes a body that can never move again. Measured on the
+// shipped build: after the first load the map froze at 255 revealed cells and ZERO discovered
+// places for the rest of the run, no matter how far the player walked — the map recorded nothing
+// and could not name a single place. `sim` itself is constructed once (`engine.js`) and only
+// ever mutated by `reset()`, so capturing it is what survives. This is the same hazard
+// `Engine._rebindQuestRuntime()` exists for; see the comment at its call site.
+//
+// None of this weakens the guarantee the amendment is about: `observe()` still takes ZERO
+// arguments and there is still no parameter anywhere in which a caller could name a place.
 //
 // Everything else is a reader, and every reader returns a COPY:
 //   seenCell / seenAt / hasPlace   booleans
@@ -49,7 +63,7 @@ export class Discovery {
   #revealed = 0;         // popcount, maintained incrementally
   #placeSet;             // Set<string> of place ids the body has stood in
   #placeOrder;           // ids in discovery order — the map draws them in the order you found them
-  #player; #env; #field;
+  #sim; #field;
   #sites;                // [{id, x, z, r2}] — the standing test, from world data
   #minR; #maxR;
   #lastCol = -1; #lastRow = -1;   // only re-paint when the body changes cell
@@ -59,16 +73,22 @@ export class Discovery {
   /**
    * @param {object} o
    * @param {import('../world/field.js').WorldField} o.field   the built province
-   * @param {object} o.player  the player body. CAPTURED, not passed per call — see the header.
-   * @param {object} o.env     sim.env, for `interior`
+   * @param {object} o.sim     the SimState. CAPTURED, not passed per call — see the header. It
+   *   must be the sim itself and not `sim.player`/`sim.env`, because `reset()` replaces those
+   *   two objects on every load and a captured copy of them goes dead.
    * @param {object} o.doc     game/data/ui/map.json
    * @param {object} o.pois    game/data/world/pois.json
    */
   constructor(o) {
     const f = o.field;
     this.#field = f;
-    this.#player = o.player;
-    this.#env = o.env || {};
+    if (!o.sim || !('player' in o.sim)) {
+      // Fail loudly at construction rather than quietly recording nothing for a whole run. The
+      // bug this replaces was invisible precisely because the model went on answering.
+      throw new Error('Discovery: `sim` is required (capture the SimState, not sim.player — ' +
+        'SimState.reset() replaces player and env on every load)');
+    }
+    this.#sim = o.sim;
     this.#cols = f.cols; this.#rows = f.rows; this.#cell = f.cell;
     this.#bits = new Uint8Array(((this.#cols * this.#rows) + 7) >> 3);
     this.#placeSet = new Set();

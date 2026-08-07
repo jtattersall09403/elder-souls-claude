@@ -90,11 +90,21 @@ const out = await page.evaluate((CASES) => {
       // --- draw every bolt EXCEPT the book's.
       // 1. skill floors, read out of the engine's own refusal strings ("root_speech 0/45"), so
       //    the fixture cannot drift away from the data it is standing in for.
-      const patch = {};
+      //
+      // BOTH SPELLINGS, deliberately, and the probe reports which one the gate answered to.
+      // `game/data/progression/skills.json` calls the skill `root-speech`; two quests
+      // (blackmarsh-coast.json:1391, blackmarsh-core.json:864) spell their `requires.skills`
+      // key `root_speech`. If only the underscore form moves the gate, the gate is reading a
+      // key the real skill register never contains — which would mean those resolutions are
+      // shut whatever the player does. Guessing one spelling would have hidden that.
+      const patch = {}, floors = {};
       for (const w of (r.why || [])) {
-        const m = /^([a-z_]+)\s+(-?\d+)\/(\d+)$/.exec(String(w));
-        if (m) patch[m[1].replace(/_/g, '-')] = Number(m[3]);
+        const m = /^([a-z_-]+)\s+(-?\d+)\/(\d+)$/.exec(String(w));
+        if (m) { floors[m[1]] = Number(m[3]); patch[m[1]] = Number(m[3]); patch[m[1].replace(/_/g, '-')] = Number(m[3]); }
       }
+      row.skill_floors = floors;
+      const real = new Set(Object.keys(H.getSkillSheet()));
+      row.floor_ids_absent_from_the_skill_register = Object.keys(floors).filter((k) => !real.has(k));
       if (Object.keys(patch).length) { try { H.setSkills(patch); } catch (e) { row.setskills_error = String(e).slice(0, 160); } }
       row.skills_raised = patch;
 
