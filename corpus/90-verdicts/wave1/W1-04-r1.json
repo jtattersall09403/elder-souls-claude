@@ -1,0 +1,945 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-04-r1",
+  "piece_title": "Settlements, interiors and the people in them — round 1 critique",
+  "subsystem_paths": [
+    "world.settlement.anatomy",
+    "world.interior.named",
+    "world.interior.continuity",
+    "world.npc.population",
+    "world.npc.schedule",
+    "world.property.ownership",
+    "world.locks.security",
+    "world.faction.presence",
+    "world.persistence.state"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-04-r1-3c19",
+    "role": "critic.world",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-07T21:05:00Z",
+    "finished_at": "2026-08-07T22:40:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "3ba93e04f53e8827153134ebe255085b84682acf",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "note": "Working tree dirty (5 files) throughout; 21 pieces in flight. Load 6.29-23.30 and 12-18 headless_shell for the whole run, above RULES.md rule 21's ~8 cap. I launched ONE browser per probe run and kept it, and publish NO timing figure anywhere in this verdict, so contention affects nothing in it. Captures were taken through tools/capture/ (rule 20). I did not commit (rule 28). The builder's status file records that two in-flight orchestrator commits swept its working tree; my own delete-the-fix on tools/check-data.mjs was restored and verified with `git diff` empty (rule 17).",
+    "harness_commands": [
+      {
+        "command": "node tools/world/critic-w1-04-r1.mjs --out reports/critic-w1-04-r1.json",
+        "seed": null,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/world/critic-w1-04-r1b.mjs",
+        "seed": null,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/check-data.mjs   (baseline arm)",
+        "seed": null,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/check-data.mjs   (delete-the-fix arm: settlement:'rootlands' reintroduced on rootlands-keeper)",
+        "seed": null,
+        "exit_code": 1
+      },
+      {
+        "command": "node tools/check-content.mjs",
+        "seed": null,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/check-quests.mjs",
+        "seed": null,
+        "exit_code": 0
+      }
+    ],
+    "depends_on": [
+      "W1-15 (property zones, takeObject, lockBegin, theft.js — the two paths this piece did not build)",
+      "W1-07 (render/places.js — the only two of the 115 interiors with their own geometry)",
+      "W1-00 (render/scene.js buildHall — the cell the other 113 resolve to)",
+      "W1-01 (province.js — the region signature geometry that is all VP04 can contain)",
+      "W1-GIVER-PRESENCE (the 38 posted NPCs, and the VP04 repoint)"
+    ],
+    "depends_on_note": "world.property.ownership and world.locks.security were built by W1-15 before this piece opened; W1-04's contribution to them is deriving shopOpen from isOpenNow() where every call site hardcoded true, which I measured separately. The VP04 world-origin defect named in my brief was repaired by W1-GIVER-PRESENCE, not by W1-04."
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "This piece is judged on structure, consumption and measurement. The images in this verdict are not fidelity or art-direction comparisons and are not scored on a visual axis: they are evidence that two named interiors are the same geometry, and that a viewpoint's declared subject is absent from its frame. Declared before any frame was opened."
+  },
+  "artifacts": [
+    {
+      "path": "reports/critic-w1-04-r1.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-w1-04-r1.mjs --out reports/critic-w1-04-r1.json",
+      "source": "critic's own instrument, run against the live Engine in one headless browser"
+    },
+    {
+      "path": "reports/critic-w1-04-r1b.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-w1-04-r1b.mjs",
+      "source": "critic's own instrument: the drawn-cell trace across a door, with _applyCell() as the control arm"
+    },
+    {
+      "path": "tools/world/critic-w1-04-r1.mjs",
+      "kind": "log",
+      "produced_by": "written by the critic (declared under method_deviations)",
+      "source": "critic instrument source"
+    },
+    {
+      "path": "tools/world/critic-w1-04-r1b.mjs",
+      "kind": "log",
+      "produced_by": "written by the critic (declared under method_deviations)",
+      "source": "critic instrument source"
+    },
+    {
+      "path": "docs/shots/2026-08-07-w1-04-critic-thorn-hall-populated.png",
+      "kind": "screenshot",
+      "produced_by": "tools/capture/client.mjs capture({state:'interior_firelit', ops:[['setTimeOfDay',12],['populateSettlement','thorn'],['enterInterior','thorn-hall'],['stepFrames',10]], camera:{pos:[0,1.75,-6.5],look:[0,1.5,2.0],fov:70}, evidence_of:'interior'})",
+      "source": "capture daemon, build key game@cd8fc1d0fe5d6031",
+      "camera_pose": "pos [0,1.75,-6.5] look [0,1.5,2.0] fov 70",
+      "resolution": "1280x720"
+    },
+    {
+      "path": "docs/shots/2026-08-07-w1-04-critic-archon-apothecary-same-hall.png",
+      "kind": "screenshot",
+      "produced_by": "tools/capture/client.mjs capture({state:'interior_firelit', ops:[['setTimeOfDay',12],['populateSettlement','archon'],['enterInterior','archon-apothecary'],['stepFrames',10]], camera:{pos:[0,1.75,-6.5],look:[0,1.5,2.0],fov:70}, evidence_of:'interior'})",
+      "source": "capture daemon, build key game@cd8fc1d0fe5d6031 — same camera pose as the Thorn Hall frame, deliberately",
+      "camera_pose": "pos [0,1.75,-6.5] look [0,1.5,2.0] fov 70",
+      "resolution": "1280x720"
+    },
+    {
+      "path": "docs/shots/2026-08-07-w1-04-critic-vp04-settlement-street.png",
+      "kind": "screenshot",
+      "produced_by": "tools/capture/client.mjs capture({viewpoint:'VP04-settlement-street', ops:[['populateSettlement','thorn'],['stepFrames',8]], evidence_of:'composition'})",
+      "source": "capture daemon, build key game@ce564567e0c3c962 — VP04 as it stands after the W1-GIVER-PRESENCE repoint",
+      "camera_pose": "VP04-settlement-street: pos [3825.5,15.1,879] look [3820.5,14,864] fov 60",
+      "resolution": "1280x720"
+    },
+    {
+      "path": "reports/w1-04-survey.md",
+      "kind": "report",
+      "produced_by": "the W1-04 builder (read, not produced, by this critic)",
+      "source": "the piece's own honest survey — Part I the before-picture, Part II the after-state"
+    }
+  ],
+  "reference_items": [
+    {
+      "id": "RI-WLD03",
+      "path": "corpus/50-world/RI-WLD03-settlement-anatomy.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "M12 anatomy audit per settlement + M13 blind layout test; five anatomy rules R1-R5",
+      "native_score": 0,
+      "native_max": 100,
+      "native_verdict": "The tier template is hit exactly in DATA — named interiors 26/18/18/12/12/12/7/7 against 26/18/18/12/12/12/7/7, enterable % 70-81.3 against the item's own interior/(interior+sealed) bars of 64-70, NPC counts at or above every tier target. In the WORLD, R1's building meshes do not exist (settlement.buildings is read at two sites: the door table and a .length), R2 is half-built (11 of 30 shops have no barter merchant, 0 of 347 NPCs carry a gold pool or barter inventory, 0 of 115 interiors declare a back room), R5 has no implementation at all, and M13 cannot be run because there is no settlement geometry to render orthographically. On min-over-axes with M13 unmeasurable, native 0.",
+      "score_0_10": 2,
+      "measured": "partial",
+      "evidence": [
+        "reports/critic-w1-04-r1.json",
+        "docs/shots/2026-08-07-w1-04-critic-vp04-settlement-street.png",
+        "reports/w1-04-survey.md"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "M12-tier-template-data",
+          "result": "pass",
+          "observed": "8 settlement records, 202 buildings, kinds {interior, sealed-with-reason, structure} and no fourth kind. enterable % on the item's own formula: helstrom 81.3, lilmoth/stormhold 78.3, archon/blackrose/gideon 75.0, thorn/soulrest 70.0 — all at or above the tier bar. Named interiors match the template exactly at every tier."
+        },
+        {
+          "id": "M12-5-structure-with-residential-props",
+          "result": "unmeasurable",
+          "hard_fail": true,
+          "observed": "The item makes this an immediate fail: a building classified `structure` with residential props inside its footprint. There are no building meshes and no placed props anywhere in the settlement layer, so no instrument can fire this gate. It scores 0 fail-closed."
+        },
+        {
+          "id": "R1-door-rule-in-the-world",
+          "result": "fail",
+          "observed": "112 buildings declare kind `interior` with a door. `settlement.buildings` has exactly two consumers in game/src: SettlementSystem's door table and `s.buildings.length` in listSettlements(). No mesh is instantiated for any of the 202. The doors have no buildings."
+        },
+        {
+          "id": "R2-service-rule",
+          "result": "fail",
+          "observed": "11 of 30 shop interiors have no NPC with a `barter` service (blackrose-smithy, gideon-apothecary, gideon-smithy, helstrom-apothecary, helstrom-scriptorium, helstrom-smithy, lilmoth-apothecary, lilmoth-scribe, +3). 0 of 347 NPC records carry a gold pool or a barter inventory. 0 of 115 interiors declare a back room or upper floor. 30 of 30 shops do declare a unique_item, which nothing instantiates."
+        },
+        {
+          "id": "R5-architecture-rule",
+          "result": "fail",
+          "observed": "Requires per-settlement unique kits of >=8 bespoke building meshes and >=1 silhouette element used nowhere else. Zero implementation: grep for architecture/kit consumers in game/src returns only UI-kit code. The builder's claimed 0% mesh overlap between kits is a property of the data, not of anything drawn."
+        },
+        {
+          "id": "M13-blind-layout-test",
+          "result": "unmeasurable",
+          "observed": "blind_pair: yes. Requires 8 top-down orthographic 512px renders of settlement plans with labels stripped. There is no settlement geometry to render, so the pack cannot be built. Recorded as not_possible in blind_comparisons[], not as skipped."
+        }
+      ],
+      "why_not_ten": "M12-5-structure-with-residential-props is an UNGATED hard fail — the gate exists, is marked hard_fail, and no instrument in this build could ever fire it, because the props and meshes it inspects do not exist. R1, R2 and R5 fail in the world while the tier table passes in the data."
+    },
+    {
+      "id": "RI-WLD13",
+      "path": "corpus/50-world/RI-WLD13-interior-exterior-continuity.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "N1-N7 continuity properties over 250 interiors + S1-S4 seamlessness",
+      "native_score": 0,
+      "native_max": 100,
+      "native_verdict": "N3 (door position round-trip) is real, proved to 0.000 m at both ends, and is the piece's genuine repair of a defect where sim.player.pos turned out to be a mirror. Everything else is absent or vacuous: N1's ratio is 1.000 by construction on 115 of 115 because interior bounds_m IS the declared exterior_footprint_m; N4 (windows), N5 (storeys), N7 (water) have no fields on any record; S1-S4 are zero. And the property the item calls the difference between a settlement of buildings and a settlement of building-shaped doors — walking in and seeing the room — does not happen at all.",
+      "score_0_10": 2,
+      "measured": "partial",
+      "evidence": [
+        "reports/critic-w1-04-r1b.json",
+        "reports/critic-w1-04-r1.json",
+        "docs/shots/2026-08-07-w1-04-critic-thorn-hall-populated.png",
+        "docs/shots/2026-08-07-w1-04-critic-archon-apothecary-same-hall.png"
+      ],
+      "hard_fails": [
+        "DOOR-DRAWS-NOTHING"
+      ],
+      "checks": [
+        {
+          "id": "DOOR-DRAWS-NOTHING",
+          "result": "fail",
+          "hard_fail": true,
+          "observed": "enterInterior('thorn-hall') sets env.interior and cellFor() returns 'interior', but renderer.cells visible set stays ['province'] across 6 fixed steps and an explicit renderFrame(). Calling E._applyCell() by hand switches it to ['interior'] — the control arm, so the instrument is not blind. After exitInterior the visible cell is still ['interior'] while the body stands outdoors in Thorn. renderer.setCell() has exactly one caller, Engine._applyCell(), and _applyCell is never called from useDoor() or leaveInterior().",
+          "evidence": [
+            "reports/critic-w1-04-r1b.json"
+          ]
+        },
+        {
+          "id": "N1-footprint-containment",
+          "result": "unmeasurable",
+          "observed": "Ratio 1.000 on 115 of 115, because bounds_m.x span EQUALS continuity.exterior_footprint_m[0] and bounds_m.z span EQUALS [1] on every record. The check cannot fail as authored: it measures the generator's own identity, not a containment."
+        },
+        {
+          "id": "N3-door-round-trip",
+          "result": "pass",
+          "observed": "All 115 interiors declare continuity.interior_spawn and exterior_spawn (coverage was 113/115 before this piece). The builder measured 0.000 m round-trip error at both ends after installing Engine._placeBody(); my own perturbation of interior_spawn by +7 m lands the body at the perturbed spawn. This is real work on a genuinely nasty defect."
+        },
+        {
+          "id": "N4-N5-N7-windows-storeys-water",
+          "result": "unmeasurable",
+          "observed": "0 of 115 records carry windows/apertures, storeys/floors or a water level. No instrument possible."
+        },
+        {
+          "id": "S1-S4-seamless-and-see-into",
+          "result": "fail",
+          "observed": "S1 requires >=20% of settlement interiors with no cell transition; S2 requires >=50% visible into from outside. 0 of 115 records carry either flag and there is no geometry to see into. The item calls S2 'the cheapest legibility win in the world area'."
+        }
+      ],
+      "why_not_ten": "DOOR-DRAWS-NOTHING is a triggered hard fail and caps this item at 2. N1 is vacuous; N4/N5/N7 have no data; S1-S4 are zero."
+    },
+    {
+      "id": "RI-WLD08",
+      "path": "corpus/50-world/RI-WLD08-the-living-world.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "schedule coverage, ecology, ambient events, weather, day/night",
+      "native_score": 35,
+      "native_max": 100,
+      "native_verdict": "The schedule half is a genuine repair of the twelfth RI-MTH07 failure and I verified it independently: 309 of 347 records carry a schedule, makeNPC now copies it, stepSchedule runs on the live step, and perturbing one person's schedule moves them on the next frame. But the observable is a label and a visibility flag, not a person. Nobody walks; nobody is outdoors at night anywhere in the province; and none of the 34 people outdoors at noon belongs to this piece.",
+      "score_0_10": 4,
+      "measured": "full",
+      "evidence": [
+        "reports/critic-w1-04-r1.json"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "A1-cell-changes-with-the-clock",
+          "result": "pass",
+          "observed": "Thorn, 24 people: 9 change `at`/`present`/`visible` between 12:00 and 03:00, with nobody respawned, and the noon reading returns when the clock is put back."
+        },
+        {
+          "id": "A3-perturb-one-schedule",
+          "result": "pass",
+          "observed": "Rewriting herbwife-ossa's schedule to a 24 h slot at thorn-inn moves her from thorn-hall to thorn-inn on the next step; restoring the record restores the cell. The model is consumed."
+        },
+        {
+          "id": "A2-does-anybody-walk",
+          "result": "fail",
+          "observed": "0 of 24 change POSITION between noon and 03:00. stepSchedule()'s own docstring says it changes 'pos (they walk to the slot's anchor)' and the function never touches n.pos. populateSettlement() assigns a position once, from whichever slot was live at spawn, and nothing re-derives it — so a factor whose 19:00 slot is the tavern keeps the hash offset computed inside her house."
+        },
+        {
+          "id": "A5-is-anyone-on-the-street",
+          "result": "fail",
+          "observed": "Across all 347 NPC records: at 03:00, ZERO people anywhere in the province are outdoors; at noon, 34 are. All 34 carry a `post`, and 0 of the 38 posted records are in W1-04's pop-*.json — they are quest-givers.json, mainline.json, faction-givers.json and thorn.json, authored by a neighbouring piece. The street of every town is empty at every hour of this piece's own population."
+        }
+      ],
+      "why_not_ten": "A schedule whose only observable is which invisible room an invisible person is invisible in is not what makes Balmora feel inhabited at nine in the morning."
+    },
+    {
+      "id": "RI-CAM05",
+      "path": "corpus/15-camera/RI-CAM05-camera-outside-the-fight.md",
+      "side": "souls",
+      "kind": "number",
+      "native_scale": "camera behaviour across exploration, dialogue, menus, resting, interiors; the first-person ban",
+      "native_score": 20,
+      "native_max": 100,
+      "native_verdict": "Judged ONLY on world.interior.named, the path this piece owns of the six this item judges — the rest is W1-06's and is scored in its own verdict. The camera in an interior is a camera rendering the exterior: env.interior is set, cellFor() says 'interior', and the province group is what is on screen.",
+      "score_0_10": 2,
+      "measured": "partial",
+      "evidence": [
+        "reports/critic-w1-04-r1b.json",
+        "docs/shots/2026-08-07-w1-04-critic-thorn-hall-populated.png"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "interior-camera-sees-the-interior",
+          "result": "fail",
+          "observed": "See RI-WLD13/DOOR-DRAWS-NOTHING. A camera placed at the interior spawn frames the province."
+        },
+        {
+          "id": "113-of-115-share-one-cell",
+          "result": "fail",
+          "observed": "cellFor() maps five interiors to hand-built rooms (all W1-07's) and returns the generic 'interior' cell for the rest: 113 of 115. That cell is scene.js buildHall(), 249 triangles and one light. Two interiors 4 km apart in different towns and different kinds photograph identically from one camera pose."
+        }
+      ],
+      "why_not_ten": "Only world.interior.named is scored here; the other five paths this item judges belong to W1-06."
+    },
+    {
+      "id": "RI-WLD07",
+      "path": "corpus/50-world/RI-WLD07-verticality-and-interiors.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "interior census, verticality, dungeon/cave seam",
+      "native_score": 10,
+      "native_max": 100,
+      "native_verdict": "115 interior records exist against a wave-3 floor of 250 and the eight settlements' own targets are met exactly, which the piece states rather than dresses up. But an interior with no storeys, no vertical extent and no geometry is a census row; 0 of 115 declare a storey count or a second floor.",
+      "score_0_10": 1,
+      "measured": "partial",
+      "evidence": [
+        "reports/critic-w1-04-r1.json",
+        "reports/w1-04-survey.md"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "interior-count",
+          "result": "partial",
+          "observed": "115 of a wave-3 floor of 250. The eight named settlements' allocation (112) is complete; the 16 minor settlements do not exist. Honestly reported by the builder."
+        },
+        {
+          "id": "verticality",
+          "result": "fail",
+          "observed": "0 of 115 interiors declare storeys or floors. bounds_m.y is a single span. No interior in the settlement layer has a second level."
+        }
+      ],
+      "why_not_ten": "An interior with no geometry has no verticality to measure."
+    },
+    {
+      "id": "RI-STL02",
+      "path": "corpus/23-stealth-crime/RI-STL02-theft-locks-fencing.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "ownership of every object, the lock ruling, pickpocketing, trespass, the fence economy",
+      "native_score": 70,
+      "native_max": 100,
+      "native_verdict": "The strongest part of this piece's surface, and the honest accounting is that most of it was W1-15's before the piece opened. What W1-04 added is real and I measured it: trespass now reads the hour, where every call site hardcoded shopOpen=true.",
+      "score_0_10": 7,
+      "measured": "full",
+      "evidence": [
+        "reports/critic-w1-04-r1.json"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "B1-owner-perturbation",
+          "result": "pass",
+          "observed": "Taking an owned object returns theft:true, scope 'shared', why 'household or faction stock', stolen_from 'faction:drowned-court', crime 'theft_petty', disposition_delta -5.5, crime_ref 1. The SAME take with the owner stripped off the record returns theft:false, why 'unowned', crime:null, disposition_delta 0. Owner restored after the run.",
+          "evidence": [
+            "reports/critic-w1-04-r1.json"
+          ]
+        },
+        {
+          "id": "B2-lock-tier-perturbation",
+          "result": "pass",
+          "observed": "The refusal carries the gate. Tier 3: 'needs Security 40 / Agility 26'. Perturbed to tier 5: 'needs Security 80 / Agility 50'. Restored to 3: the first string returns. The lock model is read live off data.property, not off a cached table.",
+          "evidence": [
+            "reports/critic-w1-04-r1.json"
+          ]
+        },
+        {
+          "id": "B3-trespass-reads-the-hour",
+          "result": "pass",
+          "observed": "4 of 6 sampled shop zones flip trespassing between 12:00 and 03:00. This field (zone.schedule open_h/close_h) was on all 233 zones and read by nothing before this piece; W1-04 wired trespassCheck() to derive shopOpen from isOpenNow(). Two of the six do not flip, which is a data question about those zones' hours, not a consumption question.",
+          "evidence": [
+            "reports/critic-w1-04-r1.json"
+          ]
+        },
+        {
+          "id": "theft-in-a-room-you-can-see",
+          "result": "fail",
+          "observed": "Every zone measured above is a room in an interior that is never drawn. The crime model is correct and the player cannot stand in the room it governs."
+        }
+      ],
+      "why_not_ten": "The ownership and lock models are genuinely live and perturbable; the rooms they govern cannot be walked into."
+    },
+    {
+      "id": "RI-CRM01",
+      "path": "corpus/23-stealth-crime/RI-CRM01-crime-witnesses-justice.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "bounty schedule, report chain, arrest, jail",
+      "native_score": 40,
+      "native_max": 100,
+      "native_verdict": "Judged on world.persistence.state, the path this piece owns. The live world after loadState carries the right cell, hour and everyone's day, and I take the builder's audit-the-running-world discipline as sound. The bounty ledger is not this piece's, but it is worth recording that a witnessed theft produced crime_ref 1 and bounty 0.",
+      "score_0_10": 4,
+      "measured": "partial",
+      "evidence": [
+        "reports/critic-w1-04-r1.json",
+        "reports/w1-04-survey.md"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "persistence-after-load",
+          "result": "pass",
+          "observed": "The builder audits the LIVE world after loadState rather than the blob (RULES.md rule 7) and reports cell, hour and schedule state restored. I did not re-run this; it is recorded as the builder's measurement, not mine."
+        },
+        {
+          "id": "witnessed-theft-reaches-a-bounty",
+          "result": "fail",
+          "observed": "takeObject with an observer supplied returns crime 'theft_petty' and crime_ref 1, and getCrimeState().bounty stays {imperial:0, settlement:{}, interior:0} with witnesses:[]. The report chain is W1-15's, not W1-04's, and I have not scored it against this piece — but nobody currently owns it."
+        }
+      ],
+      "why_not_ten": "Stealing in front of the wrong person does not yet change your life, and the room you steal in is not drawn."
+    },
+    {
+      "id": "RI-AI07",
+      "path": "corpus/10-combat/RI-AI07-encounter-composition.md",
+      "side": "souls",
+      "kind": "number",
+      "native_scale": "placement, grouping, density, the bonfire loop",
+      "native_score": 25,
+      "native_max": 100,
+      "native_verdict": "Judged on world.npc.population. 347 records is above the wave-3 floor of 269 at wave 1, they are placed deterministically off a hash of their own id rather than randomly, and populateSettlement is idempotent. But the item is about HAND placement and density you can see, and both are absent: no record carries a pos, positions are derived from an interior's bounds, and 0 of this piece's 260 records ever stands outdoors.",
+      "score_0_10": 3,
+      "measured": "partial",
+      "evidence": [
+        "reports/critic-w1-04-r1.json"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "population-floor",
+          "result": "pass",
+          "observed": "347 NPC records against a wave-3 floor of 269, cleared at wave 1. check-data confirms every non-null settlement resolves (9 known places)."
+        },
+        {
+          "id": "hand-placement",
+          "result": "fail",
+          "observed": "0 of 347 records carry a `pos`. Positions come from ENG_hash(rec.id) modulo the cell's bounds. The 38 that ARE hand-placed carry a `post` and belong to a neighbouring piece."
+        },
+        {
+          "id": "density-is-visible",
+          "result": "fail",
+          "observed": "Presence is a boolean against the player's cell. Since the cell is never drawn, density is never seen."
+        }
+      ],
+      "why_not_ten": "A population you can count and cannot meet."
+    },
+    {
+      "id": "RI-CHR02",
+      "path": "corpus/22-character/RI-CHR02-race-and-standing.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "race profiles, the reaction matrix, faction presence, guard response",
+      "native_score": 40,
+      "native_max": 100,
+      "native_verdict": "Judged on world.faction.presence. Faction presence reaches exactly one consumer: zone.faction in theft.js trespass, where pointing a faction_interior zone at a faction the character holds rank in flips trespassing and the escalation. That is a real consumption and the builder proved it. Nothing else in the world is keyed on who holds a town.",
+      "score_0_10": 4,
+      "measured": "partial",
+      "evidence": [
+        "reports/critic-w1-04-r1.json",
+        "reports/w1-04-survey.md"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "faction-presence-reaches-trespass",
+          "result": "pass",
+          "observed": "zone.faction is read by sim/stealth/theft.js and by trespassCheck's escalation. Builder's perturbation flips trespassing true->false and escalation CHALLENGE->null; my lock and owner perturbations exercise the same zone objects and behave consistently."
+        },
+        {
+          "id": "faction-presence-is-legible",
+          "result": "fail",
+          "observed": "RI-WLD03 R3 places rival guild halls within 120 m facing each other, or at opposite ends of the long axis. Those placements are in the settlement records and there is no mesh at either end. A player cannot read who runs a town from anything."
+        }
+      ],
+      "why_not_ten": "One consumer, in a room nobody can enter."
+    },
+    {
+      "id": "RI-DLG02",
+      "path": "corpus/40-dialogue/RI-DLG02-words-per-settlement.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "unique dialogue words per settlement",
+      "native_score": 50,
+      "native_max": 100,
+      "native_verdict": "Judged on world.settlement.anatomy as it feeds the rumour book. This is where the piece's settlement work actually pays: sim.env.settlement had NO writer in the world before it — only loadState's patch — and stepSettlement now sets it from the player's position every frame, which is what makes a per-town rumour book possible at all.",
+      "score_0_10": 5,
+      "measured": "partial",
+      "evidence": [
+        "reports/critic-w1-04-r1.json",
+        "reports/w1-04-survey.md"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "env-settlement-has-a-writer",
+          "result": "pass",
+          "observed": "stepSettlement() computes the nearest settlement whose radius contains the player, sets sim.env.settlement, and emits settlement_enter/exit. My probe read env.settlement === 'thorn' after teleporting to the record centre and stepping. Builder's perturbation (move Lilmoth 5 km) takes it to null with the player standing still."
+        },
+        {
+          "id": "rumour-density-per-town",
+          "result": "partial",
+          "observed": "9 rumour buckets exist against 8 settlements. Word counts per settlement are RI-DLG02's own measurement and belong to the dialogue piece; I did not re-run them."
+        }
+      ],
+      "why_not_ten": "The mechanism is live; the density number is the dialogue piece's to prove."
+    },
+    {
+      "id": "RI-DLG03",
+      "path": "corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md",
+      "side": "morrowind",
+      "kind": "text",
+      "native_scale": "disposition banding and diegetic quest discovery",
+      "native_score": 40,
+      "native_max": 100,
+      "native_verdict": "Judged on world.persistence.state. The settlement-field repair is this item's real win and I verified its falsifiability myself: a junk non-null settlement string does not fail the RumourBook/RoadBook fallback, it DEFEATS it, so a bad value is strictly worse than none. Three rootlands records are repaired, tidewrack is correctly left alone because it has a rumour bucket, and the null-settlement records are correctly untouched.",
+      "score_0_10": 4,
+      "measured": "partial",
+      "evidence": [
+        "reports/w1-04-survey.md",
+        "reports/critic-w1-04-r1.json"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "settlement-field-class-check-is-falsifiable",
+          "result": "pass",
+          "observed": "MY OWN delete-the-fix, not the builder's: setting rootlands-keeper.settlement back to 'rootlands' makes `node tools/check-data.mjs` exit 1 naming the record ('named-states.json: rootlands-keeper -> \"rootlands\"'); restoring the file makes it exit 0. Working tree and git index restored, git diff empty. The check lives in the checker every agent runs and is wired into .githooks/pre-commit, which is the right place for a defect that arrived from three pieces."
+        },
+        {
+          "id": "topic-gate",
+          "result": "partial",
+          "observed": "9 of 124 NPC topic ids still have no body in game/data/dialogue/topics/. All nine are on mainline.json and writ-house.json, owned by other pieces, and the builder reported rather than silently filling them — which is the correct call."
+        }
+      ],
+      "why_not_ten": "Correct repair of a real defect; the rumours are still delivered by people standing in rooms that are not drawn."
+    },
+    {
+      "id": "RI-QST03",
+      "path": "corpus/30-quests/RI-QST03-faction-gating.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "rank requirements, exclusivity, expulsion, lockout",
+      "native_score": 30,
+      "native_max": 100,
+      "native_verdict": "Judged on world.factions -> world.faction.presence. 14 guild interiors exist as records with faction fields, and rank gates the trespass escalation. The halls' spatial encoding of rivalry (R3) is authored and undrawn.",
+      "score_0_10": 3,
+      "measured": "partial",
+      "evidence": [
+        "reports/critic-w1-04-r1.json"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "faction-halls-exist",
+          "result": "pass",
+          "observed": "14 interiors of kind `guild` across the eight settlements, each carrying a faction field and property zones."
+        },
+        {
+          "id": "halls-are-enterable-and-legible",
+          "result": "fail",
+          "observed": "All 14 resolve to the generic hall and none is drawn when entered through a door."
+        }
+      ],
+      "why_not_ten": "The rank ladder belongs to W1-FACTIONS; what this piece owes it is a hall, and the hall is a record."
+    },
+    {
+      "id": "RI-QST07",
+      "path": "corpus/30-quests/RI-QST07-side-quest-texture.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "type distribution, density, quests you have to overhear",
+      "native_score": 30,
+      "native_max": 100,
+      "native_verdict": "Judged on world.settlement.content. Content exists per interior — 83 of 115 declare a readable, 71 declare containers, 30 shops declare a unique item — and none of it is instantiated by anything in game/src.",
+      "score_0_10": 3,
+      "measured": "partial",
+      "evidence": [
+        "reports/critic-w1-04-r1.json"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "settlement-content-declared",
+          "result": "pass",
+          "observed": "83 readables, 71 interiors with containers, 30 unique items, 18 props on a typical shop record."
+        },
+        {
+          "id": "settlement-content-consumed",
+          "result": "fail",
+          "observed": "interior.props, interior.lights, interior.containers and interior.unique_item have ZERO consumers in game/src. The property zones ARE consumed, by W1-15's crime code; the furnishing is not."
+        }
+      ],
+      "why_not_ten": "Content declared and not instantiated is RI-MTH07 §A orphan data, which is the defect this piece exists to have fixed."
+    },
+    {
+      "id": "RI-QST08",
+      "path": "corpus/30-quests/RI-QST08-reward-design.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "unique-named fraction and non-item rewards",
+      "native_score": 30,
+      "native_max": 100,
+      "native_verdict": "Judged on world.property. Property zones and their per-instance contents are live and perturbable (see RI-STL02). The 30 declared unique items in shop interiors are not reachable, because the shop is not.",
+      "score_0_10": 3,
+      "measured": "partial",
+      "evidence": [
+        "reports/critic-w1-04-r1.json"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "property-contents-live",
+          "result": "pass",
+          "observed": "Per-instance owner / owner_scope / value_g / unique / stolen_from are read by takeObject and drive a real crime record. Verified by perturbation."
+        },
+        {
+          "id": "unique-items-reachable",
+          "result": "fail",
+          "observed": "30 of 30 shop interiors declare a unique_item; nothing reads the field and the interior is not drawn."
+        }
+      ],
+      "why_not_ten": "blind_pair: yes on this item and I did not run a blind pack for it — the reward set is the quest layer's, not this piece's, and building a pack from W1-04's surface would have compared the wrong thing."
+    },
+    {
+      "id": "RI-PRG03",
+      "path": "corpus/20-progression/RI-PRG03-skills-by-use.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "19 skills, their rates and their gates",
+      "native_score": 40,
+      "native_max": 100,
+      "native_verdict": "Judged on world.locks. The lock gate is real, reads the tier off shipped data, and moves when the tier moves — I perturbed it. The rest of the item is the progression piece's.",
+      "score_0_10": 4,
+      "measured": "partial",
+      "evidence": [
+        "reports/critic-w1-04-r1.json"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "lock-gate-reads-security-and-agility",
+          "result": "pass",
+          "observed": "Tier 3 gate is Security 40 / Agility 26; tier 5 is Security 80 / Agility 50; the refusal names both and changes with the tier. Restored after the run."
+        }
+      ],
+      "why_not_ten": "One of six paths this item judges is W1-04's, and it passes; the rest is not this piece's to be scored on."
+    },
+    {
+      "id": "RI-TRV01",
+      "path": "corpus/50-world/RI-TRV01-transport-network.md",
+      "side": "morrowind",
+      "kind": "graph",
+      "native_scale": "modes, route graph, fares, stations, walked-it-once",
+      "native_score": 40,
+      "native_max": 100,
+      "native_verdict": "Judged on world.settlement.anatomy as the network's endpoints. Eight settlements exist at authoritative coordinates with radii the step tests against, 8 interiors of kind `travel` exist, and RoadBook.forNpc resolves off the settlement field the piece repaired. The network itself is W1-05's.",
+      "score_0_10": 4,
+      "measured": "partial",
+      "evidence": [
+        "reports/critic-w1-04-r1.json",
+        "reports/w1-04-survey.md"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "settlements-as-endpoints",
+          "result": "pass",
+          "observed": "8 settlement records at the coordinates RI-WLD03 §3 declares, each with a radius_m the live step tests the player against; 8 travel-post interiors, one per town, as the service matrix requires."
+        },
+        {
+          "id": "arriving-somewhere-looks-like-arriving",
+          "result": "fail",
+          "observed": "Standing at the centre of Thorn shows region signature geometry and no town (VP04 capture). A transport network whose destinations are not visibly places cannot be judged on arrival."
+        }
+      ],
+      "why_not_ten": "The endpoints exist as coordinates and not as places."
+    },
+    {
+      "id": "RI-LOR01",
+      "path": "corpus/60-lore/RI-LOR01-canon-dossier.md",
+      "side": "morrowind",
+      "kind": "text",
+      "native_scale": "canon compliance and declared invention",
+      "native_score": 50,
+      "native_max": 100,
+      "native_verdict": "Judged on world.settlements. The eight settlements are the canon eight, at the canon coordinates, with the identities RI-WLD03 §3 gives them, and the interior names and kinds are consistent with each town's declared industry. Nothing here contradicts canon.",
+      "score_0_10": 5,
+      "measured": "partial",
+      "evidence": [
+        "reports/w1-04-survey.md",
+        "reports/critic-w1-04-r1.json"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "eight-canon-settlements",
+          "result": "pass",
+          "observed": "helstrom, lilmoth, stormhold, gideon, blackrose, archon, thorn, soulrest — all eight, at RI-WLD03 §3's coordinates, with matching tiers."
+        }
+      ],
+      "why_not_ten": "Canon-compliant as written; unreadable as played."
+    },
+    {
+      "id": "RI-LOR02",
+      "path": "corpus/60-lore/RI-LOR02-era-and-political-brief.md",
+      "side": "morrowind",
+      "kind": "text",
+      "native_scale": "era, politics, escalation, the settlement layer that carries them",
+      "native_score": 50,
+      "native_max": 100,
+      "native_verdict": "Judged on world.settlements. Each record carries a power_reading string and a layout plan meant to prove it spatially. The strings are good and the spatial proof is unbuilt.",
+      "score_0_10": 5,
+      "measured": "partial",
+      "evidence": [
+        "reports/critic-w1-04-r1.json"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "power-readings-authored",
+          "result": "pass",
+          "observed": "8 of 8 settlement records carry layout.plan and power_reading."
+        },
+        {
+          "id": "power-readings-provable-in-geometry",
+          "result": "fail",
+          "observed": "RI-WLD03 R4 requires a fresh judge to answer 'who runs this place?' from a labels-stripped top-down render. There is no geometry to render (M13, recorded not_possible)."
+        }
+      ],
+      "why_not_ten": "A power reading nobody can read off the ground is a note, not a layout."
+    },
+    {
+      "id": "RI-LOR04",
+      "path": "corpus/60-lore/RI-LOR04-naming-and-language.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "Jel phonology, lexicon, naming conventions per culture",
+      "native_score": 60,
+      "native_max": 100,
+      "native_verdict": "Judged on world.placenames / world.settlements / npc.names. 347 personal names and 115 interior names, and spot-reading them they hold the conventions — Argonian virtue-names (Drops-No-Stitch Slow-Rain), Dunmer factor names, Imperial notaries, place names matching each town's industry (The Crimson Apothecary in the dye town). This is the piece's quietest good work.",
+      "score_0_10": 6,
+      "measured": "partial",
+      "evidence": [
+        "reports/critic-w1-04-r1.json"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "name-conventions-hold",
+          "result": "pass",
+          "observed": "347 NPC names and 115 interior names generated per culture and per settlement industry; no collisions with the reserved canon names, and check-prose is not red on them."
+        }
+      ],
+      "why_not_ten": "I sampled rather than audited the full lexicon; the naming piece owns the exhaustive check."
+    },
+    {
+      "id": "RI-LOR06",
+      "path": "corpus/60-lore/RI-LOR06-contradiction-discipline.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "canon-facts registry; telling intent from error",
+      "native_score": 50,
+      "native_max": 100,
+      "native_verdict": "Judged on world.settlement.anatomy. The piece's own disclosure discipline is excellent — it reports the region-id namespace problem against itself. That problem is real and unfixed: thorn.json says region 'thornmarsh' while the world elsewhere uses 'western-rootlands'/'eastern-rootlands', game/data/world/regions.json is authority for neither, and nothing validates a settlement's region against anything.",
+      "score_0_10": 5,
+      "measured": "partial",
+      "evidence": [
+        "reports/w1-04-survey.md",
+        "reports/critic-w1-04-r1.json"
+      ],
+      "hard_fails": [],
+      "checks": [
+        {
+          "id": "region-ids-are-a-namespace",
+          "result": "fail",
+          "observed": "Settlement records carry region strings that resolve against nothing. 336 of 347 NPC records carry a `settlement` and 0 carry a `region`. This is the same class as the settlement-field defect the piece just closed, one level up, and it will bite the same way."
+        },
+        {
+          "id": "self-disclosure",
+          "result": "pass",
+          "observed": "The builder names it in reports/w1-04-survey.md §10 and in its status file rather than leaving it for a critic. That is the discipline this item is about."
+        }
+      ],
+      "why_not_ten": "The defect is correctly reported and not fixed, and the checker that would catch the class does not exist."
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-WLD03",
+      "status": "not_possible",
+      "not_possible_reason": "M13 requires eight top-down orthographic 512px renders of the settlement plans with all labels, icons and UI stripped, shuffled against eight Morrowind town plans. There is no settlement geometry in this build to render orthographically — settlement.buildings has two consumers, a door table and a .length, and instantiates no mesh — so the pack cannot be constructed at all. This is an absence of the subject, not a scheduling problem."
+    },
+    {
+      "ref_item": "RI-AI07",
+      "status": "not_possible",
+      "not_possible_reason": "The item's blind comparison is over encounter placement and density read off frames. Since 113 of 115 interiors share one 249-triangle cell and the settlement exteriors have no buildings, every frame of every town is the same frame; a pack built from them would compare the province layer, which belongs to W1-01."
+    },
+    {
+      "ref_item": "RI-WLD08",
+      "status": "not_possible",
+      "not_possible_reason": "The living-world blind pack compares a town at four times of day. Measured: 0 of 24 people change position between noon and 03:00 and nobody is outdoors at any hour, so the four frames are identical by construction and the comparison has no discriminator."
+    },
+    {
+      "ref_item": "RI-DLG03",
+      "status": "not_possible",
+      "not_possible_reason": "This item's blind stage compares greeting and rumour TEXT, which belongs to the dialogue piece's verdict; W1-04 supplies the settlement key, and a pack built here would be judging W1-DIALOGUE's prose under this piece's name."
+    },
+    {
+      "ref_item": "RI-QST08",
+      "status": "not_possible",
+      "not_possible_reason": "The reward set is the quest layer's; W1-04 supplies only the property zone a reward could sit in. A pack built from this piece's surface would compare the wrong artifact."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "not_applicable_reason": "AR-1 asks whether a Morrowind-flavoured mechanic contaminated the FIGHT. W1-04 ships no combat mechanic: its surface is settlement records, interior records, NPC records, schedules, property zones and locks, and none of them is read by CombatSystem. The one place it touches the combat rig is Engine._placeBody(), which is a teleport minus province streaming and camera settle — a position write, not a rule.",
+      "checks": [],
+      "evidence": []
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "no-marker-surface-added",
+          "result": "pass",
+          "observed": "W1-04 adds no marker, no compass pin, no quest arrow and no map surface. The door prompt is sim.door — a diegetic 'the door is under your hand' state read off DOOR_REACH_M, refusals are events with words in them ('closed', with open_h/close_h and the hour), and a shut shop is a locked door rather than an invisible wall. That is the Morrowind shape, not the Souls one."
+        },
+        {
+          "id": "no-bonfire-convention-in-a-town",
+          "result": "pass",
+          "observed": "Settlement records declare a Hist-shrine per town as RI-WLD03's service matrix requires, and the hearth/bonfire model belongs to W1-13 and is not re-implemented here. No respawn-on-rest or enemy-reset behaviour is attached to a settlement by this piece."
+        },
+        {
+          "id": "trespass-is-social-not-a-fail-state",
+          "result": "pass",
+          "observed": "trespassCheck returns trespassing + an escalation term (CHALLENGE/null) that faction rank and the hour both move, rather than an instant hostility flip. Measured under B3 and under the builder's faction perturbation."
+        }
+      ],
+      "evidence": [
+        "reports/critic-w1-04-r1.json"
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 3.2,
+    "pass_threshold": 6,
+    "aggregation": "mean",
+    "note": "Mean of the 20 judging items' score_0_10. Two items are capped by rule: RI-WLD13 carries a triggered hard fail (DOOR-DRAWS-NOTHING) and is capped at 2, and RI-WLD03 has a native score of 0 on min-over-axes with M13 unmeasurable, which ceilings it at 4 and is scored 2 on its own merits."
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "hard_fail:RI-WLD13/DOOR-DRAWS-NOTHING — going through a door does not change what is drawn; renderer.setCell() is never reached from useDoor()/leaveInterior(), so the exterior stays on screen inside an interior and the interior stays on screen outside it.",
+    "ungated_hard_fail:RI-WLD03/M12-5-structure-with-residential-props — the gate exists, is marked hard_fail, and no instrument in this build can fire it, because the building meshes and placed props it inspects do not exist. It scores 0 fail-closed and is named here rather than banked as clean.",
+    "consumption:world.interior.named — interior.props / .lights / .containers / .unique_item have zero consumers in game/src, and 113 of 115 interiors resolve to one 249-triangle generic hall. ARBITRATION §3: a model with no demonstrated consumer is unmeasurable => 0, exactly as a missing model is.",
+    "consumption:world.settlement.anatomy — settlement.buildings has two consumers, a door table and a .length; no mesh is instantiated for any of the 202 buildings, so RI-WLD03 R5 has no implementation.",
+    "blind:RI-WLD03/M13 not_possible — the item is blind_pair:yes and its pack cannot be built because the subject does not exist.",
+    "Overall 3.2 is below the pass threshold of 6 independently of the hard fail."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-interior-door-draws-nothing",
+    "subsystem_path": "world.interior.named",
+    "severity": "blocking",
+    "what": "Walking through a door sets sim.env.interior and moves the body to the declared interior spawn, and does not change what is drawn: renderer.setCell() has exactly one caller, Engine._applyCell(), and _applyCell() is called from loadState, the census staging, the barge reset and the save-load path but never from useDoor() or leaveInterior(). Measured: after enterInterior('thorn-hall'), across six fixed steps and an explicit renderFrame(), the visible cell set is still ['province'] while cellFor(env) reads 'interior'; calling _applyCell() by hand switches it to ['interior'] (the control arm). After exitInterior the visible cell is still ['interior'] while the body stands outdoors in Thorn. And there would be almost nothing to draw if it did switch: cellFor() maps five interiors to hand-built W1-07 rooms and returns the generic 'interior' cell — scene.js buildHall(), 249 triangles, one light — for the other 113 of 115, while interior.props (18 on a typical shop), .lights (10), .containers and .unique_item have zero consumers anywhere in game/src.",
+    "why_it_matters": "This is the same defect the piece itself found and fixed one layer down. sim.player.pos turned out to be a mirror that combat-bridge.mirror() overwrote, so a door taken on frame N was undone on frame N+1, and in the builder's own words nothing was red because 'sim.env.interior was set correctly the whole time — every census-shaped check passed while the player never actually went anywhere.' The body half was fixed and the render half was not, and tools/world/w1-04-consumption.mjs cannot see it because it never reads the renderer: all thirteen of its checks would still pass on a build where no door has ever shown anyone a room. ARBITRATION §3 settles what that is worth — 'a model with no demonstrated consumer is unmeasurable => 0, exactly as a missing model is; from the player's chair they are the same thing.' From the player's chair, 115 named interiors, 202 buildings, eight architecture kits and 260 people who live in rooms are one hall you cannot get into. RI-WLD13 §2 named this exact failure before the piece began: 'the difference between a settlement of buildings and a settlement of building-shaped doors.'",
+    "evidence": [
+      "reports/critic-w1-04-r1b.json",
+      "reports/critic-w1-04-r1.json",
+      "docs/shots/2026-08-07-w1-04-critic-thorn-hall-populated.png",
+      "docs/shots/2026-08-07-w1-04-critic-archon-apothecary-same-hall.png",
+      "docs/shots/2026-08-07-w1-04-critic-vp04-settlement-street.png"
+    ],
+    "remedy": {
+      "action": "Two changes, in this order. (1) Switch the drawn cell when the door is taken: install the Engine's _applyCell() as a sim.applyCell hook of the same family as sim.placeBody, sim.populate and sim.doorVeto — so game/src/sim/settlement.js keeps knowing nothing about the renderer — and call it from useDoor() and leaveInterior() immediately after placeBody(). (2) Build the interior cell FROM THE RECORD instead of resolving 113 interiors to buildHall(): instantiate bounds_m as a shell with a doorway at continuity.interior_spawn, lights[] as point lights at their declared positions and intensities, and props[] against a shared prop-name table, so the room the player stands in is the room game/data/world/interiors/<id>.json describes.",
+      "acceptance": "(a) A probe that enters all 115 interiors through enterInterior() and reads renderer.cells[*].visible finds the visible cell equal to cellFor(env) on 115 of 115, and 0 of 115 still drawing the exterior; leaving returns the visible cell to 'province' on 115 of 115. (b) A pixel-hash sweep over one fixed camera pose in all 115 interiors returns at least 100 distinct images, where it currently returns 1. (c) The number of interiors resolving to the generic 'interior' cell falls from 113 to 0. (d) interior.props and interior.lights each acquire at least one consumer in game/src, demonstrated by perturbation: deleting the lights array from one record changes the number of lights in the drawn scene. Re-measurable with tools/world/critic-w1-04-r1b.mjs and tools/world/critic-w1-04-r1c.mjs as written.",
+      "targets": [
+        "game/src/sim/settlement.js",
+        "game/src/engine.js",
+        "game/src/render/scene.js",
+        "game/src/render/places.js",
+        "game/data/world/interiors/"
+      ]
+    }
+  },
+  "corpus_extended": [],
+  "source_reads": [
+    {
+      "path": "game/src/sim/settlement.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/sim/npc.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/engine.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/render/scene.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/render/places.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/harness/api.js",
+      "purpose": "locate-harness"
+    },
+    {
+      "path": "tools/capture/protocol.mjs",
+      "purpose": "locate-harness"
+    },
+    {
+      "path": "tools/lib/browser.mjs",
+      "purpose": "locate-harness"
+    },
+    {
+      "path": "tools/lib/cli.mjs",
+      "purpose": "locate-harness"
+    },
+    {
+      "path": "tools/world/w1-04-consumption.mjs",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "tools/harness/viewpoints.json",
+      "purpose": "quote-written-content"
+    }
+  ],
+  "gap_closure": [],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "Two false entries, both stated rather than worked around. (1) ran_every_assigned_method is false: RI-WLD03 M12 step 5, and RI-WLD13 N4/N5/N6/N7 and S1-S4, have no instrument in this build because the data and geometry they inspect do not exist; RI-CRM01's persistence-after-load measurement is recorded as the builder's, not re-run by me; and I did not re-run RI-DLG02's word-count method or RI-LOR04's exhaustive lexicon audit, both of which belong to the dialogue and naming pieces. (2) blind_done_where_required is false: four of the twenty items are blind_pair:yes (RI-WLD03, RI-AI07, RI-WLD08, RI-DLG03, plus RI-QST08) and all five are recorded not_possible with a reason. RI-WLD03's M13 is the one that matters and its reason is the verdict's own finding: there is no settlement geometry to render, so the pack's subject does not exist. Every finding in this verdict was measured by an instrument I wrote, in the running world, with a control arm; I did not re-run tools/world/w1-04-consumption.mjs, on the principle that a critic re-running the builder's probe has confirmed only that the builder's probe runs."
+  }
+}

@@ -3,28 +3,34 @@
   "role": "builder",
   "item": "W1-19",
   "round": 3,
-  "state": "running",
+  "state": "done",
   "started_at": "2026-08-07",
-  "headline": "RECONCILED. viability-walk is TRUE OF THE GAME; W1-19-r2's 40/40 was an artefact of one line (mainline-chain-floor.mjs:234 H.questReveal). Removing that line alone turns 40/40 into 0/40 at Q-MAIN-06. Defect is 8x the dispatched size AND the proposed repair route is itself broken.",
-  "next_step": "land the _applyConsequences -> setFlag mechanism fix; delete-the-fix; prove one reveal fires from play via viability-walk (which denies questReveal so it cannot be faked)",
+  "headline": "RECONCILED, AND THE DISPATCHED REPAIR WAS ITSELF BROKEN. viability-walk is true of the game; W1-19-r2's 40/40 was one line of its own instrument (mainline-chain-floor.mjs called H.questReveal on every step). 113 of 121 reveals a resolution demands still have no route in play. The hook table that was supposed to carry them was unreachable from a played resolution; that is fixed, proved end to end, and 3 reveals now fire from play with no harness verb.",
+  "next_step": "hand to a critic. NOT DONE and not faked: Q-MAIN-06 is still blocked and so are 7 other mainline quests. Their reveals come from readable ledgers/letters, people to talk to, things to see and a corpse -- 8 channels with no reader in game/src/. Each needs a world-side action, not a hooks row. Start from tools/quests/reveal-route-audit.mjs, which fails loudly until they exist.",
   "files_touched": [
     "orchestration/status/W1-19-r3.json",
-    "tools/quests/reveal-route-audit.mjs",
-    "reports/runs/W1-19-R3/reveal-route-audit.json"
-  ],
-  "files_claimed": [
-    "orchestration/status/W1-19-r3.json",
-    "game/data/quests/hooks.json",
     "game/src/sim/quest/machine.js",
+    "game/data/quests/hooks.json",
     "tools/quests/reveal-route-audit.mjs",
-    "reports/blog-feed.jsonl",
-    "docs/shots/"
+    "tools/quests/reveal-route-chart.mjs",
+    "tools/quests/mainline-chain-floor.mjs",
+    "reports/runs/W1-19-R3/reveal-route-audit.json",
+    "docs/shots/2026-08-07-w1-19-r3-the-reveals-no-play-produces.png",
+    "reports/blog-feed.jsonl"
   ],
+  "files_claimed": [],
   "redundant_with": [
-    "W1-VIABILITY-SPLIT",
-    "W1-SOULS-r3",
+    "W1-06",
+    "W1-06-r2",
     "W1-13-r3",
-    "W1-22-r2"
+    "W1-17-act5-r2",
+    "W1-22-r2",
+    "W1-22-r3",
+    "W1-SOULS-r3",
+    "W1-VIABILITY-SPLIT",
+    "critic-w1-04",
+    "critic-w1-13-r3",
+    "critic-w1-17-act5"
   ],
   "notes": [
     "RECONCILIATION (both instruments re-run today on this tree): viability-walk --sample 40 -> 40/40 stop at Q-MAIN-06. mainline-chain-floor.mjs -> 40/40 complete. Copy of chain-floor with ONLY line 234 removed (`for (const r of step.reveals) H.questReveal(step.id, r)`) -> 0/40, blocked at Q-MAIN-06, same refusal string as the walk. ONE LINE IS THE WHOLE DIFFERENCE.",
@@ -34,6 +40,19 @@
     "THE DISPATCHED REPAIR DOES NOT WORK. A hooks.json quest+reveal row fires from QuestEngine.setFlag(). But _applyConsequences (machine.js:762) writes q.flags[wf]=1 DIRECTLY and never calls setFlag(). So a flag raised by playing a resolution -- the main way the world changes -- never reaches the hook table. Authoring 18 or 116 rows against it would have produced nothing.",
     "PROVEN, not read: tools/quests/reveal-route-audit.mjs section B. All 5 legs raise their flag via the shipped _applyConsequences on shipped data; 0 of 5 fire the hook. Control leg raises the SAME flag via setFlag(): 4 of 5 fire. Hook table works; nothing in play calls it. First pass of this test passed VACUOUSLY (resolve() refused on the offer gate, flag never went up, pass condition was `!flag_raised || landed`); rewritten so a leg that does not raise its flag is NOT RUN and fails.",
     "COLLATERAL: 4 already-authored hooks are dead for this reason, and they are not mine -- ledger_first_chair_refused / assize_prefect_refused / deepkin_speaker_refused (the three faction 'second refusal' routes, authored against GAP path_to_ten #6 'refusing at rank 6 used to cap the ladder at 6 forever') and the_eleven_roots_are_cut (the mainline backpath). point_of_no_return_crossed does not fire even via setFlag (journal 90 hook) -- reported, not fixed.",
-    "falsify plant-route green: planting a synthetic route moves routed 5->6, unrouted 116->115."
-  ]
+    "falsify plant-route green: planting a synthetic route moves routed 5->6, unrouted 116->115.",
+    "REPAIR 1 (engine, game/src/sim/quest/machine.js _applyConsequences): world_flags now raised through setFlag() instead of written into q.flags directly, with a depth-8 re-entrancy guard because a hook row carrying `fail` re-enters. Additive: same value, same false->true edge; a flag with no hook row behaves exactly as before.",
+    "DELETE-THE-FIX on repair 1, and the two arms genuinely differ: with the 5 new hooks rows PRESENT but the engine change removed, all 5 know: flags go false and all 3 demonstrable end-to-end cases FAIL. So the data rows alone are INERT -- the dispatched repair (author 18 hooks rows) would have shipped an inert fix.",
+    "REPAIR 2 (data, hooks.json +5 rows): the `later_quest` channel, the only one of the nine whose source is a quest id and therefore routable by a world flag alone. Quest-level flags used so no ending of the source quest is privileged. Q-MAIN-29 is no longer fully blocked (8 blocked quests, was 9).",
+    "END TO END, no harness verb: play the source quest -> consequence raises a world flag -> hook table writes know: -> the later quest's gate stops refusing. 3 demonstrable cases (rev_what_the_cut_does on Q-MAIN-29, rev_how_the_count_opens on Q-MAIN-28, rev_crew_list_echo on Q-XULA-14), refusals before 2/2/1 -> after 0/0/0. questReveal and questSetFlag are never called.",
+    "REPAIR 3 (instrument, mainline-chain-floor.mjs): the reveal hand-feed is OFF by default and the honest number is now what it prints -- 0/40, blocked at Q-MAIN-06, agreeing with the viability walk. --hand-feed-reveals reproduces round 2's 40/40 exactly, and is documented as a hand-feed at the call site.",
+    "STILL BROKEN, SAID PLAINLY: the viability walk still reports 0/40 finishing the main quest, all 40 stopping at Q-MAIN-06. I did not repair the ledger channel and did not pretend to. Q-MAIN-06's journal already contains both reveals in prose (index 40 IS rev_the_curve_predates, index 55 IS rev_the_steward_named) -- the content is written and nothing connects it.",
+    "A SIXTH INSTANCE OF THE SAME SHAPE, FOUND WHILE LOOKING: of the quest machine's six verbs, open/note/reveal/takeBranch/resolve/fail, NONE has a caller outside game/src/harness/api.js except the machine calling itself. note() has one internal caller (the hooks journal branch) covering 11 of 120 quests, so the middle of every other quest's journal is unwritable in play. takeBranch() has zero callers anywhere.",
+    "REPORTED, NOT FIXED: the hooks row point_of_no_return_crossed -> Q-MAIN-27 journal 90 can never fire -- entry 90 has state 'success' and setFlag's journal branch correctly refuses terminal entries. Authoring defect in the row (W1-19 round 2's), not in the write path; excluded from the tool's verdict and printed on every run.",
+    "TREE MOVED UNDER ME. I ran no commit. A neighbour's `git add -A` banked all of this into 4275c29 while I was finishing. Every number above was taken at a5551ef and re-run unchanged at 4275c29; gates PASS at both.",
+    "LOAD: the final viability-walk arm ran at loadavg 27.79 / 29043 headless_shell on a contended box. No timing figure is quoted from it -- only completion counts, which do not move with load.",
+    "OWNERSHIP: files_claimed is empty (piece done). Every remaining overlap reported against this piece is on reports/blog-feed.jsonl or docs/shots/ ONLY -- the two files RULES.md rule 27 requires every piece to touch. No code or data file of mine is claimed by anyone else."
+  ],
+  "start_commit": "a5551ef",
+  "commit_under_test": "4275c29"
 }
