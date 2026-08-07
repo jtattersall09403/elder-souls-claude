@@ -16,6 +16,12 @@
 //       must end outside the declared radius rather than inside it.
 //   M5  the control for M4: the identical walk through a bone line, which declares solid_r 0,
 //       must pass straight through. A probe that reports every walk as blocked measures nothing.
+//   M6  the geometry SURVIVES A TILE RELEASE. `province.js#_release()` frees every geometry in a
+//       departing tile that is not flagged `geometry.userData.shared`, and the marker cache is one
+//       geometry per TYPE instanced by every tile — so a missing flag frees the buffers behind all
+//       217 markers the first time a border tile leaves the resident ring, while other tiles are
+//       still drawing them. Nothing else here would catch it: M2 teleports and streams, it never
+//       walks OUT of a ring. This checks the flag directly and then does a 2.4 km round trip.
 //
 // One browser, one page, `setRenderRate(0)` before any stepping.
 'use strict';
@@ -65,7 +71,7 @@ try {
       if (p && p.group) {
         p.group.traverse((o) => {
           if (!o.name) return;
-          if (!/^(threshold|remains):/.test(o.name)) return;
+          if (!/^(threshold|threshold-glow|remains):/.test(o.name)) return;
           const n = o.count === undefined ? 1 : o.count;
           const v = o.geometry && o.geometry.attributes.position ? o.geometry.attributes.position.count : 0;
           found[o.name] = (found[o.name] || 0) + n;
@@ -166,7 +172,7 @@ try {
     const p0 = E.renderer && E.renderer.province;
     if (p0 && p0.group) {
       p0.group.traverse((o) => {
-        if (!o.name || !/^(threshold|remains):/.test(o.name)) return;
+        if (!o.name || !/^(threshold|threshold-glow|remains):/.test(o.name)) return;
         if (o.geometry && o.geometry.userData && o.geometry.userData.shared) flagged++;
         else unflagged.push(o.name);
       });

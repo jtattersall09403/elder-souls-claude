@@ -251,6 +251,52 @@ skill-event budget (built on ~5 hits × 1,400–2,000 kills) now *over*-delivers
 softer failure than under-delivering and is left as a recorded divergence rather than silently
 retuned — RI-PRG03 is not this audit's to re-derive. See CORPUS-COHERENCE-01 §7 (edits not made).
 
+### 8. Open tension — measured time-to-kill against the census and the hour budget
+
+**Filed wave 1 by W1-SOULS round 2, at the instruction of the W1-SOULS round-1 verdict (F-6).
+Nothing in §§1–7 is changed by this section.** It records a three-way disagreement that this
+item's own provenance risk 3 (*"Combat TTK differs"*) anticipated, now with a number attached
+for the first time. It is filed rather than absorbed because resolving it means moving one of
+three figures that three different items own.
+
+**The measurement.** In the browser, straight sword, latched `light` input, no harness kill verb:
+**1,421 frames at 60 Hz = 23.68 s of continuous swinging, 42 swings, to kill one `inf_trash`** —
+the shipped statblock the tier-1 region places, i.e. the R1 trash baseline. Reproduced
+identically on two runs; the node arena agrees for this fight because it is short enough that
+stealth perception has not yet made the enemy turn. Source:
+`reports/critic-souls-r1.json` arm `K1` and `reports/souls-consumption.json` arm `K`.
+
+**The arithmetic.** §1's R1 row is 1.8 h = 108 minutes, and "typical" is 78% of the roster killed.
+
+| R1 roster size | kills at 78% | pure swinging | share of the 108 min |
+|---|---:|---:|---:|
+| 93 (§3's decomposition at N = 576) | 72.5 | 28.6 min | **27%** |
+| ~199 (§7's adopted census share, 93 × 1230/576) | 155.2 | 61.3 min | **57%** |
+
+At the census this item has itself adopted, **more than half of region one is spent swinging**,
+which leaves about eighteen seconds per enemy for walking, looting, dying, talking, resting and
+being lost. That is not a Morrowind-shaped region and it is not what §5's pace curve describes.
+
+**Three ways out, and each belongs to somebody.**
+
+1. **TTK yields.** 23.68 s per ordinary trash kill is long for a Souls first region; `RI-CMB01`
+   and the weapon items own it. Halving it dissolves the tension outright at the adopted census.
+   It would also move `RI-PRG03`'s "~5 hits per ordinary kill" budget, which the measured fight
+   already contradicts — 42 swings landed 15 hits through `armour_rating` 30.
+2. **The census yields.** `RI-WLD07`/`RI-WLD02` own it. The band is 891–1,569 and the low end
+   costs the least here. Note the same census is *already* under strain from the other side:
+   `W1-POPULATION` recorded that §7's road slice (278–477) and `RI-WLD02` D9's 0.7–1.2 groups per
+   **wilderness** minute cannot both be satisfied on the shipped trunk road.
+3. **The hour budget yields.** R1 is longer than 1.8 h. This item owns that figure, and it is the
+   figure §5's whole pace curve is computed against, so moving it is the most expensive of the
+   three.
+
+**What must not happen is the fourth option**: leaving §5's pace table as the answer. That table
+divides §1's souls-per-kill into RI-PRG01's level costs and multiplies by §1's minutes-per-kill,
+and both come from the same row of the same table — so it returns ~10.8 min/level for *any*
+census, *any* soul value and *any* TTK. It is invariant under exactly the changes that would
+resolve this section, which is why it never registered the problem.
+
 ## Comparison method
 
 The harness lives at `corpus/80-methods/sim-souls-yield.md`. Every assertion below runs

@@ -13,11 +13,18 @@
 //     cross-correlation lag between input and response.
 //   M5 no auto-follow while walking (the discriminator) — FULL. 720 frames of rotating
 //     movement input with zero look input.
-//   M1 deadzone and response curve — NOT RUN, and reported as not-run rather than skipped:
-//     it measures a stick magnitude remap (`m' = clamp((m-0.15)/0.80,0,1)`, then squared)
-//     that this build does not implement. `look` in this build is a per-frame delta in
-//     degrees, not a normalised stick magnitude, so there is no curve to fit and a fitted
-//     R^2 would be a fabricated measurement. Named in `declared_not_implemented`.
+//   M1 deadzone and response curve — NOT RUN HERE, and the STATED REASON IS NOW STALE.
+//     When this script was written the reason given was that the build had no stick magnitude
+//     remap to measure. It did: `input/pipeline.js:shapeLookStick()` has always implemented
+//     RI-CAM02 §A's radial deadzone, outer saturation and quadratic-on-magnitude, and the
+//     `look_stick` event that reaches it has always been handled by `_pump()`. What was
+//     missing was one entry in `QUEUE_INPUT_KEYS`, so the validator threw on the only key
+//     that could drive it and no probe in the project could reach the curve. W1-06 added it
+//     (2026-08-07) and demonstrated the path end to end: quartering `look.max_yaw_rate_dps`
+//     in `game/data/camera/rig.json` took a 60-frame full-deflection `look_stick` sweep from
+//     180.00 deg to 45.00 deg exactly (`reports/w1-06/cam-consume.json`). M1 is therefore
+//     RUNNABLE now, and a successor should run it here rather than re-deriving the excuse.
+//     Left not-run in this script because W1-06 did not run M1 itself and will not claim it.
 //   M4 turn-rate ceiling / M6 auto-recentre — owned by the movement and camera pieces.
 //
 // USAGE
@@ -49,7 +56,7 @@ const handle = await launchGame(args);
 const report = {
   schema: 'elder-souls/m-cam02@1', item: 'RI-CAM02', state: STATE, band: BAND,
   declared_not_implemented: [
-    'M1 deadzone and response curve: this build takes `look` as a per-frame delta in degrees, not a normalised stick magnitude, so RI-CAM02 §A\'s radial deadzone and quadratic magnitude remap have no implementation to measure. Reported not-run, scored 0, rather than fitted to a curve that does not exist.',
+    'M1 deadzone and response curve: NOT RUN by this script. The reason originally recorded here — that the build has no stick curve — was wrong: `input/pipeline.js:shapeLookStick()` implements it and `look_stick` reaches it. The real blocker was that `look_stick` was missing from QUEUE_INPUT_KEYS, so queueInputs() threw and no probe could drive the curve. W1-06 fixed that on 2026-08-07 and proved the path (reports/w1-06/cam-consume.json, look_rate trial). M1 is runnable; this script has simply not been extended to run it.',
     'M4 turn-rate ceiling and M6 auto-recentre: owned by the movement/camera pieces, not by W1-00.',
   ],
   checks: [],

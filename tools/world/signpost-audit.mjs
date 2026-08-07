@@ -13,7 +13,7 @@
 // audit MORE load-bearing rather than less: a map that only records where you have been cannot
 // correct a bad direction ahead of you, so nothing downstream catches what this tool misses.
 //
-// Eight checks. A-G fail the run; H reports a measurement this piece does not own the data for.
+// Nine checks. A-G and I fail the run; H reports a measurement this piece does not own the data for.
 // A-F were each verified falsifiable by breaking the thing they measure on purpose (an arm named
 // 'Vivec', a bearing turned 180°, a leg 'helstrom-vivec', an invented topic, a tell_id naming
 // nothing, an actor 'dwemer-centurion') and confirming the tool went red and exited 1. G was not
@@ -44,7 +44,18 @@
 //   G. NAMED ROUTES          every leg id in roads.json `named_routes` resolves, every settlement
 //                            it names has a record, and the chain has no hole.
 //   H. NIGHT LANDMARKS       (reported, never fails) how far a walker on each named route is from
-//                            the nearest GLOWING signature, against the 160 m lamp range.
+//                            the nearest GLOWING signature, against the 160 m lamp range, plus
+//                            the waylamps on the route and the LONGEST DARK STRETCH between them
+//                            — how far you walk at night with nothing lit to steer at.
+//   I. SPOKEN PLACE NAMES    every capitalised place name in a SPOKEN answer resolves. A is the
+//                            same rule for signposts; the sentences name far more places than the
+//                            posts do (Rootway Post, Ceyatatar-Zel, Tenmarch Bridge, Nine-Mud,
+//                            Xal-Ithix, the Leaning Stone) and nothing checked them. Falsified by
+//                            renaming one to "Vivec Bridge": FAIL, exit 1, restored clean. The
+//                            first version of it had a hole — a run of capitals at the START of a
+//                            sentence was skipped whole, so "Past Vivec Bridge, over the two
+//                            bridges" passed and the falsification test passed with it. Fixed to
+//                            skip only single-word sentence openers.
 //
 // Usage:  node tools/world/signpost-audit.mjs [--json] [--verbose]
 // Exits non-zero on any failure. It is not a formality and it must never be made one.
@@ -305,26 +316,41 @@ const placeNames = new Set();
 const addName = (n) => {
   if (!n) return;
   const s = String(n).trim();
-  placeNames.add(s.toLowerCase());
-  placeNames.add(s.replace(/\s*\([^)]*\)\s*$/, '').trim().toLowerCase());   // "Welkynd Shrine (A–B)"
-  placeNames.add(s.replace(/^the\s+/i, '').trim().toLowerCase());           // "The Leaning Stone"
-  placeNames.add(s.replace(/\s+\w+$/, '').trim().toLowerCase());            // "Fired-Cold" for "Fired-Cold Well"
+  // Strip the disambiguator FIRST, then derive the short forms from the bare name. Deriving them
+  // from the raw string instead made "Fired-Cold Well (Archon–Thorn)" yield "Fired-Cold Well"
+  // as its short form and never "Fired-Cold", so the check failed on a name that does exist —
+  // which is exactly the false positive that gets a checker switched off.
+  const base = s.replace(/\s*\([^)]*\)\s*$/, '').trim();
+  for (const v of [s, base, base.replace(/^the\s+/i, ''), base.replace(/\s+\w+$/, '')]) {
+    if (v && v.trim()) placeNames.add(v.trim().toLowerCase());
+  }
 };
-for (const p of (pois.pois || [])) addName(p.name);
-for (const r of (regionsDoc.regions || [])) { addName(r.name); addName(r.id.replace(/-/g, ' ')); }
-for (const w of (roads.waystations || [])) addName(w.name);
+for (const p of pois) addName(p.name);
+for (const r of ((read('world/regions.json').regions) || [])) { addName(r.name); addName(r.id.replace(/-/g, ' ')); }
+for (const w of waystations) addName(w.name);
 for (const id of settlementIds) addName(id);
 for (const s of signs) addName(s.name);
 let prosePlaces = 0;
-for (const route of (directions.routes || [])) {
+for (const route of (dirs.routes || [])) {
   for (const a of (route.answers || [])) {
     for (const sentence of String(a.x || '').split(/(?<=[.!?])\s+/)) {
       const toks = sentence.match(/\b[A-Z][a-zA-Z]+(?:[- ][A-Z][a-zA-Z]+)*\b/g) || [];
       toks.forEach((t, k) => {
-        if (k === 0 && sentence.startsWith(t)) return;      // sentence-initial, not a name claim
         if (NOT_A_PLACE.has(t)) return;
+        const initial = k === 0 && sentence.startsWith(t);
+        const parts = t.split(' ');
+        // A SENTENCE-INITIAL CAPITAL IS AMBIGUOUS, and skipping the whole run was a hole big
+        // enough to walk a lie through: "Past Vivec Bridge, over the two bridges" opens with an
+        // ordinary word, so the run "Past Vivec Bridge" was sentence-initial and never checked,
+        // and the falsification test I wrote to prove this check works quietly passed. A run of
+        // ONE word at the start of a sentence really is undecidable and is skipped. A run of two
+        // or more is a name claim, and it passes if EITHER the whole run or the run without its
+        // leading word resolves — which covers both "Tenmarch Bridge after that" and
+        // "Past Rootway Post".
+        if (initial && parts.length < 2) return;
+        const candidates = initial ? [t, parts.slice(1).join(' ')] : [t];
         prosePlaces++;
-        if (!placeNames.has(t.toLowerCase())) {
+        if (!candidates.some((c) => placeNames.has(c.toLowerCase()))) {
           fail('I', `route '${route.id}': a spoken answer names "${t}", which is not a settlement, POI, region, waystation or signpost in this build`);
         }
       });

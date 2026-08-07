@@ -1,0 +1,487 @@
+{
+ "schema_version": 1,
+ "piece_id": "w1-22-r1",
+ "piece_title": "W1-22 round 1 \u2014 regional ambience (audio.ambience.region)",
+ "subsystem_paths": [
+  "audio.ambience.region"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "crit-w1-22-r1-a9f2",
+  "role": "critic.audio",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-07T00:00:00Z",
+  "finished_at": "2026-08-07T04:20:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": true
+ },
+ "build": {
+  "commit_sha": "78aebc7",
+  "branch": "main",
+  "harness_commands": [
+   {
+    "command": "node tools/boot-check.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "(PASS at 7b8538b, before)"
+   },
+   {
+    "command": "node tools/analysis/critic-w1-22-probe.mjs --seconds 20 --rate 16000 --out reports/w1-22-critic/probe.json",
+    "exit_code": 0,
+    "stdout_artifact": "reports/w1-22-critic/probe.json"
+   },
+   {
+    "command": "node tools/blind/audio-pack-b2.mjs --out reports/w1-22-critic/b2 --seed 22071",
+    "seed": 22071,
+    "exit_code": 0,
+    "stdout_artifact": "reports/w1-22-critic/b2/trials.json"
+   },
+   {
+    "command": "node tools/analysis/content-stats.mjs --audio game/data/audio/ambience/",
+    "exit_code": 0,
+    "stdout_artifact": "reports/content-stats.json"
+   },
+   {
+    "command": "node tools/boot-check.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "(PASS at b51789e, after)"
+   },
+   {
+    "command": "headline re-check at HEAD 95d62da (live-path emitter perturbation + L1 control)",
+    "exit_code": 0,
+    "stdout_artifact": "inline in verdict notes"
+   }
+  ]
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "note": "Ambience is judged as sound. No visual reference is cited anywhere in this verdict."
+ },
+ "reference_items": [
+  {
+   "id": "RI-AUD03",
+   "path": "corpus/87-audio/RI-AUD03-regional-ambience.md",
+   "side": "morrowind",
+   "kind": "structure",
+   "native_scale": "checks passed / 6 (B1-B6)",
+   "native_score": "1 of 6",
+   "native_max": 6,
+   "native_verdict": "<=3 -> loses outright (ceiling 4)",
+   "score_0_10": 4,
+   "measured": "partial",
+   "justification": "B4 passes and I re-derived it with my own instrument. B5 is 12/13, missing by 0.009 LU on one region. B6 is 0/3 because no R7 positional emitter produces sound on any path the game or any measurement can reach - demonstrated by perturbation, with a control that moves violently. B1/B2/B3 are unrun because no fresh-judge channel is reachable from this session; they are corpus/orchestration debt, not the builder's zeros, per TOOL-LOOP rule 1.",
+   "checks": [
+    {
+     "id": "B1",
+     "result": "not_run",
+     "not_run_reason": "13 fresh judges required; no subagent-spawn tool in this session and create_session is approval-gated. Corpus/orchestration debt."
+    },
+    {
+     "id": "B2",
+     "result": "not_run",
+     "not_run_reason": "78 fresh judges required. Pack BUILT, blind, leak-audited and unjudged at reports/w1-22-critic/b2 with the reveal key at the sibling reports/w1-22-critic/b2.reveal. The critic is disqualified as a judge (has read RI-AUD03 SectionB). The builder's separation_proxy is NOT B2 and is not quoted as B2 anywhere in this verdict.",
+     "evidence": [
+      "reports/w1-22-critic/b2/pack.json",
+      "reports/w1-22-critic/b2/JUDGE.md",
+      "orchestration/status/critic-w1-22.json#b2_preregistration"
+     ]
+    },
+    {
+     "id": "B3",
+     "result": "not_run",
+     "not_run_reason": "depends on B1's Q5. Same missing channel."
+    },
+    {
+     "id": "B4",
+     "result": "pass",
+     "observed": "13 regions, 13 beds, four layer keys present in all 13, 13 unique L1 asset ids, every L3 interval inside [8,40] and every L4 inside [45,180] including stone-forest's night_interval_s. Re-derived with my own census, not the builder's tool. Instrument broken on purpose five ways: red on four.",
+     "evidence": [
+      "independent python census at ead0e35",
+      "tools/analysis/ambience-census.mjs"
+     ]
+    },
+    {
+     "id": "B5",
+     "result": "fail",
+     "observed": "12/13 inside RI-AUD03's absolute band (-28..-24, stone-wastes -34+-2). marauders-coast measured -23.991 LUFS-I, outside by 0.009 LU. No hard fail: nothing above -18. Note the builder's G4 checks +-4 LU around each bed's OWN target, which is a weaker and different claim than B5.",
+     "evidence": [
+      "reports/w1-22-critic/probe.json#C_B5_strict"
+     ]
+    },
+    {
+     "id": "B6",
+     "result": "fail",
+     "observed": "0 of 3 (4 declared) R7 emitters audible. +40 dB on bell_buoy.level_db leaves the live-path render bit-identical (peak 0.4197283983230591 both runs) and the no-listener offline render bit-identical (peak 0.342586, LUFS -23.991 both runs). Control: +40 dB on L1 drives peak 0.342586 -> 1.000031 and LUFS -23.991 -> -5.336. buildGrain() is never called for an emitter on the live path, and no caller in the tree passes `listener` to ambienceCapture/renderBedOffline. B6's stated instrument is audioLog.pan; _emit() never writes an emitter row.",
+     "evidence": [
+      "reports/w1-22-critic/probe.json#B_emitter_consumption",
+      "game/src/audio/ambience.js:253-263",
+      "game/src/audio/ambience.js:431-443"
+     ]
+    }
+   ],
+   "hard_fails": [],
+   "how_we_lose_hits": [
+    "'The signature sounds become wallpaper' - bell_buoy.period_s is 13 s, more frequent than the 15 s the item names as the failure. Emitter periods are bounded by no check anywhere; kiln declares no period_s at all and silently defaults to 20 s.",
+    "'Pairwise separation is never run because 78 judges is expensive' - B2 is indeed not run, though for a channel reason rather than a cost one, and the pack is built so the next round cannot drop it silently.",
+    "'Interiors are the exterior bed low-passed' - AVOIDED correctly. Interiors go silent and declare it. But R4 mandates a bed, and RI-WLD08 SectionD6 requires >=8 settlement and >=4 interior beds; 115 interiors and every settlement street and market are silent."
+   ],
+   "evidence": [
+    "reports/w1-22-critic/probe.json",
+    "reports/w1-22-critic/b2/pack.json",
+    "corpus/90-verdicts/wave1/W1-22-r1.md"
+   ],
+   "why_not_ten": "One of six checks demonstrably passes. The R7 emitter model has no world-side consumer, so RI-MTH07 scores it 0 and the piece's strongest seam claim (navigation by ear under S8) is not carried. Three checks could not be run at all.",
+   "path_to_ten": "1. Schedule emitter grains on the live path (LayerClock keyed on period_s, buildGrain into this.live.bus with pl.pan/pl.gain) and emit an ambience_emitter log row carrying pan, gain and distance_m, so B6's stated instrument exists; pass `listener` from ambienceCapture so emitters land in a measured clip; bound period_s in the census (>=45 s). 2. Fix attachMod's unscaled LFO swing so bed_gain_db and level_db are true scalars - three lines, and it removes a 155%-depth phase-inverting tremolo from valus-ridge. 3. Trim marauders-coast 0.5 dB so B5 is 13/13 on the item's absolute band. 4. Render the night world (tod:'night') so R5 is measured at all. 5. Get a fresh-judge channel and run the built B2 pack, then B1 and B3. 6. Wire --audio into content-stats.mjs or amend RI-AUD03 B4 to name ambience-census.mjs.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-MTH03",
+   "path": "corpus/80-methods/RI-MTH03-blind-comparison-protocol.md",
+   "side": "neutral",
+   "kind": "structure",
+   "native_scale": "% of applicable points",
+   "native_score": "6 of 6 applicable points for the half that was reachable (pack built by tool 2, reveal key outside the pack 2, leak audit performed this wave 2). The judging half (8 points: answer-before-reveal, pick, evidence, weakest point, reveal outcome) was not reachable.",
+   "native_max": null,
+   "native_verdict": "Protocol correct as far as it was executed; no blind result exists to be admissible or inadmissible.",
+   "score_0_10": 5,
+   "measured": "partial",
+   "justification": "The pack was built mechanically by a tool, never by hand. The reveal key is a sibling of the pack root, not a child. The design - stimulus, stratification, seed 22071, catch trials and the seven-step unblinding order - was pre-registered in the critic's status file BEFORE any clip was rendered. The M6 leak audit was run by the pack author on the pack before any judge saw it and FOUND a hole: the first build reported each clip's true loudness, which RI-AUD03 SectionC closes on purpose; fixed in tool and artifact. No judge was dispatched, so no pick, no reveal and no outcome.",
+   "checks": [
+    {
+     "id": "M1",
+     "result": "pass",
+     "observed": "pack built by tools/blind/audio-pack-b2.mjs; reveal at reports/w1-22-critic/b2.reveal (sibling)"
+    },
+    {
+     "id": "M2",
+     "result": "not_run",
+     "not_run_reason": "no fresh-judge channel reachable from this session"
+    },
+    {
+     "id": "M3",
+     "result": "not_run",
+     "not_run_reason": "no answer.md exists; nothing was unblinded. mapping.json has not been opened."
+    },
+    {
+     "id": "M4",
+     "result": "not_run",
+     "not_run_reason": "no pick to reveal against"
+    },
+    {
+     "id": "M6",
+     "result": "pass",
+     "observed": "leak audit found and closed a real channel (un-normalised clip loudness) in the critic's own pack before any judge saw it"
+    }
+   ],
+   "hard_fails": [],
+   "evidence": [
+    "reports/w1-22-critic/b2/pack.json",
+    "reports/w1-22-critic/b2.reveal/mapping.json (NOT OPENED)",
+    "orchestration/status/critic-w1-22.json#b2_preregistration"
+   ],
+   "why_not_ten": "Half the protocol - the judging half - could not be executed at all.",
+   "path_to_ten": "Give the project a fresh-judge dispatch path, then run the built pack per reports/w1-22-critic/b2/JUDGE.md and record separation alongside false_different_rate.",
+   "ten_by_wave": 2
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "reports/w1-22-critic/probe.json",
+   "kind": "report",
+   "produced_by": "node tools/analysis/critic-w1-22-probe.mjs --seconds 20 --rate 16000 --out reports/w1-22-critic/probe.json",
+   "note": "critic's own instrument: independent BS.1770-4 loudness, FFT, 24-band spectrum. Sections A (bed_gain_db mechanism), B (emitter consumption), C (B5 strict), D (78-pair matrix), E (suppression)."
+  },
+  {
+   "path": "reports/w1-22-critic/b2/trials.json",
+   "kind": "blind-pack",
+   "produced_by": "node tools/blind/audio-pack-b2.mjs --out reports/w1-22-critic/b2 --seed 22071",
+   "seed": 22071,
+   "sha256": "3ab1e3b84faebdf8",
+   "source": "blind-pack",
+   "note": "32 trials, unjudged. No region name, synth id, layer id or filename appears in it."
+  },
+  {
+   "path": "reports/w1-22-critic/b2/pack.json",
+   "kind": "blind-pack",
+   "produced_by": "node tools/blind/audio-pack-b2.mjs",
+   "seed": 22071,
+   "source": "blind-pack"
+  },
+  {
+   "path": "reports/w1-22-critic/b2/JUDGE.md",
+   "kind": "text-excerpt",
+   "produced_by": "written by the critic; instructions for the fresh judge this session could not dispatch"
+  },
+  {
+   "path": "reports/w1-22-critic/b2.reveal/mapping.json",
+   "kind": "blind-pack",
+   "produced_by": "node tools/blind/audio-pack-b2.mjs",
+   "seed": 22071,
+   "source": "blind-pack",
+   "note": "SIBLING of the pack, never a child. Has not been opened - there is no answer to score against."
+  },
+  {
+   "path": "tools/analysis/critic-w1-22-probe.mjs",
+   "kind": "log",
+   "produced_by": "written by this critic mid-run; declared under method_deviations"
+  },
+  {
+   "path": "tools/blind/audio-pack-b2.mjs",
+   "kind": "log",
+   "produced_by": "written by this critic mid-run; declared under method_deviations"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/W1-22-r1.md",
+   "kind": "report",
+   "produced_by": "this verdict"
+  },
+  {
+   "path": "reports/w1-22/ambience-render.json",
+   "kind": "report",
+   "produced_by": "the builder's own run; re-derived independently rather than trusted",
+   "source": "ours"
+  }
+ ],
+ "blind_comparisons": [
+  {
+   "ref_item": "RI-AUD03",
+   "status": "not_possible",
+   "not_possible_reason": "RI-AUD03 B2 needs fresh judges answering SAME/DIFFERENT on clip pairs. No subagent-spawn tool exists in this session and create_session is approval-gated, so no fresh context could be dispatched. The critic will not answer its own pack: it has read RI-AUD03 SectionB and knows what all thirteen regions are supposed to sound like, which is the item's own named failure mode and the reason two earlier comparisons in this project were voided. The pack is built, blind, leak-audited and one dispatch away.",
+   "question": "Are these two 20-second recordings from the same place in a game world, or different places? (RI-AUD03 B2 verbatim - a QUALITY/identity question, not a provenance one)",
+   "pack_artifacts": [
+    "reports/w1-22-critic/b2/PROMPT.md",
+    "reports/w1-22-critic/b2/trials.json",
+    "reports/w1-22-critic/b2/pack.json",
+    "reports/w1-22-critic/b2.reveal/mapping.json"
+   ],
+   "assignment_seed": 22071
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "not_applicable",
+   "not_applicable_reason": "Ambience is outside the fight and touches no combat mechanic. AmbienceDriver may not write to sim by construction (game/src/audio/ambience.js header), it runs in _afterStep outside armSim()'s determinism guard, and it imports nothing from sim/events.js - so it cannot introduce a Morrowind mechanic into the fight or desynchronise a trace.",
+   "checks": [
+    {
+     "id": "A1",
+     "result": "not_applicable",
+     "observed": "no combat surface is touched by this piece"
+    }
+   ]
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "B1",
+     "result": "pass",
+     "observed": "RI-AUD03 names the AR-2 risk explicitly: Souls-style near-total silence outside boss arenas, so the world reads as a mausoleum. All thirteen exteriors render audible PCM at -24 to -34 LUFS-I and separate 78/78 on a level-normalised spectrum. The world is loud where it should be loud.",
+     "evidence": [
+      "reports/w1-22-critic/probe.json#C_B5_strict",
+      "reports/w1-22-critic/probe.json#D_pair_matrix"
+     ]
+    },
+    {
+     "id": "B2",
+     "result": "pass",
+     "observed": "absence is implemented as content, not omission: stone-wastes declares L2 null, deep-marshes' L3 sits at [30,40], and the two tier-5 regions are measurably the two quietest (-28.0 and -34.0). That is RI-AUD03's absence-is-a-layer rule and AR-3 seam #3 (silence as a lethality cue) carried in measured sound."
+    },
+    {
+     "id": "B3",
+     "result": "pass",
+     "observed": "NOT stretched to cover the interior silence. Every interior and settlement cell is silent (115 interiors; helstrom-market and stormhold-street both suppress), but that is R4 debt honestly declared, not a Souls convention contaminating the world. S26 forbids diluting the AR checks to cover ordinary defects.",
+     "evidence": [
+      "reports/w1-22-critic/probe.json#E_suppression"
+     ]
+    }
+   ]
+  }
+ },
+ "score": {
+  "overall_0_10": 4,
+  "pass_threshold": 6,
+  "aggregation": "min",
+  "band_label": "Below bar \u2014 named remedy required",
+  "confidence": "high"
+ },
+ "status": "FAIL",
+ "status_reasons": [
+  "below_pass_threshold",
+  "consumption_fail:RI-AUD03/B6",
+  "check_fail:RI-AUD03/B5",
+  "corpus_debt:RI-AUD03/B1",
+  "corpus_debt:RI-AUD03/B2",
+  "corpus_debt:RI-AUD03/B3",
+  "phantom_tool:content-stats.mjs --audio"
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-audio-emitter-consumption",
+  "subsystem_path": "audio.ambience.region",
+  "what": "All four R7 positional emitters are computed every frame into an observation surface and produce no sound on any reachable path. Perturbing bell_buoy.level_db by +40 dB leaves the live-path rendered peak BIT-IDENTICAL (0.4197283983230591 before and after) and the no-listener offline render bit-identical (peak 0.342586, LUFS-I -23.991 before and after), while the same +40 dB on L1 moves peak 0.342586 -> 1.000031 and LUFS -23.991 -> -5.336. buildGrain() has three call sites; the live emitter path is not one of them, and no caller anywhere passes `listener` to ambienceCapture/renderBedOffline, so opts.listener has been null in every render this project has taken. B6 scores 0/3 under RI-MTH07 (unmeasurable => 0).",
+  "why_it_matters": "RI-AUD03 R7 makes the bell buoy, legion horn and kiln navigational instruments - the ambience answer to S8's ban on map markers - and a player lost in fog on Marauder's Coast today hears nothing at all to steer by.",
+  "evidence": [
+   "reports/w1-22-critic/probe.json#B_emitter_consumption",
+   "game/src/audio/ambience.js:253-263 (emitter block schedules no audio)",
+   "game/src/audio/ambience.js:431-443 (the only emitter grain path, gated on opts.listener)",
+   "tools/analysis/ambience-render.mjs:298 (ambienceCapture called 13 times with no listener)",
+   "control: +40 dB on L1 drives the same render into clipping, so the null is the emitter and not the probe"
+  ],
+  "severity": "blocking",
+  "remedy": {
+   "action": "In AmbienceDriver.step(), give the emitters their own LayerClock keyed on period_s and call buildGrain(this.ctx, {...e, level_db: e.level_db + bedTrimDb(bed)}, this.live.bus, this.rng, when, pl.pan, pl.gain) whenever this.ctx && this.live && pl.audible. _emit() an 'ambience_emitter' row carrying pan, gain and distance_m so that B6's stated instrument (audioLog.pan) exists at all. Pass `listener` through from Engine.ambienceCapture() so emitters appear in a measured clip. Bound period_s in tools/analysis/ambience-census.mjs: kiln declares none (silently defaulting to 20 s) and bell_buoy is 13 s, which is inside RI-AUD03's own named 'identity becomes irritation' failure.",
+   "targets": [
+    "game/src/audio/ambience.js",
+    "game/src/engine.js#ambienceCapture",
+    "tools/analysis/ambience-census.mjs",
+    "tools/analysis/ambience-render.mjs",
+    "game/data/audio/ambience/marauders-coast.json",
+    "game/data/audio/ambience/clay-moor.json"
+   ],
+   "acceptance": "Perturbing any R7 emitter's level_db by +20 dB moves the LIVE-path rendered peak by more than 1 dB; ambienceLog() returns emitter rows whose pan is strictly monotonic along the 200 m transect (B6 as written, not the placement-arithmetic proxy); every declared emitter carries a period_s of at least 45 s."
+  }
+ },
+ "secondary_observations": [
+  {
+   "what": "ROOT CAUSE of the builder's open anomaly (SUCCESSOR-8), found and proved. synth.js attachMod() sets the gain LFO's swing (amt.gain.value, an ADDITIVE AudioParam connection) from the pre-trim base; ambience.js buildBedContinuous() then multiplies only the STATIC gain by dbToGain(level_db)*trim. One term follows the trim, the other does not, so bed_gain_db AND level_db are both non-scalar. Proof: rendering valus-ridge across a -2.06 dB trim change gives (dLUFS, dPeak, dCentroid) = (-1.421, -0.918, -132.7 Hz) as shipped - reproducing the builder's figures to the decimal with independently written DSP - and exactly (-2.060, -2.060, 0.0 Hz) with that one node deleted.",
+   "subsystem_path": "audio.ambience.region",
+   "evidence": [
+    "reports/w1-22-critic/probe.json#A_bed_gain_mechanism"
+   ]
+  },
+  {
+   "what": "The same bug is an audible defect, not just a calibration nuisance, and it is on the live path. At valus-ridge's trim of -15.30 dB the LFO swing is 1.547x the static gain, so the gain parameter goes NEGATIVE at every trough and the rock-flute chord phase-inverts once every nine seconds: a declared 42% tremolo running at an effective 155%. buildBedContinuous is called by both renderBedOffline and AmbienceDriver._swapLive. Fix is three lines: apply level_db and trim before attachMod, or scale amt.gain.value identically.",
+   "subsystem_path": "audio.ambience.region",
+   "evidence": [
+    "reports/w1-22-critic/probe.json#A_bed_gain_mechanism.arithmetic"
+   ]
+  },
+  {
+   "what": "RI-AUD03 B2 has no SAME control. All 78 pairs are genuinely different regions, so a judge answering DIFFERENT to everything scores separation 1.000. The item ships a check that cannot fail. The pack built here adds 8 SAME catch pairs and reports false_different_rate; the item should be amended to require them.",
+   "subsystem_path": "process.critic.discipline"
+  },
+  {
+   "what": "The tool RI-AUD03 B4 names is a flag that lies. `node tools/analysis/content-stats.mjs --audio game/data/audio/ambience/` exists, accepts the flag, ignores it and the positional path, runs the generic content census and exits 0 - so a critic running the method verbatim records B4 as passing having checked none of its four assertions. Same class as the cmb-reach.mjs --verify precedent (TOOL-LOOP rule 3 item 5). Either wire --audio through to ambience-census.mjs or amend the item to name it.",
+   "subsystem_path": "process.verdict.format"
+  },
+  {
+   "what": "The night world has never been rendered. Every capture in ambience-render.mjs is tod:'day', so six night-only L2 sublayers and every night-gated L3/L4 event are absent from all thirteen spectra, from the separation proxy, from the level gate and from the spectra sidecar region-axes now consumes. R5 (night is a different selection, not a filter) is the rule the item cares most about after R2 and no measurement in this piece has ever seen it.",
+   "subsystem_path": "audio.ambience.region"
+  },
+  {
+   "what": "A 20 s clip is almost empty and the item's own blind test depends on what is missing from it. Measured across all thirteen regions: nine fired exactly one L3 event, four fired none, and NO region fired a single L4 creature event. Western Rootlands is one of the four (wet,open,living) regions the SectionC key says must be separated by Q3's signature sound - the hide-drum - which is now an R7 emitter and therefore silent. Stone Wastes' dying Hist is genuinely well built (partials [110,164.81,220,329.63] identical to Stone Forest's chord, detune widened 4 -> 47 cents, so it is audibly the same instrument broken - AR-3 seam #2 carried in the data) and it fires zero times in 20 s.",
+   "subsystem_path": "audio.ambience.region",
+   "evidence": [
+    "reports/w1-22-critic/probe.json#C_B5_strict.per_region"
+   ]
+  },
+  {
+   "what": "Interiors: the framing should change. RI-AUD03 R4 MANDATES that interiors get their own bed; it forbids the low-passed exterior, which the builder correctly avoided, but silence is a third option R4 does not sanction. RI-WLD08 SectionD6, the other item judging this path, requires >=8 settlement beds and >=4 interior beds. Measured in the running world, all six named cells suppress - including helstrom-market and stormhold-street, which are settlements - against 115 interiors in the data. So walking into any town in Black Marsh drops the world to absolute silence. This is honestly declared debt, not a design statement, and not AR-2 leakage.",
+   "subsystem_path": "audio.ambience.region",
+   "evidence": [
+    "reports/w1-22-critic/probe.json#E_suppression"
+   ]
+  },
+  {
+   "what": "The stale-sidecar detector's fail-open call is JUDGED CORRECT. Every agent in the project runs region-axes and none of them owns the audio; fail-closing one of nine axes would pin unrelated pieces at zero. The builder proved it falsifiable rather than asserting it. Two improvements: the warning goes only to console.warn, which nothing aggregates - it should also land in the JSON report as a boolean a tick can read; and a bed file that merely round-trips through a formatter changes the digest and cries wolf.",
+   "subsystem_path": "audio.ambience.region"
+  },
+  {
+   "what": "B4 cannot catch the failure the item says it catches. Setting an L3 interval to a flat 15 s passes B4, because 15 is inside the item's own 8-40 s band - yet RI-AUD03's 'How we lose' names 'raises the rate to every 15 seconds' as the signature-becomes-wallpaper failure and asserts the SectionA bands are checked in B4 for exactly that reason. Four other sabotages of my own census went red; this one did not.",
+   "subsystem_path": "audio.ambience.region"
+  },
+  {
+   "what": "A third close pair the builder did not name: marauders-coast/thornmarsh at spectral distance 0.190, a (wet,open,living) versus (dry,enclosed,dead) pair that should be among the easiest in the set. The two it did name reproduce: deep-marshes/stone-wastes 0.166 and marauders-coast/salt-hills 0.174.",
+   "subsystem_path": "audio.ambience.region",
+   "evidence": [
+    "reports/w1-22-critic/probe.json#D_pair_matrix"
+   ]
+  },
+  {
+   "what": "Instrument smell: while suppressed, getAmbienceState() still reports the exterior bed's four layer ids and voices_active 3. Only the `suppressed` field distinguishes a silent cell from a playing one, so a probe reading layers/voices alone would conclude the bed is running.",
+   "subsystem_path": "audio.ambience.region"
+  }
+ ],
+ "gap_closure": [],
+ "corpus_extended": [],
+ "method_deviations": [
+  {
+   "ref_item": "RI-AUD03",
+   "deviation": "B2 stimulus is a mechanically derived, label-free acoustic profile of the real rendered PCM (24 band levels relative to the clip's loudest band, spectral centroid, stereo correlation, crest factor, generic transient onsets) rather than a playable .wav.",
+   "why": "No judge available to this project has ears and there is no audio channel to one. Both members of every pair go through the identical path so the transformation cannot itself be a tell. Weaker than listening; stronger than a cosine threshold, because a judge decides rather than a fixed distance threshold.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-AUD03",
+   "deviation": "B2 sampled at 32 trials (12 hardest pairs + 12 drawn at seed 22071 + 8 SAME catch pairs) rather than the full 78.",
+   "why": "Pre-registered before any clip was rendered. The hard stratum is adversarially selected, so any separation figure from this pack is a LOWER BOUND on the full-78 number and must be reported as such, never as the full-78 B2 figure.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-AUD03",
+   "deviation": "SAME catch trials added, which B2 does not specify.",
+   "why": "B2 as written scores only the fraction answered DIFFERENT over 78 all-different pairs, so a judge that always answers DIFFERENT scores 1.000 - a probe that cannot fail. Honest caveat: because the stimulus is a time-averaged band spectrum, two recordings of one bed are nearly seed-invariant, so these catch trials are easier than a listener's would be. They detect a yes-saying judge; they do not calibrate sensitivity.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-MTH03",
+   "deviation": "Three tools written mid-critique: tools/analysis/critic-w1-22-probe.mjs, tools/blind/audio-pack-b2.mjs, and a throwaway Python census used to re-derive B4.",
+   "why": "TOOL-LOOP rule 1. RI-AUD03 B2's named tool tools/blind/audio-pack.mjs is an absence-reporter that exits 20 and has never built a pack; RI-AUD03 B4's named tool content-stats.mjs --audio silently ignores the flag. The DSP in the critic's probe is written independently of the builder's so that agreement between the two is evidence rather than a tool reporting on itself.",
+   "affects_scores": true
+  },
+  {
+   "ref_item": "RI-AUD03",
+   "deviation": "Measurements taken with 12-30 concurrent headless_shell processes and loadavg 17.1-20.5, above AGENT-PROTOCOL's cap of 8.",
+   "why": "Every figure quoted is a spectrum, a level, a ratio or a boolean, all of which survive contention; no wall-clock figure appears in this verdict. One browser was launched per probe and the page reused.",
+   "affects_scores": false
+  }
+ ],
+ "arbitration_questions": [],
+ "source_reads": [
+  {
+   "path": "game/src/audio/ambience.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "read only after the emitter perturbation had shown no change in the rendered PCM and after the two-trim render had shown bed_gain_db non-scalar"
+  },
+  {
+   "path": "game/src/audio/synth.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "read to locate the mechanism the mod-on/mod-off render pair had already isolated"
+  },
+  {
+   "path": "game/src/engine.js",
+   "purpose": "locate-harness",
+   "note": "ambienceCapture, getAmbienceState, _stepAmbience, cellFor"
+  },
+  {
+   "path": "tools/analysis/ambience-render.mjs",
+   "purpose": "locate-harness",
+   "note": "to find which capture options the builder's gates actually pass"
+  },
+  {
+   "path": "tools/blind/audio-pack.mjs",
+   "purpose": "locate-harness",
+   "note": "to establish that RI-AUD03 B2's named pack tool is an absence-reporter"
+  },
+  {
+   "path": "tools/analysis/content-stats.mjs",
+   "purpose": "locate-harness",
+   "note": "to establish that B4's named --audio flag is ignored"
+  },
+  {
+   "path": "game/data/audio/ambience/*.json",
+   "purpose": "quote-written-content",
+   "note": "layer census, emitter periods, modulation targets"
+  }
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": false,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "ran_every_assigned_method and blind_done_where_required are FALSE and the reason is the same one. RI-AUD03 B1, B2 and B3 need fresh judges; no subagent-spawn tool exists in this session and create_session is approval-gated, so no fresh context could be dispatched. I refused to answer my own pack because I have read RI-AUD03 SectionB and know what all thirteen regions are supposed to sound like - the item's own named failure and the reason two comparisons in this project were already voided. Instead I built the pack mechanically, pre-registered the design and the unblinding order before rendering a single clip, ran the M6 leak audit on my own pack and fixed the hole it found, and left mapping.json unopened. B1/B2/B3 are scored as corpus debt, not as the builder's zeros. Every other method was run: B4 and B5 were re-derived on my own instrument, B6 was demonstrated by perturbation with a control that moves violently, and the builder's headline separation figure was independently reproduced. Nothing was committed."
+ },
+ "notes": "Every number in this verdict is stamped to a commit taken at the moment of measurement. HEAD moved four times during the run: ead0e35 -> 7b8538b -> 78aebc7 -> b51789e. node tools/boot-check.mjs PASS at 7b8538b before and PASS at b51789e after. The headline measurement was re-derived immediately before finishing and did not move. Full prose verdict: corpus/90-verdicts/wave1/W1-22-r1.md. HEADLINE RE-RUN IMMEDIATELY BEFORE FINISHING, at a later commit 95d62da (three commits after it was first taken at 78aebc7): bell_buoy.level_db +40 dB leaves the live-path rendered peak at 0.4197283983230591, bit-identical to baseline, while the same +40 dB on L1 takes it to 36.77. The measurement did not move."
+}

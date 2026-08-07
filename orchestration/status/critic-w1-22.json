@@ -2,7 +2,7 @@
   "task_id": "critic-w1-22",
   "role": "critic",
   "target": "W1-22 (audio / regions)",
-  "state": "offline-phase-findings-banked",
+  "state": "complete",
   "started": "2026-08-07",
   "commit_at_start": "ead0e35",
   "contention_at_start": {
@@ -23,7 +23,16 @@
     "corpus/90-verdicts/wave1/W1-22-r1.json",
     "reports/blog-feed.jsonl (one line)"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/W1-22-r1.md",
+    "corpus/90-verdicts/wave1/W1-22-r1.json",
+    "reports/blog-feed.jsonl (one line)",
+    "tools/analysis/critic-w1-22-probe.mjs",
+    "tools/blind/audio-pack-b2.mjs",
+    "reports/w1-22-critic/probe.json",
+    "reports/w1-22-critic/b2/ (32-trial blind pack, UNJUDGED)",
+    "reports/w1-22-critic/b2.reveal/mapping.json (NOT OPENED)"
+  ],
   "findings": [
     "C-F1 ROOT CAUSE OF SUCCESSOR-8 (bed_gain_db is not a scalar) - FOUND, by inspection, pending browser proof. synth.js attachMod() line 139-143: for mod.target==='gain' it reads base = targets.gain.gain.value (which at that moment is only dbToGain(synth.gain_db)), sets the static value to base*(1-depth/2) and sets the LFO SWING AMOUNT amt.gain.value = base*depth/2, then CONNECTS amt to the gain AudioParam. An AudioParam connection is ADDITIVE. ambience.js buildBedContinuous() line 374 then does h.gain.gain.value = h.gain.gain.value * dbToGain(level_db) * trim -- which scales ONLY THE STATIC TERM. The LFO swing is never scaled. So gain(t) = base*(1-d/2)*L*trim + sin(2*pi*f*t)*base*(d/2): one term follows the trim and the other does not. bed_gain_db is therefore a scalar on part of the signal and a no-op on the rest, which is exactly 'does not behave as a scalar'.",
     "C-F2 C-F1 PREDICTS ALL THREE OF THE BUILDER'S NUMBERS, INCLUDING THE SIGN OF THE CENTROID MOVE. valus-ridge L1 is a DRONE at 146.83/174.61/220/261.63 Hz with mod {target:'gain', depth:0.42, lfo_hz:0.11} -- low frequency, gain-modulated. Its L2 is a 2400 Hz highpass with mod {target:'filter_hz'} -- high frequency, NOT gain-modulated. Lower the trim and the high L2 attenuates by the full amount while the low L1 attenuates by less, because L1's unscaled LFO term stays put. So (a) loudness moves LESS than the trim (-1.42 vs -2.06 OK), (b) peak moves least of all because the peak is set by the LFO crest (-0.92 OK), (c) the surviving energy is relatively MORE low-frequency, so the centroid FALLS (2057.8 -> 1925.1 OK). No other mechanism in the file predicts a falling centroid.",
@@ -37,11 +46,25 @@
     "C-F10 B4 RE-DERIVED INDEPENDENTLY (my own python census, not the builder's tool, at ead0e35): 13 regions in regions.json, 13 beds on disk, 0 missing, 0 orphan, all four layer keys present in all 13, 13/13 unique L1 ids, every L3 interval inside [8,40] and every L4 inside [45,180] including stone-forest's night_interval_s. B4 = PASS, agreeing with the builder. My instrument was broken on purpose five ways and went red on four (duplicate L1, L4 out of band, deleted layer key, deleted bed).",
     "C-F11 THE FIFTH SABOTAGE DID NOT GO RED, AND THAT IS THE ITEM'S FAULT NOT THE BUILD'S: setting western-rootlands' L3 interval to [15,15] passes B4, because 15 s is inside the 8-40 s band. RI-AUD03's own 'How we lose' names 'someone raises the rate to every 15 seconds' as the signature-becomes-wallpaper failure and says '\u00a7A L3/L4 interval bands are checked in B4 for this reason'. They are not sufficient to catch it.",
     "C-F12 AND THE SIGNATURES ARE NOT L3 ANY MORE, SO NO BAND CHECK REACHES THEM AT ALL. The builder correctly moved the hide-drum from L3 to an R7 emitter to resolve a real contradiction between RI-AUD03 SectionA (L3 capped at 8-40 s) and SectionB (a 90-second beat). Emitter `period_s` is bounded by nothing in ambience-census.mjs (C8 checks only that the emitters exist and the buoy's audible_m). Measured periods on disk: hide_drum 90 (matches SectionB), legion_horn 3600 (matches 'on the hour'), kiln NO period_s AT ALL (renderBedOffline defaults it to 20), bell_buoy 13. THE BELL BUOY RINGS EVERY 13 SECONDS -- more often than the 15 s the item names as the failure mode, 92 times in a twenty-minute walk, and no check in the piece or the corpus looks at it.",
-    "C-F13 R5 (night is a different selection) IS UNMEASURED. Every capture in ambience-render.mjs is taken with tod:'day'. Six night-only L2 sublayers (blackwood, marauders-coast x2, western-rootlands) and every night-gated L3/L4 event are therefore absent from all thirteen rendered spectra, from the separation proxy, from the level gate and from the spectra sidecar region-axes now consumes. Nothing in the piece has ever rendered the night world."
+    "C-F13 R5 (night is a different selection) IS UNMEASURED. Every capture in ambience-render.mjs is taken with tod:'day'. Six night-only L2 sublayers (blackwood, marauders-coast x2, western-rootlands) and every night-gated L3/L4 event are therefore absent from all thirteen rendered spectra, from the separation proxy, from the level gate and from the spectra sidecar region-axes now consumes. Nothing in the piece has ever rendered the night world.",
+    "C-F14 PROVED C-F1 IN THE BROWSER at 78aebc7. valus-ridge, 20 s @ 16 kHz, trim -13.24 -> -15.30 (-2.06 dB). AS SHIPPED: dLUFS -1.421, dPeak -0.918 dB, dBandCentroid -132.7 Hz (2057.8 -> 1925.1) - reproducing the builder's SUCCESSOR-8 figures TO THE DECIMAL with independently written DSP. WITH THE L1 GAIN LFO DELETED AND NOTHING ELSE CHANGED: dLUFS -2.060, dPeak -2.060, dBandCentroid 0.0, dPowerCentroid 0.0. Root cause confirmed. Arithmetic from the running data: swing/static = 1.547, gain_goes_negative_at_trough = TRUE, so a declared 42% tremolo runs at an effective 155% and valus-ridge's L1 phase-inverts every ~9 s, on the live path as well as the measurement path.",
+    "C-F15 PROVED C-F6 BY MY OWN PERTURBATION at 78aebc7. bell_buoy.level_db +40 dB: live-path rendered peak BIT-IDENTICAL (0.4197283983230591 both runs); no-listener offline render bit-identical (peak 0.342586, LUFS -23.991 both runs). CONTROL, same path, L1.level_db +40 dB: peak 0.342586 -> 1.000031 (clipping), LUFS -23.991 -> -5.336. So the null is the emitter, not the probe. With a listener explicitly placed - the only path that ever schedules an emitter grain, and one nothing in the tree calls - the same +40 dB moves LUFS -23.107 -> -14.764, so the code works and is simply unreachable. B6 = 0/3 under RI-MTH07.",
+    "C-F16 B5 STRICT (RI-AUD03's own absolute band, not the builder's +-4 LU around each bed's own target): 12/13. marauders-coast -23.991 against a -28..-24 band, outside by 0.009 LU. No hard fail; nothing above -18. Twelve of thirteen land within 0.05 LU of target - the calibration is essentially perfect and the miss is a rounding boundary.",
+    "C-F17 SEPARATION RE-DERIVED INDEPENDENTLY: 78/78 pairs >= 0.15, i.e. 1.000, agreeing with the builder. Closest pairs: deep-marshes/stone-wastes 0.166, marauders-coast/salt-hills 0.174, and marauders-coast/thornmarsh 0.190 - THE THIRD ONE THE BUILDER DID NOT NAME, and a (wet,open,living)/(dry,enclosed,dead) pair that ought to be easy.",
+    "C-F18 EVENT DENSITY MEASURED ACROSS ALL 13: nine regions fired exactly one L3 event in 20 s, four fired none, and NO REGION FIRED A SINGLE L4 CREATURE EVENT. Stone Wastes' dying Hist is genuinely well built (partials [110,164.81,220,329.63] identical to Stone Forest's chord, detune 4 -> 47 cents - AR-3 seam #2 carried in the data) and never sounds in a clip.",
+    "C-F19 SUPPRESSION VERIFIED IN THE RUNNING WORLD: all six named cells suppress and getAmbienceState().suppressed names them, including helstrom-market and stormhold-street which are SETTLEMENTS, against 115 interiors in the data. RI-AUD03 R4 MANDATES an interior bed (it forbids the low-passed exterior, which was correctly avoided); RI-WLD08 SectionD6 requires >=8 settlement and >=4 interior beds. So the absence is declared debt, not something the item permits. Instrument smell: while suppressed, getAmbienceState() still reports the exterior bed's four layer ids and voices_active 3.",
+    "C-F20 MY OWN B2 PACK LEAKED, AND MY OWN M6 LEAK AUDIT CAUGHT IT before any judge saw it: the first build reported each clip's true loudness (-25.0 vs -23.6 on T01), and RI-AUD03 SectionC normalises to -23 LUFS precisely so loudness carries no information. Fixed in tool and artifact.",
+    "C-F21 B2 NOT RUN, HONESTLY. No fresh-judge channel is reachable from a critic session: no subagent-spawn tool exists and create_session is approval-gated. I refused to answer my own pack (I have read RI-AUD03 SectionB). Pack is built, blind, leak-audited, 32 trials, reveal key a SIBLING and UNOPENED, with JUDGE.md for whoever dispatches. B1/B2/B3 recorded as corpus debt, not builder zeros.",
+    "C-F22 HEADLINE RE-RUN BEFORE FINISHING, at 95d62da (three commits later than 78aebc7 where it was first taken): bell_buoy +40 dB -> live peak 0.4197283983230591, BIT-IDENTICAL to baseline; control L1 +40 dB -> 36.77. Unmoved. bell_buoy.period_s still 13."
   ],
-  "method_deviations": [],
-  "next_step": "browser phase when headless_shell < 8: (1) prove C-F1 by rendering valus-ridge with and without L1 mod at two trims; (2) prove C-F6 by perturbing bell_buoy level_db +40 on the live path and on a listener render; (3) re-derive B5 strictly; (4) build and run the B2 pack per the pre-registration.",
-  "notes_for_successor": "Box was contended at start (12 browsers, load 17). Offline work first.",
+  "method_deviations": [
+    "3 tools written mid-run (TOOL-LOOP rule 1)",
+    "B2 stimulus is a label-free acoustic profile, not audio",
+    "B2 sampled 32 of 78 + 8 catch trials",
+    "measured under loadavg 17-20 / 12-30 browsers - spectra and booleans only"
+  ],
+  "next_step": "none - verdict delivered, not committed",
+  "notes_for_successor": "B2 is one dispatch away: hand a fresh agent reports/w1-22-critic/b2/PROMPT.md + trials.json and NOTHING else, collect answer.md, then open reports/w1-22-critic/b2.reveal/mapping.json. Report separation over the 24 DIFFERENT trials AND false_different_rate over the 8 SAME trials - the item has no SAME control and is unfalsifiable without them.",
   "b2_preregistration": {
     "declared_at": "2026-08-07T18:18:46.281361Z",
     "declared_before": "any clip was rendered, any pack was built, any judge was dispatched",
@@ -69,5 +92,13 @@
       "I will not read mapping.json before step 7. The sha256 of answers.jsonl is the auditable evidence of that ordering."
     ]
   },
-  "commit_stamp_offline_phase": "ead0e35 (dirty: yes, 8 files modified by neighbours)"
+  "commit_stamp_offline_phase": "ead0e35 (dirty: yes, 8 files modified by neighbours)",
+  "verdict": {
+    "score": 4,
+    "status": "FAIL - below bar, remedy required",
+    "biggest_gap": "GAP-W1-audio-emitter-consumption",
+    "boot_check": "PASS at 7b8538b (before) and b51789e (after)",
+    "commits_seen": "ead0e35 -> 7b8538b -> 78aebc7 -> b51789e",
+    "headline_reproduced_at": "95d62da (unchanged)"
+  }
 }

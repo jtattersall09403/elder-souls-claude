@@ -1,11 +1,11 @@
 {
   "schema": "elder-souls/capture@1",
   "protocol": "elder-souls/capture@1",
-  "cache_key": "37abdd9f9a8e006fd684be2931c14a3f35a78256daca659bb021b7fd3e898f8d",
-  "path": "/home/user/elder-souls-claude/reports/runs/capture-cache/game@b560d7bcd3f947dc/37abdd9f9a8e006fd684be2931c14a3f35a78256daca659bb021b7fd3e898f8d.png",
-  "bytes": 156057,
-  "sha256": "8c084fe194d3304cc06347e966129bb231f91a8d24f3ff390ca4f08fa7f453c7",
-  "captured_at": "2026-08-07T18:30:11.899Z",
+  "cache_key": "a802d8a97731f04e0f934760c31a53fa8da3a8197bbf4945c4afdb945abfe6ab",
+  "path": "/home/user/elder-souls-claude/reports/runs/capture-cache/game@3795955ce4672b9f/a802d8a97731f04e0f934760c31a53fa8da3a8197bbf4945c4afdb945abfe6ab.png",
+  "bytes": 153800,
+  "sha256": "82246d35b06baef07e0bf5373338d665739f8008ac7fc8b9b3aa77a3684da04d",
+  "captured_at": "2026-08-07T18:39:41.023Z",
   "spec": {
     "v": 1,
     "viewpoint": null,
@@ -68,10 +68,10 @@
     "arrival": "placed",
     "evidence_of": "composition",
     "placement": "teleport + camera pose; the player did not walk here",
-    "build_key": "game@b560d7bcd3f947dc",
-    "git_sha": "78aebc7a413f3de8e4375c2ed7d667907e116744",
+    "build_key": "game@3795955ce4672b9f",
+    "git_sha": "95d62dabcd5b026bf7a3e7f99ea3234035309edf",
     "git_dirty": true,
-    "game_content_sha256": "b560d7bcd3f947dc5d1121eaff20a2d83c69c420416dfc408e9de5fe4107d5f9",
+    "game_content_sha256": "3795955ce4672b9ff76370d9063d86f3ad8cf5e880264c5f6dda5b9abd176c6d",
     "served_from_cache": false,
     "build_pinned": false,
     "tree_has_since_moved_to": null,
@@ -104,14 +104,14 @@
     }
   },
   "build": {
-    "build_key": "game@b560d7bcd3f947dc",
-    "game_content_sha256": "b560d7bcd3f947dc5d1121eaff20a2d83c69c420416dfc408e9de5fe4107d5f9",
+    "build_key": "game@3795955ce4672b9f",
+    "game_content_sha256": "3795955ce4672b9ff76370d9063d86f3ad8cf5e880264c5f6dda5b9abd176c6d",
     "game_files": 686,
-    "game_bytes": 16356775,
-    "git_sha": "78aebc7a413f3de8e4375c2ed7d667907e116744",
+    "game_bytes": 16384640,
+    "git_sha": "95d62dabcd5b026bf7a3e7f99ea3234035309edf",
     "git_dirty": true,
     "git": {
-      "commit": "78aebc7a413f3de8e4375c2ed7d667907e116744",
+      "commit": "95d62dabcd5b026bf7a3e7f99ea3234035309edf",
       "branch": "claude/morrowind-souls-threejs-game-mou39v",
       "dirty": true
     }
@@ -138,18 +138,18 @@
       },
       "G3_stability": {
         "frame_c_taken": true,
-        "d1": 0.094715,
-        "d2": 0.101659,
-        "d13": 0.093557,
+        "d1": 0.082176,
+        "d2": 0.096836,
+        "d13": 0.048032,
         "set": {
-          "changed_1": 491,
-          "changed_2": 527,
-          "changed_13": 485,
-          "both": 345,
-          "either": 673,
+          "changed_1": 426,
+          "changed_2": 502,
+          "changed_13": 249,
+          "both": 408,
+          "either": 520,
           "total_blocks": 5184,
-          "overlap": 0.7026476578411406,
-          "jaccard": 0.512630014858841
+          "overlap": 0.9577464788732394,
+          "jaccard": 0.7846153846153846
         },
         "threshold": 0.005,
         "G3a_deceleration": {
@@ -161,8 +161,8 @@
         "G3b_acceleration": {
           "ran": true,
           "pass": true,
-          "rise": 0.006944,
-          "ratio": 1.07332,
+          "rise": 0.01466,
+          "ratio": 1.178404,
           "rise_abs": 0.005,
           "rise_ratio": 1.5,
           "why": null
@@ -170,9 +170,9 @@
         "G3c_accumulation": {
           "ran": true,
           "pass": true,
-          "gamma": 0.920304,
-          "overlap": 0.702648,
-          "jaccard": 0.51263,
+          "gamma": 0.496016,
+          "overlap": 0.957746,
+          "jaccard": 0.784615,
           "acc_ratio": 1.35,
           "why": null
         },
@@ -195,30 +195,30 @@
       "not_measured": "acc_ratio and acc_floor: no observed gamma exists in this project's data, because the R1 calibration never computed |A-C|. Bounded two-sidedly in reports/capture/SETTLE-SHAPES.json, not fitted to a population."
     },
     "measured": {
-      "d1": 0.094715,
-      "d2": 0.101659,
-      "d13": 0.093557,
+      "d1": 0.082176,
+      "d2": 0.096836,
+      "d13": 0.048032,
       "excess": 0,
-      "rise": 0.006944,
-      "gamma": 0.920304,
-      "overlap": 0.702648,
-      "d1_px_changed_frac": 0.058461,
-      "d1_changed_blocks": 491,
+      "rise": 0.01466,
+      "gamma": 0.496016,
+      "overlap": 0.957746,
+      "d1_px_changed_frac": 0.043608,
+      "d1_changed_blocks": 426,
       "total_blocks": 5184
     },
     "failed": [],
-    "settle_attempts": 2,
-    "settle_frames_spent": 120
+    "settle_attempts": 3,
+    "settle_frames_spent": 192
   },
   "phase_ms": {
-    "setup_ms": 10,
-    "place_ms": 1868,
-    "pose_ms": 6,
-    "stream_ms": 1,
-    "screenshot_ms": 321,
-    "settle_ms": 50134
+    "setup_ms": 9,
+    "place_ms": 1267,
+    "pose_ms": 7,
+    "stream_ms": 13,
+    "screenshot_ms": 540,
+    "settle_ms": 53172
   },
   "page_errors": 0,
-  "render_ms": 52044,
-  "mac": "eda5b71eb96ad8e095cd816655aa5eb20fe3d39b86ec3aeeeaa8f3f4f92df964"
+  "render_ms": 54633,
+  "mac": "eeaadf1cdfa3dc517e4989614a76d18dc7bfb3d4665f6043d198d52992edb17d"
 }

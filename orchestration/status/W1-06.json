@@ -2,7 +2,7 @@
   "task_id": "W1-06",
   "brief": "wave-1 piece W1-06 \u2014 Camera",
   "started": "wave-1",
-  "state": "researching",
+  "state": "partial",
   "outputs_expected": [
     "game/src/sim/camera.js (rewrite: spring arm, shoulder, containment)",
     "game/src/sim/camera-collision.js",
@@ -11,14 +11,27 @@
     "corpus/80-methods/m-cam0*.mjs (if absent)"
   ],
   "outputs_written": [
-    "game/src/sim/camera.js",
-    "game/data/camera/rig.json",
+    "corpus/80-methods/m-cam02-control.mjs (stale 'M1 unrunnable' reason corrected)",
+    "docs/shots/2026-08-07-w1-06-locked-on-mid-fight.png",
+    "docs/shots/2026-08-07-w1-06-the-frame-after-the-kill.png",
+    "docs/shots/2026-08-07-w1-06-third-person-rig-in-motion.png",
     "game/data/camera/cells.json",
+    "game/data/camera/reference-framing.json",
+    "game/data/camera/rig.json",
+    "game/data/camera/rig.json (+ lock_framing.yaw_half_life_s / pitch_half_life_s)",
     "game/data/camera/targets.json",
-    "tools/camera/gen-cells.mjs",
+    "game/src/engine.js (calls applyCameraRig at boot; getCameraRig().rig_from_file audit)",
+    "game/src/input/pipeline.js (shapeLookStick reads CAMERA_CONST; look_stick added to QUEUE_INPUT_KEYS)",
+    "game/src/sim/camera.js",
+    "game/src/sim/camera.js (applyCameraRig: 97 constants now GOVERNED by game/data/camera/rig.json)",
     "game/src/sim/route.js",
+    "reports/blog-feed.jsonl (one line)",
+    "reports/w1-06/cam-consume.json, cam-consume-falsify.json, cam-death-in-lock.json, cam-shots.json",
+    "tools/camera/cam-consume.mjs (+ --falsify)",
+    "tools/camera/cam-death-in-lock.mjs (+ --selftest)",
     "tools/camera/cam-probe.mjs",
-    "game/data/camera/reference-framing.json"
+    "tools/camera/cam-shots.mjs (non-blank gate)",
+    "tools/camera/gen-cells.mjs"
   ],
   "findings": [
     "RI-CAM01..07 live in corpus/15-camera/. All 'constructed', extremely specific numbers.",
@@ -51,7 +64,7 @@
     "CLIP-THROUGH ROOT CAUSE, ATTRIBUTED (RI-CAM01 M2b): every clip frame in the build occurs at arm_len == 0.900 m EXACTLY -- the camera is at the corpus-mandated floor and the geometry is still nearer than the boom. Longest runs: cistern 211 f at pivot [3.4, 5.4, -25.8] (up the spiral stair), stair 64 f at [0, 1.6, -3.2], boardwalk 36 f at [4.2, 2.7, -6]. cam-walk-mangrove, cam-boss-arena and cam-rig-pinch are ZERO over 8 yaws each. So this is not a rig bug: it is the arithmetic of a 0.90 m boom plus a 0.28 m cast sphere plus a 0.10 m near plane needing ~1.2 m of clear space behind the character, in fixtures that pinch below it. RI-CAM05 SD's answer is architectural and the remedy is an edit to tools/camera/gen-cells.mjs, not to the arm.",
     "POSSIBLE EARNED AMENDMENT (not filed -- ran out of budget to make it properly): RI-CAM05 SD's crawl space is 1.40 m wide x 1.60 m ceiling and SD's table still demands Sigma clip_through == 0 there. With RI-CAM01 SA's 1.55 m pivot the pivot sits 0.05 m BELOW that ceiling, and a 0.90 m arm at the resting -8 deg pitch puts the camera at 1.55 + 0.10 + 0.90*sin(8) = 1.78 m, i.e. 0.18 m ABOVE the ceiling. Zero clip in a 1.60 m crawl space is geometrically impossible given SA's own numbers. A successor should either verify this arithmetic and file it, or show where I have it wrong."
   ],
-  "next_step": "Falsify run + final death-in-lock re-run in flight. Then: blog-feed line, checkers, boot-check, re-stamp HEAD.",
+  "next_step": "HIGHEST VALUE FOR THE NEXT AGENT, in order: (1) THE PITCH PIN. In a lock-on against cam_boss_mid at 6 m the settled pitch is EXACTLY -50.000 = pitch_min_locked_deg, the floor, and it stays there after the kill. Photographed in docs/shots/2026-08-07-w1-06-locked-on-mid-fight.png and -the-frame-after-the-kill.png. Every on-screen check passes and the frame is unreadable. Instrument aimPoint() and the pitch spring TARGET directly before touching anything -- pitchBias(6,4.5) = -9.2 and the aim point is ABOVE the pivot, so neither explains a downward pin, and the predecessor's 'pitchlaw not monotone in d' is the same defect. (2) The renderer draws every enemy at one rig height (renderer.js syncEntities; mesh.scale.y is the DEAD squash only), so targets.json's 4.5/8.0 m heights are consumed by the camera's framing maths and by nothing that is drawn -- the camera frames a boss that is not there. (3) Six of seven RI-CAM0x items name a corpus/80-methods/m-cam0x-*.mjs that does not exist; cam-probe.mjs already does the work, so delegate rather than stub. (4) The 2536 clip_through frames are still open and the corpus's own answer (RI-CAM05 SD) is to widen the fixtures in tools/camera/gen-cells.mjs, not to shorten the arm. (5) File the crawl-space amendment: it is confirmed arithmetic now.",
   "notes_for_successor": "Run: `node tools/camera/cam-probe.mjs --probe all` (~12 min). ALWAYS setRenderRate(0) in a probe or stepFrames(1) costs 528 ms each. queueInputs frames are RELATIVE; tap/hold are scenario sugar only. Camera dummies are cam_rat/cam_levy/cam_elite/cam_boss_mid/cam_boss_great with heights in game/data/camera/targets.json.",
   "open_failures_at_handoff": {
     "run": "reports/w1-06/cam-probe-all.txt and cam-probe-all.json \u2014 111 checks, 22 failing",
@@ -92,6 +105,14 @@
     "OPEN / HONEST FAILURE: 'the_target_was_alive_and_moving_before_the_kill' still fails on one of four fixtures. An AGGRO'd cam_levy at 4.0 m walks 3.515 m and a cam_boss_mid at 6.0 m walks 2.524 m in 240 frames, but the levy in the STRAFE fixture walks 0.000 m -- at 3.5 m AND at 5.5 m. The other three runs have a moving target so the death-in-lock conclusions stand, but an aggroed enemy that never takes a step while the player circles it is an enemy-AI observation (W1-09/W1-15 territory) surfaced by a camera probe, and I am reporting it rather than moving the goalposts until it passes.",
     "PROBE HYGIENE: D3a originally counted the control run's own 20 deg/frame LOOK SWING as the game cutting. Scoped to the three observation runs; the control run is instrument-only.",
     "*** THE THING I FOUND BY WATCHING, AND IT IS THE PIECE'S REAL DEFECT. Three shots in docs/shots/ taken through the LIVE rig (no posed camera). Free run: pitch -8.000, boom 3.993 m, pivot 1.550 -- correct and it looks correct. Lock-on against cam_boss_mid at 6 m: SETTLED PITCH EXACTLY -50.000, which is pitch_min_locked_deg, the FLOOR. The camera stares almost straight down at the top of everybody's head. Every on-screen check passes (target_on_screen true, player_on_screen true, clip false) and the frame is unreadable -- which is exactly the predecessor's open failure 'settled pitch pinned at the -50 locked floor... not monotone in d' with a picture attached. And after the kill the mode returns to 'free' with the pitch STILL at -50: my own D3b 'no whip back' PASSES partly because nothing restores the view at all. You finish a fight looking at the ground.",
-    "*** MECHANISM FOR THE ABOVE (source, cheap to check): the renderer draws EVERY enemy from makeRiggedActor at one rig height -- game/src/render/renderer.js syncEntities uses mesh.scale.y only for the DEAD squash (0.18). So game/data/combat/enemies/cam_boss_mid.json height_m 4.5 and game/data/camera/targets.json cam_boss_mid 4.5 are consumed ONLY by the camera's framing maths (targetHeight -> size_bias, aim_k, arm ramp). The camera is correctly solving the framing of a 4.5 m creature that is drawn 1.9 m tall. That is a cross-piece seam (my render.fidelity.character path meets W1-09/W1-10's actor rig) and it is visible in 2026-08-07-w1-06-locked-on-mid-fight.png. NOT YET RESOLVED: the pitch SIGN. pitchBias(6, 4.5) = -13.6 + 4.4 = -9.2, i.e. the size term tilts UP, so a -50 floor pin is not explained by the bias alone; the aim point (target chest at 4.5*0.72 = 3.24 m, ABOVE the pivot) should also tilt up. A successor should instrument aimPoint()/the pitch spring target directly before changing anything -- do not assume the size_bias is the culprit."
+    "*** MECHANISM FOR THE ABOVE (source, cheap to check): the renderer draws EVERY enemy from makeRiggedActor at one rig height -- game/src/render/renderer.js syncEntities uses mesh.scale.y only for the DEAD squash (0.18). So game/data/combat/enemies/cam_boss_mid.json height_m 4.5 and game/data/camera/targets.json cam_boss_mid 4.5 are consumed ONLY by the camera's framing maths (targetHeight -> size_bias, aim_k, arm ramp). The camera is correctly solving the framing of a 4.5 m creature that is drawn 1.9 m tall. That is a cross-piece seam (my render.fidelity.character path meets W1-09/W1-10's actor rig) and it is visible in 2026-08-07-w1-06-locked-on-mid-fight.png. NOT YET RESOLVED: the pitch SIGN. pitchBias(6, 4.5) = -13.6 + 4.4 = -9.2, i.e. the size term tilts UP, so a -50 floor pin is not explained by the bias alone; the aim point (target chest at 4.5*0.72 = 3.24 m, ABOVE the pivot) should also tilt up. A successor should instrument aimPoint()/the pitch spring target directly before changing anything -- do not assume the size_bias is the culprit.",
+    "CONSEQUENCE OF THE look_stick FIX, recorded in corpus/80-methods/m-cam02-control.mjs: that script's declared_not_implemented said RI-CAM02 M1 could not be run because 'this build has no stick magnitude remap to measure'. That reason was WRONG and is now corrected in place. shapeLookStick() has always implemented the radial deadzone, outer saturation and quadratic-on-magnitude, and _pump() has always handled look_stick; the only thing missing was the key in QUEUE_INPUT_KEYS, which made the validator throw. M1 is RUNNABLE now and cam-consume's look_rate trial demonstrates the end-to-end path (rig.json look.max_yaw_rate_dps 180->45 takes a 60-frame full-deflection look_stick sweep from 180.00 to 45.00 deg exactly). I did NOT run M1 and do not claim it; I removed the false excuse so the next agent does not re-derive it.",
+    "CORPUS DEBT, named not built: six of seven RI-CAM0x items name a corpus/80-methods/m-cam0x-*.mjs that does not exist (only m-cam02-control.mjs is on disk). tools/camera/cam-probe.mjs already implements most of those methods under a different filename, so the honest closure is a delegating m-cam0x that runs the real probe -- NOT a stub. Out of budget this round; recorded so it is a declared debt rather than a surprise. C8 is a warning in wave 1 and an error from wave 2.",
+    "*** FALSIFY CONTROL CLEAN (reports/w1-06/cam-consume-falsify.json). Same five perturbations written to game/data/camera/rig.json.notloaded -- a path the game never opens -- with the real rig.json left byte-identical. All five observables reported IDENTICAL values (pivot 1.5500 -> 1.5500; boom 4.0159 -> 4.0159; NDC x 0.2279 -> 0.2279; sweep 180.000 -> 180.000; death pitch -20.33 -> -20.33) and all five checks went red. That is a faithful reconstruction of the pre-fix world and it proves the probe detects the ABSENCE of consumption rather than merely agreeing with the presence of it. The tool exits 0 in --falsify and non-zero if anything wrongly passes.",
+    "BLOG: one line appended to reports/blog-feed.jsonl citing all three shots.",
+    "DEATH-IN-LOCK FINAL 14/15 (reports/w1-06/cam-death-in-lock.json). All four D-checks green with the controls in place: lock releases at 0 frames latency, no hop to the second enemy, worst single-frame view change across the death 1.206 deg against CMB06's own 7.000 clamp, mode back to 'free' with 0 m of XZ pivot lag, no clip, boom never under 3.011 m. The two instrument controls now pass: the cut detector reports an injected 40.000 deg/frame slam exactly and stays quiet (0.5) on a clean ramp; the heading-swing metric reads 80 deg on a deliberate 100 deg look swing while reading 0.000 for the three observation runs -- so 'the camera does not whip back' is a measurement, not an artefact of a dead metric.",
+    "THE ONE CHECK I AM LEAVING RED, deliberately: the_target_was_alive_and_moving_before_the_kill. cam_levy walks 3.515 m at 4.0 m and cam_boss_mid walks 2.524 m at 6.0 m, but the levy in the strafe fixture walks 0.000 m at BOTH 3.5 m and 5.5 m. The other three runs have a moving target so the death-in-lock conclusions stand. An aggroed enemy that never takes a step while the player circles it is an enemy-AI observation (W1-09/W1-15), and I am reporting it rather than tuning the fixture until the check goes green.",
+    "HOUSEKEEPING: the --falsify decoy was written as game/data/camera/rig.json.notloaded and a neighbouring agent's sweeping in-flight commit picked it up MID-RUN, so it is tracked in HEAD and deleted in the working tree. The decoy now lives at reports/w1-06/rig.json.notloaded -- outside game/data/, where index.json cannot reach it and a git add -A is less likely to sweep it. Somebody should drop the tracked path; I did not commit.",
+    "boot-check PASS; check-data, check-quests, check-content all clean after every edit."
   ]
 }

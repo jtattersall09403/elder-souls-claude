@@ -52,7 +52,12 @@ if (wantsHelp(args)) usage(USAGE);
 const FALSIFY = !!args.falsify;
 
 const RIG = path.join(REPO_ROOT, 'game', 'data', 'camera', 'rig.json');
-const DECOY = RIG + '.notloaded';
+// THE DECOY LIVES OUTSIDE `game/data/`, and that placement is load-bearing twice over. It must
+// not be somewhere `game/data/index.json` could ever reach — the whole point is that the game
+// does not open it — and it must not be somewhere a neighbouring agent's `git add -A` can sweep
+// it into a commit. It was `rig.json.notloaded` next to the real file for exactly one run, and
+// a sweeping in-flight commit picked it up mid-flight while the probe still held it open.
+const DECOY = path.join(REPO_ROOT, 'reports', 'w1-06', 'rig.json.notloaded');
 const ORIGINAL = fs.readFileSync(RIG, 'utf8');
 
 /**
@@ -147,6 +152,7 @@ function writeRig(mutate) {
   const text = JSON.stringify(doc, null, 2) + '\n';
   // --falsify puts the edit somewhere the game does not look. The real file keeps its
   // original bytes, so a probe that "passes" here is reporting a change that never happened.
+  if (FALSIFY && mutate) fs.mkdirSync(path.dirname(DECOY), { recursive: true });
   fs.writeFileSync(FALSIFY && mutate ? DECOY : RIG, text);
   if (FALSIFY && mutate) fs.writeFileSync(RIG, ORIGINAL);
   return was;

@@ -41,16 +41,31 @@ export function applyOne(doc, topicId, index, before, after) {
 // The general array shape: a flat top-level array (`lines`, `race_gated`), by id where the
 // records carry one and by index where they do not. Writes back to whichever of `x`/`text` the
 // record actually uses, so it cannot silently add a second field the reader never looks at.
-export function applyOneArray(doc, arrayName, id, index, before, after) {
-  const arr = doc[arrayName];
-  if (!Array.isArray(arr)) return { ok: false, why: `no array "${arrayName}" in this file` };
+
+// `array` may be a DOTTED PATH ("slavery_lines_sample.lines"), because the dialogue tree nests one
+// spoken-line array two levels down. `field` names which key on the record holds the line, for the
+// shapes where it is neither `x` nor `text` (writ-house's scene nodes use `line`).
+export function digArray(doc, name) {
+  let cur = doc;
+  for (const part of String(name).split('.')) { if (!cur || typeof cur !== 'object') return null; cur = cur[part]; }
+  return Array.isArray(cur) ? cur : null;
+}
+
+export function applyOneArray(doc, arrayName, id, index, before, after, field) {
+  const arr = digArray(doc, arrayName);
+  if (!arr) return { ok: false, why: `no array "${arrayName}" in this file` };
   const rec = id != null ? arr.find((x) => x && x.id === id) : arr[index];
   if (!rec) return { ok: false, why: `${arrayName}: no entry ${id != null ? `with id "${id}"` : `#${index}`}` };
-  const key = rec.x !== undefined ? 'x' : 'text';
-  if (before != null && rec[key] !== before) {
-    return { ok: false, why: `${arrayName}[${id ?? index}] is not what the rewrite expected — it has been edited since. On disk: ${JSON.stringify(rec[key]).slice(0, 120)}` };
+  const key = field || (rec.x !== undefined ? 'x' : rec.text !== undefined ? 'text' : 'line');
+  const parts = String(key).split('.');
+  let host = rec;
+  for (const part of parts.slice(0, -1)) { if (!host || typeof host !== 'object') return { ok: false, why: `${arrayName}[${id ?? index}]: no path ${key}` }; host = host[part]; }
+  const leaf = parts[parts.length - 1];
+  if (!host || typeof host !== 'object') return { ok: false, why: `${arrayName}[${id ?? index}]: no path ${key}` };
+  if (before != null && host[leaf] !== before) {
+    return { ok: false, why: `${arrayName}[${id ?? index}] is not what the rewrite expected — it has been edited since. On disk: ${JSON.stringify(host[leaf]).slice(0, 120)}` };
   }
-  rec[key] = after;
+  host[leaf] = after;
   return { ok: true };
 }
 
@@ -121,6 +136,11 @@ function selfTest() {
   ad = mka();
   t(applyOneArray(ad, 'race_gated', 'rg1', null, 'gated', 'G').ok && ad.race_gated[0].x === 'G', 'array shape writes back to `x` when that is the field in use');
   t(!applyOneArray(mka(), 'nope', null, 0, 'one', 'X').ok, 'refuses an array the file does not have');
+  const nd = { sample: { lines: [{ text: 'nested' }] }, nodes: [{ id: 'n1', line: 'scene' }] };
+  t(applyOneArray(nd, 'sample.lines', null, 0, 'nested', 'N').ok && nd.sample.lines[0].text === 'N', 'array shape follows a dotted path');
+  t(applyOneArray(nd, 'nodes', 'n1', null, 'scene', 'S', 'line').ok && nd.nodes[0].line === 'S', 'array shape writes an explicitly named field');
+  const pd = { npcs: [{ id: 'carter', lines: { greeting: 'cold' } }] };
+  t(applyOneArray(pd, 'npcs', 'carter', null, 'cold', 'C', 'lines.greeting').ok && pd.npcs[0].lines.greeting === 'C', 'field may itself be a dotted path (npcs[].lines.greeting)');
   const astale = applyOneArray(mka(), 'lines', null, 0, 'SOMETHING ELSE', 'X');
   t(!astale.ok && /edited since/.test(astale.why), 'refuses an array entry whose text has changed under it');
   console.log(bad ? `SELF-TEST FAILED (${bad})` : 'self-test passed');
@@ -149,10 +169,11 @@ function main() {
     const doc = JSON.parse(raw);
     for (const r of list) {
       if (r.array != null) {
-        const arr = doc[r.array] || [];
+        const arr = digArray(doc, r.array) || [];
         const rec = r.id != null ? arr.find((x) => x && x.id === r.id) : arr[r.index];
-        const before = rec ? (rec.x !== undefined ? rec.x : rec.text) : undefined;
-        const res = applyOneArray(doc, r.array, r.id, r.index, r.before ?? before, r.after);
+        const bkey = r.field || (rec && rec.x !== undefined ? 'x' : rec && rec.text !== undefined ? 'text' : 'line');
+        const before = rec ? String(bkey).split('.').reduce((c, part) => (c && typeof c === 'object' ? c[part] : undefined), rec) : undefined;
+        const res = applyOneArray(doc, r.array, r.id, r.index, r.before ?? before, r.after, r.field);
         if (!res.ok) { problems.push(`${rel} ${r.array}[${r.id ?? r.index}]: ${res.why}`); continue; }
         records.push({ file: rel, array: r.array, id: r.id, index: r.index, rule: spec.rule, before, after: r.after });
         continue;

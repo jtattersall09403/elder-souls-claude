@@ -303,6 +303,177 @@ try {
       R.I.souls_after_load_and_10_frames = stats().souls;
     } catch (e) { R.I.error = String(e.message || e); }
 
+    // ============================================================================================
+    // K, L, M — THE THREE ARMS THAT DO NOT USE A HARNESS KILL VERB
+    // ============================================================================================
+    //
+    // The W1-SOULS round-1 verdict's central charge: "every one of the twelve arms kills with
+    // `H.killEntity()`, a harness verb that writes `b.hp = 0; b.dead = true; b.state = 'DEAD'`
+    // directly. The suite proves the scan reads a dead body. It does not prove a fight pays."
+    //
+    // These three run LAST because each reloads the world.
+
+    /**
+     * A real fight, driven with latched `light` input and nothing else. Lifted from
+     * `critic-souls-r1.mjs` K1 per the verdict's path-to-ten item 5, which says it can be lifted
+     * wholesale. `attack: false` is the self-break control: the identical loop with the input
+     * removed must kill nothing and pay nothing, or the arm is measuring the loop, not the swing.
+     */
+    const duel = ({ attack = true, cap = 5400, dist = 1.6 } = {}) => {
+      H.loadState('arena_flat');
+      H.setRenderRate(0);
+      H.setCharacter({ race: 'saxhleel', upbringing: 'lukiul', class: 'ledger-hand', birthsign: 'raj-xul' });
+      H.setTimeOfDay(14);
+      E.sim.progression.soulsHeld = 0;
+      H.stepFrames(2);
+      const sp = H.spawn('inf_trash', 0, dist);
+      const eid = sp && sp.eid ? sp.eid : (typeof sp === 'string' ? sp : (H.listEntities()[0] || {}).eid);
+      H.lockOn(eid);
+      H.stepFrames(3);
+      H.traceStart({ events: true });
+      H.traceDrain();
+      const soulsAt = stats().souls;
+      let f = 0, died = null; const evs = []; let swings = 0;
+      const period = 34;           // press, release, wait out the recovery, press again
+      while (f < cap) {
+        if (attack && f % period === 0) { H.queueInputs([{ f: 0, press: ['light'] }]); swings++; }
+        if (attack && f % period === 2) H.queueInputs([{ f: 0, release: ['light'] }]);
+        H.stepFrames(1); f++;
+        for (const rec of H.traceDrain() || []) {
+          for (const ev of rec.events || []) if (ev.type === 'souls_awarded') evs.push(ev);
+        }
+        const b = E.combat.bodyOf(String(eid));
+        if (died === null && b && (b.hp <= 0 || b.dead)) died = f;
+        if (died !== null && f > died + 4) break;
+      }
+      // Nothing in this loop touched hp, `dead`, `state` or `soulsHeld`. The only writes are
+      // `press`/`release` on the `light` button.
+      return { eid, frames_to_death: died, capped: died === null, swings,
+        souls_before: soulsAt, souls_after: stats().souls, delta: stats().souls - soulsAt,
+        events: evs.map((e) => ({ type: e.type, souls: e.souls, base: e.base, night: e.night, gold_awarded: e.gold_awarded })),
+        seconds_at_60hz: died === null ? null : Math.round(died / 60 * 100) / 100 };
+    };
+
+    R.K = { declared_souls: E.data.enemies.inf_trash.souls };
+    try {
+      R.K.fight = duel({ attack: true });
+      R.K.control_no_input = duel({ attack: false, cap: 1200 });
+    } catch (e) { R.K.error = String(e.message || e); }
+
+    // ---- L. THE HAZARD DEATH PATH, THROUGH THE REAL H9 LOOP -----------------------------------
+    //
+    // Verdict HF-2: a hazard kill paid nothing AND resurrected the corpse, because H9 wrote
+    // `ent.hp` on the `sim.entities` MIRROR and `combat-bridge.js mirror()` restores it from the
+    // untouched combat body every step.
+    //
+    // Both halves below call the SAME function — `HazardSystem.step()`, the real one, with the
+    // real H9 branch — on the same hazard and the same body. The ONLY difference is the fourth
+    // argument: with the CombatSystem, `_hurtEntity` damages the authority; without it, it falls
+    // back to writing the view, which is byte-for-byte what the code did before this round. So
+    // the control is the defect, live, rather than a description of it.
+    //
+    // `the-fall` is used rather than `voriplasm` because it carries no ANCHOR entry, so the
+    // in-volume test is the region test and does not depend on a placed signature being within
+    // 6 m in an arena. The enemy's hp is lowered so one 18%-of-max trap tick is lethal — the
+    // defect under test is the WRITE TARGET, not the magnitude.
+    const hazardRun = (withCombat) => {
+      H.loadState('arena_flat');
+      H.setRenderRate(0);
+      H.setTimeOfDay(14);
+      E.sim.progression.soulsHeld = 0;
+      if (E.sim.souls) E.sim.souls.reset();
+      H.stepFrames(2);
+      const sp = H.spawn('inf_trash', 0, 2.0);
+      const eid = sp && sp.eid ? sp.eid : (typeof sp === 'string' ? sp : (H.listEntities()[0] || {}).eid);
+      H.stepFrames(2);                       // the scan must SEE it alive before it can pay for it
+      const body = E.combat.bodyOf(String(eid));
+      const ent = E.sim.entities.find((x) => x.eid === String(eid));
+      if (!body || !ent) return { error: 'no body/entity' };
+      body.hp = 40; ent.hp = 40;             // one trap tick is 18% of 412 = 74
+      H.stepFrames(1);
+
+      const HZ = E.hazards;
+      if (!HZ) return { error: 'no hazard system' };
+      const h = (HZ.doc.hazards || []).find((x) => x.id === 'the-fall');
+      if (!h) return { error: 'hazard the-fall not on disk' };
+      const ctx = HZ._context(E.sim);
+      const savedByRegion = HZ.byRegion;
+      // Make the real loop VISIT this hazard: `here = byRegion.get(ctx.region)`. Scaffolding
+      // around the branch under test, not a reimplementation of it.
+      HZ.byRegion = new Map([[ctx.region, [h]]]);
+      HZ.active.set(h.id, { since: E.sim.frame, damageFrom: E.sim.frame, ticks: 0, dealt: 0 });
+      HZ.spent.delete(h.id);
+      const soulsBefore = E.sim.progression.soulsHeld;
+      H.traceStart({ events: true }); H.traceDrain();
+      let stepError = null;
+      try {
+        HZ.step(E.sim, E.bus, E.combat.player, withCombat ? E.combat : null);
+      } catch (err) { stepError = String(err.message || err); }
+      const bodyHpRightAfter = body.hp;
+      const entHpRightAfter = ent.hp;
+      H.stepFrames(4);                       // mirror() runs, then stepSouls sees the transition
+      const evs = [];
+      for (const rec of H.traceDrain() || []) {
+        for (const ev of rec.events || []) if (ev.type === 'souls_awarded') evs.push({ souls: ev.souls, archetype: ev.archetype });
+      }
+      const after = E.sim.entities.find((x) => x.eid === String(eid));
+      const bodyAfter = E.combat.bodyOf(String(eid));
+      HZ.byRegion = savedByRegion;
+      HZ.active.delete(h.id);
+      return {
+        with_combat: !!withCombat, hazard: h.id, step_error: stepError,
+        body_hp_right_after: bodyHpRightAfter, entity_hp_right_after: entHpRightAfter,
+        body_hp_4_frames_later: bodyAfter ? bodyAfter.hp : null,
+        entity_hp_4_frames_later: after ? after.hp : null,
+        body_dead: bodyAfter ? !!bodyAfter.dead : null,
+        souls_before: soulsBefore, souls_after: E.sim.progression.soulsHeld,
+        delta: E.sim.progression.soulsHeld - soulsBefore, events: evs,
+      };
+    };
+    R.L = { fixed: hazardRun(true), control_view_write: hazardRun(false) };
+
+    // ---- M. THE RESPAWN RE-ARM IS GATED ON A HEARTH REST, NOT ON ANY RE-SPAWN ------------------
+    //
+    // Verdict HF-3: `spawnEncounter` mints deterministic eids, `_alive` was keyed on eid and never
+    // pruned, so kill/despawn/respawn paid +816, +816, +816 with zero rests. W1-POPULATION's
+    // distance pump does exactly that despawn/respawn every time the player leaves and re-enters a
+    // post's radius. The gate is `death.ordinaryRespawnEpoch`; this arm walks both sides of it.
+    R.M = { passes: [], rests: 0 };
+    try {
+      H.loadState('arena_flat');
+      H.setRenderRate(0);
+      H.setTimeOfDay(14);
+      E.sim.progression.soulsHeld = 0;
+      if (E.sim.souls) E.sim.souls.reset();
+      H.stepFrames(2);
+      const cycle = (label) => {
+        const p = stats().pos;
+        H.spawnEncounter('deep-kin-war-brood', p[0] + 4, p[2] + 4);
+        H.stepFrames(2);
+        const es = (H.listEntities() || []).map((e) => e.eid || e.id).filter((x) => x && !!E.combat.bodyOf(String(x)));
+        const before = E.sim.progression.soulsHeld;
+        for (const eid of es) { H.killEntity(eid); }
+        H.stepFrames(3);
+        const paid = E.sim.progression.soulsHeld - before;
+        for (const eid of es) { try { H.despawn(eid); } catch { /* gone */ } }
+        H.stepFrames(2);
+        return { label, eids: es, bodies: es.length, paid,
+          refused_rearms: E.sim.souls ? E.sim.souls.refusedRearms : null };
+      };
+      R.M.passes.push(cycle('first kill'));
+      R.M.passes.push(cycle('respawned with NO rest'));
+      R.M.passes.push(cycle('respawned with NO rest, again'));
+      R.M.same_eids = R.M.passes[0].eids.length > 0
+        && JSON.stringify(R.M.passes[0].eids) === JSON.stringify(R.M.passes[1].eids);
+      // Now REST — the S5 event — and the same bodies must become payable again at x1.00.
+      const epochBefore = E.death ? E.death.ordinaryRespawnEpoch : null;
+      E.death.respawnOrdinary(E.sim, E.combat, E.bus, 'probe_hearth_rest');
+      R.M.rests = 1;
+      R.M.epoch = { before: epochBefore, after: E.death ? E.death.ordinaryRespawnEpoch : null };
+      H.stepFrames(2);
+      R.M.passes.push(cycle('after ONE rest'));
+    } catch (e) { R.M.error = String(e.message || e); }
+
     return R;
   });
 
@@ -320,19 +491,30 @@ try {
     `${aPaid}/${aReal.length} kills paid ${A.declared_souls} (${A.kills.length - aReal.length} skipped, no body); `
     + `souls ${A.souls_at_start} -> ${A.souls_at_end}, next level costs ${A.souls_to_next}`);
 
-  const bMoved = (B.kills || []).filter((k) => k.delta !== 0).length;
+  // DE-VACUUMED (verdict F-4). `bMoved === 0 && B.kills.length > 0` counted SKIPPED kills — a
+  // skip has `delta === 0` and is still in `length`, so three skips passed the ablation arm
+  // without a body ever dying. Only unskipped kills count now, and there must be some.
+  const bReal = (B.kills || []).filter((k) => !k.skipped);
+  const bMoved = bReal.filter((k) => k.delta !== 0).length;
   ok('B  ABLATION: with sim/souls.js switched off the counter is DEAD (if this passes while A passes, A is real)',
-    B.kills.length > 0 && bMoved === 0,
-    `${bMoved}/${B.kills.length} kills moved souls with the module ablated (must be 0)`);
+    bReal.length > 0 && bMoved === 0,
+    `${bMoved}/${bReal.length} REAL kills moved souls with the module ablated (must be 0 of at least 1); `
+    + `${B.kills.length - bReal.length} skipped and not counted`);
 
   const c0 = C.arms.find((a) => a.set_to === 0), c9 = C.arms.find((a) => a.set_to === 999);
   ok('C  DELETE-THE-FIX on the number: the shipped `souls` field IS what the world pays',
     c0 && c0.kill.delta === 0 && c9 && c9.kill.delta === 999 && C.restored.kill.delta === C.shipped,
     `souls=0 -> +${c0 && c0.kill.delta}; souls=999 -> +${c9 && c9.kill.delta}; restored ${C.shipped} -> +${C.restored.kill.delta}`);
 
+  // DE-VACUUMED (verdict F-4). `!D.kill` was the ERROR path: if `H.spawn('dummy_passive', …)`
+  // threw, the arm passed with no dummy ever spawned — the verdict forced the throw with a
+  // duplicate eid and watched the predicate return true. The kill must now EXIST and must not be
+  // a skip, so the arm can only pass by having actually killed a dummy and been paid nothing.
   ok('D  a 99,999-hp training dummy is not an infinite soul farm',
-    D.declared_souls === 0 && (!D.kill || D.kill.delta === 0),
-    `dummy_passive declares ${D.declared_souls} souls at ${D.hp} hp; the kill paid ${D.kill ? D.kill.delta : 'n/a — ' + D.error}`);
+    D.declared_souls === 0 && !!D.kill && !D.kill.skipped && D.kill.delta === 0,
+    `dummy_passive declares ${D.declared_souls} souls at ${D.hp} hp; `
+    + (D.kill ? `the kill${D.kill.skipped ? ' WAS SKIPPED (' + D.kill.skipped + ')' : ''} paid ${D.kill.delta}`
+      : `NO KILL HAPPENED — ${D.error} (this used to pass)`));
 
   const e1 = E.arms.find((a) => a.player_level === 1), e90 = E.arms.find((a) => a.player_level === 90);
   ok('E  S9: the same kill pays the same souls at level 1 and at level 90 — no scaling of any kind',
@@ -376,9 +558,15 @@ try {
       + `live world after load L${H.after_load_live.level}/${H.after_load_live.souls}/vigour ${H.after_load_live.attributes.vigour}`
       : `error: ${H.error}`);
 
+  // DE-VACUUMED (verdict F-4). Nothing required a kill to have happened: `killOne()` returns
+  // `{skipped, delta: 0}` when there is no body, so the arm passed on 0 -> 0 with no corpse and
+  // no payment. The builder's own -DELETED run is the proof — arm I was green there. The kill
+  // must now have really happened and really paid before "it did not pay twice" means anything.
   ok('I  a corpse restored by a load does not pay a second time',
-    I.souls_at_save !== undefined && I.souls_after_load_and_10_frames === I.souls_at_save,
-    `souls at save ${I.souls_at_save} -> after load + 10 frames ${I.souls_after_load_and_10_frames}`);
+    !!I.the_kill && !I.the_kill.skipped && I.the_kill.delta > 0
+      && I.souls_at_save !== undefined && I.souls_after_load_and_10_frames === I.souls_at_save,
+    `the corpse cost ${I.the_kill ? I.the_kill.delta : 'NO KILL'} souls to make; `
+    + `souls at save ${I.souls_at_save} -> after load + 10 frames ${I.souls_after_load_and_10_frames}`);
 
   const allKills = [].concat(A.kills || [], (C.arms || []).map((a) => a.kill), (F.arms || []).map((a) => a.kill));
   const goldMoved = allKills.filter((k) => k && k.gold_after !== k.gold_before).length;
@@ -386,6 +574,37 @@ try {
   ok('J  S15: no kill anywhere in this run moved gold, and every award declares gold_awarded 0',
     goldMoved === 0 && evs.length > 0 && evs.every((e) => e.gold_awarded === 0),
     `${goldMoved}/${allKills.length} kills moved gold; ${evs.length} souls_awarded events, all gold_awarded 0`);
+
+  // ---- K, L, M — no harness kill verb anywhere in any of the three ---------------------------
+  const K = probe.K || {}, L = probe.L || {}, M = probe.M || {};
+  const kf = K.fight || {}, kc = K.control_no_input || {};
+  ok('K  A FIGHT PAYS: latched `light` input kills a live inf_trash and souls move — no kill verb',
+    kf.frames_to_death !== null && kf.delta === K.declared_souls && (kf.events || []).length === 1
+      && kc.frames_to_death === null && kc.delta === 0,
+    `${kf.swings} swings, the sentry dies on frame ${kf.frames_to_death} (${kf.seconds_at_60hz} s @60), `
+    + `souls ${kf.souls_before} -> ${kf.souls_after} (declared ${K.declared_souls}), `
+    + `${(kf.events || []).length} souls_awarded event. SELF-BREAK, same loop with the input removed: `
+    + `died ${kc.frames_to_death === null ? 'never' : 'at ' + kc.frames_to_death} in ${kc.swings} swings, paid ${kc.delta}`);
+
+  const lf = L.fixed || {}, lc = L.control_view_write || {};
+  ok('L  THE HAZARD DEATH PATH PAYS, and the control shows why it did not: the write must reach the body',
+    lf.body_dead === true && lf.delta === (probe.K || {}).declared_souls && (lf.events || []).length >= 1
+      && lc.delta === 0 && lc.entity_hp_4_frames_later > 0,
+    `FIXED (HazardSystem.step with the CombatSystem): body hp ${lf.body_hp_right_after} right after the tick, `
+    + `dead ${lf.body_dead}, souls +${lf.delta}, ${(lf.events || []).length} event(s). `
+    + `CONTROL (the same step, same hazard, same body, without it — i.e. the pre-fix write to the mirror): `
+    + `entity hp ${lc.entity_hp_right_after} right after -> ${lc.entity_hp_4_frames_later} four frames later `
+    + `(the corpse resurrects), souls +${lc.delta}`);
+
+  const mp = M.passes || [];
+  const mNoRest = mp.slice(1, 3);
+  ok('M  the respawn re-arm is gated on a HEARTH REST: despawn/respawn without one pays nothing',
+    mp.length === 4 && mp[0].paid > 0 && M.same_eids === true
+      && mNoRest.every((p) => p.paid === 0) && mp[3].paid === mp[0].paid,
+    `first kill +${mp[0] && mp[0].paid}; same eids reused ${M.same_eids}; `
+    + `two despawn/respawn cycles with NO rest paid +${mNoRest.map((p) => p.paid).join(', +')} `
+    + `(round 1 paid the full value on every one); after one rest (epoch ${M.epoch && M.epoch.before} -> ${M.epoch && M.epoch.after}) `
+    + `+${mp[3] && mp[3].paid}; refused re-arms ${mp[2] && mp[2].refused_rearms}`);
 
   out.verdicts = v;
   for (const r of v) say(`${r.pass ? 'PASS' : 'FAIL'}  ${r.name}\n        ${r.detail}`);
@@ -434,6 +653,12 @@ try {
   if (v[0].pass && !v[1].pass) unfalsifiable.push('A passed but the ablation (B) did not go red — the counter is not reading sim/souls.js');
   if (C.arms && C.arms[0] && C.arms[1] && C.arms[0].kill.delta === C.arms[1].kill.delta) unfalsifiable.push('C: souls=0 and souls=999 paid the same — the data file is not the source of the number');
   if (day && night && day.kill.delta === night.kill.delta) unfalsifiable.push('F: the night arm is indistinguishable from the day arm');
+  // K, L and M each carry their own control, and a control that behaved like its treatment makes
+  // the arm meaningless whether or not the arm passed.
+  if (kf.frames_to_death !== null && kc.frames_to_death !== null) unfalsifiable.push('K: the no-input control killed the enemy too — the arm is measuring the loop, not the swing');
+  if (lf.delta === lc.delta) unfalsifiable.push('L: the hazard arm and its view-write control paid the same — the fourth argument changes nothing');
+  if (mp.length === 4 && mp[0].paid === 0) unfalsifiable.push('M: the FIRST kill paid nothing, so "the re-spawns paid nothing" is not evidence of a gate');
+  if (mp.length === 4 && M.same_eids !== true) unfalsifiable.push('M: the eids were not reused, so nothing tested the re-arm at all');
   out.unfalsifiable = unfalsifiable;
   for (const u of unfalsifiable) say(`UNFALSIFIABLE  ${u}`);
 

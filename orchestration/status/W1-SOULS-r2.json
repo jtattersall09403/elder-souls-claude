@@ -2,9 +2,15 @@
   "task_id": "W1-SOULS-r2",
   "brief": "corpus/90-verdicts/wave1/W1-SOULS-r1.md (verdict is the spec)",
   "started": "wave-1 round 2",
-  "state": "researching",
-  "git_at_start": { "commit": "19706e7", "dirty_paths": 13 },
-  "contention_at_start": { "headless_shell": 19, "loadavg": "16.50 16.23 10.33" },
+  "state": "building",
+  "git_at_start": {
+    "commit": "19706e7",
+    "dirty_paths": 13
+  },
+  "contention_at_start": {
+    "headless_shell": 19,
+    "loadavg": "16.50 16.23 10.33"
+  },
   "path_to_ten": [
     "1 re-anchor to RI-PRG06 s7 (GAP-W1-SOULS-01)",
     "2 fix hazard death path (hazards must damage the combat body)",
@@ -25,13 +31,26 @@
     "docs/shots/<dated>.png",
     "reports/blog-feed.jsonl line"
   ],
-  "outputs_written": [],
-  "findings": [
-    "NEIGHBOUR MID-RUN, DO NOT MEASURE AGAINST THE WORKING TREE: game/data/world/population-posts.json on disk right now is a PERTURBED placement left by W1-POPULATION's A-arm — report.perturbations {encounters_per_tm: 1.7}, 253 posts / 507 bodies / 64,408 souls. The canonical placement is at git HEAD: 144 posts / 267 bodies / 34,646 souls, perturbations null. Every census number I take reads the committed file, not the tree.",
-    "PLACEMENT BY DANGER TIER (canonical, from HEAD): t1 {slitherfang 5, drowned_lesser 6, inf_trash 4}; t2 {slitherfang 40, drowned_lesser 20, inf_trash 19}; t3 {slitherfang 25, inf_trash 12, guard_legion 19}; t4 {drowned_greater 17, inf_trash 4, guard_legion 12, slitherfang 17}; t5 {drowned_greater 20, slitherfang 21, drowned_lesser 14, guard_legion 3, inf_trash 9}. HOME TIER (lowest tier a statblock is placed in) = slitherfang 1, drowned_lesser 1, inf_trash 1, guard_legion 3, drowned_greater 4. The two elites are fog-gate bosses: cst_sap_speaker in blackwood (t2), champion_hist_marked in deep-marshes (t5).",
-    "THE DERIVATION THAT CLOSES THE VERDICT'S 'lift the low end toward 35': RI-PRG06 §2's bands ARE the min/max of §3's own per-region roster values. Verified for all six regions and both tier rows: R1 trash 35,90,125,190,150 -> band [35,190]; R2 140,290,360,520,430 -> [140,520]; R3 -> [330,1250]; R4 -> [760,2600]; R5 -> [1200,4200]; R6 -> [2100,6200]; R1 miniboss 700,900 -> [700,900]; boss = the single §3 boss value. So §7's normalisation rule, which rescales §3's VALUES by 576/N_shipped, necessarily rescales §2's BANDS by the same factor — it is arithmetic, not a judgement call. Put RI-PRG06's OWN R1 roster through its OWN §7 rule and swarm-vermin lands at 16 against a fixed floor of 35: the item contradicts itself unless the bands scale. Scaled bands at 0.46829: R1 trash [16,89], R2 [66,243], R3 [155,585], R4 [356,1218], R5 [562,1967], R6 [983,2903]. drowned_lesser 24 and slitherfang 34 are then INSIDE R1, and the model needs no re-spreading at all.",
-    "TIER_PREMIUM re-solved from RI-PRG06's own §2 ratios instead of fitted to one statblock: miniboss/elite = R1 miniboss band midpoint / R1 trash band midpoint = 800/112.5 = 7.111; boss = 3000/112.5 = 26.667. Scale-invariant (bands and values scale together). Old elite 1.6 was chosen to make champion land at 2,423, which is what put it in the R4 TRASH row that F-5 charges."
+  "outputs_written": [
+    "tools/progression/derive-soul-values.mjs (rewritten: corpus-read anchor, \u00a77 census scale, bands recomputed from \u00a73's roster and scaled, region-tier binding, --bands, --census, --strict)",
+    "game/data/combat/enemies/*.json (22 files, re-derived souls)",
+    "game/src/sim/hazards.js (_hurtEntity: H9 damages the combat body)",
+    "game/src/engine.js (hazards.step gets this.combat; SoulsSystem gets the rest-epoch supplier)",
+    "game/src/sim/souls.js (rest-epoch respawn gate; death-path list rewritten from the step order)"
   ],
-  "next_step": "rewrite derive-soul-values.mjs: census-scaled anchor + bands derived from RI-PRG06-souls-yield.json + region-tier binding + --census mode; then --write; then hazard path, respawn gate, consumption arms",
-  "notes_for_successor": "Browser contention 19 at start — do all derivation/data first, take browser last. Do NOT self-grade."
+  "findings": [
+    "NEIGHBOUR MID-RUN, DO NOT MEASURE AGAINST THE WORKING TREE: game/data/world/population-posts.json on disk right now is a PERTURBED placement left by W1-POPULATION's A-arm \u2014 report.perturbations {encounters_per_tm: 1.7}, 253 posts / 507 bodies / 64,408 souls. The canonical placement is at git HEAD: 144 posts / 267 bodies / 34,646 souls, perturbations null. Every census number I take reads the committed file, not the tree.",
+    "PLACEMENT BY DANGER TIER (canonical, from HEAD): t1 {slitherfang 5, drowned_lesser 6, inf_trash 4}; t2 {slitherfang 40, drowned_lesser 20, inf_trash 19}; t3 {slitherfang 25, inf_trash 12, guard_legion 19}; t4 {drowned_greater 17, inf_trash 4, guard_legion 12, slitherfang 17}; t5 {drowned_greater 20, slitherfang 21, drowned_lesser 14, guard_legion 3, inf_trash 9}. HOME TIER (lowest tier a statblock is placed in) = slitherfang 1, drowned_lesser 1, inf_trash 1, guard_legion 3, drowned_greater 4. The two elites are fog-gate bosses: cst_sap_speaker in blackwood (t2), champion_hist_marked in deep-marshes (t5).",
+    "THE DERIVATION THAT CLOSES THE VERDICT'S 'lift the low end toward 35': RI-PRG06 \u00a72's bands ARE the min/max of \u00a73's own per-region roster values. Verified for all six regions and both tier rows: R1 trash 35,90,125,190,150 -> band [35,190]; R2 140,290,360,520,430 -> [140,520]; R3 -> [330,1250]; R4 -> [760,2600]; R5 -> [1200,4200]; R6 -> [2100,6200]; R1 miniboss 700,900 -> [700,900]; boss = the single \u00a73 boss value. So \u00a77's normalisation rule, which rescales \u00a73's VALUES by 576/N_shipped, necessarily rescales \u00a72's BANDS by the same factor \u2014 it is arithmetic, not a judgement call. Put RI-PRG06's OWN R1 roster through its OWN \u00a77 rule and swarm-vermin lands at 16 against a fixed floor of 35: the item contradicts itself unless the bands scale. Scaled bands at 0.46829: R1 trash [16,89], R2 [66,243], R3 [155,585], R4 [356,1218], R5 [562,1967], R6 [983,2903]. drowned_lesser 24 and slitherfang 34 are then INSIDE R1, and the model needs no re-spreading at all.",
+    "TIER_PREMIUM re-solved from RI-PRG06's own \u00a72 ratios instead of fitted to one statblock: miniboss/elite = R1 miniboss band midpoint / R1 trash band midpoint = 800/112.5 = 7.111; boss = 3000/112.5 = 26.667. Scale-invariant (bands and values scale together). Old elite 1.6 was chosen to make champion land at 2,423, which is what put it in the R4 TRASH row that F-5 charges.",
+    "RE-DERIVED AND WRITTEN. K = 0.102646 (verdict predicted 0.1026). inf_trash 136 -> 64 (verdict predicted 64). drowned_lesser 50->24, beast_slitherfang 72->34, guard_legion 176->83, drowned_greater 334->157, cst_sap_speaker 137->286, champion_hist_marked 2423->5043. 22 files, 29 insertions / 29 deletions, surgical (the field is rewritten in place, not round-tripped).",
+    "THE L120 DEFECT IS GONE AND IT IS THE ONLY NUMBER THAT MATTERED: at the old values the adopted census projected 2,400,817 souls against cum(120) = 2,391,999, a first clear on level 120 exactly, which RI-PRG06 s1 forbids in terms. --census now reports the placed world (269 hostiles incl. both fog-gate bosses) paying 21,664 souls = LEVEL 19, and fails closed because 269 < the census band floor of 891.",
+    "--census FAILS CLOSED (exit 1) with a stated reason and prints the figures anyway: tier1 15 bodies/570 souls/L2 against method 1's required 13-15; whole placed world L19 against method 2's required 88-98. That is the placeholder the verdict said round 1 was right to decline to fake and wrong to omit.",
+    "F-5 CLOSED, AND IT IMMEDIATELY FOUND FOUR THINGS: --check now binds each value to the band of (its own tier row) x (the LOWEST danger_tier region it is actually placed in). Four ROSTER GAPS reported: guard_legion 83 placed from t3 wants R3 155-585; drowned_greater 157 from t4 wants R4 356-1218; cst_sap_speaker 286 from t2 wants R2 miniboss 937-1124; champion_hist_marked 5043 from t5 wants R5 miniboss 6088-7493. The shipped roster is five R1-MASS trash statblocks and two under-massed fog-gate bosses, and no tier-appropriate archetype exists above danger tier 1. Hard-fails at tier 1 (where K is anchored), reported above it, fatal everywhere under --strict. Exit: --check 0, --check --strict 1, --census 1.",
+    "HAZARD DEATH PATH FIXED (HF-2). hazards.js H9 wrote ent.hp on the sim.entities MIRROR; combat-bridge.js mirror() overwrites e.hp from the combat body at the end of every stepCombat. New HazardSystem._hurtEntity() damages combat.bodyOf(ent.eid) - the authority - and sets dead/state/move/hitboxActive plus a hazard_fired outcome:death event, falling back to ent.hp only when there is no combat body. engine.js passes this.combat as an additive 4th arg. The player branch of the same hazard already did it correctly at line ~310.",
+    "RESPAWN RE-ARM GATED ON THE S5 REST EPOCH (HF-3). souls.js _alive is now eid -> {alive, paidEpoch}; a dead->alive transition re-arms only when death.ordinaryRespawnEpoch has moved past the epoch the body was paid at. Engine supplies the counter as a function (DeathSystem hangs off the engine, not sim). refusedRearms is exposed for the instrument. With no supplier the gate degrades to epoch 0 = everything settled = the safe direction.",
+    "STALE, FOR W1-POPULATION: game/data/world/population-posts.json caches a per-post `souls` from the statblocks at generation time, so its 34,646 is now stale against the re-derived values (16,335 for the same 267 bodies). Nothing in the fight reads it - game/src/world/population.js:203 uses it for a diagnostic total only - but their generator wants a re-run. I did not touch their file."
+  ],
+  "next_step": "de-vacuum consumption arms B/D/I, land a real-fight arm with no harness kill verb, file the TTK tension in RI-PRG06 \u00a78, then ONE browser (42 headless_shell at this point, loadavg 17.7 - waiting)",
+  "notes_for_successor": "Browser contention 19 at start \u2014 do all derivation/data first, take browser last. Do NOT self-grade."
 }

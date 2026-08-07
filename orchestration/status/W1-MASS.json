@@ -1,12 +1,18 @@
 {
   "task_id": "W1-MASS",
-  "title": "weapon.feel.mass — fix the tip-speed / follow-through / continuity failure handed on by W1-11",
+  "title": "weapon.feel.mass \u2014 fix the tip-speed / follow-through / continuity failure handed on by W1-11",
   "brief": "dispatch message; specification is orchestration/status/W1-11.json (MASS findings)",
   "started": "wave-1",
   "state": "researching",
-  "declared_paths": ["weapon.feel.mass"],
+  "declared_paths": [
+    "weapon.feel.mass"
+  ],
   "git_head_at_start": "5863a06",
-  "contention_at_start": {"headless_shell": 17, "loadavg": "13.62 16.00 13.58", "note": "ABOVE the cap of 8 — declaration/authoring work first, browser later"},
+  "contention_at_start": {
+    "headless_shell": 17,
+    "loadavg": "13.62 16.00 13.58",
+    "note": "ABOVE the cap of 8 \u2014 declaration/authoring work first, browser later"
+  },
   "outputs_expected": [
     "the shape of the declaration change, written down before any edit",
     "list of pieces holding determinism baselines against clip bytes",
@@ -16,7 +22,13 @@
     "one line in reports/blog-feed.jsonl"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read RI-WPN* §E and §E.2, ARBITRATION.md S22, then swing.js and the weapon declarations",
+  "findings": [
+    "REPRODUCED at git 5863a06, `node tools/weapons/motion-census.mjs`: 606 clips, tip speed over 1.25x band 43.4% (263 clips), 91 socket pose steps > 1.00 m (E.2 HARD FAIL), arc nonconforming 3.96%, worst whp_hist_bindings/r2 163.34 m/s. Identical to W1-11's figures, so the tree has not moved under the diagnosis.",
+    "REFINEMENT OF W1-11's DIAGNOSIS \u2014 the violations are TWO populations, not one. Of the 263 tip-speed violations, only 107 have a MEAN active-window speed above the ceiling (i.e. the active window itself is over-driven); 156 peak OUTSIDE the active window, in startup or recovery. calibrateExcursion (swing.js:399) already exists to damp exactly those and is wired in (moveset.js:490). So the second population is a BUG IN THE EXISTING DAMPER, not an absent one.",
+    "THE DAMPER BUG, found by reading Clip.phaseAt (clips.js:75). Phase 1.0 is the FIRST active frame (f = startup+1) and phase 2.0 is the FIRST RECOVERY frame (f = startup+active+1); the active window therefore spans phases [1.0, 2 - 1/active]. calibrateExcursion solves `follow` over the frame band [S+A, T]. f = S+A is the LAST ACTIVE frame and the step it measures (S+A-1 -> S+A) lies wholly inside the active window, where dampExcursion changes nothing (it only scales keys with phase > 2, about the phase-2.0 value). So on any clip whose active window is over-speed, that step exceeds declaredMps for EVERY value of follow, the 20-step bisection runs to its floor, and `follow` is set to 0 \u2014 the follow-through is deleted to fix a frame it cannot reach. The windup side is NOT affected: its band [1, S+1] pivots on phase 1.0 = frame S+1, and frame S is at phase < 1 so it IS scalable.",
+    "THE DAMPER BUG, MEASURED: follow_scale over all 606 clips is BIMODAL \u2014 483 clips at 1.0, 122 clips at exactly 0, one at 0.9. That bimodality is the signature of a solve that either passes on its first try or bisects to the floor; a genuine constraint would give a spread. 99 of the 122 collapsed clips are also tip-speed violators (99/263 = 38% of violators, against 23/343 = 7% of clean clips). This is W1-11's 'recovery COMPLETELY DEAD, tip frozen for 80 consecutive frames, follow_frac 0.407 in the registry but 0.012 achieved' \u2014 the profile data was always fine; the damper zeroed it.",
+    "SO ONE ROOT CAUSE HAS TWO DISTINCT CODE EXPRESSIONS: (1) calibrateYawGain's objective (measureActiveArc, active window alone) contains no speed term, so the active window's angular rate is unconstrained \u2014 107 clips; (2) calibrateExcursion's follow band is off by two frames, so an over-speed active window silently deletes the follow-through of 122 clips. (2) is a pure code fix that moves no declaration. (1) is the declaration change."
+  ],
+  "next_step": "confirm the off-by-two by direct peakIn measurement on a collapsed clip; then decide the declaration lever for the 107",
   "notes_for_successor": "Frame convention is BINDING: Souls tick data is 1/30 s, ours 60 Hz, so every Souls figure doubles. Write f@60 and t@30, never a bare frame count. See ARBITRATION.md S22."
 }

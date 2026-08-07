@@ -22,6 +22,16 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 // Two address shapes, because the dialogue tree has two. `topic`+`index` addresses a topic info;
 // `greeting` addresses a record in a `greetings` array by its own id — which is stabler than an
 // index, since greetings are appended to and reordered by the generator that feeds some of them.
+
+// `array` may be a DOTTED PATH ("slavery_lines_sample.lines"), because the dialogue tree nests one
+// spoken-line array two levels down. `field` names which key on the record holds the line, for the
+// shapes where it is neither `x` nor `text` (writ-house's scene nodes use `line`).
+export function digArray(doc, name) {
+  let cur = doc;
+  for (const part of String(name).split('.')) { if (!cur || typeof cur !== 'object') return null; cur = cur[part]; }
+  return Array.isArray(cur) ? cur : null;
+}
+
 export function resolveOne(doc, r) {
   let inf, label;
   if (r.rumour != null) {
@@ -40,8 +50,8 @@ export function resolveOne(doc, r) {
     // (`lines`, `race_gated`). Addressed by `id` where the records carry one and by `index`
     // where they do not — and where it is by index, the guard prefix is doing all the work of
     // proving the address, which is exactly what it is for.
-    const arr = doc[r.array];
-    if (!Array.isArray(arr)) return { ok: false, why: `no array "${r.array}" in this file` };
+    const arr = digArray(doc, r.array);
+    if (!arr) return { ok: false, why: `no array "${r.array}" in this file` };
     inf = r.id != null ? arr.find((x) => x && x.id === r.id) : arr[r.index];
     if (!inf) return { ok: false, why: `${r.array}: no entry ${r.id != null ? `with id "${r.id}"` : `#${r.index}`}` };
     label = `${r.array}[${r.id ?? r.index}]`;
@@ -56,7 +66,8 @@ export function resolveOne(doc, r) {
     if (!inf) return { ok: false, why: `topic "${r.topic}" has no info #${r.index}` };
     label = `${r.topic}#${r.index}`;
   }
-  const on = String(inf.x ?? inf.text ?? '');
+  const dig = (o, k) => String(k).split('.').reduce((c, part) => (c && typeof c === 'object' ? c[part] : undefined), o);
+  const on = String((r.field ? dig(inf, r.field) : undefined) ?? inf.x ?? inf.text ?? inf.line ?? '');
   if (r.g && !on.startsWith(r.g)) {
     return { ok: false, why: `guard failed at ${label}: expected a line starting ${JSON.stringify(r.g)}, found ${JSON.stringify(on.slice(0, Math.max(40, r.g.length + 10)))}` };
   }
@@ -91,6 +102,11 @@ function selfTest() {
   t(resolveOne(adoc, { array: 'lines', index: 0, g: 'Are you free', after: 'X' }).before === 'Are you free?', 'array shape reads `text` as well as `x`');
   t(resolveOne(adoc, { array: 'race_gated', id: 'rg1', g: 'Gated', after: 'X' }).ok, 'array shape addresses by id when the records carry one');
   t(!resolveOne(adoc, { array: 'nope', index: 0, g: 'x', after: 'X' }).ok, 'refuses an array the file does not have');
+  const ndoc = { sample: { lines: [{ text: 'Nested line.' }] }, nodes: [{ id: 'n1', line: 'A scene line.' }] };
+  t(resolveOne(ndoc, { array: 'sample.lines', index: 0, g: 'Nested', after: 'X' }).ok, 'array shape follows a dotted path');
+  t(resolveOne(ndoc, { array: 'nodes', id: 'n1', field: 'line', g: 'A scene', after: 'X' }).before === 'A scene line.', 'array shape reads an explicitly named field');
+  const pdoc = { npcs: [{ id: 'carter', lines: { greeting: 'Well is cold.' } }] };
+  t(resolveOne(pdoc, { array: 'npcs', id: 'carter', field: 'lines.greeting', g: 'Well is', after: 'X' }).before === 'Well is cold.', 'field may itself be a dotted path (npcs[].lines.greeting)');
   const am = resolveOne(adoc, { array: 'lines', index: 1, g: 'Are you free', after: 'X' });
   t(!am.ok && /guard failed/.test(am.why), 'and the guard still catches a mis-addressed index');
   console.log(bad ? `SELF-TEST FAILED (${bad})` : 'self-test passed');
@@ -116,7 +132,7 @@ function main() {
     const res = resolveOne(docs.get(rel), r);
     if (!res.ok) { problems.push(res.why); continue; }
     out.push(r.array != null
-      ? { file: rel, array: r.array, id: r.id, index: r.index, before: res.before, after: r.after }
+      ? { file: rel, array: r.array, id: r.id, index: r.index, field: r.field, before: res.before, after: r.after }
       : r.rumour != null
       ? { file: rel, rumour: r.rumour, before: res.before, after: r.after }
       : r.greeting != null
