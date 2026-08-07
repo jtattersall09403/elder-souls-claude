@@ -2,7 +2,7 @@
   "task_id": "W1-SOULS",
   "brief": "souls economy: souls have no source; wire kill-award, verify levelling loop end-to-end",
   "started": "wave-1",
-  "state": "verifying",
+  "state": "complete",
   "outputs_expected": [
     "game/src/** kill-award soul source",
     "tools/** soul economy instrument (breakable)",
@@ -20,7 +20,11 @@
     "tools/progression/souls-consumption.mjs + reports/souls-consumption.json (12/12 arms, 0 unfalsifiable)",
     "tools/quests/faction-signature-sweep.mjs (+bought_stream, derived from placed enemies; +ceiling_at_design_budget)",
     "game/src/sim/events.js (+day_phase/+weather_change \u2014 W1-02's names, missing, throwing inside the fixed step)",
-    "tools/progression/derive-soul-values.mjs --pace (the balance table)"
+    "tools/progression/derive-soul-values.mjs --pace (the balance table)",
+    "docs/shots/2026-08-07-w1-souls-earned-at-the-sapwell.png",
+    "reports/blog-feed.jsonl (one line)",
+    "reports/souls-consumption-DELETED.json (the delete-the-fix arm)",
+    "reports/faction-signature-sweep.json (regenerated with the bought stream)"
   ],
   "findings": [
     "START: pgrep -c headless_shell = 12, loadavg 11.27 10.19 8.22 -- ABOVE the cap of 8. Doing design+data phase first with no browser.",
@@ -44,8 +48,13 @@
     "NODE TTK cross-check (combat-node, straight sword vs inf_trash): 21.7-23.4 s of continuous swinging, 15 landed hits through armour_rating 30. NOT used for any published number -- the node arena runs no stealth perception so the enemy never turns.",
     "THE CROSSING pays 816 souls -> level 2 with 398 of the next 483 in hand; at night 1,102 -> level 3.",
     "HEADLINE: every hand-placed enemy in the world (9) is worth 1,224 souls = level 3. RI-PRG06 \u00a77 plans ~1,230 placed enemies for a first clear at L82. The curve, the values and the loop are correct and THE WORLD IS EMPTY -- the progression ceiling is a world-population problem now, not a soul-economy one.",
-    "BLOCKER HIT (another agent's, in-flight): W1-02 landed sim/environment.js emitting 'day_phase' and 'weather_change' with NO vocabulary entry. Environment.step() runs FIRST in stepOnce(), so it threw inside the fixed step and EVERY stepping probe in the project died. boot-check stayed green because boot does not step. Added both names as the additive repair events.js itself prescribes. Their engine.js also transiently called _stepAmbience before defining it."
+    "BLOCKER HIT (another agent's, in-flight): W1-02 landed sim/environment.js emitting 'day_phase' and 'weather_change' with NO vocabulary entry. Environment.step() runs FIRST in stepOnce(), so it threw inside the fixed step and EVERY stepping probe in the project died. boot-check stayed green because boot does not step. Added both names as the additive repair events.js itself prescribes. Their engine.js also transiently called _stepAmbience before defining it.",
+    "DELETE-THE-FIX (commented out stepSouls in step.js, same probe): 8 of 12 arms go RED -- A, C, E, F, G1, G2, G3, J all fail, 0 souls_awarded events, both unfalsifiable flags fire. B/D/H/I pass trivially because they assert an ABSENCE. Restored and re-verified 12/12.",
+    "SWEEP MOVED: bought_stream = 2 points (9 placed enemies, 1,224 souls -> L3). Every reachable_ceiling rose by exactly 2. attr-scale-audit: 13 attribute demands moved dedicated -> specialist (bands 35/19 -> 48/6 specialist/dedicated), defects 0 before and 0 after. The brief's predicted 'unreachable becomes vacuous' happens at the DESIGN budget (81 points), reported as ceiling_at_design_budget, NOT asserted on.",
+    "FOUND EN ROUTE: the attr-scale-audit header claims its bands 'move with it the day somebody wires kill-souls'. They would NOT have -- faction-signature-sweep.mjs had no bought-stream term at all, so wiring the source moved nothing. The tool was one step short of its own claim. Fixed.",
+    "GATES AFTER: check-data 0, check-quests 0, check-content 0, boot-check 0 (renders a frame), derive-soul-values --check clean. RI-PRG01 method 5 S15 grep: zero hits outside sim/souls.js prose; soulsHeld writers are exactly souls.js(+kill), death.js(drop/bloodstain), engine.js(-level), save/state.js(restore). GOLD UNTOUCHED -- the known fenceSell purse defect is not made worse.",
+    "NOT DONE / for a successor: RI-PRG06 methods 1-4 and 10 (world total -> L93, per-region levels, the Monte Carlo pace sim, the L120 guard) are UNRUNNABLE until the world places its ~1,230 enemies. No assertion for them was landed. TIER_PREMIUM miniboss 2.6 / boss 4.0 are declared but unexercised -- the first miniboss or boss statblock will need them re-derived."
   ],
-  "next_step": "browser batch when contention drops: delete-the-fix run, faction-signature-sweep, attr-scale-audit, boot-check, screenshot, blog line",
-  "notes_for_successor": ""
+  "next_step": "none \u2014 complete",
+  "notes_for_successor": "The soul source is game/src/sim/souls.js, called from sim/step.js right after stampHostileAction. It is a post-step alive->dead transition scan over sim.entities with LAZY seeding (a body it has never seen alive is treated as already settled and never pays) -- that is what makes a loaded save safe with no new durable field. Do not replace it with a hook in resolve.js killed(): there are five death paths. Values live on the statblocks and are regenerated by tools/progression/derive-soul-values.mjs --write; --check fails if the field and the derivation have drifted, so wire that into a checker when convenient. The instrument is tools/progression/souls-consumption.mjs; it has its own ablation switch (sim.souls.enabled) and its own unfalsifiability gate, and the four probe gotchas are in findings. The real remaining problem is not the economy -- it is that the world places 9 enemies."
 }

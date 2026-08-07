@@ -302,7 +302,7 @@ function makeVariant(cls, vi) {
 
 const out = {
   id: 'impact-classes',
-  schema: 'es-impact-audio/1',
+  schema: 'elder-souls/impact-audio@1',
   spec: 'RI-AUD01 §A (twelve resolution classes), §C (the gain table)',
   owner: 'W1-11 — audio.combat.impact',
   note: [

@@ -278,6 +278,16 @@ export class Engine {
     // can measure. `Engine.ambienceCapture()` renders the identical graph offline into PCM,
     // which is the evidence path: an event count is not a sound.
     this.ambience = new AmbienceDriver(this.data.ambience || {}, { seed: 0xa3b1 });
+    // W1-11 — COMBAT IMPACT AUDIO. `audio.combat.impact`, RI-AUD01 / RI-AUD02.
+    //
+    // Built here for the same reason the bed is: it must exist whether or not a speaker does.
+    // But it is HANDED TO THE FIGHT, in `_buildCombat()`, and its only input is the resolver's
+    // own event stream — so unlike the bed it has no position model of its own and cannot
+    // disagree with the geometry about what happened. The bed answers "where am I"; this
+    // answers "what did the swing just do", and RI-AUD01 is blunt that the second question is
+    // not decoration: "a deterministic hit-or-miss system that is not reported is
+    // indistinguishable from a dice roll."
+    this.impactAudio = new ImpactAudio(this.data.impactAudio || {}, { seed: 0x11a0 });
     // W1-13 — the checkpoint and the death loop. Built BEFORE the first named state is
     // applied, because `applyNamedState()` seeds `progression.hearthLastRested` from the
     // hearth registry and a state applied against a null registry would respawn nowhere.
