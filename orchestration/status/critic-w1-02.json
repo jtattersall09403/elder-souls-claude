@@ -2,9 +2,9 @@
   "task_id": "critic-w1-02",
   "role": "critic",
   "judges": "W1-02",
-  "state": "in-progress",
+  "state": "complete",
   "started_at": "2026-08-07",
-  "next_step": "Blind M68: pack shipped INCOMPLETE (24 of 48 frames, builder pid 3888 died 20:59:22, no KEY.json/QUESTION.md). Pre-registration hashed 832e72db... Now looking at all 24 frames and writing ANSWERS.json before re-deriving the key.",
+  "next_step": "DONE. Verdict, JSON (validates), 2 images and the blog line are on disk. Nothing committed.",
   "judging_items_assembled_from_front_matter": {
     "bind_by_current_taxonomy_path": [
       "RI-AUD03 [audio.ambience.region, world.region.identity]",
@@ -24,17 +24,22 @@
   },
   "files_touched": [
     "orchestration/status/critic-w1-02.json",
-    "reports/critic-w1-02/c-m65.json",
-    "reports/critic-w1-02/c-m65b.json",
-    "reports/critic-w1-02/c-m65-sabotage.json"
-  ],
-  "files_claimed": [
     "corpus/90-verdicts/wave1/W1-02-r1.md",
     "corpus/90-verdicts/wave1/W1-02-r1.json",
-    "docs/shots/",
-    "reports/blog-feed.jsonl",
-    "reports/critic-w1-02/"
+    "reports/critic-w1-02/PREREGISTRATION.md",
+    "reports/critic-w1-02/c-m65.json",
+    "reports/critic-w1-02/c-m65b.json",
+    "reports/critic-w1-02/c-m65-sabotage.json",
+    "reports/critic-w1-02/m68-diagnostics.txt",
+    "reports/critic-w1-02/marker-contrast.txt",
+    "reports/critic-w1-02/consumption-census.txt",
+    "reports/critic-w1-02/DERIVED-KEY.json",
+    "reports/wld12-blind/ANSWERS.json",
+    "docs/shots/2026-08-07-w1-02-critic-m68-blind-contact-sheet.png",
+    "docs/shots/2026-08-07-w1-02-critic-border-reads-vs-border-invisible.png",
+    "reports/blog-feed.jsonl"
   ],
+  "files_claimed": [],
   "redundant_with": [
     "W1-02"
   ],
@@ -46,7 +51,13 @@
     "DEFECT: all 10 MARKED borders are 123-172 m wide. RI-WLD12 \u00a71's table puts MARKED at 60-120 m. The builder's status file scores them against the GRADED row (120-180 m). Number checked against the wrong row of the item's own table. Zero GRADED borders exist, so B3 is vacuous.",
     "GAP: RI-WLD12 M67 (continuity C1-C5, weight 14) and M69 (weight 6) have NO instrument anywhere in tools/. 20 of 100 points of the SOLE judge of world.region.transition are unmeasured.",
     "GAP: M66 covers T1/T2 and the 40 m rule only. T3 (nothing gates the crossing - an AUTOMATIC FAIL in RI-WLD12), T4 (sightline >=100 m) and T5 (>=3 tier descents) are unmeasured. T1 is scored off the declared announcement.channels array in borders.json, not off the world, and the item's 'within 100 m of the crossing' clause is never checked.",
-    "GAP: RI-WLD04 M18's weather axis is still listed in reports/region-axes.json dropped_axes with the reason 'weather is a per-frame capture parameter, not a property of the built world'. W1-02 made that false by shipping game/data/world/weather.json (13 per-region machines). The world got better and the instrument was not re-armed."
+    "GAP: RI-WLD04 M18's weather axis is still listed in reports/region-axes.json dropped_axes with the reason 'weather is a per-frame capture parameter, not a property of the built world'. W1-02 made that false by shipping game/data/world/weather.json (13 per-region machines). The world got better and the instrument was not re-armed.",
+    "MEASURED: env.weatherEffect is write-only. 11 of 12 declared weather-effect keys over 41 states have NO reader in game/src. sim/player.js:212 has no weather term, so stamina_regen_mult (18 states) multiplies nothing; chip_dps, disease_buildup_per_s, hides_enemies, aggro_radius_mult etc. are inert. What weather DOES reach: weatherLight -> stealth, sightlineM -> sky fog, and exactly one hazard gate (hazards.js:55 ash-lung).",
+    "MEASURED: 2 of 8 threshold-object types are the colour of their own ground on RI-WLD04 M18's dE>12 yardstick - imperial_border_cairn dE 4.2 on Valus Ridge, corpse_in_a_cage dE 10.8 on Blackwood. The builder's distinctness proof was explicitly colour-free and size-free and could not catch it.",
+    "MEASURED: RI-WLD08 \u00a71 clock numbers are exactly right (20x, 72 real min/day, dawn+dusk 2 game-hours = 6 real min each, 4.8-19.2h = exactly 60/40) and M43's structural assertions all pass independently (>=4 states, all reachable, no p=0 or p=1, rows sum to 1, no shared state set, every worst state has an effect).",
+    "MEASURED: RI-WLD04 M19 ONLY-HERE passes cleanly - 840 instances, 13/13 regions, no kind in two regions, all >=8.",
+    "CORRECTION I MADE TO MYSELF, caught by tools/verdict-validate.mjs: I first recorded M68 as a hard fail. It is not on RI-WLD12's six-item automatic-fail list. Withdrawn, and NONE of those six is triggered - notably fog/colour is the only cue on ZERO borders.",
+    "CROSS-CUTTING, NOT W1-02's: `node tools/verdict-validate.mjs --all` CRASHES at corpus/90-verdicts/wave1/W1-13-r2.json (and W1-FACTIONS-r2.json) because their gap_closure is an OBJECT where the validator iterates an array (tools/verdict-validate.mjs:338). 18 of 36 verdicts are never reached, so the corpus-wide verdict gate has been silently dead. One-line fix: guard with Array.isArray before the `for (const c of v.gap_closure || [])` loop at line ~336 and report a non-array as an error. I did NOT edit it - it is another piece's tool and other agents are running it right now."
   ],
   "blind_pack_state": {
     "frames_expected": 48,
@@ -60,6 +71,21 @@
       "Frames are 1280x720; RI-WLD12 M68 specifies 1920x1080.",
       "No PNG text chunks \u2014 metadata leak closed (checked IHDR/IDAT chunk walk on 4 frames)."
     ],
-    "question_is_correct": "QUESTION.md asks M68 verbatim (\"Is this one place, or two?\" / \"If two - what told you?\"), i.e. the QUALITY question the item specifies, not a provenance question. NOTE: the builder status file twice PARAPHRASES its own pack as \"whether a stranger can NAME the object at a border\", which is the wrong question; the tool is right and the handover prose is wrong."
-  }
+    "question_is_correct": "QUESTION.md asks M68 verbatim (\"Is this one place, or two?\" / \"If two - what told you?\"), i.e. the QUALITY question the item specifies, not a provenance question. NOTE: the builder status file twice PARAPHRASES its own pack as \"whether a stranger can NAME the object at a border\", which is the wrong question; the tool is right and the handover prose is wrong.",
+    "result": "M68 FAILS as run: 52.6% \"two\" over 19 usable frames vs an 80% bar; the >=25% \"one\" clause fires at 47.4%. Cue bar PASSES (80% object-or-landform; zero frames decided by fog or colour). Stratified: 75.0% on the 8 unoccluded frames, 36.4% on the 11 usable occluded ones.",
+    "answers_sha256": "be6fe0e26089401712a00ef8e841711be548bc9cf04e2e13872868e390d26d8f",
+    "order_of_operations": "prereg written+hashed 20:5x -> all 24 frames viewed -> ANSWERS.json written+hashed 21:05:28Z -> key re-derived. KEY.json never existed (builder process died mid-capture)."
+  },
+  "finished_at": "2026-08-07T21:35:00Z",
+  "score": 5,
+  "status": "FAIL",
+  "biggest_gap": "GAP-W1-02-m68-unanswerable",
+  "deliverables": [
+    "corpus/90-verdicts/wave1/W1-02-r1.md",
+    "corpus/90-verdicts/wave1/W1-02-r1.json (node tools/verdict-validate.mjs -> OK, 0 warnings)",
+    "docs/shots/2026-08-07-w1-02-critic-m68-blind-contact-sheet.png",
+    "docs/shots/2026-08-07-w1-02-critic-border-reads-vs-border-invisible.png",
+    "reports/blog-feed.jsonl (line 61; all 61 parse)"
+  ],
+  "note_on_shared_files": "reports/wld12-blind/ANSWERS.json is written INSIDE the builder's pack directory because QUESTION.md (per the tool source) specifies that path for the judge's answers. It adds a file; it does not modify any builder output. I did not run the pack builder, did not re-capture any frame, and did not touch game/src or game/data."
 }

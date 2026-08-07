@@ -4,14 +4,18 @@
  * Two panels, one browser, one bloom, one bearing, two frames apart in nothing but where the
  * camera was put.
  *
- *   LEFT   the camera rounds 1-3 measured M-D14 from: eye at `[x, stain.pos[1] + 1.6, z]` —
- *          the STAIN's COLLISION ground, sampled at the stain and used twelve metres away at the
- *          observer's coordinates — aimed at `stain.pos[1] + 0.3`.
+ *   LEFT   the camera rounds 1-3 measured M-D14 from: eye at `[x, stain.pos[1] + 1.6, z]` — the
+ *          STAIN's COLLISION ground, one constant altitude for all eight bearings — aimed at
+ *          `[stain.x, stain.pos[1] + 0.3, stain.z]`, which is the ground UNDER the bloom.
  *   RIGHT  the eye at the OBSERVER's own ground + 1.6 m, aimed at where the bloom is actually
- *          DRAWN. Where a player standing on that spot has their head.
+ *          DRAWN. Where a player standing on that spot has their head, looking at the thing.
  *
  * The verdict called this "the whole piece is a run back to a thing that is not drawn". The thing
- * is drawn. The camera was under the ground.
+ * is drawn, and `reports/runs/W1-13-R3/bloom-sight.json` reads it from 8/8 bearings in daylight
+ * and 8/8 in the dark from the right-hand camera, against 0/8 and 0/8 from that same camera with
+ * the bloom deleted from the scene. WHICH PART of the left-hand camera loses it is not settled:
+ * the eye was never buried (1.35-1.71 m over the observer's own ground on all sixteen views),
+ * which leaves ~0.25 m of eye height and 0.8 m of aim, unseparated.
  *
  * THIS SCRIPT LAUNCHES ITS OWN BROWSER and steps the simulation, because the bloom does not exist
  * until somebody dies (RULES.md 20: say which you did).

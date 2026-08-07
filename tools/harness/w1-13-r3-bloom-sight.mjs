@@ -59,7 +59,14 @@ const CONDITIONS = [
   { id: 'daylight_12m', d: 12, hour: 12 },
   { id: 'dark_6m', d: 6, hour: 1 },
 ];
-const ALL_ARMS = ['as-placed', 'player-eye', 'no-bloom', 'pre-r3-render'];
+// `as-placed` and `player-eye` differ in TWO things at once — the eye height and the aim point —
+// so the first run could say the old camera lost the bloom but not WHICH half lost it. (The
+// explanation offered first, that the eye was buried under the drawn ground, is refuted by that
+// run's own `eye_above_observer_ground_m`: 1.346-1.705 m on all sixteen as-placed views.) These
+// two arms are the other diagonal of the 2x2, so the factors come apart:
+//   aim-only  the OLD eye with the NEW aim   — if this reads 8/8 the aim was the whole story
+//   eye-only  the NEW eye with the OLD aim   — if this reads 8/8 the eye height was
+const ALL_ARMS = ['as-placed', 'player-eye', 'no-bloom', 'pre-r3-render', 'aim-only', 'eye-only'];
 const ARMS = args.arms ? String(args.arms).split(',').map((s) => s.trim()).filter((a) => ALL_ARMS.includes(a)) : ALL_ARMS;
 
 async function shoot(h) {
@@ -85,6 +92,9 @@ const out = {
     'as-placed': 'the journey camera verbatim: eye at [x, stain.pos[1]+1.6, z], look at stain.pos[1]+0.3',
     'player-eye': 'eye at the observer\'s OWN drawn ground + 1.6 m, aimed at the bloom\'s DRAWN origin',
     'no-bloom': 'NULL CONTROL — player-eye with the bloom removed from the scene graph',
+    'pre-r3-render': 'DELETE THE RENDERER FIX — player-eye with the drawn-ground lift and the hum removed',
+    'aim-only': 'the OLD eye with the NEW aim — isolates the aim point',
+    'eye-only': 'the NEW eye with the OLD aim — isolates the eye height',
   },
   rows: [],
 };
@@ -173,14 +183,14 @@ try {
         const target = geom.drawn_bloom_pos || out._lastDrawn || [st.pos[0], st.pos[1], st.pos[2]];
         if (geom.drawn_bloom_pos) out._lastDrawn = geom.drawn_bloom_pos;
 
-        const eye = arm === 'as-placed'
-          ? [x, st.pos[1] + 1.6, z]
-          : [x, geom.player_pos[1] + 1.6, z];
-        const look = arm === 'as-placed'
-          ? [st.pos[0], st.pos[1] + 0.3, st.pos[2]]
-          // Mid-hum: the column stands 0.34..2.24 m over the drawn origin, so its middle is the
-          // honest aim point for "is the thing in the frame".
-          : [target[0], target[1] + 0.9, target[2]];
+        const OLD_EYE = [x, st.pos[1] + 1.6, z];
+        const NEW_EYE = [x, geom.player_pos[1] + 1.6, z];
+        const OLD_LOOK = [st.pos[0], st.pos[1] + 0.3, st.pos[2]];
+        // Mid-hum: the column stands 0.34..2.24 m over the drawn origin, so its middle is the
+        // honest aim point for "is the thing in the frame".
+        const NEW_LOOK = [target[0], target[1] + 0.9, target[2]];
+        const eye = (arm === 'as-placed' || arm === 'aim-only') ? OLD_EYE : NEW_EYE;
+        const look = (arm === 'as-placed' || arm === 'eye-only') ? OLD_LOOK : NEW_LOOK;
 
         await h.h('camera', { pos: eye, look });
         await h.h('renderFrame');

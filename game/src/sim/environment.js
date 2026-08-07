@@ -153,10 +153,18 @@ export class Environment {
     // it, because neither diffed the whole save across a death.
     //
     // A death is 150 frames of `SURFACE_FRAMES` the player cannot act in. Charging those to the
-    // world clock is exactly the deadline burn the item names: fifty attempts at a boss is 7,500
-    // frames, and the clock is what `sim/npc.js` picks a schedule slot from, what
-    // `sim/settlement.js` locks a door on and what `sim/souls.js` pays a night award off. So the
-    // clock is HELD from the death to the respawn and released the moment the body stands up.
+    // world clock is exactly the deadline burn the item names, and it was measured rather than
+    // argued (`tools/harness/w1-13-r3-clock.mjs`, `reports/runs/W1-13-R3/clock.json`): FORTY
+    // deaths at 20:58, with this branch monkeypatched back to the unconditional tick, walk the
+    // world clock 20.967 -> 21.527 — **33.6 minutes of in-game time burned by dying**. With the
+    // hold in place the same forty deaths cost 40 frames, one per death, which is the frame the
+    // killing blow lands on: the clock runs FIRST in `sim/step.js`'s frame order, so on that one
+    // frame the player was still alive when it ticked.
+    //
+    // The consumers are real and named at the top of this file: `sim/npc.js` picks a schedule
+    // slot from the clock, `sim/settlement.js` decides whether a door is locked from it, and
+    // `sim/souls.js` pays a different award at night. So the clock is HELD from the death to the
+    // respawn and released the moment the body stands up.
     //
     // Deliberately NOT rewound: time that passed while the player was alive stays passed. This
     // freezes the interval the player did not have, and nothing else.

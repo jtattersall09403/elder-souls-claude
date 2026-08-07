@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `5de8f79`: 457 tools, 153 reference
-items, 21 pieces in flight.
+so it cannot drift. Generated at `e06f551`: 457 tools, 153 reference
+items, 20 pieces in flight.
 
-Its purpose is to stop 21+ concurrent agents each paying separately to discover the
+Its purpose is to stop 20+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -740,7 +740,6 @@ work is the difference between resuming and starting over.
 | `W1-22-r2` | building | event-level calibration running; then acceptance run + both sabotage arms; then re-run the | `game/src/audio/ambience.js` `game/src/audio/synth.js` `game/src/engine.js` `game/src/harness/api.js` `game/data/audio/ambience/*.json` `game/data/audio/ambience/interiors/*.json` |
 | `W1-MASS` | verifying | SUCCESSOR-2 RESUMED at git 88ee56d. P1/P2/P3 confirmed COMMITTED and on disk (swing.js:447 | `game/src/combat/swing.js` `tools/weapons/motion-census.mjs` `tools/weapons/build-movesets.mjs` `tools/weapons/mass-browser.mjs` `game/data/combat/movesets/` `game/data/weapons/clip-registry.json` |
 | `W1-VIABILITY-SPLIT` | in_progress | run the screen end-to-end so the fence scrubs the residual claim strings; then build the w | `orchestration/status/W1-VIABILITY-SPLIT.json` `tools/analysis/impossibility-screen.mjs` |
-| `critic-w1-02` | in-progress | Blind M68: pack shipped INCOMPLETE (24 of 48 frames, builder pid 3888 died 20:59:22, no KE | `orchestration/status/critic-w1-02.json` `reports/critic-w1-02/c-m65.json` `reports/critic-w1-02/c-m65b.json` `reports/critic-w1-02/c-m65-sabotage.json` |
 | `tool-build-viability-r6` | researching | choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items | — |
 | `W1-JOURNAL-PROSE` | researching | state the closing-line rule, then rewrite file by file, re-running the FULL gate after eve | — |
 | `judge-prose-r4` | researching | read t01-books A.txt and B.txt; answer; then t02..t15 | — |
