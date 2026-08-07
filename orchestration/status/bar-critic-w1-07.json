@@ -1,0 +1,20 @@
+{
+  "task_id": "bar-critic-w1-07",
+  "brief": "BAR CRITIC for the opening, character-creation and journey bars (W1-07 scope). Resumed after a container restart killed the first run mid-flight.",
+  "started": "wave-3",
+  "state": "resuming",
+  "outputs_expected": [
+    "corpus/88-journeys/BAR-CRITIQUE-W1-07-R1.md",
+    "corpus/88-journeys/BAR-CRITIQUE-W1-07-R1.json"
+  ],
+  "outputs_written": [
+    "(pre-restart, committed at 6e359ab) amendments to RI-JRN01-08, RI-CHR01-03, RI-PRG02/03, RI-MTH06, RI-EXP01, SCORING.md, subsystems.json",
+    "(pre-restart) corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md",
+    "(pre-restart) edits to corpus/88-journeys/AMENDMENT-PROPOSAL-JRN01-01.md"
+  ],
+  "findings": [
+    "RESUME: predecessor (me) died before writing the verdict. Amendments are on disk and committed. RI-JRN09 appears to already exist (298 lines added at 6e359ab) - likely the answer to referral 3."
+  ],
+  "next_step": "verify the phantom-tool detector (C8) in the corpus gate; re-read each amended item; regression-test against round 2's build; write the verdict",
+  "notes_for_successor": "Do not redo amendments. The deliverable that is missing is only the verdict itself."
+}
