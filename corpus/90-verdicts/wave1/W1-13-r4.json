@@ -1,0 +1,469 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-13-r4",
+  "piece_title": "W1-13 round 4 — death, recovery, the hearth loop and levelling (RI-JRN06 + RI-PRG04)",
+  "round": 4,
+  "subsystem_paths": [
+    "journey.death.recovery",
+    "combat.death.corpserun",
+    "combat.death.worldreset",
+    "progression.bonfire.function",
+    "progression.bonfire.placement",
+    "world.time.daynight"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-13-r4-clock-and-ar1",
+    "role": "critic.progression",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-07T23:45:00Z",
+    "finished_at": "2026-08-08T01:10:00Z",
+    "conflict_of_interest": false,
+    "fresh_context": true,
+    "saw_builder_notes_before_blind": false
+  },
+  "build": {
+    "commit_sha": "e74df06e3219440f5259a12536f0788d8834af05",
+    "commit_sha_at_aggregation": "1110bf72248e08b5d9f52e796dd5345fca787835",
+    "commit_sha_at_builder_probe": "0f6ff17e567f3c34f52ab16280cc9018e8f3de02",
+    "commit_sha_at_my_probes": "e74df06e3219440f5259a12536f0788d8834af05",
+    "commit_sha_at_writeup": "4698888",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true,
+    "dirty_note": "20+ agents banking. HEAD moved e74df06 -> 4698888 under me. game/src/sim/environment.js and game/src/sim/souls.js were clean in BOTH the git index and the worktree for the whole of my run — checked inside the probe with `git diff --cached --name-only` rather than by hand (RULES.md 17) — and are byte-identical across e74df06..4698888. Six game/data/world/interiors/*.json files DID change under the round's own headline number between the builder's probe commit (0f6ff17) and HEAD, via a neighbour's commit 444d43d; see secondary_observations.",
+    "harness_commands": [
+      {
+        "command": "node tools/analysis/critic-w1-13-r4-clock.mjs",
+        "exit_code": 0,
+        "note": "MY OWN INSTRUMENT, node-side, no browser. Source-level delete-the-fix on environment.js §1b and souls.js's awardHour read; the 2x2 factorial; a 96-start-hour sweep; 36 determinism populations at 40 repeats each; method 8 recomputed offline through settlement.js#isOpen and npc.js#slotAt; a reach census for both clocks; and the two consequences of the second clock (§7)."
+      },
+      {
+        "command": "node tools/check-data.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/check-quests.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/check-content.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/check-prose.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/corpus-index.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/boot-check.mjs",
+        "exit_code": null,
+        "note": "NOT RUN AND NOT CLAIMED. It draws a frame and therefore needs a browser; pgrep -c headless_shell ran 18 -> 24 -> 42 with /proc/loadavg 16.87 -> 29.45 on four cores across my run. RULES.md 21 and 26."
+      }
+    ],
+    "depends_on": [
+      "corpus/20-progression/RI-PRG04-hearth-and-death.md",
+      "corpus/88-journeys/RI-JRN06-death-and-recovery.md",
+      "corpus/00-doctrine/ARBITRATION.md",
+      "corpus/90-verdicts/wave1/W1-13-r3.md",
+      "game/src/sim/environment.js",
+      "game/src/sim/souls.js",
+      "game/src/sim/settlement.js",
+      "game/src/sim/npc.js",
+      "game/src/sim/death.js",
+      "game/src/sim/step.js",
+      "game/src/sim/state.js",
+      "game/src/sim/quest/machine.js",
+      "game/src/save/state.js",
+      "game/src/engine.js",
+      "game/data/world/weather.json",
+      "game/data/world/interiors/",
+      "game/data/combat/enemies/inf_trash.json",
+      "game/data/quests/hooks.json",
+      "game/data/states/default.json",
+      "tools/harness/w1-13-r4-clock-consequences.mjs",
+      "tools/journey/jrn06-death.mjs",
+      "reports/runs/W1-13-R4/clock-consequences.json",
+      "reports/journeys/w1-13-r4-jrn06/journey.json",
+      "orchestration/status/W1-13-r4.json"
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "art_refs": [],
+    "fidelity_refs": [],
+    "note": "Declared before anything was opened. Nothing in this verdict is a judgement about how the game LOOKS. No image was taken or cited by me; the one visual row I score (m_d14) is scored off the aggregation's own pixel counts and margin floors, not off a picture I looked at. No reference screenshot, Morrowind or modern, is cited anywhere."
+  },
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-13-r4/critic-clock.json",
+      "kind": "report",
+      "produced_by": "node tools/analysis/critic-w1-13-r4-clock.mjs",
+      "note": "Sections A-G. A: the three source cuts, each matched exactly once. B: the 2x2 factorial — only the shipped cell is equal; deleting either half alone reproduces 57-vs-42 and 42-vs-57. C: 96 start hours, shipped unequal at 0, deleted unequal at 4 (04:30, 04:45, 20:30, 20:45). D: 36 determinism populations at 40 repeats, all 1 distinct trace; the float-ordering question answered for both the clock (immune, integer counter) and _roll() (order-dependent). E: method 8 offline — 77 of 115 shut at 23:00 at HEAD, 183 of 309 schedules move, and the demonstration that c6 is a re-read rather than a restoration. F: the reach census — awardTimeOfDay has ONE consumer and 0 lines in combat code. G: the two clocks disagree after 22 deaths, and a reload turns 42 souls into 57."
+    },
+    {
+      "path": "reports/journeys/w1-13-r4-jrn06/journey.json",
+      "kind": "report",
+      "produced_by": "node tools/journey/journey-run.mjs --journey jrn06-death (the BUILDER's aggregation, re-counted by me, not re-run)",
+      "note": "run 20260807T230938Z-jrn06-death-s4711-371625 at 1110bf7, page_errors [], 43 instruments, 24 pass, 1 fail, 4 unmeasurable. The one failing row is m_prg04_m8_clock_consequence on c2_night_roster_active: false, with roster {} in all three arms."
+    },
+    {
+      "path": "reports/runs/W1-13-R4/clock-consequences.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/w1-13-r4-clock-consequences.mjs (the BUILDER's standalone probe, re-read by me, not re-run)",
+      "note": "Section A is method 8 with a no-rest control; section B is the AR-1 arms. Its rested arm carries a 52-person roster, its control arm and its four-rest arm carry none, and all three record well: hearth-archon while the 52 are Lilmoth residents."
+    },
+    {
+      "path": "reports/runs/W1-13-R3/clock.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/w1-13-r3-clock.mjs (the BUILDER's re-run, read by me)",
+      "note": "r3 path_to_ten item 2: the artifact now carries the verdict its own predicate produces, T5 renamed to T5_death_burn_is_bounded_and_the_arms_differ with the old name published as deprecated, and T6 added as the entity arm."
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "ref_item": "RI-JRN06",
+      "status": "not_possible",
+      "not_possible_reason": "RI-JRN06 and RI-PRG04 are both blind_pair: no. Neither is a look-and-feel comparison against a reference build; every method in both is a count, a distance, a frame budget or a boolean with a stated threshold. There is nothing to compare blind."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "AR1-death-must-not-pay",
+          "result": "pass",
+          "observed": "SHIPPED: from 04:30, 40 deaths x 151 f@60 and the same 6,040 f@60 spent ALIVE both leave one ordinary inf_trash paying 42; at 20:58 both pay 57. Over a 96-start-hour sweep the shipped arms are equal at 96 of 96. WITH THE AWARD CLOCK DELETED FROM THE SOURCE the r3 defect returns exactly: 04:30 dying 57 vs alive 42, 20:58 dying 42 vs alive 57, at 4 of 96 start hours (the two window edges). Round 3 shipped this leak and its own critic filed the mechanism as a design finding rather than as AR-1; round 4 named it correctly and closed it.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-13-r4/critic-clock.json"
+          ]
+        },
+        {
+          "id": "AR1-the-fix-is-where-it-is-claimed",
+          "result": "pass",
+          "observed": "2x2 factorial, run by me and not by the round: {environment.js §1b present|deleted} x {souls.js reads awardTimeOfDay|reads timeOfDay}. Only the shipped cell is equal. Each half alone is necessary and neither alone is sufficient, so the fix is the named mechanism and not a correlate.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-13-r4/critic-clock.json"
+          ]
+        },
+        {
+          "id": "AR1-the-clock-reaches-no-frame-number",
+          "result": "pass",
+          "observed": "Reach census over every .js/.mjs under game/src/**, comments excluded. awardTimeOfDay: 5 reader lines, four in environment.js (its own writer and its report) and ONE in souls.js:317; 0 in game/src/combat/** or sim/combat*. env.timeOfDay: 45 reader lines, 0 in combat code. isNight(: 2 lines, both inside souls.js. No frame number, damage value, poise value or stamina value in this build is a function of either clock; the award is paid after the exchange and changes nothing inside it, which is the S25 line. The three phaseOf( hits in sim/combat-bridge.js are the ANIMATION phase — a different function in a different file, checked rather than assumed.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-13-r4/critic-clock.json"
+          ]
+        },
+        {
+          "id": "AR1-no-compensation-elsewhere",
+          "result": "pass",
+          "observed": "m_d9_no_compensation, m_d18 and m_d19 all pass: true in the r4 aggregation. HF5 clear.",
+          "evidence": [
+            "reports/journeys/w1-13-r4-jrn06/journey.json"
+          ]
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-13-r4/critic-clock.json"
+      ]
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "AR2-no-bonfire-warp",
+          "result": "pass",
+          "observed": "Unchanged from r3 and not re-derived by me: m_d18_no_fast_travel_to_the_stain and m_d19_marker_sweep both pass: true in the r4 aggregation, hearth_menu_destinations empty, markers 0. HF6 clear.",
+          "evidence": [
+            "reports/journeys/w1-13-r4-jrn06/journey.json"
+          ]
+        }
+      ]
+    },
+    "ar3": {
+      "status": "not_sterile",
+      "seam_sterile": false,
+      "crossings": [
+        "A Morrowind rest moves a world clock that changes a Souls soul award: an ordinary inf_trash pays 42 at 17:00 and 57 at 23:00, ratio 1.3571, with a no-rest control at exactly 1.00.",
+        "A Souls death suppresses that Morrowind clock (RI-PRG04 §6 rule 4), so dying at a boss cannot burn a quest deadline.",
+        "NEW THIS ROUND, and in the opposite direction: a Morrowind save/load changes a Souls price. The award clock is not persisted, so a reload discharges the death-stolen offset and the same enemy goes from 42 souls to 57. See secondary_observations."
+      ]
+    },
+    "hard_fails_triggered": []
+  },
+  "reference_items": [
+    {
+      "id": "RI-JRN06",
+      "path": "corpus/88-journeys/RI-JRN06-death-and-recovery.md",
+      "side": "souls",
+      "kind": "structure",
+      "native_scale": "0-100 weighted over five blocks (Nothing is lost 34, The stain behaves 24, The loop is not softened 18, The run back is play 14, Death is legible and fast 10); hard fails cap at 2",
+      "native_score": 89,
+      "native_max": 100,
+      "native_verdict": "Below bar, named remedy required. Every RI-JRN06 block row is green in the r4 aggregation and m_d14 gains scored margin floors (400 px daylight, 2,000 px dark) that turn the row red when the renderer change is deleted — r3 path_to_ten item 10's first half, delivered. What holds it under 92 is unchanged from r3 and was not this round's brief: clamped_within_2m never fires, M-D10's max_frames is still 0 by construction, and the run-back block is still fail-closed on W1-12 and W1-01/02.",
+      "score_0_10": 6,
+      "measured": "full",
+      "justification": "Band 75-91 -> ladder ceiling 6, read off RI-JRN06 §C's own table (>=92 -> 8, 75-91 -> 6). 89 is 88 (r3's per-check awards, re-read) plus one for m_d14's margin floors. The aggregation backing it is reports/journeys/w1-13-r4-jrn06/journey.json, run 20260807T230938Z-jrn06-death-s4711-371625 at 1110bf7: 43 instruments, 24 pass: true, 1 pass: false, 4 unmeasurable, 0 page errors, re-counted by me off the file. The one failing row is m_prg04_m8_clock_consequence, which is an RI-PRG04 instrument.",
+      "evidence": [
+        "reports/journeys/w1-13-r4-jrn06/journey.json"
+      ]
+    },
+    {
+      "id": "RI-PRG04",
+      "path": "corpus/20-progression/RI-PRG04-hearth-and-death.md",
+      "side": "souls",
+      "kind": "structure",
+      "native_scale": "0-10, min over eight axes; failure threshold is any axis below 6",
+      "native_score": 7,
+      "native_max": 10,
+      "native_verdict": "The min is Clock cost and it has finally moved, from 6 to 7. Four of Comparison method 8's six measurable clauses now fire on evidence with real same-frames controls; the roster clause passes against an empty control and is pass: false in the aggregation; the timed-quest clause is unmeasurable => 0 on a dead consumer.",
+      "score_0_10": 7,
+      "measured": "partial",
+      "justification": "Rest effects 8 (carried), S7 8 (carried), Spacing 7 (carried), Death loop 8, Persistence 9, Clock cost 7. Death cost (M9) and Flask purity (M10) remain corpus_debt for a fourth round and are not scored as axes, exactly as r3 handled them. min = 7, set by Clock cost.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-13-r4/critic-clock.json",
+        "reports/journeys/w1-13-r4-jrn06/journey.json",
+        "reports/runs/W1-13-R4/clock-consequences.json"
+      ]
+    }
+  ],
+  "score": {
+    "overall_0_10": 6,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "band_label": "Below bar — the AR-1 fix is genuinely closed and reproducible, and the axis it was sent to raise did rise; the overall is held down by RI-JRN06's native band, which this round did not address",
+    "confidence": "high"
+  },
+  "previous_score": 6,
+  "status": "FAIL",
+  "status_reasons": [
+    "min(RI-JRN06 ladder 6, RI-PRG04 7) = 6, below the wave-1 gate of 7.0.",
+    "RI-JRN06 native 89 sits in the 75-91 band whose ceiling the item itself fixes at ladder 6, and round 4's brief was RI-PRG04's Clock cost axis rather than RI-JRN06's two weakest blocks.",
+    "RI-PRG04's min rose 6 -> 7: method 8's clock, merchant and souls-rate clauses now fire with genuine same-frames no-rest controls, and the souls clause is driven through a killed body rather than a field.",
+    "It is not 8 because the roster clause — the second half of the Clock cost 6 rung's own words — passes against a control arm containing zero people, reports a Lilmoth roster from Archon's hearth, and is c2_night_roster_active: false inside the aggregation, where the whole row reports pass: false.",
+    "AR-1 passes and this round is why: it found and closed a leak its own predecessor shipped. No hard fail is triggered on either item; HF1-HF6 all checked against live rows in the r4 aggregation."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-13-roster-clause-has-no-control",
+    "subsystem_path": "world.time.daynight",
+    "severity": "major",
+    "size": "S",
+    "what": "The clause that sets this item's score is passing against a control that contains no people, and the round's own aggregation says so. RI-PRG04's Clock cost axis puts 'clock advances AND ROSTER SWAPS' at its 6 rung, and the round-3 verdict's acceptance named the roster half explicitly: '>= 1 named NPC whose slotAt() location differs across the rest, WITH THE REST REMOVED AS THE CONTROL ARM'. In reports/runs/W1-13-R4/clock-consequences.json — and identically in -a.json — the rested arm's roster has 52 entries, the no-rest control's has 0, and the four-rest arm's has 0. 'control_npcs_moved: 0' is an empty town, not a control, and the probe's own control_note says such a row is void. All three arms record well: 'hearth-archon' while the 52 people are Lilmoth's residents, so the population the clause passes on is not the population of the town the arm is standing in. c6's roster_changed: 0 is vacuous for the same reason. And in reports/journeys/w1-13-r4-jrn06/journey.json at 1110bf7 with page_errors: [], m_prg04_m8_clock_consequence is the ONE failing row of 43 and it fails on c2_night_roster_active: false with roster: {} in all three arms.",
+    "why_it_matters": "The AR-1 fix is genuinely closed and survived four independent attempts to break it. The '151x' is a framing complaint. The save-scum is real but is 15 souls and a one-field remedy. This one is the only clause standing between Clock cost and its next rung, it is the clause the previous verdict wrote the acceptance for, the round's own aggregation reports it red, and the failure mode — a control arm that is EMPTY rather than UNCHANGED — is RULES.md 4's exact words: a probe that cannot fail is worse than no probe.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-13-r4/critic-clock.json",
+      "reports/journeys/w1-13-r4-jrn06/journey.json",
+      "reports/runs/W1-13-R4/clock-consequences.json"
+    ],
+    "remedy": {
+      "action": "Make the population an asserted precondition of the arm rather than a hope. stepSettlement installs a town only on a CROSSING (settlement.js:154, `if (want !== sim.env.settlement)` then `sim.populate(want)`), and game/data/states/default.json names no settlement and no npcs, so an arm that starts inside the radius never crosses and an arm that reloads mid-sequence may not re-cross. Either (a) give the method-8 arm a named state that declares env.settlement so engine.js:950-956 populates on load and the crossing is not depended on, or (b) teleport OUTSIDE the settlement radius, step, then teleport in — and in both cases assert roster_n > 0 before reading anything, so an empty town turns the row red instead of green.",
+      "acceptance": "In one `node tools/journey/journey-run.mjs --journey jrn06-death` run: m_prg04_m8_clock_consequence.rested.before.roster_n >= 20 AND control.before.roster_n >= 20 AND four_rests.before.roster_n >= 20, every arm's roster drawn from the settlement named in `well`; rested.npcs_moved_n >= 1; control.npcs_moved_n === 0 WITH PEOPLE IN IT; four_rests.npcs_moved_n === 0 WITH PEOPLE IN IT; and the row's own pass: true. Plus a guard inside the instrument that fails the row when any arm's roster is empty, so this cannot recur silently.",
+      "targets": [
+        "tools/journey/jrn06-death.mjs",
+        "tools/harness/w1-13-r4-clock-consequences.mjs",
+        "game/data/states/"
+      ]
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "A save and a reload buy back the night rate: 42 souls become 57 for the same enemy.",
+      "detail": "save/state.js:344-348 persists clock.time_of_day, clock.day_count and clock.weather. _awardFrames and awardTimeOfDay are in NEITHER the blob nor the loader. A load therefore writes env.timeOfDay from outside the step, Environment._syncFromFloat re-seats the award clock on it, and the death-stolen offset vanishes. Near the DAWN edge that offset runs against the player, so discharging it is a gain: from 04:48, 20 deaths leave the world clock at 4.802 and the award clock at 5.078, and one inf_trash pays 42; saving and reloading the same state re-seats the award clock to 4.802 and the same enemy pays 57. +35% for a reload, with no world event in between. It is invisible to m_d4_across_death_diff and m_d10_d11_preserved by construction, because they diff the save blob and the field is not in it. Remedy: put clock.award_frames in the blob and read it back — one field, one line each side, and m_d4 starts covering it for free.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-13-r4/critic-clock.json"
+      ]
+    },
+    {
+      "what": "The souls economy and the province can disagree about whether it is night.",
+      "detail": "The fix buys AR-1 by letting the two clocks diverge at 0.013889 h per death (150 f@60), discharged at the next rest, setTimeOfDay or load. From 20:42, 22 deaths put the award clock at 21.008 while the world clock is still 20.702: the same enemy pays 57 — the night price — while 38 of 115 interiors are open and the province is going about its evening. This is NOT AR-1, because living those frames pays 57 too, which is the fix's whole point. But it is a state the world can be put into by dying, it is reachable in one boss attempt, and no instrument in the round reports it. getEnvironment() already publishes award_offset_h and nothing scores it.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-13-r4/critic-clock.json"
+      ]
+    },
+    {
+      "what": "The '151x' is an arithmetic identity, not a magnitude.",
+      "detail": "0.559259 h = 6,040 f@60 = 40 deaths x 151 f@60 (SURFACE_FRAMES = 150 at death.js:28, plus the one frame the killing blow lands on when the player is still alive at the top of sim/step.js's frame order). 0.003703 h = 40 f@60. 151 = 6,040 / 40 = SURFACE_FRAMES + 1, and given this fixture the ratio could not have taken any other value. It is also a measurement of ROUND 3's fix, not round 4's. The small arm IS small because time genuinely does not pass, and the instrument can go red — the same frames spent alive burn 0.559259 h in the same probe, which I reproduce (0.003888 h dying against 0.559444 h alive; my 42 frames rather than 40 because my fixture spends two extra frames per kill). Report '40 f@60 against a ceiling of 41 f@60' and retire the ratio."
+    },
+    {
+      "what": "The merchant number moved under the round inside one day: 71 of 115 is now 77 of 115.",
+      "detail": "Six dwellings — archon-house-2, blackrose-house-0, gideon-house-1, helstrom-house-5, stormhold-house-1, stormhold-house-2 — declared open_h: 0 / close_h: 24 at the builder's probe commit 0f6ff17 and declare open_h: 8 / close_h: 19 at HEAD, changed by a neighbour's commit 444d43d. Under the shipped isOpen that flips them from always-open to shut at 23:00. The builder's 71 was correct when taken. Read out of 0f6ff17 rather than inferred. RULES.md 12 demonstrated in a day."
+    },
+    {
+      "what": "c6 is an arithmetic identity dressed as a world observation.",
+      "detail": "isOpen(id, hour) and slotAt(schedule, hour) are pure functions of the hour, so 'rest 4x and the shop state returns' cannot fail unless c5's clock arithmetic fails. I confirmed both halves: the reader is live (moving archon-apothecary's hours flips its readback on the same call) and the perturbation SURVIVES the 24-hour round trip, which a restoration would have undone. The hearth loop neither restores nor re-rolls the world — the shop and roster layers are stateless projections of the clock, so what comes back is the clock. The rows that carry real information here are m_d5, m_d6 and m_d16, which are green and are a different row."
+    },
+    {
+      "what": "weather.json's state array order is load-bearing and nothing says so.",
+      "detail": "Environment._roll() walks m.states in array order accumulating `acc += w[i]` and returns the first id whose partial sum exceeds the draw. Re-running 40,000 f@60 with the state array reversed settles the world on `still` instead of `canopy_dim`. Not a defect today — the order comes from a JSON array — but the weather machine's determinism is a property of a data file's key order rather than of its arithmetic, and a future generator emitting states from an object or a Map would change the weather without changing a line of code. The clock beside it is immune by construction: it is an integer frame counter, and the accumulate-a-float clock it replaced drifts 9.578e-11 h per game day (measured). This is the same IEEE-754 family a sibling piece root-caused elsewhere, living in this very file and currently masked."
+    },
+    {
+      "what": "The r4 ledger schema change made the aggregation harder to read, not easier.",
+      "detail": "Instruments now carry status: 'measured' | 'unmeasurable' at the top level and the pass/fail lives INSIDE value, so a naive count of pass: true over the ledger returns ZERO on a run with 24 passing rows. Round 3's path_to_ten item 7 asked for the top-level ok to be SPLIT into ok_pass and ok_coverage; it has instead been made less legible, and journey.ok is still !anyUnmeasurable."
+    },
+    {
+      "what": "The builder's status file presents the roster number without its aggregation result.",
+      "detail": "Finding 1 reads 'ROSTER: 25 live NPCs are in a different cell after the rest; the control moves ZERO', and the note four lines above it says the same instrument is FAIL inside the journey with the diagnosis in progress. Both are true; only one is in the findings list, and it is the flattering one. RULES.md 26 is met by the note and undercut by the finding."
+    },
+    {
+      "what": "souls_awarded now carries award_hour beside hour.",
+      "detail": "A critic reading the event stream can see the two clocks diverge without taking souls.js's word for it. Cheap, correct, and worth saying."
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-13-clock-consequences-never-fire",
+      "status": "partially-closed",
+      "measured_value": "Comparison method 8 has been run for the first time in four rounds. Of its six measurable clauses: c1 (clock 17:00 -> 23:003148, every rest exactly 6 h) PASSES; c3 (merchants closed — 71 of 115 at the builder's commit, 77 of 115 at HEAD, no-rest control 0) PASSES with a real control; c7 (souls 42 -> 57, ratio 1.3571, control 1.00, driven through a killed inf_trash body) PASSES and is the strongest clause in the set; c5 (four rests advance 24.003518 h, day +1) PASSES and I extend it to 4/8/12 rests from three start hours. c2 (night roster active) has a control containing ZERO PEOPLE and is pass: false in the aggregation. c6 (same shop state after the round trip) is a re-read of c5 rather than an independent observation, and its roster half is vacuous for c2's reason. c4 (timed quest consumed 6 h) is unmeasurable => 0 on a dead consumer: onDay appears once in game/**, its own definition at sim/quest/machine.js:712, and game/data/quests/hooks.json declares deadlines: [].",
+      "acceptance_restated": "One aggregation row reporting, in a single run: clock 17:00 -> 23:00 after the rest; souls_per_ordinary_kill 1.35x higher after the rest and 1.00x in the no-rest control; >= 1 merchant is_open true before and false after; >= 1 named NPC whose slotAt() location differs across the rest; and 4 consecutive rests advancing the clock 24 h and returning all three readings to their starting values. Plus, in the death arm, 4 deaths at 20:58 moving the clock 0.000000 h with the fix in and >= 0.05 h with it out, with the same-kill souls award differing between the two arms.",
+      "closed_by": "Four of the six clauses, with genuine same-frames no-rest controls, plus the death arm in full (0.003703 h shipped against 0.559259 h with the clock hold deleted; the same-kill award 42 vs 57 with the AWARD clock deleted, which is where the consumption demonstration now correctly lives since the shipped tree makes T6 read 57 = 57 by design). The named-NPC clause is NOT closed: its control is empty and the aggregation row is red. That is why this is partially_closed and why it becomes the next round's biggest gap in a smaller form.",
+      "evidence": [
+        "reports/runs/W1-13-R4/clock-consequences.json",
+        "reports/journeys/w1-13-r4-jrn06/journey.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-13-r4/critic-clock.json"
+      ]
+    },
+    {
+      "gap_id": "GAP-W1-13-r3-clock-artifact-carries-a-stale-verdict",
+      "status": "closed",
+      "measured_value": "tools/harness/w1-13-r3-clock.mjs re-run so reports/runs/W1-13-R3/clock.json carries the verdict its own predicate produces. T5 renamed to T5_death_burn_is_bounded_and_the_arms_differ — what it actually measured — with the old name published as deprecated so an older reader is not silently reinterpreted, and T6 added as the entity arm.",
+      "acceptance_restated": "r3 path_to_ten item 2.",
+      "closed_by": "the round, and it handled the rename in the safe direction.",
+      "evidence": [
+        "reports/runs/W1-13-R3/clock.json"
+      ]
+    }
+  ],
+  "corpus_extended": [
+    {
+      "id": "RI-PRG04",
+      "path": "corpus/20-progression/RI-PRG04-hearth-and-death.md",
+      "area": "20-progression",
+      "judges": [
+        "world.time.daynight"
+      ],
+      "reason": "corpus_hole",
+      "what": "Comparison method 8's four assertions are all READS OF A PROJECTION OF THE HOUR. 'merchants are closed' is settlement.js#isOpen(id, hour) and 'the night roster is active' is npc.js#slotAt(schedule, hour) — both pure functions of the clock, so the four-rest round-trip clause ('returns to the same shop state') cannot fail unless the clock arithmetic fails and carries no independent information. The one clause that drives a CONSUMER rather than reading a projection — an ordinary kill paying 1.35x after the rest, through sim/souls.js awardFor — is not in the item at all; the W1-13 round-3 verdict added it as acceptance and round 4 measured it. Proposed amendment: method 8 gains a fifth assertion, 'an ordinary enemy killed after the rest pays NIGHT_MULTIPLIER x what the same archetype paid before it, with a no-rest control at exactly 1.00', and its round-trip clause is either restated as a clock check or replaced by the rest-kill-rest observation (an ordinary respawns, a named one does not) that RI-PRG04 method 1 already owns. As written the method's strongest evidence lives only in a verdict and its weakest clause reads as a world observation."
+    }
+  ],
+  "arbitration_questions": [
+    {
+      "id": "AQ-W1-13-r4-01",
+      "question": "Is it acceptable that the souls economy and the province can disagree about whether it is night — that after 22 deaths without resting an enemy pays the night rate while every shop in the world is still open — and if not, which of RI-PRG04 §6 rule 4 (the clock must not advance on death) and AR-1 (a death must not pay) gives way?",
+      "souls_side": "AR-1 is absolute: spending N frames dead and N frames alive must leave the same enemy worth the same. That requires a clock that ticks through death, which is what the award clock is.",
+      "morrowind_side": "RI-PRG04 §6 rule 4 is equally absolute: dying repeatedly at a boss must not burn a quest deadline. That requires a clock that does NOT tick through death. The world the player looks at — shops, schedules, the journal date — must be one clock, and a price that disagrees with the sky is a Morrowind-side incoherence.",
+      "why_it_cannot_be_settled_by_a_builder": "The two requirements are jointly unsatisfiable with one clock, so the build's answer — two clocks, discharged at every rest — is the only shape that meets both, and the residual incoherence is a consequence rather than a defect. Whether that residual is acceptable, and up to what offset, is a design ruling and not a measurement. A third option exists and should be ruled on rather than assumed away: charge the death interval to the award clock ONLY, and let quest deadlines read a third quantity (days elapsed) that death cannot move either.",
+      "proposed_default": "Accept the two clocks, bound the offset (discharge it at a ceiling as well as at a rest), publish award_offset_h as a scored quantity, and persist it in the save so a reload is neutral."
+    }
+  ],
+  "method_deviations": [
+    {
+      "what": "I launched no browser. Every number in this verdict is taken node-side against the SHIPPED sim modules.",
+      "why": "RULES.md 21. pgrep -c headless_shell ran 18 -> 24 -> 42 with /proc/loadavg 16.87 -> 29.45 on four cores across my whole run. game/src/sim/environment.js, souls.js, settlement.js and npc.js all have ZERO imports (asserted in the probe), so they relocate into a bare-node mini-sim exactly, stepped in sim/step.js's own order (environment, then souls). The trade is stated rather than hidden: I gain an independent path to the same modules and lose the ability to root-cause the empty roster, which the verdict says plainly.",
+      "affects_scores": false
+    },
+    {
+      "what": "My delete-the-fix is a SOURCE deletion, not the builder's runtime overwrite.",
+      "why": "tools/harness/w1-13-r4-clock-consequences.mjs:310 makes its 'fix deleted' arm by writing sim.env.awardTimeOfDay = sim.env.timeOfDay over the top of §1b every frame. That is a simulated removal: §1b still runs and its output is overwritten afterwards. RULES.md 6 asks for the change to be REMOVED, so I cut §1b's three executable lines and the _syncFromFloat discharge out of one copy of environment.js and the awardHour read out of one copy of souls.js, and imported the copies. A cut matching zero or more than one time throws rather than reporting a number; all three matched exactly once.",
+      "affects_scores": false
+    },
+    {
+      "what": "I ran a 2x2 factorial the round did not run, and a 96-start-hour sweep instead of two boundary hours.",
+      "why": "'The arms differ' establishes that SOMETHING changed; it does not establish that the named mechanism is the one that changed. The off-diagonal cells do. And an invariant asserted at the two hours where it is most likely to be true or false by luck is weaker than the same invariant asserted across the day.",
+      "affects_scores": true
+    },
+    {
+      "what": "My own instrument went red twice before it was right, and both causes were my fixtures rather than the world.",
+      "why": "Draft 1's sweep used 8 deaths — 1,208 f@60, 6.7 game minutes — which on a quarter-hour start grid can never walk a living player across 05:00 or 21:00, so both arms agreed at all 96 hours and the sweep distinguished nothing (RULES.md 8). Draft 1's determinism block alternated whether a kill happened between rests across its 40 'repeats' and then asked whether all 40 agreed — they cannot, because a kill costs two extra frames. Both are recorded in comments at the lines that caused them; both earlier readings are void.",
+      "affects_scores": false
+    },
+    {
+      "what": "I did not re-run the aggregation.",
+      "why": "It is a 21-minute browser run taken at 1110bf7 with 0 page errors. I re-counted its 43 instruments off the file and read the source of the row I doubted (tools/journey/jrn06-death.mjs:330-440).",
+      "affects_scores": false
+    },
+    {
+      "what": "I did not re-derive the spacing Dijkstra, S7's network, m_d13, m_d15, m_d16, m_d17 or the bloom factorial.",
+      "why": "Round 4 did not touch them and round 3 measured them. Those axes carry round 3's scores and are marked as carried in the score table.",
+      "affects_scores": false
+    },
+    {
+      "what": "No image, against RULES.md 27.",
+      "why": "My file ownership for this task does not include docs/shots/. Reported rather than taken quietly. The artifact carries every number a picture would have shown, and the builder's own docs/shots/2026-08-07-w1-13-r4-dying-must-not-change-the-price.png already draws the AR-1 arms.",
+      "affects_scores": false
+    },
+    {
+      "what": "node tools/boot-check.mjs was not run.",
+      "why": "It draws a frame and therefore needs a browser. At 42 concurrent browsers launching one would have been the wrong trade, and RULES.md 26 says a blocked task honestly reported is a result. It is declared as NOT RUN and NOT CLAIMED. The five gates that need no browser were run and all PASS. I touched no game/ source, so the risk this covers is not one my work creates.",
+      "affects_scores": false
+    }
+  ],
+  "source_reads": [
+    {
+      "path": "game/src/sim/environment.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "IMPORTED AND STEPPED, not read for its answers — the module is the thing under test and its behaviour was measured before any line of it was read. §1b is the model under test; the file was imported and stepped rather than read. Read _roll() AFTER measuring that reversing weather.json's state array changes the settled weather, to name the mechanism (acc += w[i] in array order, and a cumulative selection that returns ids[i])."
+    },
+    {
+      "path": "game/src/sim/souls.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "IMPORTED AND STEPPED, not read for its answers — the module is the thing under test and its behaviour was measured before any line of it was read. awardFor() and SoulsSystem.step() were imported and driven with real bodies; awardHour at line 317 is the second half of the fix under test."
+    },
+    {
+      "path": "game/src/sim/settlement.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "IMPORTED AND STEPPED, not read for its answers — the module is the thing under test and its behaviour was measured before any line of it was read. isOpen() called on the shipped SettlementSystem prototype so a change to the wrap turns my numbers red. Read stepSettlement():154 AFTER establishing that five of six method-8 arms have no population, to name the crossing as the only installer."
+    },
+    {
+      "path": "game/src/sim/quest/machine.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read onDay() at 712 after the repo-wide grep returned one occurrence, to confirm the model is correct (it matches dayCount - opened_day against d.days and calls fail()) and that the absence is wiring rather than logic."
+    },
+    {
+      "path": "game/src/save/state.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read the clock block at 344-348 and the loader at 764-769 AFTER measuring that a reload turns 42 souls into 57, to establish that _awardFrames is in neither."
+    },
+    {
+      "path": "game/src/engine.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read isOpenNow() at 7788, listInteriors() at 7755 and the loadState population block at 940-956 after the six-shop discrepancy and the empty-roster finding, to rule out a fail-open default (there is one — isOpen returns true for an unknown interior — but all 115 ids resolve, so it is not the cause) and to name where a population can come from."
+    },
+    {
+      "path": "game/src/sim/state.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Confirmed SimState.reset() rebuilds env with settlement: null and empties this.npcs, which rules out a stale settlement id as the cause of the empty roster and is why the verdict names the crossing as the thing to chase rather than asserting a mechanism it did not confirm."
+    }
+  ],
+  "self_audit": {
+    "did_i_find_a_gap": true,
+    "is_the_gap_new_this_round": true,
+    "did_i_re_derive_a_builder_number": true,
+    "which": "Six. (1) The AR-1 invariant: reproduced 42=42 at 04:30 and 57=57 at 20:58 through a source-level deletion rather than a runtime overwrite, and extended to 96 start hours. (2) The defect it fixes: reproduced 57-vs-42 and 42-vs-57 at exactly the 4 start hours where 0.559 h of living crosses a window edge. (3) The determinism claim: 36 populations at 40 repeats, all bit-identical, against the builder's four. (4) The merchant count: 77 of 115 at HEAD against the builder's 71 at 0f6ff17, with the six re-houred dwellings read out of the builder's own commit. (5) The souls rate: awardFor(inf_trash, 17.0) = 42 and awardFor(..., 23.0) = 57 computed off the shipped statblock. (6) The onDay grep, run over the whole repo rather than over game/ and tools/.",
+    "did_i_break_my_own_instrument": true,
+    "how": "Twice, and both times it caught me rather than passing. The 96-hour sweep's first fixture was too short to cross a night boundary and reported a clean bill of health for a comparison that could not distinguish anything; the determinism block's first population alternated a kill between rests and reported a determinism defect that was its own frame accounting. The probe exits non-zero on an inert delete-the-fix arm and on a source cut that matches zero or more than one time, and both of those assertions fired during development.",
+    "did_i_judge_a_pack_i_built": false,
+    "did_i_run_the_aggregation": false,
+    "aggregation_note": "Not re-run — re-counted off reports/journeys/w1-13-r4-jrn06/journey.json at 1110bf7 with 0 page errors, and it is the aggregation that carries this verdict's biggest finding: the round's headline instrument is the one failing row of 43.",
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": true,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true
+  },
+  "instrument_tally": {
+    "total": 43,
+    "pass": 24,
+    "fail": 1,
+    "unmeasurable": 4,
+    "descriptive_no_pass_field": 14,
+    "top_level_ok": false,
+    "top_level_ok_note": "journey.ok is still !anyUnmeasurable, unchanged from r3 despite r3's path_to_ten item 7. The r4 ledger additionally moved pass/fail INSIDE value and put status: 'measured'|'unmeasurable' at the top level, so counting pass: true over the ledger rows returns zero on a run with 24 passing rows. The one pass: false row is m_prg04_m8_clock_consequence, failing on c2_night_roster_active."
+  },
+  "notes": "Round 3 scored 6 and named the clock's consequence chain as the single biggest gap. Round 4 ran RI-PRG04's Comparison method 8 for the first time in four rounds, and in doing so found an AR-1 leak its own predecessor had shipped — a world clock frozen by death, read by the souls economy, so that dying at the dawn edge paid 35 per cent more than living the same frames. Under ARBITRATION §3 that is an automatic fail of the piece regardless of score, and the round found it against itself, named it correctly, and closed it in four executable lines. I could not break the closure: a source-level deletion reproduces the defect exactly, a 2x2 shows both halves of the fix are individually necessary, the invariant holds at 96 of 96 start hours, and a reach census says neither clock touches a frame number, a damage value, a poise value or a stamina value anywhere in the build. What holds the piece at 6 is not that. It is that the one clause the previous verdict wrote an acceptance for — a named NPC in a different place after the rest, WITH THE REST REMOVED AS THE CONTROL — is scored against a control arm containing nobody, reports a Lilmoth roster taken from Archon's hearth, and comes back pass: false in the aggregation, which the builder disclosed and left open. The fix is excellent. The evidence for the number beside it is not."
+}

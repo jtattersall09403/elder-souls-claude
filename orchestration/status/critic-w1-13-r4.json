@@ -1,0 +1,61 @@
+{
+  "task_id": "critic-w1-13-r4",
+  "item": "RI-PRG04 + RI-JRN06",
+  "title": "CRITIC: W1-13 round 4 — death, recovery, the hearth loop, levelling",
+  "state": "complete",
+  "started_at": "2026-08-07",
+  "finished_at": "2026-08-08",
+  "verdict": "FAIL — 6 / 10 (wave-1 gate 7.0). RI-JRN06 89/100 -> ladder 6; RI-PRG04 7/10 (min-over-axes, set by Clock cost, up from 6). Round 3 was 6.",
+  "next_step": "builder round 5: close GAP-W1-13-roster-clause-has-no-control (put people in the control arm and assert roster_n > 0 before reading anything), then the three small carried items — persist clock.award_frames, ship one quest deadline and call onDay() from the world, and retire the '151x'.",
+  "files_claimed": [
+    "orchestration/status/critic-w1-13-r4.json",
+    "corpus/90-verdicts/wave1/W1-13-r4.md",
+    "corpus/90-verdicts/wave1/W1-13-r4.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r4/",
+    "tools/analysis/critic-w1-13-r4-clock.mjs",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_touched": [
+    "orchestration/status/critic-w1-13-r4.json",
+    "corpus/90-verdicts/wave1/W1-13-r4.md",
+    "corpus/90-verdicts/wave1/W1-13-r4.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r4/critic-clock.json",
+    "tools/analysis/critic-w1-13-r4-clock.mjs",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": ["W1-13-r4"],
+  "notes": [
+    "NO game/ SOURCE TOUCHED. The delete-the-fix arms are copies of game/src/sim/environment.js and game/src/sim/souls.js cut in a scratchpad directory and imported from there; the tree was never modified. RULES.md 17 checked in the probe with `git diff --cached --name-only` — both files clean in the index AND the worktree for the whole run.",
+    "redundant_with W1-13-r4 declared rather than left to read as a collision (RULES.md 16): a critic reads the builder's reports/ and status by design, and reports/blog-feed.jsonl is appended by every piece.",
+    "CONTENTION, declared under RULES.md 26. pgrep -c headless_shell ran 18 -> 24 -> 42 with /proc/loadavg 16.87 -> 29.45 on four cores for the whole run. NO BROWSER WAS LAUNCHED. Every measurement is node-side against the shipped sim modules (environment.js, souls.js, settlement.js, npc.js all have ZERO imports and relocate exactly), stepped in sim/step.js's own order. Every figure is a soul count, an hour, a frame count, a shop count, a person count or a boolean; all are frame-based and load-independent. NO TIMING FIGURE APPEARS ANYWHERE.",
+    "node tools/boot-check.mjs NOT RUN and NOT CLAIMED — it draws a frame and needs a browser. The five gates that need none were run: check-data, check-quests, check-content, check-prose, corpus-index, all PASS. I touched no game/ source, so the risk boot-check covers is not one this task creates.",
+    "NO IMAGE, against RULES.md 27, because docs/shots/ is outside this task's declared file ownership. Declared in the verdict's method_deviations rather than taken quietly."
+  ],
+  "findings": [
+    "THE AR-1 FIX IS REAL AND IT IS WHERE THE BUILDER SAYS IT IS. I did the delete-the-fix by CUTTING THE SOURCE rather than by the builder's runtime overwrite (w1-13-r4-clock-consequences.mjs:310 writes sim.env.awardTimeOfDay = sim.env.timeOfDay over the top of §1b every frame, which leaves §1b running). All three cuts matched exactly once, a cut matching 0 or >1 times throws. Shipped: 42=42 at 04:30, 57=57 at 20:58. Cut: 57 vs 42, and 42 vs 57. Reproduced exactly.",
+    "AND A 2x2 THE ROUND DID NOT RUN SAYS IT IS NOT A CORRELATE. {environment.js §1b present|deleted} x {souls.js reads awardTimeOfDay|reads timeOfDay}: ONLY THE SHIPPED CELL IS EQUAL. Each half is individually necessary and neither alone is sufficient.",
+    "THE INVARIANT HOLDS AT 96 OF 96 START HOURS, not at the two boundary hours the round tested. With the fix cut out it breaks at exactly 4 — 04:30, 04:45, 20:30, 20:45, the quarter-hours from which 0.559 h of living crosses a night-window edge. That is why three rounds did not see it.",
+    "THE CLOCK REACHES NO FRAME NUMBER. Reach census over every .js/.mjs under game/src/**, comments excluded: awardTimeOfDay has 5 reader lines, ONE of them outside environment.js (souls.js:317), and ZERO in game/src/combat/** or sim/combat*. env.timeOfDay has 45 reader lines and ZERO in combat code. isNight( has 2, both inside souls.js. No damage, poise, stamina or frame value in this build is a function of either clock. The three phaseOf( hits in sim/combat-bridge.js are the ANIMATION phase — a different function, checked not assumed. AR-1 PASSES.",
+    "DETERMINISM HOLDS FAR PAST WHERE IT WAS CLAIMED. 36 populations — 6 start hours x {4,8,12} rests x {kill between, no kill} x 40 repeats — each returning exactly ONE distinct trace, where the trace fingerprints both clocks, the frame counters, phase, daylight, weather, front progress, sightline and souls after EVERY rest.",
+    "FLOAT ORDERING: NOT load-bearing for the clock, IS load-bearing for the weather machine beside it. The clock is an integer frame counter; the accumulate-a-float clock it replaced drifts 9.578e-11 h per game day (measured). But Environment._roll() walks m.states in ARRAY order accumulating acc += w[i], and reversing weather.json's state array settles the world on `still` instead of `canopy_dim` after 40,000 f@60. Not a defect today; the weather's determinism is a property of a data file's key order rather than of its arithmetic.",
+    "THE SINGLE BIGGEST GAP — GAP-W1-13-roster-clause-has-no-control. The clause that sets this item's score passes against a control containing ZERO PEOPLE. In reports/runs/W1-13-R4/clock-consequences.json AND in -a.json: rested arm roster 52, no-rest control roster 0, four-rest arm roster 0. `control_npcs_moved: 0` is an empty town, and the probe's own control_note says such a row is VOID. All three arms record well: hearth-archon while the 52 are LILMOTH's residents — the population is not the town the arm is standing in. c6's roster_changed: 0 is vacuous for the same reason. And m_prg04_m8_clock_consequence is the ONE failing row of 43 in the aggregation (1110bf7, page_errors []), failing on c2_night_roster_active: false with roster {} in all three arms.",
+    "THE '151x' IS AN ARITHMETIC IDENTITY. 0.559259 h = 6,040 f@60 = 40 deaths x 151 f@60 (SURFACE_FRAMES 150 at death.js:28 plus the one frame the killing blow lands on). 0.003703 h = 40 f@60. 151 = 6,040/40 = SURFACE_FRAMES + 1 and could not have been any other number given this fixture. The small arm IS small because time genuinely does not pass, and the instrument can go red (the same frames alive burn 0.559259 h) — but the ratio is a restatement of round 3's fix, not a magnitude. Report '40 f@60 against a ceiling of 41'.",
+    "A SAVE AND A RELOAD BUY BACK THE NIGHT RATE. save/state.js:344-348 persists clock.time_of_day, day_count and weather; _awardFrames and awardTimeOfDay are in NEITHER the blob nor the loader. From 04:48, 20 deaths leave the world clock at 4.802 and the award clock at 5.078, and one inf_trash pays 42; reloading the same state re-seats the award clock and the same enemy pays 57. +35% for a reload, no world event in between, and invisible to m_d4 and m_d10_d11 by construction because they diff the save blob and the field is not in it. Remedy: one field, clock.award_frames.",
+    "THE TWO CLOCKS CAN DISAGREE ABOUT WHETHER IT IS NIGHT. Offset grows 0.013889 h per death (150 f@60). From 20:42, 22 deaths put the award clock at 21.008 while the world clock is still 20.702: the enemy pays the NIGHT price while 38 of 115 interiors are open. Not AR-1 (living the same frames pays the same) but a state dying can put the world into, reachable in one boss attempt, reported by nothing.",
+    "CLAUSE 4 VERIFIED AND REJECTED AS 'UNMEASURABLE'. onDay appears ONCE in game/** — its own definition at sim/quest/machine.js:712 — and hooks.json declares deadlines: []. QuestMachine is not in sim/step.js's system list at all. Under ARBITRATION §3 that is unmeasurable => 0, and the round-3 requirement CAN be met in two edits: author one deadline row (the builder's own probe already builds one by hand and shows onDay() reaching fail()), and call onDay(env.dayCount) on the day rollover environment.js:183 already detects — via a frame-to-frame dayCount compare in the Engine, which needs no new event name and so does not touch the closed vocabulary (RULES.md 15).",
+    "c6 IS AN ARITHMETIC IDENTITY DRESSED AS A WORLD OBSERVATION. isOpen(id, hour) and slotAt(schedule, hour) are PURE FUNCTIONS OF THE HOUR, so 'rest 4x and the shop state returns' cannot fail unless c5's clock arithmetic fails. Confirmed both ways: the reader is live (moving archon-apothecary's hours flips the readback on the same call) and the perturbation SURVIVES the 24-hour round trip, which a restoration would have undone. The hearth loop neither restores nor re-rolls — the shop and roster layers are stateless projections of the clock, so what comes back is the clock.",
+    "THE MERCHANT NUMBER MOVED UNDER THE ROUND IN ONE DAY. 71 of 115 shut at the builder's commit 0f6ff17; 77 of 115 at HEAD. Six dwellings (archon-house-2, blackrose-house-0, gideon-house-1, helstrom-house-5, stormhold-house-1, stormhold-house-2) went from open_h 0 / close_h 24 to open_h 8 / close_h 19 in a neighbour's commit 444d43d. Read out of 0f6ff17, not inferred. RULES.md 12 demonstrated inside a day; no fault attaches to the round.",
+    "MY OWN INSTRUMENT WENT RED TWICE AND BOTH CAUSES WERE MY FIXTURES. Draft 1's sweep used 8 deaths — 1,208 f@60, 6.7 game minutes — which on a quarter-hour grid can never walk a living player across 05:00 or 21:00, so both arms agreed at all 96 hours and the sweep distinguished nothing (RULES.md 8). Draft 1's determinism block alternated whether a kill happened between rests across its 40 'repeats'. Both are recorded in comments at the lines that caused them and both earlier readings are void.",
+    "WHAT ROUND 4 EARNED, said plainly: it found an AUTOMATIC FAIL in its own predecessor's fix — a leak that would have failed the piece regardless of score under ARBITRATION §3 — named it correctly, measured it in both directions with the harder control (the same frames spent ALIVE, not delete-the-fix), and closed it in four executable lines. It also voided two of its own earlier claims in the tree rather than leaving a comment documenting a fix for something it had not fixed, and it declined to land the §P.6 UI remedy because the file belongs to two other pieces. The score does not move because it is set by RI-JRN06's native band, which this round's brief did not touch."
+  ],
+  "gates": {
+    "check-data": "PASS",
+    "check-quests": "PASS",
+    "check-content": "PASS",
+    "check-prose": "PASS",
+    "corpus-index": "PASS",
+    "verdict-validate": "PASS (corpus/90-verdicts/wave1/W1-13-r4.json)",
+    "publish": "see notes",
+    "boot-check": "NOT RUN — needs a browser at 42 concurrent; declared, not claimed"
+  }
+}

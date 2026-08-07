@@ -1,0 +1,659 @@
+{
+ "schema": "elder-souls/critic-probe@1",
+ "tool": "tools/analysis/critic-w1-13-r4-clock.mjs",
+ "item": "RI-PRG04 / RI-JRN06 — W1-13 round 4, CRITIC",
+ "git": {
+  "commit": "852bb87d74caf65c1b3f1740b6eb65a07d5ff5d8",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "dirty": true,
+  "index_env": "(clean)",
+  "index_souls": "(clean)",
+  "worktree_env": "(clean)",
+  "worktree_souls": "(clean)"
+ },
+ "taken_at": "2026-08-07T23:45:38.624Z",
+ "contention_note": "node-side only. No browser was launched by this instrument; every figure is a soul count, an hour, a frame count or a boolean, and all are load-independent. S22: frame counts are written f@60.",
+ "a_arms_are_real": {
+  "cuts": [
+   {
+    "cut": "environment.js §1b tick",
+    "matched": 1,
+    "bytes_removed": 225
+   },
+   {
+    "cut": "environment.js §1b discharge",
+    "matched": 1,
+    "bytes_removed": -1
+   },
+   {
+    "cut": "souls.js awardHour read",
+    "matched": 1,
+    "bytes_removed": 26
+   }
+  ],
+  "env_arms_differ": true,
+  "souls_arms_differ": true
+ },
+ "b_factorial": {
+  "out_of_the_night_window": {
+   "env§1b IN / souls READS award": {
+    "dying_paid": 42,
+    "alive_paid": 42,
+    "equal": true,
+    "world_h_burned_dying": 0.003888,
+    "world_h_burned_alive": 0.559444,
+    "award_h_burned_dying": 0.559444
+   },
+   "env§1b IN / souls READS world": {
+    "dying_paid": 57,
+    "alive_paid": 42,
+    "equal": false,
+    "world_h_burned_dying": 0.003888,
+    "world_h_burned_alive": 0.559444,
+    "award_h_burned_dying": 0.559444
+   },
+   "env§1b OUT / souls READS award": {
+    "dying_paid": 57,
+    "alive_paid": 42,
+    "equal": false,
+    "world_h_burned_dying": 0.003888,
+    "world_h_burned_alive": 0.559444,
+    "award_h_burned_dying": 0.003888
+   },
+   "env§1b OUT / souls READS world": {
+    "dying_paid": 57,
+    "alive_paid": 42,
+    "equal": false,
+    "world_h_burned_dying": 0.003888,
+    "world_h_burned_alive": 0.559444,
+    "award_h_burned_dying": 0.003888
+   }
+  },
+  "into_the_night_window": {
+   "env§1b IN / souls READS award": {
+    "dying_paid": 57,
+    "alive_paid": 57,
+    "equal": true,
+    "world_h_burned_dying": 0.003889,
+    "world_h_burned_alive": 0.559445,
+    "award_h_burned_dying": 0.559445
+   },
+   "env§1b IN / souls READS world": {
+    "dying_paid": 42,
+    "alive_paid": 57,
+    "equal": false,
+    "world_h_burned_dying": 0.003889,
+    "world_h_burned_alive": 0.559445,
+    "award_h_burned_dying": 0.559445
+   },
+   "env§1b OUT / souls READS award": {
+    "dying_paid": 42,
+    "alive_paid": 57,
+    "equal": false,
+    "world_h_burned_dying": 0.003889,
+    "world_h_burned_alive": 0.559445,
+    "award_h_burned_dying": 0.003889
+   },
+   "env§1b OUT / souls READS world": {
+    "dying_paid": 42,
+    "alive_paid": 57,
+    "equal": false,
+    "world_h_burned_dying": 0.003889,
+    "world_h_burned_alive": 0.559445,
+    "award_h_burned_dying": 0.003889
+   }
+  }
+ },
+ "c_whole_day_sweep": {
+  "shipped_unequal_hours": [],
+  "deleted_unequal_hours": [
+   {
+    "hour": 4.5,
+    "dying": 57,
+    "alive": 42
+   },
+   {
+    "hour": 4.75,
+    "dying": 57,
+    "alive": 42
+   },
+   {
+    "hour": 20.5,
+    "dying": 42,
+    "alive": 57
+   },
+   {
+    "hour": 20.75,
+    "dying": 42,
+    "alive": 57
+   }
+  ],
+  "n": 96
+ },
+ "d_determinism": {
+  "repeats": {
+   "h17_x4": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 17.000463,
+    "drift_from_start_hour_frames": 5,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 1
+   },
+   "h17_x4_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 17.001204,
+    "drift_from_start_hour_frames": 13,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 1
+   },
+   "h17_x8": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 17.000833,
+    "drift_from_start_hour_frames": 9,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 2
+   },
+   "h17_x8_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 17.002315,
+    "drift_from_start_hour_frames": 25,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 2
+   },
+   "h17_x12": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 17.001204,
+    "drift_from_start_hour_frames": 13,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 3
+   },
+   "h17_x12_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 17.003426,
+    "drift_from_start_hour_frames": 37,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 3
+   },
+   "h3_x4": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 3.000463,
+    "drift_from_start_hour_frames": 5,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 1
+   },
+   "h3_x4_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 3.001204,
+    "drift_from_start_hour_frames": 13,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 1
+   },
+   "h3_x8": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 3.000833,
+    "drift_from_start_hour_frames": 9,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 2
+   },
+   "h3_x8_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 3.002315,
+    "drift_from_start_hour_frames": 25,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 2
+   },
+   "h3_x12": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 3.001204,
+    "drift_from_start_hour_frames": 13,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 3
+   },
+   "h3_x12_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 3.003426,
+    "drift_from_start_hour_frames": 37,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 3
+   },
+   "h23.5_x4": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 23.500463,
+    "drift_from_start_hour_frames": 5,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 1
+   },
+   "h23.5_x4_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 23.501204,
+    "drift_from_start_hour_frames": 13,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 1
+   },
+   "h23.5_x8": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 23.500833,
+    "drift_from_start_hour_frames": 9,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 2
+   },
+   "h23.5_x8_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 23.502315,
+    "drift_from_start_hour_frames": 25,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 2
+   },
+   "h23.5_x12": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 23.501204,
+    "drift_from_start_hour_frames": 13,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 3
+   },
+   "h23.5_x12_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 23.503426,
+    "drift_from_start_hour_frames": 37,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 3
+   },
+   "h0_x4": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 0.000463,
+    "drift_from_start_hour_frames": 5,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 1
+   },
+   "h0_x4_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 0.001204,
+    "drift_from_start_hour_frames": 13,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 1
+   },
+   "h0_x8": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 0.000833,
+    "drift_from_start_hour_frames": 9,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 2
+   },
+   "h0_x8_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 0.002315,
+    "drift_from_start_hour_frames": 25,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 2
+   },
+   "h0_x12": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 0.001204,
+    "drift_from_start_hour_frames": 13,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 3
+   },
+   "h0_x12_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 0.003426,
+    "drift_from_start_hour_frames": 37,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 3
+   },
+   "h11.999_x4": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 11.999444,
+    "drift_from_start_hour_frames": 5,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 1
+   },
+   "h11.999_x4_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 12.000185,
+    "drift_from_start_hour_frames": 13,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 1
+   },
+   "h11.999_x8": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 11.999815,
+    "drift_from_start_hour_frames": 9,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 2
+   },
+   "h11.999_x8_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 12.001296,
+    "drift_from_start_hour_frames": 25,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 2
+   },
+   "h11.999_x12": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 12.000185,
+    "drift_from_start_hour_frames": 13,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 3
+   },
+   "h11.999_x12_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 12.002407,
+    "drift_from_start_hour_frames": 37,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 3
+   },
+   "h20.966666_x4": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 20.96713,
+    "drift_from_start_hour_frames": 5,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 1
+   },
+   "h20.966666_x4_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 20.96787,
+    "drift_from_start_hour_frames": 13,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 1
+   },
+   "h20.966666_x8": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 20.9675,
+    "drift_from_start_hour_frames": 9,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 2
+   },
+   "h20.966666_x8_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 20.968981,
+    "drift_from_start_hour_frames": 25,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 2
+   },
+   "h20.966666_x12": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 20.96787,
+    "drift_from_start_hour_frames": 13,
+    "returns_to_start_hour_within_the_rest_frames": true,
+    "days_advanced": 3
+   },
+   "h20.966666_x12_kill": {
+    "runs": 40,
+    "distinct_traces": 1,
+    "bit_identical": true,
+    "hour_after": 20.970093,
+    "drift_from_start_hour_frames": 37,
+    "returns_to_start_hour_within_the_rest_frames": false,
+    "days_advanced": 3
+   }
+  },
+  "float_ordering": {
+   "clock": {
+    "accumulated_float_after_one_day": 24.00000000009578,
+    "exactly_24": false,
+    "integer_derived": 0,
+    "verdict": "the accumulator drifts by 9.57811607804615e-11 h over one day; the integer counter cannot"
+   },
+   "weather_roll": {
+    "states_in_declared_order": "canopy_dim",
+    "states_in_reversed_order": "still",
+    "order_is_load_bearing": true,
+    "note": "_roll() accumulates `acc += w[i]` over m.states in ARRAY order. The clock itself is an integer counter and is immune; this accumulator is not, and its determinism is a property of weather.json's key order rather than of the arithmetic."
+   }
+  }
+ },
+ "e_method_8_offline": {
+  "interiors_total": 115,
+  "npc_records_with_a_schedule": 309,
+  "shops_open_1700": 115,
+  "shops_open_2300": 38,
+  "shops_changed_1700_to_2300": 77,
+  "npcs_moved_1700_to_2300": 183,
+  "souls_1700": 42,
+  "souls_2300": 57,
+  "restoration_or_reread": {
+   "perturbed_interior": "archon-apothecary",
+   "reader_is_live": true,
+   "perturbation_survives_the_24h_round_trip": true,
+   "reading": "c6 asserts the shop state \"returns\". `isOpen(id, hour)` is a pure function of the hour, so it returns for the same reason 17:00 + 24 h is 17:00. The perturbation is NOT undone by the round trip, which is what a restoration would do. c6 tests the clock, not the world."
+  },
+  "round_trips": {
+   "h17.000741_x4": {
+    "hours_of_rest": 24,
+    "hour_after": 17.001944,
+    "whole_days": true,
+    "shops_changed": 0,
+    "npcs_moved": 0,
+    "day_advanced": 1
+   },
+   "h17.000741_x8": {
+    "hours_of_rest": 48,
+    "hour_after": 17.003056,
+    "whole_days": true,
+    "shops_changed": 0,
+    "npcs_moved": 0,
+    "day_advanced": 2
+   },
+   "h17.000741_x12": {
+    "hours_of_rest": 72,
+    "hour_after": 17.004167,
+    "whole_days": true,
+    "shops_changed": 0,
+    "npcs_moved": 0,
+    "day_advanced": 3
+   },
+   "h3_x4": {
+    "hours_of_rest": 24,
+    "hour_after": 3.001204,
+    "whole_days": true,
+    "shops_changed": 0,
+    "npcs_moved": 0,
+    "day_advanced": 1
+   },
+   "h3_x8": {
+    "hours_of_rest": 48,
+    "hour_after": 3.002315,
+    "whole_days": true,
+    "shops_changed": 0,
+    "npcs_moved": 0,
+    "day_advanced": 2
+   },
+   "h3_x12": {
+    "hours_of_rest": 72,
+    "hour_after": 3.003426,
+    "whole_days": true,
+    "shops_changed": 0,
+    "npcs_moved": 0,
+    "day_advanced": 3
+   },
+   "h23.5_x4": {
+    "hours_of_rest": 24,
+    "hour_after": 23.501204,
+    "whole_days": true,
+    "shops_changed": 0,
+    "npcs_moved": 0,
+    "day_advanced": 1
+   },
+   "h23.5_x8": {
+    "hours_of_rest": 48,
+    "hour_after": 23.502315,
+    "whole_days": true,
+    "shops_changed": 0,
+    "npcs_moved": 0,
+    "day_advanced": 2
+   },
+   "h23.5_x12": {
+    "hours_of_rest": 72,
+    "hour_after": 23.503426,
+    "whole_days": true,
+    "shops_changed": 0,
+    "npcs_moved": 0,
+    "day_advanced": 3
+   }
+  }
+ },
+ "f_reach_census": {
+  "awardTimeOfDay": [
+   "game/src/sim/environment.js:221",
+   "game/src/sim/environment.js:347",
+   "game/src/sim/environment.js:348",
+   "game/src/sim/environment.js:349",
+   "game/src/sim/souls.js:317"
+  ],
+  "timeOfDay": [
+   "game/src/engine.js:891",
+   "game/src/engine.js:1550",
+   "game/src/engine.js:1552",
+   "game/src/engine.js:1554",
+   "game/src/engine.js:5023",
+   "game/src/engine.js:5037",
+   "game/src/engine.js:5636",
+   "game/src/engine.js:5638",
+   "game/src/engine.js:5907",
+   "game/src/engine.js:7777",
+   "game/src/engine.js:7859",
+   "game/src/engine.js:7870",
+   "game/src/engine.js:7885",
+   "game/src/engine.js:8054",
+   "game/src/engine.js:8452",
+   "game/src/engine.js:8454",
+   "game/src/engine.js:8458",
+   "game/src/render/renderer.js:663",
+   "game/src/render/renderer.js:669",
+   "game/src/save/state.js:345",
+   "game/src/save/state.js:764",
+   "game/src/sim/environment.js:121",
+   "game/src/sim/environment.js:122",
+   "game/src/sim/environment.js:179",
+   "game/src/sim/environment.js:184",
+   "game/src/sim/environment.js:222",
+   "game/src/sim/environment.js:223",
+   "game/src/sim/environment.js:228",
+   "game/src/sim/environment.js:272",
+   "game/src/sim/environment.js:302",
+   "game/src/sim/environment.js:330",
+   "game/src/sim/environment.js:335",
+   "game/src/sim/environment.js:336",
+   "game/src/sim/environment.js:347",
+   "game/src/sim/environment.js:349",
+   "game/src/sim/hazards.js:154",
+   "game/src/sim/npc.js:224",
+   "game/src/sim/npc.js:248",
+   "game/src/sim/record.js:184",
+   "game/src/sim/settlement.js:267",
+   "game/src/sim/settlement.js:270",
+   "game/src/sim/souls.js:317",
+   "game/src/sim/souls.js:330",
+   "game/src/sim/state.js:363",
+   "game/src/sim/stealth/system.js:1027"
+  ],
+  "isNight": [
+   "game/src/sim/souls.js:190",
+   "game/src/sim/souls.js:205"
+  ],
+  "award_clock_readers_in_combat_code": [],
+  "world_clock_readers_in_combat_code": []
+ },
+ "g_what_the_second_clock_costs": {
+  "g1_the_two_clocks_disagree": {
+   "start_hour": 20.7,
+   "deaths_needed": 22,
+   "world_clock_says": 20.702315,
+   "award_clock_says": 21.00787,
+   "souls_paid": 57,
+   "shops_open_at_the_world_hour": 38,
+   "offset_h_per_death": 0.013889,
+   "reading": "the price is the NIGHT price and the province is still open for business. This is not AR-1 — living the same frames pays the same — but it is a state the world can be put in by dying, and no instrument in the round reports it."
+  },
+  "g2_a_reload_buys_back_the_night_rate": {
+   "start_hour": 4.8,
+   "deaths": 20,
+   "world_clock": 4.80213,
+   "award_clock_before_reload": 4.802407,
+   "souls_before_reload": 42,
+   "souls_after_reload": 57,
+   "the_reload_changed_the_price": true,
+   "saved_fields": "save/state.js writes clock.time_of_day, clock.day_count, clock.weather. _awardFrames and awardTimeOfDay are in NEITHER the blob nor the loader.",
+   "reading": "a save and a reload turned 42 souls into 57 for the same enemy, with no world event between them. RI-JRN05 M-D4 asks that nothing non-volatile change across a round trip; this is a volatile field with a price attached."
+  }
+ },
+ "verdict": {
+  "shipped_invariant_holds_at_all_96_start_hours": true,
+  "source_level_delete_the_fix_reproduces_the_defect": true,
+  "hours_of_the_day_where_deleting_the_fix_changes_the_price": 4,
+  "award_clock_reaches_combat_code": 0,
+  "determinism_all_bit_identical": true,
+  "failures": []
+ },
+ "ok": true
+}
