@@ -451,11 +451,15 @@ function buildWeaponGeo(w) {
       metal.push(box(R * 1.1, 0.035, R * 1.1, haftTop));
       break;
     }
-    case 'BOW': {                                   // limbs and a string, drawn in the hand frame
-      const limb = Math.min(1.0, L * 0.06 + 0.55);
+    case 'BOW': {
+      // Limbs and a string, centred on the hand rather than running to the "tip": for a bow
+      // `socket_b_dist_m` is the melee capsule the resolver keeps for a bash, not the stave's
+      // length, so drawing to it would give a bow half again too long. The per-weapon numbers
+      // are sane here (bow_marsh_longbow solves to 1.405 m), so the stave is drawn at the
+      // solved length and simply CENTRED on the grip, which is where a bow is actually held.
+      const limb = L * 0.5;
       for (const s of [1, -1]) {
-        const g = box(R * 0.7, limb, R * 0.35, s * limb * 0.5, R * 1.2 * (1 - Math.abs(s)) );
-        g.translate(0, 0, 0);
+        const g = box(R * 0.7, limb, R * 0.35, s * limb * 0.5);
         g.rotateX(s * 0.22);
         wood.push(g);
       }

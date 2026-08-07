@@ -16,7 +16,15 @@
 //      report a nicer number with a footnote; it reports `unmeasurable` with the reason.
 //   2. Improve because of GEAR. RI-JRN02 §C: "using the same agent, the same character build,
 //      and no equipment upgrade between them. If the improvement requires better gear, the game
-//      taught the player to shop, not to fight." So the loadout is captured at both encounters
+//      taught the player to shop, not to fight."
+//
+// ROUND 2 (TOOL-COVERAGE-R1 §5): the gear clause COULD NOT FAIL. `compareLoadouts()` returns
+// `{ changed: null }` when no trace record carries `player.loadout`, the caller tested
+// `if (gear && gear.changed)`, and `null` is falsy — so no blocker was raised when the clause
+// could not be checked at all, and the self-test's own fixture never emitted the field. A
+// competence curve bought entirely with gear was certified whenever the trace omitted the
+// loadout. The three states are now distinct: `true` -> GEAR_CHANGED, `null` -> GEAR_UNCHECKABLE
+// (both void the comparison), `false` -> proceed. So the loadout is captured at both encounters
 //      and any difference invalidates the comparison.
 //
 // AND THE THIRD, WHICH IS THIS BUILD'S ACTUAL SITUATION:
@@ -336,21 +344,50 @@ function findEncounters(frames, fps) {
   return out;
 }
 
+/**
+ * The no-upgrade clause. Returns `changed: true | false | null`, and the CALLER blocks on both
+ * `true` and `null` — see the GEAR_CHANGED / GEAR_UNCHECKABLE branches above.
+ *
+ * `at(f)` walks backwards for the most recent record carrying `player.loadout`, and it reports
+ * WHICH FRAME that observation came from. That matters: if the observation used for E_late
+ * predates E_first, then nothing in the trace shows what the player was wearing at the second
+ * encounter, and inheriting the first encounter's kit would certify "unchanged" from an
+ * observation that was never taken. A stale observation is not evidence of no change; it is the
+ * absence of evidence, and it degrades to `null`.
+ */
 function compareLoadouts(frames, a, b) {
   const at = (f) => {
     for (let i = frames.length - 1; i >= 0; i--) {
       const r = frames[i];
-      if ((r.frame ?? 0) <= f && r.player && r.player.loadout) return r.player.loadout;
+      if ((r.frame ?? 0) <= f && r.player && r.player.loadout) return { loadout: r.player.loadout, frame: r.frame ?? 0 };
     }
     return null;
   };
-  const la = at(a.from), lb = at(b.from);
-  if (!la || !lb) return { changed: null, why: 'no trace record carries player.loadout, so the no-upgrade clause cannot be checked' };
+  const oa = at(a.from), ob = at(b.from);
+  if (!oa || !ob) {
+    return {
+      changed: null,
+      observed_at: { E_first: oa ? oa.frame : null, E_late: ob ? ob.frame : null },
+      why: 'no trace record at or before ' + (!oa ? 'E_first' : 'E_late') + ' carries player.loadout, ' +
+           'so the no-upgrade clause cannot be checked.',
+    };
+  }
+  if (ob.frame < a.from) {
+    return {
+      changed: null,
+      observed_at: { E_first: oa.frame, E_late: ob.frame },
+      why: `the most recent loadout observation before E_late is at frame ${ob.frame}, which is ` +
+           `BEFORE E_first began (frame ${a.from}). Nothing in the trace shows what the player was ` +
+           `wearing at the second encounter, so "unchanged" would be inferred from an observation ` +
+           `that was never taken. Absence of evidence is not evidence of no change.`,
+    };
+  }
+  const la = oa.loadout, lb = ob.loadout;
   const diff = [];
   for (const k of new Set([...Object.keys(la), ...Object.keys(lb)])) {
     if (JSON.stringify(la[k]) !== JSON.stringify(lb[k])) diff.push(`${k}: ${JSON.stringify(la[k])} -> ${JSON.stringify(lb[k])}`);
   }
-  return { changed: diff.length > 0, diff };
+  return { changed: diff.length > 0, diff, observed_at: { E_first: oa.frame, E_late: ob.frame }, loadouts: { E_first: la, E_late: lb } };
 }
 
 /** K1..K6 over one encounter window. `null` where the trace does not carry the field. */
@@ -424,14 +461,21 @@ function selfTest() {
   const ok = (n, pass, d) => { lines.push(`${pass ? 'PASS' : 'FAIL'} ${n} — ${d}`); if (!pass) failed++; };
   const fps = 60;
 
-  const mkEnc = (fromMin, n, statblock, { hits, rollOverlap, rolls }) => {
+  // `loadout` defaults to a fixed kit. ROUND 2: round 1's fixture never emitted `player.loadout`
+  // at all, which is exactly why "a real improvement is recognised" passed with the gear clause
+  // silently unchecked (TOOL-COVERAGE-R1 §5). Passing `loadout: null` reproduces the absent-field
+  // case ON PURPOSE, and it must now BLOCK rather than proceed.
+  const KIT = { right: 'iron-longsword', left: 'kite-shield', armour: 'chitin-cuirass' };
+  const mkEnc = (fromMin, n, statblock, { hits, rollOverlap, rolls, loadout = KIT }) => {
     const out = [];
     const f0 = Math.round(fromMin * 60 * fps);
     for (let i = 0; i < n; i++) {
       const evs = [{ type: 'enemy_state', statblock, alertState: 'AGGRO' }];
       if (i < hits) evs.push({ type: 'hit', target: 'player' });
       if (i < rolls) evs.push({ type: 'roll_start', iframe_overlap: i < rollOverlap });
-      out.push({ frame: f0 + i * 10, events: evs, enemies: [{ statblock, alertState: 'AGGRO' }], player: { stamina: 50, stamina_max: 100 } });
+      const player = { stamina: 50, stamina_max: 100 };
+      if (loadout) player.loadout = loadout;
+      out.push({ frame: f0 + i * 10, events: evs, enemies: [{ statblock, alertState: 'AGGRO' }], player });
     }
     return out;
   };
@@ -480,6 +524,48 @@ function selfTest() {
     thinR.metrics && thinR.metrics.E_late.K2 === null && thinR.metrics.E_late.K5 === null,
     `K2=${thinR.metrics && thinR.metrics.E_late.K2}, K5=${thinR.metrics && thinR.metrics.E_late.K5}, ` +
     `missing: ${thinR.metrics && thinR.metrics.E_late._missing_fields.length}`);
+
+  // ---- THE ROUND-2 FALSIFICATIONS: the gear clause, in all three of its states --------------
+  //
+  // TOOL-COVERAGE-R1 §5's three-run table, reproduced here so the regression is permanent:
+  //   loadout present, unchanged -> changed: false -> proceeds          (correct)
+  //   loadout present, upgraded  -> changed: true  -> GEAR_CHANGED      (correct)
+  //   loadout field ABSENT       -> changed: null  -> ROUND 1 PROCEEDED (the defect)
+  const upgraded = [{ _: 'header' },
+    ...mkEnc(19, 120, 'champion_hist_marked', { hits: 40, rolls: 60, rollOverlap: 12, loadout: KIT }),
+    ...mkEnc(55, 120, 'champion_hist_marked', { hits: 10, rolls: 60, rollOverlap: 45, loadout: { ...KIT, right: 'ebony-greatsword' } })];
+  const upgradedR = analyse(upgraded, { fps, auto: true });
+  ok('gear clause: an UPGRADE between the two encounters voids the comparison',
+    upgradedR.status === 'unmeasurable' && upgradedR.blockers.some((b) => b.code === 'GEAR_CHANGED'),
+    `gear.changed=${upgradedR.gear && upgradedR.gear.changed}, blockers=${upgradedR.blockers.map((b) => b.code).join(',') || '(none)'}`);
+
+  const noLoadout = [{ _: 'header' },
+    ...mkEnc(19, 120, 'champion_hist_marked', { hits: 40, rolls: 60, rollOverlap: 12, loadout: null }),
+    ...mkEnc(55, 120, 'champion_hist_marked', { hits: 10, rolls: 60, rollOverlap: 45, loadout: null })];
+  const noLoadoutR = analyse(noLoadout, { fps, auto: true });
+  ok('gear clause: an ABSENT loadout field is UNMEASURABLE, not a silent pass (falsification)',
+    noLoadoutR.status === 'unmeasurable' && noLoadoutR.blockers.some((b) => b.code === 'GEAR_UNCHECKABLE')
+      && noLoadoutR.gear && noLoadoutR.gear.changed === null,
+    `gear.changed=${noLoadoutR.gear && noLoadoutR.gear.changed}, status=${noLoadoutR.status}, ` +
+    `blockers=${noLoadoutR.blockers.map((b) => b.code).join(',') || '(none)'} ` +
+    `(round 1: changed=null is falsy, no blocker, PROCEEDS — a curve bought with gear was certified)`);
+
+  ok('gear clause: an UNCHANGED loadout proceeds (the clause is not a blanket refusal)',
+    goodR.gear && goodR.gear.changed === false && !goodR.blockers.some((b) => String(b.code).startsWith('GEAR')),
+    `gear.changed=${goodR.gear && goodR.gear.changed}, blockers=${goodR.blockers.map((b) => b.code).join(',') || '(none)'}`);
+
+  // ---- K7's tier ladder is thin, and the spread is now reported alongside it -----------------
+  const sameTier = [{ _: 'header' },
+    ...mkEnc(19, 120, 'champion_hist_marked', { hits: 40, rolls: 60, rollOverlap: 12 }),
+    ...mkEnc(55, 120, 'cst_sap_speaker', { hits: 10, rolls: 60, rollOverlap: 45 })];
+  const sameTierR = analyse(sameTier, { fps, auto: true });
+  ok('K7 reports the hp spread the tier label hides (champion 2876 hp vs sap-speaker 380, both elite)',
+    sameTierR.K7 && sameTierR.K7.status === 'pass' && sameTierR.K7.spread
+      && sameTierR.K7.spread.late_over_first_hp !== null && sameTierR.K7.spread.late_over_first_hp < 0.5
+      && !!sameTierR.K7.spread.note,
+    `K7=${sameTierR.K7 && sameTierR.K7.status} (tier ladder), late/first hp = ` +
+    `${sameTierR.K7 && sameTierR.K7.spread && sameTierR.K7.spread.late_over_first_hp} — ` +
+    `${(sameTierR.K7 && sameTierR.K7.spread && sameTierR.K7.spread.note) ? 'noted' : 'NOT NOTED'}`);
 
   for (const l of lines) process.stdout.write(l + '\n');
   process.stdout.write(`\ncompetence self-test: ${failed === 0 ? 'PASS' : 'FAIL'} (${lines.length - failed}/${lines.length})\n`);

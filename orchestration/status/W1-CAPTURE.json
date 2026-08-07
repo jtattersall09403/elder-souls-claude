@@ -1,0 +1,19 @@
+{
+  "task_id": "W1-CAPTURE",
+  "brief": "shared warm cached screenshot service (S34)",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "tools/capture/server.mjs",
+    "tools/capture/client.mjs",
+    "tools/harness/shot.mjs",
+    "tools/capture/cache.mjs",
+    "tools/capture/protocol.md"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "S34 read: (a) appearance captures may be placed+cached; (b) arrival captures may not. Settle proof mandatory. Provenance: arrival|placed, build sha, settle proof, cache hit."
+  ],
+  "next_step": "read tools/harness/shoot.mjs and lib to learn launchGame/teleport/camera API",
+  "notes_for_successor": "Box load ~6 at start. 4 cores."
+}
