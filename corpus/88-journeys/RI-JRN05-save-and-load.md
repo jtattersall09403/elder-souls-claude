@@ -147,6 +147,21 @@ lives as data at `game/data/save-manifest.json` and the harness must be able to 
 | **Meta** | schema version, build commit, harness version, save generation, digest | durable |
 | **Declared volatile** | wall-clock `writtenAt`, playtime-seconds counter, screenshot thumbnail bytes, transient UI focus, audio bus levels, current frame index | **volatile** — excluded from the diff *by name*, declared in the manifest, and nothing else may be added to this list without an amendment to this item |
 
+**What the wave-1 repair added to the manifest, and why each was a hole rather than a nicety.**
+The manifest is a SPECIFICATION, not a description of the code (`How we lose` #7), so every row
+below is stated as the requirement it always was:
+
+| Group | Added | The requirement it restates |
+|---|---|---|
+| **Fight** *(new)* | the equipped loadout — weapon, shield, offhand configuration, two-handed, endurance, armour poise, HP ceiling, flask — and every combat body and controller, plus the animation rig's held pose and cross-fade | `sim/combat-bridge.js` makes the combat bodies the AUTHORITY and `sim.player` a view. §B's **Inventory** row has required `equipped slot` since wave 1 and nothing on the load path read it; §B's **Character** row requires the pools, and only the body has them. A save that carries the view and not the authority restores a picture of a fight. |
+| **Traversal** *(new)* | breath, depth, band, submerged, the mire's progress/refractory/escape count, the fall apex, the slide accumulator | §B **Affliction**: "active long-duration effects and their remaining duration". Drowning is one. |
+| **Player pose** | the whole camera rig — `pos`, `pivot`, the spring arm (`arm_len`/`arm_eased`/`arm_desired`/`arm_cast`/`clear_frames`), the containment integrators, the lock distance, the recentre gate, the look buffer, and last frame's projected anchors | §B **Player pose** already said "camera pitch/yaw/**distance**". `camera.dist` is an OUTPUT (`sim/camera.js` assigns `dist = armLen` at the bottom of every solve); the distance is `armLen`, and it had no writer. |
+| **Crime** | `crime.ledger`'s fourteen real fields instead of one declared path | M4 is a set difference. One path against fourteen keys fails it in both directions on every state. |
+| **World** | `world.npcs`, `world.props` and their record fields; the entity record's `lkp`, `last_seen_ago_frames`, `alert_channel`, `percept_dist_m`, `percept_los`, `encounter_id`, `encounter_role`, `encounter_leader`, `encounter_aggroed`, `encounter_hailed`; `world.capture` | §B **World**: "every named NPC's alive/dead status **and position**". A guard's last-known-position is what its whole search behaviour is driven from; `encounter_hailed` is a one-shot latch, so losing it hails the player twice. |
+| **Identity** | `creation.powers`, `creation.drawbacks`, `creation.invariants`, `upbringing_given_as`, `class_family_fit` | §B **Identity**: "birthsign-equivalent". The two arrays are what every birthsign TERM is read out of; without them seam S27's Dry Well drawback is gone after every load. |
+| **Progression** | `progression.gold`, `progression.sap_taint`, and the per-skill `levels_since_rest` / `rest_clamped` | §B **Character**: "every skill's current value **and its accumulated use-progress fraction**" — the per-rest cap is part of that accounting, and a reload that clears it re-grants the allowance. |
+| **Character** | `carried_weight`, `burden_ratio` | §B **Character**: "equip load". |
+
 **Rule V1.** The volatile list is closed. A field discovered to differ across a round trip
 that is not on the volatile list is a defect, and moving it onto the volatile list to make a
 test pass is **falsification** under `RI-MTH04`, not a fix.
@@ -212,6 +227,16 @@ node tools/journey/journey-run.mjs --journey jrn05-saveload --seed 4711 \
      --out reports/journeys/<runId>
 node tools/journey/state-diff.mjs --in reports/journeys/<runId>
 ```
+
+**Three further instruments, named here so they are not phantom tools** (`orchestration/TOOL-LOOP.md`
+rule 3). All three exist on disk; each declares what it measures and each exits non-zero when it
+cannot measure it.
+
+| Tool | What it does | Why the item needs it |
+|---|---|---|
+| `tools/journey/state-diff.mjs` | M1/M2/M4/M5 with **field-level** evidence, over a seed sweep and a state sweep, plus `getDurableFieldCensus()`. | A round trip compared as one hash is how a 219-frame divergence passed a verdict. |
+| `tools/harness/save-break.mjs` | **The falsifier.** Monkey-patches the running build to DELETE one repair at a time — the camera settle order, the rig writers, the re-mirror, the birthsign terms, the ledger's manifest paths, the body grid, the animation rig's cross-fade state, the frame-stamp rebase — re-runs the round trip, and requires the named failure to come back. Then undoes the break and requires the repair to come back with it. | A repair whose deletion changes nothing was never a repair, and a repair whose deletion produces a *different* failure moved the defect rather than closing it. The tool critic's ruling: a self-test written by the same hand as the tool proves less than an independent falsification. |
+| `tools/harness/save-consume.mjs` | **CONSUMPTION** (`ARBITRATION` §3, `RI-MTH07` §B). Perturbs a durable model to two well-separated values **plus the null control — the save not carrying it at all** — and observes a consequence a player could see: a cast the player presses being accepted or refused after a HEARTH rest (seam S27), a swing at a fixed standoff reaching the enemy or whiffing, the character drowning, the souls actually recovered from a restored bloodstain. | §CONSUMPTION rule 2: a harness return value is not an observable. The null control is the point of the exercise for a save item — if blanking the field out of the blob changes nothing, the save is writing a field nothing reads. |
 
 Requires harness amendment **`A-JRN3`** (`saveState`/`loadState` promoted to **mandatory**,
 plus `getStateHash()`, `getSaveManifest()`, `exportSave()`/`importSave()`, `getStorageInfo()`,

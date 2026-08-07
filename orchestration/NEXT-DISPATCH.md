@@ -5,7 +5,40 @@ and its status file exists. Respect the concurrency cap in `AGENT-PROTOCOL.md` �
 doing browser work, no more; the cap exists because fourteen agents on four cores cost a builder its
 headline measurement entirely.
 
-## 1. The character and weapon renderer — ULTRACODE, highest priority in the project
+## 1. The blade is underground, and now everyone can see it — ULTRACODE
+
+The renderer landed, so the swing is visible for the first time. It looks wrong, and the numbers
+now say why:
+
+- `cgs_drowned_reaper`'s tip sweeps **238° at a 2.87 m radius** — conformance is fine — while its
+  height runs **−1.92 to −0.81 m and is above ground on 0 of 40 frames**. Inclination is −36.7° at
+  rest, worsening to **−66.3°** by frame 30.
+- On a halberd you watch a bare haft stab into the dirt. On a greatsword the blade lies in the
+  ground several metres ahead. It reads as a character miming a swing while the weapon ploughs.
+
+**This is a data and solver defect, not a render one**, and the renderer builder was right to refuse
+to correct it in the renderer: the drawn tip is the hit socket to 0.0008 mm, and fudging the visual
+would break what-you-see-is-what-hits-you, which is the one invariant that makes the swing worth
+drawing. The arithmetic: `_bladeLength` solves that weapon to **3.098 m of blade** so the tip radius
+equals declared `reach_m`, on a 1.75 m character whose rest pose hangs the point down — a 3.1 m
+blade from a hand at ~1.0 m is underground by construction.
+
+Owner: whoever holds `_bladeLength` / `reach_m` (W1-10). The fix is upstream of both — either the
+declared reach, the blade-length solve, or the rest pose. A previous round attempted a pitch
+calibration and reverted it because it cost 40% arc nonconformance; that route is known bad.
+
+## 1a. Re-read every visual verdict taken through a posed camera
+
+`renderer.js` read the player's visibility as the negation of a camera override, so **every
+posed-camera capture in this project hid the player**. The W1-10 round-3 critic's byte-identical
+weapon screenshots contained no character at all — the finding was right, the evidence was of
+something else. Fixed now.
+
+Anything scored on a posed capture — art direction, third-person presentation, blind visual pairs,
+regional distinctness — was measuring a world with no character in it. Re-run rather than assume the
+verdict survives.
+
+## ~~1old. The character and weapon renderer~~ — DONE. Kept for the record.
 
 Found by the W1-10 round-3 critic. **The movesets are not rendered at all.**
 
