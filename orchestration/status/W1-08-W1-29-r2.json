@@ -30,7 +30,9 @@
     "tools/journey/input-checks.mjs (reattachAfterReload; per-group survival + always-write; M-K22 word boundaries + matcher control; M-K21 real DS3 distance)",
     "tools/journey/input-checks.mjs (6 new self-test legs: M-P24, M-K21, M-K22, M-K8, M-K9, M-N*; RECORD_SUPPRESSED for the synthetic naive transcript)",
     "tools/verdict-validate.mjs (an UNGATED hard-fail gate must now be NAMED in status_reasons/why_not_ten/biggest_gap, or it warns)",
-    "game/src/engine.js (_touchScreenSuppression — S35: the thumb ring is not drawn over map/journal/book)"
+    "game/src/engine.js (_touchScreenSuppression — S35: the thumb ring is not drawn over map/journal/book)",
+    "game/src/input/gamepad.js (a completed calibration now applies ONLY to the pad id it was learned on)",
+    "tools/journey/input-checks.mjs (successor-3: reattach arity fix, group-boundary re-sample, mp20 census+screen stand-down, rebind preconditions + both pad profiles + pad mapping proved before measuring, 4 self-test legs repaired, self-test hygiene)"
   ],
   "findings": [
     "boot-check PASS before work; load 3.05 at start",
@@ -64,8 +66,10 @@
     "REAL CHECK FAIL M-P20: smallest rendered text run on a 390px-tall phone is 7 css px (\"JEEH-EI\" on the dialogue surface).",
     "SUCCESSOR-3 ROOT CAUSE B — the M-K18/M-P23 FAILs are FALSE, and the build is fine. Bisected: --group rebind alone = 4/4 pass; --group viewport,rebind = M-K18+M-P23 FAIL with steps [idle,idle,idle]. TWO leftovers from the viewport group, neither in the build: (1) mp20 ends on openMenu(book) and a screen takes interact every frame (S14), and it ALSO enters the CENSUS, which holds the keyboard because it has a typed field — that is why the keyboard leg died beside a live pad and touch leg and looked like a defect in the keyboard path; reset() does NOT stand an entered census down, censusBegin({}) does (it re-arms paused). (2) the viewport group leaves pointer:coarse, so GamepadRouter selects souls-handheld (gamepad.js:134) where index 0 is jump, not interact — the check was pressing A and calling the surface uncompletable.",
     "SUCCESSOR-3 FIXES: mp20 now stands down its own census and screen; the rebind check ASSERTS and RECORDS its preconditions (ui mode, device class, pad profile, census) instead of inheriting them; the pad leg drives whatever control the ACTIVE profile gives interact, honouring the handheld tap/hold gate, and now runs on BOTH shipped profiles (a stricter check than before); an unclearable census makes M-K18/M-P23 unmeasurable, not FAIL. Result after viewport: 10/11 pass, both rebind checks OK, preconditions recorded {world, desktop, souls-default, census false}.",
-    "SUCCESSOR-3 DELETE-THE-FIX on the reattach: re-introducing the 3-arg page.evaluate brings the false PAGE/after-* unmeasurable entries straight back (desktop+rebind: 24/27 with 3 unmeasurable vs 25/25 clean)."
+    "SUCCESSOR-3 DELETE-THE-FIX on the reattach: re-introducing the 3-arg page.evaluate brings the false PAGE/after-* unmeasurable entries straight back (desktop+rebind: 24/27 with 3 unmeasurable vs 25/25 clean).",
+    "SUCCESSOR-3 REAL BUILD DEFECT FOUND BY THE REPAIRED INSTRUMENT: a calibration learned on an unrecognised pad was applied to EVERY pad afterwards. gamepad.js _adoptPad drops the old pads profile and quirk map on an id change (its comment says so) but calibrationResult is instance state and was never cleared. MEASURED: calibrate Some Unknown Pad 9000 (6 inputs), unplug, plug in a standard GameSir -> index 0 fired ROLL and index 5 fired LOCK_ON. With the one-line fix (perm applies only when calibrationResult.id === st.id): index 0 interact, index 5 light, and L5 still holds — the stranger returning keeps its own map (raw 0 light). DELETE-THE-FIX reproduces roll/lock_on exactly.",
+    "SUCCESSOR-3: M-K18/M-P23 were FALSE FAILS three times over — an open book screen, an entered census holding the keyboard, the handheld pad profile, a one-frame read window, and finally the calibration leak. Each was made visible rather than papered over: the check now records preconditions (ui mode, device class, pad profile, census) and PROVES the profiles interact index fires interact before it measures; if it cannot, it reports unmeasurable naming the action the pad actually fired."
   ],
-  "next_step": "full --self-test re-run; triage remaining vacuous legs (M-P5, M-P14, M-K22, M-K9); M-P20 7px finding; report+blog+shot",
+  "next_step": "final full --self-test + boot-check; then report, blog line, shot",
   "notes_for_successor": ""
 }

@@ -2388,7 +2388,7 @@ function selfTest() {
   // that a critic watching a silent terminal cannot tell slow from hung, so every walk now
   // announces itself, times itself, and projects the remainder from walks already done.
   const SEED_LADDER = [0, 15, 30, 45, 60, 100];
-  const WALKS_EXPECTED = 13 + SEED_LADDER.length;
+  const WALKS_EXPECTED = 13 + SEED_LADDER.length + 4;   // +4: the round-5 reputation and model-differential walks
   let walkN = 0;
   const T0 = Date.now();
   const secs = (ms) => (ms / 1000).toFixed(1);
@@ -2758,6 +2758,168 @@ function selfTest() {
   ok('R4: a run with no live attestation stamps model_verified:false',
     loadAttestation().status !== 'VALID' || fs.existsSync(ATTEST_PATH),
     `attestation status would be "${loadAttestation().status}"`);
+
+  // =============================================================================================
+  // ROUND 5 — THE GRANT LEDGER. Every check below exists because the last four rejections were
+  // all the same defect: a value invented inside this file and reported as if measured.
+  // =============================================================================================
+
+  // R5-2. No field is handed a bare constant. The ledger is the register and this is the fuse.
+  {
+    const gl = grantLedger();
+    ok('R5: the grant ledger declares ZERO substitutions',
+      gl.substitutions_remaining === 0 && gl.rows.length >= 14,
+      `${gl.rows.length} granted fields, ${gl.substitutions_remaining} substitution(s); ` +
+      `player-optimal bounds declared: ${gl.player_optimal_bounds.join(', ')}`);
+    ok('R5: the ledger names what round 4 handed the gate, so the regression is legible',
+      gl.rows.filter((r) => r.was_round4).length >= 9,
+      `${gl.rows.filter((r) => r.was_round4).length} fields carry their round-4 value`);
+  }
+
+  // R5-3. REPUTATION IS READ, NOT PINNED. This is the round-4 defect's direct falsification.
+  // `reputation = Proxy(get: () => 100)` could not be moved by any fixture, because there was no
+  // number to move — which is exactly why four batteries went green over it.
+  {
+    const repZero = walk({ reputation_scale: 0 }, 'reputation scaled to 0');
+    const repFull = base;
+    const nRankStops = (recs) => recs.filter((r) => r.stopped_at && /reputation \d+\/\d+/.test(String(r.stopped_at.why))).length;
+    ok('R5: the DERIVED reputation is read — scaling it to 0 moves rank/reputation stops',
+      nRankStops(repZero) > nRankStops(repFull),
+      `reputation stops ${nRankStops(repFull)} -> ${nRankStops(repZero)} at scale 0. Round 4's ` +
+      'Proxy(100) could not be moved by anything.');
+    ok('R5: and the derived value is per-faction, not one number for all of them',
+      new Set(Object.values(attainableReputation(null))).size > 1,
+      JSON.stringify(attainableReputation(null)));
+  }
+
+  // R5-4. THE W1-FACTIONS ARBITRATION, settled by the faction critic in the running engine:
+  // the rank-7 offer row carries "reputation 111/112" at 111 and drops the term at 112. Round 4
+  // published `0 of 540 viable` and named Q-ASSZ-08, Q-LEDG-08 and Q-XULA-08 unreachable by
+  // anybody, on the strength of its own stale constant. No signature may stop there now.
+  {
+    const stops112 = base.filter((r) => r.stopped_at && /reputation \d+\/112/.test(String(r.stopped_at.why)));
+    ok('R5: no signature is stopped by the rank-7 reputation bar the running engine clears',
+      stops112.length === 0,
+      stops112.length
+        ? `STILL STOPPING: ${stops112[0].stopped_at.why}`
+        : 'the derived attainable reputation clears 112, which is what the faction critic ' +
+          'measured live (W1-FACTIONS-r1 §1: term present at 111, absent at 112)');
+  }
+
+  // R5-5. RANK IS DERIVED THROUGH THE SHIPPING LADDER, not granted as 7.
+  {
+    const sheet = (() => {
+      const spec = representativeStart(RACES[0], FAMILIES[0], SIGN_FAMILIES[0], UP_CLASSES[0]);
+      const ch = composeCharacter(data, spec);
+      return { race: RACES[0], family: FAMILIES[0], birthsign: spec.birthsign, upbringing: spec.upbringing,
+        base_attributes: ch.attributes, base_skills: ch.skills };
+    })();
+    const ctx = bestCaseCtx(sheet, 55);
+    const vals = Object.values(ctx.ranks);
+    ok('R5: ranks come from FactionGates.highestQualifying(), not the constant 7',
+      vals.length === gates.ids().length && vals.some((v) => v !== 7),
+      `${JSON.stringify(ctx.ranks)} — round 4 handed every faction rank 7`);
+    ok('R5: a faction whose attainable reputation cannot clear rank 1 is derived at rank 0',
+      ctx.ranks.deep_kin === undefined || ctx.ranks.deep_kin === 0 || (attainableReputation(null).deep_kin ?? 0) >= gates.row('deep_kin', 1).reputation,
+      `deep_kin: attainable reputation ${attainableReputation(null).deep_kin}, rank-1 row asks ` +
+      `${gates.row('deep_kin', 1).reputation}, derived rank ${ctx.ranks.deep_kin}`);
+  }
+
+  // R5-6. THE FOUR UNIVERSAL `has: () => true` COLLECTIONS ARE GONE — and the difference is
+  // load-bearing, not cosmetic. Three of them stood over an EMPTY Set for three rounds, so every
+  // items/knowledge/spell_effects requirement in the tree was satisfied by a collection that
+  // contained nothing at all.
+  {
+    const sheet = (() => {
+      const spec = representativeStart(RACES[0], FAMILIES[0], SIGN_FAMILIES[0], UP_CLASSES[0]);
+      const ch = composeCharacter(data, spec);
+      return { race: RACES[0], family: FAMILIES[0], birthsign: spec.birthsign, upbringing: spec.upbringing,
+        base_attributes: ch.attributes, base_skills: ch.skills };
+    })();
+    const prov = bestCaseCtx(sheet, 55);
+    const omni = bestCaseCtx(sheet, 55, {}, null, { omniscient: true });
+    const fake = 'no_such_token_' + Math.random().toString(36).slice(2);
+    ok('R5: the provable context answers NO to a token nothing produces; the omniscient arm answers yes',
+      prov.items.has(fake) === false && omni.items.has(fake) === true
+      && prov.knowledge.has(fake) === false && prov.spellEffects.has(fake) === false
+      && prov.worldFlags.has(fake) === false,
+      `provable items/knowledge/spellEffects/worldFlags all refuse "${fake}"; the omniscient arm ` +
+      'still grants it, which is the only thing it is for');
+    ok('R5: and the provable collections are NOT empty — refusing everything would be as useless',
+      prov.items.size > 0 && prov.knowledge.size > 0 && prov.spellEffects.size > 0
+      && prov.worldFlags.size > 0 && prov.topicsKnown.size > 0,
+      `items ${prov.items.size}, knowledge ${prov.knowledge.size}, effects ${prov.spellEffects.size}, ` +
+      `flags ${prov.worldFlags.size}, topics ${prov.topicsKnown.size}`);
+    ok('R5: topicsKnown holds RAW authored spellings so canOffer\'s slug/prose fold still runs',
+      [...prov.topicsKnown].some((t) => /-/.test(t)) && [...prov.topicsKnown].some((t) => / /.test(t)),
+      'both dashed (dialogue) and spaced (quest) spellings are present; a pre-folded set could ' +
+      'not exercise topicsInclude()');
+  }
+
+  // R5-7. THE GRANT-DEPENDENCY TEST FIRES, and it fires on a REAL ungrounded token from this
+  // tree rather than on a fixture of the battery's own invention.
+  {
+    const un = UNSOURCED.items[0] || UNSOURCED.knowledge[0];
+    const sheet = (() => {
+      const spec = representativeStart(RACES[0], FAMILIES[0], SIGN_FAMILIES[0], UP_CLASSES[0]);
+      const ch = composeCharacter(data, spec);
+      return { race: RACES[0], family: FAMILIES[0], birthsign: spec.birthsign, upbringing: spec.upbringing,
+        base_attributes: ch.attributes, base_skills: ch.skills };
+    })();
+    if (!un) {
+      ok('R5: grant-dependency test fires on an ungrounded token', false,
+        'no ungrounded token on this tree — re-derive this falsification against one that is');
+    } else {
+      const isItem = UNSOURCED.items.includes(un);
+      const q = { id: '__r5_probe', category: 'probe', resolutions: [
+        { id: 'only', requires: isItem ? { items: [un] } : { knowledge: [un] } }] };
+      const r = questClearable(sheet, q, 55);
+      const control = questClearable(sheet, { id: '__r5_control', category: 'probe',
+        resolutions: [{ id: 'only', requires: {} }] }, 55);
+      ok('R5: a quest whose only route needs an UNGROUNDED token is UNMEASURABLE, not FAIL and not PASS',
+        r.status === UNMEASURABLE && Array.isArray(r.stopped_at.ungrounded_tokens)
+        && r.stopped_at.ungrounded_tokens.length > 0,
+        `requires ${JSON.stringify(un)} -> ${r.status}; tokens named: ` +
+        `${JSON.stringify((r.stopped_at || {}).ungrounded_tokens)}`);
+      ok('R5: null control — the same probe with no requirement PASSES, so the mechanism is not blanket',
+        control.status === PASS, `control -> ${control.status}`);
+    }
+  }
+
+  // R5-8. THE STAGE-SHAPED QUEST. `loadQuests()` admits two document shapes and this tool has a
+  // predicate for one of them. It must refuse the other rather than charge it.
+  {
+    const staged = quests.filter((q) => !(q.resolutions || []).length && Array.isArray(q.stages) && q.stages.length);
+    const sheet = (() => {
+      const spec = representativeStart(RACES[0], FAMILIES[0], SIGN_FAMILIES[0], UP_CLASSES[0]);
+      const ch = composeCharacter(data, spec);
+      return { race: RACES[0], family: FAMILIES[0], birthsign: spec.birthsign, upbringing: spec.upbringing,
+        base_attributes: ch.attributes, base_skills: ch.skills };
+    })();
+    const probe = questClearable(sheet, { id: '__r5_staged', category: 'probe',
+      stages: [{ index: 10, flags: ['x'] }], outcomes: [{ id: 'o', requires: [] }] }, 55);
+    ok('R5: a stage-shaped quest is UNMEASURABLE ("no predicate"), never "declares no resolutions"',
+      probe.status === UNMEASURABLE && /stage-shaped/i.test(String(probe.stopped_at.why)),
+      `${probe.status}: ${String(probe.stopped_at.why).slice(0, 120)}` +
+      ` — ${staged.length} stage-shaped quest(s) on this tree`);
+  }
+
+  // R5-9. MODEL DEPENDENCE IS MEASURED. Round 4 inferred it from "did a disposition stop occur",
+  // which is silent about every signature that PASSES because of the model.
+  {
+    const saved = OFFER_MODEL.model;
+    const a = walk(null, 'model differential arm A');
+    OFFER_MODEL.model = saved === 'derived' ? 'raw' : 'derived';
+    const b = walk(null, 'model differential arm B');
+    OFFER_MODEL.model = saved;
+    const key = (r) => `${r.viable}|${r.unmeasurable}|${JSON.stringify(r.criteria)}`;
+    const mb = new Map(b.map((r) => [r.signature, key(r)]));
+    const moved = a.filter((r) => mb.get(r.signature) !== key(r)).length;
+    ok('R5: model dependence is a MEASURED differential over both offer models',
+      Number.isFinite(moved),
+      `${moved}/${a.length} verdicts move between "${saved}" and its opposite. Round 4 counted ` +
+      'disposition STOPS instead, which cannot see a signature that passes because of the model.');
+  }
 
   process.stdout.write(`\nbuild-viability self-test: ${failed === 0 ? 'PASS' : 'FAIL'} (${lines.length - failed}/${lines.length})\n`);
   return failed === 0 ? 0 : 1;

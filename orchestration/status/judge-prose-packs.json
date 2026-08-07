@@ -1,0 +1,18 @@
+{
+  "task_id": "judge-prose-packs",
+  "brief": "blind judge of prose comparison packs (RI-MTH03), fresh context, no browser",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-PROSE-BLIND-r1.md",
+    "corpus/90-verdicts/wave1/W1-PROSE-BLIND-r1.json",
+    "reports/blog-feed.jsonl (one appended line)"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "SAMPLING RULE, DECLARED BEFORE SAMPLING (2026-08-07): (1) I answer ALL 20 available blind trials - reports/packs/prose-tics-r2/ t01..t15 and reports/packs/prose-tics-voice-r2/ t01..t05 - in directory order, writing answer.md into each trial dir. No cherry-picking, no dropping a trial I find hard. (2) I open NO file under any *.reveal/ directory, and no builder report (reports/prose-tics/W1-PROSE-TICS-report.md), until all 20 answer.md files exist on disk. (3) For the rewrite judgement I take the 180 spoken-register rewrites from reports/prose-tics/rewrites/dialogue-0{3,4,5,6}*.jsonl and sample the FIRST 10 and LAST 10 records of the largest file plus 5 from each other file - a positional rule, not a taste rule. (4) For the post-sweep quest material I take the topics files whose mtime/git-add postdates the prose pass, list them mechanically, and read the 3 largest by info count in full plus every info containing 'eleven'. (5) Martial library: inspect for completeness only, judge nothing unfinished.",
+    "Pack inventory: prose-tics-r2 = 15 trials (t01-t05 books, t06-t10 dialogue, t11-t15 journal), seed 20260807. prose-tics-voice-r2 = 5 dialogue trials, seed 20260808. Reveal keys are siblings, not children - RI-MTH03 A satisfied."
+  ],
+  "next_step": "answer 20 trials blind, writing answer.md per trial; then unblind",
+  "notes_for_successor": "MUST answer packs BEFORE reading any answer key. Record answers to scratchpad first. Do not edit prose."
+}

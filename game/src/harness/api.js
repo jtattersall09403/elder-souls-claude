@@ -2028,6 +2028,34 @@ export function installHarness(engine, bootPromise) {
      * still ask for it explicitly rather than inferring it.
      */
     syncFactionStandings() { return engine.syncFactionStandings(); },
+    /**
+     * RI-QST03 §D. Who has thrown you out, why, and what the way back costs — read out of the
+     * live gate rather than out of the file, so a probe sees what `canOffer()` sees.
+     */
+    factionDiscipline() {
+      const qe = engine.questEngine;
+      if (!qe) return { expelled: [], declared: [] };
+      qe.context();
+      return {
+        expelled: [...(qe.expelled || new Map()).entries()].map(([faction, e]) => ({ faction, ...e })),
+        declared: ((qe.discipline && qe.discipline.factions) || []).map((r) => ({
+          faction: r.faction,
+          expelled_by: (r.expelled_by || []).map((c) => c.flag),
+          readmission: r.readmission || null,
+        })),
+      };
+    },
+    /** Pay the way back in. Spends real gold through the same purse everything else spends. */
+    factionReadmit(factionId) {
+      const qe = engine.questEngine;
+      if (!qe) return { ok: false, reason: 'no quest runtime' };
+      return qe.readmit(String(factionId), {
+        gold: engine.sim.progression.gold,
+        // The purse is mirrored on the magic system (see setGold above); a readmission that
+        // debited only one of the two would leave the player richer on one screen than the other.
+        spend: (g) => { engine.sim.progression.gold -= g; engine.magic.gold = engine.sim.progression.gold; },
+      });
+    },
     resolveKilling(q) { return engine.resolveKilling(q || {}); },
     canJoinFaction(factionId, rank) { return engine.canJoinFaction(String(factionId), Number(rank)); },
     warbroodShift() { return engine.warbroodShift(); },

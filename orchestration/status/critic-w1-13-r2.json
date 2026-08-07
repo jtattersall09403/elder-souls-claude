@@ -1,0 +1,18 @@
+{
+  "task_id": "critic-w1-13-r2",
+  "brief": "critic with fresh context, W1-13 round 2",
+  "started": "2026-08-07",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-13-r2.md",
+    "corpus/90-verdicts/wave1/W1-13-r2.json",
+    "docs/shots/<dated>.png",
+    "reports/blog-feed.jsonl (one appended line)"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "start: pgrep -c headless_shell = 12, loadavg 9.85 -- ABOVE the binding cap of 8. Doing read/analyse phase first per AGENT-PROTOCOL."
+  ],
+  "next_step": "read TOOL-LOOP.md, ARBITRATION.md s3, RI-MTH04, W1-13-r1.md, status/W1-13-r2.json",
+  "notes_for_successor": "Attack order from brief: (1) run the jrn06 aggregation the builder could not, (2) audit the journey's own screen-open refusal by breaking it, and check sibling journeys in tools/journey/, (3) sweep for more constant-printed counts, (4) two purses fenceSell->sim.stealth.p.gold vs save sim.progression.gold, (5) respawn drift 0.00m at 6/6 - fix moved body or measurement?, (6) re-derive 2 CONSUMPTION couplings, (7) M-D5 world-side consumer of named-NPC guarantee."
+}

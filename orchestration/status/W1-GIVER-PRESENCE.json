@@ -1,0 +1,21 @@
+{
+  "task_id": "W1-GIVER-PRESENCE",
+  "brief": "dispatch: GAP-W1-quest-givers-not-in-the-world",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "game/data/world/settlements/* (giver spawns)",
+    "game/src/quests/QuestEngine.js (presence term in open())",
+    "tools/quests/mainline-chain-floor.mjs (stop conjuring the giver)",
+    "tools/quests/utility-findability.mjs (--state crash fix)",
+    "docs/shots/<dated>-populated-room.png",
+    "reports/blog-feed.jsonl (one line)"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "start: pgrep -c headless_shell = 14, loadavg 11.81 -> above the 8 cap, authoring phase first, no browser"
+  ],
+  "files_touched": [],
+  "next_step": "read corpus/90-verdicts/wave1/W1-19-r2.md and tools/quests/critic-giver-presence.mjs",
+  "notes_for_successor": "Both halves or neither: data (givers actually spawned) AND gate (QuestEngine.open presence term). Do NOT arm the gate fail-closed before the population exists - it has taken the engine down four times."
+}

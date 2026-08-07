@@ -80,10 +80,17 @@ const redTeam = args['red-team'] ? String(args['red-team']) : null;
 // detected and the inversion is vacuous. Each mode therefore names a SIGNATURE, and the mode
 // passes only when a failure matching it is present. This is the same rule the piece applies
 // to the build — a control that cannot exhibit the failure is not a control.
+// Where a mode plants a string, the SIGNATURE IS THAT STRING, so a match cannot be a
+// coincidence — the failure message has to be quoting the sabotage back. `blind` was caught by
+// the §0.1(a) clause rather than by M9's own domain check on the first run of this facility,
+// and a signature written from the code I expected to fire instead of the code that did would
+// have scored a correct detection as a miss. Take the fingerprint, not the guess.
+const RED_TEAM_PLANT_SURFACE = 'a-surface-nobody-wrapped';
+const RED_TEAM_PLANT_STRING = 'Press E to speak to Jeeh-Ei';
 const RED_TEAM_SIGNATURE = {
-  empty: { needle: 'M9 searched ZERO strings', what: 'the M9 grep must notice its domain is empty' },
-  blind: { needle: "M9's domain is INCOMPLETE", what: 'the accessor must name the surface it cannot see' },
-  plant: { needle: 'imperative second-person instruction', what: 'HF3 must fire on a planted HUD instruction' },
+  empty: { needle: 'M9 searched ZERO strings', what: 'the M9 grep must notice its domain is empty and refuse to score it' },
+  blind: { needle: RED_TEAM_PLANT_SURFACE, what: 'a failure must NAME the declared-but-uninstrumented surface' },
+  plant: { needle: RED_TEAM_PLANT_STRING, what: 'HF3 must fire and quote the planted HUD instruction back' },
 };
 
 const fail = (m) => { out.failures.push(m); say(`  FAIL  ${m}`); };
@@ -198,7 +205,7 @@ try {
   // A red-team run that PASSES is itself a failure, and is reported as one.
   if (redTeam) {
     say(`RED TEAM: '${redTeam}' — the probe is expected to FAIL. A pass here means the instrument cannot go red.`);
-    await handle.page.evaluate((mode) => {
+    await handle.page.evaluate(({ mode, SURF, STR }) => {
       const H = window.__HARNESS;
       if (mode === 'empty') {
         const real = H.getRenderedText;
@@ -208,11 +215,11 @@ try {
           return notDialogue ? { ...r, distinct: [], rows: [], summary: { ...(r.summary || {}), distinct: 0 } } : r;
         };
       } else if (mode === 'blind') {
-        window.__ENGINE.renderer.textRegister.declare('a-surface-nobody-wrapped', 'red-team: declared, never instrumented');
+        window.__ENGINE.renderer.textRegister.declare(SURF, 'red-team: declared, never instrumented');
       } else if (mode === 'plant') {
-        H.__redTeamPlant = () => H.drawOnMenus('Press E to speak to Jeeh-Ei');
+        H.__redTeamPlant = () => H.drawOnMenus(STR);
       }
-    }, redTeam);
+    }, { mode: redTeam, SURF: RED_TEAM_PLANT_SURFACE, STR: RED_TEAM_PLANT_STRING });
   }
   const acc = await handle.page.evaluate(async () => {
     const H = window.__HARNESS;

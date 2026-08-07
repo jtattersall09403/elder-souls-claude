@@ -2,7 +2,7 @@
   "task_id": "W1-ATTR-SCALE",
   "brief": "attribute-scale sweep: census every attribute/skill demand in game/data/quests/**, classify against real 240-sheet ceilings, fix root cause, write validator",
   "started": "2026-08-07",
-  "state": "building",
+  "state": "complete",
   "outputs_expected": [
     "tools/quests/attr-scale-audit.mjs (validator with --self-test)",
     "tools/check-quests.mjs (warning wiring)",
@@ -11,12 +11,23 @@
   "outputs_written": [
     "tools/quests/attr-scale-audit.mjs",
     "tools/quests/attr-scale-consumption.mjs",
-    "reports/attr-scale-consumption-before.json"
+    "reports/attr-scale-consumption-before.json",
+    "reports/attr-scale-consumption-after.json"
   ],
   "files_touched": [
-    "tools/quests/attr-scale-audit.mjs (new)",
-    "tools/quests/attr-scale-consumption.mjs (new)",
-    "reports/attr-scale-consumption-before.json (new)"
+    "tools/quests/attr-scale-audit.mjs (NEW — the validator, --self-test 21/21)",
+    "tools/quests/attr-scale-consumption.mjs (NEW — CONSUMPTION probe; --after flips every expectation so neither half can pass alone)",
+    "reports/attr-scale-consumption-before.json (NEW)",
+    "reports/attr-scale-consumption-after.json (NEW)",
+    "tools/check-quests.mjs (replaced the bad-skill-key warning block with the full audit — STILL A WARNING, exits 0)",
+    "tools/analysis/gen-magic-quests.mjs (SCHOOL_SKILL root_speech -> root-speech: the generator that emitted 9 of the 11 dead keys)",
+    "corpus/30-quests/quest.schema.json (+10 lines: the convention on requires.attributes and requires.skills, and attribute_scale_note / skill_id_note declared — both were already in the shipped data under additionalProperties:false)",
+    "game/data/quests/blackmarsh-coast.json (4 edits: Q-SOUL-02 res_seal, Q-BLAK-01 res_fair_copy, Q-BLAK-01 res_hold, Q-LILM-01 res_rootkeepers)",
+    "game/data/quests/blackmarsh-core.json (2 edits: Q-LEDG-01 res_blackmail, Q-DEEP-01 res_broker)",
+    "game/data/quests/faction-imperial-assize.json (10 edits, ranks 4-8) — CONTENDED: W1-FACTIONS-r2 was adding quests here throughout",
+    "game/data/quests/faction-wet-ledger.json (7 edits, ranks 4-8) — CONTENDED, same",
+    "game/data/quests/faction-xul-aneekh.json (11 edits, ranks 4-8) — CONTENDED, same",
+    "game/data/quests/magic-utility.json (8 edits: 7 dead keys + Q-MAG-10 strength 45 -> 21)"
   ],
   "findings": [
     "CENSUS: 43 attribute demands and 145 skill demands across resolutions in game/data/quests/**. Scratch census at scratchpad/census.mjs.",
@@ -29,8 +40,15 @@
     "CONSUMPTION B: Q-BLAK-01 res_hold reports `personality 31/45` at 31, which is reachable_ceiling.from_max - the best of all 240 sheets. It moves with the attribute (10/45 -> 31/45), so it is a scale bug and not a dead gate, and it opens only at 45.",
     "CONSUMPTION C: spawned dres-raid-party, killed 5 of 6 entities, stepped 60 frames each. soulsHeld 0 -> 0. The next level costs 418 souls and the player is level 1. The bought attribute stream is UNFUNDABLE in the shipped build.",
     "A pre-census world carries a placeholder SIX-attribute Souls sheet (vigour/endurance/strength/dexterity/intelligence/faith). `personality` does not exist on it at all, so setAttributes({personality}) throws and every social gate reads 0/N. Any probe touching attribute gates must H.setCharacter() first.",
-    "BASELINE, tools/quests/attr-scale-audit.mjs --sheet p10: 103 quests, 28 defects. Non-violent RESOLUTIONS authored 301, reachable 268 = 89.0%; 27 of the 33 shut are shut BY A DEFECT (shut for every character forever). The QUEST-level rate is 102/103 = 99.0% and is insensitive - it does not move until the last talk route on a quest is shut, so it must not be reported alone."
+    "BASELINE, tools/quests/attr-scale-audit.mjs --sheet p10: 103 quests, 28 defects. Non-violent RESOLUTIONS authored 301, reachable 268 = 89.0%; 27 of the 33 shut are shut BY A DEFECT (shut for every character forever). The QUEST-level rate is 102/103 = 99.0% and is insensitive - it does not move until the last talk route on a quest is shut, so it must not be reported alone.",
+    "BEFORE/AFTER, like-for-like on the SAME 120-quest tree (computed in memory, no file writes, so it could not race the concurrent authors and could not leave the tree reverted if it threw — the file-writing version of this test did exactly that once): defects 28 -> 0; ladder inversions 1 -> 0; non-violent RESOLUTIONS reachable 325/358 = 90.8% -> 352/358 = 98.3%; shut by a DEFECT 27 -> 0; quest-level non-violent 119/120 = 99.2% -> 120/120 = 100.0%. Q-MAG-22 was the one quest whose only reachable route required violence; it no longer is.",
+    "THE QUEST-LEVEL NON-COMBAT RATE IS THE WRONG HEADLINE AND I ALMOST SHIPPED IT. It moved 99.2% -> 100.0% while 27 authored non-violent routes were being restored, because most quests carry four or five endings and keep their tick until the LAST talk route is shut. Q-BLAK-01 had three non-violent routes, two of them permanently shut (personality 45; and `scribing`, which is not a skill), and the quest-level number did not move at all — the player had lost every route that involved speaking to anybody and the headline said 98.9%. The resolution-level rate is the sensitive one; the tool now reports both and says which is which.",
+    "DELETE-THE-FIX: 42/42 reverted edits make the auditor go red — but as TWO classes, and the split is the honest part. 28 revert to a demand outside a reachable band (defects). The other 14 were individually LEGAL values (rank-4/5/6 rungs at 18 and 20, both under personality hard cap 20); they were moved to 16/17 so the rank-7 and rank-8 rungs could sit above them under the cap. Their predicate is LADDER INVERSION, which is a property the tool did not have until they forced it to. Reporting 42 defect fixes would have been a claim of 14 defects that do not exist.",
+    "THE ROOT CAUSE IS NOT THE SCALE — IT IS THE MISSING HALF OF PROGRESSION. RI-PRG02 section 2 specifies two streams and only the earned one is funded. So rescaling every demand to the earned-only ceiling is a fix that becomes WRONG IN THE OTHER DIRECTION the day anybody wires kill-souls: personality 20 would be met at about level 12 and every social gate in the game becomes decoration. That is why the bands are computed from reports/faction-signature-sweep.json at run time and no rescaled ceiling is written down anywhere. When the sweep moves, the bands move with it, and the SAME tool starts reporting these demands as vacuous instead of unreachable. One instrument, both directions.",
+    "THE SEVEN `skill: 0` DEMANDS ARE NOT A DEFECT, and clamping them up would have been the mirror error — it would have made seven magic routes harder for no reason. Every one sits beside a real spell_effects requirement in a magic-utility route: the spell is the gate and the 0 is a tier marker. The classifier calls a vacuous skill demand a defect ONLY when it is the resolution sole requirement, and there is a self-test case on each side of that line.",
+    "CHECK-QUESTS WIRING IS STILL A WARNING AND WAS PROVEN TO FIRE. Reintroduced personality 45 and `scribing` 35 into Q-BLAK-01: check-quests printed both defects, printed the non-violent consequence, and EXITED 0. No fail-closed assertion was landed, per the precedent already carried in that file.",
+    "MY OWN SELF-TEST HAD A HOLE AND MUTATION TESTING FOUND IT. Six deliberate mutations of the auditor: removing the reserve, disabling the bad-key check, deleting the skill-cap check, disabling the vacuity check, and flipping `defect` to false on the unreachable and max_only bands. The unreachable mutation stayed GREEN on the first pass, because the case asserted only the band NAME and not the verdict — the exact mutation that would have shipped the whole class silently. Cases rewritten to assert both; all six now go red."
   ],
-  "next_step": "apply the data fixes: 11 bad skill keys (+ the generator that emits them), 17 over-band attribute demands re-spaced as a ladder; then re-measure and wire the warning into check-quests.mjs",
-  "notes_for_successor": "Do NOT clamp to max - zero-margin is the defect that shut Act IV for 11/40 signatures one point lower. Convention adopted: hard cap = ceiling_median - 2; warn band = above ceiling_p10 - 2. Vacuity floor = at_creation.min for attributes, base_value 5 for skills."
+  "next_step": "none for the builder. A critic should re-measure with: node tools/quests/attr-scale-audit.mjs --self-test, then --sheet p10 and --sheet median, then node tools/quests/attr-scale-consumption.mjs --after (and without --after, which must FAIL 5/8 on fixed data — that is the proof the probe is not vacuous). NOT MINE and still open: the souls economy has no source, which is what makes every ceiling here contingent; and X7_cosmetic_pairs 177 / X8_foreshadowed_pct 68.89 in tools/analysis/quest-audit.mjs are pre-existing failures I did not touch.",
+  "notes_for_successor": "Bands: hard cap = ceiling_median - 2, specialist cap = ceiling_p10 - 2, both read from reports/faction-signature-sweep.json at run time. NEVER write a rescaled ceiling into a file — that is the thing that goes stale. If you add a faction line, its rank ladder must be non-decreasing over ranks 0-8; the auditor checks it and quests numbered above 8 are exempt. The three faction files were being edited by W1-FACTIONS-r2 throughout this run: every write re-read from disk first and preserved the file own indentation (they had reformatted 2 -> 1 and gone 8 -> 17 quests), so my diffs against their version are the 42 rows and nothing else. If a script of yours must write these files, detect the indent per file and REFUSE rather than reformat."
 }
