@@ -5,9 +5,24 @@
     "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md"
   ],
   "started": "wave-1",
-  "state": "building",
+  "state": "measuring",
   "outputs_expected": [],
-  "outputs_written": [],
+  "outputs_written": [
+    "game/data/input/profiles.json",
+    "game/data/input/pad-quirks.json",
+    "game/src/input/gamepad.js",
+    "game/src/input/touch.js",
+    "game/src/input/viewport.js",
+    "game/src/input/rebind.js",
+    "game/src/input/bindings.js (rewritten: data-driven + collision audit)",
+    "game/src/input/real.js (rewritten)",
+    "game/src/input/pipeline.js (chargeIntent)",
+    "game/src/harness/api.js (A-JRN4 setViewport/getViewport, rebind*, touch*)",
+    "game/src/engine.js (setProfiles + data wiring + sim.realInput)",
+    "game/src/sim/step.js (realInput.tick before latch)",
+    "game/src/combat/player.js (chargeIntent gates r2.charged)",
+    "game/index.html (dvh, safe-area vars, pinch/pull-to-refresh suppression)"
+  ],
   "findings": [
     "BOOT CONFIRMED before work: node tools/harness/smoke.mjs passes 6/6 (chromium 141, SwiftShader).",
     "tools/journey/gamepad-shim.mjs EXISTS and is real (14.4 KB) \u2014 injects at the navigator.getGamepads() seam with x2s-standard / x2s-hid-dualsense / xbox-standard presets, dispatches real GamepadEvents, has --self-test. NOT phantom. tools/journey/journey-run.mjs IS phantom \u2014 mine to write.",
@@ -20,8 +35,12 @@
     "DEFECT (pad lifecycle): no gamepadconnected/gamepaddisconnected listeners anywhere. Disconnect is only noticed at the next poll; L6 (two pads) takes the first connected, not the most recently active.",
     "ABSENT ENTIRELY: touch input (RI-JRN04 \u00a7G, 14 actions, T1-T10) \u2014 zero touch code in the tree. Rebinding model (RI-JRN03 \u00a7E RB1-RB11) \u2014 zero. Mobile viewport/orientation/safe-area (\u00a7F H1-H12) \u2014 game/index.html uses 100vh (H4 bans it, `RI-JRN04` How-we-lose #8) and has no env(safe-area-inset-*) use.",
     "HARNESS GAPS: A-JRN4 (viewport/orientation/safe-area control) and A-JRN12 (keyboard-layout emulation) are declared absent by api.js's own capability report. M-P16..M-P19 and M-K2 need them.",
-    "CORPUS CONFLICT: RI-JRN04 \u00a7D sets the right-stick inner deadzone at 0.10 and curve m'^2.0; the shipped shapeLookStick() implements RI-CAM02 \u00a7A's 0.15/0.95/quadratic. RI-JRN04's own header cedes camera behaviour to RI-CAM02 but claims the stick transform (deadzone, curve, sensitivity). Recorded as corpus debt; see report."
+    "CORPUS CONFLICT: RI-JRN04 \u00a7D sets the right-stick inner deadzone at 0.10 and curve m'^2.0; the shipped shapeLookStick() implements RI-CAM02 \u00a7A's 0.15/0.95/quadratic. RI-JRN04's own header cedes camera behaviour to RI-CAM02 but claims the stick transform (deadzone, curve, sensitivity). Recorded as corpus debt; see report.",
+    "tools/journey/journey-run.mjs LANDED at 07:09 from the tool builder (50 KB) with --journey jrn03-desktop/jrn04-pad, --layouts, --gamepad, --dpr, --pointer, --self-test, and it reads harness_amendments_absent from getCapabilityReport(). I did NOT write it.",
+    "A-JRN4 was absent; I implemented it (game/src/input/viewport.js + __HARNESS.setViewport/getViewport) and updated api.js's capability report. A-JRN2 already worked via __HARNESS.gamepad(); I widened pushGamepadState() to carry a real `mapping` string and per-button `.value` so a non-standard descriptor can reach the translation layer.",
+    "SHARED-TREE HAZARD (not mine): the build STOPPED BOOTING at 07:12 with `QuestBook: Q-MAIN-10 consequences name quest Q-MAIN-11, which does not exist` from the main-quest builder's in-flight game/data/quests/mainline-act2.json. QuestBook load is fail-loud by design, so this blocks every browser measurement in the tree until they land act3. Boot was confirmed green before my work started.",
+    "Another agent's in-flight commit (9d2d981) absorbed my files; I did not commit."
   ],
-  "next_step": "build game/data/input/profiles.json + pad-quirks.json, then game/src/input/gamepad.js",
+  "next_step": "run tools/journey/journey-run.mjs for jrn03/jrn04 once the tree boots again; write the piece probe tools/journey/input-latency.mjs",
   "notes_for_successor": "Split out of W1-08 on the owner's explicit requirement: mobile + attached controller. platform.mobile.viewport promoted from wave 2 to wave 1 and is owned here."
 }

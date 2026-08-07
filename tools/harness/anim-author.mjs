@@ -79,6 +79,15 @@ const STANDOFF_M = 0.60;
 const TARGET_HURTBOX_M = 0.17;
 const MIN_AXIS_MAX = STANDOFF_M - TARGET_HURTBOX_M;   // 0.43 m, capsule surface to own root axis
 
+// ---- RI-CMB12 ES-REACT/1, as a constraint on the clip ------------------------------------
+// The six tracked joints are §A.1's, declared, the same six for every actor. `lie` is the number
+// of telegraph frames that are NOT on the screen: a clip's state enters ATK_WINDUP on animation
+// frame 1, so `t_label = startup` and `lie = f_vis - 1`. `t_react = (startup + 1) - f_vis`.
+const TRACKED_JOINTS = ['hand_r', 'lowerarm_r', 'upperarm_r', 'clavicle_r', 'spine_02', 'head'];
+const VIS_DEG = 12;        // §A.1 pose metric
+const LIE_MAX_F = 8;       // §A budget, every attack, reactable or not
+const T_REACT_MIN_F = 19;  // §A budget for an attack declaring reactable: true
+
 // ---- the pose the whole fight returns to -----------------------------------------------
 const IDLE = {
   spine_00: { rx: 3 },
@@ -540,6 +549,7 @@ function measureArch(archName, archObj, rowsCache) {
   let worstReach = Infinity, worstReachRow = null;
   let worstAxis = 0, worstAxisRow = null;
   let worstWorld = 0, worstTravel = 0, worstTravelRow = null;
+  let worstLie = 0, worstLieRow = null, worstReact = Infinity, worstReactRow = null;
   for (const row of rows) {
     const clip = new Clip(row.anim, archObj, row.timing, row.amplitude, row.root_dz_m);
     const t = trackOf(clip, row.weapon, row.timing, row.hitboxR);
@@ -569,12 +579,22 @@ function measureArch(archName, archObj, rowsCache) {
     // point at all (best 0.536 m, set by `greatsword:heavy:2h`, a move the fight never plays)
     // and the archetype every enemy sweep uses stays at round 3's geometry.
     if (row.played && row.coversStandoff && t.minAxis > worstAxis) { worstAxis = t.minAxis; worstAxisRow = row.label; }
+    // RI-CMB12 §A, on the rows the game plays. A clip that buys peak tip speed by shrinking its
+    // whole excursion is a clip whose windup is invisible.
+    if (row.played) {
+      const lie = t.visFrame - 1;
+      const tReact = (row.timing.startup + 1) - t.visFrame;
+      if (lie > worstLie) { worstLie = lie; worstLieRow = row.label; }
+      if (tReact < worstReact) { worstReact = tReact; worstReactRow = row.label; }
+    }
     if (t.peakWorld > worstWorld) worstWorld = t.peakWorld;
     if (t.travel / row.hitboxR > worstTravel) { worstTravel = t.travel / row.hitboxR; worstTravelRow = row.label; }
   }
   if (worstReach === Infinity) worstReach = 1;
+  if (worstReact === Infinity) worstReact = 999;
   return { peak: worstPeak, peakRow: worstPeakRow, reach: worstReach, reachRow: worstReachRow,
-    axis: worstAxis, axisRow: worstAxisRow, world: worstWorld, travelRadii: worstTravel, travelRow: worstTravelRow };
+    axis: worstAxis, axisRow: worstAxisRow, world: worstWorld, travelRadii: worstTravel, travelRow: worstTravelRow,
+    lie: worstLie, lieRow: worstLieRow, react: worstReact, reactRow: worstReactRow };
 }
 
 // One rig, reused. `evaluate()` allocates nothing, and the solver runs this tens of thousands
@@ -587,6 +607,16 @@ function trackOf(clip, w, m, hitboxR) {
   let z = 0, px = 0, py = 0, pz = 0, pz0 = 0, hasPrev = false;
   let ax = 0, ay = 0, az = 0;
   let peak = 0, peakWorld = 0, travel = 0, reach = 0, minAxis = Infinity;
+  // RI-CMB12 §A.1's POSE METRIC, computed here so the reactability budget is a CONSTRAINT on the
+  // clip rather than a measurement taken after it ships. `f_vis` is the first animation frame at
+  // which the max absolute Euler deviation over the six declared tracked joints reaches 12°
+  // against the pose the actor held before it committed — which, for a clip played from idle, is
+  // the idle stance. Round 4's first solve shrank `swing_scale` to 0.22 to buy peak tip speed
+  // for a bury inside the active window, and that pushed `f_vis` from 20 to 27 on the champion's
+  // combo_a: `lie` 6 -> 15 f@60 and `t_react` 38 -> 29. Trading RI-CMB04 §B against RI-CMB12 §A
+  // is exactly the "closed the named gap by moving the defect elsewhere" failure this round was
+  // dispatched to stop, so both are in the objective now.
+  let visFrame = null;
   for (let f = 1; f <= m.total; f++) {
     z += clip.rootDeltaAt(f);
     clip.applyPose(rig, f);
@@ -625,9 +655,20 @@ function trackOf(clip, w, m, hitboxR) {
         if (dd < minAxis) minAxis = dd;
       }
     }
+    if (visFrame === null) {
+      let dev = 0;
+      for (const bone of TRACKED_JOINTS) {
+        const i = rig.index.get(bone);
+        if (i === undefined) continue;
+        const d = Math.max(Math.abs(rig.rx[i] - idleOf(bone, 'rx')), Math.abs(rig.ry[i] - idleOf(bone, 'ry')), Math.abs(rig.rz[i] - idleOf(bone, 'rz')));
+        if (d > dev) dev = d;
+      }
+      if (dev >= VIS_DEG) visFrame = f;
+    }
     px = b[0]; py = b[1]; pz = b[2] - z; pz0 = b[2]; ax = a[0]; ay = a[1]; az = a[2]; hasPrev = true;
   }
-  return { peak, peakWorld, travel, reach, minAxis: minAxis === Infinity ? 99 : minAxis };
+  return { peak, peakWorld, travel, reach, minAxis: minAxis === Infinity ? 99 : minAxis,
+    visFrame: visFrame === null ? m.total : visFrame };
 }
 
 // ---- solve ------------------------------------------------------------------------------
@@ -656,7 +697,9 @@ for (const name of Object.keys(ARCH)) {
         for (let swing = 1.30; swing >= 0.05; swing -= 0.09) {
           const a = buildArch(def, t, swing, ext, bury, cham, hitFrac);
           const m = measureArch(name, a, rows);
-          const miss = Math.max(0, m.peak - PEAK_MAX) * 6 + Math.max(0, REACH_MIN - m.reach) * 3 + Math.max(0, m.axis - MIN_AXIS_MAX);
+          const miss = Math.max(0, m.peak - PEAK_MAX) * 6 + Math.max(0, REACH_MIN - m.reach) * 3
+            + Math.max(0, m.axis - MIN_AXIS_MAX)
+            + Math.max(0, m.lie - LIE_MAX_F) * 0.05 + Math.max(0, T_REACT_MIN_F - m.react) * 0.05;
           if (!closest || miss < closest.miss - 1e-9) closest = { a, m, t, swing, ext, bury, cham, hitFrac, miss };
           if (miss === 0) { hit = { a, m, t, swing, ext, bury, cham, hitFrac }; break; }
         }
@@ -673,11 +716,12 @@ for (const name of Object.keys(ARCH)) {
   }
   if (!best) {
     best = closest;
-    console.log(`${name.padEnd(16)} NO feasible point: peak ${best.m.peak.toFixed(3)}x (${best.m.peakRow}) reach ${best.m.reach.toFixed(3)}x (${best.m.reachRow}) min_axis ${best.m.axis.toFixed(3)} m (${best.m.axisRow})`);
+    console.log(`${name.padEnd(16)} NO feasible point: peak ${best.m.peak.toFixed(3)}x (${best.m.peakRow}) reach ${best.m.reach.toFixed(3)}x (${best.m.reachRow}) min_axis ${best.m.axis.toFixed(3)} m (${best.m.axisRow}) lie ${best.m.lie}f t_react ${best.m.react}f`);
   }
   solved[name] = best.a;
   console.log(`[${((Date.now() - _t0) / 1000).toFixed(0)}s] ${name.padEnd(16)} t=${best.t.toFixed(2)} swing=${best.swing.toFixed(2)} ext=${best.ext} bury=${best.bury} chamber=${best.cham} hitFrac=${best.hitFrac}  ` +
     `peak=${best.m.peak.toFixed(3)}x (${best.m.peakRow})  reach=${best.m.reach.toFixed(3)}x (${best.m.reachRow})  min_axis=${best.m.axis.toFixed(3)} m (${best.m.axisRow})  ` +
+    `lie=${best.m.lie}f (${best.m.lieRow})  t_react=${best.m.react}f (${best.m.reactRow})  ` +
     `world_peak=${best.m.world.toFixed(1)} m/s  travel=${best.m.travelRadii.toFixed(2)} radii/frame (${best.m.travelRow})`);
 }
 

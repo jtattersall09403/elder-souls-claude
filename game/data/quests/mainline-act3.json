@@ -1,0 +1,776 @@
+{
+  "schema": "elder-souls/quest-file@1",
+  "id": "mainline-act3",
+  "element_schema": "corpus/30-quests/quest.schema.json",
+  "piece": "W1-19 — the main quest, end to end",
+  "corpus_item": "RI-QST06 §B Act III — The Mark. Five quests, stakes 7-8, the first faction favour called in, exactly one irreversible personal cost recorded as a permanent world flag and a permanent condition, and the backpath becoming reachable at the act's end.",
+  "note": "Hand-authored. Q-MAIN-13 is the pivot and its cost has no cure anywhere in the game; RI-QST06 'How we lose' names the softening of it as the failure mode.",
+  "quests": [
+    {
+      "id": "Q-MAIN-11",
+      "title": "The Road Below",
+      "category": "main",
+      "faction": null,
+      "act": 3,
+      "rank_gate": null,
+      "discovery": "given",
+      "giver": {
+        "npc_id": "undersexton-aveline-rell",
+        "location": "Soulrest, the Drowned Court's counting house at the head of the burial stair",
+        "disposition_min": 30,
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the crypt road",
+        "prerequisite_quests": ["Q-MAIN-10"]
+      },
+      "task_kind": "pilgrimage",
+      "stakes": 7,
+      "directions": "The Court's crypt road starts under the low chapel at Soulrest and runs inland under the Stone Wastes, and it is a burial road, so it is walked and not dug. The first two days of it are lit and swept. After the third gate the Court stopped maintaining it eighty years ago and the sextons who know the rest of it are three, and two of them are at Lilmoth. Rell will give you the third. Water is the problem and not the dark; the road floods from below, on a rhythm, and Ojal-Weeth can tell you what the rhythm is because the mortuary has been burying people down there through it for four hundred years.",
+      "journal": [
+        {
+          "index": 10,
+          "state": "active",
+          "text": "Rell has opened the crypt road to me. It goes from under the low chapel inland under the Stone Wastes and it is the only way to whatever is making that sound that does not involve digging. She has called in a favour with the mortuary to do it and she said so, which she has never done before.",
+          "records_belief": false
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "The lit part of the road ends at the third gate. Beyond it the Court's own stonework stops and something older carries on, and the older work is better. The joints are tighter than anything standing above ground in this province.",
+          "records_belief": false
+        },
+        {
+          "index": 30,
+          "state": "active",
+          "text": "The road floods from below on a rhythm and the rhythm is the sound. Water comes up through the floor for the count of forty, holds, and goes back down, and it has been doing that since before the Court put a single stone down here. The mortuary hands walk it by the count and have for four hundred years and none of them have ever wondered what is doing the counting.",
+          "records_belief": false
+        },
+        {
+          "index": 40,
+          "state": "branch",
+          "text": "The old road does not go to a tomb. It goes to a gallery cut across the top of something enormous, and the enormous thing is worked stone, and it is running. I can feel it through the floor on the count of forty. This is a xanmeer and it is not a ruin.",
+          "records_belief": false
+        },
+        {
+          "index": 50,
+          "state": "active",
+          "text": "There is a body in the gallery in Court robes that has been there perhaps ten years and its own book is under it. A sexton called Ivo Sarn came down here alone, wrote everything I have just worked out, and did not go back up. His last entry is a list of the intakes he had counted and the count is not finished.",
+          "records_belief": false
+        },
+        {
+          "index": 76,
+          "state": "failure",
+          "text": "I was in the low part of the road when the water came up and I did not have the count. I got out with nothing and I will not go back down that way; the Court's road is closed to me and I am told that is a mercy.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "I have walked the crypt road to its end and stood on the gallery over the machine. It is a xanmeer built to hold, it is four thousand years old, it is running, and the rhythm the mortuary walks by is its rhythm. I came back up and told Rell and she sat down on the stair.",
+          "records_belief": false
+        },
+        {
+          "index": 92,
+          "state": "success",
+          "text": "I brought Ivo Sarn's book up with his body and gave both to the mortuary, and the Court has its own sexton's account of the gallery in its own hand, ten years old, which nobody can call an outlander's story. Ojal-Weeth buried him properly and would not take payment for it.",
+          "records_belief": false
+        }
+      ],
+      "branches": [
+        {
+          "id": "br_the_count_of_forty",
+          "at_journal_index": 20,
+          "condition": "The player learns the flood rhythm from the mortuary before entering the unlit road, or goes in without it",
+          "leads_to": ["rev_the_rhythm", "res_walk_it", "fail_caught_by_the_water"],
+          "irreversible": false
+        },
+        {
+          "id": "br_the_dead_sexton",
+          "at_journal_index": 50,
+          "condition": "The player finds Ivo Sarn and decides whether to bring him and his book up or leave the gallery as it is",
+          "leads_to": ["rev_sarns_book", "res_walk_it", "res_bring_sarn_up"],
+          "irreversible": false
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "res_walk_it",
+          "method": "wait",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "The player has stood on the gallery and knows the machine is running. The Court has it on a stranger's word, which half of them will take and half will not.",
+          "morally_better": null,
+          "requires": {},
+          "requires_knowing": ["rev_the_rhythm"],
+          "exclusive_with": ["res_bring_sarn_up"],
+          "consequences": {
+            "faction_reputation": { "the_drowned_court": 8 },
+            "world_flags": ["player_has_stood_on_the_gallery", "the_machine_is_known_to_be_running"]
+          }
+        },
+        {
+          "id": "res_bring_sarn_up",
+          "method": "trade",
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "The Court has a sexton's own ten-year-old account of the gallery and a body to bury. Sarn's intake list is the map for Q-MAIN-12, and the mortuary owes the player for the rest of the game.",
+          "morally_better": null,
+          "requires": {},
+          "requires_knowing": ["rev_the_rhythm", "rev_sarns_book"],
+          "exclusive_with": ["res_walk_it"],
+          "consequences": {
+            "faction_reputation": { "the_drowned_court": 14 },
+            "world_flags": ["player_has_stood_on_the_gallery", "the_machine_is_known_to_be_running", "sarns_book_recovered", "soulrest_mortuary_owes_the_player"],
+            "npc_disposition": { "ojal-weeth": 30, "undersexton-aveline-rell": 10 }
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_caught_by_the_water",
+          "cause": "The player enters the unlit road without the flood count",
+          "journal_index": 76,
+          "recoverable": true,
+          "consequence": "The Court's crypt road closes to the player. The gallery must then be reached from the shaft under the Bone Ladder, which is longer, unlit and not swept.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": ["D10"],
+        "stated_objective": "Walk the Court's crypt road to the end and find what is under the Stone Wastes",
+        "actual_objective": "Walk the Court's crypt road to the end and find what is under the Stone Wastes",
+        "truth": "The rhythm the mortuary has walked the road by for four hundred years is the machine's own cycle. The Court's burial practice has been organised around the thing it is looking for since before it started looking.",
+        "revealed_by": [
+          { "id": "rev_the_rhythm", "channel": "environment", "source": "loc_the_flooding_road", "before_point_of_no_return": true },
+          { "id": "rev_sarns_book", "channel": "corpse", "source": "npc-sexton-ivo-sarn", "before_point_of_no_return": true }
+        ],
+        "never_revealed": false
+      },
+      "consequences": {
+        "faction_reputation": {},
+        "world_flags": ["act_three_opened", "crypt_road_walked"],
+        "unlocks": ["Q-MAIN-12"]
+      },
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        { "type": "access", "unique_named": true, "id": "loc_the_gallery_over_the_count", "name": "the gallery over the Count" },
+        { "type": "information", "unique_named": true, "id": "topic_the_count_of_forty", "name": "the count of forty" },
+        { "type": "item", "unique_named": true, "id": "item_ivo_sarns_book", "name": "Ivo Sarn's book", "on_resolution": ["res_bring_sarn_up"] }
+      ],
+      "notes": "Act III quest 1. Stakes 7 — the jump from Act II is the point. RI-QST06 §B Act III calls in the first faction favour, and Rell spends the mortuary's to open the road. The last new place before Act V starts here and is not finished until Q-MAIN-24."
+    },
+    {
+      "id": "Q-MAIN-12",
+      "title": "The Throttle",
+      "category": "main",
+      "faction": null,
+      "act": 3,
+      "rank_gate": null,
+      "discovery": "environmental",
+      "giver": {
+        "npc_id": "undersexton-aveline-rell",
+        "location": "Soulrest, the Drowned Court's counting house at the head of the burial stair",
+        "disposition_min": 30,
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the intakes",
+        "prerequisite_quests": ["Q-MAIN-11"]
+      },
+      "task_kind": "moral_dilemma",
+      "stakes": 8,
+      "directions": "The intakes are off the gallery, six of them that can be reached from the walkway and eleven that cannot, and the sixth is the only one with a gate a person can move. Sarn's list has them in the order he walked them. The nearest well above the sixth intake is the one on the Soulrest burial stair itself, which is the one the mortuary hands kneel to, so whatever the sixth intake does will be visible from the top of the stair within a day.",
+      "journal": [
+        {
+          "index": 10,
+          "state": "active",
+          "text": "The intakes are where the machine takes. Six of them can be reached from the gallery walkway and one of those six has a gate that a person can move. If I close it I will find out whether the wells above are fed by this thing or merely near it, and the well above the sixth intake is the one on the Soulrest stair.",
+          "records_belief": true
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "Rell says the Court cannot authorise it and cannot stop me and would like the result. Bel Mourne says that if I am right about what the intake does then somebody will die of it, and that she would still do it, and that I should be clear with myself about which of those two sentences I am acting on.",
+          "records_belief": false
+        },
+        {
+          "index": 30,
+          "state": "active",
+          "text": "The gate is closed. The machine's rhythm did not change. Nothing down here noticed at all.",
+          "records_belief": true
+        },
+        {
+          "index": 44,
+          "state": "branch",
+          "text": "The Soulrest well went cold within the day. Sap in the basin, right colour, does nothing, exactly as at the Bone Ladder. So it is not that the machine is stealing what the wells should get. It is that the wells are drinking what the machine lets past. The sapwells work because of the thing that is killing the marsh, and I have just proved it by turning it off.",
+          "records_belief": false
+        },
+        {
+          "index": 50,
+          "state": "active",
+          "text": "A mortuary hand called Sesh-Weth died on the second day with the gate shut, in the ordinary way, of a chest thing he had had for years. The well did not take him. He is the only person in four hundred years of that book who went into the Soulrest ground and gave nothing back, and it is written next to my name because Ojal-Weeth writes down who was there.",
+          "records_belief": false
+        },
+        {
+          "index": 78,
+          "state": "failure",
+          "text": "I left the gate shut and went up to argue about it, and by the time I came back down the Court had sent two sextons to open it and one of them did not come out. The gallery is theirs now and they will not have me on it while the inquiry stands.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "I opened the gate again on the second day and the Soulrest well came back within the hour. I know what the machine does now and it cost one man who was going to die anyway and who deserved better than to be an experiment. I have written his name down here because there is nowhere else it will be written.",
+          "records_belief": false
+        },
+        {
+          "index": 92,
+          "state": "success",
+          "text": "I opened the gate again the same hour, before the well went fully cold, on Bel Mourne's word rather than on the evidence. The Soulrest well flickered and held and nobody died. I am nearly sure of what the machine does and nearly is not the same, and I will be arguing from nearly for the rest of this.",
+          "records_belief": false
+        },
+        {
+          "index": 94,
+          "state": "success",
+          "text": "I never closed the gate. Sarn's book has the intakes and their flows in it and the arithmetic works without anybody having to die of it, and it took eleven days and it will convince nobody who does not read arithmetic.",
+          "records_belief": false
+        }
+      ],
+      "branches": [
+        {
+          "id": "br_the_gate",
+          "at_journal_index": 20,
+          "condition": "The player closes the sixth intake, closes it and reopens it within the hour, or refuses to close it and works from Sarn's figures instead",
+          "leads_to": ["rev_wells_drink_the_overflow", "res_full_test", "res_short_test", "res_arithmetic"],
+          "irreversible": true
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "res_full_test",
+          "method": "lore_knowledge",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "The player has proved that the wells drink what the machine lets past, at the cost of one named man who is buried without being taken. The proof is unarguable and the player is named in the mortuary book as having been there.",
+          "morally_better": false,
+          "requires": {},
+          "requires_knowing": ["rev_wells_drink_the_overflow"],
+          "exclusive_with": ["res_short_test", "res_arithmetic"],
+          "consequences": {
+            "faction_reputation": { "the_drowned_court": 6, "the_rootkeepers": -10 },
+            "world_flags": ["throttle_test_completed", "sesh_weth_died_untaken", "player_proved_the_wells_drink_the_overflow", "player_named_in_the_mortuary_book"],
+            "kills_npc": ["npc-sesh-weth"]
+          }
+        },
+        {
+          "id": "res_short_test",
+          "method": "magic_utility",
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "The gate is shut and reopened inside the hour with a telekinetic pull from the walkway rather than by hand. Nobody dies and the proof is partial; every Act IV argument that leans on it is one degree weaker and the player can still make it.",
+          "morally_better": true,
+          "requires": { "spell_effects": ["telekinesis"] },
+          "requires_knowing": ["rev_wells_drink_the_overflow"],
+          "exclusive_with": ["res_full_test", "res_arithmetic"],
+          "consequences": {
+            "faction_reputation": { "the_drowned_court": 4, "the_rootkeepers": 6 },
+            "world_flags": ["throttle_test_partial", "player_proved_the_wells_drink_the_overflow", "nobody_died_in_the_throttle_test"]
+          }
+        },
+        {
+          "id": "res_arithmetic",
+          "method": "lore_knowledge",
+          "violence_required": false,
+          "journal_index": 94,
+          "outcome": "The player never touches the gate and derives the same conclusion from Ivo Sarn's intake flows. Nobody dies, no well goes cold, and the argument persuades only people who will sit down with the figures — which in Act IV is the Ledger, the Assize and nobody else.",
+          "morally_better": true,
+          "requires": { "skills": { "security": 30 } },
+          "requires_knowing": ["rev_sarn_flows"],
+          "exclusive_with": ["res_full_test", "res_short_test"],
+          "consequences": {
+            "faction_reputation": { "the_drowned_court": 2, "the_rootkeepers": 10 },
+            "world_flags": ["throttle_never_tested", "player_proved_the_wells_drink_the_overflow", "nobody_died_in_the_throttle_test", "proof_is_arithmetic_only"]
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_left_it_shut",
+          "cause": "Three days pass with the sixth intake closed",
+          "journal_index": 78,
+          "recoverable": false,
+          "consequence": "The Court takes the gallery, a sexton dies opening the gate, and the player is barred from the gallery until Act IV closes. The Act V approach must then be made from the Bone Ladder shaft.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": ["D10", "D12"],
+        "stated_objective": "Find out whether the machine is what is taking the tide",
+        "actual_objective": "Find out whether the machine is what is taking the tide",
+        "truth": "The machine is not taking the tide from the wells. The wells have been drinking what the machine lets past, for four thousand years, and stopping it stops them.",
+        "revealed_by": [
+          { "id": "rev_wells_drink_the_overflow", "channel": "environment", "source": "loc_the_sixth_intake", "before_point_of_no_return": true },
+          { "id": "rev_sarn_flows", "channel": "book", "source": "item_ivo_sarns_book", "before_point_of_no_return": true }
+        ],
+        "never_revealed": false
+      },
+      "consequences": {
+        "faction_reputation": {},
+        "world_flags": ["the_wells_and_the_machine_are_one_system"],
+        "unlocks": ["Q-MAIN-13"]
+      },
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        { "type": "information", "unique_named": true, "id": "topic_the_wells_drink_what_the_machine_lets_past", "name": "the wells drink what the machine lets past" }
+      ],
+      "notes": "Act III quest 2. This is the verification of the antagonist's second Act V claim, and the player performs it themselves with their own hands. Three resolutions: one that proves it at the cost of a named death, one that proves it partially with a spell and no death, one that never touches the gate and proves it on paper. RI-QST05: none requires violence, and the death in res_full_test is a consequence recorded as kills_npc, not a combat resolution."
+    },
+    {
+      "id": "Q-MAIN-13",
+      "title": "The Tasting",
+      "category": "main",
+      "faction": null,
+      "act": 3,
+      "rank_gate": null,
+      "discovery": "given",
+      "giver": {
+        "npc_id": "ledgerer-hosk-vei",
+        "location": "Soulrest, the Drowned Court's archive under the burial stair",
+        "disposition_min": 35,
+        "honest": false
+      },
+      "opens_by": {
+        "topic": "reading the count",
+        "prerequisite_quests": ["Q-MAIN-12"]
+      },
+      "task_kind": "moral_dilemma",
+      "stakes": 8,
+      "directions": "The reading place is on the gallery itself, at the seventh bay, where the old work has a basin cut into the lip of it and a channel running back down into the machine. Hosk-Vei will come as far as the third gate and no further and he says so plainly. What is asked of you happens at the basin and cannot be done anywhere else and cannot be undone anywhere at all.",
+      "journal": [
+        {
+          "index": 10,
+          "state": "active",
+          "text": "Hosk-Vei says the Recension does not mean that the count will be read by somebody who is owed nothing. It means the count will be read by somebody who is put into it. There is a basin on the gallery and to read what is held below I have to let the thing below hold me.",
+          "records_belief": true
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "He was clear about the cost and I want it written down that he was clear. Whatever is in that basin will take my pattern and keep it, and there is no rootkeeper, no sexton, no cure and no ending that takes it back out. He said it three times and then he asked me not to decide today.",
+          "records_belief": false
+        },
+        {
+          "index": 30,
+          "state": "active",
+          "text": "Bel Mourne says do not. Rell says it is what I am for. Ashul-Tei's question, the one she made me repeat, was for the writer of that letter, and I cannot ask it of him without going in.",
+          "records_belief": false
+        },
+        {
+          "index": 46,
+          "state": "branch",
+          "text": "I have put my hand in the basin at the seventh bay. It is cold and it is not sap. Something read me, all the way through, in about the time it takes to lose your footing, and the count of forty went out of rhythm for one cycle and came back. I am in the Count now. I do not feel changed and I am told that is normal and that it is not the same as being unchanged.",
+          "records_belief": false
+        },
+        {
+          "index": 56,
+          "state": "active",
+          "text": "What being in it gets me is that the machine now answers when I put my hand on it. Not in words. It gives me the shape of what it is holding, the way a ledger gives you a total, and the total is four thousand years of everything that has died in this province and did not get down to a root.",
+          "records_belief": false
+        },
+        {
+          "index": 60,
+          "state": "active",
+          "text": "The other thing being in it gets me is that I cannot be re-issued clean any more. The wells still take me and what comes back is a little further from what went in each time. Hosk-Vei knew that would happen. He told me the cost and he did not tell me that part, and when I asked him why not he said that nobody who was told that part has ever gone in.",
+          "records_belief": false
+        },
+        {
+          "index": 80,
+          "state": "failure",
+          "text": "I have not gone into the basin and I am not going to. Whatever is down there will have to be argued with by somebody it has not read. Hosk-Vei has stopped answering my letters and the Court has begun to say tally-reader in a different tone.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "I am in the Count. It cost what I was told it would cost and one thing I was not told, and it is the only reason anything after this is possible. I have written the date down. Nobody else is going to.",
+          "records_belief": false
+        },
+        {
+          "index": 92,
+          "state": "success",
+          "text": "I made Hosk-Vei say the whole cost out loud in front of Bel Mourne before I put my hand in, including the part he had been leaving out, and he said it. Then I did it anyway. He has been an archivist for thirty years and I think that was the worst hour of them.",
+          "records_belief": false
+        }
+      ],
+      "branches": [
+        {
+          "id": "br_the_basin",
+          "at_journal_index": 30,
+          "condition": "The player enters the Count, makes the archivist state the full cost first and then enters, or refuses — and refusing closes the intended route through Act V for good",
+          "leads_to": ["rev_the_full_cost", "res_go_in", "res_make_him_say_it", "fail_refused_the_basin"],
+          "irreversible": true
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "res_go_in",
+          "method": "wait",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "The player is written into the Count. Permanently: the machine answers their hand, every re-issue afterwards comes back a little further from what went in, and no cure exists in this game. This is the one irreversible personal cost the act is required to land.",
+          "morally_better": null,
+          "requires": {},
+          "exclusive_with": ["res_make_him_say_it"],
+          "consequences": {
+            "faction_reputation": { "the_drowned_court": 10 },
+            "world_flags": ["player_is_in_the_count", "player_reissue_is_degraded", "the_count_answers_the_players_hand", "irreversible_mark_taken"]
+          }
+        },
+        {
+          "id": "res_make_him_say_it",
+          "method": "intimidate",
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "The same permanent cost, taken with the whole of it stated out loud in front of a witness. The archivist is broken by having had to say it and becomes a pressable source in Act V; the Court cannot later claim the player was not told.",
+          "morally_better": null,
+          "requires": { "attributes": { "willpower": 35 } },
+          "requires_knowing": ["rev_the_full_cost"],
+          "exclusive_with": ["res_go_in"],
+          "consequences": {
+            "faction_reputation": { "the_drowned_court": 6 },
+            "world_flags": ["player_is_in_the_count", "player_reissue_is_degraded", "the_count_answers_the_players_hand", "irreversible_mark_taken", "hosk_vei_said_the_whole_cost"],
+            "npc_disposition": { "ledgerer-hosk-vei": -20, "undersexton-bel-mourne": 20 }
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_refused_the_basin",
+          "cause": "The player declines to enter the Count",
+          "journal_index": 80,
+          "recoverable": false,
+          "consequence": "The intended route through Act V is closed for good. The mainline can only be finished from here through the backpath, which is exactly the route Q-MAIN-14 opens and which the game does not warn is the only one left.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": ["D1", "D9"],
+        "stated_objective": "Be put into the Count so that the Count can be read",
+        "actual_objective": "Be put into the Count so that the Count can be read",
+        "truth": "The archivist states the cost accurately and omits one term of it: a pattern held in the Count comes back from a well a little further from itself every time. He omits it because nobody who has been told that has ever agreed.",
+        "revealed_by": [
+          { "id": "rev_the_full_cost", "channel": "ledger", "source": "item_the_drowned_tally_appendix", "before_point_of_no_return": true },
+          { "id": "rev_hosk_omission", "channel": "talk_to_target", "source": "ledgerer-hosk-vei", "before_point_of_no_return": true }
+        ],
+        "never_revealed": false
+      },
+      "consequences": {
+        "faction_reputation": {},
+        "world_flags": ["act_three_pivot_passed"],
+        "unlocks": ["Q-MAIN-14"]
+      },
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        { "type": "access", "unique_named": true, "id": "acc_the_count_answers", "name": "the Count answers your hand" },
+        { "type": "information", "unique_named": true, "id": "topic_what_the_count_holds", "name": "what the Count holds" }
+      ],
+      "notes": "Act III quest 3, the pivot. RI-QST06 §B: 'the antagonist alters the player's body/mind/standing irreversibly. Exactly one irreversible personal cost, recorded as a permanent world flag and a permanent stat/condition.' The flag is player_reissue_is_degraded; the condition is read by the sapwell system. There is no cure item, no cure spell, no late-game reversal and no ending that removes it, and RI-QST06 'How we lose' names adding one as the failure."
+    },
+    {
+      "id": "Q-MAIN-14",
+      "title": "The Skei",
+      "category": "main",
+      "faction": null,
+      "act": 3,
+      "rank_gate": null,
+      "discovery": "given",
+      "giver": {
+        "npc_id": "neeja-xul",
+        "location": "Blackrose, the cutting yard behind the reed-walk",
+        "disposition_min": 20,
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the skei",
+        "prerequisite_quests": ["Q-MAIN-13"]
+      },
+      "task_kind": "moral_dilemma",
+      "stakes": 7,
+      "directions": "Neeja-Xul is at the cutting yard behind the reed-walk at Blackrose, in the afternoons, as before. The knife she is talking about is not in the yard. It is in the flooded chamber under the reed-walk that the yard does not use any more, on the shelf above the waterline, and getting to it means being under water for longer than is comfortable or having something that means you do not have to be.",
+      "journal": [
+        {
+          "index": 10,
+          "state": "active",
+          "text": "Neeja-Xul says there is another way at the machine and it does not involve the Court at all. Every intake it has runs on live root. Cut the root above the intake with a proper skei and the intake stops, and eleven of them can be reached from below without ever going onto the Court's gallery.",
+          "records_belief": false
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "She is not offering this as a kindness. The Cutters have been blamed for thirty years for a thing they did not start and she would like the province to watch somebody cut a root for a reason it cannot argue with. She was honest about that, which I did not expect and which does not make it a better idea.",
+          "records_belief": false
+        },
+        {
+          "index": 30,
+          "state": "active",
+          "text": "The knife is under the reed-walk in the flooded chamber. It is her grandmother's and it is the reason her grandmother's yard book exists, and she will not go in for it herself because she is afraid of what the yard would think of her for wanting it.",
+          "records_belief": false
+        },
+        {
+          "index": 48,
+          "state": "branch",
+          "text": "I have the skei. What it opens is a route to the machine that goes under the Court, past the sextons, past the Recension and past whatever I am supposed to be, and cuts eleven live roots to get there. Everyone I have asked agrees this would stop the intakes. Nobody I have asked will say what stopping them does to the wells above, and I have already proved what stopping one does.",
+          "records_belief": false
+        },
+        {
+          "index": 82,
+          "state": "failure",
+          "text": "I went into the flooded chamber without enough breath in me and came out without the knife and with a great deal of water in my chest. Neeja-Xul has stopped talking about the roots and will not raise it again.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "The skei is in my pack. I have not decided anything by taking it, except that the decision is now mine to make, which is what she wanted and which she got.",
+          "records_belief": false
+        },
+        {
+          "index": 92,
+          "state": "success",
+          "text": "I told Neeja-Xul I would not carry her grandmother's knife to use as an argument and I brought it up out of the water and put it in her hand instead. She held it for a long time. The route under the Court is still there and I know where it starts, and I do not have the thing that opens it.",
+          "records_belief": false
+        }
+      ],
+      "branches": [
+        {
+          "id": "br_the_knife",
+          "at_journal_index": 30,
+          "condition": "The player retrieves the skei from the flooded chamber and either keeps it, opening the route under the Court, or hands it back",
+          "leads_to": ["rev_the_route_under", "res_take_the_skei", "res_give_it_back", "fail_drowned_for_it"],
+          "irreversible": true
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "res_take_the_skei",
+          "method": "steal",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "The player holds the skei and the backpath is open. Q-MAIN-29 and Q-MAIN-31 become reachable and the game says nothing about it.",
+          "morally_better": null,
+          "requires": {},
+          "exclusive_with": ["res_give_it_back"],
+          "consequences": {
+            "faction_reputation": { "the_ixtu_vakh": 10, "the_rootkeepers": -8 },
+            "world_flags": ["player_holds_the_skei", "backpath_open"],
+            "unlocks": ["Q-MAIN-29"]
+          }
+        },
+        {
+          "id": "res_give_it_back",
+          "method": "refuse",
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "The knife goes back to the woman whose grandmother cut with it. The backpath stays shut unless the player comes back for it, and Neeja-Xul will hand it over any time they ask, which is the only door in this game that reopens.",
+          "morally_better": null,
+          "requires": {},
+          "exclusive_with": ["res_take_the_skei"],
+          "consequences": {
+            "faction_reputation": { "the_ixtu_vakh": 16, "the_rootkeepers": 6 },
+            "world_flags": ["skei_returned_to_neeja_xul", "backpath_available_on_request"],
+            "npc_disposition": { "neeja-xul": 30 }
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_drowned_for_it",
+          "cause": "The player enters the flooded chamber and runs out of breath",
+          "journal_index": 82,
+          "recoverable": true,
+          "consequence": "The skei stays where it is. The backpath is not opened this way; it can still be opened later by anyone who comes back with a way of breathing under water.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": ["D12", "D8"],
+        "stated_objective": "Fetch a cutter's knife out of a flooded chamber",
+        "actual_objective": "Put a knife in the hands of somebody who might use it on a root the whole province is watching",
+        "truth": "Cutting the eleven live roots would stop the intakes and would take the wells above with them, which the player has already proved by hand in Q-MAIN-12 and which nobody in this quest will say out loud.",
+        "revealed_by": [
+          { "id": "rev_the_route_under", "channel": "talk_to_target", "source": "neeja-xul", "before_point_of_no_return": true },
+          { "id": "rev_what_the_cut_costs", "channel": "later_quest", "source": "Q-MAIN-12", "before_point_of_no_return": true }
+        ],
+        "never_revealed": false
+      },
+      "consequences": {
+        "faction_reputation": {},
+        "world_flags": ["the_route_under_the_court_is_known"],
+        "unlocks": ["Q-MAIN-15"]
+      },
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        { "type": "item", "unique_named": true, "id": "item_the_grandmother_skei", "name": "Neeja-Xul's grandmother's skei", "on_resolution": ["res_take_the_skei"] },
+        { "type": "information", "unique_named": true, "id": "topic_the_route_under_the_court", "name": "the route under the Court" }
+      ],
+      "notes": "Act III quest 4. RI-QST06 §C: the backpath must become reachable at the end of Act III and not before the end of Act II. res_take_the_skei sets backpath_open and unlocks Q-MAIN-29; res_give_it_back leaves it available on request, which is the single declared reopenable closure in the mainline."
+    },
+    {
+      "id": "Q-MAIN-15",
+      "title": "What the Hist Said",
+      "category": "main",
+      "faction": null,
+      "act": 3,
+      "rank_gate": null,
+      "discovery": "environmental",
+      "giver": {
+        "npc_id": "rootkeeper-sesh-anaat",
+        "location": "Thorn, the sapwell in the standing water at the edge of the reed town",
+        "disposition_min": 25,
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the tree at thorn",
+        "prerequisite_quests": ["Q-MAIN-14"]
+      },
+      "task_kind": "weird",
+      "stakes": 8,
+      "directions": "Thorn is out east in Thornmarsh where the road from Stormhold runs out into standing water and the town is built on stilts over it. The tree is not in the town. It is a walk out along the reed causeway from the last stilt-house, past the place where the causeway is under water at high tide, and Sesh-Anaat keeps the well at its foot. Go at low water and do not go at night, because the causeway is the only way back and it does not stay above the water.",
+      "journal": [
+        {
+          "index": 10,
+          "state": "active",
+          "text": "Sesh-Anaat has sent for me by a route I do not understand — a carter at Nine-Mud knew my name and knew where I had been, and had been told at a well two days from here. The rootkeeper at Thorn says the tree has asked for me. She says trees do not do this.",
+          "records_belief": false
+        },
+        {
+          "index": 20,
+          "state": "active",
+          "text": "The causeway out to the tree takes most of a morning and there is nothing on it. Sesh-Anaat walked it with me and did not say anything for the whole of it, and at the end she said that in forty years the tree at Thorn has spoken plainly twice, and that both times it was because it had run out of other things to do.",
+          "records_belief": false
+        },
+        {
+          "index": 40,
+          "state": "branch",
+          "text": "The tree spoke to me and it was not a dream and there was no ceremony. It said four sentences. It said that what is below Soulrest is not its enemy and never was. It said the arrangement is older than any tree standing in this province. It said that the roots have been drinking an allowance for four thousand years and have forgotten how to drink anything else. And it said: do not ask me what to do.",
+          "records_belief": false
+        },
+        {
+          "index": 50,
+          "state": "active",
+          "text": "I asked it anyway, three times, in three different ways. It did not answer and it did not go away, and Sesh-Anaat stood in the water and cried, quietly, because a tree that will not answer a question it invited you out here to ask is a tree that does not know.",
+          "records_belief": false
+        },
+        {
+          "index": 60,
+          "state": "active",
+          "text": "Sesh-Anaat says I must not repeat the fourth sentence to any rootkeeper in the province. The first three are theology and can be argued with. The fourth is the tree admitting it has no instruction, and she says that if that gets out, the interior will do something and it will not be a considered something.",
+          "records_belief": false
+        },
+        {
+          "index": 84,
+          "state": "failure",
+          "text": "I went out the causeway at the wrong water and did not get to the tree, and the tide had the causeway for eleven hours with me on the wrong side of it. Sesh-Anaat says the asking does not come twice.",
+          "records_belief": false
+        },
+        {
+          "index": 90,
+          "state": "success",
+          "text": "Four sentences from a tree, and the fourth of them was that it does not know. Everyone from here on will tell me what the Hist wants. I have heard what the Hist wants and it is for somebody else to decide.",
+          "records_belief": false
+        },
+        {
+          "index": 92,
+          "state": "success",
+          "text": "I told Sesh-Anaat I would keep the fourth sentence and I have. She has given me the thing the keepers give each other, which is a name to use at any well in the province that means the keeper of Thorn will answer for you, and she says it will open doors in the interior that gold does not.",
+          "records_belief": false
+        }
+      ],
+      "branches": [
+        {
+          "id": "br_the_fourth_sentence",
+          "at_journal_index": 50,
+          "condition": "The player decides whether to keep the fourth sentence or carry it out of Thornmarsh",
+          "leads_to": ["rev_the_tree_does_not_know", "res_heard_it", "res_keep_the_fourth"],
+          "irreversible": true
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "res_heard_it",
+          "method": "wait",
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "The player has heard the Hist speak plainly once. It refuses to instruct, which closes the last authority anyone could have appealed to and is the reason Act IV is a political act rather than a religious one.",
+          "morally_better": null,
+          "requires": {},
+          "requires_knowing": ["rev_the_tree_does_not_know"],
+          "exclusive_with": ["res_keep_the_fourth"],
+          "consequences": {
+            "faction_reputation": { "the_rootkeepers": 8 },
+            "world_flags": ["the_hist_has_spoken_plainly", "no_authority_will_adjudicate"]
+          }
+        },
+        {
+          "id": "res_keep_the_fourth",
+          "method": "persuade",
+          "violence_required": false,
+          "journal_index": 92,
+          "outcome": "The player keeps the fourth sentence out of the interior's mouth and is given a keeper's name that opens the Deep-Kin and Rootkeeper voices in Act IV without gold or rank.",
+          "morally_better": null,
+          "requires": { "disposition": 40 },
+          "requires_knowing": ["rev_the_tree_does_not_know"],
+          "exclusive_with": ["res_heard_it"],
+          "consequences": {
+            "faction_reputation": { "the_rootkeepers": 16, "the_xul_aneekh": 10 },
+            "world_flags": ["the_hist_has_spoken_plainly", "no_authority_will_adjudicate", "player_holds_a_keepers_name", "fourth_sentence_kept"],
+            "npc_disposition": { "rootkeeper-sesh-anaat": 35 }
+          }
+        }
+      ],
+      "failure_states": [
+        {
+          "id": "fail_missed_the_tide",
+          "cause": "The player attempts the causeway at high water",
+          "journal_index": 84,
+          "recoverable": false,
+          "consequence": "The tree does not ask twice. Act IV loses the keeper's name route entirely and the last two voices must be bought, argued or coerced.",
+          "silent": false
+        }
+      ],
+      "can_fail": true,
+      "deceit": {
+        "patterns": ["D10", "D12"],
+        "stated_objective": "Answer a summons from the tree at Thorn",
+        "actual_objective": "Answer a summons from the tree at Thorn",
+        "truth": "The Hist speaks plainly, once, and what it says is that it has no instruction. Every faction in Act IV will claim to know what the trees want. The player is the only person in the province who has been told, and what they were told is nothing.",
+        "revealed_by": [
+          { "id": "rev_the_tree_does_not_know", "channel": "environment", "source": "loc_the_tree_at_thorn", "before_point_of_no_return": true },
+          { "id": "rev_keepers_silence", "channel": "talk_to_target", "source": "rootkeeper-sesh-anaat", "before_point_of_no_return": true }
+        ],
+        "never_revealed": true
+      },
+      "consequences": {
+        "faction_reputation": {},
+        "world_flags": ["act_three_closed"],
+        "unlocks": ["Q-MAIN-16", "Q-MAIN-17", "Q-MAIN-18", "Q-MAIN-19", "Q-MAIN-20", "Q-MAIN-21", "Q-MAIN-22", "Q-MAIN-23"]
+      },
+      "mutually_exclusive_with": [],
+      "kill_required_npcs": [],
+      "rewards": [
+        { "type": "information", "unique_named": true, "id": "topic_what_the_hist_said", "name": "what the Hist said" },
+        { "type": "access", "unique_named": true, "id": "acc_a_keepers_name", "name": "a keeper's name", "on_resolution": ["res_keep_the_fourth"] }
+      ],
+      "notes": "Act III quest 5 and the act's closer. RI-LOR05 §7 rule 6: the Hist speaks plainly at most twice in the game and never to explain the plot; this is the first of the two and it declines to instruct. Why the tree asked for the player at all is one of the five declared unanswered questions in mainline.json and nothing later closes it. This quest's consequences open all eight Act IV quests at once."
+    }
+  ]
+}

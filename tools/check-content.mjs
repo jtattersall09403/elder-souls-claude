@@ -20,7 +20,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 const QUESTS = join(ROOT, 'game', 'data', 'quests');
-const BASELINE = join(ROOT, 'game', 'data', 'quests', '.resolution-baseline.json');
+const BASELINE = join(ROOT, 'reports', 'quest-resolution-baseline.json');
 
 if (!existsSync(QUESTS)) { console.log('check-content: no quest directory yet, skipping.'); process.exit(0); }
 

@@ -425,20 +425,71 @@ function arcTimeOf(c) {
   }
   return { at: crossT[bi] / 60, off: bd };
 }
-for (let pass = 0; pass < 8; pass++) {
-  const seq = chosen.map((id) => ({ id, ...arcTimeOf(byId.get(id)) }))
-    .filter((e) => e.off <= 220).sort((a, b) => a.at - b.at);
-  let dropped = null;
-  for (let i = 1; i < seq.length && !dropped; i++) {
-    if (seq[i].at - seq[i - 1].at < 3.0) {
-      const cand = byId.get(seq[i].id).kind === 'critical-path' ? seq[i].id
-        : (byId.get(seq[i - 1].id).kind === 'critical-path' ? seq[i - 1].id : null);
-      if (cand) dropped = cand;
+/** Candidate positions for a wayside well laid at arc time `tMin`, nearest the road first. */
+function* sitesAt(tMin) {
+  const t = Math.max(0, Math.min(crossT[crossT.length - 1], tMin * 60));
+  let i = 1;
+  while (i < crossT.length - 1 && crossT[i] < t) i++;
+  const [x, z] = crossing[i];
+  const a = crossing[Math.max(0, i - 1)], b = crossing[Math.min(crossing.length - 1, i + 1)];
+  const nx = -(b[1] - a[1]), nz = (b[0] - a[0]);
+  const nl = Math.hypot(nx, nz) || 1;
+  for (const off of [40, 25, 55, 15, 70]) {
+    for (const side of [1, -1]) {
+      const s = snap(x + (nx / nl) * off * side, z + (nz / nl) * off * side, 60);
+      if (s) yield s;
     }
   }
-  if (!dropped) break;
-  chosen.splice(chosen.indexOf(dropped), 1);
-  rejected.push({ id: dropped, kind: 'critical-path', reason: 'measured position put it under the 3.0 min consecutive floor on the critical path' });
+}
+/**
+ * Put a wayside well back on the route so that its MEASURED arc time is `want` minutes.
+ *
+ * The naive version — place at the polyline point whose arc time is `want` — does not work
+ * and it is worth saying why, because it is a property of the map and not of the code. The
+ * crossing hairpins north of Blackrose: a well laid at arc 41.96 and stepped 40 m off the
+ * carriageway is physically NEAREST the carriageway at arc 41.12, and the measured gap it
+ * was moved to fix came back unchanged eight passes running. Measured position is the truth,
+ * so the search is over measured arc time: lay at a sweep of arc times, measure each
+ * placement, and keep the one whose measurement lands closest to what the rule wants.
+ */
+function resite(c, want) {
+  let best = null, bestErr = Infinity;
+  for (let d = -3.0; d <= 3.0 + 1e-9; d += 0.1) {
+    for (const s of sitesAt(want + d)) {
+      const probe = { pos: [s[0], 0, s[1]] };
+      const m = arcTimeOf(probe);
+      if (m.off > 220) continue;
+      const err = Math.abs(m.at - want);
+      if (err < bestErr) { bestErr = err; best = s; }
+    }
+  }
+  if (!best || bestErr > 0.35) return false;
+  c.pos = [+best[0].toFixed(2), +field.heightAt(best[0], best[1]).toFixed(3), +best[1].toFixed(2)];
+  c.region = field.regionAt(best[0], best[1]).id;
+  cache.delete(c.id);
+  return true;
+}
+const repairs = [];
+for (let pass = 0; pass < 40; pass++) {
+  const seq = chosen.map((id) => ({ id, ...arcTimeOf(byId.get(id)) }))
+    .filter((e) => e.off <= 220).sort((a, b) => a.at - b.at);
+  let fixedOne = false;
+  for (let i = 1; i < seq.length && !fixedOne; i++) {
+    const gap = seq[i].at - seq[i - 1].at;
+    if (gap >= 3.0 && gap <= 5.5) continue;
+    // Move the wayside well of the offending pair to the midpoint of its two neighbours on
+    // the route. Settlement and fog-gate wells are fixed points and are never moved.
+    for (const k of [i, i - 1]) {
+      const c = byId.get(seq[k].id);
+      if (c.kind !== 'critical-path') continue;
+      const lo = k > 0 ? seq[k - 1].at : 0;
+      const hi = k + 1 < seq.length ? seq[k + 1].at : crossT[crossT.length - 1] / 60;
+      const target = (lo + hi) / 2;
+      if (Math.abs(target - seq[k].at) < 0.02) continue;
+      if (resite(c, target)) { repairs.push({ id: c.id, from_min: +seq[k].at.toFixed(2), to_min: +target.toFixed(2) }); fixedOne = true; break; }
+    }
+  }
+  if (!fixedOne) break;
 }
 
 /** Distance in metres from a candidate to the crossing polyline. */
@@ -620,6 +671,7 @@ const doc = {
     declared_count: 28, built_count: chosen.length,
     ruling: 'RI-PRG04 provenance note: "the counts are derived and should move if the map says so". The RULES are checked in measured.rules and are the binding half. Filed, not resolved here.',
   },
+  layout_repairs: repairs,
   rejected_candidates: rejected,
 };
 

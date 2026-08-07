@@ -100,6 +100,8 @@ OPTIONS
   --stratified           stratify the quest sample by giver/region (jrn07)
   --state PATH           load a committed save before the journey (jrn08)
   --wall-clock-advance D advance the wall clock, e.g. 11d, 36h, 90m (jrn08)
+  --entry PATH           html entry to serve (default game/index.html)
+  --url URL              already-served URL to drive instead
   --shots N              capture N screenshots across the journey (default 0 = none)
   --list                 print the journey registry and exit
   --self-test            prove this driver can fail; see below
@@ -322,6 +324,11 @@ async function runJourney() {
   const handle = await launchGame({
     width: profile.width, height: profile.height,
     chromiumArgs: undefined,
+    // ADDED by W1-08/W1-29 (declared): pass --entry / --url through to resolveEntry(), which
+    // already supports both. Without it this driver can only ever run the repo's own tree, so
+    // a tree that another agent has left mid-write blocks every journey in the corpus at once —
+    // which is exactly what happened at 07:12 (`QuestBook: Q-MAIN-10 names Q-MAIN-11`).
+    entry: args.entry, url: args.url,
   });
 
   // Pads must be injected above the navigator.getGamepads() seam, which means before the

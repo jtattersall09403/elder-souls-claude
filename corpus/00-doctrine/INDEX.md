@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-07T07:05:02Z
+Generated: 2026-08-07T07:16:20Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -30,7 +30,7 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 - Subsystems with at least one judging reference item: **324**
 - Subsystems judged by a doctrine document instead: **6** (see §3b)
 - **Corpus holes (no judging item): 0** (0%)
-- Front-matter problems: 0 error(s), 61 warning(s)
+- Front-matter problems: 0 error(s), 55 warning(s)
 
 | Root | Paths | Judged by RI | Judged by doctrine | Holes |
 |---|---:|---:|---:|---:|
@@ -943,9 +943,6 @@ _None._
 | WARN | `corpus/40-dialogue/RI-DLG06-voice-differentiation.md` | names phantom tool `tools/corpus/style-fingerprint.py` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-EXP05-endings-and-the-last-hour.md` | names phantom tool `tools/experience/aftermath-diff.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-EXP02-anecdote-census.md` | names phantom tool `tools/experience/anecdote-verify.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
-| WARN | `corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md` | names phantom tool `tools/experience/beat-diff.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
-| WARN | `corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md` | names phantom tool `tools/experience/beat-extract.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
-| WARN | `corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md` | names phantom tool `tools/experience/beats-from-md.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-EXP06-permissiveness-budget.md` | names phantom tool `tools/experience/breakage-probe.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-CMP03-build-identity-payoff.md` | names phantom tool `tools/experience/build-divergence.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-CMP03-build-identity-payoff.md` | names phantom tool `tools/experience/build-viability.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
@@ -955,8 +952,6 @@ _None._
 | WARN | `corpus/95-experience/RI-EXP05-endings-and-the-last-hour.md` | names phantom tool `tools/experience/ending-diff.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-EXP05-endings-and-the-last-hour.md` | names phantom tool `tools/experience/ending-specificity.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md` | names phantom tool `tools/experience/event-histogram.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
-| WARN | `corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md, corpus/95-experience/RI-EXP02-anecdote-census.md` | names phantom tool `tools/experience/isolation-check.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
-| WARN | `corpus/95-experience/RI-CMP03-build-identity-payoff.md, corpus/95-experience/RI-EXP02-anecdote-census.md, corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md` | names phantom tool `tools/experience/log-lint.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-EXP04-novelty-curve.md` | names phantom tool `tools/experience/novelty-curve.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-EXP06-permissiveness-budget.md` | names phantom tool `tools/experience/pbrule-audit.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-EXP05-endings-and-the-last-hour.md` | names phantom tool `tools/experience/ponr-probe.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
@@ -964,7 +959,6 @@ _None._
 | WARN | `corpus/95-experience/RI-EXP02-anecdote-census.md` | names phantom tool `tools/experience/recall-run.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md` | names phantom tool `tools/experience/sag-fit.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md` | names phantom tool `tools/experience/session-beats.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
-| WARN | `corpus/88-journeys/RI-JRN09-the-opening-as-an-exchange.md, corpus/95-experience/RI-CMP03-build-identity-payoff.md, corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md, corpus/95-experience/RI-EXP02-anecdote-census.md, corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md, corpus/95-experience/RI-EXP05-endings-and-the-last-hour.md` | names phantom tool `tools/experience/session-run.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-EXP03-session-shape-and-pacing-curve.md` | names phantom tool `tools/experience/shape-check.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/15-camera/RI-CAM07-third-person-character-presentation.md, corpus/86-ui/RI-UIX01-combat-hud.md` | names phantom tool `tools/harness/viewpoints.js` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/86-ui/RI-UIX06-diegesis-and-ui-style.md` | names phantom tool `tools/metrics/ui-metrics.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |

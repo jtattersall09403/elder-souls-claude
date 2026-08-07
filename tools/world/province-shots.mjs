@@ -36,6 +36,7 @@ const USAGE = `province-shots.mjs — RI-WLD04 M17 unlabelled region frames.
   --shuffle-seed <n>  the permutation seed recorded in ANSWERS.json (default 20260806)
   --night           shorthand for --passes night
   --worst           shorthand for --passes worst
+  --resume          keep any capture-NNN.png already on disk that clears its pass's luma floor
   --width/--height  default 1280 x 720`;
 
 const args = parseArgs();
@@ -48,6 +49,7 @@ const SEED = Number(args.seed || 1337);
 const PASSES = args.passes ? String(args.passes).split(',').map((x) => x.trim()).filter(Boolean)
   : args.night ? ['night'] : args.worst ? ['worst'] : ['day', 'night', 'worst'];
 const SHUFFLE_SEED = Number(args['shuffle-seed'] ?? 20260806);
+const RESUME = !!args.resume;
 for (const p of PASSES) if (!['day', 'night', 'worst'].includes(p)) usage(USAGE);
 
 // A tiny deterministic PRNG for the SAMPLING (not the game): the game's own seed is set below.
@@ -68,6 +70,7 @@ try {
   for (const PASS of PASSES) {
   const NIGHT = PASS === 'night';
   const WORST = PASS === 'worst';
+  const FLOOR = NIGHT ? 3.0 : 18.0;
   for (const r of regions) {
     const bb = r.bounds_m;
     const picked = [];
@@ -100,12 +103,28 @@ try {
       await handle.h('renderFrame');
       const id = `${String(shots.length + 1).padStart(3, '0')}`;
       const file = path.join(outDir, `capture-${id}.png`);
-      await handle.page.screenshot({ path: file, type: 'png', animations: 'disabled', caret: 'hide', timeout: 240000 });
+      // RESUME. A 117-frame pack is an hour of software rasterising and this environment kills
+      // agents mid-run; a capture that cannot be picked up costs the whole hour twice. If the
+      // frame is already on disk and bright enough for its pass, keep it. The sampling PRNG has
+      // already been drawn either way, so the point, yaw, weather and hour recorded are the ones
+      // this run chose — a resumed frame is marked as such rather than claimed as fresh.
+      let resumed = false;
+      if (RESUME && fs.existsSync(file) && meanLuma(file) >= FLOOR) { resumed = true; }
+      else await handle.page.screenshot({ path: file, type: 'png', animations: 'disabled', caret: 'hide', timeout: 240000 });
       // A frame whose eye landed inside a trunk is not a sample of the region, it is a sample of
       // one tree. Re-yaw and re-shoot rather than ship a black rectangle a judge cannot classify.
       let lum = meanLuma(file), spins = 0;
+      if (resumed) spins = -1;
       let ex = p.x, ez = p.z, ey = p.y;
-      while (lum < 18 && spins++ < 8) {
+      // THE DARK-FRAME FLOOR IS PER PASS, and that is a defect fix rather than a preference.
+      // A fixed floor of 18 exists to catch an eye that landed inside a trunk. At 01:00 the whole
+      // frame is legitimately below it, so every night frame span the re-yaw loop to its limit —
+      // eight extra full renders each. Measured on this build: 25 s for a day frame and 260 s for
+      // a night one, which turns a 40-minute night pass into a three-hour one and silently makes
+      // the recorded `yaw_deg` of every night frame the FIRST draw rather than the eighth. The
+      // floor is now the pass's own: a night frame is rejected only if it is far darker than a
+      // night frame should be.
+      while (lum < FLOOR && spins++ < 8) {
         // First re-yaw; if the eye is genuinely inside a trunk, step a few metres and try again.
         const y2 = rnd() * Math.PI * 2;
         if (spins > 2) {
@@ -124,7 +143,7 @@ try {
         capture: `capture-${id}.png`, pass: PASS, region: r.id, region_name: r.name,
         x: +p.x.toFixed(1), z: +p.z.toFixed(1), y: +p.y.toFixed(2),
         yaw_deg: +(yaw * 180 / Math.PI).toFixed(1), weather, hours: +hours.toFixed(2),
-        mean_luma: +lum.toFixed(1), reshot: spins,
+        mean_luma: +lum.toFixed(1), reshot: Math.max(0, spins), resumed,
         sha256: sha256(fs.readFileSync(file)),
       });
       log(`  ${PASS} ${r.id} ${shots.length}/${regions.length * PER * PASSES.length}`);

@@ -19,7 +19,10 @@
     "tools/experience/beats-from-md.mjs",
     "corpus/95-experience/RI-EXP01.beats.json",
     "tools/experience/session-run.mjs",
-    "tools/experience/beat-extract.mjs"
+    "tools/experience/beat-extract.mjs",
+    "tools/experience/beat-diff.mjs",
+    "tools/experience/isolation-check.mjs",
+    "tools/experience/log-lint.mjs"
   ],
   "findings": [
     "Baseline: node tools/corpus-index.mjs reports 67 phantom tools (C8), 0 errors.",
@@ -41,8 +44,13 @@
     "journey-run self-test found TWO bugs in its own first version, which is the argument for having one: (1) it blinded only getUIState while the build had grown getRenderedText, so the blinding test passed vacuously - BOTH accessors are now blinded; (2) it opened the census surface before testing movement, and a dialogue surface legitimately blocks locomotion, so it was measuring the surface not the input path - the real-input check now runs FIRST.",
     "beats-from-md.mjs 5/5 incl. two falsifications (a mangled t_target and a non-beat row both make it REFUSE rather than emit a short sheet). Generated corpus/95-experience/RI-EXP01.beats.json: 18 beats + 13 derived targets. --check is the drift gate.",
     "beat-extract.mjs (experience) 8/8. Falsifications: found_not_given does NOT fire when a topic named the item first, and a topic AFTER the pickup does not retro-convert it ('at the time it fires' is load-bearing for T_found, RI-EXP01's headline metric); combat requires an AGGRO hostile not just an attack; death fires only for the player; odd is silenced by a nearby quest_stage.",
-    "session-run.mjs enforces its profile prohibitions IN THE PAGE (replaces the __HARNESS methods), not Node-side, because a driving agent reaching window.__HARNESS via page.evaluate would walk past a Node-side check. RI-EXP01: any invocation VOIDS the run. Added a 'build-identity' profile for RI-CMP03 that also refuses setSkills/setAttributes/setMagicSkills/setGold/learnSpell - AGENT-PROTOCOL's 'never grant yourself the thing under test'."
+    "session-run.mjs enforces its profile prohibitions IN THE PAGE (replaces the __HARNESS methods), not Node-side, because a driving agent reaching window.__HARNESS via page.evaluate would walk past a Node-side check. RI-EXP01: any invocation VOIDS the run. Added a 'build-identity' profile for RI-CMP03 that also refuses setSkills/setAttributes/setMagicSkills/setGold/learnSpell - AGENT-PROTOCOL's 'never grant yourself the thing under test'.",
+    "C8 count now 55 (from 67). 12 tools written.",
+    "COLLISION: another agent overwrote my tools/experience/beats-from-md.mjs with their own (more complete: it also extracts the partial order and the 7 hard fails). I did NOT fight for the file - theirs stays. Theirs currently THROWS ('parsed only 5 order constraints; expects >=8'), correctly refusing to emit a weakened partial order, so RI-EXP01.beats.json on disk is still the one my version generated (schema elder-souls/beat-sheet@1). beat-diff.mjs was made SCHEMA-TOLERANT and reads either shape (tol vs tolerance_min, F/G vs found/given, derived_targets array vs object) with a self-test proving both give identical verdicts.",
+    "beat-diff.mjs 9/9. Falsifications: a beat outside tolerance is LATE not HIT; one observation cannot satisfy two sheet beats (else a single lucky event inflates beats_hit). Implements RI-EXP01 STEP 5 (the negative artifact) on every missing row - the search performed and its empty output - which is the step that usually gets dropped.",
+    "isolation-check.mjs 6/6. Falsifications: catches a beat-sheet read hidden inside a Bash command line (where leaks actually hide - `cat corpus/...` never appears in a file_path field); an inbox that materialises a WHOLE reference item is VOID by construction (§D is in the same file as §C); 'enforced' with no tool-call log degrades to 'attested' and caps the item at 6 rather than passing.",
+    "log-lint.mjs 8/8 incl. a false-positive control (a genuinely neutral 5-line log passes - a lint that fires on everything gets deleted rather than obeyed). Exits 20 as PLAYTHROUGH-CRITIC §5.4 names."
   ],
-  "next_step": "beat-diff.mjs, isolation-check.mjs, log-lint.mjs; then re-run session-run/journey-run self-tests once the game boots again.",
+  "next_step": "Re-verify session-run.mjs and journey-run.mjs self-tests once the game boots (touch.js layout assertion currently blocks boot). Remaining C8: 55.",
   "notes_for_successor": "build-viability is complete and self-testing. Do not rewrite it. Its --fixture keys (tier5_damage_multiplier, tier5_hp_multiplier, player_damage_multiplier, quest_disposition_floor, impossible_resolution_gate, faction_rank5_attribute_floor) are the falsification harness; keep them all."
 }

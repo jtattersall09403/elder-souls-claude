@@ -2,8 +2,15 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 336,
+  "file_count": 341,
   "files": [
+    {
+      "path": "books/interface-readables.json",
+      "schema": "elder-souls/book@2",
+      "id": null,
+      "bytes": 11780,
+      "sha256": "df131a29543b97fa"
+    },
     {
       "path": "books/the-drowned-ford.json",
       "schema": "elder-souls/book@1",
@@ -1614,8 +1621,15 @@
       "path": "input/profiles.json",
       "schema": "elder-souls/input-profiles@1",
       "id": "input-profiles",
-      "bytes": 11256,
-      "sha256": "4e511e3404b8e24a"
+      "bytes": 13524,
+      "sha256": "4ec4382d155a4289"
+    },
+    {
+      "path": "items/carried.json",
+      "schema": "elder-souls/items@1",
+      "id": null,
+      "bytes": 18545,
+      "sha256": "d9236c4abbe0f081"
     },
     {
       "path": "items/thorn.json",
@@ -1836,8 +1850,22 @@
       "path": "quests/mainline-act1.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-act1",
-      "bytes": 46821,
-      "sha256": "402bf28a657a6623"
+      "bytes": 48263,
+      "sha256": "ed0874a807ba92c8"
+    },
+    {
+      "path": "quests/mainline-act2.json",
+      "schema": "elder-souls/quest-file@1",
+      "id": "mainline-act2",
+      "bytes": 45113,
+      "sha256": "50e973e2828b4134"
+    },
+    {
+      "path": "quests/mainline-act3.json",
+      "schema": "elder-souls/quest-file@1",
+      "id": "mainline-act3",
+      "bytes": 45348,
+      "sha256": "0d6e4fa9d60d760d"
     },
     {
       "path": "quests/the-boards.json",
@@ -2204,6 +2232,13 @@
       "id": null,
       "bytes": 11782,
       "sha256": "a755474b92833b00"
+    },
+    {
+      "path": "world/hearths.json",
+      "schema": "elder-souls/hearths@1",
+      "id": null,
+      "bytes": 15118,
+      "sha256": "e8d8101902c1ccdc"
     },
     {
       "path": "world/interiors/thorn-hall.json",
