@@ -921,9 +921,32 @@ function basisAt(yawDeg, pitchDeg, fwd, right, up) {
   const cp = Math.cos(pitch), sp = Math.sin(pitch);
   fwd[0] = Math.sin(yaw) * cp; fwd[1] = sp; fwd[2] = Math.cos(yaw) * cp;
   right[0] = Math.cos(yaw); right[1] = 0; right[2] = -Math.sin(yaw);
-  up[0] = right[1] * fwd[2] - right[2] * fwd[1];
-  up[1] = right[2] * fwd[0] - right[0] * fwd[2];
-  up[2] = right[0] * fwd[1] - right[1] * fwd[0];
+  // up = fwd × right. THE ORDER IS LOAD-BEARING AND IT WAS BACKWARDS.
+  //
+  // This was `right × fwd`, which is the NEGATIVE of the up vector. At yaw 0, pitch 0 that is
+  // (1,0,0) × (0,0,1) = (0,−1,0) — it points at the ground — and in general its y component is
+  // −cos(pitch), negative across the whole legal pitch band [−55°, +38°]. Eighteen of eighteen
+  // sampled poses pointed down (`tools/camera/cam-pitch-instrument.mjs --basis`).
+  //
+  // It survived because NOTHING THE PLAYER SEES READS IT. render/renderer.js builds the view
+  // with `camera.lookAt(pivot)` and `camera.up.set(0,1,0)`, so the picture is upright no matter
+  // what this function returns. The only consumers are inside this file — project(), which is
+  // the sim's own screen-space reasoning, and the shoulder offset — so the sign error showed up
+  // as a *behaviour* rather than as an upside-down frame:
+  //
+  //   · project()'s NDC y came out sign-inverted, so containment() read a target that was HIGH
+  //     in the frame as LOW and drove `containPitch` the wrong way — positive feedback into the
+  //     pitch clamp, which is half of the −50° pin this round exists to fix.
+  //   · every on-screen test is |ndc| ≤ 1, which is SIGN-SYMMETRIC, so "both fighters on screen"
+  //     stayed true throughout and no check ever went red.
+  //   · measureOnScreen()'s `tBandY = (1 − tNdc[1]) · 0.5` — [CMB06]'s 38–62% framing band,
+  //     measured from the top of the screen — was mirrored about mid-screen.
+  //   · desiredPoint() adds `up · shoulder_up`, so RI-CAM01 §A's +0.10 m shoulder RISE was
+  //     applied downward. A census that measures it by dotting this same vector reads +0.10 and
+  //     agrees with itself, which is how it passed.
+  up[0] = fwd[1] * right[2] - fwd[2] * right[1];
+  up[1] = fwd[2] * right[0] - fwd[0] * right[2];
+  up[2] = fwd[0] * right[1] - fwd[1] * right[0];
 }
 export { basis as cameraBasis, viewBasis as cameraViewBasis };
 

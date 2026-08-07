@@ -2,14 +2,18 @@
   "task_id": "tool-critic-r4",
   "brief": "inline: critique tools/analysis/build-viability.mjs round 5",
   "started": "wave-tool-r4",
-  "state": "writing deliverables",
+  "state": "complete",
   "commit_at_start": "0b2d6ef (predecessor worked at e29ec21; tree moved)",
   "outputs_expected": [
     "corpus/80-methods/TOOL-COVERAGE-R4.md",
     "corpus/80-methods/TOOL-COVERAGE-R4.json",
     "reports/blog-feed.jsonl (one line appended)"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/80-methods/TOOL-COVERAGE-R4.md",
+    "corpus/80-methods/TOOL-COVERAGE-R4.json",
+    "reports/blog-feed.jsonl (one line appended, piece W1-TOOLS-r4-critic)"
+  ],
   "findings": [
     "COMMIT e29ec21. boot-check PASS before work. Box hostile: 24 headless_shell, loadavg 12.3 -> all analysis Node-side; browser deferred.",
     "--audit-grants exits 0, prints 15 rows, 'substitutions remaining: 0'.",
@@ -40,9 +44,16 @@
     "DEFECT J (attack 3, and this is where the 495 abstentions actually come from). All 495 UNMEASURABLE rows are stopped by `null[ungrounded requirement]` inside criterionThreeFactionsRank5, NOT by the grant-dependency test. That path abstains on a pure COUNTING argument (line 2044-2045: `blockedOnlyByAnUngroundedFlag.length && qualifying.length + blockedOnlyByAnUngroundedFlag.length >= 3`). It NEVER re-runs the compatibility search over qualifying + blocked. The grant-dependency discipline the builder invented is not applied on the path that carries 91.7% of the rows.",
     "DEFECT J DEMONSTRATED on a shadow tree. shadowE rewrites exclusivity.enemy_pairs into 12 pairs making the compatibility graph bipartite K4,4 and therefore TRIANGLE-FREE. My independent probe (scratchpad/r4b/triple.mjs, using the shipping FactionGates class) confirms 0 mutually compatible triples with ALL 8 ladders granted rank 5 \u2014 the criterion CANNOT pass for any signature, for a reason no flag grant can repair. The tool still reports `three_factions_rank5: unmeasurable x540` and prints 'held back ONLY by a rank-5 world_state flag', output byte-identical to the sound tree. A total, permanent build failure is converted into an abstention.",
     "ATTACK 5, INDEPENDENT VERIFICATION #3 (mine, on top of the predecessor's two): the exclusivity structure. Using the shipping FactionGates on 0b2d6ef I find 8 ladders and exactly 5 incompatible pairs of 28 (drowned_court/imperial_assize hard_group; imperial_assize/wet_ledger enemy_pair; imperial_assize/xul_aneekh, ixtu_vakh/wet_ledger, wet_ledger/xul_aneekh earned locks). With all 8 granted rank 5 there are 32 compatible triples. So the abstention IS defensible on the shipped tree today \u2014 but by luck, not by any check the tool performs. CORRECTION TO THE BUILDER: its finding 'only 3 factions reach rank 5' is stale; the tool at 0b2d6ef reports 4 qualifying.",
-    "DEFECT K (attack 6 \u2014 THE SELF-TEST IS RED, and only running it to the end shows it). Full `--self-test` at 0b2d6ef: 1 FAIL. `FAIL the NUMBER is read, not the presence of a record (monotone ladder, saturating at 0) \u2014 seed 0 -> 468 | 15 -> 252 | 30 -> 99 | 45 -> 45 | 60 -> 27 | 100 -> 27`. The assertion (line 2868-2871) requires ladder[last].fail === 0. It cannot be met: the residual 27 stop at Q-XULA-06 [offer] on `the_xul_aneekh rank 4/5`, a RANK gate no disposition seed can move. The builder wrote a saturation guard for TOTAL saturation (line 2846, `=== base.length`) and none for PARTIAL. The tool ships with a red battery its author never ran to completion \u2014 exactly the failure mode the brief predicted."
+    "DEFECT K (attack 6 \u2014 THE SELF-TEST IS RED, and only running it to the end shows it). Full `--self-test` at 0b2d6ef: 1 FAIL. `FAIL the NUMBER is read, not the presence of a record (monotone ladder, saturating at 0) \u2014 seed 0 -> 468 | 15 -> 252 | 30 -> 99 | 45 -> 45 | 60 -> 27 | 100 -> 27`. The assertion (line 2868-2871) requires ladder[last].fail === 0. It cannot be met: the residual 27 stop at Q-XULA-06 [offer] on `the_xul_aneekh rank 4/5`, a RANK gate no disposition seed can move. The builder wrote a saturation guard for TOTAL saturation (line 2846, `=== base.length`) and none for PARTIAL. The tool ships with a red battery its author never ran to completion \u2014 exactly the failure mode the brief predicted.",
+    "SELF-TEST COMPLETED (attack 6 discharged). Final line: `build-viability self-test: FAIL (49/51)` \u2014 49 PASS / 2 FAIL, ~37 min (22 pure checks in seconds, then 22 full 540-cell walks). SECOND FAILURE, and it is the tool convicting itself: `FAIL criterion 2 falsifiable (faction ladder) \u2014 rank-5 attribute floor -> 500: three_factions_rank5 FAIL 0 -> 0`. The RED CONTROL for criterion 2 will not go red: setting an impossible attribute floor produces zero FAILs because every signature is already UNMEASURABLE through the counting abstention at :2044. Criterion 2 is unfalsifiable on this tree \u2014 the tool's own battery confirming DEFECT D.",
+    "SIDE-BY-SIDE PROOF OF DEFECT J, from the saved artifacts: shadowS (sound) n=540 viable=0 three_factions_rank5={unmeasurable:540}; shadowE (compatibility graph triangle-free, 0 possible triples with all 8 granted) n=540 viable=0 three_factions_rank5={unmeasurable:540}. IDENTICAL.",
+    "boot-check PASS after all work. C8 = 26 unchanged. HEAD moved 0b2d6ef -> e54a18a during the run (other agents committing continuously); ALL my numbers are stamped 0b2d6ef and the deliverables say so. I did NOT commit; another agent's `git add -A` staged my two deliverables, same as happened to the round-5 builder.",
+    "CLEANUP DONE: predecessor's in-repo probe dir tools/analysis/.r4probe/ REMOVED. My shadow trees deleted after extracting evidence (disk was at 98%). Evidence kept at scratchpad/r4b/evidence/ (6 attestations + 3 criteria tallies), plus selftest-full.txt, d3-walk.txt, and my three probes (matrix-delta.mjs, triple.mjs, bv-attrib.mjs)."
   ],
-  "next_step": "write corpus/80-methods/TOOL-COVERAGE-R4.{md,json}, blog line, delete tools/analysis/.r4probe/, re-run boot-check",
-  "notes_for_successor": "Probe copies live at tools/analysis/.r4probe/ (bv-probe.mjs, bv-orig.mjs) \u2014 DELETE before finishing, they are inside the repo. Scratch probes at scratchpad/r4/.",
-  "method_deviations": []
+  "next_step": "none \u2014 verdict delivered: NOT SATISFIED, rebuild tools/analysis/build-viability.mjs (9-item rebuild list in TOOL-COVERAGE-R4.json)",
+  "notes_for_successor": "Verdict NOT SATISFIED is written and complete. If a round 6 builder responds, the two checks that matter most are: (1) the model detector must compare explainDisposition(id).race_term against the shipped raceTerm() PER GIVER, by value AND sign \u2014 my shadowD1/D2/D3 breaks are the acceptance tests and all three currently pass as sound; (2) the abstention at :2044 must re-run the triple search after granting the flags \u2014 shadowE (enemy_pairs rewritten to a bipartite K4,4) is the acceptance test and currently produces output identical to the sound tree. Reproduce shadows by copying game/+tools at the commit under test and symlinking tools/node_modules. Disk runs at ~98%; delete shadows when done.",
+  "method_deviations": [
+    "No tool was written mid-critique (TOOL-LOOP rule 1 not triggered): every instrument I needed already existed. My three probes are critic-side measurement only and live outside the repo, in the scratchpad.",
+    "Browser work was capped by contention: I ran 5 --verify-model boots while headless_shell was 6-12 and loadavg 2.98-11.5, then moved all remaining measurement Node-side per the brief's above-8-browsers rule. The matrix-delta cross-check was therefore done by importing the shipped raceTerm() rather than by a sixth boot \u2014 and it independently reproduced the live 25/31."
+  ]
 }

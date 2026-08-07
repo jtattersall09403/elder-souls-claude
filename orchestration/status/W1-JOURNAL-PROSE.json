@@ -1,0 +1,14 @@
+{
+  "task_id": "W1-JOURNAL-PROSE",
+  "brief": "inline dispatch: journal prose pass",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": ["journal entry files (TBD after check-prose)"],
+  "outputs_written": [],
+  "files_touched": [],
+  "findings": [
+    "Dispatch claims: journal closing-sting rate 36.41 vs bar 6.16; zero contractions across 1005 entries; journal untouched by both prior prose passes."
+  ],
+  "next_step": "read RI-JRN* and RI-DLG05, then run node tools/check-prose.mjs --verbose",
+  "notes_for_successor": "Do NOT sweep. Most journal entries should end flat. Need a stated rule for which minority earn a closing line. Re-run full gate after EVERY batch (a prior fix seeded its own defect 4x). sting/fragopen/tics are unwaivable; other bars may warrant declared exemption if register is deliberate."
+}

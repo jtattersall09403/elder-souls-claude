@@ -1,0 +1,15 @@
+{
+  "task_id": "judge-prose-r4",
+  "brief": "blind judge on reports/packs/prose-tics-r4/ (quality question, both sides masked)",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-PROSE-BLIND-r2.md",
+    "corpus/90-verdicts/wave1/W1-PROSE-BLIND-r2.json",
+    "reports/blog-feed.jsonl (one appended line)"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read pack README + RI-MTH03, then state procedure",
+  "notes_for_successor": "FORBIDDEN READS (contamination): corpus/90-verdicts/wave1/W1-PROSE-BLIND-r1.md, orchestration/status/W1-PROSE-R2.json, orchestration/status/W1-PROSE-TICS.json, tools/check-prose.mjs, any manifest naming sides. Do not edit prose. Answers must be written+hashed before unblinding."
+}

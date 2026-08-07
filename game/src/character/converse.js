@@ -566,6 +566,17 @@ export class Conversation {
       // watching was a merchant's actor row with no `cell` on it at all and was RIGHT to follow
       // them. Mirrors `greeting_cell`, which has always been reported for the same reason.
       said_cell: this.said ? (this.said.cell || null) : null,
+      // W1-05. `say()` has carried `source` and `route` on `this.said` since road-directions
+      // landed, with a comment saying they exist "so a probe can look the answer up and check
+      // it" — and `state()` never emitted either, so no probe ever could. `conversationSay()`
+      // returns THIS object, not `said`, so anything not listed here is invisible to every
+      // caller outside the class. That is how a probe came to report zero road directions spoken
+      // by people who were in fact offering two each: it was reading a field that does not exist
+      // on the surface it was handed. `said_route` names the row of `dialogue/road-directions.json`
+      // the words came out of. `truth` is still deliberately NOT carried — whether a direction is
+      // a lie is something the world tells you by contradicting it.
+      said_source: this.said ? (this.said.source || null) : null,
+      said_route: this.said ? (this.said.route || null) : null,
       // `root` is carried through because a reader has to be able to tell the nine words the
       // character was GIVEN from the subjects this particular person advertises — they are
       // offered by different rules and a probe that cannot separate them cannot measure either.

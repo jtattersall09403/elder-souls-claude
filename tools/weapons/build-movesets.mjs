@@ -103,6 +103,42 @@ const SHAPE_ARC_BAND = {
   slash_d: [25, 230], lash: [40, 260], grab: [0, 90],
 };
 
+// ---------------------------------------------------------------------------------------------
+// RI-WPN05 §E MASS GUARD — the arithmetic that nothing in this tool used to do.
+// ---------------------------------------------------------------------------------------------
+//
+// A slot's arc, its weapon's reach and its active window jointly DETERMINE the speed the weapon
+// tip travels at; there is no third thing to tune. The tip sweeps `arc_sweep_deg` at radius
+// `reach_m` in `active_f` frames, so
+//
+//     peak_tip_speed_mps  =  K * (arc_rad * reach_m) * 60 / active_f
+//
+// with K the ratio of peak to mean speed inside the active window. K is not a fitted constant:
+// `clips.js` interpolates every key pair with `smoothstep`, whose derivative peaks at exactly
+// 1.5, so the blade accelerates from rest at the first active frame, runs 1.5x its mean at the
+// middle, and returns to rest at the last. Checked against the rig over all 606 census clips,
+// measured / predicted is p10 1.01, p50 1.04, p90 1.12, and the effective tip radius is 1.03x
+// `reach_m` at the median — the model is predictive, which is why the guard can be arithmetic.
+//
+// Nothing enforced this. `swing.js#calibrateYawGain` solves the yaw gain so the rig sweeps the
+// DECLARED arc across the active window and its objective (`measureActiveArc`) contains no
+// tip-speed term at all, so for any (arc, active_f, reach) it will crank the angular rate to
+// whatever is required and report success. 43.4% of the census exceeded §E.2's ceiling while arc
+// conformance sat at 3.96%: the one thing that was solved was the one thing that passed.
+//
+// This guard does not repair the data. It makes the contradiction VISIBLE — a violating slot
+// carries `peak_tip_speed_mps_implied`, its own indictment, and `--gate` refuses the build — for
+// the reason recorded in reports/W1-MASS-RECONCILIATION.md: six of the fifteen classes cannot
+// satisfy §E.2 from their PUBLISHED RI-WPN02 §B cells at any active window, and choosing which
+// published column gives way is an arbitration, not a build step.
+const BAND_TOP = { light: 20, medium: 26, heavy: 32, ultra: 40, ranged: 20 };
+const SMOOTHSTEP_PEAK = 1.5;
+const massViolations = [];
+function impliedTipSpeed(arcDeg, reachM, activeF) {
+  if (!(activeF > 0) || !(arcDeg > 0)) return 0;
+  return SMOOTHSTEP_PEAK * (Math.abs(arcDeg) * Math.PI / 180) * reachM * 60 / activeF;
+}
+
 /** Which classes may be dual-wielded (RI-WPN06 §C O2). Heavy and ultra classes may not. */
 const DUAL_OK = new Set(['DGR', 'FST', 'CSW', 'TSW', 'SSW', 'SPR', 'AXE', 'MCE', 'HLB', 'WHP']);
 
@@ -698,6 +734,23 @@ for (const w of ROSTER.weapons) {
     // straight sword's, which is false, and it drops its peak tip speed below RI-WPN05 §E's ultra
     // band because tip speed is angular rate times radius.
     const capsuleLen = Math.max(0.25, reach - Math.min(Math.abs(rootM), 0.90) - 0.54);
+    // RI-WPN05 §E mass guard — see §MASS GUARD above. §E.2's ceiling is 1.25x the tier band top.
+    const massCeil = BAND_TOP[c.tier] * 1.25;
+    const massImplied = impliedTipSpeed(slotArc, reach, f.a);
+    const massOver = massImplied > massCeil;
+    if (massOver) {
+      massViolations.push({
+        weapon: w.id, class: w.class, slot: slotId, family: famName,
+        shape: POSES.families[famName].shape,
+        arc_sweep_deg: Math.round(slotArc * 10) / 10, reach_m: reach, active_f: f.a,
+        implied_mps: Math.round(massImplied * 10) / 10, ceiling_mps: massCeil,
+        over: Math.round((massImplied / massCeil) * 100) / 100,
+        // What each single lever would have to become on its own, so a reviewer can see the
+        // shape of the choice rather than be told an answer.
+        active_f_needed: Math.ceil(f.a * massImplied / massCeil),
+        arc_deg_allowed: Math.round(slotArc * massCeil / massImplied * 10) / 10,
+      });
+    }
     const slot = {
       anim: clipId,
       anim_owner: owner,
@@ -720,6 +773,9 @@ for (const w of ROSTER.weapons) {
       root_dz_m: rootM,
       arc_sweep_deg: Math.min(360, Math.round(prof.arc_deg === 0 ? 0 : Math.abs(prof.arc_deg) * 10) / 10),
       shape: prof.shape,
+      // Written ONLY when the slot violates RI-WPN05 §E.2, so a clean slot carries nothing and
+      // a violating one carries its own indictment into every downstream tool and every critic.
+      ...(massOver ? { peak_tip_speed_mps_implied: Math.round(massImplied * 10) / 10 } : {}),
       hyperarmour: ha
         ? { enabled: true, from_f: Math.ceil(0.60 * f.s), to_f: f.s + f.a, poise_multiplier: c.tier === 'ultra' ? 2.0 : c.tier === 'heavy' ? 1.7 : 1.4 }
         : { enabled: false },
@@ -877,3 +933,37 @@ for (const k in clipRegistry) {
   shareHist[n >= 5 ? '5+' : n] = (shareHist[n >= 5 ? '5+' : n] || 0) + 1;
 }
 console.log('clip-share histogram (weapons per clip):', JSON.stringify(shareHist));
+
+// ---- RI-WPN05 §E mass guard: report, and refuse under --gate ---------------------------------
+{
+  const total = outFiles.reduce((n, f) => n + Object.keys(f.doc.slots).length, 0);
+  const byClass = {}, byShape = {};
+  for (const v of massViolations) {
+    byClass[v.class] = (byClass[v.class] || 0) + 1;
+    byShape[v.shape] = (byShape[v.shape] || 0) + 1;
+  }
+  const pct = total ? ((100 * massViolations.length) / total).toFixed(2) : '0.00';
+  console.log(`RI-WPN05 §E mass guard: ${massViolations.length}/${total} slots (${pct}%) imply a peak tip speed over §E.2's ceiling`);
+  if (massViolations.length) {
+    console.log('  by class:', JSON.stringify(byClass));
+    console.log('  by shape:', JSON.stringify(byShape));
+    for (const v of [...massViolations].sort((a, b) => b.over - a.over).slice(0, 8)) {
+      console.log(`  ${v.class} ${v.weapon}/${v.slot} ${v.shape} arc=${v.arc_sweep_deg} reach=${v.reach_m} active=${v.active_f} f@60`
+        + ` -> ${v.implied_mps} m/s vs ${v.ceiling_mps} (${v.over}x); would need ${v.active_f_needed} active f@60, or arc <= ${v.arc_deg_allowed} deg`);
+    }
+  }
+  if (!check) {
+    fs.mkdirSync(R('reports'), { recursive: true });
+    fs.writeFileSync(R('reports/W1-MASS-guard.json'), JSON.stringify({
+      schema: 'elder-souls/wpn05-mass-guard@1',
+      item: 'RI-WPN05 §E / §E.2 — implied peak tip speed per slot',
+      model: 'peak = 1.5 * arc_rad * reach_m * 60 / active_f; 1.5 is the exact max derivative of clips.js smoothstep',
+      slots_total: total, slots_violating: massViolations.length, pct_violating: +pct,
+      by_class: byClass, by_shape: byShape, violations: massViolations,
+    }, null, 1) + '\n');
+  }
+  if (process.argv.includes('--gate') && massViolations.length) {
+    console.error(`GATE: ${massViolations.length} slots violate RI-WPN05 §E.2's tip-speed ceiling by arithmetic.`);
+    process.exitCode = 1;
+  }
+}
