@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 341,
+  "file_count": 343,
   "files": [
     {
       "path": "books/interface-readables.json",
@@ -1868,6 +1868,13 @@
       "sha256": "0d6e4fa9d60d760d"
     },
     {
+      "path": "quests/mainline-act4.json",
+      "schema": "elder-souls/quest-file@1",
+      "id": "mainline-act4",
+      "bytes": 66550,
+      "sha256": "ce906d805a05f06f"
+    },
+    {
       "path": "quests/the-boards.json",
       "schema": "elder-souls/quest@1",
       "id": "the-boards",
@@ -2333,6 +2340,13 @@
       "id": null,
       "bytes": 51478,
       "sha256": "edca5a51c492bb18"
+    },
+    {
+      "path": "world/respawn.json",
+      "schema": "elder-souls/respawn@1",
+      "id": null,
+      "bytes": 3360,
+      "sha256": "575767eae67cea86"
     },
     {
       "path": "world/roads.json",

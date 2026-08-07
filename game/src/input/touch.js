@@ -37,7 +37,11 @@ export class TouchInput {
     this.enabled = false;
     this.attached = false;
     this.visible = true;
-    this.lastTouchMs = 0;
+    // T7's 2 s is expressed in FIXED SIM FRAMES, not wall-clock ms: HARNESS.md §8 D1-D3 forbid
+    // a `performance.now()` read inside the fixed step, and the guard is armed, so a ms clock
+    // here takes the whole run down with a DETERMINISM VIOLATION. 2 s = 120 f@60.
+    this.lastTouchFrame = -1e9;
+    this.hideAfterFrames = Math.round((profiles.touch.hide_after_ms_when_pad_active || 2000) * 60 / 1000);
     this.padActive = false;
     this.insets = { top: 0, right: 0, bottom: 0, left: 0 };
     this.viewport = { w: 844, h: 390, dpr: 1 };
@@ -153,7 +157,7 @@ export class TouchInput {
   // ---- the pointer model. Every pointer is tracked; none is "the" pointer. T9 -------------
 
   down(id, x, y) {
-    this.lastTouchMs = nowMs();
+    this.lastTouchFrame = this.frame();
     this.visible = true;
     this.onActivity && this.onActivity('touch');
     const hit = this._hitButton(x, y);
@@ -179,7 +183,7 @@ export class TouchInput {
   move(id, x, y) {
     const p = this.pointers.get(id);
     if (!p) return;
-    this.lastTouchMs = nowMs();
+    this.lastTouchFrame = this.frame();
     if (p.role === 'stick') {
       const R = this.cfg.stick.max_radius_css_px;
       let dx = (x - this.stick.ox) / R;
@@ -202,7 +206,7 @@ export class TouchInput {
     const p = this.pointers.get(id);
     if (!p) return;
     this.pointers.delete(id);
-    this.lastTouchMs = nowMs();
+    this.lastTouchFrame = this.frame();
     if (p.role === 'stick') { this.stick.active = false; this.stick.x = 0; this.stick.y = 0; this.pipe.setMove(0, 0); return; }
     if (p.role === 'button' && p.action && !p.control.drawer) {
       const h = this.held.get(p.action);
@@ -240,7 +244,7 @@ export class TouchInput {
       }
     }
     // T7
-    if (this.padActive && nowMs() - this.lastTouchMs > this.cfg.hide_after_ms_when_pad_active && !this.pointers.size) this.visible = false;
+    if (this.padActive && frame - this.lastTouchFrame > this.hideAfterFrames && !this.pointers.size) this.visible = false;
   }
 
   releaseAll() {
@@ -268,6 +272,7 @@ export class TouchInput {
   state() {
     return {
       enabled: this.enabled, visible: this.visible, pointers: this.pointers.size,
+      lastTouchFrame: this.lastTouchFrame, hideAfterFrames: this.hideAfterFrames,
       stick: { ...this.stick }, drawerOpen: this.drawerOpen,
       held: Array.from(this.held.keys()),
       roles: Array.from(this.pointers.values()).map((p) => p.role),
@@ -275,5 +280,3 @@ export class TouchInput {
     };
   }
 }
-
-function nowMs() { return (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now(); }

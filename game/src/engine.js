@@ -51,6 +51,8 @@ import * as STL_PER from './sim/stealth/perception.js';
 import { StealthCrime, DET as STL_DET, THF as STL_THF, PP as STL_PP, JUS as STL_JUS, SAN as STL_SAN, WIT as STL_WIT, LockAttempt as STL_LockAttempt, lockGate as STL_lockGate, lockTolerance as STL_lockTolerance } from './sim/stealth/system.js';
 import { composeCharacter, signatureOf, composeSkills } from './character/sheet.js';
 import { taintOf, bandFromRests } from './sim/magic/apply.js';
+import { HearthSystem, REST_HOURS } from './sim/hearth.js';
+import { DeathSystem, SURFACE_FRAMES, DEATH_LINE } from './sim/death.js';
 
 /**
  * The character every shipped narrative state (`helstrom-market`, `stormhold-street`,
@@ -203,6 +205,18 @@ export class Engine {
     this.hazards = this.data.hazards
       ? new Hazards(this.data.hazards, this.field, this.signatures, this.data.regions.regions)
       : null;
+    // W1-13 — the checkpoint and the death loop. Built BEFORE the first named state is
+    // applied, because `applyNamedState()` seeds `progression.hearthLastRested` from the
+    // hearth registry and a state applied against a null registry would respawn nowhere.
+    this.hearths = new HearthSystem(this.data.hearths);
+    this.death = new DeathSystem(this.data.respawn, this.hearths, {
+      // "Standable" is the same predicate the capsule's own locomotion uses: the province
+      // heightfield, the max walkable slope from traversal.json, and water no deeper than the
+      // W3/W4 boundary. Inside a camera fixture or an interior the floor is a plane and
+      // everything is standable, which is true and is why the test is asked of the cell.
+      standable: (x, z) => this._standableAt(x, z),
+      groundAt: (x, z) => this.groundInActiveCell(x, z),
+    });
     this.renderer.setWorld(this.field, this.data.roads);
     // The camera's collision set. Built once from game/data/camera/cells.json and then
     // selected per named state; the sim step only ever reads it.
@@ -4241,6 +4255,10 @@ async function loadData(onBytes) {
     else if (entry.path.startsWith('crime/')) { out.crime = out.crime || {}; out.crime[entry.path.slice('crime/'.length).replace(/\.json$/, '')] = doc; }
     else if (entry.path.startsWith('world/property/')) { out.property = out.property || {}; out.property[doc.settlement] = doc; }
     else if (entry.path === 'world/hazards.json') out.hazards = doc;
+    // W1-13. The 29 sapwells and their two boss fog gates, and the seam-S5 respawn
+    // classification. Both are consumed by game/src/sim/hearth.js and game/src/sim/death.js.
+    else if (entry.path === 'world/hearths.json') out.hearths = doc;
+    else if (entry.path === 'world/respawn.json') out.respawn = doc;
     else if (entry.path === 'world/landmask.json') out.landmask = doc;
     else if (entry.path === 'input/profiles.json') out.inputProfiles = doc;
     else if (entry.path === 'input/pad-quirks.json') out.padQuirks = doc;

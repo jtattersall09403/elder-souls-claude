@@ -1,0 +1,19 @@
+{
+  "task_id": "W1-07-r3-critic",
+  "brief": "CRITIC for W1-07 round 3 (character creation and the opening). Score against amended RI-JRN01, new RI-JRN09, RI-CHR01-03, RI-PRG02/03, RI-EXP01. Baseline: round 2 re-reads at 1.3.",
+  "started": "wave-1 round 3",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-07-r3.json",
+    "corpus/90-verdicts/wave1/W1-07-r3.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-07-r3/"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "smoke.mjs 6/6 PASS at critic session start (chromium 141, SwiftShader, 577 unique colours).",
+    "tools/analysis/build-viability.mjs EXISTS on disk now - the tool that pinned RI-CHR01 Distinctness and RI-CHR03 Decidability at corpus_debt. Must check it is honest before crediting.",
+    "tools/journey/{journey-run,beat-extract,gamepad-shim,state-diff}.mjs EXIST - RI-JRN01 A-JRN1 corpus_debt may have expired."
+  ],
+  "next_step": "write independent DTR/AC/NAMED instrument; do not use builder's jrn09-exchange.mjs",
+  "notes_for_successor": ""
+}
