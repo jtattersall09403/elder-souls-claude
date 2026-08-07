@@ -1,0 +1,220 @@
+{
+  "schema": "elder-souls/npc-roster@1",
+  "group": "peoples",
+  "id": "tribes",
+  "owner": "W1-TRIBES. The six peoples of RI-LOR08, given mouths.",
+  "source": "corpus/60-lore/RI-LOR08-argonian-tribes.md §1-§2. Names validated against RI-LOR04 §1 (Jel phonology) and §4 (the Tamrielic-facing hyphenated form, which the Archein use on purpose and the interior peoples do not).",
+  "note": "These are not a faction roster. A player cannot join a people, and none of these records carries a rank ladder or a joining quest — RI-LOR08 §3. What they carry is a `faction` id per people, because that is the field `game/src/world/canon.js#stanceOf` matches a registered position against, so a people's position on a disputed fact is a thing the engine can hold.",
+  "consumed_by": "game/src/world/canon.js#stanceOf (holders.factions), game/src/character/converse.js#infoFor (a -> actor), game/data/dialogue/topics/75-tribes.json",
+  "npcs": [
+    {
+      "id": "agaceph-sheem",
+      "name": "Sheem",
+      "race": "saxhleel",
+      "class": "guide",
+      "actor": "agaceph-guide",
+      "faction": "agacephs",
+      "reaction_group": "RG-DEEP",
+      "settlement": "helstrom",
+      "interior": "helstrom-inn-gate",
+      "disposition": 45,
+      "schedule": [{ "from": "00:00", "to": "24:00", "at": "helstrom-inn-gate" }],
+      "topics": ["the-peoples", "dying-far-from-the-tree", "the-high-walks", "what-we-will-not-do", "emptying-the-coast", "the-wall-at-the-grange"],
+      "services": [],
+      "role": "Agaceph of the Deep Marshes, in Helstrom at the gate inn because somebody asked her to be. She takes people places. She does not tell them the way.",
+      "lines": {
+        "greeting": "You are the one who has been asking at the gate. Sit down, you're making the room stand up."
+      }
+    },
+    {
+      "id": "agaceph-neekhu",
+      "name": "Neekhu",
+      "race": "saxhleel",
+      "class": "weir-keeper",
+      "actor": "agaceph-weir",
+      "faction": "agacephs",
+      "reaction_group": "RG-DEEP",
+      "settlement": "helstrom",
+      "interior": "helstrom-hollow-bole",
+      "disposition": 40,
+      "schedule": [{ "from": "00:00", "to": "24:00", "at": "helstrom-hollow-bole" }],
+      "topics": ["the-peoples", "dying-far-from-the-tree", "sap-from-a-cup", "what-we-will-not-do", "the-wall-at-the-grange"],
+      "services": [],
+      "role": "Agaceph weir-keeper. Feeds people. Answers about half of what she is asked and does not pretend otherwise.",
+      "lines": {
+        "greeting": "There's fish in the pot and it's been in there since morning. Are you eating or asking?"
+      }
+    },
+    {
+      "id": "paatru-otokh",
+      "name": "Otokh",
+      "race": "saxhleel",
+      "class": "clay-digger",
+      "actor": "paatru-clay",
+      "faction": "paatru",
+      "reaction_group": "RG-COMMON",
+      "settlement": "blackrose",
+      "interior": "blackrose-prison",
+      "disposition": 18,
+      "schedule": [{ "from": "00:00", "to": "24:00", "at": "blackrose-prison" }],
+      "topics": ["the-peoples", "the-clay-in-the-wet", "the-duskfall-count", "what-we-will-not-do"],
+      "services": [],
+      "role": "Paatru of the Clay Moor, on the Blackrose lease roll. Taken at the trade-edge in the dry season, which is the fact he wants written down and which the roll does not have a column for.",
+      "lines": {
+        "greeting": "Dry season. You came in the dry season, so you came in when we trade. Say what you want."
+      }
+    },
+    {
+      "id": "paatru-wux-ei",
+      "name": "Wux-Ei",
+      "race": "saxhleel",
+      "class": "clay-digger",
+      "actor": "paatru-edge",
+      "faction": "paatru",
+      "reaction_group": "RG-COMMON",
+      "settlement": "soulrest",
+      "interior": "soulrest-market",
+      "disposition": 22,
+      "schedule": [{ "from": "00:00", "to": "24:00", "at": "soulrest-market" }],
+      "topics": ["the-peoples", "the-clay-in-the-wet", "the-duskfall-count", "what-we-will-not-do", "emptying-the-coast"],
+      "services": [],
+      "role": "Paatru at the trade-edge, come down to Soulrest for salt and rope. She will be gone before the rains.",
+      "lines": {
+        "greeting": "Salt and rope. If you're selling neither, I'll still stand here, so talk if you like."
+      }
+    },
+    {
+      "id": "sarpa-xeeth",
+      "name": "Xeeth",
+      "race": "saxhleel",
+      "class": "flier",
+      "actor": "sarpa-flier",
+      "faction": "sarpa",
+      "reaction_group": "RG-DEEP",
+      "settlement": "helstrom",
+      "interior": "helstrom-deep-market",
+      "disposition": 30,
+      "schedule": [{ "from": "00:00", "to": "24:00", "at": "helstrom-deep-market" }],
+      "topics": ["the-peoples", "the-high-walks", "the-duskfall-count", "what-we-will-not-do", "emptying-the-coast"],
+      "services": [],
+      "role": "Sarpa of the Stone Forest, down in the deep market for two days because he was asked down. He has seen every xanmeer in the province from above and has never once been asked about it by anybody who could write.",
+      "lines": {
+        "greeting": "There's a mark on the roof over there. Somebody put it up, so I came down. What was it for?"
+      }
+    },
+    {
+      "id": "archein-weighs-the-season",
+      "name": "Archein Weighs-The-Season",
+      "race": "argonian",
+      "class": "landholder",
+      "actor": "archein-holder",
+      "faction": "archein",
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "gideon",
+      "interior": "gideon-court",
+      "disposition": 52,
+      "schedule": [{ "from": "00:00", "to": "24:00", "at": "gideon-court" }],
+      "topics": ["the-peoples", "dying-far-from-the-tree", "the-wall-at-the-grange", "sap-from-a-cup", "through-a-factor", "what-we-will-not-do"],
+      "services": [],
+      "role": "Archein landholder of the estates east of Gideon, in the court building most days because the Governor's office is where the province is administered and somebody has to do it.",
+      "lines": {
+        "greeting": "You've come from the interior, I can see it on your boots. Sit. Have you eaten, or do you not do that here?"
+      }
+    },
+    {
+      "id": "archein-salts-her-own-reeds",
+      "name": "Archein Salts-Her-Own-Reeds",
+      "race": "argonian",
+      "class": "landholder",
+      "actor": "archein-factor",
+      "faction": "archein",
+      "reaction_group": "RG-LUKIUL",
+      "settlement": "gideon",
+      "interior": "gideon-grange",
+      "disposition": 46,
+      "schedule": [{ "from": "00:00", "to": "24:00", "at": "gideon-grange" }],
+      "topics": ["the-peoples", "the-wall-at-the-grange", "sap-from-a-cup", "through-a-factor", "dying-far-from-the-tree"],
+      "services": [],
+      "role": "Archein of the grange. Runs the labour side, which means she runs the factor side, which she will explain to you at length and without embarrassment.",
+      "lines": {
+        "greeting": "The grange is open and the books are open. Ask me anything you like about either."
+      }
+    },
+    {
+      "id": "miredancer-sap-speaker",
+      "name": "Sap-Speaker Neekh-Otei",
+      "race": "saxhleel",
+      "class": "sap-speaker",
+      "actor": "sap-speaker",
+      "faction": "miredancers",
+      "reaction_group": "RG-ROOT",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-rootpost",
+      "disposition": 44,
+      "schedule": [{ "from": "00:00", "to": "24:00", "at": "lilmoth-rootpost" }],
+      "topics": ["the-peoples", "the-speaker-goes-down", "sap-from-a-cup", "dying-far-from-the-tree", "the-wall-at-the-grange", "what-the-bone-holds"],
+      "services": [],
+      "role": "The Miredancers' Sap-Speaker. Gold tongue, bark-scale on both forearms, four descents with nothing brought back. She is going down again on the eighth day and everybody in the rootpost knows it.",
+      "lines": {
+        "greeting": "My mouth is gold, yes. You may look at it. Everybody looks and then asks about the weather instead."
+      }
+    },
+    {
+      "id": "miredancer-omu-ei",
+      "name": "Omu-Ei",
+      "race": "saxhleel",
+      "class": "amber-carver",
+      "actor": "miredancer-elder",
+      "faction": "miredancers",
+      "reaction_group": "RG-ROOT",
+      "settlement": "lilmoth",
+      "interior": "lilmoth-inn-stilt",
+      "disposition": 58,
+      "schedule": [{ "from": "00:00", "to": "24:00", "at": "lilmoth-inn-stilt" }],
+      "topics": ["the-peoples", "the-speaker-goes-down", "the-duskfall-count", "what-the-bone-holds", "dying-far-from-the-tree", "what-we-will-not-do", "emptying-the-coast"],
+      "services": [],
+      "role": "Miredancer elder, in from the Eastern Rootlands with amber to sell and a board game she will not let you leave without losing.",
+      "lines": {
+        "greeting": "Sit on that side. No, that side — the light's better and you'll want it. Do you know the game or shall I teach you badly?"
+      }
+    },
+    {
+      "id": "deadwater-koor-nakh",
+      "name": "Dead-Water Koor-Nakh",
+      "race": "naga",
+      "class": "war-band",
+      "actor": "deadwater-warrior",
+      "faction": "dead-water",
+      "reaction_group": "RG-NAGA",
+      "settlement": "thorn",
+      "interior": "thorn-gate",
+      "disposition": 24,
+      "schedule": [{ "from": "00:00", "to": "24:00", "at": "thorn-gate" }],
+      "topics": ["the-peoples", "what-the-bone-holds", "emptying-the-coast", "what-we-will-not-do", "dying-far-from-the-tree"],
+      "services": [],
+      "role": "Naga-Kur of the Thornmarsh, standing inside the Thorn gate rather than outside it, which the gate-warders have decided not to make an issue of. The tracks north are closed and she is the reason.",
+      "lines": {
+        "greeting": "The tracks north are shut. You knew that before you walked up here, so what is it you actually want?"
+      }
+    },
+    {
+      "id": "antiquarian-decius-arral",
+      "name": "Decius Arral",
+      "race": "imperial",
+      "class": "antiquarian",
+      "actor": "antiquarian",
+      "faction": "provincial-office",
+      "reaction_group": "RG-IMP",
+      "settlement": "gideon",
+      "interior": "gideon-court",
+      "disposition": 42,
+      "schedule": [{ "from": "00:00", "to": "24:00", "at": "gideon-court" }],
+      "topics": ["the-peoples", "the-high-walks", "the-duskfall-count"],
+      "services": [],
+      "role": "Provincial Office antiquarian, surveying the stepped ruins on a grant that has been renewed twice and read once. He has never been above one.",
+      "lines": {
+        "greeting": "You've been inland. Did you see any of the stepped ruins? I'll pay for a measurement and I'll pay more for a straight one."
+      }
+    }
+  ]
+}

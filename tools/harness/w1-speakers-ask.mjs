@@ -151,16 +151,36 @@ try {
     // Strip the GENERIC (actorless) infos out of one world-root in the LIVE index and ask the
     // same person in the same room. If `07-root-coverage.json` is an orphan model, nothing
     // moves. The null control asks twice with nothing touched.
+    // IT MUST NOT DEPEND ON WHICH PERSON THE PROBE HAPPENED TO PICK. The first version stripped
+    // the floor from ONE root and watched ONE speaker, and it passed in Gideon and failed in
+    // Stormhold for a reason that had nothing to do with the model: `little-secret` carries an
+    // `a: townsman` row, so a townsman answers it from their own line and removing the floor
+    // could not silence them. That is the coverage design working — most people fall to the
+    // floor, a few have better — and a check that reads it as an orphan model is a check that
+    // punishes the contrast the round exists to protect.
+    //
+    // So the perturbation is now over the WHOLE TOWN and the whole roster: strip every info
+    // that has neither an actor nor a cell — the true generic floor, and nothing else — and
+    // count how many (person, root) pairs in the room go silent. One speaker can be lucky;
+    // forty cannot.
+    const askTown = () => {
+      let pairs = 0;
+      for (const n of npcs) pairs += askAll(n.eid).answered;
+      return pairs;
+    };
     const nullControl = subject ? askAll(subject) : null;
-    const target = 'little secret';
-    const recT = E.topicIndex.get(target);
-    const saved = recT ? recT.infos.slice() : null;
-    let perturbed = null;
-    if (recT && subject) {
-      recT.infos = recT.infos.filter((i) => i.a);         // the floor removed, actor rows kept
-      perturbed = askAll(subject);
-      recT.infos = saved;
+    const townBefore = askTown();
+    const savedFloors = [];
+    for (const id of ROOTS) {
+      const recT = E.topicIndex.get(id.replace(/-/g, ' ')) || E.topicIndex.get(id);
+      if (!recT) continue;
+      savedFloors.push([recT, recT.infos]);
+      recT.infos = recT.infos.filter((i) => i.a || i.cell);
     }
+    const townPerturbed = askTown();
+    const perturbed = subject ? askAll(subject) : null;
+    for (const [recT, infos] of savedFloors) recT.infos = infos;
+    const townRestored = askTown();
     const restored = subject ? askAll(subject) : null;
 
     // ---- C6 DELETE THE FIX at the cell gate -----------------------------------------------
@@ -293,9 +313,10 @@ try {
       consumption: {
         consumer: 'game/data/dialogue/topics/07-root-coverage.json -> converse.js buildTopicIndex() -> infoFor() generic tier -> Conversation.start().list -> what the person in the room says',
         null_control_answered: nullControl ? nullControl.answered : null,
-        perturbed_answer: perturbed ? perturbed.answers['little-secret'] : null,
-        restored_answer: restored ? restored.answers['little-secret'] : null,
-        baseline_answer: A ? A.answers['little-secret'] : null,
+        town_pairs_before: townBefore, town_pairs_perturbed: townPerturbed, town_pairs_restored: townRestored,
+        subject_before: A ? A.answered : null,
+        subject_perturbed: perturbed ? perturbed.answered : null,
+        subject_restored: restored ? restored.answered : null,
       },
       cell_delete_the_fix: moved, cell_restored: back ? back.answers['services'] : null,
       walked,
@@ -347,13 +368,15 @@ try {
   say('C5 — CONSUMPTION: perturb the model, watch the person');
   const c = r.consumption;
   say(`     consumer: ${c.consumer}`);
-  say(`     baseline  : ${c.baseline_answer ? '"' + String(c.baseline_answer).slice(0, 70) + '"' : 'null'}`);
-  say(`     perturbed : ${c.perturbed_answer ? '"' + String(c.perturbed_answer).slice(0, 70) + '"' : 'NULL — the person went silent'}`);
-  say(`     restored  : ${c.restored_answer ? '"' + String(c.restored_answer).slice(0, 70) + '"' : 'null'}`);
-  if (c.baseline_answer && !c.perturbed_answer) pass('removing the generic floor from the LIVE index silences the person');
-  else fail('removing the generic floor changed nothing the person says — the file is an orphan model');
-  if (c.restored_answer === c.baseline_answer) pass('and putting it back restores the same words');
-  else fail('restore did not reproduce the baseline');
+  say(`     (person, root) pairs answered across all ${r.npc_count} people in the room:`);
+  say(`       floor present : ${c.town_pairs_before}`);
+  say(`       floor removed : ${c.town_pairs_perturbed}   (${c.town_pairs_before - c.town_pairs_perturbed} answers lost)`);
+  say(`       floor restored: ${c.town_pairs_restored}`);
+  say(`       and ${A ? A.eid : '?'} alone: ${c.subject_before} -> ${c.subject_perturbed} -> ${c.subject_restored} of 9`);
+  if (c.town_pairs_perturbed < c.town_pairs_before) pass(`removing the generic floor from the LIVE index costs the room ${c.town_pairs_before - c.town_pairs_perturbed} answers — the file is read`);
+  else fail('removing the generic floor changed nothing anybody in the room says — the file is an orphan model');
+  if (c.town_pairs_restored === c.town_pairs_before) pass('and putting it back restores every one of them');
+  else fail(`restore did not reproduce the baseline: ${c.town_pairs_before} -> ${c.town_pairs_restored}`);
   if (c.null_control_answered === (A ? A.answered : -1)) pass(`null control identical (${c.null_control_answered} of 9 both times)`);
   else fail(`null control moved: ${A && A.answered} -> ${c.null_control_answered}`);
 

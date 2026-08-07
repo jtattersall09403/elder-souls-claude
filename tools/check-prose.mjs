@@ -574,7 +574,9 @@ async function calibrate() {
   for (const [r, b] of Object.entries(out.registers)) {
     console.log(`  ${r}:`);
     for (const [k, bar] of Object.entries(b)) {
-      if (typeof bar !== 'object') continue;
+      // `!bar.kind` skips the sibling `reported` block, which is an object of measured reference
+      // rates for the UNGATED echo classes and has no bar to print.
+      if (typeof bar !== 'object' || !bar.kind) continue;
       const lim = bar.kind === 'cap' ? `ceiling ${bar.ceiling.toFixed(2)}` : bar.kind === 'floor' ? `floor ${bar.floor.toFixed(2)}` : `band ${bar.lo.toFixed(2)}–${bar.hi.toFixed(2)}`;
       console.log(`    ${k.padEnd(13)} ours ${bar.ours.toFixed(2).padStart(8)}  reference ${bar.target.toFixed(2).padStart(8)}  ${lim}`);
     }

@@ -734,7 +734,11 @@ export async function runJrn06(h, args, led, ctx = {}) {
         kind: 'fall_120m', frames_to_death: f,
         cause: rec ? rec.cause : null,
         placement_rule: rec ? rec.placement_rule : null,
-        frames_since_last_damage: d.frames_since_last_damage,
+        // THE PER-DEATH FIELD, not the running one. `getDeathState().frames_since_last_damage`
+        // is "now minus the last frame HP fell" and grows with every frame stepped after the
+        // death; `log[].frames_since_last_damage` is stamped inside `die()` and is the window
+        // M-D10 is actually about.
+        frames_since_last_damage: rec ? rec.frames_since_last_damage : null,
         death_point: dead ? [+dead.pos[0].toFixed(2), +dead.pos[2].toFixed(2)] : null,
         bloom_to_ledge_m: b ? +Math.hypot(b.pos[0] - ledge[0], b.pos[2] - ledge[1]).toFixed(2) : null,
         bloom_to_death_point_m: (b && dead) ? +Math.hypot(b.pos[0] - dead.pos[0], b.pos[2] - dead.pos[2]).toFixed(2) : null,

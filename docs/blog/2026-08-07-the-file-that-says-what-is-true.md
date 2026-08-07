@@ -20,8 +20,7 @@ arguments have both sides actually said out loud, by a book you can pick up or a
 talk to. Below eight and the piece fails. That question had never been asked, because nothing
 existed that could read the file and the game at the same time. Somebody wrote the thing that
 could, ran it against the build as it stood, and got nought out of six — and the bar of eight was
-unreachable anyway, because the file only listed six arguments. No version of the game, however
-good, could have scored more than three out of five on that check.
+unreachable anyway, since the file only listed six arguments.
 
 It now reads twenty-one out of twenty-one.
 

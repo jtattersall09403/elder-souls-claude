@@ -57,6 +57,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { SIGNATURE_KINDS } from '../../game/src/world/signature.js';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..', '..');
 const D = (p) => join(ROOT, 'game', 'data', 'world', p);
@@ -234,9 +235,65 @@ function arm(leg, i, towardName, fromEnd, postXZ) {
   return a;
 }
 
+// ---- the waylamp, and why a signpost is allowed to be a light ---------------------------------
+//
+// THE DEFECT THIS ANSWERS, measured by check H of `signpost-audit.mjs`: walk either named route
+// end to end at night and you never once pass within the 160 m lamp range of a glowing thing.
+// The crossing's nearest lit object is 162 m off the carriageway and the long way's is 257 m,
+// while 57 and 102 UNLIT signatures respectively sit right beside the road. The cause is one
+// line in `game/src/world/signature.js`: `imperial_milestone` is the ONLY kind with
+// `wants: 'roadside'` and its `glow` is 0, and every kind that does glow is region-filled and
+// then pushed off the carriageway by `build-signatures.mjs`. So the road was structurally
+// guaranteed to be the darkest line in the province — which is a wayfinding defect before it is
+// a lighting one, because RI-WLD06 L2 is what a player steers by with the map shut and S35's map
+// is blank ahead of them anyway.
+//
+// The fix stays inside this piece's own furniture rather than moving another item's 840
+// instances: the ROAD lights itself. Only posts at places where a traveller actually stops get
+// a lamp —
+//
+//   * WAYSTATIONS. A waystation is a shelter, a shrine or a well; the reason it is a waystation
+//     is that people break there, and a place people break at overnight keeps a light. Two of
+//     the nine are literally shrines and one is named Ash Shelter.
+//   * JUNCTIONS. The three degree->=3 nodes. A junction is the one place on the whole network
+//     where being wrong in the dark costs you an hour, so it is the one place worth the oil.
+//
+// The twenty APPROACH posts stay dark, deliberately: from an approach you can already see the
+// town, and lighting everything would make the light stop meaning anything.
+//
+// THE COLOUR IS NOT DECORATION. It is the region's own signature colour, read straight out of
+// `SIGNATURE_KINDS` — welkynd blue in Blackwood, kiln ember on the Clay Moor, jelly green in the
+// Eastern Rootlands. That is RI-WLD04 M17 step 6's principle ("a region is identifiable at
+// night by light it owns") applied to the road, and it means a lit post tells a walker which
+// region they have crossed into as well as where they are. A region whose signature does not
+// glow — the Salt Hills' unlit milestone, the Stone Forest's boles — falls back to plain
+// lamp-oil flame, which is what a shelter would burn anyway.
+const LAMP_FLAME = '#FFC061';
+function lampFor(kind, region, style) {
+  if (kind !== 'waystation' && kind !== 'junction') return null;
+  let hex = LAMP_FLAME, source = 'lamp-oil';
+  for (const [k, K] of Object.entries(SIGNATURE_KINDS)) {
+    if (K.region === region && K.glow > 0 && K.glow_hex) { hex = K.glow_hex; source = k; break; }
+  }
+  return {
+    // What it physically is, so the renderer and the sign's read-out agree about the object.
+    object: style === 'tide-pole'
+      ? 'a horn lantern lashed to the pole above the highest band, so it is still burning when the water is over the path'
+      : style === 'knife-marks'
+        ? 'a bowl cut into the root and kept filled, the flame sheltered by the lip of the cut'
+        : 'a hooded lamp on an iron hook, lit by whoever passes last',
+    hex,
+    source,                 // the region signature the colour is taken from, or 'lamp-oil'
+    glow: source === 'lamp-oil' ? 0.55 : 0.8,
+    height_m: style === 'milestone' ? 1.6 : style === 'knife-marks' ? 1.8 : 2.55,
+  };
+}
+
 function pushPost(o) {
   // The word on the sign must agree with the true bearing to the place it names. M28.3 makes
   // three wrong posts a fail; this makes one impossible to ship by accident.
+  const lamp = lampFor(o.kind, o.region, o.style);
+  if (lamp) o.lamp = lamp;
   for (const a of o.arms) {
     const wordBearing = POINTS.indexOf(a.compass) * 45;
     if (angDiff(wordBearing, a.bearing_deg) > 22.5) {

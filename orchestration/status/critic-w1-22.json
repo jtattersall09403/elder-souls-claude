@@ -1,0 +1,28 @@
+{
+  "task_id": "critic-w1-22",
+  "role": "critic",
+  "target": "W1-22 (audio / regions)",
+  "state": "researching",
+  "started": "2026-08-07",
+  "commit_at_start": "ead0e35",
+  "contention_at_start": {"headless_shell": 12, "loadavg": "17.21 11.65 6.33"},
+  "plan": [
+    "read AGENT-PROTOCOL, TOOL-LOOP, ARBITRATION s3, RI-MTH03, RI-AUD* items, W1-22.json",
+    "declare sampling + unblinding order BEFORE building B2 pack",
+    "run RI-AUD03 B2 properly (78 fresh judges, SAME/DIFFERENT, blind)",
+    "root-cause bed_gain_db non-scalar behaviour",
+    "judge fail-open stale-spectra detector",
+    "check interior suppression is permitted by the item",
+    "verify CONSUMPTION + sabotage control by own perturbation"
+  ],
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-22-r1.md",
+    "corpus/90-verdicts/wave1/W1-22-r1.json",
+    "reports/blog-feed.jsonl (one line)"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "method_deviations": [],
+  "next_step": "read TOOL-LOOP.md, ARBITRATION.md s3, RI-MTH03, W1-22.json",
+  "notes_for_successor": "Box was contended at start (12 browsers, load 17). Offline work first."
+}

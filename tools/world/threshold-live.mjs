@@ -109,6 +109,9 @@ try {
     add('M3 control — fewer markers are drawn away from any frontier',
       interior.instances < atBorder.instances, {
         note: 'a renderer that draws cairns everywhere is not drawing a border',
+        caveat: 'the resident tile ring is 5 x 5 x 300 m, so a camera 900 m from the nearest '
+          + 'cluster still has some frontier inside it. This shows the count is a function of '
+          + 'WHERE THE CAMERA IS, not that the interior is empty — read `nearest_declared_marker_m`',
         at_border: atBorder.instances, in_the_interior: interior.instances,
         nearest_declared_marker_m: +nearestThere.toFixed(1),
         interior_detail: interior,

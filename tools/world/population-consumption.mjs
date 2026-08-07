@@ -328,15 +328,29 @@ async function walkCensus(handle, metres, { chunk = 900, label = 'walk' } = {}) 
       await handle.h('loadState', STATE);
       await handle.page.evaluate(INSTALL);
       // Stand exactly where the walk started, and step the same number of frames without input.
+      //
+      // `clearInputs()` IS LOAD-BEARING AND ITS ABSENCE MADE THIS ARM PASS FOR THE WRONG REASON.
+      // `walkRoute()` queues a move vector for each frame it steps and does NOT clear the queue
+      // when it returns, so a plain `stepFrames()` afterwards keeps applying the last latched
+      // stick. Run without it, this "still" arm's player travelled 877.45 m off the road — it
+      // passed 2-against-10 not because standing still populates less, but because walking into
+      // trackless terrain does. Any probe in this tree that calls `walkRoute` and then
+      // `stepFrames` is still moving unless it clears the queue.
       await handle.h('walkRoute', { route: ROUTE, speed: SPEED, restart: true, chunkFrames: 1, stream: false });
+      await handle.h('clearInputs');
       const before = await handle.page.evaluate(() => window.__POP.census());
       let left = baseline.frames;
       while (left > 0) { const n = Math.min(1800, left); await handle.h('stepFrames', n); left -= n; }
       const after = await handle.page.evaluate(() => window.__POP.census());
-      report.arms.A2 = { frames: baseline.frames, before, after };
-      const ok = after.spawned > 0 && after.spawned * 3 < baseline.final.spawned;
+      // The arm's OWN control: if the "still" player moved, the comparison is meaningless and
+      // this check must go red rather than quietly measure something else.
+      const drift = Math.hypot(after.x - before.x, after.z - before.z);
+      report.arms.A2 = { frames: baseline.frames, before, after, drift_m: +drift.toFixed(2) };
+      const stoodStill = drift < 2.0;
+      const ok = stoodStill && after.spawned * 3 < baseline.final.spawned;
       (ok ? pass : fail)('A2 a STILL player populates far less than a walking one (motion is the driver)', {
         frames_each: baseline.frames,
+        still_player_drift_m: +drift.toFixed(2), stood_still: stoodStill,
         still_posts_spawned: after.spawned, walking_posts_spawned: baseline.final.spawned,
         ratio: +(baseline.final.spawned / Math.max(1, after.spawned)).toFixed(2),
         still_refocuses: after.refocuses, walking_refocuses: baseline.final.refocuses,

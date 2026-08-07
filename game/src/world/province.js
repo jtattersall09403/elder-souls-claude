@@ -861,6 +861,23 @@ export class Province {
         post.add(arm);
       });
       post.traverse((o) => { o.castShadow = true; o.receiveShadow = true; });
+      // The waylamp. Only junction and waystation posts carry one — see the long note in
+      // `tools/world/build-signposts.mjs` — and its colour is the region's own signature colour,
+      // so a lit post says WHERE as well as WHICH WAY. The emissive makes the object glow; what
+      // makes it light the ground around it is `updateSignatureLights`, which pools these with
+      // the region's own instances so the light budget stays at MAX_SIG_LIGHTS.
+      if (s.lamp) {
+        const lm = new THREE.Mesh(
+          new THREE.SphereGeometry(0.13, 8, 6),
+          new THREE.MeshStandardMaterial({
+            color: s.lamp.hex, emissive: s.lamp.hex, emissiveIntensity: 1.5, roughness: 0.4,
+          }),
+        );
+        lm.position.set(0, s.lamp.height_m, 0.16);
+        lm.castShadow = false; lm.receiveShadow = false;
+        lm.name = `waylamp:${s.id}`;
+        post.add(lm);
+      }
       g.add(post);
     }
     group.add(g);
@@ -1133,11 +1150,31 @@ export class Province {
       if (d > SIG_LIGHT_RANGE) continue;
       near.push({ it, K, d });
     }
+    // The waylamps join the SAME pool rather than adding lights of their own, so the cost stays
+    // the measured two and the road does not buy its legibility at 3.75 minutes a frame. W1-05:
+    // before this, neither named route passed within the 160 m lamp range of ANY glowing thing
+    // over 6.8 km and 12.4 km respectively — the road was the darkest line in the province,
+    // because the one signature kind placed roadside is the one that does not glow.
+    for (const s of (this.field.signs || [])) {
+      if (!s.lamp) continue;
+      const d = Math.hypot(s.x - x, s.z - z);
+      if (d > SIG_LIGHT_RANGE) continue;
+      near.push({ lamp: s, d, K: { glow: s.lamp.glow, glow_hex: s.lamp.hex } });
+    }
     near.sort((a, b) => a.d - b.d);
     for (let i = 0; i < this.sigLights.length; i++) {
       const l = this.sigLights[i];
       const n = near[i];
       if (!n) { l.visible = false; l.intensity = 0; continue; }
+      if (n.lamp) {
+        l.position.set(n.lamp.x, this.field.heightAt(n.lamp.x, n.lamp.z) + n.lamp.lamp.height_m, n.lamp.z);
+        l.color.set(n.lamp.lamp.hex);
+        l.distance = SIG_LIGHT_RANGE * 0.55;
+        l.decay = 1.6;
+        l.intensity = n.lamp.lamp.glow * this.nightFactor * 420;
+        l.visible = l.intensity > 0.01;
+        continue;
+      }
       const gy = n.it.kind === 'swamp_jelly_canopy'
         ? (this.field.waterSurfaceAt(n.it.x, n.it.z) ?? this.field.heightAt(n.it.x, n.it.z)) + n.it.hover
         : this.field.heightAt(n.it.x, n.it.z) + n.it.h * 0.8;

@@ -211,6 +211,20 @@ const url = handle.page.url();
 await requireMethods(handle, ['setSeed', 'loadState', 'stepFrames', 'queueInputs', 'setRenderRate',
   'teleport', 'getCameraFrame', 'getCameraRig', 'projectPoint', 'setCameraCell', 'deathCamera']);
 
+/**
+ * Reload the page so the engine boots from whatever is on disk NOW. `waitUntil: 'load'` is not
+ * enough on its own: `window.__HARNESS` is installed before the data fetch resolves, so a probe
+ * that only waits for the object calls `loadState()` against a half-loaded engine and gets
+ * `data.states is null`. `__HARNESS.ready()` is what `launchGame` itself waits for, and it is
+ * what makes a reload equivalent to a fresh launch — which is the whole reason this probe can
+ * honour "launch one browser and keep it" while still booting five times.
+ */
+async function reboot() {
+  await handle.page.goto(url, { waitUntil: 'load' });
+  await handle.page.waitForFunction(() => !!(window.__HARNESS && window.__HARNESS.version), null, { timeout: 60000 });
+  await handle.page.evaluate(() => (typeof window.__HARNESS.ready === 'function' ? window.__HARNESS.ready() : null));
+}
+
 const result = {
   schema: 'elder-souls/cam-consume@1', piece: 'W1-06', rule: 'RI-MTH07',
   mode: FALSIFY ? 'falsify (perturbations written to a file the game does not load)' : 'live',
@@ -222,8 +236,7 @@ const result = {
 
 try {
   restore();
-  await handle.page.goto(url, { waitUntil: 'load' });
-  await handle.page.waitForFunction(() => !!window.__HARNESS, null, { timeout: 60000 });
+  await reboot();
   const baseline = await handle.page.evaluate(measure);
   result.baseline = baseline;
   log(`baseline: pivot ${baseline.pivot_y_above_feet_m.toFixed(3)} m, boom ` +
@@ -232,8 +245,7 @@ try {
 
   for (const P of PERTURBATIONS) {
     const wasVal = writeRig(P);
-    await handle.page.goto(url, { waitUntil: 'load' });
-    await handle.page.waitForFunction(() => !!window.__HARNESS, null, { timeout: 60000 });
+    await reboot();
     // Proof the ENGINE saw the edit, independent of behaviour: applyCameraRig() reports
     // every constant the file moved off the module default.
     const audit = await handle.page.evaluate(() => window.__HARNESS.getCameraRig().rig_from_file);
@@ -265,8 +277,7 @@ try {
 
   // The file must come back. A probe that leaves a perturbed data file behind poisons every
   // other agent on the box.
-  await handle.page.goto(url, { waitUntil: 'load' });
-  await handle.page.waitForFunction(() => !!window.__HARNESS, null, { timeout: 60000 });
+  await reboot();
   const after = await handle.page.evaluate(measure);
   const drift = Object.keys(baseline).filter((k) => typeof baseline[k] === 'number'
     && !near(after[k], baseline[k], Math.max(1e-9, Math.abs(baseline[k]) * 1e-6)));
