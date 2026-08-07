@@ -2,29 +2,60 @@
   "task_id": "judge-prose-r4",
   "brief": "blind judge on reports/packs/prose-tics-r4/ (quality question, both sides masked)",
   "started": "wave-1",
-  "state": "researching",
+  "state": "done",
+  "commit_sha": "652b1d7",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "successor_note": "I am the SECOND judge on this task. Rule 3: my status file already existed, so I am a successor. The predecessor recorded outputs_written:[] and state:researching, but ALL FIFTEEN answer.md files were on disk with a PICK and a CONFIDENCE line. Its work was recoverable and is preserved byte-untouched. I restarted no trio and edited nothing in the pack.",
   "procedure_declared_before_reading": [
-    "1. Read AGENT-PROTOCOL, RI-MTH03, pack README, one PROMPT.md, all 15 pack.json. Confirm no mapping inside pack.",
-    "2. For each trial t01..t15 in order, read ONLY A.txt and B.txt. Decide from words alone: PICK, CONFIDENCE, 3-6 quoted evidence bullets, WEAKEST POINT. Write answer.md into the trial dir immediately (protocol rule 2: write as soon as ready).",
-    "3. Decision rule I commit to in advance: the shipped-game side should show (a) concrete, unglamorous specificity a writer needed for the world to work - prices, dates, procedures, names of offices; (b) a speaker with an agenda, bias or error, not a neutral narrator; (c) irregular rhythm and sentence length, including bad/awkward sentences; (d) content that does not resolve tidily. The placeholder side should show even paragraphing, balanced clause pairs, summary rather than incident, and thematic closure.",
-    "4. After all 15 answer.md exist, concatenate them, record sha256 of the bundle AND per-file sha256, write those into the verdict BEFORE opening ../prose-tics-r4.reveal/mapping.json.",
-    "5. Unblind, score, report accuracy per register.",
-    "6. THEN run a structural leak audit (byte-level, punctuation inventory, whitespace, word-count asymmetry, vocabulary overlap) and report anything found.",
-    "7. Write verdict .md + .json, append one line to reports/blog-feed.jsonl. No prose edits, no commits."
+    "1. Inventory predecessor answers. Confirmed 15/15 have PICK + CONFIDENCE. Preserve them as the committed pre-reveal record (RI-MTH03 M3).",
+    "2. CONTAMINATION DECLARED: to inventory them I read the PICK: and CONFIDENCE: lines of all 15 before judging anything myself. My own pass is NOT an independent blind pass and is not reported as one.",
+    "3. Did NOT read the predecessor's evidence bullets or WEAKEST POINT before forming my own view on a trio.",
+    "4. Did NOT read pack.json (carries a_words/b_words) until after all 15 of my own answers were written.",
+    "5. Running record appended trio-by-trio to reports/packs/prose-tics-r4-judgement.md.",
+    "6. Reveal opened ONLY after all 15 rows existed on disk. Then scored, then leak audit."
   ],
-  "contamination_note": "While confirming pack.json carries no mapping I necessarily saw a_words/b_words. I did NOT use them to decide any trial; I will state per-trial whether my pick agrees with the word-count asymmetry so the reader can discount if they wish.",
-  "outputs_expected": [
-    "reports/packs/prose-tics-r4/t*/answer.md",
-    "corpus/90-verdicts/wave1/W1-PROSE-BLIND-r2.md",
-    "corpus/90-verdicts/wave1/W1-PROSE-BLIND-r2.json",
+  "procedure_followed_as_declared": true,
+  "result": {
+    "my_picked_reference": "1/15 (t01 only)",
+    "predecessor_picked_reference": "15/15",
+    "my_provenance_identification": "15/15 correct",
+    "judges_exact_complements_on": 14,
+    "reading": "Discrimination perfect, preference inverted. Not the RI-MTH03 §E 'critic is not discriminating' failure. Fourteen picked-ours rows fire the mandatory M5 second pass, which is OWED and not run."
+  },
+  "verdict": "BELOW BAR — BLIND RESULT INADMISSIBLE AS A QUALITY MEASUREMENT (RI-MTH03 M6 override). Process points 16/18 = 89%, but the leak audit found a 15/15 structural tell.",
+  "leak_audit_headline": "Counting '[NAME-' tokens and picking the file with FEWER identifies our side 15/15 without reading a word. Closest margin 30 vs 40; widest 41 vs 129. Root cause is in the reveal key itself: reference name maps carry 12-57 entries, ours carry 3-25. r1 leaked setting nouns (17/17); r4 masked them and leaks mask density (15/15). Each round's fix creates the next round's tell.",
+  "second_leak": "The masker drops text, and it drops it on the side with more proper nouns, which is always the reference. Dropped-text proxy fires on the reference in 14/15 trios. The pack degrades one side and then asks which side is better.",
+  "predecessor_claim_cleared": "The predecessor suspected a length leak (A>B in all books trials). Measured against the key: A >= B in EVERY trio regardless of which side is ours, and ours is shorter in only 4/15. The trimmer uniformly favours A; it carries no provenance information. NOT a leak. Length matching is in fact excellent - eleven trios match to within two words.",
+  "trios_i_got_wrong_and_would_change": {
+    "t02-books": "Docked the reference (Charwich-Koniinge Vol. 4) as plot recap in summary. The recap IS the murderer's voice - the letter is dictated by the man who strangled the writer - so the flat chronicle tone is characterisation, not exposition.",
+    "t03-books": "Docked the reference (The Prayers of Baranat) for its closing moral. It caps a hero who has just won a horrible bride and a ruined estate, so it is a joke at his expense, not a lesson for the reader. I read the shape and not the content."
+  },
+  "finding_for_the_builder": "Our prose has one tic and one voice. The tic is the antithetical restatement ('He does not want the lease audited. He wants it laundered.') in >=9 of 15 samples. The voice - dry, institutional, withholding, aphoristic - is identical whether the speaker is a magistrate, a trader, a rootkeeper or a clerk. Morrowind's dialogue is worse AND more various; ours is better AND monotone.",
+  "predecessor_confidence_flag": "All 15 predecessor answers were CONFIDENCE: high. A judge certain fifteen times is not judging - though in this pack the sides are so separable that certainty on provenance was warranted; it was misplaced onto the quality question.",
+  "rules_conflict_declared": "RULES.md rule 28 says 'Do not commit; the orchestrator banks the tree.' My task instruction from the orchestrating agent explicitly directed me to commit to the current branch. I followed the explicit instruction, committed ONLY my four output files, and flag the conflict here and in the verdict rather than resolving it silently. The game/ modifications in the working tree belong to neighbouring agents and were not staged by me.",
+  "rule_27_shortfall": "No image in docs/shots/. This was a text-only judging task with no browser and no game run; the image is reported as absent rather than faked.",
+  "files_touched": [
+    "orchestration/status/judge-prose-r4.json",
+    "reports/packs/prose-tics-r4-judgement.md",
+    "corpus/90-verdicts/wave1/W1-PROSE-TICS-r4.md",
+    "corpus/90-verdicts/wave1/W1-PROSE-TICS-r4.json",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [],
+  "files_explicitly_not_touched": [
+    "reports/packs/prose-tics-r4/",
+    "reports/packs/prose-tics-r4.reveal/",
+    "game/"
+  ],
+  "outputs_written": [
+    "reports/packs/prose-tics-r4-judgement.md (15 pre-reveal rows + ledger + full reveal analysis)",
+    "corpus/90-verdicts/wave1/W1-PROSE-TICS-r4.md",
+    "corpus/90-verdicts/wave1/W1-PROSE-TICS-r4.json",
     "reports/blog-feed.jsonl (one appended line)"
   ],
-  "outputs_written": [],
-  "findings": [
-    "PACK STRUCTURE OK: reveal dir is a sibling (reports/packs/prose-tics-r4.reveal/), pack dirs contain only A.txt B.txt PROMPT.md pack.json. No answer.md pre-existing => pack is unanswered.",
-    "PROMPT.md of t01 points the judge at '../prose-tics-r2.reveal/' - a stale path; the real reveal dir is prose-tics-r4.reveal. Cosmetic, but it means the prompt was copied from the superseded r3/r2 pack.",
-    "SUSPECTED LEAK (not used to answer, to be confirmed post-unblind): in pack.json word counts, A > B in all 5 books trials; B > A in all 4 non-tied dialogue trials. If side assignment were per-trial random this pattern is ~1/32 x 1/16. Suggests side is constant within a register and that the length-matching trim is asymmetric."
+  "owed_to_the_next_agent": [
+    "The mandatory RI-MTH03 M5 second pass, fired by fourteen picked-ours rows, has NOT been run. It needs a different fresh agent and the harsher-lens instruction.",
+    "GAP-PACK-01 remedy: equalise '[NAME-' counts between sides before writing a pack; fix the masker's dropped-text bug; segregate registers by artifact class so our diary entries stop being compared against the quest log."
   ],
-  "next_step": "read t01-books A.txt and B.txt; answer; then t02..t15",
-  "notes_for_successor": "FORBIDDEN READS (contamination): corpus/90-verdicts/wave1/W1-PROSE-BLIND-r1.md, orchestration/status/W1-PROSE-R2.json, orchestration/status/W1-PROSE-TICS.json, tools/check-prose.mjs, mapping.json until step 4 done. Do not edit prose. Do not commit."
+  "next_step": "none - task complete"
 }

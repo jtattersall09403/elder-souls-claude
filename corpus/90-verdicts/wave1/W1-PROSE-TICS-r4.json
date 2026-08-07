@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-prose-tics-r4-blind-pack-judged-and-voided",
+  "piece_title": "W1-PROSE-TICS-r4 — the r4 blind pack, judged and then voided as a quality instrument",
+  "subsystem_paths": [
+    "process.critic.discipline",
+    "process.verdict.format"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "judge-prose-r4",
+    "role": "judge.blind.prose.second",
+    "model": "claude-opus-5",
+    "conflict_of_interest": false,
+    "built_the_pack": false,
+    "wrote_any_judged_prose": false,
+    "saw_builder_notes_before_blind": false,
+    "successor_to": "the first judge on this same task_id, which left state=researching and outputs_written=[] but had in fact written all 15 answer.md files",
+    "note": "Second judge. Continued rather than restarted per RULES.md rule 3. Restarted no trio, edited nothing in the pack or reveal."
+  },
+  "contamination_declared": {
+    "what": "To establish that the predecessor's answers were recoverable I read all fifteen of its PICK: lines before judging any trio.",
+    "consequence": "My pass is NOT an independent blind pass and is not reported as one. Agreements with the predecessor are weak evidence; disagreements are load-bearing because they were made against a known anchor.",
+    "mitigations": [
+      "Did not read the predecessor's evidence bullets or WEAKEST POINT for a trio before forming my own view of it.",
+      "Did not open any pack.json (carries a_words/b_words) until all fifteen of my rows were on disk.",
+      "Did not open the reveal until the full pre-reveal ledger existed on disk."
+    ]
+  },
+  "build": {
+    "commit_sha": "652b1d7",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "no_browser_used": true,
+    "game_source_read_or_written": false,
+    "text_only_task": true
+  },
+  "pack": {
+    "dir": "reports/packs/prose-tics-r4",
+    "reveal_dir": "reports/packs/prose-tics-r4.reveal",
+    "seed": 20260809,
+    "trials": 15,
+    "registers": { "books": 5, "dialogue": 5, "journal": 5 },
+    "pack_byte_untouched_by_judge": true,
+    "reveal_opened_after_all_answers_written": true
+  },
+  "answers_sealed_before_reveal": {
+    "record": "the predecessor's fifteen answer.md files, unmodified",
+    "bundle_sha256": "b781237aa280f50f299ad9e1475d528dc84fa80d2bcb58721fcebcab4abde697",
+    "per_file_sha256": {
+      "t01-books": "6ed419d02a548e4c8521c4272be91ab0d00503f4b3026c1ffe112aa5891d9012",
+      "t02-books": "cee5f01f97a6ae17c4690f7b60978440fcb14062bb2c9cb496dadcba07179209",
+      "t03-books": "6d5163dc7a58aa0c526ebc5efda40dcb419ac0ab14d2d6ca206afafd67c1a076",
+      "t04-books": "314ff9f6542a8403ab495b94bc780a623832fcf0e1f0007003ee530958eaa8b1",
+      "t05-books": "bbfba9d178d4aab12ffee2bac13de4b1db4f25ea6801886cebceb0e9798a0fb7",
+      "t06-dialogue": "50f3e501b1171182d25fe2b057616557f9c33b27ae9107890465f5f5399e9d19",
+      "t07-dialogue": "c23a9b580eda4977f75ee359f9d966110ac5e631e9af045aea89f2a4370f9566",
+      "t08-dialogue": "f812ae3259840ce528a465538aef7adac2b55d9238a1b6ef48a268d1404da2b1",
+      "t09-dialogue": "3af7180281ff11b524254a9e64a518e4d8c217f6cd452c928a78a574eccfe66b",
+      "t10-dialogue": "974f250747bfb5d515121baa1e6fd33fbb3d3fa0c7337cc7324ee09580ac0b1f",
+      "t11-journal": "c110d25b2a0bda7b1350215aa5e35b947c1bffec5a8945d1bf69456f0cbabc7b",
+      "t12-journal": "e52c8d9912de47228eec4c00fedf311f097849f5165ec9f29c4d94b00163585b",
+      "t13-journal": "33f77adaa313774c6a149af54523f373fdec69e299133685a08a8dcb6f48ec9d",
+      "t14-journal": "93f4f77fcba1ac318c7c93f1d0c8e9781005b120431acc28eaeabba2959ba3d5",
+      "t15-journal": "a702b893b9d8160c12faaa92fc4dde09dbcad9459c2413cbccd7feeb19556b55"
+    },
+    "self_declared_defect": "My own fifteen rows were appended to reports/packs/prose-tics-r4-judgement.md as one growing file and are NOT individually hash-sealed. Their ordering rests on testimony plus file creation order, which is weaker than RI-MTH03 M3 wants. Recorded rather than papered over."
+  },
+  "result": {
+    "predecessor_picked_reference": "15/15",
+    "my_picked_reference": "1/15",
+    "my_correct_provenance_identification": "15/15",
+    "judges_are_exact_complements_on": 14,
+    "interpretation": "Discrimination was perfect and preference was inverted. This is NOT the RI-MTH03 §E 'critic is not discriminating' failure, which predicts noise. Fourteen picked-ours rows fire the mandatory M5 second pass and cap the item at 'meets the bar'.",
+    "per_trial": [
+      { "trial": "t01-books",    "ours": "B", "ref_id": "The Dowry",                     "my_pick": "A", "picked": "reference", "my_confidence": "medium" },
+      { "trial": "t02-books",    "ours": "A", "ref_id": "Charwich-Koniinge, Volume 4",   "my_pick": "A", "picked": "ours",      "my_confidence": "high" },
+      { "trial": "t03-books",    "ours": "B", "ref_id": "The Prayers of Baranat",        "my_pick": "B", "picked": "ours",      "my_confidence": "medium" },
+      { "trial": "t04-books",    "ours": "B", "ref_id": "The Mirror",                    "my_pick": "B", "picked": "ours",      "my_confidence": "high" },
+      { "trial": "t05-books",    "ours": "A", "ref_id": "Homilies of Blessed Almalexia", "my_pick": "A", "picked": "ours",      "my_confidence": "high" },
+      { "trial": "t06-dialogue", "ours": "A", "ref_id": "bundle73",                      "my_pick": "A", "picked": "ours",      "my_confidence": "high" },
+      { "trial": "t07-dialogue", "ours": "A", "ref_id": "bundle40",                      "my_pick": "A", "picked": "ours",      "my_confidence": "high-words/low-trio" },
+      { "trial": "t08-dialogue", "ours": "A", "ref_id": "bundle30",                      "my_pick": "A", "picked": "ours",      "my_confidence": "medium-high" },
+      { "trial": "t09-dialogue", "ours": "B", "ref_id": "bundle168",                     "my_pick": "B", "picked": "ours",      "my_confidence": "high" },
+      { "trial": "t10-dialogue", "ours": "A", "ref_id": "bundle199",                     "my_pick": "A", "picked": "ours",      "my_confidence": "high" },
+      { "trial": "t11-journal",  "ours": "B", "ref_id": "bundle160",                     "my_pick": "B", "picked": "ours",      "my_confidence": "high" },
+      { "trial": "t12-journal",  "ours": "B", "ref_id": "bundle11",                      "my_pick": "B", "picked": "ours",      "my_confidence": "high" },
+      { "trial": "t13-journal",  "ours": "A", "ref_id": "bundle8",                       "my_pick": "A", "picked": "ours",      "my_confidence": "high" },
+      { "trial": "t14-journal",  "ours": "A", "ref_id": "bundle39",                      "my_pick": "A", "picked": "ours",      "my_confidence": "high" },
+      { "trial": "t15-journal",  "ours": "A", "ref_id": "bundle41",                      "my_pick": "A", "picked": "ours",      "my_confidence": "high" }
+    ]
+  },
+  "trios_i_got_wrong_and_would_change": [
+    {
+      "trial": "t02-books",
+      "why": "I docked the reference as plot recap in summary. The recap IS the murderer's voice — the letter is dictated by the man who strangled the writer — so the flat chronicle tone ('It came as quite a surprise to her when he began strangling her') is characterisation, not exposition. I judged the summary as the author's when it is the speaker's."
+    },
+    {
+      "trial": "t03-books",
+      "why": "I docked the closing moral 'before you fight, find out what you're fighting for' as a tidy summary sentence. It caps a hero who has just won a horrible bride and a ruined estate, so it is a joke at his expense, not a lesson for the reader. I read the shape and not the content."
+    }
+  ],
+  "trios_i_do_not_retract": {
+    "trials": ["t04-books", "t05-books", "t06-dialogue", "t10-dialogue", "t11-journal", "t14-journal", "t15-journal"],
+    "why": "In these the reference is a combat tutorial delivered as dialogue (The Mirror), five Aesop fables with five stated morals (Homilies), a duplicated encyclopedia entry, a printed game manual, or a quest log saying 'must' three times in four lines. On the stated bar they are the worse text and I would say so again knowing the labels."
+  },
+  "leak_audit": {
+    "performed": true,
+    "verdict": "FAILED — pack voided as a quality instrument under RI-MTH03 M6",
+    "leaks_found": [
+      {
+        "id": "LEAK-1",
+        "severity": "fatal",
+        "tell": "mask-token density: the file with fewer '[NAME-' tokens is ours",
+        "accuracy": "15/15 without reading a word",
+        "closest_margin": "t04, 30 vs 40",
+        "widest_margin": "t02, 41 vs 129",
+        "root_cause": "reference name maps carry 12-57 entries, ours carry 3-25. Morrowind's text is dense with proper nouns; ours is written about offices, tides and ledgers. The mask advertises exactly the thing it removes.",
+        "note": "This is the same failure as r1's setting-noun count (17/17), one level up. Each round's fix creates the next round's tell."
+      },
+      {
+        "id": "LEAK-2",
+        "severity": "high",
+        "tell": "the masker drops text, and it drops it on the side with more proper nouns, which is always the reference",
+        "accuracy": "dropped-text proxy fires on the reference in 14/15 trios",
+        "examples": ["said [NAME-3] to the assembled ust not be doing so purely out of avarice", "the glamo r", "the wealthy suitors hrough their lives of luxury"],
+        "why_it_matters": "the pack degrades one side and then asks which side is better — this biases the quality comparison it exists to enable, independently of blinding"
+      },
+      {
+        "id": "LEAK-3",
+        "severity": "low",
+        "tell": "unmasked proper nouns survived",
+        "examples": ["Eraamion (t10 reference)", "Vaskh (t13 ours)", "gro-Bagrat", "gro-Kharbush"],
+        "note": "fails on BOTH sides, so it is sloppiness rather than a one-sided tell. The lower-case-initial 'gro-' names defeat the capitalisation heuristic. The README's claim that the builder refuses to write the pack if any setting noun survives is not borne out."
+      },
+      {
+        "id": "NOT-A-LEAK",
+        "severity": "none",
+        "claim_cleared": "the predecessor suspected a length asymmetry (A>B in all books trials)",
+        "measurement": "A >= B in EVERY trio regardless of which side is ours; ours is the shorter text in only 4/15. The trimmer uniformly favours A and carries no provenance information. Length matching is in fact excellent — eleven trios match to within two words."
+      }
+    ],
+    "register_mismatch": {
+      "severity": "fatal to 10 of 15 trios",
+      "journal": "all five reference samples (bundles 160, 11, 8, 39, 41) are Morrowind's quest log — machine-assembled state-tracking, not prose written to be read. Ours are literary diary entries.",
+      "dialogue": "reference bundles are topic-system text sampled by prefix. t07's reference is fourteen consecutive lines beginning 'I don't'; t09's opening paragraph repeats three times verbatim; t10's reference is three manual pages.",
+      "books": "the only honest register in the pack. There the split is 1 reference / 4 ours rather than 1/14.",
+      "ri_mth03_reference": "'How we lose' §6 — the reference is too weak, so we 'win', the caps in §E get applied, and the wave wastes a cycle."
+    }
+  },
+  "finding_about_our_prose": {
+    "claim_that_survives_the_void": "Our prose is trivially distinguishable from Morrowind's; two independent readers agreed on the sort 15/15.",
+    "tic": "the antithetical restatement — 'X is not A. X is B.' — fires in at least 9 of 15 samples",
+    "examples": [
+      "A count is not a number. A count is a number that can be stood behind.",
+      "It is not a list of traders. It is a list of families.",
+      "He is not frightened of the [NAME-4]. He is frightened of whoever pressed those lead seals.",
+      "He does not want the lease audited. He wants it laundered.",
+      "there is no version of it that is only the first thing",
+      "Being interested and being right are not the same thing",
+      "Somebody carrying two jars of clean water uphill through a swamp is a sentence about the swamp and not about the water."
+    ],
+    "second_finding": "Every speaker in our samples is the same person — dry, institutional, withholding, aphoristic — whether magistrate, trader, rootkeeper or clerk. Morrowind's dialogue is worse AND more various; ours is better AND monotone. A player meets forty of ours in a row.",
+    "ri_mth03_reference": "'How we lose' §4 — a consistent tic is a legitimate finding about our writing, recorded as such rather than read as 'the reference is better at plot'."
+  },
+  "score": {
+    "overall_0_10": 4,
+    "pass_threshold": 7,
+    "aggregation": "RI-MTH03 percentage of applicable points: 16/18 = 89%, band 'below bar, admissible with recorded defect'. OVERRIDDEN by M6: the leak audit found a 15/15 structural tell, so the blind result is inadmissible as a quality measurement regardless of process hygiene.",
+    "points": {
+      "pack_built_by_tool": 2,
+      "reveal_key_outside_pack": 2,
+      "answer_before_reveal_hashed": 3,
+      "pick_no_hedging": 2,
+      "three_plus_evidence_bullets": 2,
+      "weakest_point_present": 1,
+      "reveal_outcome_recorded": 2,
+      "second_pass_when_ours": 0,
+      "leak_audit": 2
+    },
+    "band_label": "INADMISSIBLE as a quality measurement (M6 override); the item it served falls back to non-blind scoring",
+    "confidence": "high"
+  },
+  "status": "BELOW BAR — BLIND RESULT INADMISSIBLE",
+  "status_reasons": [
+    "Leak audit found a tell separating the two sides 15/15 without reading a word (mask-token density).",
+    "The masker drops text on the reference side in 14/15 trios, degrading the artifact it asks the judge to prefer.",
+    "Ten of fifteen trios compare hand-written prose against quest-log or topic-dump text; the registers are not matched by artifact class.",
+    "The mandatory M5 second pass, fired by fourteen picked-ours rows, has not been run."
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-PACK-01",
+    "subsystem_path": "process.critic.discipline",
+    "what": "The blind pack cannot separate quality from provenance, and each round's fix creates the next round's tell. r1 leaked setting nouns (17/17); r4 masked them and now leaks mask density (15/15).",
+    "why_it_matters": "Every prose verdict that cites a blind pack score is citing a provenance score wearing a quality label. The next masking fix will leak something else, because the two corpora differ in shape, not just in labels.",
+    "severity": "high",
+    "remedy": [
+      "Reject any trio whose two sides differ in '[NAME-' count by more than ~15%; equalise by inserting mask tokens into the sparser side, or drop to a single unindexed opaque token.",
+      "Fix the masker's word boundaries — the dropped-text corruption in 14/15 reference files is a correctness bug independent of blinding.",
+      "Segregate registers by artifact class: compare our journal entries to Morrowind books, or build a 'functional text' register judged on unambiguity rather than voice.",
+      "Sample reference passages matched on proper-noun density, not just on length.",
+      "Run the owed M5 second pass with the harsher lens on the trios where the pick was ours."
+    ]
+  },
+  "secondary_observations": [
+    {
+      "id": "SO-1",
+      "what": "The pack's question ('which is the game writer, which is placeholder?') presupposes one side is placeholder. Neither side is. Our side is highly-crafted literary prose; the reference is shipped functional text. A judge asked a false-dichotomy question will answer a different question than the one scored."
+    },
+    {
+      "id": "SO-2",
+      "what": "The stated bar (no stated morals, no tutorial, no tidy summary, voice over narrator) systematically selects AGAINST genuine Morrowind books, whose corpus is full of Aesop morals, embedded tutorials and neutral folk narrators. A rubric that scores the reference corpus below the imitation is measuring adherence to the rubric, not quality."
+    },
+    {
+      "id": "SO-3",
+      "what": "t01's PROMPT.md points the judge at '../prose-tics-r2.reveal/', a stale path copied from the superseded pack. Cosmetic, but it means the prompt was not regenerated for r4."
+    },
+    {
+      "id": "SO-4",
+      "what": "The predecessor recorded CONFIDENCE: high on all fifteen answers. A judge certain fifteen times is not judging — though in this pack the sides are so separable that high confidence on provenance was in fact warranted; the certainty was misplaced onto the quality question."
+    }
+  ],
+  "method_deviations": [
+    {
+      "ref_item": "RI-MTH03",
+      "deviation": "The judging agent read the predecessor's fifteen PICK: lines before judging.",
+      "why": "Required by the succession instruction to establish that the prior answers were recoverable rather than restarting from zero.",
+      "affects_scores": true,
+      "affects_how": "My pass is not an independent blind pass. It is reported as a second, anchored pass; the predecessor's fifteen sealed answers remain the primary blind record."
+    },
+    {
+      "ref_item": "RI-MTH03 M3",
+      "deviation": "My own rows were appended to one growing file rather than written as fifteen individually hashed answers.",
+      "why": "File-ownership constraint: I was forbidden to write into the pack directory, where answer.md lives.",
+      "affects_scores": false
+    },
+    {
+      "ref_item": "RULES.md rule 28",
+      "deviation": "Committed to the current branch.",
+      "why": "Explicitly directed to by the orchestrating agent, against rule 28's 'do not commit'. Conflict declared rather than resolved silently. Only the four output files were committed; game/ modifications in the tree belong to neighbouring agents and were not staged by me.",
+      "affects_scores": false
+    }
+  ],
+  "path_to_ten": [
+    { "from": 4, "to": 6, "step": "Equalise mask-token counts and fix the masker's dropped-text bug, then rebuild the pack and re-judge. Closes LEAK-1 and LEAK-2.", "cost": "an afternoon of tool work; nothing to write" },
+    { "from": 6, "to": 8, "step": "Match registers by artifact class so ten of fifteen trios stop comparing prose to state-tracking text.", "cost": "a resampling pass over the reference corpus" },
+    { "from": 8, "to": 10, "step": "Run the owed M5 second pass, and act on the antithetical-restatement tic and the single-voice finding, which are the only outputs of this round that a writer can use.", "cost": "a revision pass over our dialogue" }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": true,
+    "blind_done_where_required": true,
+    "answered_before_unblinding": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_prose_edited": true,
+    "no_pack_or_reveal_file_modified": true,
+    "no_browser_used": true,
+    "no_game_source_read_or_written": true,
+    "tempted_to_peek": "Not by the reveal. Tempted by pack.json's word counts, deferred until after the ledger was sealed; and tempted to resolve t01-t03 by authorship once I had recognised the two hands — that recognition is recorded in the rows rather than hidden.",
+    "self_audit_note": "I built neither pack and wrote none of the judged prose. My one substantive integrity problem is the declared contamination: I knew the predecessor's picks before judging. I therefore report my agreements as weak and my disagreements as load-bearing, and I do not claim this was an independent blind pass."
+  },
+  "notes": "Full trio-by-trio reasoning with quoted evidence and per-trio WEAKEST POINT: reports/packs/prose-tics-r4-judgement.md. Prose verdict: corpus/90-verdicts/wave1/W1-PROSE-TICS-r4.md."
+}
