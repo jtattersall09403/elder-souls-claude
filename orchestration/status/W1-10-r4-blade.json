@@ -1,19 +1,33 @@
 {
   "task_id": "W1-10-r4-blade",
-  "brief": "orchestration/NEXT-DISPATCH.md §1 — the blade is underground",
+  "brief": "orchestration/NEXT-DISPATCH.md \u00a71 \u2014 the blade is underground",
   "started": "wave-1 round 4",
-  "state": "researching",
-  "outputs_expected": [
-    "game/src/combat/* (upstream fix: reach_m / _bladeLength / rest pose / proportions)",
-    "tools/weapons/blade-height.mjs (measure tip height + inclination per weapon class)",
-    "corpus/12-weapons/RI-WPN0x amendment documenting the lever chosen"
+  "state": "complete",
+  "outputs_written": [
+    "game/src/combat/swing.js  (ARM_LINE \u2014 the shoulder holds the weapon up; the elbow extends it)",
+    "game/src/combat/moveset.js (_bodyBand + _bladeLength fits reach AT BODY HEIGHT)",
+    "tools/weapons/blade-height.mjs (new measure: tip height, frames above ground, inclination, reach at body height)",
+    "tools/weapons/blade-consumption.mjs (RI-MTH07 CONSUMPTION for the weapon geometry)",
+    "corpus/12-weapons/AMENDMENT-W1-10-04-BLADE-UNDERGROUND.md",
+    "reports/blade/*.json  (baselines, fixed, ablations, consumption, render tracks)",
+    "reports/blade/look-cgs/ and look-cgs-DELETED/  (the picture, with and without the fix)",
+    "reports/blade/fix-reach-player.json, reports/blade/fix-reach-ablate.json, reports/blade/look-spr/"
   ],
-  "outputs_written": [],
   "findings": [
-    "boot-check PASS at start. loadavg 4.61 on 4 cores at start.",
-    "skeleton.json: blade_axis_local = [0,-1,0]; grip hand_r rest y = 0.91 m on a 1.78 m skeleton (height_m 1.78, not 1.75). A 3.098 m blade along -Y from y=0.91 puts the tip at y=-2.19.",
-    "_bladeLength solves the HORIZONTAL radius (x,z only — `seg` drops y) to equal reach_m. So a blade inclined d degrees below horizontal must be inflated by 1/cos(d) to hit the same horizontal radius. Downward pitch and inflated blade length are COUPLED: pitch inflates b, and a longer b drives the tip deeper. That is the mechanism."
+    "ROOT CAUSE: swing.js's arm keys made `extend` decide WHICH WAY THE WEAPON POINTED, backwards. Shoulder+elbow rx at contact summed to -132 + 120*e; -90 is horizontal. At e=1 (a THRUST) the shoulder sat at -8 and the elbow at -4 \u2014 a straight arm hanging at the side, point in the floor. At e=0 the sum hit -132, cocking the weapon 42 deg ABOVE horizontal at contact. The only value presenting a level blade was e~0.28, which no clip declares.",
+    "AMPLIFIER: _bladeLength fitted the TIP'S BARE HORIZONTAL RADIUS to reach_m with no height term, so a blade d below horizontal was inflated by 1/cos d and every extra metre went into the ground. cgs_drowned_reaper solved to 3.098 m of sword; it is now 2.127 m and its tip radius is exactly 2.75 m.",
+    "BASELINE: 546/974 active frames above ground (56.1%), 22 weapons underground on every active frame, tip_y_min -2.671 m, incl -31.9 at rest / -56.4 at deepest.",
+    "FIXED: 894/974 (91.8%), 0 weapons never above ground, tip_y_min -1.179 m, incl -18.6 / -34.6. SPR went 2/56 -> 56/56, TSW 0/40 -> 40/40, WHP 0/40 -> 40/40.",
+    "NEIGHBOURS: arc nonconformance 10.41% -> 4.76%. SEP observed 1.3858 (FAIL) -> 1.473 (PASS >= 1.4). Dg_min observed 1.5511 -> 1.7425. D_min held 1.639. recovery>active by tip path 271 -> 83. Reach contiguity: 7/7 classes contiguous, reach_min 0.00-0.05 m, cmb-reach ACCEPTANCE pass.",
+    "REGRESSION, reported not hidden: socket pose steps > 1.00 m went 267 -> 307 of 2689 clips, and bone steps > 0.25 m 12.01% -> 19.64%. Holding the weapon UP puts the hand further from the body, so the same angular rate moves it further per frame. Already a HARD FAIL before and after; I made an existing failure ~15% worse.",
+    "TIP-SPEED RESIDUAL DID NOT MOVE and is NOT the same defect: 46.15% -> 45.15% over 2689 clips, worst 156.95 -> 163.34 m/s, offenders unchanged (WHP 2h.roll.r2 / plunge / art.1). Shortening every blade by 14% moved it one point. It is the declared 200-360 deg arcs in 3-6 frame contextual windows, exactly as the previous builder said.",
+    "The body-band solve is EXACTLY INERT on the corrected roster \u2014 0 of 82 solved blades differ from the old bare-radius solve. That is its purpose: with the arm line deleted it reports 24 weapons short of their declared reach, where the old solve absorbed the same failure into 3.098 m of sword and read 100% reach-conforming. It converts a silent failure into a loud one.",
+    "REJECTED LEVER (recorded so it is not retried as new): tilting skeleton.json blade_axis_local 30 deg forward reaches 88.0% above ground on its own, and reach conformance pins it to a 30-45 deg window. It was dropped because it does the same job as the arm line and two levers for one job means one is a fudge. skeleton.json is untouched.",
+    "STILL OPEN, not claimed: |threat_m - (reach_m + root_dz_m)| is outside 0.10 m on 5 of the 7 spine classes, now with MIXED sign (+0.25 dagger/axe, -0.45 GSW, -1.25 UGS) where round 3 measured 10 of 14 all SHORT. The overshoots are the target's own body radius, which reach_m's operational definition includes and the solve does not.",
+    "ANOTHER AGENT'S COMMIT (1a79bd3 / c93046d) swept my uncommitted moveset.js edit into its commit while I was working. I did not run git commit. Pristine baselines were taken from 5526173.",
+    "BODY-CORRIDOR ABLATION (cmb-reach --probe ablate --sides player, S26/M8.3): min reaching distance moves <= 0.05 m against a 0.35 m bar, all 7 classes contiguous with the corridor deleted, body_ge_weapon 0 for all 7, ACCEPTANCE pass. M8.4 attribution: player/spear now 76 weapon events and 0 body-corridor events \u2014 the spear reaches with its weapon, which before this round it did not.",
+    "BROWSER CONFIRMATION (not node-only): wpn-render-look on spr_fishers_gig puts the DRAWN tip at y 1.49-2.29 m across the active window at +4 to +19 deg inclination, and on cgs_drowned_reaper at 0.45-1.52 m. tip_vs_socket_b_mm 0.0002-0.0008 throughout, so what-you-see-is-what-hits-you is intact."
   ],
-  "next_step": "read swing.js pose generation + wpn-render-look.mjs to reproduce the tip-height measurement",
-  "notes_for_successor": "Do NOT attempt a pitch calibration in swing.js — a previous round did and reverted it at 40.4% arc nonconformance and 118 pose teleports."
+  "next_step": "done \u2014 report delivered",
+  "notes_for_successor": "Do NOT re-attempt a solved pitch calibration in swing.js (round 3) or a blade_axis_local tilt (this round): both are recorded with numbers. The live open item is the socket-teleport / tip-speed population, which is the declared arcs and the contextual frame counts, not the blade lengths \u2014 measured. `node tools/weapons/blade-height.mjs` is the instrument; `--data <dir>` lets it run against a shadow tree."
 }

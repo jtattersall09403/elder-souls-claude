@@ -209,13 +209,50 @@ export async function observe(page) {
  * Launch the game with the shim already installed. No reload: `initScripts` is applied before
  * `page.goto`, which is what round 1's reload was trying and failing to achieve.
  */
+// THE FALSIFICATION HANDLE for the entity-side check, and it is the exact build TOOL-COVERAGE-R2
+// §7 described: "a build whose pollGamepad() returns a perfect observation and whose router then
+// discards the axes". Installed AFTER the shim, it zeroes the axes at the
+// `navigator.getGamepads()` seam — where the engine's router reads them — while making
+// `__HARNESS.gamepadPoll()` keep reporting the shim's real axes. Every descriptor and poll check
+// stays green; only the world-side one may go red.
+export const BREAK_ROUTER_SOURCE = `
+(() => {
+  const realGet = navigator.getGamepads.bind(navigator);
+  navigator.getGamepads = function () {
+    return Array.from(realGet() || []).map((p) => {
+      if (!p) return p;
+      const clone = {};
+      for (const k in p) clone[k] = p[k];
+      clone.axes = (p.axes || []).map(() => 0);   // the router receives a dead stick
+      return clone;
+    });
+  };
+  const patch = () => {
+    const H = window.__HARNESS;
+    if (!H || H.__routerBroken) return;
+    H.__routerBroken = true;
+    H.gamepadPoll = function () {
+      // A perfect observation, reported by the input layer about itself.
+      // realGet is the SHIM's getGamepads, captured before this file replaced it, so this
+      // reports the true stick while the engine's router reads the zeroed one above.
+      const p = Array.from(realGet() || []).filter(Boolean)[0];
+      return p ? { id: p.id, mapping: p.mapping, axes: (p.axes || []).slice(), buttons: (p.buttons || []).map((b) => !!(b && b.pressed)), profile: 'souls-default' } : null;
+    };
+  };
+  if (window.__HARNESS) patch();
+  else { const t = setInterval(() => { if (window.__HARNESS) { patch(); clearInterval(t); } }, 5); setTimeout(() => clearInterval(t), 60000); }
+})();
+`;
+
 export async function launchGameWithShim(padId, opts = {}) {
   const desc = typeof padId === 'string' ? PADS[padId] : padId;
   if (!desc) die(EXIT.USAGE, `unknown pad preset ${JSON.stringify(padId)}. Known: ${Object.keys(PADS).join(', ')}`);
   const handle = await launchGame({
     width: 320, height: 240,
     timeout: Number(opts.timeout || 90000),
-    initScripts: [shimSource(desc, opts.index || 0)],
+    initScripts: opts.breakRouter
+      ? [shimSource(desc, opts.index || 0), BREAK_ROUTER_SOURCE]
+      : [shimSource(desc, opts.index || 0)],
   });
   const installed = await handle.page.evaluate(() => !!window.__PAD_SHIM).catch(() => false);
   if (!installed) {
@@ -270,6 +307,73 @@ async function engineSideCheck(handle) {
   };
 }
 
+/**
+ * THE ENTITY-SIDE CHECK. TOOL-COVERAGE-R2 §7, and it is the one thing all eight round-2 checks
+ * had in common:
+ *
+ *   "None of them looks at the world. They observe navigator.getGamepads(), mapping, button and
+ *    axis counts, descriptor strings, and gamepadPoll()'s RETURN VALUE. A build whose
+ *    pollGamepad() returns a perfect observation and whose router then discards the axes passes
+ *    8/8, and RI-JRN04 M13 is reported green for a pad that moves nothing."
+ *
+ * The standard is `journey-run.mjs`, in the next file in this directory: "it observes an
+ * entity-side quantity (the player moved 2.24 m) rather than the model's own return value."
+ *
+ * So: hold the shim's stick, step frames, and read the PLAYER'S POSITION out of `snapshot()`.
+ * With the null control the same file already carries elsewhere — stick at rest, same number of
+ * frames, no drift — because a check that cannot exhibit the failure is not a control.
+ *
+ * `setMode('play-instrumented')` is required and is not a cheat: `core/loop.js` polls devices in
+ * `beforeTick`, which runs on the rAF tick, and in mode `harness` the rAF tick returns before
+ * advancing anything. The pad path this measures is the one a player uses. Note the null control
+ * runs with the rAF loop LIVE, so "no drift" is a statement about an engine that was running.
+ */
+export async function entitySideCheck(handle, frames = 120) {
+  const present = await handle.page.evaluate(
+    () => !!(window.__HARNESS && typeof window.__HARNESS.snapshot === 'function'
+             && typeof window.__HARNESS.setMode === 'function'));
+  if (!present) {
+    return { available: false, why: '__HARNESS.snapshot / setMode are not on this build, so the world-side half cannot be observed.' };
+  }
+  return handle.page.evaluate(async (n) => {
+    const H = window.__HARNESS;
+    const posOf = () => {
+      const s = H.snapshot() || {};
+      const p = s.player || {};
+      return Array.isArray(p.pos) ? p.pos.slice() : [Number(p.x) || 0, 0, Number(p.z) || 0];
+    };
+    const dist = (a, b) => Math.hypot(b[0] - a[0], (b[2] || 0) - (a[2] || 0));
+    const twoFrames = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    try {
+      H.setRenderRate(0);                 // AGENT-PROTOCOL: never step with the renderer live
+      H.setMode('play-instrumented');     // beforeTick polls devices only when the rAF tick runs
+
+      const p0 = posOf();
+      window.__PAD_SHIM.set({ axes: [0, -1, 0, 0] });   // left stick fully forward
+      await twoFrames();
+      H.stepFrames(n);
+      const p1 = posOf();
+
+      window.__PAD_SHIM.set({ axes: [0, 0, 0, 0] });    // NULL CONTROL: stick at rest
+      await twoFrames();
+      H.stepFrames(n);
+      const p2 = posOf();
+
+      return {
+        available: true, frames: n,
+        pos_before: p0, pos_with_stick: p1, pos_after_release: p2,
+        moved_m: +dist(p0, p1).toFixed(4),
+        drift_m: +dist(p1, p2).toFixed(4),
+        // The pad moved the player, and nothing else did.
+        pad_moves_the_player: dist(p0, p1) > 0.25,
+        null_control_holds: dist(p1, p2) <= 0.05,
+      };
+    } catch (e) {
+      return { available: false, why: 'the entity-side check threw: ' + String(e && e.message || e) };
+    }
+  }, frames);
+}
+
 async function verifyOne(padId, hotplug, opts = {}) {
   const handle = await launchGameWithShim(padId, opts);
   try {
@@ -277,8 +381,9 @@ async function verifyOne(padId, hotplug, opts = {}) {
     const desc = PADS[padId];
     const match = seen.pads.find((p) => p.id === desc.id);
     const engine = await engineSideCheck(handle);
+    const world = await entitySideCheck(handle, Number(opts.entityFrames || 120));
     const result = {
-      pad: padId, descriptor: desc, observed: seen, engine,
+      pad: padId, descriptor: desc, observed: seen, engine, world,
       page_sees_pad: !!match,
       mapping_preserved: !!match && match.mapping === desc.mapping,
       buttons_preserved: !!match && match.buttons === desc.buttons,
@@ -358,6 +463,26 @@ async function selfTest(opts) {
       `axes ${JSON.stringify(std.engine.axes_at_rest)} -> ${JSON.stringify(std.engine.axes_with_stick)} ` +
       `(driven through window.__PAD_SHIM.set, NOT through __HARNESS.gamepad, which would set ` +
       `syntheticPads and bypass navigator.getGamepads entirely)`);
+
+    // THE ENTITY-SIDE CHECK (TOOL-COVERAGE-R2 §7). Everything above observes the input layer's
+    // own report of itself. This one observes the WORLD: hold the stick, step frames, and read
+    // where the player ended up. A build whose pollGamepad() returns a perfect observation and
+    // whose router then discards the axes passes every check above and fails this one.
+    ok('ENTITY-SIDE: holding the shim\'s stick MOVES THE PLAYER',
+      std.world.available && std.world.pad_moves_the_player,
+      std.world.available
+        ? `player moved ${std.world.moved_m} m over ${std.world.frames} frames with the left stick ` +
+          `fully forward, ${JSON.stringify(std.world.pos_before)} -> ${JSON.stringify(std.world.pos_with_stick)}. ` +
+          `Driven through window.__PAD_SHIM.set, so the whole path from navigator.getGamepads() ` +
+          `to the simulation is exercised.`
+        : std.world.why);
+    ok('NULL CONTROL: stick at rest, same frames, the player does not drift',
+      std.world.available && std.world.null_control_holds,
+      std.world.available
+        ? `drift ${std.world.drift_m} m over ${std.world.frames} uncommanded frames with the rAF ` +
+          `loop LIVE (mode play-instrumented), so "it moved" above is the pad and not the engine ` +
+          `walking on its own`
+        : std.world.why);
 
     // The one that matters for the descriptor leg: a non-standard descriptor must NOT arrive
     // as 'standard'. If it does, the leg passes without the build's mapping code ever running.

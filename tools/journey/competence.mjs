@@ -49,6 +49,20 @@ import {
 } from '../lib/cli.mjs';
 import { loadEnemies } from '../lib/gamedata.mjs';
 
+const GEAR_FIELDS = ['weapon_id', 'weapon_class', 'offhand_kind', 'equip_load_pct', 'roll_class', 'attuned'];
+const REPORTED_NOT_BLOCKING = ['stance'];
+
+export function loadoutFrom(rec) {
+  const p = (rec && rec.player) || null;
+  if (!p) return null;
+  // A trace that carries an explicit loadout still wins — this is additive, not a replacement.
+  if (p.loadout && typeof p.loadout === 'object') return { source: 'player.loadout', fields: { ...p.loadout } };
+  const fields = {};
+  for (const k of [...GEAR_FIELDS, ...REPORTED_NOT_BLOCKING]) if (p[k] !== undefined) fields[k] = p[k];
+  return Object.keys(fields).length ? { source: 'player.{' + Object.keys(fields).join(',') + '}', fields } : null;
+}
+
+
 const USAGE = `
 competence.mjs — RI-JRN02 §C, K1..K7: the competence curve.
 
@@ -114,6 +128,9 @@ report(result);
 process.exit(result.ok ? 0 : 1);
 
 // ---------------------------------------------------------------------------------------------
+/** The shipped trace numbers its frames `f` (HARNESS.md §5). Round 2 read `frame` and got 0. */
+export function frameOf(r) { return Number((r && (r.f ?? r.frame)) ?? 0); }
+
 export function analyse(records, opts = {}) {
   const fps = opts.fps || 60;
   const frames = records.filter((r) => r && r._ !== 'header' && r._ !== 'footer');
@@ -333,7 +350,7 @@ function findEncounters(frames, fps) {
         if (en && en.alertState === 'AGGRO') { hostile = true; if (en.statblock || en.id) ids.add(String(en.statblock || en.id)); }
       }
     }
-    const fr = r.frame ?? 0;
+    const fr = frameOf(r);
     if (hostile) {
       if (cur && fr - cur.to <= GAP) { cur.to = fr; for (const i of ids) cur.enemies.push(i); }
       else { if (cur) out.push(cur); cur = { id: `E${out.length + 1}`, from: fr, to: fr, enemies: [...ids] }; }
@@ -355,11 +372,34 @@ function findEncounters(frames, fps) {
  * observation that was never taken. A stale observation is not evidence of no change; it is the
  * absence of evidence, and it degrades to `null`.
  */
+// ROUND 3 (TOOL-COVERAGE-R2 §6). Round 2 fixed the clause so it BLOCKS when it cannot be
+// checked — and then it could never be checked, because it looked for `player.loadout` and
+// NO TRACE IN THIS TREE HAS EVER CARRIED THAT FIELD. A census of the 3 780-record trace at
+// reports/journeys/w1-13-jrn06/trace.jsonl finds 0 records with `player.loadout` and every one
+// of these instead:
+//
+//   weapon_id  weapon_class  stance  offhand_kind  roll_class  equip_load_pct  attuned  estus …
+//
+// So on EVERY real run the clause returned GEAR_UNCHECKABLE and voided the comparison, and the
+// tool named "the trace" as owner for data the trace was already emitting. Round 1 shipped a
+// clause that could not fail; round 2 shipped one that could not pass. The loadout is now read
+// from the fields that exist, with `player.loadout` still honoured where a future trace carries
+// it, and GEAR_UNCHECKABLE kept for when even these are missing.
+//
+// WHAT COUNTS AS GEAR. RI-JRN02 §C: "no equipment upgrade between them... if the improvement
+// requires better gear, the game taught the player to shop, not to fight." So the blocking set
+// is what you would have to GO AND GET: the weapon, the offhand, the burden you are carrying,
+// the roll class that burden buys you, and the spells you have attuned. `stance` is in the trace
+// and is reported, but it does NOT block: holding the same sword in two hands is a decision made
+// in the fight, not a trip to a merchant, and blocking on it would void every real comparison —
+// which is the failure this round exists to stop repeating in the other direction.
 function compareLoadouts(frames, a, b) {
   const at = (f) => {
     for (let i = frames.length - 1; i >= 0; i--) {
       const r = frames[i];
-      if ((r.frame ?? 0) <= f && r.player && r.player.loadout) return { loadout: r.player.loadout, frame: r.frame ?? 0 };
+      if (frameOf(r) > f) continue;
+      const l = loadoutFrom(r);
+      if (l) return { loadout: l.fields, source: l.source, frame: frameOf(r) };
     }
     return null;
   };
@@ -368,7 +408,8 @@ function compareLoadouts(frames, a, b) {
     return {
       changed: null,
       observed_at: { E_first: oa ? oa.frame : null, E_late: ob ? ob.frame : null },
-      why: 'no trace record at or before ' + (!oa ? 'E_first' : 'E_late') + ' carries player.loadout, ' +
+      why: 'no trace record at or before ' + (!oa ? 'E_first' : 'E_late') + ' carries a loadout — ' +
+           `neither player.loadout nor any of ${[...GEAR_FIELDS, ...REPORTED_NOT_BLOCKING].join(', ')} — ` +
            'so the no-upgrade clause cannot be checked.',
     };
   }
@@ -383,16 +424,26 @@ function compareLoadouts(frames, a, b) {
     };
   }
   const la = oa.loadout, lb = ob.loadout;
-  const diff = [];
+  const diff = [], nonBlocking = [];
   for (const k of new Set([...Object.keys(la), ...Object.keys(lb)])) {
-    if (JSON.stringify(la[k]) !== JSON.stringify(lb[k])) diff.push(`${k}: ${JSON.stringify(la[k])} -> ${JSON.stringify(lb[k])}`);
+    if (JSON.stringify(la[k]) === JSON.stringify(lb[k])) continue;
+    const line = `${k}: ${JSON.stringify(la[k])} -> ${JSON.stringify(lb[k])}`;
+    if (REPORTED_NOT_BLOCKING.includes(k)) nonBlocking.push(line); else diff.push(line);
   }
-  return { changed: diff.length > 0, diff, observed_at: { E_first: oa.frame, E_late: ob.frame }, loadouts: { E_first: la, E_late: lb } };
+  return {
+    changed: diff.length > 0,
+    diff,
+    reported_not_blocking: nonBlocking,
+    gear_fields: GEAR_FIELDS,
+    source: { E_first: oa.source, E_late: ob.source },
+    observed_at: { E_first: oa.frame, E_late: ob.frame },
+    loadouts: { E_first: la, E_late: lb },
+  };
 }
 
 /** K1..K6 over one encounter window. `null` where the trace does not carry the field. */
 function measure(frames, enc, fps) {
-  const win = frames.filter((r) => (r.frame ?? 0) >= enc.from && (r.frame ?? 0) <= enc.to);
+  const win = frames.filter((r) => frameOf(r) >= enc.from && frameOf(r) <= enc.to);
   const seconds = Math.max(1e-6, (enc.to - enc.from) / fps);
   let hitsTaken = 0, rolls = 0, rollsWithOverlap = 0, lowStamina = 0, attacks = 0, whiffs = 0;
   let blocks = 0, reactiveBlocks = 0, heals = 0, healsInPunish = 0;
@@ -466,7 +517,13 @@ function selfTest() {
   // silently unchecked (TOOL-COVERAGE-R1 §5). Passing `loadout: null` reproduces the absent-field
   // case ON PURPOSE, and it must now BLOCK rather than proceed.
   const KIT = { right: 'iron-longsword', left: 'kite-shield', armour: 'chitin-cuirass' };
-  const mkEnc = (fromMin, n, statblock, { hits, rollOverlap, rolls, loadout = KIT }) => {
+  // ROUND 3: the SHIPPED trace shape. `reports/journeys/w1-13-jrn06/trace.jsonl` carries these
+  // fields on all 3 780 records and `player.loadout` on none, and numbers its frames `f`.
+  const REAL_KIT = {
+    weapon_id: 'wpn-iron-longsword', weapon_class: 'straight_sword', offhand_kind: 'shield',
+    equip_load_pct: 41, roll_class: 'medium', attuned: ['spl-flare'], stance: 'one_handed',
+  };
+  const mkEnc = (fromMin, n, statblock, { hits, rollOverlap, rolls, loadout = KIT, realKit = null, frameKey = 'frame' }) => {
     const out = [];
     const f0 = Math.round(fromMin * 60 * fps);
     for (let i = 0; i < n; i++) {
@@ -474,8 +531,11 @@ function selfTest() {
       if (i < hits) evs.push({ type: 'hit', target: 'player' });
       if (i < rolls) evs.push({ type: 'roll_start', iframe_overlap: i < rollOverlap });
       const player = { stamina: 50, stamina_max: 100 };
-      if (loadout) player.loadout = loadout;
-      out.push({ frame: f0 + i * 10, events: evs, enemies: [{ statblock, alertState: 'AGGRO' }], player });
+      if (realKit) Object.assign(player, realKit);
+      else if (loadout) player.loadout = loadout;
+      const rec = { events: evs, enemies: [{ statblock, alertState: 'AGGRO' }], player };
+      rec[frameKey] = f0 + i * 10;
+      out.push(rec);
     }
     return out;
   };
@@ -566,6 +626,57 @@ function selfTest() {
     `K7=${sameTierR.K7 && sameTierR.K7.status} (tier ladder), late/first hp = ` +
     `${sameTierR.K7 && sameTierR.K7.spread && sameTierR.K7.spread.late_over_first_hp} — ` +
     `${(sameTierR.K7 && sameTierR.K7.spread && sameTierR.K7.spread.note) ? 'noted' : 'NOT NOTED'}`);
+
+  // ---- ROUND 3 (TOOL-COVERAGE-R2 §6): the clause must be LIVE against the REAL trace shape ----
+  //
+  // Round 2's clause looked for `player.loadout`, which no trace in this tree has ever carried,
+  // so on every real run it returned GEAR_UNCHECKABLE and voided the comparison. Round 1 shipped
+  // a clause that could not fail; round 2 shipped one that could not pass. These three cases use
+  // the fields the shipped trace actually emits, keyed `f` as the shipped trace keys them.
+  const realGreen = [{ _: 'header' },
+    ...mkEnc(19, 120, 'champion_hist_marked', { hits: 40, rolls: 60, rollOverlap: 12, realKit: REAL_KIT, frameKey: 'f' }),
+    ...mkEnc(55, 120, 'champion_hist_marked', { hits: 10, rolls: 60, rollOverlap: 45, realKit: REAL_KIT, frameKey: 'f' })];
+  const realGreenR = analyse(realGreen, { fps, auto: true });
+  ok('GREEN: the gear clause is LIVE against the trace fields that exist, and PROCEEDS when the kit is unchanged',
+    realGreenR.gear && realGreenR.gear.changed === false
+    && !realGreenR.blockers.some((b) => b.code.startsWith('GEAR')),
+    `read from ${realGreenR.gear && realGreenR.gear.source && realGreenR.gear.source.E_first}; ` +
+    `changed=${realGreenR.gear && realGreenR.gear.changed}; blockers=` +
+    `${realGreenR.blockers.map((b) => b.code).join(',') || '(none)'} — round 2 returned ` +
+    `GEAR_UNCHECKABLE here and voided every real run`);
+
+  const realRed = [{ _: 'header' },
+    ...mkEnc(19, 120, 'champion_hist_marked', { hits: 40, rolls: 60, rollOverlap: 12, realKit: REAL_KIT, frameKey: 'f' }),
+    ...mkEnc(55, 120, 'champion_hist_marked', {
+      hits: 10, rolls: 60, rollOverlap: 45, frameKey: 'f',
+      realKit: { ...REAL_KIT, weapon_id: 'wpn-ebony-greatsword', weapon_class: 'greatsword', equip_load_pct: 63, roll_class: 'heavy' },
+    })];
+  const realRedR = analyse(realRed, { fps, auto: true });
+  ok('RED: a weapon and burden change between the encounters VOIDS the comparison',
+    realRedR.gear && realRedR.gear.changed === true
+    && realRedR.blockers.some((b) => b.code === 'GEAR_CHANGED'),
+    `diff: ${(realRedR.gear && realRedR.gear.diff || []).join('; ')}`);
+
+  const realStance = [{ _: 'header' },
+    ...mkEnc(19, 120, 'champion_hist_marked', { hits: 40, rolls: 60, rollOverlap: 12, realKit: REAL_KIT, frameKey: 'f' }),
+    ...mkEnc(55, 120, 'champion_hist_marked', {
+      hits: 10, rolls: 60, rollOverlap: 45, frameKey: 'f',
+      realKit: { ...REAL_KIT, stance: 'two_handed' },
+    })];
+  const realStanceR = analyse(realStance, { fps, auto: true });
+  ok('a STANCE change is reported but does NOT void: two-handing the same sword is not a shopping trip',
+    realStanceR.gear && realStanceR.gear.changed === false
+    && (realStanceR.gear.reported_not_blocking || []).length === 1
+    && !realStanceR.blockers.some((b) => b.code.startsWith('GEAR')),
+    `reported_not_blocking: ${(realStanceR.gear.reported_not_blocking || []).join('; ')} — RI-JRN02 §C ` +
+    `bans an equipment UPGRADE; a clause that voided on stance would void every real fight, which ` +
+    `is the "cannot pass" failure in a different coat`);
+
+  ok('the shipped frame key `f` is read (round 2 read `frame`, so every window was empty)',
+    !!realGreenR.E_first && realGreenR.E_first.from > 0 && realGreenR.E_late.from > realGreenR.E_first.from,
+    `E_first window ${realGreenR.E_first && realGreenR.E_first.from}-${realGreenR.E_first && realGreenR.E_first.to}, ` +
+    `E_late ${realGreenR.E_late && realGreenR.E_late.from}-${realGreenR.E_late && realGreenR.E_late.to}, ` +
+    'from records keyed `f`');
 
   for (const l of lines) process.stdout.write(l + '\n');
   process.stdout.write(`\ncompetence self-test: ${failed === 0 ? 'PASS' : 'FAIL'} (${lines.length - failed}/${lines.length})\n`);

@@ -181,6 +181,31 @@ export const STATE_CHANGING_EVENTS = new Set([
   'journal', 'journal_write',
 ]);
 
+// C1 clause 3, "changed a flag", read from the WORLD rather than inferred from a button name.
+// A toggle is only a toggle if something toggled: `lock_on` pressed with no target changes
+// `player.locked_on` not at all, and that is the difference between an action and a keystroke.
+// These are fields the shipped trace record actually carries (verified against
+// reports/journeys/**/trace.jsonl), and a CHANGE in any of them between consecutive records is
+// a flag change.
+export const FLAG_FIELDS = [
+  'player.locked_on', 'player.stance', 'player.guard_raised', 'player.weapon_id',
+  'player.attuned', 'player.levitating', 'player.two_handed', 'player.crouched',
+  'player.state', 'ui.menu_open', 'ui.dialogue_open', 'ui.surface',
+];
+function readPath(rec, dotted) {
+  const [a, b] = dotted.split('.');
+  const o = rec && rec[a];
+  return o && typeof o === 'object' ? o[b] : undefined;
+}
+function flagSnapshot(rec) {
+  const out = {};
+  for (const f of FLAG_FIELDS) {
+    const v = readPath(rec, f);
+    if (v !== undefined) out[f] = Array.isArray(v) ? JSON.stringify(v) : v;
+  }
+  return out;
+}
+
 const COMBAT_MARKERS = new Set(['attack_start', 'hit', 'block', 'parry', 'roll_start', 'stagger',
   'whiff', 'guard_break', 'riposte', 'backstab', 'enemy_state', 'zone_alert']);
 
@@ -257,13 +282,23 @@ export function analyse(records, fps = 60) {
   const inputsExcluded = [];          // pure locomotion, per the derived closed-set members
   const inputsOutsideSet = [];        // an action name the closed set does not contain
   const worldChangeFrames = [];       // frames carrying a C1-clause event that is NOT an input
+  const flagChangeFrames = [];        // frames on which a tracked world/player flag CHANGED
   let combatFrames = 0, dialogueFrames = 0, menuFrames = 0, locomotionOnlyFrames = 0;
   const eventKinds = new Map();
   const perFrame = [];
 
+  let prevFlags = null;
   for (const r of frames) {
     const fr = frameOf(r) ?? 0;
     const evs = Array.isArray(r.events) ? r.events : [];
+    // C1 clause 3, observed: did any tracked flag actually change?
+    const flags = flagSnapshot(r);
+    if (prevFlags) {
+      for (const k of Object.keys(flags)) {
+        if (prevFlags[k] !== undefined && prevFlags[k] !== flags[k]) { flagChangeFrames.push(fr); break; }
+      }
+    }
+    prevFlags = flags;
     let sawCombat = false, sawDialogue = false, sawMenu = false, sawWorldChange = false;
     for (const e of evs) {
       if (!e || !e.type) continue;
@@ -309,6 +344,8 @@ export function analyse(records, fps = 60) {
   // nothing and change nothing — so they satisfy C1 only when the world corroborates within
   // CORROBORATION_FRAMES. The uncorroborated count is reported so the rule can be audited
   // rather than trusted, which is the thing round 1's audit line never actually did.
+  // A flag change is one of C1's five clauses, so it corroborates an input and stands on its own.
+  for (const fr of flagChangeFrames) worldChangeFrames.push(fr);
   const wcSorted = worldChangeFrames.slice().sort((a, b) => a - b);
   const corroboratedNear = (fr) => {
     let lo = 0, hi = wcSorted.length - 1, ans = -1;
@@ -351,7 +388,14 @@ export function analyse(records, fps = 60) {
   const haveSpeed = perFrame.some((f) => f.speed !== null);
   const havePos = perFrame.filter((f) => f.pos).length >= 2;
   const traversalSource = haveSpeed ? 'player.speed_mps' : (havePos ? 'player.pos displacement' : null);
-  let distanceM = 0;
+  // A 5 724 m step between two consecutive frames is a teleport, not traversal, and counting it
+  // would put an hour of standing still at "covered 5.7 km". Verified against the real trace at
+  // reports/journeys/w1-13-jrn06/, which carries exactly one such jump (frames 120 -> 121) and
+  // speed_mps 0 on all 3 780 records.
+  // The threshold is a SPEED, not a per-record distance: a trace sampled every 60 frames moves
+  // 4.5 m per record at a walk, and a fixed per-record cap would call that a teleport.
+  const TELEPORT_MPS = 30;   // far above any locomotion speed this game has
+  let distanceM = 0, teleports = 0;
   if (traversalSource) {
     for (let i = 0; i < perFrame.length; i++) {
       const f = perFrame[i];
@@ -363,7 +407,10 @@ export function analyse(records, fps = 60) {
       }
       if (f.pos && i > 0 && perFrame[i - 1].pos) {
         const a = perFrame[i - 1].pos, b = f.pos;
-        distanceM += Math.hypot(b[0] - a[0], (b[2] ?? 0) - (a[2] ?? 0));
+        const d = Math.hypot(b[0] - a[0], (b[2] ?? 0) - (a[2] ?? 0));
+        const dtS = Math.max(1, (f.fr - perFrame[i - 1].fr)) / fps;
+        if (d > TELEPORT_MPS * dtS) { teleports++; moving = false; }
+        else distanceM += d;
       }
       if (moving && !stateChangeSet.has(f.fr)) locomotionOnlyFrames++;
     }
@@ -469,7 +516,10 @@ export function analyse(records, fps = 60) {
     corroboration_required_names: [...CORROBORATION_REQUIRED_ACTIONS].sort(),
     corroboration_frames: CORROBORATION_FRAMES,
     traversal_measured_from: traversalSource,
+    flag_fields_watched: FLAG_FIELDS,
+    flag_change_frames: flagChangeFrames.length,
     player_distance_m: traversalSource ? +distanceM.toFixed(2) : null,
+    teleports_excluded_from_distance: teleports,
     locomotion_only_frames: locomotionOnlyFrames,
     // THE AUDIT THAT BITES. An action name the trace carries that the closed set does not
     // contain means the build and this tool disagree about what an action is called — the exact
@@ -496,6 +546,10 @@ function report(r) {
     `${r.inputs_uncorroborated} uncorroborated no-ops)\n`);
   process.stdout.write(`  closed action set (game/src/input/actions.js): ${(r.closed_action_set || []).join(' ')}\n`);
   process.stdout.write(`  excluded as locomotion: ${(r.locomotion_names || []).join(' ') || '(none)'}\n`);
+  process.stdout.write(`  C7 traversal measured from: ${r.traversal_measured_from || '(nothing — see C7)'}` +
+    `, player covered ${r.player_distance_m === null ? 'n/a' : r.player_distance_m + ' m'} over ` +
+    `${r.locomotion_only_frames} locomotion-only frames (${r.teleports_excluded_from_distance} teleport(s) ` +
+    `excluded); ${r.flag_change_frames} frames carried a flag change\n`);
   if ((r.actions_seen_outside_the_closed_set || []).length) {
     process.stdout.write(`  *** ${r.inputs_outside_the_closed_set} input(s) name an action OUTSIDE the closed set: ` +
       `${r.actions_seen_outside_the_closed_set.join(', ')} — the build and this tool disagree about ` +
@@ -550,7 +604,8 @@ function selfTest() {
   //    which is not, so this case passed against a list that excluded nothing real.
   const walk = [{ _: 'header' }];
   for (let f = 0; f <= 360 * fps; f += 10) {
-    walk.push(mk(f, [{ type: 'input_action', action: 'sprint' }], { player: { moving: true } }));
+    walk.push(mk(f, [{ type: 'input_action', action: 'sprint' }],
+      { player: { pos: [0, 0, (f / fps) * 4.5], speed_mps: 4.5 } }));
   }
   const walkR = analyse(walk, fps);
   const c1walk = walkR.checks.find((c) => c.id === 'C1');
@@ -569,7 +624,8 @@ function selfTest() {
   //    locomotion and not silently counted as activity. Round 1 excluded eleven such names.
   const bogus = [{ _: 'header' }];
   for (let f = 0; f <= 360 * fps; f += 10) {
-    bogus.push(mk(f, [{ type: 'input_action', action: 'forward' }], { player: { moving: true } }));
+    bogus.push(mk(f, [{ type: 'input_action', action: 'forward' }],
+      { player: { pos: [0, 0, (f / fps) * 4.5], speed_mps: 4.5 } }));
   }
   const bogusR = analyse(bogus, fps);
   const c1bogus = bogusR.checks.find((c) => c.id === 'C1');
@@ -583,22 +639,69 @@ function selfTest() {
     `C1 = ${c1bogus.status} (round 1 read this as PASS, gap 0.17 s, 0 excluded)`);
 
   // 7. The list membership assertion itself. Every name this file excludes must be in ACTIONS.
-  ok('every exclusion name is in the shipped closed action set',
-    [...LOCOMOTION_ACTIONS, ...FLAG_TOGGLE_ACTIONS, ...NO_OP_CAPABLE_ACTIONS].every((n) => ACTIONS.includes(n)),
-    `locomotion=[${[...LOCOMOTION_ACTIONS].join(' ')}] toggles=[${[...FLAG_TOGGLE_ACTIONS].join(' ')}] ` +
-    `no-op-capable=[${[...NO_OP_CAPABLE_ACTIONS].join(' ')}] all in ACTIONS`);
+  ok('the classification is TOTAL over the shipped closed action set',
+    ACTIONS.every((a) => LOCOMOTION_ACTIONS.has(a) || CORROBORATION_REQUIRED_ACTIONS.has(a))
+    && [...LOCOMOTION_ACTIONS, ...CORROBORATION_REQUIRED_ACTIONS].every((n) => ACTIONS.includes(n)),
+    `locomotion=[${[...LOCOMOTION_ACTIONS].join(' ')}]; corroboration-required=` +
+    `[${[...CORROBORATION_REQUIRED_ACTIONS].join(' ')}]; every one of the ${ACTIONS.length} shipped ` +
+    `actions is in exactly one class, so none can fall through to "counts by name"`);
 
-  // 8. `crouch` is a TOGGLE (actions.js AM-W1-15-01) and a toggle changes a flag, so it counts.
-  //    Round 1 excluded it as locomotion.
-  const crouch = [{ _: 'header' }];
-  for (let f = 0; f <= 360 * fps; f += 30 * fps) crouch.push(mk(f, [{ type: 'input_action', action: 'crouch' }]));
-  for (let f = 0; f <= 360 * fps; f += 30) if (f % (30 * fps)) crouch.push(mk(f, []));
-  crouch.sort((a, b) => (a._ === 'header' ? -1 : b._ === 'header' ? 1 : a.frame - b.frame));
-  const crouchR = analyse(crouch, fps);
-  ok('crouch counts as a state change (a toggle changes a flag)',
-    crouchR.state_changing_moments > 0 && crouchR.inputs_excluded_as_locomotion === 0,
-    `${crouchR.state_changing_moments} state-changing moments from ${crouchR.inputs_total} crouch presses, ` +
-    `${crouchR.inputs_excluded_as_locomotion} excluded as locomotion`);
+  // 8. TOOL-COVERAGE-R2 §5's OWN SWEEP, re-run. An hour in an empty room, one button six
+  //    times a second, player advancing 2 160 m in a straight line the whole time. Round 2 read
+  //    four of these as `C1 pass, gap_max 0.17 s, traversal_fraction 0`.
+  const sweep = {};
+  for (const action of ['roll', 'menu', 'lock_on', 'spell_cycle', 'light', 'block', 'interact',
+    'crouch', 'two_hand', 'swap_right', 'sprint', 'jump']) {
+    const rec = [{ _: 'header' }];
+    for (let f = 0; f <= 3600 * fps; f += 10) {
+      rec.push(mk(f, [{ type: 'input_action', action }],
+        { player: { pos: [0, 0, (f / fps) * 0.6], speed_mps: 0.6 } }));
+    }
+    const R = analyse(rec, fps);
+    sweep[action] = {
+      c1: R.checks.find((c) => c.id === 'C1').status,
+      gap: R.checks.find((c) => c.id === 'C1').value,
+      c7: R.checks.find((c) => c.id === 'C7').value,
+      uncorroborated: R.inputs_uncorroborated,
+    };
+  }
+  ok('NONE of the twelve shipped actions buys a C1 pass by NAME in an empty room',
+    Object.values(sweep).every((s) => s.c1 === 'fail'),
+    Object.entries(sweep).map(([a, s]) => `${a}:${s.c1}/${s.gap}s`).join(' '));
+
+  ok('and the same hour reads as TRAVERSAL, measured from where the player went',
+    Object.values(sweep).every((s) => s.c7 !== null && s.c7 > 0.9),
+    `traversal_fraction ${[...new Set(Object.values(sweep).map((s) => s.c7))].join(', ')} across all ` +
+    `twelve (round 2 read 0 for a player who covered 2 160 m, because it counted inputs)`);
+
+  // 8b. CONTROL, and it is the important half: the same four actions, corroborated by the world,
+  //     MUST count. A rule that rejects everything measures nothing.
+  const corroboratedSweep = {};
+  for (const [action, ev] of [['roll', { type: 'hit' }], ['menu', { type: 'surface_enter', surface: 'inventory' }],
+    ['lock_on', 'FLAG:locked_on'], ['spell_cycle', { type: 'cast_effective' }],
+    ['crouch', 'FLAG:stance']]) {
+    const rec = [{ _: 'header' }];
+    let toggle = false;
+    for (let f = 0; f <= 360 * fps; f += 10) {
+      const evs = [{ type: 'input_action', action }];
+      const player = { pos: [0, 0, 0], speed_mps: 0 };
+      if (f % (10 * fps) === 0) {
+        if (typeof ev === 'string') { toggle = !toggle; }
+        else evs.push(ev);
+      }
+      // The flag cases prove clause 3 the way C1 states it: the flag CHANGED in the world.
+      if (ev === 'FLAG:locked_on') player.locked_on = toggle ? 'e0' : null;
+      if (ev === 'FLAG:stance') player.stance = toggle ? 'crouched' : 'standing';
+      rec.push(mk(f, evs, { player }));
+    }
+    const R = analyse(rec, fps);
+    corroboratedSweep[action] = R.checks.find((c) => c.id === 'C1').status;
+  }
+  ok('CONTROL: corroborated by the world, those same actions DO count (not a blanket refusal)',
+    Object.values(corroboratedSweep).every((s) => s === 'pass'),
+    Object.entries(corroboratedSweep).map(([a, s]) => `${a}:${s}`).join(' ') +
+    ' — a roll that dodged a hit, a menu press that opened a surface, a lock_on that changed an ' +
+    'enemy state, a spell_cycle that landed a cast, a crouch that moved a quest stage');
 
   // 9. C1's clause list, applied to the two actions that can be a complete no-op. A player
   //    mashing `interact` in an empty room for an hour opened nothing and changed nothing.
@@ -624,6 +727,49 @@ function selfTest() {
   ok('control: corroborated `interact` DOES count (the rule is not a blanket refusal)',
     c1real.status === 'pass' && realR.inputs_uncorroborated < realR.inputs_total,
     `${realR.inputs_uncorroborated}/${realR.inputs_total} uncorroborated; gap_max = ${c1real.value} s`);
+
+  // 11. C7 IS MEASURED FROM THE WORLD. The critic's fixture: 2 160 m at 4.5 m/s for an hour.
+  const hourWalk = [{ _: 'header' }];
+  for (let f = 0; f <= 3600 * fps; f += 60) {
+    hourWalk.push(mk(f, [], { player: { pos: [0, 0, (f / fps) * 4.5], speed_mps: 4.5 } }));
+  }
+  const hourR = analyse(hourWalk, fps);
+  const c7hour = hourR.checks.find((c) => c.id === 'C7');
+  ok('C7 reads an hour of walking as traversal, from player.pos, with NO inputs at all',
+    c7hour.status === 'fail' && c7hour.value > 0.9 && hourR.inputs_total === 0
+    && hourR.player_distance_m > 15000,
+    `traversal_fraction ${c7hour.value} over ${hourR.player_distance_m} m covered, from ` +
+    `${hourR.traversal_measured_from}, with ${hourR.inputs_total} input events. Round 2 computed ` +
+    `this from the input log and read 0.`);
+
+  // 12. NULL CONTROL for C7: a player who stood still for an hour is not traversing.
+  const still = [{ _: 'header' }];
+  for (let f = 0; f <= 3600 * fps; f += 60) still.push(mk(f, [], { player: { pos: [10, 0, 10], speed_mps: 0 } }));
+  const stillR = analyse(still, fps);
+  const c7still = stillR.checks.find((c) => c.id === 'C7');
+  ok('null control: a stationary hour has traversal_fraction 0 (C7 is not a constant)',
+    c7still.value === 0 && c7still.status === 'pass',
+    `traversal_fraction ${c7still.value} over ${stillR.player_distance_m} m`);
+
+  // 13. C7 must REFUSE, not return 0, when the trace carries neither field.
+  const noPos = [{ _: 'header' }];
+  for (let f = 0; f <= 600 * fps; f += 60) noPos.push(mk(f, []));
+  const noPosR = analyse(noPos, fps);
+  const c7none = noPosR.checks.find((c) => c.id === 'C7');
+  ok('C7 is UNMEASURABLE when the trace carries no player position or speed, never 0',
+    c7none.status === 'unmeasurable' && c7none.value === null,
+    c7none.why);
+
+  // 14. The SHIPPED trace key. Every real trace in this tree numbers frames `f`, not `frame`.
+  const shipped = [{ _: 'header' }];
+  for (let f = 0; f <= 600 * fps; f += 60) {
+    shipped.push({ f, events: f % (300 * fps) === 0 ? [{ type: 'hit' }] : [], player: { pos: [0, 0, 0], speed_mps: 0 } });
+  }
+  const shippedR = analyse(shipped, fps);
+  ok('the shipped trace frame key `f` is read (round 2 read `frame` and got 0 for every frame)',
+    shippedR.duration_s > 500 && shippedR.checks.find((c) => c.id === 'C1').value > 100,
+    `duration ${shippedR.duration_s}s, gap_max ${shippedR.checks.find((c) => c.id === 'C1').value}s ` +
+    `from records keyed \`f\`; a tool reading \`frame\` would compute every gap against a constant 0`);
 
   for (const l of lines) process.stdout.write(l + '\n');
   process.stdout.write(`\ncadence self-test: ${failed === 0 ? 'PASS' : 'FAIL'} (${lines.length - failed}/${lines.length})\n`);
