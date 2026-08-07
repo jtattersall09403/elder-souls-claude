@@ -244,6 +244,11 @@ export class GamepadRouter {
       const snap = this.normalise(p, makeSnapshot());
       const idx = snap.index;
       let st = this.pads.get(idx);
+      // A DIFFERENT pad at the same index is a different pad. Without this the quirk map, the
+      // profile and any calibration of the pad that was unplugged are silently applied to the
+      // one plugged in after it — and on a phone, where the pad is invisible until its first
+      // press, index 0 is the only index there ever is.
+      if (st && (st.id !== snap.id || st.mapping !== snap.mapping)) { this._dropPad(idx, frame); st = null; }
       if (!st) { st = this._adoptPad(snap, frame); }
       st.snap = snap;
       if (this._isActive(snap, st)) { st.lastActive = frame; }

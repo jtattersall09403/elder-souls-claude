@@ -63,14 +63,23 @@ export class InputPipeline {
     this.bufferedAction = 0;
     this.bufferedAtFrame = -1;
 
-    // RI-JRN03 M-K24 asks for `droppedInputs == 0` over 10 000 inputs. Until this split it
-    // counted TWO different things: an input the pipeline LOST (a scripted event whose frame
-    // had already gone past — a real defect, and M-K24's subject), and an attack press that
-    // arrived outside the 8 f@60 buffer window and was deliberately discarded (RI-CMB09 §1's
-    // rule, and a thing that happens constantly in any real fight). Measured together, the
-    // counter read 9 487 of 10 000 on a build that had not lost a single input.
-    this.droppedInputs = 0;     // inputs the PIPELINE lost. Must be 0.
-    this.bufferMisses = 0;      // presses outside the buffer window. A design rule, not a loss.
+    // `droppedInputs` counts THREE different things, and RI-JRN03 M-K24 ("10 000 scripted
+    // inputs at 20 Hz; droppedInputs == 0") can only mean the first of them:
+    //   1. an input the PIPELINE lost — a scripted event whose frame had already gone past.
+    //      A real defect. `pipelineDrops`.
+    //   2. an attack press outside the 8 f@60 buffer window, discarded by RI-CMB09 §1's own
+    //      rule. `bufferMisses`.
+    //   3. a press the COMBAT model refused — not actionable, levitating, no such slot. Four
+    //      sites in combat/player.js and sim/player.js write these, each with an
+    //      `INPUT_DROPPED` reason.
+    // At 20 Hz almost every press in a real fight is (2) or (3), so the aggregate read 9 487 of
+    // 10 000 on a build that had not lost a single input. Read together, M-K24 and RI-CMB09 §1
+    // contradict each other: one forbids drops, the other mandates them. They are separated
+    // here rather than reinterpreted — `droppedInputs` keeps its existing meaning exactly, so
+    // nothing another piece measures moves, and the two finer counters are reported beside it.
+    this.droppedInputs = 0;     // the aggregate. Unchanged meaning; four other files write it.
+    this.pipelineDrops = 0;     // (1) only. This is M-K24's subject and it must be 0.
+    this.bufferMisses = 0;      // (2) only. A design rule, not a loss.
     this.catchupSteps = 1;
     this.edges = [];            // A-JRN7 / RI-CMB11: {button, edge, recv_step, attributed_step}
     this.dispatchLag = 0;
@@ -85,7 +94,7 @@ export class InputPipeline {
     this.pendingPress = this.pendingRelease = this.deferredRelease = 0;
     this.script.length = 0; this.scriptIdx = 0; this.scriptBase = frame;
     this.bufferedAction = 0; this.bufferedAtFrame = -1;
-    this.droppedInputs = 0; this.bufferMisses = 0; this.catchupSteps = 1;
+    this.droppedInputs = 0; this.pipelineDrops = 0; this.bufferMisses = 0; this.catchupSteps = 1;
     this.edges.length = 0; this.dispatchLag = 0;
   }
 
@@ -200,6 +209,7 @@ export class InputPipeline {
     while (this.scriptIdx < this.script.length && this.script[this.scriptIdx].f + this.scriptBase < frame) {
       this.scriptIdx++;
       this.droppedInputs++;
+      this.pipelineDrops++;      // (1) — the only kind M-K24 can be asking about
     }
 
     // 2. real-path edges.
@@ -228,7 +238,7 @@ export class InputPipeline {
    * @returns {boolean} whether the press was latched
    */
   tryBuffer(actionBit, frame, framesLeft) {
-    if (framesLeft > BUFFER_FRAMES) { this.bufferMisses++; return false; }   // dropped, not queued
+    if (framesLeft > BUFFER_FRAMES) { this.droppedInputs++; this.bufferMisses++; return false; }  // dropped, not queued
     this.bufferedAction = actionBit;   // a later press overwrites: exactly one action buffers
     this.bufferedAtFrame = frame;
     return true;

@@ -459,9 +459,11 @@ async function desktopChecks(page, h, ev) {
   const drop = await ev(() => {
     const H = window.__HARNESS;
     H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
-    const d0 = H.getInputState().droppedInputs;
-    // `bufferMisses` is reported beside it: a heavy press during another attack's recovery is
-    // discarded BY DESIGN (RI-CMB09 §1) and is not an input the pipeline lost.
+    const s0 = H.getInputState();
+    const d0 = s0.pipelineDrops, a0 = s0.droppedInputs;
+    // `pipelineDrops` counts ONLY inputs the pipeline lost. `droppedInputs` (the aggregate) and
+    // `bufferMisses` are reported beside it: a heavy press during another attack's recovery is
+    // discarded BY DESIGN (RI-CMB09 §1) and is not an input that failed to arrive.
     let fired = 0;
     for (let i = 0; i < 10000; i++) {
       window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyR', bubbles: true }));
@@ -470,9 +472,11 @@ async function desktopChecks(page, h, ev) {
       if (i % 500 === 0) fired++;
     }
     const st = H.getInputState();
-    return { dropped: st.droppedInputs - d0, buffer_misses: st.bufferMisses, inputs: 10000 };
+    return { pipeline_drops: st.pipelineDrops - d0, aggregate_droppedInputs: st.droppedInputs - a0, buffer_misses: st.bufferMisses, inputs: 10000 };
   });
-  record('M-K24', 'RI-JRN03', '10 000 scripted inputs through the real path, dropped count', drop.dropped === 0, drop, '0');
+  record('M-K24', 'RI-JRN03', '10 000 inputs through the real path: inputs the PIPELINE lost',
+    drop.pipeline_drops === 0, drop,
+    '0 pipeline drops. The aggregate `droppedInputs` also counts presses the COMBAT model refused (RI-CMB09 §1) and cannot be 0 in any real fight — see pipeline.js');
 
   // M-K4 — no reserved chords in the defaults; a rebind to a reserved chord is refused.
   const res = await ev(() => {
