@@ -40,6 +40,7 @@ import {
   makeRunId, gitInfo, hashDataTree, die, EXIT, log,
 } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
+import { deriveRefusalSet, capabilityOf, CAPABILITIES } from './lib/capabilities.mjs';
 
 const USAGE = `
 session-run.mjs — drive and record a playthrough session.
@@ -61,21 +62,27 @@ OPTIONS
                        honestly rather than pretending an agent played it)
   --out DIR            session directory (default reports/sessions/<session>)
   --shots N            captures across the session
-  --list-profiles      print the profiles and their prohibitions
-  --self-test          prove the prohibition enforcement actually blocks, and that a violation
+  --list-profiles      print the profiles and the capabilities they refuse
+  --audit-surface      boot, classify the WHOLE live harness surface, print it, and exit non-zero
+                       if anything is unclassified. This is how a critic checks the refusal set
+                       without taking this file's word for it.
+  --self-test          prove the prohibition enforcement actually blocks, that the capability
+                       derivation catches the aliases a name list misses, and that a violation
                        VOIDS the run rather than being noted in a footnote
 
-PROFILES (the prohibition sets are the instrument)
-  first-hour       refuses teleport, spawn, aggro, setTimeOfDay, setWeather, loadState
-                   (RI-EXP01 step 1 — any invocation voids the run)
-  ending           refuses teleport, spawn, loadState
-  build-identity   refuses teleport, spawn, aggro, setSkills, setAttributes, setMagicSkills,
-                   setGold, learnSpell
-                   (RI-CMP03 measures whether BUILDS diverge; a driver that can set its own
-                    skills is measuring nothing. AGENT-PROTOCOL: every magic probe in the tree
-                    opened with setMagicSkills({...100}), which is why a frozen skill register
-                    went unseen for two rounds.)
+PROFILES — each refuses CAPABILITIES; the method list is derived from the live surface
+  first-hour       mutate-world, teleport-player, grant-resource, set-environment, load-state,
+                   force-hostility, break-fence   (RI-EXP01 step 1 — any invocation voids the run)
+  ending           mutate-world, teleport-player, grant-resource, load-state, break-fence
+  build-identity   as first-hour  (RI-CMP03 measures whether BUILDS diverge; a driver that can
+                   set its own skills is measuring nothing. AGENT-PROTOCOL: every magic probe in
+                   the tree opened with setMagicSkills({...100}), which is why a frozen skill
+                   register went unseen for two rounds.)
   free             refuses nothing (for tooling development only; marked in the manifest)
+
+  A method tools/experience/lib/capabilities.mjs does not classify is REFUSED, and named in the
+  manifest. Six names against a 320-method surface is how round 2 certified a clean first hour
+  with an agent-authored NPC standing in it (TOOL-COVERAGE-R2 §8).
 
 STDIO PROTOCOL (--drive stdio)
   One JSON object per line on stdin:
@@ -90,28 +97,95 @@ STDIO PROTOCOL (--drive stdio)
   One JSON object per line on stdout in reply, always carrying {"ok":bool,"t_min":number}.
 `;
 
+// ---------------------------------------------------------------------------------------------
+// ROUND 3 — THE PROFILES REFUSE CAPABILITIES, NOT NAMES.
+//
+// TOOL-COVERAGE-R2 §8: the round-2 profile was SIX NAMES against a 320-METHOD SURFACE. `spawn`
+// was refused while `spawnNPC` spawned, `listNPCs()` went 0 -> 1, and the run recorded ZERO
+// violations and exited 0. `loadState` was refused while `restoreState` was not; `teleport` was
+// refused while `travelRide`, `boardTravel`, `setTravelMark` and `__breakTravelFence` were not.
+//
+// RI-EXP01 step 1's six names are the item's EXAMPLES of a capability, not the capability. The
+// refusal set is now DERIVED from the live surface by `tools/experience/lib/capabilities.mjs`,
+// which classifies every method by what it lets you do and FAILS CLOSED on anything it does not
+// classify — so a method added next week is refused until somebody rules on it. RI-EXP01's six
+// names are asserted to be inside the derived set on every run, so the item's own list is a
+// LOWER bound that cannot silently be dropped.
+// ---------------------------------------------------------------------------------------------
 const PROFILES = {
   'first-hour': {
-    refuse: ['teleport', 'spawn', 'aggro', 'setTimeOfDay', 'setWeather', 'loadState'],
-    source: 'RI-EXP01 step 1',
+    refuse_capabilities: ['mutate-world', 'teleport-player', 'grant-resource', 'set-environment',
+      'load-state', 'force-hostility', 'break-fence'],
+    // RI-EXP01 step 1's literal six. Asserted to be a SUBSET of the derived set on every run.
+    item_names: ['teleport', 'spawn', 'aggro', 'setTimeOfDay', 'setWeather', 'loadState'],
+    source: 'RI-EXP01 step 1, read as a capability list (TOOL-COVERAGE-R2 §8)',
     voids_run: true,
   },
-  ending: { refuse: ['teleport', 'spawn', 'loadState'], source: 'RI-EXP05', voids_run: true },
+  ending: {
+    refuse_capabilities: ['mutate-world', 'teleport-player', 'grant-resource', 'load-state', 'break-fence'],
+    item_names: ['teleport', 'spawn', 'loadState'],
+    source: 'RI-EXP05',
+    voids_run: true,
+  },
   'build-identity': {
-    refuse: ['teleport', 'spawn', 'aggro', 'setSkills', 'setAttributes', 'setMagicSkills', 'setGold', 'learnSpell'],
+    refuse_capabilities: ['mutate-world', 'teleport-player', 'grant-resource', 'set-environment',
+      'load-state', 'force-hostility', 'break-fence'],
+    item_names: ['teleport', 'spawn', 'aggro', 'setSkills', 'setAttributes', 'setMagicSkills', 'setGold', 'learnSpell'],
     source: 'RI-CMP03 + AGENT-PROTOCOL (never grant yourself the thing under test)',
     voids_run: true,
   },
-  free: { refuse: [], source: 'tooling development only', voids_run: false },
+  free: { refuse_capabilities: [], item_names: [], source: 'tooling development only', voids_run: false },
 };
+
+/** Methods this driver itself calls. If the classification refuses one, that is a BUG, and it
+ *  must be loud rather than a session that silently cannot step. */
+const DRIVER_METHODS = ['setSeed', 'setMode', 'setRenderRate', 'stepFrames', 'renderFrame',
+  'screenshot', 'traceStart', 'traceDrain', 'traceStop', 'snapshot', 'getQuestState',
+  'getCapabilityReport'];
+
+/**
+ * Read the LIVE surface and derive this profile's refusal set from it. Nothing here is a list
+ * typed by hand: the surface comes from the running build and the classification is auditable
+ * with `--audit-surface`.
+ */
+async function deriveForProfile(handle, prof) {
+  const surface = await handle.page.evaluate(
+    () => Object.keys(window.__HARNESS || {}).filter((k) => typeof window.__HARNESS[k] === 'function').sort());
+  const d = deriveRefusalSet(surface, prof.refuse_capabilities);
+  const missedItemNames = (prof.item_names || []).filter((n) => surface.includes(n) && !d.refuse.includes(n));
+  const driverBlocked = DRIVER_METHODS.filter((m) => d.refuse.includes(m));
+  return { surface, ...d, missedItemNames, driverBlocked };
+}
 
 const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
 if (args['list-profiles']) {
   for (const [k, v] of Object.entries(PROFILES)) {
-    process.stdout.write(`${k.padEnd(16)} refuses: ${v.refuse.join(', ') || '(nothing)'}\n                 ${v.source}\n`);
+    process.stdout.write(
+      `${k.padEnd(16)} refuses capabilities: ${v.refuse_capabilities.join(', ') || '(nothing)'}\n` +
+      `${''.padEnd(16)} the item's own names (a LOWER bound, asserted inside the derived set): ` +
+      `${(v.item_names || []).join(', ') || '(none)'}\n` +
+      `${''.padEnd(16)} ${v.source}\n`);
   }
+  process.stdout.write('\nThe refusal set is derived from the LIVE harness surface at install ' +
+    'time and fails closed on anything tools/experience/lib/capabilities.mjs does not classify.\n' +
+    'Run --audit-surface against a booted build to see the whole classification.\n');
   process.exit(0);
+}
+if (args['audit-surface']) {
+  const h = await launchGame({ ...args, width: 320, height: 240 });
+  try {
+    const prof = PROFILES[String(args.profile || 'first-hour')] || PROFILES['first-hour'];
+    const d = await deriveForProfile(h, prof);
+    process.stdout.write(`harness surface: ${d.surface.length} methods\n`);
+    for (const c of CAPABILITIES) {
+      const refused = prof.refuse_capabilities.includes(c);
+      process.stdout.write(`\n${refused ? 'REFUSED ' : 'allowed '} ${c} (${d.byCapability[c].length})\n  ${d.byCapability[c].join(' ')}\n`);
+    }
+    process.stdout.write(`\nUNCLASSIFIED (refused, fail-closed): ${d.unclassified.length}\n  ${d.unclassified.join(' ') || '(none)'}\n`);
+    process.stdout.write(`\nrefusal set for profile "${args.profile || 'first-hour'}": ${d.refuse.length} methods\n`);
+    process.exit(d.unclassified.length ? 1 : 0);
+  } finally { await h.close(); }
 }
 if (args['self-test']) process.exit(await selfTest());
 
@@ -147,6 +221,27 @@ async function runSession() {
   const notes = [];
 
   try {
+    // ---- derive the refusal set FROM THE LIVE SURFACE ----------------------------------
+    const derived = await deriveForProfile(handle, profile);
+    if (derived.driverBlocked.length) {
+      die(EXIT.INTERNAL,
+        `the capability classification refuses methods this driver itself needs: ` +
+        `${derived.driverBlocked.join(', ')}. That is a bug in ` +
+        `tools/experience/lib/capabilities.mjs, not a property of the build. Failing loudly ` +
+        `rather than running a session that cannot step.`);
+    }
+    if (derived.missedItemNames.length) {
+      die(EXIT.INTERNAL,
+        `${profile.source} names ${derived.missedItemNames.join(', ')} explicitly and the derived ` +
+        `capability set does NOT refuse them. The derivation must be a superset of the item's own ` +
+        `list, never a replacement for it.`);
+    }
+    log(`profile ${profileId}: ${derived.refuse.length} of ${derived.surface.length} harness methods ` +
+        `refused, derived from capabilities [${profile.refuse_capabilities.join(', ') || 'none'}]` +
+        (derived.unclassified.length
+          ? `; ${derived.unclassified.length} UNCLASSIFIED and refused fail-closed: ${derived.unclassified.join(', ')}`
+          : '; classification covers the whole surface'));
+
     // ---- install the prohibitions IN THE PAGE ------------------------------------------
     // Not a wrapper in this file: a driving agent that calls window.__HARNESS directly through
     // page.evaluate would walk straight past a Node-side check. The methods are replaced, so
@@ -167,7 +262,7 @@ async function runSession() {
         };
       }
       return true;
-    }, profile.refuse);
+    }, derived.refuse);
 
     await handle.h('setSeed', seed);
     await handle.hOpt('setMode', 'play-instrumented');
@@ -300,7 +395,16 @@ async function runSession() {
       schema: 'elder-souls/session@1',
       tool: 'tools/experience/session-run.mjs',
       session: sessionId, profile: profileId,
-      profile_prohibitions: profile.refuse,
+      profile_refuses_capabilities: profile.refuse_capabilities,
+      profile_prohibitions: derived.refuse,
+      profile_prohibitions_count: derived.refuse.length,
+      harness_surface_size: derived.surface.length,
+      // The audit trail. A reader must be able to see WHICH methods were refused and why, and
+      // to spot a method the classification does not cover — which is refused, but loudly.
+      classification_by_capability: derived.byCapability,
+      classification_unclassified_and_refused: derived.unclassified,
+      classification_complete: derived.unclassified.length === 0,
+      item_named_methods: profile.item_names,
       profile_source: profile.source,
       brief,
       seed, minutes_requested: minutes, render_policy: renderPolicy, drive: driveMode,
@@ -338,23 +442,72 @@ async function stepChunked(handle, frames, chunk) {
 }
 
 // ---------------------------------------------------------------------------------------------
+// --self-test. TOOL-COVERAGE-R2 §8's four bypasses are cases 3-6, by name.
+// ---------------------------------------------------------------------------------------------
 async function selfTest() {
   const lines = [];
   let failed = 0;
-  const ok = (n, pass, d) => { lines.push(`${pass ? 'PASS' : 'FAIL'} ${n} — ${d}`); if (!pass) failed++; };
+  const ok = (n, pass, d) => {
+    lines.push(`${pass ? 'PASS' : 'FAIL'} ${n} — ${d}`);
+    process.stdout.write(lines[lines.length - 1] + '\n');   // flush as produced
+    if (!pass) failed++;
+  };
 
-  const handle = await launchGame({ width: 320, height: 240 });
+  const handle = await launchGame({ ...args, width: 320, height: 240 });
   try {
-    // Control: BEFORE the prohibitions are installed, teleport must work. If it does not, the
-    // "it was refused" result below would be indistinguishable from "the method never worked".
-    const beforeOk = await handle.page.evaluate(async () => {
-      try { await window.__HARNESS.teleport(10, 10, {}); return { ok: true }; }
-      catch (e) { return { ok: false, error: String(e && e.message || e) }; }
-    });
-    ok('null control: teleport works before the profile is installed', beforeOk.ok,
-      beforeOk.ok ? 'teleport(10,10) succeeded' : `teleport already fails: ${beforeOk.error} — the refusal test below would prove nothing`);
+    const prof = PROFILES['first-hour'];
+    const derived = await deriveForProfile(handle, prof);
 
-    // Install first-hour's prohibitions.
+    ok('the classification covers the WHOLE live surface (fail-closed, so a gap is refused not allowed)',
+      derived.unclassified.length === 0,
+      `${derived.surface.length} methods classified into ${CAPABILITIES.length} capabilities; ` +
+      `unclassified: ${derived.unclassified.join(', ') || 'none'} (any would be REFUSED)`);
+
+    ok('the refusal set is DERIVED, not a six-name list',
+      derived.refuse.length > prof.item_names.length * 3,
+      `${derived.refuse.length} of ${derived.surface.length} methods refused, against RI-EXP01's ` +
+      `${prof.item_names.length} literal names`);
+
+    ok("RI-EXP01's own six names are all inside the derived set",
+      derived.missedItemNames.length === 0,
+      `${prof.item_names.join(', ')} — all refused`);
+
+    // NULL CONTROL. Every method the critic bypassed must WORK before the profile is installed,
+    // or "it was refused" would be indistinguishable from "it never worked".
+    const BYPASSES = [
+      ['spawnNPC', "the critic's ghost: spawn was refused, spawnNPC spawned and listNPCs went 0 -> 1"],
+      ['restoreState', 'loadState was refused, restoreState was not'],
+      ['travelRide', 'teleport was refused, travelRide was not'],
+      ['boardTravel', 'teleport was refused, boardTravel was not'],
+      ['setTravelMark', 'teleport was refused, setTravelMark was not'],
+      ['__breakTravelFence', 'a method literally named __breakTravelFence was permitted'],
+      ['spawnEncounter', 'the other four spawn aliases'],
+      ['spawnCivilian', 'the other four spawn aliases'],
+      ['spawnGuard', 'the other four spawn aliases'],
+      ['spawnProp', 'the other four spawn aliases'],
+    ].filter(([m]) => derived.surface.includes(m));
+
+    ok('CONTROL: every bypassed method EXISTS on this build before anything is installed',
+      BYPASSES.length >= 6, BYPASSES.map(([m]) => m).join(', '));
+
+    const before = await handle.page.evaluate(
+      (ms) => ms.map((m) => ({ m, present: typeof window.__HARNESS[m] === 'function' })), BYPASSES.map(([m]) => m));
+    ok('CONTROL: and they are callable functions, not stubs already throwing',
+      before.every((r) => r.present), JSON.stringify(before.map((r) => r.m + ':' + r.present)));
+
+    // The critic's exact reproduction: spawn an NPC and watch listNPCs move, BEFORE the profile.
+    const ghostBefore = await handle.page.evaluate(async () => {
+      const H = window.__HARNESS;
+      const n0 = H.listNPCs().length;
+      let spawned = null;
+      try { spawned = await H.spawnNPC({ eid: 'selftest-ghost', kind: 'npc', name: 'Ghost', x: 3, z: 3 }); } catch (e) { spawned = { error: String(e && e.message || e) }; }
+      return { n0, n1: H.listNPCs().length, spawned };
+    });
+    ok('CONTROL: spawnNPC really does put an NPC in the world on an unprotected build',
+      ghostBefore.n1 > ghostBefore.n0,
+      `listNPCs ${ghostBefore.n0} -> ${ghostBefore.n1}, spawnNPC returned ${JSON.stringify(ghostBefore.spawned).slice(0, 120)}`);
+
+    // ---- install ----------------------------------------------------------------------------
     await handle.page.evaluate((refuse) => {
       const H = window.__HARNESS;
       window.__SESSION_VIOLATIONS = [];
@@ -366,47 +519,74 @@ async function selfTest() {
           throw err;
         };
       }
-    }, PROFILES['first-hour'].refuse);
+    }, derived.refuse);
 
-    // Every prohibited method must now throw, and be recorded.
-    const after = await handle.page.evaluate(async (refuse) => {
+    // RED -> the bypasses are closed.
+    const after = await handle.page.evaluate(async (ms) => {
       const out = [];
-      for (const m of refuse) {
+      for (const m of ms) {
         try { await window.__HARNESS[m](); out.push({ m, threw: false }); }
         catch { out.push({ m, threw: true }); }
       }
       return { out, violations: window.__SESSION_VIOLATIONS.length };
-    }, PROFILES['first-hour'].refuse);
-    const allThrew = after.out.every((r) => r.threw);
-    ok('every prohibited method throws once installed', allThrew,
+    }, BYPASSES.map(([m]) => m));
+    ok("TOOL-COVERAGE-R2 §8's bypasses are now ALL refused",
+      after.out.every((r) => r.threw),
       after.out.map((r) => `${r.m}:${r.threw ? 'refused' : 'ALLOWED'}`).join(' '));
-    ok('each attempt is recorded as a violation', after.violations === PROFILES['first-hour'].refuse.length,
-      `${after.violations} violation(s) recorded for ${PROFILES['first-hour'].refuse.length} attempt(s)`);
+    ok('each attempt is recorded as a violation', after.violations === after.out.length,
+      `${after.violations} violation(s) for ${after.out.length} attempt(s)`);
 
-    // The prohibition must not be bypassable from page.evaluate — which is how a driving agent
-    // would reach it. (It is the same object, so this is really a check that we replaced the
-    // method rather than wrapping the Node-side caller.)
-    const bypass = await handle.page.evaluate(async () => {
-      try { await window.__HARNESS['teleport'](1, 1, {}); return 'BYPASSED'; }
-      catch { return 'refused'; }
+    // And the world did NOT move.
+    const ghostAfter = await handle.page.evaluate(async () => {
+      const H = window.__HARNESS;
+      const n0 = H.listNPCs().length;
+      try { await H.spawnNPC({ eid: 'selftest-ghost-2', kind: 'npc', name: 'Ghost2', x: 4, z: 4 }); } catch { /* expected */ }
+      return { n0, n1: H.listNPCs().length };
     });
-    ok('cannot be bypassed by calling window.__HARNESS directly', bypass === 'refused', bypass);
+    ok('ENTITY-SIDE: the world does not move when a refused spawn is attempted',
+      ghostAfter.n1 === ghostAfter.n0,
+      `listNPCs ${ghostAfter.n0} -> ${ghostAfter.n1} across a refused spawnNPC`);
 
-    // A non-prohibited method must still work — a profile that breaks everything measures nothing.
+    // Every method RI-EXP01 names must throw too.
+    const itemNames = await handle.page.evaluate(async (ms) => {
+      const out = [];
+      for (const m of ms) { try { await window.__HARNESS[m](); out.push({ m, threw: false }); } catch { out.push({ m, threw: true }); } }
+      return out;
+    }, prof.item_names);
+    ok("RI-EXP01's six still throw (the derivation did not lose them)",
+      itemNames.every((r) => r.threw), itemNames.map((r) => `${r.m}:${r.threw ? 'refused' : 'ALLOWED'}`).join(' '));
+
+    ok('cannot be bypassed by calling window.__HARNESS directly',
+      (await handle.page.evaluate(async () => {
+        try { await window.__HARNESS.teleport(1, 1, {}); return 'BYPASSED'; } catch { return 'refused'; }
+      })) === 'refused', 'page.evaluate reaches the same replaced object');
+
+    // GREEN. A profile that breaks everything measures nothing.
     const stillWorks = await handle.page.evaluate(async () => {
-      try { return { ok: true, n: (await window.__HARNESS.listEntities()).length }; }
-      catch (e) { return { ok: false, error: String(e && e.message || e) }; }
+      const out = {};
+      for (const m of ['listEntities', 'getPlayerStats', 'getUIState', 'stepFrames', 'queueInputs']) {
+        try { await window.__HARNESS[m](m === 'stepFrames' ? 1 : (m === 'queueInputs' ? [] : undefined)); out[m] = 'ok'; }
+        catch (e) { out[m] = 'THREW: ' + String(e && e.message || e).slice(0, 80); }
+      }
+      return out;
     });
-    ok('non-prohibited methods still work', stillWorks.ok,
-      stillWorks.ok ? `listEntities() -> ${stillWorks.n} entities` : stillWorks.error);
+    ok('GREEN: observation, input and stepping still work under the profile',
+      Object.values(stillWorks).every((v) => v === 'ok'), JSON.stringify(stillWorks));
 
-    // And the run-void rule: violations > 0 under a voiding profile means void.
     ok('a violation VOIDS the run (not a footnote)',
-      PROFILES['first-hour'].voids_run && after.violations > 0,
-      `voids_run=${PROFILES['first-hour'].voids_run}, violations=${after.violations} => void`);
+      prof.voids_run && after.violations > 0,
+      `voids_run=${prof.voids_run}, violations=${after.violations} => void`);
+
+    // FAIL-CLOSED, proved rather than asserted: a method the classifier does not know is refused.
+    const fakeSurface = [...derived.surface, 'grantEverythingToTheDriver'];
+    const withUnknown = deriveRefusalSet(fakeSurface, prof.refuse_capabilities);
+    ok('FAIL-CLOSED: an unclassified method is REFUSED, not permitted by default',
+      withUnknown.refuse.includes('grantEverythingToTheDriver')
+      && withUnknown.unclassified.includes('grantEverythingToTheDriver')
+      && capabilityOf('grantEverythingToTheDriver') === null,
+      'a method added tomorrow is prohibited until somebody rules on it, and is named in the manifest');
   } finally { await handle.close(); }
 
-  for (const l of lines) process.stdout.write(l + '\n');
   process.stdout.write(`\nsession-run self-test: ${failed === 0 ? 'PASS' : 'FAIL'} (${lines.length - failed}/${lines.length})\n`);
   return failed === 0 ? 0 : 1;
 }

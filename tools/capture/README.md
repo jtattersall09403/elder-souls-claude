@@ -54,6 +54,31 @@ each independently re-rendering the same world, driving load to 44–103 and a 1
 25 s to 150–260 s. The W1-01 round-4 builder's 117-frame region pack managed three frames in
 twelve minutes and had to be abandoned, so the piece's headline number went unmeasured.
 
+## What it does and does not buy you
+
+Measured, same 13 frames (`province-shots --per 1 --passes day`), same box, same window:
+
+| | wall clock | per frame |
+|---|---|---|
+| the old private-browser path (`--direct`) | **204 s** | 15.7 s |
+| through the daemon, cold cache | **285 s** | 21.9 s |
+| through the daemon, warm cache | **3 s** | 0.23 s |
+
+**A single agent doing a cold pack is about 40% slower through the daemon, not faster**, and
+saying otherwise would be a lie. The extra time is the S34 settle proof: three renders where the
+old path took one. Per-capture phase breakdown at 1280×720: `settle_ms` 12.1 s, `place_ms`
+(teleport + province drain) 1.5 s, `screenshot_ms` 0.27 s.
+
+What it buys is the other three things:
+
+1. **A repeat is free** — 3 s against 204 s for the same 13 frames, 68×.
+2. **N agents do not become N browsers.** The old path's 15.7 s/frame is only available to one
+   agent at a time; fourteen agents each holding a browser is what turned 25 s/frame into
+   150–260 s/frame and killed the round-4 pack. See `CONTENTION.json`.
+3. **Every frame now carries a settle proof and its provenance.** The old path had neither, and
+   the frames it produced could not be distinguished from photographs of a world that had not
+   finished loading.
+
 ## What is admissible (S34)
 
 Every capture this service produces is **placed**: it teleports and it poses the camera. Nothing
@@ -86,6 +111,13 @@ Every capture therefore carries, in its sidecar `.json` and in the client's retu
 
 For an arrival claim, walk it: `tools/world/reachability-walk.mjs`, or `__HARNESS.walkRoute()` /
 `walkPath()`.
+
+The word list is **deliberately over-inclusive** and its false positives are accepted. "The bridge
+at the crossing" is refused even though what it wants is a picture of a bridge, because the
+classifier cannot distinguish that from "the crossing is passable", and the two mistakes do not
+cost the same: a wrongly refused appearance capture costs one re-worded claim; a wrongly permitted
+arrival capture voids a verdict. The remedy — saying what the picture is actually evidence of,
+"the bridge's stonework and silhouette" — is a better claim than the one that tripped the gate.
 
 ## The settle proof, and why it has three gates
 

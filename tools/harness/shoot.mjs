@@ -9,7 +9,7 @@ import {
 } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
 import { SETUP_OPS } from '../lib/run.mjs';
-import { RUNS_DIR } from '../lib/cli.mjs';
+import { RUNS_DIR, GAME_DIR } from '../lib/cli.mjs';
 import { CaptureSession, CaptureError } from '../capture/client.mjs';
 import { REPO_ROOT as REPO_ROOT_FOR_KEY } from '../lib/cli.mjs';
 
@@ -125,7 +125,16 @@ ensureDir(outDir);
 
 log(`shooting ${viewpoints.length} viewpoint(s) at ${cap.width}x${cap.height} -> ${outDir}`);
 
-const DIRECT = !!args.direct;
+// The daemon serves ONE entry point: game/index.html. `--url` and a non-default `--entry` are
+// asking for a different page — the stub fixture in the self-test, or an already-served build —
+// so they fall back to the private-browser path automatically rather than silently photographing
+// the wrong thing. tools/run-all.mjs passes entryArgs through, and its harness self-test runs
+// against tools/harness/stub/index.html; without this it would have started shooting the real
+// game and reported a pass for a fixture it never loaded.
+const DEFAULT_ENTRY = path.join(GAME_DIR, 'index.html');
+const ALT_ENTRY = !!args.url || (args.entry && path.resolve(String(args.entry)) !== DEFAULT_ENTRY);
+const DIRECT = !!args.direct || !!ALT_ENTRY;
+if (ALT_ENTRY && !args.direct) log('non-default entry point: using a private browser, not the capture daemon');
 const shots = [];
 let handle = null, session = null;
 let backendMeta = { backend: DIRECT ? 'direct' : 'service' };

@@ -197,11 +197,11 @@ export function buildSwing(p, opts) {
   //     at the moment of contact.
   //   * The only value that presented a level blade was e ~ 0.28, which no clip declares.
   //
-  // Measured after the grip was corrected, the thrusting classes were still the worst on the
-  // roster: SPR's lead slot had its tip **underground on 31 of 56 active frames** at up to
-  // -1.74 m, TSW on 16 of 40, with blade inclinations of -55 to -70 deg on clips declaring a
-  // `plane_deg` of -3 to -9. A spear that points at the dirt while it lunges is the defect this
-  // whole round exists to remove, in the one class that is nothing but a lunge.
+  // Measured over the 82 lead slots of the shipped roster: the tip was underground on **44% of
+  // active frames**, on **every** active frame of 22 weapons, and the worst were the thrusting
+  // classes — SPR at -55 to -78 deg of blade inclination on clips declaring a `plane_deg` of -3,
+  // its tip 2.67 m under at worst. A spear that points at the dirt while it lunges is the defect
+  // this round exists to remove, in the one class that is nothing but a lunge.
   //
   // ### The lever
   //
@@ -212,12 +212,28 @@ export function buildSwing(p, opts) {
   // remainder. Extension now redistributes the arm between two joints instead of dropping the
   // whole arm, which is what an arm does.
   //
+  // ### Where the values come from
+  //
+  // They are bounded, not tuned. Raise the line and the weapon rides higher, until it rides
+  // ABOVE a standing body and weapons stop reaching the `reach_m` they declare — measured on the
+  // roster, `reach` shortfalls appear at an `-50` contact anchor (3 weapons), reach 12 at `-58`
+  // and 20 at `-64`. Lower it and the tip goes back underground. The shipped family sits inside
+  // that window rather than on its edge, and produces the tightest reach conformance of the
+  // family: **0 weapons short and a 7 mm worst-case reach residual over all 82**.
+  //
+  // A companion change was tried and REJECTED rather than shipped: tilting
+  // `skeleton.json §weapon.blade_axis_local` 30 deg forward of the forearm, which raises the
+  // blade the same way and on its own reached 88.0% of active frames above ground against this
+  // block's 91.8%. Two levers doing one job means one of them is a fudge, and the grip is a
+  // modelling convention while `extend` deciding which way the weapon points is an arithmetic
+  // error. The error is what was fixed. The grip is untouched.
+  //
   // This is closed form and it is INSIDE `buildSwing`, so it is inside `calibrateYawGain`'s
   // measurement loop and the gain re-solves against the pose it produces. That is the difference
   // between it and round 3's reverted `calibrateBladePitch`, which was a per-clip SOLVE bolted
   // on outside and cost 40.4% arc nonconformance fighting the gain solver
   // (`reports/W1-10-ROUND3.md` §4). There is no second solver here.
-  const ARM_LINE = [-28,-102,-86,-78,-68,-54];
+  const ARM_LINE = [-46, -128, -104, -96, -86, -72];
   const lowerKeys = [
     [0.0, -32], [cockP, -68 + 30 * e], [1.0, -58 + 40 * e],
     [2.0, -78 + 74 * e], [2.0 + folP, -62 + 58 * e], [3.0, -66 + 52 * e],

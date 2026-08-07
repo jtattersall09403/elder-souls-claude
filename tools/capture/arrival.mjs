@@ -25,6 +25,15 @@ const ARRIVAL_ITEM_RE = [
 
 /**
  * Claim keywords that mean "this picture asserts a journey or a duration".
+ *
+ * DELIBERATELY OVER-INCLUSIVE, and the false positives are the point. A claim worded
+ * "the bridge at the crossing" is refused even though what it wants is a picture of a bridge,
+ * because the classifier cannot tell that from "the crossing is passable" and the cost of the two
+ * mistakes is not symmetric: a wrongly refused appearance capture costs one re-worded claim, a
+ * wrongly permitted arrival capture voids a verdict. The remedy is to say what the picture is
+ * actually evidence of — "the bridge's stonework and silhouette" — which is a better claim than
+ * the one that tripped the gate.
+ *
  * Matched against `claim`, `for`, `purpose` and `note` — i.e. whatever the caller says the
  * picture is for. Word-boundary matched so "clearing" does not trip "clear".
  */

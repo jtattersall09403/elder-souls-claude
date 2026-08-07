@@ -13,8 +13,35 @@ const P = (...a) => join(ROOT, ...a);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 // ---------- tiny markdown ----------
-function md(src) {
+// Image markdown whose alt text is hard-wrapped spans several source lines, and everything below
+// works a line at a time — so `![a long caption\nthat wrapped](../shots/x.png)` matched nothing and
+// was published as literal text. The brief *tells* writers to hard-wrap, so this is the renderer's
+// bug and not theirs. Join any `![…](…)` back onto one line before parsing, leaving fenced code
+// alone so a literal example still shows as written.
+function joinWrappedImages(src) {
+  const out = [];
   const lines = src.split('\n');
+  let fence = false;
+  for (let i = 0; i < lines.length; i++) {
+    const l = lines[i];
+    if (l.startsWith('```')) { fence = !fence; out.push(l); continue; }
+    if (fence || !l.includes('![')) { out.push(l); continue; }
+    let joined = l;
+    // Keep pulling in lines until the construct closes: an alt that never hit `]`, or a `](` whose
+    // parenthesis is still open. A run-on with no terminator stops at a blank line rather than
+    // swallowing the rest of the post.
+    while (i + 1 < lines.length
+      && (/!\[[^\]]*$/.test(joined) || /!\[[^\]]*\]\([^)]*$/.test(joined))
+      && lines[i + 1].trim() !== '') {
+      joined += ' ' + lines[++i].trim();
+    }
+    out.push(joined);
+  }
+  return out.join('\n');
+}
+
+function md(src) {
+  const lines = joinWrappedImages(src).split('\n');
   let out = '', inCode = false, inList = false, inQuote = false;
   let para = [];
   const flushPara = () => { if (para.length) { out += `<p>${inline(para.join(' '))}</p>\n`; para = []; } };

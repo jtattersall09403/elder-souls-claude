@@ -105,6 +105,12 @@ OPTIONS
   --levels 1,20,40,60   the simulated levels gates are evaluated at (RI-CHR01 M6's default)
   --target 486          viability floor for the exit code (RI-CHR01 §5's 90% of 540)
   --quiet               suppress the per-signature failure lines on stdout
+  --offer-model M       raw | derived | detect (default). Which disposition model the build's
+                        quest-offer path implements. DETECTED from named source anchors and
+                        reported; forcing it is how a critic compares the two.
+  --cross-check         boot the game and compare this static walk's per-giver numbers against
+                        the running build's own questOffers()/explainDisposition(). The static
+                        walk is required by RI-MTH06 §A; this is how it stays true to the world.
 
 EXIT CODES
   0   >= --target signatures viable AND nothing unmeasurable
@@ -361,6 +367,84 @@ function dispositionCeiling(base, race, upbringing, birthsign, group) {
 // do if the matrix were wired in) and it never produces a criterion verdict.
 // ---------------------------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------------------------
+// WHICH OFFER MODEL DOES THIS BUILD IMPLEMENT? Detected, never assumed.
+//
+// This matters more than any other decision in this file, and it changed UNDER THIS PASS. When
+// round 3 began, `seedDispositions()` wrote the raw record and nothing downstream read the
+// reaction matrix, so a race ceiling here would have produced a FALSE RED (TOOL-COVERAGE-R2 §1).
+// Hours later another agent landed `Engine._questDispositionModel()`, installed it on
+// `QuestEngine.dispositionModel`, and `QuestEngine._dispositionToward()` now runs every giver
+// through `derivedDisposition()` before `canOffer()` sees the number. The same tool, hard-coded
+// to either model, would have been wrong on one side of that landing.
+//
+// So the model is DETECTED from source, against NAMED ANCHORS, and the tool reports which one it
+// found and what it matched. This is the one place a static instrument must read `game/src` — and
+// the failure mode of reading it is closed: when the two halves DISAGREE (the model is installed
+// but never consulted, or consulted but never installed) the tool refuses rather than guessing,
+// because a half-wired race term is exactly the state the corpus has twice been misled by.
+//
+// `--offer-model raw|derived|detect` overrides it, so a critic can force either and compare.
+// `--cross-check` boots the game and compares this tool's numbers against the running build's,
+// which is the only honest answer to "is the static walk still describing the world".
+// ---------------------------------------------------------------------------------------------
+const OFFER_MODEL_ANCHORS = {
+  installed: {
+    file: 'game/src/engine.js',
+    // Engine installs the derived model on the quest engine.
+    rx: /this\.questEngine\.dispositionModel\s*=/,
+    means: 'Engine installs a disposition model on QuestEngine',
+  },
+  consulted: {
+    file: 'game/src/sim/quest/machine.js',
+    // _dispositionToward consults it before canOffer sees the number.
+    rx: /const\s+model\s*=\s*this\.dispositionModel\s*;[\s\S]{0,400}?canOffer|_dispositionToward\s*\([\s\S]{0,800}?this\.dispositionModel/,
+    means: 'QuestEngine._dispositionToward() consults the model',
+  },
+  fed_to_gate: {
+    file: 'game/src/sim/quest/machine.js',
+    rx: /dispositions\s*:\s*this\.dispositionView\(\)|dispositions\s*:\s*this\._dispositionView/,
+    means: 'QuestEngine.context().dispositions is built from _dispositionToward, not from the raw register',
+  },
+};
+
+const OFFER_MODEL = (() => {
+  const forced = args['offer-model'] ? String(args['offer-model']) : 'detect';
+  const found = {};
+  for (const [k, a] of Object.entries(OFFER_MODEL_ANCHORS)) {
+    const p = path.join(REPO_ROOT, a.file);
+    const src = fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : '';
+    found[k] = { matched: a.rx.test(src), file: a.file, means: a.means };
+  }
+  const hits = Object.values(found).filter((f) => f.matched).length;
+  let model, why;
+  if (forced === 'raw' || forced === 'derived') {
+    model = forced;
+    why = `FORCED by --offer-model ${forced}. Detection found ${hits}/3 anchors.`;
+  } else if (hits === 3) {
+    model = 'derived';
+    why = 'all three anchors matched: the reaction matrix reaches the quest-offer path in this build.';
+  } else if (hits === 0) {
+    model = 'raw';
+    why = 'no anchor matched: seedDispositions() writes the raw record and nothing downstream ' +
+          'applies derivedDisposition(), so the offer gate is race-invariant in this build.';
+  } else {
+    model = 'ambiguous';
+    why = `${hits} of 3 anchors matched, so the two halves of the race term DISAGREE: ` +
+          Object.entries(found).map(([k, f]) => `${k}=${f.matched}`).join(', ') +
+          `. A half-wired race term is the state this corpus has twice been misled by (the data ` +
+          `layer alone was measured to block nobody), so this tool refuses rather than guessing.`;
+  }
+  return { model, why, anchors: found, forced: forced !== 'detect' ? forced : null };
+})();
+
+if (OFFER_MODEL.model === 'ambiguous' && !args['self-test']) {
+  die(EXIT.MEASUREMENT_FAIL,
+    'cannot determine which offer model this build implements. ' + OFFER_MODEL.why +
+    ' Re-run with --offer-model raw or --offer-model derived to force one, and say which in the ' +
+    'verdict.');
+}
+
 /** `Engine.seedDispositions()`, reproduced. id -> raw authored disposition. */
 const SEED_DISPOSITIONS = (() => {
   const m = new Map();
@@ -420,6 +504,14 @@ function achievableDisposition(npcId, forQuest) {
   const fxSeed = FIXTURE && FIXTURE.seed_disposition;
   let seeded = SEED_DISPOSITIONS.has(npcId);
   let seed = seeded ? SEED_DISPOSITIONS.get(npcId) : 0;
+  // `unseed_givers` fixture: reproduce a giver with NO NPC record, which is what this tree
+  // shipped at the start of tool round 3 — `seedDispositions()` writes nothing and gate.js
+  // `num(undefined)` reads 0. It is the RED half of the falsification and it must keep working
+  // after the data is fixed, or the check becomes a description of one afternoon's tree.
+  if (FIXTURE && FIXTURE.unseed_givers) {
+    const u = FIXTURE.unseed_givers;
+    if (u === true || (Array.isArray(u) && u.includes(npcId))) { seeded = false; seed = 0; }
+  }
   if (fxSeed !== undefined && fxSeed !== null) {
     const v = typeof fxSeed === 'number' ? fxSeed : fxSeed[npcId];
     if (Number.isFinite(v)) { seeded = true; seed = v; }
@@ -439,11 +531,36 @@ function achievableDisposition(npcId, forQuest) {
   };
 }
 
-/** The disposition table the engine would hand `canOffer`, with the bound applied to the giver. */
-function seededDispositionCtx(giverId, reach) {
+/**
+ * The disposition table the engine hands `canOffer`, under whichever model this build implements.
+ *
+ *  raw      — `q.dispositions[id] = rec.disposition` and `canOffer` reads it. Race-invariant.
+ *  derived  — `QuestEngine.context().dispositions = dispositionView()`, every entry run through
+ *             `_dispositionToward()` = `derivedDisposition(matrix, {group, race, upbringing,
+ *             birthsign, baseDisposition: register, otherTerms: movableTerms})`. Race-SENSITIVE,
+ *             and the register value is the BASE the matrix works on, not the answer.
+ *
+ * The derived branch uses the same `MODEL.disposition_other_terms_ceiling` upper bound for the
+ * movable terms that the counterfactual has always used: Personality, faction rank, reputation,
+ * same-race and gifts at their joint maximum. Player-optimal, so a gate this cannot clear is a
+ * gate no play can clear — which is what criterion 3 asks.
+ */
+function offerDispositionCtx(sheet, giverId, reach) {
   const t = Object.fromEntries(SEED_DISPOSITIONS);
+  if (FIXTURE && FIXTURE.unseed_givers === true) for (const k of Object.keys(t)) t[k] = 0;
+  else if (FIXTURE && Array.isArray(FIXTURE.unseed_givers)) for (const k of FIXTURE.unseed_givers) delete t[k];
   if (giverId) t[giverId] = reach.value;
-  return t;
+  if (OFFER_MODEL.model !== 'derived') return t;
+  const out = {};
+  for (const [id, base] of Object.entries(t)) {
+    const g = resolveGiver(id);
+    out[id] = g.status === 'resolved'
+      ? dispositionCeiling(base, sheet.race, sheet.upbringing, sheet.birthsign, g.group)
+      // No reaction group: `_questDispositionModel()` returns null and `_dispositionToward`
+      // keeps the register value. Modelled the same way, not defaulted to something kinder.
+      : base;
+  }
+  return out;
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -837,7 +954,7 @@ function questClearableInner(sheet, q, level) {
   let reach = null;
   if (q.giver && q.giver.disposition_min != null) {
     reach = achievableDisposition(q.giver.npc_id, q);
-    ctx.dispositions = seededDispositionCtx(q.giver.npc_id, reach);
+    ctx.dispositions = offerDispositionCtx(sheet, q.giver.npc_id, reach);
   }
 
   const offer = canOffer(q, ctx, gates);
@@ -849,7 +966,18 @@ function questClearableInner(sheet, q, level) {
       // reader can act on it without re-deriving anything.
       st.npc_id = reach.npc_id;
       st.gate = `giver ${reach.npc_id} requires disposition >= ${q.giver.disposition_min}`;
-      st.race_invariant = true;
+      st.offer_model = OFFER_MODEL.model;
+      st.race_invariant = OFFER_MODEL.model !== 'derived';
+      const modelled = OFFER_MODEL.model === 'derived'
+        ? (() => {
+          const g = resolveGiver(reach.npc_id);
+          if (g.status !== 'resolved') return null;
+          const term = raceTerm(data, g.group, sheet.race, sheet.upbringing);
+          return { group: g.group, race: term.race, upbringing: term.upbringing,
+                   value: dispositionCeiling(reach.value, sheet.race, sheet.upbringing, sheet.birthsign, g.group) };
+        })()
+        : null;
+      st.modelled_disposition = modelled;
       st.why =
         (reach.seeded
           ? `seedDispositions() writes ${reach.seed} for "${reach.npc_id}" (npcs/** record, raw)`
@@ -860,9 +988,16 @@ function questClearableInner(sheet, q, level) {
         (reach.gifts_excluded_as_circular.length
           ? `; ${reach.gifts_excluded_as_circular.map((g) => `${g.quest} +${g.delta}`).join(', ')} excluded as circular (that quest is gated on this same bar)`
           : '') +
-        `, reaching ${reach.value} against a required ${q.giver.disposition_min}. ` +
-        `This gate is RACE-INVARIANT: the build never applies derivedDisposition() to the quest ` +
-        `path, so every one of the 540 signatures reads the identical number. ` +
+        `, reaching a register value of ${reach.value} against a required ${q.giver.disposition_min}. ` +
+        (modelled
+          ? `This build APPLIES the reaction matrix to the offer path (offer model "derived", ` +
+            `all three source anchors matched), so what the gate actually reads is ` +
+            `${modelled.value}: ${modelled.group} with race term ${modelled.race} and upbringing ` +
+            `term ${modelled.upbringing} on top of the register, plus every movable term at its ` +
+            `ceiling (${MODEL.disposition_other_terms_ceiling}). THIS STOP IS SIGNATURE-SPECIFIC. `
+          : `This gate is RACE-INVARIANT: the build never applies derivedDisposition() to the quest ` +
+            `path (offer model "raw", no source anchor matched), so every one of the 540 ` +
+            `signatures reads the identical number. `) +
         (reach.seeded ? '' : `And nobody by that id exists in the world, so Charm ` +
           `(sim/magic/apply.js:880) cannot reach them either. `) +
         `UNPASSABLE — RI-CHR01 §5 criterion 3, "never encounter a gate with no route it can take".`;
@@ -1178,22 +1313,65 @@ function report(records, fixture) {
     unpassable.get(s.gate).signatures++;
   }
   // Every quest carrying such a gate, not merely the first one each signature stopped at.
+  // Unpassable = no signature in the whole grid can clear it. Under the `raw` model that is
+  // signature-independent; under `derived` it is a maximum over the 10x3x3 race/upbringing/sign
+  // space, because the race term is what decides it.
   const allUnpassable = [];
   for (const q of quests) {
     if (!(q.giver && q.giver.disposition_min != null)) continue;
     const reach = withFixture(fixture, () => achievableDisposition(q.giver.npc_id, q));
-    if (reach.value < q.giver.disposition_min) {
+    const g = withFixture(fixture, () => resolveGiver(q.giver.npc_id));
+    let best = reach.value, bestSig = null;
+    if (OFFER_MODEL.model === 'derived' && g.status === 'resolved') {
+      best = -Infinity;
+      for (const race of RACES) {
+        for (const uc of UP_CLASSES) {
+          const up = UPBRINGINGS.find((u) => u.signature_class === uc);
+          for (const sf of SIGN_FAMILIES) {
+            const sign = data.birthsigns.signs.find((s) => s.family === sf);
+            const v = dispositionCeiling(reach.value, race, up.id, sign && sign.id, g.group);
+            if (v > best) { best = v; bestSig = `${race}/${uc}/${sf}`; }
+          }
+        }
+      }
+    }
+    if (best < q.giver.disposition_min) {
       allUnpassable.push({
         quest: q.id, npc_id: q.giver.npc_id, requires: q.giver.disposition_min,
-        seeded: reach.seeded, seed: reach.seed, best_achievable: reach.value,
+        offer_model: OFFER_MODEL.model,
+        seeded: reach.seeded, seed: reach.seed,
+        register_best_achievable: reach.value,
+        gate_reads: best, best_signature: bestSig,
+        reaction_group: g.group || null,
         gifts: reach.gifts, circular_gifts: reach.gifts_excluded_as_circular,
       });
     }
   }
 
-  const raceDistinctness = {
+  // How many signatures does the offer path actually distinguish? Measured, not asserted: the
+  // number of DISTINCT (criteria, stopped_at) outcomes across the grid.
+  const distinctOutcomes = new Set(records.map((r) => JSON.stringify([r.criteria, r.stopped_at && r.stopped_at.why]))).size;
+
+  const raceDistinctness = OFFER_MODEL.model === 'derived' ? {
+    finding: 'The reaction matrix REACHES the quest-offer path in this build, so RI-CHR01 ' +
+             'Distinctness is measurable from it.',
+    offer_model: OFFER_MODEL.model,
+    detected_by: OFFER_MODEL.anchors,
+    distinct_offer_outcomes_across_the_grid: distinctOutcomes,
+    consequence: distinctOutcomes > 1
+      ? `${distinctOutcomes} distinct offer-path outcomes across ${records.length} signatures — ` +
+        'the gate discriminates.'
+      : `every one of ${records.length} signatures produced the IDENTICAL outcome. The matrix is ` +
+        'wired in but nothing it can express is load-bearing at any shipped disposition_min ' +
+        '(the highest is ' + census.max_disposition_min_shipped + '). That is a content fact, ' +
+        'not a wiring fact, and it is reported here rather than counted as distinctness.',
+    owner: 'game/data/quests — the disposition_min values decide whether the wired term bites.',
+  } : {
     finding: 'RI-CHR01 Distinctness is not measurable from the quest-offer path BECAUSE THE ' +
              'BUILD DOES NOT IMPLEMENT IT — not because a data field is missing.',
+    offer_model: OFFER_MODEL.model,
+    detected_by: OFFER_MODEL.anchors,
+    distinct_offer_outcomes_across_the_grid: distinctOutcomes,
     evidence: [
       'Engine.seedDispositions() (engine.js:4563) writes q.dispositions[rec.id] = rec.disposition, raw.',
       'derivedDisposition() is called nowhere on the quest path: not canOffer(), not canResolve(), ' +
@@ -1226,6 +1404,7 @@ function report(records, fixture) {
     failures_by_criterion: byCriterion,
     levels_simulated: LEVELS,
     fixture: fixture || null,
+    offer_model: OFFER_MODEL,
     giver_census: census,
     // ROUND 3. The build failure round 2 reported as `unmeasurable` and thereby charged to the
     // corpus. `unmeasurable` routes to corpus_debt and charges nobody; `fail` charges the build.
@@ -1289,91 +1468,119 @@ function selfTest() {
     true,
     `${baseViable} viable / ${base.length - baseViable - baseUnm} not viable / ${baseUnm} unmeasurable`);
 
-  // ---- ROUND 3: THE SHIPPING OFFER GATE. Red on the tree as it stands, green when fixed. ----
+  // ---- ROUND 3: THE SHIPPING OFFER GATE. Broken -> red, whole -> green, both on this tree. ----
   //
-  // TOOL-COVERAGE-R2 §1: round 2 reported the record-less givers as `unmeasurable`, which routes
-  // to corpus_debt and charges nobody. They are a hard, race-invariant, unpassable gate in the
-  // running build and the correct verdict is FAIL. These four checks are the primary path.
+  // TOOL-COVERAGE-R2 §1: round 2 reported a giver with no NPC record as `unmeasurable`, which
+  // routes to corpus_debt and charges nobody. It is a hard, unpassable gate in the running build
+  // and the correct verdict is FAIL. These checks perturb the register rather than describing
+  // whatever the tree happens to hold today — the record-less givers WERE this tree's state at
+  // the start of this round and were fixed under it, so a check that only reads today's data
+  // would have flipped from RED to a vacuous PASS without anyone touching the instrument.
   const baseReport = report(base, null);
   const ug = baseReport.unpassable_gates;
-  ok('RED — the shipping offer gate is measured and it FAILS on this tree',
-    ug.quests_blocked > 0 && nFail(base, 'no_unpassable_gate') === base.length && baseUnm === 0,
-    `${ug.quests_blocked} quests carry a giver bar no play can reach ` +
-    `(${ug.gates.map((g) => `${g.npc_id} ${g.best_achievable}/${g.requires}`).join(', ')}); ` +
-    `no_unpassable_gate FAIL for ${nFail(base, 'no_unpassable_gate')} of ${base.length}, ` +
-    `${baseUnm} unmeasurable`);
 
-  ok('the gate is RACE-INVARIANT and the tool says so rather than inventing a race term',
-    new Set(base.map((r) => r.stopped_at && r.stopped_at.why)).size === 1,
-    `all ${base.length} signatures stop at the identical clause: ` +
-    `"${String((base[0].stopped_at || {}).why || '').slice(0, 120)}…"`);
+  ok('the offer model is DETECTED from source and reported, never assumed',
+    ['raw', 'derived'].includes(OFFER_MODEL.model),
+    `model="${OFFER_MODEL.model}" — ${OFFER_MODEL.why} anchors: ` +
+    Object.entries(OFFER_MODEL.anchors).map(([k, v]) => `${k}=${v.matched}`).join(' '));
 
-  // GREEN. Mint the seed the data does not carry and the same gate must open. A FAIL that
-  // survives the fix is a constant, not a measurement.
-  const seeded = walkAll({ seed_disposition: 100 });
-  const seededRep = report(seeded, { seed_disposition: 100 });
-  ok('GREEN — seed every giver at 100 and the unpassable gates disappear',
-    seededRep.unpassable_gates.quests_blocked === 0 && nFail(seeded, 'no_unpassable_gate') < nFail(base, 'no_unpassable_gate'),
-    `seed_disposition=100: unpassable gates ${ug.quests_blocked} -> ` +
-    `${seededRep.unpassable_gates.quests_blocked}; no_unpassable_gate FAIL ` +
-    `${nFail(base, 'no_unpassable_gate')} -> ${nFail(seeded, 'no_unpassable_gate')} of ${seeded.length}`);
+  ok('GREEN: on this tree as it stands, no giver bar is unpassable',
+    ug.quests_blocked === 0 && nFail(base, 'no_unpassable_gate') === 0,
+    `${ug.quests_blocked} unpassable gates; no_unpassable_gate FAIL ${nFail(base, 'no_unpassable_gate')}/${base.length}; ` +
+    `${baseReport.giver_census.resolving_to_a_reaction_group}/${baseReport.giver_census.quests_with_a_giver_disposition_min} ` +
+    `givers resolve to a reaction group`);
 
-  // And it is not a step function on "a record exists": the NUMBER must be read. Seed each of
-  // the nine at exactly one below its own requirement, then at exactly its requirement. Blocking
-  // at N-1 and opening at N is the difference between a bar and a presence check. The gifts are
-  // subtracted first so this tests the bar and not the gift arithmetic twice.
-  const seedAt = (delta) => Object.fromEntries(ug.gates.map((g) => [g.npc_id, g.requires - (g.best_achievable - g.seed) + delta]));
-  const fxUnder = { seed_disposition: seedAt(-1) };
-  const fxOver = { seed_disposition: seedAt(0) };
-  const nUnder = report(walkAll(fxUnder), fxUnder).unpassable_gates.quests_blocked;
-  const nOver = report(walkAll(fxOver), fxOver).unpassable_gates.quests_blocked;
-  ok('the bar is READ, not merely the presence of a record (N-1 blocks, N opens)',
-    nUnder === ug.quests_blocked && nOver === 0,
-    `each of the nine seeded at (requirement - gifts - 1): ${nUnder}/${ug.quests_blocked} still ` +
-    `unpassable; at (requirement - gifts): ${nOver} unpassable`);
+  // RED. Reproduce the defect this tree shipped this morning: givers with no NPC record, so
+  // `seedDispositions()` writes nothing and `gate.js num(undefined)` reads 0.
+  const fxUnseed = { unseed_givers: true };
+  const unseeded = walkAll(fxUnseed);
+  const unseededRep = report(unseeded, fxUnseed);
+  ok('RED: unseed every giver (no NPC record) and the gate FAILS, as a build failure not as unmeasurable',
+    unseededRep.unpassable_gates.quests_blocked > 0
+    && nFail(unseeded, 'no_unpassable_gate') > 0
+    && unseeded.filter((r) => r.unmeasurable).length === 0,
+    `${unseededRep.unpassable_gates.quests_blocked} gates unpassable ` +
+    `(${unseededRep.unpassable_gates.gates.slice(0, 4).map((g) => `${g.npc_id} ${g.gate_reads}/${g.requires}`).join(', ')}…); ` +
+    `no_unpassable_gate FAIL ${nFail(unseeded, 'no_unpassable_gate')}/${unseeded.length}, ` +
+    `${unseeded.filter((r) => r.unmeasurable).length} unmeasurable`);
 
-  // The gifts model is live: a giver seeded just below its bar must be opened by a quest gift.
-  ok('quest npc_disposition consequences are counted as a route (machine.js:424)',
-    ug.gates.every((g) => Array.isArray(g.gifts))
-    && ug.gates.some((g) => g.circular_gifts.length > 0),
-    `${ug.gates.filter((g) => g.circular_gifts.length).length} of ${ug.gates.length} blocked gates ` +
-    `have a positive gift that is CIRCULAR — the only quest that raises the giver is the quest ` +
-    `the giver gates. e.g. ` +
-    (ug.gates.find((g) => g.circular_gifts.length)
-      ? `${ug.gates.find((g) => g.circular_gifts.length).npc_id}: ` +
-        ug.gates.find((g) => g.circular_gifts.length).circular_gifts.map((c) => `${c.quest} +${c.delta}`).join(', ')
-      : 'n/a'));
+  ok('RED is PARTIAL, not a constant: the bar is compared, not the presence of a record',
+    unseededRep.unpassable_gates.quests_blocked < baseReport.giver_census.quests_with_a_giver_disposition_min,
+    `${unseededRep.unpassable_gates.quests_blocked} of ` +
+    `${baseReport.giver_census.quests_with_a_giver_disposition_min} givers blocked at register 0 ` +
+    `(the shipped requirements run ` +
+    `${Math.min(...quests.filter((q) => q.giver && q.giver.disposition_min != null).map((q) => q.giver.disposition_min))}` +
+    `-${baseReport.giver_census.max_disposition_min_shipped}) — an all-or-nothing count either way ` +
+    `would mean the number is not being read`);
 
-  // ---- the COUNTERFACTUAL race bar. Labelled, and it must never be the verdict. -------------
+  // N-1 blocks, N opens, on the gates the RED produced.
+  const blocked = unseededRep.unpassable_gates.gates;
+  if (blocked.length) {
+    const need = (g, d) => g.requires - (g.gate_reads - g.seed) + d;
+    const fxU = { unseed_givers: true, seed_disposition: Object.fromEntries(blocked.map((g) => [g.npc_id, need(g, -1)])) };
+    const fxO = { unseed_givers: true, seed_disposition: Object.fromEntries(blocked.map((g) => [g.npc_id, need(g, 0)])) };
+    const nUnder = report(walkAll(fxU), fxU).unpassable_gates.quests_blocked;
+    const nOver = report(walkAll(fxO), fxO).unpassable_gates.quests_blocked;
+    ok('the NUMBER is read: seeded at N-1 the gate blocks, at N it opens',
+      nUnder === blocked.length && nOver === 0,
+      `${blocked.length} blocked gates seeded one below their own requirement: ${nUnder} still blocked; ` +
+      `seeded AT their requirement: ${nOver} blocked`);
+  } else {
+    ok('the NUMBER is read: seeded at N-1 the gate blocks, at N it opens', false,
+      'the RED produced no blocked gates, so this could not be exercised');
+  }
+
+  // The gift model (machine.js:424) is live and CIRCULAR gifts are excluded.
+  const giftedNpcs = [...DISPOSITION_GIFTS.keys()];
+  const circular = quests.filter((q) => q.giver && q.giver.disposition_min != null)
+    .map((q) => withFixture(fxUnseed, () => achievableDisposition(q.giver.npc_id, q)))
+    .filter((r) => r.gifts_excluded_as_circular.length);
+  ok('quest npc_disposition consequences are counted as a route, and CIRCULAR ones are excluded',
+    giftedNpcs.length > 0 && circular.length > 0,
+    `${giftedNpcs.length} npcs receive a positive disposition consequence somewhere in ` +
+    `game/data/quests/**; ${circular.length} givers have one authored on the very quest they ` +
+    `gate, which cannot be a route and is excluded. e.g. ${circular[0] ? circular[0].npc_id + ': ' +
+      circular[0].gifts_excluded_as_circular.map((c) => c.quest + ' +' + c.delta).join(', ') : 'n/a'}`);
+
+  // ---- the COUNTERFACTUAL. Labelled, and it must never be the verdict. ----------------------
   const FLOOR = 50;   // the maximum disposition_min shipped anywhere in game/data/quests/**
-  ok('the counterfactual is carried on every record and is NOT a criterion',
+  ok('every record carries a LABELLED counterfactual and no criterion reads it',
     base.every((r) => r.counterfactual_race_gate && r.counterfactual_race_gate.label.startsWith('COUNTERFACTUAL'))
-    && !Object.values(base[0].criteria).includes(undefined)
-    && base.every((r) => r.counterfactual_race_gate.would_block === false),
-    `all ${base.length} records carry counterfactual_race_gate; on shipped data it blocks nobody ` +
-    `because 0 of ${baseReport.giver_census.quests_with_a_giver_disposition_min} givers resolve to a ` +
-    `reaction group at all`);
+    && base.every((r) => !Object.values(r.criteria).includes(undefined)),
+    `all ${base.length} records carry counterfactual_race_gate; it names the hypothesis ` +
+    `("${base[0].counterfactual_race_gate.hypothesis.slice(0, 70)}…") and the four criteria are ` +
+    `computed without it`);
 
   const granted = walkAll({ giver_reaction_group: 'RG-DEEP', quest_disposition_floor: FLOOR });
   const cfBlocked = granted.filter((r) => r.counterfactual_race_gate.would_block).length;
   const cfDunmer = granted.filter((r) => r.signature.startsWith('dunmer/') && r.counterfactual_race_gate.would_block).length;
   const cfSax = granted.filter((r) => r.signature.startsWith('saxhleel/') && !r.counterfactual_race_gate.would_block).length;
-  ok('the counterfactual DISCRIMINATES by race+upbringing (RI-MTH06 §A\'s worked example)',
+  ok('the race+upbringing bar DISCRIMINATES (RI-MTH06 §A\'s worked example)',
     cfBlocked > 0 && cfBlocked < granted.length && cfDunmer > 0 && cfSax > 0,
-    `givers -> RG-DEEP at ${FLOOR}: the counterfactual would block ${cfBlocked}/${granted.length} ` +
-    `(${cfDunmer} dunmer blocked, ${cfSax} saxhleel not). THE PRIMARY VERDICT IS UNMOVED by the ` +
-    `race term, and that is the point: the build does not read it.`);
+    `givers -> RG-DEEP at ${FLOOR}: blocks ${cfBlocked}/${granted.length} ` +
+    `(${cfDunmer} dunmer blocked, ${cfSax} saxhleel not)`);
+
   const upSplit = [...new Set(UP_CLASSES.map((uc) => {
     const up = UPBRINGINGS.find((u) => u.signature_class === uc);
     return dispositionCeiling(50, 'dunmer', up.id, null, 'RG-DEEP');
   }))];
-  ok('the counterfactual reads the UPBRINGING term, not only the race term',
+  ok('the UPBRINGING term is read, not only the race term',
     upSplit.length > 1,
     `dunmer ceilings against RG-DEEP by upbringing: ` +
     UP_CLASSES.map((uc) => {
       const up = UPBRINGINGS.find((u) => u.signature_class === uc);
       return `${up.id}=${dispositionCeiling(50, 'dunmer', up.id, null, 'RG-DEEP')}`;
     }).join(' '));
+
+  // How much distinctness the offer path actually delivers, reported rather than assumed.
+  ok('the distinctness the offer path delivers is MEASURED and reported either way', true,
+    `offer model ${OFFER_MODEL.model}; ` +
+    `${baseReport.race_distinctness.distinct_offer_outcomes_across_the_grid} distinct outcome(s) ` +
+    `across ${base.length} signatures on shipped data. ` +
+    (baseReport.race_distinctness.distinct_offer_outcomes_across_the_grid === 1
+      ? 'ONE outcome: the matrix is wired in but no shipped disposition_min is high enough for it ' +
+        'to bite. That is a content fact and it is reported as one, not counted as distinctness.'
+      : 'the gate discriminates between signatures.'));
 
   // ---- criterion 4: the cohort resolution path --------------------------------------------
   const cohort = base.__cohort;
@@ -1485,7 +1692,85 @@ if (args.signature) {
   }
 }
 
+// ---------------------------------------------------------------------------------------------
+// --cross-check. RI-MTH06 §A requires this tool to be a STATIC walk so it can run in CI, and
+// RI-MTH07 says a tool that reads a data file and reports on the data file is measuring the
+// design document. This mode is how both are honoured at once: on demand, boot the game and
+// compare THIS TOOL'S per-giver disposition numbers against the ones the running build hands
+// `canOffer`. A disagreement means the static model has drifted from the world — which is
+// exactly what happened to this file mid-round-3, when another agent wired the reaction matrix
+// into the quest path and every hard-coded model in the tree became wrong overnight.
+// ---------------------------------------------------------------------------------------------
+async function crossCheck() {
+  const { launchGame } = await import('../lib/browser.mjs');
+  const handle = await launchGame({ ...args, width: 320, height: 240, timeout: Number(args.timeout || 120000) });
+  try {
+    await handle.page.evaluate(() => { try { window.__HARNESS.setRenderRate(0); } catch { /* ignore */ } });
+    const ch = await handle.hOpt('getCharacter');
+    const live = await handle.h('questOffers');
+    const list = live.offers || live;
+    const clauses = {};
+    for (const o of (Array.isArray(list) ? list : Object.values(list))) {
+      for (const w of (o && o.why) || []) {
+        const m = /^(\S+) disposition (\d+)\/(\d+)$/.exec(String(w));
+        if (m) clauses[m[1]] = { reads: Number(m[2]), requires: Number(m[3]) };
+      }
+    }
+    const explain = {};
+    for (const id of Object.keys(clauses)) explain[id] = await handle.hOpt('explainDisposition', id);
+
+    // The tool's own number for the SAME character the running build is using.
+    const sheetRace = (ch && ch.race) || null;
+    const sheetUp = (ch && ch.upbringing) || null;
+    const sheetSign = (ch && ch.birthsign) || null;
+    const rows = [];
+    for (const q of quests) {
+      if (!(q.giver && q.giver.disposition_min != null)) continue;
+      const reach = achievableDisposition(q.giver.npc_id, q);
+      const g = resolveGiver(q.giver.npc_id);
+      const toolReads = (OFFER_MODEL.model === 'derived' && g.status === 'resolved' && sheetRace)
+        ? dispositionCeiling(SEED_DISPOSITIONS.get(q.giver.npc_id) ?? 0, sheetRace, sheetUp, sheetSign, g.group)
+        : (SEED_DISPOSITIONS.get(q.giver.npc_id) ?? 0);
+      const engineClause = clauses[q.giver.npc_id] || null;
+      rows.push({
+        quest: q.id, npc_id: q.giver.npc_id, requires: q.giver.disposition_min,
+        tool_register: SEED_DISPOSITIONS.get(q.giver.npc_id) ?? 0,
+        tool_best_achievable: reach.value,
+        tool_gate_reads_for_this_character: toolReads,
+        engine_clause: engineClause,
+        engine_explain: explain[q.giver.npc_id] || null,
+        // The clause only appears when the engine REFUSED, so agreement is checked in the
+        // direction the engine actually reports: if the engine refused, the tool must too.
+        agrees: engineClause ? (toolReads < q.giver.disposition_min) : true,
+      });
+    }
+    const disagreements = rows.filter((r) => !r.agrees);
+    return {
+      character: { race: sheetRace, upbringing: sheetUp, birthsign: sheetSign },
+      offer_model_detected: OFFER_MODEL.model,
+      engine_disposition_clauses: clauses,
+      rows,
+      disagreements,
+      agrees: disagreements.length === 0,
+      note: 'The engine only emits a disposition clause when it REFUSES, so this checks the ' +
+            'direction that matters: every giver the running build refused must also be refused ' +
+            'by the static model for the same character. A disagreement means this file has ' +
+            'drifted from game/src and its verdict may not be scored.',
+    };
+  } finally { await handle.close().catch(() => {}); }
+}
+
 const rep = report(records, fixture);
+if (args['cross-check']) {
+  rep.cross_check = await crossCheck();
+  process.stdout.write(
+    `cross-check against the running build: ${rep.cross_check.agrees ? 'AGREES' : 'DISAGREES'} ` +
+    `(${rep.cross_check.disagreements.length} disagreement(s); offer model ${rep.cross_check.offer_model_detected}; ` +
+    `engine refused ${Object.keys(rep.cross_check.engine_disposition_clauses).length} giver(s))\n`);
+  for (const d of rep.cross_check.disagreements) {
+    process.stdout.write(`  DISAGREE ${d.quest} ${d.npc_id}: engine ${JSON.stringify(d.engine_clause)} vs tool reads ${d.tool_gate_reads_for_this_character}\n`);
+  }
+}
 const outPath = args.out ? path.resolve(String(args.out)) : path.join(REPO_ROOT, 'reports', 'viability.json');
 writeJson(outPath, rep);
 

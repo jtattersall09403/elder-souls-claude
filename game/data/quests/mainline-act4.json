@@ -352,8 +352,10 @@
       "giver": {
         "npc_id": "factor-ruvela-sath",
         "location": "Gideon, the counting floor over the toll gate at the market cross",
-        "disposition_min": 35,
-        "honest": false
+        "disposition_min": 31,
+        "honest": false,
+        "disposition_min_race_blind": 35,
+        "disposition_min_note": "W1-07 round 4. This gate was authored against a disposition register that ignored race; the RI-CHR02 matrix now reaches gate.js canOffer(), and at this giver the 12x10 row spans up to 64 points, so the authored bar excluded named races permanently with no route through. RI-CHR01 §5 criterion 3 forbids a gate with no route a signature can take, so a category:\"main\" bar is clamped to the cold-start standing of the WORST of the 540 signatures at this giver. The main quest is a writ, not a favour: what the province thinks of your race changes what else it will let you do, never whether you can finish. The gate still bites — quest consequences subtract, and a player who has burned this person falls under it. The race-blind value is preserved beside it."
       },
       "opens_by": {
         "topic": "the ledger's terms",
@@ -681,8 +683,10 @@
       "giver": {
         "npc_id": "rootkeeper-ashul-tei",
         "location": "Helstrom, the root gallery under the eastern terrace",
-        "disposition_min": 35,
-        "honest": true
+        "disposition_min": 1,
+        "honest": true,
+        "disposition_min_race_blind": 35,
+        "disposition_min_note": "W1-07 round 4. This gate was authored against a disposition register that ignored race; the RI-CHR02 matrix now reaches gate.js canOffer(), and at this giver the 12x10 row spans up to 64 points, so the authored bar excluded named races permanently with no route through. RI-CHR01 §5 criterion 3 forbids a gate with no route a signature can take, so a category:\"main\" bar is clamped to the cold-start standing of the WORST of the 540 signatures at this giver. The main quest is a writ, not a favour: what the province thinks of your race changes what else it will let you do, never whether you can finish. The gate still bites — quest consequences subtract, and a player who has burned this person falls under it. The race-blind value is preserved beside it."
       },
       "opens_by": {
         "topic": "the interior's consent",
@@ -1277,8 +1281,10 @@
       "giver": {
         "npc_id": "prefect-galvus-arn",
         "location": "Stormhold, the walled quarter above the cistern",
-        "disposition_min": 35,
-        "honest": false
+        "disposition_min": 17,
+        "honest": false,
+        "disposition_min_race_blind": 35,
+        "disposition_min_note": "W1-07 round 4. This gate was authored against a disposition register that ignored race; the RI-CHR02 matrix now reaches gate.js canOffer(), and at this giver the 12x10 row spans up to 64 points, so the authored bar excluded named races permanently with no route through. RI-CHR01 §5 criterion 3 forbids a gate with no route a signature can take, so a category:\"main\" bar is clamped to the cold-start standing of the WORST of the 540 signatures at this giver. The main quest is a writ, not a favour: what the province thinks of your race changes what else it will let you do, never whether you can finish. The gate still bites — quest consequences subtract, and a player who has burned this person falls under it. The race-blind value is preserved beside it."
       },
       "opens_by": {
         "topic": "the writ of works",
@@ -1548,8 +1554,10 @@
       "giver": {
         "npc_id": "dockmaster-weeja-sen",
         "location": "Lilmoth, the third mooring at the head of the wharf",
-        "disposition_min": 25,
-        "honest": true
+        "disposition_min": 18,
+        "honest": true,
+        "disposition_min_race_blind": 25,
+        "disposition_min_note": "W1-07 round 4. This gate was authored against a disposition register that ignored race; the RI-CHR02 matrix now reaches gate.js canOffer(), and at this giver the 12x10 row spans up to 64 points, so the authored bar excluded named races permanently with no route through. RI-CHR01 §5 criterion 3 forbids a gate with no route a signature can take, so a category:\"main\" bar is clamped to the cold-start standing of the WORST of the 540 signatures at this giver. The main quest is a writ, not a favour: what the province thinks of your race changes what else it will let you do, never whether you can finish. The gate still bites — quest consequences subtract, and a player who has burned this person falls under it. The race-blind value is preserved beside it."
       },
       "opens_by": {
         "topic": "the hiring list",
@@ -1824,8 +1832,10 @@
       "giver": {
         "npc_id": "rootkeeper-sesh-anaat",
         "location": "Thorn, the sapwell at the foot of the causeway",
-        "disposition_min": 30,
-        "honest": true
+        "disposition_min": 1,
+        "honest": true,
+        "disposition_min_race_blind": 30,
+        "disposition_min_note": "W1-07 round 4. This gate was authored against a disposition register that ignored race; the RI-CHR02 matrix now reaches gate.js canOffer(), and at this giver the 12x10 row spans up to 64 points, so the authored bar excluded named races permanently with no route through. RI-CHR01 §5 criterion 3 forbids a gate with no route a signature can take, so a category:\"main\" bar is clamped to the cold-start standing of the WORST of the 540 signatures at this giver. The main quest is a writ, not a favour: what the province thinks of your race changes what else it will let you do, never whether you can finish. The gate still bites — quest consequences subtract, and a player who has burned this person falls under it. The race-blind value is preserved beside it."
       },
       "opens_by": {
         "topic": "the keepers' leave",
@@ -2099,8 +2109,10 @@
       "giver": {
         "npc_id": "salt-factor-neloth-vaun",
         "location": "Archon, the Dres factor-house behind the stone quay",
-        "disposition_min": 40,
-        "honest": false
+        "disposition_min": 15,
+        "honest": false,
+        "disposition_min_race_blind": 40,
+        "disposition_min_note": "W1-07 round 4. This gate was authored against a disposition register that ignored race; the RI-CHR02 matrix now reaches gate.js canOffer(), and at this giver the 12x10 row spans up to 64 points, so the authored bar excluded named races permanently with no route through. RI-CHR01 §5 criterion 3 forbids a gate with no route a signature can take, so a category:\"main\" bar is clamped to the cold-start standing of the WORST of the 540 signatures at this giver. The main quest is a writ, not a favour: what the province thinks of your race changes what else it will let you do, never whether you can finish. The gate still bites — quest consequences subtract, and a player who has burned this person falls under it. The race-blind value is preserved beside it."
       },
       "opens_by": {
         "topic": "the salt factor",

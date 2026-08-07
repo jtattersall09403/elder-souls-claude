@@ -12,6 +12,8 @@
  *     produce the same file with the same sha256, and all but the first must be cache hits.
  *  3. A big job does not starve a small one. With a 40-frame pack queued on one connection, a
  *     second client asking for a single frame waits about ONE frame, not forty.
+ *  4. A client that dies mid-request does not take the daemon with it, and its work is not
+ *     wasted: the in-flight capture finishes and lands in the cache.
  *
  * Each "agent" is a real child process running the real client, because the thing under test is
  * exactly what happens between processes.
@@ -21,7 +23,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { execFile } from 'node:child_process';
+import { execFile, spawn } from 'node:child_process';
 import { parseArgs, wantsHelp, usage, ensureDir, log, EXIT, REPO_ROOT, readJson } from '../lib/cli.mjs';
 import { CaptureSession } from './client.mjs';
 
@@ -174,6 +176,50 @@ const results = {};
     pass: !!median && smallMs < median * 4,
   };
   log(`fairness: pack median ${median} ms/frame; the one-frame client waited ${smallMs} ms (FIFO would be ~${median ? median * BIG : '?'} ms)`);
+}
+
+// -------------------------------------------------------------------------------------------
+// 4: a client that dies mid-request must not take the daemon with it
+// -------------------------------------------------------------------------------------------
+{
+  const p = pt(regions[4], 3);
+  const yaw = String((Math.floor(Math.random() * 100000)) % 360);
+  const argv = ['--at', `${p.x},${p.z}`, '--yaw', yaw, '--time', '11', '--weather', 'clear', '--width', '960', '--height', '540'];
+
+  const child = spawn(process.execPath, [path.join(REPO_ROOT, 'tools/harness/shot.mjs'), ...argv],
+    { cwd: REPO_ROOT, stdio: 'ignore' });
+  // Let the request get onto the wire and into the browser, then kill the client outright.
+  await new Promise((r) => setTimeout(r, 1200));
+  child.kill('SIGKILL');
+  const killed = await new Promise((r) => child.on('exit', (code, sig) => r({ code, sig })));
+
+  // The daemon must still be there, and must still work.
+  let alive = null, err = null;
+  const s2 = new CaptureSession();
+  try { alive = await s2.status(); } catch (e) { err = e; }
+
+  // And the work must not have been thrown away: the in-flight job runs to completion and is
+  // written to the cache, so asking for the same picture again is a HIT.
+  let again = null;
+  const t0 = Date.now();
+  try { again = await s2.capture({ evidence_of: 'appearance', place: p, pose: { yaw_deg: Number(yaw), pitch_deg: 4.3, eye_m: 1.7, fov: 70 }, time: 11, weather: 'clear', width: 960, height: 540 }); }
+  catch (e) { err = err || e; }
+  const againMs = Date.now() - t0;
+  s2.close();
+
+  results.client_death = {
+    what: 'SIGKILL a client process 1.2 s into its capture',
+    must: 'the daemon survives, and the in-flight work is still written to the cache',
+    child_signal: killed.sig,
+    daemon_alive: !!(alive && alive.running),
+    daemon_pid: alive && alive.pid,
+    daemon_errors: alive && alive.stats && alive.stats.errors,
+    same_request_afterwards_cached: again ? again.cached : null,
+    same_request_afterwards_ms: againMs,
+    error: err ? String(err.message) : null,
+    pass: !!(alive && alive.running) && !!again && again.cached === true,
+  };
+  log(`client death: daemon alive=${!!(alive && alive.running)}, the killed job's picture came back from cache=${again ? again.cached : 'n/a'} in ${againMs} ms`);
 }
 
 const failed = Object.entries(results).filter(([, v]) => !v.pass).map(([k]) => k);

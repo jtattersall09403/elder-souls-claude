@@ -94,7 +94,9 @@ export class CaptureSession {
         const err = new CaptureError('capture daemon connection closed', 'DISCONNECTED');
         for (const [, p] of this.pending) p.reject(err);
         this.pending.clear();
-        this.sock = null;
+        // Only disown the socket if it is still ours: a retry may already have installed a
+        // replacement, and clobbering that would strand the very call the retry exists to make.
+        if (this.sock === c) this.sock = null;
       });
     });
   }

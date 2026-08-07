@@ -4653,7 +4653,17 @@ export class Engine {
     return {
       race: ch ? ch.race : this.sim.identity.race,
       upbringing: ch ? ch.upbringing : this.sim.identity.upbringing,
-      Personality: Number(attrs.personality || 0),
+      // DECLARED EXCLUSION, measured rather than assumed. RI-DLG04 §B's Personality term is
+      // `0.5 * (Personality - 50)`, transcribed from a GMST calibrated against Morrowind's
+      // live dialogue slider. This build's `progression/attributes.json` has `base_value: 10`
+      // and a starting Personality of 5-20 — a saxhleel reed-walker ships with 6 — so the term
+      // is a flat **-22 against every person in the province at level 1**, for every race
+      // alike. Applying it here would silently re-calibrate every `disposition_min` W1-19
+      // authored, by an amount nobody authored, in the name of a race fix. Passing the GMST's
+      // own base makes the term exactly 0 and leaves Personality where it belongs and already
+      // works: persuasion, barter and greetings. Naming this rather than dropping it silently,
+      // because "the gate moved and we do not know why" is how the last three rounds were lost.
+      Personality: (this.data.persuasionGmst && this.data.persuasionGmst.gmst.fDispPersonalityBase) || 50,
       factions: (this.sim.quest && this.sim.quest.factions) || {},
       bounty,
       // Charm writes straight into the register (`sim/magic/apply.js`), so counting it here
@@ -4687,20 +4697,19 @@ export class Engine {
         + `${missing.length} with no NPC record (${missing.slice(0, 8).join(', ')}), `
         + `${ungrouped.length} with a record and no reaction_group (${ungrouped.slice(0, 8).join(', ')}). `
         + 'A giver in either list gates every race identically; see game/data/npcs/**.';
-      // ORCHESTRATOR NOTE — the assertion is right and stays; only its severity is temporary.
-      // It landed before the data that satisfies it, so it threw out of _boot and made HEAD
-      // unbootable for six concurrent agents, whose measurements are void against a game that
-      // will not start. Downgraded to a loud warning until the records are filled.
+      // RE-ARMED. This guard was briefly a warning: it landed ahead of the data that satisfies
+      // it and made HEAD unbootable for six concurrent agents, whose measurements are void
+      // against a game that will not start. `game/data/npcs/quest-givers.json` (19 records) and
+      // the reaction groups on `npcs/mainline.json` (37 records) now satisfy it, so it fails
+      // closed again — a giver that gates every race identically is exactly the defect this was
+      // written to catch, and it shipped a whole wave invisible to every instrument.
       //
-      // TO RE-ARM: fill the givers above, then set STRICT to true in the SAME commit and confirm
-      // `node tools/harness/boot-check.mjs` passes. Failing closed here is correct once the data
-      // can satisfy it — a giver that gates every race identically is exactly the defect this
-      // was written to catch, and it shipped a whole wave invisible to every instrument.
-      //
-      // And note the guard alone does not close the piece: derivedDisposition() never touches the
-      // quest path, so complete data will turn this green while the offer path is still
-      // race-invariant. Both halves, or neither.
-      const STRICT = false;
+      // The guard alone does not close that defect and must never be read as if it did:
+      // `derivedDisposition()` did not touch the quest path at all, so complete data turns this
+      // green while the offer path stays race-invariant. The other half is
+      // `_questDispositionModel()` above, installed on `QuestEngine.dispositionModel`.
+      // Both halves, or neither.
+      const STRICT = true;
       if (STRICT) throw new Error(msg);
       console.warn('[engine] ' + msg);
       return { givers_checked: this.questBook.ids.length, missing: missing.length, ungrouped: ungrouped.length, strict: false };

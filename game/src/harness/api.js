@@ -1103,6 +1103,21 @@ export function installHarness(engine, bootPromise) {
     questFail(id, failureId) { return engine.questEngine.fail(String(id), String(failureId)); },
     questSetFlag(flag, v) { return engine.questEngine.setFlag(String(flag), v === undefined ? true : v); },
     questBook() { return engine.questEngine ? engine.questEngine.book.ids.slice() : []; },
+    /**
+     * What a quest DECLARES about how it opens and who gives it. Read-only. A probe that has to
+     * re-read `game/data/quests/**` off disk to learn a quest's `opens_by.topic` is measuring
+     * the paperwork, not the build (`RI-MTH07`).
+     */
+    questDef(id) {
+      const q = engine.questEngine.book.get(String(id));
+      return {
+        id: q.id, title: q.title, category: q.category,
+        giver: q.giver ? { ...q.giver } : null,
+        opens_by: q.opens_by ? JSON.parse(JSON.stringify(q.opens_by)) : null,
+        rank_gate: q.rank_gate ? { ...q.rank_gate } : null,
+        mutually_exclusive_with: (q.mutually_exclusive_with || []).slice(),
+      };
+    },
     questEventsDrain() { return engine.questEngine ? engine.questEngine.drainEvents() : []; },
     /** What a named resolution actually requires, so a probe can satisfy it rather than guess. */
     questResolutionRequirements(questId, resolutionId) {
@@ -1136,6 +1151,24 @@ export function installHarness(engine, bootPromise) {
     setDisposition(npcId, v) {
       engine.sim.quest.dispositions[String(npcId)] = Math.max(0, Math.min(100, Number(v)));
       return engine.sim.quest.dispositions[String(npcId)];
+    },
+
+    /**
+     * READ and WRITE faction standing. The write half exists for the same reason
+     * `setDisposition` does: `race-reactions.json` §repair_paths names the RI-DLG04 §B faction
+     * term as the ONE thing that pays off a -40 race row, and a probe that cannot move it
+     * cannot show that the race handicap has a route through it rather than being a wall.
+     * Reputation is what the quest consequences write; rank is DERIVED from it by
+     * `FactionGates.highestQualifying()` in `QuestEngine.context()`, so setting reputation here
+     * drives the same ladder play drives.
+     */
+    getFactionStanding() { return JSON.parse(JSON.stringify(engine.sim.quest.factions)); },
+    setFactionStanding(id, patch) {
+      const f = String(id);
+      const q = engine.sim.quest;
+      if (!q.factions[f]) q.factions[f] = { member: false, rank: 0, reputation: 0, expelled: false, rivalry_locked: [] };
+      Object.assign(q.factions[f], patch || {});
+      return JSON.parse(JSON.stringify(q.factions[f]));
     },
 
     /** Seed a dialogue topic. The topic gate on `opens_by` is what makes a quest offerable. */

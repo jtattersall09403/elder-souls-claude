@@ -374,6 +374,55 @@ cross-wave comparison that used it, so poses are append-only in practice.
 >
 > See `CORPUS-COHERENCE-01.md` §8.
 
+> **AMENDED wave 1 (`ARBITRATION.md` S34) — screenshots come from a shared capture daemon, and
+> every one of them declares what it is evidence of.**
+>
+> Nothing in the table above changes. What changes is *how* the frame is obtained and *what it
+> carries with it*.
+>
+> **One browser for the box.** Boot costs ~9 s and each further shot ~2.2 s, so batching inside a
+> tool was never the problem — every agent running its own browser was. At peak, forty
+> `headless_shell` processes on four cores drove load to 44–103 and a 1280×720 frame from 25 s to
+> 150–260 s, and the W1-01 round-4 region pack managed three frames in twelve minutes and was
+> abandoned. `tools/capture/server.mjs` is a long-lived daemon holding one browser and one booted
+> engine; `tools/harness/shot.mjs` is the one-command client; `tools/capture/client.mjs` is the
+> library. Starting it is automatic and idempotent, so an agent never has to know whether it is
+> running. `shoot.mjs`, `province-shots.mjs` and `w1-01-r4-shots.mjs` route through it by default
+> and keep their private-browser path under `--direct`.
+>
+> **A build-keyed cache.** A repeat of an identical request is free. The key is a content hash of
+> the whole `game/` tree ⊕ the viewpoint id ⊕ every condition that changes the image (time,
+> weather, resolution, pose, state, seed, setup ops). A stale picture cannot outlive the code that
+> drew it.
+>
+> **Provenance is mandatory, per S34.** Every capture carries `arrival: "placed"`, the build key
+> and git sha, its settle proof, and whether it came from cache, in a sidecar `.json`. These are
+> **placed** captures — teleported to and posed — which S34(a) makes legitimate evidence of
+> *appearance* and S34(b) forbids as evidence of *arrival*. **A verdict citing one of these frames
+> for an arrival claim is VOID.** The daemon refuses to take the picture at all if the claim names
+> `RI-JRN*`, reachability, traversal, the crossing, or a duration.
+>
+> **The settle row above is now a proof, not a convention.** "24 fixed steps after posing, then
+> render" is the *remedy*; the *check* is three gates, all of which must pass or the capture is an
+> error rather than a picture: **G1 residency** (the tiles the camera can see are built —
+> `streamAround(camX, camZ, 0).queued === 0`), **G2 quiescence** (the streamer has nothing
+> outstanding), and **G3 stability** (three frames A(t), B(t+12), C(t+24), gated on
+> `excess = max(0, |A−B| − |B−C|) ≤ 0.005`).
+>
+> G1 exists because image stability alone is **not sufficient on this build, measured**: the
+> province streamer is pumped only from `engine.teleport()` and `engine._applyCell()`, never from
+> the fixed step, so a camera posed where the player has never been renders an empty world and goes
+> on rendering the *same* empty world — two frames twelve apart are byte-identical, and 5 of 5
+> controls passed a naive stability test with 19–25 tiles unbuilt.
+>
+> G3 is ambient-corrected because this world is alive: a legitimately settled frame moves up to
+> 8.7% of its pixels in 12 frames while a frame with terrain still arriving can move 0.6%, so no
+> absolute two-frame threshold separates them (`separated: false` at every block size tested).
+> Subtracting the scene's own motion floor does separate them, cleanly. Threshold and gap are
+> derived in `reports/capture/SETTLE-CALIBRATION.json` by `tools/capture/calibrate-settle.mjs`;
+> the gates are attacked by `tools/capture/falsify.mjs`, which exits non-zero if any attack
+> succeeds. See `tools/capture/README.md`.
+
 ---
 
 ## 7. The data-inspection contract (hard architectural requirement)
@@ -516,7 +565,8 @@ trace header, and must appear in any verdict citing the run (`RI-MTH04`).
 node tools/harness/smoke.mjs                                        # 1. environment sane
 node tools/harness/run-headless.mjs --scenario cmb-duel-infantry    # 2. produce artifacts
 node tools/harness/trace-stats.mjs --in reports/runs/<runId>        # 3. compute numbers
-node tools/harness/shoot.mjs --out reports/runs/<runId>/shots       # 4. pixels
+node tools/harness/shot.mjs --viewpoint VP01                        # 4a. one frame, ~1 s warm
+node tools/harness/shoot.mjs --out reports/runs/<runId>/shots       # 4. pixels (via the daemon)
 node tools/metrics/image-metrics.mjs --in reports/runs/<runId>/shots
 node tools/analysis/content-stats.mjs                               # 5. content, no browser
 node tools/blind/make-pair.mjs --ours <a> --ref <b> --out packs/p1  # 6. blind pair

@@ -2,14 +2,24 @@
   "task_id": "W1-07-r4-quest-race-gate",
   "brief": "NEXT-DISPATCH \u00a71b (AMENDED) \u2014 make race and upbringing actually change whether a quest is offered. Two layers: (1) wire derivedDisposition() into the quest-offer path (seedDispositions writes rec.disposition raw); (2) fill the 31 quest givers with no reaction_group and the 9 with no NPC record at all.",
   "started": "wave-3",
-  "state": "building",
+  "state": "measuring",
   "outputs_expected": [
     "game/src/engine.js (derived disposition on the offer path)",
     "game/data/npcs/* (missing records + reaction_group)",
     "tools/harness/<quest-offer consumption probe>.mjs",
     "reports/W1-07-r4/*.json"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "game/src/sim/dialogue/disposition.js (movableTerms + normaliseFactionId; derivedDisposition refactored onto them, arithmetic-neutral over 500 oracle cases)",
+    "game/src/sim/quest/machine.js (dispositionModel; context().dispositions is now a DERIVED view; dispositionView/explainDisposition; ranks derived via FactionGates.highestQualifying)",
+    "game/src/engine.js (_questDispositionModel, _questPlayerView, _assertGiversAreVisibleToRace, loadData now keeps persuasion-gmst + faction-reactions)",
+    "game/src/harness/api.js (getGateDispositions, explainDisposition)",
+    "game/data/npcs/quest-givers.json (19 hand-authored records, incl. speaker-teel-ashaan RG-DEEP/50)",
+    "game/data/npcs/mainline.json (reaction_group + actor on all 37 untagged records)",
+    "game/data/dialogue/faction-reactions.json (aliases + alias_note)",
+    "game/data/quests/mainline-act*.json (9 main-spine gates clamped to the worst signature, race-blind value preserved)",
+    "game/data/index.json (regenerated)"
+  ],
   "findings": [
     "CONFIRMED from source, matches the round-2 tool critic: QuestEngine.context() returns `dispositions: q.dispositions` RAW (machine.js:139). gate.js canOffer() reads ctx.dispositions[giver.npc_id]. seedDispositions() (engine.js:4563) copies rec.disposition verbatim. No race term anywhere on that path.",
     "The reaction matrix reaches the world through exactly TWO consumers today: Engine.npcDisposition() (read-only surface) and character/encounter.js openingFor(). Neither is a gate.",
@@ -21,8 +31,10 @@
     "faction-reactions.json diagonals are non-zero (xul-aneekh +4, rootkeepers +4, drowned-court +3), so even rank 0 MEMBERSHIP is worth (0+1)*3*4 = +12. Membership is created the moment a quest grants faction_reputation, and the mainline grants 174 reputation deltas across 8 factions.",
     "VOCABULARY MISMATCH found: quests/faction-gates use underscore ids (the_xul_aneekh, the_drowned_court, the_dockhands, the_imperial_assize, deep_kin, house_dres); faction-reactions.json matrix uses hyphen ids and a different roster (xul-aneekh, sap-cutters, ninth-cohort, provincial-office...). the_dockhands and the_imperial_assize have NO row at all. So factionTerm would resolve to 0 for the live vocabulary even if it were wired.",
     "machine.js _applyConsequences writes faction REPUTATION but never rank; context() reads ranks[f] = q.factions[f].rank which is ALWAYS 0. FactionGates.highestQualifying() exists and is dead code. So every rank_gate in the quest data is also unpassable \u2014 the same defect one door along.",
-    "Main-quest giver groups by faction: the_drowned_court -> RG-COURT, which is the one all-zero row in the matrix ('buries everyone for a fee'). 10 of 32 main quests hang off RG-COURT givers, so the main chain's spine is race-blind BY AUTHORSHIP. neeja-xul (sap-cutter, RG-VAKH) is 0..+4 for every race. That is what makes 'every race can finish' achievable without gutting the matrix."
+    "Main-quest giver groups by faction: the_drowned_court -> RG-COURT, which is the one all-zero row in the matrix ('buries everyone for a fee'). 10 of 32 main quests hang off RG-COURT givers, so the main chain's spine is race-blind BY AUTHORSHIP. neeja-xul (sap-cutter, RG-VAKH) is 0..+4 for every race. That is what makes 'every race can finish' achievable without gutting the matrix.",
+    "ORCHESTRATOR INTERRUPT: the boot guard landed before its data and made HEAD unbootable for six agents. Downgraded to a warning within minutes, data completed, guard RE-ARMED (STRICT=true) with boot-check PASS. Lesson for the record: land a fail-closed guard in the same change as the data that satisfies it, or behind a flag.",
+    "DESIGN CALL (the load-bearing one): with truthful reaction groups the RG-ROOT row spans 64 points (saxhleel/interior +20 to dunmer/lukiul -44), so NO single base disposition lets every signature clear a min-30 gate without putting the favoured races at 90-100. Nine category:'main' gates were therefore clamped to the WORST signature's cold-start standing, with the authored value preserved as disposition_min_race_blind. No base disposition was altered anywhere \u2014 one rule, mechanically applied, nothing cherry-picked. Race bites on the 9 regional/faction/hidden gates instead, which is where the dispatch's own worked example lives."
   ],
-  "next_step": "implement movableTerms + normaliseFactionId in sim/dialogue/disposition.js; inject a disposition model into QuestEngine; load the two dropped data files",
-  "notes_for_successor": "The data fix ALONE is known not to work \u2014 a round-2 tool critic minted the missing record on a shadow tree, booted, and it blocked nobody. Both layers or neither."
+  "next_step": "live browser probe: questOffers() per signature, Q-DEEP-01 worked example, perturbation, delete-the-fix, every-race-finishes",
+  "notes_for_successor": "IF I DIED MID-RUN: chr-quest-race-gate.mjs perturbs TWO files on disk and restores them in a finally block. If the tree is broken, restore from the scratchpad copies RESTORE-race-reactions.json -> game/data/progression/race-reactions.json and RESTORE-machine.js -> game/src/sim/quest/machine.js, then run node tools/harness/boot-check.mjs. The tell for the machine.js revert is the line 'dispositions: q.dispositions,' in QuestEngine.context() -- it should read 'dispositions: this.dispositionView(),'."
 }

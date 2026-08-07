@@ -14,6 +14,22 @@ for (const t of ['tools/progress.mjs', 'tools/blog.mjs']) {
 // Every image the page references must exist under docs/, because that is all GitHub Pages
 // serves. A writing agent that references a corpus/ path, or copies its image after writing
 // the post, gets a broken image on a public page and no error anywhere — so check it here.
+// Unrendered markdown on the published page. An image whose alt text was hard-wrapped used to
+// come out as literal `![caption](../shots/x.png)` text in the middle of a post — visible to any
+// reader and to nobody checking. If the renderer cannot parse something, that must be an error
+// here rather than a paragraph of source code on a public page.
+const pageForLint = join(ROOT, 'docs', 'index.html');
+if (existsSync(pageForLint)) {
+  const h = readFileSync(pageForLint, 'utf8');
+  const raw = [...h.matchAll(/!\[[^\]]*\]\([^)]*\)/g)].map(m => m[0]);
+  if (raw.length) {
+    console.error(`publish: ${raw.length} unrendered image tag(s) reached docs/index.html:`);
+    for (const r of raw.slice(0, 5)) console.error(`  ${r.replace(/\s+/g, ' ').slice(0, 120)}`);
+    console.error('The markdown renderer did not parse these. Fix tools/blog.mjs — do not reword the post.');
+    process.exitCode = 1;
+  }
+}
+
 const page = join(ROOT, 'docs', 'index.html');
 if (existsSync(page)) {
   const html = readFileSync(page, 'utf8');
