@@ -285,6 +285,12 @@ export class AmbienceDriver {
       bed_lufs_target: bed ? bed.bed_lufs_target : null,
       emitters: this.emitterState,
       events: this.events,
+      // RI-WLD08's bar is ">= 4 ambient events per 10 minutes anywhere in the world", and it is
+      // one of the two items that judge `audio.ambience.region`. The L3 and L4 clocks are an
+      // ambient-event source with a *stated rate*, so the rate is reported rather than left to be
+      // counted out of a log by whoever needs it. Measured over the bed's own elapsed time, so a
+      // probe that has stepped ten frames does not read a rate extrapolated from nothing.
+      events_per_10min: this.t > 1 ? Math.round(this.events / this.t * 600 * 10) / 10 : null,
       border_crossings: this.borderCrossings,
       voices_active: this.voicesActive,
       voices_peak: this.voicesPeak,

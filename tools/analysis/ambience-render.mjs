@@ -288,6 +288,9 @@ try {
       silent: peak(m) < 1e-4,
       lufs_i: +lufsIntegrated(m, cap.sampleRate).toFixed(2),
       lufs_target: cap.bed_lufs_target,
+      // The trim ALREADY in the data. `--calibrate` computes `target - measured + this`, so a
+      // second calibration pass converges instead of oscillating around the first one's answer.
+      bed_gain_db_before: cap.bed_gain_db || 0,
       centroid_hz: +spec.centroid_hz.toFixed(1),
       events_fired: cap.fired.length,
       key: cap.key,

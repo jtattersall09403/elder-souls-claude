@@ -188,7 +188,13 @@ for (const tier of ['light', 'medium', 'heavy', 'ultra']) {
 {
   const w = (byTier.heavy || byTier.medium || [])[0];
   if (w) FIXTURES.push({
-    name: 'block.shield', weapon: w, target: 'mat_shield', dist: 1.2, guard: true,
+    // `inf_trash`, not `mat_shield`. The seven-material dummy is a BRACED SHIELD ON A FRAME
+    // (`stamina_max: 1`, `ai: none`) — it exists to drive §A's `shield` hitstop column without a
+    // live blocker, and it has no stamina pool for a guard to break. C04 and C05 need a real
+    // defender with a real shield and a real stamina bar, which is a scripted infantry enemy
+    // told to raise its guard.
+    name: 'block.shield', weapon: w, target: 'inf_trash', dist: 1.5, guard: true,
+    script: [{ f: 2, move: 'block' }],
     inputs: Array.from({ length: 10 }, (_, i) => [
       { f: 3 + i * 60, press: ['light'] }, { f: 5 + i * 60, release: ['light'] }]).flat(),
     frames: 700, produces: ['IMPACT', 'BLOCK', 'GUARD_BREAK'],

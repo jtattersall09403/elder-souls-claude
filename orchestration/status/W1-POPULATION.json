@@ -9,15 +9,24 @@
     "docs/shots/<populated road>.png",
     "reports/blog-feed.jsonl line"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "game/data/world/encounters.json (+14 wilderness composition templates; W1-07's two UNTOUCHED)",
+    "game/src/character/encounter.js (+'always_hostile' behaviour rule, additive)"
+  ],
   "findings": [
     "START CONTENTION: pgrep -c headless_shell = 18, loadavg 8.05 -- at/above the cap of 8. Authoring phase first, no browser.",
     "SURVEY 1 - THE WHOLE HOSTILE POPULATION OF THE PROVINCE IS TWO ROWS. game/data/world/encounters.json has exactly 2 encounters: dres-raid-party (4 inf_trash + 2 inf_trash net-throwers, absent_when_flag the_sixty_are_protected) and deep-kin-war-brood (3 inf_trash). Nine bodies, all the SAME statblock, and neither has an (x,z). The encounter records carry `regions: [...]` as a LABEL only -- nothing places them.",
     "SURVEY 2 - WHERE PLACEMENT ACTUALLY HAPPENS: engine.js:761 `for (const e of patch.encounters || []) this.spawnEncounter(e.id, e.x, e.z, e)` inside applyNamedState. So a hostile exists ONLY if a hand-written state file names it with coordinates. Same shape of defect the giver agent found for NPCs: a hand-placed scene is exactly as populated as somebody remembered to type.",
     "SURVEY 3 - THE STREAM PUMP IS THE RIGHT CONSUMER SLOT. Engine._streamProvince() runs from Engine._afterStep(), which the province-stream builder proved covers EVERY way the world advances (stepFrames, the rAF accumulator, walkRoute/walkPath/travelRide). That is where a population that follows the player belongs.",
     "SURVEY 4 - RESPAWN IS ALREADY BUILT AND DATA-DRIVEN and must not be broken: game/data/world/respawn.json + game/src/sim/death.js, with engine._classifyOnSpawn() supplying named/unique/boss/merchant/trainer/questActor from three writers (statblock, world map fog gates, spawn opts). sim.npcs is a separate array no respawn path iterates.",
-    "SURVEY 5 - souls are on the statblocks already (W1-SOULS): inf_trash 136, drowned_lesser 50, beast_slitherfang 72, cst_sap_speaker 137, guard_legion 176, drowned_greater 334, champion_hist_marked 2423, 15 props 0. 7 fightable statblocks is the whole roster."
+    "SURVEY 5 - souls are on the statblocks already (W1-SOULS): inf_trash 136, drowned_lesser 50, beast_slitherfang 72, cst_sap_speaker 137, guard_legion 176, drowned_greater 334, champion_hist_marked 2423, 15 props 0. 7 fightable statblocks is the whole roster.",
+    "SURVEY 6 - THE TRAP THAT WOULD HAVE KILLED EVERY STEPPING PROBE: character/encounter.js openingFor() THROWS for an encounter that declares neither race_behaviour nor behaviour_rule='hostile_below_disposition', and stepEncounters() calls it once per encounter member PER FRAME. A wilderness roster added without a third rule would take down the fixed step for the whole project the moment the player walked near one -- the same shape as W1-02's unlisted event name. Added `always_hostile` additively; the two existing rules are byte-unchanged.",
+    "SURVEY 7 - USABLE ROSTER IS FIVE STATBLOCKS, not seven. champion_hist_marked and cst_sap_speaker are the two FOG-GATE BOSSES (game/data/world/hearths.json fog_gates) and are both in respawn.json never_respawn_ids. Placing either in the wilderness would put a permanently-dead 2,423-soul body on a road. Wilderness templates use inf_trash(136), drowned_lesser(50), drowned_greater(334), guard_legion(176), beast_slitherfang(72) only.",
+    "SURVEY 8 - NO RANGED/DUELIST/TURTLE/AMBUSHER/ordinary-CASTER STATBLOCK EXISTS, so RI-AI05 \u00a7D's per-region archetype MIX is unreachable on this roster and no template fakes one. Declared in encounters.json absent_roles_declared rather than hidden.",
+    "SURVEY 9 - THE GEOMETRY IS ALL THERE: roads.json 10 legs / 25,056.9 m trunk / point polylines every ~12 m; regions.json 13 regions with danger_tier 1-5 and bounds; pois.json 42 (8 settlement, 16 minor-settlement, 10 landmark, 8 waystation); hearths.json 29 hearths (13 of them `critical-path` along the crossing) + 2 fog gates. The crossing is named_routes.crossing: legs stormhold-helstrom + helstrom-blackrose + blackrose-lilmoth, 6,816 m, 56.8 walk-min.",
+    "DENSITY CONTRACT, reconciled from two items that agree: RI-AI07 \u00a7D encounters per TM 0.88 (0.59-1.29), enemies per TM 1.65 (1.05-2.45), enemies per encounter 1.9 (1.4-2.6), solo:grouped 55:45; RI-WLD02 D9 hostile groups per minute of wilderness road walking 0.7-1.2 (fail <0.4 or >2.0). A TM is 120 m at S17's 2.0 m/s, so both are the SAME density and 0.88/TM = one encounter per 136 m.",
+    "ARITHMETIC THAT SETS THE GROUPED SIZES: 0.55x1 + 0.45xG = 1.9 => G = 3.0. Grouped encounters must average exactly 3 bodies for the mean to land on RI-AI07's 1.9 at the declared 55:45 split."
   ],
-  "next_step": "read regions.json danger_tier, roads.json, pois/settlements/hearths; read _streamProvince; then design the placement model",
+  "next_step": "write game/data/world/population.json (the model), then tools/world/build-population.mjs",
   "notes_for_successor": "Do NOT touch quest givers - W1-GIVER-PRESENCE owns those. I own hostiles + encounters."
 }

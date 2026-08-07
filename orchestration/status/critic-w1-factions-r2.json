@@ -2,13 +2,20 @@
   "task_id": "critic-w1-factions-r2",
   "brief": "critic with fresh context on W1-FACTIONS round 2",
   "started": "wave-1",
-  "state": "researching",
+  "state": "complete",
+  "verdict": "FAIL 5.4/10 (was 4.1). Biggest gap GAP-FCT-03: the round's headline measurements were taken in a world with nobody in it and no longer reproduce - the builder's own probe goes 16/16 (on disk) -> 8/16 (today).",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-FACTIONS-r2.md",
     "corpus/90-verdicts/wave1/W1-FACTIONS-r2.json",
     "reports/blog-feed.jsonl (one line)"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/W1-FACTIONS-r2.md",
+    "corpus/90-verdicts/wave1/W1-FACTIONS-r2.json",
+    "tools/quests/critic-faction-r2.mjs (new, declared under method_deviations)",
+    "reports/critic-faction-r2-ledger.json",
+    "reports/blog-feed.jsonl (one line appended)"
+  ],
   "findings": [
     {
       "id": "contention-at-start",
@@ -48,6 +55,6 @@
     "RI-CRM02 re-derived: favour_owed appears in 0 quests game-wide (confirms 0 of 4). Sanctioned-murder quests: 3 by my count (Q-ASSZ-05, Q-XULA-06, Q-MAIN-31) against a target of 27 and a hard-fail floor of 15 - still a HARD FAIL. Sanctioning authorities 1 of 4 - hard fail floor is <3, still FAIL.",
     "pre-PONR re-derived: 11 quests game-wide, ALL magic-piece (Q-MAG-02/04/05/06/07/13/16/18/19/24 + Q-MAIN-32). Q-MAG-10, the one inside the Assize census that made this a hard fail for the piece in r1, is FIXED. The faction lines are now clean on that invariant."
   ],
-  "next_step": "write corpus/90-verdicts/wave1/W1-FACTIONS-r2.md + .json, blog line, boot-check after",
+  "next_step": "none — verdict delivered. boot-check PASS before (after a concurrent agent's breakage self-repaired) and PASS after. NOT COMMITTED, per brief.",
   "notes_for_successor": "The faction r2 work IS COMMITTED at e1661f4. The working tree is dirty from OTHER agents (W1-SOULS on engine.js, api.js). At my first boot-check the build was BROKEN (SoulsSystem referenced with no import, engine.js:375) - a concurrent agent's in-flight edit, not the faction round. It self-repaired ~4 min later and boot-check PASSes. A 11G repo makes `git worktree add` time out (>2 min); do not try."
 }

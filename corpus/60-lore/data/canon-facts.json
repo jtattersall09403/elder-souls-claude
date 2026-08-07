@@ -2639,6 +2639,86 @@
       "authorially_true": "B",
       "player_discoverable": "early",
       "notes": "Kept, against RI-LOR06 \"How we lose\" #8, because it is PERCEIVABLE: a player who walks or sails the shore can settle it without being told. A dispute the player can check is texture; a dispute over a date they can never reach is a typo with a schema."
+    },
+    {
+      "id": "CF-D021",
+      "claim": "Is sight in this province a competence the country takes away, or the wrong sense to have trained on?",
+      "tier": "constructed",
+      "provenance": "constructed",
+      "confidence": "high",
+      "sources_real": [],
+      "in_world_sources": [
+        "Notes on the Employment of Destructive Magic in This Province",
+        "Not Being Seen in a Country That Has No Shadows"
+      ],
+      "disputed": true,
+      "dispute_kind": "fact",
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "Notes on the Employment of Destructive Magic in This Province (Battle-Mage Tertius Ollo)",
+          "stance": "A trained man can put a spell into a body at eighty paces and this country takes that away from him, and there is no substitute for it. The fault is the province's.",
+          "held_by": [
+            "the officer schools",
+            "the Ninth Cohort's unattached battle-mage",
+            "Imperial casters who arrive competent"
+          ],
+          "holders": {
+            "actors": [
+              "magister",
+              "legionary",
+              "mercenary"
+            ],
+            "factions": [
+              "ninth-cohort",
+              "provincial-office"
+            ]
+          },
+          "voiced_by": [
+            "book:why-the-ninth-has-no-battle-mages"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "Not Being Seen in a Country That Has No Shadows (Uxith-Ei, hunter at the Thornmarsh edge)",
+          "stance": "The eye was never the sense to train. You are hidden from the water, the reeds, the birds and your own smell, and a person taught properly here is not working round a defect.",
+          "held_by": [
+            "the hunters of the Thornmarsh edge",
+            "the young ones she taught",
+            "anyone hatched in the country"
+          ],
+          "holders": {
+            "actors": [
+              "rootkeeper",
+              "fisher",
+              "villager",
+              "mudborn",
+              "naga-elder"
+            ],
+            "races": [
+              "saxhleel",
+              "naga"
+            ]
+          },
+          "voiced_by": [
+            "book:not-being-seen-in-a-country-with-no-shadows"
+          ]
+        }
+      ],
+      "authorially_true": "B",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "early",
+      "topics": [
+        "the-marsh-magic",
+        "the-smell"
+      ],
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.geography"
+      ],
+      "notes": "Registered by W1-23 roughly four minutes after the pair landed on disk, mid-wave, from another piece still writing. That is the finding, not the fact: with no gate, the registry falls out of date with the shipped tree within MINUTES on a busy tree. tools/lore/canon-census.mjs should run in the same place check-content does."
     }
   ],
   "not_disputes": {

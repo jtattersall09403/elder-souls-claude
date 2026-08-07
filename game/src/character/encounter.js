@@ -73,6 +73,23 @@ export function openingFor(data, encounter, character) {
     if (!r) throw new Error(`encounter ${encounter.id} has no rule for race ${character.race}`);
     return { ...r, source: 'race_behaviour' };
   }
+  // W1-POPULATION, added additively. The two rules below decide an opening from WHO THE PLAYER IS
+  // — a race table, or a derived disposition. A slitherfang on the Rootway does neither: it is
+  // hostile to everyone and there is nothing to negotiate with. Without a third rule this function
+  // THROWS for any encounter that declares neither, and it is called once per encounter member per
+  // frame from stepEncounters(), so a wilderness roster without this would kill the fixed step for
+  // every probe in the project the first time the player walked near one.
+  // Nothing here reads race, level, or elapsed time: the opening is a constant.
+  if (encounter.behaviour_rule === 'always_hostile') {
+    return {
+      opening: 'hostile',
+      aggro_at_m: encounter.aggro_at_m,
+      net_behaviour: 'kill',
+      parley_offer: false,
+      on_player_defeat: 'death',
+      source: 'always_hostile',
+    };
+  }
   if (encounter.behaviour_rule === 'hostile_below_disposition') {
     const d = derivedDisposition(data, {
       group: encounter.reaction_group, race: character.race, upbringing: character.upbringing,

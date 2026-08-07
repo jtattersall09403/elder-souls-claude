@@ -26,14 +26,14 @@
           "count": 4,
           "spawn_offsets_m": [
             [
-              -3.0,
+              -3,
               0,
-              2.0
+              2
             ],
             [
-              3.0,
+              3,
               0,
-              2.0
+              2
             ],
             [
               -1.2,
@@ -55,12 +55,12 @@
             [
               -5.2,
               0,
-              6.0
+              6
             ],
             [
               5.2,
               0,
-              6.0
+              6
             ]
           ],
           "absent_when_flag": "the_sixty_are_protected",
@@ -71,21 +71,21 @@
       "race_behaviour": {
         "saxhleel": {
           "opening": "hostile",
-          "aggro_at_m": 28.0,
+          "aggro_at_m": 28,
           "net_behaviour": "capture",
           "parley_offer": false,
           "on_player_defeat": "capture-transport-archon"
         },
         "naga": {
           "opening": "hostile",
-          "aggro_at_m": 28.0,
+          "aggro_at_m": 28,
           "net_behaviour": "capture",
           "parley_offer": false,
           "on_player_defeat": "capture-transport-archon"
         },
         "khajiit": {
           "opening": "hostile",
-          "aggro_at_m": 12.0,
+          "aggro_at_m": 12,
           "net_behaviour": "kill",
           "parley_offer": false,
           "on_player_defeat": "death"
@@ -179,12 +179,12 @@
             [
               -2.4,
               0,
-              3.0
+              3
             ],
             [
               2.4,
               0,
-              3.0
+              3
             ],
             [
               0,
@@ -197,7 +197,7 @@
       "hostile_below_disposition": 15,
       "behaviour_rule": "hostile_below_disposition",
       "behaviour_note": "RI-CHR02 §4e mechanism 2. Not a race table — a DISPOSITION threshold, which the race term happens to push a Dunmer under all by itself. An entire tier-3/4 region's encounter density is therefore a function of what the Warden-Scribe wrote down.",
-      "aggro_at_m": 18.0,
+      "aggro_at_m": 18,
       "parley": {
         "grounds": [
           "name",
@@ -208,7 +208,491 @@
         "true_name_topic": "the-twin-lamps",
         "note": "The Twin Lamps password is race-blind and disposition-blind (RI-CHR02 §6). It is the reason a Dunmer at disposition 6 still has a non-lethal exit here."
       }
+    },
+    {
+      "id": "wl-fen-sentry",
+      "name": "Marsh sentry, alone",
+      "shape": "solo",
+      "aggro_at_m": 16,
+      "behaviour_rule": "always_hostile",
+      "behaviour_note": "Wilderness hostiles. Not a race table and not a disposition table: a slitherfang does not read the Warden-Scribe's ledger. `always_hostile` is the third rule openingFor() understands and it was added additively for this file — the other two were left exactly as they were. Nothing here reads the player's level (S9), and nothing here reads race (AR-3).",
+      "source": "RI-AI05 §B/§C/§D + RI-AI07 §D. Composition is the escalation lever (RI-AI05 §D levers 1-3); no stat, frame, moveset or HP value is touched by any of these records.",
+      "placed_by": "game/data/world/population.json + tools/world/build-population.mjs -> game/data/world/population-posts.json",
+      "members": [
+        {
+          "role": "infantry",
+          "statblock": "inf_trash",
+          "count": 1,
+          "spawn_offsets_m": [
+            [
+              0,
+              0,
+              3
+            ]
+          ]
+        }
+      ],
+      "introduces_statblock": "inf_trash",
+      "body_count": 1
+    },
+    {
+      "id": "wl-drowned-straggler",
+      "name": "A drowned one, wandered off",
+      "shape": "solo",
+      "aggro_at_m": 16,
+      "behaviour_rule": "always_hostile",
+      "behaviour_note": "Wilderness hostiles. Not a race table and not a disposition table: a slitherfang does not read the Warden-Scribe's ledger. `always_hostile` is the third rule openingFor() understands and it was added additively for this file — the other two were left exactly as they were. Nothing here reads the player's level (S9), and nothing here reads race (AR-3).",
+      "source": "RI-AI05 §B/§C/§D + RI-AI07 §D. Composition is the escalation lever (RI-AI05 §D levers 1-3); no stat, frame, moveset or HP value is touched by any of these records.",
+      "placed_by": "game/data/world/population.json + tools/world/build-population.mjs -> game/data/world/population-posts.json",
+      "members": [
+        {
+          "role": "infantry",
+          "statblock": "drowned_lesser",
+          "count": 1,
+          "spawn_offsets_m": [
+            [
+              0,
+              0,
+              3
+            ]
+          ]
+        }
+      ],
+      "introduces_statblock": "drowned_lesser",
+      "body_count": 1
+    },
+    {
+      "id": "wl-slitherfang-lone",
+      "name": "Slitherfang, hunting alone",
+      "shape": "solo",
+      "aggro_at_m": 20,
+      "behaviour_rule": "always_hostile",
+      "behaviour_note": "Wilderness hostiles. Not a race table and not a disposition table: a slitherfang does not read the Warden-Scribe's ledger. `always_hostile` is the third rule openingFor() understands and it was added additively for this file — the other two were left exactly as they were. Nothing here reads the player's level (S9), and nothing here reads race (AR-3).",
+      "source": "RI-AI05 §B/§C/§D + RI-AI07 §D. Composition is the escalation lever (RI-AI05 §D levers 1-3); no stat, frame, moveset or HP value is touched by any of these records.",
+      "placed_by": "game/data/world/population.json + tools/world/build-population.mjs -> game/data/world/population-posts.json",
+      "members": [
+        {
+          "role": "beast",
+          "statblock": "beast_slitherfang",
+          "count": 1,
+          "spawn_offsets_m": [
+            [
+              0,
+              0,
+              3
+            ]
+          ]
+        }
+      ],
+      "introduces_statblock": "beast_slitherfang",
+      "body_count": 1
+    },
+    {
+      "id": "wl-legion-picket",
+      "name": "Legion picket",
+      "shape": "solo",
+      "aggro_at_m": 16,
+      "behaviour_rule": "always_hostile",
+      "behaviour_note": "Wilderness hostiles. Not a race table and not a disposition table: a slitherfang does not read the Warden-Scribe's ledger. `always_hostile` is the third rule openingFor() understands and it was added additively for this file — the other two were left exactly as they were. Nothing here reads the player's level (S9), and nothing here reads race (AR-3).",
+      "source": "RI-AI05 §B/§C/§D + RI-AI07 §D. Composition is the escalation lever (RI-AI05 §D levers 1-3); no stat, frame, moveset or HP value is touched by any of these records.",
+      "placed_by": "game/data/world/population.json + tools/world/build-population.mjs -> game/data/world/population-posts.json",
+      "members": [
+        {
+          "role": "infantry",
+          "statblock": "guard_legion",
+          "count": 1,
+          "spawn_offsets_m": [
+            [
+              0,
+              0,
+              3
+            ]
+          ]
+        }
+      ],
+      "introduces_statblock": "guard_legion",
+      "body_count": 1
+    },
+    {
+      "id": "wl-deep-drowned-anchor",
+      "name": "Deep-Drowned, standing in the shallows",
+      "shape": "solo",
+      "aggro_at_m": 14,
+      "behaviour_rule": "always_hostile",
+      "behaviour_note": "Wilderness hostiles. Not a race table and not a disposition table: a slitherfang does not read the Warden-Scribe's ledger. `always_hostile` is the third rule openingFor() understands and it was added additively for this file — the other two were left exactly as they were. Nothing here reads the player's level (S9), and nothing here reads race (AR-3).",
+      "source": "RI-AI05 §B/§C/§D + RI-AI07 §D. Composition is the escalation lever (RI-AI05 §D levers 1-3); no stat, frame, moveset or HP value is touched by any of these records.",
+      "placed_by": "game/data/world/population.json + tools/world/build-population.mjs -> game/data/world/population-posts.json",
+      "members": [
+        {
+          "role": "infantry",
+          "statblock": "drowned_greater",
+          "count": 1,
+          "spawn_offsets_m": [
+            [
+              0,
+              0,
+              3
+            ]
+          ]
+        }
+      ],
+      "introduces_statblock": "drowned_greater",
+      "body_count": 1
+    },
+    {
+      "id": "wl-drowned-pair",
+      "name": "Two of the drowned",
+      "shape": "group",
+      "aggro_at_m": 16,
+      "behaviour_rule": "always_hostile",
+      "behaviour_note": "Wilderness hostiles. Not a race table and not a disposition table: a slitherfang does not read the Warden-Scribe's ledger. `always_hostile` is the third rule openingFor() understands and it was added additively for this file — the other two were left exactly as they were. Nothing here reads the player's level (S9), and nothing here reads race (AR-3).",
+      "source": "RI-AI05 §B/§C/§D + RI-AI07 §D. Composition is the escalation lever (RI-AI05 §D levers 1-3); no stat, frame, moveset or HP value is touched by any of these records.",
+      "placed_by": "game/data/world/population.json + tools/world/build-population.mjs -> game/data/world/population-posts.json",
+      "members": [
+        {
+          "role": "infantry",
+          "statblock": "drowned_lesser",
+          "count": 2,
+          "spawn_offsets_m": [
+            [
+              2.2,
+              0,
+              3
+            ],
+            [
+              -2.2,
+              0,
+              3
+            ]
+          ]
+        }
+      ],
+      "body_count": 2
+    },
+    {
+      "id": "wl-slitherfang-pack",
+      "name": "Slitherfang pack",
+      "shape": "swarm",
+      "aggro_at_m": 20,
+      "behaviour_rule": "always_hostile",
+      "behaviour_note": "Wilderness hostiles. Not a race table and not a disposition table: a slitherfang does not read the Warden-Scribe's ledger. `always_hostile` is the third rule openingFor() understands and it was added additively for this file — the other two were left exactly as they were. Nothing here reads the player's level (S9), and nothing here reads race (AR-3).",
+      "source": "RI-AI05 §B/§C/§D + RI-AI07 §D. Composition is the escalation lever (RI-AI05 §D levers 1-3); no stat, frame, moveset or HP value is touched by any of these records.",
+      "placed_by": "game/data/world/population.json + tools/world/build-population.mjs -> game/data/world/population-posts.json",
+      "members": [
+        {
+          "role": "beast",
+          "statblock": "beast_slitherfang",
+          "count": 3,
+          "spawn_offsets_m": [
+            [
+              3,
+              0,
+              3
+            ],
+            [
+              -1.5,
+              0,
+              5.6
+            ],
+            [
+              -1.5,
+              0,
+              0.4
+            ]
+          ]
+        }
+      ],
+      "body_count": 3
+    },
+    {
+      "id": "wl-slitherfang-swarm",
+      "name": "Slitherfang swarm",
+      "shape": "swarm",
+      "aggro_at_m": 20,
+      "behaviour_rule": "always_hostile",
+      "behaviour_note": "Wilderness hostiles. Not a race table and not a disposition table: a slitherfang does not read the Warden-Scribe's ledger. `always_hostile` is the third rule openingFor() understands and it was added additively for this file — the other two were left exactly as they were. Nothing here reads the player's level (S9), and nothing here reads race (AR-3).",
+      "source": "RI-AI05 §B/§C/§D + RI-AI07 §D. Composition is the escalation lever (RI-AI05 §D levers 1-3); no stat, frame, moveset or HP value is touched by any of these records.",
+      "placed_by": "game/data/world/population.json + tools/world/build-population.mjs -> game/data/world/population-posts.json",
+      "members": [
+        {
+          "role": "beast",
+          "statblock": "beast_slitherfang",
+          "count": 4,
+          "spawn_offsets_m": [
+            [
+              3.6,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              6.6
+            ],
+            [
+              -3.6,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              -0.6
+            ]
+          ]
+        }
+      ],
+      "body_count": 4
+    },
+    {
+      "id": "wl-legion-patrol",
+      "name": "Legion patrol",
+      "shape": "group",
+      "aggro_at_m": 16,
+      "behaviour_rule": "always_hostile",
+      "behaviour_note": "Wilderness hostiles. Not a race table and not a disposition table: a slitherfang does not read the Warden-Scribe's ledger. `always_hostile` is the third rule openingFor() understands and it was added additively for this file — the other two were left exactly as they were. Nothing here reads the player's level (S9), and nothing here reads race (AR-3).",
+      "source": "RI-AI05 §B/§C/§D + RI-AI07 §D. Composition is the escalation lever (RI-AI05 §D levers 1-3); no stat, frame, moveset or HP value is touched by any of these records.",
+      "placed_by": "game/data/world/population.json + tools/world/build-population.mjs -> game/data/world/population-posts.json",
+      "members": [
+        {
+          "role": "infantry",
+          "statblock": "guard_legion",
+          "count": 2,
+          "spawn_offsets_m": [
+            [
+              2.4,
+              0,
+              3
+            ],
+            [
+              -2.4,
+              0,
+              3
+            ]
+          ]
+        }
+      ],
+      "body_count": 2
+    },
+    {
+      "id": "wl-legion-line",
+      "name": "Legion line",
+      "shape": "group",
+      "aggro_at_m": 16,
+      "behaviour_rule": "always_hostile",
+      "behaviour_note": "Wilderness hostiles. Not a race table and not a disposition table: a slitherfang does not read the Warden-Scribe's ledger. `always_hostile` is the third rule openingFor() understands and it was added additively for this file — the other two were left exactly as they were. Nothing here reads the player's level (S9), and nothing here reads race (AR-3).",
+      "source": "RI-AI05 §B/§C/§D + RI-AI07 §D. Composition is the escalation lever (RI-AI05 §D levers 1-3); no stat, frame, moveset or HP value is touched by any of these records.",
+      "placed_by": "game/data/world/population.json + tools/world/build-population.mjs -> game/data/world/population-posts.json",
+      "members": [
+        {
+          "role": "infantry",
+          "statblock": "guard_legion",
+          "count": 3,
+          "spawn_offsets_m": [
+            [
+              3.2,
+              0,
+              3
+            ],
+            [
+              -1.6,
+              0,
+              5.77
+            ],
+            [
+              -1.6,
+              0,
+              0.23
+            ]
+          ]
+        }
+      ],
+      "body_count": 3
+    },
+    {
+      "id": "wl-sentry-and-pack",
+      "name": "Sentry with hounds",
+      "shape": "gank_duo",
+      "aggro_at_m": 18,
+      "behaviour_rule": "always_hostile",
+      "behaviour_note": "Wilderness hostiles. Not a race table and not a disposition table: a slitherfang does not read the Warden-Scribe's ledger. `always_hostile` is the third rule openingFor() understands and it was added additively for this file — the other two were left exactly as they were. Nothing here reads the player's level (S9), and nothing here reads race (AR-3).",
+      "source": "RI-AI05 §B/§C/§D + RI-AI07 §D. Composition is the escalation lever (RI-AI05 §D levers 1-3); no stat, frame, moveset or HP value is touched by any of these records.",
+      "placed_by": "game/data/world/population.json + tools/world/build-population.mjs -> game/data/world/population-posts.json",
+      "members": [
+        {
+          "role": "infantry",
+          "statblock": "inf_trash",
+          "count": 1,
+          "spawn_offsets_m": [
+            [
+              0,
+              0,
+              3
+            ]
+          ]
+        },
+        {
+          "role": "beast",
+          "statblock": "beast_slitherfang",
+          "count": 3,
+          "spawn_offsets_m": [
+            [
+              3.21,
+              0,
+              5.71
+            ],
+            [
+              -3.95,
+              0,
+              4.43
+            ],
+            [
+              0.74,
+              0,
+              -1.13
+            ]
+          ]
+        }
+      ],
+      "gank_duo": true,
+      "duo_pairing": "INFANTRY + SWARM x3",
+      "body_count": 4
+    },
+    {
+      "id": "wl-deep-drowned-and-pack",
+      "name": "Deep-Drowned with hounds",
+      "shape": "gank_duo",
+      "aggro_at_m": 18,
+      "behaviour_rule": "always_hostile",
+      "behaviour_note": "Wilderness hostiles. Not a race table and not a disposition table: a slitherfang does not read the Warden-Scribe's ledger. `always_hostile` is the third rule openingFor() understands and it was added additively for this file — the other two were left exactly as they were. Nothing here reads the player's level (S9), and nothing here reads race (AR-3).",
+      "source": "RI-AI05 §B/§C/§D + RI-AI07 §D. Composition is the escalation lever (RI-AI05 §D levers 1-3); no stat, frame, moveset or HP value is touched by any of these records.",
+      "placed_by": "game/data/world/population.json + tools/world/build-population.mjs -> game/data/world/population-posts.json",
+      "members": [
+        {
+          "role": "infantry",
+          "statblock": "drowned_greater",
+          "count": 1,
+          "spawn_offsets_m": [
+            [
+              0,
+              0,
+              3
+            ]
+          ]
+        },
+        {
+          "role": "beast",
+          "statblock": "beast_slitherfang",
+          "count": 3,
+          "spawn_offsets_m": [
+            [
+              3.52,
+              0,
+              5.96
+            ],
+            [
+              -4.33,
+              0,
+              4.57
+            ],
+            [
+              0.81,
+              0,
+              -1.53
+            ]
+          ]
+        }
+      ],
+      "gank_duo": true,
+      "duo_pairing": "POISE_MONSTER + SWARM x3 (RI-AI05 §C legal pairing)",
+      "body_count": 4
+    },
+    {
+      "id": "wl-legion-and-levy",
+      "name": "Legionary and two levies",
+      "shape": "group",
+      "aggro_at_m": 16,
+      "behaviour_rule": "always_hostile",
+      "behaviour_note": "Wilderness hostiles. Not a race table and not a disposition table: a slitherfang does not read the Warden-Scribe's ledger. `always_hostile` is the third rule openingFor() understands and it was added additively for this file — the other two were left exactly as they were. Nothing here reads the player's level (S9), and nothing here reads race (AR-3).",
+      "source": "RI-AI05 §B/§C/§D + RI-AI07 §D. Composition is the escalation lever (RI-AI05 §D levers 1-3); no stat, frame, moveset or HP value is touched by any of these records.",
+      "placed_by": "game/data/world/population.json + tools/world/build-population.mjs -> game/data/world/population-posts.json",
+      "members": [
+        {
+          "role": "infantry",
+          "statblock": "guard_legion",
+          "count": 1,
+          "spawn_offsets_m": [
+            [
+              0,
+              0,
+              3
+            ]
+          ]
+        },
+        {
+          "role": "levy",
+          "statblock": "inf_trash",
+          "count": 2,
+          "spawn_offsets_m": [
+            [
+              2.63,
+              0,
+              4.44
+            ],
+            [
+              -2.63,
+              0,
+              1.56
+            ]
+          ]
+        }
+      ],
+      "body_count": 3
+    },
+    {
+      "id": "wl-drowned-host",
+      "name": "A host out of the deep water",
+      "shape": "group",
+      "aggro_at_m": 16,
+      "behaviour_rule": "always_hostile",
+      "behaviour_note": "Wilderness hostiles. Not a race table and not a disposition table: a slitherfang does not read the Warden-Scribe's ledger. `always_hostile` is the third rule openingFor() understands and it was added additively for this file — the other two were left exactly as they were. Nothing here reads the player's level (S9), and nothing here reads race (AR-3).",
+      "source": "RI-AI05 §B/§C/§D + RI-AI07 §D. Composition is the escalation lever (RI-AI05 §D levers 1-3); no stat, frame, moveset or HP value is touched by any of these records.",
+      "placed_by": "game/data/world/population.json + tools/world/build-population.mjs -> game/data/world/population-posts.json",
+      "members": [
+        {
+          "role": "infantry",
+          "statblock": "drowned_greater",
+          "count": 1,
+          "spawn_offsets_m": [
+            [
+              0,
+              0,
+              3
+            ]
+          ]
+        },
+        {
+          "role": "lesser",
+          "statblock": "drowned_lesser",
+          "count": 2,
+          "spawn_offsets_m": [
+            [
+              2.98,
+              0,
+              4.63
+            ],
+            [
+              -2.98,
+              0,
+              1.37
+            ]
+          ]
+        }
+      ],
+      "body_count": 3
     }
   ],
-  "quest_coupling_note": "One quest resolution changes one encounter's composition (see `absent_when_flag` on dres-raid-party's net-throwers). It is the only such coupling in the file and it is deliberately narrow. The rule for anyone adding another: the lever is WHETHER a member spawns, never what a member IS. `tools/quests/encounter-seam-probe.mjs` spawns the encounter with the flag clear and with it set and counts bodies; if that probe stops showing a difference, the coupling has died and this file is decoration again."
+  "quest_coupling_note": "One quest resolution changes one encounter's composition (see `absent_when_flag` on dres-raid-party's net-throwers). It is the only such coupling in the file and it is deliberately narrow. The rule for anyone adding another: the lever is WHETHER a member spawns, never what a member IS. `tools/quests/encounter-seam-probe.mjs` spawns the encounter with the flag clear and with it set and counts bodies; if that probe stops showing a difference, the coupling has died and this file is decoration again.",
+  "wilderness_note": "The two encounters above this line (dres-raid-party, deep-kin-war-brood) are W1-07's and are UNCHANGED — same members, same offsets, same race_behaviour, same absent_when_flag. The fourteen below are the wilderness roster added by W1-POPULATION and they are composition only: every member names one of the five shipped TRASH statblocks (inf_trash, drowned_lesser, drowned_greater, guard_legion, beast_slitherfang) at its shipped stats. The two ELITE statblocks (champion_hist_marked, cst_sap_speaker) are the fog-gate bosses and appear in NO wilderness template: they are in game/data/world/respawn.json's never_respawn_ids, so placing one in the wild would put a permanently-dead 2,423-soul body on a road.",
+  "absent_roles_declared": "RI-AI05 §B names ten archetypes. The shipped roster has INFANTRY, BEAST and one ELITE CASTER. There is no RANGED, DUELIST, TURTLE, AMBUSHER or ordinary CASTER statblock in game/data/combat/enemies/, so no template here fakes one — inventing a ranged enemy means inventing frame data, which is exactly why W1-07 declared dres-raid-party's CASTER absent rather than hiding it. Consequence, stated so a critic does not have to find it: RI-AI05 §D's per-region archetype MIX (12% RANGED, 8% CASTER, 14% DUELIST at R4) is unreachable on this roster and the mix this file ships is INFANTRY/BEAST only. guard_legion stands in the TURTLE slot and drowned_greater in the POISE_MONSTER slot by weight class, not by moveset."
 }
