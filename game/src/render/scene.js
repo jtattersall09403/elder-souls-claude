@@ -282,10 +282,14 @@ export function buildScene(seed) {
   }
 
   // ---- showcase props ------------------------------------------------------------------------
-  const showcaseNpc = makeActor(mats, 0x6d5a3a);
+  // VP07 is the CHARACTER CLOSE-UP viewpoint — the pose every blind visual comparison of a
+  // person is shot from — so it gets the rigged actor too, and is posed each frame by the
+  // renderer once a rig exists to borrow a bone list from.
+  const showcaseNpc = makeRiggedActor(mats, 0x6d5a3a, 0x9aa06e);
   showcaseNpc.position.set(0, 0.15, 0);
   showcaseNpc.rotation.y = 0;          // faces +z, which is where VP07's camera is
   props.npcShowcase.add(showcaseNpc);
+  props.showcaseActor = showcaseNpc;
 
   // VP08: half a metre from a wall/ground junction. Three materials meeting, so the metric
   // has tiling, a normal break and a roughness contrast to read.
