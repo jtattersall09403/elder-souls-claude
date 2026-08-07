@@ -1,15 +1,34 @@
 {
   "task_id": "W1-LIBRARY",
-  "brief": "in-world library: books, notes, inscriptions, unreliable written record",
+  "brief": "in-world library: books, notes, inscriptions and the unreliable written record",
   "started": "wave-1",
-  "state": "researching",
-  "gap": "RI-UIX05 D fails on content: book-to-item ratio 1.57 vs bar >=15; game/data/books/ holds 1930 words",
+  "state": "writing",
+  "gap": "RI-UIX05 D fails on content: book:item word ratio 1.57 vs bar >=15; game/data/books/ holds 1930 words across 7 texts",
   "outputs_expected": [
-    "game/data/books/*.json (new hand-authored volumes)",
-    "tools/ book-corpus measurement tool if RI-UIX05 D names one that does not exist"
+    "game/data/books/foundational.json",
+    "game/data/books/the-drowned-tally.json",
+    "game/data/books/deep-time.json",
+    "game/data/books/the-occupation.json",
+    "game/data/books/a-progress-through-the-southern-marsh.json",
+    "game/data/books/quest-keys.json",
+    "game/data/books/scraps.json",
+    "corpus/80-methods/book-stats.py (named by RI-LOR03 method 1, DOES NOT EXIST)",
+    "tools/analysis/book-budget.mjs (RI-UIX05 method 7 flags do not exist on content-stats.mjs)"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read RI-UIX05 D, existing books, corpus/60-lore, mainline acts, dialogue topics for voice",
-  "notes_for_successor": "Do NOT let a generator overwrite hand-authored books. Run tools/check-content.mjs and tools/harness/boot-check.mjs before finishing."
+  "findings": [
+    "DENOMINATOR MEASURED: item `description` words across game/data/items/**  = 1231 across 44 records. game/data/weapons/** contributes 0 `description` fields. Book words 1930 / 1231 = 1.5678 -> this is exactly the 1.57 in the brief, so the ratio's denominator is confirmed to be the `description` field and nothing else. Bar >=15 therefore needs >= 18,465 book words.",
+    "PHANTOM TOOL 1: RI-LOR03 Comparison method step 1 names `python3 corpus/80-methods/book-stats.py`. It does not exist on disk. TOOL-LOOP rule 1 applies.",
+    "PHANTOM FLAGS: RI-UIX05 method step 7 names `content-stats.mjs --books --items --dialogue --corroborate`. content-stats.mjs exists but implements NONE of those four flags (its USAGE lists only --data/--out/--json/--verbose/--help) and computes NO row of the SS D budget: no book:item ratio, no corroboration rate, no contradiction count, no direction count, no read-before-quest count. The flags are silently ignored, which is the exact `cmb-reach.mjs --verify` failure TOOL-LOOP rule 3.5 names.",
+    "ENGINE LOADER (game/src/engine.js:1887): books/*.json are loaded either as `elder-souls/book@1` (one doc, needs top-level `id`) or `@2` (doc with a `books` array). Both forms are keyed by `b.id`. Adding group files is safe.",
+    "READING SCREEN renders ONLY title, author and text (game/src/ui/screens/text.js drawBook). Metadata fields on a book record are never displayed, so registry fields (contradicts/taxon/wrong_on_purpose) cannot violate RI-UIX05 R8.",
+    "PAGINATION IS PURE JS: bookPagination()/bookLayout() in game/src/ui/screens/text.js depend only on the vector glyph tables in game/src/ui/glyphs.js. Words-per-page for EVERY book is therefore computable in bare Node with no browser, which is what RI-UIX05 method step 2 wanted a browser for.",
+    "EIGHT BOOK IDS ARE REFERENCED BY SHIPPED QUESTS AND DO NOT EXIST: book_the_seventh_recension + book_against_the_ninth_clause (mainline-act1 Q-MAIN-05 revealed_by), book_for_the_ninth_clause (mainline-act2 Q-MAIN-09), book_the_leave_book_of_thorn (mainline-act4), book_the_court_and_the_tide (blackmarsh-coast res_seal requires.knowledge), book_the_rootless_egg (blackmarsh-coast res_rootkeepers requires.knowledge), book_the_sap_and_the_knife (blackmarsh-core res_broker requires.knowledge). Three of those gate a non-violent quest resolution outright.",
+    "THREE BOOKS ARE NAMED AS EVIDENCE BY SEALED MYSTERIES M-01/M-02/M-03 and do not exist: book:on-the-tally-stones, book:the-oliis-bargain, book:valus-survey-fragment. Their leak_ngrams are recorded in corpus/50-world/sealed/SEALED-ANSWERS.md and must NOT appear in the book text.",
+    "RI-LOR03 SS3's seven exemplars were written to ship (`Exemplars 1, 2, 4 and 6 are intended to ship`) and are named as in_world_sources by canon-facts.json (CF-D001 A and B, CF-062, CF-006). They exist only in the corpus markdown, not in game/data. Shipping them closes the registry's dangling in_world_sources.",
+    "MAINLINE UA-02 declares `answered_in_a_book: true` for 'what was the reservoir built to do', requiring TWO in-world texts giving incompatible accounts. Neither existed.",
+    "RI-LOR03 method 1 fail bands: median < 350 words, p90 < 1200, < 3 multi-volume series, > 20% of books under 150 words. The last one bounds how many scraps the short tail may carry."
+  ],
+  "next_step": "write game/data/books/*.json, then the two tools, then boot-check + check-content",
+  "notes_for_successor": "Do NOT let a generator overwrite hand-authored books. No objective markers in book text (S8): directions are prose under RI-WLD06 SS4 grammar. Nothing in a book may correct another book (RI-UIX05 R8 / RI-LOR03)."
 }

@@ -1,0 +1,205 @@
+{
+  "schema": "critic-input-checks/1",
+  "tool": "tools/harness/critic-w1-08-29-r1.mjs",
+  "ran_at": "2026-08-07T11:54:29.185Z",
+  "counts": {
+    "total": 1,
+    "pass": 1,
+    "fail": 0
+  },
+  "checks": [
+    {
+      "id": "C2-COVER",
+      "what": "all bound actions on their default desktop primary: edge latched vs the SIMULATION visibly responding",
+      "status": "pass",
+      "threshold": "RI-JRN03 M-K1: which action FIRED, from the trace",
+      "detail": {
+        "actions": 16,
+        "edge_latched": 16,
+        "sim_responded": 14,
+        "edge_only_no_sim_response": [
+          "crouch",
+          "spell_cycle"
+        ],
+        "per_action": {
+          "light": {
+            "primary": "Mouse0",
+            "edge": true,
+            "edges": [
+              "light"
+            ],
+            "sim_events": [
+              "ACTION_START",
+              "attack_start",
+              "first_input",
+              "first_control"
+            ],
+            "world_changed": true
+          },
+          "heavy": {
+            "primary": "KeyR",
+            "edge": true,
+            "edges": [
+              "heavy"
+            ],
+            "sim_events": [
+              "ACTION_START",
+              "attack_start",
+              "ACTION_START",
+              "attack_start"
+            ],
+            "world_changed": true
+          },
+          "roll": {
+            "primary": "Space",
+            "edge": true,
+            "edges": [
+              "roll"
+            ],
+            "sim_events": [
+              "ACTION_START",
+              "attack_start"
+            ],
+            "world_changed": true
+          },
+          "block": {
+            "primary": "Mouse2",
+            "edge": true,
+            "edges": [
+              "block"
+            ],
+            "sim_events": [
+              "GUARD_UP",
+              "guard_up"
+            ],
+            "world_changed": true
+          },
+          "parry": {
+            "primary": "Mouse1",
+            "edge": true,
+            "edges": [
+              "parry",
+              "lock_on"
+            ],
+            "sim_events": [
+              "ACTION_START",
+              "attack_start"
+            ],
+            "world_changed": true
+          },
+          "sprint": {
+            "primary": "ShiftLeft",
+            "edge": true,
+            "edges": [
+              "sprint"
+            ],
+            "sim_events": [],
+            "world_changed": true
+          },
+          "jump": {
+            "primary": "KeyX",
+            "edge": true,
+            "edges": [
+              "jump"
+            ],
+            "sim_events": [
+              "ACTION_START",
+              "attack_start"
+            ],
+            "world_changed": true
+          },
+          "use_item": {
+            "primary": "Digit1",
+            "edge": true,
+            "edges": [
+              "use_item"
+            ],
+            "sim_events": [
+              "ESTUS_START",
+              "heal"
+            ],
+            "world_changed": true
+          },
+          "interact": {
+            "primary": "KeyE",
+            "edge": true,
+            "edges": [
+              "interact"
+            ],
+            "sim_events": [
+              "INPUT_DROPPED:parley",
+              "input_dropped"
+            ],
+            "world_changed": true
+          },
+          "lock_on": {
+            "primary": "Tab",
+            "edge": true,
+            "edges": [
+              "lock_on"
+            ],
+            "sim_events": [],
+            "world_changed": true
+          },
+          "two_hand": {
+            "primary": "KeyG",
+            "edge": true,
+            "edges": [
+              "two_hand"
+            ],
+            "sim_events": [],
+            "world_changed": true
+          },
+          "swap_right": {
+            "primary": "Digit3",
+            "edge": true,
+            "edges": [
+              "swap_right"
+            ],
+            "sim_events": [
+              "ACTION_START",
+              "attack_start"
+            ],
+            "world_changed": true
+          },
+          "swap_left": {
+            "primary": "Digit4",
+            "edge": true,
+            "edges": [
+              "swap_left"
+            ],
+            "sim_events": [],
+            "world_changed": true
+          },
+          "menu": {
+            "primary": "Escape",
+            "edge": true,
+            "edges": [
+              "menu"
+            ],
+            "sim_events": [],
+            "world_changed": true
+          },
+          "crouch": {
+            "primary": "KeyC",
+            "edge": true,
+            "edges": [
+              "crouch"
+            ],
+            "sim_events": [],
+            "world_changed": false
+          },
+          "spell_cycle": {
+            "primary": "KeyT",
+            "edge": true,
+            "edges": [
+              "spell_cycle"
+            ],
+            "sim_events": [],
+            "world_changed": false
+          }
+        }
+      }
+    }
+  ]
+}

@@ -5,7 +5,17 @@
   "state": "researching",
   "outputs_expected": ["game/data/dialogue/topics/main-quest-argument.json"],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read Q-MAIN-26 declaration in game/data/quests/mainline-act5.json",
-  "notes_for_successor": ""
+  "findings": [
+    "TOPIC ID NAMESPACE IS SPLIT. game/data/dialogue/topics/*.json use dash-slug ids (313 of them, 0 with spaces). But every main-quest NPC record and every quests/mainline*.json `opens_by.topic` uses NATURAL-LANGUAGE ids with spaces ('the steward of the count'). converse.js topicsFor() looks up npc.topics literally in the topic index, so 47 distinct space-form topic ids currently DANGLE across game/data/npcs/*.json — the person advertises a subject and has nothing to say. Ixtu-Meer's three are 'the steward of the count', 'the sill', 'the opening of the count'. main-quest-argument.json must use the SPACE form or it will not resolve.",
+    "converse.js filter fields actually consumed by infoAllowed(): requires.race, requires.upbringing, forbids.race, forbids.upbringing ONLY. The 00-roots.json key_legend advertises d/r/c/f/fr/pf/pr/sx/actor/j/nj/act/q/res but infoFor() reads only `a` (actor), `requires`, `forbids`, `x`. Specificity score = (actor match ? 4) + (requires ? 2) + (forbids ? 1); FIRST-BEST-WINS on that score, ties resolved by authored order.",
+    "An NPC's OWN record line (npc.lines[topic_with_underscores]) BEATS every topic-file info. Ixtu-Meer's record carries only `greeting`, so topic-file infos are live for him.",
+    "ixtu-meer record: game/data/npcs/mainline.json:635 — race saxhleel, class steward, reaction_group RG-DEEP, actor 'rootkeeper', disposition 50, faction null, settlement null.",
+    "Q-MAIN-26 declares: giver ixtu-meer honest:true, disposition_min 0; deceit patterns D6/D11/D7 with never_revealed:true; two resolutions res_hear_him_out (requires_knowing rev_how_the_count_opens) and res_press_him_on_the_clause (requires disposition 20, requires_knowing rev_how_the_count_opens + rev_he_never_wrote_the_recension), MUTUALLY EXCLUSIVE; one failure fail_killed_him_first; kill_required_npcs []. Notes: 'Twelve topics live on this quest in game/data/dialogue/topics/main-quest-argument.json, four of them gated on knowledge learned elsewhere.'",
+    "mainline.json antagonist.refutation_audit NAMES main-quest-argument.json by path and asserts no voice in it says Ixtu-Meer was simply wrong. The audit was written against a file that does not exist. Honouring it is a hard constraint on the prose.",
+    "mainline.json mandate.adjudication_audit: Q-MAIN-26 offers only 'he never wrote in the Recension', which settles nothing. Every ending sets the_recension_is_still_unsettled.",
+    "Six endings: 4 in Q-MAIN-28 (open / take his place / kill him / walk out) + 2 backpath in Q-MAIN-31. res_open_the_count and res_take_his_place BOTH require_knowing rev_how_the_count_opens, and rev_how_the_count_opens is revealed ONLY by talk_to_target on ixtu-meer in Q-MAIN-26. So this conversation is the sole gate on 2 of the 4 intended endings and on the whole non-lethal route.",
+    "actor slot for Ixtu-Meer is 'rootkeeper'. Infos written for him must carry a:'rootkeeper' or no `a` at all."
+  ],
+  "next_step": "read RI-DLG01/RI-DLG04/RI-QST02/RI-EXP05 and ARBITRATION S8, then author the twelve topics",
+  "notes_for_successor": "The twelve topic ids must be space-form. 'the steward of the count' is the entry (opens_by), 'the sill' and 'the opening of the count' are also on his record and belong to Q-MAIN-27/28 but are answered by him here."
 }

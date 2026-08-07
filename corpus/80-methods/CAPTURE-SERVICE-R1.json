@@ -1,0 +1,162 @@
+{
+  "schema": "elder-souls/capture-service-critique@1",
+  "id": "CAPTURE-SERVICE-R1",
+  "round": 1,
+  "role": "capture service critic",
+  "authority": "ARBITRATION.md S34; TOOL-LOOP.md rule 3 (no builder checks its own homework)",
+  "ran_at": "2026-08-07",
+  "verdict": "NOT_SATISFIED",
+  "rebuilds": 7,
+  "gates_beaten": {
+    "arrival_gate": true,
+    "settle_gate": true
+  },
+  "summary": "Both gates beaten. The arrival classifier accepts 28 of 30 laundering specs it has never seen, including the plain-English form of every category S34 names, structured (object) claims, six spec fields it never reads, and an omitted evidence_of. The cache is worse: the daemon replays whatever manifest it finds in the bucket, so a hand-written sidecar makes the service assert arrival:'walked', evidence_of:'arrival' and settled:true in 24 ms with no browser and no gate. The settle proof's excess = max(0, d1-d2) measures deceleration rather than motion and certifies three shapes of still-arriving world; its streaming calibration population is caught by G1 anyway, so the threshold has never been validated on a case G3 alone must catch. The cache key does not determine the picture: time/weather are sticky and a spec that omits them banks the previous job's conditions. The builder's central streamer finding is CONFIRMED independently and is broader than reported, and is a game defect to escalate.",
+  "harness_state": "node tools/harness/boot-check.mjs PASS before every measurement. Box load 6.5-7.0 on 4 cores throughout.",
+  "critic_instrument": {
+    "path": "tools/capture/critic-r1-probe.mjs",
+    "report": "reports/capture/CRITIC-PROBE.json",
+    "phases": ["gates", "key", "forge", "sticky", "streamer", "metric"],
+    "note": "Written by the critic, not the builder. Exits non-zero when an attack SUCCEEDS. --isolate gives it a private socket and cache. Four of six phases need no browser."
+  },
+  "worst_thing": "The daemon replays cache manifests it did not write. runJob() checks only build_key and settle.settled, then returns {...man} verbatim; a hand-written sidecar in reports/runs/capture-cache/ makes the service hand back arrival:'walked' with a settled proof, and the PNG's bytes are never checked against the manifest's own sha256.",
+  "findings": [
+    {
+      "id": "F1",
+      "title": "The arrival gate accepts 28 of 30 laundering specs",
+      "severity": "high",
+      "evidence": "critic-r1-probe --gates. Morphology (traverse/traverses/traversing, crossings, routes, walking, reaches, arrivals), synonyms never listed (passable, accessible, get to, hike, trek, egress, navigate, 'takes 340 seconds', 'how far'), object/array claims stringifying to [object Object], and six fields the gate never reads (title, item, ri, caption, tags, description) including item:'RI-JRN04' verbatim. The only two refusals fired on the incidental phrase 'on foot'.",
+      "file": "tools/capture/arrival.mjs:40-50,95"
+    },
+    {
+      "id": "F2",
+      "title": "evidence_of omitted defaults to permitted, and falsify.mjs A2f does not test what it names",
+      "severity": "medium",
+      "evidence": "arrival.mjs:66 String(spec.evidence_of || spec.evidence || 'appearance'). falsify.mjs A2f is labelled 'must not default to permitted' but its spec also carries claim:'reachability of the north shore', so the refusal comes from the claim. With the claim removed the capture is taken.",
+      "file": "tools/capture/arrival.mjs:66; tools/capture/falsify.mjs:170"
+    },
+    {
+      "id": "F3",
+      "title": "The gate records nothing when it accepts",
+      "severity": "medium",
+      "evidence": "canonicalSpec drops evidence_of, claim, title, item (P2b-canonical-drops), so a laundered capture's manifest carries no trace of what it was requested for and no post-hoc audit is possible.",
+      "file": "tools/capture/protocol.mjs:42-83"
+    },
+    {
+      "id": "F4",
+      "title": "The daemon serves forged provenance out of the cache",
+      "severity": "critical",
+      "evidence": "P3-cache-forgery: SERVED in 24 ms with arrival='walked', evidence_of='arrival', settled=true, and sha256 recorded='not-even-the-hash-of-this-file' against actual c414cd0e204de974f73753c7e28d7638e7b3691bb8b1a2bab6b25bb7fed7ce77. No browser booted, no gate run.",
+      "file": "tools/capture/server.mjs:618-626"
+    },
+    {
+      "id": "F5",
+      "title": "provenance.served_from_cache is false on every cache hit",
+      "severity": "high",
+      "evidence": "P3b: cached=true at the top level while provenance.served_from_cache=false in the returned object and for ever in the sidecar on disk. S34 names the flag and HARNESS.md §6 claims the sidecar carries it. falsify.mjs A4 checks out.cached (a different field) and A5 never looks at the provenance flag.",
+      "file": "tools/capture/server.mjs:623,667; corpus/80-methods/HARNESS.md:398"
+    },
+    {
+      "id": "F6",
+      "title": "The cache key does not determine the picture",
+      "severity": "critical",
+      "evidence": "P4-spec-determinism, 3 renders: place(A) no time/weather -> 54822b05d5de; place(A) time 1 storm; place(A) identical spec to the first -> ce6b6e011369. Control: the same spec three times back to back is byte-identical (3da4742d0c0d x3). Mechanism: setTimeOfDay/setWeather write sim.env permanently and performCapture's reload rule exempts place->place, so a spec omitting a condition inherits the previous job's. This is exactly shot.mjs --at x,z without --time.",
+      "file": "tools/capture/server.mjs:417-436"
+    },
+    {
+      "id": "F7",
+      "title": "__no_camera_stream changes the picture, is not in the key, is not in the manifest; no_cache still writes",
+      "severity": "medium",
+      "evidence": "P2-cache-key-honesty: the one dishonest mutation of nine. runJob writes the manifest unconditionally on a miss regardless of job.raw.no_cache.",
+      "file": "tools/capture/server.mjs:481,618,650"
+    },
+    {
+      "id": "F8",
+      "title": "The settle metric certifies three shapes of still-arriving world",
+      "severity": "high",
+      "evidence": "P6-metric-blind-spots, fed to the service's own judge() at THRESHOLD=0.005: steady arrival (d1=0.30, d2=0.30, excess=0) SETTLED; slow steady arrival (0.060/0.055, excess=0.005) SETTLED; accelerating arrival (0.02/0.14, excess=0) SETTLED because max(0, .) never looks at d2 — the interval that begins at the frame which ships.",
+      "file": "tools/capture/settle.mjs:287-294,352"
+    },
+    {
+      "id": "F9",
+      "title": "The streaming calibration population is caught by G1 anyway, so G3's threshold is unvalidated",
+      "severity": "high",
+      "evidence": "SETTLE-CALIBRATION.json: streaming n=5 has d2=0.00000 in 5/5 and resid.queued 18-23 in 5/5 — all five are refused by G1 alone, and all five are burst-then-stop rather than still arriving. Settled n=13 has excess=0 in 10/13 and d1=0 exactly in 6/13; the band's lower edge (0.00251) is a single observation (valus-ridge day-ashfall).",
+      "file": "reports/capture/SETTLE-CALIBRATION.json"
+    },
+    {
+      "id": "F10",
+      "title": "G1 and G2 fail open and the proof cannot report it",
+      "severity": "high",
+      "evidence": "performCapture substitutes {queued:0, built:0, tiles_queued:0, not_in_province:true} when the residency read throws or camX is null; judge() then records G1/G2 pass:true and never copies not_in_province into the proof. 'the gate ran and passed' and 'the gate did not run' are indistinguishable in the manifest.",
+      "file": "tools/capture/server.mjs:509-513; tools/capture/settle.mjs:363-364"
+    },
+    {
+      "id": "F11",
+      "title": "G1's probe is documented as a pure read and is destructive",
+      "severity": "medium",
+      "evidence": "streamAround -> province.request() rebuilds the ground skin, near-prop and cover discs and releases every tile outside the new want-set. Measured at a camera 3 km from the last teleport: tilesResident 25 -> 0, meshes 247 -> 5, instances 49,967 -> 2,583. It runs between frames A and B, the two frames G3 compares.",
+      "file": "tools/capture/settle.mjs:309-323; game/src/world/province.js:181-186"
+    },
+    {
+      "id": "F12",
+      "title": "ES_CAPTURE_SOCK does not isolate a daemon",
+      "severity": "low",
+      "evidence": "LOG_PATH and LOCK_PATH are pinned to RUNS_DIR/.capture while SOCK_PATH and CACHE_DIR are overridable, so a second daemon on a private socket writes into the shared capd.log and contends for the shared capd.lock.",
+      "file": "tools/capture/protocol.mjs:14-18"
+    }
+  ],
+  "streamer_defect": {
+    "builder_claim_holds": true,
+    "confirmed_independently": true,
+    "broader_than_reported": true,
+    "escalate_as_game_defect": true,
+    "call_sites": [
+      "game/src/engine.js:2511 _applyCell() request+drain",
+      "game/src/engine.js:3277 teleport() request+drain",
+      "game/src/engine.js:4422 walkRoute() request+pump(1) every 90 frames, only when opts.stream",
+      "game/src/harness/api.js:249 streamAround()"
+    ],
+    "not_pumped_from": ["sim/step.js", "Engine._afterStep() (engine.js:2767)", "game/src/main.js"],
+    "dead_code": "game/src/world/province.js:667 Province.update(x, z, budget) has no caller anywhere in the repo",
+    "measurement": "P5-streamer-from-step: teleport to A, pose the camera 3+ km away at B, stepFrames(600) -> queued 25, tilesResident 0, tilesQueued 25. 600 frames of simulation moved the streamer by nothing.",
+    "wider_scope": "province.request() is also the only refresh for the 34 m ground skin, the 70 m ground-cover disc, the 90 m near-prop disc and the night signature lights (province.js:183-186). The whole drawn province is anchored to the last teleport.",
+    "gameplay_consequence": "RADIUS=2 => a 5x5 ring of 300 m tiles. A player who walks more than ~750 m from the last teleport walks off the built world and it does not come back. This half is established by exhaustive call-site enumeration, NOT by measurement: my walk probe put walkPath() through 4,000 frames in the deep-marshes and it covered 41.8 m, which is a mire finding belonging to another piece.",
+    "exposure_for_published_numbers": "Service captures are safe (teleport streams at the body, then streamAround at the camera, then G1 checks). province-shots.mjs --direct also calls streamAround and honestly records 'direct browser; no settle proof taken'. The exposure is shoot.mjs --direct on province viewpoints, which poses a camera without teleporting and without streaming at it; any regional-distinctness number taken that way should be re-taken through the service."
+  },
+  "three_failing_tests": {
+    "fairness": {
+      "judgement": "UNFINISHED WORK, though refusing to loosen the bar was right",
+      "why": "I re-implemented nextJob() exactly as written and drove it with the test's own queue shape: with 40 jobs on connection A and 1 on B arriving second, the dispatch order is A0 B0 A1 A2 A3 A4 — the small job is 2nd of 41. The scheduler is fair. The 74,046 ms is 2-3 real frames, because frames are heterogeneous (a cold region costs 40-55 s on this box; I measured 48-53 s at 640x360) and the bar compares a wall time against a median it does not belong to. The right quantity — jobs dispatched ahead of the small one — was already inside the daemon."
+    },
+    "contention_browsers_added": {
+      "judgement": "HONEST LIMIT, instrument fixable",
+      "why": "browsers_added=2 on a shared box is not attributable to the daemon and the builder says so rather than loosening it, which is correct. But the attributable evidence exists: the daemon's own 'booting browser' line. Assert on that and keep the /proc delta as context."
+    },
+    "n_agents_one_browser": {
+      "judgement": "HONEST LIMIT, same fix",
+      "why": "Same shared-box attribution problem. capd.log shows one 'listening on' and one 'booting browser' per daemon generation plus 'another capture daemon already owns ... - exiting' for losers, which is consistent with the bind-as-exclusion fix. I did not re-run the 8-way start race."
+    }
+  },
+  "cold_cost_trade": {
+    "judgement": "the trade is right; the justification for the third frame is not",
+    "measured": "cold service 21.9 s/frame vs direct 15.7 s/frame (-40%); at N=4 wall clocks equal (93.2 vs 98.3 s) but browsers +4 vs +0, load 10.81->22.98 vs 15.66->15.66, time-to-ready 14.4-17.2 s -> 0.38 s",
+    "correction": "S34 asks for 'two frames taken some frames apart'. The third frame is the builder's own invention, and the calibration shows it does nothing on the streaming side (d2=0 in 5/5); it exists to prevent FALSE REFUSALS on the 3 of 13 live scenes where excess > 0.",
+    "cheaper_honest_proof": "Take frame C only when d1 > threshold: if the first interval is already inside the threshold no subtraction can push it out, so C cannot change the verdict. In the calibration d1 <= 0.005 in 7 of 13 settled frames (6 of them exactly 0). ~15-20% off the settle cost for zero loss of rigour, and it should be taken together with the d2 bound in R6, which costs nothing."
+  },
+  "rebuild_list": [
+    {"id": "R1", "what": "Re-derive the provenance block on a cache hit instead of replaying the manifest, and verify sha256(png) against it; a mismatch is a miss.", "closes": ["F4"]},
+    {"id": "R2", "what": "Set provenance.served_from_cache=true on hits, in the returned object and in anything shot.mjs --out copies.", "closes": ["F5"]},
+    {"id": "R3", "what": "Rebuild the classifier: stem matching, recursive scan of every string in the spec, refuse non-string claim fields, require evidence_of explicitly, and record the accepted claim in the manifest. Fix falsify.mjs A2f.", "closes": ["F1", "F2", "F3"]},
+    {"id": "R4", "what": "Make a spec determine its picture: reload before any capture that does not pin time/weather/tide, or read the env back after posing and put the observed values in the manifest and the key.", "closes": ["F6"]},
+    {"id": "R5", "what": "Every image-affecting input in the key (__no_camera_stream); no_cache must not write. Derive LOG_PATH and LOCK_PATH from the socket path.", "closes": ["F7", "F12"]},
+    {"id": "R6", "what": "Settle proof: bound d2 as well as excess; add a monotonicity or fourth-frame test so steady arrival is visible; record not_in_province / gate-did-not-run instead of pass:true; re-calibrate against a population G1 does not already catch.", "closes": ["F8", "F9", "F10"]},
+    {"id": "R7", "what": "A read-only residency verb (provinceResidency(x,z)) so G1's probe stops rebuilding three camera-following discs and releasing tiles between the two frames it compares.", "closes": ["F11"]}
+  ],
+  "accepted_without_reservation": [
+    "G1 residency is the right gate; the insight that image stability alone passes a photograph of nothing was measured before the gate was written, and 5/5 absent controls prove it.",
+    "The build key is a content hash of game/**, with the stat signature used only as a change detector (over-invalidating, the safe direction). C3 (identical bytes, moved mtime -> still a hit) and C4 (marker read back out of the running page) are the right tests and I did not break either.",
+    "The bind-as-exclusion race fix is correct, including I_OWN_SOCKET guarding the unlink.",
+    "Three of the builder's own tests are left red rather than loosened, and the --pin-build finding was written down by someone not protecting a number."
+  ]
+}

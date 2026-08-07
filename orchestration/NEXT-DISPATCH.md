@@ -5,6 +5,28 @@ and its status file exists. Respect the concurrency cap in `AGENT-PROTOCOL.md` �
 doing browser work, no more; the cap exists because fourteen agents on four cores cost a builder its
 headline measurement entirely.
 
+## 0. A player who walks 750 m walks off the built world — ULTRACODE, above everything
+
+Confirmed independently by the capture-service critic, and it is a **game** defect, not a tooling one.
+
+- `renderer.province.request` has exactly **four** call sites — `_applyCell`, `teleport`, `walkRoute`
+  only when `opts.stream` is set, and the harness. **Nothing in `sim/step.js`, `_afterStep()` or
+  `main.js`.**
+- **`Province.update()` has no caller anywhere in the tree.**
+- Measured: 600 fixed-step frames with the camera 3 km away leaves **25 tiles unbuilt and
+  `tilesResident` 0**.
+- `request()` is also the only refresh for the ground skin, cover disc, near props and night lights,
+  so **the whole drawn province is anchored to the last teleport.**
+
+The brief's central promise is a world that takes an hour to cross on foot. **It cannot currently be
+walked across at all** — the streamer only ever runs when something teleports. Every regional and
+art-direction measurement taken by posing a camera without teleporting was a picture of an unbuilt
+world, and `shoot.mjs --direct` on province viewpoints does exactly that. Service captures are safe
+(they teleport, stream and gate on residency); the direct path is not.
+
+Owner: the world piece. Fix the pump, then re-run anything that photographed a province viewpoint
+directly.
+
 ## 1. The blade is underground, and now everyone can see it — ULTRACODE
 
 The renderer landed, so the swing is visible for the first time. It looks wrong, and the numbers

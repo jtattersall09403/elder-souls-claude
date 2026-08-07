@@ -1,0 +1,30 @@
+{
+  "schema": "critic-input-checks/1",
+  "tool": "tools/harness/critic-w1-08-29-r1.mjs",
+  "ran_at": "2026-08-07T11:50:37.464Z",
+  "counts": {
+    "total": 1,
+    "pass": 0,
+    "fail": 1
+  },
+  "checks": [
+    {
+      "id": "C1-LAT",
+      "what": "frames from a real DOM keydown to the fixed step whose TRACE records the sim acting on it",
+      "status": "FAIL",
+      "threshold": "p100 <= 2 frames measured on the SIMULATION's response (RI-JRN03 M-K23)",
+      "detail": {
+        "n": 25,
+        "edge_observer": {
+          "p50": 1,
+          "p100": 1,
+          "never": 0
+        },
+        "sim_observer": {
+          "never": 25
+        },
+        "input_dropped_no_stamina": 0
+      }
+    }
+  ]
+}

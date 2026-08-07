@@ -1,0 +1,121 @@
+{
+  "schema": "critic/w1-13-a@1",
+  "trials": [
+    {
+      "id": "T1_mid_death_save_browser_restart",
+      "souls_before": 0,
+      "surface_active_at_save": true,
+      "surface_frames_left_at_save": 150,
+      "bloom_at_save": {
+        "souls": 0,
+        "pos": [
+          3824.57,
+          2.828939106817458,
+          3981.5
+        ]
+      },
+      "souls_held_at_save": 0,
+      "blob_bloom_souls": 0,
+      "blob_hp": 0,
+      "after_load_immediate": {
+        "surface_active": false,
+        "bloom": {
+          "souls": 0
+        },
+        "souls_held": 0,
+        "deaths_this_session": 0
+      },
+      "after_1_frame": {
+        "surface_active": true,
+        "bloom": {
+          "souls": 0,
+          "pos": [
+            3824.57,
+            2.828939106817458,
+            3981.5
+          ]
+        },
+        "souls_held": 0,
+        "deaths_this_session": 1,
+        "stains_lost_to_second_death": 1
+      },
+      "after_200_frames": {
+        "surface_active": false,
+        "bloom": {
+          "souls": 0,
+          "pos": [
+            3824.57,
+            2.828939,
+            3981.5
+          ]
+        },
+        "souls_held": 0,
+        "deaths_this_session": 1,
+        "stains_lost_to_second_death": 1
+      },
+      "after_touching_bloom": {
+        "souls_held": 0,
+        "bloom": null
+      },
+      "souls_recoverable_after_load": 0,
+      "souls_destroyed_by_the_save": 4200,
+      "pass": false
+    },
+    {
+      "id": "T2_control_save_after_respawn",
+      "surface_active_at_save": false,
+      "bloom_at_save": 0,
+      "after_load": {
+        "bloom": {
+          "souls": 0,
+          "pos": [
+            3824.57,
+            2.828939,
+            3981.5
+          ]
+        },
+        "souls_held": 0
+      },
+      "after_touching_bloom": {
+        "souls_held": 0,
+        "bloom": null
+      },
+      "souls_recoverable_after_load": 0,
+      "souls_destroyed_by_the_save": 4200,
+      "pass": false
+    },
+    {
+      "id": "T3_mid_death_save_same_session_load",
+      "after_load": {
+        "surface_active": true,
+        "bloom": {
+          "souls": 0
+        },
+        "souls_held": 0,
+        "deaths_this_session": 2
+      },
+      "after_300": {
+        "surface_active": false,
+        "bloom": {
+          "souls": 0,
+          "pos": [
+            3816.17,
+            2.91023,
+            3973.1
+          ]
+        },
+        "souls_held": 0,
+        "deaths_this_session": 2
+      },
+      "after_touching_bloom": {
+        "souls_held": 0
+      },
+      "souls_recoverable_after_load": 0,
+      "souls_destroyed_by_the_save": 4200,
+      "pass": false
+    }
+  ],
+  "notes": [],
+  "page_errors": [],
+  "ok": false
+}

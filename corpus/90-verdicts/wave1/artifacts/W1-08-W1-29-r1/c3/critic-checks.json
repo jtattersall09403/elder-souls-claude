@@ -1,0 +1,105 @@
+{
+  "schema": "critic-input-checks/1",
+  "tool": "tools/harness/critic-w1-08-29-r1.mjs",
+  "ran_at": "2026-08-07T11:49:39.262Z",
+  "counts": {
+    "total": 1,
+    "pass": 0,
+    "fail": 1
+  },
+  "checks": [
+    {
+      "id": "C3-TRAP",
+      "what": "the boot state zeroes movement (consumeUI) while the same stick sweep in an arena does not",
+      "status": "FAIL",
+      "threshold": "confirms the builder's warning: a probe reading `held`/move at boot measures the surface, not the deadzone",
+      "detail": {
+        "at_boot": {
+          "1": {
+            "move": [
+              0.7648421872844886,
+              0.6442176872376911
+            ],
+            "mag": 1,
+            "held": []
+          },
+          "0.1": {
+            "move": [
+              0,
+              0
+            ],
+            "mag": 0,
+            "held": []
+          },
+          "0.2": {
+            "move": [
+              0.04966507709639537,
+              0.04183231735309683
+            ],
+            "mag": 0.0649,
+            "held": []
+          },
+          "0.6": {
+            "move": [
+              0.4469856938675582,
+              0.37649085617787137
+            ],
+            "mag": 0.5844,
+            "held": []
+          },
+          "0.92": {
+            "move": [
+              0.7648421872844884,
+              0.644217687237691
+            ],
+            "mag": 1,
+            "held": []
+          }
+        },
+        "boot_ui": [],
+        "at_arena": {
+          "1": {
+            "move": [
+              0.7648421872844886,
+              0.6442176872376911
+            ],
+            "mag": 1,
+            "held": []
+          },
+          "0.1": {
+            "move": [
+              0,
+              0
+            ],
+            "mag": 0,
+            "held": []
+          },
+          "0.2": {
+            "move": [
+              0.04966507709639537,
+              0.04183231735309683
+            ],
+            "mag": 0.0649,
+            "held": []
+          },
+          "0.6": {
+            "move": [
+              0.4469856938675582,
+              0.37649085617787137
+            ],
+            "mag": 0.5844,
+            "held": []
+          },
+          "0.92": {
+            "move": [
+              0.7648421872844884,
+              0.644217687237691
+            ],
+            "mag": 1,
+            "held": []
+          }
+        }
+      }
+    }
+  ]
+}

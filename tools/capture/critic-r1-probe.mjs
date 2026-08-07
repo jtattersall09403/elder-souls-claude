@@ -8,7 +8,7 @@
  * variants the builder did not imagine, and does NOT import falsify.mjs's idea of what an attack
  * is. It exits non-zero when an attack SUCCEEDS.
  *
- * FIVE PHASES
+ * SIX PHASES
  *   --gates     offline. 30 laundering specs put straight through `classify()`. No daemon needed:
  *               the gate is a pure function and testing it through a browser only hides which
  *               specs got through.
@@ -21,6 +21,8 @@
  *               twice with a differently-conditioned capture in between.
  *   --streamer  own browser, no daemon. Independent confirmation of the builder's central finding:
  *               is `renderer.province` ever pumped from the fixed step?
+ *   --metric    offline. Feeds shapes of change to the service's own judge() at its own declared
+ *               threshold, to find what `excess = max(0, d1 - d2)` cannot see.
  *
  * Every phase runs against an ISOLATED socket and cache (ES_CAPTURE_SOCK / ES_CAPTURE_CACHE) when
  * --isolate is given, so it cannot disturb another agent's daemon or poison the shared cache.
@@ -31,7 +33,7 @@ import crypto from 'node:crypto';
 import { parseArgs, wantsHelp, usage, ensureDir, log, EXIT, REPO_ROOT, readJson, sha256 } from '../lib/cli.mjs';
 
 const USAGE = `critic-r1-probe.mjs — the capture critic's own attacks.
-  --gates --key --forge --sticky --streamer   (choose one or more; --all runs gates+key)
+  --gates --key --forge --sticky --streamer --metric   (choose one or more; --all runs gates+key+metric)
   --isolate            use a private socket + cache dir under reports/runs/.capture-critic
   --out <dir>          where to write CRITIC-PROBE.json (default reports/capture)`;
 
