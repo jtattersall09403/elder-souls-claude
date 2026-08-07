@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `e74df06`: 501 tools, 153 reference
-items, 35 pieces in flight.
+so it cannot drift. Generated at `652b1d7`: 504 tools, 153 reference
+items, 33 pieces in flight.
 
-Its purpose is to stop 35+ concurrent agents each paying separately to discover the
+Its purpose is to stop 33+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -175,8 +175,9 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/ponr-probe.mjs` — RI-EXP05 "Comparison method" Step 2, executed.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 
-### `tools/harness/` — 184
+### `tools/harness/` — 187
 
+- `tools/harness/ai-probe.mjs` — RI-AI01's Comparison method, M1 through M9, written as a tool.
 - `tools/harness/anim-author.mjs` — re-author the four attack clip archetypes and the idle base loop, and solve for the one free parameter each archetype has.
 - `tools/harness/anim-tune.mjs` — measure the swing OFF THE ANIMATION SYSTEM, with no browser.
 - `tools/harness/api-probe.mjs` — RI-MTH01's Comparison method, M1 through M7, written as a tool.
@@ -289,6 +290,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/critic-w1-library-pages.mjs` — RI-UIX05 step 2 (K1 across the whole corpus) driven in the engine, plus the R3-exception consumption check.
 - `tools/harness/critic-w1-library-seam.mjs` — RI-UIX05 R3's permitted exception, which the item names as its ENTIRE AR-3 seam crossing: "reading a book may add a dialogue topic to `topicsKnown` ...
 - `tools/harness/critic-w1-map-r1.mjs` — the W1-MAP round-1 critic's instrument.
+- `tools/harness/critic-w1-map-stepcheck.mjs` — is the long-step crash the map's, or the tree's?
 - `tools/harness/determinism.mjs` — run the RI-MTH02 reproducibility ladder against the game and report every rung with the evidence that decided it.
 - `tools/harness/input-probe.mjs` — the RI-JRN03 checks that can be taken without the journey fleet.
 - `tools/harness/jrn01-m8-writ.mjs` — RI-JRN01 M8 (amended wave 1): is the writ an OBJECT or a return value?
@@ -338,6 +340,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-14-r3-wards.mjs` — the three round-2 findings that are not the skill register.
 - `tools/harness/w1-15-coupling.mjs` — RI-MTH07 applied to W1-15, by the builder, against itself.
 - `tools/harness/w1-21-r2-forge.mjs` — THE FALSIFIER FOR THE W1-21 AR-2 FIX: can a save still put a square on the map?
+- `tools/harness/w1-21-r2-nav.mjs` — W1-21 round 2, in the shipping browser build: THE DOOR BETWEEN SCREENS, and the three other things the round-1 verdict said no instrument in this piece looks at
 - `tools/harness/w1-26-opening.mjs` — the opening as a played scene, measured on the live build.
 - `tools/harness/w1-26-r2-arrival.mjs` — does the opening ARRIVE anywhere, and does the province hitch land in it?
 - `tools/harness/w1-26-r2-asking.mjs` — does the opening teach that ASKING is the verb?
@@ -782,6 +785,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-04-r2` | in_progress | awaiting pixel sweep + critic-w1-04-r2a live arm; then the cut arm against the scratch cop | `orchestration/status/critic-w1-04-r2.json` `tools/world/critic-w1-04-r2a.mjs` |
 | `W1-21-r2` | in_progress | browser leg: w1-21-r2-nav.mjs (P.6 sixteen-action walk) and the map shot, once pgrep -c he | `game/src/ui/system.js` `game/src/sim/discovery.js` `tools/harness/w1-21-r2-forge.mjs` |
 | `W1-04-r3` | building | write game/src/render/exterior.js (37 new exterior kit meshes + building massing), then wi | — |
 | `arbiter-wpn-s36` | in_progress | Read RULES.md, INDEX.md, ARBITRATION.md, NEXT-DISPATCH.md §S, both reference items | `orchestration/status/arbiter-wpn-s36.json` |
@@ -789,11 +793,8 @@ work is the difference between resuming and starting over.
 | `critic-w1-13-r4` | running | read RULES/INDEX/ARBITRATION §3/W1-13-r3.md; then reproduce the delete-the-fix arm on the  | `orchestration/status/critic-w1-13-r4.json` |
 | `W1-READABLES` | building | browser proof (tools/quests/document-route-world.mjs) when the box drops under ~8 headless | `orchestration/status/W1-READABLES.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/books/the-books-in-evidence.json` `game/data/books/the-drowned-tally.json` |
 | `critic-w1-map` | in_progress | read RULES/INDEX/S35, then builder status, then attack A-F | `orchestration/status/critic-w1-map.json` |
-| `critic-w1-04-r2` | in_progress | read INDEX.md, ARBITRATION §3, builder status W1-04-r2.json; then axis A (getDrawnInterior | `orchestration/status/critic-w1-04-r2.json` |
 | `critic-w1-22-r2` | running | 3) detector refusal + AMENDMENT item A arithmetic; 2) build harder blind pack and spawn fr | `orchestration/status/critic-w1-22-r2.json` `tools/analysis/critic-w1-22-r2-determinism.mjs` `reports/w1-22-critic/r2/` |
-| `W1-15-r3` | in_progress | in progress: fixing shop-hours defect C in tools/world/build-settlements.mjs, then defect  | — |
 | `W1-12` | building | Survey written. Build game/data/combat/ai.json + game/src/combat/ai.js (RI-AI01 state mach | `orchestration/status/W1-12.json` |
-| `W1-16` | surveying | read game/src/sim/state.js, engine.js (setGold/getGold/setAttributes/getDerivedStats/getSk | — |
 | `critic-w1-03` | running | bare-Node probes done (18 checks, 16 pass). Next: look at both shots, then ONE browser ses | `orchestration/status/critic-w1-03.json` |
 | `W1-03` | fixed | Three severe gaps round 1 diagnosed are now fixed and re-verified (bare Node + one browser | `reports/w1-03-survey.md` `reports/blog-feed.jsonl` `docs/shots/2026-08-07-w1-03-hip-deep-water-no-waterline.png` `docs/shots/2026-08-07-w1-03-round2-hip-deep-water-waterline-now-drawn.png` `game/src/sim/traversal.js` `game/src/engine.js` |
 | `W1-06-r3` | done | DONE. If a successor picks this up: the amendment (reports/w1-06/AMENDMENT-W1-06-02-projec | `game/src/engine.js` `game/src/sim/camera.js` `tools/camera/cam-projectpoint-fix.mjs` `tools/camera/cam-projectpoint-r3-shot.mjs` `reports/w1-06/AMENDMENT-W1-06-02-projectPoint.md` `reports/w1-06/cam-projectpoint-r3-shot.json` |

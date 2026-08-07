@@ -1,0 +1,49 @@
+{
+ "task_id": "blog-2026-08-07-g",
+ "brief": "orchestration/briefs/blog.md (inline dispatch: the map/S35 story, the orchestrator's own mistakes, and one deep dive from blog-feed.jsonl)",
+ "started": "2026-08-07",
+ "state": "complete",
+ "outputs_expected": [
+  "docs/blog/2026-08-07-<map-forged-save>.md",
+  "docs/blog/2026-08-07-<orchestrator-mistakes>.md",
+  "docs/blog/2026-08-07-<blog-feed-deep-dive>.md",
+  "docs/blog/COVERED.md (3 lines appended)"
+ ],
+ "outputs_written": [
+  "docs/blog/2026-08-07-thirty-five-squares-for-nowhere.md",
+  "docs/blog/2026-08-07-three-mistakes-that-are-mine.md",
+  "docs/blog/2026-08-07-one-line-was-the-whole-disagreement.md",
+  "docs/blog/COVERED.md (3 lines appended)",
+  "docs/index.html + docs/progress.html (node tools/publish.mjs)"
+ ],
+ "findings": [
+  "ERROR IN BRIEF (post 1): the map/forged-save finding is filed under piece 'W1-21-r1' (the interface item), not under 'W1-MAP'. The critic who found it is critic-w1-21 (state complete, verdict FAIL 2/10, AR-2 FAIL). A SEPARATE fresh critic, critic-w1-map, is in_progress right now with the forged-save route named first in its own attack_plan and has not filed a verdict — that is the 'grading right now, has not reported' critic named in the brief, and it is real and confirmed via orchestration/status/critic-w1-map.json (state: in_progress).",
+  "VERIFIED (post 1): saveState() -> world.discovery.cells all-ones, world.discovery.places all 42 pois -> loadState() drops zero; map draws 42 squares, 35 for places never stood in, over fully rendered terrain; screen's own compliance report reads places_drawn:42, places_discovered:42 and goes green because both numbers come from the same forged blob (map-probe.mjs L3 forges only the place list, corroboration is a fixed-point test on its own input). restore(blob) is a 4th mutator (arity 1) the object's own header does not admit to; W1-21-r2 (round-2 builder) exists on disk with state 'starting' and empty files_touched — nothing is fixed yet, said so in the post.",
+  "ERROR IN BRIEF (post 2): could not find any record of 'four pieces' or '~370,000 tokens' for the already-done-dispatch mistake. What is actually on disk (tools/dispatchable.mjs header, commit 8fa946c) is ONE piece, 92,000 tokens, an hour after the rule against it was written, plus an unquantified prior occurrence ('it had already happened once before'). Wrote the checked number (92k, one piece) instead and said in the post itself that the bigger figure could not be verified and is not being published.",
+  "VERIFIED (post 2): the 91 -> 65 correction is real, commit 6190592 ('Correcting my own number'): dispatchable.mjs keyed status-file-to-verdict on the whole task id, so w1-10 never matched w1-10-r4-blade and critic/fix tasks were counted as pieces owed a critic; fixed to match on the wave-and-key prefix and exclude critic/judge/fix tasks. Real figure 65.",
+  "VERIFIED (post 2): the five-fixture sweep on the discarded pan rule (corpus/90-verdicts/wave1/W1-11-r1.md, GAP-W1-m6-pan-correlation-passes-the-panner-it-was-built-to-catch) reads -0.0759 / +0.7768 / undefined / +0.6034 / +1.0000 exactly as given in the brief, with the last row (target still, player turns on the spot — ordinary play) passing the shipped M6 threshold (r >= 0.8) outright on the BROKEN rule. Numbers in the brief for this item were correct as given.",
+  "VERIFIED (post 3): tools/quests/mainline-chain-floor.mjs line 234 (the unconditional H.questReveal hand-feed) is real, is now off by default per its own comment block at that line, and removing it drops the tool's own headline from 40/40 to 0/40, matching viability-walk exactly at Q-MAIN-06. 121 (quest,reveal) pairs demanded, 5 routed via the book channel at the start of W1-19-r3, 3 more routed by that round's plumbing fix (Q-MAIN-29/28, Q-XULA-14), 113 still unrouted at round end. This is the SAME underlying reveal-routing system later extended by W1-18-r2 (already in COVERED.md, 8/121 -> 48/121) — confirmed by both pieces citing tools/quests/reveal-route-audit.mjs as a shared instrument.",
+  "The '40/40 finishing' figure this post corrects was published earlier today in the already-covered post 2026-08-07-four-endings-owed ('(4) main quest, W1-19 r2 -- 29/40 -> 40/40 signatures, no purse, no violence'). Did not edit that post (file ownership is docs/blog/ additions + COVERED.md only per the task); the correction lives in the new post and points at it by name.",
+  "W1-19-r3's engine/data repair (setFlag() routing, 3 new end-to-end reveals) has NOT been reviewed by a fresh critic — no critic-w1-19-r3.json exists on disk. Said so in the post rather than implying it passed.",
+  "Screenshots: all from existing docs/shots/ files, no capture run. pgrep -c headless_shell was 30 at the time of this task, over the stated cap of 8, confirming the brief's instruction not to launch a browser."
+ ],
+ "next_step": "none",
+ "notes_for_successor": "Uncovered candidates seen in blog-feed.jsonl worth a future post: the day/night award-clock reconciliation (W1-13-r4, resting shuts 71/115 shops and moves 25 people, but dying used to pay a stealth 35% night bonus near the day boundary — now fixed with a second clock); W1-03/W1-03-r2 water (amphibious races had none of their three promised advantages, now do, plus the waterline that was never drawn on a submerged character); W1-DLG-SHADOWS (22 accidental same-name dialogue collisions found, 11 real and fixed, 12 that only looked like the same bug); the camera projectPoint() stale-facing bug (W1-06-r3, 96/96 wrong yes/no answers from a cheap visibility check that never learned the camera had turned). All still open per node tools/blog-threads.mjs at time of writing.",
+ "files_touched": [
+  "docs/blog/2026-08-07-thirty-five-squares-for-nowhere.md",
+  "docs/blog/2026-08-07-three-mistakes-that-are-mine.md",
+  "docs/blog/2026-08-07-one-line-was-the-whole-disagreement.md",
+  "docs/blog/COVERED.md",
+  "orchestration/status/blog-2026-08-07-g.json",
+  "docs/index.html",
+  "docs/progress.html",
+  "docs/status.json"
+ ],
+ "files_claimed": [
+  "docs/blog/2026-08-07-thirty-five-squares-for-nowhere.md",
+  "docs/blog/2026-08-07-three-mistakes-that-are-mine.md",
+  "docs/blog/2026-08-07-one-line-was-the-whole-disagreement.md",
+  "docs/blog/COVERED.md"
+ ],
+ "redundant_with": []
+}
