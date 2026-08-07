@@ -90,6 +90,32 @@ export const CHANNEL_READERS = {
 };
 
 /**
+ * THE CHANNELS A DOCUMENT ANSWERS FOR. W1-READABLES.
+ *
+ * `book` was routed in W1-LIBRARY round 2 by `Engine._bookKnowledgeIndex()`, which matches a
+ * `revealed_by` row's `source` against a book's `knowledge_key` and unions the reveal id into
+ * `ctx.knowledge` for every book in `sim.quest.booksRead`. `ledger` and `letter` are the same
+ * question with a different noun on it: the quest file says *"you learn this by reading a thing
+ * somebody wrote"*, and names the thing. So they go through the same reader rather than a second
+ * one, and this constant is the whole of the difference.
+ *
+ * A ledger and a letter are still not the same OBJECT, and the world keeps them apart in the
+ * place where it matters — the verb. A letter is carried: it is an item with `readable: true`
+ * and a `book_id`, and you read it out of your own inventory. A ledger is read where it stands:
+ * it is a prop with `readable_book`, `takeable: false`, and reaching for it opens it in the room
+ * rather than putting it in your pack. That is not decoration either. Q-MAIN-06 ships a failure
+ * state called `fail_took_the_books` whose cause is *"the player removes a volume of the Tally
+ * from the archive"*, and an archive whose only interaction was `take` would have made that
+ * failure the single thing a player could do.
+ *
+ * `environment` is deliberately NOT here. Its sources are places and marks — `loc_the_flooding_
+ * road`, "the cut itself, on the shaded side" — and a place is not a document. Routing it here
+ * would mean writing a page for a thing that has no page, which is the failure this piece exists
+ * to avoid one layer along. See `W1-READABLES` for the per-source decision on all 27 rows.
+ */
+export const DOCUMENT_CHANNELS = new Set(['book', 'ledger', 'letter']);
+
+/**
  * Build the index `QuestEngine.learnFrom()` consults: `"<kind>:<source>"` -> the reveal rows that
  * source can produce. Pure over the quest definitions, so a tool can build it with no engine.
  *

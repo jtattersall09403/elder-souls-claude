@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `ef5b4c4`: 486 tools, 153 reference
-items, 28 pieces in flight.
+so it cannot drift. Generated at `0f6ff17`: 488 tools, 153 reference
+items, 27 pieces in flight.
 
-Its purpose is to stop 28+ concurrent agents each paying separately to discover the
+Its purpose is to stop 27+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -62,9 +62,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/verdict-staleness.mjs` — which verdicts are still standing on the code that is actually at HEAD.
 - `tools/verdict-validate.mjs` — **no header comment**
 
-### `tools/analysis/` — 37
+### `tools/analysis/` — 39
 
 - `tools/analysis/ambience-census.mjs` — RI-AUD03 B4 — the layer census.
+- `tools/analysis/ambience-determinism-chart.mjs` — Draw the W1-22 round-3 headline as a picture: which ambience beds render the same sound twice.
 - `tools/analysis/ambience-determinism.mjs` — DOES THE SAME BED RENDER THE SAME SOUND TWICE?
 - `tools/analysis/ambience-interior-consumption.mjs` — CONSUMPTION for the interior ambience beds.
 - `tools/analysis/ambience-onsets-chart.mjs` — Draw the W1-22 round-2 headline as a picture: how far the ambience event layers sit above or below the bed they land on, per region, before and after.
@@ -101,6 +102,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/ui-census.mjs` — RI-UIX01 §C (the budget) and §D (stamina as a correctness property).
 - `tools/analysis/ui-forbidden.mjs` — RI-UIX01 §B, both probes, and RI-UIX03 §D.
 - `tools/analysis/ui-layer.mjs` — RI-UIX02 §C, detector 1 of three: the pixel sweep.
+- `tools/analysis/w1-13-r4-chart.mjs` — THE PICTURE FOR W1-13 ROUND 4: what one ordinary enemy is worth, when you died and when you did not.
 
 ### `tools/audio/` — 4
 
@@ -764,19 +766,18 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `critic-w1-03` | running | read RULES, INDEX, w1-03 survey, W1-03.json, RI-WLD10/11, RI-VIS02/04, ARBITRATION S25 | `orchestration/status/critic-w1-03.json` |
-| `W1-03` | fixed | Three severe gaps round 1 diagnosed are now fixed and re-verified (bare Node + one browser | `reports/w1-03-survey.md` `reports/blog-feed.jsonl` `docs/shots/2026-08-07-w1-03-hip-deep-water-no-waterline.png` `docs/shots/2026-08-07-w1-03-round2-hip-deep-water-waterline-now-drawn.png` `game/src/sim/traversal.js` `game/src/engine.js` |
-| `W1-READABLES` | ? | read orchestration/INDEX.md and orchestration/status/W1-18-r2.json; run tools/quests/revea | `orchestration/status/W1-READABLES.json` |
 | `W1-04-r2` | measuring | 1. sim.applyCell hook: door verbs reach _applyCell (deferred to _afterStep, outside the ar | `game/src/sim/settlement.js` `game/src/engine.js` `game/src/render/interior.js` `game/src/render/renderer.js` `game/src/harness/api.js` `game/src/sim/npc.js` |
+| `W1-13-r4` | done | critic | `orchestration/status/W1-13-r4.json` `game/src/sim/environment.js` `game/src/sim/souls.js` `game/src/render/renderer.js` `tools/journey/jrn06-death.mjs` `tools/harness/w1-13-r4-clock-consequences.mjs` |
+| `critic-w1-03` | running | bare-Node probes done (18 checks, 16 pass). Next: look at both shots, then ONE browser ses | `orchestration/status/critic-w1-03.json` |
+| `W1-READABLES` | building | write the mechanism, then the documents | `orchestration/status/W1-READABLES.json` |
+| `W1-03` | fixed | Three severe gaps round 1 diagnosed are now fixed and re-verified (bare Node + one browser | `reports/w1-03-survey.md` `reports/blog-feed.jsonl` `docs/shots/2026-08-07-w1-03-hip-deep-water-no-waterline.png` `docs/shots/2026-08-07-w1-03-round2-hip-deep-water-waterline-now-drawn.png` `game/src/sim/traversal.js` `game/src/engine.js` |
 | `W1-06-r3` | done | DONE. If a successor picks this up: the amendment (reports/w1-06/AMENDMENT-W1-06-02-projec | `game/src/engine.js` `game/src/sim/camera.js` `tools/camera/cam-projectpoint-fix.mjs` `tools/camera/cam-projectpoint-r3-shot.mjs` `reports/w1-06/AMENDMENT-W1-06-02-projectPoint.md` `reports/w1-06/cam-projectpoint-r3-shot.json` |
 | `W1-18-r2` | done | hand to a critic. NOT DONE and not faked: 73 demanded reveals still have no route. The mai | `orchestration/status/W1-18-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/sim/quest/machine.js` `game/src/engine.js` `game/data/quests/faction-imperial-assize.json` `game/data/quests/faction-wet-ledger.json` |
-| `W1-13-r4` | running | run w1-13-r4-clock-consequences.mjs; fix env/souls award clock landed | `orchestration/status/W1-13-r4.json` `game/src/sim/environment.js` `game/src/sim/souls.js` `tools/harness/w1-13-r4-clock-consequences.mjs` |
 | `critic-w1-13-r3` | done | none — verdict delivered | `orchestration/status/critic-w1-13-r3.json` `tools/harness/critic-w1-13-r3.mjs` `tools/harness/critic-w1-13-r3-shot.mjs` `corpus/90-verdicts/wave1/W1-13-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-13-r3/` |
 | `W1-23-r2` | ? | none — round complete. A round-3 critic should re-run tools/lore/critic-w1-23-r1.mjs (or a | `corpus/60-lore/data/canon-facts.json` `game/data/lore/canon.json` `game/data/dialogue/topics/40-race-gated.json` `game/data/dialogue/topics/70-disputes.json` `game/data/factions/argonian-tribes.json` `tools/lore/build-canon.mjs` |
 | `W1-06` | partial | SUPERSEDED by successor4_log below and by orchestration/status/W1-06-r2.json (the live thr | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` `corpus/80-methods/m-cam05-world-camera.mjs` `corpus/80-methods/m-cam06-feel.mjs` |
 | `W1-06-r2` | partial | 1) tools/harness/w1-13-r3-bloom-sight.mjs still has its aim-only/eye-only arms written and | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` `corpus/80-methods/m-cam05-world-camera.mjs` `corpus/80-methods/m-cam06-feel.mjs` |
 | `W1-19-r3` | done | hand to a critic. NOT DONE and not faked: Q-MAIN-06 is still blocked and so are 7 other ma | `orchestration/status/W1-19-r3.json` `game/src/sim/quest/machine.js` `game/data/quests/hooks.json` `tools/quests/reveal-route-audit.mjs` `tools/quests/reveal-route-chart.mjs` `tools/quests/mainline-chain-floor.mjs` |
-| `W1-22-r3` | in-progress | (2) ambience-render --calibrate: clay-moor 5.8 LU under its own target, deep-marshes 0.003 | `tools/analysis/ambience-determinism.mjs` `game/src/audio/synth.js` `game/src/audio/ambience.js` `reports/w1-22/` |
 | `critic-w1-17-act5` | ? | none. Successor (round 2, after the fix): re-run corpus/90-verdicts/wave1/artifacts/W1-17- | `corpus/90-verdicts/wave1/W1-17-act5-r1.md` `corpus/90-verdicts/wave1/W1-17-act5-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/converse-node-repro.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/gen-converse-node-repro.mjs` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/opens-by-topic-scan.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/check-prose-output.txt` |
 | `W1-VIABILITY-SPLIT` | done | none -- hand to a tool critic. Do NOT let the critic grade this piece against the screen f | `orchestration/status/W1-VIABILITY-SPLIT.json` `tools/analysis/impossibility-screen.mjs` `tools/quests/viability-walk.mjs` `tools/quests/viability-split-shot.mjs` `corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md` `corpus/22-character/RI-CHR01-character-creation.md` |
 | `W1-13-r3` | done | critic | `game/src/sim/environment.js` `game/src/harness/api.js` `tools/journey/jrn06-death.mjs` `tools/journey/journey-run.mjs` `tools/harness/w1-13-r3-bloom-sight.mjs` `tools/harness/w1-13-r3-clock.mjs` |

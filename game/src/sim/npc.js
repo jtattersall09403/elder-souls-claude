@@ -215,6 +215,12 @@ function hashStr(s) {
  */
 export function stepSchedule(sim, n, bus) {
   if (!n.schedule.length) return;
+  // A person may be built by `makeNPC` OR rehydrated inline by `save/state.js` — two
+  // construction paths for one object, which is AGENT-PROTOCOL failure mode 1 and is exactly
+  // how this line came to be needed: the load path did not copy `goal`, and the first write to
+  // it threw INSIDE the fixed step, which kills every stepping probe in the project (RULES.md
+  // rule 15's reasoning). The save path is fixed; this makes a third path harmless too.
+  if (!n.goal) { n.goal = [n.pos[0], n.pos[1], n.pos[2]]; n.hasGoal = false; n.walked_m = n.walked_m || 0; }
   const i = slotAt(n.schedule, sim.env.timeOfDay);
   if (i < 0) return;
   const s = n.schedule[i];

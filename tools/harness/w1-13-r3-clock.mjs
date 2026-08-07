@@ -117,10 +117,21 @@ try {
         totalDead += g + 1;
       }
       const envAfter = H.getEnvironment();
-      const anyOpen = (() => {
-        // A door the clock decides. Read from the world, not recomputed here.
-        try { const s = H.getWorldStats(); return s && s.settlement ? s.settlement : null; } catch (e) { return null; }
-      })();
+      // ---- THE CONSUMER, and this is the W1-13 ROUND-4 CORRECTION ------------------------------
+      //
+      // This block used to read `getWorldStats().settlement` — a key that report does not have, so
+      // it came back `null` — and `getEnvironment().phase`, which is "night" on both sides of the
+      // 21:00 boundary this fixture straddles. Two vacuous reads, and the artifact shipped
+      // `T5_consumer_moved: false` on the strength of them while the real consumer was one query
+      // away. `ARBITRATION.md` §3 wants an ENTITY changing behaviour, so that is what is read now:
+      // spawn one ordinary enemy, kill it, and see what the purse is actually paid. `sim/souls.js`
+      // pays `NIGHT_MULTIPLIER` inside `isNight()`, which is the clock's own consumer.
+      const soulsBefore = H.getDeathState().souls_held;
+      H.spawn('inf_trash', eng.sim.player.pos[0] + 4, eng.sim.player.pos[2] + 4, { as: 'r3clock-ord' });
+      H.stepFrames(2);
+      H.killEntity('r3clock-ord');
+      H.stepFrames(20);
+      const soulsPaid = H.getDeathState().souls_held - soulsBefore;
 
       return {
         dead_frames: deadFrames,
@@ -135,7 +146,9 @@ try {
         phase_before: phaseBefore,
         phase_after: envAfter.phase,
         hours_burned_by_the_deaths: +(envAfter.time_of_day - hourBefore).toFixed(6),
-        settlement: anyOpen,
+        souls_for_one_ordinary_kill: soulsPaid,
+        award_hour_after: envAfter.award_time_of_day ?? null,
+        award_offset_h: envAfter.award_offset_h ?? null,
       };
     } finally {
       if (restore) envSys.step = restore;
@@ -159,8 +172,21 @@ try {
     // environment (the clock runs first in the frame order, before the fight and before
     // `DeathSystem.observe` sees hp <= 0). So one live frame per death is correct and the 150
     // frames of surface after it are the thing the rule is about. The predicate says that.
-    T5_consumer_moved: S.hours_burned_by_the_deaths <= (S.deaths_run + 1) * 24 / 259200
+    // RENAMED in W1-13 round 4. This predicate never measured a consumer — it measures the BURN,
+    // and calling it `T5_consumer_moved` is how an artifact came to carry a false flag about a
+    // model that was in fact plugged in. Both names are published so an older reader is not
+    // silently reinterpreted.
+    T5_death_burn_is_bounded_and_the_arms_differ: S.hours_burned_by_the_deaths <= (S.deaths_run + 1) * 24 / 259200
       && D.hours_burned_by_the_deaths > S.hours_burned_by_the_deaths * 10,
+    T5_consumer_moved_DEPRECATED_SEE_T6: null,
+    // T6 IS the consumption arm, and it is an entity: the same ordinary enemy, killed in both
+    // arms, paid a different number of souls. W1-13 round 4 changed which clock `souls.js` reads
+    // (`env.awardTimeOfDay`, see sim/environment.js §1b) so that DYING can no longer move the rate
+    // in either direction — so on the round-4 tree these two are EQUAL at this fixture, and the
+    // arm that proves the model is still plugged in is the one in
+    // `tools/harness/w1-13-r4-clock-consequences.mjs` §B, which deletes the award clock.
+    T6_consumer_souls_paid: { shipped: S.souls_for_one_ordinary_kill, fix_deleted: D.souls_for_one_ordinary_kill },
+    T6_the_same_enemy_paid_differently: S.souls_for_one_ordinary_kill !== D.souls_for_one_ordinary_kill,
     shipped_burn_is_one_live_frame_per_death: {
       hours: S.hours_burned_by_the_deaths,
       frames: Math.round(S.hours_burned_by_the_deaths * 259200 / 24),

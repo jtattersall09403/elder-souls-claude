@@ -57,10 +57,19 @@ const ARM = async () => {
     // The world's own answer, not the harness override.
     try { r.hearth_here = (H.listHearths().hearths || []).length ? well.id : null; } catch (e) { /**/ }
 
+    // HARNESS.md §4: the `f` of a scripted event is RELATIVE to the frame `queueInputs()` was
+    // called at, not absolute. The first draft of this probe passed `sim.frame + 1` and every
+    // event landed thousands of frames in the future, so the probe pressed nothing and reported
+    // "no key opens the level-up screen" — which is the right answer for the wrong reason, and is
+    // exactly the inert instrument RULES.md 4 exists for. The control below is what caught it.
+    // The press recipe is the one W1-13 round 3's levelling probe used to drive a real spend
+    // through the drawn screen — `{ f: 0 }` and ONE frame per edge. The first draft of this file
+    // used `{ f: 1 }` and twelve frames and NOTHING LANDED INSIDE AN OPEN SCREEN, which the
+    // in-screen control below caught and which voided the first answer this probe produced.
     const press = (action) => {
-      const f = eng.sim.frame;
-      H.queueInputs([{ f: f + 1, press: [action] }, { f: f + 3, release: [action] }]);
-      H.stepFrames(12);
+      H.queueInputs([{ f: 0, press: [action] }]); H.stepFrames(1);
+      H.queueInputs([{ f: 0, release: [action] }]); H.stepFrames(1);
+      H.stepFrames(6);
       return ui();
     };
     const reset = () => { H.clearInputs(); if (ui() !== 'world') H.closeMenu(); H.stepFrames(4); };
@@ -78,22 +87,41 @@ const ARM = async () => {
       // Get back to that screen the way the player did, then try all sixteen from inside it.
       const opener = r.actions.find((a) => r.from_world[a] === screen);
       r.from_each_screen[screen] = { opener, results: {} };
+      // THE POSITIVE CONTROL INSIDE THE SCREEN, and the first draft of this probe did not have it.
+      // `mode` is the wrong observable for "did this press land": every press that does nothing
+      // leaves the mode exactly where a swallowed press would. So the whole `getUIState()` is
+      // fingerprinted either side of each press, and the run refuses to conclude anything until at
+      // least one press has been shown to MOVE the screen it is pressed on.
+      const fingerprint = () => { try { return JSON.stringify(H.getUIState()); } catch (e) { return ''; } };
+      let anyPressMovedTheScreen = false;
       for (const a of r.actions) {
         reset();
         press(opener);
         if (ui() !== screen) { r.from_each_screen[screen].results[a] = `could not re-open (${ui()})`; continue; }
-        r.from_each_screen[screen].results[a] = press(a);
+        const fp0 = fingerprint();
+        const mode = press(a);
+        const fp1 = fingerprint();
+        const moved = fp0 !== fp1;
+        if (moved) anyPressMovedTheScreen = true;
+        r.from_each_screen[screen].results[a] = mode;
+        r.from_each_screen[screen].moved = r.from_each_screen[screen].moved || {};
+        r.from_each_screen[screen].moved[a] = moved;
       }
       // The axes too — a screen may be a tab strip.
       for (const [name, mv] of [['left', [-1, 0]], ['right', [1, 0]], ['up', [0, 1]], ['down', [0, -1]]]) {
         reset();
         press(opener);
         if (ui() !== screen) continue;
-        const f = eng.sim.frame;
-        H.queueInputs([{ f: f + 1, move: mv }, { f: f + 20, move: [0, 0] }]);
-        H.stepFrames(30);
+        const fp0 = (() => { try { return JSON.stringify(H.getUIState()); } catch (e) { return ''; } })();
+        H.queueInputs([{ f: 0, move: mv }]); H.stepFrames(1);
+        H.queueInputs([{ f: 0, move: [0, 0] }]); H.stepFrames(1);
+        H.stepFrames(6);
+        const fp1 = (() => { try { return JSON.stringify(H.getUIState()); } catch (e) { return ''; } })();
+        if (fp0 !== fp1) anyPressMovedTheScreen = true;
         r.from_each_screen[screen].results[`axis_${name}`] = ui();
+        r.from_each_screen[screen].moved[`axis_${name}`] = fp0 !== fp1;
       }
+      r.from_each_screen[screen].any_input_moved_this_screen = anyPressMovedTheScreen;
     }
     reset();
 
@@ -101,7 +129,10 @@ const ARM = async () => {
     // `ui/system.js navigable(ctx)` pushes 'levelup' onto the destination list whenever the player
     // is at a hearth. If input cannot reach it, that list is advertising a room with no door.
     r.navigable_from_world = (() => {
-      try { return eng.ui.navigable(eng._uiContext ? eng._uiContext() : eng.uiContext()); } catch (e) { return null; }
+      for (const m of ['_uiCtx', 'uiCtx', '_uiContext', 'uiContext']) {
+        try { if (typeof eng[m] === 'function') return eng.ui.navigable(eng[m]()); } catch (e) { /* next */ }
+      }
+      try { return eng.ui.navigable(eng.getUIContext && eng.getUIContext()); } catch (e) { return null; }
     })();
 
     const allModes = new Set();
@@ -109,6 +140,8 @@ const ARM = async () => {
     for (const s of Object.keys(r.from_each_screen)) {
       for (const m of Object.values(r.from_each_screen[s].results)) if (typeof m === 'string') allModes.add(m);
     }
+    r.every_open_screen_responded_to_input = Object.keys(r.from_each_screen).length > 0
+      && Object.values(r.from_each_screen).every((x) => x.any_input_moved_this_screen);
     r.modes_input_can_reach = [...allModes].sort();
     r.levelup_reached_by_input = allModes.has('levelup');
     r.levelup_advertised_by_navigable = Array.isArray(r.navigable_from_world)
@@ -139,6 +172,10 @@ try {
     levelup_advertised_but_unreachable:
       !!res.levelup_advertised_by_navigable && !res.levelup_reached_by_input,
     the_probe_can_open_screens_at_all: (res.modes_input_can_reach || []).some((m) => m !== 'world'),
+    // Two separate inertness guards, because they fail differently: one says the probe can open a
+    // screen, the other says the presses it makes INSIDE a screen actually land.
+    presses_land_inside_an_open_screen: !!res.every_open_screen_responded_to_input,
+    screens_the_ui_model_advertises: res.navigable_from_world,
     harness_verb_opens_it: res.harness_verb_opens_it,
     reading: !res.levelup_reached_by_input
       ? 'NEXT-DISPATCH §P.6 CANNOT BE MET AS THE TREE STANDS. `menu` opens the inventory and '
@@ -149,7 +186,21 @@ try {
   };
   // An absence-reporter: non-zero when the thing asked for is not there, non-zero also when the
   // probe itself proves inert by opening nothing at all.
-  out.ok = !!out.verdict.the_probe_can_open_screens_at_all && !!out.verdict.level_spend_reachable_by_input_alone;
+  if (out.verdict.the_probe_can_open_screens_at_all && !out.verdict.presses_land_inside_an_open_screen) {
+    out.verdict.probe_is_inert = true;
+    out.verdict.reading = 'THIS PROBE OPENED A SCREEN AND THEN PRESSED SIXTEEN KEYS AND FOUR AXES '
+      + 'INSIDE IT WITHOUT MOVING ANYTHING. Its answer about what a screen leads to is void until '
+      + 'at least one press is shown to land.';
+  }
+  if (!out.verdict.the_probe_can_open_screens_at_all) {
+    out.verdict.probe_is_inert = true;
+    out.verdict.reading = 'THIS PROBE PRESSED SIXTEEN KEYS AND OPENED NOTHING AT ALL, including '
+      + 'the inventory that `menu` is bound to. It is measuring its own press loop, not the game, '
+      + 'and its answer about the level-up screen is void.';
+  }
+  out.ok = !!out.verdict.the_probe_can_open_screens_at_all
+    && !!out.verdict.presses_land_inside_an_open_screen
+    && !!out.verdict.level_spend_reachable_by_input_alone;
   log(`input-only: reached ${JSON.stringify(res.modes_input_can_reach)} · levelup by input = ${res.levelup_reached_by_input} · advertised by navigable = ${res.levelup_advertised_by_navigable} · harness verb opens it = ${res.harness_verb_opens_it}`);
 } catch (err) {
   out.error = String(err && err.stack ? err.stack : err);

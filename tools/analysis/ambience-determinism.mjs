@@ -372,8 +372,12 @@ try {
   if (handle) await handle.close();
 }
 
-if (!SABOTAGE) {
-  const outPath = args.out || join(ROOT, 'reports/w1-22/ambience-determinism.json');
+// The sabotage arms write too, under a suffixed name — a delete-the-fix that leaves no artifact
+// behind cannot be re-read by a critic, and the flat arm is the "before" half of every claim in
+// this piece about the mixer. It cannot overwrite the clean baseline because the name differs.
+{
+  const outPath = args.out
+    || join(ROOT, `reports/w1-22/ambience-determinism${SABOTAGE ? '-sab-' + SABOTAGE : ''}.json`);
   mkdirSync(dirname(outPath), { recursive: true });
   writeFileSync(outPath, JSON.stringify(out, null, 2));
   out.report_path = outPath;

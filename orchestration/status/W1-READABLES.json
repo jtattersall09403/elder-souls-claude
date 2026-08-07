@@ -3,12 +3,55 @@
   "title": "Readable objects: ledgers, letters, environment reveals",
   "status": "in_progress",
   "started": "2026-08-07T22:55:55.328Z",
-  "next_step": "read orchestration/INDEX.md and orchestration/status/W1-18-r2.json; run tools/quests/reveal-route-audit.mjs",
+  "next_step": "write the mechanism, then the documents",
   "files_touched": [
     "orchestration/status/W1-READABLES.json"
   ],
-  "files_claimed": [],
+  "files_claimed": [
+    "game/data/books/",
+    "game/data/items/",
+    "game/data/world/interiors/",
+    "game/data/index.json",
+    "game/src/sim/quest/reveal-routes.js",
+    "game/src/engine.js",
+    "game/src/render/interior.js",
+    "tools/quests/reveal-route-audit.mjs",
+    "tools/quests/document-route-world.mjs",
+    "tools/check-quests.mjs",
+    "reports/runs/W1-READABLES/",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
   "notes": [
     "bootstrap stub written before reading anything, per RULES.md rule 1"
-  ]
+  ],
+  "state": "building",
+  "headline": "Ledgers and letters are books with a different noun. Build the documents, place them in rooms, and let the book reader route them.",
+  "plan": [
+    "MECHANISM 1: reveal-routes.js exports DOCUMENT_CHANNELS {ledger,letter}; engine _bookKnowledgeIndex accepts them, so a document whose knowledge_key IS the quest-declared source id confers the reveal through the SAME union ctx.knowledge already has.",
+    "MECHANISM 2: read-in-place. A prop carrying readable_book opens the book screen on interact instead of being pocketed. A ledger is a book you read where it stands (Q-MAIN-06 fails if you carry a volume out of the room); a letter is a book you carry.",
+    "MECHANISM 3: interior records may carry an ARRAY of readables, each with a book id. 83 interiors already draw a readable object and none of them had anything written in it.",
+    "DATA: author the mainline ledgers + the one mainline letter, place them in the interiors the quests name.",
+    "TOOLS: extend reveal-route-audit section A to see document routes; new browser tool for the Q-MAIN-06 end-to-end.",
+    "REPORT: the environment sources that are sentences, one decision each."
+  ],
+  "redundant_with": [
+    "W1-18-r2",
+    "W1-19-r3",
+    "W1-04-r2",
+    "W1-LIBRARY-r2",
+    "W1-VIABILITY-SPLIT"
+  ],
+  "baseline": {
+    "commit": "ef5b4c4",
+    "reveal_route_audit": {
+      "demanded": 121,
+      "routed": 48,
+      "unrouted": 73,
+      "ledger": "28 demanded 0 routed",
+      "letter": "6 demanded 0 routed",
+      "environment": "18 demanded 0 routed"
+    },
+    "viability_walk": "0/40, all 40 stop at Q-MAIN-06 on rev_the_curve_predates"
+  }
 }

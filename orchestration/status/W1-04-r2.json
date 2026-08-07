@@ -13,7 +13,19 @@
     "tools/world/w1-04-consumption.mjs: sections 10 and 11 added - the first checks in it that read the renderer, each with a cut-consumer control",
     "tools/world/w1-04-interior-sweep.mjs NEW: the pixel-hash sweep the verdict's acceptance names"
   ],
-  "headline_offline": "All 115 interiors build: 0 failures, 94 distinct scene-graph signatures (was 2), largest identical group 7 (seven byte-identical helstrom dwelling records), 0 props with no table entry, 452 architecture-kit meshes, 504-3444 triangles (was 249 on 113 of 115).",
+  "headline_measured": {
+    "instrument": "tools/world/w1-04-consumption.mjs sections 10-11, run in the browser against the real Engine",
+    "the_blocking_gap": "115 of 115 interiors entered through enterInterior(); 115 of 115 drew the cell cellFor(env) names; 115 of 115 restored the exterior on exit. Round 1: 115 entered, 0 switched.",
+    "the_control": "The identical sweep with sim.applyCell and _syncCell cut reports drawn_agrees 0 of 115, every one of them reading drawn:'province' while want:'interior'. That arm IS the round-1 build, reproduced on demand.",
+    "probe_defect_found_and_fixed": "The first run scored 113/115 because the probe asserted renderer.interiorId on all 115; the five hand-built named cells (barge-hold, writ-house, helstrom-market, stormhold-street, rootlands-well) do not use the generic interior cell and never set it. drawn == want on both. Corrected; the build was always 115.",
+    "build_defect_found_by_the_probe": "The room was cached on the interior id, so perturbing a live record and walking back through the door returned the cached room and three checks correctly reported DEAD. The cache is now keyed on the record's content. An id-keyed cache is right for play and makes the probe unfalsifiable, which is worse.",
+    "distinctness": "92 of 115 distinct scene-graph signatures read off the renderer (largest identical group 7, and those seven are byte-identical helstrom dwelling records). Round 1: 2 distinct, 113 identical.",
+    "schedules": "93 people changed POSITION across a day, 75 changed cell. Round 1 in Thorn: 9 of 24 changed cell, 0 of 24 changed position.",
+    "outdoors": "16 outdoors at 03:00, 50 at 09:00, 22 at 20:00 in the loaded towns. Round 1: 0 anywhere in the province at 03:00 and 0 of W1-04's own 260 at any hour.",
+    "perturbations_that_moved_the_screen": "bounds_m halved -> drawn shell 13.6x15.6 -> 6.8x7.8, meshes 127 -> 113. props[] stripped -> props_built 18 -> 0, meshes 127 -> 67. lights[] stripped -> lamps 8 -> 1, lit 5 -> 1. All read off renderer.interiorSummary, not off the record.",
+    "final": "tools/world/w1-04-consumption.mjs: 20/20 CONSUMED, 9 paths, 0 skipped, 0 page errors. Round 1 was 13/13 on a build where no door had ever shown anyone a room."
+  },
+  "headline_offline":"All 115 interiors build: 0 failures, 94 distinct scene-graph signatures (was 2), largest identical group 7 (seven byte-identical helstrom dwelling records), 0 props with no table entry, 452 architecture-kit meshes, 504-3444 triangles (was 249 on 113 of 115).",
   "started_at": "2026-08-07",
   "spec": "corpus/90-verdicts/wave1/W1-04-r1.md",
   "prior_round": "W1-04 (FAIL 3.2/10)",
@@ -28,6 +40,13 @@
     "Schedules: stepSchedule's docstring claims it moves pos and never touches it; nobody is ever outdoors"
   ],
   "do_not_rederive": ["ownership (RI-STL02)", "locks", "shop hours"],
+  "not_done_stated_plainly": [
+    "RI-WLD03 R5's EXTERIOR half. The eight architecture kits are implemented as INTERIOR structure (452 kit meshes across the province), but game/src/world/province.js still draws no settlement buildings at all: `settlement.buildings` reaches the door table and a .length and nothing else. So the 202 buildings are still building-shaped doors from the street, VP04 is still terrain, and the townspeople this round put outdoors are standing on a bare pad. This is the largest remaining piece of the round-1 verdict and I did not attempt it.",
+    "The unique items now have bodies and can be picked up, but they are NOT in game/data/world/property/*.json zone contents, so taking one does not run the theft chain that W1-15 built and the critic verified. `unique_item.owner` is carried and unread.",
+    "Interior walls have no collision. `sim.cell` is the camera-cell collision set and no interior has one; that was true before this round and is still true. You can walk out through a wall.",
+    "RI-WLD13 N4/N5/N7: windows and storeys are now DERIVED (a rule over interior_kind, bounds_m and a declared stair) rather than authored fields. That is an implementation, not the data the item asks for. N7 (water) is untouched.",
+    "`state: \"interior_firelit\"` now draws Thorn Hall built from its record instead of scene.js's generic hall. That changes what VP05 and every capture staged through that state looks like. It is the intended improvement, but any piece holding a cross-wave comparison through interior_firelit should know."
+  ],
   "files_claimed": [
     "game/src/engine.js",
     "game/src/sim/settlement.js",
@@ -68,9 +87,19 @@
     "tools/world/w1-04-interior-sweep.mjs",
     "tools/world/w1-04-r2-shots.mjs"
   ],
+  "shots": [
+    "docs/shots/2026-08-07-w1-04-r2-archon-apothecary-through-the-door.png",
+    "docs/shots/2026-08-07-w1-04-r2-thorn-hall-through-the-door.png",
+    "docs/shots/2026-08-07-w1-04-r2-blackrose-gaol-through-the-door.png"
+  ],
+  "shots_note": "All three entered with ops:[['enterInterior',...]] and NO staging state. The round-1 critic had to stage both of their captures through state:'interior_firelit' because ops alone photographed the exterior; that is no longer true. The three rooms differ in size, palette, partitioning and fittings: the apothecary has a back room, Thorn Hall has a mezzanine over its floor, the gaol is windowless with an iron door and block masonry.",
   "falsifications_done": [
     "build-street-life.mjs: set thorn radius_m to 1 -> exit 3, 15 records named as unplaceable. Restored; git diff and git diff --cached both empty (RULES.md rule 17).",
-    "All 115 interiors built headless with no browser: 0 failures, 0 props with no table entry."
+    "All 115 interiors built headless with no browser: 0 failures, 0 props with no table entry.",
+    "tools/world/w1-04-consumption.mjs --self-test: 7/7 GOES-RED, 13 skipped as un-invertible scenario rows. Every row with a defined disconnect, including the three new render rows, goes red when its consumer is cut.",
+    "The sweep's own control arm: sim.applyCell and _syncCell cut -> 0 of 115 drew the right cell. The instrument reproduces the round-1 build on demand.",
+    "Two defects were found by these instruments going red rather than by reading code: (1) my sweep asserted renderer.interiorId on the five hand-built named cells that never set it - a probe defect; (2) the room was cached on the interior id, so a perturbed record returned the cached room and three checks reported DEAD - a build defect, now keyed on the record's content.",
+    "A third defect was found by the fixed step THROWING: save/state.js rebuilds NPCs inline rather than through makeNPC, so `goal` was undefined and stepSchedule crashed. That path was also silently destroying W1-GIVER-PRESENCE's `post` on every load - an existing bug, now written and read back, plus a guard in stepSchedule so no third construction path can kill every stepping probe in the project."
   ],
   "method_deviations": [
     "Another agent's blanket commit swept my files into commits 0c8acfa/7d9a8e1 while I was working. I ran `git commit` at no point (RULES.md rule 28). This is the fourth time the pattern is on record.",

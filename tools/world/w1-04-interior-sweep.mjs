@@ -90,7 +90,16 @@ try {
             if (!r || !r.entered) { rows.push({ id, entered: false, reason: r && r.reason }); continue; }
             H.stepFrames(2);
             // Nobody in the frame: the picture must be of the ROOM.
-            H.clearNPCs ? H.clearNPCs() : null;
+            // NOBODY IN THE FRAME, and this is the validity of the whole measurement rather
+            // than tidiness. The round-1 critic's two captures of two different buildings
+            // differed ONLY in who was standing in them, so a sweep that leaves the cast in is
+            // hashing the people and reporting the number as a count of rooms. There IS a cast:
+            // `enterInterior` sets `env.settlement`, which makes `stepSettlement` populate the
+            // town. The first version of this line read `H.clearNPCs ? H.clearNPCs() : null` —
+            // and `clearNPCs` is not a harness verb, so it silently did nothing and every
+            // number it produced would have been contaminated by exactly the thing the round-1
+            // pair was criticised for. There is no verb for this, so it goes through the engine.
+            E.sim.npcs.length = 0;
             H.camera(POSE);
             H.renderFrame();
             const url = await H.screenshot();

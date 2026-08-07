@@ -256,7 +256,7 @@ const DEADLINE_ARM = async () => {
     // Install a ONE-DAY deadline on it. This is the shape `hooks.json` declares and never fills.
     // `fail()` refuses a failure id the quest does not declare, so the id is taken off the def.
     const def = eng.questBook ? eng.questBook.get(qid) : null;
-    const failId = (def && (def.failures || []).length) ? def.failures[0].id : null;
+    const failId = (def && (def.failure_states || []).length) ? def.failure_states[0].id : null;
     r.failure_state_used = failId;
     qm.deadlines.push({ quest: qid, days: 1, failure: failId });
 
@@ -273,7 +273,10 @@ const DEADLINE_ARM = async () => {
       // Reaching `fail()` at all IS the demonstration: `onDay` matched the deadline against the
       // day four rests bought. A throw here is `fail()` refusing an undeclared failure id, which
       // is a statement about the fixture and not about the clock.
-      r.on_day_reached_fail = /machine\.js/.test(String(e)) && /fail/.test(String(e));
+      // `no failure state` is raised by `fail()` and by nothing else in the tree, so seeing it IS
+      // the evidence that `onDay()` matched the deadline against the day four rests bought and
+      // called the failure path.
+      r.on_day_reached_fail = /no failure state/.test(String((e && e.message) || e));
       r.on_day_error = String(e && e.message || e);
     }
     r.on_day_fired = fired.length;

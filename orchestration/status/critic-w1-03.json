@@ -4,7 +4,7 @@
   "judges": "W1-03",
   "state": "running",
   "started": "2026-08-07",
-  "next_step": "read RULES, INDEX, w1-03 survey, W1-03.json, RI-WLD10/11, RI-VIS02/04, ARBITRATION S25",
+  "next_step": "bare-Node probes done (18 checks, 16 pass). Next: look at both shots, then ONE browser session for waterline-vs-surface at multiple depths/tides and the province-side enemy denial end-to-end.",
   "files_touched": [
     "orchestration/status/critic-w1-03.json"
   ],
@@ -14,6 +14,13 @@
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
-  "findings": [],
+  "findings": [
+    "PLAYER SIDE HOLDS. Independent bare-Node probe on real WorldField+Traversal: all three RI-WLD10 §3 privileges land, including a moving-body gradient walk (rule 8) and a delete-the-fix that reverts (rule 6). 9/9 player checks pass.",
+    "R6 SECOND CLAUSE FAILS. Exactly 4 archetypes declare water_native, but drowned_greater and drowned_lesser both have ai:'none' -- enemy.js _idleBehaviour returns at the top, so they never start any action in any band. Their DPS in W5 is identically 0. M53.6: 'FAIL if ... a water_native enemy's DPS in W5 is below 60% of the roster median on land (a water enemy that cannot hurt you is scenery).' Only 2 natives can act.",
+    "NO PURSUIT LOCOMOTION: CLAIM VERIFIED, not convenient. _idleBehaviour's AGGRO branch calls _steer() (yaw only) and poseLocomotion('IDLE'); the only position writes in game/src/combat are clip root motion, body-separation displace(), and knockback. Round 2's scope declaration is accurate.",
+    "CAMERA-YAW STALE BASIS DOES NOT TAINT EITHER SHOT. renderer.js:615-617 builds the THREE camera from c.pos + c.pivot via lookAt; the pre-fix applyOverride path already wrote both. Only projectNDC/projectPoint read c.yaw/c.pitch. Pixels were correct before and after the fix.",
+    "FAIL-CLOSED DEFAULTS ARE UNFALSIFIABLE ON 14 OF 15 FIXTURES. All 15 declare W0/false, and deleting the field yields the same W0 -- so the declaration changes no behaviour. 14 of 15 have ai:'none' and never start an action, so waterDeniesAttack is written and never read on them. Only probe_pulse could observe it.",
+    "ENEMY-SIDE PRODUCER NEVER RAN. _settleEnemyWater lives in engine.js, which does not load in bare Node; round 2 verified only the consumer (enemy.js) via tools/lib/combat-node.mjs with the field set by hand. The producer's gate is province-only + no cellId, while scripted enemies are a harness instrument (queueEnemyScript) -- the two halves have never been shown connected in a running world."
+  ],
   "notes": "Critic with fresh context. Four angles: waterline visual truth, pursuit-locomotion absence claim, band perturbation both races both sides, fail-closed defaults on 15 dummies. Plus two live findings: drowning near one leg (streaming hypothesis), and camera yaw never written until recently (stale-basis captures)."
 }

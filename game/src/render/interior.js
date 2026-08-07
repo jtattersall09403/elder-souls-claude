@@ -441,7 +441,9 @@ export function buildInterior(root, rec) {
     // prop entity at the exact spot the pedestal and the book were drawn — RI-QST08's "thirty
     // unique items declared, none reachable through a door" needs a body AND a position, and a
     // body the world cannot reach is the same orphan wearing a mesh.
-    placements: { unique: null, readable: null },
+    // `readables` is the plural W1-READABLES needed and `readable` is kept as the first of them,
+    // because a room may hold more than one document and the Drowned Court's archive holds two.
+    placements: { unique: null, readable: null, readables: [] },
   };
   if (!rec) { summary.error = 'no record'; return summary; }
 
@@ -661,21 +663,34 @@ export function buildInterior(root, rec) {
       pos: [s.x, by[0] + 1.02, s.z],
     };
   }
-  if (rec.readable) {
+  // W1-READABLES: `readable` may be one record or a list of them. 83 of the 115 interiors carry
+  // one, drawn as a book-shaped box on a shelf, and until now not one of them had anything
+  // written in it — the record was an id and a title and no text anywhere. A record may now name
+  // a `book` in `game/data/books/**`, which is what makes the drawn object a thing you can read;
+  // a record without one is the shelf dressing it always was and is drawn exactly as before.
+  const readables = Array.isArray(rec.readable) ? rec.readable : (rec.readable ? [rec.readable] : []);
+  for (let ri = 0; ri < readables.length; ri++) {
+    const r = readables[ri];
+    if (!r) continue;
     const g = new THREE.Group();
-    g.name = `readable:${rec.readable.id || 'readable'}`;
+    g.name = `readable:${r.id || 'readable'}`;
     const bk = box(0.3, 0.07, 0.22, P.cloth);
     part(g, bk, 0, 0.04, 0);
-    const s = wSlots[(wi + 3) % wSlots.length];
+    // Successive documents take successive wall slots, so two books in one room are two places
+    // to stand rather than one mesh inside another.
+    const s = wSlots[(wi + 3 + ri * 2) % wSlots.length];
     const px = s.x + Math.cos(s.yaw) * 0.25, pz = s.z + Math.sin(s.yaw) * 0.25;
     g.position.set(px, by[0] + 1.06, pz);
     root.add(g);
     summary.readable = true;
-    summary.placements.readable = {
-      id: rec.readable.id || `${rec.id}-readable`,
-      title: rec.readable.title || 'a page somebody left',
+    const placed = {
+      id: r.id || `${rec.id}-readable`,
+      title: r.title || 'a page somebody left',
+      book: r.book || null,
       pos: [px, by[0] + 1.1, pz],
     };
+    summary.placements.readables.push(placed);
+    if (!summary.placements.readable) summary.placements.readable = placed;
   }
 
   // ---- what got built --------------------------------------------------------------------------

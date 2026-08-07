@@ -70,6 +70,7 @@ export class Renderer {
     // cell still holds `scene.js`'s firelit hall, which is what every one of the 113 unnamed
     // interiors used to be.
     this.interiorId = null;
+    this.interiorKey = null;
     this.interiorRecord = null;
     this.interiorSummary = null;
     this.setCell('exterior');
@@ -160,7 +161,7 @@ export class Renderer {
     // been replaced by a fresh one holding `buildHall()`'s output. Without this line a seed
     // change inside an interior silently puts the generic hall back — the exact defect this
     // round exists to remove, reintroduced through a side door.
-    if (this.interiorRecord) { const rec = this.interiorRecord; this.interiorId = null; this.setInteriorRecord(rec); }
+    if (this.interiorRecord) { const rec = this.interiorRecord; this.interiorId = null; this.interiorKey = null; this.setInteriorRecord(rec); }
     this.setCell(this.cell);
     disposeGraph(old);
     return this.seed;
@@ -211,12 +212,31 @@ export class Renderer {
     // walked into standing there under another cell's name.
     if (!id) {
       if (this.interiorId === null) return this.interiorSummary || null;   // already the hall
-      this.interiorId = null; this.interiorRecord = null;
+      this.interiorId = null; this.interiorKey = null; this.interiorRecord = null;
       clearInterior(this.cells.interior);
       this.interiorSummary = buildGenericHall(this.cells.interior);
       return this.interiorSummary;
     }
-    if (id === this.interiorId) return this.interiorSummary;
+    // KEYED ON THE RECORD'S CONTENT, NOT ON ITS ID, and the reason is RULES.md rule 5.
+    //
+    // Keying on the id alone is correct for play — a record never changes while the game runs —
+    // and it makes the consumption probe unfalsifiable, which is worse than being slow. Every
+    // perturbation in this project mutates the live model and re-reads the world; with an
+    // id-keyed cache, halving `bounds_m` and walking back through the door returned the cached
+    // room and the check reported DEAD against a model that is genuinely read. Measured: three
+    // rows went red for exactly this reason before this line existed.
+    //
+    // The key is precisely the set of fields `buildInterior()` reads. A stringify of about a
+    // kilobyte against building 130 meshes is not a cost worth optimising, and it means the room
+    // rebuilds when — and only when — the file that describes it says something different.
+    const key = `${id}|${JSON.stringify([
+      rec.bounds_m, rec.props, rec.containers, rec.interior_kind, rec.settlement,
+      (rec.lights || []).map((l) => [l.pos, l.intensity, l.kind]),
+      rec.light, rec.continuity && rec.continuity.entry_side, rec.service,
+      rec.unique_item && rec.unique_item.id, rec.readable && rec.readable.id,
+    ])}`;
+    if (key === this.interiorKey) return this.interiorSummary;
+    this.interiorKey = key;
     this.interiorId = id;
     this.interiorRecord = rec;
     const root = this.cells.interior;

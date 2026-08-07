@@ -108,7 +108,7 @@ const SIGN_REACH_M = 2.6;
 import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, topicsFor, greetingBand, rootTopicIds } from './character/converse.js';
 import { topicKey } from './core/topics.js';
 import { buildOverheardIndex, buildDirectionsIndex, RumourBook, RoadBook, learnTopics, RUMOUR_TOPIC } from './sim/quest/topic-supply.js';
-import { buildRevealRoutes } from './sim/quest/reveal-routes.js';
+import { buildRevealRoutes, DOCUMENT_CHANNELS } from './sim/quest/reveal-routes.js';
 import { makeNPC, normaliseSchedule, slotAt } from './sim/npc.js';
 import { derivePools, applyBirthsignToPools, hpMaxFor, staminaMaxFor as staminaMaxForVig, progressToNext, bankProgress, USE_EVENTS } from './character/derive.js';
 import { grantUse, governingMap } from './character/skilluse.js';
@@ -1884,6 +1884,9 @@ export class Engine {
       taken: false,
       item: spec.item || spec.eid,
       readable: spec.readable || null,
+      // W1-READABLES. A book id in `game/data/books/**`. When set, `interact` OPENS it where it
+      // stands instead of pocketing it; see `_takePropPending`.
+      readable_book: spec.readable_book || null,
       reach_m: Number(spec.reach_m === undefined ? 2.2 : spec.reach_m),
     };
     for (const e of this.sim.props) if (e.eid === o.eid) return e;
@@ -2024,10 +2027,43 @@ export class Engine {
       : { captured: false };
   }
 
+  /**
+   * The deferred half of `interact`, which is either a take or — W1-READABLES — a READ.
+   *
+   * WHY A SECOND OUTCOME FOR ONE BUTTON. 34 `deceit.revealed_by` rows of channel `ledger` name a
+   * document as the source of a truth a resolution demands, and not one of them was an object in
+   * this build. A ledger is a book with a different noun and the reading of it goes through the
+   * library's reader unchanged (`_readBook`) — but the OBJECT is not a book you own. The Drowned
+   * Court's archivist "will not let the books leave the room", and Q-MAIN-06 ships a failure
+   * state, `fail_took_the_books`, whose cause is *"the player removes a volume of the Tally from
+   * the archive"*. If the only thing `interact` could do at a ledger was pocket it, then the one
+   * interaction the archive offered would be the one that closes it.
+   *
+   * So a prop may carry `readable_book`, and reaching for it opens the book screen where it
+   * stands. No new action and no new input: HARNESS.md §4's set is closed and `interact` already
+   * means *reach for the thing in front of you*. It is deferred out of the fixed step for exactly
+   * the reason a take is — opening a screen touches the renderer.
+   */
   _takePropPending() {
     const id = this._propPending;
     this._propPending = null;
-    if (id) { try { this.takeProp(id); } catch { /* it went away */ } }
+    if (!id) return;
+    const o = this.sim.props.find((x) => x.eid === id);
+    if (o && o.readable_book && this.ui && this.data.books) {
+      // Same door as the player's inventory route: `UISystem.open('book')` fires `onBookOpened`,
+      // which is `_readBook()` — the world-side consumer of `topics_taught`, `knowledge_key` and
+      // the skill-book overlay. Nothing about reading is re-implemented here.
+      try {
+        this.ui.open('book', { id: o.readable_book }, this._uiCtx());
+        cameraOpenUI(this.sim, 'menu');
+        this.ui._surfaceChanged(this.real);
+        this.ui.build(this._uiCtx(), true);
+        const ev = this.bus.emit(this.sim.frame, 'input_action');
+        ev.action = 'interact'; ev.surface = 'world'; ev.via = 'readable'; ev.node = o.eid;
+      } catch { /* the book went away with the data; the prop stays where it is */ }
+      return;
+    }
+    try { this.takeProp(id); } catch { /* it went away */ }
   }
 
   clearNPCs() {
@@ -3552,7 +3588,10 @@ export class Engine {
     for (const o of this.sim.props) {
       if (o.taken) continue;
       const d = Math.hypot(o.pos[0] - p.pos[0], o.pos[2] - p.pos[2]);
-      if (d <= (o.reach_m || 1.6)) return { text: String(o.name || 'It'), verb: 'take', range_m: +d.toFixed(2), device, glyph };
+      // W1-READABLES: the verb follows the object. A ledger on its desk is `read`, because that
+      // is what reaching for it does — and a prompt that said `take` at a book nobody will let
+      // you carry would be naming an action the world refuses.
+      if (d <= (o.reach_m || 1.6)) return { text: String(o.name || 'It'), verb: o.readable_book ? 'read' : 'take', range_m: +d.toFixed(2), device, glyph };
     }
     for (const n of this.sim.npcs) {
       const d = Math.hypot(n.pos[0] - p.pos[0], n.pos[2] - p.pos[2]);
@@ -3635,6 +3674,13 @@ export class Engine {
    * names would take the engine down for a book that is merely early. `check-content.mjs`
    * reports the dangles instead, where a dangle is a warning a person reads rather than a boot
    * failure eleven agents pay for.
+   *
+   * W1-READABLES widened the channel test from `=== 'book'` to `DOCUMENT_CHANNELS`, which is
+   * `book`, `ledger` and `letter`. Those three channels are one question — *"you learn this by
+   * reading a thing somebody wrote"* — and the quest files name the thing in the same field, so
+   * they take the same reader. What changes with the noun is the VERB, and that lives in the
+   * world (`_furnishInterior` and `_takePropPending`): a letter is carried and read out of the
+   * pack, a ledger is read where it stands. See `sim/quest/reveal-routes.js`.
    */
   _bookKnowledgeIndex() {
     // knowledge key -> reveal ids that a book is the declared source of
@@ -3642,7 +3688,7 @@ export class Engine {
     for (const doc of Object.values(this.data.quests || {})) {
       for (const q of (doc.quests || [])) {
         for (const rev of ((q.deceit && q.deceit.revealed_by) || [])) {
-          if (rev.channel !== 'book' || !rev.source) continue;
+          if (!DOCUMENT_CHANNELS.has(rev.channel) || !rev.source) continue;
           if (!byKey.has(rev.source)) byKey.set(rev.source, new Set());
           byKey.get(rev.source).add(rev.id);
         }
@@ -4262,11 +4308,18 @@ export class Engine {
       });
       mine.push(eid);
     }
-    if (p.readable) {
-      const eid = `interior-readable:${p.readable.id}`;
+    // W1-READABLES: a room may hold more than one document. `placements.readables` is the list
+    // and `placements.readable` is still its first element, so anything reading the old field
+    // sees what it always saw.
+    for (const r of (p.readables && p.readables.length ? p.readables : (p.readable ? [p.readable] : []))) {
+      const eid = `interior-readable:${r.id}`;
       this.spawnProp({
-        eid, name: p.readable.title, item: p.readable.id, pos: p.readable.pos, yaw: 0,
-        material: 'reed', shape: 'flat', reach_m: 2.0, readable: p.readable.id,
+        eid, name: r.title, item: r.id, pos: r.pos, yaw: 0,
+        material: 'reed', shape: 'flat', reach_m: 2.0, readable: r.id,
+        // A document with a book behind it is READ where it stands, and cannot be carried off.
+        // Without this a ledger's only interaction would be the one Q-MAIN-06 fails you for.
+        readable_book: r.book || null,
+        takeable: !r.book,
       });
       mine.push(eid);
     }
@@ -8089,7 +8142,7 @@ export class Engine {
       // is a physical entity with a position, readable via `interact`, that teaches a verb. It
       // was carried on the prop and reported nowhere, so the census had nothing to count and
       // could only have returned a vacuous 0.
-      out.push({ eid: o.eid, kind: 'object', archetype: 'OBJECT', name: o.name, takeable: !!o.takeable, taken: !!o.taken, reach_m: o.reach_m, readable: o.readable || null, pos: [o.pos[0], o.pos[1], o.pos[2]], hp: null });
+      out.push({ eid: o.eid, kind: 'object', archetype: 'OBJECT', name: o.name, takeable: !!o.takeable, taken: !!o.taken, reach_m: o.reach_m, readable: o.readable || null, readable_book: o.readable_book || null, pos: [o.pos[0], o.pos[1], o.pos[2]], hp: null });
     }
     return out;
   }

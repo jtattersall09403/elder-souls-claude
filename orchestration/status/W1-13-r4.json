@@ -2,9 +2,9 @@
   "task_id": "W1-13-r4",
   "item": "RI-PRG04",
   "title": "Death, recovery, the hearth loop and levelling — round 4",
-  "state": "running",
+  "state": "done",
   "started_at": "2026-08-07",
-  "next_step": "run w1-13-r4-clock-consequences.mjs; fix env/souls award clock landed",
+  "next_step": "critic",
   "files_claimed": [
     "orchestration/status/W1-13-r4.json",
     "game/src/sim/environment.js",
@@ -20,12 +20,45 @@
     "orchestration/status/W1-13-r4.json",
     "game/src/sim/environment.js",
     "game/src/sim/souls.js",
-    "tools/harness/w1-13-r4-clock-consequences.mjs"
+    "game/src/render/renderer.js",
+    "tools/journey/jrn06-death.mjs",
+    "tools/harness/w1-13-r4-clock-consequences.mjs",
+    "tools/harness/w1-13-r4-input-only.mjs",
+    "tools/harness/w1-13-r3-clock.mjs",
+    "tools/analysis/w1-13-r4-chart.mjs",
+    "reports/runs/W1-13-R4/clock-consequences.json",
+    "reports/runs/W1-13-R4/input-only.json",
+    "reports/runs/W1-13-R3/clock.json",
+    "docs/shots/2026-08-07-w1-13-r4-dying-must-not-change-the-price.png",
+    "reports/blog-feed.jsonl"
   ],
   "notes": [
-    "souls.js is claimed by W1-SOULS-r3 (state: complete). One line changed: awardFor() now reads env.awardTimeOfDay. Declared redundant_with rather than left as a collision."
+    "souls.js is claimed by W1-SOULS-r3 (state: complete). ONE line changed: awardFor() reads env.awardTimeOfDay instead of env.timeOfDay, plus one extra field on the souls_awarded event. Declared redundant_with rather than left to read as a collision (RULES.md 16).",
+    "game/src/render/renderer.js is comment-only this round. tools/journey/jrn06-death.mjs gains one instrument (m_prg04_m8_clock_consequence) and three scored fields on m_d14.",
+    "THE AGGREGATION WAS NOT RE-RUN. m_prg04_m8_clock_consequence is written and syntax-checked but the 17-minute journey run was not taken; the same six clauses ARE measured end to end in reports/runs/W1-13-R4/clock-consequences.json at commit 0f6ff17. A critic should run node tools/journey/journey-run.mjs for jrn06-death to bank it in the aggregation, and to re-take m_d14 against its new margin floors.",
+    "DECLARED OVERLAPS. W1-13-r3 is my own predecessor (state: done) and I continue its files by design: game/src/sim/environment.js, tools/journey/jrn06-death.mjs, tools/harness/w1-13-r3-clock.mjs, reports/runs/W1-13-R3/clock.json. game/src/sim/souls.js belongs to W1-SOULS-r3 (state: complete) and takes ONE line. game/src/render/renderer.js is shared with W1-03 and W1-04-r2 and my change there is COMMENT-ONLY - no executable line was touched."
   ],
   "redundant_with": [
-    "W1-SOULS-r3"
-  ]
+    "W1-SOULS-r3",
+    "W1-13-r3"
+  ],
+  "findings": [
+    "METHOD 8 RUN, ALL SIX CLAUSES, FOR THE FIRST TIME IN FOUR ROUNDS (reports/runs/W1-13-R4/clock-consequences.json, section A; and as an aggregation instrument m_prg04_m8_clock_consequence in tools/journey/jrn06-death.mjs). Rest at 17:00 -> 23.003148, every rest reporting hours:6 EXACTLY. MERCHANTS: 71 of 115 interiors open at 17:00 are shut at 23:00; the no-rest control stepping the same frames shuts ZERO. ROSTER: 25 live NPCs are in a different cell after the rest; the control moves ZERO. SOULS: one ordinary inf_trash pays 42 at 17:00 and 57 at 23:00 = x1.3571 = round(42 * 1.35); the control ratio is exactly 1.00. FOUR RESTS: 24.003518 h, day +1, and the shop state and the roster come back BIT-IDENTICAL (0 shops changed, 0 people moved).",
+    "EVERY CLAUSE CARRIES A NO-REST CONTROL THAT STEPS THE SAME FRAMES. That is what makes 71 shops shutting a statement about the rest rather than about the passage of twelve frames.",
+    "CLAUSE 4 IS UNMEASURABLE AND IS REPORTED AS AN ABSENCE RATHER THAN PASSED. game/data/quests/hooks.json declares deadlines as the empty array. QuestMachine.onDay(dayCount) at sim/quest/machine.js:712 is the only deadline consumer in the tree, and grep over game/ and tools/ returns EXACTLY ONE occurrence of onDay - its own definition. Nothing in the running world calls it: a correct model with no caller, which is the RI-MTH07 shape this project has shipped sixteen times. Driven by hand it does reach fail(), so the model is right and the wiring is missing. The quest-layer clock reader that DOES work is the journal date stamp: four rests take it from 1 Second Seed to 2 Second Seed, 3E 427.",
+    "THE AR-1 DEFECT ROUND 3 SHIPPED, AND THE CONTROL THAT FINDS IT IS SAME-FRAMES-ALIVE, NOT DELETE-THE-FIX. Round 3 held the world clock while a death is in flight (correct, RI-PRG04 section 6 rule 4) and sim/souls.js reads that same field for the 21:00-05:00 night multiplier. So the frames a player spends dead cost them no night time. MEASURED on the round-3 tree: from 04:30, forty deaths leave one ordinary enemy paying 57 where the same 6,040 frames spent ALIVE leave it paying 42. Dying paid 35 per cent more. Symmetrically at 20:58 dying pays 42 and living pays 57. Round 3 compared shipped against the round-2 clock and never against a living player, which is why nobody saw it.",
+    "THE FIX: sim/environment.js section 1b - env.awardTimeOfDay, a second clock that ticks whether the player is alive or dead and is RE-SEATED on the world clock whenever anything outside the step writes it (a rest, setTimeOfDay, a load). _syncFromFloat already detected exactly that event, so the discharge is three lines and the death-stolen offset cannot accumulate across the hearth loop - which is the loop this item is about. sim/souls.js awardFor() reads it. ONE LINE of another piece file, declared redundant_with W1-SOULS-r3.",
+    "SHIPPED AFTER THE FIX: 04:30 dying 42 = alive 42; 20:58 dying 57 = alive 57. The invariant holds in BOTH directions. AWARD CLOCK DELETED: 04:30 dying 57 vs alive 42; 20:58 dying 42 vs alive 57. THE ARMS DIFFER - RULES.md 6, written and run.",
+    "AND THE DEADLINE BURN WAS NOT GIVEN BACK. Forty deaths burn 0.003703 h of WORLD clock on the shipped tree - forty frames, one per death, which is round 3s already-characterised residual against a ceiling of 0.003796 - against 0.559259 h with round 3s clock hold deleted. 151x. The world clock is still held; only the rate the souls economy reads has been detached from it.",
+    "NEXT-DISPATCH section P.6: THE LEVEL SPEND IS NOT REACHABLE BY INPUT ALONE, and it is measured rather than read off the source (reports/runs/W1-13-R4/input-only.json). All sixteen actions of RI-JRN03 section A pressed one at a time, from the world and from every screen they open, plus all four axes. Input reaches exactly TWO modes: world and inventory. ui/system.js navigable(ctx) advertises SIX destinations at a hearth - inventory, journal, sheet, spells, map, levelup - and step() has no branch that walks from one screen to a peer, so FIVE OF THE SIX HAVE NO DOOR. openMenu(levelup) succeeds on the same body on the same frame, so this is the input path and not the state, the hearth or the vocabulary.",
+    "I DID NOT LAND THE UI FIX. The remedy is one branch in ui/system.js step() - while a menu is open, swap_left / swap_right walk navigable(ctx) - but that file belongs to W1-07 / W1-21, it changes what those two actions mean on every existing UI probe, and RI-JRN03 section A closes the action set. Named with its acceptance instead of landed. Section P.5 stays met; section P.6 needs this branch and then a recorded session.",
+    "TWO INERTNESS GUARDS CAUGHT MY OWN PROBE TWICE, AND BOTH EARLIER ANSWERS WERE THE RIGHT ANSWER FOR THE WRONG REASON. Draft 1 passed absolute frame numbers to queueInputs (HARNESS.md section 4 says they are RELATIVE to the call frame) and opened nothing at all - caught by a guard requiring the probe to open at least one screen. Draft 2 opened the inventory but every press inside it was swallowed - caught by a getUIState fingerprint control, because mode cannot tell a swallowed press from a no-op. Draft 3 uses round 3s own recipe (f:0, one frame per edge) and roll, menu and both horizontal axes demonstrably move the screen. The first two verdicts are recorded as void.",
+    "MY OWN OVERTURNED CLAIM 1, RECORDED IN THE TREE. renderer.js _drawnGroundY comment rewritten: the drawn-ground lift and the 1.9 m hum buy ZERO BEARINGS. pre-r3-render still reads 8/8 daylight and 8/8 dark under the corrected camera, and eye-only reads 8/8 + 8/8 with the renderer change absent, so the bearings came from the 0.19 m EYE correction alone. The old camera was not buried under the ground, it was inside a boulder.",
+    "MY OWN OVERTURNED CLAIM 2. The 0.8 m aim change is worth nothing at all: aim-only reads 2/8 and 3/8, exactly as-placed. The jrn06 m_d14 camera_note said which half was not established and is now corrected to say which half it is.",
+    "WHAT THE RENDERER CHANGE DOES BUY IS MARGIN, and a bearing count cannot see it: 193 px to 874 px on the worst daylight bearing, 285-4,100 to 16,310-27,134 in the dark. jrn06 m_d14 now scores min_margin_px_daylight and min_margin_px_dark against floors of 400 and 2,000 and FAILS the row if they are not met, so deleting the renderer change turns the instrument red instead of leaving it green.",
+    "w1-13-r3-clock.mjs T5_consumer_moved is fixed and RE-RUN so the artifact carries the verdict its own predicate produces. The old arm read getWorldStats().settlement (a key that report does not have, so null) and getEnvironment().phase (night on both sides of the fixture). It now spawns and kills an ordinary enemy. T5 is renamed to T5_death_burn_is_bounded_and_the_arms_differ - what it actually measured - with the old name published as deprecated so an older reader is not silently reinterpreted; T6 is the entity arm. On the round-4 tree T6 comes back EQUAL, 57 = 57, BY DESIGN, because the whole point of the fix is that dying no longer moves the rate - so the consumption demonstration now lives in the r4 probe section B, which deletes the award clock and gets 42 against 57.",
+    "GOLD PURSE (path_to_ten item 8) DELIBERATELY UNTOUCHED, per the dispatch. Item 9 corpus_debt untouched. Item 7s clamped_within_2m and the M-D10 active-window fixture were not reached this round.",
+    "CONTENTION, declared under RULES.md 26: pgrep -c headless_shell ran 18-24 and /proc/loadavg 8.5-12.9 on four cores for the whole run. Every figure in this round is a soul count, an hour, a frame count, a shop count, a person count or a boolean, and every one is frame-based and load-independent. NO TIMING FIGURE APPEARS ANYWHERE and none is claimed."
+  ],
+  "aggregation_note": "not re-run this round - see notes"
 }

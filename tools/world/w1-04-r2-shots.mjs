@@ -22,25 +22,39 @@
 import { capture } from '../capture/client.mjs';
 import { log } from '../lib/cli.mjs';
 
-// One camera pose, used for every frame. If the pose moved between shots, a difference between
-// two pictures would be a difference of viewpoint rather than of room.
-const POSE = { pos: [0, 1.62, -5.4], look: [0, 1.35, 2.4], fov: 68 };
+// THE POSE IS DERIVED FROM THE ROOM, and here is the argument for that rather than one fixed
+// pose. These rooms are no longer the same size — that is the point — so a single absolute pose
+// stands in the doorway of one and inside the back-room partition of another, which is what the
+// first version of this file did and it photographed a wall. Each shot is taken from just inside
+// that room's own declared door, looking down its own long axis. The camera is placed by the
+// same two numbers for every room; it is the rooms that differ.
+//
+// The PIXEL SWEEP (tools/world/w1-04-interior-sweep.mjs) does use one fixed pose across all 115,
+// because there the constant pose is what makes the hashes comparable. Different jobs.
+const poseFor = (b) => ({
+  pos: [0, 1.62, b.z[1] - 1.4],
+  look: [0, 1.15, b.z[0] + 2.0],
+  fov: 72,
+});
 
 const SHOTS = [
   {
     interior: 'archon-apothecary',
+    bounds: { x: [-6.8, 6.8], y: [0, 3.2], z: [-7.8, 7.8] },
     file: '2026-08-07-w1-04-r2-archon-apothecary-through-the-door',
     caption: 'The Crimson Apothecary, Archon — entered through its own door, built from its own record: '
       + '18 props, 10 declared lights, a dye-town palette and the arc_* architecture kit.',
   },
   {
     interior: 'thorn-hall',
+    bounds: { x: [-8, 8], y: [0, 3.2], z: [-9, 9] },
     file: '2026-08-07-w1-04-r2-thorn-hall-through-the-door',
     caption: 'The Rotted Hall, Thorn — the same camera pose, the same code path, four kilometres away. '
       + 'In round 1 this frame and the one above were the same 249-triangle hall.',
   },
   {
     interior: 'blackrose-prison',
+    bounds: { x: [-6.8, 6.8], y: [0, 3.2], z: [-7.8, 7.8] },
     file: '2026-08-07-w1-04-r2-blackrose-gaol-through-the-door',
     caption: 'Blackrose gaol — windowless by rule (RI-WLD13 N4), iron palette, the bla_* fortress kit.',
   },
@@ -54,17 +68,15 @@ for (const s of SHOTS) {
       time: 12,
       weather: 'clear',
       width: 1280, height: 720,
-      camera: POSE,
+      camera: poseFor(s.bounds),
       ops: [
         ['setTimeOfDay', 12],
         ['enterInterior', s.interior],
         ['stepFrames', 4],
-        // The room, not its cast. The round-1 pair differed ONLY in who was standing in it.
-        ['clearNPCs'],
         ['stepFrames', 1],
       ],
       out: `docs/shots/${s.file}.png`,
-      evidence_of: 'w1-04 round 2: the door opens on the room the file describes',
+      evidence_of: 'interior',
       caption: s.caption,
     });
     log(`${s.interior.padEnd(22)} -> ${shot.path}${shot.cached ? '  (cached)' : ''}`);

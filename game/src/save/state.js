@@ -234,6 +234,16 @@ export function buildSave(sim, build) {
         at: n.at === undefined ? null : n.at,
         activity: n.activity === undefined ? null : n.activity,
         present: n.present !== false,
+        // W1-04 r2, and this is the same defect the comment four lines up describes, found by
+        // walking into it. `post` — the outdoor station that is the ONLY thing making `at: null`
+        // mean "outdoors" rather than "everywhere" — was written by W1-GIVER-PRESENCE and was
+        // never in the save at all. So every restored quest giver came back with `post: null`
+        // and was therefore standing invisibly inside every locked cellar in the province.
+        // `goal`/`walked_m` are this round's: where a person is walking to, and how far they
+        // have walked. A load that forgets the goal stops the whole town mid-stride.
+        post: n.post || null,
+        goal: n.goal ? vec(n.goal) : null,
+        walked_m: r6(n.walked_m || 0),
       })).sort((a, b) => (a.eid < b.eid ? -1 : a.eid > b.eid ? 1 : 0)),
       props: sim.props.map((o) => ({
         eid: o.eid, name: o.name, item: o.item, pos: vec(o.pos), yaw_deg: r6(o.yaw),
@@ -701,6 +711,14 @@ export function applySave(sim, blob, moves, statFor) {
       at: n.at === undefined ? null : n.at,
       activity: n.activity === undefined ? null : n.activity,
       present: n.present !== false,
+      // READ BACK, not merely written. See the writer's note: `post` was destroyed on every
+      // load before this line existed, and `goal`/`walked_m` would have been the moment they
+      // were added. `goal` falls back to where the body is, which is the correct meaning of
+      // "not walking anywhere" and is also what an OLD save carries.
+      post: n.post || null,
+      goal: n.goal ? [...n.goal] : [n.pos[0], n.pos[1], n.pos[2]],
+      hasGoal: false,
+      walked_m: Number(n.walked_m || 0),
       _slot: -1,
     });
   }

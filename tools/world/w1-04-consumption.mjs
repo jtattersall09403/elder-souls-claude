@@ -563,7 +563,15 @@ try {
             if (!r || !r.entered) { refused++; continue; }
             entered++;
             const d = drawn();
-            if (d.agrees && d.interior_id === id) agreed++; else if (misses.length < 5) misses.push({ id, drawn: d.drawn_cell, want: d.env_cell, room: d.interior_id });
+            // Two conditions, and the second only applies to the 110 that share the GENERIC
+            // `interior` cell. `barge-hold`, `writ-house`, `helstrom-market`, `stormhold-street`
+            // and `rootlands-well` are W1-07's hand-built cells with names of their own, so
+            // `cellFor()` sends them somewhere that is not `interior` and `renderer.interiorId`
+            // is not theirs to set. The first version of this line asserted the room id on all
+            // 115 and scored those five as misses while `drawn` and `want` were equal — a defect
+            // in the probe wearing the costume of a defect in the build.
+            const roomOk = d.env_cell !== 'interior' || d.interior_id === id;
+            if (d.agrees && roomOk) agreed++; else if (misses.length < 5) misses.push({ id, drawn: d.drawn_cell, want: d.env_cell, room: d.interior_id });
             // And leaving must put the street back. The round-1 build left the ROOM on screen.
             H.exitInterior(); step(2);
             if (drawn().agrees) exteriorRestored++;
