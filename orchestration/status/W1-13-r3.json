@@ -2,7 +2,7 @@
   "task_id": "W1-13-r3",
   "brief": "death, recovery, hearth loop, levelling — round 3 after FAIL 5/10",
   "started": "wave-1 round 3",
-  "state": "building",
+  "state": "done",
   "outputs_expected": [
     "fix: applyDerivedPools works without sim.character",
     "fix: level-up screen attribute vocabulary == character attributes",
@@ -37,7 +37,9 @@
     "tools/journey/journey-run.mjs - control_observed is now a TWO-ARM null control (press/release-then-step vs key HELD across the stepped frames) and reports led.ok() with the arm named.",
     "tools/harness/w1-13-r3-clock.mjs - NEW. Four arms: shipped / live control / DELETE THE FIX (Environment.step monkeypatched back to the unconditional tick) / consumption (40 deaths at 20:58, read the world phase back).",
     "tools/journey/jrn06-death.mjs - m_d14 rebuilt: PLAYER-TRUTHFUL CAMERA (eye at the observer own ground +1.6 m, aimed at the DRAWN bloom origin via getDrawnMarkers), a 40 px margin instead of 1 px, and a WORLD-DRIVEN NULL CONTROL inside the aggregation (drink the bloom, re-shoot the eight dark bearings).",
-    "tools/harness/w1-13-r3-bloom-shot.mjs - NEW. The two cameras side by side at one bearing, one bloom, one browser -> docs/shots/."
+    "tools/harness/w1-13-r3-bloom-shot.mjs - NEW. The two cameras side by side at one bearing, one bloom, one browser -> docs/shots/.",
+    "docs/shots/2026-08-07-w1-13-r3-the-bloom-is-drawn-the-old-camera-was-inside-a-rock.png - two panels, one browser, one bloom, one bearing; the two cameras differ and nothing else does.",
+    "tools/harness/w1-13-r3-bloom-sight.mjs + w1-13-r3-clock.mjs now stamp gitInfo() into their own output (RULES.md 12); the two runs already taken carry a git_stamp_note saying plainly that they predate the stamp."
   ],
   "findings": [
     "ROOT CAUSE 1 (levelling buys nothing): engine.js applyDerivedPools() opens `const ch=this.sim.character; if(!ch) return null;`. character/derive.js's own header DECLARES this as a deliberate W1-07 reconciliation: 'a loadout with no character behind it keeps RI-CMB03's, so every existing W1-09 scenario measures exactly what it measured before.' So it is not an oversight - it is a cross-piece promise. Fixing it by absolute derivation would move arena hp_max 620->300 and focus 94->30 and break cmb-poise.mjs (hard-codes `hpEnd >= 620` as its VACUITY detector) and every W1-09/W1-14 arena calibration.",
@@ -70,21 +72,91 @@
     "THE NAMED GAP IS THE MEASUREMENT, NOT THE WORLD. bloom-sight.json, one browser, one bloom, one detector, 40 px margin: as-placed (the camera rounds 1-3 used) 2/8 daylight + 3/8 dark, REPRODUCING the aggregation; player-eye (eye at the OBSERVER own ground +1.6 m, aimed at the bloom DRAWN origin) 8/8 DAYLIGHT and 8/8 DARK, margins 874-27,134 px; no-bloom NULL CONTROL, the same camera with the bloom deleted from the scene graph, 0/8 and 0/8, MAX MARGIN 1 PX. The bloom is drawn and it reads from every bearing.",
     "MY OWN MECHANISM CLAIM WAS WRONG AND MY OWN PROBE REFUTED IT. I said the old camera was buried under the drawn ground. eye_above_observer_ground_m runs 1.346-1.705 m on ALL SIXTEEN as-placed views - never buried. What is left is a ~0.25 m eye-height difference and a 0.8 m lower aim point (the old aim was the ground UNDER the bloom, at stain.pos[1]+0.3; the new one is mid-hum). THIS RUN DOES NOT SEPARATE THEM and the piece does not claim to know which. A 2x2 factorial (old eye x new aim, new eye x old aim) is the experiment that would, and is NOT RUN. Corrected in the jrn06 comment, the m_d14 camera_note and here.",
     "CLOCK, four arms, commit pending, dirty=true (reports/runs/W1-13-R3/clock.json): shipped, 150 dead frames, clock across the dead interval 0.000000 h; the SAME 150 frames ALIVE move it 0.013889 h, so the instrument is not reading a stopped clock. DELETE THE FIX (Environment.step monkeypatched back to the unconditional tick, same browser, same build): 0.013889 h across the dead interval - the old number returns EXACTLY and the two arms differ. CONSUMPTION: 40 deaths at 20:58 burn 0.559260 h = 33.6 MINUTES of in-game time with the fix deleted (20.967 -> 21.527) and 0.003704 h with it in. That residue is exactly 40 frames - ONE PER DEATH, the frame the killing blow lands on, when the player was still alive at the top of sim/step.js frame order - and the 150-frame surface after it costs nothing.",
-    "boot-check PASS (exit 0) on the tree carrying the environment.js clock hold and the api.js getDrawnMarkers verb."
+    "boot-check PASS (exit 0) on the tree carrying the environment.js clock hold and the api.js getDrawnMarkers verb.",
+    "MECHANISM, AT ONE BEARING, WITH A PICTURE (docs/shots/2026-08-07-w1-13-r3-the-bloom-is-drawn-the-old-camera-was-inside-a-rock.png, bearing 0 at 12 m, hour 12): the stain sits at y 2.972 and the observer stands on ground at y 3.164, so pinning the eye to the STAIN ground put it at 4.572 - only 1.408 m over the observer own feet, BELOW head height - and at that bearing it is INSIDE A BOULDER. The left panel of the shot is the inside of the rock. The right panel is the same instant from 4.764 (observer ground + a head), which clears it: 195 amber px against 4,459. NOT THE WHOLE STORY: bearing 90 has the old eye 1.663 m over the observer ground, ABOVE head height, and still reads the control floor. The aim-only / eye-only arms are written into bloom-sight.mjs and NOT RUN.",
+    "HONEST LIMITS ON path_to_ten ITEM 7, which I am NOT claiming as fully closed: m_d2b reaches 3 of the 5 DECLARED placement rules (death_point, last_grounded, outside_fog_gate); clamped_within_2m and relocated_toward_hearth are still never exercised in the journey. And m_d10b has n=1 - a single 120 m fall - and its max_frames is still 0, because the ground kills on the same frame it deals the damage. That is a real world-caused death rather than damagePlayer, which is the point, but ONE row with a 0 in it is thin and a critic is entitled to say so.",
+    "THE AGGREGATION, run 20260807T211752Z-jrn06-death-s4711-3f2286, commit 37d64e3, dirty=true, 42 instruments, page_errors 0: 23 pass, ZERO FAIL, 4 unmeasurable. The top-level ok is FALSE and that is NOT a failure - journey-run.mjs:790 sets ok = !led.anyUnmeasurable, so it reports coverage. Three of the four unmeasurable rows are amendments the BUILD declares absent (A-JRN9/13/14); the fourth is m4_clause1.",
+    "M-D14 IN THE AGGREGATION, which is the named gap acceptance verbatim: 8/8 daylight at 12 m, 8/8 dark at 6 m, smallest margin 874 px, every row aimed at the DRAWN bloom, and the world-driven NULL CONTROL ran (the player drank the bloom) and came back SILENT AT ALL EIGHT BEARINGS WITH MAX MARGIN 0. m_d8_second_death also green in the same run (6 trials, bloom created on the second death 6/6, min second-death distance 45 m off the basin).",
+    "m_d4_across_death_diff 0 non-volatile paths changed, PASS. m_d10_d11_preserved changed [] , PASS. m_prg04_clock_not_advanced_on_death: 150 dead frames, 0.000000 h across them, 0.013889 h over the same 150 frames alive - PASS. And m_prg04_rest still moves the clock 12.005 -> 18.005 = exactly 6 h, so holding the clock on death did not break the other half of the rule (only RESTING moves time).",
+    "control_observed MEASURED and PASSING, and the two arms are not the same instrument: press/release-then-step moved the body 0.000 m, the key HELD across the stepped frames moved it 2.240 m, arms_differ true. path_to_ten item 6 closed, and round 3 previous charge against the build withdrawn - it was the harness.",
+    "LEVELLING RE-VERIFIED ON THE CURRENT TREE (reports/runs/W1-13-R3/levelling-r3b.json, after 4 banking commits): identical to the 18:20 run. no-character hp+208 st+20 fp+7; FIX DELETED 0/0/0 with _poolsDirty stuck true; arms_differ true; vocabulary on_screen_not_carried [] and carried_not_on_screen [], undeclared spend refused, mismatched register refused.",
+    "CAVEAT ON MY OWN INSTRUMENT: m_prg04_clock_not_advanced_on_death reports env_frames_held_by_death 0 because the control arm restoreState() replaces sim.env and zeroes the counter. The delta measurement is unaffected and is the evidence; the counter is decoration and is misleading in that row."
   ],
-  "next_step": "bloom-sight null control -> clock.mjs (delete-the-fix + consumption) -> boot-check -> FULL AGGREGATION -> shot + blog + report.",
-  "notes_for_successor": "Round 2 FAILED 5/10. path_to_ten in corpus/90-verdicts/wave1/W1-13-r2.md is the spec. Items 1,3,4 of path_to_ten are CODE-COMPLETE and UNVERIFIED IN A BROWSER. Do not re-do them; verify them.",
+  "next_step": "critic",
+  "notes_for_successor": "ROUND 3, WHERE IT STANDS. path_to_ten in corpus/90-verdicts/wave1/W1-13-r2.md is the spec. 1 BLOOM: NOT a renderer defect - the measurement was wrong. bloom-sight.json has as-placed 2/8+3/8 (reproduces), player-eye 8/8+8/8, no-bloom null control 0/8+0/8 max margin 1 px. jrn06 m_d14 rebuilt on the player-truthful camera WITH a world-driven null control (drink the bloom, re-shoot). 2 SECOND DEATH: green since the 18:48 aggregation. 3+4 LEVELLING+VOCABULARY: done with a delete-the-fix arm (levelling.json; re-verified on the current tree in levelling-r3b.json). 5 DRIFT: answered (drift.json, T1 24/24 at 0.000 m). 6 GATE: world-runs-gate.mjs at three sites; control_observed was NOT the build - journey-run pressed W, waited 60 ms of WALL clock, released, and only then stepped the 60 frames it was measuring. Now two arms. 7 M-D2/M-D10: green (m_d2b, m_d10b). 8 GOLD PURSE: NOT TOUCHED - four purses, W1-15/W1-21, deliberately left alone. 9 corpus_debt: untouched. NEW THIS ROUND, found only by the aggregation: the world clock ticked through the 150-frame death surface, against RI-PRG04 §6 rule 4. Held in Environment.step; 40 deaths at 20:58 burned 33.6 MINUTES of in-game time before the fix and 40 frames (one per death) after. WHAT I DID NOT ESTABLISH: which half of the old M-D14 camera lost the bloom. My first answer (the eye was buried) is refuted by my own probe - 1.346-1.705 m above the observer ground on all sixteen views. The shot shows the eye INSIDE A BOULDER at bearing 0, but bearing 90 has it above head height and still blind. The aim-only / eye-only arms are WRITTEN into w1-13-r3-bloom-sight.mjs and NOT RUN; that is the next experiment.",
   "files_touched": [
+    "game/src/sim/environment.js",
+    "game/src/harness/api.js",
+    "tools/journey/jrn06-death.mjs",
+    "tools/journey/journey-run.mjs",
+    "tools/harness/w1-13-r3-bloom-sight.mjs",
+    "tools/harness/w1-13-r3-clock.mjs",
+    "tools/harness/w1-13-r3-bloom-shot.mjs",
+    "reports/runs/W1-13-R3/bloom-sight.json",
+    "reports/runs/W1-13-R3/clock.json",
+    "reports/journeys/w1-13-r3b-jrn06/",
+    "docs/shots/2026-08-07-w1-13-r3-the-bloom-is-drawn-the-old-camera-was-inside-a-rock.png",
     "orchestration/status/W1-13-r3.json"
   ],
   "files_claimed": [
-    "game/src/render/renderer.js",
-    "tools/journey/jrn06-death.mjs",
-    "tools/journey/journey-run.mjs",
-    "tools/journey/world-runs-gate.mjs",
-    "tools/harness/w1-13-r3-stain-vis.mjs",
-    "reports/runs/W1-13-R3/",
-    "reports/journeys/w1-13-r3-jrn06/",
-    "docs/shots/"
-  ]
+    "reports/blog-feed.jsonl",
+    "reports/runs/W1-13-R3/levelling-r3b.json"
+  ],
+  "aggregation": {
+    "run_id": "20260807T211752Z-jrn06-death-s4711-3f2286",
+    "git": {
+      "commit": "37d64e3fe757b2909ee6f29250f81713cd654f23",
+      "branch": "claude/morrowind-souls-threejs-game-mou39v",
+      "dirty": true
+    },
+    "wall_ms": 1029662,
+    "page_errors": [],
+    "instruments": 42,
+    "pass": 23,
+    "fail": 0,
+    "unmeasurable": [
+      "m4_clause1",
+      "amendment_A-JRN13",
+      "amendment_A-JRN14",
+      "amendment_A-JRN9"
+    ],
+    "top_level_ok": false,
+    "top_level_ok_means": "journey-run.mjs line 790 computes ok as !led.anyUnmeasurable. It is a statement about INSTRUMENT COVERAGE and not about the build: ZERO instruments carry pass:false in this run. Three of the four unmeasurable rows are harness amendments the BUILD ITSELF declares absent in getCapabilityReport().harness_amendments_absent (A-JRN9/13/14) and are not W1-13 property; the fourth, m4_clause1, wants a character-field-writing event that this journey never emits.",
+    "m_d14": {
+      "daylight": "8/8",
+      "dark": "8/8",
+      "pass": true,
+      "null_control_ran": true,
+      "null_control_silent": true,
+      "null_control_max_margin": 0,
+      "min_margin_px": 874
+    },
+    "m_d8_second_death": true,
+    "m_d4_across_death_diff": {
+      "non_volatile_changed": 0,
+      "pass": true
+    },
+    "m_d10_d11_preserved": {
+      "changed": [],
+      "pass": true
+    },
+    "m_prg04_clock": {
+      "dead_frames": 150,
+      "across_dead_interval_h": 0,
+      "control_equal_live_frames_h": 0.013889,
+      "pass": true
+    },
+    "control_observed": {
+      "measured": true,
+      "press_release_then_step_m": 0,
+      "held_across_the_stepped_frames_m": 2.24,
+      "arms_differ": true
+    },
+    "rest_still_moves_the_clock_6h": {
+      "before": 12.005093,
+      "after": 18.005093000000002,
+      "hours": 6,
+      "day": 0
+    }
+  }
 }

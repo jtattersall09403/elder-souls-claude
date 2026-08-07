@@ -114,17 +114,30 @@ function buildPanel(rep, wid) {
     return `<div style="flex:1;min-width:0">
       <div style="font:600 13px/1.4 system-ui;color:${colour}">${esc(label)}</div>
       <div style="font:26px/1.15 system-ui;color:${ok ? '#7fdc7f' : '#ff5a5a'}">${s.peak_drawn_tip_mps} m/s</div>
-      <div style="font:11px/1.5 system-ui;color:#c8c8c8">character turned ${s.player_yaw_travel_deg_during_active}&deg; while the blade was live<br>
-      follow-through ${s.follow_through_frac === null ? 'n/a' : s.follow_through_frac} of ${s.recovery_frames_observed} recovery f@60</div>
+      <div style="font:11px/1.45 system-ui;color:#c8c8c8">character turned <b style="color:#fff">${s.player_yaw_travel_deg_during_startup}&deg;</b> tracking the target during startup &mdash; peak there ${(s.peak_by_phase_mps || {}).startup} m/s<br>
+      follow-through ${s.follow_through_frac === null ? 'n/a' : s.follow_through_frac} of ${s.recovery_frames_observed} recovery f@60 (&sect;E floor ${FOLLOW_MIN[s.tier]})</div>
       ${spark(s, colour)}</div>`;
   };
-  return `<div style="position:fixed;left:0;right:0;bottom:0;padding:14px 18px;background:rgba(8,10,14,0.90);
-      border-top:2px solid #444;color:#eee;font:12px/1.5 system-ui;z-index:99999">
+  const sp = (still && still.peak_by_phase_mps) || {}, mp = (move && move.peak_by_phase_mps) || {};
+  const lift = sp.startup ? (mp.startup / sp.startup) : null;
+  return `<div style="position:fixed;left:0;right:0;bottom:0;padding:12px 18px 14px;background:rgba(8,10,14,0.92);
+      border-top:2px solid #444;color:#eee;font:12px/1.45 system-ui;z-index:99999">
     <div style="font:600 15px/1.3 system-ui;margin-bottom:2px">${esc(wid)} &middot; ${esc((move || still || {}).move_id || '')} &middot; RI-WPN05 &sect;E peak tip speed, measured on the DRAWN blade</div>
-    <div style="font:11px/1.4 system-ui;color:#aaa;margin-bottom:10px">dashed red = the &sect;E.2 ceiling for tier <b>${esc(tier)}</b> (${ceil.toFixed(1)} m/s = 1.25 &times; the band top). Pale band = the active window. Every sample is the tip the renderer drew, which agrees with the hit socket to 0.0008 mm.</div>
+    <div style="font:11px/1.4 system-ui;color:#aaa;margin-bottom:8px">dashed red = the &sect;E.2 ceiling for tier <b>${esc(tier)}</b> (${ceil.toFixed(1)} m/s = 1.25 &times; the band top). Pale band = the active window. Every sample is the tip the renderer drew, which agrees with the hit socket to 0.0008 mm.</div>
     <div style="display:flex;gap:26px">${col(still, 'STILL target (the easy fixture)', '#8ab4ff')}${col(move, 'MOVING target (the character steers)', '#ffb347')}</div>
+    <div style="font:11px/1.4 system-ui;color:#9fb6d8;margin-top:8px;border-top:1px solid #333;padding-top:7px">
+      The headline peak is the same in both because it lives in the <b>active window</b>, where lock-on steering is frozen by design &mdash; the arc alone owns it.
+      What the moving target does change is the <b>startup</b> peak: ${sp.startup} &rarr; ${mp.startup} m/s${lift ? ` (&times;${lift.toFixed(2)})` : ''}.
+      That matters because most &sect;E violations in this roster peak <i>outside</i> the active window, and the node census never steers &mdash; so for those clips its numbers are a floor, not the figure.
+    </div>
   </div>`;
 }
+
+// `--from <report.json>` rebuilds ONLY the picture, from a measurement that already happened.
+// The caption is the expensive part to get right and the measurement is the expensive part to
+// run; keeping them separable means a wrong caption costs one page load instead of a re-measure.
+// It never recomputes a number — every figure in the panel comes out of the loaded report.
+const FROM = args.from ? String(args.from) : null;
 
 const handle = await launchGame({
   ...args,
@@ -145,6 +158,13 @@ try {
 } catch (e) { report.taken_under = { error: String(e && e.message).slice(0, 120) }; }
 
 try {
+  if (FROM) {
+    const prior = JSON.parse(fs.readFileSync(path.resolve(FROM), 'utf8'));
+    Object.assign(report, prior, { tag, generated: report.generated, taken_under: report.taken_under });
+    report.rebuilt_picture_from = FROM;
+    report.measurement_taken_under = prior.taken_under;
+    await handle.page.evaluate(async () => { await window.__HARNESS.ready(); });
+  } else {
   Object.assign(report, await handle.page.evaluate(async (SUBJ) => {
     const H = window.__HARNESS;
     await H.ready();
@@ -370,6 +390,7 @@ try {
 
     return out;
   }, SUBJECTS));
+  }
 
   report.page_errors = handle.errors.length;
   report.page_error_sample = handle.errors.slice(0, 3);
@@ -383,7 +404,7 @@ try {
     try {
       const shotPath = path.resolve(SHOT);
       ensureDir(path.dirname(shotPath));
-      await handle.page.setViewportSize({ width: 1100, height: 620 });
+      await handle.page.setViewportSize({ width: 1100, height: 760 });
       await handle.page.evaluate(async (payload) => {
         const H = window.__HARNESS;
         const { subject, atFrame, panelHTML } = payload;

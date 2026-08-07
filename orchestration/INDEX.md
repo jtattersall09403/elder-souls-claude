@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `d17f207`: 457 tools, 153 reference
+so it cannot drift. Generated at `37d64e3`: 460 tools, 153 reference
 items, 20 pieces in flight.
 
 Its purpose is to stop 20+ concurrent agents each paying separately to discover the
@@ -37,7 +37,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 20
+### `tools/` — 21
 
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
 - `tools/blog.mjs` — Renders docs/index.html — a two-tab page (Progress | Blog) served by GitHub Pages from /docs.
@@ -46,6 +46,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/check-data.mjs` — Every data file the game's index references must exist.
 - `tools/check-prose.mjs` — Prose-voice integrity for every player-facing register, checked over the JSON with no engine and no browser.
 - `tools/check-quests.mjs` — Content integrity for the quest layer, checked over the JSON with no engine and no browser.
+- `tools/check-souls-corpus.mjs` — the soul economy's CORPUS is internally consistent, checked over the markdown and the JSON with no engine and no browser.
 - `tools/corpus-index.mjs` — **no header comment**
 - `tools/dispatchable.mjs` — answer, before an agent is spawned, whether this piece needs one.
 - `tools/gap-ledger.mjs` — **no header comment**
@@ -395,12 +396,13 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/platform/perf-run.mjs` — RI-PLT01's frame-budget runner, AND the enforcer of RI-PLT01 rule T1.
 - `tools/platform/stream-audit.mjs` — ABSENCE-REPORTER.
 
-### `tools/progression/` — 4
+### `tools/progression/` — 5
 
 - `tools/progression/critic-souls-r1.mjs` — the W1-SOULS round-1 critic's OWN instrument.
 - `tools/progression/critic-souls-r2.mjs` — the W1-SOULS ROUND-2 critic's OWN instrument.
 - `tools/progression/derive-soul-values.mjs` — the soul value of every shipped enemy, DERIVED from its own statblock, and written back into `game/data/combat/enemies/*.json` as a `souls` field.
 - `tools/progression/souls-consumption.mjs` — the CONSUMPTION probe for the soul economy.
+- `tools/progression/souls-ledger-oracle.mjs` — THE INVARIANT, NOT THE INSTANCES.
 
 ### `tools/prose/` — 9
 
@@ -414,7 +416,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 26
+### `tools/quests/` — 27
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -440,6 +442,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/resolution-reachability.mjs` — can the player ACTUALLY take any of the endings a quest offers?
 - `tools/quests/topic-supply-audit.mjs` — can a player be OFFERED each quest by playing?
 - `tools/quests/utility-findability.mjs` — can a player be OFFERED the quests that are NOT the main quest?
+- `tools/quests/viability-split-shot.mjs` — one picture of the two instruments, drawn from their own artifacts.
 - `tools/quests/viability-walk.mjs` — build viability measured by PLAYING.
 - `tools/quests/w1-giver-presence-consumption.mjs` — RI-MTH07 / ARBITRATION §3 for GAP-W1-quest-givers-not-in-the-world.
 
@@ -735,10 +738,10 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-VIABILITY-SPLIT` | in_progress | walk baseline running; then --sabotage no-bootstrap and grant-everything; then blog line + | `orchestration/status/W1-VIABILITY-SPLIT.json` `tools/analysis/impossibility-screen.mjs` `tools/quests/viability-walk.mjs` `corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md` `corpus/22-character/RI-CHR01-character-creation.md` `corpus/22-character/RI-CHR03-birthsigns.md` |
+| `W1-SOULS-r3` | running | browser: run souls-ledger-oracle (invariant over 463 routes) + its --self-break; then soul | `orchestration/status/W1-SOULS-r3.json` `game/src/sim/souls.js` `game/src/engine.js` `game/src/world/population.js` `tools/progression/derive-soul-values.mjs` `tools/check-souls-corpus.mjs` |
+| `W1-13-r3` | done | critic | `game/src/sim/environment.js` `game/src/harness/api.js` `tools/journey/jrn06-death.mjs` `tools/journey/journey-run.mjs` `tools/harness/w1-13-r3-bloom-sight.mjs` `tools/harness/w1-13-r3-clock.mjs` |
+| `W1-VIABILITY-SPLIT` | done | none -- hand to a tool critic. Do NOT let the critic grade this piece against the screen f | `orchestration/status/W1-VIABILITY-SPLIT.json` `tools/analysis/impossibility-screen.mjs` `tools/quests/viability-walk.mjs` `tools/quests/viability-split-shot.mjs` `corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md` `corpus/22-character/RI-CHR01-character-creation.md` |
 | `W1-22-r2` | building | event-level calibration running; then acceptance run + both sabotage arms; then re-run the | `game/src/audio/ambience.js` `game/src/audio/synth.js` `game/src/engine.js` `game/src/harness/api.js` `game/data/audio/ambience/*.json` `game/data/audio/ambience/interiors/*.json` |
-| `W1-13-r3` | building | bloom-sight null control -> clock.mjs (delete-the-fix + consumption) -> boot-check -> FULL | `orchestration/status/W1-13-r3.json` |
-| `W1-SOULS-r3` | running | enumerate every eid-keyed per-session observer in the tree (souls, engine._greetCount, mag | `orchestration/status/W1-SOULS-r3.json` |
 | `W1-MASS` | verifying | SUCCESSOR-2 RESUMED at git 88ee56d. P1/P2/P3 confirmed COMMITTED and on disk (swing.js:447 | `game/src/combat/swing.js` `tools/weapons/motion-census.mjs` `tools/weapons/build-movesets.mjs` `tools/weapons/mass-browser.mjs` `game/data/combat/movesets/` `game/data/weapons/clip-registry.json` |
 | `tool-build-viability-r6` | researching | choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items | — |
 | `W1-JOURNAL-PROSE` | researching | state the closing-line rule, then rewrite file by file, re-running the FULL gate after eve | — |

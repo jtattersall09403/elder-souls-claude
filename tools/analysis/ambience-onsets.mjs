@@ -100,7 +100,29 @@ const regions = [
   ...readdirSync(join(AMB, 'interiors')).filter((f) => f.endsWith('.json'))
       .map((f) => ({ id: f.replace(/\.json$/, ''), kind: 'interior',
                      file: join(AMB, 'interiors', f) })),
-];
+].map((r) => {
+  // WHERE THE LISTENER STANDS, and it is not a detail. The first acceptance run reported ZERO
+  // events for Marauder's Coast and the Salt Hills, and the cause was this tool rather than those
+  // beds: §B gives Marauder's Coast's L3 as "rope creak; **one bell buoy audible from 600 m**" and
+  // the Salt Hills' as "**legion horn on the hour** — diegetic clock". Both signatures are R7
+  // emitters, and an emitter only sounds for a listener inside its `audible_m`. Capturing those
+  // regions from wherever the player happened to be standing measured the two regions in the game
+  // whose punctuation is a landmark, with the landmark out of earshot.
+  //
+  // So a bed with emitters is captured from `ref_m` away from its first one — close enough to
+  // hear it, far enough not to be standing inside it. §C leans on exactly these strikes to
+  // separate the four (wet, open, living) regions, so this is also the listener position the
+  // blind test's own key assumes.
+  try {
+    const bed = JSON.parse(readFileSync(r.file, 'utf8'));
+    const e = (bed.emitters || [])[0];
+    if (e && Array.isArray(e.pos_m)) {
+      r.listener = [e.pos_m[0] + (e.ref_m || 20), e.pos_m[1], 0];
+      r.listener_note = `${e.ref_m || 20} m from ${e.id}`;
+    }
+  } catch { /* a bed that will not parse is the census's problem, not this tool's */ }
+  return r;
+});
 
 // RI-AUD03 §A, the "Level (rel. bed)" column, verbatim. These are the item's numbers, not this
 // tool's; the tolerance is this tool's and is declared rather than folded into the band.
@@ -398,9 +420,11 @@ try {
   let firedTotal = 0, onsetTotal = 0;
 
   for (const r of regions) {
-    const rec = out.regions[r.id] = { tod: {} };
+    const rec = out.regions[r.id] = { tod: {}, kind: r.kind };
+    if (r.listener) { rec.listener = r.listener; rec.listener_note = r.listener_note; }
     for (const tod of ['day', 'night']) {
       const capOpts = { region: r.id, seconds: SECONDS, sampleRate: RATE, tod };
+      if (r.listener) capOpts.listener = r.listener;
       const [full, bedOnly] = await page.evaluate(async ({ o, sab }) => {
         const E = window.__ENGINE;
         // The sabotage arms operate on the CAPTURE, never on the data on disk — nothing this

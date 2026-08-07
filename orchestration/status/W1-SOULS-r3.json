@@ -4,8 +4,14 @@
   "round": 3,
   "state": "running",
   "started_at": "2026-08-07",
-  "git_at_start": { "commit": "5de8f79", "dirty_paths": "~30, all neighbours (audio ambience, W1-POPULATION verdict in flight)" },
-  "contention_at_start": { "headless_shell": 18, "loadavg": "11.10 12.11 12.71" },
+  "git_at_start": {
+    "commit": "5de8f79",
+    "dirty_paths": "~30, all neighbours (audio ambience, W1-POPULATION verdict in flight)"
+  },
+  "contention_at_start": {
+    "headless_shell": 18,
+    "loadavg": "11.10 12.11 12.71"
+  },
   "spec": "corpus/90-verdicts/wave1/W1-SOULS-r2.md path_to_ten",
   "path_to_ten": [
     "1 close GAP-W1-souls-alive-keyed-on-eid AS A CLASS (boundary + body identity)",
@@ -22,7 +28,7 @@
     "faces": [
       "F1 applyNamedState() does not clear the observer -> the same fight pays +384 then +0 (W1-SOULS-r2 HF-1)",
       "F2 post release + re-materialise under the stable post-id tag recycles eids onto NEW full-HP bodies -> 5 live hostiles worth 0 (W1-SOULS-r2 HF-2)",
-      "F3 applySave() DOES clear it while death.ordinaryRespawnEpoch does not move -> unbounded save/load farm (W1-POPULATION-r1 §2, GAP-W1-population-save-reload-repays-every-corpse)"
+      "F3 applySave() DOES clear it while death.ordinaryRespawnEpoch does not move -> unbounded save/load farm (W1-POPULATION-r1 \u00a72, GAP-W1-population-save-reload-repays-every-corpse)"
     ],
     "note": "F2 and F3 pull in OPPOSITE directions off the same key. That is the proof the key is wrong rather than the sign being wrong.",
     "fix_shape": [
@@ -30,8 +36,17 @@
       "boundary: ONE list of per-session observers shared by applyNamedState() and the blob path, instead of two hand-maintained lists that have already drifted (souls is in one, not the other)."
     ]
   },
-  "next_step": "enumerate every eid-keyed per-session observer in the tree (souls, engine._greetCount, magic.soulHistory, renderer meshes); then write the fix",
-  "files_touched": ["orchestration/status/W1-SOULS-r3.json"],
+  "next_step": "browser: run souls-ledger-oracle (invariant over 463 routes) + its --self-break; then souls-consumption acceptance arms; repair critic-souls-r1; corpus filings; shot; blog line",
+  "files_touched": [
+    "orchestration/status/W1-SOULS-r3.json",
+    "game/src/sim/souls.js",
+    "game/src/engine.js",
+    "game/src/world/population.js",
+    "tools/progression/derive-soul-values.mjs",
+    "tools/check-souls-corpus.mjs",
+    "tools/progression/souls-ledger-oracle.mjs",
+    "game/data/combat/enemies/*.json (7 re-derived)"
+  ],
   "files_claimed": [
     "game/src/sim/souls.js",
     "game/src/engine.js",
@@ -42,6 +57,21 @@
     "reports/blog-feed.jsonl",
     "docs/shots/"
   ],
-  "redundant_with": ["critic-w1-population"],
-  "redundant_note": "docs/shots/ and reports/blog-feed.jsonl are append-only shared surfaces claimed by five live pieces; the overlap is the project's convention, not a collision."
+  "redundant_with": [
+    "critic-w1-population"
+  ],
+  "redundant_note": "docs/shots/ and reports/blog-feed.jsonl are append-only shared surfaces claimed by five live pieces; the overlap is the project's convention, not a collision.",
+  "done": [
+    "CLASS FIX A (identity): sim/souls.js _alive is keyed on the ENTITY OBJECT (rec.ref), not the eid. A recycled name on a new object is a new body-life and pays; only death.js respawnOrdinary() brings the SAME object back, and that stays gated on the S5 rest epoch. HF-1 and HF-2 both close structurally.",
+    "CLASS FIX B (boundary): engine.js _sessionObservers() is ONE declared list consumed by BOTH boundaries, replacing two hand-maintained ones that had drifted. Every observer must state what it does at each boundary INCLUDING 'nothing', with a why_not. getSessionObserverCensus() is what an instrument reads.",
+    "FOURTH INSTANCE FOUND by writing that list: engine._greetCount (npc eid -> nth greeting) was in NEITHER boundary's list. character/converse.js pick(lines,npcId,nth) selects the greeting LINE with it and rumourFor passes the same nth, so the first person spoken to in the second scenario of a session answered with the fourth thing they had to say. Now cleared at both boundaries.",
+    "FIFTH, REPORTED NOT FIXED: the blob path does not call stealth.resetSubsystem(); applySave restores crime.ledger+zones only, so civilians/searches/pending survive a load. Declared in the registry as why_not. Owner W1-15.",
+    "WORLD HALF (population.js): a released post now REMEMBERS which bodies were down (this.down) and _materialise() leaves them down; the S5 epoch bump clears the register. Without this the souls fix converts HF-2's under-pay into a farm. This is population.js's own stated intent ('walking away and coming back is not a respawn, resting is') finally kept for a PARTLY cleared post.",
+    "ANCHOR re-derived to RI-PRG06 s3's R1 TRASH mean (89.61 x 0.46829 = 41.96), not s1's all-tier mean (136.18 -> 63.77, 1.520x). solveK() now THROWS if the anchor statblock's tier is not the tier the anchor quantity is a mean of. 7 statblocks rewritten: inf_trash 64->42, drowned_lesser 24->16, slitherfang 34->22, guard_legion 83->54, drowned_greater 157->103, cst_sap_speaker 286->188, champion 5043->3319.",
+    "ANCHOR ASSERTION added: the placed danger-tier-1 mean kill vs the anchor at +/-15%. Reads -40.6% (24.93 vs 41.96) and reports ANCHOR GAP, fatal under --strict. This is the check that would have caught F-3/F-4 in one run.",
+    "L120 GUARD ARMED, corpus side, unconditionally in --check: souls_for_L120 == cum(120) on the shipped curve, s3's regions sum to s1's world total, and the farm multiple 2.1276 in [1.8,2.6]. Plus the placed-world half asserted in --census's asserting branch and reported with a stated reason in the fail-closed one.",
+    "SCALE PREMISE asserted BEFORE anything derived from it: --census refuses to assert methods 1/2/10 unless world.enemy_census is within 10% of what is placed. Falsified: with the band floor dropped to 200 it fires and blocks the three methods.",
+    "tools/check-souls-corpus.mjs: all 18 band rows + 6 region totals + per-row totals + the JSON/markdown transcription + s1's three header figures = 72 rows. Falsified 3 ways (markdown band row, JSON drift, shipped curve drift); tree restored byte-identical, git index checked (RULES 17).",
+    "METHOD 6 instrumented in both tools, REPORTED and never armed (AQ-1, corpus defect, RULES 13). Reproduces the r2 critic's 32.3/50.0/53.3/76.1/70.0 exactly."
+  ]
 }

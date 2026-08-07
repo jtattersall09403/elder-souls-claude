@@ -68,6 +68,7 @@ export class PopulationSystem {
   reset() {
     this.state = new Map();
     this.live = new Map();          // post id -> [eid]
+    this.down = new Map();          // post id -> Set(eid) that was DEAD when the post was released
     this.focus = { x: NaN, z: NaN };
     this.epochSeen = -1;
     this.stats = { spawned: 0, released: 0, cleared: 0, uncleared: 0, refocuses: 0, steps: 0, skipped_cell: 0 };
@@ -101,6 +102,12 @@ export class PopulationSystem {
         for (const [id, s] of this.state) {
           if (s === CLEARED) { this.state.set(id, DORMANT); this.stats.uncleared++; }
         }
+        // ...and the PARTLY cleared ones. `this.down` is the register of bodies the player put
+        // down at a post they did not finish; the rest is what un-does it, for exactly the same
+        // reason and on exactly the same event. Clearing it here is what makes RI-PRG04 §1's
+        // "every non-unique hostile in the world returns" true of a half-fought post as well as
+        // of a finished one — a rest brings the whole post back, and nothing else does.
+        this.down.clear();
       }
       this.epochSeen = epoch;
     }
@@ -140,7 +147,30 @@ export class PopulationSystem {
     for (const [id, eids] of [...this.live]) {
       const p = this.byId.get(id);
       if (Math.hypot(p.x - px, p.z - pz) <= rel) continue;
-      for (const eid of eids) { if (sim.findEntity(eid)) { try { engine.despawn(eid); } catch { /* already gone */ } } }
+      // W1-SOULS round 3, and it is this file's own stated intent finally being kept.
+      //
+      // Step (2) above says it in terms: *"walking away and coming back is not a respawn,
+      // resting is"* — and it was true only of a post the player had FINISHED. A post left half
+      // fought was released as DORMANT and re-materialised from the encounter template, which
+      // rebuilt every member, so five corpses came back as five live full-HP hostiles for the
+      // price of a 260 m walk. The souls ledger was accidentally hiding it by refusing to pay
+      // for their recycled eids — five real enemies worth nothing, which is what `W1-SOULS-r2`
+      // HF-2 measured — and the moment that ledger was corrected to pay per BODY rather than
+      // per NAME, the same route became a farm instead. The under-payment and the farm are the
+      // same defect seen from two sides, and it is here, not in `sim/souls.js`: **the price of
+      // a respawn is the world's to charge.**
+      //
+      // So a release remembers who was down. `_materialise()` leaves them down, and only
+      // `DeathSystem.respawnOrdinary()` — the hearth rest and the player death, step (0) above —
+      // clears the register. S5 is then true of a half-fought post as well as of a finished one.
+      const down = this.down.get(id) || new Set();
+      for (const eid of eids) {
+        const e = sim.findEntity(eid);
+        if (!e) continue;
+        if (e.hp <= 0) down.add(eid);
+        try { engine.despawn(eid); } catch { /* already gone */ }
+      }
+      if (down.size) this.down.set(id, down); else this.down.delete(id);
       this.live.delete(id);
       this.stats.released++;
       if (this.state.get(id) !== CLEARED) this.state.set(id, DORMANT);
@@ -179,11 +209,25 @@ export class PopulationSystem {
       (this.faults ||= []).push({ post: p.id, encounter: p.encounter, error: String((err && err.message) || err) });
       return;
     }
+    // The bodies the player already put down at this post stay down. See the block in step (3):
+    // the eids are deterministic (`${p.id}-${role}-${i}`, and `p.id` is unique by construction),
+    // so the register survives the release that emptied the entity array. Despawning rather than
+    // spawning-them-dead keeps `sim.entities` free of corpses nobody can interact with, and it
+    // is what makes the souls ledger's LAZY SEEDING correct here rather than merely safe: a body
+    // that is not in the world is not a body the ledger has to have an opinion about.
+    const down = this.down.get(p.id);
+    const live = [];
     for (const eid of r.eids) {
+      if (down && down.has(eid)) {
+        try { engine.despawn(eid); } catch { /* never spawned */ }
+        this.stats.left_down = (this.stats.left_down || 0) + 1;
+        continue;
+      }
       const e = engine.sim.findEntity(eid);
       if (e) { e.populationPost = p.id; e.populationRegion = p.region; e.populationTier = p.tier; }
+      live.push(eid);
     }
-    this.live.set(p.id, r.eids);
+    this.live.set(p.id, live);
     this.state.set(p.id, RESIDENT);
     this.stats.spawned++;
   }

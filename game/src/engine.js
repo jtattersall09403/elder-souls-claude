@@ -674,6 +674,151 @@ export class Engine {
     return rng.int(0x7fffffff);
   }
 
+  /**
+   * PER-SESSION OBSERVERS — THE ONE LIST. W1-SOULS round 3.
+   *
+   * ---------------------------------------------------------------------------------------
+   * WHY THIS EXISTS, and it is a class of defect rather than a tidy-up.
+   * ---------------------------------------------------------------------------------------
+   *
+   * Several subsystems in this build keep a private note of *what they have already seen a
+   * body do* — the souls ledger, the death observer's HP baseline, the population system's
+   * live post index, the stealth subsystem's civilians and searches, the greeting counter.
+   * None of that is save state. All of it is an observation about a world, and it is only
+   * true of the world it was taken in.
+   *
+   * There are TWO scenario boundaries — `applyNamedState()` and the `loadState(blob)` path —
+   * and until this method there were TWO HAND-MAINTAINED LISTS of which observers each one
+   * cleared. They had already drifted, and the drift was not theoretical:
+   *
+   *   * `sim.souls` was in the blob list, with eight lines of comment explaining why, and NOT
+   *     in the named-state list. The same fight across `loadState('arena_flat')` paid `+384`
+   *     and then `+0`. (`W1-SOULS-r2` HF-1.)
+   *   * `this._greetCount` was in NEITHER, so the "nth greeting" that
+   *     `character/converse.js pick()` selects a line with carried across every boundary in a
+   *     session: the first person you spoke to in the second scenario answered you with the
+   *     fourth thing they had to say. Found by walking this list, not by looking for it.
+   *
+   * A missing line in a list nobody reads is invisible. **So the list is a declaration, and
+   * every observer must state what it does at BOTH boundaries** — including "nothing", with a
+   * reason, in `why_not`. An omission is then a written claim somebody can disagree with
+   * rather than a line nobody notices is absent, which is the only version of this that makes
+   * the next instance impossible rather than merely absent.
+   *
+   * `dirt()` is what an instrument reads: a single number per observer that is 0 for a clean
+   * scenario. `tools/progression/souls-ledger-oracle.mjs` uses it to assert that crossing a
+   * boundary actually leaves the world clean, on routes nobody has tried.
+   *
+   * `phase` preserves the existing call order exactly: `early` runs where the four clears
+   * already were (before the state's own content is applied), `late` runs where
+   * `death.reset()` already was (after the spawns, before the starting hearth is seeded).
+   * Nothing here reorders an existing call.
+   */
+  _sessionObservers() {
+    const E = this;
+    return [
+      {
+        id: 'stealth',
+        what: 'ZoneMemory, CrimeWorld (witnesses are eid-keyed), civilians, pending reports, searches, cover volumes, occluders, the light sources\' lit flags and every object\'s stolen_from.',
+        phase: 'early',
+        dirt: () => (E.sim.stealth ? E.sim.stealth.civilians.length + E.sim.stealth.searches.length + E.sim.stealth.pending.length : 0),
+        named: () => { if (E.sim.stealth) E.sim.stealth.resetSubsystem(); },
+        // DECLARED, NOT ASSUMED. `applySave()` restores `crime.ledger` and `crime.zones` from
+        // the blob and restores nothing else on this subsystem, so a load carries the previous
+        // session's civilians, searches and pending reports into the loaded world. That is the
+        // same shape as the two defects this list exists for and it is NOT this piece's to
+        // change — W1-15 owns the stealth subsystem and its round-1 verdict is the place to
+        // rule on it. Written down here so the next person sees a claim rather than a gap.
+        save: null,
+        why_not: 'applySave() restores crime.ledger + crime.zones only; civilians/searches/pending survive a load. Owner: W1-15. Reported by W1-SOULS r3, not changed by it.',
+      },
+      {
+        id: 'discovery',
+        what: 'the map discovery raster — "where THIS character has been".',
+        phase: 'early',
+        dirt: () => 0,
+        named: () => { if (E.sim.discovery) E.sim.discovery.restore(null); },
+        save: null,
+        why_not: 'applySave() restores world.discovery from the blob, which is the truthful raster for the character being loaded (save/state.js).',
+      },
+      {
+        id: 'population',
+        what: 'the post state table and the live post -> eid index. Every eid it was holding is already gone.',
+        phase: 'early',
+        dirt: () => (E.population ? E.population.live.size : 0),
+        named: () => { if (E.population) E.population.reset(); },
+        save: () => { if (E.population) E.population.reset(); },
+        // Their own round-1 critic charges this line: resetting all posts to DORMANT on a load
+        // while `ordinaryRespawnEpoch` does not move is an unbounded save/load farm
+        // (GAP-W1-population-save-reload-repays-every-corpse). The remedy is theirs — persist
+        // the cleared-post set — and is deliberately NOT attempted from here.
+        note: 'W1-POPULATION-r1 §2 charges the save-path reset as an S5 violation. Their remedy, their file.',
+      },
+      {
+        id: 'souls',
+        what: 'the eid -> body ledger: which BODY was alive when this system last looked, and at which rest epoch it was paid.',
+        phase: 'early',
+        dirt: () => (E.sim.souls ? E.sim.souls._alive.size : 0),
+        named: () => { if (E.sim.souls) E.sim.souls.reset(); },
+        save: () => { if (E.sim.souls) E.sim.souls.reset(); },
+        note: 'Since r3 the ledger is keyed on the entity OBJECT, so this call is hygiene and not the mechanism — a boundary that forgot it would still not mis-pay. See sim/souls.js.',
+      },
+      {
+        id: 'greeting_count',
+        what: 'npc eid -> how many times this character has opened a conversation with them. character/converse.js pick(lines, npcId, nth) selects the GREETING LINE with it, and engine.rumourFor passes the same nth to the rumour book.',
+        phase: 'early',
+        dirt: () => E._greetCount.size,
+        // Found by writing this list. It was in neither boundary's list, and `sim.reset()`
+        // followed by `populateSettlement()` rebuilds every NPC under the SAME deterministic
+        // eid — so the count was an observation about a person who no longer exists, applied
+        // to the person who replaced them.
+        named: () => { E._greetCount.clear(); },
+        save: () => { E._greetCount.clear(); },
+      },
+      {
+        id: 'death',
+        what: 'the death runtime: the observer\'s HP baseline, the last grounded position and the in-flight death.',
+        phase: 'late',
+        dirt: () => 0,
+        named: () => { if (E.death) E.death.reset(); },
+        save: null,
+        why_not: 'the blob path deliberately does NOT clear this wholesale — applySave() has just restored an in-flight death and DeathSystem.restoreInFlight(), and clearing it threw a 4,200-soul bloom away (W1-13 r2). The blob path does its own narrower fixup in loadState().',
+      },
+    ];
+  }
+
+  /**
+   * Clear every per-session observer this boundary declares. Returns the ids it cleared, so a
+   * caller (and an instrument) can see what actually ran rather than what was intended.
+   *
+   * @param {'named'|'save'} boundary
+   * @param {'early'|'late'} phase
+   */
+  _resetSessionObservers(boundary, phase) {
+    const done = [];
+    for (const o of this._sessionObservers()) {
+      if (o.phase !== phase) continue;
+      const fn = o[boundary];
+      if (typeof fn === 'function') { fn(); done.push(o.id); }
+    }
+    return done;
+  }
+
+  /**
+   * What an instrument reads: every per-session observer, what it does at each boundary, and how
+   * dirty it is right now. A clean scenario is every `dirt` at 0.
+   */
+  getSessionObserverCensus() {
+    return this._sessionObservers().map((o) => ({
+      id: o.id, what: o.what, phase: o.phase,
+      clears_on_named_state: typeof o.named === 'function',
+      clears_on_save_load: typeof o.save === 'function',
+      why_not: o.why_not || null,
+      note: o.note || null,
+      dirt: o.dirt(),
+    }));
+  }
+
   applyNamedState(name) {
     const patch = this.data.states[name];
     if (!patch) {
@@ -687,26 +832,17 @@ export class Engine {
     // nothing reports — which is exactly what `hist_sight` measured as UNREAD_TIMER: the effect
     // wrote a journal line, correctly, into a journal nobody could read.
     this._rebindQuestRuntime();
-    // W1-15 round-2: `reset()` and `loadState()` now CLEAR the stealth/crime subsystem.
+    // THE PER-SESSION OBSERVERS. W1-15 round 2 established the rule these lines exist for —
+    // "a scenario boundary that does not clear a subsystem is not a scenario boundary, and the
+    // cost is measured in wrong verdicts rather than in bugs" — and W1-MAP and W1-POPULATION
+    // each added their own line under it. Four hand-written lines here, a different set of hand
+    // -written lines on the blob path, and `sim.souls` present in that list and missing from
+    // this one: `+384` then `+0` for the same fight across this boundary (W1-SOULS-r2 HF-1).
     //
-    // The round-1 verdict's secondary finding, and it invalidated its own first attempt at the
-    // civilian curve: "Bounty 777, context `lockpicking` and two spawned civilians all survive a
-    // full reset and a state load. Every scenario touching stealth or crime is contaminated by
-    // whatever ran before it." A scenario boundary that does not clear a subsystem is not a
-    // scenario boundary, and the cost is measured in wrong verdicts rather than in bugs.
-    if (sim.stealth) sim.stealth.resetSubsystem();
-    // W1-MAP, and for exactly the reason given directly above: a scenario boundary that does not
-    // clear a subsystem is not a scenario boundary. The discovery raster is "where THIS character
-    // has been", so carrying it into a freshly loaded named state would show the previous run's
-    // travels on the new one's map. `restore(null)` is the save path run with no save — it is the
-    // arity-1 loader, not a mutator that can name a place, so clearing costs no guarantee.
-    if (sim.discovery) sim.discovery.restore(null);
-    // W1-POPULATION, and for the same reason as the three lines above: a scenario boundary that
-    // does not clear a subsystem is not a scenario boundary. `sim.reset()` empties `sim.entities`,
-    // so every eid the population system was holding is already gone; leaving the post state
-    // behind would mean a post the previous run cleared stays cleared in a world where it was
-    // never fought, and a post it thought RESIDENT never spawns again.
-    if (this.population) this.population.reset();
+    // They are now ONE DECLARED LIST — `_sessionObservers()` — which both boundaries consume and
+    // in which every observer must say what it does at each. Same calls, same order, plus the
+    // two that were missing. See the header on `_sessionObservers()`.
+    this._resetSessionObservers('named', 'early');
     if (patch.env) Object.assign(sim.env, {
       timeOfDay: patch.env.timeOfDay ?? sim.env.timeOfDay,
       weather: patch.env.weather ?? sim.env.weather,
@@ -814,8 +950,9 @@ export class Engine {
     // not a scenario boundary, and the cost is measured in wrong verdicts rather than in
     // bugs." The DURABLE half — the bloom itself — lives in `sim.quest.death.bloodstain` and
     // is reset by `sim.reset()` and then patched by the state, exactly like every other
-    // durable field.
-    if (this.death) this.death.reset();
+    // durable field. It runs HERE rather than with the other four because it must run after the
+    // spawns; that is why `_sessionObservers()` carries a `phase` and does not reorder anything.
+    this._resetSessionObservers('named', 'late');
     this._seedStartingHearth();
     quantiseColdState(sim);
     return { ok: true, frame: sim.frame, seed: rng.seed };
@@ -5949,20 +6086,21 @@ export class Engine {
       // on step 1 and 26 further player fields did not exist at all, because `sim.reset()`
       // replaces `sim.player` with `makePlayer()` and only `mirror()` ever adds them.
       this._restoreFightFromSave(arg);
-      // W1-SOULS. The soul source's per-eid "was it alive last time I looked" map is a
-      // per-session observation, exactly like the death observer's HP baseline below, and for
-      // the same reason: a load that restored a corpse would otherwise read as a fresh kill on
-      // the next frame and bank its souls a second time. Cleared here so the scan LAZILY
-      // re-seeds against the restored world — a body that comes back dead is recorded as
-      // already settled and is never paid for. (`applySave` restores `soulsHeld` itself; this
-      // clears only the observer, so souls banked before the save survive the load.)
-      if (this.sim.souls) this.sim.souls.reset();
-    // W1-POPULATION. Same class of per-session observation. `applySave` restores the world's
-    // durable flags but the population system's post table is a live index of eids that the
-    // restore has just invalidated; re-seeding it lets the streamer re-materialise the posts
-    // around wherever the save put the player. Nothing durable is lost, because nothing here is
-    // durable: which ordinary mobs are dead is exactly what S5 says a rest restores anyway.
-      if (this.population) this.population.reset();
+      // THE PER-SESSION OBSERVERS, from the same declared list the named-state path uses.
+      // This path used to carry its own hand-written set — `sim.souls` and `this.population`,
+      // each with its own paragraph — and the named-state path carried a different one. Two
+      // lists, and they drifted; see the header on `_sessionObservers()`.
+      //
+      // The souls ledger clears here so the scan LAZILY re-seeds against the restored world: a
+      // body that comes back dead is recorded as already settled and is never paid for.
+      // (`applySave` restores `soulsHeld` itself; this clears only the observer, so souls banked
+      // before the save survive the load.) The population table clears here because the restore
+      // has just invalidated every eid it was holding — a line W1-POPULATION's own round-1
+      // critic charges as an S5 violation, because clearing it while `ordinaryRespawnEpoch`
+      // stands still hands the player a province of newly built bodies for the price of a
+      // reload. That remedy is theirs and is deliberately not attempted from here; what IS
+      // fixed here is that this file no longer asks the souls ledger to hide it.
+      this._resetSessionObservers('save', 'early');
       // W1-13. The death observer's HP baseline is a per-session observation, not save state:
       // a load that restored a body at 40 HP would otherwise read as 460 points of damage on
       // the next frame and stamp `last_damage_frame`. Cleared, exactly as the input pipeline is.

@@ -13,9 +13,19 @@
  * The verdict called this "the whole piece is a run back to a thing that is not drawn". The thing
  * is drawn, and `reports/runs/W1-13-R3/bloom-sight.json` reads it from 8/8 bearings in daylight
  * and 8/8 in the dark from the right-hand camera, against 0/8 and 0/8 from that same camera with
- * the bloom deleted from the scene. WHICH PART of the left-hand camera loses it is not settled:
- * the eye was never buried (1.35-1.71 m over the observer's own ground on all sixteen views),
- * which leaves ~0.25 m of eye height and 0.8 m of aim, unseparated.
+ * the bloom deleted from the scene.
+ *
+ * WHAT THE PICTURE SHOWS, at bearing 0 and 12 m: the stain sits at y 2.972 and the observer is
+ * standing on ground at y 3.164, so pinning the eye to the STAIN's ground puts it at 4.572 —
+ * only 1.408 m over the observer's own feet, below head height — and at this bearing that is
+ * INSIDE a boulder. The left panel is the inside of that rock. The right panel is the same
+ * instant from 4.764, which is the observer's own ground plus a head, and it clears the rock:
+ * 195 amber pixels against 4,459.
+ *
+ * That is a mechanism for THIS bearing and it is not the whole story. Bearing 90 has the old eye
+ * 1.663 m over the observer's ground — above head height — and still reads the control floor.
+ * The general split between the ~0.25 m of eye height and the 0.8 m of aim is NOT established;
+ * the `aim-only` / `eye-only` arms in `w1-13-r3-bloom-sight.mjs` are the experiment that would.
  *
  * THIS SCRIPT LAUNCHES ITS OWN BROWSER and steps the simulation, because the bloom does not exist
  * until somebody dies (RULES.md 20: say which you did).
@@ -37,7 +47,7 @@ if (wantsHelp(args)) { usage('w1-13-r3-bloom-shot.mjs [--bearing <deg>] [--dist 
 const BEARING = Number(args.bearing ?? 180);
 const DIST = Number(args.dist ?? 12);
 const HOUR = Number(args.hour ?? 12);
-const OUT = args.out || 'docs/shots/2026-08-07-w1-13-r3-the-bloom-was-drawn-the-camera-was-underground.png';
+const OUT = args.out || 'docs/shots/2026-08-07-w1-13-r3-the-bloom-is-drawn-the-old-camera-was-inside-a-rock.png';
 
 async function shoot(h) {
   const d = await h.h('screenshot');

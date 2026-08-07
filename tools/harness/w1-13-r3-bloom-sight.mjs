@@ -46,7 +46,7 @@
 
 import { PNG } from 'pngjs';
 import { launchGame } from '../lib/browser.mjs';
-import { parseArgs, wantsHelp, usage, log, writeJson } from '../lib/cli.mjs';
+import { parseArgs, wantsHelp, usage, log, writeJson, gitInfo } from '../lib/cli.mjs';
 
 const args = parseArgs(process.argv.slice(2));
 if (wantsHelp(args)) {
@@ -86,6 +86,9 @@ function bloomPixels(png) {
 
 const out = {
   schema: 'w1-13/r3-bloom-sight@1',
+  // RULES.md 12: a measurement is a claim about a commit, not about the project.
+  git: gitInfo(),
+  taken_at: new Date().toISOString(),
   question: 'the bloom reads from 3 of 8 bearings in the aggregation. Is it undrawn, occluded, '
     + 'or outside the frame the probe is shooting?',
   arms: {

@@ -166,7 +166,7 @@ const ALLOWED_VERBS = [
   'questWorldFlags', 'getGold', 'factionGates', 'getGateDispositions', 'getCharacter',
   'getSkills', 'getPlayerStats', 'whereAmI', 'listNPCs',
   // things a player does
-  'travelToGiver', 'questOpen', 'questReveal', 'questNote', 'questResolve',
+  'travelToGiver', 'questOpen', 'questResolve',
   'talkTo', 'conversationSay', 'conversationPersuade', 'conversationClose',
 ];
 const DENIED_VERBS = {
@@ -192,7 +192,34 @@ const DENIED_VERBS = {
   teleport: 'travel the character did not make — use travelToGiver',
   questFail: 'an outcome the walk chose rather than played',
   questPresenceGate: 'turning off the check that the giver is actually there',
+  questReveal: 'foreknowledge nothing in the world can produce. `QuestEngine.reveal()` is the ONLY '
+    + 'writer of a `know:` flag, and its only non-harness caller is a `hooks.json` row carrying a '
+    + 'quest+reveal pair — of which this tree ships ZERO of 18. So every call to it is the '
+    + 'instrument handing the character a fact no play yields',
+  questNote: 'journal progress the walk decided rather than played. A journal index advances '
+    + 'because something happened in the world; setting it by number is the walk asserting the '
+    + 'thing it is supposed to be measuring',
 };
+
+// THE DIRECTION OF THIS TOOL'S ERROR, stated once and carried on every artifact.
+//
+// Refusing `questReveal` and `questNote` costs reach: a resolution gated on a reveal is
+// unreachable to this walk, and so is one gated on a journal index. Both refusals are deliberate
+// and both push the same way — THIS WALK UNDER-CLAIMS. Where the screen's grants make its
+// positives worthless, the walk's refusals make its negatives soft: a signature this walk could
+// not carry to the end might still be carryable by a player through a channel the walk declines
+// to use. That asymmetry is the point. An instrument that under-claims cannot manufacture a false
+// green, which is the failure five rounds of the static tool kept producing.
+const WALK_UNDERCLAIMS = [
+  'questReveal is refused, so any resolution gated on a `know:` flag is unreachable here. On this '
+  + 'tree that is not a loss of realism: 0 of 18 shipped hooks.json rows carry a quest+reveal pair, '
+  + 'so no play produces one either — but the walk would report the same stop even if one did.',
+  'questNote is refused, so any resolution gated on a journal index the walk did not reach by '
+  + 'completing quests is unreachable here.',
+  'the walk takes the first non-violent available resolution, then any available one. It does not '
+  + 'search for the resolution that would open the most later quests, so a signature that stops '
+  + 'may have been carryable by a different (still legitimate) choice.',
+];
 
 // =============================================================================================
 // selfSourceAudit — the invariant that makes the grant fence mean anything.
@@ -337,6 +364,23 @@ if (!SOURCE_AUDIT.ok) {
 const mainline = JSON.parse(fs.readFileSync(path.join(REPO, 'game/data/quests/mainline.json'), 'utf8'));
 const MAIN_CHAIN = [...mainline.acts.flatMap((a) => a.quests), ...mainline.aftermath.quests];
 
+// quest id -> { resolution id -> true when it demands NOTHING }. The cheapest-ending trap, made
+// countable. Read from the shipped book because the harness's quest view does not carry
+// resolution requirements; nothing here decides what the character may do.
+const FREE_ENDINGS = (() => {
+  const dir = path.join(REPO, 'game/data/quests');
+  const out = {};
+  for (const f of fs.readdirSync(dir).sort()) {
+    if (!f.endsWith('.json') || f === 'hooks.json') continue;
+    const doc = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+    for (const q of doc.quests || []) {
+      out[q.id] = {};
+      for (const r of q.resolutions || []) out[q.id][r.id] = Object.keys(r.requires || {}).length === 0;
+    }
+  }
+  return out;
+})();
+
 const STATE = 'soulrest-quay';
 const BOOTSTRAP_NPC = 'bone-ladder-carter';
 
@@ -348,7 +392,7 @@ try {
   report = await handle.page.evaluate(async (IN) => {
     const {
       sample, sabotage, falsify, STATE, BOOTSTRAP_NPC, MAIN_CHAIN, MAX_ROUNDS,
-      ALLOWED_VERBS, DENIED_VERBS,
+      ALLOWED_VERBS, DENIED_VERBS, freeEndings,
     } = IN;
 
     // ---- THE GRANT FENCE ---------------------------------------------------------------------
@@ -381,11 +425,11 @@ try {
     }
 
     if (falsify === 'grant-fence') {
-      const probes = ['setGold', 'questSetFlag', 'learnTopic', 'spawnNPC', 'setFactionStanding'];
+      const probes = ['setGold', 'questSetFlag', 'learnTopic', 'spawnNPC', 'setFactionStanding', 'questReveal', 'questNote'];
       const out = [];
       for (const v of probes) {
         let threw = null;
-        try { H[v](v === 'setGold' ? 999999 : 'x', 1); } catch (e) { threw = String(e.message || e); }
+        try { H[v](v === 'setGold' ? 999999 : 'Q-MAIN-06', 1); } catch (e) { threw = String(e.message || e); }
         out.push({ verb: v, refused: !!threw, message: threw });
       }
       // The green control: an allow-listed observation must NOT throw.
@@ -409,19 +453,19 @@ try {
      * finished the book entirely on free endings has measured something other than the gates,
      * so each one is counted and reported.
      */
+    // `H.questDef()` deliberately does not expose resolutions, so the requirement shape comes
+    // from the shipped book, read on the Node side and passed in. That is reading the paperwork
+    // to know WHAT TO LOOK AT; every decision about what the character may do is still the
+    // engine's, through `questResolutions` and `questResolve`.
     const isFreeEnding = (id, resId) => {
-      let def = null;
-      try { def = H.questDef(id); } catch (e) { return null; }
-      const r = ((def && def.resolutions) || []).find((x) => x.id === resId);
-      if (!r) return null;
-      const req = r.requires || {};
-      return Object.keys(req).length === 0;
+      const q = freeEndings[id];
+      return q ? !!q[resId] : null;
     };
 
     const playOne = (row) => {
       const out = {
         ...row,
-        completed: [], refused: [], violent: [], free_endings: [], giver_absent: [],
+        completed: [], refused: [], violent: [], free_endings: [], giver_absent: [], reveals_refused: [],
         main_chain_completed: 0, main_chain_length: MAIN_CHAIN.length,
         rounds_used: 0, gold_start: null, gold_end: null,
         ranks_start: null, ranks_end: null, persuasion: [],
@@ -480,6 +524,18 @@ try {
         if (!Array.isArray(offers)) { out.no_quest_runtime = offers; break; }
         for (const off of offers) {
           if (done.has(off.id)) continue;
+          // COST, AND WHY THIS FILTER IS NOT A SHORTCUT PAST A GATE. `travelToGiver` runs the
+          // world's own populateSettlement/populateSite, so walking to all ~120 givers on every
+          // round for every signature is tens of thousands of settlement populations and the run
+          // does not finish. A quest the shipping `canOffer` refuses is not opened by walking to
+          // the person: `open()` asks the same predicate again. The ONE exception is a refusal
+          // that is purely about how the giver feels, because that is the one a player can stand
+          // there and change — so those are still visited and still argued with. Everything else
+          // is recorded with the shipping predicate's own reason and left for the next round,
+          // when a completed quest may have moved it.
+          const whys = Array.isArray(off.why) ? off.why : [];
+          const persuadable = whys.length > 0 && whys.every((w) => / disposition -?\d+(\.\d+)?\/-?\d/.test(String(w)));
+          if (!off.offerable && !persuadable) continue;
 
           if (sabotage === 'hand-feed') {
             fenceLowered = true;
@@ -524,14 +580,14 @@ try {
 
           if (!o.ok) { continue; }   // not a permanent verdict: a later round may open it
 
-          // Reveals and journal notes a player would collect by asking.
-          try {
-            const def = H.questDef(off.id);
-            for (const r of (((def.deceit || {}).revealed_by) || [])) { try { H.questReveal(off.id, r.id); } catch (e) { /* not offered */ } }
-            for (const e2 of (def.journal || [])) {
-              if ((e2.state === 'active' || e2.state === 'branch') && e2.index > 10) { try { H.questNote(off.id, e2.index); } catch (e) { /* unreachable */ } }
-            }
-          } catch (e) { /* no def */ }
+          // NO REVEALS AND NO JOURNAL POKES. An earlier version of this loop called
+          // `questReveal` for every id in the quest's `deceit.revealed_by` and `questNote` for
+          // every active journal index. Both were wrong twice over. They were SILENT NO-OPS —
+          // `H.questDef()` returns a curated view with no `deceit`, `journal` or `resolutions` on
+          // it, so the loop iterated `undefined` and the tool reported `free_endings: 0` as a
+          // vacuous zero. And had they worked they would have been GRANTS: `reveal()` has no
+          // world-side caller on this tree at all. Both verbs are on the deny list now, so the
+          // fence refuses them rather than this loop remembering not to call them.
 
           let avail = [];
           try { avail = H.questResolutions(off.id); } catch (e) { avail = []; }
@@ -578,22 +634,43 @@ try {
       return out;
     };
 
-    const rows = [];
-    for (const row of sample) rows.push(playOne(row));
-
-    return {
-      schema: 'elder-souls/viability-walk@1',
-      harness_version: RAW.version,
-      rows,
-      harness_calls: tally,
-      denied_calls: denials,
-      allowed_verbs_missing_from_harness: missingVerbs,
-      grants_used: grantsUsed,
+    // The driver is installed rather than run, so Node can call it ONE SIGNATURE AT A TIME and
+    // print progress. A single 40-signature `evaluate` is a black box: the first version of this
+    // tool ran for twenty-five minutes with nothing on stdout and no way to tell slow from hung,
+    // which is exactly the state RULES.md rule 26 is about.
+    window.__vwalk = {
+      playOne,
+      summary: () => ({
+        schema: 'elder-souls/viability-walk@1',
+        harness_version: RAW.version,
+        harness_calls: tally,
+        denied_calls: denials,
+        allowed_verbs_missing_from_harness: missingVerbs,
+        grants_used: grantsUsed,
+      }),
     };
+    return { installed: true, missing_verbs: missingVerbs };
   }, {
     sample: SAMPLE, sabotage, falsify, STATE, BOOTSTRAP_NPC, MAIN_CHAIN, MAX_ROUNDS,
-    ALLOWED_VERBS, DENIED_VERBS,
+    ALLOWED_VERBS, DENIED_VERBS, freeEndings: FREE_ENDINGS,
   });
+
+  if (falsify !== 'grant-fence') {
+    const rows = [];
+    const t0 = Date.now();
+    for (let i = 0; i < SAMPLE.length; i++) {
+      const r = await handle.page.evaluate((row) => window.__vwalk.playOne(row), SAMPLE[i]);
+      rows.push(r);
+      const el = (Date.now() - t0) / 1000;
+      process.stderr.write(
+        `[viability-walk] ${String(i + 1).padStart(3)}/${SAMPLE.length} ${SAMPLE[i].race}/${SAMPLE[i].upbringing} `
+        + `completed ${String(r.completed.length).padStart(3)} quests, main ${r.main_chain_completed}/${r.main_chain_length}`
+        + `${r.main_chain_first_missing ? ' (stops at ' + r.main_chain_first_missing + ')' : ''} `
+        + `— ${el.toFixed(0)}s elapsed, ~${(el / (i + 1) * (SAMPLE.length - i - 1)).toFixed(0)}s left\n`);
+    }
+    const meta = await handle.page.evaluate(() => window.__vwalk.summary());
+    report = { ...meta, rows };
+  }
 } finally { await handle.close(); }
 
 // ---------------------------------------------------------------------------------------------
@@ -621,13 +698,27 @@ const finishedMain = rows.filter((r) => r.main_quest_finished).length;
 const threeAtFive = rows.filter((r) => r.factions_at_rank_5 >= 3).length;
 const bothGateCriteria = rows.filter((r) => r.main_quest_finished && r.factions_at_rank_5 >= 3).length;
 
+// WHERE THE MAIN QUEST STOPS, and where the reason for it lives. The first version of this
+// reduce looked only in `still_shut_out`, which holds the quests the offer gate never offered.
+// The whole sampled grid stops on a quest that WAS offered and then had no resolution the
+// character could take, so every stop printed with an empty reason while the artifact underneath
+// carried it in `refused`. A headline that drops the cause is the failure this project keeps
+// finding in other people's tools.
 const stopTally = new Map();
 for (const r of rows) {
   const s = r.main_chain_first_missing;
   if (!s) continue;
+  const ref = r.refused.find((x) => x.quest === s);
   const shut = r.still_shut_out.find((x) => x.quest === s);
-  const key = `${s} [${shut ? shut.gate : 'not offered'}] — ${shut ? shut.why : 'no reason recorded'}`;
+  const key = ref
+    ? `${s} [offered, then ${ref.gate}] — ${ref.why}`
+    : `${s} [${shut ? 'not offered' : 'never reached'}] — ${shut ? shut.why : 'the chain stopped earlier'}`;
   stopTally.set(key, (stopTally.get(key) || 0) + 1);
+}
+const revealsRefused = new Map();
+for (const r of rows) for (const rr of r.reveals_refused) {
+  const k = `${rr.quest}:${rr.reveal} — ${rr.why}`;
+  revealsRefused.set(k, (revealsRefused.get(k) || 0) + 1);
 }
 
 const out = {
@@ -644,6 +735,7 @@ const out = {
     + 'character is viable full stop, because this run did not measure that.',
   criteria_walked: ['main_quest', 'three_factions_rank5', 'gates_actually_refused'],
   criteria_not_walked: ['tier5_survivable'],
+  this_walk_under_claims: WALK_UNDERCLAIMS,
   criteria_not_walked_why:
     'surviving a danger-tier-5 fight needs a driven fight; scoring it off a damage model is the '
     + 'class of substitution this instrument exists to remove.',
@@ -679,6 +771,7 @@ const out = {
     violent_resolutions_taken: rows.reduce((n, r) => n + r.violent.length, 0),
     givers_not_in_the_world: [...new Set(rows.flatMap((r) => r.giver_absent.map((g) => g.quest)))],
   },
+  reveals_refused: [...revealsRefused].sort((a, b) => b[1] - a[1]).slice(0, 20).map(([why, n]) => ({ signatures: n, reveal: why })),
   where_the_main_quest_stops: [...stopTally].sort((a, b) => b[1] - a[1]).map(([why, n]) => ({ signatures: n, stop: why })),
   rows,
 };
@@ -696,7 +789,9 @@ else {
             + `class ${COVERAGE.class_id.covered}/${COVERAGE.class_id.of}, birthsign ${COVERAGE.birthsign.covered}/${COVERAGE.birthsign.of}`);
   console.log(`          race x upbringing ${COVERAGE.pair_race_x_upbringing.covered}/${COVERAGE.pair_race_x_upbringing.of} (complete by design), `
             + `class x birthsign ${COVERAGE.pair_class_x_birthsign_NOT_COVERED.covered}/${COVERAGE.pair_class_x_birthsign_NOT_COVERED.of} (NOT a design goal)`);
-  console.log(`  NOT WALKED: tier5_survivable — ${out.criteria_not_walked_why}\n`);
+  console.log(`  NOT WALKED: tier5_survivable — ${out.criteria_not_walked_why}`);
+  for (const u of WALK_UNDERCLAIMS) console.log(`  UNDER-CLAIMS: ${u}`);
+  console.log('');
   console.log(`  finished the main quest                ${finishedMain}/${rows.length}   (chain is ${MAIN_CHAIN.length} quests)`);
   console.log(`  reached three factions at rank 5       ${threeAtFive}/${rows.length}`);
   console.log(`  passed BOTH walked gate criteria       ${bothGateCriteria}/${rows.length}`);
@@ -705,6 +800,10 @@ else {
   console.log(`  violent resolutions taken              ${out.played.violent_resolutions_taken}`);
   if (out.played.givers_not_in_the_world.length) {
     console.log(`  GIVERS NOT IN THE WORLD                ${out.played.givers_not_in_the_world.length}: ${out.played.givers_not_in_the_world.slice(0, 8).join(', ')}`);
+  }
+  if (out.reveals_refused.length) {
+    console.log('\n  reveals a player asked for and did not get:');
+    for (const rr of out.reveals_refused.slice(0, 6)) console.log(`    x${String(rr.signatures).padStart(3)}  ${rr.reveal.slice(0, 150)}`);
   }
   console.log('\n  where the main quest stops:');
   for (const s of out.where_the_main_quest_stops.slice(0, 8)) console.log(`    x${String(s.signatures).padStart(3)}  ${s.stop.slice(0, 150)}`);

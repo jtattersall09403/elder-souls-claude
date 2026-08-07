@@ -32,7 +32,7 @@
 'use strict';
 
 import { launchGame } from '../lib/browser.mjs';
-import { parseArgs, wantsHelp, usage, log, writeJson } from '../lib/cli.mjs';
+import { parseArgs, wantsHelp, usage, log, writeJson, gitInfo } from '../lib/cli.mjs';
 
 const args = parseArgs(process.argv.slice(2));
 if (wantsHelp(args)) { usage('w1-13-r3-clock.mjs [--out <file>] [--deaths <n>]'); process.exit(0); }
@@ -41,6 +41,9 @@ const DEATHS = Number(args.deaths || 40);
 
 const out = {
   schema: 'w1-13/r3-clock@1',
+  // RULES.md 12: a measurement is a claim about a commit, not about the project.
+  git: gitInfo(),
+  taken_at: new Date().toISOString(),
   rule: 'RI-PRG04 §6 rule 4 — "The clock does NOT advance on death. Only resting moves time. '
     + 'Dying repeatedly at a boss must not burn a quest deadline."',
   frames_per_day: 259200,

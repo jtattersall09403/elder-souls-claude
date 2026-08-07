@@ -60,39 +60,85 @@
 // The lesson generalises past souls: **a write to `sim.entities` on a body that has a combat body
 // is a write to a cache.**
 //
-// `_seen` is a Map from eid to "was alive when last observed", and it is LAZILY seeded: the
-// first time an eid is seen, if the body is already dead, it is recorded as paid WITHOUT an
-// award. That is what makes a save/load safe — a blob that restores a corpse restores a corpse,
-// not 136 free souls — with no new durable field and therefore no change to the save manifest or
-// to `getDurableFieldCensus`, which is the instrument that has caught the last two save defects.
-//
-// A respawned enemy (`death.js` sets `b.dead = false` on a rest) is re-armed by the same
-// mechanism and pays again at x1.00 — but ONLY across a rest. See the epoch gate below.
-//
 // ---------------------------------------------------------------------------------------------
-// THE RESPAWN GATE — S5 gives respawn to the HEARTH REST, not to any re-spawn
+// WHAT THE LEDGER IS KEYED ON, AND WHY IT IS NOT THE ENTITY ID
 // ---------------------------------------------------------------------------------------------
 //
-// Round 1 re-armed a corpse on any `dead -> alive` transition and called that "exactly RI-PRG06
-// §4's respawn row". It is not. RI-PRG06 §4's row is `Respawned enemy x1.00`, and S5 is what
-// makes an enemy respawn: **you rested**. The verdict killed a party, despawned it, spawned it
-// again and collected **+816, +816, +816 across three passes with zero hearth rests**, because
-// `Engine.spawnEncounter` mints deterministic eids (`dres-raid-party-infantry-0`) so the same
-// body came back under the same key. At the time the only in-engine caller that despawns an
-// encounter was `_resolveCapture()`, so a player could not reach it — and then W1-POPULATION
-// landed `PopulationSystem`, a distance-driven pump that materialises and releases posts as the
-// player walks. That turns it into *walk 170 m away, walk back, kill again, for ever*.
+// **ROUND 3. This is the whole of `GAP-W1-souls-alive-keyed-on-eid`, and it had three faces
+// before anybody called it a class.** Rounds 1 and 2 keyed the ledger on `e.eid` and asked
+// "have I seen this NAME before, at this rest epoch". Both halves of that key are minted by
+// somebody else and reset independently of the bodies they describe — the eid by whoever
+// spawns, the epoch by `DeathSystem`, the ledger by whoever remembers to clear it — and there
+// was no invariant tying the three together. So it broke three times, in two directions:
 //
-// So the re-arm is gated on the rest counter rather than on a boolean. `DeathSystem` bumps
-// `ordinaryRespawnEpoch` in `respawnOrdinary()` — the S5 event itself, fired by a hearth rest and
-// by a player death — and a corpse only becomes payable again when the epoch has moved past the
-// one it was last paid at. A body that leaves the entity array and comes back under the same eid
-// without a rest in between stays settled and pays nothing.
+//   1. `Engine.applyNamedState()` cleared four subsystems and not this one, so the SAME fight
+//      across a scenario boundary paid `+384` and then `+0` with twelve refused re-arms and
+//      zero rests. (W1-SOULS-r2 HF-1, measured.)
+//   2. `PopulationSystem` releases a post the player only PARTLY cleared and re-materialises it
+//      under `{ tag: p.id }` — the post id, stable by construction — so five corpses' eids came
+//      back on five live, full-HP, hostile bodies and the ledger refused to pay for any of
+//      them. Five real enemies worth nothing. (W1-SOULS-r2 HF-2, measured.)
+//   3. `Engine.loadState(blob)` DID clear the ledger, while `ordinaryRespawnEpoch` did not move
+//      and `PopulationSystem.reset()` put every post back to DORMANT — so kill a post, save,
+//      load, kill it again paid in full, without bound, with no rest.
+//      (W1-POPULATION-r1 §2 / `GAP-W1-population-save-reload-repays-every-corpse`, measured by
+//      that piece's critic, on a route nobody here had tried.)
+//
+// Faces 2 and 3 pull in OPPOSITE directions off the same key. That is not three bugs with a
+// shared cause; it is the proof that the key was wrong rather than that the sign was wrong.
+//
+// **So the ledger is keyed on the BODY, not on the name.** `_alive` still maps eid -> record for
+// O(1) lookup, but the record holds `ref`, the entity object `sim/entities.js makeEntity()`
+// minted. Object identity is the one notion of "this body" in the build that nothing can
+// counterfeit: `sim.reset()` throws the array away, `despawn()` splices the object out,
+// `applySave()` rebuilds every record through `statFor`, and `spawnEncounter` builds a NEW
+// object even when it re-uses the name. So:
+//
+//   * a record whose `ref` is not the entity in front of us is about a body that no longer
+//     exists. The entity in front of us is a NEW LIFE and is seeded from scratch — alive if it
+//     is alive, and paid for when it dies. Face 2 closes structurally: there is no name left to
+//     recycle.
+//   * the ledger can no longer outlive the world it describes, because its entries are about
+//     objects the boundary destroyed. Face 1 closes structurally too, and the
+//     `_resetSessionObservers()` line the engine now calls at both boundaries is hygiene rather
+//     than the mechanism — which is what it should always have been.
+//   * face 3 is NOT a defect in this file and this file must stop pretending it can fix one.
+//     The ledger pays once per body-life; a save and a load handed the player a province full
+//     of newly built bodies, and paying for bodies the world built is exactly what this module
+//     is for. **The price of a respawn is the world's to charge, not the reward's to refuse.**
+//     Round 2's epoch gate was this module compensating for a world that rebuilds bodies for
+//     free, and that is precisely why it broke in the opposite direction on the first route
+//     nobody had tried. A fourth route will exist; it must break the WORLD's invariant, where
+//     it can be seen, and not be silently absorbed here. `tools/progression/souls-ledger-oracle.mjs`
+//     asserts all three invariants over arbitrary event sequences for that reason.
+//
+// LAZY SEEDING is unchanged and still carries the save. The first time a body-life is seen, if
+// it is already dead it is recorded as settled and never paid: a blob that restores a corpse
+// restores a corpse, not 136 free souls. No new durable field, so no change to the save
+// manifest and none to `getDurableFieldCensus`, the instrument that caught the last two save
+// defects. `ref` is a live object reference held only in this Map; at most one stale entity
+// record is pinned per distinct eid, and the eid namespace is bounded by the post table (tags
+// are post ids, stable by construction), so the retention is bounded and does not grow with
+// session length.
+//
+// ---------------------------------------------------------------------------------------------
+// THE REST EPOCH — what is left of it, and it is now doing exactly one job
+// ---------------------------------------------------------------------------------------------
+//
+// There is exactly ONE way a body comes back as the SAME object in this build:
+// `sim/death.js respawnOrdinary()` sets `e.hp = e.hpMax` in place on the entities that are still
+// in the array. That is the S5 event — a hearth rest or a player death — and `RI-PRG06` §4's
+// `Respawned enemy x1.00` row is about it. So the epoch gate survives, scoped to the case it was
+// always about: a record whose `ref` still matches, whose body was dead and is alive again, is
+// re-armed only if `ordinaryRespawnEpoch` has moved past the epoch it was paid at.
+//
+// It no longer has any opinion about bodies that were rebuilt, because it cannot see one and
+// should not: a rebuilt body is a different body.
 //
 // The epoch is supplied by the engine as a function rather than read off `sim`, because
 // `DeathSystem` hangs off the engine and not off `sim`, and this module must not acquire a
 // handle to the engine. With no supplier the gate degrades to epoch 0 — which is the SAFE
-// direction: everything stays settled, nothing double-pays.
+// direction for the one case it still governs: a revived corpse stays settled.
 //
 // ---------------------------------------------------------------------------------------------
 // S9 — NO LEVEL SCALING, and this file is where it would be easiest to break
@@ -149,14 +195,26 @@ export class SoulsSystem {
   constructor(enemyData, restEpoch) {
     this.d = enemyData || {};
     /**
-     * eid -> { alive, paidEpoch }. `alive` is what it was when last observed; `paidEpoch` is the
-     * rest epoch the body was last paid (or settled) at. Lazily seeded; see the header.
+     * eid -> { ref, alive, paidEpoch }.
+     *
+     * `ref` is THE BODY — the entity object `makeEntity()` minted — and it is what the record is
+     * really keyed on; the eid is only the index into the Map. `alive` is what that body was
+     * when last observed; `paidEpoch` is the rest epoch it was last paid (or settled) at.
+     * Lazily seeded. See the header: keying this on the eid alone is `GAP-W1-souls-alive-keyed-
+     * on-eid` and it failed in both directions.
      */
     this._alive = new Map();
     /** The S5 rest counter, or a constant 0 when nobody supplies one (safe direction). */
     this._restEpoch = typeof restEpoch === 'function' ? restEpoch : () => 0;
-    /** Diagnostics: re-arms refused because no rest had happened. */
+    /** Diagnostics: re-arms refused because no rest had happened. Revived bodies only. */
     this.refusedRearms = 0;
+    /**
+     * Diagnostics: how many times a name was seen carrying a body that was not the body the
+     * ledger had under it. Non-zero is normal (a scenario boundary, a released post coming
+     * back); it is here so an instrument can tell "a new body" from "the same body" without
+     * having to reach into the Map.
+     */
+    this.rebuilds = 0;
     /** Diagnostics for the consumption instrument. Not simulation state. */
     this.kills = 0;
     this.awarded = 0;
@@ -168,8 +226,21 @@ export class SoulsSystem {
     this.enabled = true;
   }
 
-  /** Forget every observation. Called on `sim.reset()` and on a state load. */
-  reset() { this._alive.clear(); this.kills = 0; this.awarded = 0; this.refusedRearms = 0; }
+  /**
+   * Forget every observation. Called by `Engine._resetSessionObservers()` at BOTH scenario
+   * boundaries — the named-state path and the blob path — which is one list rather than the two
+   * hand-maintained ones this call was missing from.
+   *
+   * Since round 3 this is hygiene and not the mechanism: the ledger is keyed on the body, so a
+   * boundary that failed to call it would still not mis-pay. It is called anyway, because a
+   * ledger about a world that no longer exists is a ledger that grows for no reason, and because
+   * `refusedRearms`/`rebuilds` are per-session diagnostics that a scenario boundary must zero
+   * for the next scenario's instrument to mean anything.
+   */
+  reset() {
+    this._alive.clear();
+    this.kills = 0; this.awarded = 0; this.refusedRearms = 0; this.rebuilds = 0;
+  }
 
   /**
    * One step. Allocation-conscious, no RNG, no wall clock — safe under the armed sim guard.
@@ -184,19 +255,25 @@ export class SoulsSystem {
       const e = ents[i];
       const dead = e.hp <= 0 || e.state === 'DEAD';
       const rec = this._alive.get(e.eid);
-      if (rec === undefined) {
-        // First sight. A corpse we are meeting for the first time — a loaded save, a state
-        // patch — is recorded as already settled at the CURRENT epoch and is never paid for.
-        // Stamping the current epoch (rather than 0) is what stops a load followed by a rest
-        // from paying out every corpse in the blob.
-        this._alive.set(e.eid, { alive: !dead, paidEpoch: epoch });
+      // `rec.ref !== e` is a body wearing a name the ledger has a record for. It is a DIFFERENT
+      // BODY — `sim.reset()`, `despawn()`, `applySave()` and `spawnEncounter` all mint a fresh
+      // object, and only `death.js respawnOrdinary()` brings the same one back — so the record
+      // is about something that no longer exists and is replaced rather than consulted.
+      if (rec === undefined || rec.ref !== e) {
+        // First sight OF THIS BODY. A corpse we are meeting for the first time — a loaded save,
+        // a state patch, a post re-materialised with its dead still down — is recorded as
+        // already settled at the CURRENT epoch and is never paid for. Stamping the current epoch
+        // (rather than 0) is what stops a load followed by a rest from paying out every corpse
+        // in the blob.
+        if (rec !== undefined) this.rebuilds++;
+        this._alive.set(e.eid, { ref: e, alive: !dead, paidEpoch: epoch });
         continue;
       }
       if (!rec.alive) {
-        // Already dead last time we looked. Re-arm ONLY if a HEARTH rest (or a player death)
-        // has bumped the S5 epoch since we paid for it. A body that despawned and respawned
-        // under the same eid without a rest — the population pump does this every time the
-        // player walks out of and back into a post's radius — stays settled and pays nothing.
+        // The SAME body, dead last time we looked, and it is upright again. There is exactly one
+        // way that happens: `sim/death.js respawnOrdinary()` revived it in place, which is the S5
+        // event. Re-arm only if a HEARTH rest (or a player death) has bumped the epoch since we
+        // paid for it — `RI-PRG06` §4's `Respawned enemy x1.00` row, and nothing else.
         if (!dead) {
           if (epoch > rec.paidEpoch) { rec.alive = true; rec.paidEpoch = epoch; }
           else this.refusedRearms++;

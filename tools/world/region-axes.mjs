@@ -699,6 +699,16 @@ const doc = {
   bar: { axes_available: available, must_differ_on: BAR },
   per_region: measured,
   rendered_present: !!rendered, rendered_capture_pass: renderedPass,
+  // W1-22 ROUND 2, from the round-1 verdict §5: "the warning goes to `console.warn`, which nothing
+  // aggregates — it should also land in the JSON report as a boolean a tick can read."
+  // `audioSpecMeta` was being computed, including `STALE`, and then never written anywhere, so the
+  // only trace of a stale audio sidecar was a line on a terminal nobody was watching. That is the
+  // same shape as the defect this whole piece was dispatched against: a field written and never
+  // read back. The fail-open CALL is unchanged and the critic judged it correct — every agent in
+  // the project runs this tool and none of them owns the audio, so a fail-closed audio axis would
+  // pin an unrelated piece at zero. Reported, still never enforced.
+  audio_spectra_sidecar: audioSpecMeta,
+  audio_spectra_stale: audioSpecMeta ? !!audioSpecMeta.STALE : null,
   axis_pair_counts: axisCounts,
   min_axes_differing: minAxes, min_pair: minPair,
   pairs_below_bar: pairs.filter((p) => p.axes_differing < BAR).map((p) => `${p.a}/${p.b} (${p.axes_differing})`),
