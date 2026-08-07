@@ -161,7 +161,12 @@ export class UISystem {
       const b = this.data.books && this.data.books.get(String(id));
       if (!b) throw new Error(`openMenu('book', {id:'${id}'}): no such book in game/data/books/`);
       this.bookId = b.id;
-      this.focus.book.page = this.bookPages[b.id] || 0;
+      // Clamped on the way IN as well as on the way out (see `_lastSpread`). A resumed reading
+      // position is a spread index taken at whatever resolution the last session ran at, and the
+      // same book paginates to more spreads at 3840×2160 than at 1280×720 — so a save written on
+      // a big screen resumes past the end of the book on a small one. The clamp is the fix and
+      // it belongs on both sides of the save.
+      this.focus.book.page = this._clampSpread(this.bookPages[b.id] || 0, b);
       // W1-LIBRARY round 2. THE READ SITE, and it is here rather than in `Engine.openMenu()`
       // because `Engine.openMenu()` is the HARNESS door. A player reads a book by selecting a
       // readable in the inventory and pressing confirm — `_confirm()` calls `this.open('book',
@@ -317,8 +322,24 @@ export class UISystem {
         break;
       }
       case 'book': {
-        if (dx) f.book.page = Math.max(0, f.book.page + dx);
-        if (dy) f.book.page = Math.max(0, f.book.page + dy);
+        // W1-LIBRARY round 2. This used to be `Math.max(0, page + d)` — floored and NOT
+        // capped — while `drawBook()` clamps the spread it actually draws to the last one. The
+        // two disagreeing is the whole defect, and it is three separate failures at once:
+        //
+        //   * RI-UIX05 T8 ("the book's identity and page are in getUIState() so a critic can
+        //     assert what is on screen") was false. Measured in the browser before this fix:
+        //     `a-progress-iii` is 11 pages, i.e. 6 spreads, and holding right walked
+        //     `focus.book.page` to 12 while the screen still showed the last spread —
+        //     `getUIState().book.page` reported **25** for a book whose last page is 11.
+        //   * a player who over-turns has to press LEFT once for every phantom turn before the
+        //     page moves, with nothing on screen changing to explain why.
+        //   * T5 persists the position, so the nonsense index went into the save, and
+        //     `dialogue.book_pages` carried a spread that does not exist into the next session.
+        //
+        // Clamping here rather than in the drawer keeps ONE number: what the model holds is what
+        // is drawn is what `getUIState()` reports.
+        const d = dx || dy;
+        if (d) f.book.page = this._clampSpread(f.book.page + d);
         if (this.bookId) this.bookPages[this.bookId] = f.book.page;
         break;
       }
@@ -435,7 +456,23 @@ export class UISystem {
     // opens, so a build keyed on those two alone would paint the overlay once and then never
     // again show a control pressed. `getUIState()` calls this with `force = false` on the same
     // frame a probe pressed something, which is exactly the read that would have gone stale.
-    const sig = touchSignature(ctx);
+    // AND IT HAS TO INCLUDE THE FOCUS, for a reason that is worse than the touch one: while any
+    // screen is up the world is PAUSED (RI-UIX03 §A, out of combat), and `engine._step()`'s
+    // paused branch latches input WITHOUT calling `stepOnce()`. So `ctx.frame` does not advance
+    // at all while a menu is open. `mode` does not change either, and neither does the touch
+    // signature. The three-part key above is therefore CONSTANT for the entire life of the
+    // screen — and every focus change a player makes with an actual button was discarded.
+    //
+    // Measured, through the real input pipeline, before this line existed: pressing confirm on
+    // the map moved `focus.map.view` to `local` and the drawn terrain element still reported
+    // `view: 'world'` with its rect unchanged at the province aspect — so S35's local view was
+    // wired but not reachable. In the journal, the stick moved `focus.journal.page` 0 -> 1 and
+    // the drawn elements were identical: a player turning a page saw nothing move.
+    //
+    // It survived this long because `uiFocus()`, `openMenu()` and `closeMenu()` all call
+    // `build(ctx, true)`. Every probe that moves focus through the harness door forces a
+    // rebuild and cannot see this; only input driven through the pipeline can.
+    const sig = touchSignature(ctx) + '#' + focusSignature(this.mode, this.focus);
     if (!force && this.builtFrame === ctx.frame && this.lastMode === this.mode && this.lastTouchSig === sig) return;
     const S = this.S;
     S.begin();
@@ -628,6 +665,28 @@ export class UISystem {
   _bookModel(ctx) {
     const b = this.data.books.get(this.bookId);
     return { book: b, page: this.focus.book.page, inCombat: !!ctx.inCombat };
+  }
+
+  /**
+   * The last spread index of a book at the CURRENT screen, which is the only bound that means
+   * anything: pagination is a function of the surface, so the same book is 6 spreads at
+   * 320×240 and rather more at 3840×2160.
+   *
+   * `bookPagination()` is the same call `getUIState()` and `drawBook()` make, so all three agree
+   * by construction rather than by three people remembering the same arithmetic.
+   *
+   * Fails OPEN, deliberately: if there is no screen yet (`this.S` is null before the first
+   * build) or the book has no text, the floor is still applied and the cap is not. A cap
+   * computed from a screen that does not exist would be a made-up number, and refusing to turn
+   * the page at all would be worse than the defect being fixed. The clamp on `open()` catches
+   * the resumed position the moment a screen exists.
+   */
+  _clampSpread(page, book) {
+    const p = Math.max(0, Math.floor(Number(page) || 0));
+    const b = book || (this.bookId && this.data.books ? this.data.books.get(this.bookId) : null);
+    if (!b || !b.text || !this.S) return p;
+    const pages = bookPagination(b.text, this.S).pages;
+    return Math.min(p, Math.max(0, Math.ceil(pages / 2) - 1));
   }
 
   _attributes(ctx) {
@@ -922,6 +981,30 @@ function contextOf(text, needle) {
  * layout — none of which move `sim.frame` or `mode`. Written as a string rather than a hash so
  * that a probe that wants to know WHY the layout rebuilt can read it.
  */
+/**
+ * The open screen's own focus state, as a cache key for `build()`.
+ *
+ * This exists because the layout cache cannot be keyed on the frame while a menu is open: the
+ * world is paused, so the frame is frozen, and a key made of frame + mode + touch is constant
+ * for the whole life of the screen. Anything a player changes with a button — the map's view,
+ * the journal's page, a selected row — lives in `focus[mode]` and nowhere else, so that object
+ * is exactly the missing term. Flat and small (a handful of primitives per mode), and read only
+ * once per build, which is once per rendered frame.
+ *
+ * Modes hold their focus in object literals with a fixed shape, so `for...in` order is stable
+ * and the string is comparable. A mode with no focus entry (`world`, `dialogue`) returns `-`.
+ */
+function focusSignature(mode, focus) {
+  const f = focus && focus[mode];
+  if (!f) return '-';
+  let s = '';
+  for (const k in f) {
+    const v = f[k];
+    s += k + ':' + (v !== null && typeof v === 'object' ? JSON.stringify(v) : v) + '|';
+  }
+  return s;
+}
+
 function touchSignature(ctx) {
   if (ctx.rotate) return 'rotate:' + ctx.rotate.line;
   const t = ctx.touch;

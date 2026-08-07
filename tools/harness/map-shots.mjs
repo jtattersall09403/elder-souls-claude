@@ -82,7 +82,7 @@ const shots = [
   },
   {
     name: `${stamp}-map-explored`,
-    claim: 'The discovery map screen after the body has stood at forty coordinates spread across the province: the revealed ground is broad in the open regions and narrow in the marshes, because the reveal radius is each region s own declared sightline_m in regions.json.',
+    claim: 'The discovery map screen after the body has stood at sixteen coordinates spread across the province: the revealed ground is broad in the open regions and narrow in the marshes, because the reveal radius is each region s own declared sightline_m in regions.json.',
     ops: route,
   },
   {
@@ -92,11 +92,18 @@ const shots = [
     // view is reached by a CONFIRM press and the press has to land after the screen is up. The
     // press goes through `queueInputs` — the real input path, latched inside the fixed step —
     // so this frame photographs a view a player can actually get to.
+    //
+    // `f: 0`, and the whole shot depends on it. The map pauses the world, and a paused frame
+    // latches input without advancing `sim.frame`, so a scripted press at `f >= 1` never fires
+    // and is never reported lost either (see the long note in map-probe.mjs S11). The first
+    // version of this file used `f: 1`/`f: 3` and would therefore have produced a picture of
+    // the WORLD view filed under a local-view caption — a quietly wrong artifact, which is
+    // worse than a missing one. Press and release in the same latch is a clean tap.
     ops: [
       ...early,
       ['openMenu', 'map', {}],
-      ['queueInputs', [{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]],
-      ['stepFrames', 5],
+      ['queueInputs', [{ f: 0, press: ['interact'] }, { f: 0, release: ['interact'] }]],
+      ['stepFrames', 2],
     ],
     noMenu: true,
   },

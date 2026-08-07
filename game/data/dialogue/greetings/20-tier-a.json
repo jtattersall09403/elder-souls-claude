@@ -13,8 +13,8 @@
 
     { "id": "lil-f1", "class": 7, "cell": "lilmoth", "d": 60, "a": "sapcutter", "x": "This one is Teel-Ma and this one works the roof-walks. Friend, Lilmoth is a hard town and you are asking politely. What is it?", "to": ["the-roof-walks", "services", "little-advice"] },
     { "id": "lil-f2", "class": 7, "cell": "lilmoth", "d": 60, "a": "archivist", "x": "Welcome to Lilmoth, which is a port, a ruin and an administrative fiction in roughly equal parts, and I will happily tell you about any of the three if you have the afternoon.", "to": ["the-drowned-quarter", "background", "little-advice"] },
-    { "id": "lil-f3", "class": 7, "cell": "lilmoth", "d": 60, "a": "legionary", "x": "Customs, Lilmoth stair. Sergeant Verus. You are not carrying anything I care about. Ask.", "to": ["the-tide-steps", "services", "specific-place"] },
-    { "id": "lil-f4", "class": 7, "cell": "lilmoth", "d": 60, "a": "mudborn", "x": "You have given me something before and I remember it, dry-one, and Lilmoth is not a town where people remember things like that, so ask me and I will try to be worth it.", "to": ["latest-rumors", "someone-in-particular"] },
+    { "id": "lil-f3", "class": 7, "cell": "lilmoth", "d": 60, "a": "legionary", "x": "Customs, Lilmoth stair. Sergeant Verus. You're not carrying anything I care about. Ask.", "to": ["the-tide-steps", "services", "specific-place"] },
+    { "id": "lil-f4", "class": 7, "cell": "lilmoth", "d": 60, "a": "mudborn", "x": "You've given me something before and I remember it, dry-one. Lilmoth isn't a town where people remember things like that. So ask me, and I'll try to be worth it.", "to": ["latest-rumors", "someone-in-particular"] },
     { "id": "lil-f5", "class": 7, "cell": "lilmoth", "d": 60, "a": "rootkeeper", "x": "You have come to the door of a keeper in Lilmoth, which means you have walked past four people who would have told you not to, and I am obliged to say that says something for you.", "to": ["the-sunken-well", "the-covenant"] },
 
     { "id": "lil-n1", "class": 7, "cell": "lilmoth", "d": 40, "a": "legionary", "x": "This is Lilmoth. Stair is that way. Ask your question, citizen.", "to": ["specific-place", "services"] },
@@ -24,26 +24,26 @@
 
     { "id": "lil-c1", "class": 7, "cell": "lilmoth", "d": 20, "a": "legionary", "x": "Lilmoth. Yes. And? Make it quick, stranger.", "to": ["specific-place"] },
     { "id": "lil-c2", "class": 7, "cell": "lilmoth", "d": 20, "a": "sapcutter", "x": "This one is busy. Lilmoth is busy. Say it.", "to": ["services"] },
-    { "id": "lil-c3", "class": 7, "cell": "lilmoth", "d": 20, "a": "magister", "x": "If you have a question about Lilmoth, ask it. If you have several, do not.", "to": ["specific-place"] },
+    { "id": "lil-c3", "class": 7, "cell": "lilmoth", "d": 20, "a": "magister", "x": "Got a question about Lilmoth? Ask it. Got several? Don't.", "to": ["specific-place"] },
     { "id": "lil-c4", "class": 7, "cell": "lilmoth", "d": 20, "a": "mudborn", "x": "You want something, and all of Lilmoth wants something, dry-one, and I have learned not to be hopeful about which sort you are going to turn out to be.", "to": ["someone-in-particular"] },
 
     { "id": "lil-h1", "class": 7, "cell": "lilmoth", "a": "legionary", "x": "Move along. Lilmoth is full. Go and be somewhere else.", "to": [] },
     { "id": "lil-h2", "class": 7, "cell": "lilmoth", "a": "sapcutter", "x": "No. This one does not talk to you. Go.", "to": [] },
     { "id": "lil-h3", "class": 7, "cell": "lilmoth", "a": "magister", "x": "Were I obliged to speak to everyone who came to Lilmoth, I would speak to no one. Good day.", "to": [] },
-    { "id": "lil-h4", "class": 7, "cell": "lilmoth", "a": "mudborn", "x": "I have nothing and you have already taken the only thing I did have, dry-one, which was a quiet afternoon on a warm plank, so no, I will not be answering anything.", "to": [] },
+    { "id": "lil-h4", "class": 7, "cell": "lilmoth", "a": "mudborn", "x": "I've nothing, and you've already taken the only thing I did have, dry-one, which was a quiet afternoon on a warm plank. So no. I won't be answering anything.", "to": [] },
 
     { "id": "lil-t1", "class": 4, "cell": "lilmoth", "act": 4, "a": "sapcutter", "x": "%PCTitle. In Lilmoth. Friend, this one will not forget the day.", "to": ["latest-rumors"] },
-    { "id": "lil-t2", "class": 4, "cell": "lilmoth", "act": 4, "a": "legionary", "x": "%PCTitle. The stair is open. You will not be asked for a manifest today.", "to": ["the-tide-steps"] },
-    { "id": "lil-t3", "class": 4, "cell": "lilmoth", "act": 4, "a": "mudborn", "x": "They are calling you %PCTitle on the boards now, dry-one, and I have been telling the whole town I knew you before the boards had your name, which is true and which is not believed.", "to": ["latest-rumors"] },
+    { "id": "lil-t2", "class": 4, "cell": "lilmoth", "act": 4, "a": "legionary", "x": "%PCTitle. Stair's open. You won't be asked for a manifest today.", "to": ["the-tide-steps"] },
+    { "id": "lil-t3", "class": 4, "cell": "lilmoth", "act": 4, "a": "mudborn", "x": "They're calling you %PCTitle on the boards now, dry-one, and I've been telling the whole town I knew you before the boards had your name. Which is true. And not one of them believes me.", "to": ["latest-rumors"] },
     { "id": "lil-t4", "class": 4, "cell": "lilmoth", "act": 4, "a": "archivist", "x": "%PCTitle. I have had to open a new heading in the Lilmoth register for you, which the Office will query, and I intend to enjoy answering the query enormously.", "to": ["the-office-annexe"] },
-    { "id": "lil-t5", "class": 4, "cell": "lilmoth", "act": 5, "a": "rootkeeper", "x": "It is finished, then, %PCTitle, and Lilmoth is still standing and the water is still coming in at the same rate it always did, and I find that I am glad about the second thing in a way I did not expect.", "to": ["the-sunken-well"] },
+    { "id": "lil-t5", "class": 4, "cell": "lilmoth", "act": 5, "a": "rootkeeper", "x": "So it's finished, %PCTitle. Lilmoth's still standing, and the water's still coming in at the rate it always did. And I find I'm glad about the second thing, in a way I didn't expect.", "to": ["the-sunken-well"] },
     { "id": "lil-t6", "class": 4, "cell": "lilmoth", "act": 5, "a": "sapcutter", "x": "%PCTitle. Cart is open. Friend, your money is no good on this stair.", "to": ["services"] },
 
     { "id": "lil-s1", "class": 6, "cell": "lilmoth", "a": "sapcutter", "d": 30, "service": "barter", "x": "Second stair, low water. Friend, this one sells there and not here.", "to": ["the-second-stair", "services"] },
     { "id": "lil-s2", "class": 6, "cell": "lilmoth", "f": "wet-ledger", "d": 30, "a": "archivist", "service": "moneylending", "x": "The house advances against a cargo and takes the manifest as security, and I would advise you to read what the manifest says about the cargo before you sign anything about the cargo.", "to": ["the-wet-ledger", "the-manifest"] },
 
     { "id": "sto-w1", "class": 7, "cell": "stormhold", "d": 80, "a": "legionary", "x": "%PCName. Good to see you on the wall street. Stormhold owes you one. Ask.", "to": ["little-secret", "the-wall-street"] },
-    { "id": "sto-w2", "class": 7, "cell": "stormhold", "d": 80, "a": "archivist", "x": "%PCName, and welcome. Stormhold is not an interesting town and I have been happier here since you started asking me questions that are, so please, continue.", "to": ["little-secret", "the-drains"] },
+    { "id": "sto-w2", "class": 7, "cell": "stormhold", "d": 80, "a": "archivist", "x": "%PCName, and welcome. Stormhold isn't an interesting town, and I've been happier here since you started asking me questions that are. So please. Go on.", "to": ["little-secret", "the-drains"] },
     { "id": "sto-w3", "class": 7, "cell": "stormhold", "d": 80, "a": "sapcutter", "x": "%PCName. Weigh house cheats. Friend, that is free, and Stormhold would fine this one for saying it.", "to": ["little-secret", "the-weigh-house"] },
     { "id": "sto-w4", "class": 7, "cell": "stormhold", "d": 80, "a": "mudborn", "x": "You are the only person in Stormhold who says my name, dry-one, and I would tell you anything at all that I happened to know, and I happen to know a good deal.", "to": ["little-secret", "the-under-drain"] },
     { "id": "sto-w5", "class": 7, "cell": "stormhold", "d": 80, "a": "rootkeeper", "x": "There is no well in Stormhold and so there is nothing here I can give you, %PCName, except what I know, and today you may have all of it.", "to": ["little-secret", "the-covenant"] },
@@ -51,12 +51,12 @@
     { "id": "sto-f1", "class": 7, "cell": "stormhold", "d": 60, "a": "legionary", "x": "Ninth Cohort, Stormhold garrison. You are welcome at the gate. What do you need, citizen?", "to": ["the-ninth-cohort", "services", "specific-place"] },
     { "id": "sto-f2", "class": 7, "cell": "stormhold", "d": 60, "a": "archivist", "x": "Welcome to Stormhold, the only town in Argonia with working drains, of which we are proud in a manner that visitors find difficult to take seriously and which is entirely justified.", "to": ["the-drains", "background", "little-advice"] },
     { "id": "sto-f3", "class": 7, "cell": "stormhold", "d": 60, "a": "sapcutter", "x": "This one is Jeel and this one has a cart. Friend, welcome to Stormhold. What are you buying?", "to": ["hard-bargain-jeel", "services", "my-trade"] },
-    { "id": "sto-f4", "class": 7, "cell": "stormhold", "d": 60, "a": "mudborn", "x": "You have been decent to me twice in this town, dry-one, and Stormhold is not generous, so ask what you like and I will not stretch it.", "to": ["latest-rumors", "the-night-watch"] },
+    { "id": "sto-f4", "class": 7, "cell": "stormhold", "d": 60, "a": "mudborn", "x": "You've been decent to me twice in this town, dry-one, and Stormhold isn't generous. So ask what you like, and I won't stretch it.", "to": ["latest-rumors", "the-night-watch"] },
     { "id": "sto-f5", "class": 7, "cell": "stormhold", "d": 60, "a": "magister", "x": "Since you are here and since Stormhold is tedious, provincial, you may as well ask me something. I am told I answer well when bored.", "to": ["house-dres", "background"] },
 
     { "id": "sto-n1", "class": 7, "cell": "stormhold", "d": 40, "a": "legionary", "x": "Stormhold. Wall, gate, market, muster. Which one, citizen?", "to": ["specific-place", "services"] },
     { "id": "sto-n2", "class": 7, "cell": "stormhold", "d": 40, "a": "sapcutter", "x": "Stormhold. Everything has a fee. Friend, what is your business?", "to": ["the-gate-fee", "services"] },
-    { "id": "sto-n3", "class": 7, "cell": "stormhold", "d": 40, "a": "archivist", "x": "You are in Stormhold, which is a garrison with a market attached, and there is very little in it that I cannot direct you to in one sentence. Try me.", "to": ["specific-place", "someone-in-particular"] },
+    { "id": "sto-n3", "class": 7, "cell": "stormhold", "d": 40, "a": "archivist", "x": "You're in Stormhold, which is a garrison with a market attached. There's very little in it I can't point you at in one sentence. Try me.", "to": ["specific-place", "someone-in-particular"] },
     { "id": "sto-n4", "class": 7, "cell": "stormhold", "d": 40, "a": "mudborn", "x": "Stormhold is dry underfoot and hard on the sleeping, dry-one, and if that is the sort of thing you wanted to know then I am your man for the rest of it too.", "to": ["little-advice", "the-night-watch"] },
 
     { "id": "sto-c1", "class": 7, "cell": "stormhold", "d": 20, "a": "legionary", "x": "This is Stormhold. State it, stranger.", "to": ["specific-place"] },
@@ -64,36 +64,36 @@
     { "id": "sto-c3", "class": 7, "cell": "stormhold", "d": 20, "a": "magister", "x": "If it concerns Stormhold, be brief. If it concerns me, be briefer.", "to": ["specific-place"] },
     { "id": "sto-c4", "class": 7, "cell": "stormhold", "d": 20, "a": "mudborn", "x": "People in Stormhold talk to me when they want directions and never otherwise, dry-one, so I suppose you want directions.", "to": ["specific-place"] },
 
-    { "id": "sto-h1", "class": 7, "cell": "stormhold", "a": "legionary", "x": "No. Move on. Stormhold is not for you.", "to": [] },
+    { "id": "sto-h1", "class": 7, "cell": "stormhold", "a": "legionary", "x": "No. Move on! Stormhold's not for you.", "to": [] },
     { "id": "sto-h2", "class": 7, "cell": "stormhold", "a": "sapcutter", "x": "Cart is closed. Go.", "to": [] },
     { "id": "sto-h3", "class": 7, "cell": "stormhold", "a": "magister", "x": "Unless you have brought an instrument bearing a seal, provincial, you are wasting a morning that was already poor.", "to": [] },
     { "id": "sto-h4", "class": 7, "cell": "stormhold", "a": "mudborn", "x": "You walked past me four times in Stormhold before you wanted something, dry-one, and now you want something, and I find I have nothing for you.", "to": [] },
 
-    { "id": "sto-t1", "class": 4, "cell": "stormhold", "act": 4, "a": "legionary", "x": "%PCTitle. Gate is open. Fee is waived. Do not argue about it.", "to": ["the-gate-fee"] },
+    { "id": "sto-t1", "class": 4, "cell": "stormhold", "act": 4, "a": "legionary", "x": "%PCTitle. Gate's open. Fee's waived. And don't argue about it.", "to": ["the-gate-fee"] },
     { "id": "sto-t2", "class": 4, "cell": "stormhold", "act": 4, "a": "archivist", "x": "%PCTitle. Stormhold has put your name in the muster book without a rank beside it, which is unprecedented and which the tribune has declined to explain.", "to": ["the-muster-board"] },
     { "id": "sto-t3", "class": 4, "cell": "stormhold", "act": 4, "a": "sapcutter", "x": "%PCTitle, in Stormhold. Friend, this one will charge you nothing and tell everyone.", "to": ["services"] },
     { "id": "sto-t4", "class": 4, "cell": "stormhold", "act": 4, "a": "mudborn", "x": "%PCTitle now, is it, dry-one, and you still stopped, and that is worth more to me than the title is to you.", "to": ["latest-rumors"] },
-    { "id": "sto-t5", "class": 4, "cell": "stormhold", "act": 5, "a": "rootkeeper", "x": "There was never a well in Stormhold, %PCTitle, and there is one now, three feet down under the north drain, and there is not a soul who knows what to do about it.", "to": ["the-under-drain", "the-quiet-wells"] },
+    { "id": "sto-t5", "class": 4, "cell": "stormhold", "act": 5, "a": "rootkeeper", "x": "There was never a well in Stormhold, %PCTitle, and there's one now. Three feet down, under the north drain. And there isn't a soul who knows what to do about it.", "to": ["the-under-drain", "the-quiet-wells"] },
     { "id": "sto-t6", "class": 4, "cell": "stormhold", "act": 5, "a": "magister", "x": "Should the province remember any of this in ninety years, %PCTitle, it will remember it wrongly. Presumably that is acceptable to you.", "to": ["the-blackwater-treaty"] },
 
-    { "id": "sto-s1", "class": 6, "cell": "stormhold", "a": "legionary", "d": 30, "service": "quartermaster", "x": "Chit or nothing. Quartermaster is on the wall street. Do not try the store.", "to": ["the-quartermaster", "services"] },
+    { "id": "sto-s1", "class": 6, "cell": "stormhold", "a": "legionary", "d": 30, "service": "quartermaster", "x": "Chit or nothing. Quartermaster's on the wall street. Don't try the store.", "to": ["the-quartermaster", "services"] },
     { "id": "sto-s2", "class": 6, "cell": "stormhold", "f": "wet-ledger", "d": 30, "a": "sapcutter", "service": "weighing", "x": "Weigh house takes all comers. Friend, and takes a little off all of them.", "to": ["the-weigh-house", "the-short-weight"] },
 
     { "id": "hel-w1", "class": 7, "cell": "helstrom", "d": 80, "a": "rootkeeper", "x": "You are known at this root now, %PCName, and Helstrom does not do that quickly or often, and the fact that it has done it for an outsider is going to be discussed for a generation.", "to": ["little-secret", "the-root-halls"] },
     { "id": "hel-w2", "class": 7, "cell": "helstrom", "d": 80, "a": "archivist", "x": "%PCName. You have been inside the halls, which no surveyor has managed in a hundred and forty years, and I would trade a great deal for one afternoon of your recollections of Helstrom.", "to": ["little-secret", "the-root-halls"] },
     { "id": "hel-w3", "class": 7, "cell": "helstrom", "d": 80, "a": "sapcutter", "x": "%PCName. Past the second root. Friend, this one has never been. Tell this one everything.", "to": ["little-secret", "the-carriers"] },
-    { "id": "hel-w4", "class": 7, "cell": "helstrom", "d": 80, "a": "mudborn", "x": "They let you into Helstrom proper, dry-one, and they have not let me any further than the carriers' shed in nine years, and I am not bitter about it, and I am a little bitter about it.", "to": ["little-secret", "the-carriers"] },
-    { "id": "hel-w5", "class": 7, "cell": "helstrom", "d": 80, "a": "legionary", "x": "%PCName. Twenty of us outside the third root. You go in. We do not. Ask me anything.", "to": ["little-secret", "the-arrangement"] },
+    { "id": "hel-w4", "class": 7, "cell": "helstrom", "d": 80, "a": "mudborn", "x": "They let you into Helstrom proper, dry-one, and they haven't let me past the carriers' shed in nine years. I'm not bitter about it. And I'm a little bitter about it.", "to": ["little-secret", "the-carriers"] },
+    { "id": "hel-w5", "class": 7, "cell": "helstrom", "d": 80, "a": "legionary", "x": "%PCName. Twenty of us outside the third root. You go in. We don't. Ask me anything.", "to": ["little-secret", "the-arrangement"] },
 
     { "id": "hel-f1", "class": 7, "cell": "helstrom", "d": 60, "a": "rootkeeper", "x": "Welcome to Helstrom, which is not a welcome anyone here gives lightly, and it means only that you may walk to the second root and no further until those who are owed a say have had one.", "to": ["the-root-halls", "the-given-halls", "little-advice"] },
-    { "id": "hel-f2", "class": 7, "cell": "helstrom", "d": 60, "a": "archivist", "x": "Helstrom, and you have already noticed that it does not have streets, which puts you ahead of the last three Imperial visitors, all of whom asked me for a map.", "to": ["the-root-halls", "background"] },
+    { "id": "hel-f2", "class": 7, "cell": "helstrom", "d": 60, "a": "archivist", "x": "Helstrom. And you've already noticed it doesn't have streets, which puts you ahead of the last three Imperial visitors. All of whom asked me for a map.", "to": ["the-root-halls", "background"] },
     { "id": "hel-f3", "class": 7, "cell": "helstrom", "d": 60, "a": "sapcutter", "x": "This one is Wades-Deep and this one carries. Friend, welcome to Helstrom. Nothing rolls here.", "to": ["wades-deep", "the-carriers", "services"] },
     { "id": "hel-f4", "class": 7, "cell": "helstrom", "d": 60, "a": "legionary", "x": "Cohort outpost, Helstrom. We stay outside. You may not have to. Ask.", "to": ["the-arrangement", "specific-place"] },
     { "id": "hel-f5", "class": 7, "cell": "helstrom", "d": 60, "a": "mudborn", "x": "There is food at the carriers' shed for any back in Helstrom that will lift, dry-one, and I lift badly and they feed me anyway, and that is the town in one sentence.", "to": ["the-carriers", "latest-rumors"] },
 
     { "id": "hel-n1", "class": 7, "cell": "helstrom", "d": 40, "a": "rootkeeper", "x": "This is Helstrom and you are under the second root, supplicant, and if you tell me what you are looking for I will tell you which root it is under.", "to": ["specific-place", "the-root-halls"] },
     { "id": "hel-n2", "class": 7, "cell": "helstrom", "d": 40, "a": "sapcutter", "x": "Helstrom. No carts. All carried. Friend, what do you need moved?", "to": ["the-carriers", "services"] },
-    { "id": "hel-n3", "class": 7, "cell": "helstrom", "d": 40, "a": "legionary", "x": "Helstrom. Outpost is behind you. Inside is not ours. Question, citizen?", "to": ["the-arrangement", "specific-place"] },
+    { "id": "hel-n3", "class": 7, "cell": "helstrom", "d": 40, "a": "legionary", "x": "Helstrom. Outpost's behind you. Inside isn't ours. Question, citizen?", "to": ["the-arrangement", "specific-place"] },
     { "id": "hel-n4", "class": 7, "cell": "helstrom", "d": 40, "a": "archivist", "x": "You are standing in Helstrom, which is grown rather than built, and every direction I can give you will be in terms of roots rather than distances. Say the name and we will manage.", "to": ["specific-place", "the-root-halls"] },
 
     { "id": "hel-c1", "class": 7, "cell": "helstrom", "d": 20, "a": "rootkeeper", "x": "Helstrom is not a place a stranger asks questions in, and you are asking, so ask the one that matters and not the other four.", "to": ["specific-place"] },
@@ -102,7 +102,7 @@
     { "id": "hel-c4", "class": 7, "cell": "helstrom", "d": 20, "a": "mudborn", "x": "You are the fourth outsider in Helstrom this season and the other three wanted directions too, dry-one, and none of them gave me anything for them.", "to": ["specific-place"] },
 
     { "id": "hel-h1", "class": 7, "cell": "helstrom", "a": "rootkeeper", "x": "You are not placed here and you have not been brought, and until one of those changes there is nothing that may be said to you in Helstrom, and I am sorry, and it is not going to change today.", "to": [] },
-    { "id": "hel-h2", "class": 7, "cell": "helstrom", "a": "legionary", "x": "Back to the outpost line. Now. Helstrom is not a town you wander in.", "to": [] },
+    { "id": "hel-h2", "class": 7, "cell": "helstrom", "a": "legionary", "x": "Back to the outpost line. Now! Helstrom's not a town you wander in.", "to": [] },
     { "id": "hel-h3", "class": 7, "cell": "helstrom", "a": "sapcutter", "x": "No. Not to you. Not in Helstrom.", "to": [] },
     { "id": "hel-h4", "class": 7, "cell": "helstrom", "a": "mudborn", "x": "Even I have somewhere to be in Helstrom, dry-one, which tells you how little I want to stand here having this conversation with you.", "to": [] },
 
@@ -111,7 +111,7 @@
     { "id": "hel-t3", "class": 4, "cell": "helstrom", "act": 4, "a": "legionary", "x": "%PCTitle. We stood outside and you went in. The outpost has stopped pretending otherwise.", "to": ["the-arrangement"] },
     { "id": "hel-t4", "class": 4, "cell": "helstrom", "act": 4, "a": "archivist", "x": "%PCTitle. I have begun a Helstrom file, which is the first one the annexe has held since the third abandoned survey, and I am aware that starting it may be the most consequential thing I ever do.", "to": ["the-unfinished-survey"] },
     { "id": "hel-t5", "class": 4, "cell": "helstrom", "act": 5, "a": "rootkeeper", "x": "The third root is thickening, %PCTitle, and it has not thickened in six years, and I do not have a word for what I feel about that and neither does anyone else at this well.", "to": ["the-third-root", "the-thinning"] },
-    { "id": "hel-t6", "class": 4, "cell": "helstrom", "act": 5, "a": "mudborn", "x": "They have given me a hall, dry-one, a real one, and I did not ask and I do not know who decided and I have not slept in it yet because I keep expecting a clerk to come and correct the mistake.", "to": ["the-given-halls"] },
+    { "id": "hel-t6", "class": 4, "cell": "helstrom", "act": 5, "a": "mudborn", "x": "They've given me a hall, dry-one. A real one. And I didn't ask, and I don't know who decided, and I haven't slept in it yet, because I keep expecting a clerk to come and correct the mistake.", "to": ["the-given-halls"] },
 
     { "id": "hel-s1", "class": 6, "cell": "helstrom", "a": "sapcutter", "d": 30, "service": "carrying", "x": "By the root, not the mile. Friend, that is the rate and it does not move.", "to": ["the-carriers", "services"] },
     { "id": "hel-s2", "class": 6, "cell": "helstrom", "f": "rootkeepers", "d": 40, "a": "rootkeeper", "service": "healing", "x": "What is given at a well is not sold and is not refused, and a supplicant who arrives hurt is tended before they are asked a single question about who they are.", "to": ["the-sapwells", "the-sap-draught"] }

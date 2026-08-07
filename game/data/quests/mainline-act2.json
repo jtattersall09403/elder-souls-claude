@@ -679,12 +679,13 @@
           "morally_better": false,
           "requires": {
             "attributes": {
-              "personality": 40
+              "personality": 17
             },
             "skills": {
               "speechcraft": 35
             }
           },
+          "attribute_scale_note": "W1-19 round 2, gen 3. Was `personality: 40`, which NO character this build can produce could ever reach: attributes are earned at +1 per multiple of 15 in a governing skill (progression/skills.json attribute_grant_rule, banked in character/derive.js bankProgress), so personality is worth `creation base + 6 per governing skill` and no more — 18 for a p10 sheet, 22 for a median one, 31 for the best of the 240 sheets in reports/faction-signature-sweep.json. The 40 was a Morrowind-scale number on a 31-scale sheet, and `tools/quests/resolution-reachability.mjs --sheet max` reported this ending out of reach for every character in the game. Re-set to 17: one below the p10 ceiling, so even a bottom-decile talker can take it if they carry mercantile and speechcraft to the top, and five below the median ceiling. The demand is still real — an unspecialised sheet sits near 10.",
           "requires_knowing": [
             "rev_true_tonnage"
           ],

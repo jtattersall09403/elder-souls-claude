@@ -260,7 +260,7 @@
       "class": "net-mender",
       "faction": null,
       "reaction_group": "RG-DEEP",
-      "settlement": "thornmarsh",
+      "settlement": "thorn",
       "interior": null,
       "disposition": 40,
       "topics": [
@@ -270,7 +270,8 @@
       "services": [],
       "lines": {
         "greeting": "The stilts hold. It is the wreck under them that does not."
-      }
+      },
+      "settlement_note": "W1-19 round 2 gen 3: was `thornmarsh`, which is not a settlement — game/data/world/settlements/ has eight and thornmarsh is not one of them. RumourBook.pick() and RoadBook.forNpc() both key on this string, so this person could never tell you what the town was saying or the way out of it. Thornmarsh is the stilt district of Thorn."
     },
     {
       "id": "rootkeeper-jeen",
@@ -363,7 +364,7 @@
       "class": "herbwife",
       "faction": null,
       "reaction_group": "RG-DEEP",
-      "settlement": "thornmarsh",
+      "settlement": "thorn",
       "interior": null,
       "disposition": 40,
       "topics": [
@@ -375,7 +376,8 @@
       ],
       "lines": {
         "greeting": "Rot house is the third stilt along. Do not breathe through your mouth in it."
-      }
+      },
+      "settlement_note": "W1-19 round 2 gen 3: was `thornmarsh`, which is not a settlement — game/data/world/settlements/ has eight and thornmarsh is not one of them. RumourBook.pick() and RoadBook.forNpc() both key on this string, so this person could never tell you what the town was saying or the way out of it. Thornmarsh is the stilt district of Thorn."
     },
     {
       "id": "innkeeper-veth",

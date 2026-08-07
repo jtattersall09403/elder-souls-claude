@@ -405,6 +405,99 @@ function measure(opts) {
     };
   }
 
+  // ---- L6: the Argonian flag against the NAME ON THE BOOK.
+  //
+  // W1-LIBRARY ROUND 2, second half of the round-1 critic's tool attack. L5 counts a self-declared
+  // boolean: set `argonian_authored: true` on every book without touching one byline and L5 goes
+  // from 21 to 70 and *passes harder*. Nothing looked at the author line. L6 does, and it is the
+  // row that goes red under that mutation — mirrors `corpus/80-methods/book-stats.py` S10 so the
+  // two instruments disagree by construction if either drifts.
+  const TITLES = /\b(?:Serjo|Serjeant|Sergeant|Undersexton|Sexton|Quartermaster|Captain|Master|Mistress|Brother|Sister|Legate|Prefect|Archivist|Steward|Clerk|Warden|Keeper|Hand|Lady|Lord|Saint|Canon|Provost|Curate|Deacon|Magister)\b/g;
+  const bylineNames = (author) => {
+    const s = String(author || '');
+    // An Argonian name is hyphenated: Deelith-Who-Waits-For-Rain, Marsh-of-Nine, Teeus-Ahai.
+    const argonian = s.match(/\b[A-Z][a-z]+(?:-(?:[A-Za-z][a-z]*))+\b/g) || [];
+    // "of Gideon" is a PLACE. Read as a surname it would make every Imperial byline a false hit,
+    // so strip place-phrases and honorifics before looking for a given-name/family-name pair.
+    let t = s.replace(/\bof\s+(?:the\s+)?(?:[A-Z][a-z]+(?:[- ][A-Z][a-z]+)*)/g, ' ').replace(TITLES, ' ');
+    const tamrielic = (t.match(/\b[A-Z][a-z]{2,}\s+[A-Z][a-z]{2,}(?:\s+[A-Z][a-z]{2,})?\b/g) || []).filter((x) => !x.includes('-'));
+    return { argonian, tamrielic };
+  };
+  const byline = { flagged_and_named_argonian: 0, flagged_but_byline_is_tamrielic: [], argonian_byline_not_flagged: [] };
+  for (const b of books) {
+    const { argonian, tamrielic } = bylineNames(b.author);
+    const flagged = !!b.argonian_authored;
+    if (flagged && argonian.length) byline.flagged_and_named_argonian++;
+    else if (flagged && tamrielic.length) byline.flagged_but_byline_is_tamrielic.push({ book: b.id, author: b.author || null, reads_as: tamrielic });
+    else if (!flagged && argonian.length) byline.argonian_byline_not_flagged.push({ book: b.id, author: b.author || null, reads_as: argonian });
+  }
+
+  // ---- L7/L7b/L8/X4: RI-LOR03 §2's two counts the round-1 verdict recorded as outstanding.
+  //
+  // `skill_book` is a STRING naming a skill in game/data/progression/skills.json, not a boolean.
+  // The one value that shipped before this round was `"blade"`, and there is no skill called
+  // `blade` — the id is `blades` — so the corpus's single skill book named nothing. X4 is the
+  // row that would have caught it.
+  const tagsOf = (b) => (Array.isArray(b.tags) ? b.tags : []).map((t) => String(t).toLowerCase().replace(/[_\s]+/g, '-'));
+  const skillOf = (b) => (typeof b.skill_book === 'string' && b.skill_book ? b.skill_book : (b.skill_book === true || tagsOf(b).includes('skill-book')) ? '' : null);
+  const skillBooks = books.filter((b) => skillOf(b) !== null).map((b) => ({ id: b.id, skill: skillOf(b) }));
+  let realSkills = null;
+  try {
+    realSkills = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'game/data/progression/skills.json'), 'utf8')).skills.map((s) => s.id));
+  } catch { /* no register on disk: X4 reports null rather than inventing a pass */ }
+  const danglingSkillBooks = realSkills ? skillBooks.filter((s) => !s.skill || !realSkills.has(s.skill)) : [];
+
+  // ---- L7b: does the book's own PROSE carry the skill it claims to teach?
+  //
+  // The same attack as D7, aimed at the overlay. L7 counts a string in a JSON field, so tagging
+  // all 70 books `mercantile` would satisfy it and the round-1 critic's derangement would not
+  // move it by one. L7b is a RANK test rather than a threshold, because RI-LOR03's defining move
+  // for this overlay is *"Teaches sideways, never instructs"* — an oblique book about a spear
+  // will not say "spear" eleven times, and a vocabulary floor would fail exactly the books the
+  // item wants. What a real skill book WILL do is talk about its own domain more than the rest
+  // of a 70-book library does. So: a tagged book must sit in the **top third** of the corpus for
+  // its own skill's distinctive terms. Under a derangement each tagged book gets somebody else's
+  // prose and its expected rank is uniform, so the row collapses toward 33%.
+  const SKILL_TERMS = {
+    blades: ['blade', 'sword', 'dagger', 'knife', 'hilt', 'edge', 'thrust', 'parry', 'stroke', 'scabbard'],
+    'axes-maces': ['axe', 'hammer', 'maul', 'flail', 'haft', 'chop'],
+    polearms: ['spear', 'halberd', 'glaive', 'butt of the'],
+    greatweapons: ['greatsword', 'greataxe', 'two-handed', 'great-hammer'],
+    marksman: ['bow', 'arrow', 'fletch', 'quiver', 'bowstring', 'loosed', 'sling'],
+    'claw-fang': ['claw', 'fang', 'katar', 'bare hand', 'tooth'],
+    shieldcraft: ['shield', 'boss', 'rim', 'parry', 'brace', 'block'],
+    sorcery: ['spell', 'conjur', 'sorcer', 'wizard', 'magick', 'enchant'],
+    'root-speech': ['hist', 'root', 'sap', 'root-song', 'rootkeeper', 'keeper', 'sapwell', 'the drinking', 'jel', 'tree'],
+    warding: ['prayer', 'shrine', 'bless', 'ward', 'saint', 'the nine', 'divine', 'charm', 'pray'],
+    veiling: ['unseen', 'invisible', 'veil', 'silence', 'illusion', 'not be seen'],
+    alchemy: ['fever', 'remedy', 'physic', 'draught', 'decoct', 'dose', 'poison', 'cure', 'simples', 'apothec', 'infusion', 'steep'],
+    athletics: ['pole', 'wade', 'swim', 'current', 'oar', 'row', 'mile', 'waist-deep', 'knee-deep', 'breath', 'tire'],
+    acrobatics: ['ladder', 'rung', 'climb', 'descend', 'scramble', 'ledge', 'the drop', 'shaft'],
+    survival: ['harvest', 'forage', 'flood', 'season', 'beast', 'snare', 'marsh-fever', 'safe to drink', 'weir', 'net', 'fish', 'camp', 'fire'],
+    sneak: ['unnoticed', 'without being seen', 'quietly', 'shadow', 'watch', 'follow', 'at night', 'step lightly'],
+    security: ['lock', 'bolt', 'hinge', 'strongbox', 'seal', 'key', 'bar the', 'pick the', 'chest', 'lid', 'trap'],
+    mercantile: ['drake', 'price', 'sell', 'buy', 'ledger', 'tally', 'account', 'coin', 'freight', 'lading', 'toll', 'bargain', 'weigh', 'cost'],
+    speechcraft: ['court', 'plead', 'witness', 'testimony', 'clause', 'argue', 'answer', 'the assize', 'petition', 'minute'],
+  };
+  const termRate = (text, terms) => {
+    const t = String(text || '').toLowerCase();
+    const n = Math.max(1, t.split(/\s+/).filter(Boolean).length);
+    let hits = 0;
+    for (const w of terms) { const m = t.match(new RegExp('\\b' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')); if (m) hits += m.length; }
+    return 1000 * hits / n;
+  };
+  const grounded = [], ungrounded = [];
+  for (const s of skillBooks) {
+    const terms = SKILL_TERMS[s.skill];
+    const b = books.find((x) => x.id === s.id);
+    if (!terms || !b) { ungrounded.push({ ...s, why: 'no term set for this skill' }); continue; }
+    const scored = books.map((x) => ({ id: x.id, r: termRate(x.text, terms) })).sort((a, c) => c.r - a.r);
+    const rank = scored.findIndex((x) => x.id === s.id) + 1;
+    const row = { ...s, rank, of: books.length, rate: +scored[rank - 1].r.toFixed(1) };
+    if (rank <= Math.ceil(books.length / 3) && row.rate > 0) grounded.push(row); else ungrounded.push(row);
+  }
+  const groundedPct = skillBooks.length ? +(100 * grounded.length / skillBooks.length).toFixed(1) : null;
+
   // ---- rows, with RI-UIX05 §D's own thresholds
   const rows = [
     { id: 'D1', name: 'total book words', value: totalBookWords, bar: '>= 0 (RI-LOR03 floor)', pass: totalBookWords > 0 },
@@ -423,6 +516,11 @@ function measure(opts) {
     { id: 'L3', name: 'multi-volume series (>= 3 volumes)', value: multiVolume.length, bar: '>= 3', pass: multiVolume.length >= 3 },
     { id: 'L4', name: 'books under 150 words (%)', value: +(100 * lens.filter((x) => x < 150).length / lens.length).toFixed(1), bar: '<= 20', pass: (100 * lens.filter((x) => x < 150).length / lens.length) <= 20 },
     { id: 'L5', name: 'books authored by Argonians', value: books.filter((b) => b.argonian_authored).length, bar: '>= 14', hard_fail_below: 10, pass: books.filter((b) => b.argonian_authored).length >= 14 },
+    { id: 'L6', name: 'books flagged Argonian whose byline names a Tamrielic author', value: byline.flagged_but_byline_is_tamrielic.length, bar: '== 0', pass: byline.flagged_but_byline_is_tamrielic.length === 0 },
+    { id: 'L7', name: 'books tagged `skill book` (RI-LOR03 §2 overlay)', value: skillBooks.length, bar: '>= 26', pass: skillBooks.length >= 26 },
+    { id: 'L7b', name: 'skill books whose own prose carries the skill (top third, %)', value: groundedPct, bar: '>= 70', pass: groundedPct !== null && groundedPct >= 70 },
+    { id: 'X4', name: 'skill_book values naming no skill in progression/skills.json', value: danglingSkillBooks.length, bar: '== 0', pass: danglingSkillBooks.length === 0 },
+    { id: 'L8', name: 'texts in the corpus (RI-LOR03 §2 target)', value: books.length, bar: '>= 112', pass: books.length >= 112 },
   ];
 
   return {
@@ -466,10 +564,18 @@ function selfTest() {
   const control = measure({ ...opts, _books: base, _items: items });
   const failing = control.rows.filter((r) => r.pass === false);
   if (failing.length) {
-    console.error('self-test: the CONTROL corpus is already failing, so a mutation proves nothing:');
-    for (const r of failing) console.error(`  ${r.id} ${r.name}: ${r.value} (bar ${r.bar})`);
-    return 1;
+    // NOT a bail. The old code returned 1 the moment ANY row was red, which meant that the day the
+    // corpus fell short of a target the whole instrument stopped being runnable — the self-test
+    // would refuse to answer "can you detect a deranged corpus?" because the corpus was 42 books
+    // short of a different bar. The two questions are independent. Report the reds, then check
+    // per mutation that the row that mutation targets was green BEFORE it (below); a mutation
+    // whose target was already red proves nothing and is scored INVALID rather than passing.
+    console.log('self-test: rows already red in the CONTROL corpus (a mutation targeting one of');
+    console.log('these proves nothing and is reported INVALID):');
+    for (const r of failing) console.log(`  ${r.id} ${r.name}: ${r.value} (bar ${r.bar})`);
+    console.log('');
   }
+  const controlPass = new Map(control.rows.map((r) => [r.id, r.pass]));
 
   // The round-1 critic's mutation, adopted verbatim and permanently. Swap every book's `text`
   // with another book's — a derangement, so no book keeps its own prose — and change NOTHING
@@ -497,16 +603,38 @@ function selfTest() {
     ['point a contradiction at nothing', (bs) => bs.map((b, i) => (i === 0 ? { ...b, contradicts: [{ book: 'no-such-book', on: 'x' }] } : b)), 'X2'],
     ['delete the quest-key books', (bs) => bs.filter((b) => !b.knowledge_key), 'X3'],
     ['flatten every book to 100 words', (bs) => bs.map((b) => ({ ...b, text: words(b.text).slice(0, 100).join(' ') })), 'L2'],
+    // The round-1 critic's SECOND mutation, adopted verbatim. Flag every book Argonian and touch
+    // no byline: L5 went 21 -> 70 and passed HARDER, because it counted a boolean the data
+    // declares about itself. L6 reads the name on the book instead.
+    ['flag all books Argonian without touching one byline', (bs) => bs.map((b) => ({ ...b, argonian_authored: true })), 'L6'],
+    ['unflag every Argonian author', (bs) => bs.map((b) => ({ ...b, argonian_authored: false })), 'L5'],
+    // Tagging is a claim about the writing too: `skill book` means "teaches sideways", so tagging
+    // the whole corpus must not be a way to satisfy L7 — L7's partner row L7b is the taxon spread.
+    ['strip every skill-book tag', (bs) => bs.map((b) => ({ ...b, skill_book: null, tags: (b.tags || []).filter((t) => String(t).toLowerCase().replace(/[_\s]+/g, '-') !== 'skill-book') })), 'L7'],
+    // L7's own attack, and the reason L7b exists. Tag the WHOLE corpus `mercantile` and L7 goes
+    // from 32 to 70 and passes harder, exactly as L5 did under the Argonian flip. L7b reads the
+    // prose and must collapse.
+    ['tag every book `mercantile` without reading one of them', (bs) => bs.map((b) => ({ ...b, skill_book: 'mercantile' })), 'L7b'],
+    // The derangement again, aimed at the overlay: every tag keeps its book id and gets somebody
+    // else's prose. L7 cannot see it; L7b must.
+    ["swap every book's text (derangement) — does the OVERLAY notice?", derange, 'L7b'],
+    ['point a skill book at a skill that does not exist', (bs) => bs.map((b, i) => (i === 0 ? { ...b, skill_book: 'swordsmanship' } : b)), 'X4'],
   ];
 
-  let bad = 0;
+  let bad = 0, invalid = 0;
   for (const [name, mutate, expect] of mutations) {
+    if (controlPass.get(expect) !== true) {
+      console.log(`  INVAL  ${expect}  after: ${name}   <-- target row was ALREADY RED in the control`);
+      invalid++;
+      continue;
+    }
     const mutated = measure({ ...opts, _books: { books: mutate(base.books), parseErrors: [] }, _items: items });
     const row = mutated.rows.find((r) => r.id === expect);
     const wentRed = row && row.pass === false;
     console.log(`  ${wentRed ? 'RED  ' : 'GREEN'}  ${expect}  after: ${name}${wentRed ? '' : '   <-- MUTATION NOT DETECTED'}`);
     if (!wentRed) bad++;
   }
+  if (invalid) console.log(`self-test: ${invalid} mutation(s) INVALID — their target row is already failing on the real corpus, so they were not run.`);
   console.log(bad ? `self-test FAILED: ${bad} mutation(s) did not turn a row red.` : 'self-test PASSED: every mutation was caught.');
   return bad ? 1 : 0;
 }

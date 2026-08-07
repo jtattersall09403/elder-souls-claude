@@ -672,9 +672,10 @@
           "morally_better": null,
           "requires": {
             "attributes": {
-              "willpower": 35
+              "willpower": 20
             }
           },
+          "attribute_scale_note": "W1-19 round 2, gen 3. Was `willpower: 35`, unreachable by every character this build can produce. Willpower is governed by warding and veiling alone, so it is worth `creation base + 6 per governing skill`: 22 from a p10 sheet, 23 from a median one, 30 from the best of 240 (reports/faction-signature-sweep.json). Re-set to 20 — two under the p10 ceiling, three under the median — so standing in front of Hosk-Vei and making him say the whole cost is a warding-and-veiling character's move rather than nobody's.",
           "requires_knowing": [
             "rev_the_full_cost"
           ],

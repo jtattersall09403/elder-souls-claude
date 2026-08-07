@@ -274,23 +274,52 @@ async function run(h, brk) {
     // thing as the province view with a different heading is the failure worth checking for,
     // so the assertion is on the drawn cell count: 500 m across at a 25 m raster is at most a
     // 21x21 window, against the whole province at 193x222.
+    //
+    // TRAVEL FIRST, AND THIS IS THE POINT OF THE CHECK. The first version of S11 ran from the
+    // state left by C4 — seventeen discovered cells, every one of them inside the local window
+    // — so the world view and the local view drew the SAME SEVENTEEN CELLS and the count could
+    // not tell them apart. It read `cells 17 -> 17` and passed, and it would have passed just
+    // as happily against a local view that was the province with a new caption. A control that
+    // cannot exhibit the failure is not a control (protocol, failure mode 4). So: spread the
+    // body across the province until the discovered set is comfortably larger than the local
+    // window, and only then compare. S11a asserts the precondition itself, so if this setup
+    // ever stops producing a discriminating state the probe says so instead of passing quietly.
+    for (const [x, z] of [[2171.5, 761], [2674.8, 751.6], [3200, 820], [3820, 859],
+      [3400, 1600], [2800, 2100], [2200, 2600], [1600, 2850], [1000, 2950], [439, 2913.5]]) {
+      walkTo(x, z);
+    }
     H.openMenu('map', {});
     const worldCells = H.getUIState().map.drawn_cells;
+    A('S11a', 'PRECONDITION: the province view now draws more than a local window could hold',
+      `world view draws ${worldCells} cells`, worldCells > 21 * 21,
+      'more than 441, else S11 cannot discriminate');
     // Through the REAL input path — a scripted `interact` press, latched inside the fixed step
     // exactly as a swing is — rather than by calling `UISystem._confirm()` directly. A probe
     // that reaches past the input layer cannot tell a bound button from an unbound one, which
     // is the difference between a view a player can reach and one only a critic can.
-    // `f` is RELATIVE to the queueInputs call — `pipeline.js` stores the current frame as
-    // `scriptBase` — so `f: getFrame()+1` schedules the press thousands of frames into the
-    // future and the view never swaps. That is exactly how this check failed the first time,
-    // and it failed CORRECTLY: the assertion caught its own driver.
-    H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]);
-    H.stepFrames(5);
+    // THE PRESS MUST BE AT `f: 0`, AND THIS IS NOT A STYLE CHOICE — it is the only frame that
+    // exists. The map pauses the world (RI-UIX03 §A, out of combat), and `engine._step()`'s
+    // paused branch calls `input.latchForStep(sim.frame)` WITHOUT calling `stepOnce()`. So
+    // `sim.frame` is FROZEN for as long as the screen is up. `pipeline.latchForStep` fires a
+    // scripted event only when `e.f + scriptBase === frame`, and `scriptBase` is that same
+    // frozen frame — so every scripted event at `f >= 1` is unreachable inside a paused menu.
+    // Worse, it is unreachable SILENTLY: the dropped-input branch needs `f + base < frame`,
+    // which a frozen frame can never satisfy, so the event is never fired and never counted as
+    // lost either. This check failed twice for two different driver bugs before it failed for
+    // no reason at all, and both times the assertion was right and the driver was wrong.
+    // `tools/harness/critic-w1-15.mjs:191` already uses `f: 0` for exactly this reason.
+    //
+    // Press and release in the SAME latch is a clean tap, not a cancellation: `latchForStep`
+    // ORs both into `pendingPress`/`pendingRelease`, then computes `pressed = pendingPress &
+    // ~held` BEFORE `released = pendingRelease & held`. The edge fires; the button ends up.
+    H.queueInputs([{ f: 0, press: ['interact'] }, { f: 0, release: ['interact'] }]);
+    H.stepFrames(2);
     const localSt = H.getUIState();
     const localCells = localSt.map.drawn_cells;
     A('S11', 'the LOCAL view is a real second view, not the province with a new heading',
       `view=${localSt.map.view}, cells ${worldCells} -> ${localCells}`,
-      localSt.map.view === 'local' && localCells <= 21 * 21, 'local, and at most a 21x21 window');
+      localSt.map.view === 'local' && localCells <= 21 * 21 && localCells < worldCells,
+      'local, at most a 21x21 window, and STRICTLY FEWER cells than the province view');
     A('S11b', 'and confirm does NOT travel: the body has not moved',
       'no `pending` action was queued', eng.ui.pending === null || eng.ui.pending === undefined,
       'no queued action');

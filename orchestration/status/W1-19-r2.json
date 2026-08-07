@@ -14,7 +14,11 @@
     "game/src/sim/dialogue/disposition.js",
     "game/src/harness/api.js (questDef now projects `directions`)",
     "tools/quests/mainline-findability.mjs",
-    "tools/quests/mainline-chain-floor.mjs"
+    "tools/quests/mainline-chain-floor.mjs",
+    "game/data/quests/mainline-act2.json",
+    "game/data/quests/mainline-act3.json",
+    "game/data/quests/mainline-act4.json",
+    "game/data/dialogue/topics/55-utility.json (new)"
   ],
   "not_touching": [
     "game/src/engine.js (W1-LIBRARY has an uncommitted edit in the tree)",
@@ -58,9 +62,23 @@
     "GEN-2 NEW METRIC `arrival_floor`: the standing the worst signature walks up to a gate WITH, as opposed to `chain_floor` (min over all steps) or the round-1 cold start. chain_floor called 8 gates 'priced'; only 1 of those 31 is actually arrived-at short. A gate has to be passable when you reach it, not at every instant.",
     "GEN-2 CLAMP DECISION: Q-MAIN-23 giver.disposition_min 12 -> 8, set from the measured worst arrival 10.04 (saxhleel, no purse, nothing hand-fed), reserve 2.04. Round 1 set it from the cold start (margin 0); the round-2 pass set it from chain_floor (still 1.96 short). disposition_min_race_blind is read by NO engine code \u2014 it is provenance only, and the note used to overclaim that it carried the discrimination. Corrected in place."
   ],
-  "next_step": "GEN-3: re-run mainline-chain-floor default + --sabotage no-purse; then the 34 bodiless quest topics + 35 hooks self-loops; then checkers + boot-check + blog",
+  "next_step": "delete-the-fix on the three resolution numbers in the browser, re-run chain-floor, boot-check, blog",
   "notes_for_successor": "gen-1 died mid-run; it had ALREADY landed the factionTerm split and written mainline-chain-floor.mjs even though its next_step said otherwise. Read the code before redoing anything. S35: a map exists but no quest may put anything on it \u2014 findability must NOT route through the map.",
   "findings_3": [
-    "GEN-3 START 2026-08-07: container restarted twice; picking up from gen-2 next_step. Tree at 2623123."
+    "GEN-3 START 2026-08-07: container restarted twice; picking up from gen-2 next_step. Tree at 2623123.",
+    "GEN-3 CONFIRMED (re-run of gen-2's headline, this container): mainline-chain-floor default = 40/40 both chains, 0/31 gates arrived short, 0 gate-openings bought, 0 violent. --sabotage no-purse = 40/40, 0/31 short, 0 bought, 0 violent. --sabotage no-bootstrap = 0/40, every signature blocked at Q-MAIN-01 on 'the topic \"the drowned tally\" has not come up yet'. The instrument still goes red on demand.",
+    "GEN-3 MEASURED: resolution-reachability --sheet max => 6 endings unreachable by ANY of the 240 sheets. Three are mainline and mine: Q-MAIN-08 res_lean_on_cuiro personality 40 (ceiling 31), Q-MAIN-13 res_make_him_say_it willpower 35 (ceiling 30), Q-MAIN-23 res_turn_the_writ personality 45 (ceiling 31). Three are other pieces': Q-BLAK-01 res_hold personality 45, Q-LEDG-01 res_blackmail personality 40, Q-MAG-10 mag_the_witness__intimidate strength 45.",
+    "GEN-3 ROOT CAUSE (resolutions): quest attribute demands were authored on a Morrowind-like 0-100 attribute scale; character/derive.js produces attributes in the 3-31 range (personality at_creation min 3 / max 19, reachable ceiling 18 p10 / 22 median / 31 max). Every unreachable demand is 35-45 \u2014 i.e. a 100-scale number on a 31-scale sheet.",
+    "GEN-3 OUTSTANDING QUEST-LAYER DEFECTS (topic-supply-audit): A 34 topics demanded by a quest with NO body anywhere in dialogue/topics/**; C 35 hooks.json entry_topics self-loops; D 27 quests granted by nothing and spoken by nobody. All on non-mainline quests (Q-MAG-01..28, Q-ARCH/BLAK/DOCK/LILM/SAP/SOUL/STRM-01).",
+    "GEN-3 LANDED: the three unreachable mainline endings re-scaled onto the real attribute scale \u2014 Q-MAIN-08 res_lean_on_cuiro personality 40->17, Q-MAIN-13 res_make_him_say_it willpower 35->20, Q-MAIN-23 res_turn_the_writ personality 45->20, each with an `attribute_scale_note` stating the ceiling arithmetic it was set from. resolution-reachability --sheet max now reports 0 mainline endings out of reach (3 remain, all other pieces': Q-BLAK-01, Q-LEDG-01, Q-MAG-10). check-quests and check-data clean.",
+    "GEN-3 LANDED (tree-wide half of the round-1 finding): game/data/dialogue/topics/55-utility.json \u2014 34 hand-authored topic bodies, ~100 infos, for every quest keyword in the tree that had NO body anywhere. topic-supply-audit A went 34 -> 0 and D went 27 -> 0.",
+    "GEN-3 LANDED: 32 rumour rows in dialogue/rumours.json, one per quest, keyed to the settlement the giver stands in, each carrying adds_topics. This is the SUPPLY half \u2014 a body makes a keyword answerable, only a supplier makes it reachable.",
+    "GEN-3 LANDED: all 35 hooks.json self-loop entry_topics rows repaired to point forward (same giver's next job, else same town). C went 35 -> 0.",
+    "GEN-3 GOTCHA for a successor: dropping a self-loop row outright is REFUSED by check-quests \u2014 RI-DLG05 \u00a7A.3 wants every quest to seed some topic from a journal write. The seven quests with no sibling had to be given a hand-chosen forward target, not deleted.",
+    "GEN-3 LIVE PROOF (new tool tools/quests/utility-findability.mjs, one browser, nothing hand-fed, H.learnTopic never called): standing in a town and doing the only two things a player can do there \u2014 greet people, ask what the town is saying \u2014 opens 10 of the 35 non-main non-faction quests. helstrom-market 0->4 offerable (Q-MAG-05/07/15/19), stormhold-street 0->6 (Q-STRM-01, Q-MAG-09/16/24/26/27), soulrest-quay 0->0. Cold count is 0 topics / 0 offerable / 35 blocked on topic in all three, which is correct and must stay true.",
+    "GEN-3 CONTROL (--sabotage no-rumours: greet, but do not ask what the town is saying): 10 -> 0 newly offerable, quest keywords learned 4+4+1 -> 0+0+0, blocked-on-topic back to 35/35/35. The rumour layer is exactly what carries the supply; the instrument goes red on demand.",
+    "GEN-3 FOUND AND FIXED: widow-ineel and herbwife-ossa carried settlement 'thornmarsh', which is not one of the eight settlements in game/data/world/settlements/. RumourBook.pick() and RoadBook.forNpc() both key on that string, so those two could never tell you what the town was saying or the way out of it. Set to 'thorn'. THREE MORE REMAIN and are not mine: rootlands-keeper, rootlands-drowned-speaker, rootlands-band-elder carry settlement 'rootlands', also not a settlement.",
+    "GEN-3 NOTE: Q-SOUL-02 is still not offerable at Soulrest after the topic is learned, and correctly so \u2014 it is refused on 'the_drowned_court rank 0/2; reputation 0/22', a faction ladder gate, not a topic gate. Its keyword IS now supplied (blocked-on-topic at soulrest 35 -> 34).",
+    "GEN-3 CONSUMPTION PROOF for `resolutions[].requires.attributes` (the model whose numbers I moved). Live, soulrest-quay, perturbing the character's attribute across the authored threshold and reading the gate's own refusal string: Q-MAIN-08 res_lean_on_cuiro at personality 16 refuses with 'personality 16/17', at 17 that term is GONE from the refusal (only the unsatisfied reveal remains); Q-MAIN-13 at willpower 19 refuses 'willpower 19/20', at 20 the term is gone; Q-MAIN-23 at personality 19 refuses 'personality 19/20', at 20 gone. The number is read by gate.js:197 and the boundary is exactly where it is authored \u2014 at the old values (40/35/45) that term was in the refusal for every sheet the character builder can produce."
   ]
 }

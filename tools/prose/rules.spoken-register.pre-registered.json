@@ -1,0 +1,164 @@
+{
+  "set_id": "SPOKEN-REGISTER-2026-08-07",
+  "author": "W1-PROSE-TICS successor-2",
+  "written_before_measurement": true,
+  "why": "The predecessor's report §9 leaves RULE-36 (contraction avoidance) as the largest remaining separator in the dialogue register: ours 212.21 vs Morrowind 21.39 per 10k, bAcc 0.844. The obvious fix - a regex that turns 'do not' into 'don't' - is the exact 'same fingerprint in a hat' move the brief forbids, because it moves the detector without changing one word of the writing. Before doing anything I am registering a set of SPOKEN-REGISTER rules that a contraction swap CANNOT move. If they fire, the defect is that our NPCs write rather than speak, and contraction is only its most visible symptom; if they do not fire, then contraction genuinely is the whole of it and the honest fix is narrow. Either answer is publishable. I am registering the priors first so that neither can be claimed after the fact.",
+  "multiple_comparisons": "18 rules in this set. All 18 are reported whatever they do, alongside the predecessor's 46. Combined family count for the piece is 64; Bonferroni two-sided at 0.05/64 is z = 3.41.",
+  "register": "dialogue only. Books and journal are not spoken and these rules do not apply to them.",
+  "contraction_blind": "Rules marked contraction_blind:true cannot be moved by expanding or contracting a single negation. That is the point of them. SR-01/SR-02/SR-03 are NOT blind and are carried as controls.",
+  "amendment_v2": {
+    "when": "immediately after the rule file was written and BEFORE any ours-vs-Morrowind measurement was taken or looked at. The amendment was forced by the tool's own --self-test and by a blindness check run over the real 2,813-line corpus; no separation figure had been computed at that point, and reports/prose-tics/spoken-register-*.json did not yet exist.",
+    "sha256_v1": "94a5e77eba3b33dc06a93ea8485bc28de42a25b48338181b98d989c7c85df361",
+    "changes": [
+      "SR-14 (one/two-word sentence): contraction_blind true -> FALSE. My claim was wrong and the instrument caught it. 'You do not.' is a three-word sentence; 'You don't.' is a two-word one, so a mechanical contraction swap manufactures short sentences. Measured over the real corpus the swap moved SR-14 from 862 to 872 hits. A rule I had registered as un-gameable was gameable.",
+      "SR-18 (mean words per sentence): contraction_blind true -> FALSE, same cause and far larger. The swap moved the corpus total from 31106.29 to 30461.62. Contracting shortens sentences by exactly one word per negation, so 'our NPCs use longer sentences' is partly an artefact of how the negation is spelled. This matters beyond this piece: game/data/dialogue/speakers.json calibrates six speaker archetypes on words-per-sentence targets measured against Morrowind, and Morrowind contracts while we do not.",
+      "SR-15: regex bug, not a reclassification. Written as \\b(i|me|my|mine)\\b with no 'i' flag, intending case-sensitivity on the first-person pronoun; the lowercase 'i' in the alternation defeated that and matched every stray lowercase i. Corrected to \\b(I|me|my|mine)\\b. The prior (a predicted NULL) is unchanged."
+    ],
+    "empirically_blind": "The remaining 13 blind rules were verified blind on the real corpus, not asserted: SR-04/05/06/07/08/09/10/11/12/13/15/16/17 all measured IDENTICALLY before and after a mechanical contraction swap of all 2,813 shipped lines. SR-11 is blind on this corpus but is theoretically fragile (its [^.!?]{5,80} span could cross the 80-char bound as a clause shortens); it is flagged rather than trusted."
+  },
+  "rules": [
+    {
+      "id": "SR-01",
+      "name": "contraction avoidance: do/does/did/is/are/was/were/would/could/will/have/has not",
+      "re": "\\b(do|does|did|is|are|was|were|would|could|will|have|has) not\\b",
+      "flags": "gi",
+      "contraction_blind": false,
+      "prior": "POSITIVE CONTROL, known to fire at 9.9x before this pass. Carried so the pass can be shown to have moved the thing it claims to move."
+    },
+    {
+      "id": "SR-02",
+      "name": "contractions present",
+      "re": "\\b\\w+['’](t|s|re|ve|ll|d|m)\\b",
+      "flags": "gi",
+      "contraction_blind": false,
+      "prior": "INVERSE CONTROL. Morrowind high (326.81/10k measured), ours low (16.6). Expect this to rise if the pass works."
+    },
+    {
+      "id": "SR-03",
+      "name": "cannot as one word",
+      "re": "\\bcannot\\b",
+      "flags": "gi",
+      "contraction_blind": false,
+      "prior": "The written-register spelling of 'can't'. Expect ours higher."
+    },
+    {
+      "id": "SR-04",
+      "name": "second-person address (you/your/yours)",
+      "re": "\\byou(r|rs)?\\b",
+      "flags": "gi",
+      "contraction_blind": true,
+      "prior": "Speech is addressed AT someone. Expect Morrowind HIGHER than us: their NPCs answer a question you asked, ours narrate."
+    },
+    {
+      "id": "SR-05",
+      "name": "question mark",
+      "re": "\\?",
+      "flags": "g",
+      "contraction_blind": true,
+      "prior": "Expect Morrowind higher - conversation asks back. Weak prior; could easily go the other way because their topic INFOs are mostly declarative answers."
+    },
+    {
+      "id": "SR-06",
+      "name": "exclamation mark",
+      "re": "!",
+      "flags": "g",
+      "contraction_blind": true,
+      "prior": "Expect Morrowind much higher. Our house voice is dry and I do not believe it ever raises its voice."
+    },
+    {
+      "id": "SR-07",
+      "name": "discourse opener (well/now/look/listen/see/say/why/aye/ah/oh) at line or sentence start",
+      "re": "(^|[.!?—]\\s+)(well|now|look|listen|see|say|why|aye|ah|oh|hmph|hah)\\b[,. ]",
+      "flags": "gim",
+      "contraction_blind": true,
+      "prior": "The single most characteristic thing about spoken lines and the thing I most expect us to lack. Expect Morrowind far higher."
+    },
+    {
+      "id": "SR-08",
+      "name": "sentence-initial coordinating conjunction (But/And/So/Or)",
+      "re": "(^|[.!?]\\s+)(but|and|so|or)\\b",
+      "flags": "gim",
+      "contraction_blind": true,
+      "prior": "Speech starts sentences with conjunctions; written prose is taught not to. Expect Morrowind higher."
+    },
+    {
+      "id": "SR-09",
+      "name": "abstract nominalisation (-tion/-sion/-ment/-ness/-ity/-ance/-ence)",
+      "re": "\\b\\w{3,}(tion|sion|ment|ness|ity|ance|ence)s?\\b",
+      "flags": "gi",
+      "contraction_blind": true,
+      "prior": "The clearest lexical marker of written register. Expect OURS higher. If this fires, contraction is a symptom and not the disease."
+    },
+    {
+      "id": "SR-10",
+      "name": "formal subordinator (although/whereas/insofar/inasmuch/thereby/whereby/hence/thus/moreover/furthermore/nevertheless)",
+      "re": "\\b(although|whereas|insofar|inasmuch|thereby|whereby|hence|thus|moreover|furthermore|nevertheless|notwithstanding)\\b",
+      "flags": "gi",
+      "contraction_blind": true,
+      "prior": "Expect ours higher. Low absolute rate on both sides, so probably underpowered."
+    },
+    {
+      "id": "SR-11",
+      "name": "sentence opens on a subordinate clause (When/If/Because/Since/While/Although/Once/After/Before ...,)",
+      "re": "(^|[.!?]\\s+)(when|if|because|since|while|although|once|after|before|though)\\b[^.!?]{5,80},",
+      "flags": "gim",
+      "contraction_blind": true,
+      "prior": "Front-loaded subordination is a written habit; speech puts the main clause first. Expect ours higher."
+    },
+    {
+      "id": "SR-12",
+      "name": "hedge (perhaps/rather/somewhat/largely/broadly/in some sense/more or less)",
+      "re": "\\b(perhaps|rather|somewhat|largely|broadly|more or less|in a sense|in some sense)\\b",
+      "flags": "gi",
+      "contraction_blind": true,
+      "prior": "Expect ours higher - the house voice qualifies everything."
+    },
+    {
+      "id": "SR-13",
+      "name": "imperative opener (Go/Come/Take/Give/Get/Leave/Stay/Ask/Tell/Bring/Keep/Mind/Watch)",
+      "re": "(^|[.!?]\\s+)(go|come|take|give|get|leave|stay|ask|tell|bring|keep|mind|watch|listen)\\b\\s",
+      "flags": "gim",
+      "contraction_blind": true,
+      "prior": "Morrowind NPCs give directions and orders constantly. Expect Morrowind higher."
+    },
+    {
+      "id": "SR-14",
+      "name": "one-word or two-word sentence",
+      "re": "(^|[.!?—]\\s+)[A-Za-z'’]+([ ][A-Za-z'’]+)?[.!?]",
+      "flags": "gm",
+      "contraction_blind": false,
+      "prior": "Speech is full of fragments. Expect Morrowind higher. NOTE this one is partly measured already by the archetype targets in game/data/dialogue/speakers.json (le6w_pct), so it is the rule most likely to be already-calibrated on our side. [v2: reclassified NOT blind - see amendment_v2. Prior itself unchanged.]"
+    },
+    {
+      "id": "SR-15",
+      "name": "first-person singular (I/me/my/mine)",
+      "re": "\\b(I|me|my|mine)\\b",
+      "flags": "g",
+      "contraction_blind": true,
+      "prior": "Case-sensitive on 'I' deliberately. Expect roughly parity; registered as a NULL control - a rule I predict will NOT separate. A set with no predicted nulls is not a pre-registration."
+    },
+    {
+      "id": "SR-16",
+      "name": "passive voice (be-verb + past participle)",
+      "re": "\\b(is|are|was|were|been|being|be)\\s+(\\w+ed|born|done|made|kept|held|taken|given|written|told|paid|sent|brought|found|left|set|put|read|said)\\b",
+      "flags": "gi",
+      "contraction_blind": true,
+      "prior": "Expect ours higher. Written register agentlessness."
+    },
+    {
+      "id": "SR-17",
+      "name": "mid-sentence semicolon or colon",
+      "re": "[;:]",
+      "flags": "g",
+      "contraction_blind": true,
+      "prior": "Punctuation nobody can hear. Expect ours higher. Partly measured by the predecessor's RULE-23/RULE-24 in books; registered here for the dialogue register specifically."
+    },
+    {
+      "id": "SR-18",
+      "name": "metric: mean words per sentence in a spoken line",
+      "metric": "mean_sentence_words",
+      "contraction_blind": false,
+      "prior": "Expect ours higher. NOT a hit/miss rule - a metric, reported as a ratio with no accuracy figure, because a sentence-length difference is not something a document either has or lacks. [v2: reclassified NOT blind - see amendment_v2. Prior itself unchanged.]"
+    }
+  ]
+}

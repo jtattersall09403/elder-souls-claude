@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-FACTIONS-r1",
+  "piece_title": "Faction questlines — the Assize, the Wet Ledger and the Xul-Aneekh (RI-QST01, RI-QST02, RI-CRM02) — round 1",
+  "subsystem_paths": [
+    "quests.faction.escalation",
+    "quests.faction.ranks",
+    "quests.faction.counts",
+    "progression.faction.rank",
+    "quests.deceit",
+    "quests.giver",
+    "quests.branching",
+    "dialogue.topics.truth",
+    "crime.faction.sanctioned",
+    "crime.faction.writ",
+    "crime.faction.standing",
+    "quests.faction.rankgating",
+    "quests.faction.rivalry",
+    "quests.faction.expulsion"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-factions-r1",
+    "role": "critic.quests.faction",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-07T00:00:00Z",
+    "finished_at": "2026-08-07T00:00:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "44f8432a0433ea0c55c0f7bea5235b83fa17aefa",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true,
+    "note": "Tree dirty throughout: concurrent agents editing game/data/books/**, game/data/dialogue/**, mainline-act2|3|4.json and game/src/engine.js. No dirty path is a faction quest file, faction-gates.json, sim/quest/gate.js, sim/quest/machine.js or harness/api.js. Per RI-MTH04 'How we lose' #5 every claim here is confidence: medium at best. boot-check PASS before and after. Contention: 0-12 concurrent headless_shell; all browser work taken at 6-8; no timing figure is claimed.",
+    "harness_commands": [
+      { "command": "node tools/harness/boot-check.mjs", "seed": null, "exit_code": 0 },
+      { "command": "node tools/quests/critic-faction-arbitration.mjs", "seed": null, "exit_code": 1 },
+      { "command": "node tools/quests/critic-faction-ceiling.mjs", "seed": null, "exit_code": 1 },
+      { "command": "node tools/quests/critic-faction-gate-bypass.mjs", "seed": null, "exit_code": 1 }
+    ]
+  },
+  "verdict": "FAIL",
+  "score": 4.1,
+  "gate": 7.0,
+  "item_scores": [
+    {
+      "item": "RI-QST01",
+      "title": "The escalation shape of a Morrowind faction questline",
+      "score": 3,
+      "note": "Sub-score mean about 8.0 (ladder depth 10, stakes curve 10, corruption reveal 10, rival contradiction 10, task-kind 8, volume 0), then hard-gated twice: quests per line under 18 and mean quests per rank under 2.0."
+    },
+    {
+      "item": "RI-QST02",
+      "title": "How a questline lies to you — the deceit pattern catalogue",
+      "score": 7,
+      "note": "Band 9-10 on this piece's own content: 73.4% deceit rate, 12 of 12 patterns, 78% multi-channel, 7 D5 two-cycles, 22 refuse resolutions, 20 with locks, 0 imperative journal openings. Marked down for the D6 sub-30% floor breach, the inherited zero-pre-PONR hard fail (Q-MAG-10 sits inside the Assize census), and records_belief at 8.4% against 15%."
+    },
+    {
+      "item": "RI-CRM02",
+      "title": "Faction crime — sanctioned murder, jurisdictional writs, and how a rank changes a guard",
+      "score": 2,
+      "note": "1 of 27 sanctioned-murder quests, 5 of at-least-8 exclusive pairs, 1 of 4 authorities, 0 of 4 favour_owed call-ins, no expulsion path, no factionLawFactor. The one writ quest that exists (Q-ASSZ-05) is excellent."
+    }
+  ],
+  "hard_fail_checks": [
+    { "id": "QST01-volume", "check": "quests per faction line >= 18", "result": "FAIL", "measured": "10 / 9 / 9 against a hard-fail floor of 18 (target 24-28)" },
+    { "id": "QST01-mean-per-rank", "check": "mean quests per rank >= 2.0", "result": "FAIL", "measured": "1.25 / 1.125 / 1.125 against 2.0. Undeclared by the builder and a separate gate from the volume one." },
+    { "id": "QST01-all-honest", "check": "not every quest in a line is honest", "result": "PASS", "measured": "first deceit at rank 1 / 1 / 2" },
+    { "id": "QST01-level-gating", "check": "no advancement gated on character level", "result": "PASS", "measured": "reputation + attribute + skill + world_state only; gate.js throws at construction on a level gate" },
+    { "id": "QST01-succession", "check": "a succession quest exists per line", "result": "PASS", "measured": "Q-ASSZ-08 / Q-LEDG-08 / Q-XULA-08, all task_kind succession at rank 7" },
+    { "id": "QST02-reachable-reveal", "check": "every deceitful quest has a reveal before the point of no return", "result": "FAIL", "measured": "12 of 94 have none: Q-MAG-02/04/05/06/07/10/13/16/18/19/24 and Q-MAIN-32. Eleven inherited; Q-MAG-10 is category=faction faction=the_imperial_assize and has no patterns[] at all." },
+    { "id": "QST02-D6", "check": "named-target kill quests satisfying D6 >= 30%", "result": "FAIL", "measured": "7 of 25 = 28% on D6's prose definition. The item's Comparison method #4 reads kill_required_npcs, which is empty on all 94 quests, so the method itself is vacuous and has been buying a false pass." },
+    { "id": "QST02-refuse", "check": "at least 3 quests with a refuse resolution", "result": "PASS", "measured": "22" },
+    { "id": "QST02-locks", "check": "consequences.locks non-empty somewhere", "result": "PASS", "measured": "20 quests" },
+    { "id": "QST02-deceit-one-resolution", "check": "no deceitful quest with a single resolution", "result": "FAIL", "measured": "Q-MAIN-27 (inherited, not on the three lines)" },
+    { "id": "CRM02-sanctioned-quests", "check": "sanctioned-murder quests >= 15", "result": "FAIL", "measured": "1 (Q-ASSZ-05, the Warrant of Attainder)" },
+    { "id": "CRM02-exclusive-pairs", "check": "mutually exclusive faction pairs >= 4", "result": "PASS", "measured": "5 (1 hard_group + 1 enemy_pair + 3 earned) against a target of 8" },
+    { "id": "AR-1", "check": "no Morrowind mechanic inside the fight", "result": "PASS", "measured": "nothing in this piece touches frames, dice or level-scaling" },
+    { "id": "AR-2", "check": "no Souls convention in the world", "result": "PASS", "measured": "0 imperative journal openings across 752 entries; no objective markers; advancement never reads character level" },
+    { "id": "AR-3", "check": "at least one boundary-crossing interaction", "result": "PASS", "measured": "seam_sterile false — faction standing enters encounters via Q-XULA-01 res_kill_the_crew and Q-ASSZ-05 res_execute/res_exile_him, and the exclusivity lock removes ten quests' worth of encounters from a save. Thin: RI-CRM02 section 5 factionLawFactor, the intended crossing, is absent." },
+    { "id": "CONSUMPTION", "check": "every shipped model has a demonstrated world-side consumer", "result": "PARTIAL", "measured": "5 of 7 models at coupling 1 (reputation column, world_state column, exclusivity, resolution world_flags, resolution requires). RI-CRM02 section 5 factionLawFactor and RI-QST03 section D expulsion are ABSENT rather than orphaned." }
+  ],
+  "seam_sterile": false,
+  "single_biggest_gap": {
+    "id": "GAP-FCT-01",
+    "title": "The offer gate is enforced at open() and not at resolve()",
+    "severity": "critical",
+    "measured": "On a character that has joined nothing and holds reputation 0, questOpen('Q-LEDG-07') is refused with 'requires Q-LEDG-06 first; the topic \"the underwriters gate\" has not come up yet; the topic \"the veto minute\" has not come up yet; the_wet_ledger rank 0/6; the_wet_ledger reputation 0/90', and questResolve returns {ok:false, reason:'quest not open'} — the control passes. After a single questReveal() the same questResolve returns ok:true and applies world_flags [ledger_first_chair_settled, ledger_first_chair_vacant, corrano_took_it_to_the_assize, ledger_exposed_from_inside], unlocked [Q-LEDG-08], faction_reputation to four factions including +40 to the rival Assize, and NPC dispositions. ledger_first_chair_vacant is the rank-7 world_state term; derived rank moved 0 to 1.",
+    "cause": "game/src/sim/quest/machine.js resolve() line 465 gates only on record existence; reveal() calls this.rec(id, true), which creates that record. machine.js:541 guards the journal branch of setFlag() with this.rec(h.quest) && !this.isClosed(h.quest); machine.js:540, the reveal branch immediately above it, is unguarded.",
+    "blast_radius": "0 of 110 hooks.json rows carry a quest+reveal pair today, so the world-side path (setFlag -> reveal -> record minted) is LATENT rather than a live player exploit; it becomes reachable the first time any hook adds a reveal, which the schema permits and machine.js:540 already reads. It is live for MEASUREMENT now: faction-probe.mjs:207 calls questReveal for every requires_knowing immediately before questResolve at :210, and its questOpen calls at :246 and :294 discard the return value — so every resolution in every faction-probe walk was applied outside the offer gate.",
+    "remedy": "(1) Gate machine.js resolve() on the same canOffer/open predicate and return its reason when it refuses; have reveal() mint a knowledge record distinct from the quest record, or require the quest to be open. (2) Guard machine.js:540 the way :541 is already guarded. (3) Re-run faction-probe.mjs and expect it to go red — that is the point.",
+    "evidence": "reports/critic-faction-gate-bypass.json"
+  },
+  "other_findings": [
+    {
+      "id": "FCT-02",
+      "title": "The arbitration is settled in the faction builder's favour; build-viability.mjs is the wrong instrument",
+      "measured": "The reputation term leaves Q-LEDG-08's gate.unmet at exactly 112 — present at 111 ('The Wet Ledger reputation 111/112'), absent at 112, unchanged to 300. Identical on Q-ASSZ-08 and Q-XULA-08. Null control 60->61 moves nothing. Statically, the player holds 249 / 208 / 228 reputation at the moment the rank-7 quest is tested. build-viability.mjs:1191 does c.reputation = new Proxy({}, { get: () => 100 }) — a literal left over from the old generated ladder whose rank 7 was 100 — while granting gold 1e9, ranks 7, all topics and all flags. Its 0 of 540 is the tool colliding with its own stub constant; its line 1599 quotes the stop verbatim.",
+      "remedy": "Derive the counterfactual's reputation from the book (sum of best-per-quest deltas), or grant Infinity as it already does for gold. One line."
+    },
+    {
+      "id": "FCT-03",
+      "title": "The rank-7 seat has never been vacated by play in any recorded run",
+      "measured": "All three faction-probe reports on disk end their P10 string with '(the probe poked in <assize_prefect_vacant | ledger_first_chair_vacant | deepkin_speaker_vacant> to clear rank world_state terms)'. The rank-5 and rank-6 world_state flags ARE in the raised-by-the-quests list on every line; the rank-7 one never is. The chooser adds +10000 cost to any violent resolution at faction-probe.mjs:187 and then takes the cheapest, so on all three lines it selects the refuse ending of the rank-6 quest — res_refuse_hulen, res_refuse, res_tell_the_hollow — which are exactly the endings that do not vacate the seat. P4 ('rank 7, never set') and P9 ('walked without killing') are individually true and jointly untested.",
+      "remedy": "Change the chooser to prefer, at each rank, a resolution that satisfies the NEXT rank's world_state term, and delete the poke entirely."
+    },
+    {
+      "id": "FCT-04",
+      "title": "A refusal permanently caps the ladder at rank 6",
+      "measured": "Q-ASSZ-07 res_refuse_hulen, Q-LEDG-07 res_refuse and Q-XULA-07 res_tell_the_hollow are the only endings on their quests that do not raise the vacancy flag, so the succession quest is unreachable on the refusal path with no alternative offered. RI-QST02 D4 requires refusal to be a way to win, not a way to lose.",
+      "remedy": "Give each line a second route to the vacancy that a refuser can take, or let the refusal vacate the seat by another mechanism — Q-ASSZ-07 res_resignation shows how."
+    },
+    {
+      "id": "FCT-05",
+      "title": "questDef() exposes no resolutions and no consequences — the trimmed view, half repaired",
+      "measured": "harness/api.js:1514-1529 returns id, title, category, giver, opens_by, directions, rank_gate and mutually_exclusive_with. questResolutionRequirements() covers the requires half only; the consequences half is invisible. Confirmed live: sections.harness_exposes_resolutions = false. This is why the builder poked the flag rather than picking a vacating ending, and my own probe had to read resolution ids off disk.",
+      "remedy": "Expose resolutions with their consequences on questDef()."
+    },
+    {
+      "id": "FCT-06",
+      "title": "Q-XULA-01: at rank 1 the best-paying answer is a kill with nobody to talk to",
+      "measured": "res_kill_the_crew, violence_required true, +28 own-faction reputation (the highest on the quest), deceit null, no talk_to_target reveal anywhere on the quest. One of the 18 D6 failures and the only one this piece added.",
+      "remedy": "Add a talk_to_target reveal to the crew and a non-violent resolution paying at least 28."
+    },
+    {
+      "id": "FCT-07",
+      "title": "RI-QST02's D6 Comparison method is vacuous — corpus debt, not a build defect",
+      "measured": "kill_required_npcs is empty on all 94 quests, so the item's jq check (map(select((.kill_required_npcs // []) | length > 0))) returns the empty set and D6 passes without measuring anything.",
+      "remedy": "Read D6's prose definition (a combat resolution against a named NPC), or populate the field."
+    },
+    {
+      "id": "FCT-08",
+      "title": "Topics are real — the 74-of-76 defect has not recurred",
+      "measured": "404 topic ids on disk, 0 with an empty body, 0 dangling topic-to-topic links anywhere in the tree. 50-factions.json ships 31 topics, median 3 infos and 485 characters each, every one with outbound links. Exactly one opens_by topic on the three lines has no body: Q-MAG-10's 'the witness', pre-existing; 37 tree-wide, none of the other 36 on these lines.",
+      "remedy": "None — this is a pass and should be recorded as one."
+    },
+    {
+      "id": "FCT-09",
+      "title": "The line lengths are 10 / 9 / 9, and Q-XULA-02 does not exist",
+      "measured": "The three new files hold 9+8+8 = 25 quests, but the census by faction is the_imperial_assize 10, the_wet_ledger 9, the_xul_aneekh 9, because Q-LEDG-01 (blackmarsh-core.json), Q-DEEP-01 and Q-MAG-10 are pre-existing quests already tagged to these factions. Q-XULA-02 exists nowhere; Q-DEEP-01 fills the rank-2 hole.",
+      "remedy": "Write Q-XULA-02, and count each line as it is rather than as authored."
+    },
+    {
+      "id": "FCT-10",
+      "title": "gen-faction-gates.mjs depends on a browser-generated report with no staleness check",
+      "measured": "The attribute column reads reports/faction-signature-sweep.json and the generator throws if it is absent, so regenerating gates requires a browser run to have happened first — and a stale sweep silently re-derives the ladder against an old character builder. notes_for_successor says so; the file does not.",
+      "remedy": "Stamp the sweep with the character-builder data hash and refuse a stale one."
+    },
+    {
+      "id": "FCT-11",
+      "title": "Mutual exclusion works, and it is the best-implemented thing in the piece",
+      "measured": "Joining the Wet Ledger at reputation 300 put the_imperial_assize, the_ixtu_vakh and the_xul_aneekh into rivalry_locked_now and left 0 of 10 Assize quests offerable. Holding both memberships capped both at derived rank 4 against a declared rank_ceiling_with_a_second_membership of 5. The closure is spoken: 30 lockout reasons, e.g. 'The Imperial Assize will not deal with you: you are The Wet Ledger' and 'The Xul-Aneekh will not deal with you: you are The Imperial Assize and The Wet Ledger'.",
+      "remedy": "None — but note GAP-FCT-01: this refusal is spoken by open() and is not enforced by resolve()."
+    }
+  ],
+  "path_to_ten": [
+    "Fix GAP-FCT-01 first, because every other number depends on it: gate machine.js resolve() on the offer predicate and guard machine.js:540 as :541 is guarded. Then re-run faction-probe.mjs and expect it to go red — a probe that does not go red here was never measuring the ladder.",
+    "Walk to the seat: change the probe's chooser to prefer a resolution satisfying the NEXT rank's world_state term, delete the flag poke, and report which of the three lines reaches rank 7 non-violently unaided. All three should; none has been shown to.",
+    "Expose resolutions and consequences on questDef(). Until a probe can see what an ending changes, no probe can pick one, and the poke comes back.",
+    "Volume 9 to 18 minimum, 24 to hit the bar: +2 hidden/weird quests per line (discovery found|overheard, currently 0 of 6), a second quest at ranks 0-3 and 5-7 to lift mean-quests-per-rank over 2.0, and Q-XULA-02 to close the rank-2 hole.",
+    "Give Q-XULA-01 a mouth: a talk_to_target reveal and a non-violent resolution paying at least what res_kill_the_crew pays.",
+    "Stop a refusal ending the ladder: a second route to the vacancy that a refuser can take, on each of the three lines.",
+    "RI-CRM02: build the second sanctioning authority — the ku-vastei Ruling, the only one reaching the interior jurisdiction — before writing the twenty-sixth writ, and ship factionLawFactor on the guard ladder. One multiplier, measurable in a trace, and the AR-3 crossing this piece was supposed to make.",
+    "Deceit at rank 7 on Q-LEDG-08 and Q-XULA-08, which arrive at the seat with deceit null while Q-ASSZ-08 shows what the beat is worth.",
+    "File the D6 method defect against the corpus rather than the build."
+  ],
+  "method_deviations": [
+    "tools/quests/critic-faction-arbitration.mjs (critic-written): reputation sweep 0-300 per line against the live offer gate with a null control at 60->61; a 140-signature worst-build sweep; three exclusivity trials reading rivalry_locked_now and the spoken reasons.",
+    "tools/quests/critic-faction-ceiling.mjs (critic-written): the rank-6 ending perturbation with a null control. Reads resolution IDS from the authored file because questDef() exposes none; every behaviour comes from the engine.",
+    "tools/quests/critic-faction-gate-bypass.mjs (critic-written): the GAP-FCT-01 falsification, with a passing negative control that goes red when the record is absent.",
+    "Scratchpad static re-derivations, independent of faction-probe.mjs: rep-ceiling.mjs (attainable reputation ceiling), qst-bars.mjs (RI-QST01/QST02 count tables), d3-d6.mjs (dissenter and talkable-target audits), topics2.mjs (topic bodies and dangling links), crm-topics.mjs (writs, expulsion, topic supply).",
+    "Two of my own instruments went red for their own reasons and are reported in the verdict body rather than suppressed: the topic-body extractor read responses/entries/variants and called 31 live topics empty (the bodies are under infos[].x), and the first worst-build sweep took min() over favoured attributes where gate.js takes max(). Neither number is used above.",
+    "All three browser tools reuse a single launched browser at --width 320 --height 240 with setRenderRate(0)."
+  ],
+  "unmeasured": [
+    "Whether GAP-FCT-01 is reachable in normal play today — 0 of 110 hooks.json rows carry a quest+reveal pair, so the world-side path is latent. Claimed as a certain MEASUREMENT failure and a structural LATENT gameplay failure, not as a live exploit.",
+    "RI-QST01 section 7's blind rank-band test (redacted titles assigned to rank bands by a fresh judge) — requires a second agent with no exposure to the lines. My qualitative reading is not a substitute and is not scored as one.",
+    "RI-QST02 section 8's blind read (three Morrowind briefs against three of ours) — both items are blind_pair: yes and I am not blind to either.",
+    "RI-CRM02 section 5's factionLawFactor arrest-threshold spread (target 5.3x) — no factionLawFactor exists in game/src, so there is nothing to perturb. Scored as absent rather than as orphan.",
+    "Whether the three lines can each be walked to rank 7 non-violently — blocked on GAP-FCT-01 and on questDef() exposing no consequences; I could not drive a gated walk without going through the same bypass I am reporting. A vacating non-violent ending exists on each line (res_resignation, res_show_the_returns, res_put_it_to_the_hollow); that it is reachable by play is unproven, by the builder and by me.",
+    "Any timing or throughput figure — the box carried 6 to 12 concurrent browsers throughout."
+  ],
+  "evidence_artifacts": [
+    { "path": "reports/critic-faction-arbitration.json", "sha256_16": "1ef368c229422c82" },
+    { "path": "reports/critic-faction-ceiling.json", "sha256_16": "21f45a24846a05f8" },
+    { "path": "reports/critic-faction-gate-bypass.json", "sha256_16": "dae7c3bb875126b6" },
+    { "path": "reports/faction-probe-the_imperial_assize.json", "sha256_16": "89031b88ed36b8e1" },
+    { "path": "reports/faction-probe-the_wet_ledger.json", "sha256_16": "aaf3d234455e4bb9" },
+    { "path": "reports/faction-probe-the_xul_aneekh.json", "sha256_16": "61896ab420565a96" }
+  ]
+}

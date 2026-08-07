@@ -1,0 +1,796 @@
+{
+  "schema": "elder-souls/topics@1",
+  "group": "utility-and-standalone",
+  "owner": "W1-19 round 2, gen 3 — the main quest, end to end (this file is the tree-wide half of its finding)",
+  "key_legend_ref": "00-roots.json#key_legend",
+  "hand_authored": true,
+  "generated_by": null,
+  "why": [
+    "The round-1 verdict on the main quest found that 74 of the 76 `opens_by.topic` values in",
+    "this tree were unsatisfiable, and that it was invisible because every quest tool seeded the",
+    "gate with the quest's own string. Round 2 repaired the 32 main-quest ones and W1-FACTIONS",
+    "repaired the three faction lines. `tools/quests/topic-supply-audit.mjs` then reported the",
+    "remainder: **34 topics that a quest demands and that exist NOWHERE in dialogue/topics/**,",
+    "and 27 quests whose opening keyword was granted by nothing and spoken by nobody. Every one",
+    "of those quests could be walked up to and none of them could be opened.",
+    "",
+    "This file is the body for all 34. It is not decoration and it is not lore filler: under seam",
+    "S8 there are no markers and under S35 the map shows only ground already walked and may carry",
+    "nothing a quest put there, so a sentence in somebody's mouth is the ONLY way a keyword can",
+    "reach a player. A topic with no info is a keyword nobody can say; a keyword nobody can say is",
+    "a quest nobody can be offered.",
+    "",
+    "Rules followed, from 50-factions.json and 50-mainline.json:",
+    "  * at least two infos per topic, from different actor archetypes, because a keyword",
+    "    answerable only by the quest giver is a briefing rather than a conversation (RI-DLG01).",
+    "  * the LAST info on every topic is ungated, so the keyword is never a silence once known.",
+    "    Cell-gated and disposition-gated infos come first; first-match-wins (RI-DLG01 §A).",
+    "  * `to` is the AddTopic graph `sim/quest/topic-supply.js` reads. Asking about one thing",
+    "    teaches the words for the next, which is how these quests are found without a marker.",
+    "  * nothing here states the quest's solution. It states that there is a problem and who is",
+    "    complaining about it, which is what a stranger in a market would actually be told."
+  ],
+  "supply_note": [
+    "A body alone is not supply. Each of these keywords is also seeded into the world by a rumour",
+    "row in `game/data/dialogue/rumours.json` keyed to the settlement the quest lives in, carrying",
+    "`adds_topics`, so a player who walks into the right town and asks what people are saying is",
+    "told the words. That is the same route `the-drowned-tally` uses into Q-MAIN-01, and it is the",
+    "only entry that owes nothing to a prior quest."
+  ],
+  "topics": [
+    {
+      "id": "the-tally-of-the-dead",
+      "note": "Opens Q-SOUL-02 (undertaker-vaskh, the burning yard behind the Soulrest customs post). Prerequisite topic `the-drowned-court` already has a body in 50-mainline.json.",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "soulrest",
+          "x": "The yard keeps its own count and the Court keeps its count, and for two years now the two have not been the same number. Vaskh burns them and writes them down. She has stopped saying so where the Court can hear her.",
+          "to": ["the-drowned-court", "the-burning-yard"]
+        },
+        {
+          "a": "mudborn",
+          "cell": "soulrest",
+          "d": 20,
+          "x": "You want to know what the yard says? The yard says it has burned more than the book admits. That is not a mistake, dry-one. A mistake happens once.",
+          "to": ["the-drowned-court"]
+        },
+        {
+          "a": "townsman",
+          "x": "There is an undertaker at Soulrest who wants her own dead counted again, by somebody who is not of the Court. She has been asking after a hand that can add.",
+          "to": ["the-drowned-court"]
+        }
+      ]
+    },
+    {
+      "id": "the-labour-lease",
+      "note": "Opens Q-BLAK-01 (prefect-hallow, the Prefect's floor at Blackrose).",
+      "infos": [
+        {
+          "a": "legionary",
+          "cell": "blackrose",
+          "x": "Every man in that fortress is leased out by the day to whoever files for him, and the register that says who went where is the only thing standing between the Prefect and the Elder Council. It has not balanced since Second Seed.",
+          "to": ["the-four-hundred-and-eleven", "blackrose"]
+        },
+        {
+          "a": "clerk",
+          "x": "A prison that hires its prisoners out has to write down who took them. Blackrose writes it down. Whether it writes it down correctly is a different question and it is the Prefect's question, not mine.",
+          "to": ["the-four-hundred-and-eleven"]
+        },
+        {
+          "a": "outlaw",
+          "x": "The lease is what they call it when they sell you by the week. I have been on it. You come back or you do not, and either way somebody signs.",
+          "to": ["the-four-hundred-and-eleven"]
+        }
+      ]
+    },
+    {
+      "id": "the-four-hundred-and-eleven",
+      "note": "Q-BLAK-01's prerequisite topic. The number is the count the lease register cannot account for.",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "blackrose",
+          "x": "Four hundred and eleven is the difference between the men the lease register sent out and the men any employer in this province admits to having had. It is not a rounding error. It is a town's worth.",
+          "to": ["the-labour-lease"]
+        },
+        {
+          "a": "mudborn",
+          "d": 30,
+          "x": "Four hundred and eleven. Say it slowly and it is a number. Say it in front of somebody from Blackrose and watch what their hands do.",
+          "to": ["the-labour-lease"]
+        },
+        {
+          "a": "townsman",
+          "x": "It is a number people at Blackrose will not repeat, which is how everyone else came to know it.",
+          "to": ["the-labour-lease"]
+        }
+      ]
+    },
+    {
+      "id": "the-old-quarter",
+      "note": "Opens Q-STRM-01 (quartermaster-sedd, the stores gate inside the north wall at Stormhold).",
+      "infos": [
+        {
+          "a": "legionary",
+          "cell": "stormhold",
+          "x": "The quarter inside the north wall was walled off in my grandfather's service and is used for stores now. Sedd will tell you it is perfectly safe. He tells everyone that twice, and he will not send one of us in for a crate of lamp oil.",
+          "to": ["the-north-wall", "stormhold"]
+        },
+        {
+          "a": "archivist",
+          "cell": "stormhold",
+          "x": "There is no record of the quarter being condemned and there is no record of it being opened again either. The wall went up between one page and the next and the page in between is missing.",
+          "to": ["the-north-wall"]
+        },
+        {
+          "a": "townsman",
+          "x": "Stormhold has a district behind a wall that the garrison calls a warehouse. Nobody who calls it a warehouse has been inside it.",
+          "to": ["stormhold"]
+        }
+      ]
+    },
+    {
+      "id": "the-leyawiin-charter",
+      "note": "Opens Q-LILM-01 (harbourmistress-tesh, the Lilmoth customs house). Prerequisite `the-rotting-quarter` has a body already.",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "lilmoth",
+          "x": "A trading licence out of Leyawiin, endorsed for the acquisition of botanical specimens, and the specimen it names is a tree. Tesh has it in the customs house and she has not filed it, which tells you what she thinks of it.",
+          "to": ["the-rotting-quarter", "lilmoth"]
+        },
+        {
+          "a": "merchant",
+          "x": "Anything chartered out of Leyawiin with a Company endorsement on it is the Blackwood Company, and the Blackwood Company does not buy plants.",
+          "to": ["the-rotting-quarter"]
+        },
+        {
+          "a": "sapcutter",
+          "x": "They came down the coast with a paper that said they were allowed to take cuttings. We are the cuttings, friend.",
+          "to": ["the-rotting-quarter"]
+        }
+      ]
+    },
+    {
+      "id": "the-sap-house",
+      "note": "Q-SAP-01's prerequisite topic. The sap-house on the eastern track out of Helstrom.",
+      "infos": [
+        {
+          "a": "sapcutter",
+          "cell": "helstrom",
+          "x": "The house on the eastern track where the cut goes to be boiled down. Neeth has the room over it. She was a cutter before she was whatever she is now, and she has not been out to a tree in three years.",
+          "to": ["the-phial", "helstrom"]
+        },
+        {
+          "a": "healer",
+          "x": "What comes out of a sap-house is medicine or it is not, depending entirely on who boiled it and what they were paid to leave in.",
+          "to": ["the-phial"]
+        },
+        {
+          "a": "townsman",
+          "x": "The sap-houses take the raw cut and render it. There is one on every track out of Helstrom and the one on the eastern track is the one people mean.",
+          "to": ["the-phial"]
+        }
+      ]
+    },
+    {
+      "id": "the-phial",
+      "note": "Opens Q-SAP-01 (cutter-neeth, the room over the sap-house).",
+      "infos": [
+        {
+          "a": "healer",
+          "cell": "helstrom",
+          "x": "Neeth has a phial she wants carried to a blind man in Archon, paid on delivery. She calls it medicine. I have not seen the inside of it and she has not offered.",
+          "to": ["the-sap-house", "archon"]
+        },
+        {
+          "a": "sapcutter",
+          "x": "A phial that has waited a long time for a man who cannot see it. She says the waiting part warmer than she says the medicine part, and I have known her twenty years.",
+          "to": ["the-sap-house"]
+        },
+        {
+          "a": "townsman",
+          "x": "Somebody at the Helstrom sap-house is looking for a courier who will carry a small thing a long way and not open it.",
+          "to": ["the-sap-house"]
+        }
+      ]
+    },
+    {
+      "id": "the-short-pay",
+      "note": "Opens Q-DOCK-01 (npc-porter-eeja, the shelter at the foot of the Gideon crane).",
+      "infos": [
+        {
+          "a": "townsman",
+          "cell": "gideon",
+          "x": "Eleven gold a week, every week since Rain's Hand, off every porter under the crane. Eeja can tell you the number to the coin. What she cannot tell you is whose hand it goes into, and that is the part she wants counted.",
+          "to": ["the-wharf-debt", "gideon"]
+        },
+        {
+          "a": "clerk",
+          "x": "A shortfall with no name on it is a shortfall somebody deliberately did not name. The pay book at Gideon has a column that has been left blank for four months.",
+          "to": ["the-wharf-debt"]
+        },
+        {
+          "a": "merchant",
+          "x": "The porters at Gideon are being paid short and they know exactly how short, which is unusual and is why it will not stay quiet.",
+          "to": ["gideon"]
+        }
+      ]
+    },
+    {
+      "id": "the-ledger",
+      "note": "Opens Q-MAG-01 (harbourmistress-tesh, the Lilmoth customs loft).",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "lilmoth",
+          "x": "The one that would prove the gem-running is behind a warded door in the customs loft, and Tesh talks about the ward the way you would talk about weather — a thing that is simply there and is somebody else's to change.",
+          "to": ["the-far-exit", "lilmoth"]
+        },
+        {
+          "a": "merchant",
+          "x": "Every port on this coast keeps two books and only one of them goes to the Assize. The interesting one is upstairs and it is warded.",
+          "to": ["the-far-exit"]
+        },
+        {
+          "a": "outlaw",
+          "x": "A collar-ward on a loft door. Three pins, and the third one is the one that talks. That is all I will say about it in a room with this many people in it.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-seized-hull",
+      "note": "Opens Q-MAG-02 (shipwright-oleen, the Lilmoth yard).",
+      "infos": [
+        {
+          "a": "townsman",
+          "cell": "lilmoth",
+          "x": "Customs chained a hull shut in Oleen's own yard with her tools still inside it. She wants the tools. She is not asking the customs house for them and she will not say why.",
+          "to": ["the-lost-key", "lilmoth"]
+        },
+        {
+          "a": "merchant",
+          "x": "A seizure that leaves the yard's tools in the hold is not a seizure, it is a message. Somebody wanted her stopped for a season.",
+          "to": ["the-lost-key"]
+        },
+        {
+          "a": "fisher",
+          "x": "There is a chained hull on the Lilmoth slip with a shipwright walking round it twice a day.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-barred-window",
+      "note": "Opens Q-MAG-03 (fence-ashul, the Gideon low market).",
+      "infos": [
+        {
+          "a": "outlaw",
+          "cell": "gideon",
+          "x": "The shrine-house on the low market has no door on the street side and a guard on the other, which leaves one window and the window is barred. Ashul wants what is inside it and does not care which of those three facts you solve.",
+          "to": ["the-counting-house", "gideon"]
+        },
+        {
+          "a": "townsman",
+          "x": "They barred the shrine window after the second theft, which tells you there was a first one nobody talks about.",
+          "to": []
+        },
+        {
+          "a": "merchant",
+          "x": "Ashul in the low market buys things that came out of buildings. He is polite about it, which is worse.",
+          "to": ["the-counting-house"]
+        }
+      ]
+    },
+    {
+      "id": "the-drowned-wreck",
+      "note": "Opens Q-MAG-04 (widow-ineel, the Thornmarsh stilts).",
+      "infos": [
+        {
+          "a": "fisher",
+          "cell": "thorn",
+          "x": "The Saltgirl went down on the bar mouth and she is nine metres under at low water. Ineel's man went with her. She does not want the man. She wants the log.",
+          "to": ["the-causeway", "thorn"]
+        },
+        {
+          "a": "mudborn",
+          "x": "A woman who asks for the book and not the body has already decided who to blame and only wants it written down.",
+          "to": []
+        },
+        {
+          "a": "townsman",
+          "x": "There is a widow on the Thornmarsh stilts asking after anyone who can go down deep and come up again.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-upper-shelf",
+      "note": "Opens Q-MAG-05 (rootkeeper-jeen, the Helstrom undertemple).",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "cell": "helstrom",
+          "x": "The shelf above the plaza holds what the undertemple was built to hold. The stair to it came down before my grandmother was born and no one has been minded to build another, which Jeen takes personally.",
+          "to": ["the-hollow-count", "helstrom"]
+        },
+        {
+          "a": "archivist",
+          "x": "A xanmeer shelf is a floor, not a ledge. What is on it has been on it for four thousand years and is dry, which is the only reason there is anything left.",
+          "to": ["the-hollow-count"]
+        },
+        {
+          "a": "townsman",
+          "x": "The rootkeeper at Helstrom wants something off a height she cannot reach and will not let anyone put a ladder against the stone.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-causeway",
+      "note": "Opens Q-MAG-06 (warden-eshi, the Thornmarsh hall).",
+      "infos": [
+        {
+          "a": "fisher",
+          "cell": "thorn",
+          "x": "The old causeway to Salt Hills has been under water since the year the tide came up and stayed. You can still feel the stones with a pole. Nobody has walked it since, and Eshi says that like it were a question.",
+          "to": ["the-drowned-wreck", "thorn"]
+        },
+        {
+          "a": "legionary",
+          "x": "There was a road to Salt Hills and now there is water over a road to Salt Hills. Those are different things to a quartermaster and the same thing to a man on foot.",
+          "to": []
+        },
+        {
+          "a": "townsman",
+          "x": "The causeway is the sunk road out of Thornmarsh. People say it is still there, under.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-conclave",
+      "note": "Opens Q-MAG-07 (xul-aneekh-speaker, the deep-marsh hollow).",
+      "infos": [
+        {
+          "a": "mudborn",
+          "d": 30,
+          "x": "The conclave admits no foreigner and no one whose name is not spoken by somebody already inside. Both of those are about you. Only one of them can be changed.",
+          "to": ["the-deep-kin", "the-hollow"]
+        },
+        {
+          "a": "rootkeeper",
+          "x": "They meet in a hollow that is not on any road and they do not meet at a fixed hour. If you are meant to be there you will have been told, and if you have not been told, going is the answer to a question nobody asked.",
+          "to": ["the-hollow"]
+        },
+        {
+          "a": "townsman",
+          "x": "The deep-kin hold a conclave somewhere out past the last of the tracks. That is all anybody in a town knows about it and most of us are content with that.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-counting-house",
+      "note": "Opens Q-MAG-08 (fence-ashul, the Gideon low market).",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "x": "Two clerks, one lamp, and a strongbox that is only open between the eighth and ninth bell. Every counting house in the province works that way and the reason is that it is very hard to be robbed in an hour you choose yourself.",
+          "to": ["the-barred-window", "gideon"]
+        },
+        {
+          "a": "outlaw",
+          "x": "One lamp. Think about the lamp before you think about the box.",
+          "to": ["the-barred-window"]
+        },
+        {
+          "a": "merchant",
+          "x": "The counting house on the Gideon low market opens its box for an hour a day and keeps a man watching it for the other twenty-three.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-quiet-floor",
+      "note": "Opens Q-MAG-09 (scribe-hulen, the Stormhold archive).",
+      "infos": [
+        {
+          "a": "archivist",
+          "cell": "stormhold",
+          "x": "The floor above the archive is boards over a drum of empty air, so a man walking it at night is heard in every room below. Somebody has been in there after the lamps and Hulen wants a name, not a lock.",
+          "to": ["the-hollowed-scribe", "stormhold"]
+        },
+        {
+          "a": "legionary",
+          "x": "You cannot cross that floor quietly. I have tried it sober and I have tried it otherwise.",
+          "to": ["the-hollowed-scribe"]
+        },
+        {
+          "a": "townsman",
+          "x": "The Stormhold archive has a floor that carries sound, and the scribe there has started counting footsteps.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-witness",
+      "note": "Opens Q-MAG-10 (assizer-corvo, the Gideon court).",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "x": "She saw it. She will not say so, and Corvo will not say why she will not, which means he knows why and it is not a reason he can write into a file.",
+          "to": ["the-dead-runner", "gideon"]
+        },
+        {
+          "a": "legionary",
+          "x": "The Assize can compel a statement and it cannot compel a true one, so it prefers to persuade. That is the whole of the difference between the Assize and the Legion.",
+          "to": ["the-dead-runner"]
+        },
+        {
+          "a": "townsman",
+          "x": "There is a woman in Gideon who is the only person who saw what happened and who has said nothing at all about it.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-guar-in-the-yard",
+      "note": "Opens Q-MAG-11 (herbwife-ossa, the Thornmarsh stilts).",
+      "infos": [
+        {
+          "a": "healer",
+          "cell": "thorn",
+          "x": "Ossa cannot get to her own drying racks. There is a guar standing in the yard that is not hers, will not move, and has been there since the rain stopped.",
+          "to": ["the-rot-house", "thorn"]
+        },
+        {
+          "a": "fisher",
+          "x": "A guar that will not move is either sick, calving, or somebody else's idea of a fence.",
+          "to": ["the-rot-house"]
+        },
+        {
+          "a": "townsman",
+          "x": "The herbwife on the stilts has a guar problem and a temper about it.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-two-brothers",
+      "note": "Opens Q-MAG-12 (innkeeper-veth, the Blackrose inn).",
+      "infos": [
+        {
+          "a": "innkeeper",
+          "cell": "blackrose",
+          "x": "The older one has been in my common room since Sun's Height and the younger one pays for it every week without once coming in to see him. I want the first thing stopped and I would like to understand the second.",
+          "to": ["the-cellar-door", "blackrose"]
+        },
+        {
+          "a": "outlaw",
+          "x": "A man who pays for his brother's drink and never drinks with him is paying him to stay somewhere. The question is where he would otherwise be.",
+          "to": ["the-cellar-door"]
+        },
+        {
+          "a": "townsman",
+          "x": "Veth at the Blackrose inn has two brothers on her hands and only one of them in the building.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-dead-runner",
+      "note": "Opens Q-MAG-13 (assizer-corvo, the Gideon court).",
+      "infos": [
+        {
+          "a": "legionary",
+          "cell": "gideon",
+          "x": "Dead in an alley with a full purse. Whatever he was killed for, it was not the purse, and a man carrying a full purse into an alley was carrying something else as well.",
+          "to": ["the-witness", "gideon"]
+        },
+        {
+          "a": "clerk",
+          "x": "Runners are paid on delivery in this province. A runner still holding his fee is a runner who had not delivered yet.",
+          "to": ["the-witness"]
+        },
+        {
+          "a": "townsman",
+          "x": "They found a courier dead in Gideon with his money still on him and the court has taken an interest.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-lost-key",
+      "note": "Opens Q-MAG-14 (shipwright-oleen, the Lilmoth yard).",
+      "infos": [
+        {
+          "a": "townsman",
+          "cell": "lilmoth",
+          "x": "The key to Oleen's yard store went into the mud somewhere between the slip and the gate and it has been in there for three years, so she has narrowed it to about forty paces of soft ground and given up.",
+          "to": ["the-seized-hull", "lilmoth"]
+        },
+        {
+          "a": "fisher",
+          "x": "Anything that goes into that mud comes back up eventually, in the wrong place and with something else attached to it.",
+          "to": ["the-seized-hull"]
+        },
+        {
+          "a": "merchant",
+          "x": "The Lilmoth yard has a store nobody has opened in three years, which by now is the most interesting room on the wharf.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-hollow-count",
+      "note": "Opens Q-MAG-15 (rootkeeper-jeen, the Helstrom undertemple).",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "cell": "helstrom",
+          "x": "Jeen wants a number: how many are living in the hollow under the east root. Those who go in come back. They do not come back with a number, and none of them can say why not.",
+          "to": ["the-upper-shelf", "helstrom"]
+        },
+        {
+          "a": "mudborn",
+          "d": 20,
+          "x": "You are asking me to count my own. I will tell you this much and no more: the hollow is not one room and what is in the second one is not what is in the first.",
+          "to": []
+        },
+        {
+          "a": "townsman",
+          "x": "There is a hollow under the east root at Helstrom that people live in and nobody has ever managed to count.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-flues",
+      "note": "Opens Q-MAG-16 (potter-mek, the Stone Wastes kiln).",
+      "infos": [
+        {
+          "a": "townsman",
+          "cell": "stormhold",
+          "x": "Mek dropped an entire firing down the flue at the wastes kiln. Getting it back means going in, and the flue is hot on a cycle nobody has ever written down — including Mek, who has been firing it for eleven years.",
+          "to": ["what-the-kiln-kept"]
+        },
+        {
+          "a": "merchant",
+          "x": "A kiln whose heat cycle is not written down is a kiln that has always had somebody standing next to it. Whoever that was is not standing there now.",
+          "to": ["what-the-kiln-kept"]
+        },
+        {
+          "a": "sapcutter",
+          "x": "The wastes kiln draws through flues under the floor. Warm floor, cold floor, warm floor, and if you learn the order of it you can walk them.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-rot-house",
+      "note": "Opens Q-MAG-17 (herbwife-ossa, the Thornmarsh stilts).",
+      "infos": [
+        {
+          "a": "healer",
+          "cell": "thorn",
+          "x": "The house at the end of the walk has had swamp-rot in the timbers for two seasons and the family are still living in it, because there is nowhere on those stilts to put a family and everybody has agreed not to say so.",
+          "to": ["the-guar-in-the-yard", "thorn"]
+        },
+        {
+          "a": "mudborn",
+          "x": "Rot in a stilt-house does not stay in the timbers. Ask the herbwife what she has been treating in that family and count the seasons.",
+          "to": ["the-guar-in-the-yard"]
+        },
+        {
+          "a": "townsman",
+          "x": "There is a house on the Thornmarsh walk that everyone can smell and nobody will name.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-far-exit",
+      "note": "Opens Q-MAG-20 (harbourmistress-tesh, the Lilmoth customs house).",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "lilmoth",
+          "x": "What Tesh wants is in a room with four men in it, and what Tesh does not want is four bodies in a room she would then have to explain to the Assize. So the job is the room, not the men.",
+          "to": ["the-ledger", "lilmoth"]
+        },
+        {
+          "a": "outlaw",
+          "x": "Every room built to be guarded has a second way out, because the men guarding it want one. Find theirs and you have found yours.",
+          "to": ["the-ledger"]
+        },
+        {
+          "a": "merchant",
+          "x": "The harbourmistress at Lilmoth has a problem she keeps describing as a room.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-cellar-door",
+      "note": "Opens Q-MAG-21 (innkeeper-veth, the Blackrose inn).",
+      "infos": [
+        {
+          "a": "innkeeper",
+          "cell": "blackrose",
+          "x": "I need the cellar door to stay shut for one night. Not locked — shut. There is a difference and by morning you will understand what it is.",
+          "to": ["the-two-brothers", "blackrose"]
+        },
+        {
+          "a": "outlaw",
+          "x": "Veth's cellar has a door that opens the wrong way for a cellar. Somebody built it to be held, not to be locked.",
+          "to": ["the-two-brothers"]
+        },
+        {
+          "a": "townsman",
+          "x": "The innkeeper at Blackrose has stopped sending anybody down to her own cellar after dark.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-heirloom",
+      "note": "Opens Q-MAG-22 (widow-ineel, the Thornmarsh stilts).",
+      "infos": [
+        {
+          "a": "healer",
+          "cell": "thorn",
+          "x": "It came apart in her hands and now the family will not talk to a stranger holding it in pieces, which is the whole difficulty: the thing can be mended and the conversation cannot be had until it is.",
+          "to": ["the-drowned-wreck", "thorn"]
+        },
+        {
+          "a": "merchant",
+          "x": "Marsh families keep one made thing across the generations and it is never the valuable one. Breaking it is worse than losing it.",
+          "to": []
+        },
+        {
+          "a": "townsman",
+          "x": "The widow on the stilts is carrying something in a cloth and will not put it down.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-stilled-man",
+      "note": "Opens Q-MAG-23 (herbwife-ossa, the Thornmarsh stilts).",
+      "infos": [
+        {
+          "a": "healer",
+          "cell": "thorn",
+          "x": "A hunter walked back out of the deep marsh standing up and has not moved since. He is warm. He is breathing. He is looking at us and Ossa will not say he is alive and will not say the other thing either.",
+          "to": ["the-rot-house", "the-deep-marsh"]
+        },
+        {
+          "a": "mudborn",
+          "d": 20,
+          "x": "He is not stopped. He is waiting. There is a difference and you will only see it if you stay in the room longer than is comfortable.",
+          "to": ["the-deep-marsh"]
+        },
+        {
+          "a": "townsman",
+          "x": "There is a man on the Thornmarsh stilts who came back from the marsh and has not sat down since.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-hollowed-scribe",
+      "note": "Opens Q-MAG-24 (scribe-hulen, the Stormhold archive).",
+      "infos": [
+        {
+          "a": "archivist",
+          "cell": "stormhold",
+          "x": "Hulen's assistant can still write. He can no longer read. Something took the part of him that knew what the marks meant and left the hand that makes them, and he has filled four pages since.",
+          "to": ["the-quiet-floor", "stormhold"]
+        },
+        {
+          "a": "healer",
+          "x": "I have seen a man lose his letters to a fever and a knock and a bad drink. This is none of those. A fever takes the hand as well.",
+          "to": ["the-quiet-floor"]
+        },
+        {
+          "a": "townsman",
+          "x": "There is a clerk at the Stormhold archive who writes all day and cannot tell you what he has written.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-weight-in-the-well",
+      "note": "Opens Q-MAG-25 (widow-ineel, the Gideon low market).",
+      "infos": [
+        {
+          "a": "townsman",
+          "cell": "gideon",
+          "x": "Her husband went down after a bucket and did not come up. She wants what he was carrying and she does not want the well opened, and she has been very clear that those are two separate requests.",
+          "to": ["the-high-ledger", "gideon"]
+        },
+        {
+          "a": "clerk",
+          "x": "A man does not carry anything down a well he means to come back up. Whatever he had on him, he had it on him for a reason and the reason was not water.",
+          "to": ["the-high-ledger"]
+        },
+        {
+          "a": "healer",
+          "x": "The well on the low market has been sealed since Frostfall and the family will not say by whom.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "what-the-kiln-kept",
+      "note": "Opens Q-MAG-26 (potter-mek, the Gideon low market).",
+      "infos": [
+        {
+          "a": "townsman",
+          "cell": "gideon",
+          "x": "Mek walled a firing into the old kiln the week his brother died and now he wants it out. The flue has never gone cold in all the years since and the yard men will not go near it, and neither of those facts has an explanation anybody offers.",
+          "to": ["the-flues", "gideon"]
+        },
+        {
+          "a": "merchant",
+          "x": "A potter who walls up his own work is not saving the work.",
+          "to": ["the-flues"]
+        },
+        {
+          "a": "sapcutter",
+          "x": "There is an old kiln on the Gideon low market that is warm to the hand in Evening Star.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-high-ledger",
+      "note": "Opens Q-MAG-27 (scribe-hulen, the Gideon low market).",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "x": "The season's tally is in a loft whose stair was taken out precisely so that nobody could do what Hulen now wants done. He is not asking anyone to be clever about it. He is asking them to reach it.",
+          "to": ["the-weight-in-the-well", "gideon"]
+        },
+        {
+          "a": "archivist",
+          "x": "Removing the stair is an old way of sealing a record without admitting you have sealed it. The ledger is still public. It is simply nine feet up.",
+          "to": ["the-weight-in-the-well"]
+        },
+        {
+          "a": "townsman",
+          "x": "There is a loft on the Gideon low market with no way into it and a season's accounts inside.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "the-netted-calf",
+      "note": "Opens Q-MAG-28 (warden-eshi, the Gideon low market).",
+      "infos": [
+        {
+          "a": "fisher",
+          "cell": "gideon",
+          "x": "A guar calf is fouled in a net line out in deep water and the mother will not let a boat within twenty feet of it. Eshi will not kill a breeding cow to save a calf and will not leave the calf, so he is standing on the bank.",
+          "to": ["the-guar-in-the-yard", "gideon"]
+        },
+        {
+          "a": "healer",
+          "x": "A cow guar in deep water with a calf in a line will drown herself before she leaves it. That is not devotion, it is how they are built.",
+          "to": []
+        },
+        {
+          "a": "townsman",
+          "x": "The warden has a calf in a net and a temper on the bank about it.",
+          "to": []
+        }
+      ]
+    }
+  ]
+}

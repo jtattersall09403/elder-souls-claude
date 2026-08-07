@@ -292,10 +292,27 @@ async function main() {
     }).catch((e) => ({ real: false, attached: false, harness: false, helpers: false, err: String(e && e.message) }));
     if (!live.real || !live.attached || !live.helpers) {
       log(`  [!!] the page is not measurable after group ${name} (${JSON.stringify(live)}) — reattaching`);
-      try { await reattachAfterReload(page, ev); } catch (e) {
+      let err = null;
+      try { await reattachAfterReload(page, ev); } catch (e) { err = String(e && e.message).slice(0, 400); }
+      // THE RECOVERY IS PROVED, NOT ASSUMED, AND SO IS THE FAILURE.
+      // The previous shape recorded `unmeasurable` the moment `reattachAfterReload` threw, with
+      // the threshold text "every later group in this run is unmeasurable". That is a claim about
+      // the future the tool never checked, and it was false in every run: the reattach threw on a
+      // Playwright arity error, the groups after it ran, and the file carried five of these beside
+      // forty passes. Re-sample instead — the same accessor, after the attempt — and record only
+      // what the page then actually is.
+      const after = await ev(() => {
+        const E = window.__ENGINE;
+        return { real: !!(E && E.real), attached: !!(E && E.real && E.real.attached), harness: !!window.__HARNESS, helpers: !!window.__IC };
+      }).catch((e) => ({ real: false, attached: false, harness: false, helpers: false, err: String(e && e.message) }));
+      const measurable = after.real && after.attached && after.helpers;
+      if (!measurable) {
         record(`PAGE/after-${name}`, 'RI-JRN03|RI-JRN04', 'the page could not be returned to a measurable state', null,
-          { after_group: name, observed: live, error: String(e && e.message).slice(0, 400) },
-          'n/a — every later group in this run is unmeasurable');
+          { after_group: name, observed: live, after_reattach: after, error: err },
+          'n/a — the page was still not measurable after the reattach, so later groups are running against a page that cannot answer');
+      } else if (err) {
+        // Recovered, but not cleanly: worth carrying so nobody has to re-derive it from a log.
+        log(`  [ok] the page recovered after group ${name} despite: ${err}`);
       }
     }
   };
@@ -753,12 +770,31 @@ async function reattachAfterReload(page, ev) {
     () => !!(window.__HARNESS && window.__HARNESS.getInputState && window.__ENGINE && window.__ENGINE.real),
     null, { timeout: 240000 },
   );
-  // `ready()` still resolves the boot promise; it is awaited with an explicit budget instead of
-  // `page.evaluate`'s hidden 30 s one, and its failure is not swallowed.
-  await page.evaluate(async () => {
-    if (window.__HARNESS.ready) await window.__HARNESS.ready();
-    return true;
-  }, undefined, { timeout: 240000 });
+  // `ready()` still resolves the boot promise, and its failure is not swallowed.
+  //
+  // ROUND 2 SUCCESSOR-3: the previous shape here was `page.evaluate(fn, undefined, { timeout })`,
+  // written to replace `page.evaluate`'s supposed hidden 30 s budget with an explicit one.
+  // **`page.evaluate` takes `(pageFunction, arg)` and nothing else** — a third argument makes
+  // Playwright throw `Too many arguments. If you need to pass more than 1 argument to the
+  // function wrap them in an object.` — so this function threw on EVERY call, in every run, and
+  // the page helpers below were never reinstalled after a reload. The suite then recorded
+  // `PAGE/after-<group>: the page could not be returned to a measurable state` five times while
+  // forty later checks reported `pass` in the same file. A false `unmeasurable` is the mirror of
+  // round 1's false `pass`, and it was in the function written to stop exactly that.
+  //
+  // The budget is real now, and it belongs to `waitForFunction`, which is the only API here that
+  // has one. `ready()` is started once page-side and its settlement parked on a flag, so the
+  // wait is a poll of a value rather than an await Playwright cannot bound.
+  await page.evaluate(() => {
+    if (window.__IC_READY) return;
+    window.__IC_READY = 'pending';
+    Promise.resolve(window.__HARNESS.ready ? window.__HARNESS.ready() : null)
+      .then(() => { window.__IC_READY = 'ok'; },
+        (e) => { window.__IC_READY = 'err:' + String(e && e.message).slice(0, 200); });
+  });
+  await page.waitForFunction(() => window.__IC_READY && window.__IC_READY !== 'pending', null, { timeout: 240000 });
+  const readyState = await page.evaluate(() => window.__IC_READY);
+  if (readyState !== 'ok') throw new Error(`__HARNESS.ready() rejected after reload: ${readyState}`);
   const live = await ev(() => {
     const H = window.__HARNESS;
     H.setMode('play-instrumented'); H.setRenderRate(0);
@@ -2037,7 +2073,26 @@ async function mp20(page, h, ev) {
       H.openMenu('book', { id });
     }, { surface: 'menus' });
     H.closeMenu();
-    return { available: true, legs, viewport_css: [844, 390], buffer: [cv.width, cv.height], css_per_device_px: Number(cssPerDevice.toFixed(4)), floor_css_px: H.getViewport().min_text_css_px };
+    const out = { available: true, legs, viewport_css: [844, 390], buffer: [cv.width, cv.height], css_per_device_px: Number(cssPerDevice.toFixed(4)), floor_css_px: H.getViewport().min_text_css_px };
+    // PROBE HYGIENE — this check LEAVES A BOOK OPEN, and the next group pays for it.
+    // Found by the successor-3 bisect: `--group rebind` alone passed 4/4 while
+    // `--group viewport,rebind` failed M-K18 and M-P23 with `steps: ["idle","idle","idle"]` on
+    // every modality. The cause is not in the build. `measureSurface('book', …)` ends on
+    // `openMenu('book')`, a screen stays up, and `UISystem.step()` takes `interact` (and the move
+    // axes) every frame while one is — by design, S14 — so the rebinding surface downstream never
+    // saw a press. `reset()` does not close a screen; it has to be said.
+    // …and the `dialogue` leg opens the CENSUS, which holds the keyboard (it has a typed field)
+    // until it is stood down. That is the other half of the same false FAIL: the pad and touch
+    // rebind legs passed beside a dead keyboard one, which reads exactly like a defect in the
+    // keyboard path and is not.
+    H.closeMenu();
+    // `censusBegin({})` re-arms the scene PAUSED — `hold.come-to` hands control back with nobody
+    // talking — which is the only stand-down there is: `reset()` leaves an entered census
+    // entered, measured, twice.
+    H.censusBegin({});
+    H.reset({ state: 'arena_flat' }); H.stepFrames(4);
+    out.left_open = { ui_mode: H.getUIState().mode, census_takes_input: !!(window.__ENGINE.censusSurface && window.__ENGINE.censusSurface.takesInput) };
+    return out;
   });
 
   if (!r.available) {
@@ -2201,8 +2256,40 @@ async function rebindChecks(page, h, ev) {
   const modal = await ev(() => {
     const H = window.__HARNESS;
     const out = {};
-    for (const device of ['keyboard', 'gamepad', 'touch']) {
+    // THE PRECONDITIONS ARE ASSERTED AND RECORDED, NOT INHERITED.
+    //
+    // This check reported `began: false` on all three modalities for two reasons that have
+    // nothing to do with the rebinding surface, and a FALSE FAIL trains its reader to ignore a
+    // red line exactly as a false pass trains them to trust a green one:
+    //   1. the group before it left a book screen open, and a screen takes `interact` every
+    //      frame (S14). Closed here as well as at the source, because this check must not depend
+    //      on the hygiene of whatever ran last.
+    //   2. the group before it left the viewport on a phone, and `GamepadRouter` then selects
+    //      `souls-handheld` — where index 0 is `jump`, not `interact`. The pad leg was pressing
+    //      A and calling the surface uncompletable when the surface was fine and the check was
+    //      pressing the wrong button. It now drives whatever control the ACTIVE profile gives
+    //      `interact`, on BOTH shipped profiles, which is the claim RB10 actually makes.
+    //   3. the group before it left the CENSUS surface taking input. The census has a typed
+    //      field, so it eats the KEYBOARD and only the keyboard — which is why the pad and touch
+    //      legs passed beside a dead keyboard leg and the shape looked like a build defect in the
+    //      keyboard path. `reset()` does not clear it on the same frame; it needs frames.
+    const censusTakes = () => !!(window.__ENGINE.censusSurface && window.__ENGINE.censusSurface.takesInput);
+    H.closeMenu();
+    if (censusTakes()) { H.censusBegin({}); H.reset({ state: 'arena_flat' }); H.stepFrames(4); }
+    H.setViewport({ size: { w: 1280, h: 720, dpr: 1 }, pointer: 'fine', orientation: 'landscape', insets: { top: 0, right: 0, bottom: 0, left: 0 } });
+    H.setTouchEnabled(false);
+    const st0 = H.getInputState();
+    out.preconditions = {
+      ui_mode: H.getUIState().mode, device_class: st0.deviceClass,
+      pad_profile: (st0.gamepad || {}).profile || null, census_takes_input: censusTakes(),
+    };
+    const padProfiles = H.getActionSet().padProfiles;
+    out.gamepad_profiles = {};
+    for (const leg of ['keyboard', 'gamepad:souls-default', 'gamepad:souls-handheld', 'touch']) {
+      const device = leg.split(':')[0];
+      const profileName = leg.split(':')[1] || null;
       H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+      if (profileName) H.setPadProfile(profileName);
       H.openRebinding(device);
       const steps = [];
       // Walk down two rows, open a capture, offer a control, commit — using ONLY the closed
@@ -2212,10 +2299,23 @@ async function rebindChecks(page, h, ev) {
       const padMove = (y) => ({ buttons: new Array(17).fill(0), axes: [0, y, 0, 0], mapping: 'standard' });
       const padBtn = (i) => { const b = new Array(17).fill(0); b[i] = 1; return { buttons: b, axes: [0, 0, 0, 0], mapping: 'standard' }; };
       if (device === 'gamepad') {
+        const prof = padProfiles[profileName] || {};
+        const idx = (prof.buttons || {}).interact;
+        // §C puts `interact` behind a tap/hold gate on the handheld profile (index 3: tap
+        // interact, hold two_hand). A press held past the gate is `two_hand` — which in the
+        // rebinding surface is "restore defaults", not "begin". So the gate is read and the
+        // press is a TAP when the profile says the action lives on one.
+        const gate = (prof.hold_gate || {})[String(idx)];
+        const isTap = !!(gate && gate.tap === 'interact');
         H.gamepad(padMove(1)); H.stepFrames(1); steps.push(H.rebindStep());      // stick DOWN -> move_y -1
         H.gamepad(zero); H.stepFrames(1); steps.push(H.rebindStep());
-        H.gamepad(padBtn(0)); H.stepFrames(1); steps.push(H.rebindStep());       // A = interact = begin
-        H.gamepad(zero); H.stepFrames(1);
+        if (isTap) {
+          H.gamepad(padBtn(idx)); H.stepFrames(2);
+          H.gamepad(zero); H.stepFrames(1); steps.push(H.rebindStep());          // the tap fires on release
+        } else {
+          H.gamepad(padBtn(idx)); H.stepFrames(1); steps.push(H.rebindStep());
+          H.gamepad(zero); H.stepFrames(1);
+        }
       } else if (device === 'touch') {
         H.setViewport({ size: { w: 844, h: 390, dpr: 3 }, pointer: 'coarse', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
         H.setTouchEnabled(true);
@@ -2233,9 +2333,18 @@ async function rebindChecks(page, h, ev) {
       const began = steps.some((s) => s && s.did === 'begin');
       const offered = H.rebindOffer(device === 'gamepad' ? 'Pad5' : device === 'touch' ? 'Touch:light' : 'KeyJ');
       const committed = H.rebindCommit(true);
-      out[device] = { began, offered, committed, steps: steps.filter(Boolean).map((s) => s.did) };
+      const result = { began, offered, committed, steps: steps.filter(Boolean).map((s) => s.did), profile: profileName };
+      if (profileName) {
+        out.gamepad_profiles[profileName] = result;
+        // `out.gamepad` stays the shipped default, so the field a reader already knows means
+        // what it always meant; the per-profile pair is what the threshold is applied to.
+        if (profileName === 'souls-default') out.gamepad = result;
+      } else {
+        out[device] = result;
+      }
       H.closeRebinding();
     }
+    if (!out.gamepad) out.gamepad = out.gamepad_profiles['souls-default'] || { began: false, committed: { ok: false } };
     // RB6 — pad index 16 is refused with an in-fiction line.
     H.openRebinding('gamepad');
     H.rebindBegin('light', 0);
@@ -2243,9 +2352,23 @@ async function rebindChecks(page, h, ev) {
     H.closeRebinding();
     return out;
   });
-  const allThree = ['keyboard', 'gamepad', 'touch'].every((d) => modal[d].began && modal[d].committed && modal[d].committed.ok);
+  // A PRECONDITION THAT COULD NOT BE ESTABLISHED IS `unmeasurable`, NOT `FAIL`.
+  // If the census still holds the keyboard, this instrument cannot see the rebinding surface at
+  // all, and a red M-K18 would name the wrong defect — HF9, "rebinding is not completable on some
+  // modality", against a surface nobody managed to press a key at. Same rule the empty text
+  // register is held to.
+  if (modal.preconditions && modal.preconditions.census_takes_input) {
+    const why = { reason: 'the census surface still had the keyboard when this check ran, so no key press could reach the rebinding surface', preconditions: modal.preconditions, modal };
+    record('M-K18', 'RI-JRN03', 'the rebinding surface is completable on keyboard only, gamepad only and touch only', null, why, '3/3 (HF9 / RB10)');
+    record('M-P23', 'RI-JRN04', 'a pad-only rebind commits and index 16 is refused in fiction', null, why, 'pad-only completable; index 16 never offered');
+    return;
+  }
+  const completed = (r) => !!(r && r.began && r.committed && r.committed.ok);
+  const padLegs = Object.values(modal.gamepad_profiles || {});
+  const allThree = completed(modal.keyboard) && completed(modal.touch)
+    && padLegs.length > 0 && padLegs.every(completed);
   record('M-K18', 'RI-JRN03', 'the rebinding surface is completable on keyboard only, gamepad only and touch only',
-    allThree, modal, '3/3 (HF9 / RB10)');
+    allThree, modal, `3/3 modalities, and the pad leg on both shipped profiles (${padLegs.length}) (HF9 / RB10)`);
   record('M-P23', 'RI-JRN04', 'a pad-only rebind commits and index 16 is refused in fiction',
     modal.gamepad.committed && modal.gamepad.committed.ok && modal.guide_refusal && modal.guide_refusal.refused === 'guide',
     { gamepad: modal.gamepad, guide: modal.guide_refusal }, 'pad-only completable; index 16 never offered');

@@ -7,7 +7,7 @@
 
   "topics": [
     { "id": "thorn", "settlement": "thorn", "infos": [
-      { "a": "legionary", "cell": "thorn", "x": "Eleven households and a hall. The king is real. The charter is real. Do not laugh in front of him.", "to": ["the-rotted-hall", "the-charter", "hlaalu-teeth"] },
+      { "a": "legionary", "cell": "thorn", "x": "Eleven households and a hall. The king is real. The charter is real. And don't laugh in front of him.", "to": ["the-rotted-hall", "the-charter", "hlaalu-teeth"] },
       { "a": "archivist", "cell": "thorn", "x": "The charter of Thorn is an authentic Imperial instrument granting a hereditary title over a jurisdiction that has since shrunk to eleven households, and it is therefore the cleanest illustration available anywhere of the difference between a right and a possession.", "to": ["the-charter", "the-imperial-claim", "hlaalu-teeth"] },
       { "a": "sapcutter", "cell": "thorn", "x": "Thornwood town. Straight grain. Good money. Friend, the king takes a tenth and gives it back at the feast.", "to": ["the-needle-forest", "the-tenth"] },
       { "a": "mudborn", "cell": "thorn", "d": 10, "x": "It is the poorest place I have ever begged in and the only one where a woman came out of a hall to give me something, dry-one, and it was fish, and it was all they had.", "to": ["the-rotted-hall"] } ] },
@@ -19,7 +19,7 @@
     { "id": "hlaalu-teeth", "settlement": "thorn", "actor_topic": true, "infos": [
       { "a": "archivist", "cell": "thorn", "x": "The king, and the title is not a courtesy: the instrument is in the annexe at Gideon and it is valid, and he can recite the clause that makes it so, and he will, at length, and he is correct.", "to": ["the-charter", "the-rotted-hall", "the-drowning-at-the-ford"] },
       { "a": "sapcutter", "cell": "thorn", "x": "The old king. Talks about ancestors. Friend, let him. He pays after.", "to": ["the-drowning-at-the-ford"] },
-      { "a": "mudborn", "cell": "thorn", "d": 10, "x": "He knows every person in this place by the name their mother used, dry-one, which is not a thing a king does and is very much a thing a man does who has eleven households left.", "to": ["the-tenth"] } ] },
+      { "a": "mudborn", "cell": "thorn", "d": 10, "x": "He knows every person in this place by the name their mother used, dry-one. Which isn't a thing a king does. It's very much a thing a man does who has eleven households left.", "to": ["the-tenth"] } ] },
 
     { "id": "the-drowning-at-the-ford", "settlement": "thorn", "infos": [
       { "a": "archivist", "cell": "thorn", "x": "The king's ancestors are said to have drowned a Dres column at the ford in the Arnesian War, and the account is unattested in any Imperial source and is contradicted by none, and the ford is exactly where it would have had to be.", "to": ["the-arnesian-war", "the-weeping-ford", "house-dres"] },
@@ -30,7 +30,7 @@
 
     { "id": "warden-eshi", "settlement": "thorn", "actor_topic": true, "infos": [
       { "a": "legionary", "cell": "thorn", "x": "The warden. Not ours. Not the king's either, whatever he says. She keeps the path through the needles.", "to": ["the-needle-forest", "the-one-path"] },
-      { "a": "mudborn", "cell": "thorn", "d": 10, "x": "She walks the path every day whether there is traffic on it or not, dry-one, and I asked her why once and she said that a path you do not walk stops being one.", "to": ["the-one-path"] } ] },
+      { "a": "mudborn", "cell": "thorn", "d": 10, "x": "She walks the path every day whether there's traffic on it or not, dry-one. I asked her why once, and she said a path you don't walk stops being one.", "to": ["the-one-path"] } ] },
 
     { "id": "the-one-path", "settlement": "thorn", "infos": [
       { "a": "sapcutter", "cell": "thorn", "x": "One way through the needles. No map has it. Friend, the warden has it in her feet.", "to": ["the-needle-forest", "warden-eshi"] },
@@ -48,13 +48,13 @@
 
     { "id": "the-salt-pans", "settlement": "soulrest", "infos": [
       { "a": "sapcutter", "cell": "soulrest", "x": "Cut squares in the flat. Sun does the rest. Friend, it is the only wage here.", "to": ["the-silted-bay"] },
-      { "a": "mudborn", "cell": "soulrest", "d": 10, "x": "It is honest work in that you cannot be cheated about how much salt there is, dry-one, and it is dishonest work in that the factor sets the price and there is one factor.", "to": ["the-quiet-ledgerman"] } ] },
+      { "a": "mudborn", "cell": "soulrest", "d": 10, "x": "It's honest work in that you can't be cheated about how much salt there is, dry-one. And it's dishonest work in that the factor sets the price, and there's one factor.", "to": ["the-quiet-ledgerman"] } ] },
 
     { "id": "the-silted-bay", "settlement": "soulrest", "infos": [
       { "a": "archivist", "cell": "soulrest", "x": "The bay filled from the landward side, which is the wrong direction for a river silt and the right direction for a collapse, and the survey that would have established which is one of the eastern sheets that was never completed.", "to": ["the-unfinished-survey", "the-dead-well"] } ] },
 
     { "id": "the-bone-diggers", "settlement": "soulrest", "infos": [
-      { "a": "sapcutter", "cell": "soulrest", "d": 20, "x": "They dig the old ground for bone and it sells. Friend, do not ask whose.", "to": ["the-organ-market", "the-old-ground"] },
+      { "a": "sapcutter", "cell": "soulrest", "d": 20, "x": "They dig the old ground for bone and it sells. Friend, don't ask whose.", "to": ["the-organ-market", "the-old-ground"] },
       { "a": "rootkeeper", "cell": "soulrest", "d": 30, "x": "It is forbidden and it is done, supplicant, and the people who do it are the people whose families are in that ground, and there is no version of that sentence which is comfortable.", "to": ["the-old-ground", "the-blood-price"] } ] },
 
     { "id": "the-old-ground", "settlement": "soulrest", "infos": [
@@ -68,6 +68,6 @@
       { "a": "mudborn", "cell": "soulrest", "d": 10, "x": "She will set any arm for nothing and she has nothing because of it, dry-one, and the village feeds her badly and would fight the man who tried to take her away.", "to": ["the-physicians", "soulrest"] } ] },
 
     { "id": "the-listening-at-soulrest", "settlement": "soulrest", "quest": "q-soulrest-listening", "infos": [
-      { "a": "rootkeeper", "cell": "soulrest", "d": 60, "x": "I will say this once and then deny it. Three years ago the dead well answered. Not sap. A sound, at the tide-turn, and four of us heard it, and two of those four have since left the province and one will not speak to me.", "to": ["the-dead-well", "the-listening-floor", "the-tide-turn-walk", "the-quiet-wells"], "q": true, "res": { "journal": ["q-soulrest-listening", 10] } } ] }
+      { "a": "rootkeeper", "cell": "soulrest", "d": 60, "x": "I'll say this once and then deny it. Three years ago the dead well answered. Not sap. A sound, at the tide-turn, and four of us heard it. Two of those four have since left the province, and one won't speak to me.", "to": ["the-dead-well", "the-listening-floor", "the-tide-turn-walk", "the-quiet-wells"], "q": true, "res": { "journal": ["q-soulrest-listening", 10] } } ] }
   ]
 }

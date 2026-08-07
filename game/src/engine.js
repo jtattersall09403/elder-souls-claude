@@ -88,7 +88,7 @@ import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, top
 import { topicKey } from './core/topics.js';
 import { buildOverheardIndex, buildDirectionsIndex, RumourBook, RoadBook, learnTopics } from './sim/quest/topic-supply.js';
 import { makeNPC } from './sim/npc.js';
-import { derivePools, applyBirthsignToPools, hpMaxFor, staminaMaxFor as staminaMaxForVig, progressToNext, USE_EVENTS } from './character/derive.js';
+import { derivePools, applyBirthsignToPools, hpMaxFor, staminaMaxFor as staminaMaxForVig, progressToNext, bankProgress, USE_EVENTS } from './character/derive.js';
 import { grantUse, governingMap } from './character/skilluse.js';
 
 /** Pre-allocated depth of the sim-time ring in `Engine.perf`. */
@@ -3074,7 +3074,24 @@ export class Engine {
    *      fold-safe appender — RI-UIX05 R3's ONE permitted exception, which the item names as
    *      its entire AR-3 seam crossing: *"reading a book may add a dialogue topic ... a name the
    *      player can now ask people about"*. A topic, not an objective;
-   *   3. the opacity register records the encounter and attributes it to the `book` route.
+   *   3. the opacity register records the encounter and attributes it to the `book` route;
+   *   4. if the book carries `skill_book`, the named skill gains exactly one level, ONCE EVER.
+   *
+   * (4) is W1-LIBRARY round 2 and it is here for the same reason as (1) and (2). RI-LOR03 §2's
+   * overlay row asks for **≥26** books tagged `skill book` — *"Teaches sideways, never instructs"*
+   * — and the round-1 verdict recorded the corpus at **1**. Tagging 32 books and stopping there
+   * would have shipped a third declared field with no reader, which is the failure the whole
+   * round exists to close; a tag nothing reads is a tag. So the tag is wired to Morrowind's own
+   * convention: reading the book raises the skill it is about by one, and re-reading does
+   * nothing. `booksRead` is durable and id-sorted, so the idempotence survives a save/load and
+   * the book cannot be farmed by closing and reopening it — that is the same field (1) leans on
+   * and it is checked by the same probe.
+   *
+   * It does NOT go through `grantUse()`. `grantUse` is the Cost Gate (RI-PRG03 §4): it refuses
+   * anything that consumed nothing, and reading consumes nothing, so routing a book through it
+   * would either be refused forever or require an exemption in the gate that a swing at air
+   * could then also take. A book is not a use event. It is a one-time grant of exactly
+   * `progressToNext(value)` points — one level and not a fraction more — banked directly.
    *
    * What deliberately does NOT happen: no toast, no "you have learned", no journal line, no
    * marker, no read/unread mark, no codex entry. R3 permits a topic and nothing else, R4 forbids
@@ -3095,7 +3112,31 @@ export class Engine {
     // (HARNESS §10). `getQuestState()` is the observable.
     const learned = learnTopics(q.topicsKnown, b.topics_taught || []);
     if (learned.length) q.topicsKnown.sort();
-    return { book: b.id, first, topics_learned: learned, knowledge: b.knowledge_key || null };
+    const skill = first ? this._readSkillBook(b) : null;
+    return { book: b.id, first, topics_learned: learned, knowledge: b.knowledge_key || null, skill };
+  }
+
+  /**
+   * RI-LOR03 §2's `skill book` overlay, made real. First read only; see `_readBook` for why this
+   * does not go through the Cost Gate.
+   *
+   * Returns `null` when the book is not a skill book, and an object carrying `refused` when it is
+   * one the character cannot benefit from — a dangling skill id, or no skill register yet. It
+   * never throws and never silently no-ops: a `skill_book` value that names nothing real is a
+   * data defect and `book-budget.mjs` X4 fails the build on it, but a live world that meets one
+   * must keep running.
+   */
+  _readSkillBook(b) {
+    const id = b && b.skill_book;
+    if (!id) return null;
+    const prog = this.sim.progression;
+    if (!prog || !prog.skills || !prog.skills[id]) return { skill: id, granted: 0, refused: 'no such skill on this character' };
+    const gov = this._governingOf || (this._governingOf = ((m) => (k) => m[k])(governingMap(this.chData)));
+    // Exactly one level: the points the curve says this value needs and not one more. A book is
+    // worth a level, not a percentage of one, and not more at low skill than at high.
+    const r = bankProgress(prog, id, progressToNext(prog.skills[id].value), gov);
+    if (r.attributes_granted && r.attributes_granted.length) this.sim._poolsDirty = true;
+    return r;
   }
 
   /**

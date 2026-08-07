@@ -2298,9 +2298,10 @@
           "morally_better": null,
           "requires": {
             "attributes": {
-              "personality": 45
+              "personality": 20
             }
           },
+          "attribute_scale_note": "W1-19 round 2, gen 3. Was `personality: 45`, the highest attribute demand in the build and unreachable by all 240 sheets (ceiling 31). Re-set to 20: two under the ceiling a MEDIAN sheet reaches by carrying mercantile and speechcraft to 100, and above the 18 a bottom-decile sheet can reach, so this stays the hardest social check on the spine — Q-MAIN-08's is 17 — and a character who did not build for it still has res_sign_the_clause and res_buy_the_water. Clamping to the ceiling itself (31, one sheet in 240) would have been the same defect one point lower; the reserve is deliberate, per the round-1 finding that nine gates clamped with a margin of exactly zero.",
           "requires_knowing": [
             "rev_why_the_clause"
           ],
