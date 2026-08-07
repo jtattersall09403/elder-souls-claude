@@ -161,10 +161,25 @@ function indexAt(cum, m) {
   for (let i = 0; i < cum.length; i++) { const d = Math.abs(cum[i] - m); if (d < bd) { bd = d; best = i; } }
   return best;
 }
-/** Road tangent (compass bearing) at index i, toward increasing index. */
-function tangentAt(leg, i) {
-  const p = leg.points;
-  const a = p[Math.max(0, i - 2)], b = p[Math.min(p.length - 1, i + 2)];
+/**
+ * Where the road GOES from index `i`, as a compass bearing, looking `dir` (+1 toward the leg's
+ * `to` end, -1 back toward `from`).
+ *
+ * Not the local tangent. A first cut used the +/-2-point tangent and produced arms pointing up
+ * to 93.6 deg away from the place they named, because these legs have sinuosity 1.29-1.60 and a
+ * two-point tangent measures whichever wiggle the post happens to stand on. What a walker needs
+ * is the direction the road takes them over the next few minutes, so this is the CHORD from the
+ * post to the point LOOKAHEAD_M further along — the way you will actually be facing shortly.
+ */
+const LOOKAHEAD_M = 180;
+function roadGoes(leg, i, dir) {
+  const c = cum.get(leg.id);
+  const target = c[i] + dir * LOOKAHEAD_M;
+  let j = i;
+  if (dir > 0) { while (j + 1 < c.length && c[j] < target) j++; }
+  else { while (j > 0 && c[j] > target) j--; }
+  if (j === i) j = Math.min(c.length - 1, Math.max(0, i + dir));
+  const a = leg.points[i], b = leg.points[j];
   return bearing(a[0], a[1], b[0], b[1]);
 }
 
@@ -196,8 +211,7 @@ function arm(leg, i, towardName, fromEnd, postXZ) {
   // Direction of travel along the leg toward `towardName`: to the leg's `to` end if that is
   // the destination, otherwise back down the indices.
   const forward = leg.to === towardName;
-  const tan = tangentAt(leg, i);
-  const along = forward ? tan : norm360(tan + 180);
+  const along = roadGoes(leg, i, forward ? 1 : -1);
   const remaining = forward ? c[c.length - 1] - c[i] : c[i];
   const st = styleFor(leg.class);
   const a = {

@@ -1,0 +1,750 @@
+{
+ "schema": "elder-souls/settlement@2",
+ "id": "stormhold",
+ "name": "Stormhold",
+ "tier": "city",
+ "region": "salt-hills",
+ "pos": [
+  2171.5,
+  141.12,
+  761
+ ],
+ "radius_m": 78,
+ "identity": "The border garrison — the most normal-looking place in Argonia, which makes it the strangest by contrast. Industry: customs, the Legion, and the living memory of Dunmer slave-raids down the passes. Tension: the Legion is under-funded and outnumbered eight to one, and everyone has done the arithmetic.",
+ "power_reading": "Two towns sharing one wall from opposite sides.",
+ "layout": {
+  "plan": "walled",
+  "proof": "Inside the wall every building is on a right-angled grid with the same spacing; outside it every building touches the wall and none touches another. The wall is the only thing both halves agree on, and it is drawn as a hard line through the middle of the plan."
+ },
+ "architecture_kit": {
+  "material_rule": "Imperial cut stone eaten by fungal bloom: grid inside the walls, Argonian sprawl leaning against the OUTSIDE of them. Nothing outside the wall is square and nothing inside it is not.",
+  "silhouette": "the bloom-course — a band of fungal growth at exactly the height the Legion stopped repointing",
+  "meshes": [
+   "sto_legion_block",
+   "sto_bloom_course",
+   "sto_grid_barrack",
+   "sto_wall_lean",
+   "sto_salt_kiln",
+   "sto_pass_gate",
+   "sto_customs_shed",
+   "sto_watch_tower",
+   "sto_muster_yard"
+  ]
+ },
+ "quarters": [
+  "inside-the-wall",
+  "outside-the-wall",
+  "garrison"
+ ],
+ "targets": {
+  "buildings": 28,
+  "named_interiors": 18,
+  "enterable_pct": 64,
+  "named_npcs": 30,
+  "scheduled_npc_pct": 72,
+  "shops": 5,
+  "taverns": 2,
+  "temple_shrine": 1,
+  "guild_halls": 3,
+  "trainers": 3,
+  "quest_givers": 7,
+  "rumour_variants": 11,
+  "bonfire": 1,
+  "road_gates": 3,
+  "unique_architecture_kit": "required",
+  "souls_loop_dungeon_attached": 1
+ },
+ "counts": {
+  "buildings": 33,
+  "interior": 18,
+  "sealed_with_reason": 5,
+  "structure": 10,
+  "named_interiors": 18,
+  "enterable_pct": 78.3,
+  "property_zones": 32,
+  "shops": 4,
+  "taverns": 2,
+  "temple_shrine": 2,
+  "guild_halls": 3,
+  "road_gates": 3
+ },
+ "services": {
+  "trader": [
+   "stormhold-market",
+   "stormhold-kiln"
+  ],
+  "smith": [
+   "stormhold-smithy"
+  ],
+  "bookseller": [
+   "stormhold-scribe"
+  ],
+  "inn": [
+   "stormhold-inn-pass",
+   "stormhold-inn-lean"
+  ],
+  "healer": [
+   "stormhold-chapel"
+  ],
+  "bonfire": [
+   "stormhold-shrine"
+  ],
+  "travel": [
+   "stormhold-rootpost"
+  ]
+ },
+ "buildings": [
+  {
+   "id": "stormhold-archive",
+   "name": "The Cohort Archive",
+   "kind": "interior",
+   "building_kind": "guild",
+   "interior": "stormhold-archive",
+   "enterable": true,
+   "quarter": "inside-the-wall",
+   "offset_m": [
+    -34,
+    0,
+    -30
+   ],
+   "yaw_deg": 0,
+   "door": [
+    2137.5,
+    141.12,
+    731
+   ],
+   "service": null,
+   "faction": "ninth-cohort"
+  },
+  {
+   "id": "stormhold-praetorium",
+   "name": "The Praetorium",
+   "kind": "interior",
+   "building_kind": "guild",
+   "interior": "stormhold-praetorium",
+   "enterable": true,
+   "quarter": "inside-the-wall",
+   "offset_m": [
+    45.17,
+    0,
+    8.71
+   ],
+   "yaw_deg": 79.1,
+   "door": [
+    2216.67,
+    141.12,
+    769.71
+   ],
+   "service": null,
+   "faction": "the-imperial-assize"
+  },
+  {
+   "id": "stormhold-customs",
+   "name": "The Pass Customs",
+   "kind": "interior",
+   "building_kind": "guild",
+   "interior": "stormhold-customs",
+   "enterable": true,
+   "quarter": "garrison",
+   "offset_m": [
+    -19,
+    0,
+    -30
+   ],
+   "yaw_deg": 0,
+   "door": [
+    2152.5,
+    141.12,
+    731
+   ],
+   "service": null,
+   "faction": "the-imperial-assize"
+  },
+  {
+   "id": "stormhold-market",
+   "name": "The Inside Market",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "stormhold-market",
+   "enterable": true,
+   "quarter": "garrison",
+   "offset_m": [
+    38.7,
+    0,
+    24.87
+   ],
+   "yaw_deg": 57.3,
+   "door": [
+    2210.2,
+    141.12,
+    785.87
+   ],
+   "service": "trader",
+   "faction": null
+  },
+  {
+   "id": "stormhold-smithy",
+   "name": "The Muster Forge",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "stormhold-smithy",
+   "enterable": true,
+   "quarter": "outside-the-wall",
+   "offset_m": [
+    -4,
+    0,
+    -30
+   ],
+   "yaw_deg": 0,
+   "door": [
+    2167.5,
+    141.12,
+    731
+   ],
+   "service": "smith",
+   "faction": null
+  },
+  {
+   "id": "stormhold-scribe",
+   "name": "The Wall-Scribe's Room",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "stormhold-scribe",
+   "enterable": true,
+   "quarter": "garrison",
+   "offset_m": [
+    26.68,
+    0,
+    37.47
+   ],
+   "yaw_deg": 35.5,
+   "door": [
+    2198.18,
+    141.12,
+    798.47
+   ],
+   "service": "bookseller",
+   "faction": null
+  },
+  {
+   "id": "stormhold-inn-pass",
+   "name": "The Pass and Collar",
+   "kind": "interior",
+   "building_kind": "tavern",
+   "interior": "stormhold-inn-pass",
+   "enterable": true,
+   "quarter": "garrison",
+   "offset_m": [
+    11,
+    0,
+    -30
+   ],
+   "yaw_deg": 0,
+   "door": [
+    2182.5,
+    141.12,
+    731
+   ],
+   "service": "inn",
+   "faction": null
+  },
+  {
+   "id": "stormhold-inn-lean",
+   "name": "The Leaning Rest",
+   "kind": "interior",
+   "building_kind": "tavern",
+   "interior": "stormhold-inn-lean",
+   "enterable": true,
+   "quarter": "inside-the-wall",
+   "offset_m": [
+    10.84,
+    0,
+    44.7
+   ],
+   "yaw_deg": 13.6,
+   "door": [
+    2182.34,
+    141.12,
+    805.7
+   ],
+   "service": "inn",
+   "faction": null
+  },
+  {
+   "id": "stormhold-chapel",
+   "name": "The Garrison Chapel",
+   "kind": "interior",
+   "building_kind": "temple",
+   "interior": "stormhold-chapel",
+   "enterable": true,
+   "quarter": "garrison",
+   "offset_m": [
+    26,
+    0,
+    -30
+   ],
+   "yaw_deg": 0,
+   "door": [
+    2197.5,
+    141.12,
+    731
+   ],
+   "service": "healer",
+   "faction": "the-imperial-assize"
+  },
+  {
+   "id": "stormhold-shrine",
+   "name": "The Salt-Hill Hist-Shrine",
+   "kind": "interior",
+   "building_kind": "shrine",
+   "interior": "stormhold-shrine",
+   "enterable": true,
+   "quarter": "inside-the-wall",
+   "offset_m": [
+    -6.55,
+    0,
+    45.53
+   ],
+   "yaw_deg": 351.8,
+   "door": [
+    2164.95,
+    141.12,
+    806.53
+   ],
+   "service": "bonfire",
+   "faction": "rootkeepers"
+  },
+  {
+   "id": "stormhold-rootpost",
+   "name": "The Garrison Rootpost",
+   "kind": "interior",
+   "building_kind": "travel",
+   "interior": "stormhold-rootpost",
+   "enterable": true,
+   "quarter": "garrison",
+   "offset_m": [
+    -34,
+    0,
+    -15
+   ],
+   "yaw_deg": 0,
+   "door": [
+    2137.5,
+    141.12,
+    746
+   ],
+   "service": "travel",
+   "faction": "rootkeepers"
+  },
+  {
+   "id": "stormhold-gaol",
+   "name": "The Wall Gaol",
+   "kind": "interior",
+   "building_kind": "prison",
+   "interior": "stormhold-gaol",
+   "enterable": true,
+   "quarter": "inside-the-wall",
+   "offset_m": [
+    -23,
+    0,
+    39.84
+   ],
+   "yaw_deg": 330,
+   "door": [
+    2148.5,
+    141.12,
+    800.84
+   ],
+   "service": null,
+   "faction": "ninth-cohort"
+  },
+  {
+   "id": "stormhold-kiln",
+   "name": "The Salt Kiln House",
+   "kind": "interior",
+   "building_kind": "shop",
+   "interior": "stormhold-kiln",
+   "enterable": true,
+   "quarter": "garrison",
+   "offset_m": [
+    -19,
+    0,
+    -15
+   ],
+   "yaw_deg": 0,
+   "door": [
+    2152.5,
+    141.12,
+    746
+   ],
+   "service": "trader",
+   "faction": null
+  },
+  {
+   "id": "stormhold-house-0",
+   "name": "Llarara the Elder's house",
+   "kind": "interior",
+   "building_kind": "dwelling",
+   "interior": "stormhold-house-0",
+   "enterable": true,
+   "quarter": "inside-the-wall",
+   "offset_m": [
+    -36.16,
+    0,
+    28.44
+   ],
+   "yaw_deg": 308.2,
+   "door": [
+    2135.34,
+    141.12,
+    789.44
+   ],
+   "service": null,
+   "faction": null
+  },
+  {
+   "id": "stormhold-house-1",
+   "name": "Neetrenaza of Nine Debts's house",
+   "kind": "interior",
+   "building_kind": "dwelling",
+   "interior": "stormhold-house-1",
+   "enterable": true,
+   "quarter": "outside-the-wall",
+   "offset_m": [
+    -4,
+    0,
+    -15
+   ],
+   "yaw_deg": 0,
+   "door": [
+    2167.5,
+    141.12,
+    746
+   ],
+   "service": null,
+   "faction": null
+  },
+  {
+   "id": "stormhold-house-2",
+   "name": "Bevene the Patient's house",
+   "kind": "interior",
+   "building_kind": "dwelling",
+   "interior": "stormhold-house-2",
+   "enterable": true,
+   "quarter": "garrison",
+   "offset_m": [
+    -44.14,
+    0,
+    12.96
+   ],
+   "yaw_deg": 286.4,
+   "door": [
+    2127.36,
+    141.12,
+    773.96
+   ],
+   "service": null,
+   "faction": null
+  },
+  {
+   "id": "stormhold-house-3",
+   "name": "Dram the Quiet's house",
+   "kind": "interior",
+   "building_kind": "dwelling",
+   "interior": "stormhold-house-3",
+   "enterable": true,
+   "quarter": "inside-the-wall",
+   "offset_m": [
+    11,
+    0,
+    -15
+   ],
+   "yaw_deg": 0,
+   "door": [
+    2182.5,
+    141.12,
+    746
+   ],
+   "service": null,
+   "faction": null
+  },
+  {
+   "id": "stormhold-house-4",
+   "name": "Silent-Reed Bone-Setter's house",
+   "kind": "interior",
+   "building_kind": "dwelling",
+   "interior": "stormhold-house-4",
+   "enterable": true,
+   "quarter": "outside-the-wall",
+   "offset_m": [
+    -45.79,
+    0,
+    -4.37
+   ],
+   "yaw_deg": 264.5,
+   "door": [
+    2125.71,
+    141.12,
+    756.63
+   ],
+   "service": null,
+   "faction": null
+  },
+  {
+   "id": "stormhold-north-barrack",
+   "name": "The North Barrack",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "outside-the-wall",
+   "offset_m": [
+    26,
+    0,
+    -15
+   ],
+   "yaw_deg": 0,
+   "seal_state": "visible",
+   "reason": "shut when the cohort was cut by two-thirds; the bunks are still made",
+   "told_by_trade": "legionary"
+  },
+  {
+   "id": "stormhold-raid-house",
+   "name": "The Raid House",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "inside-the-wall",
+   "offset_m": [
+    -40.89,
+    0,
+    -21.08
+   ],
+   "yaw_deg": 242.7,
+   "seal_state": "visible",
+   "reason": "a Dunmer raiding party came through the roof of it in the ninth year and nobody has slept in it since",
+   "told_by_trade": "warder"
+  },
+  {
+   "id": "stormhold-bloom-block",
+   "name": "The Bloom Block",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "garrison",
+   "offset_m": [
+    -34,
+    0,
+    0
+   ],
+   "yaw_deg": 0,
+   "seal_state": "visible",
+   "reason": "the fungal bloom ate the mortar out of the walls and the block is condemned in writing",
+   "told_by_trade": "smith"
+  },
+  {
+   "id": "stormhold-old-customs",
+   "name": "The Old Customs Shed",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "garrison",
+   "offset_m": [
+    -30.12,
+    0,
+    -34.76
+   ],
+   "yaw_deg": 220.9,
+   "seal_state": "visible",
+   "reason": "burned with its ledgers, which several people found convenient",
+   "told_by_trade": "factor"
+  },
+  {
+   "id": "stormhold-outer-lean",
+   "name": "The Fallen Lean",
+   "kind": "sealed-with-reason",
+   "building_kind": "sealed",
+   "enterable": false,
+   "quarter": "outside-the-wall",
+   "offset_m": [
+    -19,
+    0,
+    0
+   ],
+   "yaw_deg": 0,
+   "seal_state": "visible",
+   "reason": "it leaned on the wall and the wall was repointed; without the wall to lean on it fell",
+   "told_by_trade": "cook"
+  },
+  {
+   "id": "stormhold-struct-the-wall-itself",
+   "name": "The Wall Itself",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "garrison",
+   "offset_m": [
+    -15.05,
+    0,
+    -43.47
+   ],
+   "yaw_deg": 199.1,
+   "residential_props": false
+  },
+  {
+   "id": "stormhold-struct-the-pass-gate",
+   "name": "The Pass Gate",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "outside-the-wall",
+   "offset_m": [
+    -4,
+    0,
+    0
+   ],
+   "yaw_deg": 0,
+   "residential_props": false
+  },
+  {
+   "id": "stormhold-struct-the-watch-towers",
+   "name": "The Watch Towers",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "garrison",
+   "offset_m": [
+    2.19,
+    0,
+    -45.95
+   ],
+   "yaw_deg": 177.3,
+   "residential_props": false
+  },
+  {
+   "id": "stormhold-struct-the-muster-yard",
+   "name": "The Muster Yard",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "outside-the-wall",
+   "offset_m": [
+    11,
+    0,
+    0
+   ],
+   "yaw_deg": 0,
+   "residential_props": false
+  },
+  {
+   "id": "stormhold-struct-the-salt-kilns",
+   "name": "The Salt Kilns",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "garrison",
+   "offset_m": [
+    19.11,
+    0,
+    -41.84
+   ],
+   "yaw_deg": 155.5,
+   "residential_props": false
+  },
+  {
+   "id": "stormhold-struct-the-cistern",
+   "name": "The Cistern",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "inside-the-wall",
+   "offset_m": [
+    26,
+    0,
+    0
+   ],
+   "yaw_deg": 0,
+   "residential_props": false
+  },
+  {
+   "id": "stormhold-struct-the-outside-ditch",
+   "name": "The Outside Ditch",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "outside-the-wall",
+   "offset_m": [
+    33.29,
+    0,
+    -31.74
+   ],
+   "yaw_deg": 133.6,
+   "residential_props": false
+  },
+  {
+   "id": "stormhold-struct-the-bollard-line",
+   "name": "The Bollard Line",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "garrison",
+   "offset_m": [
+    -34,
+    0,
+    15
+   ],
+   "yaw_deg": 0,
+   "residential_props": false
+  },
+  {
+   "id": "stormhold-struct-the-bloom-course",
+   "name": "The Bloom Course",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "garrison",
+   "offset_m": [
+    42.7,
+    0,
+    -17.1
+   ],
+   "yaw_deg": 111.8,
+   "residential_props": false
+  },
+  {
+   "id": "stormhold-struct-the-signal-post",
+   "name": "The Signal Post",
+   "kind": "structure",
+   "building_kind": "structure",
+   "enterable": false,
+   "quarter": "garrison",
+   "offset_m": [
+    -19,
+    0,
+    15
+   ],
+   "yaw_deg": 0,
+   "residential_props": false
+  }
+ ],
+ "interiors": [
+  "stormhold-archive",
+  "stormhold-praetorium",
+  "stormhold-customs",
+  "stormhold-market",
+  "stormhold-smithy",
+  "stormhold-scribe",
+  "stormhold-inn-pass",
+  "stormhold-inn-lean",
+  "stormhold-chapel",
+  "stormhold-shrine",
+  "stormhold-rootpost",
+  "stormhold-gaol",
+  "stormhold-kiln",
+  "stormhold-house-0",
+  "stormhold-house-1",
+  "stormhold-house-2",
+  "stormhold-house-3",
+  "stormhold-house-4"
+ ],
+ "generated_by": "tools/world/build-settlements.mjs"
+}

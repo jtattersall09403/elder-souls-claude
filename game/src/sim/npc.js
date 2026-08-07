@@ -71,7 +71,91 @@ export function makeNPC(spec) {
     loiter_frames: 0,
     noticing: false,
     speaking: false,
+    // ---- W1-04: the day. -------------------------------------------------------------------
+    // The record's `schedule` was written down by every builder that touched an NPC file and
+    // read by nothing — `makeNPC` did not even copy the field. Copying it is the smaller half;
+    // `stepSchedule()` below is the half that makes a person go home.
+    schedule: normaliseSchedule(spec.schedule),
+    home_interior: spec.home_interior || spec.interior || null,
+    work_interior: spec.work_interior || spec.interior || null,
+    owns_zones: (spec.owns_zones || []).slice(),
+    // Where this person IS, right now, according to the clock. Distinct from `interior`, which
+    // is where their record says they live: `at` is the answer to "where is she at 3 a.m.".
+    at: spec.interior || null,
+    activity: null,
+    // False when the person is in a different cell from the player. A person who is at home
+    // while you are in the shop is not standing invisibly in the shop.
+    present: true,
+    _slot: -1,
   };
+}
+
+/** "HH:MM" -> hours as a float. Refuses anything else rather than silently reading 0. */
+function parseHM(s) {
+  const m = /^(\d{1,2}):(\d{2})$/.exec(String(s));
+  if (!m) throw new Error(`schedule: ${JSON.stringify(s)} is not "HH:MM"`);
+  const h = Number(m[1]) + Number(m[2]) / 60;
+  if (!(h >= 0 && h <= 24)) throw new Error(`schedule: ${JSON.stringify(s)} is out of range`);
+  return h;
+}
+
+/**
+ * Turn a record's `[{from,to,at}]` into hour floats once, at spawn, so the step does no parsing
+ * and no allocation. A slot that wraps midnight (22:00 -> 04:00) keeps `to < from` and is matched
+ * by the OR branch in `slotAt`.
+ */
+export function normaliseSchedule(rows) {
+  if (!rows || !rows.length) return [];
+  return rows.map((r) => ({
+    from: parseHM(r.from), to: parseHM(r.to), at: r.at || null, activity: r.activity || null,
+  }));
+}
+
+/** Which slot covers this hour. -1 if the day has a hole in it, which is a data defect. */
+export function slotAt(schedule, hour) {
+  for (let i = 0; i < schedule.length; i++) {
+    const s = schedule[i];
+    if (s.from <= s.to ? (hour >= s.from && hour < s.to) : (hour >= s.from || hour < s.to)) return i;
+  }
+  return -1;
+}
+
+/**
+ * THE CONSUMER. One fixed step of everybody's day.
+ *
+ * RI-WLD08's whole claim is that people go home at night, and the way this build failed it was
+ * the way eleven other subsystems failed RI-MTH07: the field was declared on 5 of 76 records and
+ * read by nothing at all. This reads it, on the live step, every frame, and it changes three
+ * things a probe can see without being told: `at` (which cell the person is in), `present`
+ * (whether they are in the player's cell) and `pos` (they walk to the slot's anchor).
+ *
+ * Deterministic, allocation-free, no clock and no draws — it runs under the armed sim guard.
+ */
+export function stepSchedule(sim, n, bus) {
+  if (!n.schedule.length) return;
+  const i = slotAt(n.schedule, sim.env.timeOfDay);
+  if (i < 0) return;
+  const s = n.schedule[i];
+  if (i !== n._slot) {
+    n._slot = i;
+    const from = n.at;
+    n.at = s.at;
+    n.activity = s.activity;
+    if (bus && from !== s.at) {
+      const ev = bus.emit(sim.frame, 'npc_schedule');
+      ev.npc = n.eid; ev.from = from; ev.to = s.at; ev.activity = s.activity;
+      ev.hour = Math.round(sim.env.timeOfDay * 100) / 100;
+    }
+  }
+  // Presence. `sim.env.interior` is the cell the player is standing in; a person whose day has
+  // them somewhere else is not in the room with you, and `visible` is what the renderer and
+  // every perception cast read.
+  const here = n.at === null || n.at === sim.env.interior;
+  if (here !== n.present) {
+    n.present = here;
+    n.visible = here;
+    if (bus) { const ev = bus.emit(sim.frame, 'npc_presence'); ev.npc = n.eid; ev.present = here; ev.at = n.at; ev.cell = sim.env.interior; }
+  }
 }
 
 /** One fixed step for every person in the world. No draws, no allocation. */
@@ -80,6 +164,12 @@ export function stepNPCs(sim, bus) {
   const list = sim.npcs;
   for (let i = 0; i < list.length; i++) {
     const n = list[i];
+    // W1-04: the day, before the facing. Where a person IS has to be settled before we ask
+    // which way they are looking, or a person who has just gone home turns to face you through
+    // a wall for one frame and the trace records it.
+    stepSchedule(sim, n, bus);
+    // Somebody who is not in this cell does not turn, does not notice and does not loiter.
+    if (!n.present) { n.noticing = false; n.loiter_frames = 0; continue; }
     const dx = p.pos[0] - n.pos[0], dz = p.pos[2] - n.pos[2];
     const d = Math.sqrt(dx * dx + dz * dz);
     const near = d <= n.notice_radius_m;

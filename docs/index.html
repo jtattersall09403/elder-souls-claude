@@ -69,7 +69,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-07 13:47Z</div>
+  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-07 13:54Z</div>
   <nav role="tablist">
     <button role="tab" id="t-blog" aria-selected="true" aria-controls="p-blog">Blog</button>
     <button role="tab" id="t-prog" aria-selected="false" aria-controls="p-prog">Build status</button>
@@ -449,10 +449,10 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 <div class="grid">
   <div class="card"><div class="n">144</div><div class="l">Reference items</div></div>
   <div class="card"><div class="n">471</div><div class="l">Subsystems judged</div></div>
-  <div class="card"><div class="n">39</div><div class="l">Verdicts filed</div></div>
-  <div class="card"><div class="n bad">0/39</div><div class="l">Verdicts passing</div></div>
+  <div class="card"><div class="n">25</div><div class="l">Verdicts filed</div></div>
+  <div class="card"><div class="n bad">0/25</div><div class="l">Verdicts passing</div></div>
   <div class="card"><div class="n warn">25</div><div class="l">Open gaps</div></div>
-  <div class="card"><div class="n">124,204</div><div class="l">Game LOC</div></div>
+  <div class="card"><div class="n">124,801</div><div class="l">Game LOC</div></div>
   <div class="card"><div class="n">56</div><div class="l">Quests</div></div>
   <div class="card"><div class="n">2,778</div><div class="l">Dialogue words</div></div>
   <div class="card"><div class="n ok">0/0</div><div class="l">Bar gates met</div></div>
@@ -486,16 +486,16 @@ table.sc-tbl td.d{color:var(--ink)}
 </style>
 <div class="sc" id="sc">
   <div class="sc-kpi">
-    <div class="card"><div class="n">3.5</div><div class="l">Mean latest score</div></div>
-    <div class="card"><div class="n">0/7</div><div class="l">Domains at the wave-1 gate</div></div>
-    <div class="card"><div class="n">19</div><div class="l">Verdicts filed</div></div>
-    <div class="card"><div class="n">6.5</div><div class="l">Mean distance to 10</div></div>
+    <div class="card"><div class="n">3.4</div><div class="l">Mean latest score</div></div>
+    <div class="card"><div class="n">0/12</div><div class="l">Domains at the wave-1 gate</div></div>
+    <div class="card"><div class="n">25</div><div class="l">Verdicts filed</div></div>
+    <div class="card"><div class="n">6.6</div><div class="l">Mean distance to 10</div></div>
   </div>
   <div class="sc-bar">
     <button id="sc-b-small" aria-pressed="true">Per domain</button>
     <button id="sc-b-over" aria-pressed="false">All together</button>
     <button id="sc-b-tbl" aria-pressed="false">Table</button>
-    <span class="sc-note">Each point is one critic verdict. The gold line is the wave-1 pass mark of 7; the target is 10 everywhere. Every line starts at zero, because before a domain's first verdict nothing had been measured; that opening run-in is dashed since nobody took a reading across it. Scores can fall as well as rise — a later critic often measures something the earlier one could not, or finds an earlier score was given too generously. This page redraws on every verdict either way.</span>
+    <span class="sc-note">A dot appears every time a critic files a verdict. Its height is that domain's score at that moment — the average across every part of the domain that has been judged so far, using each part's most recent mark. So a dot can move the line down either because a part got worse or because a weaker part reported for the first time; hover a dot to see which verdict moved it and what that verdict scored on its own. The gold line is the wave-1 pass mark of 7 and the target is 10 everywhere. Every line starts at zero, because before a domain's first verdict nothing had been measured; that opening run-in is dashed since nobody took a reading across it. Scores fall as well as rise, and the page redraws either way — a later critic often measures something the earlier one could not, or finds an earlier mark was given too generously.</span>
   </div>
   <div id="sc-small" class="sc-grid"></div>
   <div id="sc-over" class="sc-big sc-hide"></div>
@@ -519,14 +519,20 @@ table.sc-tbl td.d{color:var(--ink)}
     <tr><td class="d">Weapons</td><td><code>W1-10</code></td><td>1</td><td>08-07 08:40Z</td><td>3</td><td class="bad">FAIL</td></tr>
     <tr><td class="d">Magic</td><td><code>W1-14</code></td><td>3</td><td>08-07 09:05Z</td><td>4.6</td><td class="bad">FAIL</td></tr>
     <tr><td class="d">Character &amp; opening</td><td><code>W1-07</code></td><td>3</td><td>08-07 09:10Z</td><td>0.9</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Engine &amp; harness</td><td><code>W1-SAVE</code></td><td>1</td><td>08-07 11:05Z</td><td>2</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Quests</td><td><code>W1-19</code></td><td>1</td><td>08-07 12:20Z</td><td>4</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Death &amp; progression</td><td><code>W1-13</code></td><td>1</td><td>08-07 12:50Z</td><td>4</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">The first hour</td><td><code>W1-26</code></td><td>1</td><td>08-07 13:20Z</td><td>1.3</td><td class="bad">FAIL</td></tr>
     <tr><td class="d">The world</td><td><code>W1-01</code></td><td>1</td><td>08-07 13:35Z</td><td>5</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Controls &amp; interface</td><td><code>W1-08</code></td><td>1</td><td>08-07 13:40Z</td><td>5</td><td class="bad">FAIL</td></tr>
+    <tr><td class="d">Lore &amp; the library</td><td><code>W1-LIBRARY</code></td><td>1</td><td>08-07 13:40Z</td><td>3</td><td class="bad">FAIL</td></tr>
     </tbody></table>
   </div>
   <div class="sc-tip" id="sc-tip"></div>
 </div>
 <script>
 (function(){
-  var D=[{"name":"Character & opening","colour":"#3987e5","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.3127147766323024,"y":1.5,"round":1,"piece":"W1-07","status":"fail","when":"20:55Z","day":"08-06"},{"x":0.4261168384879725,"y":3.8,"round":2,"piece":"W1-07","status":"fail","when":"23:40Z","day":"08-06"},{"x":0.8178694158075601,"y":0.9,"round":3,"piece":"W1-07","status":"fail","when":"09:10Z","day":"08-07"}]},{"name":"Combat","colour":"#d95926","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.23711340206185566,"y":4,"round":1,"piece":"W1-09","status":"fail","when":"19:05Z","day":"08-06"},{"x":0.3402061855670103,"y":4,"round":2,"piece":"W1-09","status":"fail","when":"21:35Z","day":"08-06"},{"x":0.3951890034364261,"y":4,"round":3,"piece":"W1-09","status":"fail","when":"22:55Z","day":"08-06"}]},{"name":"Engine & harness","colour":"#199e70","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0,"y":3,"round":1,"piece":"W1-00","status":"fail","when":"13:20Z","day":"08-06"},{"x":0.07216494845360824,"y":4.1,"round":2,"piece":"W1-00","status":"fail","when":"15:05Z","day":"08-06"}]},{"name":"Magic","colour":"#c98500","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.32989690721649484,"y":2.7,"round":1,"piece":"W1-14","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.44329896907216493,"y":4.4,"round":2,"piece":"W1-14","status":"fail","when":"00:05Z","day":"08-07"},{"x":0.8144329896907216,"y":4.6,"round":3,"piece":"W1-14","status":"fail","when":"09:05Z","day":"08-07"}]},{"name":"Stealth & crime","colour":"#d55181","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.32989690721649484,"y":2,"round":1,"piece":"W1-15","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.4879725085910653,"y":3,"round":1,"piece":"W1-15","status":"fail","when":"01:10Z","day":"08-07"}]},{"name":"The world","colour":"#008300","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.20618556701030927,"y":3.1,"round":1,"piece":"W1-01","status":"fail","when":"18:20Z","day":"08-06"},{"x":0.3402061855670103,"y":3.5,"round":2,"piece":"W1-01","status":"fail","when":"21:35Z","day":"08-06"},{"x":1,"y":5,"round":1,"piece":"W1-01","status":"fail","when":"13:35Z","day":"08-07"}]},{"name":"Weapons","colour":"#9085e9","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.32989690721649484,"y":0,"round":1,"piece":"W1-10","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.44329896907216493,"y":2,"round":2,"piece":"W1-10","status":"fail","when":"00:05Z","day":"08-07"},{"x":0.7972508591065293,"y":3,"round":1,"piece":"W1-10","status":"fail","when":"08:40Z","day":"08-07"}]}], GATE=7, TARGET=10;
+  var D=[{"name":"Character & opening","colour":"#3987e5","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.3116438356164384,"y":1.5,"round":1,"raw":1.5,"pieces":1,"piece":"W1-07","status":"fail","when":"20:55Z","day":"08-06"},{"x":0.4246575342465753,"y":3.8,"round":2,"raw":3.8,"pieces":1,"piece":"W1-07","status":"fail","when":"23:40Z","day":"08-06"},{"x":0.815068493150685,"y":0.9,"round":3,"raw":0.9,"pieces":1,"piece":"W1-07","status":"fail","when":"09:10Z","day":"08-07"}]},{"name":"Combat","colour":"#d95926","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.2363013698630137,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-09","status":"fail","when":"19:05Z","day":"08-06"},{"x":0.339041095890411,"y":4,"round":2,"raw":4,"pieces":1,"piece":"W1-09","status":"fail","when":"21:35Z","day":"08-06"},{"x":0.3938356164383562,"y":4,"round":3,"raw":4,"pieces":1,"piece":"W1-09","status":"fail","when":"22:55Z","day":"08-06"}]},{"name":"Controls & interface","colour":"#199e70","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":1,"y":5,"round":1,"raw":5,"pieces":1,"piece":"W1-08","status":"fail","when":"13:40Z","day":"08-07"}]},{"name":"Death & progression","colour":"#c98500","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.9660045662100457,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-13","status":"fail","when":"12:50Z","day":"08-07"}]},{"name":"Engine & harness","colour":"#d55181","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-00","status":"fail","when":"13:20Z","day":"08-06"},{"x":0.07191780821917808,"y":4.1,"round":2,"raw":4.1,"pieces":1,"piece":"W1-00","status":"fail","when":"15:05Z","day":"08-06"},{"x":0.8938356164383562,"y":3.05,"round":1,"raw":2,"pieces":2,"piece":"W1-SAVE","status":"fail","when":"11:05Z","day":"08-07"}]},{"name":"Lore & the library","colour":"#008300","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":1,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-LIBRARY","status":"fail","when":"13:40Z","day":"08-07"}]},{"name":"Magic","colour":"#9085e9","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.3287671232876712,"y":2.7,"round":1,"raw":2.7,"pieces":1,"piece":"W1-14","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.4417808219178082,"y":4.4,"round":2,"raw":4.4,"pieces":1,"piece":"W1-14","status":"fail","when":"00:05Z","day":"08-07"},{"x":0.8116438356164384,"y":4.6,"round":3,"raw":4.6,"pieces":1,"piece":"W1-14","status":"fail","when":"09:05Z","day":"08-07"}]},{"name":"Quests","colour":"#3987e5","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.9452054794520548,"y":4,"round":1,"raw":4,"pieces":1,"piece":"W1-19","status":"fail","when":"12:20Z","day":"08-07"}]},{"name":"Stealth & crime","colour":"#d95926","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.3287671232876712,"y":2,"round":1,"raw":2,"pieces":1,"piece":"W1-15","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.4863013698630137,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-15","status":"fail","when":"01:10Z","day":"08-07"}]},{"name":"The first hour","colour":"#199e70","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.9863013698630136,"y":1.3,"round":1,"raw":1.3,"pieces":1,"piece":"W1-26","status":"fail","when":"13:20Z","day":"08-07"}]},{"name":"The world","colour":"#c98500","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.2054794520547945,"y":3.1,"round":1,"raw":3.1,"pieces":1,"piece":"W1-01","status":"fail","when":"18:20Z","day":"08-06"},{"x":0.339041095890411,"y":3.5,"round":2,"raw":3.5,"pieces":1,"piece":"W1-01","status":"fail","when":"21:35Z","day":"08-06"},{"x":0.9965753424657534,"y":5,"round":1,"raw":5,"pieces":1,"piece":"W1-01","status":"fail","when":"13:35Z","day":"08-07"}]},{"name":"Weapons","colour":"#d55181","pts":[{"x":0,"y":0,"origin":true,"round":0,"piece":"","status":"","when":"","day":""},{"x":0.3287671232876712,"y":0,"round":1,"raw":0,"pieces":1,"piece":"W1-10","status":"fail","when":"21:20Z","day":"08-06"},{"x":0.4417808219178082,"y":2,"round":2,"raw":2,"pieces":1,"piece":"W1-10","status":"fail","when":"00:05Z","day":"08-07"},{"x":0.7945205479452054,"y":3,"round":1,"raw":3,"pieces":1,"piece":"W1-10","status":"fail","when":"08:40Z","day":"08-07"}]}], GATE=7, TARGET=10;
   var tip=document.getElementById('sc-tip');
   var NS='http://www.w3.org/2000/svg';
   function el(n,a){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);return e;}
@@ -560,7 +566,7 @@ table.sc-tbl td.d{color:var(--ink)}
       if(p.origin) return;                       // the origin is a starting condition, not a data point
       var c=el('circle',{cx:pts[i][0],cy:pts[i][1],r:thin?4.5:5,fill:colour,stroke:'#1b1813','stroke-width':2});
       c.style.cursor='pointer';
-      c.addEventListener('mousemove',function(e){showTip(e,'<b>'+s.name+'</b><br>'+p.piece+' round '+p.round+'<br>score <b>'+p.y+'</b> / 10<br><span style="color:#9a8f79">'+p.day+' '+p.when+'</span>');});
+      c.addEventListener('mousemove',function(e){showTip(e,'<b>'+s.name+'</b> <b>'+p.y+'</b> / 10<br><span style="color:#9a8f79">mean of '+p.pieces+' piece'+(p.pieces===1?'':'s')+' measured so far</span><br>moved by '+p.piece+' round '+p.round+', which scored '+p.raw+'<br><span style="color:#9a8f79">'+p.day+' '+p.when+'</span>');});
       c.addEventListener('mouseleave',hideTip);
       g.appendChild(c);
     });
@@ -608,7 +614,7 @@ table.sc-tbl td.d{color:var(--ink)}
     svg.appendChild(tx);
   });
   var xl=el('text',{x:L,y:H-4,fill:'#9a8f79','font-size':10});xl.textContent='08-06 13:20Z';svg.appendChild(xl);
-  var xr=el('text',{x:W-R,y:H-4,fill:'#9a8f79','font-size':10,'text-anchor':'end'});xr.textContent='08-07 13:35Z';svg.appendChild(xr);
+  var xr=el('text',{x:W-R,y:H-4,fill:'#9a8f79','font-size':10,'text-anchor':'end'});xr.textContent='08-07 13:40Z';svg.appendChild(xr);
   big.appendChild(svg);
   var lg=document.createElement('div');lg.className='sc-legend';
   lg.innerHTML=D.map(function(s){return '<span><span class="k" style="background:'+s.colour+'"></span>'+s.name+'</span>';}).join('')+
@@ -870,20 +876,6 @@ table.sc-tbl td.d{color:var(--ink)}
 <tr><td>1</td><td>w1-26-r1</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
 <tr><td>1</td><td>w1-library-books-and-the-reading-surface</td><td><code></code></td><td class="bad">fail</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
 <tr><td>1</td><td>W1-SAVE-r1</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem">[object Object]</div></td></tr>
-<tr><td></td><td>W1-14</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
-<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
-<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
-<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
-<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
-<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
-<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
-<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
-<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
-<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
-<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
-<tr><td></td><td>W1-15</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
-<tr><td></td><td>w1-19</td><td><code></code></td><td class="bad"></td><td class="gapq"><div class="rem"></div></td></tr>
-<tr><td></td><td>W1-26</td><td><code></code></td><td class="bad">FAIL</td><td class="gapq"><div class="rem"></div></td></tr>
 </table>
 
 <h2>Open gap ledger</h2>
@@ -917,7 +909,7 @@ table.sc-tbl td.d{color:var(--ink)}
 
 <h2>Content built</h2>
 <table><tr><th>Metric</th><th>Count</th></tr>
-<tr><td>files</td><td>370</td></tr>
+<tr><td>files</td><td>496</td></tr>
 <tr><td>quests</td><td>56</td></tr>
 <tr><td>npcs</td><td>8</td></tr>
 <tr><td>topics</td><td>0</td></tr>

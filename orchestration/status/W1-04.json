@@ -2,7 +2,7 @@
   "task_id": "W1-04",
   "brief": "docs/PLAN.md \u00a73 W1-04 \u2014 Settlements, interiors and the people in them",
   "started": "wave-1",
-  "state": "researching",
+  "state": "writing",
   "paths": [
     "world.settlement.anatomy",
     "world.interior.named",
@@ -22,7 +22,12 @@
     "docs/shots/<dated>.png via tools/capture/",
     "reports/blog-feed.jsonl line"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "reports/w1-04-survey.md",
+    "tools/world/build-settlements.mjs",
+    "game/data/world/settlements/*.json (8)",
+    "game/data/world/interiors/*.json (112)"
+  ],
   "findings": [
     "JUDGING SET RECONCILED. PLAN lists 20 items; only 11 of them name any of my 9 dotted paths in judges: front-matter (RI-AI07 npc.population, RI-CAM05 interior.named, RI-CHR02 faction.presence, RI-CRM01 persistence.state, RI-DLG02 settlement.anatomy, RI-DLG03 persistence.state, RI-LOR06 settlement.anatomy, RI-STL02 locks.security+property.ownership, RI-TRV01 settlement.anatomy, RI-WLD08 npc.population+npc.schedule, RI-WLD13 interior.continuity). The other 9 (RI-LOR01/02/04, RI-PRG03, RI-QST03/07/08, RI-WLD03, RI-WLD07) judge COARSE legacy path names: world.settlements, world.interiors, npc.population, npc.services, quest.hubs, world.locks, world.property, world.settlement.content, world.factions. So the item set must be assembled by mapping coarse->fine, not by exact string match. RI-WLD03 (the settlement-anatomy bar, blind_pair:yes) is in the coarse group and is the single most load-bearing item for this piece.",
     "SURVEY, as shipped: game/data/world/settlements/ contains ONE file (thorn.json). game/data/world/interiors/ contains TWO (thorn-hall.json, writ-house.json). game/data/world/property/ contains EIGHT (all 8 settlements named). So 1 of 8 settlements exists as a settlement record, and 2 interiors exist against a wave-3 floor of 250. thorn.json carries an explicit declared_incomplete block naming W1-04 as owner.",
@@ -34,9 +39,22 @@
     "env.settlement is WRITTEN BY NOTHING in the world. It exists in makeEnvironment(), is read by sim/quest/topic-supply.js (rumours keyed per town, RI-DLG02) and by engine.js:1517, and the only writer is loadState's patch. Walking into a town does not tell the world you are in it.",
     "TOPIC GATE CHECK (the brief's explicit rule): after slug-normalisation, 9 of 116 topic ids on NPC records do not exist in game/data/dialogue/topics/: lukiul, my-work, the-chapter-s-vote, the-hold, the-interior-s-consent, the-ledger-s-terms, the-list, the-writ, your-hatch-name.",
     "BASELINES BEFORE MY CHANGES, all three green: tools/check-data.mjs exit 0 (366 files indexed), tools/check-content.mjs exit 0, tools/harness/boot-check.mjs exit 0.",
-    "Population census as shipped: 76 NPC records across 6 files, spread over 10 settlements + 2 region-level buckets + 13 with settlement=null. Against the wave-3 floor of 269. Settlement records: 1 of 8."
+    "Population census as shipped: 76 NPC records across 6 files, spread over 10 settlements + 2 region-level buckets + 13 with settlement=null. Against the wave-3 floor of 269. Settlement records: 1 of 8.",
+    "AUTHORED: 8 settlements, 112 named interiors, every tier's named_interiors target hit EXACTLY (26/18/18/12/12/12/7/7) and enterable_pct above target in all eight (70-81.3 vs 64-70). M14 mesh overlap between kits is 0%. Each interior binds `property_zones` to the zones the crime system ALREADY reads, so an interior is a door onto rooms takeObject()/lockBegin() already govern rather than a parallel world."
   ],
-  "files_i_am_editing": [],
-  "next_step": "write reports/w1-04-survey.md, then author 7 missing settlement records",
+  "files_i_am_editing": [
+    "game/data/world/settlements/*",
+    "game/data/world/interiors/*",
+    "game/data/npcs/pop-*.json",
+    "game/data/dialogue/topics/60-settlements.json",
+    "game/src/sim/settlement.js (new)",
+    "game/src/sim/npc.js",
+    "game/src/sim/step.js",
+    "game/src/engine.js (settlement/interior API only)",
+    "tools/world/build-settlements.mjs",
+    "tools/world/build-population.mjs",
+    "tools/world/w1-04-*.mjs"
+  ],
+  "next_step": "promote the property roster into NPC records with schedules; then build the live consumers",
   "notes_for_successor": "Phase 1 = authoring, no browser. Phase 2 = verification only. Coordinate with W1-FACTIONS on NPC records."
 }

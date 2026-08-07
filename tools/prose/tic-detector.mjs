@@ -130,9 +130,11 @@ export function ourCorpus() {
 
   for (const f of walkFiles(path.join(ROOT, 'game/data/books'))) {
     const d = readJSON(f);
-    for (const b of d.books || []) {
+    // both shipping schemas: book@2 (doc.books[]) and book@1 (the whole file is one book)
+    const recs = Array.isArray(d.books) ? d.books : d.id && d.text ? [d] : [];
+    for (const b of recs) {
       if (typeof b.text === 'string' && b.text.trim())
-        reg.books.push({ id: b.id, file: path.relative(ROOT, f), text: normalise(b.text) });
+        reg.books.push({ id: b.id, file: path.relative(ROOT, f), text: normalise(b.text), raw: b.text });
     }
   }
 
@@ -140,7 +142,7 @@ export function ourCorpus() {
     const d = readJSON(f);
     const rel = path.relative(ROOT, f);
     const push = (id, t) => {
-      if (typeof t === 'string' && t.trim()) reg.dialogue.push({ id, file: rel, text: normalise(t) });
+      if (typeof t === 'string' && t.trim()) reg.dialogue.push({ id, file: rel, text: normalise(t), raw: t });
     };
     for (const t of d.topics || []) for (const [i, inf] of (t.infos || []).entries()) push(`${t.id}#${i}`, inf.x);
     for (const [i, g] of (d.greetings || []).entries()) push(g.id || `greet${i}`, g.x);
@@ -161,31 +163,31 @@ export function ourCorpus() {
     const d = readJSON(f);
     for (const n of d.npcs || [])
       if (n.lines?.greeting)
-        reg.dialogue.push({ id: `npc:${n.id}`, file: path.relative(ROOT, f), text: normalise(n.lines.greeting) });
+        reg.dialogue.push({ id: `npc:${n.id}`, file: path.relative(ROOT, f), text: normalise(n.lines.greeting), raw: n.lines.greeting });
   }
   for (const f of walkFiles(path.join(ROOT, 'game/data/world'))) {
     const d = readJSON(f);
     for (const m of d.mysteries || [])
       for (const [i, r] of (m.refusals || []).entries())
-        if (r.x) reg.dialogue.push({ id: `refusal:${m.id}#${i}`, file: path.relative(ROOT, f), text: normalise(r.x) });
+        if (r.x) reg.dialogue.push({ id: `refusal:${m.id}#${i}`, file: path.relative(ROOT, f), text: normalise(r.x), raw: r.x });
   }
 
   for (const f of walkFiles(path.join(ROOT, 'game/data/quests'))) {
     const d = readJSON(f);
     for (const q of d.quests || [])
       for (const [i, j] of (q.journal || []).entries())
-        if (j.text) reg.journal.push({ id: `${q.id}#${j.stage ?? i}`, file: path.relative(ROOT, f), text: normalise(j.text) });
+        if (j.text) reg.journal.push({ id: `${q.id}#${j.stage ?? i}`, file: path.relative(ROOT, f), text: normalise(j.text), raw: j.text });
   }
 
   for (const f of walkFiles(path.join(ROOT, 'game/data/items'))) {
     const d = readJSON(f);
     for (const it of d.items || [])
-      if (it.description) reg.item.push({ id: it.id, file: path.relative(ROOT, f), text: normalise(it.description) });
+      if (it.description) reg.item.push({ id: it.id, file: path.relative(ROOT, f), text: normalise(it.description), raw: it.description });
   }
   for (const f of walkFiles(path.join(ROOT, 'game/data/weapons'))) {
     const d = readJSON(f);
     for (const w of d.weapons || [])
-      if (w.line) reg.item.push({ id: w.id, file: path.relative(ROOT, f), text: normalise(w.line) });
+      if (w.line) reg.item.push({ id: w.id, file: path.relative(ROOT, f), text: normalise(w.line), raw: w.line });
   }
   return reg;
 }
@@ -596,7 +598,7 @@ function selfTest() {
 
   // 8. our corpus must be non-empty in every register
   const ours = ourCorpus();
-  ok &= assert(ours.books.length >= 60, `our books extracted (${ours.books.length})`);
+  ok &= assert(ours.books.length >= 65, `our books extracted (${ours.books.length})`);
   ok &= assert(ours.dialogue.length >= 500, `our dialogue extracted (${ours.dialogue.length} lines)`);
   ok &= assert(ours.journal.length >= 200, `our journal extracted (${ours.journal.length} entries)`);
   ok &= assert(ours.item.length >= 20, `our item text extracted (${ours.item.length})`);
@@ -625,10 +627,25 @@ function main() {
     const rule = rules.find((r) => r.id === id || r.name === id);
     if (!rule) { console.error(`no such rule: ${id}`); return 2; }
     const ours = ourCorpus();
+    const seen = new Set();
     for (const d of ours[reg] || []) {
-      for (const m of matchesFor(rule, d.text)) {
-        const s = sentences(d.text).find((x) => x.includes(m.text)) || d.text.slice(Math.max(0, m.index - 90), m.index + 120);
-        console.log(`${d.file}\t${d.id}\t${s}`);
+      const src = d.raw ?? d.text;
+      for (const m of matchesFor(rule, src)) {
+        // locate the sentence by OFFSET, not by substring search: "eleventh" contains "eleven" and
+        // an includes() lookup silently attributes a hit to the wrong sentence.
+        let s = null;
+        let at = 0;
+        for (const cand of sentences(src)) {
+          const i = src.indexOf(cand, at);
+          if (i < 0) continue;
+          at = i + cand.length;
+          if (m.index >= i && m.index < at) { s = cand; break; }
+        }
+        if (!s) s = src.slice(Math.max(0, m.index - 90), m.index + 120);
+        const key = `${d.file}\u0000${s}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        console.log(`${d.file}\t${d.id}\t${s.replace(/\n/g, ' ')}`);
       }
     }
     return 0;

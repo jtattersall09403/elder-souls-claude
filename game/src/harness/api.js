@@ -991,6 +991,35 @@ export function installHarness(engine, bootPromise) {
     closeWrit() { return engine.closeWrit(); },
     getWritReaderState() { return engine.getWritReaderState(); },
 
+    /**
+     * W1-05 / RI-WLD06 L2. READ the signpost you are standing at, through the same reach the
+     * player's `interact` press uses, and draw it. Note that this is the harness *seam*, not
+     * the harness *proof*: RI-MTH07 §B1 rules a harness return value an observer and not a
+     * consumer, so a probe that only calls `signRead()` has measured `signRead()`. The
+     * observable that counts is the drawn panel (`getUIState().rendered_text`) and the drawn
+     * post in the scene graph (`sceneCensus()` names them `signpost:<id>`).
+     */
+    signRead() { return engine.signRead(); },
+    signClose() { return engine.signClose(); },
+    getSignReaderState() { return engine.getSignReaderState(); },
+    /**
+     * Every post in the build, with the arm bearings, so a critic can run RI-WLD06 M28 without
+     * re-reading the data file — and so the M28.3 bearing check is asked of what the engine
+     * loaded rather than of what is on disk.
+     */
+    listSignposts() {
+      const f = engine.field;
+      if (!f || !f.signs) return { present: false, signposts: [] };
+      return {
+        present: true, count: f.signs.length,
+        signposts: f.signs.map((s) => ({
+          id: s.id, kind: s.kind, style: s.style, legible: s.legible, road_class: s.road_class,
+          x: s.x, z: s.z, region: s.region, lines: s.lines,
+          arms: s.arms.map((a) => ({ name: a.name, to: a.to, compass: a.compass, bearing_deg: a.bearing_deg, along_deg: a.along_deg, path_m: a.path_m })),
+        })),
+      };
+    },
+
     /** Disposition with the race and upbringing terms in front of it (RI-CHR02 §4a). */
     getReaction(q) { return engine.getReaction(q || {}); },
     /** The standing surcharge and a quoted price (RI-CHR02 §4b). */
@@ -1415,6 +1444,42 @@ export function installHarness(engine, bootPromise) {
      * drives the same ladder play drives.
      */
     getFactionStanding() { return JSON.parse(JSON.stringify(engine.sim.quest.factions)); },
+    /**
+     * W1-FACTIONS. The rank ladders, the DECLARED exclusivity, and the exclusions that are
+     * biting RIGHT NOW — the derived rank the ladder gives this character in every faction, and
+     * which factions that closes.
+     *
+     * It exists because `FactionGates.closedBy()` had no caller anywhere in `game/src/` and
+     * `rivalry_locked` was initialised on every standing row and never written: the whole
+     * mutual-exclusion model was unreadable from the running world, which is `RI-MTH07` /
+     * ARBITRATION §3's "a correct, instrumented model that nothing in the running world reads".
+     * `QuestEngine.context()` is now that reader; this is how a probe sees what it decided.
+     */
+    factionGates() {
+      if (!engine.factionGates) return { _declared_incomplete: 'no faction gates' };
+      const g = engine.factionGates;
+      const ctx = engine.questEngine ? engine.questEngine.context() : null;
+      return {
+        factions: g.ids().map((id) => {
+          const f = g.get(id);
+          return {
+            id, name: f.name,
+            favoured_attributes: f.favoured_attributes.slice(),
+            favoured_skills: f.favoured_skills.slice(),
+            ranks: f.ranks.map((r) => ({ ...r })),
+            closes: g.closedBy(id),
+            derived_rank: ctx ? (ctx.ranks[id] || 0) : null,
+            reputation: ctx ? (ctx.reputation[id] || 0) : 0,
+            // The whole four-part statement for the NEXT rank, with this character's own
+            // numbers in it, so a UI never has to invent a requirement or a shortfall.
+            next_rank_terms: ctx ? g.evaluate(id, Math.min(7, (ctx.ranks[id] || 0) + 1), ctx) : null,
+          };
+        }),
+        declared_exclusivity: JSON.parse(JSON.stringify(g.exclusivity)),
+        rivalry_locked_now: ctx ? [...(ctx.rivalry_locked || [])].sort() : [],
+        quests_locked_by_rivalry: ctx ? [...ctx.lockedReason.entries()].map(([quest, why]) => ({ quest, why })) : [],
+      };
+    },
     setFactionStanding(id, patch) {
       const f = String(id);
       const q = engine.sim.quest;

@@ -282,13 +282,26 @@ export function writRecord(state) {
 
 export function buildCensusModel(data, state, surface, npcRecord) {
   if (!state || state.done) return null;
+  // NOBODY IS TALKING, SO THERE IS NO PANEL.
+  //
+  // A paused node is `RI-JRN01` O6's hand-back: the player has the body and the scene is waiting
+  // for them to do something in the world. There is nothing being asked and nothing being said,
+  // so drawing a vellum panel over the bottom half of the hold would be a dialogue surface open
+  // on an empty conversation — and it would put `state.awaiting` on the frame.
+  //
+  // `awaiting` is a DEVELOPER'S SENTENCE. It reads "the player crosses the hold and speaks to
+  // her. Nothing is asked until they do. RI-JRN01 O6." — a corpus reference, in italics, in the
+  // player's dialogue box. It was drawn there for exactly one build, it was caught by looking at
+  // a screenshot rather than by any measurement in this round, and it would have been an
+  // instruction leak (`RI-JRN01` M9, AR-2) as well as simply embarrassing. `awaiting` belongs in
+  // `getCensusState()`, where a probe reads it; it must never reach a draw call.
+  if (state.paused) return null;
   const place = CENSUS_PLACES[placeOfNode(state)] || CENSUS_PLACES['writ-house'];
   const kind = state.input ? state.input.kind : null;
   const asking = kind === 'questionnaire' && state.question && state.question.text;
 
   let aside = null;
   if (surface.refusal) aside = `She will not write that down: ${surface.refusal}`;
-  else if (state.awaiting) aside = state.awaiting;
   else if (kind === 'pick') {
     const want = surface.pickCount(state);
     const have = surface.picked.length;

@@ -142,7 +142,12 @@ function num(v) { return Number.isFinite(v) ? v : 0; }
 export function canOffer(def, ctx, gates) {
   const why = [];
   if (ctx.completed && ctx.completed.has(def.id)) why.push('already completed');
-  if (ctx.locked && ctx.locked.has(def.id)) why.push('closed by an earlier choice');
+  // RI-QST03 §C: a lockout must be LEGIBLE — "a locked faction's members still speak one line
+  // explaining why they will not deal with the player". `lockedReason` carries that line for a
+  // rivalry lock; a lock from a quest consequence has no rival to name and keeps the old wording.
+  if (ctx.locked && ctx.locked.has(def.id)) {
+    why.push((ctx.lockedReason && ctx.lockedReason.get(def.id)) || 'closed by an earlier choice');
+  }
   for (const other of def.mutually_exclusive_with || []) {
     if (ctx.completed && ctx.completed.has(other)) why.push(`mutually exclusive with ${other}, which is done`);
   }

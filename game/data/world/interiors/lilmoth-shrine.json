@@ -1,0 +1,149 @@
+{
+ "schema": "elder-souls/interior@1",
+ "id": "lilmoth-shrine",
+ "name": "The Tideline Hist-Shrine",
+ "settlement": "lilmoth",
+ "cell_kind": "named",
+ "interior_kind": "shrine",
+ "service": "bonfire",
+ "faction": "rootkeepers",
+ "exterior_door": [
+  2754.4,
+  0.37,
+  5062.47
+ ],
+ "continuity": {
+  "building": "lilmoth-shrine",
+  "building_offset_m": [
+   -12.1,
+   -2.4,
+   34.97
+  ],
+  "building_yaw_deg": 0,
+  "exterior_footprint_m": [
+   11.2,
+   13.2
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   5.4
+  ],
+  "exterior_spawn": [
+   2754.4,
+   0.37,
+   5064.27
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -5.6,
+   5.6
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.6,
+   6.6
+  ]
+ },
+ "floor_area_m2": 147.8,
+ "light": {
+  "kind": "hearth",
+  "pos": [
+   0,
+   0.6,
+   2.64
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "lilmoth.legionary10.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 1.4,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "lilmoth.legionary10.r0.lamp0",
+   "pos": [
+    -3.2,
+    1.6,
+    -4.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "lilmoth.legionary10.r0.lamp1",
+   "pos": [
+    1.9000000000000004,
+    1.6,
+    -4.3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "lilmoth.legionary10.r0.lamp2",
+   "pos": [
+    0,
+    1.6,
+    4.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "sap_tap",
+  "root_kerb",
+  "kneel_root",
+  "votive_rag",
+  "offering_shelf",
+  "lamp_votive",
+  "bark_strip",
+  "tally_brass",
+  "water_stoup",
+  "bench_row",
+  "sapling_pot",
+  "ash_tray",
+  "wind_chime",
+  "stone_marker",
+  "lil_sunk_facade",
+  "lil_drowned_window",
+  "lil_stilt_platform",
+  "lil_reed_shack"
+ ],
+ "property_zones": [
+  "lilmoth.legionary10.r0"
+ ],
+ "containers": [],
+ "unique_item": {
+  "id": "lilmoth-shrine-unique",
+  "name": "a sapling planted above the waterline",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:lilmoth-legionary-10"
+ },
+ "readable": {
+  "id": "lilmoth-shrine-readable",
+  "title": "Above The Line"
+ },
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19
+}

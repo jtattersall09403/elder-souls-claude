@@ -1,0 +1,185 @@
+{
+ "schema": "elder-souls/interior@1",
+ "id": "gideon-rootpost",
+ "name": "The Gideon Rootpost",
+ "settlement": "gideon",
+ "cell_kind": "named",
+ "interior_kind": "travel",
+ "service": "travel",
+ "faction": "rootkeepers",
+ "exterior_door": [
+  473,
+  2.72,
+  2920.5
+ ],
+ "continuity": {
+  "building": "gideon-rootpost",
+  "building_offset_m": [
+   34,
+   0,
+   7
+  ],
+  "building_yaw_deg": 0,
+  "exterior_footprint_m": [
+   12.4,
+   14.4
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   6
+  ],
+  "exterior_spawn": [
+   473,
+   2.72,
+   2922.3
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -6.2,
+   6.2
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.2,
+   7.2
+  ]
+ },
+ "floor_area_m2": 178.6,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.88
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "gideon.trader5.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "gideon.trader5.r1.lamp0",
+   "pos": [
+    -1,
+    1.6,
+    4.199999999999999
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "gideon.trader5.r1.lamp1",
+   "pos": [
+    -2.9,
+    1.6,
+    4.300000000000001
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "gideon.trader5.r1.lamp2",
+   "pos": [
+    2.8,
+    1.6,
+    4.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "gideon.smith10.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "gideon.smith10.r1.lamp0",
+   "pos": [
+    -1.7,
+    1.6,
+    0.5
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "gideon.smith10.r1.lamp1",
+   "pos": [
+    0.20000000000000018,
+    1.6,
+    0.40000000000000036
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "fare_board",
+  "root_socket",
+  "bench_wait",
+  "baggage_rail",
+  "ledger_stand",
+  "lamp_hanging",
+  "water_butt",
+  "rope_coil",
+  "tally_brass",
+  "stool_low",
+  "notice_board",
+  "map_table",
+  "sack_row",
+  "lantern_signal",
+  "gid_timber_frame",
+  "gid_tile_roof",
+  "gid_market_cross",
+  "gid_square_arcade"
+ ],
+ "property_zones": [
+  "gideon.trader5.r1",
+  "gideon.smith10.r1"
+ ],
+ "containers": [
+  "gideon.smith10.r1.6"
+ ],
+ "unique_item": {
+  "id": "gideon-rootpost-unique",
+  "name": "a fare table in Cyrodilic only",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:gideon-trader-5"
+ },
+ "readable": {
+  "id": "gideon-rootpost-readable",
+  "title": "Fares, Gideon"
+ },
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19
+}

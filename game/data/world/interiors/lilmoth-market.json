@@ -1,0 +1,177 @@
+{
+ "schema": "elder-souls/interior@1",
+ "id": "lilmoth-market",
+ "name": "The Sunk Market",
+ "settlement": "lilmoth",
+ "cell_kind": "named",
+ "interior_kind": "shop",
+ "service": "trader",
+ "faction": null,
+ "exterior_door": [
+  2790.9,
+  7.37,
+  5043.18
+ ],
+ "continuity": {
+  "building": "lilmoth-market",
+  "building_offset_m": [
+   24.4,
+   4.6,
+   15.68
+  ],
+  "building_yaw_deg": 0,
+  "exterior_footprint_m": [
+   12.4,
+   14.4
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   6
+  ],
+  "exterior_spawn": [
+   2790.9,
+   7.37,
+   5044.98
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -6.2,
+   6.2
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.2,
+   7.2
+  ]
+ },
+ "floor_area_m2": 178.6,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.88
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "lilmoth.priest6.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "lilmoth.priest6.r1.lamp0",
+   "pos": [
+    -3.5,
+    1.6,
+    -2.3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "lilmoth.priest6.r1.lamp1",
+   "pos": [
+    -1.6,
+    1.6,
+    -2.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "lilmoth.legionary13.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 1.4,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "lilmoth.legionary13.r0.lamp0",
+   "pos": [
+    -3.3,
+    1.6,
+    2.5
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "lilmoth.legionary13.r0.lamp1",
+   "pos": [
+    -1.4,
+    1.6,
+    2.4000000000000004
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "counter_long",
+  "shelf_stack",
+  "scale_brass",
+  "crate_sealed",
+  "ledger_stand",
+  "coin_tray",
+  "sack_row",
+  "hook_rail",
+  "lamp_hanging",
+  "stool_high",
+  "strongbox",
+  "sample_board",
+  "measure_jug",
+  "sweep_broom",
+  "lil_sunk_facade",
+  "lil_drowned_window",
+  "lil_stilt_platform",
+  "lil_reed_shack"
+ ],
+ "property_zones": [
+  "lilmoth.priest6.r1",
+  "lilmoth.legionary13.r0"
+ ],
+ "containers": [
+  "lilmoth.priest6.r1.1",
+  "lilmoth.priest6.r1.3",
+  "lilmoth.priest6.r1.5",
+  "lilmoth.priest6.r1.7"
+ ],
+ "unique_item": {
+  "id": "lilmoth-market-unique",
+  "name": "a moon-sugar tin with no seal",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:lilmoth-priest-6"
+ },
+ "readable": {
+  "id": "lilmoth-market-readable",
+  "title": "What The Landing Sells"
+ },
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19
+}

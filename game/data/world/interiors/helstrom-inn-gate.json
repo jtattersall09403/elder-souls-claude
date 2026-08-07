@@ -1,0 +1,102 @@
+{
+ "schema": "elder-souls/interior@1",
+ "id": "helstrom-inn-gate",
+ "name": "The Deep Gate House",
+ "settlement": "helstrom",
+ "cell_kind": "named",
+ "interior_kind": "tavern",
+ "service": "inn",
+ "faction": null,
+ "exterior_door": [
+  2259.21,
+  27.22,
+  2823.39
+ ],
+ "continuity": {
+  "building": "helstrom-inn-gate",
+  "building_offset_m": [
+   -3.29,
+   0,
+   49.89
+  ],
+  "building_yaw_deg": 176.2,
+  "exterior_footprint_m": [
+   10,
+   12
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   4.8
+  ],
+  "exterior_spawn": [
+   2259.21,
+   27.22,
+   2825.19
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -5,
+   5
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6,
+   6
+  ]
+ },
+ "floor_area_m2": 120,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.4
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [],
+ "props": [
+  "bar_long",
+  "bench_pair",
+  "table_round",
+  "barrel_row",
+  "tankard_shelf",
+  "hearth_open",
+  "bed_rentable",
+  "dice_cup",
+  "lamp_hanging",
+  "stair_narrow",
+  "keg_tap",
+  "cloak_hook",
+  "stew_pot",
+  "notice_board",
+  "hel_bole_arch",
+  "hel_grown_wall_a",
+  "hel_grown_wall_b",
+  "hel_shell_roof"
+ ],
+ "property_zones": [],
+ "containers": [],
+ "unique_item": {
+  "id": "helstrom-inn-gate-unique",
+  "name": "a bed the legation paid for",
+  "unique": true,
+  "takeable": true,
+  "owner": null
+ },
+ "readable": {
+  "id": "helstrom-inn-gate-readable",
+  "title": "Who Slept Here"
+ },
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 6,
+ "close_h": 26
+}

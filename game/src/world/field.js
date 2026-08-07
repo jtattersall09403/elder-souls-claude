@@ -116,6 +116,49 @@ export class WorldField {
   }
 
   /**
+   * Attach the signposts (W1-05, `RI-WLD06` L2).
+   *
+   * Seam S30 removed the surface a pin could go on. That makes the road signage the only thing
+   * left that tells a walker at a junction which way Gideon is, so a post is a WORLD OBJECT: it
+   * is drawn by `world/province.js#_signposts` per streamed tile and read by
+   * `Engine.signRead()` through the ordinary `interact` reach.
+   *
+   * Bucketed on the same 120 m grid the road segments use, because the only two questions ever
+   * asked of this set are "draw the ones in this 300 m tile" and "is there one within 3 m of the
+   * player", and a linear scan of 32 posts inside the fixed step is a linear scan of 32 posts
+   * inside the fixed step.
+   */
+  setSignposts(doc) {
+    this.signposts = doc || null;
+    this.signs = (doc && doc.signposts) || [];
+    this.signGrid = new Map();
+    for (const s of this.signs) {
+      const k = `${Math.floor(s.x / 120)},${Math.floor(s.z / 120)}`;
+      if (!this.signGrid.has(k)) this.signGrid.set(k, []);
+      this.signGrid.get(k).push(s);
+    }
+    return doc;
+  }
+
+  /** The nearest signpost to (x, z) within `r` metres, or null. Used by the `interact` reach. */
+  nearestSign(x, z, r = 3.0) {
+    if (!this.signs || !this.signs.length) return null;
+    let best = null, bd = r;
+    const cx = Math.floor(x / 120), cz = Math.floor(z / 120);
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        const bucket = this.signGrid.get(`${cx + i},${cz + j}`);
+        if (!bucket) continue;
+        for (const s of bucket) {
+          const d = Math.hypot(s.x - x, s.z - z);
+          if (d < bd) { bd = d; best = s; }
+        }
+      }
+    }
+    return best ? { sign: best, distance_m: +bd.toFixed(2) } : null;
+  }
+
+  /**
    * Attach the road network; roads carve a corridor into the ground (`RI-WLD01` §4).
    *
    * A DECK SPAN IS A STRUCTURE, NOT A BERM. Verdict W1-01 round 2: "the 21 declared `deck_spans` —

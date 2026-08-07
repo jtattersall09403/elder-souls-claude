@@ -386,9 +386,9 @@ function judge(rows, opts = {}) {
 // ---------------------------------------------------------------------------------------------
 if (args['self-test']) {
   let failed = 0;
-  // Flush as produced. R3: "--self-test did not complete in two attempts — once crashing with
-  // `Target page ... has been closed` at load 19, once still unfinished after ~28 minutes at
-  // load 5. A falsification a critic cannot re-run is a falsification on trust."
+  // Flush as produced. TOOL-COVERAGE-R3 §6: "--self-test did not complete in two attempts — once
+  // crashing with `Target page ... has been closed` at load 19, once still unfinished after ~28
+  // minutes at load 5. A falsification a critic cannot re-run is a falsification on trust."
   const ok = (name, pass, detail) => {
     process.stdout.write(`${pass ? 'PASS' : 'FAIL'} ${name} — ${detail}\n`);
     if (!pass) failed++;
@@ -399,16 +399,79 @@ if (args['self-test']) {
   // sweeps at the run's own --sim-frames. The falsification it performs — does the verdict flip
   // between a sound build and a broken one — is a property of the FIRST FEW FRAMES (the broken
   // build diverges at 61 steps vs 60), so a long sweep buys nothing and costs a critic the
-  // ability to check the work. Override with --self-test-frames if you want the long form.
+  // ability to check the work. Widen with --self-test-frames / --self-test-rates.
   const ST_FRAMES = Number.isFinite(Number(args['self-test-frames']))
     ? Number(args['self-test-frames']) : 60;
   const ST_RATES = args['self-test-rates'] ? String(args['self-test-rates']) : '60,0';
-  process.stdout.write(
-    `decoupling --self-test: capped at ${ST_FRAMES} steps/rate over rates [${ST_RATES}] ` +
-    `(--self-test-frames / --self-test-rates to widen). The verdict flip is visible at 60 steps; ` +
-    `R3 could not complete the uncapped form in two attempts.\n`);
 
-  const clean = await sweep(false, { simFrames: ST_FRAMES, rates: ST_RATES });
+  // =============================================================================================
+  // PART 1 — THE VERDICT GATE, BROWSER-FREE.
+  //
+  // TOOL-COVERAGE-R3 §6's defect is arithmetic over `judge()`, not a property of the engine, so
+  // it is falsified here over synthetic rows. This part runs on a loaded box, on a tree whose
+  // engine will not boot, and in CI — which is exactly the difference between a falsification a
+  // critic can re-run and one they have to take on trust.
+  // =============================================================================================
+  const synth = (steps, requested, hash, rate) => ({
+    render_rate_hz: rate, sim_steps_observed: steps, sim_steps_requested: requested,
+    body_sha256: hash, trace_records: steps, renders_observed: rate > 0 ? steps : 0, chunk_frames: 1,
+    m7: { player_x: 1, stamina: 2 },
+  });
+  const invariantRows = [synth(300, 300, 'aaa', 60), synth(300, 300, 'aaa', 0)];
+  const brokenRows = [synth(300, 300, 'aaa', 60), synth(301, 300, 'bbb', 0)];
+
+  // The shipped artifact of record, reconstructed: 300 steps, substituted scenario, pass:true.
+  const short = judge(invariantRows, { simFrames: 300, scenarioIsF3: false });
+  ok('R4: 300-of-3600 on a SUBSTITUTED scenario does NOT report pass:true (the R3 §6 defect)',
+    short.m6_step_count.invariance_holds === true && short.m6_step_count.pass === false &&
+    short.m6_step_count.meets_item_duration === false &&
+    short.m6_step_count.scenario_as_specified === false && !!short.m6_step_count.why_not_pass,
+    `invariance_holds=${short.m6_step_count.invariance_holds}, pass=${short.m6_step_count.pass}. ` +
+    'reports/platform/decoupling.json shipped "sim_frames_per_rate": 300, "m6_asks_for": 3600, ' +
+    '"pass": true on a 10-POINT item — the largest single entry in the 26-point sim-integrity axis.');
+  ok('R4: the real result is not LOST — invariance_holds reports it separately',
+    short.m6_trace_hash.invariance_holds === true && short.m6_trace_hash.pass === false,
+    'gating `pass` on the item\'s terms must not throw away the measurement that WAS taken');
+  ok('R4: the deviation is NAMED in the verdict, not only in a footnote',
+    Array.isArray(short.m6_step_count.deviation_from_item) &&
+    short.m6_step_count.deviation_from_item.some((d) => /asks for EXACTLY/.test(d)) &&
+    short.m6_step_count.deviation_from_item.some((d) => /F3/.test(d)),
+    JSON.stringify(short.m6_step_count.deviation_from_item));
+  ok('R4: a FULL-LENGTH run on a substituted scenario still does not pass (both terms bind)',
+    judge(invariantRows, { simFrames: M6_ASKS_FOR, scenarioIsF3: false }).m6_step_count.pass === false,
+    'duration alone is not enough — Referral 1 rules the F3 substitution is in the permissive direction');
+  const full = judge(invariantRows, { simFrames: M6_ASKS_FOR, scenarioIsF3: true });
+  ok('R4: NULL CONTROL — a full-length run on F3 CAN reach pass:true',
+    full.m6_step_count.pass === true && full.m6_step_count.item_satisfied === true &&
+    full.m6_step_count.deviation_from_item === null,
+    `at ${M6_ASKS_FOR} steps with F3 authored: pass=${full.m6_step_count.pass}. The gate is a ` +
+    'condition, not a permanent refusal — the opposite mistake, which this loop has already made twice.');
+  const brokenFull = judge(brokenRows, { simFrames: M6_ASKS_FOR, scenarioIsF3: true });
+  ok('R4: and a BROKEN build at full length on F3 still FAILS (the gate did not swallow the red)',
+    brokenFull.m6_step_count.pass === false && brokenFull.m6_step_count.invariance_holds === false &&
+    !!brokenFull.m6_step_count.hard_fail && brokenFull.m6_trace_hash.invariance_holds === false,
+    `${brokenFull.m6_step_count.hard_fail} / ${brokenFull.m6_trace_hash.hard_fail}`);
+  ok('R4: the render-count control still catches a perturbation that was never applied',
+    judge([synth(60, 60, 'aaa', 60), synth(60, 60, 'aaa', 60)]).control_render_counts_vary.pass === false,
+    'identical render counts at every rate => the sweep proved nothing, and it says so');
+
+  // =============================================================================================
+  // PART 2 — the live sweeps, clean then broken.
+  // =============================================================================================
+  process.stdout.write(
+    `\ndecoupling --self-test part 2: capped at ${ST_FRAMES} steps/rate over rates [${ST_RATES}]. ` +
+    `The verdict flip is visible at 60 steps (the broken build diverges at 61 vs 60).\n`);
+  const nodeSide = failed;
+  let clean;
+  try { clean = await sweep(false, { simFrames: ST_FRAMES, rates: ST_RATES }); }
+  catch (e) {
+    ok('the CLEAN sweep could be run', false,
+      `sweep failed: ${String((e && e.message) || e).split('\n')[0].slice(0, 200)}`);
+    process.stdout.write(
+      `\ndecoupling self-test: FAIL — browser half not run; the 7 browser-free verdict-gate ` +
+      `falsifications above ${nodeSide === 0 ? 'ALL PASSED and ' : ''}still stand\n`);
+    process.exit(1);
+  }
   const cv = judge(clean.rows, { simFrames: ST_FRAMES });
   ok('GREEN: the shipped build passes M6 (step count)', cv.m6_step_count.invariance_holds,
     JSON.stringify(cv.m6_step_count.observed));
@@ -419,7 +482,14 @@ if (args['self-test']) {
   ok('GREEN: M7 — no gameplay quantity drifts with the render rate', cv.m7_frame_rate_independence.pass,
     `${cv.m7_frame_rate_independence.quantities.join(', ')} identical to 6 dp at all rates`);
 
-  const broken = await sweep(true, { simFrames: ST_FRAMES, rates: ST_RATES });
+  let broken;
+  try { broken = await sweep(true, { simFrames: ST_FRAMES, rates: ST_RATES }); }
+  catch (e) {
+    ok('the BROKEN-build sweep could be run', false,
+      `sweep failed: ${String((e && e.message) || e).split('\n')[0].slice(0, 200)}`);
+    process.stdout.write(`\ndecoupling self-test: FAIL — the red half could not be run\n`);
+    process.exit(1);
+  }
   const bv = judge(broken.rows, { simFrames: ST_FRAMES });
   ok('RED: with the sim made to depend on the render rate, M6 step count FAILS',
     bv.m6_step_count.invariance_holds === false, JSON.stringify(bv.m6_step_count.observed));
@@ -430,38 +500,6 @@ if (args['self-test']) {
     cv.m6_trace_hash.invariance_holds !== bv.m6_trace_hash.invariance_holds,
     `clean {steps: ${cv.m6_step_count.invariance_holds}, hash: ${cv.m6_trace_hash.invariance_holds}} vs ` +
     `broken {steps: ${bv.m6_step_count.invariance_holds}, hash: ${bv.m6_trace_hash.invariance_holds}}`);
-
-  // ---- ROUND 4: the verdict-field falsification. TOOL-COVERAGE-R3 §6. ----------------------
-  // The shipped artifact said `pass: true` for a bar that was not met. These checks are
-  // arithmetic over `judge()` and need no browser, so they run even when a sweep cannot.
-  ok('R4: a SHORT run does NOT report pass:true, even when the invariance holds (the R3 defect)',
-    cv.m6_step_count.invariance_holds === true && cv.m6_step_count.pass === false &&
-    cv.m6_step_count.meets_item_duration === false && !!cv.m6_step_count.why_not_pass,
-    `${ST_FRAMES} of ${M6_ASKS_FOR} steps: invariance_holds=${cv.m6_step_count.invariance_holds}, ` +
-    `pass=${cv.m6_step_count.pass}. The shipped artifact reported 300 of 3600 as "pass": true.`);
-  ok('R4: the real result is not LOST — invariance_holds still reports it separately',
-    cv.m6_trace_hash.invariance_holds === true && cv.m6_trace_hash.pass === false,
-    'gating `pass` on the item\'s terms must not throw away the measurement that WAS taken');
-  ok('R4: the deviation is NAMED in the verdict, not only in a footnote',
-    Array.isArray(cv.m6_step_count.deviation_from_item) &&
-    cv.m6_step_count.deviation_from_item.some((d) => /asks for EXACTLY/.test(d)) &&
-    cv.m6_step_count.deviation_from_item.some((d) => /F3/.test(d)),
-    JSON.stringify(cv.m6_step_count.deviation_from_item));
-  {
-    // The null control for the gate: a full-length run against F3 must be able to reach
-    // pass:true, or the gate is a constant `false` and the bar becomes unpassable — which is
-    // the OPPOSITE mistake and one this loop has already made twice.
-    const full = judge(clean.rows, { simFrames: M6_ASKS_FOR, scenarioIsF3: true });
-    ok('R4: NULL CONTROL — a full-length run on scenario F3 CAN still reach pass:true',
-      full.m6_step_count.pass === true && full.m6_step_count.item_satisfied === true &&
-      full.m6_step_count.deviation_from_item === null,
-      `at ${M6_ASKS_FOR} steps with F3 authored: pass=${full.m6_step_count.pass}. The gate is a ` +
-      'condition, not a permanent refusal.');
-    const brokenFull = judge(broken.rows, { simFrames: M6_ASKS_FOR, scenarioIsF3: true });
-    ok('R4: and a BROKEN build at full length still fails (the gate did not swallow the red)',
-      brokenFull.m6_step_count.pass === false && !!brokenFull.m6_step_count.hard_fail,
-      brokenFull.m6_step_count.hard_fail || '');
-  }
 
   process.stdout.write(`\ndecoupling self-test: ${failed === 0 ? 'PASS' : 'FAIL'}\n`);
   process.exit(failed === 0 ? 0 : 1);

@@ -1,0 +1,140 @@
+{
+ "schema": "elder-souls/interior@1",
+ "id": "stormhold-chapel",
+ "name": "The Garrison Chapel",
+ "settlement": "stormhold",
+ "cell_kind": "named",
+ "interior_kind": "temple",
+ "service": "healer",
+ "faction": "the-imperial-assize",
+ "exterior_door": [
+  2197.5,
+  141.12,
+  731
+ ],
+ "continuity": {
+  "building": "stormhold-chapel",
+  "building_offset_m": [
+   26,
+   0,
+   -30
+  ],
+  "building_yaw_deg": 0,
+  "exterior_footprint_m": [
+   11.2,
+   13.2
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   5.4
+  ],
+  "exterior_spawn": [
+   2197.5,
+   141.12,
+   732.8
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -5.6,
+   5.6
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.6,
+   6.6
+  ]
+ },
+ "floor_area_m2": 147.8,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.64
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "stormhold.apothecary8.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "stormhold.apothecary8.r1.lamp0",
+   "pos": [
+    -2.1,
+    1.6,
+    -3.9
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "stormhold.apothecary8.r1.lamp1",
+   "pos": [
+    -0.20000000000000018,
+    1.6,
+    -4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "altar_low",
+  "kneel_step",
+  "censer_stand",
+  "offering_bowl",
+  "candle_rack",
+  "sermon_lectern",
+  "water_stoup",
+  "bench_row",
+  "wall_niche",
+  "cloth_hanging",
+  "reliquary_case",
+  "lamp_votive",
+  "bell_small",
+  "ash_tray",
+  "sto_legion_block",
+  "sto_bloom_course",
+  "sto_grid_barrack",
+  "sto_wall_lean"
+ ],
+ "property_zones": [
+  "stormhold.apothecary8.r1"
+ ],
+ "containers": [
+  "sealed.stormhold-paychest.item"
+ ],
+ "unique_item": {
+  "id": "stormhold-chapel-unique",
+  "name": "an Imperial rite copied in Jel",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:stormhold-apothecary-8"
+ },
+ "readable": {
+  "id": "stormhold-chapel-readable",
+  "title": "A Rite In Two Tongues"
+ },
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19
+}

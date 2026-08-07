@@ -57,11 +57,17 @@ for (const f of corpusFiles) {
 }
 items.sort((a, b) => String(a.id).localeCompare(String(b.id)));
 
+// A verdict is a file directly under a wave directory that carries a score. Everything a critic
+// writes alongside it — probe output, censuses, block-by-block workings — lives in `artifacts/`
+// and also names its piece, and counting those as verdicts inflated the headline from 25 to 39
+// and made "verdicts passing" meaningless, because an artifact has no status to pass.
 const verdicts = [];
 for (const f of walk(P('corpus', '90-verdicts')).filter(f => extname(f) === '.json')) {
+  if (/[\\/]artifacts[\\/]/.test(f)) continue;
   try {
     const j = JSON.parse(readFileSync(f, 'utf8'));
-    if (j && (j.piece || j.piece_id)) verdicts.push({ ...j, _path: relative(ROOT, f) });
+    const scored = typeof (j?.score?.overall_0_10 ?? j?.score_0_10) === 'number';
+    if (j && (j.piece || j.piece_id) && scored) verdicts.push({ ...j, _path: relative(ROOT, f) });
   } catch { }
 }
 

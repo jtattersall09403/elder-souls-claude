@@ -1,0 +1,1947 @@
+{
+ "schema": "elder-souls/npc-group@1",
+ "group": "pop-gideon",
+ "id": "pop-gideon",
+ "settlement": "gideon",
+ "generated_by": "tools/world/build-population.mjs",
+ "source": "the household roster in game/data/world/property/gideon.json — these are the people who already owned the objects",
+ "npcs": [
+  {
+   "id": "gideon-fisher-0",
+   "name": "Sees-All-Colours the Elder",
+   "race": "argonian",
+   "class": "fisher",
+   "actor": "fisher",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "provincial-office",
+   "household": "gideon-fisher-0",
+   "role": "head",
+   "disposition": 43,
+   "interior": "gideon-house-0",
+   "home_interior": "gideon-house-0",
+   "work_interior": "gideon-lowmarket",
+   "owns_zones": [
+    "gideon.fisher0.r0",
+    "gideon.fisher0.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "04:00",
+     "to": "08:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "04:00",
+     "at": "gideon-house-0",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-apothecary-1",
+   "name": "Ruut Cold-Ash",
+   "race": "argonian",
+   "class": "apothecary",
+   "actor": "healer",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "docks",
+   "household": "gideon-apothecary-1",
+   "role": "head",
+   "disposition": 49,
+   "interior": "gideon-house-1",
+   "home_interior": "gideon-house-1",
+   "work_interior": "gideon-lowmarket",
+   "owns_zones": [
+    "gideon.apothecary1.r0",
+    "gideon.apothecary1.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-house-1",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-house-1",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-house-1",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "heal"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-trader-2",
+   "name": "Sondaale the Younger",
+   "race": "imperial",
+   "class": "trader",
+   "actor": "merchant",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "high-street",
+   "household": "gideon-trader-2",
+   "role": "head",
+   "disposition": 41,
+   "interior": "gideon-court",
+   "home_interior": "gideon-court",
+   "work_interior": "gideon-lowmarket",
+   "owns_zones": [
+    "gideon.trader2.r0",
+    "gideon.trader2.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-court",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-court",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-court",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-fisher-3",
+   "name": "Onwen Quick-Tally",
+   "race": "argonian",
+   "class": "fisher",
+   "actor": "fisher",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "provincial-office",
+   "household": "gideon-fisher-3",
+   "role": "head",
+   "disposition": 49,
+   "interior": "gideon-tollhouse",
+   "home_interior": "gideon-tollhouse",
+   "work_interior": "gideon-lowmarket",
+   "owns_zones": [
+    "gideon.fisher3.r0",
+    "gideon.fisher3.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "04:00",
+     "to": "08:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "04:00",
+     "at": "gideon-tollhouse",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-publican-4",
+   "name": "Chun Bone-Setter",
+   "race": "argonian",
+   "class": "publican",
+   "actor": "innkeeper",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "docks",
+   "household": "gideon-publican-4",
+   "role": "head",
+   "disposition": 56,
+   "interior": "gideon-inn",
+   "home_interior": "gideon-inn",
+   "work_interior": "gideon-inn",
+   "owns_zones": [
+    "gideon.publican4.r0",
+    "gideon.publican4.r1",
+    "gideon.publican4.r2"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "02:00",
+     "at": "gideon-inn",
+     "activity": "work"
+    },
+    {
+     "from": "02:00",
+     "to": "10:00",
+     "at": "gideon-inn",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "00:00",
+     "at": "gideon-inn",
+     "activity": "work"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "bed"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-trader-5",
+   "name": "Neetrenaza of Nine Debts",
+   "race": "argonian",
+   "class": "trader",
+   "actor": "merchant",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "high-street",
+   "household": "gideon-trader-5",
+   "role": "head",
+   "disposition": 41,
+   "interior": "gideon-shrine",
+   "home_interior": "gideon-shrine",
+   "work_interior": "gideon-lowmarket",
+   "owns_zones": [
+    "gideon.trader5.r0",
+    "gideon.trader5.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-shrine",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-shrine",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-shrine",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-warder-6",
+   "name": "Deek Slow-Rain",
+   "race": "dunmer",
+   "class": "warder",
+   "actor": "legionary",
+   "faction": "ninth-cohort",
+   "settlement": "gideon",
+   "quarter": "provincial-office",
+   "household": "gideon-warder-6",
+   "role": "head",
+   "disposition": 28,
+   "interior": "gideon-grange",
+   "home_interior": "gideon-grange",
+   "work_interior": "gideon-grange",
+   "owns_zones": [
+    "gideon.warder6.r0",
+    "gideon.warder6.r1"
+   ],
+   "behaviour": "post",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "gideon-grange",
+     "activity": "work"
+    },
+    {
+     "from": "06:00",
+     "to": "10:00",
+     "at": "gideon-grange",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "18:00",
+     "at": "gideon-grange",
+     "activity": "work"
+    },
+    {
+     "from": "18:00",
+     "to": "21:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "21:00",
+     "to": "00:00",
+     "at": "gideon-grange",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-IMP"
+  },
+  {
+   "id": "gideon-legionary-7",
+   "name": "Weel Quick-Tally",
+   "race": "argonian",
+   "class": "legionary",
+   "actor": "legionary",
+   "faction": "ninth-cohort",
+   "settlement": "gideon",
+   "quarter": "docks",
+   "household": "gideon-legionary-7",
+   "role": "head",
+   "disposition": 27,
+   "interior": "gideon-lowmarket",
+   "home_interior": "gideon-lowmarket",
+   "work_interior": "gideon-court",
+   "owns_zones": [
+    "gideon.legionary7.r0",
+    "gideon.legionary7.r1"
+   ],
+   "behaviour": "post",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "gideon-court",
+     "activity": "work"
+    },
+    {
+     "from": "06:00",
+     "to": "10:00",
+     "at": "gideon-lowmarket",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "18:00",
+     "at": "gideon-court",
+     "activity": "work"
+    },
+    {
+     "from": "18:00",
+     "to": "21:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "21:00",
+     "to": "00:00",
+     "at": "gideon-lowmarket",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-IMP"
+  },
+  {
+   "id": "gideon-apothecary-8",
+   "name": "Sees-All-Colours the Elder of high street",
+   "race": "imperial",
+   "class": "apothecary",
+   "actor": "healer",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "high-street",
+   "household": "gideon-apothecary-8",
+   "role": "head",
+   "disposition": 51,
+   "interior": "gideon-chapel",
+   "home_interior": "gideon-chapel",
+   "work_interior": "gideon-lowmarket",
+   "owns_zones": [
+    "gideon.apothecary8.r0",
+    "gideon.apothecary8.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-chapel",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-chapel",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-chapel",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "heal"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-legionary-9",
+   "name": "Marks-The-Ledger of Nine Debts",
+   "race": "imperial",
+   "class": "legionary",
+   "actor": "legionary",
+   "faction": "ninth-cohort",
+   "settlement": "gideon",
+   "quarter": "provincial-office",
+   "household": "gideon-legionary-9",
+   "role": "head",
+   "disposition": 33,
+   "interior": "gideon-smithy",
+   "home_interior": "gideon-smithy",
+   "work_interior": "gideon-court",
+   "owns_zones": [
+    "gideon.legionary9.r0",
+    "gideon.legionary9.r1"
+   ],
+   "behaviour": "post",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "gideon-court",
+     "activity": "work"
+    },
+    {
+     "from": "06:00",
+     "to": "10:00",
+     "at": "gideon-smithy",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "18:00",
+     "at": "gideon-court",
+     "activity": "work"
+    },
+    {
+     "from": "18:00",
+     "to": "21:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "21:00",
+     "to": "00:00",
+     "at": "gideon-smithy",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-IMP"
+  },
+  {
+   "id": "gideon-smith-10",
+   "name": "Veek Dark-Water",
+   "race": "argonian",
+   "class": "smith",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "docks",
+   "household": "gideon-smith-10",
+   "role": "head",
+   "disposition": 44,
+   "interior": "gideon-shrine",
+   "home_interior": "gideon-shrine",
+   "work_interior": "gideon-lowmarket",
+   "owns_zones": [
+    "gideon.smith10.r0",
+    "gideon.smith10.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-shrine",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-shrine",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-shrine",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "repair"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-smith-11",
+   "name": "Chun Bone-Setter of high street",
+   "race": "imperial",
+   "class": "smith",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "high-street",
+   "household": "gideon-smith-11",
+   "role": "head",
+   "disposition": 37,
+   "interior": "gideon-grange",
+   "home_interior": "gideon-grange",
+   "work_interior": "gideon-lowmarket",
+   "owns_zones": [
+    "gideon.smith11.r0",
+    "gideon.smith11.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-grange",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-grange",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-grange",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "repair"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-weaver-12",
+   "name": "Haj-Ei Half-Moon",
+   "race": "imperial",
+   "class": "weaver",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "provincial-office",
+   "household": "gideon-weaver-12",
+   "role": "head",
+   "disposition": 43,
+   "interior": "gideon-lowmarket",
+   "home_interior": "gideon-lowmarket",
+   "work_interior": "gideon-lowmarket",
+   "owns_zones": [
+    "gideon.weaver12.r0",
+    "gideon.weaver12.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-lowmarket",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-lowmarket",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-lowmarket",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-cook-13",
+   "name": "Deek Slow-Rain of docks",
+   "race": "argonian",
+   "class": "cook",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "docks",
+   "household": "gideon-cook-13",
+   "role": "head",
+   "disposition": 47,
+   "interior": "gideon-chapel",
+   "home_interior": "gideon-chapel",
+   "work_interior": "gideon-inn",
+   "owns_zones": [
+    "gideon.cook13.r0",
+    "gideon.cook13.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "04:00",
+     "to": "08:00",
+     "at": "gideon-inn",
+     "activity": "work"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-inn",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-inn",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "04:00",
+     "at": "gideon-chapel",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-fisher-0-sibling0",
+   "name": "Tul Two-Skins",
+   "race": "argonian",
+   "class": "sibling",
+   "actor": "villager",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "provincial-office",
+   "household": "gideon-fisher-0",
+   "role": "sibling",
+   "disposition": 40,
+   "interior": "gideon-house-0",
+   "home_interior": "gideon-house-0",
+   "work_interior": "gideon-house-0",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "04:00",
+     "to": "08:00",
+     "at": "gideon-house-0",
+     "activity": "work"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-house-0",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-house-0",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "04:00",
+     "at": "gideon-house-0",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-apothecary-1-lodger0",
+   "name": "Vaman Cold-Ash",
+   "race": "argonian",
+   "class": "lodger",
+   "actor": "villager",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "docks",
+   "household": "gideon-apothecary-1",
+   "role": "lodger",
+   "disposition": 41,
+   "interior": "gideon-house-1",
+   "home_interior": "gideon-house-1",
+   "work_interior": "gideon-house-1",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "02:00",
+     "at": "gideon-house-1",
+     "activity": "work"
+    },
+    {
+     "from": "02:00",
+     "to": "10:00",
+     "at": "gideon-house-1",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "00:00",
+     "at": "gideon-house-1",
+     "activity": "work"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-apothecary-1-apprentice1",
+   "name": "Beem-Kiune Nine-Teeth",
+   "race": "argonian",
+   "class": "apprentice",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "docks",
+   "household": "gideon-apothecary-1",
+   "role": "apprentice",
+   "disposition": 42,
+   "interior": "gideon-house-1",
+   "home_interior": "gideon-house-1",
+   "work_interior": "gideon-lowmarket",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-house-1",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-house-1",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-house-1",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-trader-2-apprentice0",
+   "name": "Beem-Kiune Nine-Teeth of high street",
+   "race": "argonian",
+   "class": "apprentice",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "high-street",
+   "household": "gideon-trader-2",
+   "role": "apprentice",
+   "disposition": 44,
+   "interior": "gideon-court",
+   "home_interior": "gideon-court",
+   "work_interior": "gideon-lowmarket",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-court",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-court",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-court",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-fisher-3-lodger0",
+   "name": "Ranaso Wet-Foot",
+   "race": "dunmer",
+   "class": "lodger",
+   "actor": "villager",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "provincial-office",
+   "household": "gideon-fisher-3",
+   "role": "lodger",
+   "disposition": 39,
+   "interior": "gideon-tollhouse",
+   "home_interior": "gideon-tollhouse",
+   "work_interior": "gideon-tollhouse",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "02:00",
+     "at": "gideon-tollhouse",
+     "activity": "work"
+    },
+    {
+     "from": "02:00",
+     "to": "10:00",
+     "at": "gideon-tollhouse",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "00:00",
+     "at": "gideon-tollhouse",
+     "activity": "work"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-fisher-3-apprentice1",
+   "name": "Jaraleet Reed-Cutter",
+   "race": "argonian",
+   "class": "apprentice",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "provincial-office",
+   "household": "gideon-fisher-3",
+   "role": "apprentice",
+   "disposition": 49,
+   "interior": "gideon-tollhouse",
+   "home_interior": "gideon-tollhouse",
+   "work_interior": "gideon-lowmarket",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-tollhouse",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-tollhouse",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-tollhouse",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-keeper-court",
+   "name": "Haj-Ei the Patient",
+   "title": "Clerk",
+   "race": "argonian",
+   "class": "factor",
+   "actor": "dres-factor",
+   "faction": "the-imperial-assize",
+   "settlement": "gideon",
+   "quarter": "high-street",
+   "household": "gideon-keeper-court",
+   "role": "keeper",
+   "disposition": 31,
+   "interior": "gideon-court",
+   "home_interior": "gideon-court",
+   "work_interior": "gideon-court",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-court",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-court",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-court",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-court",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-court",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-IMP"
+  },
+  {
+   "id": "gideon-keeper-lowmarket",
+   "name": "Jaraleet Wet-Foot",
+   "title": "Trader",
+   "race": "argonian",
+   "class": "trader",
+   "actor": "merchant",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "docks",
+   "household": "gideon-keeper-lowmarket",
+   "role": "keeper",
+   "disposition": 43,
+   "interior": "gideon-lowmarket",
+   "home_interior": "gideon-lowmarket",
+   "work_interior": "gideon-lowmarket",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-lowmarket",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-lowmarket",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-lowmarket",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-lowmarket",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-keeper-tollhouse",
+   "name": "Okan Cold-Ash",
+   "title": "Clerk",
+   "race": "dunmer",
+   "class": "factor",
+   "actor": "dres-factor",
+   "faction": "the-imperial-assize",
+   "settlement": "gideon",
+   "quarter": "high-street",
+   "household": "gideon-keeper-tollhouse",
+   "role": "keeper",
+   "disposition": 29,
+   "interior": "gideon-tollhouse",
+   "home_interior": "gideon-tollhouse",
+   "work_interior": "gideon-tollhouse",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-tollhouse",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-tollhouse",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-tollhouse",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-tollhouse",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-tollhouse",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-IMP"
+  },
+  {
+   "id": "gideon-keeper-chapel",
+   "name": "Veek Salt-Hand",
+   "title": "Healer",
+   "race": "argonian",
+   "class": "priest",
+   "actor": "healer",
+   "faction": "the-imperial-assize",
+   "settlement": "gideon",
+   "quarter": "docks",
+   "household": "gideon-keeper-chapel",
+   "role": "keeper",
+   "disposition": 53,
+   "interior": "gideon-chapel",
+   "home_interior": "gideon-chapel",
+   "work_interior": "gideon-chapel",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "gideon-chapel",
+     "activity": "home"
+    },
+    {
+     "from": "06:00",
+     "to": "12:00",
+     "at": "gideon-chapel",
+     "activity": "work"
+    },
+    {
+     "from": "12:00",
+     "to": "13:00",
+     "at": "gideon-chapel",
+     "activity": "home"
+    },
+    {
+     "from": "13:00",
+     "to": "20:00",
+     "at": "gideon-chapel",
+     "activity": "work"
+    },
+    {
+     "from": "20:00",
+     "to": "00:00",
+     "at": "gideon-chapel",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "heal"
+   ],
+   "reaction_group": "RG-DEEP"
+  },
+  {
+   "id": "gideon-keeper-inn",
+   "name": "Neetrenaza the Patient",
+   "title": "Publican",
+   "race": "argonian",
+   "class": "publican",
+   "actor": "innkeeper",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "docks",
+   "household": "gideon-keeper-inn",
+   "role": "keeper",
+   "disposition": 56,
+   "interior": "gideon-inn",
+   "home_interior": "gideon-inn",
+   "work_interior": "gideon-inn",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "02:00",
+     "at": "gideon-inn",
+     "activity": "work"
+    },
+    {
+     "from": "02:00",
+     "to": "10:00",
+     "at": "gideon-inn",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "00:00",
+     "at": "gideon-inn",
+     "activity": "work"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "bed"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-keeper-smithy",
+   "name": "Deek Nine-Teeth",
+   "title": "Smith",
+   "race": "argonian",
+   "class": "smith",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "high-street",
+   "household": "gideon-keeper-smithy",
+   "role": "keeper",
+   "disposition": 37,
+   "interior": "gideon-smithy",
+   "home_interior": "gideon-smithy",
+   "work_interior": "gideon-smithy",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-smithy",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-smithy",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-smithy",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-smithy",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-smithy",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "repair"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-keeper-apothecary",
+   "name": "Jeelus-Tei Half-Moon",
+   "title": "Apothecary",
+   "race": "imperial",
+   "class": "apothecary",
+   "actor": "healer",
+   "faction": null,
+   "settlement": "gideon",
+   "quarter": "provincial-office",
+   "household": "gideon-keeper-apothecary",
+   "role": "keeper",
+   "disposition": 47,
+   "interior": "gideon-apothecary",
+   "home_interior": "gideon-apothecary",
+   "work_interior": "gideon-apothecary",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-apothecary",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-apothecary",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-apothecary",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-apothecary",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-apothecary",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "heal"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "gideon-keeper-shrine",
+   "name": "Ahnassi the Shorter",
+   "title": "Rootkeeper",
+   "race": "imperial",
+   "class": "rootkeeper",
+   "actor": "rootkeeper",
+   "faction": "rootkeepers",
+   "settlement": "gideon",
+   "quarter": "high-street",
+   "household": "gideon-keeper-shrine",
+   "role": "keeper",
+   "disposition": 50,
+   "interior": "gideon-shrine",
+   "home_interior": "gideon-shrine",
+   "work_interior": "gideon-shrine",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "gideon-shrine",
+     "activity": "home"
+    },
+    {
+     "from": "06:00",
+     "to": "12:00",
+     "at": "gideon-shrine",
+     "activity": "work"
+    },
+    {
+     "from": "12:00",
+     "to": "13:00",
+     "at": "gideon-shrine",
+     "activity": "home"
+    },
+    {
+     "from": "13:00",
+     "to": "20:00",
+     "at": "gideon-shrine",
+     "activity": "work"
+    },
+    {
+     "from": "20:00",
+     "to": "00:00",
+     "at": "gideon-shrine",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "travel"
+   ],
+   "reaction_group": "RG-DEEP"
+  },
+  {
+   "id": "gideon-keeper-rootpost",
+   "name": "Tuls Dark-Water",
+   "title": "Postmaster",
+   "race": "argonian",
+   "class": "rootkeeper",
+   "actor": "rootkeeper",
+   "faction": "rootkeepers",
+   "settlement": "gideon",
+   "quarter": "docks",
+   "household": "gideon-keeper-rootpost",
+   "role": "keeper",
+   "disposition": 48,
+   "interior": "gideon-rootpost",
+   "home_interior": "gideon-rootpost",
+   "work_interior": "gideon-rootpost",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "gideon-rootpost",
+     "activity": "home"
+    },
+    {
+     "from": "06:00",
+     "to": "12:00",
+     "at": "gideon-rootpost",
+     "activity": "work"
+    },
+    {
+     "from": "12:00",
+     "to": "13:00",
+     "at": "gideon-rootpost",
+     "activity": "home"
+    },
+    {
+     "from": "13:00",
+     "to": "20:00",
+     "at": "gideon-rootpost",
+     "activity": "work"
+    },
+    {
+     "from": "20:00",
+     "to": "00:00",
+     "at": "gideon-rootpost",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "travel"
+   ],
+   "reaction_group": "RG-DEEP"
+  },
+  {
+   "id": "gideon-keeper-grange",
+   "name": "Tul Two-Skins",
+   "title": "Clerk",
+   "race": "dunmer",
+   "class": "factor",
+   "actor": "dres-factor",
+   "faction": "wet-ledger",
+   "settlement": "gideon",
+   "quarter": "high-street",
+   "household": "gideon-keeper-grange",
+   "role": "keeper",
+   "disposition": 33,
+   "interior": "gideon-grange",
+   "home_interior": "gideon-grange",
+   "work_interior": "gideon-grange",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "gideon-grange",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "gideon-grange",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "gideon-grange",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "gideon-grange",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "gideon-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "gideon-grange",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "gideon",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-IMP"
+  }
+ ]
+}

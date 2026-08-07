@@ -1,69 +1,328 @@
 {
-  "schema": "elder-souls/interior@1",
-  "id": "thorn-hall",
-  "name": "The Rotted Hall",
-  "settlement": "thorn",
-  "cell_kind": "named",
-  "exterior_door": [
-    3820.0,
+ "schema": "elder-souls/interior@1",
+ "id": "thorn-hall",
+ "name": "The Rotted Hall",
+ "settlement": "thorn",
+ "cell_kind": "named",
+ "interior_kind": "hall",
+ "service": null,
+ "faction": null,
+ "exterior_door": [
+  3820,
+  13.31,
+  859
+ ],
+ "continuity": {
+  "building": "thorn-hall",
+  "building_offset_m": [
+   0,
+   0,
+   0
+  ],
+  "building_yaw_deg": 180,
+  "exterior_footprint_m": [
+   16,
+   18
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   7.8
+  ],
+  "exterior_spawn": [
+   3820,
+   13.31,
+   860.8
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -8,
+   8
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -9,
+   9
+  ]
+ },
+ "floor_area_m2": 288,
+ "light": {
+  "kind": "hearth",
+  "pos": [
+   0,
+   0.6,
+   3.6
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "thorn.priest1.r0.hearth",
+   "pos": [
     0,
-    857.0
-  ],
-  "bounds_m": {
-    "x": [
-      -6,
-      6
-    ],
-    "y": [
-      0,
-      4.2
-    ],
-    "z": [
-      -8,
-      8
-    ]
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
   },
-  "light": {
-    "kind": "hearth",
-    "pos": [
-      0,
-      0.6,
-      3.0
-    ],
-    "colour_hex": "#ffb066",
-    "intensity": 2.4
+  {
+   "id": "thorn.priest1.r0.lamp0",
+   "pos": [
+    -0.7000000000000002,
+    1.6,
+    4.300000000000001
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   },
-  "contents": [
-    {
-      "id": "thorn-hall-chest-01",
-      "kind": "container",
-      "pos": [
-        -3.4,
-        0,
-        5.2
-      ],
-      "locked": false
-    },
-    {
-      "id": "thorn-hall-door-01",
-      "kind": "door",
-      "pos": [
-        0,
-        0,
-        -7.6
-      ],
-      "locked": false
-    }
-  ],
-  "inhabitants": [
-    "king-hlaalu-teeth"
-  ],
-  "anchor": "interior_firelit",
-  "declared_incomplete": {
-    "owner": "wave-1 piece W1-04",
-    "missing": [
-      "furnishing pass",
-      "continuity with the exterior silhouette (RI-WLD13)"
-    ]
+  {
+   "id": "thorn.priest1.r0.lamp1",
+   "pos": [
+    1.2000000000000002,
+    1.6,
+    4.199999999999999
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.smith4.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "thorn.smith4.r0.lamp0",
+   "pos": [
+    1.2000000000000002,
+    1.6,
+    3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.smith4.r0.lamp1",
+   "pos": [
+    -0.7000000000000002,
+    1.6,
+    3.0999999999999996
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.smith4.r0.lamp2",
+   "pos": [
+    -2.6,
+    1.6,
+    2.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.cook7.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "thorn.cook7.r0.lamp0",
+   "pos": [
+    -0.6000000000000001,
+    1.6,
+    0.20000000000000018
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.cook7.r0.lamp1",
+   "pos": [
+    -2.5,
+    1.6,
+    0.2999999999999998
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.cook7.r0.lamp2",
+   "pos": [
+    2.5999999999999996,
+    1.6,
+    0
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.legionary10.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 1.4,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "thorn.legionary10.r0.lamp0",
+   "pos": [
+    -2.8,
+    1.6,
+    3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.legionary10.r0.lamp1",
+   "pos": [
+    2.3,
+    1.6,
+    3.0999999999999996
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.legionary10.r0.lamp2",
+   "pos": [
+    0.3999999999999999,
+    1.6,
+    2.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.publican12.r2.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "thorn.publican12.r2.lamp0",
+   "pos": [
+    -3,
+    1.6,
+    -3.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.publican12.r2.lamp1",
+   "pos": [
+    2.0999999999999996,
+    1.6,
+    -3.7
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.publican12.r2.lamp2",
+   "pos": [
+    0.7999999999999998,
+    1.6,
+    -3.6
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
   }
+ ],
+ "props": [
+  "high_seat",
+  "long_table",
+  "bench_row",
+  "brazier_iron",
+  "banner_wall",
+  "weapon_rack",
+  "chest_large",
+  "hearth_open",
+  "lamp_hanging",
+  "floor_rush",
+  "charter_frame",
+  "drinking_horn",
+  "stair_narrow",
+  "shield_wall",
+  "tho_rotted_hall",
+  "tho_thorn_thatch",
+  "tho_lean_to",
+  "tho_stilt_house"
+ ],
+ "property_zones": [
+  "thorn.priest1.r0",
+  "thorn.smith4.r0",
+  "thorn.cook7.r0",
+  "thorn.legionary10.r0",
+  "thorn.publican12.r2"
+ ],
+ "containers": [
+  "thorn.priest1.r0.1",
+  "thorn.priest1.r0.3",
+  "thorn.priest1.r0.5",
+  "thorn.smith4.r0.4",
+  "thorn.cook7.r0.3",
+  "thorn.publican12.r2.0",
+  "thorn.publican12.r2.2",
+  "thorn.publican12.r2.4",
+  "thorn.publican12.r2.6"
+ ],
+ "unique_item": {
+  "id": "thorn-hall-unique",
+  "name": "the Imperial charter, genuine and framed",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:thorn-priest-1"
+ },
+ "readable": {
+  "id": "thorn-hall-readable",
+  "title": "The Charter Of Thorn"
+ },
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19
 }

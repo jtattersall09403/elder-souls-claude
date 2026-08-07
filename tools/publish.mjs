@@ -11,6 +11,23 @@ for (const t of ['tools/progress.mjs', 'tools/blog.mjs']) {
   catch (e) { console.error(`publish: ${t} failed —`, e.message); process.exitCode = 1; }
 }
 
+// A verdict that no chart plots is a verdict the owner cannot see. The score charts used to
+// `console.warn` about a piece they had no domain for and carry on, and for ids that did not
+// match the pattern at all they said nothing — so seven verdicts sat on disk while the page's
+// newest reading was five hours old. Silence is the defect; make it fail here.
+try {
+  const { collect } = await import('./scores.mjs');
+  const { unmapped, rows } = collect();
+  if (unmapped && unmapped.length) {
+    console.error(`publish: ${unmapped.length} verdict(s) plot on no chart because their piece id maps to no domain:`);
+    for (const p of [...new Set(unmapped)]) console.error(`  ${p}`);
+    console.error('Add the piece to DOMAIN in tools/scores.mjs. Do not rename the verdict.');
+    process.exitCode = 1;
+  } else {
+    console.log(`publish: ${rows.length} verdict(s), all plotted.`);
+  }
+} catch (e) { console.error('publish: score check failed —', e.message); process.exitCode = 1; }
+
 // Every image the page references must exist under docs/, because that is all GitHub Pages
 // serves. A writing agent that references a corpus/ path, or copies its image after writing
 // the post, gets a broken image on a public page and no error anywhere — so check it here.

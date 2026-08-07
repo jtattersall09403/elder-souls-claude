@@ -1812,29 +1812,49 @@ async function mp20(page, h, ev) {
     H.stepFrames(2);
     const cssPerDevice = 390 / cv.height;      // logical CSS px per device px
     const legs = [];
-    const measureSurface = (label, open) => {
+    /**
+     * H10 names THREE SURFACES — dialogue, journal and book — and the HUD is not one of them.
+     * That matters here because the register tags per drawing CONTEXT and the HUD shares the
+     * `menus` context with every screen, so an unfiltered minimum reports the equip-load label
+     * ("LIGHT", 11 units) for all three legs and measures the wrong thing three times. Runs that
+     * fall inside a declared `hud.*` element are therefore excluded by RECT, from the element
+     * census the same layout produced, and the exclusion is reported so a critic can see how
+     * many runs it removed.
+     */
+    const measureSurface = (label, open, regOpts) => {
       H.renderedTextClear();
-      try { open(); } catch (e) { legs.push({ surface: label, error: String(e && e.message).slice(0, 120) }); return; }
+      try { open(); } catch (e) { legs.push({ surface: label, error: String(e && e.message).slice(0, 160) }); return; }
       H.stepFrames(2);
-      H.getUIState();
-      const t = H.getRenderedText({});
-      const runs = (t.entries || []);
-      if (!runs.length) { legs.push({ surface: label, runs: 0, measurable: false }); return; }
+      const ui = H.getUIState();
+      const hudRects = (ui.elements || []).filter((el) => el.id.startsWith('hud.')).map((el) => el.rect);
+      const t = H.getRenderedText(regOpts || {});
+      const all = (t.entries || []);
+      const inHud = (e) => hudRects.some((r) => e.x >= r[0] - 2 && e.x <= r[0] + r[2] + 2 && e.y >= r[1] - 2 && e.y <= r[1] + r[3] + 2);
+      const runs = all.filter((e) => !inHud(e));
+      if (!runs.length) { legs.push({ surface: label, runs: 0, runs_before_hud_filter: all.length, measurable: false }); return; }
       let min = Infinity, minText = null;
       for (const e of runs) {
         const css = e.px * cssPerDevice;
         if (css < min) { min = css; minText = e.text; }
       }
-      legs.push({ surface: label, runs: runs.length, min_css_px: Number(min.toFixed(2)), smallest_run: String(minText).slice(0, 40), measurable: true });
+      legs.push({
+        surface: label, runs: runs.length, hud_runs_excluded: all.length - runs.length,
+        min_css_px: Number(min.toFixed(2)), smallest_run: String(minText).slice(0, 40), measurable: true,
+      });
     };
-    measureSurface('dialogue', () => { H.censusBegin({}); H.censusEnter(); });
-    measureSurface('journal', () => { H.reset({ state: 'ui-journal' }); H.setRenderRate(0); H.openMenu('journal'); });
+    // The dialogue surface is its own 2D context and the register tags it, so it is filtered by
+    // name; the two screens share the `menus` context and are filtered by rect.
+    measureSurface('dialogue', () => { H.closeMenu(); H.censusBegin({}); H.censusEnter(); }, { surface: 'dialogue' });
+    measureSurface('journal', () => { H.uiClose(); H.reset({ state: 'ui-journal' }); H.setRenderRate(0); H.openMenu('journal'); }, { surface: 'menus' });
     measureSurface('book', () => {
-      const menus = H.listMenus();
-      const bookId = (window.__ENGINE.data.books && Object.values(window.__ENGINE.data.books)[0]);
-      const first = bookId && (Array.isArray(bookId.books) ? bookId.books[0] : bookId);
-      H.openMenu('book', { id: first ? first.id : 'a-progress-through-the-southern-marsh' });
-    });
+      H.closeMenu();
+      let id = null;
+      for (const doc of Object.values(window.__ENGINE.data.books || {})) {
+        const b = Array.isArray(doc.books) ? doc.books[0] : doc;
+        if (b && b.id) { id = b.id; break; }
+      }
+      H.openMenu('book', { id });
+    }, { surface: 'menus' });
     H.closeMenu();
     return { available: true, legs, viewport_css: [844, 390], buffer: [cv.width, cv.height], css_per_device_px: Number(cssPerDevice.toFixed(4)), floor_css_px: H.getViewport().min_text_css_px };
   });

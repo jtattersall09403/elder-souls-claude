@@ -1,0 +1,236 @@
+{
+ "schema": "elder-souls/interior@1",
+ "id": "blackrose-prison",
+ "name": "Blackrose Prison",
+ "settlement": "blackrose",
+ "cell_kind": "named",
+ "interior_kind": "prison",
+ "service": null,
+ "faction": "ninth-cohort",
+ "exterior_door": [
+  1865.5,
+  2.68,
+  4437
+ ],
+ "continuity": {
+  "building": "blackrose-prison",
+  "building_offset_m": [
+   -40,
+   0,
+   -13
+  ],
+  "building_yaw_deg": 180,
+  "exterior_footprint_m": [
+   13.6,
+   15.6
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   6.6
+  ],
+  "exterior_spawn": [
+   1865.5,
+   2.68,
+   4438.8
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -6.8,
+   6.8
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.8,
+   7.8
+  ]
+ },
+ "floor_area_m2": 212.2,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   3.12
+  ],
+  "colour_hex": "#8ea0b4",
+  "intensity": 1.1
+ },
+ "lights": [
+  {
+   "id": "blackrose.legionary3.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 1.4,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "blackrose.legionary3.r0.lamp0",
+   "pos": [
+    1.9000000000000004,
+    1.6,
+    1.7000000000000002
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.legionary3.r0.lamp1",
+   "pos": [
+    -3.2,
+    1.6,
+    1.5999999999999996
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.warder7.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "blackrose.warder7.r0.lamp0",
+   "pos": [
+    2.2,
+    1.6,
+    -4.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.warder7.r0.lamp1",
+   "pos": [
+    0.2999999999999998,
+    1.6,
+    -4.3
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.warder7.r0.lamp2",
+   "pos": [
+    -1,
+    1.6,
+    -4.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.boatwright11.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "blackrose.boatwright11.r1.lamp0",
+   "pos": [
+    -2.2,
+    1.6,
+    1.4000000000000004
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.boatwright11.r1.lamp1",
+   "pos": [
+    2.9000000000000004,
+    1.6,
+    1.5
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "blackrose.boatwright11.r1.lamp2",
+   "pos": [
+    1.5999999999999996,
+    1.6,
+    1.5999999999999996
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "cell_grate",
+  "bunk_plank",
+  "chain_ring",
+  "slop_bucket",
+  "key_rail",
+  "lamp_caged",
+  "guard_desk",
+  "irons_set",
+  "water_butt",
+  "lime_bucket",
+  "door_iron",
+  "bench_stone",
+  "tally_scratch",
+  "gaol_book",
+  "bla_fortress_wall",
+  "bla_furred_parapet",
+  "bla_corridor_gate",
+  "bla_prison_block"
+ ],
+ "property_zones": [
+  "blackrose.legionary3.r0",
+  "blackrose.warder7.r0",
+  "blackrose.boatwright11.r1"
+ ],
+ "containers": [
+  "blackrose.legionary3.r0.1",
+  "blackrose.legionary3.r0.3",
+  "blackrose.boatwright11.r1.0",
+  "blackrose.boatwright11.r1.2",
+  "blackrose.boatwright11.r1.4",
+  "blackrose.boatwright11.r1.6",
+  "blackrose.boatwright11.r1.8"
+ ],
+ "unique_item": {
+  "id": "blackrose-prison-unique",
+  "name": "the warden’s seal, which does not match the Empire’s record of it",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:blackrose-legionary-3"
+ },
+ "readable": {
+  "id": "blackrose-prison-readable",
+  "title": "The Chain On The Wall"
+ },
+ "inhabitants": [],
+ "anchor": "interior_cold",
+ "open_h": 8,
+ "close_h": 19
+}

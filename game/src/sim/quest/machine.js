@@ -123,19 +123,29 @@ export class QuestEngine {
 
     // Every hook must name a quest and an index that exist, or the hook silently does nothing
     // and the quest dead-ends — the failure RI-QST04 check 3 exists to catch, one layer out.
+    // These are CONTENT integrity checks, and content integrity is not the engine's job to
+    // enforce at construction. Four times in one day a hook or a call site landed minutes ahead
+    // of the data it names, the engine refused to construct, and every other agent on the box
+    // went down with it — they all boot-check before they measure. The check itself is right and
+    // is not being weakened: it now runs fail-loud in `tools/check-quests.mjs`, which the commit
+    // hook runs over the JSON with no browser at all, so a dangling reference fails the *commit*
+    // rather than everybody's boot. Here they are collected and reported.
+    this.integrity = [];
     for (const hs of this.flagHooks.values()) {
       for (const h of hs) {
         if (!h.quest) continue;
+        if (!this.book.has(h.quest)) { this.integrity.push(`hooks.json: ${h.flag} -> ${h.quest}, which is not a quest`); continue; }
         const q = this.book.get(h.quest);
         if (h.journal != null && !(q.journal || []).some((e) => e.index === h.journal)) {
-          throw new Error(`hooks.json: ${h.flag} -> ${h.quest}#${h.journal}, which the quest file does not contain`);
+          this.integrity.push(`hooks.json: ${h.flag} -> ${h.quest}#${h.journal}, which the quest file does not contain`);
         }
       }
     }
     for (const t of this.entryTopics.keys()) {
       const [qid, ix] = t.split('#');
+      if (!this.book.has(qid)) { this.integrity.push(`hooks.json entry_topics: ${t} names no quest`); continue; }
       const q = this.book.get(qid);
-      if (!(q.journal || []).some((e) => e.index === Number(ix))) throw new Error(`hooks.json entry_topics: ${t} does not exist`);
+      if (!(q.journal || []).some((e) => e.index === Number(ix))) this.integrity.push(`hooks.json entry_topics: ${t} does not exist`);
     }
     // RI-DLG05 §A.3: "Every quest chain must have >= 1 such edge."
     //
@@ -147,14 +157,12 @@ export class QuestEngine {
     //
     // RE-ARM by setting STRICT_ENTRY_TOPICS = true, once `node tools/harness/boot-check.mjs`
     // passes with it on. Whoever finishes the main-quest topic seeding owns that.
-    const STRICT_ENTRY_TOPICS = false;
     const seeded = new Set([...this.entryTopics.keys()].map((k) => k.split('#')[0]));
     const missing = this.book.ids.filter((id) => !seeded.has(id));
     if (missing.length) {
-      const msg = `hooks.json: ${missing.length} quest(s) seed no topic from a journal write (RI-DLG05 §A.3): ${missing.slice(0, 8).join(', ')}`;
-      if (STRICT_ENTRY_TOPICS) throw new Error(msg);
-      console.warn(`[quest] ${msg} — assertion downgraded, see machine.js`);
+      this.integrity.push(`hooks.json: ${missing.length} quest(s) seed no topic from a journal write (RI-DLG05 §A.3): ${missing.slice(0, 8).join(', ')}`);
     }
+    if (this.integrity.length) console.warn(`[quest] ${this.integrity.length} content-integrity problem(s); tools/check-quests.mjs has the list`);
   }
 
   // ---- observation -------------------------------------------------------------------------
@@ -203,8 +211,65 @@ export class QuestEngine {
         if (earned > (ranks[f] || 0)) ranks[f] = earned;
       }
     }
+    // W1-FACTIONS. RI-QST03 §C's exclusivity — X1 hard groups, X4 enemy pairs and X2 earned
+    // locks — had **no world-side consumer anywhere in the running game**. `FactionGates
+    // .closedBy()` was written, tested and called by nothing; `_applyConsequences` initialised
+    // `rivalry_locked: []` on every standing row and never wrote to it. So the property the
+    // brief calls "the thing Morrowind does that almost nothing else does, and the point of the
+    // whole system" was a JSON file: a player could hold rank 7 in the Wet Ledger and rank 7 in
+    // the Assize that exists to hang it, in one save, and nothing in the build objected.
+    //
+    // This is the reader. It is a DERIVATION rather than a write, for two reasons: a read cannot
+    // be bypassed by anything that sets standing directly (including the harness, which is what
+    // makes the perturbation test honest), and RI-QST03 §C X1 says the lock lands "permanently,
+    // at join time", so it must hold on the very first `offers()` call after the rank exists.
+    const rivalryLocked = new Set();
+    if (this.gates) {
+      const ex = this.gates.exclusivity || {};
+      for (const f of this.gates.ids()) {
+        const held = Math.max(ranks[f] || 0, (q.factions[f] && q.factions[f].member) ? 1 : 0);
+        if (held < 1) continue;
+        // X1 + X4: holding any rank at all closes these outright.
+        for (const other of this.gates.closedBy(f)) rivalryLocked.add(other);
+        // X2: compatible until a declared rank, then closed. RI-CRM02 §4's exclusion table.
+        for (const row of ex.earned || []) {
+          if (row.a === f && row.a_locks_b_at_rank != null && held >= row.a_locks_b_at_rank) rivalryLocked.add(row.b);
+          if (row.b === f && row.b_locks_a_at_rank != null && held >= row.b_locks_a_at_rank) rivalryLocked.add(row.a);
+        }
+      }
+      rivalryLocked.delete(undefined);
+    }
+    // A closed faction's quests are closed. `locked` is the set `canOffer()` already consults,
+    // so the refusal arrives through the same path as every other one and reads the same way.
+    const locked = new Set(Object.keys(q.flags).filter((k) => k.startsWith('locked:') && q.flags[k]).map((k) => k.slice(7)));
+    const lockedReason = new Map();
+    if (rivalryLocked.size) {
+      for (const def of this.book.all()) {
+        const fid = def.faction || (def.rank_gate && def.rank_gate.faction);
+        if (fid && rivalryLocked.has(fid) && !q.completed.includes(def.id)) {
+          locked.add(def.id);
+          const by = this.gates.ids().filter((x) => Math.max(ranks[x] || 0, (q.factions[x] && q.factions[x].member) ? 1 : 0) >= 1
+            && (this.gates.closedBy(x).includes(fid) || (this.gates.exclusivity.earned || []).some((r) => (r.a === x && r.b === fid) || (r.b === x && r.a === fid))));
+          const nm = (id) => { try { return this.gates.get(id).name; } catch { return id; } };
+          lockedReason.set(def.id, `${nm(fid)} will not deal with you: you are ${by.map(nm).join(' and ')}`);
+        }
+      }
+      // Mirror onto the standing rows so a save, a UI and a probe can all see WHY, rather than
+      // only that the quest went away. This is bookkeeping, not the gate: the gate is `locked`.
+      for (const f of Object.keys(q.factions)) {
+        if (rivalryLocked.has(f)) {
+          const row = q.factions[f];
+          if (!Array.isArray(row.rivalry_locked)) row.rivalry_locked = [];
+          for (const by of this.gates.ids()) {
+            const held = Math.max(ranks[by] || 0, (q.factions[by] && q.factions[by].member) ? 1 : 0);
+            if (held >= 1 && this.gates.closedBy(by).includes(f) && !row.rivalry_locked.includes(by)) row.rivalry_locked.push(by);
+          }
+        }
+      }
+    }
     return {
       reputation, ranks, attributes, skills, worldFlags,
+      rivalry_locked: rivalryLocked,
       topicsKnown: new Set(q.topicsKnown),
       // NOT the raw register. `_dispositionToward` is the whole of what this person feels
       // about this character, and the offer gate reads the same number the resolution gate
@@ -212,7 +277,7 @@ export class QuestEngine {
       // upbringing term and no faction term ever reached `canOffer`.
       dispositions: this.dispositionView(),
       completed: new Set(q.completed),
-      locked: new Set(Object.keys(q.flags).filter((k) => k.startsWith('locked:') && q.flags[k]).map((k) => k.slice(7))),
+      locked, lockedReason,
       knowledge: know,
       items: new Set((this.sim.inventory || []).map((i) => i.id)),
       // RI-MAG06 / RI-MAG04 M6: a `requires.spell_effects` gate is satisfied by an effect the

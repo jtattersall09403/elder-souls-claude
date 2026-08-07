@@ -1,0 +1,151 @@
+{
+ "schema": "elder-souls/interior@1",
+ "id": "lilmoth-inn-stilt",
+ "name": "The Stilt Rest",
+ "settlement": "lilmoth",
+ "cell_kind": "named",
+ "interior_kind": "tavern",
+ "service": "inn",
+ "faction": null,
+ "exterior_door": [
+  2760.95,
+  7.37,
+  5066.1
+ ],
+ "continuity": {
+  "building": "lilmoth-inn-stilt",
+  "building_offset_m": [
+   -5.55,
+   4.6,
+   38.6
+  ],
+  "building_yaw_deg": 180,
+  "exterior_footprint_m": [
+   11.2,
+   13.2
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   5.4
+  ],
+  "exterior_spawn": [
+   2760.95,
+   7.37,
+   5067.9
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -5.6,
+   5.6
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.6,
+   6.6
+  ]
+ },
+ "floor_area_m2": 147.8,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.64
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "lilmoth.smith9.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "lilmoth.smith9.r1.lamp0",
+   "pos": [
+    0.20000000000000018,
+    1.6,
+    0.7999999999999998
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "lilmoth.smith9.r1.lamp1",
+   "pos": [
+    -1.7,
+    1.6,
+    0.9000000000000004
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "lilmoth.smith9.r1.lamp2",
+   "pos": [
+    -3,
+    1.6,
+    1
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "bar_long",
+  "bench_pair",
+  "table_round",
+  "barrel_row",
+  "tankard_shelf",
+  "hearth_open",
+  "bed_rentable",
+  "dice_cup",
+  "lamp_hanging",
+  "stair_narrow",
+  "keg_tap",
+  "cloak_hook",
+  "stew_pot",
+  "notice_board",
+  "lil_sunk_facade",
+  "lil_drowned_window",
+  "lil_stilt_platform",
+  "lil_reed_shack"
+ ],
+ "property_zones": [
+  "lilmoth.smith9.r1"
+ ],
+ "containers": [
+  "lilmoth.smith9.r1.8"
+ ],
+ "unique_item": {
+  "id": "lilmoth-inn-stilt-unique",
+  "name": "a hammock older than the house",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:lilmoth-smith-9"
+ },
+ "readable": {
+  "id": "lilmoth-inn-stilt-readable",
+  "title": "Stilt-Town Custom"
+ },
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 6,
+ "close_h": 26
+}

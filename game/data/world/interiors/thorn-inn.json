@@ -1,0 +1,291 @@
+{
+ "schema": "elder-souls/interior@1",
+ "id": "thorn-inn",
+ "name": "The Needle and Charter",
+ "settlement": "thorn",
+ "cell_kind": "named",
+ "interior_kind": "tavern",
+ "service": "inn",
+ "faction": null,
+ "exterior_door": [
+  3837,
+  13.31,
+  859
+ ],
+ "continuity": {
+  "building": "thorn-inn",
+  "building_offset_m": [
+   17,
+   0,
+   0
+  ],
+  "building_yaw_deg": 270,
+  "exterior_footprint_m": [
+   16,
+   18
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   7.8
+  ],
+  "exterior_spawn": [
+   3837,
+   13.31,
+   860.8
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -8,
+   8
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -9,
+   9
+  ]
+ },
+ "floor_area_m2": 288,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   3.6
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "thorn.priest1.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "thorn.priest1.r1.lamp0",
+   "pos": [
+    -2,
+    1.6,
+    -0.7999999999999998
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.priest1.r1.lamp1",
+   "pos": [
+    3.0999999999999996,
+    1.6,
+    -0.7000000000000002
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.priest1.r1.lamp2",
+   "pos": [
+    1.7999999999999998,
+    1.6,
+    -0.6000000000000001
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.smith4.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "thorn.smith4.r1.lamp0",
+   "pos": [
+    -2.9,
+    1.6,
+    -1.7000000000000002
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.smith4.r1.lamp1",
+   "pos": [
+    -1,
+    1.6,
+    -1.7999999999999998
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.cook7.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "thorn.cook7.r1.lamp0",
+   "pos": [
+    2.7,
+    1.6,
+    0.7000000000000002
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.cook7.r1.lamp1",
+   "pos": [
+    -2.4,
+    1.6,
+    0.5999999999999996
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.legionary10.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 1.4,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "thorn.legionary10.r1.lamp0",
+   "pos": [
+    -0.10000000000000009,
+    1.6,
+    2.0999999999999996
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.legionary10.r1.lamp1",
+   "pos": [
+    1.7999999999999998,
+    1.6,
+    2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.legionary13.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 1.4,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "thorn.legionary13.r0.lamp0",
+   "pos": [
+    -1.5,
+    1.6,
+    1.7000000000000002
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "thorn.legionary13.r0.lamp1",
+   "pos": [
+    0.3999999999999999,
+    1.6,
+    1.5999999999999996
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "bar_long",
+  "bench_pair",
+  "table_round",
+  "barrel_row",
+  "tankard_shelf",
+  "hearth_open",
+  "bed_rentable",
+  "dice_cup",
+  "lamp_hanging",
+  "stair_narrow",
+  "keg_tap",
+  "cloak_hook",
+  "stew_pot",
+  "notice_board",
+  "tho_rotted_hall",
+  "tho_thorn_thatch",
+  "tho_lean_to",
+  "tho_stilt_house"
+ ],
+ "property_zones": [
+  "thorn.priest1.r1",
+  "thorn.smith4.r1",
+  "thorn.cook7.r1",
+  "thorn.legionary10.r1",
+  "thorn.legionary13.r0"
+ ],
+ "containers": [
+  "thorn.smith4.r1.1",
+  "thorn.smith4.r1.2",
+  "thorn.smith4.r1.5",
+  "thorn.cook7.r1.2",
+  "thorn.legionary10.r1.1"
+ ],
+ "unique_item": {
+  "id": "thorn-inn-unique",
+  "name": "a bow stave cut for a Dunmer order that was cancelled",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:thorn-priest-1"
+ },
+ "readable": {
+  "id": "thorn-inn-readable",
+  "title": "House Rules, The Needle"
+ },
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 6,
+ "close_h": 26
+}

@@ -1,0 +1,152 @@
+{
+ "schema": "elder-souls/interior@1",
+ "id": "helstrom-legation",
+ "name": "The Imperial Legation",
+ "settlement": "helstrom",
+ "cell_kind": "named",
+ "interior_kind": "guild",
+ "service": null,
+ "faction": "the-imperial-assize",
+ "exterior_door": [
+  2318.07,
+  27.22,
+  2809.12
+ ],
+ "continuity": {
+  "building": "helstrom-legation",
+  "building_offset_m": [
+   55.57,
+   0,
+   35.62
+  ],
+  "building_yaw_deg": 237.3,
+  "exterior_footprint_m": [
+   11.2,
+   13.2
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   5.4
+  ],
+  "exterior_spawn": [
+   2318.07,
+   27.22,
+   2810.92
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -5.6,
+   5.6
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -6.6,
+   6.6
+  ]
+ },
+ "floor_area_m2": 147.8,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.64
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "helstrom.boatwright13.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "helstrom.boatwright13.r1.lamp0",
+   "pos": [
+    -2.8,
+    1.6,
+    -1.4
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "helstrom.boatwright13.r1.lamp1",
+   "pos": [
+    2.3,
+    1.6,
+    -1.2999999999999998
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "helstrom.boatwright13.r1.lamp2",
+   "pos": [
+    1,
+    1.6,
+    -1.2000000000000002
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "desk_writing",
+  "record_press",
+  "map_table",
+  "seal_press",
+  "muster_board",
+  "chest_iron",
+  "chair_formal",
+  "shelf_deed",
+  "lamp_desk",
+  "banner_wall",
+  "key_rail",
+  "inkstand",
+  "strongbox",
+  "bench_wait",
+  "hel_bole_arch",
+  "hel_grown_wall_a",
+  "hel_grown_wall_b",
+  "hel_shell_roof"
+ ],
+ "property_zones": [
+  "helstrom.boatwright13.r1"
+ ],
+ "containers": [
+  "helstrom.boatwright13.r1.3",
+  "helstrom.boatwright13.r1.5"
+ ],
+ "unique_item": {
+  "id": "helstrom-legation-unique",
+  "name": "the legate's unopened writ",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:helstrom-boatwright-13"
+ },
+ "readable": {
+  "id": "helstrom-legation-readable",
+  "title": "Standing Orders, Argonia"
+ },
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19
+}

@@ -108,13 +108,24 @@ function walk(dir, out = []) {
 
 // ---------------------------------------------------------------- the world index
 function worldIndex() {
-  const ix = { book: new Set(), dialogue: new Set(), npc: new Set(), poi: new Set(), region: new Set(), item: new Set(), enemy: new Set() };
+  const ix = { book: new Set(), dialogue: new Set(), npc: new Set(), poi: new Set(), region: new Set(), item: new Set(), enemy: new Set(),
+    // Not addressable by an evidence id; used by the refusal-actor check below. `authored` is
+    // the actor vocabulary the dialogue layer writes; `staffed` is the subset some NPC in this
+    // build actually carries. A refusal keyed to an authored-but-unstaffed actor is legal — the
+    // dialogue tree is written ahead of the roster — but it cannot fire today, and a register
+    // whose refusals all sat on unstaffed actors would be silent while looking complete.
+    actorsAuthored: new Set(), actorsStaffed: new Set() };
   for (const p of walk(DATA)) {
     const rel = path.relative(DATA, p).split(path.sep).join('/');
     let doc; try { doc = readJson(p); } catch { continue; }
     if (rel.startsWith('books/')) { for (const b of (doc.books || [doc])) if (b && b.id) ix.book.add(b.id); }
-    else if (rel.startsWith('dialogue/topics/')) { for (const t of (doc.topics || [])) if (t && typeof t.id === 'string') ix.dialogue.add(topicKey(t.id)); }
-    else if (rel.startsWith('npcs/')) { for (const n of (doc.npcs || [])) if (n && n.id) ix.npc.add(n.id); }
+    else if (rel.startsWith('dialogue/topics/')) {
+      for (const t of (doc.topics || [])) {
+        if (t && typeof t.id === 'string') ix.dialogue.add(topicKey(t.id));
+        for (const i of ((t && t.infos) || [])) if (i && i.a) ix.actorsAuthored.add(i.a);
+      }
+    }
+    else if (rel.startsWith('npcs/')) { for (const n of (doc.npcs || [])) { if (n && n.id) ix.npc.add(n.id); if (n && n.actor) { ix.actorsStaffed.add(n.actor); ix.actorsAuthored.add(n.actor); } } }
     else if (rel.startsWith('items/')) { for (const it of (doc.items || [])) if (it && it.id) ix.item.add(it.id); }
     else if (rel.startsWith('combat/enemies/')) { if (doc.id) ix.enemy.add(doc.id); }
     else if (rel === 'world/pois.json') { for (const q of (doc.pois || [])) ix.poi.add(q.id); }
@@ -176,6 +187,7 @@ if (BREAK) {
 }
 
 const fail = [];
+const unstaffed = [];
 const report = { register: path.relative(ROOT, REG), mysteries: mysteries.length };
 
 // ---- R1 resolution ----------------------------------------------------------------------
@@ -198,7 +210,14 @@ for (const m of mysteries) {
   const cls = new Set((m.evidence || []).map((e) => ({ book: 'book', dialogue: 'dialogue', npc: 'dialogue', poi: 'geometry', region: 'observation', item: 'item', enemy: 'observation' })[String(e).split(':')[0]]).filter(Boolean));
   if (cls.size < QUOTAS.min_evidence_classes) fail.push(`R1 CLASSES  ${m.id}: evidence spans ${cls.size} content class(es) < ${QUOTAS.min_evidence_classes}`);
   if (!(m.refusals || []).length) fail.push(`R1 MUTE     ${m.id}: no authored refusal — the world has no way to decline about it`);
-  for (const r of (m.refusals || [])) if (!r.x || String(r.x).trim().length < 20) fail.push(`R1 MUTE     ${m.id}: a refusal with no line in it`);
+  for (const r of (m.refusals || [])) {
+    if (!r.x || String(r.x).trim().length < 20) fail.push(`R1 MUTE     ${m.id}: a refusal with no line in it`);
+    if (r.a && !ix.actorsAuthored.has(r.a)) fail.push(`R1 ACTOR    ${m.id}: refusal keyed to actor ${JSON.stringify(r.a)}, which is not in the authored actor vocabulary — nobody can ever say this line`);
+    if (r.a && !ix.actorsStaffed.has(r.a)) unstaffed.push(`${m.id}:${r.a}`);
+  }
+  if ((m.refusals || []).length && !(m.refusals || []).some((r) => !r.a || ix.actorsStaffed.has(r.a))) {
+    fail.push(`R1 SILENT   ${m.id}: every refusal is keyed to an actor no NPC in this build carries, and there is no actorless fallback — this mystery cannot decline to anybody`);
+  }
 }
 report.ids_checked = checked;
 
@@ -368,6 +387,8 @@ for (const f of report.strict_scan.pointers) process.stdout.write(`  R5 POINTER 
 process.stdout.write(`  composition: ${JSON.stringify(comp)}\n`);
 process.stdout.write(`  consumers:   ${consumers.join(', ') || '(none)'}\n`);
 process.stdout.write(`  split:       ${comp.settleable} settleable / ${comp.sealed} sealed, max settles-vs-answer Jaccard ${report.split.max_jaccard}\n`);
+report.unstaffed_refusal_actors = unstaffed;
+for (const u of unstaffed) process.stdout.write(`  R1 UNSTAFFED ${u} — the actor is authored in the dialogue tree but no NPC in this build carries it, so this row cannot fire yet (warning, not a failure)\n`);
 for (const f of fail) process.stdout.write(`  ${f}\n`);
 process.stdout.write(fail.length ? `\n${fail.length} FAILURES\n` : '\nCLEAN\n');
 report.failures = fail;

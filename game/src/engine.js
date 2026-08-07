@@ -74,6 +74,11 @@ import { CensusSurface, buildCensusModel, CENSUS_PLACES, CENSUS_CAST, CENSUS_ACT
 
 /** Lines of the writ visible at once in the reader. The document scrolls; it never clips. */
 const WRIT_WINDOW = 9;
+// W1-05. How close you have to be to read a post. RI-WLD06 §3 requires the text be "legible at
+// <= 6 m"; the READ is closer than the LOOK, because you walk up to a signpost. 2.6 m is the
+// same order as the 2.2 m an NPC is talked to at, so one press of `interact` never has to
+// choose between a person and a board it could equally have meant.
+const SIGN_REACH_M = 2.6;
 import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, topicsFor, greetingBand } from './character/converse.js';
 import { topicKey } from './core/topics.js';
 import { buildOverheardIndex, buildDirectionsIndex, RumourBook, learnTopics } from './sim/quest/topic-supply.js';
@@ -276,6 +281,11 @@ export class Engine {
     // was not, and a save taken with the surface up reloaded into a fresh `die()` that
     // destroyed 4,200 souls. `sim._traversal` set the precedent for this handle.
     this.sim._death = this.death;
+    // W1-05, RI-WLD06 L2. Attached BEFORE `setWorld` builds the Province, because the streamer
+    // draws a post when the tile under it is built and a tile built before the posts exist would
+    // be a stretch of signed road with nothing standing on it until the player walked away and
+    // came back.
+    if (this.data.signposts) this.field.setSignposts(this.data.signposts);
     this.renderer.setWorld(this.field, this.data.roads);
     // W1-13: the renderer draws the wells and the bloom off the same registry the simulation
     // respawns you at. One source, so a well you can see is a well you can rest at.
@@ -317,6 +327,12 @@ export class Engine {
     this.conversation = new Conversation(this.data.character, this.topicIndex);
     this._greetCount = new Map();
     this.writReader = { open: false, lines: [], top: 0 };
+    // W1-05, RI-WLD06 L2. The post you are standing at, if you have reached for one. Same shape
+    // as the writ reader, on purpose: a document you hold and a board you stand under are the
+    // same problem — a written thing the player must be able to READ, not merely to be near.
+    // `RI-JRN07`'s CONSUMPTION note calls a string that is authored, carried and never drawn
+    // "orphan text", and says it is identical from the player's chair to one never written.
+    this.signReader = { open: false, sign: null, lines: [], legible: true };
     // W1-2x's machine, W1-14's reason for turning it on. The QuestBook load is FAIL-LOUD by
     // design (defs.js): a quest whose journal indices are out of band, whose prose trips
     // RI-DLG05 §D, or whose hooks point at an entry that does not exist stops the game booting
@@ -1822,6 +1838,117 @@ export class Engine {
     input.consumeUI(CENSUS_ACTIONS);
   }
 
+  // ---- the post you are standing at (W1-05, RI-WLD06 L2) -----------------------------------
+
+  /**
+   * Read the nearest signpost. The world-side consumer of `game/data/world/signposts.json`.
+   *
+   * Seam S30 is the reason this method has to exist rather than a map screen. The ruling's own
+   * words are "there is nowhere to put a pin", and it is only a good ruling if the world tells
+   * you things instead. A post that the streamer draws but that the player cannot read is a
+   * decoration — RI-WLD06's own "How we lose" list has *"signposts as decoration: modelled posts
+   * with unreadable texture text"* as a named failure. So the arms go on the panel, through the
+   * same `renderer.ui.setModel` surface that draws the writ, and the strings on it are the
+   * strings in the data file.
+   *
+   * THE GLYPH GATE IS REAL AND IT IS RACE-GATED. RI-WLD06 §3 says a marsh trail's post is
+   * "knife-marks cut into a root, Argonian glyph — legible only if you know the glyphs
+   * (learnable via dialogue)". So: an Argonian reads them on sight, because this is their
+   * province and that is what `RI-CHR02` says the premise is for; anybody else sees marks until
+   * somebody teaches them, and being taught is the world flag `root_glyph_taught`. Eleven of
+   * the thirty-two posts are cut this way, which means a Breton walking the marsh trails is
+   * genuinely worse at finding Blackrose than a Saxhleel is — a difference the player can feel
+   * without a single number being shown to them. This is the piece's seam crossing: a character
+   * property changes what a world surface says.
+   */
+  signRead() {
+    if (!this.field || typeof this.field.nearestSign !== 'function') return { open: false, refused: 'no_signposts' };
+    const near = this.field.nearestSign(this.sim.player.pos[0], this.sim.player.pos[2], SIGN_REACH_M);
+    if (!near) return { open: false, refused: 'nothing_in_reach' };
+    return this._openSign(near.sign, near.distance_m);
+  }
+
+  /** Can this character read this post? Returns `true`, or the reason it cannot. */
+  signLegibility(sign) {
+    if (!sign || sign.legible !== 'glyph') return { legible: true, why: 'letters' };
+    const race = String((this.sim.character && this.sim.character.race) || '').toLowerCase();
+    if (race === 'saxhleel' || race === 'argonian') return { legible: true, why: 'native' };
+    if (this.sim.quest && this.sim.quest.flags && this.sim.quest.flags.root_glyph_taught) {
+      return { legible: true, why: 'taught' };
+    }
+    return { legible: false, why: 'root_glyph_unknown' };
+  }
+
+  _openSign(sign, distance_m) {
+    const leg = this.signLegibility(sign);
+    this.signReader = {
+      open: true, sign, legible: leg.legible, why: leg.why, distance_m,
+      lines: (leg.legible ? sign.lines : sign.illegible_lines) || [],
+    };
+    const ev = this.bus.emit(this.sim.frame, 'input_action');
+    ev.action = 'interact'; ev.surface = 'world'; ev.via = 'signpost'; ev.node = sign.id;
+    // A post is one of the routes `world/opacity.js` ROUTE already names, and M-10 in
+    // `world/opacity.json` — "The place the milestones measure to" — is anchored on the
+    // Stormhold–Thorn waystation, so a milestone read there is the mystery being MET.
+    if (this.opacity && sign.at && sign.at.waystation && leg.legible) {
+      this.opacity.met(`poi:${sign.at.waystation}`, 'signposted');
+    }
+    this._signSync();
+    return this.getSignReaderState();
+  }
+
+  signClose() {
+    this.signReader = { open: false, sign: null, lines: [], legible: true };
+    this._signSync();
+    return { open: false };
+  }
+
+  getSignReaderState() {
+    const s = this.signReader;
+    if (!s.open) return { open: false };
+    return {
+      open: true, id: s.sign.id, name: s.sign.name, style: s.sign.style, script: s.sign.script,
+      road_class: s.sign.road_class, region: s.sign.region, legible: s.legible, why: s.why,
+      distance_m: s.distance_m, lines: s.lines.slice(),
+      arms: s.legible ? s.sign.arms.map((a) => ({ name: a.name, compass: a.compass, path_m: a.path_m, walk_min: a.walk_min })) : [],
+    };
+  }
+
+  _signSync() {
+    if (!this.renderer) return null;
+    const s = this.signReader;
+    if (!s.open) {
+      if ((!this.censusSurface || !this.censusSurface.open) && !this.conversation.open && !this.writReader.open) {
+        this.renderer.ui.setModel(null);
+      }
+      return null;
+    }
+    const model = {
+      node: 'signpost:read',
+      speaker_name: s.sign.name.toUpperCase(),
+      speaker_title: null,
+      place_name: s.sign.region_name || null,
+      spoken: [],
+      preamble: s.sign.object,
+      record: { name: s.sign.id, lines: s.lines },
+      line: '',
+      aside: s.legible ? null : 'You do not read root-glyph. Somebody in the marsh does.',
+      input_kind: 'choice',
+      options: [{ id: 'close', text: 'Walk on.' }],
+      selected: 0, picked: [], typed: '',
+    };
+    this.renderer.ui.setModel(model);
+    return model;
+  }
+
+  _signReaderStep(input) {
+    if (input.pressedName('block') || input.pressedName('interact') || input.pressedName('use_item')) {
+      this._signPending = null;
+      this.signClose();
+    }
+    input.consumeUI(CENSUS_ACTIONS);
+  }
+
   _conversationSync() {
     if (!this.renderer) return null;
     if (!this.conversation.open) {
@@ -1951,9 +2078,19 @@ export class Engine {
       // alone was. No new action: HARNESS.md §4's set is closed and `use_item` already means
       // this.
       if (this.writReader.open) { this._writReaderStep(input); return; }
+      // W1-05. A post you are standing under has the buttons while you are reading it, on the
+      // same terms the writ does.
+      if (this.signReader.open) { this._signReaderStep(input); return; }
       if (input.pressedName('use_item') && this._hasWrit()) { this._writPending = true; input.consumeUI(CENSUS_ACTIONS); return; }
-      if (!this._propPending && !this._talkPending && input.pressedName('interact')) {
+      if (!this._propPending && !this._talkPending && !this._signPending && input.pressedName('interact')) {
         const p = this.sim.player;
+        // The post first. It is the tightest reach of the three (2.6 m against a prop's own
+        // `reach_m` and a person's 3.0 m), and a signpost never stands where a prop or a person
+        // is, so this cannot shadow either — but it must be tested before the person, because
+        // out on a road the only thing within reach IS the post.
+        const sn = (this.field && typeof this.field.nearestSign === 'function' && this.cellFor(this.sim.env) === 'province')
+          ? this.field.nearestSign(p.pos[0], p.pos[2], SIGN_REACH_M) : null;
+        if (sn) { this._signPending = sn; return; }
         let best = null, bestD = Infinity;
         for (const o of this.sim.props) {
           if (o.taken) continue;
@@ -2559,6 +2696,17 @@ export class Engine {
     // `activeDevice`, which the real path sets on the first event of each kind.
     const device = this.real ? this.real.activeDevice : 'keyboard';
     const glyph = device === 'gamepad' ? 'face_button' : device === 'touch' ? 'fingertip' : 'keycap';
+    // W1-05. The post, named the way everything else here is named: what it IS, never what to
+    // press. "A Legion milestone" tells you there is writing on it and that the Legion cut it;
+    // whether that is worth stopping for is the player's business. Tested first because it has
+    // the tightest reach of the three.
+    if (this.field && typeof this.field.nearestSign === 'function' && this.cellFor(this.sim.env) === 'province') {
+      const sn = this.field.nearestSign(p.pos[0], p.pos[2], SIGN_REACH_M);
+      if (sn) {
+        const NAME = { milestone: 'A Legion milestone', 'painted-board': 'A painted board', 'knife-marks': 'A root, cut', 'tide-pole': 'A tide-pole' };
+        return { text: NAME[sn.sign.style] || 'A post', verb: 'read', range_m: sn.distance_m, device, glyph };
+      }
+    }
     for (const o of this.sim.props) {
       if (o.taken) continue;
       const d = Math.hypot(o.pos[0] - p.pos[0], o.pos[2] - p.pos[2]);
@@ -3400,6 +3548,9 @@ export class Engine {
     if (this._talkPending) { const w = this._talkPending; this._talkPending = null; try { this.talkTo(w); } catch { /* they walked off */ } }
     if (this._convPending) { const t = this._convPending; this._convPending = null; try { this.conversationSay(t); } catch { /* nothing to say */ } }
     if (this._writPending) { this._writPending = false; this.openWrit(); }
+    // W1-05. Opening the sign panel touches the renderer, so it is deferred out of the fixed
+    // step for exactly the reason a prop take and a census commit are.
+    if (this._signPending) { const s = this._signPending; this._signPending = null; this._openSign(s.sign, s.distance_m); }
     if (this._censusEnterPending) { const by = this._censusEnterPending; this._censusEnterPending = false; this.censusEnter(by === true ? null : by); }
     if (this.sim.captureRequest) this._resolveCapture();
     this._travelTick();
@@ -6341,6 +6492,12 @@ async function loadData(onBytes) {
     else if (entry.path === 'world/terrain.json') out.terrain = doc;
     else if (entry.path === 'world/water.json') out.water = doc;
     else if (entry.path === 'world/roads.json') out.roads = doc;
+    // W1-05. RI-WLD06 L2. Needs its own branch for the reason the comment on `world/opacity.json`
+    // gives thirty lines below: a `world/*.json` that matches no branch here is fetched, counted
+    // in the byte total, and then dropped, which is indistinguishable from shipping nothing.
+    // Consumed by `world/field.js#setSignposts` -> `world/province.js#_signposts` (drawn) and by
+    // `Engine.signRead()` (read).
+    else if (entry.path === 'world/signposts.json') out.signposts = doc;
     else if (entry.path === 'world/signatures.json') out.signatures = doc;
     else if (entry.path === 'world/traversal.json') out.traversal = doc;
     else if (entry.path.startsWith('world/travel/')) {

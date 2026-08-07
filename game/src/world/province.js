@@ -773,9 +773,105 @@ export class Province {
     this._signatures(g, ox, oz);
     // ---- the road's declared deck spans, as structures ---------------------------------------
     this._spans(g, ox, oz);
+    // ---- the signposts, W1-05 / RI-WLD06 L2 --------------------------------------------------
+    this._signposts(g, ox, oz);
 
     this.group.add(g);
     return { group: g, tx, tz };
+  }
+
+  /**
+   * The road signage, built. `RI-WLD06` L2, and the positive half of seam S30.
+   *
+   * S30 removed the map on the grounds that "there is nowhere to put a pin". That is only a good
+   * ruling if the world pays the bill, and the bill is this: at a junction, something has to tell
+   * you which way Gideon is. Before W1-05 nothing in `game/src` drew a post of any kind, and
+   * `roads.json`'s nine waystations were read by three offline tools and by nothing the player
+   * could ever see — the orphan-data shape `RI-MTH07` §A names.
+   *
+   * A post is built from `game/data/world/signposts.json`, whose arms carry the real bearings.
+   * The ARM POINTS ALONG `along_deg`, which is where the road actually goes over the next 180 m,
+   * not at the straight line to the destination — that is `bearing_deg`, and it is what the
+   * WORD on the board says. On a causeway with sinuosity 1.60 those differ by up to 79 degrees
+   * and an arm built off the wrong one sends people into the water.
+   *
+   * The style is information: a Legion milestone is squared masonry, a marsh trail is a scarred
+   * root, a tideway is a painted pole. You can tell who maintains a road by what they signed it
+   * with from further away than you can read it, which is the whole point of L2 existing at all.
+   */
+  _signposts(group, ox, oz) {
+    const f = this.field;
+    if (!f.signs || !f.signs.length) return;
+    const here = f.signs.filter((s) => s.x >= ox && s.x < ox + TILE_M && s.z >= oz && s.z < oz + TILE_M);
+    if (!here.length) return;
+    const g = new THREE.Group();
+    g.name = 'signposts';
+    for (const s of here) {
+      const y = this._meshY(s.x, s.z);
+      const post = new THREE.Group();
+      post.name = `signpost:${s.id}`;
+      post.position.set(s.x, y, s.z);
+      const mat = this._signMat(s.style);
+      if (s.style === 'milestone') {
+        // Squared masonry, waist high, and a cap. The Legion does not build a stick.
+        const body = new THREE.Mesh(new THREE.BoxGeometry(0.62, 1.35, 0.62), mat.post);
+        body.position.y = 0.67; post.add(body);
+        const cap = new THREE.Mesh(new THREE.BoxGeometry(0.78, 0.16, 0.78), mat.post);
+        cap.position.y = 1.42; post.add(cap);
+      } else if (s.style === 'tide-pole') {
+        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.14, 3.4, 7), mat.post);
+        pole.position.y = 1.70; post.add(pole);
+        // The bands ARE the information: which one is wet is what the pole tells you.
+        for (let b = 0; b < 5; b++) {
+          const ring = new THREE.Mesh(new THREE.CylinderGeometry(0.135, 0.135, 0.16, 8), b % 2 ? mat.board : mat.arm);
+          ring.position.y = 0.45 + b * 0.55; post.add(ring);
+        }
+      } else if (s.style === 'knife-marks') {
+        // Not a post at all: a standing root, cut. Leaning, because roots do.
+        const root = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.30, 2.1, 6), mat.post);
+        root.position.set(0, 1.02, 0); root.rotation.z = 0.13; post.add(root);
+        const scar = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.44, 0.06), mat.board);
+        scar.position.set(0.10, 1.35, 0.22); post.add(scar);
+      } else {
+        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.12, 2.7, 7), mat.post);
+        pole.position.y = 1.35; post.add(pole);
+      }
+      // One arm per destination, at the height the sign's own style hangs them, pointing where
+      // the road goes. `yawFor` inverts `sim/player.js`'s forward = (sin y, _, cos y).
+      const armY = s.style === 'milestone' ? 1.05 : s.style === 'knife-marks' ? 1.55 : 2.25;
+      s.arms.forEach((a, i) => {
+        const yaw = (180 - a.along_deg) * Math.PI / 180;
+        const arm = new THREE.Group();
+        arm.position.y = armY - i * 0.34;
+        arm.rotation.y = yaw;
+        const blade = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.20, 0.92), mat.arm);
+        blade.position.z = 0.52; arm.add(blade);
+        const board = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.24, 0.74), mat.board);
+        board.position.z = 0.62; arm.add(board);
+        post.add(arm);
+      });
+      post.traverse((o) => { o.castShadow = true; o.receiveShadow = true; });
+      g.add(post);
+    }
+    group.add(g);
+  }
+
+  /** Materials per post style, cached. The style is meant to read before the text does. */
+  _signMat(style) {
+    this._signMats = this._signMats || {};
+    if (this._signMats[style]) return this._signMats[style];
+    const P = {
+      milestone: { post: 0xB9B2A0, arm: 0x4A4238, board: 0x8E8877 },      // dressed pale stone, iron arms
+      'painted-board': { post: 0x6B5A44, arm: 0x53452F, board: 0xC8B487 }, // weathered timber, chalky paint
+      'knife-marks': { post: 0x4C3B2A, arm: 0x3E3020, board: 0x7A6242 },   // living root, pale cut wood
+      'tide-pole': { post: 0x7A6E58, arm: 0x9E3B2A, board: 0xE4E0D2 },     // driftwood, red and white bands
+    }[style] || { post: 0x6B5A44, arm: 0x53452F, board: 0xC8B487 };
+    this._signMats[style] = {
+      post: new THREE.MeshStandardMaterial({ color: P.post, roughness: style === 'milestone' ? 0.82 : 0.93 }),
+      arm: new THREE.MeshStandardMaterial({ color: P.arm, roughness: 0.78, metalness: style === 'milestone' ? 0.35 : 0.0 }),
+      board: new THREE.MeshStandardMaterial({ color: P.board, roughness: 0.90 }),
+    };
+    return this._signMats[style];
   }
 
   /**

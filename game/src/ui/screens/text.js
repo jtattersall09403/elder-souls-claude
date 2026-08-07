@@ -24,7 +24,7 @@
 import { C, Ca, boneRule, panel, shellInlay, idHash } from '../theme.js';
 import { screen, row, extent, hint, letterRing, ink, inkDim, accent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
 import { drawText, faceOf, measure, wrap, writeLines, ellipsise } from '../type.js';
-import { pageMetrics, paginate, wordsOn, BODY } from '../type.js';
+import { pageMetrics, paginateBook, wordsOn, BODY } from '../type.js';
 
 /**
  * Chronological order, and the only order. `(date_written, index)` ascending, both numeric.
@@ -214,7 +214,10 @@ export function drawBook(S, m) {
   const [ix, iy, iw, ih] = sc.inner;
   const { size, lh, colW, linesPerPage, textTop } = L;
   const lines = wrap(m.book.text, faceOf('ink'), size, colW);
-  const pages = paginate(lines, linesPerPage);
+  // `paginateBook`, not `paginate` — RI-UIX05 B8's last-page balancing. `bookPagination()` below
+  // calls the same function, so the pagination a critic reads out of `getUIState().book` is the
+  // pagination that was drawn.
+  const pages = paginateBook(lines, linesPerPage);
   const spreads = Math.max(1, Math.ceil(pages.length / 2));
   const spread = Math.max(0, Math.min(spreads - 1, m.page));
 
@@ -276,7 +279,7 @@ export function bookLayout(S, inner) {
   const pad = 34 * s, gutter = 76 * s;
   const colW = (iw - pad * 2 - gutter) / 2;
   const textTop = ih * 0.08;
-  const linesPerPage = Math.max(4, Math.floor((ih * 0.80) / lh));
+  const linesPerPage = Math.max(4, Math.floor((ih * 0.84) / lh));
   return { size, lh, colW, linesPerPage, textTop, pad, gutter };
 }
 
@@ -299,7 +302,7 @@ export function bookPagination(text, S) {
   const iw = S.W - 2 * (200 * s) - 44 * s;
   const ih = 780 * s - 54 * s - 34 * s;
   const L = bookLayout(S, [0, 0, iw, ih]);
-  const pages = paginate(wrap(text, faceOf('ink'), L.size, L.colW), L.linesPerPage);
+  const pages = paginateBook(wrap(text, faceOf('ink'), L.size, L.colW), L.linesPerPage);
   return {
     pages: pages.length,
     words_per_page: pages.map(wordsOn),

@@ -23,21 +23,48 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '
 
 // Piece -> the domain a reader thinks in. Deliberately coarser than the piece list: the owner
 // asked for "sensible grouping", and a chart per piece would be a chart per builder.
+//
+// **Every piece in `docs/PLAN.md` §3 is listed, plus the named pieces that are not numbered.**
+// The previous version covered fourteen of thirty and dropped the rest — four with a warning
+// nobody read, and `w1-save`, `w1-library` and anything else without a numeric second field
+// silently, because the id pattern did not match them at all. The visible symptom was a progress
+// page whose newest verdict was five hours old while seven newer ones sat on disk. Unmapped is
+// now a hard failure in `publish.mjs`; a chart that quietly omits data is worse than no chart.
 const DOMAIN = {
   'w1-00': 'Engine & harness',
   'w1-01': 'The world',
+  'w1-02': 'The world',
   'w1-03': 'The world',
-  'w1-05': 'Weapons',
+  'w1-04': 'Settlements & people',
+  'w1-05': 'The world',
   'w1-06': 'Camera',
   'w1-07': 'Character & opening',
+  'w1-08': 'Controls & interface',
   'w1-09': 'Combat',
   'w1-10': 'Weapons',
+  'w1-11': 'Combat',
   'w1-12': 'Enemy behaviour',
+  'w1-13': 'Death & progression',
   'w1-14': 'Magic',
   'w1-15': 'Stealth & crime',
+  'w1-16': 'Death & progression',
   'w1-17': 'Dialogue',
   'w1-18': 'Quests',
-  'w1-21': 'Interface',
+  'w1-19': 'Quests',
+  'w1-20': 'Quests',
+  'w1-21': 'Controls & interface',
+  'w1-22': 'Audio',
+  'w1-23': 'Lore & the library',
+  'w1-24': 'Visuals',
+  'w1-25': 'The first hour',
+  'w1-26': 'The first hour',
+  'w1-27': 'The world',
+  'w1-28': 'The first hour',
+  'w1-29': 'Controls & interface',
+  // Named pieces, dispatched outside the numbered plan.
+  'w1-save': 'Engine & harness',
+  'w1-library': 'Lore & the library',
+  'w1-tools': 'Engine & harness',
 };
 
 // Validated categorical order (dark steps). Used only by the overlay view.
@@ -56,19 +83,22 @@ export function collect() {
   walk(dir);
 
   const rows = [];
+  const unmapped = [];
   for (const f of files) {
     let v; try { v = JSON.parse(readFileSync(f, 'utf8')); } catch { continue; }
     const piece = String(v.piece_id || v.piece || '');
     const score = v.score?.overall_0_10 ?? v.score_0_10;
     if (!piece || typeof score !== 'number') continue;
     // Piece ids are not uniform — "W1-09", "w1-09-combat-core-r2" and "w1-09-r3" all name the
-    // same piece. Match the wave-and-number prefix rather than stripping a suffix, which silently
-    // dropped a third of the combat series.
-    const m = piece.toLowerCase().match(/^(w\d+-\d+)/);
-    if (!m) continue;
+    // same piece. Match the wave-and-key prefix rather than stripping a suffix, which silently
+    // dropped a third of the combat series. The key is not always numeric: "W1-SAVE" and
+    // "W1-LIBRARY" are real pieces and used not to match at all, so they vanished without even a
+    // warning — which is how the page came to be five hours stale while the disk was current.
+    const m = piece.toLowerCase().match(/^(w\d+-[a-z0-9]+)/);
+    if (!m) { unmapped.push(piece); continue; }
     const base = m[1];
     const domain = DOMAIN[base];
-    if (!domain) { console.warn(`scores: no domain mapped for piece "${base}" (${piece})`); continue; }
+    if (!domain) { unmapped.push(piece); continue; }
     const t = v.critic?.finished_at || v.critic?.started_at;
     rows.push({
       domain, piece: base,
@@ -80,18 +110,35 @@ export function collect() {
   }
   rows.sort((a, b) => (a.t ?? 0) - (b.t ?? 0) || a.round - b.round);
 
-  // One series per domain. Where a domain has several pieces, each verdict is still a point —
-  // the line is the domain's story, which is what was asked for.
+  // One series per domain, one point per verdict, and **the height of the point is the domain's
+  // mean at that moment** — not the raw score of the verdict that landed. A domain covers several
+  // pieces, so plotting raw scores made the line jump between pieces and read as a domain
+  // collapsing when in fact a different, weaker piece had simply reported. The mean is taken over
+  // the *latest* score of every piece in the domain that has reported by then, so a piece that
+  // improves lifts the line and a piece reporting for the first time moves it by its own weight.
   const byDomain = new Map();
   for (const r of rows) {
     if (!byDomain.has(r.domain)) byDomain.set(r.domain, []);
     byDomain.get(r.domain).push(r);
   }
   const series = [...byDomain.entries()]
-    .map(([name, pts]) => ({ name, pts }))
+    .map(([name, verdicts]) => {
+      const latest = new Map();  // piece -> its most recent score so far
+      const pts = verdicts.map(r => {
+        latest.set(r.piece, r.score);
+        const vals = [...latest.values()];
+        return {
+          ...r,
+          raw: r.score,                                     // what this critic actually scored
+          score: +(vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2),  // the domain, now
+          pieces: vals.length,
+        };
+      });
+      return { name, pts };
+    })
     .filter(s => s.pts.length)
     .sort((a, b) => a.name.localeCompare(b.name));
-  return { series, rows };
+  return { series, rows, unmapped };
 }
 
 export function chartHtml() {
@@ -124,6 +171,7 @@ export function chartHtml() {
     pts: [{ x: 0, y: 0, origin: true, round: 0, piece: '', status: '', when: '', day: '' }].concat(
       s.pts.map(p => ({
         x: p.t ? (p.t - t0) / span : 0, y: p.score, round: p.round,
+        raw: p.raw, pieces: p.pieces,
         piece: p.piece.toUpperCase(), status: p.status,
         when: p.t ? new Date(p.t).toISOString().slice(11, 16) + 'Z' : '',
         day: p.t ? new Date(p.t).toISOString().slice(5, 10) : '',
@@ -169,7 +217,7 @@ table.sc-tbl td.d{color:var(--ink)}
     <button id="sc-b-small" aria-pressed="true">Per domain</button>
     <button id="sc-b-over" aria-pressed="false">All together</button>
     <button id="sc-b-tbl" aria-pressed="false">Table</button>
-    <span class="sc-note">Each point is one critic verdict. The gold line is the wave-1 pass mark of ${GATE}; the target is ${TARGET} everywhere. Every line starts at zero, because before a domain's first verdict nothing had been measured; that opening run-in is dashed since nobody took a reading across it. Scores can fall as well as rise — a later critic often measures something the earlier one could not, or finds an earlier score was given too generously. This page redraws on every verdict either way.</span>
+    <span class="sc-note">A dot appears every time a critic files a verdict. Its height is that domain's score at that moment — the average across every part of the domain that has been judged so far, using each part's most recent mark. So a dot can move the line down either because a part got worse or because a weaker part reported for the first time; hover a dot to see which verdict moved it and what that verdict scored on its own. The gold line is the wave-1 pass mark of ${GATE} and the target is ${TARGET} everywhere. Every line starts at zero, because before a domain's first verdict nothing had been measured; that opening run-in is dashed since nobody took a reading across it. Scores fall as well as rise, and the page redraws either way — a later critic often measures something the earlier one could not, or finds an earlier mark was given too generously.</span>
   </div>
   <div id="sc-small" class="sc-grid"></div>
   <div id="sc-over" class="sc-big sc-hide"></div>
@@ -216,7 +264,7 @@ table.sc-tbl td.d{color:var(--ink)}
       if(p.origin) return;                       // the origin is a starting condition, not a data point
       var c=el('circle',{cx:pts[i][0],cy:pts[i][1],r:thin?4.5:5,fill:colour,stroke:'#1b1813','stroke-width':2});
       c.style.cursor='pointer';
-      c.addEventListener('mousemove',function(e){showTip(e,'<b>'+s.name+'</b><br>'+p.piece+' round '+p.round+'<br>score <b>'+p.y+'</b> / 10<br><span style="color:#9a8f79">'+p.day+' '+p.when+'</span>');});
+      c.addEventListener('mousemove',function(e){showTip(e,'<b>'+s.name+'</b> <b>'+p.y+'</b> / 10<br><span style="color:#9a8f79">mean of '+p.pieces+' piece'+(p.pieces===1?'':'s')+' measured so far</span><br>moved by '+p.piece+' round '+p.round+', which scored '+p.raw+'<br><span style="color:#9a8f79">'+p.day+' '+p.when+'</span>');});
       c.addEventListener('mouseleave',hideTip);
       g.appendChild(c);
     });

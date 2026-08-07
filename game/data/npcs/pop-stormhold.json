@@ -1,0 +1,2673 @@
+{
+ "schema": "elder-souls/npc-group@1",
+ "group": "pop-stormhold",
+ "id": "pop-stormhold",
+ "settlement": "stormhold",
+ "generated_by": "tools/world/build-population.mjs",
+ "source": "the household roster in game/data/world/property/stormhold.json — these are the people who already owned the objects",
+ "npcs": [
+  {
+   "id": "stormhold-publican-0",
+   "name": "Llarara the Elder",
+   "race": "argonian",
+   "class": "publican",
+   "actor": "innkeeper",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-publican-0",
+   "role": "head",
+   "disposition": 57,
+   "interior": "stormhold-house-0",
+   "home_interior": "stormhold-house-0",
+   "work_interior": "stormhold-inn-pass",
+   "owns_zones": [
+    "stormhold.publican0.r0",
+    "stormhold.publican0.r1",
+    "stormhold.publican0.r2"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "02:00",
+     "at": "stormhold-inn-pass",
+     "activity": "work"
+    },
+    {
+     "from": "02:00",
+     "to": "10:00",
+     "at": "stormhold-house-0",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "00:00",
+     "at": "stormhold-inn-pass",
+     "activity": "work"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "bed"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-apothecary-1",
+   "name": "Neetrenaza of Nine Debts",
+   "race": "dunmer",
+   "class": "apothecary",
+   "actor": "healer",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "outside-the-wall",
+   "household": "stormhold-apothecary-1",
+   "role": "head",
+   "disposition": 45,
+   "interior": "stormhold-house-1",
+   "home_interior": "stormhold-house-1",
+   "work_interior": "stormhold-market",
+   "owns_zones": [
+    "stormhold.apothecary1.r0",
+    "stormhold.apothecary1.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-house-1",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-house-1",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-house-1",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "heal"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-apothecary-2",
+   "name": "Bevene the Patient",
+   "race": "argonian",
+   "class": "apothecary",
+   "actor": "healer",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "garrison",
+   "household": "stormhold-apothecary-2",
+   "role": "head",
+   "disposition": 48,
+   "interior": "stormhold-house-2",
+   "home_interior": "stormhold-house-2",
+   "work_interior": "stormhold-market",
+   "owns_zones": [
+    "stormhold.apothecary2.r0",
+    "stormhold.apothecary2.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-house-2",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-house-2",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-house-2",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "heal"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-publican-3",
+   "name": "Dram the Quiet",
+   "race": "imperial",
+   "class": "publican",
+   "actor": "innkeeper",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-publican-3",
+   "role": "head",
+   "disposition": 55,
+   "interior": "stormhold-house-3",
+   "home_interior": "stormhold-house-3",
+   "work_interior": "stormhold-inn-pass",
+   "owns_zones": [
+    "stormhold.publican3.r0",
+    "stormhold.publican3.r1",
+    "stormhold.publican3.r2"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "02:00",
+     "at": "stormhold-inn-pass",
+     "activity": "work"
+    },
+    {
+     "from": "02:00",
+     "to": "10:00",
+     "at": "stormhold-house-3",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "00:00",
+     "at": "stormhold-inn-pass",
+     "activity": "work"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "bed"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-publican-4",
+   "name": "Silent-Reed Bone-Setter",
+   "race": "argonian",
+   "class": "publican",
+   "actor": "innkeeper",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "outside-the-wall",
+   "household": "stormhold-publican-4",
+   "role": "head",
+   "disposition": 51,
+   "interior": "stormhold-house-4",
+   "home_interior": "stormhold-house-4",
+   "work_interior": "stormhold-inn-pass",
+   "owns_zones": [
+    "stormhold.publican4.r0",
+    "stormhold.publican4.r1",
+    "stormhold.publican4.r2"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "02:00",
+     "at": "stormhold-inn-pass",
+     "activity": "work"
+    },
+    {
+     "from": "02:00",
+     "to": "10:00",
+     "at": "stormhold-house-4",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "00:00",
+     "at": "stormhold-inn-pass",
+     "activity": "work"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "bed"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-publican-5",
+   "name": "Tuls Sings-At-Dusk",
+   "race": "argonian",
+   "class": "publican",
+   "actor": "innkeeper",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "garrison",
+   "household": "stormhold-publican-5",
+   "role": "head",
+   "disposition": 51,
+   "interior": "stormhold-archive",
+   "home_interior": "stormhold-archive",
+   "work_interior": "stormhold-inn-pass",
+   "owns_zones": [
+    "stormhold.publican5.r0",
+    "stormhold.publican5.r1",
+    "stormhold.publican5.r2"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "02:00",
+     "at": "stormhold-inn-pass",
+     "activity": "work"
+    },
+    {
+     "from": "02:00",
+     "to": "10:00",
+     "at": "stormhold-archive",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "00:00",
+     "at": "stormhold-inn-pass",
+     "activity": "work"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "bed"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-warder-6",
+   "name": "Drops-No-Stitch Slow-Rain",
+   "race": "imperial",
+   "class": "warder",
+   "actor": "legionary",
+   "faction": "ninth-cohort",
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-warder-6",
+   "role": "head",
+   "disposition": 25,
+   "interior": "stormhold-market",
+   "home_interior": "stormhold-market",
+   "work_interior": "stormhold-gaol",
+   "owns_zones": [
+    "stormhold.warder6.r0",
+    "stormhold.warder6.r1"
+   ],
+   "behaviour": "post",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "stormhold-gaol",
+     "activity": "work"
+    },
+    {
+     "from": "06:00",
+     "to": "10:00",
+     "at": "stormhold-market",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "18:00",
+     "at": "stormhold-gaol",
+     "activity": "work"
+    },
+    {
+     "from": "18:00",
+     "to": "21:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "21:00",
+     "to": "00:00",
+     "at": "stormhold-market",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-IMP"
+  },
+  {
+   "id": "stormhold-trader-7",
+   "name": "Hides-His-Foot the Quiet",
+   "race": "dunmer",
+   "class": "trader",
+   "actor": "merchant",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "outside-the-wall",
+   "household": "stormhold-trader-7",
+   "role": "head",
+   "disposition": 40,
+   "interior": "stormhold-scribe",
+   "home_interior": "stormhold-scribe",
+   "work_interior": "stormhold-market",
+   "owns_zones": [
+    "stormhold.trader7.r0",
+    "stormhold.trader7.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-scribe",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-scribe",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-scribe",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-apothecary-8",
+   "name": "Llarara the Elder of garrison",
+   "race": "argonian",
+   "class": "apothecary",
+   "actor": "healer",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "garrison",
+   "household": "stormhold-apothecary-8",
+   "role": "head",
+   "disposition": 49,
+   "interior": "stormhold-inn-lean",
+   "home_interior": "stormhold-inn-lean",
+   "work_interior": "stormhold-market",
+   "owns_zones": [
+    "stormhold.apothecary8.r0",
+    "stormhold.apothecary8.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-inn-lean",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-inn-lean",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-inn-lean",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "heal"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-warder-9",
+   "name": "Counts-The-Tide Salt-Hand",
+   "race": "dunmer",
+   "class": "warder",
+   "actor": "legionary",
+   "faction": "ninth-cohort",
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-warder-9",
+   "role": "head",
+   "disposition": 30,
+   "interior": "stormhold-shrine",
+   "home_interior": "stormhold-shrine",
+   "work_interior": "stormhold-gaol",
+   "owns_zones": [
+    "stormhold.warder9.r0",
+    "stormhold.warder9.r1"
+   ],
+   "behaviour": "post",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "stormhold-gaol",
+     "activity": "work"
+    },
+    {
+     "from": "06:00",
+     "to": "10:00",
+     "at": "stormhold-shrine",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "18:00",
+     "at": "stormhold-gaol",
+     "activity": "work"
+    },
+    {
+     "from": "18:00",
+     "to": "21:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "21:00",
+     "to": "00:00",
+     "at": "stormhold-shrine",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-IMP"
+  },
+  {
+   "id": "stormhold-smith-10",
+   "name": "Ahnassi Dark-Water",
+   "race": "imperial",
+   "class": "smith",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "outside-the-wall",
+   "household": "stormhold-smith-10",
+   "role": "head",
+   "disposition": 38,
+   "interior": "stormhold-gaol",
+   "home_interior": "stormhold-gaol",
+   "work_interior": "stormhold-market",
+   "owns_zones": [
+    "stormhold.smith10.r0",
+    "stormhold.smith10.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-gaol",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-gaol",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-gaol",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "repair"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-boatwright-11",
+   "name": "Wanan the Shorter",
+   "race": "argonian",
+   "class": "boatwright",
+   "actor": "fisher",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "garrison",
+   "household": "stormhold-boatwright-11",
+   "role": "head",
+   "disposition": 48,
+   "interior": "stormhold-archive",
+   "home_interior": "stormhold-archive",
+   "work_interior": "stormhold-market",
+   "owns_zones": [
+    "stormhold.boatwright11.r0",
+    "stormhold.boatwright11.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "04:00",
+     "to": "08:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "04:00",
+     "at": "stormhold-archive",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "repair"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-factor-12",
+   "name": "Nartise Half-Moon",
+   "race": "dunmer",
+   "class": "factor",
+   "actor": "dres-factor",
+   "faction": "wet-ledger",
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-factor-12",
+   "role": "head",
+   "disposition": 30,
+   "interior": "stormhold-customs",
+   "home_interior": "stormhold-customs",
+   "work_interior": "stormhold-archive",
+   "owns_zones": [
+    "stormhold.factor12.r0",
+    "stormhold.factor12.r1"
+   ],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-customs",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-customs",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-archive",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-archive",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-customs",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-IMP"
+  },
+  {
+   "id": "stormhold-smith-13",
+   "name": "Jeelus-Tei the Patient",
+   "race": "argonian",
+   "class": "smith",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "outside-the-wall",
+   "household": "stormhold-smith-13",
+   "role": "head",
+   "disposition": 44,
+   "interior": "stormhold-smithy",
+   "home_interior": "stormhold-smithy",
+   "work_interior": "stormhold-market",
+   "owns_zones": [
+    "stormhold.smith13.r0",
+    "stormhold.smith13.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-smithy",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-smithy",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-smithy",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "repair"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-publican-0-apprentice0",
+   "name": "Three-Knives Two-Skins",
+   "race": "dunmer",
+   "class": "apprentice",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-publican-0",
+   "role": "apprentice",
+   "disposition": 48,
+   "interior": "stormhold-house-0",
+   "home_interior": "stormhold-house-0",
+   "work_interior": "stormhold-inn-pass",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-house-0",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-house-0",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-inn-pass",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-inn-pass",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-house-0",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-apothecary-1-child0",
+   "name": "Tuls Sings-At-Dusk of outside the wall",
+   "race": "argonian",
+   "class": "child",
+   "actor": "villager",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "outside-the-wall",
+   "household": "stormhold-apothecary-1",
+   "role": "child",
+   "disposition": 51,
+   "interior": "stormhold-house-1",
+   "home_interior": "stormhold-house-1",
+   "work_interior": "stormhold-house-1",
+   "owns_zones": [],
+   "behaviour": "attend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "08:00",
+     "at": "stormhold-house-1",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "17:00",
+     "at": "stormhold-house-1",
+     "activity": "home"
+    },
+    {
+     "from": "17:00",
+     "to": "19:00",
+     "at": "stormhold-shrine",
+     "activity": "shrine"
+    },
+    {
+     "from": "19:00",
+     "to": "00:00",
+     "at": "stormhold-house-1",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-apothecary-1-partner1",
+   "name": "Sees-All-Colours the Elder",
+   "race": "argonian",
+   "class": "partner",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "outside-the-wall",
+   "household": "stormhold-apothecary-1",
+   "role": "partner",
+   "disposition": 47,
+   "interior": "stormhold-house-1",
+   "home_interior": "stormhold-house-1",
+   "work_interior": "stormhold-house-1",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "09:00",
+     "at": "stormhold-house-1",
+     "activity": "home"
+    },
+    {
+     "from": "09:00",
+     "to": "12:00",
+     "at": "stormhold-house-1",
+     "activity": "work"
+    },
+    {
+     "from": "12:00",
+     "to": "18:00",
+     "at": "stormhold-house-1",
+     "activity": "home"
+    },
+    {
+     "from": "18:00",
+     "to": "21:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "21:00",
+     "to": "00:00",
+     "at": "stormhold-house-1",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-apothecary-2-sibling0",
+   "name": "Sees-All-Colours the Elder of garrison",
+   "race": "argonian",
+   "class": "sibling",
+   "actor": "villager",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "garrison",
+   "household": "stormhold-apothecary-2",
+   "role": "sibling",
+   "disposition": 42,
+   "interior": "stormhold-house-2",
+   "home_interior": "stormhold-house-2",
+   "work_interior": "stormhold-house-2",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "04:00",
+     "to": "08:00",
+     "at": "stormhold-house-2",
+     "activity": "work"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-house-2",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-house-2",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "04:00",
+     "at": "stormhold-house-2",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-publican-3-elder0",
+   "name": "Meesei Wet-Foot",
+   "race": "argonian",
+   "class": "elder",
+   "actor": "town-elder",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-publican-3",
+   "role": "elder",
+   "disposition": 52,
+   "interior": "stormhold-house-3",
+   "home_interior": "stormhold-house-3",
+   "work_interior": "stormhold-house-3",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "09:00",
+     "at": "stormhold-house-3",
+     "activity": "home"
+    },
+    {
+     "from": "09:00",
+     "to": "12:00",
+     "at": "stormhold-house-3",
+     "activity": "work"
+    },
+    {
+     "from": "12:00",
+     "to": "18:00",
+     "at": "stormhold-house-3",
+     "activity": "home"
+    },
+    {
+     "from": "18:00",
+     "to": "21:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "21:00",
+     "to": "00:00",
+     "at": "stormhold-house-3",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-publican-3-sibling1",
+   "name": "Drops-No-Stitch Slow-Rain of inside the wall",
+   "race": "argonian",
+   "class": "sibling",
+   "actor": "villager",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-publican-3",
+   "role": "sibling",
+   "disposition": 43,
+   "interior": "stormhold-house-3",
+   "home_interior": "stormhold-house-3",
+   "work_interior": "stormhold-house-3",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "04:00",
+     "to": "08:00",
+     "at": "stormhold-house-3",
+     "activity": "work"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-house-3",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-house-3",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "04:00",
+     "at": "stormhold-house-3",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-publican-4-apprentice0",
+   "name": "Tul Two-Skins",
+   "race": "dunmer",
+   "class": "apprentice",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "outside-the-wall",
+   "household": "stormhold-publican-4",
+   "role": "apprentice",
+   "disposition": 49,
+   "interior": "stormhold-house-4",
+   "home_interior": "stormhold-house-4",
+   "work_interior": "stormhold-inn-pass",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-house-4",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-house-4",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-inn-pass",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-inn-pass",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-house-4",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-publican-5-elder0",
+   "name": "Counts-The-Tide Salt-Hand of garrison",
+   "race": "dunmer",
+   "class": "elder",
+   "actor": "town-elder",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "garrison",
+   "household": "stormhold-publican-5",
+   "role": "elder",
+   "disposition": 50,
+   "interior": "stormhold-archive",
+   "home_interior": "stormhold-archive",
+   "work_interior": "stormhold-archive",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "09:00",
+     "at": "stormhold-archive",
+     "activity": "home"
+    },
+    {
+     "from": "09:00",
+     "to": "12:00",
+     "at": "stormhold-archive",
+     "activity": "work"
+    },
+    {
+     "from": "12:00",
+     "to": "18:00",
+     "at": "stormhold-archive",
+     "activity": "home"
+    },
+    {
+     "from": "18:00",
+     "to": "21:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "21:00",
+     "to": "00:00",
+     "at": "stormhold-archive",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-publican-5-sibling1",
+   "name": "Ashen Rope-Maker",
+   "race": "argonian",
+   "class": "sibling",
+   "actor": "villager",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "garrison",
+   "household": "stormhold-publican-5",
+   "role": "sibling",
+   "disposition": 43,
+   "interior": "stormhold-archive",
+   "home_interior": "stormhold-archive",
+   "work_interior": "stormhold-archive",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "04:00",
+     "to": "08:00",
+     "at": "stormhold-archive",
+     "activity": "work"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-archive",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-archive",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "04:00",
+     "at": "stormhold-archive",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-warder-6-sibling0",
+   "name": "Chun Bone-Setter",
+   "race": "argonian",
+   "class": "sibling",
+   "actor": "villager",
+   "faction": "ninth-cohort",
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-warder-6",
+   "role": "sibling",
+   "disposition": 41,
+   "interior": "stormhold-market",
+   "home_interior": "stormhold-market",
+   "work_interior": "stormhold-market",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "04:00",
+     "to": "08:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "04:00",
+     "at": "stormhold-market",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-trader-7-lodger0",
+   "name": "Weel Quick-Tally",
+   "race": "argonian",
+   "class": "lodger",
+   "actor": "villager",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "outside-the-wall",
+   "household": "stormhold-trader-7",
+   "role": "lodger",
+   "disposition": 35,
+   "interior": "stormhold-scribe",
+   "home_interior": "stormhold-scribe",
+   "work_interior": "stormhold-scribe",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "02:00",
+     "at": "stormhold-scribe",
+     "activity": "work"
+    },
+    {
+     "from": "02:00",
+     "to": "10:00",
+     "at": "stormhold-scribe",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "00:00",
+     "at": "stormhold-scribe",
+     "activity": "work"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-trader-7-apprentice1",
+   "name": "Deek Slow-Rain",
+   "race": "argonian",
+   "class": "apprentice",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "outside-the-wall",
+   "household": "stormhold-trader-7",
+   "role": "apprentice",
+   "disposition": 46,
+   "interior": "stormhold-scribe",
+   "home_interior": "stormhold-scribe",
+   "work_interior": "stormhold-market",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-scribe",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-scribe",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-scribe",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-apothecary-8-sibling0",
+   "name": "Ten-Tongues the Younger",
+   "race": "dunmer",
+   "class": "sibling",
+   "actor": "villager",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "garrison",
+   "household": "stormhold-apothecary-8",
+   "role": "sibling",
+   "disposition": 38,
+   "interior": "stormhold-inn-lean",
+   "home_interior": "stormhold-inn-lean",
+   "work_interior": "stormhold-inn-lean",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "04:00",
+     "to": "08:00",
+     "at": "stormhold-inn-lean",
+     "activity": "work"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-inn-lean",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-inn-lean",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "04:00",
+     "at": "stormhold-inn-lean",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-warder-9-lodger0",
+   "name": "Heem Salt-Hand",
+   "race": "argonian",
+   "class": "lodger",
+   "actor": "villager",
+   "faction": "ninth-cohort",
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-warder-9",
+   "role": "lodger",
+   "disposition": 41,
+   "interior": "stormhold-shrine",
+   "home_interior": "stormhold-shrine",
+   "work_interior": "stormhold-shrine",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "02:00",
+     "at": "stormhold-shrine",
+     "activity": "work"
+    },
+    {
+     "from": "02:00",
+     "to": "10:00",
+     "at": "stormhold-shrine",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "00:00",
+     "at": "stormhold-shrine",
+     "activity": "work"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-warder-9-apprentice1",
+   "name": "Silent-Reed Bone-Setter of inside the wall",
+   "race": "dunmer",
+   "class": "apprentice",
+   "actor": "townsman",
+   "faction": "ninth-cohort",
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-warder-9",
+   "role": "apprentice",
+   "disposition": 47,
+   "interior": "stormhold-shrine",
+   "home_interior": "stormhold-shrine",
+   "work_interior": "stormhold-gaol",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-shrine",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-shrine",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-gaol",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-gaol",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-shrine",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-smith-10-elder0",
+   "name": "Vaman Cold-Ash",
+   "race": "argonian",
+   "class": "elder",
+   "actor": "town-elder",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "outside-the-wall",
+   "household": "stormhold-smith-10",
+   "role": "elder",
+   "disposition": 49,
+   "interior": "stormhold-gaol",
+   "home_interior": "stormhold-gaol",
+   "work_interior": "stormhold-gaol",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "09:00",
+     "at": "stormhold-gaol",
+     "activity": "home"
+    },
+    {
+     "from": "09:00",
+     "to": "12:00",
+     "at": "stormhold-gaol",
+     "activity": "work"
+    },
+    {
+     "from": "12:00",
+     "to": "18:00",
+     "at": "stormhold-gaol",
+     "activity": "home"
+    },
+    {
+     "from": "18:00",
+     "to": "21:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "21:00",
+     "to": "00:00",
+     "at": "stormhold-gaol",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-keeper-archive",
+   "name": "Marks-The-Ledger Sings-At-Dusk",
+   "title": "Clerk",
+   "race": "argonian",
+   "class": "factor",
+   "actor": "dres-factor",
+   "faction": "ninth-cohort",
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-keeper-archive",
+   "role": "keeper",
+   "disposition": 30,
+   "interior": "stormhold-archive",
+   "home_interior": "stormhold-archive",
+   "work_interior": "stormhold-archive",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-archive",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-archive",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-archive",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-archive",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-archive",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-IMP"
+  },
+  {
+   "id": "stormhold-keeper-praetorium",
+   "name": "Onwen of Nine Debts",
+   "title": "Clerk",
+   "race": "dunmer",
+   "class": "factor",
+   "actor": "dres-factor",
+   "faction": "the-imperial-assize",
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-keeper-praetorium",
+   "role": "keeper",
+   "disposition": 30,
+   "interior": "stormhold-praetorium",
+   "home_interior": "stormhold-praetorium",
+   "work_interior": "stormhold-praetorium",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-praetorium",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-praetorium",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-praetorium",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-praetorium",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-praetorium",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-IMP"
+  },
+  {
+   "id": "stormhold-keeper-customs",
+   "name": "Chun Dark-Water",
+   "title": "Clerk",
+   "race": "argonian",
+   "class": "factor",
+   "actor": "dres-factor",
+   "faction": "the-imperial-assize",
+   "settlement": "stormhold",
+   "quarter": "garrison",
+   "household": "stormhold-keeper-customs",
+   "role": "keeper",
+   "disposition": 29,
+   "interior": "stormhold-customs",
+   "home_interior": "stormhold-customs",
+   "work_interior": "stormhold-customs",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-customs",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-customs",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-customs",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-customs",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-customs",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-IMP"
+  },
+  {
+   "id": "stormhold-keeper-market",
+   "name": "Nartise Wet-Foot",
+   "title": "Trader",
+   "race": "dunmer",
+   "class": "trader",
+   "actor": "merchant",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "garrison",
+   "household": "stormhold-keeper-market",
+   "role": "keeper",
+   "disposition": 42,
+   "interior": "stormhold-market",
+   "home_interior": "stormhold-market",
+   "work_interior": "stormhold-market",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-market",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-market",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-market",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-market",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-keeper-smithy",
+   "name": "Marks-The-Ledger Nine-Teeth",
+   "title": "Smith",
+   "race": "argonian",
+   "class": "smith",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "outside-the-wall",
+   "household": "stormhold-keeper-smithy",
+   "role": "keeper",
+   "disposition": 36,
+   "interior": "stormhold-smithy",
+   "home_interior": "stormhold-smithy",
+   "work_interior": "stormhold-smithy",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-smithy",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-smithy",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-smithy",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-smithy",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-smithy",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "repair"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-keeper-scribe",
+   "name": "Ashen Two-Skins",
+   "title": "Scribe",
+   "race": "argonian",
+   "class": "scribe",
+   "actor": "clerk",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "garrison",
+   "household": "stormhold-keeper-scribe",
+   "role": "keeper",
+   "disposition": 41,
+   "interior": "stormhold-scribe",
+   "home_interior": "stormhold-scribe",
+   "work_interior": "stormhold-scribe",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-scribe",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-scribe",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-scribe",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-scribe",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-scribe",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-keeper-inn-pass",
+   "name": "Hides-His-Foot the Shorter",
+   "title": "Publican",
+   "race": "imperial",
+   "class": "publican",
+   "actor": "innkeeper",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "garrison",
+   "household": "stormhold-keeper-inn-pass",
+   "role": "keeper",
+   "disposition": 54,
+   "interior": "stormhold-inn-pass",
+   "home_interior": "stormhold-inn-pass",
+   "work_interior": "stormhold-inn-pass",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "02:00",
+     "at": "stormhold-inn-pass",
+     "activity": "work"
+    },
+    {
+     "from": "02:00",
+     "to": "10:00",
+     "at": "stormhold-inn-pass",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "00:00",
+     "at": "stormhold-inn-pass",
+     "activity": "work"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "bed"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-keeper-inn-lean",
+   "name": "Jaraleet the Elder",
+   "title": "Publican",
+   "race": "argonian",
+   "class": "publican",
+   "actor": "innkeeper",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-keeper-inn-lean",
+   "role": "keeper",
+   "disposition": 51,
+   "interior": "stormhold-inn-lean",
+   "home_interior": "stormhold-inn-lean",
+   "work_interior": "stormhold-inn-lean",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "02:00",
+     "at": "stormhold-inn-lean",
+     "activity": "work"
+    },
+    {
+     "from": "02:00",
+     "to": "10:00",
+     "at": "stormhold-inn-lean",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "00:00",
+     "at": "stormhold-inn-lean",
+     "activity": "work"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "bed"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "stormhold-keeper-chapel",
+   "name": "Sondaale the Shorter",
+   "title": "Healer",
+   "race": "argonian",
+   "class": "priest",
+   "actor": "healer",
+   "faction": "the-imperial-assize",
+   "settlement": "stormhold",
+   "quarter": "garrison",
+   "household": "stormhold-keeper-chapel",
+   "role": "keeper",
+   "disposition": 50,
+   "interior": "stormhold-chapel",
+   "home_interior": "stormhold-chapel",
+   "work_interior": "stormhold-chapel",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "stormhold-chapel",
+     "activity": "home"
+    },
+    {
+     "from": "06:00",
+     "to": "12:00",
+     "at": "stormhold-chapel",
+     "activity": "work"
+    },
+    {
+     "from": "12:00",
+     "to": "13:00",
+     "at": "stormhold-chapel",
+     "activity": "home"
+    },
+    {
+     "from": "13:00",
+     "to": "20:00",
+     "at": "stormhold-chapel",
+     "activity": "work"
+    },
+    {
+     "from": "20:00",
+     "to": "00:00",
+     "at": "stormhold-chapel",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "heal"
+   ],
+   "reaction_group": "RG-DEEP"
+  },
+  {
+   "id": "stormhold-keeper-shrine",
+   "name": "Okan Salt-Hand",
+   "title": "Rootkeeper",
+   "race": "argonian",
+   "class": "rootkeeper",
+   "actor": "rootkeeper",
+   "faction": "rootkeepers",
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-keeper-shrine",
+   "role": "keeper",
+   "disposition": 54,
+   "interior": "stormhold-shrine",
+   "home_interior": "stormhold-shrine",
+   "work_interior": "stormhold-shrine",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "stormhold-shrine",
+     "activity": "home"
+    },
+    {
+     "from": "06:00",
+     "to": "12:00",
+     "at": "stormhold-shrine",
+     "activity": "work"
+    },
+    {
+     "from": "12:00",
+     "to": "13:00",
+     "at": "stormhold-shrine",
+     "activity": "home"
+    },
+    {
+     "from": "13:00",
+     "to": "20:00",
+     "at": "stormhold-shrine",
+     "activity": "work"
+    },
+    {
+     "from": "20:00",
+     "to": "00:00",
+     "at": "stormhold-shrine",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "travel"
+   ],
+   "reaction_group": "RG-DEEP"
+  },
+  {
+   "id": "stormhold-keeper-rootpost",
+   "name": "Chun Dark-Water",
+   "title": "Postmaster",
+   "race": "dunmer",
+   "class": "rootkeeper",
+   "actor": "rootkeeper",
+   "faction": "rootkeepers",
+   "settlement": "stormhold",
+   "quarter": "garrison",
+   "household": "stormhold-keeper-rootpost",
+   "role": "keeper",
+   "disposition": 52,
+   "interior": "stormhold-rootpost",
+   "home_interior": "stormhold-rootpost",
+   "work_interior": "stormhold-rootpost",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "stormhold-rootpost",
+     "activity": "home"
+    },
+    {
+     "from": "06:00",
+     "to": "12:00",
+     "at": "stormhold-rootpost",
+     "activity": "work"
+    },
+    {
+     "from": "12:00",
+     "to": "13:00",
+     "at": "stormhold-rootpost",
+     "activity": "home"
+    },
+    {
+     "from": "13:00",
+     "to": "20:00",
+     "at": "stormhold-rootpost",
+     "activity": "work"
+    },
+    {
+     "from": "20:00",
+     "to": "00:00",
+     "at": "stormhold-rootpost",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "travel"
+   ],
+   "reaction_group": "RG-DEEP"
+  },
+  {
+   "id": "stormhold-keeper-gaol",
+   "name": "Ahnassi the Shorter",
+   "title": "Warder",
+   "race": "argonian",
+   "class": "warder",
+   "actor": "legionary",
+   "faction": "ninth-cohort",
+   "settlement": "stormhold",
+   "quarter": "inside-the-wall",
+   "household": "stormhold-keeper-gaol",
+   "role": "keeper",
+   "disposition": 29,
+   "interior": "stormhold-gaol",
+   "home_interior": "stormhold-gaol",
+   "work_interior": "stormhold-gaol",
+   "owns_zones": [],
+   "behaviour": "post",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "stormhold-gaol",
+     "activity": "work"
+    },
+    {
+     "from": "06:00",
+     "to": "10:00",
+     "at": "stormhold-gaol",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "18:00",
+     "at": "stormhold-gaol",
+     "activity": "work"
+    },
+    {
+     "from": "18:00",
+     "to": "21:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "21:00",
+     "to": "00:00",
+     "at": "stormhold-gaol",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-IMP"
+  },
+  {
+   "id": "stormhold-keeper-kiln",
+   "name": "Tul Two-Skins",
+   "title": "Trader",
+   "race": "argonian",
+   "class": "trader",
+   "actor": "merchant",
+   "faction": null,
+   "settlement": "stormhold",
+   "quarter": "garrison",
+   "household": "stormhold-keeper-kiln",
+   "role": "keeper",
+   "disposition": 43,
+   "interior": "stormhold-kiln",
+   "home_interior": "stormhold-kiln",
+   "work_interior": "stormhold-kiln",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "stormhold-kiln",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "stormhold-kiln",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "stormhold-kiln",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "stormhold-kiln",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "stormhold-inn-pass",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "stormhold-kiln",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "stormhold",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-COMMON"
+  }
+ ]
+}

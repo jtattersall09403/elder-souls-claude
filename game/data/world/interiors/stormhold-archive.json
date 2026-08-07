@@ -1,0 +1,175 @@
+{
+ "schema": "elder-souls/interior@1",
+ "id": "stormhold-archive",
+ "name": "The Cohort Archive",
+ "settlement": "stormhold",
+ "cell_kind": "named",
+ "interior_kind": "guild",
+ "service": null,
+ "faction": "ninth-cohort",
+ "exterior_door": [
+  2137.5,
+  141.12,
+  731
+ ],
+ "continuity": {
+  "building": "stormhold-archive",
+  "building_offset_m": [
+   -34,
+   0,
+   -30
+  ],
+  "building_yaw_deg": 0,
+  "exterior_footprint_m": [
+   12.4,
+   14.4
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   6
+  ],
+  "exterior_spawn": [
+   2137.5,
+   141.12,
+   732.8
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -6.2,
+   6.2
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.2,
+   7.2
+  ]
+ },
+ "floor_area_m2": 178.6,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.88
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "stormhold.publican5.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "stormhold.publican5.r0.lamp0",
+   "pos": [
+    2.5,
+    1.6,
+    1.7000000000000002
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "stormhold.publican5.r0.lamp1",
+   "pos": [
+    -2.6,
+    1.6,
+    1.5999999999999996
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "stormhold.boatwright11.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "stormhold.boatwright11.r0.lamp0",
+   "pos": [
+    -2.1,
+    1.6,
+    -4.1
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "stormhold.boatwright11.r0.lamp1",
+   "pos": [
+    -0.20000000000000018,
+    1.6,
+    -4.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "desk_writing",
+  "record_press",
+  "map_table",
+  "seal_press",
+  "muster_board",
+  "chest_iron",
+  "chair_formal",
+  "shelf_deed",
+  "lamp_desk",
+  "banner_wall",
+  "key_rail",
+  "inkstand",
+  "strongbox",
+  "bench_wait",
+  "sto_legion_block",
+  "sto_bloom_course",
+  "sto_grid_barrack",
+  "sto_wall_lean"
+ ],
+ "property_zones": [
+  "stormhold.publican5.r0",
+  "stormhold.boatwright11.r0"
+ ],
+ "containers": [
+  "stormhold.publican5.r0.9",
+  "stormhold.boatwright11.r0.1"
+ ],
+ "unique_item": {
+  "id": "stormhold-archive-unique",
+  "name": "the muster roll of a cohort that does not exist",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:stormhold-publican-5"
+ },
+ "readable": {
+  "id": "stormhold-archive-readable",
+  "title": "The Cohorts Stormhold Does Not Have"
+ },
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19
+}

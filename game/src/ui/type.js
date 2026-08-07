@@ -85,6 +85,46 @@ export function paginate(lines, linesPerPage) {
   return pages.length ? pages : [[]];
 }
 
+/**
+ * The floor a book's LAST page is balanced up to, in words. RI-UIX05 K1's `p10 >= 80`.
+ */
+export const TAIL_FLOOR_WORDS = 80;
+
+/**
+ * Pagination of a whole book: `paginate`, then the last-page balancing pass that ordinary book
+ * typesetting does and that this build did not (RI-UIX05 §A **B8**, "no page begins or ends with
+ * a single line of a paragraph where avoidable").
+ *
+ * WHY. `paginate` fills every page to the brim and lets the remainder fall onto the last one, so
+ * the final page of a book is whatever is left. Measured over the shipped corpus at 1920×1080:
+ * 324 pages, p10 **62.3** words against K1's floor of 80, with **twelve** books ending on a page
+ * under 25 words and one — `the-counting-rhyme` — ending on a page of **three**. A player turns a
+ * page to read three words. The round-1 builder concluded from the same measurement that K1 is
+ * *unsatisfiable*, because a final page is partial by construction; the round-1 critic showed
+ * that inference is wrong, and it is: a compositor does not leave a three-word page, they take
+ * lines back off the earlier pages until the tail is respectable.
+ *
+ * HOW, and it is deliberately the dullest possible method: re-run the SAME `paginate` with a
+ * smaller per-page line budget, stopping the moment the page COUNT would change. Fewer lines on
+ * the early pages is exactly "pull words back from the preceding pages"; refusing to change the
+ * page count is what keeps this a balancing pass rather than a re-flow, and it means the widow
+ * and orphan rules above still run — there is one paginator, not two.
+ *
+ * A one-page book has no tail to balance and is returned untouched.
+ */
+export function paginateBook(lines, linesPerPage, floorWords = TAIL_FLOOR_WORDS) {
+  const first = paginate(lines, linesPerPage);
+  if (first.length < 2) return first;
+  let best = first;
+  for (let cap = linesPerPage - 1; cap >= 2; cap--) {
+    if (wordsOn(best[best.length - 1]) >= floorWords) break;
+    const cand = paginate(lines, cap);
+    if (cand.length !== first.length) break;      // never add or drop a page
+    best = cand;
+  }
+  return best;
+}
+
 /** Words on a laid-out page. */
 export function wordsOn(pageLines) {
   let n = 0;

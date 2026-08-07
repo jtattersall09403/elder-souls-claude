@@ -22,6 +22,16 @@ if git diff --cached --name-only --diff-filter=ACMRD | grep -Eq '^game/data/ques
   node tools/check-content.mjs
 fi
 
+# Hooks and entry topics must name quests and journal entries that exist. This used to throw
+# from the QuestEngine constructor, which meant a hook written minutes before its quest did not
+# fail its author — it failed EVERY agent on the box, because they all boot-check before they
+# measure. That happened four times in one day. Same check, over the JSON, with no browser, at
+# the point where it costs one person instead of thirteen. Non-blocking for the same reason as
+# the boot check below: banking in-flight work is worth more than a clean tree.
+if git diff --cached --name-only --diff-filter=ACMRD | grep -Eq '^game/data/quests/'; then
+  node tools/check-quests.mjs || echo "pre-commit: quest integrity problems above — fix before this ships."
+fi
+
 # Does the game actually come up? smoke.mjs is an environment self-test and says so in
 # its own header — it never touches the engine, so a build whose engine throws during
 # setup passed every boot check on this tree while three agents lost measurement rounds

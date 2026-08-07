@@ -1,0 +1,185 @@
+{
+ "schema": "elder-souls/interior@1",
+ "id": "archon-ward",
+ "name": "The Harvesters’ Ward",
+ "settlement": "archon",
+ "cell_kind": "named",
+ "interior_kind": "temple",
+ "service": "healer",
+ "faction": "drowned-court",
+ "exterior_door": [
+  3807.01,
+  3.42,
+  3855.69
+ ],
+ "continuity": {
+  "building": "archon-ward",
+  "building_offset_m": [
+   22.01,
+   0,
+   32.19
+  ],
+  "building_yaw_deg": 214.4,
+  "exterior_footprint_m": [
+   12.4,
+   14.4
+  ],
+  "entry_side": "south",
+  "interior_spawn": [
+   0,
+   0,
+   6
+  ],
+  "exterior_spawn": [
+   3807.01,
+   3.42,
+   3857.49
+  ]
+ },
+ "bounds_m": {
+  "x": [
+   -6.2,
+   6.2
+  ],
+  "y": [
+   0,
+   3.2
+  ],
+  "z": [
+   -7.2,
+   7.2
+  ]
+ },
+ "floor_area_m2": 178.6,
+ "light": {
+  "kind": "lamp",
+  "pos": [
+   0,
+   0.6,
+   2.88
+  ],
+  "colour_hex": "#ffb066",
+  "intensity": 2.2
+ },
+ "lights": [
+  {
+   "id": "archon.cook5.r1.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "archon.cook5.r1.lamp0",
+   "pos": [
+    -2.9,
+    1.6,
+    2.9000000000000004
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.cook5.r1.lamp1",
+   "pos": [
+    -1,
+    1.6,
+    2.8
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.apothecary10.r0.hearth",
+   "pos": [
+    0,
+    0.7,
+    3.4
+   ],
+   "intensity": 0.9,
+   "snuffable": false,
+   "kind": "hearth"
+  },
+  {
+   "id": "archon.apothecary10.r0.lamp0",
+   "pos": [
+    -3.2,
+    1.6,
+    -2.2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.apothecary10.r0.lamp1",
+   "pos": [
+    1.9000000000000004,
+    1.6,
+    -2.1
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  },
+  {
+   "id": "archon.apothecary10.r0.lamp2",
+   "pos": [
+    0.5999999999999996,
+    1.6,
+    -2
+   ],
+   "intensity": 0.55,
+   "snuffable": true,
+   "kind": "oil-lamp"
+  }
+ ],
+ "props": [
+  "altar_low",
+  "kneel_step",
+  "censer_stand",
+  "offering_bowl",
+  "candle_rack",
+  "sermon_lectern",
+  "water_stoup",
+  "bench_row",
+  "wall_niche",
+  "cloth_hanging",
+  "reliquary_case",
+  "lamp_votive",
+  "bell_small",
+  "ash_tray",
+  "arc_clay_dome",
+  "arc_stain_line",
+  "arc_dye_vat",
+  "arc_drying_rack"
+ ],
+ "property_zones": [
+  "archon.cook5.r1",
+  "archon.apothecary10.r0"
+ ],
+ "containers": [
+  "archon.cook5.r1.2"
+ ],
+ "unique_item": {
+  "id": "archon-ward-unique",
+  "name": "a ward book with forty of the same complaint",
+  "unique": true,
+  "takeable": true,
+  "owner": "npc:archon-cook-5"
+ },
+ "readable": {
+  "id": "archon-ward-readable",
+  "title": "Complaints Of The Harvesters"
+ },
+ "inhabitants": [],
+ "anchor": "interior_firelit",
+ "open_h": 8,
+ "close_h": 19
+}

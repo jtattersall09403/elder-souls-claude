@@ -2,7 +2,7 @@
  "task_id": "W1-OPACITY",
  "brief": "build game/data/world/opacity.json (opacity@1) per RI-WLD09 \u00a7B1",
  "started": "wave-1",
- "state": "verifying",
+ "state": "complete",
  "outputs_expected": [
   "game/data/world/opacity.json",
   "corpus/50-world/sealed/SEALED-ANSWERS.md M-05..M-24",
@@ -37,8 +37,11 @@
   "CONSUMPTION CONFIRMED in the browser: C1 the refusal \u2014 243 refusals heard across 4 states; deleting M-01 from opacity.json turned clerk-avelia-doren's authored decline on `the-village-tally` back into refused:no_info and the register went 24 -> 23. C2 the dangle guard \u2014 pointing one evidence id at a non-existent book made boot-check exit 12 naming the unresolved reference.",
   "tools/lib/browser.mjs launchGame() calls die() (process.exit) when ready() throws, which SKIPS a finally block. A probe that perturbs a data file on disk and expects a boot failure MUST use a sidecar backup + process.on('exit'), or it leaves the tree broken for every other agent. It did, once, before I fixed it.",
   "TREE BROKEN BY A CONCURRENT AGENT at 49279c1: engine.js:335 calls this._bookKnowledgeIndex() (W1-LIBRARY round 2) and the method is not defined anywhere. Nothing boots. Not mine; my boot-check PASSED before that landed.",
-  "Another agent committed the tree including my in-progress files. I did not commit."
+  "Another agent committed the tree including my in-progress files. I did not commit.",
+  "CONSUMPTION CONFIRMED 3/3 in the live browser (reports/opacity-consumption.json): C1 refusal (243 heard; deleting M-01 -> refused:no_info, 24->23), C2 dangle guard (boot-check exit 12), C3 discovery log (reading on-the-tally-stones moved M-01 evidence_met 0->1 with route 'book' and getQuestState().booksRead). Register restored byte-identical.",
+  "opacity-resolve.mjs R1..R5 CLEAN over 128,287 strings; all 7 --break self-tests exit 1 with the right check named. One warning: M-11's smuggler refusal is keyed to an actor authored in the dialogue tree that no NPC currently carries, so that row cannot fire yet (the actorless fallback still does).",
+  "Load was 13-27 on four cores throughout the browser work. Every claim here is boolean (did behaviour change), not timing, so load does not distort it; no timing number is reported."
  ],
- "next_step": "re-run boot-check + opacity-consumption once W1-LIBRARY defines _bookKnowledgeIndex; then blog line",
- "notes_for_successor": "Scope is the register (B1) only. assembled-lore.json (B2) and voids.json (B4) are separate deliverables and are NOT in this brief; opacity-audit.py --all will fail on them until someone builds them. Run --seals --leak-scan only."
+ "next_step": "none \u2014 report written",
+ "notes_for_successor": "Regenerate the register with the generator, never by hand: it reads kind/anchors/evidence/seal/answer_words out of SEALED-ANSWERS.md so the two halves cannot drift. The generator is a scratch script; if you need it again, its game-side half (reachable_hours, has_reward, encounterable, refusals, false_accounts, stays_open) is the only authored part and it is reproduced verbatim in the JSON. Editing an answer means running tools/world/opacity-reseal.py --write in the same commit. OUT OF SCOPE and still missing: game/data/world/assembled-lore.json (RI-WLD09 \u00a7B2, 12 facts) and game/data/world/voids.json (\u00a7B4, 5 tracts). opacity-audit.py --all fails on both; use --seals --leak-scan. Also outstanding from RI-WLD09's requested harness extensions: the `discover` trace event (M-OP2 route attribution from a run) \u2014 I could not add it because 'topic_add' is not in HARNESS.md \u00a75's closed vocabulary at openMenu and extending the vocabulary is an amendment somebody else owns."
 }

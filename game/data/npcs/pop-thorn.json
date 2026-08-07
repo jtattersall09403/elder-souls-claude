@@ -1,0 +1,1208 @@
+{
+ "schema": "elder-souls/npc-group@1",
+ "group": "pop-thorn",
+ "id": "pop-thorn",
+ "settlement": "thorn",
+ "generated_by": "tools/world/build-population.mjs",
+ "source": "the household roster in game/data/world/property/thorn.json — these are the people who already owned the objects",
+ "npcs": [
+  {
+   "id": "thorn-factor-0",
+   "name": "Ocheeva of the Boards",
+   "race": "argonian",
+   "class": "factor",
+   "actor": "dres-factor",
+   "faction": "wet-ledger",
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "household": "thorn-factor-0",
+   "role": "head",
+   "disposition": 33,
+   "interior": "thorn-house-0",
+   "home_interior": "thorn-house-0",
+   "work_interior": "thorn-house-0",
+   "owns_zones": [
+    "thorn.factor0.r0",
+    "thorn.factor0.r1"
+   ],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "thorn-house-0",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "thorn-house-0",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "thorn-house-0",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "thorn-house-0",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "thorn-house-0",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-IMP"
+  },
+  {
+   "id": "thorn-priest-1",
+   "name": "Drops-No-Stitch Slow-Rain",
+   "race": "argonian",
+   "class": "priest",
+   "actor": "healer",
+   "faction": "drowned-court",
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "household": "thorn-priest-1",
+   "role": "head",
+   "disposition": 51,
+   "interior": "thorn-hall",
+   "home_interior": "thorn-hall",
+   "work_interior": "thorn-hall",
+   "owns_zones": [
+    "thorn.priest1.r0",
+    "thorn.priest1.r1"
+   ],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "thorn-hall",
+     "activity": "home"
+    },
+    {
+     "from": "06:00",
+     "to": "12:00",
+     "at": "thorn-hall",
+     "activity": "work"
+    },
+    {
+     "from": "12:00",
+     "to": "13:00",
+     "at": "thorn-hall",
+     "activity": "home"
+    },
+    {
+     "from": "13:00",
+     "to": "20:00",
+     "at": "thorn-hall",
+     "activity": "work"
+    },
+    {
+     "from": "20:00",
+     "to": "00:00",
+     "at": "thorn-hall",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [
+    "heal"
+   ],
+   "reaction_group": "RG-DEEP"
+  },
+  {
+   "id": "thorn-priest-2",
+   "name": "Marks-The-Ledger of Nine Debts",
+   "race": "khajiit",
+   "class": "priest",
+   "actor": "healer",
+   "faction": "drowned-court",
+   "settlement": "thorn",
+   "quarter": "sapwell",
+   "household": "thorn-priest-2",
+   "role": "head",
+   "disposition": 53,
+   "interior": "thorn-trader",
+   "home_interior": "thorn-trader",
+   "work_interior": "thorn-trader",
+   "owns_zones": [
+    "thorn.priest2.r0",
+    "thorn.priest2.r1"
+   ],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "thorn-trader",
+     "activity": "home"
+    },
+    {
+     "from": "06:00",
+     "to": "12:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "12:00",
+     "to": "13:00",
+     "at": "thorn-trader",
+     "activity": "home"
+    },
+    {
+     "from": "13:00",
+     "to": "20:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "20:00",
+     "to": "00:00",
+     "at": "thorn-trader",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [
+    "heal"
+   ],
+   "reaction_group": "RG-DEEP"
+  },
+  {
+   "id": "thorn-weaver-3",
+   "name": "Sedura Rope-Maker",
+   "race": "argonian",
+   "class": "weaver",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "household": "thorn-weaver-3",
+   "role": "head",
+   "disposition": 44,
+   "interior": "thorn-sapwell",
+   "home_interior": "thorn-sapwell",
+   "work_interior": "thorn-trader",
+   "owns_zones": [
+    "thorn.weaver3.r0",
+    "thorn.weaver3.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "thorn-sapwell",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "thorn-sapwell",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "thorn-sapwell",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "thorn-smith-4",
+   "name": "Keeps-Her-Own of the Boards",
+   "race": "argonian",
+   "class": "smith",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "household": "thorn-smith-4",
+   "role": "head",
+   "disposition": 36,
+   "interior": "thorn-hall",
+   "home_interior": "thorn-hall",
+   "work_interior": "thorn-trader",
+   "owns_zones": [
+    "thorn.smith4.r0",
+    "thorn.smith4.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "thorn-hall",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "thorn-hall",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "thorn-hall",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [
+    "repair"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "thorn-weaver-5",
+   "name": "Jaraleet Reed-Cutter",
+   "race": "khajiit",
+   "class": "weaver",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "thorn",
+   "quarter": "sapwell",
+   "household": "thorn-weaver-5",
+   "role": "head",
+   "disposition": 48,
+   "interior": "thorn-trader",
+   "home_interior": "thorn-trader",
+   "work_interior": "thorn-trader",
+   "owns_zones": [
+    "thorn.weaver5.r0",
+    "thorn.weaver5.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "thorn-trader",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "thorn-trader",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "thorn-trader",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "thorn-cook-6",
+   "name": "Vaman Cold-Ash",
+   "race": "argonian",
+   "class": "cook",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "household": "thorn-cook-6",
+   "role": "head",
+   "disposition": 48,
+   "interior": "thorn-sapwell",
+   "home_interior": "thorn-sapwell",
+   "work_interior": "thorn-inn",
+   "owns_zones": [
+    "thorn.cook6.r0",
+    "thorn.cook6.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "04:00",
+     "to": "08:00",
+     "at": "thorn-inn",
+     "activity": "work"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "thorn-inn",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "thorn-inn",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "04:00",
+     "at": "thorn-sapwell",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "thorn-cook-7",
+   "name": "Beem-Kiune Nine-Teeth",
+   "race": "argonian",
+   "class": "cook",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "household": "thorn-cook-7",
+   "role": "head",
+   "disposition": 45,
+   "interior": "thorn-hall",
+   "home_interior": "thorn-hall",
+   "work_interior": "thorn-inn",
+   "owns_zones": [
+    "thorn.cook7.r0",
+    "thorn.cook7.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "04:00",
+     "to": "08:00",
+     "at": "thorn-inn",
+     "activity": "work"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "thorn-inn",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "thorn-inn",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "04:00",
+     "at": "thorn-hall",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "thorn-smith-8",
+   "name": "Hides-His-Foot the Quiet",
+   "race": "argonian",
+   "class": "smith",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "thorn",
+   "quarter": "sapwell",
+   "household": "thorn-smith-8",
+   "role": "head",
+   "disposition": 41,
+   "interior": "thorn-trader",
+   "home_interior": "thorn-trader",
+   "work_interior": "thorn-trader",
+   "owns_zones": [
+    "thorn.smith8.r0",
+    "thorn.smith8.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "thorn-trader",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "thorn-trader",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "thorn-trader",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [
+    "repair"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "thorn-smith-9",
+   "name": "Tul Two-Skins",
+   "race": "argonian",
+   "class": "smith",
+   "actor": "townsman",
+   "faction": null,
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "household": "thorn-smith-9",
+   "role": "head",
+   "disposition": 36,
+   "interior": "thorn-sapwell",
+   "home_interior": "thorn-sapwell",
+   "work_interior": "thorn-trader",
+   "owns_zones": [
+    "thorn.smith9.r0",
+    "thorn.smith9.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "thorn-sapwell",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "thorn-sapwell",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "thorn-sapwell",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [
+    "repair"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "thorn-legionary-10",
+   "name": "Wanan the Shorter",
+   "race": "argonian",
+   "class": "legionary",
+   "actor": "legionary",
+   "faction": "ninth-cohort",
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "household": "thorn-legionary-10",
+   "role": "head",
+   "disposition": 27,
+   "interior": "thorn-hall",
+   "home_interior": "thorn-hall",
+   "work_interior": "thorn-hall",
+   "owns_zones": [
+    "thorn.legionary10.r0",
+    "thorn.legionary10.r1"
+   ],
+   "behaviour": "post",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "thorn-hall",
+     "activity": "work"
+    },
+    {
+     "from": "06:00",
+     "to": "10:00",
+     "at": "thorn-hall",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "18:00",
+     "at": "thorn-hall",
+     "activity": "work"
+    },
+    {
+     "from": "18:00",
+     "to": "21:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "21:00",
+     "to": "00:00",
+     "at": "thorn-hall",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-IMP"
+  },
+  {
+   "id": "thorn-apothecary-11",
+   "name": "Tuls Sings-At-Dusk",
+   "race": "khajiit",
+   "class": "apothecary",
+   "actor": "healer",
+   "faction": null,
+   "settlement": "thorn",
+   "quarter": "sapwell",
+   "household": "thorn-apothecary-11",
+   "role": "head",
+   "disposition": 49,
+   "interior": "thorn-trader",
+   "home_interior": "thorn-trader",
+   "work_interior": "thorn-trader",
+   "owns_zones": [
+    "thorn.apothecary11.r0",
+    "thorn.apothecary11.r1"
+   ],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "thorn-trader",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "thorn-trader",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "thorn-trader",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [
+    "heal"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "thorn-keeper-hall",
+   "name": "Beem-Kiune Two-Skins",
+   "title": "Steward",
+   "race": "argonian",
+   "class": "scribe",
+   "actor": "clerk",
+   "faction": null,
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "household": "thorn-keeper-hall",
+   "role": "keeper",
+   "disposition": 34,
+   "interior": "thorn-hall",
+   "home_interior": "thorn-hall",
+   "work_interior": "thorn-hall",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "thorn-hall",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "thorn-hall",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "thorn-hall",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "thorn-hall",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "thorn-hall",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "thorn-keeper-inn",
+   "name": "Tuls Dark-Water",
+   "title": "Publican",
+   "race": "argonian",
+   "class": "publican",
+   "actor": "innkeeper",
+   "faction": null,
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "household": "thorn-keeper-inn",
+   "role": "keeper",
+   "disposition": 57,
+   "interior": "thorn-inn",
+   "home_interior": "thorn-inn",
+   "work_interior": "thorn-inn",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "02:00",
+     "at": "thorn-inn",
+     "activity": "work"
+    },
+    {
+     "from": "02:00",
+     "to": "10:00",
+     "at": "thorn-inn",
+     "activity": "home"
+    },
+    {
+     "from": "10:00",
+     "to": "00:00",
+     "at": "thorn-inn",
+     "activity": "work"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [
+    "bed"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "thorn-keeper-trader",
+   "name": "Counts-The-Tide Reed-Cutter",
+   "title": "Trader",
+   "race": "argonian",
+   "class": "trader",
+   "actor": "merchant",
+   "faction": "wet-ledger",
+   "settlement": "thorn",
+   "quarter": "sapwell",
+   "household": "thorn-keeper-trader",
+   "role": "keeper",
+   "disposition": 44,
+   "interior": "thorn-trader",
+   "home_interior": "thorn-trader",
+   "work_interior": "thorn-trader",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "thorn-trader",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "thorn-trader",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "thorn-trader",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "thorn-trader",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [
+    "barter"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "thorn-keeper-apothecary",
+   "name": "Falura Deep-Root",
+   "title": "Apothecary",
+   "race": "argonian",
+   "class": "apothecary",
+   "actor": "healer",
+   "faction": null,
+   "settlement": "thorn",
+   "quarter": "rotted-hall",
+   "household": "thorn-keeper-apothecary",
+   "role": "keeper",
+   "disposition": 50,
+   "interior": "thorn-apothecary",
+   "home_interior": "thorn-apothecary",
+   "work_interior": "thorn-apothecary",
+   "owns_zones": [],
+   "behaviour": "tend",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "07:00",
+     "at": "thorn-apothecary",
+     "activity": "home"
+    },
+    {
+     "from": "07:00",
+     "to": "08:00",
+     "at": "thorn-apothecary",
+     "activity": "home"
+    },
+    {
+     "from": "08:00",
+     "to": "13:00",
+     "at": "thorn-apothecary",
+     "activity": "work"
+    },
+    {
+     "from": "13:00",
+     "to": "14:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "14:00",
+     "to": "19:00",
+     "at": "thorn-apothecary",
+     "activity": "work"
+    },
+    {
+     "from": "19:00",
+     "to": "22:00",
+     "at": "thorn-inn",
+     "activity": "tavern"
+    },
+    {
+     "from": "22:00",
+     "to": "00:00",
+     "at": "thorn-apothecary",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [
+    "heal"
+   ],
+   "reaction_group": "RG-COMMON"
+  },
+  {
+   "id": "thorn-keeper-sapwell",
+   "name": "Ocheeva Cold-Ash",
+   "title": "Rootkeeper",
+   "race": "khajiit",
+   "class": "rootkeeper",
+   "actor": "rootkeeper",
+   "faction": "rootkeepers",
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "household": "thorn-keeper-sapwell",
+   "role": "keeper",
+   "disposition": 54,
+   "interior": "thorn-sapwell",
+   "home_interior": "thorn-sapwell",
+   "work_interior": "thorn-sapwell",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "thorn-sapwell",
+     "activity": "home"
+    },
+    {
+     "from": "06:00",
+     "to": "12:00",
+     "at": "thorn-sapwell",
+     "activity": "work"
+    },
+    {
+     "from": "12:00",
+     "to": "13:00",
+     "at": "thorn-sapwell",
+     "activity": "home"
+    },
+    {
+     "from": "13:00",
+     "to": "20:00",
+     "at": "thorn-sapwell",
+     "activity": "work"
+    },
+    {
+     "from": "20:00",
+     "to": "00:00",
+     "at": "thorn-sapwell",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [
+    "travel"
+   ],
+   "reaction_group": "RG-DEEP"
+  },
+  {
+   "id": "thorn-keeper-rootpost",
+   "name": "Ocheeva Salt-Hand",
+   "title": "Postmaster",
+   "race": "argonian",
+   "class": "rootkeeper",
+   "actor": "rootkeeper",
+   "faction": "rootkeepers",
+   "settlement": "thorn",
+   "quarter": "the-boards",
+   "household": "thorn-keeper-rootpost",
+   "role": "keeper",
+   "disposition": 56,
+   "interior": "thorn-rootpost",
+   "home_interior": "thorn-rootpost",
+   "work_interior": "thorn-rootpost",
+   "owns_zones": [],
+   "behaviour": "stand",
+   "schedule": [
+    {
+     "from": "00:00",
+     "to": "06:00",
+     "at": "thorn-rootpost",
+     "activity": "home"
+    },
+    {
+     "from": "06:00",
+     "to": "12:00",
+     "at": "thorn-rootpost",
+     "activity": "work"
+    },
+    {
+     "from": "12:00",
+     "to": "13:00",
+     "at": "thorn-rootpost",
+     "activity": "home"
+    },
+    {
+     "from": "13:00",
+     "to": "20:00",
+     "at": "thorn-rootpost",
+     "activity": "work"
+    },
+    {
+     "from": "20:00",
+     "to": "00:00",
+     "at": "thorn-rootpost",
+     "activity": "home"
+    }
+   ],
+   "topics": [
+    "thorn",
+    "background"
+   ],
+   "services": [
+    "travel"
+   ],
+   "reaction_group": "RG-DEEP"
+  }
+ ]
+}

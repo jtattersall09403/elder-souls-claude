@@ -126,23 +126,47 @@ try {
   // =============================================================================================
   if (want('drown')) {
     await rested();
+    // OVERLOAD FIRST, THEN LOOK. The search criterion is `submerged` — the state the breath clock
+    // actually runs in — and a body that can swim is never submerged at any depth, because it
+    // floats with its head above the waterline by construction. Searching before the pack is
+    // heavy therefore finds W5 water the player will stand in forever without drowning, which is
+    // what the first two attempts at this section measured (4,000 and 16,000 frames, hp 620/620,
+    // breath 60/60). `RI-WLD10` §3: past 100% load "you cannot swim. You walk the bottom, with a
+    // breath clock."
+    //
+    // `__HARNESS.setBurden()` cannot do this, and that is itself a finding for RI-PRG07's owner:
+    // `Engine._recomputeBurden()` runs from `_afterStep()` on EVERY frame and recomputes
+    // `burdenRatio` from the inventory's weights, so a burden set by the verb is gone before the
+    // next traversal step reads it. The weight has to be real, so it goes in the pack.
+    {
+      const bb = await h.h('saveState');
+      bb.character.souls_held = 900;
+      bb.inventory = [...(bb.inventory || []), { id: 'bog-iron-maul', count: 40, condition: 1, charge: 0, stolen: false, owner_of_record: null, equipped_slot: null, quick_slot: null }];
+      await h.h('restoreState', bb);
+      await h.h('stepFrames', 3);
+    }
+    const burden = await h.h('getPlayerStats').then((s) => ({ ratio: s.burden_ratio, tier: s.burden_tier }));
     let site = null;
-    // A coarse spiral out from the well, reading the LIVE traversal band rather than a data file.
+    const searched = [];
+    // A spiral out from the well, reading the LIVE traversal state rather than a data file.
     outer:
-    for (let r = 40; r <= 420 && !site; r += 40) {
-      for (let a = 0; a < 12; a++) {
-        const th = (a / 12) * Math.PI * 2;
+    for (let r = 30; r <= 600 && !site; r += 30) {
+      for (let a = 0; a < 16; a++) {
+        const th = (a / 16) * Math.PI * 2;
         const x = well.pos[0] + Math.cos(th) * r, z = well.pos[2] + Math.sin(th) * r;
         await h.h('teleport', x, z);
-        await h.h('stepFrames', 3);
+        await h.h('stepFrames', 4);
         const st = await h.h('getPlayerStats');
-        if (st.submerged || st.water_band === 'W4' || st.water_band === 'W5') { site = { x, z, band: st.water_band }; break outer; }
+        if (st.submerged) { site = { x, z, band: st.water_band, state: st.state }; break outer; }
+        if (st.water_band === 'W5') searched.push({ x: +x.toFixed(0), z: +z.toFixed(0), band: st.water_band, submerged: st.submerged });
       }
     }
     if (!site) {
       out.drown = {
         found_deep_water_within_420m_of_hearth_archon: false,
-        _note: 'No W4/W5 band within 420 m of hearth-archon — the same absence the round-1 critic '
+        burden, w5_but_not_submerged: searched.slice(0, 6),
+        _note: 'No water within 600 m of hearth-archon deep enough to submerge an OVERLOADED body '
+          + '(the only body that can drown) — a near-relative of the absence the round-1 critic '
           + 'reported. The drown branch is therefore exercised through killPlayer("drown"), which '
           + 'writes sim.player.lethalCause, THE SAME FIELD traversal.js writes when the breath '
           + 'clock kills you. That is a declared weaker demonstration than the fall above and it '
@@ -163,26 +187,7 @@ try {
         ? +Math.hypot(d.bloodstain.pos[0] - ground.pos[0], d.bloodstain.pos[2] - ground.pos[2]).toFixed(2) : null;
       out.drown.pass = !!(rec && rec.cause === 'drown');
     } else {
-      out.drown = { found_deep_water_within_420m_of_hearth_archon: true, site };
-      await rested();
-      // OVERLOADED, THROUGH THE PACK AND NOT THROUGH A KNOB. `RI-WLD10` §3: past 100% load "you
-      // cannot swim. You walk the bottom, with a breath clock" — the item cites Hallgerd's Tale
-      // for it. A body that CAN swim floats with its head above the waterline by construction,
-      // which costs stamina and not breath, so an unburdened probe stands in W5 water forever
-      // and never drowns: 4,000 frames of the first attempt measured exactly that.
-      //
-      // `__HARNESS.setBurden()` cannot be used for this and that is itself a finding:
-      // `Engine._recomputeBurden()` runs from `_afterStep()` on EVERY frame and recomputes
-      // `burdenRatio` from the inventory's weights, so a burden set by the verb is gone before
-      // the next traversal step reads it. The weight has to be real, so it is put in the pack.
-      {
-        const bb = await h.h('saveState');
-        bb.character.souls_held = 900;
-        bb.inventory = [...(bb.inventory || []), { id: 'bog-iron-maul', count: 40, condition: 1, charge: 0, stolen: false, owner_of_record: null, equipped_slot: null, quick_slot: null }];
-        await h.h('restoreState', bb);
-        await h.h('stepFrames', 3);
-      }
-      out.drown.burden = await h.h('getPlayerStats').then((s) => ({ ratio: s.burden_ratio, tier: s.burden_tier }));
+      out.drown = { found_deep_water_within_420m_of_hearth_archon: true, site, burden, w5_but_not_submerged: searched.slice(0, 6) };
       // Stand on dry land first so `lastGrounded` is a real ledge, then wade in and drown.
       await h.h('teleport', well.pos[0], well.pos[2]);
       await h.h('stepFrames', 20);

@@ -251,7 +251,18 @@ export class GamepadRouter {
       if (st && (st.id !== snap.id || st.mapping !== snap.mapping)) { this._dropPad(idx, frame); st = null; }
       if (!st) { st = this._adoptPad(snap, frame); }
       st.snap = snap;
-      if (this._isActive(snap, st)) { st.lastActive = frame; }
+      // L6/L7. `lastActive` picks WHICH pad drives the game when two are attached. It is also
+      // the only evidence anywhere that a pad is the device in the player's hands right now, and
+      // round 1 threw that half away: `onDeviceActive` fired only when the chosen INDEX changed,
+      // so a player who put the phone down, tapped the glass and then picked the pad back up
+      // kept a fingertip glyph on every door prompt until the pad was physically unplugged and
+      // replugged. L7's rule is "the ACTIVE device", not "the most recently connected one", and
+      // M-P14 caught it the first time it ran: driving a pad button reported `activeDevice:
+      // 'touch'`.
+      if (this._isActive(snap, st)) {
+        st.lastActive = frame;
+        this.onDeviceActive && this.onDeviceActive('gamepad');
+      }
     }
     for (const [idx, st] of this.pads) {
       // `!chosen` is TRUE for index 0 — the classic falsy-zero bug, and here it meant that with

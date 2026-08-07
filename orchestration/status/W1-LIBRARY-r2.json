@@ -2,7 +2,7 @@
   "task_id": "W1-LIBRARY-r2",
   "brief": "verdict corpus/90-verdicts/wave1/W1-LIBRARY-r1.md (3/10 FAIL, gate 7.0)",
   "started": "wave-1 round 2",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "game/src/ consumer for topics_taught (world-side, perturbable)",
     "game/src/ consumer for knowledge_key (quest resolution)",
@@ -11,11 +11,26 @@
     "estimator fix (linear interpolation percentiles)",
     "one contradiction pair rewritten or withdrawn",
     "both new tools rebuilt so a swapped corpus goes red",
-    "RI-LOR03 §2 texts count, skill book overlay >=26"
+    "RI-LOR03 \u00a72 texts count, skill book overlay >=26"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read verdict W1-LIBRARY-r1.md and RI-LOR03, RI-UIX05",
+  "outputs_written": [
+    "game/src/sim/state.js \u2014 sim.quest.booksRead + canonicalisation",
+    "game/src/ui/system.js \u2014 UISystem.open('book') fires onBookOpened (BOTH the harness door and the player's inventory-confirm route)",
+    "game/src/engine.js \u2014 _readBook() (the world-side consumer), _bookKnowledgeIndex(), getQuestState().booksRead/bookKnowledge",
+    "game/src/sim/quest/machine.js \u2014 QuestEngine.bookKnowledge + ctx.knowledge union",
+    "game/src/save/state.js \u2014 dialogue.books_read written and read back",
+    "game/data/save-manifest.json \u2014 dialogue.books_read declared durable + id-sorted"
+  ],
+  "findings": [
+    "SEAM CLOSED, measured with the critic's own probe: critic-w1-library-seam.mjs now reports topics_before 0, topics_after 116, gained 116 (was 0/0/0). seam_sterile is now FALSE by measurement.",
+    "KNOWLEDGE GATES: critic-w1-library-consume.mjs now shows the 'you have not learned book_*' clause present in the control and ABSENT after reading, on all 3 quests. Residual refusals are skill floors and reveals from other channels, which are other systems'.",
+    "THE READ SITE WAS IN THE WRONG FILE. Engine.openMenu() is the HARNESS door. A player reads by selecting a readable in the inventory and pressing confirm: UISystem._confirm() calls this.open('book', ...) directly and never passes through Engine.openMenu(). The old _booksRead recorder sat in the engine wrapper, so it could not see the only route a person takes. The hook is now in UISystem.open().",
+    "ALL EIGHT knowledge_key values are consumed, by TWO authored linkages: 3 are named directly by a quest's requires.knowledge; the other 5 are named as deceit.revealed_by[].source with channel 'book' (Q-MAIN-05 x2, Q-MAIN-09, Q-MAIN-12, Q-MAIN-22). _bookKnowledgeIndex() reconciles both.",
+    "Engine._booksRead was a Set on the engine object: it survived sim.reset() (carrying one run's reading into the next state) and appeared in NO save blob. Replaced by sim.quest.booksRead, serialised as dialogue.books_read.",
+    "PAGINATION baseline re-measured in bare Node at 1920x1080: 324 pages, linear p10 62.3, median 126, p90 153, min 3, max 172. 12 books end on a page under 25 words.",
+    "BOOK LENGTHS: linear-interpolation p90 = 1128.6 against RI-LOR03's >= 1200 fail band (floor-index estimator says 1259). The gap in the sorted lengths is 933 -> 1259; the corpus is inside the bar only by estimator choice, as the critic said."
+  ],
+  "next_step": "paginator last-page balancing; then estimator fix in both tools; then rebuild self-tests against a deranged corpus",
   "notes_for_successor": "",
   "files_touched_prose": []
 }
