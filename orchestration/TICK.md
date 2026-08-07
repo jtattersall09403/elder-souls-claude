@@ -13,12 +13,15 @@ and it is invisible from inside a single turn because each turn feels busy.
 ## 1. Measure before deciding
 
 ```
-pgrep -c headless_shell ; cat /proc/loadavg
+node tools/contention.mjs
 ```
 
-Browsers, not agents, is the number that matters — one agent can be ten browsers. Under ~8, there is
-room for stepping work. Over it, dispatch only work that needs no browser, of which there is always
-some.
+Browsers, not agents, is the number that matters — one agent can be several browsers. But
+`pgrep -c headless_shell` is *not* that number: one browser is six of those processes here, so the
+old "under ~8" ceiling meant one and a third browsers and throttled the fleet for nothing. The tool
+counts instances and the run queue per core. GO means there is room for stepping work; WAIT means
+dispatch only work that needs no browser, of which there is always some — verdicts, prose judging,
+data audits, corpus work, blog.
 
 ## 2. Bank
 

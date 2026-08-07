@@ -73,9 +73,18 @@ right now). Between these two you should not need to go looking for anything.
     shows you the failures, the head and the tail. Nothing is discarded; the path is printed.
 20. **Use `tools/capture/` for pictures.** Launch your own browser only when you are stepping the
     simulation, and say which you did.
-21. **Check `pgrep -c headless_shell` and `cat /proc/loadavg` before browser work.** Above ~8
-    browsers, do the work that needs none and come back. Contention has cost two pieces their
-    headline numbers. **Launch one browser and keep it** for the whole run.
+21. **Run `node tools/contention.mjs --gate` before browser work.** Exit 3 means do the work that
+    needs no browser and come back. Contention has cost two pieces their headline numbers.
+    **Launch one browser and keep it** for the whole run.
+
+    This rule used to say "above ~8 `pgrep -c headless_shell`, wait", and that was wrong in a way
+    that quietly throttled the whole fleet: Chromium forks a browser process, a zygote, a GPU
+    process and a renderer per tab, so **one browser is six `headless_shell` entries here**. The
+    ceiling as written was about one and a third browsers, and agents have been sleeping, queueing
+    and skipping measurements to respect a number that never meant what it said. The tool counts
+    browser *instances* (a shell whose parent is not itself a shell) and the run queue per core,
+    which are the two things that actually contend. If you proceed past exit 3 anyway, that is
+    allowed — say in your status file that you did and why.
 
 ## Judgement
 

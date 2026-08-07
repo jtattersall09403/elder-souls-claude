@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `444d43d`: 495 tools, 153 reference
+so it cannot drift. Generated at `1110bf7`: 497 tools, 153 reference
 items, 34 pieces in flight.
 
 Its purpose is to stop 34+ concurrent agents each paying separately to discover the
@@ -37,7 +37,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 22
+### `tools/` — 23
 
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
 - `tools/blog.mjs` — Renders docs/index.html — a two-tab page (Progress | Blog) served by GitHub Pages from /docs.
@@ -48,6 +48,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/check-prose.mjs` — Prose-voice integrity for every player-facing register, checked over the JSON with no engine and no browser.
 - `tools/check-quests.mjs` — Content integrity for the quest layer, checked over the JSON with no engine and no browser.
 - `tools/check-souls-corpus.mjs` — the soul economy's CORPUS is internally consistent, checked over the markdown and the JSON with no engine and no browser.
+- `tools/contention.mjs` — how loaded is this box, really, and may I launch a browser?
 - `tools/corpus-index.mjs` — **no header comment**
 - `tools/dispatchable.mjs` — answer, before an agent is spawned, whether this piece needs one.
 - `tools/gap-ledger.mjs` — **no header comment**
@@ -172,7 +173,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/ponr-probe.mjs` — RI-EXP05 "Comparison method" Step 2, executed.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 
-### `tools/harness/` — 182
+### `tools/harness/` — 183
 
 - `tools/harness/anim-author.mjs` — re-author the four attack clip archetypes and the idle base loop, and solve for the one free parameter each archetype has.
 - `tools/harness/anim-tune.mjs` — measure the swing OFF THE ANIMATION SYSTEM, with no browser.
@@ -333,6 +334,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-14-r3-vfx.mjs` — RI-MAG05, the two findings the round-2 verdict could see in the picture.
 - `tools/harness/w1-14-r3-wards.mjs` — the three round-2 findings that are not the skill register.
 - `tools/harness/w1-15-coupling.mjs` — RI-MTH07 applied to W1-15, by the builder, against itself.
+- `tools/harness/w1-21-r2-forge.mjs` — THE FALSIFIER FOR THE W1-21 AR-2 FIX: can a save still put a square on the map?
 - `tools/harness/w1-26-opening.mjs` — the opening as a played scene, measured on the live build.
 - `tools/harness/w1-26-r2-arrival.mjs` — does the opening ARRIVE anywhere, and does the province hitch land in it?
 - `tools/harness/w1-26-r2-asking.mjs` — does the opening teach that ASKING is the verb?
@@ -776,6 +778,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `judge-prose-r4` | judging-second-pass | read t01-books A.txt and B.txt, write my row, then t02..t15, then reveal | `orchestration/status/judge-prose-r4.json` |
 | `critic-w1-13-r4` | running | read RULES/INDEX/ARBITRATION §3/W1-13-r3.md; then reproduce the delete-the-fix arm on the  | `orchestration/status/critic-w1-13-r4.json` |
 | `W1-READABLES` | building | browser proof (tools/quests/document-route-world.mjs) when the box drops under ~8 headless | `orchestration/status/W1-READABLES.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/books/the-books-in-evidence.json` `game/data/books/the-drowned-tally.json` |
 | `critic-w1-map` | in_progress | read RULES/INDEX/S35, then builder status, then attack A-F | `orchestration/status/critic-w1-map.json` |
@@ -800,7 +803,6 @@ work is the difference between resuming and starting over.
 | `W1-13-r3` | done | critic | `game/src/sim/environment.js` `game/src/harness/api.js` `tools/journey/jrn06-death.mjs` `tools/journey/journey-run.mjs` `tools/harness/w1-13-r3-bloom-sight.mjs` `tools/harness/w1-13-r3-clock.mjs` |
 | `tool-build-viability-r6` | researching | choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items | — |
 | `W1-JOURNAL-PROSE` | researching | state the closing-line rule, then rewrite file by file, re-running the FULL gate after eve | — |
-| `judge-prose-r4` | researching | read t01-books A.txt and B.txt; answer; then t02..t15 | — |
 | `W1-FACTIONS-r3` | researching | patch faction-probe to travelToGiver; then prose, records_belief, template break, browser  | — |
 | `critic-w1-souls` | researching | run the -DELETED counterpart, then write the verdict md+json, blog line | — |
 | `critic-w1-08-r2` | researching | probe 3: redo CONSUMPTION with action/x/y; check whether touch still works during a stuck  | — |
