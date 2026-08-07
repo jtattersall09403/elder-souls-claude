@@ -163,3 +163,87 @@ ILS = the fraction of cells whose triple is separated from EVERY other cell's by
 
 The 0.80 / 0.50 / 0.40 thresholds are unchanged; only the classifier is replaced, because a
 classifier that must recover a label from a set that excludes it is not a measurement.
+
+---
+
+## E. The round-2 verdict's CONSUMPTION acceptance criterion cannot be met by a correct build
+
+*Added by the same builder, later in round 3, after the impact model was wired and measured.*
+
+`W1-10-r2`'s acceptance for `GAP-W1-weapon-impact-and-material-model-has-no-consumer` reads:
+
+> `node corpus/90-verdicts/wave1/artifacts/W1-10-r2/kritik-consumption3.mjs` reports **6 of 6
+> CONSUMED**
+
+That instrument is a good instrument and its diagnosis was right — five of its six perturbations
+were genuinely inert in round 2, and finding that is why this piece scored 2. But **four of its
+six probes cannot fire on any build, however correct**, and the reason is in its own source:
+
+```js
+const a = new NodeArena({ data: loadCombatData(), loadout: { weapon: 'straight-sword' } });
+const e = a.spawn('t', 'dummy_passive', 0, 1.2, 180);
+...
+return { dmg, hitF, hitstop_held_frames };
+```
+
+| probe | why a correct build cannot move it |
+|---|---|
+| `hitstop.attacker.<tier>.stone → 99` | `dummy_passive` is **flesh**. Nothing in the fight reads the stone row |
+| `hitstop.attacker.<tier>.metal/chitin/wood/shield → 99` | four more rows the target does not have |
+| `hitstop.knockback_m ALL → 9` | knockback moves the **victim's world position**; the observation vector is `{dmg, hitF, attacker hitstop}` |
+| `hitstop.deflect.hitstop_multiplier 1.5 → 20` | a blade does not deflect off flesh; the branch is never entered |
+
+Run unmodified against the round-3 build it reports **2 of 6**, and both of the two it *can* see
+fire. The build's own instrument, `tools/weapons/impact-consumption.mjs`, drives a
+material-carrying dummy per perturbed row and observes the full impact record, and reports
+**17 of 17 CONSUMED**.
+
+### Proposed general rule, for `ARBITRATION.md` §3 and `WEAPON-CRITIC.md` §3.1
+
+> A CONSUMPTION demonstration must satisfy two conditions that are currently implicit, and a
+> probe failing either is **VOID rather than INERT**:
+>
+> 1. **The world must be able to read the row.** The perturbed cell must be one the driven
+>    scenario actually consults — a material row needs a target of that material, a block row
+>    needs a raised shield, a chain row needs a chain that reaches the link.
+> 2. **The observation vector must contain the quantity the row controls.** A knockback table is
+>    not tested by a damage number; a victim-hitstop column is not tested by the attacker's
+>    animation clock.
+>
+> A verdict that names a specific script as its acceptance criterion should state which of its
+> probes are *load-bearing* — the ones a correct build must move — so a remediation is not graded
+> against rows its own fixture cannot reach.
+
+This is filed rather than worked around: the round-3 report publishes **both** readings, the
+critic's 2/6 with this explanation and the builder's 17/17, and does not claim the acceptance
+criterion as written was met.
+
+---
+
+## F. `RI-WPN02` §B's `threat_m` spread requirement may not be reachable from its own columns
+
+*Filed as a question with the arithmetic attached, not as a request to lower a bar.*
+
+`BAR-CRITIQUE-W1-10-R1` §R4 defines `threat_m = Reach + Root Δz`, derived and never authored,
+with **a melee spread requirement of ≥ 3.0 m**. Measured on the shipping build with the critic's
+own `kritik-reach.mjs` C2 sweep, the observed `threat_m` spread across the fourteen melee class
+baselines is **2.8 m**.
+
+From §B's own published columns the *declared* spread is `WHP 3.60 + 0.20 = 3.80` down to
+`FST 0.90 + 0.10 = 1.00`, i.e. **2.80 m** — the same number. So the requirement is not missed by
+this build's animation; **it is 0.20 m outside what §B's published table can produce**, and a
+build that met it would be contradicting §B, which §B's own authority note forbids.
+
+Three ways out, and this filing does not choose between them:
+
+1. `FST`'s reach or `WHP`'s reach moves in §B, which is a design change with knock-on effects on
+   `D_min`, `ARI` and every class-rules row that mentions spacing;
+2. the spread requirement is stated as **≥ 2.75 m** to sit just inside what §B publishes — which
+   is curve-fitting the corpus and is the thing `BAR-CRITIQUE-W1-10-R1` §R1 rejected on principle;
+3. the requirement is restated over `threat_m` **including the largest contextual root** rather
+   than `r1.1`'s — UGS's `r2` lunge is 1.90 m, which would take its threat to 4.85 m and the
+   spread to 3.85 m. This is the option this builder would argue for, because *"spacing must be a
+   build decision"* is a claim about a weapon's whole vocabulary and not about its opener.
+
+Whichever is chosen, the row should be recomputed and republished with its arithmetic, so the next
+builder can tell whether they are 0.2 m short of a design or 0.2 m short of a table.

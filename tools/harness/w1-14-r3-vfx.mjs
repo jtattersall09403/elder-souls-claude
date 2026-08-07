@@ -75,8 +75,20 @@ try {
       if (!didRelease && snap.player.phase === 'active') { await shoot('release'); didRelease = true; continue; }
       // IN FLIGHT: sampled while the simulation says a projectile exists, not at a guessed frame.
       if (m.projectiles > 0 && flightShots < 3) { flightShots++; await shoot(`inflight_${flightShots}`); continue; }
-      // IMPACT: the frame the simulation says the spell landed.
-      if (!didImpact && m.impacts > 0) { await shoot('impact'); didImpact = true; continue; }
+      // IMPACT. Round 3's first two shoots caught the FIRST frame the simulation reports an
+      // impact — `t = 0`, when `spell-vfx.js` has the shell at its SMALLEST (`0.35 x burstR`)
+      // because the burst is modelled as a shell that expands over its 36 frames. So the frame
+      // being called "the impact" was the frame before the impact was visible, and the diff came
+      // back 0.038% and then 0.051% of the frame. `impact_frame_offset_f` steps into the event
+      // and photographs it at its widest: the shell is at `0.35 + 0.25 x 1.85 = 0.81` of
+      // `burstR` and the core's `punch` is still 0.94 of its peak.
+      // Both frames are kept: `impact_first_f` is the contact frame, `impact` is the event.
+      if (!didImpact && m.impacts > 0) {
+        await shoot('impact_first_f');
+        H.stepFrames(9);
+        await shoot('impact');
+        didImpact = true; continue;
+      }
       if (didImpact && m.impacts === 0 && m.residues > 0) { await shoot('after_impact'); break; }
     }
     for (let i = 0; i < 1200; i++) H.stepFrames(1);

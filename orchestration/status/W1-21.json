@@ -1,0 +1,24 @@
+{
+  "task_id": "W1-21",
+  "title": "The interface: HUD, menus, journal and inventory",
+  "brief": "docs/PLAN.md §3 W1-21; corpus/86-ui/RI-UIX01..06",
+  "started": "wave-1",
+  "state": "researching",
+  "round": 1,
+  "outputs_expected": [
+    "game/src/ui/* (HUD, journal, inventory, spells, sheet, map, books)",
+    "engine wiring so all UI renders into the harness screenshot (textured quad, no DOM)",
+    "tools/analysis/ui-census.mjs",
+    "tools/analysis/ui-forbidden.mjs",
+    "tools/analysis/marker-scan.mjs",
+    "tools/analysis/marker-diff.mjs",
+    "tools/analysis/ui-layer.mjs",
+    "tools/analysis/journal-ui.mjs",
+    "tools/analysis/text-metrics.mjs",
+    "tools/metrics/ui-metrics.mjs"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read RI-UIX01..06, existing game/src/render/ui.js, harness api",
+  "notes_for_successor": ""
+}

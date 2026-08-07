@@ -1,0 +1,17 @@
+{
+  "task_id": "W1-19",
+  "brief": "docs/PLAN.md §3 — W1-19 The main quest, end to end",
+  "started": "wave-1",
+  "state": "researching",
+  "effort": "ultracode",
+  "outputs_expected": [
+    "game/data/quests/main-quest.json",
+    "game/data/dialogue/** (main quest topics/greetings)",
+    "tools/quests/mainquest-trace.mjs",
+    "reports/**/mainquest-trace.*"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read RI-EXP05, RI-LOR01, RI-LOR02, RI-LOR05, RI-QST06, RI-WLD09, RI-JRN07, RI-QST02/04/05/07/08/09; inspect quest runtime state",
+  "notes_for_successor": "Paths owned: quests.mainline.acts, quests.mainline.antagonist, quests.mainline.prophecy, experience.ending.landing, experience.ending.aftermath, experience.ending.pointofnoreturn. W1-18 (quest engine+journal) is a SEPARATE in-flight piece — do not duplicate its engine work; consume it."
+}

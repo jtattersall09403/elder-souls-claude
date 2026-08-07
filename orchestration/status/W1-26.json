@@ -1,0 +1,22 @@
+{
+  "task_id": "W1-26",
+  "brief": "docs/PLAN.md §3 — W1-26 The opening, as a played scene (ULTRACODE). Seven paths: journey.firstlaunch.flow, journey.chargen.diegesis, journey.onboarding.explanation, journey.opening.exchange, journey.opening.legibility, experience.opening.hook, experience.opening.beats. Judged by RI-JRN01, RI-JRN09, RI-EXP01.",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "a title surface (RI-JRN01 M20/HF9) with the exact O3 set and a working Continue",
+    "a demonstrated, enumerable rendered-text accessor (RI-JRN01 M9/M15 gate, RI-JRN09 M1)",
+    "the writ drawn at the node that stamps it and carried out as an object (RI-JRN01 M8/O10)",
+    "DTR / AC / NAMED measured live (RI-JRN09 M1/M2/M3)",
+    "tools/journey/journey-run.mjs + beat-extract.mjs if the tool builder has not landed them",
+    "tools/experience/session-run.mjs, beat-diff.mjs, beats-from-md.mjs, isolation-check.mjs (RI-EXP01, five phantom tools)",
+    "RI-EXP01 run for the first time on any build: beat log, beat diff, derived targets"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "smoke.mjs PASS at session start (6/6, chromium 141, SwiftShader).",
+    "COORDINATION: W1-07-r3 is live in the same tree and owns the questionnaire fix. Its status file records question texts 0/10 -> 10/10 drawn and named classes 0/14 -> 12/14 over a 240-run sweep, plus tools/harness/jrn09-exchange.mjs already written. Its next_step is 'expose the built census model via harness; fix the jrn09 probe; DRAW THE WRIT'. Do not duplicate the questionnaire or the matcher."
+  ],
+  "next_step": "survey boot path (main.js), ui.js text drawing and the harness rendered-text surface; establish what exists before building",
+  "notes_for_successor": ""
+}

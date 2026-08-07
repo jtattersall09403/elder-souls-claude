@@ -100,7 +100,7 @@ try {
       await handle.h('renderFrame');
       const id = `${String(shots.length + 1).padStart(3, '0')}`;
       const file = path.join(outDir, `capture-${id}.png`);
-      await handle.page.screenshot({ path: file, type: 'png', animations: 'disabled', caret: 'hide' });
+      await handle.page.screenshot({ path: file, type: 'png', animations: 'disabled', caret: 'hide', timeout: 240000 });
       // A frame whose eye landed inside a trunk is not a sample of the region, it is a sample of
       // one tree. Re-yaw and re-shoot rather than ship a black rectangle a judge cannot classify.
       let lum = meanLuma(file), spins = 0;
@@ -117,7 +117,7 @@ try {
         }
         await handle.h('camera', { pos: [ex, ey + 1.7, ez], look: [ex + Math.sin(y2) * 40, ey + 1.7 - 3.0, ez + Math.cos(y2) * 40], fov: 70 });
         await handle.h('renderFrame');
-        await handle.page.screenshot({ path: file, type: 'png', animations: 'disabled', caret: 'hide' });
+        await handle.page.screenshot({ path: file, type: 'png', animations: 'disabled', caret: 'hide', timeout: 240000 });
         lum = meanLuma(file);
       }
       shots.push({

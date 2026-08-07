@@ -83,7 +83,19 @@ export class Census {
       // the current line by render/ui.js. Empty at the first node of the scene.
       spoken: (this.spoken || []).map((s) => ({ from: s.from, line: s.line })),
       sets: n.sets || null,
-      input: n.input ? { kind: n.input.kind, options: this._options(n) } : null,
+      // `count` is exposed because a pick node cannot be answered without it: `_requirePick`
+      // throws unless it gets exactly `count` distinct ids, and until now the number lived only
+      // in the graph file. The drawn surface read it via `surface.pickCount(state)`, so the
+      // scene worked, but anything else holding this state — a probe, a critic, a second
+      // surface — could only guess. `max_len` is here for the same reason on text nodes.
+      input: n.input
+        ? {
+          kind: n.input.kind,
+          options: this._options(n),
+          count: n.input.count === undefined ? null : n.input.count,
+          max_len: n.input.max_len === undefined ? null : n.input.max_len,
+        }
+        : null,
       full_screen: false,
       world_visible: true,
     };

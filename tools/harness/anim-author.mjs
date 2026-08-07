@@ -483,6 +483,7 @@ function rowsFor(archName) {
           declPeak: ms.weapon.peak_tip_speed_mps_declared,
           declReach: isOneHanded ? (base.reach_m_declared || null) : null,
           coversStandoff: coversStandoff(ms.weapon.socket_a_dist_m),
+          played: false,
         });
       }
     }
@@ -490,6 +491,7 @@ function rowsFor(archName) {
   for (const eid of Object.keys(ENEMIES)) {
     const st = ENEMIES[eid];
     if (st.id === 'probe_pulse') continue;         // an 8 m instrument pulse, not a weapon
+    // (enemy rows are marked `played: true` below — see the note on `played` above rowsFor.)
     for (const k of Object.keys(st.attacks || {})) {
       const a = st.attacks[k];
       if ((a.archetype || 'cut_diagonal') !== archName) continue;
@@ -500,6 +502,7 @@ function rowsFor(archName) {
         declPeak: st.weapon.peak_tip_speed_mps_declared || null,
         declReach: null,
         coversStandoff: coversStandoff(st.weapon.socket_a_dist_m),
+        played: true,
       });
     }
   }
@@ -510,7 +513,8 @@ function rowsFor(archName) {
   for (const row of rows) {
     const w = row.weapon;
     const key = [w.socket_a_dist_m, w.socket_b_dist_m, row.hitboxR, row.declPeak, row.declReach,
-      row.timing.startup, row.timing.active, row.timing.total, row.amplitude, row.root_dz_m].join('|');
+      row.timing.startup, row.timing.active, row.timing.total, row.amplitude, row.root_dz_m,
+      row.played].join('|');
     if (!seen.has(key)) seen.set(key, row);
   }
   return [...seen.values()];
@@ -547,7 +551,24 @@ function measureArch(archName, archObj, rowsCache) {
       const rr = t.reach / row.declReach;
       if (rr < worstReach) { worstReach = rr; worstReachRow = row.label; }
     }
-    if (row.coversStandoff && t.minAxis > worstAxis) { worstAxis = t.minAxis; worstAxisRow = row.label; }
+    // MIN-AXIS BINDS ONLY ON ROWS THE GAME ACTUALLY PLAYS.
+    //
+    // `game/data/combat/spine/*.json` is the seven-class W1-09 spine. `moveset.js` states
+    // plainly that it "is no longer read by the fight at all — its ids survive as aliases onto
+    // the roster baselines": every player swing in the running game is synthesised by
+    // `swing.js buildSwing()` from `clip-registry.json`, whose capsule already runs GRIP-to-tip
+    // (`socketsFor`: `a: GRIP_OFFSET_M`), so the player side has no dead inboard band to close.
+    // The consumers of `clips.json §archetypes` are the ENEMY statblocks.
+    //
+    // Rounds 1-3 solved against the spine rows ONLY and the champion — whose chop is the attack
+    // the whole remediation is about — was never in the objective. This is the opposite error
+    // and it is guarded the opposite way: peak tip speed and reach still bind on EVERY row,
+    // played or not, so a spine row cannot be quietly allowed to break RI-CMB04 §B. Only
+    // `min_axis` is restricted, and only because an unplayed row's inboard geometry cannot put
+    // a hole in a fight. Measured: with the spine rows binding, `sweep_wide` has NO feasible
+    // point at all (best 0.536 m, set by `greatsword:heavy:2h`, a move the fight never plays)
+    // and the archetype every enemy sweep uses stays at round 3's geometry.
+    if (row.played && row.coversStandoff && t.minAxis > worstAxis) { worstAxis = t.minAxis; worstAxisRow = row.label; }
     if (t.peakWorld > worstWorld) worstWorld = t.peakWorld;
     if (t.travel / row.hitboxR > worstTravel) { worstTravel = t.travel / row.hitboxR; worstTravelRow = row.label; }
   }
