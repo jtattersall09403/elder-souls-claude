@@ -413,8 +413,8 @@ export class QuestEngine {
   open(id) {
     const def = this.book.get(id);
     const existing = this.rec(id);
-    if (existing && existing.opened) return { ok: false, reason: 'already opened' };
     if (this.isClosed(id)) return { ok: false, reason: 'quest is closed' };
+    if (existing && existing.opened) return { ok: false, reason: 'already opened' };
     const ctx = this.context();
     const c = canOffer(def, ctx, this.gates);
     if (!c.offerable) return { ok: false, reason: c.why.join('; '), gate: c.gate };

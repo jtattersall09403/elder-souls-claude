@@ -260,6 +260,12 @@ try {
     const walk = [];
     const unmetWorldState = [];
     const openLog = [];
+    // W1-FACTIONS r2. EVERYTHING THE WALK IS HANDED, itemised. Round 1's report could not say
+    // whether the ladder was climbed or written in; these two logs are the difference. A walk
+    // that never writes a reputation is a walk the QUESTS paid for.
+    const repWrites = [], dispWrites = [];
+    const grantRep = (f, v, why) => { repWrites.push({ faction: f, reputation: v, why }); return H.setFactionStanding(f, { member: true, reputation: v }); };
+    const grantDisp = (n, v, why) => { dispWrites.push({ npc: n, to: v, why }); return H.setDisposition(n, v); };
     for (const d of line) {
       // (a) THE WORDS. Only ever the topics the quest itself declares it opens on. The forward
       //     `hooks.json` edges would grant these by playing; the probe short-circuits the
@@ -282,7 +288,7 @@ try {
       while (o && !o.offerable && guard++ < 14) {
         const g = o.gate;
         if (g) for (const t of g.terms || []) {
-          if (!t.met && t.kind === 'reputation') H.setFactionStanding(LINE, { member: true, reputation: t.need });
+          if (!t.met && t.kind === 'reputation') grantRep(LINE, t.need, `rank term at ${d.id}`);
           if (!t.met && (t.kind === 'skill_1' || t.kind === 'skill_2')) {
             const cur = H.getSkills();
             const best = (t.what || []).slice().sort((a, b) => (cur[b] || 0) - (cur[a] || 0));
@@ -297,12 +303,12 @@ try {
         }
         if (d.rank_gate && d.rank_gate.min_reputation != null) {
           const st = H.getFactionStanding()[LINE] || {};
-          if ((st.reputation || 0) < d.rank_gate.min_reputation) H.setFactionStanding(LINE, { member: true, reputation: d.rank_gate.min_reputation });
+          if ((st.reputation || 0) < d.rank_gate.min_reputation) grantRep(LINE, d.rank_gate.min_reputation, `min_reputation on ${d.id}`);
         }
         const gv = d.giver;
         if (gv && gv.disposition_min != null) {
           const have = (H.getGateDispositions() || {})[gv.npc_id] || 0;
-          if (have < gv.disposition_min) H.setDisposition(gv.npc_id, Math.min(100, gv.disposition_min + 15));
+          if (have < gv.disposition_min) grantDisp(gv.npc_id, Math.min(100, gv.disposition_min + 15), `giver.disposition_min on ${d.id}`);
         }
         o = H.questOffers().find((x) => x.id === d.id);
       }
@@ -383,6 +389,8 @@ try {
     } else { res.ceiling_open_refusal = `never became offerable: ${JSON.stringify((topOffer || {}).why)}`; }
     res.opens = openLog;
     res.unmet_world_state = unmetWorldState;
+    res.reputation_writes = repWrites;
+    res.disposition_writes = dispWrites;
     const st = walk.find((s) => s.id === top.id); if (st) st.resolved = res.ceiling_resolved;
 
     // ---- THE CONSEQUENCE, READ OFF THE LIVE WORLD -------------------------------------------
@@ -441,9 +449,17 @@ try {
     `the rank-7 world_state term is ${JSON.stringify(rank7Flag)}; raised by a resolution the walk took: ${(r.flags_raised_by_the_quests || []).includes(rank7Flag)}. Endings that raised a ladder flag: ${(r.resolutions || []).filter((x) => (x.ladder_flags_raised || []).length).map((x) => `${x.quest}:${x.resolution}->${x.ladder_flags_raised.join('+')}`).join(' ') || 'NONE'}`);
   check('P14_rank7_AND_nonviolent_together', r.final && r.final.derived_rank >= 7 && taken.length > 0 && nonviolent.length === taken.length && (r.flags_the_probe_set_itself || []).length === 0,
     `derived rank ${r.final && r.final.derived_rank}, ${nonviolent.length}/${taken.length} endings non-violent, ${(r.flags_the_probe_set_itself || []).length} flags poked — the three claims held at the same time on the same character`);
-  const badOpen = (r.opens || []).filter((o) => o.ok === false || o.threw);
+  // "already opened" / "quest is closed" are idempotency, not a bypass — the prerequisite pass
+  // opens and finishes a quest that the line loop then reaches again. A refusal with any OTHER
+  // reason is the offer gate saying no, and a walk that carried on past one is measuring nothing.
+  const idempotent = /^(already opened|quest is closed)$/;
+  const badOpen = (r.opens || []).filter((o) => o.threw || (o.ok === false && !idempotent.test(String(o.reason || ''))));
   check('P15_every_open_went_through_the_offer_gate', badOpen.length === 0,
-    badOpen.length ? `${badOpen.length} questOpen call(s) were refused or threw and the walk carried on regardless: ${badOpen.map((o) => `${o.quest}: ${o.reason || o.threw}`).join(' | ')}` : `all ${(r.opens || []).length} questOpen calls returned ok — the walk never resolved a quest it had not been given`);
+    badOpen.length ? `${badOpen.length} questOpen call(s) were refused by the gate and the walk carried on regardless: ${badOpen.map((o) => `${o.quest}: ${o.reason || o.threw}`).join(' | ')}` : `${(r.opens || []).length} questOpen calls, ${(r.opens || []).filter((o) => o.ok).length} accepted and ${(r.opens || []).length - (r.opens || []).filter((o) => o.ok).length} idempotent re-opens; none refused by the gate`);
+  check('P16_the_reputation_was_EARNED', (r.reputation_writes || []).length === 0,
+    (r.reputation_writes || []).length
+      ? `the walk WROTE reputation ${(r.reputation_writes || []).map((w) => `${w.reputation} (${w.why})`).join(', ')} — every rank derived after that is partly the probe's`
+      : `the walk wrote no reputation at all; ${(r.final || {}).reputation} was paid entirely by the quests' own consequences`);
 
   out.ok = out.failures.length === 0;
   if (args.out) writeJson(args.out, out);

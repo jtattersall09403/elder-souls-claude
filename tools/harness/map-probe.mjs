@@ -198,13 +198,23 @@ async function run(h, brk) {
     const before = H.getUIState().elements.find((e) => e.id === 'map.place.stormhold');
     H.closeMenu();
     site.x += 900; site.z += 600;                       // move the province
-    D.restore(null); sim.discovery = D;   // clean raster, still the ENGINE's object
-    if (breakMode === 'discovery') D.suspend();
+    // THE SECOND AND LAST PLACE ALLOWED TO CONSTRUCT A MODEL, and it is forced by what C2 is
+    // asking. A place's position is read at construction (from `terrain.json sites`, matched by
+    // id) and `placePos()` is what the screen draws the square from, so a model built before the
+    // province moved will draw the square where the province USED to be — correctly, since the
+    // province does not move at runtime in a real game. Re-reading the world is the whole point
+    // of the check, so the model has to be rebuilt after the move. The engine's own object is
+    // handed back four lines below, before C3.
+    const moved2 = new Disc({ field: eng.field, sim, doc: eng.data.mapUI, pois: eng.data.pois });
+    sim.discovery = moved2;
+    if (breakMode === 'discovery') moved2.suspend();
     walkTo(site.x, site.z);
     H.openMenu('map', {});
     const after = H.getUIState().elements.find((e) => e.id === 'map.place.stormhold');
     H.closeMenu();
     site.x = home.x; site.z = home.z;                    // put the province back
+    sim.discovery = D; D.restore(null);                 // and the engine's model back with it
+    if (breakMode === 'discovery') D.suspend();
     const moved = before && after && (Math.abs(before.rect[0] - after.rect[0]) > 4 || Math.abs(before.rect[1] - after.rect[1]) > 4);
     A('C2', 'the map is drawn from game/data/world/: moving a site moves its square',
       before && after ? `${before.rect[0].toFixed(1)},${before.rect[1].toFixed(1)} -> ${after.rect[0].toFixed(1)},${after.rect[1].toFixed(1)}` : 'square missing',
