@@ -104,10 +104,10 @@ const SURF = [
   // POSITIVE ridges, wide and soft, with black wet hollows between that hold the light.
   function rootnet(x, z, L) {
     const n = fbm(x / L, z / L, 5101, 3);
-    const ridge = Math.pow(1 - Math.abs(n * 2 - 1), 1.7);
-    const fine = fbm(x / (L * 0.34), z / (L * 0.34), 5107, 2);
-    const h = sat01(ridge * 0.86 + fine * 0.14);
-    return [h, h * 2 - 0.85];
+    const ridge = Math.pow(1 - Math.abs(n * 2 - 1), 3.4);
+    const fine = Math.pow(1 - Math.abs(fbm(x / (L * 0.42), z / (L * 0.42), 5107, 2) * 2 - 1), 2.6);
+    const h = sat01(ridge * 0.80 + fine * 0.30);
+    return [h, h * 2.4 - 1.0];
   },
   // polygon — Clay Moor. A fired clay pan cracks into plates; each plate curls UP at its rim as
   // it dries, so the rim is the high ground and the plate centre is dished. The joints are open
@@ -134,11 +134,11 @@ const SURF = [
   // "the ground is an animal" is the region's own line and a fen is unmistakable at three metres.
   function tussock(x, z, L) {
     const [f1, , id] = worley(x, z, L, 5131);
-    const dome = Math.pow(sat01(1 - f1 / 0.70), 0.62) * (0.62 + id * 0.55);
-    const [g1] = worley(x * 1.7 + 13, z * 1.7 + 41, L, 5137);
-    const small = Math.pow(sat01(1 - g1 / 0.55), 0.8) * 0.30;
-    const h = sat01(dome * 0.82 + small);
-    return [h, h * 2.1 - 1.05];
+    const dome = Math.pow(sat01(1 - f1 / 0.46), 0.45) * (0.60 + id * 0.55);
+    const [g1] = worley(x * 1.6 + 13, z * 1.6 + 41, L, 5137);
+    const small = Math.pow(sat01(1 - g1 / 0.40), 0.55) * 0.42;
+    const h = sat01(dome * 0.86 + small);
+    return [h, h * 2.6 - 1.15];
   },
   // rillnet — Eastern Rootlands. A tidal delta drains through a dendritic network of fine rills
   // cut a hand's depth into silt. The surface is FLAT and the drainage is the only relief, which
@@ -180,10 +180,10 @@ const SURF = [
   // flat slabs, each lying at its own level, with open joints you can turn an ankle in.
   function slab(x, z, L) {
     const [f1, f2, id] = worley(x, z, L, 5179);
-    const joint = 1 - smoothstep(0.010, 0.075, f2 - f1);
-    const tilt = (hash2(Math.floor(x / L * 0.5), Math.floor(z / L * 0.5), 5183) - 0.5) * 0.22;
-    const h = sat01((0.30 + id * 0.62 + tilt) * (1 - joint * 0.96));
-    return [h, joint > 0.5 ? -1.15 : (id - 0.5) * 1.35];
+    const joint = 1 - smoothstep(0.012, 0.100, f2 - f1);
+    const tilt = (hash2(Math.floor(x / L * 0.5), Math.floor(z / L * 0.5), 5183) - 0.5) * 0.30;
+    const h = sat01((0.34 + id * 0.66 + tilt) * (1 - joint * 0.98));
+    return [h, joint > 0.5 ? -1.3 : (id - 0.5) * 1.7];
   },
   // crackfield — Stone Wastes. A glassed salt crust in coarse polygons, half buried under a thin
   // wind drift: the crust reads where the sand is thin and disappears where it is not.
@@ -199,19 +199,19 @@ const SURF = [
   // root: rougher and less regular than the fen's tussocks, and dusted pale on the crowns.
   function hummock(x, z, L) {
     const [f1, , id] = worley(x, z, L, 5197);
-    const mound = Math.pow(sat01(1 - f1 / 0.85), 1.35) * (0.55 + id * 0.60);
-    const root = Math.pow(1 - Math.abs(fbm(x / (L * 0.55), z / (L * 0.55), 5209, 2) * 2 - 1), 2.4) * 0.34;
-    const h = sat01(mound * 0.78 + root);
-    return [h, h * 1.7 - 0.6];
+    const mound = Math.pow(sat01(1 - f1 / 0.56), 0.70) * (0.50 + id * 0.65);
+    const root = Math.pow(1 - Math.abs(fbm(x / (L * 0.55), z / (L * 0.55), 5209, 2) * 2 - 1), 3.2) * 0.40;
+    const h = sat01(mound * 0.80 + root);
+    return [h, h * 2.2 - 0.85];
   },
   // blockstep — Valus Ridge. Talus: angular limestone blocks lying at rest, each one a flat top
   // and a sharp step down to the next. The surface is a staircase with no two treads alike.
   function blockstep(x, z, L) {
     const [f1, f2, id] = worley(x, z, L, 5227);
-    const gap = 1 - smoothstep(0.02, 0.13, f2 - f1);
-    const top = 0.18 + id * 0.80;
-    const h = sat01(top * (1 - gap * 0.85));
-    return [h, gap > 0.5 ? -0.95 : (id - 0.5) * 1.5];
+    const gap = 1 - smoothstep(0.03, 0.19, f2 - f1);
+    const top = 0.10 + id * 0.90;
+    const h = sat01(top * (1 - gap * 0.92));
+    return [h, gap > 0.5 ? -1.1 : (id - 0.5) * 1.8];
   },
   // furrow — Western Rootlands. Paddy and root-wood road: the one worked landscape in the
   // province, and worked ground is RECTILINEAR. Cut furrows on the field's own bearing, with a

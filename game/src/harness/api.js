@@ -358,6 +358,16 @@ export function installHarness(engine, bootPromise) {
     /** What a renderer draws and what a critic screenshots. `full_screen_panels` is 0. */
     getCensusState() { return engine.getCensusState(); },
 
+    /**
+     * The MODEL the surface was built from — RI-JRN09 M1's "the distinct authored strings the
+     * model computes for that node", as distinct from `getCensusState()`, which is the raw
+     * census state one layer earlier. The two differ in exactly the place that matters:
+     * `buildCensusModel()` demotes the scribe's stock framing to `preamble` and puts the
+     * QUESTION in `line`, while the raw state keeps the stock line at all ten questionnaire
+     * nodes. A DTR computed against the raw state measures a scene the build does not draw.
+     */
+    getCensusModel() { return engine.renderer ? engine.renderer.ui.model : null; },
+
     // ---- W1-07 round 2: the scene, measured rather than declared ----------------------
     /**
      * The drawn surface, read back out of the layout that drew it. Round 1's

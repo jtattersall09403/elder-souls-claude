@@ -93,6 +93,13 @@ export class Census {
       out.misread_as = m.wrong;
       out.input = { kind: 'observed', options: [{ id: 'correct', text: n.correction_prompt }] };
     }
+    // At the stamp, the document itself is part of the surface. RI-JRN09 M2(c) counts "a
+    // visible written record — the writ, the ledger — whose text is drawn", and RI-JRN01 O10
+    // wants the thing carried out of the room. Round 2's verdict measured `rendered_text: []`
+    // at this node; the writ was a return value from `readWrit()` and nothing else.
+    if (n.terminates_creation && this.writ) {
+      out.writ = { name: this.writ.name, lines: String(this.writ.text || '').split('\n') };
+    }
     if (n.input && n.input.kind === 'questionnaire') {
       const q = this.asked ? this.asked[this.askedIndex] : null;
       out.question = q ? { id: q.id, index: q.index, text: q.text, answers: q.answers.map((a) => ({ id: a.id, text: a.text })) } : null;
@@ -299,6 +306,14 @@ export class Census {
         this._advance('writ.stamp');
         break;
       }
+      case 'writ.stamp': {
+        // The player takes the reed-case. Creation ends HERE, on an acknowledgement, rather
+        // than silently at the end of the birthsign node — so the stamp line and the writ's
+        // own body are on screen for a beat the player closes themselves.
+        this._requireOption(n, value);
+        this._finish();
+        break;
+      }
       default: throw new Error(`census: node ${n.id} takes no answer`);
     }
     this.transcript.push(rec);
@@ -337,7 +352,26 @@ export class Census {
         continue;
       }
       if (n.hands_control_back) { this.paused = true; this.transcript.push({ node: n.id, line: n.line }); return; }
-      if (n.terminates_creation) { this._finish(); return; }
+      if (n.terminates_creation) {
+        // THE STAMP IS A BEAT, NOT A RETURN VALUE.
+        //
+        // This used to be `{ this._finish(); return; }`. `_finish()` interpolates
+        // `writ.stamp`'s line — "%PCName. %Race. %Upbringing. %ClassName. %Birthsign. — Reed-
+        // case, stamped, and it is the only thing in this province that says you are a person
+        // rather than a shape somebody saw." — pushes it to the TRANSCRIPT, sets done = true
+        // and nulls the node. `state()` then returns `{done:true}` and `buildCensusModel()`
+        // returns null, so the single most consumption-dense string in the whole scene, the one
+        // that says all five of the player's answers back to them and hands them the writ, was
+        // computed and never drawn. That is RI-JRN09's fourth consumption shape — ORPHAN TEXT —
+        // and it is the same defect as the ten undrawn questions, one node further on.
+        //
+        // A node with an input now STOPS here so it renders and is acknowledged; `answer()`
+        // finishes the scene. `_prepareWrit()` composes the sheet early so the writ's own body
+        // can be drawn beside the line. A node with no input keeps the old behaviour, so a data
+        // file that has not opted in is unaffected.
+        if (n.input) { this._prepareWrit(); return; }
+        this._finish(); return;
+      }
       if (n.input) return;                              // somebody is waiting for an answer
       const narr = this._interpolate(n.line || '');
       this.transcript.push({ node: n.id, line: narr });
@@ -379,7 +413,12 @@ export class Census {
     return value.slice();
   }
 
-  _finish() {
+  /**
+   * Compose the sheet and render the writ WITHOUT ending the scene, so the stamp node can draw
+   * the document it is handing over. Idempotent: re-entering the node does not recompose.
+   */
+  _prepareWrit() {
+    if (this.writ) return this.writ;
     this.character = composeCharacter(this.data, this.spec);
     this.character.flags = this.flags.slice();
     this.character.route = this.spec.route;
@@ -388,6 +427,11 @@ export class Census {
     }
     this.writ = renderWrit(this.data, this.character);
     this.character.writ_text = this.writ.text;
+    return this.writ;
+  }
+
+  _finish() {
+    this._prepareWrit();
     this.transcript.push({ node: 'writ.stamp', line: this._interpolate(this.nodesById.get('writ.stamp').line), grants_item: 'stamped-writ' });
     this.done = true;
     this.nodeId = null;

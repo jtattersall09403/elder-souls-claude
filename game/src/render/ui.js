@@ -141,6 +141,15 @@ export class UILayer {
     if (m.preamble) { spokenLines.push(''); for (const ln of wrap(c, m.preamble, textW)) spokenLines.push(ln); }
     const spokenH = Math.round(nameSize * 1.32);
 
+    // The writ, at the node that stamps it. Drawn as a document — its own rule, its own
+    // smaller face — so it reads as a thing on the desk rather than as more of her talking.
+    c.font = smallFont(nameSize);
+    const recordLines = [];
+    if (m.record && Array.isArray(m.record.lines)) {
+      for (const ln of m.record.lines) for (const w of wrap(c, ln, textW)) recordLines.push(w);
+    }
+    const recordH = Math.round(nameSize * 1.30);
+
     c.font = bodyFont(bodySize);
     const lines = wrap(c, m.line || '', textW);
     const asideLines = m.aside ? wrap(c, m.aside, textW) : [];
@@ -152,6 +161,7 @@ export class UILayer {
     let contentH = pad;
     contentH += nameSize + Math.round(14 * s);                       // speaker line + rule
     if (spokenLines.length) contentH += spokenLines.length * spokenH + Math.round(14 * s);
+    if (recordLines.length) contentH += recordLines.length * recordH + Math.round(20 * s);
     contentH += lines.length * lineH;
     if (asideLines.length) contentH += Math.round(10 * s) + asideLines.length * Math.round(nameSize * 1.34);
     if (m.input_kind === 'text') contentH += Math.round(18 * s) + Math.round(bodySize * 1.7);
@@ -170,6 +180,15 @@ export class UILayer {
       spokenLines.shift();
       contentH -= spokenH;
       if (!spokenLines.length) contentH -= Math.round(14 * s);
+    }
+    // The writ's identity block is sacrificed AFTER her previous reply and BEFORE the line
+    // being spoken now or the answers to it, which never go. It is dropped from the BOTTOM,
+    // so the heading and the name survive longest — a clipped document should still be
+    // recognisably this player's document.
+    while (contentH > maxH && recordLines.length) {
+      recordLines.pop();
+      contentH -= recordH;
+      if (!recordLines.length) contentH -= Math.round(20 * s);
     }
     const panelH = Math.min(contentH, maxH);
     const x0 = marginX, y0 = H - panelH - Math.round(H * 0.045);
@@ -209,6 +228,19 @@ export class UILayer {
       c.fillStyle = INK_DIM;
       for (const ln of spokenLines) { c.fillText(ln, x0 + pad, y); y += spokenH; }
       y += Math.round(14 * s);
+    }
+
+    // --- the document on the desk
+    if (recordLines.length) {
+      y += Math.round(4 * s);
+      c.font = smallFont(nameSize);
+      c.fillStyle = INK;
+      for (const ln of recordLines) { c.fillText(ellipsise(c, ln, textW), x0 + pad, y); y += recordH; }
+      y += Math.round(6 * s);
+      c.beginPath();
+      c.moveTo(x0 + pad, y + 0.5); c.lineTo(x0 + pad + Math.round(textW * 0.42), y + 0.5);
+      c.strokeStyle = RULE; c.stroke();
+      y += Math.round(12 * s);
     }
 
     // --- what she says
@@ -263,7 +295,7 @@ export class UILayer {
     // --- metrics, from the layout that was just performed
     const frameArea = W * H;
     const panelArea = panelW * panelH;
-    const text = [who, m.place_name || '', ...spokenLines, ...lines, ...asideLines,
+    const text = [who, m.place_name || '', ...spokenLines, ...recordLines, ...lines, ...asideLines,
       ...(m.input_kind === 'text' ? [m.typed || ''] : []),
       ...shownOpts.map((o) => o.text)].filter(Boolean);
     this.last = {

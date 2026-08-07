@@ -262,6 +262,24 @@ export class CensusSurface {
  *                 `on_answer`, `on_refusal`, `scribe_line` and `on_match_named_class` in the
  *                 graph went into the transcript and never onto the vellum before this.
  */
+/**
+ * The writ's identity block — the lines that carry what the player actually supplied, plus the
+ * document's own heading so it reads as a document rather than as more dialogue. Returns null
+ * at every node but the stamp.
+ *
+ * The selection is by PREFIX rather than by index so that re-ordering `items/writ.json`'s
+ * template does not silently change what is drawn.
+ */
+const WRIT_DRAWN_PREFIXES = [
+  'PROVINCIAL OFFICE', 'Name recorded:', 'Also called:', 'Observed as:',
+  'Raised at:', 'Trade declared:', 'Tide drawn on:', 'Second tide:', 'Recorded:',
+];
+export function writRecord(state) {
+  if (!state || !state.writ || !Array.isArray(state.writ.lines)) return null;
+  const keep = state.writ.lines.filter((l) => WRIT_DRAWN_PREFIXES.some((p) => l.startsWith(p)));
+  return keep.length ? { name: state.writ.name, lines: keep } : null;
+}
+
 export function buildCensusModel(data, state, surface, npcRecord) {
   if (!state || state.done) return null;
   const place = CENSUS_PLACES[placeOfNode(state)] || CENSUS_PLACES['writ-house'];
@@ -286,6 +304,18 @@ export function buildCensusModel(data, state, surface, npcRecord) {
     spoken: Array.isArray(state.spoken) ? state.spoken.map((s) => s.line).filter(Boolean) : [],
     // Her framing, once. `question_number` is never drawn — RI-JRN01 O8 forbids "Step 2 of 4".
     preamble: (asking && state.question_number === 1) ? (state.line || '') : null,
+    // The document, at the node that stamps it. RI-JRN01 O10 and RI-JRN09 M2(c): "a visible
+    // written record whose text is drawn". Round 2 measured `rendered_text: []` here because
+    // the scene ended before this node could render at all; the writ was reachable only as a
+    // `readWrit()` return value, which RI-MTH07 §B1 rules an observer and not consumption.
+    //
+    // Only the identity block is drawn, not all eighteen lines: the panel is capped at 42% of
+    // frame height and CLIPS, so pasting the whole document in would push the answers off the
+    // bottom and be sacrificed line by line — a written record that is computed, sent to the
+    // surface and clipped, which is the same failure wearing a different hat. The lines kept
+    // are the ones carrying what the player supplied; `readWrit()` still returns the whole
+    // document, and the reed-case is still an object.
+    record: writRecord(state),
     line: asking ? state.question.text : (state.line || ''),
     question_id: asking ? state.question.id : null,
     aside,

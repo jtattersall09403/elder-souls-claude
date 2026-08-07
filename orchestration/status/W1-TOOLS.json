@@ -2,12 +2,24 @@
   "task_id": "W1-TOOLS",
   "brief": "inline (measurement instruments named by corpus but absent from disk)",
   "started": "wave-1",
-  "state": "researching",
-  "outputs_expected": ["67 phantom tools named in C8 warnings from node tools/corpus-index.mjs"],
-  "outputs_written": [],
-  "findings": [
-    "Baseline: node tools/corpus-index.mjs reports 67 phantom tools (C8), 0 errors."
+  "state": "building",
+  "outputs_expected": [
+    "67 phantom tools named in C8 warnings from node tools/corpus-index.mjs"
   ],
-  "next_step": "read RI-MTH06 + RI-MTH07, then RI-CHR01/RI-CHR03 comparison methods, build tools/analysis/build-viability.mjs first",
-  "notes_for_successor": "Work tool-by-tool. After each tool, re-run corpus-index and append to outputs_written."
+  "outputs_written": [
+    "tools/lib/gamedata.mjs",
+    "tools/analysis/build-viability.mjs"
+  ],
+  "findings": [
+    "Baseline: node tools/corpus-index.mjs reports 67 phantom tools (C8), 0 errors.",
+    "build-viability.mjs DONE. Imports the SHIPPING predicates (sheet.js composeCharacter; gate.js FactionGates/canOffer/canResolve; rules.js computeDamage; resolve.js mitigate; reaction.js derivedDisposition) rather than reimplementing them. --self-test PASSES 8/8 and falsifies ALL FOUR criteria independently.",
+    "Real-data result: 540/540 viable, exit 0. All-true is only credible because the fixture overlays prove it can say no (RI-MTH06 M3).",
+    "DATA DEFECT: regions.json declares no `tier` on any of its 13 regions and encounters.json declares none either, so RI-CHR01 criterion 4's 'tier-5 region' has NO REFERENT in shipped data. Tool substitutes every non-prop enemy at the highest shipped enemy tier (champion_hist_marked, cst_sap_speaker; both tier=elite) and prints the substitution on every run.",
+    "DATA DEFECT: progression/levels.json stops at level 5 (declared wave-1 skeleton) so there is no shipped level->attribute curve for the level-55 projection. Model parameters declared in report.model.",
+    "DATA DEFECT: progression/factions.json holds 2 factions (house-dres, shadowscale-order) which appear NOWHERE in quests/faction-gates.json's 9 ladders. The two files disagree about which factions exist.",
+    "game/src/sim/quest/gate.js exports FactionGates, canOffer, canResolve - the shipping gate predicates. Any tool asking about gates should import these, not reimplement.",
+    "Harness surface is 264 methods. Includes gamepad, gamepadPoll, getUIState, setUIVisible, getPerfStats, stallMainThread, getStorageInfo, listSaveSlots, screenshot, getCaptureState, streamAround, advanceWallClock - the journey/platform/ui tools have real seams."
+  ],
+  "next_step": "tools/journey/journey-run.mjs (+beat-extract, gamepad-shim, cadence, competence) - unblocks all 9 RI-JRN items",
+  "notes_for_successor": "build-viability is complete and self-testing. Do not rewrite it. Its --fixture keys (tier5_damage_multiplier, tier5_hp_multiplier, player_damage_multiplier, quest_disposition_floor, impossible_resolution_gate, faction_rank5_attribute_floor) are the falsification harness; keep them all."
 }

@@ -1,5 +1,20 @@
 # Build plan — waves, pieces, and how each is judged
 
+> **AMENDED 2026-08-07 by `docs/DECOMPOSITION-W1-AMENDMENT-01.md`, closing
+> `BAR-CRITIQUE-W1-07-R1` §R7 and Condition 5** — *"37 of 38 `journey.*`/`input.*`/`experience.*`
+> paths are owned by nobody."* The figure is verified. It resolved into **four** wave-1 paths in
+> no piece at all (`journey.opening.exchange`, `journey.opening.legibility`,
+> `combat.exchange.reactability`, `combat.exchange.divergence` — all four registered by reference
+> items filed *after* this plan was written) and **thirty-four** in pieces that exist here and
+> have never been dispatched. `W1-26` is dissolved and rebuilt; `W1-28` and `W1-29` are new;
+> `platform.mobile.viewport` is promoted to wave 1; seven existing pieces are amended.
+> **Unowned wave-1 paths: 0.** The amendment document carries the derivation and the evidence.
+>
+> **The larger finding is in §5c and it is not fixed by this file.** Twenty-three of thirty
+> wave-1 pieces have never been dispatched, and they include every piece that owns a path
+> deciding whether the game can be played at all — while two pieces have each been round-tripped
+> four times. **The plan said wide before deep; the dispatch order did deep before wide.**
+
 > **REWRITTEN wave-1-prep (2026-08-06) to close `BAR-CRITIQUE-02` **N3 / C3**.**
 > The previous decomposition was fourteen pieces written against a 200-path taxonomy. The
 > corpus is now **325 paths and 138 reference items**, and the old list contained no builder
@@ -106,18 +121,37 @@ they first become scoreable, so "not built yet" is a declared state rather than 
 
 ## 3. Wave-1 piece decomposition
 
-28 pieces. Each is one builder plus one separate critic. **Together they cover all 250
-wave-1 paths exactly once** — no path is in two pieces, and no wave-1 path is in none. The
-"Judged by" list is the `<<REFERENCE_ITEMS>>` block for both prompts, taken from
-`corpus/00-doctrine/INDEX.md` §2; regenerate it rather than retyping it if the taxonomy moves.
+**30 pieces** (was 28; `W1-26` redefined, `W1-28` and `W1-29` new — W1-AMENDMENT-01). Each is one
+builder plus one separate critic. **Together they cover all 255 wave-1 paths exactly once**, minus
+the two process paths in §3b — no path is in two pieces, and **no wave-1 path is in none.** The
+"Judged by" list is the `<<REFERENCE_ITEMS>>` block for both prompts and is assembled from each
+reference item's **`judges:` front-matter, never from a directory listing** — `CORPUS-CONTRACT`
+§4 was amended for exactly that reason after `W1-09` was scored against a set built from
+`ls corpus/10-combat/`, seven of whose twelve items judged none of its declared paths.
+
+> **Every claim in that paragraph is now checkable and was not before.** Four wave-1 paths were in
+> no piece when this pass ran, and nothing in the toolchain said so — `corpus-index.mjs` reports
+> corpus holes (paths no *item* judges) and has never reported ownership holes (paths no *piece*
+> declares). W1-AMENDMENT-01 §6 specifies **C9**, the sweep that closes it, on the same
+> `warn` in wave 1 / `error` from wave 2 escalation as C8.
 
 ### W1-00 — Harness, determinism and persistence
 
 Nothing downstream is admissible without it. Every critic's method begins `window.__HARNESS`; RI-MTH04 deletes a verdict that cannot show a real run.
 
-**Subsystem paths (7):** `platform.determinism.harness`, `platform.input.pipeline`, `platform.perf.simtime`, `platform.save.persistence`, `platform.save.storage`, `platform.perf.framerate`, `platform.load.ttfp`
+**Subsystem paths (8):** `platform.determinism.harness`, `platform.input.pipeline`, `platform.perf.simtime`, `platform.save.persistence`, `platform.save.storage`, `platform.perf.framerate`, `platform.load.ttfp`, `journey.save.roundtrip`
 
 **Judged by (10):** RI-AUD02, RI-CAM02, RI-CAM06, RI-CMB07, RI-JRN03, RI-JRN05, RI-MTH01, RI-MTH02, RI-PLT01, RI-PLT03
+
+> **AMENDED W1-AMENDMENT-01 §5.** `journey.save.roundtrip` added. `RI-JRN05` judges it together
+> with `platform.save.persistence` and `platform.save.storage` — **both already this piece's** —
+> and `RI-JRN05` has been in this piece's item set since the plan was written. W1-00 has shipped a
+> save system across two rounds without declaring the round trip, so the owner's *"does saving and
+> loading work correctly"* has never been a declared path. `CORPUS-CONTRACT` §4 rule 2.
+> **This requires a W1-00 round 3.**
+>
+> **Declared seam:** `RI-JRN03` also judges `platform.input.pipeline`, which stays here; the other
+> six paths it judges are W1-08's. Coupling debt recorded at the W1-00 ↔ W1-08 seam.
 
 ### W1-01 — World shape and the traversal budget
 
@@ -175,21 +209,43 @@ RI-EXP01 B01–B04 require a created character inside the first minutes; RI-CHR0
 
 **Judged by (3):** RI-CHR01, RI-CHR02, RI-CHR03
 
-### W1-08 — Input, controls and modality parity
+### W1-08 — Desktop controls and the action set
 
-RI-EXP01 requires ≥7 exercised verbs; RI-JRN04 hard-fails a journey that cannot be completed on gamepad only or touch only.
+RI-EXP01 requires ≥7 exercised verbs. This piece owns the canonical fourteen-name action set and the desktop input path; W1-29 owns gamepad and touch and consumes the action set without redefining it.
 
-**Subsystem paths (10):** `input.action.set`, `input.desktop.keyboard`, `input.desktop.pointerlock`, `input.gamepad.mapping`, `input.gamepad.analog`, `input.gamepad.lifecycle`, `input.touch.fallback`, `input.rebinding.model`, `input.modality.parity`, `input.discoverability`
+**Subsystem paths (6):** `input.action.set`, `input.desktop.keyboard`, `input.desktop.pointerlock`, `input.rebinding.model`, `input.modality.parity`, `input.discoverability`
 
 **Judged by (4):** RI-DLG09, RI-JRN02, RI-JRN03, RI-JRN04
+
+> **AMENDED W1-AMENDMENT-01 §4 — narrowed from 10 paths; the four gamepad/touch paths move to
+> W1-29.** `RI-JRN03` and `RI-JRN04` publish a *binding* division of labour — desktop path and
+> action set here, gamepad profile data and touch there — and a single builder owning both does
+> the mobile half last and worst. That prediction is already on disk: `platform.mobile.viewport`
+> was filed at wave 2 by the same taxonomy pass that filed every desktop input path at wave 1.
+> The owner named one desktop and one mobile device; two pieces.
+>
+> **Declared seams:** `RI-JRN03` also judges `platform.input.pipeline` (W1-00's). `RI-JRN02` also
+> judges `journey.firsthour.interaction`/`competence` (W1-28's). `RI-JRN04` also judges the four
+> paths now in W1-29; `input.modality.parity` stays here because `RI-JRN03` owns the parity
+> *model*. Each is a cross-piece coupling debt under `CORPUS-CONTRACT` §4 rule 1 — recorded at
+> the seam, **not dropped**.
 
 ### W1-09 — The combat core
 
 Frame-exact at 60 Hz post-S22. The single largest wave-1 piece and the one with the most reference items pointed at it.
 
-**Subsystem paths (28):** `combat.dodge.iframes`, `combat.dodge.equipload`, `combat.dodge.directional`, `combat.dodge.recovery`, `combat.attack.commitment`, `combat.attack.moveset`, `combat.attack.tracking`, `combat.attack.charge`, `combat.frames.timing`, `combat.frames.cancel`, `combat.hitbox.hurtbox`, `combat.hitbox.sweep`, `combat.hitbox.resolution`, `combat.stamina.costs`, `combat.stamina.regen`, `combat.stamina.block`, `combat.stamina.exhaustion`, `combat.poise.player`, `combat.poise.enemy`, `combat.block.guard`, `combat.block.parry`, `combat.damage.model`, `combat.damage.scaling`, `combat.heal.charges`, `combat.input.buffer`, `combat.input.latency`, `combat.player.movement`, `combat.pause.policy`
+**Subsystem paths (30):** `combat.dodge.iframes`, `combat.dodge.equipload`, `combat.dodge.directional`, `combat.dodge.recovery`, `combat.attack.commitment`, `combat.attack.moveset`, `combat.attack.tracking`, `combat.attack.charge`, `combat.frames.timing`, `combat.frames.cancel`, `combat.hitbox.hurtbox`, `combat.hitbox.sweep`, `combat.hitbox.resolution`, `combat.stamina.costs`, `combat.stamina.regen`, `combat.stamina.block`, `combat.stamina.exhaustion`, `combat.poise.player`, `combat.poise.enemy`, `combat.block.guard`, `combat.block.parry`, `combat.damage.model`, `combat.damage.scaling`, `combat.heal.charges`, `combat.input.buffer`, `combat.input.latency`, `combat.player.movement`, `combat.pause.policy`, `combat.exchange.reactability`, `combat.exchange.divergence`
 
-**Judged by (30):** RI-AI02, RI-AI03, RI-AI04, RI-AI05, RI-CAM02, RI-CAM04, RI-CMB01, RI-CMB02, RI-CMB03, RI-CMB04, RI-CMB05, RI-CMB06, RI-CMB07, RI-CMB08, RI-CMB09, RI-CMB11, RI-LOR05, RI-PRG02, RI-PRG03, RI-PRG04, RI-PRG07, RI-PRG08, RI-UIX01, RI-UIX03, RI-VIS08, RI-WLD10, RI-WPN01, RI-WPN02, RI-WPN04, RI-WPN06
+**Judged by (31):** RI-AI02, RI-AI03, RI-AI04, RI-AI05, RI-CAM02, RI-CAM04, RI-CMB01, RI-CMB02, RI-CMB03, RI-CMB04, RI-CMB05, RI-CMB06, RI-CMB07, RI-CMB08, RI-CMB09, RI-CMB11, RI-CMB12, RI-LOR05, RI-PRG02, RI-PRG03, RI-PRG04, RI-PRG07, RI-PRG08, RI-UIX01, RI-UIX03, RI-VIS08, RI-WLD10, RI-WPN01, RI-WPN02, RI-WPN04, RI-WPN06
+
+> **AMENDED W1-AMENDMENT-01 §5.** `combat.exchange.reactability` and `combat.exchange.divergence`
+> added; **`RI-CMB12` added to the item set.** `RI-CMB12` judges those two paths and nothing else.
+> It was written against *this piece's* three-round failure — a 120 s exemplar fight in which the
+> player was never hit, a boss answered by standing still, and a hole in every enemy weapon arc —
+> and it has never been scored, because when it registered its two paths nothing assigned them an
+> owner. **Five of this piece's own declared paths have never appeared on a verdict**
+> (`combat.attack.charge` — later claimed by W1-10 — `combat.damage.model`,
+> `combat.damage.scaling`, `combat.heal.charges`, `combat.pause.policy`): see §5b.
 
 ### W1-10 — Weapon movesets and the answer matrix
 
@@ -219,9 +275,16 @@ RI-AI01–07. The telegraph/punish loop is the thing a Souls player recognises i
 
 The main quest is completable from wave 1, so its last fight and its death loop exist from wave 1.
 
-**Subsystem paths (6):** `combat.difficulty.lethality`, `combat.death.corpserun`, `combat.death.worldreset`, `combat.boss.arena`, `progression.bonfire.function`, `progression.bonfire.placement`
+**Subsystem paths (7):** `combat.difficulty.lethality`, `combat.death.corpserun`, `combat.death.worldreset`, `combat.boss.arena`, `progression.bonfire.function`, `progression.bonfire.placement`, `journey.death.recovery`
 
 **Judged by (13):** RI-AI05, RI-AI06, RI-AI07, RI-AUD04, RI-CAM05, RI-CAM06, RI-CMB08, RI-JRN06, RI-LOR05, RI-PRG04, RI-TRV02, RI-WLD04, RI-WLD07
+
+> **AMENDED W1-AMENDMENT-01 §5.** `journey.death.recovery` added. `RI-JRN06` judges it together
+> with `combat.death.corpserun` and `combat.death.worldreset` — **both already this piece's** —
+> and `RI-JRN06` has been in this piece's item set since the plan was written. `RI-PRG04` owns the
+> *rules*; `RI-JRN06` asks the question `RI-PRG04` cannot — *does the loop actually work, end to
+> end, without losing anything.* The owner's "die, lose, run back, get it back" is a wave-1
+> playability path and is now declared by the piece that ships it.
 
 ### W1-14 — Magic: casting, effects and utility
 
@@ -259,7 +322,16 @@ Absent from the old plan only as `dialogue.topics`. The wordcount target is wave
 
 Quests are data (RI-QST04) or they are not judgeable. The journal is the only navigation instrument AR-2 permits.
 
-**Subsystem paths (16):** `quests.data.schema`, `quests.structure.stages`, `quests.structure.branching`, `quests.structure.deceit`, `quests.state.persistence`, `quests.failure.severed`, `quests.reward.shape`, `quests.giver.characterisation`, `quests.discovery.hooks`, `quests.lore.hooks`, `quests.resolution.noncombat`, `quests.resolution.exclusive`, `journal.entry.voice`, `journal.entry.numbering`, `journal.entry.directions`, `journal.navigation.nomarkers`
+**Subsystem paths (18):** `quests.data.schema`, `quests.structure.stages`, `quests.structure.branching`, `quests.structure.deceit`, `quests.state.persistence`, `quests.failure.severed`, `quests.reward.shape`, `quests.giver.characterisation`, `quests.discovery.hooks`, `quests.lore.hooks`, `quests.resolution.noncombat`, `quests.resolution.exclusive`, `journal.entry.voice`, `journal.entry.numbering`, `journal.entry.directions`, `journal.navigation.nomarkers`, `journey.quest.unmarked`, `journey.reentry.orientation`
+
+> **AMENDED W1-AMENDMENT-01 §5, and this piece is IN FLIGHT** (`orchestration/status/W1-18.json`,
+> state `building`). `journey.quest.unmarked` and `journey.reentry.orientation` added.
+> `RI-JRN07` judges the first together with `quests.discovery.hooks` and
+> `journal.navigation.nomarkers`; `RI-JRN08` judges the second together with `journal.entry.voice`
+> and `journal.navigation.nomarkers` — **all four of those already this piece's**, and both items
+> already in its "Judged by" list. **Its builder must be handed the two added paths and both items
+> before its verdict**, or the verdict repeats `W1-09`'s error of being scored against items whose
+> paths it never declared.
 
 **Judged by (24):** RI-DLG01, RI-DLG03, RI-DLG05, RI-DLG07, RI-DLG08, RI-DLG09, RI-JRN07, RI-JRN08, RI-LOR03, RI-LOR06, RI-MAG04, RI-QST02, RI-QST04, RI-QST05, RI-QST07, RI-QST08, RI-QST09, RI-STL01, RI-TRV02, RI-UIX02, RI-UIX04, RI-WLD03, RI-WLD06, RI-WLD09
 
@@ -315,17 +387,47 @@ Not the fidelity pass — that is wave 4. This is the bifurcation protocol exist
 
 The sabotage control, the anecdote trace, the permissiveness register and the crossing matrix are BUILD work, not critic work. PLAYTHROUGH-CRITIC §10 names 'the control is never run' as the most likely failure in the corpus.
 
-**Subsystem paths (9):** `experience.opening.beats`, `experience.opening.hook`, `experience.memory.anecdote`, `experience.memory.recall`, `experience.permissiveness.register`, `experience.permissiveness.durability`, `experience.session.shape`, `composition.seam.crossings`, `composition.matrix.coverage`
+**Subsystem paths (7):** `experience.memory.anecdote`, `experience.memory.recall`, `experience.permissiveness.register`, `experience.permissiveness.durability`, `experience.session.shape`, `composition.seam.crossings`, `composition.matrix.coverage`
 
-**Judged by (5):** RI-CMP01, RI-EXP01, RI-EXP02, RI-EXP03, RI-EXP06
+**Judged by (4):** RI-CMP01, RI-EXP02, RI-EXP03, RI-EXP06
 
-### W1-26 — The first hour, as a piece in its own right
+> **AMENDED W1-AMENDMENT-01 §4 — narrowed.** `experience.opening.hook` and
+> `experience.opening.beats` move to **W1-26**, and `RI-EXP01` goes with them: it judges those two
+> paths and **no others**. `RI-EXP01` is the corpus's only pre-existing instrument that asks
+> whether the opening is any good, and it **has never been run on any build** — partly because its
+> two paths lived in the instrument piece rather than in the piece that builds the opening. This
+> piece keeps the sabotage control, the anecdote trace, the permissiveness register and the
+> crossing matrix, which are what it was for.
 
-RI-EXP01 can return DEAD and RI-JRN01/02 gate the wave. Someone must own the beat sheet end to end, because it crosses every other piece and therefore belongs to none of them.
+### W1-26 — The opening, as a played scene
 
-**Subsystem paths (11):** `journey.firstlaunch.flow`, `journey.chargen.diegesis`, `journey.firsthour.interaction`, `journey.firsthour.competence`, `journey.onboarding.explanation`, `journey.quest.unmarked`, `journey.save.roundtrip`, `journey.death.recovery`, `journey.reentry.orientation`, `journey.process.naive`, `journey.process.fleet`
+**Redefined by W1-AMENDMENT-01 §3.** The owner's first named question — *"is the new game flow good enough vs Morrowind's famously brilliant opening scenes"* — has never had a builder. This piece owns the opening as a thing that reaches a player: the surfaces, the chargen diegesis, the exchange, and the first-hour beat sheet's opening block.
 
-**Judged by (6):** RI-JRN01, RI-JRN02, RI-JRN05, RI-JRN06, RI-JRN07, RI-JRN08
+**Subsystem paths (7):** `journey.firstlaunch.flow`, `journey.chargen.diegesis`, `journey.onboarding.explanation`, `journey.opening.exchange`, `journey.opening.legibility`, `experience.opening.hook`, `experience.opening.beats`
+
+**Judged by (3):** RI-JRN01, RI-JRN09, RI-EXP01
+
+**Cited, never scored here:** RI-PLT03 (`T_control`, `TTFP` — `platform.load.ttfp` is W1-00's), RI-CHR01 (the *content* of the eight creation inputs — `character.*` is W1-07's).
+
+**Depends on:** W1-00 (harness), W1-07 (creation content), W1-08 (the action set), W1-04 (the interior the scene happens in).
+
+> **Why the old W1-26 was dissolved.** It declared eleven `journey.*` paths — six separate
+> journeys judged by six different reference items, plus two *process* paths that are a critic's
+> deliverable and not a builder's — in one piece with one builder. It is exactly the shape
+> `CORPUS-CONTRACT` §4 was amended against, and two consequences had already landed: `W1-07`
+> absorbed `journey.chargen.diegesis` because this piece did not exist, and was thereby charged
+> **45 of `RI-JRN01`'s 100 points** for blocks measuring paths it does not own
+> (`BAR-CRITIQUE-W1-07-R1` §R7); and `W1-00`, `W1-13` and `W1-18` were each being scored against a
+> journey item whose journey path sat here instead — §4 rule 2, three times, silently. The save
+> round trip goes to **W1-00**, death and recovery to **W1-13**, the unmarked quest and the return
+> after a week to **W1-18**, the first hour to **W1-28**, and the two process paths to §3b. Every
+> move is justified by a `judges:` set and by nothing else.
+>
+> **Measurement risk, stated rather than scoped around.** `RI-JRN01` carries 33/100 as
+> `corpus_debt` until `tools/journey/journey-run.mjs` and `beat-extract.mjs` exist, and **all five
+> of `RI-EXP01`'s tools are phantom**. `RI-JRN09` is runnable **today** by design and is the one
+> instrument here that does not wait on `W1-TOOLS`. **Dispatch this piece now**; two of its three
+> items are partly `corpus_debt` until the tools land and the third is not.
 
 ### W1-27 — Density, loot and the coherence pass
 
@@ -335,26 +437,96 @@ The wave-end coherence agent's own surface, plus the hand-placement rule that fo
 
 **Judged by (13):** RI-AI07, RI-CMP01, RI-DLG08, RI-LOR05, RI-LOR06, RI-MTH05, RI-PRG04, RI-PRG08, RI-QST08, RI-WLD01, RI-WLD02, RI-WLD05, RI-WLD09
 
+### W1-28 — The first hour as interaction
+
+**New in W1-AMENDMENT-01 §4.** `RI-JRN02` — the verb grammar, the order verbs are acquired in, the interval between meaningful inputs, and the point at which the player is *competent* rather than merely *informed* — judges these two paths and has never been scored.
+
+**Subsystem paths (2):** `journey.firsthour.interaction`, `journey.firsthour.competence`
+
+**Judged by (1):** RI-JRN02
+
+**Depends on:** W1-08 (bindings), W1-09 / W1-12 (something to become competent at), W1-18 (a quest to be doing), W1-26 (the opening it begins from).
+
+> **Declared seam:** `RI-JRN02` also judges `input.discoverability`, which is **W1-08's**. Under
+> `CORPUS-CONTRACT` §4 rule 1 that leg is a cross-piece coupling debt recorded at the
+> W1-28 ↔ W1-08 seam, scored against W1-08 and cited here. It is not dropped.
+>
+> **Thin by path count, heavy by item weight**, and said plainly rather than merged into W1-26 to
+> make the list look tidier: `RI-JRN01` and `RI-JRN02` publish a *binding* division of labour —
+> the first ~15 minutes as a chain of screens versus minutes 0–60 as a chain of inputs — and
+> merging them would put one builder on both sides of it. `RI-EXP01` B01–B18 cannot be hit by a
+> build whose first hour has no owner.
+
+### W1-29 — Mobile, touch and the attached gamepad
+
+**New in W1-AMENDMENT-01 §4**, split from W1-08. The owner: *"I want them to work both on desktop **and** on mobile with a controller attached — I have this one GameSir X2s Type-C Mobile Gaming [controller]."* RI-JRN04 is the item that judges that sentence and it has never been scored.
+
+**Subsystem paths (5):** `input.gamepad.mapping`, `input.gamepad.analog`, `input.gamepad.lifecycle`, `input.touch.fallback`, `platform.mobile.viewport`
+
+**Judged by (1):** RI-JRN04
+
+**Depends on:** W1-08 (the canonical action set, which this piece consumes and may not redefine).
+
+> **`platform.mobile.viewport` is promoted from wave 2 to wave 1** (W1-AMENDMENT-01 §2b). A path
+> that decides whether the game renders and accepts input on the owner's named device cannot be
+> wave 2 while the constraint is *"the world traversable and the main quest completable from an
+> early wave."* This changes one `wave` field in `subsystems.json` from 2 to 1 — not a rename, not
+> a renumber, and it matches §4's own definition of the field. Flagged for CRT.
+>
+> **Declared seam:** `RI-JRN04` also judges `input.modality.parity`, kept in W1-08 because
+> `RI-JRN03` owns the parity *model* and the canonical action set. Coupling debt at the
+> W1-29 ↔ W1-08 seam.
+>
+> **Why wave 1 and not later.** `RI-JRN01` **HF5 is firing right now** because round 2 of `W1-07`
+> completed two of four input modalities — mouse+keyboard and touch were never run. A journey that
+> cannot be completed on a gamepad alone is a hard fail in `RI-JRN04` as well. Neither is fixable
+> by a piece that does not exist.
+
+## 3b. Paths that are a critic deliverable, not a builder's
+
+Four paths are owned by the **process**, not by any piece in §3. They are not unowned and they are
+not corpus holes: `INDEX.md` §3b names the doctrine document that carries the bar, the method and
+the evidence requirement for each, which `CORPUS-CONTRACT` §4 permits.
+
+| Path | Wave | Judged by | Discharged by |
+|---|---|---|---|
+| `journey.process.fleet` | 1 | `JOURNEY-CRITIC-FLEET.md` §1–§3, §5, §6 | **dispatching the journey-critic fleet** — one critic per journey, fresh context, evidence, aggregation |
+| `journey.process.naive` | 1 | `JOURNEY-CRITIC-FLEET.md` §4 (I1–I8, F6–F8) | **running the enforced first-time-user protocol**: isolation, pre-registration, verbatim capture, non-reuse |
+| `process.critic.discipline` | 0 | `RI-MTH03`, `RI-MTH04`, `RI-MTH06` | live since wave 0; judges every wave including this one |
+| `process.verdict.format` | 0 | `RI-MTH03`, `RI-MTH04`, `RI-MTH06` | idem |
+
+The first two were assigned to the old `W1-26` and that was a category error: a builder cannot
+write the protocol that a critic is bound by. **Neither has ever been discharged.** The owner
+asked for *"a fan of harsh critics"* and `INTENT-AUDIT-02` recorded that plural as satisfied by
+these two paths existing — the fleet itself has not been run on any build, which is the same
+failure shape as `RI-EXP01`: the instrument was specified, registered, and never used.
+
 ## 4. Every path has a wave
 
-`corpus/00-doctrine/subsystems.json` now carries a **`wave`** field on every one of its 325
+`corpus/00-doctrine/subsystems.json` now carries a **`wave`** field on every one of its **330**
 paths, and `node tools/corpus-index.mjs --check` fails with an error if any path lacks one
 (check **C7** of `RI-MTH05`). `wave` is **the wave a builder first owns the path**. Later
 waves deepen it; they never introduce it — that is the wide-before-deep constraint expressed
 as data rather than as prose nobody can check.
 
+**Re-measured 2026-08-07 (W1-AMENDMENT-01).** The table below was stale: the taxonomy has grown
+from 325 paths to 330 since it was written — `RI-JRN09` registered two, `RI-CMB12` two, and one
+more elsewhere — and **nothing recomputed it, because nothing checks it.** Every figure here is
+now a direct read of `subsystems.json`.
+
 | Root | Paths | W1 | W2 | W3 | W4 |
 |---|---:|---:|---:|---:|---:|
-| `combat.*` | 50 | 47 | 3 | 0 | 0 |
-| `weapon.*` | 20 | 16 | 4 | 0 | 0 |
-| `magic.*` | 20 | 15 | 5 | 0 | 0 |
+| `combat.*` | 52 | 49 | 3 | 0 | 0 |
 | `world.*` | 36 | 31 | 1 | 4 | 0 |
+| `render.*` | 25 | 4 | 0 | 0 | 21 |
 | `quests.*` | 22 | 17 | 3 | 2 | 0 |
+| `weapon.*` | 21 | 16 | 5 | 0 | 0 |
+| `magic.*` | 20 | 15 | 5 | 0 | 0 |
 | `progression.*` | 18 | 12 | 5 | 1 | 0 |
 | `experience.*` | 15 | 10 | 4 | 1 | 0 |
 | `dialogue.*` | 14 | 12 | 1 | 1 | 0 |
-| `platform.*` | 13 | 7 | 6 | 0 | 0 |
-| `journey.*` | 11 | 11 | 0 | 0 | 0 |
+| `platform.*` | 13 | **8** | **5** | 0 | 0 |
+| `journey.*` | 13 | 13 | 0 | 0 | 0 |
 | `lore.*` | 11 | 9 | 0 | 2 | 0 |
 | `input.*` | 10 | 10 | 0 | 0 | 0 |
 | `character.*` | 10 | 10 | 0 | 0 | 0 |
@@ -365,9 +537,14 @@ as data rather than as prose nobody can check.
 | `composition.*` | 6 | 2 | 4 | 0 | 0 |
 | `journal.*` | 4 | 4 | 0 | 0 | 0 |
 | `audio.*` | 4 | 2 | 0 | 2 | 0 |
-| `render.*` | 25 | 4 | 0 | 0 | 21 |
 | `process.*` | 2 | 0 (wave 0) | 0 | 0 | 0 |
-| **Total** | **325** | **250** | **38** | **14** | **21** |
+| **Total** | **330** | **255** | **38** | **14** | **21** |
+
+The single bolded row is the one change this amendment makes to the taxonomy:
+**`platform.mobile.viewport` is promoted from wave 2 to wave 1** and assigned to `W1-29`
+(W1-AMENDMENT-01 §2b). **Wave 1 grew by one path.** Ownership grew by five — the four orphans in
+§2a of the amendment plus this promotion — taking wave-1 paths assigned to a piece from
+**250 of 254 to 255 of 255**.
 
 `render.*` is the one root that is overwhelmingly late, and deliberately: the visual
 bifurcation protocol and the two fidelity paths the camera and the water model depend on
@@ -378,8 +555,14 @@ fail a correct renderer.
 
 ## 5. Bars that are deliberately not scoreable in wave 1
 
-Thirteen items own no wave-1 path. Each is deferred for a reason, and each is listed here so
-that a wave-1 critic handed one of them knows to record `not_built_yet` rather than 0.
+**Recomputed 2026-08-07 (W1-AMENDMENT-01). The list below was wrong in both directions**: it
+claimed thirteen, the true figure before this amendment was **fourteen**, it named `RI-LOR06` and
+`RI-MTH05` — **both of which do own wave-1 paths** — and it omitted `RI-MTH06`, `RI-CMB12` and
+`RI-JRN09`. That is not a clerical point. `RI-CMB12` and `RI-JRN09` were each written by a bar
+critic against a *wave-1* failure, each registered two wave-1 paths, and each was silently
+unscoreable because nothing assigned those paths to a piece. **Twelve** items own no wave-1 path
+after this amendment; each is deferred for a stated reason, and a wave-1 critic handed one of them
+records `not_built_yet` rather than 0.
 
 | Item | First scoreable | Why not wave 1 |
 |---|---|---|
@@ -392,12 +575,74 @@ that a wave-1 critic handed one of them knows to record `not_built_yet` rather t
 | `RI-EXP04` novelty curve | W2 | the no-empty-90-minute-window rule needs ≥10 h of content to have a window in |
 | `RI-UIX05` books and readable text | W3 | 112 books is the wave-3 lore mass |
 | `RI-VIS07` could-this-be-Skyrim | W4 | it caps the art score; capping a placeholder look tells nobody anything |
-| `RI-LOR06`, `RI-MTH03`, `RI-MTH04`, `RI-MTH05` | wave 0 | process and doctrine items — already live, and they judge every wave including this one |
+| `RI-MTH03`, `RI-MTH04`, `RI-MTH06` | wave 0 | process items on `process.*` — already live, and they judge every wave including this one |
+
+**Two items leave this list by being given owners rather than by waiting:** `RI-CMB12` (the
+exchange) → **W1-09**, and `RI-JRN09` (the opening as an exchange) → **W1-26**. Both are wave-1
+scoreable today.
 
 **Nothing else is deferred.** In particular the whole of `95-experience` except `RI-EXP04`,
-all eight `88-journeys` items, all seven camera items, all six weapon items and all nine
+all **nine** `88-journeys` items, all seven camera items, all six weapon items and all nine
 quest items are wave-1 scoreable, because the wide-before-deep constraint puts their
 prerequisites in wave 1 whether or not that was convenient.
+
+## 5b. Where the dispatched pieces have drifted from this plan
+
+Measured 2026-08-07 across every `subsystem_paths` array in `corpus/90-verdicts/wave1/`. **The
+declared path set of a dispatched piece routinely disagrees with its entry in §3, in both
+directions**, and both directions are silent failures: a piece that ships a path it did not
+declare has escaped the item that judges it (`CORPUS-CONTRACT` §4 rule 2), and a piece that
+declares less than §3 gives it has deferred the remainder without saying so.
+
+| Piece | Claimed beyond its §3 entry (§3 owner) | Dropped from its §3 entry |
+|---|---|---|
+| `W1-01` | `world.region.identity` (W1-02) | — |
+| `W1-07` | `progression.level.attributes`, `progression.skill.usegrowth`, `progression.build.identity` (all W1-16); `journey.chargen.diegesis` (W1-26) | `character.race.access`, `character.race.dialogue` |
+| `W1-09` | `platform.determinism.harness` (W1-00); `combat.encounter.exit` (W1-12); `combat.encounter.parley` (**no owner, wave 2**) | `combat.attack.charge`, `combat.damage.model`, `combat.damage.scaling`, `combat.heal.charges`, `combat.pause.policy` |
+| `W1-10` | `weapon.feel.hitstop`, `weapon.feel.mass`, `weapon.feel.material`, `weapon.feel.whiff` (all W1-11); `combat.attack.charge` (W1-09); `weapon.class.differentiation`, `weapon.identity.withinclass`, `weapon.animation.reuse`, `weapon.context.aerial` (**no owner, wave 2**) | — |
+| `W1-09-combat-core` | 19 paths under a `piece_id` that is not a piece in §3 | — |
+
+Two consequences, neither cosmetic:
+
+- **Five wave-2 paths have been built and scored by wave-1 pieces.** §4 defines `wave` as *"the
+  wave a builder first owns the path"*, so for `weapon.class.differentiation`,
+  `weapon.identity.withinclass`, `weapon.animation.reuse`, `weapon.context.aerial` and
+  `combat.encounter.parley` the field is now wrong. The `subsystems.json` correction is CRT's.
+- **Seven paths are in a §3 piece, that piece has been dispatched, and no verdict declares them.**
+  `character.race.access` and `character.race.dialogue` are the sharpest: `RI-CHR02` judges them,
+  `RI-CHR02` was scored into `W1-07` three times, and the two paths carrying *"the
+  Argonian-in-Black-Marsh premise pays mechanically"* have never been on a declared set.
+
+**This section deliberately does not rewrite §3's path lists to match.** A verdict's
+over-declaration is not a decomposition decision. It is recorded here so the next verdict on each
+piece has to reconcile it.
+
+## 5c. The dispatch order has not been wide before deep
+
+Ownership was never the expensive half of this. The measured state on 2026-08-07:
+
+> **Seven of thirty wave-1 pieces have been dispatched. `W1-01` and `W1-09` have each been
+> round-tripped four times, `W1-10` and `W1-14` three. And 79 of the corpus's 144 reference
+> items — 55% — own no path declared by any dispatched verdict.**
+
+The twenty-three pieces never dispatched include **every piece that owns a path deciding whether
+the game can be played at all**: the opening (`W1-26`), desktop controls (`W1-08`), mobile and the
+gamepad (`W1-29`), the first hour (`W1-28`), the main quest end to end (`W1-19`), settlements
+(`W1-04`), the UI and AR-2 enforcement (`W1-21`), death and the corpse run (`W1-13`), the
+experience instrument (`W1-25`), and the roads and signposts `RI-JRN07` needs (`W1-05`). Two more
+are in flight and unjudged (`W1-17` dialogue, `W1-18` quests and the journal).
+
+**The plan said wide before deep and the dispatch order did deep before wide.** No amendment to a
+path list fixes that; only dispatching the pieces does. Recommended order, on wide-before-deep and
+nothing else — each is a piece whose absence a player notices inside sixty seconds:
+
+1. **`W1-08` + `W1-29`** — controls, desktop and mobile. Nothing else can be honestly judged on a
+   build the critic cannot drive on the modalities the owner named; `RI-JRN01` HF5 is firing today
+   because two of four modalities have never been run.
+2. **`W1-26`** — the opening. Runnable against `RI-JRN09` today with no tool dependency.
+3. **`W1-00` round 3** — the save round trip, now declared.
+4. **`W1-13`** — death and recovery, now declared.
+5. **`W1-04`, `W1-21`, `W1-19`** — settlements, the UI, and the main quest end to end.
 
 ## 6. Wave-2, -3 and -4 pieces, in outline
 

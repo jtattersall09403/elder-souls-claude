@@ -370,6 +370,85 @@ function record(model, file, perturbation, consumer, quantity, before, after, no
     'ground-cover instances standing in a 70 m disc at the Valus Ridge centroid',
     coverCount(base), coverCount(wD),
     'ground cover is what most of every frame is made of; before round 4 the layer did not exist');
+
+  // (e) the GROUND SKIN's amplitude. `province.updateSkin` displaces its mesh by `SkinField.at`,
+  // and `province._skinLift` stands the ground cover on the result. The fen loses its tussocks.
+  const DEEP = REGIONS.regions.findIndex((r) => r.id === 'deep-marshes');
+  const THORN = REGIONS.regions.findIndex((r) => r.id === 'thornmarsh');
+  const smooth = clone(REGIONS);
+  smooth.regions[DEEP].terrain.skin.amp_m = 0;
+  const wE = build({ ...SHIPPED, regions: smooth });
+  const skinProfile = (w, ri) => {
+    const [cx, cz] = w.field.regions[ri].centroid_m;
+    const v = [];
+    for (let i = 0; i < 200; i++) v.push(w.field.skin.at(cx + i * 0.55, cz)[0]);
+    const m = v.reduce((a, b) => a + b, 0) / v.length;
+    let grad = 0;
+    for (let i = 1; i < v.length; i++) grad += Math.abs(v[i] - v[i - 1]);
+    return {
+      kind: w.field.skin.kindAt(cx, cz),
+      peak_m: +Math.max(...v).toFixed(3),
+      sd_m: +Math.sqrt(v.reduce((a, b) => a + (b - m) ** 2, 0) / v.length).toFixed(3),
+      mean_abs_grad_per_0p55m: +(grad / (v.length - 1)).toFixed(4),
+    };
+  };
+  record('regions.terrain.skin', 'game/data/world/regions.json',
+    'deep-marshes terrain.skin.amp_m 0.46 -> 0 (the fen loses its tussocks)',
+    'game/src/world/groundskin.js SkinField.at(), read by province.updateSkin() for every one of '
+      + 'its 15,625 vertices and by province._skinLift() to stand the ground cover on the result',
+    'the ground-skin surface on a 110 m transect through the Deep Marshes centroid, sampled at the mesh cell',
+    skinProfile(base, DEEP), skinProfile(wE, DEEP),
+    'the sub-metre half of the ordinary ground: what the bottom half of every frame is made of');
+
+  // (f) the GROUND SKIN's KIND, at a changed length: a different surface, not a flatter one.
+  const combed = clone(REGIONS);
+  combed.regions[THORN].terrain.skin = { kind: 'sandripple', amp_m: 0.42, len_m: 1.4, tone: 0.85, bearing_deg: 24 };
+  const wF = build({ ...SHIPPED, regions: combed });
+  record('regions.terrain.skin', 'game/data/world/regions.json',
+    "thornmarsh terrain.skin.kind 'hummock' -> 'sandripple' at the same amplitude",
+    'game/src/world/groundskin.js — thirteen surfaces, blended over ~12 m by a five-tap read of the region raster',
+    'the ground-skin surface on a 110 m transect through the Thornmarsh centroid',
+    skinProfile(base, THORN), skinProfile(wF, THORN),
+    'an irregular peat hummock field and a tide-combed ripple field are two different grounds at one amplitude');
+
+  // (g) the NEAR-FIELD PROP DISC. `province.updateNear` puts the deficit between declared density
+  // and the per-tile budget back inside 90 m, which is what decides canopy closure in a frame.
+  const thinned = clone(REGIONS);
+  thinned.regions[THORN].props.canopy.per100m2 = 0.6;
+  const wG = build({ ...SHIPPED, regions: thinned });
+  const nearCanopy = (w) => {
+    const r = w.field.regions[THORN];
+    const [cx0, cz0] = r.centroid_m;
+    const R = 90, budget = 300 * 300 / 100;
+    const p = r.props;
+    const def = Math.max(0, p.canopy.per100m2 - 700 / budget);
+    const defU = Math.max(0, p.under.per100m2 - 2600 / budget);
+    const defR = Math.max(0, p.rock.per100m2 - 420 / budget);
+    const mx = Math.max(def, defU, defR);
+    if (mx <= 0.001) return { step_m: 0, near_canopy: 0 };
+    const step = Math.min(6.5, Math.max(1.9, Math.sqrt(100 / (2 * mx))));
+    const cellArea = step * step, n = Math.ceil(R / step);
+    const gx0 = Math.floor((cx0 - R) / step), gz0 = Math.floor((cz0 - R) / step);
+    let count = 0;
+    for (let iz = 0; iz <= n * 2; iz++) for (let ix = 0; ix <= n * 2; ix++) {
+      const cx = gx0 + ix, cz = gz0 + iz;
+      const px = (cx + hash2(cx, cz, 8101)) * step, pz = (cz + hash2(cx, cz, 8103)) * step;
+      if (Math.hypot(px - cx0, pz - cz0) > R) continue;
+      if (px < 0 || pz < 0 || px >= w.field.sizeX || pz >= w.field.sizeZ) continue;
+      if (!w.field.isLandAt(px, pz)) continue;
+      const rr = w.field.regions[w.field.regionIndexAt(px, pz)];
+      if (rr.index !== THORN) continue;
+      if (hash2(cx, cz, 8111) < def * arrangeAt(w.field, px, pz, rr.props.arrangement, 1.0) * cellArea / 100) count++;
+    }
+    return { step_m: +step.toFixed(2), near_canopy: count };
+  };
+  record('regions.props.canopy', 'game/data/world/regions.json',
+    'thornmarsh props.canopy.per100m2 5.40 -> 0.60 (below the per-tile budget, so the disc has nothing to add)',
+    'game/src/world/province.js updateNear() — the 90 m near-field disc that puts back the deficit '
+      + 'between a region\u2019s declared density and the per-tile instance budget',
+    'the near-field lattice spacing and the canopy instances the disc adds inside 90 m of the Thornmarsh centroid',
+    nearCanopy(base), nearCanopy(wG),
+    'canopy closure spans 0.00-0.96 across the thirteen only because the near field is drawn at the declared density');
 }
 
 const failures = results.filter((r) => !r.changed);

@@ -118,6 +118,13 @@ function variant({ ablate = 'none', substeps, rootDz } = {}) {
   return d;
 }
 
+// Which side the ablation and substep probes sweep. Both together is ~4,500 fights at ~120 ms
+// each, which does not fit one run; `--sides` lets the two halves be measured and written
+// separately rather than losing both to a timeout.
+const SIDES = String(arg('sides', 'both'));
+const doEnemy = SIDES === 'both' || SIDES === 'enemy';
+const doPlayer = SIDES === 'both' || SIDES === 'player';
+
 const ABLATE = String(arg('ablate', 'none'));
 const SUBSTEPS = arg('substeps') === undefined ? undefined : Number(arg('substeps'));
 const data = variant({ ablate: ABLATE, substeps: SUBSTEPS });
@@ -362,7 +369,7 @@ if (want('ablate')) {
   const dvBody = variant({ ablate: 'body' });
   const dvRoot = variant({ ablate: 'rootdz' });
   R.probes.ablate = { enemy: {}, player: {} };
-  for (const move of Object.keys(data._enemies[ENEMY].attacks)) {
+  for (const move of (doEnemy ? Object.keys(data._enemies[ENEMY].attacks) : [])) {
     shipped[move] = sweep((d) => enemySwing(d, move));
     noBody[move] = sweep((d) => enemySwingWith(dvBody, d, move));
     noRootDz[move] = sweep((d) => enemySwingWith(dvRoot, d, move));
@@ -380,7 +387,7 @@ if (want('ablate')) {
       body_damage_ge_weapon: shipped[move].body_damage_ge_weapon,
     };
   }
-  for (const w of PLAYER_WEAPONS) {
+  for (const w of (doPlayer ? PLAYER_WEAPONS : [])) {
     const s = sweep((d) => playerSwing(d, w));
     const n = sweep((d) => playerSwingWith(dvBody, d, w));
     const z = sweep((d) => playerSwingWith(dvRoot, d, w));
@@ -407,7 +414,7 @@ if (want('substep')) {
   // parameter is decorative". FAIL if the differing set is EMPTY.
   R.probes.substep = { shipped: BASE.hitgeometry.sweep.substeps, compared: [1], changed: [], per_attack: {} };
   const dv1 = variant({ substeps: 1 });
-  for (const move of Object.keys(data._enemies[ENEMY].attacks)) {
+  for (const move of (doEnemy ? Object.keys(data._enemies[ENEMY].attacks) : [])) {
     const s = sweep((d) => enemySwing(d, move));
     const o = sweep((d) => enemySwingWith(dv1, d, move));
     const diff = [];
@@ -415,7 +422,7 @@ if (want('substep')) {
     R.probes.substep.per_attack['enemy/' + move] = { changed: diff.length, pairs: diff, identical: hitSetOf(s) === hitSetOf(o) };
     for (const p of diff) R.probes.substep.changed.push({ attack: 'enemy/' + move, ...p });
   }
-  for (const w of PLAYER_WEAPONS) {
+  for (const w of (doPlayer ? PLAYER_WEAPONS : [])) {
     const s = sweep((d) => playerSwing(d, w));
     const o = sweep((d) => playerSwingWith(dv1, d, w));
     const diff = [];

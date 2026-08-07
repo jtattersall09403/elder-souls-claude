@@ -98,7 +98,12 @@ try {
     const snap = (eid) => {
       const o = {};
       const ps = H.getPlayerStats();
-      flat({ hp: ps.hp, hp_max: ps.hp_max, pos: ps.pos.map((v) => Math.round(v * 1e3) / 1e3),
+      // POSITION TO THE NEAREST METRE, DELIBERATELY. At millimetre resolution `player.pos` moves
+      // under all 55 effects — casting shuffles the body 0.154 m — so it is in every signature
+      // and distinguishes nothing, and dropping it as noise instead threw away the ONE path
+      // `mark`/`recall`/`intervention` exist to move. Rounding is the honest cut: a cast's
+      // shuffle rounds to zero and a teleport does not. `intervention` moves 44.7 m.
+      flat({ hp: ps.hp, hp_max: ps.hp_max, pos: ps.pos.map((v) => Math.round(v)),
              equip_load_pct: ps.equip_load_pct, roll_class: ps.roll_class, attributes: ps.attributes,
              in_combat: ps.in_combat, stamina: Math.round(ps.stamina) }, 'player', o);
       const cs = H.getCombatState();
@@ -230,8 +235,18 @@ try {
       // because a body standing 1.4 m from a crouched player aggroes itself inside 320 frames
       // of perception and re-arms the very fence the settle exists to clear.
       if (!withEnemy) H.stepFrames(320);
-      const e0 = H.spawn('inf_trash', 0, 1.4);
-      const e1 = H.spawn('inf_trash', 2.6, 5.2);
+      // ...and the passive pair stands WELL OFF. S29 refuses `mark`/`recall`/`intervention`
+      // while the player is in combat, and `Engine.inCombat()` reads combat as ANY living
+      // non-player body within 30 m — alert state is not consulted, and it is right not to be:
+      // a thing that close is a fight whether or not it has noticed you yet. So a census that
+      // stands two bodies at 1.4 m and then asks whether Recall works is measuring its own
+      // arena. Bisected: with no bodies the trio teleports and emits `teleport` +
+      // `effect_apply`; with bodies at 18 m it emits NOTHING AT ALL, not even `cast_start`,
+      // because the fence drops the input before the cast begins.
+      // 34 m and 38 m: outside `inCombat()`'s 30 m, inside `detect_life`'s radius, which IS the
+      // magnitude in metres (60 at the high magnitude).
+      const e0 = H.spawn('inf_trash', 0, withEnemy ? 1.4 : 34.0);
+      const e1 = H.spawn('inf_trash', 2.6, withEnemy ? 5.2 : 38.0);
       if (withEnemy) { eid = e0; H.aggro(e0); H.aggro(e1); }
       H.magicEventsDrain();
       return eid;
@@ -338,8 +353,7 @@ try {
       // the first census report `moved_anything: 55/55` while nine effects had moved nothing at
       // all — a headline of 55 built on the price of the spell. They are dropped from the
       // signature and reported separately as `commission_only`.
-      const NOISE = (k) => k === 'gold' || k === 'player.pos.json' || k === 'player.pos.len'
-        || /^player\.pos\.\d/.test(k) || k === 'player.stamina';
+      const NOISE = (k) => k === 'gold' || k === 'player.stamina';
       // The SIGNATURE is the union over both magnitudes: an effect whose low magnitude is below
       // its own threshold (open_lock at 1 opens no tier-3 collar) still has the verb.
       const unionAll = new Set([...Object.keys(netA), ...(netB && b.delivered ? Object.keys(netB) : [])]);

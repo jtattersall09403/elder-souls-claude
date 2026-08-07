@@ -39,15 +39,22 @@ const COVER_RADIUS_M = 70;
 const COVER_LATTICE_M = 1.7;
 const COVER_REBUILD_M = 14;
 const MAX_COVER = 6000;
-// The ground skin: a fine surface mesh that follows the camera. 55 m at 1.0 m is 12,100 quads in
-// ONE draw call — cheaper on the software rasteriser than the 2-5k separate-instance ground
-// cover already is, and it is the only way to get sub-metre relief into the picture at all: the
-// tile mesh is 5.36 m per quad and cannot carry a 1.15 m tussock field. See
-// game/src/world/groundskin.js for what it carries and why it is not in the collision surface.
-const SKIN_RADIUS_M = 55;
-const SKIN_CELL_M = 1.0;
+// The ground skin: a fine surface mesh that follows the camera. 15,625 vertices in ONE draw call
+// — cheaper on the software rasteriser than the 2-5k separate-instance ground cover already is,
+// and it is the only way to get sub-metre relief into the picture at all: the tile mesh is 5.36 m
+// per quad and cannot carry a 1.3 m tussock field. See game/src/world/groundskin.js for what it
+// carries and why it is not in the collision surface.
+//
+// 34 m at 0.55 m, not 55 m at 1.0 m, and the trade is free: at eye height 1.7 m with the camera
+// pitched 4.3 degrees down and a 70-degree horizontal field of view, ground at 34 m subtends
+// 2.86 degrees below the horizontal and ground at 55 m subtends 1.77 — the top of the patch sits
+// at 43% of the frame height either way, because the horizon compresses. So the shorter radius
+// costs one per cent of frame coverage and buys FOUR TIMES the resolution, and resolution is
+// what decides whether a 1.3 m tussock field is a tussock field or a smooth tilt.
+const SKIN_RADIUS_M = 34;
+const SKIN_CELL_M = 0.55;
 const SKIN_REBUILD_M = 11;
-const SKIN_FADE_M = 14;
+const SKIN_FADE_M = 9;
 // The near-field prop disc. `MAX_INSTANCES` is a per-TILE budget, and applying it as a thinning
 // factor (which round 4 correctly changed it to) clamps every region whose declared density
 // exceeds the budget to the SAME realised density: 700 canopy over a 300 m tile is 0.78 per
@@ -292,12 +299,14 @@ export class Province {
         const a = arrangeAt(f, px, pz, r.props.arrangement, 0.45);
         const t = cv.per100m2 * patch * a * fade * cellArea / 100;
         if (hash2(cx, cz, 6313) >= t) continue;
-        if (f.depthAt(px, pz) > 0.30) continue;
+        // Same rule as the props: shell hash does not lie under 40 cm of water, but a 0.55 m
+        // reed stands in it.
+        if (f.depthAt(px, pz) > Math.max(0.12, cv.h * 0.75)) continue;
         let b = buckets.get(ri);
         if (!b) { b = { ri, geo: this._geo('cover', r), mat: this.regionMats[ri].cover, xf: [] }; buckets.set(ri, b); }
         if (b.xf.length >= MAX_COVER) continue;
         q.setFromAxisAngle(up, hash2(cx, cz, 6317) * Math.PI * 2);
-        v.set(px, this._meshY(px, pz) - 0.03, pz);
+        v.set(px, this._meshY(px, pz) - 0.03 + this._skinLift(px, pz), pz);
         s.setScalar(0.62 + hash2(cx, cz, 6319) * 0.86);
         m.compose(v, q, s);
         b.xf.push(m.clone());
@@ -386,6 +395,10 @@ export class Province {
       return depth;
     };
 
+    const skinAmp = (px, pz) => {
+      const sk = f.regions[f.regionIndexAt(px, pz)].terrain.skin;
+      return (sk && sk.amp_m) || 0.2;
+    };
     const pos = new Float32Array(V * V * 3);
     const col = new Float32Array(V * V * 3);
     const rgb = [0, 0, 0];
@@ -400,7 +413,12 @@ export class Province {
         // Taper at the rim, and lie flat under water: a tussock under 40 cm of black water is a
         // shape the water mesh hides, and pushing the skin up through it makes an island.
         const depth = coarse(cx, cz, rgb);
-        const fade = (1 - smoothstep(R - SKIN_FADE_M, R, d)) * (1 - smoothstep(0.05, 0.45, depth));
+        // Water: a tussock STANDS OUT of the fen it grows in — that is what a tussock is — so the
+        // surface is not suppressed until the water is deeper than the surface is tall. Fading it
+        // at a fixed 0.05 m (which is what this did first) deleted the Deep Marshes' whole ground
+        // character, because the Deep Marshes are under water.
+        const amp = skinAmp(cx, cz);
+        const fade = (1 - smoothstep(R - SKIN_FADE_M, R, d)) * (1 - smoothstep(amp * 0.9, amp * 2.8 + 0.2, depth));
         let rise = 0, tone = 0;
         if (fade > 0.002) {
           const [hh, tt] = f.skin.at(cx, cz);
@@ -412,7 +430,7 @@ export class Province {
         // The material's own response to its own shape. A normal alone is not enough: 0.2 m over
         // 1 m under an overcast sky moves Lambert shading by a couple of per cent, which is how
         // the micro-relief came to be in the collision surface and invisible in the frame.
-        if (tone !== 0) cH.offsetHSL(0, -0.05 * tone, 0.17 * tone);
+        if (tone !== 0) cH.offsetHSL(0, -0.06 * tone, 0.24 * tone);
         col[k] = cH.r; col[k + 1] = cH.g; col[k + 2] = cH.b;
       }
     }
@@ -442,7 +460,30 @@ export class Province {
     this.group.add(mesh);
     this.skinMesh = mesh;
     this.skinVerts = V * V;
+    // The ground cover stands ON this surface, so it has to be rebuilt with it or a shell hash
+    // sits 0.3 m inside a berm. Cheaper than making the two discs share a lattice, and exact.
+    this.coverAt = null;
     return V * V;
+  }
+
+  /**
+   * The lift the ground-skin mesh applied at a point — zero outside the patch, tapered at its rim.
+   *
+   * Anything that stands on the ground has to stand on the ground that is DRAWN, and inside the
+   * skin patch that is no longer `_meshY`. Same taper, same water rule, so a cobble on a berm
+   * crest is on the crest and a cobble ten metres past the rim is on the plain.
+   */
+  _skinLift(px, pz) {
+    const f = this.field;
+    if (!this.skinMesh || !f.skin || !f.skin.any) return 0;
+    const d = Math.hypot(px - this.skinAtPos[0], pz - this.skinAtPos[1]);
+    if (d >= SKIN_RADIUS_M) return 0;
+    const sk = f.regions[f.regionIndexAt(px, pz)].terrain.skin;
+    const amp = (sk && sk.amp_m) || 0.2;
+    const fade = (1 - smoothstep(SKIN_RADIUS_M - SKIN_FADE_M, SKIN_RADIUS_M, d))
+      * (1 - smoothstep(amp * 0.9, amp * 2.8 + 0.2, f.depthAt(px, pz)));
+    if (fade <= 0.002) return 0;
+    return f.skin.at(px, pz)[0] * fade + 0.012;
   }
 
   /**
@@ -477,7 +518,12 @@ export class Province {
       b.xf.push(m.clone());
       return true;
     };
-    if (p.canopy.shape !== 'none' && depth < 0.9 && rolls[0] < dens.canopy * cellArea / 100) {
+    // EMERGENT VEGETATION. The depth a plant will stand in is a property of the plant, not a
+    // constant: a 13 m drowned spire roots in two metres of water and a 0.25 m lichen crust roots
+    // in none. Round 4 gated both at a flat 0.9 m and 0.6 m, which is why the Deep Marshes — 86%
+    // wet, the region whose whole identity is a reed bed over black water — rendered as an empty
+    // sheet of water with the reeds standing on whatever dry ground it could find.
+    if (p.canopy.shape !== 'none' && depth < Math.max(0.9, p.canopy.h * 0.16) && rolls[0] < dens.canopy * cellArea / 100) {
       // Height variance and the occasional emergent: the vertical-structure axis, in data.
       const hv = p.canopy.h_var || 0;
       let sc = 0.72 + noise2(x * 3.1, z * 3.1, 7793) * 0.66;
@@ -493,7 +539,7 @@ export class Province {
           p.canopy.h * sc * (p.canopy.shape === 'arch' ? 0.5 : 0.86), tilt, 7797);
       }
     }
-    if (rolls[1] < dens.under * cellArea / 100 && depth < 0.6) {
+    if (rolls[1] < dens.under * cellArea / 100 && depth < Math.max(0.25, p.under.h * 0.80)) {
       push('under', 'under', this.regionMats[ri].under, 0.7 + noise2(x * 5, z * 5, 7801) * 0.8, 0, null, 7789);
     }
     if (rolls[2] < dens.rock * cellArea / 100) {
@@ -900,7 +946,16 @@ export class Province {
       case 'trunk': {
         const h = p.canopy.h;
         if (p.canopy.shape === 'arch') { geo = new THREE.TorusGeometry(p.canopy.r, 0.35, 6, 10, Math.PI); geo.rotateY(Math.PI / 2); }
-        else { geo = new THREE.CylinderGeometry(p.canopy.r * 0.16, p.canopy.r * 0.34, h, 6, 1); geo.translate(0, h / 2, 0); }
+        else {
+          // A TRUNK IS SIZED BY THE TREE'S HEIGHT, NOT BY ITS CROWN. Deriving it from the crown
+          // radius — which is what this did — gave Blackwood a 4.4 m thick bole every six metres,
+          // because a 19 m hardwood declares a 6.4 m crown and 0.34 of that is 2.18 m. Thirty-nine
+          // per cent of the region's ground was inside a trunk and a random eye-height frame was a
+          // photograph of bark. Real closed forest is 0.6-1.3 m at breast height; the flare at the
+          // base of a buttressed hardwood is the 1.8x taper below, not a doubling of the radius.
+          const rt = clamp(0.038 * h, 0.10, Math.min(0.95, p.canopy.r * 0.34));
+          geo = new THREE.CylinderGeometry(rt * 0.55, rt, h, 6, 1); geo.translate(0, h / 2, 0);
+        }
         break;
       }
       case 'crown': {

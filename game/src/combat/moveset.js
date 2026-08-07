@@ -16,7 +16,7 @@
 
 import { Clip } from './clips.js';
 import { Rig } from './skeleton.js';
-import { buildSwing, calibrateYawGain, _setClipCtor } from './swing.js';
+import { buildSwing, calibrateYawGain, calibrateExcursion, _setClipCtor } from './swing.js';
 import { resolveImpact, deflects } from './impact.js';
 
 _setClipCtor(Clip);
@@ -201,15 +201,18 @@ export class MovesetLibrary {
    * the uncalibrated one — declared honestly here rather than failing, because several offline
    * tools construct a library purely to read slot tables.
    */
-  _yawGain(weaponId, slotId, reg, slot) {
+  _yawGain(weaponId, slotId, reg, slot, bladeB) {
     if (!this.skeleton || !this.hitGeometry) return 1;
+    // The blade length is IN THE KEY. The arc is a bearing of the TIP about the character's own
+    // vertical axis, so it is a function of where the tip is, and `_bladeLength` moves the tip.
+    // Solving the gain against the registry length and then playing the clip at the calibrated
+    // one was measured at 21.1% arc nonconformance over 606 clips against 7.3% before; keyed and
+    // solved against the length the clip is actually played at, it returns to conformance.
+    const b = bladeB === undefined || bladeB === null ? reg.capsule_length_m : bladeB;
     const key = 'G|' + slot.anim + '|' + slot.startup_f + '|' + slot.active_f + '|' + slot.recovery_f + '|'
-      + (slot.charge_max_f || 0) + '|' + slot.arc_sweep_deg;
+      + (slot.charge_max_f || 0) + '|' + slot.arc_sweep_deg + '|' + Math.round(b * 1000);
     const hit = this._gainCache.get(key);
     if (hit !== undefined) return hit;
-    const cls = this.classes.classes[this.movesets[weaponId].class];
-    const b = reg.capsule_length_m;
-    const span = cls && cls.hitbox_span_m !== undefined ? cls.hitbox_span_m : b;
     const total = slot.startup_f + slot.active_f + slot.recovery_f + (slot.charge_max_f || 0);
     // ---- WHICH arc is the target ------------------------------------------------------------
     // The SLOT's `arc_sweep_deg`, not the registry profile's `arc_deg`, and the difference is not
@@ -258,11 +261,8 @@ export class MovesetLibrary {
    * tables) returns null and `socketsFor` falls back to the clip's own length, declared here
    * rather than throwing.
    *
-   * ONE KNOWN APPROXIMATION, stated rather than hidden: `_yawGain` solves the arc against the
-   * clip's registry capsule length, not against this solved one, so the two calibrations are
-   * sequential rather than jointly solved. The arc is a bearing about the root and is therefore
-   * first-order independent of the blade's length; measured, re-solving the gain against the
-   * calibrated blade moves the arc by under a degree on every class baseline.
+   * The arc gain is re-solved against the length this returns (see `_yawGain`'s key), so the
+   * clip a weapon plays is calibrated at the geometry it is played with, not at the registry's.
    */
   _bladeLength(weaponId) {
     if (!this.skeleton || !this.hitGeometry) return null;
@@ -273,7 +273,20 @@ export class MovesetLibrary {
     if (!target) { this._bladeCache.set(weaponId, null); return null; }
     const lead = ms.slots['r1.1'] ? 'r1.1' : Object.keys(ms.slots)[0];
     const slot = ms.slots[lead];
-    const clip = this.clipFor(weaponId, lead);
+    // PASS 1, built here rather than through `clipFor`, because `clipFor` now asks for the blade
+    // length and that would be a cycle. The pass-1 clip is the swing solved against the registry
+    // capsule length; the blade length is solved on its pose; `clipFor` then re-solves the arc
+    // gain against the length it found. Two passes, both fixed-length, no fixed point iterated
+    // to convergence — the pose is what the solve reads and the pose barely moves between them.
+    const reg1 = this.registry[slot.anim];
+    const total1 = slot.startup_f + slot.active_f + slot.recovery_f + (slot.charge_max_f || 0);
+    const sign1 = reg1.profile.arc_deg < 0 ? -1 : 1;
+    const prof1 = { ...reg1.profile, arc_deg: sign1 * Math.abs(slot.arc_sweep_deg) };
+    const g1 = this._yawGain(weaponId, lead, reg1, slot, reg1.capsule_length_m);
+    const clip = new Clip(slot.anim,
+      buildSwing(prof1, { yawGain: g1, accGain: Math.min(1, Math.abs(g1)) }),
+      { startup: slot.startup_f + (slot.charge_max_f || 0), active: slot.active_f, total: total1 },
+      1.0, slot.root_dz_m);
     const rig = new Rig(this.skeleton, this.hitGeometry);
     const startup = slot.startup_f + (slot.charge_max_f || 0);
     const last = startup + slot.active_f;
@@ -324,6 +337,20 @@ export class MovesetLibrary {
     return b;
   }
 
+  /**
+   * RI-CMB04 §B's declared `peak_tip_speed_mps` for a weapon class code, or null.
+   *
+   * §B tabulates the seven-class spine; `classes.json` carries the column for all fifteen, with
+   * the eight extension rows marked PROVISIONAL and owed back to RI-CMB04 as an amendment. A
+   * null is honest and load-bearing: `clipFor` then leaves the clip uncalibrated rather than
+   * silently inventing a ceiling for it, and `cmb-tipspeed.mjs` reports the row as undeclared.
+   */
+  peakTipSpeedFor(classCode) {
+    const c = this.classes && this.classes.classes && this.classes.classes[classCode];
+    const v = c && c.peak_tip_speed_mps;
+    return (typeof v === 'number' && v > 0) ? v : null;
+  }
+
   /** The `Clip` for one slot of one weapon, instantiated at that slot's own frame counts. */
   clipFor(weaponId, slotId) {
     const key = weaponId + '|' + slotId;
@@ -340,10 +367,47 @@ export class MovesetLibrary {
     // Cached per (clip, frame triple) rather than per (weapon, slot), because most clips are
     // shared and the solve depends on nothing else.
     const gsign = reg.profile.arc_deg < 0 ? -1 : 1;
-    const gk = this._yawGain(weaponId, slotId, reg, slot);
-    const arch = buildSwing(
+    const gk = this._yawGain(weaponId, slotId, reg, slot, this._bladeLength(weaponId));
+    let arch = buildSwing(
       { ...reg.profile, arc_deg: gsign * Math.abs(slot.arc_sweep_deg) },
       { yawGain: gk, accGain: Math.min(1, Math.abs(gk)) });
+
+    // ---- RI-CMB04 §B's peak_tip_speed_mps, enforced on THIS clip at THIS clip's frame counts --
+    //
+    // A swing profile is authored in PHASE space and the column is a constraint in FRAME space,
+    // and nothing joined the two: the same profile played at a 6-frame startup whips the blade
+    // four times faster than at a 24-frame startup, so every contextual multiplier that shortens
+    // a startup (running x0.70, rolling x0.60, chain hit 2 x0.78) multiplied the WINDUP's tip
+    // speed by its reciprocal. Measured over every frame of all 2,713 clips the game can play
+    // (tools/harness/cmb-tipspeed.mjs): 1,310 over their declared column, peak 158.1 m/s, and
+    // `dgr_reed_dirk 2h.run.r1` moving its tip 1.10 m in a single frame on animation frame 3.
+    // The round-3 verdict saw 39.6-45.2 m/s of this from the outside; it could only ever see the
+    // clips its exemplar happened to play.
+    //
+    // `calibrateExcursion` damps the ANTICIPATION and the FOLLOW-THROUGH until they fit the
+    // frames they have and leaves the active band alone, because that band carries the declared
+    // `arc_sweep_deg` that `_yawGain` has already solved the rig against.
+    //
+    // RECURSION GUARD, sound rather than convenient: the calibration needs the slot's socket
+    // distances, `socketsFor` needs `_bladeLength`, and `_bladeLength` calls back into `clipFor`.
+    // `_bladeLength` walks the ACTIVE window ONLY -- the exact band this damping never touches --
+    // so the blade length it solves is identical with or without the calibration, and skipping
+    // the calibration on the re-entrant call changes nothing measurable.
+    const declPeak = this.peakTipSpeedFor(ms.class);
+    if (this.skeleton && this.hitGeometry && declPeak && !this._inExcursionSolve) {
+      this._inExcursionSolve = true;
+      let sock = null;
+      try { sock = this.socketsFor(weaponId, slotId); } finally { this._inExcursionSolve = false; }
+      // `socketsFor` built and cached an UNCALIBRATED clip on the way in; drop it so the
+      // calibrated one below is what every consumer sees.
+      this._clipCache.delete(key);
+      arch = calibrateExcursion(
+        arch,
+        { startup: slot.startup_f + (slot.charge_max_f || 0), active: slot.active_f, total, root_dz_m: slot.root_dz_m },
+        sock.a, sock.b,
+        () => new Rig(this.skeleton, this.hitGeometry),
+        declPeak);
+    }
 
     c = new Clip(slot.anim, arch, { startup: slot.startup_f + (slot.charge_max_f || 0), active: slot.active_f, total }, 1.0, slot.root_dz_m);
     c.capsuleLength = reg.capsule_length_m;

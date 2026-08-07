@@ -142,6 +142,13 @@ export function buildSwing(p, opts) {
   // the hitbox has already switched off. A real recovery lets the weapon lie where the swing put
   // it and brings it up on the way back to guard, and the way back to guard is the cross-fade's
   // job, not this clip's.
+  // NOTE — a blade-presentation term was tried here in round 3 and REVERTED; see
+  // `reports/W1-10-ROUND3.md` §"the blade points into the ground". The defect it aimed at is
+  // real and measured (the weapon sits 35-41 degrees below horizontal through the active window
+  // of a HORIZONTAL sweep, so only the inboard third of the capsule is ever at the height of a
+  // person), but a solved constant offset on this chain costs 40.4% arc nonconformance against
+  // 7.3%, 118 pose teleports against 0, and 60.6% tip-speed violations. It needs the arm pose
+  // reworked, not a scalar. Filed rather than shipped.
   const pitchKeys = [
     [0.0, -6],
     [cockP, -tilt * 0.85 - 10],
@@ -150,6 +157,7 @@ export function buildSwing(p, opts) {
     [2.0 + folP, tilt * 1.0 + 6],
     [3.0, tilt * 0.88 + 2],
   ];
+
 
   const tracks = {};
   const put = (bone, axis, keys) => {
@@ -257,6 +265,121 @@ export function buildSwing(p, opts) {
       crouch_m: cr, lean_deg: lean, twist_deg: tw, offhand: oh, tier,
     },
   };
+}
+
+/**
+ * ANTICIPATION AND FOLLOW-THROUGH, DAMPED TO FIT THE FRAMES THEY HAVE.
+ *
+ * ### The defect this closes
+ *
+ * `buildSwing` authors a swing in PHASE space — six keys at phases {0, cockP, 1.0, 2.0,
+ * 2+folP, 3.0} — and `Clip` instantiates it at the slot's own FRAME counts. `RI-CMB04` §B's
+ * `peak_tip_speed_mps` is a constraint in frame space. Nothing connected the two, so **the same
+ * profile played at startup 6 whips the blade four times faster than at startup 24**, and a
+ * contextual multiplier that shortens a startup (running ×0.70, rolling ×0.60, chain hit 2
+ * ×0.78) silently multiplies the tip speed of the windup by its reciprocal.
+ *
+ * Measured on the shipped build by `tools/harness/cmb-tipspeed.mjs`, over every frame of all
+ * 2,713 clips the game can play: **1,310 clips exceeded their declared column**, peaking at
+ * **158.1 m/s**. `dgr_reed_dirk 2h.run.r1` moved its tip **1.10 m in one frame** on animation
+ * frame 3 — a 6-frame startup being asked to deliver a full anticipation excursion. The round-3
+ * verdict saw the same defect from the outside as *"39.57–45.22 m/s against a declared 18.5"*
+ * and could only see the handful of clips its exemplar happened to play; the census sees all of
+ * them, and the shape of the failure is unmistakable: of the twenty worst clips, **every single
+ * one peaks in the startup or the recovery, not in the active window.**
+ *
+ * ### The lever, and why it is this one
+ *
+ * The active band — phase 1.0 to 2.0 — is left **exactly** alone. That band carries
+ * `arc_sweep_deg`, which `RI-WPN02` §B declares and `calibrateYawGain` has already solved the
+ * rig against; damping it would make the measured arc disagree with the declared arc and would
+ * trade one item's failure for another's. What is damped is the excursion **outside** it: the
+ * anticipation (keys below phase 1.0, pulled toward the pose the hitbox opens on) and the
+ * follow-through (keys above phase 2.0, pulled toward the pose the hitbox closes on).
+ *
+ * That is also the animation-principle answer rather than a numerical one. A fast attack has
+ * **less anticipation** — it does not have the same anticipation performed faster. `RI-WPN05` §E
+ * owns anticipation as a quality, so the scale that was solved is recorded on the clip's profile
+ * (`windup_scale`, `follow_scale`) and a clip that had to give up most of its windup is visible
+ * rather than merely quiet.
+ *
+ * @param {object} arch a `buildSwing` result
+ * @param {number} windup 0..1 scale on every key below phase 1.0, about the phase-1.0 value
+ * @param {number} follow 0..1 scale on every key above phase 2.0, about the phase-2.0 value
+ */
+export function dampExcursion(arch, windup, follow) {
+  if (windup >= 1 && follow >= 1) return arch;
+  const tracks = {};
+  for (const bone in arch.tracks) {
+    tracks[bone] = {};
+    for (const ch in arch.tracks[bone]) {
+      const keys = arch.tracks[bone][ch];
+      let v1 = null, v2 = null;
+      for (const k of keys) {
+        if (Math.abs(k[0] - 1) < 1e-6) v1 = k[1];
+        if (Math.abs(k[0] - 2) < 1e-6) v2 = k[1];
+      }
+      tracks[bone][ch] = keys.map(([ph, v]) => {
+        if (ph < 1 - 1e-6 && v1 !== null) return [ph, r2(v1 + (v - v1) * windup)];
+        if (ph > 2 + 1e-6 && v2 !== null) return [ph, r2(v2 + (v - v2) * follow)];
+        return [ph, v];
+      });
+    }
+  }
+  return { ...arch, tracks, profile: { ...arch.profile, windup_scale: r2(windup), follow_scale: r2(follow) } };
+}
+
+/**
+ * Solve `dampExcursion`'s two scales against `RI-CMB04` §B's declared column, for THIS clip at
+ * THIS clip's frame counts.
+ *
+ * The two bands are disjoint in frames, so they are solved independently: `windup` binds frames
+ * `[1, startup+1]` and `follow` binds `[startup+active, total]`. Each is a fixed 20-step
+ * bisection — deterministic, allocation-bounded, and the same on every machine (AR-1).
+ *
+ * Speed is measured in the ATTACKER'S OWN FRAME (root translation removed), because the column
+ * is a property of how fast a weapon can be swung and is not raised by the fact that the
+ * character is also moving. `RI-CMB01`/`RI-CMB02` own root motion.
+ *
+ * If the declared column is unknown the clip is returned untouched and `windup_scale` is not
+ * written, so a missing declaration is visible as an absence rather than as a silent pass.
+ */
+export function calibrateExcursion(arch, frames, sockA, sockB, makeRig, declaredMps) {
+  if (!(declaredMps > 0)) return arch;
+  const rig = makeRig();
+  const Clip = _Clip;
+  const peakIn = (a, lo, hi) => {
+    const clip = new Clip('probe', a, frames, 1, frames.root_dz_m || 0);
+    const pos = [0, 0, 0];
+    let px = 0, py = 0, pz = 0, has = false, peak = 0;
+    for (let f = 1; f <= frames.total; f++) {
+      const z = clip.rootForwardAt(f);
+      pos[2] = z;
+      clip.applyPose(rig, f);
+      rig.evaluate(pos, 0, clip.rootOffsetYAt(f), sockA, sockB);
+      const b = rig.socketB;
+      if (has && f >= lo && f <= hi) {
+        const d = Math.hypot(b[0] - px, b[1] - py, (b[2] - z) - pz) * 60;
+        if (d > peak) peak = d;
+      }
+      px = b[0]; py = b[1]; pz = b[2] - z; has = true;
+    }
+    return peak;
+  };
+  const S = frames.startup, A = frames.active, T = frames.total;
+  const solve = (band, apply) => {
+    // 1.0 is always tried first: a clip that already fits keeps its full excursion.
+    if (peakIn(apply(1), band[0], band[1]) <= declaredMps) return 1;
+    let lo = 0, hi = 1;
+    for (let i = 0; i < 20; i++) {
+      const mid = (lo + hi) / 2;
+      if (peakIn(apply(mid), band[0], band[1]) <= declaredMps) lo = mid; else hi = mid;
+    }
+    return lo;
+  };
+  const w = solve([1, S + 1], (x) => dampExcursion(arch, x, 1));
+  const f = solve([S + A, T], (x) => dampExcursion(arch, w, x));
+  return dampExcursion(arch, w, f);
 }
 
 /**

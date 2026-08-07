@@ -95,7 +95,7 @@ function coverDisc(cx0, cz0) {
     const fade = 1 - smoothstep(COVER_RADIUS_M - 15, COVER_RADIUS_M, d);
     const a = arrangeAt(field, px, pz, r.props.arrangement, 0.45);
     if (hash2(cx, cz, 6313) >= cv.per100m2 * patch * a * fade * cellArea / 100) continue;
-    if (field.depthAt(px, pz) > 0.30) continue;
+    if (field.depthAt(px, pz) > Math.max(0.12, cv.h * 0.75)) continue;
     out.push([px, pz]);
   }
   return out;
@@ -135,12 +135,105 @@ for (let tz = 0; tz < tiles.z; tz++) {
       const aLow = arrangeAt(field, x, z, p.arrangement, 0.45);
       const P = placed.get(r.id);
       const cap = (k, per100) => Math.min(1, MAX_INSTANCES[k] / Math.max(1e-6, per100 * TILE_M * TILE_M / 100));
-      if (p.canopy.shape !== 'none' && depth < 0.9
+      if (p.canopy.shape !== 'none' && depth < Math.max(0.9, p.canopy.h * 0.16)
         && hash2(ix + ox, iz + oz, 7741) < p.canopy.per100m2 * cap('canopy', p.canopy.per100m2) * aTall * cellArea / 100) P.canopy.push([x, z]);
-      if (hash2(ix + ox, iz + oz, 7757) < p.under.per100m2 * cap('under', p.under.per100m2) * aLow * cellArea / 100 && depth < 0.6) P.under.push([x, z]);
+      if (hash2(ix + ox, iz + oz, 7757) < p.under.per100m2 * cap('under', p.under.per100m2) * aLow * cellArea / 100
+        && depth < Math.max(0.25, p.under.h * 0.80)) P.under.push([x, z]);
       if (hash2(ix + ox, iz + oz, 7761) < p.rock.per100m2 * cap('rock', p.rock.per100m2) * aTall * cellArea / 100) P.rock.push([x, z]);
     }
   }
+}
+
+
+// ---- 4. the NEAR-FIELD PROP DISC, replicated -------------------------------------------------
+// `province.updateNear` puts the deficit between a region's declared density and the per-tile
+// budget back inside 90 m of the camera, because the per-tile budget clamps every dense region to
+// the same 0.78 canopy per 100 m2 and that is the density a frame is actually made at. What this
+// measures is therefore the density a standing player is IN, which is the number the M17 frames
+// see — not the province-wide average, which is a mixture of near and far.
+const NEAR_RADIUS_M = 90;
+const MAX_NEAR = { canopy: 2600, under: 2400, rock: 700 };
+const TILE_BUDGET = (TILE_M * TILE_M) / 100;
+function nearDisc(cx0, cz0) {
+  const out = { canopy: [], under: [], rock: [] };
+  const ri0 = field.regionIndexAt(cx0, cz0);
+  const defOf = (r) => {
+    const p = r.props;
+    const d = {
+      canopy: Math.max(0, (p.canopy.shape === 'none' ? 0 : p.canopy.per100m2) - MAX_INSTANCES.canopy / TILE_BUDGET),
+      under: Math.max(0, p.under.per100m2 - MAX_INSTANCES.under / TILE_BUDGET),
+      rock: Math.max(0, p.rock.per100m2 - MAX_INSTANCES.rock / TILE_BUDGET),
+    };
+    d.max = Math.max(d.canopy, d.under, d.rock);
+    return d;
+  };
+  const here = defOf(REG[ri0]);
+  if (here.max <= 0.001) return out;
+  const step = Math.min(6.5, Math.max(1.9, Math.sqrt(100 / (2 * here.max))));
+  const cellArea = step * step;
+  const n = Math.ceil(NEAR_RADIUS_M / step);
+  const gx0 = Math.floor((cx0 - NEAR_RADIUS_M) / step), gz0 = Math.floor((cz0 - NEAR_RADIUS_M) / step);
+  for (let iz = 0; iz <= n * 2; iz++) for (let ix = 0; ix <= n * 2; ix++) {
+    const cx = gx0 + ix, cz = gz0 + iz;
+    const px = (cx + hash2(cx, cz, 8101)) * step, pz = (cz + hash2(cx, cz, 8103)) * step;
+    if (Math.hypot(px - cx0, pz - cz0) > NEAR_RADIUS_M) continue;
+    if (px < 0 || pz < 0 || px >= field.sizeX || pz >= field.sizeZ) continue;
+    if (!field.isLandAt(px, pz)) continue;
+    const r = REG[field.regionIndexAt(px, pz)];
+    const d = defOf(r);
+    if (d.max <= 0.001) continue;
+    const p = r.props;
+    const depth = field.depthAt(px, pz);
+    const aTall = arrangeAt(field, px, pz, p.arrangement, 1.0);
+    const aLow = arrangeAt(field, px, pz, p.arrangement, 0.45);
+    if (p.canopy.shape !== 'none' && depth < Math.max(0.9, p.canopy.h * 0.16)
+      && hash2(cx, cz, 8111) < d.canopy * aTall * cellArea / 100 && out.canopy.length < MAX_NEAR.canopy) out.canopy.push([px, pz]);
+    if (hash2(cx, cz, 8117) < d.under * aLow * cellArea / 100
+      && depth < Math.max(0.25, p.under.h * 0.80) && out.under.length < MAX_NEAR.under) out.under.push([px, pz]);
+    if (hash2(cx, cz, 8123) < d.rock * aTall * cellArea / 100 && out.rock.length < MAX_NEAR.rock) out.rock.push([px, pz]);
+  }
+  return out;
+}
+
+/**
+ * Realised canopy closure, from the geometry the renderer places.
+ *
+ * The tile lattice at its capped density plus the near disc at the deficit, over four discs of
+ * ground inside the region; crown discs of the region's own radius, weighted by the plan-view
+ * fraction its crown SHAPE projects. `regions.json canopy_closure` is derived from the declared
+ * numbers; this is derived from the placed ones, and the two agreeing is the check.
+ */
+const CROWN_PLAN_FRACTION = { sphere: 1.0, dome: 1.0, cone: 1.0, spire: 0.3025, column: 0.81, arch: 0.30, none: 0 };
+function nearDensity(r) {
+  const bb = r.bounds_m;
+  let st = 0x7654321 ^ (r.index * 26953);
+  const rnd = () => { st ^= st << 13; st >>>= 0; st ^= st >>> 17; st ^= st << 5; st >>>= 0; return st / 4294967296; };
+  const acc = { canopy: 0, under: 0, rock: 0 };
+  let discs = 0;
+  const areaPer = Math.PI * NEAR_RADIUS_M * NEAR_RADIUS_M;
+  for (let tries = 0; tries < 600 && discs < 4; tries++) {
+    const x = bb.x[0] + rnd() * (bb.x[1] - bb.x[0]), z = bb.z[0] + rnd() * (bb.z[1] - bb.z[0]);
+    if (field.regionIndexAt(x, z) !== r.index || !field.isLandAt(x, z) || field.depthAt(x, z) > 0.3) continue;
+    const nd = nearDisc(x, z);
+    // the tile layer inside the same disc, at its capped density
+    const p = r.props;
+    const cap = (k, per100) => Math.min(1, MAX_INSTANCES[k] / Math.max(1e-6, per100 * TILE_BUDGET));
+    acc.canopy += nd.canopy.length + p.canopy.per100m2 * cap('canopy', p.canopy.per100m2) * areaPer / 100;
+    acc.under += nd.under.length + p.under.per100m2 * cap('under', p.under.per100m2) * areaPer / 100;
+    acc.rock += nd.rock.length + p.rock.per100m2 * cap('rock', p.rock.per100m2) * areaPer / 100;
+    discs++;
+  }
+  if (!discs) return null;
+  const per = (v) => +((v / discs) / areaPer * 100).toFixed(3);
+  const cn = per(acc.canopy);
+  const occ = CROWN_PLAN_FRACTION[r.props.canopy.shape] ?? 0;
+  const rr = r.props.canopy.r || 0;
+  return {
+    discs,
+    canopy_per100m2: cn, under_per100m2: per(acc.under), rock_per100m2: per(acc.rock),
+    realised_canopy_closure: +(1 - Math.exp(-(cn / 100) * Math.PI * rr * rr * occ)).toFixed(3),
+    declared_canopy_closure: r.canopy_closure,
+  };
 }
 
 /** Nearest-neighbour statistics and the Clark-Evans dispersion index. */
@@ -201,6 +294,8 @@ for (const r of REG) {
     rock: { declared_per100m2: r.props.rock.per100m2, ...(spacing(P.rock, areaM2) || {}) },
     cover: { declared_per100m2: r.props.cover.per100m2, patch_m: r.props.cover.patch_m,
       ...(coverStats(r) || {}) },
+    skin: r.terrain.skin,
+    near_field: nearDensity(r),
   });
 }
 

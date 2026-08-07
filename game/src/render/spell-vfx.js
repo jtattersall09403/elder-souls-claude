@@ -594,14 +594,23 @@ export class SpellVFX {
       const pal = this.paletteFor(im.spell);
       const t = 1 - im.remaining_f / im.total_f;          // 0 at contact, 1 at the end
       const punch = Math.max(0, 1 - t * t);                // fast in, slow out
-      const r = im.r * (0.35 + t * 1.85);                  // the shell expands
+      // THE BURST IS NOT THE COLLISION SPHERE. Every radius below was scaled from `im.r`, which
+      // for a projectile is its HITBOX radius — 0.22 m for a `LIGHT` bolt, 0.14 m for a
+      // `CANTRIP`. So 600 particles were emitted into a 0.4 m ball, and the impact frame came
+      // back 780 changed pixels (0.038% of a 1920x1080 frame): technically not identical to
+      // idle, visually a dot. The measurement said "an impact happened" and the picture did not.
+      // A bolt that connects throws matter over about a body's width; a `volume` spell already
+      // declares a footprint larger than that and must keep its own. So the burst radius is the
+      // spell's footprint FLOORED at 1.3 m, never the collision sphere.
+      const burstR = Math.max(im.r, 1.3);
+      const r = burstR * (0.35 + t * 1.85);                // the shell expands
       this._emitCore(im.at[0], im.at[1] + 0.55, im.at[2], pal, 0.6 + punch * 0.9,
-        Math.round(60 + 150 * punch), im.r * (0.25 + t * 0.8), im.spawnF);
+        Math.round(60 + 150 * punch), burstR * (0.25 + t * 0.8), im.spawnF);
       this._emitTrailRing([im.at[0], im.at[1], im.at[2]], r, pal, im.spawnF + 3);
       this._emitImpact([im.at[0], im.at[1], im.at[2]], r, pal, Math.round(90 + 210 * punch), im.spawnF);
       // and the bloom on the floor beneath it, from the first frame — L5's ragged mask, not a
       // radial mandala, and it is IN FRAME because it is under the thing that just exploded.
-      this._pushDecal([im.at[0], 0, im.at[2]], im.r * (0.9 + t * 0.7), pal, 0.85 * (1 - t * 0.5), im.spawnF);
+      this._pushDecal([im.at[0], 0, im.at[2]], burstR * (0.9 + t * 0.7), pal, 0.85 * (1 - t * 0.5), im.spawnF);
     }
 
     // ---- L7: residue. Every spell leaves a stain for 3,600 f@60, and it is finally drawn. -----

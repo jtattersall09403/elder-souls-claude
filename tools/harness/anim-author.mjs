@@ -614,6 +614,7 @@ const PEAK_MAX = 0.99;     // fraction of RI-CMB04 §B's declared column, every 
 const REACH_MIN = 0.90;    // fraction of RI-CMB02 §A's declared reach
 const solved = {};
 for (const name of Object.keys(ARCH)) {
+  const _t0 = Date.now();
   const rows = rowsFor(name);
   const def = ARCH[name];
   const buryOpts = def.bury ? [1.0, 0.85, 0.7, 0.55, 0.4] : [0];
@@ -622,10 +623,16 @@ for (const name of Object.keys(ARCH)) {
   for (const bury of buryOpts) {
    for (const cham of chamOpts) {
     for (const hitFrac of (def.bury ? [0.2, 0.3, 0.45, 0.6] : [1])) {
-    for (let t = 0.00; t <= 0.801; t += 0.05) {
-      for (let ext = 0; ext <= 70; ext += 5) {
+    // GRID COARSENED, wave 1 round 4. The 0.05-step scan over `t` x `ext` x `swing` is 6,630
+    // measurements per (bury, chamber, hitFrac) triple and 530,400 in total, which did not
+    // finish inside a 900 s budget — the whole solve was killed at SIGTERM twice and clips.json
+    // therefore still carried the ROUND-3 solve while `anim-author.mjs` carried the round-4
+    // knobs. A 6.6x coarser grid over the same ranges finds the same feasible corner (the
+    // objective is a plateau in `t` and `ext`, not a needle) and finishes.
+    for (let t = 0.00; t <= 0.801; t += 0.10) {
+      for (let ext = 0; ext <= 70; ext += 10) {
         let hit = null;
-        for (let swing = 1.30; swing >= 0.05; swing -= 0.05) {
+        for (let swing = 1.30; swing >= 0.05; swing -= 0.09) {
           const a = buildArch(def, t, swing, ext, bury, cham, hitFrac);
           const m = measureArch(name, a, rows);
           const miss = Math.max(0, m.peak - PEAK_MAX) * 6 + Math.max(0, REACH_MIN - m.reach) * 3 + Math.max(0, m.axis - MIN_AXIS_MAX);
@@ -648,7 +655,7 @@ for (const name of Object.keys(ARCH)) {
     console.log(`${name.padEnd(16)} NO feasible point: peak ${best.m.peak.toFixed(3)}x (${best.m.peakRow}) reach ${best.m.reach.toFixed(3)}x (${best.m.reachRow}) min_axis ${best.m.axis.toFixed(3)} m (${best.m.axisRow})`);
   }
   solved[name] = best.a;
-  console.log(`${name.padEnd(16)} t=${best.t.toFixed(2)} swing=${best.swing.toFixed(2)} ext=${best.ext} bury=${best.bury} chamber=${best.cham} hitFrac=${best.hitFrac}  ` +
+  console.log(`[${((Date.now() - _t0) / 1000).toFixed(0)}s] ${name.padEnd(16)} t=${best.t.toFixed(2)} swing=${best.swing.toFixed(2)} ext=${best.ext} bury=${best.bury} chamber=${best.cham} hitFrac=${best.hitFrac}  ` +
     `peak=${best.m.peak.toFixed(3)}x (${best.m.peakRow})  reach=${best.m.reach.toFixed(3)}x (${best.m.reachRow})  min_axis=${best.m.axis.toFixed(3)} m (${best.m.axisRow})  ` +
     `world_peak=${best.m.world.toFixed(1)} m/s  travel=${best.m.travelRadii.toFixed(2)} radii/frame (${best.m.travelRow})`);
 }

@@ -64,13 +64,23 @@ const norm = (s) => String(s == null ? '' : s).replace(/\s+/g, ' ').trim().toLow
  */
 const delivered = (authored, blob) => { const a = norm(authored); return !a || blob.indexOf(a) >= 0; };
 
-/** The authored strings the model computes for a node, deduplicated, with their role. */
+/**
+ * The authored strings the model computes for a node, deduplicated, with their role.
+ *
+ * `model` here is `getCensusModel()` — the object `buildCensusModel()` produced and
+ * `UILayer.setModel()` drew — NOT `getCensusState()`. RI-JRN09 M1 says "the distinct authored
+ * strings THE MODEL computes for that node", and the two disagree in precisely the place the
+ * item was written about: the raw state carries the scribe's stock framing in `line` at all ten
+ * questionnaire nodes, while the model demotes it to `preamble` at question one and puts the
+ * QUESTION in `line`. An earlier draft of this probe read the raw state and reported DTR_q 0.55
+ * for a scene that draws its question at 10 of 10 nodes.
+ */
 function authoredAt(model) {
   const c = [];
   const push = (kind, s) => { if (s && String(s).trim()) c.push({ kind, s: String(s) }); };
   push('line', model.line);
   push('preamble', model.preamble);
-  for (const sp of (model.spoken || [])) push('spoken', sp);
+  for (const sp of (model.spoken || [])) push('spoken', (sp && typeof sp === 'object') ? sp.line : sp);
   push('aside', model.aside);
   for (const o of (model.options || [])) push('option', o.text || o.id);
   if (model.question && model.question.text) push('question', model.question.text);
@@ -94,16 +104,25 @@ function answerFor(model, pattern, qi) {
   return opts[0].id;
 }
 
-/** One complete walk of the census. Returns every node with what was computed and what was drawn. */
-async function walk(h, { state = 'barge-hold', pattern = () => 0, begin = {} } = {}) {
+/**
+ * One complete walk of the census, from the barge hold to the stamp.
+ *
+ * `steer` maps a node id to the option id to take there, which is how the M3 sweep reaches all
+ * 10 races x 4 upbringings on the questionnaire route. `hold.out` carries no input: it is
+ * RI-JRN01 O6's hand-back, where the player walks out of the hold and into the Writ House, and
+ * it is crossed with `censusEnter()` rather than an answer.
+ */
+async function walk(h, { state = 'barge-hold', pattern = () => 0, begin = {}, steer = {} } = {}) {
   await h.h('loadState', state);
   await h.h('censusBegin', begin);
-  const nodes = []; let qi = 0; let guard = 0;
+  const nodes = []; let qi = 0; let guard = 0; let entered = false;
   let st = await h.h('getCensusState');
   while (st && !st.done && guard++ < 64) {
     const drawnRows = (st.surface && st.surface.rendered_text) || [];
     const blob = norm(drawnRows.join('  '));
-    const uniq = authoredAt(st);
+    // COMPUTED comes from the model; DRAWN comes from the surface the model was drawn onto.
+    const model = (await h.h('getCensusModel')) || st;
+    const uniq = authoredAt(model);
     const hit = uniq.filter((x) => delivered(x.s, blob));
     const missed = uniq.filter((x) => !delivered(x.s, blob));
     const kind = st.input ? st.input.kind : null;
@@ -118,8 +137,14 @@ async function walk(h, { state = 'barge-hold', pattern = () => 0, begin = {} } =
       missed: missed.map((m) => ({ kind: m.kind, s: m.s.slice(0, 100) })),
     });
     if (kind === 'questionnaire') qi++;
-    const v = answerFor(st, pattern, qi - 1);
-    if (v === null) break;
+    if (!kind) {
+      // RI-JRN01 O6's hand-back. Crossed once; a second one means the graph is stuck.
+      if (!entered) { entered = true; st = await h.h('censusEnter'); continue; }
+      break;
+    }
+    const forced = steer[st.node];
+    const v = forced !== undefined ? forced : answerFor(st, pattern, qi - 1);
+    if (v === null || v === undefined) break;
     st = await h.h('censusAnswer', v);
   }
   return { nodes, final: st };
@@ -131,7 +156,13 @@ try {
 
   // ---- M1 ES-LEGIBLE ----------------------------------------------------------------------
   say('== M1 ES-LEGIBLE — did the authored text reach the frame? ==');
-  const { nodes } = await walk(h, { pattern: (i) => i % 4 });
+  // The questionnaire route, because it is the one RI-CHR01 calls mandatory and the one whose
+  // ten questions round 2 never printed.
+  const { nodes } = await walk(h, {
+    begin: { race: 'saxhleel' },
+    steer: { 'writ.class-routes': 'questionnaire' },
+    pattern: (i) => i % 4,
+  });
   const qNodes = nodes.filter((n) => n.questionnaire);
   const dtrQ = qNodes.length ? qNodes.reduce((a, n) => a + n.dtr, 0) / qNodes.length : 0;
   const totC = nodes.reduce((a, n) => a + n.computed, 0);
@@ -201,7 +232,10 @@ try {
   // ---- M3 ES-NAMED ------------------------------------------------------------------------
   say(`\n== M3 ES-NAMED — does the questionnaire end with somebody saying a profession? ==`);
   const races = (await h.h('getCreationData')).races.races.map((r) => r.id);
-  const ups = ['interior', 'coastal', 'foreign-born', 'imperial-raised'];
+  // The four upbringings the graph actually offers at `writ.upbringing`, read from the node
+  // rather than guessed — an earlier draft of this probe guessed and would have steered every
+  // run into the same branch while reporting full coverage.
+  const ups = ['interior', 'lukiul', 'foreign-born', 'blackrose'];
   const perPair = Math.ceil(RUNS / (races.length * ups.length));
   const hist = { a: 0, b: 0, c: 0, d: 0 };
   const classes = new Map();
@@ -213,14 +247,20 @@ try {
   for (const race of races) for (const up of ups) for (let k = 0; k < perPair; k++) {
     const picks = [];
     const w = await walk(h, {
-      begin: { race, upbringing: up, route: 'questionnaire' },
+      begin: { race },
+      steer: { 'writ.upbringing': up, 'writ.class-routes': 'questionnaire' },
       pattern: () => { const j = Math.floor(rnd() * 4); picks.push(j); return j; },
     });
     for (const j of picks) hist[LETTERS[j]]++;
     total++;
     const c = await h.h('getCharacter');
     const id = c.class_id || null;
-    const isNamed = !!(id && c.class_route !== 'custom' && c.class_name);
+    // The unnamed band is a FEATURE the item explicitly protects ("I do not have a word for
+    // what you are" is a good answer for a customs officer). A run that fell through to the
+    // custom/unnamed outcome is not a named match and must not be counted as one — an earlier
+    // draft counted them and reported a false NAMED_distinct of 15 of 14 and a false
+    // "naming line drawn 232/240".
+    const isNamed = !!(id && id !== 'custom' && c.class_route !== 'custom' && c.class_name);
     if (isNamed) {
       named++;
       classes.set(id, (classes.get(id) || 0) + 1);
