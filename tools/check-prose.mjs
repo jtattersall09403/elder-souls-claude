@@ -69,6 +69,7 @@
 //   node tools/check-prose.mjs --file <path>    # one file's numbers, with examples
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -374,6 +375,57 @@ export const DEFAULT_BARS = {
 // reference predicts none is still one that is there.
 const MIN_EXPECTED = 2;
 
+// ------------------------------------------------------------------ declared register exemptions
+//
+// WHY THIS EXISTS, AND WHY IT IS AS NARROW AS IT IS.
+//
+// `game/data/dialogue/topics/main-quest-argument.json` is the climax of the main quest: four
+// hundred years of a clerk under the Stone Wastes, and its own `voice_note` specifies the register
+// against a corpus item — "long sentences, impersonal passive, agency placed in an institution
+// rather than in the speaker … a man who has spent four centuries removing himself from his own
+// sentences" (RI-DLG06 §B row 1). Zero contractions and zero exclamation marks in that file are
+// not the corpus-wide undershoot this gate was built to find. They are the characterisation.
+//
+// Without an exemption the gate tells the next writer to put contractions and exclamation marks
+// into the game's Dagoth Ur conversation, and the writer who does as it says makes the corpus
+// worse while turning a warning green. That is precisely the failure the round-2 builder recorded
+// twice — a metric that charges a file for the fix — arriving from the opposite direction.
+//
+// THE LINE, and it is the whole design:
+//   * Only the REGISTER-DEPENDENT bars may be exempted — questions, exclamations, contractions,
+//     andopen. A formal speaker really does not contract or exclaim, and that is a defensible
+//     authorial choice a file may declare.
+//   * `sting`, `fragopen` and every tic are NEVER exemptible. They are the round's actual finding.
+//     No register note justifies appending an interpretive clause to a fact, and if this hatch
+//     could reach them it would become the way the finding gets undone one file at a time.
+//   * The declaration must be IN THE FILE, machine-readable, and carry a reason per metric. An
+//     exemption nobody can read is indistinguishable from a bug.
+//   * Exempted metrics are still measured, still printed, and counted separately in the summary,
+//     so the escape hatch is visible in the same output as the regressions rather than silent.
+export const EXEMPTIBLE = new Set(['questions', 'exclamations', 'contractions', 'andopen']);
+
+let EXEMPT_INDEX = null;
+function buildExemptIndex(root = ROOT) {
+  const idx = new Map();
+  for (const dir of ['game/data/dialogue', 'game/data/books', 'game/data/quests']) {
+    for (const f of walk(path.join(root, dir))) {
+      const d = readJSON(f); if (!d) continue;
+      const dec = d.prose_register_exemption;
+      if (dec && typeof dec === 'object') idx.set(path.relative(root, f), dec);
+    }
+  }
+  return idx;
+}
+export function exemptionsFor(relFile, root = ROOT) {
+  if (!EXEMPT_INDEX) EXEMPT_INDEX = buildExemptIndex(root);
+  const dec = EXEMPT_INDEX.get(relFile) || {};
+  const out = {};
+  for (const [k, why] of Object.entries(dec)) {
+    if (EXEMPTIBLE.has(k) && typeof why === 'string' && why.trim().length >= 20) out[k] = why.trim();
+  }
+  return out;
+}
+
 function judge(bar, rate, fileWords) {
   // returns null when fine, else a short reason
   if (!bar) return null;
@@ -494,6 +546,32 @@ function selfTest() {
   t(cf.length === 0, `the gate stays QUIET on prose without it (flagged: ${cf.join(', ') || 'nothing'})`);
   t(Object.keys(cfile.tics).length === 0, 'and finds no tics in it');
 
+  // THE DECLARED-REGISTER EXEMPTION, and the assertions that keep it from becoming a blanket
+  // escape hatch. The one that matters is the third: if this could waive `sting`, the round's
+  // whole finding could be undone one declaration at a time.
+  t(EXEMPTIBLE.has('contractions') && EXEMPTIBLE.has('exclamations') && EXEMPTIBLE.has('questions') && EXEMPTIBLE.has('andopen'),
+    'exemption: the four register-dependent bars may be waived');
+  t(!EXEMPTIBLE.has('sting') && !EXEMPTIBLE.has('fragopen'),
+    'exemption: sting and fragopen may NEVER be waived — they are the round\'s finding, not a register choice');
+  {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'prose-ex-'));
+    fs.mkdirSync(path.join(tmp, 'game/data/dialogue'), { recursive: true });
+    fs.writeFileSync(path.join(tmp, 'game/data/dialogue/d.json'), JSON.stringify({
+      prose_register_exemption: {
+        contractions: 'a four-hundred-year-old clerk who has removed himself from his own sentences',
+        sting: 'this must be ignored, a register note cannot license a closing sting',
+        andopen: 'too short',
+      },
+      topics: [],
+    }));
+    const got = exemptionsFor('game/data/dialogue/d.json', tmp);
+    t(got.contractions && /four-hundred-year-old/.test(got.contractions), 'exemption: a declared reason on an exemptible bar is honoured');
+    t(got.sting === undefined, 'exemption: a declaration on `sting` is IGNORED even when the file asks for it');
+    t(got.andopen === undefined, 'exemption: a reason under twenty characters is not a reason and is refused');
+    t(Object.keys(exemptionsFor('game/data/dialogue/absent.json', tmp)).length === 0, 'exemption: a file that declares nothing gets nothing');
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+
   // a file below min_words must not be judged at all — one question mark in 200 words is not a fact
   t(bars.min_words >= 200, 'a minimum-length guard exists so a short file cannot swing a rate');
 
@@ -596,6 +674,7 @@ async function main() {
   const bars = loadBars();
   const ours = ourText();
   let regressions = 0;
+  let exemptCount = 0;
   const lines = [];
 
   for (const r of ['dialogue', 'books', 'journal']) {
@@ -622,18 +701,24 @@ async function main() {
     for (const [f, sc] of byFile(all)) {
       if (only && !f.includes(only)) continue;
       if (sc.words < (bars.min_words || 400)) continue;
+      const ex = exemptionsFor(f);
       const bad = [];
+      const exempted = [];
       for (const [k, bar] of Object.entries(reg || {})) {
         if (typeof bar !== 'object' || !bar.kind) continue;
         const why = judge(bar, sc.rates[k], sc.words);
-        if (why) bad.push(`${k} ${why}`);
+        if (!why) continue;
+        if (EXEMPTIBLE.has(k) && ex[k]) exempted.push(`${k} ${why}  — EXEMPT: ${ex[k]}`);
+        else bad.push(`${k} ${why}`);
       }
       const ticList = Object.entries(sc.tics).map(([k, v]) => `${k} x${v}`);
-      if (bad.length || ticList.length) {
+      if (bad.length || ticList.length || exempted.length) {
         regressions += bad.length;
+        exemptCount += exempted.length;
         lines.push(`  ${f}  (${sc.words} w)`);
         for (const b of bad) lines.push(`      ${b}`);
         for (const tl of ticList) lines.push(`      tic: ${tl}`);
+        for (const e of exempted) lines.push(`      ${e}`);
       } else if (verbose) {
         lines.push(`  ok  ${f}  (${sc.words} w)`);
       }
@@ -688,10 +773,12 @@ async function main() {
     console.warn('  These are voice defects a reader finds in four lines and no metric in the corpus');
     console.warn('  used to catch. See tools/prose/prose-bars.json for what each bar is made of, and');
     console.warn('  `node tools/check-prose.mjs --file <path>` for one file\'s numbers.');
+    if (exemptCount) console.warn(`  (plus ${exemptCount} bar(s) waived by a declared register exemption, listed below and NOT counted above.)`);
     console.warn(lines.join('\n'));
     if (strict) { console.error('check-prose: --strict'); return 1; }
     return 0;
   }
+  if (exemptCount) console.log(`check-prose: ${exemptCount} bar(s) waived by a declared register exemption.`);
   if (verbose || only) console.log(lines.join('\n'));
   console.log(`check-prose: ${Object.keys(bars.registers || {}).length} register(s) inside the recorded ratchet.`);
   return 0;

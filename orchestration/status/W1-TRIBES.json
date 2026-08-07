@@ -2,7 +2,7 @@
   "task_id": "W1-TRIBES",
   "brief": "inline dispatch: Argonian tribes \u2014 CF-C023 gap (Agacephs/Paatru/Archein/Sarpa/Dead-Water/Miredancers all zero occurrences)",
   "started": "wave-1",
-  "state": "writing",
+  "state": "complete",
   "outputs_expected": [
     "corpus/60-lore/RI-LORxx-argonian-tribes-design.md",
     "game/data/lore/canon-register (facts/holders/edges for tribal disputes)",
@@ -11,9 +11,15 @@
     "reports/blog-feed.jsonl line"
   ],
   "outputs_written": [
-    "corpus/60-lore/RI-LOR08-argonian-tribes.md \u2014 the design note. Six peoples, ALL canon-named, zero invented; five-axis differentiation (diet/Hist/Empire/lukiul/refusal); Xul-Aneekh reframed as a consensus OF peoples; 6 new disputes CF-D022..D027 and 5 arguments deliberately NOT registered; rejected-names table so omissions are decisions.",
-    "game/data/npcs/tribes.json \u2014 11 NPCs: 2 Agaceph, 2 Paatru, 1 Sarpa, 2 Archein, 2 Miredancer, 1 Dead-Water, 1 Provincial-Office antiquarian. New faction ids agacephs/paatru/sarpa/archein/miredancers/dead-water so canon.js#stanceOf can match a people to a position. check-data 347 NPCs, settlements resolve.",
-    "game/data/dialogue/topics/75-tribes.json \u2014 12 topics, 62 infos, 2771 w. 7 dispute topics (cf+pos on CF-D022..D027) and 5 argument topics deliberately carrying NO cf. check-prose on this file: questions 50.5 (floor 39.8), exclamations 14.4 (band 5.3-42.6), sting 0.00 (ceiling 6.0), fragopen 0.00, andopen 36.1 (band 16-128), contractions 115.5 (band 43.8-365.4), zero tics \u2014 every gated bar green."
+    "corpus/60-lore/RI-LOR08-argonian-tribes.md \u2014 the design note, written BEFORE any content. Six peoples, all canon-named, zero invented; a rejected-names table so every omission is a decision; the five-axis differentiation test; the Xul-Aneekh reframed as a consensus OF peoples; 6 registered disputes and 5 deliberately unregistered arguments; measured tooling section; comparison method, scoring, how-we-lose, provenance.",
+    "game/data/npcs/tribes.json \u2014 11 NPCs across 5 settlements, new faction ids agacephs/paatru/sarpa/archein/miredancers/dead-water.",
+    "game/data/dialogue/topics/75-tribes.json \u2014 12 topics, 62 infos, 2771 w. 7 dispute topics (cf+pos), 5 argument topics with no cf at all.",
+    "game/data/books/the-peoples.json \u2014 4 books, 2310 w: A Survey of the Peoples of the Interior (T1, Imperial), The Grange Book (T6, Archein), The Descents (T4, Miredancer rootpost record), Told at the Weir (T4, a lukiul factor's failed errand).",
+    "game/data/dialogue/rumours.json \u2014 7 tribal rumours added across helstrom/gideon/lilmoth/thorn/blackrose/soulrest, all adds_topics resolving.",
+    "corpus/60-lore/data/canon-facts.json \u2014 CF-D022..CF-D027 (6 disputes, 66 positions total in registry) + CF-C025..CF-C030 (one constructed fact per people). Registry 71 -> 83 facts, 21 -> 27 disputed.",
+    "tools/lore/tribe-census.mjs \u2014 NEW, the tool RI-LOR08's comparison method names. Refuses to count mentions: presence (body/mouth/text), registered position, refusal, and the pairwise axis-collision arithmetic. --self-test 9/9, each check broken on purpose.",
+    "game/data/lore/canon.json + game/data/index.json regenerated.",
+    "reports/blog-feed.jsonl \u2014 one line."
   ],
   "findings": [
     "W1-23 report \u00a76 is the binding context: province is organised by 4 CONSTRUCTED bodies (Deep-Kin 87, Xul-Aneekh 84, Drowned Court 64, Sap-Cutters 53, Wet Ledger 45), not tribes. Its explicit warning: 'If tribes are wanted, they need a faction each, not a mention each.'",
@@ -27,10 +33,15 @@
     "SOURCE: 'Tribal Connections' is the load-bearing one \u2014 tribes raid each other and forgive, because reincarnation makes tribe membership fluid ('A Black-Tongue may become a Miredancer in the fullness of time'), and because they are INTERDEPENDENT by design. And 'As many as the lights' = the count of tribes is deliberately uncountable.",
     "MECHANICS: game/src/world/canon.js \u2014 holders match on actor OR faction, narrowed by races/settlements; a speaker matching TWO positions gets NEITHER. fold() normalises id spellings. resolve() THROWS at boot on: a topics[] entry that is not a dialogue topic in the build, a voiced_by book/npc/dialogue#actor that does not exist, or a position with no holders. So content must land BEFORE registration.",
     "GEOGRAPHY: region->settlement map is blackwood>Gideon, crimson-coast>Archon, stone-forest>Helstrom, stone-wastes>Soulrest, thornmarsh>Thorn, western-rootlands>Lilmoth+Blackrose, salt-hills>Stormhold. clay-moor, deep-marshes, eastern-rootlands, hive, marauders-coast, valus-ridge have NO settlement \u2014 those are the tribes' ground.",
-    "PROSE BARS (tools/check-prose.mjs): questions floor 39.8/10k (ref 159.2), exclamations band floor 5.3 (ref 21.3), sting ceiling 6.0 (ref 3.4), andopen band floor 16.0 (ref 64.0), contractions band 43.8-365.4 (ref 292.3). Tics: 'that is what/why/all', -body forms, 'eleven', sentence-initial 'Which' fragments."
+    "PROSE BARS (tools/check-prose.mjs): questions floor 39.8/10k (ref 159.2), exclamations band floor 5.3 (ref 21.3), sting ceiling 6.0 (ref 3.4), andopen band floor 16.0 (ref 64.0), contractions band 43.8-365.4 (ref 292.3). Tics: 'that is what/why/all', -body forms, 'eleven', sentence-initial 'Which' fragments.",
+    "MEASURED at b51789e. Registry 21 -> 27 disputes, 27/27 fully voiced. Contradiction edges 50 -> 57, unregistered 0. Topics on which two REAL shipped people give incompatible registered answers: 4 -> 10. Perturbation (lines that vanish when a holder is struck): 11/11 -> 43/43. Reach 336/336 -> 347/347. Dated/undated-horizon facts 12 (8 pre-3E) -> 14 (10 pre-3E).",
+    "The fail-closed assertion was tested, not assumed: pointing CF-D027/A at an actor no NPC carries takes boot-check from PASS to a thrown 'canon register: 1 unresolved reference'. Content landed before registration, per the brief.",
+    "PROSE: all four authored files pass every gated bar. 75-tribes.json questions 50.5 (floor 39.8), exclamations 14.4 (band 5.3-42.6), sting 0.00 (ceiling 6.0), fragopen 0.00, andopen 36.1, contractions 115.5, zero tics. the-peoples.json (books register) questions 17.2 (floor 8.2), exclamations 8.6, sting 0.00, andopen 21.5, contractions 30.0, zero tics. rumours.json went from 6 failing bars to clean (others had already fixed most of it; my 3 -body forms were the last).",
+    "The de-contraction of the interior peoples' voices was a register decision that the metric happened to want too: Agaceph/Paatru/Sarpa/Dead-Water/Sap-Speaker speak Tamrielic formally, Archein and Imperials contract. Contraction rate fell 416.8 -> 115.5 per 10k and the file reads as two registers rather than one.",
+    "DELIBERATELY NOT REGISTERED, under W1-23's ruling: whether the coast should be emptied; whether an outsider may be guided inland; whether the Sap-Speaker should keep drinking; whether a lukiul may be buried at a well; whether the Archein factor/quay distinction is a distinction. All five are written as arguments with heat and carry no cf. The last one is the sharpest case \u2014 registering it would flatter it."
   ],
-  "next_step": "write game/data/books/the-tribes.json, then register CF-D022..D027 + CF-C025..C030 in corpus/60-lore/data/canon-facts.json, then build-canon + census",
-  "notes_for_successor": "DESIGN DECIDED (write it down before authoring): six peoples, ALL canon-named, none invented \u2014 Agacephs (Deep Marshes), Paatru (Clay Moor), Sarpa (Stone Forest), Archein (Blackwood/Gideon estates), Gee-Rusleel/Miredancers (Eastern Rootlands), Naga-Kur/Dead-Water (Thornmarsh+Hive). The hinge: the Xul-Aneekh is a CONSENSUS OF tribes, not a people, which is why it is fragile. New files only (no collision): corpus/60-lore/RI-LOR08-argonian-tribes.md, game/data/npcs/tribes.json, game/data/dialogue/topics/75-tribes.json, game/data/books/the-tribes.json. Prose builder holds 10-global/50-mainline/30-texture/20-tier-a/greetings/40-race-gated; martial library holds the-drill-book/the-arms-of-the-province/the-ford-arguments.",
+  "next_step": "none for the builder. Open for a critic: (1) the axis table in tribe-census.mjs is TRANSCRIBED from RI-LOR08 \u00a72, not derived \u2014 a builder who changed \u00a72 and not the table would pass; (2) Paatru/Sarpa/Archein each appear in only one shipped book; (3) Ghost People and Root-House People are left on the table on purpose as the wave-2 additions.",
+  "notes_for_successor": "Complete. Browser used once, for boot-check + the deliberate fail-closed perturbation, at loadavg 17 with 24 browsers \u2014 a boolean, not a timing, so contention does not touch it. Did not commit.",
   "files_touching": [
     "corpus/60-lore/RI-LOR08-argonian-tribes.md",
     "corpus/60-lore/data/canon-facts.json",

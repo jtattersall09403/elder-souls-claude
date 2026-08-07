@@ -277,6 +277,61 @@ for (const [name, route] of Object.entries(namedRoutes)) {
   }
 }
 
+// ------------------------------------------- I — does the SPOKEN prose name real places?
+//
+// Check A keeps a signpost from naming somewhere that does not exist. Nothing kept the SENTENCES
+// from doing it, and the sentences name far more places than the posts do — Rootway Post,
+// Ceyatatar-Zel, Tenmarch Bridge, Mudwater Landing, Nine-Mud, Xal-Ithix, Bone Ladder, the Leaning
+// Stone. `road-directions.json`'s own note has always CLAIMED that every place named in it is a
+// record in `pois.json`; until this check that claim was an assertion in a comment.
+//
+// It is the same defect class the brief names — a signpost pointing at a place that does not
+// exist is what the 74 unsatisfiable dialogue gates were — and it is worse in prose, because a
+// player who walks twenty minutes looking for Tenmarch Bridge and finds no bridge stops believing
+// the next set of directions too.
+//
+// HOW IT DECIDES WHAT IS A PLACE NAME: capitalised words and hyphenated capitalised runs that are
+// not sentence-initial. Everything that is a proper noun but NOT a place — races, institutions,
+// scripts, compass words, numbers written out — is listed here by name rather than pattern, so
+// adding one is a deliberate act that shows up in a diff.
+const NOT_A_PLACE = new Set([
+  'I', 'Legion', 'Ayleid', 'Cyrodilic', 'Jel', 'Hive', 'Moor',
+  'North', 'South', 'East', 'West', 'Tide', 'Stilt', 'Bone', 'Red',
+  // sentence openers that survive the split when a line uses an em dash or a colon
+  'Not', 'And', 'But', 'So', 'If', 'Then', 'Do', 'Have', 'Can', 'Are', 'Did', 'Go', 'Look', 'Keep',
+  'You', 'It', 'The', 'Twelve', 'Fifteen', 'Nineteen', 'Twenty', 'Thirty',
+]);
+const placeNames = new Set();
+const addName = (n) => {
+  if (!n) return;
+  const s = String(n).trim();
+  placeNames.add(s.toLowerCase());
+  placeNames.add(s.replace(/\s*\([^)]*\)\s*$/, '').trim().toLowerCase());   // "Welkynd Shrine (A–B)"
+  placeNames.add(s.replace(/^the\s+/i, '').trim().toLowerCase());           // "The Leaning Stone"
+  placeNames.add(s.replace(/\s+\w+$/, '').trim().toLowerCase());            // "Fired-Cold" for "Fired-Cold Well"
+};
+for (const p of (pois.pois || [])) addName(p.name);
+for (const r of (regionsDoc.regions || [])) { addName(r.name); addName(r.id.replace(/-/g, ' ')); }
+for (const w of (roads.waystations || [])) addName(w.name);
+for (const id of settlementIds) addName(id);
+for (const s of signs) addName(s.name);
+let prosePlaces = 0;
+for (const route of (directions.routes || [])) {
+  for (const a of (route.answers || [])) {
+    for (const sentence of String(a.x || '').split(/(?<=[.!?])\s+/)) {
+      const toks = sentence.match(/\b[A-Z][a-zA-Z]+(?:[- ][A-Z][a-zA-Z]+)*\b/g) || [];
+      toks.forEach((t, k) => {
+        if (k === 0 && sentence.startsWith(t)) return;      // sentence-initial, not a name claim
+        if (NOT_A_PLACE.has(t)) return;
+        prosePlaces++;
+        if (!placeNames.has(t.toLowerCase())) {
+          fail('I', `route '${route.id}': a spoken answer names "${t}", which is not a settlement, POI, region, waystation or signpost in this build`);
+        }
+      });
+    }
+  }
+}
+
 // ------------------------------------------- H — is there a lit landmark to steer by at night?
 //
 // REPORTED, NOT ENFORCED, and deliberately so. `game/data/world/signatures.json` is RI-WLD04

@@ -27,19 +27,38 @@
 // WHY IT IS A TRANSITION SCAN AND NOT A HOOK IN `killed()`
 // ---------------------------------------------------------------------------------------------
 //
-// There are FIVE places a body can die in this build, and a hook in any one of them is a soul
-// source with holes in it:
+// There are SIX places a body can die in this build, and a hook in any one of them is a soul
+// source with holes in it. **This list is written from the step order, not from a grep** —
+// round 1's version was a grep, and the W1-SOULS round-1 verdict found that one entry was dead
+// code and two real sites were missing. What matters for each site is not "does it kill" but
+// "does the kill reach `sim.entities`, which is what this scan reads":
 //
-//   combat/resolve.js killed()          a weapon landed the last hit
-//   combat/player.js  _critDamage()     a backstab or riposte did
-//   sim/combat-bridge.js                a spell did (`target.dead = true`, inline)
-//   sim/hazards.js                      the province did, OUTSIDE the fixed step
-//   sim/player.js:233                   the non-combat entity path
+//   combat/resolve.js  killed()        a weapon landed the last hit    — kills the COMBAT BODY;
+//                                      `combat-bridge.js mirror()` copies `eb.hp`/`eb.state`
+//                                      onto the entity at the end of `stepCombat`, and
+//                                      `stepSouls` runs after it in the same step. CARRIED.
+//   combat/player.js   _critDamage()   a backstab or riposte did       — same, CARRIED.
+//   sim/magic/system.js:1040           a spell's damage tick did       — same, CARRIED.
+//   sim/magic/apply.js:164             an applied effect did           — same, CARRIED.
+//   sim/hazards.js     H9              the province did, in `Engine._settleWorld()`, i.e. AFTER
+//                                      `stepSouls` — so the transition is seen on the NEXT step.
+//                                      Now CARRIED; it was EATEN until 2026-08-07, see below.
+//   sim/player.js:233                  DEAD CODE. Nothing imports `stepPlayer`; `sim/events.js:19`
+//                                      says so in-tree. Round 1 listed it as a live death path.
 //
 // So the award observes the world instead of instrumenting the killers: once per step, every
 // entity that was alive last time we looked and is dead now is paid for. It cannot miss a death
 // path, it cannot double-pay one that emits two events, and it does not care that hazards run in
-// `Engine._afterStep()` a frame late — the transition is still a transition next step.
+// `Engine._settleWorld()` a frame late — the transition is still a transition next step.
+//
+// THE HAZARD PATH WAS EATEN, AND THE SCAN WAS NOT AT FAULT. Round 1's header said the scan
+// "cannot miss a death path"; the verdict then killed an entity with a hazard-shaped write and
+// measured hp 412 -> 0 -> **412** with zero souls. The cause is the view/authority split, not the
+// scan: H9 wrote `ent.hp` on the `sim.entities` MIRROR, and `mirror()` restores it from the
+// untouched combat body every step. Fixed in `sim/hazards.js _hurtEntity()`, which now damages
+// the combat body — the authority — exactly as the player branch of the same hazard already did.
+// The lesson generalises past souls: **a write to `sim.entities` on a body that has a combat body
+// is a write to a cache.**
 //
 // `_seen` is a Map from eid to "was alive when last observed", and it is LAZILY seeded: the
 // first time an eid is seen, if the body is already dead, it is recorded as paid WITHOUT an
@@ -48,7 +67,32 @@
 // to `getDurableFieldCensus`, which is the instrument that has caught the last two save defects.
 //
 // A respawned enemy (`death.js` sets `b.dead = false` on a rest) is re-armed by the same
-// mechanism and pays again at x1.00, which is exactly RI-PRG06 §4's respawn row.
+// mechanism and pays again at x1.00 — but ONLY across a rest. See the epoch gate below.
+//
+// ---------------------------------------------------------------------------------------------
+// THE RESPAWN GATE — S5 gives respawn to the HEARTH REST, not to any re-spawn
+// ---------------------------------------------------------------------------------------------
+//
+// Round 1 re-armed a corpse on any `dead -> alive` transition and called that "exactly RI-PRG06
+// §4's respawn row". It is not. RI-PRG06 §4's row is `Respawned enemy x1.00`, and S5 is what
+// makes an enemy respawn: **you rested**. The verdict killed a party, despawned it, spawned it
+// again and collected **+816, +816, +816 across three passes with zero hearth rests**, because
+// `Engine.spawnEncounter` mints deterministic eids (`dres-raid-party-infantry-0`) so the same
+// body came back under the same key. At the time the only in-engine caller that despawns an
+// encounter was `_resolveCapture()`, so a player could not reach it — and then W1-POPULATION
+// landed `PopulationSystem`, a distance-driven pump that materialises and releases posts as the
+// player walks. That turns it into *walk 170 m away, walk back, kill again, for ever*.
+//
+// So the re-arm is gated on the rest counter rather than on a boolean. `DeathSystem` bumps
+// `ordinaryRespawnEpoch` in `respawnOrdinary()` — the S5 event itself, fired by a hearth rest and
+// by a player death — and a corpse only becomes payable again when the epoch has moved past the
+// one it was last paid at. A body that leaves the entity array and comes back under the same eid
+// without a rest in between stays settled and pays nothing.
+//
+// The epoch is supplied by the engine as a function rather than read off `sim`, because
+// `DeathSystem` hangs off the engine and not off `sim`, and this module must not acquire a
+// handle to the engine. With no supplier the gate degrades to epoch 0 — which is the SAFE
+// direction: everything stays settled, nothing double-pays.
 //
 // ---------------------------------------------------------------------------------------------
 // S9 — NO LEVEL SCALING, and this file is where it would be easiest to break
@@ -100,11 +144,19 @@ export function awardFor(stat, timeOfDay) {
 export class SoulsSystem {
   /**
    * @param {object} enemyData  `Engine.data.enemies` — statblock id -> record
+   * @param {function():number} [restEpoch]  `() => death.ordinaryRespawnEpoch`. See the header.
    */
-  constructor(enemyData) {
+  constructor(enemyData, restEpoch) {
     this.d = enemyData || {};
-    /** eid -> true if it was ALIVE when last observed. Lazily seeded; see the header. */
+    /**
+     * eid -> { alive, paidEpoch }. `alive` is what it was when last observed; `paidEpoch` is the
+     * rest epoch the body was last paid (or settled) at. Lazily seeded; see the header.
+     */
     this._alive = new Map();
+    /** The S5 rest counter, or a constant 0 when nobody supplies one (safe direction). */
+    this._restEpoch = typeof restEpoch === 'function' ? restEpoch : () => 0;
+    /** Diagnostics: re-arms refused because no rest had happened. */
+    this.refusedRearms = 0;
     /** Diagnostics for the consumption instrument. Not simulation state. */
     this.kills = 0;
     this.awarded = 0;
@@ -117,7 +169,7 @@ export class SoulsSystem {
   }
 
   /** Forget every observation. Called on `sim.reset()` and on a state load. */
-  reset() { this._alive.clear(); this.kills = 0; this.awarded = 0; }
+  reset() { this._alive.clear(); this.kills = 0; this.awarded = 0; this.refusedRearms = 0; }
 
   /**
    * One step. Allocation-conscious, no RNG, no wall clock — safe under the armed sim guard.
@@ -127,26 +179,34 @@ export class SoulsSystem {
    */
   step(sim, bus) {
     const ents = sim.entities;
+    const epoch = this._restEpoch() || 0;
     for (let i = 0; i < ents.length; i++) {
       const e = ents[i];
       const dead = e.hp <= 0 || e.state === 'DEAD';
-      const was = this._alive.get(e.eid);
-      if (was === undefined) {
+      const rec = this._alive.get(e.eid);
+      if (rec === undefined) {
         // First sight. A corpse we are meeting for the first time — a loaded save, a state
-        // patch — is recorded as already settled and is never paid for.
-        this._alive.set(e.eid, !dead);
+        // patch — is recorded as already settled at the CURRENT epoch and is never paid for.
+        // Stamping the current epoch (rather than 0) is what stops a load followed by a rest
+        // from paying out every corpse in the blob.
+        this._alive.set(e.eid, { alive: !dead, paidEpoch: epoch });
         continue;
       }
-      if (!was) {
-        // Already dead last time we looked. Re-arm if something brought it back (a HEARTH
-        // respawn); otherwise leave it settled.
-        if (!dead) this._alive.set(e.eid, true);
+      if (!rec.alive) {
+        // Already dead last time we looked. Re-arm ONLY if a HEARTH rest (or a player death)
+        // has bumped the S5 epoch since we paid for it. A body that despawned and respawned
+        // under the same eid without a rest — the population pump does this every time the
+        // player walks out of and back into a post's radius — stays settled and pays nothing.
+        if (!dead) {
+          if (epoch > rec.paidEpoch) { rec.alive = true; rec.paidEpoch = epoch; }
+          else this.refusedRearms++;
+        }
         continue;
       }
       if (!dead) continue;
 
       // ---- the transition: alive -> dead, exactly once -------------------------------------
-      this._alive.set(e.eid, false);
+      rec.alive = false; rec.paidEpoch = epoch;
       const stat = this.d[e.id];
       const a = awardFor(stat, sim.env && sim.env.timeOfDay);
       this.kills++;

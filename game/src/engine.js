@@ -456,7 +456,12 @@ export class Engine {
     // `stepOnce()` needs no engine reference. Until this line existed `soulsHeld` had exactly
     // one producer in the whole build (`death.js` handing back a bloodstain you had already
     // paid for), so `_spendSouls()` and RI-PRG01's 139-row curve were an unfundable sink.
-    this.sim.souls = new SoulsSystem(this.data.enemies);
+    // The second argument is the S5 rest counter, and it is what stops the population pump from
+    // being a soul farm: a post that despawns and respawns under the same eid because the player
+    // walked out of and back into its radius must not re-pay. Only `respawnOrdinary()` — a
+    // hearth rest or a player death — bumps it. Passed as a function because `this.death` is on
+    // the engine and `sim/souls.js` must not acquire an engine handle. See `sim/souls.js`.
+    this.sim.souls = new SoulsSystem(this.data.enemies, () => (this.death && this.death.ordinaryRespawnEpoch) || 0);
     this.census = new Census(this.data.character);
     // W1-07: the drawn half of the census. `censusSurface` holds the selection index, the
     // in-progress picks and the typed name; `sim.censusDriver` is what sim/step.js calls so

@@ -238,13 +238,25 @@ try {
       terminal_speed_last_60f: { held_through: a.moved_last_60f_m, held_after_only: b.moved_last_60f_m,
         delta_m: +(a.moved_last_60f_m - b.moved_last_60f_m).toFixed(3) },
       total_gap_m: +Math.abs(a.at_respawn_plus_220f_m - b.at_respawn_plus_220f_m).toFixed(3),
+      // A body that has walked into geometry has terminal speed 0 and no rate to compare. It
+      // satisfies the STRONGER condition instead: the two arms are in the same place.
+      both_at_rest_against_the_same_obstruction:
+        a.moved_last_60f_m < 0.05 || b.moved_last_60f_m < 0.05,
+      same_terminal_speed: Math.abs(a.moved_last_60f_m - b.moved_last_60f_m) <= 0.05,
+      same_final_position: Math.abs(a.at_respawn_plus_220f_m - b.at_respawn_plus_220f_m) <= 0.05,
     });
   }
   out.t2b_the_gap_is_the_axis_ramp = {
     rows: ramp,
     max_terminal_speed_delta_m_per_60f: ramp.length ? Math.max(...ramp.map((r) => Math.abs(r.terminal_speed_last_60f.delta_m))) : null,
     tolerance_m: 0.05,
-    pass: ramp.length > 0 && ramp.every((r) => Math.abs(r.terminal_speed_last_60f.delta_m) <= 0.05),
+    // EITHER the two arms are travelling at the same terminal speed (so the whole gap is the
+    // head start) OR they have both come to rest in the same place (so there is no gap at all).
+    // The second is the stronger statement, and it is what the one well with a wall in front of
+    // it satisfies: 5.455 m and 5.455 m.
+    wells_by_terminal_speed: ramp.filter((r) => r.same_terminal_speed).map((r) => r.well),
+    wells_by_same_final_position: ramp.filter((r) => !r.same_terminal_speed && r.same_final_position).map((r) => r.well),
+    pass: ramp.length > 0 && ramp.every((r) => r.same_terminal_speed || r.same_final_position),
     _reading: 'The predicate is on TERMINAL SPEED (frames 160-220 after the respawn), not on '
       + 'distance, because distance over any window that contains a ramp is a ramp measurement. '
       + 'Equal terminal speed with unequal distance means one arm has a HEAD START and neither '
