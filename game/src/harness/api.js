@@ -1998,6 +1998,30 @@ export function installHarness(engine, bootPromise) {
     residentsPresent(zoneId) { return engine.settlements.residentsPresent(engine.sim, String(zoneId)); },
     /** Spawn everyone whose record belongs to this town. Idempotent. */
     populateSettlement(sid) { return engine.populateSettlement(String(sid)); },
+    /** Spawn everyone posted at a named site that is not a town (the hollow above the sap-line). */
+    populateSite(id) { return engine.populateSite(String(id)); },
+    /**
+     * GAP-W1-quest-givers-not-in-the-world. Go to where this quest's giver lives — the same call
+     * walking across the town boundary makes, and the honest replacement for
+     * `mainline-chain-floor.mjs`'s `H.spawnNPC({ from_record: giver, pos: [0,0,2] })`, which
+     * conjured the person out of nothing so that a gate with no presence term could be satisfied.
+     *
+     * It goes RED where the old call could not: a giver whose record names no town and no site
+     * is not spawned, `present` comes back false, and the run stops instead of quietly
+     * continuing against a body the probe made up.
+     */
+    travelToGiver(questId) {
+      const def = engine.questBook.get(String(questId));
+      const giver = (def && def.giver && def.giver.npc_id) || null;
+      if (!giver) return { quest: String(questId), giver: null, present: false, why: 'quest names no giver' };
+      const rec = engine._anyNpcRecord(giver);
+      if (!rec) return { quest: String(questId), giver, present: false, why: 'no NPC record' };
+      const where = rec.settlement || (rec.post && rec.post.site) || null;
+      if (rec.settlement) engine.populateSettlement(rec.settlement);
+      else if (rec.post && rec.post.site) engine.populateSite(rec.post.site);
+      const present = !!engine.sim.findNPC(giver);
+      return { quest: String(questId), giver, went_to: where, present, why: present ? null : `${giver} has no place in the world (settlement=${rec.settlement ?? 'null'}, site=${(rec.post && rec.post.site) ?? 'null'})` };
+    },
 
     // ---- W1-04 PERTURBATION HANDLES ----------------------------------------------------------
     // RI-MTH07 / ARBITRATION §3 requires a model's consumer to be demonstrated by PERTURBING the

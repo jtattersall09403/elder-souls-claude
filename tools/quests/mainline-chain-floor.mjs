@@ -188,14 +188,26 @@ try {
             if (v != null) out.arrival[step.id] = v;
           }
         }
+        // ---- GAP-W1-quest-givers-not-in-the-world -------------------------------------------
+        // Walk to the town this quest's giver lives in, BEFORE asking the gate. This used to
+        // happen only on a standing refusal, and it happened by conjuring:
+        //
+        //     H.spawnNPC({ from_record: giver, pos: [0, 0, 2] })
+        //
+        // with a comment conceding that `questOpen` already assumed the person was there,
+        // "since the gate has never had a proximity term". So the instrument manufactured the
+        // one thing it was supposed to be measuring, and 40/40 signatures completed both chains
+        // in a world where nine of ninety-four givers existed. `travelToGiver` runs the world's
+        // own `populateSettlement`/`populateSite` — the call walking across a town boundary
+        // makes — and returns `present: false` when the person's record names no place at all,
+        // which is the failure the old line could not express.
+        const trip = H.travelToGiver(step.id);
+        if (!trip.present) { out.giver_absent = out.giver_absent || []; out.giver_absent.push(trip); }
         let o = H.questOpen(step.id);
-        // Refused on standing? Go and talk to them. This is the only place the trace does
-        // anything a player could not, and what it does is stand in front of the quest giver —
-        // which `questOpen` already assumes, since the gate has never had a proximity term.
+        // Refused on standing? Go and talk to them.
         if (!o.ok && sabotage !== 'no-purse' && /disposition \d/.test(String(o.reason || ''))) {
           const giver = (H.questDef(step.id).giver || {}).npc_id;
           if (giver) {
-            try { H.spawnNPC({ from_record: giver, pos: [0, 0, 2] }); } catch (e) { /* already there */ }
             try {
               H.talkTo(giver);
               const attempt = { quest: step.id, npc: giver, tries: [] };

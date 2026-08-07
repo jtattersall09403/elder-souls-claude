@@ -3,11 +3,27 @@
   "brief": "docs/PLAN.md §3 W1-22 (audio bed)",
   "started": "wave-1",
   "state": "researching",
+  "declared_paths": ["audio.ambience.region"],
+  "judged_by_from_frontmatter": {
+    "RI-AUD03": "judges: [audio.ambience.region, world.region.identity]",
+    "RI-WLD08": "judges: [... , audio.ambience.region]",
+    "RI-WLD04": "judges: [world.regions, world.biomes, world.terrain, world.flora, world.audio, world.weather, combat.difficulty-gating] -- NOTE: judges `world.audio`, NOT `audio.ambience.region`. PLAN lists it in W1-22 Judged by (3). Path-name seam: PLAN and front-matter disagree."
+  },
+  "not_mine": {
+    "audio.combat.impact": "W1-11 (RI-AUD01, RI-AUD02)",
+    "audio.music.policy": "RI-AUD04 -- no wave-1 owner",
+    "audio.voice.policy": "RI-AUD05 -- no wave-1 owner"
+  },
   "outputs_expected": [],
   "outputs_written": [],
   "findings": [
-    "status file created before any reading (AGENT-PROTOCOL rule 1)"
+    "SURVEY-1 (engine): ZERO audio code exists. `grep -rn AudioContext|createOscillator|createGain|decodeAudioData|new Audio(` across game/src returns NOTHING. No file in game/ has audio/sound/sfx/ambien in its name.",
+    "SURVEY-2 (assets): ZERO audio assets on disk. find for mp3/ogg/wav/m4a/opus/webm across the repo (minus node_modules) returns nothing. `audioMB 0` was literally true.",
+    "SURVEY-3 (the 'sound' in the engine is not sound): every hit for sound/ in game/src/sim/stealth/* is the STEALTH sound-RADIUS abstraction (detection.js::soundRadius, perception.js hearR, system.js events type:'sound'). It is a perception model with no audio output whatsoever. An agent grepping for 'sound' finds a live, well-instrumented subsystem and can mistake it for audio. It is not.",
+    "SURVEY-4 (what data declares): game/data/world/regions.json gives each of 13 regions an `audio` array of 3 identifier strings (39 total, e.g. amb_insect_wall/amb_canopy_drip/sfx_distant_axe) plus a prose `ambient_text`. Nothing reads either. This is the source of the '8 of 9 audio axes scored by reading strings out of regions.json' defect.",
+    "SURVEY-5 (the build already admits it): game/src/harness/api.js:2125 self-declares { what: 'audio', owner: 'RI-AUD01..03 / wave-1 piece W1-25', surfaced_as: 'audioMB: 0. RI-AUD02 is unmeasurable in this piece and scores 0, fail-closed' }. Owner attribution there is stale (W1-25 vs plan's W1-22).",
+    "SURVEY-6 (RI-AUD03 B4 names a file tree that does not exist): game/data/audio/ambience/<region>.json -- 0 of 13 present. RI-AUD03 scoring says 'a region with no <region>.json audio file scores 0 for that region'. So today B4 = 0/13 and the item is 0/6."
   ],
-  "next_step": "read docs/PLAN.md W1-22 entry for declared paths + judges; assemble RI-AUD* item set from judges front-matter",
-  "notes_for_successor": "Piece never dispatched before. Mandate: honest survey FIRST (what engine plays vs what data declares vs the gap). Prior piece measured audioMB 0 with 8/9 audio axes scored off regions.json strings."
+  "next_step": "read regions raster/regionAt runtime resolution + engine step + data index rules; then design a ZERO-ASSET procedural Web Audio bed (fits RI-AUD02 budget) so the evidence can be real PCM, not an event count",
+  "notes_for_successor": "Design decision forming: there are no audio assets and none can be added within RI-AUD02's budget, so the bed must be PROCEDURAL (Web Audio synthesis: noise buffers + filters + oscillators). That makes the sceptic-proof evidence possible: render each region's bed in an OfflineAudioContext, capture real PCM, and measure spectral separation between regions. An event count is not a sound; a waveform is. Sabotage control: force all 13 L1s to identical params and the separation metric MUST collapse."
 }

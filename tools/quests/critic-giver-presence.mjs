@@ -33,8 +33,17 @@ import { launchGame } from '../lib/browser.mjs';
 const USAGE = `
 critic-giver-presence.mjs — is the person a quest names actually in the world?
 
-  --states a,b,c            named states to boot (default: the four town states)
+  --states a,b,c            named states to boot (default: EVERY bootable inhabited state)
+  --legacy-states           boot only the four town states this tool shipped with
   --sabotage assume-present control: report presence without asking the world
+
+DEFAULT STATE LIST, changed by W1-GIVER-PRESENCE and declared here rather than quietly. It was
+four hardcoded ids. A hardcoded list cannot see a town that did not exist when the list was
+typed, and the remedy this tool exists to police is "place the givers" — which necessarily means
+new places. The default is now DERIVED from the build: every state file that names a settlement
+(env.settlement, or an env.interior belonging to one) or a site. That can only ever ADD states,
+the two questions it asks are unchanged, and --legacy-states reproduces the original four exactly
+so the two numbers can be compared. The sabotage control is untouched.
 `;
 
 const args = parseArgs();

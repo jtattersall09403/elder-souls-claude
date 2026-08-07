@@ -26,6 +26,12 @@ import { UISystem, OPENABLE } from './ui/system.js';
 import { combatMeta, combatFrame } from './combat/trace.js';
 import { mirror } from './sim/combat-bridge.js';
 import { makeRecord } from './sim/record.js';
+// UNBLOCK, not my piece. `engine.js:375` constructs `SoulsSystem` and the import for it had not
+// landed, so `Engine._boot()` threw `ReferenceError: SoulsSystem is not defined` and NOTHING in
+// the tree booted — boot-check, every probe, every capture. Third time this shape has stopped
+// the build (see "Unblock the engine: a call site landed minutes before its method" and its
+// sequel). One line, the narrowest possible fix, and `sim/souls.js` already exports the name.
+import { SoulsSystem } from './sim/souls.js';
 import { buildCells, EMPTY_CELL } from './sim/collision.js';
 import {
   CAMERA_CONST, CAMERA_MODES, PERSPECTIVE_MODES, NEAR_CORNER_R, CAMERA_ALPHAS,
