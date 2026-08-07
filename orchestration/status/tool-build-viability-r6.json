@@ -11,8 +11,13 @@
   "outputs_written": [],
   "findings": [
     "box contention at start: pgrep -c headless_shell = 32, loadavg 10.24 12.97 14.46 -> Node-side work only, no browser",
-    "BASELINE at 756ffff: `node tools/boot-check.mjs` PASS; `node tools/harness/boot-check.mjs` PASS; C8 = 26, unchanged from R4 verdict."
+    "BASELINE at 756ffff: `node tools/boot-check.mjs` PASS; `node tools/harness/boot-check.mjs` PASS; C8 = 26, unchanged from R4 verdict.",
+    "ITEM 6 CONFIRMED empirically at 756ffff: game/data/npcs = 15 files, 15 with top-level doc.npcs (what loadNPCs reads), 0 with nested group.npcs (what build-viability.mjs:1257 iterates), 347 records, 776 topics. The tool's npcs producer branch collects 0 while citing itself as a source.",
+    "ITEM 4 CONFIRMED by reading: build-viability.mjs:2044 abstains when `qualifying.length + blockedOnlyByAnUngroundedFlag.length >= 3` -- a pure count. The triple search (2034-2043) runs ONLY over `qualifying`, and is never re-run over qualifying+blocked. So a tree with no compatible triple at all still abstains.",
+    "ITEM 1 ROOT CAUSE CONFIRMED: verifyModelLive() ALREADY fetches explainDisposition(id).race_term at :3196 and stores it, then never uses it. The whole verdict is `race_sensitive: moved.length > 0` at :3226. The fix the R4 critic prescribes is available against an already-exposed field.",
+    "ENGINE EXPOSES THE MODELLED TERM: Engine._questDispositionModel() (engine.js:6836-6870) returns race_term/upbringing_term/birthsign_term/other_terms/movable/group/player_race, and QuestEngine.explainDisposition() (machine.js:422) spreads it. The shipped raceTerm() is game/src/character/reaction.js:11 (pure, importable). Second race channel is dlgMovableTerms' `fDispRaceMod` (dialogue/disposition.js:297), which surfaces separately in `movable` as term ['fDispRaceMod', n]. Both channels are separately observable per giver.",
+    "DECISION EVIDENCE for (a) vs (b): the harness DOES expose setFactionStanding/questSetFlag/setSkills/setAttributes/setGold/setCharacter, so a live 540-signature probe IS buildable. But game/src/harness/api.js:1610-1617 documents that exact approach already failing this way: W1-FACTIONS round 1's live in-engine walk 'chose the cheapest ending at every rank -- always the refusal, because a refusal asks for nothing -- and then poked the rank-7 world flag in by hand to get past the gate it had just declined to open. \"Rank 7 reached\" and \"walked without killing\" were each true and had never been true together.' A live probe does not remove the substitution class; it relocates it inside the engine where no ledger prints it."
   ],
-  "next_step": "map build-viability.mjs (3760 lines); reproduce R4 attacks before fixing anything",
+  "next_step": "choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items",
   "notes_for_successor": "Round 6. Five prior rejections. Do NOT self-grade; a separate tool critic checks. Never touch critic probes. Prove by patching a shadow tree + booting engine, not by reading source."
 }

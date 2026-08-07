@@ -1,4 +1,12 @@
-# Agent durability protocol
+# Agent durability protocol — the evidence
+
+> **The rules are in `orchestration/RULES.md`, which is short and complete. Read that first.**
+> This file is the evidence behind them: the measured numbers, the rounds that were lost, and the
+> arguments that settled each one. It exists so that a rule can be *checked* rather than merely
+> obeyed — but reading it to work out what the rule is costs a dozen agents the same tokens over
+> and over, which is exactly the waste the split exists to stop. Come here when you want to know
+> why, or when you think a rule is wrong.
+
 
 **Every agent dispatched in this project MUST follow this. It is not optional.**
 

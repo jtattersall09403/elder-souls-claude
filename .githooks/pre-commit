@@ -67,6 +67,13 @@ if git diff --cached --name-only --diff-filter=ACMRD | grep -Eq '^game/'; then
   }
 fi
 
+# Regenerate the orientation index (orchestration/INDEX.md — not the corpus one below). It is
+# derived from the tree, so it cannot drift, which is the whole reason a dozen concurrent agents
+# can trust it instead of each paying to rediscover the same 441 tools. Must run BEFORE the early
+# exit further down, or it would only ever refresh on corpus commits.
+node tools/gen-index.mjs >/dev/null 2>&1 || echo "pre-commit: gen-index failed — orchestration/INDEX.md may be stale."
+git add orchestration/INDEX.md 2>/dev/null || true
+
 # Keep the published page current on EVERY commit. GitHub Pages serves /docs from this
 # branch, so a stale page is a silent lie about where the project is — and gating this on
 # which paths changed is how it went stale in the first place. Both generators are cheap.

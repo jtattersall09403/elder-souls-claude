@@ -264,6 +264,123 @@ function attractors(h, d) {
 // ---------------------------------------------------------------------------------------
 const arg = process.argv[2] || '';
 
+// RI-CAM03 §E M2, RUN AS WRITTEN — and this is the check that actually catches the defect.
+//
+//   "Compute the settled camera.pitch_deg minus the pitch that the CMB06 aim-point spring
+//    alone would produce. FAIL if the residual differs from pitch_bias(d, h) by > 1.0°."
+//
+// "The spring alone" cannot be read off the settled pose, because at the settled pose the
+// defect is already baked into it — that reading is what let a 0.58–0.81 loop gain look
+// harmless. It has to be a SECOND SETTLED RUN with the bias switched off, which is a
+// perturbation of the module's own declared constants and needs no edit to the file.
+//
+// The arithmetic of the defect: with the pitch target measured from the camera's own
+// (pitch-dependent) position the closed loop is `p = g(p) + bias`, so the declared bias
+// arrives on screen multiplied by 1/(1 − g′). At g′ = 0.58–0.81 that is a 2.4× to 5.3×
+// amplification — RI-CAM03 §D's −15.6° for a naga levy becomes −46° of actual camera pitch,
+// and the camera hoists itself 2.2 m to make it true. It is not a runaway; it is a stable
+// answer to the wrong equation, which is why every settling check and every on-screen check
+// was happy with it.
+function m2Residual(h, d) {
+  const settlePitch = () => {
+    const s = makeSim({ targetH: h, d });
+    s.cameraTargets = { cam_boss_mid: h, _default: h };
+    for (let f = 0; f < 600; f++) { s.frame = f; stepCamera(s); }
+    return s.camera.pitch;
+  };
+  const withBias = settlePitch();
+  const save = {
+    a: CAMERA_CONST.pitch_base_min_deg, b: CAMERA_CONST.pitch_base_max_deg,
+    c: CAMERA_CONST.pitch_base_slope, d: CAMERA_CONST.size_bias_per_m,
+  };
+  CAMERA_CONST.pitch_base_min_deg = 0; CAMERA_CONST.pitch_base_max_deg = 0;
+  CAMERA_CONST.pitch_base_slope = 0; CAMERA_CONST.size_bias_per_m = 0;
+  const springAlone = settlePitch();
+  CAMERA_CONST.pitch_base_min_deg = save.a; CAMERA_CONST.pitch_base_max_deg = save.b;
+  CAMERA_CONST.pitch_base_slope = save.c; CAMERA_CONST.size_bias_per_m = save.d;
+
+  const residual = withBias - springAlone;
+  const declared = pitchBias(d, h);
+  const err = Math.abs(residual - declared);
+  return {
+    h, d, with_bias: +withBias.toFixed(3), spring_alone: +springAlone.toFixed(3),
+    residual: +residual.toFixed(3), declared_pitch_bias: +declared.toFixed(3),
+    err: +err.toFixed(3), amplification: +(residual / declared).toFixed(2), pass: err <= 1.0,
+  };
+}
+
+// FIX A's behavioural falsifier. RI-CAM03 §C step 5: when an anchor leaves the safe rect the
+// containment law moves the pitch "toward the offending anchor's vertical side". That decision
+// is made from project()'s NDC y, so with the up vector inverted it is made backwards: a target
+// riding HIGH in the frame is read as LOW and the pitch is driven further from it.
+//
+// Set up a target the safe rect cannot hold — a great boss at close range — and ask the only
+// question that matters: over the frames containment is ACTIVE, does the target's true screen-
+// space excursion shrink or grow?
+function containSteer() {
+  const h = 8.0, d = 2.2;
+  const sim = makeSim({ targetH: h, d });
+  sim.cameraTargets = { cam_boss_mid: h, _default: h };
+  let active = 0, improved = 0, worsened = 0, firstAbs = null, lastAbs = null;
+  let prev = null;
+  for (let f = 0; f < 400; f++) {
+    sim.frame = f;
+    stepCamera(sim);
+    const o = sim.camera.onscreen;
+    if (!o.t) { prev = null; continue; }
+    const trueY = trueNdcY(sim);
+    if (trueY === null) { prev = null; continue; }
+    const outOfRect = Math.abs(o.tNdc[0]) > CAMERA_CONST.safe_rect_x
+      || Math.abs(o.tNdc[1]) > CAMERA_CONST.safe_rect_y;
+    if (outOfRect && f > 30) {
+      active++;
+      if (firstAbs === null) firstAbs = Math.abs(trueY);
+      lastAbs = Math.abs(trueY);
+      if (prev !== null) { if (Math.abs(trueY) < prev - 1e-9) improved++; else if (Math.abs(trueY) > prev + 1e-9) worsened++; }
+    }
+    prev = Math.abs(trueY);
+  }
+  // The decisive term is the SIGN AGREEMENT: containment's whole decision is the sign of
+  // project()'s NDC y, so if that disagrees with the true screen-space y the law is steering
+  // from a mirrored picture whatever else it does. The behavioural terms are context — note
+  // that after the fix containment does not engage here AT ALL, because the framing no longer
+  // needs correcting, so "it steers the right way" cannot be the pass condition on its own.
+  const trueY = trueNdcY(sim);
+  const simY = sim.camera.onscreen.tNdc[1];
+  const agrees = trueY === null || Math.abs(trueY) < 1e-6 || Math.sign(simY) === Math.sign(trueY);
+  return {
+    frames_containment_active: active,
+    true_excursion_first: firstAbs === null ? null : +firstAbs.toFixed(4),
+    true_excursion_last: lastAbs === null ? null : +lastAbs.toFixed(4),
+    frames_moving_target_back_toward_centre: improved,
+    frames_pushing_it_further_out: worsened,
+    containPitch_settled: +sim.camera.containPitch.toFixed(3),
+    settled_true_ndc_y: trueY === null ? null : +trueY.toFixed(4),
+    settled_sim_ndc_y: +simY.toFixed(4),
+    sim_ndc_sign_agrees_with_truth: agrees,
+    steers_from_a_mirrored_picture: !agrees,
+    pass: agrees && (active === 0 || improved > worsened),
+  };
+}
+
+if (arg === '--contain') {
+  const r = containSteer();
+  console.log(JSON.stringify(r, null, 2));
+  process.exit(r.pass ? 0 : 1);
+}
+
+if (arg === '--m2') {
+  const rows = [[0.6, 2.0], [1.9, 3.5], [1.9, 8.0], [2.6, 4.0], [4.5, 6.0]].map(([h, d]) => m2Residual(h, d));
+  console.log('# RI-CAM03 §E M2 — settled pitch minus spring-alone pitch must equal pitch_bias(d,h) ±1.0°');
+  console.log('h\td\twith_bias\tspring_alone\tresidual\tdeclared\terr\tamplification\tpass');
+  for (const r of rows) {
+    console.log(`${r.h}\t${r.d}\t${r.with_bias}\t${r.spring_alone}\t${r.residual}\t${r.declared_pitch_bias}\t${r.err}\t${r.amplification}x\t${r.pass}`);
+  }
+  const bad = rows.filter((r) => !r.pass).length;
+  console.log(`\nM2 failures: ${bad} of ${rows.length}`);
+  process.exit(bad ? 1 : 0);
+}
+
 if (arg === '--gain') {
   const rows = [[0.6, 2.0], [1.9, 3.5], [1.9, 8.0], [2.6, 4.0], [4.5, 6.0], [8.0, 10.0]]
     .map(([h, d]) => attractors(h, d));
