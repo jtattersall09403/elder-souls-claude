@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `1f420f4`: 485 tools, 153 reference
+so it cannot drift. Generated at `ef81471`: 486 tools, 153 reference
 items, 27 pieces in flight.
 
 Its purpose is to stop 27+ concurrent agents each paying separately to discover the
@@ -169,7 +169,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/ponr-probe.mjs` — RI-EXP05 "Comparison method" Step 2, executed.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 
-### `tools/harness/` — 180
+### `tools/harness/` — 181
 
 - `tools/harness/anim-author.mjs` — re-author the four attack clip archetypes and the idle base loop, and solve for the one free parameter each archetype has.
 - `tools/harness/anim-tune.mjs` — measure the swing OFF THE ANIMATION SYSTEM, with no browser.
@@ -322,6 +322,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-13-r3-drift.mjs` — **no header comment**
 - `tools/harness/w1-13-r3-levelling.mjs` — **no header comment**
 - `tools/harness/w1-13-r4-clock-consequences.mjs` — RI-PRG04 COMPARISON METHOD #8, RUN — and the AR-1 arm that running it turned up.
+- `tools/harness/w1-13-r4-input-only.mjs` — NEXT-DISPATCH §P.6 — IS THE LEVEL SPEND REACHABLE BY INPUT ALONE?
 - `tools/harness/w1-14-r3-apm3.mjs` — RI-MAG01 AP-M3, "the homing orb", made reproducible.
 - `tools/harness/w1-14-r3-census.mjs` — RI-MAG06 M7 (`DISTINCT-VERBS`) and M8 (the arena audit), re-run.
 - `tools/harness/w1-14-r3-skill.mjs` — GAP-W1-magic-skill-frozen, measured under RI-MAG06 §E.
