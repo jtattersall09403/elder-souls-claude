@@ -191,7 +191,9 @@ export class Census {
     if (!n) throw new Error('census: creation is finished');
     const rec = { node: n.id, value };
 
-    if (this.paused) throw new Error('census: the scene is waiting for the player to reach the Writ House; call censusEnter() when they do');
+    if (this.paused) {
+      throw new Error(`census: nothing has been asked — ${n.id} is waiting for ${AWAITING[n.resume_by || 'walk'] || AWAITING.walk} Call censusEnter('${n.resume_by || 'walk'}') when they do.`);
+    }
     this.spoken = [];
     switch (n.id) {
       case 'hold.hatch-name': {

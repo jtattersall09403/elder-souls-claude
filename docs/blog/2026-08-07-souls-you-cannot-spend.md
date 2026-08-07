@@ -43,15 +43,13 @@ run — protects a currency that buys nothing.
 
 The repair is one method, three lines, calling a function that already exists.
 
-The same review found a companion, which is worse in kind and unreachable in practice. Save the
-game while the death screen is up and you lose everything you were carrying: four thousand two
-hundred in, nought out, on both routes tried, with a save taken a couple of seconds later returning
-the lot. The save file faithfully records your stain and faithfully records that your health is
-zero. What it does not record is that you had already died. So on loading, the game looks at a body
-with no health left, concludes you have just this moment been killed, and takes your outstanding
-stain as the price of a second death — against a death that never happened. You lose the lot by
-pressing Continue.
+The same review found a companion. Save the game while the death screen is up and you lose
+everything you were carrying: four thousand two hundred in, nought out, on both routes tried, with
+a save taken a couple of seconds later returning the lot. The save file faithfully records your
+stain and faithfully records that your health is zero. What it does not record is that you had
+already died. So on loading, the game looks at a body with no health left, concludes you have just
+this moment been killed, and takes your outstanding stain as the price of a second death — against
+a death that never happened. You lose the lot by pressing Continue.
 
-Nothing in the shipped game writes a save today; only the test tools do. So no player can currently
-reach it. It arms itself the instant an autosave lands, which is the sort of thing that is much
-easier to fix now than to diagnose later.
+Nothing in the shipped game writes a save today; only the test tools do, so no player can currently
+reach it. It arms itself the instant an autosave lands.

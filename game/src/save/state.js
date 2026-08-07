@@ -142,6 +142,12 @@ export function buildSave(sim, build) {
     journal: sim.quest.journal.map((e) => ({ n: e.n, date: e.date, quest: e.quest, text: e.text })), // ORDER IS SEMANTIC
     dialogue: {
       topics_known: [...sim.quest.topicsKnown].sort(),
+      // W1-LIBRARY round 2. Which books this character has READ, and it is durable because
+      // reading is what opens three of the game's non-violent quest resolutions (see
+      // `QuestEngine.bookKnowledge`). Without this field a load silently closes every door the
+      // reading had opened, and — because the previous recorder was an Engine-level Set that no
+      // blob mentioned — every existing round-trip check reported clean while it did so.
+      books_read: [...sim.quest.booksRead].sort(),
       dispositions: sortedMap(sim.quest.dispositions),
     },
     factions: sortedMap(sim.quest.factions),
@@ -585,6 +591,7 @@ export function applySave(sim, blob, moves, statFor) {
   sim.quest.completed = [...blob.quests_completed];
   sim.quest.journal = blob.journal.map((e) => ({ n: e.n, date: e.date, quest: e.quest, text: e.text }));
   sim.quest.topicsKnown = [...blob.dialogue.topics_known];
+  sim.quest.booksRead = [...(blob.dialogue.books_read || [])];
   sim.quest.dispositions = { ...blob.dialogue.dispositions };
   sim.quest.factions = deepCopy(blob.factions);
   sim.quest.crime.bounty = { ...blob.crime.bounty };

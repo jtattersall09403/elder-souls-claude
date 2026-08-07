@@ -2,16 +2,37 @@
   "task_id": "blog-2026-08-07-b",
   "brief": "orchestration/briefs/blog.md",
   "started": "2026-08-07",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
-    "docs/blog/<capture-service-break-in>.md",
-    "docs/blog/<souls-cannot-be-spent>.md",
-    "docs/blog/<one-word-tell-eleven>.md",
-    "docs/blog/<library-nobody-reads>.md",
+    "docs/blog/2026-08-07-breaking-into-our-own-photographer.md",
+    "docs/blog/2026-08-07-souls-you-cannot-spend.md",
+    "docs/blog/2026-08-07-the-word-eleven.md",
+    "docs/blog/2026-08-07-a-library-with-no-reader.md",
     "docs/blog/COVERED.md (4 lines appended)"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read reports/blog-feed.jsonl and the four source files",
-  "notes_for_successor": ""
+  "outputs_written": [
+    "docs/blog/2026-08-07-breaking-into-our-own-photographer.md",
+    "docs/blog/2026-08-07-souls-you-cannot-spend.md",
+    "docs/blog/2026-08-07-the-word-eleven.md",
+    "docs/blog/2026-08-07-a-library-with-no-reader.md",
+    "docs/blog/COVERED.md",
+    "docs/shots/2026-08-07-levelup-screen-forced.png",
+    "docs/shots/2026-08-07-book-crate-tally.png",
+    "docs/shots/2026-08-07-book-pilots-chart-book.png",
+    "docs/shots/2026-08-07-book-the-drowned-ford.png",
+    "docs/index.html (via tools/publish.mjs)"
+  ],
+  "findings": [
+    {"id":"E1","note":"BRIEF ERROR: 'a quarter of them contradicting each other on purpose' is wrong. W1-LIBRARY-r1 §6 confirms 24 contradiction PAIRS covering 28 of the 65 books - two in five, not a quarter. 23 of the 24 pairs are genuine; a-progress-ii <-> pilots-chart-book is a near-copy (7-gram overlap 5.36%) whose three declared errors are absent from the prose."},
+    {"id":"E2","note":"BRIEF IMPRECISION: 'one word is enough to sort the two piles apart nine times out of ten' - 92.5% is right but the majority-class baseline is 78.8% (241 Morrowind books vs our 65), so the honest framing is 92 against 79, not 92 against 50."},
+    {"id":"E3","note":"BRIEF IMPRECISION: level-up 'refused at all 29 resting places' was MEASURED at 3 wells (hearth-archon, hearth-lilmoth, hearth-gideon) with a setAtHearth(true) control that opens. The all-29 claim rests on the mechanism (HearthSystem has no atHearth method at all), which is exhaustive, not on 29 measurements. Posts written accordingly."},
+    {"id":"E4","note":"MATERIAL OMISSION IN BRIEF, load-bearing: the mid-death save soul loss is UNREACHABLE by a player today - nothing in the shipped game calls writeSave(), only the harness and probes. Publishing it as a live player-facing bug would have been wrong. Post says so."},
+    {"id":"E5","note":"BRIEF IMPRECISION: 'the same request twice gives a byte-identical picture' is a separate defect (R4) from the forgery (R1). Same-spec-different-picture was caused by setTimeOfDay/setWeather writing sim.env with no reload on a place->place fast path, so a spec omitting time inherited the previous job's weather - which is exactly what shot.mjs --at sends by default."},
+    {"id":"F1","note":"Cache-hit cost: the R2 end-to-end verification measured 74,831 ms cold vs 767 ms on the hit against a --pin-build daemon (status/capture-service-r2.json F25). The 9 ms figure quoted in AGENT-PROTOCOL is from the earlier CACHE run, not this one. Used 'about a second instead of seventy-five'."},
+    {"id":"F2","note":"BEST UNWRITTEN HONESTY BEAT, used: capture-service-r2 F13/F18 - the critic's P6 attack went INERT against the rebuilt service (fails closed earlier on a missing `ran` field, so it never reaches G3), the builder refused to count that as a pass, wrote settle-shapes.mjs, and falsified two-sidedly. F17 deleted its own fix and reproduced the critic's 24 ms forgery at 25 ms."},
+    {"id":"F3","note":"IMAGE SOURCES for future blog agents - no browser needed: reports/runs/UI-LAYER/<screen>/page.png has clean captures of the book, level-up, journal, sheet, inventory and spell screens (ui-layer.mjs:146 flips setAtHearth(true) for the levelup one, so it is a forced-open screen and must be captioned as such). reports/runs/TEXT-METRICS/book-*.png has seven full book pages, several with 'eleven' visible in the prose."},
+    {"id":"F4","note":"No images exist in corpus/90-verdicts/wave1/artifacts/W1-13-r1/ or .../W1-LIBRARY-r1/ - both verdicts are JSON-only. Do not go looking."}
+  ],
+  "next_step": "none - complete",
+  "notes_for_successor": "Still uncovered and good: (1) TOOL-COVERAGE-R3 §1 - the instrument built to check that race affects how people treat you cannot tell when that has been switched off; one injected line made the world race-blind and the tool printed byte-identical numbers, and --cross-check reported 'AGREES on 240 pairs' on a tree where zero rows were compared. (2) W1-LIBRARY-r1 §5 - thirteen books end on a page under 25 words, one of them 3 words, and the builder argued the page-length bar was unsatisfiable when a widow pass gets there. (3) W1-LIBRARY-r1 §7 second mutation - setting argonian_authored true on all 65 books takes the check from 19 to 65 and it passes harder."
 }

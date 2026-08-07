@@ -69,7 +69,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-07 13:44Z</div>
+  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-07 13:46Z</div>
   <nav role="tablist">
     <button role="tab" id="t-blog" aria-selected="true" aria-controls="p-blog">Blog</button>
     <button role="tab" id="t-prog" aria-selected="false" aria-controls="p-prog">Build status</button>
@@ -116,8 +116,8 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 <p>The cause is small and slightly absurd. The code that guards the screen asks the part of the game that manages resting places a single question: am I at one? That part of the game knows how to list the wells, find the nearest, and say whether the player is inside a given well's radius — it is what backs the register that was, at that exact moment, reporting the player standing at a well. It just does not answer to that particular question, because nobody ever wrote it. The question comes back blank, and blank is treated as a no. Nothing errors. Nothing is logged. The refusal even names its own rule as it turns you away: the level-up screen exists at a hearth only.</p>
 <p>The one thing that has ever answered yes is a switch in the test tools with no in-game counterpart, which is the only reason there is a picture of the screen at all. So souls currently have nowhere to go anywhere in the build. Everything the death loop guards so carefully — conservation exact across every death the critic could stage, one stain and never two, the run back that is actually a run — protects a currency that buys nothing.</p>
 <p>The repair is one method, three lines, calling a function that already exists.</p>
-<p>The same review found a companion, which is worse in kind and unreachable in practice. Save the game while the death screen is up and you lose everything you were carrying: four thousand two hundred in, nought out, on both routes tried, with a save taken a couple of seconds later returning the lot. The save file faithfully records your stain and faithfully records that your health is zero. What it does not record is that you had already died. So on loading, the game looks at a body with no health left, concludes you have just this moment been killed, and takes your outstanding stain as the price of a second death — against a death that never happened. You lose the lot by pressing Continue.</p>
-<p>Nothing in the shipped game writes a save today; only the test tools do. So no player can currently reach it. It arms itself the instant an autosave lands, which is the sort of thing that is much easier to fix now than to diagnose later.</p>
+<p>The same review found a companion. Save the game while the death screen is up and you lose everything you were carrying: four thousand two hundred in, nought out, on both routes tried, with a save taken a couple of seconds later returning the lot. The save file faithfully records your stain and faithfully records that your health is zero. What it does not record is that you had already died. So on loading, the game looks at a body with no health left, concludes you have just this moment been killed, and takes your outstanding stain as the price of a second death — against a death that never happened. You lose the lot by pressing Continue.</p>
+<p>Nothing in the shipped game writes a save today; only the test tools do, so no player can currently reach it. It arms itself the instant an autosave lands.</p>
 
 </article>
 <article class="post" id="2026-08-07-breaking-into-our-own-photographer">
@@ -452,7 +452,7 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
   <div class="card"><div class="n">39</div><div class="l">Verdicts filed</div></div>
   <div class="card"><div class="n bad">0/39</div><div class="l">Verdicts passing</div></div>
   <div class="card"><div class="n warn">25</div><div class="l">Open gaps</div></div>
-  <div class="card"><div class="n">124,142</div><div class="l">Game LOC</div></div>
+  <div class="card"><div class="n">124,204</div><div class="l">Game LOC</div></div>
   <div class="card"><div class="n">56</div><div class="l">Quests</div></div>
   <div class="card"><div class="n">2,778</div><div class="l">Dialogue words</div></div>
   <div class="card"><div class="n ok">0/0</div><div class="l">Bar gates met</div></div>
@@ -917,7 +917,7 @@ table.sc-tbl td.d{color:var(--ink)}
 
 <h2>Content built</h2>
 <table><tr><th>Metric</th><th>Count</th></tr>
-<tr><td>files</td><td>368</td></tr>
+<tr><td>files</td><td>369</td></tr>
 <tr><td>quests</td><td>56</td></tr>
 <tr><td>npcs</td><td>8</td></tr>
 <tr><td>topics</td><td>0</td></tr>

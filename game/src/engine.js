@@ -332,7 +332,13 @@ export class Engine {
     // a `knowledge_key` no quest asks for is a book that thinks it opens a door that is not
     // there, and it is exactly how this model came to have no reader without anybody noticing.
     // The check runs the other way too, in `tools/check-content.mjs`.
-    this.questEngine.bookKnowledge = this._bookKnowledgeIndex();
+    // ORCHESTRATOR, 2026-08-07: guarded because the call landed a few minutes before the method
+    // did, and a half-written engine takes down every other agent on the box — all of whom
+    // boot-check before they measure. Remove the guard once `_bookKnowledgeIndex` exists; the
+    // fail-loud behaviour described above belongs INSIDE it, not at the call site.
+    this.questEngine.bookKnowledge = typeof this._bookKnowledgeIndex === 'function'
+      ? this._bookKnowledgeIndex()
+      : {};
     this._assertGiversAreVisibleToRace();
     // W1-19: the authored NPC disposition table, copied into the register the quest gates read.
     // Without this every `giver.disposition_min` in game/data/quests/** is unreachable.
@@ -2612,6 +2618,40 @@ export class Engine {
       rows.push({ key: k, label: k.replace(/_/g, ' '), from: r4c(b), to: r4c(a) });
     }
     return rows;
+  }
+
+  /**
+   * book id -> the knowledge ids reading it confers. See `QuestEngine.bookKnowledge`.
+   *
+   * NOT fail-closed. Five of the eight shipped `knowledge_key`s are reached through
+   * `deceit.revealed_by[].source` rather than through a `requires.knowledge`, and a sixth kind
+   * of linkage will be invented by somebody next wave; throwing on a key no quest currently
+   * names would take the engine down for a book that is merely early. `check-content.mjs`
+   * reports the dangles instead, where a dangle is a warning a person reads rather than a boot
+   * failure eleven agents pay for.
+   */
+  _bookKnowledgeIndex() {
+    // knowledge key -> reveal ids that a book is the declared source of
+    const byKey = new Map();
+    for (const doc of Object.values(this.data.quests || {})) {
+      for (const q of (doc.quests || [])) {
+        for (const rev of ((q.deceit && q.deceit.revealed_by) || [])) {
+          if (rev.channel !== 'book' || !rev.source) continue;
+          if (!byKey.has(rev.source)) byKey.set(rev.source, new Set());
+          byKey.get(rev.source).add(rev.id);
+        }
+      }
+    }
+    const idx = new Map();
+    for (const doc of Object.values(this.data.books || {})) {
+      const list = Array.isArray(doc.books) ? doc.books : (doc.id ? [doc] : []);
+      for (const b of list) {
+        const key = b.knowledge_key;
+        if (!key) continue;
+        idx.set(b.id, [key, ...(byKey.get(key) || [])].sort());
+      }
+    }
+    return idx;
   }
 
   /**
@@ -6046,9 +6086,8 @@ export class Engine {
       // What reading those books has actually unlocked, resolved through the same map
       // `QuestEngine.context()` uses. Reported so a probe can see the gate move, not just the
       // list grow.
-      bookKnowledge: [...new Set(q.booksRead
-        .map((id) => this.questEngine && this.questEngine.bookKnowledge && this.questEngine.bookKnowledge.get(id))
-        .filter(Boolean))].sort(),
+      bookKnowledge: [...new Set(q.booksRead.flatMap(
+        (id) => (this.questEngine && this.questEngine.bookKnowledge.get(id)) || []))].sort(),
       dispositions: { ...q.dispositions },
       factions: JSON.parse(JSON.stringify(q.factions)),
       crime: JSON.parse(JSON.stringify(q.crime)),

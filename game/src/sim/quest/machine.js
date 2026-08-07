@@ -83,15 +83,30 @@ export class QuestEngine {
     // who you are. `Engine` installs that term here; see `_dispositionToward`.
     this.dispositionModel = null;
 
-    // W1-LIBRARY round 2. book id -> `knowledge_key`, installed by `Engine` from
-    // `game/data/books/**`. `context()` resolves `sim.quest.booksRead` through it, which is what
-    // makes `requires.knowledge: ["book_the_court_and_the_tide"]` satisfiable by READING THE
-    // BOOK. Before this, `ctx.knowledge` unioned only per-quest `know:` flags, whose sole writer
-    // is `reveal()`, which throws unless the id is in that quest's `deceit.revealed_by` — and
-    // none of the three book keys appears in any `revealed_by` in any quest file. Three of the
-    // game's non-violent exits were therefore permanently closed and the round-1 critic measured
-    // them so. Left empty, this changes nothing: an engine that installs no map behaves exactly
-    // as it did before.
+    // W1-LIBRARY round 2. book id -> the knowledge ids that READING it confers. Installed by
+    // `Engine._bookKnowledgeIndex()` from `game/data/books/**` and the quest book.
+    //
+    // Before this, `ctx.knowledge` unioned only per-quest `know:` flags, whose sole writer is
+    // `reveal()`, which throws unless the id is in that quest's `deceit.revealed_by` — and none
+    // of the three book keys named by a `requires.knowledge` appears in any `revealed_by` in any
+    // quest file. `book.knowledge_key` had zero readers in `game/src/`. Three of the game's
+    // non-violent exits were therefore permanently closed, and the round-1 critic measured them
+    // closed in a real browser after reading each book to its last page.
+    //
+    // Two authored linkages feed it, and the index is where they are reconciled:
+    //   * `requires.knowledge: ["book_the_court_and_the_tide"]` names the key directly (3 books);
+    //   * `deceit.revealed_by: [{id, channel:'book', source:'book_the_seventh_recension'}]` names
+    //     the key as the SOURCE of a reveal id, and the resolution gates on that id through
+    //     `requires_knowing` (5 books). All eight shipped `knowledge_key`s are one or the other.
+    //
+    // This widens the DERIVED context; it does not write flags. `reveal()` remains the only
+    // writer of a `know:` flag, and therefore the only thing that emits a `reveal` event. The
+    // consequence is deliberate and is the point of RI-UIX05 §D's *"books readable BEFORE the
+    // quest that references them"* row: a book read three regions before the quest opens still
+    // counts, because `booksRead` is durable and the union is recomputed every time a gate runs.
+    //
+    // Left empty this changes nothing: an engine that installs no index behaves exactly as it
+    // did before, which is what keeps it out of the "fail-closed before its data exists" trap.
     this.bookKnowledge = new Map();
 
     this.flagHooks = new Map();     // world flag -> hook[]
@@ -165,8 +180,7 @@ export class QuestEngine {
     // have to know where the knowledge came from — a truth learned from a person and the same
     // truth learned from a book satisfy the same clause, which is the point of a lore gate.
     for (const bid of q.booksRead || []) {
-      const k = this.bookKnowledge.get(bid);
-      if (k) know.add(k);
+      for (const k of this.bookKnowledge.get(bid) || []) know.add(k);
     }
     const reputation = {}, ranks = {};
     for (const f of Object.keys(q.factions)) {

@@ -161,6 +161,9 @@ const REQUIRED = ['setSeed', 'setRenderRate', 'getRenderRate', 'stepFrames', 'ge
 
 /** One rate. Fresh browser per rate: a contaminated world would be indistinguishable from HF2. */
 async function runAtRate(scenario, rate, opts = {}) {
+  // ROUND 4: the step budget is a PARAMETER so --self-test can cap it (R3: the uncapped form
+  // ran eight full browser sweeps and the critic could not complete it in two attempts).
+  const SIM_FRAMES_R = Number.isFinite(Number(opts.simFrames)) ? Number(opts.simFrames) : SIM_FRAMES;
   const handle = await launchGame({
     ...args, width: 320, height: 240,
     timeout: Number(args.timeout || 120000),
@@ -199,12 +202,12 @@ async function runAtRate(scenario, rate, opts = {}) {
     // The cadence. See the header: this is what makes "render rate 30" mean anything under a
     // harness whose rAF loop neither steps nor draws.
     const chunk = CADENCE === 'call' ? 300
-      : (rate > 0 ? Math.max(1, Math.round(60 / rate)) : SIM_FRAMES);
+      : (rate > 0 ? Math.max(1, Math.round(60 / rate)) : SIM_FRAMES_R);
 
     const hash = crypto.createHash('sha256');
     let records = 0, stepped = 0;
-    while (stepped < SIM_FRAMES) {
-      const n = Math.min(chunk, SIM_FRAMES - stepped);
+    while (stepped < SIM_FRAMES_R) {
+      const n = Math.min(chunk, SIM_FRAMES_R - stepped);
       await handle.h('stepFrames', n);
       stepped += n;
       const recs = await handle.h('traceDrain');
@@ -231,7 +234,7 @@ async function runAtRate(scenario, rate, opts = {}) {
       set_returned: set,
       read_back: readBack,
       chunk_frames: chunk,
-      sim_steps_requested: SIM_FRAMES,
+      sim_steps_requested: SIM_FRAMES_R,
       sim_steps_observed: num(after.simStepsTotal) - num(before.simStepsTotal),
       renders_observed: num(after.rendersTotal) - num(before.rendersTotal),
       trace_records: records,
@@ -245,18 +248,26 @@ async function runAtRate(scenario, rate, opts = {}) {
 
 function num(v) { return Number.isFinite(Number(v)) ? Number(v) : 0; }
 
-async function sweep(broken) {
+async function sweep(broken, opts = {}) {
   const scenario = loadScenario(SCENARIO_ID);
+  const frames = Number.isFinite(Number(opts.simFrames)) ? Number(opts.simFrames) : SIM_FRAMES;
+  const rates = opts.rates
+    ? String(opts.rates).split(',').map((x) => Number(x.trim())).filter((x) => Number.isFinite(x))
+    : RATES;
   const rows = [];
-  for (const rate of RATES) {
-    log(`M6: render rate ${rate} Hz, ${SIM_FRAMES} sim steps, cadence ${CADENCE}${broken ? ' [BROKEN ON PURPOSE]' : ''}`);
-    rows.push(await runAtRate(scenario, rate, { broken }));
+  for (const rate of rates) {
+    log(`M6: render rate ${rate} Hz, ${frames} sim steps, cadence ${CADENCE}${broken ? ' [BROKEN ON PURPOSE]' : ''}`);
+    rows.push(await runAtRate(scenario, rate, { broken, simFrames: frames }));
   }
   return { scenario, rows };
 }
 
-function judge(rows) {
-  const stepsOk = rows.every((r) => r.sim_steps_observed === SIM_FRAMES);
+function judge(rows, opts = {}) {
+  // ROUND 4: both the step budget and the F3 determination are parameters, so the self-test can
+  // exercise the verdict gate in BOTH directions without booting a browser twice more.
+  const FRAMES = Number.isFinite(Number(opts.simFrames)) ? Number(opts.simFrames) : SIM_FRAMES;
+  const IS_F3 = opts.scenarioIsF3 === undefined ? scenarioIsF3 : !!opts.scenarioIsF3;
+  const stepsOk = rows.every((r) => r.sim_steps_observed === r.sim_steps_requested);
   const hashes = [...new Set(rows.map((r) => r.body_sha256))];
   const hashOk = hashes.length === 1;
 
@@ -296,13 +307,13 @@ function judge(rows) {
   // `true` when either is false. The measured property is still reported separately as
   // `invariance_holds`, because it IS a real result and losing it would be the opposite mistake.
   // =============================================================================================
-  const meetsDuration = SIM_FRAMES >= M6_ASKS_FOR;
-  const scenarioAsSpecified = scenarioIsF3;
+  const meetsDuration = FRAMES >= M6_ASKS_FOR;
+  const scenarioAsSpecified = IS_F3;
   const itemSatisfied = meetsDuration && scenarioAsSpecified;
   const deviation = [
     meetsDuration ? null
-      : `ran ${SIM_FRAMES} steps per rate; M6 asks for EXACTLY ${M6_ASKS_FOR} ` +
-        `(${(100 * SIM_FRAMES / M6_ASKS_FOR).toFixed(1)}% of the specified duration)`,
+      : `ran ${FRAMES} steps per rate; M6 asks for EXACTLY ${M6_ASKS_FOR} ` +
+        `(${(100 * FRAMES / M6_ASKS_FOR).toFixed(1)}% of the specified duration)`,
     scenarioAsSpecified ? null
       : `scenario "${SCENARIO_ID}" was substituted for M6's named F3 ("boss arena, 1 boss, ` +
         'active fight"), which has no file. Sim/render coupling surfaces under LOAD AND ' +
@@ -323,9 +334,9 @@ function judge(rows) {
       scenario_as_specified: scenarioAsSpecified,
       item_satisfied: itemSatisfied,
       deviation_from_item: deviation.length ? deviation : null,
-      steps_run_per_rate: SIM_FRAMES,
+      steps_run_per_rate: FRAMES,
       m6_asks_for: M6_ASKS_FOR,
-      expected: SIM_FRAMES,
+      expected: FRAMES,
       observed: rows.map((r) => ({ rate: r.render_rate_hz, steps: r.sim_steps_observed })),
       hard_fail: stepsOk ? null : 'HF2 — the simulation step count changes with the render rate.',
       why_not_pass: gated(stepsOk) ? null
@@ -481,9 +492,21 @@ const report = {
     (CADENCE === 'sim'
       ? 'chunk = round(60 / rate), i.e. one render every 1000/rate ms of SIMULATED time.'
       : 'one render per stepFrames() call, 300 steps per call.'),
+    // ROUND 4 — TOOL-COVERAGE-R3 Referral 2: "the limit is real and should be stated more loudly
+    // than it is." The tool said the rAF loop neither steps nor draws; it did not say the
+    // CONSEQUENCE.
+    'SCOPE LIMIT, and it is a real one: because renderRateHz is two-state on stepFrames, this ' +
+    'sweep never exercises the thing that consumes the rate AS A RATE — core/loop.js\'s rAF ' +
+    'loop, which in harness mode neither steps nor draws. So M6 as measured here covers the ' +
+    'INTERLEAVING axis in HARNESS MODE, and THE SHIPPING RENDER PATH IS NOT TESTED AT ALL. A ' +
+    'decoupling defect living in the production scheduler would pass this sweep.',
   ],
   sim_frames_per_rate: SIM_FRAMES,
-  m6_asks_for: 3600,
+  m6_asks_for: M6_ASKS_FOR,
+  // ROUND 4 — the two facts that gate `pass`, at the top level as well as inside each verdict,
+  // so a consumer scanning the artifact cannot miss them. TOOL-COVERAGE-R3 §6.
+  meets_item_duration: SIM_FRAMES >= M6_ASKS_FOR,
+  scenario_as_specified: scenarioIsF3,
   rates: RATES,
   cadence: CADENCE,
   broken_on_purpose: !!args['break-decoupling'],
@@ -508,10 +531,33 @@ for (const r of rows) {
     `${r.renders_observed} renders (chunk ${r.chunk_frames}), ${r.trace_records} trace records, ` +
     `body_sha256 ${r.body_sha256.slice(0, 16)}…\n`);
 }
-if (SIM_FRAMES !== 3600) {
+if (SIM_FRAMES < M6_ASKS_FOR || !scenarioIsF3) {
+  // ROUND 4. Round 3 printed this as a NOTE beside `pass: true`. It is now the reason `pass` is
+  // not true, and it is stated as such.
   process.stdout.write(
-    `  NOTE: M6 as written asks for 3600 steps (60 s) per rate; this run took ${SIM_FRAMES}. ` +
-    `Re-run with --sim-frames 3600 on a quiet box for the item's own figure.\n`);
+    `  M6 NOT SATISFIED ON THE ITEM'S OWN TERMS — this is why \`pass\` is false above:\n`);
+  if (SIM_FRAMES < M6_ASKS_FOR) {
+    process.stdout.write(
+      `    duration: ran ${SIM_FRAMES} steps per rate; M6 asks for EXACTLY ${M6_ASKS_FOR} ` +
+      `(${(100 * SIM_FRAMES / M6_ASKS_FOR).toFixed(1)}%). Re-run --sim-frames ${M6_ASKS_FOR} on a quiet box.\n`);
+  }
+  if (!scenarioIsF3) {
+    process.stdout.write(
+      `    scenario: "${SCENARIO_ID}" substituted for M6's named F3 ("boss arena, 1 boss, active ` +
+      `fight"), which has no file. Sim/render coupling surfaces under load and complexity, so a ` +
+      `flat-ground trash duel is a substitution in the PERMISSIVE direction ` +
+      `(TOOL-COVERAGE-R3 Referral 1: author F3 from shipped content).\n`);
+  }
+  process.stdout.write(
+    `    The INVARIANCE RESULT stands and is reported as \`invariance_holds\` per check: ` +
+    `${Object.entries(verdict).filter(([, v]) => v.invariance_holds !== undefined)
+      .map(([k, v]) => k + '=' + v.invariance_holds).join(', ')}.\n`);
 }
+// ROUND 4 — the shipping-render-path limit, stated in the artifact as R3 Referral 2 requires.
+process.stdout.write(
+  `  SCOPE LIMIT: renderRateHz is two-state on the stepFrames path, so this sweep exercises the ` +
+  `sim/render INTERLEAVING in HARNESS MODE. core/loop.js's rAF loop — the SHIPPING render ` +
+  `scheduler — neither steps nor draws here and is NOT TESTED. A decoupling defect living in the ` +
+  `production scheduler would pass this sweep.\n`);
 log(`wrote ${path.relative(REPO_ROOT, outPath)}`);
 process.exit(allPass ? 0 : 1);
