@@ -37,7 +37,15 @@ const N = Number(args.agents || 6);
 const OUT = path.resolve(String(args.out || path.join(REPO_ROOT, 'reports/capture')));
 ensureDir(OUT);
 
-/** Browser processes on the box, counted from /proc rather than from the daemon's own opinion. */
+/**
+ * Browser processes on the box, counted from /proc rather than from the daemon's own opinion.
+ *
+ * This box is SHARED — measured mid-run, 24 browser processes belonging to other agents were
+ * live — so the absolute count is meaningless and every assertion below is on the DELTA between
+ * the count before this test started and its peak while the test ran. A test that asserted
+ * "exactly one browser on the box" would fail for reasons that have nothing to do with the
+ * service, which is the same class of mistake as a probe that cannot fail.
+ */
 function browserCount() {
   let n = 0;
   const names = [];
@@ -120,6 +128,8 @@ const results = {};
     browsers_before: before.n,
     browsers_peak_during: peak,
     browsers_after: after.n,
+    browsers_added_by_this_test: peak - before.n,
+    note: 'the box is shared; only the DELTA is attributable to this test',
     samples,
     wall_ms: Date.now() - t0,
     all_succeeded: out.every((r) => r.ok),
@@ -128,9 +138,9 @@ const results = {};
     overlapping_rendered: rendered,
     overlapping_served_from_cache: served,
     distinct_sha256_among_overlapping: shas.size,
-    pass: peak <= 1 && out.every((r) => r.ok) && shas.size === 1 && rendered === 1 && served === sameSpec.length - 1,
+    pass: (peak - before.n) <= 1 && out.every((r) => r.ok) && shas.size === 1 && rendered === 1 && served === sameSpec.length - 1,
   };
-  log(`N=${N} agents: peak browsers=${peak} (before ${before.n}), all ok=${out.every((r) => r.ok)}; ` +
+  log(`N=${N} agents: browsers ${before.n} -> peak ${peak} (delta ${peak - before.n}), all ok=${out.every((r) => r.ok)}; ` +
     `overlapping: ${rendered} rendered + ${served} served from cache, ${shas.size} distinct sha256`);
 }
 

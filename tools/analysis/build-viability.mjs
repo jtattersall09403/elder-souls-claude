@@ -1484,51 +1484,49 @@ function selfTest() {
     `model="${OFFER_MODEL.model}" — ${OFFER_MODEL.why} anchors: ` +
     Object.entries(OFFER_MODEL.anchors).map(([k, v]) => `${k}=${v.matched}`).join(' '));
 
-  ok('GREEN: on this tree as it stands, no giver bar is unpassable',
-    ug.quests_blocked === 0 && nFail(base, 'no_unpassable_gate') === 0,
-    `${ug.quests_blocked} unpassable gates; no_unpassable_gate FAIL ${nFail(base, 'no_unpassable_gate')}/${base.length}; ` +
-    `${baseReport.giver_census.resolving_to_a_reaction_group}/${baseReport.giver_census.quests_with_a_giver_disposition_min} ` +
-    `givers resolve to a reaction group`);
+  const blockedGivers = (recs) => new Set(recs.map((r) => r.stopped_at && r.stopped_at.npc_id).filter(Boolean));
 
-  // RED. Reproduce the defect this tree shipped this morning: givers with no NPC record, so
-  // `seedDispositions()` writes nothing and `gate.js num(undefined)` reads 0.
+  ok('the tool never REFUSES: every signature gets a definite verdict on the offer gate',
+    base.every((r) => r.criteria.no_unpassable_gate !== UNMEASURABLE),
+    `${nFail(base, 'no_unpassable_gate')} FAIL / ${base.length - nFail(base, 'no_unpassable_gate')} pass / ` +
+    `0 unmeasurable; ${ug.quests_blocked} gates unpassable for EVERY signature; ` +
+    `${baseReport.giver_census.resolving_to_a_reaction_group}/` +
+    `${baseReport.giver_census.quests_with_a_giver_disposition_min} givers resolve to a reaction group. ` +
+    'TOOL-COVERAGE-R2 §1: `unmeasurable` routes to corpus_debt and charges nobody, `fail` charges ' +
+    'the build, and a giver the world cannot reach is the build\'s.');
+
+  // RED. Reproduce the defect this tree shipped at the start of tool round 3: givers with no NPC
+  // record, so `seedDispositions()` writes nothing and `gate.js num(undefined)` reads 0.
   const fxUnseed = { unseed_givers: true };
   const unseeded = walkAll(fxUnseed);
   const unseededRep = report(unseeded, fxUnseed);
-  ok('RED: unseed every giver (no NPC record) and the gate FAILS, as a build failure not as unmeasurable',
-    unseededRep.unpassable_gates.quests_blocked > 0
-    && nFail(unseeded, 'no_unpassable_gate') > 0
+  ok('RED: unseed every giver (the record-less state) and the gate goes red, as FAIL not unmeasurable',
+    nFail(unseeded, 'no_unpassable_gate') > nFail(base, 'no_unpassable_gate')
     && unseeded.filter((r) => r.unmeasurable).length === 0,
-    `${unseededRep.unpassable_gates.quests_blocked} gates unpassable ` +
-    `(${unseededRep.unpassable_gates.gates.slice(0, 4).map((g) => `${g.npc_id} ${g.gate_reads}/${g.requires}`).join(', ')}…); ` +
-    `no_unpassable_gate FAIL ${nFail(unseeded, 'no_unpassable_gate')}/${unseeded.length}, ` +
-    `${unseeded.filter((r) => r.unmeasurable).length} unmeasurable`);
+    `no_unpassable_gate FAIL ${nFail(base, 'no_unpassable_gate')} -> ${nFail(unseeded, 'no_unpassable_gate')} ` +
+    `of ${base.length}; givers stopping at least one signature ${blockedGivers(base).size} -> ` +
+    `${blockedGivers(unseeded).size}; ${unseeded.filter((r) => r.unmeasurable).length} unmeasurable; ` +
+    `${unseededRep.unpassable_gates.quests_blocked} unpassable for EVERY signature`);
 
-  ok('RED is PARTIAL, not a constant: the bar is compared, not the presence of a record',
-    unseededRep.unpassable_gates.quests_blocked < baseReport.giver_census.quests_with_a_giver_disposition_min,
-    `${unseededRep.unpassable_gates.quests_blocked} of ` +
-    `${baseReport.giver_census.quests_with_a_giver_disposition_min} givers blocked at register 0 ` +
-    `(the shipped requirements run ` +
-    `${Math.min(...quests.filter((q) => q.giver && q.giver.disposition_min != null).map((q) => q.giver.disposition_min))}` +
-    `-${baseReport.giver_census.max_disposition_min_shipped}) — an all-or-nothing count either way ` +
-    `would mean the number is not being read`);
+  ok('RED is PARTIAL at the gate level: some givers block, not all — so the bar is compared',
+    blockedGivers(unseeded).size > 0
+    && blockedGivers(unseeded).size < baseReport.giver_census.quests_with_a_giver_disposition_min,
+    `${blockedGivers(unseeded).size} of ${baseReport.giver_census.quests_with_a_giver_disposition_min} ` +
+    `givers with a disposition_min stop at least one signature at register 0: ` +
+    `${[...blockedGivers(unseeded)].slice(0, 6).join(', ')}`);
 
-  // N-1 blocks, N opens, on the gates the RED produced.
-  const blocked = unseededRep.unpassable_gates.gates;
-  if (blocked.length) {
-    const need = (g, d) => g.requires - (g.gate_reads - g.seed) + d;
-    const fxU = { unseed_givers: true, seed_disposition: Object.fromEntries(blocked.map((g) => [g.npc_id, need(g, -1)])) };
-    const fxO = { unseed_givers: true, seed_disposition: Object.fromEntries(blocked.map((g) => [g.npc_id, need(g, 0)])) };
-    const nUnder = report(walkAll(fxU), fxU).unpassable_gates.quests_blocked;
-    const nOver = report(walkAll(fxO), fxO).unpassable_gates.quests_blocked;
-    ok('the NUMBER is read: seeded at N-1 the gate blocks, at N it opens',
-      nUnder === blocked.length && nOver === 0,
-      `${blocked.length} blocked gates seeded one below their own requirement: ${nUnder} still blocked; ` +
-      `seeded AT their requirement: ${nOver} blocked`);
-  } else {
-    ok('the NUMBER is read: seeded at N-1 the gate blocks, at N it opens', false,
-      'the RED produced no blocked gates, so this could not be exercised');
+  // The NUMBER is read: sweep the register and require a monotone, saturating response. A
+  // presence check would give a step; a threshold gives a ladder.
+  const ladder = [];
+  for (const s of [0, 15, 30, 45, 60, 100]) {
+    const fx = { unseed_givers: true, seed_disposition: s };
+    ladder.push({ seed: s, fail: nFail(walkAll(fx), 'no_unpassable_gate') });
   }
+  const monotone = ladder.every((r, i) => i === 0 || r.fail <= ladder[i - 1].fail);
+  ok('the NUMBER is read, not the presence of a record (monotone ladder, saturating at 0)',
+    monotone && ladder[0].fail > 0 && ladder[ladder.length - 1].fail === 0
+    && new Set(ladder.map((r) => r.fail)).size > 2,
+    ladder.map((r) => `seed ${r.seed} -> ${r.fail} fail`).join(' | '));
 
   // The gift model (machine.js:424) is live and CIRCULAR gifts are excluded.
   const giftedNpcs = [...DISPOSITION_GIFTS.keys()];

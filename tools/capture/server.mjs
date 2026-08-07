@@ -172,41 +172,73 @@ async function isServing() {
 }
 
 /**
- * Exclusive start. Two agents racing `--daemon` must end up with ONE daemon.
+ * Exclusive start. N agents racing `--daemon` must end up with ONE daemon and ONE browser.
  *
- * The rendezvous is an O_EXCL lock file, not the socket: two servers that both find the socket
- * dead, both unlink it and both call listen() would BOTH succeed (the second unlinks the first's
- * socket out from under it) and the box would quietly hold two browsers. O_CREAT|O_EXCL is atomic
- * on this filesystem, so exactly one wins.
+ * THE FIRST VERSION OF THIS WAS WRONG, and its own log caught it. It used an O_EXCL lock file as
+ * the rendezvous and treated a lock as stale when the holder's pid was alive but its socket did
+ * not yet answer. That window — between taking the lock and finishing `listen()` — is exactly when
+ * six agents arrive at once, so three challengers in a row declared the lock stale, unlinked it
+ * AND the socket, and bound anyway. Measured, from capd.log: four processes logged "listening on"
+ * within 300 ms of each other.
  *
- * A lock whose pid is gone, or whose pid is alive but whose socket does not answer, is stale and
- * is broken. That is what makes it safe after a container reclaim.
+ * The fix is to stop using the lock file as the exclusion at all. **`listen()` on a unix socket
+ * path IS the atomic operation** — the kernel lets exactly one process bind a given path, and a
+ * second gets EADDRINUSE. So:
+ *
+ *   1. try to bind. Bound => we own it, unconditionally.
+ *   2. EADDRINUSE and something answers => a live daemon owns it; exit 0 quietly.
+ *   3. EADDRINUSE and nothing answers => the file is a corpse from a killed daemon. THAT is the
+ *      only thing the lock file now serialises: removing it, so two survivors do not unlink each
+ *      other's fresh socket.
+ *
+ * A lock is broken only when its holder's pid is gone or it is older than LOCK_STALE_MS, which is
+ * a bound on how long an unlink can take, not a guess about how long a boot takes.
  */
-async function acquireLock() {
-  for (let attempt = 0; attempt < 5; attempt++) {
+const LOCK_STALE_MS = 30000;
+/** True only for the process that actually bound the socket. Guards the unlink on shutdown. */
+let I_OWN_SOCKET = false;
+const pidAlive = (pid) => { try { process.kill(pid, 0); return true; } catch { return false; } };
+
+function tryListen() {
+  return new Promise((resolve) => {
+    const onErr = (e) => { server.removeListener('listening', onOk); resolve(e.code || 'ERR'); };
+    const onOk = () => { server.removeListener('error', onErr); resolve(null); };
+    server.once('error', onErr);
+    server.once('listening', onOk);
+    server.listen(SOCK_PATH);
+  });
+}
+
+/** @returns 'owner' | 'loser' | 'failed' */
+async function bindExclusive() {
+  for (let attempt = 0; attempt < 8; attempt++) {
+    const err = await tryListen();
+    if (!err) { I_OWN_SOCKET = true; return 'owner'; }
+    if (err !== 'EADDRINUSE') { logLine('listen failed:', err); return 'failed'; }
+    if (await isServing()) return 'loser';          // a live daemon owns the path
+
+    // The socket file is a corpse. Serialise its removal through the lock file.
+    let holdsLock = false;
     try {
       const fd = fs.openSync(LOCK_PATH, 'wx');
-      fs.writeFileSync(fd, JSON.stringify({ pid: process.pid, sock: SOCK_PATH, started: new Date().toISOString() }));
+      fs.writeFileSync(fd, JSON.stringify({ pid: process.pid, at: Date.now(), sock: SOCK_PATH }));
       fs.closeSync(fd);
-      return true;
+      holdsLock = true;
     } catch (e) {
       if (e.code !== 'EEXIST') throw e;
       let held = null;
       try { held = JSON.parse(fs.readFileSync(LOCK_PATH, 'utf8')); } catch { /* corrupt */ }
-      const pidAlive = held && held.pid ? (() => { try { process.kill(held.pid, 0); return true; } catch { return false; } })() : false;
-      if (pidAlive && await isServing()) return false;            // someone else genuinely owns it
-      // stale: the holder is gone, or is alive but not answering.
-      try { fs.unlinkSync(LOCK_PATH); } catch { /* raced */ }
-      try { fs.unlinkSync(SOCK_PATH); } catch { /* raced */ }
-      await sleep(50 + Math.random() * 100);
+      const dead = !held || !held.pid || !pidAlive(held.pid);
+      const ancient = !held || !held.at || (Date.now() - held.at > LOCK_STALE_MS);
+      if (dead || ancient) { try { fs.unlinkSync(LOCK_PATH); } catch { /* raced */ } }
     }
+    if (holdsLock) {
+      if (!(await isServing())) { try { fs.unlinkSync(SOCK_PATH); } catch { /* raced */ } }
+      try { fs.unlinkSync(LOCK_PATH); } catch { /* raced */ }
+    }
+    await sleep(80 + Math.random() * 220);
   }
-  return false;
-}
-
-if (!(await acquireLock())) {
-  process.stderr.write('[capd] another capture daemon already owns ' + SOCK_PATH + '\n');
-  process.exit(0);
+  return 'failed';
 }
 
 const started = Date.now();
@@ -215,7 +247,7 @@ const logLine = (...a) => process.stdout.write(`[capd ${new Date().toISOString()
 // ---- build identity -------------------------------------------------------------------------
 let BUILD = buildKey();
 let BUILD_SIG = statSignature().sig;
-logLine('build', BUILD.build_key, 'git', BUILD.git_sha && BUILD.git_sha.slice(0, 8), BUILD.git_dirty ? '(dirty)' : '');
+// (logged after the bind, so a losing process never writes a line that looks like a start)
 
 /** Set when --pin-build is in force and the tree has moved on since the daemon booted. */
 let DRIFTED_TO = null;
@@ -716,7 +748,8 @@ function summarise(raw) {
 }
 
 // ---- the socket ----------------------------------------------------------------------------------
-try { fs.unlinkSync(SOCK_PATH); } catch { /* */ }
+// NOTE: no pre-emptive unlink here. Unlinking before listening is what let four daemons bind the
+// same path at once — see bindExclusive() above.
 const server = net.createServer((sock) => {
   const connId = nextConnId++;
   const c = { sock, queue: [], alive: true, opened: Date.now() };
@@ -791,7 +824,11 @@ async function shutdown(why) {
   try { server.close(); } catch { /* */ }
   for (const c of conns.values()) { try { c.sock.end(); } catch { /* */ } }
   await dropBrowser('shutdown');
-  try { fs.unlinkSync(SOCK_PATH); } catch { /* */ }
+  // ONLY the process that bound the socket may remove it. Found the hard way: a leftover daemon
+  // that had lost the bind race was killed, and its shutdown unlinked the LIVE daemon's socket
+  // out from under a 40-frame job that was halfway through. A process must not clean up a
+  // resource it does not own.
+  if (I_OWN_SOCKET) { try { fs.unlinkSync(SOCK_PATH); } catch { /* */ } }
   try {
     const held = JSON.parse(fs.readFileSync(LOCK_PATH, 'utf8'));
     if (held.pid === process.pid) fs.unlinkSync(LOCK_PATH);
@@ -810,9 +847,17 @@ for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP']) process.on(sig, () => shutdow
 process.on('uncaughtException', (e) => { logLine('UNCAUGHT', e && e.stack || e); });
 process.on('unhandledRejection', (e) => { logLine('UNHANDLED', e && e.stack || e); });
 
-server.listen(SOCK_PATH, () => {
-  fs.chmodSync(SOCK_PATH, 0o600);
-  logLine('listening on', SOCK_PATH, '| idle', IDLE_MS / 1000 + 's', '| browser-idle', BROWSER_IDLE_MS / 1000 + 's');
-  logLine('settle threshold', THRESHOLD, 'gap', GAP, '| cache', USE_CACHE ? CACHE_DIR : 'DISABLED',
-    PIN_BUILD ? '| BUILD PINNED' : '');
-});
+const outcome = await bindExclusive();
+if (outcome === 'loser') {
+  process.stderr.write('[capd] another capture daemon already owns ' + SOCK_PATH + ' - exiting\n');
+  process.exit(0);
+}
+if (outcome !== 'owner') {
+  process.stderr.write('[capd] could not bind ' + SOCK_PATH + '\n');
+  process.exit(EXIT.INTERNAL);
+}
+fs.chmodSync(SOCK_PATH, 0o600);
+logLine('build', BUILD.build_key, 'git', BUILD.git_sha && BUILD.git_sha.slice(0, 8), BUILD.git_dirty ? '(dirty)' : '');
+logLine('listening on', SOCK_PATH, '| idle', IDLE_MS / 1000 + 's', '| browser-idle', BROWSER_IDLE_MS / 1000 + 's');
+logLine('settle threshold', THRESHOLD, 'gap', GAP, '| cache', USE_CACHE ? CACHE_DIR : 'DISABLED',
+  PIN_BUILD ? '| BUILD PINNED' : '');

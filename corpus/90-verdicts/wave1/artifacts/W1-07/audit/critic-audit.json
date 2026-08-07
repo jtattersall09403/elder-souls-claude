@@ -1,6 +1,6 @@
 {
   "tool": "critic-w1-07-audit",
-  "root": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/wt-head",
+  "root": "/home/user/elder-souls-claude",
   "results": [
     {
       "id": "PRG02-m1-ten-attributes",
@@ -233,37 +233,37 @@
     {
       "id": "CHR02-m4-npc-coverage",
       "ok": true,
-      "measured": "5/5 NPCs across 2 files carry a reaction_group",
+      "measured": "71/71 NPCs across 5 files carry a reaction_group",
       "expected": "100%"
     },
     {
       "id": "CHR02-m4-population",
       "ok": false,
-      "measured": "5 NPC records shipped; group shares {\"RG-DEEP\":2,\"RG-LUKIUL\":1,\"RG-LEDGER\":1,\"RG-EMPIRE\":1}",
+      "measured": "71 NPC records shipped; group shares {\"RG-COURT\":12,\"RG-EMPIRE\":9,\"RG-LEDGER\":7,\"RG-TOWN\":10,\"RG-ROOT\":7,\"RG-VAKH\":6,\"RG-DRES\":2,\"RG-BWC\":2,\"RG-DEEP\":11,\"RG-LUKIUL\":3,\"RG-NAGA\":1,\"RG-OUTLAW\":1}",
       "expected": "enough NPCs for the +-4pt population-share assertion to mean anything"
     },
     {
       "id": "CHR02-m5-1500-greetings",
       "ok": false,
-      "measured": "0 greeting lines (dir ABSENT)",
+      "measured": "0 greeting lines (dir exists)",
       "expected": ">= 1,500 across >= 250 of 300 cells"
     },
     {
       "id": "CHR02-m5-90-race-topics",
       "ok": false,
-      "measured": "0 race-filtered topic records (0 forbids)",
+      "measured": "45 race-filtered topic records (0 forbids)",
       "expected": ">= 90, >= 30 forbids"
     },
     {
       "id": "CHR02-m5-60-slavery-lines",
       "ok": false,
-      "measured": "8 slavery-vocabulary hits in dialogue",
+      "measured": "39 slavery-vocabulary hits in dialogue",
       "expected": ">= 60 lines, >= 12 to a Dunmer player"
     },
     {
       "id": "tool-build-viability.mjs",
-      "ok": false,
-      "measured": "tools/analysis/build-viability.mjs ABSENT",
+      "ok": true,
+      "measured": "tools/analysis/build-viability.mjs exists",
       "expected": "required by a method assigned to this piece"
     },
     {
@@ -274,20 +274,20 @@
     },
     {
       "id": "tool-journey-run.mjs",
-      "ok": false,
-      "measured": "tools/journey/journey-run.mjs ABSENT",
+      "ok": true,
+      "measured": "tools/journey/journey-run.mjs exists",
       "expected": "required by a method assigned to this piece"
     },
     {
       "id": "tool-beat-extract.mjs",
-      "ok": false,
-      "measured": "tools/journey/beat-extract.mjs ABSENT",
+      "ok": true,
+      "measured": "tools/journey/beat-extract.mjs exists",
       "expected": "required by a method assigned to this piece"
     },
     {
       "id": "tool-gamepad-shim.mjs",
-      "ok": false,
-      "measured": "tools/journey/gamepad-shim.mjs ABSENT",
+      "ok": true,
+      "measured": "tools/journey/gamepad-shim.mjs exists",
       "expected": "required by a method assigned to this piece"
     }
   ]

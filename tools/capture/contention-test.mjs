@@ -44,6 +44,10 @@ ensureDir(OUT);
 const WORK = path.join(REPO_ROOT, 'reports', 'runs', '.contention');
 ensureDir(WORK);
 
+/**
+ * Browser processes on the box. SHARED BOX: other agents' browsers are in this count, so both
+ * rounds report the delta from their own baseline and the comparison is delta-vs-delta.
+ */
 function browserCount() {
   let n = 0;
   for (const d of fs.readdirSync('/proc')) {
@@ -120,7 +124,8 @@ process.stdout.write(JSON.stringify({ boot_ms: boot, total_ms: Date.now() - t0 }
 
 function runRound(script, tag) {
   return new Promise((resolve) => {
-    let peakBrowsers = browserCount(), peakLoad = loadavg(), samples = 0;
+    const baseBrowsers = browserCount(), baseLoad = loadavg();
+    let peakBrowsers = baseBrowsers, peakLoad = baseLoad, samples = 0;
     const watch = setInterval(() => {
       samples++;
       const b = browserCount(); if (b > peakBrowsers) peakBrowsers = b;
@@ -142,7 +147,12 @@ function runRound(script, tag) {
         per.push({ agent: a, ms: Date.now() - t1, code, boot_ms: stat && stat.boot_ms, err: code ? se.slice(-300) : undefined });
         if (++done === N) {
           clearInterval(watch);
-          resolve({ wall_ms: Date.now() - t0, peak_browsers: peakBrowsers, peak_load: peakLoad, samples, per });
+          resolve({
+            wall_ms: Date.now() - t0,
+            browsers_before: baseBrowsers, peak_browsers: peakBrowsers,
+            browsers_added: peakBrowsers - baseBrowsers,
+            load_before: baseLoad, peak_load: peakLoad, samples, per,
+          });
         }
       });
     }
@@ -151,7 +161,7 @@ function runRound(script, tag) {
 
 log(`round 1: ${N} agents x ${M} frames, EACH WITH ITS OWN BROWSER`);
 const direct = await runRound(AGENT_DIRECT, 'direct');
-log(`  wall ${(direct.wall_ms / 1000).toFixed(1)} s, peak browsers ${direct.peak_browsers}, peak load ${direct.peak_load}`);
+log(`  wall ${(direct.wall_ms / 1000).toFixed(1)} s, browsers +${direct.browsers_added} (${direct.browsers_before} -> ${direct.peak_browsers}), load ${direct.load_before} -> ${direct.peak_load}`);
 
 // Let the box settle so round 2 does not inherit round 1's load.
 await new Promise((r) => setTimeout(r, 15000));
@@ -162,7 +172,7 @@ await new Promise((r) => setTimeout(r, 2000));
 
 log(`round 2: ${N} agents x ${M} frames, ALL SHARING ONE DAEMON`);
 const service = await runRound(AGENT_SERVICE, 'service');
-log(`  wall ${(service.wall_ms / 1000).toFixed(1)} s, peak browsers ${service.peak_browsers}, peak load ${service.peak_load}`);
+log(`  wall ${(service.wall_ms / 1000).toFixed(1)} s, browsers +${service.browsers_added} (${service.browsers_before} -> ${service.peak_browsers}), load ${service.load_before} -> ${service.peak_load}`);
 
 const frames = N * M;
 const report = {
@@ -181,11 +191,12 @@ const report = {
     s_per_frame: +(service.wall_ms / 1000 / frames).toFixed(2),
     all_ok: service.per.every((p) => p.code === 0),
   },
-  browsers_direct_vs_service: `${direct.peak_browsers} vs ${service.peak_browsers}`,
+  browsers_added_direct_vs_service: `${direct.browsers_added} vs ${service.browsers_added}`,
+  note: 'the box is shared with other agents; only the delta from each round\'s own baseline is attributable',
   speedup: +(direct.wall_ms / service.wall_ms).toFixed(2),
-  verdict: service.peak_browsers <= 1 && direct.peak_browsers > 1
-    ? `one browser instead of ${direct.peak_browsers}; wall clock ${direct.wall_ms > service.wall_ms ? 'improved' : 'regressed'} ${(direct.wall_ms / service.wall_ms).toFixed(2)}x`
-    : 'INCONCLUSIVE: the browser counts did not differ as expected',
+  verdict: service.browsers_added <= 1 && direct.browsers_added > 1
+    ? `${service.browsers_added} browser added instead of ${direct.browsers_added}; wall clock ${direct.wall_ms > service.wall_ms ? 'improved' : 'regressed'} ${(direct.wall_ms / service.wall_ms).toFixed(2)}x`
+    : `INCONCLUSIVE: browsers added direct=${direct.browsers_added} service=${service.browsers_added}`,
 };
 fs.writeFileSync(path.join(OUT, 'CONTENTION.json'), JSON.stringify(report, null, 2));
 process.stdout.write(JSON.stringify(report, null, 2) + '\n');

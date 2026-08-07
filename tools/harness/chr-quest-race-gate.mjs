@@ -253,6 +253,11 @@ try {
     const perRace = {};
     for (const race of races) {
       for (const up of ups) {
+        // `reset()` first. Check 2b leaves the player a rank-6 Xul-Aneekh member, and
+        // `faction-reactions.json` prices that at -36 against a Sap-Cutter — correctly, and
+        // catastrophically for a probe that carried it into this sweep. This measures the
+        // COLD START, where the only thing that has changed is who the character is.
+        H.reset();
         H.setCharacter({ race, upbringing: up, class: 'reed-walker', birthsign: 'raj-xul' });
         for (const t of topics) { try { H.learnTopic(t); } catch (e) { /* unknown topic */ } }
         const offers = H.questOffers();

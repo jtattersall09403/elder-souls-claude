@@ -155,6 +155,14 @@ const EXPLICIT = {
   recallQuote: 'observe', enchantQuote: 'observe', fenceQuote: 'observe',
   travelFare: 'observe', travelQuote: 'observe', probeWard: 'observe',
   isStealthOpener: 'observe', readSave: 'observe',
+
+  // Added by the fail-closed fuse itself. The surface grew from 319 to 325 methods DURING tool
+  // round 3 (fourteen agents share this tree) and `--self-test` refused rather than letting the
+  // three new names through unclassified. That is the whole point of the default: the hole
+  // round 2 shipped was six names against a surface that kept growing.
+  explainDisposition: 'observe',   // QuestEngine.explainDisposition — a read with its terms shown
+  questDef: 'observe',             // the quest definition as authored
+  setFactionStanding: 'grant-resource',  // singular sibling of setFactionStandings
 };
 
 // ---------------------------------------------------------------------------------------------

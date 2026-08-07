@@ -94,22 +94,48 @@ CHECKS
 // locomotion is `sprint` and `jump`. Both are asserted below.
 const LOCOMOTION_NAMES = ['sprint', 'jump'];
 
-// Actions that change a flag by construction, so they satisfy C1 without corroboration.
-// `crouch` is here and not in LOCOMOTION_NAMES: actions.js's AM-W1-15-01 note states it is a
-// TOGGLE, and a toggle changes a flag.
-const FLAG_TOGGLE_NAMES = ['crouch', 'lock_on', 'two_hand', 'swap_right', 'swap_left', 'menu', 'spell_cycle'];
+// ROUND 3 — NOTHING SATISFIES C1 BY NAME. TOOL-COVERAGE-R2 §5 swept nine actions through the
+// round-2 classifier and found four that bought a pass they had not earned:
+//
+//   an hour in an empty room, one button six times a second, player advancing 2 160 m:
+//     roll        -> C1 PASS, gap_max 0.17 s, traversal_fraction 0
+//     menu        -> C1 PASS, gap_max 0.17 s
+//     lock_on     -> C1 PASS, gap_max 0.17 s
+//     spell_cycle -> C1 PASS, gap_max 0.17 s
+//
+// "An hour of dodge-rolling across the map, and an hour of opening and closing the inventory,
+// both read as maximally engaged. That is the exact reading the file's own header says it
+// exists to prevent." The round-2 fix (a FLAG_TOGGLE class that counted by name) was the same
+// mistake as round 1's, one level in: it asserted that pressing `menu` opens a surface instead
+// of checking that a surface opened.
+//
+// RI-JRN02 C1's definition is FIVE WORLD FACTS, not five button names:
+//   "a state-changing input = an action that moved an entity, opened a surface, changed a flag,
+//    dealt or took damage, or added a journal entry. Pure locomotion does not count."
+//
+// So: an input satisfies C1 only when the TRACE shows one of those five within
+// CORROBORATION_FRAMES. A roll that dodged a hit counts, because the hit is in the trace. A
+// roll in an empty room does not, because nothing happened. `menu` counts when a surface
+// actually opened. The uncorroborated inputs are counted and named on every run, so the rule
+// is audited rather than trusted — and, unlike round 2's audit line, that count is not always 0.
+//
+// `sprint` and `jump` are excluded ENTIRELY: C1's last sentence names locomotion and these two
+// are the closed set's locomotion members. `roll` is NOT excluded entirely — it is the souls
+// traversal verb AND the souls defensive verb, and which one it was on a given press is a
+// question only the world can answer. That is what corroboration is for.
+const CORROBORATION_REQUIRED_NAMES = ['light', 'heavy', 'roll', 'block', 'parry', 'use_item',
+  'interact', 'lock_on', 'two_hand', 'swap_right', 'swap_left', 'menu', 'crouch', 'spell_cycle'];
 
-// Actions that can be a complete no-op: pressed in an empty room they open nothing and change
-// nothing, and "an action that opened nothing and changed nothing" is not one of C1's five
-// clauses. They count only when the trace corroborates a clause nearby.
-const NO_OP_CAPABLE_NAMES = ['interact', 'use_item'];
+// Kept as exported names so a critic can see the classification is total over the closed set.
+const FLAG_TOGGLE_NAMES = [];
+const NO_OP_CAPABLE_NAMES = CORROBORATION_REQUIRED_NAMES;
 
 /** How many frames after an input the trace may corroborate it. 1 s at 60 Hz. */
 const CORROBORATION_FRAMES = 60;
 
 // The assertion. A name here that the engine does not emit excludes nothing and audits nothing,
 // which is precisely how round 1 shipped an exclusion list with eleven dead entries.
-for (const [label, names] of [['LOCOMOTION_NAMES', LOCOMOTION_NAMES], ['FLAG_TOGGLE_NAMES', FLAG_TOGGLE_NAMES], ['NO_OP_CAPABLE_NAMES', NO_OP_CAPABLE_NAMES]]) {
+for (const [label, names] of [['LOCOMOTION_NAMES', LOCOMOTION_NAMES], ['CORROBORATION_REQUIRED_NAMES', CORROBORATION_REQUIRED_NAMES]]) {
   const stray = names.filter((n) => !ACTIONS.includes(n));
   if (stray.length) {
     throw new Error(
@@ -120,7 +146,22 @@ for (const [label, names] of [['LOCOMOTION_NAMES', LOCOMOTION_NAMES], ['FLAG_TOG
   }
 }
 
+// TOTALITY. Every member of the closed action set must be in exactly one class. An action that
+// is in neither would silently fall through to "satisfies C1", which is how `roll` bought a pass.
+{
+  const classified = new Set([...LOCOMOTION_NAMES, ...CORROBORATION_REQUIRED_NAMES]);
+  const unclassified = ACTIONS.filter((a) => !classified.has(a));
+  if (unclassified.length) {
+    throw new Error(
+      `cadence.mjs does not classify ${unclassified.join(', ')} from the closed action set ` +
+      `(game/src/input/actions.js). An unclassified action falls through to "satisfies C1 by ` +
+      `name", which is exactly how an hour of dodge-rolling read as maximally engaged ` +
+      `(TOOL-COVERAGE-R2 §5). Put it in LOCOMOTION_NAMES or CORROBORATION_REQUIRED_NAMES.`);
+  }
+}
+
 export const LOCOMOTION_ACTIONS = new Set(LOCOMOTION_NAMES);
+export const CORROBORATION_REQUIRED_ACTIONS = new Set(CORROBORATION_REQUIRED_NAMES);
 export const FLAG_TOGGLE_ACTIONS = new Set(FLAG_TOGGLE_NAMES);
 export const NO_OP_CAPABLE_ACTIONS = new Set(NO_OP_CAPABLE_NAMES);
 export const CLOSED_ACTION_SET = new Set(ACTIONS);
@@ -192,8 +233,24 @@ export function analyse(records, fps = 60) {
     return { schema: 'elder-souls/cadence@1', item: 'RI-JRN02 §B', frames: 0, duration_s: 0, ok: false, checks, header };
   }
 
-  const f0 = frames[0].frame ?? 0;
-  const fN = frames[frames.length - 1].frame ?? frames.length;
+  // The shipped trace record numbers its frames `f` (HARNESS.md §5), not `frame`. Round 2 read
+  // `r.frame ?? 0`, so on every real trace in this tree EVERY frame index was 0 and the gaps
+  // were computed against a constant. Both keys are accepted and the one actually found is
+  // reported, so a schema change is loud rather than silently zeroing the axis.
+  const frameOf = (r) => (r && (r.f ?? r.frame));
+  const frameKey = frames[0].f !== undefined ? 'f' : (frames[0].frame !== undefined ? 'frame' : null);
+  if (frameKey === null) {
+    for (const [id, name] of [['C1', 'gap_max'], ['C2', 'gap_p95'], ['C3', 'apm_nc'], ['C4', 'apm_c'],
+      ['C5', 'combat_fraction'], ['C6', 'dialogue_fraction'], ['C7', 'traversal_fraction'],
+      ['C8', 'menu_fraction'], ['C9', 'longest_corridor'], ['C10', 'input_variety_10min']]) {
+      add(id, name, null, false, null, null,
+        'no trace record carries a frame index under `f` or `frame`, so no interval in this file ' +
+        'can be measured. Reporting that rather than computing every gap against a constant 0.');
+    }
+    return { schema: 'elder-souls/cadence@2', item: 'RI-JRN02 §B', frames: frames.length, duration_s: null, ok: false, checks, header };
+  }
+  const f0 = frameOf(frames[0]) ?? 0;
+  const fN = frameOf(frames[frames.length - 1]) ?? frames.length;
   const durationFrames = Math.max(1, fN - f0);
   const durationS = durationFrames / fps;
 
@@ -207,7 +264,7 @@ export function analyse(records, fps = 60) {
   const perFrame = [];
 
   for (const r of frames) {
-    const fr = r.frame ?? 0;
+    const fr = frameOf(r) ?? 0;
     const evs = Array.isArray(r.events) ? r.events : [];
     let sawCombat = false, sawDialogue = false, sawMenu = false, sawWorldChange = false;
     for (const e of evs) {
@@ -252,11 +309,10 @@ export function analyse(records, fps = 60) {
   const inputsUncorroborated = [];
   const inputStateChangeFrames = [];
   for (const i of inputsAll) {
-    if (LOCOMOTION_ACTIONS.has(i.action)) continue;
-    if (NO_OP_CAPABLE_ACTIONS.has(i.action) && !corroboratedNear(i.frame)) {
-      inputsUncorroborated.push(i);
-      continue;
-    }
+    if (LOCOMOTION_ACTIONS.has(i.action)) continue;   // C1: "pure locomotion does not count"
+    // EVERY remaining action must be corroborated by one of C1's five world facts. No name is
+    // trusted, including the ones that "obviously" change a flag.
+    if (!corroboratedNear(i.frame)) { inputsUncorroborated.push(i); continue; }
     inputStateChangeFrames.push(i.frame);
   }
 

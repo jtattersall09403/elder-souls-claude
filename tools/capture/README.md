@@ -198,9 +198,19 @@ reports/runs/.capture/capd.log     the daemon's log
 reports/runs/capture-cache/<build_key>/<cache_key>.png|.json
 ```
 
-- **Starting** is automatic and race-free. The rendezvous is the lock file, not the socket: two
-  servers that both found the socket dead, both unlinked it and both called `listen()` would both
-  succeed, and the box would quietly hold two browsers.
+- **Starting** is automatic and race-free, and the exclusion is the **bind**, not the lock file.
+  `listen()` on a unix socket path is atomic — the kernel lets exactly one process bind it. The
+  lock file only serialises removing a *corpse* socket left by a killed daemon.
+  The first version had this the other way round and its own log caught it: it treated a lock as
+  stale when the holder's pid was alive but its socket did not yet answer, which is exactly the
+  window between taking the lock and finishing `listen()`. Six agents racing produced **four**
+  processes all logging "listening on", three orphaned daemons and three orphaned browsers.
+  Verified after the fix: eight daemons launched simultaneously produce one "listening on" line
+  and one process; six client processes racing a cold daemon produce one "booting browser" and
+  four "another capture daemon already owns … - exiting".
+- **Only the owner cleans up.** `shutdown()` unlinks the socket only if this process bound it.
+  Found the hard way: killing a leftover daemon that had *lost* the race removed the live
+  daemon's socket out from under a 40-frame job.
 - **A client that dies** loses its queued jobs; a job already in flight finishes and is written to
   the cache (the work is done), and its reply is dropped.
 - **Fairness** is per-connection round-robin. A 117-frame pack does not make a one-frame client
@@ -211,7 +221,24 @@ reports/runs/capture-cache/<build_key>/<cache_key>.png|.json
   content change drops the browser (which is holding the old code) and adopts a new build key.
   New captures land in a new cache bucket; the old build's pictures stay on disk to be diffed.
   An mtime that moves without content moving does **not** invalidate.
+- **A broken `game/`** does not take the daemon down. `launchGame()` reports failure through
+  `die()` → `process.exit()`, which for a shared daemon is a respawn loop; the boot therefore runs
+  with `process.exit` swapped for a throw, and a game that will not boot becomes a `GAME_BROKEN`
+  job error with a 15 s backoff while the daemon stays up.
+- **Pinning**: `--pin-build` freezes the build key so a long pack is drawn by ONE game. Measured
+  during this piece's own benchmark, another builder edited `game/` four times in three minutes
+  and an unpinned daemon correctly threw the browser away each time — which would have made a
+  117-frame pack a mixture of four different games. A pinned capture still records the drift
+  (`tree_has_since_moved_to`), so it never claims to be of the current tree.
 - `node tools/capture/server.mjs --status | --stop`.
+
+## Reading the test reports
+
+The box is **shared**: 24 browser processes belonging to other agents were live during these
+runs. Every browser-count assertion is therefore on the **delta** from that test's own baseline,
+never on an absolute — an assertion of "one browser on the box" would fail for reasons that have
+nothing to do with the service, which is the same class of mistake as a probe that cannot fail.
+Load averages are recorded alongside every timing for the same reason.
 
 ## Existing capture paths
 
