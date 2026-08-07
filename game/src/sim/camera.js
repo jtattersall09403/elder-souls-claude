@@ -1192,7 +1192,21 @@ export function beginDeathCamera(sim) {
 }
 
 // =========================================================================================
-function applyOverride(c) {
+/** Pose `c.pos`/`c.pivot`/`c.fov` from `c.override` AND solve `c.yaw`/`c.pitch` (plus
+ *  `c.dist`/`c.armLen`) from that same pos->look pair. `stepCamera()` below calls this once
+ *  per fixed-step frame while an override is installed, which is correct for anything that
+ *  steps the world first — but `projectNDC()`/`project()` (this file, `project()`) reads
+ *  `c.yaw`/`c.pitch` alone, never `c.pos`/`c.pivot` directly, to build the view basis
+ *  (`viewBasis` -> `basisAt(c.yaw + c.shakeYaw, c.pitch + c.shakePitch, ...)`). A caller that
+ *  poses the camera and reads `projectPoint()` back WITHOUT stepping first — every capture
+ *  script that shoots a `renderFrame()` off a `camera({pos, look})` call, since `renderFrame()`
+ *  is a draw, not a step — got an answer built from whatever yaw/pitch the follow rig had
+ *  solved before the override was installed, silently and plausibly wrong (RI-CAM03 verdict
+ *  W1-13-r3 §5/§7: 0 of 96 `projectPoint` reads on_screen:true through a posed camera,
+ *  including 0 of 58 rows the same probe's own pixels scored visible). `engine.camera()`
+ *  exported from here so it can call this SAME function immediately on `pos`/`look`,
+ *  rather than re-deriving yaw/pitch by hand and risking the two derivations drifting apart. */
+export function applyOverride(c) {
   const o = c.override;
   c.pos[0] = o.pos[0]; c.pos[1] = o.pos[1]; c.pos[2] = o.pos[2];
   c.pivot[0] = o.look[0]; c.pivot[1] = o.look[1]; c.pivot[2] = o.look[2];

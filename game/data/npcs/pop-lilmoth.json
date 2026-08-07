@@ -1,2705 +1,3331 @@
 {
- "schema": "elder-souls/npc-group@1",
- "group": "pop-lilmoth",
- "id": "pop-lilmoth",
- "settlement": "lilmoth",
- "generated_by": "tools/world/build-population.mjs",
- "source": "the household roster in game/data/world/property/lilmoth.json — these are the people who already owned the objects",
- "npcs": [
-  {
-   "id": "lilmoth-factor-0",
-   "name": "Ranaso Wet-Foot",
-   "race": "argonian",
-   "class": "factor",
-   "actor": "dres-factor",
-   "faction": "wet-ledger",
-   "settlement": "lilmoth",
-   "quarter": "rot-quarter",
-   "household": "lilmoth-factor-0",
-   "role": "head",
-   "disposition": 31,
-   "interior": "lilmoth-house-0",
-   "home_interior": "lilmoth-house-0",
-   "work_interior": "lilmoth-customs",
-   "owns_zones": [
-    "lilmoth.factor0.r0",
-    "lilmoth.factor0.r1"
-   ],
-   "behaviour": "stand",
-   "schedule": [
+  "schema": "elder-souls/npc-group@1",
+  "group": "pop-lilmoth",
+  "id": "pop-lilmoth",
+  "settlement": "lilmoth",
+  "generated_by": "tools/world/build-population.mjs",
+  "source": "the household roster in game/data/world/property/lilmoth.json — these are the people who already owned the objects",
+  "npcs": [
     {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-house-0",
-     "activity": "home"
+      "id": "lilmoth-factor-0",
+      "name": "Ranaso Wet-Foot",
+      "race": "argonian",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "wet-ledger",
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "household": "lilmoth-factor-0",
+      "role": "head",
+      "disposition": 31,
+      "interior": "lilmoth-house-0",
+      "home_interior": "lilmoth-house-0",
+      "work_interior": "lilmoth-customs",
+      "owns_zones": [
+        "lilmoth.factor0.r0",
+        "lilmoth.factor0.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "lilmoth-house-0",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "lilmoth-customs",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "lilmoth-customs",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-house-0",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-customs",
+        "at_building_name": "The Customs Hall",
+        "pos": [
+          2801.53,
+          0.37,
+          5026.28
+        ],
+        "yaw": 90,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-customs's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
     },
     {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-house-0",
-     "activity": "home"
+      "id": "lilmoth-cook-1",
+      "name": "Three-Knives Two-Skins",
+      "race": "argonian",
+      "class": "cook",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "stilt-town",
+      "household": "lilmoth-cook-1",
+      "role": "head",
+      "disposition": 43,
+      "interior": "lilmoth-house-1",
+      "home_interior": "lilmoth-house-1",
+      "work_interior": "lilmoth-inn-drowned",
+      "owns_zones": [
+        "lilmoth.cook1.r0",
+        "lilmoth.cook1.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "lilmoth-house-1",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-house-1",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-market",
+        "at_building_name": "The Sunk Market",
+        "pos": [
+          2793.34,
+          7.37,
+          5046.46
+        ],
+        "yaw": 57,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
     },
     {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-customs",
-     "activity": "work"
+      "id": "lilmoth-scribe-2",
+      "name": "Okan Sings-At-Dusk",
+      "race": "argonian",
+      "class": "scribe",
+      "actor": "clerk",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "the-landing",
+      "household": "lilmoth-scribe-2",
+      "role": "head",
+      "disposition": 35,
+      "interior": "lilmoth-house-2",
+      "home_interior": "lilmoth-house-2",
+      "work_interior": "lilmoth-yard",
+      "owns_zones": [
+        "lilmoth.scribe2.r0",
+        "lilmoth.scribe2.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "lilmoth-house-2",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "lilmoth-yard",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "lilmoth-yard",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-house-2",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-scribe",
+        "at_building_name": "The Scribe's Stair",
+        "pos": [
+          2781.85,
+          0.37,
+          5061.74
+        ],
+        "yaw": 25,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-scribe's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
     },
     {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
+      "id": "lilmoth-weaver-3",
+      "name": "Waits-For-Salt the Shorter",
+      "race": "dunmer",
+      "class": "weaver",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "household": "lilmoth-weaver-3",
+      "role": "head",
+      "disposition": 44,
+      "interior": "lilmoth-house-3",
+      "home_interior": "lilmoth-house-3",
+      "work_interior": "lilmoth-yard",
+      "owns_zones": [
+        "lilmoth.weaver3.r0",
+        "lilmoth.weaver3.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "lilmoth-house-3",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "lilmoth-yard",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "lilmoth-yard",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-house-3",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-yard",
+        "at_building_name": "The Wet Yard",
+        "pos": [
+          2799.85,
+          7.37,
+          5034.17
+        ],
+        "yaw": 79,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-yard's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
     },
     {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-customs",
-     "activity": "work"
+      "id": "lilmoth-factor-4",
+      "name": "Ocheeva of the Boards",
+      "race": "argonian",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "wet-ledger",
+      "settlement": "lilmoth",
+      "quarter": "stilt-town",
+      "household": "lilmoth-factor-4",
+      "role": "head",
+      "disposition": 29,
+      "interior": "lilmoth-house-4",
+      "home_interior": "lilmoth-house-4",
+      "work_interior": "lilmoth-customs",
+      "owns_zones": [
+        "lilmoth.factor4.r0",
+        "lilmoth.factor4.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "lilmoth-house-4",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "lilmoth-customs",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "lilmoth-customs",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-house-4",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-inn-stilt",
+        "at_building_name": "The Stilt Rest",
+        "pos": [
+          2760.11,
+          7.37,
+          5068.19
+        ],
+        "yaw": 352,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-inn-stilt's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
     },
     {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
+      "id": "lilmoth-cook-5",
+      "name": "Jeelus-Tei the Patient",
+      "race": "argonian",
+      "class": "cook",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "the-landing",
+      "household": "lilmoth-cook-5",
+      "role": "head",
+      "disposition": 46,
+      "interior": "lilmoth-customs",
+      "home_interior": "lilmoth-customs",
+      "work_interior": "lilmoth-inn-drowned",
+      "owns_zones": [
+        "lilmoth.cook5.r0",
+        "lilmoth.cook5.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "lilmoth-customs",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "07:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "work"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-customs",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-customs",
+        "at_building_name": "The Customs Hall",
+        "pos": [
+          2800.97,
+          0.37,
+          5027.19
+        ],
+        "yaw": 90,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-customs's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
     },
     {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-house-0",
-     "activity": "home"
+      "id": "lilmoth-priest-6",
+      "name": "Marks-The-Ledger of Nine Debts",
+      "race": "argonian",
+      "class": "priest",
+      "actor": "healer",
+      "faction": "drowned-court",
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "household": "lilmoth-priest-6",
+      "role": "head",
+      "disposition": 47,
+      "interior": "lilmoth-ledger-house",
+      "home_interior": "lilmoth-ledger-house",
+      "work_interior": "lilmoth-healer",
+      "owns_zones": [
+        "lilmoth.priest6.r0",
+        "lilmoth.priest6.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "lilmoth-ledger-house",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "09:00",
+          "at": "lilmoth-healer",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "20:00",
+          "at": "lilmoth-healer",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "lilmoth-ledger-house",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-market",
+        "at_building_name": "The Sunk Market",
+        "pos": [
+          2793.8,
+          7.37,
+          5043.2
+        ],
+        "yaw": 57,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-weaver-7",
+      "name": "Silent-Reed Bone-Setter",
+      "race": "imperial",
+      "class": "weaver",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "stilt-town",
+      "household": "lilmoth-weaver-7",
+      "role": "head",
+      "disposition": 42,
+      "interior": "lilmoth-smithy",
+      "home_interior": "lilmoth-smithy",
+      "work_interior": "lilmoth-yard",
+      "owns_zones": [
+        "lilmoth.weaver7.r0",
+        "lilmoth.weaver7.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "08:00",
+          "at": "lilmoth-smithy",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "lilmoth-yard",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "lilmoth-yard",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-customs",
+        "at_building_name": "The Customs Hall",
+        "pos": [
+          2800.67,
+          0.37,
+          5029.48
+        ],
+        "yaw": 90,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-customs's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-priest-8",
+      "name": "Haj-Ei Half-Moon",
+      "race": "dunmer",
+      "class": "priest",
+      "actor": "healer",
+      "faction": "drowned-court",
+      "settlement": "lilmoth",
+      "quarter": "the-landing",
+      "household": "lilmoth-priest-8",
+      "role": "head",
+      "disposition": 50,
+      "interior": "lilmoth-scribe",
+      "home_interior": "lilmoth-scribe",
+      "work_interior": "lilmoth-healer",
+      "owns_zones": [
+        "lilmoth.priest8.r0",
+        "lilmoth.priest8.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "lilmoth-scribe",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "09:00",
+          "at": "lilmoth-healer",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "20:00",
+          "at": "lilmoth-healer",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "lilmoth-scribe",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-apothecary",
+        "at_building_name": "The Rot-Quarter Apothecary",
+        "pos": [
+          2788.82,
+          7.37,
+          5057.7
+        ],
+        "yaw": 35,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-apothecary's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-smith-9",
+      "name": "Ten-Tongues the Younger",
+      "race": "argonian",
+      "class": "smith",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "household": "lilmoth-smith-9",
+      "role": "head",
+      "disposition": 42,
+      "interior": "lilmoth-inn-drowned",
+      "home_interior": "lilmoth-inn-drowned",
+      "work_interior": "lilmoth-yard",
+      "owns_zones": [
+        "lilmoth.smith9.r0",
+        "lilmoth.smith9.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "08:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "lilmoth-yard",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "lilmoth-yard",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-yard",
+        "at_building_name": "The Wet Yard",
+        "pos": [
+          2799.79,
+          7.37,
+          5036.22
+        ],
+        "yaw": 79,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-yard's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-legionary-10",
+      "name": "Beem-Kiune Nine-Teeth",
+      "race": "argonian",
+      "class": "legionary",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "lilmoth",
+      "quarter": "stilt-town",
+      "household": "lilmoth-legionary-10",
+      "role": "head",
+      "disposition": 29,
+      "interior": "lilmoth-shrine",
+      "home_interior": "lilmoth-shrine",
+      "work_interior": "lilmoth-customs",
+      "owns_zones": [
+        "lilmoth.legionary10.r0",
+        "lilmoth.legionary10.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "lilmoth-customs",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "10:00",
+          "at": "lilmoth-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "18:00",
+          "at": "lilmoth-customs",
+          "activity": "work"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "lilmoth-shrine",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-customs",
+        "at_building_name": "The Customs Hall",
+        "pos": [
+          2801.37,
+          0.37,
+          5030.76
+        ],
+        "yaw": 90,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-customs's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-legionary-11",
+      "name": "Veek Dark-Water",
+      "race": "argonian",
+      "class": "legionary",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "lilmoth",
+      "quarter": "the-landing",
+      "household": "lilmoth-legionary-11",
+      "role": "head",
+      "disposition": 31,
+      "interior": "lilmoth-rootpost",
+      "home_interior": "lilmoth-rootpost",
+      "work_interior": "lilmoth-customs",
+      "owns_zones": [
+        "lilmoth.legionary11.r0",
+        "lilmoth.legionary11.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "lilmoth-customs",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "09:00",
+          "at": "lilmoth-rootpost",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "18:00",
+          "at": "lilmoth-customs",
+          "activity": "work"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "lilmoth-rootpost",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-scribe",
+        "at_building_name": "The Scribe's Stair",
+        "pos": [
+          2784.1,
+          0.37,
+          5060.23
+        ],
+        "yaw": 25,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-scribe's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-apothecary-12",
+      "name": "Three-Knives Two-Skins of rot quarter",
+      "race": "argonian",
+      "class": "apothecary",
+      "actor": "healer",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "household": "lilmoth-apothecary-12",
+      "role": "head",
+      "disposition": 49,
+      "interior": "lilmoth-yard",
+      "home_interior": "lilmoth-yard",
+      "work_interior": "lilmoth-yard",
+      "owns_zones": [
+        "lilmoth.apothecary12.r0",
+        "lilmoth.apothecary12.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "lilmoth-yard",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "lilmoth-yard",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "lilmoth-yard",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-yard",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-inn-stilt",
+        "at_building_name": "The Stilt Rest",
+        "pos": [
+          2758.34,
+          7.37,
+          5068.62
+        ],
+        "yaw": 352,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-inn-stilt's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-legionary-13",
+      "name": "Ranaso Half-Moon",
+      "race": "argonian",
+      "class": "legionary",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "lilmoth",
+      "quarter": "stilt-town",
+      "household": "lilmoth-legionary-13",
+      "role": "head",
+      "disposition": 34,
+      "interior": "lilmoth-market",
+      "home_interior": "lilmoth-market",
+      "work_interior": "lilmoth-customs",
+      "owns_zones": [
+        "lilmoth.legionary13.r0",
+        "lilmoth.legionary13.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "lilmoth-customs",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "10:00",
+          "at": "lilmoth-market",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "18:00",
+          "at": "lilmoth-customs",
+          "activity": "work"
+        },
+        {
+          "from": "18:00",
+          "to": "19:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-market",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-inn-drowned",
+        "at_building_name": "The Drowned Bell",
+        "pos": [
+          2766.58,
+          0.37,
+          5070.2
+        ],
+        "yaw": 3,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-inn-drowned's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-factor-0-child0",
+      "name": "Ocheeva of the Boards of rot quarter",
+      "race": "argonian",
+      "class": "child",
+      "actor": "villager",
+      "faction": "wet-ledger",
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "household": "lilmoth-factor-0",
+      "role": "child",
+      "disposition": 52,
+      "interior": "lilmoth-house-0",
+      "home_interior": "lilmoth-house-0",
+      "work_interior": "lilmoth-house-0",
+      "owns_zones": [],
+      "behaviour": "attend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "09:00",
+          "at": "lilmoth-house-0",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "lilmoth-shrine",
+          "activity": "shrine"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "lilmoth-house-0",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-scribe",
+        "at_building_name": "The Scribe's Stair",
+        "pos": [
+          2784.37,
+          0.37,
+          5059.4
+        ],
+        "yaw": 25,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-scribe's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-factor-0-partner1",
+      "name": "Drops-No-Stitch Slow-Rain",
+      "race": "argonian",
+      "class": "partner",
+      "actor": "townsman",
+      "faction": "wet-ledger",
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "household": "lilmoth-factor-0",
+      "role": "partner",
+      "disposition": 47,
+      "interior": "lilmoth-house-0",
+      "home_interior": "lilmoth-house-0",
+      "work_interior": "lilmoth-house-0",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "09:00",
+          "at": "lilmoth-house-0",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "12:00",
+          "at": "lilmoth-house-0",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "18:00",
+          "at": "lilmoth-house-0",
+          "activity": "home"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "lilmoth-house-0",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-house-0",
+        "at_building_name": "Ranaso Wet-Foot's house",
+        "pos": [
+          2733.87,
+          7.37,
+          5056.2
+        ],
+        "yaw": 308,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-house-0's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-cook-1-partner0",
+      "name": "Silent-Reed Bone-Setter of stilt town",
+      "race": "imperial",
+      "class": "partner",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "stilt-town",
+      "household": "lilmoth-cook-1",
+      "role": "partner",
+      "disposition": 48,
+      "interior": "lilmoth-house-1",
+      "home_interior": "lilmoth-house-1",
+      "work_interior": "lilmoth-house-1",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "09:00",
+          "at": "lilmoth-house-1",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "12:00",
+          "at": "lilmoth-house-1",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "18:00",
+          "at": "lilmoth-house-1",
+          "activity": "home"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "lilmoth-house-1",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-house-1",
+        "at_building_name": "Three-Knives Two-Skins's house",
+        "pos": [
+          2726.1,
+          0.37,
+          5045.24
+        ],
+        "yaw": 297,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-house-1's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-scribe-2-elder0",
+      "name": "Ruut Cold-Ash",
+      "race": "argonian",
+      "class": "elder",
+      "actor": "town-elder",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "the-landing",
+      "household": "lilmoth-scribe-2",
+      "role": "elder",
+      "disposition": 50,
+      "interior": "lilmoth-house-2",
+      "home_interior": "lilmoth-house-2",
+      "work_interior": "lilmoth-house-2",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "09:00",
+          "at": "lilmoth-house-2",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "12:00",
+          "at": "lilmoth-house-2",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "18:00",
+          "at": "lilmoth-house-2",
+          "activity": "home"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "lilmoth-house-2",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-house-2",
+        "at_building_name": "Okan Sings-At-Dusk's house",
+        "pos": [
+          2724.41,
+          7.37,
+          5039.89
+        ],
+        "yaw": 286,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-house-2's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-scribe-2-sibling1",
+      "name": "Sedura Rope-Maker",
+      "race": "argonian",
+      "class": "sibling",
+      "actor": "villager",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "the-landing",
+      "household": "lilmoth-scribe-2",
+      "role": "sibling",
+      "disposition": 45,
+      "interior": "lilmoth-house-2",
+      "home_interior": "lilmoth-house-2",
+      "work_interior": "lilmoth-house-2",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "lilmoth-house-2",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "13:00",
+          "at": "lilmoth-house-2",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "lilmoth-house-2",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-house-2",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-inn-drowned",
+        "at_building_name": "The Drowned Bell",
+        "pos": [
+          2770.72,
+          0.37,
+          5070.44
+        ],
+        "yaw": 3,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-inn-drowned's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-weaver-3-sibling0",
+      "name": "Bevene the Patient",
+      "race": "argonian",
+      "class": "sibling",
+      "actor": "villager",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "household": "lilmoth-weaver-3",
+      "role": "sibling",
+      "disposition": 42,
+      "interior": "lilmoth-house-3",
+      "home_interior": "lilmoth-house-3",
+      "work_interior": "lilmoth-house-3",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "lilmoth-house-3",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "lilmoth-house-3",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "lilmoth-house-3",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-house-3",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-smithy",
+        "at_building_name": "The Tidewater Forge",
+        "pos": [
+          2792.27,
+          0.37,
+          5056.72
+        ],
+        "yaw": 46,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-factor-4-elder0",
+      "name": "Keeps-Her-Own of the Boards",
+      "race": "argonian",
+      "class": "elder",
+      "actor": "town-elder",
+      "faction": "wet-ledger",
+      "settlement": "lilmoth",
+      "quarter": "stilt-town",
+      "household": "lilmoth-factor-4",
+      "role": "elder",
+      "disposition": 47,
+      "interior": "lilmoth-house-4",
+      "home_interior": "lilmoth-house-4",
+      "work_interior": "lilmoth-house-4",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "09:00",
+          "at": "lilmoth-house-4",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "18:00",
+          "at": "lilmoth-house-4",
+          "activity": "home"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "lilmoth-house-4",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-yard",
+        "at_building_name": "The Wet Yard",
+        "pos": [
+          2800.96,
+          7.37,
+          5032.29
+        ],
+        "yaw": 79,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-yard's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-factor-4-sibling1",
+      "name": "Deek Slow-Rain",
+      "race": "dunmer",
+      "class": "sibling",
+      "actor": "villager",
+      "faction": "wet-ledger",
+      "settlement": "lilmoth",
+      "quarter": "stilt-town",
+      "household": "lilmoth-factor-4",
+      "role": "sibling",
+      "disposition": 41,
+      "interior": "lilmoth-house-4",
+      "home_interior": "lilmoth-house-4",
+      "work_interior": "lilmoth-house-4",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "lilmoth-house-4",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "lilmoth-house-4",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "lilmoth-house-4",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-house-4",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-pawn",
+        "at_building_name": "The Low Pawn",
+        "pos": [
+          2776.64,
+          7.37,
+          5061.79
+        ],
+        "yaw": 14,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-pawn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-cook-5-sibling0",
+      "name": "Llarara the Elder",
+      "race": "argonian",
+      "class": "sibling",
+      "actor": "villager",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "the-landing",
+      "household": "lilmoth-cook-5",
+      "role": "sibling",
+      "disposition": 45,
+      "interior": "lilmoth-customs",
+      "home_interior": "lilmoth-customs",
+      "work_interior": "lilmoth-customs",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "lilmoth-customs",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "lilmoth-customs",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "lilmoth-customs",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-customs",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-yard",
+        "at_building_name": "The Wet Yard",
+        "pos": [
+          2799.55,
+          7.37,
+          5034.65
+        ],
+        "yaw": 79,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-yard's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-priest-6-lodger0",
+      "name": "Vaman Cold-Ash",
+      "race": "dunmer",
+      "class": "lodger",
+      "actor": "villager",
+      "faction": "drowned-court",
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "household": "lilmoth-priest-6",
+      "role": "lodger",
+      "disposition": 36,
+      "interior": "lilmoth-ledger-house",
+      "home_interior": "lilmoth-ledger-house",
+      "work_interior": "lilmoth-ledger-house",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "02:00",
+          "at": "lilmoth-ledger-house",
+          "activity": "work"
+        },
+        {
+          "from": "02:00",
+          "to": "07:00",
+          "at": "lilmoth-ledger-house",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "10:00",
+          "at": "lilmoth-ledger-house",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "17:00",
+          "at": "lilmoth-ledger-house",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "lilmoth-ledger-house",
+          "activity": "work"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-ledger-house",
+        "at_building_name": "The Ledger House",
+        "pos": [
+          2797.19,
+          0.37,
+          5036.43
+        ],
+        "yaw": 68,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-ledger-house's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-priest-6-apprentice1",
+      "name": "Waits-For-Salt the Shorter of rot quarter",
+      "race": "argonian",
+      "class": "apprentice",
+      "actor": "townsman",
+      "faction": "drowned-court",
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "household": "lilmoth-priest-6",
+      "role": "apprentice",
+      "disposition": 45,
+      "interior": "lilmoth-ledger-house",
+      "home_interior": "lilmoth-ledger-house",
+      "work_interior": "lilmoth-healer",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "lilmoth-ledger-house",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "lilmoth-healer",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "lilmoth-healer",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-ledger-house",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-inn-drowned",
+        "at_building_name": "The Drowned Bell",
+        "pos": [
+          2766.76,
+          0.37,
+          5069.87
+        ],
+        "yaw": 3,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-inn-drowned's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-weaver-7-sibling0",
+      "name": "Drops-No-Stitch Slow-Rain of stilt town",
+      "race": "argonian",
+      "class": "sibling",
+      "actor": "villager",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "stilt-town",
+      "household": "lilmoth-weaver-7",
+      "role": "sibling",
+      "disposition": 46,
+      "interior": "lilmoth-smithy",
+      "home_interior": "lilmoth-smithy",
+      "work_interior": "lilmoth-smithy",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "04:00",
+          "to": "08:00",
+          "at": "lilmoth-smithy",
+          "activity": "work"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "lilmoth-smithy",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "lilmoth-smithy",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "04:00",
+          "at": "lilmoth-smithy",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-smithy",
+        "at_building_name": "The Tidewater Forge",
+        "pos": [
+          2795.01,
+          0.37,
+          5052.46
+        ],
+        "yaw": 46,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-priest-8-lodger0",
+      "name": "Nartise Half-Moon",
+      "race": "dunmer",
+      "class": "lodger",
+      "actor": "villager",
+      "faction": "drowned-court",
+      "settlement": "lilmoth",
+      "quarter": "the-landing",
+      "household": "lilmoth-priest-8",
+      "role": "lodger",
+      "disposition": 35,
+      "interior": "lilmoth-scribe",
+      "home_interior": "lilmoth-scribe",
+      "work_interior": "lilmoth-scribe",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "02:00",
+          "at": "lilmoth-scribe",
+          "activity": "work"
+        },
+        {
+          "from": "02:00",
+          "to": "10:00",
+          "at": "lilmoth-scribe",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "00:00",
+          "at": "lilmoth-scribe",
+          "activity": "work"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-scribe",
+        "at_building_name": "The Scribe's Stair",
+        "pos": [
+          2783.75,
+          0.37,
+          5060.73
+        ],
+        "yaw": 25,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-scribe's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-priest-8-apprentice1",
+      "name": "Sondaale the Younger",
+      "race": "imperial",
+      "class": "apprentice",
+      "actor": "townsman",
+      "faction": "drowned-court",
+      "settlement": "lilmoth",
+      "quarter": "the-landing",
+      "household": "lilmoth-priest-8",
+      "role": "apprentice",
+      "disposition": 42,
+      "interior": "lilmoth-scribe",
+      "home_interior": "lilmoth-scribe",
+      "work_interior": "lilmoth-healer",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "lilmoth-scribe",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "lilmoth-healer",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "lilmoth-healer",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-scribe",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-scribe",
+        "at_building_name": "The Scribe's Stair",
+        "pos": [
+          2781.11,
+          0.37,
+          5060.67
+        ],
+        "yaw": 25,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-scribe's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-smith-9-sibling0",
+      "name": "Wanan the Shorter",
+      "race": "argonian",
+      "class": "sibling",
+      "actor": "villager",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "household": "lilmoth-smith-9",
+      "role": "sibling",
+      "disposition": 39,
+      "interior": "lilmoth-inn-drowned",
+      "home_interior": "lilmoth-inn-drowned",
+      "work_interior": "lilmoth-inn-drowned",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "13:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-customs",
+        "at_building_name": "The Customs Hall",
+        "pos": [
+          2802.37,
+          0.37,
+          5024.71
+        ],
+        "yaw": 90,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-customs's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-legionary-10-partner0",
+      "name": "Deek Slow-Rain of stilt town",
+      "race": "argonian",
+      "class": "partner",
+      "actor": "townsman",
+      "faction": "ninth-cohort",
+      "settlement": "lilmoth",
+      "quarter": "stilt-town",
+      "household": "lilmoth-legionary-10",
+      "role": "partner",
+      "disposition": 41,
+      "interior": "lilmoth-shrine",
+      "home_interior": "lilmoth-shrine",
+      "work_interior": "lilmoth-shrine",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "09:00",
+          "at": "lilmoth-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "18:00",
+          "at": "lilmoth-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "00:00",
+          "at": "lilmoth-shrine",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-scribe",
+        "at_building_name": "The Scribe's Stair",
+        "pos": [
+          2783.73,
+          0.37,
+          5059.96
+        ],
+        "yaw": 25,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-scribe's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-keeper-customs",
+      "name": "Neetrenaza the Patient",
+      "title": "Clerk",
+      "race": "argonian",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "the-imperial-assize",
+      "settlement": "lilmoth",
+      "quarter": "stilt-town",
+      "household": "lilmoth-keeper-customs",
+      "role": "keeper",
+      "disposition": 33,
+      "interior": "lilmoth-customs",
+      "home_interior": "lilmoth-customs",
+      "work_interior": "lilmoth-customs",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "lilmoth-customs",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "lilmoth-customs",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "lilmoth-customs",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-customs",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-yard",
+        "at_building_name": "The Wet Yard",
+        "pos": [
+          2800.24,
+          7.37,
+          5033.91
+        ],
+        "yaw": 79,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-yard's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-keeper-yard",
+      "name": "Veek Cold-Ash",
+      "title": "Boatwright",
+      "race": "imperial",
+      "class": "boatwright",
+      "actor": "fisher",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "the-landing",
+      "household": "lilmoth-keeper-yard",
+      "role": "keeper",
+      "disposition": 48,
+      "interior": "lilmoth-yard",
+      "home_interior": "lilmoth-yard",
+      "work_interior": "lilmoth-yard",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "lilmoth-yard",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "lilmoth-yard",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "lilmoth-yard",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-yard",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-smithy",
+        "at_building_name": "The Tidewater Forge",
+        "pos": [
+          2794.17,
+          0.37,
+          5054.61
+        ],
+        "yaw": 46,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-keeper-ledger-house",
+      "name": "Neetrenaza the Patient",
+      "title": "Clerk",
+      "race": "imperial",
+      "class": "factor",
+      "actor": "dres-factor",
+      "faction": "wet-ledger",
+      "settlement": "lilmoth",
+      "quarter": "stilt-town",
+      "household": "lilmoth-keeper-ledger-house",
+      "role": "keeper",
+      "disposition": 33,
+      "interior": "lilmoth-ledger-house",
+      "home_interior": "lilmoth-ledger-house",
+      "work_interior": "lilmoth-ledger-house",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "lilmoth-ledger-house",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "lilmoth-ledger-house",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "lilmoth-ledger-house",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-ledger-house",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-yard",
+        "at_building_name": "The Wet Yard",
+        "pos": [
+          2798.81,
+          7.37,
+          5035.59
+        ],
+        "yaw": 79,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-yard's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-keeper-market",
+      "name": "Ahnassi the Younger",
+      "title": "Trader",
+      "race": "imperial",
+      "class": "trader",
+      "actor": "merchant",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "the-landing",
+      "household": "lilmoth-keeper-market",
+      "role": "keeper",
+      "disposition": 41,
+      "interior": "lilmoth-market",
+      "home_interior": "lilmoth-market",
+      "work_interior": "lilmoth-market",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "lilmoth-market",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "lilmoth-market",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "lilmoth-market",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-market",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-market",
+        "at_building_name": "The Sunk Market",
+        "pos": [
+          2795.21,
+          7.37,
+          5043.54
+        ],
+        "yaw": 57,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-keeper-smithy",
+      "name": "Ahnassi the Shorter",
+      "title": "Smith",
+      "race": "dunmer",
+      "class": "smith",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "the-landing",
+      "household": "lilmoth-keeper-smithy",
+      "role": "keeper",
+      "disposition": 38,
+      "interior": "lilmoth-smithy",
+      "home_interior": "lilmoth-smithy",
+      "work_interior": "lilmoth-smithy",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "lilmoth-smithy",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "lilmoth-smithy",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "lilmoth-smithy",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-smithy",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-smithy",
+        "at_building_name": "The Tidewater Forge",
+        "pos": [
+          2794.32,
+          0.37,
+          5055.93
+        ],
+        "yaw": 46,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-keeper-apothecary",
+      "name": "Heem Reed-Cutter",
+      "title": "Apothecary",
+      "race": "argonian",
+      "class": "apothecary",
+      "actor": "healer",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "stilt-town",
+      "household": "lilmoth-keeper-apothecary",
+      "role": "keeper",
+      "disposition": 45,
+      "interior": "lilmoth-apothecary",
+      "home_interior": "lilmoth-apothecary",
+      "work_interior": "lilmoth-apothecary",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "lilmoth-apothecary",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "lilmoth-apothecary",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "lilmoth-apothecary",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-apothecary",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-yard",
+        "at_building_name": "The Wet Yard",
+        "pos": [
+          2799.18,
+          7.37,
+          5032.83
+        ],
+        "yaw": 79,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-yard's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-keeper-scribe",
+      "name": "Ahnassi the Shorter",
+      "title": "Scribe",
+      "race": "imperial",
+      "class": "scribe",
+      "actor": "clerk",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "the-landing",
+      "household": "lilmoth-keeper-scribe",
+      "role": "keeper",
+      "disposition": 36,
+      "interior": "lilmoth-scribe",
+      "home_interior": "lilmoth-scribe",
+      "work_interior": "lilmoth-scribe",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "lilmoth-scribe",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "lilmoth-scribe",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "lilmoth-scribe",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-scribe",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-scribe",
+        "at_building_name": "The Scribe's Stair",
+        "pos": [
+          2783.48,
+          0.37,
+          5060.6
+        ],
+        "yaw": 25,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-scribe's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-keeper-pawn",
+      "name": "Ocheeva Salt-Hand",
+      "title": "Pawnbroker",
+      "race": "argonian",
+      "class": "trader",
+      "actor": "merchant",
+      "faction": "wet-ledger",
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "household": "lilmoth-keeper-pawn",
+      "role": "keeper",
+      "disposition": 43,
+      "interior": "lilmoth-pawn",
+      "home_interior": "lilmoth-pawn",
+      "work_interior": "lilmoth-pawn",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "lilmoth-pawn",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "lilmoth-pawn",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "lilmoth-pawn",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "lilmoth-pawn",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-inn-drowned",
+        "at_building_name": "The Drowned Bell",
+        "pos": [
+          2770.13,
+          0.37,
+          5069.89
+        ],
+        "yaw": 3,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-inn-drowned's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-keeper-inn-drowned",
+      "name": "Sees-All-Colours Wet-Foot",
+      "title": "Publican",
+      "race": "argonian",
+      "class": "publican",
+      "actor": "innkeeper",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "household": "lilmoth-keeper-inn-drowned",
+      "role": "keeper",
+      "disposition": 54,
+      "interior": "lilmoth-inn-drowned",
+      "home_interior": "lilmoth-inn-drowned",
+      "work_interior": "lilmoth-inn-drowned",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "02:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "work"
+        },
+        {
+          "from": "02:00",
+          "to": "09:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "home"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "00:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "work"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "bed"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-apothecary",
+        "at_building_name": "The Rot-Quarter Apothecary",
+        "pos": [
+          2787.85,
+          7.37,
+          5059.18
+        ],
+        "yaw": 35,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-apothecary's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-keeper-inn-stilt",
+      "name": "Ranaso the Patient",
+      "title": "Publican",
+      "race": "argonian",
+      "class": "publican",
+      "actor": "innkeeper",
+      "faction": null,
+      "settlement": "lilmoth",
+      "quarter": "rot-quarter",
+      "household": "lilmoth-keeper-inn-stilt",
+      "role": "keeper",
+      "disposition": 58,
+      "interior": "lilmoth-inn-stilt",
+      "home_interior": "lilmoth-inn-stilt",
+      "work_interior": "lilmoth-inn-stilt",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "10:00",
+          "at": "lilmoth-inn-stilt",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "22:00",
+          "at": "lilmoth-inn-stilt",
+          "activity": "work"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "bed"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-customs",
+        "at_building_name": "The Customs Hall",
+        "pos": [
+          2801.56,
+          0.37,
+          5025.83
+        ],
+        "yaw": 90,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-customs's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-keeper-shrine",
+      "name": "Wanan of Nine Debts",
+      "title": "Rootkeeper",
+      "race": "argonian",
+      "class": "rootkeeper",
+      "actor": "rootkeeper",
+      "faction": "rootkeepers",
+      "settlement": "lilmoth",
+      "quarter": "stilt-town",
+      "household": "lilmoth-keeper-shrine",
+      "role": "keeper",
+      "disposition": 48,
+      "interior": "lilmoth-shrine",
+      "home_interior": "lilmoth-shrine",
+      "work_interior": "lilmoth-shrine",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "lilmoth-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "12:00",
+          "at": "lilmoth-shrine",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "lilmoth-shrine",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "20:00",
+          "at": "lilmoth-shrine",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "lilmoth-shrine",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "travel"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-shrine",
+        "at_building_name": "The Tideline Hist-Shrine",
+        "pos": [
+          2753.94,
+          0.37,
+          5066.04
+        ],
+        "yaw": 341,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-shrine's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-keeper-healer",
+      "name": "Chun Slow-Rain",
+      "title": "Healer",
+      "race": "dunmer",
+      "class": "priest",
+      "actor": "healer",
+      "faction": "drowned-court",
+      "settlement": "lilmoth",
+      "quarter": "the-landing",
+      "household": "lilmoth-keeper-healer",
+      "role": "keeper",
+      "disposition": 49,
+      "interior": "lilmoth-healer",
+      "home_interior": "lilmoth-healer",
+      "work_interior": "lilmoth-healer",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "lilmoth-healer",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "07:00",
+          "at": "lilmoth-healer",
+          "activity": "work"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "12:00",
+          "at": "lilmoth-healer",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "lilmoth-healer",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "17:00",
+          "at": "lilmoth-healer",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "20:00",
+          "at": "lilmoth-healer",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "lilmoth-healer",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-healer",
+        "at_building_name": "The Wet Ward",
+        "pos": [
+          2748.17,
+          7.37,
+          5063.28
+        ],
+        "yaw": 330,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-healer's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "lilmoth-keeper-rootpost",
+      "name": "Veek Salt-Hand",
+      "title": "Postmaster",
+      "race": "argonian",
+      "class": "rootkeeper",
+      "actor": "rootkeeper",
+      "faction": "rootkeepers",
+      "settlement": "lilmoth",
+      "quarter": "stilt-town",
+      "household": "lilmoth-keeper-rootpost",
+      "role": "keeper",
+      "disposition": 49,
+      "interior": "lilmoth-rootpost",
+      "home_interior": "lilmoth-rootpost",
+      "work_interior": "lilmoth-rootpost",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "06:00",
+          "at": "lilmoth-rootpost",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "12:00",
+          "at": "lilmoth-rootpost",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "lilmoth-rootpost",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "20:00",
+          "at": "lilmoth-rootpost",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "22:00",
+          "at": "lilmoth-rootpost",
+          "activity": "home"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "lilmoth",
+        "background"
+      ],
+      "services": [
+        "travel"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-customs",
+        "at_building_name": "The Customs Hall",
+        "pos": [
+          2800.3,
+          0.37,
+          5027.63
+        ],
+        "yaw": 90,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from lilmoth-customs's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
     }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-IMP"
-  },
-  {
-   "id": "lilmoth-cook-1",
-   "name": "Three-Knives Two-Skins",
-   "race": "argonian",
-   "class": "cook",
-   "actor": "townsman",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "stilt-town",
-   "household": "lilmoth-cook-1",
-   "role": "head",
-   "disposition": 43,
-   "interior": "lilmoth-house-1",
-   "home_interior": "lilmoth-house-1",
-   "work_interior": "lilmoth-inn-drowned",
-   "owns_zones": [
-    "lilmoth.cook1.r0",
-    "lilmoth.cook1.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "04:00",
-     "to": "08:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "work"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "04:00",
-     "at": "lilmoth-house-1",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-scribe-2",
-   "name": "Okan Sings-At-Dusk",
-   "race": "argonian",
-   "class": "scribe",
-   "actor": "clerk",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "the-landing",
-   "household": "lilmoth-scribe-2",
-   "role": "head",
-   "disposition": 35,
-   "interior": "lilmoth-house-2",
-   "home_interior": "lilmoth-house-2",
-   "work_interior": "lilmoth-yard",
-   "owns_zones": [
-    "lilmoth.scribe2.r0",
-    "lilmoth.scribe2.r1"
-   ],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-house-2",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-house-2",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-yard",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-yard",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-house-2",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-weaver-3",
-   "name": "Waits-For-Salt the Shorter",
-   "race": "dunmer",
-   "class": "weaver",
-   "actor": "townsman",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "rot-quarter",
-   "household": "lilmoth-weaver-3",
-   "role": "head",
-   "disposition": 44,
-   "interior": "lilmoth-house-3",
-   "home_interior": "lilmoth-house-3",
-   "work_interior": "lilmoth-yard",
-   "owns_zones": [
-    "lilmoth.weaver3.r0",
-    "lilmoth.weaver3.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-house-3",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-house-3",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-yard",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-yard",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-house-3",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-factor-4",
-   "name": "Ocheeva of the Boards",
-   "race": "argonian",
-   "class": "factor",
-   "actor": "dres-factor",
-   "faction": "wet-ledger",
-   "settlement": "lilmoth",
-   "quarter": "stilt-town",
-   "household": "lilmoth-factor-4",
-   "role": "head",
-   "disposition": 29,
-   "interior": "lilmoth-house-4",
-   "home_interior": "lilmoth-house-4",
-   "work_interior": "lilmoth-customs",
-   "owns_zones": [
-    "lilmoth.factor4.r0",
-    "lilmoth.factor4.r1"
-   ],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-house-4",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-house-4",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-customs",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-customs",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-house-4",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-IMP"
-  },
-  {
-   "id": "lilmoth-cook-5",
-   "name": "Jeelus-Tei the Patient",
-   "race": "argonian",
-   "class": "cook",
-   "actor": "townsman",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "the-landing",
-   "household": "lilmoth-cook-5",
-   "role": "head",
-   "disposition": 46,
-   "interior": "lilmoth-customs",
-   "home_interior": "lilmoth-customs",
-   "work_interior": "lilmoth-inn-drowned",
-   "owns_zones": [
-    "lilmoth.cook5.r0",
-    "lilmoth.cook5.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "04:00",
-     "to": "08:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "work"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "04:00",
-     "at": "lilmoth-customs",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-priest-6",
-   "name": "Marks-The-Ledger of Nine Debts",
-   "race": "argonian",
-   "class": "priest",
-   "actor": "healer",
-   "faction": "drowned-court",
-   "settlement": "lilmoth",
-   "quarter": "rot-quarter",
-   "household": "lilmoth-priest-6",
-   "role": "head",
-   "disposition": 47,
-   "interior": "lilmoth-ledger-house",
-   "home_interior": "lilmoth-ledger-house",
-   "work_interior": "lilmoth-healer",
-   "owns_zones": [
-    "lilmoth.priest6.r0",
-    "lilmoth.priest6.r1"
-   ],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "06:00",
-     "at": "lilmoth-ledger-house",
-     "activity": "home"
-    },
-    {
-     "from": "06:00",
-     "to": "12:00",
-     "at": "lilmoth-healer",
-     "activity": "work"
-    },
-    {
-     "from": "12:00",
-     "to": "13:00",
-     "at": "lilmoth-ledger-house",
-     "activity": "home"
-    },
-    {
-     "from": "13:00",
-     "to": "20:00",
-     "at": "lilmoth-healer",
-     "activity": "work"
-    },
-    {
-     "from": "20:00",
-     "to": "00:00",
-     "at": "lilmoth-ledger-house",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "heal"
-   ],
-   "reaction_group": "RG-DEEP"
-  },
-  {
-   "id": "lilmoth-weaver-7",
-   "name": "Silent-Reed Bone-Setter",
-   "race": "imperial",
-   "class": "weaver",
-   "actor": "townsman",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "stilt-town",
-   "household": "lilmoth-weaver-7",
-   "role": "head",
-   "disposition": 42,
-   "interior": "lilmoth-smithy",
-   "home_interior": "lilmoth-smithy",
-   "work_interior": "lilmoth-yard",
-   "owns_zones": [
-    "lilmoth.weaver7.r0",
-    "lilmoth.weaver7.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-smithy",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-smithy",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-yard",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-yard",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-smithy",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-priest-8",
-   "name": "Haj-Ei Half-Moon",
-   "race": "dunmer",
-   "class": "priest",
-   "actor": "healer",
-   "faction": "drowned-court",
-   "settlement": "lilmoth",
-   "quarter": "the-landing",
-   "household": "lilmoth-priest-8",
-   "role": "head",
-   "disposition": 50,
-   "interior": "lilmoth-scribe",
-   "home_interior": "lilmoth-scribe",
-   "work_interior": "lilmoth-healer",
-   "owns_zones": [
-    "lilmoth.priest8.r0",
-    "lilmoth.priest8.r1"
-   ],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "06:00",
-     "at": "lilmoth-scribe",
-     "activity": "home"
-    },
-    {
-     "from": "06:00",
-     "to": "12:00",
-     "at": "lilmoth-healer",
-     "activity": "work"
-    },
-    {
-     "from": "12:00",
-     "to": "13:00",
-     "at": "lilmoth-scribe",
-     "activity": "home"
-    },
-    {
-     "from": "13:00",
-     "to": "20:00",
-     "at": "lilmoth-healer",
-     "activity": "work"
-    },
-    {
-     "from": "20:00",
-     "to": "00:00",
-     "at": "lilmoth-scribe",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "heal"
-   ],
-   "reaction_group": "RG-DEEP"
-  },
-  {
-   "id": "lilmoth-smith-9",
-   "name": "Ten-Tongues the Younger",
-   "race": "argonian",
-   "class": "smith",
-   "actor": "townsman",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "rot-quarter",
-   "household": "lilmoth-smith-9",
-   "role": "head",
-   "disposition": 42,
-   "interior": "lilmoth-inn-drowned",
-   "home_interior": "lilmoth-inn-drowned",
-   "work_interior": "lilmoth-yard",
-   "owns_zones": [
-    "lilmoth.smith9.r0",
-    "lilmoth.smith9.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-yard",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-yard",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "repair"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-legionary-10",
-   "name": "Beem-Kiune Nine-Teeth",
-   "race": "argonian",
-   "class": "legionary",
-   "actor": "legionary",
-   "faction": "ninth-cohort",
-   "settlement": "lilmoth",
-   "quarter": "stilt-town",
-   "household": "lilmoth-legionary-10",
-   "role": "head",
-   "disposition": 29,
-   "interior": "lilmoth-shrine",
-   "home_interior": "lilmoth-shrine",
-   "work_interior": "lilmoth-customs",
-   "owns_zones": [
-    "lilmoth.legionary10.r0",
-    "lilmoth.legionary10.r1"
-   ],
-   "behaviour": "post",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "06:00",
-     "at": "lilmoth-customs",
-     "activity": "work"
-    },
-    {
-     "from": "06:00",
-     "to": "10:00",
-     "at": "lilmoth-shrine",
-     "activity": "home"
-    },
-    {
-     "from": "10:00",
-     "to": "18:00",
-     "at": "lilmoth-customs",
-     "activity": "work"
-    },
-    {
-     "from": "18:00",
-     "to": "21:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "21:00",
-     "to": "00:00",
-     "at": "lilmoth-shrine",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-IMP"
-  },
-  {
-   "id": "lilmoth-legionary-11",
-   "name": "Veek Dark-Water",
-   "race": "argonian",
-   "class": "legionary",
-   "actor": "legionary",
-   "faction": "ninth-cohort",
-   "settlement": "lilmoth",
-   "quarter": "the-landing",
-   "household": "lilmoth-legionary-11",
-   "role": "head",
-   "disposition": 31,
-   "interior": "lilmoth-rootpost",
-   "home_interior": "lilmoth-rootpost",
-   "work_interior": "lilmoth-customs",
-   "owns_zones": [
-    "lilmoth.legionary11.r0",
-    "lilmoth.legionary11.r1"
-   ],
-   "behaviour": "post",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "06:00",
-     "at": "lilmoth-customs",
-     "activity": "work"
-    },
-    {
-     "from": "06:00",
-     "to": "10:00",
-     "at": "lilmoth-rootpost",
-     "activity": "home"
-    },
-    {
-     "from": "10:00",
-     "to": "18:00",
-     "at": "lilmoth-customs",
-     "activity": "work"
-    },
-    {
-     "from": "18:00",
-     "to": "21:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "21:00",
-     "to": "00:00",
-     "at": "lilmoth-rootpost",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-IMP"
-  },
-  {
-   "id": "lilmoth-apothecary-12",
-   "name": "Three-Knives Two-Skins of rot quarter",
-   "race": "argonian",
-   "class": "apothecary",
-   "actor": "healer",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "rot-quarter",
-   "household": "lilmoth-apothecary-12",
-   "role": "head",
-   "disposition": 49,
-   "interior": "lilmoth-yard",
-   "home_interior": "lilmoth-yard",
-   "work_interior": "lilmoth-yard",
-   "owns_zones": [
-    "lilmoth.apothecary12.r0",
-    "lilmoth.apothecary12.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-yard",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-yard",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-yard",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-yard",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-yard",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "heal"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-legionary-13",
-   "name": "Ranaso Half-Moon",
-   "race": "argonian",
-   "class": "legionary",
-   "actor": "legionary",
-   "faction": "ninth-cohort",
-   "settlement": "lilmoth",
-   "quarter": "stilt-town",
-   "household": "lilmoth-legionary-13",
-   "role": "head",
-   "disposition": 34,
-   "interior": "lilmoth-market",
-   "home_interior": "lilmoth-market",
-   "work_interior": "lilmoth-customs",
-   "owns_zones": [
-    "lilmoth.legionary13.r0",
-    "lilmoth.legionary13.r1"
-   ],
-   "behaviour": "post",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "06:00",
-     "at": "lilmoth-customs",
-     "activity": "work"
-    },
-    {
-     "from": "06:00",
-     "to": "10:00",
-     "at": "lilmoth-market",
-     "activity": "home"
-    },
-    {
-     "from": "10:00",
-     "to": "18:00",
-     "at": "lilmoth-customs",
-     "activity": "work"
-    },
-    {
-     "from": "18:00",
-     "to": "21:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "21:00",
-     "to": "00:00",
-     "at": "lilmoth-market",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-IMP"
-  },
-  {
-   "id": "lilmoth-factor-0-child0",
-   "name": "Ocheeva of the Boards of rot quarter",
-   "race": "argonian",
-   "class": "child",
-   "actor": "villager",
-   "faction": "wet-ledger",
-   "settlement": "lilmoth",
-   "quarter": "rot-quarter",
-   "household": "lilmoth-factor-0",
-   "role": "child",
-   "disposition": 52,
-   "interior": "lilmoth-house-0",
-   "home_interior": "lilmoth-house-0",
-   "work_interior": "lilmoth-house-0",
-   "owns_zones": [],
-   "behaviour": "attend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "08:00",
-     "at": "lilmoth-house-0",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "17:00",
-     "at": "lilmoth-house-0",
-     "activity": "home"
-    },
-    {
-     "from": "17:00",
-     "to": "19:00",
-     "at": "lilmoth-shrine",
-     "activity": "shrine"
-    },
-    {
-     "from": "19:00",
-     "to": "00:00",
-     "at": "lilmoth-house-0",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-factor-0-partner1",
-   "name": "Drops-No-Stitch Slow-Rain",
-   "race": "argonian",
-   "class": "partner",
-   "actor": "townsman",
-   "faction": "wet-ledger",
-   "settlement": "lilmoth",
-   "quarter": "rot-quarter",
-   "household": "lilmoth-factor-0",
-   "role": "partner",
-   "disposition": 47,
-   "interior": "lilmoth-house-0",
-   "home_interior": "lilmoth-house-0",
-   "work_interior": "lilmoth-house-0",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "09:00",
-     "at": "lilmoth-house-0",
-     "activity": "home"
-    },
-    {
-     "from": "09:00",
-     "to": "12:00",
-     "at": "lilmoth-house-0",
-     "activity": "work"
-    },
-    {
-     "from": "12:00",
-     "to": "18:00",
-     "at": "lilmoth-house-0",
-     "activity": "home"
-    },
-    {
-     "from": "18:00",
-     "to": "21:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "21:00",
-     "to": "00:00",
-     "at": "lilmoth-house-0",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-cook-1-partner0",
-   "name": "Silent-Reed Bone-Setter of stilt town",
-   "race": "imperial",
-   "class": "partner",
-   "actor": "townsman",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "stilt-town",
-   "household": "lilmoth-cook-1",
-   "role": "partner",
-   "disposition": 48,
-   "interior": "lilmoth-house-1",
-   "home_interior": "lilmoth-house-1",
-   "work_interior": "lilmoth-house-1",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "09:00",
-     "at": "lilmoth-house-1",
-     "activity": "home"
-    },
-    {
-     "from": "09:00",
-     "to": "12:00",
-     "at": "lilmoth-house-1",
-     "activity": "work"
-    },
-    {
-     "from": "12:00",
-     "to": "18:00",
-     "at": "lilmoth-house-1",
-     "activity": "home"
-    },
-    {
-     "from": "18:00",
-     "to": "21:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "21:00",
-     "to": "00:00",
-     "at": "lilmoth-house-1",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-scribe-2-elder0",
-   "name": "Ruut Cold-Ash",
-   "race": "argonian",
-   "class": "elder",
-   "actor": "town-elder",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "the-landing",
-   "household": "lilmoth-scribe-2",
-   "role": "elder",
-   "disposition": 50,
-   "interior": "lilmoth-house-2",
-   "home_interior": "lilmoth-house-2",
-   "work_interior": "lilmoth-house-2",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "09:00",
-     "at": "lilmoth-house-2",
-     "activity": "home"
-    },
-    {
-     "from": "09:00",
-     "to": "12:00",
-     "at": "lilmoth-house-2",
-     "activity": "work"
-    },
-    {
-     "from": "12:00",
-     "to": "18:00",
-     "at": "lilmoth-house-2",
-     "activity": "home"
-    },
-    {
-     "from": "18:00",
-     "to": "21:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "21:00",
-     "to": "00:00",
-     "at": "lilmoth-house-2",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-scribe-2-sibling1",
-   "name": "Sedura Rope-Maker",
-   "race": "argonian",
-   "class": "sibling",
-   "actor": "villager",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "the-landing",
-   "household": "lilmoth-scribe-2",
-   "role": "sibling",
-   "disposition": 45,
-   "interior": "lilmoth-house-2",
-   "home_interior": "lilmoth-house-2",
-   "work_interior": "lilmoth-house-2",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "04:00",
-     "to": "08:00",
-     "at": "lilmoth-house-2",
-     "activity": "work"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-house-2",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-house-2",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "04:00",
-     "at": "lilmoth-house-2",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-weaver-3-sibling0",
-   "name": "Bevene the Patient",
-   "race": "argonian",
-   "class": "sibling",
-   "actor": "villager",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "rot-quarter",
-   "household": "lilmoth-weaver-3",
-   "role": "sibling",
-   "disposition": 42,
-   "interior": "lilmoth-house-3",
-   "home_interior": "lilmoth-house-3",
-   "work_interior": "lilmoth-house-3",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "04:00",
-     "to": "08:00",
-     "at": "lilmoth-house-3",
-     "activity": "work"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-house-3",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-house-3",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "04:00",
-     "at": "lilmoth-house-3",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-factor-4-elder0",
-   "name": "Keeps-Her-Own of the Boards",
-   "race": "argonian",
-   "class": "elder",
-   "actor": "town-elder",
-   "faction": "wet-ledger",
-   "settlement": "lilmoth",
-   "quarter": "stilt-town",
-   "household": "lilmoth-factor-4",
-   "role": "elder",
-   "disposition": 47,
-   "interior": "lilmoth-house-4",
-   "home_interior": "lilmoth-house-4",
-   "work_interior": "lilmoth-house-4",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "09:00",
-     "at": "lilmoth-house-4",
-     "activity": "home"
-    },
-    {
-     "from": "09:00",
-     "to": "12:00",
-     "at": "lilmoth-house-4",
-     "activity": "work"
-    },
-    {
-     "from": "12:00",
-     "to": "18:00",
-     "at": "lilmoth-house-4",
-     "activity": "home"
-    },
-    {
-     "from": "18:00",
-     "to": "21:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "21:00",
-     "to": "00:00",
-     "at": "lilmoth-house-4",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-factor-4-sibling1",
-   "name": "Deek Slow-Rain",
-   "race": "dunmer",
-   "class": "sibling",
-   "actor": "villager",
-   "faction": "wet-ledger",
-   "settlement": "lilmoth",
-   "quarter": "stilt-town",
-   "household": "lilmoth-factor-4",
-   "role": "sibling",
-   "disposition": 41,
-   "interior": "lilmoth-house-4",
-   "home_interior": "lilmoth-house-4",
-   "work_interior": "lilmoth-house-4",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "04:00",
-     "to": "08:00",
-     "at": "lilmoth-house-4",
-     "activity": "work"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-house-4",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-house-4",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "04:00",
-     "at": "lilmoth-house-4",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-cook-5-sibling0",
-   "name": "Llarara the Elder",
-   "race": "argonian",
-   "class": "sibling",
-   "actor": "villager",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "the-landing",
-   "household": "lilmoth-cook-5",
-   "role": "sibling",
-   "disposition": 45,
-   "interior": "lilmoth-customs",
-   "home_interior": "lilmoth-customs",
-   "work_interior": "lilmoth-customs",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "04:00",
-     "to": "08:00",
-     "at": "lilmoth-customs",
-     "activity": "work"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-customs",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-customs",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "04:00",
-     "at": "lilmoth-customs",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-priest-6-lodger0",
-   "name": "Vaman Cold-Ash",
-   "race": "dunmer",
-   "class": "lodger",
-   "actor": "villager",
-   "faction": "drowned-court",
-   "settlement": "lilmoth",
-   "quarter": "rot-quarter",
-   "household": "lilmoth-priest-6",
-   "role": "lodger",
-   "disposition": 36,
-   "interior": "lilmoth-ledger-house",
-   "home_interior": "lilmoth-ledger-house",
-   "work_interior": "lilmoth-ledger-house",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "02:00",
-     "at": "lilmoth-ledger-house",
-     "activity": "work"
-    },
-    {
-     "from": "02:00",
-     "to": "10:00",
-     "at": "lilmoth-ledger-house",
-     "activity": "home"
-    },
-    {
-     "from": "10:00",
-     "to": "00:00",
-     "at": "lilmoth-ledger-house",
-     "activity": "work"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-priest-6-apprentice1",
-   "name": "Waits-For-Salt the Shorter of rot quarter",
-   "race": "argonian",
-   "class": "apprentice",
-   "actor": "townsman",
-   "faction": "drowned-court",
-   "settlement": "lilmoth",
-   "quarter": "rot-quarter",
-   "household": "lilmoth-priest-6",
-   "role": "apprentice",
-   "disposition": 45,
-   "interior": "lilmoth-ledger-house",
-   "home_interior": "lilmoth-ledger-house",
-   "work_interior": "lilmoth-healer",
-   "owns_zones": [],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-ledger-house",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-ledger-house",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-healer",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-healer",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-ledger-house",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-weaver-7-sibling0",
-   "name": "Drops-No-Stitch Slow-Rain of stilt town",
-   "race": "argonian",
-   "class": "sibling",
-   "actor": "villager",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "stilt-town",
-   "household": "lilmoth-weaver-7",
-   "role": "sibling",
-   "disposition": 46,
-   "interior": "lilmoth-smithy",
-   "home_interior": "lilmoth-smithy",
-   "work_interior": "lilmoth-smithy",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "04:00",
-     "to": "08:00",
-     "at": "lilmoth-smithy",
-     "activity": "work"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-smithy",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-smithy",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "04:00",
-     "at": "lilmoth-smithy",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-priest-8-lodger0",
-   "name": "Nartise Half-Moon",
-   "race": "dunmer",
-   "class": "lodger",
-   "actor": "villager",
-   "faction": "drowned-court",
-   "settlement": "lilmoth",
-   "quarter": "the-landing",
-   "household": "lilmoth-priest-8",
-   "role": "lodger",
-   "disposition": 35,
-   "interior": "lilmoth-scribe",
-   "home_interior": "lilmoth-scribe",
-   "work_interior": "lilmoth-scribe",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "02:00",
-     "at": "lilmoth-scribe",
-     "activity": "work"
-    },
-    {
-     "from": "02:00",
-     "to": "10:00",
-     "at": "lilmoth-scribe",
-     "activity": "home"
-    },
-    {
-     "from": "10:00",
-     "to": "00:00",
-     "at": "lilmoth-scribe",
-     "activity": "work"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-priest-8-apprentice1",
-   "name": "Sondaale the Younger",
-   "race": "imperial",
-   "class": "apprentice",
-   "actor": "townsman",
-   "faction": "drowned-court",
-   "settlement": "lilmoth",
-   "quarter": "the-landing",
-   "household": "lilmoth-priest-8",
-   "role": "apprentice",
-   "disposition": 42,
-   "interior": "lilmoth-scribe",
-   "home_interior": "lilmoth-scribe",
-   "work_interior": "lilmoth-healer",
-   "owns_zones": [],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-scribe",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-scribe",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-healer",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-healer",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-scribe",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-smith-9-sibling0",
-   "name": "Wanan the Shorter",
-   "race": "argonian",
-   "class": "sibling",
-   "actor": "villager",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "rot-quarter",
-   "household": "lilmoth-smith-9",
-   "role": "sibling",
-   "disposition": 39,
-   "interior": "lilmoth-inn-drowned",
-   "home_interior": "lilmoth-inn-drowned",
-   "work_interior": "lilmoth-inn-drowned",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "04:00",
-     "to": "08:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "work"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "04:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-legionary-10-partner0",
-   "name": "Deek Slow-Rain of stilt town",
-   "race": "argonian",
-   "class": "partner",
-   "actor": "townsman",
-   "faction": "ninth-cohort",
-   "settlement": "lilmoth",
-   "quarter": "stilt-town",
-   "household": "lilmoth-legionary-10",
-   "role": "partner",
-   "disposition": 41,
-   "interior": "lilmoth-shrine",
-   "home_interior": "lilmoth-shrine",
-   "work_interior": "lilmoth-shrine",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "09:00",
-     "at": "lilmoth-shrine",
-     "activity": "home"
-    },
-    {
-     "from": "09:00",
-     "to": "12:00",
-     "at": "lilmoth-shrine",
-     "activity": "work"
-    },
-    {
-     "from": "12:00",
-     "to": "18:00",
-     "at": "lilmoth-shrine",
-     "activity": "home"
-    },
-    {
-     "from": "18:00",
-     "to": "21:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "21:00",
-     "to": "00:00",
-     "at": "lilmoth-shrine",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-keeper-customs",
-   "name": "Neetrenaza the Patient",
-   "title": "Clerk",
-   "race": "argonian",
-   "class": "factor",
-   "actor": "dres-factor",
-   "faction": "the-imperial-assize",
-   "settlement": "lilmoth",
-   "quarter": "stilt-town",
-   "household": "lilmoth-keeper-customs",
-   "role": "keeper",
-   "disposition": 33,
-   "interior": "lilmoth-customs",
-   "home_interior": "lilmoth-customs",
-   "work_interior": "lilmoth-customs",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-customs",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-customs",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-customs",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-customs",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-customs",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-IMP"
-  },
-  {
-   "id": "lilmoth-keeper-yard",
-   "name": "Veek Cold-Ash",
-   "title": "Boatwright",
-   "race": "imperial",
-   "class": "boatwright",
-   "actor": "fisher",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "the-landing",
-   "household": "lilmoth-keeper-yard",
-   "role": "keeper",
-   "disposition": 48,
-   "interior": "lilmoth-yard",
-   "home_interior": "lilmoth-yard",
-   "work_interior": "lilmoth-yard",
-   "owns_zones": [],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "04:00",
-     "to": "08:00",
-     "at": "lilmoth-yard",
-     "activity": "work"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-yard",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-yard",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "04:00",
-     "at": "lilmoth-yard",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "repair"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-keeper-ledger-house",
-   "name": "Neetrenaza the Patient",
-   "title": "Clerk",
-   "race": "imperial",
-   "class": "factor",
-   "actor": "dres-factor",
-   "faction": "wet-ledger",
-   "settlement": "lilmoth",
-   "quarter": "stilt-town",
-   "household": "lilmoth-keeper-ledger-house",
-   "role": "keeper",
-   "disposition": 33,
-   "interior": "lilmoth-ledger-house",
-   "home_interior": "lilmoth-ledger-house",
-   "work_interior": "lilmoth-ledger-house",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-ledger-house",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-ledger-house",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-ledger-house",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-ledger-house",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-ledger-house",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-IMP"
-  },
-  {
-   "id": "lilmoth-keeper-market",
-   "name": "Ahnassi the Younger",
-   "title": "Trader",
-   "race": "imperial",
-   "class": "trader",
-   "actor": "merchant",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "the-landing",
-   "household": "lilmoth-keeper-market",
-   "role": "keeper",
-   "disposition": 41,
-   "interior": "lilmoth-market",
-   "home_interior": "lilmoth-market",
-   "work_interior": "lilmoth-market",
-   "owns_zones": [],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-market",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-market",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-market",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-market",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-market",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-keeper-smithy",
-   "name": "Ahnassi the Shorter",
-   "title": "Smith",
-   "race": "dunmer",
-   "class": "smith",
-   "actor": "townsman",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "the-landing",
-   "household": "lilmoth-keeper-smithy",
-   "role": "keeper",
-   "disposition": 38,
-   "interior": "lilmoth-smithy",
-   "home_interior": "lilmoth-smithy",
-   "work_interior": "lilmoth-smithy",
-   "owns_zones": [],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-smithy",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-smithy",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-smithy",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-smithy",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-smithy",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "repair"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-keeper-apothecary",
-   "name": "Heem Reed-Cutter",
-   "title": "Apothecary",
-   "race": "argonian",
-   "class": "apothecary",
-   "actor": "healer",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "stilt-town",
-   "household": "lilmoth-keeper-apothecary",
-   "role": "keeper",
-   "disposition": 45,
-   "interior": "lilmoth-apothecary",
-   "home_interior": "lilmoth-apothecary",
-   "work_interior": "lilmoth-apothecary",
-   "owns_zones": [],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-apothecary",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-apothecary",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-apothecary",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-apothecary",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-apothecary",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "heal"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-keeper-scribe",
-   "name": "Ahnassi the Shorter",
-   "title": "Scribe",
-   "race": "imperial",
-   "class": "scribe",
-   "actor": "clerk",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "the-landing",
-   "household": "lilmoth-keeper-scribe",
-   "role": "keeper",
-   "disposition": 36,
-   "interior": "lilmoth-scribe",
-   "home_interior": "lilmoth-scribe",
-   "work_interior": "lilmoth-scribe",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-scribe",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-scribe",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-scribe",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-scribe",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-scribe",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-keeper-pawn",
-   "name": "Ocheeva Salt-Hand",
-   "title": "Pawnbroker",
-   "race": "argonian",
-   "class": "trader",
-   "actor": "merchant",
-   "faction": "wet-ledger",
-   "settlement": "lilmoth",
-   "quarter": "rot-quarter",
-   "household": "lilmoth-keeper-pawn",
-   "role": "keeper",
-   "disposition": 43,
-   "interior": "lilmoth-pawn",
-   "home_interior": "lilmoth-pawn",
-   "work_interior": "lilmoth-pawn",
-   "owns_zones": [],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "lilmoth-pawn",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "lilmoth-pawn",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "lilmoth-pawn",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "lilmoth-pawn",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "lilmoth-pawn",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-keeper-inn-drowned",
-   "name": "Sees-All-Colours Wet-Foot",
-   "title": "Publican",
-   "race": "argonian",
-   "class": "publican",
-   "actor": "innkeeper",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "rot-quarter",
-   "household": "lilmoth-keeper-inn-drowned",
-   "role": "keeper",
-   "disposition": 54,
-   "interior": "lilmoth-inn-drowned",
-   "home_interior": "lilmoth-inn-drowned",
-   "work_interior": "lilmoth-inn-drowned",
-   "owns_zones": [],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "02:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "work"
-    },
-    {
-     "from": "02:00",
-     "to": "10:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "home"
-    },
-    {
-     "from": "10:00",
-     "to": "00:00",
-     "at": "lilmoth-inn-drowned",
-     "activity": "work"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "bed"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-keeper-inn-stilt",
-   "name": "Ranaso the Patient",
-   "title": "Publican",
-   "race": "argonian",
-   "class": "publican",
-   "actor": "innkeeper",
-   "faction": null,
-   "settlement": "lilmoth",
-   "quarter": "rot-quarter",
-   "household": "lilmoth-keeper-inn-stilt",
-   "role": "keeper",
-   "disposition": 58,
-   "interior": "lilmoth-inn-stilt",
-   "home_interior": "lilmoth-inn-stilt",
-   "work_interior": "lilmoth-inn-stilt",
-   "owns_zones": [],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "02:00",
-     "at": "lilmoth-inn-stilt",
-     "activity": "work"
-    },
-    {
-     "from": "02:00",
-     "to": "10:00",
-     "at": "lilmoth-inn-stilt",
-     "activity": "home"
-    },
-    {
-     "from": "10:00",
-     "to": "00:00",
-     "at": "lilmoth-inn-stilt",
-     "activity": "work"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "bed"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "lilmoth-keeper-shrine",
-   "name": "Wanan of Nine Debts",
-   "title": "Rootkeeper",
-   "race": "argonian",
-   "class": "rootkeeper",
-   "actor": "rootkeeper",
-   "faction": "rootkeepers",
-   "settlement": "lilmoth",
-   "quarter": "stilt-town",
-   "household": "lilmoth-keeper-shrine",
-   "role": "keeper",
-   "disposition": 48,
-   "interior": "lilmoth-shrine",
-   "home_interior": "lilmoth-shrine",
-   "work_interior": "lilmoth-shrine",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "06:00",
-     "at": "lilmoth-shrine",
-     "activity": "home"
-    },
-    {
-     "from": "06:00",
-     "to": "12:00",
-     "at": "lilmoth-shrine",
-     "activity": "work"
-    },
-    {
-     "from": "12:00",
-     "to": "13:00",
-     "at": "lilmoth-shrine",
-     "activity": "home"
-    },
-    {
-     "from": "13:00",
-     "to": "20:00",
-     "at": "lilmoth-shrine",
-     "activity": "work"
-    },
-    {
-     "from": "20:00",
-     "to": "00:00",
-     "at": "lilmoth-shrine",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "travel"
-   ],
-   "reaction_group": "RG-DEEP"
-  },
-  {
-   "id": "lilmoth-keeper-healer",
-   "name": "Chun Slow-Rain",
-   "title": "Healer",
-   "race": "dunmer",
-   "class": "priest",
-   "actor": "healer",
-   "faction": "drowned-court",
-   "settlement": "lilmoth",
-   "quarter": "the-landing",
-   "household": "lilmoth-keeper-healer",
-   "role": "keeper",
-   "disposition": 49,
-   "interior": "lilmoth-healer",
-   "home_interior": "lilmoth-healer",
-   "work_interior": "lilmoth-healer",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "06:00",
-     "at": "lilmoth-healer",
-     "activity": "home"
-    },
-    {
-     "from": "06:00",
-     "to": "12:00",
-     "at": "lilmoth-healer",
-     "activity": "work"
-    },
-    {
-     "from": "12:00",
-     "to": "13:00",
-     "at": "lilmoth-healer",
-     "activity": "home"
-    },
-    {
-     "from": "13:00",
-     "to": "20:00",
-     "at": "lilmoth-healer",
-     "activity": "work"
-    },
-    {
-     "from": "20:00",
-     "to": "00:00",
-     "at": "lilmoth-healer",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "heal"
-   ],
-   "reaction_group": "RG-DEEP"
-  },
-  {
-   "id": "lilmoth-keeper-rootpost",
-   "name": "Veek Salt-Hand",
-   "title": "Postmaster",
-   "race": "argonian",
-   "class": "rootkeeper",
-   "actor": "rootkeeper",
-   "faction": "rootkeepers",
-   "settlement": "lilmoth",
-   "quarter": "stilt-town",
-   "household": "lilmoth-keeper-rootpost",
-   "role": "keeper",
-   "disposition": 49,
-   "interior": "lilmoth-rootpost",
-   "home_interior": "lilmoth-rootpost",
-   "work_interior": "lilmoth-rootpost",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "06:00",
-     "at": "lilmoth-rootpost",
-     "activity": "home"
-    },
-    {
-     "from": "06:00",
-     "to": "12:00",
-     "at": "lilmoth-rootpost",
-     "activity": "work"
-    },
-    {
-     "from": "12:00",
-     "to": "13:00",
-     "at": "lilmoth-rootpost",
-     "activity": "home"
-    },
-    {
-     "from": "13:00",
-     "to": "20:00",
-     "at": "lilmoth-rootpost",
-     "activity": "work"
-    },
-    {
-     "from": "20:00",
-     "to": "00:00",
-     "at": "lilmoth-rootpost",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "lilmoth",
-    "background"
-   ],
-   "services": [
-    "travel"
-   ],
-   "reaction_group": "RG-DEEP"
-  }
- ]
+  ],
+  "street_life_note": "Some records in this file carry a `post` block and outdoor `at: null` schedule rows written by tools/world/build-street-life.mjs. Re-run it after moving a settlement; do not hand-edit `post`."
 }

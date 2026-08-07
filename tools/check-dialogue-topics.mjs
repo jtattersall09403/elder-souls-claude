@@ -76,8 +76,24 @@ function loadDocs(dir) {
 // upbringings are read from the shipped rosters rather than hand-copied, so this sweep does not
 // silently go stale the day a new race ships.
 function loadRaces() {
+  // W1-DLG-SHADOWS. `races.json#races` is an array of full race RECORDS ({id, name,
+  // attribute_deltas, skills, ...}), not an array of id strings — and this used to return that
+  // array verbatim. `infoAllowed()`'s `req.race.indexOf(race) < 0` then compared a race OBJECT
+  // against an array of author-written id strings, which never matches, so EVERY
+  // `requires.race`/`forbids.race` gate silently evaluated as "never satisfied" for the whole
+  // sweep: `infoAllowed()` returned false for every info carrying either field, in every one of
+  // the 880 swept contexts, so `overlaps()` could never find a shared context for a pair where
+  // the collision depended on a race gate actually matching — a false NEGATIVE, the opposite
+  // failure from the one this tool exists to catch. The self-test's "boots" partition case still
+  // passed with the bug present, for the wrong reason (both sides' requires.race checks failed
+  // shut instead of genuinely partitioning), which is exactly RULES.md rule 4's "a probe that
+  // cannot fail is worse than no probe" — see the new self-test case below that does fail
+  // without this line.
   const d = readJSON(path.join(ROOT, 'game', 'data', 'progression', 'races.json'));
-  return (d && Array.isArray(d.races) && d.races.length) ? d.races : ['saxhleel', 'naga', 'dunmer', 'imperial', 'nord', 'breton', 'redguard', 'khajiit', 'orsimer', 'bosmer'];
+  const ids = d && Array.isArray(d.races) && d.races.length
+    ? d.races.map((r) => (r && typeof r === 'object') ? r.id : r).filter(Boolean)
+    : [];
+  return ids.length ? ids : ['saxhleel', 'naga', 'dunmer', 'imperial', 'nord', 'breton', 'redguard', 'khajiit', 'orsimer', 'bosmer'];
 }
 const RACES = loadRaces();
 const UPBRINGINGS = ['interior', 'lukiul', 'foreign-born', 'blackrose'];
@@ -205,17 +221,45 @@ function selfTest() {
     fs.writeFileSync(path.join(tmp, 'y.json'), JSON.stringify({ group: 'y', topics: [{ id: 'weather', infos: [{ a: 'guard', x: 'b' }] }] }));
     const disjointActor = scan(tmp);
     assertT(!disjointActor.live.some((c) => c.key === 'weather'), 'two different specific actors never coexist for one NPC — not reported live');
+
+    fs.rmSync(path.join(tmp, 'x.json'));
+    fs.rmSync(path.join(tmp, 'y.json'));
+
+    // (4) W1-DLG-SHADOWS. Two race-gated infos, same actor, whose `requires.race` lists OVERLAP
+    // (both name 'saxhleel') rather than partition — must be LIVE. `loadRaces()` used to return
+    // `races.json#races` verbatim (a race RECORD per entry, not its id string), so every
+    // `requires.race`/`forbids.race` check in the sweep compared an object against the info's
+    // string array and always failed shut — `overlaps()` could never find a shared context for
+    // ANY race-gated pair, live or partitioned alike, and this exact case would have come back
+    // NOT live (silently wrong) before that fix. It must fail if `loadRaces()` regresses.
+    fs.writeFileSync(path.join(tmp, 'p.json'), JSON.stringify({ group: 'p', topics: [{ id: 'the-flood', infos: [{ a: 'elder', x: 'saxhleel-or-naga line', requires: { race: ['saxhleel', 'naga'] } }] }] }));
+    fs.writeFileSync(path.join(tmp, 'q.json'), JSON.stringify({ group: 'q', topics: [{ id: 'the-flood', infos: [{ a: 'elder', x: 'saxhleel-or-dunmer line', requires: { race: ['saxhleel', 'dunmer'] } }] }] }));
+    const raceOverlap = scan(tmp);
+    assertT(raceOverlap.live.some((c) => c.key === 'the flood'), 'two race-gated infos overlapping on a SHARED race (saxhleel is in both requires.race lists) are reported LIVE, proving the race sweep runs on real id strings');
+    fs.rmSync(path.join(tmp, 'p.json'));
+    fs.rmSync(path.join(tmp, 'q.json'));
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 
-  // Confirmed positive on the SHIPPED tree. If this ever reads 0 live, either the known W1-17
-  // shadow was actually resolved (good — update this assertion) or the scanner broke (bad).
+  // W1-DLG-SHADOWS. The known W1-17 shadow ("the steward of the count") is now RESOLVED on the
+  // shipped tree — `50-mainline.json`'s redundant rootkeeper stub for it (and its six siblings,
+  // the-sill / the-opening-of-the-count / the-ninth-clause-of-the-drowned-tally /
+  // the-chain-on-the-wall / the-three-things-i-checked-myself / what-does-the-marsh-owe-you) was
+  // retired because `ixtu-meer` is the only actor='rootkeeper' NPC record whose own `topics[]`
+  // names any of them — see corpus/90-verdicts/wave1/W1-17-act5-r1.md and each id's own `note` in
+  // `50-mainline.json`. Asserting the ABSENCE here, rather than deleting the check, is what keeps
+  // this a real regression guard: if a future edit reintroduces a same-id, same-actor stub for
+  // any of these seven, this line goes red again immediately, on the real shipped tree, without
+  // needing a fresh critic to notice it by hand.
   const shipped = scan(TOPICS_DIR);
-  assertT(shipped.live.some((c) => c.key === 'the steward of the count'), 'the shipped tree still reports the known W1-17 shadow ("the steward of the count") LIVE');
+  const climaxIds = ['the steward of the count', 'the sill', 'the opening of the count', 'the ninth clause of the drowned tally', 'the chain on the wall', 'the three things i checked myself', 'what does the marsh owe you'];
+  for (const key of climaxIds) {
+    assertT(!shipped.live.some((c) => c.key === key), `the shipped tree no longer reports the W1-17 Act V shadow ("${key}") LIVE (W1-DLG-SHADOWS retired the redundant 50-mainline.json stub)`);
+  }
   assertT(shipped.partitioned.length > 0, 'the shipped tree has at least one intended, partitioned same-id split (the check would be all-noise otherwise)');
 
-  console.log(bad ? `SELF-TEST FAILED (${bad})` : 'self-test passed: goes red on a genuine overlap, stays quiet on the intended race-partition pattern, and finds the known live shadow on the shipped tree.');
+  console.log(bad ? `SELF-TEST FAILED (${bad})` : 'self-test passed: goes red on a genuine overlap, stays quiet on the intended race-partition pattern, catches a race-gated overlap using real race ids, and confirms the W1-17 Act V shadow stays resolved on the shipped tree.');
   return bad ? 1 : 0;
 }
 

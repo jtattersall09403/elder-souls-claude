@@ -525,6 +525,228 @@ try {
       });
     }
 
+    // ============================================================================================
+    // 10. THE RENDER HALF — and the reason this section exists is that its absence was the
+    //     round-1 verdict.
+    // ============================================================================================
+    // Every check above this line goes `HARNESS -> Engine -> sim/settlement.js` and back. Not one
+    // of them reads the renderer. So all thirteen of them passed — honestly, and they still pass
+    // — on a build where `renderer.setCell()` had exactly one caller, neither door verb reached
+    // it, **115 of 115 interiors were entered and 0 of 115 switched the drawn cell**, and walking
+    // out of a room left the room on the screen while the body stood in the street.
+    //
+    // That is the same defect this piece found and fixed one layer down, when `sim.player.pos`
+    // turned out to be a mirror: the body half was fixed and the render half was not, and the
+    // instrument could not tell, because the instrument was made of the half that worked.
+    //
+    // The rule this section is written to is RULES.md rule 5. A model's consumer is not "the
+    // function that reads the field"; it is the thing the player can see. So every row below
+    // reads `getDrawnInterior()`, which reports what the RENDERER has visible, and each one is
+    // paired with a control that shows the reading is capable of being wrong.
+    const drawn = () => H.getDrawnInterior();
+
+    // ---- 10a. THE SWEEP. Every door in the game, and what is on the screen after it. -----------
+    // Scenario row with its own internal control: the identical sweep is run a second time with
+    // the cell consumer CUT, and must report zero. A sweep that passes both ways is measuring
+    // nothing, which is exactly how the round-1 build scored 13/13.
+    {
+      const ids = H.listInteriors().map((i) => i.id);
+      const sweep = (label) => {
+        let agreed = 0, entered = 0, refused = 0, errored = 0, exteriorRestored = 0;
+        const misses = [];
+        for (const id of ids) {
+          try {
+            // Always start outside, through the door verb rather than by hand.
+            if (H.whereAmI().interior) { H.exitInterior(); step(1); }
+            const r = H.enterInterior(id);
+            step(2);
+            if (!r || !r.entered) { refused++; continue; }
+            entered++;
+            const d = drawn();
+            if (d.agrees && d.interior_id === id) agreed++; else if (misses.length < 5) misses.push({ id, drawn: d.drawn_cell, want: d.env_cell, room: d.interior_id });
+            // And leaving must put the street back. The round-1 build left the ROOM on screen.
+            H.exitInterior(); step(2);
+            if (drawn().agrees) exteriorRestored++;
+          } catch (e) { errored++; }
+        }
+        return { label, total: ids.length, entered, refused, errored, drawn_agrees: agreed, exterior_restored_on_exit: exteriorRestored, misses };
+      };
+
+      const live = sweep('consumer live');
+      // THE CONTROL. Cut the cell consumer — the hook AND the reconciliation behind it — and run
+      // the identical sweep. This reproduces the round-1 build exactly.
+      const E = eng();
+      const savedHook = E.sim.applyCell;
+      const savedSync = E._syncCell;
+      E.sim.applyCell = null;
+      E._syncCell = function () { return false; };
+      let cutRun = null;
+      try { cutRun = sweep('consumer cut'); } finally {
+        E.sim.applyCell = savedHook;
+        E._syncCell = savedSync;
+        try { if (H.whereAmI().interior) H.exitInterior(); } catch { /* already outside */ }
+        E._syncCell();
+        step(2);
+      }
+
+      const passes = live.entered > 0 && live.drawn_agrees === live.entered
+        && live.exterior_restored_on_exit === live.entered
+        && cutRun.drawn_agrees < live.drawn_agrees;   // the control MUST be worse
+      pushRow({
+        path: 'world.interior.named',
+        model: 'game/data/world/interiors/**.json -> the 115 named cells, entered through the door',
+        consumer: 'sim/settlement.js useDoor()/leaveInterior() -> sim.applyCell -> Engine._syncCell() -> renderer.setCell(). READ OFF THE RENDERER, not off sim.env.',
+        perturbation: 'enter and leave all 115 through enterInterior()/exitInterior(); then repeat with the cell consumer cut',
+        before: cutRun, after: live,
+        changed: cutRun.drawn_agrees !== live.drawn_agrees,
+        verdict: passes ? 'CONSUMED' : 'DEAD',
+        note: 'Round 1: 115 of 115 entered, 0 of 115 switched the drawn cell. The cut arm is that build.',
+      });
+    }
+
+    // ---- 10b. bounds_m — is the room the size the file says? ------------------------------------
+    // `bounds_m` was read at exactly ONE site in the whole build, to derive an NPC's hash offset,
+    // and RI-WLD13 N1 was vacuous as authored: the footprint ratio was 1.000 by construction on
+    // 115 of 115 and the check could not fail. It is the shell of the room now.
+    const roomId = (() => {
+      const l = H.listInteriors().find((i) => i.id === 'archon-apothecary');
+      return l ? l.id : H.listInteriors()[0].id;
+    })();
+    // Enter it THROUGH THE DOOR, so everything below is measured on the path the player takes.
+    const reEnter = () => { try { if (H.whereAmI().interior) { H.exitInterior(); step(1); } } catch { /* outside */ } H.enterInterior(roomId); step(2); return drawn().interior; };
+    H.setTimeOfDay(12); step(2);
+    reEnter();
+
+    check({
+      path: 'world.interior.named',
+      model: `game/data/world/interiors/${roomId}.json -> bounds_m`,
+      consumer: 'render/interior.js buildInterior() -> the floor, four walls, ceiling and beam count of the drawn cell',
+      perturbation: 'halve the room on x and z',
+      note: 'RI-WLD13 N1. Read off the renderer: the numbers below are the shell that got built.',
+      read: () => { const s = reEnter(); return s ? { bounds: s.bounds, meshes: s.meshes } : null; },
+      perturb: () => {
+        const d = H.__w1_04_interior(roomId);
+        const old = JSON.parse(JSON.stringify(d.bounds_m));
+        d.bounds_m = { x: [old.x[0] / 2, old.x[1] / 2], y: old.y, z: [old.z[0] / 2, old.z[1] / 2] };
+        return () => { d.bounds_m = old; };
+      },
+      cut: () => { const E = eng(); const s = E.renderer.setInteriorRecord; E.renderer.setInteriorRecord = () => null; return () => { E.renderer.setInteriorRecord = s; }; },
+    });
+
+    check({
+      path: 'world.interior.named',
+      model: `game/data/world/interiors/${roomId}.json -> props[]`,
+      consumer: 'render/interior.js PROPS table -> furniture meshes in the drawn cell',
+      perturbation: 'strip every prop off the record',
+      note: 'RI-QST07: the round-1 verdict called `settlement.content` "a prop list nobody instantiates". 18 props declared, none drawn.',
+      read: () => { const s = reEnter(); return s ? { props_built: s.props_built, kit_meshes: s.kit_meshes, meshes: s.meshes } : null; },
+      perturb: () => { const d = H.__w1_04_interior(roomId); const old = d.props; d.props = []; return () => { d.props = old; }; },
+      cut: () => { const E = eng(); const s = E.renderer.setInteriorRecord; E.renderer.setInteriorRecord = () => null; return () => { E.renderer.setInteriorRecord = s; }; },
+    });
+
+    check({
+      path: 'world.interior.named',
+      model: `game/data/world/interiors/${roomId}.json -> lights[]`,
+      consumer: 'render/interior.js -> the point lights and lamp fittings of the drawn cell',
+      perturbation: 'strip every declared light off the record',
+      note: 'The record declares 10 lights; the hall it used to resolve to drew exactly one.',
+      read: () => { const s = reEnter(); return s ? { lamps_built: s.lamps_built, lights_lit: s.lights_lit, lights_declared: s.lights_declared } : null; },
+      perturb: () => { const d = H.__w1_04_interior(roomId); const old = d.lights; d.lights = []; return () => { d.lights = old; }; },
+      cut: () => { const E = eng(); const s = E.renderer.setInteriorRecord; E.renderer.setInteriorRecord = () => null; return () => { E.renderer.setInteriorRecord = s; }; },
+    });
+
+    // ---- 10c. 113 of 115 were the same room. How many are now? ---------------------------------
+    {
+      const ids = H.listInteriors().map((i) => i.id);
+      const sigs = new Map();
+      let read = 0;
+      for (const id of ids) {
+        try {
+          if (H.whereAmI().interior) { H.exitInterior(); step(1); }
+          const r = H.enterInterior(id);
+          if (!r || !r.entered) continue;
+          step(1);
+          const s = drawn().interior;
+          if (!s) continue;
+          read++;
+          // The room as the SCENE GRAPH has it, not as the file has it.
+          const key = JSON.stringify([s.bounds, s.meshes, s.triangles, s.lamps_built, s.props_built, s.windows, s.storeys, s.back_room]);
+          sigs.set(key, (sigs.get(key) || 0) + 1);
+        } catch { /* counted by `read` */ }
+      }
+      try { if (H.whereAmI().interior) H.exitInterior(); } catch { /* outside */ }
+      step(2);
+      const biggest = Math.max(0, ...sigs.values());
+      pushRow({
+        path: 'world.interior.named',
+        model: 'all 115 interior records',
+        consumer: 'render/interior.js — the geometry each record actually builds',
+        perturbation: 'walk into all 115 in turn and hash the drawn room',
+        before: { round_1: { distinct_rooms: 2, largest_identical_group: 113, note: '113 of 115 resolved to one 249-triangle hall' } },
+        after: { rooms_read: read, distinct_rooms: sigs.size, largest_identical_group: biggest },
+        changed: sigs.size > 2,
+        verdict: sigs.size > 2 ? 'CONSUMED' : 'DEAD',
+        note: 'A scene-graph signature, not a pixel hash — the pixel sweep is tools/world/w1-04-interior-sweep.mjs.',
+      });
+    }
+
+    // ============================================================================================
+    // 11. world.npc.schedule — DOES ANYBODY ACTUALLY WALK?
+    // ============================================================================================
+    // Round 1: 9 of 24 of Thorn's people changed cell across the day and **0 of 24 changed
+    // position**. `stepSchedule()`'s own docstring claimed they "walk to the slot's anchor" and
+    // the function never touched `pos`. This is the row that would have caught that.
+    {
+      const town = towns.find((t) => t.id === 'thorn') || towns[0];
+      H.teleport(town.pos[0], town.pos[2]);
+      H.setTimeOfDay(2); step(6);
+      const before = H.whereIsEveryone().map((e) => ({ eid: e.eid, at: e.at, pos: e.pos.map((v) => Math.round(v * 100) / 100) }));
+      // Run the clock through the working day, stepping so the schedule is actually consumed.
+      for (let hh = 3; hh <= 20; hh++) { H.setTimeOfDay(hh); step(30); }
+      const after = H.whereIsEveryone().map((e) => ({ eid: e.eid, at: e.at, pos: e.pos.map((v) => Math.round(v * 100) / 100) }));
+      const byId = new Map(before.map((b) => [b.eid, b]));
+      let movedCell = 0, movedPos = 0;
+      for (const a of after) {
+        const b = byId.get(a.eid);
+        if (!b) continue;
+        if (b.at !== a.at) movedCell++;
+        if (Math.hypot(a.pos[0] - b.pos[0], a.pos[2] - b.pos[2]) > 0.05) movedPos++;
+      }
+      pushRow({
+        path: 'world.npc.schedule',
+        model: 'game/data/npcs/pop-*.json -> schedule[].at + activity, as POSITION',
+        consumer: 'sim/npc.js stepSchedule() -> n.pos, walked over the fixed step at 1.35 m/s',
+        perturbation: `run ${town.id}'s day from 02:00 to 20:00 and compare everybody's position`,
+        before: { hour: 2, people: before.length, round_1: { changed_cell: 9, changed_position: 0 } },
+        after: { hour: 20, changed_cell: movedCell, changed_position: movedPos },
+        changed: movedPos > 0,
+        verdict: movedPos > 0 ? 'CONSUMED' : 'DEAD',
+        note: 'Round 1 scored 0 of 24 here with the docstring claiming otherwise.',
+      });
+
+      // ---- and is anybody ever OUTDOORS? -------------------------------------------------------
+      // Round 1: at 03:00, across eight settlements, not one person in the province was outdoors,
+      // and at noon the 34 who were belonged to a neighbouring piece.
+      const outdoorsAt = (hour) => {
+        H.setTimeOfDay(hour); step(40);
+        return H.whereIsEveryone().filter((e) => e.at === null && e.present).length;
+      };
+      const night = outdoorsAt(3);
+      const morning = outdoorsAt(9);
+      const evening = outdoorsAt(20);
+      pushRow({
+        path: 'world.npc.population',
+        model: 'game/data/npcs/pop-*.json -> post + the outdoor schedule rows (tools/world/build-street-life.mjs)',
+        consumer: 'sim/npc.js stepSchedule() presence rule: `at: null` + a post means OUTDOORS',
+        perturbation: `stand in ${town.id} and read the street at 03:00, 09:00 and 20:00`,
+        before: { round_1: { outdoors_at_03: 0, outdoors_at_12: '34, all of them another piece\'s quest-givers' } },
+        after: { outdoors_at_03: night, outdoors_at_09: morning, outdoors_at_20: evening },
+        changed: (night + morning + evening) > 0,
+        verdict: (night > 0 && morning > 0) ? 'CONSUMED' : 'DEAD',
+        note: 'The street of every town in Argonia was empty at every hour of W1-04\'s own population.',
+      });
+    }
+
     return { results, errors: [] };
   }, { selfTest });
 

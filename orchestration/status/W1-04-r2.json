@@ -1,7 +1,19 @@
 {
   "task_id": "W1-04-r2",
   "title": "Settlements, interiors and the people in them - round 2",
-  "state": "building",
+  "state": "measuring",
+  "done_so_far": [
+    "sim/settlement.js: applyCell() hook called from useDoor() and leaveInterior()",
+    "engine.js: sim.applyCell hook + _syncCell() reconciliation from _afterStep() and _render(); _applyCell() now passes the interior record to the renderer",
+    "render/interior.js NEW: buildInterior() builds the room from bounds_m/lights[]/props[]/containers/unique_item; 148-entry prop table; all 8 architecture kits",
+    "render/renderer.js: setInteriorRecord(), disposal, rebuild after setWorldSeed",
+    "harness/api.js: getDrawnInterior() - the first harness surface that reads the RENDERER",
+    "sim/npc.js: stepSchedule now moves pos (walks at 1.35 m/s, snaps on a cell change); goal/walked_m added; docstring corrected",
+    "tools/world/build-street-life.mjs NEW + all 8 pop-*.json rewritten: 260 posts, 5 cohorts, 23 outdoors at 03:00",
+    "tools/world/w1-04-consumption.mjs: sections 10 and 11 added - the first checks in it that read the renderer, each with a cut-consumer control",
+    "tools/world/w1-04-interior-sweep.mjs NEW: the pixel-hash sweep the verdict's acceptance names"
+  ],
+  "headline_offline": "All 115 interiors build: 0 failures, 94 distinct scene-graph signatures (was 2), largest identical group 7 (seven byte-identical helstrom dwelling records), 0 props with no table entry, 452 architecture-kit meshes, 504-3444 triangles (was 249 on 113 of 115).",
   "started_at": "2026-08-07",
   "spec": "corpus/90-verdicts/wave1/W1-04-r1.md",
   "prior_round": "W1-04 (FAIL 3.2/10)",

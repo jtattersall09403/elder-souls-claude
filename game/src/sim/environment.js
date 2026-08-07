@@ -121,6 +121,11 @@ export class Environment {
     if (env._clockFrames === undefined || Math.abs(expected - env.timeOfDay) > 1e-6) {
       const h = ((Number(env.timeOfDay) % 24) + 24) % 24;
       env._clockFrames = Math.round(h / 24 * FRAMES_PER_DAY) % FRAMES_PER_DAY;
+      // THE DISCHARGE. See §1b below. Something outside the step wrote the world clock — a rest,
+      // a `setTimeOfDay`, a load — so it is authoritative and the award clock is re-seated on it.
+      // This is what stops the death-stolen offset accumulating across a long session: the
+      // hearth loop passes through a rest every time round.
+      env._awardFrames = env._clockFrames;
     }
   }
 
@@ -178,6 +183,42 @@ export class Environment {
       if (env._clockFrames === 0) env.dayCount = (env.dayCount | 0) + 1;
       env.timeOfDay = this._hoursFor(env._clockFrames);
     }
+
+    // ---- 1b. THE AWARD CLOCK, and why holding the world clock needed a second one -------------
+    //
+    // W1-13 round 4, and it is an AR-1 defect round 3 shipped without noticing.
+    //
+    // Freezing the world clock on death fixed the deadline burn above and broke something else:
+    // `sim/souls.js awardFor()` pays `NIGHT_MULTIPLIER 1.35x` for a kill inside `isNight()`,
+    // whose window runs 21:00 -> 05:00 off THIS field. So with the clock held, the frames a
+    // player spends dead cost them no night time — and near the END of the window that is a
+    // reward for dying. Measured, not argued (`tools/harness/w1-13-r4-clock-consequences.mjs`):
+    // from 04:30, forty deaths and forty deaths' worth of frames spent ALIVE take the same
+    // ordinary enemy from 42 souls to 57. The player who died was paid 35% more.
+    //
+    // `AR-1` forbids exactly that shape ("a death must not compensate the player"), and
+    // `RI-JRN06` D9 says it again. But the item is equally clear the other way — the clock must
+    // NOT advance on death — so the answer is not to give the burn back.
+    //
+    // TWO CLOCKS, then, and they answer two different questions:
+    //
+    //   `timeOfDay`      THE WORLD'S clock. Held on death. Merchants, NPC schedules, journal
+    //                    dates and quest deadlines read it, and dying moves none of them.
+    //   `awardTimeOfDay` HOW MUCH WORLD HAS ELAPSED. Ticks every unpaused frame whether the
+    //                    player is alive or dead. `sim/souls.js` reads it and nothing else does.
+    //
+    // The offset between them is exactly the time death has stolen, and it is DISCHARGED
+    // whenever the world clock is authoritatively written from outside the step — a rest, a
+    // `setTimeOfDay`, a load. `_syncFromFloat` above already detects precisely that event. So
+    // the drift cannot accumulate across the hearth loop, which is the loop this item is about:
+    // rest, die, rest again, and the two clocks are equal at every rest.
+    //
+    // The invariant this buys, and it is what the probe asserts: SPENDING N FRAMES DEAD AND
+    // SPENDING N FRAMES ALIVE LEAVE THE SAME ENEMY WORTH THE SAME NUMBER OF SOULS. Dying costs
+    // you nothing and pays you nothing.
+    if (env._awardFrames === undefined || env._awardFrames === null) env._awardFrames = env._clockFrames | 0;
+    if (!this.paused) env._awardFrames = ((env._awardFrames | 0) + 1) % FRAMES_PER_DAY;
+    env.awardTimeOfDay = this._hoursFor(env._awardFrames | 0);
     env.daylight = daylightAt(env.timeOfDay);
     const phaseNow = phaseOf(env.timeOfDay);
     env.phase = phaseNow;
@@ -300,6 +341,12 @@ export class Environment {
       // a whole window that also contains ordinary play.
       held_by_death: !!env.clockHeldByDeath,
       clock_frames_held_by_death: env._clockFramesHeldByDeath | 0,
+      // W1-13 round 4. The award clock (§1b): what `sim/souls.js` reads instead of `time_of_day`,
+      // and how far ahead of the world it is running because the player has been dying. Both are
+      // published so a probe can assert the AR-1 invariant without reaching into `_` fields.
+      award_time_of_day: Number.isFinite(env.awardTimeOfDay) ? env.awardTimeOfDay : env.timeOfDay,
+      award_offset_h: Number.isFinite(env.awardTimeOfDay)
+        ? Math.round((((env.awardTimeOfDay - env.timeOfDay) % 24 + 24) % 24) * 1e6) / 1e6 : 0,
       region: m.region,
       weather: env.weather,
       weather_from: env._weatherFrom ?? env.weather,

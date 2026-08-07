@@ -304,7 +304,18 @@ export class SoulsSystem {
       // ---- the transition: alive -> dead, exactly once -------------------------------------
       rec.alive = false; rec.paidEpoch = epoch;
       const stat = this.d[e.id];
-      const a = awardFor(stat, sim.env && sim.env.timeOfDay);
+      // W1-13 round 4, AR-1. NOT `env.timeOfDay` — the AWARD clock. `sim/environment.js` §1b
+      // holds the world clock while a death is in flight (RI-PRG04 §6 rule 4, so dying at a boss
+      // cannot burn a quest deadline) and that made the frames a player spends dead free of night
+      // time: from 04:30, forty deaths left this same enemy paying 57 where forty deaths' worth of
+      // frames spent ALIVE left it paying 42. A death that pays 35% more is loss compensation and
+      // AR-1 forbids it. `awardTimeOfDay` ticks whether the player is alive or dead and is
+      // re-seated on the world clock at every rest, so the rate follows elapsed world and not the
+      // clock death freezes. The `||` fallback is the pre-environment-step case (a probe that
+      // never stepped the world), where the two are equal by construction.
+      const env = sim.env;
+      const awardHour = env && Number.isFinite(env.awardTimeOfDay) ? env.awardTimeOfDay : (env && env.timeOfDay);
+      const a = awardFor(stat, awardHour);
       this.kills++;
       if (this.enabled && a.souls > 0) {
         sim.progression.soulsHeld += a.souls;
@@ -317,6 +328,9 @@ export class SoulsSystem {
         ev.souls = this.enabled ? a.souls : 0;
         ev.held = sim.progression.soulsHeld;
         ev.hour = Math.round((sim.env && sim.env.timeOfDay || 0) * 100) / 100;
+        // W1-13 r4: the hour the RATE was decided by, beside the hour the world reads. They differ
+        // by exactly the time death has held the clock, and a critic reading the stream can see it.
+        ev.award_hour = Math.round((awardHour || 0) * 100) / 100;
         // Declared on the event so a critic reading the stream can see the S15 line being held
         // rather than having to take this file's word for it.
         ev.gold_awarded = 0;

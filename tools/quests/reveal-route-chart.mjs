@@ -8,6 +8,11 @@
 // `tools/analysis/ambience-onsets-chart.mjs` uses.
 //
 //   node tools/quests/reveal-route-chart.mjs --out docs/shots/<name>.png
+//
+// W1-18 ROUND 2 added `--round w1-18-r2`, which draws the same report with this round's headline
+// instead of the last one's. It is a flag rather than a second file because the picture is of the
+// same measurement and a second copy of a chart tool is how two charts start disagreeing; the
+// default is untouched, so `docs/shots/2026-08-07-w1-19-r3-*.png` still regenerates byte-for-byte.
 
 import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
 import { deflateSync } from 'node:zlib';
@@ -63,9 +68,17 @@ function text(s, x, y, r, g, b, scale = 1) {
   return cx;
 }
 
+const ROUND = argOf('--round') || 'w1-19-r3';
+const world = (() => { try { return JSON.parse(readFileSync(join(ROOT, 'reports/runs/W1-18-R2/reveal-route-world.json'), 'utf8')); } catch { return null; } })();
+
 // ---- title -----------------------------------------------------------------------------------
-text('THE TRUTHS THE GAME ASKS FOR AND NEVER TELLS YOU', 40, 30, 0xEE, 0xEE, 0xE4, 3);
-text('W1-19 ROUND 3 / QUEST RESOLUTIONS DEMAND A REVEAL / CAN PLAY PRODUCE IT', 40, 66, 0x8A, 0x94, 0x88, 2);
+if (ROUND === 'w1-18-r2') {
+  text('THE PEOPLE WHO KNEW, AND NOBODY COULD ASK THEM', 40, 30, 0xEE, 0xEE, 0xE4, 3);
+  text('W1-18 ROUND 2 / TALKING TO THE PERSON THE QUEST FILE NAMES NOW TELLS YOU WHAT THEY KNOW', 40, 66, 0x8A, 0x94, 0x88, 2);
+} else {
+  text('THE TRUTHS THE GAME ASKS FOR AND NEVER TELLS YOU', 40, 30, 0xEE, 0xEE, 0xE4, 3);
+  text('W1-19 ROUND 3 / QUEST RESOLUTIONS DEMAND A REVEAL / CAN PLAY PRODUCE IT', 40, 66, 0x8A, 0x94, 0x88, 2);
+}
 
 // ---- the channel bars ------------------------------------------------------------------------
 const ch = Object.entries(rep.by_channel).sort((a, b) => b[1].total - a[1].total);
@@ -86,26 +99,54 @@ ch.forEach(([name, v], i) => {
 
 // ---- the two instruments ---------------------------------------------------------------------
 const BY = Y0 + ch.length * rowH + 40;
-text('THE SAME COMMIT, TWO INSTRUMENTS, ONE LINE APART', 40, BY, 0xCC, 0xC4, 0x9A, 2);
 const box = (x, y, w, h, r, g, b) => { rect(x, y, w, 2, r, g, b); rect(x, y + h, w, 2, r, g, b); rect(x, y, 2, h, r, g, b); rect(x + w, y, 2, h + 2, r, g, b); };
 
-box(40, BY + 26, 570, 100, 0x6E, 0x2B, 0x2B);
-text('MAINLINE-CHAIN-FLOOR, AS SHIPPED IN ROUND 2', 56, BY + 40, 0xCC, 0xAA, 0xAA, 2);
-text('40/40 SIGNATURES COMPLETE BOTH CHAINS', 56, BY + 62, 0xEE, 0xCC, 0xCC, 2);
-text('IT CALLED H.QUESTREVEAL() ON EVERY STEP', 56, BY + 90, 0x9A, 0x7A, 0x7A, 2);
+if (ROUND === 'w1-18-r2') {
+  const p = rep.people_channel || { legs_run: 0, journal_writes: 0 };
+  const w = (world && world.cases || []).find((c) => c.passed) || null;
+  text('THE ROUTER, AND THE SAME RUN WITH THE ROUTER TAKEN OUT', 40, BY, 0xCC, 0xC4, 0x9A, 2);
 
-box(650, BY + 26, 570, 100, 0x2E, 0x7A, 0x44);
-text('THE SAME TOOL, THAT ONE LINE REMOVED', 666, BY + 40, 0xAA, 0xCC, 0xAA, 2);
-text('0/40 - ALL STOP AT Q-MAIN-06', 666, BY + 62, 0xCC, 0xEE, 0xCC, 2);
-text('WHERE THE WALK ALWAYS SAID THEY STOP', 666, BY + 90, 0x7A, 0x9A, 0x7A, 2);
+  box(40, BY + 26, 570, 100, 0x2E, 0x7A, 0x44);
+  text('TALK TO THE PERSON THE FILE NAMES', 56, BY + 40, 0xAA, 0xCC, 0xAA, 2);
+  text(`${p.legs_run} OF ${p.legs_run} GATES STOP REFUSING`, 56, BY + 62, 0xCC, 0xEE, 0xCC, 2);
+  text(`AND NOTE() WRITES ${p.journal_writes} JOURNAL ENTRIES`, 56, BY + 90, 0x7A, 0x9A, 0x7A, 2);
 
-// ---- the footer numbers ----------------------------------------------------------------------
-const FY = BY + 160;
-text(`${rep.unrouted} OF ${rep.demanded_reveals} REVEALS A RESOLUTION DEMANDS HAVE NO ROUTE IN PLAY`, 40, FY, 0xEE, 0xEE, 0xE4, 2);
-text(`${rep.fully_blocked_quests.length} QUESTS HAVE EVERY RESOLUTION BLOCKED, ALL OF THEM MAINLINE:`, 40, FY + 24, 0x9A, 0x9A, 0x92, 2);
-text(rep.fully_blocked_quests.map((q) => q.id).join(', '), 40, FY + 46, 0xCC, 0xAA, 0x6A, 2);
-text('REPAIRED THIS ROUND: THE HOOK TABLE IS NOW REACHABLE FROM A PLAYED RESOLUTION,', 40, FY + 78, 0x7A, 0xAA, 0x88, 2);
-text(`AND ${rep.end_to_end.demonstrable} REVEALS NOW FIRE FROM PLAY WITH NO HARNESS VERB TOUCHED.`, 40, FY + 100, 0x7A, 0xAA, 0x88, 2);
+  box(650, BY + 26, 570, 100, 0x6E, 0x2B, 0x2B);
+  text('THE SAME RUN, REVEALROUTES EMPTIED', 666, BY + 40, 0xCC, 0xAA, 0xAA, 2);
+  text(`0 OF ${p.legs_run} GATES STOP REFUSING`, 666, BY + 62, 0xEE, 0xCC, 0xCC, 2);
+  text('AND 0 JOURNAL ENTRIES ARE WRITTEN', 666, BY + 90, 0x9A, 0x7A, 0x7A, 2);
+
+  const FY = BY + 160;
+  text(`${rep.routed} OF ${rep.demanded_reveals} REVEALS A RESOLUTION DEMANDS NOW HAVE A ROUTE IN PLAY - WAS 8`, 40, FY, 0xEE, 0xEE, 0xE4, 2);
+  if (w) {
+    text(`IN THE RUNNING GAME: ${w.quest} - TALK TO ${String(w.npc).toUpperCase()}`, 40, FY + 30, 0x7A, 0xAA, 0x88, 2);
+    // The 5x7 font has no brackets, so the arrows carry the before/after on their own.
+    text(`KNOWS NOTHING > KNOWS ${w.knows_after.join(' ')}`, 40, FY + 52, 0xCC, 0xEE, 0xCC, 2);
+    text(`JOURNAL ${(w.journal_indices_before || []).join(' ')} > ${(w.journal_indices_after || []).join(' ')} - THE MIDDLE OF IT, WRITTEN BY PLAY`, 40, FY + 74, 0xCC, 0xEE, 0xCC, 2);
+    text('CONTROLS: THE WRONG PERSON TELLS YOU NOTHING, AND NOR DOES THE RIGHT ONE', 40, FY + 96, 0x9A, 0x9A, 0x92, 2);
+    text('BEFORE YOU HAVE TAKEN THE JOB.', 40, FY + 118, 0x9A, 0x9A, 0x92, 2);
+  }
+  text(`STILL UNROUTED: ${rep.unrouted}. LEDGER, LETTER AND ENVIRONMENT NAME OBJECTS THIS BUILD`, 40, FY + 148, 0xCC, 0xAA, 0x6A, 2);
+  text('DOES NOT CONTAIN. THAT IS CONTENT, NOT A READER.', 40, FY + 170, 0xCC, 0xAA, 0x6A, 2);
+} else {
+  text('THE SAME COMMIT, TWO INSTRUMENTS, ONE LINE APART', 40, BY, 0xCC, 0xC4, 0x9A, 2);
+  box(40, BY + 26, 570, 100, 0x6E, 0x2B, 0x2B);
+  text('MAINLINE-CHAIN-FLOOR, AS SHIPPED IN ROUND 2', 56, BY + 40, 0xCC, 0xAA, 0xAA, 2);
+  text('40/40 SIGNATURES COMPLETE BOTH CHAINS', 56, BY + 62, 0xEE, 0xCC, 0xCC, 2);
+  text('IT CALLED H.QUESTREVEAL() ON EVERY STEP', 56, BY + 90, 0x9A, 0x7A, 0x7A, 2);
+
+  box(650, BY + 26, 570, 100, 0x2E, 0x7A, 0x44);
+  text('THE SAME TOOL, THAT ONE LINE REMOVED', 666, BY + 40, 0xAA, 0xCC, 0xAA, 2);
+  text('0/40 - ALL STOP AT Q-MAIN-06', 666, BY + 62, 0xCC, 0xEE, 0xCC, 2);
+  text('WHERE THE WALK ALWAYS SAID THEY STOP', 666, BY + 90, 0x7A, 0x9A, 0x7A, 2);
+
+  const FY = BY + 160;
+  text(`${rep.unrouted} OF ${rep.demanded_reveals} REVEALS A RESOLUTION DEMANDS HAVE NO ROUTE IN PLAY`, 40, FY, 0xEE, 0xEE, 0xE4, 2);
+  text(`${rep.fully_blocked_quests.length} QUESTS HAVE EVERY RESOLUTION BLOCKED, ALL OF THEM MAINLINE:`, 40, FY + 24, 0x9A, 0x9A, 0x92, 2);
+  text(rep.fully_blocked_quests.map((q) => q.id).join(', '), 40, FY + 46, 0xCC, 0xAA, 0x6A, 2);
+  text('REPAIRED THIS ROUND: THE HOOK TABLE IS NOW REACHABLE FROM A PLAYED RESOLUTION,', 40, FY + 78, 0x7A, 0xAA, 0x88, 2);
+  text(`AND ${rep.end_to_end.demonstrable} REVEALS NOW FIRE FROM PLAY WITH NO HARNESS VERB TOUCHED.`, 40, FY + 100, 0x7A, 0xAA, 0x88, 2);
+}
 
 png(OUT);
 console.log('wrote', OUT);

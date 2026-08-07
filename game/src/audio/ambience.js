@@ -475,7 +475,7 @@ export class AmbienceDriver {
     this.live.layers = buildBedContinuous(ctx, bed, this.live.mix, new Rng(this.seed ^ 0x51ed),
                                           this.lastEnv || { tod: 'day', weather: 'clear' }, now, CROSSFADE_S);
     for (const old of this.live.emitters) if (old) old.handle.stop(now + CROSSFADE_S + 0.05);
-    this.live.emitters = buildEmitterVoices(ctx, bed, this.live.mix, new Rng(this.seed ^ 0x7e17), now);
+    this.live.emitters = buildEmitterVoices(ctx, bed, this.live.mix, this.seed, now);
   }
 
   detach() {
@@ -507,6 +507,31 @@ export class AmbienceDriver {
  * every later run.
  */
 export function bedTrimDb(bed) { return bed && bed.bed_gain_db ? bed.bed_gain_db : 0; }
+
+/**
+ * The PRNG for emitter slot `i`. ROUND 3, AND IT IS A CORRECTNESS FIX RATHER THAN TIDYING.
+ *
+ * `renderBedOffline()` used to build the emitters from the same `Rng` the L3/L4 event scheduler
+ * draws from, and after it. That makes an emitter's audio a function of how many draws the event
+ * layers happened to take — so `mute: ['L3','L4']`, whose entire promise is that "the bed cancels
+ * to the sample", silently rendered a DIFFERENT kiln in the muted pass. Subtracting the two then
+ * left the difference of two independent noise streams at full kiln level, and every event level
+ * measured against that residual was a measurement of the kiln.
+ *
+ * The symptom, and the reason this was found rather than reasoned about: clay-moor's L3 level
+ * would not respond to its own trim. Cutting `event_gain_db` by 6.91 dB moved the measurement
+ * 0.05 dB; the `--sabotage trimshift` control then moved every trim in the province by exactly
+ * -6 dB and watched 38 of 40 bed/layer pairs follow to within 0.01 dB while clay-moor moved 0.00.
+ *
+ * A per-SLOT seed rather than one stream shared across the emitters, because a mute that skips
+ * one emitter must not shift the noise of the next; and derived from the bed's own seed, so
+ * `AmbienceDriver._swapLive()` and `renderBedOffline()` build the same kiln. That last part is
+ * this file's founding rule: a measurement path that renders differently from the live path is
+ * measuring itself.
+ */
+export function emitterRng(seedBase, i) {
+  return new Rng((((seedBase ^ 0x7e17) >>> 0) + Math.imul(i + 1, 0x9e3779b1)) >>> 0);
+}
 
 /**
  * The event layer's calibrated trim, in dB. `bedTrimDb`'s argument one layer down, and it exists
@@ -553,10 +578,14 @@ export function eventTrimDb(layer) { return layer && layer.event_gain_db ? layer
  * which is correct: an emitter's level is a fact about where you are standing, and before the
  * first `step()` the driver does not know.
  */
-export function buildEmitterVoices(ctx, bed, dest, rng, t0 = 0) {
+export function buildEmitterVoices(ctx, bed, dest, seedBase, t0 = 0) {
   const out = [];
-  for (const e of bed.emitters || EMPTY) {
+  const ems = bed.emitters || EMPTY;
+  for (let i = 0; i < ems.length; i++) {
+    const e = ems[i];
     if (emitterMode(e) !== 'continuous') { out.push(null); continue; }
+    // Per-slot PRNG, so skipping an emitter cannot change the next one's noise. See `emitterRng`.
+    const rng = emitterRng(seedBase, i);
     const rolloff = ctx.createGain();
     rolloff.gain.value = 0;
     const panner = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
@@ -705,6 +734,9 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
       const p = emitterPlacement(e, opts.listener[0], opts.listener[1], opts.listener[2] || 0);
       if (!p.audible) continue;
       if (emitterMode(e) === 'continuous' ? muteCont : muteStrike) continue;
+      // NOT `rng`. The event scheduler's stream must not reach an emitter, or muting the event
+      // layers changes the emitter's audio and the subtraction stops being a subtraction.
+      const eRng = emitterRng(h, i);
       if (emitterMode(e) === 'continuous') {
         // The listener does not move during an offline capture, so the rolloff and the pan are
         // constants here — the same two numbers the live driver writes every frame.
@@ -714,15 +746,15 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
         const sink = sinkFor(mix, false);
         if (panner) { panner.pan.value = Math.max(-1, Math.min(1, p.pan)); rolloff.connect(panner); panner.connect(sink); }
         else rolloff.connect(sink);
-        buildContinuous(ctx, e.synth, rolloff, rng, 0, dbToGain((e.level_db || 0) + eventTrimDb(e) + bedTrimDb(bed)));
+        buildContinuous(ctx, e.synth, rolloff, eRng, 0, dbToGain((e.level_db || 0) + eventTrimDb(e) + bedTrimDb(bed)));
         fired.push({ layer: 'emitter', id: e.id, mode: 'continuous', at_s: 0,
                      pan: Math.round(p.pan * 1000) / 1000, gain: Math.round(p.gain * 1000) / 1000,
                      distance_m: Math.round(p.distance_m) });
         continue;
       }
-      const clock = emitterClock(e, rng);
+      const clock = emitterClock(e, eRng);
       for (const { at } of clock.due(0, seconds, env)) {
-        buildGrain(ctx, { ...e, level_db: (e.level_db || 0) + eventTrimDb(e) + bedTrimDb(bed) }, mix, rng, at, p.pan, p.gain);
+        buildGrain(ctx, { ...e, level_db: (e.level_db || 0) + eventTrimDb(e) + bedTrimDb(bed) }, mix, eRng, at, p.pan, p.gain);
         fired.push({ layer: 'emitter', id: e.id, at_s: Math.round(at * 100) / 100,
                      pan: Math.round(p.pan * 1000) / 1000, gain: Math.round(p.gain * 1000) / 1000,
                      distance_m: Math.round(p.distance_m) });

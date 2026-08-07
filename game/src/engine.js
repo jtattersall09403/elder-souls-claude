@@ -42,7 +42,7 @@ import { buildCells, EMPTY_CELL } from './sim/collision.js';
 import {
   CAMERA_CONST, CAMERA_MODES, PERSPECTIVE_MODES, NEAR_CORNER_R, CAMERA_ALPHAS, applyCameraRig,
   openUI as cameraOpenUI, closeUI as cameraCloseUI, beginFogGate, beginDeathCamera,
-  pitchArmScale, projectNDC, cameraBasis, triggerShake,
+  pitchArmScale, projectNDC, cameraBasis, triggerShake, applyOverride as applyCameraOverride,
 } from './sim/camera.js';
 import { PLAYER_RADIUS_M } from './sim/world-collision.js';
 import { beginRoute, endRoute, groundYInCell } from './sim/route.js';
@@ -5846,11 +5846,18 @@ export class Engine {
     // written. It is checked against the vocabulary rather than a blocklist so a future mode
     // name cannot sneak a first-person view in under a synonym.
     if (pose.mode !== undefined) c.mode = String(pose.mode);
-    // Apply immediately so a read-back before the next step is truthful.
-    const o = c.override;
-    c.pos[0] = o.pos[0]; c.pos[1] = o.pos[1]; c.pos[2] = o.pos[2];
-    c.pivot[0] = o.look[0]; c.pivot[1] = o.look[1]; c.pivot[2] = o.look[2];
-    c.fov = o.fov;
+    // Apply immediately so a read-back before the next step is truthful — and that includes
+    // `c.yaw`/`c.pitch`, not just `c.pos`/`c.pivot`/`c.fov`. `projectPoint()` -> `projectNDC()`
+    // builds its view basis from `c.yaw`/`c.pitch` alone (sim/camera.js `viewBasis`), which
+    // `stepCamera()` only (re)solves from a fresh `c.override` once the fixed step runs. A
+    // capture that poses the camera and reads `projectPoint()` back off a `renderFrame()` —
+    // a draw, not a step — never ran a step in between, so `c.yaw`/`c.pitch` held whatever the
+    // follow rig had solved before the override, and every such `projectPoint` answered about a
+    // camera that was not the one placed (W1-13-r3 verdict §5/§7 — 0 of 96 posed-camera
+    // `projectPoint` reads agreed with the pixels). `applyCameraOverride` is the SAME function
+    // `stepCamera()` calls every frame while an override is installed, so this is not a second,
+    // divergable derivation — it is calling the real one a step early.
+    applyCameraOverride(c);
     return this.cameraState();
   }
 

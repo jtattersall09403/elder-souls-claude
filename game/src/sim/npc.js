@@ -94,6 +94,12 @@ export function makeNPC(spec) {
     // is where their record says they live: `at` is the answer to "where is she at 3 a.m.".
     at: spec.interior || null,
     activity: null,
+    // W1-04 r2. Where this person is WALKING to, and how far they have walked getting there.
+    // Round 1 had neither, which is why `stepSchedule`'s docstring could claim "they walk to the
+    // slot's anchor" while 0 of 24 people in Thorn moved a millimetre across a whole day.
+    goal: [Number(spec.pos ? spec.pos[0] : 0), Number(spec.pos ? spec.pos[1] : 0), Number(spec.pos ? spec.pos[2] : 0)],
+    hasGoal: false,
+    walked_m: 0,
     // False when the person is in a different cell from the player. A person who is at home
     // while you are in the shop is not standing invisibly in the shop.
     present: true,
@@ -160,10 +166,18 @@ function anchorFor(sim, n, at, activity) {
   if (!d || !d.bounds_m) return null;
   const h = hashStr(`${n.eid}|${at}|${activity || ''}`);
   const bx = d.bounds_m.x, bz = d.bounds_m.z;
-  // Inset by 1.2 m so nobody stands in a wall.
-  const fx = ((h % 1000) / 1000) * 2 - 1;
-  const fz -= 0;
-  return null;
+  // Inset by 1.2 m so nobody stands in a wall, and quantised to a centimetre so the anchor is a
+  // stable number a probe can compare across runs.
+  const ix = Math.max(0, (bx[1] - bx[0]) / 2 - 1.2);
+  const iz = Math.max(0, (bz[1] - bz[0]) / 2 - 1.2);
+  const cx = (bx[0] + bx[1]) / 2, cz = (bz[0] + bz[1]) / 2;
+  const fx = ((h % 2000) / 1000) - 1;
+  const fz = (((h >>> 11) % 2000) / 1000) - 1;
+  return [
+    Math.round((cx + fx * ix) * 100) / 100,
+    d.bounds_m.y ? d.bounds_m.y[0] : 0,
+    Math.round((cz + fz * iz) * 100) / 100,
+  ];
 }
 
 /** FNV-1a, the same hash the Engine and render/interior.js use, so all three agree. */

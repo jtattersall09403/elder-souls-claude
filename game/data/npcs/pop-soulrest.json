@@ -1,1303 +1,1605 @@
 {
- "schema": "elder-souls/npc-group@1",
- "group": "pop-soulrest",
- "id": "pop-soulrest",
- "settlement": "soulrest",
- "generated_by": "tools/world/build-population.mjs",
- "source": "the household roster in game/data/world/property/soulrest.json — these are the people who already owned the objects",
- "npcs": [
-  {
-   "id": "soulrest-weaver-0",
-   "name": "Heem Salt-Hand",
-   "race": "argonian",
-   "class": "weaver",
-   "actor": "townsman",
-   "faction": null,
-   "settlement": "soulrest",
-   "quarter": "drowned-court",
-   "household": "soulrest-weaver-0",
-   "role": "head",
-   "disposition": 44,
-   "interior": "soulrest-grey-hist",
-   "home_interior": "soulrest-grey-hist",
-   "work_interior": "soulrest-market",
-   "owns_zones": [
-    "soulrest.weaver0.r0",
-    "soulrest.weaver0.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
+  "schema": "elder-souls/npc-group@1",
+  "group": "pop-soulrest",
+  "id": "pop-soulrest",
+  "settlement": "soulrest",
+  "generated_by": "tools/world/build-population.mjs",
+  "source": "the household roster in game/data/world/property/soulrest.json — these are the people who already owned the objects",
+  "npcs": [
     {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "soulrest-grey-hist",
-     "activity": "home"
+      "id": "soulrest-weaver-0",
+      "name": "Heem Salt-Hand",
+      "race": "argonian",
+      "class": "weaver",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "soulrest",
+      "quarter": "drowned-court",
+      "household": "soulrest-weaver-0",
+      "role": "head",
+      "disposition": 44,
+      "interior": "soulrest-grey-hist",
+      "home_interior": "soulrest-grey-hist",
+      "work_interior": "soulrest-market",
+      "owns_zones": [
+        "soulrest.weaver0.r0",
+        "soulrest.weaver0.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "08:00",
+          "at": "soulrest-grey-hist",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-grey-hist",
+        "at_building_name": "The Grey Hist",
+        "pos": [
+          629.28,
+          7.91,
+          4876.58
+        ],
+        "yaw": 90,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-grey-hist's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
     },
     {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "soulrest-grey-hist",
-     "activity": "home"
+      "id": "soulrest-weaver-1",
+      "name": "Silent-Reed Bone-Setter",
+      "race": "argonian",
+      "class": "weaver",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "soulrest",
+      "quarter": "fishery",
+      "household": "soulrest-weaver-1",
+      "role": "head",
+      "disposition": 48,
+      "interior": "soulrest-market",
+      "home_interior": "soulrest-market",
+      "work_interior": "soulrest-market",
+      "owns_zones": [
+        "soulrest.weaver1.r0",
+        "soulrest.weaver1.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "soulrest-market",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "soulrest-market",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-market",
+        "at_building_name": "The Salt Stall",
+        "pos": [
+          624.21,
+          7.91,
+          4889.65
+        ],
+        "yaw": 42,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
     },
     {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "soulrest-market",
-     "activity": "work"
+      "id": "soulrest-smith-2",
+      "name": "Hides-His-Foot the Quiet",
+      "race": "argonian",
+      "class": "smith",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "soulrest",
+      "quarter": "the-steps",
+      "household": "soulrest-smith-2",
+      "role": "head",
+      "disposition": 41,
+      "interior": "soulrest-pawn",
+      "home_interior": "soulrest-pawn",
+      "work_interior": "soulrest-market",
+      "owns_zones": [
+        "soulrest.smith2.r0",
+        "soulrest.smith2.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "soulrest-pawn",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "soulrest-pawn",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-pawn",
+        "at_building_name": "The Silt Pawn",
+        "pos": [
+          606.61,
+          7.91,
+          4895.27
+        ],
+        "yaw": 354,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-pawn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
     },
     {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
+      "id": "soulrest-cook-3",
+      "name": "Drops-No-Stitch Slow-Rain",
+      "race": "argonian",
+      "class": "cook",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "soulrest",
+      "quarter": "drowned-court",
+      "household": "soulrest-cook-3",
+      "role": "head",
+      "disposition": 43,
+      "interior": "soulrest-boneyard",
+      "home_interior": "soulrest-boneyard",
+      "work_interior": "soulrest-boneyard",
+      "owns_zones": [
+        "soulrest.cook3.r0",
+        "soulrest.cook3.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "soulrest-boneyard",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "07:00",
+          "at": "soulrest-boneyard",
+          "activity": "work"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "soulrest-boneyard",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "soulrest-boneyard",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "soulrest-boneyard",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-boneyard",
+        "at_building_name": "The Boneyard Shed",
+        "pos": [
+          595.09,
+          7.91,
+          4887.77
+        ],
+        "yaw": 306,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-boneyard's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
     },
     {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "soulrest-market",
-     "activity": "work"
+      "id": "soulrest-cook-4",
+      "name": "Okan Sings-At-Dusk",
+      "race": "argonian",
+      "class": "cook",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "soulrest",
+      "quarter": "fishery",
+      "household": "soulrest-cook-4",
+      "role": "head",
+      "disposition": 45,
+      "interior": "soulrest-court-steps",
+      "home_interior": "soulrest-court-steps",
+      "work_interior": "soulrest-court-steps",
+      "owns_zones": [
+        "soulrest.cook4.r0",
+        "soulrest.cook4.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "soulrest-court-steps",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "soulrest-court-steps",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "soulrest-court-steps",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "soulrest-court-steps",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-market",
+        "at_building_name": "The Salt Stall",
+        "pos": [
+          621.79,
+          7.91,
+          4890.71
+        ],
+        "yaw": 42,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
     },
     {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
+      "id": "soulrest-scribe-5",
+      "name": "Llarara the Elder",
+      "race": "argonian",
+      "class": "scribe",
+      "actor": "clerk",
+      "faction": null,
+      "settlement": "soulrest",
+      "quarter": "the-steps",
+      "household": "soulrest-scribe-5",
+      "role": "head",
+      "disposition": 41,
+      "interior": "soulrest-smithy",
+      "home_interior": "soulrest-smithy",
+      "work_interior": "soulrest-market",
+      "owns_zones": [
+        "soulrest.scribe5.r0",
+        "soulrest.scribe5.r1"
+      ],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "soulrest-smithy",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "soulrest-smithy",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-market",
+        "at_building_name": "The Salt Stall",
+        "pos": [
+          621.11,
+          7.91,
+          4892.36
+        ],
+        "yaw": 42,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
     },
     {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "soulrest-grey-hist",
-     "activity": "home"
+      "id": "soulrest-boatwright-6",
+      "name": "Dram the Quiet",
+      "race": "argonian",
+      "class": "boatwright",
+      "actor": "fisher",
+      "faction": null,
+      "settlement": "soulrest",
+      "quarter": "drowned-court",
+      "household": "soulrest-boatwright-6",
+      "role": "head",
+      "disposition": 43,
+      "interior": "soulrest-quay",
+      "home_interior": "soulrest-quay",
+      "work_interior": "soulrest-market",
+      "owns_zones": [
+        "soulrest.boatwright6.r0",
+        "soulrest.boatwright6.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "soulrest-quay",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "09:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "soulrest-quay",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-smithy",
+        "at_building_name": "The Bone Forge",
+        "pos": [
+          619.41,
+          7.91,
+          4900.55
+        ],
+        "yaw": 18,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-smithy's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "soulrest-weaver-7",
+      "name": "Bevene the Patient",
+      "race": "argonian",
+      "class": "weaver",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "soulrest",
+      "quarter": "fishery",
+      "household": "soulrest-weaver-7",
+      "role": "head",
+      "disposition": 40,
+      "interior": "soulrest-grey-hist",
+      "home_interior": "soulrest-grey-hist",
+      "work_interior": "soulrest-market",
+      "owns_zones": [
+        "soulrest.weaver7.r0",
+        "soulrest.weaver7.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "soulrest-grey-hist",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "soulrest-grey-hist",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-grey-hist",
+        "at_building_name": "The Grey Hist",
+        "pos": [
+          628.65,
+          7.91,
+          4879.64
+        ],
+        "yaw": 90,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-grey-hist's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "soulrest-weaver-8",
+      "name": "Ahnassi Dark-Water",
+      "race": "argonian",
+      "class": "weaver",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "soulrest",
+      "quarter": "the-steps",
+      "household": "soulrest-weaver-8",
+      "role": "head",
+      "disposition": 46,
+      "interior": "soulrest-market",
+      "home_interior": "soulrest-market",
+      "work_interior": "soulrest-market",
+      "owns_zones": [
+        "soulrest.weaver8.r0",
+        "soulrest.weaver8.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "soulrest-market",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "soulrest-market",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-market",
+        "at_building_name": "The Salt Stall",
+        "pos": [
+          620.44,
+          7.91,
+          4892.63
+        ],
+        "yaw": 42,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "soulrest-boatwright-9",
+      "name": "Wanan the Shorter",
+      "race": "argonian",
+      "class": "boatwright",
+      "actor": "fisher",
+      "faction": null,
+      "settlement": "soulrest",
+      "quarter": "drowned-court",
+      "household": "soulrest-boatwright-9",
+      "role": "head",
+      "disposition": 44,
+      "interior": "soulrest-pawn",
+      "home_interior": "soulrest-pawn",
+      "work_interior": "soulrest-market",
+      "owns_zones": [
+        "soulrest.boatwright9.r0",
+        "soulrest.boatwright9.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "04:00",
+          "at": "soulrest-pawn",
+          "activity": "home"
+        },
+        {
+          "from": "04:00",
+          "to": "07:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "07:00",
+          "to": "09:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "09:00",
+          "to": "13:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "17:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "errand"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "soulrest-pawn",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-market",
+        "at_building_name": "The Salt Stall",
+        "pos": [
+          622.5,
+          7.91,
+          4889.21
+        ],
+        "yaw": 42,
+        "cohort": "errand",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "soulrest-trader-10",
+      "name": "Fastidious Reed-Cutter",
+      "race": "khajiit",
+      "class": "trader",
+      "actor": "merchant",
+      "faction": null,
+      "settlement": "soulrest",
+      "quarter": "fishery",
+      "household": "soulrest-trader-10",
+      "role": "head",
+      "disposition": 38,
+      "interior": "soulrest-boneyard",
+      "home_interior": "soulrest-boneyard",
+      "work_interior": "soulrest-market",
+      "owns_zones": [
+        "soulrest.trader10.r0",
+        "soulrest.trader10.r1"
+      ],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "08:00",
+          "at": "soulrest-boneyard",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-market",
+        "at_building_name": "The Salt Stall",
+        "pos": [
+          620.82,
+          7.91,
+          4891.54
+        ],
+        "yaw": 42,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "soulrest-warder-11",
+      "name": "Meesei Wet-Foot",
+      "race": "argonian",
+      "class": "warder",
+      "actor": "legionary",
+      "faction": "ninth-cohort",
+      "settlement": "soulrest",
+      "quarter": "the-steps",
+      "household": "soulrest-warder-11",
+      "role": "head",
+      "disposition": 28,
+      "interior": "soulrest-court-steps",
+      "home_interior": "soulrest-court-steps",
+      "work_interior": "soulrest-court-steps",
+      "owns_zones": [
+        "soulrest.warder11.r0",
+        "soulrest.warder11.r1"
+      ],
+      "behaviour": "post",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "06:00",
+          "at": "soulrest-court-steps",
+          "activity": "work"
+        },
+        {
+          "from": "06:00",
+          "to": "10:00",
+          "at": "soulrest-court-steps",
+          "activity": "home"
+        },
+        {
+          "from": "10:00",
+          "to": "18:00",
+          "at": "soulrest-court-steps",
+          "activity": "work"
+        },
+        {
+          "from": "18:00",
+          "to": "21:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "21:00",
+          "to": "22:00",
+          "at": "soulrest-court-steps",
+          "activity": "home"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [],
+      "reaction_group": "RG-IMP",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-court-steps",
+        "at_building_name": "The Drowned Court Steps",
+        "pos": [
+          634.32,
+          7.91,
+          4885.73
+        ],
+        "yaw": 66,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-court-steps's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "soulrest-keeper-grey-hist",
+      "name": "Ruut Deep-Root",
+      "title": "Rootkeeper",
+      "race": "argonian",
+      "class": "rootkeeper",
+      "actor": "rootkeeper",
+      "faction": "rootkeepers",
+      "settlement": "soulrest",
+      "quarter": "the-steps",
+      "household": "soulrest-keeper-grey-hist",
+      "role": "keeper",
+      "disposition": 53,
+      "interior": "soulrest-grey-hist",
+      "home_interior": "soulrest-grey-hist",
+      "work_interior": "soulrest-grey-hist",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "05:00",
+          "at": null,
+          "activity": "watch"
+        },
+        {
+          "from": "05:00",
+          "to": "06:00",
+          "at": "soulrest-grey-hist",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "12:00",
+          "at": "soulrest-grey-hist",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "soulrest-grey-hist",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "20:00",
+          "at": "soulrest-grey-hist",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "22:00",
+          "at": "soulrest-grey-hist",
+          "activity": "home"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": null,
+          "activity": "watch"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [
+        "travel"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-grey-hist",
+        "at_building_name": "The Grey Hist",
+        "pos": [
+          629.44,
+          7.91,
+          4878.16
+        ],
+        "yaw": 90,
+        "cohort": "watch",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-grey-hist's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "soulrest-keeper-court-steps",
+      "name": "Chun Dark-Water",
+      "title": "Sexton",
+      "race": "argonian",
+      "class": "priest",
+      "actor": "healer",
+      "faction": "drowned-court",
+      "settlement": "soulrest",
+      "quarter": "drowned-court",
+      "household": "soulrest-keeper-court-steps",
+      "role": "keeper",
+      "disposition": 50,
+      "interior": "soulrest-court-steps",
+      "home_interior": "soulrest-court-steps",
+      "work_interior": "soulrest-court-steps",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "soulrest-court-steps",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "12:00",
+          "at": "soulrest-court-steps",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "soulrest-court-steps",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "19:00",
+          "at": "soulrest-court-steps",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "soulrest-court-steps",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [
+        "heal"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-court-steps",
+        "at_building_name": "The Drowned Court Steps",
+        "pos": [
+          633.16,
+          7.91,
+          4886.41
+        ],
+        "yaw": 66,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-court-steps's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "soulrest-keeper-market",
+      "name": "Hides-His-Foot the Shorter",
+      "title": "Trader",
+      "race": "argonian",
+      "class": "trader",
+      "actor": "merchant",
+      "faction": null,
+      "settlement": "soulrest",
+      "quarter": "the-steps",
+      "household": "soulrest-keeper-market",
+      "role": "keeper",
+      "disposition": 38,
+      "interior": "soulrest-market",
+      "home_interior": "soulrest-market",
+      "work_interior": "soulrest-market",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "soulrest-market",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "08:00",
+          "at": "soulrest-market",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "soulrest-market",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "soulrest-market",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-market",
+        "at_building_name": "The Salt Stall",
+        "pos": [
+          620.73,
+          7.91,
+          4892.99
+        ],
+        "yaw": 42,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-market's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "soulrest-keeper-smithy",
+      "name": "Meesei Reed-Cutter",
+      "title": "Smith",
+      "race": "argonian",
+      "class": "smith",
+      "actor": "townsman",
+      "faction": null,
+      "settlement": "soulrest",
+      "quarter": "the-steps",
+      "household": "soulrest-keeper-smithy",
+      "role": "keeper",
+      "disposition": 41,
+      "interior": "soulrest-smithy",
+      "home_interior": "soulrest-smithy",
+      "work_interior": "soulrest-smithy",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "soulrest-smithy",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "09:00",
+          "at": "soulrest-smithy",
+          "activity": "work"
+        },
+        {
+          "from": "09:00",
+          "to": "17:00",
+          "at": null,
+          "activity": "market"
+        },
+        {
+          "from": "17:00",
+          "to": "19:00",
+          "at": "soulrest-smithy",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "soulrest-smithy",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [
+        "repair"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-pawn",
+        "at_building_name": "The Silt Pawn",
+        "pos": [
+          608.59,
+          7.91,
+          4895.28
+        ],
+        "yaw": 354,
+        "cohort": "market",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-pawn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "soulrest-keeper-pawn",
+      "name": "Neetrenaza the Patient",
+      "title": "Pawnbroker",
+      "race": "argonian",
+      "class": "trader",
+      "actor": "merchant",
+      "faction": null,
+      "settlement": "soulrest",
+      "quarter": "fishery",
+      "household": "soulrest-keeper-pawn",
+      "role": "keeper",
+      "disposition": 40,
+      "interior": "soulrest-pawn",
+      "home_interior": "soulrest-pawn",
+      "work_interior": "soulrest-pawn",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "soulrest-pawn",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "soulrest-pawn",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "soulrest-pawn",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "soulrest-pawn",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-pawn",
+        "at_building_name": "The Silt Pawn",
+        "pos": [
+          610.49,
+          7.91,
+          4895.52
+        ],
+        "yaw": 354,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-pawn's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "soulrest-keeper-quay",
+      "name": "Ocheeva Salt-Hand",
+      "title": "Postmaster",
+      "race": "argonian",
+      "class": "rootkeeper",
+      "actor": "rootkeeper",
+      "faction": "rootkeepers",
+      "settlement": "soulrest",
+      "quarter": "the-steps",
+      "household": "soulrest-keeper-quay",
+      "role": "keeper",
+      "disposition": 56,
+      "interior": "soulrest-quay",
+      "home_interior": "soulrest-quay",
+      "work_interior": "soulrest-quay",
+      "owns_zones": [],
+      "behaviour": "stand",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "06:00",
+          "at": "soulrest-quay",
+          "activity": "home"
+        },
+        {
+          "from": "06:00",
+          "to": "12:00",
+          "at": "soulrest-quay",
+          "activity": "work"
+        },
+        {
+          "from": "12:00",
+          "to": "13:00",
+          "at": "soulrest-quay",
+          "activity": "home"
+        },
+        {
+          "from": "13:00",
+          "to": "20:00",
+          "at": "soulrest-quay",
+          "activity": "work"
+        },
+        {
+          "from": "20:00",
+          "to": "00:00",
+          "at": "soulrest-quay",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [
+        "travel"
+      ],
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-quay",
+        "at_building_name": "The Silted Quay House",
+        "pos": [
+          597.25,
+          7.91,
+          4898.63
+        ],
+        "yaw": 330,
+        "cohort": "indoors",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-quay's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
+    },
+    {
+      "id": "soulrest-keeper-boneyard",
+      "name": "Veek Cold-Ash",
+      "title": "Trader",
+      "race": "argonian",
+      "class": "trader",
+      "actor": "merchant",
+      "faction": null,
+      "settlement": "soulrest",
+      "quarter": "drowned-court",
+      "household": "soulrest-keeper-boneyard",
+      "role": "keeper",
+      "disposition": 43,
+      "interior": "soulrest-boneyard",
+      "home_interior": "soulrest-boneyard",
+      "work_interior": "soulrest-boneyard",
+      "owns_zones": [],
+      "behaviour": "tend",
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "08:00",
+          "at": "soulrest-boneyard",
+          "activity": "home"
+        },
+        {
+          "from": "08:00",
+          "to": "13:00",
+          "at": "soulrest-boneyard",
+          "activity": "work"
+        },
+        {
+          "from": "13:00",
+          "to": "14:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        },
+        {
+          "from": "14:00",
+          "to": "19:00",
+          "at": "soulrest-boneyard",
+          "activity": "work"
+        },
+        {
+          "from": "19:00",
+          "to": "22:00",
+          "at": null,
+          "activity": "street"
+        },
+        {
+          "from": "22:00",
+          "to": "00:00",
+          "at": "soulrest-boneyard",
+          "activity": "home"
+        }
+      ],
+      "topics": [
+        "soulrest",
+        "background"
+      ],
+      "services": [
+        "barter"
+      ],
+      "reaction_group": "RG-COMMON",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-boneyard",
+        "at_building_name": "The Boneyard Shed",
+        "pos": [
+          593.65,
+          7.91,
+          4885.29
+        ],
+        "yaw": 306,
+        "cohort": "evening",
+        "note": "W1-04 r2 street life: an outdoor station derived from soulrest-boneyard's door. `at: null` in the schedule below means HERE, not \"everywhere\"."
+      }
     }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "soulrest-weaver-1",
-   "name": "Silent-Reed Bone-Setter",
-   "race": "argonian",
-   "class": "weaver",
-   "actor": "townsman",
-   "faction": null,
-   "settlement": "soulrest",
-   "quarter": "fishery",
-   "household": "soulrest-weaver-1",
-   "role": "head",
-   "disposition": 48,
-   "interior": "soulrest-market",
-   "home_interior": "soulrest-market",
-   "work_interior": "soulrest-market",
-   "owns_zones": [
-    "soulrest.weaver1.r0",
-    "soulrest.weaver1.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "soulrest-market",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "soulrest-market",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "soulrest-market",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "soulrest-smith-2",
-   "name": "Hides-His-Foot the Quiet",
-   "race": "argonian",
-   "class": "smith",
-   "actor": "townsman",
-   "faction": null,
-   "settlement": "soulrest",
-   "quarter": "the-steps",
-   "household": "soulrest-smith-2",
-   "role": "head",
-   "disposition": 41,
-   "interior": "soulrest-pawn",
-   "home_interior": "soulrest-pawn",
-   "work_interior": "soulrest-market",
-   "owns_zones": [
-    "soulrest.smith2.r0",
-    "soulrest.smith2.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "soulrest-pawn",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "soulrest-pawn",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "soulrest-pawn",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [
-    "repair"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "soulrest-cook-3",
-   "name": "Drops-No-Stitch Slow-Rain",
-   "race": "argonian",
-   "class": "cook",
-   "actor": "townsman",
-   "faction": null,
-   "settlement": "soulrest",
-   "quarter": "drowned-court",
-   "household": "soulrest-cook-3",
-   "role": "head",
-   "disposition": 43,
-   "interior": "soulrest-boneyard",
-   "home_interior": "soulrest-boneyard",
-   "work_interior": "soulrest-boneyard",
-   "owns_zones": [
-    "soulrest.cook3.r0",
-    "soulrest.cook3.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "04:00",
-     "to": "08:00",
-     "at": "soulrest-boneyard",
-     "activity": "work"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "soulrest-boneyard",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "soulrest-boneyard",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "04:00",
-     "at": "soulrest-boneyard",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "soulrest-cook-4",
-   "name": "Okan Sings-At-Dusk",
-   "race": "argonian",
-   "class": "cook",
-   "actor": "townsman",
-   "faction": null,
-   "settlement": "soulrest",
-   "quarter": "fishery",
-   "household": "soulrest-cook-4",
-   "role": "head",
-   "disposition": 45,
-   "interior": "soulrest-court-steps",
-   "home_interior": "soulrest-court-steps",
-   "work_interior": "soulrest-court-steps",
-   "owns_zones": [
-    "soulrest.cook4.r0",
-    "soulrest.cook4.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "04:00",
-     "to": "08:00",
-     "at": "soulrest-court-steps",
-     "activity": "work"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "soulrest-court-steps",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "soulrest-court-steps",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "04:00",
-     "at": "soulrest-court-steps",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "soulrest-scribe-5",
-   "name": "Llarara the Elder",
-   "race": "argonian",
-   "class": "scribe",
-   "actor": "clerk",
-   "faction": null,
-   "settlement": "soulrest",
-   "quarter": "the-steps",
-   "household": "soulrest-scribe-5",
-   "role": "head",
-   "disposition": 41,
-   "interior": "soulrest-smithy",
-   "home_interior": "soulrest-smithy",
-   "work_interior": "soulrest-market",
-   "owns_zones": [
-    "soulrest.scribe5.r0",
-    "soulrest.scribe5.r1"
-   ],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "soulrest-smithy",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "soulrest-smithy",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "soulrest-smithy",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "soulrest-boatwright-6",
-   "name": "Dram the Quiet",
-   "race": "argonian",
-   "class": "boatwright",
-   "actor": "fisher",
-   "faction": null,
-   "settlement": "soulrest",
-   "quarter": "drowned-court",
-   "household": "soulrest-boatwright-6",
-   "role": "head",
-   "disposition": 43,
-   "interior": "soulrest-quay",
-   "home_interior": "soulrest-quay",
-   "work_interior": "soulrest-market",
-   "owns_zones": [
-    "soulrest.boatwright6.r0",
-    "soulrest.boatwright6.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "04:00",
-     "to": "08:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "04:00",
-     "at": "soulrest-quay",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [
-    "repair"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "soulrest-weaver-7",
-   "name": "Bevene the Patient",
-   "race": "argonian",
-   "class": "weaver",
-   "actor": "townsman",
-   "faction": null,
-   "settlement": "soulrest",
-   "quarter": "fishery",
-   "household": "soulrest-weaver-7",
-   "role": "head",
-   "disposition": 40,
-   "interior": "soulrest-grey-hist",
-   "home_interior": "soulrest-grey-hist",
-   "work_interior": "soulrest-market",
-   "owns_zones": [
-    "soulrest.weaver7.r0",
-    "soulrest.weaver7.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "soulrest-grey-hist",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "soulrest-grey-hist",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "soulrest-grey-hist",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "soulrest-weaver-8",
-   "name": "Ahnassi Dark-Water",
-   "race": "argonian",
-   "class": "weaver",
-   "actor": "townsman",
-   "faction": null,
-   "settlement": "soulrest",
-   "quarter": "the-steps",
-   "household": "soulrest-weaver-8",
-   "role": "head",
-   "disposition": 46,
-   "interior": "soulrest-market",
-   "home_interior": "soulrest-market",
-   "work_interior": "soulrest-market",
-   "owns_zones": [
-    "soulrest.weaver8.r0",
-    "soulrest.weaver8.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "soulrest-market",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "soulrest-market",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "soulrest-market",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "soulrest-boatwright-9",
-   "name": "Wanan the Shorter",
-   "race": "argonian",
-   "class": "boatwright",
-   "actor": "fisher",
-   "faction": null,
-   "settlement": "soulrest",
-   "quarter": "drowned-court",
-   "household": "soulrest-boatwright-9",
-   "role": "head",
-   "disposition": 44,
-   "interior": "soulrest-pawn",
-   "home_interior": "soulrest-pawn",
-   "work_interior": "soulrest-market",
-   "owns_zones": [
-    "soulrest.boatwright9.r0",
-    "soulrest.boatwright9.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "04:00",
-     "to": "08:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "04:00",
-     "at": "soulrest-pawn",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [
-    "repair"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "soulrest-trader-10",
-   "name": "Fastidious Reed-Cutter",
-   "race": "khajiit",
-   "class": "trader",
-   "actor": "merchant",
-   "faction": null,
-   "settlement": "soulrest",
-   "quarter": "fishery",
-   "household": "soulrest-trader-10",
-   "role": "head",
-   "disposition": 38,
-   "interior": "soulrest-boneyard",
-   "home_interior": "soulrest-boneyard",
-   "work_interior": "soulrest-market",
-   "owns_zones": [
-    "soulrest.trader10.r0",
-    "soulrest.trader10.r1"
-   ],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "soulrest-boneyard",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "soulrest-boneyard",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "soulrest-boneyard",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "soulrest-warder-11",
-   "name": "Meesei Wet-Foot",
-   "race": "argonian",
-   "class": "warder",
-   "actor": "legionary",
-   "faction": "ninth-cohort",
-   "settlement": "soulrest",
-   "quarter": "the-steps",
-   "household": "soulrest-warder-11",
-   "role": "head",
-   "disposition": 28,
-   "interior": "soulrest-court-steps",
-   "home_interior": "soulrest-court-steps",
-   "work_interior": "soulrest-court-steps",
-   "owns_zones": [
-    "soulrest.warder11.r0",
-    "soulrest.warder11.r1"
-   ],
-   "behaviour": "post",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "06:00",
-     "at": "soulrest-court-steps",
-     "activity": "work"
-    },
-    {
-     "from": "06:00",
-     "to": "10:00",
-     "at": "soulrest-court-steps",
-     "activity": "home"
-    },
-    {
-     "from": "10:00",
-     "to": "18:00",
-     "at": "soulrest-court-steps",
-     "activity": "work"
-    },
-    {
-     "from": "18:00",
-     "to": "21:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "21:00",
-     "to": "00:00",
-     "at": "soulrest-court-steps",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [],
-   "reaction_group": "RG-IMP"
-  },
-  {
-   "id": "soulrest-keeper-grey-hist",
-   "name": "Ruut Deep-Root",
-   "title": "Rootkeeper",
-   "race": "argonian",
-   "class": "rootkeeper",
-   "actor": "rootkeeper",
-   "faction": "rootkeepers",
-   "settlement": "soulrest",
-   "quarter": "the-steps",
-   "household": "soulrest-keeper-grey-hist",
-   "role": "keeper",
-   "disposition": 53,
-   "interior": "soulrest-grey-hist",
-   "home_interior": "soulrest-grey-hist",
-   "work_interior": "soulrest-grey-hist",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "06:00",
-     "at": "soulrest-grey-hist",
-     "activity": "home"
-    },
-    {
-     "from": "06:00",
-     "to": "12:00",
-     "at": "soulrest-grey-hist",
-     "activity": "work"
-    },
-    {
-     "from": "12:00",
-     "to": "13:00",
-     "at": "soulrest-grey-hist",
-     "activity": "home"
-    },
-    {
-     "from": "13:00",
-     "to": "20:00",
-     "at": "soulrest-grey-hist",
-     "activity": "work"
-    },
-    {
-     "from": "20:00",
-     "to": "00:00",
-     "at": "soulrest-grey-hist",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [
-    "travel"
-   ],
-   "reaction_group": "RG-DEEP"
-  },
-  {
-   "id": "soulrest-keeper-court-steps",
-   "name": "Chun Dark-Water",
-   "title": "Sexton",
-   "race": "argonian",
-   "class": "priest",
-   "actor": "healer",
-   "faction": "drowned-court",
-   "settlement": "soulrest",
-   "quarter": "drowned-court",
-   "household": "soulrest-keeper-court-steps",
-   "role": "keeper",
-   "disposition": 50,
-   "interior": "soulrest-court-steps",
-   "home_interior": "soulrest-court-steps",
-   "work_interior": "soulrest-court-steps",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "06:00",
-     "at": "soulrest-court-steps",
-     "activity": "home"
-    },
-    {
-     "from": "06:00",
-     "to": "12:00",
-     "at": "soulrest-court-steps",
-     "activity": "work"
-    },
-    {
-     "from": "12:00",
-     "to": "13:00",
-     "at": "soulrest-court-steps",
-     "activity": "home"
-    },
-    {
-     "from": "13:00",
-     "to": "20:00",
-     "at": "soulrest-court-steps",
-     "activity": "work"
-    },
-    {
-     "from": "20:00",
-     "to": "00:00",
-     "at": "soulrest-court-steps",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [
-    "heal"
-   ],
-   "reaction_group": "RG-DEEP"
-  },
-  {
-   "id": "soulrest-keeper-market",
-   "name": "Hides-His-Foot the Shorter",
-   "title": "Trader",
-   "race": "argonian",
-   "class": "trader",
-   "actor": "merchant",
-   "faction": null,
-   "settlement": "soulrest",
-   "quarter": "the-steps",
-   "household": "soulrest-keeper-market",
-   "role": "keeper",
-   "disposition": 38,
-   "interior": "soulrest-market",
-   "home_interior": "soulrest-market",
-   "work_interior": "soulrest-market",
-   "owns_zones": [],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "soulrest-market",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "soulrest-market",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "soulrest-market",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "soulrest-market",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "soulrest-keeper-smithy",
-   "name": "Meesei Reed-Cutter",
-   "title": "Smith",
-   "race": "argonian",
-   "class": "smith",
-   "actor": "townsman",
-   "faction": null,
-   "settlement": "soulrest",
-   "quarter": "the-steps",
-   "household": "soulrest-keeper-smithy",
-   "role": "keeper",
-   "disposition": 41,
-   "interior": "soulrest-smithy",
-   "home_interior": "soulrest-smithy",
-   "work_interior": "soulrest-smithy",
-   "owns_zones": [],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "soulrest-smithy",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "soulrest-smithy",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "soulrest-smithy",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "soulrest-smithy",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "soulrest-smithy",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [
-    "repair"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "soulrest-keeper-pawn",
-   "name": "Neetrenaza the Patient",
-   "title": "Pawnbroker",
-   "race": "argonian",
-   "class": "trader",
-   "actor": "merchant",
-   "faction": null,
-   "settlement": "soulrest",
-   "quarter": "fishery",
-   "household": "soulrest-keeper-pawn",
-   "role": "keeper",
-   "disposition": 40,
-   "interior": "soulrest-pawn",
-   "home_interior": "soulrest-pawn",
-   "work_interior": "soulrest-pawn",
-   "owns_zones": [],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "soulrest-pawn",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "soulrest-pawn",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "soulrest-pawn",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "soulrest-pawn",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "soulrest-pawn",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-COMMON"
-  },
-  {
-   "id": "soulrest-keeper-quay",
-   "name": "Ocheeva Salt-Hand",
-   "title": "Postmaster",
-   "race": "argonian",
-   "class": "rootkeeper",
-   "actor": "rootkeeper",
-   "faction": "rootkeepers",
-   "settlement": "soulrest",
-   "quarter": "the-steps",
-   "household": "soulrest-keeper-quay",
-   "role": "keeper",
-   "disposition": 56,
-   "interior": "soulrest-quay",
-   "home_interior": "soulrest-quay",
-   "work_interior": "soulrest-quay",
-   "owns_zones": [],
-   "behaviour": "stand",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "06:00",
-     "at": "soulrest-quay",
-     "activity": "home"
-    },
-    {
-     "from": "06:00",
-     "to": "12:00",
-     "at": "soulrest-quay",
-     "activity": "work"
-    },
-    {
-     "from": "12:00",
-     "to": "13:00",
-     "at": "soulrest-quay",
-     "activity": "home"
-    },
-    {
-     "from": "13:00",
-     "to": "20:00",
-     "at": "soulrest-quay",
-     "activity": "work"
-    },
-    {
-     "from": "20:00",
-     "to": "00:00",
-     "at": "soulrest-quay",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [
-    "travel"
-   ],
-   "reaction_group": "RG-DEEP"
-  },
-  {
-   "id": "soulrest-keeper-boneyard",
-   "name": "Veek Cold-Ash",
-   "title": "Trader",
-   "race": "argonian",
-   "class": "trader",
-   "actor": "merchant",
-   "faction": null,
-   "settlement": "soulrest",
-   "quarter": "drowned-court",
-   "household": "soulrest-keeper-boneyard",
-   "role": "keeper",
-   "disposition": 43,
-   "interior": "soulrest-boneyard",
-   "home_interior": "soulrest-boneyard",
-   "work_interior": "soulrest-boneyard",
-   "owns_zones": [],
-   "behaviour": "tend",
-   "schedule": [
-    {
-     "from": "00:00",
-     "to": "07:00",
-     "at": "soulrest-boneyard",
-     "activity": "home"
-    },
-    {
-     "from": "07:00",
-     "to": "08:00",
-     "at": "soulrest-boneyard",
-     "activity": "home"
-    },
-    {
-     "from": "08:00",
-     "to": "13:00",
-     "at": "soulrest-boneyard",
-     "activity": "work"
-    },
-    {
-     "from": "13:00",
-     "to": "14:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "14:00",
-     "to": "19:00",
-     "at": "soulrest-boneyard",
-     "activity": "work"
-    },
-    {
-     "from": "19:00",
-     "to": "22:00",
-     "at": "soulrest-grey-hist",
-     "activity": "tavern"
-    },
-    {
-     "from": "22:00",
-     "to": "00:00",
-     "at": "soulrest-boneyard",
-     "activity": "home"
-    }
-   ],
-   "topics": [
-    "soulrest",
-    "background"
-   ],
-   "services": [
-    "barter"
-   ],
-   "reaction_group": "RG-COMMON"
-  }
- ]
+  ],
+  "street_life_note": "Some records in this file carry a `post` block and outdoor `at: null` schedule rows written by tools/world/build-street-life.mjs. Re-run it after moving a settlement; do not hand-edit `post`."
 }

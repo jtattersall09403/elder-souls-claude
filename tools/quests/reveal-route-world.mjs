@@ -18,9 +18,14 @@
 //   * `__ENGINE`    — INDEX.md's documented back door around harness prohibitions.
 //
 // PERMITTED AND DECLARED, because they are not what is being measured:
-//   * `questOpen` — whether THIS character could have been OFFERED this quest is the offer gate's
-//     question and belongs to `mainline-findability.mjs`; several of these quests sit behind a
-//     faction ladder. What is measured here is what TALKING does to a quest that is under way.
+//   * `questOpen` and `learnTopic` — whether THIS character could have been OFFERED this quest is
+//     the offer gate's question and belongs to `mainline-findability.mjs`; at a cold start every
+//     one of the 36 candidates refuses, mostly on a topic that has not come up yet and often on a
+//     faction ladder as well. Both grants are recorded per case, and NEITHER touches knowledge:
+//     `learnTopic` writes `topicsKnown`, which is what you can ASK ABOUT; `know:` flags are a
+//     different register with one writer, and that writer is what is under test. Only the
+//     `opens_by` topics the refusal names are granted — never a topic the gate did not ask for —
+//     and a leg the gate still refuses is SKIPPED with the reason printed, never scored.
 //   * `populateSettlement` / `populateSite` — WALKING INTO THE TOWN THE PERSON LIVES IN. This is
 //     the world's own call, the same one `travelToGiver` makes and the same one crossing a town
 //     boundary makes; the settlement each person belongs to is read out of their own record in
@@ -43,6 +48,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execSync } from 'node:child_process';
 import { parseArgs, wantsHelp, usage, writeJson, ensureDir } from '../lib/cli.mjs';
 import { launchGame, requireMethods } from '../lib/browser.mjs';
 
@@ -56,8 +62,7 @@ if (wantsHelp(args)) {
     'reveal-route-world.mjs — does talking to a person, in the running game, produce the reveal',
     'the quest file names them as the source of?',
     '',
-    '  --cases <n>   how many quests to walk (default 6)',
-    '  --spawn       put a named source in the world when they are not already there (declared)',
+    '  --cases <n>   how many legs the offer gate lets through before stopping (default 6)',
     '  --out <path>  where to write the report',
   ].join('\n'));
 }
@@ -103,40 +108,65 @@ for (const q of quests) {
     CHANNEL_READERS[r.channel] === 'person' && npcIds.has(r.source)
     && demanded.has(r.id) && r.before_point_of_no_return !== false);
   if (!rows.length) continue;
-  candidates.push({ quest: q.id, rows: rows.map((r) => ({ reveal: r.id, source: r.source, journal: r.journal == null ? null : r.journal })) });
+  candidates.push({
+    quest: q.id,
+    rows: rows.map((r) => ({ reveal: r.id, source: r.source, journal: r.journal == null ? null : r.journal })),
+    // How hard this quest is to ACCEPT, which is a different measurement and not this one's.
+    // Cheapest first, so the run spends its browser on legs that get past the offer gate; a
+    // quest whose offer gate refuses is SKIPPED with the refusal printed, never scored.
+    cost: ((q.opens_by && q.opens_by.prerequisite_quests) || []).length + (q.rank_gate ? 10 : 0),
+    has_journal: rows.some((r) => r.journal != null),
+    topic: (q.opens_by && q.opens_by.topic) || null,
+    prereqTopics: (q.opens_by && q.opens_by.prerequisite_topics) || [],
+  });
 }
-candidates.sort((a, b) => (a.quest < b.quest ? -1 : 1));
-const withJournal = candidates.filter((c) => c.rows.some((r) => r.journal != null));
-const chosen = [...withJournal, ...candidates.filter((c) => !withJournal.includes(c))].slice(0, Number(args.cases || 6));
-if (!chosen.length) { console.error('reveal-route-world: no person-channel candidate in the shipped data. Nothing to measure.'); process.exit(2); }
+candidates.sort((a, b) => (a.cost - b.cost) || (b.has_journal - a.has_journal) || (a.quest < b.quest ? -1 : 1));
+if (!candidates.length) { console.error('reveal-route-world: no person-channel candidate in the shipped data. Nothing to measure.'); process.exit(2); }
+const WANT = Number(args.cases || 6);
 
 // ---- the run --------------------------------------------------------------------------------
 const handle = await launchGame(args);
-const conjured = [];
+const walkedTo = new Set();
 const cases = [];
 try {
-  await requireMethods(handle, ['talkTo', 'getQuestState', 'questOpen', 'listNPCs', 'reset', 'spawnNPC']);
+  await requireMethods(handle, ['talkTo', 'getQuestState', 'questOpen', 'listNPCs', 'reset', 'populateSettlement', 'populateSite', 'travelToGiver', 'learnTopic']);
 
-  for (const c of chosen) {
+  const isPresent = (id) => handle.page.evaluate((x) => (window.__HARNESS.listNPCs() || []).some((n) => (n.eid || n.id) === x), id);
+  /** Walk into the town or site this person's own record says they are in. Never invents one. */
+  const walkTo = async (id) => {
+    if (await isPresent(id)) return true;
+    const place = npcPlace.get(id);
+    if (!place) return false;
+    if (place.settlement) { await handle.h('populateSettlement', place.settlement); walkedTo.add(place.settlement); }
+    else { await handle.h('populateSite', place.site); walkedTo.add(place.site); }
+    return isPresent(id);
+  };
+
+  for (const c of candidates) {
+    if (cases.filter((x) => !x.skipped && !x.error).length >= WANT) break;
     const row = c.rows.find((r) => r.journal != null) || c.rows[0];
-    const rec = { quest: c.quest, npc: row.source, reveal: row.reveal, journal_declared: row.journal };
+    const rec = { quest: c.quest, npc: row.source, reveal: row.reveal, journal_declared: row.journal, npc_place: npcPlace.get(row.source) || null };
     await handle.h('reset');
-
-    // Is the person in the world? `talkTo` throws if not, and that is the honest answer.
-    let present = await handle.page.evaluate((id) => (window.__HARNESS.listNPCs() || []).some((n) => (n.eid || n.id) === id), row.source);
-    if (!present && args.spawn) {
-      await handle.h('spawnNPC', { eid: row.source, id: row.source, name: row.source });
-      present = await handle.page.evaluate((id) => (window.__HARNESS.listNPCs() || []).some((n) => (n.eid || n.id) === id), row.source);
-      if (present) conjured.push(row.source);
-      rec.npc_conjured = present;
-    }
+    // Walk to the giver's town first — that is where the quest is accepted — then to the
+    // source's, which is often the same place and sometimes is not.
+    rec.travel = await handle.h('travelToGiver', c.quest);
+    const present = await walkTo(row.source);
     rec.npc_present = present;
     if (!present) { rec.skipped = 'that person is not in the world; talkTo would throw'; cases.push(rec); continue; }
 
+    // `Engine.getQuestState()` reports the raw per-quest flag bag and one flat journal, so the
+    // `know:` set and the entry count are derived here rather than read off a convenience field.
+    // Reading a field that does not exist is how the first version of this leg reported
+    // `knows: []` while the engine was in fact writing the reveal.
     const knows = async () => {
       const st = await handle.h('getQuestState');
-      const r = [...(st.active || []), ...(st.closed || [])].find((x) => x.id === c.quest);
-      return { knows: (r && r.knows) || [], entries: (r && r.entries) || 0 };
+      const r = (st.active || []).find((x) => x.id === c.quest);
+      const flags = (r && r.flags) || {};
+      return {
+        knows: Object.keys(flags).filter((k) => k.startsWith('know:')).map((k) => k.slice(5)).sort(),
+        entries: (st.journal || []).filter((e) => e.quest === c.quest).length,
+        indices: (st.journal || []).filter((e) => e.quest === c.quest).map((e) => e.n),
+      };
     };
 
     // ---- CONTROL 2: the quest is NOT open. Talk to the right person; nothing may be learned.
@@ -147,9 +177,24 @@ try {
     rec.control_quest_not_open_learned = afterUnopened.knows.includes(row.reveal);
 
     // ---- the quest is opened. DECLARED GRANT: the offer gate is not what is under test.
-    const opened = await handle.h('questOpen', c.quest);
+    let opened = await handle.h('questOpen', c.quest);
+    // The topic gate. Declared grant: only the `opens_by` topics this quest itself names, and
+    // only when the refusal names them. Nothing else about the gate is touched.
+    if (!(opened && opened.ok) && /topic "/.test(String(opened && opened.reason || ''))) {
+      const topics = [...new Set([c.topic, ...(c.prereqTopics || [])].filter(Boolean))];
+      for (const t of topics) await handle.h('learnTopic', t);
+      rec.topics_granted = topics;
+      opened = await handle.h('questOpen', c.quest);
+    }
     rec.opened = !!(opened && opened.ok);
-    if (!rec.opened) { rec.open_refusal = opened && opened.reason; }
+    if (!rec.opened) {
+      // The OFFER gate refused. That is a real property of this character and this world state
+      // and it belongs to `mainline-findability.mjs`; it is not evidence about the reveal route
+      // either way, so the leg is SKIPPED with the refusal printed rather than scored red.
+      rec.open_refusal = opened && opened.reason;
+      rec.skipped = `the offer gate refused: ${rec.open_refusal}`;
+      cases.push(rec); continue;
+    }
     const before = await knows();
     rec.knows_before = before.knows;
     rec.journal_entries_before = before.entries;
@@ -160,11 +205,14 @@ try {
     const after = await knows();
     rec.knows_after = after.knows;
     rec.journal_entries_after = after.entries;
+    rec.journal_indices_before = before.indices;
+    rec.journal_indices_after = after.indices;
     rec.learned_by_talking = !before.knows.includes(row.reveal) && after.knows.includes(row.reveal);
     rec.journal_written = row.journal == null ? null : (after.entries > before.entries);
 
     // ---- CONTROL 1: the wrong person. A fresh run, the quest open, talk to somebody else.
     await handle.h('reset');
+    await walkTo(row.source);
     await handle.h('questOpen', c.quest);
     const other = await handle.page.evaluate((id) => {
       const list = (window.__HARNESS.listNPCs() || []).map((n) => n.eid || n.id).filter((x) => x && x !== id);
@@ -193,9 +241,11 @@ const run = cases.filter((c) => !c.skipped && !c.error);
 const report = {
   schema: 'elder-souls/reveal-route-world@1',
   generated_by: 'tools/quests/reveal-route-world.mjs',
+  // RULES.md rule 12.
+  commit: (() => { try { return execSync('git rev-parse --short HEAD', { cwd: ROOT }).toString().trim(); } catch { return null; } })(),
   build: handle.buildInfo || null,
   act: 'talkTo(npcId) — nothing else',
-  declared_grants: ['questOpen (the offer gate is not what is measured here)', ...(conjured.length ? [`spawnNPC for: ${conjured.join(', ')}`] : [])],
+  declared_grants: ['questOpen + learnTopic (the offer gate is not what is measured here; only the opens_by topics a refusal named)', `walked into: ${[...walkedTo].sort().join(', ') || '(nowhere)'} — populateSettlement/populateSite, each read off the person's own record, nobody spawned from nothing`],
   prohibited_and_unused: PROHIBITED,
   candidates_total: candidates.length,
   cases,
@@ -220,7 +270,7 @@ for (const c of cases) {
   console.log(`      knows BEFORE ......................... [${c.knows_before.join(', ')}]`);
   console.log(`      knows AFTER .......................... [${c.knows_after.join(', ')}]`);
   console.log(`      learned "${c.reveal}" by talking ... ${c.learned_by_talking}`);
-  console.log(`      journal entries ${c.journal_entries_before} -> ${c.journal_entries_after}   (file declares entry ${c.journal_declared})`);
+  console.log(`      journal [${(c.journal_indices_before || []).join(', ')}] -> [${(c.journal_indices_after || []).join(', ')}]   (the file declares entry ${c.journal_declared} for this reveal)`);
   console.log(`      CONTROL quest not open, same person .. learned=${c.control_quest_not_open_learned}  (must be false)`);
   console.log(`      CONTROL wrong person (${String(c.control_wrong_person).slice(0, 24)}) . learned=${c.control_wrong_person_learned}  (must be false)`);
   console.log(`      ${c.passed ? 'PASS' : 'FAIL'}`);

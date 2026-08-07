@@ -1,23 +1,42 @@
 {
   "task_id": "W1-DLG-SHADOWS",
-  "state": "in_progress",
+  "state": "complete",
   "owner": "dialogue-shadow-builder",
   "started": "2026-08-07",
-  "summary": "Close the live (context-overlapping) topic-id collisions reported by tools/check-dialogue-topics.mjs across game/data/dialogue/topics/**. Do not flatten the intended race-partitioned same-id pattern (41 quiet/partitioned pairs). For each live collision, make the winner structural (retire stub / narrow filter / rename id), not merely score-favoured. Prove each through Conversation.state().said_from on the real converse.js path. Rule 6: restore at least one collision on a copy and confirm the wrong line returns.",
-  "next_step": "Enumerate the 23 live collisions reported by `node tools/check-dialogue-topics.mjs --all`, decide per-id fix, apply, verify with node repro scripts + check-dialogue-topics.mjs + check-prose.mjs, then do the rule-6 revert-and-confirm on one case, then write reports/blog-feed.jsonl line.",
-  "files_claimed": [
-    "game/data/dialogue/topics/00-roots.json",
-    "game/data/dialogue/topics/06-opening-roots.json",
-    "game/data/dialogue/topics/07-root-coverage.json",
-    "game/data/dialogue/topics/10-global.json",
-    "game/data/dialogue/topics/40-race-gated.json",
-    "game/data/dialogue/topics/50-factions.json",
-    "game/data/dialogue/topics/50-mainline.json",
-    "game/data/dialogue/topics/55-utility.json",
-    "game/data/dialogue/topics/70-disputes.json",
-    "game/data/dialogue/topics/22-tier-c.json",
-    "game/data/dialogue/topics/main-quest-argument.json"
+  "finished": "2026-08-07",
+  "summary": "Closed the live (context-overlapping) topic-id collisions reported by tools/check-dialogue-topics.mjs across game/data/dialogue/topics/**, without flattening the intended race-partitioned same-id pattern.",
+  "what_i_found": "The check reported 23 live collisions at start, not 22. Investigation (empirical infoFor() reproduction across every actor/race/d/cell signature, not just reasoning) showed only 11 of the 23 were genuine order-dependent bugs (a tie or a permanently-shadowed line); the other 12 were a SECOND, THIRD and FOURTH legitimate deterministic pattern the checker's overlap model doesn't yet name as safe (parallel to the race-partition it already excludes): actor-specific-vs-universal-fallback (Group A's 9 root topics: background/duties/latest-rumors/little-advice/little-secret/my-trade/services/someone-in-particular/specific-place, plus slavery), cell-specific-vs-cell-blind (soulrest), and disposition-band-ladder (the-drowned-court). Proved each empirically with tools/harness-style Node repro before deciding, per RULES.md rule 4/10.",
+  "bug_found_and_fixed_in_the_instrument": "tools/check-dialogue-topics.mjs's loadRaces() returned races.json#races VERBATIM — full race RECORD objects, not id strings — so every requires.race/forbids.race check in the context sweep compared an object against a string array and silently failed shut, a false-negative bug hiding real race-gated collisions (the-arnesian-war, bridge-duty, home-leave, the-muster-board never appeared in the original 23 because of it). Fixed to map to r.id; added self-test case (4) that fails under the old code and passes under the fix (confirmed by literally reverting the fix in a scratch copy and re-running --self-test, RULES.md rule 4). Live count went 23 -> 19 -> up again to 19 after the bug fix revealed 3 previously-hidden (but dominance-safe) pairs, net same shape, more honest.",
+  "real_fixes_applied": [
+    "7 Act V climax topics (the-steward-of-the-count [Q-MAIN-26 entry topic], the-sill, the-opening-of-the-count, the-ninth-clause-of-the-drowned-tally, the-chain-on-the-wall, the-three-things-i-checked-myself, what-does-the-marsh-owe-you): retired the redundant, eleven-year-old rootkeeper stub info in 50-mainline.json for each — ixtu-meer is the ONLY actor=rootkeeper NPC record whose own topics[] names any of these ids, confirmed by scanning every NPC record, so the stubs were provably dead weight fully superseded by main-quest-argument.json. This is the exact W1-17-act5-r1.md finding. Now TRUE partitions (0 overlapping context), not just score-favoured.",
+    "the-arnesian-war: retired 40-race-gated.json's ungated archivist fallback, which tied against 10-global.json's ungated archivist line and was permanently dead text (confirmed empirically before touching it) for every one of the ten playable races, including the two race-gated lines in the same file whose OWN fallback this was supposed to be.",
+    "reading-the-count, the-cutters-terms: added d:20 to the tied 70-disputes.json dispute-stance info (CF-D018 pos B / CF-D017 pos A respectively), which previously tied against a same-actor ungated 50-mainline.json line and was PERMANENTLY unreachable (Map iteration order, not authorial intent) — RI-LOR06's contradiction requirement (a registered dispute must be heard from a qualified speaker) was silently unmet for these two. Now the neutral fact answers below the trust threshold, the dispute stance above it — Morrowind's own documented d-band mechanism, deliberately, not incidentally.",
+    "the-witness: added d:20 to 55-utility.json's clerk/gideon info (the Q-MAG-10-relevant 'Corvo won't say why' reveal), which tied against 50-factions.json's clerk/gideon info and was permanently dead (quest was still reachable via the legionary path, so not a hard block, but a silenced unique line)."
   ],
-  "files_touched": [],
-  "notes": "Tool check-dialogue-topics.mjs currently reports 23 live topic ids (task brief said 22 — investigating whether one of the 23 turns out to be already-partitioned or a near-duplicate of another entry once witness pairs are inspected). W1-17-act5-r1.md's finding (the-steward-of-the-count / the-sill / the-opening-of-the-count shadowed by 50-mainline.json stub vs main-quest-argument.json) is 3 of the 23 and the most consequential (main quest climax entry topic)."
+  "left_unchanged_and_why": "12 topics (Group A's 9 root topics + slavery + soulrest + the-drowned-court) plus 3 more revealed by the race-bug fix (bridge-duty, home-leave, the-muster-board) still show LIVE in check-dialogue-topics.mjs's output, but every one was empirically proven (real infoFor()/Conversation calls across every relevant signature, see prove-shadows.mjs) to resolve deterministically and correctly today — the specific-actor/specific-race/specific-cell/higher-d entry always wins when eligible, the fallback only ever fires when nothing more specific applies. Touching these would have meant deleting a working fallback that other, less-specific NPCs genuinely rely on, for no behavioural gain — exactly the flattening RULES.md and the task brief warn against, just along axes (actor-exclusivity, cell-specificity, d-banding) the checker doesn't yet name the way it names race-partitioning.",
+  "proof": "corpus/90-verdicts/wave1/artifacts equivalent kept only in scratchpad this round (prove-shadows.mjs) since no verdict file was requested; asserts on Conversation.state().said_from for all 11 fixed topics, reproducing W1-17-act5-r1.md's exact broken-row signatures (blackrose Khajiit d40, foreign-born Nord d30, foreign-born Imperial d24) and confirming main-quest-argument now answers. Rule 6: restored the-steward-of-the-count's stub into a COPY of the topics tree (not the shipped tree) and confirmed both check-dialogue-topics.mjs re-flags it live AND the real Conversation path delivers the wrong (stub) line again for the same signature — see chat transcript / rule6-verify.mjs run.",
+  "gates_run": {
+    "node tools/check-dialogue-topics.mjs": "19 live (was 23; 11 genuine bugs fixed, 4 of which still show live for benign dominance reasons, +3 newly-revealed-but-safe from the race-bug fix; 12 pre-existing dominance-safe pairs correctly left untouched); 41 partitioned (was 40 before the fix, +1 net: 3 Act V ids no longer appear in either bucket since they are now single-file)",
+    "node tools/check-dialogue-topics.mjs --self-test": "PASS (new case 4 added and confirmed it fails on the pre-fix loadRaces())",
+    "node tools/check-prose.mjs": "PASS on every file this round touched — none of 50-mainline.json/40-race-gated.json/70-disputes.json/55-utility.json/tools/check-dialogue-topics.mjs appear in the flagged list",
+    "node tools/check-quests.mjs": "PASS (120 quests, hooks and entry topics all resolve)",
+    "node tools/check-content.mjs": "PASS (383 quest resolutions, none lost)",
+    "node tools/boot-check.mjs": "PASS"
+  },
+  "files_claimed": [
+    "game/data/dialogue/topics/50-mainline.json",
+    "game/data/dialogue/topics/40-race-gated.json",
+    "game/data/dialogue/topics/70-disputes.json",
+    "game/data/dialogue/topics/55-utility.json",
+    "tools/check-dialogue-topics.mjs"
+  ],
+  "files_touched": [
+    "game/data/dialogue/topics/50-mainline.json",
+    "game/data/dialogue/topics/40-race-gated.json",
+    "game/data/dialogue/topics/70-disputes.json",
+    "game/data/dialogue/topics/55-utility.json",
+    "tools/check-dialogue-topics.mjs",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with_note": "node tools/ownership.mjs --conflicts reports an undeclared overlap with W1-23-r2 (also touched game/data/dialogue/topics/40-race-gated.json and 70-disputes.json). W1-23-r2's own status file records state:complete; checked its diff (CF-D008/CF-D028 slavery content) does not overlap the ids I edited (the-arnesian-war, reading-the-count, the-cutters-terms) — no actual content collision, just shared-tree co-editing across rounds."
 }

@@ -65,6 +65,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
+import { execSync } from 'node:child_process';
 
 const ROOT = path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), '../..');
 const QDIR = path.join(ROOT, 'game/data/quests');
@@ -77,12 +78,17 @@ if (argv.includes('--help') || argv.includes('-h')) {
   console.log(`reveal-route-audit.mjs — can play produce the reveals the resolutions demand?
 
 USAGE
-  node tools/quests/reveal-route-audit.mjs [--json] [--falsify plant-route|plant-flag]
+  node tools/quests/reveal-route-audit.mjs [--json] [--falsify no-router|plant-route|plant-flag]
 
   A. static census of every (quest,reveal) a resolution demands vs the routes game/src/ can read
   B. live coupling test: does a played resolution's world_flag reach the hooks table?
+  C. end to end: play the source quest, does the later quest stop refusing?
+  D. the people channel: talk to the person the file names, does the gate stop refusing, and
+     does note() write the entry the file declares?
 
-  Exit 0 only when A has no unroutable reveal and B couples.`);
+  --falsify no-router empties the route index; every leg of D must go red.
+
+  Exit 0 only when A has no unroutable reveal, B couples, and C and D pass.`);
   process.exit(0);
 }
 
@@ -422,6 +428,9 @@ people.call_site = {
 const report = {
   schema: 'elder-souls/reveal-route-audit@1',
   generated_by: 'tools/quests/reveal-route-audit.mjs',
+  // RULES.md rule 12: a measurement is a claim about a commit, not about the project. This tree
+  // moves under agents several times a day.
+  commit: (() => { try { return execSync('git rev-parse --short HEAD', { cwd: ROOT }).toString().trim(); } catch { return null; } })(),
   quests: quests.length,
   hooks_rows_total: hookRows.length,
   hooks_rows_with_quest_and_reveal: hookRows.filter((r) => r.quest && r.reveal).length,

@@ -2,18 +2,30 @@
   "task_id": "W1-13-r4",
   "item": "RI-PRG04",
   "title": "Death, recovery, the hearth loop and levelling — round 4",
-  "state": "starting",
+  "state": "running",
   "started_at": "2026-08-07",
-  "next_step": "read corpus/90-verdicts/wave1/W1-13-r3.md and prior status files",
+  "next_step": "run w1-13-r4-clock-consequences.mjs; fix env/souls award clock landed",
   "files_claimed": [
     "orchestration/status/W1-13-r4.json",
-    "corpus/90-verdicts/wave1/W1-13-r4-evidence.md",
-    "tools/analysis/hearth-rest-clock.mjs",
-    "game/src/sim/death.js",
-    "game/src/sim/hearth.js",
+    "game/src/sim/environment.js",
+    "game/src/sim/souls.js",
+    "tools/harness/w1-13-r4-clock-consequences.mjs",
+    "tools/journey/jrn06-death.mjs",
+    "game/src/render/renderer.js",
+    "reports/runs/W1-13-R4/",
     "docs/shots/",
     "reports/blog-feed.jsonl"
   ],
-  "files_touched": [],
-  "notes": []
+  "files_touched": [
+    "orchestration/status/W1-13-r4.json",
+    "game/src/sim/environment.js",
+    "game/src/sim/souls.js",
+    "tools/harness/w1-13-r4-clock-consequences.mjs"
+  ],
+  "notes": [
+    "souls.js is claimed by W1-SOULS-r3 (state: complete). One line changed: awardFor() now reads env.awardTimeOfDay. Declared redundant_with rather than left as a collision."
+  ],
+  "redundant_with": [
+    "W1-SOULS-r3"
+  ]
 }

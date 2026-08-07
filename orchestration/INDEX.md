@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `f3b6764`: 479 tools, 153 reference
-items, 27 pieces in flight.
+so it cannot drift. Generated at `7d9a8e1`: 485 tools, 153 reference
+items, 26 pieces in flight.
 
-Its purpose is to stop 27+ concurrent agents each paying separately to discover the
+Its purpose is to stop 26+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -115,12 +115,14 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/blind/audio-pack.mjs` — ABSENCE-REPORTER.
 - `tools/blind/make-pair.mjs` — assemble a blind comparison pack (CORPUS-CONTRACT §6).
 
-### `tools/camera/` — 6
+### `tools/camera/` — 8
 
 - `tools/camera/cam-consume.mjs` — **no header comment**
 - `tools/camera/cam-death-in-lock.mjs` — **no header comment**
 - `tools/camera/cam-pitch-instrument.mjs` — W1-06 round 2 — INSTRUMENT THE PITCH PIN.
 - `tools/camera/cam-probe.mjs` — the W1-06 instrument.
+- `tools/camera/cam-projectpoint-fix.mjs` — W1-06 round 3.
+- `tools/camera/cam-projectpoint-r3-shot.mjs` — W1-06 round 3, browser confirmation.
 - `tools/camera/cam-shots.mjs` — **no header comment**
 - `tools/camera/gen-cells.mjs` — Generates game/data/camera/cells.json — the static collision set the spring arm casts against and the navmesh spines the scripted routes follow.
 
@@ -167,7 +169,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/ponr-probe.mjs` — RI-EXP05 "Comparison method" Step 2, executed.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 
-### `tools/harness/` — 179
+### `tools/harness/` — 180
 
 - `tools/harness/anim-author.mjs` — re-author the four attack clip archetypes and the idle base loop, and solve for the one free parameter each archetype has.
 - `tools/harness/anim-tune.mjs` — measure the swing OFF THE ANIMATION SYSTEM, with no browser.
@@ -319,6 +321,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/w1-13-r3-clock.mjs` — **no header comment**
 - `tools/harness/w1-13-r3-drift.mjs` — **no header comment**
 - `tools/harness/w1-13-r3-levelling.mjs` — **no header comment**
+- `tools/harness/w1-13-r4-clock-consequences.mjs` — RI-PRG04 COMPARISON METHOD #8, RUN — and the AR-1 arm that running it turned up.
 - `tools/harness/w1-14-r3-apm3.mjs` — RI-MAG01 AP-M3, "the homing orb", made reproducible.
 - `tools/harness/w1-14-r3-census.mjs` — RI-MAG06 M7 (`DISTINCT-VERBS`) and M8 (the arena audit), re-run.
 - `tools/harness/w1-14-r3-skill.mjs` — GAP-W1-magic-skill-frozen, measured under RI-MAG06 §E.
@@ -499,7 +502,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 80
+### `tools/world/` — 83
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -515,6 +518,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/build-settlements.mjs` — author game/data/world/settlements/*.json and game/data/world/interiors/*.json.
 - `tools/world/build-signatures.mjs` — **no header comment**
 - `tools/world/build-signposts.mjs` — **no header comment**
+- `tools/world/build-street-life.mjs` — **no header comment**
 - `tools/world/build-terrain.mjs` — **no header comment**
 - `tools/world/build-town-states.mjs` — one bootable state per settlement, standing in the town itself.
 - `tools/world/build-travel.mjs` — **no header comment**
@@ -575,6 +579,8 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/w1-01-r3-probe.mjs` — **no header comment**
 - `tools/world/w1-01-r4-shots.mjs` — Round-4 eye-height comparison shots: one frame per region at a fixed, seeded ground point, so the ground skin and the near-field prop disc can be looked at rath
 - `tools/world/w1-04-consumption.mjs` — **no header comment**
+- `tools/world/w1-04-interior-sweep.mjs` — **no header comment**
+- `tools/world/w1-04-r2-shots.mjs` — **no header comment**
 - `tools/world/w1-04-settlement-field.mjs` — **no header comment**
 - `tools/world/wayfind-journey.mjs` — **no header comment**
 - `tools/world/waylamp-probe.mjs` — **no header comment**
@@ -583,7 +589,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **114 tools have no header comment**, so nobody can tell what they do without
+> **117 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -757,12 +763,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-13-r4` | running | run w1-13-r4-clock-consequences.mjs; fix env/souls award clock landed | `orchestration/status/W1-13-r4.json` `game/src/sim/environment.js` `game/src/sim/souls.js` `tools/harness/w1-13-r4-clock-consequences.mjs` |
+| `W1-04-r2` | measuring | 1. sim.applyCell hook: door verbs reach _applyCell (deferred to _afterStep, outside the ar | — |
 | `W1-06-r3` | in_progress | 1) read engine.js camera()/projectPoint(), sim/camera.js project()/viewBasis()/basisAt() t | — |
-| `W1-13-r4` | starting | read corpus/90-verdicts/wave1/W1-13-r3.md and prior status files | — |
 | `critic-w1-13-r3` | done | none — verdict delivered | `orchestration/status/critic-w1-13-r3.json` `tools/harness/critic-w1-13-r3.mjs` `tools/harness/critic-w1-13-r3-shot.mjs` `corpus/90-verdicts/wave1/W1-13-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-13-r3/` |
 | `W1-23-r2` | ? | none — round complete. A round-3 critic should re-run tools/lore/critic-w1-23-r1.mjs (or a | `corpus/60-lore/data/canon-facts.json` `game/data/lore/canon.json` `game/data/dialogue/topics/40-race-gated.json` `game/data/dialogue/topics/70-disputes.json` `game/data/factions/argonian-tribes.json` `tools/lore/build-canon.mjs` |
-| `W1-DLG-SHADOWS` | in_progress | Enumerate the 23 live collisions reported by `node tools/check-dialogue-topics.mjs --all`, | — |
-| `W1-04-r2` | building | 1. sim.applyCell hook: door verbs reach _applyCell (deferred to _afterStep, outside the ar | — |
 | `W1-18-r2` | building | build game/src/sim/quest/reveal-routes.js + QuestEngine.learnFrom(); wire to Engine.talkTo | `orchestration/status/W1-18-r2.json` |
 | `W1-06` | partial | SUPERSEDED by successor4_log below and by orchestration/status/W1-06-r2.json (the live thr | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` `corpus/80-methods/m-cam05-world-camera.mjs` `corpus/80-methods/m-cam06-feel.mjs` |
 | `W1-06-r2` | partial | 1) tools/harness/w1-13-r3-bloom-sight.mjs still has its aim-only/eye-only arms written and | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` `corpus/80-methods/m-cam05-world-camera.mjs` `corpus/80-methods/m-cam06-feel.mjs` |
