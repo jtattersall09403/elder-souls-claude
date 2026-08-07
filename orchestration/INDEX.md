@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `1110bf7`: 497 tools, 153 reference
-items, 34 pieces in flight.
+so it cannot drift. Generated at `e74df06`: 501 tools, 153 reference
+items, 35 pieces in flight.
 
-Its purpose is to stop 34+ concurrent agents each paying separately to discover the
+Its purpose is to stop 35+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -63,7 +63,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/verdict-staleness.mjs` — which verdicts are still standing on the code that is actually at HEAD.
 - `tools/verdict-validate.mjs` — **no header comment**
 
-### `tools/analysis/` — 40
+### `tools/analysis/` — 41
 
 - `tools/analysis/ambience-census.mjs` — RI-AUD03 B4 — the layer census.
 - `tools/analysis/ambience-determinism-chart.mjs` — Draw the W1-22 round-3 headline as a picture: which ambience beds render the same sound twice.
@@ -82,6 +82,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/creation-audit.mjs` — run RI-CHR01 / RI-CHR02 / RI-CHR03 / RI-PRG02 / RI-PRG03's comparison methods over the SHIPPED data, with no browser and no game running.
 - `tools/analysis/crime-audit.mjs` — the static half of W1-15's evidence.
 - `tools/analysis/critic-w1-07-audit.mjs` — W1-07 CRITIC offline audit.
+- `tools/analysis/critic-w1-13-r4-clock.mjs` — W1-13 ROUND-4 CRITIC's own instrument, written with fresh context and declared under `method_deviations`.
 - `tools/analysis/critic-w1-22-probe.mjs` — WRITTEN BY THE W1-22 ROUND-1 CRITIC, declared under method_deviations.
 - `tools/analysis/critic-w1-22-r2-determinism.mjs` — WRITTEN BY THE W1-22 ROUND-2 CRITIC (round-3 judgement), declared under method_deviations.
 - `tools/analysis/data-index.mjs` — regenerate game/data/index.json, the manifest HARNESS.md §7 rule 5 requires.
@@ -113,9 +114,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/audio/impact-probe.mjs` — drive `aud-impact-matrix` and write the run artifacts RI-AUD01's Comparison method reads.
 - `tools/audio/make-impact-classes.mjs` — Authoring tool for `game/data/audio/impact/classes.json` — RI-AUD01 §A/§C, W1-11.
 
-### `tools/blind/` — 3
+### `tools/blind/` — 4
 
 - `tools/blind/audio-pack-b2.mjs` — RI-AUD03 B2 PACK BUILDER.
+- `tools/blind/audio-pack-w1-22-r2.mjs` — W1-22 ROUND-2 CRITIC'S BLIND PACK BUILDER — THE HARDER PACK THE B2 JUDGE ASKED FOR.
 - `tools/blind/audio-pack.mjs` — ABSENCE-REPORTER.
 - `tools/blind/make-pair.mjs` — assemble a blind comparison pack (CORPUS-CONTRACT §6).
 
@@ -173,7 +175,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/ponr-probe.mjs` — RI-EXP05 "Comparison method" Step 2, executed.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 
-### `tools/harness/` — 183
+### `tools/harness/` — 184
 
 - `tools/harness/anim-author.mjs` — re-author the four attack clip archetypes and the idle base loop, and solve for the one free parameter each archetype has.
 - `tools/harness/anim-tune.mjs` — measure the swing OFF THE ANIMATION SYSTEM, with no browser.
@@ -286,6 +288,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/critic-w1-library-consume.mjs` — the ARBITRATION §3 CONSUMPTION check for W1-LIBRARY.
 - `tools/harness/critic-w1-library-pages.mjs` — RI-UIX05 step 2 (K1 across the whole corpus) driven in the engine, plus the R3-exception consumption check.
 - `tools/harness/critic-w1-library-seam.mjs` — RI-UIX05 R3's permitted exception, which the item names as its ENTIRE AR-3 seam crossing: "reading a book may add a dialogue topic to `topicsKnown` ...
+- `tools/harness/critic-w1-map-r1.mjs` — the W1-MAP round-1 critic's instrument.
 - `tools/harness/determinism.mjs` — run the RI-MTH02 reproducibility ladder against the game and report every rung with the evidence that decided it.
 - `tools/harness/input-probe.mjs` — the RI-JRN03 checks that can be taken without the journey fleet.
 - `tools/harness/jrn01-m8-writ.mjs` — RI-JRN01 M8 (amended wave 1): is the writ an OBJECT or a return value?
@@ -516,7 +519,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 84
+### `tools/world/` — 85
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -565,6 +568,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-w1-04-r1.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r1b.mjs` — **no header comment**
 - `tools/world/critic-w1-04-r1c.mjs` — **no header comment**
+- `tools/world/critic-w1-04-r2a.mjs` — **no header comment**
 - `tools/world/crossing.mjs` — **no header comment**
 - `tools/world/env-consumption.mjs` — RI-MTH07 / ARBITRATION §3 — the CONSUMPTION probe for W1-02's clock and weather machine.
 - `tools/world/hazard-fire.mjs` — **no header comment**
@@ -604,7 +608,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **118 tools have no header comment**, so nobody can tell what they do without
+> **119 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -778,16 +782,17 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-21-r2` | in_progress | browser leg: w1-21-r2-nav.mjs (P.6 sixteen-action walk) and the map shot, once pgrep -c he | `game/src/ui/system.js` `game/src/sim/discovery.js` `tools/harness/w1-21-r2-forge.mjs` |
+| `W1-04-r3` | building | write game/src/render/exterior.js (37 new exterior kit meshes + building massing), then wi | — |
+| `arbiter-wpn-s36` | in_progress | Read RULES.md, INDEX.md, ARBITRATION.md, NEXT-DISPATCH.md §S, both reference items | `orchestration/status/arbiter-wpn-s36.json` |
 | `judge-prose-r4` | judging-second-pass | read t01-books A.txt and B.txt, write my row, then t02..t15, then reveal | `orchestration/status/judge-prose-r4.json` |
 | `critic-w1-13-r4` | running | read RULES/INDEX/ARBITRATION §3/W1-13-r3.md; then reproduce the delete-the-fix arm on the  | `orchestration/status/critic-w1-13-r4.json` |
 | `W1-READABLES` | building | browser proof (tools/quests/document-route-world.mjs) when the box drops under ~8 headless | `orchestration/status/W1-READABLES.json` `game/src/sim/quest/reveal-routes.js` `game/src/engine.js` `game/src/render/interior.js` `game/data/books/the-books-in-evidence.json` `game/data/books/the-drowned-tally.json` |
 | `critic-w1-map` | in_progress | read RULES/INDEX/S35, then builder status, then attack A-F | `orchestration/status/critic-w1-map.json` |
-| `W1-04-r3` | starting | read RULES/INDEX (done), read W1-04-r2.json handoff, verdict, province.js, interior.js | — |
 | `critic-w1-04-r2` | in_progress | read INDEX.md, ARBITRATION §3, builder status W1-04-r2.json; then axis A (getDrawnInterior | `orchestration/status/critic-w1-04-r2.json` |
 | `critic-w1-22-r2` | running | 3) detector refusal + AMENDMENT item A arithmetic; 2) build harder blind pack and spawn fr | `orchestration/status/critic-w1-22-r2.json` `tools/analysis/critic-w1-22-r2-determinism.mjs` `reports/w1-22-critic/r2/` |
 | `W1-15-r3` | in_progress | in progress: fixing shop-hours defect C in tools/world/build-settlements.mjs, then defect  | — |
 | `W1-12` | building | Survey written. Build game/data/combat/ai.json + game/src/combat/ai.js (RI-AI01 state mach | `orchestration/status/W1-12.json` |
-| `W1-21-r2` | starting | read RULES.md (done), INDEX.md, W1-21-r1.md verdict, W1-13-r4.json §5, NEXT-DISPATCH.md §P | — |
 | `W1-16` | surveying | read game/src/sim/state.js, engine.js (setGold/getGold/setAttributes/getDerivedStats/getSk | — |
 | `critic-w1-03` | running | bare-Node probes done (18 checks, 16 pass). Next: look at both shots, then ONE browser ses | `orchestration/status/critic-w1-03.json` |
 | `W1-03` | fixed | Three severe gaps round 1 diagnosed are now fixed and re-verified (bare Node + one browser | `reports/w1-03-survey.md` `reports/blog-feed.jsonl` `docs/shots/2026-08-07-w1-03-hip-deep-water-no-waterline.png` `docs/shots/2026-08-07-w1-03-round2-hip-deep-water-waterline-now-drawn.png` `game/src/sim/traversal.js` `game/src/engine.js` |

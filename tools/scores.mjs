@@ -15,7 +15,8 @@
 // numbers for anyone the chart does not serve.
 
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
-import { join, extname } from 'node:path';
+import { join, extname, relative, sep } from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
@@ -86,6 +87,28 @@ export function collect() {
   };
   walk(dir);
 
+  // When a verdict file was first committed, from git. A critic is supposed to stamp
+  // `critic.finished_at`, and 37 of 39 do — but the two that do not were being plotted at x = 0,
+  // i.e. at the extreme left of the whole project timeline, as though a verdict filed today were
+  // the oldest measurement its domain has. That is worse than not plotting them: it drags a domain
+  // line backwards through time and the page gives no sign anything is wrong. Git knows when the
+  // file arrived, so use that and say how often we had to.
+  const addedAt = (() => {
+    const map = new Map();
+    try {
+      const out = execFileSync('git', ['log', '--diff-filter=A', '--format=%x00%aI', '--name-only',
+        '--', 'corpus/90-verdicts'], { cwd: ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 });
+      let when = null;
+      for (const line of out.split('\n')) {
+        if (line.startsWith('\0')) { when = line.slice(1).trim(); continue; }
+        const p = line.trim();
+        if (p && when && !map.has(p)) map.set(p, when);
+      }
+    } catch { /* no git, or no history — the fallback simply does not fire */ }
+    return map;
+  })();
+  let inferredTimes = 0;
+
   const rows = [];
   const unmapped = [];
   for (const f of files) {
@@ -103,9 +126,14 @@ export function collect() {
     const base = m[1];
     const domain = DOMAIN[base];
     if (!domain) { unmapped.push(piece); continue; }
-    const t = v.critic?.finished_at || v.critic?.started_at;
+    let t = v.critic?.finished_at || v.critic?.started_at;
+    let inferred = false;
+    if (!t) {
+      t = addedAt.get(relative(ROOT, f).split(sep).join('/')) || null;
+      if (t) { inferred = true; inferredTimes++; }
+    }
     rows.push({
-      domain, piece: base,
+      domain, piece: base, inferred,
       round: Number((piece.match(/-r(\d+)$/) || [, 1])[1]),
       score, t: t ? Date.parse(t) : null,
       status: /pass/i.test(String(v.status || '')) ? 'pass' : 'fail',
@@ -142,11 +170,11 @@ export function collect() {
     })
     .filter(s => s.pts.length)
     .sort((a, b) => a.name.localeCompare(b.name));
-  return { series, rows, unmapped };
+  return { series, rows, unmapped, inferredTimes };
 }
 
 export function chartHtml() {
-  const { series, rows } = collect();
+  const { series, rows, inferredTimes } = collect();
   if (!series.length) return '';
 
   const GATE = 7, TARGET = 10;
@@ -221,7 +249,7 @@ table.sc-tbl td.d{color:var(--ink)}
     <button id="sc-b-small" aria-pressed="true">Per domain</button>
     <button id="sc-b-over" aria-pressed="false">All together</button>
     <button id="sc-b-tbl" aria-pressed="false">Table</button>
-    <span class="sc-note">A dot appears every time a critic files a verdict. Its height is that domain's score at that moment — the average across every part of the domain that has been judged so far, using each part's most recent mark. So a dot can move the line down either because a part got worse or because a weaker part reported for the first time; hover a dot to see which verdict moved it and what that verdict scored on its own. The gold line is the wave-1 pass mark of ${GATE} and the target is ${TARGET} everywhere. Every line starts at zero, because before a domain's first verdict nothing had been measured; that opening run-in is dashed since nobody took a reading across it. Scores fall as well as rise, and the page redraws either way — a later critic often measures something the earlier one could not, or finds an earlier mark was given too generously.</span>
+    <span class="sc-note">A dot appears every time a critic files a verdict. Its height is that domain's score at that moment — the average across every part of the domain that has been judged so far, using each part's most recent mark. So a dot can move the line down either because a part got worse or because a weaker part reported for the first time; hover a dot to see which verdict moved it and what that verdict scored on its own. The gold line is the wave-1 pass mark of ${GATE} and the target is ${TARGET} everywhere. Every line starts at zero, because before a domain's first verdict nothing had been measured; that opening run-in is dashed since nobody took a reading across it. Scores fall as well as rise, and the page redraws either way — a later critic often measures something the earlier one could not, or finds an earlier mark was given too generously.${inferredTimes ? ` <b>${inferredTimes} verdict${inferredTimes === 1 ? '' : 's'}</b> did not stamp a time, so ${inferredTimes === 1 ? 'its dot sits' : 'those dots sit'} where the file was first committed rather than where the critic finished. That is close but it is not the critic's own reading.` : ''}</span>
   </div>
   <div id="sc-small" class="sc-grid"></div>
   <div id="sc-over" class="sc-big sc-hide"></div>
