@@ -2,7 +2,7 @@
   "task_id": "W1-19",
   "brief": "docs/PLAN.md §3 — W1-19 The main quest, end to end",
   "started": "wave-1",
-  "state": "building",
+  "state": "complete",
   "effort": "ultracode",
   "outputs_expected": [
     "game/data/quests/main-quest.json",
@@ -18,16 +18,25 @@
     "game/data/quests/mainline-act4.json",
     "game/data/quests/mainline-act5.json",
     "game/data/quests/mainline-backpath.json",
+    "game/data/npcs/mainline.json",
     "game/data/quests/hooks.json (additive: 32 entry_topics + 3 hooks)",
     "game/src/sim/quest/machine.js (setFlag hook adds_topics)",
+    "game/src/engine.js (seedDispositions, called at boot and in _rebindQuestRuntime)",
+    "game/src/harness/api.js (getDispositions / setDisposition)",
+    "game/data/index.json (regenerated)",
     "tools/quests/mainline-census.mjs",
-    "reports/runs/W1-19/mainline-census.json",
-    "game/data/npcs/mainline.json",
-    "game/src/engine.js (seedDispositions)",
-    "game/src/harness/api.js (getDispositions/setDisposition)",
     "tools/quests/mainline-trace.mjs",
-    "reports/runs/W1-19-MAINLINE/mainline-trace.json",
-    "reports/runs/W1-19-MAINLINE/mainline-journal.txt"
+    "tools/experience/ponr-probe.mjs",
+    "tools/experience/ending-diff.mjs",
+    "tools/experience/aftermath-diff.mjs",
+    "tools/experience/ending-specificity.mjs",
+    "tools/analysis/gen-magic-quests.mjs (fenced so a regen cannot recreate 4 mislabelled category:main quests)",
+    "reports/runs/W1-19-MAINLINE/ (trace, journal, README)",
+    "reports/runs/W1-19-PONR/",
+    "reports/runs/W1-19-ENDING-DIFF/",
+    "reports/runs/W1-19-AFTERMATH/",
+    "reports/runs/W1-19-SPECIFICITY/",
+    "reports/runs/W1-19/mainline-census.json"
   ],
   "findings": [
     "THERE IS NO MAIN QUEST. 37 quests on disk: 21 side, 11 faction, 1 hidden, 4 tagged category=main but all act 2 magic-utility fillers (Q-BLAK-01, Q-MAG-05/13/19). RI-QST06 needs 28 main quests across 5 acts + 3 backpath.",
@@ -42,8 +51,12 @@
     "RI-QST09 side effects of adding 32 quests: X1 24.3->56.5 PASS, X2 9->13 PASS, X7 0->62 (regression I introduced) fixed back to 0 by giving every exclusive resolution its own npc_disposition entity, its own reward and >=3 distinct flags, X8 0->76.92 (bar 80) - the 9 remaining unforeshadowed exclusive quests are ALL pre-existing non-mainline (Q-ARCH-01, Q-SOUL-02, Q-BLAK-01, Q-STRM-01, Q-LILM-01, Q-SAP-01, Q-LEDG-01, Q-DOCK-01, Q-DEEP-01); 30 of 30 mainline exclusive quests foreshadow. Fixing the other nine is W1-18 prose and I did not edit another builder's journal text.",
     "TRACE GREEN: intended chain 29/29 quests completed, 158 journal entries, 0 violent resolutions, PONR crossed, ending_the_count_was_opened. Backpath chain 17/17, 95 entries, 0 violent, ending_the_count_went_past_the_roots. 121 world flags differ between the two ending states. Zero markers, zero duplicate stage entries, 100% dated, 100% first person.",
     "CONSUMPTION DEFECT FOUND AND FIXED (the eighth in this project): the per-NPC `disposition` field is authored on every record in game/data/npcs/** and NOTHING in the build read it. game/src/sim/quest/gate.js canOffer() checks giver.disposition_min against sim.quest.dispositions, which started empty and was only ever written by a Charm effect (sim/magic/apply.js) or by a quest consequence, so EVERY quest in the build with disposition_min > 0 was unofferable from a cold start. Engine.seedDispositions() now copies it at boot and on every reset/loadState. Perturbation proof: the drop-dispo sabotage zeroes the table and Q-MAIN-01 refuses to open with \"undersexton-aveline-rell disposition 0/25\".",
-    "Sabotage controls all go red: drop-topic stops at Q-MAIN-01 (topic gate), drop-reveal stops at Q-MAIN-06 (requires_knowing gate), drop-dispo stops at Q-MAIN-01 (disposition gate)."
+    "Sabotage controls all go red: drop-topic stops at Q-MAIN-01 (topic gate), drop-reveal stops at Q-MAIN-06 (requires_knowing gate), drop-dispo stops at Q-MAIN-01 (disposition gate).",
+    "TOOLS WRITTEN (TOOL-LOOP declaration): RI-QST06 named eight jq blocks over game/src/data/quests/*.json, a path that does not exist -> tools/quests/mainline-census.mjs. RI-EXP05 named four tools/experience/* commands, none of which existed -> ponr-probe.mjs (7 checks pass incl. the walk-back clause), ending-diff.mjs (exit 3, npc_reaction_delta declared unmeasurable), aftermath-diff.mjs (exit 3, 20 simulated minutes stepped), ending-specificity.mjs (exit 4, reports the absence and never passes). corpus-index C8 warnings for RI-EXP05 are now zero; 40 phantom tools remain corpus-wide for the tools-backlog builder.",
+    "OPEN: X8_foreshadowed_pct 76.92 vs bar 80. All nine unforeshadowed exclusive quests are pre-existing non-mainline (Q-ARCH-01, Q-SOUL-02, Q-BLAK-01, Q-STRM-01, Q-LILM-01, Q-SAP-01, Q-LEDG-01, Q-DOCK-01, Q-DEEP-01); 30/30 mainline exclusive quests foreshadow. One clause of first-person journal prose per quest closes it and it is W1-18 authored text.",
+    "OPEN: silent_failure_pct 22.86 vs 5-15% band. I shipped 4 silent failures in 45 (8.9%), which pulled the global from 31.58 to 22.86; the residual is the pre-existing corpus.",
+    "OPEN and NOT closable by this piece: RI-EXP05 LH11 (ending_specific_facts) and LH12 npc_reaction_delta both need window.__HARNESS.askTopic(npc, topic) -> response_id, which W1-17 owns, plus tools/experience/session-run.mjs and a resolver shared with RI-EXP02. Both are reported as unmeasurable and neither is scored as zero-that-passes."
   ],
   "next_step": "verify boot smoke after changes, run check-content, re-run census, write reports",
-  "notes_for_successor": "Paths owned: quests.mainline.acts, quests.mainline.antagonist, quests.mainline.prophecy, experience.ending.landing, experience.ending.aftermath, experience.ending.pointofnoreturn. W1-18 (quest engine+journal) is a SEPARATE in-flight piece — do not duplicate its engine work; consume it."
+  "notes_for_successor": "The mainline is complete and completable; what is thin is DEPTH. The Act V conversation declares 12 topics in Q-MAIN-26 notes but game/data/dialogue/topics/main-quest-argument.json does NOT exist - RI-EXP05 LH6 needs 12 topics with 4 knowledge-gated and that file is the next thing to write. The aftermath quest Q-MAIN-32 promises nine disagreeing accounts and has one. The eleven intake keepers on the counting floor are one collective id. Do not regenerate any mainline-*.json: they are hand-authored and tools/check-content.mjs guards them."
 }

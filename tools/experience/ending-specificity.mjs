@@ -27,7 +27,10 @@
 //      writing a second, different resolver here would produce a number that is not comparable to
 //      the one RI-EXP02 is scored on — which is the failure mode RI-MTH07 exists to catch.
 //   3. **There is no played chain to resolve against.** The item's step 1 requires two chains
-//      produced by `tools/experience/session-run.mjs`, which does not exist either.
+//      produced by `tools/experience/session-run.mjs`. That file did not exist when this tool was
+//      written and appeared during the same session from another builder, so the check below is
+//      done at run time rather than asserted here — but a chain runner existing is not the same
+//      as two recorded ending chains existing, and neither has been produced.
 //      `tools/quests/mainline-trace.mjs` produces a *scripted* chain, not a played one; using it
 //      would resolve the ending text against a trace that a probe wrote rather than against one a
 //      player produced, and every fact would resolve trivially.
@@ -94,6 +97,7 @@ const out = {
 };
 writeJson(path.join(outDir, 'ending-specificity.json'), out);
 console.error(`\nending-specificity: UNMEASURABLE on this build.\n  ${out.reason}\n`);
-for (const m of missing) console.error(`  missing: ${m.id} — ${m.what} (owner: ${m.owner})`);
+for (const m of missing) console.error(`  ${m.present ? 'present' : 'MISSING'}: ${m.id} — ${m.what} (owner: ${m.owner})`);
+console.error('  MISSING: two recorded ending chains — a chain runner existing is not two chains existing');
 console.error(`\n  ${endingEntries} ending journal entries / ${endingWords} words are authored and waiting for a resolver.\n  wrote ${outDir}\n`);
 process.exit(4);
