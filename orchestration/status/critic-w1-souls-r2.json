@@ -52,7 +52,8 @@
  },
  "git": {
   "measured_at": "a5a637d",
-  "note": "browser runs were taken across 88ee56d -> a5a637d; git diff on that range touches no souls source, no enemy statblock, no RI-PRG06 file, no constants.json and no world data — only a neighbour's audio work. A neighbour swept tools/progression/critic-souls-r2.mjs and my shot into a5a637d; I did not commit."
+  "note": "browser runs were taken across 88ee56d -> a5a637d; git diff on that range touches no souls source, no enemy statblock, no RI-PRG06 file, no constants.json and no world data — only a neighbour's audio work. A neighbour swept tools/progression/critic-souls-r2.mjs and my shot into a5a637d; I did not commit.",
+  "index_note": "RULES 17 check, done at hand-off: a neighbour git add-ed my verdict .md/.json, tools/scores.mjs, the shot and my status file into their index. git diff on every one of those paths is EMPTY, so the staged copy matches disk exactly and nothing stale will ship. I did not commit and I staged nothing."
  },
  "redundant_with_why": "reports/blog-feed.jsonl and docs/shots/ are append-only shared surfaces every agent writes to; my writes are one appended line and one dated filename nobody else can collide with. Declared rather than left to read as a collision (RULES 16).",
  "deliverables": {

@@ -551,10 +551,16 @@ export function installHarness(engine, bootPromise) {
     getDrawnMarkers() {
       const r = engine.renderer;
       const M = r && r._marks;
-      if (!M) return { present: false, stain: null, wells: [] };
+      // Nothing here may throw. A probe that aims its camera at this reading falls back to the
+      // MODEL's position when it is absent, which is the very camera that produced
+      // `GAP-W1-bloodstain-invisible-from-most-bearings` — so a thrown error would quietly
+      // reinstate the defect instead of reporting itself.
+      if (!M) return { present: false, stain: null, wells: [], why: 'the marker group has not been built' };
       const worldPos = (o) => {
         if (!o) return null;
-        o.updateWorldMatrix(true, false);
+        // `updateWorldMatrix` keeps this honest between draws; if this build's three predates it,
+        // `matrixWorld` from the last draw is still the DRAWN position and is the right answer.
+        try { if (typeof o.updateWorldMatrix === 'function') o.updateWorldMatrix(true, false); } catch (err) { /* last draw's matrix */ }
         const e = o.matrixWorld.elements;
         return [e[12], e[13], e[14]];
       };
