@@ -53,7 +53,8 @@
     "BUG FOUND AND FIXED IN MY OWN SCREEN: the player chevron pointed exactly BACKWARDS. toScreen maps world +Z onto screen +y without flipping, so the body-local to screen rotation must NOT negate the y term; the first version had a '* -1'. Plausible-looking until you turn around.",
     "Load reached 49.1 during the verification phase (four cores). Every number this piece reports is a count or a boolean, not a timing, so it is not distorted - but the wall clock of the capture pass was.",
     "map-probe clean run 29/29 at the point S11 was added; S11 itself failed FIRST TIME and correctly - queueInputs `f` is RELATIVE to the call (pipeline.js stores scriptBase=frame), so `f: getFrame()+1` scheduled the press thousands of frames out. A check that catches its own driver is the one you want.",
-    "tools/capture arrival gate REFUSED my first declaration: evidence_of must be an exact token of a closed vocabulary and 'menu-appearance' is not one. 'menu' is. The gate is real and it fired on a builder acting in good faith."
+    "tools/capture arrival gate REFUSED my first declaration: evidence_of must be an exact token of a closed vocabulary and 'menu-appearance' is not one. 'menu' is. The gate is real and it fired on a builder acting in good faith.",
+    "Capture pass is the slow part: 43 teleports per shot each drain 25 province tiles, and one frame already came back UNSETTLED (the capture daemon refuses it rather than passing it quietly - S34). If a successor has to redo this, cut tools/harness/map-shots.mjs `legs` to ~16 and drop to 1024x576 before anything else."
   ],
   "next_step": "shots landing, then blog line + final gate run",
   "notes_for_successor": "Decision taken: roads are NOT drawn on the map. S35 forbids 'a route, path, trail or line of any kind' and a drawn road is the first thing a hostile critic will call a line. Wayfinding stays with signposts (already in the world)."

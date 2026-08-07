@@ -71,6 +71,27 @@ export function normalise(s) {
     .trim();
 }
 
+// ORTHOGRAPHY NORMALISATION — declared POST-HOC, added after RULE-21 came back at 51x in books and
+// literally infinity in dialogue.
+//
+// Morrowind's text is ASCII. It cannot contain U+2014 and it does not: it writes the dash as "--",
+// at 20.37 per 10k in books, 19.04 in dialogue and 9.53 in journal. We write U+2014 and never "--".
+// So a rule that matches the CHARACTER is measuring a font, and it separates the corpora perfectly
+// while telling you nothing about the writing. Measured as a FIGURE instead, we run 1.0x of
+// Morrowind in books, 0.9x in dialogue and 0.3x in journal — in two registers we use it LESS.
+//
+// This is reported rather than folded into the primary numbers, because the pre-registered rules
+// were fixed before any measurement and quietly redefining one afterwards is how a run stops being
+// pre-registered. Both readings appear in the output, labelled.
+export function normaliseOrthography(s) {
+  return String(s)
+    .replace(/--/g, '—')
+    .replace(/(\S) - (\S)/g, '$1—$2')
+    .replace(/–/g, '—')
+    .replace(/[‘’]/g, "'")
+    .replace(/[“”]/g, '"');
+}
+
 // ---------------------------------------------------------------- rules
 
 export function loadRules(file = RULES_FILE) {
@@ -490,7 +511,38 @@ export function runAll({ ours, ref, rules }) {
           : null,
       });
     }
+    // POST-HOC confound pass: the same rules over orthography-normalised text, both sides.
+    // Declared as post-hoc in the output; it never replaces the pre-registered numbers.
+    const onorm = o.map((d) => ({ ...d, text: normaliseOrthography(d.text) }));
+    const rnorm = r.map((d) => ({ ...d, text: normaliseOrthography(d.text) }));
+    const confounds = [];
+    for (const rule of rules) {
+      if (rule.kind === 'metric') continue;
+      const a = measure(rule, onorm);
+      const b = measure(rule, rnorm);
+      const pre = rows.find((x) => x.id === rule.id);
+      const preRatio = pre ? pre.ratio : null;
+      const postRatio = b.per10k ? a.per10k / b.per10k : null;
+      // only worth reporting when normalisation moves the answer materially
+      const moved = preRatio == null || postRatio == null
+        ? preRatio !== postRatio
+        : Math.abs(Math.log((postRatio || 1e-9) / (preRatio || 1e-9))) > 0.35;
+      if (moved) {
+        confounds.push({
+          id: rule.id, name: rule.name,
+          as_registered: { ours_per10k: pre ? pre.ours_per10k : null, ref_per10k: pre ? pre.ref_per10k : null, ratio: preRatio },
+          orthography_normalised: { ours_per10k: a.per10k, ref_per10k: b.per10k, ratio: postRatio },
+        });
+      }
+    }
+
     out.registers[ourKey] = {
+      confound_note:
+        'orthography_normalised maps -- and spaced hyphens to an em dash and straightens quotes, on ' +
+        'BOTH sides. It is POST-HOC: added after RULE-21 returned 51x in books and inf in dialogue, ' +
+        'which turned out to be a character-encoding difference rather than a writing habit. Where a ' +
+        'rule appears below, the as_registered figure is measuring a font.',
+      confounds,
       ours_docs: o.length,
       ours_words: o.reduce((a, d) => a + words(d.text), 0),
       ref_docs: r.length,
@@ -574,6 +626,20 @@ function selfTest() {
   ok &= assert(sepAfter.accuracy < sep.accuracy, `mutation: separation degrades when the reference is infected (${sep.accuracy.toFixed(3)} -> ${sepAfter.accuracy.toFixed(3)})`);
   const sepClean = separation(measure(byId['RULE-01'], clean), measure(byId['RULE-01'], clean));
   ok &= assert(sepClean.accuracy === 0.5, 'a rule that fires on neither side scores 0.50, not 1.00');
+
+  // 6a. the orthography confound: a rule that separates on the GLYPH must stop separating once
+  //     both sides are written the same way. This is the check that caught the em-dash artefact.
+  const oursDash = [{ id: 'o', text: 'Not quiet — silent, in a city, at midday.' }];
+  const refDash = [{ id: 'r', text: 'Not quiet -- silent, in a city, at midday.' }];
+  const dashRule = byId['RULE-21'];
+  const rawRef = measure(dashRule, refDash);
+  ok &= assert(rawRef.per10k === 0, 'RULE-21 scores ZERO on ASCII text that uses the same figure');
+  const normRef = measure(dashRule, refDash.map((d) => ({ ...d, text: normaliseOrthography(d.text) })));
+  ok &= assert(normRef.per10k > 0, 'and scores non-zero once the orthography is normalised');
+  const normOurs = measure(dashRule, oursDash.map((d) => ({ ...d, text: normaliseOrthography(d.text) })));
+  ok &= assert(Math.abs(normOurs.per10k - normRef.per10k) < 1e-9,
+    'two identical sentences spelled differently measure the SAME after normalisation');
+  ok &= assert(normaliseOrthography('a — b') === 'a — b', 'an em dash is left alone by normalisation');
 
   // 6b. the template parser the journal reference depends on
   const tmpl = braceTemplates('x {{Journal Entries\n|id=Q\n|1||He said {{Small|so}}.\n}} y', '{{Journal Entries');
@@ -684,6 +750,11 @@ function main() {
         `${(x.ratio == null ? 'inf' : fmt(x.ratio, 1)).padStart(6)}  ${fmt(x.bundled ? x.bundled.ours_presence_pct : x.ours_presence_pct, 1).padStart(5)}  ` +
         `${fmt(x.bundled ? x.bundled.ref_presence_pct : x.ref_presence_pct, 1).padStart(5)}  ${fmt(x.z, 1).padStart(5)}  ${x.name}`
       );
+    }
+    for (const x of r.confounds || []) {
+      console.log(`  ${x.id}  CONFOUND ${x.name}: as registered ${fmt(x.as_registered.ratio, 1)}x ` +
+        `-> orthography-normalised ${x.orthography_normalised.ratio == null ? 'inf' : fmt(x.orthography_normalised.ratio, 1) + 'x'} ` +
+        `(ours ${fmt(x.orthography_normalised.ours_per10k)} vs ref ${fmt(x.orthography_normalised.ref_per10k)})`);
     }
     for (const x of r.rows.filter((y) => y.metric)) {
       console.log(`  ${x.id}  metric ${x.name}: ours ${fmt(x.ours)}  ref ${fmt(x.ref)}  ratio ${fmt(x.ratio)}`);

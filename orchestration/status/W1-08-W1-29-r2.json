@@ -27,7 +27,10 @@
     "game/data/world/inscriptions.json (NEW \u2014 the \u00a7F DS2 mechanism, 10 inscriptions, 4 before the first choice)",
     "game/src/engine.js (_spawnInscriptions + budget throw + world/inscriptions.json loader branch)",
     "game/data/index.json (regenerated, 501 files)",
-    "tools/journey/input-checks.mjs (reattachAfterReload; per-group survival + always-write; M-K22 word boundaries + matcher control; M-K21 real DS3 distance)"
+    "tools/journey/input-checks.mjs (reattachAfterReload; per-group survival + always-write; M-K22 word boundaries + matcher control; M-K21 real DS3 distance)",
+    "tools/journey/input-checks.mjs (6 new self-test legs: M-P24, M-K21, M-K22, M-K8, M-K9, M-N*; RECORD_SUPPRESSED for the synthetic naive transcript)",
+    "tools/verdict-validate.mjs (an UNGATED hard-fail gate must now be NAMED in status_reasons/why_not_ten/biggest_gap, or it warns)",
+    "game/src/engine.js (_touchScreenSuppression \u2014 S35: the thumb ring is not drawn over map/journal/book)"
   ],
   "findings": [
     "boot-check PASS before work; load 3.05 at start",
@@ -49,8 +52,12 @@
     "Load 17-22 on this box during measurement \u2014 noted per AGENT-PROTOCOL.",
     "COUPLING REPRODUCED INDEPENDENTLY 2026-08-07 14:19: desktop 73c633ee15bc82aa (controls_drawn 0, coverage 1.68%) vs handheld 90318e3504ddda6c (controls_drawn 11, coverage 9.15%); null control identical to desktop; delete-the-fix (sever _uiCtx().touch/.rotate) returns EXACTLY 73c633ee15bc82aa. Portrait rotate 3cf4307910309435, rotate_drawn true, 11.68% of frame. coupling 1. JOB ONE IS DONE AND PROVED.",
     "M-K21 BUILD FIX LANDED + PROVED TO RUN: 10 inscriptions across 5 states, every DS4 verb covered, every DS3 distance 0.57-2.06 m (<= 8). DELETE-THE-FIX: nulling engine.data.inscriptions returns the census to 0; restoring returns it to 2 in barge-hold.",
-    "M-K21's DS3 leg was ALSO vacuous in the predecessor's draft: `f.distance_to_first_use_m === undefined || <= 8` and nothing ever set that field, so the 8 m threshold could not be failed by any build. Now measured from the inscription to its situation position."
+    "M-K21's DS3 leg was ALSO vacuous in the predecessor's draft: `f.distance_to_first_use_m === undefined || <= 8` and nothing ever set that field, so the 8 m threshold could not be failed by any build. Now measured from the inscription to its situation position.",
+    "S35 RECONCILED. Nothing of mine assumed there was no map: the action set is CLOSED at 16 (RI-JRN03 \u00a7B) so no 'map' action was ever needed; the map is a menu screen and `menu` is bound to Escape/KeyM on desktop, to the pad, and lives in the touch DRAWER, so a touch-only player reaches it. What DID need reconciling: ui/system.js draws the touch overlay AFTER the screens and outside beginScreen(), so eleven combat marks were painted across the map. Suppressed on map/journal/book only; the drawer (which carries `menu`) stays, so the way out is always on the glass. M-P21's 16-action reachability is measured in the world and is untouched.",
+    "verdict-validate: the r1 verdict's checks[] carry NO hard_fail flags at all, so neither the existing ungated warning nor mine ever fired on it \u2014 the critic recorded the five ungated gates in status_reasons prose only. Positive control built: a check with hard_fail:true + result:'unmeasurable' and an id absent from the narrative now warns; adding 'ungated_hard_fail:RI-JRN03/M-K99' to status_reasons clears it.",
+    "check-data 503/503 clean, check-quests 94 quests clean, boot-check PASS after every engine edit.",
+    "Load reached 41-47 on four cores during the verification run. Numbers taken under that load are flagged in checks.json (load_at_start)."
   ],
-  "next_step": "self-test legs for M-K8, M-K9, M-K21, M-K22, M-P24, naive; then verdict-validate ungated; S35 reconcile; full run; shot; blog line",
+  "next_step": "await the full --self-test run; write reports/W1-08-W1-29-R2.md + blog line",
   "notes_for_successor": ""
 }

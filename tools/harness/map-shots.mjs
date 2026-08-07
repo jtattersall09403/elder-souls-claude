@@ -36,7 +36,14 @@ const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
 const outDir = path.resolve(String(args.out || path.join(REPO_ROOT, 'docs/shots')));
 fs.mkdirSync(outDir, { recursive: true });
-const W = Number(args.width || 1280), Hh = Number(args.height || 720);
+// 960x540 rather than 1280x720, and sixteen stops rather than forty. Both are contention
+// decisions and are recorded as such: this ran with `pgrep -c headless_shell` at 36 against the
+// protocol's working rule of ~8, and the first attempt at forty stops and 1280x720 never
+// returned — each `teleport` drains 25 province tiles, and the shared browser was dropped twice
+// mid-job by other agents' edits changing the build key. The map is a flat 2D panel, so the
+// smaller frame costs it almost nothing; the stop count is what the picture is actually about
+// and sixteen is still enough to cross five regions.
+const W = Number(args.width || 960), Hh = Number(args.height || 540);
 const stamp = new Date().toISOString().slice(0, 10);
 
 /** One leg of the route: stand somewhere, and let the fixed step's `stepDiscovery` see it. */
@@ -56,13 +63,10 @@ const early = [
 // that difference is the thing worth photographing.
 const route = [];
 const legs = [
-  [2171.5, 761], [2400, 900], [2700, 751], [3000, 800], [3400, 830], [3820, 859],
-  [3700, 1200], [3400, 1600], [3000, 2000], [2600, 2300], [2200, 2600], [1800, 2800],
-  [1400, 2900], [1000, 2950], [600, 2930], [439, 2913.5], [700, 3200], [1100, 3400],
-  [1500, 3600], [1900, 3800], [2300, 3900], [2700, 3800], [3100, 3600], [3400, 3300],
-  [3600, 2900], [3500, 2500], [3200, 2200], [2800, 1900], [2400, 1600], [2000, 1300],
-  [1600, 1100], [1200, 1000], [900, 1200], [700, 1600], [900, 2000], [1300, 2200],
-  [1700, 2400], [2100, 2200], [2500, 1900], [2900, 1500],
+  [2171.5, 761], [2674.8, 751.6], [3200, 820], [3820, 859],
+  [3400, 1600], [2800, 2100], [2200, 2600], [1600, 2850],
+  [1000, 2950], [439, 2913.5], [900, 3400], [1500, 3700],
+  [2100, 3900], [2700, 3700], [3300, 3300], [3600, 2700],
 ];
 for (const [x, z] of legs) route.push(...stand(x, z));
 
@@ -98,24 +102,33 @@ const shots = [
   },
 ];
 
+// Retried, because on a box this busy the two ways a request dies are both transient: the daemon
+// drops its browser whenever another agent's edit changes the build key, and a frame can come
+// back UNSETTLED when the province streamer is still arriving behind the panel. Neither is a
+// reason to give up, and neither is a reason to lower the settle threshold — S34 is explicit
+// that an unsettled frame is an error and never a quiet pass, so the answer is to ask again.
 let bad = 0;
 for (const s of shots) {
-  try {
-    const shot = await capture({
-      evidence_of: 'menu',
-      claim: s.claim,
-      state: 'default',
-      ui: true,
-      ops: s.ops,
-      ...(s.noMenu ? {} : { menu: { name: 'map', opts: {} } }),
-      width: W, height: Hh,
-    });
-    const dest = path.join(outDir, `${s.name}.png`);
-    fs.copyFileSync(shot.path, dest);
-    log(`${dest}  (cached=${shot.cached})`);
-  } catch (e) {
-    log(`FAILED ${s.name}: ${e.message}`);
-    bad++;
+  let done = false;
+  for (let attempt = 1; attempt <= 3 && !done; attempt++) {
+    try {
+      const shot = await capture({
+        evidence_of: 'menu',
+        claim: s.claim,
+        state: 'default',
+        ui: true,
+        ops: s.ops,
+        ...(s.noMenu ? {} : { menu: { name: 'map', opts: {} } }),
+        width: W, height: Hh,
+      });
+      const dest = path.join(outDir, `${s.name}.png`);
+      fs.copyFileSync(shot.path, dest);
+      log(`${dest}  (cached=${shot.cached}, attempt ${attempt})`);
+      done = true;
+    } catch (e) {
+      log(`attempt ${attempt} for ${s.name}: ${e.message.split('\n')[0]}`);
+    }
   }
+  if (!done) { log(`FAILED ${s.name} after 3 attempts`); bad++; }
 }
 process.exit(bad ? EXIT.FAIL : EXIT.OK);

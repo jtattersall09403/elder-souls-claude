@@ -37,6 +37,31 @@ Not player-reachable until autosave or save-on-rest lands, at which point it is 
 
 Owner: W1-13, dispatched.
 
+## 0d. Two purses, and the save carries the empty one
+
+Found by the W1-13 round-2 builder while writing a probe, and it is the mechanism behind a defect
+the save critic reported separately. **`fenceSell` pays into `sim.stealth.p.gold` while the save
+writes `sim.progression.gold`** — measured 417 against 0. So money earned by fencing is money the
+save cannot see, which is how the spendable purse comes to be destroyed on a plain round trip, and
+with it the bribe and therefore the non-lethal exit.
+
+Alongside it: **`crime.bounty` in the save is a projection rewritten from `crime.ledger` every
+frame**, so editing it in a blob is silently discarded. That trap turned the builder's own control
+half-green before it noticed.
+
+## 0e. `loadState()` does not close an open screen, and a stopped world scores as a passing one
+
+`Engine._step()` returns early while a screen is open outside combat — correct, and S14. But
+`loadState()` does not close one, so a screen left open upstream **freezes every subsequent block
+while the instrument keeps printing `[OK]`**. Twenty deaths produced no death, no surface, no bloom,
+`damage_frame: 0` on all twenty, ten of nineteen checks failing — and nineteen `[OK]` lines.
+
+Proved in isolation 4/4: healthy control 5 frames and a death; sheet open 0 frames and no death;
+`loadState` does not rescue it; `closeMenu` restores it. Two of the same journey's headline counts
+were **constants** — it printed "20 of 20 conserved" from a line that counted rows, next to "20
+mismatches". Any tool that steps the world must prove the frame counter moved before it reports
+anything, and every journey in the tree should be audited for the same assumption.
+
 ## 0c. Nothing reads the books back — and it is the tenth orphan of the same shape
 
 `corpus/90-verdicts/wave1/W1-LIBRARY-r1.md`, **FAIL 3/10**. The prose is excellent — 13 read end to

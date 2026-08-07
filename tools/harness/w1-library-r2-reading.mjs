@@ -223,10 +223,17 @@ if (out.fatal) {
     `max ${out.T2_T3.max_frames} frames, median ${out.T2_T3.median_frames}, over ${out.T2_T3.turns} turns (bar <= 6, hard fail > 30)`);
   add('K5-T4', 'a second input two frames later is honoured (no blocking animation)',
     !!out.T4.second_input_honoured, `advanced by ${out.T4.advanced_by} on two inputs`);
+  // `getUIState().book.page` is the 1-BASED left-hand page of the spread — `focus.book.page * 2
+  // + 1` in ui/system.js — so a book sitting on its first spread reports 1, not 0. Asserting 0
+  // here failed this check twice against a build that was behaving correctly, which is the
+  // ordinary way a probe lies about a fix.
+  const FIRST_SPREAD = 1;
   add('K6-T5', 'the page you were on survives close, reopen, save, reset and load — per book',
-    out.T5.reopen_same_session === out.T5.page_reached
-      && out.T5.other_book_opens_at === 0
-      && out.T5.after_reset_before_load === 0
+    out.T5.page_reached > FIRST_SPREAD
+      && out.T5.reopen_same_session === out.T5.page_reached
+      && out.T5.other_book_opens_at === FIRST_SPREAD
+      && out.T5.after_reset_before_load === FIRST_SPREAD
+      && out.T5.save_carries_book_pages === true
       && out.T5.after_load === out.T5.page_reached,
     `reached ${out.T5.page_reached}; reopen ${out.T5.reopen_same_session}; other book ${out.T5.other_book_opens_at}; after reset ${out.T5.after_reset_before_load}; AFTER LOAD ${out.T5.after_load}; save carries book_pages: ${out.T5.save_carries_book_pages}`);
   add('K7-T6', 'reading pauses the world out of combat and does NOT pause it in combat',

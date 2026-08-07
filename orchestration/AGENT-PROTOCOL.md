@@ -140,6 +140,22 @@ original blanket cap did.
 | **Picture-only** | needs frames but not a stepping loop | **uncapped — go through `tools/capture/`, never your own browser** |
 | **Light** | writes content, edits the corpus, plans, decomposes, audits data, writes prose | **effectively uncapped** — run as many as there is useful work for |
 
+### The number that actually matters is concurrent browsers, not agents
+
+**Measure it, every time, before and during browser work:**
+
+```
+pgrep -c headless_shell ; cat /proc/loadavg
+```
+
+Measured on this box with eleven agents running: **36 `headless_shell` processes on four cores, loadavg 38–48.** A W1-13 journey that normally takes minutes ran for 35 minutes and had to be killed, so the round's aggregate figures went untaken — the second time in this project that contention, not the work, has cost a piece its headline numbers.
+
+The reason the agent count misleads is that **one agent is not one browser**. A probe suite that opens a page per scenario, or a capture script that relaunches between shots, is five or ten browsers by itself. Eleven agents was never eleven browsers.
+
+**The working rule: keep `pgrep -c headless_shell` under about 8.** If it is above that when you are about to start a stepping run, do something else first — there is nearly always corpus, data or content work in your piece that needs no browser — and come back. If you take a measurement anyway, say so in your report and treat every timing figure as an upper bound. Rates, counts and booleans survive contention; milliseconds do not.
+
+**Reuse one browser across your whole run.** Launch once, keep the page, `setRenderRate(0)`, step. Relaunching per scenario is the single most expensive habit in this project.
+
 ### Do not launch a browser for a photograph
 
 `tools/capture/` pools captures behind one warm browser with a build-keyed cache. A hit is **9 ms

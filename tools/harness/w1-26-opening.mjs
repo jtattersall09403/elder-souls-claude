@@ -260,6 +260,12 @@ try {
       if (!st || st.done) break;
       H.renderFrame();
       const node = st.node;
+      // The scene has TWO nodes that hand control back to the player and wait (`hold.come-to`,
+      // resumed by talking; `hold.out`, resumed by walking up the companionway). A walker that
+      // does not hand it back stops on the first one and reports the whole opening as undrawn —
+      // which is exactly what this loop did, and why M1 read DTR_scene = 0 on a scene that
+      // draws everything.
+      if (st.paused) { H.censusEnter(st.resume_by); continue; }
       const inp = st.input;
       if (!inp) { H.stepFrames(4); if (H.getCensusState().node === node) break; continue; }
       let value = null;
@@ -486,19 +492,48 @@ try {
     // `first_control` never fires — which is the measurement, not a probe failure.
     await H.titleShow();
     await H.titleActivate('new');
+    const E = window.__ENGINE;
     const before = H.getPlayerStats();
-    for (let i = 0; i < 6; i++) {
-      H.queueInputs([{ f: 0, move: [0, 1] }]);
-      H.stepFrames(10);
-    }
+    const node_at_start = (H.getCensusState() || {}).node;
+    // ONE call with the whole timeline. `InputPipeline.queueInputs()` REPLACES the script and
+    // re-bases it on the calling frame, so the six-calls-of-one-frame shape this used to have
+    // delivered SIX frames of input and called it sixty. Round 1's "0.0000 m" was that artefact
+    // sitting on top of a real defect; both are gone and the number must be taken honestly.
+    const s60 = []; for (let i = 0; i < 60; i++) s60.push({ f: i, move: [0, 1] });
+    H.queueInputs(s60); H.stepFrames(60);
     const after = H.getPlayerStats();
+    // O6's RIGHT end. The scene no longer puts a question up on its own — it waits, which is the
+    // whole repair — so a probe that only walks forward will never reach a field node and will
+    // report the interval as undefined forever. Being a body is the first half of the check; the
+    // second half is going and talking to her, which is the act that starts the questions.
+    const walkAndTalk = () => {
+      for (let a = 0; a < 40 && (H.getCensusState() || {}).paused; a++) {
+        const st = H.getCensusState();
+        if (st.resume_by !== 'talk') { H.censusEnter(st.resume_by); continue; }
+        const p = E.sim.player.pos;
+        const who = E.sim.findNPC(st.speaker);
+        const tgt = who ? who.pos : [-2, 0, 2.6];
+        const yaw = (H.getPlayerStats().yaw || 0) * Math.PI / 180;
+        const dx = tgt[0] - p[0], dz = tgt[2] - p[2];
+        const fx = Math.sin(yaw), fz = Math.cos(yaw);
+        const fwd = dx * fx + dz * fz, str = dx * fz - dz * fx;
+        const n = Math.max(1e-6, Math.hypot(fwd, str));
+        const step = [];
+        for (let i = 0; i < 30; i++) step.push({ f: i, move: [str / n, fwd / n] });
+        step.push({ f: 31, press: ['interact'] }, { f: 32, release: ['interact'] });
+        H.queueInputs(step); H.stepFrames(40);
+      }
+    };
+    walkAndTalk();
     const s = H.getJourneyStamps();
     const cs = H.getCensusState();
     return {
       ...s,
       moved_m: +Math.hypot(after.pos[0] - before.pos[0], after.pos[2] - before.pos[2]).toFixed(3),
-      census_node_at_start: cs ? cs.node : null,
-      census_takes_input: !!(cs && cs.surface && cs.surface.takes_input),
+      census_node_at_start: node_at_start,
+      census_node_after_talking: cs ? cs.node : null,
+      census_takes_input_at_start: !!(cs && cs.surface && cs.surface.takes_input),
+      opened_paused: node_at_start === 'hold.come-to',
       forward_input_frames: 60,
     };
   });
