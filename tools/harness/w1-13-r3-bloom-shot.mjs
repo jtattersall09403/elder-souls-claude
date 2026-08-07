@@ -1,27 +1,23 @@
 /**
- * w1-13-r3-bloom-shot.mjs — the bloom from a bearing it could not be seen from, with and
- * without the round-3 renderer change, in one image.
+ * w1-13-r3-bloom-shot.mjs — one picture of the round-3 finding.
  *
- * `path_to_ten` item 1 of `corpus/90-verdicts/wave1/W1-13-r2.md` is "draw the bloom": M-D14
- * measured it visible from **1 of 8 bearings in daylight at 12 m** and 3 of 8 in the dark at
- * 6 m, and in every failing view the frame containing the bloom was PIXEL-IDENTICAL to the
- * control shot 180 degrees away — 195 px in both.
+ * Two panels, one browser, one bloom, one bearing, two frames apart in nothing but where the
+ * camera was put.
  *
- * This file stands at one of those failing bearings and shoots the same frame twice:
+ *   LEFT   the camera rounds 1-3 measured M-D14 from: eye at `[x, stain.pos[1] + 1.6, z]` —
+ *          the STAIN's COLLISION ground, sampled at the stain and used twelve metres away at the
+ *          observer's coordinates — aimed at `stain.pos[1] + 0.3`.
+ *   RIGHT  the eye at the OBSERVER's own ground + 1.6 m, aimed at where the bloom is actually
+ *          DRAWN. Where a player standing on that spot has their head.
  *
- *   LEFT  — the world as it now is.
- *   RIGHT — the same frame with the round-3 change DELETED in the page: the three sap-light
- *           planes removed from the marker group and the bloom put back on the COLLISION
- *           ground (`_drawnGroundY` stubbed to its fallback), which is where
- *           `DeathSystem.placeStain()` leaves it and roughly a third of a metre below the
- *           tussock relief `groundskin.js` draws and does not collide.
+ * The verdict called this "the whole piece is a run back to a thing that is not drawn". The thing
+ * is drawn. The camera was under the ground.
  *
- * If the two frames come out the same, the change is inert and must not be claimed. The
- * amber-band pixel count of each is printed and written into the sidecar next to the image, so
- * the picture is evidence rather than illustration.
+ * THIS SCRIPT LAUNCHES ITS OWN BROWSER and steps the simulation, because the bloom does not exist
+ * until somebody dies (RULES.md 20: say which you did).
  *
- * Usage: node tools/harness/w1-13-r3-bloom-shot.mjs [--bearing 180] [--dist 12] [--hour 12]
- *                                                   [--out docs/shots/<name>.png]
+ * Usage:
+ *   node tools/harness/w1-13-r3-bloom-shot.mjs [--bearing 180] [--dist 12] [--hour 12] [--out <png>]
  */
 'use strict';
 
@@ -32,14 +28,17 @@ import { launchGame } from '../lib/browser.mjs';
 import { parseArgs, wantsHelp, usage, log } from '../lib/cli.mjs';
 
 const args = parseArgs(process.argv.slice(2));
-if (wantsHelp(args)) { usage('w1-13-r3-bloom-shot.mjs [--bearing deg] [--dist m] [--hour h] [--out file.png]'); process.exit(0); }
+if (wantsHelp(args)) { usage('w1-13-r3-bloom-shot.mjs [--bearing <deg>] [--dist <m>] [--hour <h>] [--out <png>]'); process.exit(0); }
 
-const BEARING = Number(args.bearing === undefined ? 180 : args.bearing);
-const DIST = Number(args.dist === undefined ? 12 : args.dist);
-const HOUR = Number(args.hour === undefined ? 12 : args.hour);
-const OUT = String(args.out || 'docs/shots/2026-08-07-w1-13-r3-bloom-drawn-vs-buried.png');
+const BEARING = Number(args.bearing ?? 180);
+const DIST = Number(args.dist ?? 12);
+const HOUR = Number(args.hour ?? 12);
+const OUT = args.out || 'docs/shots/2026-08-07-w1-13-r3-the-bloom-was-drawn-the-camera-was-underground.png';
 
-/** The same amber/ochre band `jrn06-death.mjs`'s `bloomPixels()` counts. One detector, not two. */
+async function shoot(h) {
+  const d = await h.h('screenshot');
+  return PNG.sync.read(Buffer.from(String(d).replace(/^data:image\/png;base64,/, ''), 'base64'));
+}
 function bloomPixels(png) {
   let n = 0;
   for (let i = 0; i < png.data.length; i += 4) {
@@ -49,15 +48,9 @@ function bloomPixels(png) {
   return n;
 }
 
-async function shoot(h) {
-  const dataUrl = await h.h('screenshot');
-  return PNG.sync.read(Buffer.from(String(dataUrl).replace(/^data:image\/png;base64,/, ''), 'base64'));
-}
-
 let handle;
-const meta = { bearing_deg: BEARING, distance_m: DIST, hour: HOUR };
 try {
-  handle = await launchGame({ width: 640, height: 400 });
+  handle = await launchGame({ width: 640, height: 480 });
   const h = handle;
   await h.h('loadState', 'default');
   await h.h('setRenderRate', 60);
@@ -73,74 +66,60 @@ try {
   await h.h('stepFrames', 4);
   await h.h('damagePlayer', 100000, { stagger: false });
   await h.h('stepFrames', 1);
-  await h.h('stepFrames', 220);
+  await h.h('stepFrames', 260);
 
   const st = (await h.h('getDeathState')).bloodstain;
-  if (!st) throw new Error('no bloodstain was placed — nothing to photograph');
-  meta.stain = st;
+  if (!st) throw new Error('no bloodstain was placed');
   await h.h('setTimeOfDay', HOUR);
 
   const th = (BEARING / 360) * Math.PI * 2;
-  const x = st.pos[0] + Math.cos(th) * DIST, z = st.pos[2] + Math.sin(th) * DIST;
-
-  const view = async () => {
-    await h.h('teleport', x, z);
-    await h.h('stepFrames', 2);
-    await h.h('camera', { pos: [x, st.pos[1] + 1.6, z], look: [st.pos[0], st.pos[1] + 0.3, st.pos[2]] });
-    await h.h('renderFrame');
-    return shoot(h);
-  };
-
-  const after = await view();
-  meta.px_with_the_change = bloomPixels(after);
-
-  // ---- DELETE THE FIX, in the page -----------------------------------------------------------
-  await handle.page.evaluate(() => {
-    const eng = window.__ENGINE || (window.__HARNESS && window.__HARNESS._engine);
-    const r = eng.renderer;
-    // 1. the hum: the three cross-planes of sap-light added in round 3.
-    const g = r._marks && r._marks.stain;
-    if (g) {
-      for (const child of g.children.slice()) {
-        if (child.geometry && child.geometry.type === 'PlaneGeometry') g.remove(child);
-      }
-    }
-    // 2. the lift: put the bloom back on the COLLISION ground, which is where round 2 drew it.
-    r._drawnGroundY = function (px, pz, fallbackY) { return fallbackY; };
-    const stain = eng.sim.quest.death.bloodstain;
-    if (g && stain) g.position.set(stain.pos[0], stain.pos[1], stain.pos[2]);
-  });
-  const before = await view();
-  meta.px_with_the_change_deleted = bloomPixels(before);
-
-  // ---- the control: the same pose, turned 180 degrees away ------------------------------------
-  await h.h('camera', { pos: [x, st.pos[1] + 1.6, z], look: [x + (x - st.pos[0]), st.pos[1] + 0.3, z + (z - st.pos[2])] });
+  const x = st.pos[0] + Math.cos(th) * DIST;
+  const z = st.pos[2] + Math.sin(th) * DIST;
+  await h.h('teleport', x, z);
+  await h.h('stepFrames', 3);
   await h.h('renderFrame');
-  meta.px_control_turned_away = bloomPixels(await shoot(h));
+  const snap = await h.hOpt('snapshot');
+  const groundY = snap && snap.player && snap.player.pos ? snap.player.pos[1] : st.pos[1];
+  const drawn = await h.hOpt('getDrawnMarkers');
+  const target = (drawn && drawn.stain && drawn.stain.pos) ? drawn.stain.pos : st.pos;
+
+  // LEFT: the camera rounds 1-3 used.
+  await h.h('camera', { pos: [x, st.pos[1] + 1.6, z], look: [st.pos[0], st.pos[1] + 0.3, st.pos[2]] });
+  await h.h('renderFrame');
+  const left = await shoot(h);
+
+  // RIGHT: the observer's own eye, aimed at the drawn bloom.
+  await h.h('camera', { pos: [x, groundY + 1.6, z], look: [target[0], target[1] + 0.9, target[2]] });
+  await h.h('renderFrame');
+  const right = await shoot(h);
   await h.h('camera', null);
 
-  // ---- compose: after | before, side by side --------------------------------------------------
-  const W = after.width, H = after.height, GAP = 6;
-  const sheet = new PNG({ width: W * 2 + GAP, height: H });
-  for (let i = 0; i < sheet.data.length; i += 4) {
-    sheet.data[i] = 20; sheet.data[i + 1] = 20; sheet.data[i + 2] = 22; sheet.data[i + 3] = 255;
+  const GAP = 8;
+  const out = new PNG({ width: left.width + GAP + right.width, height: Math.max(left.height, right.height) });
+  for (let y = 0; y < out.height; y++) {
+    for (let px = 0; px < out.width; px++) {
+      const o = (out.width * y + px) << 2;
+      let src = null, sx = 0;
+      if (px < left.width) { src = left; sx = px; }
+      else if (px >= left.width + GAP) { src = right; sx = px - left.width - GAP; }
+      if (src && y < src.height) {
+        const s = (src.width * y + sx) << 2;
+        out.data[o] = src.data[s]; out.data[o + 1] = src.data[s + 1];
+        out.data[o + 2] = src.data[s + 2]; out.data[o + 3] = 255;
+      } else { out.data[o] = 20; out.data[o + 1] = 20; out.data[o + 2] = 22; out.data[o + 3] = 255; }
+    }
   }
-  PNG.bitblt(after, sheet, 0, 0, W, H, 0, 0);
-  PNG.bitblt(before, sheet, 0, 0, W, H, W + GAP, 0);
   fs.mkdirSync(path.dirname(OUT), { recursive: true });
-  fs.writeFileSync(OUT, PNG.sync.write(sheet));
+  fs.writeFileSync(OUT, PNG.sync.write(out));
 
-  meta.image = OUT;
-  meta.left = 'the world as it is (round 3): the bloom lifted onto the DRAWN ground and given its hum';
-  meta.right = 'the same frame with the round-3 change deleted in the page: no hum planes, bloom on the collision ground';
-  meta.detector = 'the amber/ochre band jrn06-death.mjs bloomPixels() counts — one detector, not two';
-  fs.writeFileSync(OUT.replace(/\.png$/, '.json'), JSON.stringify(meta, null, 2) + '\n');
-
-  log(`bearing ${BEARING}deg @ ${DIST} m, hour ${HOUR}`);
-  log(`  with the change      : ${meta.px_with_the_change} px`);
-  log(`  change DELETED       : ${meta.px_with_the_change_deleted} px`);
-  log(`  control (turned away): ${meta.px_control_turned_away} px`);
-  log(`  -> ${OUT}`);
+  log(`bearing ${BEARING} deg at ${DIST} m, hour ${HOUR}`);
+  log(`stain model y ${st.pos[1].toFixed(3)}   observer ground y ${groundY.toFixed(3)}   drawn bloom y ${target[1].toFixed(3)}`);
+  log(`LEFT  (rounds 1-3 camera, eye ${(st.pos[1] + 1.6).toFixed(3)}, ${(st.pos[1] + 1.6 - groundY).toFixed(3)} m over the observer's own ground): ${bloomPixels(left)} amber px`);
+  log(`RIGHT (the observer's eye,  eye ${(groundY + 1.6).toFixed(3)}): ${bloomPixels(right)} amber px`);
+  log(`wrote ${OUT}`);
+} catch (err) {
+  log(`ERROR ${err && err.stack ? err.stack : err}`);
+  process.exitCode = 1;
 } finally {
-  if (handle) await handle.close().catch(() => {});
+  if (handle) await handle.close();
 }

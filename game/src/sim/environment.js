@@ -139,9 +139,33 @@ export class Environment {
     this._syncFromFloat(env);
 
     // ---- 1. the clock ------------------------------------------------------------------------
+    //
+    // W1-13 round 3. RI-PRG04 §6 rule 4 is one sentence and it is load-bearing:
+    //
+    //   > **The clock does NOT advance on death.** Only resting moves time. Dying repeatedly at a
+    //   > boss must not burn a quest deadline.
+    //
+    // and §7's death-loop check says it again as an assertion — *"assert the world clock did not
+    // advance"*. The clock ticked through the death surface anyway, and the W1-13 round-3
+    // aggregation is what caught it: `m_d4_across_death_diff` came back with ONE non-volatile
+    // path changed across a death, `clock.time_of_day` 15.000741 -> 15.019352, which is 201
+    // frames — the whole window, the 150 dead ones included. Neither standalone probe could see
+    // it, because neither diffed the whole save across a death.
+    //
+    // A death is 150 frames of `SURFACE_FRAMES` the player cannot act in. Charging those to the
+    // world clock is exactly the deadline burn the item names: fifty attempts at a boss is 7,500
+    // frames, and the clock is what `sim/npc.js` picks a schedule slot from, what
+    // `sim/settlement.js` locks a door on and what `sim/souls.js` pays a night award off. So the
+    // clock is HELD from the death to the respawn and released the moment the body stands up.
+    //
+    // Deliberately NOT rewound: time that passed while the player was alive stays passed. This
+    // freezes the interval the player did not have, and nothing else.
+    const heldByDeath = !!(sim._death && sim._death.active);
+    env.clockHeldByDeath = heldByDeath;
+    if (heldByDeath) env._clockFramesHeldByDeath = (env._clockFramesHeldByDeath | 0) + 1;
     const before = env.timeOfDay;
     const phaseBefore = phaseOf(before);
-    if (!this.paused) {
+    if (!this.paused && !heldByDeath) {
       env._clockFrames = (env._clockFrames + 1) % FRAMES_PER_DAY;
       if (env._clockFrames === 0) env.dayCount = (env.dayCount | 0) + 1;
       env.timeOfDay = this._hoursFor(env._clockFrames);
@@ -262,6 +286,12 @@ export class Environment {
       phase: env.phase || phaseOf(env.timeOfDay),
       daylight: env.daylight ?? daylightAt(env.timeOfDay),
       paused: this.paused,
+      // RI-PRG04 §6 rule 4, made readable: whether the clock is being held right now, and how
+      // many frames it has been held for in total. A probe can then assert "the clock did not
+      // advance on death" against the frames it knows the player spent dead, instead of against
+      // a whole window that also contains ordinary play.
+      held_by_death: !!env.clockHeldByDeath,
+      clock_frames_held_by_death: env._clockFramesHeldByDeath | 0,
       region: m.region,
       weather: env.weather,
       weather_from: env._weatherFrom ?? env.weather,

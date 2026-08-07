@@ -43,7 +43,7 @@
 //
 // Exit 0 = every gate passed. 1 = a gate failed. 2 = the build could not be driven.
 
-import { writeFileSync, mkdirSync, readFileSync } from 'node:fs';
+import { writeFileSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -81,7 +81,19 @@ if (SABOTAGE && !['silent', 'quiet'].includes(SABOTAGE)) {
 }
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..', '..');
-const regions = JSON.parse(readFileSync(join(ROOT, 'game/data/world/regions.json'), 'utf8')).regions;
+const AMB = join(ROOT, 'game/data/audio/ambience');
+// Every bed in the build, exterior and interior, measured by one instrument. The thirteen region
+// beds live in `audio/ambience/` and the R4 / RI-WLD08 §6 interior and settlement beds in
+// `audio/ambience/interiors/`. An interior bed that nothing measures is how round 1 shipped
+// thirteen calibrated exteriors and absolute silence indoors; there is no reason to build a
+// second set of beds and then grade only the first.
+const regions = [
+  ...JSON.parse(readFileSync(join(ROOT, 'game/data/world/regions.json'), 'utf8')).regions
+      .map((r) => ({ id: r.id, kind: 'region', file: join(AMB, `${r.id}.json`) })),
+  ...readdirSync(join(AMB, 'interiors')).filter((f) => f.endsWith('.json'))
+      .map((f) => ({ id: f.replace(/\.json$/, ''), kind: 'interior',
+                     file: join(AMB, 'interiors', f) })),
+];
 
 // RI-AUD03 §A, the "Level (rel. bed)" column, verbatim. These are the item's numbers, not this
 // tool's; the tolerance is this tool's and is declared rather than folded into the band.
@@ -126,6 +138,66 @@ function median(xs) {
 function crestDb(x) { return db(peak(x)) - db(rms(x)); }
 
 /**
+ * Gated K-weighted integrated loudness, BS.1770-4. Only used to give the INTERIOR beds a
+ * `bed_lufs_target` they actually land on — the thirteen region beds are owned by
+ * `ambience-render.mjs --calibrate`, which has B5's gate on it, and two tools writing the same
+ * field to the same file is how a build ends up with two mixes.
+ */
+function lufsIntegrated(x, fs) {
+  const y = highpass(shelf(x, fs), fs, 38.13, 0.5);
+  const block = Math.round(0.4 * fs), hop = Math.round(0.1 * fs);
+  const loud = [];
+  for (let o = 0; o + block <= y.length; o += hop) {
+    let s = 0;
+    for (let i = 0; i < block; i++) s += y[o + i] * y[o + i];
+    const ms = s / block;
+    loud.push(ms > 0 ? -0.691 + 10 * Math.log10(ms) : -Infinity);
+  }
+  const abs = loud.filter((l) => l > -70);
+  if (!abs.length) return -Infinity;
+  const mp = (a) => a.reduce((s, l) => s + Math.pow(10, (l + 0.691) / 10), 0) / a.length;
+  const un = -0.691 + 10 * Math.log10(mp(abs));
+  const rel = abs.filter((l) => l > un - 10);
+  return -0.691 + 10 * Math.log10(mp(rel.length ? rel : abs));
+}
+/** BS.1770 stage 1: high shelf, +4 dB at 1681 Hz. */
+function shelf(x, fs) {
+  const A = Math.pow(10, 4 / 40), w = 2 * Math.PI * 1681.97 / fs;
+  const cw = Math.cos(w), al = Math.sin(w) / Math.SQRT2;
+  const b0 = A * ((A + 1) + (A - 1) * cw + 2 * Math.sqrt(A) * al);
+  const b1 = -2 * A * ((A - 1) + (A + 1) * cw);
+  const b2 = A * ((A + 1) + (A - 1) * cw - 2 * Math.sqrt(A) * al);
+  const a0 = (A + 1) - (A - 1) * cw + 2 * Math.sqrt(A) * al;
+  const a1 = 2 * ((A - 1) - (A + 1) * cw);
+  const a2 = (A + 1) - (A - 1) * cw - 2 * Math.sqrt(A) * al;
+  return biquad(x, b0 / a0, b1 / a0, b2 / a0, a1 / a0, a2 / a0);
+}
+function biquad(x, b0, b1, b2, a1, a2) {
+  const y = new Float64Array(x.length);
+  let x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+  for (let i = 0; i < x.length; i++) {
+    const v = b0 * x[i] + b1 * x1 + b2 * x2 - a1 * y1 - a2 * y2;
+    x2 = x1; x1 = x[i]; y2 = y1; y1 = v; y[i] = v;
+  }
+  return y;
+}
+
+/** One-pole-pair Butterworth high-pass, used only by the onset detector. */
+function highpass(x, fs, f0, q = 1 / Math.SQRT2) {
+  const w = 2 * Math.PI * f0 / fs, cw = Math.cos(w), sw = Math.sin(w), al = sw / (2 * q);
+  const b0 = (1 + cw) / 2, b1 = -(1 + cw), b2 = (1 + cw) / 2;
+  const a0 = 1 + al, a1 = -2 * cw, a2 = 1 - al;
+  const B0 = b0 / a0, B1 = b1 / a0, B2 = b2 / a0, A1 = a1 / a0, A2 = a2 / a0;
+  const y = new Float64Array(x.length);
+  let x1 = 0, x2 = 0, y1 = 0, y2 = 0;
+  for (let i = 0; i < x.length; i++) {
+    const v = B0 * x[i] + B1 * x1 + B2 * x2 - A1 * y1 - A2 * y2;
+    x2 = x1; x1 = x[i]; y2 = y1; y1 = v; y[i] = v;
+  }
+  return y;
+}
+
+/**
  * Onsets from a short-time energy envelope, written here rather than borrowed.
  *
  * The rule is deliberately close to the blind pack's in SHAPE — a frame that is well above the
@@ -135,9 +207,22 @@ function crestDb(x) { return db(peak(x)) - db(rms(x)); }
  * reached over the running floor, which the pack's does not.
  */
 function onsets(x, fs) {
+  // DETECT ON THE HIGH-PASSED SIGNAL, and this is a correction to this tool rather than a
+  // convenience. The first version ran on the broadband mix and reported 98 onsets in the Stone
+  // Wastes while reporting zero everywhere else — all of them false. That bed is a brown drone
+  // low-passed at 70 Hz, and at 70 Hz a 10 ms frame is most of a cycle, so frame-to-frame energy
+  // swings by more than the 1.5x rise test on the carrier alone. The detector was firing on the
+  // waveform of the floor, not on anything happening.
+  //
+  // A discrete sound event — a drip, a snap, a creak, a wingbeat — is broadband and has an edge;
+  // that is what makes it discrete rather than part of the floor. Perceptual onset detectors
+  // high-pass for exactly this reason. 300 Hz keeps every event synth in the province (the
+  // lowest-centred is a 145 Hz band-passed door at Stormhold, whose attack still carries well
+  // above 300) and removes the L1 rumble that every bed is mostly made of.
+  const hp = highpass(x, fs, 300);
   const H = Math.round(fs * 0.01);                       // 10 ms frames
   const env = [];
-  for (let o = 0; o + H <= x.length; o += H) env.push(rms(x, o, o + H));
+  for (let o = 0; o + H <= hp.length; o += H) env.push(rms(hp, o, o + H));
   if (env.length < 3) return [];
   const med = median(env) || 1e-9;
   const out = [];
@@ -290,6 +375,8 @@ try {
         crest_factor_db: crest,
         event_peak_dbfs: +db(peak(E)).toFixed(2),
         bed_rms_dbfs: +db(rms(B)).toFixed(2),
+        bed_lufs_i: +lufsIntegrated(B, RATE).toFixed(2),
+        mix_lufs_i: +lufsIntegrated(F, RATE).toFixed(2),
         level_rel_bed: byLayer,
         onsets: det.slice(0, 8),
         events: levels.slice(0, 12),
@@ -361,7 +448,8 @@ try {
     const centre = { L3: (BANDS.L3[0] + BANDS.L3[1]) / 2, L4: (BANDS.L4[0] + BANDS.L4[1]) / 2 };
     const written = [];
     for (const [id, rec] of Object.entries(out.regions)) {
-      const file = join(ROOT, 'game/data/audio/ambience', `${id}.json`);
+      const file = (regions.find((r) => r.id === id) || {}).file;
+      if (!file) continue;
       let bed;
       try { bed = JSON.parse(readFileSync(file, 'utf8')); } catch { continue; }
       let touched = false;
@@ -381,6 +469,27 @@ try {
         written.push({ region: id, layer, n: xs.length, measured_rel_db: +measured.toFixed(2),
                        target_rel_db: centre[layer], event_gain_db: next, was: prev });
         touched = true;
+      }
+      // The INTERIOR beds' master trim. The thirteen region beds are deliberately not touched
+      // here — `ambience-render.mjs --calibrate` owns `bed_gain_db` for those and B5 gates them,
+      // and two tools writing one field into one file is how a build acquires two mixes. The
+      // interiors are new in round 2 and that tool does not know about them.
+      const meta = regions.find((r) => r.id === id);
+      if (meta && meta.kind === 'interior') {
+        const ls = Object.values(rec.tod).filter((t) => !t.error && isFinite(t.bed_lufs_i))
+          .map((t) => t.bed_lufs_i);
+        if (ls.length && bed.bed_lufs_target !== undefined) {
+          const measured = median(ls);
+          const prev = bed.bed_gain_db || 0;
+          bed.bed_gain_db = +(prev + (bed.bed_lufs_target - measured)).toFixed(2);
+          bed.bed_gain_db_note = 'Master trim, in dB, that lands this interior bed on its own '
+            + 'bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-onsets.mjs '
+            + '--calibrate), not guessed. The run that writes it and re-measures it is '
+            + 'self-fulfilling and proves nothing on its own; the value is in every later run.';
+          written.push({ region: id, layer: 'bed', measured_lufs_i: +measured.toFixed(2),
+                         target_lufs: bed.bed_lufs_target, bed_gain_db: bed.bed_gain_db, was: prev });
+          touched = true;
+        }
       }
       if (touched) writeFileSync(file, JSON.stringify(bed, null, 2) + '\n');
     }

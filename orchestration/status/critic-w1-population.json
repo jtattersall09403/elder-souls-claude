@@ -3,19 +3,39 @@
   "role": "critic",
   "judges": "W1-POPULATION",
   "commit_at_start": "8fa946c",
+  "commit_at_measure": "28909e1",
   "state": "running",
   "started": "2026-08-07",
-  "next_step": "read RULES/INDEX done; read W1-POPULATION.json, RI-PRG06, RI-AI05, PLAN W1-12/W1-27",
-  "files_touched": [],
+  "next_step": "C1 (crossing walked end to end) still running; re-run C3/C4 with the two instrument bugs fixed; then finish verdict md+json, shot, blog line.",
+  "files_touched": [
+    "orchestration/status/critic-w1-population.json",
+    "tools/world/critic-population-r1.mjs",
+    "reports/world/population/critic-r1.json"
+  ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-POPULATION-r1.md",
     "corpus/90-verdicts/wave1/W1-POPULATION-r1.json",
-    "orchestration/status/critic-w1-population.json",
     "docs/shots/",
-    "reports/blog-feed.jsonl",
-    "tools/harness/critic-w1-population-r1.mjs"
+    "reports/blog-feed.jsonl"
   ],
-  "notes": [
-    "Browser contention at start: pgrep headless_shell=18, loadavg 12.96 — deferring browser work, doing static reads first (RULES 21)."
-  ]
+  "redundant_with": [],
+  "findings": [
+    "CONTENTION THROUGHOUT: pgrep -c headless_shell 18-36, loadavg 12-22 on four cores. Every number in this critique is a COUNT, a BOOLEAN or a FRAME count. No wall-clock timing is claimed anywhere.",
+    "HARD FAIL (RI-AI05 M4 / §D introduction rule, 'any violation is a hard fail'): the placement satisfies the rule only in an order NO PLAYER WALKS. The generator's post-pass tags 5 posts `introduces` and all 5 are solo -- but it sorts by (danger_tier, distance-from-safety). Walked along the game's own canonical critical-path route (roads.json named_routes.crossing, RI-WLD01 §5 'Stormhold south gate to Lilmoth harbour steps'), guard_legion debuts in a PAIR at stormhold-helstrom 1450 m and drowned_lesser debuts in a PAIR at helstrom-blackrose 875 m. Walked the OTHER way -- which is the direction the shipped default state forces, player start [2766.5, 5011] is 16.5 m from the Lilmoth end -- guard_legion debuts in a group of THREE (wl-legion-line) at helstrom-blackrose 295 m. The violation survives both directions.",
+    "The builder KNEW about walk order and moved the label instead of the placement: its own finding says the first pass 'introduced inf_trash in a TIER-4 region, because that is simply where the crossing's first leg starts', and the remedy was to re-sort the TAG by tier. That makes the `introduces` field internally consistent and detaches it from what the player meets. RULES 7 exactly: a field written and never read back re-serialises to what was saved and passes forever.",
+    "RI-PRG06 §2 BAND CONFORMANCE: 252 of 267 shipped bodies (94%) fall OUTSIDE their region tier's trash soul band. t1 4/15 in band; t2 0/79; t3 0/56; t4 0/50; t5 0/67. Realised tier multiplier vs t1: 1.00 / 1.02 / 1.50 / 2.37 / 1.97 against the contract's 1.0 / 3.2 / 7.9 / 15.5 / 24.4 -- and t5 is BELOW t4.",
+    "RI-PRG06 METHOD 6 (band separation, '≤25% overlap' to pass, 'adjacent tiers indistinguishable' = 0): shipped adjacent-tier soul-value sets overlap 100% / 67% / 100% / 100%. Every tier draws from the same five-value set {24,34,64,83,157}. 'Am I in the right region', which §2 says must be answerable from a single kill, is not answerable at all.",
+    "AND A MEANINGFUL SHARE OF THAT IS THIS PIECE'S, NOT THE ROSTER'S. The five soul values are W1-SOULS's; WHICH statblock stands in which tier is this piece's composition table. Pure composition choice on the shipped roster allows a 6.54x spread (t1 all drowned_lesser 24, t5 all drowned_greater 157). Shipped realises 2.37x and inverts at the top, because t5's tables are heavy in wl-drowned-host and wl-slitherfang-swarm -- big groups of cheap bodies that DILUTE souls/body below t4's solo drowned_greater.",
+    "DENSITY IS UNIFORM, BY DECLARATION. population.json tier_multiplier is 0.85 / 1.0 / 1.05 / 1.1 / 1.0 -- a 1.29x range across the whole 1-5 span, non-monotone, with t5 exactly equal to t2. Realised median road spacing: t1 190 m, t2 140, t3 140, t4 125, t5 140 -- tiers 2, 3 and 5 are IDENTICAL. Realised bodies/post 1.36 / 1.80 / 1.75 / 1.61 / 2.58, also non-monotone (t4 < t2).",
+    "THE DECLARED JUSTIFICATION DOES NOT HOLD ON THIS ROSTER. tier_multiplier's own note cites 'RI-AI05's whole thesis: late difficulty comes from which questions are asked at once, not from more bodies.' RI-AI05's levers 1 and 2 are 'new archetype' and 'new combination'. Lever 1 is unavailable here -- zero new statblocks were built -- so the piece flattened the one axis it owned while citing a compensating mechanism it did not have.",
+    "MORE BODIES, NOT MORE KINDS -- the count. Bodies 9 -> 267 (29.7x). Encounter templates 2 -> 16 (8x). Fightable statblocks 5 -> 5 (1.00x). Zero new archetypes. RI-AI05's hard fail 'fewer than 8 archetypes clearing M1's distinctness bar (the roster is not a roster)' stands untouched, and RI-AI05 §D's per-region mix requires RANGED 10-12% in EVERY region and ELITE 1-3 per region; shipped is 0% and 0. The piece declared this in encounters.json `absent_roles_declared` rather than hiding it, which is worth credit -- but it declared the ROSTER gap and not the SOUL-BAND gap, which is the one RI-PRG06 scores.",
+    "CREDIT WHERE IT IS DUE, measured not assumed: the composition tables genuinely shift by tier and this is real lever-2 work. t1 carries zero guard_legion and zero drowned_greater; t5 is 28% wl-deep-drowned-anchor and carries all five statblocks. Fourteen new wilderness templates from solo through pair, pack, swarm, line and four mixed-role pairings. The safety axis is doing work: only 3 of 122 road posts sit inside 50 m of a place of safety, 67 sit beyond 200 m.",
+    "INSTRUMENT BUG, MINE, ROUND 1, AND THE SAME ONE THE BUILDER RECORDED FROM THE OTHER SIDE: my first C3 killed bodies by writing hp on the sim.entities record and on a combat body I fetched with `E.combat.bodies.get` -- which does not exist. The accessor is `combat.bodyOf()`. sim/combat-bridge.js#mirror rewrites e.hp from the combat body every step, so the kill un-happened on the next frame; the arm reported 'killed: 2' and a souls delta of ZERO and the zero was the instrument. Fixed. Anything in this tree that kills or heals through the sim record alone is writing to a mirror.",
+    "MY C4 ROUND 1 ALSO FAILED ON A SHAPE ERROR: queueInputs takes {f, press:[...]} records, not {light:true}. Fixed to the press/release/recover cycle the souls critic uses.",
+    "CONTROLS THAT WENT THE RIGHT WAY (C2, at 36 browsers / loadavg 20): the STILL control materialised 0 posts with measured drift 0.00 m after clearInputs -- the builder's own warning that walkRoute leaves the stick latched is real and is guarded here by an asserted drift, not by hope. The ABLATION control walked 1,199 m of the crossing with setPopulation({enabled:false}) and materialised 0 posts / 0 bodies.",
+    "SMALL DEFECT FOUND BY READING THE CONTROL'S OUTPUT: PopulationSystem.reset() clears state, live, focus, epochSeen, stats and candidates but NOT this.faults. So populationReport().faults accumulates for the life of the page across every loadState, and my ablation arm -- which spawned nothing at all -- reported faults: 2 inherited from two arms earlier. A fault count that cannot be zeroed by a scenario boundary is not a fault count.",
+    "GATES AT 28909e1: check-data 0, check-quests 0, check-content 0. Generator --check exit 0, so the shipped posts file does still regenerate from the shipped model.",
+    "SOUL TOTALS ARE NOT STALE AT HEAD, checked rather than trusted: population-posts.json report.souls says 16,335 and recomputing from the shipped statblocks gives 16,335. The builder's mid-run re-anchor is reflected. 16,335 souls = level 16 on game/data/progression/levels.json, and is 2.15% of the 759,447 souls RI-PRG06 §1 needs for its typical first clear at L82."
+  ],
+  "notes_for_successor": "One browser held for the whole run (RULES 21). The C1 arm walks the full 6,825 m crossing in 900-frame chunks with NO top-ups, which is the expensive one; C3 and C4 are cheap and decisive and should be run first on a contended box. tools/world/critic-population-r1.mjs is mine, shares no code with the builder's suite, and every arm has a control that must go the other way."
 }

@@ -866,25 +866,84 @@ async function driveBeats(handle, o) {
   // --- first control ----------------------------------------------------------------------
   // "Control" is the first frame on which the player can move the body. Observed entity-side:
   // drive a movement input and see whether the player's position changes.
-  const p0 = await handle.hOpt('snapshot');
-  const pos0 = p0 && p0.player && p0.player.pos ? p0.player.pos.slice() : null;
-  if (o.inputMode === 'real') await realKey(handle.page, 'KeyW', 'w', { delay: 60 });
-  else await handle.h('queueInputs', [{ f: 1, press: ['forward'] }, { f: 40, release: ['forward'] }]);
-  await handle.h('stepFrames', 60);
-  const p1 = await handle.hOpt('snapshot');
-  const pos1 = p1 && p1.player && p1.player.pos ? p1.player.pos.slice() : null;
-  const moved = pos0 && pos1 && (Math.abs(pos1[0] - pos0[0]) + Math.abs(pos1[2] - pos0[2])) > 1e-4;
-  await record('first_control', { moved, pos_before: pos0, pos_after: pos1 });
-  if (moved) await o.onFirstControl();
-  else {
+  //
+  // TWO ARMS, because the round-3 aggregation charged this row to the build and it was ours.
+  //
+  // `control_observed` came back `unmeasurable` with the player at [2766.5,2.68,5011] before and
+  // after, and — the round-2 gate having proved the world WAS running — the row said in as many
+  // words "this is the BUILD refusing the input". It was not. The sequence was
+  // `realKey(page,'KeyW','w',{delay:60})` and then `stepFrames(60)`, and `realKey` presses the
+  // key, waits 60 ms of WALL clock, and RELEASES it. So the key was down across zero stepped
+  // frames and up across all sixty. The body was asked to walk with nothing held.
+  //
+  // Arm A is that sequence, kept verbatim and still reported, so the defect stays visible and a
+  // future reader can see which of the two moves the body. Arm B holds the key DOWN across the
+  // stepped frames and releases it afterwards, which is what a player does. A row that passes on
+  // A and B alike would mean this correction was inert; the two are recorded separately so that
+  // cannot be hidden.
+  const armFrom = async (hold) => {
+    const a0 = await handle.hOpt('snapshot');
+    const q0 = a0 && a0.player && a0.player.pos ? a0.player.pos.slice() : null;
+    if (o.inputMode === 'real') {
+      if (hold) {
+        await realKey(handle.page, 'KeyW', 'w', { up: false, delay: 0 });
+        await handle.h('stepFrames', 60);
+        await realKey(handle.page, 'KeyW', 'w', { down: false });
+      } else {
+        await realKey(handle.page, 'KeyW', 'w', { delay: 60 });
+        await handle.h('stepFrames', 60);
+      }
+    } else {
+      await handle.h('queueInputs', [{ f: 1, press: ['forward'] }, { f: 40, release: ['forward'] }]);
+      await handle.h('stepFrames', 60);
+    }
+    const a1 = await handle.hOpt('snapshot');
+    const q1 = a1 && a1.player && a1.player.pos ? a1.player.pos.slice() : null;
+    return { pos_before: q0, pos_after: q1, moved: !!(q0 && q1 && (Math.abs(q1[0] - q0[0]) + Math.abs(q1[2] - q0[2])) > 1e-4) };
+  };
+  const armA = await armFrom(false);
+  await handle.h('stepFrames', 10);
+  const armB = await armFrom(true);
+  const pos0 = armB.pos_before, pos1 = armB.pos_after;
+  const moved = armA.moved || armB.moved;
+  await record('first_control', {
+    moved, pos_before: pos0, pos_after: pos1,
+    arm_press_release_then_step: armA,
+    arm_held_across_the_stepped_frames: armB,
+    arms_differ: armA.moved !== armB.moved,
+  });
+  if (moved) {
+    // MEASURED, and it says which arm carried it. `path_to_ten` item 6's acceptance is that this
+    // row is measured rather than unmeasurable, and a row that does not name the arm would hide
+    // the fact that the correction above was the thing that moved it.
+    const dist = (a) => (a.pos_before && a.pos_after
+      ? +Math.hypot(a.pos_after[0] - a.pos_before[0], a.pos_after[2] - a.pos_before[2]).toFixed(4) : null);
+    led.ok('control_observed', 'the player body responded to a movement input', {
+      input_mode: o.inputMode,
+      moved: true,
+      moved_m_press_release_then_step: dist(armA),
+      moved_m_held_across_the_stepped_frames: dist(armB),
+      arm_that_moved_the_body: armB.moved ? 'held across the stepped frames' : 'press/release then step',
+      arms_differ: armA.moved !== armB.moved,
+      world_was_running: gControl.ok,
+      pass: true,
+      note: 'Two arms on purpose. `realKey(page, code, char, {delay})` presses, waits WALL-clock '
+        + 'milliseconds and releases, so the old single arm held the key across zero STEPPED frames '
+        + 'and the body was asked to walk with nothing down. The round-3 aggregation read that as '
+        + '"the BUILD refusing the input" — the gate had correctly ruled out a frozen world, which '
+        + 'left the build as the only remaining suspect and it was the wrong one.',
+    });
+    await o.onFirstControl();
+  } else {
     led.unmeasurable('control_observed', 'the player body responded to a movement input',
       `the player did not move between ${JSON.stringify(pos0)} and ${JSON.stringify(pos1)} after 60 frames of forward input ` +
-      `in mode '${o.inputMode}'. This is an ENTITY-SIDE observation (RI-MTH07 §B2): first_control ` +
-      `is not claimable when nothing in the world moved. ` +
+      `in mode '${o.inputMode}', on EITHER arm — neither press/release-then-step nor the key held ` +
+      'across the stepped frames moved the body. This is an ENTITY-SIDE observation (RI-MTH07 §B2): ' +
+      'first_control is not claimable when nothing in the world moved. ' +
       (gControl.ok
         ? `The world WAS running when this was taken (world_runs_before_first_control advanced ${gControl.advanced} of `
-          + `${gControl.frames_requested}, UI mode ${JSON.stringify(gControl.ui_mode_after_close)}), so this is the BUILD `
-          + 'refusing the input and not a frozen simulation.'
+          + `${gControl.frames_requested}, UI mode ${JSON.stringify(gControl.ui_mode_after_close)}), and the held arm rules `
+          + 'out the harness dropping the key, so this is the BUILD refusing the input.'
         : `The world was NOT running when this was taken (${gControl.why}), so this row is a harness fault and NOT `
           + 'evidence against the build.'),
       gControl.ok ? 'the build' : 'the leg that left a screen open');

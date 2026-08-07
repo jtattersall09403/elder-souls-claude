@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-07T20:57:20Z
+Generated: 2026-08-07T21:10:33Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -30,7 +30,7 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 - Subsystems with at least one judging reference item: **324**
 - Subsystems judged by a doctrine document instead: **6** (see §3b)
 - **Corpus holes (no judging item): 0** (0%)
-- Front-matter problems: 0 error(s), 26 warning(s)
+- Front-matter problems: 0 error(s), 27 warning(s)
 
 | Root | Paths | Judged by RI | Judged by doctrine | Holes |
 |---|---:|---:|---:|---:|
@@ -915,6 +915,7 @@ _None._
 
 | Level | File | Problem |
 |---|---|---|
+| WARN | `corpus/22-character/RI-CHR01-character-creation.md, corpus/22-character/RI-CHR03-birthsigns.md, corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md, corpus/95-experience/RI-CMP03-build-identity-payoff.md` | names phantom tool `tools/analysis/build-viability.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/23-stealth-crime/RI-STL02-theft-locks-fencing.md` | names phantom tool `tools/analysis/economy-model.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/40-dialogue/RI-DLG09-the-parley.md` | names phantom tool `tools/analysis/pacifist-in-fight.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/95-experience/RI-CMP02-emergence-fuzzing.md` | names phantom tool `tools/composition/emergence-probe.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |

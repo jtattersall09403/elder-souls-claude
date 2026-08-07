@@ -166,6 +166,13 @@ async function armC1(handle) {
   const A = { name: 'C1 crossing walked end to end, no top-ups', samples: [] };
   await handle.h('loadState', STATE);
   await handle.page.evaluate(INSTALL);
+  // `PopulationSystem.reset()` restores state/live/focus/epoch/stats/candidates and does NOT
+  // restore `enabled`. So `setPopulation({enabled:false})` survives every `loadState` for the
+  // life of the page, and the round-1 run of this arm walked 5,999.4 m through a world that a
+  // PREVIOUS arm had switched off and reported it as an empty road. Re-arm and ASSERT.
+  await handle.h('setPopulation', { enabled: true });
+  A.enabled_at_start = (await handle.h('populationReport')).enabled;
+  if (A.enabled_at_start !== true) { A.VOID = 'population system is disabled at arm start'; return A; }
   let r = await handle.h('walkRoute', { route: ROUTE, speed: 'walk', restart: true, chunkFrames: 1, stream: false });
   A.start = await handle.page.evaluate(() => ({ ...window.__CP.pos(), ...window.__CP.hp() }));
   let guard = 0;
@@ -240,6 +247,7 @@ async function armC3(handle) {
   const A = { name: 'C3 re-pay without a rest: the save/load door' };
   await handle.h('loadState', STATE);
   await handle.page.evaluate(INSTALL);
+  await handle.h('setPopulation', { enabled: true });   // see C1: reset() does not restore this
 
   // Stand on a road post and let it materialise. Standing, not walking: this arm is about
   // payment, not arrival, and A1 already owns arrival.
@@ -347,6 +355,7 @@ async function armC4(handle) {
   for (const fight of [true, false]) {
     await handle.h('loadState', STATE);
     await handle.page.evaluate(INSTALL);
+    await handle.h('setPopulation', { enabled: true }); // see C1: reset() does not restore this
     await handle.h('teleport', target.x + 10, target.z + 10);
     await handle.h('clearInputs');
     await handle.h('stepFrames', 400);

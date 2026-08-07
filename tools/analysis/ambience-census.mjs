@@ -305,6 +305,79 @@ for (const r of regions) {
   if (b.brief !== r.ambient_text) fail('C11', `${r.id}: the bed's brief has drifted from regions.json's ambient_text. RI-AUD03's own provenance note: "If regions.json changes, this table follows it, not the reverse."`);
 }
 
+// ---- C14: INTERIOR AND SETTLEMENT BEDS (R4, RI-WLD08 §6) --------------------------------------
+//
+// ROUND 2. Round 1 shipped thirteen exteriors and nothing indoors, on a reading of R4 under which
+// silence was a permitted third option; the round-1 critic ruled otherwise and this round agrees,
+// on RI-AUD03's own "How we lose" wording — the named interior failure is that a low-passed
+// exterior "is not *wrong*, it is just **nothing**", and silence is that failure at its limit.
+// RI-WLD08 §6 puts a positive count on it: "≥13 (one per region) + ≥8 settlement beds + ≥4
+// interior beds". A count is the one thing an absence can never satisfy.
+//
+// These beds are checked to the SAME rules as the thirteen — four layers declared, `null` only
+// with a reason, unique L1 across the whole province, §A's interval bands, a target inside §A's
+// level band and not sitting on its fence — because an interior bed held to a lower standard is
+// how a build ends up with thirteen good beds and seven that nobody looked at.
+const IDIR = join(DIR, 'interiors');
+const interiors = {};
+if (existsSync(IDIR)) {
+  for (const f of readdirSync(IDIR).filter((f) => f.endsWith('.json'))) {
+    const doc = JSON.parse(readFileSync(join(IDIR, f), 'utf8'));
+    interiors[doc.id || f.replace(/\.json$/, '')] = doc;
+  }
+}
+const nInterior = Object.values(interiors).filter((b) => b.bed_kind === 'interior').length;
+const nSettlement = Object.values(interiors).filter((b) => b.bed_kind === 'settlement').length;
+if (!Object.keys(interiors).length) {
+  fail('C14', 'no interior beds at all. RI-AUD03 R4 mandates an interior bed and RI-WLD08 §6 counts '
+    + 'them; going silent indoors is the "just nothing" failure R4 names, not an exemption from it.');
+} else {
+  if (nInterior < 4) {
+    fail('C14', `${nInterior} interior beds; RI-WLD08 §6 requires >=4.`);
+  }
+  // The settlement shortfall is REPORTED AND NOT FAILED, and the reason is that it is not this
+  // piece's to fix: `Engine.cellFor()` returns exactly two settlement cells in this build
+  // (`helstrom-market`, `stormhold-street`), so eight settlement beds would mean authoring beds
+  // for six settlements that do not exist in the world. Failing here would make an audio check
+  // red for a world gap and hide the real one.
+  if (nSettlement < 8) {
+    warn('C14', `${nSettlement} settlement beds; RI-WLD08 §6 wants >=8. The shortfall is the `
+      + 'WORLD\'s, not the bed set\'s: this build has only two settlement cells to give a bed to. '
+      + 'Recorded as corpus/world debt rather than failed here.');
+  }
+  for (const [id, b] of Object.entries(interiors)) {
+    if (!b.layers) { fail('C14', `${id}: no layers.`); continue; }
+    for (const L of ['L1', 'L2', 'L3', 'L4']) {
+      if (!(L in b.layers)) fail('C14', `${id}: layer ${L} is not declared at all. R1 permits null; it does not permit absent.`);
+      else if (b.layers[L] === null && !b[`${L}_null_reason`]) fail('C14', `${id}: ${L} is null with no ${L}_null_reason.`);
+    }
+    if (b.layers.L1 === null) fail('C14', `${id}: L1 is null. Every bed has a floor.`);
+    const L3 = b.layers.L3, L4 = b.layers.L4;
+    if (L3 && !band(L3.interval_s, 8, 40)) fail('C14', `${id}: L3 interval ${JSON.stringify(L3.interval_s)} outside §A's 8–40 s.`);
+    if (L4 && !band(L4.interval_s, 45, 180)) fail('C14', `${id}: L4 interval ${JSON.stringify(L4.interval_s)} outside §A's 45–180 s.`);
+    const t = b.bed_lufs_target;
+    if (!(t >= -28 && t <= -24)) fail('C14', `${id}: bed target ${t} LUFS outside §A's −28..−24 band.`);
+    // Round 1's B5 miss was 0.009 LU, on a bed whose target WAS the band edge. A target on a
+    // fence fails on rounding, so an interior bed may not be authored onto one.
+    else if (t > -24.5 || t < -27.5) fail('C14', `${id}: bed target ${t} LUFS sits on §A's band fence. `
+      + 'Round 1 shipped marauders-coast at a target of −24.0 and measured −23.991, missing B5 by nine '
+      + 'thousandths of a decibel. Targets go inside the band, not on it.');
+    if (b.layers.L3 && b.layers.L3.event_gain_db === undefined) {
+      warn('C14', `${id}: L3 has no event_gain_db — this bed's events have never been measured against `
+        + 'their own floor. Run `node tools/analysis/ambience-onsets.mjs --calibrate`.');
+    }
+  }
+  // R2, across the WHOLE province rather than only the thirteen. An interior that reused a
+  // region's L1 would be the "one swamp loop" failure wearing a roof.
+  const all = new Map();
+  for (const [id, b] of [...Object.entries(beds), ...Object.entries(interiors)]) {
+    const l1 = b.layers && b.layers.L1 && b.layers.L1.id;
+    if (!l1) continue;
+    if (all.has(l1)) fail('C14', `L1 "${l1}" is shared by ${all.get(l1)} and ${id}. R2 applies to every bed in the build, not only to the thirteen exteriors.`);
+    else all.set(l1, id);
+  }
+}
+
 // ---- report -------------------------------------------------------------------------------------
 const uniqueL1 = byL1.size;
 const declaredNull = Object.entries(beds).flatMap(([id, b]) =>

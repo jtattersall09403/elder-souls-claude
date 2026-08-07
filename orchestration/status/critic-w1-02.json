@@ -4,7 +4,7 @@
   "judges": "W1-02",
   "state": "in-progress",
   "started_at": "2026-08-07",
-  "next_step": "RI-WLD08 weather/daynight numbers; ONLY-HERE M19; RI-WLD14 F1-F8; RI-WLD09; then the M68 blind pack (builder still capturing, 19/48 at 20:57)",
+  "next_step": "Blind M68: pack shipped INCOMPLETE (24 of 48 frames, builder pid 3888 died 20:59:22, no KEY.json/QUESTION.md). Pre-registration hashed 832e72db... Now looking at all 24 frames and writing ANSWERS.json before re-deriving the key.",
   "judging_items_assembled_from_front_matter": {
     "bind_by_current_taxonomy_path": [
       "RI-AUD03 [audio.ambience.region, world.region.identity]",
@@ -47,5 +47,19 @@
     "GAP: RI-WLD12 M67 (continuity C1-C5, weight 14) and M69 (weight 6) have NO instrument anywhere in tools/. 20 of 100 points of the SOLE judge of world.region.transition are unmeasured.",
     "GAP: M66 covers T1/T2 and the 40 m rule only. T3 (nothing gates the crossing - an AUTOMATIC FAIL in RI-WLD12), T4 (sightline >=100 m) and T5 (>=3 tier descents) are unmeasured. T1 is scored off the declared announcement.channels array in borders.json, not off the world, and the item's 'within 100 m of the crossing' clause is never checked.",
     "GAP: RI-WLD04 M18's weather axis is still listed in reports/region-axes.json dropped_axes with the reason 'weather is a per-frame capture parameter, not a property of the built world'. W1-02 made that false by shipping game/data/world/weather.json (13 per-region machines). The world got better and the instrument was not re-armed."
-  ]
+  ],
+  "blind_pack_state": {
+    "frames_expected": 48,
+    "frames_shipped": 24,
+    "builder_process": "pid 3888 died at 20:59:22 mid-capture; KEY.json and QUESTION.md are written after the loop and do not exist",
+    "prereg_sha256": "832e72dbcb01d64abbc7ef2f9b868553b50a87be110deb57cfc5ae494f24d1fc",
+    "leaks_found_before_judging": [
+      "KEY.json is written INSIDE the pack directory (reports/wld12-blind/KEY.json), not as a sibling. RI-MTH03 \u00a7A requires the reveal outside the pack. Same shape as the W1-22 B2 leak.",
+      "The answer key is RE-DERIVABLE from the tool source: the shuffle is Fisher-Yates on the constant seed 0xb11d and the shot list is a pure function of shipped borders.json + terrain.json. Any judge doing RI-MTH03 M6 (which requires reading the builder) can reconstruct which frame is which border. I did NOT re-derive it before answering.",
+      "QUESTION.md discloses the full scoring rule INCLUDING which cues fail (\"FAIL if the most common cue is fog or colour\"), which tells a judge that naming colour is the losing answer. RI-MTH03 \u00a7C's prompt is deliberately neutral about scoring.",
+      "Frames are 1280x720; RI-WLD12 M68 specifies 1920x1080.",
+      "No PNG text chunks \u2014 metadata leak closed (checked IHDR/IDAT chunk walk on 4 frames)."
+    ],
+    "question_is_correct": "QUESTION.md asks M68 verbatim (\"Is this one place, or two?\" / \"If two - what told you?\"), i.e. the QUALITY question the item specifies, not a provenance question. NOTE: the builder status file twice PARAPHRASES its own pack as \"whether a stranger can NAME the object at a border\", which is the wrong question; the tool is right and the handover prose is wrong."
+  }
 }

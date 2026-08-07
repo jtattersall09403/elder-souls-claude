@@ -848,20 +848,70 @@ export async function runJrn06(h, args, led, ctx = {}) {
     const saveBefore = await h.h('saveState');
     await h.h('damagePlayer', 100000, { stagger: false });
     await h.h('stepFrames', 1);
-    await h.h('stepFrames', 200);
+
+    // THE DEAD INTERVAL, stepped to rather than assumed.
+    //
+    // This block used to be `stepFrames(1); stepFrames(200)`. `SURFACE_FRAMES` is 150, so 51 of
+    // those 200 frames were the player back on their feet and PLAYING — and the round-3
+    // aggregation charged the world clock's movement over all 201 of them to the death. Time
+    // passing while you walk is not what RI-PRG04 §6 rule 4 forbids; time charged for the 150
+    // frames you could not act in is. The two are separated here by stepping to the exact frame
+    // the body stands up and taking a second baseline on the first frame it was down.
+    const saveAtDeath = await h.h('saveState');
+    let deadFrames = 0;
+    for (let i = 0; i < 400 && (await h.h('getDeathState')).surface_active; i++) {
+      await h.h('stepFrames', 1); deadFrames++;
+    }
+    const saveAtRespawn = await h.h('saveState');
+    await h.h('stepFrames', 50);
     const saveAfter = await h.h('saveState');
     const hashAfter = await h.h('getStateHash');
 
+    // THE CONTROL: the same number of frames, alive, from the same starting state. If the clock
+    // does not move here either, the instrument is measuring a stopped clock and its silence
+    // across the death means nothing.
+    await h.h('restoreState', saveBefore);
+    await h.h('stepFrames', 2);
+    const liveA = (await h.h('saveState')).clock.time_of_day;
+    await h.h('stepFrames', deadFrames);
+    const liveB = (await h.h('saveState')).clock.time_of_day;
+
+    const clockAcrossDeadInterval = +(saveAtRespawn.clock.time_of_day - saveAtDeath.clock.time_of_day).toFixed(6);
+    const clockAcrossEqualLiveFrames = +(liveB - liveA).toFixed(6);
+
     const all = diffPaths(saveBefore, saveAfter);
-    const nonVolatile = all.filter((d) => !isVolatile(d.path));
+    // `clock.time_of_day` is measured by its own instrument below, across the interval the rule
+    // is actually about, so it is excluded HERE and nowhere else — a path diff that spans 51
+    // frames of ordinary play cannot answer a question about the 150 frames of death inside it.
+    const nonVolatile = all.filter((d) => !isVolatile(d.path) && d.path !== 'clock.time_of_day');
     put('m_d4_across_death_diff', 'M-D4 across-death state diff, death-volatile excluded by name', {
       hash_before: hashBefore, hash_after: hashAfter,
       volatile_group: DEATH_VOLATILE,
       total_changed_paths: all.length,
       non_volatile_changed: nonVolatile.length,
       offending: nonVolatile.slice(0, 20),
+      clock_note: 'clock.time_of_day is excluded from THIS diff and charged in full to '
+        + 'm_prg04_clock_not_advanced_on_death, which measures it across the dead interval '
+        + 'instead of across the dead interval plus 51 frames of walking.',
       pass: nonVolatile.length === 0,
       hard_fail_HF2: nonVolatile.length > 0,
+    });
+
+    put('m_prg04_clock_not_advanced_on_death', 'RI-PRG04 §6 rule 4 — the clock does not advance on death', {
+      dead_frames: deadFrames,
+      clock_at_death: saveAtDeath.clock.time_of_day,
+      clock_at_respawn: saveAtRespawn.clock.time_of_day,
+      clock_across_dead_interval_h: clockAcrossDeadInterval,
+      control_equal_live_frames_h: clockAcrossEqualLiveFrames,
+      control_clock_moved: clockAcrossEqualLiveFrames > 0,
+      env_frames_held_by_death: (await h.hOpt('getEnvironment') || {}).clock_frames_held_by_death ?? null,
+      _why: 'RI-PRG04 §6 rule 4: "The clock does NOT advance on death. Only resting moves time. '
+        + 'Dying repeatedly at a boss must not burn a quest deadline." §7 check 4 repeats it as an '
+        + 'assertion. The world charged the whole 150-frame death surface to the clock, which the '
+        + 'aggregation caught and no standalone probe did. The control arm runs the SAME number of '
+        + 'frames ALIVE from the same save: if the clock does not move there, this instrument is '
+        + 'reading a stopped clock and proves nothing.',
+      pass: deadFrames > 100 && clockAcrossDeadInterval === 0 && clockAcrossEqualLiveFrames > 0,
     });
 
     // The explicit D10/D11 enumeration, so the reader does not have to trust an empty diff.
@@ -877,18 +927,25 @@ export async function runJrn06(h, args, led, ctx = {}) {
       travel_nodes: b.travel.nodes_visited,
       souls_spent: b.progression.souls_spent, level: b.character.level,
       afflictions: b.afflictions,
-      clock: b.clock.time_of_day,
     });
     const A = pick(saveBefore), B = pick(saveAfter);
+    // The clock is carried in this row as the DEAD-INTERVAL delta, not as the two endpoint
+    // readings of a window that also contains 51 frames of walking. See
+    // m_prg04_clock_not_advanced_on_death.
+    A.clock_across_the_dead_interval = 0;
+    B.clock_across_the_dead_interval = clockAcrossDeadInterval;
     const named = diffPaths(A, B);
     put('m_d10_d11_preserved', 'D10/D11 world mutation and progression preserved, field by field', {
       before: A, after: B,
       changed: named,
-      clock_advanced_by_death: B.clock !== A.clock,
+      clock_advanced_by_death: clockAcrossDeadInterval !== 0,
+      clock_moved_over_equal_live_frames: clockAcrossEqualLiveFrames,
       diseases_survived: JSON.stringify(A.afflictions) === JSON.stringify(B.afflictions),
       pass: named.length === 0,
       note: 'The clock must NOT move on death (RI-PRG04 §6 rule 4) and a disease must NOT be '
-        + 'cured by it (RI-JRN06 "How we lose" #11). Both are in this list.',
+        + 'cured by it (RI-JRN06 "How we lose" #11). Both are in this list. The clock entry is '
+        + 'the delta across the frames the player was DOWN; the control that proves the clock '
+        + 'runs at all over the same number of frames is in m_prg04_clock_not_advanced_on_death.',
     });
   }
 
@@ -1362,39 +1419,107 @@ async function surfaceAndVisibilityShots(h, ctx) {
   };
 
   // --- M-D14: the bloom at 12 m in daylight and at 6 m at night
+  //
+  // THE CAMERA THIS CHECK USED TO PLACE, and why it is not that camera any more.
+  //
+  // Rounds 1-3 shot from `[x, stain.pos[1] + 1.6, z]`, aimed at `stain.pos[1] + 0.3`. All three
+  // numbers are the STAIN's y — `field.heightAt`, the collision surface, sampled at the stain and
+  // then used twelve metres away at the observer's coordinates. The drawn ground is
+  // `renderer._drawnGroundY`, which that file's header says departs from the collision surface
+  // "by up to 6.80 m in the Stone Forest and 2.61 m in the Hive" before the 0.34 m ground skin is
+  // added. So on any bearing where the ground rises the eye was UNDER IT, and a frame of dirt
+  // scores exactly the control floor, because dirt is not amber. That is what "the bloom is
+  // invisible from seven of eight bearings" was measuring.
+  //
+  // `tools/harness/w1-13-r3-bloom-sight.mjs` put the two cameras side by side on one browser:
+  // the old one reproduces 2/8 and 3/8, and the eye at the OBSERVER's own ground aimed at the
+  // bloom's DRAWN origin reads 8/8 in daylight. The camera below is the second one — where a
+  // player standing there actually has their head, looking at where the thing actually is.
+  //
+  // A camera correction that turns a red green is exactly the move a critic should distrust, so
+  // this check now carries its OWN null control, driven by the world rather than by the probe:
+  // once the sixteen views are taken, the player walks onto the bloom and DRINKS it, and the
+  // eight dark bearings are re-shot with no bloom in the world at all. If those still report
+  // amber, the detector is reading the marsh and every row above it is void.
   const st = (await h.h('getDeathState')).bloodstain;
   const views = [];
+  const MARGIN = 40;      // px over the 180-away control. One pixel is not a sighting.
+  const shootBearing = async (cond, a, tag) => {
+    const th = (a / 8) * Math.PI * 2;
+    const x = st.pos[0] + Math.cos(th) * cond.d, z = st.pos[2] + Math.sin(th) * cond.d;
+    await h.h('teleport', x, z);
+    await h.h('stepFrames', 3);
+    await h.h('renderFrame');
+    const snap = await h.hOpt('snapshot');
+    const groundY = snap && snap.player && snap.player.pos ? snap.player.pos[1] : st.pos[1];
+    const drawn = await h.hOpt('getDrawnMarkers');
+    const target = (drawn && drawn.stain && drawn.stain.pos) ? drawn.stain.pos : [st.pos[0], st.pos[1], st.pos[2]];
+    const eye = [x, groundY + 1.6, z];
+    const look = [target[0], target[1] + 0.9, target[2]];
+    await h.h('camera', { pos: eye, look });
+    await h.h('renderFrame');
+    const bp = bloomPixels(await shoot(h));
+    // Control: the same pose with the camera turned away from the bloom.
+    await h.h('camera', { pos: eye, look: [eye[0] + (eye[0] - look[0]), look[1], eye[2] + (eye[2] - look[2])] });
+    await h.h('renderFrame');
+    const ctrl = bloomPixels(await shoot(h));
+    return {
+      condition: cond.id, tag, bearing_deg: Math.round((a / 8) * 360),
+      px: bp.count, control_px: ctrl.count, margin: bp.count - ctrl.count,
+      visible: bp.count > ctrl.count + MARGIN,
+      eye_y: +eye[1].toFixed(3), observer_ground_y: +groundY.toFixed(3),
+      stain_model_y: +st.pos[1].toFixed(3),
+      drawn_bloom_y: drawn && drawn.stain && drawn.stain.pos ? +drawn.stain.pos[1].toFixed(3) : null,
+      bloom_in_scene: !!(drawn && drawn.stain && drawn.stain.in_scene),
+    };
+  };
+  const nullViews = [];
+  let recovered = null;
   if (st) {
     for (const cond of [{ id: 'daylight_12m', d: 12, hour: 12 }, { id: 'dark_6m', d: 6, hour: 1 }]) {
       await h.h('setTimeOfDay', cond.hour);
-      for (let a = 0; a < 8; a++) {
-        const th = (a / 8) * Math.PI * 2;
-        const x = st.pos[0] + Math.cos(th) * cond.d, z = st.pos[2] + Math.sin(th) * cond.d;
-        await h.h('teleport', x, z);
-        await h.h('stepFrames', 2);
-        await h.h('camera', { pos: [x, st.pos[1] + 1.6, z], look: [st.pos[0], st.pos[1] + 0.3, st.pos[2]] });
-        await h.h('renderFrame');
-        const p = await shoot(h);
-        const bp = bloomPixels(p);
-        // Control: the same pose with the camera turned away from the bloom.
-        await h.h('camera', { pos: [x, st.pos[1] + 1.6, z], look: [x + (x - st.pos[0]), st.pos[1] + 0.3, z + (z - st.pos[2])] });
-        await h.h('renderFrame');
-        const ctrl = bloomPixels(await shoot(h));
-        views.push({ condition: cond.id, bearing_deg: Math.round((a / 8) * 360), px: bp.count, control_px: ctrl.count, visible: bp.count > 0 && bp.count > ctrl.count });
-      }
+      for (let a = 0; a < 8; a++) views.push(await shootBearing(cond, a, 'bloom'));
+    }
+    // THE NULL CONTROL, world-driven: drink the bloom and shoot the same eight dark bearings at
+    // a world that no longer has one.
+    await h.h('camera', null);
+    await h.h('teleport', st.pos[0], st.pos[2]);
+    await h.h('stepFrames', 30);
+    recovered = await h.hOpt('recoverBloodstain');
+    await h.h('stepFrames', 4);
+    const gone = !(await h.h('getDeathState')).bloodstain;
+    if (gone) {
+      await h.h('setTimeOfDay', 1);
+      for (let a = 0; a < 8; a++) nullViews.push(await shootBearing({ id: 'dark_6m', d: 6, hour: 1 }, a, 'no-bloom'));
     }
     await h.h('camera', null);
   }
   const day = views.filter((v) => v.condition === 'daylight_12m');
   const night = views.filter((v) => v.condition === 'dark_6m');
+  const nullSilent = nullViews.length === 8 && nullViews.every((v) => !v.visible);
   const visibility = {
     stain: st,
     views,
+    null_control_views: nullViews,
+    recovered,
     daylight_12m_visible: `${day.filter((v) => v.visible).length}/${day.length}`,
     dark_6m_visible: `${night.filter((v) => v.visible).length}/${night.length}`,
-    pass: day.length === 8 && night.length === 8 && day.every((v) => v.visible) && night.every((v) => v.visible),
-    control_note: 'Each viewpoint is shot twice — at the bloom and turned 180 deg away. A detector '
-      + 'that fires on the marsh rather than on the bloom shows up as a non-zero control.',
+    margin_px: MARGIN,
+    null_control_bloom_removed_from_the_world: nullViews.length === 8,
+    null_control_silent: nullSilent,
+    null_control_max_margin: nullViews.length ? Math.max(...nullViews.map((v) => v.margin)) : null,
+    pass: day.length === 8 && night.length === 8
+      && day.every((v) => v.visible) && night.every((v) => v.visible)
+      && nullSilent,
+    control_note: 'Two controls, not one. (1) Each viewpoint is shot twice — at the bloom and '
+      + 'turned 180 deg away — so a detector firing on the marsh shows as a non-zero control, and '
+      + 'a sighting now needs ' + MARGIN + ' px over it rather than the single pixel that used to '
+      + 'count. (2) The bloom is then DRUNK and the eight dark bearings re-shot: if the detector '
+      + 'still finds amber with no bloom in the world, every row above it is void and this check '
+      + 'fails whatever the first sixteen said.',
+    camera_note: 'The eye is at the OBSERVER\'s own ground + 1.6 m and aims at the bloom\'s DRAWN '
+      + 'origin (getDrawnMarkers, read off matrixWorld). Rounds 1-3 put it at the STAIN\'s '
+      + 'COLLISION y and aimed 0.3 m over that, which on a rising bearing is underground.',
   };
   await h.h('setRenderRate', 0);
   return { surface, visibility };

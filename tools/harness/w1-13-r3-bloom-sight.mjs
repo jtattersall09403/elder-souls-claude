@@ -59,7 +59,8 @@ const CONDITIONS = [
   { id: 'daylight_12m', d: 12, hour: 12 },
   { id: 'dark_6m', d: 6, hour: 1 },
 ];
-const ARMS = ['as-placed', 'player-eye', 'no-bloom'];
+const ALL_ARMS = ['as-placed', 'player-eye', 'no-bloom', 'pre-r3-render'];
+const ARMS = args.arms ? String(args.arms).split(',').map((s) => s.trim()).filter((a) => ALL_ARMS.includes(a)) : ALL_ARMS;
 
 async function shoot(h) {
   const dataUrl = await h.h('screenshot');
@@ -139,6 +140,23 @@ try {
           const g = M && M.stain;
           let removed = false;
           if (armIn === 'no-bloom' && g && g.parent) { M.group.remove(g); removed = true; }
+          // DELETE THE RENDERER FIX. Round 3 did two things to the bloom — lifted it onto the
+          // DRAWN ground (`_drawnGroundY`, which before it existed was simply `stain.pos[1]`) and
+          // gave it the 1.9 m hum. Both are removed here, on the same browser and the same
+          // camera, so "the camera was the whole story" is a claim this file can refute rather
+          // than one it assumes. `_drawnGroundY` is re-pointed at its own fallback, which is
+          // exactly what the old line passed; the blades are detached from the group.
+          window.__BLOOM_RESTORE = null;
+          if (armIn === 'pre-r3-render' && g) {
+            const origDrawn = r._drawnGroundY;
+            r._drawnGroundY = function (x, z, fallbackY) { return fallbackY; };
+            const blades = g.children.filter((c) => c.geometry && c.geometry.type === 'PlaneGeometry');
+            for (const b of blades) g.remove(b);
+            window.__BLOOM_RESTORE = () => {
+              r._drawnGroundY = origDrawn;
+              for (const b of blades) g.add(b);
+            };
+          }
           const drawn = (g && g.parent) ? (() => { g.updateWorldMatrix(true, false); const e = g.matrixWorld.elements; return [e[12], e[13], e[14]]; })() : null;
           const p = eng.sim.player.pos;
           return {
@@ -174,14 +192,14 @@ try {
         await h.h('renderFrame');
         const ctrl = bloomPixels(await shoot(h));
 
-        // Put the bloom back before the next shot, so removal is scoped to the row that asked.
-        if (geom.removed_for_this_shot) {
-          await h.page.evaluate(() => {
-            const eng = window.__ENGINE || (window.__HARNESS && window.__HARNESS._engine);
-            const M = eng.renderer._marks;
-            if (M && M.stain && !M.stain.parent) M.group.add(M.stain);
-          });
-        }
+        // Put the world back before the next shot, so every perturbation is scoped to the row
+        // that asked for it and no row inherits the previous row's damage.
+        await h.page.evaluate(() => {
+          const eng = window.__ENGINE || (window.__HARNESS && window.__HARNESS._engine);
+          const M = eng.renderer._marks;
+          if (M && M.stain && !M.stain.parent) M.group.add(M.stain);
+          if (typeof window.__BLOOM_RESTORE === 'function') { window.__BLOOM_RESTORE(); window.__BLOOM_RESTORE = null; }
+        });
 
         out.rows.push({
           arm,
@@ -216,6 +234,15 @@ try {
   };
   out.summary = {};
   for (const arm of ARMS) for (const c of CONDITIONS) out.summary[`${arm}/${c.id}`] = tally(arm, c.id);
+  const vis = (arm, c) => tally(arm, c).visible;
+  if (ARMS.includes('pre-r3-render') && ARMS.includes('player-eye')) {
+    out.renderer_fix_earned_its_place = {
+      player_eye: { daylight: vis('player-eye', 'daylight_12m'), dark: vis('player-eye', 'dark_6m') },
+      pre_r3_render: { daylight: vis('pre-r3-render', 'daylight_12m'), dark: vis('pre-r3-render', 'dark_6m') },
+      inert: vis('pre-r3-render', 'daylight_12m') === vis('player-eye', 'daylight_12m')
+        && vis('pre-r3-render', 'dark_6m') === vis('player-eye', 'dark_6m'),
+    };
+  }
 
   const buried = out.rows.filter((r) => r.arm === 'as-placed' && r.eye_above_observer_ground_m < 1.0);
   const nullArm = out.rows.filter((r) => r.arm === 'no-bloom');

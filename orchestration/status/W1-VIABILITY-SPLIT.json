@@ -2,16 +2,31 @@
   "task_id": "W1-VIABILITY-SPLIT",
   "state": "in_progress",
   "started": "2026-08-07",
-  "summary": "Split build-viability into two instruments: a screen (lower bound on impossibility, may never say viable) and a walk (viability by playing real signatures from a cold start, granted nothing).",
-  "next_step": "read RULES/INDEX/NEXT-DISPATCH R/TOOL-COVERAGE-R4/r6 objection",
+  "summary": "Split per NEXT-DISPATCH \u00a7R. SCREEN: build-viability.mjs renamed to tools/analysis/impossibility-screen.mjs, verdict vocabulary changed to impossible/abstained/not_screened_out, and a code fence (vocabulary + shape + exit) that makes a positive claim unemittable. WALK: tools/quests/viability-walk.mjs, stratified sample played cold in the engine.",
+  "next_step": "run the screen end-to-end so the fence scrubs the residual claim strings; then build the walk",
   "files_touched": [
-    "orchestration/status/W1-VIABILITY-SPLIT.json"
+    "orchestration/status/W1-VIABILITY-SPLIT.json",
+    "tools/analysis/impossibility-screen.mjs"
   ],
   "files_claimed": [
-    "tools/quests/",
-    "corpus/80-methods/",
-    "reports/blog-feed.jsonl"
+    "tools/analysis/impossibility-screen.mjs",
+    "tools/quests/viability-walk.mjs",
+    "corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md",
+    "corpus/22-character/RI-CHR01-character-creation.md",
+    "corpus/22-character/RI-CHR03-birthsigns.md",
+    "corpus/95-experience/RI-CMP03-build-identity-payoff.md",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
   ],
-  "redundant_with": ["tool-build-viability-r6"],
-  "notes": "Successor to five rejected rebuilds. Not round 6 of the same rebuild."
+  "redundant_with": [
+    "tool-build-viability-r6"
+  ],
+  "notes": "Successor to five rejected rebuilds. Not round 6 of the same rebuild.",
+  "start_commit": "a5a637d",
+  "findings": [
+    "BASELINE at a5a637d: node tools/corpus-index.mjs C8 = 26 warn / 0 error; check-quests PASS.",
+    "Box loaded at start: pgrep -c headless_shell = 42, loadavg 23.19 -> Node-side work first.",
+    "FENCE FALSIFIER FOUND A REAL HOLE IN THE FENCE: case F3 ({signatures_playable: 486}) walked straight through, because `_` is a word character so \\bplayable\\b never matches inside a snake_case key -- and every key in the artifact is snake_case. Fixed by normalising `_` before the scan. Rule 4 paid for itself on its first run.",
+    "The renamed screen is 4 rules: vocabulary (claim words, on artifact + stdout + stderr), shape (row verdict is a 3-value string, never a boolean; forbidden keys incl. `target`), exit (0 only when nothing condemned and nothing abstained), and one enumerable exemption for the pointer literal `tools/quests/viability-walk.mjs`."
+  ]
 }

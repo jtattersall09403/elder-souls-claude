@@ -1,0 +1,529 @@
+{
+ "schema_version": 1,
+ "piece_id": "w1-souls-r2",
+ "piece_title": "W1-SOULS round 2 — the soul economy: the source, the derivation, the values and the instrument",
+ "subsystem_paths": [
+  "progression.souls.economy",
+  "progression.level.curve",
+  "coherence.progression.pacing",
+  "world.region.gating",
+  "combat.encounter.placement",
+  "world.hazard.environment"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "critic-w1-souls-r2",
+  "role": "critic.progression",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-07T20:40:00Z",
+  "finished_at": "2026-08-07T22:05:00Z",
+  "conflict_of_interest": false,
+  "wrote_what_it_judges": false,
+  "saw_builder_notes_before_measuring": true
+ },
+ "build": {
+  "commit_sha": "a5a637d",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "measured_on": "the working tree across 88ee56d..a5a637d. `git diff` on that range touches no soul source, no enemy statblock, no RI-PRG06 file, no constants.json and no world data — only a neighbour's audio work — so every number is a claim about a5a637d.",
+  "harness_commands": [
+   {
+    "command": "node tools/harness/boot-check.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "PASS — the engine constructed and the harness answers. Run before and after."
+   },
+   {
+    "command": "node tools/check-data.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "clean"
+   },
+   {
+    "command": "node tools/check-content.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "clean"
+   },
+   {
+    "command": "node tools/check-quests.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "clean"
+   },
+   {
+    "command": "node tools/progression/derive-soul-values.mjs --check",
+    "exit_code": 0,
+    "stdout_artifact": "K = 0.102646; 7 fightable statblocks, 15 props at zero; four roster gaps reported; clean"
+   },
+   {
+    "command": "node tools/progression/derive-soul-values.mjs --check --strict",
+    "exit_code": 1,
+    "stdout_artifact": "four roster gaps fatal — deliberate, not wired into any project gate"
+   },
+   {
+    "command": "node tools/progression/derive-soul-values.mjs --census",
+    "exit_code": 1,
+    "stdout_artifact": "tier1 15 bodies/570 souls/L2; whole placed world 269/21,664/L19; FAIL-CLOSED at 269 of the band floor 891"
+   },
+   {
+    "command": "node tools/progression/souls-consumption.mjs --out reports/critic-r2-souls-consumption-INTACT.json  (theirs, re-run by me)",
+    "exit_code": 0,
+    "stdout_artifact": "15/15 arms, 0 unfalsifiable. Arm K: 42 latched light swings, no kill verb, frame 1421, souls 0->64, 1 event, self-break control never kills. Arm L: with the CombatSystem body hp 40->0, souls +64; without it the entity's hp is 0 then 40 four frames later and souls +0. Arm M: +192, then +0/+0 across two despawn/respawn cycles with no rest, then +192 after one rest."
+   },
+   {
+    "command": "node tools/progression/critic-souls-r1.mjs --out reports/critic-r2-souls-r1-rerun.json  (the ROUND-1 critic's instrument, re-run)",
+    "exit_code": 1,
+    "stdout_artifact": "5/8. K5 now GREEN: +384, +0, +0, same eids reused, 0 rests — a falsifier written before the fix confirming the fix. K3/K6/K7 red against code shapes round 2 replaced."
+   },
+   {
+    "command": "node tools/progression/critic-souls-r2.mjs --out reports/critic-souls-r2.json --shot docs/shots/2026-08-07-w1-souls-critic-r2-five-live-enemies-worth-nothing.png  (mine)",
+    "exit_code": 1,
+    "stdout_artifact": "3/11. C1a/C1c/C6 pass; C1b, C2a, C2b, C3a, C3b, C7, C4, C5 fail."
+   }
+  ],
+  "depends_on": [
+   "game/src/sim/souls.js",
+   "game/src/sim/hazards.js",
+   "game/src/sim/death.js",
+   "game/src/engine.js",
+   "game/src/world/population.js",
+   "game/data/combat/enemies/*.json",
+   "game/data/progression/levels.json",
+   "game/data/world/population-posts.json",
+   "game/data/world/encounters.json",
+   "game/data/world/regions.json",
+   "game/data/world/hearths.json",
+   "corpus/00-doctrine/constants.json",
+   "corpus/20-progression/RI-PRG06-souls-yield-and-pace.md",
+   "corpus/20-progression/RI-PRG06-souls-yield.json",
+   "tools/progression/derive-soul-values.mjs",
+   "tools/progression/souls-consumption.mjs"
+  ]
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "note": "This is a number piece. The single screenshot is evidence that a screen exists saying 'souls held 0 / to the next 418' after five live enemies died; it is not evidence of any quantity. Every quantity in this verdict is a frame count at fixed 60 Hz, a soul count, a level, a band percentage, a boolean, or arithmetic over files."
+ },
+ "reference_items": [
+  {
+   "id": "RI-PRG06",
+   "path": "corpus/20-progression/RI-PRG06-souls-yield-and-pace.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "eight axes, each 0/6/10, aggregated min-over-axes (## Scoring). Failure threshold: any axis below 6.",
+   "native_score": 6,
+   "native_max": 10,
+   "native_verdict": "Pass at the floor",
+   "score_0_10": 6,
+   "measured": "partial",
+   "axes": [
+    {
+     "axis": "Region-1 assertion",
+     "score": null,
+     "measured": "projection only",
+     "observed": "The placed danger-tier-1 roster is 15 bodies / 570 souls / L2 and --census fails closed. Projected onto §7's 199-body region 1 at the PLACED mix's mean kill of 38.00 it is 7,562 souls -> LEVEL 10, which is the axis's zero row ('level outside 11-17'). At the anchor's own claimed mean of 63.77 it is 12,691 -> L14, the target exactly. Not scored, because 15 of ~199 bodies are placed and the piece did not place them; recorded because the gap is the anchor's, not the population's."
+    },
+    {
+     "axis": "All-region levels",
+     "score": null,
+     "measured": "no",
+     "observed": "269 of 891 hostiles placed; --census fails closed with a stated reason. Correct behaviour."
+    },
+    {
+     "axis": "Typical sim (Monte Carlo)",
+     "score": null,
+     "measured": "no",
+     "observed": "Never run in this tree; no instrument exists. Not charged — it needs a populated world."
+    },
+    {
+     "axis": "Pace",
+     "score": null,
+     "measured": "no",
+     "observed": "--pace is a tautology and the tool says so in its own header; the measured 1,421-frame TTK is filed as RI-PRG06 §8 rather than absorbed. Honest, and correctly not scored."
+    },
+    {
+     "axis": "S9 — no level scaling",
+     "score": 10,
+     "measured": "yes",
+     "observed": "Arm E: the same kill pays 64 at level 1 and 64 at level 90. Nothing in sim/souls.js reads level, playtime or clear count. awardFor() takes a statblock and the world clock."
+    },
+    {
+     "axis": "Band separation (method 6)",
+     "score": null,
+     "measured": "yes, and it is the ITEM that fails",
+     "observed": "Adjacent published trash bands overlap by 32.3 / 50.0 / 53.3 / 76.1 / 70.0 percent of the lower band's width against method 6's 25% ceiling. Scale-invariant. A corpus defect, filed as AQ-1, not charged to the piece."
+    },
+    {
+     "axis": "Quest souls",
+     "score": 10,
+     "measured": "yes",
+     "observed": "Arm J: zero of ten kills moved gold; ten souls_awarded events all declaring gold_awarded 0. souls.js has no price table and no function that takes souls and returns a thing."
+    },
+    {
+     "axis": "L120 guard",
+     "score": 7,
+     "measured": "yes, on the projection",
+     "observed": "FIXED and closed to the digit: round 1's projected 2,400,817 x the §7 scale is 1,124,285 = RI-PRG06 §1's contract exactly -> L93, souls_for_L120/world = 2.128 against the target 2.13. Held below 10 because --census PRINTS method 10 in both branches and asserts nothing, so the tripwire that would notice the number moving back was never armed."
+    }
+   ],
+   "evidence": [
+    "reports/critic-souls-r2.json",
+    "reports/critic-souls-r2-offline.json",
+    "reports/critic-r2-souls-consumption-INTACT.json",
+    "reports/critic-r2-souls-r1-rerun.json"
+   ],
+   "why_not_ten": "Two live defects with one root (GAP-W1-SOULS-02), one un-derived step in the anchor worth 1.52x with no assertion that would catch it, a census scale keyed to a planning number whose fail-closed guard opens at a 28% error, and the L120 guard printed rather than asserted.",
+   "path_to_ten": "(1) Close GAP-W1-SOULS-02: `if (this.sim.souls) this.sim.souls.reset();` in applyNamedState() beside the two identical lines already there, and re-key `_alive` on a spawn generation as well as the rest epoch. (2) Arm the L120 guard in --census instead of printing it. (3) Assert the census scale's own premise before asserting anything derived from it. (4) Re-derive the anchor against §3's R1 TRASH mean, or rename it and add a mean assertion at +/-15% beside the range assertion. (5) Guard the other 23 corpus band/total rows in tools/check-*.mjs. (6) Retire or repair critic-souls-r1.mjs K3/K6/K7. (7) File that danger tier 1 has no boss — 36% of §1's region-1 souls. (8) Give method 6 an instrument.",
+   "evidence_note": "arms C1/C2/C3/C7 (offline), C4/C5/C6 (live); the builder's suite at 15/15 with 0 unfalsifiable; the round-1 critic's K5 now green at +384/+0/+0."
+  },
+  {
+   "id": "RI-PRG01",
+   "path": "corpus/20-progression/RI-PRG01-soul-cost-curve.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "shared curve; judged here only as the sink the soul values run through",
+   "score_0_10": 6,
+   "measured": "partial",
+   "evidence": [
+    "reports/critic-souls-r2.json"
+   ],
+   "why_not_ten": "Not this piece's item and not measured against RI-PRG01's own methods. Recorded because RI-PRG06 method 11 requires the three items to move together and the curve was not touched by this round.",
+   "native_score": 6,
+   "native_max": 10,
+   "native_verdict": "Pass — not this piece's item",
+   "evidence_note": "arm C2/C3 read game/data/progression/levels.json through the tool's own levelFor(); cum(120) = 2,391,999 unchanged, and every level figure in this verdict runs through it.",
+   "path_to_ten": "Belongs to RI-PRG01's own piece, not to W1-SOULS."
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "reports/critic-souls-r2.json",
+   "kind": "report",
+   "produced_by": "node tools/progression/critic-souls-r2.mjs (mine)",
+   "source": "mine",
+   "note": "Eleven arms. C6 is the self-break: six bodies spawned, stepped 60 frames, nothing killed, souls +0."
+  },
+  {
+   "path": "reports/critic-souls-r2-offline.json",
+   "kind": "report",
+   "produced_by": "node tools/progression/critic-souls-r2.mjs --offline (mine)",
+   "source": "mine",
+   "note": "The four file-only arms, taken at loadavg 1.01 with no browsers running."
+  },
+  {
+   "path": "reports/critic-r2-souls-consumption-INTACT.json",
+   "kind": "report",
+   "produced_by": "node tools/progression/souls-consumption.mjs (theirs, re-run by me)",
+   "source": "theirs",
+   "note": "TRUSTED, and I read the predicates rather than the summary. B, D and I are genuinely de-vacuumed with exactly the clauses the round-1 verdict named. The suite carries a real unfalsifiability gate."
+  },
+  {
+   "path": "reports/critic-r2-souls-r1-rerun.json",
+   "kind": "report",
+   "produced_by": "node tools/progression/critic-souls-r1.mjs (the round-1 critic's, re-run by me)",
+   "source": "third-party",
+   "note": "K5 is the strongest single piece of evidence for the respawn gate: a falsifier written before the fix, now green. K3/K6/K7 are stale and report three false reds."
+  },
+  {
+   "path": "docs/shots/2026-08-07-w1-souls-critic-r2-five-live-enemies-worth-nothing.png",
+   "kind": "screenshot",
+   "produced_by": "node tools/progression/critic-souls-r2.mjs --shot",
+   "source": "mine",
+   "note": "The sapwell screen after killing five live, full-HP hostiles on the second visit to a partly-cleared post: 'souls held 0 / to the next 418 / Not enough souls yet. Come back.' Taken in a browser this run already had open, rendering off for the stepping run and on for these frames (S34(a)).",
+   "camera_pose": "the default player camera at the arena_flat spawn, unmoved; the sapwell level-up surface is drawn over it via openMenu('levelup') after setAtHearth(true)",
+   "resolution": "1280x720"
+  }
+ ],
+ "source_reads": [
+  {
+   "path": "game/src/sim/souls.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read after C4 measured the boundary. The eid-keyed `_alive` and the `if (!dead)` re-arm branch are the mechanism for both faces of the biggest gap."
+  },
+  {
+   "path": "game/src/engine.js applyNamedState() / loadState()",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "The blob path clears the observer at line 5926 with eight lines of comment; the named path clears stealth and population and not souls."
+  },
+  {
+   "path": "game/src/world/population.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Steps (2), (3) and (4): CLEARED only when every body is down; non-cleared posts released as DORMANT; DORMANT re-materialised with { tag: p.id }. This is what makes HF-2 reachable in ordinary play."
+  },
+  {
+   "path": "tools/progression/derive-soul-values.mjs",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read to find what the tool asserts as opposed to what it prints. --check is a range test; the L120 guard and method 6 are console.log only; PUBLISHED_R1_TRASH guards one of 24 corpus rows."
+  },
+  {
+   "path": "tools/progression/souls-consumption.mjs verdict block",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "Read the B/D/I predicates directly rather than trusting '15/15'."
+  },
+  {
+   "path": "game/src/sim/player.js",
+   "purpose": "diagnose-after-demonstrating",
+   "note": "stepPlayer is exported and imported by nothing. The rewritten death-path list is correct to call it dead."
+  }
+ ],
+ "blind_comparisons": [],
+ "arbitration": {
+  "ar1": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "A1",
+     "result": "pass",
+     "observed": "Arm E: identical award at level 1 and level 90. No dice, no to-hit, no level read anywhere in souls.js."
+    },
+    {
+     "id": "A2",
+     "result": "pass",
+     "observed": "The night multiplier reads sim.env.timeOfDay, a world property, never the player."
+    }
+   ]
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    {
+     "id": "B1",
+     "result": "pass",
+     "observed": "Arm J: zero of ten kills moved gold; every souls_awarded event declares gold_awarded 0. Souls buy a level and nothing else (S15)."
+    },
+    {
+     "id": "B2",
+     "result": "pass",
+     "observed": "The known fenceSell two-purse defect is untouched and not made worse."
+    }
+   ]
+  },
+  "ar3": {
+   "status": "not-sterile",
+   "seam_sterile": false,
+   "observed": "The piece IS seam S2 — a Souls currency earned in a Souls fight buying a point on a ten-attribute Morrowind sheet whose derived pool the Souls body reads. Round 2 adds a second real crossing: RI-PRG04 §2's hearth rest now reaches RI-PRG06 §4's respawn row through DeathSystem.ordinaryRespawnEpoch.",
+   "justification": "Correct and unchanged from round 1. The night multiplier makes the Morrowind world clock change a Souls reward, which is the crossing AR-3 asks for rather than one it forbids."
+  },
+  "consumption": {
+   "status": "pass",
+   "models": [
+    {
+     "model": "the per-archetype souls field derived by derive-soul-values.mjs",
+     "consumer": "sim/souls.js awardFor() -> sim.progression.soulsHeld -> engine._spendSouls() -> attributes.vigour -> derived pools -> combat body hp_max 196 -> 222",
+     "demonstration": "Arm C sets the field to 0 and to 999 and the award follows both ways; arm G3 lands a 210-point blow that kills at the old ceiling and leaves 12 hp at the new; arm B ablates the module and the counter goes dead while A is green; the builder's delete-the-fix leg takes the suite to 3/15.",
+     "perturbed": true
+    }
+   ],
+   "notes": "RI-MTH07 satisfied. This was already true in round 1 and round 2 did not weaken it."
+  }
+ },
+ "score": {
+  "overall_0_10": 6,
+  "pass_threshold": 6,
+  "aggregation": "min",
+  "band_label": "Pass at the floor (6/10) — PROVISIONAL, because four of RI-PRG06's eight axes need a populated world",
+  "confidence": "high",
+  "confidence_note": "The offline arms are arithmetic over files and are unaffected by load. The two live findings each carry two controls in the same run and reproduce the builder's own numbers where they overlap (frame 1421, +384 for six dres-raid-party bodies).",
+  "weights": {
+   "RI-PRG06": 1
+  }
+ },
+ "status": "PASS",
+ "status_reasons": [
+  "STATUS IS PASS AT THE FLOOR AND THE VALIDATOR WILL WARN THAT IT SHOULD BE READ AS PROVISIONAL — that warning is correct and intended. The piece passes on every axis that can be measured today. Four of RI-PRG06's eight axes (region-1, all-region levels, the Monte Carlo sim, the pace curve) require a world holding at least 891 of its 1,230 hostiles and 269 are placed; the piece's own --census fails closed on exactly that and is right to. Re-open those four when W1-POPULATION and the enemy-roster piece land bodies past the band floor. Nothing in the two hard fails waits on that.",
+  "All eight items of the round-1 path to ten were delivered, and six of them I verified independently rather than accepting the status file.",
+  "The central charge is answered: arm K kills a live inf_trash with 42 latched `light` swings and no harness kill verb, dying on frame 1421, with a self-break control that never kills.",
+  "The re-anchor's band step is genuinely DERIVED, and it survives a harder test than the one round 2 ran: all 18 of §2's band rows recomputed from §3's MARKDOWN roster match, and all six region totals reconcile.",
+  "HF-1 is closed to the digit: round 1's projected 2,400,817 x the §7 scale is 1,124,285, RI-PRG06 §1's contract exactly, L93, L120 ratio 2.128 against target 2.13.",
+  "HELD AT THE FLOOR — hard fail 1: `loadState('<named>')` does not clear the souls observer, so the class round 2 named in its own status file ('ANY probe in this tree that recycles an encounter is doing the same thing') is unfixed at the boundary. Measured: +384 then +0 across the boundary, same eids, 12 refused re-arms, zero rests. It has already cost tools/progression/critic-souls-r1.mjs three false reds.",
+  "HELD AT THE FLOOR — hard fail 2: a partly-cleared population post is released as DORMANT and re-materialised under its stable tag, so five live, full-HP, hostile bodies are worth 0 souls while the sixth beside them pays 64. RI-PRG06 §4's row is 'Respawned enemy x1.00'.",
+  "The anchor's remaining un-derived step is worth 1.52x: 12,665/93 is the mean over ALL 93 R1 bodies (36% of the souls from 3% of the bodies) pinned to a TRASH statblock at premium 1.0, against §3's own R1 trash mean of 89.61.",
+  "And it lands on the item's zero row: the placed tier-1 mean kill is 38.00, which at §7's 199-body region 1 is 7,562 souls -> L10, where RI-PRG06 method 1 scores 0 at 'outside 11-17'. Nothing asserts it — --check is a range test and --census is fail-closed.",
+  "The census scale is keyed to a planning constant and nothing binds it to what is placed; the fail-closed guard opens at 891 bodies, where the scale error is 28%.",
+  "The L120 guard — the axis round 1 returned the piece on — is printed by --census in both branches and asserted in neither.",
+  "RI-PRG06 method 6 has never had an instrument, and the item's own published bands overlap by up to 76% against its 25% ceiling. Filed as AQ-1 and NOT charged to the piece."
+ ],
+ "hard_fails": [
+  {
+   "id": "HF-1",
+   "title": "the class was named and not fixed: loadState('<named>') does not clear the souls observer",
+   "subsystem_path": "progression.souls.economy",
+   "severity": "major",
+   "measured": true,
+   "evidence": "reports/critic-souls-r2.json arms.C4 — pass1 +384, pass2 +0, same_eids true, refused_rearms 12, hearth_rests 0, after_observer_reset +384, with_unique_tag +384",
+   "why_it_matters": "applyNamedState() is the scenario boundary every probe in this tree uses. It empties sim.entities and re-seeds stealth and population immediately afterwards for exactly this reason; sim.souls is not in that list, so the epoch gate silently zeroes payment for any probe that recycles eids. Round 2 discovered this face of the bug itself (15/15 -> 8/15) and fixed its own instrument with unique tags. tools/progression/critic-souls-r1.mjs already reports three false reds.",
+   "evidence_artifact": "reports/critic-souls-r2.json"
+  },
+  {
+   "id": "HF-2",
+   "title": "a partly-cleared post comes back as live enemies worth zero souls",
+   "subsystem_path": "progression.souls.economy",
+   "severity": "major",
+   "measured": true,
+   "evidence": "reports/critic-souls-r2.json arms.C5 — killed 5 of 6 (+320); released; same tag -> same eids; 6 alive on return, 5 recycled at full hp; killing those 5 paid +0 while the never-killed sixth paid +64",
+   "why_it_matters": "world/population.js marks a post CLEARED only when every body is down, releases a non-cleared post as DORMANT, and re-materialises it with { tag: p.id } — a stable tag. So the ordinary act of partly clearing a road post, walking 260 m away and coming back produces live, dangerous, killable bodies that pay nothing until the player happens to rest. RI-PRG06 §4's modifier row is 'Respawned enemy x1.00'. PopulationSystem's own CLEARED state already prevents the farm the gate was written for, so the gate is belt-and-braces that mis-fires.",
+   "evidence_artifact": "reports/critic-souls-r2.json"
+  }
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-souls-alive-keyed-on-eid",
+  "subsystem_path": "progression.souls.economy",
+  "severity": "major",
+  "what": "SoulsSystem._alive is keyed on the eid and nothing in the build is authorised to clear it. One bug, two faces: every probe in this tree (HF-1) and every player (HF-2). Both were produced by the round-2 epoch gate, which is otherwise a correct and well-evidenced fix.",
+  "why_it_matters": "The probe face silently under-reports payment for any instrument that recycles an encounter, which round 2 measured as taking its own suite from 15/15 to 8/15 and which has already cost a second tool three false failures — this project rates a probe that quietly reports the wrong number below no probe at all. The player face makes real, dangerous combat unpaid in ordinary play and violates RI-PRG06 §4's own modifier row.",
+  "not_a_hard_fail_because": "n/a — it is recorded as two hard fails above. It is not an automatic fail under RI-PRG06's Scoring table, which reserves those for S9 level-scaling and quest souls, both of which are clean.",
+  "remedy": {
+   "action": "(1) In engine.js applyNamedState(), beside the existing stealth and population re-seeds: `if (this.sim.souls) this.sim.souls.reset();`. (2) In sim/souls.js, stop keying the gate on the eid alone — have spawnEncounter stamp a spawn generation on the entity and record `{ alive, paidEpoch, gen }`, re-arming when the generation moves OR the rest epoch moves. That keeps round 1's HF-3 farm shut while restoring §4's x1.00 to a body that was genuinely built again.",
+   "targets": [
+    "game/src/engine.js",
+    "game/src/sim/souls.js",
+    "game/src/engine.js spawnEncounter()",
+    "tools/progression/souls-consumption.mjs"
+   ],
+   "acceptance": "Two arms in souls-consumption.mjs, neither able to pass while the other fails under a delete-the-fix. (a) An UNTAGGED fight, killed, crossed over loadState('<named>'), killed again, must pay both times. (b) A post of n bodies with n-1 killed, despawned wholesale and re-spawned under the SAME tag, must pay for all n-1 recycled bodies on the second visit AND must still pay nothing for a body that was never despawned and never rested past. tools/progression/critic-souls-r2.mjs arms C4 and C5 are those two arms."
+  },
+  "evidence": [
+   "reports/critic-souls-r2.json",
+   "docs/shots/2026-08-07-w1-souls-critic-r2-five-live-enemies-worth-nothing.png"
+  ],
+  "evidence_note": "arms.C4 (+384 then +0 across loadState, 12 refused re-arms, 0 rests) and arms.C5 (5 live full-HP hostiles paid +0 while the never-killed sixth paid +64)."
+ },
+ "secondary_observations": [
+  {
+   "id": "F-3",
+   "what": "The band rescale is DERIVED — verified from the markdown, not the JSON, across all 18 band rows and all 6 region totals — but the shipped tool guards exactly 1 of those 24 rows with a hard-coded [35,190]. Content integrity belongs in tools/check-*.mjs.",
+   "evidence_note": "reports/critic-souls-r2.json arms.C1"
+  },
+  {
+   "id": "F-4",
+   "what": "The anchor's un-derived step: 12,665/93 = 136.18 is the all-tier R1 mean pinned to a trash statblock; §3's R1 trash mean is 89.61; ratio 1.520. The placed tier-1 roster's mean kill is 38.00, which projects region 1 to LEVEL 10 against method 1's required 13-15 and its zero row of 'outside 11-17'. The trash itself is well calibrated (38.00 vs §3's scaled trash mean of 41.96); region 1's shortfall is that danger tier 1 has NO boss and NO miniboss, and both shipped elites are fog gates at tiers 2 and 5 — 36% of §1's region-1 souls.",
+   "evidence_note": "reports/critic-souls-r2.json arms.C3"
+  },
+  {
+   "id": "F-5",
+   "what": "CENSUS_SCALE = 576/world.enemy_census where enemy_census is RI-WLD07's PLAN, not a count. Nothing binds it to what is placed, so the derivation is invariant to the population builder landing. --census fails closed below 891 bodies and asserts at or above it; at 891 the correct §7 scale is 0.6465 against the shipped 0.4683 — a 28% error — so the guard stops protecting exactly when it starts being wrong.",
+   "evidence_note": "reports/critic-souls-r2.json arms.C2"
+  },
+  {
+   "id": "F-6",
+   "what": "--census PRINTS the L120 guard in both branches and asserts nothing. RI-PRG06 method 10 wants souls_for_L120/world_total in [1.8, 2.6]; the placed world gives 110.4 and the projection gives 2.128. Neither is checked. This is the axis round 1 returned the piece on.",
+   "evidence_note": "tools/progression/derive-soul-values.mjs census() — a console.log with no comparison"
+  },
+  {
+   "id": "F-7",
+   "what": "tools/progression/critic-souls-r1.mjs is stale and reports three false reds: K3 tests the pre-fix mirror write, K6 and K7 replay round-1 predicates that round 2 replaced. Its K5, by contrast, is now the strongest single piece of evidence for the respawn gate — a falsifier written before the fix, now green at +384/+0/+0.",
+   "evidence_note": "reports/critic-r2-souls-r1-rerun.json"
+  },
+  {
+   "id": "F-8",
+   "what": "The scan is LAZILY SEEDED: a body already dead the first time the scan looks at it is recorded as settled and never paid. Correct for a loaded save, and a trap for an instrument — it cost my own first run every one of its live arms. Worth a line in the module header beside the load reasoning.",
+   "evidence_note": "reports/critic-souls-r2.json (the run before stepFrames(2) was added after every spawn)"
+  },
+  {
+   "id": "OK-1",
+   "what": "Everything else the round-1 verdict asked for is done and verified: the hazard fix carries its own view-write control (corpse resurrects without the CombatSystem arg), B/D/I carry exactly the clauses named, arm K is a real fight with a self-break, §8 files the TTK tension without absorbing it, and stepPlayer is confirmed dead so the rewritten death-path list is right.",
+   "evidence_note": "reports/critic-r2-souls-consumption-INTACT.json; game/src/sim/player.js"
+  }
+ ],
+ "path_to_ten": [
+  "1 Close GAP-W1-SOULS-02 — the one line in applyNamedState() and a spawn generation on _alive. Non-negotiable: one face is a live payment defect, the other a measurement-integrity hazard for the whole project.",
+  "2 Arm the L120 guard in --census instead of printing it. It is the axis round 1 returned the piece on and the tripwire was never set.",
+  "3 Assert the census scale's own premise before asserting anything derived from it — the guard currently opens at a 28% error.",
+  "4 Re-derive the anchor against §3's R1 TRASH mean, or rename it and say why it carries 1.52x; then add a MEAN assertion at +/-15% beside the per-value range assertion, which is the check that would have caught this in one run.",
+  "5 Guard the other 23 corpus band and region-total rows in tools/check-*.mjs, where content integrity belongs.",
+  "6 Retire or repair tools/progression/critic-souls-r1.mjs K3/K6/K7; keep K5, which is now evidence.",
+  "7 File that danger tier 1 has no boss and no miniboss — 36% of RI-PRG06 §1's region-1 souls — in the same place --check prints its four roster gaps.",
+  "8 Give RI-PRG06 method 6 an instrument (critic-souls-r2.mjs arm C7 is eight lines) and raise AQ-1."
+ ],
+ "arbitration_questions": [
+  {
+   "id": "AQ-1",
+   "against": "RI-PRG06",
+   "question": "§2 states its bands are 'deliberately non-overlapping at the edges so that am I in the right region is answerable from a single kill', and method 6 caps adjacent trash-band overlap at 25% of the lower band's width. The published bands overlap by 32.3%, 50.0%, 53.3%, 76.1% and 70.0%. Since §2's bands are exactly the min and max of §3's roster (proved in this verdict), the two cannot be reconciled without moving §3's values, which §7 froze and §1's cumulative column depends on. Does §2's separation claim, method 6's threshold, or §3's spread yield?",
+   "blocks": "nothing today; blocks the enemy-roster piece the moment it builds a tier-appropriate body, and W1-SOULS' own region binding rests on these bands."
+  },
+  {
+   "id": "AQ-2",
+   "against": "RI-WLD07",
+   "question": "Is world.enemy_census a plan or a measurement? The soul values are derived from it as though it were a fact about the shipped world, while --census tests the shipped world against it. Both cannot be true, and the answer decides whether re-running derive-soul-values.mjs is a maintenance task or a contract violation.",
+   "blocks": "nothing today; decides the acceptance test for path-to-ten item 3."
+  }
+ ],
+ "corpus_extended": [
+  {
+   "path": "corpus/20-progression/RI-PRG06-souls-yield-and-pace.md",
+   "section": "§8",
+   "by": "the round-2 builder, at the round-1 verdict's instruction (F-6)",
+   "note": "Reviewed and endorsed. It names the measurement, the arithmetic, the three ways out and who owns each, and explicitly refuses the fourth option of leaving §5's pace table as the answer. This is what filing rather than absorbing looks like."
+  }
+ ],
+ "method_deviations": [
+  {
+   "ref_item": "RI-PRG06",
+   "deviation": "I wrote a tool mid-critique: tools/progression/critic-souls-r2.mjs, seven arms.",
+   "why": "TOOL-LOOP rule 1. Four arms are file-only (the band derivation recomputed from the item's MARKDOWN rather than the JSON the shipped tool reads; the census scale's provenance; the anchor's semantics; method 6's separation) and three drive the live world. It carries its own self-break (C6) and both live arms carry controls in two directions."
+  },
+  {
+   "ref_item": "RI-PRG06",
+   "deviation": "My instrument was wrong before the world was, and I declare it rather than quietly fixing it.",
+   "why": "The scan is lazily seeded, so a body killed within the frame it spawned is recorded as settled and never paid. My first C4/C5 pass read +0 everywhere — it was measuring the seeding rule, not the gate. Fixed with stepFrames(2) after every spawn; the note is now in the tool."
+  },
+  {
+   "ref_item": "RI-PRG06",
+   "deviation": "I edited no game source. The one-line remedy in HF-1 is demonstrated through window.__ENGINE.sim.souls.reset() — the back door INDEX.md names — rather than by patching engine.js on a shared tree.",
+   "why": "Eleven-ish agents are live and rule 17 exists because a neighbour's `git add -A` has staged a critic's temporary edit before now. Nothing of mine is staged; git status shows one modified path and it is a neighbour's status file."
+  },
+  {
+   "ref_item": "RI-PRG06",
+   "deviation": "I did not re-run the builder's delete-the-fix leg (3/15) and I did not drive PopulationSystem end-to-end for HF-2.",
+   "why": "For the first: the in-suite ablation (arm B) tests the same coupling, it is green while arm A is green, and the suite's own unfalsifiability gate fails the run if that pairing breaks. For the second: I drove spawnEncounter with the same stable tag _materialise() passes and read world/population.js steps (2)-(4) for the reachability, so the mechanism is measured and the reachability is argued from source. Said plainly rather than implied."
+  },
+  {
+   "ref_item": "RI-PRG06",
+   "deviation": "No wall-clock figure is published anywhere in this verdict.",
+   "why": "pgrep -c headless_shell was 24-30 and loadavg 14.79-23.66 through every browser run, well above the protocol cap of 8. Every figure is a frame count at fixed 60 Hz, a soul count, a level, a band percentage, a boolean or arithmetic over files. The offline arms were taken at loadavg 1.01 with no browsers running, and that is stated where they appear."
+  }
+ ],
+ "unmeasured": [
+  {
+   "claim": "RI-PRG06 methods 1-4 and 10 against a POPULATED world",
+   "reason": "269 of the census band's 891 hostiles are placed. --census fails closed and says so, which is correct. Every level figure in this verdict is arithmetic onto constants.json's adopted census, not a measurement of a populated world."
+  },
+  {
+   "claim": "HF-2 driven end-to-end through PopulationSystem's own release and re-materialise pump",
+   "reason": "Mechanism measured by driving spawnEncounter with the same stable tag; reachability read from world/population.js steps (2), (3) and (4)."
+  },
+  {
+   "claim": "the builder's delete-the-fix leg (3/15) reproduced independently",
+   "reason": "Accepted rather than reproduced; arm B is an independent test of the same coupling and the suite's unfalsifiability gate enforces the pairing."
+  },
+  {
+   "claim": "boss and miniboss soul values as an exercised TIER",
+   "reason": "Unchanged from round 1. No statblock carries tier `boss`; the two `elite` bodies are fog gates at danger tiers 2 and 5, and --check --strict reports both as out of band. TIER_PREMIUM 7.111 / 26.667 is exercised by two bodies, neither of which fits."
+  },
+  {
+   "claim": "RI-PRG06 method 9's second half (night variant HP/damage/aggro deltas)",
+   "reason": "No night variant statblocks exist; only the x1.35 soul term is implemented, and it is measured."
+  }
+ ],
+ "self_audit": {
+  "did_i_find_a_gap": true,
+  "gaps_found": 8,
+  "hard_fails_found": 2,
+  "did_i_run_the_aggregation": true,
+  "aggregation_note": "Ran the builder's whole suite (15/15) rather than only my own arms, per rule 9, and re-ran the round-1 critic's suite as a third opinion.",
+  "did_my_instrument_go_red": true,
+  "instrument_falsification": "C6 is the self-break and it passes: six bodies spawned, 60 frames stepped, nothing killed, souls +0 — so C4 and C5 measure kills and not spawns. Both live arms additionally carry positive controls in the same run (C4 pass 3 and pass 4 restore payment; C5's never-killed sixth body pays 64 on the same frame the five recycled ones pay 0).",
+  "did_i_judge_something_i_built": false,
+  "did_i_commit": false,
+  "commit_note": "A neighbour swept tools/progression/critic-souls-r2.mjs and my screenshot into a5a637d while I was working. I did not commit and nothing of mine was staged by me.",
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": true,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "ran_every_assigned_method_note": "FALSE and declared. RI-PRG06 methods 1, 2, 3, 4 and 10 cannot be run against a world with 269 of the census band's 891 hostiles placed; --census fails closed with a stated reason, which is correct. Methods 5 (S9), 7 (quest souls) and 9's first half (night x1.35) were run and are green. Method 6 was run for the first time in this tree and it is the ITEM that fails it — filed as AQ-1, not charged.",
+  "blind_done_where_required_note": "RI-PRG06 is blind_pair: no. No blind comparison was required and none was built.",
+  "self_audit_note": "ran_every_assigned_method is FALSE, deliberately. RI-PRG06 methods 1, 2, 3, 4 and 10 cannot be run against a world holding 269 of the census band's 891 hostiles; the piece's own --census fails closed with a stated reason, which is the correct behaviour and which this verdict endorses. Methods 5 (S9), 7 (quest souls) and 9's first half (the x1.35 night term) were run and are green. Method 6 was run here for the first time in this tree and it is the ITEM that fails it, filed as AQ-1. Every level figure in this verdict is therefore a PROJECTION onto constants.json's adopted census, labelled as such, and not a measurement of a populated world. The PASS at 6 rests on the axes that ARE measurable plus the two hard fails, not on the unmeasurable four; an orchestrator treating this as PROVISIONAL on the world-contract axes is reading it correctly."
+ },
+ "notes": "Round 2 is a good round that is held at the pass floor by a regression of its own making. The eight-item path to ten was delivered in full, the central charge is answered with a real fight and a self-break, and the number the piece was returned on is closed to the digit. What holds it at 6 is that the epoch gate — a correct and well-evidenced fix — is keyed on the eid, and the builder found one face of that (its own suite) and named the class in its own status file ('ANY probe in this tree that recycles an encounter is doing the same thing') without fixing it at the boundary where it lives. The other face is worse and nobody had looked: five live, full-HP, hostile bodies worth nothing to a player who partly cleared a road post and came back. Separately, the brief's central question has a split answer worth carrying forward — the BAND step of the re-anchor is genuinely arithmetic and I proved it from the markdown rather than the JSON, but the ANCHOR step is not: 12,665/93 is the mean of a region that includes its boss, pinned to a trash statblock, and the 1.52x that follows lands the placed region 1 on this item's own zero row with no assertion anywhere that would notice."
+}

@@ -1,0 +1,216 @@
+{
+  "schema": "elder-souls/ambience-bed@1",
+  "id": "barge_hold",
+  "cell": "barge_hold",
+  "bed_kind": "interior",
+  "region_name": "A moored barge hold (W1-07)",
+  "brief": "the inside of a hull: water working against timber from the far side of a plank, rope under load, and no wind at all",
+  "key": {
+    "wet_dry": "wet",
+    "open_enclosed": "enclosed",
+    "living_dead": "living"
+  },
+  "bed_lufs_target": -26,
+  "crossfade_s": 4,
+  "max_voices": 8,
+  "denies": [
+    {
+      "class": "wind",
+      "why": "You are inside a hull below the waterline. R4's whole point is that an interior is not the outside quieter — if the barge's wind got in, this would be the exterior bed with a lowpass on it, which is the failure R4 names."
+    }
+  ],
+  "layers": {
+    "L1": {
+      "id": "l1_hull_below_waterline",
+      "text": "the pressure of water on the other side of a plank",
+      "level_db": 0,
+      "classes": [
+        "pressure"
+      ],
+      "synth": {
+        "kind": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 120,
+          "q": 0.7
+        },
+        "gain_db": -4,
+        "width": 0.2,
+        "mod": {
+          "target": "filter_hz",
+          "lfo_hz": 0.047,
+          "depth": 0.22
+        }
+      }
+    },
+    "L2": {
+      "id": "l2_bilge_and_sway",
+      "text": "bilge water moving with the swell; the hull answering it",
+      "level_db": -4,
+      "sublayers": [
+        {
+          "when": {},
+          "classes": [
+            "water"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "pink",
+            "filter": {
+              "type": "bandpass",
+              "hz": 240,
+              "q": 1.4
+            },
+            "gain_db": -9,
+            "width": 0.45,
+            "mod": {
+              "target": "gain",
+              "lfo_hz": 0.11,
+              "depth": 0.5
+            }
+          }
+        },
+        {
+          "when": {
+            "tod": "night"
+          },
+          "classes": [
+            "timber"
+          ],
+          "synth": {
+            "kind": "drone",
+            "partials_hz": [
+              58,
+              87
+            ],
+            "partial_gains_db": [
+              -10,
+              -16
+            ],
+            "waveform": "sine",
+            "detune_cents": 9,
+            "gain_db": -13,
+            "filter": {
+              "type": "lowpass",
+              "hz": 300,
+              "q": 0.8
+            }
+          }
+        }
+      ]
+    },
+    "L3": {
+      "id": "l3_timber_and_rope",
+      "text": "a plank taking weight; rope creaking against a cleat",
+      "interval_s": [
+        9,
+        26
+      ],
+      "level_db": -2,
+      "events": [
+        {
+          "id": "plank_take",
+          "classes": [
+            "timber"
+          ],
+          "weight": 3,
+          "pan": [
+            -0.7,
+            0.7
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "brown",
+            "filter": {
+              "type": "bandpass",
+              "hz": 190,
+              "q": 4.5
+            },
+            "env": {
+              "attack_s": 0.02,
+              "decay_s": 0.5
+            },
+            "gain_db": -7
+          }
+        },
+        {
+          "id": "cleat_creak",
+          "classes": [
+            "rope"
+          ],
+          "weight": 2,
+          "pan": [
+            -0.85,
+            0.85
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "osc",
+            "waveform": "sawtooth",
+            "freq_hz": 320,
+            "glide_hz": [
+              320,
+              197
+            ],
+            "filter": {
+              "type": "lowpass",
+              "hz": 900,
+              "q": 2
+            },
+            "env": {
+              "attack_s": 0.05,
+              "decay_s": 0.42
+            },
+            "gain_db": -12
+          }
+        }
+      ]
+    },
+    "L4": {
+      "id": "l4_something_in_the_bilge",
+      "text": "something in the bilge that is not the bilge",
+      "interval_s": [
+        55,
+        165
+      ],
+      "level_db": 0,
+      "events": [
+        {
+          "id": "bilge_shift",
+          "classes": [
+            "creature"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.5,
+            0.5
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "brown",
+            "filter": {
+              "type": "lowpass",
+              "hz": 340,
+              "q": 1.2
+            },
+            "env": {
+              "attack_s": 0.06,
+              "decay_s": 0.8
+            },
+            "gain_db": -8,
+            "repeats": {
+              "n": 2,
+              "gap_s": 0.7,
+              "gap_jitter_s": 0.2
+            }
+          }
+        }
+      ]
+    }
+  },
+  "emitters": [],
+  "provenance": "W1-22 round 2. RI-AUD03 R4 (\"Interiors get their own bed, not the exterior bed at -12 dB\") and RI-WLD08 §6 (\">=13 (one per region) + >=8 settlement beds + >=4 interior beds\"). Round 1 read R4 as permitting silence and shipped `suppressed` for every interior in the build; the round-1 critic ruled that R4 mandates a bed, and this round agrees on the item's own \"How we lose\" wording — the named failure is that a low-passed exterior \"is not wrong, it is just nothing\", and silence is that failure at its limit rather than an escape from it. Cells are `Engine.cellFor()`'s names. This build has no audio assets, so a synth spec IS the asset; parameters constructed here."
+}

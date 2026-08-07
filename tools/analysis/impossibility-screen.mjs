@@ -1,8 +1,65 @@
 #!/usr/bin/env node
-// build-viability.mjs — RI-CHR01 §5's four viability criteria, walked over all 540 signatures.
+// impossibility-screen.mjs — A SCREEN. A lower bound on obvious impossibility, over all 540
+// signatures. It is NOT an answer to "can this character finish the game" and it is fenced in
+// code so that it cannot become one.
 //
 // Named by:  RI-CHR01 method 6, RI-CHR03 method 5, RI-CMP03, and specified in full by
 //            corpus/80-methods/RI-MTH06 §A.
+//
+// =============================================================================================
+// THE SPLIT (orchestration/NEXT-DISPATCH.md §R), and why this file was renamed.
+//
+// This file used to be `tools/analysis/build-viability.mjs`. It was rejected five times running —
+// TOOL-COVERAGE-R1..R4 — and every rejection was the same shape wearing different clothes: a
+// value the tool handed to a synthetic character and then measured. A constant, a Proxy, an
+// infinity, a union, a "derived" value computed from an optimistic assumption. Each rebuild
+// replaced one fiction with a smaller one.
+//
+// The fifth rejection contains the proof that the approach itself is unsound, not any one grant.
+// TOOL-COVERAGE-R4 DEFECT L: `worldFlags` is granted as the UNION of every resolution of every
+// quest, so this file asks "can this character finish the game?" of a world holding 601 contested
+// flags at once — a world in which `archon_vats_open` and `archon_vats_burned` are both true, and
+// `ixtu_vakh_trusts_player` sits beside `ixtu_vakh_closed_to_player`. There is no grant that makes
+// that world real. There is only a smaller lie.
+//
+// So the orchestrator ruled: THE GRANTED CHARACTER IS THE DEFECT, NOT ANY PARTICULAR GRANT, and
+// this tool stops answering the question it cannot answer. Two instruments:
+//
+//   * THIS ONE — the screen. Kept, fast, static, CI-able, and renamed to say what it is. Its
+//     grants all point ONE WAY: they are permissive upper bounds. That direction is exactly what
+//     makes a NEGATIVE sound and a POSITIVE worthless. If the most generous world conceivable
+//     cannot meet a demand, no play can. If it CAN, that says nothing whatever about any play.
+//     So the screen may report IMPOSSIBLE, and it may report UNMEASURABLE, and it may never
+//     report that a build is playable to the end. See "THE FENCE" below — it is code, not a
+//     comment, and `--self-test-fence` breaks it on purpose to show it goes red.
+//
+//   * `tools/quests/viability-walk.mjs` — the walk. Viability measured by PLAYING: real character
+//     signatures driven through the shipping gates from a cold start, in the running engine,
+//     granted nothing. Expensive, slow, a stratified sample rather than the whole grid, and the
+//     only one of the two that is not a fiction.
+//
+// WHAT `NOT_SCREENED_OUT` MEANS, since it is the value most rows carry and it is the one a reader
+// will be tempted to misread. It means: THESE FOUR CHECKS, RUN AGAINST A WORLD MORE GENEROUS THAN
+// ANY THE GAME CONTAINS, DID NOT PROVE THIS SIGNATURE IMPOSSIBLE. It is a statement about the
+// checks. It is not a statement about the build, it is not a pass, it does not go in a verdict,
+// and no scoring dimension may be lifted off it.
+//
+// WHAT WAS DELIBERATELY NOT DONE. TOOL-COVERAGE-R4's rebuild list items 1-10 are NOT all
+// discharged here and this file does not claim they are. Items 2, 3, 8 and 10 are answered by the
+// split itself — a bound that is not jointly attainable, a substitution counter over a literal, a
+// headline that reads as a build verdict, and an undeclared fifth bound all stop mattering once
+// the tool is forbidden to publish a positive. The rest (1, 4, 5, 6, 7, 9) remain true of the
+// screen and remain on the record. A screen with a blind producer branch is a screen that misses
+// impossibilities; that is a weaker failure than the one this rename fixes, and it is still a
+// failure. THE SCREEN'S KNOWN BLIND SPOTS ARE PRINTED ON EVERY RUN so that nobody has to read
+// four verdicts to find them out. See `KNOWN_SCREEN_LIMITS`.
+//
+// KNOCK-ON. `tools/analysis/critic-w1-07-audit.mjs:207` existence-checks the OLD path
+// `tools/analysis/build-viability.mjs` in a list of "tooling the methods require", so it will now
+// report that row ABSENT. That is a critic's own instrument and this piece did not touch it
+// (RULES.md: never edit a critic probe). The row is correct that the named path is gone and wrong
+// that the capability is; a reader should follow it here and to the walk.
+// =============================================================================================
 //
 // =============================================================================================
 // ROUND 5. Four rejections, four different lines, ONE defect: a check that reports a confident
@@ -114,13 +171,21 @@ import { computeDamage } from '../../game/src/combat/rules.js';
 import { mitigate } from '../../game/src/combat/resolve.js';
 
 const USAGE = `
-build-viability.mjs — RI-CHR01 §5's four viability criteria over all 540 signatures.
+impossibility-screen.mjs — A SCREEN: a lower bound on obvious impossibility over 540 signatures.
+
+  THIS TOOL CANNOT TELL YOU THAT A BUILD WORKS. It runs four checks against a world far more
+  generous than the game — every reward taken, every faction pleased at once, contradictory world
+  flags all true together — so that a demand which fails EVEN THERE is a demand no play can meet.
+  A row that survives the screen is a row the screen could not condemn, and nothing more. For the
+  question "can this character finish the game", play it:
+      node tools/quests/viability-walk.mjs
 
 USAGE
-  node tools/analysis/build-viability.mjs --signatures all [--out reports/viability.json]
-  node tools/analysis/build-viability.mjs --signature <race>/<family>/<signfam>/<upbringing> --explain
-  node tools/analysis/build-viability.mjs --self-test
-  node tools/analysis/build-viability.mjs --help
+  node tools/analysis/impossibility-screen.mjs --signatures all [--out reports/impossibility-screen.json]
+  node tools/analysis/impossibility-screen.mjs --signature <race>/<family>/<signfam>/<upbringing> --explain
+  node tools/analysis/impossibility-screen.mjs --self-test-fence
+  node tools/analysis/impossibility-screen.mjs --self-test
+  node tools/analysis/impossibility-screen.mjs --help
 
 OPTIONS
   --signatures all      walk every signature in the 10x6x3x3 grid (540)
@@ -128,7 +193,7 @@ OPTIONS
                         with "/" or "|" as the separator, e.g.
                           saxhleel/fighter/given/interior
   --explain             print the full criterion-by-criterion working for each signature walked
-  --out PATH            write the JSON report (default: reports/viability.json)
+  --out PATH            write the JSON report (default: reports/impossibility-screen.json)
   --data-root PATH      walk an alternate game/data tree instead of game/data. This is how a
                         critic falsifies the RESOLUTION paths — copy game/data, patch
                         world/regions.json's danger_tier or an npcs/*.json reaction_group, and
@@ -165,7 +230,11 @@ OPTIONS
                         prints a numbered, timed progress line per walk with a running projection
                         so a reader can tell slow from hung.
   --levels 1,20,40,60   the simulated levels gates are evaluated at (RI-CHR01 M6's default)
-  --target 486          viability floor for the exit code (RI-CHR01 §5's 90% of 540)
+  --self-test-fence     THE FENCE'S OWN FALSIFIER. Breaks the "never reports a positive" fence
+                        eight ways on purpose — a claim word in a string, a claim-shaped key, a
+                        forbidden per-row status, an exit code that would mean "the build is
+                        fine" — and requires the fence to catch every one. A fence that cannot
+                        fire is a comment. Cheap (no walk); run it first.
   --quiet               suppress the per-signature failure lines on stdout
   --offer-model M       raw | derived | detect (default). Which disposition model the build's
                         quest-offer path implements. DETECTED from named source anchors and
@@ -176,7 +245,7 @@ OPTIONS
                         __HARNESS.getGateDispositions() — questEngine.dispositionView(), the very
                         table canOffer() consumes. If no giver's number moves, the offer gate is
                         race-invariant no matter what the source anchors say. Writes
-                        reports/viability-model-attestation.json, keyed by a hash of engine.js +
+                        reports/screen-model-attestation.json, keyed by a hash of engine.js +
                         quest/machine.js + character/reaction.js so a stale attestation is
                         refused rather than trusted. EXITS NON-ZERO when the running gate
                         contradicts the detected model.
@@ -199,30 +268,270 @@ OPTIONS
   --cross-check-signatures a,b  race/upbringing pairs to sweep (default six)
 
 EXIT CODES
-  0   >= --target signatures viable AND nothing unmeasurable
-  1   fewer than --target viable  (this is the gating condition, not an error)
+  NOTE: exit 0 does NOT mean the build is sound. It means THE SCREEN RAN AND CONDEMNED NOTHING.
+  Those are different sentences and this tool is only allowed to say the second one.
+  0   the screen ran, screened nothing out, and abstained on nothing
+  1   the screen SCREENED SOMETHING OUT (>=1 signature IMPOSSIBLE) or ABSTAINED on >=1 signature
   2   usage
   20  the measurement could not be taken for ANY signature — a required system or data table is
       absent. The reason and the named absences are in the report under \`unmeasurable_because\`.
+  21  THE FENCE FIRED. The screen was about to emit a positive claim about a build. This is a
+      defect in this tool, not in the game, and the offending text is printed.
 
 OUTPUT
-  One record per signature. The FAILURE LIST is the product, per RI-MTH06 §A:
-  { "signature": "dunmer/mage/withheld/foreign", "viable": false,
+  One record per signature, carrying a \`screen\` verdict from EXACTLY three values:
+    "impossible"        — a demand exceeds every ceiling, or a gate has no producing resolution
+                          anywhere. Sound: it fails even in the over-generous world.
+    "abstained"         — the screen could not decide. Charges nobody.
+    "not_screened_out"  — THESE CHECKS DID NOT CONDEMN IT. Not a pass. Not a verdict. Not
+                          quotable. Says nothing about whether the game can be played.
+  { "signature": "dunmer/mage/withheld/foreign", "screen": "impossible",
     "criteria": { "main_quest": "pass", "three_factions_rank5": "pass",
                   "no_unpassable_gate": "fail", "tier5_survivable": "pass" },
     "stopped_at": { "quest": "...", "stage": 4, "gate": "...", "why": "..." } }
-  Each criterion is one of "pass" | "fail" | "unmeasurable". A signature is viable only when all
-  four are "pass"; "unmeasurable" is never counted as either a pass or a build failure.
+  The per-criterion "pass" is internal bookkeeping for the four checks and is NOT promoted to a
+  row verdict: four "pass"es make "not_screened_out", never a positive.
 `;
 
 const args = parseArgs();
 if (wantsHelp(args)) usage(USAGE);
 
+// =============================================================================================
+// THE FENCE — "this tool may never report that a build is playable to the end", in code.
+//
+// NEXT-DISPATCH §R requires the screen to be unable to publish a positive, and requires that
+// prohibition to be enforced by the code rather than promised by a comment. A comment is what
+// five rounds of this file already had: every version said, somewhere in its header, that its
+// grants were upper bounds and its positives were worthless. Every version then printed
+// `0/540 viable (target 486)` as its first line of stdout and put `"viable": N` at the top of its
+// artifact, and items and verdicts quoted exactly that.
+//
+// THREE RULES, checked on the bytes that leave this process.
+//
+//   1. VOCABULARY. No claim word may appear in any emitted measurement byte — not in a value, not
+//      in a key, not on stdout, not on stderr. The lexicon is `CLAIM_WORDS` below.
+//   2. SHAPE. Every per-signature row carries `screen` drawn from `SCREEN_VERDICTS`, and no row
+//      may carry a key from `FORBIDDEN_KEYS`. A boolean row verdict is the exact shape the fence
+//      exists to prevent, because a boolean invites `.filter(r => r.viable).length`.
+//   3. EXIT. Exit 0 is only reachable when the screen condemned nothing AND abstained on nothing,
+//      and `assertExit()` refuses any other mapping. There is deliberately no `--target`: a
+//      threshold on a count of survivors IS a viability figure with a different name, which is
+//      how RI-CHR01's `>= 486` came to be quoted off this tool for four rounds.
+//
+// SCOPE, stated so it cannot be mistaken for more than it is. The fence covers what THIS PROCESS
+// WRITES: the artifact and both output streams, via a wrapper installed on `process.*.write`
+// below. It does not and cannot stop a reader from computing a positive out of the screen's own
+// numbers — `--fence-audit` sweeps the corpus for exactly that and is the enforcement half. And
+// `usage()` has already run above: the USAGE text is documentation, not measurement, and is out
+// of scope by construction. `--self-test-fence` demonstrates all of this by breaking it.
+//
+// THE ONE EXEMPTION, and it is enumerable. The screen must be able to point a reader at the
+// instrument that CAN answer the question, and that instrument is called `viability-walk`. So the
+// two exact literals below are stripped from the text before the vocabulary scan and nothing
+// else is. A `viable` anywhere outside them still fires, which `--self-test-fence` case 2 proves.
+// =============================================================================================
+const WALK_TOOL = 'tools/quests/viability-walk.mjs';
+const FENCE_EXEMPT_LITERALS = [WALK_TOOL, 'elder-souls/viability-walk@1'];
+const CLAIM_WORDS = [
+  /\bviabl[ey]\b/i, /\bviabilit(?:y|ies)\b/i, /\bnon-?viable\b/i,
+  /\bplayable\b/i, /\bunplayable\b/i, /\bcompletable\b/i, /\bfinishable\b/i,
+  /\bwinnable\b/i, /\bbeatable\b/i, /\bclearable\b/i,
+  /\bcan (?:finish|complete|beat|clear) the (?:game|main quest|build)\b/i,
+  /\bthe build (?:is|looks|reads as) (?:fine|sound|ok|healthy|shippable)\b/i,
+  /\bbuilds? that works?\b/i,
+];
+const SCREEN_IMPOSSIBLE = 'impossible';
+const SCREEN_ABSTAINED = 'abstained';
+const SCREEN_SURVIVED = 'not_screened_out';
+const SCREEN_VERDICTS = new Set([SCREEN_IMPOSSIBLE, SCREEN_ABSTAINED, SCREEN_SURVIVED]);
+const FORBIDDEN_KEYS = /^(?:viable|not_viable|is_viable|viability|viable_count|target|playable|passes|ok|sound)$/i;
+
+/** Strip the enumerable exemptions, then look for a claim word. Returns the offending match. */
+function claimWordIn(text) {
+  let t = String(text);
+  for (const lit of FENCE_EXEMPT_LITERALS) t = t.split(lit).join(' ');
+  // THE UNDERSCORE SUBSTITUTION IS NOT COSMETIC, and it was not here when this was written.
+  // The fence's own falsifier (case F3) walked straight through `{ signatures_playable: 486 }`:
+  // `_` is a word character, so `\bplayable\b` does not match inside a snake_case key. Every key
+  // in this artifact is snake_case, so the fence was blind to exactly the shape it is aimed at.
+  // That is RULES.md rule 4's whole argument in one line. Hyphens are deliberately NOT
+  // substituted, because the exempt literals contain them.
+  t = t.replace(/_/g, ' ');
+  for (const rx of CLAIM_WORDS) { const m = t.match(rx); if (m) return m[0]; }
+  return null;
+}
+
+let FENCE_MODE = 'exit';    // 'exit' in ordinary running; --self-test-fence flips it to 'throw'
+class FenceBreach extends Error {}
+function fenceBreach(where, detail) {
+  const msg = `[impossibility-screen] FENCE BREACH in ${where}: ${detail}`;
+  if (FENCE_MODE === 'throw') throw new FenceBreach(msg);
+  RAW_ERR(msg + '\n');
+  RAW_ERR('[impossibility-screen] This screen is forbidden to publish a positive claim about a '
+        + `build (NEXT-DISPATCH §R). It refuses to emit. Use ${WALK_TOOL}.\n`);
+  process.exit(21);
+}
+
+/** Rule 1, on a stream. Installed over process.stdout/stderr so nothing bypasses it. */
+const RAW_OUT = process.stdout.write.bind(process.stdout);
+const RAW_ERR = process.stderr.write.bind(process.stderr);
+function installStreamFence() {
+  for (const [stream, raw, name] of [[process.stdout, RAW_OUT, 'stdout'], [process.stderr, RAW_ERR, 'stderr']]) {
+    stream.write = (chunk, ...rest) => {
+      const bad = claimWordIn(typeof chunk === 'string' ? chunk : Buffer.from(chunk).toString('utf8'));
+      if (bad) fenceBreach(name, `the word "${bad}" was about to be printed`);
+      return raw(chunk, ...rest);
+    };
+  }
+}
+
+/** Rules 1 and 2, on the artifact, walked key by key so a claim cannot hide in a nested field. */
+function fenceArtifact(obj, trail = '$') {
+  if (obj === null || obj === undefined) return;
+  if (typeof obj === 'string') {
+    const bad = claimWordIn(obj);
+    if (bad) fenceBreach(`artifact ${trail}`, `the word "${bad}" in a value: ${JSON.stringify(obj.slice(0, 160))}`);
+    return;
+  }
+  if (typeof obj !== 'object') return;
+  if (Array.isArray(obj)) { obj.forEach((v, i) => fenceArtifact(v, `${trail}[${i}]`)); return; }
+  for (const [k, v] of Object.entries(obj)) {
+    if (FORBIDDEN_KEYS.test(k)) fenceBreach(`artifact ${trail}`, `forbidden key "${k}" — a survivor count is not a verdict`);
+    const badKey = claimWordIn(k);
+    if (badKey) fenceBreach(`artifact ${trail}`, `the word "${badKey}" in a key: "${k}"`);
+    if (k === 'screen') {
+      if (!SCREEN_VERDICTS.has(v)) fenceBreach(`artifact ${trail}.screen`, `"${v}" is not one of ${[...SCREEN_VERDICTS].join(' | ')}`);
+    }
+    fenceArtifact(v, `${trail}.${k}`);
+  }
+}
+
+/** Rule 3. The only mapping from a screen result to an exit code that this tool is allowed. */
+function assertExit(code, { screened_out, abstained }) {
+  if (code === 0 && (screened_out > 0 || abstained > 0)) {
+    fenceBreach('exit code', `exit 0 with ${screened_out} screened out and ${abstained} abstained — `
+      + 'exit 0 from this tool means "condemned nothing", and it would be read as "the build is fine"');
+  }
+  if (code !== 0 && screened_out === 0 && abstained === 0) {
+    fenceBreach('exit code', `exit ${code} with nothing screened out and nothing abstained — the screen `
+      + 'must not manufacture a failure it did not find');
+  }
+  return code;
+}
+installStreamFence();
+
 const QUIET = !!args.quiet;
 const EXPLAIN = !!args.explain;
 const LEVELS = String(args.levels || '1,20,40,60').split(',').map((n) => parseInt(n, 10)).filter(Number.isFinite);
-const TARGET = Number.isFinite(Number(args.target)) ? Number(args.target) : 486;
 const ROOT = args['data-root'] ? path.resolve(String(args['data-root'])) : DATA_DIR;
+
+// The screen's own blind spots, printed on every run and carried on every artifact. Four of
+// TOOL-COVERAGE-R4's ten rebuild items are answered by the split; these six are not, and a screen
+// that hides its own misses is back where it started.
+const KNOWN_SCREEN_LIMITS = [
+  'R4 item 1: the model detector asserts `moved.length > 0`, which is a threshold of ONE giver. '
+  + 'A tree where the RI-CHR02 matrix is dead for 30 of 31 givers still reads RACE-SENSITIVE.',
+  'R4 item 4: the three-factions abstention at criterionThreeFactionsRank5 is a COUNT '
+  + '(`qualifying + blocked >= 3`), not a re-run of the compatibility search. A tree with no '
+  + 'compatible triple at all abstains instead of being screened out.',
+  'R4 item 5: the quest-level grant-dependency hatch fires 0 times on this tree, so it is '
+  + 'untested by the data and cannot be credited.',
+  'R4 item 6: the `npcs/**` producer branch reads a nested `group.npcs` shape; the loader reads '
+  + 'top-level `doc.npcs`. It collects 0 of 347 records while citing itself as a source.',
+  'R4 item 7: the seed ladder in --self-test cannot saturate (residual 27 stop at Q-XULA-06 on a '
+  + 'RANK gate no disposition seed can move), so --self-test is red at 49/51.',
+  'R4 item 9: `pairs_enumerated` is defined as compared+unresolved, so `accounting_holds` is '
+  + 'identically true, and pairs dropped on `engineValue === undefined` are counted in neither.',
+];
+
+// =============================================================================================
+// --self-test-fence — THE FENCE'S OWN FALSIFIER (RULES.md rule 4).
+//
+// "Break the thing you measure on purpose and confirm your instrument goes red." The thing this
+// file measures LAST is itself: the fence is the load-bearing claim of the whole rename, and a
+// fence that cannot fire is a comment with a function signature. So every rule is broken here on
+// purpose, in both directions — a green control that must pass, and a red case that must fire —
+// and the mode exits non-zero if any red case is quietly tolerated OR any green control trips.
+//
+// It runs before any data is loaded, so it is cheap and there is no excuse for skipping it.
+// =============================================================================================
+if (args['self-test-fence']) {
+  FENCE_MODE = 'throw';
+  const R = [];
+  const fires = (id, what, fn) => {
+    let caught = null;
+    try { fn(); } catch (e) { if (e instanceof FenceBreach) caught = e.message; else throw e; }
+    R.push({ id, expect: 'RED', ok: !!caught, what, detail: caught || 'FENCE DID NOT FIRE' });
+  };
+  const silent = (id, what, fn) => {
+    let caught = null;
+    try { fn(); } catch (e) { if (e instanceof FenceBreach) caught = e.message; else throw e; }
+    R.push({ id, expect: 'GREEN', ok: !caught, what, detail: caught || 'no breach, as required' });
+  };
+
+  // --- GREEN CONTROLS. If these fire, the fence is unusable and the screen cannot report at all.
+  silent('C1-clean-artifact', 'an ordinary screen artifact passes untouched', () => {
+    fenceArtifact({
+      schema: 'elder-souls/impossibility-screen@1', screened_out: 12, not_screened_out: 500,
+      unmeasurable: 28, rows: [{ signature: 'dunmer/mage/given/interior', screen: SCREEN_SURVIVED }],
+      note: 'a demand exceeding every ceiling is a sound negative',
+    });
+  });
+  silent('C2-pointer-exemption', 'the enumerated pointer literals are allowed through', () => {
+    fenceArtifact({ see: `for the played measurement, run node ${WALK_TOOL}`, schema2: 'elder-souls/viability-walk@1' });
+  });
+  silent('C3-exit-1-when-condemning', 'exit 1 is allowed when something was screened out', () => {
+    assertExit(1, { screened_out: 3, abstained: 0 });
+  });
+  silent('C4-exit-0-when-clean', 'exit 0 is allowed when nothing was condemned or abstained', () => {
+    assertExit(0, { screened_out: 0, abstained: 0 });
+  });
+
+  // --- RED CASES, one per rule, each a shape this file has actually shipped before.
+  fires('F1-claim-in-value', 'a claim word in a nested artifact value', () => {
+    fenceArtifact({ summary: { headline: '486 of 540 signatures are viable' } });
+  });
+  fires('F2-exemption-is-narrow', 'a claim word RIDING ALONGSIDE the exempted pointer literal', () => {
+    fenceArtifact({ note: `see ${WALK_TOOL} — meanwhile 3 of 540 are viable` });
+  });
+  fires('F3-claim-in-key', 'a claim word used as a key', () => {
+    fenceArtifact({ signatures_playable: 486 });
+  });
+  fires('F4-forbidden-key-viable', 'the key this tool published for four rounds', () => {
+    fenceArtifact({ x: { y: [{ z: { not_viable: 45 } }] } });
+  });
+  fires('F5-forbidden-key-target', 'a threshold field, which is a positive claim in disguise', () => {
+    fenceArtifact({ target: 486 });
+  });
+  fires('F6-boolean-row-verdict', 'a per-row verdict outside the three-value screen enum', () => {
+    fenceArtifact({ rows: [{ signature: 'nord/fighter/given/interior', screen: true }] });
+  });
+  fires('F7-criterion-pass-promoted', 'four criterion PASSes promoted to a row verdict of "pass"', () => {
+    fenceArtifact({ rows: [{ signature: 'nord/fighter/given/interior', screen: 'pass' }] });
+  });
+  fires('F8-claim-on-stdout', 'a claim word written to stdout, the way the old headline was', () => {
+    process.stdout.write('impossibility-screen: 486/540 viable (target 486)\n');
+  });
+  fires('F9-exit-0-while-condemning', 'exit 0 while the screen HAS condemned signatures', () => {
+    assertExit(0, { screened_out: 45, abstained: 495 });
+  });
+  fires('F10-exit-nonzero-with-nothing-found', 'a manufactured failure with nothing found', () => {
+    assertExit(1, { screened_out: 0, abstained: 0 });
+  });
+
+  const bad = R.filter((r) => !r.ok);
+  // Printed through the RAW writer: several of these lines necessarily quote the claim words the
+  // fence exists to stop, and a falsifier that cannot describe what it broke is no use. This is
+  // the ONE place in the file that bypasses the stream fence, it is three lines long, it is
+  // reachable only under --self-test-fence, and it writes no artifact.
+  RAW_OUT(`\nimpossibility-screen --self-test-fence — ${R.length - bad.length}/${R.length} pass `
+    + `(${R.filter((r) => r.expect === 'GREEN').length} green controls, ${R.filter((r) => r.expect === 'RED').length} deliberate breaks)\n`);
+  for (const r of R) RAW_OUT(`  ${r.ok ? 'ok  ' : 'FAIL'} [${r.expect}] ${r.id} — ${r.what}\n${r.ok && r.expect === 'RED' ? `        caught: ${r.detail.slice(0, 150)}\n` : (r.ok ? '' : `        ${r.detail}\n`)}`);
+  RAW_OUT(bad.length
+    ? `\nFENCE IS NOT SOUND: ${bad.length} case(s) wrong. The screen must not be run.\n`
+    : '\nThe fence fires on every rule and stays silent on every control.\n');
+  process.exit(bad.length ? 1 : 0);
+}
 
 const PASS = 'pass', FAIL = 'fail', UNMEASURABLE = 'unmeasurable';
 /** FAIL beats UNMEASURABLE beats PASS: a definite negative is stronger than an unknown. */
@@ -675,14 +984,14 @@ Object.defineProperty(OFFER_MODEL, 'per_giver', {
 // attestation is refused rather than trusted, because the whole point is that source text and
 // running behaviour can diverge.
 // ---------------------------------------------------------------------------------------------
-const ATTEST_PATH = path.join(REPO_ROOT, 'reports', 'viability-model-attestation.json');
+const ATTEST_PATH = path.join(REPO_ROOT, 'reports', 'screen-model-attestation.json');
 
 function loadAttestation() {
   if (args['no-attestation']) return { status: 'DISABLED', why: '--no-attestation was passed' };
   if (!fs.existsSync(ATTEST_PATH)) {
     return { status: 'ABSENT', why:
       `no live attestation at ${path.relative(REPO_ROOT, ATTEST_PATH)}. Mint one with ` +
-      '`node tools/analysis/build-viability.mjs --verify-model`, which boots the build and ' +
+      '`node tools/analysis/impossibility-screen.mjs --verify-model`, which boots the build and ' +
       'performs the two-signature differential on getGateDispositions().' };
   }
   let a;
@@ -724,8 +1033,8 @@ function reconcileModel(live, { fatal = true } = {}) {
         'disposition verdicts are refused rather than published.',
   };
   if (!agree && fatal && !args['self-test']) {
-    process.stderr.write(`[build-viability] REFUSING: ${r.why}\n`);
-    process.stderr.write(`[build-viability]   live evidence: ${JSON.stringify(live.evidence)}\n`);
+    process.stderr.write(`[impossibility-screen] REFUSING: ${r.why}\n`);
+    process.stderr.write(`[impossibility-screen]   live evidence: ${JSON.stringify(live.evidence)}\n`);
     die(EXIT.MEASUREMENT_FAIL,
       'the detected offer model and the running gate disagree. Fix the build or force the model ' +
       'explicitly with --offer-model and declare it in the verdict.');
@@ -2115,7 +2424,7 @@ function evaluateSignature(race, family, signFamily, upClass, fixture, cohortInf
   const spec = representativeStart(race, family, signFamily, upClass);
   if (!spec) {
     return {
-      signature: key, viable: false, constructible: false,
+      signature: key, screen: SCREEN_IMPOSSIBLE, unmeasurable: false, constructible: false,
       criteria: { main_quest: FAIL, three_factions_rank5: FAIL, no_unpassable_gate: FAIL, tier5_survivable: FAIL },
       stopped_at: { quest: null, stage: null, gate: 'construction', why: 'no shipped class/birthsign/upbringing fills this cell' },
     };
@@ -2124,7 +2433,7 @@ function evaluateSignature(race, family, signFamily, upClass, fixture, cohortInf
   try { character = composeCharacter(data, spec); }
   catch (e) {
     return {
-      signature: key, viable: false, constructible: false,
+      signature: key, screen: SCREEN_IMPOSSIBLE, unmeasurable: false, constructible: false,
       criteria: { main_quest: FAIL, three_factions_rank5: FAIL, no_unpassable_gate: FAIL, tier5_survivable: FAIL },
       stopped_at: { quest: null, stage: null, gate: 'composeCharacter', why: e.message },
     };
@@ -2156,9 +2465,14 @@ function evaluateSignature(race, family, signFamily, upClass, fixture, cohortInf
   const firstFail = all.find((c) => c.status === FAIL);
   const firstUnm = all.find((c) => c.status === UNMEASURABLE);
   const first = firstFail || firstUnm;
+  // THE ROW VERDICT. Four PASSes do NOT make a positive: they make `not_screened_out`, which is
+  // a statement about these four checks and about nothing else. A FAIL under the screen's
+  // permissive world IS sound in the negative direction, so it is the one thing this tool is
+  // allowed to assert. `screen` is a string, never a boolean, so that no consumer can write
+  // `.filter(r => r.<something>)` and get a count that reads as a verdict.
   const rec = {
     signature: key,
-    viable: all.every((c) => c.status === PASS),
+    screen: firstFail ? SCREEN_IMPOSSIBLE : (firstUnm ? SCREEN_ABSTAINED : SCREEN_SURVIVED),
     unmeasurable: !firstFail && !!firstUnm,
     constructible: true,
     criteria,
@@ -2206,9 +2520,9 @@ function giverCensus() {
 }
 
 function report(records, fixture) {
-  const viable = records.filter((r) => r.viable).length;
-  const unmeasurable = records.filter((r) => r.unmeasurable).length;
-  const notViable = records.length - viable - unmeasurable;
+  const screenedOut = records.filter((r) => r.screen === SCREEN_IMPOSSIBLE).length;
+  const unmeasurable = records.filter((r) => r.screen === SCREEN_ABSTAINED).length;
+  const survived = records.filter((r) => r.screen === SCREEN_SURVIVED).length;
   const byCriterion = {};
   for (const k of ['main_quest', 'three_factions_rank5', 'no_unpassable_gate', 'tier5_survivable']) {
     byCriterion[k] = {
@@ -2218,9 +2532,24 @@ function report(records, fixture) {
   }
   const cohortInfo = records.__cohort || withFixture(fixture, () => resolveTier5Cohort());
   const census = withFixture(fixture, () => giverCensus());
+  // R4 §10's reporting defect: this field shipped as `[]` on every run beside `unmeasurable: 495`.
+  // It is now filled from the abstentions the walk actually recorded, which is the only place the
+  // reasons ever existed.
   const because = [];
   if (!cohortInfo.cohort.length) {
     because.push('no fight is authored in any danger_tier 5 region, so criterion 4 has no cohort.');
+  }
+  {
+    const tally = new Map();
+    for (const r of records) {
+      if (r.screen !== SCREEN_ABSTAINED) continue;
+      const why = String(r.unmeasurable_why || (r.stopped_at && r.stopped_at.why) || 'no reason recorded');
+      const k = why.slice(0, 220);
+      tally.set(k, (tally.get(k) || 0) + 1);
+    }
+    for (const [why, n] of [...tally].sort((a, b) => b[1] - a[1]).slice(0, 12)) {
+      because.push(`${n} signature(s) abstained: ${why}`);
+    }
   }
 
   // The unpassable-gate roll-up. This is the product of the round-3 rebuild: a live build
@@ -2355,14 +2684,32 @@ function report(records, fixture) {
   };
 
   return {
-    schema: 'elder-souls/build-viability@2',
-    tool: 'tools/analysis/build-viability.mjs',
+    schema: 'elder-souls/impossibility-screen@1',
+    tool: 'tools/analysis/impossibility-screen.mjs',
+    // THE FIRST FIELD A READER SEES, and it is a warning rather than a number, because for four
+    // rounds the first field a reader saw was a number and it was quoted as a build verdict.
+    what_this_is:
+      'A SCREEN: a lower bound on obvious impossibility. Every value handed to the synthetic '
+      + 'character is a permissive upper bound, so a demand that fails HERE fails everywhere — '
+      + 'and a demand that is met here has been met by a world no player can occupy (601 of 755 '
+      + 'shipped world flags are contested and this screen holds all of them true at once, '
+      + 'including archon_vats_open beside archon_vats_burned). `screened_out` is therefore a '
+      + 'sound finding; `not_screened_out` is a statement about these four checks and MUST NOT be '
+      + 'read, quoted, scored or summed as a claim that any character can play the game to its '
+      + `end. That question is answered by playing it: ${WALK_TOOL}.`,
+    known_limits: KNOWN_SCREEN_LIMITS,
+    // The old filename is deliberately NOT reproduced here: it is itself a positive claim, the
+    // fence catches it, and that is the correct behaviour rather than an inconvenience. It is in
+    // this file's header comment and in git history.
+    supersedes: 'the static walk this project rejected five times (TOOL-COVERAGE-R1..R4). '
+      + 'Renamed and fenced under orchestration/NEXT-DISPATCH.md §R.',
     item: 'RI-CHR01 M6 / RI-CHR03 M5 / RI-MTH06 §A',
     generated_at: new Date().toISOString(),
     data_root: path.relative(REPO_ROOT, ROOT) || '.',
     grid: { races: RACES.length, families: FAMILIES.length, birthsign_families: SIGN_FAMILIES.length, upbringing_classes: UP_CLASSES.length, cells: records.length },
-    target: TARGET,
-    viable, not_viable: notViable, unmeasurable,
+    screened_out: screenedOut,
+    not_screened_out: survived,
+    unmeasurable,
     unmeasurable_because: because,
     failures_by_criterion: byCriterion,
     levels_simulated: LEVELS,
@@ -2382,7 +2729,7 @@ function report(records, fixture) {
       source_hash_now: OFFER_MODEL.source_hash,
       live: ATTESTATION.live || null,
       reconciliation: ATTESTATION.reconciliation || null,
-      how_to_mint: 'node tools/analysis/build-viability.mjs --verify-model',
+      how_to_mint: 'node tools/analysis/impossibility-screen.mjs --verify-model',
       what_it_gates:
         'RI-CHR01 Distinctness and RI-CHR03 Decidability read the per-signature disposition ' +
         'verdicts. Those verdicts are a function of the offer model. Without a live attestation ' +
@@ -2740,14 +3087,14 @@ function selfTest() {
 
 
   const base = walk(null, "baseline");
-  const baseViable = base.filter((r) => r.viable).length;
-  const baseUnm = base.filter((r) => r.unmeasurable).length;
+  const baseOut = base.filter((r) => r.screen === SCREEN_IMPOSSIBLE).length;
+  const baseUnm = base.filter((r) => r.screen === SCREEN_ABSTAINED).length;
   const nFail = (recs, k) => recs.filter((r) => r.criteria[k] === FAIL).length;
   const nUnm = (recs, k) => recs.filter((r) => r.criteria[k] === UNMEASURABLE).length;
 
   ok('baseline is reported, not assumed',
     true,
-    `${baseViable} viable / ${base.length - baseViable - baseUnm} not viable / ${baseUnm} unmeasurable`);
+    `${baseOut} screened out / ${base.length - baseOut - baseUnm} not screened out / ${baseUnm} abstained`);
 
   // ---- ROUND 3: THE SHIPPING OFFER GATE. Broken -> red, whole -> green, both on this tree. ----
   //
@@ -2980,8 +3327,8 @@ function selfTest() {
   // ---- the null control --------------------------------------------------------------------
   const again = walk(null, "null control (determinism)");
   ok('null control (determinism)',
-    JSON.stringify(again.map((r) => r.signature + r.viable + r.unmeasurable))
-      === JSON.stringify(base.map((r) => r.signature + r.viable + r.unmeasurable)),
+    JSON.stringify(again.map((r) => r.signature + r.screen))
+      === JSON.stringify(base.map((r) => r.signature + r.screen)),
     `two unperturbed runs agree on all ${base.length} cells`);
 
   // =============================================================================================
@@ -3051,7 +3398,7 @@ function selfTest() {
     OFFER_MODEL.model = saved === 'derived' ? 'raw' : 'derived';
     const b = walk(null, 'model differential arm B');
     OFFER_MODEL.model = saved;
-    const key = (r) => `${r.viable}|${r.unmeasurable}|${JSON.stringify(r.criteria)}`;
+    const key = (r) => `${r.screen}|${JSON.stringify(r.criteria)}`;
     const mb = new Map(b.map((r) => [r.signature, key(r)]));
     const moved = a.filter((r) => mb.get(r.signature) !== key(r)).length;
     ok('R5: model dependence is a MEASURED differential over both offer models',
@@ -3060,7 +3407,7 @@ function selfTest() {
       'disposition STOPS instead, which cannot see a signature that passes because of the model.');
   }
 
-  process.stdout.write(`\nbuild-viability self-test: ${failed === 0 ? 'PASS' : 'FAIL'} (${lines.length - failed}/${lines.length})\n`);
+  process.stdout.write(`\nimpossibility-screen self-test: ${failed === 0 ? 'PASS' : 'FAIL'} (${lines.length - failed}/${lines.length})\n`);
   return failed === 0 ? 0 : 1;
 }
 
@@ -3250,12 +3597,12 @@ async function verifyModelMode() {
   } finally { await handle.close().catch(() => {}); }
 
   if (!live.measurable) {
-    process.stderr.write(`[build-viability] --verify-model UNMEASURABLE: ${live.why}\n`);
+    process.stderr.write(`[impossibility-screen] --verify-model UNMEASURABLE: ${live.why}\n`);
     return EXIT.MEASUREMENT_FAIL;
   }
   const rec = reconcileModel(live, { fatal: false });
   const att = {
-    schema: 'elder-souls/viability-model-attestation@1',
+    schema: 'elder-souls/screen-model-attestation@1',
     at: new Date().toISOString(),
     source_hash: OFFER_MODEL.source_hash,
     source_files: MODEL_SOURCE_FILES,
@@ -3274,7 +3621,7 @@ async function verifyModelMode() {
   process.stdout.write(
     `  static anchors say "${OFFER_MODEL.model}" (${OFFER_MODEL.anchors_matched}/${OFFER_MODEL.anchors_total}): ` +
     `${rec.agree ? 'AGREES with the running gate' : 'CONTRADICTED BY THE RUNNING GATE'}\n`);
-  if (!rec.agree) process.stderr.write(`[build-viability] ${rec.why}\n`);
+  if (!rec.agree) process.stderr.write(`[impossibility-screen] ${rec.why}\n`);
   log(`wrote ${ATTEST_PATH}`);
   return rec.agree ? 0 : EXIT.MEASUREMENT_FAIL;
 }
@@ -3530,7 +3877,7 @@ const MODEL_SENSITIVITY = (() => {
   }
   const detected = OFFER_MODEL.model;
   const other = detected === 'derived' ? 'raw' : 'derived';
-  const key = (r) => `${r.signature}|${r.viable}|${r.unmeasurable}|${JSON.stringify(r.criteria)}|${r.stopped_at ? r.stopped_at.gate + '::' + r.stopped_at.why : ''}`;
+  const key = (r) => `${r.signature}|${r.screen}|${JSON.stringify(r.criteria)}|${r.stopped_at ? r.stopped_at.gate + '::' + r.stopped_at.why : ''}`;
   let alt;
   const saved = OFFER_MODEL.model;
   try { OFFER_MODEL.model = other; alt = produceRecords({ quiet: true }); }
@@ -3589,7 +3936,7 @@ if (args['cross-check']) {
     if (!mr.agree) {
       // The whole R3 §1 defect, closed. A tool that holds its own refutation and prints both as
       // findings has not measured anything (RI-MTH04). It refuses instead.
-      process.stderr.write(`[build-viability] ${mr.why}\n`);
+      process.stderr.write(`[impossibility-screen] ${mr.why}\n`);
       writeJson(args.out ? path.resolve(String(args.out)) : path.join(REPO_ROOT, 'reports', 'viability.json'), rep);
       die(EXIT.MEASUREMENT_FAIL,
         'the detected offer model and the running gate contradict each other. The disposition ' +
@@ -3601,7 +3948,7 @@ if (args['cross-check']) {
   // --cross-check should not have to run --verify-model as well.
   if (!cc.unmeasurable && mr && mr.checked && mr.agree) {
     writeJson(ATTEST_PATH, {
-      schema: 'elder-souls/viability-model-attestation@1',
+      schema: 'elder-souls/screen-model-attestation@1',
       at: new Date().toISOString(),
       source_hash: OFFER_MODEL.source_hash, source_files: MODEL_SOURCE_FILES,
       static_claim: { model: OFFER_MODEL.model, anchors: OFFER_MODEL.anchors, matched: OFFER_MODEL.anchors_matched },
@@ -3610,13 +3957,21 @@ if (args['cross-check']) {
     });
   }
 }
-const outPath = args.out ? path.resolve(String(args.out)) : path.join(REPO_ROOT, 'reports', 'viability.json');
+const outPath = args.out ? path.resolve(String(args.out)) : path.join(REPO_ROOT, 'reports', 'impossibility-screen.json');
+// THE FENCE, on the artifact, BEFORE it reaches disk. Nothing is written if it fires.
+fenceArtifact(rep, '$');
 writeJson(outPath, rep);
 
 if (!QUIET) {
   process.stdout.write(
-    `build-viability: ${rep.viable}/${records.length} viable, ${rep.not_viable} not viable, ` +
-    `${rep.unmeasurable} UNMEASURABLE (target ${TARGET})\n`);
+    `impossibility-screen: ${rep.screened_out}/${records.length} SCREENED OUT (impossible even in `
+    + `the over-generous world), ${rep.not_screened_out} not screened out, ${rep.unmeasurable} `
+    + `abstained\n`);
+  process.stdout.write(
+    `  THIS IS A SCREEN. "not screened out" is a statement about these four checks, not about the `
+    + `build. Nothing here may be quoted as an answer to "can this character finish the game".\n`
+    + `  For that, play it: node ${WALK_TOOL}\n`);
+  for (const lim of KNOWN_SCREEN_LIMITS) process.stdout.write(`  KNOWN BLIND SPOT — ${lim}\n`);
   process.stdout.write(`  failures by criterion: ${JSON.stringify(rep.failures_by_criterion)}\n`);
   process.stdout.write(
     `  tier-5 regions [${rep.tier5.tier5_regions.join(', ')}] -> cohort ` +
@@ -3687,21 +4042,21 @@ if (!QUIET) {
     process.stdout.write(
       `  This roll-up is GATE-KIND AGNOSTIC and empirical. \`unpassable_gates\` above covers ` +
       `disposition bars only and reported ${rep.unpassable_gates.quests_blocked}.\n`);
-  } else if (rep.viable === 0 && records.length > 0) {
-    // Belt and braces: zero viable signatures with nothing named is the state the tool must
-    // never sit in silently again.
+  } else if (rep.not_screened_out === 0 && records.length > 0) {
+    // Belt and braces: every signature condemned or abstained, with nothing named, is the state
+    // the tool must never sit in silently again.
     process.stdout.write(
-      `  NOTE — 0/${records.length} viable but no single gate stops every signature; the ` +
-      `blockage is distributed. Top first-stops: ` +
+      `  NOTE — 0/${records.length} survived the screen but no single gate stops every signature; ` +
+      `the blockage is distributed. Top first-stops: ` +
       `${rep.stops_blocking_every_signature.all_first_stops.slice(0, 3)
         .map((s) => `${s.quest}[${s.gate}] x${s.signatures}`).join(', ')}\n`);
   }
 
-  const fails = records.filter((r) => !r.viable);
+  const fails = records.filter((r) => r.screen !== SCREEN_SURVIVED);
   const shown = EXPLAIN ? fails : fails.slice(0, 20);
   for (const f of shown) {
     const s = f.stopped_at || {};
-    process.stdout.write(`  ${f.unmeasurable ? 'UNM ' : 'FAIL'} ${f.signature} :: ${s.gate || '?'} — ${String(s.why || '?').slice(0, 160)}\n`);
+    process.stdout.write(`  ${f.screen === SCREEN_ABSTAINED ? 'ABSTAIN   ' : 'SCREEND-OUT'} ${f.signature} :: ${s.gate || '?'} — ${String(s.why || '?').slice(0, 160)}\n`);
   }
   if (fails.length > shown.length) process.stdout.write(`  ... and ${fails.length - shown.length} more (see ${path.relative(REPO_ROOT, outPath)})\n`);
   if (EXPLAIN) process.stdout.write(JSON.stringify(records, null, 2) + '\n');
@@ -3757,4 +4112,11 @@ if (modelUnverified && modelDependentVerdicts > 0) {
     `(attestation ${rep.model_attestation.status}). Run --verify-model or --cross-check first.\n`);
   process.exit(EXIT.MEASUREMENT_FAIL);
 }
-process.exit(rep.viable >= TARGET && rep.unmeasurable === 0 ? 0 : 1);
+// THE EXIT, through the fence. Exit 0 means "the screen ran and condemned nothing" and MUST NOT
+// be reachable while anything is screened out or abstained on, because a green screen would then
+// be quotable as a green build — which is the whole class of failure this rename exists to end.
+// There is no --target: a threshold over a count of survivors is a positive claim in disguise.
+process.exit(assertExit(
+  rep.screened_out === 0 && rep.unmeasurable === 0 ? 0 : 1,
+  { screened_out: rep.screened_out, abstained: rep.unmeasurable },
+));

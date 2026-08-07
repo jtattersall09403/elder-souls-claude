@@ -28,9 +28,19 @@
 //
 // USAGE
 //   node tools/weapons/mass-browser.mjs --tag shipped [--weapon whp_hist_bindings] [--out dir]
+//                                       [--shot docs/shots/<name>.png]
+//
+//   P4  SHOT      — one picture, over a real frame at the measured peak, captioned from the
+//                   run's own numbers. `--weapon` picks the subject of the picture.
+//
+// CONTENTION: this tool steps the simulation, so it launches its own browser (RULES.md 20) and
+// keeps the one it launched for every phase (RULES.md 21). Every figure it reports is a speed,
+// a fraction, a count or a boolean — none is a wall-clock timing — so a run taken under load is
+// still a run, and the load is recorded in the report as `taken_under`.
 'use strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { execSync } from 'node:child_process';
 import { parseArgs, wantsHelp, usage, writeJson, ensureDir } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
 
@@ -122,6 +132,17 @@ const handle = await launchGame({
   height: Number(args.height || 240),
 });
 const report = { schema: 'elder-souls/wpn05-mass-browser@1', tag, generated: new Date().toISOString() };
+// RULES.md 26: "say under what load every timing figure was taken, or publish no timing figure."
+// This tool publishes none, but the load belongs in the artifact anyway — a successor comparing
+// two runs needs to know which box each was taken on.
+try {
+  report.taken_under = {
+    headless_shell: Number(execSync('pgrep -c headless_shell || true').toString().trim()) || 0,
+    loadavg: fs.readFileSync('/proc/loadavg', 'utf8').trim().split(' ').slice(0, 3).join(' '),
+    git_head: execSync('git rev-parse --short HEAD').toString().trim(),
+    swing_js_sha1: execSync('git hash-object game/src/combat/swing.js').toString().trim(),
+  };
+} catch (e) { report.taken_under = { error: String(e && e.message).slice(0, 120) }; }
 
 try {
   Object.assign(report, await handle.page.evaluate(async (SUBJ) => {

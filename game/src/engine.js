@@ -4505,18 +4505,47 @@ export class Engine {
    * region model, and no ambience-only notion of where anything is — so a bed that disagrees
    * with the ground under your feet is not expressible.
    *
-   * R4 — INTERIORS DO NOT GET THE EXTERIOR BED. RI-AUD03 R4 says a muffled version of outside is
-   * the sound of a hole in the design, and this build has no interior beds yet. The honest
-   * behaviour is therefore to go SILENT and say so (`getAmbienceState().suppressed`), not to
-   * low-pass the region bed and call it a cellar. An absence that is reported is a piece of work
-   * outstanding; an absence that is papered over is a defect nobody will ever find.
+   * R4 — INTERIORS GET THEIR OWN BED. ROUND 2, AND THIS REVERSES ROUND 1.
+   *
+   * Round 1 read R4 ("Interiors get their own bed, not the exterior bed at −12 dB") as forbidding
+   * the low-passed exterior while permitting silence, and shipped `suppressed` for every interior
+   * in the build — which meant walking into any town in Black Marsh dropped the world to absolute
+   * silence, `helstrom-market` and `stormhold-street` included. The round-1 critic ruled that R4
+   * mandates a bed rather than merely forbidding one, and this round agrees, on the item's own
+   * "How we lose" wording: the named failure is that a low-passed exterior "is not *wrong*, it is
+   * just **nothing**". Silence is that failure at its limit, not an escape from it. R1's `null`
+   * permission is scoped to a LAYER inside a declared bed, and RI-WLD08 §6 sets a positive count
+   * — "≥13 (one per region) + ≥8 settlement beds + ≥4 interior beds" — that no absence satisfies.
+   *
+   * So an interior cell now looks up its own bed by cell name, from
+   * `game/data/audio/ambience/interiors/`, and these are real beds rather than the region bed with
+   * a filter on it: the writ house has no L4 at all (R1 — nothing lives there, and the absence is
+   * the identity), the barge hold denies wind, and the market's L2 swaps a daytime crowd for the
+   * empty building at night rather than turning the same crowd down (R5).
+   *
+   * `suppressed` still exists and still means what it said, for the cells that genuinely have no
+   * bed — `arena`, which belongs to the combat mix rather than to regional ambience. An absence
+   * that is reported is work outstanding; an absence papered over is a defect nobody finds.
    */
   _stepAmbience() {
     if (!this.ambience) return;
     const p = this.sim.player;
     const cell = this.cellFor(this.sim.env);
     if (cell !== 'province' && cell !== 'exterior' && cell !== 'showcase') {
-      this.ambience.suppressed = cell;
+      // An interior cell drives the SAME `AmbienceDriver` on the SAME code path as the exterior —
+      // one clock set, one voice budget, one crossfade — so an interior bed cannot quietly become
+      // a second implementation that is measured by nothing.
+      const bed = this.ambience.bedFor(cell);
+      if (!bed) { this.ambience.suppressed = cell; return; }
+      this.ambience.suppressed = null;
+      const ai = this._ambienceArg || (this._ambienceArg = { regionId: null, x: 0, z: 0, yawRad: 0, timeOfDay: 12, weather: 'clear', frame: 0, dt: STEP_MS / 1000 });
+      ai.regionId = cell;
+      ai.x = p.pos[0]; ai.z = p.pos[2];
+      ai.yawRad = (p.yaw || 0) * Math.PI / 180;
+      ai.timeOfDay = this.sim.env.timeOfDay;
+      ai.weather = this.sim.env.weather;
+      ai.frame = this.sim.frame;
+      this.ambience.step(ai);
       return;
     }
     this.ambience.suppressed = null;

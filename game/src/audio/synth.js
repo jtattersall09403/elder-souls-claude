@@ -42,6 +42,25 @@
 /** Attack/decay envelopes shorter than this are inaudible clicks; clamp rather than reject. */
 const MIN_ENV_S = 0.0005;
 
+/**
+ * RI-AUD03 §A, the L1 row: "looped, gapless, **≥30 s of material**". Round 1 used 6.
+ *
+ * Six seconds of brown noise is not six seconds of texture — it is one random walk with two or
+ * three large slow excursions in it, and looping it repeats those excursions on a six-second
+ * cycle for as long as the region is loaded. `tools/analysis/ambience-onsets.mjs` caught it in
+ * the Stone Wastes, whose L1 is the quietest in the game with `L2: null` behind it: the same two
+ * swells arrived at 0.77 s and 3.12 s past every single buffer boundary — 0.77, 3.12, 6.77, 9.12,
+ * 15.12, 21.12 — and muting L1 removed every one of them. That is the loop being audible AS a
+ * loop, which is the exact failure the "≥30 s" clause exists to prevent, and it was in every
+ * region with a noise layer rather than only the one quiet enough to expose it.
+ *
+ * The cost is memory: 30 s of stereo float at 48 kHz is ~11.5 MB per noise layer, against ~2.3 MB
+ * at six. A bed holds one to three of them and the old ones are released after the 4 s region
+ * crossfade. That is real and it is the item's own number; RI-AUD02's budget is about SHIPPED
+ * BYTES, and this costs none — the buffer is generated, not loaded.
+ */
+const LOOP_SECONDS = 30;
+
 export function dbToGain(db) { return Math.pow(10, db / 20); }
 export function gainToDb(g) { return 20 * Math.log10(Math.max(1e-9, g)); }
 
@@ -226,7 +245,7 @@ export function buildContinuous(ctx, synth, dest, rng, t0 = 0, gainMul = 1) {
     // `loop: true` on the LAST argument, not just on the source: the buffer has to be built to
     // wrap (see `makeNoiseBuffer`) or `src.loop` clicks once per period for as long as the
     // region is loaded.
-    src.buffer = makeNoiseBuffer(ctx, synth.colour, 6, rng,
+    src.buffer = makeNoiseBuffer(ctx, synth.colour, LOOP_SECONDS, rng,
                                  synth.width === undefined ? 0.5 : synth.width, true);
     src.loop = true;
     filter = applyFilter(ctx, src, synth.filter);

@@ -63,6 +63,7 @@ const DOMAIN = {
   'w1-29': 'Controls & interface',
   // Named pieces, dispatched outside the numbered plan.
   'w1-save': 'Engine & harness',
+  'w1-souls': 'Death & progression',
   'w1-library': 'Lore & the library',
   'w1-prose': 'Dialogue',
   'w1-tools': 'Engine & harness',
