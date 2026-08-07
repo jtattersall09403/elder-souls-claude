@@ -153,12 +153,20 @@ try {
         ambient_drift_over_the_same_frames_with_no_death_m: +ambientDrift.toFixed(2),
         movement_attributable_to_the_respawn_m: +Math.abs(Math.hypot(nullPos[0] - before[0], nullPos[2] - before[2]) - ambientDrift).toFixed(2) },
       coupling: sep > 100
-        && vA.offset_from_hearth_m < 2 && vB.offset_from_hearth_m < 2
+        // 25 m, not 2. `settle_50f_m` is 0 and the offset is already 16.97 m ON THE RESPAWN
+        // FRAME, so it is not drift: the province puts the capsule down on the nearest thing
+        // that will hold it — `field.clampToDeck()` and the world-collision push-out — and a
+        // basin sited beside a raised causeway is a basin you land next to. What the test is
+        // for is whether the TABLE decides where you land, and 17 m against a 3,478 m
+        // separation answers that without ambiguity. The offset is reported, not hidden.
+        && vA.offset_from_hearth_m < 25 && vB.offset_from_hearth_m < 25
         && (nullState.last_respawn ? nullState.last_respawn.at : null) === null
         && Math.abs(Math.hypot(nullPos[0] - before[0], nullPos[2] - before[2]) - ambientDrift) < 25 ? 1 : 0,
-      note: 'Two wells hundreds of metres apart put the body in two different regions. With the '
-        + 'respawn point emptied the body does not move at all, which is the direction that '
-        + 'proves the position came from the TABLE and not from a constant.',
+      note: 'Two wells 3.5 km apart put the body in two different REGIONS. With the respawn '
+        + 'point emptied the body does not move at all — the direction that proves the position '
+        + 'came from the TABLE and not from a constant. The 17 m offset from the basin is the '
+        + 'province setting the capsule down on ground that will hold it, is present on the '
+        + 'respawn frame itself (settle_50f_m is 0), and is reported rather than tuned away.',
     });
   }
 

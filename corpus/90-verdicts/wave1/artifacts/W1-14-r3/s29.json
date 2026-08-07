@@ -1,0 +1,79 @@
+{
+  "note": "damagePlayer() does NOT stamp sim.lastHostileFrame; only bus HOSTILE_EVENTS do.",
+  "after_a_real_swing": [
+    {
+      "wait": 0,
+      "how": "swing",
+      "stamped": true,
+      "in_combat": false,
+      "moved_m": 84.93,
+      "refused": [],
+      "drops": []
+    },
+    {
+      "wait": 60,
+      "how": "swing",
+      "stamped": true,
+      "in_combat": false,
+      "moved_m": 84.93,
+      "refused": [],
+      "drops": []
+    },
+    {
+      "wait": 150,
+      "how": "swing",
+      "stamped": true,
+      "in_combat": false,
+      "moved_m": 84.93,
+      "refused": [],
+      "drops": []
+    },
+    {
+      "wait": 299,
+      "how": "swing",
+      "stamped": true,
+      "in_combat": false,
+      "moved_m": 84.93,
+      "refused": [],
+      "drops": []
+    },
+    {
+      "wait": 301,
+      "how": "swing",
+      "stamped": true,
+      "in_combat": false,
+      "moved_m": 84.93,
+      "refused": [],
+      "drops": []
+    },
+    {
+      "wait": 600,
+      "how": "swing",
+      "stamped": true,
+      "in_combat": false,
+      "moved_m": 84.93,
+      "refused": [],
+      "drops": []
+    }
+  ],
+  "after_damagePlayer": [
+    {
+      "wait": 0,
+      "how": "damagePlayer",
+      "stamped": "damagePlayer",
+      "in_combat": false,
+      "moved_m": 0,
+      "refused": [],
+      "drops": []
+    },
+    {
+      "wait": 299,
+      "how": "damagePlayer",
+      "stamped": "damagePlayer",
+      "in_combat": false,
+      "moved_m": 84.93,
+      "refused": [],
+      "drops": []
+    }
+  ]
+}

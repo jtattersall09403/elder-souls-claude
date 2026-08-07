@@ -3378,7 +3378,13 @@ export class Engine {
     const second = ch.birthsign_second ? birthsignById(this.chData, ch.birthsign_second) : null;
     ch.powers = birthsignPowers(sign, second);
     ch.drawbacks = birthsignDrawbacks(sign, second);
-    this.applyDerivedPools({ refill: false, why: 'load_recompose' });
+    // AND NOTHING ELSE. The first version also called `applyDerivedPools()` here, on the
+    // reasonable-sounding grounds that the pools should be re-derived from the restored sign.
+    // It re-derived them from `sim.progression.attributes`, which does not carry WILLPOWER —
+    // so `pools.focus_max` came out 0 and the load clamped a loaded reservoir of 94 Focus to
+    // zero and emptied the attunement. RI-JRN05's own round-trip instrument caught it on 8 of
+    // 8 trials within minutes of the change. The pools in the save are the pools; what was
+    // missing was the TERMS, and only the terms are put back.
     return { sign: ch.birthsign, second: ch.birthsign_second || null, powers: ch.powers.length, drawbacks: ch.drawbacks.length };
   }
 

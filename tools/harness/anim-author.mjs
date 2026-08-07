@@ -752,15 +752,35 @@ function better(a, b) {                     // true when `a` beats `b`
 const GATE = process.argv.includes('--gate');
 const GATE_K = Number(process.argv.includes('--gate-k') ? process.argv[process.argv.indexOf('--gate-k') + 1] : 24);
 const ONLY = process.argv.includes('--only') ? String(process.argv[process.argv.indexOf('--only') + 1]).split(',') : null;
+//
+// THE SHORTLIST HAS TO BE DIVERSE, NOT PROXY-OPTIMAL. Measured: ranking it by this file's own
+// `lie` and gating the top 16 finds `chop_overhead`'s answer at rank 13 and finds NOTHING for
+// `sweep_wide` — every one of that archetype's sixteen proxy-best points reads `lie 13-14` live,
+// because the proxy rewards exactly the small excursions that leave the SILHOUETTE unchanged.
+// A second shortlist ordered by DESCENDING excursion is therefore kept and interleaved with the
+// first: excursion is the one knob that moves the outline, so the two orders bracket the answer
+// even where the proxy is anti-correlated with it.
 const SHORTLIST = [];
+const SHORTLIST_SWING = [];
 /** Keep the best GATE_K distinct (t, swing, ext, bury, cham, hitFrac) points, in rank order. */
-function shortlistPush(list, c) {
+function shortlistPush(list, c, cmp) {
   const k = [c.t, c.swing, c.ext, c.bury, c.cham, c.hitFrac].map((v) => Number(v).toFixed(3)).join('|');
   if (list.some((x) => x._k === k)) return;
   c._k = k;
   list.push(c);
-  list.sort((a, b) => (better(a, b) ? -1 : better(b, a) ? 1 : 0));
+  list.sort(cmp || ((a, b) => (better(a, b) ? -1 : better(b, a) ? 1 : 0)));
   if (list.length > GATE_K) list.length = GATE_K;
+}
+const BY_SWING = (a, b) => (b.swing - a.swing) || (a.m.axis - b.m.axis);
+/** The two orders, interleaved, deduplicated, in the order the gate should try them. */
+function interleave(a, b) {
+  const out = [], seen = new Set();
+  for (let i = 0; i < Math.max(a.length, b.length); i++) {
+    for (const c of [a[i], b[i]]) {
+      if (c && !seen.has(c._k)) { seen.add(c._k); out.push(c); }
+    }
+  }
+  return out;
 }
 /**
  * Grade a shortlist with `cmb-exchange.mjs` and return the first candidate that clears
@@ -833,7 +853,7 @@ for (const name of Object.keys(ARCH)) {
      for (let t = 0.00; t <= 0.801; t += 0.10) {
       for (let ext = 0; ext <= 70; ext += 10) {
         const hit = cell(t, 1.30, 0.05, 0.09, ext, bury, cham, hitFrac);
-        if (hit) { if (better(hit, best)) best = hit; if (GATE) shortlistPush(SHORTLIST, hit); }
+        if (hit) { if (better(hit, best)) best = hit; if (GATE) { shortlistPush(SHORTLIST, hit); shortlistPush(SHORTLIST_SWING, hit, BY_SWING); } }
       }
      }
     }
@@ -859,13 +879,13 @@ for (const name of Object.keys(ARCH)) {
     for (const t of tS) for (const ext of eS) for (const hitFrac of hS) for (const bury of bS) for (const cham of cS) {
       const hit = cell(t, Math.min(1.30, b0.swing + 0.09), Math.max(0.05, b0.swing - 0.09), 0.01,
         ext, bury, cham, hitFrac);
-      if (hit) { if (better(hit, best)) best = hit; if (GATE) shortlistPush(SHORTLIST, hit); }
+      if (hit) { if (better(hit, best)) best = hit; if (GATE) { shortlistPush(SHORTLIST, hit); shortlistPush(SHORTLIST_SWING, hit, BY_SWING); } }
     }
   }
   if (GATE && SHORTLIST.length) {
-    const g = gate(name, SHORTLIST);
+    const g = gate(name, interleave(SHORTLIST, SHORTLIST_SWING));
     if (g) best = g;
-    SHORTLIST.length = 0;
+    SHORTLIST.length = 0; SHORTLIST_SWING.length = 0;
   }
   solved[name] = best.a;
   console.log(`[${((Date.now() - _t0) / 1000).toFixed(0)}s] ${name.padEnd(16)} t=${best.t.toFixed(2)} swing=${best.swing.toFixed(2)} ext=${best.ext} bury=${best.bury} chamber=${best.cham} hitFrac=${best.hitFrac}  ` +

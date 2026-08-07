@@ -125,33 +125,37 @@ async function main() {
   await ev(() => { window.__HARNESS.setMode('play-instrumented'); window.__HARNESS.setRenderRate(0); return true; });
   await page.evaluate(PAGE_HELPERS);
 
-  // THE TITLE SURFACE HAS THE BUTTONS. W1-26's title screen consumes every action of the closed
-  // set every frame (`engine._censusStep` -> `input.consumeUI(CENSUS_ACTIONS)`), which is
-  // correct — a menu that let the body walk behind it would be the defect. But it means a probe
-  // that starts measuring input while the title is up measures the TITLE, and reads a working
-  // control layer as sixteen dead buttons. Every check below therefore starts in the world.
-  const dismissed = await ev(() => {
+  // WHICH ACTION FIRED IS READ FROM THE EDGE LOG, NOT FROM `held`.
+  //
+  // RI-JRN03 M-K1 says "record which action fired from the trace", and there is a reason it says
+  // trace and not state. A surface that is open takes the buttons — `engine._censusStep` calls
+  // `input.consumeUI(CENSUS_ACTIONS)` for the title, the census and a conversation, and
+  // CENSUS_ACTIONS is exactly `interact, block, light, heavy, roll`. That is CORRECT: a menu
+  // that let the body swing behind it would be the defect. But `consumeUI` clears `pressed` and
+  // `held` in the SAME step, so a probe reading `held` sees five of the sixteen actions as dead
+  // buttons whenever the opening's census is up — which it is, at `hold.hatch-name`, on a fresh
+  // boot. `menu` is the same story one layer along: pressing Escape opens a surface, and the
+  // surface it opened eats the press.
+  //
+  // `pipe.edges` is pushed inside `latchForStep`, BEFORE any surface consumes, so it records the
+  // press that a `held` read cannot see. That is the A-JRN7 channel the item names. The index is
+  // taken and read INSIDE one `page.evaluate`, never carried across two, because the ring is
+  // cleared when it passes 64 entries and a cursor held on the host outlives the array it indexes.
+  // …and the probe starts in the WORLD. On a fresh boot the opening census is already at
+  // `hold.hatch-name`, and `consumeUI` zeroes `moveX/moveY` as well as clearing the five
+  // actions, so a stick sweep measured there reads a perfect radial deadzone as [0,0] at every
+  // magnitude. `reset()` leaves the census; every check that resets is therefore clean, and
+  // this puts the ones that do not on the same footing.
+  const surfaces = await ev(() => {
     const H = window.__HARNESS;
-    const before = H.getUIState ? H.getUIState() : null;
-    try { H.titleActivate('new'); } catch (e) { return { ok: false, why: String(e && e.message), before }; }
-    H.stepFrames(4);
-    return { ok: true, before, after: H.getUIState ? H.getUIState() : null };
+    const at_boot = { mode: H.getUIState ? H.getUIState().mode : null, census: H.getCensusState ? H.getCensusState() : null };
+    H.reset({ state: 'default' });
+    H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.stepFrames(2);
+    return { at_boot, after_reset: { mode: H.getUIState ? H.getUIState().mode : null, census: H.getCensusState ? H.getCensusState() : null },
+      consumed_by_an_open_surface: ['interact', 'block', 'light', 'heavy', 'roll', 'move'] };
   });
-  if (!dismissed.ok) log(`  [note] title surface not dismissed: ${dismissed.why}`);
-  // `reset()` puts the title back, so every check that resets must dismiss it again. Rather than
-  // audit thirty call sites, the reset is wrapped once here.
-  await ev(() => {
-    const H = window.__HARNESS;
-    const raw = H.reset.bind(H);
-    H.reset = (opts) => {
-      const r = raw(opts);
-      H.setMode('play-instrumented'); H.setRenderRate(0);
-      try { H.titleActivate('new'); } catch { /* already in the world */ }
-      H.stepFrames(4);
-      return r;
-    };
-    return true;
-  });
+  log(`  [note] surfaces: ${JSON.stringify(surfaces)}`);
 
   const groups = args.group ? new Set(String(args.group).split(',').map((s) => s.trim())) : null;
   const want = (g) => !groups || groups.has(g);
@@ -362,7 +366,9 @@ async function desktopChecks(page, h, ev) {
         window.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, movementX: 10, movementY: 0 }));
         H.stepFrames(1);
       }
-      out[hz] = Number((H.getCameraFrame().camera.yaw_deg - y0).toFixed(6));
+      let d = H.getCameraFrame().camera.yaw_deg - y0;
+      while (d > 180) d -= 360; while (d < -180) d += 360;   // yaw is 0..360 and wraps
+      out[hz] = Number(d.toFixed(6));
     }
     H.setRenderRate(0);
     return out;
@@ -387,7 +393,9 @@ async function desktopChecks(page, h, ev) {
       H.stepFrames(2);
       const y0 = H.getCameraFrame().camera.yaw_deg;
       for (let i = 0; i < 20; i++) { window.dispatchEvent(new MouseEvent('mousemove', { bubbles: true, movementX: px, movementY: 0 })); H.stepFrames(1); }
-      pts.push([px * 20, H.getCameraFrame().camera.yaw_deg - y0]);
+      let dd = H.getCameraFrame().camera.yaw_deg - y0;
+      while (dd > 180) dd -= 360; while (dd < -180) dd += 360;
+      pts.push([px * 20, dd]);
     }
     return pts;
   });
@@ -468,8 +476,9 @@ async function desktopChecks(page, h, ev) {
       window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyR', bubbles: true }));
       let seen = -1;
       for (let s = 0; s < 5; s++) {
+        const e0 = H.getInputEdges().length;
         H.stepFrames(1);
-        if (H.getInputState().held.includes('heavy')) { seen = H.getFrame() - f0; break; }
+        if (H.getInputEdges().slice(e0).some((e) => e.button === 'heavy')) { seen = H.getFrame() - f0; break; }
       }
       gaps.push(seen);
       window.dispatchEvent(new KeyboardEvent('keyup', { code: 'KeyR', bubbles: true }));
@@ -542,7 +551,6 @@ async function driveControl(page, h, ev, control) {
   return ev((c) => {
     const H = window.__HARNESS;
     const canvas = document.querySelector('canvas#view');
-    const before = new Set(H.getInputState().held);
     const holdM = /^(.*)Hold(\d+)$/.exec(c);
     const base = holdM ? holdM[1] : c;
     const holdFrames = holdM ? Number(holdM[2]) : 0;
@@ -557,6 +565,7 @@ async function driveControl(page, h, ev, control) {
       if (mouse) window.dispatchEvent(new MouseEvent('mouseup', { button: Number(mouse[1]), bubbles: true }));
       else if (!wheel) window.dispatchEvent(new KeyboardEvent('keyup', { code: base, bubbles: true }));
     };
+    const e0 = H.getInputEdges().length;
     down();
     // A hold-gated binding needs its gate frames; `two_hand` on KeyG is gated too.
     const steps = Math.max(2, holdFrames + 2, 15);
@@ -564,12 +573,10 @@ async function driveControl(page, h, ev, control) {
     // Taking the first would report `parry` for the `Mouse1Hold12` binding and call a working
     // hold gate a misroute.
     const all = [];
-    for (let i = 0; i < steps; i++) {
-      H.stepFrames(1);
-      for (const a of H.getInputState().held) if (!before.has(a) && !all.includes(a)) all.push(a);
-    }
+    for (let i = 0; i < steps; i++) H.stepFrames(1);
     up();
-    for (let i = 0; i < 3; i++) { H.stepFrames(1); for (const a of H.getInputState().held) if (!before.has(a) && !all.includes(a)) all.push(a); }
+    for (let i = 0; i < 3; i++) H.stepFrames(1);
+    for (const e of H.getInputEdges().slice(e0)) if (!all.includes(e.button)) all.push(e.button);
     return all;
   }, control);
 }
@@ -593,24 +600,19 @@ async function padChecks(page, h, ev) {
       const map = {};
       for (let i = 0; i < 17; i++) {
         H.gamepad(zero); H.stepFrames(2);
-        const before = new Set(H.getInputState().held);
         const on = { buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' };
         on.buttons[i] = 1;
-        let fired = null;
+        let e0 = H.getInputEdges().length;
         // 20 frames: long enough for a 12-frame hold gate to promote.
-        for (let f = 0; f < 20; f++) {
-          H.gamepad(on); H.stepFrames(1);
-          for (const a of H.getInputState().held) if (!before.has(a)) fired = fired || a;
-        }
-        const heldAction = fired;
-        H.gamepad(zero); H.stepFrames(1);
+        for (let f = 0; f < 20; f++) { H.gamepad(on); H.stepFrames(1); }
+        const heldAction = (H.getInputEdges().slice(e0)[0] || {}).button || null;
+        H.gamepad(zero); H.stepFrames(3);
         // A tap: press and release inside the gate window emits the TAP action on release.
-        H.gamepad(zero); H.stepFrames(2);
-        const before2 = new Set(H.getInputState().held);
+        e0 = H.getInputEdges().length;
         H.gamepad(on); H.stepFrames(3);
         H.gamepad(zero);
-        let tapFired = null;
-        for (let f = 0; f < 4; f++) { H.stepFrames(1); for (const a of H.getInputState().held) if (!before2.has(a)) tapFired = tapFired || a; }
+        for (let f = 0; f < 4; f++) H.stepFrames(1);
+        const tapFired = (H.getInputEdges().slice(e0).map((x) => x.button).find((a) => a !== heldAction)) || null;
         map[i] = { hold: heldAction, tap: tapFired };
         H.gamepad(zero); H.stepFrames(2);
       }
@@ -862,7 +864,7 @@ async function padChecks(page, h, ev) {
       const f0 = H.getFrame();
       H.gamepad(on);
       let seen = -1;
-      for (let s = 0; s < 5; s++) { H.stepFrames(1); if (H.getInputState().held.includes('light')) { seen = H.getFrame() - f0; break; } }
+      for (let s = 0; s < 5; s++) { const e0 = H.getInputEdges().length; H.stepFrames(1); if (H.getInputEdges().slice(e0).some((e) => e.button === 'light')) { seen = H.getFrame() - f0; break; } }
       gaps.push(seen);
     }
     H.gamepad(zero); H.stepFrames(2);
@@ -925,14 +927,14 @@ async function padChecks(page, h, ev) {
     };
     const drive = (i) => {
       H.gamepad(hid(-1)); H.stepFrames(3);
-      const before = new Set(H.getInputState().held);
-      let fired = null;
-      for (let f = 0; f < 18; f++) { H.gamepad(hid(i)); H.stepFrames(1); for (const a of H.getInputState().held) if (!before.has(a)) fired = fired || a; }
+      let e0 = H.getInputEdges().length;
+      for (let f = 0; f < 18; f++) { H.gamepad(hid(i)); H.stepFrames(1); }
+      const fired = (H.getInputEdges().slice(e0)[0] || {}).button || null;
       H.gamepad(hid(-1)); H.stepFrames(3);
-      let tap = null;
-      const b2 = new Set(H.getInputState().held);
+      e0 = H.getInputEdges().length;
       H.gamepad(hid(i)); H.stepFrames(3); H.gamepad(hid(-1));
-      for (let f = 0; f < 4; f++) { H.stepFrames(1); for (const a of H.getInputState().held) if (!b2.has(a)) tap = tap || a; }
+      for (let f = 0; f < 4; f++) H.stepFrames(1);
+      const tap = H.getInputEdges().slice(e0).map((x) => x.button).find((a) => a !== fired) || null;
       H.gamepad(hid(-1)); H.stepFrames(2);
       return { hold: fired, tap };
     };
@@ -960,9 +962,9 @@ async function padChecks(page, h, ev) {
     }
     out.calibration = { started: !!st0.calibrating, prompts, inputs, finished: !H.getInputState().gamepad.calibrating };
     // …and the map it produced is live: raw 0 was claimed by the first prompt.
-    const before = new Set(H.getInputState().held);
-    let fired = null;
-    for (let f = 0; f < 6; f++) { H.gamepad(unk(0)); H.stepFrames(1); for (const a of H.getInputState().held) if (!before.has(a)) fired = fired || a; }
+    const e0b = H.getInputEdges().length;
+    for (let f = 0; f < 6; f++) { H.gamepad(unk(0)); H.stepFrames(1); }
+    const fired = (H.getInputEdges().slice(e0b)[0] || {}).button || null;
     H.gamepad(unk(-1)); H.stepFrames(2);
     out.calibrated_action_for_raw0 = fired;
     return out;
@@ -1029,13 +1031,12 @@ async function touchChecks(page, h, ev) {
     let id = 1;
     for (const c of layout) {
       if (c.action === '__drawer') continue;
-      const before = new Set(H.getInputState().held);
+      const e0 = H.getInputEdges().length;
       H.touchDown(id, c.x, c.y);
-      let fired = null;
-      for (let f = 0; f < 20; f++) { H.stepFrames(1); for (const a of H.getInputState().held) if (!before.has(a)) fired = fired || a; }
+      for (let f = 0; f < 20; f++) H.stepFrames(1);
       H.touchUp(id);
-      for (let f = 0; f < 4; f++) { H.stepFrames(1); for (const a of H.getInputState().held) if (!before.has(a)) fired = fired || a; }
-      reach[c.action] = fired;
+      for (let f = 0; f < 4; f++) H.stepFrames(1);
+      reach[c.action] = (H.getInputEdges().slice(e0)[0] || {}).button || null;
       id++;
     }
     // The drawer, then its petals.
@@ -1043,13 +1044,12 @@ async function touchChecks(page, h, ev) {
     H.touchDown(900, drawer.x, drawer.y); H.touchUp(900); H.stepFrames(2);
     const petals = H.touchLayout().filter((c) => c.fromDrawer);
     for (const p of petals) {
-      const before = new Set(H.getInputState().held);
+      const e0 = H.getInputEdges().length;
       H.touchDown(id, p.x, p.y);
-      let fired = null;
-      for (let f = 0; f < 20; f++) { H.stepFrames(1); for (const a of H.getInputState().held) if (!before.has(a)) fired = fired || a; }
+      for (let f = 0; f < 20; f++) H.stepFrames(1);
       H.touchUp(id);
-      for (let f = 0; f < 4; f++) { H.stepFrames(1); for (const a of H.getInputState().held) if (!before.has(a)) fired = fired || a; }
-      reach[p.action] = fired;
+      for (let f = 0; f < 4; f++) H.stepFrames(1);
+      reach[p.action] = (H.getInputEdges().slice(e0)[0] || {}).button || null;
       id++;
       H.touchDown(901, drawer.x, drawer.y); H.touchUp(901); H.stepFrames(2);   // reopen
     }

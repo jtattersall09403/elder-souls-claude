@@ -2,7 +2,7 @@
   "task_id": "W1-07-r3-critic",
   "brief": "CRITIC for W1-07 round 3 (character creation and the opening). Score against amended RI-JRN01, new RI-JRN09, RI-CHR01-03, RI-PRG02/03, RI-EXP01. Baseline: round 2 re-reads at 1.3.",
   "started": "wave-1 round 3",
-  "state": "researching",
+  "state": "writing",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-07-r3.json",
     "corpus/90-verdicts/wave1/W1-07-r3.md",
@@ -10,10 +10,24 @@
   ],
   "outputs_written": [],
   "findings": [
-    "smoke.mjs 6/6 PASS at critic session start (chromium 141, SwiftShader, 577 unique colours).",
-    "tools/analysis/build-viability.mjs EXISTS on disk now - the tool that pinned RI-CHR01 Distinctness and RI-CHR03 Decidability at corpus_debt. Must check it is honest before crediting.",
-    "tools/journey/{journey-run,beat-extract,gamepad-shim,state-diff}.mjs EXIST - RI-JRN01 A-JRN1 corpus_debt may have expired."
+    "smoke.mjs 6/6 PASS at critic session start AND after the tree went down mid-run (chromium 141, SwiftShader).",
+    "TREE MOVED UNDER ME. HEAD at dispatch was b3c6f43 (W1-07 r3). I measured a tree that also contains bcc2567 (W1-26: title.js, text-register.js, ui.js scroll-note move) and 227947b (W1-01 r4). The build I scored is NOT the build the W1-07 builder measured; recorded in the verdict.",
+    "PHANTOM TOOLS 67 -> 55. tools/analysis/build-viability.mjs, tools/journey/{journey-run,beat-extract,gamepad-shim,state-diff}.mjs and all five tools/experience/* NOW EXIST. RI-JRN01's A-JRN1 corpus_debt and RI-CHR01/CHR03's Distinctness/Decidability corpus_debt have EXPIRED by their own condition.",
+    "CONFIRMED under my own instrument (critic-w1-07-r3a.mjs, draw-call register not the layout echo): DTR_q = 1.0000, DTR_scene = 0.9279 under the builder's model denominator. 10-of-10 SURVIVES. 0 clipped strings. metrics().text never claimed a string the draw register did not see, so my a-priori attack on that accessor is WITHDRAWN on the evidence for this scene.",
+    "DTR under the census-state denominator (what the scene computes, not what buildCensusModel kept): DTR_scene 0.8673, DTR_q 0.8500. Under +writ body: 0.8288. Worst node 0.5000 at hold.hatch-name / writ.given-name \u2014 HF1 fires below 0.50, so it misses by one unit in the fourth decimal.",
+    "CONFIRMED under my own node-level sweep (critic-w1-07-r3c.mjs, independent LCG, my own sweep shape): NAMED_distinct = 14 of 14, NAMED_rate 96.25%, 0 classes never produced, histogram max deviation 10.17% (HF4 needs <15%). 14-of-14 SURVIVES.",
+    "FLOOR SWEEP the builder did not run: at nearest_profession_floor 0 the matcher still reaches 14 of 14 and names 100% of runs. The floor buys the honest unnamed band and buys nothing else; the 2.1% band is one tuned constant, not a property of the answers.",
+    "*** BIGGEST GAP *** RI-JRN09 M3 NAMED_line requires the on_match_named_class LINE on the frame in 100% of named runs. MEASURED 0 of 12 (critic-w1-07-r3g.mjs, 6 races x 2 upbringings, all named). The line arrives in state.spoken at writ.birthsign and is thrown away by ui.js's overflow-sacrifice loop before fillText. The builder's probe reports 100% because it greps for the CLASS NAME anywhere in the whole scene, and the same round added 'Trade declared: %ClassName' to the drawn writ. The moment RI-CHR01 SS4 calls 'the moment the route is for' is orphan text, one node further along than round 2's.",
+    "ACCESSOR HOLE (critic-w1-07-r3e/f.mjs): renderer owns THREE 2D text surfaces (ui, title, menus) and instruments TWO. Instrumenting menus yields 0 strings anyway, because game/src/ui/glyphs.js drawText() strokes vector paths and NEVER calls fillText. 5 distinct strings on the menus surface during the opening ('5','0','LIGHT','Spark-Dart','Take A tithe-gourd, empty') are invisible to the accessor M9/M15 are gated on. W1-26's own probe asserts 'title (the only non-dialogue drawn surface in the build)' \u2014 false.",
+    "M5 PIXEL READBACK (critic-w1-07-r3d.mjs, round-2 critic's method verbatim): max 0.4980 against the 0.55 ceiling, where the build self-reports 0.3837. M5 PASSES. Round 2's pixel max was 0.49, so the PANEL_MAX_FRAC 0.42->0.48 trade cost about 0.008 of frame area. But the builder's counter-check used getCensusState().surface.opaque_area_frac = UILayer.metrics(), which is exactly the number amended M5 forbids.",
+    "HF9 DOES NOT FIRE. Title surface exists, shows on a play-mode boot with no flags, draws the exact O3 set (Continue/New/Load/Settings/Quit to menu), and titleActivate('continue') returns {loaded:true, ok:true}. Built by W1-26, NOT by W1-07's builder. Credit recorded to the build and attribution recorded honestly.",
+    "M8 CLOSED. Writ opens via use_item; 10 rendered rows at the open node incl. 'Name recorded: Silence-Under-Salt', 'Observed as: Saxhleel', 'Trade declared: Xanmeer-Delver', scrolling '1-9 of 16'. Round 2 measured rendered_text: [].",
+    "MUTE PAIRS CONFIRMED 0 of 150 under my own data-level census (critic-w1-07-r3b.mjs, 15 NPCs x 10 races). Per-race topic totals 56-57 across all ten races, 0 races mute with anyone, no settlement silent for any race. The Saxhleel finding is genuinely closed and the fix is in the right direction: of 57 (npc,topic) pairs only ONE is subtractive; 35 of 57 vary the ANSWER by race (23 two-way, 12 three-way).",
+    "WRONG-DIRECTION HUNT, second result: greetings key on playerRaceClass(), which is {saxhleel, naga, dunmer, imperial, other-foreign}. Six of the ten playable races collapse to one bucket, so a Nord and a Khajiit get byte-identical greetings from every NPC in the build forever. Per RI-CHR02 SS4c's own 5-class design, so not a violation - but '13/13 NPCs greet races differently' is at most a 5-way distinction.",
+    "M4 CLAUSE 1, the item's headline number nobody has ever measured: getJourneyStamps() returns first_control_frame: null, first_field_frame: 0, first_field_node 'hold.hatch-name', available_play_s_before_first_field: null. Against O6's >= 60 s.",
+    "NEW O8 DEFECT: the census panel header draws '1 of 13' next to the place name at hold.hatch-name. O8 forbids 'No Step 2 of 4'. It is the option-scroll indicator (W1-26 moved it into the header to stop it being clipped) and it reads as a creation-progress counter. No method in RI-JRN01 owns it: M5 measures area, M9 greps a fixed substring list that does not contain it.",
+    "QUESTIONNAIRE ANSWERS ARE ROUNDED AWAY: exact set-equality matches 1 of 240. In 233 named runs the mean overlap between the five skills the player's ten answers derived and the five skills of the class actually adopted is 2.66 of 5; 95 of 233 keep 2 or fewer; one keeps none. census.js sets spec.custom = null and spec.classId = c.id, so the derived shape is discarded. Before round 3 the questionnaire gave the player exactly their derived shape (named_class was null in ~100% of plays)."
   ],
-  "next_step": "write independent DTR/AC/NAMED instrument; do not use builder's jrn09-exchange.mjs",
+  "next_step": "write W1-07-r3.json/.md and validate",
   "notes_for_successor": ""
 }

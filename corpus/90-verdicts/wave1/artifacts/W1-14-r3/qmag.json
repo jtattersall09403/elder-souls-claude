@@ -1,0 +1,163 @@
+{
+  "q_mag_quests": 28,
+  "casts": [
+    {
+      "eff": "open_lock",
+      "kinds": [
+        "cast_start",
+        "focus_spend",
+        "cast_release",
+        "lock_opened",
+        "world_flag",
+        "effect_apply",
+        "spell_impact"
+      ]
+    },
+    {
+      "eff": "shatter",
+      "kinds": [
+        "cast_start",
+        "focus_spend",
+        "cast_release",
+        "object_shattered",
+        "world_flag",
+        "effect_apply",
+        "spell_impact"
+      ]
+    },
+    {
+      "eff": "ward_trap",
+      "kinds": [
+        "cast_start",
+        "focus_spend",
+        "cast_release",
+        "sap_ward",
+        "world_flag",
+        "needle",
+        "collapse",
+        "effect_apply",
+        "spell_impact"
+      ]
+    },
+    {
+      "eff": "detect_key",
+      "refused": "range"
+    }
+  ],
+  "flipped_count": 1,
+  "flipped": [
+    {
+      "quest": "Q-MAG-01",
+      "before": [
+        {
+          "id": "mag_the_warded_ledger__magic",
+          "method": "magic_utility",
+          "available": false,
+          "why": [
+            "you cannot bring open_lock to bear",
+            "you cannot bring shatter to bear"
+          ]
+        },
+        {
+          "id": "mag_the_warded_ledger__bribe",
+          "method": "bribe",
+          "available": false,
+          "why": [
+            "disposition 0/45"
+          ]
+        },
+        {
+          "id": "mag_the_warded_ledger__steal",
+          "method": "steal",
+          "available": false,
+          "why": [
+            "security 5/55"
+          ]
+        },
+        {
+          "id": "mag_the_warded_ledger__combat",
+          "method": "combat",
+          "available": true,
+          "why": []
+        }
+      ],
+      "after": [
+        {
+          "id": "mag_the_warded_ledger__magic",
+          "method": "magic_utility",
+          "available": true,
+          "why": []
+        },
+        {
+          "id": "mag_the_warded_ledger__bribe",
+          "method": "bribe",
+          "available": false,
+          "why": [
+            "disposition 0/45"
+          ]
+        },
+        {
+          "id": "mag_the_warded_ledger__steal",
+          "method": "steal",
+          "available": false,
+          "why": [
+            "security 5/55"
+          ]
+        },
+        {
+          "id": "mag_the_warded_ledger__combat",
+          "method": "combat",
+          "available": true,
+          "why": []
+        }
+      ]
+    }
+  ],
+  "available_before": 26,
+  "available_after": 27,
+  "nonviolent_available_after": [
+    "Q-MAG-01/mag_the_warded_ledger__magic:magic_utility",
+    "Q-MAG-06/mag_the_sunken_causeway__trade:trade",
+    "Q-MAG-08/mag_the_counting_house__bribe:bribe",
+    "Q-MAG-14/mag_the_lost_key__trade:trade",
+    "Q-MAG-16/mag_the_kiln_flues__bribe:bribe",
+    "Q-MAG-17/mag_the_rot_house__trade:trade",
+    "Q-MAG-18/mag_the_burning_bank__wait:wait",
+    "Q-MAG-21/mag_the_door_that_stays_shut__trade:trade",
+    "Q-MAG-23/mag_the_stilled_man__trade:trade",
+    "Q-MAG-23/mag_the_stilled_man__wait:wait"
+  ],
+  "sample_before": [
+    {
+      "id": "mag_the_warded_ledger__magic",
+      "method": "magic_utility",
+      "available": false,
+      "why": [
+        "you cannot bring open_lock to bear",
+        "you cannot bring shatter to bear"
+      ]
+    },
+    {
+      "id": "mag_the_warded_ledger__bribe",
+      "method": "bribe",
+      "available": false,
+      "why": [
+        "disposition 0/45"
+      ]
+    },
+    {
+      "id": "mag_the_warded_ledger__steal",
+      "method": "steal",
+      "available": false,
+      "why": [
+        "security 5/55"
+      ]
+    },
+    {
+      "id": "mag_the_warded_ledger__combat",
+      "method": "combat",
+      "available": true,
+      "why": []
+    }
+  ]
+}

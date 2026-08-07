@@ -1,0 +1,6577 @@
+{
+  "schema": "elder-souls/build-viability@1",
+  "tool": "tools/analysis/build-viability.mjs",
+  "item": "RI-CHR01 M6 / RI-CHR03 M5 / RI-MTH06 §A",
+  "generated_at": "2026-08-07T09:00:15.572Z",
+  "grid": {
+    "races": 10,
+    "families": 6,
+    "birthsign_families": 3,
+    "upbringing_classes": 3,
+    "cells": 540
+  },
+  "target": 486,
+  "viable": 540,
+  "not_viable": 0,
+  "unmeasurable": 0,
+  "failures_by_criterion": {
+    "main_quest": 0,
+    "three_factions_rank5": 0,
+    "no_unpassable_gate": 0,
+    "tier5_survivable": 0
+  },
+  "levels_simulated": [
+    1,
+    20,
+    40,
+    60
+  ],
+  "fixture": null,
+  "model": {
+    "attribute_points_per_level": 1,
+    "attribute_cap": 99,
+    "skill_cap": 100,
+    "skills_masterable_at": {
+      "1": 0,
+      "20": 3,
+      "40": 5,
+      "55": 6,
+      "60": 6
+    },
+    "skill_ceiling_at": {
+      "1": 25,
+      "20": 55,
+      "40": 80,
+      "55": 95,
+      "60": 100
+    },
+    "disposition_other_terms_ceiling": 40,
+    "disposition_base": 50,
+    "lethality": {
+      "frames_per_second": 60,
+      "player_armour_rating": 30,
+      "player_ward": 1,
+      "flask_charges": 8,
+      "flask_heal_fraction": 0.496,
+      "player_avoidance": 0.55,
+      "attempts_allowed": 3,
+      "player_uptime": 0.55
+    },
+    "tier5_cohort": [
+      {
+        "id": "champion_hist_marked",
+        "tier": "elite",
+        "hp": 2876,
+        "armour_rating": 55
+      },
+      {
+        "id": "cst_sap_speaker",
+        "tier": "elite",
+        "hp": 380,
+        "armour_rating": 14
+      }
+    ],
+    "tier5_substitution_note": "regions.json declares no `tier` on any region and encounters.json declares none either, so \"the tier-5 region\" has no referent in shipped data. The cohort above is every non-prop enemy at the highest shipped enemy tier. Declared, per RI-MTH06 §E.",
+    "quests_walked": 70,
+    "quest_categories": [
+      "(none)",
+      "faction",
+      "hidden",
+      "main",
+      "side"
+    ],
+    "factions_with_ladders": [
+      "deep_kin",
+      "ixtu_vakh",
+      "the_dockhands",
+      "the_drowned_court",
+      "the_imperial_assize",
+      "the_ixtu_vakh",
+      "the_rootkeepers",
+      "the_wet_ledger",
+      "the_xul_aneekh"
+    ]
+  },
+  "records": [
+    {
+      "signature": "saxhleel/fighter/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/fighter/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/fighter/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/fighter/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/fighter/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/fighter/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/fighter/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/fighter/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/fighter/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/thief/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/thief/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/thief/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/thief/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/thief/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/thief/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/thief/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/thief/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/thief/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/social/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/social/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/social/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/social/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/social/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/social/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/social/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/social/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/social/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/scout/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/scout/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/scout/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/scout/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/scout/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/scout/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/scout/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/scout/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/scout/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/mage/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/mage/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/mage/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/mage/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/mage/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/mage/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/mage/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/mage/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/mage/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/root/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/root/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/root/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/root/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/root/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/root/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/root/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/root/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "saxhleel/root/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/fighter/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/fighter/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/fighter/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/fighter/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/fighter/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/fighter/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/fighter/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/fighter/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/fighter/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/thief/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/thief/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/thief/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/thief/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/thief/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/thief/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/thief/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/thief/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/thief/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/social/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/social/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/social/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/social/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/social/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/social/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/social/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/social/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/social/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/scout/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/scout/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/scout/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/scout/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/scout/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/scout/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/scout/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/scout/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/scout/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/mage/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/mage/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/mage/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/mage/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/mage/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/mage/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/mage/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/mage/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/mage/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/root/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/root/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/root/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/root/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/root/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/root/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/root/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/root/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "naga/root/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/fighter/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/fighter/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/fighter/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/fighter/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/fighter/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/fighter/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/fighter/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/fighter/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/fighter/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/thief/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/thief/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/thief/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/thief/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/thief/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/thief/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/thief/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/thief/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/thief/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/social/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/social/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/social/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/social/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/social/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/social/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/social/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/social/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/social/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/scout/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/scout/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/scout/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/scout/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/scout/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/scout/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/scout/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/scout/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/scout/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/mage/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/mage/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/mage/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/mage/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/mage/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/mage/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/mage/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/mage/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/mage/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/root/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/root/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/root/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/root/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/root/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/root/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/root/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/root/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "dunmer/root/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/fighter/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/fighter/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/fighter/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/fighter/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/fighter/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/fighter/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/fighter/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/fighter/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/fighter/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/thief/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/thief/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/thief/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/thief/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/thief/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/thief/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/thief/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/thief/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/thief/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/social/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/social/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/social/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/social/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/social/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/social/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/social/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/social/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/social/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/scout/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/scout/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/scout/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/scout/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/scout/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/scout/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/scout/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/scout/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/scout/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/mage/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/mage/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/mage/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/mage/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/mage/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/mage/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/mage/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/mage/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/mage/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/root/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/root/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/root/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/root/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/root/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/root/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/root/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/root/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "imperial/root/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/fighter/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/fighter/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/fighter/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/fighter/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/fighter/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/fighter/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/fighter/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/fighter/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/fighter/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/thief/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/thief/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/thief/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/thief/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/thief/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/thief/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/thief/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/thief/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/thief/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/social/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/social/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/social/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/social/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/social/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/social/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/social/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/social/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/social/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/scout/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/scout/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/scout/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/scout/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/scout/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/scout/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/scout/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/scout/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/scout/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/mage/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/mage/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/mage/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/mage/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/mage/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/mage/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/mage/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/mage/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/mage/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/root/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/root/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/root/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/root/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/root/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/root/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/root/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/root/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "nord/root/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/fighter/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/fighter/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/fighter/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/fighter/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/fighter/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/fighter/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/fighter/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/fighter/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/fighter/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/thief/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/thief/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/thief/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/thief/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/thief/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/thief/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/thief/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/thief/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/thief/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/social/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/social/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/social/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/social/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/social/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/social/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/social/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/social/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/social/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/scout/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/scout/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/scout/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/scout/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/scout/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/scout/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/scout/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/scout/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/scout/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/mage/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/mage/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/mage/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/mage/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/mage/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/mage/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/mage/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/mage/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/mage/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/root/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/root/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/root/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/root/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/root/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/root/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/root/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/root/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "breton/root/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/fighter/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/fighter/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/fighter/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/fighter/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/fighter/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/fighter/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/fighter/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/fighter/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/fighter/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/thief/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/thief/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/thief/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/thief/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/thief/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/thief/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/thief/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/thief/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/thief/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/social/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/social/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/social/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/social/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/social/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/social/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/social/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/social/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/social/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/scout/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/scout/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/scout/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/scout/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/scout/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/scout/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/scout/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/scout/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/scout/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/mage/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/mage/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/mage/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/mage/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/mage/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/mage/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/mage/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/mage/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/mage/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/root/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/root/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/root/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/root/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/root/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/root/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/root/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/root/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "redguard/root/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/fighter/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/fighter/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/fighter/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/fighter/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/fighter/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/fighter/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/fighter/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/fighter/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/fighter/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/thief/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/thief/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/thief/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/thief/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/thief/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/thief/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/thief/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/thief/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/thief/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/social/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/social/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/social/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/social/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/social/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/social/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/social/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/social/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/social/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/scout/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/scout/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/scout/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/scout/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/scout/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/scout/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/scout/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/scout/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/scout/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/mage/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/mage/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/mage/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/mage/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/mage/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/mage/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/mage/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/mage/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/mage/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/root/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/root/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/root/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/root/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/root/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/root/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/root/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/root/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "khajiit/root/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/fighter/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/fighter/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/fighter/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/fighter/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/fighter/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/fighter/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/fighter/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/fighter/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/fighter/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/thief/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/thief/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/thief/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/thief/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/thief/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/thief/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/thief/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/thief/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/thief/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/social/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/social/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/social/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/social/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/social/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/social/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/social/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/social/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/social/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/scout/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/scout/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/scout/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/scout/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/scout/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/scout/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/scout/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/scout/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/scout/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/mage/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/mage/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/mage/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/mage/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/mage/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/mage/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/mage/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/mage/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/mage/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/root/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/root/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/root/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/root/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/root/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/root/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/root/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/root/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "orsimer/root/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/fighter/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/fighter/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/fighter/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/fighter/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/fighter/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/fighter/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/fighter/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/fighter/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/fighter/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/thief/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/thief/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/thief/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/thief/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/thief/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/thief/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/thief/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/thief/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/thief/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/social/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/social/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/social/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/social/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/social/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/social/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/social/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/social/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/social/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/scout/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/scout/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/scout/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/scout/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/scout/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/scout/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/scout/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/scout/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/scout/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/mage/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/mage/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/mage/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/mage/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/mage/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/mage/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/mage/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/mage/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/mage/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/root/given/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/root/given/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/root/given/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/root/withheld/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/root/withheld/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/root/withheld/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/root/turned/interior",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/root/turned/assimilated",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    },
+    {
+      "signature": "bosmer/root/turned/foreign",
+      "viable": true,
+      "constructible": true,
+      "criteria": {
+        "main_quest": true,
+        "three_factions_rank5": true,
+        "no_unpassable_gate": true,
+        "tier5_survivable": true
+      },
+      "stopped_at": null
+    }
+  ]
+}
