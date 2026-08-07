@@ -781,11 +781,13 @@ export class Province {
   }
 
   /**
-   * The road signage, built. `RI-WLD06` L2, and the positive half of seam S30.
+   * The road signage, built. `RI-WLD06` L2, and the positive half of seam S35.
    *
-   * S30 removed the map on the grounds that "there is nowhere to put a pin". That is only a good
-   * ruling if the world pays the bill, and the bill is this: at a junction, something has to tell
-   * you which way Gideon is. Before W1-05 nothing in `game/src` drew a post of any kind, and
+   * S35 permits a map and defines it as a record of ground you have already walked — no marker,
+   * no route line, no distance readout, and nothing at all drawn for a place you have not stood
+   * in. Which means the map cannot answer the only question that matters the first time: at a
+   * junction, which way is Gideon? Something in the world has to, and this is that something.
+   * Before W1-05 nothing in `game/src` drew a post of any kind, and
    * `roads.json`'s nine waystations were read by three offline tools and by nothing the player
    * could ever see — the orphan-data shape `RI-MTH07` §A names.
    *

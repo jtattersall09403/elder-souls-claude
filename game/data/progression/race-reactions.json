@@ -4,58 +4,337 @@
   "owner": "W1-07 — character creation",
   "source": "corpus/22-character/RI-CHR02-race-and-standing.md §2-§5",
   "provenance": "constructed",
-  "range": [-40, 14],
+  "range": [
+    -40,
+    14
+  ],
   "application": "raceReaction[group][race] is added to npc.baseDisposition inside RI-DLG04 §B's derivedDisposition BEFORE every other term. The upbringing term stacks on top of it.",
-  "races": ["saxhleel", "naga", "dunmer", "imperial", "nord", "breton", "redguard", "khajiit", "orsimer", "bosmer"],
+  "races": [
+    "saxhleel",
+    "naga",
+    "dunmer",
+    "imperial",
+    "nord",
+    "breton",
+    "redguard",
+    "khajiit",
+    "orsimer",
+    "bosmer"
+  ],
   "reaction_groups": [
-    { "key": "RG-DEEP", "name": "Xul-Aneekh / Deep-Kin and interior villagers", "where": "Helstrom, Stone Forest, Deep Marshes, Thorn's back tracks", "population_share": 0.21, "hostile_below_disposition": 15 },
-    { "key": "RG-ROOT", "name": "Rootkeepers and sapwell-keepers", "where": "everywhere there is a well", "population_share": 0.04 },
-    { "key": "RG-LUKIUL", "name": "Coastal assimilated Argonians", "where": "Gideon, Archon, Lilmoth, Soulrest", "population_share": 0.24 },
-    { "key": "RG-NAGA", "name": "Naga bands and river-crews", "where": "Marauder's Coast, the Hive, riverine", "population_share": 0.05 },
-    { "key": "RG-LEDGER", "name": "The Wet Ledger (lukiul + Imperial factors)", "where": "Gideon, Lilmoth", "population_share": 0.06 },
-    { "key": "RG-EMPIRE", "name": "Provincial Office, Ninth Cohort, Blackrose staff", "where": "Gideon, Stormhold, Blackrose, Archon", "population_share": 0.11, "arrests": true },
-    { "key": "RG-DRES", "name": "Dres salt-factors, ship-crews, raid parties", "where": "Crimson Coast, Salt Hills passes, at sea", "population_share": 0.04 },
-    { "key": "RG-BWC", "name": "Blackwood Company, early", "where": "Lilmoth, Blackwood", "population_share": 0.02 },
-    { "key": "RG-VAKH", "name": "Ixtu-Vakh, the Sap-Cutters", "where": "itinerant", "population_share": 0.02 },
-    { "key": "RG-COURT", "name": "The Drowned Court", "where": "Soulrest, and every burial", "population_share": 0.03 },
-    { "key": "RG-TOWN", "name": "Unaligned townsfolk, mixed-race, coastal", "where": "all eight settlements", "population_share": 0.15 },
-    { "key": "RG-OUTLAW", "name": "Bandits, smugglers, fences, the Lilmoth rot-quarter", "where": "everywhere", "population_share": 0.03 }
+    {
+      "key": "RG-DEEP",
+      "name": "Xul-Aneekh / Deep-Kin and interior villagers",
+      "where": "Helstrom, Stone Forest, Deep Marshes, Thorn's back tracks",
+      "population_share": 0.21,
+      "hostile_below_disposition": 15
+    },
+    {
+      "key": "RG-ROOT",
+      "name": "Rootkeepers and sapwell-keepers",
+      "where": "everywhere there is a well",
+      "population_share": 0.04
+    },
+    {
+      "key": "RG-LUKIUL",
+      "name": "Coastal assimilated Argonians",
+      "where": "Gideon, Archon, Lilmoth, Soulrest",
+      "population_share": 0.24
+    },
+    {
+      "key": "RG-NAGA",
+      "name": "Naga bands and river-crews",
+      "where": "Marauder's Coast, the Hive, riverine",
+      "population_share": 0.05
+    },
+    {
+      "key": "RG-LEDGER",
+      "name": "The Wet Ledger (lukiul + Imperial factors)",
+      "where": "Gideon, Lilmoth",
+      "population_share": 0.06
+    },
+    {
+      "key": "RG-EMPIRE",
+      "name": "Provincial Office, Ninth Cohort, Blackrose staff",
+      "where": "Gideon, Stormhold, Blackrose, Archon",
+      "population_share": 0.11,
+      "arrests": true
+    },
+    {
+      "key": "RG-DRES",
+      "name": "Dres salt-factors, ship-crews, raid parties",
+      "where": "Crimson Coast, Salt Hills passes, at sea",
+      "population_share": 0.04
+    },
+    {
+      "key": "RG-BWC",
+      "name": "Blackwood Company, early",
+      "where": "Lilmoth, Blackwood",
+      "population_share": 0.02
+    },
+    {
+      "key": "RG-VAKH",
+      "name": "Ixtu-Vakh, the Sap-Cutters",
+      "where": "itinerant",
+      "population_share": 0.02
+    },
+    {
+      "key": "RG-COURT",
+      "name": "The Drowned Court",
+      "where": "Soulrest, and every burial",
+      "population_share": 0.03
+    },
+    {
+      "key": "RG-TOWN",
+      "name": "Unaligned townsfolk, mixed-race, coastal",
+      "where": "all eight settlements",
+      "population_share": 0.15
+    },
+    {
+      "key": "RG-OUTLAW",
+      "name": "Bandits, smugglers, fences, the Lilmoth rot-quarter",
+      "where": "everywhere",
+      "population_share": 0.03
+    }
   ],
   "matrix": {
-    "RG-DEEP":   { "saxhleel": 14, "naga": 6,   "dunmer": -40, "imperial": -22, "nord": -16, "breton": -14, "redguard": -12, "khajiit": -8,  "orsimer": -18, "bosmer": -13 },
-    "RG-ROOT":   { "saxhleel": 12, "naga": 8,   "dunmer": -34, "imperial": -16, "nord": -14, "breton": -12, "redguard": -12, "khajiit": -10, "orsimer": -14, "bosmer": -11 },
-    "RG-LUKIUL": { "saxhleel": 9,  "naga": -4,  "dunmer": -28, "imperial": -2,  "nord": -6,  "breton": -4,  "redguard": -4,  "khajiit": -6,  "orsimer": -10, "bosmer": -5 },
-    "RG-NAGA":   { "saxhleel": 2,  "naga": 14,  "dunmer": -30, "imperial": -20, "nord": -12, "breton": -12, "redguard": -8,  "khajiit": 2,   "orsimer": -6,  "bosmer": -9 },
-    "RG-LEDGER": { "saxhleel": 4,  "naga": -8,  "dunmer": -6,  "imperial": 8,   "nord": 2,   "breton": 4,   "redguard": 2,   "khajiit": -6,  "orsimer": -4,  "bosmer": 2 },
-    "RG-EMPIRE": { "saxhleel": -6, "naga": -20, "dunmer": 2,   "imperial": 12,  "nord": 8,   "breton": 6,   "redguard": 6,   "khajiit": -10, "orsimer": 4,   "bosmer": 0 },
-    "RG-DRES":   { "saxhleel": -30,"naga": -26, "dunmer": 12,  "imperial": 4,   "nord": 0,   "breton": 0,   "redguard": -2,  "khajiit": -6,  "orsimer": -4,  "bosmer": -2 },
-    "RG-BWC":    { "saxhleel": -12,"naga": -14, "dunmer": 2,   "imperial": 4,   "nord": 6,   "breton": 2,   "redguard": 6,   "khajiit": 0,   "orsimer": 6,   "bosmer": 10 },
-    "RG-VAKH":   { "saxhleel": 0,  "naga": 4,   "dunmer": 2,   "imperial": 2,   "nord": 2,   "breton": 2,   "redguard": 2,   "khajiit": 4,   "orsimer": 2,   "bosmer": 2 },
-    "RG-COURT":  { "saxhleel": 0,  "naga": 0,   "dunmer": 0,   "imperial": 0,   "nord": 0,   "breton": 0,   "redguard": 0,   "khajiit": 0,   "orsimer": 0,   "bosmer": 0 },
-    "RG-TOWN":   { "saxhleel": 6,  "naga": -6,  "dunmer": -18, "imperial": 2,   "nord": 0,   "breton": 0,   "redguard": 0,   "khajiit": -4,  "orsimer": -6,  "bosmer": 0 },
-    "RG-OUTLAW": { "saxhleel": 0,  "naga": 6,   "dunmer": -4,  "imperial": -4,  "nord": 0,   "breton": 0,   "redguard": 0,   "khajiit": 4,   "orsimer": 2,   "bosmer": 0 }
+    "RG-DEEP": {
+      "saxhleel": 14,
+      "naga": 6,
+      "dunmer": -40,
+      "imperial": -22,
+      "nord": -16,
+      "breton": -14,
+      "redguard": -12,
+      "khajiit": -8,
+      "orsimer": -18,
+      "bosmer": -13
+    },
+    "RG-ROOT": {
+      "saxhleel": 12,
+      "naga": 8,
+      "dunmer": -34,
+      "imperial": -16,
+      "nord": -14,
+      "breton": -12,
+      "redguard": -12,
+      "khajiit": -10,
+      "orsimer": -14,
+      "bosmer": -11
+    },
+    "RG-LUKIUL": {
+      "saxhleel": 9,
+      "naga": -4,
+      "dunmer": -28,
+      "imperial": -2,
+      "nord": -6,
+      "breton": -4,
+      "redguard": -4,
+      "khajiit": -6,
+      "orsimer": -10,
+      "bosmer": -5
+    },
+    "RG-NAGA": {
+      "saxhleel": 2,
+      "naga": 14,
+      "dunmer": -30,
+      "imperial": -20,
+      "nord": -12,
+      "breton": -12,
+      "redguard": -8,
+      "khajiit": 2,
+      "orsimer": -6,
+      "bosmer": -9
+    },
+    "RG-LEDGER": {
+      "saxhleel": 4,
+      "naga": -8,
+      "dunmer": -6,
+      "imperial": 8,
+      "nord": 2,
+      "breton": 4,
+      "redguard": 2,
+      "khajiit": -6,
+      "orsimer": -4,
+      "bosmer": 2
+    },
+    "RG-EMPIRE": {
+      "saxhleel": -6,
+      "naga": -20,
+      "dunmer": 2,
+      "imperial": 12,
+      "nord": 8,
+      "breton": 6,
+      "redguard": 6,
+      "khajiit": -10,
+      "orsimer": 4,
+      "bosmer": 0
+    },
+    "RG-DRES": {
+      "saxhleel": -30,
+      "naga": -26,
+      "dunmer": 12,
+      "imperial": 4,
+      "nord": 0,
+      "breton": 0,
+      "redguard": -2,
+      "khajiit": -6,
+      "orsimer": -4,
+      "bosmer": -2
+    },
+    "RG-BWC": {
+      "saxhleel": -12,
+      "naga": -14,
+      "dunmer": 2,
+      "imperial": 4,
+      "nord": 6,
+      "breton": 2,
+      "redguard": 6,
+      "khajiit": 0,
+      "orsimer": 6,
+      "bosmer": 10
+    },
+    "RG-VAKH": {
+      "saxhleel": 0,
+      "naga": 4,
+      "dunmer": 2,
+      "imperial": 2,
+      "nord": 2,
+      "breton": 2,
+      "redguard": 2,
+      "khajiit": 4,
+      "orsimer": 2,
+      "bosmer": 2
+    },
+    "RG-COURT": {
+      "saxhleel": 0,
+      "naga": 0,
+      "dunmer": 0,
+      "imperial": 0,
+      "nord": 0,
+      "breton": 0,
+      "redguard": 0,
+      "khajiit": 0,
+      "orsimer": 0,
+      "bosmer": 0
+    },
+    "RG-TOWN": {
+      "saxhleel": 6,
+      "naga": -6,
+      "dunmer": -18,
+      "imperial": 2,
+      "nord": 0,
+      "breton": 0,
+      "redguard": 0,
+      "khajiit": -4,
+      "orsimer": -6,
+      "bosmer": 0
+    },
+    "RG-OUTLAW": {
+      "saxhleel": 0,
+      "naga": 6,
+      "dunmer": -4,
+      "imperial": -4,
+      "nord": 0,
+      "breton": 0,
+      "redguard": 0,
+      "khajiit": 4,
+      "orsimer": 2,
+      "bosmer": 0
+    }
   },
   "load_bearing_cells": [
-    { "cell": "dunmer/RG-DEEP", "value": -40, "reading": "A Dunmer is not disliked in the Helstrom interior; a Dunmer is the shape of the thing that takes children, and RI-LOR02 §1 establishes that this is happening now. -40 drops a default 50-base NPC to 10, the Hostile band, before Personality, crime or weapon-drawn is counted." },
-    { "cell": "naga/RG-EMPIRE", "value": -20, "reading": "Imperial contempt, reproduced in the mouths of Imperial NPCs and in guard behaviour, never as narration. A Naga player is inside the majority and outside the law." },
-    { "cell": "saxhleel/RG-DRES", "value": -30, "reading": "A Saxhleel is not a customer to a Dres factor. They are stock. This is the cell that changes an encounter." },
-    { "cell": "RG-COURT/*", "value": 0, "reading": "One group in twelve is genuinely indifferent: the Drowned Court buries everyone for a fee and has for four hundred years. A matrix with no neutral row is a matrix somebody generated rather than authored." }
+    {
+      "cell": "dunmer/RG-DEEP",
+      "value": -40,
+      "reading": "A Dunmer is not disliked in the Helstrom interior; a Dunmer is the shape of the thing that takes children, and RI-LOR02 §1 establishes that this is happening now. -40 drops a default 50-base NPC to 10, the Hostile band, before Personality, crime or weapon-drawn is counted."
+    },
+    {
+      "cell": "naga/RG-EMPIRE",
+      "value": -20,
+      "reading": "Imperial contempt, reproduced in the mouths of Imperial NPCs and in guard behaviour, never as narration. A Naga player is inside the majority and outside the law."
+    },
+    {
+      "cell": "saxhleel/RG-DRES",
+      "value": -30,
+      "reading": "A Saxhleel is not a customer to a Dres factor. They are stock. This is the cell that changes an encounter."
+    },
+    {
+      "cell": "RG-COURT/*",
+      "value": 0,
+      "reading": "One group in twelve is genuinely indifferent: the Drowned Court buries everyone for a fee and has for four hundred years. A matrix with no neutral row is a matrix somebody generated rather than authored."
+    }
   ],
   "upbringings": [
-    { "id": "interior", "name": "Interior", "given_as": "black water, no bottom", "who": "Raised in the marsh proper, by kin, in Jel", "signature_class": "interior",
-      "mods": { "RG-DEEP": 10, "RG-ROOT": 8, "RG-LUKIUL": -8, "RG-LEDGER": -6, "RG-EMPIRE": -8, "RG-TOWN": -4 } },
-    { "id": "lukiul", "name": "Lukiul", "given_as": "the harbour at Lilmoth / the Gideon cut", "who": "Raised in a coastal town under Imperial law, literate, assimilated", "signature_class": "assimilated",
-      "mods": { "RG-DEEP": -16, "RG-ROOT": -10, "RG-LUKIUL": 10, "RG-LEDGER": 8, "RG-EMPIRE": 4, "RG-TOWN": 6 } },
-    { "id": "foreign-born", "name": "Foreign-born", "given_as": "a river you have not heard of", "who": "Raised outside the province entirely", "signature_class": "foreign",
-      "mods": { "RG-DEEP": -4, "RG-ROOT": -2, "RG-LUKIUL": 2, "RG-LEDGER": 4, "RG-EMPIRE": 6 } },
-    { "id": "blackrose", "name": "Blackrose", "given_as": "the ditch under the wall", "who": "Born in the prison town, to a guard's family or an inmate's", "signature_class": "assimilated",
-      "mods": { "RG-DEEP": -6, "RG-ROOT": -4, "RG-EMPIRE": 4, "RG-TOWN": -2 } }
+    {
+      "id": "interior",
+      "name": "Interior",
+      "given_as": "black water, no bottom",
+      "who": "Raised in the marsh proper, by kin, in Jel",
+      "signature_class": "interior",
+      "mods": {
+        "RG-DEEP": 10,
+        "RG-ROOT": 8,
+        "RG-LUKIUL": -8,
+        "RG-LEDGER": -6,
+        "RG-EMPIRE": -8,
+        "RG-TOWN": -4
+      }
+    },
+    {
+      "id": "lukiul",
+      "name": "Lukiul",
+      "given_as": "the harbour at Lilmoth / the Gideon cut",
+      "who": "Raised in a coastal town under Imperial law, literate, assimilated",
+      "signature_class": "assimilated",
+      "mods": {
+        "RG-DEEP": -16,
+        "RG-ROOT": -10,
+        "RG-LUKIUL": 10,
+        "RG-LEDGER": 8,
+        "RG-EMPIRE": 4,
+        "RG-TOWN": 6
+      }
+    },
+    {
+      "id": "foreign-born",
+      "name": "Foreign-born",
+      "given_as": "a river you have not heard of",
+      "who": "Raised outside the province entirely",
+      "signature_class": "foreign",
+      "mods": {
+        "RG-DEEP": -4,
+        "RG-ROOT": -2,
+        "RG-LUKIUL": 2,
+        "RG-LEDGER": 4,
+        "RG-EMPIRE": 6
+      }
+    },
+    {
+      "id": "blackrose",
+      "name": "Blackrose",
+      "given_as": "the ditch under the wall",
+      "who": "Born in the prison town, to a guard's family or an inmate's",
+      "signature_class": "assimilated",
+      "mods": {
+        "RG-DEEP": -6,
+        "RG-ROOT": -4,
+        "RG-EMPIRE": 4,
+        "RG-TOWN": -2
+      }
+    }
   ],
   "upbringing_note": "Upbringing is legal for any race. It is the mechanism by which a player can PARTLY buy out of their race: a lukiul Dunmer is at -28 -16 = -44 with the Deep-Kin, an interior Dunmer at -40 +10 = -30. The axis never fully cancels the race term, and that is the point.",
   "price_surcharge": {
     "formula": "r = raceReaction[merchant.reaction_group][player.race] + upbringingMod[merchant.reaction_group][player.upbringing]; buyMult = clamp(1.00 - 0.006*r, 0.90, 1.30); sellMult = clamp(1.00 + 0.005*r, 0.78, 1.10)",
-    "buy_clamp": [0.90, 1.30],
-    "sell_clamp": [0.78, 1.10],
+    "buy_clamp": [
+      0.9,
+      1.3
+    ],
+    "sell_clamp": [
+      0.78,
+      1.1
+    ],
     "buy_coeff": -0.006,
     "sell_coeff": 0.005,
     "stacks_on": "RI-PRG05's disposition/Mercantile multipliers",
@@ -64,29 +343,123 @@
   },
   "guards": {
     "formula": "arrestThreshold = base[guard.authority] * raceLawFactor[player.race]; attackThreshold = 4 * arrestThreshold; suspicionMultiplier = raceSuspicion[player.race]",
-    "base": { "imperial_authority": 300, "settlement_militia": 150, "interior": null },
+    "base": {
+      "imperial_authority": 300,
+      "settlement_militia": 150,
+      "interior": null
+    },
     "interior_note": "The interior does not arrest. RG-DEEP settlements have no bounty, no guards and no jail. They have blood-price (RI-CRM01 §6): a debt owed to a family, payable in gold, in labour, or in a matching death. It never expires and never leaves on respawn.",
     "race_never_changes_what_is_a_crime": "Only the response. Theft is theft for everyone.",
     "law_factor": {
-      "imperial":  { "lawFactor": 1.35, "arrest_at": 405, "attack_at": 1620, "suspicion": 0.80, "loiter_to_challenge_s": 11.3 },
-      "nord":      { "lawFactor": 1.15, "arrest_at": 345, "attack_at": 1380, "suspicion": 0.90, "loiter_to_challenge_s": 10.0 },
-      "breton":    { "lawFactor": 1.15, "arrest_at": 345, "attack_at": 1380, "suspicion": 0.90, "loiter_to_challenge_s": 10.0 },
-      "redguard":  { "lawFactor": 1.15, "arrest_at": 345, "attack_at": 1380, "suspicion": 0.90, "loiter_to_challenge_s": 10.0 },
-      "bosmer":    { "lawFactor": 1.15, "arrest_at": 345, "attack_at": 1380, "suspicion": 0.90, "loiter_to_challenge_s": 10.0 },
-      "dunmer":    { "lawFactor": 1.10, "arrest_at": 330, "attack_at": 1320, "suspicion": 0.95, "loiter_to_challenge_s": 9.5 },
-      "orsimer":   { "lawFactor": 0.85, "arrest_at": 255, "attack_at": 1020, "suspicion": 1.20, "loiter_to_challenge_s": 7.5 },
-      "saxhleel":  { "lawFactor": 0.70, "arrest_at": 210, "attack_at": 840,  "suspicion": 1.35, "loiter_to_challenge_s": 6.7 },
-      "khajiit":   { "lawFactor": 0.55, "arrest_at": 165, "attack_at": 660,  "suspicion": 1.55, "loiter_to_challenge_s": 5.8 },
-      "naga":      { "lawFactor": 0.33, "arrest_at": 99,  "attack_at": 396,  "suspicion": 2.00, "loiter_to_challenge_s": 4.5 }
+      "imperial": {
+        "lawFactor": 1.35,
+        "arrest_at": 405,
+        "attack_at": 1620,
+        "suspicion": 0.8,
+        "loiter_to_challenge_s": 11.3
+      },
+      "nord": {
+        "lawFactor": 1.15,
+        "arrest_at": 345,
+        "attack_at": 1380,
+        "suspicion": 0.9,
+        "loiter_to_challenge_s": 10.0
+      },
+      "breton": {
+        "lawFactor": 1.15,
+        "arrest_at": 345,
+        "attack_at": 1380,
+        "suspicion": 0.9,
+        "loiter_to_challenge_s": 10.0
+      },
+      "redguard": {
+        "lawFactor": 1.15,
+        "arrest_at": 345,
+        "attack_at": 1380,
+        "suspicion": 0.9,
+        "loiter_to_challenge_s": 10.0
+      },
+      "bosmer": {
+        "lawFactor": 1.15,
+        "arrest_at": 345,
+        "attack_at": 1380,
+        "suspicion": 0.9,
+        "loiter_to_challenge_s": 10.0
+      },
+      "dunmer": {
+        "lawFactor": 1.1,
+        "arrest_at": 330,
+        "attack_at": 1320,
+        "suspicion": 0.95,
+        "loiter_to_challenge_s": 9.5
+      },
+      "orsimer": {
+        "lawFactor": 0.85,
+        "arrest_at": 255,
+        "attack_at": 1020,
+        "suspicion": 1.2,
+        "loiter_to_challenge_s": 7.5
+      },
+      "saxhleel": {
+        "lawFactor": 0.7,
+        "arrest_at": 210,
+        "attack_at": 840,
+        "suspicion": 1.35,
+        "loiter_to_challenge_s": 6.7
+      },
+      "khajiit": {
+        "lawFactor": 0.55,
+        "arrest_at": 165,
+        "attack_at": 660,
+        "suspicion": 1.55,
+        "loiter_to_challenge_s": 5.8
+      },
+      "naga": {
+        "lawFactor": 0.33,
+        "arrest_at": 99,
+        "attack_at": 396,
+        "suspicion": 2.0,
+        "loiter_to_challenge_s": 4.5
+      }
     },
-    "loiter_ratio_claim": { "pair": ["naga", "imperial"], "value": 2.51, "band": [2.2, 2.8] }
+    "loiter_ratio_claim": {
+      "pair": [
+        "naga",
+        "imperial"
+      ],
+      "value": 2.51,
+      "band": [
+        2.2,
+        2.8
+      ]
+    }
   },
   "repair_paths": [
-    { "id": "reputation", "effect": "Global Reputation is race-blind; at Reputation 40 it contributes +40 to persuasion ratings, out-weighing a -40 race term in the persuasion channel though not in disposition." },
-    { "id": "faction-rank", "effect": "RI-DLG04 §B's faction term is (0.5*rank + 1) * 3 * reaction; Deep-Kin rank 6 against a Deep-Kin NPC is +48, which fully covers a Dunmer's -40." },
-    { "id": "surcharge-quests", "effect": "Three quests permanently zero one group's price surcharge each.", "where": ["gideon", "helstrom", "archon"] },
-    { "id": "twin-lamps-password", "effect": "Race-blind, disposition-blind; opens one topic on ~40 NPCs." },
-    { "id": "sap-taint-band-4", "effect": "Rooted non-Argonians are addressed by rootkeepers regardless of race, and some Argonians will not be in the room." }
+    {
+      "id": "reputation",
+      "effect": "Global Reputation is race-blind; at Reputation 40 it contributes +40 to persuasion ratings, out-weighing a -40 race term in the persuasion channel though not in disposition."
+    },
+    {
+      "id": "faction-rank",
+      "effect": "RI-DLG04 §B's faction term is (0.5*rank + 1) * 3 * reaction; Deep-Kin rank 6 against a Deep-Kin NPC is +48, which fully covers a Dunmer's -40."
+    },
+    {
+      "id": "surcharge-quests",
+      "effect": "Three quests permanently zero one group's price surcharge each.",
+      "where": [
+        "gideon",
+        "helstrom",
+        "archon"
+      ]
+    },
+    {
+      "id": "twin-lamps-password",
+      "effect": "Race-blind, disposition-blind; opens one topic on ~40 NPCs."
+    },
+    {
+      "id": "sap-taint-band-4",
+      "effect": "Rooted non-Argonians are addressed by rootkeepers regardless of race, and some Argonians will not be in the room."
+    }
   ],
   "declared_incomplete": {
     "owner": "W1-07 built the matrix, the surcharge, the guard table and the encounter rules. The dialogue VOLUME of RI-CHR02 §4c (1,500 greeting lines, 90 race-filtered topics, 60 slavery lines) is owned by wave-1 pieces W1-11..W1-13 and is NOT shipped here.",
@@ -97,5 +470,10 @@
       "the 34 race-gated quests"
     ],
     "shipped_here": "the reaction matrix itself, the upbringing table, the surcharge formula, the guard law-factor table, the AR-3 encounter rules, and a worked sample of race-conditioned greeting and slavery lines in dialogue/writ-house.json"
-  }
+  },
+  "group_aliases": {
+    "RG-COMMON": "RG-TOWN",
+    "RG-IMP": "RG-EMPIRE"
+  },
+  "group_aliases_note": "W1-19 round 2, cross-agent repair. `game/data/npcs/pop-*.json` (the province population, ~180 records) declares `reaction_group: \"RG-COMMON\"`, which is not one of the twelve rows in `matrix`. `raceTerm()` throws on an unknown group — correctly — and `QuestEngine.dispositionView()` walks every quest giver and every name in the disposition register, so a single unknown group took the whole quest offer gate down: `getGateDispositions()` threw on a cold boot of any state and every quest measurement in the tree was blocked. RG-COMMON and RG-IMP are the two unknown groups in the tree (measured over game/data/npcs/**). RG-COMMON is aliased to RG-TOWN because that is what the population records are — ordinary townspeople with no house behind them — and an alias is preferred to a copied row, which would drift the moment RG-TOWN is retuned. WHOEVER OWNS THE POPULATION FILES: either write RG-TOWN / RG-EMPIRE, or author a real RG-COMMON row here and delete this alias. RG-IMP is aliased to RG-EMPIRE for the same reason: it is the imperial row under a shorter name."
 }

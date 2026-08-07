@@ -2,10 +2,13 @@
 /**
  * build-signposts.mjs — W1-05. The L2 layer of RI-WLD06, which did not exist.
  *
- * Seam S30: "there is nowhere to put a pin". There is no map, no compass marker, no quest
- * arrow and no fast-travel pin, and that is not a subtraction — it is a bill. RI-WLD06 makes
- * the bill explicit in three layers: L1 sightlines, **L2 roads and signage**, L3 prose. This
- * file builds L2.
+ * Seam S35 (which supersedes S30): there IS a map, and it is "a record of where you have been
+ * and what you have found, never an instruction about where to go" — terrain revealed only
+ * where you have walked, no marker, no route line, no distance readout. That is exactly why
+ * this file has to exist. A map that only draws ground you have already crossed cannot get you
+ * anywhere new, so **everything that gets you somewhere for the first time has to be in the
+ * world**. RI-WLD06 makes that bill explicit in three layers: L1 sightlines, **L2 roads and
+ * signage**, L3 prose. This file builds L2, and L2 is what a player uses with the map shut.
  *
  * Before this ran, `grep -ri signpost game/ tools/` returned an enum value in
  * `world/opacity.js`, one dialogue note, and the string "signposts" inside a *comment* in

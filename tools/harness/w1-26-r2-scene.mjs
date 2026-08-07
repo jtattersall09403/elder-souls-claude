@@ -111,13 +111,24 @@ try {
       const eng = window.__ENGINE;
       const elems = eng.renderer.menus.elements.filter((e) => e.text != null && String(e.text).length);
       const want = [...new Set(elems.map((e) => String(e.text)))];
-      const got = new Set(H.getRenderedText({ surface: ['menus'] }).distinct);
+      const drawn = H.getRenderedText({ surface: ['menus'] }).distinct;
+      const got = new Set(drawn);
+      // A DECLARED STRING THE FRAME ITSELF TRUNCATED IS NOT A BLIND SPOT.
+      // `ui/hud.js` ellipsises a label that will not fit its declared rect, so the quick slot
+      // declares "Spark-Dart" and PAINTS "Spark-Da…". The register is faithful — it reports what
+      // went through the draw call — and reporting that as "missing" would blame the instrument
+      // for the layout. It is recorded under its own name instead, because an unreadable spell
+      // name in a quick slot is a real legibility defect and it should not vanish into a pass.
+      const truncatedBy = (t) => drawn.find((d) => d.endsWith('…') && t.startsWith(d.slice(0, -1)) && d.length > 1);
+      const missing = want.filter((t) => !got.has(t) && !truncatedBy(t));
+      const truncated = want.filter((t) => !got.has(t) && truncatedBy(t)).map((t) => ({ declared: t, drawn: truncatedBy(t) }));
       r.set_equality = {
         element_texts: want,
         register_has: want.filter((t) => got.has(t)),
-        register_missing: want.filter((t) => !got.has(t)),
+        truncated_by_the_frame: truncated,
+        register_missing: missing,
         elements_non_empty: want.length > 0,
-        equal: want.length > 0 && want.every((t) => got.has(t)),
+        equal: want.length > 0 && missing.length === 0,
       };
     }
     const low = (s) => String(s).toLowerCase();
@@ -147,7 +158,12 @@ try {
   say(`  UISurface.elements[].text on this frame: ${JSON.stringify(A.set_equality.element_texts)}`);
   if (!A.set_equality.elements_non_empty) fail('no HUD element carried text on the measured frame — set equality is untestable, not satisfied');
   else if (!A.set_equality.equal) fail(`the register is MISSING drawn element text: ${JSON.stringify(A.set_equality.register_missing)}`);
-  else pass(`set equality: the register contains all ${A.set_equality.element_texts.length} strings UISurface.elements[].text carries on that frame`);
+  else {
+    pass(`set equality: the register accounts for all ${A.set_equality.element_texts.length} strings UISurface.elements[].text carries on that frame`);
+    for (const t of A.set_equality.truncated_by_the_frame) {
+      say(`  NOTE  the frame TRUNCATES a declared label: "${t.declared}" is painted as "${t.drawn}" (ui/hud.js ellipsises to the declared rect). The register is faithful; the label is not legible. W1-21 owns that rect.`);
+    }
+  }
   if (!A.non_dialogue.complete) fail(`M9's domain is incomplete (blind: ${JSON.stringify(A.non_dialogue.blind)}) — unmeasurable, not clean`);
   else if (!A.non_dialogue.distinct.length) fail('M9 searched ZERO strings. That is ignorance, not a pass.');
   else {

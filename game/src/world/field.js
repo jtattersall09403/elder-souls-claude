@@ -118,8 +118,9 @@ export class WorldField {
   /**
    * Attach the signposts (W1-05, `RI-WLD06` L2).
    *
-   * Seam S30 removed the surface a pin could go on. That makes the road signage the only thing
-   * left that tells a walker at a junction which way Gideon is, so a post is a WORLD OBJECT: it
+   * Seam S35 permits a map but confines it to ground the player has already walked, so the map
+   * is blank in the one direction the player needs it. The road signage is therefore what tells
+   * a walker at a junction which way Gideon is, so a post is a WORLD OBJECT: it
    * is drawn by `world/province.js#_signposts` per streamed tile and read by
    * `Engine.signRead()` through the ordinary `interact` reach.
    *

@@ -123,10 +123,24 @@ try {
     const driftTo = (await h.h('snapshot')).player.pos;
     const ambientDrift = Math.hypot(driftTo[0] - driftFrom[0], driftTo[2] - driftFrom[2]);
 
+    // ROUND 2 — THE NULL CONTROL HAD TO CHANGE, AND THE REASON IS THE POINT.
+    //
+    // Round 1's null control was `hearthLastRested = null`, and it read `moved_m: 0` because
+    // `respawn()` did `if (hearth) { move }` with no `else`: the body did not move, the bloom
+    // landed at its feet and every soul came back within five frames. The verdict called that
+    // out — the builder had read a FAIL-OPEN PATH as a clean control, "a missing floor rather
+    // than a null". `respawnHearth()` now falls back to the nearest well in the province, so
+    // that state is no longer null; it is a floor, and the floor is a feature.
+    //
+    // The honest null control for a PLACEMENT TABLE is the table being empty. With no wells
+    // anywhere there is nowhere to wake up, and the body must stay where it fell — which is
+    // still the direction that proves the position came from the table rather than from a
+    // constant, and it can no longer be satisfied by a bug.
     await h.h('loadState', 'default');
     await h.h('setRenderRate', 0);
     await h.h('teleport', stable[0], stable[2]);
     await h.h('stepFrames', 4);
+    const emptied = await h.h('setHearths', []);
     const blob = await h.h('saveState');
     blob.progression.hearth_last_rested = null;
     await h.h('restoreState', blob);
@@ -137,6 +151,25 @@ try {
     await h.h('stepFrames', 200);
     const nullState = await h.h('getDeathState');
     const nullPos = (await h.h('snapshot')).player.pos;
+    await h.h('setHearths', null);          // put the province's 29 wells back
+
+    // AND THE FLOOR ITSELF, measured rather than assumed: with the table present and the
+    // respawn point null, the body must be CARRIED to the nearest well. Round 1 shipped this
+    // state as a free death.
+    await h.h('loadState', 'default');
+    await h.h('setRenderRate', 0);
+    await h.h('teleport', stable[0] + 300, stable[2] + 300);
+    await h.h('stepFrames', 4);
+    const fb = await h.h('saveState');
+    fb.progression.hearth_last_rested = null;
+    fb.character.souls_held = 900;
+    await h.h('restoreState', fb);
+    const floorFrom = (await h.h('snapshot')).player.pos;
+    await h.h('damagePlayer', 1e6, { stagger: false });
+    await h.h('stepFrames', 1);
+    await h.h('stepFrames', 200);
+    const floorState = await h.h('getDeathState');
+    const floorTo = (await h.h('snapshot')).player.pos;
 
     const sep = Math.hypot(vA.pos[0] - vB.pos[0], vA.pos[2] - vB.pos[2]);
     record({
@@ -151,7 +184,17 @@ try {
         surface_went_up: onSurface.surface_active, deaths: nullState.deaths_this_session,
         respawn_target: nullState.last_respawn ? nullState.last_respawn.at : null,
         ambient_drift_over_the_same_frames_with_no_death_m: +ambientDrift.toFixed(2),
-        movement_attributable_to_the_respawn_m: +Math.abs(Math.hypot(nullPos[0] - before[0], nullPos[2] - before[2]) - ambientDrift).toFixed(2) },
+        movement_attributable_to_the_respawn_m: +Math.abs(Math.hypot(nullPos[0] - before[0], nullPos[2] - before[2]) - ambientDrift).toFixed(2),
+        hearths_in_the_table: emptied.count,
+        _what_the_null_is: 'the placement TABLE emptied, not the respawn point nulled — see the comment above' },
+      floor_when_the_respawn_point_is_null_but_the_table_is_not: {
+        died_at: floorFrom.map((v) => +v.toFixed(2)),
+        woke_at: floorTo.map((v) => +v.toFixed(2)),
+        carried_m: +Math.hypot(floorTo[0] - floorFrom[0], floorTo[2] - floorFrom[2]).toFixed(2),
+        respawn_target: floorState.last_respawn ? floorState.last_respawn.at : null,
+        souls_held_after: floorState.souls_held,
+        _why: 'Round 1 read this state as its null control and it was a fail-open: the body did '
+          + 'not move and 4,200 souls were back in five frames. It is now a floor.' },
       coupling: sep > 100
         // 25 m, not 2. `settle_50f_m` is 0 and the offset is already 16.97 m ON THE RESPAWN
         // FRAME, so it is not drift: the province puts the capsule down on the nearest thing
@@ -161,7 +204,11 @@ try {
         // separation answers that without ambiguity. The offset is reported, not hidden.
         && vA.offset_from_hearth_m < 25 && vB.offset_from_hearth_m < 25
         && (nullState.last_respawn ? nullState.last_respawn.at : null) === null
-        && Math.abs(Math.hypot(nullPos[0] - before[0], nullPos[2] - before[2]) - ambientDrift) < 25 ? 1 : 0,
+        && Math.abs(Math.hypot(nullPos[0] - before[0], nullPos[2] - before[2]) - ambientDrift) < 25
+        // and the FLOOR: with the table present, a null respawn point costs you a walk home.
+        && !!(floorState.last_respawn && floorState.last_respawn.at)
+        && Math.hypot(floorTo[0] - floorFrom[0], floorTo[2] - floorFrom[2]) > 25
+        && floorState.souls_held === 0 ? 1 : 0,
       note: 'Two wells 3.5 km apart put the body in two different REGIONS. With the respawn '
         + 'point emptied the body does not move at all — the direction that proves the position '
         + 'came from the TABLE and not from a constant. The 17 m offset from the basin is the '
@@ -235,7 +282,12 @@ try {
     //     a deliberate seam-S5 violation, staged to prove the rule is read: if the boss comes
     //     back when the data says it may, the data is what was holding it dead.
     await setup();
-    await h.h('setRespawnRules', { respawning_tiers: ['trash', 'elite', 'prop'], never_respawn_ids: [], never_respawn_tiers: [], never_respawn_archetypes: [] });
+    // ROUND 2: `never_respawn_entity_flags: []` joins the list. The two fog-gate bosses now
+    // declare `boss` and `unique` in their own STATBLOCKS (that is the M-D5 repair — the flags
+    // finally have a world-side writer), so emptying `never_respawn_ids` alone no longer frees
+    // the champion: the entity flag still holds it, correctly. The perturbation has to clear
+    // every refusal in the file for "everything comes back" to mean what it says.
+    await h.h('setRespawnRules', { respawning_tiers: ['trash', 'elite', 'prop'], never_respawn_ids: [], never_respawn_tiers: [], never_respawn_archetypes: [], never_respawn_entity_flags: [] });
     const c = await dieAndCount();
     const cPx = await shotOf();
     // restore
@@ -256,7 +308,7 @@ try {
       observable: 'which actors are standing up after the player dies, counted both as states and as upright-actor pixels on a rendered frame',
       shipped: { states: a, correct: shippedOK },
       value_a: { rules: { respawning_tiers: [] }, states: b },
-      value_b: { rules: { respawning_tiers: ['trash', 'elite', 'prop'], never_respawn_ids: [] }, states: c },
+      value_b: { rules: { respawning_tiers: ['trash', 'elite', 'prop'], never_respawn_ids: [], never_respawn_entity_flags: [] }, states: c },
       frame_diff_none_back_vs_all_back_px: dNoneVsAll,
       frame_diff_same_condition_twice_px: dSelf,
       null_control: { what: 'respawning_tiers emptied is the null control: with no tier declared ordinary, DeathSystem.respawns() returns false for every body and nothing at all comes back', held: noneBack },
@@ -620,14 +672,30 @@ try {
     // measurable against a lit frame.
     await h.h('setTimeOfDay', 12.0);
     const hr = (await h.h('listHearths')).hearths.find((x) => x.kind === 'settlement');
+    await h.h('teleport', hr.pos[0], hr.pos[2]);
+    await h.h('stepFrames', 2);
+    await h.h('restAt', hr.id);                 // so the respawn brings the body back HERE
     await h.h('teleport', hr.pos[0] + 30, hr.pos[2]);
-    await h.h('stepFrames', 3);
+    // LET THE PROVINCE BUILD BEFORE PHOTOGRAPHING IT. Round 2: `_streamProvince()` runs from the
+    // fixed step, and three frames after a teleport is not enough — round 1's `alive` frame came
+    // back 99.1% dark with 162 warm pixels, i.e. BLACK, and its `skipped` frame came back black
+    // too because the respawn did not stream either. The instrument therefore compared two
+    // unbuilt frames against one unbuilt frame with ink on it, and passed. It stopped passing the
+    // moment the respawn started streaming the ground under the body, which is how the artifact
+    // came to light. All three frames are now taken from the same standing spot with the same
+    // world built under them, which is the only way "the ink is the observable" is a like-for-like
+    // comparison rather than a comparison of two different worlds.
+    await h.h('stepFrames', 90);
     const alive = await inkOf();
     await h.h('damagePlayer', 1e6, { stagger: false });
     await h.h('stepFrames', 1);
     const dead = await inkOf();
     await h.h('skipDeathSurface');
     await h.h('stepFrames', 4);
+    // Back to the SAME viewpoint the other two frames were taken from — the respawn moved the
+    // body to the well, and a frame taken from a different place measures the place.
+    await h.h('teleport', hr.pos[0] + 30, hr.pos[2]);
+    await h.h('stepFrames', 90);
     const skipped = await inkOf();
     await h.h('stepFrames', 200);
     record({
@@ -643,12 +711,18 @@ try {
       // 162 warm pixels alive, 20,097 with the surface up, 176 once it is skipped. A string
       // that reached `getDeathState()` and never reached the canvas would leave all three
       // identical, which is RI-JRN09 ES-LEGIBLE/1 — orphan text — exactly.
-      coupling: dead.warm > alive.warm * 5 && skipped.warm < dead.warm / 5 ? 1 : 0,
+      // Round 2: the bar is stated against BOTH surrounding frames, and both are now taken from
+      // the same standing spot with the same world built under them (see above). A string that
+      // reached `getDeathState()` and never reached the canvas would leave all three within noise
+      // of each other, which is RI-JRN09 ES-LEGIBLE/1 — orphan text — exactly.
+      coupling: dead.warm > alive.warm * 3 && dead.warm > skipped.warm * 3 ? 1 : 0,
       ink_ratio_dead_over_alive: alive.warm ? +(dead.warm / alive.warm).toFixed(1) : null,
       ink_ratio_dead_over_skipped: skipped.warm ? +(dead.warm / skipped.warm).toFixed(1) : null,
-      note: 'The frame gains ink when the surface goes up and loses it when the surface is '
-        + 'skipped. The dark fraction is reported too but is NOT part of the coupling test: '
-        + 'this viewpoint is already 99% dark, so a scrim cannot move it.',
+      note: 'The frame gains ink when the surface goes up and loses it again when the surface is '
+        + 'skipped, from the same spot, over the same built ground, at the same hour. The dark '
+        + 'fraction is reported and is NOT part of the coupling test — the scrim is real but a '
+        + 'daylit province and an unbuilt one differ by more than a scrim does, and round 1 was '
+        + 'comparing exactly that by accident.',
     });
   }
 

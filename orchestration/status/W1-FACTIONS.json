@@ -17,7 +17,16 @@
     "game/data/quests/faction-gates.json (regenerated)",
     "game/data/dialogue/topics/50-factions.json",
     "game/data/npcs/faction-givers.json",
-    "game/data/quests/faction-wet-ledger.json"
+    "game/data/quests/faction-wet-ledger.json",
+    "game/data/quests/faction-imperial-assize.json",
+    "game/data/quests/faction-xul-aneekh.json",
+    "game/data/quests/hooks.json (24 forward entry_topics rows)",
+    "tools/quests/topic-supply-audit.mjs",
+    "game/src/sim/quest/machine.js (exclusivity consumer)",
+    "game/src/sim/quest/gate.js (legible lockout)",
+    "game/src/harness/api.js (factionGates())",
+    "game/data/index.json",
+    "reports/quest-resolution-baseline.json"
   ],
   "findings": [
     "game/data/progression/factions.json (2 factions, house-dres/shadowscale-order) is a WAVE-0 SKELETON and is NOT the ladder of record. tools/lib/gamedata.mjs:90-97 says so explicitly and returns it separately under .skeleton.",
@@ -34,8 +43,11 @@
     "game/data/quests/hooks.json is STALE against its own generator on purpose — W1-19 round 2 hand-rewrote every entry_topics row to point FORWARD. Running tools/analysis/gen-quest-hooks.mjs would re-introduce the self-loop defect that made 0 of 32 main quests offerable. Hand-edit hooks.json; never regenerate it.",
     "Baselines before my changes: check-data 360 files PASS, check-content 205 resolutions, boot-check PASS. tools/analysis/build-viability.mjs CRASHES (topics.js:69 it is not iterable via canOffer) — pre-existing, not mine.",
     "MEASURED after the ladder fix: rank-1 attribute demand met at CREATION by 104-192 of 240 signatures per faction (was 0/240 for all nine). No dead favoured attributes remain.",
-    "26 DANGLING RESOLUTION-LEVEL QUEST REFERENCES across the shipped book (Q-ARCH-01, Q-BLAK-01, Q-DEEP-01, Q-DOCK-01, Q-LILM-01, Q-SAP-01, Q-SOUL-02, Q-STRM-01 all lock or unlock quests that do not exist). QuestBook._check validates only TOP-LEVEL consequences.unlocks/locks, so none of them is visible at boot. Q-LEDG-04 was one of the 26 and is now written."
+    "26 DANGLING RESOLUTION-LEVEL QUEST REFERENCES across the shipped book (Q-ARCH-01, Q-BLAK-01, Q-DEEP-01, Q-DOCK-01, Q-LILM-01, Q-SAP-01, Q-SOUL-02, Q-STRM-01 all lock or unlock quests that do not exist). QuestBook._check validates only TOP-LEVEL consequences.unlocks/locks, so none of them is visible at boot. Q-LEDG-04 was one of the 26 and is now written.",
+    "FactionGates.closedBy() — the ENTIRE X1/X4/X2 mutual-exclusion model — had NO CONSUMER anywhere in game/src/. machine.js initialised rivalry_locked:[] on every standing row and never wrote it. A player could hold rank 7 in the Wet Ledger and rank 7 in the Assize that exists to hang it, in one save. QuestEngine.context() is now the reader; the lock lands in ctx.locked and canOffer() speaks a reason.",
+    "topic-supply audit over the whole tree: 34 quest topics EXIST NOWHERE in dialogue/topics/**, and 35 hooks.json entry_topics rows are still SELF-LOOPS (W1-19 repaired only the Q-MAIN rows). None of the 34 or 35 is on the three carried lines. Tool: tools/quests/topic-supply-audit.mjs.",
+    "BLOCKING, ANOTHER AGENT: game/data/npcs/pop-*.json (8 files, written 13:51) declare reaction_group RG-COMMON, which is not in progression/race-reactions.json. derivedDisposition() THROWS on it, out of QuestEngine.dispositionView() -> context() -> offers(). questOffers() is dead for the whole build while those files are on disk. 182 records affected."
   ],
-  "next_step": "write faction-imperial-assize.json then faction-xul-aneekh.json, then hooks.json forward edges, then index + boot + probe",
+  "next_step": "retry faction-probe once RG-COMMON is fixed; then blog line",
   "notes_for_successor": ""
 }

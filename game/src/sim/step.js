@@ -21,6 +21,7 @@ import { stepCombat } from './combat-bridge.js';
 import { stepWorldCollision } from './world-collision.js';
 import { stepEncounters } from '../character/encounter.js';
 import { stepNPCs } from './npc.js';
+import { stepSettlement } from './settlement.js';
 import { stepSkillUse } from '../character/skilluse.js';
 
 /**
@@ -119,6 +120,12 @@ export function stepOnce(sim, input, combat, bus) {
     // which is the state every probe for RI-PRG03 and RI-MAG01 runs in.
     if (sim.encounterData && sim.progression && sim.progression.skills
         && Object.keys(sim.progression.skills).length) stepSkillUse(sim, combat, bus, sim.encounterData);
+    // W1-04: the town and its doors. BEFORE the people, because `stepNPCs` decides who is in
+    // the room with you by comparing each person's scheduled cell against `sim.env.interior`,
+    // and a door taken this frame has to have moved the player before that comparison is made
+    // — otherwise everyone is one frame late through every doorway. It reads the same latch a
+    // swing does, so `interact` at a door is a simulation event on an exact frame.
+    if (sim.settlements) stepSettlement(sim, input, bus);
     // W1-07: the people. After physics so a person turns to face the position the trace
     // reports this frame, before the camera so a dialogue-facing turn is not one frame late.
     if (sim.npcs.length) stepNPCs(sim, bus);

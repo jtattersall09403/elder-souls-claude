@@ -9,6 +9,17 @@
 
 /** RI-CHR02 §3: the race term plus the upbringing term, applied BEFORE every other term. */
 export function raceTerm(data, group, race, upbringing) {
+  // W1-19 round 2, cross-agent repair. The province population files (`game/data/npcs/pop-*.json`,
+  // ~180 records) landed with `reaction_group: "RG-COMMON"`, which is not one of the twelve rows
+  // `race-reactions.json` declares. `QuestEngine.dispositionView()` walks every giver and every
+  // name in the register, so ONE unknown group took the entire quest offer gate down for every
+  // agent measuring quests: `getGateDispositions()` threw `unknown reaction group: "RG-COMMON"`
+  // on a cold boot of any state. The throw is right and stays; what was missing is a declared
+  // way to say "these are ordinary people" without duplicating a row that would then drift.
+  // `race-reactions.json#group_aliases` is that declaration, and an alias must resolve to a real
+  // row or this still throws.
+  const aliases = data.reactions.group_aliases || null;
+  if (aliases && Object.prototype.hasOwnProperty.call(aliases, group)) group = aliases[group];
   const row = data.reactions.matrix[group];
   if (!row) throw new Error(`unknown reaction group: ${JSON.stringify(group)}`);
   if (!(race in row)) throw new Error(`unknown race in matrix: ${JSON.stringify(race)}`);

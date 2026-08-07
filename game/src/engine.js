@@ -58,6 +58,10 @@ import { StealthCrime, DET as STL_DET, THF as STL_THF, PP as STL_PP, JUS as STL_
 import { composeCharacter, signatureOf, composeSkills, birthsignById, birthsignPowers, birthsignDrawbacks } from './character/sheet.js';
 import { taintOf, bandFromRests } from './sim/magic/apply.js';
 import { HearthSystem, REST_HOURS } from './sim/hearth.js';
+import { SettlementSystem, useDoor, leaveInterior } from './sim/settlement.js';
+
+/** A deterministic id hash. Not a game RNG: it never draws, it only spreads bodies in a room. */
+function ENG_hash(s) { let h = 2166136261 >>> 0; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h >>> 0; }
 import { DeathSystem, SURFACE_FRAMES, DEATH_LINE } from './sim/death.js';
 
 /**
@@ -258,6 +262,17 @@ export class Engine {
     // applied, because `applyNamedState()` seeds `progression.hearthLastRested` from the
     // hearth registry and a state applied against a null registry would respawn nowhere.
     this.hearths = new HearthSystem(this.data.hearths);
+    // W1-04 — towns, doors and the cells behind them. `data.settlements` and `data.interiors`
+    // had no reader in the whole build before this line; `sim.env.settlement`, which the entire
+    // per-town rumour book is keyed on, had no writer. The system is hung on the SIM (not just
+    // on the engine) because `sim/step.js` is what drives it, and a system only the engine can
+    // see is a system the fixed step cannot run.
+    this.settlements = new SettlementSystem(Object.values(this.data.settlements || {}), this.data.interiors || {});
+    this.sim.settlements = this.settlements;
+    // Walking into a town spawns its people. Without this the 260 scheduled NPC records in
+    // `game/data/npcs/pop-*.json` are exactly what `topics_taught` was: a field on disk that
+    // no entity in the running world is built from.
+    this.sim.populate = (sid) => this.populateSettlement(sid);
     this.death = new DeathSystem(this.data.respawn, this.hearths, {
       // "Standable" is the same predicate the capsule's own locomotion uses: the province
       // heightfield, the max walkable slope from traversal.json, and water no deeper than the
@@ -1304,6 +1319,15 @@ export class Engine {
         // where the two vocabularies disagree (a `band-elder` answers as a `naga-elder`).
         merged.actor = spec.actor || rec2.actor || rec2.class || null;
         merged.lines = spec.lines || rec2.lines || null;
+        // W1-04. The record's day. `makeNPC` never copied `schedule` off the record, so the
+        // field was written by every builder that touched an NPC file and read by nothing —
+        // the same shape of defect as `topics_taught`. These four lines are what make a person
+        // have somewhere to be; `sim/npc.js stepSchedule()` is what makes them go there.
+        merged.schedule = spec.schedule || rec2.schedule || null;
+        merged.home_interior = spec.home_interior || rec2.home_interior || rec2.interior || null;
+        merged.work_interior = spec.work_interior || rec2.work_interior || rec2.interior || null;
+        merged.owns_zones = spec.owns_zones || rec2.owns_zones || [];
+        merged.behaviour = spec.behaviour || rec2.behaviour || undefined;
       } else if (!merged.eid) merged.eid = recId;
     }
     if (this.sim.findNPC(merged.eid)) return this.sim.findNPC(merged.eid);
@@ -1843,9 +1867,11 @@ export class Engine {
   /**
    * Read the nearest signpost. The world-side consumer of `game/data/world/signposts.json`.
    *
-   * Seam S30 is the reason this method has to exist rather than a map screen. The ruling's own
-   * words are "there is nowhere to put a pin", and it is only a good ruling if the world tells
-   * you things instead. A post that the streamer draws but that the player cannot read is a
+   * Seam S35 is the reason this method has to exist alongside a map screen rather than being
+   * replaced by one. S35 permits the map and defines it as "a record of where you have been and
+   * what you have found, never an instruction about where to go" — so on the first walk down a
+   * road the map is blank ahead of you and the post is the only thing in the province that can
+   * tell you what is at the other end. A post that the streamer draws but that the player cannot read is a
    * decoration — RI-WLD06's own "How we lose" list has *"signposts as decoration: modelled posts
    * with unreadable texture text"* as a named failure. So the arms go on the panel, through the
    * same `renderer.ui.setModel` surface that draws the writ, and the strings on it are the
@@ -5907,6 +5933,119 @@ export class Engine {
     return { ...q, sold: true, gold: st.p.gold, laundered: true };
   }
 
+  // ================= W1-04 — settlements, interiors and the people in them ====================
+  // Thin, like the stealth block above it: every one of these delegates to
+  // game/src/sim/settlement.js, which is the same module `sim/step.js` drives every frame.
+  // There is no second implementation, so a probe cannot pass against a surface the player
+  // never touches — the failure mode that put one good detection model and one broken one in
+  // this build at the same time.
+
+  /**
+   * Spawn everyone whose record says they belong to this town, at the position their schedule
+   * has them in right now. Idempotent — `spawnNPC` returns the existing person for an eid that
+   * is already in the world, so walking in and out of a gate does not duplicate a village.
+   *
+   * Positions are derived, not authored per-person: a person stands at their cell's centre with
+   * a deterministic offset off their own eid, which is what keeps forty people in a capital from
+   * occupying one point. Nothing here draws RNG — `mix` is a hash of the id.
+   */
+  populateSettlement(sid) {
+    const out = [];
+    for (const group of Object.values(this.data.npcs)) {
+      if (!group || !group.npcs) continue;
+      for (const rec of group.npcs) {
+        if (rec.settlement !== sid) continue;
+        if (this.sim.findNPC(rec.id)) { out.push(rec.id); continue; }
+        const cell = (rec.schedule && rec.schedule.length ? rec.schedule[0].at : null) || rec.interior || null;
+        const d = cell ? this.settlements.interior(cell) : null;
+        const h = ENG_hash(rec.id);
+        const bx = d ? d.bounds_m.x[1] - 1.2 : 3;
+        const bz = d ? d.bounds_m.z[1] - 1.2 : 4;
+        const pos = [
+          Math.round((((h % 200) / 100) - 1) * bx * 100) / 100,
+          0,
+          Math.round(((((h >>> 8) % 200) / 100) - 1) * bz * 100) / 100,
+        ];
+        this.spawnNPC({ ...rec, eid: rec.id, from_record: rec.id, pos, yaw: (h >>> 16) % 360 });
+        out.push(rec.id);
+      }
+    }
+    return out;
+  }
+
+  /** Every town, with its plan, its counts and its door list length. */
+  listSettlements() {
+    return this.settlements.list.map((s) => ({
+      id: s.id, name: s.name, tier: s.tier, region: s.region, pos: [...s.pos], radius_m: s.radius_m,
+      plan: s.layout.plan, power_reading: s.power_reading,
+      buildings: s.buildings.length, doors: this.settlements.doors.get(s.id).length,
+      interiors: s.interiors.length, counts: s.counts, services: Object.keys(s.services),
+    }));
+  }
+
+  /** Every named cell of a town, or of the world when no town is named. */
+  listInteriors(settlement) {
+    return Object.values(this.settlements.interiors)
+      .filter((d) => !settlement || d.settlement === settlement)
+      .map((d) => ({
+        id: d.id, name: d.name, settlement: d.settlement, kind: d.interior_kind, service: d.service,
+        floor_area_m2: d.floor_area_m2, props: (d.props || []).length, lights: (d.lights || []).length,
+        containers: (d.containers || []).length, zones: (d.property_zones || []).length,
+        unique_item: d.unique_item ? d.unique_item.name : null, readable: d.readable ? d.readable.title : null,
+        open_h: d.open_h, close_h: d.close_h,
+        open_now: this.settlements.isOpen(d.id, this.sim.env.timeOfDay),
+        occupants: this.settlements.occupants(this.sim, d.id).map((n) => n.eid),
+      }));
+  }
+
+  /** Where the body is, in the world's own words. */
+  whereAmI() {
+    const d = this.sim.door;
+    return {
+      settlement: this.sim.env.settlement,
+      interior: this.sim.env.interior,
+      hour: Math.round(this.sim.env.timeOfDay * 100) / 100,
+      pos: [...this.sim.player.pos],
+      door_in_reach: d ? { interior: d.interior, name: d.name || null, way: d.way, dist_m: d.dist_m } : null,
+    };
+  }
+
+  /** Go through a door by name. The same call `stepSettlement` makes off the `interact` latch. */
+  enterInterior(id) { return useDoor(this.sim, id, this.bus); }
+
+  /** Back out onto the doorstep. */
+  exitInterior() { return leaveInterior(this.sim, this.bus); }
+
+  /** Is the cell this zone is a room of open at the current hour? */
+  isOpenNow(zoneOrInterior) {
+    const iid = this.settlements.zoneInterior.get(zoneOrInterior) || zoneOrInterior;
+    return this.settlements.isOpen(iid, this.sim.env.timeOfDay);
+  }
+
+  /**
+   * Everybody's day, right now, off the LIVE npc list. `at` is where the schedule says they
+   * are; `present` is whether that is the cell the player is standing in.
+   */
+  whereIsEveryone() {
+    return this.sim.npcs.map((n) => ({
+      eid: n.eid, name: n.name, at: n.at, activity: n.activity, present: n.present,
+      home: n.home_interior, work: n.work_interior, slots: n.schedule.length,
+      pos: [n.pos[0], n.pos[1], n.pos[2]],
+    }));
+  }
+
+  /**
+   * RI-STL02's `livesHere`. True when the character taking something from this zone is one of
+   * the people who own it — which in wave 1 means a companion or a possessed body, and is
+   * false for the ordinary player, but is now COMPUTED rather than asserted.
+   */
+  _livesHere(zoneId) {
+    const me = this.sim.playerNpcId || null;
+    if (!me) return false;
+    const r = this.settlements.residentsPresent(this.sim, zoneId);
+    return r.owners.includes(me);
+  }
+
   visibilityAt(q) {
     const d = this.sim.stealth.d.detection;
     const raw = STL_DET.visibilityRaw(d, q);
@@ -5959,7 +6098,13 @@ export class Engine {
     // civilians who can actually see you, by the same line-of-sight cast the perception pass
     // uses, not merely by "civ_state !== CALM" as in round 1.
     const observers = opts.observedBy || this._observersOf(st);
-    const res = STL_THF.take(st.d.theft, obj, { observed: observers.length > 0, observedBy: observers, factionRanks: st.p.standings, livesHere: false });
+    // `livesHere` was a hardcoded `false` here for the whole of wave 1, which is RI-MTH07 §C3's
+    // hand-feed in its purest form: RI-STL02 §1 makes the entire `shared` scope turn on it and
+    // nothing in the world could ever make it true. It is now DERIVED — from whether the
+    // character is standing in a zone one of whose owners is a person they are travelling with,
+    // or, in the ordinary case, whether the player character is themselves an owner of it.
+    const lives = this._livesHere(zone.id);
+    const res = STL_THF.take(st.d.theft, obj, { observed: observers.length > 0, observedBy: observers, factionRanks: st.p.standings, livesHere: lives });
     res.observed_by = observers;
     res.observed_by_source = opts.observedBy ? 'supplied_by_caller' : 'derived_from_the_world';
     if (res.stolen_from) {
@@ -6038,7 +6183,12 @@ export class Engine {
 
   trespassCheck(zoneId, opts) {
     const z = this._zoneById(zoneId);
-    return { zone: z.id, ...STL_THF.trespass(this.sim.stealth.d.theft, { class: z.class, faction: z.faction }, { factionRanks: this.sim.stealth.p.standings, ...opts }) };
+    // W1-04: `shopOpen` defaulted to `true` at every call site in the build, so a shop was as
+    // little a trespass at three in the morning as at noon and `zone.schedule.open_h` — on all
+    // 233 zones — was read by nothing. It is now derived from the world clock and the hours of
+    // the interior the zone is a room of, unless the caller states the case explicitly.
+    const derived = { shopOpen: this.isOpenNow(z.id), residents_present: this.settlements.residentsPresent(this.sim, z.id).present };
+    return { zone: z.id, hour: Math.round(this.sim.env.timeOfDay * 100) / 100, derived_shop_open: derived.shopOpen, residents_present: derived.residents_present, ...STL_THF.trespass(this.sim.stealth.d.theft, { class: z.class, faction: z.faction }, { factionRanks: this.sim.stealth.p.standings, shopOpen: derived.shopOpen, ...opts }) };
   }
 
   fenceQuote(fenceId, item) {

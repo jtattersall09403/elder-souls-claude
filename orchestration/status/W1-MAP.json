@@ -1,0 +1,19 @@
+{
+  "task_id": "W1-MAP",
+  "brief": "inline (owner overruled S30 via S35): build a discovery map that records where you have been, with no possible quest-marker surface",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus amendment record to RI-UIX04 JU8",
+    "discovery model (world-side, save-durable)",
+    "world map drawn from game/data/world/",
+    "local (cell) view",
+    "hostile probe: quest attempts to place a marker and fails",
+    "docs/shots/ screenshots (early + explored)",
+    "reports/blog-feed.jsonl line"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read ARBITRATION.md S30 and S35, then RI-UIX03/RI-UIX04, then game/data/world/",
+  "notes_for_successor": ""
+}

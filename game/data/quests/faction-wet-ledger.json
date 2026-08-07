@@ -28,7 +28,11 @@
       "category": "faction",
       "faction": "the_wet_ledger",
       "act": null,
-      "rank_gate": { "faction": "the_wet_ledger", "min_rank": 0, "min_reputation": 0 },
+      "rank_gate": {
+        "faction": "the_wet_ledger",
+        "min_rank": 0,
+        "min_reputation": 0
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "factor-belliene",
@@ -38,7 +42,11 @@
       },
       "opens_by": {
         "topic": "the wet ledger",
-        "overheard_from": ["gideon-quay-porter", "fence-ashul", "npc-porter-eeja"]
+        "overheard_from": [
+          "gideon-quay-porter",
+          "fence-ashul",
+          "npc-porter-eeja"
+        ]
       },
       "task_kind": "delivery",
       "stakes": 2,
@@ -66,7 +74,7 @@
           "index": 40,
           "state": "active",
           "text": "The bond underwrites a hull called the Salt Wife against loss for nine days at anchor at Archon. Nine days is not a call for water and no cargo I know of is worth insuring while it sits still.",
-          "records_belief": false
+          "records_belief": true
         },
         {
           "index": 72,
@@ -98,7 +106,11 @@
           "id": "br_seal",
           "at_journal_index": 20,
           "condition": "The player has the sealed bond, a day of road ahead, and no witness",
-          "leads_to": ["res_lodge", "res_read_then_lodge", "res_sell"],
+          "leads_to": [
+            "res_lodge",
+            "res_read_then_lodge",
+            "res_sell"
+          ],
           "irreversible": false
         }
       ],
@@ -111,11 +123,21 @@
           "outcome": "The bond is lodged unread. The Ledger has a runner it can send again and the player has forty gold and no idea what they carried.",
           "morally_better": null,
           "requires": {},
-          "exclusive_with": ["res_read_then_lodge", "res_sell"],
+          "exclusive_with": [
+            "res_read_then_lodge",
+            "res_sell"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 10 },
-            "world_flags": ["ledger_runner_named", "salt_wife_bond_lodged"],
-            "npc_disposition": { "factor-belliene": 10 }
+            "faction_reputation": {
+              "the_wet_ledger": 10
+            },
+            "world_flags": [
+              "ledger_runner_named",
+              "salt_wife_bond_lodged"
+            ],
+            "npc_disposition": {
+              "factor-belliene": 10
+            }
           }
         },
         {
@@ -125,13 +147,28 @@
           "journal_index": 92,
           "outcome": "The bond is lodged and read. The player knows the Salt Wife is insured to sit still at Archon for nine days, which is the shape of a thing the Ledger will spend four ranks not telling them.",
           "morally_better": null,
-          "requires": { "skills": { "security": 20 } },
+          "requires": {
+            "skills": {
+              "security": 20
+            }
+          },
           "requires_knowing": [],
-          "exclusive_with": ["res_lodge", "res_sell"],
+          "exclusive_with": [
+            "res_lodge",
+            "res_sell"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 10 },
-            "world_flags": ["ledger_runner_named", "salt_wife_bond_lodged", "player_read_the_salt_wife_bond"],
-            "npc_disposition": { "factor-belliene": 10 }
+            "faction_reputation": {
+              "the_wet_ledger": 10
+            },
+            "world_flags": [
+              "ledger_runner_named",
+              "salt_wife_bond_lodged",
+              "player_read_the_salt_wife_bond"
+            ],
+            "npc_disposition": {
+              "factor-belliene": 10
+            }
           }
         },
         {
@@ -141,12 +178,28 @@
           "journal_index": 94,
           "outcome": "The bond is sold at Soulrest and the loss is put on a ford. The player is taken on anyway, at a lower opinion and with a Soulrest factor who now knows their face.",
           "morally_better": false,
-          "requires": { "skills": { "speechcraft": 20 } },
-          "exclusive_with": ["res_lodge", "res_read_then_lodge"],
+          "requires": {
+            "skills": {
+              "speechcraft": 20
+            }
+          },
+          "exclusive_with": [
+            "res_lodge",
+            "res_read_then_lodge"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 4, "the_drowned_court": 6 },
-            "world_flags": ["ledger_runner_named", "salt_wife_bond_sold", "soulrest_factor_knows_the_player"],
-            "npc_disposition": { "factor-belliene": -10 }
+            "faction_reputation": {
+              "the_wet_ledger": 4,
+              "the_drowned_court": 6
+            },
+            "world_flags": [
+              "ledger_runner_named",
+              "salt_wife_bond_sold",
+              "soulrest_factor_knows_the_player"
+            ],
+            "npc_disposition": {
+              "factor-belliene": -10
+            }
           }
         }
       ],
@@ -163,16 +216,39 @@
       "can_fail": true,
       "deceit": null,
       "consequences": {
-        "faction_reputation": { "the_wet_ledger": 10 },
-        "world_flags": ["ledger_runner_named"],
-        "unlocks": ["Q-LEDG-01"]
+        "faction_reputation": {
+          "the_wet_ledger": 10
+        },
+        "world_flags": [
+          "ledger_runner_named"
+        ],
+        "unlocks": [
+          "Q-LEDG-01"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "gold", "unique_named": false, "amount": 120 },
-        { "type": "access", "unique_named": true, "id": "acc_ledger_counting_floor", "name": "the counting floor over the toll gate" },
-        { "type": "information", "unique_named": true, "id": "topic_the_salt_wife", "name": "the Salt Wife", "on_resolution": ["res_read_then_lodge"] }
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 120
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_ledger_counting_floor",
+          "name": "the counting floor over the toll gate"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_salt_wife",
+          "name": "the Salt Wife",
+          "on_resolution": [
+            "res_read_then_lodge"
+          ]
+        }
       ],
       "notes": "Rank 0. RI-QST01: an errand that establishes the faction's texture and geography and grants no discretion beyond the route. The one thing it hides is the shape of the whole line — a hull paid to sit still at Archon — and a player who breaks the seal at rank 0 carries that fact for six more quests before anyone confirms it."
     },
@@ -182,7 +258,11 @@
       "category": "faction",
       "faction": "the_wet_ledger",
       "act": null,
-      "rank_gate": { "faction": "the_wet_ledger", "min_rank": 2, "min_reputation": 22 },
+      "rank_gate": {
+        "faction": "the_wet_ledger",
+        "min_rank": 2,
+        "min_reputation": 22
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "sedd-ravano",
@@ -192,8 +272,13 @@
       },
       "opens_by": {
         "topic": "the second set of weights",
-        "prerequisite_quests": ["Q-LEDG-01"],
-        "overheard_from": ["npc-wuleen-kus", "npc-porter-eeja"]
+        "prerequisite_quests": [
+          "Q-LEDG-01"
+        ],
+        "overheard_from": [
+          "npc-wuleen-kus",
+          "npc-porter-eeja"
+        ]
       },
       "task_kind": "investigation",
       "stakes": 4,
@@ -259,7 +344,12 @@
           "id": "br_orders",
           "at_journal_index": 30,
           "condition": "The player is holding eleven orders, four of them in the giver's own hand",
-          "leads_to": ["res_hand_over", "res_squeeze", "res_give_wuleen", "rev_wuleen_counterfoil"],
+          "leads_to": [
+            "res_hand_over",
+            "res_squeeze",
+            "res_give_wuleen",
+            "rev_wuleen_counterfoil"
+          ],
           "irreversible": true
         }
       ],
@@ -272,11 +362,21 @@
           "outcome": "Ravano gets the orders and the knowledge that the player has read them. The audit passes. Nothing about the gate changes and the player has bought a clerk who is afraid of them.",
           "morally_better": null,
           "requires": {},
-          "exclusive_with": ["res_squeeze", "res_give_wuleen"],
+          "exclusive_with": [
+            "res_squeeze",
+            "res_give_wuleen"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 12 },
-            "world_flags": ["ledger_caster_orders_held", "ravano_owes_the_player"],
-            "npc_disposition": { "sedd-ravano": -20 }
+            "faction_reputation": {
+              "the_wet_ledger": 12
+            },
+            "world_flags": [
+              "ledger_caster_orders_held",
+              "ravano_owes_the_player"
+            ],
+            "npc_disposition": {
+              "sedd-ravano": -20
+            }
           }
         },
         {
@@ -286,12 +386,31 @@
           "journal_index": 92,
           "outcome": "Ravano pays a share of the gate to keep four orders out of the audit. The short weight continues with a third person in it, and the third person is the player.",
           "morally_better": false,
-          "requires": { "attributes": { "personality": 14 }, "skills": { "speechcraft": 25 } },
-          "exclusive_with": ["res_hand_over", "res_give_wuleen"],
+          "requires": {
+            "attributes": {
+              "personality": 14
+            },
+            "skills": {
+              "speechcraft": 25
+            }
+          },
+          "exclusive_with": [
+            "res_hand_over",
+            "res_give_wuleen"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 12, "the_dockhands": -8 },
-            "world_flags": ["ledger_caster_orders_held", "player_takes_a_cut_of_the_gideon_gate", "ravano_owes_the_player"],
-            "npc_disposition": { "sedd-ravano": 25 }
+            "faction_reputation": {
+              "the_wet_ledger": 12,
+              "the_dockhands": -8
+            },
+            "world_flags": [
+              "ledger_caster_orders_held",
+              "player_takes_a_cut_of_the_gideon_gate",
+              "ravano_owes_the_player"
+            ],
+            "npc_disposition": {
+              "sedd-ravano": 25
+            }
           }
         },
         {
@@ -301,13 +420,29 @@
           "journal_index": 94,
           "outcome": "The counterfoil goes to the man it exonerates. He does not use it. The Ledger learns nothing and the player has a dissenter who will now speak to them about anything.",
           "morally_better": true,
-          "requires": { "disposition": 40 },
-          "requires_knowing": ["rev_wuleen_counterfoil"],
-          "exclusive_with": ["res_hand_over", "res_squeeze"],
+          "requires": {
+            "disposition": 40
+          },
+          "requires_knowing": [
+            "rev_wuleen_counterfoil"
+          ],
+          "exclusive_with": [
+            "res_hand_over",
+            "res_squeeze"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 6, "the_dockhands": 12 },
-            "world_flags": ["wuleen_kus_exonerated_privately", "ledger_caster_orders_held"],
-            "npc_disposition": { "npc-wuleen-kus": 40, "sedd-ravano": -10 }
+            "faction_reputation": {
+              "the_wet_ledger": 6,
+              "the_dockhands": 12
+            },
+            "world_flags": [
+              "wuleen_kus_exonerated_privately",
+              "ledger_caster_orders_held"
+            ],
+            "npc_disposition": {
+              "npc-wuleen-kus": 40,
+              "sedd-ravano": -10
+            }
           }
         }
       ],
@@ -323,27 +458,70 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D3", "D12"],
+        "patterns": [
+          "D3",
+          "D12"
+        ],
         "stated_objective": "Find where the gate's spare weights are cast, before the audit does",
         "actual_objective": "The same thing, honestly asked, by a man who has forgotten that four of the orders are his",
         "truth": "Ravano ordered four single stones himself and has never connected that fact to the Lilmoth porter who was hanged with it nine years ago.",
         "revealed_by": [
-          { "id": "rev_caster_orders", "channel": "ledger", "source": "item_caster_order_book", "before_point_of_no_return": true },
-          { "id": "rev_wuleen_counterfoil", "channel": "rival_npc", "source": "npc-wuleen-kus", "before_point_of_no_return": true }
+          {
+            "id": "rev_caster_orders",
+            "channel": "ledger",
+            "source": "item_caster_order_book",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_wuleen_counterfoil",
+            "channel": "rival_npc",
+            "source": "npc-wuleen-kus",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_wet_ledger": 12, "the_dockhands": 0 },
-        "world_flags": ["gideon_gate_weights_traced"],
-        "unlocks": ["Q-LEDG-03"]
+        "faction_reputation": {
+          "the_wet_ledger": 12,
+          "the_dockhands": 0
+        },
+        "world_flags": [
+          "gideon_gate_weights_traced"
+        ],
+        "unlocks": [
+          "Q-LEDG-03"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "gold", "unique_named": false, "amount": 250, "on_resolution": ["res_hand_over"] },
-        { "type": "service", "unique_named": true, "id": "svc_gideon_gate_cut", "name": "a standing cut of the Gideon gate", "on_resolution": ["res_squeeze"] },
-        { "type": "ally", "unique_named": true, "id": "npc-wuleen-kus", "name": "Wuleen-Kus of the low market", "on_resolution": ["res_give_wuleen"] }
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 250,
+          "on_resolution": [
+            "res_hand_over"
+          ]
+        },
+        {
+          "type": "service",
+          "unique_named": true,
+          "id": "svc_gideon_gate_cut",
+          "name": "a standing cut of the Gideon gate",
+          "on_resolution": [
+            "res_squeeze"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "npc-wuleen-kus",
+          "name": "Wuleen-Kus of the low market",
+          "on_resolution": [
+            "res_give_wuleen"
+          ]
+        }
       ],
       "notes": "Rank 2. The first inconsistency, and the rival speaks unprompted (RI-QST01's rank-2 requirement). The giver is honest — this line's lie was at rank 1 and the escalation here is that the honest man is implicated and does not know it."
     },
@@ -353,7 +531,11 @@
       "category": "faction",
       "faction": "the_wet_ledger",
       "act": null,
-      "rank_gate": { "faction": "the_wet_ledger", "min_rank": 3, "min_reputation": 36 },
+      "rank_gate": {
+        "faction": "the_wet_ledger",
+        "min_rank": 3,
+        "min_reputation": 36
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "factor-ruvela-sath",
@@ -363,8 +545,12 @@
       },
       "opens_by": {
         "topic": "the wharf debt",
-        "prerequisite_quests": ["Q-LEDG-02"],
-        "prerequisite_topics": ["the second set of weights"]
+        "prerequisite_quests": [
+          "Q-LEDG-02"
+        ],
+        "prerequisite_topics": [
+          "the second set of weights"
+        ]
       },
       "task_kind": "theft",
       "stakes": 6,
@@ -436,7 +622,13 @@
           "id": "br_box",
           "at_journal_index": 30,
           "condition": "The player has read the list of names and knows what is under the third board",
-          "leads_to": ["res_take_box", "res_acknowledgement", "res_warn_wharf", "res_pay_it", "rev_wuleen_lilmoth"],
+          "leads_to": [
+            "res_take_box",
+            "res_acknowledgement",
+            "res_warn_wharf",
+            "res_pay_it",
+            "rev_wuleen_lilmoth"
+          ],
           "irreversible": true
         }
       ],
@@ -448,13 +640,35 @@
           "journal_index": 90,
           "outcome": "The strike fund goes into the Ledger's strongroom. Nine hundred porters find out in the season the crane stops. The Deep-Kin hear about it before the month is out and stop pretending the coast can be reasoned with.",
           "morally_better": false,
-          "requires": { "skills": { "sneak": 32, "security": 32 } },
-          "exclusive_with": ["res_acknowledgement", "res_warn_wharf", "res_pay_it"],
+          "requires": {
+            "skills": {
+              "sneak": 32,
+              "security": 32
+            }
+          },
+          "exclusive_with": [
+            "res_acknowledgement",
+            "res_warn_wharf",
+            "res_pay_it"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 18, "the_dockhands": -30, "the_xul_aneekh": -18 },
-            "world_flags": ["gideon_strike_fund_taken", "gideon_quay_hostile_to_outlanders", "ledger_closed_the_interior"],
-            "locks": ["Q-XULA-03"],
-            "npc_disposition": { "npc-porter-eeja": -70, "npc-wuleen-kus": -40 }
+            "faction_reputation": {
+              "the_wet_ledger": 18,
+              "the_dockhands": -30,
+              "the_xul_aneekh": -18
+            },
+            "world_flags": [
+              "gideon_strike_fund_taken",
+              "gideon_quay_hostile_to_outlanders",
+              "ledger_closed_the_interior"
+            ],
+            "locks": [
+              "Q-XULA-03"
+            ],
+            "npc_disposition": {
+              "npc-porter-eeja": -70,
+              "npc-wuleen-kus": -40
+            }
           }
         },
         {
@@ -464,13 +678,35 @@
           "journal_index": 92,
           "outcome": "The wharf keeps the eleven hundred and signs away the right to it. The Ledger has an instrument now where before it had a word, and it will use the instrument in four seasons rather than tonight.",
           "morally_better": false,
-          "requires": { "attributes": { "personality": 16 }, "skills": { "speechcraft": 32 } },
-          "exclusive_with": ["res_take_box", "res_warn_wharf", "res_pay_it"],
+          "requires": {
+            "attributes": {
+              "personality": 16
+            },
+            "skills": {
+              "speechcraft": 32
+            }
+          },
+          "exclusive_with": [
+            "res_take_box",
+            "res_warn_wharf",
+            "res_pay_it"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 16, "the_dockhands": -10, "the_xul_aneekh": -8 },
-            "world_flags": ["gideon_strike_fund_acknowledged", "ledger_holds_a_wharf_instrument"],
-            "locks": ["Q-XULA-03"],
-            "npc_disposition": { "npc-porter-eeja": -25 }
+            "faction_reputation": {
+              "the_wet_ledger": 16,
+              "the_dockhands": -10,
+              "the_xul_aneekh": -8
+            },
+            "world_flags": [
+              "gideon_strike_fund_acknowledged",
+              "ledger_holds_a_wharf_instrument"
+            ],
+            "locks": [
+              "Q-XULA-03"
+            ],
+            "npc_disposition": {
+              "npc-porter-eeja": -25
+            }
           }
         },
         {
@@ -480,13 +716,34 @@
           "journal_index": 94,
           "outcome": "The box moves in the night and the Ledger writes off eleven hundred it never had a paper for. The player has lied to a factor who does not forget and has bought the whole Gideon quay.",
           "morally_better": true,
-          "requires": { "skills": { "speechcraft": 32 } },
-          "requires_knowing": ["rev_wuleen_lilmoth"],
-          "exclusive_with": ["res_take_box", "res_acknowledgement", "res_pay_it"],
+          "requires": {
+            "skills": {
+              "speechcraft": 32
+            }
+          },
+          "requires_knowing": [
+            "rev_wuleen_lilmoth"
+          ],
+          "exclusive_with": [
+            "res_take_box",
+            "res_acknowledgement",
+            "res_pay_it"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": -12, "the_dockhands": 30, "the_xul_aneekh": 10 },
-            "world_flags": ["gideon_strike_fund_saved", "sath_suspects_the_player"],
-            "npc_disposition": { "npc-porter-eeja": 50, "factor-ruvela-sath": -30, "npc-wuleen-kus": 30 }
+            "faction_reputation": {
+              "the_wet_ledger": -12,
+              "the_dockhands": 30,
+              "the_xul_aneekh": 10
+            },
+            "world_flags": [
+              "gideon_strike_fund_saved",
+              "sath_suspects_the_player"
+            ],
+            "npc_disposition": {
+              "npc-porter-eeja": 50,
+              "factor-ruvela-sath": -30,
+              "npc-wuleen-kus": 30
+            }
           }
         },
         {
@@ -496,12 +753,27 @@
           "journal_index": 96,
           "outcome": "The player buys the problem. Both sides are satisfied, neither knows it, and the eleven hundred is now the player's claim on the Ledger rather than the Ledger's on the wharf.",
           "morally_better": true,
-          "requires": { "gold": 1100 },
-          "exclusive_with": ["res_take_box", "res_acknowledgement", "res_warn_wharf"],
+          "requires": {
+            "gold": 1100
+          },
+          "exclusive_with": [
+            "res_take_box",
+            "res_acknowledgement",
+            "res_warn_wharf"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 14, "the_dockhands": 8 },
-            "world_flags": ["gideon_strike_fund_saved", "ledger_owes_the_player_eleven_hundred"],
-            "npc_disposition": { "factor-ruvela-sath": 15, "npc-porter-eeja": 20 }
+            "faction_reputation": {
+              "the_wet_ledger": 14,
+              "the_dockhands": 8
+            },
+            "world_flags": [
+              "gideon_strike_fund_saved",
+              "ledger_owes_the_player_eleven_hundred"
+            ],
+            "npc_disposition": {
+              "factor-ruvela-sath": 15,
+              "npc-porter-eeja": 20
+            }
           }
         }
       ],
@@ -517,28 +789,78 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D2", "D8", "D3"],
+        "patterns": [
+          "D2",
+          "D8",
+          "D3"
+        ],
         "stated_objective": "Recover a float the wharf has been holding for two seasons",
         "actual_objective": "Take a strike fund the Ledger has no instrument for, before the wharf works out that the Ledger has no instrument for it",
         "truth": "There is no float. There are nine hundred porters and eleven gold a week, and the word 'float' is doing all of the work.",
         "revealed_by": [
-          { "id": "rev_the_list", "channel": "ledger", "source": "item_strike_box_list", "before_point_of_no_return": true },
-          { "id": "rev_wuleen_lilmoth", "channel": "rival_npc", "source": "npc-wuleen-kus", "before_point_of_no_return": true },
-          { "id": "rev_eeja", "channel": "talk_to_target", "source": "npc-porter-eeja", "before_point_of_no_return": true }
+          {
+            "id": "rev_the_list",
+            "channel": "ledger",
+            "source": "item_strike_box_list",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_wuleen_lilmoth",
+            "channel": "rival_npc",
+            "source": "npc-wuleen-kus",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_eeja",
+            "channel": "talk_to_target",
+            "source": "npc-porter-eeja",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_wet_ledger": 14, "the_dockhands": 0 },
-        "world_flags": ["gideon_float_question_settled"],
-        "unlocks": ["Q-LEDG-04"]
+        "faction_reputation": {
+          "the_wet_ledger": 14,
+          "the_dockhands": 0
+        },
+        "world_flags": [
+          "gideon_float_question_settled"
+        ],
+        "unlocks": [
+          "Q-LEDG-04"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "gold", "unique_named": false, "amount": 400, "on_resolution": ["res_take_box", "res_acknowledgement"] },
-        { "type": "property", "unique_named": true, "id": "prop_ledger_claim_eleven_hundred", "name": "a claim on the Ledger for eleven hundred", "on_resolution": ["res_pay_it"] },
-        { "type": "access", "unique_named": true, "id": "acc_gideon_quay_free", "name": "the run of the Gideon quay", "on_resolution": ["res_warn_wharf"] }
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 400,
+          "on_resolution": [
+            "res_take_box",
+            "res_acknowledgement"
+          ]
+        },
+        {
+          "type": "property",
+          "unique_named": true,
+          "id": "prop_ledger_claim_eleven_hundred",
+          "name": "a claim on the Ledger for eleven hundred",
+          "on_resolution": [
+            "res_pay_it"
+          ]
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_gideon_quay_free",
+          "name": "the run of the Gideon quay",
+          "on_resolution": [
+            "res_warn_wharf"
+          ]
+        }
       ],
       "notes": "Rank 3. The X2 lock arms here: two of the four resolutions permanently close Q-XULA-03 and the Deep-Kin line with it (RI-CRM02 §4, 'Wet Ledger rank >= 3 cannot hold Xul-Aneekh'). The X3 escape is res_warn_wharf and res_pay_it, neither of which locks — and res_warn_wharf is gated on the dissenter's reveal, which is what RI-QST03 §C X3 means by a mediated alternate rather than a menu option."
     },
@@ -548,7 +870,11 @@
       "category": "faction",
       "faction": "the_wet_ledger",
       "act": null,
-      "rank_gate": { "faction": "the_wet_ledger", "min_rank": 4, "min_reputation": 52 },
+      "rank_gate": {
+        "faction": "the_wet_ledger",
+        "min_rank": 4,
+        "min_reputation": 52
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "factor-belliene",
@@ -558,8 +884,12 @@
       },
       "opens_by": {
         "topic": "the quiet partner",
-        "prerequisite_quests": ["Q-LEDG-03"],
-        "prerequisite_topics": ["the wharf debt"]
+        "prerequisite_quests": [
+          "Q-LEDG-03"
+        ],
+        "prerequisite_topics": [
+          "the wharf debt"
+        ]
       },
       "task_kind": "dirty_work",
       "stakes": 7,
@@ -631,14 +961,25 @@
           "id": "br_chair",
           "at_journal_index": 32,
           "condition": "The player has two years of returns for the eighth chair and can read the water-call in them",
-          "leads_to": ["res_false_name", "res_table", "res_take_share", "res_hand_wuleen", "rev_returns"],
+          "leads_to": [
+            "res_false_name",
+            "res_table",
+            "res_take_share",
+            "res_hand_wuleen",
+            "rev_returns"
+          ],
           "irreversible": false
         },
         {
           "id": "br_whose_chair",
           "at_journal_index": 46,
           "condition": "The player knows the eighth chair is a Dres salt-factor and that the giver has been signing for him",
-          "leads_to": ["res_false_name", "res_table", "res_take_share", "res_hand_wuleen"],
+          "leads_to": [
+            "res_false_name",
+            "res_table",
+            "res_take_share",
+            "res_hand_wuleen"
+          ],
           "irreversible": true
         }
       ],
@@ -651,11 +992,27 @@
           "outcome": "A name goes into the chair and the chair goes on paying Archon. The Ledger is safe, the water-call is safe, and the player has been useful in the specific way this institution values.",
           "morally_better": false,
           "requires": {},
-          "exclusive_with": ["res_table", "res_take_share", "res_hand_wuleen"],
+          "exclusive_with": [
+            "res_table",
+            "res_take_share",
+            "res_hand_wuleen"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 20, "house_dres": 10, "the_imperial_assize": -12, "the_xul_aneekh": -14 },
-            "world_flags": ["ledger_eighth_chair_papered", "archon_water_call_protected", "ledger_gate_held"],
-            "npc_disposition": { "factor-belliene": 30, "npc-wuleen-kus": -50 }
+            "faction_reputation": {
+              "the_wet_ledger": 20,
+              "house_dres": 10,
+              "the_imperial_assize": -12,
+              "the_xul_aneekh": -14
+            },
+            "world_flags": [
+              "ledger_eighth_chair_papered",
+              "archon_water_call_protected",
+              "ledger_gate_held"
+            ],
+            "npc_disposition": {
+              "factor-belliene": 30,
+              "npc-wuleen-kus": -50
+            }
           }
         },
         {
@@ -665,13 +1022,36 @@
           "journal_index": 92,
           "outcome": "The table hears it. Belliene is not destroyed — she names four others and survives by making the room complicit — but the eighth chair is struck and Archon loses its cover inside the Ledger.",
           "morally_better": null,
-          "requires": { "disposition": 50, "knowledge": ["topic_ledger_assembly_procedure"] },
-          "requires_knowing": ["rev_returns"],
-          "exclusive_with": ["res_false_name", "res_take_share", "res_hand_wuleen"],
+          "requires": {
+            "disposition": 50,
+            "knowledge": [
+              "topic_ledger_assembly_procedure"
+            ]
+          },
+          "requires_knowing": [
+            "rev_returns"
+          ],
+          "exclusive_with": [
+            "res_false_name",
+            "res_take_share",
+            "res_hand_wuleen"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": -8, "house_dres": -25, "the_imperial_assize": 14, "the_dockhands": 12 },
-            "world_flags": ["ledger_eighth_chair_struck", "archon_water_call_exposed", "ledger_gate_held"],
-            "npc_disposition": { "factor-belliene": -40, "harbourmistress-tesh": 30 }
+            "faction_reputation": {
+              "the_wet_ledger": -8,
+              "house_dres": -25,
+              "the_imperial_assize": 14,
+              "the_dockhands": 12
+            },
+            "world_flags": [
+              "ledger_eighth_chair_struck",
+              "archon_water_call_exposed",
+              "ledger_gate_held"
+            ],
+            "npc_disposition": {
+              "factor-belliene": -40,
+              "harbourmistress-tesh": 30
+            }
           }
         },
         {
@@ -681,14 +1061,42 @@
           "journal_index": 94,
           "outcome": "The player holds the eighth chair's share and a toll gate to draw it through. Every gold of it came off a hull that sat at Archon for nine days, and the player is now the person who knows that and takes it anyway.",
           "morally_better": false,
-          "requires": { "attributes": { "personality": 18 }, "skills": { "mercantile": 40 } },
-          "requires_knowing": ["rev_returns"],
-          "exclusive_with": ["res_false_name", "res_table", "res_hand_wuleen"],
+          "requires": {
+            "attributes": {
+              "personality": 18
+            },
+            "skills": {
+              "mercantile": 40
+            }
+          },
+          "requires_knowing": [
+            "rev_returns"
+          ],
+          "exclusive_with": [
+            "res_false_name",
+            "res_table",
+            "res_hand_wuleen"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 20, "house_dres": 20, "the_xul_aneekh": -30, "the_dockhands": -15 },
-            "world_flags": ["ledger_eighth_chair_papered", "player_holds_the_dres_share", "archon_water_call_protected", "ledger_gate_held"],
-            "locks": ["Q-XULA-03"],
-            "npc_disposition": { "salt-factor-neloth-vaun": 45, "npc-wuleen-kus": -60 }
+            "faction_reputation": {
+              "the_wet_ledger": 20,
+              "house_dres": 20,
+              "the_xul_aneekh": -30,
+              "the_dockhands": -15
+            },
+            "world_flags": [
+              "ledger_eighth_chair_papered",
+              "player_holds_the_dres_share",
+              "archon_water_call_protected",
+              "ledger_gate_held"
+            ],
+            "locks": [
+              "Q-XULA-03"
+            ],
+            "npc_disposition": {
+              "salt-factor-neloth-vaun": 45,
+              "npc-wuleen-kus": -60
+            }
           }
         },
         {
@@ -698,13 +1106,33 @@
           "journal_index": 96,
           "outcome": "The returns leave the Ledger in the hands of the man it ruined. He reaches the Assize. What the Assize does with them is the Assize's line, not this one — and the player has no gate, no share, and a factor who now knows exactly what they are.",
           "morally_better": true,
-          "requires": { "disposition": 45 },
-          "requires_knowing": ["rev_wuleen_nine_years"],
-          "exclusive_with": ["res_false_name", "res_table", "res_take_share"],
+          "requires": {
+            "disposition": 45
+          },
+          "requires_knowing": [
+            "rev_wuleen_nine_years"
+          ],
+          "exclusive_with": [
+            "res_false_name",
+            "res_table",
+            "res_take_share"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": -20, "the_dockhands": 25, "the_imperial_assize": 20, "house_dres": -30 },
-            "world_flags": ["ledger_eighth_chair_reported_to_the_assize", "archon_water_call_exposed", "belliene_hunting_the_player"],
-            "npc_disposition": { "npc-wuleen-kus": 60, "factor-belliene": -70 }
+            "faction_reputation": {
+              "the_wet_ledger": -20,
+              "the_dockhands": 25,
+              "the_imperial_assize": 20,
+              "house_dres": -30
+            },
+            "world_flags": [
+              "ledger_eighth_chair_reported_to_the_assize",
+              "archon_water_call_exposed",
+              "belliene_hunting_the_player"
+            ],
+            "npc_disposition": {
+              "npc-wuleen-kus": 60,
+              "factor-belliene": -70
+            }
           }
         }
       ],
@@ -720,28 +1148,77 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D1", "D2", "D9"],
+        "patterns": [
+          "D1",
+          "D2",
+          "D9"
+        ],
         "stated_objective": "Find out who has been signing as the Ledger's eighth partner",
         "actual_objective": "Find out whether anyone outside the counting floor can find out, and close the route they would use",
         "truth": "The eighth chair belongs to a House Dres salt-factor at Archon, and the factor who set this task has been signing his returns for two years.",
         "revealed_by": [
-          { "id": "rev_returns", "channel": "ledger", "source": "item_eighth_chair_returns", "before_point_of_no_return": true },
-          { "id": "rev_tesh", "channel": "talk_to_target", "source": "harbourmistress-tesh", "before_point_of_no_return": true },
-          { "id": "rev_wuleen_nine_years", "channel": "rival_npc", "source": "npc-wuleen-kus", "before_point_of_no_return": true }
+          {
+            "id": "rev_returns",
+            "channel": "ledger",
+            "source": "item_eighth_chair_returns",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_tesh",
+            "channel": "talk_to_target",
+            "source": "harbourmistress-tesh",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_wuleen_nine_years",
+            "channel": "rival_npc",
+            "source": "npc-wuleen-kus",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_wet_ledger": 16, "house_dres": 0 },
-        "world_flags": ["ledger_eighth_chair_settled"],
-        "unlocks": ["Q-LEDG-05"]
+        "faction_reputation": {
+          "the_wet_ledger": 16,
+          "house_dres": 0
+        },
+        "world_flags": [
+          "ledger_eighth_chair_settled"
+        ],
+        "unlocks": [
+          "Q-LEDG-05"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "property", "unique_named": true, "id": "prop_gideon_lower_gate", "name": "the lower toll gate at Gideon", "on_resolution": ["res_false_name", "res_table", "res_take_share"] },
-        { "type": "service", "unique_named": true, "id": "svc_eighth_chair_share", "name": "the eighth chair's share", "on_resolution": ["res_take_share"] },
-        { "type": "information", "unique_named": true, "id": "topic_the_water_call", "name": "the water-call" }
+        {
+          "type": "property",
+          "unique_named": true,
+          "id": "prop_gideon_lower_gate",
+          "name": "the lower toll gate at Gideon",
+          "on_resolution": [
+            "res_false_name",
+            "res_table",
+            "res_take_share"
+          ]
+        },
+        {
+          "type": "service",
+          "unique_named": true,
+          "id": "svc_eighth_chair_share",
+          "name": "the eighth chair's share",
+          "on_resolution": [
+            "res_take_share"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_water_call",
+          "name": "the water-call"
+        }
       ],
       "notes": "Rank 4, first of two. This is the quest that was referenced and did not exist. It is also where the line stops being about money: the corruption is now House Dres, the player profits from it in three of four endings, and every ending grants the rank-5 holding flag `ledger_gate_held` except the one where they walk away."
     },
@@ -751,7 +1228,11 @@
       "category": "faction",
       "faction": "the_wet_ledger",
       "act": null,
-      "rank_gate": { "faction": "the_wet_ledger", "min_rank": 4, "min_reputation": 52 },
+      "rank_gate": {
+        "faction": "the_wet_ledger",
+        "min_rank": 4,
+        "min_reputation": 52
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "harbourmaster-cuiro-vaneth",
@@ -761,8 +1242,12 @@
       },
       "opens_by": {
         "topic": "the water call",
-        "prerequisite_quests": ["Q-LEDG-04"],
-        "prerequisite_topics": ["the quiet partner"]
+        "prerequisite_quests": [
+          "Q-LEDG-04"
+        ],
+        "prerequisite_topics": [
+          "the quiet partner"
+        ]
       },
       "task_kind": "dirty_work",
       "stakes": 7,
@@ -834,7 +1319,13 @@
           "id": "br_beach",
           "at_journal_index": 34,
           "condition": "The player has seen the tide-marks and knows what a water-call weighs",
-          "leads_to": ["res_talk_her_round", "res_buy_the_plank", "res_give_vashum", "res_exile_skara", "rev_tidemarks"],
+          "leads_to": [
+            "res_talk_her_round",
+            "res_buy_the_plank",
+            "res_give_vashum",
+            "res_exile_skara",
+            "rev_tidemarks"
+          ],
           "irreversible": true
         }
       ],
@@ -846,12 +1337,34 @@
           "journal_index": 90,
           "outcome": "A captain who counted stops counting. The water-call runs on and the player is the reason. Archon stays a harbour and the beach stays quiet, which is what quiet is for.",
           "morally_better": false,
-          "requires": { "attributes": { "personality": 18 }, "skills": { "speechcraft": 40 } },
-          "exclusive_with": ["res_buy_the_plank", "res_give_vashum", "res_exile_skara"],
+          "requires": {
+            "attributes": {
+              "personality": 18
+            },
+            "skills": {
+              "speechcraft": 40
+            }
+          },
+          "exclusive_with": [
+            "res_buy_the_plank",
+            "res_give_vashum",
+            "res_exile_skara"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 22, "house_dres": 12, "the_xul_aneekh": -20 },
-            "world_flags": ["archon_beach_quiet", "ledger_gate_held", "skara_takes_the_money"],
-            "npc_disposition": { "harbourmaster-cuiro-vaneth": 35, "ee-vashum": -30 }
+            "faction_reputation": {
+              "the_wet_ledger": 22,
+              "house_dres": 12,
+              "the_xul_aneekh": -20
+            },
+            "world_flags": [
+              "archon_beach_quiet",
+              "ledger_gate_held",
+              "skara_takes_the_money"
+            ],
+            "npc_disposition": {
+              "harbourmaster-cuiro-vaneth": 35,
+              "ee-vashum": -30
+            }
           }
         },
         {
@@ -861,13 +1374,34 @@
           "journal_index": 92,
           "outcome": "The evidence is bought and burned at the Ledger's expense, in front of the man who ordered it dealt with. Vaneth respects it and resents it, and the gate the player holds pays for it all year.",
           "morally_better": false,
-          "requires": { "gold": 2400, "skills": { "mercantile": 40 } },
-          "requires_knowing": ["rev_tidemarks"],
-          "exclusive_with": ["res_talk_her_round", "res_give_vashum", "res_exile_skara"],
+          "requires": {
+            "gold": 2400,
+            "skills": {
+              "mercantile": 40
+            }
+          },
+          "requires_knowing": [
+            "rev_tidemarks"
+          ],
+          "exclusive_with": [
+            "res_talk_her_round",
+            "res_give_vashum",
+            "res_exile_skara"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 18, "house_dres": 8, "the_xul_aneekh": -12 },
-            "world_flags": ["archon_beach_quiet", "ledger_gate_held", "tide_marks_destroyed"],
-            "npc_disposition": { "harbourmaster-cuiro-vaneth": 20 }
+            "faction_reputation": {
+              "the_wet_ledger": 18,
+              "house_dres": 8,
+              "the_xul_aneekh": -12
+            },
+            "world_flags": [
+              "archon_beach_quiet",
+              "ledger_gate_held",
+              "tide_marks_destroyed"
+            ],
+            "npc_disposition": {
+              "harbourmaster-cuiro-vaneth": 20
+            }
           }
         },
         {
@@ -877,13 +1411,34 @@
           "journal_index": 94,
           "outcome": "The tide-marks go up the root track in the hands of the one Deep-Kin elder who does not want the coast drowned. What she does with them is her line's business. The Ledger has been robbed of the thing it was buying and does not know it yet.",
           "morally_better": true,
-          "requires": { "disposition": 40 },
-          "requires_knowing": ["rev_vashum", "rev_tidemarks"],
-          "exclusive_with": ["res_talk_her_round", "res_buy_the_plank", "res_exile_skara"],
+          "requires": {
+            "disposition": 40
+          },
+          "requires_knowing": [
+            "rev_vashum",
+            "rev_tidemarks"
+          ],
+          "exclusive_with": [
+            "res_talk_her_round",
+            "res_buy_the_plank",
+            "res_exile_skara"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": -10, "the_xul_aneekh": 30, "house_dres": -25, "the_imperial_assize": 8 },
-            "world_flags": ["tide_marks_went_inland", "deepkin_have_the_archon_proof", "vaneth_suspects_the_player"],
-            "npc_disposition": { "ee-vashum": 45, "harbourmaster-cuiro-vaneth": -25 }
+            "faction_reputation": {
+              "the_wet_ledger": -10,
+              "the_xul_aneekh": 30,
+              "house_dres": -25,
+              "the_imperial_assize": 8
+            },
+            "world_flags": [
+              "tide_marks_went_inland",
+              "deepkin_have_the_archon_proof",
+              "vaneth_suspects_the_player"
+            ],
+            "npc_disposition": {
+              "ee-vashum": 45,
+              "harbourmaster-cuiro-vaneth": -25
+            }
           }
         },
         {
@@ -893,12 +1448,30 @@
           "journal_index": 96,
           "outcome": "The captain and the proof both leave the province alive and paid. Nothing is settled, nobody is punished, and the Salt Wife will be in on the ninth regardless — which is the honest cost of the merciful answer.",
           "morally_better": null,
-          "requires": { "gold": 900, "skills": { "mercantile": 32 } },
-          "exclusive_with": ["res_talk_her_round", "res_buy_the_plank", "res_give_vashum"],
+          "requires": {
+            "gold": 900,
+            "skills": {
+              "mercantile": 32
+            }
+          },
+          "exclusive_with": [
+            "res_talk_her_round",
+            "res_buy_the_plank",
+            "res_give_vashum"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 10, "the_xul_aneekh": -4 },
-            "world_flags": ["archon_beach_quiet", "ledger_gate_held", "skara_left_the_province"],
-            "npc_disposition": { "harbourmaster-cuiro-vaneth": 10 }
+            "faction_reputation": {
+              "the_wet_ledger": 10,
+              "the_xul_aneekh": -4
+            },
+            "world_flags": [
+              "archon_beach_quiet",
+              "ledger_gate_held",
+              "skara_left_the_province"
+            ],
+            "npc_disposition": {
+              "harbourmaster-cuiro-vaneth": 10
+            }
           }
         }
       ],
@@ -914,28 +1487,76 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D1", "D4", "D5"],
+        "patterns": [
+          "D1",
+          "D4",
+          "D5"
+        ],
         "stated_objective": "Talk an Archon captain out of making a scene about the water-call",
         "actual_objective": "Destroy a two-season record of what House Dres has taken off this beach, before the record reaches the interior",
         "truth": "The Salt Wife leaves Archon a hand and a half lower than she arrives, eleven times a year, and Skara has it chalked on a plank.",
         "revealed_by": [
-          { "id": "rev_tidemarks", "channel": "talk_to_target", "source": "npc-skara-hull-chalk", "before_point_of_no_return": true },
-          { "id": "rev_rope_woman", "channel": "eavesdrop", "source": "archon-crane-crew", "before_point_of_no_return": true },
-          { "id": "rev_vashum", "channel": "rival_npc", "source": "ee-vashum", "before_point_of_no_return": true }
+          {
+            "id": "rev_tidemarks",
+            "channel": "talk_to_target",
+            "source": "npc-skara-hull-chalk",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_rope_woman",
+            "channel": "eavesdrop",
+            "source": "archon-crane-crew",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_vashum",
+            "channel": "rival_npc",
+            "source": "ee-vashum",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_wet_ledger": 18, "the_xul_aneekh": 0 },
-        "world_flags": ["archon_water_call_question_raised"],
-        "unlocks": ["Q-LEDG-06"]
+        "faction_reputation": {
+          "the_wet_ledger": 18,
+          "the_xul_aneekh": 0
+        },
+        "world_flags": [
+          "archon_water_call_question_raised"
+        ],
+        "unlocks": [
+          "Q-LEDG-06"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "gold", "unique_named": false, "amount": 900, "on_resolution": ["res_talk_her_round", "res_buy_the_plank", "res_exile_skara"] },
-        { "type": "ally", "unique_named": true, "id": "ee-vashum", "name": "Ee-Vashum of the war-broods", "on_resolution": ["res_give_vashum"] },
-        { "type": "information", "unique_named": true, "id": "topic_the_archon_question", "name": "the Archon question" }
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 900,
+          "on_resolution": [
+            "res_talk_her_round",
+            "res_buy_the_plank",
+            "res_exile_skara"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "ee-vashum",
+          "name": "Ee-Vashum of the war-broods",
+          "on_resolution": [
+            "res_give_vashum"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_archon_question",
+          "name": "the Archon question"
+        }
       ],
       "notes": "Rank 4, second of two. D5 lands here: this quest and Q-XULA-04 are the same event from two chairs, and neither account is wrong. Every ending except res_give_vashum raises `ledger_gate_held`, which is the rank-5 world-state requirement — so a player who does the decent thing here reaches rank 5 through Q-LEDG-04 or not at all. That is deliberate and it is what RI-QST09 means by a cost."
     },
@@ -945,7 +1566,11 @@
       "category": "faction",
       "faction": "the_wet_ledger",
       "act": null,
-      "rank_gate": { "faction": "the_wet_ledger", "min_rank": 5, "min_reputation": 70 },
+      "rank_gate": {
+        "faction": "the_wet_ledger",
+        "min_rank": 5,
+        "min_reputation": 70
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "harbourmistress-tesh",
@@ -955,8 +1580,12 @@
       },
       "opens_by": {
         "topic": "the underwriters gate",
-        "prerequisite_quests": ["Q-LEDG-05"],
-        "prerequisite_topics": ["the water call"]
+        "prerequisite_quests": [
+          "Q-LEDG-05"
+        ],
+        "prerequisite_topics": [
+          "the water call"
+        ]
       },
       "task_kind": "politics",
       "stakes": 8,
@@ -972,7 +1601,7 @@
           "index": 26,
           "state": "active",
           "text": "Four seats decide it. Sath votes with whoever holds the strongroom. Vaneth votes for Archon staying a harbour. Tesh has not voted in nine years and is entitled to. Belliene votes last and everybody knows why.",
-          "records_belief": false
+          "records_belief": true
         },
         {
           "index": 36,
@@ -1022,7 +1651,13 @@
           "id": "br_table",
           "at_journal_index": 36,
           "condition": "The player holds a gate, has the four seats counted, and knows the Assize is watching",
-          "leads_to": ["res_vote_open", "res_vote_shut", "res_bring_the_wharf", "res_hand_the_assize", "rev_fifth_vote"],
+          "leads_to": [
+            "res_vote_open",
+            "res_vote_shut",
+            "res_bring_the_wharf",
+            "res_hand_the_assize",
+            "rev_fifth_vote"
+          ],
           "irreversible": true
         }
       ],
@@ -1034,13 +1669,38 @@
           "journal_index": 90,
           "outcome": "Archon stays open. The Ledger is richer, the interior is angrier, and the player's own gate is the instrument that made the difference.",
           "morally_better": false,
-          "requires": { "attributes": { "personality": 20 }, "skills": { "speechcraft": 50 } },
-          "exclusive_with": ["res_vote_shut", "res_bring_the_wharf", "res_hand_the_assize"],
+          "requires": {
+            "attributes": {
+              "personality": 20
+            },
+            "skills": {
+              "speechcraft": 50
+            }
+          },
+          "exclusive_with": [
+            "res_vote_shut",
+            "res_bring_the_wharf",
+            "res_hand_the_assize"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 26, "house_dres": 20, "the_xul_aneekh": -30, "the_imperial_assize": -14 },
-            "world_flags": ["ledger_archon_decided", "archon_water_call_open", "ledger_gate_held"],
-            "locks": ["Q-XULA-06"],
-            "npc_disposition": { "harbourmaster-cuiro-vaneth": 30, "ee-vashum": -40 }
+            "faction_reputation": {
+              "the_wet_ledger": 26,
+              "house_dres": 20,
+              "the_xul_aneekh": -30,
+              "the_imperial_assize": -14
+            },
+            "world_flags": [
+              "ledger_archon_decided",
+              "archon_water_call_open",
+              "ledger_gate_held"
+            ],
+            "locks": [
+              "Q-XULA-06"
+            ],
+            "npc_disposition": {
+              "harbourmaster-cuiro-vaneth": 30,
+              "ee-vashum": -40
+            }
           }
         },
         {
@@ -1050,13 +1710,40 @@
           "journal_index": 92,
           "outcome": "The water-call is shut by the body that profits from it, for reasons that are partly conscience and mostly the note from the Assize. Archon becomes a hole. Nine hundred a season goes out of the Ledger and out of the town with it.",
           "morally_better": true,
-          "requires": { "attributes": { "personality": 20 }, "skills": { "speechcraft": 50, "mercantile": 40 } },
-          "requires_knowing": ["rev_the_note"],
-          "exclusive_with": ["res_vote_open", "res_bring_the_wharf", "res_hand_the_assize"],
+          "requires": {
+            "attributes": {
+              "personality": 20
+            },
+            "skills": {
+              "speechcraft": 50,
+              "mercantile": 40
+            }
+          },
+          "requires_knowing": [
+            "rev_the_note"
+          ],
+          "exclusive_with": [
+            "res_vote_open",
+            "res_bring_the_wharf",
+            "res_hand_the_assize"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 14, "house_dres": -40, "the_xul_aneekh": 25, "the_imperial_assize": 18 },
-            "world_flags": ["ledger_archon_decided", "archon_water_call_shut", "ledger_gate_held", "archon_trade_collapsed"],
-            "npc_disposition": { "harbourmaster-cuiro-vaneth": -50, "ee-vashum": 30 }
+            "faction_reputation": {
+              "the_wet_ledger": 14,
+              "house_dres": -40,
+              "the_xul_aneekh": 25,
+              "the_imperial_assize": 18
+            },
+            "world_flags": [
+              "ledger_archon_decided",
+              "archon_water_call_shut",
+              "ledger_gate_held",
+              "archon_trade_collapsed"
+            ],
+            "npc_disposition": {
+              "harbourmaster-cuiro-vaneth": -50,
+              "ee-vashum": 30
+            }
           }
         },
         {
@@ -1066,13 +1753,38 @@
           "journal_index": 94,
           "outcome": "A porter who cannot read the minutes speaks in the room where the minutes are taken, and the vote turns on him. The Ledger will never allow it again and will never quite be the same body afterwards.",
           "morally_better": true,
-          "requires": { "disposition": 55, "skills": { "speechcraft": 50 } },
-          "requires_knowing": ["rev_fifth_vote"],
-          "exclusive_with": ["res_vote_open", "res_vote_shut", "res_hand_the_assize"],
+          "requires": {
+            "disposition": 55,
+            "skills": {
+              "speechcraft": 50
+            }
+          },
+          "requires_knowing": [
+            "rev_fifth_vote"
+          ],
+          "exclusive_with": [
+            "res_vote_open",
+            "res_vote_shut",
+            "res_hand_the_assize"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 16, "the_dockhands": 40, "house_dres": -35, "the_xul_aneekh": 20 },
-            "world_flags": ["ledger_archon_decided", "archon_water_call_shut", "ledger_gate_held", "gideon_wharf_has_a_seat"],
-            "npc_disposition": { "npc-porter-eeja": 60, "npc-wuleen-kus": 50, "factor-belliene": -30 }
+            "faction_reputation": {
+              "the_wet_ledger": 16,
+              "the_dockhands": 40,
+              "house_dres": -35,
+              "the_xul_aneekh": 20
+            },
+            "world_flags": [
+              "ledger_archon_decided",
+              "archon_water_call_shut",
+              "ledger_gate_held",
+              "gideon_wharf_has_a_seat"
+            ],
+            "npc_disposition": {
+              "npc-porter-eeja": 60,
+              "npc-wuleen-kus": 50,
+              "factor-belliene": -30
+            }
           }
         },
         {
@@ -1082,13 +1794,36 @@
           "journal_index": 96,
           "outcome": "The whole question leaves the Ledger's hands and lands in a court the Ledger owns most of the debts of. It is not obvious this is better. It is obvious it is out of the room, and the room will not forgive it.",
           "morally_better": null,
-          "requires": { "skills": { "security": 50 } },
-          "requires_knowing": ["rev_the_note"],
-          "exclusive_with": ["res_vote_open", "res_vote_shut", "res_bring_the_wharf"],
+          "requires": {
+            "skills": {
+              "security": 50
+            }
+          },
+          "requires_knowing": [
+            "rev_the_note"
+          ],
+          "exclusive_with": [
+            "res_vote_open",
+            "res_vote_shut",
+            "res_bring_the_wharf"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": -25, "the_imperial_assize": 35, "house_dres": -20 },
-            "world_flags": ["ledger_archon_decided", "archon_question_before_the_assize", "ledger_gate_held", "ledger_table_hostile_to_the_player"],
-            "npc_disposition": { "assizer-corvo": 40, "factor-belliene": -60, "factor-ruvela-sath": -50 }
+            "faction_reputation": {
+              "the_wet_ledger": -25,
+              "the_imperial_assize": 35,
+              "house_dres": -20
+            },
+            "world_flags": [
+              "ledger_archon_decided",
+              "archon_question_before_the_assize",
+              "ledger_gate_held",
+              "ledger_table_hostile_to_the_player"
+            ],
+            "npc_disposition": {
+              "assizer-corvo": 40,
+              "factor-belliene": -60,
+              "factor-ruvela-sath": -50
+            }
           }
         }
       ],
@@ -1104,27 +1839,62 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D12", "D3"],
+        "patterns": [
+          "D12",
+          "D3"
+        ],
         "stated_objective": "Attend the table and vote the gate the player holds",
         "actual_objective": "The same, honestly asked, by the one person at the table who has stopped pretending the vote is about freight",
         "truth": "There is a fifth vote — the wharf's — that has never been counted, and counting it is the only route to shutting Archon without wrecking the town.",
         "revealed_by": [
-          { "id": "rev_fifth_vote", "channel": "rival_npc", "source": "npc-wuleen-kus", "before_point_of_no_return": true },
-          { "id": "rev_the_note", "channel": "letter", "source": "item_corvo_note", "before_point_of_no_return": true }
+          {
+            "id": "rev_fifth_vote",
+            "channel": "rival_npc",
+            "source": "npc-wuleen-kus",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_the_note",
+            "channel": "letter",
+            "source": "item_corvo_note",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_wet_ledger": 22, "house_dres": 0 },
-        "world_flags": ["ledger_archon_decided"],
-        "unlocks": ["Q-LEDG-07"]
+        "faction_reputation": {
+          "the_wet_ledger": 22,
+          "house_dres": 0
+        },
+        "world_flags": [
+          "ledger_archon_decided"
+        ],
+        "unlocks": [
+          "Q-LEDG-07"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "faction_rank", "unique_named": false, "id": "rank_silent_partner", "name": "Silent Partner" },
-        { "type": "access", "unique_named": true, "id": "acc_ledger_table", "name": "a seat at the Ledger's table" },
-        { "type": "information", "unique_named": true, "id": "topic_the_first_chair", "name": "the first chair" }
+        {
+          "type": "faction_rank",
+          "unique_named": false,
+          "id": "rank_silent_partner",
+          "name": "Silent Partner"
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_ledger_table",
+          "name": "a seat at the Ledger's table"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_first_chair",
+          "name": "the first chair"
+        }
       ],
       "notes": "Rank 5, and the `politics` quest RI-QST03 §B requires before rank 6. It raises `ledger_archon_decided` on every ending, which is the point: the rank-6 world-state requirement is that the question was settled with you in the room, not that it was settled your way."
     },
@@ -1134,7 +1904,11 @@
       "category": "faction",
       "faction": "the_wet_ledger",
       "act": null,
-      "rank_gate": { "faction": "the_wet_ledger", "min_rank": 6, "min_reputation": 90 },
+      "rank_gate": {
+        "faction": "the_wet_ledger",
+        "min_rank": 6,
+        "min_reputation": 90
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "factor-ruvela-sath",
@@ -1144,8 +1918,12 @@
       },
       "opens_by": {
         "topic": "the veto minute",
-        "prerequisite_quests": ["Q-LEDG-06"],
-        "prerequisite_topics": ["the underwriters gate"]
+        "prerequisite_quests": [
+          "Q-LEDG-06"
+        ],
+        "prerequisite_topics": [
+          "the underwriters gate"
+        ]
       },
       "task_kind": "politics",
       "stakes": 9,
@@ -1217,7 +1995,13 @@
           "id": "br_garden",
           "at_journal_index": 58,
           "condition": "The player has been invited to the house on the rise and has the eighth chair's returns or does not",
-          "leads_to": ["res_kill_her", "res_show_the_returns", "res_name_sath", "res_refuse", "rev_corrano"],
+          "leads_to": [
+            "res_kill_her",
+            "res_show_the_returns",
+            "res_name_sath",
+            "res_refuse",
+            "rev_corrano"
+          ],
           "irreversible": true
         }
       ],
@@ -1230,11 +2014,25 @@
           "outcome": "The first chair is vacant by the player's hand and the table owes them for it, which is not the same as being grateful. Every ending of this line that follows is coloured by the fact that this one was available and cheap.",
           "morally_better": false,
           "requires": {},
-          "exclusive_with": ["res_show_the_returns", "res_name_sath", "res_refuse"],
+          "exclusive_with": [
+            "res_show_the_returns",
+            "res_name_sath",
+            "res_refuse"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 26, "the_imperial_assize": -30, "the_drowned_court": -10 },
-            "world_flags": ["ledger_first_chair_vacant", "corrano_dead", "ledger_table_owes_the_player"],
-            "npc_disposition": { "factor-ruvela-sath": 30 }
+            "faction_reputation": {
+              "the_wet_ledger": 26,
+              "the_imperial_assize": -30,
+              "the_drowned_court": -10
+            },
+            "world_flags": [
+              "ledger_first_chair_vacant",
+              "corrano_dead",
+              "ledger_table_owes_the_player"
+            ],
+            "npc_disposition": {
+              "factor-ruvela-sath": 30
+            }
           }
         },
         {
@@ -1244,13 +2042,33 @@
           "journal_index": 92,
           "outcome": "The one person at the table who has been fighting the eighth chair for four years is finally handed the proof, and she takes it out of the building. The chair is vacant, the Ledger is exposed, and the player has done the right thing to an institution they still belong to.",
           "morally_better": true,
-          "requires": { "disposition": 55 },
-          "requires_knowing": ["rev_corrano"],
-          "exclusive_with": ["res_kill_her", "res_name_sath", "res_refuse"],
+          "requires": {
+            "disposition": 55
+          },
+          "requires_knowing": [
+            "rev_corrano"
+          ],
+          "exclusive_with": [
+            "res_kill_her",
+            "res_name_sath",
+            "res_refuse"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": -10, "the_imperial_assize": 40, "the_dockhands": 25, "house_dres": -40 },
-            "world_flags": ["ledger_first_chair_vacant", "corrano_took_it_to_the_assize", "ledger_exposed_from_inside"],
-            "npc_disposition": { "factor-ruvela-sath": -60, "assizer-corvo": 35 }
+            "faction_reputation": {
+              "the_wet_ledger": -10,
+              "the_imperial_assize": 40,
+              "the_dockhands": 25,
+              "house_dres": -40
+            },
+            "world_flags": [
+              "ledger_first_chair_vacant",
+              "corrano_took_it_to_the_assize",
+              "ledger_exposed_from_inside"
+            ],
+            "npc_disposition": {
+              "factor-ruvela-sath": -60,
+              "assizer-corvo": 35
+            }
           }
         },
         {
@@ -1260,13 +2078,38 @@
           "journal_index": 94,
           "outcome": "The player tells the incumbent who commissioned her removal, and is named to the chair by the person they were sent to empty it of. The cleanest succession this line has, and it costs three enemies at the table who will still be at it.",
           "morally_better": null,
-          "requires": { "attributes": { "personality": 22 }, "skills": { "speechcraft": 60 } },
-          "requires_knowing": ["rev_corrano", "rev_sath_word"],
-          "exclusive_with": ["res_kill_her", "res_show_the_returns", "res_refuse"],
+          "requires": {
+            "attributes": {
+              "personality": 22
+            },
+            "skills": {
+              "speechcraft": 60
+            }
+          },
+          "requires_knowing": [
+            "rev_corrano",
+            "rev_sath_word"
+          ],
+          "exclusive_with": [
+            "res_kill_her",
+            "res_show_the_returns",
+            "res_refuse"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 24, "the_imperial_assize": 6 },
-            "world_flags": ["ledger_first_chair_vacant", "corrano_retired", "player_named_to_the_first_chair"],
-            "npc_disposition": { "factor-ruvela-sath": -70, "harbourmaster-cuiro-vaneth": -40, "factor-belliene": -20 }
+            "faction_reputation": {
+              "the_wet_ledger": 24,
+              "the_imperial_assize": 6
+            },
+            "world_flags": [
+              "ledger_first_chair_vacant",
+              "corrano_retired",
+              "player_named_to_the_first_chair"
+            ],
+            "npc_disposition": {
+              "factor-ruvela-sath": -70,
+              "harbourmaster-cuiro-vaneth": -40,
+              "factor-belliene": -20
+            }
           }
         },
         {
@@ -1277,11 +2120,23 @@
           "outcome": "The player returns the errand undone and says nothing to anyone. Corrano keeps the chair, the table finds somebody else within the season, and the line stops here — at rank 6, holding a gate, with no way up and no way to say why.",
           "morally_better": true,
           "requires": {},
-          "exclusive_with": ["res_kill_her", "res_show_the_returns", "res_name_sath"],
+          "exclusive_with": [
+            "res_kill_her",
+            "res_show_the_returns",
+            "res_name_sath"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": -18 },
-            "world_flags": ["ledger_first_chair_held", "ledger_table_hostile_to_the_player"],
-            "npc_disposition": { "factor-ruvela-sath": -50, "factor-belliene": -30 }
+            "faction_reputation": {
+              "the_wet_ledger": -18
+            },
+            "world_flags": [
+              "ledger_first_chair_held",
+              "ledger_table_hostile_to_the_player"
+            ],
+            "npc_disposition": {
+              "factor-ruvela-sath": -50,
+              "factor-belliene": -30
+            }
           }
         }
       ],
@@ -1297,28 +2152,77 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D1", "D6", "D11"],
+        "patterns": [
+          "D1",
+          "D6",
+          "D11"
+        ],
         "stated_objective": "Deal with an obstruction at the head of the Ledger, quietly, on the table's behalf",
         "actual_objective": "Have the one person who has spent four years trying to shut Archon removed by somebody the table can disown",
         "truth": "The first chair vetoed the Dres seat and was overruled by the four people now asking for her removal.",
         "revealed_by": [
-          { "id": "rev_corrano", "channel": "talk_to_target", "source": "npc-ineve-corrano", "before_point_of_no_return": true },
-          { "id": "rev_veto_minute", "channel": "ledger", "source": "item_table_minute_four_years", "before_point_of_no_return": true },
-          { "id": "rev_sath_word", "channel": "eavesdrop", "source": "factor-ruvela-sath", "before_point_of_no_return": true }
+          {
+            "id": "rev_corrano",
+            "channel": "talk_to_target",
+            "source": "npc-ineve-corrano",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_veto_minute",
+            "channel": "ledger",
+            "source": "item_table_minute_four_years",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_sath_word",
+            "channel": "eavesdrop",
+            "source": "factor-ruvela-sath",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_wet_ledger": 24, "the_imperial_assize": 0 },
-        "world_flags": ["ledger_first_chair_settled"],
-        "unlocks": ["Q-LEDG-08"]
+        "faction_reputation": {
+          "the_wet_ledger": 24,
+          "the_imperial_assize": 0
+        },
+        "world_flags": [
+          "ledger_first_chair_settled"
+        ],
+        "unlocks": [
+          "Q-LEDG-08"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "information", "unique_named": true, "id": "topic_the_veto_minute", "name": "the veto minute" },
-        { "type": "property", "unique_named": true, "id": "prop_house_on_the_rise", "name": "the house on the rise", "on_resolution": ["res_kill_her", "res_name_sath"] },
-        { "type": "ally", "unique_named": true, "id": "npc-ineve-corrano", "name": "Ineve Corrano", "on_resolution": ["res_show_the_returns", "res_name_sath"] }
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_veto_minute",
+          "name": "the veto minute"
+        },
+        {
+          "type": "property",
+          "unique_named": true,
+          "id": "prop_house_on_the_rise",
+          "name": "the house on the rise",
+          "on_resolution": [
+            "res_kill_her",
+            "res_name_sath"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "npc-ineve-corrano",
+          "name": "Ineve Corrano",
+          "on_resolution": [
+            "res_show_the_returns",
+            "res_name_sath"
+          ]
+        }
       ],
       "notes": "Rank 6, and the quest that vacates the seat rank 7 requires. RI-QST02 D6 and D11 both land: the target has real dialogue that recontextualises the order, and she is given the coherent account in which she is the reasonable party — at length, in argument, before any blow. Three of the four resolutions are non-violent and one of those three is the best outcome in the line."
     },
@@ -1328,7 +2232,11 @@
       "category": "faction",
       "faction": "the_wet_ledger",
       "act": null,
-      "rank_gate": { "faction": "the_wet_ledger", "min_rank": 7, "min_reputation": 112 },
+      "rank_gate": {
+        "faction": "the_wet_ledger",
+        "min_rank": 7,
+        "min_reputation": 112
+      },
       "discovery": "consequence",
       "giver": {
         "npc_id": "harbourmistress-tesh",
@@ -1338,7 +2246,9 @@
       },
       "opens_by": {
         "topic": "the first chair",
-        "prerequisite_quests": ["Q-LEDG-07"]
+        "prerequisite_quests": [
+          "Q-LEDG-07"
+        ]
       },
       "task_kind": "succession",
       "stakes": 10,
@@ -1404,7 +2314,12 @@
           "id": "br_first_day",
           "at_journal_index": 60,
           "condition": "The player is in the first chair with the book open and the table waiting",
-          "leads_to": ["res_keep_the_house", "res_strike_the_eighth", "res_seat_the_wharf", "res_dissolve"],
+          "leads_to": [
+            "res_keep_the_house",
+            "res_strike_the_eighth",
+            "res_seat_the_wharf",
+            "res_dissolve"
+          ],
           "irreversible": true
         }
       ],
@@ -1417,11 +2332,27 @@
           "outcome": "The Ledger continues. The player is the institution now, and the institution is what the dissenter warned them it was seven quests ago. RI-QST01's rank-7 shape, honestly taken: you became the thing.",
           "morally_better": false,
           "requires": {},
-          "exclusive_with": ["res_strike_the_eighth", "res_seat_the_wharf", "res_dissolve"],
+          "exclusive_with": [
+            "res_strike_the_eighth",
+            "res_seat_the_wharf",
+            "res_dissolve"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 20, "house_dres": 25, "the_xul_aneekh": -40, "the_imperial_assize": -20 },
-            "world_flags": ["ledger_first_chair_taken", "ledger_continues_unchanged", "archon_water_call_open"],
-            "npc_disposition": { "npc-wuleen-kus": -60, "factor-ruvela-sath": 30 }
+            "faction_reputation": {
+              "the_wet_ledger": 20,
+              "house_dres": 25,
+              "the_xul_aneekh": -40,
+              "the_imperial_assize": -20
+            },
+            "world_flags": [
+              "ledger_first_chair_taken",
+              "ledger_continues_unchanged",
+              "archon_water_call_open"
+            ],
+            "npc_disposition": {
+              "npc-wuleen-kus": -60,
+              "factor-ruvela-sath": 30
+            }
           }
         },
         {
@@ -1431,12 +2362,37 @@
           "journal_index": 92,
           "outcome": "The Dres seat is struck out of the book by the person who took the chair to do it. The Ledger loses three seats, most of its money and all of its cover, and might not survive the year — which is the honest price of the clean answer.",
           "morally_better": true,
-          "requires": { "attributes": { "personality": 24 }, "skills": { "speechcraft": 70, "mercantile": 35 } },
-          "exclusive_with": ["res_keep_the_house", "res_seat_the_wharf", "res_dissolve"],
+          "requires": {
+            "attributes": {
+              "personality": 24
+            },
+            "skills": {
+              "speechcraft": 70,
+              "mercantile": 35
+            }
+          },
+          "exclusive_with": [
+            "res_keep_the_house",
+            "res_seat_the_wharf",
+            "res_dissolve"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 12, "house_dres": -60, "the_xul_aneekh": 35, "the_imperial_assize": 25 },
-            "world_flags": ["ledger_first_chair_taken", "ledger_eighth_chair_struck", "archon_water_call_shut", "ledger_diminished"],
-            "npc_disposition": { "factor-ruvela-sath": -70, "ee-vashum": 40 }
+            "faction_reputation": {
+              "the_wet_ledger": 12,
+              "house_dres": -60,
+              "the_xul_aneekh": 35,
+              "the_imperial_assize": 25
+            },
+            "world_flags": [
+              "ledger_first_chair_taken",
+              "ledger_eighth_chair_struck",
+              "archon_water_call_shut",
+              "ledger_diminished"
+            ],
+            "npc_disposition": {
+              "factor-ruvela-sath": -70,
+              "ee-vashum": 40
+            }
           }
         },
         {
@@ -1446,12 +2402,39 @@
           "journal_index": 94,
           "outcome": "The porters get a seat and the player's own gate. The Ledger stops being a compact of factors and becomes something with nine hundred people in it, which is slower, louder, and not obviously a merchant house any more.",
           "morally_better": true,
-          "requires": { "attributes": { "personality": 24 }, "skills": { "speechcraft": 70 }, "faction_rank": { "faction": "the_wet_ledger", "min_rank": 7 } },
-          "exclusive_with": ["res_keep_the_house", "res_strike_the_eighth", "res_dissolve"],
+          "requires": {
+            "attributes": {
+              "personality": 24
+            },
+            "skills": {
+              "speechcraft": 70
+            },
+            "faction_rank": {
+              "faction": "the_wet_ledger",
+              "min_rank": 7
+            }
+          },
+          "exclusive_with": [
+            "res_keep_the_house",
+            "res_strike_the_eighth",
+            "res_dissolve"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": 16, "the_dockhands": 60, "house_dres": -30, "the_xul_aneekh": 15 },
-            "world_flags": ["ledger_first_chair_taken", "gideon_wharf_has_a_seat", "ledger_is_a_guild_now"],
-            "npc_disposition": { "npc-porter-eeja": 70, "npc-wuleen-kus": 70 }
+            "faction_reputation": {
+              "the_wet_ledger": 16,
+              "the_dockhands": 60,
+              "house_dres": -30,
+              "the_xul_aneekh": 15
+            },
+            "world_flags": [
+              "ledger_first_chair_taken",
+              "gideon_wharf_has_a_seat",
+              "ledger_is_a_guild_now"
+            ],
+            "npc_disposition": {
+              "npc-porter-eeja": 70,
+              "npc-wuleen-kus": 70
+            }
           }
         },
         {
@@ -1461,12 +2444,33 @@
           "journal_index": 98,
           "outcome": "The Ledger ends. Its gates go to the Assize, its bond room to Lilmoth, its debts to a Governor who has not left his compound in two years. The province is not better. It is differently arranged, and the arrangement is nobody's yet.",
           "morally_better": null,
-          "requires": { "skills": { "mercantile": 60, "security": 60 } },
-          "exclusive_with": ["res_keep_the_house", "res_strike_the_eighth", "res_seat_the_wharf"],
+          "requires": {
+            "skills": {
+              "mercantile": 60,
+              "security": 60
+            }
+          },
+          "exclusive_with": [
+            "res_keep_the_house",
+            "res_strike_the_eighth",
+            "res_seat_the_wharf"
+          ],
           "consequences": {
-            "faction_reputation": { "the_wet_ledger": -60, "the_imperial_assize": 40, "the_dockhands": -20, "house_dres": -20 },
-            "world_flags": ["ledger_dissolved", "gideon_tolls_to_the_assize", "archon_water_call_shut"],
-            "npc_disposition": { "assizer-corvo": 45, "factor-belliene": -80 }
+            "faction_reputation": {
+              "the_wet_ledger": -60,
+              "the_imperial_assize": 40,
+              "the_dockhands": -20,
+              "house_dres": -20
+            },
+            "world_flags": [
+              "ledger_dissolved",
+              "gideon_tolls_to_the_assize",
+              "archon_water_call_shut"
+            ],
+            "npc_disposition": {
+              "assizer-corvo": 45,
+              "factor-belliene": -80
+            }
           }
         }
       ],
@@ -1483,15 +2487,44 @@
       "can_fail": true,
       "deceit": null,
       "consequences": {
-        "faction_reputation": { "the_wet_ledger": 20, "the_dockhands": 0 },
-        "world_flags": ["ledger_succession_settled"]
+        "faction_reputation": {
+          "the_wet_ledger": 20,
+          "the_dockhands": 0
+        },
+        "world_flags": [
+          "ledger_succession_settled"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "faction_rank", "unique_named": true, "id": "rank_the_ledger", "name": "The Ledger" },
-        { "type": "property", "unique_named": true, "id": "prop_the_counting_floor", "name": "the counting floor at Gideon", "on_resolution": ["res_keep_the_house", "res_strike_the_eighth", "res_seat_the_wharf"] },
-        { "type": "access", "unique_named": true, "id": "acc_ledger_report_chain", "name": "the Ledger's report chain in Gideon and Lilmoth", "on_resolution": ["res_keep_the_house", "res_strike_the_eighth"] }
+        {
+          "type": "faction_rank",
+          "unique_named": true,
+          "id": "rank_the_ledger",
+          "name": "The Ledger"
+        },
+        {
+          "type": "property",
+          "unique_named": true,
+          "id": "prop_the_counting_floor",
+          "name": "the counting floor at Gideon",
+          "on_resolution": [
+            "res_keep_the_house",
+            "res_strike_the_eighth",
+            "res_seat_the_wharf"
+          ]
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_ledger_report_chain",
+          "name": "the Ledger's report chain in Gideon and Lilmoth",
+          "on_resolution": [
+            "res_keep_the_house",
+            "res_strike_the_eighth"
+          ]
+        }
       ],
       "notes": "Rank 7. Succession, and the escalation is a decision rather than a fight: four endings, none of them combat, and the escalation from rank 0's sealed bond is that the player now signs the thing the bond was underwriting. `acc_ledger_report_chain` is RI-CRM02 §6's four-uses-per-playthrough interception, granted here as the line's terminal reward."
     }

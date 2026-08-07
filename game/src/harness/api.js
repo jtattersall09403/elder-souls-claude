@@ -1142,6 +1142,27 @@ export function installHarness(engine, bootPromise) {
     },
 
     /**
+     * REPLACE THE PLACEMENT TABLE. `game/data/world/hearths.json` is the model
+     * `RI-MTH07` asks to be perturbed for the respawn position, and until now the only way to
+     * make the respawn point unresolvable was to null `hearthLastRested` — which, since W1-13
+     * round 2 gave `respawnHearth()` a nearest-well FLOOR, is no longer the same thing as "the
+     * table is empty". Emptying the table is: with no wells anywhere, there is nowhere to wake
+     * up and the body stays where it fell. That is the null control the model needs, and it
+     * perturbs the DATA rather than a private field.
+     *
+     * Pass an array of hearth records to install, or `null` to restore the shipped table.
+     */
+    setHearths(list) {
+      const hs = engine.hearths;
+      if (!hs) throw new Error('setHearths: no hearth registry');
+      if (!hs._shipped) hs._shipped = hs.d.hearths;
+      hs.d.hearths = list === null || list === undefined ? hs._shipped : list.map((x) => ({ ...x, pos: [...x.pos] }));
+      hs.byId = new Map();
+      for (const x of hs.d.hearths) hs.byId.set(x.id, x);
+      return { count: hs.count(), ids: hs.d.hearths.map((x) => x.id) };
+    },
+
+    /**
      * THE WORLD MAP'S KNOB, and the reason `RI-JRN06` M-D5 is no longer an orphan predicate.
      *
      * `never_respawn_entity_flags` decides whether a body ever stands back up, and in round 1

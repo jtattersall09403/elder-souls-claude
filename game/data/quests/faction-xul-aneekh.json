@@ -29,7 +29,11 @@
       "category": "faction",
       "faction": "the_xul_aneekh",
       "act": null,
-      "rank_gate": { "faction": "the_xul_aneekh", "min_rank": 0, "min_reputation": 0 },
+      "rank_gate": {
+        "faction": "the_xul_aneekh",
+        "min_rank": 0,
+        "min_reputation": 0
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "rootkeeper-ashul-tei",
@@ -39,7 +43,11 @@
       },
       "opens_by": {
         "topic": "the hollow that eats",
-        "overheard_from": ["helstrom-net-mender", "helstrom-draught-seller", "ixtu-meer"]
+        "overheard_from": [
+          "helstrom-net-mender",
+          "helstrom-draught-seller",
+          "ixtu-meer"
+        ]
       },
       "task_kind": "errand",
       "stakes": 2,
@@ -99,7 +107,10 @@
           "id": "br_bundle",
           "at_journal_index": 34,
           "condition": "The player is at the hollow with the bundle unopened",
-          "leads_to": ["res_carry_it", "res_ask_first"],
+          "leads_to": [
+            "res_carry_it",
+            "res_ask_first"
+          ],
           "irreversible": false
         }
       ],
@@ -112,11 +123,20 @@
           "outcome": "The hollow has taken what it was given and named the player. They have no idea what they carried, which is the ordinary condition of everybody on the coast and is about to stop being theirs.",
           "morally_better": null,
           "requires": {},
-          "exclusive_with": ["res_ask_first"],
+          "exclusive_with": [
+            "res_ask_first"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 10 },
-            "world_flags": ["deepkin_named_the_player"],
-            "npc_disposition": { "speaker-teel-ashaan": 15, "rootkeeper-ashul-tei": 15 }
+            "faction_reputation": {
+              "the_xul_aneekh": 10
+            },
+            "world_flags": [
+              "deepkin_named_the_player"
+            ],
+            "npc_disposition": {
+              "speaker-teel-ashaan": 15,
+              "rootkeeper-ashul-tei": 15
+            }
           }
         },
         {
@@ -126,12 +146,27 @@
           "journal_index": 92,
           "outcome": "The player asks what is in the bundle before setting it down. Nobody does that, so they get an answer, a season's count, and a public argument between the Speaker and the one elder who disagrees with him.",
           "morally_better": null,
-          "requires": { "attributes": { "hist-bond": 12 } },
-          "exclusive_with": ["res_carry_it"],
+          "requires": {
+            "attributes": {
+              "hist-bond": 12
+            }
+          },
+          "exclusive_with": [
+            "res_carry_it"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 10 },
-            "world_flags": ["deepkin_named_the_player", "player_heard_the_clutch_count"],
-            "npc_disposition": { "speaker-teel-ashaan": 15, "ee-vashum": 25, "rootkeeper-ashul-tei": 15 }
+            "faction_reputation": {
+              "the_xul_aneekh": 10
+            },
+            "world_flags": [
+              "deepkin_named_the_player",
+              "player_heard_the_clutch_count"
+            ],
+            "npc_disposition": {
+              "speaker-teel-ashaan": 15,
+              "ee-vashum": 25,
+              "rootkeeper-ashul-tei": 15
+            }
           }
         }
       ],
@@ -148,16 +183,40 @@
       "can_fail": true,
       "deceit": null,
       "consequences": {
-        "faction_reputation": { "the_xul_aneekh": 10 },
-        "world_flags": ["deepkin_named_the_player"],
-        "unlocks": ["Q-XULA-01"]
+        "faction_reputation": {
+          "the_xul_aneekh": 10
+        },
+        "world_flags": [
+          "deepkin_named_the_player"
+        ],
+        "unlocks": [
+          "Q-XULA-01"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "access", "unique_named": true, "id": "acc_the_hollow", "name": "the hollow east of Helstrom" },
-        { "type": "information", "unique_named": true, "id": "topic_the_root_track", "name": "the root track" },
-        { "type": "information", "unique_named": true, "id": "topic_the_clutch_count", "name": "the clutch count", "on_resolution": ["res_ask_first"] }
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_the_hollow",
+          "name": "the hollow east of Helstrom"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_root_track",
+          "name": "the root track"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_clutch_count",
+          "name": "the clutch count",
+          "on_resolution": [
+            "res_ask_first"
+          ]
+        }
       ],
       "notes": "Rank 0. The errand that establishes the faction's texture and geography, and hides the whole line's engine in plain sight: three wrong clutches this season, none last. RI-CRM02 §5's world-side payoff begins the moment this rank is held — interior camps stop being hostile on sight."
     },
@@ -167,7 +226,11 @@
       "category": "faction",
       "faction": "the_xul_aneekh",
       "act": null,
-      "rank_gate": { "faction": "the_xul_aneekh", "min_rank": 1, "min_reputation": 10 },
+      "rank_gate": {
+        "faction": "the_xul_aneekh",
+        "min_rank": 1,
+        "min_reputation": 10
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "speaker-teel-ashaan",
@@ -177,7 +240,9 @@
       },
       "opens_by": {
         "topic": "the root track",
-        "prerequisite_quests": ["Q-XULA-00"]
+        "prerequisite_quests": [
+          "Q-XULA-00"
+        ]
       },
       "task_kind": "escort",
       "stakes": 3,
@@ -205,7 +270,7 @@
           "index": 44,
           "state": "active",
           "text": "The band lost two to a cutting crew three seasons ago and will not pass one. The cutters are four and are not armed for anything but cutting, and they have a phial run to make by dark.",
-          "records_belief": false
+          "records_belief": true
         },
         {
           "index": 76,
@@ -237,7 +302,11 @@
           "id": "br_the_well",
           "at_journal_index": 44,
           "condition": "The band has stopped and there is a cutting crew between them and the hollow",
-          "leads_to": ["res_long_way", "res_buy_them_off", "res_kill_the_crew"],
+          "leads_to": [
+            "res_long_way",
+            "res_buy_them_off",
+            "res_kill_the_crew"
+          ],
           "irreversible": true
         }
       ],
@@ -249,12 +318,27 @@
           "journal_index": 90,
           "outcome": "A day and a night in wet ground and everybody arrives. The slowest answer, the one that costs the player and nobody else, and the one the band's elder will describe to other bands.",
           "morally_better": true,
-          "requires": { "skills": { "survival": 20 } },
-          "exclusive_with": ["res_buy_them_off", "res_kill_the_crew"],
+          "requires": {
+            "skills": {
+              "survival": 20
+            }
+          },
+          "exclusive_with": [
+            "res_buy_them_off",
+            "res_kill_the_crew"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 14 },
-            "world_flags": ["rootlands_band_came_in", "deepkin_trust_the_players_walking"],
-            "npc_disposition": { "rootlands-band-elder": 40, "speaker-teel-ashaan": 20 }
+            "faction_reputation": {
+              "the_xul_aneekh": 14
+            },
+            "world_flags": [
+              "rootlands_band_came_in",
+              "deepkin_trust_the_players_walking"
+            ],
+            "npc_disposition": {
+              "rootlands-band-elder": 40,
+              "speaker-teel-ashaan": 20
+            }
           }
         },
         {
@@ -264,12 +348,29 @@
           "journal_index": 92,
           "outcome": "The cutting crew is paid what the run would have fetched and leaves for the afternoon. The band arrives, the well is uncut for a day, and the player has done business with the faction the Deep-Kin hate most.",
           "morally_better": null,
-          "requires": { "gold": 400, "skills": { "mercantile": 20 } },
-          "exclusive_with": ["res_long_way", "res_kill_the_crew"],
+          "requires": {
+            "gold": 400,
+            "skills": {
+              "mercantile": 20
+            }
+          },
+          "exclusive_with": [
+            "res_long_way",
+            "res_kill_the_crew"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 12, "the_ixtu_vakh": 10 },
-            "world_flags": ["rootlands_band_came_in", "player_paid_a_cutting_crew"],
-            "npc_disposition": { "rootlands-band-elder": 25, "cutter-neeth": 20 }
+            "faction_reputation": {
+              "the_xul_aneekh": 12,
+              "the_ixtu_vakh": 10
+            },
+            "world_flags": [
+              "rootlands_band_came_in",
+              "player_paid_a_cutting_crew"
+            ],
+            "npc_disposition": {
+              "rootlands-band-elder": 25,
+              "cutter-neeth": 20
+            }
           }
         },
         {
@@ -280,11 +381,25 @@
           "outcome": "Four cutters die at a well they were working. The band arrives, the hollow does not ask, and the player has learned at rank 1 exactly how much this faction will decline to know.",
           "morally_better": false,
           "requires": {},
-          "exclusive_with": ["res_long_way", "res_buy_them_off"],
+          "exclusive_with": [
+            "res_long_way",
+            "res_buy_them_off"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 16, "the_ixtu_vakh": -40 },
-            "world_flags": ["rootlands_band_came_in", "cutting_crew_dead_at_the_well", "sapcutters_hunting_the_player"],
-            "npc_disposition": { "rootlands-band-elder": 30, "cutter-neeth": -70, "ee-vashum": -20 }
+            "faction_reputation": {
+              "the_xul_aneekh": 16,
+              "the_ixtu_vakh": -40
+            },
+            "world_flags": [
+              "rootlands_band_came_in",
+              "cutting_crew_dead_at_the_well",
+              "sapcutters_hunting_the_player"
+            ],
+            "npc_disposition": {
+              "rootlands-band-elder": 30,
+              "cutter-neeth": -70,
+              "ee-vashum": -20
+            }
           }
         }
       ],
@@ -301,16 +416,38 @@
       "can_fail": true,
       "deceit": null,
       "consequences": {
-        "faction_reputation": { "the_xul_aneekh": 12, "the_ixtu_vakh": 0 },
-        "world_flags": ["rootlands_band_settled"],
-        "unlocks": ["Q-XULA-03"]
+        "faction_reputation": {
+          "the_xul_aneekh": 12,
+          "the_ixtu_vakh": 0
+        },
+        "world_flags": [
+          "rootlands_band_settled"
+        ],
+        "unlocks": [
+          "Q-XULA-03"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "ally", "unique_named": true, "id": "rootlands-band-elder", "name": "the elder of the Eastern Rootlands band" },
-        { "type": "information", "unique_named": true, "id": "topic_the_lukiul_question", "name": "the lukiul question" },
-        { "type": "training", "unique_named": false, "id": "train_survival_deepkin", "name": "reading the root track" }
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "rootlands-band-elder",
+          "name": "the elder of the Eastern Rootlands band"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_lukiul_question",
+          "name": "the lukiul question"
+        },
+        {
+          "type": "training",
+          "unique_named": false,
+          "id": "train_survival_deepkin",
+          "name": "reading the root track"
+        }
       ],
       "notes": "Rank 1. Route choice only, as RI-QST01's rank-1 band requires — except that the cheapest route is four corpses and the faction will not ask. The rumour that the faction has enemies arrives as a well being cut half a day off the track."
     },
@@ -320,7 +457,11 @@
       "category": "faction",
       "faction": "the_xul_aneekh",
       "act": null,
-      "rank_gate": { "faction": "the_xul_aneekh", "min_rank": 3, "min_reputation": 36 },
+      "rank_gate": {
+        "faction": "the_xul_aneekh",
+        "min_rank": 3,
+        "min_reputation": 36
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "speaker-teel-ashaan",
@@ -330,8 +471,12 @@
       },
       "opens_by": {
         "topic": "the lukiul question",
-        "prerequisite_quests": ["Q-DEEP-01"],
-        "prerequisite_topics": ["the root track"]
+        "prerequisite_quests": [
+          "Q-DEEP-01"
+        ],
+        "prerequisite_topics": [
+          "the root track"
+        ]
       },
       "task_kind": "theft",
       "stakes": 6,
@@ -359,7 +504,7 @@
           "index": 46,
           "state": "active",
           "text": "Ee-Vashum has been waiting for me on the road out. She wrote the first column herself, nine years ago, as a record of who to talk to. Somebody else has added the third and she says she knows who and will not say.",
-          "records_belief": false
+          "records_belief": true
         },
         {
           "index": 54,
@@ -403,7 +548,13 @@
           "id": "br_third_column",
           "at_journal_index": 34,
           "condition": "The player has the list and has read the third column",
-          "leads_to": ["res_carry_entire", "res_strip_the_column", "res_give_vashum", "res_read_it_aloud", "rev_vashum_wrote_it"],
+          "leads_to": [
+            "res_carry_entire",
+            "res_strip_the_column",
+            "res_give_vashum",
+            "res_read_it_aloud",
+            "rev_vashum_wrote_it"
+          ],
           "irreversible": true
         }
       ],
@@ -415,13 +566,34 @@
           "journal_index": 90,
           "outcome": "Sixty-one households and their kin go into the hollow's keeping. The Deep-Kin have, for the first time, a document that tells them who is related to whom on the coast — which is a thing you only need if you are planning to be selective.",
           "morally_better": false,
-          "requires": { "skills": { "sneak": 32, "security": 25 } },
-          "exclusive_with": ["res_strip_the_column", "res_give_vashum", "res_read_it_aloud"],
+          "requires": {
+            "skills": {
+              "sneak": 32,
+              "security": 25
+            }
+          },
+          "exclusive_with": [
+            "res_strip_the_column",
+            "res_give_vashum",
+            "res_read_it_aloud"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 18, "the_wet_ledger": -20, "the_imperial_assize": -12 },
-            "world_flags": ["deepkin_hold_the_kin_list", "helstrom_households_marked"],
-            "locks": ["Q-LEDG-03"],
-            "npc_disposition": { "speaker-teel-ashaan": 30, "ee-vashum": -40 }
+            "faction_reputation": {
+              "the_xul_aneekh": 18,
+              "the_wet_ledger": -20,
+              "the_imperial_assize": -12
+            },
+            "world_flags": [
+              "deepkin_hold_the_kin_list",
+              "helstrom_households_marked"
+            ],
+            "locks": [
+              "Q-LEDG-03"
+            ],
+            "npc_disposition": {
+              "speaker-teel-ashaan": 30,
+              "ee-vashum": -40
+            }
           }
         },
         {
@@ -431,14 +603,36 @@
           "journal_index": 92,
           "outcome": "The hollow gets the traders and not the families. It is a smaller betrayal and it is still one, and the Speaker's silence about the joins in the paper is the first time the player learns he already knew.",
           "morally_better": null,
-          "requires": { "skills": { "sneak": 32, "security": 32 } },
-          "requires_knowing": ["rev_third_column"],
-          "exclusive_with": ["res_carry_entire", "res_give_vashum", "res_read_it_aloud"],
+          "requires": {
+            "skills": {
+              "sneak": 32,
+              "security": 32
+            }
+          },
+          "requires_knowing": [
+            "rev_third_column"
+          ],
+          "exclusive_with": [
+            "res_carry_entire",
+            "res_give_vashum",
+            "res_read_it_aloud"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 14, "the_wet_ledger": -10 },
-            "world_flags": ["deepkin_hold_the_trader_list", "kin_column_destroyed"],
-            "locks": ["Q-LEDG-03"],
-            "npc_disposition": { "speaker-teel-ashaan": 15, "ee-vashum": 20 }
+            "faction_reputation": {
+              "the_xul_aneekh": 14,
+              "the_wet_ledger": -10
+            },
+            "world_flags": [
+              "deepkin_hold_the_trader_list",
+              "kin_column_destroyed"
+            ],
+            "locks": [
+              "Q-LEDG-03"
+            ],
+            "npc_disposition": {
+              "speaker-teel-ashaan": 15,
+              "ee-vashum": 20
+            }
           }
         },
         {
@@ -448,13 +642,31 @@
           "journal_index": 94,
           "outcome": "The list goes to the elder who wrote the first column of it, and she burns the third. The hollow gets nothing and is told the floor was empty, which is a lie the player will be carrying for four more ranks.",
           "morally_better": true,
-          "requires": { "disposition": 45 },
-          "requires_knowing": ["rev_vashum_wrote_it", "rev_the_daughter"],
-          "exclusive_with": ["res_carry_entire", "res_strip_the_column", "res_read_it_aloud"],
+          "requires": {
+            "disposition": 45
+          },
+          "requires_knowing": [
+            "rev_vashum_wrote_it",
+            "rev_the_daughter"
+          ],
+          "exclusive_with": [
+            "res_carry_entire",
+            "res_strip_the_column",
+            "res_read_it_aloud"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 6, "the_wet_ledger": 4 },
-            "world_flags": ["kin_list_with_vashum", "player_lied_to_the_hollow"],
-            "npc_disposition": { "ee-vashum": 55, "speaker-teel-ashaan": -10 }
+            "faction_reputation": {
+              "the_xul_aneekh": 6,
+              "the_wet_ledger": 4
+            },
+            "world_flags": [
+              "kin_list_with_vashum",
+              "player_lied_to_the_hollow"
+            ],
+            "npc_disposition": {
+              "ee-vashum": 55,
+              "speaker-teel-ashaan": -10
+            }
           }
         },
         {
@@ -464,13 +676,38 @@
           "journal_index": 96,
           "outcome": "The list becomes public and worthless in the same afternoon. Eleven households learn they were on it for nothing, sixty-one learn they were watched, and the hollow's instrument is destroyed by being shown to everybody it was about.",
           "morally_better": null,
-          "requires": { "attributes": { "personality": 16 }, "skills": { "speechcraft": 32 } },
-          "requires_knowing": ["rev_third_column"],
-          "exclusive_with": ["res_carry_entire", "res_strip_the_column", "res_give_vashum"],
+          "requires": {
+            "attributes": {
+              "personality": 16
+            },
+            "skills": {
+              "speechcraft": 32
+            }
+          },
+          "requires_knowing": [
+            "rev_third_column"
+          ],
+          "exclusive_with": [
+            "res_carry_entire",
+            "res_strip_the_column",
+            "res_give_vashum"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": -18, "the_wet_ledger": 12, "the_imperial_assize": 8 },
-            "world_flags": ["kin_list_public", "helstrom_knows_it_was_watched", "hollow_hostile_to_the_player"],
-            "npc_disposition": { "speaker-teel-ashaan": -50, "ee-vashum": 25, "helstrom-draught-seller": -30 }
+            "faction_reputation": {
+              "the_xul_aneekh": -18,
+              "the_wet_ledger": 12,
+              "the_imperial_assize": 8
+            },
+            "world_flags": [
+              "kin_list_public",
+              "helstrom_knows_it_was_watched",
+              "hollow_hostile_to_the_player"
+            ],
+            "npc_disposition": {
+              "speaker-teel-ashaan": -50,
+              "ee-vashum": 25,
+              "helstrom-draught-seller": -30
+            }
           }
         }
       ],
@@ -486,28 +723,76 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D2", "D3", "D8"],
+        "patterns": [
+          "D2",
+          "D3",
+          "D8"
+        ],
         "stated_objective": "Take a list of who in Helstrom trades with the takers out of the town, quietly",
         "actual_objective": "Obtain a kin-map of sixty-one coastal households, so that a decision about the coast can be made household by household",
         "truth": "The first column is a nine-year-old record of who to talk to, written by an elder who wanted to persuade people. Somebody else added a third column of who they are related to.",
         "revealed_by": [
-          { "id": "rev_third_column", "channel": "ledger", "source": "item_helstrom_kin_list", "before_point_of_no_return": true },
-          { "id": "rev_vashum_wrote_it", "channel": "rival_npc", "source": "ee-vashum", "before_point_of_no_return": true },
-          { "id": "rev_the_daughter", "channel": "rival_npc", "source": "ee-vashum", "before_point_of_no_return": true }
+          {
+            "id": "rev_third_column",
+            "channel": "ledger",
+            "source": "item_helstrom_kin_list",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_vashum_wrote_it",
+            "channel": "rival_npc",
+            "source": "ee-vashum",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_the_daughter",
+            "channel": "rival_npc",
+            "source": "ee-vashum",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_xul_aneekh": 14, "the_wet_ledger": 0 },
-        "world_flags": ["helstrom_kin_list_settled"],
-        "unlocks": ["Q-XULA-04"]
+        "faction_reputation": {
+          "the_xul_aneekh": 14,
+          "the_wet_ledger": 0
+        },
+        "world_flags": [
+          "helstrom_kin_list_settled"
+        ],
+        "unlocks": [
+          "Q-XULA-04"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "item", "unique_named": true, "id": "item_helstrom_kin_list", "name": "the Helstrom kin list", "on_resolution": ["res_carry_entire", "res_strip_the_column"] },
-        { "type": "ally", "unique_named": true, "id": "ee-vashum", "name": "Ee-Vashum of the war-broods", "on_resolution": ["res_give_vashum"] },
-        { "type": "information", "unique_named": true, "id": "topic_the_coast_wound", "name": "the coast wound" }
+        {
+          "type": "item",
+          "unique_named": true,
+          "id": "item_helstrom_kin_list",
+          "name": "the Helstrom kin list",
+          "on_resolution": [
+            "res_carry_entire",
+            "res_strip_the_column"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "ee-vashum",
+          "name": "Ee-Vashum of the war-broods",
+          "on_resolution": [
+            "res_give_vashum"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_coast_wound",
+          "name": "the coast wound"
+        }
       ],
       "notes": "Rank 3. The X2 lock fires in this direction here: two resolutions permanently close Q-LEDG-03 and the Wet Ledger line with it (RI-CRM02 §4, 'Xul-Aneekh rank >= 2 cannot hold Wet Ledger'). The X3 escapes are res_give_vashum and res_read_it_aloud, and the first is gated on the dissenter's two reveals."
     },
@@ -517,7 +802,11 @@
       "category": "faction",
       "faction": "the_xul_aneekh",
       "act": null,
-      "rank_gate": { "faction": "the_xul_aneekh", "min_rank": 4, "min_reputation": 52 },
+      "rank_gate": {
+        "faction": "the_xul_aneekh",
+        "min_rank": 4,
+        "min_reputation": 52
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "xul-aneekh-speaker",
@@ -527,8 +816,12 @@
       },
       "opens_by": {
         "topic": "the coast wound",
-        "prerequisite_quests": ["Q-XULA-03"],
-        "prerequisite_topics": ["the lukiul question"]
+        "prerequisite_quests": [
+          "Q-XULA-03"
+        ],
+        "prerequisite_topics": [
+          "the lukiul question"
+        ]
       },
       "task_kind": "dirty_work",
       "stakes": 7,
@@ -600,7 +893,13 @@
           "id": "br_sluice",
           "at_journal_index": 36,
           "condition": "The player knows what the upper sluice does to the reaches behind it",
-          "leads_to": ["res_shut_upper", "res_lower_sluice", "res_warn_gideon", "res_refuse_on_the_rim", "rev_lower_sluice"],
+          "leads_to": [
+            "res_shut_upper",
+            "res_lower_sluice",
+            "res_warn_gideon",
+            "res_refuse_on_the_rim",
+            "rev_lower_sluice"
+          ],
           "irreversible": true
         }
       ],
@@ -612,13 +911,39 @@
           "journal_index": 90,
           "outcome": "The barges stop and four reaches lose their drinking water. The hollow gets the season it asked for and eleven thousand people behind the cut pay for it, which is the argument the whole faction is built on, executed.",
           "morally_better": false,
-          "requires": { "skills": { "sneak": 40, "survival": 20 } },
-          "exclusive_with": ["res_lower_sluice", "res_warn_gideon", "res_refuse_on_the_rim"],
+          "requires": {
+            "skills": {
+              "sneak": 40,
+              "survival": 20
+            }
+          },
+          "exclusive_with": [
+            "res_lower_sluice",
+            "res_warn_gideon",
+            "res_refuse_on_the_rim"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 24, "the_wet_ledger": -40, "the_imperial_assize": -30, "the_dockhands": -25 },
-            "world_flags": ["drowned_road_upper_sluice_shut", "gideon_freight_stopped", "eastern_rootlands_undrinkable", "deepkin_hollow_kept"],
-            "locks": ["Q-LEDG-05", "Q-ASSZ-05"],
-            "npc_disposition": { "xul-aneekh-speaker": 40, "ee-vashum": -50, "rootlands-band-elder": -60 }
+            "faction_reputation": {
+              "the_xul_aneekh": 24,
+              "the_wet_ledger": -40,
+              "the_imperial_assize": -30,
+              "the_dockhands": -25
+            },
+            "world_flags": [
+              "drowned_road_upper_sluice_shut",
+              "gideon_freight_stopped",
+              "eastern_rootlands_undrinkable",
+              "deepkin_hollow_kept"
+            ],
+            "locks": [
+              "Q-LEDG-05",
+              "Q-ASSZ-05"
+            ],
+            "npc_disposition": {
+              "xul-aneekh-speaker": 40,
+              "ee-vashum": -50,
+              "rootlands-band-elder": -60
+            }
           }
         },
         {
@@ -628,13 +953,39 @@
           "journal_index": 92,
           "outcome": "The lower sluice does the job without the reaches. It is the third option nobody at the hollow had walked far enough to find, and finding it required going onto the coast side, which is why nobody had.",
           "morally_better": true,
-          "requires": { "attributes": { "hist-bond": 18 }, "skills": { "survival": 40, "root-speech": 20 } },
-          "requires_knowing": ["rev_lower_sluice"],
-          "exclusive_with": ["res_shut_upper", "res_warn_gideon", "res_refuse_on_the_rim"],
+          "requires": {
+            "attributes": {
+              "hist-bond": 18
+            },
+            "skills": {
+              "survival": 40,
+              "root-speech": 20
+            }
+          },
+          "requires_knowing": [
+            "rev_lower_sluice"
+          ],
+          "exclusive_with": [
+            "res_shut_upper",
+            "res_warn_gideon",
+            "res_refuse_on_the_rim"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 22, "the_wet_ledger": -25, "the_imperial_assize": -15 },
-            "world_flags": ["drowned_road_lower_sluice_shut", "gideon_freight_stopped", "deepkin_hollow_kept"],
-            "npc_disposition": { "xul-aneekh-speaker": 25, "ee-vashum": 40, "rootlands-band-elder": 30 }
+            "faction_reputation": {
+              "the_xul_aneekh": 22,
+              "the_wet_ledger": -25,
+              "the_imperial_assize": -15
+            },
+            "world_flags": [
+              "drowned_road_lower_sluice_shut",
+              "gideon_freight_stopped",
+              "deepkin_hollow_kept"
+            ],
+            "npc_disposition": {
+              "xul-aneekh-speaker": 25,
+              "ee-vashum": 40,
+              "rootlands-band-elder": 30
+            }
           }
         },
         {
@@ -644,12 +995,31 @@
           "journal_index": 94,
           "outcome": "The Ledger lifts the season's freight before the sluice shuts. The hollow gets its stopped river and Gideon loses nothing, and the player has served two bodies that would each expel them for it.",
           "morally_better": null,
-          "requires": { "skills": { "speechcraft": 40 } },
-          "exclusive_with": ["res_shut_upper", "res_lower_sluice", "res_refuse_on_the_rim"],
+          "requires": {
+            "skills": {
+              "speechcraft": 40
+            }
+          },
+          "exclusive_with": [
+            "res_shut_upper",
+            "res_lower_sluice",
+            "res_refuse_on_the_rim"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 18, "the_wet_ledger": 15 },
-            "world_flags": ["drowned_road_upper_sluice_shut", "gideon_freight_lifted_early", "deepkin_hollow_kept", "player_warned_the_coast"],
-            "npc_disposition": { "xul-aneekh-speaker": 20, "harbourmistress-tesh": 40 }
+            "faction_reputation": {
+              "the_xul_aneekh": 18,
+              "the_wet_ledger": 15
+            },
+            "world_flags": [
+              "drowned_road_upper_sluice_shut",
+              "gideon_freight_lifted_early",
+              "deepkin_hollow_kept",
+              "player_warned_the_coast"
+            ],
+            "npc_disposition": {
+              "xul-aneekh-speaker": 20,
+              "harbourmistress-tesh": 40
+            }
           }
         },
         {
@@ -659,13 +1029,39 @@
           "journal_index": 96,
           "outcome": "The player says the number out loud on the rim and refuses. Three war-broods leave with them. The sluice stays open, the Speaker stops speaking to them, and the argument inside the faction becomes public for the first time in nine years.",
           "morally_better": true,
-          "requires": { "attributes": { "personality": 18 }, "skills": { "speechcraft": 40 } },
-          "requires_knowing": ["rev_the_number", "rev_vashum_on_the_rim"],
-          "exclusive_with": ["res_shut_upper", "res_lower_sluice", "res_warn_gideon"],
+          "requires": {
+            "attributes": {
+              "personality": 18
+            },
+            "skills": {
+              "speechcraft": 40
+            }
+          },
+          "requires_knowing": [
+            "rev_the_number",
+            "rev_vashum_on_the_rim"
+          ],
+          "exclusive_with": [
+            "res_shut_upper",
+            "res_lower_sluice",
+            "res_warn_gideon"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": -16, "the_wet_ledger": 10, "the_dockhands": 12 },
-            "world_flags": ["drowned_road_sluice_open", "deepkin_argument_public", "war_broods_split"],
-            "npc_disposition": { "xul-aneekh-speaker": -60, "ee-vashum": 60, "rootlands-band-elder": 40 }
+            "faction_reputation": {
+              "the_xul_aneekh": -16,
+              "the_wet_ledger": 10,
+              "the_dockhands": 12
+            },
+            "world_flags": [
+              "drowned_road_sluice_open",
+              "deepkin_argument_public",
+              "war_broods_split"
+            ],
+            "npc_disposition": {
+              "xul-aneekh-speaker": -60,
+              "ee-vashum": 60,
+              "rootlands-band-elder": 40
+            }
           }
         }
       ],
@@ -681,28 +1077,74 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D1", "D4", "D5", "D12"],
+        "patterns": [
+          "D1",
+          "D4",
+          "D5",
+          "D12"
+        ],
         "stated_objective": "Shut the sluice on the drowned road and stop the Gideon barges for a season",
         "actual_objective": "The same, by the route the hollow has chosen, which nobody at the hollow has walked",
         "truth": "The upper sluice backs the Blackwater into four reaches where eleven thousand Argonians drink. There is a lower sluice that stops the barges and does not, and reaching it means walking on the coast side.",
         "revealed_by": [
-          { "id": "rev_the_number", "channel": "environment", "source": "environment_the_four_reaches", "before_point_of_no_return": true },
-          { "id": "rev_lower_sluice", "channel": "environment", "source": "environment_the_lower_sluice", "before_point_of_no_return": true },
-          { "id": "rev_vashum_on_the_rim", "channel": "rival_npc", "source": "ee-vashum", "before_point_of_no_return": true }
+          {
+            "id": "rev_the_number",
+            "channel": "environment",
+            "source": "environment_the_four_reaches",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_lower_sluice",
+            "channel": "environment",
+            "source": "environment_the_lower_sluice",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_vashum_on_the_rim",
+            "channel": "rival_npc",
+            "source": "ee-vashum",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_xul_aneekh": 18, "the_wet_ledger": 0 },
-        "world_flags": ["drowned_road_sluice_settled"],
-        "unlocks": ["Q-XULA-05"]
+        "faction_reputation": {
+          "the_xul_aneekh": 18,
+          "the_wet_ledger": 0
+        },
+        "world_flags": [
+          "drowned_road_sluice_settled"
+        ],
+        "unlocks": [
+          "Q-XULA-05"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "access", "unique_named": true, "id": "acc_deepkin_hollow_seat", "name": "a place on the rim of the hollow" },
-        { "type": "information", "unique_named": true, "id": "topic_the_taking_below", "name": "the taking below" },
-        { "type": "ally", "unique_named": true, "id": "ee-vashum", "name": "Ee-Vashum of the war-broods", "on_resolution": ["res_lower_sluice", "res_refuse_on_the_rim"] }
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_deepkin_hollow_seat",
+          "name": "a place on the rim of the hollow"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_taking_below",
+          "name": "the taking below"
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "ee-vashum",
+          "name": "Ee-Vashum of the war-broods",
+          "on_resolution": [
+            "res_lower_sluice",
+            "res_refuse_on_the_rim"
+          ]
+        }
       ],
       "notes": "Rank 4, first of two, and where the dissenter is finally believed — RI-QST01's rank-4 requirement. D5 in both directions: this quest and Q-LEDG-05 are the same event from two chairs and neither faction is wrong about the other. D12's third option is the lower sluice, unavailable to a player who has not walked on the coast side, which is the one thing this faction's whole doctrine tells them not to do."
     },
@@ -712,7 +1154,11 @@
       "category": "faction",
       "faction": "the_xul_aneekh",
       "act": null,
-      "rank_gate": { "faction": "the_xul_aneekh", "min_rank": 4, "min_reputation": 52 },
+      "rank_gate": {
+        "faction": "the_xul_aneekh",
+        "min_rank": 4,
+        "min_reputation": 52
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "rootkeeper-ashul-tei",
@@ -722,8 +1168,12 @@
       },
       "opens_by": {
         "topic": "the taking below",
-        "prerequisite_quests": ["Q-XULA-04"],
-        "prerequisite_topics": ["the coast wound"]
+        "prerequisite_quests": [
+          "Q-XULA-04"
+        ],
+        "prerequisite_topics": [
+          "the coast wound"
+        ]
       },
       "task_kind": "investigation",
       "stakes": 8,
@@ -795,7 +1245,13 @@
           "id": "br_the_count",
           "at_journal_index": 38,
           "condition": "The player has both counts and can see that they agree",
-          "leads_to": ["res_to_the_gallery", "res_to_the_hollow", "res_to_the_cutters", "res_burn_it", "rev_court_ledger"],
+          "leads_to": [
+            "res_to_the_gallery",
+            "res_to_the_hollow",
+            "res_to_the_cutters",
+            "res_burn_it",
+            "rev_court_ledger"
+          ],
           "irreversible": true
         }
       ],
@@ -807,13 +1263,38 @@
           "journal_index": 90,
           "outcome": "The two counts are put side by side by the rootkeeper who asked for them, and he carries it into the hollow himself. The best outcome and the least dramatic: the player did the work and somebody else with standing said it.",
           "morally_better": true,
-          "requires": { "attributes": { "hist-bond": 18 }, "skills": { "root-speech": 40, "alchemy": 20 } },
-          "requires_knowing": ["rev_court_ledger"],
-          "exclusive_with": ["res_to_the_hollow", "res_to_the_cutters", "res_burn_it"],
+          "requires": {
+            "attributes": {
+              "hist-bond": 18
+            },
+            "skills": {
+              "root-speech": 40,
+              "alchemy": 20
+            }
+          },
+          "requires_knowing": [
+            "rev_court_ledger"
+          ],
+          "exclusive_with": [
+            "res_to_the_hollow",
+            "res_to_the_cutters",
+            "res_burn_it"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 24, "the_drowned_court": 20, "the_ixtu_vakh": 15 },
-            "world_flags": ["deepkin_hollow_kept", "sapwell_shortfall_predates_the_cutting", "gallery_carried_the_count"],
-            "npc_disposition": { "rootkeeper-ashul-tei": 50, "ledgerer-hosk-vei": 30 }
+            "faction_reputation": {
+              "the_xul_aneekh": 24,
+              "the_drowned_court": 20,
+              "the_ixtu_vakh": 15
+            },
+            "world_flags": [
+              "deepkin_hollow_kept",
+              "sapwell_shortfall_predates_the_cutting",
+              "gallery_carried_the_count"
+            ],
+            "npc_disposition": {
+              "rootkeeper-ashul-tei": 50,
+              "ledgerer-hosk-vei": 30
+            }
           }
         },
         {
@@ -823,13 +1304,39 @@
           "journal_index": 92,
           "outcome": "The player says it in the hollow themselves. Teel-Ashaan does not deny it and asks what to do with a grievance nobody is responsible for, which is a question the faction has no machinery for answering.",
           "morally_better": true,
-          "requires": { "attributes": { "willpower": 18 }, "skills": { "root-speech": 40, "speechcraft": 25 } },
-          "requires_knowing": ["rev_court_ledger", "rev_fourth_well"],
-          "exclusive_with": ["res_to_the_gallery", "res_to_the_cutters", "res_burn_it"],
+          "requires": {
+            "attributes": {
+              "willpower": 18
+            },
+            "skills": {
+              "root-speech": 40,
+              "speechcraft": 25
+            }
+          },
+          "requires_knowing": [
+            "rev_court_ledger",
+            "rev_fourth_well"
+          ],
+          "exclusive_with": [
+            "res_to_the_gallery",
+            "res_to_the_cutters",
+            "res_burn_it"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 20, "the_drowned_court": 15, "the_ixtu_vakh": 10 },
-            "world_flags": ["deepkin_hollow_kept", "sapwell_shortfall_predates_the_cutting", "speaker_heard_it_from_the_player"],
-            "npc_disposition": { "speaker-teel-ashaan": 30, "ee-vashum": 30 }
+            "faction_reputation": {
+              "the_xul_aneekh": 20,
+              "the_drowned_court": 15,
+              "the_ixtu_vakh": 10
+            },
+            "world_flags": [
+              "deepkin_hollow_kept",
+              "sapwell_shortfall_predates_the_cutting",
+              "speaker_heard_it_from_the_player"
+            ],
+            "npc_disposition": {
+              "speaker-teel-ashaan": 30,
+              "ee-vashum": 30
+            }
           }
         },
         {
@@ -839,13 +1346,34 @@
           "journal_index": 94,
           "outcome": "The most hated faction in the province is handed the proof that it is not to blame, and puts it on phial labels. The argument escapes the interior entirely and every foreigner buying sap is now carrying it, which nobody in this line wanted or can undo.",
           "morally_better": null,
-          "requires": { "skills": { "mercantile": 40 } },
-          "requires_knowing": ["rev_court_ledger"],
-          "exclusive_with": ["res_to_the_gallery", "res_to_the_hollow", "res_burn_it"],
+          "requires": {
+            "skills": {
+              "mercantile": 40
+            }
+          },
+          "requires_knowing": [
+            "rev_court_ledger"
+          ],
+          "exclusive_with": [
+            "res_to_the_gallery",
+            "res_to_the_hollow",
+            "res_burn_it"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": -12, "the_ixtu_vakh": 45, "the_drowned_court": -10 },
-            "world_flags": ["deepkin_hollow_kept", "sapwell_shortfall_on_the_phial_labels", "cutters_vindicated_publicly"],
-            "npc_disposition": { "cutter-neeth": 60, "speaker-teel-ashaan": -35 }
+            "faction_reputation": {
+              "the_xul_aneekh": -12,
+              "the_ixtu_vakh": 45,
+              "the_drowned_court": -10
+            },
+            "world_flags": [
+              "deepkin_hollow_kept",
+              "sapwell_shortfall_on_the_phial_labels",
+              "cutters_vindicated_publicly"
+            ],
+            "npc_disposition": {
+              "cutter-neeth": 60,
+              "speaker-teel-ashaan": -35
+            }
           }
         },
         {
@@ -856,11 +1384,26 @@
           "outcome": "Four hundred years of the Drowned Court's counting goes into a fire and the gallery is told the question is open. The hollow keeps its answer. The player keeps the only thing anybody has that contradicts it, which is a memory.",
           "morally_better": false,
           "requires": {},
-          "exclusive_with": ["res_to_the_gallery", "res_to_the_hollow", "res_to_the_cutters"],
+          "exclusive_with": [
+            "res_to_the_gallery",
+            "res_to_the_hollow",
+            "res_to_the_cutters"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 20, "the_drowned_court": -50, "the_ixtu_vakh": -20 },
-            "world_flags": ["deepkin_hollow_kept", "court_ledger_burned", "sapwell_question_buried"],
-            "npc_disposition": { "ledgerer-hosk-vei": -80, "rootkeeper-ashul-tei": -40 }
+            "faction_reputation": {
+              "the_xul_aneekh": 20,
+              "the_drowned_court": -50,
+              "the_ixtu_vakh": -20
+            },
+            "world_flags": [
+              "deepkin_hollow_kept",
+              "court_ledger_burned",
+              "sapwell_question_buried"
+            ],
+            "npc_disposition": {
+              "ledgerer-hosk-vei": -80,
+              "rootkeeper-ashul-tei": -40
+            }
           }
         }
       ],
@@ -876,28 +1419,69 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D3", "D5", "D12"],
+        "patterns": [
+          "D3",
+          "D5",
+          "D12"
+        ],
         "stated_objective": "Find out why four sapwells under Helstrom have stopped giving back",
         "actual_objective": "The same, honestly asked, by a rootkeeper who already suspects the answer and cannot say it where he lives",
         "truth": "The shortfall began before the first cutting crew ever worked in the province, and the Drowned Court has four hundred years of counting that says so.",
         "revealed_by": [
-          { "id": "rev_court_ledger", "channel": "ledger", "source": "ledgerer-hosk-vei", "before_point_of_no_return": true },
-          { "id": "rev_fourth_well", "channel": "environment", "source": "environment_the_fourth_well", "before_point_of_no_return": true },
-          { "id": "rev_cutters_said_so", "channel": "rival_npc", "source": "cutter-neeth", "before_point_of_no_return": true }
+          {
+            "id": "rev_court_ledger",
+            "channel": "ledger",
+            "source": "ledgerer-hosk-vei",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_fourth_well",
+            "channel": "environment",
+            "source": "environment_the_fourth_well",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_cutters_said_so",
+            "channel": "rival_npc",
+            "source": "cutter-neeth",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_xul_aneekh": 18, "the_drowned_court": 0 },
-        "world_flags": ["helstrom_sapwells_settled"],
-        "unlocks": ["Q-XULA-06"]
+        "faction_reputation": {
+          "the_xul_aneekh": 18,
+          "the_drowned_court": 0
+        },
+        "world_flags": [
+          "helstrom_sapwells_settled"
+        ],
+        "unlocks": [
+          "Q-XULA-06"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "item", "unique_named": true, "id": "item_drowned_court_count", "name": "four hundred years of the Court's count" },
-        { "type": "information", "unique_named": true, "id": "topic_the_ku_vastei", "name": "the ku-vastei" },
-        { "type": "training", "unique_named": false, "id": "train_rootspeech_gallery", "name": "the gallery's reading of a well" }
+        {
+          "type": "item",
+          "unique_named": true,
+          "id": "item_drowned_court_count",
+          "name": "four hundred years of the Court's count"
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_ku_vastei",
+          "name": "the ku-vastei"
+        },
+        {
+          "type": "training",
+          "unique_named": false,
+          "id": "train_rootspeech_gallery",
+          "name": "the gallery's reading of a well"
+        }
       ],
       "notes": "Rank 4, second of two. The faction's central belief is disproved by the player at rank 4 and the faction does not change its mind, which is RI-QST01's rank-4 shape done properly: the dissenter is right, the rot is named, and the institution goes on. Every ending raises `deepkin_hollow_kept`, the rank-5 world state, including the one where the player burns the evidence."
     },
@@ -907,7 +1491,11 @@
       "category": "faction",
       "faction": "the_xul_aneekh",
       "act": null,
-      "rank_gate": { "faction": "the_xul_aneekh", "min_rank": 5, "min_reputation": 70 },
+      "rank_gate": {
+        "faction": "the_xul_aneekh",
+        "min_rank": 5,
+        "min_reputation": 70
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "ee-vashum",
@@ -917,8 +1505,12 @@
       },
       "opens_by": {
         "topic": "the ku vastei",
-        "prerequisite_quests": ["Q-XULA-05"],
-        "prerequisite_topics": ["the taking below"]
+        "prerequisite_quests": [
+          "Q-XULA-05"
+        ],
+        "prerequisite_topics": [
+          "the taking below"
+        ]
       },
       "task_kind": "politics",
       "stakes": 9,
@@ -990,7 +1582,13 @@
           "id": "br_ruling",
           "at_journal_index": 48,
           "condition": "The player knows the hollow does not want the ruling and that the other brood will take a war without one",
-          "leads_to": ["res_bring_the_ruling", "res_settle_in_the_hollows_name", "res_pay_both_prices", "res_stand_on_the_tracks", "rev_ixakh"],
+          "leads_to": [
+            "res_bring_the_ruling",
+            "res_settle_in_the_hollows_name",
+            "res_pay_both_prices",
+            "res_stand_on_the_tracks",
+            "rev_ixakh"
+          ],
           "irreversible": true
         }
       ],
@@ -1002,13 +1600,39 @@
           "journal_index": 90,
           "outcome": "A ku-vastei rules and the blood-price is extinguished, and the hollow is publicly shown to have needed an outsider to end its own quarrel. RI-CRM02 §1: the Ruling is a service, honoured in the interior jurisdiction and nowhere else, and it is available to a player who has joined nothing.",
           "morally_better": true,
-          "requires": { "attributes": { "personality": 20 }, "skills": { "speechcraft": 50, "root-speech": 25 } },
-          "requires_knowing": ["rev_ixakh"],
-          "exclusive_with": ["res_settle_in_the_hollows_name", "res_pay_both_prices", "res_stand_on_the_tracks"],
+          "requires": {
+            "attributes": {
+              "personality": 20
+            },
+            "skills": {
+              "speechcraft": 50,
+              "root-speech": 25
+            }
+          },
+          "requires_knowing": [
+            "rev_ixakh"
+          ],
+          "exclusive_with": [
+            "res_settle_in_the_hollows_name",
+            "res_pay_both_prices",
+            "res_stand_on_the_tracks"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 14, "the_rootkeepers": 25 },
-            "world_flags": ["deepkin_coast_decided", "thorn_blood_price_ruled", "hollow_needed_an_arbiter", "player_holds_a_ku_vastei_ruling"],
-            "npc_disposition": { "ku-vastei-ixakh": 30, "ee-vashum": 45, "speaker-teel-ashaan": -30 }
+            "faction_reputation": {
+              "the_xul_aneekh": 14,
+              "the_rootkeepers": 25
+            },
+            "world_flags": [
+              "deepkin_coast_decided",
+              "thorn_blood_price_ruled",
+              "hollow_needed_an_arbiter",
+              "player_holds_a_ku_vastei_ruling"
+            ],
+            "npc_disposition": {
+              "ku-vastei-ixakh": 30,
+              "ee-vashum": 45,
+              "speaker-teel-ashaan": -30
+            }
           }
         },
         {
@@ -1018,12 +1642,38 @@
           "journal_index": 92,
           "outcome": "The player settles it with the hollow's authority and it holds. The hollow keeps its standing and now owes the player for it, which is the shape every rank-6 politics quest in Morrowind has: you did not fix the institution, you became load-bearing inside it.",
           "morally_better": null,
-          "requires": { "attributes": { "willpower": 20 }, "skills": { "speechcraft": 50, "root-speech": 25 }, "faction_rank": { "faction": "the_xul_aneekh", "min_rank": 5 } },
-          "exclusive_with": ["res_bring_the_ruling", "res_pay_both_prices", "res_stand_on_the_tracks"],
+          "requires": {
+            "attributes": {
+              "willpower": 20
+            },
+            "skills": {
+              "speechcraft": 50,
+              "root-speech": 25
+            },
+            "faction_rank": {
+              "faction": "the_xul_aneekh",
+              "min_rank": 5
+            }
+          },
+          "exclusive_with": [
+            "res_bring_the_ruling",
+            "res_pay_both_prices",
+            "res_stand_on_the_tracks"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 28 },
-            "world_flags": ["deepkin_coast_decided", "thorn_blood_price_settled_by_the_hollow", "hollow_owes_the_player"],
-            "npc_disposition": { "speaker-teel-ashaan": 40, "ku-vastei-ixakh": -10, "ee-vashum": 10 }
+            "faction_reputation": {
+              "the_xul_aneekh": 28
+            },
+            "world_flags": [
+              "deepkin_coast_decided",
+              "thorn_blood_price_settled_by_the_hollow",
+              "hollow_owes_the_player"
+            ],
+            "npc_disposition": {
+              "speaker-teel-ashaan": 40,
+              "ku-vastei-ixakh": -10,
+              "ee-vashum": 10
+            }
           }
         },
         {
@@ -1033,12 +1683,28 @@
           "journal_index": 94,
           "outcome": "Both blood-prices are paid in coast money by an outlander's hand, publicly. It works, it ends nothing, and every person on that ground now knows what five ranks on the coast is worth in kin.",
           "morally_better": null,
-          "requires": { "gold": 6000 },
-          "exclusive_with": ["res_bring_the_ruling", "res_settle_in_the_hollows_name", "res_stand_on_the_tracks"],
+          "requires": {
+            "gold": 6000
+          },
+          "exclusive_with": [
+            "res_bring_the_ruling",
+            "res_settle_in_the_hollows_name",
+            "res_stand_on_the_tracks"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 16, "the_wet_ledger": -10 },
-            "world_flags": ["deepkin_coast_decided", "thorn_blood_price_paid_in_coast_money", "interior_knows_the_players_purse"],
-            "npc_disposition": { "ee-vashum": -15, "speaker-teel-ashaan": 10 }
+            "faction_reputation": {
+              "the_xul_aneekh": 16,
+              "the_wet_ledger": -10
+            },
+            "world_flags": [
+              "deepkin_coast_decided",
+              "thorn_blood_price_paid_in_coast_money",
+              "interior_knows_the_players_purse"
+            ],
+            "npc_disposition": {
+              "ee-vashum": -15,
+              "speaker-teel-ashaan": 10
+            }
           }
         },
         {
@@ -1049,11 +1715,27 @@
           "outcome": "The other brood is turned back on the tracks and three of the hollow's own do not come home, and the player chose which three. The hollow calls it a consensus. Ixakh had been in the gate house for six days.",
           "morally_better": false,
           "requires": {},
-          "exclusive_with": ["res_bring_the_ruling", "res_settle_in_the_hollows_name", "res_pay_both_prices"],
+          "exclusive_with": [
+            "res_bring_the_ruling",
+            "res_settle_in_the_hollows_name",
+            "res_pay_both_prices"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 22, "the_rootkeepers": -30 },
-            "world_flags": ["deepkin_coast_decided", "thorn_tracks_held_by_force", "blood_price_outstanding", "three_war_broods_dead"],
-            "npc_disposition": { "speaker-teel-ashaan": 30, "ku-vastei-ixakh": -60, "ee-vashum": -30 }
+            "faction_reputation": {
+              "the_xul_aneekh": 22,
+              "the_rootkeepers": -30
+            },
+            "world_flags": [
+              "deepkin_coast_decided",
+              "thorn_tracks_held_by_force",
+              "blood_price_outstanding",
+              "three_war_broods_dead"
+            ],
+            "npc_disposition": {
+              "speaker-teel-ashaan": 30,
+              "ku-vastei-ixakh": -60,
+              "ee-vashum": -30
+            }
           }
         }
       ],
@@ -1069,27 +1751,65 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D3", "D12"],
+        "patterns": [
+          "D3",
+          "D12"
+        ],
         "stated_objective": "End a blood-price between two war-broods before it becomes a war",
         "actual_objective": "The same, asked by the one elder in the faction who is willing to pay the hollow's standing for it",
         "truth": "The hollow can end it and will not, because ending it through a ku-vastei says out loud that a consensus which has become a party cannot settle its own.",
         "revealed_by": [
-          { "id": "rev_ixakh", "channel": "talk_to_target", "source": "ku-vastei-ixakh", "before_point_of_no_return": true },
-          { "id": "rev_teel_refusal", "channel": "eavesdrop", "source": "speaker-teel-ashaan", "before_point_of_no_return": true }
+          {
+            "id": "rev_ixakh",
+            "channel": "talk_to_target",
+            "source": "ku-vastei-ixakh",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_teel_refusal",
+            "channel": "eavesdrop",
+            "source": "speaker-teel-ashaan",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_xul_aneekh": 22, "the_rootkeepers": 0 },
-        "world_flags": ["deepkin_coast_decided"],
-        "unlocks": ["Q-XULA-07"]
+        "faction_reputation": {
+          "the_xul_aneekh": 22,
+          "the_rootkeepers": 0
+        },
+        "world_flags": [
+          "deepkin_coast_decided"
+        ],
+        "unlocks": [
+          "Q-XULA-07"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "faction_rank", "unique_named": false, "id": "rank_sap_drinker", "name": "Sap-Drinker" },
-        { "type": "service", "unique_named": true, "id": "svc_ku_vastei_ruling", "name": "a ku-vastei's Ruling", "on_resolution": ["res_bring_the_ruling"] },
-        { "type": "information", "unique_named": true, "id": "topic_the_consensus", "name": "the consensus" }
+        {
+          "type": "faction_rank",
+          "unique_named": false,
+          "id": "rank_sap_drinker",
+          "name": "Sap-Drinker"
+        },
+        {
+          "type": "service",
+          "unique_named": true,
+          "id": "svc_ku_vastei_ruling",
+          "name": "a ku-vastei's Ruling",
+          "on_resolution": [
+            "res_bring_the_ruling"
+          ]
+        },
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_consensus",
+          "name": "the consensus"
+        }
       ],
       "notes": "Rank 5, the `politics` quest RI-QST03 §B requires before rank 6, and the one place the Shadowscales appear as what RI-LOR02 §4.8 and RI-CRM02 §1 say they are: a SERVICE, not a ladder. `svc_ku_vastei_ruling` is RI-CRM02's interior-jurisdiction blood-price extinguisher, and it is reachable by a character who has joined nothing, because Ixakh does not ask what you are before she rules."
     },
@@ -1099,7 +1819,11 @@
       "category": "faction",
       "faction": "the_xul_aneekh",
       "act": null,
-      "rank_gate": { "faction": "the_xul_aneekh", "min_rank": 6, "min_reputation": 90 },
+      "rank_gate": {
+        "faction": "the_xul_aneekh",
+        "min_rank": 6,
+        "min_reputation": 90
+      },
       "discovery": "given",
       "giver": {
         "npc_id": "helstrom-gallery-keepers",
@@ -1109,8 +1833,12 @@
       },
       "opens_by": {
         "topic": "the consensus",
-        "prerequisite_quests": ["Q-XULA-06"],
-        "prerequisite_topics": ["the ku vastei"]
+        "prerequisite_quests": [
+          "Q-XULA-06"
+        ],
+        "prerequisite_topics": [
+          "the ku vastei"
+        ]
       },
       "task_kind": "politics",
       "stakes": 9,
@@ -1182,7 +1910,13 @@
           "id": "br_speaker",
           "at_journal_index": 52,
           "condition": "The player has been asked, the Speaker knows why, and the gallery is waiting",
-          "leads_to": ["res_put_it_to_the_hollow", "res_the_gallery_way", "res_make_them_ask", "res_tell_the_hollow", "rev_the_last_speaker"],
+          "leads_to": [
+            "res_put_it_to_the_hollow",
+            "res_the_gallery_way",
+            "res_make_them_ask",
+            "res_tell_the_hollow",
+            "rev_the_last_speaker"
+          ],
           "irreversible": true
         }
       ],
@@ -1194,13 +1928,38 @@
           "journal_index": 90,
           "outcome": "The question is put in the open and the hollow does not contradict it. Teel-Ashaan walks out at the top of the track and nobody follows, which is the entirety of how a speaker stops.",
           "morally_better": null,
-          "requires": { "attributes": { "willpower": 22 }, "skills": { "root-speech": 60, "speechcraft": 30 } },
-          "requires_knowing": ["rev_teel_himself"],
-          "exclusive_with": ["res_the_gallery_way", "res_make_them_ask", "res_tell_the_hollow"],
+          "requires": {
+            "attributes": {
+              "willpower": 22
+            },
+            "skills": {
+              "root-speech": 60,
+              "speechcraft": 30
+            }
+          },
+          "requires_knowing": [
+            "rev_teel_himself"
+          ],
+          "exclusive_with": [
+            "res_the_gallery_way",
+            "res_make_them_ask",
+            "res_tell_the_hollow"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 26, "the_rootkeepers": 10 },
-            "world_flags": ["deepkin_speaker_vacant", "teel_ashaan_walked_out", "hollow_asked_in_the_open"],
-            "npc_disposition": { "helstrom-gallery-keepers": 30, "speaker-teel-ashaan": -20, "ee-vashum": 25 }
+            "faction_reputation": {
+              "the_xul_aneekh": 26,
+              "the_rootkeepers": 10
+            },
+            "world_flags": [
+              "deepkin_speaker_vacant",
+              "teel_ashaan_walked_out",
+              "hollow_asked_in_the_open"
+            ],
+            "npc_disposition": {
+              "helstrom-gallery-keepers": 30,
+              "speaker-teel-ashaan": -20,
+              "ee-vashum": 25
+            }
           }
         },
         {
@@ -1210,13 +1969,35 @@
           "journal_index": 92,
           "outcome": "It is done the way the last one was done and the hollow is told he is unwell. It works, it is quick, and it makes the player exactly what the gallery has been for twenty-two years.",
           "morally_better": false,
-          "requires": { "skills": { "sneak": 60 } },
-          "requires_knowing": ["rev_the_last_speaker"],
-          "exclusive_with": ["res_put_it_to_the_hollow", "res_make_them_ask", "res_tell_the_hollow"],
+          "requires": {
+            "skills": {
+              "sneak": 60
+            }
+          },
+          "requires_knowing": [
+            "rev_the_last_speaker"
+          ],
+          "exclusive_with": [
+            "res_put_it_to_the_hollow",
+            "res_make_them_ask",
+            "res_tell_the_hollow"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 24, "the_rootkeepers": -40, "the_drowned_court": -15 },
-            "world_flags": ["deepkin_speaker_vacant", "teel_ashaan_dead", "gallery_did_it_again"],
-            "npc_disposition": { "helstrom-gallery-keepers": 45, "ee-vashum": -60, "ku-vastei-ixakh": -70 }
+            "faction_reputation": {
+              "the_xul_aneekh": 24,
+              "the_rootkeepers": -40,
+              "the_drowned_court": -15
+            },
+            "world_flags": [
+              "deepkin_speaker_vacant",
+              "teel_ashaan_dead",
+              "gallery_did_it_again"
+            ],
+            "npc_disposition": {
+              "helstrom-gallery-keepers": 45,
+              "ee-vashum": -60,
+              "ku-vastei-ixakh": -70
+            }
           }
         },
         {
@@ -1226,13 +2007,39 @@
           "journal_index": 94,
           "outcome": "The gallery is made to ask him and he is told they asked the player first. He stands down in front of the whole hollow and names the question rather than a successor, which is the only thing in twenty-two years that has changed how the hollow decides anything.",
           "morally_better": true,
-          "requires": { "attributes": { "personality": 22 }, "skills": { "speechcraft": 60, "root-speech": 30 } },
-          "requires_knowing": ["rev_teel_himself", "rev_vashum_refuses"],
-          "exclusive_with": ["res_put_it_to_the_hollow", "res_the_gallery_way", "res_tell_the_hollow"],
+          "requires": {
+            "attributes": {
+              "personality": 22
+            },
+            "skills": {
+              "speechcraft": 60,
+              "root-speech": 30
+            }
+          },
+          "requires_knowing": [
+            "rev_teel_himself",
+            "rev_vashum_refuses"
+          ],
+          "exclusive_with": [
+            "res_put_it_to_the_hollow",
+            "res_the_gallery_way",
+            "res_tell_the_hollow"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 24, "the_rootkeepers": 20 },
-            "world_flags": ["deepkin_speaker_vacant", "teel_ashaan_stood_down", "hollow_named_the_question"],
-            "npc_disposition": { "speaker-teel-ashaan": 40, "ee-vashum": 50, "helstrom-gallery-keepers": -20 }
+            "faction_reputation": {
+              "the_xul_aneekh": 24,
+              "the_rootkeepers": 20
+            },
+            "world_flags": [
+              "deepkin_speaker_vacant",
+              "teel_ashaan_stood_down",
+              "hollow_named_the_question"
+            ],
+            "npc_disposition": {
+              "speaker-teel-ashaan": 40,
+              "ee-vashum": 50,
+              "helstrom-gallery-keepers": -20
+            }
           }
         },
         {
@@ -1243,11 +2050,24 @@
           "outcome": "The player refuses and tells the hollow what was wanted. The Speaker keeps speaking, the gallery stops speaking to the player, and the line stops at Sap-Drinker with nobody at the bottom of the ladder.",
           "morally_better": true,
           "requires": {},
-          "exclusive_with": ["res_put_it_to_the_hollow", "res_the_gallery_way", "res_make_them_ask"],
+          "exclusive_with": [
+            "res_put_it_to_the_hollow",
+            "res_the_gallery_way",
+            "res_make_them_ask"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": -20, "the_rootkeepers": 15 },
-            "world_flags": ["teel_ashaan_still_speaks", "gallery_hostile_to_the_player"],
-            "npc_disposition": { "helstrom-gallery-keepers": -60, "speaker-teel-ashaan": 45 }
+            "faction_reputation": {
+              "the_xul_aneekh": -20,
+              "the_rootkeepers": 15
+            },
+            "world_flags": [
+              "teel_ashaan_still_speaks",
+              "gallery_hostile_to_the_player"
+            ],
+            "npc_disposition": {
+              "helstrom-gallery-keepers": -60,
+              "speaker-teel-ashaan": 45
+            }
           }
         }
       ],
@@ -1263,28 +2083,79 @@
       ],
       "can_fail": true,
       "deceit": {
-        "patterns": ["D1", "D6", "D11", "D8"],
+        "patterns": [
+          "D1",
+          "D6",
+          "D11",
+          "D8"
+        ],
         "stated_objective": "Find out whether the hollow is still listening to its Speaker",
         "actual_objective": "Have the Speaker stopped, by somebody the gallery can disown, as the gallery has done once before",
         "truth": "The speaker before this one went quiet in a season and the gallery has never been asked how.",
         "revealed_by": [
-          { "id": "rev_the_last_speaker", "channel": "eavesdrop", "source": "helstrom-gallery-keepers", "before_point_of_no_return": true },
-          { "id": "rev_teel_himself", "channel": "talk_to_target", "source": "speaker-teel-ashaan", "before_point_of_no_return": true },
-          { "id": "rev_vashum_refuses", "channel": "rival_npc", "source": "ee-vashum", "before_point_of_no_return": true }
+          {
+            "id": "rev_the_last_speaker",
+            "channel": "eavesdrop",
+            "source": "helstrom-gallery-keepers",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_teel_himself",
+            "channel": "talk_to_target",
+            "source": "speaker-teel-ashaan",
+            "before_point_of_no_return": true
+          },
+          {
+            "id": "rev_vashum_refuses",
+            "channel": "rival_npc",
+            "source": "ee-vashum",
+            "before_point_of_no_return": true
+          }
         ],
         "never_revealed": false
       },
       "consequences": {
-        "faction_reputation": { "the_xul_aneekh": 24, "the_rootkeepers": 0 },
-        "world_flags": ["deepkin_speaker_settled"],
-        "unlocks": ["Q-XULA-08"]
+        "faction_reputation": {
+          "the_xul_aneekh": 24,
+          "the_rootkeepers": 0
+        },
+        "world_flags": [
+          "deepkin_speaker_settled"
+        ],
+        "unlocks": [
+          "Q-XULA-08"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "information", "unique_named": true, "id": "topic_the_speakers_silence", "name": "the Speaker's silence" },
-        { "type": "ally", "unique_named": true, "id": "speaker-teel-ashaan", "name": "Teel-Ashaan, formerly Speaker", "on_resolution": ["res_make_them_ask", "res_tell_the_hollow"] },
-        { "type": "access", "unique_named": true, "id": "acc_helstrom_gallery", "name": "the gallery under Helstrom", "on_resolution": ["res_put_it_to_the_hollow", "res_the_gallery_way", "res_make_them_ask"] }
+        {
+          "type": "information",
+          "unique_named": true,
+          "id": "topic_the_speakers_silence",
+          "name": "the Speaker's silence"
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "speaker-teel-ashaan",
+          "name": "Teel-Ashaan, formerly Speaker",
+          "on_resolution": [
+            "res_make_them_ask",
+            "res_tell_the_hollow"
+          ]
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_helstrom_gallery",
+          "name": "the gallery under Helstrom",
+          "on_resolution": [
+            "res_put_it_to_the_hollow",
+            "res_the_gallery_way",
+            "res_make_them_ask"
+          ]
+        }
       ],
       "notes": "Rank 6, and the quest that vacates the seat rank 7 requires. D11 and D6 both land on the recruiter from rank 1: he is given the account in which he is the reasonable party, at length, before anything happens, and three of the four resolutions do not end in a corpse. The one that does is the one the institution prefers."
     },
@@ -1294,7 +2165,11 @@
       "category": "faction",
       "faction": "the_xul_aneekh",
       "act": null,
-      "rank_gate": { "faction": "the_xul_aneekh", "min_rank": 7, "min_reputation": 112 },
+      "rank_gate": {
+        "faction": "the_xul_aneekh",
+        "min_rank": 7,
+        "min_reputation": 112
+      },
       "discovery": "consequence",
       "giver": {
         "npc_id": "ee-vashum",
@@ -1304,7 +2179,9 @@
       },
       "opens_by": {
         "topic": "the speakers silence",
-        "prerequisite_quests": ["Q-XULA-07"]
+        "prerequisite_quests": [
+          "Q-XULA-07"
+        ]
       },
       "task_kind": "succession",
       "stakes": 10,
@@ -1370,7 +2247,12 @@
           "id": "br_the_question",
           "at_journal_index": 46,
           "condition": "The player is at the bottom of the hollow with everyone who is coming already there",
-          "leads_to": ["res_keep_the_question", "res_change_the_question", "res_name_vashum", "res_no_mouth"],
+          "leads_to": [
+            "res_keep_the_question",
+            "res_change_the_question",
+            "res_name_vashum",
+            "res_no_mouth"
+          ],
           "irreversible": true
         }
       ],
@@ -1382,12 +2264,36 @@
           "journal_index": 90,
           "outcome": "The coast is a wound and the player is now the person who says so. The cut comes within the year, the interior is united behind it, and the player has read four hundred years of counting that says it will not work.",
           "morally_better": false,
-          "requires": { "attributes": { "willpower": 24 }, "skills": { "root-speech": 70, "speechcraft": 35 } },
-          "exclusive_with": ["res_change_the_question", "res_name_vashum", "res_no_mouth"],
+          "requires": {
+            "attributes": {
+              "willpower": 24
+            },
+            "skills": {
+              "root-speech": 70,
+              "speechcraft": 35
+            }
+          },
+          "exclusive_with": [
+            "res_change_the_question",
+            "res_name_vashum",
+            "res_no_mouth"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 20, "the_wet_ledger": -60, "the_imperial_assize": -50, "the_ixtu_vakh": -40 },
-            "world_flags": ["deepkin_speaker_is_the_player", "interior_committed_to_the_cut", "coast_cities_under_threat"],
-            "npc_disposition": { "ee-vashum": -70, "helstrom-gallery-keepers": 50 }
+            "faction_reputation": {
+              "the_xul_aneekh": 20,
+              "the_wet_ledger": -60,
+              "the_imperial_assize": -50,
+              "the_ixtu_vakh": -40
+            },
+            "world_flags": [
+              "deepkin_speaker_is_the_player",
+              "interior_committed_to_the_cut",
+              "coast_cities_under_threat"
+            ],
+            "npc_disposition": {
+              "ee-vashum": -70,
+              "helstrom-gallery-keepers": 50
+            }
           }
         },
         {
@@ -1397,12 +2303,42 @@
           "journal_index": 92,
           "outcome": "The question stops being who is draining us and becomes what we do while we find out. Three war-broods walk out. Nine years of grief is left holding nothing, and the coast gets a year, and that is all anyone in this line ever had to offer.",
           "morally_better": true,
-          "requires": { "attributes": { "willpower": 24 }, "skills": { "root-speech": 70, "speechcraft": 35 }, "items": ["item_drowned_court_count"] },
-          "exclusive_with": ["res_keep_the_question", "res_name_vashum", "res_no_mouth"],
+          "requires": {
+            "attributes": {
+              "willpower": 24
+            },
+            "skills": {
+              "root-speech": 70,
+              "speechcraft": 35
+            },
+            "items": [
+              "item_drowned_court_count"
+            ]
+          },
+          "exclusive_with": [
+            "res_keep_the_question",
+            "res_name_vashum",
+            "res_no_mouth"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 14, "the_wet_ledger": 20, "the_imperial_assize": 25, "the_drowned_court": 30, "the_ixtu_vakh": 25 },
-            "world_flags": ["deepkin_speaker_is_the_player", "interior_question_changed", "war_broods_split", "coast_cities_have_a_year"],
-            "npc_disposition": { "ee-vashum": 50, "helstrom-gallery-keepers": -30, "rootkeeper-ashul-tei": 45 }
+            "faction_reputation": {
+              "the_xul_aneekh": 14,
+              "the_wet_ledger": 20,
+              "the_imperial_assize": 25,
+              "the_drowned_court": 30,
+              "the_ixtu_vakh": 25
+            },
+            "world_flags": [
+              "deepkin_speaker_is_the_player",
+              "interior_question_changed",
+              "war_broods_split",
+              "coast_cities_have_a_year"
+            ],
+            "npc_disposition": {
+              "ee-vashum": 50,
+              "helstrom-gallery-keepers": -30,
+              "rootkeeper-ashul-tei": 45
+            }
           }
         },
         {
@@ -1412,12 +2348,37 @@
           "journal_index": 94,
           "outcome": "The player names the dissenter and stands down in the same breath, and she asks the different question herself with her lukiul daughter standing on the rim. It is the best ending in the line and the player is not in it.",
           "morally_better": true,
-          "requires": { "attributes": { "personality": 24 }, "skills": { "speechcraft": 70, "root-speech": 35 } },
-          "exclusive_with": ["res_keep_the_question", "res_change_the_question", "res_no_mouth"],
+          "requires": {
+            "attributes": {
+              "personality": 24
+            },
+            "skills": {
+              "speechcraft": 70,
+              "root-speech": 35
+            }
+          },
+          "exclusive_with": [
+            "res_keep_the_question",
+            "res_change_the_question",
+            "res_no_mouth"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": 18, "the_drowned_court": 20, "the_ixtu_vakh": 20, "the_wet_ledger": 15 },
-            "world_flags": ["deepkin_speaker_is_vashum", "interior_question_changed", "coast_cities_have_a_year", "vashum_daughter_on_the_rim"],
-            "npc_disposition": { "ee-vashum": 70, "rootkeeper-ashul-tei": 40 }
+            "faction_reputation": {
+              "the_xul_aneekh": 18,
+              "the_drowned_court": 20,
+              "the_ixtu_vakh": 20,
+              "the_wet_ledger": 15
+            },
+            "world_flags": [
+              "deepkin_speaker_is_vashum",
+              "interior_question_changed",
+              "coast_cities_have_a_year",
+              "vashum_daughter_on_the_rim"
+            ],
+            "npc_disposition": {
+              "ee-vashum": 70,
+              "rootkeeper-ashul-tei": 40
+            }
           }
         },
         {
@@ -1427,12 +2388,34 @@
           "journal_index": 98,
           "outcome": "The player tells the hollow it does not need a mouth and walks up the track. The bands argue until dark. It is either the end of the Xul-Aneekh as a body that can decide anything, or the first honest thing it has done in nine years, and the game does not adjudicate.",
           "morally_better": null,
-          "requires": { "attributes": { "willpower": 24 }, "skills": { "root-speech": 70 } },
-          "exclusive_with": ["res_keep_the_question", "res_change_the_question", "res_name_vashum"],
+          "requires": {
+            "attributes": {
+              "willpower": 24
+            },
+            "skills": {
+              "root-speech": 70
+            }
+          },
+          "exclusive_with": [
+            "res_keep_the_question",
+            "res_change_the_question",
+            "res_name_vashum"
+          ],
           "consequences": {
-            "faction_reputation": { "the_xul_aneekh": -30, "the_rootkeepers": 25 },
-            "world_flags": ["deepkin_no_speaker", "hollow_arguing", "interior_undecided"],
-            "npc_disposition": { "ee-vashum": 30, "helstrom-gallery-keepers": -50, "speaker-teel-ashaan": 30 }
+            "faction_reputation": {
+              "the_xul_aneekh": -30,
+              "the_rootkeepers": 25
+            },
+            "world_flags": [
+              "deepkin_no_speaker",
+              "hollow_arguing",
+              "interior_undecided"
+            ],
+            "npc_disposition": {
+              "ee-vashum": 30,
+              "helstrom-gallery-keepers": -50,
+              "speaker-teel-ashaan": 30
+            }
           }
         }
       ],
@@ -1449,15 +2432,43 @@
       "can_fail": true,
       "deceit": null,
       "consequences": {
-        "faction_reputation": { "the_xul_aneekh": 20, "the_wet_ledger": 0 },
-        "world_flags": ["deepkin_succession_settled"]
+        "faction_reputation": {
+          "the_xul_aneekh": 20,
+          "the_wet_ledger": 0
+        },
+        "world_flags": [
+          "deepkin_succession_settled"
+        ]
       },
       "mutually_exclusive_with": [],
       "kill_required_npcs": [],
       "rewards": [
-        { "type": "faction_rank", "unique_named": true, "id": "rank_xul_aneekh", "name": "Xul-Aneekh" },
-        { "type": "access", "unique_named": true, "id": "acc_interior_safe_passage", "name": "safe passage in the interior", "on_resolution": ["res_keep_the_question", "res_change_the_question", "res_name_vashum"] },
-        { "type": "ally", "unique_named": true, "id": "ee-vashum", "name": "Ee-Vashum, Speaker", "on_resolution": ["res_name_vashum"] }
+        {
+          "type": "faction_rank",
+          "unique_named": true,
+          "id": "rank_xul_aneekh",
+          "name": "Xul-Aneekh"
+        },
+        {
+          "type": "access",
+          "unique_named": true,
+          "id": "acc_interior_safe_passage",
+          "name": "safe passage in the interior",
+          "on_resolution": [
+            "res_keep_the_question",
+            "res_change_the_question",
+            "res_name_vashum"
+          ]
+        },
+        {
+          "type": "ally",
+          "unique_named": true,
+          "id": "ee-vashum",
+          "name": "Ee-Vashum, Speaker",
+          "on_resolution": [
+            "res_name_vashum"
+          ]
+        }
       ],
       "notes": "Rank 7. Succession, decided by what question gets asked rather than by who holds a title, and none of the four resolutions is combat. `acc_interior_safe_passage` is the world-side payoff RI-CRM02 §5 specifies: Deep-Kin standing shifts interior war-brood `hostile_below_disposition` by -40, so the same camps in the same places with the same movesets stop aggroing. A faction rank has emptied a region's encounter tables, which is the AR-3 crossing this line exists to make."
     }

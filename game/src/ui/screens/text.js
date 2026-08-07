@@ -271,6 +271,15 @@ export function drawBook(S, m) {
  * is the pagination that was drawn — K1 measures the distribution over EVERY book in the corpus
  * via `getUIState().book.pages`, and two implementations of this arithmetic would eventually
  * disagree and make that measurement fiction.
+ *
+ * **The 0.84 fill factor, W1-LIBRARY round 2.** It was 0.80, which is 14 lines at 1080p, and the
+ * corpus paginated to 324 pages with a median of 126 words — inside B1 (120-180) but hard against
+ * its floor, and with no room for the tail-balancing pass in `paginateBook` to take lines back off
+ * the early pages without pushing the median under 120. At 0.84 the same panel takes 15 lines, the
+ * corpus paginates to 300 pages, and K1 reads **p10 84.9 / median 130 / p90 162 / max 185** on ALL
+ * pages including every book's last — the first pagination in this build that satisfies K1 without
+ * excluding the final page from the count. 0.86 is the same 15 lines; 0.88 is 16 and puts the last
+ * baseline within 8 px of the page-count row, so 0.84 is the largest step that is still a margin.
  */
 export function bookLayout(S, inner) {
   const s = S.s;

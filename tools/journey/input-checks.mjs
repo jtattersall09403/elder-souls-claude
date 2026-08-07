@@ -1917,7 +1917,16 @@ async function mp25(page, h, ev) {
       perf, world,
       buffer: [cv.width, cv.height],
       alloc: m0 === null ? { available: false, why: 'performance.memory is not exposed in this container' }
-        : { available: true, bytes_per_step: Number(((m1 - m0) / 600).toFixed(1)), from: m0, to: m1, steps: 600 },
+        : {
+          available: true, bytes_per_step: Number(((m1 - m0) / 600).toFixed(1)), from: m0, to: m1, steps: 600,
+          // `performance.memory.usedJSHeapSize` is QUANTISED (Chrome reports it in 100 KB
+          // buckets by default), so a reported 0 bytes/step means "below the quantum over 600
+          // steps", i.e. under ~170 B/step, and NOT a measured zero. Stated because an
+          // unstated quantum is exactly how a 0-byte claim gets made from noise, and
+          // RI-PLT01 M4's real instrument is `tools/platform/alloc-probe.mjs` with forced GC.
+          quantised: m1 === m0,
+          resolution_note: 'usedJSHeapSize is bucketed; from === to means below the quantum over 600 steps, not a measured zero. RI-PLT01 M4 proper is tools/platform/alloc-probe.mjs.',
+        },
       device_class: H.getInputState().deviceClass,
     };
   });
