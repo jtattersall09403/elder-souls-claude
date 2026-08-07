@@ -1,0 +1,266 @@
+{
+  "schema": "elder-souls/ambience-bed@1",
+  "id": "marauders-coast",
+  "region": "marauders-coast",
+  "region_name": "Marauder's Coast",
+  "danger_tier": 2,
+  "brief": "surf; rope creak; gull-cry; one bell buoy audible from 600 m",
+  "regions_json_audio": [
+    "amb_topal_surf",
+    "sfx_bell_buoy_600m",
+    "sfx_rope_creak"
+  ],
+  "key": {
+    "wet_dry": "wet",
+    "open_enclosed": "open",
+    "living_dead": "living"
+  },
+  "bed_lufs_target": -24,
+  "crossfade_s": 4.0,
+  "max_voices": 8,
+  "denies": [],
+  "layers": {
+    "L1": {
+      "id": "l1_open_sea_floor",
+      "text": "open sea floor, wide stereo",
+      "level_db": 0,
+      "voices": 2,
+      "classes": [
+        "water"
+      ],
+      "synth": {
+        "kind": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "lowpass",
+          "hz": 1150,
+          "q": 0.4
+        },
+        "gain_db": -5,
+        "width": 1.0,
+        "mod": {
+          "target": "filter_hz",
+          "lfo_hz": 0.061,
+          "depth": 0.35
+        }
+      }
+    },
+    "L2": {
+      "id": "l2_surf_tidal",
+      "text": "surf, tide-driven and ToD-linked (RI-WLD10: this is one of the five tidal regions)",
+      "level_db": -3,
+      "voices": 2,
+      "sublayers": [
+        {
+          "when": {
+            "tod": "day"
+          },
+          "classes": [
+            "water"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "white",
+            "filter": {
+              "type": "bandpass",
+              "hz": 1800,
+              "q": 0.6
+            },
+            "gain_db": -9,
+            "width": 0.9,
+            "mod": {
+              "target": "gain",
+              "lfo_hz": 0.11,
+              "depth": 0.6
+            }
+          }
+        },
+        {
+          "when": {
+            "tod": "night"
+          },
+          "classes": [
+            "water"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "pink",
+            "filter": {
+              "type": "bandpass",
+              "hz": 900,
+              "q": 0.5
+            },
+            "gain_db": -8,
+            "width": 0.9,
+            "mod": {
+              "target": "gain",
+              "lfo_hz": 0.07,
+              "depth": 0.7
+            }
+          }
+        }
+      ]
+    },
+    "L3": {
+      "id": "l3_rope_creak",
+      "text": "rope creak",
+      "interval_s": [
+        10,
+        28
+      ],
+      "level_db": -4,
+      "events": [
+        {
+          "id": "rope_creak",
+          "classes": [
+            "structure"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.7,
+            0.7
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "osc",
+            "waveform": "sawtooth",
+            "freq_hz": 240,
+            "glide_hz": [
+              240,
+              310
+            ],
+            "filter": {
+              "type": "bandpass",
+              "hz": 520,
+              "q": 7.0
+            },
+            "env": {
+              "attack_s": 0.14,
+              "decay_s": 0.5
+            },
+            "gain_db": -12
+          }
+        }
+      ]
+    },
+    "L4": {
+      "id": "l4_gulls_or_drowned",
+      "text": "gull-cry (day) / drowned-things (night) \u2014 R5: a different SELECTION, not a filter",
+      "interval_s": [
+        45,
+        130
+      ],
+      "level_db": -2,
+      "events": [
+        {
+          "id": "gull_cry",
+          "classes": [
+            "fauna",
+            "birdsong"
+          ],
+          "weight": 1,
+          "pan": [
+            -1.0,
+            1.0
+          ],
+          "when": {
+            "tod": "day"
+          },
+          "synth": {
+            "kind": "grain",
+            "source": "osc",
+            "waveform": "sawtooth",
+            "freq_hz": 1600,
+            "glide_hz": [
+              1600,
+              1050
+            ],
+            "filter": {
+              "type": "bandpass",
+              "hz": 1800,
+              "q": 3.5
+            },
+            "env": {
+              "attack_s": 0.01,
+              "decay_s": 0.28
+            },
+            "gain_db": -7,
+            "repeats": {
+              "n": 3,
+              "gap_s": 0.26,
+              "gap_jitter_s": 0.06
+            }
+          }
+        },
+        {
+          "id": "drowned_thing",
+          "classes": [
+            "unexplained"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.5,
+            0.5
+          ],
+          "when": {
+            "tod": "night"
+          },
+          "synth": {
+            "kind": "grain",
+            "source": "osc",
+            "waveform": "sine",
+            "freq_hz": 96,
+            "glide_hz": [
+              96,
+              64
+            ],
+            "filter": {
+              "type": "lowpass",
+              "hz": 350,
+              "q": 1.0
+            },
+            "env": {
+              "attack_s": 0.4,
+              "decay_s": 1.4
+            },
+            "gain_db": -6
+          }
+        }
+      ]
+    }
+  },
+  "emitters": [
+    {
+      "id": "bell_buoy",
+      "text": "one bell buoy audible from 600 m \u2014 a fixed POSITIONAL landmark (R7). A player who has learned the bell can locate themselves in fog, which is the ambience contribution to S8: the world tells you where you are by sound because it is not allowed to tell you with an arrow.",
+      "pos_m": [
+        398,
+        4486
+      ],
+      "audible_m": 600,
+      "ref_m": 35,
+      "level_db": 2,
+      "classes": [
+        "navigation"
+      ],
+      "period_s": 13.0,
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 523.25,
+        "partials_hz": [
+          523.25,
+          1298,
+          1570
+        ],
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 3.2
+        },
+        "gain_db": -5
+      }
+    }
+  ],
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+}

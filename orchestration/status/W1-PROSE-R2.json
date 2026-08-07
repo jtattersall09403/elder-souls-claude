@@ -1,0 +1,18 @@
+{
+  "task_id": "W1-PROSE-R2",
+  "brief": "inline (round-2 prose builder)",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "tools/check-prose.mjs (new, warning-only)",
+    "tools/prose/build-r2-packs.mjs (fixed: name-substitute BOTH sides, strip wiki markup, ask the QUALITY question)",
+    "corpus/95-packs/... regenerated packs",
+    "rewrites: flatten punchline rate in game/data/dialogue/topics/55-utility.json and 50-factions.json",
+    "even out round-1's over-application (. Which is X., sentence-initial And, greetings.json contraction overshoot)",
+    "reports/blog-feed.jsonl line"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read W1-PROSE-BLIND-r1.md verdict + W1-PROSE-TICS.json pre-registered rules",
+  "notes_for_successor": "Do NOT grade myself. Do not undo round-1 pre-registered rules. Coordinate: W1-LIBRARY-MARTIAL writing ~42 books, lore builder in corpus/60-lore/."
+}

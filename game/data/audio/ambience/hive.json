@@ -1,0 +1,211 @@
+{
+  "schema": "elder-souls/ambience-bed@1",
+  "id": "hive",
+  "region": "hive",
+  "region_name": "The Hive",
+  "danger_tier": 2,
+  "brief": "a single sustained insect chord that shifts pitch with distance to the queen",
+  "regions_json_audio": [
+    "amb_hive_chord"
+  ],
+  "key": {
+    "wet_dry": "dry",
+    "open_enclosed": "enclosed",
+    "living_dead": "living"
+  },
+  "bed_lufs_target": -25,
+  "crossfade_s": 4.0,
+  "max_voices": 8,
+  "denies": [
+    {
+      "class": "wind",
+      "why": "inside a hive there is no weather. Wing-wash is the only air movement."
+    }
+  ],
+  "layers": {
+    "L1": {
+      "id": "l1_hive_chord_gradient",
+      "text": "a single sustained insect chord that SHIFTS PITCH WITH DISTANCE TO THE QUEEN \u2014 the only L1 in the game that is a gradient, not a loop",
+      "level_db": 0,
+      "voices": 2,
+      "classes": [
+        "insect_layer"
+      ],
+      "synth": {
+        "kind": "drone",
+        "waveform": "sawtooth",
+        "partials_hz": [
+          219,
+          438,
+          657
+        ],
+        "partial_gains_db": [
+          -8,
+          -13,
+          -21
+        ],
+        "detune_cents": 14,
+        "gain_db": -7,
+        "filter": {
+          "type": "lowpass",
+          "hz": 2600,
+          "q": 0.9
+        }
+      },
+      "gradient": {
+        "source": "distance_to_anchor",
+        "anchor_m": [
+          1237,
+          3732
+        ],
+        "span_m": 700,
+        "pitch_cents_near": -420,
+        "pitch_cents_far": 260,
+        "note": "RI-AUD03 \u00a7B. The queen is the anchor; the chord flattens as you approach her. A player who has learned it can walk to her with the screen off, which is the S8 no-markers ruling paid for in sound."
+      }
+    },
+    "L2": {
+      "id": "l2_wing_wash",
+      "text": "wing-wash",
+      "level_db": -4,
+      "voices": 2,
+      "sublayers": [
+        {
+          "when": {},
+          "classes": [
+            "insect_layer"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "pink",
+            "filter": {
+              "type": "bandpass",
+              "hz": 1500,
+              "q": 1.0
+            },
+            "gain_db": -9,
+            "width": 0.55,
+            "mod": {
+              "target": "gain",
+              "lfo_hz": 11.0,
+              "depth": 0.28
+            }
+          }
+        }
+      ]
+    },
+    "L3": {
+      "id": "l3_chitin_and_cell",
+      "text": "chitin scrape; cell-tick",
+      "interval_s": [
+        8,
+        20
+      ],
+      "level_db": -4,
+      "events": [
+        {
+          "id": "cell_tick",
+          "classes": [
+            "structure"
+          ],
+          "weight": 4,
+          "pan": [
+            -0.9,
+            0.9
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "white",
+            "filter": {
+              "type": "bandpass",
+              "hz": 3400,
+              "q": 7.0
+            },
+            "env": {
+              "attack_s": 0.001,
+              "decay_s": 0.03
+            },
+            "gain_db": -11,
+            "repeats": {
+              "n": 3,
+              "gap_s": 0.11,
+              "gap_jitter_s": 0.03
+            }
+          }
+        },
+        {
+          "id": "chitin_scrape",
+          "classes": [
+            "fauna"
+          ],
+          "weight": 2,
+          "pan": [
+            -0.6,
+            0.6
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "white",
+            "filter": {
+              "type": "bandpass",
+              "hz": 2200,
+              "q": 2.2
+            },
+            "env": {
+              "attack_s": 0.04,
+              "decay_s": 0.28
+            },
+            "gain_db": -10
+          }
+        }
+      ]
+    },
+    "L4": {
+      "id": "l4_drone_passby",
+      "text": "drone pass-by (dog-sized, doppler)",
+      "interval_s": [
+        45,
+        120
+      ],
+      "level_db": 1,
+      "events": [
+        {
+          "id": "drone_passby",
+          "classes": [
+            "fauna"
+          ],
+          "weight": 1,
+          "pan": [
+            -1.0,
+            1.0
+          ],
+          "doppler": true,
+          "synth": {
+            "kind": "grain",
+            "source": "osc",
+            "waveform": "sawtooth",
+            "freq_hz": 150,
+            "glide_hz": [
+              178,
+              126
+            ],
+            "filter": {
+              "type": "lowpass",
+              "hz": 1200,
+              "q": 1.4
+            },
+            "env": {
+              "attack_s": 0.35,
+              "decay_s": 0.6
+            },
+            "gain_db": -6
+          }
+        }
+      ]
+    }
+  },
+  "emitters": [],
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+}

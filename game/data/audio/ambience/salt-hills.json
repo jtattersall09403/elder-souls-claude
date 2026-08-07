@@ -1,0 +1,234 @@
+{
+  "schema": "elder-souls/ambience-bed@1",
+  "id": "salt-hills",
+  "region": "salt-hills",
+  "region_name": "The Salt Hills",
+  "danger_tier": 3,
+  "brief": "legion horn on the hour; guar-bells; wind with no insect layer under it",
+  "regions_json_audio": [
+    "amb_wind_open_dry",
+    "sfx_legion_horn_hour",
+    "sfx_guar_bells"
+  ],
+  "key": {
+    "wet_dry": "dry",
+    "open_enclosed": "open",
+    "living_dead": "living"
+  },
+  "bed_lufs_target": -26,
+  "crossfade_s": 4.0,
+  "max_voices": 8,
+  "denies": [
+    {
+      "class": "insect_layer",
+      "why": "RI-AUD03 \u00a7B and regions.json both: \"wind with no insect layer under it\". The absence IS the identity \u2014 it is what separates the Salt Hills from every other open region in the province."
+    }
+  ],
+  "layers": {
+    "L1": {
+      "id": "l1_dry_open_wind",
+      "text": "dry open wind, no insect layer under it (the absence is the identity)",
+      "level_db": 0,
+      "voices": 2,
+      "classes": [
+        "wind"
+      ],
+      "synth": {
+        "kind": "noise",
+        "colour": "pink",
+        "filter": {
+          "type": "bandpass",
+          "hz": 940,
+          "q": 0.55
+        },
+        "gain_db": -4,
+        "width": 0.8,
+        "mod": {
+          "target": "filter_hz",
+          "lfo_hz": 0.083,
+          "depth": 0.5
+        }
+      }
+    },
+    "L2": {
+      "id": "l2_grass_hiss",
+      "text": "grass hiss",
+      "level_db": -5,
+      "voices": 2,
+      "sublayers": [
+        {
+          "when": {},
+          "classes": [
+            "flora"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "white",
+            "filter": {
+              "type": "highpass",
+              "hz": 3600,
+              "q": 0.7
+            },
+            "gain_db": -12,
+            "width": 0.7,
+            "mod": {
+              "target": "gain",
+              "lfo_hz": 0.37,
+              "depth": 0.45
+            }
+          }
+        }
+      ]
+    },
+    "L3": {
+      "id": "l3_legion_horn",
+      "text": "legion horn on the hour \u2014 a diegetic clock",
+      "interval_s": [
+        12,
+        38
+      ],
+      "level_db": -3,
+      "events": [
+        {
+          "id": "dry_grass_gust",
+          "classes": [
+            "wind"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.9,
+            0.9
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "pink",
+            "filter": {
+              "type": "bandpass",
+              "hz": 1400,
+              "q": 1.1
+            },
+            "env": {
+              "attack_s": 0.45,
+              "decay_s": 1.2
+            },
+            "gain_db": -11
+          }
+        }
+      ]
+    },
+    "L4": {
+      "id": "l4_guar_and_wamasu",
+      "text": "guar-bells; hill-wamasu at distance",
+      "interval_s": [
+        50,
+        165
+      ],
+      "level_db": -3,
+      "events": [
+        {
+          "id": "guar_bells",
+          "classes": [
+            "livestock"
+          ],
+          "weight": 2,
+          "pan": [
+            -0.8,
+            0.8
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "osc",
+            "waveform": "triangle",
+            "freq_hz": 1174,
+            "glide_hz": [
+              1174,
+              1160
+            ],
+            "env": {
+              "attack_s": 0.001,
+              "decay_s": 0.42
+            },
+            "gain_db": -11,
+            "repeats": {
+              "n": 4,
+              "gap_s": 0.33,
+              "gap_jitter_s": 0.11
+            }
+          }
+        },
+        {
+          "id": "hill_wamasu_distant",
+          "classes": [
+            "fauna"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.6,
+            0.6
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "osc",
+            "waveform": "sawtooth",
+            "freq_hz": 88,
+            "glide_hz": [
+              88,
+              70
+            ],
+            "filter": {
+              "type": "lowpass",
+              "hz": 300,
+              "q": 1.0
+            },
+            "env": {
+              "attack_s": 0.2,
+              "decay_s": 1.3
+            },
+            "gain_db": -10
+          }
+        }
+      ]
+    }
+  },
+  "emitters": [
+    {
+      "id": "legion_horn",
+      "text": "the legion horn on the hour: a diegetic clock at a fixed place, so hearing it tells you both the time and the bearing to the fort (R7).",
+      "pos_m": [
+        1982,
+        706
+      ],
+      "audible_m": 900,
+      "ref_m": 60,
+      "level_db": 2,
+      "classes": [
+        "navigation"
+      ],
+      "period_s": 3600.0,
+      "on_the_hour": true,
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sawtooth",
+        "freq_hz": 146.83,
+        "partials_hz": [
+          146.83,
+          220.0,
+          293.66
+        ],
+        "filter": {
+          "type": "lowpass",
+          "hz": 900,
+          "q": 0.9
+        },
+        "env": {
+          "attack_s": 0.18,
+          "decay_s": 2.4
+        },
+        "gain_db": -4
+      }
+    }
+  ],
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+}

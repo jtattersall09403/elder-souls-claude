@@ -2,8 +2,99 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 509,
+  "file_count": 538,
   "files": [
+    {
+      "path": "audio/ambience/blackwood.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "blackwood",
+      "bytes": 5721,
+      "sha256": "dbe3184bd458bc1c"
+    },
+    {
+      "path": "audio/ambience/clay-moor.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "clay-moor",
+      "bytes": 5237,
+      "sha256": "b0853e5db6b6d39a"
+    },
+    {
+      "path": "audio/ambience/crimson-coast.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "crimson-coast",
+      "bytes": 4664,
+      "sha256": "5186ae1a8024045d"
+    },
+    {
+      "path": "audio/ambience/deep-marshes.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "deep-marshes",
+      "bytes": 4528,
+      "sha256": "e51bf61073f95c87"
+    },
+    {
+      "path": "audio/ambience/eastern-rootlands.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "eastern-rootlands",
+      "bytes": 4950,
+      "sha256": "fe9b9b3bbfe5d608"
+    },
+    {
+      "path": "audio/ambience/hive.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "hive",
+      "bytes": 5046,
+      "sha256": "43a57c7f98002cc3"
+    },
+    {
+      "path": "audio/ambience/marauders-coast.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "marauders-coast",
+      "bytes": 6187,
+      "sha256": "4a59eb37546f18be"
+    },
+    {
+      "path": "audio/ambience/salt-hills.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "salt-hills",
+      "bytes": 5478,
+      "sha256": "aa9fe29b96c4b669"
+    },
+    {
+      "path": "audio/ambience/stone-forest.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "stone-forest",
+      "bytes": 4821,
+      "sha256": "0b423c2cd7a5ce0b"
+    },
+    {
+      "path": "audio/ambience/stone-wastes.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "stone-wastes",
+      "bytes": 5178,
+      "sha256": "8483b2b6afb4e33c"
+    },
+    {
+      "path": "audio/ambience/thornmarsh.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "thornmarsh",
+      "bytes": 4305,
+      "sha256": "df2df7c83201f1ba"
+    },
+    {
+      "path": "audio/ambience/valus-ridge.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "valus-ridge",
+      "bytes": 4369,
+      "sha256": "a253efc25fd3f277"
+    },
+    {
+      "path": "audio/ambience/western-rootlands.json",
+      "schema": "elder-souls/ambience-bed@1",
+      "id": "western-rootlands",
+      "bytes": 6771,
+      "sha256": "543576077c3b2713"
+    },
     {
       "path": "books/a-progress-through-the-southern-marsh.json",
       "schema": "elder-souls/book@2",
@@ -50,8 +141,15 @@
       "path": "books/the-arms-of-the-province.json",
       "schema": "elder-souls/book@2",
       "id": null,
-      "bytes": 44466,
-      "sha256": "7c777f8e28fcd3fa"
+      "bytes": 51453,
+      "sha256": "eb3d18b2fe5d77d8"
+    },
+    {
+      "path": "books/the-body-and-the-dark.json",
+      "schema": "elder-souls/book@2",
+      "id": null,
+      "bytes": 41177,
+      "sha256": "cd2a5c8ed1f60b38"
     },
     {
       "path": "books/the-casebook-of-the-assize.json",
@@ -71,8 +169,8 @@
       "path": "books/the-drill-book.json",
       "schema": "elder-souls/book@2",
       "id": null,
-      "bytes": 36748,
-      "sha256": "f2a92741ea334753"
+      "bytes": 57772,
+      "sha256": "cfde8df4535f0179"
     },
     {
       "path": "books/the-drowned-ford.json",
@@ -93,8 +191,15 @@
       "path": "books/the-ford-arguments.json",
       "schema": "elder-souls/book@2",
       "id": null,
-      "bytes": 29988,
-      "sha256": "f60448cf2f8d84dd"
+      "bytes": 37962,
+      "sha256": "e367e2a33b7ecc9b"
+    },
+    {
+      "path": "books/the-long-service.json",
+      "schema": "elder-souls/book@2",
+      "id": null,
+      "bytes": 32746,
+      "sha256": "f4114c22c48cbc90"
     },
     {
       "path": "books/the-long-tail.json",
@@ -109,6 +214,20 @@
       "id": null,
       "bytes": 28082,
       "sha256": "d417e0dca808e393"
+    },
+    {
+      "path": "books/the-schools-and-the-quarrels.json",
+      "schema": "elder-souls/book@2",
+      "id": null,
+      "bytes": 54673,
+      "sha256": "e9e2a684e2cee0b8"
+    },
+    {
+      "path": "books/the-short-arms.json",
+      "schema": "elder-souls/book@2",
+      "id": null,
+      "bytes": 16882,
+      "sha256": "617cb192cccbab16"
     },
     {
       "path": "books/the-short-forms.json",
@@ -163,155 +282,155 @@
       "path": "combat/enemies/beast_slitherfang.json",
       "schema": "elder-souls/enemy@1",
       "id": "beast_slitherfang",
-      "bytes": 3777,
-      "sha256": "abf59ff15b0cd44c"
+      "bytes": 4364,
+      "sha256": "7a97766891d33575"
     },
     {
       "path": "combat/enemies/cam_boss_great.json",
       "schema": "elder-souls/enemy@1",
       "id": "cam_boss_great",
-      "bytes": 2384,
-      "sha256": "5afa7166e0996d64"
+      "bytes": 2970,
+      "sha256": "b6fcb11c88b9f66e"
     },
     {
       "path": "combat/enemies/cam_boss_mid.json",
       "schema": "elder-souls/enemy@1",
       "id": "cam_boss_mid",
-      "bytes": 2386,
-      "sha256": "832cfc733c72304e"
+      "bytes": 2972,
+      "sha256": "5aafb29d76f2cc5b"
     },
     {
       "path": "combat/enemies/cam_elite.json",
       "schema": "elder-souls/enemy@1",
       "id": "cam_elite",
-      "bytes": 2384,
-      "sha256": "7a1719a9508dfceb"
+      "bytes": 2970,
+      "sha256": "5fe1c723cf64c783"
     },
     {
       "path": "combat/enemies/cam_levy.json",
       "schema": "elder-souls/enemy@1",
       "id": "cam_levy",
-      "bytes": 2382,
-      "sha256": "dae0407c01aa87b3"
+      "bytes": 2968,
+      "sha256": "4920636d8e962d13"
     },
     {
       "path": "combat/enemies/cam_rat.json",
       "schema": "elder-souls/enemy@1",
       "id": "cam_rat",
-      "bytes": 2434,
-      "sha256": "0412ce4a97a656b1"
+      "bytes": 3020,
+      "sha256": "4d5b4a65b7a84eef"
     },
     {
       "path": "combat/enemies/champion_hist_marked.json",
       "schema": "elder-souls/enemy@1",
       "id": "champion_hist_marked",
-      "bytes": 5609,
-      "sha256": "9a297d1c8d6e0e91"
+      "bytes": 6198,
+      "sha256": "6944fd08818f579f"
     },
     {
       "path": "combat/enemies/cst_sap_speaker.json",
       "schema": "elder-souls/enemy@1",
       "id": "cst_sap_speaker",
-      "bytes": 7540,
-      "sha256": "59529f0772c3af71"
+      "bytes": 8128,
+      "sha256": "64a60d853a2eb2fb"
     },
     {
       "path": "combat/enemies/drowned_greater.json",
       "schema": "elder-souls/enemy@1",
       "id": "drowned_greater",
-      "bytes": 4525,
-      "sha256": "010b9b407120fe34"
+      "bytes": 5113,
+      "sha256": "4554a6e03858cbe6"
     },
     {
       "path": "combat/enemies/drowned_lesser.json",
       "schema": "elder-souls/enemy@1",
       "id": "drowned_lesser",
-      "bytes": 4616,
-      "sha256": "326f621ca6e18c16"
+      "bytes": 5203,
+      "sha256": "e4f0b073d4cb01f4"
     },
     {
       "path": "combat/enemies/dummy_passive.json",
       "schema": "elder-souls/enemy@1",
       "id": "dummy_passive",
-      "bytes": 2709,
-      "sha256": "51d89f5e283ebd86"
+      "bytes": 3295,
+      "sha256": "03f43d0ff5ca47ce"
     },
     {
       "path": "combat/enemies/guard_legion.json",
       "schema": "elder-souls/enemy@1",
       "id": "guard_legion",
-      "bytes": 5228,
-      "sha256": "6645751d4dc7c672"
+      "bytes": 5816,
+      "sha256": "3cebebdb1cf0e589"
     },
     {
       "path": "combat/enemies/inf_trash.json",
       "schema": "elder-souls/enemy@1",
       "id": "inf_trash",
-      "bytes": 5447,
-      "sha256": "ac75af1524623c89"
+      "bytes": 6035,
+      "sha256": "940e2a0f2404f050"
     },
     {
       "path": "combat/enemies/mat_chitin.json",
       "schema": "elder-souls/enemy@1",
       "id": "mat_chitin",
-      "bytes": 2370,
-      "sha256": "547d82908e68ab7f"
+      "bytes": 2956,
+      "sha256": "dfc25b8049fdcd9f"
     },
     {
       "path": "combat/enemies/mat_flesh.json",
       "schema": "elder-souls/enemy@1",
       "id": "mat_flesh",
-      "bytes": 2358,
-      "sha256": "cf667018a217eb22"
+      "bytes": 2944,
+      "sha256": "2a1d36a991ea6192"
     },
     {
       "path": "combat/enemies/mat_metal.json",
       "schema": "elder-souls/enemy@1",
       "id": "mat_metal",
-      "bytes": 2365,
-      "sha256": "1747988df25d8fc0"
+      "bytes": 2951,
+      "sha256": "f369db9b735ec8a9"
     },
     {
       "path": "combat/enemies/mat_plant.json",
       "schema": "elder-souls/enemy@1",
       "id": "mat_plant",
-      "bytes": 2357,
-      "sha256": "111a8a8639240187"
+      "bytes": 2943,
+      "sha256": "3eb7a989de27a231"
     },
     {
       "path": "combat/enemies/mat_shield.json",
       "schema": "elder-souls/enemy@1",
       "id": "mat_shield",
-      "bytes": 2555,
-      "sha256": "5fb44cebb0b87806"
+      "bytes": 3141,
+      "sha256": "7f3f817fdf5e2ee8"
     },
     {
       "path": "combat/enemies/mat_stone.json",
       "schema": "elder-souls/enemy@1",
       "id": "mat_stone",
-      "bytes": 2371,
-      "sha256": "92d8bc79e5842787"
+      "bytes": 2957,
+      "sha256": "8489f5927585b74f"
     },
     {
       "path": "combat/enemies/mat_water.json",
       "schema": "elder-souls/enemy@1",
       "id": "mat_water",
-      "bytes": 2363,
-      "sha256": "38b7eaf6ca866a18"
+      "bytes": 2949,
+      "sha256": "b2880e391a048163"
     },
     {
       "path": "combat/enemies/mat_wood.json",
       "schema": "elder-souls/enemy@1",
       "id": "mat_wood",
-      "bytes": 2349,
-      "sha256": "dbc746676ba99471"
+      "bytes": 2935,
+      "sha256": "60f737bf47018302"
     },
     {
       "path": "combat/enemies/probe_pulse.json",
       "schema": "elder-souls/enemy@1",
       "id": "probe_pulse",
-      "bytes": 2676,
-      "sha256": "863de9b057fb899e"
+      "bytes": 3262,
+      "sha256": "1b00cd0a3d214735"
     },
     {
       "path": "combat/flask.json",
@@ -1737,6 +1856,13 @@
       "sha256": "acf0b206d2781a4b"
     },
     {
+      "path": "dialogue/topics/56-writ-house-open.json",
+      "schema": "elder-souls/topics@1",
+      "id": null,
+      "bytes": 11409,
+      "sha256": "81a168dc99797182"
+    },
+    {
       "path": "dialogue/topics/60-roads.json",
       "schema": "elder-souls/topics@1",
       "id": null,
@@ -1868,16 +1994,16 @@
       "path": "npcs/faction-givers.json",
       "schema": "elder-souls/npcs@1",
       "id": null,
-      "bytes": 7007,
-      "sha256": "c7684d467c725aeb",
+      "bytes": 10006,
+      "sha256": "f6e8d681fb98fe56",
       "declared_incomplete": true
     },
     {
       "path": "npcs/mainline.json",
       "schema": "elder-souls/npcs@1",
       "id": null,
-      "bytes": 21379,
-      "sha256": "c7d3795342c3a58d",
+      "bytes": 33305,
+      "sha256": "0c2c8729d182af31",
       "declared_incomplete": true
     },
     {
@@ -1947,16 +2073,16 @@
       "path": "npcs/quest-givers.json",
       "schema": "elder-souls/npcs@1",
       "id": null,
-      "bytes": 13331,
-      "sha256": "06aeaddc3a9d6f5e",
+      "bytes": 28763,
+      "sha256": "b7cc7128938a873e",
       "declared_incomplete": true
     },
     {
       "path": "npcs/thorn.json",
       "schema": "elder-souls/npcs@1",
       "id": null,
-      "bytes": 1880,
-      "sha256": "058d29b2bbdbd672",
+      "bytes": 2668,
+      "sha256": "56dcf2f8e95f1631",
       "declared_incomplete": true
     },
     {
@@ -2291,8 +2417,8 @@
       "path": "states/helstrom-market.json",
       "schema": "elder-souls/state@1",
       "id": "helstrom-market",
-      "bytes": 2125,
-      "sha256": "01af3be9c24727e1"
+      "bytes": 2437,
+      "sha256": "1590cc0d73f08c1f"
     },
     {
       "path": "states/interior_firelit.json",
@@ -2314,6 +2440,13 @@
       "id": "npc_showcase",
       "bytes": 1300,
       "sha256": "3178285ddb0e6647"
+    },
+    {
+      "path": "states/rootlands-hollow.json",
+      "schema": "elder-souls/state@1",
+      "id": "rootlands-hollow",
+      "bytes": 1063,
+      "sha256": "72a373095ace3461"
     },
     {
       "path": "states/rootlands-well-graph.json",
@@ -2344,11 +2477,18 @@
       "sha256": "2254d5acaab87c36"
     },
     {
+      "path": "states/stone-wastes-count.json",
+      "schema": "elder-souls/state@1",
+      "id": "stone-wastes-count",
+      "bytes": 904,
+      "sha256": "11d5753f528719ab"
+    },
+    {
       "path": "states/stormhold-street.json",
       "schema": "elder-souls/state@1",
       "id": "stormhold-street",
-      "bytes": 1867,
-      "sha256": "8899143edc05323f"
+      "bytes": 2176,
+      "sha256": "4d4656b371d09ec9"
     },
     {
       "path": "states/sv1-midquest.json",
@@ -2375,8 +2515,64 @@
       "path": "states/thorn-hall.json",
       "schema": "elder-souls/state@1",
       "id": "thorn-hall",
-      "bytes": 530,
-      "sha256": "4ab0e0aab53ea8cb"
+      "bytes": 840,
+      "sha256": "bc5a6ddc2575b1f1"
+    },
+    {
+      "path": "states/town-archon.json",
+      "schema": "elder-souls/state@1",
+      "id": "town-archon",
+      "bytes": 870,
+      "sha256": "0c1aece8a8b9b5c8"
+    },
+    {
+      "path": "states/town-blackrose.json",
+      "schema": "elder-souls/state@1",
+      "id": "town-blackrose",
+      "bytes": 881,
+      "sha256": "9aed4adeca63d4fe"
+    },
+    {
+      "path": "states/town-gideon.json",
+      "schema": "elder-souls/state@1",
+      "id": "town-gideon",
+      "bytes": 863,
+      "sha256": "ce1a2022227599b9"
+    },
+    {
+      "path": "states/town-helstrom.json",
+      "schema": "elder-souls/state@1",
+      "id": "town-helstrom",
+      "bytes": 876,
+      "sha256": "c60c3b58c444844e"
+    },
+    {
+      "path": "states/town-lilmoth.json",
+      "schema": "elder-souls/state@1",
+      "id": "town-lilmoth",
+      "bytes": 876,
+      "sha256": "8f15629a557c49a2"
+    },
+    {
+      "path": "states/town-soulrest.json",
+      "schema": "elder-souls/state@1",
+      "id": "town-soulrest",
+      "bytes": 872,
+      "sha256": "68afd4ea4af4db01"
+    },
+    {
+      "path": "states/town-stormhold.json",
+      "schema": "elder-souls/state@1",
+      "id": "town-stormhold",
+      "bytes": 875,
+      "sha256": "8ca720fd7b8a08a6"
+    },
+    {
+      "path": "states/town-thorn.json",
+      "schema": "elder-souls/state@1",
+      "id": "town-thorn",
+      "bytes": 864,
+      "sha256": "37823ecc899cb47d"
     },
     {
       "path": "states/ui-journal.json",
@@ -3584,6 +3780,13 @@
       "id": null,
       "bytes": 8669,
       "sha256": "ff446f8b72588b64"
+    },
+    {
+      "path": "world/weather.json",
+      "schema": "elder-souls/weather@1",
+      "id": null,
+      "bytes": 19006,
+      "sha256": "5c314ecf72e42b9b"
     }
   ]
 }

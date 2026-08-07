@@ -1,0 +1,241 @@
+{
+  "schema": "elder-souls/ambience-bed@1",
+  "id": "blackwood",
+  "region": "blackwood",
+  "region_name": "Blackwood",
+  "danger_tier": 2,
+  "brief": "canopy drip; a solid wall of insect noise; distant axe-strokes",
+  "regions_json_audio": [
+    "amb_insect_wall",
+    "amb_canopy_drip",
+    "sfx_distant_axe"
+  ],
+  "key": {
+    "wet_dry": "wet",
+    "open_enclosed": "enclosed",
+    "living_dead": "living"
+  },
+  "bed_lufs_target": -25,
+  "crossfade_s": 4.0,
+  "max_voices": 8,
+  "denies": [
+    {
+      "class": "wind",
+      "why": "RI-AUD03 \u00a7B: Blackwood's L1 is \"deep canopy pressure, NO WIND\". A canopy this closed (canopy_closure 0.965) does not move air at head height. Any wind layer here would make it a forest instead of the inside of one."
+    }
+  ],
+  "layers": {
+    "L1": {
+      "id": "l1_canopy_pressure",
+      "text": "deep canopy pressure, no wind \u2014 the lowest floor in the game",
+      "level_db": 0,
+      "voices": 2,
+      "classes": [
+        "pressure"
+      ],
+      "synth": {
+        "kind": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "lowpass",
+          "hz": 155,
+          "q": 0.6
+        },
+        "gain_db": -3,
+        "width": 0.15,
+        "mod": {
+          "target": "filter_hz",
+          "lfo_hz": 0.031,
+          "depth": 0.18
+        }
+      }
+    },
+    "L2": {
+      "id": "l2_insect_wall",
+      "text": "a solid wall of insect noise \u2014 the densest L2 in the game",
+      "level_db": -3,
+      "voices": 3,
+      "sublayers": [
+        {
+          "when": {
+            "tod": "day"
+          },
+          "classes": [
+            "insect_layer"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "white",
+            "filter": {
+              "type": "bandpass",
+              "hz": 5200,
+              "q": 2.4
+            },
+            "gain_db": -9,
+            "width": 0.85,
+            "mod": {
+              "target": "gain",
+              "lfo_hz": 7.3,
+              "depth": 0.22
+            }
+          }
+        },
+        {
+          "when": {
+            "tod": "night"
+          },
+          "classes": [
+            "insect_layer"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "white",
+            "filter": {
+              "type": "bandpass",
+              "hz": 3100,
+              "q": 3.1
+            },
+            "gain_db": -8,
+            "width": 0.9,
+            "mod": {
+              "target": "gain",
+              "lfo_hz": 4.1,
+              "depth": 0.34
+            }
+          }
+        },
+        {
+          "when": {
+            "weather": "heavy_rain"
+          },
+          "classes": [
+            "rain"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "pink",
+            "filter": {
+              "type": "highpass",
+              "hz": 1800,
+              "q": 0.7
+            },
+            "gain_db": -7,
+            "width": 0.7
+          }
+        }
+      ]
+    },
+    "L3": {
+      "id": "l3_drip_and_axe",
+      "text": "canopy drip; distant axe-strokes",
+      "interval_s": [
+        8,
+        24
+      ],
+      "level_db": -4,
+      "events": [
+        {
+          "id": "canopy_drip",
+          "classes": [
+            "water"
+          ],
+          "weight": 4,
+          "pan": [
+            -0.9,
+            0.9
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "osc",
+            "waveform": "sine",
+            "freq_hz": 1450,
+            "glide_hz": [
+              1450,
+              620
+            ],
+            "env": {
+              "attack_s": 0.002,
+              "decay_s": 0.09
+            },
+            "gain_db": -10
+          }
+        },
+        {
+          "id": "distant_axe",
+          "classes": [
+            "labour"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.5,
+            0.5
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "pink",
+            "filter": {
+              "type": "bandpass",
+              "hz": 520,
+              "q": 3.0
+            },
+            "env": {
+              "attack_s": 0.001,
+              "decay_s": 0.55
+            },
+            "gain_db": -13,
+            "repeats": {
+              "n": 3,
+              "gap_s": 1.4,
+              "gap_jitter_s": 0.25
+            }
+          }
+        }
+      ]
+    },
+    "L4": {
+      "id": "l4_chitin_hound",
+      "text": "chitin-hound call \u2014 eyeless, so it calls to navigate: a sonar-like double click",
+      "interval_s": [
+        50,
+        150
+      ],
+      "level_db": -2,
+      "events": [
+        {
+          "id": "chitin_hound_sonar",
+          "classes": [
+            "predator"
+          ],
+          "weight": 1,
+          "pan": [
+            -1.0,
+            1.0
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "osc",
+            "waveform": "square",
+            "freq_hz": 2600,
+            "glide_hz": [
+              2600,
+              2300
+            ],
+            "env": {
+              "attack_s": 0.001,
+              "decay_s": 0.035
+            },
+            "gain_db": -8,
+            "repeats": {
+              "n": 2,
+              "gap_s": 0.14,
+              "gap_jitter_s": 0.01
+            }
+          }
+        }
+      ]
+    }
+  },
+  "emitters": [],
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+}

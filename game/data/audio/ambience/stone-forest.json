@@ -1,0 +1,208 @@
+{
+  "schema": "elder-souls/ambience-bed@1",
+  "id": "stone-forest",
+  "region": "stone-forest",
+  "region_name": "The Stone Forest",
+  "danger_tier": 3,
+  "brief": "stone tick as boles cool; wind through petrified trunks; a low choral hum from the Hist",
+  "regions_json_audio": [
+    "amb_stone_tick",
+    "amb_hist_choral_hum",
+    "sfx_dry_thunder"
+  ],
+  "key": {
+    "wet_dry": "dry",
+    "open_enclosed": "enclosed",
+    "living_dead": "living"
+  },
+  "bed_lufs_target": -26,
+  "crossfade_s": 4.0,
+  "max_voices": 8,
+  "denies": [
+    {
+      "class": "standing_water",
+      "why": "RI-WLD10 \u00a77: no standing water. The Stone Forest is a dry petrified wood."
+    }
+  ],
+  "layers": {
+    "L1": {
+      "id": "l1_hist_choral_hum",
+      "text": "a low choral hum from the Hist \u2014 pitched, chord-like, unsettling. THE HEALTHY INSTRUMENT (R6): Stone Wastes L4 is this, broken.",
+      "level_db": 0,
+      "voices": 2,
+      "classes": [
+        "hist"
+      ],
+      "lore_carrier": true,
+      "synth": {
+        "kind": "drone",
+        "waveform": "sine",
+        "partials_hz": [
+          110.0,
+          164.81,
+          220.0,
+          329.63
+        ],
+        "partial_gains_db": [
+          -6,
+          -10,
+          -13,
+          -19
+        ],
+        "detune_cents": 4,
+        "gain_db": -6,
+        "mod": {
+          "target": "gain",
+          "lfo_hz": 0.055,
+          "depth": 0.18
+        }
+      }
+    },
+    "L2": {
+      "id": "l2_wind_petrified_trunks",
+      "text": "wind through petrified trunks",
+      "level_db": -5,
+      "voices": 2,
+      "sublayers": [
+        {
+          "when": {},
+          "classes": [
+            "wind"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "pink",
+            "filter": {
+              "type": "bandpass",
+              "hz": 480,
+              "q": 1.6
+            },
+            "gain_db": -10,
+            "width": 0.6,
+            "mod": {
+              "target": "filter_hz",
+              "lfo_hz": 0.067,
+              "depth": 0.4
+            }
+          }
+        }
+      ]
+    },
+    "L3": {
+      "id": "l3_stone_tick",
+      "text": "stone tick as boles cool \u2014 rate RISES after dusk",
+      "interval_s": [
+        9,
+        32
+      ],
+      "level_db": -3,
+      "night_interval_s": [
+        8,
+        16
+      ],
+      "events": [
+        {
+          "id": "stone_tick",
+          "classes": [
+            "earth"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.9,
+            0.9
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "white",
+            "filter": {
+              "type": "bandpass",
+              "hz": 2700,
+              "q": 9.0
+            },
+            "env": {
+              "attack_s": 0.001,
+              "decay_s": 0.05
+            },
+            "gain_db": -9
+          }
+        }
+      ]
+    },
+    "L4": {
+      "id": "l4_wamasu_herd",
+      "text": "wamasu herd; stone-beetle",
+      "interval_s": [
+        50,
+        160
+      ],
+      "level_db": -2,
+      "events": [
+        {
+          "id": "wamasu_herd",
+          "classes": [
+            "fauna"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.8,
+            0.8
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "osc",
+            "waveform": "sawtooth",
+            "freq_hz": 78,
+            "glide_hz": [
+              78,
+              62
+            ],
+            "filter": {
+              "type": "lowpass",
+              "hz": 380,
+              "q": 1.1
+            },
+            "env": {
+              "attack_s": 0.15,
+              "decay_s": 1.0
+            },
+            "gain_db": -7,
+            "repeats": {
+              "n": 2,
+              "gap_s": 0.8,
+              "gap_jitter_s": 0.3
+            }
+          }
+        },
+        {
+          "id": "stone_beetle",
+          "classes": [
+            "fauna"
+          ],
+          "weight": 2,
+          "pan": [
+            -1.0,
+            1.0
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "white",
+            "filter": {
+              "type": "bandpass",
+              "hz": 4200,
+              "q": 6.0
+            },
+            "env": {
+              "attack_s": 0.02,
+              "decay_s": 0.2
+            },
+            "gain_db": -11
+          }
+        }
+      ]
+    }
+  },
+  "emitters": [],
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+}

@@ -1,0 +1,184 @@
+{
+  "schema": "elder-souls/ambience-bed@1",
+  "id": "deep-marshes",
+  "region": "deep-marshes",
+  "region_name": "The Deep Marshes",
+  "danger_tier": 5,
+  "brief": "NO birds. A low intestinal gurgle. A sound like breathing that is not yours",
+  "regions_json_audio": [
+    "amb_intestinal_gurgle",
+    "amb_breathing_not_yours",
+    "amb_no_birds"
+  ],
+  "key": {
+    "wet_dry": "wet",
+    "open_enclosed": "enclosed",
+    "living_dead": "dead"
+  },
+  "bed_lufs_target": -28,
+  "crossfade_s": 4.0,
+  "max_voices": 8,
+  "denies": [
+    {
+      "class": "birdsong",
+      "why": "RI-AUD03 \u00a7B: \"NO birds.\" The Deep Marshes are tier 5 and the silence IS the lethality warning (\u00a7Seam 3). A bird here would undo the only warning the player is given that this region is beyond them."
+    },
+    {
+      "class": "birds",
+      "why": "as above \u2014 no avian content of any kind, day or night."
+    },
+    {
+      "class": "insect_layer",
+      "why": "nothing calls in the Deep Marshes. An insect bed would make it Blackwood."
+    }
+  ],
+  "layers": {
+    "L1": {
+      "id": "l1_intestinal_gurgle",
+      "text": "a low intestinal gurgle",
+      "level_db": 0,
+      "voices": 2,
+      "classes": [
+        "visceral"
+      ],
+      "synth": {
+        "kind": "drone",
+        "waveform": "triangle",
+        "partials_hz": [
+          41,
+          61.5,
+          82
+        ],
+        "partial_gains_db": [
+          -5,
+          -16,
+          -22
+        ],
+        "detune_cents": 11,
+        "gain_db": -7,
+        "filter": {
+          "type": "lowpass",
+          "hz": 300,
+          "q": 0.8
+        },
+        "mod": {
+          "target": "gain",
+          "lfo_hz": 0.73,
+          "depth": 0.5
+        }
+      }
+    },
+    "L2": {
+      "id": "l2_still_water",
+      "text": "still water, almost nothing",
+      "level_db": -6,
+      "voices": 1,
+      "sublayers": [
+        {
+          "when": {},
+          "classes": [
+            "water"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "brown",
+            "filter": {
+              "type": "lowpass",
+              "hz": 210,
+              "q": 0.5
+            },
+            "gain_db": -13,
+            "width": 0.25,
+            "mod": {
+              "target": "filter_hz",
+              "lfo_hz": 0.021,
+              "depth": 0.2
+            }
+          }
+        }
+      ]
+    },
+    "L3": {
+      "id": "l3_near_empty",
+      "text": "NO birds. L3 is near-empty by design: 1 per 30\u201340 s",
+      "interval_s": [
+        30,
+        40
+      ],
+      "level_db": -5,
+      "events": [
+        {
+          "id": "marsh_gas_release",
+          "classes": [
+            "water"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.8,
+            0.8
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "brown",
+            "filter": {
+              "type": "lowpass",
+              "hz": 400,
+              "q": 1.0
+            },
+            "env": {
+              "attack_s": 0.09,
+              "decay_s": 0.7
+            },
+            "gain_db": -12
+          }
+        }
+      ]
+    },
+    "L4": {
+      "id": "l4_breathing_not_yours",
+      "text": "a sound like breathing that is not yours \u2014 sourceless, never resolves to an entity, and in no bestiary (RI-AUD03 R6)",
+      "interval_s": [
+        70,
+        180
+      ],
+      "level_db": -1,
+      "lore_carrier": true,
+      "events": [
+        {
+          "id": "breathing_not_yours",
+          "classes": [
+            "unexplained"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.25,
+            0.25
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "pink",
+            "filter": {
+              "type": "bandpass",
+              "hz": 430,
+              "q": 1.8
+            },
+            "env": {
+              "attack_s": 0.6,
+              "decay_s": 1.1
+            },
+            "gain_db": -9,
+            "repeats": {
+              "n": 2,
+              "gap_s": 1.9,
+              "gap_jitter_s": 0.2
+            }
+          }
+        }
+      ]
+    }
+  },
+  "emitters": [],
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+}

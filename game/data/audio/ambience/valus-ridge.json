@@ -1,0 +1,187 @@
+{
+  "schema": "elder-souls/ambience-bed@1",
+  "id": "valus-ridge",
+  "region": "valus-ridge",
+  "region_name": "Valus Ridge",
+  "danger_tier": 4,
+  "brief": "wind through rock flutes (a real audible chord); rockfall; hackwing screams",
+  "regions_json_audio": [
+    "amb_rock_flute_chord",
+    "sfx_rockfall",
+    "sfx_hackwing_scream"
+  ],
+  "key": {
+    "wet_dry": "dry",
+    "open_enclosed": "open",
+    "living_dead": "dead"
+  },
+  "bed_lufs_target": -26,
+  "crossfade_s": 4.0,
+  "max_voices": 8,
+  "denies": [
+    {
+      "class": "insect_layer",
+      "why": "altitude. Nothing swarms on the ridge."
+    },
+    {
+      "class": "standing_water",
+      "why": "RI-WLD10 \u00a77: no standing water."
+    }
+  ],
+  "layers": {
+    "L1": {
+      "id": "l1_rock_flute_chord",
+      "text": "wind through rock flutes \u2014 a REAL AUDIBLE CHORD. The only tonal L1 with a defined pitch set: D3 F3 A3 C4, a D-minor seventh, blown rather than played.",
+      "level_db": 0,
+      "voices": 2,
+      "classes": [
+        "wind"
+      ],
+      "synth": {
+        "kind": "drone",
+        "waveform": "sine",
+        "partials_hz": [
+          146.83,
+          174.61,
+          220.0,
+          261.63
+        ],
+        "partial_gains_db": [
+          -7,
+          -11,
+          -12,
+          -17
+        ],
+        "detune_cents": 9,
+        "gain_db": -6,
+        "filter": {
+          "type": "bandpass",
+          "hz": 240,
+          "q": 1.2
+        },
+        "mod": {
+          "target": "gain",
+          "lfo_hz": 0.11,
+          "depth": 0.42
+        }
+      }
+    },
+    "L2": {
+      "id": "l2_altitude_wind",
+      "text": "high thin altitude wind",
+      "level_db": -4,
+      "voices": 2,
+      "sublayers": [
+        {
+          "when": {},
+          "classes": [
+            "wind"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "white",
+            "filter": {
+              "type": "highpass",
+              "hz": 2400,
+              "q": 0.6
+            },
+            "gain_db": -10,
+            "width": 0.85,
+            "mod": {
+              "target": "filter_hz",
+              "lfo_hz": 0.13,
+              "depth": 0.45
+            }
+          }
+        }
+      ]
+    },
+    "L3": {
+      "id": "l3_rockfall",
+      "text": "rockfall",
+      "interval_s": [
+        11,
+        36
+      ],
+      "level_db": -1,
+      "events": [
+        {
+          "id": "rockfall",
+          "classes": [
+            "earth"
+          ],
+          "weight": 1,
+          "pan": [
+            -1.0,
+            1.0
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "brown",
+            "filter": {
+              "type": "lowpass",
+              "hz": 900,
+              "q": 1.0
+            },
+            "env": {
+              "attack_s": 0.01,
+              "decay_s": 0.9
+            },
+            "gain_db": -6,
+            "repeats": {
+              "n": 5,
+              "gap_s": 0.19,
+              "gap_jitter_s": 0.12
+            }
+          }
+        }
+      ]
+    },
+    "L4": {
+      "id": "l4_hackwing_screams",
+      "text": "hackwing screams with a LONG REVERB TAIL \u2014 the only region with real distance",
+      "interval_s": [
+        48,
+        150
+      ],
+      "level_db": 2,
+      "events": [
+        {
+          "id": "hackwing_scream",
+          "classes": [
+            "fauna"
+          ],
+          "weight": 1,
+          "pan": [
+            -1.0,
+            1.0
+          ],
+          "reverb_tail_s": 2.6,
+          "synth": {
+            "kind": "grain",
+            "source": "osc",
+            "waveform": "sawtooth",
+            "freq_hz": 1500,
+            "glide_hz": [
+              1500,
+              620
+            ],
+            "filter": {
+              "type": "bandpass",
+              "hz": 1600,
+              "q": 2.6
+            },
+            "env": {
+              "attack_s": 0.008,
+              "decay_s": 1.9
+            },
+            "gain_db": -5
+          }
+        }
+      ]
+    }
+  },
+  "emitters": [],
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+}

@@ -1,0 +1,175 @@
+{
+  "schema": "elder-souls/ambience-bed@1",
+  "id": "thornmarsh",
+  "region": "thornmarsh",
+  "region_name": "Thornmarsh",
+  "danger_tier": 4,
+  "brief": "thorn-clatter like dice in a cup; NO birdsong inside the thicket",
+  "regions_json_audio": [
+    "amb_thorn_clatter",
+    "amb_no_birdsong",
+    "sfx_ash_fall"
+  ],
+  "key": {
+    "wet_dry": "dry",
+    "open_enclosed": "enclosed",
+    "living_dead": "dead"
+  },
+  "bed_lufs_target": -27,
+  "crossfade_s": 4.0,
+  "max_voices": 8,
+  "denies": [
+    {
+      "class": "birdsong",
+      "why": "RI-AUD03 \u00a7B and regions.json both: \"NO birdsong inside the thicket\". Thornmarsh is one of the two most distinctive regions in the province precisely because the layer everyone would add is missing."
+    },
+    {
+      "class": "wind",
+      "why": "a thicket this dense has no air movement and no distance \u2014 hence a dead-air room tone rather than an outdoor L1."
+    }
+  ],
+  "layers": {
+    "L1": {
+      "id": "l1_dead_air_room_tone",
+      "text": "dead-air room tone \u2014 a thicket has no distance",
+      "level_db": 0,
+      "voices": 2,
+      "classes": [
+        "pressure"
+      ],
+      "synth": {
+        "kind": "noise",
+        "colour": "brown",
+        "filter": {
+          "type": "bandpass",
+          "hz": 255,
+          "q": 4.2
+        },
+        "gain_db": -8,
+        "width": 0.05,
+        "mod": {
+          "target": "gain",
+          "lfo_hz": 0.023,
+          "depth": 0.12
+        }
+      }
+    },
+    "L2": {
+      "id": "l2_thorn_clatter_only",
+      "text": "NO birdsong inside the thicket \u2192 L2 is thorn-clatter only",
+      "level_db": -4,
+      "voices": 2,
+      "sublayers": [
+        {
+          "when": {},
+          "classes": [
+            "flora"
+          ],
+          "synth": {
+            "kind": "noise",
+            "colour": "white",
+            "filter": {
+              "type": "bandpass",
+              "hz": 2900,
+              "q": 3.4
+            },
+            "gain_db": -13,
+            "width": 0.5,
+            "mod": {
+              "target": "gain",
+              "lfo_hz": 2.7,
+              "depth": 0.6
+            }
+          }
+        }
+      ]
+    },
+    "L3": {
+      "id": "l3_thorn_clatter",
+      "text": "thorn-clatter like dice in a cup",
+      "interval_s": [
+        8,
+        20
+      ],
+      "level_db": -2,
+      "events": [
+        {
+          "id": "thorn_clatter",
+          "classes": [
+            "flora"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.8,
+            0.8
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "white",
+            "filter": {
+              "type": "bandpass",
+              "hz": 3100,
+              "q": 6.0
+            },
+            "env": {
+              "attack_s": 0.001,
+              "decay_s": 0.055
+            },
+            "gain_db": -9,
+            "repeats": {
+              "n": 7,
+              "gap_s": 0.075,
+              "gap_jitter_s": 0.045
+            }
+          }
+        }
+      ]
+    },
+    "L4": {
+      "id": "l4_hackwing_above",
+      "text": "hackwing, muffled and ALWAYS above",
+      "interval_s": [
+        55,
+        175
+      ],
+      "level_db": -4,
+      "events": [
+        {
+          "id": "hackwing_above",
+          "classes": [
+            "fauna"
+          ],
+          "weight": 1,
+          "pan": [
+            -0.15,
+            0.15
+          ],
+          "elevation": "above",
+          "synth": {
+            "kind": "grain",
+            "source": "osc",
+            "waveform": "sawtooth",
+            "freq_hz": 980,
+            "glide_hz": [
+              980,
+              700
+            ],
+            "filter": {
+              "type": "lowpass",
+              "hz": 1100,
+              "q": 1.6
+            },
+            "env": {
+              "attack_s": 0.02,
+              "decay_s": 0.35
+            },
+            "gain_db": -13
+          }
+        }
+      ]
+    }
+  },
+  "emitters": [],
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+}
