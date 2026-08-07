@@ -53,6 +53,19 @@ critic re-checks — the builder never checks its own tools.
 - **`cadence.mjs`** — its exclusion list is not the shipped action set.
 - **`competence.mjs`** — the gear clause cannot fail.
 
+## 2b. The Act V conversation nobody wrote
+
+`Q-MAIN-26` declares a twelve-topic Act V conversation and
+`game/data/dialogue/topics/main-quest-argument.json` **does not exist** — the topic bodies were
+never written. The main quest completes without it, but the climactic conversation of the game is
+currently a declaration with no words in it. This is W1-17's (dialogue) territory and is the single
+largest remaining gap in the main quest.
+
+Orchestrator ruling already made, for whoever picks this up: the four quests that carried
+`category:"main"` were magic-utility quests mislabelled by a generator shorthand, with stakes
+contradicting the act band they claimed. They are recategorised to `side` and the generator is
+fenced. Do not "restore" them.
+
 ## 3. Critics owed a piece that has reported
 
 Dispatch a fresh-context critic for any piece whose builder has finished and whose verdict is stale.

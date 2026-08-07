@@ -91,10 +91,30 @@ export class UISurface {
     this.overdrawPx = 0;
   }
 
+  /**
+   * Resize the surface to the drawing buffer.
+   *
+   * `texture.dispose()` is not tidiness — it is a correctness fix, and the RI-UIX02 §C pixel
+   * sweep is what found it. `THREE.CanvasTexture` allocates its GPU storage at the canvas's
+   * size on first upload and, on `needsUpdate`, re-uploads with `texSubImage2D` into that
+   * storage. Resize the canvas from 1920×1080 to 1280×720 and the new frame is pasted into the
+   * bottom-left corner of a texture that is still 1920×1080 — WebGL's origin is bottom-left —
+   * while the old frame survives in the rest of it. Sampled across a full-screen quad, the
+   * player sees TWO interfaces: the correct one, and a ghost of the previous size offset up the
+   * screen. Measured: the ghost's quick-slot cluster landed at (773, 643) instead of
+   * (1152, 592), which is exactly where the arithmetic above puts it.
+   *
+   * It is invisible at a fixed resolution and appears the moment anyone resizes a window,
+   * rotates a phone, or captures at a second device-pixel ratio — i.e. in every RI-UIX06 §E
+   * scaling capture and on every real player's first window drag. `dispose()` frees the
+   * storage so the next upload is a `texImage2D` at the new size.
+   */
   setSize(w, h) {
     const W = Math.max(2, w | 0), H = Math.max(2, h | 0);
     if (this.canvas.width === W && this.canvas.height === H) return false;
     this.canvas.width = W; this.canvas.height = H;
+    this.texture.dispose();
+    this.texture.needsUpdate = true;
     return true;
   }
 
