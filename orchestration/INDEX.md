@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `a5551ef`: 477 tools, 153 reference
+so it cannot drift. Generated at `4275c29`: 478 tools, 153 reference
 items, 25 pieces in flight.
 
 Its purpose is to stop 25+ concurrent agents each paying separately to discover the
@@ -37,13 +37,14 @@ which is a **back door**: capability prohibitions installed on the harness do no
 ## Tools, by area
 
 
-### `tools/` — 21
+### `tools/` — 22
 
 - `tools/blog-threads.mjs` — which stories the blog has started and not finished.
 - `tools/blog.mjs` — Renders docs/index.html — a two-tab page (Progress | Blog) served by GitHub Pages from /docs.
 - `tools/boot-check.mjs` — A forwarding shim, because agents keep writing `tools/boot-check.mjs` and the real file is `tools/harness/boot-check.mjs`.
 - `tools/check-content.mjs` — Hand-authored content must not vanish when a generator re-runs.
 - `tools/check-data.mjs` — Every data file the game's index references must exist.
+- `tools/check-dialogue-topics.mjs` — A duplicate topic id across game/data/dialogue/topics/**/*.json is a defect that nothing currently detects.
 - `tools/check-prose.mjs` — Prose-voice integrity for every player-facing register, checked over the JSON with no engine and no browser.
 - `tools/check-quests.mjs` — Content integrity for the quest layer, checked over the JSON with no engine and no browser.
 - `tools/check-souls-corpus.mjs` — the soul economy's CORPUS is internally consistent, checked over the markdown and the JSON with no engine and no browser.
@@ -755,6 +756,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-06-r2` | partial | 1) Re-run `node tools/camera/cam-probe.mjs --probe pitchlaw` live once the box clears, to  | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` `corpus/80-methods/m-cam05-world-camera.mjs` `corpus/80-methods/m-cam06-feel.mjs` |
 | `critic-w1-13-r3` | running | factorial (pre-r3-render / aim-only / eye-only) still running; then 2x2 shot, finish verdi | `orchestration/status/critic-w1-13-r3.json` `tools/harness/critic-w1-13-r3.mjs` `tools/harness/critic-w1-13-r3-shot.mjs` `corpus/90-verdicts/wave1/W1-13-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-13-r3/` |
 | `W1-17-act5-r2` | in_progress | 1) edit converse.js to add from/said_from provenance (additive field only). 2) write tools | — |
 | `W1-23-r2` | ? | read corpus/90-verdicts/wave1/W1-23-r1.md in full, then locate lore registry files and con | — |
@@ -763,7 +765,6 @@ work is the difference between resuming and starting over.
 | `critic-w1-04` | running | write corpus/90-verdicts/wave1/W1-04-r1.{md,json}, copy shot to docs/shots, blog line, ver | `orchestration/status/critic-w1-04.json` |
 | `W1-SOULS-r3` | running | re-run full oracle after the idempotence fix; then delete-the-fix legs (souls rec.ref, pop | `orchestration/status/W1-SOULS-r3.json` `game/src/sim/souls.js` `game/src/engine.js` `game/src/world/population.js` `tools/progression/derive-soul-values.mjs` `tools/check-souls-corpus.mjs` |
 | `W1-19-r3` | running | land the _applyConsequences -> setFlag mechanism fix; delete-the-fix; prove one reveal fir | `orchestration/status/W1-19-r3.json` `tools/quests/reveal-route-audit.mjs` `reports/runs/W1-19-R3/reveal-route-audit.json` |
-| `W1-06-r2` | partial | 1) confirm the pitch-pin fix live in the browser (cam-probe.mjs --probe pitchlaw,lock, and | — |
 | `W1-03` | researching | read RULES/INDEX (done); read docs/PLAN.md S3 W1-03 entry, ARBITRATION S25, reports/w1-05- | — |
 | `W1-VIABILITY-SPLIT` | done | none -- hand to a tool critic. Do NOT let the critic grade this piece against the screen f | `orchestration/status/W1-VIABILITY-SPLIT.json` `tools/analysis/impossibility-screen.mjs` `tools/quests/viability-walk.mjs` `tools/quests/viability-split-shot.mjs` `corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md` `corpus/22-character/RI-CHR01-character-creation.md` |
 | `W1-13-r3` | done | critic | `game/src/sim/environment.js` `game/src/harness/api.js` `tools/journey/jrn06-death.mjs` `tools/journey/journey-run.mjs` `tools/harness/w1-13-r3-bloom-sight.mjs` `tools/harness/w1-13-r3-clock.mjs` |

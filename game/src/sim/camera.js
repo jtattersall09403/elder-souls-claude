@@ -666,10 +666,26 @@ export { pitchBias };
 
 /** Target collision height. Declared per enemy in `game/data/camera/targets.json`, because
  *  RI-CAM03 §D's `size_bias(h)` is a function of it and a camera that guesses the height of
- *  the thing it is framing has an unfalsifiable boss camera. */
+ *  the thing it is framing has an unfalsifiable boss camera.
+ *
+ *  W1-06 round 4: this read `t.archetype_id`, a property `game/src/sim/entities.js:makeEntity`
+ *  never sets — a spawned enemy carries `id` (the archetype/species key, e.g. `"cam_boss_mid"`,
+ *  == `stat.id`) and `eid` (the per-instance handle), never `archetype_id`. So the table lookup
+ *  missed on EVERY real entity, `t.height_m` also missed (never set either), and every locked
+ *  target — a 0.6 m rat and an 8.0 m great boss alike — fell through to the bare `_default`
+ *  1.9 m. RI-CAM03 §D's whole size-dependent pitch/aim law was therefore dead code against any
+ *  entity the game actually spawns; it only ever ran in `tools/camera/cam-pitch-instrument.mjs`,
+ *  whose synthetic target sets `archetype_id` and `height_m` by hand and never goes through
+ *  `spawn()`. Confirmed live: `tools/camera/cam-probe.mjs --probe pitchlaw` reported an
+ *  identical 8-row d-sweep for h = 0.6, 1.9, 2.6, 4.5 and 8.0 (`lock_height_m` pinned at 1.9 in
+ *  every row) before this fix. `t.id` already carries the exact key `game/data/camera/
+ *  targets.json`'s `heights_m` table is keyed by, so this is additive — no entity field
+ *  changes shape, and `archetype_id` is tried first for any caller (present or future
+ *  synthetic sim) that already sets it. */
 function targetHeight(sim, t) {
   const table = sim.cameraTargets;
-  if (table && t.archetype_id && table[t.archetype_id] !== undefined) return table[t.archetype_id];
+  const key = t.archetype_id || t.id;
+  if (table && key && table[key] !== undefined) return table[key];
   if (t.height_m) return t.height_m;
   return (table && table._default) || 1.9;
 }
