@@ -178,6 +178,12 @@ export function installHarness(engine, bootPromise) {
      * `sim.env` after the fixed step wrote it, never read back out of `weather.json`.
      */
     getEnvironment() { return engine.getEnvironment(); },
+    /** W1-02 / RI-WLD12 M65. The staggered crossover, walked on the live field. */
+    getBorderCrossover(id, opts) { return engine.getBorderCrossover(id, opts || {}); },
+    /** Every declared border: kind, width, threshold object, tier jump, announcement. */
+    listBorders() { return engine.listBorders(); },
+    /** Which border the body is in, how far through it, and the nine axes' answers there. */
+    getBorderAt(x, z) { return engine.getBorderAt(x, z); },
     /** Hold the sun still for a comparable screenshot (HARNESS.md §6). Returns the new state. */
     pauseClock(on) { return engine.pauseClock(on === undefined ? true : on); },
     camera(pose) { return engine.camera(pose === undefined ? null : pose); },

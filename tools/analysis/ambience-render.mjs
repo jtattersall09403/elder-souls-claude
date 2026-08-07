@@ -307,6 +307,53 @@ try {
     what: `fraction of the ${pairs.length} unordered region pairs whose LEVEL-NORMALISED 24-band spectra differ by cosine distance >= ${SEP}`,
     caveat: 'A MACHINE PROXY FOR RI-AUD03 B2, NOT B2. B2 is 78 fresh judges answering SAME/DIFFERENT and is a critic\'s to run. Never quote this number as B2.' };
 
+  // ---- --calibrate: write the per-bed master trim -----------------------------------------------
+  // Not a threshold being loosened — a mix being made. The first render measured beds from −14.5
+  // to −36.7 LUFS against targets of −24 to −34; every individual gain in the data was plausible
+  // and their sum was not, because loudness is not the sum of the numbers you typed. This
+  // computes the trim that lands each bed on its OWN declared target, applies it in the page,
+  // re-renders to confirm, and writes it into the bed files.
+  if (args.calibrate) {
+    const trims = {};
+    for (const id of ids) trims[id] = +(out.regions[id].lufs_target - out.regions[id].lufs_i
+                                        + (out.regions[id].bed_gain_db_before || 0)).toFixed(2);
+    const dir = join(ROOT, 'game/data/audio/ambience');
+    for (const f of readdirSync(dir).filter((f) => f.endsWith('.json'))) {
+      const p = join(dir, f);
+      const doc = JSON.parse(readFileSync(p, 'utf8'));
+      if (trims[doc.id] === undefined) continue;
+      doc.bed_gain_db = trims[doc.id];
+      doc.bed_gain_db_note = 'Master trim, in dB, that lands this bed on its own bed_lufs_target. '
+        + 'Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. '
+        + 'Once written it is a regression fence: change a layer gain and the next render shows the '
+        + 'bed off target. The run that writes it and re-measures it is self-fulfilling and proves '
+        + 'nothing on its own; the value is in every later run.';
+      writeFileSync(p, JSON.stringify(doc, null, 2) + '\n');
+    }
+    out.calibration_written = trims;
+    // Re-render in-page with the trims applied, so this run reports post-calibration numbers.
+    const re = await page.evaluate(async ({ trims, seconds, rate }) => {
+      const E = window.__ENGINE;
+      const res = {};
+      for (const [id, t] of Object.entries(trims)) {
+        E.ambience.beds[id].bed_gain_db = t;
+        const c = await E.ambienceCapture({ region: id, seconds, sampleRate: rate, tod: 'day' });
+        res[id] = c.ok ? { L: c.L, R: c.R, sampleRate: c.sampleRate } : null;
+      }
+      return res;
+    }, { trims, seconds: SECONDS, rate: RATE });
+    for (const [id, c] of Object.entries(re)) {
+      if (!c) continue;
+      const m = new Float64Array(c.L.length);
+      for (let i = 0; i < m.length; i++) m[i] = 0.5 * (c.L[i] + c.R[i]);
+      out.regions[id].lufs_i_before_trim = out.regions[id].lufs_i;
+      out.regions[id].bed_gain_db = trims[id];
+      out.regions[id].lufs_i = +lufsIntegrated(m, c.sampleRate).toFixed(2);
+      out.regions[id].peak = +peak(m).toFixed(5);
+      out.regions[id]._bands = bandSpectrum(m, c.sampleRate).bands;
+    }
+  }
+
   // GATE 4 — bed level inside §A's band (B5's own check, on real loudness).
   const inBand = ids.filter((id) => {
     const r = out.regions[id], t = r.lufs_target;
@@ -395,10 +442,17 @@ try {
   // ---- E: the emitter transect (B6) ------------------------------------------------------------
   const transect = await page.evaluate(() => {
     const H = window.__HARNESS;
-    // Walk east past the bell buoy at (398, 4486), facing north, from 300 m west to 300 m east.
+    // Walk east past the bell buoy at (398, 4486), facing north, OFFSET 150 m to the south.
+    //
+    // The offset is load-bearing and the first version of this probe did not have it. Walking
+    // along z = 4486 puts the buoy exactly abeam for the whole transect, so `sin(bearing)`
+    // saturates at +1, flips to −1 at the moment of passing, and saturates again — a plateau,
+    // a step, a plateau. The pan model was correct and the PROBE was degenerate. Offsetting the
+    // line makes the bearing sweep continuously, which is the case a player actually walks and
+    // the only one in which "moves across the stereo field" is a testable claim at all.
     const rows = [];
     for (let d = -300; d <= 300; d += 20) {
-      const r = H.ambienceEmitters(398 + d, 4486, 0, 'marauders-coast');
+      const r = H.ambienceEmitters(398 + d, 4486 - 150, 0, 'marauders-coast');
       const e = r.emitters.find((x) => x.id === 'bell_buoy');
       rows.push({ x: 398 + d, distance_m: e ? +e.distance_m.toFixed(1) : null,
                   pan: e ? +e.pan.toFixed(4) : null, gain: e ? +e.gain.toFixed(4) : null, audible: e ? e.audible : false });
@@ -417,15 +471,25 @@ try {
   out.emitter_transect = transect;
   {
     const rows = transect.rows.filter((r) => r.audible);
-    // Pan must cross zero exactly once and be monotonically increasing as we pass west→east.
-    let mono = true;
-    for (let i = 1; i < rows.length; i++) if (rows[i].pan < rows[i - 1].pan - 1e-9) mono = false;
-    const gainsRise = rows.length > 2 && Math.max(...rows.map((r) => r.gain)) > 4 * Math.min(...rows.map((r) => r.gain));
+    // STRICT monotonicity, in whichever direction the geometry dictates, with no plateau: a
+    // plateau means the bearing has saturated and the bell has stopped carrying position. Plus
+    // exactly one zero crossing (it passes you once), and a gain maximum at closest approach.
+    let mono = rows.length > 4;
+    const dir = Math.sign(rows[rows.length - 1].pan - rows[0].pan);
+    for (let i = 1; i < rows.length; i++) {
+      if (Math.sign(rows[i].pan - rows[i - 1].pan) !== dir) { mono = false; break; }
+    }
+    let crossings = 0;
+    for (let i = 1; i < rows.length; i++) if (Math.sign(rows[i].pan) !== Math.sign(rows[i - 1].pan)) crossings++;
+    const gains = rows.map((r) => r.gain);
+    const gMaxAt = gains.indexOf(Math.max(...gains));
+    const nearestAt = rows.map((r) => r.distance_m).indexOf(Math.min(...rows.map((r) => r.distance_m)));
+    const gainsRise = Math.max(...gains) > 2 * Math.min(...gains) && gMaxAt === nearestAt;
     const sweeps = new Set(transect.turn.map((t) => Math.sign(t.pan))).size >= 2;
-    out.gates.G7_emitter = { pass: mono && gainsRise && sweeps && transect.far_audible === false,
-      pan_monotonic_along_transect: mono, gain_varies_with_distance: gainsRise,
+    out.gates.G7_emitter = { pass: mono && crossings === 1 && gainsRise && sweeps && transect.far_audible === false,
+      pan_strictly_monotonic: mono, zero_crossings: crossings, gain_peaks_at_closest_approach: gainsRise,
       pan_sweeps_when_the_player_turns: sweeps, silent_beyond_audible_m: transect.far_audible === false,
-      what: 'RI-AUD03 B6 / R7. A landmark you can steer by must move across the stereo field as you pass it AND as you turn your head, and must stop at its stated range.' };
+      what: 'RI-AUD03 B6 / R7. A landmark you can steer by must move across the stereo field as you pass it AND as you turn your head, must be loudest where it is nearest, and must stop at its stated range.' };
   }
 
   // ---- P: THE PERTURBATION (RI-MTH07) ----------------------------------------------------------

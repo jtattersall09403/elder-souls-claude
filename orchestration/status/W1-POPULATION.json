@@ -1,0 +1,16 @@
+{
+  "task_id": "W1-POPULATION",
+  "brief": "inline (world population builder): hostile population + encounters",
+  "started": "2026-08-07",
+  "state": "researching",
+  "outputs_expected": [
+    "game/data/world/<population/encounter data>",
+    "engine consumer wiring",
+    "docs/shots/<populated road>.png",
+    "reports/blog-feed.jsonl line"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "survey: count entities on disk, find engine consumers (spawnEncounter, absent_when_flag, respawn at hearth)",
+  "notes_for_successor": "Do NOT touch quest givers - W1-GIVER-PRESENCE owns those. I own hostiles + encounters."
+}

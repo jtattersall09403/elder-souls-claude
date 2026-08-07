@@ -19,7 +19,14 @@
     "RI-WPN05": "judges: [weapon.feel.hitstop, weapon.feel.material, weapon.feel.mass, weapon.feel.whiff, combat.feedback.hitstop]"
   },
   "outputs_expected": [],
-  "outputs_written": [],
+  "outputs_written": [
+    "tools/audio/make-impact-classes.mjs (authoring tool)",
+    "game/data/audio/impact/classes.json (12 classes, 48 variants, RI-AUD01 A/C)",
+    "game/src/audio/impact-audio.js (ImpactAudio driver + buildImpactVoice + renderVoiceOffline)",
+    "game/src/combat/system.js (THE CONSUMER: emit-closure hook + setAudio + _audioWorld)",
+    "game/src/engine.js (import, construct, setAudio in _buildCombat, loader branch, 3 accessors)",
+    "game/src/harness/api.js (audioLog/audioStats/audioCapture/setAudioTriggerSource + unimplemented narrowed)"
+  ],
   "findings": [
     "SURVEY-1 (hitstop/material ALREADY BUILT by W1-10 rounds 1-3): game/src/combat/impact.js exists (173 lines), exports resolveImpact() reading game/data/weapons/classes.json ON THE FRAME OF THE HIT, consumed by game/src/combat/resolve.js (the fight) and game/src/combat/moveset.js (harness accessors). W1-10-r2 GAP `GAP-W1-weapon-impact-and-material-model-has-no-consumer` is CLOSED: W1-10-r3 verdict records `impact/material consumed 6/6 behavioural with silent controls`. Do NOT redo this.",
     "SURVEY-2 (what W1-10-r3 left BROKEN and is squarely `weapon.feel.mass`, MY path): peak tip speeds of 200.9 / 189.5 / 160.3 / 144.7 / 137.5 m/s against RI-WPN05 \u00a7E's WIDEST band ceiling of 40 m/s (ultra) \u2014 a factor of five. The weapon tip is BELOW THE FLOOR on 13%-68% of every trace's frames, reaching -2.83 m. RI-WPN05 scored ladder 4. This is the largest un-owned defect inside my declared paths.",
@@ -32,6 +39,6 @@
     "SURVEY-9 (reusable primitives, no seam violation): game/src/audio/synth.js exports dbToGain, gainToDb, makeNoiseBuffer, buildContinuous, buildGrain \u2014 all written against BaseAudioContext, all W1-22s.",
     "SURVEY-10 (PRNG): game/src/core/rng.js exports class Rng (splitmix32 seeded, xoshiro-ish). Same one ambience uses. Variant selection must use it for RI-AUD01 M9 determinism."
   ],
-  "next_step": "author game/data/audio/impact/classes.json (12 classes, gain table, >=4 variants, synth specs), then game/src/audio/impact-audio.js",
+  "next_step": "write tools/audio/impact-probe.mjs (M1/M4/M5/M6/M9 + sabotage), run node-side via combat-node.mjs",
   "notes_for_successor": "This piece is NOT a green field. W1-10 built and got credit for hitstop+material consumption. The two real holes are (a) weapon.feel.mass \u2014 tip speeds 5x the band, tip below floor \u2014 and (b) audio.combat.impact \u2014 literally zero. Prioritise (b) then (a); (b) is a hard 0 that caps RI-AUD01 and RI-AUD02."
 }

@@ -237,7 +237,7 @@ export class AmbienceDriver {
           level_db: layer.level_db || 0,
         });
         if (this.ctx && this.live) {
-          buildGrain(this.ctx, { ...ev, level_db: layer.level_db || 0 },
+          buildGrain(this.ctx, { ...ev, level_db: (layer.level_db || 0) + bedTrimDb(bed) },
                      this.live.bus, this.rng, this.ctx.currentTime + Math.max(0, at - this.t), pan);
         }
       }
@@ -327,12 +327,34 @@ export class AmbienceDriver {
   }
 }
 
+/**
+ * The bed's master trim, in dB.
+ *
+ * WHY THIS EXISTS, AND WHY IT IS DATA RATHER THAN A CONSTANT. The first render of the thirteen
+ * beds measured integrated loudness from −14.5 to −36.7 LUFS against declared targets of −24 to
+ * −34: the Stone Forest was **11.5 LU hot** and Thornmarsh **5.8 LU cold**. That is exactly the
+ * failure RI-AUD03 §How we lose calls "mixed by ear at exploration volume" — every individual
+ * `gain_db` in the data looked reasonable and the sum of them did not, because loudness is not
+ * the sum of the numbers you typed.
+ *
+ * `bed_gain_db` is the per-region trim that lands each bed on its own declared target. It is
+ * calibrated by measurement (`tools/analysis/ambience-render.mjs --calibrate`) rather than
+ * guessed, and once written it is a REGRESSION FENCE: change a layer's gain and the next render
+ * will show the bed off target again.
+ *
+ * The honest caveat, stated here because it is easy to overclaim: the run that WRITES the trim
+ * and then re-measures it is self-fulfilling and proves nothing on its own. The value is in
+ * every later run.
+ */
+export function bedTrimDb(bed) { return bed && bed.bed_gain_db ? bed.bed_gain_db : 0; }
+
 /** Every continuous voice a bed has in this environment, faded in over `fadeIn` seconds. */
 export function buildBedContinuous(ctx, bed, dest, rng, env, t0 = 0, fadeIn = 0, gradientPos = null) {
   const out = [];
+  const trim = dbToGain(bedTrimDb(bed));
   const mk = (synth, levelDb, gradient) => {
     const h = buildContinuous(ctx, synth, dest, rng, t0);
-    const target = h.gain.gain.value * dbToGain(levelDb || 0);
+    const target = h.gain.gain.value * dbToGain(levelDb || 0) * trim;
     if (fadeIn > 0) {
       h.gain.gain.setValueAtTime(0.0001, t0);
       h.gain.gain.linearRampToValueAtTime(target, t0 + fadeIn);
@@ -383,7 +405,7 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
   for (const key of ['L3', 'L4']) {
     for (const { at, ev } of clocks[key].due(0, seconds, env)) {
       const pan = ev.pan ? ev.pan[0] + rng.next() * (ev.pan[1] - ev.pan[0]) : 0;
-      buildGrain(ctx, { ...ev, level_db: bed.layers[key].level_db || 0 }, bus, rng, at, pan);
+      buildGrain(ctx, { ...ev, level_db: (bed.layers[key].level_db || 0) + bedTrimDb(bed) }, bus, rng, at, pan);
       fired.push({ layer: key, id: ev.id, at_s: Math.round(at * 100) / 100, pan: Math.round(pan * 100) / 100 });
     }
   }
@@ -395,7 +417,7 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
       if (!p.audible) continue;
       const period = e.period_s || 20;
       for (let t = period * 0.5; t < seconds; t += period) {
-        buildGrain(ctx, { ...e, level_db: e.level_db || 0 }, bus, rng, t, p.pan, p.gain);
+        buildGrain(ctx, { ...e, level_db: (e.level_db || 0) + bedTrimDb(bed) }, bus, rng, t, p.pan, p.gain);
         fired.push({ layer: 'emitter', id: e.id, at_s: Math.round(t * 100) / 100,
                      pan: Math.round(p.pan * 1000) / 1000, gain: Math.round(p.gain * 1000) / 1000,
                      distance_m: Math.round(p.distance_m) });

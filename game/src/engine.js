@@ -56,6 +56,7 @@ import { WorldField } from './world/field.js';
 import { SignatureField, SIGNATURE_KINDS } from './world/signature.js';
 import { OpacityRegister } from './world/opacity.js';
 import { Environment } from './sim/environment.js';
+import { BorderField } from './world/borders.js';
 import { Traversal } from './sim/traversal.js';
 import { Hazards } from './sim/hazards.js';
 import { Discovery } from './sim/discovery.js';
@@ -254,6 +255,11 @@ export class Engine {
     // crowns and the root causeways in it (RI-WLD04 M19; verdict W1-01 r2 §4 measured 0 of 13).
     this.signatures = this.data.signatures ? new SignatureField(this.data.signatures) : null;
     this.field.setSignatures(this.signatures);
+    // W1-02 / RI-WLD12. The edges, attached BEFORE the renderer builds any tile, because the
+    // ground colour and the prop scatter read the palette and flora axes off it — a tile built
+    // before the borders exist is a tile with the old texture swap baked into its vertex colours.
+    this.borders = this.data.borders ? new BorderField(this.data.borders, this.data.regions.regions) : null;
+    this.field.setBorders(this.borders);
     // What the ground and the water do to a body: max walkable slope, gravity and the fall, the
     // S25 denial ladder, the per-band stamina drain, the breath clock, the mire counter.
     this.traversal = new Traversal(this.data.traversal, this.field);
@@ -361,8 +367,13 @@ export class Engine {
     // The region lookup is passed as a CLOSURE over the field rather than the field itself, so the
     // environment cannot reach anything spatial except "which region is this point in".
     if (this.data.weather) {
+      // The WEATHER axis, not the raster (RI-WLD12 §2). Weather is one of the nine staggered
+      // axes, and it crosses between the flora and the fauna — so walking a border, the far
+      // region's sky arrives after its ground and its plants and before its creatures. Using
+      // `regionAt` here would have put weather back on the one coordinate everything else used to
+      // share, which is the defect this whole piece exists to remove.
       this.environment = new Environment(this.data.weather, (x, z) => {
-        const r = this.field.regionAt(x, z);
+        const r = this.field.axisRegionAt(x, z, 'weather');
         return r ? r.id : null;
       });
       this.sim.environment = this.environment;
@@ -5010,6 +5021,58 @@ export class Engine {
     return this.environment.paused;
   }
 
+  /**
+   * W1-02 / `RI-WLD12` M65 — the staggered-crossover traverse, run against the LIVE field.
+   *
+   * The item's core check and its weight-30 one: walk the perpendicular of a border sampling every
+   * 2 m, find the position at which each of the nine axes becomes more far-region than near, and
+   * report the spread. `RI-MTH07` is why this walks `field.axisRegionIndexAt` rather than reading
+   * `borders.json`'s declared offsets — a table copied out of the file it was built from measures
+   * the file. The declared numbers are returned alongside as `declared` precisely so the two can
+   * be compared and a divergence is visible rather than hidden.
+   *
+   * @param {string} id border id, e.g. "stone-wastes--western-rootlands"
+   */
+  getBorderCrossover(id, opts = {}) {
+    if (!this.borders) throw new Error('getBorderCrossover(): no border field is installed (game/data/world/borders.json is not in the build)');
+    return this.borders.traverse(id, (x, z) => this.field.regionIndexAt(x, z),
+      opts.length_m || 400, opts.step_m || 2);
+  }
+
+  /** Every border the province declares, without the rasters. */
+  listBorders() {
+    if (!this.borders) throw new Error('listBorders(): no border field is installed');
+    return this.borders.borders.map((b) => ({
+      id: b.id, a: b.a, b: b.b, kind: b.kind, width_m: b.width_m, delta_tier: b.delta_tier,
+      threshold_type: b.threshold_type, threshold_owner: b.threshold_owner,
+      objects: b.threshold_objects.length, on_road: b.road_crossings,
+      announced: !!b.announcement, stddev_m: b.crossover_stats.stddev_m,
+    }));
+  }
+
+  /** What border, if any, the body is standing in — and how far through it. */
+  getBorderAt(x, z) {
+    if (!this.borders) throw new Error('getBorderAt(): no border field is installed');
+    const px = x === undefined ? this.sim.player.pos[0] : Number(x);
+    const pz = z === undefined ? this.sim.player.pos[2] : Number(z);
+    const hit = this.borders.at(px, pz);
+    const raster = this.field.regionAt(px, pz);
+    const axes = {};
+    for (const ax of ['palette', 'flora', 'weather', 'fauna', 'audio', 'hazard', 'tier', 'architecture', 'only_here']) {
+      axes[ax] = this.field.axisRegionAt(px, pz, ax).id;
+    }
+    return {
+      x: +px.toFixed(2), z: +pz.toFixed(2),
+      raster_region: raster.id,
+      in_border: !!hit,
+      border: hit ? hit.border.id : null,
+      kind: hit ? hit.border.kind : null,
+      distance_through_m: hit ? hit.distance_m : null,
+      axis_regions: axes,
+      distinct_axis_regions: new Set(Object.values(axes)).size,
+    };
+  }
+
   camera(pose) {
     const c = this.sim.camera;
     if (pose === null) { c.override = null; return this.cameraState(); }
@@ -7496,6 +7559,12 @@ async function loadData(onBytes) {
     // dropped, which is indistinguishable from shipping nothing. Consumed by
     // `sim/environment.js#Environment`, stepped from `sim/step.js`.
     else if (entry.path === 'world/weather.json') out.weather = doc;
+    // W1-02. The province's edges (RI-WLD12): every walkable region adjacency, its kind, its
+    // threshold objects, its tier announcement, the nine per-axis crossover offsets, and a signed
+    // distance field so a runtime lookup knows how far THROUGH a border a point is. Own branch,
+    // same discipline as the two above. Consumed by `world/borders.js#BorderField`, attached to
+    // the field and read by `world/province.js`'s ground colour and prop scatter.
+    else if (entry.path === 'world/borders.json') out.borders = doc;
     // W1-13. The 29 sapwells and their two boss fog gates, and the seam-S5 respawn
     // classification. Both are consumed by game/src/sim/hearth.js and game/src/sim/death.js.
     else if (entry.path === 'world/hearths.json') out.hearths = doc;

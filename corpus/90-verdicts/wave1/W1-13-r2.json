@@ -1,0 +1,411 @@
+{
+ "schema_version": 1,
+ "piece_id": "w1-13-death-and-the-hearth-loop",
+ "piece_title": "W1-13 \u2014 death, recovery and the hearth loop (RI-JRN06 + RI-PRG04)",
+ "round": 2,
+ "subsystem_paths": [
+  "journey.death.recovery",
+  "combat.death.corpserun",
+  "combat.death.worldreset",
+  "progression.bonfire.function",
+  "progression.bonfire.placement"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "crit-w1-13-r2-death-hearth",
+  "role": "critic.combat",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-07T15:55:00Z",
+  "finished_at": "2026-08-07T16:55:00Z",
+  "conflict_of_interest": false,
+  "fresh_context": true
+ },
+ "build": {
+  "commit_sha_at_journey_run": "4231395849077244b0ec2be2e4399a0a10625770",
+  "commit_sha_at_writeup": "ac507dc844648c27e8179d560d87cbf2dd100a8b",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "dirty": true,
+  "dirty_note": "Eleven agents editing concurrently. Two breakages hit mid-measurement and healed: engine.js constructed SoulsSystem with no import (every launch died at _boot); sim/environment.js emitted weather_change before it was in sim/events.js's closed vocabulary (every province step threw). Per RI-MTH04 'How we lose' #5 every claim here is confidence: medium at best on reproducibility grounds.",
+  "harness_commands": [
+   {
+    "command": "node tools/harness/boot-check.mjs",
+    "exit_code": 0,
+    "when": "before and after",
+    "stdout_artifact": "boot-check: PASS \u2014 the engine constructed and the harness answers."
+   },
+   {
+    "command": "node tools/journey/journey-run.mjs --journey jrn06-death --deaths 20 --profile headless-small --trace-events --out reports/journeys/critic-w1-13-r2-jrn06",
+    "exit_code": 1,
+    "run_id": "20260807T162212Z-jrn06-death-s4711-57e6a3",
+    "stdout_artifact": "reports/journeys/critic-w1-13-r2-jrn06/journey.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-13-r2-a.mjs --only a1",
+    "exit_code": 0,
+    "stdout_artifact": "reports/runs/critic-W1-13-R2/probe-a1.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-13-r2-b.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "reports/runs/critic-W1-13-R2/probe-b.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-13-r2-c.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "reports/runs/critic-W1-13-R2/probe-c.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-13-r2-d.mjs",
+    "exit_code": 0,
+    "stdout_artifact": "reports/runs/critic-W1-13-R2/probe-d.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-13-r2-d.mjs --only d2,d3",
+    "exit_code": 0,
+    "stdout_artifact": "reports/runs/critic-W1-13-R2/probe-d23.json"
+   },
+   {
+    "command": "node tools/harness/critic-w1-13-r2-d.mjs --only d2 --wells hearth-archon,hearth-stormhold",
+    "exit_code": 0,
+    "stdout_artifact": "reports/runs/critic-W1-13-R2/probe-d2b.json"
+   }
+  ]
+ },
+ "artifacts": [
+  {
+   "path": "reports/journeys/critic-w1-13-r2-jrn06/journey.json",
+   "sha256_16": "74e2cb85820d973f",
+   "what": "THE AGGREGATION. 37 instruments, ok:false, 2 checks pass:false"
+  },
+  {
+   "path": "reports/journeys/critic-w1-13-r2-jrn06/trace.jsonl",
+   "sha256_16": "69f53dd882bc8454",
+   "records": 121
+  },
+  {
+   "path": "reports/runs/critic-W1-13-R2/probe-a1.json",
+   "sha256_16": "c0d2ae5af814b073",
+   "what": "the ten drawn level-up rows vs the character's six attributes"
+  },
+  {
+   "path": "reports/runs/critic-W1-13-R2/probe-b.json",
+   "sha256_16": "8a773b5957b630c9",
+   "what": "does the spend buy anything: two arms, control green"
+  },
+  {
+   "path": "reports/runs/critic-W1-13-R2/probe-c.json",
+   "sha256_16": "92795fbeb20e0427",
+   "what": "the world-runs gate broken on purpose; 12/12 sibling exposure"
+  },
+  {
+   "path": "reports/runs/critic-W1-13-R2/probe-d.json",
+   "sha256_16": "926c363d1bb516c3",
+   "what": "the drawn inventory.gold across four purses"
+  },
+  {
+   "path": "reports/runs/critic-W1-13-R2/probe-d23.json",
+   "sha256_16": "de28bc4ec032b98f",
+   "what": "drift four arms; CONSUMPTION model 2b re-derived"
+  },
+  {
+   "path": "reports/runs/critic-W1-13-R2/probe-d2b.json",
+   "sha256_16": "8aadd3e5e2681cfd",
+   "what": "drift, held arm with traversal.reset() stubbed"
+  },
+  {
+   "path": "docs/shots/2026-08-07-w1-13-r2-levelup-ten-rows-six-attributes.png",
+   "sha256_16": "6af9d649ee5f8926",
+   "what": "the level-up screen listing ten attributes the character does not have"
+  }
+ ],
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "note": "RI-JRN06 blind_pair: no. The one pixel measurement cited (M-D14's bloom visibility) is a presence test against an in-row 180-degree-away control, not a fidelity comparison; no reference image was consulted. The single image in docs/shots/ is evidence of a UI surface's CONTENTS, not of an arrival (S34(b)). No placed capture is cited for any arrival claim."
+ },
+ "reference_items": [
+  {
+   "id": "RI-JRN06",
+   "path": "corpus/88-journeys/RI-JRN06-death-and-recovery.md",
+   "side": "souls",
+   "native_scale": "0-100 weighted",
+   "native_score": 78,
+   "band": "Below bar, named remedy required",
+   "ladder": 6
+  },
+  {
+   "id": "RI-PRG04",
+   "path": "corpus/30-progression/RI-PRG04-hearth.md",
+   "side": "souls",
+   "native_scale": "0-10 min-over-axes",
+   "native_score": 5,
+   "ladder": 5
+  }
+ ],
+ "score": 5,
+ "previous_score": 4,
+ "gate": 7.0,
+ "status": "FAIL",
+ "aggregation": "min over the two items",
+ "hard_fails": {
+  "triggered": [],
+  "checked": [
+   {
+    "id": "HF1",
+    "what": "any souls-conservation discrepancy",
+    "result": "clear",
+    "evidence": "m_d1_souls_conservation mismatches 0 over 20 trials, all three legs"
+   },
+   {
+    "id": "HF3",
+    "what": "a named actor respawned",
+    "result": "clear",
+    "evidence": "m_d5_respawn_scope named_or_boss_or_fixture_respawned []"
+   },
+   {
+    "id": "HF4",
+    "what": "two bloodstains at once",
+    "result": "clear",
+    "evidence": "m_d8_second_death any_two_stains 0 \u2014 it fails in the SAFE direction (zero stains, not two)"
+   },
+   {
+    "id": "HF5",
+    "what": "AR-1 Morrowind forgiveness in the Souls loop",
+    "result": "clear",
+    "evidence": "m_d9_no_compensation forbidden_hits []"
+   },
+   {
+    "id": "HF6",
+    "what": "AR-2 Souls convention in the world",
+    "result": "clear",
+    "evidence": "m_d19_marker_sweep markers_reported 0; m_d18 hearth_menu_destinations []"
+   }
+  ]
+ },
+ "failing_checks": [
+  {
+   "id": "m_d14_stain_visibility",
+   "item": "RI-JRN06/M-D14",
+   "pass": false,
+   "measured": "daylight 12 m visible 1/8 bearings; dark 6 m visible 3/8. In every failing view px == control_px == 195, i.e. the frame containing the bloom is pixel-identical to the frame turned 180 degrees away.",
+   "aggregate_only": true
+  },
+  {
+   "id": "m_d8_second_death",
+   "item": "RI-JRN06/M-D8",
+   "pass": false,
+   "measured": "6 doubled deaths, every one stains_before 1 -> stains_after 0, second_stain_souls null. Predicate is stains_after === 1.",
+   "aggregate_only": true
+  }
+ ],
+ "status_reasons": [
+  "below_wave_1_gate:7.0",
+  "check_fail:RI-JRN06/M-D14 the bloodstain is not drawn from 7 of 8 bearings in daylight at 12 m and 5 of 8 in the dark at 6 m",
+  "check_fail:RI-JRN06/M-D8 a second death leaves no bloodstain at all",
+  "min_over_axes:RI-PRG04 rest-effects axis at 5 \u2014 levelling is reachable and buys nothing on any session without sim.character",
+  "instrument_constant:RI-JRN06/M-D2 placement_rules {death_point:20}, max_offset_m 0 \u2014 the four placement rules the builder fixed never fire in the journey",
+  "instrument_constant:RI-JRN06/M-D10 max_frames 0 over 20 damagePlayer deaths",
+  "corpus_debt:RI-PRG04/M9 death-cost sim (W1-16), RI-PRG04/M10 flask purity (arbitration question open from round 1)",
+  "corpus_debt:RI-JRN06/R3 encounters on the run back (W1-12), R4 shortcut ratio (W1-01/W1-02)"
+ ],
+ "biggest_gap": {
+  "id": "GAP-W1-bloodstain-invisible-from-most-bearings",
+  "subsystem_path": "combat.death.corpserun",
+  "severity": "blocking",
+  "size": "M",
+  "what": "The bloodstain the whole piece exists to walk back to is not drawn from most approach bearings. RI-JRN06 M-D14 requires it visible at 12 m in daylight and 6 m in the dark; the aggregation measures 1 of 8 bearings and 3 of 8 respectively, with the bloom frame pixel-identical (195 px) to the in-row 180-degree-away control at every failing bearing. The bloom holds 4,200 souls at [3834.57,2.97,3959.5]. Round 1 could not see it because it shot one bearing; the round-2 CONSUMPTION artifact could not see it because it used bloom_px:195 as its RECOVERED-state null control \u2014 the same 195 this check reads as 'nothing rendered'.",
+  "why_this_one": "Everything else the piece protects is bookkeeping that holds \u2014 conservation exact, one stain, nothing softened, no fast travel to the corpse \u2014 and all of it exists to make ONE WALK matter. There is no light on the floor from most directions.",
+  "remedy": "Make the bloom a camera-facing billboard with a vertical emissive component, or raise its origin above the local ground normal, in render/renderer.js syncDeathMarkers(). It is currently either single-sided, sunk into the heightfield, or occluded by marsh reed instancing at grazing angles.",
+  "acceptance": "m_d14_stain_visibility reports 8/8 daylight at 12 m and 8/8 dark at 6 m with the in-row 180-degree control still at its floor at every bearing, INSIDE a full journey-run.mjs --journey jrn06-death run rather than a standalone probe; and the same run's m_d8_second_death goes green."
+ },
+ "secondary_observations": [
+  {
+   "what": "Souls now have a sink and on every session without sim.character the sink is a hole. Two arms, one browser, identical frames, spends driven through the real input path: arm no-character (the shipped 'default' state, which is what the ROUND-2 BUILDER'S OWN levelling probe used) spent 37,652 souls across 24 levels and moved hp_max 620->620, stamina_max 120->120, focus_max 94->94, leaving sim._poolsDirty stuck true forever; arm with-character moved hp_max 300->508, stamina_max 104->130, focus_max 30->56 for exactly the same spends. THE CONTROL GOES GREEN. Mechanism: Engine.applyDerivedPools() opens `const ch = this.sim.character; if (!ch) return null;`. Its own header comment describes this failure as already fixed once \u2014 'VIGOUR 6 and VIGOUR 18 both reported hp_max 620'. VIGOUR 18 reports hp_max 620. So round 2's headline (souls 4,200 -> 3,782 = exactly soulsToNextLevel()) is true and is arithmetic: the money left and the character did not change.",
+   "evidence": [
+    "reports/runs/critic-W1-13-R2/probe-b.json"
+   ],
+   "subsystem_path": "progression.bonfire.function"
+  },
+  {
+   "what": "The level-up screen offers ten attributes and the character has six, and they are different vocabularies. Read off the DRAWN elements: STRENGTH 12, ENDURANCE 20, AGILITY 10, SPEED 10, VIGOUR 10, WILLPOWER 10, INTELLECT 10, HIST-BOND 10, PERSONALITY 10, LUCK 10 \u2014 while the character carries vigour 10, endurance 20, strength 12, dexterity 12, intelligence 10, faith 10. Seven rows are for attributes the character does not have, each drawing a constant 10, and confirming one MINTS the key at 11 because _spendSouls does prog.attributes[attrId] = (prog.attributes[attrId] || 10) + 1 with no validation. Three of the character's real attributes (dexterity, intelligence, faith) are not on the screen and cannot be raised. The screen's own preview for speed and agility reads derived: [] \u2014 it promises nothing. Across the whole build `speed` is named by no pool, no reaction, no faction gate and no quest requirement. TWO OF THE BUILDER'S OWN THREE HEADLINE SPENDS were agility (hearth-lilmoth) and speed (hearth-gideon), both recorded pass:true with souls_matches_cost:true.",
+   "evidence": [
+    "reports/runs/critic-W1-13-R2/probe-a1.json",
+    "docs/shots/2026-08-07-w1-13-r2-levelup-ten-rows-six-attributes.png",
+    "reports/runs/W1-13-R2/levelling-loop.json"
+   ],
+   "subsystem_path": "progression.bonfire.function"
+  },
+  {
+   "what": "Respawn drift 0.00 m at 6 of 6 is the MEASUREMENT, not the fix. Four arms per well in one run: released 0.00 m; held 9.78 m (archon) / 13.97 m (stormhold) / 12.86 m (gideon) at 220 frames, 1.57-2.24 m off the basin on the respawn frame itself; released with traversal.reset() stubbed out 0.00 m; HELD with traversal.reset() stubbed out 9.78 m and 13.97 m \u2014 IDENTICAL TO THE DIGIT. The line _afterRespawnPlacement() added is inert: with the axis released there is no velocity to reset, with it held the body re-accelerates on the next frame anyway. Round 1's finding stands unfixed \u2014 a player killed while running is 8-14 m from the basin 3.7 s later without touching the controller \u2014 and RI-PRG04 D6's 'they are standing at the HEARTH' is still true for one frame.",
+   "evidence": [
+    "reports/runs/critic-W1-13-R2/probe-d23.json",
+    "reports/runs/critic-W1-13-R2/probe-d2b.json"
+   ],
+   "subsystem_path": "progression.bonfire.function"
+  },
+  {
+   "what": "It is four purses, not two, and the one the player reads is a hard zero. The inventory screen's drawn `inventory.gold` element reads '0 gold' at start, after setGold(777), after fencing, and after a save/load round trip \u2014 because engine.js reads (sim.loadout && sim.loadout.gold) || sim.gold || 0 and NEITHER sim.loadout NOR sim.gold is ever defined on the sim. Meanwhile progression.gold 0/777/777/777, stealth.p.gold 400 throughout (never touched by setGold), magic.gold 0/777/777/777, combat.world.gold 0/0/0/777. The builder was right to file the two-purse defect and it is one field bigger than filed. Not W1-13's model \u2014 W1-15/crime and W1-21/interface own it \u2014 but it is the mechanism behind the save critic's separately-reported defect.",
+   "evidence": [
+    "reports/runs/critic-W1-13-R2/probe-d.json"
+   ],
+   "subsystem_path": "world.crime.economy"
+  },
+  {
+   "what": "journey-run.mjs really is handing jrn06 an open inventory screen, and the builder's gate caught it live: m_jrn06_entry_screen_closed reports ui_mode_on_entry 'inventory', ui_mode_after_close 'world', advanced 5. Without it this aggregation would have been twenty fictional rows. But the SAME open screen breaks journey-run.mjs's own pre-legs one step earlier and those are unguarded: control_observed is unmeasurable ('the player did not move between [2766.5,2.68,5011] and [2766.5,2.68,5011] after 60 frames of forward input'), taking first_control and m4_clause1 with it. Swept: 12 of 12 combinations of {arena_flat, settlement_primary_street, barge-hold} x {inventory, journal, sheet, map} freeze the world and loadState rescues none of them. Only jrn06-death.mjs carries a gate; jrn01/02/03/05/07/08/09 are all exposed.",
+   "evidence": [
+    "reports/runs/critic-W1-13-R2/probe-c.json",
+    "reports/journeys/critic-w1-13-r2-jrn06/journey.json"
+   ],
+   "subsystem_path": "process.instruments"
+  },
+  {
+   "what": "Two aggregate counts are still properties of the harness rather than of the build. m_d10_death_legibility n 20 max_frames 0 \u2014 all twenty deaths are damagePlayer(1e5), so 'HP reaches 0 within 12 frames of the last hit' measures the verb. m_d2_stain_placement placement_rules {death_point: 20}, max_offset_m 0, mean_offset_m 0 \u2014 the fall / last-grounded / drown / fog-gate rules the builder fixed and demonstrated standalone do not fire ONCE in twenty journey deaths, so round 1's '0.000 m describes the probe' is completely unmoved by the aggregation. The fixes are real (placement.json shows the fall rule anchoring 0.00 m from the ledge and 63.64 m from the floor); the journey cannot reach them.",
+   "evidence": [
+    "reports/journeys/critic-w1-13-r2-jrn06/journey.json",
+    "reports/runs/W1-13-R2/placement.json"
+   ],
+   "subsystem_path": "process.instruments"
+  },
+  {
+   "what": "A failing check still reaches the ledger as ok. jrn06-death.mjs's put() calls led.ok() unconditionally and only ADDS a separate log('FAIL ...') line, so both failing checks appear in the ledger dump as '[OK ] m_d8_second_death ...' and '[OK ] m_d14_stain_visibility ...'. journey.ok is false and the FAIL lines are printed, so nothing is concealed \u2014 but the per-check surface a human reads says OK for a check that failed.",
+   "evidence": [
+    "reports/journeys/critic-w1-13-r2-jrn06/journey.json",
+    "tools/journey/jrn06-death.mjs:183-188"
+   ],
+   "subsystem_path": "process.instruments"
+  },
+  {
+   "what": "M-D5's third documented world-side writer has no user. respawn.json documents three producers of the six never-respawn flags. Statblock is real (champion_hist_marked and cst_sap_speaker both declare boss+unique, though redundantly with never_respawn_ids). World map is real and I re-derived it (below). But the caller/state-file route \u2014 engine.js:661-667 carrying the six flags out of a named state's `spawn:` block \u2014 has ZERO users: game/data/states/*.json declares 18 spawn entries and none of them carries any of the six. 'A quest can place a named actor in DATA' is still paperwork.",
+   "evidence": [
+    "game/data/states/*.json",
+    "game/data/world/respawn.json"
+   ],
+   "subsystem_path": "combat.death.worldreset"
+  }
+ ],
+ "gap_closure": {
+  "round_1_gap": "GAP-W1-hearth-levelup-gate-reads-a-method-that-does-not-exist",
+  "closed": true,
+  "evidence": "HearthSystem.atHearth() exists; the screen opens at a walked-to basin with used_setAtHearth:false, is refused 48.5 m off it, and the spend survives a save/load audited on the live world. Verified independently: probe-a1 opened the screen at hearth-archon after a walked arrival and a rest with no setAtHearth in the path.",
+  "but": "The door opens onto a room that takes the money and changes nothing on any session without sim.character \u2014 see secondary_observations[0]."
+ },
+ "consumption": {
+  "binding": "RI-MTH07 via ARBITRATION section 3",
+  "models_claimed_by_builder": 8,
+  "models_re_derived_by_this_critic": 2,
+  "re_derivations": [
+   {
+    "model": "game/data/world/hearths.json fog_gates[].boss -> game/data/world/respawn.json never_respawn_entity_flags",
+    "history": "round 1 scored this coupling 0 as RI-MTH07 section A's ORPHAN PREDICATE",
+    "my_perturbation": "repointed both fog gates at 'inf_trash' in the live world-map object and nothing else \u2014 no harness flag verb, no code change, no entity touched \u2014 then spawned an ordinary trash mob, killed it, killed the player, stepped 220 frames",
+    "shipped": {
+     "gates_boss": null,
+     "hp_after_player_death": 412,
+     "stood_back_up": true
+    },
+    "perturbed": {
+     "gates_boss": "inf_trash",
+     "hp_after_player_death": 0,
+     "stood_back_up": false
+    },
+    "coupled": true,
+    "verdict": "ACCEPTED. The round-1 rejection is overturned on my own measurement."
+   },
+   {
+    "model": "game/data/world/hearths.json \u2014 29 placements -> the body's position after a death",
+    "my_perturbation": "three wells 3.5 km apart, four input/perturbation arms each",
+    "coupled": true,
+    "verdict": "ACCEPTED. The observable is a real world position, not a constant \u2014 the held arms move it 8-14 m."
+   }
+  ],
+  "not_re_derived": [
+   "the bloom record",
+   "focus_restores_at_hearth",
+   "the world clock",
+   "DEATH_LINE",
+   "enemiesDeadUntilRest",
+   "respawning_tiers"
+  ],
+  "note": "The bloom-record model is accepted as COUPLED and is simultaneously the source of the named gap: its null control's bloom_px 195 is the same 195 M-D14 reads as 'nothing rendered'. Coupling and visibility are different questions and this piece has now been caught by the difference."
+ },
+ "arbitration": {
+  "AR1_souls_leakage": {
+   "result": "pass",
+   "evidence": "m_d9_no_compensation forbidden_hits [], strings_containing_a_numeral []; no dice, no roll-to-hit, no mid-fight pause, no level scaling"
+  },
+  "AR2_morrowind_leakage": {
+   "result": "pass",
+   "evidence": "m_d19 markers_reported 0, no world-anchored HUD element; m_d18 hearth_menu_destinations [], 26 stations, 0 of them hearths"
+  },
+  "AR3_seam_sterility": {
+   "seam_sterile": false,
+   "evidence": "a rest advances the Morrowind clock six hours with the sky following it, advances an untreated disease, and raises sap taint whose only consumer is NPC disposition; and the WORLD MAP's fog-gate table decides who the fight treats as content (re-derived above)"
+  }
+ },
+ "arbitration_questions": [
+  {
+   "id": "AQ-W1-13-r2-01",
+   "question": "RI-JRN06 M-D8 says 'exactly one bloodstain, ALWAYS'. The build places no bloodstain at all when the player dies holding zero souls. Should a 0-soul bloom be placed (Dark Souls does), or should M-D8 exempt it?",
+   "filed_not_resolved": true
+  },
+  {
+   "id": "AQ-W1-13-r1-01",
+   "question": "RI-PRG04 M10 flask purity names items the build ships under RI-CMB08's names \u2014 carried unresolved from round 1",
+   "filed_not_resolved": true
+  }
+ ],
+ "corpus_debt": [
+  {
+   "item": "RI-PRG04/M9",
+   "reason": "death-cost arithmetic over RI-PRG06 is W1-16's; still unrun"
+  },
+  {
+   "item": "RI-PRG04/M10",
+   "reason": "item-name collision with RI-CMB08; arbitration question open"
+  },
+  {
+   "item": "RI-JRN06/R3",
+   "reason": "needs a placed hostile roster (W1-12); fail-closed, not charged"
+  },
+  {
+   "item": "RI-JRN06/R4",
+   "reason": "needs shortcut geometry (W1-01/W1-02); fail-closed, not charged"
+  }
+ ],
+ "method_deviations": [
+  "Wrote four probes mid-critique per TOOL-LOOP rule 1: tools/harness/critic-w1-13-r2-{a,b,c,d}.mjs. Each carries its own control. The world-runs gate (c) was shown to go red against a deliberately sabotaged closeMenu() before its green answer was used; the levelling probe (b) has a matched arm that goes green; the drift probe (d) stubs the very line under test.",
+  "git.dirty was true for the whole run and not by my hand \u2014 eleven agents editing. Two concurrent breakages hit mid-measurement and healed: engine.js:375 constructed SoulsSystem with no import (every browser launch died at Engine._boot); sim/environment.js emitted weather_change before it was in sim/events.js's closed vocabulary (every province step threw). Per RI-MTH04 'How we lose' #5 every claim here is confidence: medium at best on reproducibility grounds. The journey's own git.commit (4231395) is recorded.",
+  "Did not re-derive the spacing Dijkstra field over 22,068 cells, and did not re-run the round-1 checks round 2 did not touch (S7 in both directions, the nine placement rules). Those axes carry round 1's scores unchanged.",
+  "sha256 truncated to 16 hex chars in the evidence block for readability; full digests recomputable from the paths.",
+  "No use of tools/lib/combat-node.mjs. Nothing in this verdict was measured outside a browser.",
+  "Contention was measured before and during: pgrep -c headless_shell 5-18, loadavg 9.06-31.19. The read/analyse phase was taken first while browsers were above the cap of 8, per AGENT-PROTOCOL. One browser was launched per probe and reused across its scenarios. The only wall-clock figure (595,538 ms for the journey) is declared an upper bound and supports no claim."
+ ],
+ "source_reads": [
+  "game/src/engine.js \u2014 _spendSouls, applyDerivedPools, _classifyOnSpawn, spawn, _uiCtx (hypothesis only; every score below rests on an artifact)",
+  "game/src/ui/system.js _attributes(ctx); game/src/ui/screens/progress.js (to learn the element ids the drawn census emits, so the row list could be read off the SCREEN rather than the data file)",
+  "game/src/character/derive.js derivePools",
+  "tools/journey/jrn06-death.mjs (the world-runs gate and put(), reproduced in probe-c to test it)"
+ ],
+ "path_to_ten": [
+  "Draw the bloom. M-D14 8/8 daylight at 12 m and 8/8 dark at 6 m inside a full journey run, with the 180-degree-away control still at its floor. (the named gap)",
+  "Place a stain on a second death, or file the arbitration question against RI-JRN06 M-D8's 'always'. m_d8_second_death goes green in the aggregate either way.",
+  "Make a level buy something: derive the pools from progression.attributes unconditionally and apply birthsign terms only when sim.character exists. Acceptance: probe-b's no-character arm reports the same hp_max/stamina_max/focus_max deltas as its with-character arm, and sim._poolsDirty returns to false after every spend.",
+  "Make the level-up screen list the character's attributes: zero rows for an attribute the character does not carry, zero carried attributes missing from the screen, and _spendSouls refuses an id outside the declared set instead of minting it.",
+  "Give the drift a real answer: either clear the held move axis across a death or state that carrying momentum through a respawn is intended. Acceptance: a drift measurement with the axis HELD, at six wells, against a stated target.",
+  "Gate the other journeys: lift jrn06-death.mjs's WORLD-RUNS-ON-ENTRY block into journey-run.mjs so it runs once before every journey, and fix whichever leg leaves the inventory screen open. control_observed should be measured, not unmeasurable.",
+  "Make M-D2 and M-D10 reachable: twenty damagePlayer deaths on flat standable ground cannot exercise four placement rules or a legibility window. Drive at least one death per rule inside the journey.",
+  "Give sim.loadout.gold a definition or point inventory.gold at the real purse \u2014 and pick one purse. Four is three too many and the screen reads none of them. (W1-15 / W1-21, filed here with the measurement.)",
+  "Clear the two corpus_debt items (RI-PRG04 M9, M10) and the M10 arbitration question."
+ ],
+ "self_audit": {
+  "did_i_find_a_gap": true,
+  "is_the_gap_new_this_round": true,
+  "did_i_re_derive_a_builder_number": true,
+  "which": "CONSUMPTION model 2b (fog gate boss -> respawn classification) re-derived by my own world-map perturbation; and the respawn-drift 0.00 m re-derived and shown to be an artefact of the released input rather than of the fix.",
+  "did_i_break_my_own_instruments": true,
+  "how": "probe-c sabotaged closeMenu() to a no-op that returns the mode it failed to close, and the gate went red (advanced 0, gate_would_refuse true) against a healthy control (advanced 5); probe-b's with-character arm moved every pool the no-character arm left flat; probe-d stubbed traversal.reset() in all four drift arms.",
+  "unmeasured_list_non_empty": true,
+  "boot_check_before_and_after": "PASS / PASS"
+ },
+ "notes": "Round 1 scored 4 and named a gap that is genuinely closed. Round 2 earned the increase to 5: the mid-death save is fixed across nine save moments, M-D7 was written from nothing and passes, M-D4 went from a stale volatile list to four seeds with a deliberate falsifiability control, the fall rule fires, the fog gate no longer degenerates at its centre, and the WORLD-RUNS-ON-ENTRY gate is the best instrument work in the piece \u2014 I tried to make it lie and it refused, and my own run proves it was needed. What the round did not do is look behind the door it opened."
+}
