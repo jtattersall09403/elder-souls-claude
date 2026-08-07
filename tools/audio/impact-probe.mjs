@@ -119,6 +119,62 @@ for (const tier of ['light', 'medium', 'heavy', 'ultra']) {
 }
 
 /**
+ * C10 `player_hurt`, C06 `parried`, C07 `riposte`, C08 `backstab`, C11 `stamina_break`.
+ *
+ * These five need the enemy to ACT, and the note in AGENT-PROTOCOL about the node arena is
+ * about perception, not about action: `EnemyController.loadScript()` drives an attack from a
+ * declared frame without any perception at all. So the arena CAN produce them — scripted — and
+ * the honest caveat is narrower than "not reachable in Node": the script decides when the
+ * enemy swings where the game's AI would. The browser pass confirms the same five arise
+ * unscripted.
+ */
+{
+  // C10 — the enemy swings and connects. `player_hurt` is the class §A marks "hit
+  // (owner=enemy)" and it is the one class the player hears about themselves.
+  FIXTURES.push({
+    name: 'player_hurt', weapon: (byTier.light || [])[0], target: 'drowned_lesser', dist: 1.6,
+    yaw: 180, script: [{ f: 10, move: 'chop' }, { f: 200, move: 'chop' }, { f: 390, move: 'chop' },
+                       { f: 580, move: 'thrust' }, { f: 760, move: 'combo_b' }, { f: 920, move: 'chop' }],
+    inputs: [], frames: 1150, invulnPlayer: false, produces: ['IMPACT'],
+  });
+
+  // C06/C07 — the player parries the scripted swing and ripostes into the opening. The parry
+  // is the readability keystone (§A C06: "the single brightest, cleanest transient in the
+  // entire game") so it gets its own fixture rather than being hoped for.
+  FIXTURES.push({
+    name: 'parry_riposte', weapon: (byTier.light || [])[0], shield: 'buckler', target: 'drowned_lesser',
+    dist: 1.6, yaw: 180,
+    script: [{ f: 10, move: 'chop' }, { f: 220, move: 'chop' }, { f: 430, move: 'chop' }, { f: 640, move: 'chop' }],
+    // The chop's startup is 68 f@60, so the parry has to be pressed late enough that its own
+    // window is open on the attacker's first ACTIVE frame — RI-CMB05 §D.
+    inputs: [60, 270, 480, 690].flatMap((f) => ([
+      { f, press: ['parry'] }, { f: f + 4, release: ['parry'] },
+      { f: f + 22, press: ['light'] }, { f: f + 24, release: ['light'] },
+    ])),
+    frames: 900, produces: ['PARRY', 'CRIT_HIT'],
+  });
+
+  // C08 — the target's back. Spawned facing AWAY (yaw 0 with the player at the origin looking
+  // down +z), which is the geometric condition `criticalKind()` reads.
+  FIXTURES.push({
+    name: 'backstab', weapon: (byTier.light || [])[0], target: 'drowned_lesser', dist: 1.1, yaw: 0,
+    inputs: Array.from({ length: 6 }, (_, i) => [
+      { f: 20 + i * 90, press: ['light'] }, { f: 22 + i * 90, release: ['light'] }]).flat(),
+    frames: 620, produces: ['CRIT_HIT'],
+  });
+
+  // C11 — the player runs dry. `EXHAUSTED_ENTER` is the "you have nothing left" moment and §A
+  // gives it a non-diegetic cue, which is why it is the one class in the data with no noise
+  // layer at all.
+  FIXTURES.push({
+    name: 'stamina_break', weapon: (byTier.ultra || byTier.heavy || [])[0], target: null,
+    inputs: Array.from({ length: 24 }, (_, i) => [
+      { f: 3 + i * 12, press: ['heavy'] }, { f: 6 + i * 12, release: ['heavy'] }]).flat(),
+    frames: 400, produces: ['EXHAUSTED_ENTER'],
+  });
+}
+
+/**
  * Blocks and guard breaks — C04, C05. The ENEMY blocks: `mat_shield` is the seven-material
  * fixture's shield dummy and a blow into a raised guard reads off the `shield` column of
  * RI-WPN05 §A, which is exactly what makes C04 a distinct class rather than a quiet C01.
@@ -145,13 +201,21 @@ function runFixture(fx, audioData, opts) {
 
   let e = null;
   if (fx.target) {
-    e = a.spawn('t', fx.target, 0, fx.dist, 180);
+    e = a.spawn('t', fx.target, 0, fx.dist, fx.yaw === undefined ? 180 : fx.yaw);
     a.lockOn('t');
-    if (fx.guard) { e.guardRaised = true; e.shield = e.shield || a.cs.shieldFor('kite_garrison'); e.shieldId = 'kite_garrison'; }
-    // RI-WPN05 M1's census dummies carry 9999 poise so hitstop is isolated from stagger.
-    // Here the opposite is wanted for the death fixture: the target must actually die.
+    if (fx.guard) {
+      e.guardRaised = true;
+      e.shield = e.shield || a.cs.shieldFor('kite_garrison'); e.shieldId = 'kite_garrison';
+      // C05 wants the guard to FAIL. Starting the shield near empty is the honest way to reach
+      // a guard break in a fixture: it is the same code path a long exchange reaches, arrived
+      // at sooner. Nothing about the break itself is faked.
+      e.stamina = 12;
+    }
+    if (fx.script) a.script('t', fx.script);
     if (!fx.killable) e.hp = 1e9;
+    else e.hp = 40;
   }
+  if (fx.shield) a.cs.rebuildPlayerLoadout({ shield: fx.shield });
   a.queueInputs(fx.inputs);
 
   const trace = [];

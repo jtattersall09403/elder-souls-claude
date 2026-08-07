@@ -34,7 +34,15 @@
     "game/src/sim/stealth/system.js skyAmbient rewritten off the weather table's light class",
     "game/src/render/sky.js (+25 named weather states, sightline_m as Beer-Lambert extinction)",
     "game/src/render/renderer.js (passes sim.env to sky.apply)",
-    "tools/world/env-consumption.mjs (RI-MTH07 perturb-and-watch, 9/9)"
+    "tools/world/env-consumption.mjs (RI-MTH07 perturb-and-watch, 9/9)",
+    "tools/world/build-borders.mjs",
+    "game/data/world/borders.json (24 borders, 14 HARD / 10 MARKED, 210 threshold objects of 8 types, 7 announced tier jumps, signed distance field)",
+    "game/src/world/borders.js (BorderField: bilinear signed distance, per-axis staggered lookup, gradient-following M65 traverse)",
+    "game/src/world/field.js (setBorders + axisRegionIndexAt/axisRegionAt)",
+    "game/src/world/province.js (_groundColour uses the PALETTE axis, _scatter uses the FLORA axis)",
+    "game/src/engine.js (borders.json branch, BorderField install, weather machine on the WEATHER axis, getBorderCrossover/listBorders/getBorderAt)",
+    "game/src/harness/api.js (getBorderCrossover, listBorders, getBorderAt)",
+    "tools/world/border-traverse.mjs + reports/border-crossover.json (RI-WLD12 M65)"
   ],
   "findings": [
     "Prior round measured RI-WLD04 and found 8/9 axes read strings out of regions.json rather than measuring the world; an audio axis scored 78/78 with audioMB 0. Assume nothing measured.",
@@ -57,9 +65,13 @@
     "CONSUMPTION DEMONSTRATED, 9/9 in tools/world/env-consumption.mjs, each with an in-band FROZEN-CLOCK negative control: A0 clock advances from the step not a verb (frozen drift 0.000000000 h); A1 259,200 frames = one game day = 72 real minutes exactly; C1 stealth outdoor ambient moves 15:00->dusk while the frozen control holds to 1e-9; C2 souls night multiplier fires at 22:00 and not on the frozen control; C3 the weather machine rolls in all 13 regions over 14 ticks and never lands in an undeclared state; C4 every state changes the frame in every region; C5 two runs byte-identical, no RNG/clock; C6 night_cold is chosen 227/400 at 01:00 and 5/400 at 12:00.",
     "SABOTAGE CONTROL RUN: changing the clock increment from +1 to +0 takes the probe from 9/9 to 5/9 (A0, A1, C1, C2 all go red). The instrument can fail.",
     "SECOND MODEL DEFECT, found by my own probe and fixed: sky.js was combining the region's fog extinction with the weather's by Math.max(). In the four regions whose own extinction is already high (blackwood 0.018/m, hive, marauders-coast, stone-forest) the region term beat EVERY state its machine can roll, so weather changed the frame by exactly nothing in 4 of 13 regions - RI-WLD08's 'weather as a colour grade' arriving through a Math.max. Extinction coefficients add; now additive, and all 13 regions show 4 distinct realised sightlines.",
-    "THIRD PROBE DEFECT, self-caught: the first C2 called awardFor('str', h) - awardFor takes a STATBLOCK and returns souls 0 for anything with no .souls field, so the check passed vacuously against a placeholder. Rewritten against a real stat and a hour inside RI-PRG04's 21:00-05:00 window."
+    "THIRD PROBE DEFECT, self-caught: the first C2 called awardFor('str', h) - awardFor takes a STATBLOCK and returns souls 0 for anything with no .souls field, so the check passed vacuously against a placeholder. Rewritten against a real stat and a hour inside RI-PRG04's 21:00-05:00 window.",
+    "RI-WLD12 M65 MEASURED ON THE LIVE FIELD: 24 of 24 borders pass. stddev(c) over the nine axes min 16.49 m / median 22.82 m / max 62.03 m; every HARD >= 8 m and every MARKED >= 25 m; MARKED span min 108 m >= 60 m. ZERO automatic fails (stddev < 5 m). Canonical order holds on every border: palette > flora > weather > fauna > audio > {hazard,tier} > architecture > only_here. Before this the same measurement was stddev 0 on all 24 by construction.",
+    "M64 inventory: 24 walkable adjacencies, 58% HARD (bar 40%), 8 distinct threshold-object types in use (bar 6), graded widths 123-172 m (bar 120-180), 210 objects placed, 0 borders with neither a landform nor an object, 7 borders with |dtier|>=2 all carrying a 2-channel announcement.",
+    "THREE INSTRUMENT DEFECTS FOUND BY RUNNING THE TRAVERSE AGAINST THE LIVE FIELD RATHER THAN THE DECLARED OFFSETS - each would have shipped a wrong number: (1) the signed distance raster is 25 m/cell, so nearest-neighbour reads made nine crossovers 5.5 m apart land in the SAME cell - 23 of 24 borders had 5-6 axis pairs inside the 3 m limit while the data was correct. Fixed by bilinear interpolation, which also stopped the ground colour changing in 25 m squares. (2) anchoring the traverse at the border's NARROWEST point put it where the distance band is thinnest, so the walk left the band before the early axes handed over and every axis flipped together at the raster line - a perfect texture swap on 3 of 24 from a correct build. (3) a STRAIGHT perpendicular is perpendicular only where it was fitted; on a curving frontier arc length and signed distance come apart and the ruler bends. The walk now follows the gradient at every step.",
+    "RESIDUAL, declared: marauders-coast--western-rootlands resolves only 6 of 9 axes in a 400 m traverse - the band does not reach far enough on one side for hazard/architecture/only_here. Its 6 resolved axes give stddev 26.45 m, above the bar, but it is a partial measurement and should be read as such."
   ],
-  "next_step": "BORDERS: world.region.transition, sole judge RI-WLD12, currently an automatic fail (all 9 axes cross at one raster coordinate). Build tools/world/build-borders.mjs + game/data/world/borders.json + game/src/world/borders.js with per-axis staggered crossover, then wire province/renderer consumers.",
+  "next_step": "sabotage control on the M65 traverse; then browser: boot-check + tools/capture for 2-3 region/border shots; then blog line",
   "notes_for_successor": "Load was 9.13 / 12 headless_shell at start \u2014 authoring phase first, browser only for verification.",
   "method_deviations": []
 }

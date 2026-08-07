@@ -10,8 +10,18 @@
     "reports/blog-feed.jsonl (one line appended)"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read TOOL-LOOP.md, RI-MTH04, TOOL-COVERAGE-R1/R2/R3, tool-build-viability-r5.json",
+  "findings": [
+    "COMMIT e29ec21. boot-check PASS before work. Box hostile: 24 headless_shell, loadavg 12.3 -> all analysis Node-side; browser deferred.",
+    "--audit-grants exits 0, prints 15 rows, 'substitutions remaining: 0'.",
+    "DEFECT A (attack 1, the clean kill): `substitutions_remaining` is `rows.filter(r => r.basis === 'SUBSTITUTION').length` over a HAND-WRITTEN literal array (build-viability.mjs:1432-1449). No row is ever labelled 'SUBSTITUTION'. The count is 0 by construction and cannot be anything else. --self-test asserts it to 0 \u2014 asserting a tautology. Worse, the ledger's own doc comment at :1422 defines `player-optimal-bound` as 'derived, then taken at its independent maximum. THE ONE SURVIVING SUBSTITUTION, stated as one.' So the file simultaneously says there are 4 surviving substitutions and reports 0.",
+    "DEFECT B (attack 1+2, measured): REPUTATION is not a player-optimal bound, it is a JOINTLY UNREACHABLE vector. REPUTATION_GIFTS (:1379-1398) takes, per quest, the max delta PER FACTION INDEPENDENTLY across all resolutions, and drops every negative (`if (d <= 0) continue`). Measured on the shipped book (121 quests): 64 of 121 quests have their per-faction maxima coming from DIFFERENT, mutually exclusive resolutions; 200 negative faction_reputation deltas summing -3443 are discarded outright. Example Q-ASSZ-04 credits imperial_assize +42 (res_hand_hallow), xul_aneekh +25 (res_lodge_them) and drowned_court +20 (res_hide_vell) from ONE quest. A real one-resolution-per-quest playthrough optimising the_dockhands reaches dockhands 521 but house_dres -236 and rootkeepers -3; the tool's context holds dockhands 521 AND house_dres 169 AND rootkeepers 184 at the same time.",
+    "VERIFIED INDEPENDENTLY (attack 5): 12 of 24 faction-gates world_state.flag rows have no producer anywhere in game/data \u2014 exactly the dockhands/drowned_court/ixtu_vakh/rootkeepers ranks 5/6/7 the builder names. My own recursive scan over all of game/data found 786 produced flags and the same 12 missing, with the 12 grounded controls also matching.",
+    "VERIFIED INDEPENDENTLY (attack 5): the six ungrounded requirement tokens are real \u2014 items item_pitch_flask, item_ash_barrow, saltrice_bundle; knowledge topic_the_low_tide_hour, topic_ledger_assembly_procedure, topic_the_barge_schedule.",
+    "BONUS CONTENT FINDING the tool did NOT surface: the_xul_aneekh's rank 5/6/7 world_state.flags are deepkin_hollow_kept / deepkin_coast_decided / deepkin_speaker_vacant \u2014 the SAME three flags as deep_kin's. Two ladders share one flag triple.",
+    "CONTRADICTION with the builder's own status file: it records 'deep_kin attainable reputation is 5 against a rank-1 demand of 10, so that ladder cannot be entered at all'. --audit-grants on e29ec21 prints deep_kin 159 and the rank-1 demand is 10. That finding is stale/wrong against the shipped tree.",
+    "Rank-5 reputation demand is 70 for ALL EIGHT ladders. Every one of the 56 triples of ladder factions is reputation-feasible under a single consistent playthrough, so the builder's 'no three rank-5-capable factions' finding cannot rest on reputation; it rests on the ungrounded rank-5 world flags + exclusivity."
+  ],
+  "next_step": "read criteria/crossCheckVerdict/verifyModel; then attack 3 (unmeasurable escape hatch) and attack 4 (sign-flip model break)",
   "notes_for_successor": "Box at loadavg 9.85, 6 headless_shell at start. Do node-side work first.",
   "method_deviations": []
 }

@@ -250,16 +250,39 @@ export class BorderField {
     // Never sample beyond where the band reaches: past that the answer is the raster's, and
     // reporting it as a crossover is reporting the instrument.
     if (atScore > 0) lengthM = Math.min(lengthM, atScore * 2);
-    const n = Math.floor(lengthM / stepM);
-    const samples = [];
-    for (let i = 0; i <= n; i++) {
-      const s = -lengthM / 2 + i * stepM;
-      const x = at.x + ux * s, z = at.z + uz * s;
-      const fb = regionIndexAt(x, z);
-      const row = { s_m: +s.toFixed(1), x: +x.toFixed(1), z: +z.toFixed(1), raster: fb };
-      for (const ax of BORDER_AXES) row[ax] = this.axisRegionIndexAt(x, z, ax, fb);
-      samples.push(row);
-    }
+    // ---- walking the perpendicular, and why it FOLLOWS the gradient --------------------------
+    //
+    // RI-WLD12 M65 says "a line perpendicular to it". A straight line is perpendicular at the
+    // point it was fitted and nowhere else, and on a frontier that curves the walk's ARC LENGTH
+    // and the border's SIGNED DISTANCE come apart: a 400 m straight walk across a curving border
+    // covered 254 m of transition on one border and compressed three axis pairs inside 3 m of each
+    // other on the way. The axes were where they said they were; the ruler was bent.
+    //
+    // Re-evaluating the gradient at every step keeps the walk perpendicular for its whole length,
+    // so `s_m` is the distance through the border and the crossovers are comparable across
+    // borders of different shapes. It falls back to the last good direction where the gradient is
+    // momentarily undefined, so a single bad cell cannot derail a traverse.
+    const half = lengthM / 2;
+    const walk = (sign) => {
+      const rows = [];
+      let x = at.x, z = at.z, dx = ux * sign, dz = uz * sign;
+      for (let s = 0; s <= half; s += stepM) {
+        const fb = regionIndexAt(x, z);
+        const row = { s_m: +(s * sign).toFixed(1), x: +x.toFixed(1), z: +z.toFixed(1), raster: fb };
+        for (const ax of BORDER_AXES) row[ax] = this.axisRegionIndexAt(x, z, ax, fb);
+        rows.push(row);
+        const g = this._gradient(x, z, b.index);
+        if (g) {
+          // Never reverse: a gradient that flips is noise at the band's edge, not the border
+          // turning round.
+          const cand = [g[0] * sign, g[1] * sign];
+          if (cand[0] * dx + cand[1] * dz > 0.2) { dx = cand[0]; dz = cand[1]; }
+        }
+        x += dx * stepM; z += dz * stepM;
+      }
+      return rows;
+    };
+    const samples = walk(-1).reverse().concat(walk(1).slice(1));
     // c[a] = the position at which the axis is more B than A over a 20 m window (10 samples at 2 m).
     const W = Math.max(1, Math.round(20 / stepM));
     const cross = {};

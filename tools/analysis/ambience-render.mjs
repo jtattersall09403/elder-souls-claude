@@ -552,6 +552,25 @@ if (args.out) {
   mkdirSync(dirname(join(ROOT, String(args.out))), { recursive: true });
   writeFileSync(join(ROOT, String(args.out)), JSON.stringify(printable, null, 2) + '\n');
 }
+
+// THE SPECTRA SIDECAR, for `tools/world/region-axes.mjs`.
+//
+// RI-WLD04 M18's own tool drops the `audio` axis, and its header says exactly why: "The audio
+// axis is the sharpest illustration — getWorldStats() reports audioMB: 0. There is no audio in
+// this build at all, and the audio axis still scores 78/78." That was the correct call against a
+// build with no audio, and it is no longer the right one. This file is the measured input that
+// lets that axis be scored off rendered sound instead of dropped — or off nothing, if this file
+// is absent, in which case region-axes.mjs behaves exactly as it did before.
+if (out.pass !== undefined && Object.keys(out.regions).length) {
+  const spectra = { schema: 'elder-souls/ambience-spectra@1',
+    source: 'tools/analysis/ambience-render.mjs — level-normalised 24-band spectra of the rendered PCM',
+    seconds: SECONDS, sample_rate: RATE, bands: NBANDS, f_min_hz: FMIN, f_max_hz: FMAX, regions: {} };
+  for (const [id, r] of Object.entries(out.regions)) {
+    if (r._bands) spectra.regions[id] = { bands: r._bands.map((v) => +v.toFixed(6)), centroid_hz: r.centroid_hz, lufs_i: r.lufs_i };
+  }
+  mkdirSync(join(ROOT, 'reports/w1-22'), { recursive: true });
+  writeFileSync(join(ROOT, 'reports/w1-22/ambience-spectra.json'), JSON.stringify(spectra, null, 2) + '\n');
+}
 if (args.json) console.log(JSON.stringify(printable, null, 2));
 else {
   console.log(`ambience-render: ${SECONDS}s per region at ${RATE} Hz`);

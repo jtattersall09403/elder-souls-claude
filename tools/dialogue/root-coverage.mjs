@@ -141,12 +141,12 @@ function run(idx, npcs, { quiet = false } = {}) {
   for (const p of per) {
     for (const r of roots) {
       const a = p.answers[r.id];
-      if (!a || !a._cell) continue;
+      if (!a || !a.cell) continue;
       placed.checked++;
       const s = String(p.npc.settlement || '');
-      if (!s.startsWith(a._cell)) {
+      if (!s.startsWith(a.cell)) {
         placed.misplaced++;
-        if (placed.examples.length < 6) placed.examples.push(`${p.npc.id} (in ${s || 'nowhere'}) answers "${r.id}" with the ${a._cell} line`);
+        if (placed.examples.length < 6) placed.examples.push(`${p.npc.id} (in ${s || 'nowhere'}) answers "${r.id}" with the ${a.cell} line`);
       }
     }
   }
@@ -224,7 +224,13 @@ function selfTest() {
   {
     const d = clone(docs);
     for (const doc of d) for (const t of (doc.topics || [])) if (t.root) for (const i of (t.infos || [])) i.x = 'One sentence for everybody.';
-    const r = run(buildTopicIndex(d), npcs, { quiet: true });
+    // Tier 1 of the precedence ladder is a line on the person's OWN record, which the topic
+    // index cannot reach. Left in place, the fixture's dullness plateaus around 52% and the
+    // check "passes" for a reason that has nothing to do with the mutation — the first version
+    // of this mutation did exactly that and the plateau was mistaken for a bug in the metric.
+    const flat = npcs.map((n) => ({ ...n, lines: null }));
+    const r = run(buildTopicIndex(d), flat, { quiet: true });
+    const baseFlat = run(buildTopicIndex(clone(docs)), flat, { quiet: true });
     check('M3 one string for everybody leaves COVERAGE untouched', r.answering_any === base.answering_any,
       `${r.answering_any}`);
     check('M3 one string for everybody drives DULLNESS to 100%', r.dullness > 0.999,

@@ -262,8 +262,15 @@ export function infoFor(topicIndex, topicId, npc, player, canon = null) {
     // alone would decide. It scores by the HEIGHT of the bar, so the highest band the speaker
     // clears is the one the player hears — which is the same answer Morrowind's authored
     // descending order gives, obtained without depending on file order.
+    //
+    // `cell` sits between the actor and the player gates, worth 2. That places a cell-gated
+    // GENERIC (2) below any actor line (8) — a fisher in Gideon still hears the fisher's answer
+    // rather than the town's — while a cell-gated ACTOR line (10) beats that same actor's
+    // townless one, which is what makes "the Stormhold legionary's answer" reachable in
+    // Stormhold and unreachable in Thorn. It is worth less than `requires` (4) because a race
+    // gate is about who is asking and a cell gate is only about where the answer was written.
     const dScore = info.d != null ? 1 + Math.min(1, Number(info.d) / 100) : 0;
-    const score = (matchesActor ? 8 : 0) + (info.requires ? 4 : 0) + dScore + (info.forbids ? 0.5 : 0);
+    const score = (matchesActor ? 8 : 0) + (info.cell ? 2 : 0) + (info.requires ? 4 : 0) + dScore + (info.forbids ? 0.5 : 0);
     if (score > bestScore) { best = info; bestScore = score; }
   }
   if (!best) return null;
@@ -274,6 +281,11 @@ export function infoFor(topicIndex, topicId, npc, player, canon = null) {
     // W1-23. Which registered dispute this line argues, and which side of it. Carried out so a
     // probe can see that the answer moved rather than merely that an answer arrived.
     cf: best.cf || null, pos: best.pos || null,
+    // W1-SPEAKERS. Which town this answer was written for, or null for the province-wide one.
+    // Carried out for the same reason `cf` is: a probe that can see only the text cannot tell a
+    // Gideon answer correctly delivered in Gideon from a Gideon answer delivered in Soulrest,
+    // and "an answer arrived" is exactly the check that let 267 dead cell gates ship.
+    cell: best.cell || null,
     // Morrowind's AddTopic, which this corpus has been authoring all along under the name `to`.
     // 456 of the 638 infos in `game/data/dialogue/topics/**` carry one and NOTHING read it, so
     // the province's entire keyword graph — 181 distinct targets — was a diagram. It is
