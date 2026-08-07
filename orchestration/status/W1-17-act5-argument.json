@@ -16,7 +16,8 @@
     "game/src/character/converse.js (edited)",
     "game/src/sim/quest/gate.js (edited)",
     "game/src/engine.js (edited)",
-    "game/data/npcs/mainline.json (ixtu-meer topics array)"
+    "game/data/npcs/mainline.json (ixtu-meer topics array)",
+    "game/src/combat/parley.js (edited)"
   ],
   "findings": [
     "SHIPPED AND MEASURED: 12 topics, 36 infos, 3,637 authored words, 0 shadowed infos, 0 duplicate topic ids. Verified in the running build by tools/quests/act5-argument-probe.mjs (report: reports/runs/W1-17-ACT5-ARGUMENT.json).",
@@ -29,8 +30,21 @@
     "tools/dialogue/build-graph.mjs CANNOT RUN on the current tree and has not been able to for some time \u2014 it throws `duplicate topic id 'the-marsh-fever' (40-race-gated.json and earlier)` before it reaches any lint. Pre-existing, not introduced here; main-quest-argument.json introduces no duplicate id.",
     "tools/dialogue/voice-metrics.mjs is cited by game/data/dialogue/speakers.json and reports/W1-17-measurements.md and DOES NOT EXIST.",
     "game/data/books/ total is 1,930 words across 2 files; a third file (the-drowned-tally.json) was added by a concurrent agent during this session, so the library is already being worked.",
-    "THE LIBRARY IS TAKEN. A concurrent W1-LIBRARY agent took game/data/books/ from 1,930 words / 2 files to 33,378 words / 57 books during this session, including the two incompatible accounts of the reservoir that mainline.json UA-02 depends on. I did not touch it; I linked to it instead \u2014 both d60 answers to `the-count-itself` carry an AddTopic edge to `the-house-under-the-wastes`."
+    "THE LIBRARY IS TAKEN. A concurrent W1-LIBRARY agent took game/data/books/ from 1,930 words / 2 files to 33,378 words / 57 books during this session, including the two incompatible accounts of the reservoir that mainline.json UA-02 depends on. I did not touch it; I linked to it instead \u2014 both d60 answers to `the-count-itself` carry an AddTopic edge to `the-house-under-the-wastes`.",
+    "The parley's NAME ground (game/src/combat/parley.js) tested `topicsKnown.indexOf(true_name_topic)` exactly, which is the same slug-vs-prose defect: a player who had genuinely learned a name could be told they had not. Folded.",
+    "tools/quests/mainline-census.mjs measures only LH6a ('the conversation quest has no violence_required resolution'). The topic-count and knowledge-gate halves of LH6 were unmeasured by anything; tools/quests/act5-argument-probe.mjs measures them, in the browser, against the running build."
   ],
   "next_step": "none \u2014 a fresh-context critic should re-measure LH6/LH7/LH8 against the running build, and separately audit the core/topics.js fold, which changes what the quest offer gate accepts across the whole game.",
-  "notes_for_successor": "The twelve topic ids are slug form in the data file and prose form on the NPC record; core/topics.js folds them so both spellings resolve. Do NOT normalise one side away \u2014 76 quest files and 313 dialogue records disagree and the fold is what lets them coexist. tools/dialogue/build-graph.mjs still cannot run (pre-existing duplicate id 'the-marsh-fever' in 40-race-gated.json) and tools/dialogue/voice-metrics.mjs, which speakers.json cites, does not exist."
+  "notes_for_successor": "The twelve topic ids are slug form in the data file and prose form on the NPC record; core/topics.js folds them so both spellings resolve. Do NOT normalise one side away \u2014 76 quest files and 313 dialogue records disagree and the fold is what lets them coexist. tools/dialogue/build-graph.mjs still cannot run (pre-existing duplicate id 'the-marsh-fever' in 40-race-gated.json) and tools/dialogue/voice-metrics.mjs, which speakers.json cites, does not exist.",
+  "regression_sweep": {
+    "boot-check": "PASS",
+    "check-content": "205 quest resolutions, none lost",
+    "check-data": "359 indexed data files, all present",
+    "mainline-trace": "all 18 checks PASS, 29/29 intended + 17/17 backpath, 0 violent",
+    "chr-quest-race-gate": "14/14 PASS",
+    "mainline-census": "all PASS incl. EXP05.LH7 (3 verified claims), LH8 (0 refutations), QST05.M3 69/69 = 100% non-violent",
+    "ar3-encounter-test": "12/12 PASS",
+    "act5-argument-probe": "PASS \u2014 12 topics, 4 knowledge-gated, 12/12 answers differ across the standing range",
+    "load_at_measurement": "12.5-20 one-minute; the probe is a single short-lived page and takes no timing measurement"
+  }
 }

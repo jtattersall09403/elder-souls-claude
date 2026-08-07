@@ -473,18 +473,48 @@
       "path": "corpus/90-verdicts/wave1/artifacts/W1-26-r1/session.json",
       "kind": "trace",
       "produced_by": "copy of reports/sessions/exp-w1-opening/session.json"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/named-critic.json",
+      "kind": "report",
+      "produced_by": "CITED, NOT PRODUCED BY THIS CRITIC: W1-07-r3 critic-w1-07-r3c.mjs, the 240-run NAMED sweep with its published a/b/c/d histogram."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-07-r3/m5-title-writ-critic.json",
+      "kind": "report",
+      "produced_by": "CITED, NOT PRODUCED BY THIS CRITIC: W1-07-r3 independent pixel readback of the creation frames (opaque UI area fraction)."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-07-r3.json",
+      "kind": "report",
+      "produced_by": "CITED, NOT PRODUCED BY THIS CRITIC: the sibling verdict, for M6 speaker resolution 18 of 18 and for the accessor hole it recorded as a secondary observation."
+    },
+    {
+      "path": "reports/sessions/exp-w1-opening/session.json",
+      "kind": "trace",
+      "produced_by": "node tools/experience/session-run.mjs --session exp-w1-opening --brief corpus/95-experience/briefs/first-hour.md --seed 1337 --minutes 10 --render-policy on-demand --profile first-hour (produced by the W1-26 builder; the first RI-EXP01 run on any build)"
+    },
+    {
+      "path": "reports/sessions/exp-w1-opening/beat-diff.json",
+      "kind": "negative-evidence",
+      "produced_by": "node tools/experience/beat-diff.mjs --beats corpus/95-experience/RI-EXP01.beats.json --log reports/sessions/exp-w1-opening/beat-log.json (produced by the W1-26 builder)"
+    },
+    {
+      "path": "corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md",
+      "kind": "text-excerpt",
+      "produced_by": "The reference item itself, cited for §0.1(b) corpus_debt bookkeeping rather than as measured evidence."
     }
   ],
   "blind_comparisons": [
     {
       "ref_item": "RI-JRN01",
       "status": "not_possible",
-      "reason": "The blind pair needs tools/journey/beat-extract.mjs output stripped to «person»/«place» and length-matched against MW/OPEN rows 3-12, plus a second agent to judge it. beat-extract.mjs now exists; the second agent does not, and a critic that strips its own pack and judges it has not run a blind comparison. Recorded as corpus_debt against the isolated-agent channel, not against the build."
+      "not_possible_reason": "The blind pair needs tools/journey/beat-extract.mjs output stripped to «person»/«place» and length-matched against MW/OPEN rows 3-12, plus a second agent to judge it. beat-extract.mjs now exists; the second agent does not, and a critic that strips its own pack and judges it has not run a blind comparison. Recorded as corpus_debt against the isolated-agent channel, not against the build."
     },
     {
       "ref_item": "RI-EXP01",
       "status": "not_possible",
-      "reason": "Step 4 needs a beat log to strip and ours is empty. A blind pack whose A side is eighteen missing beats is not a pack."
+      "not_possible_reason": "Step 4 needs a beat log to strip and ours is empty. A blind pack whose A side is eighteen missing beats is not a pack."
     }
   ],
   "arbitration": {
@@ -547,17 +577,17 @@
     "WHAT THIS PIECE ACTUALLY BUILT, so the caps are not read as a verdict on the work: a title surface that reaches the exact O3 set from a fresh profile and whose Continue loads a real save (HF9 closed, verified independently and walked); a draw-call rendered-text register that is a genuinely good instrument and found its own orphan text; first_input/first_control emitted for the first time, which discharges the blocking condition on M4 clause 1 and lets the corpus measure its own best idea; ten of ten dilemma questions reaching the frame; AC 6 of 7 with quotes that are real writing; and the first RI-EXP01 artifact set in the project's history. Three of those are things no previous round of any piece had."
   ],
   "biggest_gap": {
-    "gap_id": "GAP-W1-the-rendered-text-accessor-cannot-see-the-surface-M9-is-aimed-at",
+    "gap_id": "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
     "subsystem_path": "journey.opening.legibility",
     "severity": "blocking",
     "what": "The build's rendered-text accessor — `__HARNESS.getRenderedText()`, fed by render/text-register.js — is STRUCTURALLY INCAPABLE of seeing the one surface RI-JRN01 M9 and M15 are aimed at, and the build's own report records a pass over an empty set as a result. render/render.js:90 carries the comment 'Every 2D surface this renderer owns is registered against the one rendered-text register' and then instruments two of three: `this.ui` as 'dialogue' and `this.title` as 'title'. The third, `this.menus = new UISurface(...)` at renderer.js:86, is W1-21's HUD and menus — which is precisely M9's domain, 'every string rendered OUTSIDE a dialogue/journal/book surface'. FALSIFIED, not inferred: I instrumented the menus context at runtime through the register's OWN public instrument() and forced a repaint, and got ZERO entries. Then, in the same freshly-instrumented context, I drew one sentinel through ui/glyphs.js drawText() — the path every string in that surface takes — and one through ctx.fillText(). The register saw the fillText sentinel (1 row) and did not see the glyphs sentinel (0 rows). glyphs.js renders every glyph as a stroked Path (moveTo / lineTo / quadraticCurveTo / stroke) and never calls fillText or strokeText, which the register wraps. So the hole cannot be closed by calling instrument() — the register is blind to that surface by construction. Enumerated directly through UISurface.elements[].text, the opening draws five strings the accessor cannot see: '5', '0', 'LIGHT', 'Spark-Dart' and 'Take A tithe-gourd, empty'. reports/journeys/w1-26-opening.json records `m9.surfaces_searched: 'title (the only non-dialogue drawn surface in the build)'` — which is false — with `distinct_searched: 0` and `hits: []`, and the piece reports M9 as scoreable for the first time on that basis.",
     "why_it_matters": "This is not a missing feature; it is a wrong number that looks right, on the piece's own declared path, in the instrument the whole area was gated on. RI-JRN01 §0.1(a) exists because a canvas-only build returned an empty accessibility tree to the obvious accessor, so a grep over an empty set returned zero hits and read as a clean pass; the amendment's fix was to demand a NAMED accessor demonstrated non-empty. This build supplied one, demonstrated it non-empty ON A DIFFERENT SURFACE, and bought exactly the same false pass one layer down. That is RI-JRN01 How-we-lose #15 reproduced by the fix written to close it — and it is strictly worse than the failure it replaced, because the empty accessibility tree announced its own emptiness while `getRenderedText()` returns twelve confident strings and a summary block. Every future critic of this journey will read it and believe it. The concrete cost this round: M9 (10 points) and M15 (3 points) score 0 of RI-JRN01's 20-point Restraint block; the check that was meant to catch instruction text did not catch the instruction text that is there; and AR-2 fails on a string the build's own sweep reported as absent. The cost next round is larger and less visible — the accessor is now the corpus's only answer to 'what does the frame say?', and it answers for two thirds of the frame.",
     "evidence": [
-      "corpus/90-verdicts/wave1/artifacts/W1-26-r1/accessor-hole.log — instrumented:{dialogue:true, menus:false, title:true}; menus register entries after instrumenting + a forced repaint: 0; falsification: register_saw_glyphs false (0 rows) / register_saw_filltext true (1 row) in the SAME context",
-      "corpus/90-verdicts/wave1/artifacts/W1-26-r1/ar2-m9-hud.log — M9 over its real domain: 5 strings searched, 1 hit ('Take A tithe-gourd, empty'). M9 as the build ran it: 0 strings searched.",
-      "corpus/90-verdicts/wave1/artifacts/W1-26-r1/builder-w1-26-opening.json — m9.distinct_searched: 0, m9.surfaces_searched: 'title (the only non-dialogue drawn surface in the build)'",
-      "game/src/render/renderer.js:86-95 — three surfaces constructed, two instrumented, under a comment claiming all",
-      "game/src/ui/glyphs.js:212-245 — drawText() strokes vector paths and never calls fillText/strokeText"
+      "corpus/90-verdicts/wave1/artifacts/W1-26-r1/accessor-hole.log",
+      "corpus/90-verdicts/wave1/artifacts/W1-26-r1/accessor-hole.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-26-r1/ar2-m9-hud.log",
+      "corpus/90-verdicts/wave1/artifacts/W1-26-r1/ar2-m9-hud.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-26-r1/builder-w1-26-opening.json"
     ],
     "remedy": {
       "action": "Make the register see the third surface, then re-run M9 and M15 over it. Two routes, either acceptable. (a) Give ui/glyphs.js drawText() a register call of its own: it already holds the string, x, y, the face and the size at the top of the function, so one `textRegister.note(ctx, s, x, y, size)` before the glyph loop puts it in the same register with the same clip shadow. (b) Have UISurface.el() route every record carrying `text` through a shim that the register wraps, so the tag stays on the element rather than being inferred. Route (a) is smaller and catches anything that draws glyphs, including surfaces nobody has written yet; route (b) is safer against a future surface that draws text some third way. Whichever is taken, `getRenderedText()` must stop advertising `surfaces_instrumented` as a static array and derive it from the contexts actually wrapped, and tools/harness/w1-26-opening.mjs must FAIL rather than pass when its M9 grep searches zero strings — a probe that cannot go red is worse than no probe. Separately, remove or rewrite the interact prompt so it names the object without commanding the player ('A tithe-gourd, empty' rather than 'Take A tithe-gourd, empty').",
@@ -732,23 +762,28 @@
   "source_reads": [
     {
       "path": "game/src/render/renderer.js",
-      "purpose": "Establish how many 2D text surfaces exist and which are instrumented — the structural half of the biggest gap. The claim was then falsified at runtime rather than asserted from the source."
+      "note": "Establish how many 2D text surfaces exist and which are instrumented — the structural half of the biggest gap. The claim was then falsified at runtime rather than asserted from the source.",
+      "purpose": "diagnose-after-demonstrating"
     },
     {
       "path": "game/src/ui/glyphs.js",
-      "purpose": "Establish that drawText() strokes vector paths and never calls fillText/strokeText, which is why instrumenting the third surface yields zero entries. Confirmed at runtime with a sentinel."
+      "note": "Establish that drawText() strokes vector paths and never calls fillText/strokeText, which is why instrumenting the third surface yields zero entries. Confirmed at runtime with a sentinel.",
+      "purpose": "diagnose-after-demonstrating"
     },
     {
       "path": "game/src/render/ui.js",
-      "purpose": "Find wrap() and ellipsise(), because my delivery test was producing false 'undrawn' results on wrapped prose. This read changed my own numbers, upward, in the build's favour."
+      "note": "Find wrap() and ellipsise(), because my delivery test was producing false 'undrawn' results on wrapped prose. This read changed my own numbers, upward, in the build's favour.",
+      "purpose": "diagnose-after-demonstrating"
     },
     {
       "path": "game/data/dialogue/topics/writ-house.json",
-      "purpose": "Enumerate the census graph exhaustively (20 nodes) so that DTR coverage could be stated as a fraction of the whole rather than of whatever a walk happened to reach."
+      "note": "Enumerate the census graph exhaustively (20 nodes) so that DTR coverage could be stated as a fraction of the whole rather than of whatever a walk happened to reach.",
+      "purpose": "quote-written-content"
     },
     {
       "path": "game/src/render/text-register.js",
-      "purpose": "Understand what the accessor claims about itself before testing it. Its own header is accurate about what it does and silent about what it does not cover."
+      "note": "Understand what the accessor claims about itself before testing it. Its own header is accurate about what it does and silent about what it does not cover.",
+      "purpose": "locate-harness"
     }
   ],
   "self_audit": {

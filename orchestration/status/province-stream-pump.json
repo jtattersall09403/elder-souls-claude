@@ -16,7 +16,11 @@
     "game/src/engine.js: STREAM_* constants + _streamProvince() called from _afterStep()",
     "game/src/world/province.js: tileM/radiusTiles/skinRadiusM fields + one-tile release hysteresis",
     "reports/world/province-stream/AFTER-camera3km.json",
-    "reports/world/province-stream/AFTER-walked3km.json"
+    "reports/world/province-stream/AFTER-walked3km.json",
+    "reports/world/province-stream/AFTER-budget.json",
+    "reports/world/province-stream/DELETED-budget.json",
+    "reports/world/province-stream/AFTER-crossing.json",
+    "reports/world/province-stream/CONSUME-radius{1,2,3}.json"
   ],
   "findings": [
     "load average at start 24.62 on four cores — HIGH. All wall-clock numbers below were taken under that.",
@@ -33,8 +37,13 @@
     "AFTER, critic baseline (camera 3 km, 600 fixed steps): ring_built 25/25, ring_unbuilt 0 (was 0/25 and 25), all four disc lags 0 m (were 3000 m).",
     "AFTER, WALKED 3 km (4099 m of path, no teleport after load) + 600 more fixed steps: ring 25/25, unbuilt 0, ground underfoot TRUE, tilesBuiltTotal 145 (25 at load + 120 streamed in while walking). Disc lags: skin 0.63 m, near 6.63 m, cover 0.63 m.",
     "SECOND DEFECT FOUND AND FIXED: request() released a tile the instant it left the build ring. Harmless when it only ran on a teleport; a thrash from the fixed step. A body oscillating on a tile EDGE flipped tx0 back and forth and released+rebuilt a 5-tile row each time. Measured: 30 tile builds for 26.9 m of movement, 92 of 30,000 steps over one 60 Hz frame. Fixed with one tile of release hysteresis (KEEP = radiusTiles + 1).",
-    "The straight-line-bearing budget walk from Lilmoth at 189 deg walks into the Topal Bay (26.9 m in 30,000 frames). The budget probe now follows the crossing road spline instead."
+    "The straight-line-bearing budget walk from Lilmoth at 189 deg walks into the Topal Bay (26.9 m in 30,000 frames). The budget probe now follows the crossing road spline instead.",
+    "CROSSING WALKED END TO END (run 1): 55.1 min, 6615 m, 34 samples, ground underfoot built on EVERY sample, worst ring_unbuilt 1 of 25 (the outer trickle, 600-750 m out, behind the fog in all 13 regions). Region sequence crossed valus-ridge -> stone-forest -> western-rootlands -> eastern-rootlands.",
+    "DELETE-THE-FIX (shadow tree, ONLY the this._streamProvince() call site removed, identical 1999.4 m walk): 0 tiles built (vs 30), ring 0/25 (vs 25/25), near 3x3 ring 9 of 9 UNBUILT (vs 0), all four discs 1453 m behind. The tiles go straight back to unbuilt.",
+    "FRAME BUDGET, identical 1999.4 m walks, 60,000 steps each, load 4.5-6.7: with fix mean 0.2674 ms, p50 0.05, p99 0.32, p999 66.82, max 133.8, 194 steps over 16.7 ms (0.32%); fix deleted mean 0.0618 ms, p50 0.05, p99 0.185, p999 1.625, max 14.93, 0 steps over 16.7 ms.",
+    "COST COMPOSITION per 2 km (attributed by identity-comparing the disc anchor arrays across each step): ground skin + cover disc rebuilt together 145 frames at 59.31 ms mean; near-prop disc 69 frames at 2.71 ms; tile build 30 frames at 69.18 ms. NO frame did a disc rebuild AND a tile build — the one-unit-of-work-per-step guard holds.",
+    "THE SKIN AND THE COVER DISC CANNOT BE SPLIT: updateSkin() sets this.coverAt = null on purpose, because the ground cover stands ON the skin surface and a stale cover disc sits 0.3 m inside a berm. So skin+cover is one indivisible ~59 ms unit, fired every ~13.8 m by SKIN_REBUILD_M = 11. THAT IS THE RESIDUAL COST AND I DID NOT CLOSE IT — it is W1-01 territory (updateSkin builds 15,625 vertices) and reducing it means either making updateSkin cheaper or moving W1-01s calibrated rebuild distance, which moves the picture."
   ],
-  "next_step": "crossing end to end; budget fixed vs deleted; consumption on radiusTiles; night walk",
+  "next_step": "finish consumption arms, night walk, final boot-check",
   "notes_for_successor": "Probe is tools/world/prov-stream.mjs. It reads window.__ENGINE read-only and NEVER calls request/pump/drain/streamAround — that is deliberate, the harness's own streamAround is why this defect survived. --tile-radius / --skin-radius perturb the streamer for RI-MTH07 consumption."
 }

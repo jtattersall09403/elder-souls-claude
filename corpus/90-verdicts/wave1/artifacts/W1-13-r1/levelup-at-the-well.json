@@ -1,0 +1,205 @@
+{
+  "schema": "critic/w1-13-f@1",
+  "wells": [
+    {
+      "hearth": "hearth-archon",
+      "basin": [
+        3784.57,
+        3.386,
+        3941.5
+      ],
+      "registry_says_standing_at": "hearth-archon",
+      "ui": {
+        "mode": "world",
+        "screens_offered": null,
+        "at_hearth_flag": null,
+        "hearth_name": null,
+        "raw_keys": [
+          "mode",
+          "map_exists",
+          "navigable",
+          "screen",
+          "elements",
+          "coveragePct",
+          "hud",
+          "menu",
+          "book",
+          "focus",
+          "journal",
+          "fonts",
+          "textRenderPath",
+          "text_raster_scale",
+          "text_glyph_source",
+          "materials",
+          "overdraw",
+          "surfaces",
+          "full_screen_panels",
+          "hud_elements",
+          "markers",
+          "world_rendered_behind",
+          "dialogue_surface",
+          "non_world_area_frac",
+          "draw_calls",
+          "frame"
+        ]
+      },
+      "open_levelup_result": {
+        "ok": false,
+        "threw": "openMenu('levelup'): the level-up screen exists at a HEARTH only (RI-UIX03 L1). It is not on the pause menu and it is not available in the world."
+      },
+      "ui_mode_after": "world",
+      "levelup_reachable": false
+    },
+    {
+      "hearth": "hearth-lilmoth",
+      "basin": [
+        2766.17,
+        2.68,
+        5145.5
+      ],
+      "registry_says_standing_at": "hearth-lilmoth",
+      "ui": {
+        "mode": "world",
+        "screens_offered": null,
+        "at_hearth_flag": null,
+        "hearth_name": null,
+        "raw_keys": [
+          "mode",
+          "map_exists",
+          "navigable",
+          "screen",
+          "elements",
+          "coveragePct",
+          "hud",
+          "menu",
+          "book",
+          "focus",
+          "journal",
+          "fonts",
+          "textRenderPath",
+          "text_raster_scale",
+          "text_glyph_source",
+          "materials",
+          "overdraw",
+          "surfaces",
+          "full_screen_panels",
+          "hud_elements",
+          "markers",
+          "world_rendered_behind",
+          "dialogue_surface",
+          "non_world_area_frac",
+          "draw_calls",
+          "frame"
+        ]
+      },
+      "open_levelup_result": {
+        "ok": false,
+        "threw": "openMenu('levelup'): the level-up screen exists at a HEARTH only (RI-UIX03 L1). It is not on the pause menu and it is not available in the world."
+      },
+      "ui_mode_after": "world",
+      "levelup_reachable": false
+    },
+    {
+      "hearth": "hearth-gideon",
+      "basin": [
+        438.43,
+        2.689,
+        3031.5
+      ],
+      "registry_says_standing_at": "hearth-gideon",
+      "ui": {
+        "mode": "world",
+        "screens_offered": null,
+        "at_hearth_flag": null,
+        "hearth_name": null,
+        "raw_keys": [
+          "mode",
+          "map_exists",
+          "navigable",
+          "screen",
+          "elements",
+          "coveragePct",
+          "hud",
+          "menu",
+          "book",
+          "focus",
+          "journal",
+          "fonts",
+          "textRenderPath",
+          "text_raster_scale",
+          "text_glyph_source",
+          "materials",
+          "overdraw",
+          "surfaces",
+          "full_screen_panels",
+          "hud_elements",
+          "markers",
+          "world_rendered_behind",
+          "dialogue_surface",
+          "non_world_area_frac",
+          "draw_calls",
+          "frame"
+        ]
+      },
+      "open_levelup_result": {
+        "ok": false,
+        "threw": "openMenu('levelup'): the level-up screen exists at a HEARTH only (RI-UIX03 L1). It is not on the pause menu and it is not available in the world."
+      },
+      "ui_mode_after": "world",
+      "levelup_reachable": false
+    }
+  ],
+  "override": {
+    "setAtHearth": {
+      "ok": true,
+      "at_hearth": true,
+      "declared_override": true
+    },
+    "ui": {
+      "mode": "world",
+      "screens_offered": null,
+      "at_hearth_flag": null,
+      "hearth_name": null,
+      "raw_keys": [
+        "mode",
+        "map_exists",
+        "navigable",
+        "screen",
+        "elements",
+        "coveragePct",
+        "hud",
+        "menu",
+        "book",
+        "focus",
+        "journal",
+        "fonts",
+        "textRenderPath",
+        "text_raster_scale",
+        "text_glyph_source",
+        "materials",
+        "overdraw",
+        "surfaces",
+        "full_screen_panels",
+        "hud_elements",
+        "markers",
+        "world_rendered_behind",
+        "dialogue_surface",
+        "non_world_area_frac",
+        "draw_calls",
+        "frame"
+      ]
+    },
+    "open_levelup_result": {
+      "ok": true,
+      "result": {
+        "ok": true,
+        "mode": "levelup",
+        "paused": true
+      }
+    },
+    "ui_mode_after": "levelup",
+    "levelup_reachable": true,
+    "_note": "setAtHearth() is a harness override with no in-game counterpart. If the screen is reachable HERE and not at the basin, the sapwell is not what opens it."
+  },
+  "page_errors": []
+}

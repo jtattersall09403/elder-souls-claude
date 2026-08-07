@@ -1,0 +1,95 @@
+{
+  "schema": "critic-input-checks/1",
+  "tool": "tools/harness/critic-w1-08-29-r1d.mjs",
+  "ran_at": "2026-08-07T12:46:30.933Z",
+  "counts": {
+    "total": 2,
+    "pass": 0,
+    "fail": 2,
+    "unmeasurable": 0
+  },
+  "checks": [
+    {
+      "id": "L1-OVERLAY-ABLATION",
+      "what": "the touch overlay reaches the framebuffer: handheld vs desktop, same frame, zero input",
+      "status": "FAIL",
+      "threshold": "RI-MTH07 §B: coupling 0 = orphan model",
+      "detail": {
+        "model_value_a": {
+          "frame": 24,
+          "device": "desktop",
+          "overlay_visible": true,
+          "controls": 11,
+          "held": []
+        },
+        "model_value_b": {
+          "frame": 24,
+          "device": "handheld",
+          "overlay_visible": true,
+          "controls": 11,
+          "held": []
+        },
+        "observed_a": "a4932a97f50021ee",
+        "observed_b": "a4932a97f50021ee",
+        "null_control": {
+          "desktop_resampled": "a4932a97f50021ee",
+          "stable": true
+        },
+        "coupling": 0,
+        "note": "zero held actions in both arms, so a hash difference is the overlay and not the player animating"
+      }
+    },
+    {
+      "id": "L2-TEXT-REGISTER",
+      "what": "text the UI model reports drawing appears in the register M-K20 searches",
+      "status": "FAIL",
+      "threshold": "M-K20/HF5 searches getRenderedText(); if the UI draws text the register never sees, the check is inert",
+      "detail": {
+        "opened": [
+          {
+            "surface": "dialogue",
+            "ok": true,
+            "entries_after": 0
+          },
+          {
+            "surface": "menu",
+            "ok": true,
+            "entries_after": 0
+          },
+          {
+            "surface": "rest",
+            "ok": true,
+            "entries_after": 0
+          }
+        ],
+        "ui_elements": 6,
+        "ui_elements_with_text": 3,
+        "ui_text_sample": [
+          {
+            "id": "hud.heal",
+            "text": "5"
+          },
+          {
+            "id": "hud.equipload",
+            "text": "LIGHT"
+          },
+          {
+            "id": "hud.quickslots",
+            "text": "Spark-Dart"
+          }
+        ],
+        "register_entries": 0,
+        "register_surfaces": [
+          "dialogue",
+          "title"
+        ],
+        "register_summary": {
+          "total": 0,
+          "dropped": 0,
+          "cap": 40000,
+          "surfaces": {}
+        }
+      }
+    }
+  ]
+}

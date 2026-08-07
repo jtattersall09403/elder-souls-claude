@@ -185,15 +185,24 @@ function hasProseDirection(text, places) {
 }
 
 // S8: things that must never be in book text.
+//
+// The word "marker" alone is NOT the test and the first version of this tool got that wrong: it
+// flagged `march-marker` in a surveyor's monograph, which is a boundary stone and is exactly the
+// kind of in-world object RI-WLD06 §3 requires the world to have. What S8 forbids is the UI
+// affordance — a marker you travel TO, a pin, a waypoint, an arrow, a minimap, a coordinate.
+// The patterns below name that thing and leave the stones alone.
 const MARKER_PATTERNS = [
-  [/\bmarker\b/i, 'the word "marker"'],
-  [/\bwaypoint\b/i, 'waypoint'],
+  [/\b(?:quest|objective|map|compass|navigation|nav)[\s-]?markers?\b/i, 'a UI marker'],
+  [/\b(?:to|at|on|toward|towards|follow) the marker\b/i, '"the marker" as a destination'],
+  [/\bwaypoints?\b/i, 'waypoint'],
   [/\bmini-?map\b/i, 'minimap'],
   [/\bquest arrow\b/i, 'quest arrow'],
-  [/\bobjective\b/i, 'objective'],
+  [/\b(?:objective|waypoint) (?:marker|arrow|indicator)\b/i, 'objective marker'],
+  [/\byour objective\b/i, 'an objective addressed to the player'],
   [/\bfast[- ]travel\b/i, 'fast travel'],
-  [/\bmap pin\b/i, 'map pin'],
-  [/\bcompass (marker|arrow)\b/i, 'compass marker'],
+  [/\bmap pins?\b/i, 'map pin'],
+  [/\bcompass arrow\b/i, 'compass arrow'],
+  [/\bdistance to (?:objective|target)\b/i, 'a distance readout'],
   [/\b\d{2,4}\s*,\s*\d{2,4}\b/, 'a coordinate pair'],
 ];
 
@@ -263,7 +272,20 @@ function measure(opts) {
   // ---- §D row 6: readable before the quest that references them, checked against the QUESTS,
   //      not against a field the author wrote. A book claiming `readable_before` for a quest that
   //      does not reference it is not evidence of anything.
-  const questRefs = new Map();   // knowledge/source key -> [quest file]
+  //      Two classes of reference count, and they are reported separately because they are
+  //      different strengths of claim:
+  //        NAMED  — the quest names the book: `channel: "book"` in revealed_by, or a
+  //                 `requires.knowledge` key. The strongest form; a resolution can be gated on it.
+  //        TOPIC  — the quest's `opens_by.topic` / `prerequisite_topics` names a topic the book
+  //                 teaches. This is RI-UIX05 R3's permitted exception working as designed: the
+  //                 book gives the player a NAME, the name is a line of enquiry, and the quest
+  //                 opens on it. It is a real link and it is weaker than NAMED, so it is labelled.
+  //      D6 counts DISTINCT BOOKS across both classes.
+  const push = (m, k, v) => { if (!m.has(k)) m.set(k, []); if (!m.get(k).includes(v)) m.get(k).push(v); };
+  const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+  const questRefs = new Map();     // knowledge/source key -> [quest id or file]
+  const questTopics = new Map();   // slugged topic -> [quest id or file]
   const collect = (v, file) => {
     if (Array.isArray(v)) { v.forEach((x) => collect(x, file)); return; }
     if (!isObj(v)) return;
@@ -271,9 +293,13 @@ function measure(opts) {
     if (v.requires && Array.isArray(v.requires.knowledge)) {
       for (const k of v.requires.knowledge) if (/^(book_|item_)/.test(k)) push(questRefs, k, file);
     }
+    if (isObj(v.opens_by)) {
+      const who = v.id || file;
+      if (v.opens_by.topic) push(questTopics, slug(v.opens_by.topic), who);
+      for (const t of v.opens_by.prerequisite_topics || []) push(questTopics, slug(t), who);
+    }
     for (const x of Object.values(v)) collect(x, file);
   };
-  const push = (m, k, v) => { if (!m.has(k)) m.set(k, []); if (!m.get(k).includes(v)) m.get(k).push(v); };
   for (const { file, val } of walkJson(questsDir)) if (val) collect(val, path.basename(file));
 
   const keyed = new Map();
@@ -281,11 +307,19 @@ function measure(opts) {
     if (b.knowledge_key) keyed.set(b.knowledge_key, b.id);
     keyed.set('book_' + String(b.id).replace(/-/g, '_'), b.id);
   }
-  const questLinked = []; const questRefsUnsatisfied = [];
+  const namedLinks = []; const questRefsUnsatisfied = [];
   for (const [key, files] of questRefs) {
-    if (keyed.has(key)) questLinked.push({ key, book: keyed.get(key), quests: files });
+    if (keyed.has(key)) namedLinks.push({ key, book: keyed.get(key), quests: files });
     else questRefsUnsatisfied.push({ key, quests: files });
   }
+  const topicLinks = [];
+  for (const b of books) {
+    for (const t of b.topics_taught || []) {
+      const qs = questTopics.get(slug(t));
+      if (qs) { topicLinks.push({ book: b.id, topic: slug(t), quests: qs }); break; }
+    }
+  }
+  const questLinked = [...new Set([...namedLinks.map((l) => l.book), ...topicLinks.map((l) => l.book)])];
 
   // ---- S8: no markers in book text
   const markerHits = [];
@@ -360,6 +394,8 @@ function measure(opts) {
       dangling_contradictions: danglingContradictions,
       prose_directions: withDirections,
       quest_linked: questLinked,
+      quest_links_named: namedLinks,
+      quest_links_topic: topicLinks,
       quest_refs_unsatisfied: questRefsUnsatisfied,
       marker_hits: markerHits,
       multi_volume: multiVolume.map(([id, v]) => ({ id, volumes: v })),
