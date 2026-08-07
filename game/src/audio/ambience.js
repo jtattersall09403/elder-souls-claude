@@ -19,7 +19,7 @@
 'use strict';
 
 import { Rng } from '../core/rng.js';
-import { buildContinuous, buildGrain, dbToGain, gainToDb } from './synth.js';
+import { buildContinuous, buildGrain, dbToGain, gainToDb, DeterministicMixer, sinkFor } from './synth.js';
 
 /** RI-AUD02 §D V5 — the ambience bus may not exceed eight concurrent voices. */
 export const AMBIENCE_VOICE_CAP = 8;
@@ -294,7 +294,7 @@ export class AmbienceDriver {
         });
         if (this.ctx && this.live) {
           buildGrain(this.ctx, { ...ev, level_db: (layer.level_db || 0) + eventTrimDb(layer) + bedTrimDb(bed) },
-                     this.live.bus, this.rng, this.ctx.currentTime + Math.max(0, at - this.t), pan);
+                     this.live.mix, this.rng, this.ctx.currentTime + Math.max(0, at - this.t), pan);
         }
       }
     }
@@ -356,7 +356,7 @@ export class AmbienceDriver {
           this._emitPlacement(s.frame, e, pl, true);
           if (this.ctx && this.live) {
             buildGrain(this.ctx, { ...e, level_db: (e.level_db || 0) + eventTrimDb(e) + bedTrimDb(bed) },
-                       this.live.bus, this.rng, this.ctx.currentTime + Math.max(0, d.at - this.t),
+                       this.live.mix, this.rng, this.ctx.currentTime + Math.max(0, d.at - this.t),
                        pl.pan, pl.gain);
           }
         }
@@ -452,7 +452,10 @@ export class AmbienceDriver {
     const bus = ctx.createGain();
     bus.gain.value = 1;
     bus.connect(ctx.destination);
-    this.live = { bus, layers: [], emitters: [] };
+    // ROUND 3 (RI-AUD03 R3). Everything that reaches the bus goes through the lane ladder, so
+    // three simultaneously sounding signals are never summed in an order the graph has not fixed.
+    // See `DeterministicMixer` in synth.js and `tools/analysis/ambience-determinism.mjs`.
+    this.live = { bus, mix: new DeterministicMixer(ctx, bus), layers: [], emitters: [] };
     const bed = this.bedFor(this.region);
     if (bed) this._swapLive(bed);
     return true;
@@ -465,10 +468,14 @@ export class AmbienceDriver {
       old.gain.gain.linearRampToValueAtTime(0.0001, now + CROSSFADE_S);
       old.stop(now + CROSSFADE_S + 0.05);
     }
-    this.live.layers = buildBedContinuous(ctx, bed, this.live.bus, new Rng(this.seed ^ 0x51ed),
+    // A region swap is a new generation of continuous voices. The outgoing generation is still
+    // fading out on the same lanes for `CROSSFADE_S`, which puts exactly two sounding signals in
+    // one node — and two is exact whatever order the platform sums them in.
+    this.live.mix.resetReservations();
+    this.live.layers = buildBedContinuous(ctx, bed, this.live.mix, new Rng(this.seed ^ 0x51ed),
                                           this.lastEnv || { tod: 'day', weather: 'clear' }, now, CROSSFADE_S);
     for (const old of this.live.emitters) if (old) old.handle.stop(now + CROSSFADE_S + 0.05);
-    this.live.emitters = buildEmitterVoices(ctx, bed, this.live.bus, new Rng(this.seed ^ 0x7e17), now);
+    this.live.emitters = buildEmitterVoices(ctx, bed, this.live.mix, new Rng(this.seed ^ 0x7e17), now);
   }
 
   detach() {
@@ -553,7 +560,9 @@ export function buildEmitterVoices(ctx, bed, dest, rng, t0 = 0) {
     const rolloff = ctx.createGain();
     rolloff.gain.value = 0;
     const panner = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
-    if (panner) { rolloff.connect(panner); panner.connect(dest); } else rolloff.connect(dest);
+    // A continuous emitter sounds for as long as the bed does, so it reserves a lane (R3).
+    const sink = sinkFor(dest, false);
+    if (panner) { rolloff.connect(panner); panner.connect(sink); } else rolloff.connect(sink);
     const handle = buildContinuous(ctx, e.synth, rolloff, rng, t0,
                                    dbToGain((e.level_db || 0) + eventTrimDb(e) + bedTrimDb(bed)));
     out.push({ id: e.id, gain: rolloff, panner, handle });
@@ -613,6 +622,13 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
   const bus = ctx.createGain();
   bus.gain.value = 1;
   bus.connect(ctx.destination);
+  // ROUND 3 (RI-AUD03 R3) — THE SAME LADDER THE LIVE PATH USES, for the same reason and by the
+  // same class. This is the file's founding rule applied to the mixing topology as well as to the
+  // scheduler: a measurement path that sums its voices differently from the live path is
+  // measuring itself. It is also the path that matters most here, because every clip in every
+  // blind pack is rendered through it, and until this existed two of the beds could not be
+  // recorded twice and compared. See `DeterministicMixer` in synth.js.
+  const mix = new DeterministicMixer(ctx, bus);
 
   let h = (opts.seed === undefined ? 0xa3b1 : opts.seed) >>> 0;
   for (let i = 0; i < bed.id.length; i++) h = (Math.imul(h ^ bed.id.charCodeAt(i), 0x01000193)) >>> 0;
@@ -634,7 +650,7 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
   // numbers cannot answer it, because a noise grain normalised to ±0.9 and a sine at the same
   // `gain_db` are not the same loudness. `tools/analysis/ambience-onsets.mjs` is the consumer.
   const muted = new Set(opts.mute || EMPTY);
-  buildBedContinuous(ctx, bed, bus, new Rng(h ^ 0x51ed), env, 0, 0, opts.listener || null, muted);
+  buildBedContinuous(ctx, bed, mix, new Rng(h ^ 0x51ed), env, 0, 0, opts.listener || null, muted);
 
   const rng = new Rng(h);
   const clocks = { L3: new LayerClock(bed.layers.L3, rng, 'L3'), L4: new LayerClock(bed.layers.L4, rng, 'L4') };
@@ -644,7 +660,7 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
     for (const { at, ev } of clocks[key].due(0, seconds, env)) {
       const pan = ev.pan ? ev.pan[0] + rng.next() * (ev.pan[1] - ev.pan[0]) : 0;
       buildGrain(ctx, { ...ev, level_db: (bed.layers[key].level_db || 0) + eventTrimDb(bed.layers[key])
-                                         + bedTrimDb(bed) }, bus, rng, at, pan);
+                                         + bedTrimDb(bed) }, mix, rng, at, pan);
       fired.push({ layer: key, id: ev.id, at_s: Math.round(at * 100) / 100, pan: Math.round(pan * 100) / 100 });
     }
   }
@@ -676,8 +692,9 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
         const rolloff = ctx.createGain();
         rolloff.gain.value = p.gain;
         const panner = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
-        if (panner) { panner.pan.value = Math.max(-1, Math.min(1, p.pan)); rolloff.connect(panner); panner.connect(bus); }
-        else rolloff.connect(bus);
+        const sink = sinkFor(mix, false);
+        if (panner) { panner.pan.value = Math.max(-1, Math.min(1, p.pan)); rolloff.connect(panner); panner.connect(sink); }
+        else rolloff.connect(sink);
         buildContinuous(ctx, e.synth, rolloff, rng, 0, dbToGain((e.level_db || 0) + eventTrimDb(e) + bedTrimDb(bed)));
         fired.push({ layer: 'emitter', id: e.id, mode: 'continuous', at_s: 0,
                      pan: Math.round(p.pan * 1000) / 1000, gain: Math.round(p.gain * 1000) / 1000,
@@ -686,7 +703,7 @@ export async function renderBedOffline(OfflineCtor, bed, opts = {}) {
       }
       const clock = emitterClock(e, rng);
       for (const { at } of clock.due(0, seconds, env)) {
-        buildGrain(ctx, { ...e, level_db: (e.level_db || 0) + eventTrimDb(e) + bedTrimDb(bed) }, bus, rng, at, p.pan, p.gain);
+        buildGrain(ctx, { ...e, level_db: (e.level_db || 0) + eventTrimDb(e) + bedTrimDb(bed) }, mix, rng, at, p.pan, p.gain);
         fired.push({ layer: 'emitter', id: e.id, at_s: Math.round(at * 100) / 100,
                      pan: Math.round(p.pan * 1000) / 1000, gain: Math.round(p.gain * 1000) / 1000,
                      distance_m: Math.round(p.distance_m) });

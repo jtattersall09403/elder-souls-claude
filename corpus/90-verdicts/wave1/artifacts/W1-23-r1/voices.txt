@@ -1,0 +1,81 @@
+W1-23 ROUND-1 CRITIC — TEXT EVIDENCE. commit 3ba93e04f53e8827153134ebe255085b84682acf
+
+==============================================================================
+1. WHO SPEAKS ON SLAVERY. Every distinct answer the province gives to the
+   dialogue topic `slavery`, over all 347 NPCs, with the register installed.
+==============================================================================
+PLAYER RACE saxhleel: 3 distinct answers to "slavery" in the whole province
+   [clerk/imperial] No subject of the Empire may be held as property inside the Empire's law. Where it happens it happens outside that law, off foreign keels, and the Office has made representations. I've copied three of them myself.
+   [townsman/saxhleel] This one will not discuss it with you standing there, and this one is sorry.
+   [dres-factor/dunmer] The House keeps a stock column and people are entered in it and taken out of it, and the law you are quoting changes the word on the paper and nothing else. You wanted an honest answer. Now go and be shocked somewhere I can't see you.
+
+PLAYER RACE argonian: 3 distinct answers to "slavery" in the whole province
+   [clerk/imperial] No subject of the Empire may be held as property inside the Empire's law. Where it happens it happens outside that law, off foreign keels, and the Office has made representations. I've copied three of them myself.
+   [townsman/saxhleel] It is illegal in the Empire and it happens on the road twice a month.
+   [dres-factor/dunmer] The House keeps a stock column and people are entered in it and taken out of it, and the law you are quoting changes the word on the paper and nothing else. You wanted an honest answer. Now go and be shocked somewhere I can't see you.
+
+PLAYER RACE naga: 3 distinct answers to "slavery" in the whole province
+   [clerk/imperial] No subject of the Empire may be held as property inside the Empire's law. Where it happens it happens outside that law, off foreign keels, and the Office has made representations. I've copied three of them myself.
+   [townsman/saxhleel] This one will not discuss it with you standing there, and this one is sorry.
+   [dres-factor/dunmer] The House keeps a stock column and people are entered in it and taken out of it, and the law you are quoting changes the word on the paper and nothing else. You wanted an honest answer. Now go and be shocked somewhere I can't see you.
+
+PLAYER RACE dunmer: 3 distinct answers to "slavery" in the whole province
+   [clerk/imperial] No subject of the Empire may be held as property inside the Empire's law. Where it happens it happens outside that law, off foreign keels, and the Office has made representations. I've copied three of them myself.
+   [townsman/saxhleel] Your House ran it and your House is still owed for it, depending which ledger.
+   [dres-factor/dunmer] The House keeps a stock column and people are entered in it and taken out of it, and the law you are quoting changes the word on the paper and nothing else. You wanted an honest answer. Now go and be shocked somewhere I can't see you.
+
+PLAYER RACE imperial: 3 distinct answers to "slavery" in the whole province
+   [clerk/imperial] No subject of the Empire may be held as property inside the Empire's law. Where it happens it happens outside that law, off foreign keels, and the Office has made representations. I've copied three of them myself.
+   [townsman/saxhleel] The Empire abolished it and then declined to enforce the abolition. Neither instrument has been withdrawn.
+   [dres-factor/dunmer] The House keeps a stock column and people are entered in it and taken out of it, and the law you are quoting changes the word on the paper and nothing else. You wanted an honest answer. Now go and be shocked somewhere I can't see you.
+
+argonian-race NPCs in the province: 227
+  of whom have ANY answer to `slavery`: 66 -> 3 distinct:
+     This one will not discuss it with you standing there, and this one is sorry.
+     The House keeps a stock column and people are entered in it and taken out of it, and the law you are quoting changes the word on the paper and nothing else. You wanted an honest answer. Now go and be shocked somewhere I can't see you.
+     No subject of the Empire may be held as property inside the Empire's law. Where it happens it happens outside that law, off foreign keels, and the Office has made representations. I've copied three of them myself.
+
+==============================================================================
+2. DELETE-THE-FIX. The same two topics with the register and with canon=null.
+==============================================================================
+==== WITH REGISTER
+  topic the-thinning: 5 distinct answers in the province
+     [archivist / -] The sap yield from the Helstrom wells is down by a figure the Ledger will not state and which can be infe
+     [deep-elder / shadowscale-order] This one will say it plainly and once. The wells are short because the root under them is being taken and
+     [mudborn / the_drowned_court] The Court keeps the burial ledgers and the burial ledgers are where it shows first, dry-one, and I have b
+     [clerk / -] The Ledger commissioned a survey and I've read it. Too many cuts, too close together, over too few season
+     [rootkeeper / the_xul_aneekh] Six years, and it is not cutting, and it is not the Empire, and it is not the fever. I have eliminated th
+  topic slavery: 3 distinct answers in the province
+     [clerk / -] No subject of the Empire may be held as property inside the Empire's law. Where it happens it happens out
+     [townsman / the_dockhands] Your House ran it and your House is still owed for it, depending which ledger.
+     [dres-factor / house_dres] The House keeps a stock column and people are entered in it and taken out of it, and the law you are quot
+==== REGISTER DELETED
+  topic the-thinning: 5 distinct answers in the province
+     [archivist / -] The sap yield from the Helstrom wells is down by a figure the Ledger will not state and which can be infe
+     [deep-elder / shadowscale-order] This one will say it plainly and once. The wells are short because the root under them is being taken and
+     [mudborn / the_drowned_court] The Court keeps the burial ledgers and the burial ledgers are where it shows first, dry-one, and I have b
+     [clerk / -] The Ledger commissioned a survey and I've read it. Too many cuts, too close together, over too few season
+     [rootkeeper / the_xul_aneekh] Six years, and it is not cutting, and it is not the Empire, and it is not the fever. I have eliminated th
+  topic slavery: 3 distinct answers in the province
+     [clerk / -] No subject of the Empire may be held as property inside the Empire's law. Where it happens it happens out
+     [townsman / the_dockhands] Your House ran it and your House is still owed for it, depending which ledger.
+     [dres-factor / house_dres] The House keeps a stock column and people are entered in it and taken out of it, and the law you are quot
+3. THE 'BEFORE' COLUMN. The registry's own history — voiced_by and holders are fields
+   this piece INVENTED. A census whose fully-voiced test reads voiced_by scores 0 of N
+   on any registry that has none, however loudly the province is already arguing.
+
+  b96de7c   facts 54  disputed 6   voiced_by entries 0    positions with holders 0
+  86366ea   facts 54  disputed 6   voiced_by entries 0    positions with holders 0
+  cdb2938   facts 71  disputed 21  voiced_by entries 93   positions with holders 48
+  HEAD      facts 83  disputed 27  voiced_by entries 136  positions with holders 66
+
+  Books already on disk at b96de7c (pre-piece): 112.
+  Of the six seeded disputes, how many would have counted as FULLY VOICED at b96de7c
+  on books alone, had the schema had a voiced_by field:
+    CF-D001  YES - every position already had a book
+    CF-D002  no  - at least one position needed a voice this piece wrote
+    CF-D003  YES - every position already had a book
+    CF-D004  no  - at least one position needed a voice this piece wrote
+    CF-D005  YES - every position already had a book
+    CF-D006  YES - every position already had a book
+    => 4 of 6, not 0 of 6.

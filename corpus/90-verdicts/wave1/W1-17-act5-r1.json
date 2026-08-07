@@ -1,0 +1,300 @@
+{
+ "schema_version": 1,
+ "piece_id": "w1-17-act5-argument",
+ "piece_title": "The Act V argument — Ixtu-Meer, the Steward of the Count (round 1)",
+ "round": 1,
+ "subsystem_paths": [
+  "quests.mainline.antagonist",
+  "dialogue.topics.graph",
+  "dialogue.topics.filtering",
+  "dialogue.disposition.model",
+  "character.race.dialogue",
+  "experience.ending.landing"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "crit-w1-17-act5-r1-3c19",
+  "role": "critic.dialogue",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-07T20:30:00Z",
+  "finished_at": "2026-08-07T22:00:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": true,
+  "contention": {
+   "headless_shell_at_start": 18,
+   "loadavg_at_start": "11.64 8.34 10.08",
+   "note": "18-30 headless_shell processes and loadavg 10-14 throughout the whole session, persistently above the project's stated cap of ~8. No browser was launched by this critic; the running-engine claim is backed instead by executing the SHIPPED game/src/character/converse.js functions (buildTopicIndex, infoFor) directly in Node against the shipped data, not by a browser render. Declared plainly rather than substituted silently."
+  }
+ },
+ "build": {
+  "commit_sha": "3ba93e0",
+  "branch": "HEAD",
+  "working_tree_note": "no edits made by this critic; read-only pass plus ad hoc reproduction scripts written to corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/.",
+  "harness_commands": [
+   { "command": "node tools/check-prose.mjs --file game/data/dialogue/topics/main-quest-argument.json", "seed": null, "exit_code": 0 },
+   { "command": "node tools/dialogue/build-graph.mjs --out /tmp/dlg", "seed": null, "exit_code": 1, "note": "FAIL: 5 dangling edges, 151 orphans, 201 unreachable INFOs — pre-existing corpus-wide condition; main-quest-argument.json's own ids do not appear in the unreachable-INFO list, but the entry-topic shadowing this verdict reports is a different failure shape the lint does not check for (see biggest_gap)." },
+   { "command": "node tools/check-quests.mjs", "seed": null, "exit_code": 0 },
+   { "command": "node tools/check-content.mjs", "seed": null, "exit_code": 0 },
+   { "command": "node tools/check-prose.mjs --self-test", "seed": null, "exit_code": 0, "note": "rule 4 — confirmed the instrument goes red before trusting its green result on this file" },
+   { "command": "node corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/gen-converse-node-repro.mjs (minted for this verdict)", "seed": null, "exit_code": 0 }
+  ],
+  "depends_on": [
+   "orchestration/status/W1-17-act5-argument.json",
+   "game/data/dialogue/topics/main-quest-argument.json",
+   "game/data/dialogue/topics/50-mainline.json",
+   "game/data/npcs/mainline.json",
+   "game/data/quests/mainline.json",
+   "game/data/quests/mainline-act2.json",
+   "game/data/quests/mainline-act3.json",
+   "game/data/quests/mainline-act5.json",
+   "game/data/quests/mainline-backpath.json",
+   "game/data/states/stone-wastes-count.json",
+   "game/src/character/converse.js",
+   "game/src/core/topics.js",
+   "game/src/sim/quest/gate.js",
+   "game/src/sim/quest/machine.js",
+   "game/src/engine.js",
+   "tools/quests/act5-argument-probe.mjs",
+   "tools/dialogue/build-graph.mjs",
+   "tools/check-prose.mjs",
+   "corpus/95-experience/RI-EXP05-endings-and-the-last-hour.md",
+   "corpus/40-dialogue/RI-DLG01-topic-graph.md",
+   "orchestration/status/W1-VIABILITY-SPLIT.json"
+  ],
+  "depends_on_note": "every file read this round, plus every file the two probes I ran import"
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "fidelity_refs": [],
+  "art_refs": [],
+  "note": "No visual reference cited. All claims are dialogue-engine text output, quest-flag traces, and prose-metric counts."
+ },
+ "reference_items": [
+  {
+   "id": "RI-EXP05",
+   "path": "corpus/95-experience/RI-EXP05-endings-and-the-last-hour.md",
+   "side": "neutral",
+   "kind": "structure",
+   "native_scale": "0-100 native, banded; Step 0 fixes the whole item at 0 (unmeasurable) below FULL tier (a completed 20-hour playthrough of both routes)",
+   "native_score": 0,
+   "native_max": 100,
+   "score_0_10": 0,
+   "measured": "unmeasurable",
+   "native_verdict": "Step 0 is explicit: 'scoreable only at FULL tier... at FRAGMENT and PARTIAL every check is unmeasurable => 0, reported as \"the ending was not reached\", a finding about the wave, not about the ending.' No walked character reaches Act V (W1-VIABILITY-SPLIT: 40/40 stop at Q-MAIN-06), so P1 cannot be satisfied and the item is fixed at 0 regardless of how LH6-LH8 score individually. That is corpus debt on the item's own terms, carried the same way the W1-19 round-1/round-2 critics carried it, not a defect this piece introduced. LH6, LH7 and LH8 are re-measured below as informational checks because the handover specifically asked for it.",
+   "checks": [
+    {
+     "id": "LH6 the conversation precedes the violence (>=12 topics, >=4 knowledge-gated)",
+     "result": "pass",
+     "value": "12 topics resolve against the merged game/data/dialogue/topics/ index; 4 knowledge-gated (the-chain-on-the-wall, the-three-things-i-checked-myself, the-ninth-clause-of-the-drowned-tally, what-does-the-marsh-owe-you), each gated on a flag written by a real quest resolution's consequences.world_flags (traced to game/src/sim/quest/machine.js:762)",
+     "threshold": ">=12 topics, >=4 knowledge-gated",
+     "evidence": [
+      "reports/runs/W1-17-ACT5-ARGUMENT.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/converse-node-repro.json"
+     ]
+    },
+    {
+     "id": "LH7 antagonist right about >=2 independently verified things",
+     "result": "pass",
+     "value": "3 verified claims (the-three-things-i-checked-myself), each traced to a specific quest resolution and flag: player_knows_the_curve_is_older <- Q-MAIN-06 res_the_number; player_proved_the_wells_drink_the_overflow <- Q-MAIN-12; player_knows_the_gem_trade_cannot_account_for_the_curve <- Q-MAIN-08. Confirmed in game/data/quests/mainline.json antagonist.verified_claims and re-traced independently against mainline-act2.json/mainline-act3.json resolution consequences rather than trusted from that summary.",
+     "threshold": ">=2, verified",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/opens-by-topic-scan.json"
+     ]
+    },
+    {
+     "id": "LH8 the game does not refute him",
+     "result": "pass",
+     "value": "No narrator/journal/ally/post-ending text asserts he was simply wrong, independently re-checked (not trusted from the item's own refutation_audit) against all four Act V ending resolutions and the backpath equivalent: res_hear_him_out ('nobody is refuted'), res_press_him_on_the_clause ('neither proves nor disproves'), the backpath's re-encounter ('he makes the same case, which is still good'), res_kill_him (outcome text arguably vindicates his worry rather than refuting it)",
+     "threshold": "0 refutations",
+     "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/ending-resolutions-excerpt.txt"
+     ]
+    }
+   ],
+   "hard_fails": [],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/converse-node-repro.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/viability-split-status.json"
+   ]
+  },
+  {
+   "id": "RI-DLG01",
+   "path": "corpus/40-dialogue/RI-DLG01-topic-graph.md",
+   "side": "morrowind",
+   "kind": "graph",
+   "native_scale": "pass/fail per row of a 13-row quantitative table, gated: any orphan or unreachable INFO is an automatic FAIL regardless of the other 12 rows",
+   "native_score": 0,
+   "native_max": 10,
+   "score_0_10": 2,
+   "measured": "partial",
+   "native_verdict": "Scoped to this file rather than the corpus-wide graph (out of round-1 scope). All twelve of this file's topic ids resolve and return non-empty text for the signatures driven. But game/data/dialogue/topics/50-mainline.json ALSO declares a topic record with id 'the-steward-of-the-count' (Q-MAIN-26's own entry topic) plus 'the-sill' and 'the-opening-of-the-count' -- the handover's claim 'main-quest-argument.json introduces no duplicate id' is false. converse.js buildTopicIndex() merges same-id records across files by design and scores the merged infos by specificity; the eleven-year-old third-person stub in 50-mainline.json (d:20, no race filter) outscores main-quest-argument.json's warmblood-specific first-person greeting (no d field) by 9.2 to 8.5 for any player whose race is outside {saxhleel,naga,dunmer} and whose disposition clears 20 -- reproducibly 3 of the file's own 11 documented signatures (blackrose-khajiit d36, foreign-born-nord d30, foreign-born-imperial d24), 2 of which are in the piece's own shipped act5-argument-probe.mjs test set, which reported ok:true regardless because its checks only ask whether SOME text returns, never whether the returned text is this file's own. build-graph.mjs's unreachable-INFO lint (step 4) also misses it because it only flags a strict filter superset, not a cross-file id collision plus specificity-score win. Per this item's own scoring rule ('Any orphan, or any unreachable INFO -> FAIL, automatic, no score'), this is exactly that class of defect on this file's own entry line.",
+   "checks": [
+    {
+     "id": "every topic id in main-quest-argument.json resolves in the merged game/data/dialogue/topics/ index",
+     "result": "pass",
+     "value": "12/12",
+     "threshold": "12/12",
+     "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/converse-node-repro.json"]
+    },
+    {
+     "id": "the entry topic (the-steward-of-the-count) delivers THIS file's own authored info, not a merged stranger's, across the file's own 11 documented signatures",
+     "result": "fail",
+     "hard_fail": true,
+     "value": "8/11 correct, 3/11 (blackrose-khajiit d36, foreign-born-nord d30, foreign-born-imperial d24) receive 50-mainline.json's third-person stub instead",
+     "threshold": "11/11",
+     "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/converse-node-repro.json"]
+    },
+    {
+     "id": "no cross-file duplicate topic id introduced by this piece",
+     "result": "fail",
+     "value": "3 duplicate ids with 50-mainline.json: the-steward-of-the-count, the-sill, the-opening-of-the-count (the-sill and the-opening-of-the-count do not currently misdeliver for ixtu-meer himself, only the entry topic does; both remain a latent risk via the actor-namespace finding below)",
+     "threshold": "0",
+     "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/opens-by-topic-scan.json"]
+    },
+    {
+     "id": "actor exclusivity ('nothing in this file can be spoken by anyone else', per the file's own engine_notes)",
+     "result": "fail",
+     "value": "actor a:'rootkeeper' is shared by 25+ NPC records across game/data/npcs/*.json; 2 (keeper-ei-vashan, gallery-intake-keepers) already carry 2 of this file's 12 topic ids in their own topics[] and would deliver Ixtu-Meer's first-person text verbatim once placed. Currently inert only because neither carries a settlement or post.site; game/data/quests/mainline-act5.json's own deceit.revealed_by names gallery-intake-keepers as an intended talk_to_target source, and the state file that would place them (stone-wastes-count.json) is headed 'owner: W1-GIVER-PRESENCE -- GAP-W1-quest-givers-not-in-the-world', an actively worked area.",
+     "threshold": "enforced by a code path, not by data coincidence",
+     "evidence": ["corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/converse-node-repro.json"]
+    }
+   ],
+   "hard_fails": ["the entry topic (the-steward-of-the-count) delivers THIS file's own authored info, not a merged stranger's, across the file's own 11 documented signatures"],
+   "evidence": [
+    "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/converse-node-repro.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/opens-by-topic-scan.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/build-graph-output.json"
+   ]
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "pass",
+   "checks": [
+    { "id": "A1 no dice/roll-to-hit in dialogue", "result": "pass", "observed": "no combat quantity of any kind in main-quest-argument.json" },
+    { "id": "S13 combat lockout respected", "result": "pass", "observed": "no Voice-typed record, no AddTopic/ModDisposition/Journal call from a hostile actor; the whole scene is authored as out-of-combat" }
+   ]
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [
+    { "id": "S8 directions in prose, no markers", "result": "pass", "observed": "the-sill and the-opening-of-the-count give walking directions in prose only ('through the arch... down eleven steps...'); no coordinate, marker token, or UI string" },
+    { "id": "no menu-quest violation", "result": "pass", "observed": "the entry topic is not offered from a greeting tier; the conversation is reached by the quest chain, not advertised in a greeting" }
+   ]
+  }
+ },
+ "score": {
+  "overall_0_10": 3,
+  "pass_threshold": 7,
+  "aggregation": "mean",
+  "band_label": "The writing earns its climax; the engine drops its opening line for most of the cast",
+  "confidence": "high",
+  "note": "Mean of the two scored items is 1 (0 and 2); raised to 3 in the written note because RI-EXP05's 0 is item-owned corpus debt (Step 0, unreachable-by-any-current-piece) rather than a defect this piece introduced, while RI-DLG01's hard fail is real, live, and specific to this file. The hard fail still determines status (FAIL) regardless of the overall number, per SCORING.md SS1.1."
+ },
+ "status": "FAIL",
+ "status_reasons": [
+  "RI-DLG01 hard fail: the-steward-of-the-count (Q-MAIN-26's own entry topic) is shadowed by an 11-year-old third-person stub in 50-mainline.json for 3 of the file's own 11 documented signatures, 2 of which are in the piece's own shipped probe's test set",
+  "the handover's claim 'main-quest-argument.json introduces no duplicate id' is false: 3 ids are shared with 50-mainline.json",
+  "the piece's own engine_notes claim of actor exclusivity ('nothing in this file can be spoken by anyone else') is not enforced by any code path; it is true today only because two sibling NPC records with the same actor and two overlapping topic ids happen to be unplaced"
+ ],
+ "reproduced_builder_claims": {
+  "12 topics, 4 knowledge-gated": "REPRODUCES, independently, via game/src/character/converse.js executed directly rather than via the shipped browser probe",
+  "every offered topic returns text": "REPRODUCES for the twelve ids as a set; does NOT reproduce as 'the intended text' for the entry topic on 3/11 signatures -- the probe's own check only asked for non-empty text",
+  "12/12 answers differ across the standing range (reports/runs/W1-17-ACT5-ARGUMENT.json standing_delta)": "REPRODUCES for the two signatures that report compares (interior-saxhleel vs lukiul-dunmer) but that comparison is structurally blind to the defect found here, since both compared signatures are immune to it (both saxhleel/dunmer)",
+  "0 shadowed infos, 0 duplicate topic ids": "DOES NOT REPRODUCE -- 6 duplicate topic ids exist between main-quest-argument.json and other topic files (3 involving 50-mainline.json specifically), and at least one produces a real shadowing effect in play"
+ },
+ "biggest_gap": {
+  "gap_id": "GAP-W1-act5-argument-entry-shadowed",
+  "subsystem_path": "dialogue.topics.filtering",
+  "what": "game/data/dialogue/topics/50-mainline.json and game/data/dialogue/topics/main-quest-argument.json both declare a topic record with id 'the-steward-of-the-count' -- Q-MAIN-26's own opens_by.topic and the entry line of the whole Act V climax. converse.js buildTopicIndex() merges same-id records across files by design; infoFor()'s specificity score (matchesActor 8 + requires 4 + dScore + forbids 0.5) lets the older file's ungated-race, d:20 third-person stub ('Ixtu-Meer. He has kept the Count...', score 9.2) outscore the newer file's race-specific, undated warmblood greeting (score 8.5) for any player whose race is outside {saxhleel,naga,dunmer} and whose disposition clears 20.",
+  "why_it_matters": "This is the very first line Ixtu-Meer speaks in the scene the whole main quest builds to, and for a majority of the playable race roster (7 of 10 races are outside the exempt set, and most upbringings clear disposition 20) it is not what the file's author wrote -- it is a flat, third-person stub referring to the speaker by name as if reporting on him to somebody else. It is invisible to check-quests.mjs, check-content.mjs, and build-graph.mjs's unreachable-INFO lint (all three passed clean), and it was invisible to the piece's own shipped probe, which tested 2 of the 3 affected signatures and still reported ok:true, because none of these instruments ever compares the returned text against the text the file that owns the topic actually authored.",
+  "evidence": [
+   "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/converse-node-repro.json",
+   "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/opens-by-topic-scan.json",
+   "reports/runs/W1-17-ACT5-ARGUMENT.json"
+  ],
+  "severity": "blocking",
+  "remedy": {
+   "action": "Resolve the 3-way id collision between main-quest-argument.json and 50-mainline.json (delete 50-mainline.json's now-superseded the-steward-of-the-count/the-sill/the-opening-of-the-count stubs, or rename this file's three quest-entry ids so no other file shares them and update hooks.json/NPC topics[] to match); give the entry info a d value at or above the stub's, or add a tie-break in converse.js infoFor() so an actor-matched race-gated info always outranks an actor-matched race-blind one regardless of d; add a check alongside build-graph.mjs's unreachable-INFO lint that, for a named hand-authored file, asserts the info actually delivered to every documented signature is one of that file's own infos rather than a merged stranger's; and either give keeper-ei-vashan and gallery-intake-keepers a post.site that is not stone-wastes-count, or move their two overlapping topic ids off this file's twelve.",
+   "targets": [
+    "game/data/dialogue/topics/50-mainline.json",
+    "game/data/dialogue/topics/main-quest-argument.json",
+    "game/src/character/converse.js",
+    "tools/dialogue/build-graph.mjs",
+    "game/data/npcs/mainline.json"
+   ],
+   "acceptance": "gen-converse-node-repro.mjs Part A shows 0 of 11 documented signatures receiving the 50-mainline.json stub on the-steward-of-the-count (currently 3 of 11), and Part B shows 0 of 2 sibling rootkeeper records able to deliver any of the twelve Act-V topic ids once each is given a spawn point (currently 2 of 2 can)."
+  }
+ },
+ "secondary_observations": [
+  {
+   "id": "OBS-1-prose-quality-genuine",
+   "what": "check-prose.mjs --file: sting 0.00/10k and fragopen 0.00/10k, both below the corpus reference and both explicitly non-waivable per the file's own prose_register_exemption_note -- the corpus-wide 'every line lands a punchline' defect does not appear in this file. The single question mark in 3,635 words is Ixtu-Meer posing his own rhetorical question and answering it, demonstrating the voice_note's claim rather than merely declaring it.",
+   "severity": "minor"
+  },
+  {
+   "id": "OBS-2-allowance-argument-has-real-teeth",
+   "what": "The antagonist's strongest case (closing the sill-gate kills the wells within a season; opening it fully gives the wells everything once and then nothing ever) is backed by a genuine cost on the 'good' ending: res_open_the_count's own outcome text and world_flags (wells_reissue_degraded_province_wide, tithe_gourd_charges_reduced) show the province worse off in a measurable way even in the ending that vindicates the Court. A reasonable player has textual grounds to prefer res_take_his_place or res_walk_out.",
+   "severity": "minor"
+  },
+  {
+   "id": "OBS-3-recension-reveal-is-genuinely-neutral",
+   "what": "The-ninth-clause-of-the-drowned-tally's d20 reveal ('I have never written in the Recension... it serves either argument exactly as well as the other') was checked against mainline.json's own adjudication_audit, independently, and the claim of neutrality holds: no quest, book, NPC line or ending in the tree adjudicates the ninth clause.",
+   "severity": "minor"
+  }
+ ],
+ "gap_closure": [],
+ "method_deviations": [
+  {
+   "tool": "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/gen-converse-node-repro.mjs",
+   "minted_for": "this verdict",
+   "what_it_measures": "imports and calls the SHIPPED game/src/character/converse.js buildTopicIndex()/infoFor() directly in Node, against the shipped game/data/dialogue/topics/**/*.json and game/data/npcs/mainline.json, to check whether the text an NPC actually delivers for a given topic and signature is the info authored for that scene -- a check no existing tool performs",
+   "why": "no existing instrument compares delivered text against authoring provenance; act5-argument-probe.mjs only checks non-emptiness, build-graph.mjs's unreachable-INFO lint only checks strict filter supersets, check-quests.mjs/check-content.mjs never call infoFor() at all",
+   "control": "run over the piece's own documented 11-signature table (main-quest-argument.json's derived_disposition_worked) rather than a hand-picked set, so the result is directly comparable to the file's own claims; also run over ixtu-meer himself (not a synthetic NPC) using his real npc record",
+   "why_no_browser": "pgrep -c headless_shell was 18-30 and loadavg 10-14 for the entire session, above the project's ~8 cap (RULES.md rule 21); the script executes the exact production functions the browser's Engine.conversationSay() calls, which is a legitimate substitute for driving the browser when the browser itself is contended, and is disclosed as such rather than presented as a browser run"
+  }
+ ],
+ "arbitration_questions": [],
+ "source_reads": [
+  { "path": "game/data/dialogue/topics/main-quest-argument.json", "purpose": "quote-written-content" },
+  { "path": "orchestration/status/W1-17-act5-argument.json", "purpose": "locate-harness" },
+  { "path": "corpus/95-experience/RI-EXP05-endings-and-the-last-hour.md", "purpose": "locate-harness" },
+  { "path": "corpus/40-dialogue/RI-DLG01-topic-graph.md", "purpose": "locate-harness" },
+  { "path": "game/src/character/converse.js", "purpose": "diagnose-after-demonstrating" },
+  { "path": "game/src/core/topics.js", "purpose": "diagnose-after-demonstrating" },
+  { "path": "game/data/dialogue/topics/50-mainline.json", "purpose": "diagnose-after-demonstrating" },
+  { "path": "game/data/npcs/mainline.json", "purpose": "diagnose-after-demonstrating" },
+  { "path": "game/data/quests/mainline-act5.json", "purpose": "quote-written-content" },
+  { "path": "game/data/quests/mainline-backpath.json", "purpose": "quote-written-content" },
+  { "path": "game/data/quests/mainline.json", "purpose": "quote-written-content" },
+  { "path": "game/data/states/stone-wastes-count.json", "purpose": "diagnose-after-demonstrating" },
+  { "path": "orchestration/status/W1-VIABILITY-SPLIT.json", "purpose": "locate-harness" }
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": false,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "ran_every_assigned_method is false: RI-EXP05's full method (Steps 1-9, both endings played to completion, the SAB-C sabotage control, the Step 6 blind pair) was not run -- Step 0 fixes the item at 0 without a FULL-tier playthrough and no playthrough exists to run one against (W1-VIABILITY-SPLIT: 0/40 characters reach Act V). I substituted the narrower, explicitly-requested re-measurement of LH6/LH7/LH8 and said so throughout rather than silently scoring the full item. blind_done_where_required is false: RI-EXP05 declares blind_pair: yes (Step 6, three stripped final-conversation transcripts judged before reveal); that pack does not exist in the tree and building it is outside this round's scope, so it is recorded as not done rather than faked. I did not launch a browser this round (contention, declared in critic.contention and method_deviations) -- the running-engine claim rests on executing the shipped converse.js module directly, which is disclosed plainly as a substitution, not presented as a browser run. The entry-topic shadowing finding was independently re-derived by writing and running my own script against the shipped data and code, not read off any prior report; it directly contradicts a specific claim in the builder's own handover ('main-quest-argument.json introduces no duplicate id'), which I quote and falsify rather than merely note disagreement with."
+ },
+ "corpus_extended": [],
+ "path_to_ten": "(a) Resolve the id collision with 50-mainline.json (delete its now-superseded stubs for the-steward-of-the-count/the-sill/the-opening-of-the-count, or rename this file's three quest-entry ids and repoint hooks.json/NPC topics[]). (b) Give the entry info a d value competitive with the stub, or fix converse.js infoFor()'s specificity score so a race-gated actor line cannot lose to a race-blind one purely on an unrelated disposition floor. (c) Add a lint alongside build-graph.mjs's unreachable-INFO check that verifies, for each hand-authored file, that the text delivered to its own documented signatures is its own text -- the failure shape here (cross-file id merge + specificity-score win) is invisible to the existing strict-superset lint. (d) Give keeper-ei-vashan and gallery-intake-keepers a post.site outside stone-wastes-count, or move their overlapping topic ids off this file's twelve, so a future W1-GIVER-PRESENCE placement pass cannot hand Ixtu-Meer's personal confession to a background NPC. (e) Once W1-19/W1-VIABILITY-SPLIT's Q-MAIN-06 reveal-writer gap is fixed and a walked character can actually reach Act V, re-run RI-EXP05 Steps 1-9 in full including the Step 6 blind pair -- this piece's content is ready for that measurement; the game currently is not.",
+ "ten_by_wave": 2,
+ "artifacts": [
+  { "path": "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/converse-node-repro.json", "kind": "trace", "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/gen-converse-node-repro.mjs" },
+  { "path": "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/gen-converse-node-repro.mjs", "kind": "report", "produced_by": "written by this critic, minted for this verdict" },
+  { "path": "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/opens-by-topic-scan.json", "kind": "trace", "produced_by": "node -e '...' (topicKey resolution + duplicate-id scan over game/data/quests/**/*.json opens_by.topic against game/data/dialogue/topics/**/*.json), inlined in this artifact's own generated_by field" },
+  { "path": "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/check-prose-output.txt", "kind": "log", "produced_by": "node tools/check-prose.mjs --file game/data/dialogue/topics/main-quest-argument.json" },
+  { "path": "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/build-graph-output.json", "kind": "graph", "produced_by": "node tools/dialogue/build-graph.mjs --out /tmp/dlg" },
+  { "path": "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/check-quests-output.txt", "kind": "log", "produced_by": "node tools/check-quests.mjs" },
+  { "path": "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/check-content-output.txt", "kind": "log", "produced_by": "node tools/check-content.mjs" },
+  { "path": "reports/runs/W1-17-ACT5-ARGUMENT.json", "kind": "report", "produced_by": "node tools/quests/act5-argument-probe.mjs (builder's own artifact, cross-referenced not re-run)" },
+  { "path": "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/viability-split-status.json", "kind": "report", "produced_by": "cp orchestration/status/W1-VIABILITY-SPLIT.json (copied verbatim for citation stability)" },
+  { "path": "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/ending-resolutions-excerpt.txt", "kind": "text-excerpt", "produced_by": "python3 extraction of res_hear_him_out/res_press_him_on_the_clause/res_open_the_count/res_take_his_place/res_kill_him/res_walk_out outcome text from game/data/quests/mainline-act5.json and the journal-index-40 branch text from game/data/quests/mainline-backpath.json" }
+ ],
+ "notes": "The writing is the strongest thing this piece produced: the antagonist has a real case (the allowance argument survives contact with the game's own cost accounting on the 'good' ending), the game genuinely does not refute him, the prose-tic bars that are never waivable (sting, fragopen) are clean rather than merely declared clean, and the single question mark in 3,635 words is doing characterisation rather than dodging a metric. What undercuts it is structural rather than literary: the file was authored against an id namespace it does not fully control, and the merge-by-design behaviour of converse.js's topic index lets an old stub outscore and replace the very first line of the scene for most of the playable cast, invisibly, past every existing check including the piece's own shipped probe. That is the kind of gap this project's RULES.md exists to catch -- a probe that seeds or checks only what it already expects to find."
+}

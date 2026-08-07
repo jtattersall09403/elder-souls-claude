@@ -4,14 +4,28 @@
   "judges": "W1-13-r3",
   "state": "running",
   "started": "2026-08-07",
-  "commit": "b1c92d1",
-  "next_step": "read RULES, INDEX, W1-13-r2 verdict, W1-13-r3 status",
-  "files_touched": [],
+  "commit": "b1c92d1 at start; HEAD moved to 3ba93e0 mid-run (other agents banking). W1-13 files themselves are committed and clean in git status.",
+  "next_step": "factorial running; then critic probe (C1 pool consumption / C2 projectPoint / C3 purse); then verdict md+json, image, blog line",
+  "files_touched": [
+    "orchestration/status/critic-w1-13-r3.json",
+    "tools/harness/critic-w1-13-r3.mjs"
+  ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-13-r3.md",
     "corpus/90-verdicts/wave1/W1-13-r3.json",
+    "reports/runs/critic-W1-13-R3/",
     "docs/shots/",
-    "reports/blog-feed.jsonl"
+    "reports/blog-feed.jsonl",
+    "tools/harness/critic-w1-13-r3.mjs"
   ],
-  "notes": "Fresh-context critic. Must test r3's overturn of r2's named gap (bloodstain visibility 1/8 vs 8/8), the two unrun arms, world-clock-stops-in-death, input-refusal claim, items 7 and 8 scoring, and ok:false semantics."
+  "notes": "Fresh-context critic. Must test r3's overturn of r2's named gap (bloodstain visibility 1/8 vs 8/8), the two unrun arms, world-clock-stops-in-death, input-refusal claim, items 7 and 8 scoring, and ok:false semantics.",
+  "findings": [
+    "REPRODUCED on the current tree: bloom-sight as-placed 2/8 daylight + 3/8 dark, identical to the builder run.",
+    "projectPoint is BLIND to a posed camera: engine.camera({pos,look}) writes c.pos/c.pivot and never c.yaw/c.pitch; sim/camera.js project() builds its basis from c.yaw/c.pitch. All 96 bloom-sight rows say on_screen:false including 16 rows at up to 27,134 px.",
+    "clock.json verdict block is STALE: T5_consumer_moved:false was written by an earlier predicate; the predicate in the tree would return true on the same numbers. The probe was not re-run after the predicate was fixed.",
+    "clock CONSUMPTION is not demonstrated: phase night->night in BOTH arms, settlement:null. The header names settlement.js#isOpen and npc.js#slotAt and measures neither.",
+    "levelling.json and levelling-r3b.json carry NO git field (RULES 12).",
+    "the leg that leaves the inventory screen open is still not fixed: world_runs_legs_jrn06-death reports ui_mode_on_entry inventory. The gate catches it.",
+    "aggregation re-counted by hand: 42 rows, 23 pass, 0 fail, 4 unmeasurable, 15 descriptive. ok:false is !anyUnmeasurable \u2014 the builder reading is literally correct."
+  ]
 }

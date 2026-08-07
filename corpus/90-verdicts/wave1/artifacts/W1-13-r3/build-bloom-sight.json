@@ -1,0 +1,964 @@
+{
+  "schema": "w1-13/r3-bloom-sight@1",
+  "question": "the bloom reads from 3 of 8 bearings in the aggregation. Is it undrawn, occluded, or outside the frame the probe is shooting?",
+  "arms": {
+    "as-placed": "the journey camera verbatim: eye at [x, stain.pos[1]+1.6, z], look at stain.pos[1]+0.3",
+    "player-eye": "eye at the observer's OWN drawn ground + 1.6 m, aimed at the bloom's DRAWN origin",
+    "no-bloom": "NULL CONTROL — player-eye with the bloom removed from the scene graph"
+  },
+  "rows": [
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 0,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.164,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.408,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 45,
+      "px": 695,
+      "control_px": 196,
+      "margin": 499,
+      "visible": true,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.045,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.527,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 90,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 2.908,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.663,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 135,
+      "px": 1900,
+      "control_px": 195,
+      "margin": 1705,
+      "visible": true,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.018,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.554,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 180,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.193,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.378,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 225,
+      "px": 196,
+      "control_px": 195,
+      "margin": 1,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.226,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.346,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 270,
+      "px": 196,
+      "control_px": 195,
+      "margin": 1,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.446,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "daylight_12m",
+      "bearing_deg": 315,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.446,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 0,
+      "px": 7450,
+      "control_px": 195,
+      "margin": 7255,
+      "visible": true,
+      "eye_y": 4.572,
+      "observer_ground_y": 2.867,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.705,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 45,
+      "px": 18454,
+      "control_px": 195,
+      "margin": 18259,
+      "visible": true,
+      "eye_y": 4.572,
+      "observer_ground_y": 2.94,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.632,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 90,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.075,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.497,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 135,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.096,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.476,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 180,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.173,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.398,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 225,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.12,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.452,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 270,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.572,
+      "observer_ground_y": 3.1,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.472,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "as-placed",
+      "condition": "dark_6m",
+      "bearing_deg": 315,
+      "px": 24274,
+      "control_px": 195,
+      "margin": 24079,
+      "visible": true,
+      "eye_y": 4.572,
+      "observer_ground_y": 2.975,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.597,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 0,
+      "px": 4460,
+      "control_px": 195,
+      "margin": 4265,
+      "visible": true,
+      "eye_y": 4.764,
+      "observer_ground_y": 3.164,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 45,
+      "px": 2458,
+      "control_px": 195,
+      "margin": 2263,
+      "visible": true,
+      "eye_y": 4.645,
+      "observer_ground_y": 3.045,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 90,
+      "px": 1069,
+      "control_px": 195,
+      "margin": 874,
+      "visible": true,
+      "eye_y": 4.508,
+      "observer_ground_y": 2.908,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 135,
+      "px": 1882,
+      "control_px": 195,
+      "margin": 1687,
+      "visible": true,
+      "eye_y": 4.618,
+      "observer_ground_y": 3.018,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 180,
+      "px": 1754,
+      "control_px": 195,
+      "margin": 1559,
+      "visible": true,
+      "eye_y": 4.793,
+      "observer_ground_y": 3.193,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 225,
+      "px": 4024,
+      "control_px": 195,
+      "margin": 3829,
+      "visible": true,
+      "eye_y": 4.826,
+      "observer_ground_y": 3.226,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 270,
+      "px": 2896,
+      "control_px": 195,
+      "margin": 2701,
+      "visible": true,
+      "eye_y": 4.726,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "daylight_12m",
+      "bearing_deg": 315,
+      "px": 5423,
+      "control_px": 195,
+      "margin": 5228,
+      "visible": true,
+      "eye_y": 4.726,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 0,
+      "px": 27329,
+      "control_px": 195,
+      "margin": 27134,
+      "visible": true,
+      "eye_y": 4.467,
+      "observer_ground_y": 2.867,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 45,
+      "px": 22681,
+      "control_px": 195,
+      "margin": 22486,
+      "visible": true,
+      "eye_y": 4.54,
+      "observer_ground_y": 2.94,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 90,
+      "px": 16505,
+      "control_px": 195,
+      "margin": 16310,
+      "visible": true,
+      "eye_y": 4.675,
+      "observer_ground_y": 3.075,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 135,
+      "px": 23297,
+      "control_px": 195,
+      "margin": 23102,
+      "visible": true,
+      "eye_y": 4.696,
+      "observer_ground_y": 3.096,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 180,
+      "px": 23518,
+      "control_px": 195,
+      "margin": 23323,
+      "visible": true,
+      "eye_y": 4.773,
+      "observer_ground_y": 3.173,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 225,
+      "px": 23101,
+      "control_px": 195,
+      "margin": 22906,
+      "visible": true,
+      "eye_y": 4.72,
+      "observer_ground_y": 3.12,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 270,
+      "px": 18186,
+      "control_px": 195,
+      "margin": 17991,
+      "visible": true,
+      "eye_y": 4.7,
+      "observer_ground_y": 3.1,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "player-eye",
+      "condition": "dark_6m",
+      "bearing_deg": 315,
+      "px": 23180,
+      "control_px": 195,
+      "margin": 22985,
+      "visible": true,
+      "eye_y": 4.575,
+      "observer_ground_y": 2.975,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": 3.172,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": true,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 0,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.764,
+      "observer_ground_y": 3.164,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 45,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.645,
+      "observer_ground_y": 3.045,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 90,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.508,
+      "observer_ground_y": 2.908,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 135,
+      "px": 196,
+      "control_px": 195,
+      "margin": 1,
+      "visible": false,
+      "eye_y": 4.618,
+      "observer_ground_y": 3.018,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 180,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.793,
+      "observer_ground_y": 3.193,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 225,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.826,
+      "observer_ground_y": 3.226,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 270,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.726,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "daylight_12m",
+      "bearing_deg": 315,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.726,
+      "observer_ground_y": 3.126,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 0,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.467,
+      "observer_ground_y": 2.867,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 45,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.54,
+      "observer_ground_y": 2.94,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 90,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.675,
+      "observer_ground_y": 3.075,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 135,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.696,
+      "observer_ground_y": 3.096,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 180,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.773,
+      "observer_ground_y": 3.173,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 225,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.72,
+      "observer_ground_y": 3.12,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 270,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.7,
+      "observer_ground_y": 3.1,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    },
+    {
+      "arm": "no-bloom",
+      "condition": "dark_6m",
+      "bearing_deg": 315,
+      "px": 195,
+      "control_px": 195,
+      "margin": 0,
+      "visible": false,
+      "eye_y": 4.575,
+      "observer_ground_y": 2.975,
+      "stain_model_y": 2.972,
+      "drawn_bloom_y": null,
+      "eye_above_observer_ground_m": 1.6,
+      "bloom_in_scene": false,
+      "bloom_part_count": 6,
+      "projected": {
+        "on_screen": false
+      }
+    }
+  ],
+  "stain_model_pos": [
+    3834.57,
+    2.971782,
+    3959.5
+  ],
+  "stain_souls": 4200,
+  "summary": {
+    "as-placed/daylight_12m": {
+      "visible": 2,
+      "of": 8
+    },
+    "as-placed/dark_6m": {
+      "visible": 3,
+      "of": 8
+    },
+    "player-eye/daylight_12m": {
+      "visible": 8,
+      "of": 8
+    },
+    "player-eye/dark_6m": {
+      "visible": 8,
+      "of": 8
+    },
+    "no-bloom/daylight_12m": {
+      "visible": 0,
+      "of": 8
+    },
+    "no-bloom/dark_6m": {
+      "visible": 0,
+      "of": 8
+    }
+  },
+  "findings": {
+    "as_placed_rows_with_the_eye_below_head_height": 0,
+    "worst_eye_above_observer_ground_m": 1.346,
+    "null_control_max_margin": 1,
+    "null_control_is_silent": true
+  },
+  "instrument_goes_red": true,
+  "ok": true,
+  "git_stamp_note": "RULES.md 12. These numbers were taken BEFORE this probe stamped its own commit. Stamped by hand afterwards and deliberately not back-dated to a commit that was not recorded at launch: the run was taken on a DIRTY working tree on branch claude/morrowind-souls-threejs-game-mou39v, and the exact code it exercised (game/src/sim/environment.js clock hold, game/src/harness/api.js getDrawnMarkers, tools/harness/w1-13-r3-*.mjs) is committed in d17f207. HEAD at the time of stamping is 37d64e3. Later runs of this tool self-stamp via gitInfo()."
+}

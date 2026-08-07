@@ -1,0 +1,58 @@
+{
+  "task_id": "W1-VIABILITY-SPLIT",
+  "state": "done",
+  "started": "2026-08-07",
+  "summary": "Split per NEXT-DISPATCH \u00a7R. SCREEN: build-viability.mjs renamed to tools/analysis/impossibility-screen.mjs, verdict vocabulary changed to impossible/abstained/not_screened_out, and a code fence (vocabulary + shape + exit) that makes a positive claim unemittable. WALK: tools/quests/viability-walk.mjs, stratified sample played cold in the engine.",
+  "next_step": "none -- hand to a tool critic. Do NOT let the critic grade this piece against the screen for positives; the screen is forbidden to produce them by design.",
+  "files_touched": [
+    "orchestration/status/W1-VIABILITY-SPLIT.json",
+    "tools/analysis/impossibility-screen.mjs",
+    "tools/quests/viability-walk.mjs",
+    "tools/quests/viability-split-shot.mjs",
+    "corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md",
+    "corpus/22-character/RI-CHR01-character-creation.md",
+    "corpus/22-character/RI-CHR03-birthsigns.md",
+    "corpus/95-experience/RI-CMP03-build-identity-payoff.md",
+    "reports/impossibility-screen.json",
+    "reports/runs/W1-VIABILITY-WALK/",
+    "docs/shots/2026-08-07-viability-split-screen-vs-walk.png",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_claimed": [],
+  "redundant_with": [
+    "tool-build-viability-r6"
+  ],
+  "notes": "Successor to five rejected rebuilds. Not round 6 of the same rebuild.",
+  "start_commit": "a5a637d",
+  "findings": [
+    "EVERY NUMBER IN THIS FILE IS RE-STAMPED AT 37d64e3. The tree moved three commits under this piece while it ran (e06f551, d17f207, 37d64e3, touching game/src/engine.js, souls.js, population.js and the enemy statblocks), and other agents' `git add -A` banked the rename and the item edits before I finished. All four walk arms and the full 540-cell screen were re-run at 37d64e3 and every figure reproduced unchanged. Box at re-run: 12 headless_shell, loadavg 7.56.",
+    "GATES AT 37d64e3: boot-check PASS, check-quests PASS (120 quests), check-content PASS (383 resolutions), corpus-index C8 = 26 warn / 0 error (unchanged from the pre-rename baseline).",
+    "Box loaded at start: pgrep -c headless_shell = 42, loadavg 23.19 -> Node-side work first.",
+    "FENCE FALSIFIER FOUND A REAL HOLE IN THE FENCE: case F3 ({signatures_playable: 486}) walked straight through, because `_` is a word character so \\bplayable\\b never matches inside a snake_case key -- and every key in the artifact is snake_case. Fixed by normalising `_` before the scan. Rule 4 paid for itself on its first run.",
+    "The renamed screen is 4 rules: vocabulary (claim words, on artifact + stdout + stderr), shape (row verdict is a 3-value string, never a boolean; forbidden keys incl. `target`), exit (0 only when nothing condemned and nothing abstained), and one enumerable exemption for the pointer literal `tools/quests/viability-walk.mjs`.",
+    "SCREEN LANDED. git mv tools/analysis/build-viability.mjs -> tools/analysis/impossibility-screen.mjs. Full 540 walk at a5a637d: 45 SCREENED OUT / 0 not screened out / 495 abstained. Same three numbers as TOOL-COVERAGE-R4's baseline (45 not viable / 495 unmeasurable), now labelled as what they are and with no positive figure anywhere in the artifact or on stdout.",
+    "THE FENCE CAUGHT THE SHIPPING TOOL THREE TIMES on its way to a clean run: $.supersedes, $.model_attestation.how_to_mint and $.model_sensitivity.method each carried a claim word. Exit 21 each time, nothing written. That is the fence working on real output, not on a test fixture.",
+    "unmeasurable_because was [] on every run beside unmeasurable:495 (R4 \u00a710 minor). Now filled from the abstentions the walk recorded.",
+    "GRANT FENCE FALSIFIER GREEN BOTH WAYS: 5/5 denied verbs throw (setGold, questSetFlag, learnTopic, spawnNPC, setFactionStanding) and the allowed control verb works.",
+    "SOURCE AUDIT FALSIFIER GREEN BOTH WAYS: a planted `window.__ENGINE` reference goes red, the clean file goes green. It counts code lines only (comment-only lines excluded) so the header can name both doors.",
+    "C8 back to 26 warn / 0 error after retargeting RI-MTH06 SS A, RI-CHR01 M6, RI-CHR03 M5 and RI-CMP03 step 2.",
+    "NOT MINE, REPORTED: reports/viability.json is UNTRACKED and was regenerated at 16:58 today by the PRE-RENAME tool (schema elder-souls/build-viability@2, target 486, viable 0) from some other process. I did not delete it -- it is a neighbour's live output. It is the last quotable viability figure on this tree and the fence cannot reach it.",
+    "WALK LANDED, 40 signatures, all four arms at a5a637d (box: 18-24 headless_shell, loadavg 10-15 throughout; ~35s per 40-signature arm):",
+    "  ARM granted-nothing:  5/29 main-quest quests, 0/40 finished main, 0/40 three-at-rank-5, 0 violent, 200 free endings, gold 0->0. ALL 40 stop at Q-MAIN-06.",
+    "  ARM no-bootstrap:     0 quests, stops at Q-MAIN-01 'the topic \"the drowned tally\" has not come up yet'. The instrument is sensitive to the one world action it declares.",
+    "  ARM hand-feed:        IDENTICAL to baseline (5 quests, same stop). The world's own AddTopic edges carry the chain as far as it goes; topics are not what blocks it.",
+    "  ARM grant-everything: three-at-rank-5 goes 0/40 -> 40/40 while the main quest does not move. THAT IS THE SIZE OF THE FICTION, MEASURED: the criterion the screen abstains on for all 540 signatures is bought outright by grants, and the grants buy nothing else.",
+    "BUILD FINDING (played, not modelled): all 40 sampled characters stop at Q-MAIN-06. Both non-violent resolutions (res_the_number, res_the_fair_copy) refuse with 'you do not know rev_the_curve_predates'. QuestEngine.reveal() is the ONLY writer of a know: flag and its only non-harness caller is a hooks.json quest+reveal row -- of which this tree ships 0 of 18. So no play on this tree can produce that reveal. Same shape as NEXT-DISPATCH SS 0c (books teach nothing).",
+    "TWO SILENT NO-OPS FOUND IN MY OWN FIRST WALK, both by running it: H.questDef() returns a curated view with no deceit/journal/resolutions, so the reveal loop, the journal-note loop and the free-ending detector all iterated undefined. free_endings printed 0 -- a VACUOUS ZERO. Fixed: requirements now come from the shipped book on the Node side and the true count is 200 of 200 resolutions taken demanding nothing.",
+    "questReveal and questNote are now DENIED verbs, not allowed ones, because reveal() has no world-side caller at all. The walk therefore UNDER-CLAIMS and says so in three declared clauses on every artifact -- the opposite direction of error from the screen, and the safe one."
+  ],
+  "end_commit_tree": "a5a637d + uncommitted (orchestrator banks the tree; nothing committed)",
+  "not_done": [
+    "The screen's own --self-test is still red at 49/51 (R4 item 7, seed ladder cannot saturate). Not run to completion this pass -- it is a ~37-minute battery of full 540-cell walks and the box was at loadavg 10-15. The failure is printed on every screen run under KNOWN BLIND SPOT.",
+    "TOOL-COVERAGE-R4 rebuild items 1, 4, 5, 6, 7 and 9 are NOT fixed. They are true of the screen, they are printed on every run and carried on every artifact under known_limits, and items 2/3/8/10 stop mattering once the tool cannot publish a positive.",
+    "The walk does not cover RI-CHR01 criterion 4 (tier5_survivable) at all. Declared on every artifact.",
+    "reports/viability.json (untracked, pre-rename schema, regenerated at 16:58 by another process) was left in place -- it is a neighbour's live output, and it is the last quotable viability figure on this tree.",
+    "The screen's model attestation is deliberately NOT minted. --verify-model would write a VALID attestation from the very detector R4 item 1 shows is a threshold of one giver, so the screen is left refusing a clean exit and saying why (exit 20, 'attestation ABSENT, 18 verdicts move with the offer model'). That is the fail-closed direction and it is the honest one."
+  ],
+  "commit_under_test": "37d64e3"
+}

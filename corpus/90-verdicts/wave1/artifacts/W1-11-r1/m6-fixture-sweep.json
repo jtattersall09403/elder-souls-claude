@@ -1,0 +1,121 @@
+{
+  "generated": "2026-08-07T21:59:22.926Z",
+  "question": "Is RI-AUD01 M6 PASS a property of the panner or of the fixture?",
+  "m6_bar": {
+    "r_min": 0.8,
+    "events_min": 20
+  },
+  "rows": [
+    {
+      "fixture": "orbit_player",
+      "rule": "SHIPPED (impact position)",
+      "impacts": 48,
+      "bearing_spread_deg": 77.4,
+      "pan_distinct": 48,
+      "distance_m_max": 1.4458,
+      "r": 1,
+      "M6_PASSES": true
+    },
+    {
+      "fixture": "orbit_player",
+      "rule": "LEGACY (attacker position)",
+      "impacts": 48,
+      "bearing_spread_deg": 77.4,
+      "pan_distinct": 48,
+      "distance_m_max": 0,
+      "r": -0.0759,
+      "M6_PASSES": false
+    },
+    {
+      "fixture": "orbit_world",
+      "rule": "SHIPPED (impact position)",
+      "impacts": 42,
+      "bearing_spread_deg": 79.8,
+      "pan_distinct": 23,
+      "distance_m_max": 1.4496,
+      "r": 1,
+      "M6_PASSES": true
+    },
+    {
+      "fixture": "orbit_world",
+      "rule": "LEGACY (attacker position)",
+      "impacts": 42,
+      "bearing_spread_deg": 79.8,
+      "pan_distinct": 26,
+      "distance_m_max": 0,
+      "r": 0.7768,
+      "M6_PASSES": false
+    },
+    {
+      "fixture": "still",
+      "rule": "SHIPPED (impact position)",
+      "impacts": 48,
+      "bearing_spread_deg": 0,
+      "pan_distinct": 1,
+      "distance_m_max": 1.3408,
+      "r": null,
+      "M6_PASSES": false
+    },
+    {
+      "fixture": "still",
+      "rule": "LEGACY (attacker position)",
+      "impacts": 48,
+      "bearing_spread_deg": 0,
+      "pan_distinct": 1,
+      "distance_m_max": 0,
+      "r": null,
+      "M6_PASSES": false
+    },
+    {
+      "fixture": "player_turns",
+      "rule": "SHIPPED (impact position)",
+      "impacts": 17,
+      "bearing_spread_deg": 97.9,
+      "pan_distinct": 17,
+      "distance_m_max": 1.1327,
+      "r": 0.9999,
+      "M6_PASSES": false
+    },
+    {
+      "fixture": "player_turns",
+      "rule": "LEGACY (attacker position)",
+      "impacts": 17,
+      "bearing_spread_deg": 97.9,
+      "pan_distinct": 17,
+      "distance_m_max": 0,
+      "r": 0.6034,
+      "M6_PASSES": false
+    },
+    {
+      "fixture": "player_turns_pinned",
+      "rule": "SHIPPED (impact position)",
+      "impacts": 100,
+      "bearing_spread_deg": 70,
+      "pan_distinct": 100,
+      "distance_m_max": 1.196,
+      "r": 1,
+      "M6_PASSES": true
+    },
+    {
+      "fixture": "player_turns_pinned",
+      "rule": "LEGACY (attacker position)",
+      "impacts": 100,
+      "bearing_spread_deg": 70,
+      "pan_distinct": 94,
+      "distance_m_max": 0,
+      "r": 1,
+      "M6_PASSES": true
+    }
+  ],
+  "legacy_r_range": [
+    -0.0759,
+    1
+  ],
+  "legacy_fixtures_on_which_the_BROKEN_rule_PASSES_M6": [
+    "player_turns_pinned"
+  ],
+  "distance_m_max_under_legacy": [
+    0
+  ],
+  "finding": "M6 as specified (Pearson r of pan against bearing) does NOT discriminate the two rules. The invariant that does is distance_m: under the legacy rule every player-landed blow is 0.0000 m from the listener on every fixture."
+}

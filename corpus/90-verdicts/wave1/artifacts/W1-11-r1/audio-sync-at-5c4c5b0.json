@@ -1,0 +1,123 @@
+{
+  "run": "/tmp/claude-0/-home-user-elder-souls-claude/3c195166-6f14-54d0-bf0f-867f7b39d84b/scratchpad/run-critic",
+  "generated": "2026-08-07T22:04:28.090Z",
+  "checks": {
+    "M1": {
+      "what": "frame offset — |audioLog.frame - trace event f|",
+      "n": 78,
+      "offset_frames": {
+        "p50": 0,
+        "p95": 0,
+        "p99": 0,
+        "max": 0
+      },
+      "fired_on_anim_start": 0,
+      "orphans": 0,
+      "pass": true,
+      "hard_fail": false
+    },
+    "M7": {
+      "what": "source of truth — no impact may be triggered from the animation event track",
+      "fired_on_anim_start": 0,
+      "trigger_source": "resolution",
+      "pass": true,
+      "hard_fail": false
+    },
+    "M4": {
+      "what": "class coverage — all nine mandatory classes present, distinct assets",
+      "present": [
+        "backstab",
+        "blocked",
+        "death",
+        "guard_break",
+        "hit_chitin_light",
+        "hit_flesh_heavy",
+        "hit_flesh_light",
+        "parried",
+        "player_hurt",
+        "riposte",
+        "whiff"
+      ],
+      "counts": {
+        "hit_flesh_light": 22,
+        "hit_chitin_light": 12,
+        "hit_flesh_heavy": 11,
+        "whiff": 8,
+        "death": 1,
+        "player_hurt": 6,
+        "parried": 4,
+        "riposte": 3,
+        "backstab": 3,
+        "guard_break": 4,
+        "blocked": 4
+      },
+      "missing_mandatory": [],
+      "aliased_pairs": [],
+      "pass": true,
+      "hard_fail": false
+    },
+    "M5": {
+      "what": "variants — >= 4 declared per class (asset set), zero immediate repeats (run)",
+      "declared_variants": {
+        "hit_flesh_light": 4,
+        "hit_chitin_light": 4,
+        "hit_flesh_heavy": 4,
+        "blocked": 4,
+        "guard_break": 4,
+        "parried": 4,
+        "riposte": 4,
+        "backstab": 4,
+        "whiff": 4,
+        "player_hurt": 4,
+        "stamina_break": 4,
+        "death": 4
+      },
+      "distinct_variants_observed": {
+        "hit_flesh_light": 4,
+        "hit_chitin_light": 4,
+        "hit_flesh_heavy": 4,
+        "whiff": 4,
+        "death": 1,
+        "player_hurt": 4,
+        "parried": 3,
+        "riposte": 3,
+        "backstab": 3,
+        "guard_break": 4,
+        "blocked": 4
+      },
+      "observed_note": "a class voiced n times can show at most n distinct variants; this column is diagnostic, not scored",
+      "immediate_repeats": {},
+      "classes_declaring_fewer_than_4": [],
+      "pass": true,
+      "hard_fail": false
+    },
+    "M6": {
+      "what": "spatialisation — a panner exists and pan varies with bearing",
+      "n": 72,
+      "pan_nonzero": 10,
+      "pan_min": 0,
+      "pan_max": 0.998519,
+      "pan_distinct": 11,
+      "panner": {
+        "model": "equalpower",
+        "distanceModel": "inverse",
+        "refDistance": 1,
+        "maxDistance": 40,
+        "rolloffFactor": 1,
+        "panningModel": "equalpower",
+        "hrtf": false
+      },
+      "listener_attached_to": "character",
+      "pass": true,
+      "hard_fail": false,
+      "note": "AGENT-PROTOCOL: a still target hides every steering defect. The node arena has no perception, so nothing here ever turns and this row can only say a panner EXISTS. The correlation of pan against bearing over a MOVING target is measured by tools/audio/impact-browser.mjs phase P4 and is reported there, not here."
+    }
+  },
+  "resolution_events": 82,
+  "audio_events": 78,
+  "summary": {
+    "checks_passed": 5,
+    "checks_total": 5,
+    "hard_fails": []
+  }
+}

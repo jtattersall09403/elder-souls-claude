@@ -1,0 +1,24 @@
+
+== A flesh dummy == material=flesh voices=1 classes=["hit_flesh_heavy"]
+   first row: {"f":59,"cls":"hit_flesh_heavy","gain":0.44614,"sample":"hit_flesh_heavy.v1","pan":0}
+   hit_flesh_heavy: peak_dbfs=-6 norm_db=1.68 layers=[{"freq":null,"filt":"bandpass@undefined","gain_db":-8,"decay_s":0.066},{"freq":94.5,"filt":null,"gain_db":-1,"decay_s":0.228},{"freq":null,"filt":"bandpass@undefined","gain_db":-11,"decay_s":0.054},{"freq":null,"filt":"lowpass@undefined","gain_db":-13,"decay_s":0.312}]
+
+== B shield dummy (braced shield prop) == material=shield voices=1 classes=["blocked"]
+   first row: {"f":59,"cls":"blocked","gain":0.23346,"sample":"blocked.v1","pan":0}
+   blocked: peak_dbfs=-12 norm_db=1.73 layers=[{"freq":128.76,"filt":null,"gain_db":-2,"decay_s":0.156},{"freq":null,"filt":"lowpass@undefined","gain_db":-9,"decay_s":0.192},{"freq":null,"filt":"lowpass@undefined","gain_db":-16,"decay_s":0.102}]
+
+== C live blocker, guard UP (shield column) == material=flesh voices=1 classes=["blocked"]
+   first row: {"f":59,"cls":"blocked","gain":0.23346,"sample":"blocked.v1","pan":0}
+   blocked: peak_dbfs=-12 norm_db=1.73 layers=[{"freq":128.76,"filt":null,"gain_db":-2,"decay_s":0.156},{"freq":null,"filt":"lowpass@undefined","gain_db":-9,"decay_s":0.192},{"freq":null,"filt":"lowpass@undefined","gain_db":-16,"decay_s":0.102}]
+
+== D live blocker, guard DOWN (control) == material=flesh voices=1 classes=["hit_flesh_heavy"]
+   first row: {"f":59,"cls":"hit_flesh_heavy","gain":0.44614,"sample":"hit_flesh_heavy.v1","pan":0}
+   hit_flesh_heavy: peak_dbfs=-6 norm_db=1.68 layers=[{"freq":null,"filt":"bandpass@undefined","gain_db":-8,"decay_s":0.066},{"freq":94.5,"filt":null,"gain_db":-1,"decay_s":0.228},{"freq":null,"filt":"bandpass@undefined","gain_db":-11,"decay_s":0.054},{"freq":null,"filt":"lowpass@undefined","gain_db":-13,"decay_s":0.312}]
+
+== E flesh dummy, material forced -> chitin == material=chitin voices=1 classes=["hit_chitin_light"]
+   first row: {"f":59,"cls":"hit_chitin_light","gain":0.43158,"sample":"hit_chitin_light.v1","pan":0}
+   hit_chitin_light: peak_dbfs=-8 norm_db=2.73 layers=[{"freq":null,"filt":"highpass@undefined","gain_db":-3,"decay_s":0.0268},{"freq":null,"filt":"bandpass@undefined","gain_db":-8,"decay_s":0.2562},{"freq":275.2,"filt":null,"gain_db":-18,"decay_s":0.0488}]
+
+== F flesh dummy, material forced -> stone == material=stone voices=1 classes=["hit_chitin_light"]
+   first row: {"f":59,"cls":"hit_chitin_light","gain":0.41515,"sample":"hit_chitin_light.v1","pan":0}
+   hit_chitin_light: peak_dbfs=-8 norm_db=2.73 layers=[{"freq":null,"filt":"highpass@undefined","gain_db":-3,"decay_s":0.0268},{"freq":null,"filt":"bandpass@undefined","gain_db":-8,"decay_s":0.2562},{"freq":275.2,"filt":null,"gain_db":-18,"decay_s":0.0488}]

@@ -36,7 +36,7 @@
       "boundary: ONE list of per-session observers shared by applyNamedState() and the blob path, instead of two hand-maintained lists that have already drifted (souls is in one, not the other)."
     ]
   },
-  "next_step": "browser: run souls-ledger-oracle (invariant over 463 routes) + its --self-break; then souls-consumption acceptance arms; repair critic-souls-r1; corpus filings; shot; blog line",
+  "next_step": "re-run full oracle after the idempotence fix; then delete-the-fix legs (souls rec.ref, population down register); souls-consumption suite; critic-souls-r1; shot; blog",
   "files_touched": [
     "orchestration/status/W1-SOULS-r3.json",
     "game/src/sim/souls.js",
@@ -73,5 +73,11 @@
     "SCALE PREMISE asserted BEFORE anything derived from it: --census refuses to assert methods 1/2/10 unless world.enemy_census is within 10% of what is placed. Falsified: with the band floor dropped to 200 it fires and blocks the three methods.",
     "tools/check-souls-corpus.mjs: all 18 band rows + 6 region totals + per-row totals + the JSON/markdown transcription + s1's three header figures = 72 rows. Falsified 3 ways (markdown band row, JSON drift, shipped curve drift); tree restored byte-identical, git index checked (RULES 17).",
     "METHOD 6 instrumented in both tools, REPORTED and never armed (AQ-1, corpus defect, RULES 13). Reproduces the r2 critic's 32.3/50.0/53.3/76.1/70.0 exactly."
+  ],
+  "findings_from_the_oracle": [
+    "The oracle went red on ITSELF twice before it went red on the world, and both are recorded in its header rather than quietly fixed: (a) I1 charged 27 violations on `kill_some > rest > kill_some` because the payment key was the body-life and not the body-life PER REST EPOCH -- RI-PRG06 s4's respawn row says a rest makes the same body payable again; (b) I3 charged 45 violations on `kill_some > release > materialise` because the oracle drove bare harness verbs instead of PopulationSystem's own release/_materialise, i.e. it was auditing a route the world does not have.",
+    "AFTER those two corrections, 460 of 463 routes clean and 17 I3 violations on 2 distinct routes NOBODY HAS EVER DRIVEN: `kill_some > release > materialise > materialise > materialise` and `save_load > kill_all > materialise > release > materialise`. Both materialise a post that is already standing.",
+    "ROOT: Engine.spawnEncounter() IS NOT ATOMIC. It spawns members in order and Engine.spawn() THROWS on a duplicate eid, so a post whose survivor is still standing spawns every member before it -- alive, full HP, including the ones the player killed -- and then throws. _materialise's catch marks the post CLEARED and returns, leaving those bodies in the world and in nothing's index. Untracked, live, free.",
+    "Not reachable by a player today: step (4) guarantees DORMANT before calling _materialise. But that guarantee lives in the CALLER, which is the exact shape of defect this whole round is about, so _materialise is now idempotent -- a post whose bodies are already in the world is not materialised. This is what 'make the fourth instance impossible rather than absent' bought."
   ]
 }

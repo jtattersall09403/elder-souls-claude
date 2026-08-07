@@ -759,7 +759,37 @@ export class QuestEngine {
       q.dispositions[n] = (q.dispositions[n] || 0) + d;
       changed.npc_disposition[n] = q.dispositions[n];
     }
-    for (const wf of c.world_flags || []) { if (!q.flags[wf]) { q.flags[wf] = 1; changed.world_flags.push(wf); } }
+    // W1-19 round 3. THIS LINE USED TO BE `q.flags[wf] = 1`, and that direct write is why the
+    // whole hook table was unreachable from the one thing a player does.
+    //
+    // `hooks.json` is the systems layer RI-QST04 requires, keyed by world flag: a row says "when
+    // this becomes true of the world, add this topic / write this journal entry / reveal this
+    // truth". `setFlag()` is what consults it. But every world flag a QUEST raises was written
+    // straight into `q.flags` here, so the table was consulted only by the magic system, by
+    // `readmit()`, and by the harness verb `questSetFlag` — i.e. by everything except playing a
+    // quest. Five shipped rows were keyed to flags only a resolution can raise and all five were
+    // dead: `the_eleven_roots_are_cut` (the mainline backpath), and the three faction
+    // "second refusal" routes authored against GAP path_to_ten #6, which is why refusing at rank
+    // 6 still capped the ladder at 6 after that gap was reported fixed.
+    //
+    // Routing through `setFlag()` is additive: it writes the same value under the same
+    // "only on the false -> true edge" condition, and a flag with no hook row behaves exactly as
+    // it did. `tools/quests/reveal-route-audit.mjs` is the standing check, with the direct-write
+    // behaviour available as its control leg.
+    //
+    // RE-ENTRANCY. `setFlag()` can fire a row carrying `fail`, `fail()` calls back into this
+    // method, and that consequence can raise another hooked flag. The depth guard makes the
+    // cascade finite without making it invisible: flags raised beyond the guard are still
+    // written, they simply stop firing further hooks. A cycle in the hook table is a content
+    // defect and belongs to `tools/check-quests.mjs`, not to a stack overflow at run time.
+    this._flagDepth = (this._flagDepth || 0);
+    for (const wf of c.world_flags || []) {
+      if (q.flags[wf]) continue;
+      changed.world_flags.push(wf);
+      if (this._flagDepth >= 8) { q.flags[wf] = 1; continue; }
+      this._flagDepth++;
+      try { this.setFlag(wf, true); } finally { this._flagDepth--; }
+    }
     for (const u of c.unlocks || []) { q.flags[`unlocked:${u}`] = 1; changed.unlocked.push(u); }
     for (const l of c.locks || []) { q.flags[`locked:${l}`] = 1; changed.locked.push(l); }
     for (const other of def.mutually_exclusive_with || []) { q.flags[`locked:${other}`] = 1; changed.locked.push(other); }

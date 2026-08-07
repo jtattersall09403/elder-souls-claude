@@ -1,0 +1,50 @@
+{
+  "schema": "w1-13/r3-clock@1",
+  "rule": "RI-PRG04 §6 rule 4 — \"The clock does NOT advance on death. Only resting moves time. Dying repeatedly at a boss must not burn a quest deadline.\"",
+  "frames_per_day": 259200,
+  "arms": {
+    "shipped": {
+      "dead_frames": 150,
+      "clock_at_death": 20.967315,
+      "clock_at_respawn": 20.967315,
+      "across_dead_interval_h": 0,
+      "control_live_frames_h": 0.013889,
+      "env_frames_held_by_death": 6000,
+      "deaths_run": 40,
+      "total_dead_frames": 6040,
+      "hour_before_the_deaths": 20.967407,
+      "hour_after_the_deaths": 20.971111,
+      "phase_before": "night",
+      "phase_after": "night",
+      "hours_burned_by_the_deaths": 0.003704,
+      "settlement": null
+    },
+    "fix_deleted": {
+      "dead_frames": 150,
+      "clock_at_death": 20.967315,
+      "clock_at_respawn": 20.981204,
+      "across_dead_interval_h": 0.013889,
+      "control_live_frames_h": 0.013889,
+      "env_frames_held_by_death": 6000,
+      "deaths_run": 40,
+      "total_dead_frames": 6040,
+      "hour_before_the_deaths": 20.967407,
+      "hour_after_the_deaths": 21.526667,
+      "phase_before": "night",
+      "phase_after": "night",
+      "hours_burned_by_the_deaths": 0.55926,
+      "settlement": null
+    }
+  },
+  "verdict": {
+    "T1_clock_frozen_across_the_death": true,
+    "T2_control_clock_runs_when_alive": true,
+    "T3_delete_the_fix_returns_the_old_number": true,
+    "T4_the_two_arms_differ": true,
+    "T5_consumer_moved": false,
+    "fix_is_inert": false,
+    "deaths_at_2058_kept_the_hour": true
+  },
+  "ok": true,
+  "git_stamp_note": "RULES.md 12. These numbers were taken BEFORE this probe stamped its own commit. Stamped by hand afterwards and deliberately not back-dated to a commit that was not recorded at launch: the run was taken on a DIRTY working tree on branch claude/morrowind-souls-threejs-game-mou39v, and the exact code it exercised (game/src/sim/environment.js clock hold, game/src/harness/api.js getDrawnMarkers, tools/harness/w1-13-r3-*.mjs) is committed in d17f207. HEAD at the time of stamping is 37d64e3. Later runs of this tool self-stamp via gitInfo()."
+}

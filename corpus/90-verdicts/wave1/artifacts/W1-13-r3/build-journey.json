@@ -1,0 +1,2846 @@
+{
+  "schema": "elder-souls/journey-run@1",
+  "tool": "tools/journey/journey-run.mjs",
+  "amendment": "A-JRN1",
+  "run_id": "20260807T211752Z-jrn06-death-s4711-3f2286",
+  "journey": "jrn06-death",
+  "item": "RI-JRN06",
+  "title": "death and recovery",
+  "seed": 4711,
+  "profile": "headless-small",
+  "profile_realised": {
+    "width": 320,
+    "height": 240,
+    "dpr": 1,
+    "pointer": "fine",
+    "touch": false
+  },
+  "input_mode": "real",
+  "args": [
+    "--journey",
+    "jrn06-death",
+    "--deaths",
+    "20",
+    "--profile",
+    "headless-small",
+    "--trace-events",
+    "--out",
+    "reports/journeys/w1-13-r3b-jrn06"
+  ],
+  "url": "http://127.0.0.1:45215/game/index.html",
+  "harness_version": 2,
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 555
+  },
+  "capability_report": {
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "implemented": [
+      "fixed 60 Hz simulation decoupled from render (HARNESS.md R2/R3)",
+      "seeded PRNG with a runtime guard that throws on Math.random/Date.now/performance.now/new Date inside a step",
+      "the elder-souls/trace@1 record, including the camera channel RI-CAM02/RI-CAM06 need",
+      "the 15-button closed action set (14 from W1-00 + `crouch` from W1-15/AM-W1-15-01), the scripted path, the real desktop path, the 8 f@60 single-slot buffer",
+      "IndexedDB save with the RI-JRN05 §A write protocol, digest, A/B generations, export/import, hostility simulation",
+      "deterministic sky, sun and named weather; the nine viewpoint anchors",
+      "the game/data/** layout of HARNESS.md §5 with a generated index.json",
+      "W1-07: character creation as a scene — 10 attributes, 19 skills, 10 races, 9 birthsigns, 14 classes plus the custom route, the 12-question route, the 12x10 reaction matrix, the price surcharge, the guard law-factor table and the race-conditioned encounter opening",
+      "W1-09: swept-capsule hit resolution over bone-attached hurtboxes, 4 substeps, no distance check and no dice (RI-CMB04)",
+      "W1-09: the RI-CMB01 §B roll ladder at all four equip-load tiers, i-frames as a frame window",
+      "W1-09: RI-CMB02 §A/§B frame data for all 7 classes x R1/R2 with the §D commitment rule",
+      "W1-09: RI-CMB03 stamina, block, guard break and RI-CMB09 exhaustion, symmetric for enemies",
+      "W1-09: RI-CMB05 poise, stagger, hyperarmour, backstab, parry and riposte",
+      "W1-09: RI-CMB06 lock-on with target-relative directional roll and soft-lock steering",
+      "W1-09: RI-CMB08 healing with animation commitment and finite charges",
+      "W1-09: es-combat-trace/1 (RI-CMB07 §A) as a second stream, and the S13 parley"
+    ],
+    "not_implemented": [
+      {
+        "what": "enemy DECISION-MAKING (approach, circle, commit, attack token, punish reads, leash)",
+        "owner": "RI-AI01..07 / wave-1 piece W1-12",
+        "surfaced_as": "enemy statblocks declare ai='scripted'; actions come from the scenario file on declared frames, which is the RI-CMB07 M1 Mode-A instrument. spawn() throws for any archetype declaring behaviour this build cannot run. RI-CMB07 M2 (Mode-B free play against real AI) is therefore NOT measurable in this piece and scores 0, fail-closed."
+      },
+      {
+        "what": "mid-animation combat state across a save/load",
+        "owner": "W1-09, declared limitation",
+        "surfaced_as": "sim/combat-bridge.js header. The combat bodies are the authority and sim.player is a view; a save taken on frame 12 of a roll restores a standing character at the roll position. Correct under seam S6 (you save by resting) and true of both source games, but stated rather than discovered."
+      },
+      {
+        "what": "weapon movesets beyond the 7-class spine, and attack ratings",
+        "owner": "RI-WPN01..06 / wave-1 piece W1-10",
+        "surfaced_as": "movesets/*.json weapon.attack_rating_provenance marks all seven AR values PROVISIONAL; only the straight sword is pinned (to the RI-CMB07 exemplar HIT of 118 at motion value 1.00)."
+      },
+      {
+        "what": "hitstop, mass and impact feel",
+        "owner": "RI-WPN05 / RI-AUD01 / wave-1 piece W1-11",
+        "surfaced_as": "hitstop_frames is read from the moveset and applied, but the camera, audio and animation consequences are W1-11."
+      },
+      {
+        "what": "a quest runtime",
+        "owner": "wave-1 pieces W1-14..W1-16",
+        "surfaced_as": "getQuestState()._declared_incomplete; quest STATE is real and round-trips, quest PROGRESSION does not exist"
+      },
+      {
+        "what": "dialogue, topics, journal writing at runtime",
+        "owner": "wave-1 pieces W1-11..W1-13",
+        "surfaced_as": "data files exist and are analysable; getDialogueState() (A-JRN13) is absent"
+      },
+      {
+        "what": "the province: 13 regions, 8 settlements, 250 interiors, roads",
+        "owner": "wave-1 pieces W1-01..W1-05",
+        "surfaced_as": "getWorldStats()._declared_incomplete — counts come from game/data/**, which is the corpus transcription plus one worked settlement"
+      },
+      {
+        "what": "combat FOLEY (footsteps, cloth, armour rattle)",
+        "owner": "RI-AUD01 §D / no wave-1 owner",
+        "surfaced_as": "the §D sparseness budget counts non-combat voices and there are none, so the exploration mix is silence rather than a bed at -26..-22 LUFS-S. §D is a budget approached only from below and RI-AUD01 says so"
+      },
+      {
+        "what": "music (audio.music.policy)",
+        "owner": "RI-AUD04 / no wave-1 owner",
+        "surfaced_as": "no music bus, no music. RI-AUD04 unmeasurable, 0 fail-closed"
+      },
+      {
+        "what": "voice (audio.voice.policy)",
+        "owner": "RI-AUD05 / no wave-1 owner",
+        "surfaced_as": "no voice bus. RI-AUD05 unmeasurable, 0 fail-closed"
+      },
+      {
+        "what": "settlement ambience beds (RI-WLD08 §6 wants >=8)",
+        "owner": "W1-22 / W1-01..W1-05",
+        "surfaced_as": "two settlement beds exist (market, street) because Engine.cellFor() returns exactly two settlement cells in this build. Eight would mean authoring beds for six settlements the world does not have; ambience-census C14 warns rather than fails, so the gap is charged where it lives"
+      },
+      {
+        "what": "positional ambient emitters per km2 (RI-WLD08 §6 wants >=25)",
+        "owner": "W1-22, outstanding",
+        "surfaced_as": "four R7 emitters in the province (bell buoy, hide-drum, legion horn, kiln). They now SOUND — round 1 computed their pan and gain every frame and scheduled no audio at all — but four is not twenty-five per km2, and the shortfall is data authoring rather than a missing mechanism"
+      },
+      {
+        "what": "boss-arena ambience (cell `arena`)",
+        "owner": "W1-22 / RI-AUD01",
+        "surfaced_as": "getAmbienceState().suppressed names the cell. Deliberate: an arena's sound belongs to the combat mix, and RI-AUD03 is a REGIONAL identity item. Reported rather than filled with a bed nobody specified"
+      },
+      {
+        "what": "heap/GC access (A-JRN9), dialogue state (A-JRN13), resource registry (A-JRN14). A-JRN2 (gamepad) and A-JRN4 (viewport/orientation/safe-area) landed with W1-08/W1-29; A-JRN12 (keyboard layout) is driven runner-side through CDP by tools/journey/journey-run.mjs",
+        "owner": "runner-side or later pieces",
+        "surfaced_as": "the methods are absent rather than present-and-lying"
+      },
+      {
+        "what": "Tier-H performance numbers (fps, frame time, TTFP wall clock, hitch durations)",
+        "owner": "attested real hardware",
+        "surfaced_as": "getPerfStats()._unmeasurable / getLoadState()._unmeasurable. RI-PLT01 rule T1 forbids emitting these from a SwiftShader run at all"
+      }
+    ],
+    "harness_amendments_implemented": [
+      "A-JRN1 (partial: play-instrumented mode, no UI-text stream)",
+      "A-JRN3",
+      "A-JRN5 (partial: Tier-S fields only)",
+      "A-JRN6",
+      "A-JRN7",
+      "A-JRN8",
+      "A-JRN10",
+      "A-JRN11",
+      "A-JRN15 (partial)",
+      "A-JRN2 (gamepad, W1-29)",
+      "A-JRN4 (viewport/orientation/safe-area, W1-29)",
+      "A-JRN12 (runner-side via CDP Input.dispatchKeyEvent, W1-08)"
+    ],
+    "harness_amendments_absent": [
+      "A-JRN9",
+      "A-JRN13",
+      "A-JRN14"
+    ]
+  },
+  "git": {
+    "commit": "37d64e3fe757b2909ee6f29250f81713cd654f23",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true
+  },
+  "data": {
+    "files": 558,
+    "sha256": "4e9e05bfcee091f626075b5f9381d42a18aa63dd91b5e958328429806c5f5974"
+  },
+  "started_at": "2026-08-07T21:17:52.288Z",
+  "ended_at": "2026-08-07T21:35:01.950Z",
+  "wall_ms": 1029662,
+  "page_errors": [],
+  "beats": [
+    {
+      "kind": "journey_start",
+      "frame": 5,
+      "journey": "jrn06-death"
+    },
+    {
+      "kind": "first_input",
+      "frame": 65,
+      "device": "keyboard",
+      "via": "page.keyboard"
+    },
+    {
+      "kind": "first_control",
+      "frame": 200,
+      "moved": true,
+      "pos_before": [
+        2766.5,
+        2.68,
+        5011
+      ],
+      "pos_after": [
+        2766.5,
+        2.68,
+        5013.24
+      ],
+      "arm_press_release_then_step": {
+        "pos_before": [
+          2766.5,
+          2.68,
+          5011
+        ],
+        "pos_after": [
+          2766.5,
+          2.68,
+          5011
+        ],
+        "moved": false
+      },
+      "arm_held_across_the_stepped_frames": {
+        "pos_before": [
+          2766.5,
+          2.68,
+          5011
+        ],
+        "pos_after": [
+          2766.5,
+          2.68,
+          5013.24
+        ],
+        "moved": true
+      },
+      "arms_differ": true
+    },
+    {
+      "kind": "surface_enter",
+      "frame": 200,
+      "surface": "census",
+      "speaker": "jeeh-ei",
+      "place": "barge-hold"
+    },
+    {
+      "kind": "surface_exit",
+      "frame": 201,
+      "surface": "census",
+      "still_open": false
+    },
+    {
+      "kind": "journey_end",
+      "frame": 201,
+      "frames_stepped": 3600
+    }
+  ],
+  "trace_records": 201,
+  "ui_text_frames": 5,
+  "surfaces": 1,
+  "driver_events": [],
+  "instruments": [
+    {
+      "id": "profile",
+      "what": "viewport/dpr/pointer realised",
+      "status": "measured",
+      "value": {
+        "profile": "headless-small",
+        "width": 320,
+        "height": 240,
+        "dpr": 1,
+        "pointer": "fine",
+        "touch": false,
+        "note": "dpr and pointer are set on the browser context at launch; viewport is set here. A-JRN4 is declared absent in the engine and is supplied runner-side."
+      }
+    },
+    {
+      "id": "input_mode",
+      "what": "real input path attached",
+      "status": "measured",
+      "value": {
+        "mode": "play-instrumented",
+        "result": "play-instrumented"
+      }
+    },
+    {
+      "id": "world_runs_boot",
+      "what": "the world advances at 'boot'",
+      "status": "measured",
+      "value": {
+        "ok": true,
+        "site": "boot",
+        "ui_mode_on_entry": "world",
+        "ui_mode_after_close": "world",
+        "screen_was_open": false,
+        "frame_before": 0,
+        "frame_after": 5,
+        "advanced": 5,
+        "frames_requested": 5,
+        "why": null
+      }
+    },
+    {
+      "id": "world_runs_before_first_control",
+      "what": "the world advances at 'before_first_control'",
+      "status": "measured",
+      "value": {
+        "ok": true,
+        "site": "before_first_control",
+        "ui_mode_on_entry": "world",
+        "ui_mode_after_close": "world",
+        "screen_was_open": false,
+        "frame_before": 65,
+        "frame_after": 70,
+        "advanced": 5,
+        "frames_requested": 5,
+        "why": null
+      }
+    },
+    {
+      "id": "control_observed",
+      "what": "the player body responded to a movement input",
+      "status": "measured",
+      "value": {
+        "input_mode": "real",
+        "moved": true,
+        "moved_m_press_release_then_step": 0,
+        "moved_m_held_across_the_stepped_frames": 2.24,
+        "arm_that_moved_the_body": "held across the stepped frames",
+        "arms_differ": true,
+        "world_was_running": true,
+        "pass": true,
+        "note": "Two arms on purpose. `realKey(page, code, char, {delay})` presses, waits WALL-clock milliseconds and releases, so the old single arm held the key across zero STEPPED frames and the body was asked to walk with nothing down. The round-3 aggregation read that as \"the BUILD refusing the input\" — the gate had correctly ruled out a frozen world, which left the build as the only remaining suspect and it was the wrong one."
+      }
+    },
+    {
+      "id": "first_input",
+      "what": "first_input event",
+      "status": "measured",
+      "value": {
+        "source": "trace",
+        "frame": 66
+      }
+    },
+    {
+      "id": "first_control",
+      "what": "first_control event",
+      "status": "measured",
+      "value": {
+        "source": "trace",
+        "frame": 141
+      }
+    },
+    {
+      "id": "m4_clause1",
+      "what": "control precedes definition",
+      "status": "unmeasurable",
+      "why": "no character-field-writing event in the trace",
+      "owner": "A-JRN1/A-JRN7"
+    },
+    {
+      "id": "ui_text_accessor",
+      "what": "rendered-text accessor demonstrated live",
+      "status": "measured",
+      "value": {
+        "accessor": "__HARNESS.getRenderedText()",
+        "accessor_strength": "fillText-level, clip-aware",
+        "frames_sampled": 5,
+        "frames_with_text": 5,
+        "example": [
+          "5",
+          "LIGHT",
+          "Spark-Da…"
+        ],
+        "dom_inner_text_len": 0,
+        "note": "document.body.innerText is EMPTY — the canvas accessor is the only enumerable rendered-text surface, which is why M9/M15 may not be greped from the DOM."
+      }
+    },
+    {
+      "id": "m9_instruction_budget",
+      "what": "instruction tokens outside dialogue/journal/book surfaces",
+      "status": "measured",
+      "value": {
+        "frames_outside_surface": 5,
+        "hits": 0,
+        "examples": [],
+        "threshold": 0,
+        "caveat": null
+      }
+    },
+    {
+      "id": "m15_chosen_one",
+      "what": "prophecy vocabulary in rendered text",
+      "status": "measured",
+      "value": {
+        "hits": 0,
+        "examples": [],
+        "threshold": 0
+      }
+    },
+    {
+      "id": "m2_unskippable",
+      "what": "frames from a real input to the surface being gone",
+      "status": "measured",
+      "value": {
+        "surfaces": 1,
+        "over_30_frames": 0,
+        "ignored_input_entirely": 0,
+        "detail": [
+          {
+            "id": "census",
+            "first_rendered_frame": 200,
+            "frames_to_dismiss": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "m1_surfaces_to_control",
+      "what": "distinct full-viewport surfaces before first_control",
+      "status": "measured",
+      "value": {
+        "count": 0,
+        "threshold": 2,
+        "hard_fail_at": 4
+      }
+    },
+    {
+      "id": "amendment_A-JRN13",
+      "what": "checks depending on A-JRN13",
+      "status": "unmeasurable",
+      "why": "the build declares A-JRN13 absent in getCapabilityReport().harness_amendments_absent",
+      "owner": "runner-side or later pieces"
+    },
+    {
+      "id": "amendment_A-JRN14",
+      "what": "checks depending on A-JRN14",
+      "status": "unmeasurable",
+      "why": "the build declares A-JRN14 absent in getCapabilityReport().harness_amendments_absent",
+      "owner": "runner-side or later pieces"
+    },
+    {
+      "id": "amendment_A-JRN9",
+      "what": "checks depending on A-JRN9",
+      "status": "unmeasurable",
+      "why": "the build declares A-JRN9 absent in getCapabilityReport().harness_amendments_absent",
+      "owner": "runner-side or later pieces"
+    },
+    {
+      "id": "world_runs_legs_jrn06-death",
+      "what": "the world advances at 'legs_jrn06-death'",
+      "status": "measured",
+      "value": {
+        "ok": true,
+        "site": "legs_jrn06-death",
+        "ui_mode_on_entry": "inventory",
+        "ui_mode_after_close": "world",
+        "screen_was_open": true,
+        "frame_before": 201,
+        "frame_after": 206,
+        "advanced": 5,
+        "frames_requested": 5,
+        "why": null
+      }
+    },
+    {
+      "id": "m_d5_respawn_scope",
+      "what": "M-D5 world reset scope (D9, seam S5)",
+      "status": "measured",
+      "value": {
+        "classification": [
+          {
+            "eid": "boss-a",
+            "id": "champion_hist_marked",
+            "archetype": "INFANTRY",
+            "tier": "elite",
+            "flags": [
+              "unique",
+              "boss"
+            ],
+            "classified_by": {
+              "statblock": [
+                "unique",
+                "boss"
+              ],
+              "world_map": [
+                "boss"
+              ],
+              "spawn_opts": []
+            },
+            "boss_of_gate": "gate-drowned-xanmeer",
+            "respawns": false,
+            "alive": true
+          },
+          {
+            "eid": "fix-a",
+            "id": "dummy_passive",
+            "archetype": "DUMMY",
+            "tier": "prop",
+            "flags": [],
+            "classified_by": {
+              "statblock": [],
+              "world_map": [],
+              "spawn_opts": []
+            },
+            "boss_of_gate": null,
+            "respawns": false,
+            "alive": true
+          },
+          {
+            "eid": "named-a",
+            "id": "inf_trash",
+            "archetype": "INFANTRY",
+            "tier": "trash",
+            "flags": [
+              "named"
+            ],
+            "classified_by": {
+              "statblock": [],
+              "world_map": [],
+              "spawn_opts": [
+                "named"
+              ]
+            },
+            "boss_of_gate": null,
+            "respawns": false,
+            "alive": true
+          },
+          {
+            "eid": "ord-a",
+            "id": "inf_trash",
+            "archetype": "INFANTRY",
+            "tier": "trash",
+            "flags": [],
+            "classified_by": {
+              "statblock": [],
+              "world_map": [],
+              "spawn_opts": []
+            },
+            "boss_of_gate": null,
+            "respawns": true,
+            "alive": true
+          },
+          {
+            "eid": "ord-b",
+            "id": "inf_trash",
+            "archetype": "INFANTRY",
+            "tier": "trash",
+            "flags": [],
+            "classified_by": {
+              "statblock": [],
+              "world_map": [],
+              "spawn_opts": []
+            },
+            "boss_of_gate": null,
+            "respawns": true,
+            "alive": true
+          },
+          {
+            "eid": "ord-c",
+            "id": "drowned_lesser",
+            "archetype": "INFANTRY",
+            "tier": "trash",
+            "flags": [],
+            "classified_by": {
+              "statblock": [],
+              "world_map": [],
+              "spawn_opts": []
+            },
+            "boss_of_gate": null,
+            "respawns": true,
+            "alive": true
+          },
+          {
+            "eid": "quest-a",
+            "id": "inf_trash",
+            "archetype": "INFANTRY",
+            "tier": "trash",
+            "flags": [
+              "questActor"
+            ],
+            "classified_by": {
+              "statblock": [],
+              "world_map": [],
+              "spawn_opts": [
+                "questActor"
+              ]
+            },
+            "boss_of_gate": null,
+            "respawns": false,
+            "alive": true
+          }
+        ],
+        "killed": [
+          "boss-a",
+          "fix-a",
+          "named-a",
+          "ord-a",
+          "ord-b",
+          "ord-c",
+          "quest-a"
+        ],
+        "kill_register_after_kills": [
+          "ord-a",
+          "ord-b",
+          "ord-c"
+        ],
+        "respawned_after_player_death": [
+          "ord-a",
+          "ord-b",
+          "ord-c"
+        ],
+        "still_dead_after_player_death": [
+          "boss-a",
+          "fix-a",
+          "named-a",
+          "quest-a"
+        ],
+        "named_or_boss_or_fixture_respawned": [],
+        "ordinary_failed_to_respawn": [],
+        "pass": true,
+        "hard_fail_HF3": false,
+        "note": "100% of ordinary enemies respawn; 0 named actors, bosses or fixtures do. A respawned named actor is HF3."
+      }
+    },
+    {
+      "id": "m_d6_named_stays_dead",
+      "what": "M-D6 dead named NPC stays dead, across rest and death",
+      "status": "measured",
+      "value": {
+        "after_rest_alive": [
+          "ord-a",
+          "ord-b",
+          "ord-c"
+        ],
+        "named_back_after_rest": [],
+        "rest_respawned_count": 3,
+        "rest_held_dead": [
+          {
+            "eid": "boss-a",
+            "id": "champion_hist_marked",
+            "reason": "S5: not in respawn scope"
+          },
+          {
+            "eid": "fix-a",
+            "id": "dummy_passive",
+            "reason": "S5: not in respawn scope"
+          },
+          {
+            "eid": "named-a",
+            "id": "inf_trash",
+            "reason": "S5: not in respawn scope"
+          },
+          {
+            "eid": "quest-a",
+            "id": "inf_trash",
+            "reason": "S5: not in respawn scope"
+          }
+        ],
+        "npcs_dead_register": [],
+        "kill_register_cleared_by_rest": [],
+        "pass": true
+      }
+    },
+    {
+      "id": "m_prg04_rest",
+      "what": "RI-PRG04 §1/§2 what resting does",
+      "status": "measured",
+      "value": {
+        "respawn_point_set": "hearth-thorn",
+        "clock": {
+          "before": 12.005093,
+          "after": 18.005093000000002,
+          "hours": 6,
+          "day": 0
+        },
+        "focus_restored": true,
+        "hp": 620,
+        "flask_charges": 5,
+        "rest_clamp_reset": true,
+        "sap_taint": {
+          "band": 0,
+          "rests": 1,
+          "immune": false,
+          "ward_uses_left": 3
+        },
+        "diseases_advanced": [],
+        "menu_destinations": [],
+        "s7_pass": true
+      }
+    },
+    {
+      "id": "m_d7_merchant_state_survives_death",
+      "what": "M-D7 a completed sale survives a death",
+      "status": "measured",
+      "value": {
+        "sale_made": true,
+        "attempts": [
+          {
+            "instance": "lilmoth.factor0.r0.0",
+            "fence": "fence.lilmoth.rot-hookline",
+            "registered": true,
+            "sold": true,
+            "refused": null,
+            "error": null
+          }
+        ],
+        "sale": {
+          "instance": "lilmoth.factor0.r0.0",
+          "fenceId": "fence.lilmoth.rot-hookline",
+          "price_g": 17,
+          "gold_after_sale": 417
+        },
+        "before": {
+          "fence_purse_gold": 417,
+          "progression_gold": 0,
+          "laundered_rows": 1,
+          "laundered_by": [
+            "lilmoth.factor0.r0.0@fence.lilmoth.rot-hookline"
+          ],
+          "stolen_registry_len": 1,
+          "save_stolen_registry": "[\"lilmoth.factor0.r0.0\"]",
+          "bounty": "{\"imperial\":0,\"settlement\":{},\"interior\":0}",
+          "inventory_len": 2
+        },
+        "after": {
+          "fence_purse_gold": 417,
+          "progression_gold": 0,
+          "laundered_rows": 1,
+          "laundered_by": [
+            "lilmoth.factor0.r0.0@fence.lilmoth.rot-hookline"
+          ],
+          "stolen_registry_len": 1,
+          "save_stolen_registry": "[\"lilmoth.factor0.r0.0\"]",
+          "bounty": "{\"imperial\":0,\"settlement\":{},\"interior\":0}",
+          "inventory_len": 2
+        },
+        "the_death_happened": true,
+        "deaths_this_session": [
+          0,
+          1
+        ],
+        "surface_went_up": true,
+        "respawned_at": "hearth-archon",
+        "moved_across_the_death": [],
+        "control_a_real_sale_moves_them": {
+          "second_sale": true,
+          "moved_by_a_sale": [
+            "fence_purse_gold",
+            "laundered_rows",
+            "laundered_by",
+            "stolen_registry_len",
+            "save_stolen_registry",
+            "inventory_len"
+          ]
+        },
+        "pool_is_vacuous": true,
+        "_pool_note": "RI-JRN06 M-D7 names `progression.merchant.barter`. This build has no such path and no shipped verb decrements a merchant purse: every fence in game/data/crime/fences.json carries a `gold_pool` and engine.fenceSell() never touches it. \"Pool unchanged\" is therefore trivially true of a constant and is NOT what this row passes on. Filed as an orphan model under RI-MTH07 §A — a number the data supplies that nothing in the world reads or writes.",
+        "pass": true
+      }
+    },
+    {
+      "id": "m_d1_souls_conservation",
+      "what": "M-D1 souls held == souls stored == souls returned",
+      "status": "measured",
+      "value": {
+        "trials": 20,
+        "trials_banked_eq_held": 20,
+        "trials_held_eq_stored": 20,
+        "trials_stored_eq_returned": 14,
+        "population_banked_eq_held": 20,
+        "population_held_eq_stored": 20,
+        "population_stored_eq_returned": 14,
+        "doubled_deaths_excluded_from_return_leg_only": 6,
+        "_why": "A second death destroys the first bloom (D16), so `stored == returned` is void for a doubled death and the other two legs are not. Round 1 dropped the whole row and measured 14 of 20.",
+        "mismatches": 0,
+        "mismatches_banked_eq_held": 0,
+        "mismatches_held_eq_stored": 0,
+        "mismatches_stored_eq_returned": 0,
+        "rows": [],
+        "sample": [
+          {
+            "banked": 500,
+            "held": 500,
+            "stain": 500,
+            "returned": 500,
+            "second_death": false
+          },
+          {
+            "banked": 697,
+            "held": 697,
+            "stain": 697,
+            "returned": 697,
+            "second_death": false
+          },
+          {
+            "banked": 894,
+            "held": 894,
+            "stain": 894,
+            "returned": 0,
+            "second_death": true
+          }
+        ],
+        "pass": true,
+        "hard_fail_HF1": false
+      }
+    },
+    {
+      "id": "m_d2_stain_placement",
+      "what": "M-D2 stain within 2.0 m of the death point, on standable ground",
+      "status": "measured",
+      "value": {
+        "n": 20,
+        "max_offset_m": 0,
+        "mean_offset_m": 0,
+        "over_2m": 0,
+        "placement_rules": {
+          "death_point": 20
+        },
+        "_see_also": "m_d2b_placement_rules_exercised — this population is 20 scripted deaths on flat standable ground and can only ever produce `death_point`. The other three §6 rules are driven there.",
+        "pass": true
+      }
+    },
+    {
+      "id": "m_d8_second_death",
+      "what": "M-D8 exactly one bloodstain, always; the first is destroyed",
+      "status": "measured",
+      "value": {
+        "trials": 6,
+        "any_two_stains": 0,
+        "first_souls_returned_anywhere": 0,
+        "bloom_created_on_second_death": 6,
+        "still_one_after_wake": 6,
+        "recovered_during_wake_window": 0,
+        "min_second_death_dist_from_hearth_m": 45,
+        "sample": [
+          {
+            "stains_before": 1,
+            "stains_after": 1,
+            "first_stain_souls": 894,
+            "second_stain_souls": 0,
+            "on_surface_stain_count": 1,
+            "second_death_pos": [
+              3752.7502,
+              3.42,
+              3909.6802
+            ],
+            "hearth_pos": [
+              3784.57,
+              3.386,
+              3941.5
+            ],
+            "second_death_dist_from_hearth_m": 45,
+            "recovered_between": null
+          },
+          {
+            "stains_before": 1,
+            "stains_after": 1,
+            "first_stain_souls": 1485,
+            "second_stain_souls": 0,
+            "on_surface_stain_count": 1,
+            "second_death_pos": [
+              3791.6096,
+              3.42,
+              3897.054
+            ],
+            "hearth_pos": [
+              3784.57,
+              3.386,
+              3941.5
+            ],
+            "second_death_dist_from_hearth_m": 45,
+            "recovered_between": null
+          },
+          {
+            "stains_before": 1,
+            "stains_after": 1,
+            "first_stain_souls": 2076,
+            "second_stain_souls": 0,
+            "on_surface_stain_count": 1,
+            "second_death_pos": [
+              3824.6653,
+              3.42,
+              3921.0704
+            ],
+            "hearth_pos": [
+              3784.57,
+              3.386,
+              3941.5
+            ],
+            "second_death_dist_from_hearth_m": 45,
+            "recovered_between": null
+          }
+        ],
+        "pass": true,
+        "hard_fail_HF4": false
+      }
+    },
+    {
+      "id": "m_d10_death_legibility",
+      "what": "M-D10 HP reaches 0 within 12 frames of the last hit",
+      "status": "measured",
+      "value": {
+        "n": 20,
+        "max_frames": 0,
+        "over_12": 0,
+        "pass": true
+      }
+    },
+    {
+      "id": "m_d12_time_dead",
+      "what": "M-D12 / R6 death frame -> controllable frame",
+      "status": "measured",
+      "value": {
+        "n": 20,
+        "median_frames": 150,
+        "median_s": 2.5,
+        "p95_frames": 150,
+        "p95_s": 2.5,
+        "target_median_s": 4,
+        "target_p95_s": 6,
+        "pass": true
+      }
+    },
+    {
+      "id": "m_d17_stain_loss_rate",
+      "what": "M-D17 / R5 fraction of stains lost to a second death",
+      "status": "measured",
+      "value": {
+        "deaths": 20,
+        "lost_to_second_death": 6,
+        "rate": 0.3,
+        "band": [
+          0.1,
+          0.35
+        ],
+        "pass": true,
+        "note": "This session is scripted, so the rate is a property of the script and is reported as such: what the check proves is that a second death DOES destroy the first stain (M-D8) and that the rate is neither 0 (nothing at stake) nor > 0.60 (a shredder). The human figure is RI-PRG04 §7 arithmetic and is unvalidated against play."
+      }
+    },
+    {
+      "id": "m_d2b_placement_rules_exercised",
+      "what": "M-D2 the four §6 placement rules, driven inside the journey",
+      "status": "measured",
+      "value": {
+        "rules_in_the_scripted_20": {
+          "death_point": 20
+        },
+        "rules_over_the_whole_journey": {
+          "death_point": 20,
+          "last_grounded": 1,
+          "outside_fog_gate": 1
+        },
+        "declared_rules": [
+          "death_point",
+          "last_grounded",
+          "outside_fog_gate",
+          "clamped_within_2m",
+          "relocated_toward_hearth"
+        ],
+        "rules_reached": [
+          "death_point",
+          "last_grounded",
+          "outside_fog_gate"
+        ],
+        "rules_reached_n": 3,
+        "fall_rule": {
+          "cause": "fall",
+          "rule": "last_grounded",
+          "bloom_to_ledge_m": 0,
+          "bloom_to_death_point_m": 63.64,
+          "pass": true
+        },
+        "fog_rule": {
+          "rule": "outside_fog_gate",
+          "r_m": 29,
+          "radius_m": 26,
+          "pass": true
+        },
+        "rows": [
+          {
+            "kind": "fall_120m",
+            "frames_to_death": 171,
+            "cause": "fall",
+            "placement_rule": "last_grounded",
+            "frames_since_last_damage": 0,
+            "death_point": [
+              3884.57,
+              4041.5
+            ],
+            "bloom_to_ledge_m": 0,
+            "bloom_to_death_point_m": 63.64,
+            "world_supplied_the_cause": true
+          },
+          {
+            "kind": "inside_fog_gate",
+            "gate": "gate-drowned-xanmeer",
+            "radius_m": 26,
+            "death_offset_m": 12,
+            "cause": "combat",
+            "placement_rule": "outside_fog_gate",
+            "bloom_dist_from_gate_centre_m": 29,
+            "outside_gate": true,
+            "world_supplied_the_cause": false
+          }
+        ],
+        "_why": "Round 1 and round 2 both reported `placement_rules: {death_point: 20}` and 0.000 m, so three of the four rules the piece FIXED had never fired in the aggregation that scored it. This check exists to make the aggregate able to see them.",
+        "pass": true
+      }
+    },
+    {
+      "id": "m_d10b_death_legibility_world_caused",
+      "what": "M-D10 HP reaches 0 within 12 frames of the last hit — on a death the WORLD delivered",
+      "status": "measured",
+      "value": {
+        "n": 1,
+        "max_frames": 0,
+        "over_12": 0,
+        "rows": [
+          {
+            "kind": "fall_120m",
+            "frames_since_last_damage": 0,
+            "frames_to_death": 171
+          },
+          {
+            "kind": "inside_fog_gate"
+          }
+        ],
+        "_why": "The scripted 20 are all `damagePlayer(100000)`, which sets HP to 0 on the same frame it is the last damage — so `m_d10_death_legibility` reported `max_frames: 0` over 20 trials and was measuring the verb. This population is a body that fell 120 m and was killed by the ground: the damage is the world's and the frame count is a real one.",
+        "pass": true
+      }
+    },
+    {
+      "id": "m_d4_across_death_diff",
+      "what": "M-D4 across-death state diff, death-volatile excluded by name",
+      "status": "measured",
+      "value": {
+        "hash_before": "6724bed6c55d821163e0981961dceaf9b1635133291c16dcea2d12624b5549f4",
+        "hash_after": "fc6ef5dc76017c642eb63d41338ad8521f967f75c4ff21d008c1afbad925e844",
+        "volatile_group": [
+          "character.souls_held",
+          "character.hp",
+          "character.stamina",
+          "character.poise",
+          "character.estus",
+          "pose.",
+          "fight.player.rig.",
+          "fight.player.pos",
+          "fight.player.yaw",
+          "fight.player.prevA",
+          "fight.player.prevB",
+          "fight.player.socketA",
+          "fight.player.socketB",
+          "fight.player.animFrame",
+          "fight.player._loopFrame",
+          "fight.player._lastRootDy",
+          "fight.player.actionableAt",
+          "fight.player.stagger",
+          "fight.player.yawExempt",
+          "traversal.last_escape_ago_frames",
+          "death.in_flight",
+          "death.deaths_this_session",
+          "death.stains_lost_to_second_death",
+          "death.last_grounded",
+          "world.entities",
+          "world.enemies_dead_until_rest",
+          "death.bloodstain",
+          "volatile.",
+          "magic.focus",
+          "afflictions"
+        ],
+        "total_changed_paths": 139,
+        "non_volatile_changed": 0,
+        "offending": [],
+        "clock_note": "clock.time_of_day is excluded from THIS diff and charged in full to m_prg04_clock_not_advanced_on_death, which measures it across the dead interval instead of across the dead interval plus 51 frames of walking.",
+        "pass": true,
+        "hard_fail_HF2": false
+      }
+    },
+    {
+      "id": "m_prg04_clock_not_advanced_on_death",
+      "what": "RI-PRG04 §6 rule 4 — the clock does not advance on death",
+      "status": "measured",
+      "value": {
+        "dead_frames": 150,
+        "clock_at_death": 15.000833,
+        "clock_at_respawn": 15.000833,
+        "clock_across_dead_interval_h": 0,
+        "control_equal_live_frames_h": 0.013889,
+        "control_clock_moved": true,
+        "env_frames_held_by_death": 0,
+        "_why": "RI-PRG04 §6 rule 4: \"The clock does NOT advance on death. Only resting moves time. Dying repeatedly at a boss must not burn a quest deadline.\" §7 check 4 repeats it as an assertion. The world charged the whole 150-frame death surface to the clock, which the aggregation caught and no standalone probe did. The control arm runs the SAME number of frames ALIVE from the same save: if the clock does not move there, this instrument is reading a stopped clock and proves nothing.",
+        "pass": true
+      }
+    },
+    {
+      "id": "m_d10_d11_preserved",
+      "what": "D10/D11 world mutation and progression preserved, field by field",
+      "status": "measured",
+      "value": {
+        "before": {
+          "containers_emptied": [
+            "chest:rotted-hall-1",
+            "chest:rotted-hall-2"
+          ],
+          "doors_unlocked": [
+            "door:rotted-hall-inner"
+          ],
+          "shortcuts_opened": [
+            "shortcut:rotted-hall-ladder"
+          ],
+          "items_taken": [
+            "item:eshis-knife"
+          ],
+          "npcs_dead": [
+            "warden-eshi"
+          ],
+          "fog_gates_passed": [
+            "gate-ceyatatar-vault"
+          ],
+          "quests": {},
+          "journal_len": 0,
+          "flags": {
+            "w1-13:probe": true
+          },
+          "factions": {
+            "legion": {
+              "rank": 3,
+              "expelled": false
+            }
+          },
+          "dispositions": {
+            "aftermath-province-npcs": 35,
+            "agaceph-neekhu": 40,
+            "agaceph-sheem": 45,
+            "antiquarian-decius-arral": 42,
+            "archein-salts-her-own-reeds": 46,
+            "archein-weighs-the-season": 52,
+            "archon-apothecary-10": 50,
+            "archon-apothecary-11": 45,
+            "archon-bond-clerk": 30,
+            "archon-cook-5": 46,
+            "archon-crane-crew": 35,
+            "archon-factor-7": 33,
+            "archon-factor-9": 34,
+            "archon-keeper-apothecary": 52,
+            "archon-keeper-guild-office": 33,
+            "archon-keeper-inn": 52,
+            "archon-keeper-kiln-house": 40,
+            "archon-keeper-market": 40,
+            "archon-keeper-rootpost": 48,
+            "archon-keeper-shrine": 49,
+            "archon-keeper-vat-house": 39,
+            "archon-keeper-ward": 48,
+            "archon-legionary-12": 34,
+            "archon-legionary-13": 29,
+            "archon-priest-0": 49,
+            "archon-priest-0-elder0": 51,
+            "archon-priest-0-sibling1": 44,
+            "archon-priest-3": 52,
+            "archon-priest-3-sibling0": 43,
+            "archon-priest-4": 46,
+            "archon-scribe-6": 36,
+            "archon-scribe-8": 36,
+            "archon-smith-2": 42,
+            "archon-smith-2-child0": 53,
+            "archon-smith-2-partner1": 47,
+            "archon-weaver-1": 41,
+            "archon-weaver-1-apprentice0": 50,
+            "assizer-corvo": 45,
+            "blackrose-apothecary-9": 50,
+            "blackrose-boatwright-11": 40,
+            "blackrose-factor-10": 29,
+            "blackrose-keeper-clerk": 30,
+            "blackrose-keeper-inn": 57,
+            "blackrose-keeper-market": 38,
+            "blackrose-keeper-pawn": 45,
+            "blackrose-keeper-prison": 29,
+            "blackrose-keeper-rootpost": 56,
+            "blackrose-keeper-shrine": 54,
+            "blackrose-keeper-smithy": 42,
+            "blackrose-keeper-warders-hall": 29,
+            "blackrose-legionary-2": 29,
+            "blackrose-legionary-2-sibling0": 44,
+            "blackrose-legionary-3": 34,
+            "blackrose-legionary-3-elder0": 54,
+            "blackrose-legionary-3-sibling1": 39,
+            "blackrose-publican-1": 54,
+            "blackrose-publican-1-elder0": 52,
+            "blackrose-publican-1-sibling1": 43,
+            "blackrose-publican-6": 54,
+            "blackrose-rootkeeper-4": 49,
+            "blackrose-rootkeeper-5": 52,
+            "blackrose-smith-12": 41,
+            "blackrose-trader-0": 43,
+            "blackrose-trader-0-partner0": 46,
+            "blackrose-trader-8": 46,
+            "blackrose-warder-7": 29,
+            "blackrose-weaver-13": 44,
+            "blackrose-yard-hands": 30,
+            "blackwood-company-camp": 20,
+            "blackwood-company-factor": 25,
+            "bone-ladder-carter": 30,
+            "clerk-avelia-doren": 40,
+            "cutter-neeth": 42,
+            "deadwater-koor-nakh": 24,
+            "dockmaster-weeja-sen": 40,
+            "dyer-sallis": 45,
+            "ee-vashum": 35,
+            "factor-belliene": 40,
+            "factor-ruvela-sath": 45,
+            "fence-ashul": 40,
+            "gallery-intake-keepers": 35,
+            "gideon-apothecary-1": 49,
+            "gideon-apothecary-1-apprentice1": 42,
+            "gideon-apothecary-1-lodger0": 41,
+            "gideon-apothecary-8": 51,
+            "gideon-cook-13": 47,
+            "gideon-court-factor": 40,
+            "gideon-fisher-0": 43,
+            "gideon-fisher-0-sibling0": 40,
+            "gideon-fisher-3": 49,
+            "gideon-fisher-3-apprentice1": 49,
+            "gideon-fisher-3-lodger0": 39,
+            "gideon-keeper-apothecary": 47,
+            "gideon-keeper-chapel": 53,
+            "gideon-keeper-court": 31,
+            "gideon-keeper-grange": 33,
+            "gideon-keeper-inn": 56,
+            "gideon-keeper-lowmarket": 43,
+            "gideon-keeper-rootpost": 48,
+            "gideon-keeper-shrine": 50,
+            "gideon-keeper-smithy": 37,
+            "gideon-keeper-tollhouse": 29,
+            "gideon-legionary-7": 27,
+            "gideon-legionary-9": 33,
+            "gideon-publican-4": 56,
+            "gideon-quay-porter": 35,
+            "gideon-smith-10": 44,
+            "gideon-smith-11": 37,
+            "gideon-trader-2": 41,
+            "gideon-trader-2-apprentice0": 44,
+            "gideon-trader-5": 41,
+            "gideon-warder-6": 28,
+            "gideon-weaver-12": 43,
+            "harbourmaster-cuiro-vaneth": 40,
+            "harbourmistress-tesh": 45,
+            "helstrom-apothecary-5": 46,
+            "helstrom-apothecary-5-child0": 59,
+            "helstrom-apothecary-5-partner1": 47,
+            "helstrom-boatwright-13": 46,
+            "helstrom-boatwright-13-sibling0": 41,
+            "helstrom-draught-seller": 50,
+            "helstrom-factor-10": 30,
+            "helstrom-factor-10-elder0": 53,
+            "helstrom-factor-10-sibling1": 45,
+            "helstrom-factor-12": 36,
+            "helstrom-factor-12-child0": 53,
+            "helstrom-factor-12-partner1": 41,
+            "helstrom-fisher-3": 46,
+            "helstrom-fisher-3-child0": 54,
+            "helstrom-fisher-3-partner1": 43,
+            "helstrom-gallery-keepers": 30,
+            "helstrom-keeper-apothecary": 52,
+            "helstrom-keeper-archive": 28,
+            "helstrom-keeper-deep-market": 42,
+            "helstrom-keeper-hist-shrine": 56,
+            "helstrom-keeper-hollow-bole": 34,
+            "helstrom-keeper-inn-egg": 52,
+            "helstrom-keeper-inn-gate": 51,
+            "helstrom-keeper-inn-tide": 53,
+            "helstrom-keeper-legation": 32,
+            "helstrom-keeper-rootpost": 55,
+            "helstrom-keeper-scriptorium": 41,
+            "helstrom-keeper-smithy": 41,
+            "helstrom-keeper-undertemple": 47,
+            "helstrom-keeper-warders": 33,
+            "helstrom-legionary-2": 27,
+            "helstrom-legionary-2-apprentice0": 50,
+            "helstrom-legionary-6": 29,
+            "helstrom-legionary-6-sibling0": 43,
+            "helstrom-legionary-7": 27,
+            "helstrom-legionary-7-apprentice1": 50,
+            "helstrom-legionary-7-lodger0": 42,
+            "helstrom-legionary-9": 32,
+            "helstrom-legionary-9-apprentice1": 43,
+            "helstrom-legionary-9-lodger0": 39,
+            "helstrom-net-mender": 42,
+            "helstrom-publican-8": 57,
+            "helstrom-publican-8-apprentice0": 45,
+            "helstrom-reed-seller": 40,
+            "helstrom-salt-factor": 45,
+            "helstrom-warder-0": 28,
+            "helstrom-warder-0-apprentice0": 44,
+            "helstrom-warder-1": 31,
+            "helstrom-warder-1-apprentice1": 47,
+            "helstrom-warder-1-lodger0": 35,
+            "helstrom-warder-4": 24,
+            "helstrom-warder-4-sibling0": 45,
+            "helstrom-weaver-11": 48,
+            "helstrom-weaver-11-partner0": 44,
+            "herbwife-ossa": 40,
+            "innkeeper-veth": 45,
+            "ixtu-meer": 50,
+            "jeeh-ei": 55,
+            "keeper-ei-vashan": 40,
+            "keeper-teeja-lun": 45,
+            "king-hlaalu-teeth": 40,
+            "ku-vastei-ixakh": 50,
+            "ledgerer-hosk-vei": 45,
+            "lilmoth-apothecary-12": 49,
+            "lilmoth-cook-1": 43,
+            "lilmoth-cook-1-partner0": 48,
+            "lilmoth-cook-5": 46,
+            "lilmoth-cook-5-sibling0": 45,
+            "lilmoth-factor-0": 31,
+            "lilmoth-factor-0-child0": 52,
+            "lilmoth-factor-0-partner1": 47,
+            "lilmoth-factor-4": 29,
+            "lilmoth-factor-4-elder0": 47,
+            "lilmoth-factor-4-sibling1": 41,
+            "lilmoth-keeper-apothecary": 45,
+            "lilmoth-keeper-customs": 33,
+            "lilmoth-keeper-healer": 49,
+            "lilmoth-keeper-inn-drowned": 54,
+            "lilmoth-keeper-inn-stilt": 58,
+            "lilmoth-keeper-ledger-house": 33,
+            "lilmoth-keeper-market": 41,
+            "lilmoth-keeper-pawn": 43,
+            "lilmoth-keeper-rootpost": 49,
+            "lilmoth-keeper-scribe": 36,
+            "lilmoth-keeper-shrine": 48,
+            "lilmoth-keeper-smithy": 38,
+            "lilmoth-keeper-yard": 48,
+            "lilmoth-legionary-10": 29,
+            "lilmoth-legionary-10-partner0": 41,
+            "lilmoth-legionary-11": 31,
+            "lilmoth-legionary-13": 34,
+            "lilmoth-priest-6": 47,
+            "lilmoth-priest-6-apprentice1": 45,
+            "lilmoth-priest-6-lodger0": 36,
+            "lilmoth-priest-8": 50,
+            "lilmoth-priest-8-apprentice1": 42,
+            "lilmoth-priest-8-lodger0": 35,
+            "lilmoth-rootkeepers": 20,
+            "lilmoth-scribe-2": 35,
+            "lilmoth-scribe-2-elder0": 50,
+            "lilmoth-scribe-2-sibling1": 45,
+            "lilmoth-smith-9": 42,
+            "lilmoth-smith-9-sibling0": 39,
+            "lilmoth-weaver-3": 44,
+            "lilmoth-weaver-3-sibling0": 42,
+            "lilmoth-weaver-7": 42,
+            "lilmoth-weaver-7-sibling0": 46,
+            "lilmoth-wharf-cutters": 20,
+            "lilmoth-yard-brothers": 20,
+            "master-anse": 35,
+            "miredancer-omu-ei": 58,
+            "miredancer-sap-speaker": 44,
+            "neeja-xul": 40,
+            "notary-sedda-vell": 30,
+            "npc-porter-eeja": 40,
+            "npc-sesh-weth": 35,
+            "npc-sexton-ivo-sarn": 0,
+            "npc-the-thing-in-the-third-bay": 0,
+            "npc-wuleen-kus": 40,
+            "ojal-weeth": 40,
+            "paatru-otokh": 18,
+            "paatru-wux-ei": 22,
+            "potter-mek": 40,
+            "prefect-galvus-arn": 45,
+            "prefect-hallow": 40,
+            "quartermaster-sedd": 45,
+            "rootkeeper-ashul-tei": 45,
+            "rootkeeper-jeen": 45,
+            "rootkeeper-sesh-anaat": 45,
+            "rootlands-band-elder": 40,
+            "rootlands-drowned-speaker": 30,
+            "rootlands-keeper": 52,
+            "salt-factor-neloth-vaun": 45,
+            "sarpa-xeeth": 30,
+            "scribe-hulen": 40,
+            "sedd-ravano": 25,
+            "sexton-ivrenne-mour": 40,
+            "sexton-ravel-doun": 30,
+            "shipwright-oleen": 40,
+            "soulrest-boatwright-6": 43,
+            "soulrest-boatwright-9": 44,
+            "soulrest-cook-3": 43,
+            "soulrest-cook-4": 45,
+            "soulrest-customs-clerk": 35,
+            "soulrest-keeper-boneyard": 43,
+            "soulrest-keeper-court-steps": 50,
+            "soulrest-keeper-grey-hist": 53,
+            "soulrest-keeper-market": 38,
+            "soulrest-keeper-pawn": 40,
+            "soulrest-keeper-quay": 56,
+            "soulrest-keeper-smithy": 41,
+            "soulrest-scribe-5": 41,
+            "soulrest-sexton-on-duty": 35,
+            "soulrest-smith-2": 41,
+            "soulrest-trader-10": 38,
+            "soulrest-warder-11": 28,
+            "soulrest-weaver-0": 44,
+            "soulrest-weaver-1": 48,
+            "soulrest-weaver-7": 40,
+            "soulrest-weaver-8": 46,
+            "speaker-teel-ashaan": 50,
+            "stormhold-apothecary-1": 45,
+            "stormhold-apothecary-1-child0": 51,
+            "stormhold-apothecary-1-partner1": 47,
+            "stormhold-apothecary-2": 48,
+            "stormhold-apothecary-2-sibling0": 42,
+            "stormhold-apothecary-8": 49,
+            "stormhold-apothecary-8-sibling0": 38,
+            "stormhold-boatwright-11": 48,
+            "stormhold-factor-12": 30,
+            "stormhold-gate-guard": 38,
+            "stormhold-keeper-archive": 30,
+            "stormhold-keeper-chapel": 50,
+            "stormhold-keeper-customs": 29,
+            "stormhold-keeper-gaol": 29,
+            "stormhold-keeper-inn-lean": 51,
+            "stormhold-keeper-inn-pass": 54,
+            "stormhold-keeper-kiln": 43,
+            "stormhold-keeper-market": 42,
+            "stormhold-keeper-praetorium": 30,
+            "stormhold-keeper-rootpost": 52,
+            "stormhold-keeper-scribe": 41,
+            "stormhold-keeper-shrine": 54,
+            "stormhold-keeper-smithy": 36,
+            "stormhold-publican-0": 57,
+            "stormhold-publican-0-apprentice0": 48,
+            "stormhold-publican-3": 55,
+            "stormhold-publican-3-elder0": 52,
+            "stormhold-publican-3-sibling1": 43,
+            "stormhold-publican-4": 51,
+            "stormhold-publican-4-apprentice0": 49,
+            "stormhold-publican-5": 51,
+            "stormhold-publican-5-elder0": 50,
+            "stormhold-publican-5-sibling1": 43,
+            "stormhold-second-guard": 36,
+            "stormhold-smith-10": 38,
+            "stormhold-smith-10-elder0": 49,
+            "stormhold-smith-13": 44,
+            "stormhold-street-sweeper": 44,
+            "stormhold-trader-7": 40,
+            "stormhold-trader-7-apprentice1": 46,
+            "stormhold-trader-7-lodger0": 35,
+            "stormhold-warder-6": 25,
+            "stormhold-warder-6-sibling0": 41,
+            "stormhold-warder-9": 30,
+            "stormhold-warder-9-apprentice1": 47,
+            "stormhold-warder-9-lodger0": 41,
+            "thorn-apothecary-11": 49,
+            "thorn-cook-6": 48,
+            "thorn-cook-7": 45,
+            "thorn-factor-0": 33,
+            "thorn-keeper-apothecary": 50,
+            "thorn-keeper-hall": 34,
+            "thorn-keeper-inn": 57,
+            "thorn-keeper-rootpost": 56,
+            "thorn-keeper-sapwell": 54,
+            "thorn-keeper-trader": 44,
+            "thorn-legionary-10": 27,
+            "thorn-priest-1": 51,
+            "thorn-priest-2": 53,
+            "thorn-smith-4": 36,
+            "thorn-smith-8": 41,
+            "thorn-smith-9": 36,
+            "thorn-weaver-3": 44,
+            "thorn-weaver-5": 48,
+            "undersexton-aveline-rell": 45,
+            "undersexton-bel-mourne": 45,
+            "undertaker-vaskh": 45,
+            "warden-eshi": 30,
+            "warden-scribe-tuleeh-ma": 45,
+            "widow-ineel": 40,
+            "xul-aneekh-speaker": 45
+          },
+          "topics": [
+            "the-rootward-tide",
+            "the-tally-of-the-dead"
+          ],
+          "bounty": {
+            "imperial": 0
+          },
+          "witnesses": [],
+          "inventory": [
+            {
+              "id": "eshis-knife",
+              "count": 1,
+              "condition": 1,
+              "charge": 0,
+              "stolen": false,
+              "owner_of_record": null,
+              "equipped_slot": "right",
+              "quick_slot": null
+            }
+          ],
+          "hearths_discovered": [
+            "hearth-archon",
+            "hearth-lilmoth"
+          ],
+          "hearth_last_rested": "hearth-archon",
+          "travel_nodes": [],
+          "souls_spent": 11240,
+          "level": 1,
+          "afflictions": [
+            {
+              "id": "swamp-rot",
+              "kind": "disease",
+              "incubation_in_frames": 1200,
+              "duration_in_frames": 216000
+            }
+          ],
+          "clock_across_the_dead_interval": 0
+        },
+        "after": {
+          "containers_emptied": [
+            "chest:rotted-hall-1",
+            "chest:rotted-hall-2"
+          ],
+          "doors_unlocked": [
+            "door:rotted-hall-inner"
+          ],
+          "shortcuts_opened": [
+            "shortcut:rotted-hall-ladder"
+          ],
+          "items_taken": [
+            "item:eshis-knife"
+          ],
+          "npcs_dead": [
+            "warden-eshi"
+          ],
+          "fog_gates_passed": [
+            "gate-ceyatatar-vault"
+          ],
+          "quests": {},
+          "journal_len": 0,
+          "flags": {
+            "w1-13:probe": true
+          },
+          "factions": {
+            "legion": {
+              "rank": 3,
+              "expelled": false
+            }
+          },
+          "dispositions": {
+            "aftermath-province-npcs": 35,
+            "agaceph-neekhu": 40,
+            "agaceph-sheem": 45,
+            "antiquarian-decius-arral": 42,
+            "archein-salts-her-own-reeds": 46,
+            "archein-weighs-the-season": 52,
+            "archon-apothecary-10": 50,
+            "archon-apothecary-11": 45,
+            "archon-bond-clerk": 30,
+            "archon-cook-5": 46,
+            "archon-crane-crew": 35,
+            "archon-factor-7": 33,
+            "archon-factor-9": 34,
+            "archon-keeper-apothecary": 52,
+            "archon-keeper-guild-office": 33,
+            "archon-keeper-inn": 52,
+            "archon-keeper-kiln-house": 40,
+            "archon-keeper-market": 40,
+            "archon-keeper-rootpost": 48,
+            "archon-keeper-shrine": 49,
+            "archon-keeper-vat-house": 39,
+            "archon-keeper-ward": 48,
+            "archon-legionary-12": 34,
+            "archon-legionary-13": 29,
+            "archon-priest-0": 49,
+            "archon-priest-0-elder0": 51,
+            "archon-priest-0-sibling1": 44,
+            "archon-priest-3": 52,
+            "archon-priest-3-sibling0": 43,
+            "archon-priest-4": 46,
+            "archon-scribe-6": 36,
+            "archon-scribe-8": 36,
+            "archon-smith-2": 42,
+            "archon-smith-2-child0": 53,
+            "archon-smith-2-partner1": 47,
+            "archon-weaver-1": 41,
+            "archon-weaver-1-apprentice0": 50,
+            "assizer-corvo": 45,
+            "blackrose-apothecary-9": 50,
+            "blackrose-boatwright-11": 40,
+            "blackrose-factor-10": 29,
+            "blackrose-keeper-clerk": 30,
+            "blackrose-keeper-inn": 57,
+            "blackrose-keeper-market": 38,
+            "blackrose-keeper-pawn": 45,
+            "blackrose-keeper-prison": 29,
+            "blackrose-keeper-rootpost": 56,
+            "blackrose-keeper-shrine": 54,
+            "blackrose-keeper-smithy": 42,
+            "blackrose-keeper-warders-hall": 29,
+            "blackrose-legionary-2": 29,
+            "blackrose-legionary-2-sibling0": 44,
+            "blackrose-legionary-3": 34,
+            "blackrose-legionary-3-elder0": 54,
+            "blackrose-legionary-3-sibling1": 39,
+            "blackrose-publican-1": 54,
+            "blackrose-publican-1-elder0": 52,
+            "blackrose-publican-1-sibling1": 43,
+            "blackrose-publican-6": 54,
+            "blackrose-rootkeeper-4": 49,
+            "blackrose-rootkeeper-5": 52,
+            "blackrose-smith-12": 41,
+            "blackrose-trader-0": 43,
+            "blackrose-trader-0-partner0": 46,
+            "blackrose-trader-8": 46,
+            "blackrose-warder-7": 29,
+            "blackrose-weaver-13": 44,
+            "blackrose-yard-hands": 30,
+            "blackwood-company-camp": 20,
+            "blackwood-company-factor": 25,
+            "bone-ladder-carter": 30,
+            "clerk-avelia-doren": 40,
+            "cutter-neeth": 42,
+            "deadwater-koor-nakh": 24,
+            "dockmaster-weeja-sen": 40,
+            "dyer-sallis": 45,
+            "ee-vashum": 35,
+            "factor-belliene": 40,
+            "factor-ruvela-sath": 45,
+            "fence-ashul": 40,
+            "gallery-intake-keepers": 35,
+            "gideon-apothecary-1": 49,
+            "gideon-apothecary-1-apprentice1": 42,
+            "gideon-apothecary-1-lodger0": 41,
+            "gideon-apothecary-8": 51,
+            "gideon-cook-13": 47,
+            "gideon-court-factor": 40,
+            "gideon-fisher-0": 43,
+            "gideon-fisher-0-sibling0": 40,
+            "gideon-fisher-3": 49,
+            "gideon-fisher-3-apprentice1": 49,
+            "gideon-fisher-3-lodger0": 39,
+            "gideon-keeper-apothecary": 47,
+            "gideon-keeper-chapel": 53,
+            "gideon-keeper-court": 31,
+            "gideon-keeper-grange": 33,
+            "gideon-keeper-inn": 56,
+            "gideon-keeper-lowmarket": 43,
+            "gideon-keeper-rootpost": 48,
+            "gideon-keeper-shrine": 50,
+            "gideon-keeper-smithy": 37,
+            "gideon-keeper-tollhouse": 29,
+            "gideon-legionary-7": 27,
+            "gideon-legionary-9": 33,
+            "gideon-publican-4": 56,
+            "gideon-quay-porter": 35,
+            "gideon-smith-10": 44,
+            "gideon-smith-11": 37,
+            "gideon-trader-2": 41,
+            "gideon-trader-2-apprentice0": 44,
+            "gideon-trader-5": 41,
+            "gideon-warder-6": 28,
+            "gideon-weaver-12": 43,
+            "harbourmaster-cuiro-vaneth": 40,
+            "harbourmistress-tesh": 45,
+            "helstrom-apothecary-5": 46,
+            "helstrom-apothecary-5-child0": 59,
+            "helstrom-apothecary-5-partner1": 47,
+            "helstrom-boatwright-13": 46,
+            "helstrom-boatwright-13-sibling0": 41,
+            "helstrom-draught-seller": 50,
+            "helstrom-factor-10": 30,
+            "helstrom-factor-10-elder0": 53,
+            "helstrom-factor-10-sibling1": 45,
+            "helstrom-factor-12": 36,
+            "helstrom-factor-12-child0": 53,
+            "helstrom-factor-12-partner1": 41,
+            "helstrom-fisher-3": 46,
+            "helstrom-fisher-3-child0": 54,
+            "helstrom-fisher-3-partner1": 43,
+            "helstrom-gallery-keepers": 30,
+            "helstrom-keeper-apothecary": 52,
+            "helstrom-keeper-archive": 28,
+            "helstrom-keeper-deep-market": 42,
+            "helstrom-keeper-hist-shrine": 56,
+            "helstrom-keeper-hollow-bole": 34,
+            "helstrom-keeper-inn-egg": 52,
+            "helstrom-keeper-inn-gate": 51,
+            "helstrom-keeper-inn-tide": 53,
+            "helstrom-keeper-legation": 32,
+            "helstrom-keeper-rootpost": 55,
+            "helstrom-keeper-scriptorium": 41,
+            "helstrom-keeper-smithy": 41,
+            "helstrom-keeper-undertemple": 47,
+            "helstrom-keeper-warders": 33,
+            "helstrom-legionary-2": 27,
+            "helstrom-legionary-2-apprentice0": 50,
+            "helstrom-legionary-6": 29,
+            "helstrom-legionary-6-sibling0": 43,
+            "helstrom-legionary-7": 27,
+            "helstrom-legionary-7-apprentice1": 50,
+            "helstrom-legionary-7-lodger0": 42,
+            "helstrom-legionary-9": 32,
+            "helstrom-legionary-9-apprentice1": 43,
+            "helstrom-legionary-9-lodger0": 39,
+            "helstrom-net-mender": 42,
+            "helstrom-publican-8": 57,
+            "helstrom-publican-8-apprentice0": 45,
+            "helstrom-reed-seller": 40,
+            "helstrom-salt-factor": 45,
+            "helstrom-warder-0": 28,
+            "helstrom-warder-0-apprentice0": 44,
+            "helstrom-warder-1": 31,
+            "helstrom-warder-1-apprentice1": 47,
+            "helstrom-warder-1-lodger0": 35,
+            "helstrom-warder-4": 24,
+            "helstrom-warder-4-sibling0": 45,
+            "helstrom-weaver-11": 48,
+            "helstrom-weaver-11-partner0": 44,
+            "herbwife-ossa": 40,
+            "innkeeper-veth": 45,
+            "ixtu-meer": 50,
+            "jeeh-ei": 55,
+            "keeper-ei-vashan": 40,
+            "keeper-teeja-lun": 45,
+            "king-hlaalu-teeth": 40,
+            "ku-vastei-ixakh": 50,
+            "ledgerer-hosk-vei": 45,
+            "lilmoth-apothecary-12": 49,
+            "lilmoth-cook-1": 43,
+            "lilmoth-cook-1-partner0": 48,
+            "lilmoth-cook-5": 46,
+            "lilmoth-cook-5-sibling0": 45,
+            "lilmoth-factor-0": 31,
+            "lilmoth-factor-0-child0": 52,
+            "lilmoth-factor-0-partner1": 47,
+            "lilmoth-factor-4": 29,
+            "lilmoth-factor-4-elder0": 47,
+            "lilmoth-factor-4-sibling1": 41,
+            "lilmoth-keeper-apothecary": 45,
+            "lilmoth-keeper-customs": 33,
+            "lilmoth-keeper-healer": 49,
+            "lilmoth-keeper-inn-drowned": 54,
+            "lilmoth-keeper-inn-stilt": 58,
+            "lilmoth-keeper-ledger-house": 33,
+            "lilmoth-keeper-market": 41,
+            "lilmoth-keeper-pawn": 43,
+            "lilmoth-keeper-rootpost": 49,
+            "lilmoth-keeper-scribe": 36,
+            "lilmoth-keeper-shrine": 48,
+            "lilmoth-keeper-smithy": 38,
+            "lilmoth-keeper-yard": 48,
+            "lilmoth-legionary-10": 29,
+            "lilmoth-legionary-10-partner0": 41,
+            "lilmoth-legionary-11": 31,
+            "lilmoth-legionary-13": 34,
+            "lilmoth-priest-6": 47,
+            "lilmoth-priest-6-apprentice1": 45,
+            "lilmoth-priest-6-lodger0": 36,
+            "lilmoth-priest-8": 50,
+            "lilmoth-priest-8-apprentice1": 42,
+            "lilmoth-priest-8-lodger0": 35,
+            "lilmoth-rootkeepers": 20,
+            "lilmoth-scribe-2": 35,
+            "lilmoth-scribe-2-elder0": 50,
+            "lilmoth-scribe-2-sibling1": 45,
+            "lilmoth-smith-9": 42,
+            "lilmoth-smith-9-sibling0": 39,
+            "lilmoth-weaver-3": 44,
+            "lilmoth-weaver-3-sibling0": 42,
+            "lilmoth-weaver-7": 42,
+            "lilmoth-weaver-7-sibling0": 46,
+            "lilmoth-wharf-cutters": 20,
+            "lilmoth-yard-brothers": 20,
+            "master-anse": 35,
+            "miredancer-omu-ei": 58,
+            "miredancer-sap-speaker": 44,
+            "neeja-xul": 40,
+            "notary-sedda-vell": 30,
+            "npc-porter-eeja": 40,
+            "npc-sesh-weth": 35,
+            "npc-sexton-ivo-sarn": 0,
+            "npc-the-thing-in-the-third-bay": 0,
+            "npc-wuleen-kus": 40,
+            "ojal-weeth": 40,
+            "paatru-otokh": 18,
+            "paatru-wux-ei": 22,
+            "potter-mek": 40,
+            "prefect-galvus-arn": 45,
+            "prefect-hallow": 40,
+            "quartermaster-sedd": 45,
+            "rootkeeper-ashul-tei": 45,
+            "rootkeeper-jeen": 45,
+            "rootkeeper-sesh-anaat": 45,
+            "rootlands-band-elder": 40,
+            "rootlands-drowned-speaker": 30,
+            "rootlands-keeper": 52,
+            "salt-factor-neloth-vaun": 45,
+            "sarpa-xeeth": 30,
+            "scribe-hulen": 40,
+            "sedd-ravano": 25,
+            "sexton-ivrenne-mour": 40,
+            "sexton-ravel-doun": 30,
+            "shipwright-oleen": 40,
+            "soulrest-boatwright-6": 43,
+            "soulrest-boatwright-9": 44,
+            "soulrest-cook-3": 43,
+            "soulrest-cook-4": 45,
+            "soulrest-customs-clerk": 35,
+            "soulrest-keeper-boneyard": 43,
+            "soulrest-keeper-court-steps": 50,
+            "soulrest-keeper-grey-hist": 53,
+            "soulrest-keeper-market": 38,
+            "soulrest-keeper-pawn": 40,
+            "soulrest-keeper-quay": 56,
+            "soulrest-keeper-smithy": 41,
+            "soulrest-scribe-5": 41,
+            "soulrest-sexton-on-duty": 35,
+            "soulrest-smith-2": 41,
+            "soulrest-trader-10": 38,
+            "soulrest-warder-11": 28,
+            "soulrest-weaver-0": 44,
+            "soulrest-weaver-1": 48,
+            "soulrest-weaver-7": 40,
+            "soulrest-weaver-8": 46,
+            "speaker-teel-ashaan": 50,
+            "stormhold-apothecary-1": 45,
+            "stormhold-apothecary-1-child0": 51,
+            "stormhold-apothecary-1-partner1": 47,
+            "stormhold-apothecary-2": 48,
+            "stormhold-apothecary-2-sibling0": 42,
+            "stormhold-apothecary-8": 49,
+            "stormhold-apothecary-8-sibling0": 38,
+            "stormhold-boatwright-11": 48,
+            "stormhold-factor-12": 30,
+            "stormhold-gate-guard": 38,
+            "stormhold-keeper-archive": 30,
+            "stormhold-keeper-chapel": 50,
+            "stormhold-keeper-customs": 29,
+            "stormhold-keeper-gaol": 29,
+            "stormhold-keeper-inn-lean": 51,
+            "stormhold-keeper-inn-pass": 54,
+            "stormhold-keeper-kiln": 43,
+            "stormhold-keeper-market": 42,
+            "stormhold-keeper-praetorium": 30,
+            "stormhold-keeper-rootpost": 52,
+            "stormhold-keeper-scribe": 41,
+            "stormhold-keeper-shrine": 54,
+            "stormhold-keeper-smithy": 36,
+            "stormhold-publican-0": 57,
+            "stormhold-publican-0-apprentice0": 48,
+            "stormhold-publican-3": 55,
+            "stormhold-publican-3-elder0": 52,
+            "stormhold-publican-3-sibling1": 43,
+            "stormhold-publican-4": 51,
+            "stormhold-publican-4-apprentice0": 49,
+            "stormhold-publican-5": 51,
+            "stormhold-publican-5-elder0": 50,
+            "stormhold-publican-5-sibling1": 43,
+            "stormhold-second-guard": 36,
+            "stormhold-smith-10": 38,
+            "stormhold-smith-10-elder0": 49,
+            "stormhold-smith-13": 44,
+            "stormhold-street-sweeper": 44,
+            "stormhold-trader-7": 40,
+            "stormhold-trader-7-apprentice1": 46,
+            "stormhold-trader-7-lodger0": 35,
+            "stormhold-warder-6": 25,
+            "stormhold-warder-6-sibling0": 41,
+            "stormhold-warder-9": 30,
+            "stormhold-warder-9-apprentice1": 47,
+            "stormhold-warder-9-lodger0": 41,
+            "thorn-apothecary-11": 49,
+            "thorn-cook-6": 48,
+            "thorn-cook-7": 45,
+            "thorn-factor-0": 33,
+            "thorn-keeper-apothecary": 50,
+            "thorn-keeper-hall": 34,
+            "thorn-keeper-inn": 57,
+            "thorn-keeper-rootpost": 56,
+            "thorn-keeper-sapwell": 54,
+            "thorn-keeper-trader": 44,
+            "thorn-legionary-10": 27,
+            "thorn-priest-1": 51,
+            "thorn-priest-2": 53,
+            "thorn-smith-4": 36,
+            "thorn-smith-8": 41,
+            "thorn-smith-9": 36,
+            "thorn-weaver-3": 44,
+            "thorn-weaver-5": 48,
+            "undersexton-aveline-rell": 45,
+            "undersexton-bel-mourne": 45,
+            "undertaker-vaskh": 45,
+            "warden-eshi": 30,
+            "warden-scribe-tuleeh-ma": 45,
+            "widow-ineel": 40,
+            "xul-aneekh-speaker": 45
+          },
+          "topics": [
+            "the-rootward-tide",
+            "the-tally-of-the-dead"
+          ],
+          "bounty": {
+            "imperial": 0
+          },
+          "witnesses": [],
+          "inventory": [
+            {
+              "id": "eshis-knife",
+              "count": 1,
+              "condition": 1,
+              "charge": 0,
+              "stolen": false,
+              "owner_of_record": null,
+              "equipped_slot": "right",
+              "quick_slot": null
+            }
+          ],
+          "hearths_discovered": [
+            "hearth-archon",
+            "hearth-lilmoth"
+          ],
+          "hearth_last_rested": "hearth-archon",
+          "travel_nodes": [],
+          "souls_spent": 11240,
+          "level": 1,
+          "afflictions": [
+            {
+              "id": "swamp-rot",
+              "kind": "disease",
+              "incubation_in_frames": 1200,
+              "duration_in_frames": 216000
+            }
+          ],
+          "clock_across_the_dead_interval": 0
+        },
+        "changed": [],
+        "clock_advanced_by_death": false,
+        "clock_moved_over_equal_live_frames": 0.013889,
+        "diseases_survived": true,
+        "pass": true,
+        "note": "The clock must NOT move on death (RI-PRG04 §6 rule 4) and a disease must NOT be cured by it (RI-JRN06 \"How we lose\" #11). Both are in this list. The clock entry is the delta across the frames the player was DOWN; the control that proves the clock runs at all over the same number of frames is in m_prg04_clock_not_advanced_on_death."
+      }
+    },
+    {
+      "id": "m_d3_unreachable_relocation",
+      "what": "M-D3 / RN5 / D4 geometry never destroys souls",
+      "status": "measured",
+      "value": {
+        "found_unstandable_site": true,
+        "site": {
+          "x": 3811.882645082258,
+          "z": 4078.8099392564523,
+          "depth": 2.264
+        },
+        "death_registered": true,
+        "death_state_when_no_record": null,
+        "placement_rule": "relocated_toward_hearth",
+        "relocated_m": 14.5,
+        "stain_pos": [
+          3809.053835,
+          0.79979,
+          4064.588552
+        ],
+        "stain_water_depth_m": 1.2,
+        "stain_exists": true,
+        "souls_recovered": 7777,
+        "recoverable": true,
+        "pass": true,
+        "hard_fail_HF7": false,
+        "note": null
+      }
+    },
+    {
+      "id": "m_d15_recovery_robustness",
+      "what": "M-D15 recovery under five conditions",
+      "status": "measured",
+      "value": {
+        "conditions": [
+          {
+            "id": "rolling",
+            "refused_at_2p6m": true,
+            "souls_after": 3333,
+            "stain_after": 0,
+            "ok": true
+          },
+          {
+            "id": "mid_attack",
+            "refused_at_2p6m": true,
+            "souls_after": 3333,
+            "stain_after": 0,
+            "ok": true
+          },
+          {
+            "id": "at_1_hp",
+            "refused_at_2p6m": true,
+            "souls_after": 3333,
+            "stain_after": 0,
+            "ok": true
+          },
+          {
+            "id": "hostile_aggroed",
+            "refused_at_2p6m": true,
+            "souls_after": 3333,
+            "stain_after": 0,
+            "ok": true
+          },
+          {
+            "id": "one_frame_press",
+            "refused_at_2p6m": true,
+            "souls_after": 3333,
+            "stain_after": 0,
+            "ok": true
+          }
+        ],
+        "credited": 5,
+        "of": 5,
+        "consumed_without_crediting": 0,
+        "pass": true,
+        "hard_fail_HF9": false,
+        "note": "RI-PRG04 §6: recovery is by touch, all-or-nothing, with no animation — so there is no window in which the stain is consumed and the souls are not credited. The refusal at 2.6 m is reported too: a check that only ever credits could not tell a working radius from an unconditional grant."
+      }
+    },
+    {
+      "id": "m_d16_persistence",
+      "what": "M-D16 / D17 the stain survives rest, region change, save and reload",
+      "status": "measured",
+      "value": {
+        "born": {
+          "pos": [
+            3839.57,
+            3.42,
+            3911.5
+          ],
+          "souls": 9100,
+          "death_index": 1
+        },
+        "after_rest": {
+          "pos": [
+            3839.57,
+            3.42,
+            3911.5
+          ],
+          "souls": 9100,
+          "death_index": 1
+        },
+        "after_region_change": {
+          "pos": [
+            3839.57,
+            3.42,
+            3911.5
+          ],
+          "souls": 9100,
+          "death_index": 1
+        },
+        "after_named_state_load": null,
+        "after_blob_restore": {
+          "pos": [
+            3839.57,
+            3.42,
+            3911.5
+          ],
+          "souls": 9100,
+          "death_index": 1
+        },
+        "after_storage_round_trip": {
+          "pos": [
+            3839.57,
+            3.42,
+            3911.5
+          ],
+          "souls": 9100,
+          "death_index": 1
+        },
+        "pass": true,
+        "storage_path_exercised": true
+      }
+    },
+    {
+      "id": "m_d9_no_compensation",
+      "what": "M-D9 / D18 no loss compensation of any kind",
+      "status": "measured",
+      "value": {
+        "ui_strings_seen": [
+          "5",
+          "LIGHT",
+          "Spark-Dart",
+          "YOU WENT DOWN"
+        ],
+        "forbidden_hits": [],
+        "strings_containing_a_numeral": [],
+        "system_enumeration": {
+          "loss_toast": false,
+          "retrieval_item": null,
+          "insurance": null,
+          "reduced_death_penalty_option": false,
+          "partial_recovery": false,
+          "grace_period_frames": 0,
+          "_note": "RI-JRN06 D18 is a hard fail if any of these exist. They do not, and this object is the enumeration M-D9 asks for rather than a promise."
+        },
+        "inventory_items_that_restore_a_lost_stain": [],
+        "pass": true,
+        "hard_fail_HF5": false,
+        "data_side_note": "The item also asks for an enumeration of every ITEM in the game data whose effect restores a lost bloodstain. That half is a data grep and is reported as such by tools/harness/w1-13-consume.mjs --items; the figure here is the RUNNING inventory."
+      }
+    },
+    {
+      "id": "m_d18_no_fast_travel_to_the_stain",
+      "what": "M-D18 / seam S7 no route that ends at the death point",
+      "status": "measured",
+      "value": {
+        "hearth_menu_destinations": [],
+        "travel_services": 68,
+        "stations": 26,
+        "stations_are_hearths": 0,
+        "travel_network_present": true,
+        "pass": true,
+        "note": "Two directions, per the RI-PRG04 S7 amendment: the transport network must EXIST (it does — RI-TRV01, 5 modes) and no route may end at or near the death point. A hearth exposes no destination list at all, and no station coincides with a hearth."
+      }
+    },
+    {
+      "id": "m_d19_marker_sweep",
+      "what": "M-D19 no marker, arrow, minimap or compass pointing at the stain",
+      "status": "measured",
+      "value": {
+        "markers_reported": 0,
+        "map_exists": true,
+        "marker_like_elements": [],
+        "world_anchored_elements": [],
+        "hud_element_ids": [
+          "hud.health",
+          "hud.stamina",
+          "hud.focus",
+          "hud.heal",
+          "hud.equipload",
+          "hud.quickslots"
+        ],
+        "pass": true
+      }
+    },
+    {
+      "id": "m_d11_death_surface",
+      "what": "M-D11 death surface: <= 3.0 s, skippable on its first frame",
+      "status": "measured",
+      "value": {
+        "samples": [
+          {
+            "frames_after_death": 0,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 6,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 12,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 18,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 24,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 30,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 36,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 42,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 48,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 54,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 60,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 66,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 72,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 78,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 84,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 90,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 96,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 102,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 108,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 114,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 120,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 126,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 132,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 138,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 144,
+            "surface_active": true,
+            "line": "YOU WENT DOWN"
+          },
+          {
+            "frames_after_death": 150,
+            "surface_active": false,
+            "line": null
+          }
+        ],
+        "surface_up_for_frames": 150,
+        "surface_up_for_s": 2.5,
+        "ceiling_s": 3,
+        "line": "YOU WENT DOWN",
+        "skipped_on_first_rendered_frame": true,
+        "frames_from_input_to_gone": 2,
+        "pixels": {
+          "width": 1920,
+          "height": 1080,
+          "dark_px": 1972721,
+          "warm_ink_px": 19928,
+          "dark_frac": 0.9514
+        },
+        "surface_actually_drawn": true,
+        "statistics_or_tips_rendered": 0,
+        "pass": true,
+        "hard_fail_HF8": false
+      }
+    },
+    {
+      "id": "m_d14_stain_visibility",
+      "what": "M-D14 the bloom is visible at 12 m, and at 6 m in the dark",
+      "status": "measured",
+      "value": {
+        "stain": {
+          "pos": [
+            3834.57,
+            2.971782,
+            3959.5
+          ],
+          "souls": 4200,
+          "death_index": 2
+        },
+        "views": [
+          {
+            "condition": "daylight_12m",
+            "tag": "bloom",
+            "bearing_deg": 0,
+            "px": 4459,
+            "control_px": 195,
+            "margin": 4264,
+            "visible": true,
+            "eye_y": 4.764,
+            "observer_ground_y": 3.164,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.408
+          },
+          {
+            "condition": "daylight_12m",
+            "tag": "bloom",
+            "bearing_deg": 45,
+            "px": 2458,
+            "control_px": 195,
+            "margin": 2263,
+            "visible": true,
+            "eye_y": 4.645,
+            "observer_ground_y": 3.045,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.527
+          },
+          {
+            "condition": "daylight_12m",
+            "tag": "bloom",
+            "bearing_deg": 90,
+            "px": 1069,
+            "control_px": 195,
+            "margin": 874,
+            "visible": true,
+            "eye_y": 4.508,
+            "observer_ground_y": 2.908,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.663
+          },
+          {
+            "condition": "daylight_12m",
+            "tag": "bloom",
+            "bearing_deg": 135,
+            "px": 1882,
+            "control_px": 195,
+            "margin": 1687,
+            "visible": true,
+            "eye_y": 4.618,
+            "observer_ground_y": 3.018,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.554
+          },
+          {
+            "condition": "daylight_12m",
+            "tag": "bloom",
+            "bearing_deg": 180,
+            "px": 1754,
+            "control_px": 195,
+            "margin": 1559,
+            "visible": true,
+            "eye_y": 4.793,
+            "observer_ground_y": 3.193,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.378
+          },
+          {
+            "condition": "daylight_12m",
+            "tag": "bloom",
+            "bearing_deg": 225,
+            "px": 4023,
+            "control_px": 195,
+            "margin": 3828,
+            "visible": true,
+            "eye_y": 4.826,
+            "observer_ground_y": 3.226,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.345
+          },
+          {
+            "condition": "daylight_12m",
+            "tag": "bloom",
+            "bearing_deg": 270,
+            "px": 2897,
+            "control_px": 195,
+            "margin": 2702,
+            "visible": true,
+            "eye_y": 4.726,
+            "observer_ground_y": 3.126,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.446
+          },
+          {
+            "condition": "daylight_12m",
+            "tag": "bloom",
+            "bearing_deg": 315,
+            "px": 5423,
+            "control_px": 195,
+            "margin": 5228,
+            "visible": true,
+            "eye_y": 4.726,
+            "observer_ground_y": 3.126,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.446
+          },
+          {
+            "condition": "dark_6m",
+            "tag": "bloom",
+            "bearing_deg": 0,
+            "px": 27329,
+            "control_px": 195,
+            "margin": 27134,
+            "visible": true,
+            "eye_y": 4.467,
+            "observer_ground_y": 2.867,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.705
+          },
+          {
+            "condition": "dark_6m",
+            "tag": "bloom",
+            "bearing_deg": 45,
+            "px": 22681,
+            "control_px": 195,
+            "margin": 22486,
+            "visible": true,
+            "eye_y": 4.54,
+            "observer_ground_y": 2.94,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.632
+          },
+          {
+            "condition": "dark_6m",
+            "tag": "bloom",
+            "bearing_deg": 90,
+            "px": 13102,
+            "control_px": 195,
+            "margin": 12907,
+            "visible": true,
+            "eye_y": 4.675,
+            "observer_ground_y": 3.075,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.497
+          },
+          {
+            "condition": "dark_6m",
+            "tag": "bloom",
+            "bearing_deg": 135,
+            "px": 23297,
+            "control_px": 195,
+            "margin": 23102,
+            "visible": true,
+            "eye_y": 4.696,
+            "observer_ground_y": 3.096,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.476
+          },
+          {
+            "condition": "dark_6m",
+            "tag": "bloom",
+            "bearing_deg": 180,
+            "px": 23796,
+            "control_px": 195,
+            "margin": 23601,
+            "visible": true,
+            "eye_y": 4.773,
+            "observer_ground_y": 3.173,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.398
+          },
+          {
+            "condition": "dark_6m",
+            "tag": "bloom",
+            "bearing_deg": 225,
+            "px": 23210,
+            "control_px": 195,
+            "margin": 23015,
+            "visible": true,
+            "eye_y": 4.72,
+            "observer_ground_y": 3.12,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.452
+          },
+          {
+            "condition": "dark_6m",
+            "tag": "bloom",
+            "bearing_deg": 270,
+            "px": 18186,
+            "control_px": 195,
+            "margin": 17991,
+            "visible": true,
+            "eye_y": 4.7,
+            "observer_ground_y": 3.1,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.472
+          },
+          {
+            "condition": "dark_6m",
+            "tag": "bloom",
+            "bearing_deg": 315,
+            "px": 23180,
+            "control_px": 195,
+            "margin": 22985,
+            "visible": true,
+            "eye_y": 4.575,
+            "observer_ground_y": 2.975,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": 3.172,
+            "aimed_at_the_drawn_bloom": true,
+            "bloom_in_scene": true,
+            "old_eye_above_observer_ground_m": 1.597
+          }
+        ],
+        "null_control_views": [
+          {
+            "condition": "dark_6m",
+            "tag": "no-bloom",
+            "bearing_deg": 0,
+            "px": 195,
+            "control_px": 195,
+            "margin": 0,
+            "visible": false,
+            "eye_y": 4.467,
+            "observer_ground_y": 2.867,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": null,
+            "aimed_at_the_drawn_bloom": false,
+            "bloom_in_scene": false,
+            "old_eye_above_observer_ground_m": 1.705
+          },
+          {
+            "condition": "dark_6m",
+            "tag": "no-bloom",
+            "bearing_deg": 45,
+            "px": 195,
+            "control_px": 195,
+            "margin": 0,
+            "visible": false,
+            "eye_y": 4.54,
+            "observer_ground_y": 2.94,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": null,
+            "aimed_at_the_drawn_bloom": false,
+            "bloom_in_scene": false,
+            "old_eye_above_observer_ground_m": 1.632
+          },
+          {
+            "condition": "dark_6m",
+            "tag": "no-bloom",
+            "bearing_deg": 90,
+            "px": 195,
+            "control_px": 195,
+            "margin": 0,
+            "visible": false,
+            "eye_y": 4.675,
+            "observer_ground_y": 3.075,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": null,
+            "aimed_at_the_drawn_bloom": false,
+            "bloom_in_scene": false,
+            "old_eye_above_observer_ground_m": 1.497
+          },
+          {
+            "condition": "dark_6m",
+            "tag": "no-bloom",
+            "bearing_deg": 135,
+            "px": 195,
+            "control_px": 195,
+            "margin": 0,
+            "visible": false,
+            "eye_y": 4.696,
+            "observer_ground_y": 3.096,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": null,
+            "aimed_at_the_drawn_bloom": false,
+            "bloom_in_scene": false,
+            "old_eye_above_observer_ground_m": 1.476
+          },
+          {
+            "condition": "dark_6m",
+            "tag": "no-bloom",
+            "bearing_deg": 180,
+            "px": 195,
+            "control_px": 195,
+            "margin": 0,
+            "visible": false,
+            "eye_y": 4.773,
+            "observer_ground_y": 3.173,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": null,
+            "aimed_at_the_drawn_bloom": false,
+            "bloom_in_scene": false,
+            "old_eye_above_observer_ground_m": 1.398
+          },
+          {
+            "condition": "dark_6m",
+            "tag": "no-bloom",
+            "bearing_deg": 225,
+            "px": 195,
+            "control_px": 195,
+            "margin": 0,
+            "visible": false,
+            "eye_y": 4.72,
+            "observer_ground_y": 3.12,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": null,
+            "aimed_at_the_drawn_bloom": false,
+            "bloom_in_scene": false,
+            "old_eye_above_observer_ground_m": 1.452
+          },
+          {
+            "condition": "dark_6m",
+            "tag": "no-bloom",
+            "bearing_deg": 270,
+            "px": 195,
+            "control_px": 195,
+            "margin": 0,
+            "visible": false,
+            "eye_y": 4.7,
+            "observer_ground_y": 3.1,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": null,
+            "aimed_at_the_drawn_bloom": false,
+            "bloom_in_scene": false,
+            "old_eye_above_observer_ground_m": 1.472
+          },
+          {
+            "condition": "dark_6m",
+            "tag": "no-bloom",
+            "bearing_deg": 315,
+            "px": 195,
+            "control_px": 195,
+            "margin": 0,
+            "visible": false,
+            "eye_y": 4.575,
+            "observer_ground_y": 2.975,
+            "stain_model_y": 2.972,
+            "drawn_bloom_y": null,
+            "aimed_at_the_drawn_bloom": false,
+            "bloom_in_scene": false,
+            "old_eye_above_observer_ground_m": 1.597
+          }
+        ],
+        "recovered": null,
+        "daylight_12m_visible": "8/8",
+        "dark_6m_visible": "8/8",
+        "margin_px": 40,
+        "null_control_bloom_removed_from_the_world": true,
+        "null_control_why_not": null,
+        "null_control_silent": true,
+        "null_control_max_margin": 0,
+        "old_camera_eye_above_observer_ground_m": [
+          1.408,
+          1.527,
+          1.663,
+          1.554,
+          1.378,
+          1.345,
+          1.446,
+          1.446,
+          1.705,
+          1.632,
+          1.497,
+          1.476,
+          1.398,
+          1.452,
+          1.472,
+          1.597
+        ],
+        "old_camera_buried_on_n_bearings": 0,
+        "every_row_aimed_at_the_drawn_bloom": true,
+        "pass": true,
+        "control_note": "Two controls, not one. (1) Each viewpoint is shot twice — at the bloom and turned 180 deg away — so a detector firing on the marsh shows as a non-zero control, and a sighting now needs 40 px over it rather than the single pixel that used to count. (2) The bloom is then DRUNK and the eight dark bearings re-shot: if the detector still finds amber with no bloom in the world, every row above it is void and this check fails whatever the first sixteen said.",
+        "camera_note": "RI-JRN06 M-D14 reads \"From 8 viewpoints at 12 m WITH LOS (and 6 m in RN1's dark cave)\", and D14 itself says \"visible from >= 12 m WITH CLEAR LINE OF SIGHT\". A viewpoint under the ground has no line of sight and is not one of the eight the item asks for. The eye is therefore at the OBSERVER's own ground + 1.6 m and aims at the bloom's DRAWN origin (getDrawnMarkers, read off matrixWorld). Rounds 1-3 put it at the STAIN's COLLISION y — sampled at the stain and used at the observer's coordinates 12 m away — and aimed 0.3 m over that; renderer.js's own header records that the drawn ground departs from the collision surface by up to 6.80 m. old_eye_above_observer_ground_m is that camera's height over the ground the observer is standing on, per bearing."
+      }
+    },
+    {
+      "id": "m_d13_run_back",
+      "what": "M-D13 / R1-R4 run-back timing, walked",
+      "status": "measured",
+      "value": {
+        "trials": [
+          {
+            "dist": 150,
+            "ok": true,
+            "bearings_tried": 2,
+            "bearings_rejected_by_ground": 1,
+            "respawned_at": "hearth-archon",
+            "approach_frames": 6636,
+            "approach_min": 1.843,
+            "approach_m": 147,
+            "approach_mean_speed_mps": 1.3291,
+            "run_back_frames": 6685,
+            "run_back_min": 1.857,
+            "run_back_m": 148.5,
+            "run_back_arrived": true,
+            "run_back_aborted": null,
+            "ratio": 1.007,
+            "recovered_on_arrival": true,
+            "souls_after": 4200
+          },
+          {
+            "dist": 220,
+            "ok": true,
+            "bearings_tried": 12,
+            "bearings_rejected_by_ground": 11,
+            "respawned_at": "hearth-archon",
+            "approach_frames": 9820,
+            "approach_min": 2.728,
+            "approach_m": 217,
+            "approach_mean_speed_mps": 1.326,
+            "run_back_frames": 9886,
+            "run_back_min": 2.746,
+            "run_back_m": 218.5,
+            "run_back_arrived": true,
+            "run_back_aborted": null,
+            "ratio": 1.007,
+            "recovered_on_arrival": true,
+            "souls_after": 4200
+          },
+          {
+            "dist": 300,
+            "ok": true,
+            "bearings_tried": 14,
+            "bearings_rejected_by_ground": 13,
+            "respawned_at": "hearth-archon",
+            "approach_frames": 14150,
+            "approach_min": 3.931,
+            "approach_m": 297,
+            "approach_mean_speed_mps": 1.2595,
+            "run_back_frames": 14301,
+            "run_back_min": 3.973,
+            "run_back_m": 298.5,
+            "run_back_arrived": true,
+            "run_back_aborted": null,
+            "ratio": 1.011,
+            "recovered_on_arrival": true,
+            "souls_after": 4200
+          }
+        ],
+        "run_back_median_min": 2.746,
+        "run_back_p95_min": 3.973,
+        "R1_band": [
+          1.5,
+          3
+        ],
+        "R2_ceiling": 4,
+        "R1_pass": true,
+        "R2_pass": true,
+        "recovered_on_arrival": "3/3",
+        "R3_note": "encounters_on_run_back needs a placed hostile roster in the province. game/data/world/encounters.json exists but no roster is placed on the ground between a well and an arbitrary death point, so R3 is UNMEASURED here rather than reported as 0 — a 0 would read as the failure R3 exists to catch and would be an artefact of the probe. Owner: W1-12 (combat.encounter.placement).",
+        "R4_note": "The shortcut ratio (RN2) needs an unlockable shortcut on the ground. sim.world.shortcutsOpened is a real, saved register and magic/apply.js writes it, but no shortcut GEOMETRY exists in the province, so R4 is UNMEASURED. Owner: W1-01/W1-02."
+      }
+    },
+    {
+      "id": "m_jrn06_summary",
+      "what": "RI-JRN06 M-D1..M-D19",
+      "status": "measured",
+      "value": {
+        "scenarios": [
+          "RN1",
+          "RN2",
+          "RN3",
+          "RN4",
+          "RN5"
+        ],
+        "deaths": 20,
+        "checks": {
+          "m_d5_respawn_scope": true,
+          "m_d6_named_stays_dead": true,
+          "m_d7_merchant_state_survives_death": true,
+          "m_d1_souls_conservation": true,
+          "m_d2_stain_placement": true,
+          "m_d8_second_death": true,
+          "m_d10_death_legibility": true,
+          "m_d12_time_dead": true,
+          "m_d17_stain_loss_rate": true,
+          "m_d2b_placement_rules_exercised": true,
+          "m_d10b_death_legibility_world_caused": true,
+          "m_d4_across_death_diff": true,
+          "m_prg04_clock_not_advanced_on_death": true,
+          "m_d10_d11_preserved": true,
+          "m_d3_unreachable_relocation": true,
+          "m_d15_recovery_robustness": true,
+          "m_d16_persistence": true,
+          "m_d9_no_compensation": true,
+          "m_d18_no_fast_travel_to_the_stain": true,
+          "m_d19_marker_sweep": true,
+          "m_d11_death_surface": true,
+          "m_d14_stain_visibility": true
+        }
+      }
+    }
+  ],
+  "ok": false,
+  "artifacts": {
+    "trace": "trace.jsonl",
+    "ui_text": "ui-text.jsonl",
+    "surfaces": "surfaces.json",
+    "shots": []
+  }
+}

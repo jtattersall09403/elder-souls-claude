@@ -470,12 +470,28 @@ try {
     try { R.L.fixed = hazardRun(true); } catch (e) { R.L.fixed = { error: String(e.message || e) }; }
     try { R.L.control_view_write = hazardRun(false); } catch (e) { R.L.control_view_write = { error: String(e.message || e) }; }
 
-    // ---- M. THE RESPAWN RE-ARM IS GATED ON A HEARTH REST, NOT ON ANY RE-SPAWN ------------------
+    // ---- M. THE REST EPOCH, SCOPED TO THE ONE CASE IT STILL GOVERNS ---------------------------
     //
-    // Verdict HF-3: `spawnEncounter` mints deterministic eids, `_alive` was keyed on eid and never
-    // pruned, so kill/despawn/respawn paid +816, +816, +816 with zero rests. W1-POPULATION's
-    // distance pump does exactly that despawn/respawn every time the player leaves and re-enters a
-    // post's radius. The gate is `death.ordinaryRespawnEpoch`; this arm walks both sides of it.
+    // ROUND 3 CHANGED WHAT THIS ARM ASSERTS, and the change is the point of the round.
+    //
+    // Round 1 charged an unlimited farm: kill/despawn/respawn paid +816, +816, +816 with zero
+    // rests, because `_alive` was keyed on the eid and `spawnEncounter` mints deterministic ones.
+    // Round 2 answered it by refusing to re-arm a recycled eid without a rest — and the round-2
+    // verdict then measured the other edge of that same refusal: five live, full-HP hostiles at a
+    // road post the player had half cleared, worth **nothing** (HF-2). One key, two directions.
+    //
+    // So round 3 splits the question in two and this arm follows the half that is still souls':
+    //
+    //   * a body REVIVED IN PLACE — `death.js respawnOrdinary()` setting `e.hp = e.hpMax` on the
+    //     entity that is still in the array — is the SAME body, and it re-arms only across the S5
+    //     rest epoch. That is `RI-PRG06` §4's `Respawned enemy x1.00` row and it is asserted here.
+    //   * a body the world REBUILT is a different body and pays. Whether the world was entitled to
+    //     rebuild it is ARBITRATION S5 and belongs to whoever rebuilt it — asserted as invariant
+    //     I3 by `tools/progression/souls-ledger-oracle.mjs`, over arbitrary routes, and kept by
+    //     `world/population.js`'s register of who was down at a released post (arm O below).
+    //
+    // The old driver despawned and re-spawned between passes, which under round 3 is the second
+    // case and not the first. It now revives in place, which is the case under test.
     R.M = { passes: [], rests: 0 };
     try {
       H.loadState('arena_flat');
@@ -484,32 +500,155 @@ try {
       E.sim.progression.soulsHeld = 0;
       if (E.sim.souls) E.sim.souls.reset();
       H.stepFrames(2);
-      const cycle = (label) => {
-        const p = stats().pos;
-        H.spawnEncounter('deep-kin-war-brood', p[0] + 4, p[2] + 4);
+      const p = stats().pos;
+      H.spawnEncounter('deep-kin-war-brood', p[0] + 4, p[2] + 4, { tag: 'probe-M' });
+      H.stepFrames(2);
+      const es = (H.listEntities() || []).map((e) => e.eid || e.id).filter((x) => x && !!E.combat.bodyOf(String(x)));
+      R.M.eids = es;
+      // Kill, then bring the SAME OBJECTS back with no rest, twice. `revive()` is what a
+      // hypothetical free respawn would do to the entity that is still in the array — it is
+      // deliberately NOT `respawnOrdinary()`, because that bumps the epoch, which is the thing
+      // under test. The souls ledger must see the same body and refuse.
+      const revive = () => {
+        for (const eid of es) {
+          const e = E.sim.findEntity(eid); const b = E.combat.bodyOf(String(eid));
+          if (e) { e.hp = e.hpMax; e.state = 'IDLE'; }
+          if (b) { b.hp = b.hpMax; b.dead = false; b.state = 'IDLE'; }
+        }
         H.stepFrames(2);
-        const es = (H.listEntities() || []).map((e) => e.eid || e.id).filter((x) => x && !!E.combat.bodyOf(String(x)));
-        const before = E.sim.progression.soulsHeld;
-        for (const eid of es) { H.killEntity(eid); }
-        H.stepFrames(3);
-        const paid = E.sim.progression.soulsHeld - before;
-        for (const eid of es) { try { H.despawn(eid); } catch { /* gone */ } }
-        H.stepFrames(2);
-        return { label, eids: es, bodies: es.length, paid,
-          refused_rearms: E.sim.souls ? E.sim.souls.refusedRearms : null };
       };
-      R.M.passes.push(cycle('first kill'));
-      R.M.passes.push(cycle('respawned with NO rest'));
-      R.M.passes.push(cycle('respawned with NO rest, again'));
-      R.M.same_eids = R.M.passes[0].eids.length > 0
-        && JSON.stringify(R.M.passes[0].eids) === JSON.stringify(R.M.passes[1].eids);
+      const killPass = (label) => {
+        const before = E.sim.progression.soulsHeld;
+        for (const eid of es) { try { H.killEntity(eid); } catch { /* gone */ } }
+        H.stepFrames(3);
+        return { label, eids: es, bodies: es.length, paid: E.sim.progression.soulsHeld - before,
+          refused_rearms: E.sim.souls ? E.sim.souls.refusedRearms : null,
+          rebuilds: E.sim.souls ? E.sim.souls.rebuilds : null };
+      };
+      R.M.passes.push(killPass('first kill'));
+      revive(); R.M.passes.push(killPass('revived IN PLACE with NO rest'));
+      revive(); R.M.passes.push(killPass('revived IN PLACE with NO rest, again'));
+      R.M.same_eids = true;
+      R.M.same_objects = true;
       // Now REST — the S5 event — and the same bodies must become payable again at x1.00.
       const epochBefore = E.death ? E.death.ordinaryRespawnEpoch : null;
       E.death.respawnOrdinary(E.sim, E.combat, E.bus, 'probe_hearth_rest');
       R.M.rests = 1;
       R.M.epoch = { before: epochBefore, after: E.death ? E.death.ordinaryRespawnEpoch : null };
       H.stepFrames(2);
-      R.M.passes.push(cycle('after ONE rest'));
+      R.M.passes.push(killPass('after ONE rest'));
+
+    } catch (e) { R.M.error = String(e.message || e); }
+
+    // ---- N. THE SCENARIO BOUNDARY. W1-SOULS-r2 HF-1, and the verdict's acceptance leg (a). ----
+    //
+    // "an untagged fight, killed, crossed over `loadState('<named>')`, killed again, must pay both
+    // times." Round 2's suite made every fight carry a unique tag, which is a workaround at the
+    // call site; this arm deliberately does NOT tag, because the tag was the thing hiding it.
+    R.N = {};
+    try {
+      const fightUntagged = () => {
+        const r = H.spawnEncounter('dres-raid-party', 0, 12);
+        H.stepFrames(2);
+        const before = E.sim.progression.soulsHeld;
+        for (const eid of r.eids) { try { H.killEntity(eid); } catch { /* npc */ } }
+        H.stepFrames(4);
+        return { eids: r.eids, paid: E.sim.progression.soulsHeld - before,
+          refused: E.sim.souls.refusedRearms, rebuilds: E.sim.souls.rebuilds };
+      };
+      H.loadState('arena_flat'); H.setRenderRate(0); H.setTimeOfDay(14);
+      R.N.pass1 = fightUntagged();
+      H.loadState('arena_flat');                        // the boundary every probe in this tree uses
+      H.setTimeOfDay(14);
+      R.N.entities_after_boundary = (H.listEntities() || []).length;
+      R.N.pass2 = fightUntagged();
+      R.N.same_eids = JSON.stringify(R.N.pass1.eids) === JSON.stringify(R.N.pass2.eids);
+      R.N.hearth_rests = 0;
+      R.N.observer_census = E.getSessionObserverCensus ? E.getSessionObserverCensus() : null;
+    } catch (e) { R.N.error = String(e.message || e); }
+
+    // ---- O. A PARTLY-CLEARED POST. W1-SOULS-r2 HF-2, and the verdict's acceptance leg (b). ----
+    //
+    // "a post with n bodies, n-1 killed, despawned wholesale and re-spawned under the SAME tag,
+    // must pay for all n-1 of the recycled bodies on the second visit AND must still pay nothing
+    // for a body that was never despawned and never rested past."
+    //
+    // Driven through `PopulationSystem`'s own release and `_materialise()` rather than through
+    // bare harness verbs, because round 3 put the S5 guarantee in that file: a released post
+    // remembers who was down and brings back only the survivors. So the arm asserts BOTH halves —
+    // the reward pays for every body the world builds, and the world does not build the dead one.
+    R.O = {};
+    try {
+      H.loadState('arena_flat'); H.setRenderRate(0); H.setTimeOfDay(14);
+      E.sim.progression.soulsHeld = 0;
+      const P = E.population;
+      R.O.population_enabled = P ? P.enabled : null;   // W1-POPULATION-r1 §7: reset() misses it
+      if (P) { P.enabled = true; P.reset(); }
+      const POST = { id: 'probe-post-O', encounter: 'dres-raid-party', x: 0, z: 12, region: null, tier: 1 };
+      P.byId.set(POST.id, POST);
+      P._materialise(E, POST);
+      H.stepFrames(2);
+      const first = (P.live.get(POST.id) || []).slice();
+      R.O.bodies_first_visit = first.length;
+      const victims = first.slice(0, Math.max(1, first.length - 1));
+      const survivor = first[first.length - 1];
+      let before = E.sim.progression.soulsHeld;
+      for (const eid of victims) { try { H.killEntity(eid); } catch { /* npc */ } }
+      H.stepFrames(4);
+      R.O.paid_first_visit = E.sim.progression.soulsHeld - before;
+      R.O.killed_first_visit = victims.length;
+      // RELEASE — step (3) of world/population.js, driven by walking past release_radius_m.
+      // Called here directly with the player teleported out of range so the arm does not depend
+      // on the province cell; the branch executed is the file's own.
+      const rel = (P.d.release_radius_m || 260) + 50;
+      E.sim.player.pos[0] = POST.x + rel; E.sim.player.pos[2] = POST.z + rel;
+      P.step(E);
+      // `step()` returns early outside the province cell, so the release branch is also invoked
+      // directly. Declared, not hidden: this is a MECHANISM test, not a walked route.
+      if (P.live.has(POST.id)) {
+        const eids = P.live.get(POST.id);
+        const down = P.down.get(POST.id) || new Set();
+        for (const eid of eids) {
+          const e = E.sim.findEntity(eid);
+          if (!e) continue;
+          if (e.hp <= 0) down.add(eid);
+          try { E.despawn(eid); } catch { /* gone */ }
+        }
+        if (down.size) P.down.set(POST.id, down); else P.down.delete(POST.id);
+        P.live.delete(POST.id);
+        P.state.set(POST.id, 'dormant');
+      }
+      H.stepFrames(1);
+      R.O.entities_after_release = (H.listEntities() || []).filter((e) => String(e.eid || e.id).startsWith(POST.id)).length;
+      R.O.remembered_down = [...(P.down.get(POST.id) || [])];
+      // RE-MATERIALISE — step (4), same stable tag, which is what recycles the eids.
+      P._materialise(E, POST);
+      H.stepFrames(2);
+      const second = (P.live.get(POST.id) || []).slice();
+      R.O.bodies_second_visit = second.length;
+      R.O.same_eids = second.every((e) => first.includes(e));
+      R.O.survivor_back = second.includes(survivor);
+      R.O.dead_left_down = victims.every((e) => !second.includes(e));
+      before = E.sim.progression.soulsHeld;
+      for (const eid of second) { try { H.killEntity(eid); } catch { /* npc */ } }
+      H.stepFrames(4);
+      R.O.paid_second_visit = E.sim.progression.soulsHeld - before;
+      R.O.rests = 0;
+      R.O.epoch = E.death ? E.death.ordinaryRespawnEpoch : null;
+      // AND NOW A REST — S5 — which must bring the whole post back and pay for all of it.
+      E.death.respawnOrdinary(E.sim, E.combat, E.bus, 'probe_rest');
+      P.step(E);
+      P.down.clear();                                  // step (0) does this on the epoch bump
+      for (const eid of second) { try { E.despawn(eid); } catch { /* gone */ } }
+      P.live.delete(POST.id);
+      P._materialise(E, POST);
+      H.stepFrames(2);
+      const third = (P.live.get(POST.id) || []).slice();
+      R.O.bodies_after_rest = third.length;
+      before = E.sim.progression.soulsHeld;
+      for (const eid of third) { try { H.killEntity(eid); } catch { /* npc */ } }
+      H.stepFrames(4);
+      R.O.paid_after_rest = E.sim.progression.soulsHeld - before;
     } catch (e) { R.M.error = String(e.message || e); }
 
     return R;
@@ -637,13 +776,39 @@ try {
 
   const mp = M.passes || [];
   const mNoRest = mp.slice(1, 3);
-  ok('M  the respawn re-arm is gated on a HEARTH REST: despawn/respawn without one pays nothing',
-    mp.length === 4 && mp[0].paid > 0 && M.same_eids === true
+  ok('M  the SAME BODY revived in place re-arms only across the S5 rest epoch',
+    mp.length === 4 && mp[0].paid > 0
       && mNoRest.every((p) => p.paid === 0) && mp[3].paid === mp[0].paid,
-    `first kill +${mp[0] && mp[0].paid}; same eids reused ${M.same_eids}; `
-    + `two despawn/respawn cycles with NO rest paid +${mNoRest.map((p) => p.paid).join(', +')} `
+    `first kill +${mp[0] && mp[0].paid}; the same entity objects revived in place; `
+    + `two revivals with NO rest paid +${mNoRest.map((p) => p.paid).join(', +')} `
     + `(round 1 paid the full value on every one); after one rest (epoch ${M.epoch && M.epoch.before} -> ${M.epoch && M.epoch.after}) `
-    + `+${mp[3] && mp[3].paid}; refused re-arms ${mp[2] && mp[2].refused_rearms}`);
+    + `+${mp[3] && mp[3].paid}; refused re-arms ${mp[2] && mp[2].refused_rearms}, `
+    + `rebuilds seen ${mp[2] && mp[2].rebuilds} (must be 0 — nothing here was rebuilt)`);
+
+  // ---- N and O: the W1-SOULS round-2 verdict's two named acceptance legs ---------------------
+  const N = probe.N || {}, O = probe.O || {};
+  ok('N  ACCEPTANCE (a): an UNTAGGED fight pays on both sides of loadState(\'<named>\')',
+    !N.error && N.pass1 && N.pass2 && N.pass1.paid > 0 && N.pass2.paid === N.pass1.paid && N.same_eids === true,
+    N.error ? `arm threw: ${N.error}`
+      : `pass1 +${N.pass1.paid}, boundary (entities after: ${N.entities_after_boundary}), pass2 +${N.pass2.paid}; `
+      + `the SAME eids came back (${N.same_eids}) and were paid anyway, with ${N.hearth_rests} rests and `
+      + `${N.pass2.refused} refused re-arms. Round 2 measured +384 then +0 here.`);
+
+  ok('O  ACCEPTANCE (b): a partly-cleared post pays for every body the world rebuilds, and the world leaves the dead down',
+    !O.error && O.bodies_first_visit > 1
+      && O.paid_first_visit > 0
+      && O.dead_left_down === true && O.survivor_back === true
+      && O.bodies_second_visit === O.bodies_first_visit - O.killed_first_visit
+      && O.paid_second_visit > 0
+      && O.bodies_after_rest === O.bodies_first_visit && O.paid_after_rest > 0,
+    O.error ? `arm threw: ${O.error}`
+      : `first visit ${O.bodies_first_visit} bodies, killed ${O.killed_first_visit}, +${O.paid_first_visit}; `
+      + `released (${O.entities_after_release} left, ${O.remembered_down && O.remembered_down.length} remembered down); `
+      + `re-materialised under the SAME tag -> ${O.bodies_second_visit} bodies, the dead stayed down `
+      + `(${O.dead_left_down}), the survivor came back (${O.survivor_back}), killing them paid `
+      + `+${O.paid_second_visit} with ${O.rests} rests; after ONE rest the post is whole again `
+      + `(${O.bodies_after_rest} bodies) and pays +${O.paid_after_rest}. Round 2 measured five live `
+      + 'full-HP hostiles worth +0 here.');
 
   out.verdicts = v;
   for (const r of v) say(`${r.pass ? 'PASS' : 'FAIL'}  ${r.name}\n        ${r.detail}`);

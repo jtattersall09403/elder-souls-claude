@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `07f8b75`: 460 tools, 153 reference
-items, 24 pieces in flight.
+so it cannot drift. Generated at `3ba93e0`: 475 tools, 153 reference
+items, 26 pieces in flight.
 
-Its purpose is to stop 24+ concurrent agents each paying separately to discover the
+Its purpose is to stop 26+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -61,9 +61,10 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/verdict-staleness.mjs` — which verdicts are still standing on the code that is actually at HEAD.
 - `tools/verdict-validate.mjs` — **no header comment**
 
-### `tools/analysis/` — 36
+### `tools/analysis/` — 37
 
 - `tools/analysis/ambience-census.mjs` — RI-AUD03 B4 — the layer census.
+- `tools/analysis/ambience-determinism.mjs` — DOES THE SAME BED RENDER THE SAME SOUND TWICE?
 - `tools/analysis/ambience-interior-consumption.mjs` — CONSUMPTION for the interior ambience beds.
 - `tools/analysis/ambience-onsets-chart.mjs` — Draw the W1-22 round-2 headline as a picture: how far the ambience event layers sit above or below the bed they land on, per region, before and after.
 - `tools/analysis/ambience-onsets.mjs` — DOES ANYTHING ACTUALLY HAPPEN?
@@ -100,8 +101,9 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/analysis/ui-forbidden.mjs` — RI-UIX01 §B, both probes, and RI-UIX03 §D.
 - `tools/analysis/ui-layer.mjs` — RI-UIX02 §C, detector 1 of three: the pixel sweep.
 
-### `tools/audio/` — 3
+### `tools/audio/` — 4
 
+- `tools/audio/critic-m6-fixture-sweep.mjs` — is RI-AUD01 M6's PASS a property of the PANNER or of the FIXTURE?
 - `tools/audio/impact-browser.mjs` — the BROWSER half of `audio.combat.impact` (W1-11).
 - `tools/audio/impact-probe.mjs` — drive `aud-impact-matrix` and write the run artifacts RI-AUD01's Comparison method reads.
 - `tools/audio/make-impact-classes.mjs` — Authoring tool for `game/data/audio/impact/classes.json` — RI-AUD01 §A/§C, W1-11.
@@ -164,7 +166,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/experience/ponr-probe.mjs` — RI-EXP05 "Comparison method" Step 2, executed.
 - `tools/experience/session-run.mjs` — the playthrough session driver.
 
-### `tools/harness/` — 174
+### `tools/harness/` — 179
 
 - `tools/harness/anim-author.mjs` — re-author the four attack clip archetypes and the idle base loop, and solve for the one free parameter each archetype has.
 - `tools/harness/anim-tune.mjs` — measure the swing OFF THE ANIMATION SYSTEM, with no browser.
@@ -243,6 +245,8 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/critic-w1-13-r2-b.mjs` — **no header comment**
 - `tools/harness/critic-w1-13-r2-c.mjs` — **no header comment**
 - `tools/harness/critic-w1-13-r2-d.mjs` — **no header comment**
+- `tools/harness/critic-w1-13-r3-shot.mjs` — **no header comment**
+- `tools/harness/critic-w1-13-r3.mjs` — **no header comment**
 - `tools/harness/critic-w1-14-r2a.mjs` — the W1-14 round-2 critic's OWN instrument.
 - `tools/harness/critic-w1-14-r2b.mjs` — the W1-14 round-2 critic's targeted probe.
 - `tools/harness/critic-w1-14-r2c.mjs` — W1-14 round 2: the progression / quest-reachability probe.
@@ -265,6 +269,9 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/harness/critic-w1-14-r3-seam.mjs` — W1-14 round-3 CRITIC.
 - `tools/harness/critic-w1-14-r3-vfx.mjs` — W1-14 round-3 CRITIC, RI-MAG05.
 - `tools/harness/critic-w1-15.mjs` — the W1-15 CRITIC's own instrument.
+- `tools/harness/critic-w1-21-r1-shots.mjs` — the W1-21 critic's picture, taken through `tools/capture/`.
+- `tools/harness/critic-w1-21-r1.mjs` — the W1-21 round-1 CRITIC's own instrument.
+- `tools/harness/critic-w1-21-r1b.mjs` — the W1-21 round-1 CRITIC's second pass.
 - `tools/harness/critic-w1-26-r1a2.mjs` — CRITIC's own RI-JRN09 M1 (DTR) over EVERY node of the census graph.
 - `tools/harness/critic-w1-26-r1b.mjs` — is the W1-26 rendered-text accessor structurally blind to a third text surface?
 - `tools/harness/critic-w1-26-r1c.mjs` — the CRITIC's own M20/HF9, M4 clause 1 (O6), RI-JRN09 M2 (AC), and the RI-MTH07 CONSUMPTION perturbation on the naming line.
@@ -366,12 +373,16 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/lib/serve.mjs` — Minimal static file server.
 - `tools/lib/trace-schema.mjs` — ONE documented, versioned reader for `elder-souls/trace@1`.
 
-### `tools/lore/` — 5
+### `tools/lore/` — 9
 
 - `tools/lore/build-canon.mjs` — Project the canon registry into the game, WITHOUT its answers.
 - `tools/lore/canon-census.mjs` — The contradiction census — RI-LOR06 "Comparison method" steps 4 and 5, run against the SHIPPED tree rather than against the registry's own prose.
 - `tools/lore/canon-consumption.mjs` — Does anything read the canon register?
 - `tools/lore/canon-in-page.mjs` — The canon register, in the page.
+- `tools/lore/critic-w1-23-r1-ablate.mjs` — CRITIC W1-23 r1, RULES #6 delete-the-fix: the same topics answered with the register and with canon=null, to test whether the register CAUSES the province's dis
+- `tools/lore/critic-w1-23-r1-shot.mjs` — One picture for the W1-23 round-1 verdict: what the register is measured to do, next to what it is measured NOT to do.
+- `tools/lore/critic-w1-23-r1-voices.mjs` — CRITIC W1-23 r1.
+- `tools/lore/critic-w1-23-r1.mjs` — CRITIC instrument, W1-23 round 1.
 - `tools/lore/tribe-census.mjs` — tribe-census — RI-LOR08's comparison method, checks 1, 2 and 6.
 
 ### `tools/metrics/` — 6
@@ -416,7 +427,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 27
+### `tools/quests/` — 28
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -440,6 +451,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/mainline-trace.mjs` — W1-19's deliverable: the main quest, played end to end, in the browser, through the shipped QuestEngine, with a trace instead of a claim.
 - `tools/quests/method-guard-control.mjs` — W1-FACTIONS round 3.
 - `tools/quests/resolution-reachability.mjs` — can the player ACTUALLY take any of the endings a quest offers?
+- `tools/quests/reveal-route-audit.mjs` — is there a route in PLAY that produces each reveal a resolution demands, and does the hook table that is supposed to carry them actually fire?
 - `tools/quests/topic-supply-audit.mjs` — can a player be OFFERED each quest by playing?
 - `tools/quests/utility-findability.mjs` — can a player be OFFERED the quests that are NOT the main quest?
 - `tools/quests/viability-split-shot.mjs` — one picture of the two instruments, drawn from their own artifacts.
@@ -483,7 +495,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 77
+### `tools/world/` — 80
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -528,6 +540,9 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-w1-01-r2-shots.mjs` — **no header comment**
 - `tools/world/critic-w1-01-r2-structure.mjs` — **no header comment**
 - `tools/world/critic-w1-01-r2-travel.mjs` — **no header comment**
+- `tools/world/critic-w1-04-r1.mjs` — **no header comment**
+- `tools/world/critic-w1-04-r1b.mjs` — **no header comment**
+- `tools/world/critic-w1-04-r1c.mjs` — **no header comment**
 - `tools/world/crossing.mjs` — **no header comment**
 - `tools/world/env-consumption.mjs` — RI-MTH07 / ARBITRATION §3 — the CONSUMPTION probe for W1-02's clock and weather machine.
 - `tools/world/hazard-fire.mjs` — **no header comment**
@@ -564,7 +579,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **109 tools have no header comment**, so nobody can tell what they do without
+> **114 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -738,20 +753,22 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-19-r3` | running | reconcile mainline-chain-floor.mjs (find the hand-feed); prove a single reveal route end-t | `orchestration/status/W1-19-r3.json` |
-| `critic-w1-21` | running | read RULES/INDEX, W1-21.json, PLAN 3, ARBITRATION AR-2, seam S35 | `orchestration/status/critic-w1-21.json` |
+| `critic-w1-13-r3` | running | factorial arms 5/12 done (as-placed 2/8+3/8 REPRODUCED, player-eye 8/8+8/8 REPRODUCED, no- | `orchestration/status/critic-w1-13-r3.json` `tools/harness/critic-w1-13-r3.mjs` |
+| `W1-22-r3` | in-progress | (2) ambience-render --calibrate: clay-moor 5.8 LU under its own target, deep-marshes 0.003 | `tools/analysis/ambience-determinism.mjs` `game/src/audio/synth.js` `game/src/audio/ambience.js` `reports/w1-22/` |
+| `critic-w1-11` | writing-verdict | write corpus/90-verdicts/wave1/W1-11-r1.{md,json}, validate, blog line | `orchestration/status/critic-w1-11.json` `tools/audio/critic-m6-fixture-sweep.mjs` `corpus/90-verdicts/wave1/artifacts/W1-11-r1/` `docs/shots/2026-08-07-W1-11-r1-critic-m6-passes-on-the-broken-panner.png` |
+| `critic-w1-17-act5` | ? | none. Successor (round 2, after the fix): re-run corpus/90-verdicts/wave1/artifacts/W1-17- | `corpus/90-verdicts/wave1/W1-17-act5-r1.md` `corpus/90-verdicts/wave1/W1-17-act5-r1.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/converse-node-repro.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/gen-converse-node-repro.mjs` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/opens-by-topic-scan.json` `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/check-prose-output.txt` |
+| `critic-w1-04` | running | write corpus/90-verdicts/wave1/W1-04-r1.{md,json}, copy shot to docs/shots, blog line, ver | `orchestration/status/critic-w1-04.json` |
+| `critic-w1-21` | running | run critic-w1-21-r1.mjs (A..E), then ui-metrics/ui-forbidden/marker-diff/journal-ui, then  | `orchestration/status/critic-w1-21.json` `tools/harness/critic-w1-21-r1.mjs` |
+| `W1-SOULS-r3` | running | re-run full oracle after the idempotence fix; then delete-the-fix legs (souls rec.ref, pop | `orchestration/status/W1-SOULS-r3.json` `game/src/sim/souls.js` `game/src/engine.js` `game/src/world/population.js` `tools/progression/derive-soul-values.mjs` `tools/check-souls-corpus.mjs` |
+| `W1-19-r3` | running | land the _applyConsequences -> setFlag mechanism fix; delete-the-fix; prove one reveal fir | `orchestration/status/W1-19-r3.json` `tools/quests/reveal-route-audit.mjs` `reports/runs/W1-19-R3/reveal-route-audit.json` |
+| `W1-06-r2` | partial | 1) confirm the pitch-pin fix live in the browser (cam-probe.mjs --probe pitchlaw,lock, and | — |
+| `W1-03` | researching | read RULES/INDEX (done); read docs/PLAN.md S3 W1-03 entry, ARBITRATION S25, reports/w1-05- | — |
 | `critic-w1-23` | researching | read RI-LOR04, canon-facts.json disputes, run census/consumption, check hash absence, 336/ | — |
-| `critic-w1-17-act5` | ? | read W1-17-act5-argument.json handover, main-quest-argument.json, RI-DLG items; re-measure | — |
-| `critic-w1-11` | running | read INDEX.md, RULES.md done; then W1-11 status + PLAN §3 + ARBITRATION S22 | `orchestration/status/critic-w1-11.json` |
-| `critic-w1-04` | running | read INDEX.md, RULES.md done; then W1-04.json, reports/w1-04-survey.md, docs/PLAN.md S3 W1 | `orchestration/status/critic-w1-04.json` |
-| `critic-w1-13-r3` | running | read RULES, INDEX, W1-13-r2 verdict, W1-13-r3 status | — |
 | `W1-VIABILITY-SPLIT` | done | none -- hand to a tool critic. Do NOT let the critic grade this piece against the screen f | `orchestration/status/W1-VIABILITY-SPLIT.json` `tools/analysis/impossibility-screen.mjs` `tools/quests/viability-walk.mjs` `tools/quests/viability-split-shot.mjs` `corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md` `corpus/22-character/RI-CHR01-character-creation.md` |
-| `W1-SOULS-r3` | running | browser: run souls-ledger-oracle (invariant over 463 routes) + its --self-break; then soul | `orchestration/status/W1-SOULS-r3.json` `game/src/sim/souls.js` `game/src/engine.js` `game/src/world/population.js` `tools/progression/derive-soul-values.mjs` `tools/check-souls-corpus.mjs` |
 | `W1-13-r3` | done | critic | `game/src/sim/environment.js` `game/src/harness/api.js` `tools/journey/jrn06-death.mjs` `tools/journey/journey-run.mjs` `tools/harness/w1-13-r3-bloom-sight.mjs` `tools/harness/w1-13-r3-clock.mjs` |
 | `tool-build-viability-r6` | researching | choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items | — |
 | `W1-JOURNAL-PROSE` | researching | state the closing-line rule, then rewrite file by file, re-running the FULL gate after eve | — |
 | `judge-prose-r4` | researching | read t01-books A.txt and B.txt; answer; then t02..t15 | — |
-| `W1-06-r2` | researching | instrument in bare Node (camera.js imports only rng.js + collision.js) to confirm before c | — |
 | `W1-06` | partial | HIGHEST VALUE FOR THE NEXT AGENT, in order: (1) THE PITCH PIN. In a lock-on against cam_bo | — |
 | `W1-FACTIONS-r3` | researching | patch faction-probe to travelToGiver; then prose, records_belief, template break, browser  | — |
 | `critic-w1-souls` | researching | run the -DELETED counterpart, then write the verdict md+json, blog line | — |

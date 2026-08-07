@@ -1,0 +1,771 @@
+{
+  "schema": "w1-13/r3-drift@1",
+  "target": {
+    "T1": "respawn_pos (the world's own record of where the respawn WROTE the body) is 0.00 m from the named basin, in every mode, at every well",
+    "T2a": "nothing of the BODY is carried: releasing the axis on the killing blow lands the body exactly where never pressing it lands it (within 0.05 m), at every well, from arms that were demonstrably walking when they died",
+    "T2b": "the two held arms reach the SAME TERMINAL SPEED (frames 160-220 after the respawn, within 0.05 m per 60 frames). Neither is travelling faster; one had a head start, and the head start is the analog axis already being at full deflection, which is a true statement about a held stick"
+  },
+  "surface_frames": 150,
+  "stub_traversal_reset": false,
+  "rows": [
+    {
+      "well": "hearth-archon",
+      "mode": "released",
+      "moved_6f_before_death_m": 0,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        3784.57,
+        3.386,
+        3941.5
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 0,
+      "moved_last_60f_m": 0,
+      "at_respawn_plus_220f_m": 0,
+      "drift_after_respawn_m": 0
+    },
+    {
+      "well": "hearth-archon",
+      "mode": "held-through",
+      "moved_6f_before_death_m": 0.176,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        3784.57,
+        3.386,
+        3941.5
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0.373,
+      "moved_next_210f_m": 7.84,
+      "moved_last_60f_m": 2.24,
+      "at_respawn_plus_220f_m": 8.213,
+      "drift_after_respawn_m": 8.213
+    },
+    {
+      "well": "hearth-archon",
+      "mode": "held-after-only",
+      "moved_6f_before_death_m": 0,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        3784.57,
+        3.386,
+        3941.5
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 7.541,
+      "moved_last_60f_m": 2.24,
+      "at_respawn_plus_220f_m": 7.541,
+      "drift_after_respawn_m": 7.541
+    },
+    {
+      "well": "hearth-archon",
+      "mode": "held-then-released",
+      "moved_6f_before_death_m": 0.176,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        3784.57,
+        3.386,
+        3941.5
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 0,
+      "moved_last_60f_m": 0,
+      "at_respawn_plus_220f_m": 0,
+      "drift_after_respawn_m": 0
+    },
+    {
+      "well": "hearth-blackrose",
+      "mode": "released",
+      "moved_6f_before_death_m": 0,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        1905.13,
+        2.609,
+        4568
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 0,
+      "moved_last_60f_m": 0,
+      "at_respawn_plus_220f_m": 0,
+      "drift_after_respawn_m": 0
+    },
+    {
+      "well": "hearth-blackrose",
+      "mode": "held-through",
+      "moved_6f_before_death_m": 0.191,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        1905.13,
+        2.609,
+        4568
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0.533,
+      "moved_next_210f_m": 11.2,
+      "moved_last_60f_m": 3.2,
+      "at_respawn_plus_220f_m": 11.733,
+      "drift_after_respawn_m": 11.733
+    },
+    {
+      "well": "hearth-blackrose",
+      "mode": "held-after-only",
+      "moved_6f_before_death_m": 0,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        1905.13,
+        2.609,
+        4568
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 10.773,
+      "moved_last_60f_m": 3.2,
+      "at_respawn_plus_220f_m": 10.773,
+      "drift_after_respawn_m": 10.773
+    },
+    {
+      "well": "hearth-blackrose",
+      "mode": "held-then-released",
+      "moved_6f_before_death_m": 0.191,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        1905.13,
+        2.609,
+        4568
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 0,
+      "moved_last_60f_m": 0,
+      "at_respawn_plus_220f_m": 0,
+      "drift_after_respawn_m": 0
+    },
+    {
+      "well": "hearth-ceyatatar-vault",
+      "mode": "released",
+      "moved_6f_before_death_m": 0,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        1562.5,
+        2.737,
+        2962.5
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 0,
+      "moved_last_60f_m": 0,
+      "at_respawn_plus_220f_m": 0,
+      "drift_after_respawn_m": 0
+    },
+    {
+      "well": "hearth-ceyatatar-vault",
+      "mode": "held-through",
+      "moved_6f_before_death_m": 0.224,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        1562.5,
+        2.737,
+        2962.5
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0.317,
+      "moved_next_210f_m": 5.138,
+      "moved_last_60f_m": 0,
+      "at_respawn_plus_220f_m": 5.455,
+      "drift_after_respawn_m": 5.455
+    },
+    {
+      "well": "hearth-ceyatatar-vault",
+      "mode": "held-after-only",
+      "moved_6f_before_death_m": 0,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        1562.5,
+        2.737,
+        2962.5
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 5.455,
+      "moved_last_60f_m": 0.362,
+      "at_respawn_plus_220f_m": 5.455,
+      "drift_after_respawn_m": 5.455
+    },
+    {
+      "well": "hearth-ceyatatar-vault",
+      "mode": "held-then-released",
+      "moved_6f_before_death_m": 0.224,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        1562.5,
+        2.737,
+        2962.5
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 0,
+      "moved_last_60f_m": 0,
+      "at_respawn_plus_220f_m": 0,
+      "drift_after_respawn_m": 0
+    },
+    {
+      "well": "hearth-cross-01",
+      "mode": "released",
+      "moved_6f_before_death_m": 0,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        2182.28,
+        186.636,
+        1150.62
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 0,
+      "moved_last_60f_m": 0,
+      "at_respawn_plus_220f_m": 0,
+      "drift_after_respawn_m": 0
+    },
+    {
+      "well": "hearth-cross-01",
+      "mode": "held-through",
+      "moved_6f_before_death_m": 0.176,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        2182.28,
+        186.636,
+        1150.62
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0.533,
+      "moved_next_210f_m": 11.209,
+      "moved_last_60f_m": 3.2,
+      "at_respawn_plus_220f_m": 11.743,
+      "drift_after_respawn_m": 11.743
+    },
+    {
+      "well": "hearth-cross-01",
+      "mode": "held-after-only",
+      "moved_6f_before_death_m": 0,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        2182.28,
+        186.636,
+        1150.62
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 10.783,
+      "moved_last_60f_m": 3.2,
+      "at_respawn_plus_220f_m": 10.783,
+      "drift_after_respawn_m": 10.783
+    },
+    {
+      "well": "hearth-cross-01",
+      "mode": "held-then-released",
+      "moved_6f_before_death_m": 0.176,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        2182.28,
+        186.636,
+        1150.62
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 0,
+      "moved_last_60f_m": 0,
+      "at_respawn_plus_220f_m": 0,
+      "drift_after_respawn_m": 0
+    },
+    {
+      "well": "hearth-cross-02",
+      "mode": "released",
+      "moved_6f_before_death_m": 0,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        2369.17,
+        73.044,
+        1412.3
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 0,
+      "moved_last_60f_m": 0,
+      "at_respawn_plus_220f_m": 0,
+      "drift_after_respawn_m": 0
+    },
+    {
+      "well": "hearth-cross-02",
+      "mode": "held-through",
+      "moved_6f_before_death_m": 0.176,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        2369.17,
+        73.044,
+        1412.3
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0.533,
+      "moved_next_210f_m": 11.197,
+      "moved_last_60f_m": 3.198,
+      "at_respawn_plus_220f_m": 11.731,
+      "drift_after_respawn_m": 11.731
+    },
+    {
+      "well": "hearth-cross-02",
+      "mode": "held-after-only",
+      "moved_6f_before_death_m": 0,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        2369.17,
+        73.044,
+        1412.3
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 10.771,
+      "moved_last_60f_m": 3.198,
+      "at_respawn_plus_220f_m": 10.771,
+      "drift_after_respawn_m": 10.771
+    },
+    {
+      "well": "hearth-cross-02",
+      "mode": "held-then-released",
+      "moved_6f_before_death_m": 0.176,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        2369.17,
+        73.044,
+        1412.3
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 0,
+      "moved_last_60f_m": 0,
+      "at_respawn_plus_220f_m": 0,
+      "drift_after_respawn_m": 0
+    },
+    {
+      "well": "hearth-cross-03",
+      "mode": "released",
+      "moved_6f_before_death_m": 0,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        2419.3,
+        45.119,
+        1716.78
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 0,
+      "moved_last_60f_m": 0,
+      "at_respawn_plus_220f_m": 0,
+      "drift_after_respawn_m": 0
+    },
+    {
+      "well": "hearth-cross-03",
+      "mode": "held-through",
+      "moved_6f_before_death_m": 0.32,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        2419.3,
+        45.119,
+        1716.78
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0.533,
+      "moved_next_210f_m": 11.2,
+      "moved_last_60f_m": 3.2,
+      "at_respawn_plus_220f_m": 11.733,
+      "drift_after_respawn_m": 11.733
+    },
+    {
+      "well": "hearth-cross-03",
+      "mode": "held-after-only",
+      "moved_6f_before_death_m": 0,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        2419.3,
+        45.119,
+        1716.78
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 10.773,
+      "moved_last_60f_m": 3.2,
+      "at_respawn_plus_220f_m": 10.773,
+      "drift_after_respawn_m": 10.773
+    },
+    {
+      "well": "hearth-cross-03",
+      "mode": "held-then-released",
+      "moved_6f_before_death_m": 0.32,
+      "frames_from_kill_to_respawn": 151,
+      "respawn_frame": 229,
+      "respawn_pos": [
+        2419.3,
+        45.119,
+        1716.78
+      ],
+      "at_respawn_frame_m": 0,
+      "at_the_respawn_frame_sampled_m": 0,
+      "moved_first_10f_m": 0,
+      "moved_next_210f_m": 0,
+      "moved_last_60f_m": 0,
+      "at_respawn_plus_220f_m": 0,
+      "drift_after_respawn_m": 0
+    }
+  ],
+  "wells": [
+    "hearth-archon",
+    "hearth-blackrose",
+    "hearth-ceyatatar-vault",
+    "hearth-cross-01",
+    "hearth-cross-02",
+    "hearth-cross-03"
+  ],
+  "t1": {
+    "n": 24,
+    "max_at_respawn_frame_m": 0,
+    "over_0_25m": [],
+    "pass": true
+  },
+  "t2a_no_carried_momentum": {
+    "rows": [
+      {
+        "well": "hearth-archon",
+        "moving_before_the_death_m_per_6f": 0.176,
+        "released": 0,
+        "held_then_released": 0,
+        "delta_m": 0
+      },
+      {
+        "well": "hearth-blackrose",
+        "moving_before_the_death_m_per_6f": 0.191,
+        "released": 0,
+        "held_then_released": 0,
+        "delta_m": 0
+      },
+      {
+        "well": "hearth-ceyatatar-vault",
+        "moving_before_the_death_m_per_6f": 0.224,
+        "released": 0,
+        "held_then_released": 0,
+        "delta_m": 0
+      },
+      {
+        "well": "hearth-cross-01",
+        "moving_before_the_death_m_per_6f": 0.176,
+        "released": 0,
+        "held_then_released": 0,
+        "delta_m": 0
+      },
+      {
+        "well": "hearth-cross-02",
+        "moving_before_the_death_m_per_6f": 0.176,
+        "released": 0,
+        "held_then_released": 0,
+        "delta_m": 0
+      },
+      {
+        "well": "hearth-cross-03",
+        "moving_before_the_death_m_per_6f": 0.32,
+        "released": 0,
+        "held_then_released": 0,
+        "delta_m": 0
+      }
+    ],
+    "max_delta_m": 0,
+    "tolerance_m": 0.05,
+    "all_arms_were_actually_moving_before_the_death": true,
+    "pass": true,
+    "_reading": "The `moving_before_the_death` column is the control that stops this being vacuous: a body that was standing still when it died cannot demonstrate that momentum is not carried. Each of these was walking when it was killed."
+  },
+  "t2b_the_gap_is_the_axis_ramp": {
+    "rows": [
+      {
+        "well": "hearth-archon",
+        "first_10f": {
+          "held_through": 0.373,
+          "held_after_only": 0,
+          "delta_m": 0.373
+        },
+        "next_210f": {
+          "held_through": 7.84,
+          "held_after_only": 7.541,
+          "delta_m": 0.299
+        },
+        "terminal_speed_last_60f": {
+          "held_through": 2.24,
+          "held_after_only": 2.24,
+          "delta_m": 0
+        },
+        "total_gap_m": 0.672,
+        "both_at_rest_against_the_same_obstruction": false,
+        "same_terminal_speed": true,
+        "same_final_position": false
+      },
+      {
+        "well": "hearth-blackrose",
+        "first_10f": {
+          "held_through": 0.533,
+          "held_after_only": 0,
+          "delta_m": 0.533
+        },
+        "next_210f": {
+          "held_through": 11.2,
+          "held_after_only": 10.773,
+          "delta_m": 0.427
+        },
+        "terminal_speed_last_60f": {
+          "held_through": 3.2,
+          "held_after_only": 3.2,
+          "delta_m": 0
+        },
+        "total_gap_m": 0.96,
+        "both_at_rest_against_the_same_obstruction": false,
+        "same_terminal_speed": true,
+        "same_final_position": false
+      },
+      {
+        "well": "hearth-ceyatatar-vault",
+        "first_10f": {
+          "held_through": 0.317,
+          "held_after_only": 0,
+          "delta_m": 0.317
+        },
+        "next_210f": {
+          "held_through": 5.138,
+          "held_after_only": 5.455,
+          "delta_m": -0.317
+        },
+        "terminal_speed_last_60f": {
+          "held_through": 0,
+          "held_after_only": 0.362,
+          "delta_m": -0.362
+        },
+        "total_gap_m": 0,
+        "both_at_rest_against_the_same_obstruction": true,
+        "same_terminal_speed": false,
+        "same_final_position": true
+      },
+      {
+        "well": "hearth-cross-01",
+        "first_10f": {
+          "held_through": 0.533,
+          "held_after_only": 0,
+          "delta_m": 0.533
+        },
+        "next_210f": {
+          "held_through": 11.209,
+          "held_after_only": 10.783,
+          "delta_m": 0.426
+        },
+        "terminal_speed_last_60f": {
+          "held_through": 3.2,
+          "held_after_only": 3.2,
+          "delta_m": 0
+        },
+        "total_gap_m": 0.96,
+        "both_at_rest_against_the_same_obstruction": false,
+        "same_terminal_speed": true,
+        "same_final_position": false
+      },
+      {
+        "well": "hearth-cross-02",
+        "first_10f": {
+          "held_through": 0.533,
+          "held_after_only": 0,
+          "delta_m": 0.533
+        },
+        "next_210f": {
+          "held_through": 11.197,
+          "held_after_only": 10.771,
+          "delta_m": 0.426
+        },
+        "terminal_speed_last_60f": {
+          "held_through": 3.198,
+          "held_after_only": 3.198,
+          "delta_m": 0
+        },
+        "total_gap_m": 0.96,
+        "both_at_rest_against_the_same_obstruction": false,
+        "same_terminal_speed": true,
+        "same_final_position": false
+      },
+      {
+        "well": "hearth-cross-03",
+        "first_10f": {
+          "held_through": 0.533,
+          "held_after_only": 0,
+          "delta_m": 0.533
+        },
+        "next_210f": {
+          "held_through": 11.2,
+          "held_after_only": 10.773,
+          "delta_m": 0.427
+        },
+        "terminal_speed_last_60f": {
+          "held_through": 3.2,
+          "held_after_only": 3.2,
+          "delta_m": 0
+        },
+        "total_gap_m": 0.96,
+        "both_at_rest_against_the_same_obstruction": false,
+        "same_terminal_speed": true,
+        "same_final_position": false
+      }
+    ],
+    "max_terminal_speed_delta_m_per_60f": 0.362,
+    "tolerance_m": 0.05,
+    "wells_by_terminal_speed": [
+      "hearth-archon",
+      "hearth-blackrose",
+      "hearth-cross-01",
+      "hearth-cross-02",
+      "hearth-cross-03"
+    ],
+    "wells_by_same_final_position": [
+      "hearth-ceyatatar-vault"
+    ],
+    "pass": true,
+    "_reading": "The predicate is on TERMINAL SPEED (frames 160-220 after the respawn), not on distance, because distance over any window that contains a ramp is a ramp measurement. Equal terminal speed with unequal distance means one arm has a HEAD START and neither is travelling faster — and the head start belongs to the analog axis, which really is at full deflection because the player really is holding it. T2a shows that letting go removes it completely."
+  },
+  "t2_pairs_raw": [
+    {
+      "well": "hearth-archon",
+      "comparison": "momentum carried across the respawn?",
+      "a": 8.213,
+      "b": 7.541,
+      "delta_m": 0.672
+    },
+    {
+      "well": "hearth-archon",
+      "comparison": "is a release across the death honoured?",
+      "a": 0,
+      "b": 0,
+      "delta_m": 0
+    },
+    {
+      "well": "hearth-blackrose",
+      "comparison": "momentum carried across the respawn?",
+      "a": 11.733,
+      "b": 10.773,
+      "delta_m": 0.96
+    },
+    {
+      "well": "hearth-blackrose",
+      "comparison": "is a release across the death honoured?",
+      "a": 0,
+      "b": 0,
+      "delta_m": 0
+    },
+    {
+      "well": "hearth-ceyatatar-vault",
+      "comparison": "momentum carried across the respawn?",
+      "a": 5.455,
+      "b": 5.455,
+      "delta_m": 0
+    },
+    {
+      "well": "hearth-ceyatatar-vault",
+      "comparison": "is a release across the death honoured?",
+      "a": 0,
+      "b": 0,
+      "delta_m": 0
+    },
+    {
+      "well": "hearth-cross-01",
+      "comparison": "momentum carried across the respawn?",
+      "a": 11.743,
+      "b": 10.783,
+      "delta_m": 0.96
+    },
+    {
+      "well": "hearth-cross-01",
+      "comparison": "is a release across the death honoured?",
+      "a": 0,
+      "b": 0,
+      "delta_m": 0
+    },
+    {
+      "well": "hearth-cross-02",
+      "comparison": "momentum carried across the respawn?",
+      "a": 11.731,
+      "b": 10.771,
+      "delta_m": 0.96
+    },
+    {
+      "well": "hearth-cross-02",
+      "comparison": "is a release across the death honoured?",
+      "a": 0,
+      "b": 0,
+      "delta_m": 0
+    },
+    {
+      "well": "hearth-cross-03",
+      "comparison": "momentum carried across the respawn?",
+      "a": 11.733,
+      "b": 10.773,
+      "delta_m": 0.96
+    },
+    {
+      "well": "hearth-cross-03",
+      "comparison": "is a release across the death honoured?",
+      "a": 0,
+      "b": 0,
+      "delta_m": 0
+    }
+  ],
+  "answer": "The respawn frame is EXACT (T1) and post-respawn motion is the current input, not carried momentum (T2). Carrying a HELD input through a respawn is therefore intended and is not drift: a player holding forward walks the instant control returns, which is what the round-2 critic's 9.78 m and 13.97 m at 271 frames are — walking pace.",
+  "pass": true
+}

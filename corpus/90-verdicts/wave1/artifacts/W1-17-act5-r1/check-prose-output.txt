@@ -1,0 +1,54 @@
+check-prose: 4 bar(s) waived by a declared register exemption.
+
+dialogue: 3249 passages, 71144 words
+  questions         56.22 /10k   reference 159.19  (0.35x)
+  exclamations      17.29 /10k   reference 21.30  (0.81x)
+  sting              0.70 /10k   reference 3.42  (0.21x)
+  epigram_echo      25.86 /10k   reference 23.07  (1.12x)  [reported, not gated]
+  echo_statement    20.66 /10k   reference 17.65  (1.17x)  [reported, not gated]
+  echo_question      2.39 /10k   reference 4.42  (0.54x)  [reported, not gated]
+  echo_direction     2.81 /10k   reference 1.00  (2.82x)  [reported, not gated]
+  fragopen           0.00 /10k   reference 0.08  (0.00x)
+  andopen           31.20 /10k   reference 64.02  (0.49x)
+  contractions     210.14 /10k   reference 292.31  (0.72x)
+  game/data/dialogue/topics/main-quest-argument.json  (3635 w)
+      questions 2.8 < floor 39.8 (reference 159.2)  — EXEMPT: Ixtu-Meer answers; he does not interrogate. He has been alone under the Stone Wastes for four hundred years and the player is the first person to ask him anything. A speaker who put questions back to the player here would be a different character, and the two endings this conversation unlocks both turn on him NOT asking anything of you.
+      exclamations 0.0 < band floor 5.3 — undershoot (reference 21.3)  — EXEMPT: See voice_note: RI-DLG06 section B row 1, impersonal passive with the agency placed in an institution rather than in the speaker. Four hundred years underground is the characterisation; an exclamation mark anywhere in this file would be the loudest thing in the game and would land on the wrong line.
+      andopen 5.5 < band floor 16.0 — undershoot (reference 64.0)  — EXEMPT: Sentence-initial And/But/So is a spoken-cadence marker and this speaker has had no one to speak to. The long subordinated periods are the point; see voice_note on w_entry running deliberately long against the archetype target, permitted for the climax alone by RI-DLG08 section tonal range.
+      contractions 0.0 < band floor 43.8 — undershoot (reference 292.3)  — EXEMPT: The same note. He is a clerk who has spent four centuries removing himself from his own sentences, and the uncontracted register IS that removal. This file is the corpus-wide contraction undershoot's most defensible instance, not an example of it.
+      --- game/data/dialogue/topics/main-quest-argument.json ---
+      questions      2.75 /10k   reference 159.19
+      exclamations   0.00 /10k   reference 21.30
+      sting          0.00 /10k   reference 3.42
+      epigram_echo   2.75 /10k
+      echo_statement 0.00 /10k
+      echo_question  0.00 /10k
+      echo_direction 2.75 /10k
+      fragopen       0.00 /10k   reference 0.08
+      andopen        5.50 /10k   reference 64.02
+      contractions   0.00 /10k   reference 292.31
+
+books: 117 passages, 95361 words
+  questions          9.44 /10k   reference 32.67  (0.29x)
+  exclamations       4.30 /10k   reference 10.89  (0.39x)
+  sting              1.99 /10k   reference 0.05  (36.96x)
+  epigram_echo       1.89 /10k   reference 2.53  (0.74x)  [reported, not gated]
+  echo_statement     1.68 /10k   reference 2.43  (0.69x)  [reported, not gated]
+  echo_question      0.00 /10k   reference 0.11  (0.00x)  [reported, not gated]
+  echo_direction     0.21 /10k   reference 0.00  (0.21x)  [reported, not gated]
+  fragopen           0.31 /10k   reference 0.11  (2.92x)
+  andopen           20.45 /10k   reference 22.32  (0.92x)
+  contractions      25.27 /10k   reference 60.76  (0.42x)
+
+journal: 1005 passages, 39819 words
+  questions          0.25 /10k   reference 0.97  (0.26x)
+  exclamations       0.00 /10k   reference 1.19  (0.00x)
+  sting             36.41 /10k   reference 6.16  (5.91x)
+  epigram_echo       6.78 /10k   reference 9.08  (0.75x)  [reported, not gated]
+  echo_statement     6.78 /10k   reference 8.87  (0.76x)  [reported, not gated]
+  echo_question      0.00 /10k   reference 0.11  (0.00x)  [reported, not gated]
+  echo_direction     0.00 /10k   reference 0.11  (0.00x)  [reported, not gated]
+  fragopen           0.00 /10k   reference 0.00  (0.00x)
+  andopen            2.51 /10k   reference 8.97  (0.28x)
+  contractions       0.00 /10k   reference 77.20  (0.00x)
+check-prose: 3 register(s) inside the recorded ratchet.

@@ -1,0 +1,272 @@
+{
+  "commit": "3ba93e04f53e8827153134ebe255085b84682acf",
+  "seal": {
+    "rows": [
+      {
+        "id": "CF-D001",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D002",
+        "sealed": false,
+        "recovered": null
+      },
+      {
+        "id": "CF-D003",
+        "sealed": true,
+        "recovered": "B"
+      },
+      {
+        "id": "CF-D004",
+        "sealed": true,
+        "recovered": "C"
+      },
+      {
+        "id": "CF-D005",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D006",
+        "sealed": true,
+        "recovered": "C"
+      },
+      {
+        "id": "CF-D007",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D008",
+        "sealed": true,
+        "recovered": "B"
+      },
+      {
+        "id": "CF-D009",
+        "sealed": true,
+        "recovered": "B"
+      },
+      {
+        "id": "CF-D010",
+        "sealed": true,
+        "recovered": "C"
+      },
+      {
+        "id": "CF-D011",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D012",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D013",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D014",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D015",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D016",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D017",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D018",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D019",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D020",
+        "sealed": true,
+        "recovered": "B"
+      },
+      {
+        "id": "CF-D021",
+        "sealed": true,
+        "recovered": "B"
+      },
+      {
+        "id": "CF-D022",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D023",
+        "sealed": true,
+        "recovered": "C"
+      },
+      {
+        "id": "CF-D024",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D025",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D026",
+        "sealed": true,
+        "recovered": null
+      },
+      {
+        "id": "CF-D027",
+        "sealed": true,
+        "recovered": null
+      }
+    ],
+    "sealed": 26,
+    "recovered": 9
+  },
+  "ablation": {
+    "pairs": 161702,
+    "changed": 31,
+    "silenced": 31,
+    "swapped": 0,
+    "examples": [
+      {
+        "npc": "notary-sedda-vell",
+        "actor": "archivist",
+        "faction": null,
+        "topic": "sap-from-a-cup",
+        "with": null,
+        "without": "They get a soul. And they come back short — the Court has the figures and the figures run four hundred years. Estate-hatched, cup-given: they die a little young and they bury a little heavy, and I've stopped saying so at Gideon because of what it does to a room."
+      },
+      {
+        "npc": "notary-sedda-vell",
+        "actor": "archivist",
+        "faction": null,
+        "topic": "what-the-bone-holds",
+        "with": null,
+        "without": "The pattern left at the moment of death. A bone is a bone after that — good bone, honoured bone, still bone. The Court has never found anything in one and the Court has looked, professionally, for four hundred years."
+      },
+      {
+        "npc": "ledgerer-hosk-vei",
+        "actor": "archivist",
+        "faction": "the_drowned_court",
+        "topic": "the-count-itself",
+        "with": null,
+        "without": "The measure has not moved. The sixth volume's disputed leaves are a copying error and the archive entered a note saying so at the time, and the note is still there, and no sexton at Soulrest has ever read it."
+      },
+      {
+        "npc": "gideon-court-factor",
+        "actor": "clerk",
+        "faction": "the_drowned_court",
+        "topic": "the-thinning",
+        "with": null,
+        "without": "The Ledger commissioned a survey and I've read it. Too many cuts, too close together, over too few seasons — no mystery in it at all. Wound a thing often enough and it stops giving. Ask the cutters how many routes ran the Helstrom shelf ten years ago and how many run it now."
+      },
+      {
+        "npc": "sedd-ravano",
+        "actor": "clerk",
+        "faction": "the_wet_ledger",
+        "topic": "slavery",
+        "with": null,
+        "without": "No subject of the Empire may be held as property inside the Empire's law. Where it happens it happens outside that law, off foreign keels, and the Office has made representations. I've copied three of them myself."
+      },
+      {
+        "npc": "harbourmaster-cuiro-vaneth",
+        "actor": "clerk",
+        "faction": "the_wet_ledger",
+        "topic": "slavery",
+        "with": null,
+        "without": "No subject of the Empire may be held as property inside the Empire's law. Where it happens it happens outside that law, off foreign keels, and the Office has made representations. I've copied three of them myself."
+      }
+    ]
+  },
+  "voice_vs_gate": {
+    "total": 70,
+    "tagged": 50,
+    "untagged": [
+      "CF-D001/B -> dialogue:the-marsh-burial#rootkeeper",
+      "CF-D002/A -> dialogue:the-cut-roots#rootkeeper",
+      "CF-D002/B -> dialogue:the-cut-roots#mudborn",
+      "CF-D003/A -> dialogue:the-xanmeers#archivist",
+      "CF-D003/B -> dialogue:the-xanmeers#rootkeeper",
+      "CF-D004/A -> dialogue:the-great-hist#archivist",
+      "CF-D004/B -> dialogue:the-great-hist#rootkeeper",
+      "CF-D004/C -> dialogue:the-eleven-wells#rootkeeper",
+      "CF-D005/A -> dialogue:the-fever-year#archivist",
+      "CF-D005/B -> dialogue:the-fever-year#mudborn",
+      "CF-D009/A -> dialogue:the-labour-lease#clerk",
+      "CF-D009/B -> dialogue:the-lease-roll#sapcutter",
+      "CF-D010/B -> dialogue:the-ninth-cohort#legionary",
+      "CF-D010/C -> dialogue:the-interiors-consent#rootkeeper",
+      "CF-D012/A -> dialogue:the-ninth-clause-of-the-drowned-tally#mudborn",
+      "CF-D012/A -> dialogue:the-ninth-clause-of-the-drowned-tally#archivist",
+      "CF-D014/A -> dialogue:the-empty-boxes#townsman",
+      "CF-D014/B -> dialogue:the-empty-boxes#clerk",
+      "CF-D016/B -> dialogue:the-hist#rootkeeper",
+      "CF-D017/B -> dialogue:the-sap-cutters#rootkeeper"
+    ]
+  },
+  "reach": {
+    "population": 347,
+    "holdsAndSpeaks": 156,
+    "holdsOnly": 191,
+    "holdsNothing": 0,
+    "positions": 66,
+    "positions_with_no_dialogue_voice": 30
+  },
+  "stale_measured": [
+    {
+      "id": "CF-C023",
+      "term": "Agacephs",
+      "asserted": 0,
+      "observed": 53
+    },
+    {
+      "id": "CF-C023",
+      "term": "Paatru",
+      "asserted": 0,
+      "observed": 34
+    },
+    {
+      "id": "CF-C023",
+      "term": "Archein",
+      "asserted": 0,
+      "observed": 50
+    },
+    {
+      "id": "CF-C023",
+      "term": "Sarpa",
+      "asserted": 0,
+      "observed": 26
+    },
+    {
+      "id": "CF-C023",
+      "term": "Dead-Water",
+      "asserted": 0,
+      "observed": 10
+    },
+    {
+      "id": "CF-C023",
+      "term": "Miredancers",
+      "asserted": 0,
+      "observed": 47
+    }
+  ]
+}

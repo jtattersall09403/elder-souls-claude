@@ -4,11 +4,28 @@
   "judges": "W1-21",
   "state": "running",
   "started": "2026-08-07",
-  "next_step": "read RULES/INDEX, W1-21.json, PLAN 3, ARBITRATION AR-2, seam S35",
+  "next_step": "run critic-w1-21-r1.mjs (A..E), then ui-metrics/ui-forbidden/marker-diff/journal-ui, then captures",
   "files_touched": [
-    "orchestration/status/critic-w1-21.json"
+    "orchestration/status/critic-w1-21.json",
+    "tools/harness/critic-w1-21-r1.mjs"
+  ],
+  "findings_so_far": [
+    "MARKER ON THE MAP: YES. Through the ordinary save door. saveState() -> set world.discovery.cells to an all-ones raster and world.discovery.places to all 42 poi ids -> loadState(). ZERO dropped by the load audit; the map then draws 42 place squares, 35 of them for places the body never stood in, and the whole province rendered (painted_frac 1.0). map-probe L3 forges only the PLACE LIST and leaves the raster honest, so its corroboration check passes; the raster is in the same blob an attacker controls, so the corroboration is a fixed-point test on its own input. Evidence: reports/runs/CRITIC-W1-21-R1B/critic-w1-21-r1b.json F1/F2/F3, map-forged-save.png.",
+    "REGISTER-NOT-PICTURE: getUIState().map.mutator_arities — the exact evidence AMENDMENT-W1-MAP-01 §3b tells a critic to read from the running object — is a hand-written literal {observe, suspend, resume}. The object's prototype carries a FOURTH mutator, restore(blob), arity 1, which names places. The compliance report is built from a list, so it cannot report the one thing it exists to detect. G1/G2.",
+    "PAUSED SCREEN STILL DOES NOT REDRAW ON A MODEL CHANGE. W1-MAP fixed the FOCUS half (focusSignature in the build() cache key). Engine._afterStep() applies ui.pending on PAUSED frames, so using an item changes sim.inventory while the frame, the mode, the touch signature and the focus are all unchanged. Measured in PIXELS with a working control: focus move = 55,656 px change; use a black-water draught (model 3 -> 2) = 0 px change; close and reopen the screen = 102 px change. H0/H2/H3."
+  ],
+  "verified_neighbour_findings": [
+    "Book over-run: FIXED. _clampSpread caps on the way in and on the way out. My first D1 was my own error - getUIState().book.page is the LEFT PAGE NUMBER (spread*2+1), not a spread index.",
+    "Paused-screen redraw: HALF fixed - see above.",
+    "Rendered-text register: not W1-21's; the equivalent shape here is G1/G2."
+  ],
+  "old_findings_so_far": [
+    "marker-scan (RI-UIX02 K1) is RED at HEAD: exit 1, 42 F2 hits, all game/data/npcs/quest-givers.json npcs[].post.pos. W1-21 reported K1 PASS/0 hits; the data arrived after that measurement.",
+    "journal-ui.mjs JU8 still asserts the PRE-S35 clause ('map unreachable AND non-existent'). A map now exists, so W1-21's own RI-UIX04 instrument must now go red; AMENDMENT-W1-MAP-01 amended the ITEM and nobody amended the INSTRUMENT.",
+    "None of ui-layer (8 viewpoints), ui-metrics (6 screens), ui-forbidden (4 menus), ui-census or marker-diff ever opens the map screen."
   ],
   "files_claimed": [
+    "tools/harness/critic-w1-21-r1.mjs",
     "corpus/90-verdicts/wave1/W1-21-r1.md",
     "corpus/90-verdicts/wave1/W1-21-r1.json",
     "docs/shots/",

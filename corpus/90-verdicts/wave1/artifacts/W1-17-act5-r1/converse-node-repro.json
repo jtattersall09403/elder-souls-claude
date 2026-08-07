@@ -1,0 +1,138 @@
+{
+  "generated_by": "critic w1-17-act5, ad hoc node script executing the SHIPPED game/src/character/converse.js buildTopicIndex()/infoFor() against the SHIPPED game/data/dialogue/topics/**/*.json and game/data/npcs/mainline.json — the same functions and data the browser engine loads, run without a browser because of headless_shell contention (18-30 processes, loadavg 10-14 throughout this session, above the project cap of ~8)",
+  "partA": {
+    "topic": "the-steward-of-the-count",
+    "note": "Q-MAIN-26's own opens_by.topic, the entry line of the whole Act V conversation. 50-mainline.json ALSO declares a topic with this exact id (a stub, d:20, no race filter, third-person: 'Ixtu-Meer. He has kept the Count...'). buildTopicIndex() merges same-id topic records across files (converse.js:79-82, by design), so infoFor() scores across BOTH files' infos together.",
+    "rows": [
+      {
+        "signature": "interior-saxhleel",
+        "race": "saxhleel",
+        "upbringing": "interior",
+        "disposition": 74,
+        "delivered": "Sit down. Root and river, and it is ninety years since anyone said it to me in that order; the last one who did was carrying a lamp and did not stay. I am the Steward of the Count. No living hand gave me the title, and I have never established who gave it to the woman before me, and you may take that as the shape of the whole business before we start on the details.",
+        "from": "main-quest-argument.json (Ixtu-Meer, first-person, race-specific)"
+      },
+      {
+        "signature": "interior-naga",
+        "race": "naga",
+        "upbringing": "interior",
+        "disposition": 66,
+        "delivered": "Sit down. Root and river, and it is ninety years since anyone said it to me in that order; the last one who did was carrying a lamp and did not stay. I am the Steward of the Count. No living hand gave me the title, and I have never established who gave it to the woman before me, and you may take that as the shape of the whole business before we start on the details.",
+        "from": "main-quest-argument.json (Ixtu-Meer, first-person, race-specific)"
+      },
+      {
+        "signature": "lukiul-saxhleel",
+        "race": "saxhleel",
+        "upbringing": "lukiul",
+        "disposition": 48,
+        "delivered": "Sit down, supplicant. You came out of the water and you were not raised at it — the vowels are wrong, and I am four hundred years out of practice at hearing anything, so they must be very wrong indeed. That is not held against you here. It is only that you have been counted twice, once by the pool and once by an office, and I have spent my whole life on what becomes of a thing that is counted twice by two people who do not speak.",
+        "from": "main-quest-argument.json (Ixtu-Meer, first-person, race-specific)"
+      },
+      {
+        "signature": "blackrose-khajiit",
+        "race": "khajiit",
+        "upbringing": "blackrose",
+        "disposition": 36,
+        "delivered": "Ixtu-Meer. He has kept the Count since before the ninth recension and he has been waiting for a visitor to come down and ask him one honest question about it.",
+        "from": "STUB (50-mainline.json, third-person, unauthored-for-this-scene)"
+      },
+      {
+        "signature": "foreign-born-nord",
+        "race": "nord",
+        "upbringing": "foreign-born",
+        "disposition": 30,
+        "delivered": "Ixtu-Meer. He has kept the Count since before the ninth recension and he has been waiting for a visitor to come down and ask him one honest question about it.",
+        "from": "STUB (50-mainline.json, third-person, unauthored-for-this-scene)"
+      },
+      {
+        "signature": "foreign-born-imperial",
+        "race": "imperial",
+        "upbringing": "foreign-born",
+        "disposition": 24,
+        "delivered": "Ixtu-Meer. He has kept the Count since before the ninth recension and he has been waiting for a visitor to come down and ask him one honest question about it.",
+        "from": "STUB (50-mainline.json, third-person, unauthored-for-this-scene)"
+      },
+      {
+        "signature": "interior-dunmer",
+        "race": "dunmer",
+        "upbringing": "interior",
+        "disposition": 20,
+        "delivered": "Sit down, supplicant. You are Chimer-get, and the word for your people has been changed twice while I have been at this desk, so you will forgive me if I reach for an old one. Whatever is between us is four centuries out of date. I am told the current version is a great deal worse than the one I remember, and I am not going to pretend to an opinion I have not earned. Put the blade down where I can see it and we will get on faster; it is not fear, it is arithmetic, and you will find that everything down here is.",
+        "from": "main-quest-argument.json (Ixtu-Meer, first-person, race-specific)"
+      },
+      {
+        "signature": "lukiul-nord",
+        "race": "nord",
+        "upbringing": "lukiul",
+        "disposition": 18,
+        "delivered": "Sit down, supplicant. You are a warmblood and you have come a very long way down, and neither of those is held against you here — nothing is held against a soul here, which is the whole difficulty with the place, and it took me two hundred years to notice it. I wrote the letter you are carrying. I am glad it was read. Before anything else I would like to know whether Ashul-Tei is well.",
+        "from": "main-quest-argument.json (Ixtu-Meer, first-person, race-specific)"
+      },
+      {
+        "signature": "lukiul-imperial",
+        "race": "imperial",
+        "upbringing": "lukiul",
+        "disposition": 12,
+        "delivered": "Sit down, supplicant. You are a warmblood and you have come a very long way down, and neither of those is held against you here — nothing is held against a soul here, which is the whole difficulty with the place, and it took me two hundred years to notice it. I wrote the letter you are carrying. I am glad it was read. Before anything else I would like to know whether Ashul-Tei is well.",
+        "from": "main-quest-argument.json (Ixtu-Meer, first-person, race-specific)"
+      },
+      {
+        "signature": "foreign-born-dunmer",
+        "race": "dunmer",
+        "upbringing": "foreign-born",
+        "disposition": 6,
+        "delivered": "Sit down, supplicant. You are Chimer-get, and the word for your people has been changed twice while I have been at this desk, so you will forgive me if I reach for an old one. Whatever is between us is four centuries out of date. I am told the current version is a great deal worse than the one I remember, and I am not going to pretend to an opinion I have not earned. Put the blade down where I can see it and we will get on faster; it is not fear, it is arithmetic, and you will find that everything down here is.",
+        "from": "main-quest-argument.json (Ixtu-Meer, first-person, race-specific)"
+      },
+      {
+        "signature": "lukiul-dunmer",
+        "race": "dunmer",
+        "upbringing": "lukiul",
+        "disposition": 0,
+        "delivered": "Sit down, supplicant. You are Chimer-get, and the word for your people has been changed twice while I have been at this desk, so you will forgive me if I reach for an old one. Whatever is between us is four centuries out of date. I am told the current version is a great deal worse than the one I remember, and I am not going to pretend to an opinion I have not earned. Put the blade down where I can see it and we will get on faster; it is not fear, it is arithmetic, and you will find that everything down here is.",
+        "from": "main-quest-argument.json (Ixtu-Meer, first-person, race-specific)"
+      }
+    ],
+    "affected": [
+      "blackrose-khajiit",
+      "foreign-born-nord",
+      "foreign-born-imperial"
+    ]
+  },
+  "partB": {
+    "note": "actor:'rootkeeper' is not unique to ixtu-meer (confirmed: 25+ NPC records across game/data/npcs/*.json share it, per grep). These two share it AND carry an Act-V topic id in their own `topics` array. Neither has a settlement or post.site today (game/data/npcs/mainline.json), so populateSite()/populateSettlement() never spawns them — but game/data/quests/mainline-act5.json's own deceit.revealed_by names 'gallery-intake-keepers' as the talk_to_target source of rev_the_three_accounts, so the record is intended to be reachable, not decorative.",
+    "rows": [
+      {
+        "npc": "keeper-ei-vashan",
+        "name": "Ei-Vashan",
+        "actor": "rootkeeper",
+        "disposition": 40,
+        "settlement": null,
+        "post": null,
+        "own_topics": [
+          "the ash gallery",
+          "the sill",
+          "what the wells do now"
+        ],
+        "delivers": {
+          "the sill": "Through the arch at the far end and down eleven steps. There is a cut stone across the bottom of the arch, about as high as your ankle, worn hollow in the middle where four thousand years of feet have gone over it. It is a step. Everyone who has gone over it has come back up, and I have never been able to establish whether that is because the room lets them or because none of them did anything, and I have had a long time to think about it and no way at all to test it."
+        }
+      },
+      {
+        "npc": "gallery-intake-keepers",
+        "name": "the keepers of the intakes",
+        "actor": "rootkeeper",
+        "disposition": 35,
+        "settlement": null,
+        "post": null,
+        "own_topics": [
+          "the ash gallery",
+          "the opening of the count"
+        ],
+        "delivers": {
+          "the opening of the count": "Before you ask me that you should go and hear the ones who will have to live in the answer. Back through the arch, along the gallery, and take the long lit way rather than the stair through the working parts — the eleven bays are all off it, there is a keeper in each of them, and not one will refuse you. It costs you a day and a half and you will not get it back, and I would spend it. Then ask me again, and I will tell you where I differ from them, and you will be able to hear that I am differing rather than deciding."
+        }
+      }
+    ]
+  }
+}

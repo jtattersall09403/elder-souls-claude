@@ -2,12 +2,22 @@
   "task_id": "critic-w1-17-act5",
   "role": "critic",
   "target": "W1-17-act5-argument",
-  "status": "in_progress",
-  "next_step": "read W1-17-act5-argument.json handover, main-quest-argument.json, RI-DLG items; re-measure LH6/LH7/LH8 against running engine",
-  "files_touched": [],
-  "files_claimed": [
+  "status": "done",
+  "next_step": "none. Successor (round 2, after the fix): re-run corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/gen-converse-node-repro.mjs Part A/B to confirm 0/11 and 0/2; re-score RI-DLG01 and RI-EXP05's LH6-8 checks.",
+  "files_touched": [
     "corpus/90-verdicts/wave1/W1-17-act5-r1.md",
-    "corpus/90-verdicts/wave1/W1-17-act5-r1.json"
+    "corpus/90-verdicts/wave1/W1-17-act5-r1.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/converse-node-repro.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/gen-converse-node-repro.mjs",
+    "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/opens-by-topic-scan.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/check-prose-output.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/build-graph-output.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/check-quests-output.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/check-content-output.txt",
+    "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/viability-split-status.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/ending-resolutions-excerpt.txt",
+    "reports/blog-feed.jsonl"
   ],
-  "notes": "Fresh critic, no prior context. Starting per RULES.md rule 1 (status file before reading)."
+  "files_claimed": [],
+  "notes": "VERDICT: FAIL (score 3/10). RI-EXP05's LH6/LH7/LH8 all independently re-verified PASS (item itself fixed at native 0 by its own Step 0 -- no walked character reaches Act V, W1-VIABILITY-SPLIT's defect, not this piece's). RI-DLG01 hard-fails: the handover's claim 'main-quest-argument.json introduces no duplicate id' is FALSE -- it shares 3 topic ids with 50-mainline.json, and one of them (the-steward-of-the-count, Q-MAIN-26's own entry topic) is silently shadowed by an old third-person stub for any player whose race is outside {saxhleel,naga,dunmer} with disposition >=20 -- reproduced directly against the shipped converse.js, 3 of the piece's own 11 documented signatures, 2 of which are in its own shipped probe's test set which still reported ok:true. Did not launch a browser (headless_shell 18-30, loadavg 10-14 all session, above the ~8 cap) -- verified instead by executing the shipped converse.js buildTopicIndex()/infoFor() directly in Node against shipped data, which is the production code path, not a re-implementation. Did not commit."
 }

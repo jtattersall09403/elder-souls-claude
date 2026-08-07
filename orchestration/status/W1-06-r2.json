@@ -1,21 +1,40 @@
 {
   "task_id": "W1-06-r2",
-  "brief": "camera, round 2",
+  "brief": "camera, round 2 (continued by successor-4 -- the r2 agent found the pitch-pin root cause, landed the fix, and was killed by a container restart before writing back)",
   "started": "2026-08-07",
-  "state": "researching",
+  "state": "partial",
+  "files_touched": [],
+  "files_claimed": [
+    "corpus/80-methods/m-cam01-rig.mjs",
+    "corpus/80-methods/m-cam03-lockon-framing.mjs",
+    "corpus/80-methods/m-cam05-world-camera.mjs",
+    "corpus/80-methods/m-cam06-feel.mjs",
+    "corpus/80-methods/m-cam04-locked-movement.mjs",
+    "corpus/80-methods/m-cam07-presentation.mjs",
+    "docs/shots/",
+    "reports/blog-feed.jsonl",
+    "reports/w1-06/",
+    "reports/runs/W1-13-R3/bloom-sight.json"
+  ],
+  "redundant_with": ["W1-06"],
+  "note_on_redundancy": "W1-06.json (successor-3) and this file are the same piece under two status paths; successor-3's own log names this exact defect as the highest-value next_step. I am continuing both threads as one round rather than picking one, since they never conflicted -- r2 found+fixed the defect successor-3 left open.",
   "contention_at_start": {
-    "headless_shell": 30,
-    "loadavg": "12.99 16.07 15.71"
+    "headless_shell": 18,
+    "loadavg": "10.86 9.72 10.12"
   },
   "outputs_expected": [
-    "camera fix",
-    "docs/shots/*.png x2-3",
-    "reports/blog-feed.jsonl line"
+    "camera fix (VERIFIED: already landed in game/src/sim/camera.js at HEAD, swept in by an orchestrator's in-flight commit 3757b02 before r2 could write its own status)",
+    "docs/shots/*.png x2-3, dated today, through the live rig post-fix",
+    "reports/blog-feed.jsonl line",
+    "settle which of the bloom's two camera differences (eye height vs aim point) actually loses it -- named by the dispatch as written-and-unrun"
   ],
   "outputs_written": [],
   "findings": [
-    "*** ROOT CAUSE CANDIDATE (source, not yet instrumented): camera.js basisAt() builds the up vector as up = right x fwd. At yaw=0,pitch=0 that is (1,0,0)x(0,0,1) = (0,-1,0) -- it points DOWN. In general up.y = -cos(pitch), negative for the whole legal pitch band. The correct handedness is fwd x right. Consequence 1: project() computes yu = d.up, so EVERY sim-side NDC y is SIGN-INVERTED. Consequence 2: containment() reads tY and steers `(tY>0 ? 1 : -1)*contain_pitch_deg_per_frame` -- with the sign flipped it drives the pitch AWAY from the target, a positive feedback loop that runs to the containPitch floor and pins the view down. Consequence 3: |ndc|<=1 is sign-symmetric, which is exactly WHY every on-screen check passes while the frame is unreadable. Consequence 4: measureOnScreen's tBandY = (1-tNdc[1])*0.5 is inverted, matching round 1's 0.005-0.23 in-band fraction. Consequence 5: desiredPoint adds _up*shoulder_up, so the +0.10 m shoulder rise is applied DOWNWARD (and round 1's census measured it by dotting the same inverted vector, so it self-cancelled and read 0.10)."
+    "R2's ORIGINAL FINDING, NOW CONFIRMED LANDED IN game/src/sim/camera.js AT HEAD (no diff in the working tree -- this is not my edit, I am verifying a predecessor's swept-in work): the up vector in basis() was built as up = right x fwd, which at yaw=0/pitch=0 is (0,-1,0) -- pointing at the ground -- and up.y = -cos(pitch) for the WHOLE legal pitch band. project()'s NDC y was therefore sign-inverted, and containSteer's `(tY>0?1:-1)*rate` correction drove the pitch AWAY from the target: a positive-feedback loop that ran to the -50 deg locked floor and pinned the view down for the rest of any fight, PAST the kill. The current source (game/src/sim/camera.js:552-643, function lockOrientation) now measures the pitch target's elevation over the PIVOT (pitch-independent baseline) instead of the camera's own pitch-dependent position, which was the actual closed loop (comment block at line 573 attributes it precisely: loop gain G ~= +2.5 at the mid-boss case, and a gain above 1 does not settle, it runs to whichever clamp the initial sign points at).",
+    "CONFIRMED WITH tools/camera/cam-pitch-instrument.mjs (already built, committed, not part-built as the dispatch text guessed) run fresh this round: --table settles mid-boss at pitch +9.377 deg (not the -50 floor); --gain reports loop_gain_G ~ 0 (a contraction) with 0.000 spread across six different starting pitches for every (h,d) row, i.e. the answer no longer depends on where the lock happened to start; --m2 (RI-CAM03 SE M2, the item's own falsifier) passes 5/5 with residual error <=0.17 deg against the declared pitch_bias(d,h); --contain confirms the NDC sign now agrees with a ground-truth, independently-built view basis (sim_ndc_sign_agrees_with_truth: true). All four exit 0.",
+    "RULES.md rule 4/6 applied: this is the falsifier written IN the tool by the r2 agent (attractors()/m2Residual()) rather than something I had to invent -- reverting the pitch reference (measuring elevation from c.pos instead of c.pivot) is the documented one-line regression that makes --gain go back above 1 on its own; I did not need to hand-break it because the tool already carries its own delete-the-fix.",
+    "NOT YET DONE by r2 or by me: browser confirmation. cam-pitch-instrument.mjs runs the REAL camera.js module in bare Node against a synthetic sim (imports only sim/collision.js and core/rng.js, both pure) -- the arithmetic is identical to the browser's, but AGENT-PROTOCOL says a number seen only outside the browser is not yet a claim. Queued as this round's browser work, box permitting (see contention note)."
   ],
-  "next_step": "instrument in bare Node (camera.js imports only rng.js + collision.js) to confirm before changing anything",
-  "notes_for_successor": "Box above browser cap at start; doing source+instrumentation phase first."
+  "next_step": "1) confirm the pitch-pin fix live in the browser (cam-probe.mjs --probe pitchlaw,lock, and/or cam-shots.mjs for a picture) once headless_shell count is back under the rule-21 cap. 2) run tools/harness/w1-13-r3-bloom-sight.mjs with the aim-only/eye-only arms it already declares but has never executed -- this is the dispatch's other named live finding and settles which of the bloom camera's two differences (eye height vs aim point) actually lost the stain. 3) close the corpus/80-methods debt for RI-CAM01/03/05/06 (delegate to cam-probe.mjs, which already implements the methods) and file an honest absence-reporter for RI-CAM04/RI-CAM07, which cam-probe.mjs does NOT cover at all. 4) shots + blog line.",
+  "notes_for_successor": "The pitch-pin defect chain (basis handedness -> NDC sign -> containment steering -> lockOrientation's pitch reference) is FIXED and instrument-confirmed in bare Node; only the browser leg and the corpus debt remained when I picked this up. Box was at 18 headless_shell / loadavg ~10 at the start of this round -- doing non-browser work first per rule 21, one browser session for everything once it clears."
 }

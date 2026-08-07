@@ -24,7 +24,7 @@
 //      between it and the gate is the RESERVE the design is choosing to leave.
 //
 //   B. COMPLETION WITHOUT A HAND-FEED.  The same run plays both chains with **zero**
-//      `learnTopic()` calls. The only topic granted from outside the quest graph is the one a
+//      `learnTopic()` calls AND — since W1-19 round 3 — zero `questReveal()` calls. The only topic granted from outside the quest graph is the one a
 //      player gets by walking up to somebody in Soulrest and being greeted — the world-side
 //      consumer of `opens_by.overheard_from` — after which every keyword must arrive through
 //      `hooks.json`'s forward AddTopic edges or the chain stops where a player would stop.
@@ -41,6 +41,11 @@
 //   --sabotage hand-feed      call learnTopic() before every step, the way the round-1 tools
 //                             did. Completion must NOT change — if it does, the forward AddTopic
 //                             graph is not carrying the chain and something else is.
+//   --hand-feed-reveals       W1-19 round 3. Restores the round-2 behaviour: call
+//                             `H.questReveal()` for every reveal each step declares. This is a
+//                             HAND-FEED and it is what made round 2 report 40/40; it is off by
+//                             default and exists only to reproduce that number.
+//
 //   --sabotage no-purse       run with 0 gold and no persuasion. The chain must stop where a
 //                             character who cannot pay stops, which is what shows that the purse
 //                             is what is carrying the low-standing signatures and not the clamp.
@@ -71,6 +76,8 @@ if (wantsHelp(args)) usage(USAGE);
 const outDir = args.out ? path.resolve(String(args.out)) : path.join(RUNS_DIR, 'W1-19-R2-FLOOR');
 ensureDir(outDir);
 const sabotage = args.sabotage ? String(args.sabotage) : null;
+// W1-19 round 3: off by default. See the long note at the questReveal call site.
+const handFeedReveals = args['hand-feed-reveals'] === true || args.handFeedReveals === true;
 if (sabotage && !['no-bootstrap', 'hand-feed', 'no-purse'].includes(sabotage)) usage(USAGE);
 const PURSE = args.purse === undefined ? 2500 : Number(args.purse);
 const ATTEMPTS = args.attempts === undefined ? 6 : Number(args.attempts);
@@ -132,7 +139,7 @@ const STATE = 'soulrest-quay';
 const handle = await launchGame({ ...args, width: 320, height: 240, timeout: Number(args.timeout || 900000) });
 let report;
 try {
-  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS }) => {
+  report = await handle.page.evaluate(async ({ plans, prefer, sigs, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS }) => {
     const H = window.__HARNESS;
     await H.ready();
     H.setRenderRate(0);
@@ -231,7 +238,27 @@ try {
           out.blocked_offer_why = offer ? offer.why : null;
           break;
         }
-        for (const r of step.reveals) { try { H.questReveal(step.id, r); } catch (e) { /* not offered */ } }
+        // W1-19 ROUND 3. THIS LINE WAS UNCONDITIONAL AND IT IS WHY THIS TOOL SAID 40/40.
+        //
+        // `H.questReveal` writes a `know:` flag directly. It is the reveal-shaped twin of
+        // `H.learnTopic`, which the header above rightly calls RI-MTH07's hand-feed failure and
+        // which this tool goes to great lengths to avoid — there is a whole `--sabotage
+        // hand-feed` arm to prove the topic graph carries the chain without it. The reveal
+        // hand-feed sat four lines below the gate that discipline was protecting, under no flag,
+        // inside a `catch` that swallowed its own failure.
+        //
+        // With it on, every signature completes both chains. With it off, all 40 stop at
+        // `Q-MAIN-06` — "you do not know rev_the_curve_predates" — which is exactly where
+        // `tools/quests/viability-walk.mjs` has always said they stop. One line was the entire
+        // disagreement between the two instruments.
+        //
+        // So it is OFF by default now and the honest number is the one this tool prints.
+        // `--hand-feed-reveals` restores the round-2 behaviour, for reproducing that number and
+        // for nothing else. `tools/quests/reveal-route-audit.mjs` says which reveals have a
+        // route in play (5 of 121 at the time of writing) and is the check to consult first.
+        if (handFeedReveals) {
+          for (const r of step.reveals) { try { H.questReveal(step.id, r); } catch (e) { /* not offered */ } }
+        }
         for (const ix of step.notes) { try { H.questNote(step.id, ix); } catch (e) { /* not reachable */ } }
         const avail = H.questResolutions(step.id);
         const want = prefer[name] && prefer[name][step.id];
@@ -278,7 +305,7 @@ try {
       rows.push(row);
     }
     return { schema: 'elder-souls/mainline-chain-floor@1', harness_version: H.version, gates, rows };
-  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS });
+  }, { plans, prefer: PREFER, sigs: SIGS, gateNpcs, gates, sabotage, handFeedReveals, BOOTSTRAP_NPC, STATE, PURSE, ATTEMPTS });
 } finally { await handle.close(); }
 
 // ---- reduce ---------------------------------------------------------------------------------

@@ -194,6 +194,30 @@ export class PopulationSystem {
   }
 
   _materialise(engine, p) {
+    // IDEMPOTENCE, and this was found by an instrument that was not looking for it.
+    //
+    // `tools/progression/souls-ledger-oracle.mjs` enumerates world-event routes and asserts "an
+    // eid last observed dead is never observed alive again without a rest". It went red on two
+    // routes out of 463, both of which materialise a post that is ALREADY standing —
+    // `kill_some > release > materialise > materialise > materialise` and
+    // `save_load > kill_all > materialise > release > materialise`.
+    //
+    // The cause is that **`Engine.spawnEncounter()` is not atomic**: it spawns members in order
+    // and `Engine.spawn()` THROWS on a duplicate eid, so a post whose survivor is still standing
+    // spawns every member BEFORE it — alive, at full HP, including the ones the player killed —
+    // and then throws. The `catch` below marks the post CLEARED and returns, so those bodies are
+    // in the world and in nothing's index: untracked, live, and free.
+    //
+    // Step (4) happens to guarantee `DORMANT` before it calls here, so no player reaches it
+    // today. That guarantee lives in the CALLER, which is exactly the shape of defect this piece
+    // has just spent a round on, so it is made a property of this function instead: a post whose
+    // bodies are already in the world is not materialised. Cheap — at most one post is
+    // materialised per fixed step — and it makes the next caller's mistake harmless.
+    const prefix = `${p.id}-`;
+    if (this.live.has(p.id) || engine.sim.entities.some((e) => String(e.eid).startsWith(prefix))) {
+      this.stats.refused_double_materialise = (this.stats.refused_double_materialise || 0) + 1;
+      return;
+    }
     // `tag` is why `spawnEncounter` grew one optional field. It names its bodies
     // `${encounterId}-${role}-${i}`, and `Engine.spawn()` THROWS on a duplicate eid — so two
     // posts of the same template resident at the same time would have killed the fixed step the

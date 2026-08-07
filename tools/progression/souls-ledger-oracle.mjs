@@ -33,7 +33,12 @@
 // THE THREE INVARIANTS
 // -------------------------------------------------------------------------------------------
 //
-//   I1  NO DOUBLE PAY          a body-life is paid for at most once.
+//   I1  NO DOUBLE PAY          a body-life is paid for at most once PER REST EPOCH. The epoch is
+//                              part of the key because `RI-PRG06` §4's `Respawned enemy x1.00` row
+//                              says so: rest, and the corpse you already sold is a live enemy
+//                              again and is worth its value again. The oracle's first full run
+//                              charged ITSELF 27 I1 violations on `kill_some > rest > kill_some`
+//                              for exactly this, and it was the oracle that was wrong.
 //   I2  NO FREE KILL           a body-life that dies is paid for exactly once, at its statblock
 //                              value x the night multiplier. Nothing dies for nothing.
 //   I3  NO FREE RESURRECTION   an eid last observed DEAD is never observed ALIVE again unless
@@ -156,6 +161,41 @@ async function main() {
         return night ? Math.round(base * 1.35) : base;
       };
 
+      // The post the whole oracle drives. `PopulationSystem` is province-cell gated out of every
+      // fixture cell by design, so its two branches are invoked directly against a synthetic post
+      // rather than by walking 260 m; the CODE executed is the shipped file's.
+      const P = E.population;
+      const POST = { id: TAG, encounter: ENC, x: 0, z: 12, region: null, tier: 1 };
+      if (P) P.byId.set(POST.id, POST);
+      const releasePost = () => {
+        // THE FALLBACK IS NOT A SHORTCUT — IT IS THE DEFECT, MODELLED HONESTLY.
+        //
+        // `PopulationSystem` step (3) only iterates `this.live`. After `applySave()` calls
+        // `population.reset()`, `live` and `down` are BOTH empty while the bodies themselves have
+        // been restored by the save — so the world is holding entities that its own post index
+        // knows nothing about, and letting go of them records nothing about who was dead. This
+        // branch is that state. It is `GAP-W1-population-save-reload-repays-every-corpse`
+        // (`W1-POPULATION-r1` §2), it is filed, it is open, and it belongs to that piece: the
+        // remedy is to persist the cleared-post set (and now the down register) into the save,
+        // which is a save-schema decision W1-SOULS is not entitled to make.
+        //
+        // The oracle leaves it RED on purpose. A tool that went green while an unbounded farm
+        // existed would be worse than no tool.
+        if (!P || !P.live.has(POST.id)) { for (const e of ents()) { try { H.despawn(e.eid); } catch { /* gone */ } } H.stepFrames(1); return; }
+        const eids = P.live.get(POST.id);
+        const down = P.down.get(POST.id) || new Set();
+        for (const eid of eids) {
+          const e = E.sim.findEntity(eid);
+          if (!e) continue;
+          if (e.hp <= 0) down.add(eid);
+          try { E.despawn(eid); } catch { /* gone */ }
+        }
+        if (down.size) P.down.set(POST.id, down); else P.down.delete(POST.id);
+        P.live.delete(POST.id);
+        P.state.set(POST.id, 'dormant');
+        H.stepFrames(1);
+      };
+
       const results = [];
       for (const route of all) {
         // ---- a clean world for every route ---------------------------------------------------
@@ -167,7 +207,8 @@ async function main() {
         if (E.population) E.population.enabled = true;
         if (SELF_BREAK) E.sim.souls.enabled = false; else E.sim.souls.enabled = true;
         H.setTimeOfDay(12);                       // out of the night window: value == base
-        H.spawnEncounter(ENC, 0, 12, { tag: TAG });
+        if (P) { P.reset(); P.byId.set(POST.id, POST); P._materialise(E, POST); }
+        else H.spawnEncounter(ENC, 0, 12, { tag: TAG });
         // The scan is LAZILY SEEDED — a body already dead the first time it is looked at is
         // recorded as settled and never paid. Step once while everything is standing, or the
         // oracle measures the seeding rule instead of the ledger. (This cost the round-2 critic
@@ -176,8 +217,11 @@ async function main() {
 
         // ---- the oracle's OWN bookkeeping, derived from the route, never from the engine ------
         // lifeId: a monotonic counter per (eid). It advances when THE ROUTE destroyed the body.
-        const life = new Map();      // eid -> { life, everDead, paidLives:Set, lastSeenDead }
+        // eid -> { life, paidLives:Set, lastSeenDead }. The PAYMENT KEY is `life:epoch`, not
+        // `life`: a body-life may be sold once per rest epoch, which is RI-PRG06 §4's respawn row.
+        const life = new Map();
         const touch = (eid) => { if (!life.has(eid)) life.set(eid, { life: 0, paidLives: new Set(), lastSeenDead: false }); return life.get(eid); };
+        const payKey = (r) => `${r.life}:${epoch()}`;
         for (const e of ents()) { const r = touch(e.eid); r.lastSeenDead = e.dead; }
         const newLives = () => { for (const [, r] of life) r.life++; };
 
@@ -217,9 +261,9 @@ async function main() {
               const want = victims.reduce((a, v) => a + valueOf(v.id), 0);
               for (const v of victims) {
                 const r = touch(v.eid);
-                const key = r.life;
-                // I1 — NO DOUBLE PAY.
-                if (r.paidLives.has(key)) violations.push({ inv: 'I1', eid: v.eid, after: ev, note: 'this body-life was paid for twice' });
+                const key = payKey(r);
+                // I1 — NO DOUBLE PAY within one rest epoch.
+                if (r.paidLives.has(key)) violations.push({ inv: 'I1', eid: v.eid, after: ev, key, note: 'this body-life was paid for twice inside one rest epoch' });
                 r.paidLives.add(key);
               }
               // I2 — NO FREE KILL. Asserted in BOTH modes: `--self-break` disables the producer,
@@ -236,27 +280,31 @@ async function main() {
               const paid = souls() - before;
               const want = standing.reduce((a, v) => a + valueOf(v.id), 0);
               for (const v of standing) {
-                const r = touch(v.eid); const key = r.life;
-                if (r.paidLives.has(key)) violations.push({ inv: 'I1', eid: v.eid, after: ev, note: 'this body-life was paid for twice' });
+                const r = touch(v.eid); const key = payKey(r);
+                if (r.paidLives.has(key)) violations.push({ inv: 'I1', eid: v.eid, after: ev, key, note: 'this body-life was paid for twice inside one rest epoch' });
                 r.paidLives.add(key);
               }
               if (paid !== want) violations.push({ inv: 'I2', after: ev, paid, want, eids: standing.map((v) => v.eid), note: 'live bodies died for the wrong number of souls' });
               paidThisRoute.push({ ev, paid, want, n: standing.length });
             } else if (ev === 'release') {
-              // What `PopulationSystem` step (3) does when the player walks past the release
-              // radius: every body of the post leaves the entity array.
-              for (const e of ents()) { try { H.despawn(e.eid); } catch { /* gone */ } }
-              H.stepFrames(1);
+              // THROUGH `PopulationSystem`, because that is what the world does. The oracle's
+              // first full run drove `despawn` on every body by hand and charged 45 I3 violations
+              // for a route no player has: the shipped release is step (3) of `world/population
+              // .js`, which since round 3 REMEMBERS which bodies were down and hands the register
+              // to `_materialise()`. An oracle that bypasses the mechanism it is auditing is
+              // measuring its own shortcut. Same branch, same file, called directly because
+              // `step()` returns early outside the province cell — a MECHANISM test, declared.
+              releasePost();
             } else if (ev === 'materialise') {
-              // What step (4) does: the SAME post id as the tag, which is what recycles the eids.
-              try { H.spawnEncounter(ENC, 0, 12, { tag: TAG }); } catch { /* still resident */ }
+              // Step (4): the same post id as the tag, which is what recycles the eids.
+              P._materialise(E, POST);
               H.stepFrames(2);
-              newLives();                       // the route rebuilt them: new bodies, by construction
+              newLives();                       // the world rebuilt them: new bodies, by construction
             } else if (ev === 'named_load') {
               H.loadState('arena_flat');
               if (E.population) E.population.enabled = true;
               H.setTimeOfDay(12);
-              try { H.spawnEncounter(ENC, 0, 12, { tag: TAG }); } catch { /* n/a */ }
+              if (P) { P.reset(); P.byId.set(POST.id, POST); P._materialise(E, POST); }
               H.stepFrames(2);
               // A NAMED STATE LOAD IS THE PROBE RE-STAGING, NOT THE WORLD RESURRECTING, and the
               // oracle's first run charged itself an I3 violation for it on every route that
@@ -282,6 +330,9 @@ async function main() {
               // objects — which is the one case where a life does NOT advance.
               E.death.respawnOrdinary(E.sim, E.combat, E.bus, 'oracle_rest');
               E.death.ordinaryRespawnEpoch++;
+              // Step (0) of world/population.js on the epoch bump: the CLEARED posts go DORMANT
+              // and the register of who was down is cleared. A rest brings the whole post back.
+              if (P) { P.down.clear(); for (const [id, st] of P.state) if (st === 'cleared') P.state.set(id, 'dormant'); }
               H.stepFrames(2);
             }
           } catch (err) { broke = `${ev}: ${String(err && err.message || err)}`; break; }
@@ -322,7 +373,18 @@ async function main() {
     invariants: {
       I1: { statement: 'a body-life is paid for at most once', owner: 'game/src/sim/souls.js', violations: byInv.I1.length, examples: byInv.I1.slice(0, 8) },
       I2: { statement: 'a body-life that dies is paid exactly its statblock value x night', owner: 'game/src/sim/souls.js', violations: byInv.I2.length, examples: byInv.I2.slice(0, 8) },
-      I3: { statement: 'an eid last observed dead is never observed alive again without the rest epoch moving', owner: 'game/src/world/population.js + engine.js loadState', violations: byInv.I3.length, examples: byInv.I3.slice(0, 8) },
+      I3: {
+        statement: 'an eid last observed dead is never observed alive again without the rest epoch moving',
+        owner: 'game/src/world/population.js + engine.js loadState',
+        violations: byInv.I3.length,
+        examples: byInv.I3.slice(0, 8),
+        known_open: 'Every route that still violates I3 contains `save_load`. applySave() calls '
+          + 'population.reset(), which empties the post index AND the register of who was down, '
+          + 'while applySave restores the bodies and death.ordinaryRespawnEpoch does not move. '
+          + 'That is GAP-W1-population-save-reload-repays-every-corpse (W1-POPULATION-r1 §2), '
+          + 'filed and open, and its remedy is to persist the cleared-post set into the save. '
+          + 'A route violating I3 WITHOUT `save_load` in it would be new and is not expected.',
+      },
     },
     page_errors: pageErrors.slice(0, 10),
     results: R.results,

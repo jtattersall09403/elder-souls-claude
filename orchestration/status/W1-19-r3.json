@@ -5,10 +5,12 @@
   "round": 3,
   "state": "running",
   "started_at": "2026-08-07",
-  "headline": "PENDING - W1-VIABILITY-SPLIT is right and W1-19-r2's 40/40 is an artefact of hand-feeding. The defect is 8x larger than dispatched: 116 of 121 (quest,reveal) demands have NO producing route in play, across 8 of 9 channels.",
-  "next_step": "reconcile mainline-chain-floor.mjs (find the hand-feed); prove a single reveal route end-to-end from play before authoring any at scale",
+  "headline": "RECONCILED. viability-walk is TRUE OF THE GAME; W1-19-r2's 40/40 was an artefact of one line (mainline-chain-floor.mjs:234 H.questReveal). Removing that line alone turns 40/40 into 0/40 at Q-MAIN-06. Defect is 8x the dispatched size AND the proposed repair route is itself broken.",
+  "next_step": "land the _applyConsequences -> setFlag mechanism fix; delete-the-fix; prove one reveal fires from play via viability-walk (which denies questReveal so it cannot be faked)",
   "files_touched": [
-    "orchestration/status/W1-19-r3.json"
+    "orchestration/status/W1-19-r3.json",
+    "tools/quests/reveal-route-audit.mjs",
+    "reports/runs/W1-19-R3/reveal-route-audit.json"
   ],
   "files_claimed": [
     "orchestration/status/W1-19-r3.json",
@@ -25,11 +27,13 @@
     "W1-22-r2"
   ],
   "notes": [
-    "reports/blog-feed.jsonl and docs/shots/ are shared by every piece by protocol (rule 27); declared redundant, not a collision.",
-    "AUDIT RESULT (static, over game/data/quests/**, 120 quests): 121 distinct (quest,reveal) pairs are demanded by a resolution's requires_knowing. 5 are producible in play. 116 are not.",
-    "The 5 producible are ALL channel=book, and they work only because W1-LIBRARY round 2 built _bookKnowledgeIndex() -> ctx.knowledge. That is the ONE channel with a route.",
-    "Channels with ZERO producing route: ledger 28, talk_to_target 28, rival_npc 23, environment 18, eavesdrop 9, letter 6, later_quest 3, corpse 1.",
-    "9 quests have every resolution blocked: Q-MAIN-06,07,08,10,11,15,26,29,30. All mainline. Q-MAIN-06 is the first, which is exactly where the viability walk stops.",
-    "hooks.json: 0 of 139 rows (18 hooks + 121 entry_topics) carry a quest+reveal pair."
+    "RECONCILIATION (both instruments re-run today on this tree): viability-walk --sample 40 -> 40/40 stop at Q-MAIN-06. mainline-chain-floor.mjs -> 40/40 complete. Copy of chain-floor with ONLY line 234 removed (`for (const r of step.reveals) H.questReveal(step.id, r)`) -> 0/40, blocked at Q-MAIN-06, same refusal string as the walk. ONE LINE IS THE WHOLE DIFFERENCE.",
+    "The chain-floor tool eliminated the TOPIC hand-feed scrupulously (it has a --sabotage hand-feed arm to prove the topic graph carries the chain) and then carried a REVEAL hand-feed four lines below the gate it was protecting, under no sabotage flag, inside a try/catch that swallows failure.",
+    "SCALE: 121 (quest,reveal) pairs demanded by resolutions; 5 routed; 116 unroutable in play. Only channel=book is routed, and only because W1-LIBRARY built _bookKnowledgeIndex(). 8 channels have zero reader in game/src/: ledger 28, talk_to_target 28, rival_npc 23, environment 18, eavesdrop 9, letter 6, later_quest 3, corpse 1.",
+    "9 quests fully blocked, ALL MAINLINE: Q-MAIN-06,07,08,10,11,15,26,29,30.",
+    "THE DISPATCHED REPAIR DOES NOT WORK. A hooks.json quest+reveal row fires from QuestEngine.setFlag(). But _applyConsequences (machine.js:762) writes q.flags[wf]=1 DIRECTLY and never calls setFlag(). So a flag raised by playing a resolution -- the main way the world changes -- never reaches the hook table. Authoring 18 or 116 rows against it would have produced nothing.",
+    "PROVEN, not read: tools/quests/reveal-route-audit.mjs section B. All 5 legs raise their flag via the shipped _applyConsequences on shipped data; 0 of 5 fire the hook. Control leg raises the SAME flag via setFlag(): 4 of 5 fire. Hook table works; nothing in play calls it. First pass of this test passed VACUOUSLY (resolve() refused on the offer gate, flag never went up, pass condition was `!flag_raised || landed`); rewritten so a leg that does not raise its flag is NOT RUN and fails.",
+    "COLLATERAL: 4 already-authored hooks are dead for this reason, and they are not mine -- ledger_first_chair_refused / assize_prefect_refused / deepkin_speaker_refused (the three faction 'second refusal' routes, authored against GAP path_to_ten #6 'refusing at rank 6 used to cap the ladder at 6 forever') and the_eleven_roots_are_cut (the mainline backpath). point_of_no_return_crossed does not fire even via setFlag (journal 90 hook) -- reported, not fixed.",
+    "falsify plant-route green: planting a synthetic route moves routed 5->6, unrouted 116->115."
   ]
 }

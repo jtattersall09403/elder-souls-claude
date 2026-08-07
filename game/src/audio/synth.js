@@ -64,6 +64,158 @@ const LOOP_SECONDS = 30;
 export function dbToGain(db) { return Math.pow(10, db / 20); }
 export function gainToDb(g) { return 20 * Math.log10(Math.max(1e-9, g)); }
 
+// ---- deterministic summation (RI-AUD03 R3) ---------------------------------------------------
+
+/**
+ * ROUND 3. WHY THE MIXING TOPOLOGY IS PART OF THE SPECIFICATION AND NOT AN IMPLEMENTATION DETAIL.
+ *
+ * RI-AUD03 R3 gives up HARNESS.md §8's permission for non-simulation code to use unseeded
+ * randomness, in its own words, so that "two runs of the same scenario produce the same ambience"
+ * — because otherwise "audioLog diverges between runs and the blind pack is not reproducible".
+ * Every blind measurement this piece is scored on (B1, B2, B3) is a comparison between
+ * recordings, so all of them rest on that rule.
+ *
+ * Round 2 found, and honestly declined to explain, that two interior beds (`street` and `well`)
+ * did not render reproducibly at a fixed seed with no perturbation at all between the captures.
+ * Round 3 measured it. Every PRNG in this subsystem was already seeded and the schedules were
+ * identical; the divergence was in the rendered floats, at 3e-8 (about −150 dBFS), on roughly
+ * half of all samples, starting at sample 0.
+ *
+ * THE CAUSE IS NOT IN THIS FILE, and it was proved from outside it before a line was changed.
+ * `tools/analysis/ambience-determinism.mjs --only-control` renders bare `OscillatorNode` →
+ * `GainNode` graphs containing no Elder Souls code at all, twice each, and compares the floats:
+ *
+ *     1 source into one node   identical
+ *     2 sources into one node  identical
+ *     3 sources into one node  DIVERGES, max 1.49e-8
+ *     8 sources into one node  DIVERGES, max 4.47e-8
+ *
+ * One and two are exact because IEEE-754 addition is commutative: `a + b` and `b + a` are the
+ * same bits, and `x + 0` is `x`. Three is where it breaks, because addition is NOT associative —
+ * `(a + b) + c` and `a + (b + c)` differ by up to one unit in the last place. So the platform is
+ * summing a node's inputs in an order that is not fixed by the graph, and the run-to-run
+ * difference is exactly one float32 ULP. It is also INTERMITTENT — a width that diverges on one
+ * run can come out clean on the next — which is why nothing in rounds 1 or 2 caught it and why a
+ * single green from a flat topology is worth nothing.
+ *
+ * THE REMEDY IS TOPOLOGICAL. If no node ever receives more than two connections that are
+ * simultaneously non-zero, the sum is exact whatever order the platform picks, because the only
+ * orders available are `a + b` and `b + a`. So every place in this subsystem where three or more
+ * signals meet now meets them two at a time, in an order the graph fixes. The same control tool
+ * proves the remedy at every width it proves the defect at.
+ *
+ * The audio cost is one unity `GainNode` per extra input and a change to the output of at most
+ * one ULP — far below the precision of any level, spectrum or loudness this project reports, so
+ * no calibrated number in the bed data is invalidated by it.
+ */
+
+/**
+ * Connect `nodes` so that they sum into one output without any node receiving more than two
+ * connections. Returns the tail of the chain, which the caller connects onward.
+ *
+ * Left-leaning rather than balanced on purpose: the order is then a plain function of the array,
+ * so two builds of the same bed produce the same tree and a reader can predict it.
+ */
+export function joinChain(ctx, nodes) {
+  if (!nodes.length) return null;
+  // DELETE-THE-FIX, and it must cover BOTH sites or the arm is only half an arm. The first
+  // version of this control gated the bus ladder alone; `street` (three layers summing on the
+  // bus) went red under it and `well` (a four-partial chord summing in one node) stayed green,
+  // because the chord chain was still in place. Two beds, two halves of one defect. The flag now
+  // restores a flat N-input summation everywhere the fix chained.
+  if (globalThis.__ES_AUDIO_FLAT_MIX) {
+    const flat = ctx.createGain();
+    flat.gain.value = 1;
+    for (const n of nodes) n.connect(flat);
+    return flat;
+  }
+  let acc = nodes[0];
+  for (let i = 1; i < nodes.length; i++) {
+    const j = ctx.createGain();
+    j.gain.value = 1;
+    acc.connect(j);
+    nodes[i].connect(j);
+    acc = j;
+  }
+  return acc;
+}
+
+/**
+ * The ambience bus, as a fixed ladder of lanes that sum two at a time.
+ *
+ * A chain built lazily as sources arrive would work offline — every grain in an offline render is
+ * created before `startRendering()` — but the live driver schedules grains while audio is
+ * flowing, and re-plumbing a running graph for every drip would both click and grow without
+ * bound. So the ladder is allocated once, at a fixed width, and callers take a lane:
+ *
+ *   `reserve()` — a permanent lane, for a voice that runs for as long as the bed does (L1, each
+ *                 L2 sublayer, a continuous emitter). Reset on a region swap, so the outgoing and
+ *                 incoming generations share a lane during the 4 s crossfade. That is two
+ *                 simultaneously non-zero signals in one node, which is exact.
+ *   `lane()`    — the next rotating lane, for a transient grain. Grains in the same lane are
+ *                 separated by every other rotating lane before it comes round again, and the
+ *                 longest grain in the province is under two seconds against event intervals of
+ *                 eight seconds and up, so a lane never carries two sounding grains at once. A
+ *                 grain that is not sounding contributes exactly 0.0, and `x + 0` is `x`.
+ *
+ * The width is twice RI-AUD02 §D V5's eight-voice cap for the ambience bus, so the structure
+ * cannot be the thing that runs out before the budget does.
+ *
+ * DELETE-THE-FIX (RULES.md rule 6). Setting `globalThis.__ES_AUDIO_FLAT_MIX` makes every lane the
+ * destination itself, which is exactly the round-2 topology, on the same tree and the same commit
+ * with no file edited and nothing staged. `tools/analysis/ambience-determinism.mjs --sabotage
+ * flatmix` is the arm that uses it, and D1 must go red under it or the check is inert.
+ */
+export const MIX_LANES = 16;
+
+export class DeterministicMixer {
+  constructor(ctx, dest, lanes = MIX_LANES) {
+    this.ctx = ctx;
+    this.dest = dest;
+    this.flat = !!globalThis.__ES_AUDIO_FLAT_MIX;
+    this.reserved = 0;
+    this.rotating = 0;
+    this.lanes = [];
+    if (this.flat) return;
+    for (let i = 0; i < lanes; i++) {
+      const g = ctx.createGain();
+      g.gain.value = 1;
+      this.lanes.push(g);
+    }
+    const tail = joinChain(ctx, this.lanes);
+    if (tail) tail.connect(dest);
+  }
+
+  /** A lane held for the lifetime of a continuous voice. */
+  reserve() {
+    if (this.flat) return this.dest;
+    return this.lanes[Math.min(this.reserved++, this.lanes.length - 1)];
+  }
+
+  /** The next rotating lane, for a one-shot. */
+  lane() {
+    if (this.flat) return this.dest;
+    const base = Math.min(this.reserved, this.lanes.length - 1);
+    const span = Math.max(1, this.lanes.length - base);
+    const g = this.lanes[base + (this.rotating % span)];
+    this.rotating++;
+    return g;
+  }
+
+  /** A region swap starts a new generation of continuous voices. See the class note. */
+  resetReservations() { this.reserved = 0; }
+}
+
+/**
+ * Resolve a destination that may be a `DeterministicMixer` or a plain `AudioNode`. Keeping both
+ * shapes legal means a caller that has no mixer (a unit test, a probe rendering one layer) does
+ * not have to build one to use `buildContinuous` or `buildGrain`.
+ */
+export function sinkFor(dest, transient = false) {
+  if (dest && typeof dest.reserve === 'function') return transient ? dest.lane() : dest.reserve();
+  return dest;
+}
+
 // ---- noise ---------------------------------------------------------------------------------
 
 /**
@@ -234,7 +386,8 @@ function attachMod(ctx, mod, targets, t0) {
 export function buildContinuous(ctx, synth, dest, rng, t0 = 0, gainMul = 1) {
   const out = ctx.createGain();
   out.gain.value = dbToGain(synth.gain_db || 0) * gainMul;
-  out.connect(dest);
+  // A continuous layer holds its lane for as long as the bed does. See `DeterministicMixer`.
+  out.connect(sinkFor(dest, false));
 
   const started = [];
   let filter = null;
@@ -254,10 +407,9 @@ export function buildContinuous(ctx, synth, dest, rng, t0 = 0, gainMul = 1) {
     started.push(src);
   } else if (synth.kind === 'drone') {
     oscs = [];
-    const sum = ctx.createGain();
-    sum.gain.value = 1;
     const partials = synth.partials_hz || [];
     const gains = synth.partial_gains_db || [];
+    const voices = [];
     for (let i = 0; i < partials.length; i++) {
       const o = ctx.createOscillator();
       o.type = synth.waveform || 'sine';
@@ -268,11 +420,17 @@ export function buildContinuous(ctx, synth, dest, rng, t0 = 0, gainMul = 1) {
       o.detune.value = (synth.detune_cents || 0) * (i % 2 === 0 ? 1 : -1);
       const g = ctx.createGain();
       g.gain.value = dbToGain(gains[i] === undefined ? -12 : gains[i]);
-      o.connect(g); g.connect(sum);
+      o.connect(g);
+      voices.push(g);
       o.start(t0);
       oscs.push(o);
       started.push(o);
     }
+    // ROUND 3 — the chord sums TWO PARTIALS AT A TIME. Four partials into one gain node is the
+    // exact shape `--only-control` shows diverging by a float ULP run to run, and the well's L1
+    // (a four-partial shaft resonance) was one of the two beds that would not render twice the
+    // same. See the `DeterministicMixer` note above.
+    const sum = joinChain(ctx, voices) || (() => { const g = ctx.createGain(); g.gain.value = 1; return g; })();
     filter = applyFilter(ctx, sum, synth.filter);
     filter.connect(out);
   } else {
@@ -302,9 +460,14 @@ export function buildGrain(ctx, ev, dest, rng, t, pan = 0, gainMul = 1) {
   const panner = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
   const bus = ctx.createGain();
   bus.gain.value = dbToGain((ev.level_db || 0)) * gainMul;
-  if (panner) { panner.pan.value = Math.max(-1, Math.min(1, pan)); bus.connect(panner); panner.connect(dest); }
-  else bus.connect(dest);
+  // ROUND 3 — a grain is transient, so it takes a ROTATING lane rather than reserving one. See
+  // `DeterministicMixer`: the whole point is that the ambience bus never sums three simultaneously
+  // sounding signals in an order the graph has not fixed.
+  const sink = sinkFor(dest, true);
+  if (panner) { panner.pan.value = Math.max(-1, Math.min(1, pan)); bus.connect(panner); panner.connect(sink); }
+  else bus.connect(sink);
 
+  const strikes = [];
   let last = t;
   for (let i = 0; i < (reps.n || 1); i++) {
     const jitter = reps.gap_jitter_s ? (rng.next() * 2 - 1) * reps.gap_jitter_s : 0;
@@ -314,7 +477,7 @@ export function buildGrain(ctx, ev, dest, rng, t, pan = 0, gainMul = 1) {
     g.gain.setValueAtTime(0.0001, at);
     g.gain.exponentialRampToValueAtTime(Math.max(1e-4, dbToGain(s.gain_db || -12)), at + atk);
     g.gain.exponentialRampToValueAtTime(0.0001, at + atk + dec);
-    g.connect(bus);
+    strikes.push(g);
 
     if (s.source === 'noise') {
       const src = ctx.createBufferSource();
@@ -325,8 +488,7 @@ export function buildGrain(ctx, ev, dest, rng, t, pan = 0, gainMul = 1) {
       src.stop(at + atk + dec + 0.02);
     } else {
       const freqs = s.partials_hz && s.partials_hz.length ? s.partials_hz : [s.freq_hz || 440];
-      const pre = s.filter ? ctx.createGain() : g;
-      if (s.filter) { const f = applyFilter(ctx, pre, s.filter); f.connect(g); }
+      const partialGains = [];
       for (let k = 0; k < freqs.length; k++) {
         const o = ctx.createOscillator();
         o.type = s.waveform || 'sine';
@@ -337,11 +499,22 @@ export function buildGrain(ctx, ev, dest, rng, t, pan = 0, gainMul = 1) {
         }
         const og = ctx.createGain();
         og.gain.value = k === 0 ? 1 : 0.4 / k;
-        o.connect(og); og.connect(pre);
+        o.connect(og);
+        partialGains.push(og);
         o.start(at);
         o.stop(at + atk + dec + 0.02);
       }
+      // Same rule as the drone chord: partials meet two at a time.
+      const summed = joinChain(ctx, partialGains);
+      if (summed) {
+        if (s.filter) { const f = applyFilter(ctx, summed, s.filter); f.connect(g); }
+        else summed.connect(g);
+      }
     }
   }
+  // The repeats of one grain (`roof_rat` is six taps 0.09 s apart with a 0.10 s decay, so they DO
+  // overlap) meet two at a time as well, for the same reason.
+  const strikeTail = joinChain(ctx, strikes);
+  if (strikeTail) strikeTail.connect(bus);
   return { bus, panner, endsAt: last + atk + dec + 0.02 };
 }

@@ -1,0 +1,59 @@
+{
+  "available": true,
+  "mode": "model",
+  "ctxState": "none",
+  "sampleRate": null,
+  "latencyHint": "interactive",
+  "baseLatency": null,
+  "outputLatency": null,
+  "scheduler": {
+    "driver": "none",
+    "tickMs": 8,
+    "lookaheadMs": 40
+  },
+  "scheduleMisses": 0,
+  "htmlAudioElements": 0,
+  "decodesAfterReady": 0,
+  "voicesActive": 3,
+  "voicesPeak": 8,
+  "voicesPeakByBus": {
+    "sfx": 4,
+    "music": 0,
+    "ambience": 0,
+    "voice": 0,
+    "ui": 0
+  },
+  "stolen": 12,
+  "dropped": 9,
+  "panner": {
+    "model": "equalpower",
+    "distanceModel": "inverse",
+    "refDistance": 1,
+    "maxDistance": 40,
+    "rolloffFactor": 1,
+    "panningModel": "equalpower",
+    "hrtf": false
+  },
+  "listenerAttachedTo": "character",
+  "trigger_source": "resolution",
+  "pan_source": "impact",
+  "classes": 12,
+  "variants": 48,
+  "events": 13,
+  "synthesised": true,
+  "sampledBytes": 0,
+  "run_id": "aud-impact-matrix-1337",
+  "seed": 1337,
+  "sabotage": null,
+  "fixtures": 39,
+  "trace_events": 457,
+  "audio_events": 78,
+  "not_exercised_in_node": [
+    "player_hurt",
+    "parried",
+    "riposte",
+    "backstab",
+    "stamina_break"
+  ],
+  "not_exercised_why": "the bare-Node arena runs CombatSystem.step alone; stealth perception, which is what sets alertState=AGGRO and makes an enemy attack or turn its back, runs in Engine only (AGENT-PROTOCOL). Classes requiring an enemy to choose to attack (player_hurt), the player to parry an incoming swing (parried/riposte), an enemy to be facing away (backstab) or the player to run dry (stamina_break) are produced in the browser pass."
+}

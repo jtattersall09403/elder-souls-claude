@@ -297,6 +297,48 @@ and both come from the same row of the same table — so it returns ~10.8 min/le
 census, *any* soul value and *any* TTK. It is invariant under exactly the changes that would
 resolve this section, which is why it never registered the problem.
 
+### 9. AQ-1 — §2 contradicts its own method 6, and the contradiction is load-bearing
+
+**Filed wave 1 by W1-SOULS round 3, at the instruction of the W1-SOULS round-2 verdict (F-7 /
+path_to_ten 8). Nothing in §§1–8 is changed by this section.** It is an arbitration question
+against this item, raised by the round-2 critic and given an instrument here because it had never
+had one anywhere — which is why nobody had noticed that §2's central claim about itself is false.
+
+**§2 says of its own bands:** *"the bands are deliberately non-overlapping at the edges so that
+'am I in the right region' is answerable from a single kill."*
+**Method 6 says:** adjacent trash bands may overlap by at most **25%** of the lower band's width.
+
+**Measured, from §2 as published:**
+
+| pair | lower band | upper band | overlap | % of the lower band's width |
+|---|---|---|---:|---:|
+| R1/R2 | 35–190 | 140–520 | 50 | **32.3%** |
+| R2/R3 | 140–520 | 330–1,250 | 190 | **50.0%** |
+| R3/R4 | 330–1,250 | 760–2,600 | 490 | **53.3%** |
+| R4/R5 | 760–2,600 | 1,200–4,200 | 1,400 | **76.1%** |
+| R5/R6 | 1,200–4,200 | 2,100–6,200 | 2,100 | **70.0%** |
+
+**Five of five, and the percentages are scale-invariant** — §7 multiplies both bands of every pair
+by the same factor, so the census normalisation neither causes this nor cures it.
+
+**Why it cannot be fixed by editing §2.** §2's bands are not independent data: they are exactly
+the min and max of §3's own per-region roster, verified for all eighteen rows by
+`tools/check-souls-corpus.mjs` (B1). So the two claims cannot be reconciled without moving §3's
+*values* — which §7 froze and which §1's cumulative column depends on. **Somebody must rule on
+whether §2's separation claim, method 6's threshold, or §3's spread yields.**
+
+**Instruments, both REPORT-ONLY and deliberately never armed** (landing a fail-closed assertion on
+a corpus question would take the project's boot-check down over somebody else's ruling):
+
+* `node tools/check-souls-corpus.mjs` — prints the table above beside the eighteen band rows it
+  *does* assert.
+* `node tools/progression/derive-soul-values.mjs --check` — prints it beside the region binding
+  that is built on these bands.
+
+**What it blocks.** Nothing today. It blocks the enemy-roster piece the moment it builds a
+tier-appropriate body, because `--check`'s region binding decides "is this value right for where
+it is placed" using bands that §2's own stated purpose says should separate and do not.
+
 ## Comparison method
 
 The harness lives at `corpus/80-methods/sim-souls-yield.md`. Every assertion below runs
