@@ -224,32 +224,41 @@ function table() {
 //
 // This is the falsifier for fix B and it needs no hand-patching: revert the pitch reference and
 // this number goes above 1 on its own.
-function loopGain(h, d) {
+// Measuring the gain at the SETTLED pitch is measuring it after the runaway has already
+// finished — at a clamp the derivative is 0 and at a far-flung fixed point it is a contraction
+// again, so the settled point is the one place the defect is invisible. The decisive question
+// is instead: DOES THE ANSWER DEPEND ON WHERE IT STARTED? A well-posed pitch law is a function
+// of (h, d) and has one attractor. A loop with gain above 1 has the initial pitch — an
+// irrelevant fact about the frame the lock happened to be acquired on — choose the clamp.
+function attractors(h, d) {
   const alpha = 1 - Math.pow(2, -(1 / 60) / CAMERA_CONST.lock_pitch_half_life_s);
-  const base = makeSim({ targetH: h, d });
-  base.cameraTargets = { cam_boss_mid: h, _default: h };
-  for (let f = 0; f < 300; f++) { base.frame = f; stepCamera(base); }
-  const snap = JSON.parse(JSON.stringify({ c: base.camera, p: base.player.pos }));
+  const starts = [-45, -25, -8, 0, 12, 25];
+  const settled = starts.map((p0) => {
+    const s = makeSim({ targetH: h, d });
+    s.cameraTargets = { cam_boss_mid: h, _default: h };
+    s.camera.pitch = p0;
+    for (let f = 0; f < 600; f++) { s.frame = f; stepCamera(s); }
+    return +s.camera.pitch.toFixed(3);
+  });
+  const spread = +(Math.max(...settled) - Math.min(...settled)).toFixed(3);
 
+  // The gain itself, measured properly and away from any clamp. Two steps are needed because
+  // lockOrientation() reads the pose writePose() left last frame, so the loop only closes on
+  // the second step: d(pitch₂)/d(pitch₀) = (1−α)·(1 + (G−1)·α).
   const probe = (p0) => {
     const s = makeSim({ targetH: h, d });
     s.cameraTargets = { cam_boss_mid: h, _default: h };
-    Object.assign(s.camera, JSON.parse(JSON.stringify(snap.c)));
+    for (let f = 0; f < 200; f++) { s.frame = f; stepCamera(s); }
     s.camera.pitch = p0;
-    // Re-pose at this pitch so c.pos is the position this pitch actually implies — otherwise the
-    // difference measures a stale pose rather than the loop.
-    s.frame = 300; stepCamera(s);
-    const after1 = s.camera.pitch;
-    s.frame = 301; stepCamera(s);
-    return { after1, after2: s.camera.pitch };
+    s.frame = 200; stepCamera(s);
+    s.frame = 201; stepCamera(s);
+    return s.camera.pitch;
   };
-  const eps = 0.5;
-  const p0 = snap.c.pitch;
-  const a = probe(p0 - eps), b = probe(p0 + eps);
-  const dNext = (b.after2 - a.after2) / (2 * eps);
-  const G = 1 + (dNext - 1) / alpha;
-  return { h, d, settled: +p0.toFixed(3), alpha: +alpha.toFixed(5),
-    d_next_d_pitch: +dNext.toFixed(4), gain: +G.toFixed(3), divergent: G > 1 };
+  // Probe at −20°, a pitch comfortably inside the locked band for every row here.
+  const eps = 0.5, mid = -20;
+  const dp2 = (probe(mid + eps) - probe(mid - eps)) / (2 * eps);
+  const G = 1 + (dp2 / (1 - alpha) - 1) / alpha;
+  return { h, d, settled, spread, gain: +G.toFixed(3), divergent: G > 1 || spread > 1.0 };
 }
 
 // ---------------------------------------------------------------------------------------
@@ -257,11 +266,14 @@ const arg = process.argv[2] || '';
 
 if (arg === '--gain') {
   const rows = [[0.6, 2.0], [1.9, 3.5], [1.9, 8.0], [2.6, 4.0], [4.5, 6.0], [8.0, 10.0]]
-    .map(([h, d]) => loopGain(h, d));
-  console.log('h\td\tsettled\td(pitch_next)/d(pitch)\tloop_gain_G\tdivergent');
-  for (const r of rows) console.log(`${r.h}\t${r.d}\t${r.settled}\t${r.d_next_d_pitch}\t${r.gain}\t${r.divergent}`);
+    .map(([h, d]) => attractors(h, d));
+  console.log('# settled pitch from six starting pitches (−45 −25 −8 0 +12 +25), 600 frames each');
+  console.log('h\td\tsettled_from_each_start\t\t\t\tspread\tloop_gain_G\tdivergent');
+  for (const r of rows) {
+    console.log(`${r.h}\t${r.d}\t[${r.settled.join(', ')}]\t${r.spread}\t${r.gain}\t${r.divergent}`);
+  }
   const bad = rows.filter((r) => r.divergent).length;
-  console.log(`\ndivergent (G > 1): ${bad} of ${rows.length}`);
+  console.log(`\ndivergent (gain > 1, or the answer depends on the starting pitch by > 1°): ${bad} of ${rows.length}`);
   process.exit(bad ? 1 : 0);
 }
 
