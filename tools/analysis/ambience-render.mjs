@@ -39,6 +39,7 @@
 //   node tools/analysis/ambience-render.mjs [--seconds 6] [--out reports/...json] [--json]
 
 import { writeFileSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
+import { execSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { launchGame } from '../lib/browser.mjs';
@@ -229,7 +230,23 @@ function mono(cap) {
 function peak(a) { let p = 0; for (let i = 0; i < a.length; i++) p = Math.max(p, Math.abs(a[i])); return p; }
 
 // ---- drive the build ---------------------------------------------------------------------------
-const out = { tool: 'tools/analysis/ambience-render.mjs', seconds: SECONDS, sample_rate: RATE, gates: {}, regions: {}, notes: [] };
+// AGENT-PROTOCOL: "a measurement is a claim about a COMMIT, not about the project". Fifteen agents
+// edit this tree at once and a neighbour landing an hour later can falsify a green without touching
+// a single file of this piece. Stamp it at the moment the number is taken, and record `dirty` —
+// it usually is, and an unstamped report is unreproducible by the critic who has to re-run it.
+function gitStamp() {
+  try {
+    const sh = (c) => execSync(c, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    return { commit: sh('git rev-parse --short HEAD'), dirty: sh('git status --porcelain') !== '' };
+  } catch { return { commit: null, dirty: null }; }
+}
+
+const out = {
+  tool: 'tools/analysis/ambience-render.mjs',
+  taken_at: new Date().toISOString(),
+  git: gitStamp(),
+  seconds: SECONDS, sample_rate: RATE, gates: {}, regions: {}, notes: [],
+};
 let handle;
 let exitCode = 0;
 

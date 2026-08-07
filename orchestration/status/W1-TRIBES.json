@@ -1,6 +1,6 @@
 {
   "task_id": "W1-TRIBES",
-  "brief": "inline dispatch: Argonian tribes — CF-C023 gap (Agacephs/Paatru/Archein/Sarpa/Dead-Water/Miredancers all zero occurrences)",
+  "brief": "inline dispatch: Argonian tribes \u2014 CF-C023 gap (Agacephs/Paatru/Archein/Sarpa/Dead-Water/Miredancers all zero occurrences)",
   "started": "wave-1",
   "state": "researching",
   "outputs_expected": [
@@ -11,8 +11,14 @@
     "reports/blog-feed.jsonl line"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read reports/lore/W1-23-registry-report.md, orchestration/status/W1-23.json, RI-LOR01, RI-LOR06",
-  "notes_for_successor": "Authoring task. NO BROWSER until final verify — box at loadavg 21 with 24 browsers. Prose bar: use question marks, avoid every-line-punchline, avoid the word 'eleven'. Run node tools/check-prose.mjs on output.",
+  "findings": [
+    "W1-23 report \u00a76 is the binding context: province is organised by 4 CONSTRUCTED bodies (Deep-Kin 87, Xul-Aneekh 84, Drowned Court 64, Sap-Cutters 53, Wet Ledger 45), not tribes. Its explicit warning: 'If tribes are wanted, they need a faction each, not a mention each.'",
+    "Ruling from lore builder (W1-23 \u00a74): a contradiction is a disagreement about what IS THE CASE; a disagreement about what is WORTH DOING is an argument. Register the first, write the second.",
+    "Registry now has real consumers: tools/lore/build-canon.mjs projects corpus/60-lore/data/canon-facts.json -> game/data/lore/canon.json with authorially_true replaced by truth_seal. converse.js infoFor() gates infos by cf+pos against holders.",
+    "21 disputes registered, 71 facts, as of W1-23. canon-census.mjs is the gate tool (not wired into CI on purpose).",
+    "Faction ids are spelled two ways on NPC records (drowned-court vs the_drowned_court etc) - any new tribe id must pick ONE and check world/canon.js#fold()."
+  ],
+  "next_step": "read RI-LOR01, W1-PROSE-BLIND-r1, mine uesp extract for tribe names; then write design note",
+  "notes_for_successor": "Authoring task. NO BROWSER until final verify \u2014 box at loadavg 21 with 24 browsers. Prose bar: use question marks, avoid every-line-punchline, avoid the word 'eleven'. Run node tools/check-prose.mjs on output.",
   "files_touching": []
 }
