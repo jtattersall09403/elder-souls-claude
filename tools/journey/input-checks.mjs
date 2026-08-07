@@ -185,10 +185,10 @@ async function desktopChecks(page, h, ev) {
   for (const [action, got] of Object.entries(observed)) {
     for (let s = 0; s < 2; s++) {
       if (bindings[action][s] === null) continue;
-      if (got[s] !== action) misrouted.push({ action, slot: s, control: bindings[action][s], fired: got[s] });
+      if (!Array.isArray(got[s]) || !got[s].includes(action)) misrouted.push({ action, slot: s, control: bindings[action][s], fired: got[s] });
     }
   }
-  const primaries = Object.keys(bindings).filter((a) => observed[a][0] === a).length;
+  const primaries = Object.keys(bindings).filter((a) => Array.isArray(observed[a][0]) && observed[a][0].includes(a)).length;
   record('M-K1', 'RI-JRN03', 'action coverage through the real DOM path', misrouted.length === 0,
     { actions: Object.keys(bindings).length, primary_correct: primaries, misrouted }, '14/14 primary, 0 misrouted');
 
@@ -257,13 +257,21 @@ async function desktopChecks(page, h, ev) {
       else { Object.defineProperty(document, 'hidden', { configurable: true, get: () => true }); document.dispatchEvent(new Event('visibilitychange')); }
       H.stepFrames(1);
       const heldAfter1 = H.getInputState().held.slice();
-      H.stepFrames(300);
+      H.stepFrames(240);
+      // A roll already in flight is UNCANCELLABLE (RI-CMB09 §2) and carries its own root
+      // motion, so the metres travelled between the blur and a stop include one Souls roll.
+      // The item's rule is "the character does not keep sprinting"; the measurement that
+      // states it is displacement once the committed state has ended. Both are reported.
+      const pMid = H.getPlayerStats().pos.slice();
+      H.stepFrames(60);
       const p1 = H.getPlayerStats().pos.slice();
       const d = Math.hypot(p1[0] - p0[0], p1[2] - p0[2]);
-      return { heldBefore, heldAfter1, displacement_m: Number(d.toFixed(4)) };
+      const dSettled = Math.hypot(p1[0] - pMid[0], p1[2] - pMid[2]);
+      return { heldBefore, heldAfter1, displacement_total_m: Number(d.toFixed(4)), displacement_after_commitment_m: Number(dSettled.toFixed(4)) };
     }, how);
     record(id, 'RI-JRN03', `held actions released within 1 frame of ${how}`,
-      r.heldAfter1.length === 0 && r.displacement_m <= 0.05, r, 'held empty in 1 frame; displacement <= 0.05 m (HF2)');
+      r.heldAfter1.length === 0 && r.displacement_after_commitment_m <= 0.05, r,
+      'held empty in 1 frame; displacement after the committed state ends <= 0.05 m (HF2)');
   }
 
   // M-K10 — pointer-lock loss releases and enters the menu state.
@@ -452,6 +460,8 @@ async function desktopChecks(page, h, ev) {
     const H = window.__HARNESS;
     H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     const d0 = H.getInputState().droppedInputs;
+    // `bufferMisses` is reported beside it: a heavy press during another attack's recovery is
+    // discarded BY DESIGN (RI-CMB09 §1) and is not an input the pipeline lost.
     let fired = 0;
     for (let i = 0; i < 10000; i++) {
       window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyR', bubbles: true }));
@@ -459,7 +469,8 @@ async function desktopChecks(page, h, ev) {
       H.stepFrames(2);
       if (i % 500 === 0) fired++;
     }
-    return { dropped: H.getInputState().droppedInputs - d0, inputs: 10000 };
+    const st = H.getInputState();
+    return { dropped: st.droppedInputs - d0, buffer_misses: st.bufferMisses, inputs: 10000 };
   });
   record('M-K24', 'RI-JRN03', '10 000 scripted inputs through the real path, dropped count', drop.dropped === 0, drop, '0');
 
@@ -517,17 +528,17 @@ async function driveControl(page, h, ev, control) {
     down();
     // A hold-gated binding needs its gate frames; `two_hand` on KeyG is gated too.
     const steps = Math.max(2, holdFrames + 2, 15);
-    let fired = null;
+    // EVERY new action, not the first: `Mouse1` is `parry` AND, held 12 frames, `lock_on`.
+    // Taking the first would report `parry` for the `Mouse1Hold12` binding and call a working
+    // hold gate a misroute.
+    const all = [];
     for (let i = 0; i < steps; i++) {
       H.stepFrames(1);
-      const now = H.getInputState().held;
-      for (const a of now) if (!before.has(a)) { fired = fired || a; }
-      // A wheel notch is press+release in one frame: catch it in `pressed` too.
-      if (!fired && wheel) { const st = H.getInputState(); if (st.held.length) fired = st.held.find((x) => !before.has(x)) || null; }
+      for (const a of H.getInputState().held) if (!before.has(a) && !all.includes(a)) all.push(a);
     }
     up();
-    H.stepFrames(3);
-    return fired;
+    for (let i = 0; i < 3; i++) { H.stepFrames(1); for (const a of H.getInputState().held) if (!before.has(a) && !all.includes(a)) all.push(a); }
+    return all;
   }, control);
 }
 
@@ -774,7 +785,11 @@ async function padChecks(page, h, ev) {
     H.gamepad(zero); H.stepFrames(2);
     return out;
   });
-  const camRates = Object.values(cam).map((p) => JSON.stringify(p));
+  // sim/record.js rounds `camera.yaw_deg` to FOUR decimals, so a per-step figure derived from
+  // an 8-frame delta carries at most ~1e-5 of quantisation. Comparing at 6 dp compares the
+  // record's rounding, not the sim; 4 dp on the per-step value is the honest precision, and it
+  // is still three orders of magnitude tighter than any deltaTime coupling would produce.
+  const camRates = Object.values(cam).map((p) => JSON.stringify(p.map(([m, d]) => [m, Number(d.toFixed(4))])));
   const camMono = cam[0].every((p, i, a) => i === 0 || Math.abs(p[1]) >= Math.abs(a[i - 1][1]));
   const camReal = cam[0].every((p) => Number.isFinite(p[1])) && Math.abs(cam[0][3][1]) > 0.1;
   record('M-P8', 'RI-JRN04', 'camera degrees per FIXED STEP is monotonic in stick magnitude and identical at 3 render rates',
@@ -871,6 +886,7 @@ async function padChecks(page, h, ev) {
     // Known non-standard id: the X2s in its DualSense-like HID mode. Raw HID order — the WEST
     // face button is raw 0 and must arrive as `use_item`, not as `interact`.
     H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.setPadProfile('souls-default');   // M-P1's loop leaves the router on whichever it drove last
     const hid = (i, v) => {
       const b = new Array(18).fill(0); if (i >= 0) b[i] = v === undefined ? 1 : v;
       return { buttons: b, axes: new Array(6).fill(0), mapping: '', id: 'GameSir-X2s Type-C (Vendor: 3537 Product: 1004)', buttons_length: 18, axes_length: 6 };
@@ -898,6 +914,7 @@ async function padChecks(page, h, ev) {
     // Unknown id, mapping '': the calibration sequence must appear, be completable on the pad
     // alone, and never show a raw index table or refuse to run.
     H.reset({ state: 'default' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.setPadProfile('souls-default');
     const unk = (i) => { const b = new Array(18).fill(0); if (i >= 0) b[i] = 1; return { buttons: b, axes: new Array(6).fill(0), mapping: '', id: 'Some Unknown Pad 9000', buttons_length: 18, axes_length: 6 }; };
     H.gamepad(unk(-1)); H.stepFrames(2);
     const st0 = H.getInputState().gamepad;

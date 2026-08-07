@@ -96,6 +96,9 @@ OPTIONS
   --scenario A,B,C       named sub-scenarios (jrn05 SV1..SV5, jrn06 RN1..RN5)
   --corruption all|none  save-corruption battery (jrn05)
   --deaths N             number of deaths to drive (jrn06)
+  --prove-falsifiable    (jrn06) break the S5 classification and the stored souls on purpose
+                         and assert the corresponding checks go red
+  --no-shots             (jrn06) skip M-D11/M-D14, the two checks that need pixels
   --sample-quests N      quests to sample (jrn07)
   --stratified           stratify the quest sample by giver/region (jrn07)
   --state PATH           load a committed save before the journey (jrn08)

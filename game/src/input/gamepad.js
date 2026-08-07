@@ -249,7 +249,11 @@ export class GamepadRouter {
       if (this._isActive(snap, st)) { st.lastActive = frame; }
     }
     for (const [idx, st] of this.pads) {
-      if (!chosen || (st.lastActive > this.pads.get(chosen).lastActive)) chosen = idx;
+      // `!chosen` is TRUE for index 0 — the classic falsy-zero bug, and here it meant that with
+      // two pads attached the FIRST one could never stay active: index 0 was chosen, then
+      // immediately displaced by index 1, and `_releasePad` dropped whatever index 0 was
+      // holding. One player, one pad in each hand, and the one they were using went dead.
+      if (chosen === null || (st.lastActive > this.pads.get(chosen).lastActive)) chosen = idx;
     }
     if (chosen !== this.activeIndex) {
       if (this.activeIndex !== null && this.pads.has(this.activeIndex)) this._releasePad(this.pads.get(this.activeIndex));

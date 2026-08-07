@@ -1,0 +1,4797 @@
+{
+ "generated": "2026-08-07T08:02:40.880Z",
+ "instrument": "kritik3-motion-focused.mjs (critic-authored)",
+ "step_m": 0.2,
+ "weapons": {
+  "hlb_garrison_bill": {
+   "class": "HLB",
+   "declared_reach_m": 2.85,
+   "regimes": {
+    "S": {
+     "cells": 17,
+     "hitting": 9,
+     "hit_fraction": 0.529,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.76,
+     "body_hits": 4,
+     "vector": "11111111100000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.76
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.95
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.16
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.35
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.56
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.76
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.96
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.16
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.35
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.56
+      },
+      {
+       "d": 2.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.75
+      },
+      {
+       "d": 3,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.96
+      },
+      {
+       "d": 3.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.16
+      },
+      {
+       "d": 3.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.35
+      }
+     ]
+    },
+    "A": {
+     "cells": 17,
+     "hitting": 10,
+     "hit_fraction": 0.588,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.96,
+     "body_hits": 5,
+     "vector": "11111111110000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.75
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.95
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.15
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.36
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.56
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.76
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.96
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.16
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.36
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.56
+      },
+      {
+       "d": 2.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.76
+      },
+      {
+       "d": 3,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.96
+      },
+      {
+       "d": 3.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.16
+      },
+      {
+       "d": 3.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.36
+      }
+     ]
+    },
+    "R": {
+     "cells": 17,
+     "hitting": 0,
+     "hit_fraction": 0,
+     "min_at_open_m": null,
+     "max_at_open_m": null,
+     "body_hits": 0,
+     "vector": "00000000000000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.76
+      },
+      {
+       "d": 0.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.76
+      },
+      {
+       "d": 0.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.76
+      },
+      {
+       "d": 0.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.76
+      },
+      {
+       "d": 1,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.76
+      },
+      {
+       "d": 1.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.76
+      },
+      {
+       "d": 1.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.76
+      },
+      {
+       "d": 1.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.81
+      },
+      {
+       "d": 1.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.9
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.96
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.16
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.36
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.56
+      },
+      {
+       "d": 2.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.75
+      },
+      {
+       "d": 3,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.95
+      },
+      {
+       "d": 3.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.15
+      },
+      {
+       "d": 3.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.35
+      }
+     ]
+    },
+    "M": {
+     "cells": 17,
+     "hitting": 7,
+     "hit_fraction": 0.412,
+     "min_at_open_m": 0.63,
+     "max_at_open_m": 0.97,
+     "body_hits": 5,
+     "vector": "11111110000000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.63
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.63
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.63
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.63
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.63
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.77
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.97
+      },
+      {
+       "d": 1.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.17
+      },
+      {
+       "d": 1.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.37
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.57
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.77
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.97
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.17
+      },
+      {
+       "d": 2.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.37
+      },
+      {
+       "d": 3,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.57
+      },
+      {
+       "d": 3.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.77
+      },
+      {
+       "d": 3.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.97
+      }
+     ]
+    }
+   }
+  },
+  "tsw_bog_rapier": {
+   "class": "TSW",
+   "declared_reach_m": 2.087,
+   "regimes": {
+    "S": {
+     "cells": 13,
+     "hitting": 6,
+     "hit_fraction": 0.462,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.13,
+     "body_hits": 0,
+     "vector": "1111110000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.73
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.93
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.13
+      },
+      {
+       "d": 1.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.33
+      },
+      {
+       "d": 1.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.53
+      },
+      {
+       "d": 1.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.73
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.93
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.13
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.53
+      }
+     ]
+    },
+    "A": {
+     "cells": 13,
+     "hitting": 7,
+     "hit_fraction": 0.538,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.33,
+     "body_hits": 0,
+     "vector": "1111111000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.73
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.93
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.13
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.33
+      },
+      {
+       "d": 1.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.53
+      },
+      {
+       "d": 1.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.73
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.93
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.13
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.53
+      }
+     ]
+    },
+    "R": {
+     "cells": 13,
+     "hitting": 4,
+     "hit_fraction": 0.308,
+     "min_at_open_m": 1.07,
+     "max_at_open_m": 1.07,
+     "body_hits": 0,
+     "vector": "1111000000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.07
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.07
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.07
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.07
+      },
+      {
+       "d": 1,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.14
+      },
+      {
+       "d": 1.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.23
+      },
+      {
+       "d": 1.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.33
+      },
+      {
+       "d": 1.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.53
+      },
+      {
+       "d": 1.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.73
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.93
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.13
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.53
+      }
+     ]
+    },
+    "M": {
+     "cells": 13,
+     "hitting": 7,
+     "hit_fraction": 0.538,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1,
+     "body_hits": 1,
+     "vector": "1111111000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.72
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.89
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 1
+      },
+      {
+       "d": 1.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.2
+      },
+      {
+       "d": 1.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.4
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.6
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.8
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.2
+      }
+     ]
+    }
+   }
+  },
+  "whp_hide_lash": {
+   "class": "WHP",
+   "declared_reach_m": 3.6,
+   "regimes": {
+    "S": {
+     "cells": 21,
+     "hitting": 13,
+     "hit_fraction": 0.619,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 2.58,
+     "body_hits": 3,
+     "vector": "111111111111100000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.78
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.98
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.18
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.38
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.58
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.78
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.98
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.18
+      },
+      {
+       "d": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.38
+      },
+      {
+       "d": 2.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.58
+      },
+      {
+       "d": 2.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.78
+      },
+      {
+       "d": 3,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.98
+      },
+      {
+       "d": 3.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.18
+      },
+      {
+       "d": 3.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.38
+      },
+      {
+       "d": 3.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.58
+      },
+      {
+       "d": 3.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.78
+      },
+      {
+       "d": 4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.98
+      },
+      {
+       "d": 4.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 4.18
+      }
+     ]
+    },
+    "A": {
+     "cells": 21,
+     "hitting": 14,
+     "hit_fraction": 0.667,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 2.78,
+     "body_hits": 4,
+     "vector": "111111111111110000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.78
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.98
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.18
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.38
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.58
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.78
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.98
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.18
+      },
+      {
+       "d": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.38
+      },
+      {
+       "d": 2.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.58
+      },
+      {
+       "d": 2.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.78
+      },
+      {
+       "d": 3,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.98
+      },
+      {
+       "d": 3.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.18
+      },
+      {
+       "d": 3.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.38
+      },
+      {
+       "d": 3.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.58
+      },
+      {
+       "d": 3.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.78
+      },
+      {
+       "d": 4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.98
+      },
+      {
+       "d": 4.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 4.18
+      }
+     ]
+    },
+    "R": {
+     "cells": 21,
+     "hitting": 12,
+     "hit_fraction": 0.571,
+     "min_at_open_m": 1.85,
+     "max_at_open_m": 2.38,
+     "body_hits": 0,
+     "vector": "111111111111000000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.85
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.85
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.85
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.85
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.85
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.85
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.85
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.88
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.95
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.03
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.18
+      },
+      {
+       "d": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.38
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.58
+      },
+      {
+       "d": 2.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.78
+      },
+      {
+       "d": 3,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.98
+      },
+      {
+       "d": 3.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.18
+      },
+      {
+       "d": 3.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.38
+      },
+      {
+       "d": 3.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.58
+      },
+      {
+       "d": 3.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.78
+      },
+      {
+       "d": 4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.98
+      },
+      {
+       "d": 4.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 4.18
+      }
+     ]
+    },
+    "M": {
+     "cells": 21,
+     "hitting": 21,
+     "hit_fraction": 1,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 3.41,
+     "body_hits": 0,
+     "vector": "111111111111111111111",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.81
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.01
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.21
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.41
+      },
+      {
+       "d": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.61
+      },
+      {
+       "d": 2.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.81
+      },
+      {
+       "d": 2.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.01
+      },
+      {
+       "d": 3,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.21
+      },
+      {
+       "d": 3.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.41
+      },
+      {
+       "d": 3.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.61
+      },
+      {
+       "d": 3.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.81
+      },
+      {
+       "d": 3.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 3.01
+      },
+      {
+       "d": 4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 3.21
+      },
+      {
+       "d": 4.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 3.41
+      }
+     ]
+    }
+   }
+  },
+  "spr_drowned_harpoon": {
+   "class": "SPR",
+   "declared_reach_m": 3.283,
+   "regimes": {
+    "S": {
+     "cells": 19,
+     "hitting": 17,
+     "hit_fraction": 0.895,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 3.34,
+     "body_hits": 0,
+     "vector": "1111111111111111100",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.74
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.94
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.14
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.34
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.54
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.74
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.94
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.14
+      },
+      {
+       "d": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.34
+      },
+      {
+       "d": 2.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.54
+      },
+      {
+       "d": 2.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.74
+      },
+      {
+       "d": 3,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.94
+      },
+      {
+       "d": 3.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 3.14
+      },
+      {
+       "d": 3.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 3.34
+      },
+      {
+       "d": 3.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.54
+      },
+      {
+       "d": 3.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.74
+      }
+     ]
+    },
+    "A": {
+     "cells": 19,
+     "hitting": 17,
+     "hit_fraction": 0.895,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 3.34,
+     "body_hits": 0,
+     "vector": "1111111111111111100",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.74
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.94
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.14
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.34
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.54
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.74
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.94
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.14
+      },
+      {
+       "d": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.34
+      },
+      {
+       "d": 2.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.54
+      },
+      {
+       "d": 2.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.74
+      },
+      {
+       "d": 3,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.94
+      },
+      {
+       "d": 3.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 3.14
+      },
+      {
+       "d": 3.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 3.34
+      },
+      {
+       "d": 3.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.54
+      },
+      {
+       "d": 3.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.74
+      }
+     ]
+    },
+    "R": {
+     "cells": 19,
+     "hitting": 17,
+     "hit_fraction": 0.895,
+     "min_at_open_m": 1.38,
+     "max_at_open_m": 3.34,
+     "body_hits": 0,
+     "vector": "1111111111111111100",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.38
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.38
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.38
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.38
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.38
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.41
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.49
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.58
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.74
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.94
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.14
+      },
+      {
+       "d": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.34
+      },
+      {
+       "d": 2.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.54
+      },
+      {
+       "d": 2.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.74
+      },
+      {
+       "d": 3,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.94
+      },
+      {
+       "d": 3.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 3.14
+      },
+      {
+       "d": 3.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 3.34
+      },
+      {
+       "d": 3.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.54
+      },
+      {
+       "d": 3.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.74
+      }
+     ]
+    },
+    "M": {
+     "cells": 19,
+     "hitting": 13,
+     "hit_fraction": 0.684,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 2.2,
+     "body_hits": 0,
+     "vector": "1111111111111000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.72
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.92
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.12
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.32
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.48
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.68
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.88
+      },
+      {
+       "d": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2
+      },
+      {
+       "d": 2.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.2
+      },
+      {
+       "d": 2.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.3
+      },
+      {
+       "d": 3,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.5
+      },
+      {
+       "d": 3.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.7
+      },
+      {
+       "d": 3.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.9
+      },
+      {
+       "d": 3.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.1
+      },
+      {
+       "d": 3.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.3
+      }
+     ]
+    }
+   }
+  },
+  "cgs_drowned_reaper": {
+   "class": "CGS",
+   "declared_reach_m": 2.75,
+   "regimes": {
+    "S": {
+     "cells": 16,
+     "hitting": 9,
+     "hit_fraction": 0.563,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.73,
+     "body_hits": 5,
+     "vector": "1111111110000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.73
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.93
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.13
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.33
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.53
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.73
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.93
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.13
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.53
+      },
+      {
+       "d": 2.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.73
+      },
+      {
+       "d": 3,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.93
+      },
+      {
+       "d": 3.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.13
+      }
+     ]
+    },
+    "A": {
+     "cells": 16,
+     "hitting": 11,
+     "hit_fraction": 0.688,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 2.13,
+     "body_hits": 7,
+     "vector": "1111111111100000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.73
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.93
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 1.13
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 1.33
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.53
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.73
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.93
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.13
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.53
+      },
+      {
+       "d": 2.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.73
+      },
+      {
+       "d": 3,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.93
+      },
+      {
+       "d": 3.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.13
+      }
+     ]
+    },
+    "R": {
+     "cells": 16,
+     "hitting": 0,
+     "hit_fraction": 0,
+     "min_at_open_m": null,
+     "max_at_open_m": null,
+     "body_hits": 0,
+     "vector": "0000000000000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.07
+      },
+      {
+       "d": 0.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.07
+      },
+      {
+       "d": 0.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.07
+      },
+      {
+       "d": 0.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.07
+      },
+      {
+       "d": 1,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.07
+      },
+      {
+       "d": 1.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.07
+      },
+      {
+       "d": 1.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.07
+      },
+      {
+       "d": 1.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.07
+      },
+      {
+       "d": 1.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.07
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.14
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.23
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.53
+      },
+      {
+       "d": 2.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.73
+      },
+      {
+       "d": 3,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.93
+      },
+      {
+       "d": 3.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.13
+      }
+     ]
+    },
+    "M": {
+     "cells": 16,
+     "hitting": 16,
+     "hit_fraction": 1,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.46,
+     "body_hits": 0,
+     "vector": "1111111111111111",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.66
+      },
+      {
+       "d": 2.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.86
+      },
+      {
+       "d": 2.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.06
+      },
+      {
+       "d": 3,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.26
+      },
+      {
+       "d": 3.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.46
+      }
+     ]
+    }
+   }
+  },
+  "ugs_golem_sword": {
+   "class": "UGS",
+   "declared_reach_m": 2.95,
+   "regimes": {
+    "S": {
+     "cells": 17,
+     "hitting": 11,
+     "hit_fraction": 0.647,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 2.06,
+     "body_hits": 8,
+     "vector": "11111111111000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.66
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.86
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 1.06
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 1.26
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.46
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.66
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.86
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 2.06
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.26
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.46
+      },
+      {
+       "d": 2.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.66
+      },
+      {
+       "d": 3,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.86
+      },
+      {
+       "d": 3.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.06
+      },
+      {
+       "d": 3.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.26
+      }
+     ]
+    },
+    "A": {
+     "cells": 17,
+     "hitting": 15,
+     "hit_fraction": 0.882,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 2.86,
+     "body_hits": 11,
+     "vector": "11111111111111100",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.66
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.86
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 1.06
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 1.26
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 1.46
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.66
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.86
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.06
+      },
+      {
+       "d": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.26
+      },
+      {
+       "d": 2.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 2.46
+      },
+      {
+       "d": 2.8,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 2.66
+      },
+      {
+       "d": 3,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 2.86
+      },
+      {
+       "d": 3.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.06
+      },
+      {
+       "d": 3.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.26
+      }
+     ]
+    },
+    "R": {
+     "cells": 17,
+     "hitting": 0,
+     "hit_fraction": 0,
+     "min_at_open_m": null,
+     "max_at_open_m": null,
+     "body_hits": 0,
+     "vector": "00000000000000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 0.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 0.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 0.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 1,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 1.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 1.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 1.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 1.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.33
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.36
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.43
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.51
+      },
+      {
+       "d": 2.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.66
+      },
+      {
+       "d": 3,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.86
+      },
+      {
+       "d": 3.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.06
+      },
+      {
+       "d": 3.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 3.26
+      }
+     ]
+    },
+    "M": {
+     "cells": 17,
+     "hitting": 17,
+     "hit_fraction": 1,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.6,
+     "body_hits": 0,
+     "vector": "11111111111111111",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 2.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.8
+      },
+      {
+       "d": 2.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1
+      },
+      {
+       "d": 3,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.2
+      },
+      {
+       "d": 3.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.4
+      },
+      {
+       "d": 3.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.6
+      }
+     ]
+    }
+   }
+  },
+  "ghm_bog_maul": {
+   "class": "GHM",
+   "declared_reach_m": 2.148,
+   "regimes": {
+    "S": {
+     "cells": 13,
+     "hitting": 7,
+     "hit_fraction": 0.538,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.34,
+     "body_hits": 0,
+     "vector": "1111111000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.74
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.94
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.14
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.34
+      },
+      {
+       "d": 1.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.54
+      },
+      {
+       "d": 1.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.74
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.94
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.14
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.34
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.54
+      }
+     ]
+    },
+    "A": {
+     "cells": 13,
+     "hitting": 10,
+     "hit_fraction": 0.769,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.94,
+     "body_hits": 2,
+     "vector": "1111111111000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.74
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.94
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.14
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.34
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.54
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 1.74
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 1.94
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.14
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.34
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.54
+      }
+     ]
+    },
+    "R": {
+     "cells": 13,
+     "hitting": 0,
+     "hit_fraction": 0,
+     "min_at_open_m": null,
+     "max_at_open_m": null,
+     "body_hits": 0,
+     "vector": "0000000000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.11
+      },
+      {
+       "d": 0.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.11
+      },
+      {
+       "d": 0.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.11
+      },
+      {
+       "d": 0.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.11
+      },
+      {
+       "d": 1,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.11
+      },
+      {
+       "d": 1.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.11
+      },
+      {
+       "d": 1.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.11
+      },
+      {
+       "d": 1.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.11
+      },
+      {
+       "d": 1.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.11
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.18
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.24
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.34
+      },
+      {
+       "d": 2.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.54
+      }
+     ]
+    },
+    "M": {
+     "cells": 13,
+     "hitting": 13,
+     "hit_fraction": 1,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 0.79,
+     "body_hits": 0,
+     "vector": "1111111111111",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 2.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.79
+      }
+     ]
+    }
+   }
+  },
+  "ssw_garrison_sword": {
+   "class": "SSW",
+   "declared_reach_m": 1.95,
+   "regimes": {
+    "S": {
+     "cells": 12,
+     "hitting": 11,
+     "hit_fraction": 0.917,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 2.17,
+     "body_hits": 0,
+     "vector": "111111111110",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.77
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.96
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.17
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.36
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.57
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.77
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.97
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.17
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.36
+      }
+     ]
+    },
+    "A": {
+     "cells": 12,
+     "hitting": 12,
+     "hit_fraction": 1,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 2.37,
+     "body_hits": 0,
+     "vector": "111111111111",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.76
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.96
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.16
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.36
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.57
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.77
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.97
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.17
+      },
+      {
+       "d": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.37
+      }
+     ]
+    },
+    "R": {
+     "cells": 12,
+     "hitting": 10,
+     "hit_fraction": 0.833,
+     "min_at_open_m": 1.3,
+     "max_at_open_m": 1.97,
+     "body_hits": 0,
+     "vector": "111111111100",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.3
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.3
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.3
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.3
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.3
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.37
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.47
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.57
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.77
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.97
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.17
+      },
+      {
+       "d": 2.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.36
+      }
+     ]
+    },
+    "M": {
+     "cells": 12,
+     "hitting": 12,
+     "hit_fraction": 1,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.97,
+     "body_hits": 0,
+     "vector": "111111111111",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.67
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.77
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.97
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.17
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.37
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.57
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.77
+      },
+      {
+       "d": 2.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.97
+      }
+     ]
+    }
+   }
+  },
+  "axe_bog_cleaver": {
+   "class": "AXE",
+   "declared_reach_m": 1.794,
+   "regimes": {
+    "S": {
+     "cells": 11,
+     "hitting": 9,
+     "hit_fraction": 0.818,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.78,
+     "body_hits": 3,
+     "vector": "11111111100",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.78
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.98
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.18
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.38
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.58
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.78
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.98
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.18
+      }
+     ]
+    },
+    "A": {
+     "cells": 11,
+     "hitting": 10,
+     "hit_fraction": 0.909,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.98,
+     "body_hits": 4,
+     "vector": "11111111110",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.78
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.98
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.18
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.38
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.58
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.78
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.98
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.18
+      }
+     ]
+    },
+    "R": {
+     "cells": 11,
+     "hitting": 0,
+     "hit_fraction": 0,
+     "min_at_open_m": null,
+     "max_at_open_m": null,
+     "body_hits": 0,
+     "vector": "00000000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.65
+      },
+      {
+       "d": 0.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.65
+      },
+      {
+       "d": 0.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.65
+      },
+      {
+       "d": 0.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.65
+      },
+      {
+       "d": 1,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.65
+      },
+      {
+       "d": 1.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.65
+      },
+      {
+       "d": 1.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.68
+      },
+      {
+       "d": 1.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.75
+      },
+      {
+       "d": 1.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.83
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.98
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.18
+      }
+     ]
+    },
+    "M": {
+     "cells": 11,
+     "hitting": 11,
+     "hit_fraction": 1,
+     "min_at_open_m": 0.55,
+     "max_at_open_m": 1.7,
+     "body_hits": 0,
+     "vector": "11111111111",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.55
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.55
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.55
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.55
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.61
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.81
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.01
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.21
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.34
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.5
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.7
+      }
+     ]
+    }
+   }
+  },
+  "mce_bog_iron_mace": {
+   "class": "MCE",
+   "declared_reach_m": 1.7,
+   "regimes": {
+    "S": {
+     "cells": 11,
+     "hitting": 8,
+     "hit_fraction": 0.727,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.57,
+     "body_hits": 0,
+     "vector": "11111111000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.77
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.97
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.17
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.37
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.57
+      },
+      {
+       "d": 1.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.77
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.97
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.17
+      }
+     ]
+    },
+    "A": {
+     "cells": 11,
+     "hitting": 9,
+     "hit_fraction": 0.818,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.77,
+     "body_hits": 0,
+     "vector": "11111111100",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.77
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.97
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.17
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.37
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.57
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.77
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.97
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.17
+      }
+     ]
+    },
+    "R": {
+     "cells": 11,
+     "hitting": 0,
+     "hit_fraction": 0,
+     "min_at_open_m": null,
+     "max_at_open_m": null,
+     "body_hits": 0,
+     "vector": "00000000000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.64
+      },
+      {
+       "d": 0.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.64
+      },
+      {
+       "d": 0.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.64
+      },
+      {
+       "d": 0.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.64
+      },
+      {
+       "d": 1,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.64
+      },
+      {
+       "d": 1.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.64
+      },
+      {
+       "d": 1.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.67
+      },
+      {
+       "d": 1.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.75
+      },
+      {
+       "d": 1.8,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.82
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.97
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.17
+      }
+     ]
+    },
+    "M": {
+     "cells": 11,
+     "hitting": 11,
+     "hit_fraction": 1,
+     "min_at_open_m": 0.63,
+     "max_at_open_m": 1.56,
+     "body_hits": 0,
+     "vector": "11111111111",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.63
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.63
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.63
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.63
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.84
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.04
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.24
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.35
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.36
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.56
+      }
+     ]
+    }
+   }
+  },
+  "dgr_shell_knife": {
+   "class": "DGR",
+   "declared_reach_m": 1.05,
+   "regimes": {
+    "S": {
+     "cells": 8,
+     "hitting": 5,
+     "hit_fraction": 0.625,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 0.98,
+     "body_hits": 3,
+     "vector": "11111000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.79
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.98
+      },
+      {
+       "d": 1.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.19
+      },
+      {
+       "d": 1.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.39
+      },
+      {
+       "d": 1.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.59
+      }
+     ]
+    },
+    "A": {
+     "cells": 8,
+     "hitting": 6,
+     "hit_fraction": 0.75,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.18,
+     "body_hits": 4,
+     "vector": "11111100",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.78
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.98
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.18
+      },
+      {
+       "d": 1.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.38
+      },
+      {
+       "d": 1.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.58
+      }
+     ]
+    },
+    "R": {
+     "cells": 8,
+     "hitting": 4,
+     "hit_fraction": 0.5,
+     "min_at_open_m": 0.92,
+     "max_at_open_m": 0.99,
+     "body_hits": 0,
+     "vector": "11110000",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.92
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.92
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.92
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.99
+      },
+      {
+       "d": 1,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.08
+      },
+      {
+       "d": 1.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.19
+      },
+      {
+       "d": 1.4,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.39
+      },
+      {
+       "d": 1.6,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.59
+      }
+     ]
+    },
+    "M": {
+     "cells": 8,
+     "hitting": 8,
+     "hit_fraction": 1,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.43,
+     "body_hits": 0,
+     "vector": "11111111",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.67
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.69
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.69
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.83
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.03
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.23
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.43
+      }
+     ]
+    }
+   }
+  },
+  "csw_naga_sickle": {
+   "class": "CSW",
+   "declared_reach_m": 1.75,
+   "regimes": {
+    "S": {
+     "cells": 11,
+     "hitting": 10,
+     "hit_fraction": 0.909,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 1.97,
+     "body_hits": 3,
+     "vector": "11111111110",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.77
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.97
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.17
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.37
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.57
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.77
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.97
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.17
+      }
+     ]
+    },
+    "A": {
+     "cells": 11,
+     "hitting": 11,
+     "hit_fraction": 1,
+     "min_at_open_m": 0.64,
+     "max_at_open_m": 2.17,
+     "body_hits": 3,
+     "vector": "11111111111",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "body",
+       "at_open_m": 0.64
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.77
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.97
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.17
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.37
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.57
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.77
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.97
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 2.17
+      }
+     ]
+    },
+    "R": {
+     "cells": 11,
+     "hitting": 9,
+     "hit_fraction": 0.818,
+     "min_at_open_m": 1.17,
+     "max_at_open_m": 1.77,
+     "body_hits": 0,
+     "vector": "11111111100",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.17
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.17
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.17
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.17
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.22
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.31
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.38
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.57
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.77
+      },
+      {
+       "d": 2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 1.97
+      },
+      {
+       "d": 2.2,
+       "hit": false,
+       "via": null,
+       "at_open_m": 2.17
+      }
+     ]
+    },
+    "M": {
+     "cells": 11,
+     "hitting": 11,
+     "hit_fraction": 1,
+     "min_at_open_m": 0.63,
+     "max_at_open_m": 1.93,
+     "body_hits": 0,
+     "vector": "11111111111",
+     "detail": [
+      {
+       "d": 0.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.63
+      },
+      {
+       "d": 0.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.63
+      },
+      {
+       "d": 0.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.63
+      },
+      {
+       "d": 0.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.63
+      },
+      {
+       "d": 1,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.73
+      },
+      {
+       "d": 1.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 0.93
+      },
+      {
+       "d": 1.4,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.13
+      },
+      {
+       "d": 1.6,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.33
+      },
+      {
+       "d": 1.8,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.53
+      },
+      {
+       "d": 2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.73
+      },
+      {
+       "d": 2.2,
+       "hit": true,
+       "via": "weapon",
+       "at_open_m": 1.93
+      }
+     ]
+    }
+   }
+  }
+ },
+ "summary": [
+  {
+   "weapon": "hlb_garrison_bill",
+   "class": "HLB",
+   "declared_reach_m": 2.85,
+   "S": 0.529,
+   "A": 0.588,
+   "R": 0,
+   "M": 0.412,
+   "max_reach_static_m": 1.76,
+   "shortfall_vs_declared_m": -1.09
+  },
+  {
+   "weapon": "tsw_bog_rapier",
+   "class": "TSW",
+   "declared_reach_m": 2.087,
+   "S": 0.462,
+   "A": 0.538,
+   "R": 0.308,
+   "M": 0.538,
+   "max_reach_static_m": 1.13,
+   "shortfall_vs_declared_m": -0.96
+  },
+  {
+   "weapon": "whp_hide_lash",
+   "class": "WHP",
+   "declared_reach_m": 3.6,
+   "S": 0.619,
+   "A": 0.667,
+   "R": 0.571,
+   "M": 1,
+   "max_reach_static_m": 2.58,
+   "shortfall_vs_declared_m": -1.02
+  },
+  {
+   "weapon": "spr_drowned_harpoon",
+   "class": "SPR",
+   "declared_reach_m": 3.283,
+   "S": 0.895,
+   "A": 0.895,
+   "R": 0.895,
+   "M": 0.684,
+   "max_reach_static_m": 3.34,
+   "shortfall_vs_declared_m": 0.06
+  },
+  {
+   "weapon": "cgs_drowned_reaper",
+   "class": "CGS",
+   "declared_reach_m": 2.75,
+   "S": 0.563,
+   "A": 0.688,
+   "R": 0,
+   "M": 1,
+   "max_reach_static_m": 1.73,
+   "shortfall_vs_declared_m": -1.02
+  },
+  {
+   "weapon": "ugs_golem_sword",
+   "class": "UGS",
+   "declared_reach_m": 2.95,
+   "S": 0.647,
+   "A": 0.882,
+   "R": 0,
+   "M": 1,
+   "max_reach_static_m": 2.06,
+   "shortfall_vs_declared_m": -0.89
+  },
+  {
+   "weapon": "ghm_bog_maul",
+   "class": "GHM",
+   "declared_reach_m": 2.148,
+   "S": 0.538,
+   "A": 0.769,
+   "R": 0,
+   "M": 1,
+   "max_reach_static_m": 1.34,
+   "shortfall_vs_declared_m": -0.81
+  },
+  {
+   "weapon": "ssw_garrison_sword",
+   "class": "SSW",
+   "declared_reach_m": 1.95,
+   "S": 0.917,
+   "A": 1,
+   "R": 0.833,
+   "M": 1,
+   "max_reach_static_m": 2.17,
+   "shortfall_vs_declared_m": 0.22
+  },
+  {
+   "weapon": "axe_bog_cleaver",
+   "class": "AXE",
+   "declared_reach_m": 1.794,
+   "S": 0.818,
+   "A": 0.909,
+   "R": 0,
+   "M": 1,
+   "max_reach_static_m": 1.78,
+   "shortfall_vs_declared_m": -0.01
+  },
+  {
+   "weapon": "mce_bog_iron_mace",
+   "class": "MCE",
+   "declared_reach_m": 1.7,
+   "S": 0.727,
+   "A": 0.818,
+   "R": 0,
+   "M": 1,
+   "max_reach_static_m": 1.57,
+   "shortfall_vs_declared_m": -0.13
+  },
+  {
+   "weapon": "dgr_shell_knife",
+   "class": "DGR",
+   "declared_reach_m": 1.05,
+   "S": 0.625,
+   "A": 0.75,
+   "R": 0.5,
+   "M": 1,
+   "max_reach_static_m": 0.98,
+   "shortfall_vs_declared_m": -0.07
+  },
+  {
+   "weapon": "csw_naga_sickle",
+   "class": "CSW",
+   "declared_reach_m": 1.75,
+   "S": 0.909,
+   "A": 1,
+   "R": 0.818,
+   "M": 1,
+   "max_reach_static_m": 1.97,
+   "shortfall_vs_declared_m": 0.22
+  }
+ ]
+}

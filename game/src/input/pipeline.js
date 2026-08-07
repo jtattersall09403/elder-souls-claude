@@ -63,7 +63,14 @@ export class InputPipeline {
     this.bufferedAction = 0;
     this.bufferedAtFrame = -1;
 
-    this.droppedInputs = 0;
+    // RI-JRN03 M-K24 asks for `droppedInputs == 0` over 10 000 inputs. Until this split it
+    // counted TWO different things: an input the pipeline LOST (a scripted event whose frame
+    // had already gone past — a real defect, and M-K24's subject), and an attack press that
+    // arrived outside the 8 f@60 buffer window and was deliberately discarded (RI-CMB09 §1's
+    // rule, and a thing that happens constantly in any real fight). Measured together, the
+    // counter read 9 487 of 10 000 on a build that had not lost a single input.
+    this.droppedInputs = 0;     // inputs the PIPELINE lost. Must be 0.
+    this.bufferMisses = 0;      // presses outside the buffer window. A design rule, not a loss.
     this.catchupSteps = 1;
     this.edges = [];            // A-JRN7 / RI-CMB11: {button, edge, recv_step, attributed_step}
     this.dispatchLag = 0;
@@ -78,7 +85,7 @@ export class InputPipeline {
     this.pendingPress = this.pendingRelease = this.deferredRelease = 0;
     this.script.length = 0; this.scriptIdx = 0; this.scriptBase = frame;
     this.bufferedAction = 0; this.bufferedAtFrame = -1;
-    this.droppedInputs = 0; this.catchupSteps = 1;
+    this.droppedInputs = 0; this.bufferMisses = 0; this.catchupSteps = 1;
     this.edges.length = 0; this.dispatchLag = 0;
   }
 
@@ -221,7 +228,7 @@ export class InputPipeline {
    * @returns {boolean} whether the press was latched
    */
   tryBuffer(actionBit, frame, framesLeft) {
-    if (framesLeft > BUFFER_FRAMES) { this.droppedInputs++; return false; }  // dropped, not queued
+    if (framesLeft > BUFFER_FRAMES) { this.bufferMisses++; return false; }   // dropped, not queued
     this.bufferedAction = actionBit;   // a later press overwrites: exactly one action buffers
     this.bufferedAtFrame = frame;
     return true;

@@ -85,8 +85,22 @@ const MIN_AXIS_MAX = STANDOFF_M - TARGET_HURTBOX_M;   // 0.43 m, capsule surface
 // frame 1, so `t_label = startup` and `lie = f_vis - 1`. `t_react = (startup + 1) - f_vis`.
 const TRACKED_JOINTS = ['hand_r', 'lowerarm_r', 'upperarm_r', 'clavicle_r', 'spine_02', 'head'];
 const VIS_DEG = 12;        // §A.1 pose metric
-const LIE_MAX_F = 8;       // §A budget, every attack, reactable or not
-const T_REACT_MIN_F = 19;  // §A budget for an attack declaring reactable: true
+//
+// THIS FILE COMPUTES ONLY ONE OF §A.1's TWO METRICS, AND THE OTHER ONE IS SOMETIMES THE BINDING
+// ONE. `cmb-exchange.mjs` takes `f_vis` as `min(pose, silhouette)`, or the LATER of the two
+// where they disagree by more than four frames. Measured on the champion, in animation frames
+// (r4b): chop pose 9 / silhouette 9, this file 9 — exact. thrust pose 10 / silhouette 12, this
+// file 9. combo_b pose 6 / silhouette 5, this file 4. combo_a pose 8 / SILHOUETTE 16 — they
+// disagree by eight, so the later wins and `lie` is 15 where this file reads 6.
+//
+// So the figures below are a LOWER BOUND on `lie` and an UPPER BOUND on `t_react`, not the
+// numbers RI-CMB12 M1 scores. The budgets are tightened by one frame against the two rows where
+// the gap is one frame; NO constant fixes the combo_a case, because the gap there is a metric
+// this search cannot afford to run (a 96x96 raster of thirteen capsules per frame per row per
+// grid point). `cmb-exchange.mjs --probe react --clips <candidate>` is therefore the ACCEPTANCE
+// GATE for anything this solver emits, and the solver is not permitted to mark its own homework.
+const LIE_MAX_F = 7;       // §A budget 8, tightened by the measured one-frame proxy error
+const T_REACT_MIN_F = 20;  // §A budget 19, tightened by the same frame
 
 // ---- the pose the whole fight returns to -----------------------------------------------
 const IDLE = {
@@ -675,6 +689,43 @@ function trackOf(clip, w, m, hitboxR) {
 const PEAK_MAX = 0.99;     // fraction of RI-CMB04 §B's declared column, every frame of the clip
 const REACH_MIN = 0.90;    // fraction of RI-CMB02 §A's declared reach
 const solved = {};
+
+/**
+ * WHAT IS HARD AND WHAT IS RANKED, and why round 4a got this wrong twice.
+ *
+ * HARD: `RI-CMB04` §B's peak tip speed column and `RI-CMB02` §A's reach floor. Both are numbers
+ * the corpus declares and both are measured on EVERY row, played or not.
+ *
+ * RANKED, in this order, over the points that clear both:
+ *   1. `lie`      — RI-CMB12 §A. A windup nobody can see is the defect this round exists to stop.
+ *   2. `t_react`  — the same item's other budget.
+ *   3. `min_axis` — RI-CMB04 M8's inboard geometry, on the rows the game plays.
+ *   4. `swing`    — the largest excursion, then 5. the smallest elbow extension.
+ *
+ * Round 4a's search made three mistakes that this ordering and the loop below remove.
+ *
+ * (a) It `break`ed out of the `ext` loop on the first feasible point, so a whole region was
+ *     never examined. Measured: `thrust` shipped at `ext 0, swing 0.22` with `lie 8`, while
+ *     `ext 50, swing 0.49` clears every hard constraint (peak 0.989x, reach 1.014x) at
+ *     `lie 6` and `min_axis 0.235` — strictly better on all five keys. It was invisible to the
+ *     search because `ext 0` had already produced *a* feasible point at that `t`.
+ * (b) It folded `min_axis` into a weighted `miss` alongside peak and reach, so an archetype with
+ *     NO feasible `min_axis` (`sweep_wide` — a horizontal sweep cannot pass 0.43 m from its own
+ *     root axis, §11.3) fell through to `closest`, which minimises the weighted sum and
+ *     therefore bought inboard geometry it could never reach with excursion it needed for the
+ *     telegraph. That is how `sweep_wide` came to ship at `swing 0.13` and `lie 15`.
+ * (c) The `swing` step was coarsened to 0.09 to make the solve finish, and the answer for
+ *     `sweep_wide` lives between two grid points: 0.13 reads `lie 15` live and 0.18 reads 7,
+ *     and the grid samples 0.13 then 0.22. A local refinement pass at 0.01 now follows the
+ *     coarse pass, so the coarse grid only has to find the right basin.
+ */
+const KEY = (c) => [c.m.lie, -c.m.react, c.m.axis, -c.swing, c.ext];
+function better(a, b) {                     // true when `a` beats `b`
+  if (!b) return true;
+  const ka = KEY(a), kb = KEY(b);
+  for (let i = 0; i < ka.length; i++) { if (ka[i] < kb[i] - 1e-9) return true; if (ka[i] > kb[i] + 1e-9) return false; }
+  return false;
+}
 for (const name of Object.keys(ARCH)) {
   const _t0 = Date.now();
   const rows = rowsFor(name);
@@ -682,41 +733,48 @@ for (const name of Object.keys(ARCH)) {
   const buryOpts = def.bury ? [1.0, 0.85, 0.7, 0.55, 0.4] : [0];
   const chamOpts = def.chamber ? [1.0, 0.85, 0.7, 0.55] : [0];
   let best = null, closest = null;
+  /** The largest `swing` at this cell that clears BOTH hard constraints, or null. Peak rises
+   *  monotonically with excursion and `lie` falls with it, so the largest feasible swing is
+   *  also the lie-minimal one for the cell; that is what licenses the inner break. */
+  const cell = (t, swing0, swing1, dsw, ext, bury, cham, hitFrac) => {
+    for (let swing = swing0; swing >= swing1 - 1e-9; swing -= dsw) {
+      const a = buildArch(def, t, swing, ext, bury, cham, hitFrac);
+      const m = measureArch(name, a, rows);
+      const miss = Math.max(0, m.peak - PEAK_MAX) * 6 + Math.max(0, REACH_MIN - m.reach) * 3
+        + Math.max(0, m.axis - MIN_AXIS_MAX)
+        + Math.max(0, m.lie - LIE_MAX_F) * 0.05 + Math.max(0, T_REACT_MIN_F - m.react) * 0.05;
+      if (!closest || miss < closest.miss - 1e-9) closest = { a, m, t, swing, ext, bury, cham, hitFrac, miss };
+      if (m.peak <= PEAK_MAX && m.reach >= REACH_MIN) return { a, m, t, swing, ext, bury, cham, hitFrac };
+    }
+    return null;
+  };
   for (const bury of buryOpts) {
    for (const cham of chamOpts) {
     for (const hitFrac of (def.bury ? [0.2, 0.3, 0.45, 0.6] : [1])) {
-    // GRID COARSENED, wave 1 round 4. The 0.05-step scan over `t` x `ext` x `swing` is 6,630
-    // measurements per (bury, chamber, hitFrac) triple and 530,400 in total, which did not
-    // finish inside a 900 s budget — the whole solve was killed at SIGTERM twice and clips.json
-    // therefore still carried the ROUND-3 solve while `anim-author.mjs` carried the round-4
-    // knobs. A 6.6x coarser grid over the same ranges finds the same feasible corner (the
-    // objective is a plateau in `t` and `ext`, not a needle) and finishes.
-    for (let t = 0.00; t <= 0.801; t += 0.10) {
+     for (let t = 0.00; t <= 0.801; t += 0.10) {
       for (let ext = 0; ext <= 70; ext += 10) {
-        let hit = null;
-        for (let swing = 1.30; swing >= 0.05; swing -= 0.09) {
-          const a = buildArch(def, t, swing, ext, bury, cham, hitFrac);
-          const m = measureArch(name, a, rows);
-          const miss = Math.max(0, m.peak - PEAK_MAX) * 6 + Math.max(0, REACH_MIN - m.reach) * 3
-            + Math.max(0, m.axis - MIN_AXIS_MAX)
-            + Math.max(0, m.lie - LIE_MAX_F) * 0.05 + Math.max(0, T_REACT_MIN_F - m.react) * 0.05;
-          if (!closest || miss < closest.miss - 1e-9) closest = { a, m, t, swing, ext, bury, cham, hitFrac, miss };
-          if (miss === 0) { hit = { a, m, t, swing, ext, bury, cham, hitFrac }; break; }
-        }
-        // Prefer the deepest bury, then the largest swing, then the smallest extension.
-        if (hit && (!best || hit.swing > best.swing + 1e-9)) best = hit;
-        if (hit) break;         // smallest feasible ext at this (bury, t)
+        const hit = cell(t, 1.30, 0.05, 0.09, ext, bury, cham, hitFrac);
+        if (hit && better(hit, best)) best = hit;
       }
+     }
     }
-    if (best) break;
-    }
-    if (best) break;
    }
-   if (best) break;             // the deepest bury that admits any feasible point wins
   }
   if (!best) {
     best = closest;
     console.log(`${name.padEnd(16)} NO feasible point: peak ${best.m.peak.toFixed(3)}x (${best.m.peakRow}) reach ${best.m.reach.toFixed(3)}x (${best.m.reachRow}) min_axis ${best.m.axis.toFixed(3)} m (${best.m.axisRow}) lie ${best.m.lie}f t_react ${best.m.react}f`);
+  } else {
+    // LOCAL REFINEMENT. The coarse pass located the basin; this walks it at the resolution the
+    // answer actually lives at. `sweep_wide` moves from `lie 6 / swing 0.13` to the 0.14-0.21
+    // band the coarse grid steps straight over.
+    const b0 = best;
+    for (let t = Math.max(0, b0.t - 0.10); t <= Math.min(0.80, b0.t + 0.10) + 1e-9; t += 0.05) {
+      for (let ext = Math.max(0, b0.ext - 10); ext <= Math.min(70, b0.ext + 10); ext += 5) {
+        const hit = cell(t, Math.min(1.30, b0.swing + 0.09), Math.max(0.05, b0.swing - 0.09), 0.01,
+          ext, b0.bury, b0.cham, b0.hitFrac);
+        if (hit && better(hit, best)) best = hit;
+      }
+    }
   }
   solved[name] = best.a;
   console.log(`[${((Date.now() - _t0) / 1000).toFixed(0)}s] ${name.padEnd(16)} t=${best.t.toFixed(2)} swing=${best.swing.toFixed(2)} ext=${best.ext} bury=${best.bury} chamber=${best.cham} hitFrac=${best.hitFrac}  ` +
@@ -725,7 +783,14 @@ for (const name of Object.keys(ARCH)) {
     `world_peak=${best.m.world.toFixed(1)} m/s  travel=${best.m.travelRadii.toFixed(2)} radii/frame (${best.m.travelRow})`);
 }
 
-if (process.argv.includes('--write')) {
+// `--out <path>` writes the solve somewhere ELSE. Round 4a's solve wrote straight into
+// `game/data/combat/clips.json` and the regression it carried (`RI-CMB12` M1: lie 9/13/15/4
+// against an 8-frame budget) was in the shipping data for the rest of the session, because the
+// only copy of the answer was the game's own file. A solve is a candidate until
+// `cmb-exchange.mjs --probe react --clips <that file>` has passed it; `--out` is what lets that
+// sentence be true.
+const OUT_PATH = process.argv.includes('--out') ? process.argv[process.argv.indexOf('--out') + 1] : null;
+if (process.argv.includes('--write') || OUT_PATH) {
   for (const name of Object.keys(solved)) clipsDoc.archetypes[name] = solved[name];
   clipsDoc.archetypes.idle_loop = IDLE_LOOP;
   clipsDoc.phase_parameterisation.termination_rule =
@@ -735,6 +800,7 @@ if (process.argv.includes('--write')) {
     'construction. Before this rule, a straight-sword R1 moved its tip 1.42 m and a halberd R1 ' +
     '2.54 m in the single frame the move retired — 85 to 152 m/s of pose discontinuity, ' +
     'W1-09 verdict §2.5.';
-  fs.writeFileSync(clipsPath, JSON.stringify(clipsDoc, null, 1) + '\n');
-  console.log('written game/data/combat/clips.json');
+  const dest = OUT_PATH || clipsPath;
+  fs.writeFileSync(dest, JSON.stringify(clipsDoc, null, 1) + '\n');
+  console.log('written ' + dest);
 }

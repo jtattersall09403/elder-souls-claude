@@ -16,7 +16,7 @@
 // L7: there is no respec button. Respec, if it exists, is a named person with a price.
 'use strict';
 
-import { C, Ca, boneRule, bonePip, shellInlay, idHash } from '../theme.js';
+import { C, Ca, boneRule, bonePip, shellInlay, chitinPath, idHash } from '../theme.js';
 import { screen, row, column, hint, extent, ink, inkDim, accent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
 import { drawText, faceOf, measure, wrap, writeLines } from '../type.js';
 
@@ -69,9 +69,16 @@ export function drawLevelUp(S, m) {
       drawText(c, a.name, r[0] + 8 * s, r[1] + 26 * s, faceOf('bone'), 15 * s, ink());
       drawText(c, String(a.value), r[0] + 210 * s, r[1] + 27 * s, faceOf('bone'), 19 * s, ink());
       // the gauge, with the soft cap cut into it (L8)
+      // A2: not a plain rectangle. The gauge is a bone trough with a cut edge, exactly as the
+      // HUD's bars are, so nothing on any screen in this interface is an axis-aligned box.
       const gx = r[0] + 262 * s, gw = r[2] - 280 * s, gy = r[1] + 16 * s, gh = 10 * s;
-      c.fillStyle = C('parchment'); c.fillRect(gx, gy, gw, gh);
+      chitinPath(c, gx, gy, gw, gh, s, idHash(a.id) & 0xffff);
+      c.save(); c.clip();
+      c.fillStyle = C('parchment'); c.fillRect(gx - 2, gy - 2, gw + 4, gh + 4);
       c.fillStyle = C('reed_dark'); c.fillRect(gx, gy, gw * Math.min(1, a.value / 99), gh);
+      c.restore();
+      chitinPath(c, gx, gy, gw, gh, s, idHash(a.id) & 0xffff);
+      c.strokeStyle = Ca('bone_dim', 0.8); c.lineWidth = 1.6 * s; c.stroke();
       for (const [cap, label] of [[a.soft_cap, 'soft'], [a.hard_cap_curve, 'hard']]) {
         if (!cap) continue;
         const cx = gx + gw * (cap / 99);

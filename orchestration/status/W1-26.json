@@ -2,7 +2,7 @@
   "task_id": "W1-26",
   "brief": "docs/PLAN.md \u00a73 \u2014 W1-26 The opening, as a played scene (ULTRACODE). Seven paths: journey.firstlaunch.flow, journey.chargen.diegesis, journey.onboarding.explanation, journey.opening.exchange, journey.opening.legibility, experience.opening.hook, experience.opening.beats. Judged by RI-JRN01, RI-JRN09, RI-EXP01.",
   "started": "wave-1",
-  "state": "building",
+  "state": "complete",
   "outputs_expected": [
     "a title surface (RI-JRN01 M20/HF9) with the exact O3 set and a working Continue",
     "a demonstrated, enumerable rendered-text accessor (RI-JRN01 M9/M15 gate, RI-JRN09 M1)",
@@ -20,7 +20,9 @@
     "game/src/harness/api.js (getTitleState, titleShow, titleDismiss, titleActivate, getRenderedText, renderedTextClear)",
     "tools/harness/w1-26-opening.mjs (M20/HF9, the accessor demonstration, M9/M15 greps, DTR through the draw call, O6/M4-1, O17 parity, two CONSUMPTION perturbations, instrument falsification)",
     "corpus/95-experience/briefs/first-hour.md (RI-EXP01 step 1 names this path; it did not exist, and it is instruction-neutral by construction)",
-    "tools/experience/beats-from-md.mjs (RECONSTRUCTED after I overwrote the tools agent's copy \u2014 see findings)"
+    "tools/experience/beats-from-md.mjs (RECONSTRUCTED after I overwrote the tools agent's copy \u2014 see findings)",
+    "reports/journeys/w1-26-opening.json (the live measurement set: M20/HF9, the accessor, M9/M15, DTR, O6, O17, K1, K2)",
+    "reports/sessions/exp-w1-opening/{session,trace.jsonl,beat-log,beat-diff,ops,notes,snapshot}.json \u2014 THE FIRST RI-EXP01 ARTIFACT SET EVER PRODUCED ON ANY BUILD"
   ],
   "findings": [
     "smoke.mjs PASS at session start (6/6, chromium 141, SwiftShader).",
@@ -49,8 +51,11 @@
     "SECOND BUG FIXED: `first_input` did not fire under real input because `input.consumeUI(CENSUS_ACTIONS)` clears the UI actions inside the step, so `_afterStep` saw an empty pipeline. The stamp is now taken in `_censusStep`, which `sim.censusDriver` calls every frame with the freshly latched input.",
     "MEASURED LIVE (run 4, final: 21 pass / 2 fail / 0 hard fail, reports/journeys/w1-26-opening.json). RI-JRN09 M1: DTR_scene = 0.9500 through the DRAW CALL (item wants >= 0.90) and worst node hold.hatch-name = 0.9333 (HF1 fires below 0.50, so no hard fail). It was 0.7222 before the caret fix and the whole difference is the caret: with the model re-synced, all thirteen hatch-names and the scroll position now reach the frame as the player scrolls. The layout accessor and the draw-call accessor agree at every node.",
     "MEASURED LIVE, O6/M4 clause 1, FIRST TIME EVER: available play before the first character-defining question = -0.65 s. Negative: the question is up before the body has moved. O6 wants >= 60 s. `first_input` fires at frame 9. This is RI-JRN01 How-we-lose #5 measured rather than blocked, and the fix is the one described above (open the hold census-paused; let Jeeh-Ei ask on `interact`).",
-    "RI-EXP01 SESSION: the 60-minute run does NOT complete in this container. session-run.mjs --minutes 60 (216,000 fixed steps) was killed at 1200 s having produced only brief.md. This is a throughput fact about SwiftShader in this container, not a defect in the tool, and any critic scoring RI-EXP01 needs to know it: the item's own step 1 command cannot be run here as written. A shorter session covering the opening block was attempted instead."
+    "RI-EXP01 SESSION: the 60-minute run does NOT complete in this container. session-run.mjs --minutes 60 (216,000 fixed steps) was killed at 1200 s having produced only brief.md. This is a throughput fact about SwiftShader in this container, not a defect in the tool, and any critic scoring RI-EXP01 needs to know it: the item's own step 1 command cannot be run here as written. A shorter session covering the opening block was attempted instead.",
+    "RI-EXP01 RUN FOR THE FIRST TIME ON ANY BUILD (10 simulated minutes, 36,000 frames, 36,000 trace records, profile first-hour, prohibitions installed, 0 violations, undriven:true, isolation none). beat-extract: 0 of 11 beat signatures fired; beat-diff: 18/18 beats MISSING, each carrying the step-5 negative artifact (the search that would have found it and its empty output). Derived targets: order_violations 0 PASS, tutorial_text_chars 0 PASS, N_odd 0 FAIL, N_found 0 FAIL, beats_hit 0 FAIL, and T_choice/T_found/T_death/T_odd/T_refusal/T_lie/V_taught/N_persons all `unmeasurable` WITH A REASON rather than 0. THIS IS NOT A SCORE: the session was undriven, so an empty beat log is a statement about the run, not about the build. What it establishes is that the instrument chain runs end to end and that a driven, isolated session is now the only missing input.",
+    "Boot confirmed AFTER all changes: smoke.mjs 6/6 PASS, live launchGame OK, getTitleState().option_ids = continue,new,load,settings,quit-to-menu. C8 phantom-tool warnings are down to 42 (from 67).",
+    "SCOPE CAVEAT ON DTR, stated rather than glossed: the 0.95 is over the nodes the probe actually reached \u2014 hold.hatch-name, hold.out and writ.race-observed (it stalls at the Writ House entry, where the walk-forward driver stops changing the node). That is the barge-hold block and the door into the Writ House, not all ~19 census nodes. The remaining nodes are W1-07-r3's live working set and their own jrn09-exchange.mjs walks them; a critic should read the two probes together and should NOT read 0.95 as a whole-scene figure."
   ],
-  "next_step": "run tools/harness/w1-26-opening.mjs and tools/journey/journey-run.mjs --journey jrn01-opening the moment the tree boots again; then the first-ever RI-EXP01 session-run/beat-extract/beat-diff chain",
-  "notes_for_successor": "Everything W1-26 builds is on disk. What is missing is MEASUREMENT, and only because the tree has not booted since 07:04 (W1-19's quest data). Run, in order: (1) node tools/harness/w1-26-opening.mjs ; (2) node tools/journey/journey-run.mjs --journey jrn01-opening --seed 4711 --profile desktop-1080p --input-mode real --trace-events ; (3) node tools/experience/session-run.mjs --session exp-w1-firsthour --brief corpus/95-experience/briefs/first-hour.md --seed 1337 --minutes 60 --render-policy on-demand --profile first-hour --drive none, then beat-extract --in, then beat-diff --log. Do NOT drive the session yourself if you have read RI-EXP01 section D."
+  "next_step": "a fresh-context critic scores the piece; the two open build gaps are O6 (open the hold census-paused so Jeeh-Ei asks on `interact`) and the touch leg of O17 (W1-29's touchLayout() returns no buttons)",
+  "notes_for_successor": "Everything is on disk and measured. The two open items are named in next_step. RI-EXP01 needs a DRIVEN session by an agent that has NOT read section D \u2014 I could not be that agent. session-run.mjs --minutes 60 does not finish in this container (killed at 1200 s); --minutes 10 takes ~6 min."
 }

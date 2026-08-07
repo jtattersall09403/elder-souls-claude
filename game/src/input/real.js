@@ -451,6 +451,7 @@ export class RealInput {
       moveBindings: this.moveBindings,
       chargeIntent: this.pipe.chargeIntent,
       droppedInputs: this.pipe.droppedInputs,
+      bufferMisses: this.pipe.bufferMisses,
     };
   }
 }

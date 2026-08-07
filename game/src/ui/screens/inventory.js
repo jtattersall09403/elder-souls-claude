@@ -16,7 +16,7 @@
 //   C9 no auto-sort-and-junk — "take all" exists on a container; nothing decides what is junk
 'use strict';
 
-import { C, Ca, boneRule, bonePip, panel, idHash } from '../theme.js';
+import { C, Ca, boneRule, bonePip, panel, chitinPath, idHash } from '../theme.js';
 import { screen, column, tagColumn, row, extent, hint, ink, inkDim, accent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
 import { drawText, faceOf, measure, wrap, writeLines, ellipsise } from '../type.js';
 
@@ -156,10 +156,15 @@ function encumbrance(S, x, y, w, m, alpha) {
     const t = `${fmt(m.load)} / ${fmt(m.loadMax)}`;
     drawText(c, t, r[0] + 2 * s, r[1] + 18 * s, f, sz, ink());
     const by = r[1] + 28 * s, bh = 11 * s;
-    c.fillStyle = C('parchment'); c.fillRect(r[0], by, r[2], bh);
     const frac = Math.max(0, Math.min(1, m.loadMax ? m.load / m.loadMax : 0));
+    chitinPath(c, r[0], by, r[2], bh, s, 8123);
+    c.save(); c.clip();
+    c.fillStyle = C('parchment'); c.fillRect(r[0] - 2, by - 2, r[2] + 4, bh + 4);
     c.fillStyle = C(frac > 1 - 1e-9 ? 'blood' : 'reed_dark');
     c.fillRect(r[0], by, r[2] * frac, bh);
+    c.restore();
+    chitinPath(c, r[0], by, r[2], bh, s, 8123);
+    c.strokeStyle = Ca('bone_dim', 0.85); c.lineWidth = 1.6 * s; c.stroke();
     for (const b of [0.60, 0.85]) {          // the burden tier boundaries, cut into the bone
       c.beginPath(); c.moveTo(r[0] + r[2] * b, by); c.lineTo(r[0] + r[2] * b, by + bh);
       c.strokeStyle = Ca('bone_dim', 0.9); c.lineWidth = 1.6 * s; c.stroke();

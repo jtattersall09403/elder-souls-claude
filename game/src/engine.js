@@ -934,6 +934,7 @@ export class Engine {
    */
   _deathTick() {
     if (!this.death) return null;
+    this._fogGateTick();
     if (this.death.active && this.input && this.input.pressed) this.death.requestSkip(this.sim.frame);
     const wasActive = this.death.active;
     const r = this.death.observe(this.sim, this.combat, this.bus);
@@ -971,6 +972,55 @@ export class Engine {
       quantiseColdState(this.sim);
     }
     return r;
+  }
+
+  /**
+   * The boss arenas, as volumes on the ground (`combat.boss.arena`).
+   *
+   * `game/data/world/hearths.json` declares two fog gates with a position, a radius, the boss
+   * behind each and the well 60-110 s away that RI-PRG04 §5 requires. This is the runtime that
+   * makes them a place rather than a table: crossing into one writes `sim.world.fogGatesPassed`
+   * — a register the save has carried since wave 1 with no writer — drives the camera through
+   * RI-CAM06 §I's 90-frame gate move, and puts `HearthSystem.gateAt()` in the path of
+   * `DeathSystem.placeStain()`, which is what keeps a bloom from landing inside a resealed
+   * arena (RI-PRG04 §6, the rule that exists so recovering souls never requires re-fighting a
+   * boss).
+   */
+  _fogGateTick() {
+    if (!this.hearths || !this.hearths.gates.length) return;
+    if (this.cellFor(this.sim.env) !== 'province') return;
+    const p = this.sim.player;
+    const g = this.hearths.gateAt(p.pos[0], p.pos[2]);
+    const was = this._inFogGate || null;
+    if (g && g.id !== was) {
+      this._inFogGate = g.id;
+      if (!this.sim.world.fogGatesPassed.includes(g.id)) {
+        this.sim.world.fogGatesPassed.push(g.id);
+        this.sim.world.fogGatesPassed.sort();
+      }
+      const ev = this.bus.emit(this.sim.frame, 'surface_enter');
+      ev.surface = 'fog_gate'; ev.gate = g.id; ev.boss = g.boss;
+      beginFogGate(this.sim, null);
+    } else if (!g && was) {
+      this._inFogGate = null;
+      const ev = this.bus.emit(this.sim.frame, 'surface_exit');
+      ev.surface = 'fog_gate'; ev.gate = was;
+    }
+  }
+
+  /** The two fog gates, where they are, which boss is behind each, and the well that serves it. */
+  getFogGates() {
+    if (!this.hearths) return { count: 0, gates: [] };
+    const p = this.sim.player;
+    return {
+      count: this.hearths.gates.length,
+      inside: this._inFogGate || null,
+      passed: [...this.sim.world.fogGatesPassed],
+      gates: this.hearths.gates.map((g) => ({
+        ...g,
+        dist_m: g.pos ? +Math.hypot(g.pos[0] - p.pos[0], g.pos[2] - p.pos[2]).toFixed(2) : null,
+      })),
+    };
   }
 
   /** The one line the death surface carries. RI-JRN06 D5/D18: no statistics, no tips. */
@@ -1931,7 +1981,7 @@ export class Engine {
       reputation: (this.sim.quest.factions && this.sim.quest.factions.reputation) || 0,
       bounty: Object.values(this.sim.quest.crime.bounty || {}).reduce((a, b) => a + (Number(b) || 0), 0),
       focusLabel: this.sim.player.focusMax ? `${Math.round(this.sim.player.focus)} of ${Math.round(this.sim.player.focusMax)}` : null,
-      dpr: 1,
+      dpr: this._dpr || 1,
       drawingBufferWidth: this.renderer.canvas.width,
       spentFrom: this._spentFrom,
     };
@@ -2106,6 +2156,34 @@ export class Engine {
    * nobody mistakes it for a hearth existing in the world.
    */
   setAtHearth(v) { this.sim._uiForceHearth = !!v; return { ok: true, at_hearth: !!v, declared_override: !!v }; }
+
+  /**
+   * RI-UIX06 M-F17.2 — "the whole point of F17", and the reason this verb has to exist.
+   *
+   * `main.js` sizes the drawing buffer to `innerWidth × innerHeight` in CSS pixels and the CSS
+   * stretches the canvas to `100dvw × 100dvh`. On a retina or 4K display that is a DPR-1
+   * surface being upscaled by the compositor, which is exactly the "UI drawn into a fixed-size
+   * canvas texture and blitted" failure FD2 detects — invisible on a 1080p dev monitor and
+   * mushy on everything a real player owns.
+   *
+   * This sets the backing store to `innerWidth × dpr` so the mapping is 1:1 in DEVICE pixels.
+   * The UI canvas follows via `Renderer.setSize`, so the glyphs are re-rasterised from outline
+   * data at the new resolution rather than magnified. Default is 1 and nothing calls this
+   * during an ordinary run, so no existing world capture changes — HARNESS.md §6 pins world
+   * shots at DPR 1 and gives the UI set its own configuration, which is what this serves.
+   */
+  setDevicePixelRatio(n) {
+    const dpr = Number(n);
+    if (!Number.isFinite(dpr) || dpr <= 0 || dpr > 4) {
+      throw new Error(`setDevicePixelRatio(${JSON.stringify(n)}): expected a ratio in (0, 4]`);
+    }
+    this._dpr = dpr;
+    const cssW = Math.floor(window.innerWidth), cssH = Math.floor(window.innerHeight);
+    const w = Math.max(2, Math.floor(cssW * dpr)), h = Math.max(2, Math.floor(cssH * dpr));
+    this.renderer.setSize(w, h);
+    if (this.ui) this.ui.build(this._uiCtx(), true);
+    return { dpr, css: [cssW, cssH], buffer: [w, h] };
+  }
 
   /** M-P1/M-P2's raw counts. A boolean would hide how total a wrong pause is. */
   getUIPauseReport() {

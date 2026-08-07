@@ -1,15 +1,40 @@
 {
-  "task_id": "W1-10-r3-critic",
-  "brief": "critic round 3 on W1-10 weapon movesets",
-  "started": "wave-1",
-  "state": "researching",
-  "outputs_expected": [
-    "corpus/90-verdicts/wave1/W1-10-r3.json",
-    "corpus/90-verdicts/wave1/W1-10-r3.md",
-    "corpus/90-verdicts/wave1/artifacts/W1-10-r3/"
-  ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read prior verdicts + builder r3 report; confirm smoke",
-  "notes_for_successor": ""
+ "task_id": "W1-10-r3-critic",
+ "brief": "critic round 3 on W1-10 weapon movesets",
+ "started": "wave-1",
+ "state": "writing",
+ "outputs_expected": [
+  "corpus/90-verdicts/wave1/W1-10-r3.json",
+  "corpus/90-verdicts/wave1/W1-10-r3.md",
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r3/"
+ ],
+ "outputs_written": [
+  "corpus/90-verdicts/wave1/W1-10-r3.md",
+  "corpus/90-verdicts/wave1/W1-10-r3.json",
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r3/kritik3-setpoint.{mjs,json}",
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r3/kritik3-consumption.{mjs,json}",
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r3/kritik3-ar-ari-cfs.{mjs,json}",
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r3/kritik3-tip-height.json",
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r3/kritik3-fingerprint-rig.json",
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r3/kritik3-motion-focused.mjs",
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r3/kritik3-blind-PICKS.md",
+  "corpus/90-verdicts/wave1/artifacts/W1-10-r3/frames/*.png",
+  "tools/harness/critic-w1-10-r3-browser.mjs",
+  "tools/harness/critic-w1-10-r3-connect.mjs",
+  "tools/weapons/rvs-matrix.mjs"
+ ],
+ "findings": [
+  "BIGGEST GAP: the animation model has NO RENDERED CONSUMER. game/src/render/ has zero references to a weapon or a bone and no SkinnedMesh. makeActor() welds ONE 0.95 m box at local (0.40,1.28,0.10) for all 87 weapons; renderer.js:398-399 sets only position and rotation.y. Frame-0 screenshots of ssw/hlb/cgs are BYTE-IDENTICAL (md5 9bdb823f...). Character-box pixel change across a full 60-frame r1.1: HLB 0.19%, CGS 0.21%.",
+  "SETPOINT: D5 and D6 observed are readbacks of the JSON. _bladeLength and _yawGain solve the rig until measured == declared. Residual median 0.0012 m / 0.000 deg over 82 weapons. Scaling every clip registry arc by 0.4 moves the observed arc on 0/82 weapons. Perturbing the JSON moves observed reach on 67/82 within 0.05 m.",
+  "USABLE REACH (capsule point inside a 0.30-1.70 m torso band): WHP 1.724 vs 3.624 declared (short 1.902 m), SPR 1.510 vs 3.111, TSW 1.198 vs 2.218, CGS 1.959 vs 2.748, HLB 1.992 vs 2.860. Tip below the floor on 100% of active frames for CGS/HLB/TSW/WHP (browser, getHitGeometry).",
+  "MOVING TARGET (new protocol rule): HLB, CGS, UGS and GHM land ZERO hits across the whole sweep against a target retreating at 2.0 m/s, while landing 7-11 of 13-17 against a still one. Every prior reach instrument used a still target.",
+  "MY OWN FINGERPRINT: D_min 1.6316 (PASS, builder 1.6392), Dg_min 1.5511 (identical), SEP 1.3988 (FAIL, builder 1.3858), W_min 0.1476 (FAIL), W_med 0.5394 (PASS), chain_arc_range>=20 7/14 (FAIL, need 10; builder said 8). ARI 0.4277 PASS. CFS 1.0000 over 593 cells. TDV median 1.0, 5 bows at 0 by construction.",
+  "CONSUMPTION ADJUDICATION: builder 17/17 is right; round-2 2/6 was one probe too pessimistic (my run of the r2 rows on the r2 fixture scores 3/6 because knockback IS observable) and 17/17 is one cell too optimistic (victim_delta.flesh moved only the RECORD on a passive dummy; on inf_trash mid-attack the victim stall goes 16 -> 72 frames, so the row IS consumed). AMENDMENT-W1-10-03 E ADOPTED, plus one added clause: a consumption suite must carry a probe a correct build leaves INERT. Mine had 3 and all 3 were silent.",
+  "CR BUG: tools/weapons/connect-rate.mjs counts re-seats not presses; every healthy weapon reads exactly 10/12 = 0.833 with 10 hits from 10 presses. CR_mean 0.4219 is deflated. The zeros are real.",
+  "BLIND: M6 grouping 12/12 correct (GHM/TSW/SPR) but T6/T7 = spr_fishers_gig / spr_mire_trident are the same motion 1-2 frames apart, declared indistinguishable BEFORE the reveal => FAIL of the within-group clause.",
+  "RI-WPN07 RVS: wrote tools/weapons/rvs-matrix.mjs per TOOL-LOOP rule 1; exits 2. 8 of 10 archetypes missing, policy-competent.json missing, H.runPolicy missing. corpus_debt against W1-12, weight 0.",
+  "SCORE 3/10 FAIL (gate 7.0), min over RI-WPN01..06."
+ ],
+ "next_step": "fold the completed motion sweep numbers into W1-10-r3.md 5 and revalidate",
+ "notes_for_successor": ""
 }

@@ -163,6 +163,8 @@ export function installHarness(engine, bootPromise) {
     uiFocus(patch) { return engine.uiFocus(patch || {}); },
     uiSearch(q) { return engine.uiSearch(q); },
     setAtHearth(v) { return engine.setAtHearth(v); },
+    setDevicePixelRatio(n) { return engine.setDevicePixelRatio(n); },
+    getDevicePixelRatio() { return engine._dpr || 1; },
     getUIPauseReport() { return engine.getUIPauseReport(); },
     listMenus() { return OPENABLE_MENUS.slice(); },
     fogGate(eid) { return engine.fogGate(eid === undefined ? null : eid); },
@@ -750,6 +752,9 @@ export function installHarness(engine, bootPromise) {
 
     /** The 29 sapwells, their two boss fog gates, and the measured spacing they were placed by. */
     listHearths() { return engine.listHearths(); },
+
+    /** The boss arenas as VOLUMES: where they are, who is behind each, and which have been crossed. */
+    getFogGates() { return engine.getFogGates(); },
 
     /**
      * Rest. Everything RI-PRG04 §1 says a HEARTH does, and it is the ONLY thing in this build

@@ -15,9 +15,11 @@
 // can only come from a data file (the count of compensation ITEMS, M-D9's second half) that is
 // said out loud in the result.
 //
-// It can fail. `--prove-falsifiable` breaks four things on purpose — the S5 classification, the
-// souls conservation, the single-stain rule and the no-compensation rule — and asserts the
-// corresponding check goes red. A probe that cannot fail is worse than no probe.
+// It can fail, and `--prove-falsifiable` demonstrates it rather than claiming it: two REAL breaks
+// of the running world (the S5 classification emptied; the stored souls edited behind the loop)
+// and two predicate checks against synthetic evidence (the single-stain rule, which no API in
+// this build can violate because the stain is one FIELD, and the compensation grep). Which row
+// is which is stated in the row. A probe that cannot fail is worse than no probe.
 'use strict';
 
 import { PNG } from 'pngjs';
@@ -707,7 +709,105 @@ export async function runJrn06(h, args, led, ctx = {}) {
     put('m_d13_run_back', 'M-D13 / R1-R4 run-back timing, walked', r);
   }
 
+  // ---- the instrument proves it can fail ------------------------------------------------------
+  if (args['prove-falsifiable']) {
+    put('m_falsifiable', 'the instrument goes red when the thing it measures is broken', await proveFalsifiable(h));
+  }
+
   return out;
+}
+
+/**
+ * AGENT-PROTOCOL: "Before trusting your own instrument, break the thing it measures on purpose
+ * and confirm the instrument goes red."
+ *
+ * Four breaks. Two of them are real breaks of the running world; two are checks of a predicate
+ * against synthetic evidence, and which is which is stated per row rather than blurred — a
+ * predicate check is weaker evidence and pretending otherwise would be the thing this whole
+ * exercise exists to stop.
+ */
+async function proveFalsifiable(h) {
+  const rows = [];
+
+  // 1. WORLD BREAK — seam S5. Tell the classification that bosses and fixtures are ordinary and
+  //    watch M-D5's own predicate report a respawned named actor.
+  await h.h('loadState', 'arena_flat');
+  await h.h('setRenderRate', 0);
+  const shipped = await h.h('getRespawnRules');
+  await h.h('spawn', 'champion_hist_marked', 6, 6, { as: 'fb-boss' });
+  await h.h('spawn', 'inf_trash', -6, 6, { as: 'fb-named' });
+  await h.h('setEntityNamed', 'fb-named', { named: true });
+  await h.h('killEntity', 'fb-boss'); await h.h('killEntity', 'fb-named');
+  await h.h('stepFrames', 2);
+  await h.h('setRespawnRules', { respawning_tiers: ['trash', 'elite', 'prop'], never_respawn_ids: [], never_respawn_tiers: [], never_respawn_entity_flags: [], never_respawn_archetypes: [] });
+  await h.h('damagePlayer', 1e6, { stagger: false });
+  await h.h('stepFrames', 1);
+  await h.h('stepFrames', 200);
+  const broken = (await h.h('listEntities')).filter((e) => e.hp > 0).map((e) => e.eid).sort();
+  await h.h('setRespawnRules', shipped.rules);
+  rows.push({
+    id: 'S5_classification', kind: 'world break',
+    what: 'every never-respawn rule emptied',
+    named_actors_standing_after_the_players_death: broken,
+    check_goes_red: broken.includes('fb-boss') || broken.includes('fb-named'),
+  });
+
+  // 2. WORLD BREAK — souls conservation. Overwrite the stain's stored souls behind the loop's
+  //    back and watch M-D1's equality fail.
+  await h.h('loadState', 'default');
+  await h.h('setRenderRate', 0);
+  const hr = (await h.h('listHearths')).hearths.find((x) => x.kind === 'settlement');
+  await h.h('teleport', hr.pos[0], hr.pos[2]);
+  await h.h('stepFrames', 2);
+  await h.h('restAt', hr.id);
+  const b0 = await h.h('saveState');
+  b0.character.souls_held = 4200;
+  await h.h('restoreState', b0);
+  await h.h('teleport', hr.pos[0] + 40, hr.pos[2] + 12);
+  await h.h('stepFrames', 4);
+  await h.h('damagePlayer', 1e6, { stagger: false });
+  await h.h('stepFrames', 1);
+  await h.h('stepFrames', 200);
+  const b1 = await h.h('saveState');
+  const stored = b1.death.bloodstain.souls;
+  b1.death.bloodstain.souls = 3000;              // a "rounding" of exactly the kind HF1 forbids
+  await h.h('restoreState', b1);
+  const st = (await h.h('getDeathState')).bloodstain;
+  await h.h('teleport', st.pos[0], st.pos[2]);
+  await h.h('stepFrames', 3);
+  const returned = (await h.h('getDeathState')).souls_held;
+  rows.push({
+    id: 'souls_conservation', kind: 'world break',
+    what: 'the stored souls edited from 4,200 to 3,000 behind the loop',
+    banked: 4200, stored_by_the_loop: stored, stored_after_the_edit: 3000, returned,
+    check_goes_red: returned !== 4200,
+  });
+
+  // 3. PREDICATE CHECK — the single-stain rule. There is exactly ONE bloodstain FIELD in the
+  //    simulation (`sim.quest.death.bloodstain`), so a second stain is not constructible through
+  //    any API, and that structural fact is stronger evidence than any break. What is checked
+  //    here is that M-D8's predicate would go red if it ever saw two.
+  const twoStains = [{ stains_before: 1, stains_after: 2, on_surface_stain_count: 2, first_stain_souls: 4200, second_stain_souls: 0 }];
+  rows.push({
+    id: 'single_stain', kind: 'predicate check (declared weaker)',
+    what: 'M-D8 fed a synthetic trial in which two stains exist',
+    predicate_result: twoStains.every((d) => d.stains_after === 1 && d.on_surface_stain_count === 1),
+    check_goes_red: !twoStains.every((d) => d.stains_after === 1 && d.on_surface_stain_count === 1),
+    structural_note: 'sim.quest.death.bloodstain is a single field, not a list. D16 holds by '
+      + 'construction and no API in this build can produce a second stain.',
+  });
+
+  // 4. PREDICATE CHECK — the compensation grep, fed a string of the kind D18 forbids.
+  const FORB = /(souls?\s+lost|lost\s+\d|retrieve|insurance|recover\s+your|\bpenalty\b|deaths?:\s*\d|time\s+survived)/i;
+  const planted = ['YOU WENT DOWN', 'Souls lost: 4,200', 'Retrieve your tithe'];
+  const caught = planted.filter((t) => FORB.test(t));
+  rows.push({
+    id: 'no_compensation_grep', kind: 'predicate check (declared weaker)',
+    what: 'the M-D9 vocabulary run over three planted strings',
+    planted, caught, check_goes_red: caught.length === 2,
+  });
+
+  return { rows, all_red: rows.every((r) => r.check_goes_red), pass: rows.every((r) => r.check_goes_red) };
 }
 
 // ---------------------------------------------------------------------------------------------

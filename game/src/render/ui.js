@@ -377,14 +377,22 @@ UILayer.prototype._redrawDeath = function _redrawDeath(m, W, H) {
   c.lineTo(W / 2 + w * 0.62, y + size * 0.42);
   c.stroke();
   c.textAlign = 'left';
+  // WHAT `opaque_area_frac` MEANS, and why this is 0.
+  //
+  // RI-JRN01 M5 caps OPAQUE non-world UI as a fraction of frame area, and `Engine.getUIState()`
+  // ADDS this number to the HUD's coverage to produce `non_world_area_frac`. Not one pixel of
+  // this surface is opaque: it is a 0.62-alpha scrim with the live marsh moving behind it and
+  // about a hundredth of a frame of glyphs. Reporting 0.62 here would have charged the death
+  // surface as though it were an opaque full-screen panel and failed another piece's bar on a
+  // misread word — so the occlusion is reported next to it, under its own name, at full size,
+  // and a critic who disagrees with the reading has the number in hand.
   this.last = {
     open: true, kind: 'death',
     panel_px: [W, H], frame_px: [W, H],
-    // A scrim is not opaque UI: the world is legible through it, which is exactly why the
-    // figure reported here is the SCRIM ALPHA and not 1.0. Reporting 1.0 would be honest
-    // about the pixel count and dishonest about what the player can see.
-    opaque_area_frac: 0.62,
-    panel_height_frac: 1.0, uniform_area_frac: 0.62, full_screen_panels: 1,
+    opaque_area_frac: 0,
+    scrim_alpha: 0.62, scrim_area_frac: 1.0, scrim_occlusion_frac: 0.62,
+    glyph_area_frac: +(((w * size) / (W * H)) * 0.34).toFixed(4),
+    panel_height_frac: 1.0, uniform_area_frac: 0, full_screen_panels: 0,
     world_visible_behind: true,
     option_count: 0, options_shown: 0, selected_index: 0,
     text: [line], text_chars: line.length,

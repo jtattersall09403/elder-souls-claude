@@ -131,6 +131,14 @@ const results = [];
 let instrument = [];
 try {
   await h.h('setRenderRate', 60);
+  // Make the drawing buffer equal the CSS viewport before comparing instruments. `main.js`
+  // sizes the canvas from `innerWidth` only on load and on a resize event, so under Playwright
+  // it can still be carrying index.html's 1920x1080 attribute while the viewport is 1280x720 —
+  // the canvas is then DOWNSCALED by CSS and `__HARNESS.screenshot()` returns a 1920-wide image
+  // of a 1280-wide picture. That is supersampling rather than a DOM leak, but it makes an exact
+  // pixel comparison impossible, so the buffer is pinned to 1:1 first and the relationship is
+  // recorded either way.
+  const buf = await h.h('setDevicePixelRatio', 1);
   await h.h('loadState', state);
   await h.h('stepFrames', 4);
   for (const vp of VIEWPOINTS) {
@@ -184,7 +192,11 @@ try {
             || Math.abs(P.data[o + 2] - A.data[o + 2]) > 2) differ++;
         }
       } else differ = -1;
-      instrument.push({ viewpoint: vp.id, harness: [A.width, A.height], page: [P.width, P.height], differing_pixels: differ });
+      instrument.push({
+        viewpoint: vp.id, harness: [A.width, A.height], page: [P.width, P.height],
+        differing_pixels: differ,
+        note: differ === -1 ? 'size mismatch: the drawing buffer is not 1:1 with the viewport' : null,
+      });
       fs.writeFileSync(path.join(dir, 'page.png'), pageBuf);
     }
 

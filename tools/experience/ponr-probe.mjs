@@ -158,7 +158,9 @@ metric('LH2', 'ponr_position_fraction', frac, frac >= 0.94, '>= 0.94');
 // registry, so a declared channel with no line behind it does not count.
 const q = defs[ponr.quest];
 const channelEvidence = (ponr.signal_channels || []).map((c) => {
-  const m = /journal (\d+)/.exec(c.where || '');
+  // the index may be named in either field — `source` for the journal channel (whose source IS a
+  // journal entry) and `where` for the npc and world channels
+  const m = /journal (\d+)/.exec(`${c.source || ''} ${c.where || ''}`);
   const idx = m ? Number(m[1]) : null;
   const entry = idx == null ? null : (q.journal || []).find((e) => e.index === idx);
   return { channel: c.channel, source: c.source, journal_index: idx, evidence: entry ? entry.text.slice(0, 160) : null };
