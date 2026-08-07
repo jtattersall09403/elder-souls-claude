@@ -1,0 +1,14 @@
+{
+  "task_id": "tool-build-viability-r5",
+  "brief": "inline prompt (round 5 build-viability tool builder)",
+  "started": "wave-1 round 5",
+  "state": "researching",
+  "outputs_expected": [
+    "tools/analysis/build-viability.mjs (rewritten: no synthetic constants, traceable counts, real model detector)",
+    "reports/blog-feed.jsonl (one line)"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read TOOL-COVERAGE-R1/R2/R3 build-viability sections + W1-FACTIONS-r1.md verdict",
+  "notes_for_successor": "Box at loadavg 10.6, 6 headless_shell at start. Node-side work preferred."
+}

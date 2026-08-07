@@ -328,6 +328,13 @@ export class Engine {
     // The player object and `sim.env` are CAPTURED here and never passed again: `observe()`
     // takes no arguments, which is the whole of the "a quest cannot place a marker" guarantee.
     // See game/src/sim/discovery.js's header and AMENDMENT-W1-MAP-01 §3b.
+    this._discDebug = {
+      mapUI: !!this.data.mapUI,
+      mapUI_reveal: this.data.mapUI && this.data.mapUI.reveal ? [this.data.mapUI.reveal.min_m, this.data.mapUI.reveal.max_m] : null,
+      pois: !!this.data.pois,
+      pois_count: this.data.pois && this.data.pois.pois ? this.data.pois.pois.length : null,
+      field_sites: this.field && this.field.sites ? this.field.sites.length : null,
+    };
     this.sim.discovery = new Discovery({
       field: this.field,
       player: this.sim.player,
@@ -3405,6 +3412,17 @@ export class Engine {
     const eids = [];
     let first = true;
     for (const m of enc.members) {
+      // AR-3, the seam. The W1-19 round-1 verdict declared this piece `seam_sterile: true`:
+      // "the complete set of consequence keys across all 32 mainline quests is faction_reputation,
+      // kills_npc, locks, npc_disposition, unlocks, world_flags. NOTHING touches an encounter, an
+      // enemy, a spawn or a combat quantity" — and ARBITRATION AR-3 names "a quest whose resolution
+      // changes an encounter's composition" as the crossing it is asking for. `absent_when_flag`
+      // is that one field: a member role that is not spawned once a world flag the quest set is
+      // true. It is deliberately the ONLY quest lever on an encounter and it is deliberately
+      // composition rather than a stat, because AR-3's legal lever is WHETHER, WHEN and HOW an
+      // encounter aggros and what parley it offers, while any change to hp, poise, damage,
+      // archetype, moveset or frame data is an automatic AR-1 fail. Nothing here reads race.
+      if (m.absent_when_flag && this.sim.quest && this.sim.quest.flags[m.absent_when_flag]) continue;
       for (let i = 0; i < m.count; i++) {
         const off = m.spawn_offsets_m[i] || [0, 0, 0];
         const eid = this.spawn(m.statblock, Number(x) + off[0], Number(z) + off[2], { as: `${id}-${m.role}-${i}` });

@@ -2868,7 +2868,10 @@ async function runSelfTest(page, h, ev) {
         });
         return d.orphan_frames > 0;
       },
-      cleanup: () => ev(() => { if (window.__ENGINE.__omOrig) window.__ENGINE.openMenu = window.__ENGINE.__omOrig; }),
+      cleanup: () => ev(() => {
+        const R = window.__ENGINE.real;
+        if (R.__menuOpenPinned) { delete R.menuOpen; R.menuOpen = false; delete R.__menuOpenPinned; }
+      }),
     },
     {
       // THE NAIVE SCORER IS AN INSTRUMENT TOO. It reads a transcript, and a transcript is a data
