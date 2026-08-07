@@ -1,0 +1,18 @@
+{
+  "task_id": "critic-w1-08-r2",
+  "brief": "critic with fresh context on W1-08 (controls/input) round 2",
+  "started": "2026-08-07",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-08-W1-29-r2.md",
+    "corpus/90-verdicts/wave1/W1-08-W1-29-r2.json",
+    "docs/shots/<handheld controls shot>.png",
+    "reports/blog-feed.jsonl (one line appended)"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "start-of-run box state: loadavg 11.59 14.12 13.29, pgrep -c headless_shell = 0, nproc 4"
+  ],
+  "next_step": "read ARBITRATION.md s3, RI-MTH04, r1 verdict, builder r2 report",
+  "notes_for_successor": ""
+}

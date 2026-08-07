@@ -4759,6 +4759,34 @@ export class Engine {
     return this.sim.env.weather;
   }
 
+  /**
+   * W1-02. The world clock and the weather machine, read back off the LIVE simulation rather than
+   * off `weather.json`.
+   *
+   * `RI-MTH07` and ARBITRATION §3 exist because eight of `RI-WLD04`'s nine axes were once scored by
+   * reading strings out of `regions.json`. So every number here is derived from `sim.env` after the
+   * step has run — `time_of_day` off the integer frame counter the step advances, `weather` off the
+   * state the machine rolled, `sightline_m` off the front's interpolation — and the file supplies
+   * only the state's declared properties. `states_here` is the machine that is actually installed
+   * for the region the body is standing in, which is why walking changes it.
+   */
+  getEnvironment() {
+    if (!this.environment) throw new Error('getEnvironment(): no weather machine is installed (game/data/world/weather.json is not in the build)');
+    return this.environment.report(this.sim);
+  }
+
+  /**
+   * Hold the sun still. `HARNESS.md` §6 requires the clock pinned for a comparable screenshot, and
+   * before W1-02 the clock was pinned by construction because nothing moved it. Now that it moves,
+   * a capture needs a way to stop it — and a critic needs a way to prove the world is the thing
+   * moving it, by pausing and watching the hour stop advancing.
+   */
+  pauseClock(on = true) {
+    if (!this.environment) throw new Error('pauseClock(): no environment is installed');
+    this.environment.paused = !!on;
+    return this.environment.paused;
+  }
+
   camera(pose) {
     const c = this.sim.camera;
     if (pose === null) { c.override = null; return this.cameraState(); }

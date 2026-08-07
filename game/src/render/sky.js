@@ -32,6 +32,38 @@ export const WEATHER = {
   heat_shimmer: { fogDensity: 0.0040, sunIntensity: 2.30, ambient: 0.66, tint: [1.00, 0.92, 0.78], overcast: 0.00, rain: 0.0 },
   dry_thunder:  { fogDensity: 0.0068, sunIntensity: 0.90, ambient: 0.74, tint: [0.86, 0.86, 0.90], overcast: 0.55, rain: 0.0 },
   still:        { fogDensity: 0.0058, sunIntensity: 1.20, ambient: 0.98, tint: [1.00, 0.97, 0.86], overcast: 0.18, rain: 0.0 },
+  // W1-02. `RI-WLD08` §5 names a four-state machine for each of the thirteen regions and no two
+  // regions may share a full state set; twenty-five of the forty-one states it names had no entry
+  // here, so `setWeather('thick_fog')` threw and `game/data/world/weather.json` could not have
+  // been rendered even if something had been reading it. `tint` is the state's own colour cast and
+  // `overcast` its light class — `sun` states sit at or below 0.20, `overcast` around 0.55-0.85,
+  // `dark` at 0.86 and above, matching the `light` field the stealth model reads so the two halves
+  // of the build cannot disagree about whether it is a bright day.
+  humid_clear:     { fogDensity: 0.0072, sunIntensity: 1.90, ambient: 0.86, tint: [0.97, 1.00, 0.92], overcast: 0.08, rain: 0.0 },
+  night_bloom:     { fogDensity: 0.0110, sunIntensity: 0.55, ambient: 1.15, tint: [0.66, 1.00, 0.86], overcast: 0.20, rain: 0.0 },
+  canopy_dim:      { fogDensity: 0.0140, sunIntensity: 0.50, ambient: 0.70, tint: [0.72, 0.82, 0.70], overcast: 0.72, rain: 0.0 },
+  steam:           { fogDensity: 0.0300, sunIntensity: 0.58, ambient: 1.02, tint: [0.86, 0.92, 0.84], overcast: 0.66, rain: 0.0 },
+  downpour:        { fogDensity: 0.0250, sunIntensity: 0.26, ambient: 0.70, tint: [0.60, 0.70, 0.64], overcast: 0.98, rain: 1.0 },
+  queen_agitation: { fogDensity: 0.0064, sunIntensity: 1.70, ambient: 0.92, tint: [1.00, 0.90, 0.62], overcast: 0.14, rain: 0.0 },
+  comb_swelter:    { fogDensity: 0.0080, sunIntensity: 1.95, ambient: 0.90, tint: [1.00, 0.94, 0.70], overcast: 0.10, rain: 0.0 },
+  drone_haze:      { fogDensity: 0.0130, sunIntensity: 0.85, ambient: 0.94, tint: [0.96, 0.90, 0.72], overcast: 0.58, rain: 0.0 },
+  gale:            { fogDensity: 0.0190, sunIntensity: 0.30, ambient: 0.64, tint: [0.62, 0.70, 0.78], overcast: 0.96, rain: 0.5 },
+  high_clear:      { fogDensity: 0.0016, sunIntensity: 2.45, ambient: 0.58, tint: [0.98, 0.99, 1.00], overcast: 0.00, rain: 0.0 },
+  hail:            { fogDensity: 0.0215, sunIntensity: 0.30, ambient: 0.72, tint: [0.78, 0.84, 0.92], overcast: 0.94, rain: 0.8 },
+  hill_mist:       { fogDensity: 0.0355, sunIntensity: 0.62, ambient: 1.06, tint: [0.88, 0.90, 0.92], overcast: 0.64, rain: 0.0 },
+  sleet:           { fogDensity: 0.0205, sunIntensity: 0.33, ambient: 0.70, tint: [0.74, 0.80, 0.90], overcast: 0.92, rain: 0.7 },
+  cloud_below:     { fogDensity: 0.0020, sunIntensity: 2.35, ambient: 0.74, tint: [1.00, 0.98, 0.96], overcast: 0.04, rain: 0.0 },
+  rockfall_wind:   { fogDensity: 0.0105, sunIntensity: 0.95, ambient: 0.76, tint: [0.86, 0.84, 0.82], overcast: 0.52, rain: 0.0 },
+  ash_storm:       { fogDensity: 0.0560, sunIntensity: 0.24, ambient: 0.68, tint: [0.62, 0.58, 0.54], overcast: 0.98, rain: 0.0 },
+  drizzle:         { fogDensity: 0.0116, sunIntensity: 0.60, ambient: 0.90, tint: [0.80, 0.84, 0.84], overcast: 0.76, rain: 0.4 },
+  dry_heat:        { fogDensity: 0.0046, sunIntensity: 2.25, ambient: 0.64, tint: [1.00, 0.94, 0.76], overcast: 0.02, rain: 0.0 },
+  haze:            { fogDensity: 0.0148, sunIntensity: 0.90, ambient: 0.96, tint: [0.94, 0.90, 0.80], overcast: 0.56, rain: 0.0 },
+  night_cold:      { fogDensity: 0.0090, sunIntensity: 0.36, ambient: 0.60, tint: [0.68, 0.74, 0.90], overcast: 0.88, rain: 0.0 },
+  red_haze:        { fogDensity: 0.0175, sunIntensity: 0.72, ambient: 0.92, tint: [1.00, 0.66, 0.58], overcast: 0.60, rain: 0.0 },
+  black_clear:     { fogDensity: 0.0100, sunIntensity: 0.30, ambient: 0.58, tint: [0.58, 0.66, 0.70], overcast: 0.86, rain: 0.0 },
+  thick_fog:       { fogDensity: 0.0850, sunIntensity: 0.40, ambient: 1.10, tint: [0.78, 0.82, 0.80], overcast: 0.80, rain: 0.0 },
+  white_clear:     { fogDensity: 0.0018, sunIntensity: 2.50, ambient: 0.60, tint: [1.00, 1.00, 0.98], overcast: 0.00, rain: 0.0 },
+  night_freeze:    { fogDensity: 0.0086, sunIntensity: 0.30, ambient: 0.56, tint: [0.72, 0.80, 0.96], overcast: 0.90, rain: 0.0 },
 };
 
 const SKY_VERT = `

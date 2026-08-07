@@ -1,0 +1,1049 @@
+{
+  "schema": "canon@1",
+  "id": "canon",
+  "owner": "W1-23",
+  "source": "corpus/60-lore/data/canon-facts.json",
+  "generated_by": "tools/lore/build-canon.mjs",
+  "what_this_is": "The province's canon, world-side. What is held true, what is argued about, and which shipped book or speaker takes which side. It carries NO ruling on who is right: `authorially_true` is replaced by `truth_seal`, the sha256 of the ruling, which stays in the corpus. The game cannot adjudicate a dispute because the answer is not in the build.",
+  "sealed_half": "corpus/60-lore/data/canon-facts.json `authorially_true` — never shipped, never quoted here",
+  "consumed_by": [
+    "game/src/world/canon.js — CanonRegistry; built at boot from engine.data.canon",
+    "game/src/engine.js _installCanon() — resolves every voiced_by source and every argued-on topic against the loaded data and THROWS on a dangle; installs the register on the conversation",
+    "game/src/character/converse.js — infoFor() offers a line that claims a side of a dispute ONLY to a speaker the register says holds that side",
+    "game/src/engine.js getCanonState() — the harness surface: which disputes this playthrough has heard argued, and from how many sides",
+    "tools/lore/canon-census.mjs — the corpus-wide census (RI-LOR06 comparison method §4 and §5)",
+    "tools/lore/build-canon.mjs — the only writer"
+  ],
+  "id_scheme": {
+    "CF-nnn": "a canon fact",
+    "CF-Dnnn": "a registered dispute",
+    "CF-Cnnn": "our invention, binding on this project",
+    "voiced_by": "book:<book id> | dialogue:<topic id>#<actor> | npc:<npc id>"
+  },
+  "counts": {
+    "facts": 54,
+    "by_tier": {
+      "hard-canon": 28,
+      "soft-canon": 9,
+      "apocryphal": 1,
+      "constructed": 16
+    },
+    "disputed": 6,
+    "deliberately_open": 1,
+    "positions": 15,
+    "voiced_sources": 0,
+    "argued_on_topics": 0
+  },
+  "facts": [
+    {
+      "id": "CF-001",
+      "claim": "The Hist are giant sentient spore-trees native to Black Marsh, growing chiefly in the interior swamps.",
+      "tier": "hard-canon",
+      "in_world_sources": [
+        "The Sap and the Ledger",
+        "The Egg Speaks Twice"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.hist",
+        "world.flora"
+      ]
+    },
+    {
+      "id": "CF-002",
+      "claim": "Argonian hatchlings drink Hist sap at hatching; the sap confers the hatchling's soul.",
+      "tier": "hard-canon",
+      "in_world_sources": [
+        "The Egg Speaks Twice (First Song)",
+        "The Sap and the Ledger"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.hist",
+        "lore.metaphysics",
+        "progression.souls"
+      ]
+    },
+    {
+      "id": "CF-003",
+      "claim": "When an Argonian dies its soul returns to its Hist, is held there, and may be issued again to a later hatchling.",
+      "tier": "hard-canon",
+      "in_world_sources": [
+        "The Egg Speaks Twice (Third Song)",
+        "The Sap and the Ledger"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.metaphysics",
+        "progression.bonfires",
+        "combat.respawn"
+      ]
+    },
+    {
+      "id": "CF-004",
+      "claim": "The Hist shapes Argonian bodies, deciding what hatches, and can reshape Argonians to meet need.",
+      "tier": "hard-canon",
+      "in_world_sources": [
+        "The Egg Speaks Twice (First Song)"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "mid",
+      "judges": [
+        "lore.hist",
+        "progression.levelling"
+      ]
+    },
+    {
+      "id": "CF-005",
+      "claim": "Hist sap carries the Hist's communication — visions, warning, summons — to an Argonian who drinks or licks it.",
+      "tier": "hard-canon",
+      "in_world_sources": [
+        "The Sap and the Ledger (the flood anecdote)"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.hist",
+        "progression.bonfires",
+        "dialogue.hist"
+      ]
+    },
+    {
+      "id": "CF-006",
+      "claim": "Hist sap consumed by a NON-Argonian is a hallucinogen causing bloodlust; the drinker does not perceive what they are killing.",
+      "tier": "hard-canon",
+      "in_world_sources": [
+        "A Practical Handling of the Marsh-Fevers, section 10"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.metaphysics",
+        "progression.bonfires",
+        "combat.status"
+      ]
+    },
+    {
+      "id": "CF-007",
+      "claim": "Hist sap increases the combat prowess of those who drink it; Argonian shamans use it ritually.",
+      "tier": "hard-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "mid",
+      "judges": [
+        "lore.hist",
+        "items.consumables"
+      ]
+    },
+    {
+      "id": "CF-010",
+      "claim": "The Hist say the Void is 'where all roots lead' and that they rejoin it; they speak of invoking the 'Songs of Sithis' in vengeance.",
+      "tier": "soft-canon",
+      "in_world_sources": [
+        "The Egg Speaks Twice (Eighth Song)"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "mid",
+      "judges": [
+        "lore.religion",
+        "lore.metaphysics"
+      ]
+    },
+    {
+      "id": "CF-011",
+      "claim": "During the Oblivion Crisis (3E 433+) the Hist withdrew the Argonians and organised a counter-invasion of the Deadlands so ferocious that Dagon's lieutenants sealed the gates.",
+      "tier": "hard-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "never",
+      "judges": [
+        "lore.era"
+      ]
+    },
+    {
+      "id": "CF-020",
+      "claim": "Argonians are reptilian, breathe water, and resist disease.",
+      "tier": "hard-canon",
+      "in_world_sources": [
+        "Ledger and Journal of Andrel Vorin"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.argonian",
+        "player.race"
+      ]
+    },
+    {
+      "id": "CF-022",
+      "claim": "Jel is the Argonian root-tongue; it runs on idiom and metaphor, is near-untranslatable without Black Marsh cultural knowledge, and forms words chiefly by compounding.",
+      "tier": "hard-canon",
+      "in_world_sources": [
+        "The Egg Speaks Twice (translator's foreword)"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.language",
+        "world.placenames",
+        "npc.names"
+      ]
+    },
+    {
+      "id": "CF-023",
+      "claim": "Argonians carry both Jel names and Tamrielic names, the latter often direct translations of the former.",
+      "tier": "hard-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.names",
+        "npc.names"
+      ]
+    },
+    {
+      "id": "CF-024",
+      "claim": "Hyphenated Tamrielic Argonian names may encode gender through the possessive (Lifts-Her-Tail, Hides-His-Eyes).",
+      "tier": "hard-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.names",
+        "npc.names"
+      ]
+    },
+    {
+      "id": "CF-025",
+      "claim": "Attested Jel roots include beeko (friend), deelith (teacher), ku-vastei (needed change), xanmeer (stone-nest), lukiul (assimilated Argonian), kaoc (curse), thtithil (egg).",
+      "tier": "soft-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "n-a",
+      "judges": [
+        "lore.language"
+      ]
+    },
+    {
+      "id": "CF-026",
+      "claim": "The Naga are a scaled, serpentine Argonian form. Imperial sources characterise them as thugs responsible for banditry.",
+      "tier": "hard-canon",
+      "in_world_sources": [
+        "The Blessings of the Coast"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.argonian",
+        "creatures.humanoid",
+        "dialogue.claims"
+      ]
+    },
+    {
+      "id": "CF-028",
+      "claim": "Argonians born under the sign of the Shadow are taken at birth and given to the Dark Brotherhood as Shadowscales; survivors to adulthood become full members.",
+      "tier": "hard-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "mid",
+      "judges": [
+        "lore.factions",
+        "quests.factions"
+      ]
+    },
+    {
+      "id": "CF-029",
+      "claim": "Shadowscales may leave the Brotherhood to serve Black Marsh as ku-vastei — agents of needed change and arbiters who act with impunity.",
+      "tier": "hard-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "mid",
+      "judges": [
+        "lore.factions",
+        "quests.factions",
+        "dialogue.questgivers"
+      ]
+    },
+    {
+      "id": "CF-040",
+      "claim": "Duskfall ended the ancient high Argonian civilisation; the knowledge of how the xanmeers were built was lost with it and no living Argonian has it.",
+      "tier": "hard-canon",
+      "in_world_sources": [
+        "The Egg Speaks Twice (Seventh Song)",
+        "Inscription, Third Terrace, Ixt-Shaneekh"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.history",
+        "world.ruins"
+      ]
+    },
+    {
+      "id": "CF-041",
+      "claim": "Xanmeers ('stone-nests') are pre-Duskfall Argonian stepped ziggurats, often in symmetrical complexes joined by elevated stone walkways, carved with geometric patterns and images of the ancient Argonians. Many are sunken or buried.",
+      "tier": "hard-canon",
+      "in_world_sources": [
+        "Inscription, Third Terrace, Ixt-Shaneekh"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.history",
+        "world.ruins",
+        "visual.architecture"
+      ]
+    },
+    {
+      "id": "CF-042",
+      "claim": "Many xanmeers are shrines erected in both reverence to and fear of Sithis; the purpose of many is lost.",
+      "tier": "soft-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "mid",
+      "judges": [
+        "lore.religion",
+        "world.ruins",
+        "quests.main"
+      ]
+    },
+    {
+      "id": "CF-043",
+      "claim": "Xanmeer names are Jel compounds, e.g. Ixtaxh-Thitithil-Meht ≈ 'Exact Egg-Cracker'.",
+      "tier": "hard-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "n-a",
+      "judges": [
+        "lore.language",
+        "world.placenames"
+      ]
+    },
+    {
+      "id": "CF-044",
+      "claim": "The Ruddy Man is a figure of ancient Black Marsh legend associated with the deep past and a stone or ruddy body.",
+      "tier": "soft-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": true,
+      "invention_space": true,
+      "player_discoverable": "never",
+      "judges": [
+        "lore.history"
+      ]
+    },
+    {
+      "id": "CF-045",
+      "claim": "The Knahaten Flu began at Stormhold in 2E 560 and persisted 41 years, to 2E 601.",
+      "tier": "hard-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.history",
+        "world.settlements"
+      ]
+    },
+    {
+      "id": "CF-046",
+      "claim": "The Knahaten Flu drove the Kothringi and the Lilmothiit to extinction; Argonians were unaffected.",
+      "tier": "hard-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.history"
+      ]
+    },
+    {
+      "id": "CF-047",
+      "claim": "The Kothringi were silver-skinned humans native to Black Marsh, of Nedic descent, and notable sailors.",
+      "tier": "hard-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "mid",
+      "judges": [
+        "lore.history",
+        "npc.names"
+      ]
+    },
+    {
+      "id": "CF-049",
+      "claim": "A small number of Kothringi survived the Flu 'through unnatural means'.",
+      "tier": "soft-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "late",
+      "judges": [
+        "lore.history",
+        "npc.unique"
+      ]
+    },
+    {
+      "id": "CF-050",
+      "claim": "Blackrose prison was built by Potentate Versidae-Shae on the ruins of a Lilmothiit settlement called Blackrose.",
+      "tier": "soft-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "mid",
+      "judges": [
+        "lore.history",
+        "world.settlements"
+      ]
+    },
+    {
+      "id": "CF-060",
+      "claim": "The Empire holds the coasts of Black Marsh and uses the interior for prisons; the heart of the province remains solely Argonian and is not under Imperial control.",
+      "tier": "hard-canon",
+      "in_world_sources": [
+        "The Blessings of the Coast"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.politics",
+        "world.settlements",
+        "quests.factions"
+      ]
+    },
+    {
+      "id": "CF-062",
+      "claim": "House Dres of Morrowind has raided Black Marsh for slaves for centuries and slavery remains legal in Morrowind in 3E 427.",
+      "tier": "hard-canon",
+      "in_world_sources": [
+        "Ledger and Journal of Andrel Vorin",
+        "The Egg Speaks Twice (Sixth Song)",
+        "The Blessings of the Coast (denies it)"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.politics",
+        "quests.factions",
+        "dialogue.claims"
+      ]
+    },
+    {
+      "id": "CF-064",
+      "claim": "The Blackwood Company is a Leyawiin mercenary outfit, chiefly Khajiit and Argonian, that secretly doses its members with sap from a Hist kept in its hall cellar.",
+      "tier": "hard-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "mid",
+      "judges": [
+        "lore.factions",
+        "quests.factions"
+      ]
+    },
+    {
+      "id": "CF-067",
+      "claim": "The An-Xileel formed during the Oblivion Crisis (3E 433+) and therefore DO NOT EXIST in 3E 427.",
+      "tier": "hard-canon",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "never",
+      "judges": [
+        "lore.era",
+        "lore.factions"
+      ]
+    },
+    {
+      "id": "CF-071",
+      "claim": "REJECTED SOURCE: claims that Gideon is 'ruled by a Root-Assembly' and Blackrose 'governed by a Warden-Brood' originate from an AI-generated worldbuilding site (fables.gg), not from canon.",
+      "tier": "apocryphal",
+      "in_world_sources": [],
+      "disputed": false,
+      "contradicts_ok": true,
+      "invention_space": false,
+      "player_discoverable": "n-a",
+      "judges": [
+        "lore.politics"
+      ]
+    },
+    {
+      "id": "CF-088",
+      "claim": "Binding place names from the project map: Lilmoth, Soulrest, Blackrose, Gideon, Stormhold, Thorn, Archon, Helstrom; regions Valus Ridge, Blackwood, The Hive, Marauder's Coast, Stone Wastes, Western Rootlands, Eastern Rootlands, The Deep Marshes, The Stone Forest, The Clay Moor, Crimson Coast; waters Topal Bay, Padomaic Ocean.",
+      "tier": "hard-canon",
+      "in_world_sources": [
+        "The Blessings of the Coast"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "world.placenames",
+        "world.settlements"
+      ]
+    },
+    {
+      "id": "CF-089",
+      "claim": "The interior of Black Marsh is functionally impassable to outsiders — no roads, shifting water, disease, and navigation by knowledge no foreigner has.",
+      "tier": "hard-canon",
+      "in_world_sources": [
+        "A Practical Handling of the Marsh-Fevers"
+      ],
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "world.travel",
+        "lore.politics"
+      ]
+    },
+    {
+      "id": "CF-D001",
+      "claim": "What survives when an Argonian soul returns to the Hist?",
+      "tier": "soft-canon",
+      "disputed": true,
+      "in_world_sources": [
+        "The Sap and the Ledger",
+        "The Egg Speaks Twice"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "The Sap and the Ledger (Sergius Verrent)",
+          "stance": "The sap is a solvent. The individual dissolves into a common stock; what is issued to a new egg is MADE OF the dead, as a second loaf is made of the same flour. Argonians have no life after this one, only a contribution.",
+          "held_by": [
+            "Imperial scholars",
+            "the Imperial Cult",
+            "most educated foreigners",
+            "some lukiul"
+          ],
+          "holders": null,
+          "voiced_by": []
+        },
+        {
+          "id": "B",
+          "in_world_source": "The Egg Speaks Twice (Third Song)",
+          "stance": "The tree gives him out again; that is the whole promise. The question 'is it the same person' is a foreign question the language does not contain.",
+          "held_by": [
+            "interior Argonians",
+            "rootkeepers",
+            "the Deep-Kin"
+          ],
+          "holders": null,
+          "voiced_by": []
+        }
+      ],
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "late",
+      "judges": [
+        "lore.metaphysics",
+        "progression.bonfires",
+        "books.content"
+      ],
+      "truth_seal": "2e5c8017f8a037f8e70d2cdcc95b7de0b14ce44ac3804e9cbe66fc7b1c72df5f"
+    },
+    {
+      "id": "CF-D002",
+      "claim": "Who cut the first sapwell, and why?",
+      "tier": "constructed",
+      "disputed": true,
+      "in_world_sources": [
+        "The Sap and the Ledger (records only that rootkeepers refuse to say)",
+        "oral tradition, Helstrom",
+        "Drowned Court commonplace book"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "oral tradition, Helstrom",
+          "stance": "The Hist cut itself, and the keepers only keep the cut open.",
+          "held_by": [
+            "rootkeepers",
+            "Deep-Kin"
+          ],
+          "holders": null,
+          "voiced_by": []
+        },
+        {
+          "id": "B",
+          "in_world_source": "Drowned Court commonplace book",
+          "stance": "The Kothringi cut the first, and the Knahaten Flu was the payment.",
+          "held_by": [
+            "Drowned Court",
+            "some Soulrest families"
+          ],
+          "holders": null,
+          "voiced_by": []
+        },
+        {
+          "id": "C",
+          "in_world_source": "The Sap and the Ledger",
+          "stance": "Nobody will say, and they become genuinely angry when pressed.",
+          "held_by": [
+            "Imperial scholarship"
+          ],
+          "holders": null,
+          "voiced_by": []
+        }
+      ],
+      "deliberately_open": true,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "never",
+      "judges": [
+        "lore.metaphysics",
+        "quests.main"
+      ],
+      "truth_seal": null
+    },
+    {
+      "id": "CF-D003",
+      "claim": "Were the xanmeers built by Argonians, or built by someone older and merely occupied by them?",
+      "tier": "hard-canon",
+      "disputed": true,
+      "in_world_sources": [
+        "An Imperial antiquarian's survey (T1, to be written)",
+        "The Egg Speaks Twice (Seventh Song)"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "Imperial antiquarian survey",
+          "stance": "The present Argonians cannot build such things and never could; the xanmeers are the work of a vanished people whose ruins the natives inherited.",
+          "held_by": [
+            "Imperial antiquarians",
+            "some Telvanni"
+          ],
+          "holders": null,
+          "voiced_by": []
+        },
+        {
+          "id": "B",
+          "in_world_source": "The Egg Speaks Twice (Seventh Song)",
+          "stance": "'Our grandmothers stacked the world into steps and walked up it. We do not know how.'",
+          "held_by": [
+            "all Argonians"
+          ],
+          "holders": null,
+          "voiced_by": []
+        }
+      ],
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "mid",
+      "judges": [
+        "lore.history",
+        "world.ruins",
+        "dialogue.claims"
+      ],
+      "truth_seal": "df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"
+    },
+    {
+      "id": "CF-D004",
+      "claim": "Is the Hist one mind or many trees?",
+      "tier": "soft-canon",
+      "disputed": true,
+      "in_world_sources": [
+        "The Sap and the Ledger",
+        "rootkeepers of Helstrom",
+        "the Lilmoth keepers"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "Imperial usage",
+          "stance": "'The Hist' is a species. Trees are individuals, like any grove.",
+          "held_by": [
+            "Imperial scholars",
+            "naturalists"
+          ],
+          "holders": null,
+          "voiced_by": []
+        },
+        {
+          "id": "B",
+          "in_world_source": "rootkeepers of Helstrom",
+          "stance": "There is one tree. What you see are its fingers.",
+          "held_by": [
+            "interior rootkeepers",
+            "Deep-Kin"
+          ],
+          "holders": null,
+          "voiced_by": []
+        },
+        {
+          "id": "C",
+          "in_world_source": "the Lilmoth keepers",
+          "stance": "There was one. Some fingers have stopped listening.",
+          "held_by": [
+            "coastal keepers",
+            "Drowned Court"
+          ],
+          "holders": null,
+          "voiced_by": []
+        }
+      ],
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "late",
+      "judges": [
+        "lore.hist",
+        "quests.main"
+      ],
+      "truth_seal": "6b23c0d5f35d1b11f9b683f0b0a617355deb11277d91ae091d399c655b87940d"
+    },
+    {
+      "id": "CF-D005",
+      "claim": "What caused the Knahaten Flu?",
+      "tier": "soft-canon",
+      "disputed": true,
+      "in_world_sources": [
+        "An Imperial history (T7, to be written)",
+        "Argonian oral account, Stormhold"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "Imperial history",
+          "stance": "An Argonian shaman engineered it through a manipulation of the Hist, in revenge for the treatment of his people.",
+          "held_by": [
+            "Imperial historians",
+            "most foreigners",
+            "many Dunmer"
+          ],
+          "holders": null,
+          "voiced_by": []
+        },
+        {
+          "id": "B",
+          "in_world_source": "Argonian oral account",
+          "stance": "Natural. The marsh is full of fevers and this one travelled.",
+          "held_by": [
+            "Argonians",
+            "some Imperial physicians"
+          ],
+          "holders": null,
+          "voiced_by": []
+        }
+      ],
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "player_discoverable": "late",
+      "judges": [
+        "lore.history",
+        "books.content"
+      ],
+      "truth_seal": "a15e2cd8474313f59559d85510b7630aa0899ccf1ae0e38da70241393043488d"
+    },
+    {
+      "id": "CF-D006",
+      "claim": "Why has the Rootward Tide begun to fail?",
+      "tier": "constructed",
+      "disputed": true,
+      "in_world_sources": [
+        "Deep-Kin testimony",
+        "Wet Ledger commissioned survey",
+        "Drowned Court burial ledgers"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "Deep-Kin testimony",
+          "stance": "Root-theft. The soul-gem trade intercepts the fall. Foreigners are drinking the marsh.",
+          "held_by": [
+            "Deep-Kin",
+            "most interior Argonians"
+          ],
+          "holders": null,
+          "voiced_by": []
+        },
+        {
+          "id": "B",
+          "in_world_source": "Wet Ledger commissioned survey",
+          "stance": "Too many wounds. Thirty years of Sap-Cutters opening wells for sale; the tree is bleeding capacity.",
+          "held_by": [
+            "Wet Ledger",
+            "middle-river rootkeepers",
+            "Imperial naturalists"
+          ],
+          "holders": null,
+          "voiced_by": []
+        },
+        {
+          "id": "C",
+          "in_world_source": "Drowned Court burial ledgers",
+          "stance": "It started before the cutting and before the gem trade. Something below the Stone Wastes is filling.",
+          "held_by": [
+            "Drowned Court"
+          ],
+          "holders": null,
+          "voiced_by": []
+        }
+      ],
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "late",
+      "judges": [
+        "quests.main",
+        "lore.metaphysics"
+      ],
+      "truth_seal": "6b23c0d5f35d1b11f9b683f0b0a617355deb11277d91ae091d399c655b87940d"
+    },
+    {
+      "id": "CF-C001",
+      "claim": "Legion strength in Black Marsh in 3E 427 is thin because reserves were redeployed to the Vvardenfell crisis.",
+      "tier": "constructed",
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.politics",
+        "world.settlements"
+      ]
+    },
+    {
+      "id": "CF-C002",
+      "claim": "In 3E 427 the Blackwood Company is a young Leyawiin outfit operating in Black Marsh, hunting for a Hist to take. It has not yet acquired the tree it is documented as holding in 3E 433.",
+      "tier": "constructed",
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "mid",
+      "judges": [
+        "lore.factions",
+        "quests.factions"
+      ]
+    },
+    {
+      "id": "CF-C003",
+      "claim": "In 3E 427 there is an isolationist current in the interior — the Xul-Aneekh, 'the Deep-Kin' — a consensus, not a party, from which An-Xileel sentiment later grows. They are NEVER called the An-Xileel.",
+      "tier": "constructed",
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.factions",
+        "lore.era",
+        "quests.factions"
+      ]
+    },
+    {
+      "id": "CF-C004",
+      "claim": "The Wet Ledger is a compact of lukiul river-factors and Imperial merchants controlling Gideon's tolls, warehouses and the Governor's debts.",
+      "tier": "constructed",
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.factions",
+        "quests.factions",
+        "economy.gold"
+      ]
+    },
+    {
+      "id": "CF-C005",
+      "claim": "The Ixtu-Vakh (Sap-Cutters) are Argonian heretics who cut sapwells for profit and sell hist-sap phials to foreigners.",
+      "tier": "constructed",
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "mid",
+      "judges": [
+        "lore.factions",
+        "quests.factions",
+        "progression.bonfires"
+      ]
+    },
+    {
+      "id": "CF-C006",
+      "claim": "The Drowned Court of Soulrest is a mixed-race mortuary order, four centuries old, that buries or burns the dead of every people for a fee.",
+      "tier": "constructed",
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.factions",
+        "lore.religion",
+        "quests.main"
+      ]
+    },
+    {
+      "id": "CF-C007",
+      "claim": "The Blackrose Prefect runs a labour-lease scheme renting prisoners to coastal plantations and, through intermediaries, to Dres factors. Legal on paper; slavery in fact.",
+      "tier": "constructed",
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "mid",
+      "judges": [
+        "lore.politics",
+        "quests.factions"
+      ]
+    },
+    {
+      "id": "CF-C008",
+      "claim": "The Rootward Tide: everything that dies in Black Marsh leaks soul-stuff downward into a water table threaded with Hist root, which drinks it and holds it as pattern (eixa). Sap is soul in liquid form; Jel has one word, vei, for blood and sap.",
+      "tier": "constructed",
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.metaphysics",
+        "progression.souls",
+        "progression.bonfires"
+      ]
+    },
+    {
+      "id": "CF-C009",
+      "claim": "A sapwell (ixtu-xul) is a Hist root deliberately cut and kept open. Wells remember what the tree forgets, because a wound is a place where something happened. This is why a well can re-issue a specific person.",
+      "tier": "constructed",
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "mid",
+      "judges": [
+        "progression.bonfires",
+        "combat.death",
+        "combat.respawn"
+      ]
+    },
+    {
+      "id": "CF-C010",
+      "claim": "Beneath the Stone Wastes near Soulrest, a pre-Duskfall xanmeer engine built to HOLD souls is filling. It is the true cause of the Tide's failure — and the sapwells work because of it.",
+      "tier": "constructed",
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "late",
+      "judges": [
+        "quests.main",
+        "lore.metaphysics",
+        "progression.bonfires"
+      ]
+    },
+    {
+      "id": "CF-C011",
+      "claim": "Sap-taint (teekh-kaoc): a non-Argonian who rests at sapwells accumulates corruption in five bands, ending in the Hist addressing them directly. At band 3 enemy SKINS lie; frames, hitboxes, telegraphs, damage and AI never change.",
+      "tier": "constructed",
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "progression.bonfires",
+        "combat.status",
+        "player.race"
+      ]
+    },
+    {
+      "id": "CF-C012",
+      "claim": "Travel is by poled barge along Hist-advised routes: a poler asks the tree each morning which way the water moved in the night. Purchasable with gold, schedule-bound, refusable, severable as a plot event. Sapwells never teleport.",
+      "tier": "constructed",
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "world.travel",
+        "progression.bonfires"
+      ]
+    },
+    {
+      "id": "CF-C013",
+      "claim": "Xul-hesh (root-theft): soul-gem trapping intercepts soul-stuff that would have gone down to the roots. Argonians regard it as somewhere between poisoning a well and kidnapping, and its Daedric patron is Molag Bal.",
+      "tier": "constructed",
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "mid",
+      "judges": [
+        "lore.religion",
+        "lore.metaphysics",
+        "economy.items",
+        "quests.factions"
+      ]
+    },
+    {
+      "id": "CF-C014",
+      "claim": "The year 3E 427 is known in interior Argonian reckoning as the Ninth Sap-Fall since the Rootless Egg. Interior Argonians count by the Hist's cycle, not the Imperial calendar.",
+      "tier": "constructed",
+      "disputed": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "player_discoverable": "early",
+      "judges": [
+        "lore.era",
+        "dialogue.voice"
+      ]
+    }
+  ]
+}

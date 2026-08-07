@@ -265,7 +265,7 @@ try {
     const wells = String(args.wells || 'hearth-archon,hearth-stormhold,hearth-gideon').split(',');
     for (const wid of wells) {
       for (const mode of ['released', 'held']) {
-        const r = await ev(h, async (w, m) => {
+        const r = await ev(h, async ({ w, m }) => {
           const eng = window.__ENGINE || (window.__HARNESS && window.__HARNESS._engine);
           const H = window.__HARNESS;
           H.loadState('default'); H.setRenderRate(0);
@@ -295,7 +295,7 @@ try {
             after_220f_m: Math.round(d1 * 100) / 100,
             drift_m: Math.round(Math.hypot(p1[0] - p0[0], p1[2] - p0[2]) * 100) / 100,
           };
-        }, wid, mode);
+        }, { w: wid, m: mode });
         rows.push(r);
       }
     }
