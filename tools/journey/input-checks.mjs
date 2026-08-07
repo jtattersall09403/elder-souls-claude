@@ -2506,9 +2506,50 @@ function naiveChecks(transcript, sourcePath) {
     hpWords.length === 0, { ...src, description: t.hotplug_description || null, words_found: hpWords }, '0 of the four');
 }
 
+/**
+ * A page-side snippet that raises an interaction prompt, or says why it could not.
+ *
+ * TWO SELF-TEST LEGS REPORTED "the instrument did not go red" WHEN WHAT ACTUALLY HAPPENED IS
+ * THAT NEITHER LEG EVER GOT A PROMPT ON THE SCREEN TO CORRUPT. `M-K22` looked in `barge-hold`
+ * only and `M-P14` in `npc_showcase` only; the check they are testing (`mp14`) sweeps four
+ * states for exactly this reason and says so in its own comment. A leg that cannot establish its
+ * precondition must report that, not a silent `false` — the failure it produces otherwise is
+ * indistinguishable from the check being vacuous, which is the one distinction this whole round
+ * is about.
+ */
+const RAISE_PROMPT = `(() => {
+  const H = window.__HARNESS;
+  const promptOf = () => (H.getUIState().elements || []).find((e) => e.id === 'hud.prompt') || null;
+  for (const st of ['barge-hold', 'helstrom-market', 'settlement_primary_street', 'npc_showcase']) {
+    H.reset({ state: st }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.stepFrames(2);
+    for (const e of H.listEntities().filter((x) => x.kind === 'npc' || x.kind === 'object').slice(0, 6)) {
+      H.teleport(e.pos[0] + 0.5, e.pos[2] + 0.5);
+      H.stepFrames(2);
+      if (promptOf()) return { ok: true, state: st, el: promptOf() };
+    }
+  }
+  return { ok: false, reason: 'no interaction prompt could be raised in any of the four swept states' };
+})()`;
+
 async function runSelfTest(page, h, ev) {
   const vacuous = [];
   const legs = [];
+  // THE SELF-TEST ASSERTS ITS OWN PRECONDITIONS TOO.
+  // It runs last, after five groups have each left the page as they found it useful. `M-P5`
+  // perturbs `souls-default`'s hold gate — and the viewport group leaves `pointer: coarse`, so
+  // `GamepadRouter` has selected `souls-handheld` and the perturbation lands on a profile nothing
+  // is reading. The leg then reports "the instrument did not go red" about an instrument that was
+  // never shown the defect. Round 1's self-test took M-P5 red; round 2's did not, and nothing
+  // about M-P5 had changed.
+  await ev(() => {
+    const H = window.__HARNESS;
+    H.closeMenu();
+    if (window.__ENGINE.censusSurface && window.__ENGINE.censusSurface.takesInput) H.censusBegin({});
+    H.setTouchEnabled(false);
+    H.setViewport({ size: { w: 1280, h: 720, dpr: 1 }, pointer: 'fine', orientation: 'landscape', insets: { top: 0, right: 0, bottom: 0, left: 0 } });
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0); H.stepFrames(2);
+  });
   const perturbations = [
     {
       id: 'M-P5', what: 'set the roll/sprint discriminator to 1 frame',
@@ -2637,22 +2678,22 @@ async function runSelfTest(page, h, ev) {
         E._interactPrompt = function () { const p = E.__ipOrig.call(this); if (p) { p.device = 'keyboard'; p.glyph = 'keycap'; } return p; };
       }),
       check: async () => {
-        const d = await ev(() => {
+        const d = await page.evaluate(`(() => {
           const H = window.__HARNESS;
-          H.reset({ state: 'npc_showcase' }); H.setMode('play-instrumented'); H.setRenderRate(0);
-          H.stepFrames(2);
-          const t = H.listEntities().find((e) => e.kind === 'npc' || e.kind === 'object');
-          if (!t) return { glyphs: [] };
-          H.teleport(t.pos[0] + 0.6, t.pos[2] + 0.6); H.stepFrames(2);
+          const r = ${RAISE_PROMPT};
+          if (!r.ok) return r;
+          const promptOf = () => (H.getUIState().elements || []).find((e) => e.id === 'hud.prompt') || null;
           const g = [];
           const b = new Array(17).fill(0); b[0] = 1;
           H.gamepad({ buttons: b, axes: [0, 0, 0, 0], mapping: 'standard' }); H.stepFrames(2);
-          g.push(((H.getUIState().elements || []).find((e) => e.id === 'hud.prompt') || {}).meta);
+          g.push((promptOf() || {}).meta);
           H.gamepad({ buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' });
           window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyE', bubbles: true })); H.stepFrames(2);
-          g.push(((H.getUIState().elements || []).find((e) => e.id === 'hud.prompt') || {}).meta);
-          return { glyphs: g.map((m) => m && m.glyph) };
-        });
+          g.push((promptOf() || {}).meta);
+          return { ok: true, state: r.state, glyphs: g.map((m) => m && m.glyph) };
+        })()`);
+        if (!d.ok) throw new Error(`leg precondition: ${d.reason}`);
+        // The pad leg must be the one that moves: frozen, a pad press still reports `keycap`.
         return d.glyphs.length === 2 && d.glyphs[0] === d.glyphs[1] && d.glyphs[0] === 'keycap';
       },
       cleanup: () => ev(() => { if (window.__ENGINE.__ipOrig) window.__ENGINE._interactPrompt = window.__ENGINE.__ipOrig; }),
@@ -2758,17 +2799,10 @@ async function runSelfTest(page, h, ev) {
         E._interactPrompt = function () { const p = E.__ip22.call(this); if (p) p.text = 'Press E to open'; return p; };
       }),
       check: async () => {
-        if (!CONTROL_NAME_HIT) return false;   // mk22 did not run, so its matcher is not available
-        const d = await ev(() => {
-          const H = window.__HARNESS;
-          H.reset({ state: 'barge-hold' }); H.setMode('play-instrumented'); H.setRenderRate(0); H.stepFrames(2);
-          const t = H.listEntities().find((e) => e.kind === 'object' || e.kind === 'npc');
-          if (!t) return { texts: [] };
-          H.teleport(t.pos[0] + 0.6, t.pos[2] + 0.6); H.stepFrames(2);
-          const el = (H.getUIState().elements || []).find((x) => x.id === 'hud.prompt');
-          return { texts: el ? [el.text] : [] };
-        });
-        return d.texts.length > 0 && d.texts.every((s) => !!CONTROL_NAME_HIT(s));
+        if (!CONTROL_NAME_HIT) throw new Error('mk22 did not run, so its own matcher is not available to grade this leg with');
+        const d = await page.evaluate(`(() => { const r = ${RAISE_PROMPT}; return r.ok ? { ok: true, state: r.state, text: r.el.text } : r; })()`);
+        if (!d.ok) throw new Error(`leg precondition: ${d.reason}`);
+        return !!CONTROL_NAME_HIT(d.text);
       },
       cleanup: () => ev(() => { if (window.__ENGINE.__ip22) window.__ENGINE._interactPrompt = window.__ENGINE.__ip22; }),
     },
@@ -2798,11 +2832,19 @@ async function runSelfTest(page, h, ev) {
       // swallowed before it can open the menu, while the user agent releases the lock anyway —
       // which is exactly "How we lose" #3, the build that keeps running with an invisible cursor
       // over the boss. HF4.
-      id: 'M-K9', what: 'swallow Escape so the lock is released and no menu opens',
+      // THE PERTURBATION HAS TO BE AT THE LAYER THE CHECK READS, AND THE FIRST DRAFT WAS NOT.
+      // It stubbed `Engine.openMenu` — but `menuOpen` is `RealInput`'s own field, set in the
+      // `pointerlockchange` handler (`real.js`: "if (was && !this.pointerLocked) { …
+      // this.menuOpen = true; }"), which is the line HF4 actually rests on. Stubbing the engine
+      // method left that line intact, the state never became the forbidden one, and the leg
+      // reported "did not go red" about a check that was never shown a defect. So: delete THAT
+      // defence — pin `menuOpen` false through a property — and leave every other part of the
+      // path running.
+      id: 'M-K9', what: 'delete the lock-loss menu guard so the lock is released and no menu opens',
       apply: () => ev(() => {
-        const E = window.__ENGINE;
-        E.__omOrig = E.__omOrig || E.openMenu;
-        E.openMenu = function () { return false; };
+        const R = window.__ENGINE.real;
+        R.__menuOpenPinned = true;
+        Object.defineProperty(R, 'menuOpen', { configurable: true, get: () => false, set: () => {} });
       }),
       check: async () => {
         const d = await ev(() => {

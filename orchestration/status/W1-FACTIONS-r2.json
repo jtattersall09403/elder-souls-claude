@@ -1,0 +1,21 @@
+{
+  "task_id": "W1-FACTIONS-r2",
+  "brief": "corpus/90-verdicts/wave1/W1-FACTIONS-r1.md",
+  "started": "wave-1 round 2",
+  "state": "researching",
+  "outputs_expected": [
+    "engine fix: quest resolve() offer gate (GAP-FCT-01, machine.js:540)",
+    "re-verified probe claims after engine fix",
+    "rank-7 vacated by non-violent play, or a plain statement it cannot be",
+    "RI-QST01 mean quests/rank >= 2.0 (needs ~+11 quests/line)",
+    "D6 talk-alternative for Q-XULA-01 and the 7/25 kill-required set",
+    "expulsion/readmission path",
+    "reports/blog-feed.jsonl line"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "contention at start: pgrep headless_shell=12, loadavg 12.36 - authoring/code phase first, browser later"
+  ],
+  "next_step": "read W1-FACTIONS-r1.md verdict and r1 status, then machine.js:520-560",
+  "notes_for_successor": ""
+}
