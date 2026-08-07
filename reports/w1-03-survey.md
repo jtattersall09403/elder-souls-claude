@@ -272,7 +272,7 @@ the claim is not ambiguous at all, because I read the code: **there is no code p
 would have drawn a waterline on this character even if the water mesh above had been perfectly
 present.** The screenshot is consistent with that; the source read is what actually proves it.
 
-### 4.5 A fourth, related gap found while reading `denies()`: W4 attacks are never denied for anyone
+### 5.5 A fourth, related gap found while reading `denies()`: W4 attacks are never denied for anyone
 
 `RI-WLD10` §5 R2 states the denial set in full: *"sprint above W2; roll above W2; **all attacks,
 blocks and parries in W5; attacks in W4 for the non-amphibious**."* §1's band table says the same

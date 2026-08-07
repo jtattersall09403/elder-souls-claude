@@ -380,7 +380,8 @@
           "observed": "Every zone measured above is a room in an interior that is never drawn. The crime model is correct and the player cannot stand in the room it governs."
         }
       ],
-      "why_not_ten": "The ownership and lock models are genuinely live and perturbable; the rooms they govern cannot be walked into."
+      "why_not_ten": "The ownership and lock models are genuinely live and perturbable; the rooms they govern cannot be walked into. On the min-over-axes note: `theft-in-a-room-you-can-see` is MY OWN cross-cutting check, not one of RI-STL02's five scoring axes (ownership, pickpocket, lock, trespass, fence) — it is recorded here because it is where this item meets the verdict's biggest gap, and it does not drive this item's native score. Of the item's own axes I measured three (ownership, lock, trespass) and did not measure pickpocket or the fence economy, which is why native is 70 and not higher.",
+      "justification": "7 is claimed on two independent perturbations I ran myself against the live Engine, not on the builder's report: taking an object with an owner returns theft:true / crime:'theft_petty' / stolen_from:'faction:drowned-court' / disposition_delta:-5.5 while the SAME take with `owner` stripped off the record returns theft:false / why:'unowned' / crime:null / disposition_delta:0; and perturbing a lock's tier 3->5 moves the refusal from 'needs Security 40 / Agility 26' to 'needs Security 80 / Agility 50' and restores on the way back. Both are in reports/critic-w1-04-r1.json (checks B1-owner-perturbation, B2-lock-tier-perturbation). This is the one item on this piece whose model is demonstrably read by the running world in both directions."
     },
     {
       "id": "RI-CRM01",
@@ -410,7 +411,7 @@
           "observed": "takeObject with an observer supplied returns crime 'theft_petty' and crime_ref 1, and getCrimeState().bounty stays {imperial:0, settlement:{}, interior:0} with witnesses:[]. The report chain is W1-15's, not W1-04's, and I have not scored it against this piece — but nobody currently owns it."
         }
       ],
-      "why_not_ten": "Stealing in front of the wrong person does not yet change your life, and the room you steal in is not drawn."
+      "why_not_ten": "Stealing in front of the wrong person does not yet change your life, and the room you steal in is not drawn. On the min-over-axes note: `witnessed-theft-reaches-a-bounty` is not one of RI-CRM01's axes as this piece is judged on it — W1-04 is judged here only on world.persistence.state, and the bounty schedule, report chain, arrest and jail axes belong to W1-15's verdict. It is recorded because nobody currently owns it, not because it scores this piece."
     },
     {
       "id": "RI-AI07",
@@ -474,7 +475,7 @@
           "observed": "RI-WLD03 R3 places rival guild halls within 120 m facing each other, or at opposite ends of the long axis. Those placements are in the settlement records and there is no mesh at either end. A player cannot read who runs a town from anything."
         }
       ],
-      "why_not_ten": "One consumer, in a room nobody can enter."
+      "why_not_ten": "One consumer, in a room nobody can enter. On the min-over-axes note: `faction-presence-is-legible` is a cross-cutting consequence of the verdict's biggest gap rather than one of RI-CHR02's own axes (race profile, reaction matrix, race dialogue, race access, disposition model, gold economy, guard response), seven of whose eight paths belong to W1-07 and W1-15. This piece is judged only on world.faction.presence, on which the single declared consumer passes."
     },
     {
       "id": "RI-DLG02",
@@ -884,7 +885,22 @@
       ]
     }
   },
-  "corpus_extended": [],
+  "corpus_extended": [
+    {
+      "what": "RI-WLD13's N1 (footprint containment) cannot fail against a generated interior set, because the generator defines the interior's bounds AS the exterior footprint it is checked against.",
+      "where": "corpus/50-world/RI-WLD13-interior-exterior-continuity.md §1 N1; game/data/world/interiors/*.json (continuity.exterior_footprint_m vs bounds_m)",
+      "detail": "N1 asks for interior floor area / (exterior footprint x storeys) in [0.70, 1.15]. On all 115 shipped interiors, bounds_m.x span EQUALS continuity.exterior_footprint_m[0] and bounds_m.z span EQUALS [1] to within 0.02 m, so the ratio is 1.000 on 115 of 115 and the check measures the generator's own identity. The 'bigger on the inside' failure N1 exists to catch is unreachable by construction. This is RULES.md rule 4's problem in the corpus rather than in a tool: a probe that cannot fail is worse than no probe.",
+      "proposed": "Either require N1 to be measured against the DRAWN building footprint rather than a declared field on the same record, or add an N1b that asserts the interior shell and the exterior mesh are two independently authored objects and reports the ratio between them. Both need RI-WLD03 R5's building meshes to exist first.",
+      "status": "reported, not applied — amending a reference item mid-wave is not a critic's call"
+    },
+    {
+      "what": "No item in the twenty judging W1-04 contains a method that asks whether an interior is DRAWN when you enter it.",
+      "where": "corpus/50-world/RI-WLD03 M12/M13, RI-WLD13 N1-N7 and S1-S4, RI-CAM05, RI-WLD07",
+      "detail": "RI-WLD13 N3 measures the body's position across the door to 1.0 m and is the closest any method comes. Every other continuity property is measured off record fields. That is why this build could ship 115 named interiors, pass a thirteen-check consumption probe, and have no door that shows anyone a room: the corpus measures where the player IS and never what the player SEES. S2 ('interiors visible into from outside') is the one bar that would have caught it and it has no method attached.",
+      "proposed": "Add to RI-WLD13 a method of the shape: enter every interior through the game's own door verb, read the renderer's visible cell set, and require it to equal the cell the environment names, on 100% of the population — plus a pixel-distinctness sweep over one fixed pose so 'the interior is drawn' cannot be satisfied by drawing the same interior every time.",
+      "status": "reported, not applied — the method is written out concretely in this verdict's biggest_gap.remedy.acceptance so a builder can implement it without an item amendment"
+    }
+  ],
   "source_reads": [
     {
       "path": "game/src/sim/settlement.js",
