@@ -342,6 +342,16 @@ async function runJourney() {
     for (const id of ids) padDescriptors.push(await installShim(handle.page, id, padDescriptors.length));
     await handle.page.reload({ waitUntil: 'load' });
     await handle.page.waitForFunction(() => !!(window.__HARNESS && window.__HARNESS.version), null, { timeout: 60000 });
+    // FIXED by W1-08/W1-29 (declared): `window.__HARNESS` is installed by the module's top
+    // level, but `engine.renderer` and the whole world are built by `ready()`, which the
+    // reload discards. Waiting only for `__HARNESS.version` therefore returned a page whose
+    // engine had no renderer, and the first `getRenderedText()` threw
+    // `Cannot read properties of null (reading 'textRegister')` — so EVERY --gamepad run,
+    // i.e. every run of RI-JRN04's own Comparison method, aborted at exit 12.
+    await handle.page.evaluate(() => window.__HARNESS.ready({ mode: 'play-instrumented' }));
+    await handle.page.waitForFunction(() => {
+      try { return !!(window.__HARNESS && window.__HARNESS.getRenderedText); } catch { return false; }
+    }, null, { timeout: 60000 });
   }
 
   const capability = (await handle.hOpt('getCapabilityReport')) || null;
