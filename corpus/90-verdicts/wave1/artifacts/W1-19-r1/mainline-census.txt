@@ -1,0 +1,59 @@
+
+mainline census — 32 main-category quests (28 in acts, 4 off-act)
+
+  act 1:  5 quests, mean stakes 2.40, kinds delivery/errand/investigation
+  act 2:  5 quests, mean stakes 3.60, kinds investigation
+  act 3:  5 quests, mean stakes 7.60, kinds moral_dilemma/pilgrimage/weird
+  act 4:  8 quests, mean stakes 8.50, kinds politics/rival_conflict
+  act 5:  5 quests, mean stakes 10.00, kinds pilgrimage/succession
+
+  PASS      QST06.A1     five acts present = [1,2,3,4,5]  [5 acts]
+  PASS      QST06.A2     per-act counts within +-1 of 5/5/5/8/5 = {"1":5,"2":5,"3":5,"4":8,"5":5}  [5/5/5/8/5 +-1]
+  PASS      QST06.A3     total acted main quests = 28  [>= 24]
+  PASS      QST06.A4     mean stakes strictly increasing across acts = [2.4,3.6,7.6,8.5,10]  [strictly increasing]
+  PASS      QST06.A5     Act I mean stakes = 2.4  [<= 3.5]
+  PASS      QST06.HF1    HARD FAIL — high stakes in Act I = 2.4  [<= 4]
+  PASS      QST06.A6     Act V mean stakes = 10  [>= 9]
+  PASS      QST06.HF2    HARD FAIL — Act IV sequenced rather than simultaneous = []  [empty]
+  PASS      QST06.A7     every Act IV quest opens off the same prerequisite set = ["[\"Q-MAIN-15\"]"]  [exactly 1 distinct set]
+  PASS      QST06.A8     Act IV quests with a faction-rank-gated resolution = 7  [>= 4]
+  PASS      QST06.A9     Act IV mean resolutions = 3.375  [>= 3.0]
+  PASS      QST06.A10    Act II quests rewarding information = 5  [>= 3]
+  PASS      QST06.A11    Acts II-III quests rewarding information = 10  [>= 5]
+  PASS      QST06.A12    main quests carrying deceit pattern D7 = 4  [>= 2]
+  PASS      QST06.A13    of those, never_revealed = 4  [>= 1]
+  PASS      QST06.A14    an in-world book argues the mandate is genuine AND one argues it is constructed = {"for":true,"against":true}  [both]
+  PASS      QST06.HF3    HARD FAIL — the mandate is adjudicated by the game = false  [never_adjudicated: true]
+  PASS      QST06.A15    Act V quests with a talk_to_target reveal = 5  [>= 1]
+  PASS      QST06.A16    Act V quests with a non-violent resolution = 5  [>= 1]
+  PASS      EXP05.LH9    non-violent resolutions to the final confrontation = 3  [>= 1]
+  PASS      EXP05.LH6a   the conversation quest has no violence_required resolution at all = 0  [0]
+  PASS      QST06.A17    backpath quests = [{"id":"Q-MAIN-14","act":3,"irreversible":1},{"id":"Q-MAIN-29","act":null,"irreversible":1},{"id":"Q-MAIN-30","act":null,"irreversible":0},{"id":"Q-MAIN-31","act":null,"irreversible":1},{"id":"Q-MAIN-32","act":null,"irreversible":0}]  [>= 3]
+  PASS      QST06.HF4    HARD FAIL — no backpath = 5  [>= 3]
+  PASS      QST06.A18    at least one backpath quest with an irreversible branch = 3  [>= 1]
+  PASS      QST06.A19    the backpath ending flag differs from every intended ending flag = ["ending_the_count_went_past_the_roots","ending_the_count_bled_slowly"]  [disjoint]
+  PASS      QST06.HF5    HARD FAIL — a main quest hard-gated on faction rank = []  [empty]
+  PASS      EXP05.LH2    ponr_position_fraction = 0.9643  [>= 0.94]
+  PASS      EXP05.LH3    ponr_signal_channels (independent, declared with evidence) = 3  [>= 3]
+  PASS      EXP05.LH5    threads permanently closed by the crossing, each with in-fiction acknowledgement = 4  [>= 4, all in fiction]
+  PASS      EXP05.LH4    ponr_modals / confirmation strings in shipped mainline text = []  [0]
+  PASS      EXP05.LH14   terminal furniture (credits, score, completion %, grade) = 0  [0]
+  PASS      EXP05.LH12   world_flag_delta between the intended ending and the backpath ending = 25  [>= 25]
+  PASS      EXP05.LH7    antagonist_verified_claims, each resolved to an earlier player-observed event = 3  [>= 2]
+  PASS      EXP05.LH8    antagonist_refuted_by_game = []  [false]
+  PASS      EXP05.LH7b   verified claims whose evidence flag no quest sets = []  [empty]
+  PASS      WLD09.B3a    unanswered questions in the main quest = 5  [3-6]
+  PASS      WLD09.B3b    of which the player explicitly asks and is refused or evaded on screen = 3  [>= 1]
+  PASS      WLD09.B3c    of which the antagonist asks about the player = 1  [>= 1]
+  PASS      WLD09.B3d    answered in a book but not in dialogue = 1  [<= 1]
+  PASS      WLD09.B3e    ending text that closes a declared unanswered question = 0  [0]
+  PASS      QST05.M1     mainline quests with >= 1 non-violent resolution = "32/32"  [100%]
+  PASS      QST05.M2     mainline quests with an empty kill_required_npcs = "32/32"  [100%]
+  PASS      QST05.M3     shipped quests with >= 1 non-violent resolution = "69/69 = 100.0%"  [>= 45%]
+
+  not measurable from shipped data alone:
+    EXP05.LH11: ending_specific_facts requires resolving ending text against a played chain (RI-EXP05 step 4, FULL tier). No played chain exists for this build.
+    EXP05.LH12b: npc_reaction_delta requires the scripted 6-topic x 40-NPC sweep over two loaded ending states (RI-EXP05 step 3). W1-17 owns the topic bodies; only the flag delta is answerable here.
+    EXP05.LH10: final_hour_scripted_seconds and final_boss_phases require a combat trace. The mainline authors no scripted sequence and no phased encounter, so the data-side answer is 0/0, but a trace is what proves it.
+    JRN07.L5: the fresh-agent navigation leg is RI-WLD06 M29, cited not restated, and belongs to a journey run rather than to a census.
+

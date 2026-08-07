@@ -22,6 +22,8 @@
 // the fight, whether a hostile can be resolved without killing it.
 'use strict';
 
+import { topicsInclude } from '../core/topics.js';
+
 import { bearingDeg, angleDelta } from './geometry.js';
 
 /**
@@ -76,7 +78,10 @@ function testGround(key, def, player, target, cfg, world, disposition) {
     case 'NAME': {
       const topic = cfg.true_name_topic;
       if (!topic) return { pass: false, why: 'target declares no true_name_topic' };
-      const known = (world.topicsKnown || []).indexOf(topic) >= 0;
+      // Folded (core/topics.js): the parley's `true_name_topic` is authored in prose and the
+      // AddTopic edges that put a topic into `topicsKnown` are authored as slugs, so an exact
+      // indexOf made the NAME ground unwinnable for a player who had genuinely learned the name.
+      const known = topicsInclude(world.topicsKnown, topic);
       return { pass: known, why: known ? `knows topic '${topic}'` : `does not know topic '${topic}'`, ignores_disposition: true };
     }
     case 'FACTION': {

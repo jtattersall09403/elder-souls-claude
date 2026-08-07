@@ -1,0 +1,662 @@
+{
+  "schema": "critic-input-checks/1",
+  "tool": "tools/harness/critic-w1-08-29-r1b.mjs",
+  "ran_at": "2026-08-07T12:32:45.172Z",
+  "counts": {
+    "total": 4,
+    "pass": 3,
+    "fail": 1,
+    "unmeasurable": 0
+  },
+  "checks": [
+    {
+      "id": "E1-TOUCH-ROLL",
+      "what": "the touch control labelled `roll` produces the roll action",
+      "status": "pass",
+      "threshold": "RI-JRN04 M-P21 / HF5: the action a control is labelled for must be the action it fires",
+      "detail": {
+        "tap_fired": [
+          "roll"
+        ],
+        "hold_fired": [
+          "sprint"
+        ],
+        "controls_whose_label_never_fires": [],
+        "distinct_actions_produced": [
+          "block",
+          "crouch",
+          "heavy",
+          "interact",
+          "jump",
+          "light",
+          "lock_on",
+          "parry",
+          "roll",
+          "sprint",
+          "use_item"
+        ],
+        "n_controls": 11,
+        "all_taps": {
+          "roll": [
+            "roll"
+          ],
+          "block": [
+            "block"
+          ],
+          "light": [
+            "light"
+          ],
+          "interact": [
+            "interact"
+          ],
+          "jump": [
+            "jump"
+          ],
+          "parry": [
+            "parry"
+          ],
+          "heavy": [
+            "heavy"
+          ],
+          "use_item": [
+            "use_item"
+          ],
+          "crouch": [
+            "crouch"
+          ],
+          "lock_on": [
+            "lock_on"
+          ]
+        },
+        "all_holds": {
+          "roll": [
+            "sprint"
+          ],
+          "block": [
+            "block"
+          ],
+          "light": [
+            "light"
+          ],
+          "interact": [
+            "interact"
+          ],
+          "jump": [
+            "jump"
+          ],
+          "parry": [
+            "parry"
+          ],
+          "heavy": [
+            "heavy"
+          ],
+          "use_item": [
+            "use_item"
+          ],
+          "crouch": [
+            "crouch"
+          ],
+          "lock_on": [
+            "lock_on"
+          ]
+        }
+      }
+    },
+    {
+      "id": "E2-DOUBLE-BIND",
+      "what": "no shipped default control is owned by two actions",
+      "status": "pass",
+      "threshold": "RI-JRN03 M-K1 / RB4: one press = one action. M-K1 uses `fired.includes(action)` and cannot see the extra",
+      "detail": {
+        "shared_controls": {},
+        "one_press_fires": {},
+        "bindings": {
+          "light": [
+            "Mouse0",
+            null
+          ],
+          "block": [
+            "Mouse2",
+            "KeyF"
+          ],
+          "parry": [
+            "Mouse1",
+            "KeyV"
+          ],
+          "heavy": [
+            "KeyR",
+            "Mouse3"
+          ],
+          "roll": [
+            "Space",
+            "Mouse4"
+          ],
+          "sprint": [
+            "ShiftLeft",
+            null
+          ],
+          "jump": [
+            "KeyX",
+            null
+          ],
+          "interact": [
+            "KeyE",
+            "Enter"
+          ],
+          "use_item": [
+            "Digit1",
+            null
+          ],
+          "lock_on": [
+            "Tab",
+            "Mouse1Hold12"
+          ],
+          "two_hand": [
+            "KeyG",
+            null
+          ],
+          "swap_right": [
+            "Digit3",
+            "WheelUp"
+          ],
+          "swap_left": [
+            "Digit4",
+            "WheelDown"
+          ],
+          "menu": [
+            "Escape",
+            "KeyM"
+          ],
+          "crouch": [
+            "KeyC",
+            "KeyZ"
+          ],
+          "spell_cycle": [
+            "KeyT",
+            "Digit2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "E3-TEXT-STREAM",
+      "what": "the stream M-K20 (HF5) searches is ever non-empty, i.e. M-K20 can fail",
+      "status": "FAIL",
+      "threshold": "AGENT-PROTOCOL: a probe that cannot fail is worse than no probe. M-K20 passed on frames=0",
+      "detail": {
+        "probes": [
+          {
+            "label": "arena, no ui",
+            "entries": 0,
+            "distinct": [],
+            "surfaces": [
+              "dialogue",
+              "title"
+            ],
+            "total": 0
+          },
+          {
+            "label": "menu open",
+            "entries": 0,
+            "distinct": [],
+            "surfaces": [
+              "dialogue",
+              "title"
+            ],
+            "total": 0
+          },
+          {
+            "label": "boot state",
+            "error": "loadState('boot'): no such named state. Known: arena_champion, arena_duel, arena_flat, arena_probe, barge-hold, cam_boardwalk, cam_boss_arena, cam_cistern, cam_collision_rig, cam_flat_plain, cam_mangrove, cam_pinch, cam_stair, default, dungeon_primary, endgame-200q, helstrom-market, interior_firelit, material_showcase, npc_showcase, rootlands-well-graph, settlement_primary_street, showcase_patch, stormhold-street, sv1-midquest, sv5-journal-bloodstain, swamp_canopy, thorn-hall, ui-journal, vista_primary, water_shallows, wld-dres-raid-road, wpn-dummy-arena, wpn-loadout-o1_sword_shield, wpn-loadout-o2_dual, wpn-loadout-o3_twohand, wpn-material-range, writ-house"
+          },
+          {
+            "label": "handheld + touch overlay",
+            "entries": 0,
+            "distinct": [],
+            "surfaces": [
+              "dialogue",
+              "title"
+            ],
+            "total": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "E4-OVERLAY-DRAW",
+      "what": "the touch overlay the model reports changes what the renderer draws",
+      "status": "pass",
+      "threshold": "RI-JRN04 §G: a control the player must find with a thumb has to be drawn",
+      "detail": {
+        "layout_controls": 11,
+        "desktop_census": {
+          "actors": [
+            {
+              "id": "player",
+              "built": true,
+              "rigged": true,
+              "visible": true,
+              "weapon_key": "ssw_garrison_sword|SSW|1.388|0.95|1.288|wpn_guard|wpn_tip|0.07",
+              "bones": {
+                "root": [
+                  0,
+                  -0.00675,
+                  0
+                ],
+                "pelvis": [
+                  0,
+                  0.97325,
+                  0
+                ],
+                "spine_00": [
+                  0,
+                  1.0932499999999998,
+                  0
+                ],
+                "spine_02": [
+                  0,
+                  1.3328325897170088,
+                  0.014148593728399581
+                ],
+                "neck": [
+                  0,
+                  1.5324847478145163,
+                  0.025939088502065902
+                ],
+                "head": [
+                  -0.000056722071848824006,
+                  1.6322740421759643,
+                  0.032427039908391526
+                ],
+                "clavicle_l": [
+                  -0.16922976668102163,
+                  1.4735420285475958,
+                  0.006265707640912893
+                ],
+                "clavicle_r": [
+                  0.16922976668102163,
+                  1.4716361722229323,
+                  0.03853817249901912
+                ],
+                "upperarm_l": [
+                  -0.21900322746955742,
+                  1.4438744778218906,
+                  -0.0002488172895644407
+                ],
+                "upperarm_r": [
+                  0.21900322746955742,
+                  1.441408075519385,
+                  0.041515548997396554
+                ],
+                "lowerarm_l": [
+                  -0.1956198520039579,
+                  1.1688171072878804,
+                  0.04661972937822737
+                ],
+                "lowerarm_r": [
+                  0.1819265044501108,
+                  1.171486515469856,
+                  0.10607302749964033
+                ],
+                "hand_l": [
+                  -0.18888149902912274,
+                  0.9683701524523096,
+                  0.21207550261184172
+                ],
+                "hand_r": [
+                  0.14027692452251217,
+                  1.0129431056006026,
+                  0.30788804101172895
+                ],
+                "thigh_l": [
+                  -0.1,
+                  0.9332499999999999,
+                  0
+                ],
+                "thigh_r": [
+                  0.1,
+                  0.9332499999999999,
+                  0
+                ],
+                "calf_l": [
+                  -0.1,
+                  0.5032537490809643,
+                  -0.001795604514855503
+                ],
+                "calf_r": [
+                  0.1,
+                  0.5032537490809643,
+                  0.001795604514855503
+                ],
+                "foot_l": [
+                  -0.1,
+                  0.08300686150681016,
+                  0.056450026087244094
+                ],
+                "foot_r": [
+                  0.1,
+                  0.08350796044118844,
+                  0.06354892765760306
+                ]
+              },
+              "weapon_origin": [
+                0.14027692452251217,
+                1.0129431056006026,
+                0.30788804101172895
+              ],
+              "drawn_tip": [
+                -0.08206775601405275,
+                0.16656520983705037,
+                1.3852697285301097
+              ],
+              "drawn_guard": [
+                0.12425785531958962,
+                0.9519648710355052,
+                0.38550920005483996
+              ],
+              "drawn_length_m": 1.388,
+              "socket_b": [
+                -0.082068,
+                0.166565,
+                1.38527
+              ],
+              "tip_vs_socket_b_mm": 0.0004210185643530906,
+              "guard_vs_socket_a_mm": 0.00027854299676765664,
+              "weapon_tris": 60
+            }
+          ]
+        },
+        "handheld_idle_census": {
+          "actors": [
+            {
+              "id": "player",
+              "built": true,
+              "rigged": true,
+              "visible": true,
+              "weapon_key": "ssw_garrison_sword|SSW|1.388|0.95|1.288|wpn_guard|wpn_tip|0.07",
+              "bones": {
+                "root": [
+                  0,
+                  -0.004,
+                  0
+                ],
+                "pelvis": [
+                  0,
+                  0.976,
+                  0
+                ],
+                "spine_00": [
+                  0,
+                  1.096,
+                  0
+                ],
+                "spine_02": [
+                  0,
+                  1.3357185656786819,
+                  0.011619348904114871
+                ],
+                "neck": [
+                  0,
+                  1.5354840370775833,
+                  0.021302139657543934
+                ],
+                "head": [
+                  -0.00008338690654808011,
+                  1.6353286471455717,
+                  0.02687411300593378
+                ],
+                "clavicle_l": [
+                  -0.16890629684889158,
+                  1.4764864904937924,
+                  -0.0008327283539788293
+                ],
+                "clavicle_r": [
+                  0.16890629684889158,
+                  1.4746223008220334,
+                  0.03762733321700926
+                ],
+                "upperarm_l": [
+                  -0.21858461945150676,
+                  1.4467958153239218,
+                  -0.007941038374491435
+                ],
+                "upperarm_r": [
+                  0.21858461945150676,
+                  1.4443833345722334,
+                  0.041830806011493145
+                ],
+                "lowerarm_l": [
+                  -0.19642469435307797,
+                  1.1723347906823132,
+                  0.04285348566413306
+                ],
+                "lowerarm_r": [
+                  0.18011365735759652,
+                  1.1750342566366134,
+                  0.10794479311558647
+                ],
+                "hand_l": [
+                  -0.1929682243555761,
+                  0.9740127316553506,
+                  0.21094992738275586
+                ],
+                "hand_r": [
+                  0.13465772909925067,
+                  1.0182066433951888,
+                  0.31027832546050027
+                ],
+                "thigh_l": [
+                  -0.1,
+                  0.9359999999999999,
+                  0
+                ],
+                "thigh_r": [
+                  0.1,
+                  0.9359999999999999,
+                  0
+                ],
+                "calf_l": [
+                  -0.1,
+                  0.5060057115751322,
+                  -0.002216285629508381
+                ],
+                "calf_r": [
+                  0.1,
+                  0.5060057115751322,
+                  0.002216285629508381
+                ],
+                "foot_l": [
+                  -0.1,
+                  0.08570204116532988,
+                  0.055618173303278944
+                ],
+                "foot_r": [
+                  0.1,
+                  0.08632053948054151,
+                  0.06438023276877719
+                ]
+              },
+              "weapon_origin": [
+                0.13465772909925067,
+                1.0182066433951888,
+                0.31027832546050027
+              ],
+              "drawn_tip": [
+                -0.1080069956029957,
+                0.18098846193712204,
+                1.3904281058248862
+              ],
+              "drawn_guard": [
+                0.11717467976911763,
+                0.9578883306100255,
+                0.38809891482392866
+              ],
+              "drawn_length_m": 1.388,
+              "socket_b": [
+                -0.108007,
+                0.180988,
+                1.390428
+              ],
+              "tip_vs_socket_b_mm": 0.0004739241974082898,
+              "guard_vs_socket_a_mm": 0.0004680873531374573,
+              "weapon_tris": 60
+            }
+          ]
+        },
+        "handheld_touching_census": {
+          "actors": [
+            {
+              "id": "player",
+              "built": true,
+              "rigged": true,
+              "visible": true,
+              "weapon_key": "ssw_garrison_sword|SSW|1.388|0.95|1.288|wpn_guard|wpn_tip|0.07",
+              "bones": {
+                "root": [
+                  0,
+                  -0.007842592592592592,
+                  0
+                ],
+                "pelvis": [
+                  0,
+                  0.9721574074074074,
+                  0
+                ],
+                "spine_00": [
+                  0,
+                  1.0921574074074074,
+                  0
+                ],
+                "spine_02": [
+                  0,
+                  1.3301328139745716,
+                  0.031107971151987098
+                ],
+                "neck": [
+                  0,
+                  1.528445652780542,
+                  0.05703128044530968
+                ],
+                "head": [
+                  0.0001446691022138368,
+                  1.6275392927967947,
+                  0.07046368824064445
+                ],
+                "clavicle_l": [
+                  -0.1626223010048538,
+                  1.4625308909730064,
+                  0.09837413220643752
+                ],
+                "clavicle_r": [
+                  0.1626223010048538,
+                  1.4753727113044952,
+                  0.0001344431081882827
+                ],
+                "upperarm_l": [
+                  -0.21045238953569317,
+                  1.430895462162186,
+                  0.10893264891512286
+                ],
+                "upperarm_r": [
+                  0.21045238953569317,
+                  1.4475142884735244,
+                  -0.018201066388493815
+                ],
+                "lowerarm_l": [
+                  -0.031786701416708946,
+                  1.3303479701257375,
+                  0.29963863658763973
+                ],
+                "lowerarm_r": [
+                  0.2396384334045877,
+                  1.1763875697624224,
+                  0.04534794811396715
+                ],
+                "hand_l": [
+                  0.05799242912743449,
+                  1.5063294405431904,
+                  0.46866594144827095
+                ],
+                "hand_r": [
+                  0.3117636810990313,
+                  1.070688874741745,
+                  0.27167897673342306
+                ],
+                "thigh_l": [
+                  -0.1,
+                  0.9321574074074074,
+                  0
+                ],
+                "thigh_r": [
+                  0.1,
+                  0.9321574074074074,
+                  0
+                ],
+                "calf_l": [
+                  -0.1,
+                  0.5021600040656289,
+                  -0.0014943625155468432
+                ],
+                "calf_r": [
+                  0.1,
+                  0.5021600040656289,
+                  0.0014943625155468432
+                ],
+                "foot_l": [
+                  -0.1,
+                  0.08195402463660618,
+                  0.057045665261143935
+                ],
+                "foot_r": [
+                  0.1,
+                  0.08237105603629367,
+                  0.06295361009005006
+                ]
+              },
+              "weapon_origin": [
+                0.3117636810990313,
+                1.070688874741745,
+                0.27167897673342306
+              ],
+              "drawn_tip": [
+                0.6968015418678303,
+                0.5064204567082822,
+                1.479938467978826
+              ],
+              "drawn_guard": [
+                0.3395041609815096,
+                1.0300355305030229,
+                0.3587293723562907
+              ],
+              "drawn_length_m": 1.388,
+              "socket_b": [
+                0.696802,
+                0.50642,
+                1.479938
+              ],
+              "tip_vs_socket_b_mm": 0.0007984182623786559,
+              "guard_vs_socket_a_mm": 0.0006204769658399127,
+              "weapon_tris": 60
+            }
+          ]
+        },
+        "census_sizes": {
+          "desktop": 1702,
+          "handheld_touching": 1709
+        },
+        "touch_state_keys": [
+          "enabled",
+          "visible",
+          "pointers",
+          "lastTouchFrame",
+          "hideAfterFrames",
+          "stick",
+          "drawerOpen",
+          "held",
+          "roles",
+          "insetViolations"
+        ]
+      }
+    }
+  ]
+}

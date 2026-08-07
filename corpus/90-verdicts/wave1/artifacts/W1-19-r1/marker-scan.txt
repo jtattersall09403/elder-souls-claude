@@ -1,0 +1,3 @@
+[harness] marker-scan: 357 files under game/data
+[harness]   EXCUSED F1  stealth/detection.json:no_meter.hud_elements — The value is the integer 0 and the key is W1-15's DECLARATION that the stealth system draws no HUD elements — RI-STL01's 'no detection meter' compliance, asserted in data. It is a count of markers, not a coordinate a marker could be drawn from, and F1's `hud_.*` branch has caught the one field in the tree that exists to say there are none.
+[harness] K1 PASS — 0 hits, 1 declared exceptions ({"F1":0,"F2":0,"F3":0,"F4":0,"F5":0})

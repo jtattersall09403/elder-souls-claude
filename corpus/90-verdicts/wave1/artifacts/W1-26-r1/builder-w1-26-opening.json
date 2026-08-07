@@ -1,0 +1,413 @@
+{
+  "schema": "elder-souls/w1-26-opening@1",
+  "item": "RI-JRN01",
+  "piece": "W1-26",
+  "checks": {
+    "fresh_profile": {
+      "fresh_browser_context": true,
+      "storage_seeded_by": "writeSave(\"slot-a\") then page.reload()",
+      "slots": [
+        "slot-a"
+      ]
+    },
+    "m20": {
+      "present": true,
+      "shown_at_boot_in_harness_mode": false,
+      "raised_by": "titleShow()",
+      "option_ids": [
+        "continue",
+        "new",
+        "load",
+        "settings",
+        "quit-to-menu"
+      ],
+      "o3_expected": [
+        "continue",
+        "new",
+        "load",
+        "settings",
+        "quit-to-menu"
+      ],
+      "selected_id": "continue",
+      "save_count": 1,
+      "continue_available": true,
+      "unskippable_ms": 0,
+      "world_behind": true,
+      "drawn_strings": [
+        "ELDER SOULS",
+        "ARGONIA",
+        "— Continue",
+        "  New",
+        "  Load",
+        "  Settings",
+        "  Quit to menu",
+        "Nameless"
+      ]
+    },
+    "m20_continue": {
+      "result": {
+        "id": "continue",
+        "slot": "slot-a",
+        "loaded": true,
+        "ok": true,
+        "gen": 1,
+        "degraded": false
+      },
+      "hash_before": "5cd325c9ff04493389d5c1875784a15e2a23565d90faaae7074882b395647dac",
+      "hash_after": "d876416a4ab90d621109a36968e4e90274091e04c0b40f979e5244b264f30d9d",
+      "title_shown_after": false
+    },
+    "accessor": {
+      "dom_inner_text_len": 0,
+      "dom_child_count": 2,
+      "accessor": "window.__HARNESS.getRenderedText()",
+      "source": "CanvasRenderingContext2D.fillText, instrumented at the draw call (game/src/render/text-register.js)",
+      "surfaces": [
+        "dialogue",
+        "title"
+      ],
+      "distinct": [
+        "JEEH-EI",
+        "THE HOLD, TWO DAYS OUT OF GIDEON   ·   1 of 13",
+        "They will take the other one off you at the writ house. Tell me the one they cannot.",
+        "— Silence-Under-Salt",
+        "  Waits-For-The-Second-Tide",
+        "  Counts-The-Drowned",
+        "  Small-Root-Deep-Water",
+        "  Hears-The-Barge-Coming",
+        "  Does-Not-Answer-Twice",
+        "  Walks-Where-It-Is-Dry",
+        "  Keeps-The-Egg-Warm",
+        "  Three-Names-One-Mouth"
+      ],
+      "summary": {
+        "total": 24,
+        "dropped": 0,
+        "cap": 40000,
+        "surfaces": {
+          "dialogue": {
+            "entries": 24,
+            "drawn": 24,
+            "clipped": 0,
+            "distinct_drawn": 12
+          }
+        }
+      }
+    },
+    "m9": {
+      "instrument": "__HARNESS.getRenderedText({notSurface:[\"dialogue\"]})",
+      "surfaces_searched": "title (the only non-dialogue drawn surface in the build)",
+      "distinct_searched": 0,
+      "hits": []
+    },
+    "m15": {
+      "instrument": "__HARNESS.getRenderedText()",
+      "distinct_searched": 16,
+      "hits": []
+    },
+    "orphan_text": {
+      "clipped_entries": []
+    },
+    "scene_walk": {
+      "nodes": [
+        "hold.hatch-name"
+      ]
+    },
+    "dtr": {
+      "accessor_used": "__HARNESS.getRenderedText() — the register, fed by fillText and clip-aware",
+      "accessor_compared_against": "__HARNESS.getUIState().text — the layout's own array, which cannot see a clipped line",
+      "dtr_scene_register": 0.95,
+      "dtr_scene_layout": 0,
+      "questionnaire_nodes": [],
+      "worst_node": {
+        "node": "hold.hatch-name",
+        "kind": "text",
+        "authored": 15,
+        "drawn_register": 14,
+        "drawn_layout": 0,
+        "dtr_register": 0.9333,
+        "dtr_layout": 0,
+        "undrawn": [
+          {
+            "role": "spoken",
+            "text": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+          }
+        ],
+        "clipped_here": 0
+      },
+      "nodes": [
+        {
+          "node": "hold.hatch-name",
+          "kind": "text",
+          "authored": 15,
+          "drawn_register": 14,
+          "drawn_layout": 0,
+          "dtr_register": 0.9333,
+          "dtr_layout": 0,
+          "undrawn": [
+            {
+              "role": "spoken",
+              "text": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+            }
+          ],
+          "clipped_here": 0
+        },
+        {
+          "node": "hold.out",
+          "kind": null,
+          "authored": 3,
+          "drawn_register": 3,
+          "drawn_layout": 0,
+          "dtr_register": 1,
+          "dtr_layout": 0,
+          "undrawn": [],
+          "clipped_here": 0
+        },
+        {
+          "node": "writ.race-observed",
+          "kind": "observed",
+          "authored": 2,
+          "drawn_register": 2,
+          "drawn_layout": 0,
+          "dtr_register": 1,
+          "dtr_layout": 0,
+          "undrawn": [],
+          "clipped_here": 0
+        },
+        {
+          "node": "writ.race-observed",
+          "threw": "census: race must be observed before the scene reaches the desk"
+        }
+      ],
+      "layout_overclaims_at": []
+    },
+    "m4_clause1": {
+      "first_input_frame": 9,
+      "first_control_frame": 39,
+      "first_field_frame": 0,
+      "first_field_node": "hold.hatch-name",
+      "available_play_s_before_first_field": -0.65,
+      "fixed_step_hz": 60,
+      "frame": 208,
+      "moved_m": 0,
+      "census_node_at_start": "hold.hatch-name",
+      "census_takes_input": true,
+      "forward_input_frames": 60,
+      "threshold_s": 60
+    },
+    "o17_parity": {
+      "keyboard": {
+        "before_selected": "continue",
+        "after_selected": "new",
+        "shown_after": false,
+        "inputs": 2,
+        "inputs_taken": 1
+      },
+      "mouse+keyboard": {
+        "before_selected": "continue",
+        "after_selected": "new",
+        "shown_after": false,
+        "inputs": 2,
+        "inputs_taken": 2
+      },
+      "gamepad": {
+        "before_selected": "continue",
+        "after_selected": "new",
+        "shown_after": true,
+        "inputs": 2,
+        "inputs_taken": 2
+      },
+      "touch": {
+        "unmeasurable": "touchLayout() returned no buttons",
+        "layout": [
+          {
+            "action": "roll",
+            "x": 1749,
+            "y": 1032,
+            "r": 24,
+            "held": false,
+            "gate": {
+              "tap": "roll",
+              "hold": "sprint",
+              "frames": 12
+            },
+            "down": false
+          },
+          {
+            "action": "block",
+            "x": 1769,
+            "y": 975,
+            "r": 24,
+            "held": true,
+            "gate": null,
+            "down": false
+          },
+          {
+            "action": "light",
+            "x": 1813,
+            "y": 932,
+            "r": 24,
+            "held": false,
+            "gate": null,
+            "down": false
+          },
+          {
+            "action": "interact",
+            "x": 1871,
+            "y": 914,
+            "r": 24,
+            "held": false,
+            "gate": null,
+            "down": false
+          },
+          {
+            "action": "jump",
+            "x": 1685,
+            "y": 1026,
+            "r": 24,
+            "held": false,
+            "gate": null,
+            "down": false
+          },
+          {
+            "action": "parry",
+            "x": 1715,
+            "y": 940,
+            "r": 24,
+            "held": false,
+            "gate": null,
+            "down": false
+          },
+          {
+            "action": "heavy",
+            "x": 1780,
+            "y": 877,
+            "r": 24,
+            "held": false,
+            "gate": null,
+            "down": false
+          },
+          {
+            "action": "use_item",
+            "x": 1866,
+            "y": 850,
+            "r": 24,
+            "held": false,
+            "gate": null,
+            "down": false
+          },
+          {
+            "action": "crouch",
+            "x": 1621,
+            "y": 1019,
+            "r": 22,
+            "held": false,
+            "gate": null,
+            "down": false
+          },
+          {
+            "action": "lock_on",
+            "x": 1862,
+            "y": 787,
+            "r": 22,
+            "held": false,
+            "gate": null,
+            "down": false
+          },
+          {
+            "action": "__drawer",
+            "x": 1560,
+            "y": 848,
+            "r": 24,
+            "drawer": true,
+            "down": false
+          }
+        ],
+        "before_selected": "continue",
+        "after_selected": "continue",
+        "shown_after": true,
+        "inputs": 0
+      }
+    },
+    "consumption_k1": {
+      "model": "the save store (game/src/save/store.js, IndexedDB) — the one model the title surface reads",
+      "observable": "the strings the title DREW, read through the rendered-text register (frame-side, not a getTitleState() return value)",
+      "with_save": {
+        "drawn": [
+          "ELDER SOULS",
+          "ARGONIA",
+          "— Continue",
+          "  New",
+          "  Load",
+          "  Settings",
+          "  Quit to menu",
+          "Nameless"
+        ],
+        "continue_enabled": true
+      },
+      "null_control_stable": true,
+      "without_save": {
+        "drawn": [
+          "ELDER SOULS",
+          "ARGONIA",
+          "  Continue",
+          "— New",
+          "  Load",
+          "  Settings",
+          "  Quit to menu",
+          "No life recorded in this province."
+        ],
+        "continue_enabled": false
+      },
+      "restored": {
+        "drawn": [
+          "ELDER SOULS",
+          "ARGONIA",
+          "— Continue",
+          "  New",
+          "  Load",
+          "  Settings",
+          "  Quit to menu",
+          "Nameless"
+        ],
+        "continue_enabled": true
+      },
+      "coupling": 1
+    },
+    "instrument_falsification": {
+      "before": 8,
+      "after": 0,
+      "restored": 8
+    }
+  },
+  "hard_fails": [],
+  "failures": [
+    "M4 clause 1: -0.65 s of available play before the first character-defining question at 'hold.hatch-name'. O6 wants >= 60 — \"you get a body before you get a character\" is the item's own best idea and this build asks first.",
+    "O17 touch: unmeasurable — touchLayout() returned no buttons. RI-JRN01 M13 is a hard fail on a leg that cannot COMPLETE; a leg that cannot be DRIVEN by a probe is a tooling gap and is reported as one, not as HF5."
+  ],
+  "passes": [
+    "a title surface exists",
+    "M20: the option set is exactly O3's five",
+    "M20/O3: `Continue` is focused by default when a save exists",
+    "M20: the title drew 8 distinct strings",
+    "M20: `Continue` loaded the save",
+    "M20: the title yields to the world on `Continue`",
+    "§0.1(a): accessor `window.__HARNESS.getRenderedText()` demonstrated non-empty — 12 distinct strings on a frame known to carry text",
+    "M9: 0 hits over 0 distinct non-dialogue strings, through a demonstrated accessor",
+    "M15: 0 hits over 16 distinct strings",
+    "no orphan text: every string handed to a draw call landed inside its clip",
+    "M1: DTR_scene = 0.95 through the draw call (RI-JRN09 wants >= 0.90)",
+    "M1: worst node is 'hold.hatch-name' at DTR 0.9333 (HF1 fires below 0.50)",
+    "M1: the layout accessor and the draw-call accessor agree — no node claims a string it clipped away",
+    "M4: `first_input` fired at frame 9 — the A-JRN7 event that had never been emitted",
+    "O17 keyboard: the title responded (continue -> new, shown=false)",
+    "O17 mouse+keyboard: the title responded (continue -> new, shown=false)",
+    "O17 gamepad: the title responded (continue -> new, shown=true)",
+    "K1 null control: perturb nothing, observe nothing",
+    "K1 CONSUMPTION: the save store changes what the player can see and what they can activate",
+    "K1 delete-the-fix: removing the save removes the row, restoring it brings it back",
+    "K2: the register goes red when the surface stops drawing (8 -> 0 -> 8)"
+  ],
+  "page_errors": [],
+  "verdict": "FAIL"
+}

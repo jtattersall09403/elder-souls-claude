@@ -1,0 +1,419 @@
+{
+ "schema": "elder-souls/mainline-topic-supply@1",
+ "tool": "inline, W1-19-r1 critic",
+ "measured_at": "2026-08-07T12:09:52.912Z",
+ "fold_rule": "game/src/core/topics.js (UNTRACKED at measurement; NOT imported by sim/quest/gate.js or sim/quest/machine.js)",
+ "summary": {
+  "main_quests": 32,
+  "supplied_only_by_itself": 23,
+  "no_supplier_at_all": 5,
+  "supplied_by_something_else": 4
+ },
+ "rows": [
+  {
+   "quest": "Q-MAIN-01",
+   "act": 1,
+   "topic": "the drowned tally",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-01",
+     "index": 10
+    },
+    {
+     "source": "Q-MAIN-06",
+     "index": 10
+    }
+   ],
+   "only_self": false,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-02",
+   "act": 1,
+   "topic": "the empty boxes",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-02",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-03",
+   "act": 1,
+   "topic": "the cold well",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-03",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-04",
+   "act": 1,
+   "topic": "a name for cover",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-04",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-05",
+   "act": 1,
+   "topic": "the ninth recension",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-05",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-06",
+   "act": 2,
+   "topic": "the drowned tally",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-01",
+     "index": 10
+    },
+    {
+     "source": "Q-MAIN-06",
+     "index": 10
+    }
+   ],
+   "only_self": false,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-07",
+   "act": 2,
+   "topic": "the cutting yard",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-07",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-08",
+   "act": 2,
+   "topic": "the gem shipping",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-08",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-09",
+   "act": 2,
+   "topic": "the low chapel",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-09",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-10",
+   "act": 2,
+   "topic": "the root gallery",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-10",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-11",
+   "act": 3,
+   "topic": "the crypt road",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-11",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-12",
+   "act": 3,
+   "topic": "the intakes",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-12",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-13",
+   "act": 3,
+   "topic": "reading the count",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-13",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-14",
+   "act": 3,
+   "topic": "the skei",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-14",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-15",
+   "act": 3,
+   "topic": "the tree at thorn",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-15",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-16",
+   "act": 4,
+   "topic": "the chapter's vote",
+   "suppliers": [],
+   "only_self": false,
+   "no_supplier": true
+  },
+  {
+   "quest": "Q-MAIN-17",
+   "act": 4,
+   "topic": "the ledger's terms",
+   "suppliers": [],
+   "only_self": false,
+   "no_supplier": true
+  },
+  {
+   "quest": "Q-MAIN-18",
+   "act": 4,
+   "topic": "the interior's consent",
+   "suppliers": [],
+   "only_self": false,
+   "no_supplier": true
+  },
+  {
+   "quest": "Q-MAIN-19",
+   "act": 4,
+   "topic": "the cutters' terms",
+   "suppliers": [],
+   "only_self": false,
+   "no_supplier": true
+  },
+  {
+   "quest": "Q-MAIN-20",
+   "act": 4,
+   "topic": "the writ of works",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-20",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-21",
+   "act": 4,
+   "topic": "the hiring list",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-21",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-22",
+   "act": 4,
+   "topic": "the keepers' leave",
+   "suppliers": [],
+   "only_self": false,
+   "no_supplier": true
+  },
+  {
+   "quest": "Q-MAIN-23",
+   "act": 4,
+   "topic": "the salt factor",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-23",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-24",
+   "act": 5,
+   "topic": "the works",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-24",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-25",
+   "act": 5,
+   "topic": "the ash gallery",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-25",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-26",
+   "act": 5,
+   "topic": "the steward of the count",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-26",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-27",
+   "act": 5,
+   "topic": "the sill",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-27",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-28",
+   "act": 5,
+   "topic": "the opening of the count",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-28",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-29",
+   "act": null,
+   "topic": "the eleven live roots",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-29",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-30",
+   "act": null,
+   "topic": "the thread is cut",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-30",
+     "index": 10
+    },
+    {
+     "source": "world_flag:mandate_void"
+    }
+   ],
+   "only_self": false,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-31",
+   "act": null,
+   "topic": "the root channels",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-31",
+     "index": 10
+    },
+    {
+     "source": "world_flag:the_eleven_roots_are_cut"
+    }
+   ],
+   "only_self": false,
+   "no_supplier": false
+  },
+  {
+   "quest": "Q-MAIN-32",
+   "act": null,
+   "topic": "what the wells do now",
+   "suppliers": [
+    {
+     "source": "Q-MAIN-32",
+     "index": 10
+    }
+   ],
+   "only_self": true,
+   "no_supplier": false
+  }
+ ]
+}

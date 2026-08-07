@@ -3,11 +3,11 @@
   "trials": [
     {
       "id": "T1_mid_death_save_browser_restart",
-      "souls_before": 0,
+      "souls_before": 4200,
       "surface_active_at_save": true,
       "surface_frames_left_at_save": 150,
       "bloom_at_save": {
-        "souls": 0,
+        "souls": 4200,
         "pos": [
           3824.57,
           2.828939106817458,
@@ -15,12 +15,12 @@
         ]
       },
       "souls_held_at_save": 0,
-      "blob_bloom_souls": 0,
+      "blob_bloom_souls": 4200,
       "blob_hp": 0,
       "after_load_immediate": {
         "surface_active": false,
         "bloom": {
-          "souls": 0
+          "souls": 4200
         },
         "souls_held": 0,
         "deaths_this_session": 0
@@ -64,10 +64,10 @@
     {
       "id": "T2_control_save_after_respawn",
       "surface_active_at_save": false,
-      "bloom_at_save": 0,
+      "bloom_at_save": 4200,
       "after_load": {
         "bloom": {
-          "souls": 0,
+          "souls": 4200,
           "pos": [
             3824.57,
             2.828939,
@@ -77,12 +77,12 @@
         "souls_held": 0
       },
       "after_touching_bloom": {
-        "souls_held": 0,
+        "souls_held": 4200,
         "bloom": null
       },
-      "souls_recoverable_after_load": 0,
-      "souls_destroyed_by_the_save": 4200,
-      "pass": false
+      "souls_recoverable_after_load": 4200,
+      "souls_destroyed_by_the_save": 0,
+      "pass": true
     },
     {
       "id": "T3_mid_death_save_same_session_load",

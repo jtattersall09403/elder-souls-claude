@@ -2,16 +2,25 @@
   "task_id": "W1-26-r1-critic",
   "brief": "CRITIC of W1-26 — the opening, as a played scene. Judge RI-JRN01, RI-JRN09, RI-EXP01 as amended by BAR-CRITIQUE-W1-07-R1.",
   "started": "wave-1",
-  "state": "researching",
+  "state": "measuring",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-26-r1.json",
     "corpus/90-verdicts/wave1/W1-26-r1.md",
     "corpus/90-verdicts/wave1/artifacts/W1-26-r1/"
   ],
-  "outputs_written": [],
-  "findings": [
-    "loadavg at start: 11.70 9.86 9.34 on 4 cores - at the ~12 distortion threshold per AGENT-PROTOCOL"
+  "outputs_written": [
+    "tools/harness/critic-w1-26-r1a2.mjs (DTR over all 20 census nodes, 3 routes)",
+    "tools/harness/critic-w1-26-r1b.mjs (the accessor blind-spot test, 4 ways)"
   ],
-  "next_step": "read ARBITRATION S34, RI-MTH07, TOOL-LOOP, RI-EXP01, BAR-CRITIQUE-W1-07-R1; then find the builder's W1-26 artifacts",
-  "notes_for_successor": ""
+  "findings": [
+    "loadavg 11.7 at start, 17-22 during measurement on 4 cores. AGENT-PROTOCOL names ~12 as the distortion threshold. Recorded in the verdict.",
+    "boot-check.mjs PASS at HEAD 8744ead.",
+    "THE GRAPH HAS 20 NODES (game/data/dialogue/topics/writ-house.json), not 19. The builder's probe reached 3 node ids (hold.hatch-name, hold.out, writ.race-observed). The sibling W1-07-r3 critic's probe reached 11 (questionnaire route only). NOBODY had ever visited writ.class-named, the four writ.class-custom-* pick nodes, writ.birthsign-second, hold.wake, writ.enter or writ.strange-check.",
+    "STRUCTURAL: renderer.js constructs THREE 2D surfaces — this.ui (UILayer 'dialogue'), this.menus (UISurface, W1-21) and this.title — under a comment saying 'Every 2D surface this renderer owns is registered'. It instruments TWO. game/src/ui/surface.js:68 is the third context; game/src/ui/glyphs.js drawText() strokes vector paths (moveTo/lineTo/quadraticCurveTo/stroke) and NEVER calls fillText/strokeText, so the register is structurally incapable of seeing it even if instrumented. SAME HOLE the sibling found.",
+    "reports/journeys/w1-26-opening.json m9 records distinct_searched: 0 and hits: [] — a grep over an EMPTY set reported as a pass. This is RI-JRN01 How-we-lose #15 reproduced by the fix written to close it.",
+    "The builder's OWN final artifact shows hold.wake's line — 'You are awake. Good...' the first thing anyone says in the game — as undrawn at hold.hatch-name even in the 0.95 run.",
+    "INSTRUMENT TRAP I hit and fixed: UILayer repaints only when dirty, and getCensusState()/censusAnswer() both call metrics() which repaints and clears the flag. A probe that clears the register AFTER reading state measures an empty set and reports DTR 0 for a scene that drew everything. Use a watermark (getRenderedText().next_index) taken BEFORE the repainting call, never renderedTextClear()."
+  ],
+  "next_step": "run critic-w1-26-r1a2 (all-nodes DTR) and critic-w1-26-r1b (accessor hole); then AC/NAMED citation, M4 clause 1, RI-EXP01 disposition; then write the verdict",
+  "notes_for_successor": "Do NOT use renderFrame() in a stepping loop at load>15 — the first version of the DTR probe was killed at 900 s. setRenderRate(0) + getUIState() forces UILayer.metrics() -> _redraw() -> fillText with no WebGL frame and is ~20x cheaper."
 }

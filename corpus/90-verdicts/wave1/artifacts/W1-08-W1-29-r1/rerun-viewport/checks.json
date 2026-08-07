@@ -1,0 +1,81 @@
+{
+  "schema": "elder-souls/input-checks@1",
+  "tool": "tools/journey/input-checks.mjs",
+  "items": [
+    "RI-JRN03",
+    "RI-JRN04"
+  ],
+  "shim": null,
+  "entry": "game/index.html",
+  "ran_at": "2026-08-07T12:05:19.645Z",
+  "counts": {
+    "total": 4,
+    "pass": 4,
+    "fail": 0,
+    "unmeasurable": 0
+  },
+  "self_test": null,
+  "checks": [
+    {
+      "id": "M-P16",
+      "item": "RI-JRN04",
+      "what": "portrait shows an in-world rotate state and recovers on rotation with no reload",
+      "status": "pass",
+      "threshold": "a rotate state with 0 UI-kit chrome, recovered within 30 frames (H1)",
+      "detail": {
+        "rotateState": {
+          "kind": "rotate",
+          "line": "The map lies the long way.",
+          "illustration": "chart-on-a-table"
+        },
+        "recovered_after_frames": 0
+      }
+    },
+    {
+      "id": "M-P18",
+      "item": "RI-JRN04",
+      "what": "an 88 px chrome collapse costs 0 sim frames and 0 camera pose change",
+      "status": "pass",
+      "threshold": "0 frames lost, camera delta 0 (H4)",
+      "detail": {
+        "frames_advanced": 60,
+        "camera_delta": {
+          "yaw": 0,
+          "pitch": 0
+        },
+        "resizes": 4
+      }
+    },
+    {
+      "id": "M-P19",
+      "item": "RI-JRN04",
+      "what": "pinch, double-tap zoom, pull-to-refresh, selection and the long-press callout are all suppressed",
+      "status": "pass",
+      "threshold": "0 zoom, 0 navigation, 0 selection, 0 callout; dvh not vh (H4/H5)",
+      "detail": {
+        "touch_action": "none",
+        "overscroll": "none",
+        "user_select": "none",
+        "gesturestart_prevented": false,
+        "contextmenu_prevented": true,
+        "selectstart_prevented": false,
+        "viewport_meta": "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover",
+        "canvas_height_css": "240px",
+        "uses_dvh": true
+      }
+    },
+    {
+      "id": "H12",
+      "item": "RI-JRN04",
+      "what": "the wake-lock and orientation-lock capabilities are probed, not assumed",
+      "status": "pass",
+      "threshold": "capability report present; absence is reported, never thrown",
+      "detail": {
+        "orientationLock": true,
+        "fullscreen": true,
+        "wakeLock": true,
+        "matchMedia": true
+      }
+    }
+  ]
+}

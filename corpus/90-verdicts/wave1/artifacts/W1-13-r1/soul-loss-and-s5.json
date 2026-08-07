@@ -1,0 +1,422 @@
+{
+  "schema": "critic/w1-13-b@1",
+  "soul_loss": [
+    {
+      "id": "B1_double_hit_during_surface",
+      "bloom_on_surface": 4200,
+      "bloom_after_two_more_hits": 4200,
+      "deaths_this_session": 1,
+      "stains_lost": 0,
+      "recovered": 4200,
+      "pass": true
+    },
+    {
+      "id": "B2_unresolvable_respawn_point",
+      "hearth_last_rested_before": "hearth-thorn",
+      "hearth_last_rested_after": "hearth-thorn",
+      "respawn_hearth_reported": "hearth-thorn",
+      "death_pos": [
+        3824.57,
+        2.8289,
+        3981.5
+      ],
+      "respawn_pos": [
+        3773.05,
+        13.1951,
+        967.26
+      ],
+      "respawn_moved_m": 3014.68,
+      "dist_respawn_to_bloom_m": 3014.68,
+      "souls_held_5_frames_after_respawn": 0,
+      "bloom_after_5_frames": 1,
+      "death_was_free": false,
+      "pass": true,
+      "_p0": [
+        3784.57,
+        3.3859,
+        3941.5
+      ]
+    },
+    {
+      "id": "B3_die_in_water",
+      "skipped": "no water band W4/W5 found within 400 m of hearth-archon"
+    },
+    {
+      "id": "B4_die_falling",
+      "grounded_pos": [
+        3814.57,
+        3.035,
+        3971.5
+      ],
+      "cause": "combat",
+      "placement_rule": "death_point",
+      "stain_offset_m": 0,
+      "recovered": 4200,
+      "pass": true
+    },
+    {
+      "id": "B5_die_during_hearth_rest",
+      "rest_hp": 620,
+      "surface_went_up": false,
+      "deaths_this_session": 0,
+      "bloom": null,
+      "recovered": 4200,
+      "pass": true
+    },
+    {
+      "id": "B6_never_rested",
+      "hearth_last_rested": null,
+      "respawn_hearth": null,
+      "respawn_moved_m": 0,
+      "souls_held_after": 4200,
+      "death_was_free": true
+    }
+  ],
+  "s5": [
+    {
+      "id": "N1_who_is_at_risk_in_the_shipped_province",
+      "entities_total": 0,
+      "respawning": 0,
+      "never_respawning": 0,
+      "by_tier": {},
+      "by_archetype": {},
+      "entities_carrying_a_never_respawn_flag": 0,
+      "npcs_in_sim_npcs": null,
+      "_note": "sim.npcs is a different array from sim.entities. If every merchant and quest actor lives there, no respawn code path can reach them and the S5 guarantee costs nothing to keep — which is a good design and weak evidence."
+    },
+    {
+      "id": "N_roster_rest",
+      "trigger": "rest",
+      "archetype_used": "inf_trash",
+      "pre_count": 14,
+      "rows": [
+        {
+          "tag": "plain_trash",
+          "route": "via_spawn_opts",
+          "eid": "plain_trash__via_spawn_opts",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "plain_trash",
+          "route": "via_harness_verb",
+          "eid": "plain_trash__via_harness_verb",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "flag_named",
+          "route": "via_spawn_opts",
+          "eid": "flag_named__via_spawn_opts",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "flag_named",
+          "route": "via_harness_verb",
+          "eid": "flag_named__via_harness_verb",
+          "error": null,
+          "classified_respawns": false,
+          "alive_after_kill": false,
+          "alive_after_trigger": false,
+          "stood_back_up": false
+        },
+        {
+          "tag": "flag_merchant",
+          "route": "via_spawn_opts",
+          "eid": "flag_merchant__via_spawn_opts",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "flag_merchant",
+          "route": "via_harness_verb",
+          "eid": "flag_merchant__via_harness_verb",
+          "error": null,
+          "classified_respawns": false,
+          "alive_after_kill": false,
+          "alive_after_trigger": false,
+          "stood_back_up": false
+        },
+        {
+          "tag": "flag_questActor",
+          "route": "via_spawn_opts",
+          "eid": "flag_questActor__via_spawn_opts",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "flag_questActor",
+          "route": "via_harness_verb",
+          "eid": "flag_questActor__via_harness_verb",
+          "error": null,
+          "classified_respawns": false,
+          "alive_after_kill": false,
+          "alive_after_trigger": false,
+          "stood_back_up": false
+        },
+        {
+          "tag": "flag_boss",
+          "route": "via_spawn_opts",
+          "eid": "flag_boss__via_spawn_opts",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "flag_boss",
+          "route": "via_harness_verb",
+          "eid": "flag_boss__via_harness_verb",
+          "error": null,
+          "classified_respawns": false,
+          "alive_after_kill": false,
+          "alive_after_trigger": false,
+          "stood_back_up": false
+        },
+        {
+          "tag": "flag_trainer",
+          "route": "via_spawn_opts",
+          "eid": "flag_trainer__via_spawn_opts",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "flag_trainer",
+          "route": "via_harness_verb",
+          "eid": "flag_trainer__via_harness_verb",
+          "error": null,
+          "classified_respawns": false,
+          "alive_after_kill": false,
+          "alive_after_trigger": false,
+          "stood_back_up": false
+        },
+        {
+          "tag": "flag_unique",
+          "route": "via_spawn_opts",
+          "eid": "flag_unique__via_spawn_opts",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "flag_unique",
+          "route": "via_harness_verb",
+          "eid": "flag_unique__via_harness_verb",
+          "error": null,
+          "classified_respawns": false,
+          "alive_after_kill": false,
+          "alive_after_trigger": false,
+          "stood_back_up": false
+        }
+      ],
+      "ordinary_came_back": 2,
+      "protected_that_stood_back_up": [
+        "flag_named/via_spawn_opts",
+        "flag_merchant/via_spawn_opts",
+        "flag_questActor/via_spawn_opts",
+        "flag_boss/via_spawn_opts",
+        "flag_trainer/via_spawn_opts",
+        "flag_unique/via_spawn_opts"
+      ],
+      "flags_honoured_via_spawn_opts": [],
+      "flags_honoured_via_harness_verb": [
+        "flag_named",
+        "flag_merchant",
+        "flag_questActor",
+        "flag_boss",
+        "flag_trainer",
+        "flag_unique"
+      ]
+    },
+    {
+      "id": "N_roster_death",
+      "trigger": "death",
+      "archetype_used": "inf_trash",
+      "pre_count": 14,
+      "rows": [
+        {
+          "tag": "plain_trash",
+          "route": "via_spawn_opts",
+          "eid": "plain_trash__via_spawn_opts",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "plain_trash",
+          "route": "via_harness_verb",
+          "eid": "plain_trash__via_harness_verb",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "flag_named",
+          "route": "via_spawn_opts",
+          "eid": "flag_named__via_spawn_opts",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "flag_named",
+          "route": "via_harness_verb",
+          "eid": "flag_named__via_harness_verb",
+          "error": null,
+          "classified_respawns": false,
+          "alive_after_kill": false,
+          "alive_after_trigger": false,
+          "stood_back_up": false
+        },
+        {
+          "tag": "flag_merchant",
+          "route": "via_spawn_opts",
+          "eid": "flag_merchant__via_spawn_opts",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "flag_merchant",
+          "route": "via_harness_verb",
+          "eid": "flag_merchant__via_harness_verb",
+          "error": null,
+          "classified_respawns": false,
+          "alive_after_kill": false,
+          "alive_after_trigger": false,
+          "stood_back_up": false
+        },
+        {
+          "tag": "flag_questActor",
+          "route": "via_spawn_opts",
+          "eid": "flag_questActor__via_spawn_opts",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "flag_questActor",
+          "route": "via_harness_verb",
+          "eid": "flag_questActor__via_harness_verb",
+          "error": null,
+          "classified_respawns": false,
+          "alive_after_kill": false,
+          "alive_after_trigger": false,
+          "stood_back_up": false
+        },
+        {
+          "tag": "flag_boss",
+          "route": "via_spawn_opts",
+          "eid": "flag_boss__via_spawn_opts",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "flag_boss",
+          "route": "via_harness_verb",
+          "eid": "flag_boss__via_harness_verb",
+          "error": null,
+          "classified_respawns": false,
+          "alive_after_kill": false,
+          "alive_after_trigger": false,
+          "stood_back_up": false
+        },
+        {
+          "tag": "flag_trainer",
+          "route": "via_spawn_opts",
+          "eid": "flag_trainer__via_spawn_opts",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "flag_trainer",
+          "route": "via_harness_verb",
+          "eid": "flag_trainer__via_harness_verb",
+          "error": null,
+          "classified_respawns": false,
+          "alive_after_kill": false,
+          "alive_after_trigger": false,
+          "stood_back_up": false
+        },
+        {
+          "tag": "flag_unique",
+          "route": "via_spawn_opts",
+          "eid": "flag_unique__via_spawn_opts",
+          "error": null,
+          "classified_respawns": true,
+          "alive_after_kill": false,
+          "alive_after_trigger": true,
+          "stood_back_up": true
+        },
+        {
+          "tag": "flag_unique",
+          "route": "via_harness_verb",
+          "eid": "flag_unique__via_harness_verb",
+          "error": null,
+          "classified_respawns": false,
+          "alive_after_kill": false,
+          "alive_after_trigger": false,
+          "stood_back_up": false
+        }
+      ],
+      "ordinary_came_back": 2,
+      "protected_that_stood_back_up": [
+        "flag_named/via_spawn_opts",
+        "flag_merchant/via_spawn_opts",
+        "flag_questActor/via_spawn_opts",
+        "flag_boss/via_spawn_opts",
+        "flag_trainer/via_spawn_opts",
+        "flag_unique/via_spawn_opts"
+      ],
+      "flags_honoured_via_spawn_opts": [],
+      "flags_honoured_via_harness_verb": [
+        "flag_named",
+        "flag_merchant",
+        "flag_questActor",
+        "flag_boss",
+        "flag_trainer",
+        "flag_unique"
+      ]
+    }
+  ],
+  "notes": [],
+  "page_errors": []
+}

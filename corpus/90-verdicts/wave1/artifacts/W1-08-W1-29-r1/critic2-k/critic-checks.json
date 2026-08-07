@@ -1,0 +1,345 @@
+{
+  "schema": "critic-input-checks/1",
+  "tool": "tools/harness/critic-w1-08-29-r1c.mjs",
+  "ran_at": "2026-08-07T12:39:18.984Z",
+  "counts": {
+    "total": 3,
+    "pass": 1,
+    "fail": 2,
+    "unmeasurable": 0
+  },
+  "checks": [
+    {
+      "id": "K1-TOUCH-COUPLING",
+      "what": "RI-MTH07: perturbing the touch model changes what an entity/the renderer does",
+      "status": "pass",
+      "threshold": "coupling 0 = orphan model, score the dimension 0 fail-closed (RI-MTH07 §B)",
+      "detail": {
+        "model_value_a": {
+          "overlay": "visible, 0 pointers",
+          "frame": 32,
+          "visible": true,
+          "controls": 11,
+          "held": true
+        },
+        "model_value_b": {
+          "overlay": "visible, 4 pointers on control centres",
+          "frame": 34,
+          "held": [
+            "light",
+            "block"
+          ],
+          "pressed_controls": 4,
+          "touch_visible": true
+        },
+        "observed_a": "8a08229ddf69f040",
+        "observed_b": "708a492d5715350d",
+        "coupling": 1,
+        "null_control": {
+          "a": "0562d59573dcef9a",
+          "b": "0562d59573dcef9a",
+          "identical": true
+        },
+        "positive_control": {
+          "before_camera_turn": "84290a18beb2512c",
+          "after_camera_turn": "e0cafa4d3fa131a3",
+          "hash_moved": true
+        }
+      }
+    },
+    {
+      "id": "K2-ROTATE-COUPLING",
+      "what": "RI-MTH07: the rotate line the model authors reaches a draw call",
+      "status": "FAIL",
+      "threshold": "RI-JRN04 H1/M-P16: an in-world rotate illustration, drawn",
+      "detail": {
+        "model_value_a": {
+          "orientation": "landscape",
+          "rotateState": null
+        },
+        "model_value_b": {
+          "orientation": "portrait",
+          "rotateState": null
+        },
+        "observed_a": "94b26d08bf3fb7ef",
+        "observed_b": "92ceeef9780b30de",
+        "note": "hashes differ only because the canvas is resized; the load-bearing observation is the drawn-text stream",
+        "rendered_text_in_portrait": {
+          "entries": 0,
+          "distinct": []
+        },
+        "coupling": 0,
+        "renderer_consumers_of_rotateState": "none — grep over game/**/*.js finds rotateState only in game/src/input/viewport.js"
+      }
+    },
+    {
+      "id": "K3-TEXT-POSITIVE",
+      "what": "the rendered-text register M-K20 (HF5) searches can ever be non-empty",
+      "status": "FAIL",
+      "threshold": "AGENT-PROTOCOL §\"a probe that cannot fail is worse than no probe\"",
+      "detail": {
+        "probes": [
+          {
+            "state": "helstrom-market",
+            "entries": 0,
+            "distinct_count": 0,
+            "sample": []
+          },
+          {
+            "state": "thorn-hall",
+            "entries": 0,
+            "distinct_count": 0,
+            "sample": []
+          },
+          {
+            "state": "ui-journal",
+            "entries": 0,
+            "distinct_count": 0,
+            "sample": []
+          },
+          {
+            "state": "npc_showcase",
+            "entries": 0,
+            "distinct_count": 0,
+            "sample": []
+          },
+          {
+            "state": "default",
+            "entries": 0,
+            "distinct_count": 0,
+            "sample": []
+          },
+          {
+            "state": "settlement_primary_street",
+            "entries": 0,
+            "distinct_count": 0,
+            "sample": []
+          },
+          {
+            "state": "helstrom-market + uiOpen(dialogue)",
+            "entries": 0,
+            "sample": [],
+            "ui": {
+              "mode": "world",
+              "map_exists": false,
+              "navigable": [
+                "inventory",
+                "journal",
+                "sheet",
+                "spells"
+              ],
+              "screen": {
+                "w": 1920,
+                "h": 1080,
+                "dpr": 1
+              },
+              "elements": [
+                {
+                  "id": "hud.health",
+                  "kind": "health_bar",
+                  "rect": [
+                    42,
+                    40,
+                    400,
+                    16
+                  ],
+                  "visible": true,
+                  "opacity": 1,
+                  "text": null,
+                  "fill": 1,
+                  "worldAnchor": null,
+                  "material": null,
+                  "focused": false
+                },
+                {
+                  "id": "hud.stamina",
+                  "kind": "stamina_bar",
+                  "rect": [
+                    42,
+                    64,
+                    400,
+                    10
+                  ],
+                  "visible": true,
+                  "opacity": 1,
+                  "text": null,
+                  "fill": 1,
+                  "worldAnchor": null,
+                  "material": null,
+                  "focused": false,
+                  "meta": {
+                    "regen_blocked": false,
+                    "exhausted": false
+                  }
+                },
+                {
+                  "id": "hud.focus",
+                  "kind": "focus_bar",
+                  "rect": [
+                    42,
+                    82,
+                    400,
+                    10
+                  ],
+                  "visible": true,
+                  "opacity": 1,
+                  "text": null,
+                  "fill": 1,
+                  "worldAnchor": null,
+                  "material": null,
+                  "focused": false
+                },
+                {
+                  "id": "hud.heal",
+                  "kind": "heal_charges",
+                  "rect": [
+                    42,
+                    118,
+                    110,
+                    24
+                  ],
+                  "visible": true,
+                  "opacity": 1,
+                  "text": "5",
+                  "fill": 1,
+                  "worldAnchor": null,
+                  "material": null,
+                  "focused": false,
+                  "meta": {
+                    "charges": 5,
+                    "max": 5
+                  }
+                },
+                {
+                  "id": "hud.equipload",
+                  "kind": "equip_load",
+                  "rect": [
+                    1758,
+                    852,
+                    120,
+                    24
+                  ],
+                  "visible": true,
+                  "opacity": 1,
+                  "text": "LIGHT",
+                  "fill": 0.24,
+                  "worldAnchor": null,
+                  "material": null,
+                  "focused": false,
+                  "meta": {
+                    "roll_class": "LIGHT",
+                    "pct": 24
+                  }
+                },
+                {
+                  "id": "hud.quickslots",
+                  "kind": "quick_slots",
+                  "rect": [
+                    1728,
+                    888,
+                    150,
+                    150
+                  ],
+                  "visible": true,
+                  "opacity": 1,
+                  "text": "Spark-Dart",
+                  "fill": null,
+                  "worldAnchor": null,
+                  "material": null,
+                  "focused": false,
+                  "meta": {
+                    "left": null,
+                    "right": null,
+                    "item": null,
+                    "spell": "Spark-Dart",
+                    "leftActive": false,
+                    "rightActive": false
+                  }
+                }
+              ],
+              "coveragePct": 2.0457,
+              "hud": {
+                "persistent_count": 6,
+                "total_count": 6,
+                "coverage_pct": 2.0457,
+                "coverage_with_conditional_pct": 2.0457,
+                "centre_coverage_pct": 0,
+                "world_anchored": [],
+                "numeric_text": [
+                  "hud.heal"
+                ],
+                "bar_contrasts": {
+                  "health": {
+                    "fill_vs_trough": 6.351
+                  },
+                  "stamina": {
+                    "fill_vs_trough": 7.966,
+                    "spent_vs_trough": 10.923,
+                    "exhausted_trough_vs_trough": 10.923
+                  },
+                  "focus": {
+                    "fill_vs_trough": 5.659
+                  },
+                  "boss": {
+                    "fill_vs_trough": 6.351
+                  },
+                  "buildup_poison": {
+                    "fill_vs_trough": 7.827
+                  },
+                  "buildup_disease": {
+                    "fill_vs_trough": 6.351
+                  },
+                  "buildup_curse": {
+                    "fill_vs_trough": 5.659
+                  },
+                  "buildup_frost": {
+                    "fill_vs_trough": 8.826
+                  }
+                }
+              },
+              "menu": {
+                "area_frac": 0,
+                "opacity": 0,
+                "paused": false
+              },
+              "book": null,
+              "focus": null,
+              "journal": null,
+              "fonts": [
+                {
+                  "family": "Argonian Reed (project)",
+                  "size_px": 19,
+                  "weight": 1.15,
+                  "path": "game/src/ui/glyphs.js"
+                },
+                {
+                  "family": "Argonian Bone-cut (project)",
+                  "size_px": 15,
+                  "weight": 1.5,
+                  "path": "game/src/ui/glyphs.js"
+                }
+              ],
+              "textRenderPath": "canvas-vector",
+              "text_raster_scale": 1,
+              "text_glyph_source": "game/src/ui/glyphs.js",
+              "materials": [],
+              "overdraw": 0.02,
+              "surfaces": 1,
+              "full_screen_panels": 0,
+              "hud_elements": 6,
+              "markers": 0,
+              "world_rendered_behind": true,
+              "dialogue_surface": {
+                "open": false
+              },
+              "non_world_area_frac": 0.0205,
+              "draw_calls": 43,
+              "frame": 60
+            }
+          }
+        ],
+        "verdict": "M-K20 searches a stream nothing ever writes — the check cannot fail"
+      }
+    }
+  ]
+}

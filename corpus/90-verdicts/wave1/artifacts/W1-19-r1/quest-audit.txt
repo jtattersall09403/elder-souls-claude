@@ -1,0 +1,27 @@
+quest-audit: 69 quests in 14 file(s) under game/data/quests/
+
+  RI-QST04 §D census
+    PASS  mean_resolutions                  2.97   target >= 2.4 (hard fail < 2.0)
+    PASS  single_solution_pct               1.45   target <= 15% (hard fail > 30%)
+    below  mean_branches                     1.25   target >= 1.3 (hard fail < 1.0)
+    PASS  with_failures_pct                98.55   target >= 70% (hard fail < 40%)
+    PASS  can_fail_false_pct                1.45   target <= 20% (hard fail > 40%)
+    below  silent_failure_pct               22.86   target 5-15% (hard fail 0 or > 30%)
+    PASS  mean_journal                      7.57   target >= 5 (hard fail < 4)
+    PASS  directions_pct                     100   target 100% (hard fail otherwise)
+    below  multi_faction_consequence_pct    18.84   target >= 30% (hard fail < 10%)
+
+  RI-QST09 §2 exclusivity census
+    PASS  X1_exclusive_pct                 56.52   bar >= 45%
+    PASS  X2_quests_with_K2_or_higher         13   bar >= 12
+    PASS  X3_quests_with_K3                    9   bar >= 6
+    PASS  X4_quests_with_K4                    6   bar >= 3
+    PASS  X5_irreversibility_index         0.989   bar >= 0.85
+    PASS  X6_declared_reopenable               2   bar <= 2
+    PASS  X7_cosmetic_pairs                    0   bar 0
+    PASS  X8_foreshadowed_pct              84.62   bar >= 80%
+    PASS  X10_nonviolent_exclusive_pct       100   bar >= 60%
+
+  closure score 500 over 272 closures
+
+  integrity problems: 0

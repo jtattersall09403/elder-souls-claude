@@ -1,0 +1,237 @@
+{
+  "schema": "critic/w1-13-c@1",
+  "placement": [
+    {
+      "id": "C1_real_fall_death",
+      "ledge_pos": [
+        3814.57,
+        3.035,
+        3971.5
+      ],
+      "hp0_pos": [
+        3814.57,
+        3.035,
+        3971.5
+      ],
+      "frames_to_hp0": 149,
+      "died": true,
+      "cause_recorded": "combat",
+      "placement_rule": "death_point",
+      "death_pos": [
+        3814.57,
+        3.035043,
+        3971.5
+      ],
+      "stain_pos": [
+        3814.57,
+        3.035043235241269,
+        3971.5
+      ],
+      "stain_offset_from_death_point_m": 0,
+      "stain_offset_from_last_grounded_m": 0,
+      "surface_up_before_step": true,
+      "expected_rule": "last_grounded",
+      "pass": false
+    },
+    {
+      "id": "C2_real_drown_death",
+      "skipped": "no W4/W5 water within 600 m of hearth-archon"
+    },
+    {
+      "id": "C3_death_in_boss_arena",
+      "gate": {
+        "id": "gate-drowned-xanmeer",
+        "pos": [
+          3477,
+          3.82,
+          2857.5
+        ],
+        "radius_m": 26
+      },
+      "death_pos": [
+        3477,
+        4.08,
+        2857.5
+      ],
+      "placement_rule": "outside_fog_gate",
+      "stain_pos": [
+        3477,
+        4.08,
+        2857.5
+      ],
+      "stain_dist_from_gate_centre_m": 0,
+      "outside_the_gate": false,
+      "pass": false
+    }
+  ],
+  "conservation": {
+    "deaths": 12,
+    "doubled": 4,
+    "leg1_banked_eq_held": "12/12",
+    "leg2_held_eq_stored": "12/12",
+    "leg3_stored_eq_returned": "8/8",
+    "first_bloom_destroyed_on_every_double": true,
+    "mismatches": [],
+    "rows": [
+      {
+        "i": 0,
+        "doubled": false,
+        "banked": 313,
+        "held_at_death": 313,
+        "stored_in_bloom": 313,
+        "second_bloom_souls": null,
+        "first_destroyed": null,
+        "returned": 313,
+        "leg1_banked_eq_held": true,
+        "leg2_held_eq_stored": true,
+        "leg3_stored_eq_returned": true
+      },
+      {
+        "i": 1,
+        "doubled": false,
+        "banked": 734,
+        "held_at_death": 734,
+        "stored_in_bloom": 734,
+        "second_bloom_souls": null,
+        "first_destroyed": null,
+        "returned": 734,
+        "leg1_banked_eq_held": true,
+        "leg2_held_eq_stored": true,
+        "leg3_stored_eq_returned": true
+      },
+      {
+        "i": 2,
+        "doubled": true,
+        "banked": 1155,
+        "held_at_death": 1155,
+        "stored_in_bloom": 1155,
+        "second_bloom_souls": 0,
+        "first_destroyed": true,
+        "returned": 0,
+        "leg1_banked_eq_held": true,
+        "leg2_held_eq_stored": true,
+        "leg3_stored_eq_returned": null
+      },
+      {
+        "i": 3,
+        "doubled": false,
+        "banked": 1576,
+        "held_at_death": 1576,
+        "stored_in_bloom": 1576,
+        "second_bloom_souls": null,
+        "first_destroyed": null,
+        "returned": 1576,
+        "leg1_banked_eq_held": true,
+        "leg2_held_eq_stored": true,
+        "leg3_stored_eq_returned": true
+      },
+      {
+        "i": 4,
+        "doubled": false,
+        "banked": 1997,
+        "held_at_death": 1997,
+        "stored_in_bloom": 1997,
+        "second_bloom_souls": null,
+        "first_destroyed": null,
+        "returned": 1997,
+        "leg1_banked_eq_held": true,
+        "leg2_held_eq_stored": true,
+        "leg3_stored_eq_returned": true
+      },
+      {
+        "i": 5,
+        "doubled": true,
+        "banked": 2418,
+        "held_at_death": 2418,
+        "stored_in_bloom": 2418,
+        "second_bloom_souls": 0,
+        "first_destroyed": true,
+        "returned": 0,
+        "leg1_banked_eq_held": true,
+        "leg2_held_eq_stored": true,
+        "leg3_stored_eq_returned": null
+      },
+      {
+        "i": 6,
+        "doubled": false,
+        "banked": 2839,
+        "held_at_death": 2839,
+        "stored_in_bloom": 2839,
+        "second_bloom_souls": null,
+        "first_destroyed": null,
+        "returned": 2839,
+        "leg1_banked_eq_held": true,
+        "leg2_held_eq_stored": true,
+        "leg3_stored_eq_returned": true
+      },
+      {
+        "i": 7,
+        "doubled": false,
+        "banked": 3260,
+        "held_at_death": 3260,
+        "stored_in_bloom": 3260,
+        "second_bloom_souls": null,
+        "first_destroyed": null,
+        "returned": 3260,
+        "leg1_banked_eq_held": true,
+        "leg2_held_eq_stored": true,
+        "leg3_stored_eq_returned": true
+      },
+      {
+        "i": 8,
+        "doubled": true,
+        "banked": 3681,
+        "held_at_death": 3681,
+        "stored_in_bloom": 3681,
+        "second_bloom_souls": 0,
+        "first_destroyed": true,
+        "returned": 0,
+        "leg1_banked_eq_held": true,
+        "leg2_held_eq_stored": true,
+        "leg3_stored_eq_returned": null
+      },
+      {
+        "i": 9,
+        "doubled": false,
+        "banked": 4102,
+        "held_at_death": 4102,
+        "stored_in_bloom": 4102,
+        "second_bloom_souls": null,
+        "first_destroyed": null,
+        "returned": 4102,
+        "leg1_banked_eq_held": true,
+        "leg2_held_eq_stored": true,
+        "leg3_stored_eq_returned": true
+      },
+      {
+        "i": 10,
+        "doubled": false,
+        "banked": 4523,
+        "held_at_death": 4523,
+        "stored_in_bloom": 4523,
+        "second_bloom_souls": null,
+        "first_destroyed": null,
+        "returned": 4523,
+        "leg1_banked_eq_held": true,
+        "leg2_held_eq_stored": true,
+        "leg3_stored_eq_returned": true
+      },
+      {
+        "i": 11,
+        "doubled": true,
+        "banked": 4944,
+        "held_at_death": 4944,
+        "stored_in_bloom": 4944,
+        "second_bloom_souls": 0,
+        "first_destroyed": true,
+        "returned": 0,
+        "leg1_banked_eq_held": true,
+        "leg2_held_eq_stored": true,
+        "leg3_stored_eq_returned": null
+      }
+    ],
+    "pass": true
+  },
+  "notes": [],
+  "page_errors": []
+}

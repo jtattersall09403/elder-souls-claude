@@ -10,12 +10,25 @@ import { RUNS_DIR } from '../lib/cli.mjs';
 
 export const PROTOCOL = 'elder-souls/capture@1';
 
-/** Everything the daemon owns on disk. Under reports/runs/, which is already gitignored. */
-export const CAPD_DIR = path.join(RUNS_DIR, '.capture');
-export const SOCK_PATH = process.env.ES_CAPTURE_SOCK || path.join(CAPD_DIR, 'capd.sock');
+/**
+ * Everything the daemon owns on disk. Under reports/runs/, which is already gitignored.
+ *
+ * ISOLATION IS DERIVED FROM THE SOCKET, not bolted on beside it. `ES_CAPTURE_SOCK` used to move
+ * only the socket: `LOCK_PATH` and `LOG_PATH` stayed pinned to RUNS_DIR/.capture, so the R1
+ * critic's deliberately isolated daemon wrote into the SHARED capd.log and contended for the
+ * SHARED capd.lock — an "isolated" instance that could still disturb, and be disturbed by, the
+ * daemon every other agent on this box is using. All four paths now come from one place.
+ */
+const SOCK_ENV = process.env.ES_CAPTURE_SOCK || '';
+export const SOCK_PATH = SOCK_ENV || path.join(RUNS_DIR, '.capture', 'capd.sock');
+/** The directory the daemon owns: the socket's own directory, whatever that is. */
+export const CAPD_DIR = path.dirname(SOCK_PATH);
 export const LOCK_PATH = path.join(CAPD_DIR, 'capd.lock');
 export const LOG_PATH = path.join(CAPD_DIR, 'capd.log');
-export const CACHE_DIR = process.env.ES_CAPTURE_CACHE || path.join(RUNS_DIR, 'capture-cache');
+/** The HMAC key with which the daemon signs its own cache manifests. See server.mjs readCache(). */
+export const CACHE_KEY_PATH = path.join(CAPD_DIR, 'cache-mac.key');
+export const CACHE_DIR = process.env.ES_CAPTURE_CACHE
+  || (SOCK_ENV ? path.join(CAPD_DIR, 'cache') : path.join(RUNS_DIR, 'capture-cache'));
 
 /** Defaults. Every one of these is part of the cache key, because every one changes the image. */
 export const DEFAULTS = {
@@ -78,8 +91,46 @@ export function canonicalSpec(spec = {}) {
     settle_frames: Number(spec.settle_frames ?? DEFAULTS.settle_frames),
     settle_gap: Number(spec.settle_gap ?? DEFAULTS.settle_gap),
     settle_threshold: Number(spec.settle_threshold ?? DEFAULTS.settle_threshold),
+    // Force the third frame even when the skip rule would allow two. Changes what is PROVED about
+    // the picture, and a proof is part of what a cache entry is, so it is in the key.
+    settle_always_c: !!spec.settle_always_c,
+    /**
+     * THE FALSIFICATION HOOK, AND IT IS IN THE KEY.
+     *
+     * `__no_camera_stream` removes the daemon's stream-drain at the camera, so a DIFFERENT and
+     * emptier world is photographed. It was the one dishonest mutation of the nine the R1 critic
+     * tested (`P2-cache-key-honesty`): it moved the picture and did not move the key, and it was
+     * dropped by canonicalSpec so it did not appear in the manifest either. Combined with the old
+     * `no_cache` — which meant "do not READ" and still wrote — that was a cache-poisoning
+     * primitive: alter how the picture is produced, then bank the result under the legitimate key.
+     * `no_cache` no longer writes (see server.mjs), and this is now keyed and recorded.
+     */
+    __no_camera_stream: !!spec.__no_camera_stream,
   };
   return c;
+}
+
+/**
+ * Top-level spec keys the daemon actually understands. Anything else a caller passes is IGNORED,
+ * and silently ignoring `exposure` or `lod` is how a caller comes to believe it asked for something
+ * it did not get. `unknownKeys()` is recorded in every manifest and returned to the caller.
+ *
+ * `no_cache` is deliberately NOT in the canonical spec: it changes only whether the cache is
+ * consulted, never the picture, so keying on it would fork the cache for no reason.
+ */
+export const KNOWN_SPEC_KEYS = new Set([
+  'viewpoint', 'viewpoints_file', 'state', 'seed', 'place', 'pose', 'camera',
+  'time', 'weather', 'tide', 'width', 'height', 'ui', 'menu', 'ops',
+  'settle_frames', 'settle_gap', 'settle_threshold', 'settle_always_c',
+  'no_cache', '__no_camera_stream',
+  // declaration + free text: read by the arrival gate, recorded in the manifest audit block,
+  // deliberately absent from the cache key because none of them moves a pixel.
+  'evidence_of', 'arrival', 'claim', 'for', 'purpose', 'note', 'title', 'caption', 'description',
+  'why', 'label', 'item', 'ri', 'tags',
+]);
+
+export function unknownKeys(spec = {}) {
+  return Object.keys(spec).filter((k) => !KNOWN_SPEC_KEYS.has(k));
 }
 
 /** Stable JSON — keys sorted at every level, so key order in the caller cannot fork the cache. */

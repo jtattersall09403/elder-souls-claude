@@ -29,6 +29,7 @@
 'use strict';
 
 import { playerRaceClass } from './reaction.js';
+import { topicKey } from '../core/topics.js';
 
 /**
  * The band a disposition falls in, READ OUT OF `greetings.json#keying.bands`.
@@ -88,9 +89,15 @@ export function buildTopicIndex(topicDocs) {
       // `id`. Indexing those produced a single junk entry under the key `undefined`. Skip
       // anything that is not a topic record rather than pretending it is one.
       if (!t || typeof t.id !== 'string') continue;
-      const cur = idx.get(t.id) || { id: t.id, infos: [] };
+      // Keyed on the FOLDED spelling (core/topics.js). The dialogue files write slugs and the
+      // NPC records write the prose form of the same keyword, and until this fold existed 47
+      // distinct topic ids sat in `npc.topics` with no reachable info — the person advertised
+      // a subject and had nothing to say on it. `id` keeps the authored spelling, because that
+      // is what a save file and a UI should show.
+      const key = topicKey(t.id);
+      const cur = idx.get(key) || { id: t.id, infos: [] };
       for (const info of (t.infos || [])) cur.infos.push({ ...info, from: doc.group || null });
-      idx.set(t.id, cur);
+      idx.set(key, cur);
     }
   }
   return idx;
@@ -102,7 +109,7 @@ export function buildTopicIndex(topicDocs) {
  * here and nowhere else, and both are read against the LIVE player race rather than against a
  * snapshot, so `setState({race})` moves the list without anything being respawned.
  */
-export function infoAllowed(info, { race, upbringing }) {
+export function infoAllowed(info, { race, upbringing, disposition, knows }) {
   if (!info) return false;
   const req = info.requires || null;
   const forb = info.forbids || null;
@@ -110,11 +117,37 @@ export function infoAllowed(info, { race, upbringing }) {
   if (req && Array.isArray(req.upbringing) && req.upbringing.indexOf(upbringing) < 0) return false;
   if (forb && Array.isArray(forb.race) && forb.race.indexOf(race) >= 0) return false;
   if (forb && Array.isArray(forb.upbringing) && forb.upbringing.indexOf(upbringing) >= 0) return false;
+  // Filter field 10 — Disposition >= N (RI-DLG01 §A). `d` is authored across this corpus and
+  // was read by NOTHING until now: `tools/dialogue/build-graph.mjs` counts it as a filter for
+  // the unreachable-INFO lint while the world-side reader ignored it, so every disposition
+  // band in the dialogue data was decorative. It is checked only when the caller supplies a
+  // disposition, so a probe that asks `infoFor(idx, id, npc, {race, upbringing})` keeps its
+  // old answers and nothing that was passing starts failing for a reason it cannot see.
+  if (info.d != null && disposition !== undefined && Number(disposition) < Number(info.d)) return false;
+  // Filter fields 11-16 — the world-state conditions (`Journal`, `Global`). `knows` is the set
+  // of world flags the character has actually earned. `requires.knows` is ANY-of, because two
+  // different routes through an act can teach the same thing; `requires.knows_all` is ALL-of,
+  // for a claim that is only worth putting to somebody once every piece of it is in hand.
+  // Enforced only when the caller supplies the set, for the same reason as `d`.
+  if (knows) {
+    if (req && Array.isArray(req.knows) && !req.knows.some((k) => knows.has(k))) return false;
+    if (req && Array.isArray(req.knows_all) && !req.knows_all.every((k) => knows.has(k))) return false;
+    if (forb && Array.isArray(forb.knows) && forb.knows.some((k) => knows.has(k))) return false;
+  } else if (req && (Array.isArray(req.knows) || Array.isArray(req.knows_all))) {
+    // No knowledge context means the character has learned nothing we can see. A gate whose
+    // evidence is missing must close, not open — an unverifiable requirement that passes is
+    // the "the gate is decorative" failure RI-JRN07 M-Q14 makes a hard fail.
+    return false;
+  }
   return true;
 }
 
-/** `the-hatch-name-list` -> `the_hatch_name_list`, the key an NPC record writes a line under. */
-function lineKey(topicId) { return String(topicId).split('-').join('_'); }
+/**
+ * `the-hatch-name-list` -> `the_hatch_name_list`, the key an NPC record writes a line under.
+ * Folded first (core/topics.js) so that the prose spelling of the same keyword — which is what
+ * the main-quest NPC records use — finds the same field.
+ */
+function lineKey(topicId) { return topicKey(topicId).split(' ').join('_'); }
 
 /**
  * The info this person would give on this topic, or null if there is nothing they are willing
@@ -143,7 +176,7 @@ function lineKey(topicId) { return String(topicId).split('-').join('_'); }
 export function infoFor(topicIndex, topicId, npc, player) {
   const own = npc.lines ? npc.lines[lineKey(topicId)] : null;
   if (own) return { topic: topicId, actor: npc.actor || null, text: own, gated: false, source: 'npc' };
-  const t = topicIndex.get(topicId);
+  const t = topicIndex.get(topicKey(topicId));
   if (!t) return null;
   const actor = npc.actor || null;
   let best = null, bestScore = -1;
@@ -161,7 +194,16 @@ export function infoFor(topicIndex, topicId, npc, player) {
     // which the province's answer most depends on who is asking. The gates were being read and
     // were still decorative. Specificity ordering is what makes an ungated info mean "when
     // nothing more particular applies" rather than "always".
-    const score = (matchesActor ? 4 : 0) + (info.requires ? 2 : 0) + (info.forbids ? 1 : 0);
+    //
+    // `d` joins the same ladder, above `forbids` and below `requires`. Morrowind expresses a
+    // disposition band by stacking INFOs with descending `Disposition >=` minima and taking the
+    // first that passes; because this reader scores rather than takes-the-first, a band has to
+    // be worth something or a d60 answer and a d30 answer would tie and the authored order
+    // alone would decide. It scores by the HEIGHT of the bar, so the highest band the speaker
+    // clears is the one the player hears — which is the same answer Morrowind's authored
+    // descending order gives, obtained without depending on file order.
+    const dScore = info.d != null ? 1 + Math.min(1, Number(info.d) / 100) : 0;
+    const score = (matchesActor ? 8 : 0) + (info.requires ? 4 : 0) + dScore + (info.forbids ? 0.5 : 0);
     if (score > bestScore) { best = info; bestScore = score; }
   }
   if (!best) return null;
@@ -218,6 +260,11 @@ export class Conversation {
     this.npc = npc;
     this.sel = 0;
     this.said = null;
+    // The filter context this conversation is conducted under. The derived disposition and the
+    // world flags the character has actually earned are part of who is standing there, so they
+    // travel with the player view rather than being re-supplied at every `say()`; `say()` is
+    // called from the UI and had no way to know either of them.
+    this.player = { ...player, disposition: dispo, knows: player.knows || this.knows || null };
     this.greeting = greetingFor(this.data, {
       npcId: npc.eid, reactionGroup: npc.reaction_group, disposition: dispo,
       playerRace: player.race, nth,
@@ -227,13 +274,25 @@ export class Conversation {
     if (!this.greeting && npc.lines && npc.lines.greeting) {
       this.greeting = { cell: null, reaction_group: npc.reaction_group, disposition_band: null, player_race_class: playerRaceClass(player.race), line: npc.lines.greeting, pool_size: 1 };
     }
-    this.list = topicsFor(this.topics, npc, player);
+    this.list = topicsFor(this.topics, npc, this.player);
     return this;
   }
 
+  /**
+   * The world flags this character has earned, as a Set. Installed by the engine at boot so the
+   * knowledge gates in `dialogue/topics/**` are evaluated against what the player actually did
+   * rather than against what the quest data knows (RI-JRN07 M-Q14 — a gate that cannot fail is
+   * a gate that is not there).
+   */
+  setKnows(knows) { this.knows = knows || null; return this; }
+
   say(topicId, player) {
     if (!this.open || !this.npc) return null;
-    const info = infoFor(this.topics, topicId, this.npc, player);
+    // The conversation's own filter context wins: it carries the derived disposition and the
+    // knowledge set, which the caller does not have. A caller-supplied view is merged over it
+    // so a probe can still perturb race or upbringing mid-conversation and watch the list move.
+    const view = player ? { ...this.player, ...player } : this.player;
+    const info = infoFor(this.topics, topicId, this.npc, view);
     if (!info) return null;
     this.said = info;
     return info;

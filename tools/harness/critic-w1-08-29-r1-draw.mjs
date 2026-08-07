@@ -69,25 +69,37 @@ async function main() {
     H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     if (H.setViewport) H.setViewport({ width: 844, height: 390, pointer: 'coarse', hover: 'none', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
     H.stepFrames(4);
+    // THE SIM IS NOT ADVANCED BETWEEN THE TWO CAPTURES. Stepping the world between them would
+    // change the pixels through animation and light alone and the diff would prove nothing.
+    // Both frames are rendered from the SAME simulation frame, so any difference is the
+    // overlay and nothing else.
+    const f0 = H.getFrame();
+    if (H.renderedTextClear) H.renderedTextClear();
     const before = await H.screenshot();
+    const textBefore = H.getRenderedText ? H.getRenderedText() : null;
     // four simultaneous pointers: floating stick, camera drag, and two buttons
     H.touchDown(1, 120, 300); H.touchMove(1, 170, 250);
     H.touchDown(2, 620, 140); H.touchMove(2, 660, 150);
     H.touchDown(3, 780, 300);
     H.touchDown(4, 720, 240);
-    H.stepFrames(4);
     const st = H.getInputState();
-    const after = await H.screenshot();
+    if (H.renderedTextClear) H.renderedTextClear();
+    const after = await H.screenshot();          // renderNow(), no stepFrames
+    const textAfter = H.getRenderedText ? H.getRenderedText() : null;
+    const f1 = H.getFrame();
     const touchState = H.getTouchState ? H.getTouchState() : null;
     H.touchUp(1); H.touchUp(2); H.touchUp(3); H.touchUp(4);
-    return { before, after, identical: before === after, held: st.held.slice(), move: H.getMoveVector(), touchState, drawn: H.getDrawnGeometry ? Object.keys(H.getDrawnGeometry() || {}) : null };
+    return { before, after, identical: before === after, sim_frame_before: f0, sim_frame_after: f1,
+      held: st.held.slice(), move: H.getMoveVector(), touchState, textBefore, textAfter };
   });
   const p1 = writePng('touch-none.png', d1.before);
   const p2 = writePng('touch-four-pointers.png', d1.after);
   record('D1-TOUCH-DRAW',
-    'a four-pointer touch the model reports as registered changes the rendered frame',
-    !d1.identical,
-    { frames_identical: d1.identical, model_registered_held: d1.held, model_move_vector: d1.move, png_before: p1, png_after: p2 },
+    'a four-pointer touch the model reports as registered changes the rendered frame (same sim frame)',
+    !d1.identical && d1.sim_frame_before === d1.sim_frame_after,
+    { frames_identical: d1.identical, sim_frame_before: d1.sim_frame_before, sim_frame_after: d1.sim_frame_after,
+      model_registered_held: d1.held, model_move_vector: d1.move, touch_model: d1.touchState,
+      rendered_text_before: d1.textBefore, rendered_text_after: d1.textAfter, png_before: p1, png_after: p2 },
     'RI-JRN04 §G / CONSUMPTION §4: a control the player must find has to be drawn');
 
   // ---- D2: the rotate state ------------------------------------------------------------
@@ -96,19 +108,28 @@ async function main() {
     H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
     if (H.setViewport) H.setViewport({ width: 844, height: 390, pointer: 'coarse', hover: 'none' });
     H.stepFrames(2);
+    const vpLandscape = H.getViewport ? H.getViewport() : null;
+    const f0 = H.getFrame();
+    if (H.renderedTextClear) H.renderedTextClear();
     const landscape = await H.screenshot();
-    if (H.setViewport) H.setViewport({ width: 390, height: 844, pointer: 'coarse', hover: 'none' });
-    H.stepFrames(4);
+    const textLandscape = H.getRenderedText ? H.getRenderedText() : null;
+    if (H.setViewport) H.setViewport({ width: 390, height: 844, pointer: 'coarse', hover: 'none', orientation: 'portrait' });
     const vp = H.getViewport ? H.getViewport() : null;
-    const portrait = await H.screenshot();
-    return { landscape, portrait, identical: landscape === portrait, viewport: vp };
+    if (H.renderedTextClear) H.renderedTextClear();
+    const portrait = await H.screenshot();       // again, no stepFrames
+    const textPortrait = H.getRenderedText ? H.getRenderedText() : null;
+    return { landscape, portrait, identical: landscape === portrait, sim_frame: f0, sim_frame_after: H.getFrame(),
+      viewport_landscape: vpLandscape, viewport_portrait: vp, text_landscape: textLandscape, text_portrait: textPortrait };
   });
   const p3 = writePng('rotate-landscape.png', d2.landscape);
   const p4 = writePng('rotate-portrait.png', d2.portrait);
   record('D2-ROTATE-DRAW',
-    'the portrait rotate state the model reports is drawn on the frame',
+    'the portrait rotate state the model reports is drawn on the frame (same sim frame)',
     !d2.identical,
-    { frames_identical: d2.identical, viewport_model: d2.viewport, png_landscape: p3, png_portrait: p4 },
+    { frames_identical: d2.identical, sim_frame: d2.sim_frame, sim_frame_after: d2.sim_frame_after,
+      viewport_landscape: d2.viewport_landscape, viewport_portrait: d2.viewport_portrait,
+      rendered_text_landscape: d2.text_landscape, rendered_text_portrait: d2.text_portrait,
+      png_landscape: p3, png_portrait: p4 },
     'RI-JRN04 H1 / M-P16: an in-world rotate illustration, not a UI modal');
 
   // ---- D3: the four authored strings ---------------------------------------------------

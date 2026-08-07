@@ -2,16 +2,39 @@
   "task_id": "province-stream-pump",
   "brief": "orchestration/NEXT-DISPATCH.md §0 — province streamer is never pumped from the fixed step",
   "started": "2026-08-07",
-  "state": "researching",
+  "state": "measuring",
   "outputs_expected": [
-    "game/src/... streamer pumped from fixed step",
-    "tools/harness/prov-stream-probe.mjs (baseline + after)",
+    "tools/world/prov-stream.mjs (read-only streaming probe — DONE)",
+    "game/src/engine.js _streamProvince() called from _afterStep()",
+    "game/src/world/province.js radiusTiles/skinRadiusM/tileM as instance fields (consumption knobs)",
     "reports/world/province-stream/*.json"
   ],
-  "outputs_written": [],
-  "findings": [
-    "load average at start: 24.62 (four cores) — high; measurements taken under load will be flagged"
+  "outputs_written": [
+    "tools/world/prov-stream.mjs",
+    "reports/world/province-stream/BEFORE-camera3km.json",
+    "reports/world/province-stream/BEFORE-walk3km.json",
+    "game/src/engine.js: STREAM_* constants + _streamProvince() called from _afterStep()",
+    "game/src/world/province.js: tileM/radiusTiles/skinRadiusM fields + one-tile release hysteresis",
+    "reports/world/province-stream/AFTER-camera3km.json",
+    "reports/world/province-stream/AFTER-walked3km.json"
   ],
-  "next_step": "read game/src/render/places.js (Province), sim/step.js, engine.js _afterStep, main.js; find request()/update()",
-  "notes_for_successor": "Do NOT fix in the harness. Harness already calls request(); the fix must be driven from the simulation fixed step. Acceptance evidence must be a WALKED crossing (ARBITRATION S34), captured directly, not via the capture service (NOT SATISFIED)."
+  "findings": [
+    "load average at start 24.62 on four cores — HIGH. All wall-clock numbers below were taken under that.",
+    "boot-check PASS before any change.",
+    "BASELINE REPRODUCED (camera 3 km, 600 fixed steps, nothing teleports): ring_built 0/25, ring_unbuilt 25, ground_underfoot_built false, tilesBuiltTotal stayed at 25 for the whole 600 frames. NOTE the critic's 'tilesResident 0' is really 'zero of the 25 tiles that should be resident AT THE CAMERA'; tilesResident reads 25 because Lilmoth's ring is still resident 3 km behind. Same defect, sharper number.",
+    "BASELINE step cost, camera3km, 600 steps: mean 0.7275 ms/step, worst single step 28.83 ms (frame 45).",
+    "BASELINE WALKED (walkRoute crossing, stream:false, 3 km): ground_underfoot_built goes FALSE by ~750 m and stays false; 20 of 30 samples have no ground built under the player; ring 0/25 by 2.3 km; all four discs (skin/near/cover/focus) lag up to 2182.73 m.",
+    "BASELINE walking step cost: 0.116-0.230 ms/frame (mean over 3000-frame chunks).",
+    "All four camera-following layers hang off request(): province.skinAtPos (11 m hysteresis), nearAtPos (22 m), coverAt (14 m), sigLights. Each has its OWN internal distance gate, so calling request() often is cheap.",
+    "Both stepping paths call Engine._afterStep(): stepFrames() (engine.js:3209) and the rAF accumulator; walkRoute/walkPath/travelRide also call stepOnce()+_afterStep() per frame. So _afterStep() is the one slot that covers every way the world advances.",
+    "_afterStep() is OUTSIDE armSim(), so building geometry there is legal under the determinism guard; province.js contains no Math.random/Date.now/performance.now.",
+    "tools/harness/viewpoints-province.json names anchor states region_blackwood etc. which DO NOT EXIST in game/data/states — a separate defect, not fixed here.",
+    "FIX: Engine._streamProvince() in _afterStep(). Refocus every 2 m of movement; build 1 queued tile per 30 frames; build 2/frame while the nearest missing tile is within the 3x3 around the focus (queue[0].d <= 2). Focus = camera override eye if one is posed, else the player.",
+    "AFTER, critic baseline (camera 3 km, 600 fixed steps): ring_built 25/25, ring_unbuilt 0 (was 0/25 and 25), all four disc lags 0 m (were 3000 m).",
+    "AFTER, WALKED 3 km (4099 m of path, no teleport after load) + 600 more fixed steps: ring 25/25, unbuilt 0, ground underfoot TRUE, tilesBuiltTotal 145 (25 at load + 120 streamed in while walking). Disc lags: skin 0.63 m, near 6.63 m, cover 0.63 m.",
+    "SECOND DEFECT FOUND AND FIXED: request() released a tile the instant it left the build ring. Harmless when it only ran on a teleport; a thrash from the fixed step. A body oscillating on a tile EDGE flipped tx0 back and forth and released+rebuilt a 5-tile row each time. Measured: 30 tile builds for 26.9 m of movement, 92 of 30,000 steps over one 60 Hz frame. Fixed with one tile of release hysteresis (KEEP = radiusTiles + 1).",
+    "The straight-line-bearing budget walk from Lilmoth at 189 deg walks into the Topal Bay (26.9 m in 30,000 frames). The budget probe now follows the crossing road spline instead."
+  ],
+  "next_step": "crossing end to end; budget fixed vs deleted; consumption on radiusTiles; night walk",
+  "notes_for_successor": "Probe is tools/world/prov-stream.mjs. It reads window.__ENGINE read-only and NEVER calls request/pump/drain/streamAround — that is deliberate, the harness's own streamAround is why this defect survived. --tile-radius / --skin-radius perturb the streamer for RI-MTH07 consumption."
 }

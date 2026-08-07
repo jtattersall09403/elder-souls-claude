@@ -1,0 +1,14 @@
+{
+  "agent": "critic", "item": "W1-08-W1-29-r1", "state": "measuring",
+  "phase": "findings established, writing verdict",
+  "trusted_artifacts": ["c1","c2","c3","draw","rerun-desktop","rerun-pad","rerun-touch","rerun-viewport","rerun-rebind"],
+  "reran": ["critic2-e (E1 touch-roll, E2 double-bind, E3 rendered-text stream, E4 overlay draw)"],
+  "findings": [
+    "E1/E2 CLEARED the build: touch roll tap->roll hold->sprint; no shipped default control is double-bound",
+    "E3 FAIL: getRenderedText() returns 0 entries in every state incl. menu-open => M-K20 (HF5, 6 pts) cannot fail",
+    "draw PNGs are byte-identical (md5) => touch overlay and rotate state are never drawn",
+    "rotateState has NO renderer consumer; game/src/render/ui.js has zero touch references",
+    "13 scored check IDs absent from the instrument: M-K8 M-K9 M-K21 M-K22 M-N1 M-N2 M-N3 M-N5 M-N7 M-P14 M-P20 M-P24 M-P25"
+  ],
+  "updated_at": "2026-08-07T00:00:00Z"
+}

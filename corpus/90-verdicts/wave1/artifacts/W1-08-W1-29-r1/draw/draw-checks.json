@@ -1,0 +1,216 @@
+{
+  "schema": "critic-input-draw/1",
+  "tool": "tools/harness/critic-w1-08-29-r1-draw.mjs",
+  "s34_evidence_kind": "appearance",
+  "ran_at": "2026-08-07T11:58:36.806Z",
+  "counts": {
+    "total": 3,
+    "pass": 0,
+    "fail": 2
+  },
+  "checks": [
+    {
+      "id": "D1-TOUCH-DRAW",
+      "what": "a four-pointer touch the model reports as registered changes the rendered frame (same sim frame)",
+      "status": "FAIL",
+      "threshold": "RI-JRN04 §G / CONSUMPTION §4: a control the player must find has to be drawn",
+      "detail": {
+        "frames_identical": true,
+        "sim_frame_before": 4,
+        "sim_frame_after": 4,
+        "model_registered_held": [],
+        "model_move_vector": [
+          0,
+          0
+        ],
+        "touch_model": null,
+        "rendered_text_before": {
+          "accessor": "window.__HARNESS.getRenderedText()",
+          "source": "CanvasRenderingContext2D.fillText, instrumented at the draw call (game/src/render/text-register.js)",
+          "surfaces_instrumented": [
+            "dialogue",
+            "title"
+          ],
+          "next_index": 0,
+          "entries": [],
+          "distinct": [],
+          "distinct_count": 0,
+          "clipped_excluded": true,
+          "summary": {
+            "total": 0,
+            "dropped": 0,
+            "cap": 40000,
+            "surfaces": {}
+          }
+        },
+        "rendered_text_after": {
+          "accessor": "window.__HARNESS.getRenderedText()",
+          "source": "CanvasRenderingContext2D.fillText, instrumented at the draw call (game/src/render/text-register.js)",
+          "surfaces_instrumented": [
+            "dialogue",
+            "title"
+          ],
+          "next_index": 0,
+          "entries": [],
+          "distinct": [],
+          "distinct_count": 0,
+          "clipped_excluded": true,
+          "summary": {
+            "total": 0,
+            "dropped": 0,
+            "cap": 40000,
+            "surfaces": {}
+          }
+        },
+        "png_before": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/touch-none.png",
+        "png_after": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/touch-four-pointers.png"
+      }
+    },
+    {
+      "id": "D2-ROTATE-DRAW",
+      "what": "the portrait rotate state the model reports is drawn on the frame (same sim frame)",
+      "status": "FAIL",
+      "threshold": "RI-JRN04 H1 / M-P16: an in-world rotate illustration, not a UI modal",
+      "detail": {
+        "frames_identical": true,
+        "sim_frame": 2,
+        "sim_frame_after": 2,
+        "viewport_landscape": {
+          "deviceClass": "handheld",
+          "size": {
+            "w": 844,
+            "h": 390,
+            "dpr": 1
+          },
+          "insets": {
+            "top": 0,
+            "right": 44,
+            "bottom": 21,
+            "left": 44
+          },
+          "orientation": "landscape",
+          "orientationLocked": false,
+          "lockRefused": false,
+          "fullscreen": false,
+          "wakeLock": false,
+          "resizes": 0,
+          "rotateState": null,
+          "capabilities": {
+            "orientationLock": true,
+            "fullscreen": true,
+            "wakeLock": true,
+            "matchMedia": true
+          },
+          "min_text_css_px": 18
+        },
+        "viewport_portrait": {
+          "deviceClass": "handheld",
+          "size": {
+            "w": 844,
+            "h": 390,
+            "dpr": 1
+          },
+          "insets": {
+            "top": 0,
+            "right": 44,
+            "bottom": 21,
+            "left": 44
+          },
+          "orientation": "portrait",
+          "orientationLocked": false,
+          "lockRefused": false,
+          "fullscreen": false,
+          "wakeLock": false,
+          "resizes": 0,
+          "rotateState": {
+            "kind": "rotate",
+            "line": "The map lies the long way.",
+            "illustration": "chart-on-a-table"
+          },
+          "capabilities": {
+            "orientationLock": true,
+            "fullscreen": true,
+            "wakeLock": true,
+            "matchMedia": true
+          },
+          "min_text_css_px": 18
+        },
+        "rendered_text_landscape": {
+          "accessor": "window.__HARNESS.getRenderedText()",
+          "source": "CanvasRenderingContext2D.fillText, instrumented at the draw call (game/src/render/text-register.js)",
+          "surfaces_instrumented": [
+            "dialogue",
+            "title"
+          ],
+          "next_index": 0,
+          "entries": [],
+          "distinct": [],
+          "distinct_count": 0,
+          "clipped_excluded": true,
+          "summary": {
+            "total": 0,
+            "dropped": 0,
+            "cap": 40000,
+            "surfaces": {}
+          }
+        },
+        "rendered_text_portrait": {
+          "accessor": "window.__HARNESS.getRenderedText()",
+          "source": "CanvasRenderingContext2D.fillText, instrumented at the draw call (game/src/render/text-register.js)",
+          "surfaces_instrumented": [
+            "dialogue",
+            "title"
+          ],
+          "next_index": 0,
+          "entries": [],
+          "distinct": [],
+          "distinct_count": 0,
+          "clipped_excluded": true,
+          "summary": {
+            "total": 0,
+            "dropped": 0,
+            "cap": 40000,
+            "surfaces": {}
+          }
+        },
+        "png_landscape": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/rotate-landscape.png",
+        "png_portrait": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/rotate-portrait.png"
+      }
+    },
+    {
+      "id": "D3-STRINGS",
+      "what": "the authored refusal / rotate / calibration lines appear in what the renderer drew",
+      "status": "unmeasurable",
+      "threshold": "reported as evidence; the draw path is judged from D1/D2 and from the renderer source",
+      "detail": {
+        "strings": {
+          "rebinder_open": true,
+          "viewport_rotate": {
+            "kind": "rotate",
+            "line": "The map lies the long way.",
+            "illustration": "chart-on-a-table"
+          }
+        },
+        "drawnText": null,
+        "uiCensus": null,
+        "harness_methods": [
+          "getBuildInfo",
+          "setEquipLoad",
+          "uiOpen",
+          "uiClose",
+          "uiFocus",
+          "uiSearch",
+          "getUIPauseReport",
+          "setUIVisible",
+          "getDrawnGeometry",
+          "getRenderedText",
+          "renderedTextClear",
+          "getUIState",
+          "addStatusBuildup",
+          "questResolutionRequirements",
+          "setCrimeContext"
+        ]
+      }
+    }
+  ]
+}

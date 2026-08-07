@@ -1,0 +1,316 @@
+{
+  "schema": "elder-souls/ponr-probe@1",
+  "tool": "tools/experience/ponr-probe.mjs",
+  "written_by": "W1-19 under orchestration/TOOL-LOOP.md — RI-EXP05 step 2 named this command and it did not exist",
+  "at": "2026-08-07T12:02:09.984Z",
+  "ponr": {
+    "quest": "Q-MAIN-27",
+    "resolution": "res_cross",
+    "flag": "point_of_no_return_crossed"
+  },
+  "chain_walked": [
+    {
+      "quest": "Q-MAIN-01",
+      "ok": true,
+      "resolution": "res_carry"
+    },
+    {
+      "quest": "Q-MAIN-02",
+      "ok": true,
+      "resolution": "res_count_plain"
+    },
+    {
+      "quest": "Q-MAIN-03",
+      "ok": true,
+      "resolution": "res_report_drain"
+    },
+    {
+      "quest": "Q-MAIN-04",
+      "ok": true,
+      "resolution": "res_ledger"
+    },
+    {
+      "quest": "Q-MAIN-05",
+      "ok": true,
+      "resolution": "res_accept_quietly"
+    },
+    {
+      "quest": "Q-MAIN-06",
+      "ok": true,
+      "resolution": "res_the_number"
+    },
+    {
+      "quest": "Q-MAIN-07",
+      "ok": true,
+      "resolution": "res_trade_the_number"
+    },
+    {
+      "quest": "Q-MAIN-08",
+      "ok": true,
+      "resolution": "res_ask_the_crane"
+    },
+    {
+      "quest": "Q-MAIN-09",
+      "ok": true,
+      "resolution": "res_hold_both"
+    },
+    {
+      "quest": "Q-MAIN-10",
+      "ok": true,
+      "resolution": "res_hear_it_out"
+    },
+    {
+      "quest": "Q-MAIN-11",
+      "ok": true,
+      "resolution": "res_walk_it"
+    },
+    {
+      "quest": "Q-MAIN-12",
+      "ok": true,
+      "resolution": "res_full_test"
+    },
+    {
+      "quest": "Q-MAIN-13",
+      "ok": true,
+      "resolution": "res_go_in"
+    },
+    {
+      "quest": "Q-MAIN-14",
+      "ok": true,
+      "resolution": "res_take_the_skei"
+    },
+    {
+      "quest": "Q-MAIN-15",
+      "ok": true,
+      "resolution": "res_heard_it"
+    },
+    {
+      "quest": "Q-MAIN-16",
+      "ok": true,
+      "resolution": "res_persuade_chapter"
+    },
+    {
+      "quest": "Q-MAIN-17",
+      "ok": true,
+      "resolution": "res_whole_arithmetic"
+    },
+    {
+      "quest": "Q-MAIN-18",
+      "ok": true,
+      "resolution": "res_walk_the_eleven"
+    },
+    {
+      "quest": "Q-MAIN-19",
+      "ok": true,
+      "resolution": "res_expose_the_yard"
+    },
+    {
+      "quest": "Q-MAIN-20",
+      "ok": true,
+      "resolution": "res_the_paragraph"
+    },
+    {
+      "quest": "Q-MAIN-21",
+      "ok": true,
+      "resolution": "res_the_eleven"
+    },
+    {
+      "quest": "Q-MAIN-22",
+      "ok": true,
+      "resolution": "res_on_a_silence"
+    },
+    {
+      "quest": "Q-MAIN-23",
+      "ok": true,
+      "resolution": "res_sign_the_clause"
+    },
+    {
+      "quest": "Q-MAIN-24",
+      "ok": true,
+      "resolution": "res_shore_and_go"
+    },
+    {
+      "quest": "Q-MAIN-25",
+      "ok": true,
+      "resolution": "res_counting_floor"
+    },
+    {
+      "quest": "Q-MAIN-26",
+      "ok": true,
+      "resolution": "res_hear_him_out"
+    }
+  ],
+  "crossing": {
+    "ok": true,
+    "quest": "Q-MAIN-27",
+    "resolution": "res_cross",
+    "journal_index": 90,
+    "faction_reputation": {},
+    "world_flags": [
+      "on_the_reservoir_floor",
+      "point_of_no_return_crossed",
+      "crypt_road_closed_behind",
+      "intakes_from_above_closed",
+      "works_camp_unreachable",
+      "the_eight_voices_are_finished",
+      "the_sill_is_behind_me"
+    ],
+    "unlocked": [
+      "Q-MAIN-28"
+    ],
+    "locked": [
+      "Q-MAIN-29"
+    ],
+    "npc_disposition": {},
+    "kills_npc": []
+  },
+  "crossing_events": [
+    {
+      "frame": 0,
+      "day": 0,
+      "kind": "journal_write",
+      "quest": "Q-MAIN-27",
+      "index": 90,
+      "date": "1 Second Seed, 3E 427",
+      "flags": [
+        "quest_finished"
+      ],
+      "words": 26
+    },
+    {
+      "frame": 0,
+      "day": 0,
+      "kind": "quest_resolve",
+      "quest": "Q-MAIN-27",
+      "resolution": "res_cross",
+      "method": "wait",
+      "violence_required": false,
+      "faction_reputation": {},
+      "world_flags": [
+        "on_the_reservoir_floor",
+        "point_of_no_return_crossed",
+        "crypt_road_closed_behind",
+        "intakes_from_above_closed",
+        "works_camp_unreachable",
+        "the_eight_voices_are_finished",
+        "the_sill_is_behind_me"
+      ],
+      "unlocked": [
+        "Q-MAIN-28"
+      ],
+      "locked": [
+        "Q-MAIN-29"
+      ],
+      "npc_disposition": {},
+      "kills_npc": []
+    }
+  ],
+  "channel_evidence": [
+    {
+      "channel": "npc",
+      "source": "keeper-ei-vashan",
+      "journal_index": 20,
+      "evidence": "Ei-Vashan told me at the Bone Ladder well, three weeks ago, that once the working parts have your weight on the floor they will not accept a hand on the intakes"
+    },
+    {
+      "channel": "journal",
+      "source": "Q-MAIN-27 journal 40",
+      "journal_index": 40,
+      "evidence": "I am standing on the near side of the sill. Everything above me stops being reachable when I put my weight on the other side of it: the crypt road, the intakes "
+    },
+    {
+      "channel": "world",
+      "source": "the works camp",
+      "journal_index": 24,
+      "evidence": "The camp knew before I did. Rell has moved the barges to the deep-water berth and the cutters have stopped work on the twelfth root and the sick-tent has been s"
+    }
+  ],
+  "walk_back": [
+    {
+      "attempt": "open Q-MAIN-29",
+      "refused": true,
+      "why": "closed by an earlier choice; the topic \"the eleven live roots\" has not come up yet"
+    },
+    {
+      "attempt": "re-open Q-MAIN-16",
+      "refused": true,
+      "why": "already opened"
+    },
+    {
+      "attempt": "re-open Q-MAIN-22",
+      "refused": true,
+      "why": "already opened"
+    },
+    {
+      "attempt": "re-cross Q-MAIN-27",
+      "refused": true,
+      "why": "quest is closed"
+    }
+  ],
+  "metrics": [
+    {
+      "id": "located",
+      "label": "world flags set by the crossing",
+      "value": [
+        "on_the_reservoir_floor",
+        "point_of_no_return_crossed",
+        "crypt_road_closed_behind",
+        "intakes_from_above_closed",
+        "works_camp_unreachable",
+        "the_eight_voices_are_finished",
+        "the_sill_is_behind_me",
+        "unlocked:Q-MAIN-28",
+        "locked:Q-MAIN-29"
+      ],
+      "bar": "includes point_of_no_return_crossed",
+      "pass": true
+    },
+    {
+      "id": "LH2",
+      "label": "ponr_position_fraction",
+      "value": 0.9643,
+      "bar": ">= 0.94",
+      "pass": true
+    },
+    {
+      "id": "LH3",
+      "label": "ponr_signal_channels with an evidence line in shipped text",
+      "value": 3,
+      "bar": ">= 3",
+      "pass": true
+    },
+    {
+      "id": "LH4",
+      "label": "ponr_modals — confirmation prose, text-bearing events, UI surfaces raised at the crossing",
+      "value": {
+        "prose": 0,
+        "text_events": 0,
+        "ui_changed": false
+      },
+      "bar": "0",
+      "pass": true
+    },
+    {
+      "id": "LH5.walkback",
+      "label": "threads that still work after the crossing",
+      "value": [],
+      "bar": "none",
+      "pass": true
+    },
+    {
+      "id": "LH5.threads",
+      "label": "threads the crossing closes, each with an in-fiction acknowledgement",
+      "value": 4,
+      "bar": ">= 4, all in fiction",
+      "pass": true
+    },
+    {
+      "id": "LH5.flags",
+      "label": "declared closure flags actually set by the crossing",
+      "value": 4,
+      "bar": "all",
+      "pass": true
+    }
+  ],
+  "ok": true
+}

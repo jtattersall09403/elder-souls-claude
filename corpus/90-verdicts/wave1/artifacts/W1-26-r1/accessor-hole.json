@@ -1,0 +1,72 @@
+{
+  "probe": "critic-w1-26-r1b",
+  "renderer_reachable": true,
+  "instrumented": {
+    "dialogue": true,
+    "menus": false,
+    "title": true
+  },
+  "surfaces_owned": [
+    "ui(dialogue)",
+    "menus",
+    "title"
+  ],
+  "menus_elements_total": 6,
+  "menus_strings": [
+    "5",
+    "LIGHT",
+    "Spark-Dart"
+  ],
+  "menus_register_entries_after_instrumenting": 0,
+  "menus_register_distinct": [],
+  "falsification": {
+    "drawn_via_glyphs_drawText": "CRITIC-SENTINEL-GLYPHS",
+    "register_saw_glyphs": false,
+    "register_rows_after_glyphs": 0,
+    "drawn_via_fillText": "CRITIC-SENTINEL-FILLTEXT",
+    "register_saw_filltext": true,
+    "register_rows_after_filltext": 1
+  },
+  "harness_report": {
+    "accessor": "window.__HARNESS.getRenderedText()",
+    "source": "CanvasRenderingContext2D.fillText, instrumented at the draw call (game/src/render/text-register.js)",
+    "surfaces_instrumented": [
+      "dialogue",
+      "title"
+    ],
+    "next_index": 1,
+    "entries": [
+      {
+        "i": 0,
+        "frame": 0,
+        "surface": "menus",
+        "kind": "fill",
+        "text": "CRITIC-SENTINEL-FILLTEXT",
+        "x": 20,
+        "y": 60,
+        "w": 187,
+        "px": 14,
+        "clipped": false
+      }
+    ],
+    "distinct": [
+      "CRITIC-SENTINEL-FILLTEXT"
+    ],
+    "distinct_count": 1,
+    "clipped_excluded": true,
+    "summary": {
+      "total": 1,
+      "dropped": 0,
+      "cap": 40000,
+      "surfaces": {
+        "menus": {
+          "entries": 1,
+          "drawn": 1,
+          "clipped": 0,
+          "distinct_drawn": 1
+        }
+      }
+    }
+  },
+  "dom_inner_text_len": 0
+}

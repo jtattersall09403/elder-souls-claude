@@ -1,0 +1,171 @@
+{
+  "schema": "critic/w1-13-d@1",
+  "walked_loop": {
+    "hearth": "hearth-archon",
+    "bearing_deg": 0,
+    "out_leg": {
+      "arrived": true,
+      "path_m": 217,
+      "frames": 10842,
+      "minutes": 3.012
+    },
+    "death_pos": [
+      3784.57,
+      -0.4093,
+      4158.5131
+    ],
+    "souls_at_death": 4200,
+    "respawn_pos": [
+      3784.9802,
+      2.4083,
+      4030.9213
+    ],
+    "respawn_hearth": "hearth-archon",
+    "respawn_dist_from_well_m": 89.42,
+    "bloom_pos": [
+      3784.57,
+      0.649273,
+      4078.513119
+    ],
+    "bloom_souls": 4200,
+    "run_back": {
+      "arrived": true,
+      "path_m": 46.1,
+      "frames": 2208,
+      "minutes": 0.613,
+      "aborted": null
+    },
+    "arrived_at": [
+      3784.5824,
+      0.9941,
+      4077.0695
+    ],
+    "dist_arrived_to_bloom_m": 1.44,
+    "souls_after": 4200,
+    "bloom_after": 0,
+    "recovered_exactly": true,
+    "r1_band_1p5_to_3p0": false,
+    "evidence_kind": "walked (S34(b): the run back is arrival evidence and was not teleported)"
+  },
+  "fog_gate": [
+    {
+      "offset_from_centre_m": 0,
+      "death_pos": [
+        3477,
+        4.08,
+        2857.5
+      ],
+      "placement_rule": "outside_fog_gate",
+      "stain_dist_from_centre_m": 0,
+      "gate_radius_m": 26,
+      "outside_the_gate": false
+    },
+    {
+      "offset_from_centre_m": 0.001,
+      "death_pos": [
+        3477.001,
+        4.08,
+        2857.5
+      ],
+      "placement_rule": "outside_fog_gate",
+      "stain_dist_from_centre_m": 29,
+      "gate_radius_m": 26,
+      "outside_the_gate": true
+    },
+    {
+      "offset_from_centre_m": 0.5,
+      "death_pos": [
+        3477.5,
+        4.08,
+        2857.5
+      ],
+      "placement_rule": "outside_fog_gate",
+      "stain_dist_from_centre_m": 29,
+      "gate_radius_m": 26,
+      "outside_the_gate": true
+    },
+    {
+      "offset_from_centre_m": 5,
+      "death_pos": [
+        3482,
+        4.08,
+        2857.5
+      ],
+      "placement_rule": "outside_fog_gate",
+      "stain_dist_from_centre_m": 29,
+      "gate_radius_m": 26,
+      "outside_the_gate": true
+    },
+    {
+      "offset_from_centre_m": 20,
+      "death_pos": [
+        3497,
+        4.08,
+        2857.5
+      ],
+      "placement_rule": "outside_fog_gate",
+      "stain_dist_from_centre_m": 29,
+      "gate_radius_m": 26,
+      "outside_the_gate": true
+    }
+  ],
+  "no_travel": {
+    "hearth_menu_destinations": "no hearth menu surface exposed",
+    "travel_stations": 26,
+    "travel_services": 68,
+    "min_station_to_hearth_m": null,
+    "compensation_block": {
+      "loss_toast": false,
+      "retrieval_item": null,
+      "insurance": null,
+      "reduced_death_penalty_option": false,
+      "partial_recovery": false,
+      "grace_period_frames": 0,
+      "_note": "RI-JRN06 D18 is a hard fail if any of these exist. They do not, and this object is the enumeration M-D9 asks for rather than a promise."
+    }
+  },
+  "markers": {
+    "markers": 0,
+    "map_exists": false,
+    "elements": [
+      {
+        "id": "hud.health",
+        "kind": "health_bar",
+        "worldAnchor": null,
+        "text": null
+      },
+      {
+        "id": "hud.stamina",
+        "kind": "stamina_bar",
+        "worldAnchor": null,
+        "text": null
+      },
+      {
+        "id": "hud.focus",
+        "kind": "focus_bar",
+        "worldAnchor": null,
+        "text": null
+      },
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "worldAnchor": null,
+        "text": "5"
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "worldAnchor": null,
+        "text": "LIGHT"
+      },
+      {
+        "id": "hud.quickslots",
+        "kind": "quick_slots",
+        "worldAnchor": null,
+        "text": "Spark-Dart"
+      }
+    ],
+    "world_anchored": 0
+  },
+  "page_errors": []
+}

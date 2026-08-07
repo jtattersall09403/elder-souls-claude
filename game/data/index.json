@@ -2,8 +2,29 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 349,
+  "file_count": 359,
   "files": [
+    {
+      "path": "books/a-progress-through-the-southern-marsh.json",
+      "schema": "elder-souls/book@2",
+      "id": null,
+      "bytes": 23084,
+      "sha256": "1a3637e1453a6c83"
+    },
+    {
+      "path": "books/deep-time.json",
+      "schema": "elder-souls/book@2",
+      "id": null,
+      "bytes": 32049,
+      "sha256": "fab8c4631a600f64"
+    },
+    {
+      "path": "books/foundational.json",
+      "schema": "elder-souls/book@2",
+      "id": null,
+      "bytes": 26453,
+      "sha256": "17c08a97e044ae9a"
+    },
     {
       "path": "books/interface-readables.json",
       "schema": "elder-souls/book@2",
@@ -12,12 +33,54 @@
       "sha256": "df131a29543b97fa"
     },
     {
+      "path": "books/quest-keys.json",
+      "schema": "elder-souls/book@2",
+      "id": null,
+      "bytes": 18759,
+      "sha256": "85be0e1eabed275e"
+    },
+    {
+      "path": "books/scraps.json",
+      "schema": "elder-souls/book@2",
+      "id": null,
+      "bytes": 14982,
+      "sha256": "54ee737521f1c651"
+    },
+    {
       "path": "books/the-drowned-ford.json",
       "schema": "elder-souls/book@1",
       "id": "the-drowned-ford",
       "bytes": 841,
       "sha256": "fb0e38e389a2c802",
       "declared_incomplete": true
+    },
+    {
+      "path": "books/the-drowned-tally.json",
+      "schema": "elder-souls/book@2",
+      "id": null,
+      "bytes": 26590,
+      "sha256": "6c95aea53285e01c"
+    },
+    {
+      "path": "books/the-long-tail.json",
+      "schema": "elder-souls/book@2",
+      "id": null,
+      "bytes": 40077,
+      "sha256": "9d677b33113c93dd"
+    },
+    {
+      "path": "books/the-occupation.json",
+      "schema": "elder-souls/book@2",
+      "id": null,
+      "bytes": 27127,
+      "sha256": "73f057b4e4d7bf4d"
+    },
+    {
+      "path": "books/told-and-sung.json",
+      "schema": "elder-souls/book@2",
+      "id": null,
+      "bytes": 14622,
+      "sha256": "1811c59d29734de6"
     },
     {
       "path": "camera/cells.json",
@@ -1486,8 +1549,8 @@
       "path": "dialogue/faction-reactions.json",
       "schema": "elder-souls/faction-reactions@1",
       "id": "faction-reactions",
-      "bytes": 9161,
-      "sha256": "d4597b7504109863"
+      "bytes": 12749,
+      "sha256": "1d85669f04108b0d"
     },
     {
       "path": "dialogue/greetings/00-priority-classes.json",
@@ -1594,6 +1657,13 @@
       "id": "speaker-coverage",
       "bytes": 20215,
       "sha256": "0290c7181be6bfa0"
+    },
+    {
+      "path": "dialogue/topics/main-quest-argument.json",
+      "schema": "elder-souls/dialogue-topics@2",
+      "id": "main-quest-argument",
+      "bytes": 37703,
+      "sha256": "6298d886eb995fb7"
     },
     {
       "path": "dialogue/topics/thorn.json",
@@ -1713,8 +1783,8 @@
       "path": "npcs/mainline.json",
       "schema": "elder-souls/npcs@1",
       "id": null,
-      "bytes": 21082,
-      "sha256": "9711c6eee4dd826b",
+      "bytes": 21396,
+      "sha256": "c2139bf3e2ed16b0",
       "declared_incomplete": true
     },
     {
@@ -1873,22 +1943,22 @@
       "path": "quests/mainline-act2.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-act2",
-      "bytes": 54499,
-      "sha256": "01b93125ac2d6ac9"
+      "bytes": 56178,
+      "sha256": "6837749ae8cc66dd"
     },
     {
       "path": "quests/mainline-act3.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-act3",
-      "bytes": 55044,
-      "sha256": "256d17100415d733"
+      "bytes": 55883,
+      "sha256": "070c527e6629b2ee"
     },
     {
       "path": "quests/mainline-act4.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-act4",
-      "bytes": 96802,
-      "sha256": "2b8a6b247fefc5eb"
+      "bytes": 101840,
+      "sha256": "a766621e456889ab"
     },
     {
       "path": "quests/mainline-act5.json",

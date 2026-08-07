@@ -1,0 +1,113 @@
+{
+  "schema": "elder-souls/input-checks@1",
+  "tool": "tools/journey/input-checks.mjs",
+  "items": [
+    "RI-JRN03",
+    "RI-JRN04"
+  ],
+  "shim": null,
+  "entry": "game/index.html",
+  "ran_at": "2026-08-07T12:04:20.180Z",
+  "counts": {
+    "total": 5,
+    "pass": 5,
+    "fail": 0,
+    "unmeasurable": 0
+  },
+  "self_test": null,
+  "checks": [
+    {
+      "id": "M-P21a",
+      "item": "RI-JRN04",
+      "what": "all sixteen actions of the closed set reachable on touch",
+      "status": "pass",
+      "threshold": "every action fires (HF5 / O17)",
+      "detail": {
+        "reach": {
+          "roll": "sprint",
+          "block": "block",
+          "light": "light",
+          "interact": "interact",
+          "jump": "jump",
+          "parry": "parry",
+          "heavy": "heavy",
+          "use_item": "use_item",
+          "crouch": "crouch",
+          "lock_on": "lock_on",
+          "two_hand": "two_hand",
+          "swap_left": "swap_left",
+          "swap_right": "swap_right",
+          "spell_cycle": "spell_cycle",
+          "menu": "menu"
+        },
+        "unreached": []
+      }
+    },
+    {
+      "id": "M-P21b",
+      "item": "RI-JRN04",
+      "what": "multi-touch: stick + camera + two buttons all register simultaneously",
+      "status": "pass",
+      "threshold": "4 pointers, camera still turns while a button is held (How we lose #12)",
+      "detail": {
+        "pointers": 4,
+        "roles": [
+          "stick",
+          "camera",
+          "button",
+          "button"
+        ],
+        "held": [
+          "light",
+          "block"
+        ],
+        "move": [
+          0.7071067811865475,
+          0.7071067811865475
+        ],
+        "camera_turned_deg": 16.8
+      }
+    },
+    {
+      "id": "T2",
+      "item": "RI-JRN04",
+      "what": "the virtual stick floats: the same drag from two origins gives the same vector",
+      "status": "pass",
+      "threshold": "identical move vector (T2)",
+      "detail": {
+        "origin_a": [
+          0.7071067811865475,
+          0.7071067811865475
+        ],
+        "origin_b": [
+          0.7071067811865475,
+          0.7071067811865475
+        ],
+        "same": true
+      }
+    },
+    {
+      "id": "M-P22",
+      "item": "RI-JRN04",
+      "what": "touch controls hide 2 s after the last touch while a pad is active and return on touch",
+      "status": "pass",
+      "threshold": "visible at 1 s, gone by 2.5 s, back on touch (T7)",
+      "detail": {
+        "visAt1s": true,
+        "visAt2_5s": false,
+        "visAfterTouch": true
+      }
+    },
+    {
+      "id": "M-P17",
+      "item": "RI-JRN04",
+      "what": "no touch control intersects a safe-area inset on a clamped landscape phone",
+      "status": "pass",
+      "threshold": "0 elements intersect an inset; every target >= 44 CSS px (H3/H11)",
+      "detail": {
+        "violations": 0,
+        "min_target_css_px": 44
+      }
+    }
+  ]
+}

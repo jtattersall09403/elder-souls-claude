@@ -1,0 +1,151 @@
+{
+  "probe": "critic-w1-26-r1d",
+  "frames": [
+    {
+      "label": "barge-hold, no census",
+      "menus_elements": 6,
+      "menus_strings": [
+        "5",
+        "LIGHT",
+        "Spark-Dart"
+      ],
+      "menus_kinds": [
+        "health_bar",
+        "stamina_bar",
+        "focus_bar",
+        "heal_charges",
+        "equip_load",
+        "quick_slots"
+      ],
+      "accessor_non_dialogue": []
+    },
+    {
+      "label": "census open (hold.hatch-name)",
+      "menus_elements": 6,
+      "menus_strings": [
+        "5",
+        "LIGHT",
+        "Spark-Dart"
+      ],
+      "menus_kinds": [
+        "health_bar",
+        "stamina_bar",
+        "focus_bar",
+        "heal_charges",
+        "equip_load",
+        "quick_slots"
+      ],
+      "accessor_non_dialogue": []
+    },
+    {
+      "label": "after the hatch-name is given (hold.out)",
+      "menus_elements": 6,
+      "menus_strings": [
+        "5",
+        "LIGHT",
+        "Spark-Dart"
+      ],
+      "menus_kinds": [
+        "health_bar",
+        "stamina_bar",
+        "focus_bar",
+        "heal_charges",
+        "equip_load",
+        "quick_slots"
+      ],
+      "accessor_non_dialogue": []
+    },
+    {
+      "label": "120 frames of walking in the hold",
+      "menus_elements": 7,
+      "menus_strings": [
+        "0",
+        "LIGHT",
+        "Spark-Dart",
+        "Take A tithe-gourd, empty"
+      ],
+      "menus_kinds": [
+        "health_bar",
+        "stamina_bar",
+        "focus_bar",
+        "heal_charges",
+        "equip_load",
+        "quick_slots",
+        "interact_prompt"
+      ],
+      "accessor_non_dialogue": []
+    },
+    {
+      "label": "240 more frames, walking back",
+      "menus_elements": 6,
+      "menus_strings": [
+        "0",
+        "LIGHT",
+        "Spark-Dart"
+      ],
+      "menus_kinds": [
+        "health_bar",
+        "stamina_bar",
+        "focus_bar",
+        "heal_charges",
+        "equip_load",
+        "quick_slots"
+      ],
+      "accessor_non_dialogue": []
+    }
+  ],
+  "forbidden_kinds": [
+    "damage_number",
+    "enemy_nameplate",
+    "enemy_health_bar",
+    "hit_marker",
+    "damage_direction",
+    "minimap",
+    "compass",
+    "objective_tracker",
+    "quest_marker",
+    "waypoint",
+    "ground_telegraph",
+    "xp_popup",
+    "combo_counter",
+    "dps_meter",
+    "auto_equip",
+    "best_in_slot",
+    "active_quest_list",
+    "objective_line",
+    "progress_bar",
+    "checkbox",
+    "tracked_quest",
+    "map",
+    "map_pin",
+    "codex_entry"
+  ],
+  "m9": {
+    "domain": "every string rendered outside a dialogue/journal/book surface (RI-JRN01 M9)",
+    "instrument": "UISurface.elements[].text, enumerated directly — the build accessor cannot see this surface",
+    "strings_searched": 5,
+    "strings": [
+      "5",
+      "LIGHT",
+      "Spark-Dart",
+      "0",
+      "Take A tithe-gourd, empty"
+    ],
+    "hits": [
+      "Take A tithe-gourd, empty"
+    ],
+    "strings_the_build_accessor_saw_in_the_same_domain": []
+  },
+  "m11": {
+    "forbidden_kinds_present": [],
+    "kinds_seen": [
+      "health_bar",
+      "stamina_bar",
+      "focus_bar",
+      "heal_charges",
+      "equip_load",
+      "quick_slots",
+      "interact_prompt"
+    ]
+  }
+}

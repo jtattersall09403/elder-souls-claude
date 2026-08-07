@@ -10,6 +10,8 @@
 // what makes advancement a build statement rather than a wait.
 'use strict';
 
+import { topicsInclude } from '../../core/topics.js';
+
 const LEVEL_WORDS = /^(level|char_?level|player_?level|souls|soul_?count|xp|experience|quests_completed|quest_count)$/i;
 
 /** Throws on any gate expressed in a currency this game does not gate on. */
@@ -147,10 +149,16 @@ export function canOffer(def, ctx, gates) {
   for (const pq of (def.opens_by && def.opens_by.prerequisite_quests) || []) {
     if (!(ctx.completed && ctx.completed.has(pq))) why.push(`requires ${pq} first`);
   }
+  // `topicsInclude` and not `Set.has` — core/topics.js. The quest files write a topic keyword
+  // in prose ("the steward of the count") and hooks.json's AddTopic edges write the same
+  // keyword as a slug ("the-steward-of-the-count"), so an exact-string membership test meant
+  // that 74 of the 76 `opens_by` topics in this tree could not be satisfied by any edge the
+  // machine is able to fire. It went unseen because every quest tool seeds the gate with the
+  // quest's own `opens_by.topic` string, which passes whatever the edges say.
   for (const t of (def.opens_by && def.opens_by.prerequisite_topics) || []) {
-    if (!(ctx.topicsKnown && ctx.topicsKnown.has(t))) why.push(`the topic "${t}" has not come up yet`);
+    if (!topicsInclude(ctx.topicsKnown, t)) why.push(`the topic "${t}" has not come up yet`);
   }
-  if (def.opens_by && def.opens_by.topic && ctx.topicsKnown && !ctx.topicsKnown.has(def.opens_by.topic)) {
+  if (def.opens_by && def.opens_by.topic && ctx.topicsKnown && !topicsInclude(ctx.topicsKnown, def.opens_by.topic)) {
     why.push(`the topic "${def.opens_by.topic}" has not come up yet`);
   }
   if (def.giver && def.giver.disposition_min != null) {

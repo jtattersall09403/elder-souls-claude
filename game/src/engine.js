@@ -84,6 +84,35 @@ const PERF_SAMPLES = 20000;
 /** `ES-WATER/1` walk multipliers, RI-WLD10 §2. Mirrored in game/data/world/water.json. */
 const WATER_SPEED_MULT = { W0: 1.00, W1: 0.97, W2: 0.85, W3: 0.65, W4: 0.43, W5: 0.55 };
 
+// ---- province streaming, from the fixed step (see Engine._streamProvince) ---------------------
+/**
+ * How far the player must move before the streamer re-focuses. Two metres: one `request()` per
+ * 60 frames at the 2.0 m/s walk, comfortably under the tightest of the three disc hysteresis
+ * distances inside `request()` (the ground skin's 11 m), so the discs still decide when THEY
+ * rebuild and this only decides how often they are asked.
+ */
+const STREAM_REFOCUS_M = 2.0;
+/**
+ * Frames between queued tile builds. A 300 m tile is ~9,000 walking frames wide and the five
+ * tiles a boundary crossing queues appear 600-750 m ahead, so 30 frames (0.5 s) puts all five in
+ * 2.5 s with no two consecutive frames paying for one. Raising this costs nothing until it
+ * exceeds ~1,800 (five tiles per 300 m at a sprint); lowering it towards 1 recreates the hitch
+ * this budget exists to avoid.
+ */
+const STREAM_BUILD_EVERY = 30;
+/**
+ * How near a missing tile has to be, in squared tile distance from the focus, before it stops
+ * being a trickle and starts being a hole. 2 is the 3x3 block centred on the focus — the tile you
+ * stand on and its eight neighbours, i.e. everything inside 450 m. Nine tiles, so the burst is
+ * bounded. A walking player never reaches this: the ring is built two tiles out and 300 m of
+ * walking is ~9,000 frames against the 150 the trickle needs for a boundary row. It fires on a
+ * cold entry into the province that did not come through `_applyCell()` — which is exactly what a
+ * posed capture camera is.
+ */
+const STREAM_NEAR_D2 = 2;
+/** Tiles built per frame while the nearest missing ground is that close. A hole beats a hitch. */
+const STREAM_URGENT_TILES = 2;
+
 /**
  * `RI-PRG07` §3 — BURDEN. Everything carried, equipped or not, over `maxLoad x 2.5`. Three
  * transitions, at 0.60, 0.85 and 1.00, and above 1.00 you do not move at all.
@@ -1318,7 +1347,11 @@ export class Engine {
       // requires.race / forbids.race. Round 2's finding was that these two were the same list
       // for a Dunmer and a Saxhleel because only the first one existed.
       topics: n.topics.slice(),
-      topics_offered: topicsFor(this.topicIndex, n, p).map((t) => t.id),
+      // Per-NPC derived disposition, not the player view alone: an INFO's `d` band is a fact
+      // about THIS person's regard for you, so a list computed without it would disagree with
+      // what `talkTo(eid)` then offers — the two must be the same list or a probe is measuring
+      // a surface the player never sees.
+      topics_offered: topicsFor(this.topicIndex, n, { ...p, disposition: this.npcDisposition(n.eid).disposition }).map((t) => t.id),
       services: n.services.slice(),
       base_disposition: n.base_disposition, loiter_frames: n.loiter_frames,
     }));
@@ -1327,8 +1360,22 @@ export class Engine {
   /** The player as the dialogue gates see them. Falls back to the sim identity pre-census. */
   _talkPlayer() {
     const ch = this.sim.character;
-    if (ch) return { race: ch.race, upbringing: ch.upbringing, birthsign: ch.birthsign };
-    return { race: this.sim.identity.race || null, upbringing: this.sim.identity.upbringing || null, birthsign: this.sim.identity.sign || null };
+    // `knows` is the LIVE world-flag set, rebuilt on every call rather than cached, because a
+    // topic that opens the moment you learn something is the whole point of an AddTopic edge
+    // and a snapshot taken at boot would make every knowledge gate in `dialogue/topics/**`
+    // permanently closed. Read from `sim.quest.flags` directly, so it is the same register the
+    // quest gates read and there is no second source of truth about what the player knows.
+    const knows = this._knownFlags();
+    if (ch) return { race: ch.race, upbringing: ch.upbringing, birthsign: ch.birthsign, knows };
+    return { race: this.sim.identity.race || null, upbringing: this.sim.identity.upbringing || null, birthsign: this.sim.identity.sign || null, knows };
+  }
+
+  /** Every world flag currently set, as a Set. The knowledge half of a dialogue filter. */
+  _knownFlags() {
+    const f = (this.sim.quest && this.sim.quest.flags) || null;
+    const out = new Set();
+    if (f) for (const k of Object.keys(f)) if (f[k]) out.add(k);
+    return out;
   }
 
   // ---- talking to somebody (W1-07 round 3) ------------------------------------------------
@@ -2810,6 +2857,9 @@ export class Engine {
     // reason the trace record is: `observe()` reads the HP the frame ended on and writes the
     // respawn the next frame starts from, and it must not be inside `stepOnce`'s timing window.
     this._deathTick();
+    // THE PROVINCE FOLLOWS THE PLAYER. After `_deathTick()`, so a respawn is streamed on the
+    // frame it happens rather than the next one. See `_streamProvince()`.
+    this._streamProvince();
     if (this.trace) {
       this.trace.records.push(makeRecord(this.sim, this.input, this.bus, this.trace.opts, this.tracePerf ? this._perfBlock() : null));
     }
@@ -2817,6 +2867,103 @@ export class Engine {
       const ev = this.bus.snapshotInto([]).slice();
       this.combatTrace.records.push(combatFrame(this.combat, this.sim.frame - 1, this.input, ev, this.sim.camera));
     }
+  }
+
+  /**
+   * THE STREAMER, PUMPED FROM THE FIXED STEP. Without this the province is drawn where the player
+   * last TELEPORTED to, and the brief's central promise — a world that takes an hour to cross on
+   * foot — is not merely unmet but unattemptable.
+   *
+   * `renderer.province.request()` used to have four call sites: `_applyCell()`, `teleport()`,
+   * `walkRoute()` behind an opt-in flag, and `window.__HARNESS.streamAround()`. Not one of them is
+   * the simulation. `Province.update()` had no caller at all. Measured before this existed: 600
+   * fixed steps with the viewpoint 3 km from the last teleport left **all 25 tiles of the resident
+   * ring unbuilt** and `tilesBuiltTotal` unchanged, and a player walking the crossing had no ground
+   * drawn under their feet from 750 m onward. The harness call site is why it survived — every
+   * service capture asked for the tiles itself, so the pictures looked fine and the running world
+   * had nothing in it.
+   *
+   * `request()` is also the ONLY refresh for the ground skin, the near-prop disc, the ground-cover
+   * disc and the region's night lamps, so all four were anchored to the last teleport too. They
+   * move with the player now because they move with `request()`.
+   *
+   * WHY HERE. `_afterStep()` is outside `armSim()` and outside `stepOnce()`'s timing window, which
+   * is where `RI-PLT01` §C.3 puts everything that observes a step — building 12,000 vertices of
+   * terrain inside the armed guard would be a determinism hazard and an allocation charged to the
+   * simulation. It is also the one slot every way the world advances passes through: `stepFrames`,
+   * the rAF accumulator, `walkRoute`, `walkPath` and `travelRide` all call it per frame.
+   *
+   * THE BUDGET, AND WHY IT IS NOT ONE TILE A FRAME. Streaming from the step is exactly where
+   * hitches come from, so the cost is spread rather than paid:
+   *
+   *  - Re-focus is gated on `STREAM_REFOCUS_M` of movement. At the 2.0 m/s walk that is one
+   *    `request()` per 60 frames, and `request()` is cheap by construction because the skin, near
+   *    and cover discs each carry their own 11/22/14 m hysteresis inside.
+   *  - Tiles are 300 m and the ring is 5x5, so the queue is EMPTY except in the frames after the
+   *    player crosses a tile boundary — one crossing per ~9,000 frames of walking, five new tiles
+   *    each, and they appear 600-750 m ahead. There is no reason to build them quickly, so the
+   *    trickle is one tile per `STREAM_BUILD_EVERY` frames and no two consecutive frames ever pay
+   *    for a tile.
+   *  - The exception is the tile the player is STANDING ON. If that is missing the world has a
+   *    hole in it underfoot, which beats any frame-time argument, so it is built at once. The
+   *    queue is sorted nearest-first, so this resolves in one or two builds. In practice it only
+   *    fires on a cold entry into the province cell that did not come through `_applyCell()`.
+   *
+   * S17: the hour comes from distance and incident. Nothing here may slow the player down to buy
+   * streaming time, and nothing here touches locomotion — this runs after the step has already
+   * decided where the body went.
+   */
+  _streamProvince() {
+    const pv = this.renderer && this.renderer.province;
+    if (!pv) return;
+    if (this.cellFor(this.sim.env) !== 'province') return;
+    // THE FOCUS IS WHERE THE WORLD IS DRAWN FROM, which in gameplay is the player and can only
+    // be anything else under a posed camera. `camera({pos, look})` is how every direct capture
+    // photographs a province viewpoint, and with the focus pinned to the player those captures
+    // photographed unbuilt ground from 3 km away — the second half of this defect, and the reason
+    // `tools/harness/shoot.mjs --direct` on `viewpoints-province.json` could not be trusted. An
+    // override means somebody has moved the eye off the body deliberately; the streamer follows
+    // the eye. `c.override` is null in play, so this reduces to the player's own position.
+    const c = this.sim.camera;
+    const eye = (c && c.override && c.override.pos) || null;
+    const p = this.sim.player.pos;
+    const x = eye ? eye[0] : p[0], z = eye ? eye[2] : p[2];
+    const s = this._provStream || (this._provStream = { x: NaN, z: NaN, since: 0, refocuses: 0, built: 0, urgent: 0 });
+    // (1) Re-focus. `!(d < R)` rather than `d >= R` so the first call, where the last focus is
+    // NaN, always re-focuses.
+    const dx = x - s.x, dz = z - s.z;
+    let discWork = false;
+    if (!(dx * dx + dz * dz < STREAM_REFOCUS_M * STREAM_REFOCUS_M)) {
+      s.x = x; s.z = z; s.refocuses++;
+      // Did the re-focus actually rebuild anything? `updateSkin`, `updateNear` and `updateCover`
+      // assign a NEW anchor array only on the frames they do work, so an identity comparison is
+      // an exact, allocation-free answer. Measured with `tools/world/prov-stream.mjs --mode
+      // budget`: over 999 m of walking, 73 frames rebuilt the ground skin and the cover disc
+      // together at a mean of 70.3 ms, 35 rebuilt the near disc at 3.7 ms, and 10 built a tile at
+      // 78.2 ms. The skin and the cover are ONE unit and cannot be split — `updateSkin` clears
+      // `coverAt` on purpose, because the cover stands on the skin surface and a cover disc left
+      // behind sits 0.3 m inside a berm.
+      const sk = pv.skinAtPos, nr = pv.nearAtPos, cv = pv.coverAt;
+      pv.request(x, z);
+      discWork = pv.skinAtPos !== sk || pv.nearAtPos !== nr || pv.coverAt !== cv;
+    }
+    // (2) Build, on a budget. Nothing below runs at all while the queue is empty, which is
+    // ~99.9% of frames.
+    if (!pv.queue.length) { s.since = 0; return; }
+    s.since++;
+    // `request()` leaves the queue sorted by squared tile distance from the focus, so `queue[0].d`
+    // is how far away the nearest MISSING ground is, in tiles squared. That is the only quantity
+    // the budget should depend on: ground you are standing on or looking straight at is a hole in
+    // the world and is worth a hitch; ground two tiles out is 600-750 m away, is behind the fog in
+    // every one of the thirteen regions, and is worth nothing at all.
+    if (pv.queue[0].d <= STREAM_NEAR_D2) { s.urgent++; s.built += pv.pump(STREAM_URGENT_TILES); s.since = 0; return; }
+    // ONE UNIT OF STREAMING WORK PER FIXED STEP. A frame that has just rebuilt the skin and the
+    // cover disc has spent ~70 ms; adding a ~78 ms tile build to it would make one 148 ms frame
+    // out of two that could have been 12 m apart. `s.since` keeps counting, so the trickle is
+    // delayed by a frame rather than starved. The urgent path above is deliberately NOT subject
+    // to this: a hole in the ground under the player beats any frame-time argument.
+    if (discWork) return;
+    if (s.since >= STREAM_BUILD_EVERY) { s.built += pv.pump(1); s.since = 0; }
   }
 
   /**
@@ -4419,7 +4566,13 @@ export class Engine {
       if (w.frames % o.sampleEvery === 0) w.samples.push(+(step * 60).toFixed(4));
       const reg = this.field.regionAt(p.pos[0], p.pos[2]).id;
       if (reg !== w.lastRegion) { w.regions.push({ region: reg, frame: w.frames, m: +w.dist.toFixed(1) }); w.lastRegion = reg; }
-      if (o.stream && w.frames % 90 === 0) { this.renderer.province.request(p.pos[0], p.pos[2]); this.renderer.province.pump(1); }
+      // `opts.stream` is accepted and IGNORED. It used to be the only thing in this file that
+      // streamed the province while a body moved — `request()` + `pump(1)` every 90 frames, and
+      // only if a caller opted in. The streamer is pumped from `_afterStep()` now, which this
+      // loop calls above, so the world builds itself under a walking player whether or not
+      // anybody asked. Leaving the old line here as well would be two implementations of one
+      // system, which is the shape AGENT-PROTOCOL names as how this build came to have a good
+      // detection model and a broken one at the same time.
     }
     const s = w.samples;
     const below = s.filter((v) => v < 1.6).length;

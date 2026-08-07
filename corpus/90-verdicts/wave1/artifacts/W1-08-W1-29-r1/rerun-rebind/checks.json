@@ -1,0 +1,198 @@
+{
+  "schema": "elder-souls/input-checks@1",
+  "tool": "tools/journey/input-checks.mjs",
+  "items": [
+    "RI-JRN03",
+    "RI-JRN04"
+  ],
+  "shim": null,
+  "entry": "game/index.html",
+  "ran_at": "2026-08-07T12:05:52.708Z",
+  "counts": {
+    "total": 4,
+    "pass": 4,
+    "fail": 0,
+    "unmeasurable": 0
+  },
+  "self_test": null,
+  "checks": [
+    {
+      "id": "M-K17",
+      "item": "RI-JRN03",
+      "what": "five rebinds including a mouse button and a conflict; conflict named before commit; serialised",
+      "status": "pass",
+      "threshold": "all persist; the conflict named the previous owner before commit (RB4); an orphaning take is refused (RB5)",
+      "detail": {
+        "edits": [
+          {
+            "action": "light",
+            "control": "KeyP",
+            "took": null,
+            "line": null
+          },
+          {
+            "action": "heavy",
+            "control": "Mouse4",
+            "took": "roll",
+            "line": "Forward already answers for getting out of the way."
+          },
+          {
+            "action": "jump",
+            "control": "KeyN",
+            "took": null,
+            "line": null
+          },
+          {
+            "action": "use_item",
+            "control": "KeyU",
+            "took": null,
+            "line": null
+          },
+          {
+            "action": "parry",
+            "control": "KeyF",
+            "took": "block",
+            "line": "F already answers for the guard."
+          }
+        ],
+        "restored_light": [
+          "KeyP",
+          null
+        ],
+        "orphan_refusal": {
+          "ok": false,
+          "refused": "would_orphan",
+          "orphan": "roll",
+          "line": "Leave it unbound and you leave it undone. getting out of the way would have nothing."
+        }
+      }
+    },
+    {
+      "id": "M-K19",
+      "item": "RI-JRN03",
+      "what": "unbinding the last control an action has is refused",
+      "status": "pass",
+      "threshold": "refused (RB5)",
+      "detail": {
+        "unbind_secondary": {
+          "ok": true
+        },
+        "unbind_last": {
+          "ok": false,
+          "refused": "zero_binding",
+          "line": "Leave it unbound and you leave it undone."
+        }
+      }
+    },
+    {
+      "id": "M-K18",
+      "item": "RI-JRN03",
+      "what": "the rebinding surface is completable on keyboard only, gamepad only and touch only",
+      "status": "pass",
+      "threshold": "3/3 (HF9 / RB10)",
+      "detail": {
+        "keyboard": {
+          "began": true,
+          "offered": {
+            "control": "KeyJ",
+            "conflictWith": null,
+            "line": null
+          },
+          "committed": {
+            "ok": true,
+            "device": "keyboard",
+            "action": "light",
+            "slot": 0,
+            "control": "KeyJ",
+            "took": null
+          },
+          "steps": [
+            "idle",
+            "idle",
+            "begin"
+          ]
+        },
+        "gamepad": {
+          "began": true,
+          "offered": {
+            "control": "Pad5",
+            "conflictWith": null,
+            "line": null
+          },
+          "committed": {
+            "ok": true,
+            "device": "gamepad",
+            "action": "light",
+            "slot": 0,
+            "control": "Pad5",
+            "took": null
+          },
+          "steps": [
+            "idle",
+            "idle",
+            "begin"
+          ]
+        },
+        "touch": {
+          "began": true,
+          "offered": {
+            "control": "Touch:light",
+            "conflictWith": null,
+            "line": null
+          },
+          "committed": {
+            "ok": true,
+            "device": "touch",
+            "action": "light",
+            "slot": 0,
+            "control": "Touch:light",
+            "took": null
+          },
+          "steps": [
+            "idle",
+            "idle",
+            "begin"
+          ]
+        },
+        "guide_refusal": {
+          "refused": "guide",
+          "line": "That one answers to the machine before it answers to you."
+        }
+      }
+    },
+    {
+      "id": "M-P23",
+      "item": "RI-JRN04",
+      "what": "a pad-only rebind commits and index 16 is refused in fiction",
+      "status": "pass",
+      "threshold": "pad-only completable; index 16 never offered",
+      "detail": {
+        "gamepad": {
+          "began": true,
+          "offered": {
+            "control": "Pad5",
+            "conflictWith": null,
+            "line": null
+          },
+          "committed": {
+            "ok": true,
+            "device": "gamepad",
+            "action": "light",
+            "slot": 0,
+            "control": "Pad5",
+            "took": null
+          },
+          "steps": [
+            "idle",
+            "idle",
+            "begin"
+          ]
+        },
+        "guide": {
+          "refused": "guide",
+          "line": "That one answers to the machine before it answers to you."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "schema": "elder-souls/world-coupling@1",
+  "piece_id": "w1-19",
+  "critic_run_id": "crit-w1-19-r1-3c19",
+  "method": "RI-MTH07 Comparison method steps 1-5, applied exhaustively over every model W1-19's status file lists as an output. ARBITRATION §3 CONSUMPTION.",
+  "measured_at": "2026-08-07T12:10:00Z",
+  "note": "RI-MTH07 §B1: a harness return value is not an observable. Where the observable below is a quest-offer DECISION or a refusal string, that is an entity-side gate outcome the player would meet as a closed door, not the model's own return value.",
+  "models": [
+    {
+      "model": "The act/stakes graph and the 32 quest definitions (game/data/quests/mainline*.json)",
+      "consumer": "game/src/sim/quest/defs.js -> QuestBook -> QuestEngine.open()/resolve(); game/src/engine.js:236-238 constructs it at boot",
+      "perturbation": "drop-topic sabotage (builder's own) vs baseline, same seed",
+      "model_value_a": "topic seeded",
+      "model_value_b": "topic withheld",
+      "observed_a": "29/29 quests opened, 158 journal entries",
+      "observed_b": "0/29 opened, 0 journal entries, refusal string 'the topic \"the drowned tally\" has not come up yet'",
+      "coupling": 1.0,
+      "evidence": ["mainline-trace.baseline.json", "mainline-trace.drop-topic.json"]
+    },
+    {
+      "model": "giver.disposition_min against the derived disposition register",
+      "consumer": "game/src/sim/quest/gate.js canOffer() line 156-158, reading QuestEngine.context().dispositions (a derived view since W1-07 r4)",
+      "perturbation": "character signature, one field moved (upbringing), everything else held fixed",
+      "model_value_a": "dunmer/interior at rootkeeper-ashul-tei",
+      "model_value_b": "dunmer/lukiul at rootkeeper-ashul-tei",
+      "observed_a": "29/29 intended chain completed",
+      "observed_b": "9/29, refused at Q-MAIN-10 with 'rootkeeper-ashul-tei disposition 0/1'",
+      "coupling": 1.0,
+      "evidence": ["mainline-race-trace.json", "mainline-block-attribute.json"]
+    },
+    {
+      "model": "The 174 faction_reputation deltas the mainline grants",
+      "consumer": "machine.js _applyConsequences -> QuestEngine._dispositionToward -> the movable `faction` term -> gate.js canOffer()",
+      "perturbation": "before/after Q-MAIN-01 res_carry, saxhleel/interior, watching salt-factor-neloth-vaun",
+      "model_value_a": "faction term 0",
+      "model_value_b": "faction term -12",
+      "observed_a": "standing 15, Q-MAIN-23 offerable",
+      "observed_b": "standing 3, Q-MAIN-23 refused permanently",
+      "coupling": 1.0,
+      "evidence": ["mainline-block-attribute.json"]
+    },
+    {
+      "model": "The point-of-no-return flag set and its locks/unlocks",
+      "consumer": "gate.js opens_by/closed_by; walk-back attempts refused live",
+      "perturbation": "before vs after Q-MAIN-27 res_cross",
+      "model_value_a": "not crossed",
+      "model_value_b": "crossed",
+      "observed_a": "Q-MAIN-29 and Q-MAIN-16/22 reachable",
+      "observed_b": "4/4 walk-back attempts refused, 0 modals, 0 text events",
+      "coupling": 1.0,
+      "evidence": ["ponr-probe.json"]
+    },
+    {
+      "model": "The journal entries (253 across the two chains)",
+      "consumer": "sim/quest/journal.js write() -> engine ctx.journal -> game/src/ui/screens/text.js drawJournal(), elements of kind `journal_entry`",
+      "perturbation": "not separately perturbed; the entries are drawn from the same store the trace reads and the UI screen enumerates them as elements",
+      "coupling": 1.0,
+      "evidence": ["game/src/ui/screens/text.js:124-131", "mainline-trace.baseline.json"]
+    },
+    {
+      "model": "opens_by.topic — the topic gate's SUPPLY side (31 distinct prose keywords)",
+      "consumer": "gate.js:153 reads it; NOTHING IN THE WORLD WRITES IT. The only writers of sim.quest.topicsKnown are machine.js:424/465 (hooks and entry_topics, all dashed slugs), magic/apply.js:593 (a speak-with-dead effect) and window.__HARNESS.learnTopic().",
+      "perturbation": "cold boot, nothing learned through the harness",
+      "model_value_a": "n/a — no world-side value can be produced",
+      "model_value_b": "n/a",
+      "observed_a": "0/32 main quests offerable; 32/32 blocked on the topic gate; topicsKnown length 0",
+      "observed_b": "n/a",
+      "coupling": 0.0,
+      "orphan_shape": "orphan predicate (RI-MTH07 §A row 3) — the rule is only reachable by telling the engine what it should have observed",
+      "evidence": ["mainline-findability.json", "mainline-trace.drop-topic.json", "mainline-topic-supply.json"]
+    },
+    {
+      "model": "opens_by.overheard_from — the three NPCs who carry the rumour that starts the main quest",
+      "consumer": "NONE. `grep -rn overheard_from game/src/ --include=*.js` returns 0 outside the harness.",
+      "observed_a": "declared on 3 of 32 main quests; 0 code consumers; 0 rumour lines anywhere in game/data/dialogue/** name a main-quest noun",
+      "coupling": 0.0,
+      "orphan_shape": "orphan data (RI-MTH07 §A row 2)",
+      "evidence": ["mainline-findability.json"]
+    },
+    {
+      "model": "q.directions — 32 prose wayfinding strings, 100% coverage, the AR-2 defence",
+      "consumer": "game/src/sim/quest/defs.js validation only (length >= 20, banned-prose scan). Never rendered, never spoken, never written into a journal entry: journal.js write() copies `def.text` and nothing else.",
+      "observed_a": "0 of 32 mainline `directions` strings appear verbatim in any journal entry of their own quest; 3 of 32 share even a 40-character window",
+      "coupling": 0.0,
+      "orphan_shape": "orphan text (RI-JRN07 CONSUMPTION §4, the fourth shape) — authored, validated, carried through the model, never drawn",
+      "evidence": ["directions-verbatim check, this verdict §4", "game/src/sim/quest/journal.js:60-96"]
+    },
+    {
+      "model": "hooks.json entry_topics — the 32 AddTopic edges W1-19 appended",
+      "consumer": "machine.js _write() fires them on the journal write at the declared index",
+      "observed_a": "mechanically live, but 23 of 32 seed only the topic that opens the quest doing the seeding (Q-MAIN-nn#10 adds the topic Q-MAIN-nn's own opens_by demands) and 5 seed nothing that any quest asks for; only 4 edges point forward",
+      "coupling": 0.0,
+      "orphan_shape": "the edge fires and reaches nothing reachable — a supply graph with no source node",
+      "evidence": ["mainline-topic-supply.json"]
+    },
+    {
+      "model": "game/data/dialogue/topics/main-quest-argument.json — the Act V twelve-topic conversation",
+      "consumer": "claimed in the file's own engine_notes as game/src/character/converse.js infoFor(); NOT VERIFIED by this critic. Landed untracked at 12:00Z, during this measurement.",
+      "observed_a": "12 topics, 4 knowledge-gated, race- and upbringing-filtered infos present on disk",
+      "coupling": null,
+      "note": "Declared unmeasured rather than assumed. Ixtu-meer is unreachable in play for the independent reason above, so no player can reach this conversation today regardless of whether converse.js reads it.",
+      "evidence": ["ls -la game/data/dialogue/topics/main-quest-argument.json at 12:02:21Z"]
+    }
+  ],
+  "zero_coupling_count": 4,
+  "consequence": "RI-MTH07 §B3 and ARBITRATION §3: a model with no demonstrated world-side consumer is unmeasurable => 0 for its dimension. The four zeros above are the discovery half of quests.mainline.acts; they are recorded in the verdict's status_reasons and are the subject of the single biggest gap."
+}

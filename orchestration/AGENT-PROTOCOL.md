@@ -104,6 +104,26 @@ not publish a number that has only ever been seen outside the browser — and no
 exist**; the flag is silently ignored. Check that a flag you are relying on is implemented before
 you cite it.
 
+## Leave something for the blog — every agent, every run
+
+The owner reads the blog to see progress, and it must not depend on a writer re-deriving your work
+from your artifacts. **Make the blog agent cheap by doing the two things only you can do.**
+
+Before you finish, if you found or built anything a person would find interesting:
+
+1. **Copy one illustrative image into `docs/shots/`** with a dated, descriptive name — a before/after
+   pair if you have one. You already have the world open; the blog writer would have to boot it
+   again to get the same picture, and captures are the most expensive thing on this box.
+2. **Append one line to `reports/blog-feed.jsonl`**:
+   ```json
+   {"at":"<ISO>","piece":"W1-xx","kind":"finding|fix|verdict|ruling","headline":"one sentence a
+    non-developer would understand","shots":["docs/shots/…png"],"detail":"where to read more"}
+   ```
+   One sentence, in plain words. Not "CFS_live 0.0000" but "every weapon played the same animation".
+
+This costs you a minute and saves a writer an hour of archaeology. A finding nobody can explain to a
+player is a finding the owner cannot see.
+
 ## Parallelism: run as much as is safe, and the limit is contention, not headcount
 
 > User direction: *"always be running as much in parallel as you can… always be assessing and

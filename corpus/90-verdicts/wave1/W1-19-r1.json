@@ -1,0 +1,1008 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-19",
+  "piece_title": "The main quest, end to end — The Rootward Tide",
+  "subsystem_paths": [
+    "quests.mainline.acts",
+    "quests.mainline.antagonist",
+    "quests.mainline.prophecy",
+    "experience.ending.landing",
+    "experience.ending.aftermath",
+    "experience.ending.pointofnoreturn"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-19-r1-3c19",
+    "role": "critic.quests",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-07T11:45:00Z",
+    "finished_at": "2026-08-07T12:20:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "be17753",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "harness_commands": [
+      {
+        "command": "node tools/harness/boot-check.mjs",
+        "seed": null,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/quests/mainline-trace.mjs (baseline re-run of the builder's own instrument)",
+        "seed": 1337,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/quests/mainline-trace.mjs --sabotage drop-topic",
+        "seed": 1337,
+        "exit_code": 1
+      },
+      {
+        "command": "node tools/quests/mainline-race-trace.mjs   (written by this critic; TOOL-LOOP declared)",
+        "seed": 1337,
+        "exit_code": 1
+      },
+      {
+        "command": "node tools/quests/mainline-gate-margin.mjs   (written by this critic; TOOL-LOOP declared)",
+        "seed": 1337,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/quests/mainline-block-attribute.mjs (written by this critic; TOOL-LOOP declared)",
+        "seed": 1337,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/quests/mainline-findability.mjs   (written by this critic; TOOL-LOOP declared)",
+        "seed": 1337,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/quests/mainline-census.mjs",
+        "seed": null,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/experience/ponr-probe.mjs",
+        "seed": 1337,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/analysis/quest-audit.mjs",
+        "seed": null,
+        "exit_code": 1
+      },
+      {
+        "command": "node tools/analysis/marker-scan.mjs",
+        "seed": null,
+        "exit_code": 0
+      },
+      {
+        "command": "python3 corpus/80-methods/opacity-audit.py --all",
+        "seed": null,
+        "exit_code": 0
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "fidelity_refs": [],
+    "art_refs": [],
+    "note": "No visual reference of any era is cited and no screenshot is used as evidence. S34 forbids a placed capture as arrival evidence and no arrival claim is made here; every claim in this verdict is a quest-engine state transition, a gate refusal string, or a static census of shipped data. The capture pool was not used."
+  },
+  "reference_items": [
+    {
+      "id": "RI-QST06",
+      "path": "corpus/30-quests/RI-QST06-main-quest-architecture.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "0-10 band table; aggregation: band; 6 hard fails",
+      "native_score": 7,
+      "native_max": 10,
+      "native_verdict": "Structurally the 9-10 row is satisfied in full and every one of the six hard fails is clear; held to 7 by the item's Additional-hard-requirements section and by two of its own How-we-lose bullets landing on the shipping build",
+      "score_0_10": 6,
+      "measured": "full",
+      "checks": [
+        {
+          "id": "A1-A5 act shape",
+          "result": "pass",
+          "value": "5 acts, 5/5/5/8/5, 28 acted + 4 off-act, stakes 2.40/3.60/7.60/8.50/10.00 strictly increasing, Act I 2.40",
+          "threshold": "5 acts, +-1 of 5/5/5/8/5, >=24, monotonic, Act I <=3.5",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+          ]
+        },
+        {
+          "id": "HF1 high stakes in Act I",
+          "result": "pass",
+          "value": 2.4,
+          "threshold": "<= 4",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+          ]
+        },
+        {
+          "id": "HF2 Act IV sequenced",
+          "result": "pass",
+          "value": "all 8 open off exactly one prerequisite set [Q-MAIN-15]; none sequenced behind another Act IV quest",
+          "threshold": "empty",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+          ]
+        },
+        {
+          "id": "A8/A9 Act IV leverage",
+          "result": "pass",
+          "value": "7 of 8 rank-leveraged, mean resolutions 3.375",
+          "threshold": ">=4 rank-gated, >=3.0 mean",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+          ]
+        },
+        {
+          "id": "A10/A11 information as reward",
+          "result": "pass",
+          "value": "Act II 5, Acts II-III 10",
+          "threshold": ">=3 / >=5",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+          ]
+        },
+        {
+          "id": "HF3 mandate adjudicated",
+          "result": "pass",
+          "value": "4 D7 quests, 4 never_revealed; a book argues for and a book argues against",
+          "threshold": "never adjudicated",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+          ]
+        },
+        {
+          "id": "HF4 no backpath",
+          "result": "pass",
+          "value": "5 backpath quests, 3 with an irreversible branch, ending flags disjoint from the intended ending",
+          "threshold": ">=3",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt",
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.baseline.json"
+          ]
+        },
+        {
+          "id": "HF5 rank_gate on a main quest",
+          "result": "pass",
+          "value": 0,
+          "threshold": "empty",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+          ]
+        },
+        {
+          "id": "HF6 antagonist unkillable-until-scripted with no pre-fight conversation",
+          "result": "pass",
+          "value": "Act V authors 0 violent resolutions and a 12-topic pre-violence conversation exists on disk from 12:00:00Z; there is no scripted-invulnerability construct because there is no authored encounter at all",
+          "threshold": "a conversation before the fight",
+          "hard_fail": false,
+          "note": "Passes the hard fail as written, but see AR-3: the encounter the conversation is supposed to precede does not exist. 0 mainline consequences touch an encounter, enemy, spawn or combat key. [evidence detail] main-quest-argument.json (12 topics, 4 knowledge-gated)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json"
+          ]
+        },
+        {
+          "id": "Additional hard requirement — main quest completable at higher cost",
+          "result": "fail",
+          "value": "29 of 40 race x upbringing signatures complete both chains; 11 cannot. saxhleel x4 and naga x4 stop at Q-MAIN-23 (Act IV) on 'salt-factor-neloth-vaun disposition 3/15' and 7/15; dunmer/lukiul, dunmer/foreign-born and dunmer/blackrose stop at Q-MAIN-10 (Act II, quest 9 of 29) on 'rootkeeper-ashul-tei disposition 0/1'",
+          "threshold": "completable for every character",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-race-trace.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-block-attribute.json"
+          ]
+        },
+        {
+          "id": "Act I walks the world on directions prose only",
+          "result": "fail",
+          "value": "directions coverage 100% (32/32, >=20 chars, 0 banned tokens) but 0 of 32 strings are ever shown to the player: journal.js writes def.text only, and 0 of 32 directions appear verbatim in any journal entry (3 share a 40-character window)",
+          "threshold": "prose the player can navigate by",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+          ],
+          "note": "[evidence detail] game/src/sim/quest/journal.js:60-96"
+        },
+        {
+          "id": "Discoverability of the chain in the running world",
+          "result": "fail",
+          "value": "0 of 32 main quests offerable at a cold start; 32/32 refused on the topic gate; topicsKnown length 0",
+          "threshold": "the chain can be entered by playing",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-findability.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.drop-topic.json"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "'Leverage becomes a gate ... makes the main quest incompletable in some saves' — measured: 11 of 40 signatures, via giver disposition rather than faction rank, but the same shape and the same consequence.",
+        "'Act IV becomes a corridor' — NOT hit; Act IV is genuinely simultaneous and this was verified live."
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.baseline.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-race-trace.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-gate-margin.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-findability.json"
+      ],
+      "why_not_ten": "The architecture is at the item's 9-10 band and I could not falsify a single structural check: 32 original quests, five acts, strictly monotonic stakes 2.40 to 10.00, an Act IV that is simultaneous on one predecessor, D7 unadjudicated four times, a backpath with a disjoint ending, zero rank gates, and 253 dated first-person journal entries with zero marker tokens. What holds it to 6 is that the architecture is not reachable and not universally completable: 0 of 32 quests can be opened without a harness call, and 11 of 40 character signatures are permanently refused mid-chain by gates clamped to exactly the worst signature's cold-start standing and then eaten by the piece's own faction-reputation grants.",
+      "path_to_ten": "(a) Author forward-pointing AddTopic edges so each main quest's opening topic is granted by an EARLIER quest, book or rumour, and give Q-MAIN-01 a world-side entry (>=1 rumour line in a settlement other than Soulrest naming the Drowned Tally); fold the slug/prose spellings inside sim/quest/gate.js, not only in converse.js. (b) Re-clamp the nine main-spine gates to (worst cold-start standing - the largest cumulative negative faction term the mainline itself can produce), so the margin is non-zero, and re-run mainline-race-trace.mjs to 40/40. (c) Render q.directions where the player can read it — the giver's spoken line and a verbatim journal copy.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-EXP05",
+      "path": "corpus/95-experience/RI-EXP05-endings-and-the-last-hour.md",
+      "side": "neutral",
+      "kind": "trace",
+      "native_scale": "0-100 weighted; aggregation: weighted-sum; scoreable only at FULL tier; 9 hard fails",
+      "native_score": 0,
+      "native_max": 100,
+      "native_verdict": "We lose — HF8, FULL tier not reached, unmeasurable => 0 fail-closed",
+      "score_0_10": 0,
+      "measured": "unmeasurable",
+      "checks": [
+        {
+          "id": "Step 0 dosage",
+          "result": "unmeasurable",
+          "value": "no FULL-tier playthrough exists for this build: 20 h of simulated play with P1-P11 was neither run by the builder nor by me. What exists is a quest-engine state walk.",
+          "threshold": "FULL tier",
+          "hard_fail": true,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.baseline.json"
+          ],
+          "note": "[evidence detail] mainline-trace.baseline.json is a 29-step engine walk, not a session"
+        },
+        {
+          "id": "LH2 ponr_position_fraction",
+          "result": "pass",
+          "value": 0.9643,
+          "threshold": ">= 0.94",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/ponr-probe.json"
+          ]
+        },
+        {
+          "id": "LH3 ponr_signal_channels",
+          "result": "pass",
+          "value": 3,
+          "threshold": ">= 3",
+          "note": "3 diegetic channels each with an evidence line in shipped text. The >=45-minute lead is not measurable without a played session.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/ponr-probe.json"
+          ]
+        },
+        {
+          "id": "LH4 ponr_modals",
+          "result": "pass",
+          "value": "prose 0, text events 0, ui_changed false",
+          "threshold": "0",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/ponr-probe.json"
+          ]
+        },
+        {
+          "id": "LH5 ponr is real",
+          "result": "pass",
+          "value": "4 threads closed, all with an in-fiction acknowledgement; 4/4 walk-back attempts refused live",
+          "threshold": ">= 4",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/ponr-probe.json"
+          ]
+        },
+        {
+          "id": "LH6 the conversation",
+          "result": "pass",
+          "value": "12 topics, 4 knowledge-gated, race/upbringing-filtered infos. MEASURED AT 12:02:21Z. The file did not exist at 11:47:28Z or 11:59:36Z and landed untracked at 12:00. It is scored as found.",
+          "threshold": ">= 12 topics, >= 4 knowledge-gated",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+          ],
+          "note": "[evidence detail] game/data/dialogue/topics/main-quest-argument.json"
+        },
+        {
+          "id": "LH7 antagonist_verified_claims",
+          "result": "pass",
+          "value": 3,
+          "threshold": ">= 2",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+          ]
+        },
+        {
+          "id": "LH8 antagonist_refuted_by_game",
+          "result": "pass",
+          "value": false,
+          "threshold": "false",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+          ]
+        },
+        {
+          "id": "LH9 non-violent final resolution",
+          "result": "pass",
+          "value": 3,
+          "threshold": ">= 1",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+          ]
+        },
+        {
+          "id": "LH10 spectacle cap",
+          "result": "unmeasurable",
+          "value": "no combat trace; the mainline authors no scripted sequence and no phased encounter, so the data-side answer is 0/0, but a trace is what the item asks for",
+          "threshold": "<= 90 s, <= 3 phases",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json"
+          ]
+        },
+        {
+          "id": "LH11 ending_specific_facts",
+          "result": "unmeasurable",
+          "value": "tools/experience/ending-specificity.mjs exits 4 and never passes; no resolver from ending text to trace events exists",
+          "threshold": ">= 5 facts, >= 3 categories; <= 1 is a hard fail",
+          "hard_fail": true,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+          ],
+          "note": "[evidence detail] W1-19 status file; the tool is authored to report the absence"
+        },
+        {
+          "id": "LH12 two endings — flag delta",
+          "result": "pass",
+          "value": 121,
+          "threshold": ">= 25",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.baseline.json"
+          ]
+        },
+        {
+          "id": "LH12 two endings — npc_reaction_delta",
+          "result": "unmeasurable",
+          "value": "requires a 6-topic x 40-NPC sweep over two loaded ending states; no dialogue runtime exists (game/src/sim/dialogue/ contains only disposition.js)",
+          "threshold": ">= 10; 0 is a hard fail",
+          "hard_fail": true,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json"
+          ]
+        },
+        {
+          "id": "LH14 terminal furniture",
+          "result": "pass",
+          "value": 0,
+          "threshold": "0",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+          ]
+        },
+        {
+          "id": "LH16 severance path",
+          "result": "pass",
+          "value": "the backpath reaches ending_the_count_went_past_the_roots, disjoint from the intended ending, in the player's journal voice, no game over",
+          "threshold": "reachable, in-voice",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.baseline.json"
+          ]
+        }
+      ],
+      "hard_fails": [
+        "HF8 — FULL tier not reached; every check is unmeasurable => 0, fail-closed",
+        "HF3 — ending_specific_facts unmeasurable => 0, which is <= 1",
+        "HF1 — npc_reaction_delta unmeasurable => 0"
+      ],
+      "how_we_lose_hits": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/ponr-probe.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.baseline.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json"
+      ],
+      "why_not_ten": "The item's Step 0 makes it scoreable only at FULL tier and its HF8 makes anything less unmeasurable => 0. No 20-hour playthrough exists for this build and neither the builder nor I ran one. Ten of the sixteen LH checks measure well and several are strong — the point of no return in particular is the best-evidenced thing in the piece, at 0.9643 with zero modals, three diegetic channels and a walk-back refused four times out of four — but the item does not permit them to be totalled outside a playthrough, and two further hard fails (LH11, LH12's reaction delta) fire independently of the tier.",
+      "path_to_ten": "Run a FULL-tier playthrough (PLAYTHROUGH-CRITIC §3: 20 h, P1-P11, both routes) once the main quest can be entered by playing at all — which is this verdict's biggest gap and blocks the tier. Then build the two missing resolvers: tools/experience/session-run.mjs plus an ending-text-to-trace-event resolver for LH11, and __HARNESS.askTopic(npc, topic) -> response_id for LH12's reaction delta.",
+      "ten_by_wave": 3
+    },
+    {
+      "id": "RI-LOR01",
+      "path": "corpus/60-lore/RI-LOR01-canon-dossier.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "three axes 0-5; aggregation: min-over-axes",
+      "native_score": 1,
+      "native_max": 5,
+      "native_verdict": "min-over-axes, and the checks map 1:1 to the item's three axes: canon fidelity 4, invention density 4, provenance legibility 1. The min is provenance. It is 1 and not 0 because the axis is MEASURED rather than unmeasurable and it lands on the boundary between the item's 0 band (<70% traceable) and its 1 band (>=70%): a hand-selected 15-name probe returns 9 registered and 6 not, but a hand-selected list is exactly the sample RI-MTH04 voids, so I decline to claim the 60% that would make it 0 and take the more generous of the two bands. What is categorical and not sampled is that Ixtu-Meer, the Drowned Tally and the Ninth Recension — the antagonist and the mandate — return zero files across all four registry files in corpus/60-lore/data/.",
+      "score_0_10": 3,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "canon fidelity",
+          "result": "pass",
+          "value": "no hard-canon contradiction found in the mainline's shipped prose; the Hist material in the Act V conversation is handled without asserting a canonical fact; the era material (Dres salt, the Imperial assize, current slavery) is consistent",
+          "threshold": "zero hard-canon contradictions",
+          "note": "Read, not exhaustively audited by an instrument: corpus/80-methods/canon-check.py performs registry-integrity and triage only and makes no semantic ruling by its own statement. [evidence detail] game/data/quests/mainline-act1.json | game/data/dialogue/topics/main-quest-argument.json",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+          ]
+        },
+        {
+          "id": "invention density",
+          "result": "pass",
+          "value": "an entirely original main quest (32 quests, an original antagonist, an original mandate, an original phenomenon) plus >=4 original factions in the substrate it hangs off",
+          "threshold": "original main quest, >=4 original factions, >=20 original named settlements",
+          "note": "Held below 5 because the build ships 8 settlements, not >=20 — not this piece's to supply. [evidence detail] game/data/world/pois.json",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt",
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+          ]
+        },
+        {
+          "id": "provenance legibility",
+          "result": "fail",
+          "value": "the main quest's two central inventions have NO entry anywhere in corpus/60-lore/data/: 'Ixtu-Meer' (the antagonist) returns 0 files, 'Drowned Tally' and 'Ninth Recension' (the mandate) return 0 files. 'Rootward Tide', 'Drowned Court', 'Stone Wastes', 'xanmeer', 'Sap-Cutters', 'Wet Ledger', 'Rootkeepers', 'Deep-Kin' and 'Skei' are all registered. game/data/quests/mainline.json carries no provenance block of its own.",
+          "threshold": "every lore claim traceable to a registry entry in <30 s",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+          ],
+          "note": "[evidence detail] grep -ril over corpus/60-lore/data/"
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "'a critic reads our book and cannot tell whether the claim is Bethesda's or ours' — for the antagonist and the mandate, which are the two things the whole quest is about, there is nothing to check against."
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+      ],
+      "why_not_ten": "The min axis is provenance: the antagonist and the mandate — the two inventions the main quest is built on — are not in the canon registry, so a later reader cannot tell what is ours and what is recalled. I did not attempt a seeded proper-noun sample because no instrument in the tree produces one, so I report the categorical absence rather than a percentage.",
+      "path_to_ten": "Add registry entries in corpus/60-lore/data/canon-facts.json for Ixtu-Meer, the Drowned Tally, the Ninth Recension and the Steward of the Count, each marked `constructed` with its authorial-truth status, and add a `provenance` block to game/data/quests/mainline.json naming the registry ids each act depends on. Acceptance: every proper noun in a seeded 30-name sample from the mainline's shipped prose resolves to a registry entry.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-LOR02",
+      "path": "corpus/60-lore/RI-LOR02-era-and-political-brief.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "0-5 band; aggregation: band",
+      "native_score": 3,
+      "native_max": 5,
+      "native_verdict": "Below the 4 band: politics are settlement-specific and on-substrate, but the settlement-legibility leg cannot be measured because no dialogue runtime exists",
+      "score_0_10": 5,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "anachronism",
+          "result": "pass",
+          "value": "0 found; no An-Xileel, no Oblivion Crisis, slavery current in every mention (the Dres salt-factor, the labour lease, the Wet Ledger's short pay)",
+          "threshold": "0 timeline-breaking anachronisms",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+          ],
+          "note": "[evidence detail] game/data/quests/mainline-act*.json"
+        },
+        {
+          "id": "quests hang off the substrate",
+          "result": "pass",
+          "value": "the mainline's spine is the Drowned Court's counting bureaucracy, House Dres salt, the Imperial assize and the Sap-Cutters' terms — 174 faction-reputation deltas across 8 factions",
+          "threshold": ">= 6/10 on-substrate",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt",
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json"
+          ]
+        },
+        {
+          "id": "settlements politically legible from three NPCs each",
+          "result": "unmeasurable",
+          "value": "game/src/sim/dialogue/ contains only disposition.js; there is no topic-asking runtime, so no settlement's politics can be read off three NPCs in play",
+          "threshold": "8 settlements from 3 NPCs each",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+      ],
+      "why_not_ten": "The politics the mainline authors are specific, current and named — this is not the generic 'the Empire is bad' failure the item warns about. But the item scores what a player can determine in play, and the leg that measures it (three NPCs per settlement) has no runtime to measure through.",
+      "path_to_ten": "Not this piece's to close alone: it needs W1-17's topic runtime. What this piece owes is the mainline's own share — at least three NPCs per settlement carrying a main-quest-relevant political line, keyed to the factions the mainline already moves reputation with.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-LOR05",
+      "path": "corpus/60-lore/RI-LOR05-religion-and-souls-metaphysics.md",
+      "side": "neutral",
+      "kind": "structure",
+      "native_scale": "0-5 band; aggregation: band",
+      "native_score": 3,
+      "native_max": 5,
+      "native_verdict": "Terminology clean, no S7/S15/AR-1 violation; the fiction exists in the corpus and reaches the player only through journal entries",
+      "score_0_10": 5,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "S15 souls as currency",
+          "result": "pass",
+          "value": "mainline reward types are gold 8, information 68, service 11, ally 16, access 20, item 15, faction_rank 5, property 4. Zero soul-priced anything. The 14 'soul' string matches are the settlement Soulrest and canonical soul-gems as a traded good, never a currency.",
+          "threshold": "0",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+          ],
+          "note": "[evidence detail] reward-type census, this verdict"
+        },
+        {
+          "id": "S7 bonfire warp",
+          "result": "pass",
+          "value": "0 occurrences of 'bonfire' in any mainline file; the mainline authors no travel shortcut",
+          "threshold": "0",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+          ],
+          "note": "[evidence detail] grep over game/data/quests/mainline*.json"
+        },
+        {
+          "id": "AR-1 taint alters combat",
+          "result": "pass",
+          "value": "the Act III irreversible mark (player_reissue_is_degraded) is a standing/administrative cost, set on both chains and cleared by neither; it touches no combat quantity",
+          "threshold": "0",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.baseline.json"
+          ]
+        },
+        {
+          "id": "the player could finish without learning why they respawn",
+          "result": "fail",
+          "value": "the sapwell/Hist metaphysics reaches the player only as journal prose the quest writes; the 12-topic Act V conversation that carries the religious argument cannot be reached in play because ixtu-meer's quests cannot be opened",
+          "threshold": "explained in-world",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-findability.json"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "'Fiction exists in the corpus but not in the game' — the band-2 description, avoided only because the journal entries do carry the fiction and are drawn."
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+      ],
+      "why_not_ten": "No violation of S15, S7 or AR-1 anywhere in the mainline — this is clean and I tried to break it. It sits at 3 rather than 4-5 because the ask-a-villager leg has no runtime and because the piece's own religious argument is unreachable in play.",
+      "path_to_ten": "Make the Act V conversation reachable (the biggest gap), then measure the ask-a-villager test on the sapwell topics the mainline already seeds.",
+      "ten_by_wave": 2
+    },
+    {
+      "id": "RI-WLD09",
+      "path": "corpus/50-world/RI-WLD09-the-opacity-budget.md",
+      "side": "morrowind",
+      "kind": "number",
+      "native_scale": "0-10, weighted mean of check groups each 0/1/2, then banded; explicit 0 = WE LOSE clause",
+      "native_score": 0,
+      "native_max": 10,
+      "native_verdict": "WE LOSE — the item's own score-0 clause fires: voids.json absent, opacity.json absent, 0 sealed-and-declared mysteries against a bar of 24",
+      "score_0_10": 2,
+      "measured": "partial",
+      "checks": [
+        {
+          "id": "B3 unanswered questions in the main quest",
+          "result": "pass",
+          "value": "5 unanswered, 3 of which the player explicitly asks and is refused or evaded on screen, 1 asked by the antagonist about the player, 1 answered in a book but not in dialogue, 0 ending lines closing a declared question",
+          "threshold": "3-6 unanswered",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+          ]
+        },
+        {
+          "id": "M-OP1 register sealed and declared",
+          "result": "fail",
+          "value": "game/data/world/opacity.json missing; sealed_in_corpus 4, declared_in_game 0, matched 0",
+          "threshold": ">= 24",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/opacity-audit.txt"
+          ]
+        },
+        {
+          "id": "M-OP5 voids",
+          "result": "fail",
+          "value": "game/data/world/voids.json missing",
+          "threshold": ">= 3 tracts",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/opacity-audit.txt"
+          ]
+        },
+        {
+          "id": "assembled lore",
+          "result": "fail",
+          "value": "game/data/world/assembled-lore.json missing, 0 facts",
+          "threshold": ">= 7",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/opacity-audit.txt"
+          ]
+        },
+        {
+          "id": "leak scan",
+          "result": "pass",
+          "value": "2560 strings scanned, 0 leaks",
+          "threshold": "0",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/opacity-audit.txt"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/opacity-audit.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+      ],
+      "why_not_ten": "The item's WE-LOSE clause is triggered by three whole-world registries that do not exist. W1-19's own leg — the mainline's five unanswered questions, three of them refused on screen and one asked of the player by the antagonist — is measured and in band, which is the only reason this is 2 rather than 0. The debt belongs to the world-registry owner, not to this piece, and RI-MTH07's 'the consumer is the next piece' rule says it is still 0 today and is recorded against the seam.",
+      "path_to_ten": "Ship game/data/world/opacity.json with >= 24 sealed-and-declared mysteries, voids.json with >= 3 tracts, and assembled-lore.json; register the mainline's five unanswered questions there as its contribution. Acceptance: opacity-audit.py --all reports 0 failures.",
+      "ten_by_wave": 2
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-race-trace.json",
+      "kind": "trace",
+      "produced_by": "node tools/quests/mainline-race-trace.mjs",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-gate-margin.json",
+      "kind": "report",
+      "produced_by": "node tools/quests/mainline-gate-margin.mjs",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-block-attribute.json",
+      "kind": "trace",
+      "produced_by": "node tools/quests/mainline-block-attribute.mjs",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-findability.json",
+      "kind": "negative-evidence",
+      "produced_by": "node tools/quests/mainline-findability.mjs",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-topic-supply.json",
+      "kind": "report",
+      "produced_by": "inline node script, W1-19-r1 critic — folds hooks.json AddTopic edges against every main quest's opens_by.topic",
+      "seed": null
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.baseline.json",
+      "kind": "trace",
+      "produced_by": "node tools/quests/mainline-trace.mjs (the builder's own instrument, re-run unmodified)",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.drop-topic.json",
+      "kind": "negative-evidence",
+      "produced_by": "node tools/quests/mainline-trace.mjs --sabotage drop-topic",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-19-r1/ponr-probe.json",
+      "kind": "trace",
+      "produced_by": "node tools/experience/ponr-probe.mjs",
+      "seed": 1337
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json",
+      "kind": "report",
+      "produced_by": "RI-MTH07 Comparison method steps 1-5, applied by the W1-19-r1 critic",
+      "seed": null
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt",
+      "kind": "log",
+      "produced_by": "node tools/quests/mainline-census.mjs",
+      "seed": null
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-19-r1/quest-audit.txt",
+      "kind": "log",
+      "produced_by": "node tools/analysis/quest-audit.mjs",
+      "seed": null
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-19-r1/marker-scan.txt",
+      "kind": "log",
+      "produced_by": "node tools/analysis/marker-scan.mjs",
+      "seed": null
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-19-r1/opacity-audit.txt",
+      "kind": "log",
+      "produced_by": "python3 corpus/80-methods/opacity-audit.py --all",
+      "seed": null
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json",
+      "kind": "report",
+      "produced_by": "inline node census by the W1-19-r1 critic over game/data/quests/**, game/data/dialogue/**, game/data/books/** and corpus/60-lore/data/** at be17753",
+      "seed": null
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "A1 roll-to-hit or dice damage introduced",
+          "result": "pass",
+          "observed": "the mainline authors no combat quantity of any kind; 0 of 32 quests carry an encounter, enemy, spawn or combat consequence key (the full key set is faction_reputation, kills_npc, locks, npc_disposition, unlocks, world_flags)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json"
+          ]
+        },
+        {
+          "id": "A2 pausing or menu mid-fight",
+          "result": "not_applicable",
+          "observed": "no fight is authored by this piece",
+          "not_run_reason": "no combat surface in scope"
+        },
+        {
+          "id": "A3 level-scaled enemies",
+          "result": "pass",
+          "observed": "0 rank_gate, 0 level references, 0 souls/xp references in any mainline file"
+        },
+        {
+          "id": "A4 non-lethal exits preserved (ARBITRATION §1 as amended)",
+          "result": "pass",
+          "observed": "32/32 mainline quests have >= 1 non-violent resolution; 32/32 have an empty kill_required_npcs; both traced chains resolved 46 quests with 0 violent resolutions; build-wide 69/69 = 100% against the >= 45% bar",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt",
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.baseline.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-race-trace.json"
+          ]
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+      ]
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "B1 objective markers / waypoints / minimap",
+          "result": "pass",
+          "observed": "marker-scan K1: 0 hits across 353 data files, 1 declared exception (W1-15's zero-count declaration). 253 journal entries across both chains: 0 marker tokens under the U9 regex.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/marker-scan.txt",
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.baseline.json"
+          ]
+        },
+        {
+          "id": "B2 quest-added / objective-updated acknowledgement",
+          "result": "pass",
+          "observed": "the journal writes a numbered dated first-person entry; the only non-verbal acknowledgement is a glyph with no words and no quest name (RI-UIX04 Q11) [evidence detail] game/src/sim/quest/machine.js:_write",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+          ]
+        },
+        {
+          "id": "B3 souls as currency (S15)",
+          "result": "pass",
+          "observed": "0 soul-priced anything; gold is the only currency in 8 gold rewards and every in-fiction payment [evidence detail] reward-type census",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+          ]
+        },
+        {
+          "id": "B4 item descriptions replacing NPC dialogue as the lore vector",
+          "result": "pass",
+          "observed": "68 information rewards and a 12-topic conversation carry the lore; nothing in the mainline puts a lore claim in an item description"
+        },
+        {
+          "id": "B5 prose directions present (S8)",
+          "result": "pass",
+          "observed": "directions_pct 100 (69/69 build-wide, 32/32 mainline), >= 20 chars, 0 banned prose tokens",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-19-r1/quest-audit.txt"
+          ],
+          "note": "The strings pass. That they are never shown to the player is a CONSUMPTION defect, not an AR-2 leak, and is scored as such — per S26 a defect is judged as a defect."
+        }
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/marker-scan.txt"
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 4,
+    "pass_threshold": 7,
+    "aggregation": "mean",
+    "band_label": "Recognisable but wrong — fully the right idea, executed so that a player cannot reach it",
+    "confidence": "high"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "overall 4 < wave-1 gate 7.0 (SCORING §0)",
+    "hard_fail:RI-EXP05/HF8 — FULL tier not reached, unmeasurable => 0 fail-closed",
+    "hard_fail:RI-EXP05/HF3 — ending_specific_facts unmeasurable => 0",
+    "hard_fail:RI-EXP05/HF1 — npc_reaction_delta unmeasurable => 0",
+    "consumption:coupling_zero:opens_by.topic — the topic gate is live and has no world-side supplier; 0/32 main quests offerable at a cold start",
+    "consumption:coupling_zero:opens_by.overheard_from — 0 code consumers",
+    "consumption:coupling_zero:q.directions — 32 authored strings, 0 ever drawn or written to the journal",
+    "consumption:coupling_zero:hooks.json entry_topics — 23/32 edges seed the quest that fires them",
+    "completability:11_of_40_signatures_cannot_finish",
+    "seam_sterile:true",
+    "ar1_pass",
+    "ar2_pass"
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-mainquest-topic-bootstrap",
+    "subsystem_path": "quests.mainline.acts",
+    "what": "The main quest cannot be entered or advanced by playing. Booted cold with nothing granted through the harness, 0 of 32 category:\"main\" quests are offerable and 32 of 32 are refused by gate.js:153 on `opens_by.topic`; `topicsKnown` is length 0 and nothing in the running world can ever add to it in the spelling the gate compares. Of the 32 AddTopic edges W1-19 appended to hooks.json, 23 seed only the topic that opens the very quest firing them (Q-MAIN-nn#10 adds the topic Q-MAIN-nn's own opens_by demands), 5 seed a topic no quest asks for, and only 4 point forward. Separately, 2 of 32 opening topics exist in the world's raw spelling at all, 0 exist as a dialogue topic id, 0 rumour lines anywhere in game/data/dialogue/** name a main-quest noun, and `opens_by.overheard_from` — declared on the three quests that are supposed to be overheard — has zero code consumers. The builder's green 29/29 trace does not contradict this: tools/quests/mainline-trace.mjs calls `H.learnTopic(step.topic)` with the exact string the gate is about to ask for, immediately before asking. Running the builder's own drop-topic sabotage — which the builder framed as a control proving the instrument can fail — is in fact the measurement of the shipping build, and it stops at Q-MAIN-01 with 0 journal entries. MEASURED VALUES BY ARTIFACT: corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-findability.json — live cold boot: main quests offerable 0/32, blocked on the topic gate 32/32, topics known at a cold start 0 || corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-topic-supply.json — supplied only by itself 23, no supplier at all 5, supplied by something else 4 || corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.drop-topic.json — 'Q-MAIN-01: could not open — the topic \"the drowned tally\" has not come up yet', 0/29 and 0/17, 0 journal entries || corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json — coupling 0 on opens_by.topic, opens_by.overheard_from, q.directions and the entry_topics edges || game/src/core/topics.js — landed UNTRACKED during this measurement and states the same finding independently; it is imported by game/src/character/converse.js and NOT by game/src/sim/quest/gate.js or game/src/sim/quest/machine.js, so the fold does not reach the quest gate at commit be17753",
+    "why_it_matters": "A player who boots this build, walks to Soulrest and stands in front of Undersexton Aveline Rell cannot start the main quest, and no sentence anywhere in the world tells them the words that would let them.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-findability.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-topic-supply.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.drop-topic.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+    ],
+    "severity": "blocking",
+    "remedy": {
+      "action": "Two edits, in this order. (1) Import `topicKey` from game/src/core/topics.js into game/src/sim/quest/gate.js and fold both sides of the two topic comparisons (line 151 prerequisite_topics, line 153 opens_by.topic) and the topicsKnown set built in machine.js context(). That alone lifts the world-suppliable count from 2/32 to 27/32 in spelling terms. (2) Re-author the AddTopic graph so it points FORWARD: each main quest's opening topic must be granted by an earlier quest's journal entry, a book, or a rumour — never by its own index 10 — and Q-MAIN-01 must have a world-side entry that owes nothing to a prior quest, which means >= 1 rumour line in game/data/dialogue/rumours.json in a settlement other than Soulrest naming the Drowned Tally, plus greeting or topic content on the three NPCs already declared in Q-MAIN-01's opens_by.overheard_from, and a consumer for that field.",
+      "targets": [
+        "game/src/sim/quest/gate.js",
+        "game/src/sim/quest/machine.js",
+        "game/data/quests/hooks.json",
+        "game/data/dialogue/rumours.json",
+        "game/data/dialogue/topics/",
+        "game/data/quests/mainline-act1.json"
+      ],
+      "acceptance": "node tools/quests/mainline-findability.mjs reports `main quests offerable` >= 1 and `blocked on the topic` <= 31 at a cold start with nothing learned through the harness, AND a played run of tools/quests/mainline-trace.mjs with every H.learnTopic() call removed completes 29/29 on the intended chain and 17/17 on the backpath. Equivalently: mainline-topic-supply.json reports supplied_only_by_itself = 0 and no_supplier_at_all <= 1 (Q-MAIN-01, whose supplier must be a rumour rather than a quest).",
+      "ref_item": "RI-MTH07",
+      "estimated_size": "M"
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "ELEVEN OF FORTY CHARACTER SIGNATURES CANNOT FINISH THE MAIN QUEST, and the cause is that the wave-3 clamp left exactly zero margin. Playing both chains once per (race x upbringing) signature: 29/40 complete, 11 fail. saxhleel x4 and naga x4 — the province's own two races — stop at Q-MAIN-23 in Act IV on 'salt-factor-neloth-vaun disposition 3/15' and '7/15'; dunmer/lukiul, dunmer/foreign-born and dunmer/blackrose stop at Q-MAIN-10 at quest 9 of 29 on 'rootkeeper-ashul-tei disposition 0/1'. dunmer/interior finishes, so the discriminating field is upbringing alone. The mechanism is exact and measured term by term: all nine clamped main-spine gates have a worst-signature cold-start margin of precisely 0, and the mainline's own 174 faction-reputation grants then move the derived `faction` term negative. saxhleel/interior stands at exactly 15 at the salt factor at a cold start; the FIRST quest of the main quest, Q-MAIN-01 / res_carry, takes the faction term from 0 to -12 and the standing to 3, and Act IV is shut twenty-two quests later with no route back. This is the design call the dispatch asked to be scrutinised, and the answer is that it did not preserve the authored intent: the clamp converted a permanent cold-start exclusion into a delayed one, and the offer-gate probe that certified it (tools/harness/chr-quest-race-gate.mjs) measures a cold start only and can never see it. The W1-07-r4 builder predicted this shape in its own notes ('it can close the MAIN spine on a route the player chose') and declared it out of scope; nobody re-ran the completion trace.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-race-trace.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-gate-margin.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-block-attribute.json"
+      ],
+      "subsystem_path": "quests.mainline.acts"
+    },
+    {
+      "what": "AR-3, seam sterility: this piece creates ZERO interactions that cross the Souls/Morrowind boundary. The full set of consequence keys across all 32 mainline quests is faction_reputation, kills_npc, locks, npc_disposition, unlocks and world_flags — nothing touches an encounter, an enemy, a spawn or a combat quantity. There is no authored encounter for the antagonist at all, so RI-QST06's requirement that 'the encounter must be authored so that [the conversation before the fight] can [happen]' has no encounter to be authored against. seam_sterile: true, justified: the piece is a quest-structure and dialogue piece by construction, but the main quest is precisely where the project's one mandatory seam crossing was supposed to live.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json"
+      ],
+      "subsystem_path": "quests.mainline.antagonist"
+    },
+    {
+      "what": "The two OPEN metrics the builder attributed to pre-existing content both verify, exactly. X8_foreshadowed_pct 76.92 against 80: 39 exclusive quests, 9 unforeshadowed, and all 9 are non-mainline (Q-ARCH-01, Q-SOUL-02, Q-BLAK-01, Q-STRM-01, Q-LILM-01, Q-SAP-01, Q-LEDG-01, Q-DOCK-01, Q-DEEP-01); 30 of 30 mainline exclusive quests foreshadow. silent_failure_pct 22.86 against a 5-15% band: 70 failure_states, 16 silent; the mainline's own 32 failure_states carry 4 silent = 12.50%, inside the band, and the pre-existing 38 carry 12 = 31.58%, which alone would be a hard fail. The builder's own number for its share ('4 in 45, 8.9%') uses quests as the denominator where the metric uses failure_states; the direction is right and the arithmetic is off by that substitution.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/quest-audit.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+      ],
+      "subsystem_path": "quests.mainline.acts"
+    },
+    {
+      "what": "Every headline number the builder claimed reproduces on re-run of its own instrument, unmodified: intended 29/29 with 158 journal entries, backpath 17/17 with 95, 121 world flags differing between the two ending states, PONR at 0.9643 with 0 modals and 3 evidenced channels, 4/4 walk-back attempts refused, 32/32 quests with a non-violent resolution, 0 violent resolutions taken on either chain, 100% dated, 100% first person, 0 marker tokens. The census passes all five RI-QST06 hard fails. The journal prose is the strongest writing in the tree — measured against SCORING §2.2's anchors it sits at or above the 7 exemplar, carrying the giver's evasiveness and the player's suspicion rather than a stage index. None of that is in dispute; what is in dispute is that a machine walking the graph is not a player finding it.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-trace.baseline.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/mainline-census.txt"
+      ],
+      "subsystem_path": "quests.mainline.acts"
+    },
+    {
+      "what": "TIMING, declared per the dispatch. game/data/dialogue/topics/main-quest-argument.json did NOT exist at 11:47:28Z or at 11:59:36Z and existed at 12:02:21Z with an mtime of 12:00, landed untracked by another agent during this measurement. It is scored as found: 12 topics, 4 knowledge-gated, race- and upbringing-filtered infos, no ungated info on any of the four gated topics. Its own engine_notes claim game/src/character/converse.js infoFor() as the consumer; I did not verify that and record it as unmeasured rather than assumed. game/src/core/topics.js also landed untracked during the run and is NOT imported by sim/quest/gate.js or sim/quest/machine.js at be17753, so the topic fold it implements does not reach the quest gate.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+      ],
+      "subsystem_path": "quests.mainline.antagonist"
+    },
+    {
+      "what": "RI-QST06's Comparison method cannot be run as written: all eight of its jq blocks read game/src/data/quests/*.json, a path that has never existed in this tree (the quests live at game/data/quests/). The builder wrote tools/quests/mainline-census.mjs to close that, correctly and honestly, and I re-ran it rather than the jq. This is a corpus defect on the item, not a builder deviation.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+      ],
+      "subsystem_path": "quests.mainline.acts"
+    },
+    {
+      "what": "RI-EXP05 is in a builder piece's judges list and is scoreable only at FULL tier — 20 hours of simulated play with P1 through P11. No wave-1 builder piece can satisfy that and no critic of a single piece can run it, so the item is structurally guaranteed to score 0 for W1-19 however good the endings are. That is a corpus shape worth an orchestrator ruling: either RI-EXP05 is judged only by the playthrough critic, or it publishes a data-tier sub-scale for piece critics. I applied it as written and did not invent a tier.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-19-r1/inline-measurements.json"
+      ],
+      "subsystem_path": "experience.ending.landing"
+    }
+  ],
+  "gap_closure": [],
+  "corpus_extended": [],
+  "method_deviations": [
+    {
+      "ref_item": "RI-QST06",
+      "deviation": "Ran tools/quests/mainline-census.mjs instead of the item's eight jq blocks.",
+      "why": "The jq blocks read game/src/data/quests/*.json, which does not exist in this tree. The census tool implements the same eight assertions against game/data/quests/. Recorded as a corpus defect on the item rather than as a critic choice.",
+      "affects_scores": false
+    },
+    {
+      "ref_item": "RI-JRN07",
+      "deviation": "Consumed as a corroborating instrument although it is not in W1-19's judges list; no score is recorded for it.",
+      "why": "The dispatch named it and it owns the findability half of the chain. Its M-Q4 (a quest with no discovery path other than its giver) and its CONSUMPTION §4 fourth shape (orphan text) are the two instruments that see this piece's biggest gap, and RI-QST06 has no such instrument. Its checks appear as evidence under RI-QST06 and in world-coupling.json, never as a native score.",
+      "affects_scores": false
+    },
+    {
+      "ref_item": "RI-MTH07",
+      "deviation": "Four new tools were written to run this item and the dispatch's completion sweep: tools/quests/mainline-race-trace.mjs, mainline-gate-margin.mjs, mainline-block-attribute.mjs and mainline-findability.mjs. Declared under orchestration/TOOL-LOOP.md.",
+      "why": "RI-MTH07's hand-feed audit (Comparison method step 3) and the dispatch's per-signature completion sweep had no instrument. Every existing quest tool seeds the topic gate with the string the gate is about to ask for, so none of them can see the discovery defect; and chr-quest-race-gate.mjs measures the offer gate at a cold start only, so it cannot see a gate that closes mid-chain.",
+      "affects_scores": true
+    }
+  ],
+  "arbitration_questions": [],
+  "source_reads": [
+    {
+      "path": "game/src/sim/quest/gate.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read only after the live cold boot showed 32/32 refused, to name the line that refuses (153) and to check whether it folds the topic spelling. It does not."
+    },
+    {
+      "path": "game/src/sim/quest/machine.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read after the same demonstration, to enumerate every writer of sim.quest.topicsKnown (424, 465) and to name the disposition view the race sweep exercised (158-162, 199-250)."
+    },
+    {
+      "path": "game/src/sim/quest/journal.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read after measuring 0/32 directions verbatim in journal text, to establish that write() copies def.text and nothing else."
+    },
+    {
+      "path": "game/src/ui/screens/text.js",
+      "purpose": "locate-harness",
+      "note": "To establish that journal entries ARE drawn (elements of kind journal_entry), so the journal is not also orphan text."
+    },
+    {
+      "path": "game/src/harness/api.js",
+      "purpose": "locate-harness",
+      "note": "setCharacter, getGateDispositions, explainDisposition, questOffers — the surface the four new tools drive."
+    },
+    {
+      "path": "game/src/core/topics.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Found untracked during the run; read to establish whether the fold it implements reaches the quest gate. It does not — only character/converse.js imports it."
+    },
+    {
+      "path": "tools/quests/mainline-trace.mjs",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read after re-running it green, to establish that it hand-feeds H.learnTopic(step.topic) immediately before asking the gate for that exact string."
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is false in two places, both declared. RI-EXP05's Step 0 requires a FULL-tier 20-hour playthrough with P1-P11; I did not run one and scored the item 0 fail-closed on its own HF8 rather than substituting a cheaper instrument. RI-LOR01's provenance axis has no seeded-sample instrument in the tree, so I report the categorical absence of two registry entries rather than a percentage from a hand-picked list, which RI-MTH04 would void. blind_done_where_required is false: RI-QST06 and RI-JRN07 both declare blind_pair: yes, and neither pack was run — RI-QST06's blind needs an act-by-act beat table for a reference main quest with proper nouns stripped and RI-JRN07's needs a length-matched Morrowind journal sequence; neither reference artifact exists in the tree and I did not fabricate one. Both absences are recorded rather than scored as passes. Every number in this verdict came from a command listed in build.harness_commands, run by me at be17753, and every source file I opened is listed in source_reads with the demonstration that preceded it."
+  },
+  "notes": "CONSUMPTION (ARBITRATION §3 / RI-MTH07), enumerated exhaustively over W1-19's own output list, is in corpus/90-verdicts/wave1/artifacts/W1-19-r1/world-coupling.json: ten models, six with coupling 1.0 demonstrated by an entity-side observable (a gate decision or a refusal string, never a harness return value), four with coupling 0.0, and one declared unmeasured. The four zeros are opens_by.topic (orphan predicate — the gate is live and nothing in the world can satisfy it), opens_by.overheard_from (orphan data — 0 code consumers), q.directions (orphan text, RI-JRN07's fourth shape — 32 authored strings, 100% coverage, 0 ever drawn) and the 32 entry_topics AddTopic edges W1-19 appended (23 of which seed the quest that fires them). This is the ninth, tenth, eleventh and twelfth model in this project that nothing read, found by the same method that found the eighth — and the eighth was found by this piece's own builder, which is worth saying: the builder ran the audit honestly and stopped one door short, at the register rather than at the gate's other argument. The single biggest gap is the first of the four because it subsumes the rest: nothing else can be reached. AR-3: seam_sterile true, justified. Load average at the start of the run was 11.64 and peaked at 26.02; every browser run was sequential and no capture was taken."
+}

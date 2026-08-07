@@ -1,0 +1,259 @@
+{
+  "schema": "elder-souls/input-checks@1",
+  "tool": "tools/journey/input-checks.mjs",
+  "items": [
+    "RI-JRN03",
+    "RI-JRN04"
+  ],
+  "shim": null,
+  "entry": "game/index.html",
+  "ran_at": "2026-08-07T12:01:47.351Z",
+  "counts": {
+    "total": 16,
+    "pass": 16,
+    "fail": 0,
+    "unmeasurable": 0
+  },
+  "self_test": null,
+  "checks": [
+    {
+      "id": "M-K1",
+      "item": "RI-JRN03",
+      "what": "action coverage through the real DOM path",
+      "status": "pass",
+      "threshold": "14/14 primary, 0 misrouted",
+      "detail": {
+        "actions": 16,
+        "primary_correct": 16,
+        "misrouted": []
+      }
+    },
+    {
+      "id": "M-K2",
+      "item": "RI-JRN03",
+      "what": "bindings matched on KeyboardEvent.code, never .key/.keyCode",
+      "status": "pass",
+      "threshold": "identical action map on qwerty/azerty/qwertz (HF1)",
+      "detail": {
+        "heavy_from_code": true,
+        "azerty_w_dispatched": true,
+        "before": 470,
+        "compares_key": false,
+        "compares_keycode": false,
+        "compares_code": true
+      }
+    },
+    {
+      "id": "M-K5",
+      "item": "RI-JRN03",
+      "what": "auto-repeat produces exactly one action",
+      "status": "pass",
+      "threshold": "exactly 1 (HF7)",
+      "detail": {
+        "fires": 1
+      }
+    },
+    {
+      "id": "M-K6",
+      "item": "RI-JRN03",
+      "what": "held actions released within 1 frame of blur",
+      "status": "pass",
+      "threshold": "held empty in 1 frame; displacement after the committed state ends <= 0.05 m (HF2)",
+      "detail": {
+        "heldBefore": [
+          "roll",
+          "sprint"
+        ],
+        "heldAfter1": [],
+        "displacement_total_m": 4.6874,
+        "displacement_after_commitment_m": 0
+      }
+    },
+    {
+      "id": "M-K7",
+      "item": "RI-JRN03",
+      "what": "held actions released within 1 frame of visibilitychange",
+      "status": "pass",
+      "threshold": "held empty in 1 frame; displacement after the committed state ends <= 0.05 m (HF2)",
+      "detail": {
+        "heldBefore": [
+          "roll",
+          "sprint"
+        ],
+        "heldAfter1": [],
+        "displacement_total_m": 4.6874,
+        "displacement_after_commitment_m": 0
+      }
+    },
+    {
+      "id": "M-K10",
+      "item": "RI-JRN03",
+      "what": "pointer-lock loss releases every held action and enters the menu state",
+      "status": "pass",
+      "threshold": "held empty in 1 frame, menu entered — no reachable gameplay-with-no-lock-and-no-menu (HF4)",
+      "detail": {
+        "before": [
+          "sprint"
+        ],
+        "after": [],
+        "menuOpen": true,
+        "pointerLocked": false
+      }
+    },
+    {
+      "id": "M-K11",
+      "item": "RI-JRN03",
+      "what": "a permanently failing pointer lock leaves the game playable (click-drag look, 0 modals)",
+      "status": "pass",
+      "threshold": "fallback engaged and the camera turns (PL5)",
+      "detail": {
+        "dragLookFallback": true,
+        "lockErrors": 2,
+        "yaw_before": 0,
+        "yaw_after": 12,
+        "turned": true
+      }
+    },
+    {
+      "id": "M-K12",
+      "item": "RI-JRN03",
+      "what": "degrees turned per fixed step is identical at 60/30/15 Hz render",
+      "status": "pass",
+      "threshold": "identical to 6 dp AND non-zero (HF8 / RI-PLT01 HF3)",
+      "detail": {
+        "per_rate": {
+          "0": 9.6,
+          "15": 9.6,
+          "30": 9.6,
+          "60": 9.6
+        },
+        "rotation_is_real": true
+      }
+    },
+    {
+      "id": "M-K13",
+      "item": "RI-JRN03",
+      "what": "degrees turned is exactly linear in total mouse delta",
+      "status": "pass",
+      "threshold": "r2 >= 0.999 (PL8)",
+      "detail": {
+        "points": [
+          [
+            40,
+            4.8
+          ],
+          [
+            80,
+            9.600000000000001
+          ],
+          [
+            160,
+            19.200000000000003
+          ],
+          [
+            320,
+            38.4
+          ]
+        ],
+        "r2": 1.0000000000000002
+      }
+    },
+    {
+      "id": "M-K14",
+      "item": "RI-JRN03",
+      "what": "context menu / scroll / tab-focus / quick-find all suppressed on the canvas",
+      "status": "pass",
+      "threshold": "0 context menus, 0 scroll, 0 focus change (PL9, KB4-KB6)",
+      "detail": {
+        "contextmenu_default_prevented": true,
+        "space_default_prevented": true,
+        "tab_default_prevented": true,
+        "wheel_default_prevented": true,
+        "page_scrolled": false,
+        "body_overflow": "hidden",
+        "canvas_cursor": "none"
+      }
+    },
+    {
+      "id": "M-K15",
+      "item": "RI-JRN03",
+      "what": "the cursor is hidden during gameplay and no software cursor is drawn",
+      "status": "pass",
+      "threshold": "computed cursor 'none' (PL10)",
+      "detail": {
+        "cursor": "none"
+      }
+    },
+    {
+      "id": "M-K16",
+      "item": "RI-JRN03",
+      "what": "sprint-roll-attack completes on a 2-key-rollover keyboard",
+      "status": "pass",
+      "threshold": "sequence completes; no default action needs 3 simultaneous MATRIX keys (HF6)",
+      "detail": {
+        "ghosted": [],
+        "sprinting": true,
+        "rolled": true,
+        "swung": true,
+        "matrix_at_peak": 2
+      }
+    },
+    {
+      "id": "M-K23",
+      "item": "RI-JRN03",
+      "what": "frames from a real DOM event to the sim step that consumes it, over 200 inputs",
+      "status": "pass",
+      "threshold": "p100 <= 2 frames, p50 <= 1",
+      "detail": {
+        "n": 200,
+        "p50": 1,
+        "p100": 1,
+        "never_consumed": 0
+      }
+    },
+    {
+      "id": "M-K24",
+      "item": "RI-JRN03",
+      "what": "10 000 inputs through the real path: inputs the PIPELINE lost",
+      "status": "pass",
+      "threshold": "0 pipeline drops. The aggregate `droppedInputs` also counts presses the COMBAT model refused (RI-CMB09 §1) and cannot be 0 in any real fight — see pipeline.js",
+      "detail": {
+        "pipeline_drops": 0,
+        "aggregate_droppedInputs": 9487,
+        "buffer_misses": 0,
+        "inputs": 10000
+      }
+    },
+    {
+      "id": "M-K4",
+      "item": "RI-JRN03",
+      "what": "no default uses Ctrl/Alt; Ctrl+W and F5 are refused with an in-fiction line",
+      "status": "pass",
+      "threshold": "0 defaults use Ctrl/Alt; both refused in fiction (KB3/RB6)",
+      "detail": {
+        "usesModifier": [],
+        "ctrlW": {
+          "refused": "reserved",
+          "line": "The bindings hold. That hand belongs to the window, not to you."
+        },
+        "f5": {
+          "refused": "reserved",
+          "line": "The bindings hold. That hand belongs to the window, not to you."
+        },
+        "audit": []
+      }
+    },
+    {
+      "id": "M-K20",
+      "item": "RI-JRN03",
+      "what": "instruction tokens in the rendered-text stream outside the settings surface",
+      "status": "pass",
+      "threshold": "0 hits (HF5 / RI-JRN01 HF3)",
+      "detail": {
+        "frames": 0,
+        "hits": [],
+        "sample": []
+      }
+    }
+  ]
+}

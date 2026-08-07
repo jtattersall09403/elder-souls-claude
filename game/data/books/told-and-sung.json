@@ -1,0 +1,80 @@
+{
+  "schema": "elder-souls/book@2",
+  "group": "told-and-sung",
+  "owner": "W1-LIBRARY — the in-world library",
+  "note": "The taxa a library forgets it needs: folk tale, children's rhyme, bad verse by somebody local, a chapel tract, a skill book that teaches sideways rather than instructing (RI-LOR03 §2: 'a book that raises Long Blade is a duelling anecdote, not a manual'), and a printed sheet of rumour that contradicts, on a named fact, what a quest-giver in Soulrest says out loud. The tract and the root-songs cannot both be right about where the dead go and neither is corrected.",
+  "books": [
+    {
+      "id": "the-boy-who-counted-the-tide",
+      "title": "The Boy Who Counted the Tide",
+      "author": "told at Hollow-Reeds; set down by a schoolmistress of the Chapel",
+      "kind": "folk-tale",
+      "taxon": "T8",
+      "argonian_authored": false,
+      "unreliability": "A children's story with the ending left exactly as it is told, by a woman who plainly wanted to soften it and has written a note saying she was not allowed to.",
+      "topics_taught": ["the-counting", "hollow-reeds"],
+      "text": "There was a boy at the landing who could count before he could swim, which is the wrong way round.\n\nHe counted the boats and there were nine. He counted the houses and there were eleven. He counted the posts of the weir and there were forty-four, and he counted them again in the morning and there were forty-four, and he was pleased.\n\nThen he counted the tide.\n\nHe sat on the last post and counted it out and counted it in, and it went out and came in and he had a number, and the next day he did it again and he had the same number, and the day after that he had the same number, and he went to his mother and said: the tide is the same every day.\n\nHis mother said: yes.\n\nHe said: then I know what it will do tomorrow.\n\nHis mother said: yes.\n\nHe said: then I know what it will do always.\n\nAnd his mother put down what she was holding and said: no. And he asked why not, and she said: because you have counted the going out and the coming in, and you have not counted the years, and the years are the ones that are getting shorter.\n\nHe did not believe her. He was a boy who could count.\n\nSo he went and sat on the last post to count the years, and he counted one, and he counted two, and by the ninth he was a man and by the fortieth he was old and by the last one he was the only person left at the landing who remembered where the ninth house had been.\n\nAnd he had his number. And it was not the same.\n\nAnd he went to tell his mother and she had been dead for thirty years, and there was nobody at the landing who wanted a number, and he sat down on the last post with it and that is where he is.\n\n(The teller's note, which I am instructed to include and which I would not have chosen: it is told to children who ask too many questions, and it is not told as a warning against counting. It is told as a warning against expecting anybody to want the answer. — A.C.)"
+    },
+    {
+      "id": "the-counting-rhyme",
+      "title": "A rhyme for the stair, as children sing it at Soulrest",
+      "author": "children",
+      "kind": "verse",
+      "taxon": "T8",
+      "argonian_authored": true,
+      "unreliability": "Nonsense, and the fourth line is a name, and nobody at Soulrest can tell you whose.",
+      "topics_taught": ["soulrest", "the-burial-stair"],
+      "text": "One for the box and two for the lid,\nThree for the sexton who never did,\nFour for the hand in the fourth-book margin,\nFive for the price and there's never a bargain,\n\nSix for the throat and seven for the sound,\nEight for the ones that were never found,\nNine for the well and the well says nine,\nTen — there's no ten, the tenth is mine.\n\n(Sung going down the burial stair, one step to a number. The stair has eleven steps. The children stop on the tenth and jump the last one, and if you ask why they will tell you that you do not step on the tenth, and if you ask why not they will tell you that you do not step on the tenth.)"
+    },
+    {
+      "id": "verses-on-the-provincial-service",
+      "title": "Verses Composed on the Occasion of My Eleventh Year in the Provincial Service",
+      "author": "Nerien Vass, clerk, of the customs post at Soulrest",
+      "kind": "verse",
+      "taxon": "T5",
+      "argonian_authored": false,
+      "unreliability": "Bad in a particular way: a competent clerk imitating a poet he has read four poems by, in a form that does not fit anything he actually wants to say, and it very nearly works twice.",
+      "topics_taught": ["soulrest", "nerien-vass", "the-provincial-office"],
+      "text": "I.\n\nEleven years upon this weeping shore\nI have set down what came and what went out;\nThe Office asks for nothing more\nAnd I have never given it more, and that is what it is about.\n\nII.\n\nMy father kept a shop in Bravil town\nAnd hoped that I should rise; and I have risen\nTo where the burial stair goes down,\nWhich is a rising in the ledger's sense and in no other and I have made my peace with the position.\n\nIII.\n\nO! for a line that scans! O! for a rhyme\nThat does not have to be explained!\nI have been given a great deal of time\nAnd nothing whatsoever to do with it, and it has rained.\n\nIV.\n\nThey say the tide runs downward here and takes\nThe dead of this whole country to the root.\nI have entered four hundred of them for the Office's sakes\nAnd nobody has ever asked me what I thought about it, and I have thought about it, and this is the only place I have put it.\n\nV.\n\nEleven years. The twelfth begins in Sun's Dawn.\nI shall not write again; the fit is gone.\n\n(Found in the back of a customs day-book. Vass is understood to have been embarrassed about them and to have shown them, at one time or another, to almost everybody.)"
+    },
+    {
+      "id": "a-tract-for-the-marsh",
+      "title": "A Tract for the Marsh: Wherein the Nine Are Commended to the Saxhleel",
+      "author": "the Chapel at Gideon, for free distribution",
+      "kind": "pamphlet",
+      "taxon": "T3",
+      "argonian_authored": false,
+      "unreliability": "Written with real warmth by people who have not understood one word of what they are answering, and it is the warmth that makes it unbearable rather than the error.",
+      "contradicts": [{ "book": "the-egg-speaks-twice", "on": "where the dead go, and whether the question is a question", "cf": "CF-D001" }],
+      "topics_taught": ["the-nine-divines", "the-chapel-at-gideon"],
+      "text": "To our neighbours of this province, in friendship.\n\nYou have a tree and we have Nine, and it is often said that these cannot be reconciled. We say they can, and we say it not to take anything from you but because we have seen what it costs a people to have no promise at the end.\n\nConsider what you are told. That when you die you go down into the root, and are held, and are given out again. It is a good teaching and there is much in it we honour. But ask, as we ask you gently to ask: given out as whom?\n\nWe are taught that Arkay keeps the boundary between the living and the dead and keeps it for each soul singly, by name, and that no soul is ever poured in with another. That is the whole of the comfort of it. Not that you will live again — that you will still be you.\n\nYour own people tell us the name is a rope and not a root, and that when the living let go of the rope it lies on the ground. We have heard this said and we have heard it said beautifully. We ask only: who put that in your mouth? A teaching that tells you your name does not matter is a very convenient teaching for everyone except you.\n\nThe Nine ask nothing of you that your own life does not already ask. Mara you keep already, better than we do. Zenithar you keep at every market. Kynareth you keep by living where you live. What we bring is Arkay and what Arkay brings is the boundary, and the boundary is the promise that you are not a measure poured back into a jar.\n\nCome to the chapel at Gideon on any day. There is no charge, there is no enrolment, and you will not be asked to give up your well.\n\nWe know what has been done in this province in the Empire's name and we do not ask you to forget it. We ask you to notice that the chapel was here before the customs house and will be here after it, and that we have never once written to the Office about anybody who came through our door.\n\n(A hand on the back of one surviving copy, in reed-ink: they are kind and they are wrong and the wrongness is not in the Nine. It is in the sentence given out as whom. There is no whom. They have translated the question into their own language and then answered their translation, and they will do this for four hundred years and be gentle about it the whole time.)"
+    },
+    {
+      "id": "the-eleven-strokes-of-teeja-lun",
+      "title": "The Eleven Strokes of Teeja-Lun, as Sedd Ravano Tells It",
+      "author": "Sexton Corvo Sedd, repeating a story he has told too often",
+      "kind": "journal",
+      "taxon": "T4",
+      "argonian_authored": false,
+      "skill_book": "blade",
+      "unreliability": "A story about a fight, told by a man who was not in it, improved by eleven tellings, and it teaches the thing it is about entirely by accident.",
+      "topics_taught": ["teeja-lun", "the-bone-ladder", "the-eleven-strokes"],
+      "text": "You want the Bone Ladder story. Everyone wants the Bone Ladder story. Sit down.\n\nThree of them came off the coast track at dusk, and they were not robbers, they were the sort of men who are between things and have decided that a keeper at a well with nobody near her is a thing. And Teeja-Lun was sitting where she sits, which is with her back to the rib and the well in front of her, and she did not stand up.\n\nThat is the first thing and it is the whole story and nobody ever believes it is the whole story.\n\nShe did not stand up. Three armed men came down the bank at her and she stayed sitting, because the ground in front of that well is soft for about four paces and then it is stone, and she knows exactly where the soft ends, and standing up would have told them.\n\nThe first one came at her fast because she was sitting and a sitting woman is finished. He was in the soft. His foot went and his weight went forward and she put the pole through him going down, and she did it from a sit, which is the part everybody says is impossible and which is not impossible at all, it is just not a thing a man who has been taught to fight standing has ever practised.\n\nThe second one stopped. That was sensible and it did not help him, because stopping in the soft is worse than moving in it.\n\nThe third one went round. He went round onto the stone, which is what she wanted, and by then she was up, and it was a fair fight on hard ground between a man with a blade and a woman with a pole who has been sitting still for eleven hours, and he had eleven strokes.\n\nThat is where the name comes from and it is a bad name because it makes it sound like she made eleven. He made eleven. She made none. She stepped back and stepped back and let him swing, and she never once tried to hit him, and on the eleventh he had to reach, and reaching is where a blade stops being a blade and becomes a stick you are holding at the wrong end.\n\nThen she hit him once.\n\nAnd the point, which is the reason I tell it and not just because it is a good one: she was not faster than him and she was not stronger than him and she did not know a trick. She knew four paces of ground and she was willing to give away eleven strokes to get to the twelfth. That is it. That is the whole of the art as far as I have ever been able to see it, and I have watched a great many people learn the other kind.\n\nShe will not talk about it. I asked her once and she said the ground did most of it, and I said that was modest, and she said it was not modest, it was where the credit goes."
+    },
+    {
+      "id": "the-soulrest-sheet",
+      "title": "The Soulrest Sheet, for the week of the ninth",
+      "author": "printed at Gideon, sold on the stair for one drake",
+      "kind": "broadsheet",
+      "taxon": "T2",
+      "argonian_authored": false,
+      "unreliability": "Prints whatever will sell, corrects nothing, and is right about one thing this week by accident and wrong about the thing everybody buys it for.",
+      "contradicts": [
+        { "book": "the-drowned-tally-eleventh-volume", "on": "the eleven boxes, and what the Court has said about them", "cf": null }
+      ],
+      "contradicts_dialogue": "Undersexton Aveline Rell, asked directly, says the Court has made no statement about the boxes and that the yard hands were mistaken. The sheet says the Court has confirmed them. Both are on the page in the same week and nothing in the game says which.",
+      "topics_taught": ["soulrest", "the-empty-boxes", "the-drowned-court", "the-soulrest-sheet"],
+      "text": "PRICES AT THE CROSS. Rice down a half. Salt steady. Hide up, and up again if the Archon carts are late, which they will be.\n\nSAILINGS. The Gull of Ebonheart out of Archon on the tide of the eleventh, salt and dye, taking eight. The Court's barge to Gideon on the ninth, not taking passengers, before you ask, it has never taken passengers and it is not going to start.\n\nTHE MATTER OF THE BOXES. This sheet is able to report that the Drowned Court has CONFIRMED that eleven burial boxes were returned from the ground on the ninth carrying nothing, and that the weight was found by an undersexton of the Court in person. Readers will draw their own conclusions and this sheet will not draw them for you, except to observe that eleven is a great many and that the ground is where the boxes are supposed to stay.\n\nWe are further told, by a person at the yard whose name we have and will not print, that this is the second time and not the first.\n\nA CORRECTION. Last week this sheet printed that the customs post is open on the seventh. It is not and has not been for eleven years. We are informed that a note to this effect has been on the door for some time.\n\nWANTED. Hands for the wet season at the Gideon quay, ask for Weeja-Sen, pays late.\n\nWANTED. Any person who was at the Bone Ladder on the night of the fourth and saw a light on the Wastes. This sheet pays for a good account and pays better for a dull one, dull accounts being likelier.\n\nLOST. A grey lamp, brass hood, long line wound on the shaft, off the burial stair. It is not worth anything to anybody but the owner. Return to the archive door under the stair, which sticks."
+    }
+  ]
+}

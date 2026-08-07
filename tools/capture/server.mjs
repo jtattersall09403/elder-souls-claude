@@ -48,18 +48,19 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import net from 'node:net';
+import crypto from 'node:crypto';
 import { spawn } from 'node:child_process';
 import { parseArgs, wantsHelp, usage, ensureDir, sha256, EXIT, REPO_ROOT } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
 import {
-  PROTOCOL, CAPD_DIR, SOCK_PATH, LOCK_PATH, LOG_PATH, CACHE_DIR,
-  canonicalSpec, cacheKey, cachePaths,
+  PROTOCOL, CAPD_DIR, SOCK_PATH, LOCK_PATH, LOG_PATH, CACHE_DIR, CACHE_KEY_PATH,
+  canonicalSpec, cacheKey, cachePaths, stableJson, unknownKeys,
 } from './protocol.mjs';
 import { buildKey, statSignature } from './buildkey.mjs';
 import { classify } from './arrival.mjs';
 import {
-  THUMB_SOURCE, THRESHOLD, GAP,
-  snap, diffSlots, residency, judge, UnsettledError,
+  THUMB_SOURCE, THRESHOLD, GAP, SKIP_RULE,
+  snap, diffSlots, triad, residency, judge, UnsettledError,
 } from './settle.mjs';
 
 const USAGE = `

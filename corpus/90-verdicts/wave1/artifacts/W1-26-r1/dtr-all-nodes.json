@@ -1,0 +1,2168 @@
+{
+  "probe": "critic-w1-26-r1a2",
+  "walks": [
+    {
+      "nodes": [
+        {
+          "node": "hold.hatch-name",
+          "kind": "text",
+          "question_id": null,
+          "option_count": 0,
+          "register_rows_arrival": 12,
+          "register_rows_scrolled": 180,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 15,
+            "drawn": 14,
+            "dtr": 0.9333,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+              }
+            ],
+            "dtr_space_joined": 0.9333
+          },
+          "d_state_arrival": {
+            "computed": 2,
+            "drawn": 1,
+            "dtr": 0.5,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+              }
+            ],
+            "dtr_space_joined": 0.5
+          },
+          "d_state_scrolled": {
+            "computed": 2,
+            "drawn": 1,
+            "dtr": 0.5,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+              }
+            ],
+            "dtr_space_joined": 0.5
+          }
+        },
+        {
+          "node": "hold.out",
+          "kind": null,
+          "question_id": null,
+          "option_count": 0,
+          "register_rows_arrival": 5,
+          "register_rows_scrolled": 5,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 3,
+            "drawn": 3,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 2,
+            "drawn": 2,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_scrolled": {
+            "computed": 2,
+            "drawn": 2,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.race-observed",
+          "kind": "observed",
+          "question_id": null,
+          "option_count": 1,
+          "register_rows_arrival": 7,
+          "register_rows_scrolled": 7,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.75
+          },
+          "d_state_arrival": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.75
+          },
+          "d_state_scrolled": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.75
+          }
+        },
+        {
+          "node": "writ.sex",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 3,
+          "register_rows_arrival": 7,
+          "register_rows_scrolled": 28,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.75
+          },
+          "d_state_arrival": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.75
+          },
+          "d_state_scrolled": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.75
+          }
+        },
+        {
+          "node": "writ.upbringing",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 4,
+          "register_rows_arrival": 7,
+          "register_rows_scrolled": 35,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.given-name",
+          "kind": "text",
+          "question_id": null,
+          "option_count": 0,
+          "register_rows_arrival": 11,
+          "register_rows_scrolled": 99,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 11,
+            "drawn": 9,
+            "dtr": 0.8182,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "Foreign-born. Then everything here will be explained to you badly by people who think they are being kind."
+              },
+              {
+                "role": "spoken",
+                "text": "A Saxhleel who has never stood in the marsh. — Then you will find out this month what the rest of us found out at hatching, and yo"
+              }
+            ],
+            "dtr_space_joined": 0.8182
+          },
+          "d_state_arrival": {
+            "computed": 3,
+            "drawn": 1,
+            "dtr": 0.3333,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "Foreign-born. Then everything here will be explained to you badly by people who think they are being kind."
+              },
+              {
+                "role": "spoken",
+                "text": "A Saxhleel who has never stood in the marsh. — Then you will find out this month what the rest of us found out at hatching, and yo"
+              }
+            ],
+            "dtr_space_joined": 0.3333
+          },
+          "d_state_scrolled": {
+            "computed": 3,
+            "drawn": 1,
+            "dtr": 0.3333,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "Foreign-born. Then everything here will be explained to you badly by people who think they are being kind."
+              },
+              {
+                "role": "spoken",
+                "text": "A Saxhleel who has never stood in the marsh. — Then you will find out this month what the rest of us found out at hatching, and yo"
+              }
+            ],
+            "dtr_space_joined": 0.3333
+          }
+        },
+        {
+          "node": "writ.class-routes",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 3,
+          "register_rows_arrival": 7,
+          "register_rows_scrolled": 28,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "question_id": "q1",
+          "option_count": 4,
+          "register_rows_arrival": 10,
+          "register_rows_scrolled": 50,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 6,
+            "drawn": 6,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.6667
+          },
+          "d_state_arrival": {
+            "computed": 6,
+            "drawn": 6,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.6667
+          },
+          "d_state_scrolled": {
+            "computed": 6,
+            "drawn": 6,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.6667
+          }
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "question_id": "q2",
+          "option_count": 4,
+          "register_rows_arrival": 7,
+          "register_rows_scrolled": 42,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.8333
+          },
+          "d_state_scrolled": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.8333
+          }
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "question_id": "q3",
+          "option_count": 4,
+          "register_rows_arrival": 8,
+          "register_rows_scrolled": 48,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.8
+          },
+          "d_state_arrival": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          },
+          "d_state_scrolled": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          }
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "question_id": "q5",
+          "option_count": 4,
+          "register_rows_arrival": 8,
+          "register_rows_scrolled": 48,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.8
+          },
+          "d_state_arrival": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          },
+          "d_state_scrolled": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          }
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "question_id": "q6",
+          "option_count": 4,
+          "register_rows_arrival": 8,
+          "register_rows_scrolled": 48,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.8
+          },
+          "d_state_arrival": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          },
+          "d_state_scrolled": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          }
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "question_id": "q7",
+          "option_count": 4,
+          "register_rows_arrival": 8,
+          "register_rows_scrolled": 48,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.8
+          },
+          "d_state_arrival": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          },
+          "d_state_scrolled": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          }
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "question_id": "q8",
+          "option_count": 4,
+          "register_rows_arrival": 8,
+          "register_rows_scrolled": 48,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.8
+          },
+          "d_state_arrival": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          },
+          "d_state_scrolled": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          }
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "question_id": "q9",
+          "option_count": 4,
+          "register_rows_arrival": 7,
+          "register_rows_scrolled": 42,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.8333
+          },
+          "d_state_scrolled": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.8333
+          }
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "question_id": "q10",
+          "option_count": 4,
+          "register_rows_arrival": 8,
+          "register_rows_scrolled": 48,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.8
+          },
+          "d_state_arrival": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          },
+          "d_state_scrolled": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          }
+        },
+        {
+          "node": "writ.class-questions",
+          "kind": "questionnaire",
+          "question_id": "q11",
+          "option_count": 4,
+          "register_rows_arrival": 7,
+          "register_rows_scrolled": 42,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.8333
+          },
+          "d_state_scrolled": {
+            "computed": 6,
+            "drawn": 5,
+            "dtr": 0.8333,
+            "missed": [
+              {
+                "role": "line",
+                "text": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and i"
+              }
+            ],
+            "dtr_space_joined": 0.8333
+          }
+        },
+        {
+          "node": "writ.birthsign",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 9,
+          "register_rows_arrival": 12,
+          "register_rows_scrolled": 132,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 11,
+            "drawn": 10,
+            "dtr": 0.9091,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "Salt-Blade. Not to the letter — nobody is, and the ones who are worry me — but of the words I am allowed to write, that is the one"
+              }
+            ],
+            "dtr_space_joined": 0.9091
+          },
+          "d_state_arrival": {
+            "computed": 11,
+            "drawn": 10,
+            "dtr": 0.9091,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "Salt-Blade. Not to the letter — nobody is, and the ones who are worry me — but of the words I am allowed to write, that is the one"
+              }
+            ],
+            "dtr_space_joined": 0.9091
+          },
+          "d_state_scrolled": {
+            "computed": 11,
+            "drawn": 10,
+            "dtr": 0.9091,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "Salt-Blade. Not to the letter — nobody is, and the ones who are worry me — but of the words I am allowed to write, that is the one"
+              }
+            ],
+            "dtr_space_joined": 0.9091
+          }
+        },
+        {
+          "node": "writ.birthsign-second",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 8,
+          "register_rows_arrival": 12,
+          "register_rows_scrolled": 108,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 10,
+            "drawn": 9,
+            "dtr": 0.9,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "They gave you the sap twice. Somebody was not paying attention, or somebody was paying very close attention. Choose the second tid"
+              }
+            ],
+            "dtr_space_joined": 0.8
+          },
+          "d_state_arrival": {
+            "computed": 10,
+            "drawn": 9,
+            "dtr": 0.9,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "They gave you the sap twice. Somebody was not paying attention, or somebody was paying very close attention. Choose the second tid"
+              }
+            ],
+            "dtr_space_joined": 0.8
+          },
+          "d_state_scrolled": {
+            "computed": 10,
+            "drawn": 9,
+            "dtr": 0.9,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "They gave you the sap twice. Somebody was not paying attention, or somebody was paying very close attention. Choose the second tid"
+              }
+            ],
+            "dtr_space_joined": 0.8
+          }
+        },
+        {
+          "node": "writ.stamp",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 1,
+          "register_rows_arrival": 13,
+          "register_rows_scrolled": 13,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 12,
+            "drawn": 9,
+            "dtr": 0.75,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+              },
+              {
+                "role": "record",
+                "text": "Second tide: The Full Root (Raj-Xul)"
+              },
+              {
+                "role": "record",
+                "text": "Recorded: Male."
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          },
+          "d_state_arrival": {
+            "computed": 16,
+            "drawn": 9,
+            "dtr": 0.5625,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+              },
+              {
+                "role": "writ",
+                "text": "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma."
+              },
+              {
+                "role": "writ",
+                "text": "Second tide: The Full Root (Raj-Xul)"
+              },
+              {
+                "role": "writ",
+                "text": "Recorded: Male."
+              },
+              {
+                "role": "writ",
+                "text": "Caste line: You walk the way people walk when they have been paid to walk somewhere."
+              },
+              {
+                "role": "writ",
+                "text": "Bounty ledger reference: TW-SAX-FIG"
+              },
+              {
+                "role": "writ",
+                "text": "This case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+              }
+            ],
+            "dtr_space_joined": 0.5
+          },
+          "d_state_scrolled": {
+            "computed": 16,
+            "drawn": 9,
+            "dtr": 0.5625,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+              },
+              {
+                "role": "writ",
+                "text": "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma."
+              },
+              {
+                "role": "writ",
+                "text": "Second tide: The Full Root (Raj-Xul)"
+              },
+              {
+                "role": "writ",
+                "text": "Recorded: Male."
+              },
+              {
+                "role": "writ",
+                "text": "Caste line: You walk the way people walk when they have been paid to walk somewhere."
+              },
+              {
+                "role": "writ",
+                "text": "Bounty ledger reference: TW-SAX-FIG"
+              },
+              {
+                "role": "writ",
+                "text": "This case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+              }
+            ],
+            "dtr_space_joined": 0.5
+          }
+        }
+      ],
+      "writ": {
+        "reader_state": {
+          "open": true,
+          "lines": [
+            "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON",
+            "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.",
+            "",
+            "Name recorded: Silence-Under-Salt",
+            "Also called: Silence-Under-Salt",
+            "Observed as: Saxhleel",
+            "Raised at: a river you have not heard of",
+            "Trade declared: Salt-Blade",
+            "Tide drawn on: The Two-Drink (Kaal-Kaal)",
+            "Second tide: The Full Root (Raj-Xul)",
+            "Recorded: Male.",
+            "",
+            "Caste line: You walk the way people walk when they have been paid to walk somewhere.",
+            "Bounty ledger reference: TW-SAX-FIG",
+            "",
+            "This case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+          ],
+          "top": 0,
+          "window": 9,
+          "total": 16
+        },
+        "body_lines": 13,
+        "drawn_lines": 7,
+        "dtr": 0.5385,
+        "undrawn": [
+          "Tide drawn on: The Two-Drink (Kaal-Kaal)",
+          "Second tide: The Full Root (Raj-Xul)",
+          "Recorded: Male.",
+          "Caste line: You walk the way people walk when they have been paid to walk somewhere.",
+          "Bounty ledger reference: TW-SAX-FIG",
+          "This case is stamped. It is the only thing in this province that says the bearer is a person rather than a sha"
+        ],
+        "register_rows": 10,
+        "distinct_drawn": [
+          "REED-CASE WRIT, STAMPED",
+          "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON",
+          "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.",
+          "Name recorded: Silence-Under-Salt",
+          "Also called: Silence-Under-Salt",
+          "Observed as: Saxhleel",
+          "Raised at: a river you have not heard of",
+          "Trade declared: Salt-Blade",
+          "1–9 of 16",
+          "— Fold it away."
+        ]
+      },
+      "done": true,
+      "walk": "A-questionnaire",
+      "opts": {
+        "race": "saxhleel",
+        "upbringing": "foreign-born",
+        "route": "questionnaire",
+        "birthsign": "kaal-kaal"
+      }
+    },
+    {
+      "nodes": [
+        {
+          "node": "hold.hatch-name",
+          "kind": "text",
+          "question_id": null,
+          "option_count": 0,
+          "register_rows_arrival": 12,
+          "register_rows_scrolled": 168,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 15,
+            "drawn": 14,
+            "dtr": 0.9333,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+              }
+            ],
+            "dtr_space_joined": 0.9333
+          },
+          "d_state_arrival": {
+            "computed": 2,
+            "drawn": 1,
+            "dtr": 0.5,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+              }
+            ],
+            "dtr_space_joined": 0.5
+          },
+          "d_state_scrolled": {
+            "computed": 2,
+            "drawn": 1,
+            "dtr": 0.5,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+              }
+            ],
+            "dtr_space_joined": 0.5
+          }
+        },
+        {
+          "node": "hold.out",
+          "kind": null,
+          "question_id": null,
+          "option_count": 0,
+          "register_rows_arrival": 5,
+          "register_rows_scrolled": 5,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 3,
+            "drawn": 3,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 2,
+            "drawn": 2,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_scrolled": {
+            "computed": 2,
+            "drawn": 2,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.race-observed",
+          "kind": "observed",
+          "question_id": null,
+          "option_count": 1,
+          "register_rows_arrival": 6,
+          "register_rows_scrolled": 6,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_scrolled": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.sex",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 3,
+          "register_rows_arrival": 7,
+          "register_rows_scrolled": 28,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.75
+          },
+          "d_state_arrival": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.75
+          },
+          "d_state_scrolled": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.75
+          }
+        },
+        {
+          "node": "writ.upbringing",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 4,
+          "register_rows_arrival": 7,
+          "register_rows_scrolled": 35,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.given-name",
+          "kind": "text",
+          "question_id": null,
+          "option_count": 0,
+          "register_rows_arrival": 11,
+          "register_rows_scrolled": 99,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 11,
+            "drawn": 9,
+            "dtr": 0.8182,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "The interior. I will write the marsh. There are people here who will read that and stand up straighter, and people who will read i"
+              },
+              {
+                "role": "spoken",
+                "text": "Stop. A Dunmer raised in the deep marsh. — I have written this once before and the once was a mistake in the hand, not in the man."
+              }
+            ],
+            "dtr_space_joined": 0.8182
+          },
+          "d_state_arrival": {
+            "computed": 3,
+            "drawn": 1,
+            "dtr": 0.3333,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "The interior. I will write the marsh. There are people here who will read that and stand up straighter, and people who will read i"
+              },
+              {
+                "role": "spoken",
+                "text": "Stop. A Dunmer raised in the deep marsh. — I have written this once before and the once was a mistake in the hand, not in the man."
+              }
+            ],
+            "dtr_space_joined": 0.3333
+          },
+          "d_state_scrolled": {
+            "computed": 3,
+            "drawn": 1,
+            "dtr": 0.3333,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "The interior. I will write the marsh. There are people here who will read that and stand up straighter, and people who will read i"
+              },
+              {
+                "role": "spoken",
+                "text": "Stop. A Dunmer raised in the deep marsh. — I have written this once before and the once was a mistake in the hand, not in the man."
+              }
+            ],
+            "dtr_space_joined": 0.3333
+          }
+        },
+        {
+          "node": "writ.class-routes",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 3,
+          "register_rows_arrival": 7,
+          "register_rows_scrolled": 28,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.class-named",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 14,
+          "register_rows_arrival": 12,
+          "register_rows_scrolled": 180,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 15,
+            "drawn": 15,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 15,
+            "drawn": 10,
+            "dtr": 0.6667,
+            "missed": [
+              {
+                "role": "option",
+                "text": "Bone-Setter"
+              },
+              {
+                "role": "option",
+                "text": "Sap-Reader"
+              },
+              {
+                "role": "option",
+                "text": "Tide-Caller"
+              },
+              {
+                "role": "option",
+                "text": "Root-Speaker"
+              },
+              {
+                "role": "option",
+                "text": "Egg-Tender"
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          },
+          "d_state_scrolled": {
+            "computed": 15,
+            "drawn": 15,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.birthsign",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 9,
+          "register_rows_arrival": 12,
+          "register_rows_scrolled": 120,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 11,
+            "drawn": 10,
+            "dtr": 0.9091,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "Salt-Blade. Somebody paid you to stand at the front of something."
+              }
+            ],
+            "dtr_space_joined": 0.9091
+          },
+          "d_state_arrival": {
+            "computed": 11,
+            "drawn": 10,
+            "dtr": 0.9091,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "Salt-Blade. Somebody paid you to stand at the front of something."
+              }
+            ],
+            "dtr_space_joined": 0.9091
+          },
+          "d_state_scrolled": {
+            "computed": 11,
+            "drawn": 10,
+            "dtr": 0.9091,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "Salt-Blade. Somebody paid you to stand at the front of something."
+              }
+            ],
+            "dtr_space_joined": 0.9091
+          }
+        },
+        {
+          "node": "writ.stamp",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 1,
+          "register_rows_arrival": 13,
+          "register_rows_scrolled": 13,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 12,
+            "drawn": 9,
+            "dtr": 0.75,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+              },
+              {
+                "role": "record",
+                "text": "Second tide: None recorded."
+              },
+              {
+                "role": "record",
+                "text": "Recorded: Male."
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          },
+          "d_state_arrival": {
+            "computed": 16,
+            "drawn": 9,
+            "dtr": 0.5625,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+              },
+              {
+                "role": "writ",
+                "text": "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma."
+              },
+              {
+                "role": "writ",
+                "text": "Second tide: None recorded."
+              },
+              {
+                "role": "writ",
+                "text": "Recorded: Male."
+              },
+              {
+                "role": "writ",
+                "text": "Caste line: You walk the way people walk when they have been paid to walk somewhere."
+              },
+              {
+                "role": "writ",
+                "text": "Bounty ledger reference: TW-DUN-FIG"
+              },
+              {
+                "role": "writ",
+                "text": "This case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+              }
+            ],
+            "dtr_space_joined": 0.5
+          },
+          "d_state_scrolled": {
+            "computed": 16,
+            "drawn": 9,
+            "dtr": 0.5625,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+              },
+              {
+                "role": "writ",
+                "text": "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma."
+              },
+              {
+                "role": "writ",
+                "text": "Second tide: None recorded."
+              },
+              {
+                "role": "writ",
+                "text": "Recorded: Male."
+              },
+              {
+                "role": "writ",
+                "text": "Caste line: You walk the way people walk when they have been paid to walk somewhere."
+              },
+              {
+                "role": "writ",
+                "text": "Bounty ledger reference: TW-DUN-FIG"
+              },
+              {
+                "role": "writ",
+                "text": "This case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+              }
+            ],
+            "dtr_space_joined": 0.5
+          }
+        }
+      ],
+      "writ": {
+        "reader_state": {
+          "open": true,
+          "lines": [
+            "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON",
+            "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.",
+            "",
+            "Name recorded: Silence-Under-Salt",
+            "Also called: Silence-Under-Salt",
+            "Observed as: Dunmer",
+            "Raised at: black water, no bottom",
+            "Trade declared: Salt-Blade",
+            "Tide drawn on: The Full Root (Raj-Xul)",
+            "Second tide: None recorded.",
+            "Recorded: Male.",
+            "",
+            "Caste line: You walk the way people walk when they have been paid to walk somewhere.",
+            "Bounty ledger reference: TW-DUN-FIG",
+            "",
+            "This case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+          ],
+          "top": 0,
+          "window": 9,
+          "total": 16
+        },
+        "body_lines": 13,
+        "drawn_lines": 7,
+        "dtr": 0.5385,
+        "undrawn": [
+          "Tide drawn on: The Full Root (Raj-Xul)",
+          "Second tide: None recorded.",
+          "Recorded: Male.",
+          "Caste line: You walk the way people walk when they have been paid to walk somewhere.",
+          "Bounty ledger reference: TW-DUN-FIG",
+          "This case is stamped. It is the only thing in this province that says the bearer is a person rather than a sha"
+        ],
+        "register_rows": 10,
+        "distinct_drawn": [
+          "REED-CASE WRIT, STAMPED",
+          "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON",
+          "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.",
+          "Name recorded: Silence-Under-Salt",
+          "Also called: Silence-Under-Salt",
+          "Observed as: Dunmer",
+          "Raised at: black water, no bottom",
+          "Trade declared: Salt-Blade",
+          "1–9 of 16",
+          "— Fold it away."
+        ]
+      },
+      "done": true,
+      "walk": "B-named",
+      "opts": {
+        "race": "dunmer",
+        "upbringing": "interior",
+        "route": "named",
+        "birthsign": null
+      }
+    },
+    {
+      "nodes": [
+        {
+          "node": "hold.hatch-name",
+          "kind": "text",
+          "question_id": null,
+          "option_count": 0,
+          "register_rows_arrival": 12,
+          "register_rows_scrolled": 168,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 15,
+            "drawn": 14,
+            "dtr": 0.9333,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+              }
+            ],
+            "dtr_space_joined": 0.9333
+          },
+          "d_state_arrival": {
+            "computed": 2,
+            "drawn": 1,
+            "dtr": 0.5,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+              }
+            ],
+            "dtr_space_joined": 0.5
+          },
+          "d_state_scrolled": {
+            "computed": 2,
+            "drawn": 1,
+            "dtr": 0.5,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "You are awake. Good. They do not like waking you at the desk, it makes the writing slow."
+              }
+            ],
+            "dtr_space_joined": 0.5
+          }
+        },
+        {
+          "node": "hold.out",
+          "kind": null,
+          "question_id": null,
+          "option_count": 0,
+          "register_rows_arrival": 5,
+          "register_rows_scrolled": 5,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 3,
+            "drawn": 3,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 2,
+            "drawn": 2,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_scrolled": {
+            "computed": 2,
+            "drawn": 2,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.race-observed",
+          "kind": "observed",
+          "question_id": null,
+          "option_count": 1,
+          "register_rows_arrival": 7,
+          "register_rows_scrolled": 7,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.75
+          },
+          "d_state_arrival": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.75
+          },
+          "d_state_scrolled": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.75
+          }
+        },
+        {
+          "node": "writ.sex",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 3,
+          "register_rows_arrival": 7,
+          "register_rows_scrolled": 28,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.75
+          },
+          "d_state_arrival": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.75
+          },
+          "d_state_scrolled": {
+            "computed": 4,
+            "drawn": 4,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0.75
+          }
+        },
+        {
+          "node": "writ.upbringing",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 4,
+          "register_rows_arrival": 7,
+          "register_rows_scrolled": 35,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.given-name",
+          "kind": "text",
+          "question_id": null,
+          "option_count": 0,
+          "register_rows_arrival": 11,
+          "register_rows_scrolled": 99,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 11,
+            "drawn": 9,
+            "dtr": 0.8182,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "Blackrose. Guard's family or inmate's, and I am not going to ask which, and neither will most people, and the ones who do ask will"
+              },
+              {
+                "role": "spoken",
+                "text": "A Khajiit born at Blackrose. — Then either your mother wore the Ninth Cohort's coat or she wore its irons, and there is a man on t"
+              }
+            ],
+            "dtr_space_joined": 0.8182
+          },
+          "d_state_arrival": {
+            "computed": 3,
+            "drawn": 1,
+            "dtr": 0.3333,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "Blackrose. Guard's family or inmate's, and I am not going to ask which, and neither will most people, and the ones who do ask will"
+              },
+              {
+                "role": "spoken",
+                "text": "A Khajiit born at Blackrose. — Then either your mother wore the Ninth Cohort's coat or she wore its irons, and there is a man on t"
+              }
+            ],
+            "dtr_space_joined": 0.3333
+          },
+          "d_state_scrolled": {
+            "computed": 3,
+            "drawn": 1,
+            "dtr": 0.3333,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "Blackrose. Guard's family or inmate's, and I am not going to ask which, and neither will most people, and the ones who do ask will"
+              },
+              {
+                "role": "spoken",
+                "text": "A Khajiit born at Blackrose. — Then either your mother wore the Ninth Cohort's coat or she wore its irons, and there is a man on t"
+              }
+            ],
+            "dtr_space_joined": 0.3333
+          }
+        },
+        {
+          "node": "writ.class-routes",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 3,
+          "register_rows_arrival": 7,
+          "register_rows_scrolled": 28,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_scrolled": {
+            "computed": 5,
+            "drawn": 5,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.class-custom-name",
+          "kind": "text",
+          "question_id": null,
+          "option_count": 0,
+          "register_rows_arrival": 12,
+          "register_rows_scrolled": 168,
+          "clipped_strings": [
+            "  Egg-Tender",
+            "  Egg-Tender",
+            "  Egg-Tender",
+            "  Egg-Tender",
+            "  Fence",
+            "  Root-Speaker",
+            "  Warden's Man",
+            "  Nobody In Particular",
+            "  Nobody In Particular",
+            "  Nobody In Particular",
+            "  Nobody In Particular",
+            "— Nobody In Particular",
+            "  Egg-Tender",
+            "  Egg-Tender"
+          ],
+          "d_model_scrolled": {
+            "computed": 14,
+            "drawn": 13,
+            "dtr": 0.9286,
+            "missed": [
+              {
+                "role": "option",
+                "text": "Nobody In Particular"
+              }
+            ],
+            "dtr_space_joined": 0.8571
+          },
+          "d_state_arrival": {
+            "computed": 1,
+            "drawn": 1,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0
+          },
+          "d_state_scrolled": {
+            "computed": 1,
+            "drawn": 1,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 0
+          }
+        },
+        {
+          "node": "writ.class-custom-favoured",
+          "kind": "pick",
+          "question_id": null,
+          "option_count": 10,
+          "register_rows_arrival": 12,
+          "register_rows_scrolled": 132,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 11,
+            "drawn": 11,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 11,
+            "drawn": 10,
+            "dtr": 0.9091,
+            "missed": [
+              {
+                "role": "option",
+                "text": "LUCK"
+              }
+            ],
+            "dtr_space_joined": 0.9091
+          },
+          "d_state_scrolled": {
+            "computed": 11,
+            "drawn": 11,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.class-custom-neglected",
+          "kind": "pick",
+          "question_id": null,
+          "option_count": 8,
+          "register_rows_arrival": 11,
+          "register_rows_scrolled": 99,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 9,
+            "drawn": 9,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 9,
+            "drawn": 9,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_scrolled": {
+            "computed": 9,
+            "drawn": 9,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.class-custom-primary",
+          "kind": "pick",
+          "question_id": null,
+          "option_count": 19,
+          "register_rows_arrival": 12,
+          "register_rows_scrolled": 240,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 20,
+            "drawn": 20,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 20,
+            "drawn": 10,
+            "dtr": 0.5,
+            "missed": [
+              {
+                "role": "option",
+                "text": "Warding"
+              },
+              {
+                "role": "option",
+                "text": "Veiling"
+              },
+              {
+                "role": "option",
+                "text": "Alchemy"
+              },
+              {
+                "role": "option",
+                "text": "Athletics"
+              },
+              {
+                "role": "option",
+                "text": "Acrobatics"
+              },
+              {
+                "role": "option",
+                "text": "Survival"
+              },
+              {
+                "role": "option",
+                "text": "Sneak"
+              },
+              {
+                "role": "option",
+                "text": "Security"
+              },
+              {
+                "role": "option",
+                "text": "Mercantile"
+              },
+              {
+                "role": "option",
+                "text": "Speechcraft"
+              }
+            ],
+            "dtr_space_joined": 0.5
+          },
+          "d_state_scrolled": {
+            "computed": 20,
+            "drawn": 20,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.class-custom-secondary",
+          "kind": "pick",
+          "question_id": null,
+          "option_count": 16,
+          "register_rows_arrival": 12,
+          "register_rows_scrolled": 204,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 17,
+            "drawn": 17,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 17,
+            "drawn": 10,
+            "dtr": 0.5882,
+            "missed": [
+              {
+                "role": "option",
+                "text": "Athletics"
+              },
+              {
+                "role": "option",
+                "text": "Acrobatics"
+              },
+              {
+                "role": "option",
+                "text": "Survival"
+              },
+              {
+                "role": "option",
+                "text": "Sneak"
+              },
+              {
+                "role": "option",
+                "text": "Security"
+              },
+              {
+                "role": "option",
+                "text": "Mercantile"
+              },
+              {
+                "role": "option",
+                "text": "Speechcraft"
+              }
+            ],
+            "dtr_space_joined": 0.5882
+          },
+          "d_state_scrolled": {
+            "computed": 17,
+            "drawn": 17,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.birthsign",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 9,
+          "register_rows_arrival": 12,
+          "register_rows_scrolled": 120,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 10,
+            "drawn": 10,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_arrival": {
+            "computed": 10,
+            "drawn": 10,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          },
+          "d_state_scrolled": {
+            "computed": 10,
+            "drawn": 10,
+            "dtr": 1,
+            "missed": [],
+            "dtr_space_joined": 1
+          }
+        },
+        {
+          "node": "writ.stamp",
+          "kind": "choice",
+          "question_id": null,
+          "option_count": 1,
+          "register_rows_arrival": 13,
+          "register_rows_scrolled": 13,
+          "clipped_strings": [],
+          "d_model_scrolled": {
+            "computed": 12,
+            "drawn": 9,
+            "dtr": 0.75,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+              },
+              {
+                "role": "record",
+                "text": "Second tide: None recorded."
+              },
+              {
+                "role": "record",
+                "text": "Recorded: Male."
+              }
+            ],
+            "dtr_space_joined": 0.6667
+          },
+          "d_state_arrival": {
+            "computed": 16,
+            "drawn": 9,
+            "dtr": 0.5625,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+              },
+              {
+                "role": "writ",
+                "text": "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma."
+              },
+              {
+                "role": "writ",
+                "text": "Second tide: None recorded."
+              },
+              {
+                "role": "writ",
+                "text": "Recorded: Male."
+              },
+              {
+                "role": "writ",
+                "text": "Caste line: You walk the way people walk when they have been paid to walk somewhere."
+              },
+              {
+                "role": "writ",
+                "text": "Bounty ledger reference: TW-KHA-FIG"
+              },
+              {
+                "role": "writ",
+                "text": "This case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+              }
+            ],
+            "dtr_space_joined": 0.5
+          },
+          "d_state_scrolled": {
+            "computed": 16,
+            "drawn": 9,
+            "dtr": 0.5625,
+            "missed": [
+              {
+                "role": "spoken",
+                "text": "The tide was in and the root had more than it needed. It gave you a swallow it did not owe you."
+              },
+              {
+                "role": "writ",
+                "text": "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma."
+              },
+              {
+                "role": "writ",
+                "text": "Second tide: None recorded."
+              },
+              {
+                "role": "writ",
+                "text": "Recorded: Male."
+              },
+              {
+                "role": "writ",
+                "text": "Caste line: You walk the way people walk when they have been paid to walk somewhere."
+              },
+              {
+                "role": "writ",
+                "text": "Bounty ledger reference: TW-KHA-FIG"
+              },
+              {
+                "role": "writ",
+                "text": "This case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+              }
+            ],
+            "dtr_space_joined": 0.5
+          }
+        }
+      ],
+      "writ": {
+        "reader_state": {
+          "open": true,
+          "lines": [
+            "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON",
+            "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.",
+            "",
+            "Name recorded: Silence-Under-Salt",
+            "Also called: Silence-Under-Salt",
+            "Observed as: Khajiit",
+            "Raised at: the ditch under the wall",
+            "Trade declared: Silence-Under-Salt",
+            "Tide drawn on: The Full Root (Raj-Xul)",
+            "Second tide: None recorded.",
+            "Recorded: Male.",
+            "",
+            "Caste line: You walk the way people walk when they have been paid to walk somewhere.",
+            "Bounty ledger reference: TW-KHA-FIG",
+            "",
+            "This case is stamped. It is the only thing in this province that says the bearer is a person rather than a shape somebody saw."
+          ],
+          "top": 0,
+          "window": 9,
+          "total": 16
+        },
+        "body_lines": 13,
+        "drawn_lines": 7,
+        "dtr": 0.5385,
+        "undrawn": [
+          "Tide drawn on: The Full Root (Raj-Xul)",
+          "Second tide: None recorded.",
+          "Recorded: Male.",
+          "Caste line: You walk the way people walk when they have been paid to walk somewhere.",
+          "Bounty ledger reference: TW-KHA-FIG",
+          "This case is stamped. It is the only thing in this province that says the bearer is a person rather than a sha"
+        ],
+        "register_rows": 10,
+        "distinct_drawn": [
+          "REED-CASE WRIT, STAMPED",
+          "PROVINCIAL OFFICE OF ARGONIA — WRIT OF PERSON",
+          "Issued at the Writ House, Tidewrack, by the hand of Warden-Scribe Tuleeh-Ma.",
+          "Name recorded: Silence-Under-Salt",
+          "Also called: Silence-Under-Salt",
+          "Observed as: Khajiit",
+          "Raised at: the ditch under the wall",
+          "Trade declared: Silence-Under-Salt",
+          "1–9 of 16",
+          "— Fold it away."
+        ]
+      },
+      "done": true,
+      "walk": "C-custom",
+      "opts": {
+        "race": "khajiit",
+        "upbringing": "blackrose",
+        "route": "custom",
+        "birthsign": null
+      }
+    }
+  ],
+  "node_ids_seen": [
+    "hold.hatch-name",
+    "hold.out",
+    "writ.birthsign",
+    "writ.birthsign-second",
+    "writ.class-custom-favoured",
+    "writ.class-custom-name",
+    "writ.class-custom-neglected",
+    "writ.class-custom-primary",
+    "writ.class-custom-secondary",
+    "writ.class-named",
+    "writ.class-questions",
+    "writ.class-routes",
+    "writ.given-name",
+    "writ.race-observed",
+    "writ.sex",
+    "writ.stamp",
+    "writ.upbringing"
+  ],
+  "totals": {
+    "node_ids_measured": 17,
+    "node_visits": 26,
+    "d_state_arrival": {
+      "scene": 0.7744,
+      "q": 0.85,
+      "computed": 195,
+      "drawn": 151,
+      "worst": {
+        "dtr": 0.3333,
+        "node": "writ.given-name"
+      },
+      "below_half": [
+        {
+          "node": "writ.given-name",
+          "dtr": 0.3333
+        }
+      ]
+    },
+    "d_state_scrolled": {
+      "scene": 0.8923,
+      "q": 0.85,
+      "computed": 195,
+      "drawn": 174,
+      "worst": {
+        "dtr": 0.3333,
+        "node": "writ.given-name"
+      },
+      "below_half": [
+        {
+          "node": "writ.given-name",
+          "dtr": 0.3333
+        }
+      ]
+    },
+    "d_model_scrolled": {
+      "scene": 0.9585,
+      "q": 1,
+      "computed": 217,
+      "drawn": 208,
+      "worst": {
+        "dtr": 0.75,
+        "node": "writ.stamp"
+      },
+      "below_half": []
+    },
+    "total_clipped": 14
+  }
+}

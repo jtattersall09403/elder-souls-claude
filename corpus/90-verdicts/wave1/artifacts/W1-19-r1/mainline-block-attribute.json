@@ -1,0 +1,1607 @@
+{
+  "tool": "tools/quests/mainline-block-attribute.mjs",
+  "schema": "elder-souls/mainline-block-attribute@1",
+  "cases": [
+    {
+      "race": "saxhleel",
+      "upbringing": "interior",
+      "watch": "salt-factor-neloth-vaun",
+      "blocked": {
+        "quest": "Q-MAIN-23",
+        "reason": "salt-factor-neloth-vaun disposition 3/15"
+      },
+      "track": [
+        {
+          "after": "(cold start)",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 15,
+            "modelled": true,
+            "band": "cold",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": 0,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                0
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-01 / res_carry",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-02 / res_count_plain",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-03 / res_report_drain",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-04 / res_ledger",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-05 / res_accept_quietly",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-06 / res_the_number",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-07 / res_trade_the_number",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-08 / res_ask_the_crane",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-09 / res_hold_both",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-10 / res_hear_it_out",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-11 / res_walk_it",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-12 / res_full_test",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-13 / res_go_in",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-14 / res_take_the_skei",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-15 / res_heard_it",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-16 / res_persuade_chapter",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-17 / res_whole_arithmetic",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-18 / res_walk_the_eleven",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-19 / res_expose_the_yard",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-20 / res_the_paragraph",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-21 / res_the_eleven",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-22 / res_true_reason",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 3,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -30,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "saxhleel",
+            "player_upbringing": "interior"
+          }
+        }
+      ]
+    },
+    {
+      "race": "naga",
+      "upbringing": "interior",
+      "watch": "salt-factor-neloth-vaun",
+      "blocked": {
+        "quest": "Q-MAIN-23",
+        "reason": "salt-factor-neloth-vaun disposition 7/15"
+      },
+      "track": [
+        {
+          "after": "(cold start)",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 19,
+            "modelled": true,
+            "band": "cold",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": 0,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                0
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-01 / res_carry",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-02 / res_count_plain",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-03 / res_report_drain",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-04 / res_ledger",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-05 / res_accept_quietly",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-06 / res_the_number",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-07 / res_trade_the_number",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-08 / res_ask_the_crane",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-09 / res_hold_both",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-10 / res_hear_it_out",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-11 / res_walk_it",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-12 / res_full_test",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-13 / res_go_in",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-14 / res_take_the_skei",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-15 / res_heard_it",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-16 / res_persuade_chapter",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-17 / res_whole_arithmetic",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-18 / res_walk_the_eleven",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-19 / res_expose_the_yard",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-20 / res_the_paragraph",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-21 / res_the_eleven",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        },
+        {
+          "after": "Q-MAIN-22 / res_true_reason",
+          "explain": {
+            "npc": "salt-factor-neloth-vaun",
+            "register": 45,
+            "value": 7,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-DRES",
+            "base": 45,
+            "race_term": -26,
+            "upbringing_term": 0,
+            "birthsign_term": 0,
+            "other_terms": -12,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -12
+              ]
+            ],
+            "player_race": "naga",
+            "player_upbringing": "interior"
+          }
+        }
+      ]
+    },
+    {
+      "race": "dunmer",
+      "upbringing": "lukiul",
+      "watch": "rootkeeper-ashul-tei",
+      "blocked": {
+        "quest": "Q-MAIN-10",
+        "reason": "rootkeeper-ashul-tei disposition 0/1"
+      },
+      "track": [
+        {
+          "after": "(cold start)",
+          "explain": {
+            "npc": "rootkeeper-ashul-tei",
+            "register": 45,
+            "value": 1,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-ROOT",
+            "base": 45,
+            "race_term": -34,
+            "upbringing_term": -10,
+            "birthsign_term": 0,
+            "other_terms": 0,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                0
+              ]
+            ],
+            "player_race": "dunmer",
+            "player_upbringing": "lukiul"
+          }
+        },
+        {
+          "after": "Q-MAIN-01 / res_carry",
+          "explain": {
+            "npc": "rootkeeper-ashul-tei",
+            "register": 45,
+            "value": 4,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-ROOT",
+            "base": 45,
+            "race_term": -34,
+            "upbringing_term": -10,
+            "birthsign_term": 0,
+            "other_terms": 3,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                3
+              ]
+            ],
+            "player_race": "dunmer",
+            "player_upbringing": "lukiul"
+          }
+        },
+        {
+          "after": "Q-MAIN-02 / res_count_plain",
+          "explain": {
+            "npc": "rootkeeper-ashul-tei",
+            "register": 45,
+            "value": 4,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-ROOT",
+            "base": 45,
+            "race_term": -34,
+            "upbringing_term": -10,
+            "birthsign_term": 0,
+            "other_terms": 3,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                3
+              ]
+            ],
+            "player_race": "dunmer",
+            "player_upbringing": "lukiul"
+          }
+        },
+        {
+          "after": "Q-MAIN-03 / res_report_drain",
+          "explain": {
+            "npc": "rootkeeper-ashul-tei",
+            "register": 45,
+            "value": 4,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-ROOT",
+            "base": 45,
+            "race_term": -34,
+            "upbringing_term": -10,
+            "birthsign_term": 0,
+            "other_terms": 3,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                3
+              ]
+            ],
+            "player_race": "dunmer",
+            "player_upbringing": "lukiul"
+          }
+        },
+        {
+          "after": "Q-MAIN-04 / res_ledger",
+          "explain": {
+            "npc": "rootkeeper-ashul-tei",
+            "register": 45,
+            "value": 0,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-ROOT",
+            "base": 45,
+            "race_term": -34,
+            "upbringing_term": -10,
+            "birthsign_term": 0,
+            "other_terms": -6,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -6
+              ]
+            ],
+            "player_race": "dunmer",
+            "player_upbringing": "lukiul"
+          }
+        },
+        {
+          "after": "Q-MAIN-05 / res_accept_quietly",
+          "explain": {
+            "npc": "rootkeeper-ashul-tei",
+            "register": 45,
+            "value": 0,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-ROOT",
+            "base": 45,
+            "race_term": -34,
+            "upbringing_term": -10,
+            "birthsign_term": 0,
+            "other_terms": -6,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -6
+              ]
+            ],
+            "player_race": "dunmer",
+            "player_upbringing": "lukiul"
+          }
+        },
+        {
+          "after": "Q-MAIN-06 / res_the_number",
+          "explain": {
+            "npc": "rootkeeper-ashul-tei",
+            "register": 45,
+            "value": 0,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-ROOT",
+            "base": 45,
+            "race_term": -34,
+            "upbringing_term": -10,
+            "birthsign_term": 0,
+            "other_terms": -6,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -6
+              ]
+            ],
+            "player_race": "dunmer",
+            "player_upbringing": "lukiul"
+          }
+        },
+        {
+          "after": "Q-MAIN-07 / res_trade_the_number",
+          "explain": {
+            "npc": "rootkeeper-ashul-tei",
+            "register": 45,
+            "value": 0,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-ROOT",
+            "base": 45,
+            "race_term": -34,
+            "upbringing_term": -10,
+            "birthsign_term": 0,
+            "other_terms": -9,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -9
+              ]
+            ],
+            "player_race": "dunmer",
+            "player_upbringing": "lukiul"
+          }
+        },
+        {
+          "after": "Q-MAIN-08 / res_ask_the_crane",
+          "explain": {
+            "npc": "rootkeeper-ashul-tei",
+            "register": 45,
+            "value": 0,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-ROOT",
+            "base": 45,
+            "race_term": -34,
+            "upbringing_term": -10,
+            "birthsign_term": 0,
+            "other_terms": -9,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -9
+              ]
+            ],
+            "player_race": "dunmer",
+            "player_upbringing": "lukiul"
+          }
+        },
+        {
+          "after": "Q-MAIN-09 / res_hold_both",
+          "explain": {
+            "npc": "rootkeeper-ashul-tei",
+            "register": 45,
+            "value": 0,
+            "modelled": true,
+            "band": "hostile",
+            "group": "RG-ROOT",
+            "base": 45,
+            "race_term": -34,
+            "upbringing_term": -10,
+            "birthsign_term": 0,
+            "other_terms": -9,
+            "movable": [
+              [
+                "personality",
+                0
+              ],
+              [
+                "faction",
+                -9
+              ]
+            ],
+            "player_race": "dunmer",
+            "player_upbringing": "lukiul"
+          }
+        }
+      ]
+    }
+  ]
+}

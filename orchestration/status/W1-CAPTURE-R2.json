@@ -1,0 +1,27 @@
+{
+  "task_id": "W1-CAPTURE-R2",
+  "brief": "rebuild tools/capture/ against CAPTURE-SERVICE-R1 (NOT SATISFIED, 7 rebuilds)",
+  "started": "wave-1 round 2",
+  "state": "researching",
+  "predecessor": "orchestration/status/W1-CAPTURE.json (round 1, NOT SATISFIED)",
+  "acceptance_test": "node tools/capture/critic-r1-probe.mjs --all (offline) must go 28/30 accepted -> 0; --forge and --sticky must hold",
+  "outputs_expected": [
+    "tools/capture/arrival.mjs (rebuilt: declared evidence_of from closed vocabulary, fail closed, recursive scan)",
+    "tools/capture/settle.mjs (d2 bound, monotonicity, fail-closed G1/G2, conditional frame C, read-only residency)",
+    "tools/capture/server.mjs (cache re-derives provenance, verifies bytes, re-runs gate; sticky-condition fix; no_cache no-write)",
+    "tools/capture/protocol.mjs (key completeness)",
+    "tools/capture/falsify.mjs (A2f fixed; both-ways falsification)",
+    "tools/capture/concurrency-test.mjs (fairness bar fixed: count jobs dispatched ahead)",
+    "reports/capture/SETTLE-CALIBRATION-R2.json (threshold re-derived on G3-only cases)",
+    "reports/capture/CRITIC-PROBE.json (probe re-run, 0 beaten)"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "BASELINE, before any change: boot-check PASS. critic-r1-probe --all = GATES BEATEN, 4 of 4 offline checks found a hole: P1 28/30 laundering accepted; P2 K1-no-camera-stream dishonest; P2b canonicalSpec drops evidence_of,claim,title,item,__no_camera_stream,no_cache,fov,exposure,lod; P6 3 unsettled worlds certified SETTLED.",
+    "Box load at start: 24.70 on 4 cores (10 agents). Browser measurements will be slow and must be reported with the load.",
+    "DESIGN: the arrival gate becomes three layers. A: evidence_of REQUIRED, exact token from a CLOSED vocabulary, appearance-class permitted / arrival-class refused / anything else refused (fail closed, no default). B: reference-item class check (RI-JRN*, RI-WLD03) scanned RECURSIVELY over every string in the spec. C: residual stem+phrase denylist, also recursive. A is the gate; B and C are defence in depth and can only refuse, never permit.",
+    "DESIGN, settle: G3 splits into G3a excess=max(0,d1-d2) (deceleration, existing), G3b rise=max(0,d2-d1) (ACCELERATION: catches the world exploding after the shipped frame), G3c accumulation d13=|A-C| vs max(d1,d2) (catches STEADY arrival, where d1==d2 so both excess and rise are 0). G3c needs NO extra frame: A and C are already taken."
+  ],
+  "next_step": "rebuild arrival.mjs",
+  "notes_for_successor": ""
+}

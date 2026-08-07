@@ -140,6 +140,30 @@ export function installHarness(engine, bootPromise) {
     lockOn(eid) { return engine.lockOn(eid === undefined ? null : eid); },
     setTimeOfDay(h) { return engine.setTimeOfDay(h); },
     setWeather(id) { return engine.setWeather(id); },
+
+    /**
+     * getEnvConditions() — READ BACK the conditions the world is actually in.
+     *
+     * `setTimeOfDay` and `setWeather` write `sim.env` and nothing puts them back, so they are
+     * STICKY across captures. The CAPTURE-SERVICE-R1 critic used that to break the cache's central
+     * promise: `place(A)` with no time and no weather rendered one picture, and the byte-identical
+     * spec rendered a different one after an intervening `time: 1, weather: storm` capture, because
+     * the place-to-place fast path never reloads. There was no way to ask the engine what
+     * conditions a frame was actually taken in, so the manifest recorded `time: null` and the cache
+     * banked a night storm under it.
+     *
+     * This is that verb. It reads and returns; it sets nothing.
+     */
+    getEnvConditions() {
+      const e = engine.sim.env || {};
+      let tide = null;
+      try { tide = engine.getTide(); } catch (err) { tide = null; }
+      return {
+        time_of_day: e.timeOfDay === undefined ? null : e.timeOfDay,
+        weather: e.weather === undefined ? null : e.weather,
+        tide,
+      };
+    },
     camera(pose) { return engine.camera(pose === undefined ? null : pose); },
     listAnchors() { return engine.renderer.listAnchors(); },
 
@@ -251,6 +275,69 @@ export function installHarness(engine, bootPromise) {
       const queued = engine.renderer.province.request(Number(x), Number(z));
       const built = budget === undefined ? engine.renderer.province.drain() : engine.renderer.province.pump(Number(budget));
       return { queued, built, ...engine.renderer.province.stats() };
+    },
+
+    /**
+     * provinceResidency(x, z) — HOW MUCH OF WHAT A CAMERA AT (x, z) NEEDS DOES NOT EXIST YET,
+     * WITHOUT TOUCHING THE SCENE.
+     *
+     * Added for the capture service's G1 gate (ARBITRATION.md S34 anti-loophole). That gate used
+     * `streamAround(x, z, 0)`, documented as "a pure read, because a budget of 0 builds nothing".
+     * IT IS NOT A PURE READ, and the CAPTURE-SERVICE-R1 critic measured what it costs: at a camera
+     * 3 km from the last teleport the probe took `tilesResident` from 25 to 0 and meshes from 247
+     * to 5, BETWEEN the two frames the settle proof compares. `request()` (world/province.js)
+     * re-focuses the streamer, rebuilds the ground skin, the near-prop disc and the cover disc,
+     * and RELEASES every resident tile outside the new want-set. A budget of 0 only stops `pump()`
+     * from building; everything destructive has already happened.
+     *
+     * This computes the same want-set — the same RADIUS x RADIUS ring of TILE_M tiles, clipped to
+     * the field, from `stats()`'s own declared geometry so it cannot drift from the streamer's —
+     * and reports the shortfall by reading `province.tiles` and `province.queue`. It sets no focus,
+     * builds nothing, releases nothing, and rebuilds no disc. A measurement must not demolish the
+     * thing it measures.
+     *
+     * @returns {{missing:number, want:number, resident_in_want:number, resident_total:number,
+     *            queued_total:number, queued_in_want:number, tile_size_m:number,
+     *            radius_tiles:number, read_only:true}}
+     */
+    provinceResidency(x, z) {
+      const p = engine.renderer && engine.renderer.province;
+      if (!p) throw new Error('provinceResidency: no province is loaded');
+      const st = p.stats();
+      const T = st.tileSizeM, R = st.residentRadiusTiles;
+      const f = p.field;
+      const tx0 = Math.floor(Number(x) / T), tz0 = Math.floor(Number(z) / T);
+      const want = [];
+      for (let dz = -R; dz <= R; dz++) {
+        for (let dx = -R; dx <= R; dx++) {
+          const tx = tx0 + dx, tz = tz0 + dz;
+          if (tx < 0 || tz < 0 || tx * T >= f.sizeX || tz * T >= f.sizeZ) continue;
+          want.push(`${tx},${tz}`);
+        }
+      }
+      let resident = 0, queuedInWant = 0;
+      const missingKeys = [];
+      for (const k of want) {
+        if (p.tiles.has(k)) resident++;
+        else {
+          missingKeys.push(k);
+          if (p.queue.some((q) => q.k === k)) queuedInWant++;
+        }
+      }
+      return {
+        missing: want.length - resident,
+        missing_keys: missingKeys,
+        want: want.length,
+        resident_in_want: resident,
+        resident_total: st.tilesResident,
+        queued_total: st.tilesQueued,
+        queued_in_want: queuedInWant,
+        tile_size_m: T,
+        radius_tiles: R,
+        meshes: st.meshes,
+        instances: st.instances,
+        read_only: true,
+      };
     },
 
     // ---- rendering ---------------------------------------------------------------------------

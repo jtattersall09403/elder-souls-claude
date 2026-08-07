@@ -1,0 +1,173 @@
+{
+ "schema": "elder-souls/w1-19-r1-inline@1",
+ "measured_at": "2026-08-07T12:15:28.043Z",
+ "commit": "be17753",
+ "mainline_reward_types": {
+  "gold": 8,
+  "information": 68,
+  "service": 11,
+  "ally": 16,
+  "access": 20,
+  "item": 15,
+  "faction_rank": 5,
+  "property": 4
+ },
+ "s15_soul_string_matches": {
+  "count": 79,
+  "samples": [
+   "elder-souls/quest-file@1",
+   "Soulrest, the Drowned Court's counting house at the head of the ",
+   "soulrest-customs-clerk",
+   "keeps the counting house at the head of the burial stair in Soulrest, above the salt-store, where the stair turns and the wa",
+   "rried goes to the Court's factor in Gideon. The road out of Soulrest runs north with the Stone Wastes on your right until it",
+   "A clerk on the Soulrest customs bench told me the Drowned Court has been paying",
+   "e Rell has given me a sealed quarterly return to carry from Soulrest to the Court's factor in Gideon. She pays a hundred and",
+   " carrying a book. I was carrying a man in a good coat, from Soulrest to Gideon, to see who he was.",
+   "nd hundred and twenty and a name of her own to ask after in Soulrest, which is the first time she has given me anything I di",
+   "I gave the return back to Rell in Soulrest unopened and told her I would carry books but not peopl",
+   "soulrest-customs-clerk",
+   "The return goes back to Soulrest unopened. Rell pays half, respects it, and gives the pl",
+   "Carry the Court's quarterly return from Soulrest to Gideon",
+   "Soulrest, the Drowned Court's counting house at the head of the ",
+   "The Court's burial ground is below Soulrest on the seaward side, past the salt-store and down the s",
+   "r, and slow, and it has been going on longer than anyone in Soulrest has been paying attention to it.",
+   "soulrest_court_book_unchanged",
+   "soulrest-sexton-on-duty",
+   "soulrest_mortuary_favours_player",
+   "soulrest-sexton-on-duty"
+  ],
+  "soul_priced_anything": 0
+ },
+ "s7_bonfire_matches": 0,
+ "directions_verbatim_in_journal": {
+  "quests": 32,
+  "verbatim": 0,
+  "shared_40char_window": 3
+ },
+ "mainline_consequence_keys": [
+  "faction_reputation",
+  "kills_npc",
+  "locks",
+  "npc_disposition",
+  "unlocks",
+  "world_flags"
+ ],
+ "mainline_encounter_side_consequences": 0,
+ "silent_failures": {
+  "mainline": {
+   "failure_states": 32,
+   "silent": 4,
+   "pct": 12.5
+  },
+  "pre_existing": {
+   "failure_states": 38,
+   "silent": 12,
+   "pct": 31.58
+  },
+  "global_pct": 22.86
+ },
+ "x8_unforeshadowed_exclusive_quests": [
+  {
+   "id": "Q-ARCH-01",
+   "category": "side"
+  },
+  {
+   "id": "Q-BLAK-01",
+   "category": "side"
+  },
+  {
+   "id": "Q-STRM-01",
+   "category": "side"
+  },
+  {
+   "id": "Q-SAP-01",
+   "category": "faction"
+  },
+  {
+   "id": "Q-LEDG-01",
+   "category": "faction"
+  },
+  {
+   "id": "Q-DOCK-01",
+   "category": "faction"
+  }
+ ],
+ "x8_exclusive_total": 39,
+ "x8_mainline_exclusive": 30,
+ "lore_provenance_sample": {
+  "note": "hand-selected, NOT a seeded sample; reported as categorical presence/absence per name, never as a percentage claim",
+  "names": [
+   {
+    "name": "Rootward Tide",
+    "registered": true
+   },
+   {
+    "name": "Drowned Court",
+    "registered": true
+   },
+   {
+    "name": "Ixtu-Meer",
+    "registered": false
+   },
+   {
+    "name": "Drowned Tally",
+    "registered": false
+   },
+   {
+    "name": "Ninth Recension",
+    "registered": false
+   },
+   {
+    "name": "Aveline Rell",
+    "registered": false
+   },
+   {
+    "name": "Stone Wastes",
+    "registered": true
+   },
+   {
+    "name": "xanmeer",
+    "registered": true
+   },
+   {
+    "name": "Sap-Cutters",
+    "registered": true
+   },
+   {
+    "name": "Wet Ledger",
+    "registered": true
+   },
+   {
+    "name": "Rootkeepers",
+    "registered": true
+   },
+   {
+    "name": "Bone Ladder",
+    "registered": false
+   },
+   {
+    "name": "Hollow-Reeds",
+    "registered": false
+   },
+   {
+    "name": "Deep-Kin",
+    "registered": true
+   },
+   {
+    "name": "Skei",
+    "registered": true
+   }
+  ]
+ },
+ "overheard_from_code_consumers": 0,
+ "topic_fold_wiring": {
+  "game/src/core/topics.js": "present, untracked at be17753",
+  "imported_by": [
+   "game/src/character/converse.js"
+  ],
+  "NOT_imported_by": [
+   "game/src/sim/quest/gate.js",
+   "game/src/sim/quest/machine.js"
+  ]
+ }
+}

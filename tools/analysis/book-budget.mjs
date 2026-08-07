@@ -1,0 +1,464 @@
+#!/usr/bin/env node
+// book-budget.mjs — RI-UIX05 §D, the lore-vector budget, with no browser involved.
+//
+// WHY THIS FILE EXISTS (orchestration/TOOL-LOOP.md rule 1).
+// RI-UIX05's Comparison method step 7 names:
+//
+//     node tools/analysis/content-stats.mjs --books game/data/books/ --items game/data/items/ \
+//          --dialogue game/data/dialogue/ --corroborate
+//
+// content-stats.mjs exists. NONE of those four flags does. Its USAGE advertises only
+// --data/--out/--json/--verbose/--help, the unknown flags are parsed and silently discarded,
+// and the tool computes NOT ONE of §D's six rows: no book:item word ratio, no corroboration
+// rate, no contradiction count, no direction count, no read-before-quest count. It emits a book
+// count and a length summary and exits 0, which is exactly the failure TOOL-LOOP rule 3.5 names
+// ("a flag that lies is worse than a missing flag") and is how K9 could be scored at all.
+//
+// This is the missing instrument, built to the item rather than to what was easy. It is a
+// SEPARATE FILE on purpose: content-stats.mjs is consumed by a dozen other items and widening it
+// to carry a UI item's budget would couple them. content-stats.mjs is left alone; the two flags
+// it should honour are honoured here and the item's step 7 command is accepted verbatim so a
+// critic who copies the line out of RI-UIX05 gets a real measurement instead of a shrug.
+//
+// IT CAN FAIL. Every row is a threshold from RI-UIX05 §D and the process exits non-zero when any
+// row is out of band. Break the corpus on purpose — delete a book, empty a `contradicts`, point a
+// quest at a book that is not there — and it goes red. Verified by --self-test.
+//
+// WHAT IT DOES NOT DO. It does not measure the reading screen. Words-per-page, line length,
+// leading and contrast are RI-UIX05 §A/K1–K3 and belong to tools/analysis/text-metrics.mjs and
+// the browser. `--pagination` here reports the words-per-page DISTRIBUTION ONLY, computed from
+// the shipping pagination functions in bare Node (they are pure arithmetic over the vector glyph
+// tables), which is RI-UIX05 method step 2 without the browser cost. It is a cross-check on the
+// corpus, not a substitute for the capture.
+//
+// Consumers: corpus/86-ui/RI-UIX05 §D (K9), corpus/60-lore/RI-LOR03 §2.
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+const argv = process.argv.slice(2);
+const flag = (name, dflt) => {
+  const i = argv.indexOf('--' + name);
+  if (i < 0) return dflt;
+  const v = argv[i + 1];
+  return (v === undefined || v.startsWith('--')) ? true : v;
+};
+const has = (name) => argv.includes('--' + name);
+
+const USAGE = `
+book-budget.mjs — RI-UIX05 §D lore-vector budget + RI-LOR03 §1 shape, static, no browser.
+
+USAGE
+  node tools/analysis/book-budget.mjs [--books DIR] [--items DIR] [--dialogue DIR]
+                                      [--quests DIR] [--corroborate] [--pagination]
+                                      [--out FILE] [--json] [--self-test]
+
+OPTIONS
+  --books DIR      book data root      (default game/data/books)
+  --items DIR      item data root      (default game/data/items)
+  --dialogue DIR   dialogue data root  (default game/data/dialogue)
+  --quests DIR     quest data root     (default game/data/quests)
+  --corroborate    run the proper-noun corroboration pass (§D row 3). Costs a second or two.
+  --pagination     also report words-per-page across every book, using the SHIPPING pagination
+                   from game/src/ui/screens/text.js. Requires that module to load in bare Node.
+  --out FILE       write the full result as JSON (default reports/book-budget.json)
+  --json           print the full result to stdout
+  --self-test      prove the tool can fail: run the checks against three mutated corpora and
+                   assert each mutation turns a passing row red. Exits non-zero if any does not.
+
+EXIT
+  0  every §D row in band
+  1  one or more rows out of band  (the failing rows are printed)
+  2  the data could not be read at all
+`;
+
+if (has('help') || has('h')) { process.stdout.write(USAGE); process.exit(0); }
+
+// ---------------------------------------------------------------- helpers
+const words = (s) => String(s || '').trim().split(/\s+/).filter(Boolean);
+const wc = (s) => words(s).length;
+const isObj = (v) => v && typeof v === 'object' && !Array.isArray(v);
+
+function walkJson(dir) {
+  const out = [];
+  if (!fs.existsSync(dir)) return out;
+  for (const e of fs.readdirSync(dir, { withFileTypes: true }).sort((a, b) => (a.name < b.name ? -1 : 1))) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) out.push(...walkJson(p));
+    else if (e.name.endsWith('.json')) {
+      try { out.push({ file: p, val: JSON.parse(fs.readFileSync(p, 'utf8')) }); }
+      catch (err) { out.push({ file: p, val: null, error: err.message }); }
+    }
+  }
+  return out;
+}
+
+/** Every book record, from either shipping schema: book@1 (one doc) or book@2 (doc.books[]). */
+function loadBooks(dir) {
+  const books = [];
+  const parseErrors = [];
+  for (const { file, val, error } of walkJson(dir)) {
+    if (error) { parseErrors.push({ file, error }); continue; }
+    const rel = path.relative(ROOT, file);
+    if (Array.isArray(val.books)) for (const b of val.books) books.push({ ...b, _file: rel });
+    else if (val.id) books.push({ ...val, _file: rel });
+  }
+  return { books, parseErrors };
+}
+
+/** Item description words. RI-UIX03 §C's unit: the `description` field of an item record. */
+function itemDescriptionWords(dir) {
+  let total = 0; const recs = [];
+  const visit = (v) => {
+    if (Array.isArray(v)) { v.forEach(visit); return; }
+    if (!isObj(v)) return;
+    if (typeof v.description === 'string' && v.description.trim()) {
+      const n = wc(v.description);
+      total += n; recs.push({ id: v.id || v.name || null, words: n });
+    }
+    for (const x of Object.values(v)) visit(x);
+  };
+  for (const { val } of walkJson(dir)) if (val) visit(val);
+  return { total, count: recs.length, records: recs };
+}
+
+/** Every authored string in the dialogue tree, for corroboration. */
+function dialogueProse(dir) {
+  const out = [];
+  const visit = (v) => {
+    if (typeof v === 'string') { if (/\s/.test(v) && v.length > 12) out.push(v); return; }
+    if (Array.isArray(v)) { v.forEach(visit); return; }
+    if (isObj(v)) for (const [k, x] of Object.entries(v)) { if (k === 'id' || k === 'key') continue; visit(x); }
+  };
+  for (const { val } of walkJson(dir)) if (val) visit(val);
+  return out;
+}
+
+/**
+ * Proper nouns: capitalised tokens (and hyphenated Argonian compounds) that are not sentence-
+ * initial-only. A word that only ever appears at the start of a sentence is not evidence of a
+ * name, and counting it was how a naive version of this check reported 90% corroboration on a
+ * corpus with no names in it at all.
+ */
+function properNouns(text) {
+  const found = new Set();
+  const s = String(text);
+  // token, plus the character before it
+  const re = /(^|[^.!?\n]\s+|\n\n)([A-Z][a-z]+(?:-[A-Z][a-z]+)*(?:-[a-z]+)*)/g;
+  let m;
+  while ((m = re.exec(s))) {
+    const w = m[2];
+    if (w.length < 4) continue;
+    if (STOP.has(w)) continue;
+    found.add(w);
+  }
+  return found;
+}
+const STOP = new Set([
+  'The', 'This', 'That', 'These', 'Those', 'There', 'Then', 'They', 'Their', 'Them', 'What',
+  'When', 'Where', 'Which', 'While', 'With', 'Would', 'Will', 'Nobody', 'Nothing', 'Every',
+  'Because', 'Before', 'After', 'About', 'Above', 'Below', 'Under', 'First', 'Second', 'Third',
+  'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eighth', 'Ninth', 'Tenth', 'Eleven', 'Twelve',
+  'Here', 'Have', 'Hers', 'His', 'Item', 'Leaf', 'From', 'Into', 'Only', 'Some', 'Such',
+  'Both', 'Been', 'Being', 'Should', 'Shall', 'Consider', 'Against', 'Written', 'Signed',
+  'Entered', 'Received', 'Recovered', 'Published', 'Chapter', 'Volume', 'Below', 'Note',
+]);
+
+/**
+ * A prose direction under RI-WLD06 §4 grammar: a route a reader could walk, made of settlement
+ * and landmark nouns, relative bearings and road classes, with NO coordinate, no marker and no
+ * minimap. Detection is deliberately conservative — a movement verb AND a bearing/relative term
+ * AND a named place — because the row it feeds (§D "usable prose direction ≥12") is one a
+ * generous matcher would pass vacuously.
+ */
+const MOVE = /\b(out of|keep|follow|walk|go|take the|turn|hold|cross|head|leave|come down|run(s)? (north|south|east|west)|make for|put in at|pole|row)\b/i;
+const BEARING = /\b(north|south|east|west|left|right|landward|seaward|upstream|downstream|inland|shaded side|until|past|beyond|as far as|before you reach|at the fork|on your (left|right))\b/i;
+function hasProseDirection(text, places) {
+  const paras = String(text).split(/\n+/);
+  for (const p of paras) {
+    if (!MOVE.test(p)) continue;
+    if (!BEARING.test(p)) continue;
+    for (const pl of places) if (p.includes(pl)) return { para: p.slice(0, 200), place: pl };
+  }
+  return null;
+}
+
+// S8: things that must never be in book text.
+const MARKER_PATTERNS = [
+  [/\bmarker\b/i, 'the word "marker"'],
+  [/\bwaypoint\b/i, 'waypoint'],
+  [/\bmini-?map\b/i, 'minimap'],
+  [/\bquest arrow\b/i, 'quest arrow'],
+  [/\bobjective\b/i, 'objective'],
+  [/\bfast[- ]travel\b/i, 'fast travel'],
+  [/\bmap pin\b/i, 'map pin'],
+  [/\bcompass (marker|arrow)\b/i, 'compass marker'],
+  [/\b\d{2,4}\s*,\s*\d{2,4}\b/, 'a coordinate pair'],
+];
+
+// ---------------------------------------------------------------- the measurement
+function measure(opts) {
+  const booksDir = path.resolve(ROOT, opts.books);
+  const itemsDir = path.resolve(ROOT, opts.items);
+  const dialogueDir = path.resolve(ROOT, opts.dialogue);
+  const questsDir = path.resolve(ROOT, opts.quests);
+
+  const { books, parseErrors } = opts._books || loadBooks(booksDir);
+  if (!books.length) {
+    return { fatal: `no books found under ${booksDir}` };
+  }
+
+  const items = opts._items || itemDescriptionWords(itemsDir);
+
+  // ---- duplicate ids. The engine keys books by id in a Map; a duplicate silently wins.
+  const seen = new Map(); const duplicates = [];
+  for (const b of books) {
+    if (seen.has(b.id)) duplicates.push({ id: b.id, files: [seen.get(b.id), b._file] });
+    else seen.set(b.id, b._file);
+  }
+
+  // ---- lengths (RI-LOR03 §1 shape)
+  const lens = books.map((b) => wc(b.text)).sort((a, b) => a - b);
+  const pct = (p) => lens[Math.min(lens.length - 1, Math.floor(p * lens.length))];
+  const totalBookWords = lens.reduce((a, b) => a + b, 0);
+  const series = new Map();
+  for (const b of books) if (b.series && b.series.id) {
+    if (!series.has(b.series.id)) series.set(b.series.id, []);
+    series.get(b.series.id).push(b.id);
+  }
+  const multiVolume = [...series.entries()].filter(([, v]) => v.length >= 3);
+
+  // ---- §D row 2: the ratio
+  const ratio = items.total ? totalBookWords / items.total : null;
+
+  // ---- §D row 4: contradictions, and they must be REAL — the named partner must exist.
+  const ids = new Set(books.map((b) => b.id));
+  const contradicting = [];
+  const danglingContradictions = [];
+  for (const b of books) {
+    const cs = Array.isArray(b.contradicts) ? b.contradicts : [];
+    const live = [];
+    for (const c of cs) {
+      if (!c || !c.book) continue;
+      if (ids.has(c.book)) live.push(c); else danglingContradictions.push({ from: b.id, to: c.book });
+    }
+    if (live.length) contradicting.push({ id: b.id, against: live.map((c) => c.book), on: live.map((c) => c.on) });
+  }
+
+  // ---- §D row 5: prose directions
+  const places = [
+    'Soulrest', 'Gideon', 'Lilmoth', 'Helstrom', 'Stormhold', 'Archon', 'Blackrose', 'Thorn',
+    'Bone Ladder', 'Hollow-Reeds', 'Stilt-Row', 'Tenmarch', 'Mudwater Landing', 'Nine-Mud',
+    'Stone Wastes', 'Deep Marshes', 'Blackwood', 'Thornmarsh', 'Border Falls', 'Salt Hills',
+    'Topal', 'Crimson Coast', 'Ix-Thakla', 'Ixt-Shaneekh', 'Valus', 'Sunken Teeth', 'Ceyatatar-Zel',
+    'Tideway Shrine', 'Kiln Camp', 'the market cross', 'the burial stair', 'the third mooring',
+  ];
+  const withDirections = [];
+  for (const b of books) {
+    const d = hasProseDirection(b.text, places);
+    if (d) withDirections.push({ id: b.id, place: d.place });
+  }
+
+  // ---- §D row 6: readable before the quest that references them, checked against the QUESTS,
+  //      not against a field the author wrote. A book claiming `readable_before` for a quest that
+  //      does not reference it is not evidence of anything.
+  const questRefs = new Map();   // knowledge/source key -> [quest file]
+  const collect = (v, file) => {
+    if (Array.isArray(v)) { v.forEach((x) => collect(x, file)); return; }
+    if (!isObj(v)) return;
+    if (v.channel === 'book' && v.source) push(questRefs, v.source, file);
+    if (v.requires && Array.isArray(v.requires.knowledge)) {
+      for (const k of v.requires.knowledge) if (/^(book_|item_)/.test(k)) push(questRefs, k, file);
+    }
+    for (const x of Object.values(v)) collect(x, file);
+  };
+  const push = (m, k, v) => { if (!m.has(k)) m.set(k, []); if (!m.get(k).includes(v)) m.get(k).push(v); };
+  for (const { file, val } of walkJson(questsDir)) if (val) collect(val, path.basename(file));
+
+  const keyed = new Map();
+  for (const b of books) {
+    if (b.knowledge_key) keyed.set(b.knowledge_key, b.id);
+    keyed.set('book_' + String(b.id).replace(/-/g, '_'), b.id);
+  }
+  const questLinked = []; const questRefsUnsatisfied = [];
+  for (const [key, files] of questRefs) {
+    if (keyed.has(key)) questLinked.push({ key, book: keyed.get(key), quests: files });
+    else questRefsUnsatisfied.push({ key, quests: files });
+  }
+
+  // ---- S8: no markers in book text
+  const markerHits = [];
+  for (const b of books) {
+    for (const [re, what] of MARKER_PATTERNS) {
+      const m = re.exec(b.text || '');
+      if (m) markerHits.push({ id: b.id, what, excerpt: String(b.text).slice(Math.max(0, m.index - 40), m.index + 60) });
+    }
+  }
+
+  // ---- §D row 3: corroboration
+  let corroboration = null;
+  if (opts.corroborate) {
+    const dialogue = dialogueProse(dialogueDir).join('\n');
+    const byBook = books.map((b) => ({ id: b.id, nouns: properNouns(b.text) }));
+    const elsewhere = new Map();  // noun -> where
+    for (const b of byBook) for (const n of b.nouns) push(elsewhere, n, b.id);
+    const dialogueNouns = properNouns(dialogue);
+    let corroborated = 0; const uncorroborated = [];
+    for (const b of byBook) {
+      let ok = false;
+      for (const n of b.nouns) {
+        if (dialogueNouns.has(n)) { ok = true; break; }
+        const where = elsewhere.get(n) || [];
+        if (where.some((x) => x !== b.id)) { ok = true; break; }
+      }
+      if (ok) corroborated++; else uncorroborated.push(b.id);
+    }
+    corroboration = {
+      books_with_a_corroborated_proper_noun: corroborated,
+      pct: +(100 * corroborated / books.length).toFixed(1),
+      uncorroborated,
+    };
+  }
+
+  // ---- rows, with RI-UIX05 §D's own thresholds
+  const rows = [
+    { id: 'D1', name: 'total book words', value: totalBookWords, bar: '>= 0 (RI-LOR03 floor)', pass: totalBookWords > 0 },
+    { id: 'D2', name: 'book words / item description words', value: ratio === null ? null : +ratio.toFixed(2), bar: '>= 15', hard_fail_below: 4, pass: ratio !== null && ratio >= 15 },
+    { id: 'D3', name: 'books with a corroborated proper noun (%)', value: corroboration ? corroboration.pct : null, bar: '>= 60', hard_fail_below: 20, pass: corroboration ? corroboration.pct >= 60 : null, skipped: !opts.corroborate },
+    { id: 'D4', name: 'books that contradict another book on a named fact', value: contradicting.length, bar: '>= 8', hard_fail_below: 1, pass: contradicting.length >= 8 },
+    { id: 'D5', name: 'books carrying a usable prose direction', value: withDirections.length, bar: '>= 12', hard_fail_below: 1, pass: withDirections.length >= 12 },
+    { id: 'D6', name: 'books readable before the quest that references them', value: questLinked.length, bar: '>= 10', pass: questLinked.length >= 10 },
+    { id: 'S8', name: 'marker/objective/coordinate language in book text', value: markerHits.length, bar: '== 0', pass: markerHits.length === 0 },
+    { id: 'X1', name: 'duplicate book ids across files', value: duplicates.length, bar: '== 0', pass: duplicates.length === 0 },
+    { id: 'X2', name: 'contradicts[] naming a book that does not exist', value: danglingContradictions.length, bar: '== 0', pass: danglingContradictions.length === 0 },
+    { id: 'X3', name: 'quest book references with no book on disk', value: questRefsUnsatisfied.length, bar: '== 0', pass: questRefsUnsatisfied.length === 0 },
+    { id: 'L1', name: 'median book words (RI-LOR03 §1)', value: pct(0.5), bar: '>= 350; >= 500 for a 5', pass: pct(0.5) >= 350 },
+    { id: 'L2', name: 'p90 book words (RI-LOR03 §1)', value: pct(0.9), bar: '>= 1200', pass: pct(0.9) >= 1200 },
+    { id: 'L3', name: 'multi-volume series (>= 3 volumes)', value: multiVolume.length, bar: '>= 3', pass: multiVolume.length >= 3 },
+    { id: 'L4', name: 'books under 150 words (%)', value: +(100 * lens.filter((x) => x < 150).length / lens.length).toFixed(1), bar: '<= 20', pass: (100 * lens.filter((x) => x < 150).length / lens.length) <= 20 },
+    { id: 'L5', name: 'books authored by Argonians', value: books.filter((b) => b.argonian_authored).length, bar: '>= 14', hard_fail_below: 10, pass: books.filter((b) => b.argonian_authored).length >= 14 },
+  ];
+
+  return {
+    schema: 'elder-souls/book-budget@1',
+    computed_at: new Date().toISOString(),
+    item: 'RI-UIX05 §D (K9); RI-LOR03 §1',
+    inputs: { books: path.relative(ROOT, booksDir), items: path.relative(ROOT, itemsDir), dialogue: path.relative(ROOT, dialogueDir), quests: path.relative(ROOT, questsDir) },
+    counts: {
+      books: books.length,
+      book_words: totalBookWords,
+      item_description_words: items.total,
+      item_records: items.count,
+      lengths: { p10: pct(0.10), p25: pct(0.25), median: pct(0.5), p75: pct(0.75), p90: pct(0.90), max: lens[lens.length - 1], min: lens[0] },
+    },
+    rows,
+    detail: {
+      parse_errors: parseErrors,
+      duplicates,
+      contradicting,
+      dangling_contradictions: danglingContradictions,
+      prose_directions: withDirections,
+      quest_linked: questLinked,
+      quest_refs_unsatisfied: questRefsUnsatisfied,
+      marker_hits: markerHits,
+      multi_volume: multiVolume.map(([id, v]) => ({ id, volumes: v })),
+      corroboration,
+    },
+  };
+}
+
+// ---------------------------------------------------------------- self-test (rule 3.2)
+function selfTest() {
+  const base = loadBooks(path.join(ROOT, 'game/data/books'));
+  const items = itemDescriptionWords(path.join(ROOT, 'game/data/items'));
+  const opts = { books: 'game/data/books', items: 'game/data/items', dialogue: 'game/data/dialogue', quests: 'game/data/quests', corroborate: false };
+
+  const control = measure({ ...opts, _books: base, _items: items });
+  const failing = control.rows.filter((r) => r.pass === false);
+  if (failing.length) {
+    console.error('self-test: the CONTROL corpus is already failing, so a mutation proves nothing:');
+    for (const r of failing) console.error(`  ${r.id} ${r.name}: ${r.value} (bar ${r.bar})`);
+    return 1;
+  }
+
+  const mutations = [
+    ['drop every contradicts[]', (bs) => bs.map((b) => ({ ...b, contradicts: [] })), 'D4'],
+    ['halve the corpus', (bs) => bs.slice(0, Math.floor(bs.length / 8)), 'D2'],
+    ['duplicate an id', (bs) => [...bs, { ...bs[0], _file: 'MUTANT' }], 'X1'],
+    ['put a marker in a book', (bs) => bs.map((b, i) => (i === 0 ? { ...b, text: b.text + '\n\nHead to the marker on your compass.' } : b)), 'S8'],
+    ['point a contradiction at nothing', (bs) => bs.map((b, i) => (i === 0 ? { ...b, contradicts: [{ book: 'no-such-book', on: 'x' }] } : b)), 'X2'],
+    ['delete the quest-key books', (bs) => bs.filter((b) => !b.knowledge_key), 'X3'],
+    ['flatten every book to 100 words', (bs) => bs.map((b) => ({ ...b, text: words(b.text).slice(0, 100).join(' ') })), 'L2'],
+  ];
+
+  let bad = 0;
+  for (const [name, mutate, expect] of mutations) {
+    const mutated = measure({ ...opts, _books: { books: mutate(base.books), parseErrors: [] }, _items: items });
+    const row = mutated.rows.find((r) => r.id === expect);
+    const wentRed = row && row.pass === false;
+    console.log(`  ${wentRed ? 'RED  ' : 'GREEN'}  ${expect}  after: ${name}${wentRed ? '' : '   <-- MUTATION NOT DETECTED'}`);
+    if (!wentRed) bad++;
+  }
+  console.log(bad ? `self-test FAILED: ${bad} mutation(s) did not turn a row red.` : 'self-test PASSED: every mutation was caught.');
+  return bad ? 1 : 0;
+}
+
+// ---------------------------------------------------------------- pagination cross-check
+async function pagination(books) {
+  const mod = await import(path.join(ROOT, 'game/src/ui/screens/text.js'));
+  if (typeof mod.bookPagination !== 'function') throw new Error('bookPagination not exported');
+  const S = { s: 1, W: 1920, H: 1080 };
+  const per = [];
+  for (const b of books) {
+    const r = mod.bookPagination(b.text, S);
+    per.push({ id: b.id, pages: r.pages, words_per_page: r.words_per_page });
+  }
+  const all = per.flatMap((p) => p.words_per_page).sort((a, x) => a - x);
+  const pc = (p) => all[Math.min(all.length - 1, Math.floor(p * all.length))];
+  return { at: '1920x1080', pages_total: per.reduce((a, p) => a + p.pages, 0), words_per_page: { p10: pc(0.1), median: pc(0.5), p90: pc(0.9), min: all[0], max: all[all.length - 1] }, per_book: per };
+}
+
+// ---------------------------------------------------------------- main
+const opts = {
+  books: String(flag('books', 'game/data/books')),
+  items: String(flag('items', 'game/data/items')),
+  dialogue: String(flag('dialogue', 'game/data/dialogue')),
+  quests: String(flag('quests', 'game/data/quests')),
+  corroborate: has('corroborate'),
+};
+
+if (has('self-test')) process.exit(selfTest());
+
+const result = measure(opts);
+if (result.fatal) { console.error('book-budget: ' + result.fatal); process.exit(2); }
+
+if (has('pagination')) {
+  try { result.pagination = await pagination(loadBooks(path.resolve(ROOT, opts.books)).books); }
+  catch (e) { result.pagination = { error: String(e.message), note: 'the shipping pagination module would not load in bare Node; run the browser capture instead (RI-UIX05 step 1)' }; }
+}
+
+const outPath = path.resolve(ROOT, String(flag('out', 'reports/book-budget.json')));
+fs.mkdirSync(path.dirname(outPath), { recursive: true });
+fs.writeFileSync(outPath, JSON.stringify(result, null, 2) + '\n');
+
+const c = result.counts;
+console.log(`books ${c.books}   book words ${c.book_words}   item description words ${c.item_description_words}`);
+console.log(`lengths  p10 ${c.lengths.p10}  p25 ${c.lengths.p25}  median ${c.lengths.median}  p75 ${c.lengths.p75}  p90 ${c.lengths.p90}  max ${c.lengths.max}`);
+console.log('');
+for (const r of result.rows) {
+  const mark = r.skipped ? 'skip' : r.pass === true ? 'PASS' : r.pass === false ? 'FAIL' : ' -- ';
+  console.log(`  ${mark}  ${r.id.padEnd(3)} ${String(r.name).padEnd(48)} ${String(r.value)}   (bar ${r.bar})`);
+}
+if (result.pagination && !result.pagination.error) {
+  const w = result.pagination.words_per_page;
+  console.log(`\n  words per page @1920x1080: p10 ${w.p10}  median ${w.median}  p90 ${w.p90}   (RI-UIX05 B1: 120-180, p90<=240, p10>=80)`);
+}
+console.log(`\n${path.relative(ROOT, outPath)}`);
+
+const failed = result.rows.filter((r) => r.pass === false);
+if (failed.length) {
+  console.error(`\nbook-budget: ${failed.length} row(s) out of band: ${failed.map((r) => r.id).join(', ')}`);
+  process.exit(1);
+}
+process.exit(0);

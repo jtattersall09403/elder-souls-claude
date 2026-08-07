@@ -1,21 +1,36 @@
 {
   "task_id": "W1-17-act5-argument",
-  "brief": "orchestration/NEXT-DISPATCH.md §2b",
+  "brief": "orchestration/NEXT-DISPATCH.md \u00a72b \u2014 the Act V conversation nobody wrote",
   "started": "wave-1",
-  "state": "researching",
-  "outputs_expected": ["game/data/dialogue/topics/main-quest-argument.json"],
-  "outputs_written": [],
-  "findings": [
-    "TOPIC ID NAMESPACE IS SPLIT. game/data/dialogue/topics/*.json use dash-slug ids (313 of them, 0 with spaces). But every main-quest NPC record and every quests/mainline*.json `opens_by.topic` uses NATURAL-LANGUAGE ids with spaces ('the steward of the count'). converse.js topicsFor() looks up npc.topics literally in the topic index, so 47 distinct space-form topic ids currently DANGLE across game/data/npcs/*.json — the person advertises a subject and has nothing to say. Ixtu-Meer's three are 'the steward of the count', 'the sill', 'the opening of the count'. main-quest-argument.json must use the SPACE form or it will not resolve.",
-    "converse.js filter fields actually consumed by infoAllowed(): requires.race, requires.upbringing, forbids.race, forbids.upbringing ONLY. The 00-roots.json key_legend advertises d/r/c/f/fr/pf/pr/sx/actor/j/nj/act/q/res but infoFor() reads only `a` (actor), `requires`, `forbids`, `x`. Specificity score = (actor match ? 4) + (requires ? 2) + (forbids ? 1); FIRST-BEST-WINS on that score, ties resolved by authored order.",
-    "An NPC's OWN record line (npc.lines[topic_with_underscores]) BEATS every topic-file info. Ixtu-Meer's record carries only `greeting`, so topic-file infos are live for him.",
-    "ixtu-meer record: game/data/npcs/mainline.json:635 — race saxhleel, class steward, reaction_group RG-DEEP, actor 'rootkeeper', disposition 50, faction null, settlement null.",
-    "Q-MAIN-26 declares: giver ixtu-meer honest:true, disposition_min 0; deceit patterns D6/D11/D7 with never_revealed:true; two resolutions res_hear_him_out (requires_knowing rev_how_the_count_opens) and res_press_him_on_the_clause (requires disposition 20, requires_knowing rev_how_the_count_opens + rev_he_never_wrote_the_recension), MUTUALLY EXCLUSIVE; one failure fail_killed_him_first; kill_required_npcs []. Notes: 'Twelve topics live on this quest in game/data/dialogue/topics/main-quest-argument.json, four of them gated on knowledge learned elsewhere.'",
-    "mainline.json antagonist.refutation_audit NAMES main-quest-argument.json by path and asserts no voice in it says Ixtu-Meer was simply wrong. The audit was written against a file that does not exist. Honouring it is a hard constraint on the prose.",
-    "mainline.json mandate.adjudication_audit: Q-MAIN-26 offers only 'he never wrote in the Recension', which settles nothing. Every ending sets the_recension_is_still_unsettled.",
-    "Six endings: 4 in Q-MAIN-28 (open / take his place / kill him / walk out) + 2 backpath in Q-MAIN-31. res_open_the_count and res_take_his_place BOTH require_knowing rev_how_the_count_opens, and rev_how_the_count_opens is revealed ONLY by talk_to_target on ixtu-meer in Q-MAIN-26. So this conversation is the sole gate on 2 of the 4 intended endings and on the whole non-lethal route.",
-    "actor slot for Ixtu-Meer is 'rootkeeper'. Infos written for him must carry a:'rootkeeper' or no `a` at all."
+  "state": "complete",
+  "outputs_expected": [
+    "game/data/dialogue/topics/main-quest-argument.json",
+    "game/src/core/topics.js",
+    "tools/quests/act5-argument-probe.mjs"
   ],
-  "next_step": "read RI-DLG01/RI-DLG04/RI-QST02/RI-EXP05 and ARBITRATION S8, then author the twelve topics",
-  "notes_for_successor": "The twelve topic ids must be space-form. 'the steward of the count' is the entry (opens_by), 'the sill' and 'the opening of the count' are also on his record and belong to Q-MAIN-27/28 but are answered by him here."
+  "outputs_written": [
+    "game/data/dialogue/topics/main-quest-argument.json",
+    "game/src/core/topics.js",
+    "tools/quests/act5-argument-probe.mjs",
+    "reports/runs/W1-17-ACT5-ARGUMENT.json",
+    "game/src/character/converse.js (edited)",
+    "game/src/sim/quest/gate.js (edited)",
+    "game/src/engine.js (edited)",
+    "game/data/npcs/mainline.json (ixtu-meer topics array)"
+  ],
+  "findings": [
+    "SHIPPED AND MEASURED: 12 topics, 36 infos, 3,637 authored words, 0 shadowed infos, 0 duplicate topic ids. Verified in the running build by tools/quests/act5-argument-probe.mjs (report: reports/runs/W1-17-ACT5-ARGUMENT.json).",
+    "MEASURED IN THE RUNNING BUILD (tools/quests/act5-argument-probe.mjs): 12 topics on ixtu-meer, 4 of them absent for a character carrying no flags and present once the six Act II/III/V flags are set; all 12 answers differ between an interior Saxhleel (disposition 74) and a lukiul Dunmer (0); `how the Count opens` is offered at every disposition including 0; the Recension answer is present above disposition 20 and the refusal below it, and the refusal does not leak the revelation.",
+    "TOPIC NAMESPACE DEFECT, PROJECT-WIDE. The quest layer writes topic keywords in prose ('the steward of the count' \u2014 76 `opens_by.topic` values, and every main-quest NPC `topics` array). The dialogue layer writes slugs ('the-steward-of-the-count' \u2014 313 topic ids and ALL of hooks.json's entry_topics AddTopic edges). Nothing folded them. MEASURED BEFORE THE FIX: 74 of 76 `opens_by.topic` values could not be satisfied by any AddTopic edge the machine can fire, 63 of them pure slug-vs-prose spellings; and 47 distinct topic ids sat in NPC `topics` arrays with no reachable info. It was invisible because EVERY quest tool seeds the gate with the quest's own `opens_by.topic` string (tools/quests/mainline-trace.mjs, tools/harness/mag-quest.mjs, harness/api.js seedTopic) \u2014 seeding the exact string the gate is about to ask for passes whatever the edges say. Fixed in game/src/core/topics.js (topicKey/sameTopic/topicsInclude), consumed by converse.js buildTopicIndex/infoFor/lineKey and by sim/quest/gate.js canOffer.",
+    "`d` (disposition >= N, RI-DLG01 filter field 10) was authored across the dialogue corpus and READ BY NOTHING. tools/dialogue/build-graph.mjs counts it as a filter for the unreachable-INFO lint while converse.js infoAllowed ignored it, so every disposition band in the dialogue data was decorative. Now read, and only when the caller supplies a disposition, so old probe call sites are unchanged.",
+    "converse.js infoAllowed now also reads requires.knows (any-of), requires.knows_all (all-of) and forbids.knows against the LIVE sim.quest.flags set, supplied by engine._talkPlayer()/_knownFlags(). A knowledge gate with no context supplied CLOSES rather than opens (RI-JRN07 M-Q14).",
+    "engine.listNPCs().topics_offered now computes with the per-NPC derived disposition, so the listed surface and what talkTo() actually offers are the same list.",
+    "RG-DEEP derived dispositions on base 50, measured live: interior Saxhleel 74, interior Naga 66, lukiul Saxhleel 48, blackrose Khajiit 36, foreign-born Nord 30, foreign-born Imperial 24, interior Dunmer 20, lukiul Nord 18, lukiul Imperial 12, foreign-born Dunmer 6, lukiul Dunmer 0. res_press_him_on_the_clause's `requires: {disposition: 20}` therefore lands exactly on the interior/lukiul Dunmer split (26 points).",
+    "tools/dialogue/build-graph.mjs CANNOT RUN on the current tree and has not been able to for some time \u2014 it throws `duplicate topic id 'the-marsh-fever' (40-race-gated.json and earlier)` before it reaches any lint. Pre-existing, not introduced here; main-quest-argument.json introduces no duplicate id.",
+    "tools/dialogue/voice-metrics.mjs is cited by game/data/dialogue/speakers.json and reports/W1-17-measurements.md and DOES NOT EXIST.",
+    "game/data/books/ total is 1,930 words across 2 files; a third file (the-drowned-tally.json) was added by a concurrent agent during this session, so the library is already being worked.",
+    "THE LIBRARY IS TAKEN. A concurrent W1-LIBRARY agent took game/data/books/ from 1,930 words / 2 files to 33,378 words / 57 books during this session, including the two incompatible accounts of the reservoir that mainline.json UA-02 depends on. I did not touch it; I linked to it instead \u2014 both d60 answers to `the-count-itself` carry an AddTopic edge to `the-house-under-the-wastes`."
+  ],
+  "next_step": "none \u2014 a fresh-context critic should re-measure LH6/LH7/LH8 against the running build, and separately audit the core/topics.js fold, which changes what the quest offer gate accepts across the whole game.",
+  "notes_for_successor": "The twelve topic ids are slug form in the data file and prose form on the NPC record; core/topics.js folds them so both spellings resolve. Do NOT normalise one side away \u2014 76 quest files and 313 dialogue records disagree and the fold is what lets them coexist. tools/dialogue/build-graph.mjs still cannot run (pre-existing duplicate id 'the-marsh-fever' in 40-race-gated.json) and tools/dialogue/voice-metrics.mjs, which speakers.json cites, does not exist."
 }

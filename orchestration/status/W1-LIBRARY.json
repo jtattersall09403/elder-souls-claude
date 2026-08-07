@@ -2,7 +2,7 @@
   "task_id": "W1-LIBRARY",
   "brief": "in-world library: books, notes, inscriptions and the unreliable written record",
   "started": "wave-1",
-  "state": "writing",
+  "state": "tooling",
   "gap": "RI-UIX05 D fails on content: book:item word ratio 1.57 vs bar >=15; game/data/books/ holds 1930 words across 7 texts",
   "outputs_expected": [
     "game/data/books/foundational.json",
@@ -15,7 +15,17 @@
     "corpus/80-methods/book-stats.py (named by RI-LOR03 method 1, DOES NOT EXIST)",
     "tools/analysis/book-budget.mjs (RI-UIX05 method 7 flags do not exist on content-stats.mjs)"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "game/data/books/foundational.json (7 texts, 3918 w)",
+    "game/data/books/the-drowned-tally.json (6 texts)",
+    "game/data/books/deep-time.json (8 texts)",
+    "game/data/books/quest-keys.json (4 texts)",
+    "game/data/books/the-occupation.json (6 texts)",
+    "game/data/books/a-progress-through-the-southern-marsh.json (3 texts, one series)",
+    "game/data/books/the-long-tail.json (5 texts)",
+    "game/data/books/told-and-sung.json (6 texts)",
+    "game/data/books/scraps.json (11 texts)"
+  ],
   "findings": [
     "DENOMINATOR MEASURED: item `description` words across game/data/items/**  = 1231 across 44 records. game/data/weapons/** contributes 0 `description` fields. Book words 1930 / 1231 = 1.5678 -> this is exactly the 1.57 in the brief, so the ratio's denominator is confirmed to be the `description` field and nothing else. Bar >=15 therefore needs >= 18,465 book words.",
     "PHANTOM TOOL 1: RI-LOR03 Comparison method step 1 names `python3 corpus/80-methods/book-stats.py`. It does not exist on disk. TOOL-LOOP rule 1 applies.",
@@ -27,8 +37,10 @@
     "THREE BOOKS ARE NAMED AS EVIDENCE BY SEALED MYSTERIES M-01/M-02/M-03 and do not exist: book:on-the-tally-stones, book:the-oliis-bargain, book:valus-survey-fragment. Their leak_ngrams are recorded in corpus/50-world/sealed/SEALED-ANSWERS.md and must NOT appear in the book text.",
     "RI-LOR03 SS3's seven exemplars were written to ship (`Exemplars 1, 2, 4 and 6 are intended to ship`) and are named as in_world_sources by canon-facts.json (CF-D001 A and B, CF-062, CF-006). They exist only in the corpus markdown, not in game/data. Shipping them closes the registry's dangling in_world_sources.",
     "MAINLINE UA-02 declares `answered_in_a_book: true` for 'what was the reservoir built to do', requiring TWO in-world texts giving incompatible accounts. Neither existed.",
-    "RI-LOR03 method 1 fail bands: median < 350 words, p90 < 1200, < 3 multi-volume series, > 20% of books under 150 words. The last one bounds how many scraps the short tail may carry."
+    "RI-LOR03 method 1 fail bands: median < 350 words, p90 < 1200, < 3 multi-volume series, > 20% of books under 150 words. The last one bounds how many scraps the short tail may carry.",
+    "CORPUS SHAPE REACHED: 63 texts, 36,037 words, book:item ratio 29.27 (bar >=15, was 1.57). p10 113 / p25 216 / median 588 / p75 797 / p90 1264 / max 1512. Under-150 texts 11/63 = 17.5% (RI-LOR03 method 1 fails above 20%). Argonian-authored 17 (bar >=14). Three multi-volume series: the-drowned-tally (vols 4/6/11), the-stone-nests (I/II/III), a-progress-through-the-southern-marsh (I/II/III).",
+    "ID COLLISION CAUGHT: `what-the-water-took` already existed in interface-readables.json (Waneela of Lilmoth on the ford). The engine keys books by b.id in a Map, so a duplicate silently wins. Renamed the new Flu folk-tale to `what-the-water-went-round`. Any book tool must check for duplicate ids across files."
   ],
-  "next_step": "write game/data/books/*.json, then the two tools, then boot-check + check-content",
+  "next_step": "write corpus/80-methods/book-stats.py and the SS D budget tool; then boot-check, check-content, marker-scan",
   "notes_for_successor": "Do NOT let a generator overwrite hand-authored books. No objective markers in book text (S8): directions are prose under RI-WLD06 SS4 grammar. Nothing in a book may correct another book (RI-UIX05 R8 / RI-LOR03)."
 }

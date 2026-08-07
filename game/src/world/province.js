@@ -85,6 +85,20 @@ export class Province {
     this.nightFactor = 0;
     this.sigLights = null;
 
+    // THE STREAMING SETTINGS, AS FIELDS AND NOT AS MODULE CONSTANTS.
+    //
+    // Two reasons, and neither is style. (1) `Engine._streamProvince()` reads `tileM` once per
+    // fixed step to decide whether the ground under the player exists yet, and the only other way
+    // to get it out of here was `stats()`, which traverses the whole scene graph and allocates.
+    // (2) RI-MTH07 consumption: a claim that the streamer is what builds the world underneath a
+    // walking player is only a claim until you can PERTURB the streamer and watch the built world
+    // change. A module-level `const` cannot be perturbed from outside, so the consumption check
+    // could not be written at all — and an instrument that cannot be made to go red is the failure
+    // mode AGENT-PROTOCOL names twice.
+    this.tileM = TILE_M;
+    this.radiusTiles = RADIUS;
+    this.skinRadiusM = SKIN_RADIUS_M;
+
     this.mats = {
       ground: new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.94, metalness: 0.0 }),
       far: new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.97, metalness: 0.0 }),
@@ -185,6 +199,7 @@ export class Province {
     this.updateCover(x, z);
     if (this.nightFactor > 0) this.updateSignatureLights(x, z);
     const tx0 = Math.floor(x / TILE_M), tz0 = Math.floor(z / TILE_M);
+    const RADIUS = this.radiusTiles;
     const want = new Set();
     for (let dz = -RADIUS; dz <= RADIUS; dz++) {
       for (let dx = -RADIUS; dx <= RADIUS; dx++) {
@@ -197,8 +212,17 @@ export class Province {
       }
     }
     this.queue.sort((a, b) => a.d - b.d);
+    // RELEASE ON A WIDER RING THAN YOU BUILD ON. Releasing the moment a tile leaves `want` was
+    // harmless while `request()` only ran on a teleport, and is a thrash the moment it runs from
+    // the fixed step: a body standing on a tile EDGE — a road that runs along one, a fight, a
+    // shoreline, anywhere the position oscillates by a couple of metres — flips `tx0` back and
+    // forth, and each flip released a five-tile row and rebuilt it. Measured before this existed:
+    // 30 tile builds for 26.9 m of movement, 92 steps over one 60 Hz frame in 30,000. One tile of
+    // hysteresis costs at most 49 resident tiles instead of 25 and makes the churn impossible,
+    // because a tile has to be pushed a full 300 m past the build ring before it is dropped.
+    const KEEP = RADIUS + 1;
     for (const [k, t] of this.tiles) {
-      if (!want.has(k)) { this._release(k, t); }
+      if (Math.abs(t.tx - tx0) > KEEP || Math.abs(t.tz - tz0) > KEEP) this._release(k, t);
     }
     this.queue = this.queue.filter((q) => want.has(q.k));
     return this.queue.length;
@@ -362,7 +386,7 @@ export class Province {
       this.skinMesh.geometry.dispose();
       this.skinMesh = null;
     }
-    const C = SKIN_CELL_M, R = SKIN_RADIUS_M;
+    const C = SKIN_CELL_M, R = this.skinRadiusM;
     const x0 = Math.floor((x - R) / C) * C, z0 = Math.floor((z - R) / C) * C;
     const N = Math.ceil((2 * R) / C);                    // quads per side
     const V = N + 1;                                     // vertices per side
@@ -478,10 +502,13 @@ export class Province {
     const f = this.field;
     if (!this.skinMesh || !f.skin || !f.skin.any) return 0;
     const d = Math.hypot(px - this.skinAtPos[0], pz - this.skinAtPos[1]);
-    if (d >= SKIN_RADIUS_M) return 0;
+    // Read the SAME radius `updateSkin` built with (`this.skinRadiusM`, not the module constant),
+    // or perturbing the skin radius would move the drawn patch and leave every prop lifted onto
+    // the old one — a consumption knob that half-applies is worse than none.
+    if (d >= this.skinRadiusM) return 0;
     const sk = f.regions[f.regionIndexAt(px, pz)].terrain.skin;
     const amp = (sk && sk.amp_m) || 0.2;
-    const fade = (1 - smoothstep(SKIN_RADIUS_M - SKIN_FADE_M, SKIN_RADIUS_M, d))
+    const fade = (1 - smoothstep(this.skinRadiusM - SKIN_FADE_M, this.skinRadiusM, d))
       * (1 - smoothstep(amp * 0.9, amp * 2.8 + 0.2, f.depthAt(px, pz)));
     if (fade <= 0.002) return 0;
     return f.skin.at(px, pz)[0] * fade + 0.012;
@@ -1115,7 +1142,7 @@ export class Province {
     this.group.traverse((o) => { if (o.isInstancedMesh) { instances += o.count; meshes++; } else if (o.isMesh) meshes++; });
     return {
       tilesResident: this.tiles.size, tilesQueued: this.queue.length, tilesBuiltTotal: this.built,
-      tileSizeM: TILE_M, residentRadiusTiles: RADIUS, meshes, instances,
+      tileSizeM: this.tileM, residentRadiusTiles: this.radiusTiles, meshes, instances,
       groundCoverInstances: this.coverCount || 0, groundCoverRadiusM: COVER_RADIUS_M,
     };
   }

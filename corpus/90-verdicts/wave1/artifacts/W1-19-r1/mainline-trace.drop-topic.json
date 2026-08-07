@@ -1,0 +1,244 @@
+{
+  "schema": "elder-souls/mainline-trace@1",
+  "harness_version": 2,
+  "intended": {
+    "chain": "intended",
+    "steps": [
+      {
+        "quest": "Q-MAIN-01",
+        "opened": false,
+        "reveals": [],
+        "notes": [],
+        "resolution": null,
+        "why": "the topic \"the drowned tally\" has not come up yet"
+      }
+    ],
+    "journal": [],
+    "events": [],
+    "problems": [
+      "Q-MAIN-01: could not open — the topic \"the drowned tally\" has not come up yet"
+    ],
+    "gold_spent": 0,
+    "completed": [],
+    "flags": {},
+    "topics_known": [],
+    "factions": {}
+  },
+  "backpath": {
+    "chain": "backpath",
+    "steps": [
+      {
+        "quest": "Q-MAIN-01",
+        "opened": false,
+        "reveals": [],
+        "notes": [],
+        "resolution": null,
+        "why": "the topic \"the drowned tally\" has not come up yet"
+      }
+    ],
+    "journal": [],
+    "events": [],
+    "problems": [
+      "Q-MAIN-01: could not open — the topic \"the drowned tally\" has not come up yet"
+    ],
+    "gold_spent": 0,
+    "completed": [],
+    "flags": {},
+    "topics_known": [],
+    "factions": {}
+  },
+  "tool": "tools/quests/mainline-trace.mjs",
+  "sabotage": "drop-topic",
+  "assertions": [
+    {
+      "id": "intended.complete",
+      "label": "every quest in the intended chain resolved",
+      "value": "0/29",
+      "bar": "all",
+      "pass": false
+    },
+    {
+      "id": "intended.problems",
+      "label": "intended chain problems",
+      "value": [
+        "Q-MAIN-01: could not open — the topic \"the drowned tally\" has not come up yet"
+      ],
+      "bar": "none",
+      "pass": false
+    },
+    {
+      "id": "intended.nonlethal",
+      "label": "intended chain quests resolved with violence",
+      "value": [],
+      "bar": "0",
+      "pass": true
+    },
+    {
+      "id": "intended.journal",
+      "label": "intended chain journal entries written",
+      "value": "0 over 29 quests (0.00/quest)",
+      "bar": ">= 5 per quest",
+      "pass": false
+    },
+    {
+      "id": "intended.firstperson",
+      "label": "intended journal entries in first person",
+      "value": "0/0",
+      "bar": "100%",
+      "pass": false
+    },
+    {
+      "id": "intended.dated",
+      "label": "intended journal entries carrying a date",
+      "value": "0/0",
+      "bar": "100%",
+      "pass": false
+    },
+    {
+      "id": "backpath.complete",
+      "label": "every quest in the backpath chain resolved",
+      "value": "0/17",
+      "bar": "all",
+      "pass": false
+    },
+    {
+      "id": "backpath.problems",
+      "label": "backpath chain problems",
+      "value": [
+        "Q-MAIN-01: could not open — the topic \"the drowned tally\" has not come up yet"
+      ],
+      "bar": "none",
+      "pass": false
+    },
+    {
+      "id": "backpath.nonlethal",
+      "label": "backpath chain quests resolved with violence",
+      "value": [],
+      "bar": "0",
+      "pass": true
+    },
+    {
+      "id": "backpath.journal",
+      "label": "backpath chain journal entries written",
+      "value": "0 over 17 quests (0.00/quest)",
+      "bar": ">= 5 per quest",
+      "pass": false
+    },
+    {
+      "id": "backpath.firstperson",
+      "label": "backpath journal entries in first person",
+      "value": "0/0",
+      "bar": "100%",
+      "pass": false
+    },
+    {
+      "id": "backpath.dated",
+      "label": "backpath journal entries carrying a date",
+      "value": "0/0",
+      "bar": "100%",
+      "pass": false
+    },
+    {
+      "id": "endings.delta",
+      "label": "world flags differing between the two ending states",
+      "value": 0,
+      "bar": ">= 25",
+      "pass": false
+    },
+    {
+      "id": "endings.distinct",
+      "label": "the two chains reach different ending flags",
+      "value": {
+        "intended": [],
+        "backpath": []
+      },
+      "bar": "disjoint and non-empty",
+      "pass": false
+    },
+    {
+      "id": "ponr.crossed",
+      "label": "the intended chain crossed the point of no return",
+      "value": false,
+      "bar": "true",
+      "pass": false
+    },
+    {
+      "id": "mark.irreversible",
+      "label": "the Act III mark is set and no chain clears it",
+      "value": {
+        "intended": false,
+        "backpath": false
+      },
+      "bar": "both true",
+      "pass": false
+    },
+    {
+      "id": "jrn07.U9",
+      "label": "marker_count in the written journal",
+      "value": 0,
+      "bar": "0",
+      "pass": true
+    },
+    {
+      "id": "jrn07.U7",
+      "label": "duplicate journal entries for the same stage",
+      "value": [],
+      "bar": "0",
+      "pass": true
+    }
+  ],
+  "ok": false,
+  "chains": {
+    "intended": [
+      "Q-MAIN-01",
+      "Q-MAIN-02",
+      "Q-MAIN-03",
+      "Q-MAIN-04",
+      "Q-MAIN-05",
+      "Q-MAIN-06",
+      "Q-MAIN-07",
+      "Q-MAIN-08",
+      "Q-MAIN-09",
+      "Q-MAIN-10",
+      "Q-MAIN-11",
+      "Q-MAIN-12",
+      "Q-MAIN-13",
+      "Q-MAIN-14",
+      "Q-MAIN-15",
+      "Q-MAIN-16",
+      "Q-MAIN-17",
+      "Q-MAIN-18",
+      "Q-MAIN-19",
+      "Q-MAIN-20",
+      "Q-MAIN-21",
+      "Q-MAIN-22",
+      "Q-MAIN-23",
+      "Q-MAIN-24",
+      "Q-MAIN-25",
+      "Q-MAIN-26",
+      "Q-MAIN-27",
+      "Q-MAIN-28",
+      "Q-MAIN-32"
+    ],
+    "backpath": [
+      "Q-MAIN-01",
+      "Q-MAIN-02",
+      "Q-MAIN-03",
+      "Q-MAIN-04",
+      "Q-MAIN-05",
+      "Q-MAIN-06",
+      "Q-MAIN-07",
+      "Q-MAIN-08",
+      "Q-MAIN-09",
+      "Q-MAIN-10",
+      "Q-MAIN-11",
+      "Q-MAIN-12",
+      "Q-MAIN-13",
+      "Q-MAIN-14",
+      "Q-MAIN-15",
+      "Q-MAIN-29",
+      "Q-MAIN-31"
+    ]
+  },
+  "ending_flag_delta": []
+}

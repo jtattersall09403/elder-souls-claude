@@ -1,0 +1,685 @@
+{
+  "tool": "tools/quests/mainline-findability.mjs",
+  "schema": "elder-souls/mainline-findability@1",
+  "measured_at": "2026-08-07T12:05:28.695Z",
+  "fold_rule": "game/src/core/topics.js (transcribed); NOTE — check whether sim/quest/gate.js imports it",
+  "static": {
+    "main_quests": 32,
+    "distinct_opens_topics": 31,
+    "world_suppliable_raw": 2,
+    "world_suppliable_folded": 27,
+    "exists_as_dialogue_topic_raw": 0,
+    "exists_as_dialogue_topic_folded": 3,
+    "dialogue_mentions_key_noun": 3,
+    "overheard_from_rows": 3,
+    "overheard_from_code_consumers": 0,
+    "rumour_lines_naming_a_main_quest_noun": 0,
+    "rows": [
+      {
+        "quest": "Q-MAIN-01",
+        "act": 1,
+        "topic": "the drowned tally",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "undersexton-aveline-rell",
+        "overheard_from": [
+          "soulrest-customs-clerk",
+          "bone-ladder-carter",
+          "gideon-quay-porter"
+        ],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-02",
+        "act": 1,
+        "topic": "the empty boxes",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "undersexton-aveline-rell",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-03",
+        "act": 1,
+        "topic": "the cold well",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "undersexton-aveline-rell",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-04",
+        "act": 1,
+        "topic": "a name for cover",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "undersexton-aveline-rell",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-05",
+        "act": 1,
+        "topic": "the ninth recension",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "undersexton-aveline-rell",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-06",
+        "act": 2,
+        "topic": "the drowned tally",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "ledgerer-hosk-vei",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-07",
+        "act": 2,
+        "topic": "the cutting yard",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "neeja-xul",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-08",
+        "act": 2,
+        "topic": "the gem shipping",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "harbourmaster-cuiro-vaneth",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-09",
+        "act": 2,
+        "topic": "the low chapel",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "undersexton-bel-mourne",
+        "overheard_from": [
+          "ojal-weeth",
+          "soulrest-sexton-on-duty"
+        ],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-10",
+        "act": 2,
+        "topic": "the root gallery",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "rootkeeper-ashul-tei",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-11",
+        "act": 3,
+        "topic": "the crypt road",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "undersexton-aveline-rell",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-12",
+        "act": 3,
+        "topic": "the intakes",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "undersexton-aveline-rell",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-13",
+        "act": 3,
+        "topic": "reading the count",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "ledgerer-hosk-vei",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-14",
+        "act": 3,
+        "topic": "the skei",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "neeja-xul",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-15",
+        "act": 3,
+        "topic": "the tree at thorn",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "rootkeeper-sesh-anaat",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-16",
+        "act": 4,
+        "topic": "the chapter's vote",
+        "supplied_raw": false,
+        "supplied_folded": false,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "undersexton-aveline-rell",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-17",
+        "act": 4,
+        "topic": "the ledger's terms",
+        "supplied_raw": false,
+        "supplied_folded": false,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "factor-ruvela-sath",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-18",
+        "act": 4,
+        "topic": "the interior's consent",
+        "supplied_raw": false,
+        "supplied_folded": false,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "rootkeeper-ashul-tei",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-19",
+        "act": 4,
+        "topic": "the cutters' terms",
+        "supplied_raw": false,
+        "supplied_folded": false,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "neeja-xul",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-20",
+        "act": 4,
+        "topic": "the writ of works",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "prefect-galvus-arn",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-21",
+        "act": 4,
+        "topic": "the hiring list",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "dockmaster-weeja-sen",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-22",
+        "act": 4,
+        "topic": "the keepers' leave",
+        "supplied_raw": false,
+        "supplied_folded": false,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "rootkeeper-sesh-anaat",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-23",
+        "act": 4,
+        "topic": "the salt factor",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "salt-factor-neloth-vaun",
+        "overheard_from": [
+          "harbourmaster-cuiro-vaneth",
+          "archon-crane-crew"
+        ],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-24",
+        "act": 5,
+        "topic": "the works",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "undersexton-aveline-rell",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-25",
+        "act": 5,
+        "topic": "the ash gallery",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "undersexton-bel-mourne",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-26",
+        "act": 5,
+        "topic": "the steward of the count",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": true,
+        "giver_npc": "ixtu-meer",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": true
+      },
+      {
+        "quest": "Q-MAIN-27",
+        "act": 5,
+        "topic": "the sill",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": true,
+        "giver_npc": "ixtu-meer",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": true
+      },
+      {
+        "quest": "Q-MAIN-28",
+        "act": 5,
+        "topic": "the opening of the count",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": true,
+        "giver_npc": "ixtu-meer",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-29",
+        "act": null,
+        "topic": "the eleven live roots",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "neeja-xul",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": true
+      },
+      {
+        "quest": "Q-MAIN-30",
+        "act": null,
+        "topic": "the thread is cut",
+        "supplied_raw": true,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "ledgerer-hosk-vei",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-31",
+        "act": null,
+        "topic": "the root channels",
+        "supplied_raw": true,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "neeja-xul",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      },
+      {
+        "quest": "Q-MAIN-32",
+        "act": null,
+        "topic": "what the wells do now",
+        "supplied_raw": false,
+        "supplied_folded": true,
+        "is_dialogue_topic_raw": false,
+        "is_dialogue_topic_folded": false,
+        "giver_npc": "keeper-teeja-lun",
+        "overheard_from": [],
+        "dialogue_mentions_key_noun": false
+      }
+    ]
+  },
+  "live": {
+    "topics_known_at_cold_start": [],
+    "main_offerable": 0,
+    "main_total": 32,
+    "blocked_on_topic": 32,
+    "rows": [
+      {
+        "id": "Q-MAIN-01",
+        "offerable": false,
+        "why": [
+          "the topic \"the drowned tally\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-02",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-01 first",
+          "the topic \"the empty boxes\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-03",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-02 first",
+          "the topic \"the cold well\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-04",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-03 first",
+          "the topic \"a name for cover\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-05",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-04 first",
+          "the topic \"the ninth recension\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-06",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-05 first",
+          "the topic \"the ninth clause of the Drowned Tally\" has not come up yet",
+          "the topic \"the drowned tally\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-07",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-06 first",
+          "the topic \"the cutting yard\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-08",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-06 first",
+          "the topic \"the gem shipping\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-09",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-08 first",
+          "the topic \"the low chapel\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-10",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-09 first",
+          "the topic \"the root gallery\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-11",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-10 first",
+          "the topic \"the crypt road\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-12",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-11 first",
+          "the topic \"the intakes\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-13",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-12 first",
+          "the topic \"reading the count\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-14",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-13 first",
+          "the topic \"the skei\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-15",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-14 first",
+          "the topic \"the tree at thorn\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-16",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-15 first",
+          "the topic \"the chapter's vote\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-17",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-15 first",
+          "the topic \"the ledger's terms\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-18",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-15 first",
+          "the topic \"the interior's consent\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-19",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-15 first",
+          "the topic \"the cutters' terms\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-20",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-15 first",
+          "the topic \"the writ of works\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-21",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-15 first",
+          "the topic \"the hiring list\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-22",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-15 first",
+          "the topic \"the keepers' leave\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-23",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-15 first",
+          "the topic \"the salt factor\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-24",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-16 first",
+          "requires Q-MAIN-17 first",
+          "requires Q-MAIN-18 first",
+          "requires Q-MAIN-19 first",
+          "requires Q-MAIN-20 first",
+          "requires Q-MAIN-21 first",
+          "requires Q-MAIN-22 first",
+          "requires Q-MAIN-23 first",
+          "the topic \"the works\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-25",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-24 first",
+          "the topic \"the ash gallery\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-26",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-25 first",
+          "the topic \"the steward of the count\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-27",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-26 first",
+          "the topic \"the sill\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-28",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-27 first",
+          "the topic \"the opening of the count\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-29",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-14 first",
+          "the topic \"the eleven live roots\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-30",
+        "offerable": false,
+        "why": [
+          "the topic \"the ninth clause of the Drowned Tally\" has not come up yet",
+          "the topic \"the thread is cut\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-31",
+        "offerable": false,
+        "why": [
+          "requires Q-MAIN-29 first",
+          "the topic \"the root channels\" has not come up yet"
+        ]
+      },
+      {
+        "id": "Q-MAIN-32",
+        "offerable": false,
+        "why": [
+          "the topic \"what the tide does now\" has not come up yet",
+          "the topic \"what the wells do now\" has not come up yet"
+        ]
+      }
+    ]
+  }
+}

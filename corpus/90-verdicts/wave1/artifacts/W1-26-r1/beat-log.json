@@ -1,0 +1,21 @@
+{
+  "schema": "elder-souls/beat-log@1",
+  "tool": "tools/experience/beat-extract.mjs",
+  "item": "RI-EXP01 step 2",
+  "fps": 60,
+  "trace_records": 36000,
+  "beats": [],
+  "by_class": {},
+  "tutorial_text_chars": 0,
+  "deferred": [
+    {
+      "beat_class": "lie",
+      "why": "RI-EXP01 step 2: resolved in the VERIFICATION stage against game/data/**, never during play. beat-diff.mjs --verify-lies performs it; a trace alone cannot."
+    },
+    {
+      "beat_class": "hub_exits",
+      "why": "needs getWorldStats() plus a route probe (>=3 navmesh exits with no blocking volume), which is a live-world measurement and not a trace signature."
+    }
+  ],
+  "empty_note": "NO BEAT SIGNATURE FIRED in 36000 trace records. This is a statement about the RUN, not about the build: an undriven session produces an empty beat log, and so does a build that emits none of the eleven signatures. beat-diff.mjs will show every beat missing; check session.json's `undriven` flag before reading that as a build defect."
+}
