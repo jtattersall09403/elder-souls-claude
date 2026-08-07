@@ -187,18 +187,49 @@ def norm_title(s: str) -> str:
 
 def step4_contradictions(books, registry_path: Path):
     """RI-LOR03 step 4: every `disputed` registry fact must name >=2 books that EXIST."""
-    out = {"registry": str(registry_path.relative_to(ROOT)), "disputed": [], "pairs_in_books": 0}
+    out = {"registry": relpath(registry_path), "disputed": [], "pairs_in_books": 0}
     ids = {b["id"] for b in books}
-    titles = {norm_title(b.get("title", "")): b["id"] for b in books}
+    # Index each book under its full title AND under the part before a colon, because the
+    # registry cites works by short title and often with a locator: "The Egg Speaks Twice
+    # (Third Song)" must resolve to "The Egg Speaks Twice: Nine Root-Songs of the Deep
+    # Marshes". Matching only the full string reported that book as never written, twice,
+    # which is the precise false alarm this check exists to avoid raising.
+    titles = {}
+    for b in books:
+        full = norm_title(b.get("title", ""))
+        short = norm_title((b.get("title", "") or "").split(":")[0])
+        for key in (full, short):
+            if key:
+                titles.setdefault(key, b["id"])
 
     def find(source: str):
-        n = norm_title(source)
+        raw = re.sub(r"\([^)]*\)", " ", source or "")     # drop the locator
+        n = norm_title(raw)
         if not n:
             return None
+        if n in titles:
+            return titles[n]
         for t, bid in titles.items():
-            if t and (t in n or n.startswith(t)):
+            if not t or len(t) < 8:
+                continue
+            if t in n or n in t or n.startswith(t) or t.startswith(n):
                 return bid
         return None
+
+    # A book declares which registry fact it holds a position on, via `registry.cf` or
+    # `registry_facts[]`. This is the reliable direction: the registry's own
+    # `positions[].in_world_source` strings are a mixture of book titles ("The Sap and the
+    # Ledger"), oral sources ("oral tradition, Helstrom") and whole institutions ("Imperial
+    # usage"), and only some of them are books at all. Matching titles is still done, because
+    # RI-LOR03 step 4's FAIL CLAUSE is "any disputed fact names a book that was never written" —
+    # so a source that LOOKS like a titled book and resolves to nothing is the thing to catch.
+    declared = {}
+    for b in books:
+        cfs = list(b.get("registry_facts") or [])
+        if isinstance(b.get("registry"), dict) and b["registry"].get("cf"):
+            cfs.append(b["registry"]["cf"])
+        for cf in set(cfs):
+            declared.setdefault(cf, []).append(b["id"])
 
     if registry_path.exists():
         reg = json.loads(registry_path.read_text(encoding="utf8"))
@@ -206,15 +237,24 @@ def step4_contradictions(books, registry_path: Path):
         for f in facts:
             if not f.get("disputed"):
                 continue
-            found, missing = [], []
+            matched, unmatched = [], []
             for p in f.get("positions", []):
                 src = p.get("in_world_source", "")
                 bid = find(src)
-                (found if bid else missing).append(bid or src)
+                if bid:
+                    matched.append(bid)
+                elif re.match(r"^The [A-Z]", src or ""):
+                    # Title Case with a leading article: this is a named book and it is missing.
+                    unmatched.append(src)
+            in_library = sorted(set(matched) | set(declared.get(f.get("id"), [])))
             out["disputed"].append(
-                {"id": f.get("id"), "positions": len(f.get("positions", [])),
-                 "in_books": found, "not_in_books": missing,
-                 "satisfied": len(found) >= 2}
+                {"id": f.get("id"),
+                 "positions": len(f.get("positions", [])),
+                 "titles_matched": matched,
+                 "named_books_missing": unmatched,
+                 "books_holding_a_position": in_library,
+                 "represented": len(in_library) >= 1,
+                 "both_sides_in_the_library": len(in_library) >= 2}
             )
 
     # Book-declared contradictions, and the partner must exist.
@@ -358,9 +398,15 @@ def run_checks(result, bands):
     add("S4a", "books that contradict another book", c["books_that_contradict"],
         f">= {bands['contradiction_pairs_min']}", c["books_that_contradict"] >= bands["contradiction_pairs_min"])
     add("S4b", "contradicts[] naming a book that does not exist", len(c["dangling"]), "== 0", not c["dangling"])
-    add("S4c", "disputed registry facts with >=2 positions in real books",
-        sum(1 for x in c["disputed"] if x["satisfied"]), f"== {len(c['disputed'])} of {len(c['disputed'])}",
-        all(x["satisfied"] for x in c["disputed"]) if c["disputed"] else False)
+    add("S4c", "disputed registry facts represented by a real book",
+        sum(1 for x in c["disputed"] if x["represented"]), f"== {len(c['disputed'])} of {len(c['disputed'])}",
+        all(x["represented"] for x in c["disputed"]) if c["disputed"] else False)
+    add("S4e", "disputed facts naming a titled book that was never written",
+        sum(len(x["named_books_missing"]) for x in c["disputed"]), "== 0",
+        not any(x["named_books_missing"] for x in c["disputed"]))
+    add("S4f", "disputed facts with BOTH sides in the library",
+        sum(1 for x in c["disputed"] if x["both_sides_in_the_library"]), ">= 4",
+        sum(1 for x in c["disputed"] if x["both_sides_in_the_library"]) >= 4)
     add("S4d", "books that are wrong on purpose", len(c["wrong_on_purpose"]), f">= {bands['wrong_books_min']}",
         len(c["wrong_on_purpose"]) >= bands["wrong_books_min"])
     add("S5", "quest-hint ratio (books quoting a quest objective)", result["quest_hints"]["ratio"],

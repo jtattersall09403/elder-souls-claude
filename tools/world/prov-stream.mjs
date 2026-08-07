@@ -224,6 +224,23 @@ const INSTALL_INSPECTOR = () => {
         idle_frames: n - Object.values(evCount).reduce((a, v) => a + v, 0),
       };
     },
+    /** Walk toward a world point for n fixed steps, through the game's own locomotion. */
+    walkToward(tx, tz, n) {
+      const e = window.__ENGINE;
+      const p = e.sim.player;
+      const mag = 0.55 - 1e-9;
+      for (let i = 0; i < n; i++) {
+        const b = Math.atan2(tx - p.pos[0], tz - p.pos[2]);
+        const cy = e.sim.camera.yaw * Math.PI / 180;
+        e.input.reset(e.sim.frame);
+        const script = [{ f: 0, move: [Math.sin(b - cy) * mag, Math.cos(b - cy) * mag] }];
+        if (e.traversal && e.traversal.mired) { script.push({ f: 0, press: ['roll'] }); script.push({ f: 1, release: ['roll'] }); }
+        e.input.queueInputs(script, e.sim.frame);
+        e.loop.stepOnce(); e._afterStep();
+        if (Math.hypot(p.pos[0] - tx, p.pos[2] - tz) < 20) break;
+      }
+      return [p.pos[0], p.pos[2]];
+    },
     /** Wall-clock cost of the last k fixed steps, and the worst single step in the window. */
     stepCost(k) {
       const e = window.__ENGINE;
@@ -309,6 +326,44 @@ try {
     report.after_steps = await handle.page.evaluate(([x, z]) => window.__PROBE.look([x, z]), to);
     log(`camera3km: after ${FRAMES} frames — ring_built ${report.after_steps.ring_built}/${report.after_steps.ring_want}, ` +
         `unbuilt ${report.after_steps.ring_unbuilt}, tilesResident ${report.after_steps.tilesResident}`);
+  } else if (MODE === 'nightlamp') {
+    // Do the region's NIGHT LAMPS move with the player? They are the fourth thing `request()` is
+    // the only refresh for, and the crossing road never passes within the 160 m lamp range of a
+    // glowing signature (nearest on the walked route: 281 m), so this walks at one on purpose.
+    // ONE setup teleport to put the body 300 m from a welkynd pillar, then WALKED the rest.
+    report.lamp = await handle.page.evaluate(() => {
+      const e = window.__ENGINE;
+      const sig = e.field.sig;
+      const p = e.sim.player.pos;
+      let best = null;
+      for (const it of sig.items) {
+        if (it.kind !== 'welkynd_pillar') continue;
+        const d = Math.hypot(it.x - p[0], it.z - p[2]);
+        if (!best || d < best.d) best = { x: it.x, z: it.z, d, kind: it.kind };
+      }
+      return best;
+    });
+    // Stand 300 m off, on the bearing back toward where the body already is.
+    const startAt = await handle.page.evaluate((L) => {
+      const e = window.__ENGINE;
+      const p = e.sim.player.pos;
+      let ux = p[0] - L.x, uz = p[2] - L.z;
+      const n = Math.hypot(ux, uz) || 1;
+      return [L.x + (ux / n) * 300, L.z + (uz / n) * 300];
+    }, report.lamp);
+    await handle.h('teleport', startAt[0], startAt[1]);
+    report.lamp_walk = [];
+    for (let i = 0; i < 14; i++) {
+      const s = await handle.page.evaluate(() => window.__PROBE.look(null));
+      s.lamp_target_m = +Math.hypot(s.player[0] - report.lamp.x, s.player[1] - report.lamp.z).toFixed(1);
+      report.lamp_walk.push(s);
+      if (s.lamp_target_m < 25) break;
+      await handle.page.evaluate(([lx, lz]) => window.__PROBE.walkToward(lx, lz, 1500), [report.lamp.x, report.lamp.z]);
+    }
+    report.after_steps = await handle.page.evaluate(() => window.__PROBE.look(null));
+    for (const s of report.lamp_walk) {
+      log(`  ${s.lamp_target_m} m from the pillar — lamps created ${s.sig_lights_created}, lit ${s.lamps_lit}, nearest ${s.nearest_lamp_m} m, underfoot ${s.ground_underfoot_built}`);
+    }
   } else if (MODE === 'budget') {
     // THE FRAME-BUDGET MEASUREMENT. Walk in a straight line, time every step. Run this on a tree
     // with the fix and on a tree with the call site deleted and the two are directly comparable:

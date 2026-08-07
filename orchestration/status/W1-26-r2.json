@@ -1,0 +1,28 @@
+{
+  "task_id": "W1-26-r2",
+  "brief": "corpus/90-verdicts/wave1/W1-26-r1.md (FAIL 1.3/10)",
+  "started": "wave-1 round 2",
+  "state": "researching",
+  "outputs_expected": [
+    "game/src/render/text-register.js — sees EVERY drawing surface incl. the vector-stroked glyph path; blind surfaces declared, never an empty set masquerading as clean",
+    "game/src/ui/glyphs.js — drawText() reports to the register",
+    "game/src/render/renderer.js — declare + instrument all three 2D surfaces",
+    "game/src/harness/api.js — getRenderedText() derives surfaces from the contexts actually wrapped; reports blind[]",
+    "game/src/render/ui.js — overflow policy stops sacrificing the scribe's replies (no panel-budget widening)",
+    "the naming line drawn (NAMED_line coupling > 0)",
+    "hold opens census-paused; scribe asks on interact; >= 60 s of body before the first question",
+    "locomotion actually moves the body",
+    "tools/harness/w1-26-opening.mjs — exits non-zero when M9 searches zero strings",
+    "delete-the-fix confirmation for each fix",
+    "docs/shots/ image + reports/blog-feed.jsonl line"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "boot-check PASS at start. loadavg 16.9 (above the ~12 distortion threshold named in AGENT-PROTOCOL).",
+    "Choke point confirmed: ALL menus/HUD text goes through ui/glyphs.js drawText() (re-exported by ui/type.js). It strokes vector paths; the register wraps fillText/strokeText only. Hence menus surface = 0 entries even when instrumented.",
+    "render/ui.js (dialogue) uses ctx.fillText directly — that is why 'dialogue' is the only surface with entries.",
+    "render/ui.js:199 — `while (contentH > maxH && spokenLines.length) spokenLines.shift()` is the line that eats the scribe's replies. PANEL_MAX_FRAC=0.48, measured area cost 0.498 of 0.55 — no budget headroom."
+  ],
+  "next_step": "measure: DTR per node, why locomotion is 0.0000 m, and what the census-pause path looks like",
+  "notes_for_successor": "Do NOT re-derive the ui.js wrap() space-dropping bug: a space-joined delivery test invents undrawn text. Strip all whitespace from both sides when matching register rows against authored strings."
+}

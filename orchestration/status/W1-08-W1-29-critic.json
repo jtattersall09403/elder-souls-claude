@@ -1,14 +1,24 @@
 {
-  "agent": "critic", "item": "W1-08-W1-29-r1", "state": "measuring",
-  "phase": "findings established, writing verdict",
-  "trusted_artifacts": ["c1","c2","c3","draw","rerun-desktop","rerun-pad","rerun-touch","rerun-viewport","rerun-rebind"],
-  "reran": ["critic2-e (E1 touch-roll, E2 double-bind, E3 rendered-text stream, E4 overlay draw)"],
-  "findings": [
-    "E1/E2 CLEARED the build: touch roll tap->roll hold->sprint; no shipped default control is double-bound",
-    "E3 FAIL: getRenderedText() returns 0 entries in every state incl. menu-open => M-K20 (HF5, 6 pts) cannot fail",
-    "draw PNGs are byte-identical (md5) => touch overlay and rotate state are never drawn",
-    "rotateState has NO renderer consumer; game/src/render/ui.js has zero touch references",
-    "13 scored check IDs absent from the instrument: M-K8 M-K9 M-K21 M-K22 M-N1 M-N2 M-N3 M-N5 M-N7 M-P14 M-P20 M-P24 M-P25"
+  "agent": "critic",
+  "item": "W1-08-W1-29-r1",
+  "state": "complete",
+  "verdict": "FAIL",
+  "score_0_10": 5,
+  "pass_threshold": 7.0,
+  "native": { "RI-JRN03": "66/100", "RI-JRN04": "71/100" },
+  "deliverables": [
+    "corpus/90-verdicts/wave1/W1-08-W1-29-r1.json (schema-valid, 0 warnings)",
+    "corpus/90-verdicts/wave1/W1-08-W1-29-r1.md"
   ],
-  "updated_at": "2026-08-07T00:00:00Z"
+  "biggest_gap": "GAP-W1-input-discoverability-unmeasured (input.discoverability)",
+  "trusted_artifacts": ["rerun-desktop","rerun-pad","rerun-rebind","rerun-viewport","c1","c1-pilot","c2","c3"],
+  "distrusted_and_reran": ["rerun-touch (M-P21a predicate)","draw (D1 arm never drove the model)"],
+  "new_artifacts": ["critic2-e","critic2-k","critic2-l"],
+  "new_tools": [
+    "tools/harness/critic-w1-08-29-r1b.mjs",
+    "tools/harness/critic-w1-08-29-r1c.mjs",
+    "tools/harness/critic-w1-08-29-r1d.mjs"
+  ],
+  "not_done": ["git commit (forbidden)", "tools/publish.mjs (forbidden)", "naive passes M-N* (need a separate isolated agent)"],
+  "updated_at": "2026-08-07T13:40:00Z"
 }

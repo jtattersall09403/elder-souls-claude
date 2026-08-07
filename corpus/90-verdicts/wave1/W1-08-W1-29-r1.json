@@ -1,0 +1,1113 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-08-w1-29-r1",
+  "piece_title": "W1-08 / W1-29 round 1 — desktop controls, mobile, touch and the attached gamepad",
+  "subsystem_paths": [
+    "input.action.set",
+    "input.desktop.keyboard",
+    "input.desktop.pointerlock",
+    "input.rebinding.model",
+    "input.discoverability",
+    "input.modality.parity",
+    "input.gamepad.mapping",
+    "input.gamepad.analog",
+    "input.gamepad.lifecycle",
+    "input.touch.fallback",
+    "platform.mobile.viewport",
+    "combat.input.latency"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-08-29-r1-resume-2",
+    "role": "critic.platform",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-07T12:20:00Z",
+    "finished_at": "2026-08-07T13:40:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "be177539c26afa33454e36d5bc6d3cb57a26a689",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "harness_commands": [
+      {
+        "command": "node tools/harness/boot-check.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "boot-check: PASS — the engine constructed and the harness answers"
+      },
+      {
+        "command": "node tools/harness/critic-w1-08-29-r1b.mjs --out corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-e",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-e/critic-checks.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-08-29-r1c.mjs --out corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-k",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-k/critic-checks.json"
+      },
+      {
+        "command": "node tools/harness/critic-w1-08-29-r1d.mjs --out corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-l",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-l/critic-checks.json"
+      },
+      {
+        "command": "md5sum corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/*.png",
+        "exit_code": 0,
+        "stdout_artifact": "rotate-landscape.png == rotate-portrait.png (bf31918e…); touch-none.png == touch-four-pointers.png (c0fedb10…)"
+      },
+      {
+        "command": "grep -c \"'M-K8'|'M-K9'|'M-K21'|'M-K22'|'M-N1'|'M-N2'|'M-N3'|'M-N5'|'M-N7'|'M-P14'|'M-P20'|'M-P24'|'M-P25'\" tools/journey/input-checks.mjs",
+        "exit_code": 1,
+        "stdout_artifact": "0 for all thirteen ids"
+      }
+    ]
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "Declared before any citation. The PNGs and framebuffer hashes cited here are used ONLY as presence/absence evidence for RI-MTH07 coupling — 'did this pixel buffer change at a fixed sim frame' — and never to judge fidelity or art direction. No fidelity or art-direction claim is made anywhere in this verdict, so ARBITRATION §4's line is not crossed."
+  },
+  "reference_items": [
+    {
+      "id": "RI-JRN03",
+      "path": "corpus/88-journeys/RI-JRN03-desktop-controls.md",
+      "side": "neutral",
+      "kind": "number",
+      "native_scale": "0-100 weighted over six blocks, plus ten hard fails that cap at 2 (## Scoring)",
+      "native_score": 66,
+      "native_max": 100,
+      "native_verdict": "Recognisably attempting it (50-69)",
+      "score_0_10": 5,
+      "measured": "partial",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-rebind/checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/c1/critic-checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/c2/critic-checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-e/critic-checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-l/critic-checks.json"
+      ],
+      "why_not_ten": "28 of the item's 100 points have no instrument at all: M-K8 (5), M-K9 (5), M-K21 (4), M-K22 (4), M-N1 (4), M-N2 (2), M-N5 (2), M-N3 (1), M-N7 (1) do not appear anywhere in tools/journey/input-checks.mjs (grep returns 0 for each). A further 6 points (M-K20) are recorded as passing against a rendered-text register that is empty in every state probed — 7 named states plus a forced dialogue/menu/rest open — while getUIState() simultaneously reports three HUD elements carrying drawn text ('5', 'LIGHT', 'Spark-Dart'). M-K20 therefore cannot fail, and it is one of the two checks behind HF5.",
+      "path_to_ten": "(1) Route every fillText through game/src/render/text-register.js — it currently instruments only the 'dialogue' and 'title' surfaces and catches nothing — and add a positive-control leg to --self-test that draws a known token and asserts M-K20 goes red. (2) Implement the nine missing checks: M-K8 and M-K9 are the HF3/HF4 gates (no click-to-play surface; no reachable gameplay-with-no-lock-and-no-menu) and are cheap; M-K21/M-K22 need the discoverability census; M-N1/M-N2/M-N3/M-N5/M-N7 need the naive pass in RI-JRN03's `Naive pass` section, which is a separate agent run and not an instrument. (3) Tighten M-K1's predicate from `fired.includes(action)` to set equality, so a control that fires the right action plus an extra one is visible.",
+      "ten_by_wave": 2,
+      "hard_fails": [],
+      "how_we_lose_hits": [],
+      "checks": [
+        {
+          "id": "M-K1",
+          "result": "pass",
+          "value": "16/16 primary correct, 0 misrouted",
+          "threshold": "14/14 primary, 0 misrouted",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ],
+          "note": "Corroborated independently: critic2-e E2 enumerated the shipped defaults and found ZERO controls owned by two actions. The heavy attack is on its normative primary KeyR and fires. NOTE the predicate is `fired.includes(action)`, which would also pass a control that fires the right action plus extras — c2 shows Mouse1 held 15 frames latching both `parry` and `lock_on`, which is by design (lock_on's secondary is the literal binding `Mouse1Hold12`), not a double-bind."
+        },
+        {
+          "id": "M-K2",
+          "result": "pass",
+          "value": "compares_code true, compares_key false, compares_keycode false; AZERTY W dispatched to the same action",
+          "threshold": "identical action map on qwerty/azerty/qwertz (HF1)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "M-K4",
+          "result": "pass",
+          "value": "0 defaults use Ctrl/Alt; Ctrl+W and F5 refused in fiction",
+          "threshold": "0 defaults use Ctrl/Alt; both refused (KB3/RB6)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "M-K5",
+          "result": "pass",
+          "value": 1,
+          "threshold": "exactly 1 (HF7)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "M-K6",
+          "result": "pass",
+          "value": "held [] in 1 frame; 0.00 m displacement after the committed state ends",
+          "threshold": "held empty in 1 frame; <= 0.05 m (HF2)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "M-K7",
+          "result": "pass",
+          "value": "held [] in 1 frame on visibilitychange",
+          "threshold": "held empty in 1 frame (HF2)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "M-K8",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "no click-to-play / enable-mouse-look surface (HF3)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ],
+          "note": "The id does not exist in tools/journey/input-checks.mjs. HF3 is an ungated hard fail. NOT observed to be triggered — unmeasured is not the same as failed. GATE NOTE: this check is the instrument behind a named hard fail; the gate is UNEVALUATED, not triggered. Recorded in status_reasons as ungated_hard_fail rather than in hard_fails[], because verdict-validate.mjs:134 reads checks[].hard_fail===true as \"triggered\" and would cap the item at 2 for a hard fail nobody has observed."
+        },
+        {
+          "id": "M-K9",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "no reachable gameplay-with-no-pointer-lock-and-no-menu (HF4)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ],
+          "note": "Id absent from the instrument. M-K10 covers the adjacent case (lock loss releases held actions and enters the menu) and passes, which makes the unmeasured HF4 less likely to be live, but it is not the same check. GATE NOTE: this check is the instrument behind a named hard fail; the gate is UNEVALUATED, not triggered. Recorded in status_reasons as ungated_hard_fail rather than in hard_fails[], because verdict-validate.mjs:134 reads checks[].hard_fail===true as \"triggered\" and would cap the item at 2 for a hard fail nobody has observed."
+        },
+        {
+          "id": "M-K10",
+          "result": "pass",
+          "value": "held [] , menuOpen true, pointerLocked false",
+          "threshold": "held empty in 1 frame, menu entered (HF4)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "M-K11",
+          "result": "pass",
+          "value": "dragLookFallback true after 2 lock errors; yaw 0 -> 12 deg, 0 modals",
+          "threshold": "fallback engaged and the camera turns (PL5)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "M-K12",
+          "result": "pass",
+          "value": "9.6 deg per fixed step at render 0/15/30/60 Hz, identical",
+          "threshold": "identical to 6 dp AND non-zero (HF8)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "M-K13",
+          "result": "pass",
+          "value": 1,
+          "threshold": "r2 >= 0.999 (PL8)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "M-K14",
+          "result": "pass",
+          "value": "contextmenu/space/tab/wheel all default-prevented; page_scrolled false",
+          "threshold": "0 context menus, 0 scroll, 0 focus change (PL9, KB4-KB6)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "M-K15",
+          "result": "pass",
+          "value": "cursor: none",
+          "threshold": "computed cursor 'none' (PL10)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "M-K16",
+          "result": "pass",
+          "value": "matrix_at_peak 2; sprint+roll+swing all completed, 0 ghosted",
+          "threshold": "no default needs 3 simultaneous matrix keys (HF6)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "M-K17",
+          "result": "pass",
+          "value": "5 rebinds incl. Mouse4; both conflicts named the previous owner before commit; orphaning take refused",
+          "threshold": "all persist; conflict named before commit (RB4); orphaning take refused (RB5)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-rebind/checks.json"
+          ]
+        },
+        {
+          "id": "M-K18",
+          "result": "pass",
+          "value": "3/3 — keyboard, gamepad and touch each began, offered and committed",
+          "threshold": "3/3 (HF9 / RB10)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-rebind/checks.json"
+          ]
+        },
+        {
+          "id": "M-K19",
+          "result": "pass",
+          "value": "unbind of the last control refused ('zero_binding')",
+          "threshold": "refused (RB5)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-rebind/checks.json"
+          ]
+        },
+        {
+          "id": "M-K20",
+          "result": "unmeasurable",
+          "value": "0 hits over a stream with 0 entries in 7 named states, in menu/dialogue/rest, and on handheld with the overlay on",
+          "threshold": "0 instruction tokens outside the settings surface (HF5)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-l/critic-checks.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-k/critic-checks.json"
+          ],
+          "note": "RECORDED AS PASSING BY THE BUILD'S OWN INSTRUMENT with `frames: 0`. L2 shows getUIState() reporting three HUD elements carrying text at the same moment getRenderedText() reports 0 entries and surfaces {} — the register instruments only 'dialogue' and 'title' and neither ever writes. A probe that cannot fail (AGENT-PROTOCOL). Scored 0, fail-closed. GATE NOTE: this check is the instrument behind a named hard fail; the gate is UNEVALUATED, not triggered. Recorded in status_reasons as ungated_hard_fail rather than in hard_fails[], because verdict-validate.mjs:134 reads checks[].hard_fail===true as \"triggered\" and would cap the item at 2 for a hard fail nobody has observed."
+        },
+        {
+          "id": "M-K21",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "discoverability without instruction",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ],
+          "note": "Id absent from the instrument."
+        },
+        {
+          "id": "M-K22",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "no control legend / prompt containing a control name (HF5)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ],
+          "note": "Id absent from the instrument. GATE NOTE: this check is the instrument behind a named hard fail; the gate is UNEVALUATED, not triggered. Recorded in status_reasons as ungated_hard_fail rather than in hard_fails[], because verdict-validate.mjs:134 reads checks[].hard_fail===true as \"triggered\" and would cap the item at 2 for a hard fail nobody has observed."
+        },
+        {
+          "id": "M-K23",
+          "result": "pass",
+          "value": "p50 1, p100 1 over 200 inputs on BOTH observers",
+          "threshold": "p100 <= 2 frames, p50 <= 1",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/c1/critic-checks.json"
+          ],
+          "note": "The strongest single result in the piece. The predecessor critic built a second, independent observer that reads the SIMULATION's trace response rather than the pipeline's own edge ring, on the same 200 presses. Both give p100 = 1 frame, never_consumed 0. The c1-pilot artifact shows that observer returning `never: 25` before it was corrected, which is what a real discriminator looks like."
+        },
+        {
+          "id": "M-K24",
+          "result": "pass",
+          "value": "pipeline_drops 0 over 10 000 inputs; aggregate droppedInputs 9487 reported separately",
+          "threshold": "0 pipeline drops (S33)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ],
+          "note": "ARBITRATION S33 applied exactly as ruled: presses lost in transport are counted at 0, presses refused by a combat window are counted separately at 9487 and not conflated. The instrument's threshold string states the distinction in place."
+        },
+        {
+          "id": "M-N1",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "naive corroboration",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ],
+          "note": "The whole Naive pass (M-N1/N2/N3/N5/N7, 10 points) was never run; it is a fresh-agent protocol, not an instrument."
+        },
+        {
+          "id": "M-N2",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "naive corroboration",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "M-N3",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "naive corroboration",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "M-N5",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "no unrecoverable loss of control (HF10)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ],
+          "note": "GATE NOTE: this check is the instrument behind a named hard fail; the gate is UNEVALUATED, not triggered. Recorded in status_reasons as ungated_hard_fail rather than in hard_fails[], because verdict-validate.mjs:134 reads checks[].hard_fail===true as \"triggered\" and would cap the item at 2 for a hard fail nobody has observed."
+        },
+        {
+          "id": "M-N7",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "naive corroboration",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "RI-JRN04",
+      "path": "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md",
+      "side": "neutral",
+      "kind": "number",
+      "native_scale": "0-100 weighted over seven blocks, plus eight hard fails that cap at 2 (## Scoring)",
+      "native_score": 71,
+      "native_max": 100,
+      "native_verdict": "Below bar — named remedy required (70-89)",
+      "score_0_10": 5,
+      "measured": "partial",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-touch/checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-viewport/checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/c3/critic-checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/draw-checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/touch-none.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/touch-four-pointers.png",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-e/critic-checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-l/critic-checks.json"
+      ],
+      "why_not_ten": "The entire touch surface is an orphan model. L1 is the ablation: at an identical pinned sim frame (24), with zero held actions in both arms, a desktop framebuffer and a handheld framebuffer are byte-identical (md5 a4932a97f50021ee), while touchState() reports `visible: true` and touchLayout() reports 11 controls in both. The null control (desktop resampled) is stable at the same hash, so the probe can see a difference and there is none to see. The predecessor's draw/ PNGs agree independently: touch-none.png and touch-four-pointers.png are byte-identical (md5 c0fedb10…), as are rotate-landscape.png and rotate-portrait.png (bf31918e…). grep over game/**/*.js finds `rotateState` only in game/src/input/viewport.js — no renderer reads it — and game/src/render/ui.js contains no reference to touch at all. Per this item's own CONSUMPTION section, coupling == 0 scores that dimension 0, fail-closed, with no partial. That is the whole 'Touch parity' block (10) plus M-P16 (3) and M-P17 (4). A further 8 points (M-P14, M-P20, M-P24, M-P25) have no instrument.",
+      "path_to_ten": "Draw the two models that already exist and are already correct. (1) Add a touch-overlay pass to the renderer that consumes engine.real.touch.layout() — 11 control positions, radii and pressed state are already computed, safe-area-clamped and measured correct by M-P17; this is a draw call, not a design. (2) Add an in-world rotate illustration that consumes viewport.rotateState() — the authored line 'The map lies the long way.' and the illustration key 'chart-on-a-table' are already carried. (3) Re-run the L1 ablation and require the handheld and desktop framebuffer hashes to DIFFER at a pinned frame with zero input, and the rotate line to appear in getRenderedText(). (4) Implement M-P14, M-P20, M-P25 and give M-P24 a live register (see the RI-JRN03 remedy).",
+      "ten_by_wave": 2,
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "#11 — 'Touch is later.' Everything is built for the pad because the user asked about a pad. The touch INPUT model is complete and correct (all sixteen actions reachable, floating stick, 4-pointer multi-touch, safe-area clamped) and none of it is drawn, which is the same outcome by a different route: a touch-only player has nothing on screen to press."
+      ],
+      "checks": [
+        {
+          "id": "M-P1",
+          "result": "pass",
+          "value": "souls-default and souls-handheld both match §C exactly; 0 mismatches, 0 unreachable, 0 unbound",
+          "threshold": "observed map == §C for all actions (HF1)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ]
+        },
+        {
+          "id": "M-P2",
+          "result": "pass",
+          "value": "index 16 fires nothing; 16-button descriptor threw null",
+          "threshold": "no action, no exception, no undefined read",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ]
+        },
+        {
+          "id": "M-P3",
+          "result": "pass",
+          "value": "1 fire at 0.35, 1 release at 0.20, 0 extra fires over a 0.30<->0.40 dither; value path confirmed",
+          "threshold": "hysteresis, 0 dither fires (HF8)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ],
+          "note": "Read via .value, not .pressed — 'How we lose' #2 avoided."
+        },
+        {
+          "id": "M-P4",
+          "result": "pass",
+          "value": "half_intent 0 / full_intent 1, entered at the same frame 5/5 runs",
+          "threshold": "never at 0.5, always at 0.9, same frame 5/5",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ]
+        },
+        {
+          "id": "M-P5",
+          "result": "pass",
+          "value": "roll at 4/8/11 frames, sprint at 12/13/20/60; never both, never neither",
+          "threshold": "tap <= 11 -> roll, hold >= 12 -> sprint (HF-adjacent)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ],
+          "note": "'How we lose' #4 avoided — roll and sprint share one control with the 12-frame discriminator, and critic2-e E1 confirms the SAME discriminator on touch (tap -> roll, hold -> sprint), which is T5."
+        },
+        {
+          "id": "M-P6",
+          "result": "pass",
+          "value": "0 at 0.10 and at 0.14 at every bearing; max/min ratio 1.0000000000000007 at 0.60; 1.0 at 0.92",
+          "threshold": "radial, ratio at 0.60 <= 1.02 (>1.10 = axial)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/c3/critic-checks.json"
+          ],
+          "note": "'How we lose' #3 avoided. ARBITRATION S32 respected: this item owns the raw 0.14 deadzone (a device property) and the artifacts contain no curve claim above it — the response curve is left to RI-CAM02. c3's independent sweep reproduces the same radial figures."
+        },
+        {
+          "id": "M-P7",
+          "result": "pass",
+          "value": "45.0 deg from axes [0.707, -0.707]",
+          "threshold": "45 +/- 1.5 deg",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ]
+        },
+        {
+          "id": "M-P8",
+          "result": "pass",
+          "value": "monotonic in magnitude; identical at render 0/15/60 Hz to ~5 dp; non-zero",
+          "threshold": "identical across render rates AND non-zero (HF6)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ]
+        },
+        {
+          "id": "M-P9",
+          "result": "pass",
+          "value": 1,
+          "threshold": "exactly 1 for a sub-frame press+release (HF6)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ]
+        },
+        {
+          "id": "M-P10",
+          "result": "pass",
+          "value": "p50 1, p100 1 over 200 presses, never 0",
+          "threshold": "p100 <= 2 frames",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ]
+        },
+        {
+          "id": "M-P11",
+          "result": "pass",
+          "value": "held ['sprint'] -> [] on the disconnect frame; move [0,0]; displacement 0.00 m",
+          "threshold": "held empty on the disconnect frame; <= 0.05 m (HF3)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ],
+          "note": "'How we lose' #5 avoided — the telescopic-pad jog case."
+        },
+        {
+          "id": "M-P12",
+          "result": "pass",
+          "value": "sim advanced 301 frames across the disconnect; ui false (0 modal surfaces)",
+          "threshold": "0 modals; sim advances (HF4 / seam S14)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ],
+          "note": "'How we lose' #6 avoided."
+        },
+        {
+          "id": "M-P13",
+          "result": "pass",
+          "value": "deviceClass 'desktop' from the viewport with pad_connected false",
+          "threshold": "device class from media queries, never from the gamepad list (L1)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ],
+          "note": "'How we lose' #7 avoided."
+        },
+        {
+          "id": "M-P14",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "lifecycle",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ],
+          "note": "Id absent from the instrument."
+        },
+        {
+          "id": "M-P15",
+          "result": "pass",
+          "value": "quirk 3537:1004 de-permuted a mapping-'' pad correctly with no prompt; an unknown id completed calibration in 6 inputs of a budget of 8",
+          "threshold": "known id -> correct map, no prompt; unknown -> calibration in <= 8 inputs (HF2)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ],
+          "note": "This is the item's own 'How we lose' #1 — the single most likely way it fails — and it is avoided in code rather than assumed away. game/data/input/pad-quirks.json carries BOTH GameSir X2s enumeration modes (generic-HID 3537:1004 with a face-cluster permutation and hat-axis D-pad, and the standard-mapping identity entry), labels its own provenance 'canonical-recall, confidence medium' rather than claiming measurement, and backs it with a pad-only calibration path for any id that does not match or matches wrongly. See status_reasons: no physical pad exists and this is not a substitute for one."
+        },
+        {
+          "id": "M-P16",
+          "result": "fail",
+          "value": "coupling 0 — rotateState() returns the authored line and no renderer consumes it; rotate-landscape.png and rotate-portrait.png are byte-identical (md5 bf31918e…)",
+          "threshold": "an in-world rotate illustration, 0 UI-kit chrome, recovered < 30 frames (H1)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/draw-checks.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/rotate-portrait.png",
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-k/critic-checks.json"
+          ],
+          "note": "The recovery half is real and good — 0 frames, no reload. The drawn half is the orphan-text shape RI-JRN04's own CONSUMPTION §4 names. Scored 0, no partial."
+        },
+        {
+          "id": "M-P17",
+          "result": "fail",
+          "value": "0 inset violations and min target 44 CSS px, over 11 controls that are never drawn",
+          "threshold": "0 elements intersect an inset; every target >= 44 CSS px (H3/H11)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-touch/checks.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-l/critic-checks.json"
+          ],
+          "note": "The geometry is correct and 'How we lose' #10 (the notch) is genuinely handled in the model. Scored 0 because the admissible observable for a journey is what the player can see or do, and nothing is on screen — RI-JRN04 CONSUMPTION §2, 'a harness return value is not an observable'."
+        },
+        {
+          "id": "M-P18",
+          "result": "pass",
+          "value": "88 px chrome collapse over 4 resizes: 60 frames advanced, camera delta yaw 0 pitch 0",
+          "threshold": "0 frames lost, camera delta 0 (H4)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-viewport/checks.json"
+          ]
+        },
+        {
+          "id": "M-P19",
+          "result": "pass",
+          "value": "touch_action none, overscroll none, user_select none, contextmenu prevented, uses_dvh true",
+          "threshold": "0 zoom, 0 navigation, 0 selection; dvh not vh (H4/H5)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-viewport/checks.json"
+          ],
+          "note": "'How we lose' #8 (100vh) and #9 (pull-to-refresh) both avoided. gesturestart_prevented and selectstart_prevented are reported false, which is a marginal note rather than a fail: touch_action:none and user_select:none already close both routes in Chromium, and gesturestart is a WebKit event this container cannot dispatch."
+        },
+        {
+          "id": "M-P20",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "the phone is a real device",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-viewport/checks.json"
+          ],
+          "note": "Id absent from the instrument."
+        },
+        {
+          "id": "M-P21",
+          "result": "fail",
+          "value": "16/16 actions reachable in the MODEL (critic2-e E1: tap->roll, hold->sprint, 10 direct controls + 5 drawer petals + sprint on hold); 0 of them reach the framebuffer (L1 coupling 0)",
+          "threshold": "every action fires and is findable on touch (HF5 / O17 / §G T1-T4)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-e/critic-checks.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-l/critic-checks.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/touch-four-pointers.png"
+          ],
+          "note": "Two separate findings. (a) The input half is BETTER than the shipped instrument can show: M-P21a's predicate is `!fired` — something fired — never `fired === action`, so its own artifact records `reach.roll = 'sprint'` and passes. I re-drove it: that was the probe holding 20 frames past the 12-frame discriminator, and a 2-frame tap does produce `roll`. The build is correct and the check is blind. (b) The drawn half is coupling 0, which is what the score reflects. HF5 is NOT recorded as triggered: the item's HF5 is 'the opening or a quest is not completable on touch only', and I did not run an opening or a quest end-to-end, so I will not claim it."
+        },
+        {
+          "id": "M-P22",
+          "result": "fail",
+          "value": "touchState().visible follows the T7 rule correctly (true at 1 s, false at 2.5 s, true after touch) on an overlay that is never drawn; L1 also shows visible:true on deviceClass 'desktop'",
+          "threshold": "visible at 1 s, gone by 2.5 s, back on touch (T7)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-touch/checks.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-l/critic-checks.json"
+          ],
+          "note": "Coupling 0: a visibility flag on nothing."
+        },
+        {
+          "id": "M-P23",
+          "result": "pass",
+          "value": "pad-only rebind began, offered Pad5, committed; index 16 refused in fiction",
+          "threshold": "pad-only completable; index 16 never offered",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-rebind/checks.json"
+          ]
+        },
+        {
+          "id": "M-P24",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "no tutorial/instruction string teaching the controls (HF7)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-l/critic-checks.json"
+          ],
+          "note": "Folded into the same record() call as M-K20 and inherits its inert register. HF7 is an ungated hard fail. Not observed triggered. GATE NOTE: this check is the instrument behind a named hard fail; the gate is UNEVALUATED, not triggered. Recorded in status_reasons as ungated_hard_fail rather than in hard_fails[], because verdict-validate.mjs:134 reads checks[].hard_fail===true as \"triggered\" and would cap the item at 2 for a hard fail nobody has observed."
+        },
+        {
+          "id": "M-P25",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "the phone is a real device",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-viewport/checks.json"
+          ],
+          "note": "Id absent from the instrument."
+        },
+        {
+          "id": "T2",
+          "result": "pass",
+          "value": "identical move vector from two drag origins",
+          "threshold": "floating stick (§G T2)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-touch/checks.json"
+          ]
+        },
+        {
+          "id": "T9/M-P21b",
+          "result": "pass",
+          "value": "4 pointers: stick + camera + 2 buttons; held ['light','block'] while the camera turned 16.8 deg",
+          "threshold": "camera still turns while a button is held (§G T9)",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-touch/checks.json"
+          ],
+          "note": "The item calls this 'the most common touch bug there is' and the model handles it. It is still invisible."
+        },
+        {
+          "id": "L6",
+          "result": "pass",
+          "value": "active pad follows most-recent activity; 0 actions latched on removal of either",
+          "threshold": "active index follows activity; 0 latched on removal",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ]
+        },
+        {
+          "id": "H12",
+          "result": "pass",
+          "value": "orientationLock/fullscreen/wakeLock/matchMedia all probed and reported, none assumed",
+          "threshold": "capability report present; absence reported, never thrown",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-viewport/checks.json"
+          ]
+        },
+        {
+          "id": "M-N1",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "naive corroboration",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ],
+          "note": "The naive pass (M-N1/N3/N5, 4 points) was never run."
+        },
+        {
+          "id": "M-N3",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "naive corroboration",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ]
+        },
+        {
+          "id": "M-N5",
+          "result": "unmeasurable",
+          "value": null,
+          "threshold": "no unrecoverable loss of control",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ]
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json",
+      "kind": "report",
+      "produced_by": "node tools/journey/input-checks.mjs --group desktop --out <dir> (predecessor critic, 2026-08-07T12:01:47Z)",
+      "source": "ours",
+      "note": "TRUSTED, not re-run in full. 16/16 pass. I re-derived M-K1 independently (critic2-e E2) and audited M-K20's predicate (critic2-l L2)."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json",
+      "kind": "report",
+      "produced_by": "node tools/journey/input-checks.mjs --group pad --self-test --out <dir> (predecessor critic, 2026-08-07T12:03:04Z)",
+      "source": "ours",
+      "note": "TRUSTED, not re-run. Carries the 5-leg --self-test: M-P5, M-P3, M-P1, M-P6, M-P17 each perturbed and each went red, vacuous []. Note the five self-tested instruments do NOT include either instrument I found broken."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-touch/checks.json",
+      "kind": "report",
+      "produced_by": "node tools/journey/input-checks.mjs --group touch --out <dir> (predecessor critic, 2026-08-07T12:04:20Z)",
+      "source": "ours",
+      "note": "PARTLY DISTRUSTED and re-run: its M-P21a records reach.roll = 'sprint' and still passes. See critic2-e."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-viewport/checks.json",
+      "kind": "report",
+      "produced_by": "node tools/journey/input-checks.mjs --group viewport --out <dir> (predecessor critic, 2026-08-07T12:05:19Z)",
+      "source": "ours",
+      "note": "TRUSTED for M-P18/M-P19/H12; M-P16 superseded by the coupling test."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-rebind/checks.json",
+      "kind": "report",
+      "produced_by": "node tools/journey/input-checks.mjs --group rebind --out <dir> (predecessor critic, 2026-08-07T12:05:52Z)",
+      "source": "ours",
+      "note": "TRUSTED, not re-run."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/c1/critic-checks.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-08-29-r1.mjs --probe c1 --n 200 --out <dir> (predecessor critic)",
+      "source": "ours",
+      "note": "TRUSTED. Independent sim-side latency observer, p100 = 1 frame over 200 inputs."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/c1-pilot/critic-checks.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-08-29-r1.mjs --probe c1 --n 25 --out <dir> (predecessor critic)",
+      "source": "ours",
+      "note": "Kept as negative evidence that the c1 observer discriminates: sim_observer never:25 before correction."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/c2/critic-checks.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-08-29-r1.mjs --probe c2 --out <dir> (predecessor critic)",
+      "source": "ours",
+      "note": "TRUSTED as raw data, its own verdict line partly superseded: its 'edge_only_no_sim_response' for crouch and spell_cycle is a trace-coverage limit, and its parry->[parry,lock_on] is the deliberate Mouse1Hold12 binding, not a conflict (critic2-e E2)."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/c3/critic-checks.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-08-29-r1.mjs --probe c3 --out <dir> (predecessor critic)",
+      "source": "ours",
+      "note": "Recorded FAIL because the consumeUI trap did NOT reproduce: boot and arena sweeps are identical and both show a correct radial deadzone. The builder's warning to read pipe.edges rather than held is therefore unnecessary at this build; nothing else in the suite reads the wrong one (all pad/touch probes read getInputEdges())."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/draw-checks.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-08-29-r1-draw.mjs --out <dir> (predecessor critic)",
+      "source": "ours",
+      "note": "Its D1 arm never got the touch to register (model_registered_held []), so I re-ran the ablation properly rather than accept the conclusion on a probe that had not driven the model. The conclusion survived."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/touch-none.png",
+      "kind": "negative-evidence",
+      "produced_by": "page.screenshot() at sim frame 4, arena, handheld viewport 844x390 dpr 1, no pointers down",
+      "resolution": "844x390",
+      "camera_pose": "default arena_flat spawn camera, pinned at sim frame 4; identical pose in the paired image — the pair is presence/absence evidence for RI-MTH07 coupling only, never a fidelity or art-direction citation",
+      "source": "ours",
+      "note": "md5 c0fedb10484d7dd07adcae77a004ef71 — byte-identical to touch-four-pointers.png."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/touch-four-pointers.png",
+      "kind": "negative-evidence",
+      "produced_by": "page.screenshot() at sim frame 4, arena, handheld viewport 844x390 dpr 1, four pointers down",
+      "resolution": "844x390",
+      "camera_pose": "identical to touch-none.png — same spawn camera, same pinned sim frame 4; coupling evidence only",
+      "source": "ours",
+      "note": "md5 c0fedb10484d7dd07adcae77a004ef71."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/rotate-landscape.png",
+      "kind": "negative-evidence",
+      "produced_by": "page.screenshot() at sim frame 2, landscape orientation, rotateState null",
+      "resolution": "844x390",
+      "camera_pose": "default spawn camera pinned at sim frame 2; identical pose in the paired image; coupling evidence only",
+      "source": "ours",
+      "note": "md5 bf31918ede7ee2ea55324ddec0adbb07."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/rotate-portrait.png",
+      "kind": "negative-evidence",
+      "produced_by": "page.screenshot() at sim frame 2, portrait orientation, rotateState = {kind:'rotate', line:'The map lies the long way.'}",
+      "resolution": "844x390",
+      "camera_pose": "identical to rotate-landscape.png — same pinned sim frame 2; coupling evidence only",
+      "source": "ours",
+      "note": "md5 bf31918ede7ee2ea55324ddec0adbb07 — the authored line is in the model and not in the pixels."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-e/critic-checks.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-08-29-r1b.mjs --out corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-e",
+      "source": "ours",
+      "note": "MY re-measurement. E1 touch tap/hold sweep; E2 shipped-defaults double-bind enumeration; E3 rendered-text stream; E4 (discarded, see method_deviations)."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-k/critic-checks.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-08-29-r1c.mjs --out corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-k",
+      "source": "ours",
+      "note": "MY re-measurement. RI-MTH07 coupling attempt with a null control and a positive control. K1's arm was confounded (see method_deviations) and is superseded by L1; K3 is sound and decisive."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-l/critic-checks.json",
+      "kind": "report",
+      "produced_by": "node tools/harness/critic-w1-08-29-r1d.mjs --out corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-l",
+      "source": "ours",
+      "note": "MY re-measurement, the load-bearing one. L1 is the clean overlay ablation (same pinned frame, zero input in both arms, stable null control). L2 is the text-register disconnect."
+    }
+  ],
+  "source_reads": [
+    {
+      "path": "tools/journey/input-checks.mjs",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read only AFTER the artifacts showed M-P21a passing on reach.roll='sprint' and M-K20 passing on frames:0, to name the predicates responsible: `unreached = entries where !v` at :1132 and `budget.hits.length === 0` over an empty `t.entries` at :549. Also used to establish, by grep, that thirteen scored check ids have no implementation."
+    },
+    {
+      "path": "game/src/render/ui.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read only after L1 measured coupling 0, to locate the missing consumer. Contains no reference to touch."
+    },
+    {
+      "path": "game/src/input/viewport.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "Read only after the rotate PNGs were shown byte-identical, to establish that rotateState() at :134 has no renderer consumer anywhere in game/**."
+    },
+    {
+      "path": "game/src/harness/api.js",
+      "purpose": "locate-harness",
+      "note": "Harness surface for touchLayout/touchState/getRenderedText/getDrawnGeometry. Its own comment at :582 says touchLayout() 'reports what it would draw'."
+    },
+    {
+      "path": "game/data/input/pad-quirks.json",
+      "purpose": "quote-written-content",
+      "note": "Quoted for the GameSir X2s entries and their self-declared provenance."
+    },
+    {
+      "path": "corpus/88-journeys/RI-JRN03-desktop-controls.md",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md",
+      "purpose": "quote-written-content"
+    }
+  ],
+  "blind_comparisons": [],
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "A1",
+          "result": "pass",
+          "observed": "No roll-to-hit or dice mechanic anywhere in the input path. Every action resolves deterministically from an edge; M-K23 and M-P10 both give p100 = 1 frame over 200 inputs with 0 never-consumed, which is incompatible with a probabilistic gate.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/c1/critic-checks.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ]
+        },
+        {
+          "id": "A4",
+          "result": "pass",
+          "observed": "No pause mid-fight. M-P12 disconnects the pad during play and the sim advances 301 frames with ui:false — 0 modal surfaces. Seam S14 upheld on the exact case (a telescopic USB-C pad jogging loose) the item predicts.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ]
+        },
+        {
+          "id": "A6",
+          "result": "pass",
+          "observed": "No animation cancel introduced by the input layer. M-K6/M-K7 release held actions in 1 frame on blur and visibilitychange but record displacement_after_commitment_m = 0.0000 — the committed state is allowed to finish and only then does the release take effect, which is the Souls rule rather than an input-driven cancel.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "A9",
+          "result": "pass",
+          "observed": "ARBITRATION S33 applied correctly rather than used as cover: M-K24 reports pipeline_drops 0 over 10 000 inputs and keeps the 9487 combat-refused presses in a separate counter. A press lost in transport is zero; a press refused by a window is not counted as a loss. No Morrowind-side leniency was smuggled into the combat window to make the number look better.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        }
+      ]
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "B3",
+          "result": "pass",
+          "observed": "No objective marker, minimap or map surface is introduced by either item. getUIState() reports map_exists:false and navigable ['inventory','journal','sheet','spells'] with no map, upholding S30.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-k/critic-checks.json"
+          ]
+        },
+        {
+          "id": "B7",
+          "result": "pass",
+          "observed": "Every refusal in the piece is written in fiction, not in UI-kit English: 'The bindings hold. That hand belongs to the window, not to you.' (Ctrl+W/F5), 'Forward already answers for getting out of the way.' (rebind conflict), 'Leave it unbound and you leave it undone.' (orphan refusal), 'That one answers to the machine before it answers to you.' (guide button). The pad calibration prompts are imperatives about the world — 'Swing.', 'Take it on the shield.' — never control names, which is what §G and HF7 ask for.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-rebind/checks.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+          ]
+        },
+        {
+          "id": "B9",
+          "result": "pass",
+          "observed": "No Souls convention leaked into the world layer: no bonfire warp, no soul-currency purchase, no item description standing in for dialogue. The piece touches only the input surface.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        },
+        {
+          "id": "B11",
+          "result": "not_applicable",
+          "not_run_reason": "This piece ships no world content, no NPC and no loot, so there is nothing for the Morrowind-leakage content probes to examine.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json"
+          ]
+        }
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 5,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "band_label": "Recognisably attempting the thing — and clearly worse than the reference in a way a player would notice within a minute",
+    "confidence": "high",
+    "weights": {
+      "RI-JRN03": 1,
+      "RI-JRN04": 1
+    }
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "coupling_zero:RI-JRN04/touch-overlay",
+    "coupling_zero:RI-JRN04/M-P16-rotate-state",
+    "below_wave_gate:5.0_of_7.0",
+    "inert_instrument:RI-JRN03/M-K20",
+    "inert_instrument:RI-JRN04/M-P24",
+    "unimplemented_checks:13",
+    "ungated_hard_fail:RI-JRN03/HF3",
+    "ungated_hard_fail:RI-JRN03/HF4",
+    "ungated_hard_fail:RI-JRN03/HF5",
+    "ungated_hard_fail:RI-JRN03/HF10",
+    "ungated_hard_fail:RI-JRN04/HF7",
+    "unverified_on_hardware:gamesir-x2s-type-c"
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-input-discoverability-unmeasured",
+    "subsystem_path": "input.discoverability",
+    "what": "RI-JRN03's entire 'Discoverability without instruction' block — 14 of its 100 points, and the home of hard fail HF5 — is unmeasured, and the one check in it that reports a result reports it from an empty buffer. M-K20 searches window.__HARNESS.getRenderedText() for instruction tokens and passed with `frames: 0`. I drove the register in seven named states (arena_flat, helstrom-market, thorn-hall, ui-journal, npc_showcase, default, settlement_primary_street) and through uiOpen('dialogue'), uiOpen('menu') and uiOpen('rest'): entries = 0 and summary.surfaces = {} in every single one, while getUIState() at the same instant reports three HUD elements carrying drawn text ('5', 'LIGHT', 'Spark-Dart'). game/src/render/text-register.js instruments only the 'dialogue' and 'title' surfaces and neither ever writes. M-K21 and M-K22 — the other 8 points of the block, M-K22 being the second half of HF5 — do not exist in tools/journey/input-checks.mjs at all; nor do M-K8 (HF3), M-K9 (HF4), M-N1/M-N2/M-N3/M-N5(HF10)/M-N7, M-P14, M-P20, M-P24 (HF7) or M-P25. That is 13 scored ids returning 0 to `grep -c` over the instrument, 28 of RI-JRN03's 100 points and 12 of RI-JRN04's, and five named hard-fail gates that no instrument can fire. The build's `--self-test` takes 5 instruments red — M-P5, M-P3, M-P1, M-P6, M-P17 — and not one of them is a check in this block.",
+    "why_it_matters": "The measurement floor is the reason the undrawn touch overlay could ship with 41/41 green, and it is why nobody would be able to tell next round whether the overlay was actually drawn or the same orphan text was moved somewhere else: the only instrument that inspects drawn strings is looking at a buffer nothing writes.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-l/critic-checks.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-k/critic-checks.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-e/critic-checks.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+    ],
+    "severity": "major",
+    "remedy": {
+      "action": "Three steps, in order. (1) MAKE THE REGISTER REAL: game/src/render/text-register.js wraps CanvasRenderingContext2D.fillText but only for the 'dialogue' and 'title' surfaces; route every text-drawing surface through it — HUD, menu, rest, the rebinding screen, and the touch/rotate surfaces once they are drawn — so getRenderedText() returns what is on the glass. (2) GIVE M-K20 A POSITIVE CONTROL IN --self-test: add a leg that draws a known token ('Press E') on a non-settings surface and asserts M-K20 goes red; a leg that asserts the token is NOT found when drawn on the settings surface; and make the check itself report `unmeasurable` rather than `pass` whenever entries === 0, so an empty stream can never again read as a clean bill of health. (3) IMPLEMENT THE MISSING IDS: M-K8, M-K9, M-K21, M-K22, M-P14, M-P20, M-P24 and M-P25 as instrument checks in tools/journey/input-checks.mjs, each with a --self-test perturbation leg; and run the Naive pass (M-N1/N2/N3/N5/N7 for RI-JRN03, M-N1/N3/N5 for RI-JRN04) as the separate fresh-agent protocol its own section specifies, since it is a procedure and not an instrument.",
+      "targets": [
+        "game/src/render/text-register.js",
+        "game/src/render/ui.js",
+        "tools/journey/input-checks.mjs",
+        "corpus/88-journeys/RI-JRN03-desktop-controls.md",
+        "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md"
+      ],
+      "acceptance": "`node tools/journey/input-checks.mjs --group desktop,pad,touch,viewport,rebind --self-test` reports (a) M-K20 with entries > 0 in at least one ordinary gameplay state and 0 instruction-token hits, (b) a --self-test leg that draws 'Press E' outside the settings surface and drives M-K20 red, (c) non-null results for all thirteen ids currently missing, and (d) a --self-test leg for each newly added check that goes red under perturbation with `vacuous: []`. Re-measured by a later critic with `grep -c \"'M-K8'\" tools/journey/input-checks.mjs` returning >= 1 for every id in RI-JRN03 and RI-JRN04's ## Scoring tables.",
+      "ref_item": "RI-JRN03",
+      "estimated_size": "M"
+    }
+  },
+  "secondary_observations": [
+    {
+      "what": "THE OPEN THING THE BUILDER DECLARED, SCORED. The touch overlay and the four authored strings are computed, carried and correct in the model, and no renderer draws them. The clean ablation (critic2-l L1): at pinned sim frame 24, with zero held actions in both arms, deviceClass 'desktop' and deviceClass 'handheld' produce a byte-identical framebuffer, md5 a4932a97f50021ee, while touchState() reports visible:true and touchLayout() reports 11 controls in BOTH. The null control (desktop resampled) is stable at the same hash, so the probe can see a difference and there is none. Independently corroborated by the predecessor's PNG pairs, which are byte-identical (touch c0fedb10…, rotate bf31918e…). grep finds no renderer consumer for rotateState and no touch reference in game/src/render/ui.js. This is RI-JRN04's own CONSUMPTION §4 'orphan text' shape, and its §3 says coupling == 0 scores that dimension 0 with no partial — applied to M-P16, M-P17, M-P21 and M-P22. It is NOT the single biggest gap only because the builder declared it and it is a draw call away from correct, whereas the measurement floor above is what let it ship green.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-l/critic-checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/draw/draw-checks.json"
+      ],
+      "subsystem_path": "input.touch.fallback"
+    },
+    {
+      "what": "NO PHYSICAL PAD: ADEQUATE, AND NOT A LOWERED BAR. The build does not assume mapping==='standard' — RI-JRN04's own 'How we lose' #1 and the most likely way the item fails. game/data/input/pad-quirks.json carries BOTH GameSir X2s Type-C enumeration modes: the generic-HID entry 3537:1004 with the DualSense-like face-cluster permutation (raw 0->WEST, 1->SOUTH, 2->EAST), the D-pad as hat axis 9, triggers on axes 3/4 with .value preferred; and the standard-mapping identity entry, present so the table is a complete statement about the device rather than a list of cases that went wrong. It labels its own provenance 'canonical-recall, confidence medium' rather than claiming measurement, and M-P15 shows the fallback for anything it gets wrong: an unknown id reaches a pad-only calibration that completed in 6 inputs against a budget of 8, with in-fiction prompts ('Swing.', 'Take it on the shield.'). That is the right shape — implement both branches, declare the recall, and give the player a self-service escape hatch — and it is not a request to lower any bar. It is still not a measurement: ten real-hardware behaviours remain unverified and the verdict records `unverified_on_hardware:gamesir-x2s-type-c` in status_reasons so the debt is carried rather than closed by argument.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+      ],
+      "subsystem_path": "input.gamepad.mapping"
+    },
+    {
+      "what": "TWO INSTRUMENTS THAT PASS WHILE THEIR OWN DATA SHOWS THE DEFECT — the shape the sibling critic found as `r.frame` vs `f`. That literal field bug does NOT reproduce here: both tools/journey/input-checks.mjs and tools/harness/critic-w1-08-29-r1.mjs read `r.f`, the field every shipped trace writes. The equivalent shape is present twice. (a) M-P21a computes `unreached = entries where !v` — something fired — never `v === action`, so its own artifact records `reach.roll = 'sprint'` and still passes; a genuine misroute would be invisible to it. I re-drove it and the BUILD IS CORRECT: a 2-frame tap on the touch roll control produces `roll` and a 20-frame hold produces `sprint`, which is §G T5 working exactly as specified; the predecessor's probe simply held past the 12-frame discriminator. (b) M-K20 passes on an empty buffer, as above. Additionally M-K1's predicate is `fired.includes(action)` rather than set equality, so a control firing the right action plus extras would pass — here it does not matter, because critic2-e E2 enumerated the shipped defaults and found ZERO controls owned by two actions.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-e/critic-checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-touch/checks.json"
+      ],
+      "subsystem_path": "input.modality.parity"
+    },
+    {
+      "what": "THE consumeUI TRAP DOES NOT REPRODUCE. The builder warns that consumeUI clears five actions and zeroes movement at the boot state, so a perfect radial deadzone would measure [0,0], and directs readers to pipe.edges rather than held. The predecessor's c3 probe recorded FAIL for exactly the opposite reason: the boot sweep and the arena sweep are IDENTICAL and both show a correct radial deadzone (0 at 0.10 and 0.14, 0.0649 at 0.20, 0.5844 at 0.60, 1.0 at 0.92, boot_ui []). The warning appears to be stale. I confirmed the second half of the question directly: every pad and touch probe in tools/journey/input-checks.mjs reads H.getInputEdges(), i.e. the edges, not `held` — nothing in the suite reads the wrong one. The only place `held` is the primary observable is M-P21b's multi-touch check, where held ['light','block'] is the correct thing to assert.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/c3/critic-checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json"
+      ],
+      "subsystem_path": "input.gamepad.analog"
+    },
+    {
+      "what": "WHAT IS GENUINELY VERY GOOD, recorded so the next round does not regress it. Latency p100 = 1 frame over 200 inputs on keyboard AND pad, corroborated by a second, independent, sim-side observer built by the predecessor critic (c1) — and the c1-pilot artifact shows that observer returning never:25 before correction, which is what a discriminator that can fail looks like. Both gamepad profiles match §C exactly with 0 unbound. The roll/sprint 12-frame discriminator is right on pad AND on touch. The deadzone is genuinely radial (max/min ratio 1.0000000000000007 at 0.60) rather than the axial one-liner the item predicts. Disconnect releases everything on the disconnect frame with 0.00 m displacement and no modal, and the sim keeps advancing 301 frames. dvh not vh. Rebinding is completable on keyboard, pad and touch alike, names the previous owner before commit, and refuses to orphan an action — all in fiction. The heavy attack reaching its normative primary key again is a real fix to a real defect.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/c1/critic-checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/c1-pilot/critic-checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-pad/checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-rebind/checks.json"
+      ],
+      "subsystem_path": "combat.input.latency"
+    },
+    {
+      "what": "AR-3 (seam sterility). This piece creates ONE boundary-crossing interaction and it is real rather than nominal: the input layer refuses presses that the COMBAT model rejects, and keeps that refusal in a counter separate from transport loss (M-K24: pipeline_drops 0, aggregate droppedInputs 9487 over 10 000 inputs), and c2 shows the desktop `interact` key producing a trace event INPUT_DROPPED:parley — a keyboard press arriving at the Morrowind-side parley window and being refused by it. The input surface is otherwise legitimately internal. seam_sterile is therefore FALSE, but the crossing is thin and I record it as thin rather than claim more for it.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-desktop/checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/c2/critic-checks.json"
+      ],
+      "subsystem_path": "input.action.set"
+    },
+    {
+      "what": "MINOR, not fed forward as work. (a) touchState().visible reports true on deviceClass 'desktop' (critic2-l L1 model_value_a) — the visibility model does not gate on device class; harmless while nothing is drawn, wrong once something is. (b) M-P19 reports gesturestart_prevented false and selectstart_prevented false; both routes are already closed by touch-action:none and user-select:none in Chromium, and gesturestart is a WebKit event this container cannot dispatch, so this is a reporting gap rather than a defect — but it will need a real iOS Safari pass before ship. (c) c2 records crouch and spell_cycle latching an edge with no trace event and world_changed false; that is a trace-coverage limit for two non-combat actions rather than a demonstrated dead action, and I did not have a clean way to separate the two without more instrument work.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/critic2-l/critic-checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/rerun-viewport/checks.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-08-W1-29-r1/c2/critic-checks.json"
+      ],
+      "subsystem_path": "platform.mobile.viewport"
+    }
+  ],
+  "method_deviations": [
+    {
+      "ref_item": "RI-JRN03",
+      "deviation": "I did not re-run the full instrumented pass. I read the predecessor critic's ten artifact directories and re-measured only what they do not answer or what I positively distrusted: the touch tap/hold sweep (its M-P21a passes on data showing a misroute), the shipped-defaults double-bind enumeration (its M-K1 predicate cannot see an extra action), the rendered-text stream (its M-K20 passes on frames:0), and the overlay/rotate draw path (its D1 arm never got the touch model to register).",
+      "why": "The box was under load and a full re-run would have distorted other agents' numbers for no new information. Every trusted artifact is named in `artifacts[]` with a TRUSTED or DISTRUSTED note.",
+      "affects_scores": false
+    },
+    {
+      "ref_item": "RI-JRN04",
+      "deviation": "critic2-k K1 is DISCARDED and superseded by critic2-l L1. K1 perturbed the touch model by putting four pointers down on control centres and observed the framebuffer hash move (coupling 1) — but the same perturbation put `light` and `block` into held, so the player animated and the hash would have moved whether or not the overlay is drawn. L1 is the clean ablation: device class only, zero held actions in both arms, identical pinned sim frame, stable null control.",
+      "why": "Recorded rather than deleted because it is the exact confound that would let a later round claim the overlay is drawn when it is not. critic2-e E4 is discarded for the same reason — its geometry census differs frame to frame on actor bone positions, so its predicate could not fail.",
+      "affects_scores": false
+    },
+    {
+      "ref_item": "RI-JRN04",
+      "deviation": "The naive passes (RI-JRN03 M-N1/N2/N3/N5/N7 and RI-JRN04 M-N1/N3/N5, fleet roles JC-03N and JC-04N) were not run by me or by my predecessor.",
+      "why": "They are a fresh-agent isolation protocol, not an instrument, and running them requires a separate agent with `isolation: enforced`. They are scored 0 fail-closed and are part of the named gap's remedy.",
+      "affects_scores": true
+    }
+  ],
+  "arbitration_questions": [],
+  "corpus_extended": [
+    {
+      "id": "RI-JRN04",
+      "path": "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md",
+      "reason": "The item's ## Scoring table weights M-P21 at 8 points as a single id, but the instrument splits it into M-P21a (reachability) and M-P21b (multi-touch), which measure different §G requirements (T1/T4 vs T9) and can diverge — here the input half is right and the drawn half is coupling 0. The item should either split the weight explicitly or state which sub-check carries it. I apportioned it to the whole and scored 0 under the item's own CONSUMPTION §3 ('there is no partial'), but a later critic reading the table alone would not reach the same split."
+    },
+    {
+      "id": "RI-JRN03",
+      "path": "corpus/88-journeys/RI-JRN03-desktop-controls.md",
+      "reason": "HF5 is defined over M-K20 AND M-K22, and M-K22 has no instrument, so HF5 has never been evaluable in either direction. More generally the item's ## Scoring table lists nine ids (M-K8, M-K9, M-K21, M-K22, M-N1, M-N2, M-N3, M-N5, M-N7) that no tool implements, worth 28 of 100 points — the item and its instrument have drifted apart and nothing in RI-MTH05's coherence checks compares a Scoring table's ids against the instrument that is supposed to answer them. That comparison is a one-line corpus check worth adding."
+    },
+    {
+      "id": "RI-MTH04",
+      "path": "corpus/80-methods/RI-MTH04-measurement-integrity.md",
+      "reason": "tools/verdict-validate.mjs:134 computes `hf` as `hard_fails[].length > 0 || checks.some(c => c.hard_fail === true)` and caps the item at 2. But VERDICT-SCHEMA.md describes checks[].hard_fail as a property of the CHECK — which named hard fail it gates — not as a claim that the fail triggered. The two readings collide: a critic who honestly records \"M-K8 is the HF3 gate and it is UNMEASURED\" is forced to either cap the item at 2 for a hard fail nobody observed, or drop the flag and lose the machine-readable link between the gate and its missing instrument. I dropped the flag and carried the fact in status_reasons as ungated_hard_fail:<item>/<HF>, which no aggregator currently consumes. Either give checks[] a separate `gates_hard_fail: \"HF3\"` string field, or make the validator require result===\"fail\" before it treats hard_fail as triggered. This matters beyond this verdict: five named hard-fail gates across RI-JRN03 and RI-JRN04 have no instrument, and there is currently no typed way to say so."
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "ran_every_assigned_method is FALSE and this is the honest record: AR-1, AR-2, AR-3 and CONSUMPTION (RI-MTH07) were all run, but the naive passes required by both items' ## Comparison method were not — they need a separate fresh agent under enforced isolation. Those checks are scored 0 fail-closed and are in the remedy. On judged_output_not_source: every source read is logged in source_reads with one of the three permitted purposes, and in every diagnose case the measurement came first — L1's byte-identical framebuffers before game/src/render/ui.js was opened, the byte-identical PNGs before game/src/input/viewport.js, and M-P21a's own artifact before tools/journey/input-checks.mjs. Neither item carries `blind_pair: yes`, so no blind pack was owed. On the escalation ladder: my first three hypotheses (a touch roll misroute, a Mouse1 double-bind, a literal `r.frame` field bug) were each DISPROVED by measurement and are recorded as such rather than quietly dropped — the gap I named is the one that survived, and I did not accept 'the builder already said so' as a reason to stop looking past the declared open thing."
+  },
+  "notes": "Resumed verdict. A previous critic completed the measurement pass and was lost to a connection error before writing anything; its ten artifact directories survived and are cited here with per-artifact TRUSTED / DISTRUSTED notes. Two headline claims by the builder survive independent re-measurement intact (p100 = 1 frame on both keyboard and pad; 16/16 actions on touch, including the roll/sprint tap-hold discriminator that its own instrument reported as a misroute). One does not: the 41/41 green includes a check that reads an empty buffer, and the items' Scoring tables between them name thirteen more checks that no tool implements. The practical answer to the owner's question: on desktop and on a pad, yes — a GameSir X2s owner would very probably be able to play this, on a pad-quirks table that handles both of the device's enumeration modes with a calibration fallback for anything it gets wrong, though no physical pad has ever been plugged in. On touch alone, no — the controls exist, work, are correctly laid out and are drawn nowhere."
+}
