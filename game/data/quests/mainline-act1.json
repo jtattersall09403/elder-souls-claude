@@ -364,7 +364,16 @@
         }
       ],
       "can_fail": true,
-      "deceit": null,
+      "deceit": {
+        "patterns": ["D10"],
+        "stated_objective": "Count eleven burial boxes and write down their weights",
+        "actual_objective": "Count eleven burial boxes and write down their weights",
+        "truth": "The eleven are the eleven the counting house asked about. The mortuary has been counting them for four years and the real figure is closer to ninety, and nobody asked the mortuary because the mortuary is not the counting house.",
+        "revealed_by": [
+          { "id": "rev_ojal", "channel": "talk_to_target", "source": "ojal-weeth", "before_point_of_no_return": true }
+        ],
+        "never_revealed": false
+      },
       "consequences": {
         "faction_reputation": { "the_drowned_court": 0 },
         "world_flags": ["player_has_heard_the_sound_under_the_wastes"],
@@ -539,7 +548,17 @@
         }
       ],
       "can_fail": true,
-      "deceit": null,
+      "deceit": {
+        "patterns": ["D10"],
+        "stated_objective": "Find out why the sapwell at the Bone Ladder has stopped giving",
+        "actual_objective": "Find out why the sapwell at the Bone Ladder has stopped giving",
+        "truth": "The well has not stopped. It is draining downward through a worked shaft under the rib that every keeper on this coast has known about their whole life and none of them will discuss, because a well that drains is still a well.",
+        "revealed_by": [
+          { "id": "rev_shaft", "channel": "environment", "source": "loc_shaft_under_the_rib", "before_point_of_no_return": true },
+          { "id": "rev_keepers_knew", "channel": "talk_to_target", "source": "keeper-teeja-lun", "before_point_of_no_return": true }
+        ],
+        "never_revealed": false
+      },
       "consequences": {
         "faction_reputation": { "the_drowned_court": 0 },
         "world_flags": ["player_has_seen_a_cold_well"],

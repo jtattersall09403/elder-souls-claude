@@ -1,3 +1,16 @@
+#!/usr/bin/env node
+// chr-custom-route.mjs — does the CUSTOM class route complete without throwing?
+//
+// Owner: W1-07. The round-2 verdict: "the custom route throws out of `stepFrames` on caret+A"
+// — `census: writ.class-custom-neglected cannot repeat strength`, because census.js _options()
+// ignored `inp.excludes` for the attribute and skill sources and offered attributes the player
+// had already spent. A third of the creation routes crashed the simulation loop.
+//
+// This walks the whole custom route for four races and asserts it reaches the stamp with a
+// legal sheet. It is deliberately not a unit test: the throw was in the live fixed step.
+//
+// USAGE
+//   node tools/harness/chr-custom-route.mjs
 import { parseArgs } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
 const args = parseArgs();

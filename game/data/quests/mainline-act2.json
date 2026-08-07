@@ -144,7 +144,17 @@
         }
       ],
       "can_fail": true,
-      "deceit": null,
+      "deceit": {
+        "patterns": ["D10", "D12"],
+        "stated_objective": "Read the Drowned Tally and produce a number",
+        "actual_objective": "Read the Drowned Tally and produce a number",
+        "truth": "The Court has held the only continuous record of the tide for four hundred years and has never added it up, and the return column it never added up has been corrected downward in the margins, by the same hand, since the fourth volume.",
+        "revealed_by": [
+          { "id": "rev_the_curve_predates", "channel": "ledger", "source": "item_the_drowned_tally", "before_point_of_no_return": true },
+          { "id": "rev_the_steward_named", "channel": "ledger", "source": "item_tally_volume_four", "before_point_of_no_return": true }
+        ],
+        "never_revealed": false
+      },
       "consequences": {
         "faction_reputation": {},
         "world_flags": ["act_two_opened"],
@@ -283,7 +293,17 @@
         }
       ],
       "can_fail": true,
-      "deceit": null,
+      "deceit": {
+        "patterns": ["D3", "D10"],
+        "stated_objective": "Hear the Cutters' account of what they have done to the wells",
+        "actual_objective": "Hear the Cutters' account of what they have done to the wells",
+        "truth": "The Cutters are guilty of everything they are accused of and did not start it. Their own yard books go back further than the licence they are blamed for, and the earliest of them already complains that the wells give less than the year before.",
+        "revealed_by": [
+          { "id": "rev_older_cutting", "channel": "ledger", "source": "item_the_grandmother_yard_book", "before_point_of_no_return": true },
+          { "id": "rev_fresh_wounds_give", "channel": "talk_to_target", "source": "neeja-xul", "before_point_of_no_return": true }
+        ],
+        "never_revealed": false
+      },
       "consequences": {
         "faction_reputation": {},
         "world_flags": ["cutters_account_heard"]
@@ -750,7 +770,17 @@
         }
       ],
       "can_fail": true,
-      "deceit": null,
+      "deceit": {
+        "patterns": ["D10", "D11"],
+        "stated_objective": "Hear what the interior says about the failing tide",
+        "actual_objective": "Hear what the interior says about the failing tide",
+        "truth": "The Deep-Kin's account blames foreigners. The letter in their own gallery, which they have held for eleven years and shown to nobody, says the arrangement is older than the writer and was not the writer's idea, and the writer is not a foreigner.",
+        "revealed_by": [
+          { "id": "rev_the_letter", "channel": "letter", "source": "item_stewards_letter", "before_point_of_no_return": true },
+          { "id": "rev_ashul_withheld", "channel": "rival_npc", "source": "rootkeeper-ashul-tei", "before_point_of_no_return": true }
+        ],
+        "never_revealed": false
+      },
       "consequences": {
         "faction_reputation": {},
         "world_flags": ["act_two_closed", "antagonist_speaks_in_his_own_words"],

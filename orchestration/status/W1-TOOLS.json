@@ -14,7 +14,12 @@
     "tools/journey/beat-extract.mjs",
     "corpus/88-journeys/data/mw-open-beats.json",
     "tools/journey/cadence.mjs",
-    "tools/journey/competence.mjs"
+    "tools/journey/competence.mjs",
+    "tools/experience/lib/md.mjs",
+    "tools/experience/beats-from-md.mjs",
+    "corpus/95-experience/RI-EXP01.beats.json",
+    "tools/experience/session-run.mjs",
+    "tools/experience/beat-extract.mjs"
   ],
   "findings": [
     "Baseline: node tools/corpus-index.mjs reports 67 phantom tools (C8), 0 errors.",
@@ -31,8 +36,13 @@
     "cadence.mjs self-test 5/5. Falsifications: 300s dead gap turns C1 red; pure locomotion is NOT counted as activity (an hour walking in a circle must not read as engaged); empty trace is unmeasurable not a pass.",
     "competence.mjs self-test 5/5. Falsifications: K7 VOIDS an improvement measured against a weaker late enemy; a build declaring enemy DECISION-MAKING absent cannot claim a competence curve at all (K6's punish window does not exist against a scripted enemy).",
     "BLOCKER (transient, another agent): game/src/render/renderer.js imports ./title.js which does not exist yet -> the game does not boot. W1-26 is mid-write on render/text-register.js + title.js. journey-run --self-test cannot complete until that lands. RETRY IT.",
-    "W1-26 is adding __HARNESS.getRenderedText() (render/text-register.js): fillText-level and CLIP-AWARE. journey-run.mjs already prefers it over getUIState().text and names which accessor it used + how strong it is."
+    "W1-26 is adding __HARNESS.getRenderedText() (render/text-register.js): fillText-level and CLIP-AWARE. journey-run.mjs already prefers it over getUIState().text and names which accessor it used + how strong it is.",
+    "*** THE GAME DOES NOT CURRENTLY BOOT *** (as of this writing, not my change). Engine._boot -> new RealInput -> new TouchInput -> TouchInput._assertLayout THROWS: \"RI-JRN04 H11: touch controls 'heavy' and 'parry' are 6.9 px apart, below the 8 px minimum\" (game/src/input/touch.js:74). window.__HARNESS.ready() rejects, so EVERY browser-based tool in the tree exits 12. The assertion is correct and is doing its job; the touch layout that violates it is the defect. Owner: whichever agent is on RI-JRN04 touch controls.",
+    "journey-run self-test found TWO bugs in its own first version, which is the argument for having one: (1) it blinded only getUIState while the build had grown getRenderedText, so the blinding test passed vacuously - BOTH accessors are now blinded; (2) it opened the census surface before testing movement, and a dialogue surface legitimately blocks locomotion, so it was measuring the surface not the input path - the real-input check now runs FIRST.",
+    "beats-from-md.mjs 5/5 incl. two falsifications (a mangled t_target and a non-beat row both make it REFUSE rather than emit a short sheet). Generated corpus/95-experience/RI-EXP01.beats.json: 18 beats + 13 derived targets. --check is the drift gate.",
+    "beat-extract.mjs (experience) 8/8. Falsifications: found_not_given does NOT fire when a topic named the item first, and a topic AFTER the pickup does not retro-convert it ('at the time it fires' is load-bearing for T_found, RI-EXP01's headline metric); combat requires an AGGRO hostile not just an attack; death fires only for the player; odd is silenced by a nearby quest_stage.",
+    "session-run.mjs enforces its profile prohibitions IN THE PAGE (replaces the __HARNESS methods), not Node-side, because a driving agent reaching window.__HARNESS via page.evaluate would walk past a Node-side check. RI-EXP01: any invocation VOIDS the run. Added a 'build-identity' profile for RI-CMP03 that also refuses setSkills/setAttributes/setMagicSkills/setGold/learnSpell - AGENT-PROTOCOL's 'never grant yourself the thing under test'."
   ],
-  "next_step": "RETRY journey-run --self-test once game/src/render/title.js lands. Then tools/experience/* (~20 tools, RI-EXP01 has NEVER been run).",
+  "next_step": "beat-diff.mjs, isolation-check.mjs, log-lint.mjs; then re-run session-run/journey-run self-tests once the game boots again.",
   "notes_for_successor": "build-viability is complete and self-testing. Do not rewrite it. Its --fixture keys (tier5_damage_multiplier, tier5_hp_multiplier, player_damage_multiplier, quest_disposition_floor, impossible_resolution_gate, faction_rank5_attribute_floor) are the falsification harness; keep them all."
 }

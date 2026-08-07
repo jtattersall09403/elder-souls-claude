@@ -10,14 +10,20 @@
     "tools/quests/mainquest-trace.mjs",
     "reports/**/mainquest-trace.*"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "game/data/quests/mainline-act1.json",
+    "game/data/quests/mainline-act2.json"
+  ],
   "findings": [
     "THERE IS NO MAIN QUEST. 37 quests on disk: 21 side, 11 faction, 1 hidden, 4 tagged category=main but all act 2 magic-utility fillers (Q-BLAK-01, Q-MAG-05/13/19). RI-QST06 needs 28 main quests across 5 acts + 3 backpath.",
     "Quest runtime IS wired: game/src/engine.js:236-238 constructs QuestBook, FactionGates, QuestEngine from this.data.quests. Harness verbs exist at game/src/harness/api.js:757-778 and 848: questOffers/questOpen/questNote/questResolutions/questResolve/questFail/questSetFlag/questBook/questEventsDrain/questReveal/questLearnTopic.",
     "HARD CONSTRAINT: QuestEngine constructor (machine.js ~line 98) THROWS if any quest id in the book lacks an entry_topics row in hooks.json (RI-DLG05 A.3). Every new main quest MUST get an entry_topics entry or the game does not boot.",
     "QuestBook._check() is fail-loud: directions >=20 chars mandatory, journal indices ascend/unique/banded (rumour 1-9, accepted 10, progress 11-39, post_reveal 40-69, failure 70-89, success 90-99, closed 100), no imperative-verb journal openers, prohibitions.js banned prose scan, one distinct success index per resolution, branch targets must resolve, requires_knowing must name a declared reveal, symmetric exclusivity.",
-    "Settlements (game/data/world/pois.json): stormhold[2171,761] thorn[3820,859] gideon[439,2913] helstrom[2262,2773] archon[3785,3823] blackrose[1905,4450] soulrest[610,4877] lilmoth[2766,5027]. 13 regions in game/data/world/regions.json."
+    "Settlements (game/data/world/pois.json): stormhold[2171,761] thorn[3820,859] gideon[439,2913] helstrom[2262,2773] archon[3785,3823] blackrose[1905,4450] soulrest[610,4877] lilmoth[2766,5027]. 13 regions in game/data/world/regions.json.",
+    "DESIGN: main quest = The Rootward Tide is failing (RI-LOR05 §6 cause C is authorially true). Handler Undersexton Aveline Rell, Drowned Court, Soulrest. Mandate = the ninth clause of the Ninth Recension of the Drowned Tally (D7, never_revealed). Antagonist = Ixtu-Meer, the Steward of the Count, tending a pre-Duskfall xanmeer reservoir under the Stone Wastes. Endings: open the Count / keep the Count / backpath cut. Acts I-V = 5/5/5/8/5, +3 backpath = 31 quests, ids Q-MAIN-01..31.",
+    "deceit.revealed_by is the ONLY place a reveal id may be declared. requires_knowing and branch.leads_to both resolve against it, so ANY quest with a knowledge gate needs a deceit block even when the giver is honest (patterns D10/D12 fit an honest quest).",
+    "CONFLICT: Q-BLAK-01, Q-MAG-05, Q-MAG-13, Q-MAG-19 carry category:\"main\", act:2, stakes 8-9. They are magic-utility quests mislabelled by tools/analysis/gen-magic-quests.mjs (cat:\"main\" shorthand). They already break RI-QST06 (Act II stakes band is 3-4) and they inflate the Act II count to 9 against a 5±1 target. magic-audit Q11_WEIGHT is 9 against a >=6 bar, so reclassifying up to 3 of them is safe."
   ],
-  "next_step": "read RI-EXP05, RI-LOR01/02/05, RI-WLD09, RI-JRN07, RI-QST02/05/09; then author Act I",
+  "next_step": "write mainline-act3/4/5 + backpath, then hooks entry_topics, then tools/quests/mainline-census.mjs and the trace",
   "notes_for_successor": "Paths owned: quests.mainline.acts, quests.mainline.antagonist, quests.mainline.prophecy, experience.ending.landing, experience.ending.aftermath, experience.ending.pointofnoreturn. W1-18 (quest engine+journal) is a SEPARATE in-flight piece — do not duplicate its engine work; consume it."
 }

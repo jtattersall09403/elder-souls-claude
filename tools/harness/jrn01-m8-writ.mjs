@@ -1,4 +1,18 @@
-// RI-JRN01 M8 (amended): the carried writ must be OPENABLE and its text must reach the frame.
+#!/usr/bin/env node
+// jrn01-m8-writ.mjs — RI-JRN01 M8 (amended wave 1): is the writ an OBJECT or a return value?
+//
+// Owner: W1-07. M8 as originally written was satisfied by a string in `readWrit()`, which the
+// item's own How-we-lose #10 describes word for word: "the stamped document is a flag, not an
+// object … exists in the save file, is never rendered, cannot be read". BAR-CRITIQUE-W1-07-R1
+// §R2.3 stiffened it: the object must be openable through the same input path a player has,
+// and its rendered-text set at the open node must be non-empty and contain the answers.
+// Round 2 measured `rendered_text: []` at the stamped node.
+//
+// This creates a character through the real graph, opens the carried writ, and reads the drawn
+// rows back out of the surface — not out of the API that was the defect.
+//
+// USAGE
+//   node tools/harness/jrn01-m8-writ.mjs
 import { parseArgs } from '../lib/cli.mjs';
 import { launchGame } from '../lib/browser.mjs';
 const args = parseArgs();

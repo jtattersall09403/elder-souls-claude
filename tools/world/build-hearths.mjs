@@ -407,6 +407,40 @@ function worstOver(ids) {
   }
   return { worst, mean: n ? sum / n : Infinity, unreached, g };
 }
+/**
+ * REPAIR PASS. The layout lays wayside wells at arc times computed from the road; the wells
+ * are then offset 40 m off the carriageway and snapped to standable ground, and a well can
+ * end up projecting onto an EARLIER arc point than the one it was laid for — which is how
+ * `hearth-cross-10 -> hearth-cross-11` came out at 2.48 min inside a layout whose every
+ * intended gap was 3.4. Measured position is the truth, so the measurement repairs the
+ * layout rather than the layout being trusted: any wayside well whose measured gap to the
+ * previous well on the route is under 3.0 min is dropped. Settlement and fog-gate wells are
+ * never dropped — they are placed by rules of their own.
+ */
+function arcTimeOf(c) {
+  let bi = -1, bd = Infinity;
+  for (let i = 0; i < crossing.length; i++) {
+    const d = Math.hypot(crossing[i][0] - c.pos[0], crossing[i][1] - c.pos[2]);
+    if (d < bd) { bd = d; bi = i; }
+  }
+  return { at: crossT[bi] / 60, off: bd };
+}
+for (let pass = 0; pass < 8; pass++) {
+  const seq = chosen.map((id) => ({ id, ...arcTimeOf(byId.get(id)) }))
+    .filter((e) => e.off <= 220).sort((a, b) => a.at - b.at);
+  let dropped = null;
+  for (let i = 1; i < seq.length && !dropped; i++) {
+    if (seq[i].at - seq[i - 1].at < 3.0) {
+      const cand = byId.get(seq[i].id).kind === 'critical-path' ? seq[i].id
+        : (byId.get(seq[i - 1].id).kind === 'critical-path' ? seq[i - 1].id : null);
+      if (cand) dropped = cand;
+    }
+  }
+  if (!dropped) break;
+  chosen.splice(chosen.indexOf(dropped), 1);
+  rejected.push({ id: dropped, kind: 'critical-path', reason: 'measured position put it under the 3.0 min consecutive floor on the critical path' });
+}
+
 /** Distance in metres from a candidate to the crossing polyline. */
 function offCrossing(c) {
   let bd = Infinity;
@@ -422,13 +456,13 @@ function offCrossing(c) {
 const CP_NEAR_M = 220;
 function breaksCriticalPath(id) {
   const c = byId.get(id);
-  if (offCrossing(c) > CP_NEAR_M) return null;
-  const g = distFrom(id);
+  const a = arcTimeOf(c);
+  if (a.off > CP_NEAR_M) return null;
   for (const o of chosen) {
     const oc = byId.get(o);
-    if (offCrossing(oc) > CP_NEAR_M) continue;
-    const t = g[idxOf(oc.pos[0], oc.pos[2])] / 60;
-    if (t < 3.0) return o;
+    const b = arcTimeOf(oc);
+    if (b.off > CP_NEAR_M) continue;
+    if (Math.abs(a.at - b.at) < 3.0) return o;
   }
   return null;
 }
