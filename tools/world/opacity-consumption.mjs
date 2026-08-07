@@ -176,12 +176,19 @@ try {
   victim.evidence = victim.evidence.slice();
   victim.evidence[0] = 'book:a-book-that-was-never-written';
   await writeRegister(JSON.stringify(broken, null, 1) + '\n');
-  const guard = await withWorld(async (h) => h.h('getOpacityState'));
+  // `launchGame` calls `die()` (process.exit) when `ready()` throws, which is correct for a
+  // probe that needs a world and fatal for one whose whole point is that the world must NOT
+  // come up. So C2 runs `boot-check.mjs` as a CHILD PROCESS and reads its exit code — which is
+  // also the closest thing to what CI would actually do.
+  const { spawnSync } = await import('node:child_process');
+  const r = spawnSync(process.execPath, [path.join(REPO_ROOT, 'tools/harness/boot-check.mjs')],
+    { cwd: REPO_ROOT, encoding: 'utf8', timeout: 900e3 });
+  const combined = `${r.stdout || ''}${r.stderr || ''}`;
   await restore();
-  out.checks.push({ id: 'C2', booted: guard.ok, error: guard.ok ? null : String(guard.error).slice(0, 220) });
-  if (guard.ok) fail('the engine booted with a dangling evidence id — the resolver is not on the boot path, so a mystery pointing at nothing would ship');
-  else if (!/opacity register/.test(String(guard.error))) fail(`the boot failed but not with the register's own error: ${String(guard.error).slice(0, 160)}`);
-  else pass('the engine refused to boot, naming the unresolved reference');
+  out.checks.push({ id: 'C2', boot_exit: r.status, named_register: /opacity register/.test(combined) });
+  if (r.status === 0) fail('boot-check PASSED with a dangling evidence id — the resolver is not on the boot path, so a mystery pointing at nothing would ship');
+  else if (!/opacity register/.test(combined)) fail(`the boot failed but not with the register's own error: ${combined.slice(0, 200)}`);
+  else pass(`the engine refused to boot (exit ${r.status}), naming the unresolved reference`);
 
   // ---- C3: the discovery log -------------------------------------------------------------
   say('== C3 the discovery log: reading a declared book moves evidence_met ==');

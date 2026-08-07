@@ -13,7 +13,11 @@
   "outputs_written": [
     "tools/quests/faction-probe.mjs",
     "tools/quests/faction-signature-sweep.mjs",
-    "corpus/30-quests/FACTION-ROSTER-DESIGN.md"
+    "corpus/30-quests/FACTION-ROSTER-DESIGN.md",
+    "game/data/quests/faction-gates.json (regenerated)",
+    "game/data/dialogue/topics/50-factions.json",
+    "game/data/npcs/faction-givers.json",
+    "game/data/quests/faction-wet-ledger.json"
   ],
   "findings": [
     "game/data/progression/factions.json (2 factions, house-dres/shadowscale-order) is a WAVE-0 SKELETON and is NOT the ladder of record. tools/lib/gamedata.mjs:90-97 says so explicitly and returns it separately under .skeleton.",
@@ -28,8 +32,10 @@
     "THREE factions favour the attribute \"intelligence\", which does not exist. The sheet has \"intellect\". the_imperial_assize, the_xul_aneekh and deep_kin each therefore have one dead favoured attribute; the Assize is worst hit (its live attribute floor drops to 3).",
     "Q-LEDG-01 res_blackmail unlocks Q-LEDG-04 and res_expose locks Q-LEDG-04. Q-LEDG-04 DOES NOT EXIST. QuestBook._check only validates top-level consequences.unlocks/locks, never resolution-level ones, so the dangling reference boots clean.",
     "game/data/quests/hooks.json is STALE against its own generator on purpose — W1-19 round 2 hand-rewrote every entry_topics row to point FORWARD. Running tools/analysis/gen-quest-hooks.mjs would re-introduce the self-loop defect that made 0 of 32 main quests offerable. Hand-edit hooks.json; never regenerate it.",
-    "Baselines before my changes: check-data 360 files PASS, check-content 205 resolutions, boot-check PASS. tools/analysis/build-viability.mjs CRASHES (topics.js:69 it is not iterable via canOffer) — pre-existing, not mine."
+    "Baselines before my changes: check-data 360 files PASS, check-content 205 resolutions, boot-check PASS. tools/analysis/build-viability.mjs CRASHES (topics.js:69 it is not iterable via canOffer) — pre-existing, not mine.",
+    "MEASURED after the ladder fix: rank-1 attribute demand met at CREATION by 104-192 of 240 signatures per faction (was 0/240 for all nine). No dead favoured attributes remain.",
+    "26 DANGLING RESOLUTION-LEVEL QUEST REFERENCES across the shipped book (Q-ARCH-01, Q-BLAK-01, Q-DEEP-01, Q-DOCK-01, Q-LILM-01, Q-SAP-01, Q-SOUL-02, Q-STRM-01 all lock or unlock quests that do not exist). QuestBook._check validates only TOP-LEVEL consequences.unlocks/locks, so none of them is visible at boot. Q-LEDG-04 was one of the 26 and is now written."
   ],
-  "next_step": "fix gen-faction-gates.mjs (intelligence->intellect, RI-QST03 §B numbers, drop self-enemy pair, add X2 pairs) and regenerate faction-gates.json",
+  "next_step": "write faction-imperial-assize.json then faction-xul-aneekh.json, then hooks.json forward edges, then index + boot + probe",
   "notes_for_successor": ""
 }

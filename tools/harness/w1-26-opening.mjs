@@ -188,13 +188,30 @@ try {
       accessor: proof.accessor,
       source: proof.source,
       surfaces: proof.surfaces_instrumented,
+      // W1-26 round 2. `surfaces` used to be all this recorded, and it was a HARDCODED literal
+      // in the harness that named two of the build's three 2D surfaces. The roster and the
+      // sentinels are recorded here so the claim "the accessor sees the frame" is checkable
+      // from the artifact rather than taken on the harness's word.
+      declared: proof.surfaces_declared,
+      blind: proof.blind_surfaces,
+      complete: proof.complete,
+      draw_paths: proof.draw_paths,
+      sentinels: H.drawSentinels('W1-26-OPENING'),
       distinct: proof.distinct,
       summary: proof.summary,
     };
   });
   out.checks.accessor = acc;
-  const live = acc.distinct.length > 0;
-  if (!live) {
+  // §0.1(a) has TWO clauses now and the second is the one round 1 failed: the accessor must be
+  // non-empty AND it must be able to see the surfaces the greps are aimed at. An accessor that
+  // is demonstrated non-empty on the dialogue surface and blind to the HUD buys a false pass on
+  // exactly the domain M9 is defined over, which is what happened.
+  const live = acc.distinct.length > 0 && acc.complete === true && acc.sentinels.both_seen === true;
+  if (!acc.complete) {
+    fail(`§0.1(a): the register declares ${JSON.stringify(acc.blind)} and cannot see ${acc.blind.length === 1 ? 'it' : 'them'}. M9 and M15 are \`unmeasurable ⇒ 0\`, never pass.`);
+  } else if (!acc.sentinels.both_seen) {
+    fail(`§0.1(a): a draw path is invisible to the register — vector sentinel seen=${acc.sentinels.vector.seen}, fillText sentinel seen=${acc.sentinels.fill.seen}. M9 and M15 are \`unmeasurable ⇒ 0\`.`);
+  } else if (!acc.distinct.length) {
     fail('§0.1(a): the rendered-text accessor returned EMPTY on a frame known to carry text. M9 and M15 are `unmeasurable ⇒ 0`, never pass.');
   } else {
     pass(`§0.1(a): accessor \`${acc.accessor}\` demonstrated non-empty — ${acc.distinct.length} distinct strings on a frame known to carry text`);

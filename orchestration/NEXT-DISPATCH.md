@@ -37,6 +37,29 @@ Not player-reachable until autosave or save-on-rest lands, at which point it is 
 
 Owner: W1-13, dispatched.
 
+## 0c. Nothing reads the books back — and it is the tenth orphan of the same shape
+
+`corpus/90-verdicts/wave1/W1-LIBRARY-r1.md`, **FAIL 3/10**. The prose is excellent — 13 read end to
+end, author voice 13/13, no omniscient narrator, quest-hint ratio 0.0% — and it does not reach the
+game.
+
+- **60 of 65 books declare `topics_taught`, 116 topics, and `topics_taught` is read by nothing.**
+  Opened all sixty in the engine: `topicsKnown` `[]` before, `[]` after. That field is `RI-UIX05`
+  R3's exception and the item's **entire declared AR-3 crossing**.
+- All three knowledge-gated **non-violent** resolutions return byte-identical refusals after the
+  book is read to its last page. `knowledge_key` is read by **zero code** in `game/src`.
+  `ctx.knowledge` unions only per-quest `know:` flags, whose sole writer is `reveal()`, which
+  requires the id be in `deceit.revealed_by` — none of the three appears in any quest file.
+
+The remedy is two call sites and a save field, and the critic's probes already exist and already go
+red. Also charged: K1's page balancing (a last-page pass lifts p10 from 62.3 to 82.3 — the item's
+own §A B8 already requires it, so no amendment is warranted), and one of the 24 contradiction pairs
+is not a contradiction.
+
+**And the separability finding, which is bigger than the books.** A one-token rule separates our
+prose from Morrowind's 241 books at **92.5%**: *"eleven"* is in 49 of our 65 and 7 of their 241,
+84× by rate. A prose-tic sweep across all shipped text is dispatched.
+
 ## 0b. The prohibitions are installed on the wrong object
 
 `session-run`'s capability prohibitions install on `window.__HARNESS`, and `main.js:24` publishes

@@ -49,6 +49,54 @@
  },
  "mysteries": [
   {
+   "id": "M-01",
+   "name": "The Counting Obelisk",
+   "kind": "object",
+   "anchors": [
+    "poi:the-counting-obelisk"
+   ],
+   "evidence": [
+    "npc:keeper-teeja-lun",
+    "book:on-the-tally-stones",
+    "poi:the-counting-obelisk",
+    "dialogue:the-hist-that-stopped",
+    "dialogue:the-quiet-wells"
+   ],
+   "evidence_classes": [
+    "book",
+    "dialogue",
+    "geometry"
+   ],
+   "false_accounts": [
+    "npc:keeper-teeja-lun",
+    "book:on-the-tally-stones"
+   ],
+   "reachable_hours": 13.0,
+   "encounterable": true,
+   "has_reward": false,
+   "resolution": {
+    "kind": "sealed",
+    "settles": null,
+    "stays_open": "what is being counted, and who is doing the counting through her hands"
+   },
+   "refusal_topics": [
+    "the-village-tally",
+    "counting-by-tides"
+   ],
+   "refusals": [
+    {
+     "a": "rootkeeper",
+     "x": "You have been to the stone. Then you know it is being written on and you do not know by whom, and that is exactly as far as this one has got in forty years."
+    },
+    {
+     "a": null,
+     "x": "Somebody cuts it. Somebody has always cut it. I have never met anybody who wanted to know more than that."
+    }
+   ],
+   "answer_words": 106,
+   "seal": "7f7b6cee541869451a064b29c1cce75ab50edd5613f1304e5961851bae49225c"
+  },
+  {
    "id": "M-02",
    "name": "The Kothringi mirror-town",
    "kind": "place",
@@ -119,7 +167,7 @@
     "book:valus-survey-fragment",
     "book:the-stone-nests-ii"
    ],
-   "reachable_hours": 26,
+   "reachable_hours": 26.0,
    "encounterable": false,
    "has_reward": false,
    "resolution": {
@@ -169,7 +217,7 @@
     "dialogue:the-deep-marshes",
     "dialogue:the-voriplasm"
    ],
-   "reachable_hours": 18,
+   "reachable_hours": 18.0,
    "encounterable": true,
    "has_reward": false,
    "resolution": {
@@ -215,7 +263,7 @@
     "book:the-house-built-in-reverence",
     "book:the-house-built-in-fear"
    ],
-   "reachable_hours": 15,
+   "reachable_hours": 15.0,
    "encounterable": true,
    "has_reward": false,
    "resolution": {
@@ -305,7 +353,7 @@
     "dialogue:the-great-hist",
     "dialogue:the-third-root"
    ],
-   "reachable_hours": 12,
+   "reachable_hours": 12.0,
    "encounterable": true,
    "has_reward": false,
    "resolution": {
@@ -397,7 +445,7 @@
     "book:the-knahaten-years",
     "book:a-short-account-of-the-pacification"
    ],
-   "reachable_hours": 11,
+   "reachable_hours": 11.0,
    "encounterable": true,
    "has_reward": false,
    "resolution": {
@@ -442,7 +490,7 @@
     "dialogue:the-milestones",
     "dialogue:the-removed-name"
    ],
-   "reachable_hours": 8,
+   "reachable_hours": 8.0,
    "encounterable": true,
    "has_reward": true,
    "resolution": {
@@ -578,7 +626,7 @@
     "dialogue:the-under-drain",
     "dialogue:the-drains"
    ],
-   "reachable_hours": 14,
+   "reachable_hours": 14.0,
    "encounterable": true,
    "has_reward": true,
    "resolution": {
@@ -715,7 +763,7 @@
     "book:the-yard-tally-blackrose",
     "dialogue:the-vat-cough"
    ],
-   "reachable_hours": 9,
+   "reachable_hours": 9.0,
    "encounterable": true,
    "has_reward": false,
    "resolution": {
@@ -850,7 +898,7 @@
     "dialogue:the-wamasu",
     "dialogue:the-marsh-creatures"
    ],
-   "reachable_hours": 6,
+   "reachable_hours": 6.0,
    "encounterable": true,
    "has_reward": false,
    "resolution": {
@@ -940,7 +988,7 @@
     "dialogue:the-drums",
     "book:the-duskfall-chronicle"
    ],
-   "reachable_hours": 19,
+   "reachable_hours": 19.0,
    "encounterable": true,
    "has_reward": false,
    "resolution": {
@@ -985,7 +1033,7 @@
     "book:the-counting-rhyme",
     "book:the-boy-who-counted-the-tide"
    ],
-   "reachable_hours": 16,
+   "reachable_hours": 16.0,
    "encounterable": true,
    "has_reward": false,
    "resolution": {
@@ -1030,7 +1078,7 @@
     "dialogue:the-unfinished-survey",
     "book:the-stone-nests-ii"
    ],
-   "reachable_hours": 24,
+   "reachable_hours": 24.0,
    "encounterable": false,
    "has_reward": true,
    "resolution": {

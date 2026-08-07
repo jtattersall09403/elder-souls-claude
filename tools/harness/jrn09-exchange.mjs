@@ -108,14 +108,21 @@ function answerFor(model, pattern, qi) {
  * One complete walk of the census, from the barge hold to the stamp.
  *
  * `steer` maps a node id to the option id to take there, which is how the M3 sweep reaches all
- * 10 races x 4 upbringings on the questionnaire route. `hold.out` carries no input: it is
- * RI-JRN01 O6's hand-back, where the player walks out of the hold and into the Writ House, and
- * it is crossed with `censusEnter()` rather than an answer.
+ * 10 races x 4 upbringings on the questionnaire route.
+ *
+ * TWO NODES CARRY NO INPUT, AND BOTH ARE `RI-JRN01` O6's HAND-BACK.
+ * `hold.come-to` is the scene's start: the hold opens with control in the player's hands and no
+ * question anywhere, and Jeeh-Ei speaks when the player crosses the hold and reaches for her.
+ * `hold.out` is the way out: the player walks up the companionway into the Writ House. Each
+ * publishes `resume_by` ('talk' / 'walk') and the census refuses a resume that names the wrong
+ * act, so the walk is crossed by asking the node what it is waiting for rather than by counting.
+ * This was a one-shot `entered` flag when there was one hand-back; a one-shot flag stops the
+ * walk dead at the second, and every measurement below then reads 0 on a scene that works.
  */
 async function walk(h, { state = 'barge-hold', pattern = () => 0, begin = {}, steer = {}, light = false } = {}) {
   await h.h('loadState', state);
   await h.h('censusBegin', begin);
-  const nodes = []; let qi = 0; let guard = 0; let entered = false;
+  const nodes = []; let qi = 0; let guard = 0;
   let st = await h.h('getCensusState');
   while (st && !st.done && guard++ < 64) {
     const drawnRows = (st.surface && st.surface.rendered_text) || [];
@@ -144,8 +151,9 @@ async function walk(h, { state = 'barge-hold', pattern = () => 0, begin = {}, st
     });
     if (kind === 'questionnaire') qi++;
     if (!kind) {
-      // RI-JRN01 O6's hand-back. Crossed once; a second one means the graph is stuck.
-      if (!entered) { entered = true; st = await h.h('censusEnter'); continue; }
+      // RI-JRN01 O6's hand-back — see the note above. Crossed on the node's own terms; a node
+      // with no input that is NOT paused means the graph is stuck and the walk stops.
+      if (st.paused) { st = await h.h('censusEnter', st.resume_by); continue; }
       break;
     }
     const forced = steer[st.node];

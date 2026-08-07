@@ -110,7 +110,7 @@
     },
     {
       "id": "F22",
-      "note": "NOT CLOSED, stated plainly for the critic: (a) ACC_RATIO=1.35 and ACC_FLOOR=0.004 are BOUNDED two-sidedly but NOT CALIBRATED - no observed gamma exists in the project's data because the R1 calibration never computed |A-C|. calibrate-settle.mjs now records d13/gamma so one run closes it; the population that matters is `lighting` (G1-clean but still changing), not `streaming` (G1 catches all five). (b) see F24 for the cache-HIT verification. (c) Queue fairness (verdict section 5) not addressed - the critic's own diagnosis is that the bar is wrong, not the scheduler."
+      "note": "NOT CLOSED, stated plainly for the critic: (a) ACC_RATIO=1.35 and ACC_FLOOR=0.004 are BOUNDED two-sidedly but NOT CALIBRATED - no observed gamma exists in the project's data because the R1 calibration never computed |A-C|. calibrate-settle.mjs now records d13/gamma so one run closes it; the population that matters is `lighting` (G1-clean but still changing), not `streaming` (G1 catches all five). (b) CLOSED - see F25. (c) Queue fairness (verdict section 5) not addressed - the critic's own diagnosis is that the bar is wrong, not the scheduler."
     },
     {
       "id": "F23",
@@ -119,8 +119,12 @@
     {
       "id": "F24",
       "note": "CACHE-HIT VERIFICATION, first attempt INVALID and why it matters: two identical specs 61 s apart both rendered (cached:false, 61.0 s then 62.8 s). Not a defect - the daemon log shows 'BUILD CHANGED game@bd9b5ece0bd54658 -> game@350cb91ccc884b54' between them, so the second request landed in a different bucket and correctly missed. Notably readCache() logged NO rejection, which is the right signature for 'the entry was never there' as against 'the entry was there and refused'. Re-running against a --pin-build daemon, which freezes the build key at boot so another agent editing game/ cannot move the bucket mid-test. LESSON FOR ANY AGENT MEASURING CACHE BEHAVIOUR ON THIS BOX: without --pin-build, a two-request cache test is measuring other agents' edit rate, not the cache."
+    },
+    {
+      "id": "F25",
+      "note": "*** R2 CACHE-HIT PATH VERIFIED END TO END *** against a --pin-build daemon. Same spec twice: first cached=false flag=false 74831 ms; second cached=TRUE, provenance.served_from_cache=TRUE, 767 ms, arrival='placed', evidence_of='region-appearance', identical sha256. Sidecar ON DISK re-read: served_from_cache=true, arrival='placed', mac present, and manifest.sha256 == the served sha256. So a reader who does what HARNESS.md section 6 tells them to do - read the sidecar - can now learn that a capture came from cache, which was false on every hit in R1."
     }
   ],
-  "next_step": "none - complete. Successor: run calibrate-settle.mjs for the gamma distribution, and hit-check.mjs when the game boots.",
+  "next_step": "none - complete",
   "notes_for_successor": "server.mjs was the only file the predecessor never touched; arrival/protocol/settle were already rebuilt at HEAD. The acceptance test passes. The two open items are in F22."
 }

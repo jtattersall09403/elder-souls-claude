@@ -60,6 +60,10 @@ import { launchGame } from '../lib/browser.mjs';
 // Every journey in the corpus, all nine, failed to start. Both shapes are handled here.
 import * as SHIM from './gamepad-shim.mjs';
 import { loadQuests } from '../lib/gamedata.mjs';
+// ROUND 4 — the ONE reader for `elder-souls/trace@1`. `frameOf` returns null, never 0, when a
+// record carries no frame key; `eventFrameOf` reads the event's own `f` first. See
+// TOOL-COVERAGE-R3 §3 and the note at `evOf` below.
+import { frameOf, eventFrameOf } from '../lib/trace-schema.mjs';
 const PADS = SHIM.PADS;
 const observePads = SHIM.observe;
 const installShim = SHIM.installShim
@@ -623,15 +627,7 @@ async function runJourney() {
     //
     // Repair: read through `tools/lib/trace-schema.mjs` (the one documented reader for
     // `elder-souls/trace@1`), and guard on `Number.isFinite`, not `!== null`.
-    const evOf = (kind) => {
-      for (const r of traceRecords) {
-        if (r && r.type === kind) return { ...r, frame: frameOf(r) };
-        for (const e of (r && r.events) || []) {
-          if (e && e.type === kind) return { ...e, frame: eventFrameOf(e, r) };
-        }
-      }
-      return null;
-    };
+    const evOf = (kind) => findTraceEvent(traceRecords, kind);
     const fiTrace = evOf('first_input');
     const fcTrace = evOf('first_control');
 
@@ -660,39 +656,9 @@ async function runJourney() {
 
     // M4 clause 1 — the >= 60 s bar nobody has ever measured.
     const fcFrame = fcTrace ? fcTrace.frame : firstControlDriverFrame;
-    const firstDefining = (() => {
-      for (const r of traceRecords) {
-        for (const e of (r && r.events) || [r]) {
-          if (!e) continue;
-          if (e.type === 'creation_field') return { frame: eventFrameOf(e, r), event: 'creation_field' };
-          if (e.type === 'dialogue_open' && e.scene === 'census') return { frame: eventFrameOf(e, r), event: 'dialogue_open(census)' };
-        }
-      }
-      return null;
-    })();
-    // `Number.isFinite`, NOT `!== null`. R3 §3: `undefined !== null` is true, so the round-3
-    // guard admitted a pair of undefined frames, computed NaN seconds, and stamped the clause
-    // `status: "measured"` with `seconds: null` — a bar reported as met that was never taken.
-    // A frame we cannot read is `unmeasurable`, and it says which half was missing.
-    const fcOk = Number.isFinite(fcFrame);
-    const fdOk = !!firstDefining && Number.isFinite(firstDefining.frame);
-    if (fcOk && fdOk) {
-      led.ok('m4_clause1', 'control precedes definition (seconds of available play)', {
-        first_control_frame: fcFrame, first_defining_frame: firstDefining.frame,
-        seconds: +((firstDefining.frame - fcFrame) / 60).toFixed(2),
-        threshold_s: 60, event: firstDefining.event,
-      });
-    } else {
-      led.unmeasurable('m4_clause1', 'control precedes definition',
-        !fcOk
-          ? `no readable first_control frame (got ${JSON.stringify(fcFrame)}); ` +
-            'elder-souls/trace@1 numbers frames `f` — see tools/lib/trace-schema.mjs'
-          : !firstDefining
-            ? 'no character-field-writing event in the trace'
-            : `a character-field-writing event (${firstDefining.event}) was found but carries no ` +
-              `readable frame (got ${JSON.stringify(firstDefining.frame)})`,
-        'A-JRN1/A-JRN7');
-    }
+    const m4 = m4Clause1(traceRecords, fcFrame);
+    if (m4.status === 'measured') led.ok('m4_clause1', 'control precedes definition (seconds of available play)', m4.value);
+    else led.unmeasurable('m4_clause1', 'control precedes definition', m4.why, 'A-JRN1/A-JRN7');
 
     // --- the UI-text stream, and the accessor demonstration ---------------------------------
     const streamPath = path.join(outDir, 'ui-text.jsonl');
@@ -1115,10 +1081,139 @@ function parseDuration(s) {
 // ---------------------------------------------------------------------------------------------
 // self-test — the driver proves it can fail
 // ---------------------------------------------------------------------------------------------
+/**
+ * Find the first trace event of a kind, stamped with the frame it actually happened on.
+ *
+ * ROUND 4, TOOL-COVERAGE-R3 §3. Exported and pure so the falsification below runs Node-side —
+ * the round-3 version of this was three inline expressions inside a browser-driving function,
+ * which is why a bug that made both operands `undefined` survived two accepting critics.
+ */
+export function findTraceEvent(traceRecords, kind) {
+  for (const r of traceRecords || []) {
+    if (r && r.type === kind) return { ...r, frame: frameOf(r) };
+    for (const e of (r && r.events) || []) {
+      if (e && e.type === kind) return { ...e, frame: eventFrameOf(e, r) };
+    }
+  }
+  return null;
+}
+
+/**
+ * RI-JRN01 M4 clause 1 — "the >= 60 s bar nobody has ever measured". Pure, exported, testable.
+ *
+ * The guard is `Number.isFinite`, NOT `!== null`. R3 §3 ran a shadow tree whose engine emits a
+ * `creation_field` through the real jrn01-opening journey and got back
+ * `{"status":"measured","value":{"seconds":null,...}}`: `undefined !== null` is true, so the
+ * round-3 guard admitted a pair of undefined frames, `(undefined - undefined)/60` is NaN, and
+ * `JSON.stringify` DROPPED both frame fields from the artifact — a bar reported as measured that
+ * had never been taken.
+ */
+export function m4Clause1(traceRecords, fcFrame) {
+  let firstDefining = null;
+  outer:
+  for (const r of traceRecords || []) {
+    for (const e of (r && r.events) || [r]) {
+      if (!e) continue;
+      if (e.type === 'creation_field') { firstDefining = { frame: eventFrameOf(e, r), event: 'creation_field' }; break outer; }
+      if (e.type === 'dialogue_open' && e.scene === 'census') { firstDefining = { frame: eventFrameOf(e, r), event: 'dialogue_open(census)' }; break outer; }
+    }
+  }
+  const fcOk = Number.isFinite(fcFrame);
+  const fdOk = !!firstDefining && Number.isFinite(firstDefining.frame);
+  if (fcOk && fdOk) {
+    return { status: 'measured', value: {
+      first_control_frame: fcFrame, first_defining_frame: firstDefining.frame,
+      seconds: +((firstDefining.frame - fcFrame) / 60).toFixed(2),
+      threshold_s: 60, event: firstDefining.event,
+    } };
+  }
+  return { status: 'unmeasurable', why:
+    !fcOk
+      ? `no readable first_control frame (got ${JSON.stringify(fcFrame)}); elder-souls/trace@1 ` +
+        'numbers frames `f` — see tools/lib/trace-schema.mjs'
+      : !firstDefining
+        ? 'no character-field-writing event in the trace'
+        : `a character-field-writing event (${firstDefining.event}) was found but carries no ` +
+          `readable frame (got ${JSON.stringify(firstDefining.frame)})` };
+}
+
 async function selfTest() {
   const lines = [];
   let failed = 0;
   const ok = (n, pass, d) => { lines.push(`${pass ? 'PASS' : 'FAIL'} ${n} — ${d}`); if (!pass) failed++; };
+
+  // =============================================================================================
+  // ROUND 4 — the R3 §3 falsifications. Node-side and FIRST, so they run whether or not the
+  // browser is available and a critic can re-run them on a loaded box.
+  // =============================================================================================
+
+  // R4-1. The engine's dialect. A real event from a shipped trace, verbatim from R3 §3.
+  {
+    const engineTrace = [
+      { f: 61, events: [{ f: 61, type: 'first_input', device: 'keyboard' }] },
+      { f: 121, events: [{ f: 121, type: 'first_control', device: 'keyboard' }] },
+    ];
+    const fi = findTraceEvent(engineTrace, 'first_input');
+    const fc = findTraceEvent(engineTrace, 'first_control');
+    ok('R4: first_input/first_control read the engine dialect ({"f":61,"type":"first_input"})',
+      fi && fi.frame === 61 && fc && fc.frame === 121,
+      `first_input frame=${fi && fi.frame}, first_control frame=${fc && fc.frame}. Round 3 read ` +
+      '`r.frame ?? e.frame` and BOTH operands were undefined.');
+    ok('R4: an absent event is null, not a phantom frame',
+      findTraceEvent(engineTrace, 'creation_field') === null, 'null');
+  }
+
+  // R4-2. THE BAR ITSELF. R3's shadow-tree result reproduced: a trace that emits creation_field.
+  // Round 3 returned `status:"measured", seconds:null`. It must now MEASURE, with real numbers.
+  {
+    const withCreation = [
+      { f: 121, events: [{ f: 121, type: 'first_control', device: 'keyboard' }] },
+      { f: 5000, events: [{ f: 5000, type: 'creation_field', field: 'name' }] },
+    ];
+    const m = m4Clause1(withCreation, 121);
+    ok('R4: M4 clause 1 MEASURES on a trace that emits creation_field (the R3 shadow-tree case)',
+      m.status === 'measured' && m.value.seconds === 81.32 &&
+      m.value.first_control_frame === 121 && m.value.first_defining_frame === 5000,
+      `status=${m.status}, seconds=${m.value && m.value.seconds}, ` +
+      `frames ${m.value && m.value.first_control_frame} -> ${m.value && m.value.first_defining_frame}. ` +
+      'R3 produced status="measured" with seconds:null and both frame fields DROPPED by ' +
+      'JSON.stringify.');
+    ok('R4: and the >= 60 s bar is actually decidable from it',
+      m.value.seconds >= m.value.threshold_s, `${m.value.seconds}s >= ${m.value.threshold_s}s`);
+  }
+
+  // R4-3. THE GUARD. `undefined !== null` is true — the exact hole R3 drove through. Each of
+  // these must be UNMEASURABLE and must name which half is missing.
+  {
+    const undefFrames = [{ events: [{ type: 'creation_field' }] }];
+    const a = m4Clause1(undefFrames, undefined);
+    const b = m4Clause1(undefFrames, 121);
+    const c = m4Clause1([{ f: 1, events: [] }], 121);
+    ok('R4: an undefined first_control frame is UNMEASURABLE, not "measured" (the R3 hole)',
+      a.status === 'unmeasurable' && /no readable first_control frame/.test(a.why),
+      `status=${a.status} — \`undefined !== null\` is true, which is how round 3 let this through`);
+    ok('R4: a defining event with no readable frame is UNMEASURABLE and says so',
+      b.status === 'unmeasurable' && /carries no.*readable frame/.test(b.why), b.why);
+    ok('R4: no defining event at all is UNMEASURABLE with a different reason',
+      c.status === 'unmeasurable' && /no character-field-writing event/.test(c.why), c.why);
+    ok('R4: NaN and Infinity are refused as frames (falsification)',
+      m4Clause1([{ f: NaN, events: [{ type: 'creation_field' }] }], 121).status === 'unmeasurable' &&
+      m4Clause1([{ f: Infinity, events: [{ type: 'creation_field' }] }], 121).status === 'unmeasurable',
+      'Number.isFinite, not !== null and not truthiness');
+  }
+
+  // R4-4. Null control: the legacy dialect must still work, so an old artifact is still readable.
+  {
+    const legacy = [
+      { frame: 121, events: [{ type: 'first_control' }] },
+      { frame: 5000, events: [{ type: 'creation_field' }] },
+    ];
+    const m = m4Clause1(legacy, findTraceEvent(legacy, 'first_control').frame);
+    ok('R4: null control — the legacy `frame` dialect still measures identically',
+      m.status === 'measured' && m.value.seconds === 81.32,
+      `seconds=${m.value && m.value.seconds} — the repair reads both dialects, it does not ` +
+      'swap one hard-coded key for another');
+  }
 
   const handle = await launchGame({ width: 320, height: 240 });
   try {
