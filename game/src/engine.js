@@ -2077,8 +2077,16 @@ export class Engine {
     return {
       frame: this.sim.frame,
       inCombat,
+      // W1-13 r2: the first disjunct is the WORLD's answer (`HearthSystem.atHearth`, which now
+      // exists — see sim/hearth.js). The second is a declared test override and it is reported
+      // as one, so a probe that leans on `setAtHearth()` is visible in its own output rather
+      // than passing silently. `atHearthReal` is what the province says; `atHearthOverridden`
+      // says whether the harness put its thumb on the scale.
       atHearth: !!(this.hearths && this.hearths.atHearth && this.hearths.atHearth(this.sim))
         || !!this.sim._uiForceHearth,
+      atHearthReal: !!(this.hearths && this.hearths.atHearth && this.hearths.atHearth(this.sim)),
+      atHearthOverridden: !!this.sim._uiForceHearth,
+      atHearthId: this.hearths ? ((this.hearths.at(this.sim.player.pos[0], this.sim.player.pos[2]) || {}).id || null) : null,
       hearthName: prog.hearthLastRested || null,
       player: p,
       estusMax: (cb && cb.estusMax) || 5,
@@ -2196,17 +2204,36 @@ export class Engine {
     return { name: e.display_name || e.archetype || eid, frac: e.hpMax ? e.hp / e.hpMax : 0 };
   }
 
-  /** X12: a prompt only for something ACTUALLY in range. The range test is the prompt's cause. */
+  /**
+   * X12: a prompt only for something ACTUALLY in range. The range test is the prompt's cause.
+   *
+   * IT NAMES THE THING. IT DOES NOT TELL YOU WHAT TO DO WITH IT.
+   *
+   * This used to read `'Take ' + o.name` and `'Speak to ' + n.name`, and the W1-26 round-1
+   * critic caught `"Take A tithe-gourd, empty"` drawn on the HUD after 120 frames of walking in
+   * the hold. `RI-JRN01` M9 greps the non-dialogue text stream "for imperative second-person
+   * instruction" with **hard fail: any hit**, and AR-2 fails on its instruction clause. An
+   * imperative verb is the game leaning over the player's shoulder, and it is the one thing
+   * O11/O13 exist to keep off this frame.
+   *
+   * A label is not an instruction. "A tithe-gourd, empty" tells you what is within reach; the
+   * verb is yours. It is also what Morrowind does — the thing under the cursor is named, and
+   * nobody tells you to pick it up — and it costs the player nothing, because `interact` is one
+   * button and the prompt only appears when there is something for it to reach.
+   *
+   * `verb` is carried in the record for anything that needs to know WHICH interaction is
+   * offered without reading it off the drawn string.
+   */
   _interactPrompt() {
     const p = this.sim.player;
     for (const o of this.sim.props) {
       if (o.taken) continue;
       const d = Math.hypot(o.pos[0] - p.pos[0], o.pos[2] - p.pos[2]);
-      if (d <= (o.reach_m || 1.6)) return { text: 'Take ' + (o.name || 'it'), range_m: +d.toFixed(2) };
+      if (d <= (o.reach_m || 1.6)) return { text: String(o.name || 'It'), verb: 'take', range_m: +d.toFixed(2) };
     }
     for (const n of this.sim.npcs) {
       const d = Math.hypot(n.pos[0] - p.pos[0], n.pos[2] - p.pos[2]);
-      if (d <= 2.2) return { text: 'Speak to ' + (n.name || n.eid), range_m: +d.toFixed(2) };
+      if (d <= 2.2) return { text: String(n.name || n.eid), verb: 'talk', range_m: +d.toFixed(2) };
     }
     return null;
   }

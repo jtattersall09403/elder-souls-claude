@@ -1,0 +1,17 @@
+{
+  "task_id": "W1-FACTIONS",
+  "brief": "faction questline builder — roster, ranks with real requirements, 3+ questlines to a rank ceiling, mutual exclusion, topic ids that exist",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/30-quests/FACTION-ROSTER-DESIGN.md",
+    "game/data/progression/factions.json (expanded)",
+    "game/data/quests/faction-*.json",
+    "game/data/dialogue/topics/* (missing topic bodies)",
+    "game/data/index.json (registration)"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read ARBITRATION.md, INTENT-AUDIT-CHARTER.md, RI-QST01/QST02/CRM02, factions.json, mainline quests",
+  "notes_for_successor": ""
+}

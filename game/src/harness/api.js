@@ -23,6 +23,9 @@ import { DEFAULT_BINDINGS, MOVE_BINDINGS, RESERVED_CONTROLS, auditBindings, roll
 import { canonicalise, stateDiff, leafPaths } from '../core/canonical.js';
 import { VOLATILE_PATHS } from '../save/state.js';
 import { installWeaponsHarness } from './weapons.js';
+// The two text draw paths, imported so `drawSentinels()` can exercise BOTH of them — the
+// falsification that keeps the rendered-text register honest. See that method.
+import { drawText as drawGlyphText, faceOf } from '../ui/glyphs.js';
 // W1-14 round 2: the RI-MAG06 registry, so `getEffectConsumerMap()` reports the build's own
 // declaration rather than a second list that could drift from it.
 import { HANDLERS as MAGIC_HANDLERS, DAMAGE_EFFECTS as MAGIC_DAMAGE_EFFECTS } from '../sim/magic/apply.js';
@@ -663,15 +666,36 @@ export function installHarness(engine, bootPromise) {
      * clean pass. `RI-MTH06` §B names that failure in advance.
      *
      * This register is fed by the **draw call**: `render/text-register.js` wraps every 2D
-     * context the renderer owns, so nothing can appear here that was not handed to
-     * `fillText`, and nothing handed to one can fail to appear. It also shadows the clip
-     * state, so a string painted outside its surface's clip region comes back
-     * `clipped: true` and is excluded from `entries` — orphan text one layer below the
-     * round-2 defect.
+     * context the renderer owns and hooks the vector glyph path as well, so nothing can appear
+     * here that was not handed to a drawing primitive, and nothing handed to one can fail to
+     * appear. It also shadows the clip state, so a string painted outside its surface's clip
+     * region comes back `clipped: true` and is excluded from `entries` — orphan text one layer
+     * below the round-2 defect.
+     *
+     * W1-26 ROUND 2 — WHY THIS RETURN VALUE NOW CARRIES `complete` AND `blind_surfaces`.
+     * This method used to publish a HARDCODED `surfaces_instrumented: ['dialogue','title']`.
+     * The build owned three 2D surfaces; the third, `menus`, is exactly M9's domain ("every
+     * string rendered outside a dialogue/journal/book surface") and was not wrapped — and could
+     * not have been helped by wrapping alone, because the HUD paints through `ui/glyphs.js`,
+     * which strokes vector paths and never calls `fillText`. So M9 searched **0 strings and
+     * recorded a pass**; over its real domain it was 5 strings and 1 hit. That is `RI-JRN01`
+     * How-we-lose #15 — "the instrument is blind and the grep comes back clean" — reproduced by
+     * the fix written to close it, and strictly worse than the empty accessibility tree it
+     * replaced, because an empty tree announced its own emptiness and this returned twelve
+     * confident strings and a summary block.
+     *
+     * Two changes, and the second matters more than the first. The literal is gone: what is
+     * published is derived from the contexts the register actually wrapped. And the roster is
+     * published beside it, so **an empty result and a clean result are no longer the same
+     * value**: a query whose scope includes a surface the register cannot see comes back
+     * `complete: false` with that surface named, and every check computed over this stream is
+     * required to report `unmeasurable` — never `pass` — when it is false.
+     * `tools/harness/w1-26-opening.mjs` exits non-zero on it; a probe that cannot go red is
+     * worse than no probe.
      *
      * @param {object} [opts]
      *   `since` (entry index), `sinceFrame`, `surface` / `notSurface`
-     *   ('dialogue' | 'title'), `includeClipped` (default false).
+     *   ('dialogue' | 'title' | 'menus'), `includeClipped` (default false).
      */
     getRenderedText(opts) {
       const o = opts || {};
@@ -680,10 +704,29 @@ export function installHarness(engine, bootPromise) {
       const distinct = [];
       const seen = new Set();
       for (const e of entries) if (!seen.has(e.text)) { seen.add(e.text); distinct.push(e.text); }
+      // Scoped to the SAME surface filter the entries were taken under, so a caller who greps
+      // `{notSurface:['dialogue']}` is told whether *that* domain is fully covered rather than
+      // whether the build as a whole is.
+      const cov = reg.coverage(o);
       return {
         accessor: 'window.__HARNESS.getRenderedText()',
-        source: 'CanvasRenderingContext2D.fillText, instrumented at the draw call (game/src/render/text-register.js)',
-        surfaces_instrumented: ['dialogue', 'title'],
+        source: 'the draw call — CanvasRenderingContext2D.fillText/strokeText, and ui/glyphs.js drawText() '
+          + 'through the register\'s per-context hook (game/src/render/text-register.js)',
+        // Derived from the register's roster. Never a literal — see the note above.
+        surfaces_declared: cov.declared,
+        surfaces_instrumented: cov.instrumented,
+        surfaces_in_scope: cov.in_scope,
+        blind_surfaces: cov.blind,
+        draw_paths: cov.paths,
+        surface_notes: cov.why,
+        /**
+         * FAIL-CLOSED. False means this result is IGNORANCE, not absence: some surface inside
+         * the query's scope draws text the register cannot see. `measurable` is the same field
+         * under the name a second critique reached for; both are published so neither spelling
+         * silently returns `undefined` and reads as falsy-but-fine.
+         */
+        complete: cov.complete,
+        measurable: cov.complete,
         next_index: reg.seq,
         entries,
         distinct,
@@ -694,6 +737,46 @@ export function installHarness(engine, bootPromise) {
     },
     /** Reset the register — a probe measuring one node clears, steps, then reads. */
     renderedTextClear() { return engine.renderer.textRegister.clear(); },
+
+    /** The roster on its own, for a critic who wants coverage without pulling every entry. */
+    registerSurfaces(opts) { return engine.renderer.textRegister.coverage(opts || {}); },
+
+    /**
+     * **THE FALSIFICATION.** Draw one sentinel through each of the build's two text draw paths,
+     * onto the surface M9 is aimed at, and report what the register saw.
+     *
+     * `AGENT-PROTOCOL`: "before trusting your own instrument, break the thing it measures on
+     * purpose and confirm the instrument goes red." This is the positive half of that — the
+     * round-1 critic falsified the old register exactly this way and found the vector sentinel
+     * invisible and the `fillText` one visible. Anyone can now re-run it in one call, and a
+     * regression that re-blinds the glyph path shows up as `vector.seen: false` rather than as
+     * a quietly smaller number somewhere downstream.
+     */
+    drawSentinels(tag) {
+      const t = String(tag || 'ES-SENTINEL');
+      const reg = engine.renderer.textRegister;
+      const surf = engine.renderer.menus;
+      const ctx = surf.ctx;
+      const mark = reg.seq;
+      const vecText = t + '-VECTOR', fillText = t + '-FILLTEXT';
+      // Drawn straight onto the surface's context, outside `el()`, deliberately: this is a test
+      // of the REGISTER's reach, not of the element vocabulary.
+      ctx.save();
+      drawGlyphText(ctx, vecText, 20, 40, faceOf('bone'), 16, '#fff');
+      ctx.font = '16px sans-serif';
+      ctx.fillStyle = '#fff';
+      ctx.fillText(fillText, 20, 80);
+      ctx.restore();
+      const rows = reg.all({ since: mark }).map((e) => ({ surface: e.surface, kind: e.kind, text: e.text }));
+      const saw = (s) => rows.find((r) => r.text === s) || null;
+      return {
+        surface: 'menus',
+        vector: { path: 'ui/glyphs.js drawText() — stroked quadratic paths', text: vecText, seen: !!saw(vecText), entry: saw(vecText) },
+        fill: { path: 'CanvasRenderingContext2D.fillText', text: fillText, seen: !!saw(fillText), entry: saw(fillText) },
+        rows,
+        both_seen: !!saw(vecText) && !!saw(fillText),
+      };
+    },
 
     /**
      * `first_input`, `first_control` and the first field-writing node, as frames.

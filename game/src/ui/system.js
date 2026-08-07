@@ -596,6 +596,14 @@ export class UISystem {
       // never present, checked positively so that "no map" is a measurement rather than a claim
       map_exists: false,
       navigable: this.navigable(ctx),
+      // W1-13 r2. The level-up screen is gated on this flag in three places above, and for the
+      // whole of round 1 it was `undefined` at all 29 sapwells. Reporting it here means a probe
+      // can see WHY the screen is or is not offered, and can see whether the answer came from
+      // the province (`at_hearth_real`) or from the harness override (`at_hearth_overridden`).
+      at_hearth: !!(ctx && ctx.atHearth),
+      at_hearth_real: !!(ctx && ctx.atHearthReal),
+      at_hearth_overridden: !!(ctx && ctx.atHearthOverridden),
+      at_hearth_id: (ctx && ctx.atHearthId) || null,
       screen: { w: S.W, h: S.H, dpr: ctx && ctx.dpr ? ctx.dpr : 1 },
       elements: els.map((e) => ({ ...e })),          // RENDER ORDER PRESERVED — RI-UIX04 JU2
       coveragePct: +((nonWorld / (S.W * S.H)) * 100).toFixed(4),

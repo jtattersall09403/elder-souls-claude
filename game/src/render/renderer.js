@@ -90,9 +90,23 @@ export class Renderer {
     // Every 2D surface this renderer owns is registered against the one rendered-text
     // register, so `__HARNESS.getRenderedText()` enumerates the frame's strings rather than
     // an empty accessibility tree. `RI-JRN01` §0.1(a) refuses to score M9/M15 without this.
+    //
+    // W1-26 round 2. This comment used to say exactly what it says now and then instrument TWO
+    // of the three, and `getRenderedText()` published a HARDCODED `['dialogue','title']` beside
+    // it. The missing one was `menus` — which is precisely M9's domain, "every string rendered
+    // outside a dialogue/journal/book surface" — so M9 searched an empty set and the build's own
+    // report recorded a pass. Over its real domain M9 had a hit. Two things stop that recurring:
+    // every surface is `declare()`d before it is instrumented, so a surface that is not wrapped
+    // is NAMED rather than absent; and `getRenderedText()` derives what it publishes from the
+    // register's roster rather than from a literal in the harness. Adding a fourth surface here
+    // without instrumenting it now makes the harness say `complete: false` instead of lying.
     this.textRegister = textRegister;
+    textRegister.declare('dialogue', 'render/ui.js — the vellum panel, via ctx.fillText');
+    textRegister.declare('title', 'render/title.js — the title surface, via ctx.fillText');
+    textRegister.declare('menus', 'ui/hud.js + ui/screens/* — the HUD and the menus, via ui/glyphs.js drawText (stroked vector paths)');
     textRegister.instrument(this.ui.ctx, 'dialogue');
     textRegister.instrument(this.title.ctx, 'title');
+    textRegister.instrument(this.menus.ctx, 'menus');
     this.lastStats = { drawCalls: 0, triangles: 0, programs: 0, geometries: 0, textures: 0 };
     this._look = new THREE.Vector3();
     this._focus = new THREE.Vector3();

@@ -249,6 +249,25 @@ export class TextRegister {
     });
   }
 
+  /**
+   * The vector draw path, by name rather than through the per-context hook.
+   *
+   * Same record, same clip shadow. It exists because a caller holding a context is more likely
+   * to reach for `textRegister.noteVector(ctx, …)` than for `ctx.__esNoteText(…)`, and because
+   * a second module arriving at this problem should not have to invent a third entry point —
+   * the W1-08/W1-29 round-1 critic reached the same hole from another item (0 entries and
+   * `surfaces: {}` in seven named states, while `getUIState()` reported three HUD elements
+   * carrying drawn text, so `M-K20`'s grep passed on an empty buffer in every reachable state).
+   *
+   * It is a no-op on a context this register does not own: an unregistered surface must stay
+   * visibly unregistered rather than quietly reporting into somebody else's bucket.
+   */
+  noteVector(ctx, text, x, y, w, px) {
+    if (!ctx || !ctx.__esNoteText) return false;
+    ctx.__esNoteText(text, x, y, w, px);
+    return true;
+  }
+
   /** Every string handed to a 2D context, clipped or not. */
   all(opts) { return this._filter(this.entries, opts); }
 

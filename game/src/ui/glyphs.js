@@ -208,6 +208,16 @@ export function measure(text, face, size) {
  * The path is built in GRID units and drawn under a transform, so the rasteriser sees real
  * curves at the final device resolution — this is the property M-F17.2 measures and it is the
  * reason the glyphs are geometry rather than an atlas.
+ *
+ * IT ALSO TELLS THE RENDERED-TEXT REGISTER (W1-26 round 2).
+ * `render/text-register.js` wraps `fillText`/`strokeText`. Not one glyph here goes through
+ * either — every one is a stroked path — so every string the HUD and the menus draw was
+ * INVISIBLE to the register, and `RI-JRN01` M9 ("grep every string rendered outside a
+ * dialogue/journal/book surface") ran over an empty set and reported a pass. Over its real
+ * domain M9 had a hit. `ctx.__esNoteText` is the hook the register installs on the contexts it
+ * owns; calling it is what makes the enumeration of the frame's text actually complete. It is
+ * absent on any context the register does not own, so this costs an undefined-check and cannot
+ * report into a surface nobody registered.
  */
 export function drawText(ctx, text, x, y, face, size, colour, opts) {
   const u = size * CAP_EM / CAP;
@@ -242,7 +252,9 @@ export function drawText(ctx, text, x, y, face, size, colour, opts) {
     pen += advanceUnits(s[i], face);
   }
   ctx.restore();
-  return pen * u;
+  const adv = pen * u;
+  if (ctx.__esNoteText) ctx.__esNoteText(s, x, y, adv, size);
+  return adv;
 }
 
 /** Every character this build can draw. `text-metrics.mjs` uses it to prove coverage. */

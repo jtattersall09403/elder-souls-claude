@@ -14,8 +14,8 @@ last arrived, you walked off the end of what existed.
 This was found by a reviewer who had been asked to look at something else entirely — the tool the
 project uses to take screenshots — and who went through the code listing every place that asks for
 ground to be built. There were four. Loading a new place asks for it. Teleporting asks for it. A
-scripted walk asks for it, but only if you pass an option that nothing passes. And the screenshot
-tool asks for it. None of those four is the game running.
+scripted walk asks for it, but only if it is specifically told to, which nothing in the game ever
+does. And the screenshot tool asks for it. None of those four is the game running.
 
 There was also a routine written specifically to do this every frame, sitting finished in the
 file, with nothing anywhere in the project calling it.

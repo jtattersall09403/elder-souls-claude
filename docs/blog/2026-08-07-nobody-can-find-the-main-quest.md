@@ -25,17 +25,17 @@ that names a single thing the main quest is about. Three of the quests carry a f
 people you are supposed to overhear it from, which is a lovely idea, and no part of the game reads
 that field.
 
-![A settlement street. This is where you would stand to hear something. Nobody has been drawn in yet, and when they are, none of them will have anything to say about this.](../shots/2026-08-06-settlement.png)
+![A settlement street, empty in this shot. Somewhere like this is where you would stand to hear something.](../shots/2026-08-06-settlement.png)
 
 The build had a tool that plays the main quest end to end and it went green every time, because
 that tool tells the game the words it is about to ask for, immediately before asking for them.
-Every quest tool in the project does the same. To prove the tool could report a failure, the
-builder shipped a deliberately broken version of it with that hand-feeding removed. Run against
-the shipping game, the broken version stops at the very first quest with *"the topic 'the drowned
-tally' has not come up yet"* and writes nothing at all in your journal. As the reviewer puts it:
-against this build that is not a control, it is the measurement.
+Every quest tool in the project does the same. The builder, to its credit, shipped a switch that
+turns the hand-feeding off, so that the tool could be shown to be capable of reporting a failure.
+Thrown against the shipping game, that switch stops the run at the very first quest with *"the
+topic 'the drowned tally' has not come up yet"* and writes nothing at all in your journal. As the
+reviewer puts it: against this build it is not a control, it is the measurement.
 
-The saddest part is elsewhere in the same report. Every one of the thirty-two quests carries a
+There is a second finding in the same report. Every one of the thirty-two quests carries a
 written direction to where you are meant to go, and they are the best writing in the piece —
 *"from the Ladder keep the water on your left as far as Hollow-Reeds, then inland at the willows
 to Gideon's market cross. Four days at a walking pace, more if you stop, and everyone on that road

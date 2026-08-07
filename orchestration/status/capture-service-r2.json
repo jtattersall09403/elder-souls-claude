@@ -2,21 +2,59 @@
   "task_id": "capture-service-r2",
   "brief": "inline: rebuild capture service gates per corpus/80-methods/CAPTURE-SERVICE-R1.md verdict (NOT SATISFIED, 7 rebuilds)",
   "started": "wave-1 round 2",
-  "state": "researching",
+  "state": "building",
   "acceptance_test": "node tools/capture/critic-r1-probe.mjs --gates --key --metric --forge --sticky --isolate (must exit 0; do not edit the probe)",
   "outputs_expected": [
     "tools/capture/arrival.mjs (rebuilt gate)",
     "tools/capture/settle.mjs (rebuilt proof)",
     "tools/capture/server.mjs (manifest forgery refusal, isolation)",
-    "tools/capture/buildkey.mjs (key coverage)",
-    "tools/capture/README.md (updated)",
+    "tools/capture/README.md",
     "docs/shots/<dated>.png",
     "reports/blog-feed.jsonl line"
   ],
   "outputs_written": [],
   "findings": [
-    {"at": "start", "note": "loadavg 1.94 at start - box quiet, browser work viable"}
+    {
+      "id": "F1",
+      "note": "loadavg 1.94 at start - box quiet"
+    },
+    {
+      "id": "F2",
+      "note": "MY PREDECESSOR'S WORK IS ALREADY COMMITTED AT HEAD. tools/capture/ is clean vs HEAD and arrival.mjs/protocol.mjs already carry the R1 rebuild (closed-vocabulary declaration gate, recursive string scan, __no_camera_stream in the key, CAPD_DIR-derived isolation). Do not rewrite from scratch - verify and finish."
+    },
+    {
+      "id": "F3",
+      "note": "BASELINE MEASURED: `node tools/capture/critic-r1-probe.mjs --isolate --gates --key --metric` EXITS 0 already. P1 0/30 accepted (was 28/30). P2 all mutations keyed honestly. P2b holds. P6 no blind spot. So R3/R5/R6 offline surfaces are done. Remaining to verify: --forge (R1/R2) and --sticky (R4)."
+    },
+    {
+      "id": "F4",
+      "note": "BLOCKER, NOT MINE: `node tools/harness/boot-check.mjs` FAILS AT HEAD for every agent on this box. engine.js:321 calls `this._installTopicSupply()` and that method is defined NOWHERE in game/src. engine.js:77 imports from sim/quest/topic-supply.js (untracked, exists, exports buildOverheardIndex/buildDirectionsIndex/RumourBook/learnTopics but no installer). The W1-19 round-2 agent committed the call site without the method. Error: `TypeError: this._installTopicSupply is not a function` at Engine._boot. NO BROWSER WORK IS POSSIBLE until this is wired."
+    },
+    {
+      "id": "F5",
+      "note": "VERIFIED TRUE: game/src/harness/api.js:303 defines provinceResidency(x,z) (R7). engine.js:2931 calls this._streamProvince() from _afterStep() - the province streamer defect IS fixed, confirmed by reading the call site."
+    },
+    {
+      "id": "F6",
+      "note": "VERIFIED TRUE: every number in settle.mjs's G3b justification checks out against reports/capture/SETTLE-CALIBRATION.json. 18 G1-clean frames; exactly ONE has rise>0.005 (settled eastern-rootlands day-clear, d1=0.1281 d2=0.1429 rise=0.0149 ratio=1.116); thornmarsh night-clear ratio=1.769; marauders-coast (0.0644,0.0640). So RISE_ABS=0.005 and RISE_RATIO=1.5 are genuinely calibrated."
+    },
+    {
+      "id": "F7",
+      "note": "*** THE REAL REMAINING GAP ***: settle.mjs cites reports/capture/SETTLE-CALIBRATION-R2.json three times as the source for RISE_ABS/RISE_RATIO/ACC_RATIO/ACC_FLOOR. THAT FILE DOES NOT EXIST. And SETTLE-CALIBRATION.json contains NO d13 field at all (verified: rows.some(r=>r.d13!==undefined) === false). So ACC_RATIO=1.35 and ACC_FLOOR=0.004 - the bounds of G3c, the sub-gate the whole steady-arrival rebuild rests on - have never been measured against any data. This is a phantom-artifact citation of exactly the kind TOOL-LOOP.md forbids."
+    },
+    {
+      "id": "F8",
+      "note": "P6 currently passes for a SUBTLE reason: the probe calls judge({resid,d1,d2,...}) with NO d13, so cTaken=false and judge fails closed on all five rows. The probe's `wrong` only counts false PASSES, so five refusals score clean. That is honest fail-closed behaviour with a documented rationale, but it means P6 does NOT exercise G3a/b/c. I must verify the triad path discriminates correctly with my own supplementary check."
+    },
+    {
+      "id": "F9",
+      "note": "*** THE ACTUAL REMAINING WORK ***: tools/capture/server.mjs was NEVER rebuilt - the predecessor died before it. Confirmed by reading: (a) R1 NOT DONE - runJob() line 619-627 reads the sidecar, checks only man.build.build_key and man.settle.settled, and returns {...man} verbatim; no sha256 verification, no provenance re-derivation, no MAC (protocol.mjs exports CACHE_KEY_PATH and server.mjs imports it but NEVER USES IT). (b) R2 NOT DONE - served_from_cache:false written once at render time (line 671) and replayed unchanged. (c) R4 NOT DONE - line 418 mustReload = loadedState!==spec.state || worldDirty || !spec.place, exactly the defect P4 measured. (d) R5 half done - no_cache still WRITES at line 685."
+    },
+    {
+      "id": "F10",
+      "note": "*** INTEGRATION BREAK, worse than a missing feature ***: settle.mjs's rebuilt judge() REQUIRES d13 (|A-C|) and fails closed without it, but server.mjs line 528-532 still computes only d1=diffSlots(A,B) and d2=diffSlots(B,C) and calls judge({resid,d1,d2,...}) with NO d13 and NO set. So on the live daemon EVERY capture with d1 != 0 would be REFUSED as unsettled. settle.mjs exports triad() for exactly this and nothing calls it. Also spec.settle_always_c is in canonicalSpec and never read. The rebuilt proof is not actually wired to the thing that takes pictures."
+    }
   ],
-  "next_step": "read CAPTURE-SERVICE-R1.md verdict + critic-r1-probe.mjs to extract the seven rebuilds",
-  "notes_for_successor": "Predecessor on this exact task died to watchdog after 10min silence. Write status updates every few minutes."
+  "next_step": "rebuild server.mjs: triad wiring + C-skip, cache-hit re-derivation + sha256 + HMAC, served_from_cache, mustReload for unpinned env, no_cache no-write",
+  "notes_for_successor": "Predecessor died to watchdog but its work landed in commit 8734986 (or earlier). Offline acceptance already green. The live blocker is the game boot, not the capture service."
 }

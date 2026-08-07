@@ -1,0 +1,17 @@
+{
+  "task_id": "W1-OPACITY",
+  "brief": "build game/data/world/opacity.json (opacity@1) per RI-WLD09 §B1",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": [
+    "game/data/world/opacity.json",
+    "corpus/50-world/sealed/SEALED-ANSWERS.md (20 remaining entries)",
+    "game/data/index.json entry",
+    "a world-side consumer in game/src that reads the register",
+    "tooling: opacity-audit.py run against the real build"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read SEALED-ANSWERS.md, opacity-audit.py, RI-LOR06, RI-LOR01",
+  "notes_for_successor": ""
+}

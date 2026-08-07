@@ -61,6 +61,26 @@ export class HearthSystem {
     return null;
   }
 
+  /**
+   * Is the PLAYER standing at a sapwell? The predicate `game/src/engine.js`'s `_uiCtx()` has
+   * been calling since the UI was written, and which this class did not have.
+   *
+   * W1-13 round 2, `GAP-W1-hearth-levelup-gate-reads-a-method-that-does-not-exist`. The gate is
+   * `!!(this.hearths && this.hearths.atHearth && this.hearths.atHearth(this.sim))`, so the
+   * missing method short-circuited to `undefined` at all 29 wells and the level-up screen —
+   * which `RI-PRG04` §1 calls "the only place levelling is possible" — was refused everywhere
+   * in the province. The only writer of the other disjunct is `__HARNESS.setAtHearth()`. So the
+   * player could bank souls, die, walk back, recover 4,200 of them, and never spend one:
+   * `_spendSouls()` has exactly one producer and it is inside `case 'levelup'`.
+   *
+   * `at(x, z)` was already right — it already tests each well's own `interact_radius_m` and it
+   * already backs `listHearths().standing_at`. Only the name the UI calls was missing.
+   */
+  atHearth(sim) {
+    if (!sim || !sim.player || !sim.player.pos) return false;
+    return !!this.at(sim.player.pos[0], sim.player.pos[2]);
+  }
+
   /** The boss fog gate whose volume contains (x, z), if any. */
   gateAt(x, z) {
     for (const g of this.gates) {

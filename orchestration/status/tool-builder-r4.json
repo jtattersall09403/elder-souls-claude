@@ -2,7 +2,7 @@
   "task_id": "tool-builder-r4",
   "brief": "corpus/80-methods/TOOL-COVERAGE-R3.md (tool critic verdict, NOT SATISFIED, six rebuilds)",
   "started": "round-4",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "tools/analysis/build-viability.mjs",
     "tools/experience/beat-extract.mjs",
@@ -12,8 +12,17 @@
     "decoupling tool verdict field",
     "tools-tree sweep for r.frame / field-shape assumptions"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read TOOL-COVERAGE-R3.md + R1/R2, then boot-check",
+  "outputs_written": [
+    "tools/lib/trace-schema.mjs"
+  ],
+  "findings": [
+    "BUILT tools/lib/trace-schema.mjs \u2014 the versioned single reader R3 called 'the highest-value thing this loop could produce next'. frameOf() returns NULL, never 0, on a missing frame key. requireFrames() is a fail-closed gate. --census over reports/**. --verify a.b,c.d exits 1 on an absent path. self-test 25/25 including an explicit R3 REGRESSION GUARD that demonstrates the old `r.frame ?? 0` reader collapsing a 27-minute gap to 0.",
+    "ROOT CAUSE of why four tools independently invented `r.frame`: THE ENGINE SPEAKS TWO DIALECTS. game/src/sim/record.js:51 writes `f: sim.frame` on every trace record, but engine.js:3360 getFrame() returns `{frame, t_ms}`. A tool author who used the harness API first and the trace second would write `r.frame` and be right about half the codebase. tools/journey/jrn06-death.mjs:305 reads `.frame` CORRECTLY for exactly this reason (it is a getFrame() result, not a trace record).",
+    "SWEEP RESULT (whole tools tree, not just the named instances): on the ARTIFACT side the `.frame` defect has exactly the three instances R3 named (experience/beat-extract, journey-run, cadence's FLAG_FIELDS) and no more. tools/lib/scenario.mjs:67 `raw.f ?? raw.frame ?? 0` is an AUTHORED input script where 0 is a legitimate default, not a trace read. tools/world/hazard-fire.mjs:114 `r.frame ?? r.f` is backwards but functionally correct (falls through to r.f, then the event spread overrides with e.f).",
+    "FULL CENSUS over every reports/**/*.jsonl confirms all 8 historically-invented paths absent: player.region, world.region, player.crouched, player.two_handed, player.loadout, ui.menu_open, ui.dialogue_open, ui.surface. Real paths: env.region, player.stealth.crouched, player.stance, events[].f.",
+    "cadence.mjs:319-320 does not merely LIST the absent ui fields in FLAG_FIELDS, it actively reads r.ui.dialogue_open and r.ui.menu_open. No trace record in the tree carries a `ui` subtree at all.",
+    "boot-check PASS before work started."
+  ],
+  "next_step": "rebuild build-viability.mjs (cross-check reconciliation + derivedDisposition anchor + per-giver model)",
   "notes_for_successor": ""
 }
