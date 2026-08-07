@@ -301,8 +301,17 @@ async function armC3(handle) {
     await handle.page.evaluate(INSTALL);
     await handle.h('teleport', target.x + 6, target.z + 6);
     await handle.h('clearInputs');
-    await handle.h('stepFrames', 400);
+    await handle.h('stepFrames', 900);
     const s4 = await snap();
+    // A zero here must be diagnosable rather than mysterious: say WHERE the player is, what
+    // cell the streamer thinks it is in, and what the post table looks like after the load.
+    A.L3_diag = await handle.page.evaluate(() => ({
+      pos: window.__CP.pos(),
+      cell: window.__ENGINE.cellFor(window.__ENGINE.sim.env),
+      env_region: window.__ENGINE.sim.env.region,
+      report: (({ dormant, resident, cleared, live_posts, live_bodies, candidates, stats }) =>
+        ({ dormant, resident, cleared, live_posts, live_bodies, candidates, stats }))(window.__HARNESS.populationReport()),
+    }));
     const killed3 = await handle.page.evaluate(() => window.__CP.killAllPopulation());
     await handle.h('stepFrames', 20);
     const s5 = await snap();
@@ -344,19 +353,25 @@ async function armC4(handle) {
     const r = await handle.page.evaluate(async (doFight) => {
       const H = window.__HARNESS, E = window.__ENGINE;
       const hp0 = E.combat.player.hp;
-      const start = E.sim.frame;
+      let r_swings = 0;
       const bodies0 = E.sim.entities.filter((e) => e.populationPost && e.hp > 0).length;
-      let frames = 0, dead = false;
-      while (frames < 10800) {
+      let frames = 0, dead = false, swings = 0, locked = false;
+      const period = 34;   // press, release, wait out the recovery, press again
+      while (frames < 14400) {
         const alive = E.sim.entities.filter((e) => e.populationPost && e.hp > 0);
         if (!alive.length) break;
-        if (doFight) { try { H.lockOn(alive[0].eid); } catch { /* out of range */ } H.queueInputs([{ light: true }]); }
-        H.stepFrames(30); frames += 30;
+        if (doFight) {
+          if (!locked) { try { H.lockOn(alive[0].eid); locked = true; } catch { /* out of range */ } }
+          if (frames % period === 0) { H.queueInputs([{ f: 0, press: ['light'] }]); swings++; }
+          if (frames % period === 2) H.queueInputs([{ f: 0, release: ['light'] }]);
+        }
+        H.stepFrames(1); frames++;
         if (E.combat.player.hp <= 0) { dead = true; break; }
       }
+      r_swings = swings;
       const aliveEnd = E.sim.entities.filter((e) => e.populationPost && e.hp > 0).length;
       return {
-        fighting: doFight, hp_start: hp0, hp_end: E.combat.player.hp,
+        fighting: doFight, swings: r_swings, hp_start: hp0, hp_end: E.combat.player.hp,
         hp_max: E.combat.player.hp_max ?? E.combat.player.hpMax,
         player_died: dead, frames, sim_seconds: +(frames / 60).toFixed(1),
         enemy_bodies_at_start: bodies0, enemy_bodies_alive_at_end: aliveEnd,

@@ -3,6 +3,36 @@
   "brief": "docs/PLAN.md §3 W1-05 — roads, signposts, wayfinding without a marker (seam S35 supersedes S30; AR-2)",
   "started": "wave-1",
   "state": "verifying",
+  "files_touched": [
+    "game/data/world/signposts.json",
+    "tools/world/build-signposts.mjs",
+    "game/src/world/province.js",
+    "game/src/world/field.js",
+    "game/src/engine.js",
+    "game/src/harness/api.js",
+    "game/data/dialogue/road-directions.json",
+    "game/data/dialogue/topics/60-roads.json",
+    "game/src/sim/quest/topic-supply.js",
+    "game/src/character/converse.js",
+    "game/data/index.json",
+    "tools/world/signpost-audit.mjs",
+    "tools/world/wayfind-journey.mjs",
+    "tools/world/waylamp-probe.mjs",
+    "tools/world/build-roads.mjs",
+    "game/data/world/roads.json",
+    "tools/harness/viewpoints-province.json",
+    "tools/check-prose.mjs",
+    "reports/w1-05-survey.md",
+    "reports/w1-05-journey.json",
+    "reports/w1-05-journey-onehop.json",
+    "reports/w1-05-waylamp.json",
+    "orchestration/status/W1-05.json"
+  ],
+  "files_claimed": [
+    "reports/w1-05-journey-gideon-soulrest.json",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
   "outputs_expected": [
     "reports/w1-05-survey.md",
     "game/data/world/signposts.json",
@@ -80,6 +110,6 @@
     "SUCCESSOR F28 (CONSUMPTION PROVEN for the waylamp, in the browser): tools/world/waylamp-probe.mjs, 5 of 5. C1 the scene really contains waylamp:sign-way-way-helstrom-blackrose-3 with emissive #5FC8FF; C2 at night updateSignatureLights puts a LIVE PointLight at the post, intensity 336, hex #5FC8FF, distance 0.00 m from the post — an emissive alone makes the object glow and lights nothing, which is the distinction the region lights exist for; C3 still exactly 2 light slots, so the road bought its legibility inside the MEASURED budget and not by adding lights; C4 zero live lights at noon; C5 strip the `lamp` field off all 12 posts on field.signs and the light at the post goes out. Also hardened province.updateSignatureLights: it used to `return 0` when field.sig was absent, which would have left lit posts in the data and none in the frame — the orphan shape this piece exists to stop, arriving through an early return.",
     "SUCCESSOR F29 (PHASE B, SOULREST->LILMOTH: STILL DOES NOT ARRIVE, and here is exactly where): the tidied route fixed the reversals and the body still ended 579.2 m short after 400000 frames with aborted:null, longest_stuck_frames 0, mired_frames 0 — and it ended at (2188.3, 4993.7), 13 m from where the untidied run ended, so it is deterministic. THAT POINT IS 189 m OFF THE NEAREST ROAD CENTRELINE AND UNDER 20.1 m OF WATER; the deepest point of the walk was 27.4 m at (2410.1, 5052). The body leaves the road at about blackrose-lilmoth point 63 (2278, 4827), which is the approach to that legs 408 m elevated causeway (points 70-104, max height 14.2 m, kind causeway over water), and never recovers. THE ROAD IS NOT THE PROBLEM AND I CHECKED: across all 10 legs, ZERO centreline points are under more than 1 m of water without a deck span over them, and zero of the 1035 route waypoints stand in water deeper than 1.5 m. So the route is dry and the body still ends up swimming. Whether that is my follower or a causeway a player can fall off with no way back up is NOT settled, and I am not going to claim either."
   ],
-  "next_step": "RUN WHEN QUIET: (1) node tools/world/waylamp-probe.mjs — the CONSUMPTION proof for the waylamp, written and never yet run; (2) wayfind-journey phase B is in flight (bg b353ejmnb) under loadavg 19-20 / 24-36 browsers; (3) the night shot keeps being REFUSED by the S34 settle gate G3c (content still arriving) — retrying at --settle 90; (4) blog-feed line. Everything else is done and every gate is green.",
-  "notes_for_successor": "Phase 1 = authoring, no browser. Phase 2 = engine journey + capture service. Do NOT land a fail-closed assert before data exists. Load was 2.71 at successor start — box is quiet."
+  "next_step": "SECOND SUCCESSOR IN PROGRESS: regenerating reports/w1-05-journey.json (Soulrest->Lilmoth), which I accidentally overwrote (see F31) with a Gideon->Soulrest plan-only run — need to rerun `node tools/world/wayfind-journey.mjs --from Soulrest --to Lilmoth --out reports/w1-05-journey.json` once loadavg drops (was 23.6 / 42 headless_shell at time of writing, another agent's contention, not mine). Diagnostic in flight: tools raw-leg walkPath on soulrest-blackrose's UNTIDIED points, to settle whether the phase-B water trap (F29) is my navigator's bug or the world's. THEN: write reports/w1-05-journey-gideon-soulrest.json as the clean positive proof (phase A ARRIVED, ablation ALSO arrives on this leg since it has no branch, no causeway, no deck_spans) and update survey.md §5/§7 with the honest state: two of two attempted Phase-B body walks (Soulrest->Lilmoth two-hop, and the Soulrest->Blackrose one-hop) FAIL TO ARRIVE and land within 300m of each other in deep water, which is suspicious enough (same landing zone from two different starts/destinations) to be a world defect rather than noise. Then blog-feed + status update to done/verifying.",
+  "notes_for_successor": "Phase 1 = authoring, no browser. Phase 2 = engine journey + capture service. Do NOT land a fail-closed assert before data exists. Load was 2.71 at successor start — box is quiet. IMPORTANT: reports/w1-05-journey.json's default --out is that path — always pass --out explicitly to a scratch name before rerunning wayfind-journey.mjs on a different pair, or you will clobber it (I did, once)."
 }

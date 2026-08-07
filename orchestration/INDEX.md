@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `a5a637d`: 449 tools, 153 reference
+so it cannot drift. Generated at `c9fad96`: 449 tools, 153 reference
 items, 23 pieces in flight.
 
 Its purpose is to stop 23+ concurrent agents each paying separately to discover the
@@ -727,17 +727,17 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-22-r2` | building | finish event-level calibration; author interior beds (5 interior + 2 settlement); wire _st | `game/src/audio/ambience.js` `game/src/audio/synth.js` `game/src/engine.js` `tools/analysis/ambience-onsets.mjs` |
+| `W1-05` | verifying | SECOND SUCCESSOR IN PROGRESS: regenerating reports/w1-05-journey.json (Soulrest->Lilmoth), | `game/data/world/signposts.json` `tools/world/build-signposts.mjs` `game/src/world/province.js` `game/src/world/field.js` `game/src/engine.js` `game/src/harness/api.js` |
 | `critic-w1-02` | in-progress | RI-WLD08 weather/daynight numbers; ONLY-HERE M19; RI-WLD14 F1-F8; RI-WLD09; then the M68 b | `orchestration/status/critic-w1-02.json` `reports/critic-w1-02/c-m65.json` `reports/critic-w1-02/c-m65b.json` `reports/critic-w1-02/c-m65-sabotage.json` |
 | `W1-VIABILITY-SPLIT` | in_progress | read RULES/INDEX/NEXT-DISPATCH R/TOOL-COVERAGE-R4/r6 objection | `orchestration/status/W1-VIABILITY-SPLIT.json` |
 | `W1-MASS` | verifying | SUCCESSOR-2 RESUMED at git 88ee56d. P1/P2/P3 confirmed COMMITTED and on disk (swing.js:447 | `game/src/combat/swing.js` `tools/weapons/motion-census.mjs` `tools/weapons/build-movesets.mjs` `tools/weapons/mass-browser.mjs` `game/data/combat/movesets/` `game/data/weapons/clip-registry.json` |
 | `critic-w1-population` | running | read RULES/INDEX done; read W1-POPULATION.json, RI-PRG06, RI-AI05, PLAN W1-12/W1-27 | — |
-| `W1-22-r2` | building | build tools/analysis/ambience-onsets.mjs (measures RENDERED event level vs RENDERED bed by | — |
 | `W1-13-r3` | building | Diagnose the three aggregation reds (m_d14 named gap first, then m_d4, then m_d10_d11) and | `orchestration/status/W1-13-r3.json` |
 | `critic-w1-souls-r2` | started | read RULES/INDEX, r1 verdict, W1-SOULS-r2.json status, the item, then run the builder's su | `orchestration/status/critic-w1-souls-r2.json` |
 | `tool-build-viability-r6` | researching | choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items | — |
 | `W1-JOURNAL-PROSE` | researching | state the closing-line rule, then rewrite file by file, re-running the FULL gate after eve | — |
 | `judge-prose-r4` | researching | read t01-books A.txt and B.txt; answer; then t02..t15 | — |
-| `W1-05` | verifying | RUN WHEN QUIET: (1) node tools/world/waylamp-probe.mjs — the CONSUMPTION proof for the way | — |
 | `W1-06-r2` | researching | instrument in bare Node (camera.js imports only rng.js + collision.js) to confirm before c | — |
 | `W1-06` | partial | HIGHEST VALUE FOR THE NEXT AGENT, in order: (1) THE PITCH PIN. In a lock-on against cam_bo | — |
 | `critic-w1-23` | researching | read TOOL-LOOP, ARBITRATION §3, RI-LOR01/04/06, builder report | — |

@@ -51,6 +51,71 @@ const SUBJECTS = [
 const BAND_TOP = { light: 20, medium: 26, heavy: 32, ultra: 40, ranged: 20 };
 const FOLLOW_MIN = { light: 0.20, medium: 0.20, heavy: 0.25, ultra: 0.30, ranged: 0.20 };
 
+const SHOT = args.shot ? String(args.shot) : null;
+const SHOT_SUBJECT = String(args.weapon || SUBJECTS[0].id);
+
+/** The frame of peak DRAWN tip speed in the MOVING series — where the picture is taken. */
+function shotFrame(rep, wid) {
+  const s = (rep.series || []).find((x) => x.weapon === wid && x.moving);
+  if (!s || !s.speed_series) return 40;
+  let bi = 1, bv = -1;
+  for (let i = 1; i < s.speed_series.length; i++) {
+    if (s.speed_series[i] !== null && s.speed_series[i] > bv) { bv = s.speed_series[i]; bi = i; }
+  }
+  return bi;
+}
+
+/**
+ * The caption, built from `rep` and nothing else. Three columns, because the finding IS the
+ * three-way comparison: the still control cannot tell a fast blade from a slow one, and the
+ * §E ceiling is the line both are measured against.
+ */
+function buildPanel(rep, wid) {
+  const esc = (x) => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const rows = (rep.series || []).filter((s) => s.weapon === wid);
+  const still = rows.find((s) => !s.moving), move = rows.find((s) => s.moving);
+  const tier = (move || still || {}).tier || 'medium';
+  const ceil = (BAND_TOP[tier] || 26) * 1.25;
+  const spark = (s, colour) => {
+    if (!s || !s.speed_series) return '';
+    const v = s.speed_series, n = v.length;
+    const hi = Math.max(ceil * 1.15, ...v.filter((x) => x !== null));
+    const W = 470, Hh = 108;
+    let d = '';
+    for (let i = 1; i < n; i++) {
+      if (v[i] === null) continue;
+      const x = (i / (n - 1)) * W, y = Hh - (v[i] / hi) * Hh;
+      d += (d ? 'L' : 'M') + x.toFixed(1) + ',' + y.toFixed(1);
+    }
+    // Shade the ACTIVE window, so "the whole arc lives in the live frames" is visible and not
+    // merely asserted.
+    let ax0 = null, ax1 = null;
+    (s.phase_series || []).forEach((p, i) => { if (p === 'active') { if (ax0 === null) ax0 = i; ax1 = i; } });
+    const band = ax0 === null ? '' :
+      `<rect x="${((ax0 / (n - 1)) * W).toFixed(1)}" y="0" width="${(((ax1 - ax0) / (n - 1)) * W).toFixed(1)}" height="${Hh}" fill="#ffffff" opacity="0.10"/>`;
+    const cy = Hh - (ceil / hi) * Hh;
+    return `<svg width="${W}" height="${Hh}" style="display:block">${band}`
+      + `<line x1="0" y1="${cy.toFixed(1)}" x2="${W}" y2="${cy.toFixed(1)}" stroke="#ff5a5a" stroke-width="1.5" stroke-dasharray="5 4"/>`
+      + `<path d="${d}" fill="none" stroke="${colour}" stroke-width="2"/></svg>`;
+  };
+  const col = (s, label, colour) => {
+    if (!s) return `<div style="flex:1"><b>${esc(label)}</b><br><i>not measured</i></div>`;
+    const ok = s.peak_drawn_tip_mps <= ceil;
+    return `<div style="flex:1;min-width:0">
+      <div style="font:600 13px/1.4 system-ui;color:${colour}">${esc(label)}</div>
+      <div style="font:26px/1.15 system-ui;color:${ok ? '#7fdc7f' : '#ff5a5a'}">${s.peak_drawn_tip_mps} m/s</div>
+      <div style="font:11px/1.5 system-ui;color:#c8c8c8">character turned ${s.player_yaw_travel_deg_during_active}&deg; while the blade was live<br>
+      follow-through ${s.follow_through_frac === null ? 'n/a' : s.follow_through_frac} of ${s.recovery_frames_observed} recovery f@60</div>
+      ${spark(s, colour)}</div>`;
+  };
+  return `<div style="position:fixed;left:0;right:0;bottom:0;padding:14px 18px;background:rgba(8,10,14,0.90);
+      border-top:2px solid #444;color:#eee;font:12px/1.5 system-ui;z-index:99999">
+    <div style="font:600 15px/1.3 system-ui;margin-bottom:2px">${esc(wid)} &middot; ${esc((move || still || {}).move_id || '')} &middot; RI-WPN05 &sect;E peak tip speed, measured on the DRAWN blade</div>
+    <div style="font:11px/1.4 system-ui;color:#aaa;margin-bottom:10px">dashed red = the &sect;E.2 ceiling for tier <b>${esc(tier)}</b> (${ceil.toFixed(1)} m/s = 1.25 &times; the band top). Pale band = the active window. Every sample is the tip the renderer drew, which agrees with the hit socket to 0.0008 mm.</div>
+    <div style="display:flex;gap:26px">${col(still, 'STILL target (the easy fixture)', '#8ab4ff')}${col(move, 'MOVING target (the character steers)', '#ffb347')}</div>
+  </div>`;
+}
+
 const handle = await launchGame({
   ...args,
   width: Number(args.width || 320),

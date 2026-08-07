@@ -21,8 +21,25 @@
     "SUCCESSOR PICKUP (round 2, continuation): status file existed; resuming from next_step = interior beds, night rendering, browser verification. Not re-doing items 1-4 or B5. First act: re-read verdict + blind answers, then verify on-disk state of the claimed-done work before building anything new.",
     "JUDGE FINDING IS NOW THE HEAD OF THE QUEUE, ahead of the verdict path_to_ten. B2 blind judge: transient_onsets EMPTY for all 64 recordings across 21m20s, corroborated by a detector-free statistic (crest factor 10.0-17.4 dB everywhere; steady noise measures 10-13, a bed with one-shots measures >20). The two agree, so this is not a detector artefact.",
     "MECHANISM HYPOTHESIS (to be measured, not asserted): the events are BELOW THE BED, not missing. RI-AUD03 SecA sets L3 at -6..+2 dB rel. bed (\"may exceed the bed\") and L4 at -4..+4. The bed data declares level_db inside those bands - and then the event synth carries its OWN gain_db of -6..-13 on top, which nothing sums or audits. Declared-compliant, rendered-buried. Same class as bed_gain_db: \"loudness is not the sum of the numbers you typed\".",
-    "THIS IS THE SAME FIX AS THE EMITTERS, as the orchestrator suspected. R7 grains now schedule (predecessor) but hide_drum renders at level_db -2 + synth -6 = -8 effective, so a strike that now happens is still under the floor. Scheduling was necessary and is not sufficient; the level audit covers both."
+    "THIS IS THE SAME FIX AS THE EMITTERS, as the orchestrator suspected. R7 grains now schedule (predecessor) but hide_drum renders at level_db -2 + synth -6 = -8 effective, so a strike that now happens is still under the floor. Scheduling was necessary and is not sufficient; the level audit covers both.",
+    "R4 JUDGEMENT, MADE AGAIN INDEPENDENTLY (successor, not inherited from the predecessor entry above). I AGREE WITH THE CRITIC, and I reach it by a route the critic did not use. R4s main clause is positive and imperative - \"Interiors get their own bed\" - and the subordinate clause rules out one particular wrong bed, it does not exhaust the space. But the decisive text is RI-AUD03s own \"How we lose\" list, which names the failure as: \"Interiors are the exterior bed low-passed. R4. Cheap, universal, and it makes every building in the game feel like a tent. Nobody reports it because it is not WRONG, it is just NOTHING.\" An item that names \"just nothing\" as the loss cannot be satisfied by delivering literally nothing; silence is that failure taken to its limit, not an escape from it. R1s null permission is scoped to a LAYER inside a declared bed, and the ARBITRATION amendment (\"silence in a dry region is a design statement\") is scoped to a REGION and cites R1, i.e. layers. RI-WLD08 SEC6 independently sets a POSITIVE COUNT of >=4 interior beds, which an absence of beds cannot satisfy. Round 1s \"interiors go silent and report suppressed\" is not permitted. Building interior beds. NOT referring this as a seam question - the orchestrator asked me to refer only on disagreement, and I do not disagree.",
+    "DEFECT FOUND BY MY OWN INSTRUMENT, not in the verdict and not in the blind answers: THE NOISE LOOP SEAM CLICKS. makeNoiseBuffer generated exactly n samples and ambience.js set src.loop=true. Brown noise is an integrated random walk, so first and last samples are uncorrelated and wrapping STEPS - a click, once per 6 s buffer period, forever, in every region with a noise layer. SecA requires L1 \"looped, GAPLESS\"; it was not. Masked everywhere except the Stone Wastes (L1 brown at -16 dB, L2 declared null): with no bed to hide behind the seam read as a discrete event 10 dB over the floor at 3.12/9.12/15.12/21.12/27.12 s - exactly the 6.0 s period. The ONE region my tool reported transients for was reporting nothing but this. Fixed: buffers for loop are generated n+xf long and the tail cross-faded back over the head (0.25 s), plus DC removal before normalising."
   ],
-  "next_step": "build tools/analysis/ambience-onsets.mjs (measures RENDERED event level vs RENDERED bed by difference, plus own onset detector + crest factor); prove it red; then calibrate levels; then interiors; then night",
-  "notes_for_successor": "Do not touch tools/blind/audio-pack-b2.mjs or its pack dir (fresh judge answering it now). Files I am touching: game/src/audio/{ambience,synth}.js, game/src/engine.js (_stepAmbience/ambienceCapture), game/src/harness/api.js (getUnimplemented), game/data/audio/ambience/*.json, NEW game/data/audio/ambience/interiors/, tools/analysis/{ambience-census,ambience-render,content-stats}.mjs."
+  "next_step": "finish event-level calibration; author interior beds (5 interior + 2 settlement); wire _stepAmbience to look up a bed by cell instead of suppressing; extend census; re-run gates",
+  "notes_for_successor": "Do not touch tools/blind/audio-pack-b2.mjs or its pack dir (fresh judge answering it now). Files I am touching: game/src/audio/{ambience,synth}.js, game/src/engine.js (_stepAmbience/ambienceCapture), game/src/harness/api.js (getUnimplemented), game/data/audio/ambience/*.json, NEW game/data/audio/ambience/interiors/, tools/analysis/{ambience-census,ambience-render,content-stats}.mjs.",
+  "files_touched": [
+    "game/src/audio/ambience.js",
+    "game/src/audio/synth.js",
+    "game/src/engine.js",
+    "tools/analysis/ambience-onsets.mjs"
+  ],
+  "files_claimed": [
+    "game/data/audio/ambience/",
+    "game/data/audio/ambience/interiors/",
+    "game/data/index.json",
+    "tools/analysis/ambience-census.mjs",
+    "tools/analysis/ambience-render.mjs",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ]
 }
