@@ -9,7 +9,7 @@
  "hp": 99999,
  "poise": 99999,
  "material": "flesh",
- "material_note": "Measurement fixture; flesh so a reach sweep measures GEOMETRY and nothing else — the multiplier is 1.10 and constant across every probe.",
+ "material_note": "Measurement fixture; flesh so a reach sweep measures GEOMETRY and nothing else \u2014 the multiplier is 1.10 and constant across every probe.",
  "stamina_max": 9999,
  "radius_m": 0.4,
  "sight_radius_m": 0.0,
@@ -39,7 +39,8 @@
    "root_dz_m": 0.0,
    "hitstop_frames": 0,
    "hitbox_radius_m": 8.0,
-   "note": "A ONE-FRAME hitbox with an 8 m radius. RI-CMB01 M2 asks for exactly this: 'enemy scripted to activate a 1-frame hitbox exactly on frame press + k'. The radius is deliberately large so that GEOMETRY is never the variable — the only thing that can decide hit/no-hit is whether the player's i-frame window was open on that frame, which is what M2 measures. poise_damage is 0 so a stagger cannot confound the run, and the damage is small so the player survives the whole sweep."
+   "note": "A ONE-FRAME hitbox with an 8 m radius. RI-CMB01 M2 asks for exactly this: 'enemy scripted to activate a 1-frame hitbox exactly on frame press + k'. The radius is deliberately large so that GEOMETRY is never the variable \u2014 the only thing that can decide hit/no-hit is whether the player's i-frame window was open on that frame, which is what M2 measures. poise_damage is 0 so a stagger cannot confound the run, and the damage is small so the player survives the whole sweep.",
+   "reactable": true
   }
  },
  "parley": null,
@@ -47,5 +48,6 @@
   "what": "A MEASUREMENT FIXTURE, not a game enemy. It never appears in a scenario a player could reach, and it is declared here rather than special-cased in the probe so that the number a critic reads (8.0 m) is inspectable in the data tree instead of buried in a tool."
  },
  "armour_rating": 0,
- "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 §B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here."
+ "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 \u00a7B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here.",
+ "_reactable_note": "RI-CMB12 \u00a7A: `reactable` is DECLARED HERE, IN ADVANCE, and counts against the archetype's `reactable_share` (>= 0.70). An attack declaring `true` must measure `t_react = f_active - f_vis >= 19 f@60`, where f_vis is the frame the POSE first becomes distinguishable \u2014 not the frame the state label changes. Measured by tools/harness/cmb-exchange.mjs --probe react."
 }

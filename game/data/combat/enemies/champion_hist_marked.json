@@ -14,7 +14,7 @@
   "torso_upper": "metal",
   "torso_lower": "metal"
  },
- "material_note": "RI-WPN05 §B: 'plant / root — Hist-bonded champions'. The Hist has taken the limbs; the man is still wearing his cuirass and still has his face. Three materials on one body, and each of them changes which weapon you want.",
+ "material_note": "RI-WPN05 \u00a7B: 'plant / root \u2014 Hist-bonded champions'. The Hist has taken the limbs; the man is still wearing his cuirass and still has his face. Three materials on one body, and each of them changes which weapon you want.",
  "stamina_max": 180,
  "radius_m": 0.5,
  "sight_radius_m": 18,
@@ -33,8 +33,8 @@
   "capsule_length_m": 1.65,
   "length_m": 1.75,
   "peak_tip_speed_mps_declared": 26,
-  "_socket_rule_note": "socket_a_dist_m is skeleton.json §weapon.socket_rule's grip_offset_m (0.10) because socket_a is wpn_guard. It was 0.30-0.45 in wave 1, which put the near end of the hitbox a third of a metre past the hands and gave every enemy a dead ring in front of its own chest that no pose could close (W1-09 round-4 measurement: min_axis 0.67-0.93 m). capsule_length_m follows from the two sockets.",
-  "_peak_declared_note": "RI-CMB04 §B declares peak_tip_speed_mps per PLAYER weapon class and nothing for enemies, so the enemy clips were the one part of the build no speed ceiling applied to. Adopted from the §B row whose capsule_length_m is nearest this weapon's (ultra_greatsword, 1.7 m). PROVISIONAL: RI-CMB04 owns the column and may re-derive it."
+  "_socket_rule_note": "socket_a_dist_m is skeleton.json \u00a7weapon.socket_rule's grip_offset_m (0.10) because socket_a is wpn_guard. It was 0.30-0.45 in wave 1, which put the near end of the hitbox a third of a metre past the hands and gave every enemy a dead ring in front of its own chest that no pose could close (W1-09 round-4 measurement: min_axis 0.67-0.93 m). capsule_length_m follows from the two sockets.",
+  "_peak_declared_note": "RI-CMB04 \u00a7B declares peak_tip_speed_mps per PLAYER weapon class and nothing for enemies, so the enemy clips were the one part of the build no speed ceiling applied to. Adopted from the \u00a7B row whose capsule_length_m is nearest this weapon's (ultra_greatsword, 1.7 m). PROVISIONAL: RI-CMB04 owns the column and may re-derive it."
  },
  "attacks": {
   "chop": {
@@ -48,7 +48,8 @@
    "stamina": 26,
    "root_dz_m": 1.2,
    "hitstop_frames": 6,
-   "hitbox_radius_m": 0.1
+   "hitbox_radius_m": 0.1,
+   "reactable": true
   },
   "thrust": {
    "anim": "e_thrust",
@@ -61,7 +62,8 @@
    "stamina": 20,
    "root_dz_m": 1.6,
    "hitstop_frames": 5,
-   "hitbox_radius_m": 0.09
+   "hitbox_radius_m": 0.09,
+   "reactable": true
   },
   "combo_a": {
    "anim": "e_combo_a",
@@ -74,7 +76,8 @@
    "stamina": 16,
    "root_dz_m": 0.9,
    "hitstop_frames": 5,
-   "hitbox_radius_m": 0.1
+   "hitbox_radius_m": 0.1,
+   "reactable": true
   },
   "combo_b": {
    "anim": "e_combo_b",
@@ -87,7 +90,8 @@
    "stamina": 22,
    "root_dz_m": 1.1,
    "hitstop_frames": 6,
-   "hitbox_radius_m": 0.1
+   "hitbox_radius_m": 0.1,
+   "reactable": true
   }
  },
  "parley": {
@@ -109,8 +113,9 @@
  "provenance": {
   "identity": "The RI-CMB07 exemplar's opponent. 2876 HP is the exemplar's own figure, which is not frame data and therefore survives the S22 invalidation.",
   "frame_data": "PROVISIONAL. Enemy windup and punish-window design is RI-AI02/RI-AI03 and wave-1 piece W1-12. All values f@60.",
-  "poise": "48 rather than RI-CMB05 §A's cited 28: the corpus figure predates this build's poise-pool arithmetic (poise_health_max = 20 + armour_poise), under which 28 would mean armour_poise 8 and a champion that a single straight-sword R1 (22 poise damage, resisted to 22) staggers every other swing. 48 gives it 28 of armour poise and two swings of standing. Flagged as a divergence rather than silently adopted."
+  "poise": "48 rather than RI-CMB05 \u00a7A's cited 28: the corpus figure predates this build's poise-pool arithmetic (poise_health_max = 20 + armour_poise), under which 28 would mean armour_poise 8 and a champion that a single straight-sword R1 (22 poise damage, resisted to 22) staggers every other swing. 48 gives it 28 of armour poise and two swings of standing. Flagged as a divergence rather than silently adopted."
  },
  "armour_rating": 55,
- "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 §B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here."
+ "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 \u00a7B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here.",
+ "_reactable_note": "RI-CMB12 \u00a7A: `reactable` is DECLARED HERE, IN ADVANCE, and counts against the archetype's `reactable_share` (>= 0.70). An attack declaring `true` must measure `t_react = f_active - f_vis >= 19 f@60`, where f_vis is the frame the POSE first becomes distinguishable \u2014 not the frame the state label changes. Measured by tools/harness/cmb-exchange.mjs --probe react."
 }

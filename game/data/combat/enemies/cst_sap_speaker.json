@@ -9,7 +9,7 @@
  "hp": 380,
  "poise": 26,
  "material": "plant",
- "material_note": "RI-WPN05 §B: 'plant / root — root-wardens'. A sap-speaker is more Hist than Kothringi.",
+ "material_note": "RI-WPN05 \u00a7B: 'plant / root \u2014 root-wardens'. A sap-speaker is more Hist than Kothringi.",
  "stamina_max": 100,
  "radius_m": 0.4,
  "sight_radius_m": 22,
@@ -28,14 +28,14 @@
   "capsule_length_m": 0.95,
   "length_m": 1.05,
   "peak_tip_speed_mps_declared": 18.5,
-  "_socket_rule_note": "socket_a_dist_m is skeleton.json §weapon.socket_rule's grip_offset_m (0.10) because socket_a is wpn_guard. It was 0.30-0.45 in wave 1, which put the near end of the hitbox a third of a metre past the hands and gave every enemy a dead ring in front of its own chest that no pose could close (W1-09 round-4 measurement: min_axis 0.67-0.93 m). capsule_length_m follows from the two sockets.",
-  "_peak_declared_note": "RI-CMB04 §B declares peak_tip_speed_mps per PLAYER weapon class and nothing for enemies, so the enemy clips were the one part of the build no speed ceiling applied to. Adopted from the §B row whose capsule_length_m is nearest this weapon's (straight_sword, 0.95 m). PROVISIONAL: RI-CMB04 owns the column and may re-derive it."
+  "_socket_rule_note": "socket_a_dist_m is skeleton.json \u00a7weapon.socket_rule's grip_offset_m (0.10) because socket_a is wpn_guard. It was 0.30-0.45 in wave 1, which put the near end of the hitbox a third of a metre past the hands and gave every enemy a dead ring in front of its own chest that no pose could close (W1-09 round-4 measurement: min_axis 0.67-0.93 m). capsule_length_m follows from the two sockets.",
+  "_peak_declared_note": "RI-CMB04 \u00a7B declares peak_tip_speed_mps per PLAYER weapon class and nothing for enemies, so the enemy clips were the one part of the build no speed ceiling applied to. Adopted from the \u00a7B row whose capsule_length_m is nearest this weapon's (straight_sword, 0.95 m). PROVISIONAL: RI-CMB04 owns the column and may re-derive it."
  },
  "_declared_incomplete": {
   "owner": "W1-14 (this piece) declares it; enemy DECISION-MAKING is RI-AI01..07 / wave-1 piece W1-12",
   "what_is_real": [
    "the statblock, the melee move and the reposition are real and this archetype spawns",
-   "the `spells` block is a DECLARATION with every RI-AI02 / RI-MAG01 §F number stated, so AP-M1..AP-M6 are statically checkable against it and tools/analysis/magic-audit.mjs does check them"
+   "the `spells` block is a DECLARATION with every RI-AI02 / RI-MAG01 \u00a7F number stated, so AP-M1..AP-M6 are statically checkable against it and tools/analysis/magic-audit.mjs does check them"
   ],
   "what_is_NOT_real": [
    "this enemy does not cast. The player's cast state machine is implemented; the ENEMY's is not, because enemy action selection is W1-12's and this build's enemies execute scripted actions on declared frames (the RI-CMB07 M1 Mode-A instrument), not decisions.",
@@ -56,7 +56,8 @@
    "hitstop_frames": 5,
    "hitbox_radius_m": 0.085,
    "amplitude": 0.9,
-   "note": "RI-MAG01 §F: 'The caster is also a fighter.' A caster whose only behaviour is back-away-and-cast converts every fight into a chase. This is the required melee move."
+   "note": "RI-MAG01 \u00a7F: 'The caster is also a fighter.' A caster whose only behaviour is back-away-and-cast converts every fight into a chase. This is the required melee move.",
+   "reactable": true
   },
   "shoulder_turn": {
    "anim": "e_shoulder_turn",
@@ -73,7 +74,8 @@
    "amplitude": 0.7,
    "reposition": true,
    "reposition_kind": "advance",
-   "note": "The required NON-RETREAT reposition: it closes 1.6 m and it hits on the way. A caster that only backs away is a bad enemy."
+   "note": "The required NON-RETREAT reposition: it closes 1.6 m and it hits on the way. A caster that only backs away is a bad enemy.",
+   "reactable": true
   }
  },
  "spells": {
@@ -85,7 +87,7 @@
    "recovery_f": 20,
    "severity": "S3",
    "min_windup_required_f": 12,
-   "silhouette": "cast_point + sorcery hand shape — one hand snapped forward from the hip, elbow locked",
+   "silhouette": "cast_point + sorcery hand shape \u2014 one hand snapped forward from the hip, elbow locked",
    "geometry": {
     "kind": "projectile",
     "speed_mps": 22,
@@ -110,7 +112,7 @@
    "recovery_f": 28,
    "severity": "S6",
    "min_windup_required_f": 24,
-   "silhouette": "cast_draw + sorcery hand shape — the catalyst drawn ACROSS the centreline, which no other move in this kit does",
+   "silhouette": "cast_draw + sorcery hand shape \u2014 the catalyst drawn ACROSS the centreline, which no other move in this kit does",
    "geometry": {
     "kind": "projectile",
     "speed_mps": 16,
@@ -135,7 +137,7 @@
    "recovery_f": 40,
    "severity": "S6",
    "min_windup_required_f": 24,
-   "silhouette": "cast_gather + sorcery hand shape — HEAD DOWN, both arms low and wide, the only move in this kit that lowers the head",
+   "silhouette": "cast_gather + sorcery hand shape \u2014 HEAD DOWN, both arms low and wide, the only move in this kit that lowers the head",
    "geometry": {
     "kind": "volume",
     "shape": "sphere",
@@ -159,9 +161,10 @@
   }
  },
  "silhouette_distinctness": {
-  "rule": "RI-AI02 §D / AP-M6: two spells in one caster's kit may not share a windup silhouette and be distinguished only by particle colour.",
-  "how": "The three spells are three different CLASSES, so they are three different class archetypes in game/data/magic/cast-clips.json: cast_point (arm forward, head level, still walking), cast_draw (arms across the centreline, torso rotated), cast_gather (head DOWN, arms low and wide, feet planted). The differences are in the spine, the neck and the shoulders — measurable off the bone transforms with the particles switched off."
+  "rule": "RI-AI02 \u00a7D / AP-M6: two spells in one caster's kit may not share a windup silhouette and be distinguished only by particle colour.",
+  "how": "The three spells are three different CLASSES, so they are three different class archetypes in game/data/magic/cast-clips.json: cast_point (arm forward, head level, still walking), cast_draw (arms across the centreline, torso rotated), cast_gather (head DOWN, arms low and wide, feet planted). The differences are in the spine, the neck and the shoulders \u2014 measurable off the bone transforms with the particles switched off."
  },
  "armour_rating": 14,
- "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 §B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here."
+ "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 \u00a7B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here.",
+ "_reactable_note": "RI-CMB12 \u00a7A: `reactable` is DECLARED HERE, IN ADVANCE, and counts against the archetype's `reactable_share` (>= 0.70). An attack declaring `true` must measure `t_react = f_active - f_vis >= 19 f@60`, where f_vis is the frame the POSE first becomes distinguishable \u2014 not the frame the state label changes. Measured by tools/harness/cmb-exchange.mjs --probe react."
 }

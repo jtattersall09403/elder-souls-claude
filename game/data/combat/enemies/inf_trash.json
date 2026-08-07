@@ -9,7 +9,7 @@
  "hp": 412,
  "poise": 32,
  "material": "flesh",
- "material_note": "RI-WPN05 §B: 'flesh — Naga levy'. A marsh sentry is a man with a spear.",
+ "material_note": "RI-WPN05 \u00a7B: 'flesh \u2014 Naga levy'. A marsh sentry is a man with a spear.",
  "stamina_max": 100,
  "radius_m": 0.4,
  "sight_radius_m": 16,
@@ -28,8 +28,8 @@
   "capsule_length_m": 1.35,
   "length_m": 1.45,
   "peak_tip_speed_mps_declared": 23.5,
-  "_socket_rule_note": "socket_a_dist_m is skeleton.json §weapon.socket_rule's grip_offset_m (0.10) because socket_a is wpn_guard. It was 0.30-0.45 in wave 1, which put the near end of the hitbox a third of a metre past the hands and gave every enemy a dead ring in front of its own chest that no pose could close (W1-09 round-4 measurement: min_axis 0.67-0.93 m). capsule_length_m follows from the two sockets.",
-  "_peak_declared_note": "RI-CMB04 §B declares peak_tip_speed_mps per PLAYER weapon class and nothing for enemies, so the enemy clips were the one part of the build no speed ceiling applied to. Adopted from the §B row whose capsule_length_m is nearest this weapon's (greatsword, 1.35 m). PROVISIONAL: RI-CMB04 owns the column and may re-derive it."
+  "_socket_rule_note": "socket_a_dist_m is skeleton.json \u00a7weapon.socket_rule's grip_offset_m (0.10) because socket_a is wpn_guard. It was 0.30-0.45 in wave 1, which put the near end of the hitbox a third of a metre past the hands and gave every enemy a dead ring in front of its own chest that no pose could close (W1-09 round-4 measurement: min_axis 0.67-0.93 m). capsule_length_m follows from the two sockets.",
+  "_peak_declared_note": "RI-CMB04 \u00a7B declares peak_tip_speed_mps per PLAYER weapon class and nothing for enemies, so the enemy clips were the one part of the build no speed ceiling applied to. Adopted from the \u00a7B row whose capsule_length_m is nearest this weapon's (greatsword, 1.35 m). PROVISIONAL: RI-CMB04 owns the column and may re-derive it."
  },
  "attacks": {
   "chop": {
@@ -45,7 +45,8 @@
    "hitstop_frames": 6,
    "hitbox_radius_m": 0.095,
    "amplitude": 1,
-   "note": "P_safe = the 76-frame recovery. A straight sword R1 has Ps 25 f@60 (RI-CMB02 §A), so this window is punishable with 51 frames of slack."
+   "note": "P_safe = the 76-frame recovery. A straight sword R1 has Ps 25 f@60 (RI-CMB02 \u00a7A), so this window is punishable with 51 frames of slack.",
+   "reactable": true
   },
   "thrust": {
    "anim": "e_thrust",
@@ -59,7 +60,8 @@
    "root_dz_m": 1.2,
    "hitstop_frames": 5,
    "hitbox_radius_m": 0.08,
-   "amplitude": 1
+   "amplitude": 1,
+   "reactable": true
   },
   "combo_a": {
    "anim": "e_combo_a",
@@ -73,7 +75,8 @@
    "root_dz_m": 0.6,
    "hitstop_frames": 5,
    "hitbox_radius_m": 0.09,
-   "amplitude": 0.9
+   "amplitude": 0.9,
+   "reactable": true
   },
   "combo_b": {
    "anim": "e_combo_b",
@@ -87,7 +90,8 @@
    "root_dz_m": 0.8,
    "hitstop_frames": 6,
    "hitbox_radius_m": 0.095,
-   "amplitude": 1.05
+   "amplitude": 1.05,
+   "reactable": true
   }
  },
  "parley": {
@@ -109,10 +113,11 @@
  },
  "provenance": {
   "frame_data": "PROVISIONAL, constructed by W1-09 so that i-frame negation, blocking, guard break, poise, backstab and parley are demonstrable in a real trace. Enemy windup and punish-window DESIGN is RI-AI02/RI-AI03 and wave-1 piece W1-12; every figure here must be re-derived there. All values are f@60.",
-  "ai": "`scripted` — actions come from the scenario file on declared frames. This is the RI-CMB07 M1 Mode-A instrument, not an AI stub. W1-09 does not own when an enemy decides to swing.",
-  "parley": "ARBITRATION §1 as amended / seam S13. A humanoid faction NPC with no parley path is a DEFECT, so this one has four grounds."
+  "ai": "`scripted` \u2014 actions come from the scenario file on declared frames. This is the RI-CMB07 M1 Mode-A instrument, not an AI stub. W1-09 does not own when an enemy decides to swing.",
+  "parley": "ARBITRATION \u00a71 as amended / seam S13. A humanoid faction NPC with no parley path is a DEFECT, so this one has four grounds."
  },
  "armour_rating": 30,
- "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 §B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here.",
- "sight_radius_m_source": "RI-AI01 §B's archetype table: INFANTRY R = 16 m ±2. Round 1 shipped 14.0, which is inside the tolerance but is not the nominal, and RI-STL01 §2's worked table — the one method 2 asserts against within 5% — is computed at R = 16 for 'an INFANTRY enemy (R = 16 m) at 8 m'. Moved to the nominal by W1-15 round 2 so the item's own five rows are reproducible against the archetype the item names. Nothing in the fight reads this field; only perception does."
+ "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 \u00a7B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here.",
+ "sight_radius_m_source": "RI-AI01 \u00a7B's archetype table: INFANTRY R = 16 m \u00b12. Round 1 shipped 14.0, which is inside the tolerance but is not the nominal, and RI-STL01 \u00a72's worked table \u2014 the one method 2 asserts against within 5% \u2014 is computed at R = 16 for 'an INFANTRY enemy (R = 16 m) at 8 m'. Moved to the nominal by W1-15 round 2 so the item's own five rows are reproducible against the archetype the item names. Nothing in the fight reads this field; only perception does.",
+ "_reactable_note": "RI-CMB12 \u00a7A: `reactable` is DECLARED HERE, IN ADVANCE, and counts against the archetype's `reactable_share` (>= 0.70). An attack declaring `true` must measure `t_react = f_active - f_vis >= 19 f@60`, where f_vis is the frame the POSE first becomes distinguishable \u2014 not the frame the state label changes. Measured by tools/harness/cmb-exchange.mjs --probe react."
 }

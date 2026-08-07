@@ -1,0 +1,13 @@
+{
+  "task_id": "W1-TOOLS",
+  "brief": "inline (measurement instruments named by corpus but absent from disk)",
+  "started": "wave-1",
+  "state": "researching",
+  "outputs_expected": ["67 phantom tools named in C8 warnings from node tools/corpus-index.mjs"],
+  "outputs_written": [],
+  "findings": [
+    "Baseline: node tools/corpus-index.mjs reports 67 phantom tools (C8), 0 errors."
+  ],
+  "next_step": "read RI-MTH06 + RI-MTH07, then RI-CHR01/RI-CHR03 comparison methods, build tools/analysis/build-viability.mjs first",
+  "notes_for_successor": "Work tool-by-tool. After each tool, re-run corpus-index and append to outputs_written."
+}

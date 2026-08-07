@@ -1,0 +1,16 @@
+{
+  "task_id": "decomposition-architect",
+  "brief": "inline dispatch: enumerate unowned subsystem paths, assign owners, define new pieces, update docs/PLAN.md",
+  "started": "2026-08-07",
+  "state": "researching",
+  "outputs_expected": [
+    "docs/PLAN.md (amended)",
+    "orchestration/DECOMPOSITION-W1-PATHS.md (new-piece definitions + amendments)"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "BAR-CRITIQUE-W1-07-R1 claims 37 of 38 journey.*/input.*/experience.* paths declared by no wave-1 piece. To be verified."
+  ],
+  "next_step": "run tools/corpus-index.mjs; enumerate subsystems.json paths vs piece declared_paths across all wave-1 pieces",
+  "notes_for_successor": ""
+}

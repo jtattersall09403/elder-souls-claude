@@ -34,7 +34,7 @@ try {
     await h.h('camera', { pos: [p.x, p.y + 1.7, p.z], look: [p.x + Math.sin(yaw) * 40, p.y + 1.7 - 3.0, p.z + Math.cos(yaw) * 40], fov: 70 });
     await h.h('stepFrames', 24);
     await h.h('renderFrame');
-    await h.page.screenshot({ path: `${OUT}/${r.id}.png`, type: 'png', animations: 'disabled' });
+    await h.page.screenshot({ path: `${OUT}/${r.id}.png`, type: 'png', animations: 'disabled', timeout: 180000 });
     const st2 = await h.page.evaluate(() => window.__HARNESS.getWorldStats && window.__HARNESS.getWorldStats());
     rec.push({ region: r.id, x: +p.x.toFixed(1), z: +p.z.toFixed(1), stats: st2 && st2.province });
     console.log(r.id, JSON.stringify(rec[rec.length - 1].stats || {}));

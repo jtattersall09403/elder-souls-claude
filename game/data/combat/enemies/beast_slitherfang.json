@@ -13,7 +13,7 @@
   "head": "flesh",
   "jaw": "flesh"
  },
- "material_note": "RI-WPN05 §B: 'mire-crab, chitin-armoured'. A slitherfang is plated along the body and soft at the head, which is the whole reason material is per-REGION and not per-body: a thrust to the head beats a slash along the flank.",
+ "material_note": "RI-WPN05 \u00a7B: 'mire-crab, chitin-armoured'. A slitherfang is plated along the body and soft at the head, which is the whole reason material is per-REGION and not per-body: a thrust to the head beats a slash along the flank.",
  "stamina_max": 0,
  "radius_m": 0.5,
  "sight_radius_m": 16,
@@ -33,8 +33,8 @@
   "capsule_length_m": 0.8,
   "length_m": 0.9,
   "peak_tip_speed_mps_declared": 22,
-  "_socket_rule_note": "socket_a_dist_m is skeleton.json §weapon.socket_rule's grip_offset_m (0.10) because socket_a is wpn_guard. It was 0.30-0.45 in wave 1, which put the near end of the hitbox a third of a metre past the hands and gave every enemy a dead ring in front of its own chest that no pose could close (W1-09 round-4 measurement: min_axis 0.67-0.93 m). capsule_length_m follows from the two sockets.",
-  "_peak_declared_note": "RI-CMB04 §B declares peak_tip_speed_mps per PLAYER weapon class and nothing for enemies, so the enemy clips were the one part of the build no speed ceiling applied to. Adopted from the §B row whose capsule_length_m is nearest this weapon's (halberd, 0.75 m). PROVISIONAL: RI-CMB04 owns the column and may re-derive it."
+  "_socket_rule_note": "socket_a_dist_m is skeleton.json \u00a7weapon.socket_rule's grip_offset_m (0.10) because socket_a is wpn_guard. It was 0.30-0.45 in wave 1, which put the near end of the hitbox a third of a metre past the hands and gave every enemy a dead ring in front of its own chest that no pose could close (W1-09 round-4 measurement: min_axis 0.67-0.93 m). capsule_length_m follows from the two sockets.",
+  "_peak_declared_note": "RI-CMB04 \u00a7B declares peak_tip_speed_mps per PLAYER weapon class and nothing for enemies, so the enemy clips were the one part of the build no speed ceiling applied to. Adopted from the \u00a7B row whose capsule_length_m is nearest this weapon's (halberd, 0.75 m). PROVISIONAL: RI-CMB04 owns the column and may re-derive it."
  },
  "attacks": {
   "lunge": {
@@ -47,7 +47,8 @@
    "motion_value": 0.66,
    "root_dz_m": 2.2,
    "hitstop_frames": 5,
-   "hitbox_radius_m": 0.11
+   "hitbox_radius_m": 0.11,
+   "reactable": true
   },
   "whip": {
    "anim": "e_whip",
@@ -60,15 +61,17 @@
    "root_dz_m": 0.3,
    "hitstop_frames": 4,
    "hitbox_radius_m": 0.11,
-   "unblockable": false
+   "unblockable": false,
+   "reactable": true
   }
  },
  "parley": null,
  "provenance": {
-  "parley": "parley: null, DELIBERATELY. Seam S13: 'Beasts and mindless things are exempt — they have no parley and Souls owns them entirely.' The exemption is a declaration, not an omission: the input is dropped with a named reason and a PARLEY_EXEMPT event, so a critic can tell a designed exemption from a forgotten one.",
-  "winded": "RI-CMB09 §4 enemy symmetry: beasts have no stamina bar and instead go WINDED after >= 3 attacks in 6 s, with the same tell and the same x0.50 poise, for 75 f@60.",
+  "parley": "parley: null, DELIBERATELY. Seam S13: 'Beasts and mindless things are exempt \u2014 they have no parley and Souls owns them entirely.' The exemption is a declaration, not an omission: the input is dropped with a named reason and a PARLEY_EXEMPT event, so a critic can tell a designed exemption from a forgotten one.",
+  "winded": "RI-CMB09 \u00a74 enemy symmetry: beasts have no stamina bar and instead go WINDED after >= 3 attacks in 6 s, with the same tell and the same x0.50 poise, for 75 f@60.",
   "frame_data": "PROVISIONAL. Owner RI-AI05 / wave-1 piece W1-12."
  },
  "armour_rating": 18,
- "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 §B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here."
+ "_armour_rating_note": "Seam S19's consuming system for `corrode` (RI-MAG06 \u00a7B: \"the rating falls\"). A flat subtraction from every incoming damage number, applied in combat/resolve.js at the one site damage is computed. It was 0 everywhere in wave 1, which meant `corrode` had nothing to corrode and measured NOT_OBSERVED. Provisional: RI-CMB01 owns armour as a fight quantity and may re-derive every figure here.",
+ "_reactable_note": "RI-CMB12 \u00a7A: `reactable` is DECLARED HERE, IN ADVANCE, and counts against the archetype's `reactable_share` (>= 0.70). An attack declaring `true` must measure `t_react = f_active - f_vis >= 19 f@60`, where f_vis is the frame the POSE first becomes distinguishable \u2014 not the frame the state label changes. Measured by tools/harness/cmb-exchange.mjs --probe react."
 }
