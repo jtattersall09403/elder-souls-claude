@@ -1,6 +1,6 @@
 {
   "task_id": "W1-TOOLS-r2",
-  "brief": "orchestration/NEXT-DISPATCH.md §2 + corpus/80-methods/TOOL-COVERAGE-R1.md (NOT SATISFIED)",
+  "brief": "orchestration/NEXT-DISPATCH.md \u00a72 + corpus/80-methods/TOOL-COVERAGE-R1.md (NOT SATISFIED)",
   "started": "wave-1 round 2",
   "state": "researching",
   "outputs_expected": [
@@ -14,7 +14,9 @@
     "further C8 tools by min-over-axes priority"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "confirm boot with tools/harness/smoke.mjs; get true C8 count; read build-viability.mjs",
+  "findings": [
+    "BASELINE r2: node tools/harness/smoke.mjs PASS 6/6 (game boots, SwiftShader). node tools/corpus-index.mjs: C8 = 38 phantom tools, 0 errors. (Critic's 49/48 figure has moved down further as other agents ship.)"
+  ],
+  "next_step": "read tools/analysis/build-viability.mjs and the RI-MTH06 \u00a7A / RI-CHR01 spec",
   "notes_for_successor": "Round 2. Do NOT touch the seven accepted tools (journey/beat-extract, mw-open-beats.json, experience/{session-run,beat-extract,beat-diff,isolation-check,log-lint})."
 }

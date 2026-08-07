@@ -11,7 +11,7 @@
 > hands critics the wrong bar and lets builders start on unjudged work.
 > Check staleness in CI with `node tools/corpus-index.mjs --check`.
 
-Generated: 2026-08-07T08:31:48Z
+Generated: 2026-08-07T09:07:15Z
 
 This index satisfies CORPUS-CONTRACT §4. Its rules:
 
@@ -30,7 +30,7 @@ This index satisfies CORPUS-CONTRACT §4. Its rules:
 - Subsystems with at least one judging reference item: **324**
 - Subsystems judged by a doctrine document instead: **6** (see §3b)
 - **Corpus holes (no judging item): 0** (0%)
-- Front-matter problems: 0 error(s), 39 warning(s)
+- Front-matter problems: 0 error(s), 38 warning(s)
 
 | Root | Paths | Judged by RI | Judged by doctrine | Holes |
 |---|---:|---:|---:|---:|
@@ -928,7 +928,6 @@ _None._
 | WARN | `corpus/95-experience/RI-CMP02-emergence-fuzzing.md` | names phantom tool `tools/composition/probes-from-md.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/40-dialogue/RI-DLG01-topic-graph.md` | names phantom tool `tools/corpus/dump-dialogue-graph.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/40-dialogue/RI-DLG02-words-per-settlement.md, corpus/40-dialogue/RI-DLG03-greetings-and-rumours.md, corpus/40-dialogue/RI-DLG04-disposition-and-persuasion.md, corpus/40-dialogue/RI-DLG06-voice-differentiation.md` | names phantom tool `tools/corpus/dump-dialogue.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
-| WARN | `corpus/40-dialogue/RI-DLG05-journal.md, corpus/86-ui/RI-UIX02-no-marker-enforcement.md, corpus/86-ui/RI-UIX04-journal-ui.md` | names phantom tool `tools/corpus/dump-journal.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/40-dialogue/RI-DLG02-words-per-settlement.md` | names phantom tool `tools/corpus/dump-npcs.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/40-dialogue/RI-DLG01-topic-graph.md` | names phantom tool `tools/corpus/probe-combat-dialogue.mjs` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
 | WARN | `corpus/40-dialogue/RI-DLG06-voice-differentiation.md` | names phantom tool `tools/corpus/style-fingerprint.py` in its `## Comparison method` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is `corpus_debt`, not a zero against the build. |
