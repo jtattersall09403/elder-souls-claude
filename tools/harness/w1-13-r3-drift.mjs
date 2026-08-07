@@ -59,9 +59,10 @@ const out = {
     T2a: 'nothing of the BODY is carried: releasing the axis on the killing blow lands the body '
       + 'exactly where never pressing it lands it (within 0.05 m), at every well, from arms that '
       + 'were demonstrably walking when they died',
-    T2b: 'the head start `held-through` has over `held-after-only` is opened in the first ten '
-      + 'frames and not widened over the next 210 (rate delta within 0.25 m) — it is the analog '
-      + 'axis already being at full deflection, which is a true statement about a held stick',
+    T2b: 'the two held arms reach the SAME TERMINAL SPEED (frames 160-220 after the respawn, '
+      + 'within 0.05 m per 60 frames). Neither is travelling faster; one had a head start, and '
+      + 'the head start is the analog axis already being at full deflection, which is a true '
+      + 'statement about a held stick',
   },
   surface_frames: 150,
   stub_traversal_reset: !!args['stub-traversal-reset'],
@@ -144,7 +145,9 @@ try {
           // gap is a fixed head start, not a body carrying anything.
           H.stepFrames(10);
           const p10 = eng.sim.player.pos.slice();
-          H.stepFrames(210);
+          H.stepFrames(150);
+          const p160 = eng.sim.player.pos.slice();
+          H.stepFrames(60);
           const p1 = eng.sim.player.pos.slice();
           const d = (a) => (a ? +Math.hypot(a[0] - well.pos[0], a[2] - well.pos[2]).toFixed(3) : null);
           return {
@@ -159,6 +162,10 @@ try {
             at_the_respawn_frame_sampled_m: d(pAtSample),
             moved_first_10f_m: +Math.hypot(p10[0] - pAtSample[0], p10[2] - pAtSample[2]).toFixed(3),
             moved_next_210f_m: +Math.hypot(p1[0] - p10[0], p1[2] - p10[2]).toFixed(3),
+            // TERMINAL SPEED. Frames 160-220 after the respawn: any locomotion ramp in this
+            // build is over long before frame 160, so this is the arms' STEADY-STATE rate and
+            // it is the number that says whether one of them is genuinely travelling faster.
+            moved_last_60f_m: +Math.hypot(p1[0] - p160[0], p1[2] - p160[2]).toFixed(3),
             at_respawn_plus_220f_m: d(p1),
             drift_after_respawn_m: +Math.hypot(p1[0] - pAtSample[0], p1[2] - pAtSample[2]).toFixed(3),
           };
@@ -228,17 +235,21 @@ try {
         delta_m: +(a.moved_first_10f_m - b.moved_first_10f_m).toFixed(3) },
       next_210f: { held_through: a.moved_next_210f_m, held_after_only: b.moved_next_210f_m,
         delta_m: +(a.moved_next_210f_m - b.moved_next_210f_m).toFixed(3) },
+      terminal_speed_last_60f: { held_through: a.moved_last_60f_m, held_after_only: b.moved_last_60f_m,
+        delta_m: +(a.moved_last_60f_m - b.moved_last_60f_m).toFixed(3) },
       total_gap_m: +Math.abs(a.at_respawn_plus_220f_m - b.at_respawn_plus_220f_m).toFixed(3),
     });
   }
   out.t2b_the_gap_is_the_axis_ramp = {
     rows: ramp,
-    max_rate_delta_over_the_last_210f_m: ramp.length ? Math.max(...ramp.map((r) => Math.abs(r.next_210f.delta_m))) : null,
-    tolerance_m: 0.25,
-    pass: ramp.length > 0 && ramp.every((r) => Math.abs(r.next_210f.delta_m) <= 0.25),
-    _reading: 'A gap opened in the first ten frames and not widened over the next 210 is a HEAD '
-      + 'START, not a speed. The head start belongs to the input axis, which really is at full '
-      + 'deflection because the player really is holding it — and T2a shows that letting go '
+    max_terminal_speed_delta_m_per_60f: ramp.length ? Math.max(...ramp.map((r) => Math.abs(r.terminal_speed_last_60f.delta_m))) : null,
+    tolerance_m: 0.05,
+    pass: ramp.length > 0 && ramp.every((r) => Math.abs(r.terminal_speed_last_60f.delta_m) <= 0.05),
+    _reading: 'The predicate is on TERMINAL SPEED (frames 160-220 after the respawn), not on '
+      + 'distance, because distance over any window that contains a ramp is a ramp measurement. '
+      + 'Equal terminal speed with unequal distance means one arm has a HEAD START and neither '
+      + 'is travelling faster — and the head start belongs to the analog axis, which really is at '
+      + 'full deflection because the player really is holding it. T2a shows that letting go '
       + 'removes it completely.',
   };
 
@@ -264,7 +275,7 @@ try {
   log('');
   log(`T1 respawn frame exact: ${out.t1.pass ? 'PASS' : 'FAIL'} (max ${out.t1.max_at_respawn_frame_m} m)`);
   log(`T2a no carried momentum: ${out.t2a_no_carried_momentum.pass ? 'PASS' : 'FAIL'} (max ${out.t2a_no_carried_momentum.max_delta_m} m, release-at-death vs never-pressed)`);
-  log(`T2b the gap is the axis ramp: ${out.t2b_the_gap_is_the_axis_ramp.pass ? 'PASS' : 'FAIL'} (max rate delta over the last 210 f ${out.t2b_the_gap_is_the_axis_ramp.max_rate_delta_over_the_last_210f_m} m)`);
+  log(`T2b the gap is the axis ramp: ${out.t2b_the_gap_is_the_axis_ramp.pass ? 'PASS' : 'FAIL'} (max terminal-speed delta ${out.t2b_the_gap_is_the_axis_ramp.max_terminal_speed_delta_m_per_60f} m per 60 f)`);
 } finally {
   if (handle) await handle.close().catch(() => {});
 }

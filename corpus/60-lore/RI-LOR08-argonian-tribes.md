@@ -96,7 +96,7 @@ Recording these so the next agent does not read the omission as an oversight.
 
 #### The era note, taken seriously
 
-Four of the six are named in ESO material set in 2E 582 — a hundred and eighty decades before our
+Four of the six are named in ESO material set in 2E 582 — roughly seventeen centuries before our
 3E 427. Tribes are not institutions and do not need continuity of leadership to persist; what needs
 defending is any *specific* claim carried forward. So: the Miredancer office of **Sap-Speaker** and
 its sap-poisoning symptoms (gold tongue, bark-scale) are carried forward, because the source
@@ -368,6 +368,62 @@ things have changed about it:
    how a chain of custody becomes a chain of clean hands, and the player meets the factor.
 
 ---
+
+### 6. Verified tooling (run 2026-08-07, commit stamped in the report)
+
+`tools/lore/tribe-census.mjs` was written for this item's comparison method and did not exist before
+it. It refuses to count mentions.
+
+```
+$ node tools/lore/tribe-census.mjs
+build    : 347 npcs, 1221 dialogue infos, 116 books
+   ok   Agacephs     deep-marshes       npc 2  info 14  book 3  pos 4  refusal 2
+   ok   Paatru       clay-moor          npc 2  info 10  book 1  pos 1  refusal 2
+   ok   Sarpa        stone-forest       npc 1  info 5   book 1  pos 2  refusal 1
+   ok   Archein      blackwood          npc 2  info 11  book 1  pos 3  refusal 1
+   ok   Miredancers  eastern-rootlands  npc 2  info 19  book 2  pos 5  refusal 2
+   ok   Dead-Water   thornmarsh         npc 1  info 6   book 2  pos 2  refusal 1
+DIFFER   6 peoples, 15 pairs, worst overlap 0 of 5
+TRIBE CENSUS: PASS
+
+$ node tools/lore/tribe-census.mjs --self-test
+TRIBE CENSUS SELF-TEST: PASS (9/9)
+```
+
+The self-test breaks each check on purpose — a people with no NPC, a people with no info, the books
+removed, the register credited to nobody, the refusal topic emptied, a seventh people copied off the
+first — and confirms each goes red. Two of the nine assertions bracket the collision arithmetic from
+both sides: three shared axes must fail and two must not.
+
+**The one honest weakness, stated where a critic will find it.** The five axes live in prose in §2
+and the tool's table is a *transcription* of them. A builder who changed §2 and not the table would
+pass. What the tool does guarantee is that the collision count is not computed by the person who
+wants it to come out clean, and that the presence, position and refusal checks read the shipped
+build rather than this file.
+
+### 7. What the register does with them
+
+Measured on the same build with the instruments W1-23 left behind, before and after this item landed:
+
+| | before | after |
+|---|---|---|
+| registered disputes | 21 | **27** |
+| disputes fully voiced from every position | 21 / 21 | **27 / 27** |
+| contradiction edges in shipped books, registered | 50 / 50 | **57 / 57**, unregistered 0 |
+| topics on which two real people give incompatible registered answers | 4 | **10** |
+| registered lines that vanish when a holder is struck from the register | 11 / 11 | **43 / 43** |
+| people in the province holding at least one registered position | 336 / 336 | **347 / 347** |
+| registered facts carrying a date or an explicit undated horizon | 12 (8 pre-Third-Era) | **14 (10 pre-Third-Era)** |
+
+The perturbation is the number that matters. Strike the Agacephs out of CF-D027 position B and the
+Agaceph guide stops having a view about the high walks — not a duller view, no view. A people's
+position is a game object here, which is the whole difference between a society and a set of
+adjectives.
+
+**And the fail-closed direction was tested rather than assumed.** Pointing CF-D027/A at an actor no
+NPC carries takes `boot-check` from PASS to a thrown `canon register: 1 unresolved reference`. The
+content was written before the assertion, and the assertion was then confirmed to be live by
+breaking it.
 
 ## Comparison method
 

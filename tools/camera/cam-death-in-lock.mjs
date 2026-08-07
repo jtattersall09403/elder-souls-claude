@@ -112,7 +112,10 @@ function runInPage(opts) {
   // =======================================================================================
   const SCENARIOS = [
     { id: 'levy-dies-while-player-runs', arch: 'cam_levy', second: 'cam_levy', d: 4.0, drive: 'run' },
-    { id: 'levy-dies-while-player-strafes', arch: 'cam_levy', second: 'cam_levy', d: 3.5, drive: 'strafe' },
+    // d was 3.5 and the aggroed levy then stood still for the whole run: already inside its own
+    // reach, it swung on the spot and never took a step, so the lock spring was tracking a
+    // stationary object and the run proved nothing. 5.5 m makes it close the distance.
+    { id: 'levy-dies-while-player-strafes', arch: 'cam_levy', second: 'cam_levy', d: 5.5, drive: 'strafe' },
     { id: 'boss-dies-while-player-runs', arch: 'cam_boss_mid', second: 'cam_levy', d: 6.0, drive: 'run' },
     // POSITIVE CONTROL, and the reason it is here. The three runs above all report a heading
     // swing of exactly 0.000 deg after the kill, which is correct — RI-CAM02 §D forbids the
@@ -126,6 +129,12 @@ function runInPage(opts) {
   ];
   const KILL_AT = 240;            // frames of live fight before the killing blow
   const AFTER = 150;              // 2.5 s of watching what the camera does next
+  // The sprint control needs longer: 5 frames to swing the view off the body's heading, then
+  // 20 clear frames for RI-CAM02 §E's gate (it requires no look input at all), then enough
+  // frames for the recentre to visibly close the error.
+  const SPRINT_AFTER = 330;
+  const SWING_F = 5;              // frames of look input used to build the yaw error
+  const SETTLE_F = 40;            // kill + this = the frame the swing window starts at
 
   for (const S of SCENARIOS) {
     H.setSeed(20260807);
@@ -152,12 +161,21 @@ function runInPage(opts) {
       else ev.move = [Math.cos(t * 2.3) * 0.95, Math.sin(t * 0.9) * 0.4];
       // The sprint control: held from the kill onward, straight forward, which is what
       // RI-CAM02 §E's 20-frame gate wants (speed ≥ 0.90 of sprint, forward dominance ≥ 0.70).
-      if (S.sprintAfter && f >= KILL_AT) { ev.move = [0, 1]; if (f === KILL_AT) ev.press = ['sprint']; }
+      if (S.sprintAfter && f >= KILL_AT) {
+        ev.move = [0, 1];
+        if (f === KILL_AT) ev.press = ['sprint'];
+        // RI-CAM02 §E closes the CAMERA yaw onto the PLAYER yaw. Running straight forward with
+        // the camera already behind the body leaves nothing to close — which is exactly why the
+        // first version of this control reported 0 deg and looked like the game was at fault.
+        // So: swing the view 100 deg off the heading first, then stop looking entirely.
+        if (f < KILL_AT + SWING_F) ev.look = [20, 0];
+      }
       H.queueInputs([ev]);
     };
 
     let killFrame = -1, releaseFrame = -1, hoppedTo = null;
-    for (let f = 0; f < KILL_AT + AFTER; f++) {
+    const after_n = S.sprintAfter ? SPRINT_AFTER : AFTER;
+    for (let f = 0; f < KILL_AT + after_n; f++) {
       if (f === KILL_AT) { H.killEntity(eid); killFrame = rows.length; }
       drive(f);
       H.stepFrames(1);
@@ -177,6 +195,7 @@ function runInPage(opts) {
         clip: !!c.clip_through, arm: c.arm_len_m,
         pivot_dy: c.pivot[1] - p[1],
         pivot_dxz: Math.hypot(c.pivot[0] - p[0], c.pivot[2] - p[2]),
+        recentre_active: !!c.recentre_active,
       });
       if (releaseFrame < 0 && killFrame >= 0 && rows[rows.length - 1].lock_target === null) releaseFrame = rows.length - 1;
       if (releaseFrame >= 0 && hoppedTo === null && rows[rows.length - 1].lock_target) hoppedTo = rows[rows.length - 1].lock_target;
@@ -192,6 +211,11 @@ function runInPage(opts) {
     // which is exactly the failure a per-frame cut test alone would miss.
     const headingSwing15 = Math.abs(ang180(rows[Math.min(rows.length - 1, killFrame + 15)].yaw_deg - rows[killFrame].yaw_deg));
     const headingSwing60 = Math.abs(ang180(rows[Math.min(rows.length - 1, killFrame + 60)].yaw_deg - rows[killFrame].yaw_deg));
+    // The sprint control's own window: from after the deliberate swing to the end of the run.
+    const swingStart = Math.min(rows.length - 1, killFrame + SETTLE_F);
+    const recentreSwing = Math.abs(ang180(rows[rows.length - 1].yaw_deg - rows[swingStart].yaw_deg));
+    const recentreWindow = rows.slice(swingStart);
+    const recentreCut = cuts(recentreWindow);
 
     const rec = {
       target: S.arch, second_enemy_present: true, sprint_after_kill: !!S.sprintAfter,
@@ -208,6 +232,9 @@ function runInPage(opts) {
       cut_after_death_deg_per_frame: cutAfter.max_deg_per_frame,
       heading_swing_15f_deg: r3(headingSwing15),
       heading_swing_60f_deg: r3(headingSwing60),
+      recentre_window_swing_deg: r3(recentreSwing),
+      recentre_window_cut_deg_per_frame: recentreCut.max_deg_per_frame,
+      recentre_active_frames: recentreWindow.filter((r) => r.recentre_active).length,
       pivot_dxz_p100_after: r3(Math.max(...after.map((r) => r.pivot_dxz))),
       pivot_dy_p100_after: r3(Math.max(...after.map((r) => Math.abs(r.pivot_dy)))),
       clip_frames_after: after.filter((r) => r.clip).length,
@@ -247,14 +274,16 @@ function runInPage(opts) {
     '(a recentre-on-kill shows up here even when it is smooth enough to pass D3a)');
   // The control that makes the line above mean something.
   chk('D3b_control_sprint_DOES_move_the_heading',
-    sprinted.length > 0 && sprinted.every((v) => v.heading_swing_60f_deg > 2.0),
-    `holding sprint after the kill swung the heading ${sprinted.map((v) => v.heading_swing_60f_deg).join(', ')} deg ` +
-    'in 60 f. If this were also 0, D3b would be structurally unfalsifiable and the three quiet ' +
-    'runs would prove nothing.');
+    sprinted.length > 0 && sprinted.every((v) => v.recentre_window_swing_deg > 20.0 && v.recentre_active_frames > 30),
+    `after the kill, swinging the view 100 deg off the heading and then holding sprint drove the ` +
+    `camera back by ${sprinted.map((v) => v.recentre_window_swing_deg).join(', ')} deg over ` +
+    `${sprinted.map((v) => v.recentre_active_frames).join(', ')} frames of active recentre. ` +
+    'This is the control: the quantity D3b measures IS able to move, so the zeros above are the ' +
+    'game declining to turn the camera for you rather than the probe failing to look.');
   chk('D3b_control_recentre_stays_inside_its_clamp',
-    sprinted.every((v) => v.cut_after_death_deg_per_frame <= 1.5 + 1e-6),
+    sprinted.every((v) => v.recentre_window_cut_deg_per_frame <= 1.5 + 1e-6),
     `worst single-frame view change while the sprint recentre runs = ` +
-    `${sprinted.map((v) => v.cut_after_death_deg_per_frame).join(', ')} deg (RI-CAM02 §E clamps ` +
+    `${sprinted.map((v) => v.recentre_window_cut_deg_per_frame).join(', ')} deg (RI-CAM02 §E clamps ` +
     'the recentre at 90 deg/s = 1.500 deg/frame)');
   chk('the_target_was_alive_and_moving_before_the_kill',
     V.every((v) => v.target_path_m > 1.0),

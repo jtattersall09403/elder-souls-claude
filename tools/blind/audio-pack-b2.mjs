@@ -139,7 +139,11 @@ function profile(cap) {
   let pk = 0; for (let i = 0; i < M.length; i++) pk = Math.max(pk, Math.abs(M[i]));
   return {
     duration_s: +(M.length / fs).toFixed(1),
-    loudness_lufs: +lufsI(M, fs).toFixed(2),
+    // RI-AUD03 SectionC: clips are normalised to -23 LUFS-I "so that loudness carries no
+    // information". The source level is therefore NOT reported -- reporting it would hand the
+    // judge a channel the item deliberately closes. Caught by this critic's own RI-MTH03 M6
+    // leak audit after the first pack was built with the true level in it.
+    loudness_lufs: -23.0,
     crest_factor_db: +(20 * Math.log10(pk / Math.max(1e-9, Math.pow(10, (lufsI(M, fs) + 0.691) / 20)))).toFixed(1),
     spectral_centroid_hz: +num.toFixed(0),
     stereo_correlation: +corr.toFixed(3),

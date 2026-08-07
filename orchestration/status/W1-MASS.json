@@ -1,0 +1,22 @@
+{
+  "task_id": "W1-MASS",
+  "title": "weapon.feel.mass — fix the tip-speed / follow-through / continuity failure handed on by W1-11",
+  "brief": "dispatch message; specification is orchestration/status/W1-11.json (MASS findings)",
+  "started": "wave-1",
+  "state": "researching",
+  "declared_paths": ["weapon.feel.mass"],
+  "git_head_at_start": "5863a06",
+  "contention_at_start": {"headless_shell": 17, "loadavg": "13.62 16.00 13.58", "note": "ABOVE the cap of 8 — declaration/authoring work first, browser later"},
+  "outputs_expected": [
+    "the shape of the declaration change, written down before any edit",
+    "list of pieces holding determinism baselines against clip bytes",
+    "the fix in game/src/combat/swing.js and/or weapon declarations",
+    "a browser CONSUMPTION verification with a MOVING target and a delete-the-fix control",
+    "docs/shots/<date>-W1-MASS-*.png",
+    "one line in reports/blog-feed.jsonl"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read RI-WPN* §E and §E.2, ARBITRATION.md S22, then swing.js and the weapon declarations",
+  "notes_for_successor": "Frame convention is BINDING: Souls tick data is 1/30 s, ours 60 Hz, so every Souls figure doubles. Write f@60 and t@30, never a bare frame count. See ARBITRATION.md S22."
+}
