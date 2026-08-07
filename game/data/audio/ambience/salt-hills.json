@@ -194,7 +194,7 @@
   "emitters": [
     {
       "id": "legion_horn",
-      "text": "the legion horn on the hour: a diegetic clock at a fixed place, so hearing it tells you both the time and the bearing to the fort (R7).",
+      "text": "the legion horn on the hour: a diegetic clock at a fixed place, so hearing it tells you both the time and the bearing to the fort (R7). ROUND 2 — `phase` 0.002 puts the first strike 7.2 s into a capture, i.e. the §C clip is DELIBERATELY taken across the hour. That is a declared bias and it is declared because RI-AUD03 §C leans on it: the grading key gives Salt Hills (dry, open, living) and it gives The Clay Moor the same triple, so those two are separated by Q3 — horn versus kiln — exactly as the four (wet, open, living) regions are. An hourly event has a 0.6 % duty cycle in a 20 s window; a capture that does not phase it cannot separate the pair, and a capture that does must say so.",
       "pos_m": [
         1982,
         706
@@ -227,7 +227,9 @@
           "decay_s": 2.4
         },
         "gain_db": -4
-      }
+      },
+      "mode": "strike",
+      "phase": 0.002
     }
   ],
   "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",

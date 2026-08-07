@@ -15,7 +15,7 @@
     "open_enclosed": "open",
     "living_dead": "living"
   },
-  "bed_lufs_target": -24,
+  "bed_lufs_target": -24.5,
   "crossfade_s": 4,
   "max_voices": 8,
   "denies": [],
@@ -232,7 +232,7 @@
   "emitters": [
     {
       "id": "bell_buoy",
-      "text": "one bell buoy audible from 600 m — a fixed POSITIONAL landmark (R7). A player who has learned the bell can locate themselves in fog, which is the ambience contribution to S8: the world tells you where you are by sound because it is not allowed to tell you with an arrow.",
+      "text": "one bell buoy audible from 600 m — a fixed POSITIONAL landmark (R7). A player who has learned the bell can locate themselves in fog, which is the ambience contribution to S8: the world tells you where you are by sound because it is not allowed to tell you with an arrow. ROUND 2: the period was 13 s, which rang the buoy 92 times in a twenty-minute walk. RI-AUD03 §How-we-lose names exactly that — \"someone finds them atmospheric and raises the rate to every 15 seconds; identity becomes irritation, and the positional emitters stop being navigational because a landmark you hear constantly carries no position\". 60 s is a bell on an ocean swell and is inside the L4 rarity band (45–180 s) the item checks its other one-shots against.",
       "pos_m": [
         398,
         4486
@@ -243,7 +243,7 @@
       "classes": [
         "navigation"
       ],
-      "period_s": 13,
+      "period_s": 60,
       "synth": {
         "kind": "grain",
         "source": "osc",
@@ -259,7 +259,9 @@
           "decay_s": 3.2
         },
         "gain_db": -5
-      }
+      },
+      "phase": 0.12,
+      "mode": "strike"
     }
   ],
   "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",

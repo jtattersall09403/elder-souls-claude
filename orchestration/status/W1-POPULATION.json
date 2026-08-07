@@ -2,7 +2,7 @@
   "task_id": "W1-POPULATION",
   "brief": "inline (world population builder): hostile population + encounters",
   "started": "2026-08-07",
-  "state": "building",
+  "state": "complete",
   "outputs_expected": [
     "game/data/world/<population/encounter data>",
     "engine consumer wiring",
@@ -19,7 +19,14 @@
     "game/src/engine.js (data branches for population.json/population-posts.json; import + construct; _streamPopulation() from _afterStep; reset on loadState and applySave; spawnEncounter opts.tag/opts.yaw)",
     "game/src/sim/death.js (respawnOrdinary bumps ordinaryRespawnEpoch - the half of S5 that lives outside sim.entities)",
     "game/src/harness/api.js (populationReport(), setPopulation() ablation switch)",
-    "game/data/index.json (regenerated, 538 -> 545)"
+    "game/data/index.json (regenerated, 538 -> 545)",
+    "tools/world/population-consumption.mjs (NEW: the RI-MTH07 CONSUMPTION probe, 9 checks in 8 arms A1..A8, every one with a control that must go the other way; kill-safe restore)",
+    "tools/world/population-shots.mjs (NEW: before/after frames through tools/capture/, declared evidence_of 'composition' — appearance only, never arrival)",
+    "reports/world/population/consumption.json (A0-A4, 5/5 substantive checks at 0b2d6ef)",
+    "reports/world/population/consumption-a5a8.json (A7, A8x3 PASS; A6 first run FAILED and the instrument was wrong)",
+    "docs/shots/2026-08-07-population-road-after-populated.png (+ sidecar; three hostiles resident beside the trunk)",
+    "reports/blog-feed.jsonl (one line)",
+    "tools/world/build-population.mjs (poi -> rings_poi on garrison posts; RI-WLD02 §1 landmine)"
   ],
   "findings": [
     "START CONTENTION: pgrep -c headless_shell = 18, loadavg 8.05 -- at/above the cap of 8. Authoring phase first, no browser.",
@@ -70,6 +77,6 @@
     "MY OWN MISTAKE, REPORTED BECAUSE SOMEBODY LOSES BY IT: reports/blog-feed.jsonl is a SHARED APPEND-ONLY LOG and I read-modify-wrote it. I appended a line, then later wanted to correct a number in it, so I read the file, popped the last line and re-appended. In between, other agents had appended ten lines of their own -- so the line I popped was NOT mine, it was somebody else's, and it is gone. The file is untracked in git so there is no baseline to recover it from, and I could not identify the piece from the status files. THE RULE: only ever append to blog-feed.jsonl; to correct a line, append a corrected one. Fifteen agents write this file.",
     "GATES AFTER THE WIRING: check-data 0 (545 indexed files), check-quests 0 (120 quests), check-content 0 (383 resolutions), boot-check PASS. Taken at pgrep -c headless_shell = 24 and loadavg 21.47 -- booleans only, no timing claimed."
   ],
-  "next_step": "SUCCESSOR-2 RESUMED at 0b2d6ef, pgrep=0 loadavg 0.80 (quiet box, browser phase viable). Writing tools/world/population-consumption.mjs now, then ONE browser for: baseline walk / ablation / model perturbation regenerate+reload / composition swap / S5 respawn / still-vs-walking. Then docs/shots + blog line.",
-  "notes_for_successor": "Do NOT touch quest givers - W1-GIVER-PRESENCE owns those. I own hostiles + encounters."
+  "next_step": "DONE for this run. The one arm never obtained is A5 (regenerate population-posts.json from a perturbed population.json, REBOOT, re-census): attempted three times, abandoned each time at 25-40 min with pgrep -c headless_shell 24-48 and loadavg 17-21. It now costs two browser boots and NO walking (standingCensus), so on a quiet box it is a few minutes: `node tools/world/population-consumption.mjs --arms A5`. Run it and the piece is 9 for 9.",
+  "notes_for_successor": "Do NOT touch quest givers - W1-GIVER-PRESENCE owns those. I own hostiles + encounters. THREE THINGS THAT WILL SAVE YOU TIME: (1) walkRoute() does not clear its input queue, so stepFrames() after it keeps walking - call clearInputs() and assert the drift, or your 'still' control is a 877 m walk. (2) A post materialises at up to 170 m and the widest sight_radius_m in the roster is 20 m, so a behaviour probe must CLOSE THE DISTANCE before concluding anything about perception. (3) A finally block does not run on SIGTERM - the signal handlers now in population-consumption.mjs are the only reason a killed run leaves the canonical placement on disk. Also: blog-feed.jsonl is append-only, never read-modify-write it."
 }

@@ -16,7 +16,7 @@
 | Worst instrument still standing | **`tools/analysis/build-viability.mjs`**, fifth round |
 | C8 now | **26**, 0 errors (`node tools/corpus-index.mjs`) — unchanged |
 | Harness state | `node tools/harness/boot-check.mjs` **PASS** before and after every measurement. `smoke.mjs` never boots the engine and was not used. |
-| Self-test | **39 PASS / 1 FAIL**, run to completion (~40 min). The builder never finished it. |
+| Self-test | **`build-viability self-test: FAIL (49/51)`** — run to completion for the first time (~37 min). The builder never finished it. |
 
 **What round 5 got right, and it is a great deal.** The four synthetic constants are genuinely
 gone: `gold = 1e9` is now a sum over real `rewards[]`, ranks come from the shipping
@@ -226,7 +226,7 @@ as `deep_kin`'s**. Two ladders share one flag triple.
 ## 6. Attack 6 — **the self-test is red**, and only running it to the end shows it
 
 The builder shipped with the battery still running and reported anyway. Run to completion at
-`0b2d6ef`: **two failures**, both in the walk-based half that nobody had ever reached.
+`0b2d6ef`, the battery's own last line is **`build-viability self-test: FAIL (49/51)`** — two failures, both in the walk-based half that nobody had ever reached.
 
 **Failure 1 — the seed ladder cannot saturate.**
 

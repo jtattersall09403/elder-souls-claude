@@ -194,7 +194,7 @@
   "emitters": [
     {
       "id": "kiln",
-      "text": "the kiln itself: a fixed industrial roar you can steer by (R7)",
+      "text": "the kiln itself: a fixed industrial roar you can steer by (R7), and the one emitter of the four that is CONTINUOUS rather than struck — §B files it under Clay Moor's L2 as \"kiln roar (proximity-driven)\" while R7 names it a positional emitter, and both are true of a source whose level and pan are functions of where you stand. It declares no `period_s` for that reason. ROUND 2: it previously had a `kind: \"noise\"` synth and no code path but `buildGrain()`, which would have rendered a brown-noise roar as a 440 Hz sine blip had anything ever reached it.",
       "pos_m": [
         3743,
         2010
@@ -220,7 +220,8 @@
           "lfo_hz": 0.19,
           "depth": 0.22
         }
-      }
+      },
+      "mode": "continuous"
     }
   ],
   "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
