@@ -38,6 +38,14 @@ export class Census {
     this.asked = null;
     this.askedIndex = 0;
     this.transcript = [];
+    // Everything the speaker has said since the last thing the player was asked. The round-2
+    // verdict found the ten questions were computed and thrown away; the same was true of every
+    // REPLY in the graph — `on_answer`, `on_refusal`, the birthsign `scribe_line`, the
+    // conditional branches at `writ.strange-check`, and `on_match_named_class`, which is the
+    // line RI-CHR01 §4 calls "the moment the route is for". All of them were written into the
+    // transcript and none was ever drawn. They are drawn now, as the speaker's reply above the
+    // next thing she asks, which is also how a conversation works.
+    this.spoken = [];
     this.flags = [];
     this.character = null;
     this.done = false;
@@ -71,6 +79,9 @@ export class Census {
       place: n.place,
       beat: n.beat || null,
       line: this._interpolate(n.line || ''),
+      // What she said about the last thing you told her, in the order she said it. Drawn above
+      // the current line by render/ui.js. Empty at the first node of the scene.
+      spoken: (this.spoken || []).map((s) => ({ from: s.from, line: s.line })),
       sets: n.sets || null,
       input: n.input ? { kind: n.input.kind, options: this._options(n) } : null,
       full_screen: false,
@@ -92,6 +103,23 @@ export class Census {
     return out;
   }
 
+  /**
+   * Resolve an `excludes` spec-field name to the set of ids it has already claimed. Unknown
+   * names resolve to the empty set rather than throwing: a data file that names a field this
+   * function does not know must not be able to take the fixed step down with it.
+   */
+  _excluded(field) {
+    const c = this.spec.custom;
+    if (!field || !c) return new Set();
+    const map = {
+      favoured_attributes: c.favoured,
+      neglected_attributes: c.neglected,
+      primary_skills: c.primary,
+      secondary_skills: c.secondary,
+    };
+    return new Set(map[field] || []);
+  }
+
   _options(n) {
     const inp = n.input;
     if (!inp) return null;
@@ -103,11 +131,18 @@ export class Census {
       const ex = new Set(inp.excludes || []);
       return this.data.birthsigns.signs.filter((s) => !ex.has(s.id)).map((s) => ({ id: s.id, text: s.name, aside: s.scribe_line }));
     }
+    // `excludes` on these two is a SPEC FIELD NAME, not a list of ids — "favoured_attributes"
+    // means "the two she has already written down". Round 2 ignored it here, so the neglected
+    // node offered attributes the player had just chosen as favoured, and picking one threw
+    // `census: writ.class-custom-neglected cannot repeat strength` out of the fixed step from
+    // eight button presses. An option that cannot legally be taken must not be on the list.
     if (inp.source === 'progression/attributes.json#attributes') {
-      return this.data.attributes.attributes.map((a) => ({ id: a.id, text: a.name }));
+      const ex = this._excluded(inp.excludes);
+      return this.data.attributes.attributes.filter((a) => !ex.has(a.id)).map((a) => ({ id: a.id, text: a.name }));
     }
     if (inp.source === 'progression/skills.json#skills') {
-      return this.data.skills.skills.map((s) => ({ id: s.id, text: s.name }));
+      const ex = this._excluded(inp.excludes);
+      return this.data.skills.skills.filter((s) => !ex.has(s.id)).map((s) => ({ id: s.id, text: s.name }));
     }
     return null;
   }
@@ -122,6 +157,7 @@ export class Census {
     const rec = { node: n.id, value };
 
     if (this.paused) throw new Error('census: the scene is waiting for the player to reach the Writ House; call censusEnter() when they do');
+    this.spoken = [];
     switch (n.id) {
       case 'hold.hatch-name': {
         if (value === 'refuse' || value === null || value === '') {
@@ -212,23 +248,37 @@ export class Census {
         rec.question = q.id;
         this.askedIndex++;
         if (this.askedIndex >= this.asked.length) {
-          const s = scoreAnswers(this.data, this.answers);
+          const s = scoreAnswers(this.data, this.answers, { asked: this.asked });
           this.questionnaireResult = s;
           // No named match: the shape is still one of the six families (sheet.familyOfSkills),
           // and the Warden-Scribe writes what she saw rather than leaving the box empty.
           const fit = familyOfSkills(this.data, s.primary, s.secondary);
           const writeIn = this.data.classes.family_write_in[fit.family];
           this.spec.custom = {
-            name: s.matched_class ? classById(this.data, s.matched_class).name : writeIn,
+            name: writeIn,
             family: fit.family,
             favoured: s.favoured, neglected: s.neglected, primary: s.primary, secondary: s.secondary,
           };
-          if (s.matched_class) {
-            this.spec.classId = s.matched_class;
+          if (s.named_class) {
+            // She has a word for it. The character takes the profession — the questionnaire is
+            // the third door to the SAME object route A reaches (RI-CHR01 §4's own title), not
+            // a third kind of object. `named_via` records whether the shape was the profession
+            // to the skill or was rounded to it, and both lines are authored separately.
+            const c = classById(this.data, s.named_class);
+            this.spec.classId = c.id;
             this.spec.custom = null;
-            rec.line = n.on_match_named_class.replace('%ClassName', classById(this.data, s.matched_class).name);
+            const tmpl = s.named_via === 'exact'
+              ? n.on_match_named_class
+              : (n.on_nearest_named_class || n.on_match_named_class);
+            rec.line = tmpl.replace(/%ClassName/g, c.name);
+            rec.named_class = c.id;
+            rec.named_via = s.named_via;
+            rec.named_fit = s.nearest_profession ? s.nearest_profession.fit : null;
           } else {
             rec.line = n.on_no_match;
+            rec.named_class = null;
+            rec.named_via = null;
+            rec.named_fit = s.nearest_profession ? s.nearest_profession.fit : null;
           }
           this._advance('writ.birthsign');
         }
@@ -252,6 +302,7 @@ export class Census {
       default: throw new Error(`census: node ${n.id} takes no answer`);
     }
     this.transcript.push(rec);
+    if (rec.line) this.spoken.unshift({ from: n.id, line: this._interpolate(rec.line) });
     return this.state();
   }
 
@@ -272,7 +323,11 @@ export class Census {
       if (n.kind === 'conditional') {
         if (n.branches) {
           for (const b of n.branches) {
-            if (this._matches(b.when)) { this.transcript.push({ node: b.id, line: b.line }); this.flags.push(b.sets_flag); }
+            if (this._matches(b.when)) {
+              this.transcript.push({ node: b.id, line: b.line });
+              this.spoken.push({ from: b.id, line: this._interpolate(b.line) });
+              this.flags.push(b.sets_flag);
+            }
           }
           this.nodeId = n.next;
           continue;
@@ -284,7 +339,9 @@ export class Census {
       if (n.hands_control_back) { this.paused = true; this.transcript.push({ node: n.id, line: n.line }); return; }
       if (n.terminates_creation) { this._finish(); return; }
       if (n.input) return;                              // somebody is waiting for an answer
-      this.transcript.push({ node: n.id, line: this._interpolate(n.line || '') });
+      const narr = this._interpolate(n.line || '');
+      this.transcript.push({ node: n.id, line: narr });
+      if (narr) this.spoken.push({ from: n.id, line: narr });
       this.nodeId = n.next;
     }
     throw new Error('census: the graph did not settle in 16 hops — a node cycle');

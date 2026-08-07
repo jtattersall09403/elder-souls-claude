@@ -69,7 +69,7 @@ footer{color:var(--dim);font-size:11px;padding:24px 28px;border-top:1px solid va
 </style></head><body>
 <header>
   <h1>Elder Souls &mdash; Argonia</h1>
-  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-06 23:37Z</div>
+  <div class="sub">A browser game: Morrowind's world, Dark Souls' combat, in Black Marsh &middot; updated 2026-08-07 06:07Z</div>
   <nav role="tablist">
     <button role="tab" id="t-blog" aria-selected="true" aria-controls="p-blog">Blog</button>
     <button role="tab" id="t-prog" aria-selected="false" aria-controls="p-prog">Build status</button>
@@ -227,12 +227,12 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 <div class="wrap">
 
 <div class="grid">
-  <div class="card"><div class="n">143</div><div class="l">Reference items</div></div>
-  <div class="card"><div class="n">469</div><div class="l">Subsystems judged</div></div>
+  <div class="card"><div class="n">144</div><div class="l">Reference items</div></div>
+  <div class="card"><div class="n">471</div><div class="l">Subsystems judged</div></div>
   <div class="card"><div class="n">27</div><div class="l">Verdicts filed</div></div>
   <div class="card"><div class="n bad">0/27</div><div class="l">Verdicts passing</div></div>
   <div class="card"><div class="n warn">13</div><div class="l">Open gaps</div></div>
-  <div class="card"><div class="n">109,116</div><div class="l">Game LOC</div></div>
+  <div class="card"><div class="n">109,929</div><div class="l">Game LOC</div></div>
   <div class="card"><div class="n">21</div><div class="l">Quests</div></div>
   <div class="card"><div class="n">1,035</div><div class="l">Dialogue words</div></div>
   <div class="card"><div class="n ok">0/0</div><div class="l">Bar gates met</div></div>
@@ -287,7 +287,7 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 <tr><td><code>CRM</code></td><td></td><td>2</td><td style="width:40%"><div class="bar"><i style="width:24%"></i></div></td></tr>
 <tr><td><code>DLG</code></td><td>Dialogue &amp; journal</td><td>9</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
 <tr><td><code>EXP</code></td><td></td><td>6</td><td style="width:40%"><div class="bar"><i style="width:72%"></i></div></td></tr>
-<tr><td><code>JRN</code></td><td></td><td>8</td><td style="width:40%"><div class="bar"><i style="width:96%"></i></div></td></tr>
+<tr><td><code>JRN</code></td><td></td><td>9</td><td style="width:40%"><div class="bar"><i style="width:100%"></i></div></td></tr>
 <tr><td><code>LOR</code></td><td>Lore &amp; canon</td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
 <tr><td><code>MAG</code></td><td></td><td>6</td><td style="width:40%"><div class="bar"><i style="width:72%"></i></div></td></tr>
 <tr><td><code>MTH</code></td><td>Measurement</td><td>7</td><td style="width:40%"><div class="bar"><i style="width:84%"></i></div></td></tr>
@@ -366,6 +366,7 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 <tr><td><code>RI-JRN06</code></td><td>Death and recovery, end to end — die, lose, respawn, run back, get it back</td><td>structure</td><td><span class="tag souls">souls</span></td><td>constructed</td><td>&mdash;</td><td><code>journey.death.recovery combat.death.corpserun combat.death.worldreset</code></td></tr>
 <tr><td><code>RI-JRN07</code></td><td>A quest end to end without markers — rumour, giver, prose, landmark, resolution, journal</td><td>structure</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>journey.quest.unmarked quests.discovery.hooks journal.navigation.nomarkers</code></td></tr>
 <tr><td><code>RI-JRN08</code></td><td>Returning after a week — can a cold player rebuild their own intentions from in-game information alone?</td><td>structure</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td><span class="ok">yes</span></td><td><code>journey.reentry.orientation journal.entry.voice journal.navigation.nomarkers</code></td></tr>
+<tr><td><code>RI-JRN09</code></td><td>The opening as an exchange — did the scene reach the player, were the answers consumed, and did anyone say what you are</td><td>number</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td>&mdash;</td><td><code>journey.opening.exchange journey.opening.legibility</code></td></tr>
 <tr><td><code>RI-LOR01</code></td><td>Black Marsh and Argonian canon dossier — what we may not contradict, and where we must invent</td><td>text</td><td><span class="tag morrowind">morrowind</span></td><td>canonical-recall</td><td>&mdash;</td><td><code>lore.canon lore.hist lore.factions lore.history world.settlements quests.main quests.factions dialogue.claims books.content</code></td></tr>
 <tr><td><code>RI-LOR02</code></td><td>Era selection and the political brief — Black Marsh, 3E 427</td><td>text</td><td><span class="tag morrowind">morrowind</span></td><td>constructed</td><td>&mdash;</td><td><code>lore.era lore.factions lore.politics quests.main quests.factions quests.escalation dialogue.rumours world.settlements world.travel</code></td></tr>
 <tr><td><code>RI-LOR03</code></td><td>The structure of an Elder Scrolls in-world book — length stats, taxonomy, and six full exemplars</td><td>text</td><td><span class="tag morrowind">morrowind</span></td><td>canonical-recall</td><td><span class="ok">yes</span></td><td><code>books.content books.length books.taxonomy lore.canon dialogue.claims quests.lorehooks ui.readables</code></td></tr>
@@ -506,11 +507,11 @@ dagger/BLOCK      SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 <tr><td>books</td><td>0</td></tr>
 <tr><td>dialogueWords</td><td>1,035</td></tr>
 <tr><td>settlements</td><td>8</td></tr>
-<tr><td>source files</td><td>92</td></tr>
+<tr><td>source files</td><td>93</td></tr>
 </table>
 
 <h2>Latest captures</h2>
-<div class="shots"><figure><img src="../reports/w1-07/scene/shots/07-writ.class-questions.png"><figcaption>07-writ.class-questions.png</figcaption></figure><figure><img src="../reports/w1-07/scene/shots/08-writ.class-questions.png"><figcaption>08-writ.class-questions.png</figcaption></figure><figure><img src="../reports/w1-07/scene/shots/09-writ.class-questions.png"><figcaption>09-writ.class-questions.png</figcaption></figure><figure><img src="../reports/w1-07/scene/shots/10-writ.class-questions.png"><figcaption>10-writ.class-questions.png</figcaption></figure><figure><img src="../reports/w1-07/scene/shots/11-writ.class-questions.png"><figcaption>11-writ.class-questions.png</figcaption></figure><figure><img src="../reports/w1-07/scene/shots/12-writ.class-questions.png"><figcaption>12-writ.class-questions.png</figcaption></figure><figure><img src="../reports/w1-07/scene/shots/13-writ.class-questions.png"><figcaption>13-writ.class-questions.png</figcaption></figure><figure><img src="../reports/w1-07/scene/shots/14-writ.class-questions.png"><figcaption>14-writ.class-questions.png</figcaption></figure><figure><img src="../reports/w1-07/scene/shots/15-writ.class-questions.png"><figcaption>15-writ.class-questions.png</figcaption></figure><figure><img src="../reports/w1-07/scene/shots/16-writ.class-questions.png"><figcaption>16-writ.class-questions.png</figcaption></figure><figure><img src="../reports/w1-07/scene/shots/17-writ.birthsign.png"><figcaption>17-writ.birthsign.png</figcaption></figure><figure><img src="../reports/w1-07/scene/shots/18-stamped.png"><figcaption>18-stamped.png</figcaption></figure></div>
+<div class="shots"><figure><img src="../reports/w1-07/scene/shots/17-writ.birthsign.png"><figcaption>17-writ.birthsign.png</figcaption></figure><figure><img src="../reports/w1-07/scene/shots/18-stamped.png"><figcaption>18-stamped.png</figcaption></figure><figure><img src="../reports/w1-14-r3/vfx/after_impact.png"><figcaption>after_impact.png</figcaption></figure><figure><img src="../reports/w1-14-r3/vfx/control.png"><figcaption>control.png</figcaption></figure><figure><img src="../reports/w1-14-r3/vfx/impact.png"><figcaption>impact.png</figcaption></figure><figure><img src="../reports/w1-14-r3/vfx/inflight_1.png"><figcaption>inflight_1.png</figcaption></figure><figure><img src="../reports/w1-14-r3/vfx/inflight_2.png"><figcaption>inflight_2.png</figcaption></figure><figure><img src="../reports/w1-14-r3/vfx/inflight_3.png"><figcaption>inflight_3.png</figcaption></figure><figure><img src="../reports/w1-14-r3/vfx/lit_midnight.png"><figcaption>lit_midnight.png</figcaption></figure><figure><img src="../reports/w1-14-r3/vfx/lit_noon.png"><figcaption>lit_noon.png</figcaption></figure><figure><img src="../reports/w1-14-r3/vfx/release.png"><figcaption>release.png</figcaption></figure><figure><img src="../reports/w1-14-r3/vfx/residue20s.png"><figcaption>residue20s.png</figcaption></figure></div>
 
 </div>
 <footer>

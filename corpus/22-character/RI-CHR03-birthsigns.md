@@ -186,6 +186,15 @@ appears on the character sheet has failed (`RI-CHR01` §6.5).
    end-to-end viable with ≥ 4 of the 6 families**, and **assert The Dry Well is viable with ≥ 1
    family and non-viable with ≥ 2** — the trap must be a real trap and must not be a universal
    one. A sign viable with 6/6 families has no drawback that matters.
+
+   > **AMENDED wave 1 — `BAR-CRITIQUE-W1-07-R1` §R2.5. While `tools/analysis/build-viability.mjs`
+   > does not exist, the Decidability axis is `corpus_debt`: removed from the min-over-axes
+   > aggregation, reported at `unmeasurable`, and filed against `RI-MTH06` — not scored 0 against
+   > the build.** The reasoning is `RI-CHR01` method 6's, in full, and the effect here is the same:
+   > this item aggregates min-over-axes, so an axis no build can measure pinned `RI-CHR03`'s native
+   > score at **0 for every build that will ever exist**, and did, in both `W1-07` rounds. The
+   > axis keeps its `≥ 4 of 6`, `≥ 1 / ≥ 2` and `6/6 ⇒ 0` thresholds verbatim and returns to the
+   > min the day the tool does.
 6. **Visibility.** Static analysis over `game/data/dialogue/**`: **assert ≥ 9 rootkeeper
    greeting lines keyed on `birthsign`, one per sign; ≥ 4 birthsign-gated topics; ≥ 1
    birthsign-gated quest.** Harness: create a Spilled character, rest, die, **assert a keeper
@@ -223,11 +232,38 @@ binary.
 Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
 **No threshold in this item was changed.**
 
-| Ladder | 4 | 6 | 8 |
-|---|---|---|---|
-| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+| Ladder | 0 | 2 | 4 | 6 | 8 |
+|---|---|---|---|---|---|
+| Native | 0 / 10 | 2 / 10 | 4 / 10 | 6 / 10 | 8 / 10 |
 
-**Aggregation (a property of this item, not of the critic):** min-over-axes.
+> **AMENDED wave 1 — `BAR-CRITIQUE-W1-07-R1` §R5.** 0 and 2 rungs added; reasoning in full at
+> `RI-CHR01`. This item recorded `native_score: 0` in `W1-07` round 2 and was translated to ladder
+> **4** on a row that said nothing below 4.
+
+**Aggregation (a property of this item, not of the critic):** min-over-axes, over the axes that are
+**measurable**; axes in `corpus_debt` are excluded from the min and reported separately.
+
+### CONSUMPTION (`RI-MTH07` / `ARBITRATION` §3) — *(ADDED wave 1, `BAR-CRITIQUE-W1-07-R1` §R4)*
+
+1. **Enumerate exhaustively:** `birthsigns.json`'s nine records, the three power families, each
+   mechanical and conditional drawback, the `Kaal-Kaal` composition rule, the re-cut prerequisite
+   and price, the respawn-graph term, and the nine rootkeeper greeting lines.
+2. **Perturb and observe** per `RI-MTH07` §B, entity-side, with the null control.
+3. **Apply the consequence:** any `coupling == 0` scores **that axis 0**, fail-closed. There is no
+   `partial`.
+4. **The distinction this item must keep, because wave 1 blurred it.** Round 2 perturbed
+   `birthsigns.json` and moved live `focus_max` 74 → 46, with `Kaal-Kaal` composing at exactly
+   half — a genuine, well-executed coupling proof, and it should be read as one. **And** across
+   everything the critic could drive, **Focus never fell below max**: 90/90 before a cast attempt,
+   90/90 after, 90/90 after resting. The Dry Well's drawback is *implemented* and *unobservable*,
+   and the verdict recorded `PARTIAL — unobservable`.
+   **`RI-MTH07` has no `partial`.** The honest disposition is: `coupling > 0` on the composition
+   model (it is), **and** the Drawback-reality axis at **0** by its own method 2, whose assertion is
+   about a quantity that must *move*. A drawback that removes a refill you never need has removed
+   nothing, which is this item's own definition of a drawback that is not real. The
+   cross-piece nature of the cause (something must spend Focus, and that is `W1-14`'s) makes it a
+   **seam debt recorded against the `W1-07`↔`W1-14` seam**, per `CORPUS-CONTRACT` §4 rule 1 — not a
+   third disposition invented at the item.
 
 ## How we lose
 

@@ -25,6 +25,7 @@ const gameEffects = rd('game/data/magic/effects.json');
 const spells = rd('game/data/magic/spells.json');
 const classes = rd('game/data/magic/cast-classes.json');
 const ench = rd('game/data/magic/enchanting.json');
+const birthsigns = rd('game/data/progression/birthsigns.json');
 const byId = Object.fromEntries(gameEffects.effects.map((e) => [e.id, e]));
 
 const R = { schema: 'elder-souls/magic-audit@1', checks: {} };
@@ -198,13 +199,33 @@ const rec = (id, pass, detail) => { R.checks[id] = { pass, ...detail }; };
   });
 
   // A real cross-item conflict, filed rather than smoothed over.
-  rec('CROSS_ITEM_CONFLICT_birthsign_focus_absorption', false, {
-    conflict: "game/data/progression/birthsigns.json (W1-07, RI-CHR03) ships 'The Dry Well', an Atronach analogue whose power is 'You absorb 55% of the magnitude of any spell effect that lands on you, as Focus' and whose text states 'Focus is refilled only by absorption and by consumables'.",
-    why_it_matters: "RI-MAG01 §A: 'Anything that restores Focus in the field — a potion, a merchant, a shrine, a slow trickle, a focus regen stat — deletes RI-MAG02's bounds on levitation and RI-MAG03's bounds on spellmaking simultaneously. It is an automatic fail of this item.' Absorption is a field restore and consumables are named explicitly.",
-    what_this_build_does: 'NOT IMPLEMENTED. There is no absorption path and no consumable that restores Focus anywhere in game/src. The live check (mag-probe MAG01_M3) drinks every consumable across 4,200 frames and observes zero rises. The conflict is in the DATA and the prose, not in the simulation.',
-    owner: 'RI-CHR03 / RI-MAG01 jointly. Two readings are available and one of them has to be chosen by a ruling, not by a builder: (a) The Dry Well trades regeneration it never had for absorption, which RI-MAG01 §A forbids outright; (b) The Dry Well becomes the sign that trades a LARGER Focus pool for something else entirely, keeping RI-MAG01 §A intact. This build behaves as (b) by omission and does not pretend the text agrees.',
-    reported_as: 'W1-14 gap, filed by the builder against its own item.',
-  });
+  // WAS an unconditional `rec(..., false, ...)` — a conflict the builder filed against its own
+  // item and could not resolve, because RI-CHR03 gave The Dry Well a power (55% spell
+  // absorption) and a drawback ("no Focus regeneration of any kind") that RI-MAG01 §A made
+  // respectively illegal and unobservable. **S27 ruled it, wave 1**: Focus never regenerates for
+  // anybody, it is restored at a hearth and nowhere else, a sign may grant Focus as a DISCRETE
+  // ONE-SHOT and never as a rate, and The Dry Well's drawback is that its bearer's hearth rest
+  // does not restore Focus at all. The data was amended to match and the absorption is now a
+  // real, consumed, one-shot path (`magic/system.js:absorbOnHit`). This is the check that S27
+  // was actually asking for, run against the data rather than asserted.
+  {
+    const dry = (birthsigns.signs || []).find((x) => x.id === 'nu-ixtu');
+    const abs = dry && (dry.power.effects || []).find((e) => e.kind === 'spell_absorption');
+    const drawbackIsHearth = !!(dry && dry.drawback && dry.drawback.removes_system === 'hearth_focus_restore');
+    const absIsOneShot = !!(abs && String(abs.note || '').includes('one-shot'));
+    // and nothing anywhere may declare a RATE
+    const blob = JSON.stringify(birthsigns);
+    const noRate = !/focus_regen|focus_per_second|focus_regeneration_rate/i.test(blob);
+    rec('S27_birthsign_focus', drawbackIsHearth && absIsOneShot && noRate, {
+      ruling: 'ARBITRATION S27, wave 1',
+      drawback_removes: dry && dry.drawback ? dry.drawback.removes_system : null,
+      drawback_is_hearth_denial: drawbackIsHearth,
+      absorption_declared_one_shot: absIsOneShot,
+      no_regeneration_rate_declared_anywhere: noRate,
+      consumed_by: 'game/src/sim/magic/system.js absorbOnHit() — a discrete grant per effect that lands on you, and never on an effect you cast yourself, so it cannot become a rate.',
+      note: "Wave 1 derived `spell_absorption` in character/derive.js and consumed it nowhere, so the sign's power was as unobservable as its drawback. Both halves are live now.",
+    });
+  }
 }
 
 // ============================== RI-MAG03 M3/M8 — enchanting + economy ========================

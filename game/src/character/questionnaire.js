@@ -33,7 +33,7 @@ export function selectQuestions(data, race, upbringing) {
  * Score a set of answers. `answers` is [{questionId, answerId}]; order is irrelevant.
  * Returns the three primaries, two secondaries, two favoured and two neglected attributes.
  */
-export function scoreAnswers(data, answers) {
+export function scoreAnswers(data, answers, opts = {}) {
   const qs = new Map(data.creationQuestions.questions.map((q) => [q.id, q]));
   const skillOrder = skillIds(data);
   const attrOrder = attributeIds(data);
@@ -64,11 +64,88 @@ export function scoreAnswers(data, answers) {
   // in dialogue/creation-questions.json#scoring. Without it the route breaks sum-zero.
   const neglected = attrRanked.slice().reverse().filter((a) => favoured.indexOf(a) < 0).slice(0, 2);
 
+  const skill_weights = Object.fromEntries(skillOrder.map((s) => [s, skillWeight.get(s)]));
+  const matched_class = matchNamedClass(data, primary, secondary);
+
+  // The word she writes in the box. `matched_class` is set only when the derived shape IS a
+  // named class to the skill; `nearest` is what a clerk with fourteen words and a tally sheet
+  // actually does. See nearestProfession() for why the two are different questions.
+  const askedQuestions = opts.asked || answers.map((a) => qs.get(a.questionId)).filter(Boolean);
+  const nearest = nearestProfession(data, askedQuestions, skill_weights);
+  const floor = professionFloor(data);
+  const named_class = matched_class || (nearest && nearest.fit >= floor ? nearest.id : null);
+
   return {
-    skill_weights: Object.fromEntries(skillOrder.map((s) => [s, skillWeight.get(s)])),
+    skill_weights,
     attribute_weights: Object.fromEntries(attrOrder.map((a) => [a, attrWeight.get(a)])),
     primary, secondary, favoured, neglected,
-    matched_class: matchNamedClass(data, primary, secondary),
+    matched_class,
+    named_class,
+    named_via: matched_class ? 'exact' : (named_class ? 'nearest' : null),
+    nearest_profession: nearest,
+    profession_floor: floor,
+  };
+}
+
+/**
+ * The floor under which the Warden-Scribe admits she has no word for you. Lives in
+ * `dialogue/creation-questions.json#scoring.nearest_profession_floor` so that a critic can
+ * move it and watch the outcome move — CONSUMPTION, RI-MTH07 §3.
+ */
+export function professionFloor(data) {
+  const sc = data.creationQuestions.scoring || {};
+  const v = sc.nearest_profession_floor;
+  return Number.isFinite(v) ? v : 4;
+}
+
+/**
+ * Expected weight of each skill under uniform answering over a given question set. This is the
+ * whole trick, and it is worth the paragraph.
+ *
+ * Skills are not evenly distributed across the 48 answers — `speechcraft` is weighted by many
+ * more answers than `polearms` is. So a raw dot product against a class's skill set is a
+ * measure of how *common* that class's skills are in the questionnaire, not of what the player
+ * chose: measured over 41,943,040 routes, the raw product picks only 5 of the 14 classes ever,
+ * and over a 240-run play sweep it picks 5. Subtracting the expected weight turns the score
+ * into "how much more of this than chance", and the same sweep then reaches 14 of 14.
+ */
+export function expectedWeights(data, askedQuestions) {
+  const e = new Map(skillIds(data).map((s) => [s, 0]));
+  for (const q of askedQuestions) {
+    const n = q.answers.length || 1;
+    for (const a of q.answers) for (const s of a.weights) e.set(s, (e.get(s) || 0) + 1 / n);
+  }
+  return e;
+}
+
+/**
+ * RI-CHR01 §4: "at the end of it I will have a word for you, and it will be a better word than
+ * the one you would have picked" — the Warden-Scribe's own shipped line, and a description of
+ * this function. She has fourteen words on her list and a tally of what you said. She writes
+ * the nearest one, or she writes that she has none.
+ *
+ * @returns {null|{id, fit, margin, runner_up}} fit is in units of answers-above-chance.
+ */
+export function nearestProfession(data, askedQuestions, skillWeights) {
+  if (!askedQuestions || !askedQuestions.length) return null;
+  const e = expectedWeights(data, askedQuestions);
+  const classes = data.classes.classes;
+  const scored = classes.map((c, i) => {
+    let fit = 0;
+    for (const k of Object.keys(c.skills)) {
+      const w = (skillWeights[k] || 0) - (e.get(k) || 0);
+      fit += (c.skills[k] === 25 ? 3 : 2) * w;
+    }
+    // Round to a tenth: the tie-break must not turn on float noise, and two runs of the same
+    // answers must not disagree.
+    return { id: c.id, fit: Math.round(fit * 10) / 10, i };
+  });
+  scored.sort((a, b) => (b.fit - a.fit) || (a.i - b.i));
+  return {
+    id: scored[0].id,
+    fit: scored[0].fit,
+    margin: Math.round((scored[0].fit - scored[1].fit) * 10) / 10,
+    runner_up: scored[1].id,
   };
 }
 
@@ -92,6 +169,12 @@ export function matchNamedClass(data, primary, secondary) {
  * level, deduplicating on the vector, which is exhaustive (every route's vector is generated)
  * and about two orders of magnitude cheaper. `routes_enumerated` is reported so a critic can
  * see that the whole product was covered rather than sampled.
+ *
+ * TWO reachability questions, and the round-2 verdict is the reason they are both answered
+ * here. `classes` is the set reachable by EXACT shape identity — the strict reading, and the
+ * one that is true in principle and never happens in play. `named` is the set the Warden-Scribe
+ * actually says out loud, which is exact identity OR the nearest profession above the floor.
+ * A route that reaches 11 classes on paper and 0 in 240 plays has not shipped a questionnaire.
  */
 export function reachableClasses(data, askedQuestions, opts = {}) {
   const skillOrder = skillIds(data);
@@ -99,6 +182,7 @@ export function reachableClasses(data, askedQuestions, opts = {}) {
   const n = skillOrder.length;
   const table = maskClassTable(data, idx);
   const found = new Set();
+  const namedFound = new Set();
   const w = new Int32Array(n);
   const qs = askedQuestions;
   // Answers pre-resolved to skill indices, so the hot loop touches no strings and no Maps.
@@ -106,6 +190,30 @@ export function reachableClasses(data, askedQuestions, opts = {}) {
   const depth = qs.length;
   const top = new Int32Array(5);
   let routes = 0;
+  let namedRoutes = 0;
+
+  // --- the nearest-profession score, maintained incrementally down the recursion. `fit[c]`
+  // is class c's bias-corrected score for the partial answer set; `cw[c*n+s]` is its weight
+  // on skill s; `base[c]` is the constant -sum(cw*E) so the leaf never re-subtracts chance.
+  const classes = data.classes.classes;
+  const C = classes.length;
+  const cw = new Float64Array(C * n);
+  const base = new Float64Array(C);
+  const floor = professionFloor(data);
+  {
+    const e = expectedWeights(data, qs);
+    for (let c = 0; c < C; c++) {
+      const cls = classes[c];
+      for (const k of Object.keys(cls.skills)) {
+        const si = idx.get(k);
+        const v = cls.skills[k] === 25 ? 3 : 2;
+        cw[c * n + si] = v;
+        base[c] -= v * (e.get(k) || 0);
+      }
+    }
+  }
+  const fit = new Float64Array(C);
+  for (let c = 0; c < C; c++) fit[c] = base[c];
 
   const leaf = () => {
     routes++;
@@ -122,7 +230,12 @@ export function reachableClasses(data, askedQuestions, opts = {}) {
     for (let i = 0; i < 3; i++) m3 |= 1 << top[i];
     for (let i = 3; i < 5; i++) m2 |= 1 << top[i];
     const hit = table.get(m3 * 524288 + m2);
-    if (hit) found.add(hit);
+    if (hit) { found.add(hit); namedFound.add(hit); namedRoutes++; return; }
+    // Nearest profession. Ties go to the earlier class in the roster, exactly as
+    // nearestProfession() does, so the two cannot disagree.
+    let bi = 0, bf = fit[0];
+    for (let c = 1; c < C; c++) if (fit[c] > bf) { bf = fit[c]; bi = c; }
+    if (Math.round(bf * 10) / 10 >= floor) { namedFound.add(classes[bi].id); namedRoutes++; }
   };
 
   const rec = (i) => {
@@ -130,15 +243,23 @@ export function reachableClasses(data, askedQuestions, opts = {}) {
     const opts2 = answerIdx[i];
     for (let a = 0; a < opts2.length; a++) {
       const ws = opts2[a];
-      for (let s = 0; s < ws.length; s++) w[ws[s]]++;
+      for (let s = 0; s < ws.length; s++) { const si = ws[s]; w[si]++; for (let c = 0; c < C; c++) fit[c] += cw[c * n + si]; }
       rec(i + 1);
-      for (let s = 0; s < ws.length; s++) w[ws[s]]--;
+      for (let s = 0; s < ws.length; s++) { const si = ws[s]; w[si]--; for (let c = 0; c < C; c++) fit[c] -= cw[c * n + si]; }
     }
   };
   rec(0);
 
   const out = [...found].sort();
-  if (opts.detail) return { classes: out, routes_enumerated: routes };
+  if (opts.detail) {
+    return {
+      classes: out,
+      named: [...namedFound].sort(),
+      routes_enumerated: routes,
+      routes_named: namedRoutes,
+      named_fraction: routes ? +(namedRoutes / routes).toFixed(6) : 0,
+    };
+  }
   return out;
 }
 

@@ -315,9 +315,9 @@ const ARCH = {
  */
 const EXT_CH = { lowerarm_r: 'rx', upperarm_r: 'rx' };
 
-function buildArch(def, t, swing, ext, bury, cham) {
+function buildArch(def, t, swing, ext, bury, cham, hitFrac) {
   const tracks = {};
-  const hp = def.bury ? (def.hitFrac === undefined ? 0.5 : def.hitFrac) : 1.0;
+  const hp = def.bury ? (hitFrac === undefined ? (def.hitFrac === undefined ? 0.5 : def.hitFrac) : hitFrac) : 1.0;
   const B = def.bury ? bury : 0;
   const C = def.chamber ? cham : 0;
   for (const bone of Object.keys(def.tracks)) {
@@ -364,9 +364,15 @@ function buildArch(def, t, swing, ext, bury, cham) {
         [1.0, r(v1)],
       ];
       if (hp < 1.0) {
-        keys.push([1.0 + hp * 0.5, r(seg(v1, hit, 0.5))]);
+        // Both active sub-segments are split into THREE, not one. A smoothstep segment peaks at
+        // 1.5x its own mean rate, so a single key from `hit` to `bury` spends half the frames of
+        // the swing travelling at 1.5x the speed the frame count implies — which is most of why
+        // the arc archetypes could not fit under RI-CMB04 §B's column once the bury was inside
+        // the window. Subdividing pushes the local rate toward the mean without changing a
+        // single pose.
+        for (let i = 1; i <= 2; i++) keys.push([1.0 + hp * (i / 3), r(seg(v1, hit, i / 3))]);
         keys.push([1.0 + hp, r(hit)]);
-        keys.push([1.0 + hp + (1 - hp) * 0.5, r(seg(hit, endActive, 0.5))]);
+        for (let i = 1; i <= 3; i++) keys.push([1.0 + hp + (1 - hp) * (i / 4), r(seg(hit, endActive, i / 4))]);
         keys.push([2.0, r(endActive)]);
       } else {
         keys.push([1.25, r(seg(v1, hit, 0.25))]);
@@ -610,25 +616,28 @@ const solved = {};
 for (const name of Object.keys(ARCH)) {
   const rows = rowsFor(name);
   const def = ARCH[name];
-  const buryOpts = def.bury ? [1.0, 0.85, 0.7, 0.55] : [0];
+  const buryOpts = def.bury ? [1.0, 0.85, 0.7, 0.55, 0.4] : [0];
   const chamOpts = def.chamber ? [1.0, 0.85, 0.7, 0.55] : [0];
   let best = null, closest = null;
   for (const bury of buryOpts) {
    for (const cham of chamOpts) {
+    for (const hitFrac of (def.bury ? [0.2, 0.3, 0.45, 0.6] : [1])) {
     for (let t = 0.00; t <= 0.801; t += 0.05) {
       for (let ext = 0; ext <= 70; ext += 5) {
         let hit = null;
-        for (let swing = 1.30; swing >= 0.10; swing -= 0.05) {
-          const a = buildArch(def, t, swing, ext, bury, cham);
+        for (let swing = 1.30; swing >= 0.05; swing -= 0.05) {
+          const a = buildArch(def, t, swing, ext, bury, cham, hitFrac);
           const m = measureArch(name, a, rows);
           const miss = Math.max(0, m.peak - PEAK_MAX) * 6 + Math.max(0, REACH_MIN - m.reach) * 3 + Math.max(0, m.axis - MIN_AXIS_MAX);
-          if (!closest || miss < closest.miss - 1e-9) closest = { a, m, t, swing, ext, bury, cham, miss };
-          if (miss === 0) { hit = { a, m, t, swing, ext, bury, cham }; break; }
+          if (!closest || miss < closest.miss - 1e-9) closest = { a, m, t, swing, ext, bury, cham, hitFrac, miss };
+          if (miss === 0) { hit = { a, m, t, swing, ext, bury, cham, hitFrac }; break; }
         }
         // Prefer the deepest bury, then the largest swing, then the smallest extension.
         if (hit && (!best || hit.swing > best.swing + 1e-9)) best = hit;
         if (hit) break;         // smallest feasible ext at this (bury, t)
       }
+    }
+    if (best) break;
     }
     if (best) break;
    }
@@ -639,7 +648,7 @@ for (const name of Object.keys(ARCH)) {
     console.log(`${name.padEnd(16)} NO feasible point: peak ${best.m.peak.toFixed(3)}x (${best.m.peakRow}) reach ${best.m.reach.toFixed(3)}x (${best.m.reachRow}) min_axis ${best.m.axis.toFixed(3)} m (${best.m.axisRow})`);
   }
   solved[name] = best.a;
-  console.log(`${name.padEnd(16)} t=${best.t.toFixed(2)} swing=${best.swing.toFixed(2)} ext=${best.ext} bury=${best.bury} chamber=${best.cham}  ` +
+  console.log(`${name.padEnd(16)} t=${best.t.toFixed(2)} swing=${best.swing.toFixed(2)} ext=${best.ext} bury=${best.bury} chamber=${best.cham} hitFrac=${best.hitFrac}  ` +
     `peak=${best.m.peak.toFixed(3)}x (${best.m.peakRow})  reach=${best.m.reach.toFixed(3)}x (${best.m.reachRow})  min_axis=${best.m.axis.toFixed(3)} m (${best.m.axisRow})  ` +
     `world_peak=${best.m.world.toFixed(1)} m/s  travel=${best.m.travelRadii.toFixed(2)} radii/frame (${best.m.travelRow})`);
 }

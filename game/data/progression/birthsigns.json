@@ -305,7 +305,7 @@
       "drawback": {
         "kind": "conditional",
         "summary": "You receive that second sign's drawback at FULL magnitude.",
-        "detail": "Choosing The Dry Well gives you x1.30 Focus and 27.5% absorption AND zero Focus regeneration. Choosing The Unlit Water gives you -10% detection radius and a 10 s invisibility AND the full Shadowscale claim. Choosing a Given sign gives you half a modest power and nothing else, which is legal, safe, and the reason this sign is not simply the best one.",
+        "detail": "Choosing The Dry Well gives you x1.30 Focus and 27.5% absorption AND, at full magnitude, a hearth rest that restores no Focus at all — S27, and the reason the drawback is worth taking seriously now that it removes something a player has. Choosing The Unlit Water gives you -10% detection radius and a 10 s invisibility AND the full Shadowscale claim. Choosing a Given sign gives you half a modest power and nothing else, which is legal, safe, and the reason this sign is not simply the best one.",
         "implementation_warning": "The single most likely implementation bug is halving the drawback too. If it lands, Two-Drink is strictly the best sign in the game and eight of the nine are dead."
       },
       "balance": {

@@ -58,7 +58,7 @@ for (let z = 0; z < ROWS; z++) for (let x = 0; x < COLS; x++) {
     const px = x * CELL + ux * CELL, pz = z * CELL + uz * CELL;
     const d = field.depthAt(px, pz, PLAN_TIDE);
     const sl = field.slopeAt(px, pz, 12);
-    const mud = field.substrateAt(px, pz) === 'SUCK' && d >= 0.01 ? 9 : 0;
+    const mud = field.substrateAt(px, pz) === 'SUCK' && d >= 0.01 ? 40 : 0;
     const c = sl > 45 || d > 1.35 ? Infinity : 1 + 0.25 * sl + 6 * d + mud;
     if (c < best) best = c;
   }

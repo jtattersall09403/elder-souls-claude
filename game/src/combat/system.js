@@ -399,12 +399,32 @@ export class CombatSystem {
         const nx = dx / d, nz = dz / d;
         // A FORCE, not a constraint — see hitgeometry.json §bodies.separation. An uncapped
         // push outruns the swing that caused the overlap.
-        const cap = (cfg.separation.max_speed_mps || 3.0) / 60;
-        const push = Math.min(want - d, cap);
         // Who yields. A body consuming root motion from a committed move this frame is
         // DRIVING and does not give ground; the other takes the whole displacement.
         const drivingA = !!(A.move && A.lastRootDelta !== 0);
         const drivingB = !!(B.move && B.lastRootDelta !== 0);
+        // A FORCE, not a constraint — see hitgeometry.json §bodies.separation. An uncapped
+        // push outruns the swing that caused the overlap.
+        //
+        // But a cap ALONE is a hole rather than a smoothing, and that is what wave 1 shipped.
+        // A champion's chop carries its root 0.80 m across 10 active frames — 0.080 m/frame —
+        // against a 0.050 m/frame cap, so the lunge outran its own separation and buried the
+        // target a third of a metre INSIDE the attacker, which is precisely where the round-2
+        // dead ring lives and precisely why the model measured as consuming nothing (round-3
+        // verdict §5: both radii zeroed, 585/2617 interpenetrating frames and 0.015 m minimum
+        // centre distance, byte-identical). §bodies.separation.driver_carry: the driver's own
+        // root translation along the contact normal is carried in FULL on top of the capped
+        // restorative term. You cannot walk THROUGH a body; you can only fail to be teleported
+        // off one. Overlap can no longer deepen frame-on-frame, and pre-existing overlap still
+        // relieves gradually, so the hit still resolves before the push does.
+        const cap = (cfg.separation.max_speed_mps || 3.0) / 60;
+        let carry = 0;
+        if (cfg.separation.driver_carry) {
+          if (drivingA && !drivingB) carry = advanceAlong(A, nx, nz);
+          else if (drivingB && !drivingA) carry = advanceAlong(B, -nx, -nz);
+          else if (drivingA && drivingB) carry = Math.max(advanceAlong(A, nx, nz), advanceAlong(B, -nx, -nz));
+        }
+        const push = Math.min(want - d, cap + carry);
         let shareA;
         if (drivingA && !drivingB) shareA = 0;
         else if (drivingB && !drivingA) shareA = 1;

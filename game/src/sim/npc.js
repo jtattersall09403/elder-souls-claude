@@ -53,6 +53,11 @@ export function makeNPC(spec) {
     // changes what this person thinks without anything being re-spawned.
     base_disposition: spec.disposition === undefined ? 40 : spec.disposition,
     topics: (spec.topics || []).slice(),
+    // The `a` row this person answers a topic with (character/converse.js infoFor).
+    actor: spec.actor || null,
+    // Hand-written lines on the record — the fallback when a person is outside the reaction
+    // matrix and `greetings.json` therefore has no cell for them.
+    lines: spec.lines || null,
     services: (spec.services || []).slice(),
     pos: [Number(spec.pos ? spec.pos[0] : 0), Number(spec.pos ? spec.pos[1] : 0), Number(spec.pos ? spec.pos[2] : 0)],
     homePos: [Number(spec.pos ? spec.pos[0] : 0), Number(spec.pos ? spec.pos[1] : 0), Number(spec.pos ? spec.pos[2] : 0)],

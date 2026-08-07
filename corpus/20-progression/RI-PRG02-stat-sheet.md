@@ -230,11 +230,32 @@ existing; it cannot be traded against numerical accuracy elsewhere.
 Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
 **No threshold in this item was changed.**
 
-| Ladder | 4 | 6 | 8 |
-|---|---|---|---|
-| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+| Ladder | 0 | 2 | 4 | 6 | 8 |
+|---|---|---|---|---|---|
+| Native | 0 / 10 | 2 / 10 | 4 / 10 | 6 / 10 | 8 / 10 |
 
-**Aggregation (a property of this item, not of the critic):** min-over-axes.
+> **AMENDED wave 1 — `BAR-CRITIQUE-W1-07-R1` §R5.** 0 and 2 rungs added. This item aggregates
+> min-over-axes and the row was silent below 4; reasoning in full at `RI-CHR01`.
+
+**Aggregation (a property of this item, not of the critic):** min-over-axes, over the axes that are
+**measurable**; axes in `corpus_debt` are excluded from the min and reported separately.
+
+### CONSUMPTION (`RI-MTH07` / `ARBITRATION` §3) — *(ADDED wave 1, `BAR-CRITIQUE-W1-07-R1` §R4)*
+
+1. **Enumerate exhaustively:** the ten attribute definitions, every derivation curve and its
+   anchors, the grade table, the post-cap gain rule, and the two-stream earned fraction.
+2. **Perturb and observe** per `RI-MTH07` §B: two well-separated values, everything else fixed, an
+   **entity-side** observable, plus the null control. `getDerivedStats()` returning the right
+   number is **not** an observable — it is the model. The observable is what the fight does with
+   it.
+3. **Apply the consequence:** any `coupling == 0` scores **that axis 0**, fail-closed. There is no
+   `partial`.
+4. **This item has the corpus's best worked instance of the check passing, and it is worth copying.**
+   Round 1 reported `hp_max` 620 for VIGOUR 6 and VIGOUR 18 alike. Round 2 reported 508 and 196 —
+   *and then counted hits*: **11 blows of 50 to fell the Orsimer, 4 to fell the Bosmer.** The
+   second number is the consumption proof and the first is not, because the pool being right and
+   the fight reading the pool are two different claims. **A verdict on this item that reports
+   sheet values without an entity-side consequence has measured the spreadsheet.**
 
 ## How we lose
 

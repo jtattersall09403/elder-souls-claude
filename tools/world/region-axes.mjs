@@ -30,7 +30,8 @@ import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { WorldField } from '../../game/src/world/field.js';
 import { SignatureField, SIGNATURE_KINDS } from '../../game/src/world/signature.js';
-import { noise2 } from '../../game/src/world/noise.js';
+import { noise2, hash2 } from '../../game/src/world/noise.js';
+import { arrangeAt, latticePoints } from '../../game/src/world/arrangement.js';
 
 globalThis.atob = globalThis.atob || ((s) => Buffer.from(s, 'base64').toString('binary'));
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -197,9 +198,114 @@ for (const r of regions) {
     // un-drop `architecture`." Neither number below can be satisfied by a table: both are sampled
     // off `field.heightAt` minus `field.naturalHeightAt` — i.e. off how much of the ground in this
     // region IS the signature element, and how tall it stands.
+    // ---- ROUND 4: the ORDINARY ground, measured off the built world -------------------------
+    // Verdict W1-01 r2 named the gap as "thirteen regions are one place, painted thirteen
+    // colours" and the r3 builder proved that placing thirteen rare landmarks could not move it,
+    // because a random frame is made of ordinary ground and ordinary flora. These two axes are
+    // that ordinary ground: the SHAPE of the surface at the scale a walking player reads it, and
+    // the SPACING STATISTICS of the props standing on it. Neither can be satisfied by a table
+    // row: micro_relief is sampled off `field.heightAt` minus the same field with the region's
+    // micro-relief removed, and arrangement is the renderer's own lattice with the renderer's own
+    // rolls, scored by nearest-neighbour distance and Clark-Evans dispersion.
+    micro_relief: microRelief(r),
+    arrangement: arrangementStats(r),
     signature_relief: signatureRelief(r),
     architecture_placed: architecturePlaced(r),
     hazard_volumes: hazardVolumes(r),
+  };
+}
+
+/**
+ * The shape of the ORDINARY ground: the region's micro-relief, measured rather than declared.
+ *
+ * Sampled on a 3 m lattice along four 240 m transects through the region: the standard deviation
+ * of the micro term, its realised gradient, and the sign skew (a tussock field is mounds above a
+ * mean, a crack polygon field is grooves below one, a dune field is neither). The declared
+ * mixture is reported alongside so a critic can see the two agree.
+ */
+function microRelief(r) {
+  const bb = r.bounds_m;
+  const vals = [], grads = [];
+  const cx = (bb.x[0] + bb.x[1]) / 2, cz = (bb.z[0] + bb.z[1]) / 2;
+  for (let t = 0; t < 4; t++) {
+    const th = t * Math.PI / 4;
+    for (let d = -120; d <= 120; d += 3) {
+      const x = cx + Math.cos(th) * d, z = cz + Math.sin(th) * d;
+      if (field.regionIndexAt(x, z) !== r.index) continue;
+      const v = field.micro.at(x, z);
+      vals.push(v);
+      grads.push(Math.hypot((field.micro.at(x + 2.5, z) - field.micro.at(x - 2.5, z)) / 5,
+        (field.micro.at(x, z + 2.5) - field.micro.at(x, z - 2.5)) / 5));
+    }
+  }
+  if (!vals.length) return { sd_m: 0, mean_abs_grad: 0, skew: 0, dominant: null, declared_amp_m: 0 };
+  const m = vals.reduce((a, b) => a + b, 0) / vals.length;
+  const sd = Math.sqrt(vals.reduce((a, b) => a + (b - m) ** 2, 0) / vals.length) || 1e-6;
+  const skew = vals.reduce((a, b) => a + ((b - m) / sd) ** 3, 0) / vals.length;
+  const dom = field.micro.dominantAt(cx, cz);
+  return {
+    sd_m: +sd.toFixed(3),
+    mean_abs_grad: +(grads.reduce((a, b) => a + b, 0) / grads.length).toFixed(4),
+    skew: +skew.toFixed(3),
+    dominant: dom ? dom.kind : null,
+    declared_amp_m: (r.terrain.micro && r.terrain.micro.amp_m) || 0,
+    declared_mix: (r.terrain.micro && r.terrain.micro.weights) || {},
+  };
+}
+
+/**
+ * The SPACING STATISTICS of the ordinary flora, from the renderer's own lattice.
+ *
+ * Clark-Evans R is the observed mean nearest-neighbour distance over the mean expected under a
+ * Poisson process of the same intensity: below 1 is clumped, 1 is random, above 1 is
+ * over-dispersed. Two regions instancing the same cone at the same density are different
+ * landscapes at R 0.7 and R 1.3, and that is the whole claim this axis exists to score.
+ */
+function arrangementStats(r) {
+  const TILE_M = 300, N = 46;
+  const cellArea = (TILE_M * TILE_M) / (N * N);
+  const bb = r.bounds_m;
+  const pts = [];
+  let area = 0;
+  const t0x = Math.floor(bb.x[0] / TILE_M), t1x = Math.ceil(bb.x[1] / TILE_M);
+  const t0z = Math.floor(bb.z[0] / TILE_M), t1z = Math.ceil(bb.z[1] / TILE_M);
+  for (let tz = t0z; tz < t1z; tz++) for (let tx = t0x; tx < t1x; tx++) {
+    const ox = tx * TILE_M, oz = tz * TILE_M;
+    let li = -1;
+    for (const [x, z] of latticePoints(ox, oz, TILE_M, N)) {
+      li++;
+      const ix = li % N, iz = (li / N) | 0;
+      if (field.regionIndexAt(x, z) !== r.index || !field.isLandAt(x, z)) continue;
+      area += cellArea;
+      const p = r.props;
+      const cap = Math.min(1, 700 / Math.max(1e-6, p.canopy.per100m2 * TILE_M * TILE_M / 100));
+      const a = arrangeAt(field, x, z, p.arrangement, 1.0);
+      if (p.canopy.shape !== 'none' && field.depthAt(x, z) < 0.9
+        && hash2(ix + ox, iz + oz, 7741) < p.canopy.per100m2 * cap * a * cellArea / 100) pts.push([x, z]);
+    }
+  }
+  if (pts.length < 12 || area <= 0) {
+    return { mode: r.props.arrangement.mode, n: pts.length, nn_mean_m: 0, nn_cv: 0, clark_evans_R: 1,
+      cover_shape: r.props.cover.shape, cover_per100m2: r.props.cover.per100m2, cover_patch_m: r.props.cover.patch_m };
+  }
+  const nn = [];
+  for (let i = 0; i < pts.length; i++) {
+    let best = Infinity;
+    for (let j = 0; j < pts.length; j++) {
+      if (i === j) continue;
+      const d = Math.hypot(pts[i][0] - pts[j][0], pts[i][1] - pts[j][1]);
+      if (d < best) best = d;
+    }
+    if (Number.isFinite(best)) nn.push(best);
+  }
+  const mean = nn.reduce((a, b) => a + b, 0) / nn.length;
+  const sd = Math.sqrt(nn.reduce((a, b) => a + (b - mean) ** 2, 0) / nn.length);
+  const expected = 0.5 / Math.sqrt(pts.length / area);
+  return {
+    mode: r.props.arrangement.mode, n: pts.length,
+    nn_mean_m: +mean.toFixed(2), nn_cv: +(sd / mean).toFixed(3),
+    clark_evans_R: +(mean / expected).toFixed(3),
+    cover_shape: r.props.cover.shape, cover_per100m2: r.props.cover.per100m2, cover_patch_m: r.props.cover.patch_m,
   };
 }
 
@@ -341,6 +447,21 @@ const AXES = [
   { id: 'flora_silhouette_placed', source: 'same lattice: placed crown height and radius, not the table row',
     d: (a, b) => Math.abs(a.flora_placed.mean_canopy_height_m - b.flora_placed.mean_canopy_height_m)
       + 2.0 * Math.abs(a.flora_placed.mean_canopy_radius_m - b.flora_placed.mean_canopy_radius_m), min: 2.0 },
+  { id: 'ground_microrelief', source: 'built terrain: the region\u2019s own micro-relief field sampled on a 3 m lattice along four 240 m transects \u2014 the shape of the ORDINARY ground, not of its landmark',
+    d: (a, b) => {
+      const A = a.micro_relief, B = b.micro_relief;
+      return 6 * Math.abs(A.sd_m - B.sd_m) + 30 * Math.abs(A.mean_abs_grad - B.mean_abs_grad)
+        + 0.8 * Math.abs(A.skew - B.skew) + (A.dominant === B.dominant ? 0 : 1.4);
+    }, min: 1.0 },
+  { id: 'prop_arrangement', source: 'the renderer\u2019s own scatter lattice with the renderer\u2019s own rolls: nearest-neighbour distance, its coefficient of variation and the Clark-Evans dispersion index',
+    d: (a, b) => {
+      const A = a.arrangement, B = b.arrangement;
+      return 2.5 * Math.abs(A.clark_evans_R - B.clark_evans_R) + 2.0 * Math.abs(A.nn_cv - B.nn_cv)
+        + Math.abs(A.nn_mean_m - B.nn_mean_m) / 6
+        + (A.mode === B.mode ? 0 : 0.9) + (A.cover_shape === B.cover_shape ? 0 : 0.9)
+        + Math.abs(A.cover_per100m2 - B.cover_per100m2) / 14
+        + Math.abs(A.cover_patch_m - B.cover_patch_m) / 10;
+    }, min: 1.0 },
   { id: 'signature_silhouette', source: 'built terrain: heightAt minus naturalHeightAt on a 12 m lattice — how much of the region\u2019s ground IS its ONLY-HERE element, and which way it displaces',
     d: (a, b) => {
       const A = a.signature_relief, B = b.signature_relief;

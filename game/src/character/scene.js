@@ -98,6 +98,7 @@ export class CensusSurface {
     this.options = [];
     this.axisHeld = 0;
     this.axisFrames = 0;
+    this.refusal = null;      // set by Engine._censusApplyPending when she will not write it
     this.lastConfirm = -1;
     this.confirmCount = 0;
     this.inputsTaken = 0;
@@ -120,7 +121,7 @@ export class CensusSurface {
     if (!this.takesInput) { this.options = []; if (this.node !== wasNode) { this.sel = 0; this.picked = []; this.typed = ''; } return this; }
 
     const kind = state.input ? state.input.kind : null;
-    if (this.node !== wasNode) { this.sel = 0; this.picked = []; this.typed = ''; }
+    if (this.node !== wasNode) { this.sel = 0; this.picked = []; this.typed = ''; this.refusal = null; }
 
     if (kind === 'text') {
       this.options = this._nameOptions(state, censusObj);
@@ -245,26 +246,48 @@ export class CensusSurface {
 /**
  * The model render/ui.js draws. Everything in it is a string that came from a data file or
  * from `census.state()`; nothing here is composed out of stat names or numbers.
+ *
+ * THE ROUND-2 DEFECT, AND WHY IT WAS ONE FIELD.
+ * This function used to end at `line: state.line || ''`. At the ten questionnaire nodes
+ * `state.line` is the scribe's stock transition line — the same string at all ten — and the
+ * dilemma itself lives in `state.question.text`, which nothing read. So the player was shown
+ * four answers with no question above them, ten times, on the route RI-CHR01 calls mandatory.
+ * Measured by the round-2 critic: 10 distinct question texts in the model, 1 distinct drawn
+ * line, 0 of 10 reaching the frame. Morrowind asks you ten questions you can read.
+ *
+ * Two fields fix it and a third makes the scene a conversation:
+ *   `line`      — at a questionnaire node this is the QUESTION. It is what she is asking.
+ *   `preamble`  — her stock framing, drawn once, at the first question only.
+ *   `spoken`    — what she said about your last answer, drawn above the current line. Every
+ *                 `on_answer`, `on_refusal`, `scribe_line` and `on_match_named_class` in the
+ *                 graph went into the transcript and never onto the vellum before this.
  */
 export function buildCensusModel(data, state, surface, npcRecord) {
   if (!state || state.done) return null;
   const place = CENSUS_PLACES[placeOfNode(state)] || CENSUS_PLACES['writ-house'];
   const kind = state.input ? state.input.kind : null;
+  const asking = kind === 'questionnaire' && state.question && state.question.text;
+
   let aside = null;
-  if (state.awaiting) aside = state.awaiting;
+  if (surface.refusal) aside = `She will not write that down: ${surface.refusal}`;
+  else if (state.awaiting) aside = state.awaiting;
   else if (kind === 'pick') {
     const want = surface.pickCount(state);
     const have = surface.picked.length;
     aside = have ? `She is waiting for ${want - have} more.` : null;
-  } else if (kind === 'questionnaire' && state.question_count) {
-    aside = null;
   }
+
   return {
     node: state.node,
     speaker_name: npcRecord ? npcRecord.name : null,
     speaker_title: npcRecord ? (npcRecord.title || null) : null,
     place_name: place.name,
-    line: state.line || '',
+    // The reply to the last answer, oldest first. Drawn dim, above the rule.
+    spoken: Array.isArray(state.spoken) ? state.spoken.map((s) => s.line).filter(Boolean) : [],
+    // Her framing, once. `question_number` is never drawn — RI-JRN01 O8 forbids "Step 2 of 4".
+    preamble: (asking && state.question_number === 1) ? (state.line || '') : null,
+    line: asking ? state.question.text : (state.line || ''),
+    question_id: asking ? state.question.id : null,
     aside,
     input_kind: kind,
     options: surface.options,

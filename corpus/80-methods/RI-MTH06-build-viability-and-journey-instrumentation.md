@@ -99,11 +99,98 @@ under `corpus/88-journeys/data/` once, so every future critic compares against t
 > step that names a phantom command is a corpus defect and is filed as one, not absorbed into a
 > build's score.
 
+### E. **The phantom-command sweep, run for the first time** — *(ADDED wave 1, `BAR-CRITIQUE-W1-07-R1` §R2)*
+
+Method 1 has existed since wave 0 and **had never been run.** Run at this pass over the
+`## Comparison method` section of all 144 reference items, resolving each `tools/**.mjs|cjs|js|py`
+path against the tree. Reproduce with `node tools/corpus-index.mjs` (check **C8**):
+
+```
+reference items scanned                    : 144
+distinct tool paths named in their methods :  82
+        …resolving to a file on disk       :  15
+        …PHANTOM                           :  67
+```
+
+**Sixty-seven of eighty-two — 82% of the instruments this corpus names do not exist.** Only 15 do.
+This item's own Scoring puts *"≥ 5, or any in an item that gates a wave"* at the **0 band** on the
+Phantom-commands axis, so under its own min-over-axes rule `RI-MTH06` is at **0**. It is the only
+item in the corpus that fails on a measurement of the corpus, and recording that here rather than
+in a verdict is the point of it existing.
+
+The distribution is not uniform, and the shape is the finding:
+
+| Area | Phantom tools named |
+|---|---:|
+| `95-experience` (played experience, anecdotes, cross-system payoff) | **30** |
+| `86-ui` | 10 | 
+| `40-dialogue` | 9 |
+| `85-platform` | 8 |
+| `88-journeys` | 6 |
+| `80-methods`, `87-audio` | 4 each |
+| `15-camera`, `22-character`, `23-stealth-crime` | 1 each |
+
+**Every quality instrument pointed at the opening is in that list** — `session-run.mjs`,
+`beat-diff.mjs`, `beat-extract.mjs`, `isolation-check.mjs`, `log-lint.mjs`, `journey-run.mjs`,
+`gamepad-shim.mjs`, `naive-driver.mjs`, `build-viability.mjs` — while the *correctness* instruments
+(`run-headless.mjs`, `content-stats.mjs`, `creation-audit.mjs`, `cmb-reach.mjs`, `determinism.mjs`,
+`smoke.mjs`, `trace.mjs`) all exist and are used every round. **The corpus built the tools that
+check whether the artifact is right and did not build the tools that check whether it is any
+good** — and `corpus/95-experience/`, the area whose entire subject is whether the game is any
+good, is 30 of the 67.
+
+**Two rules follow, and neither lowers a threshold.**
+
+**E.1 — The sweep is wired into the gate.** Method 1 becomes a check in
+`node tools/corpus-index.mjs --check` (alongside `RI-MTH05` C6's ladder-anchor check), reported as
+`phantom tools : N/137`, so the debt cannot regrow silently. A sweep run once and never again is
+how 74 accumulated.
+
+**E.2 — A dimension blocked *only* by a phantom tool is `corpus_debt`, not a zero against the
+build.** This is the rule the corpus most needed and did not have, and its absence has cost three
+builders a score each:
+
+> Where a reference item's axis or check cannot be measured **solely** because a tool this item
+> lists as phantom does not exist, that axis is recorded `unmeasurable`, its weight is **removed
+> from the numerator and the denominator**, the item reports `raw / runnable`, and the debt is
+> filed **against `RI-MTH06`** in the piece's `status_reasons` as `corpus_debt`. It is **not**
+> averaged into the piece's mean.
+>
+> This does not soften `CRITIC-DOCTRINE` §7.3. §7.3 governs a **harness gap the piece could
+> close**: fail-closed at 0, never "unknown". A tool the corpus mandated, assigned to nobody and
+> never wrote is the *other* case, and `CRITIC-DOCTRINE` §7's own closing paragraph already rules
+> it: *"if an item cannot reach 10 because the corpus is broken … file it as `corpus_extended`, do
+> not absorb it into the piece's score."* The two clauses have been in tension since wave 0 and
+> every wave-1 critic resolved it the harsher way, against the builder.
+>
+> **The axis keeps every threshold it had** and returns to the aggregation the day the tool exists.
+> **`corpus_debt` is not a pass**: it is reported on every line, it escalates by method 6's ledger,
+> and an item carrying it may not be scored above the band its *runnable* fraction earns.
+
+**E.3 — What this rule was hiding, measured.** Under min-over-axes an unmeasurable axis is not a
+lost fraction; it is the whole item.
+
+| Item | Axis blocked | Tool | Consequence under min-over-axes |
+|---|---|---|---|
+| `RI-CHR01` | Distinctness | `build-viability.mjs` | **native 0 for every build that will ever exist** |
+| `RI-CHR03` | Decidability | `build-viability.mjs` | **native 0 for every build that will ever exist** |
+| `RI-JRN01` | all of it, as written | `journey-run.mjs` (`A-JRN1`) | **0 for every build**, and it scored 0 twice |
+
+`W1-07`'s gate is **7.0** over six items — a required total of **42**. With three of the six pinned
+at 0 by the corpus, the maximum attainable total is **30**, i.e. a mean of **5.0**. Under the
+generous translation two wave-1 critics actually used (native 0 → ladder 4, because the anchor rows
+were silent below 4) the ceiling is **38/6 = 6.33**. **`W1-07` could not pass its gate under any
+build, in any round, by arithmetic**, and three rounds have been dispatched at it. That is the same
+finding `BAR-CRITIQUE-W1-09-R1` §R6.4 made about `W1-09`, arrived at independently, in a second
+area, one wave later.
+
 ## Comparison method
 
 1. **Phantom-command sweep.** Extract every fenced command and every `tools/**` path from every
    `## Comparison method` section in the corpus. **Assert each resolves to a file on disk.**
-   Print the misses with the items that name them.
+   Print the misses with the items that name them. *Run for the first time at wave 1: **74 of 137
+   phantom**. See §E for the result, the distribution and the two rules it forces. This step is
+   now a gate check in `tools/corpus-index.mjs --check` and may not go another wave unrun.*
 2. **Exit-code contract.** For each resolved tool, run it with `--help`. **Assert exit 0 and a
    usage block.** A tool that cannot describe itself will not be run by a critic under time
    pressure.

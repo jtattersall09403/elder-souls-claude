@@ -1,7 +1,7 @@
 {
   "schema": "elder-souls/quest-hooks@1",
   "id": "quest-hooks",
-  "corpus_item": "RI-QST04 (behaviour hooks keyed by world_flags), RI-DLG05 §A.3 (every chain seeds a topic)",
+  "corpus_item": "RI-QST04 (behaviour hooks keyed by world_flags), RI-DLG05 \u00a7A.3 (every chain seeds a topic)",
   "generated_by": "tools/analysis/gen-quest-hooks.mjs",
   "note": "Generated. Do not hand-edit; edit the generator or the quest files it reads.",
   "entry_topics": [
@@ -234,6 +234,34 @@
       "index": 10,
       "adds_topics": [
         "the-hollowed-scribe"
+      ]
+    },
+    {
+      "quest": "Q-MAG-25",
+      "index": 10,
+      "adds_topics": [
+        "the-weight-in-the-well"
+      ]
+    },
+    {
+      "quest": "Q-MAG-26",
+      "index": 10,
+      "adds_topics": [
+        "what-the-kiln-kept"
+      ]
+    },
+    {
+      "quest": "Q-MAG-27",
+      "index": 10,
+      "adds_topics": [
+        "the-high-ledger"
+      ]
+    },
+    {
+      "quest": "Q-MAG-28",
+      "index": 10,
+      "adds_topics": [
+        "the-netted-calf"
       ]
     }
   ],

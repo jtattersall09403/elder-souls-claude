@@ -228,6 +228,31 @@ reported as a referral, not silently averaged.
 
 ---
 
+### CONSUMPTION (`RI-MTH07` / `ARBITRATION` §3) — *(ADDED wave 1, `BAR-CRITIQUE-W1-07-R1` §R4)*
+
+`ARBITRATION` §3's CONSUMPTION check reached the **critics** through the doctrine and reached
+**none of the fourteen items** judging the opening, character creation or the journeys — measured
+at this pass, `grep -cE 'RI-MTH07|CONSUMPTION|world-side consumer'` returned **0** for every one of
+`RI-JRN01`–`RI-JRN08`, `RI-CHR01`–`RI-CHR03`, `RI-PRG02`, `RI-PRG03` and `RI-EXP01`. Which models
+must be enumerated, and what a zero costs, are properties of the item and not of a critic's
+diligence. For this item:
+
+1. **Enumerate exhaustively** every model this journey requires to act — every table, graph,
+   binding map, budget and record it publishes that the running game must read — and list it in
+   the verdict. A sample is not an enumeration.
+2. **Perturb and observe** per `RI-MTH07` §B: two well-separated values, everything else held
+   fixed, plus the null control. For a **journey** the admissible observable is what the player
+   could see or do — a drawn string, a rendered object, a surface that appears, an input that is
+   accepted or refused, a state that survives. **A harness return value is not an observable**;
+   `RI-MTH07` §B1 rules the trace an observer, not a consumer.
+3. **Apply the consequence.** Any `coupling == 0` scores **that dimension 0**, fail-closed, and
+   appears in the piece's `status_reasons`. There is no `partial`.
+4. **The fourth shape.** `RI-MTH07` §A names orphan model, orphan data and orphan predicate.
+   `corpus/88-journeys/` produced a fourth — **orphan text**: a string authored, computed
+   correctly, carried through the model, exposed through the harness, and never drawn. From the
+   player's chair it is identical to a string that was never written. See `RI-JRN09`
+   `ES-LEGIBLE/1`.
+
 ## Scoring
 
 Native scale 0–100, then translated per `SCORING.md` §1.2.

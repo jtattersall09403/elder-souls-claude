@@ -647,8 +647,22 @@
       "critic": "critic.combat",
       "wave": 1
     },
-    { "path": "combat.exchange.reactability", "title": "Can a telegraph be read while playing — visual onset vs the declared windup label", "arb": "souls", "area": "10-combat", "critic": "critic.combat", "wave": 1 },
-    { "path": "combat.exchange.divergence", "title": "Do different decisions at the same moment produce different outcomes", "arb": "souls", "area": "10-combat", "critic": "critic.combat", "wave": 1 },
+    {
+      "path": "combat.exchange.reactability",
+      "title": "Can a telegraph be read while playing — visual onset vs the declared windup label",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat",
+      "wave": 1
+    },
+    {
+      "path": "combat.exchange.divergence",
+      "title": "Do different decisions at the same moment produce different outcomes",
+      "arb": "souls",
+      "area": "10-combat",
+      "critic": "critic.combat",
+      "wave": 1
+    },
     {
       "path": "combat.difficulty.lethality",
       "title": "Regions gated by lethality; NO level-scaling to the player (seam S9)",
@@ -2175,6 +2189,24 @@
       "judged_by_doctrine": "JOURNEY-CRITIC-FLEET.md §4 (I1-I8, rules F6-F8)",
       "note": "Some journeys can only be judged by an agent that has not read the corpus. This path exists so that a violated isolation is a scoreable defect rather than a procedural footnote.",
       "registered": "wave-0 corpus-audit (from corpus/88-journeys/paths-requested.json)",
+      "wave": 1
+    },
+    {
+      "path": "journey.opening.exchange",
+      "title": "Whether the player's answers are consumed inside the creation scene by the person who asked for them",
+      "arb": "morrowind",
+      "area": "88-journeys",
+      "critic": "critic.journey",
+      "registered": "wave-1 BAR-CRITIQUE-W1-07-R1 (RI-JRN09)",
+      "wave": 1
+    },
+    {
+      "path": "journey.opening.legibility",
+      "title": "Whether the authored text the opening computes actually reaches the frame the player is looking at",
+      "arb": "morrowind",
+      "area": "88-journeys",
+      "critic": "critic.journey",
+      "registered": "wave-1 BAR-CRITIQUE-W1-07-R1 (RI-JRN09)",
       "wave": 1
     },
     {

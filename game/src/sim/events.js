@@ -15,6 +15,11 @@ export const EVENT_TYPES = new Set([
   // lead and its class.
   'world_fall_start', 'world_landed', 'world_fall_damage', 'world_fall_death',
   'world_slope_blocked', 'world_mired', 'world_drowning', 'world_drowned',
+  // The mire's EXIT. RI-WLD10 §4 makes MIRED escapable by struggling; the only implementation
+  // of the struggle lived in `sim/player.js`, which nothing imports, so these two events had
+  // never been emitted once and their absence from this list had never been noticed. They are
+  // emitted now, from `combat/player.js` — the input gate that actually runs.
+  'world_mire_struggle', 'world_mire_break',
   'action_denied_by_water',
   'hazard_tell', 'hazard_enter', 'hazard_exit', 'hazard_damage', 'hazard_fired',
   // HARNESS.md §5

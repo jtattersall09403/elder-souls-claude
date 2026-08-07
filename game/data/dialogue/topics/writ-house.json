@@ -159,6 +159,7 @@
       "line": "Then sit. I will ask you ten things and none of them is any of my business, and at the end of it I will have a word for you, and it will be a better word than the one you would have picked.",
       "input": { "kind": "questionnaire", "source": "dialogue/creation-questions.json", "count": 10 },
       "on_match_named_class": "That is a %ClassName. That is exactly a %ClassName. I have written eleven of them this year and not one of them said the word to me first.",
+      "on_nearest_named_class": "%ClassName. Not to the letter — nobody is, and the ones who are worry me — but of the words I am allowed to write, that is the one nearest to what you just told me. %ClassName. You will hear it said back to you and you will not like it the first time.",
       "on_no_match": "I do not have a word for that. I am going to write what you told me and let the next person along argue with it.",
       "next": "writ.birthsign"
     },

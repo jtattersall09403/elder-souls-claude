@@ -132,6 +132,15 @@ export class UILayer {
     const textW = panelW - pad * 2;
 
     // --- measure first, then place. The panel is exactly as tall as its contents.
+    // `spoken` is what she said about your last answer and `preamble` is her framing of a new
+    // set of questions; both are hers, both are drawn quieter than the thing she is asking
+    // now, and neither existed before round 3 — the graph wrote them and nothing drew them.
+    c.font = italicFont(nameSize);
+    const spokenLines = [];
+    for (const s of (Array.isArray(m.spoken) ? m.spoken : [])) for (const ln of wrap(c, s, textW)) spokenLines.push(ln);
+    if (m.preamble) { spokenLines.push(''); for (const ln of wrap(c, m.preamble, textW)) spokenLines.push(ln); }
+    const spokenH = Math.round(nameSize * 1.32);
+
     c.font = bodyFont(bodySize);
     const lines = wrap(c, m.line || '', textW);
     const asideLines = m.aside ? wrap(c, m.aside, textW) : [];
@@ -142,6 +151,7 @@ export class UILayer {
 
     let contentH = pad;
     contentH += nameSize + Math.round(14 * s);                       // speaker line + rule
+    if (spokenLines.length) contentH += spokenLines.length * spokenH + Math.round(14 * s);
     contentH += lines.length * lineH;
     if (asideLines.length) contentH += Math.round(10 * s) + asideLines.length * Math.round(nameSize * 1.34);
     if (m.input_kind === 'text') contentH += Math.round(18 * s) + Math.round(bodySize * 1.7);
@@ -149,7 +159,18 @@ export class UILayer {
     if (win.to < opts.length || win.from > 0) contentH += Math.round(nameSize * 1.2);
     contentH += pad;
 
+    // The panel is capped at 42% of frame height and CLIPS, so anything that would push the
+    // answers off the bottom has to go instead. The order of sacrifice is fixed and is the
+    // order of importance: the thing being asked and the answers to it always survive; her
+    // reply to the previous answer is dropped a line at a time until they fit. Without this
+    // rule, adding `spoken` in round 3 would have re-created the round-2 defect one layer
+    // down — a question that is computed, sent to the surface, and clipped off the vellum.
     const maxH = Math.round(H * PANEL_MAX_FRAC);
+    while (contentH > maxH && spokenLines.length) {
+      spokenLines.shift();
+      contentH -= spokenH;
+      if (!spokenLines.length) contentH -= Math.round(14 * s);
+    }
     const panelH = Math.min(contentH, maxH);
     const x0 = marginX, y0 = H - panelH - Math.round(H * 0.045);
 
@@ -181,6 +202,14 @@ export class UILayer {
     c.moveTo(x0 + pad, y + 0.5); c.lineTo(x0 + panelW - pad, y + 0.5);
     c.strokeStyle = RULE; c.lineWidth = Math.max(1, Math.round(1 * s)); c.stroke();
     y += Math.round(bodySize * 1.12);
+
+    // --- what she said about the last thing you told her
+    if (spokenLines.length) {
+      c.font = italicFont(nameSize);
+      c.fillStyle = INK_DIM;
+      for (const ln of spokenLines) { c.fillText(ln, x0 + pad, y); y += spokenH; }
+      y += Math.round(14 * s);
+    }
 
     // --- what she says
     c.font = bodyFont(bodySize);
@@ -234,7 +263,7 @@ export class UILayer {
     // --- metrics, from the layout that was just performed
     const frameArea = W * H;
     const panelArea = panelW * panelH;
-    const text = [who, m.place_name || '', ...lines, ...asideLines,
+    const text = [who, m.place_name || '', ...spokenLines, ...lines, ...asideLines,
       ...(m.input_kind === 'text' ? [m.typed || ''] : []),
       ...shownOpts.map((o) => o.text)].filter(Boolean);
     this.last = {

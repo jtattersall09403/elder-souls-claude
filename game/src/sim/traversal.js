@@ -81,6 +81,7 @@ export class Traversal {
     this.blockedBySlope = false;
     this.footAccum = 0;
     this.mireRecovery = 0;
+    this.mireRefractory = 0;
     this.lastEscapeF = -999;
     this.escapePressed = false;
     this.events = [];
@@ -318,10 +319,17 @@ export class Traversal {
     // SUCK **that has water in it** (band >= W1). This is a deviation from a literal reading of
     // the item and it is declared here rather than hidden: `mire_requires_band` is in
     // traversal.json, and setting it to "W0" restores the literal rule.
+    // AND YOUR FEET MUST BE ON THE BOTTOM. `mire_footfall_m` is literally footfalls: a body in
+    // W5 is SWIMMING, and mud three metres below a swimmer cannot take hold of them. Without this
+    // clause the counter ran while the capsule swam a channel and it surfaced on the far bank
+    // already MIRED — measured at (2923.9, 4851.1) in 3.79 m of water, which is where ten of the
+    // thirteen S9 walked reachability legs died.
     const sucking = sub === 'SUCK'
-      && bandIndex(this.band) >= bandIndex(S.mire_requires_band || 'W1');
+      && bandIndex(this.band) >= bandIndex(S.mire_requires_band || 'W1')
+      && bandIndex(this.band) < bandIndex('W5');
     if (sucking) {
-      if (this.footAccum >= S.mire_footfall_m) {
+      if (this.mireRefractory > 0) { this.mireRefractory--; this.footAccum = 0; }
+      else if (this.footAccum >= S.mire_footfall_m) {
         this.footAccum = 0;
         this.mire += S.mire_per_footfall;
         if (this.mire >= S.mire_threshold && !this.mired) {
@@ -351,6 +359,10 @@ export class Traversal {
           if (this.mireEscapes >= S.mire_escape_successes) {
             this.mire = 0; this.mireEscapes = 0;
             this.mireRecovery = S.mire_break_recovery_frames;
+            // You have just hauled yourself out. The counter does not re-arm for
+            // `mire_refractory_frames`, or the break buys exactly 5.4 m and the mire is a fence
+            // rather than a cost — see the note in game/data/world/traversal.json.
+            this.mireRefractory = S.mire_refractory_frames || 0;
             this.events.push({ kind: 'mire_break' });
           }
         }
@@ -425,7 +437,7 @@ export class Traversal {
         breathes_water: !!this.breathesWater, buoyant: !!this.buoyant,
         stamina_drain_per_s: this.staminaDrainPerS || 0,
         regen_suppressed: !!this.regenSuppressed,
-        mire: this.mire, mired: this.mired,
+        mire: this.mire, mired: this.mired, mire_refractory: this.mireRefractory,
         blocked_by_slope: this.blockedBySlope,
         on_deck: this.onDeck || null,
         on_road: !!this.onRoad,

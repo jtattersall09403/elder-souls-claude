@@ -323,20 +323,43 @@ export function calibrateYawGain(p, frames, sockA, sockB, makeRig) {
   const target = Math.abs(p.arc_deg);
   if (!(target > 0.5)) return 1;
   const rig = makeRig();
-  // ONE monotone knob, so a bisection is valid:
-  //   k <= 1  shrinks the arc chain AND the shoulder roll together (reaches the small arcs)
-  //   k >  1  opens the arc chain alone (reaches the big ones)
-  const measure = (k) => measureActiveArc(p, k, frames, sockA, sockB, rig, undefined, Math.min(1, k));
-  // Not linear, so bisect rather than solve. 26 steps takes the bracket below 1e-6 — far finer
-  // than the ±10° tolerance needs, and cheap: 26 x `active` rig evaluations, cached per clip.
-  let lo = 0.001, hi = 12;
-  if (measure(hi) < target) return hi;          // unreachable: report the ceiling honestly
-  if (measure(lo) > target) return lo;          // below the floor the rig can produce; likewise
-  for (let i = 0; i < 26; i++) {
-    const mid = (lo + hi) / 2;
-    if (measure(mid) < target) lo = mid; else hi = mid;
+  //   k  > 0   the arc chain drives the blade the way the clip declares
+  //   k <= 1   the shoulder roll is damped with it, which is what reaches the small arcs
+  //   k  < 0   the arc chain COUNTER-rotates
+  //
+  // The negative branch is not a trick. Even with the arc chain switched off entirely, extending
+  // an arm sweeps the blade's bearing by 20–35°, because the shoulder and elbow do not extend
+  // along the character's forward axis. Five spears and two thrusting swords declare arcs of
+  // 0–10°, which is BELOW that floor, and no positive gain can reach them. A fencer keeps the
+  // point on line by counter-rotating the torso into the extension, and that is exactly what a
+  // negative gain is: the arc chain turning back against the drift the arm is producing.
+  //
+  // `measure` is V-shaped across the sign change, so a bare bisection would be invalid. A fixed
+  // coarse scan brackets the branch first and the bisection runs inside the bracket. Both are
+  // fixed-length, so this is deterministic (AR-1) and allocates nothing per call beyond the scan.
+  const measure = (k) => measureActiveArc(p, k, frames, sockA, sockB, rig, undefined, Math.min(1, Math.abs(k)));
+  const GRID = 40, K0 = -2.5, K1 = 12;
+  let bi = -1, bd = Infinity, vals = new Array(GRID + 1);
+  for (let i = 0; i <= GRID; i++) {
+    const k = K0 + ((K1 - K0) * i) / GRID;
+    vals[i] = { k, v: measure(k) };
+    const d = Math.abs(vals[i].v - target);
+    if (d < bd) { bd = d; bi = i; }
   }
-  return (lo + hi) / 2;
+  // Bracket: the grid point nearest the target and whichever neighbour lies on the other side.
+  let a = vals[bi], b = null;
+  for (const j of [bi - 1, bi + 1]) {
+    if (j < 0 || j > GRID) continue;
+    if ((vals[j].v - target) * (a.v - target) <= 0) { b = vals[j]; break; }
+  }
+  if (!b) return a.k;                            // target outside the reachable range: honest ceiling
+  let lo = a, hi = b;
+  for (let i = 0; i < 22; i++) {
+    const mk = (lo.k + hi.k) / 2;
+    const mv = measure(mk);
+    if ((mv - target) * (lo.v - target) <= 0) hi = { k: mk, v: mv }; else lo = { k: mk, v: mv };
+  }
+  return (lo.k + hi.k) / 2;
 }
 
 /**

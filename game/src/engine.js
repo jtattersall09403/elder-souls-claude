@@ -61,6 +61,7 @@ const DEFAULT_START = Object.freeze({ race: 'saxhleel', class_id: 'reed-walker' 
 import { derivedDisposition, priceQuote, guardTerms, raceTerm, matrixSigma, meanRaceGap, playerRaceClass } from './character/reaction.js';
 import { encounterById, openingFor, defeatOutcome } from './character/encounter.js';
 import { CensusSurface, buildCensusModel, CENSUS_PLACES, CENSUS_CAST, CENSUS_ACTIONS, placeOfNode } from './character/scene.js';
+import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, topicsFor, greetingBand } from './character/converse.js';
 import { makeNPC } from './sim/npc.js';
 import { derivePools, applyBirthsignToPools, hpMaxFor, staminaMaxFor as staminaMaxForVig, progressToNext, USE_EVENTS } from './character/derive.js';
 import { grantUse, governingMap } from './character/skilluse.js';
@@ -222,6 +223,12 @@ export class Engine {
     // that a census answer arrives through the same latched input a swing does (RI-JRN01 O17).
     this.censusSurface = new CensusSurface(this.data.character);
     this.sim.censusDriver = (input) => (this._censusStep ? this._censusStep(input) : null);
+    // W1-07 round 3: the world-side reader for greetings.json and the race-gated topics.
+    // The topic index is built once over every dialogue/topics/*.json in the tree, so a
+    // topic added by another piece is speakable the moment it is indexed.
+    this.topicIndex = buildTopicIndex(this.data.character.topicDocs);
+    this.conversation = new Conversation(this.data.character, this.topicIndex);
+    this._greetCount = new Map();
     // W1-2x's machine, W1-14's reason for turning it on. The QuestBook load is FAIL-LOUD by
     // design (defs.js): a quest whose journal indices are out of band, whose prose trips
     // RI-DLG05 §D, or whose hooks point at an entry that does not exist stops the game booting
@@ -871,6 +878,12 @@ export class Engine {
         merged.disposition = spec.disposition === undefined ? rec2.disposition : spec.disposition;
         merged.topics = spec.topics || rec2.topics || [];
         merged.services = spec.services || rec2.services || [];
+        // Which `a` row of a topic record this person answers with. The topic corpus keys its
+        // infos by an ACTOR ROLE — rootkeeper, fisher, dres-factor, legionary — and an NPC
+        // record's `class` is already that word for most of the cast; `actor` overrides it
+        // where the two vocabularies disagree (a `band-elder` answers as a `naga-elder`).
+        merged.actor = spec.actor || rec2.actor || rec2.class || null;
+        merged.lines = spec.lines || rec2.lines || null;
       } else if (!merged.eid) merged.eid = recId;
     }
     if (this.sim.findNPC(merged.eid)) return this.sim.findNPC(merged.eid);
@@ -1008,13 +1021,102 @@ export class Engine {
   }
 
   listNPCs() {
+    const p = this._talkPlayer();
     return this.sim.npcs.map((n) => ({
       eid: n.eid, kind: 'npc', name: n.name, title: n.title, race: n.race,
       settlement: n.settlement, interior: n.interior, reaction_group: n.reaction_group,
       pos: [n.pos[0], n.pos[1], n.pos[2]], yaw: n.yaw, behaviour: n.behaviour,
-      topics: n.topics.slice(), services: n.services.slice(),
+      // `topics` is what is WRITTEN on the record. `topics_offered` is what this person will
+      // actually discuss with the character who is currently standing in the world, after
+      // requires.race / forbids.race. Round 2's finding was that these two were the same list
+      // for a Dunmer and a Saxhleel because only the first one existed.
+      topics: n.topics.slice(),
+      topics_offered: topicsFor(this.topicIndex, n, p).map((t) => t.id),
+      services: n.services.slice(),
       base_disposition: n.base_disposition, loiter_frames: n.loiter_frames,
     }));
+  }
+
+  /** The player as the dialogue gates see them. Falls back to the sim identity pre-census. */
+  _talkPlayer() {
+    const ch = this.sim.character;
+    if (ch) return { race: ch.race, upbringing: ch.upbringing, birthsign: ch.birthsign };
+    return { race: this.sim.identity.race || null, upbringing: this.sim.identity.upbringing || null, birthsign: this.sim.identity.sign || null };
+  }
+
+  // ---- talking to somebody (W1-07 round 3) ------------------------------------------------
+
+  /**
+   * Open a conversation. The greeting comes out of `dialogue/greetings.json`, keyed by the
+   * person's reaction group, the band of their LIVE derived disposition toward this character,
+   * and the character's race class — so the reaction matrix, the birthsign terms and the
+   * player's race all reach a sentence somebody says out loud.
+   */
+  talkTo(eid) {
+    const n = this.sim.findNPC(eid);
+    if (!n) throw new Error(`talkTo('${eid}'): nobody by that name is in the world`);
+    if (this.censusSurface && this.censusSurface.takesInput) throw new Error('talkTo: the census has the conversation');
+    const p = this._talkPlayer();
+    const d = this.npcDisposition(eid);
+    const nth = this._greetCount.get(eid) || 0;
+    this._greetCount.set(eid, nth + 1);
+    this.conversation.start(n, p, d.disposition, nth);
+    for (const x of this.sim.npcs) x.speaking = (x.eid === n.eid);
+    const st = this.conversation.state();
+    const ev = this.bus.emit(this.sim.frame, 'dialogue_open');
+    ev.npc = n.eid; ev.greeting_cell = st.greeting_cell; ev.disposition = d.disposition;
+    ev.band = greetingBand(this.chData, d.disposition); ev.topics_offered = st.topics.length;
+    this._conversationSync();
+    return st;
+  }
+
+  /** Say a topic. Returns the info, or a refusal naming why there is nothing to hear. */
+  conversationSay(topicId) {
+    const p = this._talkPlayer();
+    const info = this.conversation.say(topicId, p);
+    if (!info) return { refused: 'no_info', topic: topicId, npc: this.conversation.npc ? this.conversation.npc.eid : null };
+    const ev = this.bus.emit(this.sim.frame, 'dialogue_topic');
+    ev.npc = this.conversation.npc.eid; ev.topic = topicId; ev.gated = info.gated;
+    this._conversationSync();
+    return this.conversation.state();
+  }
+
+  conversationClose() {
+    const n = this.conversation.npc;
+    this.conversation.close();
+    for (const x of this.sim.npcs) x.speaking = false;
+    if (n) { const ev = this.bus.emit(this.sim.frame, 'dialogue_close'); ev.npc = n.eid; ev.scene = 'talk'; }
+    this._conversationSync();
+    return { open: false };
+  }
+
+  getConversationState() { return this.conversation.state(); }
+
+  _conversationSync() {
+    if (!this.renderer) return null;
+    if (!this.conversation.open) {
+      if (!this.censusSurface || !this.censusSurface.open) this.renderer.ui.setModel(null);
+      return null;
+    }
+    const n = this.conversation.npc;
+    const place = (n && n.interior && CENSUS_PLACES[n.interior]) ? CENSUS_PLACES[n.interior].name : (n ? (n.settlement || null) : null);
+    const model = buildConversationModel(this.conversation, place);
+    this.renderer.ui.setModel(model);
+    return model;
+  }
+
+  /** One fixed step of an open conversation. Same closed action set the census uses. */
+  _conversationStep(input) {
+    if (!this.conversation.open) return;
+    const y = input.moveY || 0;
+    const dir = y > 0.45 ? -1 : y < -0.45 ? 1 : 0;
+    if (dir !== this._convAxis) { this._convAxis = dir; if (dir) { this.conversation.move(dir); this._conversationSync(); } }
+    if (input.pressedName('block')) { this.conversationClose(); input.consumeUI(CENSUS_ACTIONS); return; }
+    if (input.pressedName('interact')) {
+      const t = this.conversation.list[this.conversation.sel];
+      if (t) this._convPending = t.id;
+    }
+    input.consumeUI(CENSUS_ACTIONS);
   }
 
   // ---- the surface ----------------------------------------------------------------------
@@ -1040,6 +1142,9 @@ export class Engine {
    * frame's events.
    */
   _censusStep(input) {
+    // A conversation with somebody who is not the Warden-Scribe has the buttons while it is
+    // open, on exactly the terms the census does.
+    if (this.conversation && this.conversation.open) { this._conversationStep(input); return; }
     if (!this.censusSurface || !this.censusSurface.takesInput) {
       // Not in a conversation: `interact` reaches for whatever is in front of you. The take
       // itself is deferred out of the step for the same reason a census commit is.
@@ -1055,7 +1160,7 @@ export class Engine {
           ev.surface = 'barge-hold'; ev.to = 'writ-house'; ev.by = 'walked';
         }
       }
-      if (!this._propPending && input.pressedName('interact')) {
+      if (!this._propPending && !this._talkPending && input.pressedName('interact')) {
         const p = this.sim.player;
         let best = null, bestD = Infinity;
         for (const o of this.sim.props) {
@@ -1063,7 +1168,16 @@ export class Engine {
           const d = Math.hypot(o.pos[0] - p.pos[0], o.pos[2] - p.pos[2]);
           if (d <= o.reach_m && d < bestD) { best = o; bestD = d; }
         }
-        if (best) this._propPending = best.eid;
+        if (best) { this._propPending = best.eid; return; }
+        // Nothing to pick up: reach for the nearest person instead. Opening a conversation
+        // touches the renderer, so like a census commit it is queued out of the fixed step.
+        let who = null, whoD = Infinity;
+        for (const n of this.sim.npcs) {
+          if (!n.visible) continue;
+          const d = Math.hypot(n.pos[0] - p.pos[0], n.pos[2] - p.pos[2]);
+          if (d <= Math.min(n.notice_radius_m, 3.0) && d < whoD) { who = n; whoD = d; }
+        }
+        if (who) this._talkPending = who.eid;
       }
       return;
     }
@@ -1080,12 +1194,38 @@ export class Engine {
     }
   }
 
-  /** Apply a queued census commit. Runs after the step, before the trace record. */
+  /**
+   * Apply a queued census commit. Runs after the step, before the trace record.
+   *
+   * A commit that came from the SURFACE is a thing the player pressed a button to do, and the
+   * fixed step is not allowed to die of it. Round 2 shipped a route where eight button presses
+   * on a pad threw `census: writ.class-custom-neglected cannot repeat strength` out of
+   * `stepFrames` and took the simulation loop with it. The option that caused it no longer
+   * exists (Census._excluded now filters the pick list), but "the list is correct" and "an
+   * incorrect answer cannot crash the game" are different guarantees and this build wants
+   * both. The refusal is NOT swallowed — HARNESS R7 — it is emitted as an event and shown to
+   * the player as the scribe declining to write it down.
+   */
   _censusApplyPending() {
     const r = this._censusPending;
     if (!r) return;
     this._censusPending = null;
-    this.censusAnswer(r.value);
+    const node = this.census.node();
+    try {
+      this.censusAnswer(r.value);
+      if (this.censusSurface) this.censusSurface.refusal = null;
+    } catch (err) {
+      const reason = String(err && err.message ? err.message : err).replace(/^census:\s*/, '');
+      const ev = this.bus.emit(this.sim.frame, 'census_refused');
+      ev.node = node ? node.id : null;
+      ev.value = Array.isArray(r.value) ? r.value.slice() : r.value;
+      ev.reason = reason;
+      if (this.censusSurface) {
+        this.censusSurface.refusal = reason;
+        this.censusSurface.picked = [];
+      }
+      this._censusSync();
+    }
   }
 
   /** Keyboard text entry. Not a button, so not part of HARNESS.md §4's closed action set. */
@@ -1487,6 +1627,8 @@ export class Engine {
     // here, rather than every frame.
     if (this.sim._poolsDirty) this.applyDerivedPools({ refill: false, why: 'earned_attribute' });
     if (this._propPending) this._takePropPending();
+    if (this._talkPending) { const w = this._talkPending; this._talkPending = null; try { this.talkTo(w); } catch { /* they walked off */ } }
+    if (this._convPending) { const t = this._convPending; this._convPending = null; try { this.conversationSay(t); } catch { /* nothing to say */ } }
     if (this._censusEnterPending) { this._censusEnterPending = false; this.censusEnter(); }
     if (this.sim.captureRequest) this._resolveCapture();
     this._travelTick();
@@ -1533,8 +1675,12 @@ export class Engine {
     const pz = this._prevZ === undefined ? z : this._prevZ;
     p.frameNow = this.sim.frame;
     const moving = (x !== px || z !== pz);
-    this.traversal.escapePressed = !!p.mireStruggle;
+    // The struggle press comes from `combat/player.js` (the live gate) via the body, or from
+    // `sim/player.js` via the sim player if anything ever calls it again. Either latches it.
+    const bodyNow = this.combat && this.combat.player;
+    this.traversal.escapePressed = !!p.mireStruggle || !!(bodyNow && bodyNow.mireStruggle);
     p.mireStruggle = false;
+    if (bodyNow) bodyNow.mireStruggle = false;
     this.traversal.step(p, px, pz, this._burdenMult(), moving, this.combat && this.combat.player);
     // The band the body is standing in, published where `sim/player.js` reads it, so S25's
     // DENIAL of sprint and roll above knee depth happens at action selection and not as a
@@ -1556,7 +1702,13 @@ export class Engine {
     // why verdict W1-01 measured 1.9988 m/s in W2 standing water and scored RI-WLD10's whole
     // locomotion ladder inert. Writing the body closes it: the band multiplier is now a speed.
     const b = this.combat && this.combat.player;
-    if (b) { b.pos[0] = p.pos[0]; b.pos[1] = p.pos[1]; b.pos[2] = p.pos[2]; }
+    if (b) {
+      b.pos[0] = p.pos[0]; b.pos[1] = p.pos[1]; b.pos[2] = p.pos[2];
+      // The world's verdict, published where the LIVE input gate reads it. `sim/player.js` had
+      // this logic and is not on the call path; `combat/player.js _tryStart` is. Without this the
+      // water denial and the mire struggle were both unreachable code.
+      b.worldDeny = { roll: !!p.denyRoll, sprint: !!p.denySprint, mired: !!p.mired, band: this.traversal.band };
+    }
     this._prevX = p.pos[0]; this._prevZ = p.pos[2];
 
     // RI-WLD11. After physics, so a hazard reads the position the trace reports on this frame.
@@ -3591,7 +3743,10 @@ export class Engine {
       out.push({ eid: n.eid, kind: 'npc', archetype: 'NPC', name: n.name, race: n.race, pos: [n.pos[0], n.pos[1], n.pos[2]], hp: null, topics: n.topics.length });
     }
     for (const o of this.sim.props) {
-      out.push({ eid: o.eid, kind: 'object', archetype: 'OBJECT', name: o.name, takeable: !!o.takeable, taken: !!o.taken, pos: [o.pos[0], o.pos[1], o.pos[2]], hp: null });
+      // `reach_m` is the field `_censusStep` actually tests when `interact` is pressed, and it
+      // is the register `telekinesis` was moved onto in W1-14 round 3. Reporting it here is what
+      // makes "an object outside melee reach becomes takeable" (RI-MAG06 §B) a readable check.
+      out.push({ eid: o.eid, kind: 'object', archetype: 'OBJECT', name: o.name, takeable: !!o.takeable, taken: !!o.taken, reach_m: o.reach_m, pos: [o.pos[0], o.pos[1], o.pos[2]], hp: null });
     }
     return out;
   }
@@ -3854,6 +4009,10 @@ async function loadData(onBytes) {
     writHouse: out.topics['writ-house'],
     writItems: out.items['writ'],
     npcs: out.npcs['writ-house'],
+    // The two models the round-2 verdict found had no reader. `character/converse.js` is the
+    // reader; `Engine.talkTo()` is the world-side path that calls it.
+    greetings: out.greetings,
+    topicDocs: Object.keys(out.topics).sort().map((k) => out.topics[k]),
   };
   for (const k of Object.keys(out.character)) {
     if (!out.character[k]) throw new Error(`character data missing: ${k} (W1-07 expects it in game/data/**)`);

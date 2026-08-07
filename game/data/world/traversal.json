@@ -1,88 +1,90 @@
 {
-  "schema": "elder-souls/traversal@1",
-  "provenance": "W1-01 round 3. RI-WLD07 \u00a74 (verticality), RI-WLD10 \u00a72/\u00a73/\u00a74 (bands, stamina, breath, substrate) and seam S25 (water at the waterline; actions above knee depth are DENIED rather than degraded, and stamina is charged for standing in it). Every number here is READ by game/src/sim/traversal.js \u2014 perturb a value and the world changes, which is RI-MTH07's consumption requirement.",
-  "_why_this_file_exists": "Verdict W1-01 round 2: 'There is no maximum walkable slope' (70.63 deg walked at full stick, state WALK, while the piece's own flood fill calls 40 deg impassable), 'there is no fall' (150 m drop, HP 620->620), and '60 s in 8.28 m of water costs no breath, no stamina and no state change'. Three instruments in one build disagreed about what the ground was because none of them was written down. This is the declaration; traversal.js is the observation.",
-  "slope": {
-    "max_walkable_deg": 40.0,
-    "_max_walkable_source": "tools/world/scale-audit.mjs S9-NO-FENCES uses slope > 40 deg as impassable when it floods the province for reachability. The controller now uses the SAME number, so the passability model and the body agree. Two instruments that disagree by thirty degrees make both meaningless.",
-    "slide_deg": 46.0,
-    "slide_accel_mps2": 7.4,
-    "slide_max_mps": 9.0,
-    "step_up_m": 0.55,
-    "_step_up_note": "A ledge lower than this is stepped onto without the slope gate being consulted, so a 0.3 m root or a kerb is not a wall. Above it the gate decides."
+ "schema": "elder-souls/traversal@1",
+ "provenance": "W1-01 round 3. RI-WLD07 \u00a74 (verticality), RI-WLD10 \u00a72/\u00a73/\u00a74 (bands, stamina, breath, substrate) and seam S25 (water at the waterline; actions above knee depth are DENIED rather than degraded, and stamina is charged for standing in it). Every number here is READ by game/src/sim/traversal.js \u2014 perturb a value and the world changes, which is RI-MTH07's consumption requirement.",
+ "_why_this_file_exists": "Verdict W1-01 round 2: 'There is no maximum walkable slope' (70.63 deg walked at full stick, state WALK, while the piece's own flood fill calls 40 deg impassable), 'there is no fall' (150 m drop, HP 620->620), and '60 s in 8.28 m of water costs no breath, no stamina and no state change'. Three instruments in one build disagreed about what the ground was because none of them was written down. This is the declaration; traversal.js is the observation.",
+ "slope": {
+  "max_walkable_deg": 40.0,
+  "_max_walkable_source": "tools/world/scale-audit.mjs S9-NO-FENCES uses slope > 40 deg as impassable when it floods the province for reachability. The controller now uses the SAME number, so the passability model and the body agree. Two instruments that disagree by thirty degrees make both meaningless.",
+  "slide_deg": 46.0,
+  "slide_accel_mps2": 7.4,
+  "slide_max_mps": 9.0,
+  "step_up_m": 0.55,
+  "_step_up_note": "A ledge lower than this is stepped onto without the slope gate being consulted, so a 0.3 m root or a kerb is not a wall. Above it the gate decides."
+ },
+ "fall": {
+  "gravity_mps2": 19.6,
+  "_gravity_note": "2x earth. Souls games all use a heavy gravity; at 9.81 the drop from a 17 m embankment takes 1.9 s and reads as floating.",
+  "safe_m": 4.0,
+  "lethal_m": 22.0,
+  "curve_exponent": 1.4,
+  "_damage": "fraction of max HP = clamp(((distance - safe)/(lethal - safe))^exponent, 0, 1). 4 m free, 22 m fatal, 150 m emphatically fatal.",
+  "water_soften_depth_m": 1.4,
+  "water_damage_mult": 0.25,
+  "_water_source": "RI-WLD10 \u00a72: 'fall damage is computed against the water surface with a x0.25 multiplier above 1.40 m depth and x1.00 below it. Landing in ankle water from a height still kills you.'",
+  "stagger_frames": 26,
+  "stagger_from_m": 7.0
+ },
+ "water": {
+  "hysteresis_m": 0.03,
+  "_hysteresis_source": "RI-WLD10 \u00a71 property 2: band transitions apply +-0.03 m so a character on the W2/W3 line does not flicker at 60 Hz. The hysteresis is on the BAND, never on the field.",
+  "speed_mult": {
+   "W0": 1.0,
+   "W1": 0.97,
+   "W2": 0.85,
+   "W3": 0.65,
+   "W4": 0.43,
+   "W5": 0.55
   },
-  "fall": {
-    "gravity_mps2": 19.6,
-    "_gravity_note": "2x earth. Souls games all use a heavy gravity; at 9.81 the drop from a 17 m embankment takes 1.9 s and reads as floating.",
-    "safe_m": 4.0,
-    "lethal_m": 22.0,
-    "curve_exponent": 1.4,
-    "_damage": "fraction of max HP = clamp(((distance - safe)/(lethal - safe))^exponent, 0, 1). 4 m free, 22 m fatal, 150 m emphatically fatal.",
-    "water_soften_depth_m": 1.4,
-    "water_damage_mult": 0.25,
-    "_water_source": "RI-WLD10 \u00a72: 'fall damage is computed against the water surface with a x0.25 multiplier above 1.40 m depth and x1.00 below it. Landing in ankle water from a height still kills you.'",
-    "stagger_frames": 26,
-    "stagger_from_m": 7.0
+  "swim_mps": 1.1,
+  "swim_burst_mps": 1.7,
+  "sprint_denied_above": "W2",
+  "roll_denied_above": "W2",
+  "stamina_drain_moving_per_s": {
+   "W0": 0,
+   "W1": 0,
+   "W2": 0,
+   "W3": 2.0,
+   "W4": 5.0,
+   "W5": 4.0
   },
-  "water": {
-    "hysteresis_m": 0.03,
-    "_hysteresis_source": "RI-WLD10 \u00a71 property 2: band transitions apply +-0.03 m so a character on the W2/W3 line does not flicker at 60 Hz. The hysteresis is on the BAND, never on the field.",
-    "speed_mult": {
-      "W0": 1.0,
-      "W1": 0.97,
-      "W2": 0.85,
-      "W3": 0.65,
-      "W4": 0.43,
-      "W5": 0.55
-    },
-    "swim_mps": 1.1,
-    "swim_burst_mps": 1.7,
-    "sprint_denied_above": "W2",
-    "roll_denied_above": "W2",
-    "stamina_drain_moving_per_s": {
-      "W0": 0,
-      "W1": 0,
-      "W2": 0,
-      "W3": 2.0,
-      "W4": 5.0,
-      "W5": 4.0
-    },
-    "stamina_drain_still_per_s": {
-      "W0": 0,
-      "W1": 0,
-      "W2": 0,
-      "W3": 0,
-      "W4": 1.2,
-      "W5": 0.6
-    },
-    "regen_suppressed_in": [
-      "W5"
-    ],
-    "regen_delay_rearmed_in": [
-      "W4"
-    ],
-    "breath_max_s": 60.0,
-    "_breath_source": "RI-WLD10 \u00a73: breath_max = 40 s + 2.0 s per point of Endurance above 10, capped at 100. The shipped build is an Endurance 20 sheet, so 60 s.",
-    "breath_refill_mult": 3.0,
-    "drown_hp_pct_per_s": 2.0,
-    "submerge_head_clearance_m": 1.8,
-    "_submerge_note": "The breath clock runs while SUBMERGED, i.e. while the water surface is above the head of a 1.8 m body. Swimming with your head out costs stamina, not breath."
+  "stamina_drain_still_per_s": {
+   "W0": 0,
+   "W1": 0,
+   "W2": 0,
+   "W3": 0,
+   "W4": 1.2,
+   "W5": 0.6
   },
-  "substrate": {
-    "speed_mult": {
-      "FIRM": 1.0,
-      "SILT": 0.92,
-      "SUCK": 0.7
-    },
-    "mire_per_footfall": 1,
-    "mire_footfall_m": 0.9,
-    "mire_decay_frames": 45,
-    "mire_threshold": 6,
-    "mire_escape_cost_stamina": 25,
-    "mire_escape_cooldown_frames": 30,
-    "mire_escape_successes": 3,
-    "mire_break_recovery_frames": 20,
-    "mire_requires_band": "W1",
-    "_mire_requires_band_note": "The mire counter runs on SUCK that has water in it. RI-WLD10 \u00a74 names only wet contexts for SUCK (mudflats at low tide, the Deep Marshes floor, voriplasm margins) and its MIRED block presupposes a rising tide; read without the qualifier the rule mires the player after 5.4 m of walking on dry mud and makes a fifth of the province impassable. Set to \"W0\" to restore the literal reading."
-  }
+  "regen_suppressed_in": [
+   "W5"
+  ],
+  "regen_delay_rearmed_in": [
+   "W4"
+  ],
+  "breath_max_s": 60.0,
+  "_breath_source": "RI-WLD10 \u00a73: breath_max = 40 s + 2.0 s per point of Endurance above 10, capped at 100. The shipped build is an Endurance 20 sheet, so 60 s.",
+  "breath_refill_mult": 3.0,
+  "drown_hp_pct_per_s": 2.0,
+  "submerge_head_clearance_m": 1.8,
+  "_submerge_note": "The breath clock runs while SUBMERGED, i.e. while the water surface is above the head of a 1.8 m body. Swimming with your head out costs stamina, not breath."
+ },
+ "substrate": {
+  "speed_mult": {
+   "FIRM": 1.0,
+   "SILT": 0.92,
+   "SUCK": 0.7
+  },
+  "mire_per_footfall": 1,
+  "mire_footfall_m": 0.9,
+  "mire_decay_frames": 45,
+  "mire_threshold": 6,
+  "mire_escape_cost_stamina": 25,
+  "mire_escape_cooldown_frames": 30,
+  "mire_escape_successes": 3,
+  "mire_break_recovery_frames": 20,
+  "mire_requires_band": "W1",
+  "_mire_requires_band_note": "The mire counter runs on SUCK that has water in it. RI-WLD10 \u00a74 names only wet contexts for SUCK (mudflats at low tide, the Deep Marshes floor, voriplasm margins) and its MIRED block presupposes a rising tide; read without the qualifier the rule mires the player after 5.4 m of walking on dry mud and makes a fifth of the province impassable. Set to \"W0\" to restore the literal reading. Round 4 tested \"W2\" (water over the ankle) against the S9 walked reachability probe and it changed nothing, so the round-3 reading is kept rather than loosened for no measured gain.",
+  "mire_refractory_frames": 420,
+  "_mire_refractory_note": "Frames after BREAKING OUT of a mire during which the counter does not re-arm. Without it the mire is a fence rather than a cost: three struggles at 25 stamina buy exactly `mire_footfall_m` x `mire_threshold` = 5.4 m of walking before the body sinks again, so a delta whose substrate is wet SUCK cannot be crossed on foot at any stamina budget. Measured: every one of the thirteen S9 walked reachability legs aborted MIRED inside the Eastern Rootlands, on ground the S9-NO-FENCES flood fill calls 99.3% walkable - the same class of two-instruments-disagree defect as round 2's thirty-degree slope gap. RI-WLD10 \u00a74 requires MIRED to be 'survivable, expensive, and something a competent player walks around'; a state you cannot leave for more than 5.4 m is not expensive, it is a wall. 420 f is 7 s, about 10 m of wet-SUCK walking, so a break buys roughly 15 m for 75 stamina."
+ }
 }

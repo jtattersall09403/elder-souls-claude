@@ -373,6 +373,18 @@ export function installHarness(engine, bootPromise) {
     /** What this person thinks of you, derived live from the RI-CHR02 matrix. */
     npcDisposition(eid) { return engine.npcDisposition(eid); },
 
+    // ---- W1-07 round 3: the world-side reader for greetings and race-gated topics ------
+    /**
+     * Talk to somebody. Returns the greeting they gave you, WHICH CELL of
+     * `dialogue/greetings.json` it came out of, and the topics they will discuss with the
+     * character currently in the world after `requires.race` / `forbids.race`.
+     */
+    talkTo(eid) { return engine.talkTo(eid); },
+    /** Say a topic. Returns the info, or `{refused:'no_info'}` — never a silent nothing. */
+    conversationSay(topic) { return engine.conversationSay(topic); },
+    conversationClose() { return engine.conversationClose(); },
+    getConversationState() { return engine.getConversationState(); },
+
     /** Put a person in the world (a state file's `npcs` array uses the same path). */
     spawnNPC(spec) { return engine.spawnNPC(spec || {}); },
 
@@ -585,6 +597,32 @@ export function installHarness(engine, bootPromise) {
         if (b.shieldFlat) { for (const k of Object.keys(w)) w[k] = w[k] * 0.31; b.shieldFlat = 0; }
       }
       return true;
+    },
+    /**
+     * READ-ONLY: what a hit of `amount` and kind `kind` WOULD cost this body, through the same
+     * `mitigate()` the weapon resolver uses. Nothing is applied and nothing is spent.
+     *
+     * `damagePlayer()` remains the honest instrument for a single measurement — RI-MAG06 §B
+     * says a ward is judged by the damage taken from a real scripted hit. But a CENSUS reads
+     * every channel on every body twice per run, and seven real 100-damage hits taken twice
+     * kill the caster before it can cast anything, which is a snapshot perturbing the thing it
+     * is snapshotting. This is the same arithmetic without the corpse.
+     */
+    probeWard(amount, kind, eid) {
+      const b = eid ? engine.combat.bodyOf(String(eid)) : engine.combat.player;
+      if (!b) return null;
+      const raw = Number(amount);
+      const k = kind || 'physical';
+      const saved = b.wardCharges;
+      const applied = mitigate(b, raw, k);
+      b.wardCharges = saved;
+      return Math.round(applied * 1000) / 1000;
+    },
+    /** The inventory with its condition — `mend_item` raises it, `corrode` lowers it. */
+    getInventory() {
+      return (engine.sim.inventory || []).map((i) => ({
+        id: i.id, count: i.count, condition: Math.round((i.condition === undefined ? 1 : i.condition) * 1e4) / 1e4,
+      }));
     },
     /** RI-LOR05 §4a: read the taint register; and clear it, for a probe that needs to count from 0. */
     getSapTaint() { const t = engine.sim.progression.sapTaint; return t ? { ...t } : null; },

@@ -179,7 +179,20 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
       // `imp.multiplier` is RI-WPN05 §B's (damage type x material) cell and it lands BEFORE
       // mitigation, because it is a property of the blade meeting the surface and mitigation is
       // a property of the buffs the victim is carrying.
-      const dmgBase = mitigate(B, computeDamage(A.move.motion_value || 1, A.moves._weapon.attack_rating, bestHb.damage_mult, 0) * imp.multiplier * haft);
+      //
+      // S26 AS AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 §R6, enforced by RI-CMB04 M8.4): **the
+      // corridor is a hazard, not a weapon.** Round 3 shipped a body check that paid the blade's
+      // number — 96 damage whether the greatsword cut at 3.65 m or the champion's chest arrived
+      // at 0.05 m — and that makes reach cosmetic, which is RI-CMB02 "How we lose" #10 arriving
+      // through a door nobody was watching. A `via: "body"` hit is priced from the attacker's own
+      // closing speed in hit points, never from its attack rating, and is then clamped strictly
+      // below what the same attack's blade would have done.
+      const dmgWeapon = computeDamage(A.move.motion_value || 1, A.moves._weapon.attack_rating, bestHb.damage_mult, 0) * imp.multiplier * haft;
+      const dmgBase = mitigate(B, bestVia === 'body' ? bodyDamage(A, dmgWeapon, C) : dmgWeapon);
+      // The corridor's poise damage is its own too, and below every declared attack's, so being
+      // shoulder-charged staggers a light build and does not stagger a heavy one.
+      const bhz = (C.hitgeometry.body_hazard && C.hitgeometry.body_hazard.damage) || null;
+      const poiseDmg = (bestVia === 'body' && bhz) ? (bhz.poise_damage || 0) : (A.move.poise_damage || 0);
 
       // ---- (1c) deflection — §A. A non-blunt blade on stone under 30 poise damage BOUNCES ----
       // Zero damage, no victim reaction at all, the attacker eats a x1.5 hitstop and +16 f@60 of
@@ -250,13 +263,16 @@ export function sweepAndResolve(bodies, C, frame, emit, sim) {
 
       // (4) poise
       const ha = inHyperArmour(B.move, B.animFrame);
-      const pr = applyPoiseDamage(B, A.move.poise_damage || 0, C.poise, { frame, hyperArmour: ha, exhausted: B.exhausted });
+      const pr = applyPoiseDamage(B, poiseDmg, C.poise, { frame, hyperArmour: ha, exhausted: B.exhausted });
 
       // (5) damage
       B.hp -= dmgBase;
       const e = emit(frame, 'HIT');
       e.src = A.id; e.dst = B.id; e.wpn = A.move.id; e.dmg = Math.round(dmgBase);
-      e.pd = A.move.poise_damage || 0; e.part = bestHb.id; e.substep = bestSub; e.t = round3(t);
+      e.pd = poiseDmg; e.part = bestHb.id; e.substep = bestSub; e.t = round3(t);
+      // RI-CMB04 M8.4's attribution table is computed from these two side by side: what the
+      // corridor charged, and what the blade would have charged for the same attack.
+      if (bestVia === 'body') e.dmg_if_weapon = Math.round(dmgWeapon);
       // S26: `weapon` if the blade connected, otherwise the attacker's own trunk capsule that
       // ran the target down. A critic reading the trace can separate the two without guessing.
       e.via = bestVia || 'weapon';

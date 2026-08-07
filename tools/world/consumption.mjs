@@ -25,6 +25,8 @@ import { WorldField } from '../../game/src/world/field.js';
 import { SignatureField } from '../../game/src/world/signature.js';
 import { Traversal } from '../../game/src/sim/traversal.js';
 import { Hazards } from '../../game/src/sim/hazards.js';
+import { arrangeAt, latticePoints } from '../../game/src/world/arrangement.js';
+import { hash2, fbm, smoothstep } from '../../game/src/world/noise.js';
 
 globalThis.atob = globalThis.atob || ((s) => Buffer.from(s, 'base64').toString('binary'));
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -39,14 +41,14 @@ const REGIONS = rd('game/data/world/regions.json');
 const WATER = rd('game/data/world/water.json');
 
 /** Build a whole world from four documents, so a perturbed document produces a perturbed world. */
-function build({ roads, signatures, traversal, hazards }) {
-  const field = new WorldField(TERRAIN, REGIONS, WATER);
+function build({ roads, signatures, traversal, hazards, regions }) {
+  const field = new WorldField(TERRAIN, regions || REGIONS, WATER);
   field.setRoads(roads);
   const sig = new SignatureField(signatures);
   field.setSignatures(sig);
   const trav = new Traversal(traversal, field);
   trav.attach(sig);
-  const haz = new Hazards(hazards, field, sig, REGIONS.regions);
+  const haz = new Hazards(hazards, field, sig, (regions || REGIONS).regions);
   return { field, sig, trav, haz };
 }
 
@@ -253,6 +255,121 @@ function record(model, file, perturbation, consumer, quantity, before, after, no
     'shoulder slope 5-14 m off the centreline along the first declared span',
     shoulder(base), shoulder(w),
     'round 2 counted 2,537 shoulder points above 40 degrees across the network; a viaduct has air where a berm has a shoulder');
+}
+
+// ---- 5. regions.json: the ORDINARY ground and the ORDINARY flora -------------------------------
+// Round 4's whole subject. Verdict W1-01 r2 measured that two-thirds of regional distinctness was
+// tint, and the r3 builder showed that placing thirteen rare landmarks could not move it because a
+// random frame is made of the ordinary ground. These four perturbations are the proof that the
+// ordinary ground is now DATA WITH A CONSUMER and not a comment: change a region's declared
+// micro-relief mixture, its prop arrangement or its ground-cover density, and the surface the
+// player stands on and the props standing on it change with it.
+{
+  const HIVE = REGIONS.regions.findIndex((r) => r.id === 'hive');
+  const CLAY = REGIONS.regions.findIndex((r) => r.id === 'clay-moor');
+  const VALUS = REGIONS.regions.findIndex((r) => r.id === 'valus-ridge');
+  const hx = REGIONS.regions[HIVE].centroid_m[0], hz = REGIONS.regions[HIVE].centroid_m[1];
+
+  // (a) the amplitude. `field.heightAt` -> `_terrain` -> `MicroField.at`.
+  const flat = clone(REGIONS); flat.regions[HIVE].terrain.micro.amp_m = 0;
+  const wA = build({ ...SHIPPED, regions: flat });
+  const profile = (w) => {
+    const out = [];
+    for (let d = 0; d < 60; d += 12) out.push(+w.field.heightAt(hx + d, hz).toFixed(3));
+    return out;
+  };
+  record('regions.terrain.micro', 'game/data/world/regions.json',
+    'hive terrain.micro.amp_m 0.62 -> 0 (the region loses its comb treads)',
+    'game/src/world/field.js _terrain() via MicroField.at() — inside heightAt, so inside collision, the terrain mesh, the slope histogram and the water census',
+    'ground height on a 60 m transect through the Hive centroid, every 12 m',
+    profile(base), profile(wA),
+    'the ordinary ground of a region is now data; before round 4 all thirteen shared one detailAt with three scalars');
+
+  // (b) the MIXTURE, at constant amplitude: a different landform, not a smaller one.
+  const swapped = clone(REGIONS);
+  swapped.regions[HIVE].terrain.micro.weights = { bund: 1.0 };
+  const wB = build({ ...SHIPPED, regions: swapped });
+  const dom = (w) => {
+    const d = w.field.micro.dominantAt(hx, hz);
+    const sd = (() => { const v = []; for (let i = 0; i < 120; i++) v.push(w.field.micro.at(hx + i * 3, hz)); const m = v.reduce((a, b) => a + b) / v.length; return +Math.sqrt(v.reduce((a, b) => a + (b - m) ** 2, 0) / v.length).toFixed(3); })();
+    return { dominant: d && d.kind, sd_m: sd, h_at_centroid: +w.field.heightAt(hx, hz).toFixed(3) };
+  };
+  record('regions.terrain.micro', 'game/data/world/regions.json',
+    'hive terrain.micro.weights terracette+crack -> bund, amplitude unchanged',
+    'game/src/world/microrelief.js MicroField — nine primitives, blended over ~70 m by a 9-tap read of the region raster',
+    'dominant primitive, realised micro sd over a 360 m transect, and the ground height at the centroid',
+    dom(base), dom(wB),
+    'the same amplitude in a different shape is a different place, which is what M18 ground_microrelief scores');
+
+  // (c) the ARRANGEMENT. `province._scatter` -> `arrangement.arrangeAt`.
+  const scattered = clone(REGIONS);
+  scattered.regions[CLAY].props.arrangement = { mode: 'scatter', strength: 0 };
+  const wC = build({ ...SHIPPED, regions: scattered });
+  const spacing = (w) => {
+    const r = w.field.regions[CLAY], TILE = 300, N = 46, cellArea = TILE * TILE / (N * N);
+    const bb = r.bounds_m; const pts = [];
+    for (let tz = Math.floor(bb.z[0] / TILE); tz < Math.ceil(bb.z[1] / TILE); tz++) {
+      for (let tx = Math.floor(bb.x[0] / TILE); tx < Math.ceil(bb.x[1] / TILE); tx++) {
+        const ox = tx * TILE, oz = tz * TILE; let li = -1;
+        for (const [x, z] of latticePoints(ox, oz, TILE, N)) {
+          li++; const ix = li % N, iz = (li / N) | 0;
+          if (w.field.regionIndexAt(x, z) !== CLAY || !w.field.isLandAt(x, z)) continue;
+          const p = r.props;
+          const cap = Math.min(1, 700 / (p.canopy.per100m2 * TILE * TILE / 100));
+          if (hash2(ix + ox, iz + oz, 7741) < p.canopy.per100m2 * cap
+            * arrangeAt(w.field, x, z, p.arrangement, 1.0) * cellArea / 100) pts.push([x, z]);
+        }
+      }
+    }
+    if (pts.length < 12) return { n: pts.length, nn_mean_m: 0 };
+    let sum = 0;
+    for (let i = 0; i < pts.length; i++) {
+      let best = Infinity;
+      for (let j = 0; j < pts.length; j++) if (i !== j) { const d = Math.hypot(pts[i][0] - pts[j][0], pts[i][1] - pts[j][1]); if (d < best) best = d; }
+      sum += best;
+    }
+    return { n: pts.length, nn_mean_m: +(sum / pts.length).toFixed(2) };
+  };
+  record('regions.props.arrangement', 'game/data/world/regions.json',
+    "clay-moor props.arrangement 'isolated' (45 m lattice) -> 'scatter'",
+    'game/src/world/arrangement.js arrangeAt(), read by province._scatter for every lattice site',
+    'placed clay-moor canopy instances and their mean nearest-neighbour distance',
+    spacing(base), spacing(wC),
+    'the same cone at the same declared density is a different landscape at a different spacing — M18 prop_arrangement');
+
+  // (d) the GROUND COVER. `province.updateCover` builds a 70 m disc on a 1.7 m lattice.
+  const bare = clone(REGIONS);
+  bare.regions[VALUS].props.cover.per100m2 = 1;
+  const wD = build({ ...SHIPPED, regions: bare });
+  const coverCount = (w) => {
+    const R = 70, STEP = 1.7, cellArea = STEP * STEP;
+    const [cx0, cz0] = w.field.regions[VALUS].centroid_m;
+    const n = Math.ceil(R / STEP);
+    const gx0 = Math.floor((cx0 - R) / STEP), gz0 = Math.floor((cz0 - R) / STEP);
+    let count = 0;
+    for (let iz = 0; iz <= n * 2; iz++) for (let ix = 0; ix <= n * 2; ix++) {
+      const cx = gx0 + ix, cz = gz0 + iz;
+      const px = (cx + hash2(cx, cz, 6301)) * STEP, pz = (cz + hash2(cx, cz, 6307)) * STEP;
+      const d = Math.hypot(px - cx0, pz - cz0);
+      if (d > R || px < 0 || pz < 0 || px >= w.field.sizeX || pz >= w.field.sizeZ) continue;
+      if (!w.field.isLandAt(px, pz)) continue;
+      const r = w.field.regions[w.field.regionIndexAt(px, pz)];
+      const cv = r.props.cover;
+      const patch = 0.30 + 1.70 * smoothstep(0.40, 0.62, fbm(px / cv.patch_m, pz / cv.patch_m, 6311, 3));
+      const fade = 1 - smoothstep(R - 15, R, d);
+      const a = arrangeAt(w.field, px, pz, r.props.arrangement, 0.45);
+      if (hash2(cx, cz, 6313) >= cv.per100m2 * patch * a * fade * cellArea / 100) continue;
+      if (w.field.depthAt(px, pz) > 0.30) continue;
+      count++;
+    }
+    return count;
+  };
+  record('regions.props.cover', 'game/data/world/regions.json',
+    'valus-ridge props.cover.per100m2 30 -> 1 (the scree is swept off the mountain)',
+    'game/src/world/province.js updateCover() — the camera-following 70 m ground-cover disc',
+    'ground-cover instances standing in a 70 m disc at the Valus Ridge centroid',
+    coverCount(base), coverCount(wD),
+    'ground cover is what most of every frame is made of; before round 4 the layer did not exist');
 }
 
 const failures = results.filter((r) => !r.changed);

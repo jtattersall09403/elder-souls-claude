@@ -26,7 +26,10 @@
   "game/data/combat/enemies/*.json (22)",
   "game/data/states/wpn-material-range.json",
   "tools/weapons/impact-consumption.mjs (NEW)",
-  "tools/weapons/impact-census.mjs (NEW)"
+  "tools/weapons/impact-census.mjs (NEW)",
+  "game/src/combat/swing.js",
+  "game/src/combat/geometry.js",
+  "tools/weapons/motion-census.mjs (NEW)"
  ],
  "findings": [
   "BOOT OK at start: node tools/harness/smoke.mjs passes (6/6).",
@@ -40,8 +43,16 @@
   "MEASURED: tools/weapons/impact-consumption.mjs 17/17 CONSUMED. tools/weapons/impact-census.mjs M1 0 failures (5x7 attacker AND victim grids exact), M2 0 failures (18 cells, 0/22 statblocks missing material, 1 distinct damage over 20 repeats), M3 deflection PASS (TSW+SSW deflect, MCE bypasses, +16f exact), M4 0 failures, ILS_unique 0.8286 (bar 0.80), tier span ok, monotone true.",
   "CONFIRMED BAR DEFECT: ILS_1nn (RI-WPN05 F's literal leave-one-out nearest-neighbour over 35 unique points) = 0.0000 by construction, exactly as the round-2 critic filed. Reporting both readings.",
   "The round-2 critic's kritik-consumption3.mjs can only reach 2/6 on ANY correct build: four of its six probes perturb rows a FLESH dummy never reads, and it observes only {dmg, hitF, attacker hitstop} so it cannot see a knockback. Reproduced and documented rather than claimed passing.",
-  "DAMAGE BASELINE MOVED: a straight-sword r1.1 on flesh is now 129.8, not 118, because RI-WPN05 B's flesh/slash multiplier is 1.10 and it is now applied. 118 was the pre-material number and the RI-CMB07 exemplar carrying it is already marked INVALIDATED pending the S22 regeneration."
+  "DAMAGE BASELINE MOVED: a straight-sword r1.1 on flesh is now 129.8, not 118, because RI-WPN05 B's flesh/slash multiplier is 1.10 and it is now applied. 118 was the pre-material number and the RI-CMB07 exemplar carrying it is already marked INVALIDATED pending the S22 regeneration.",
+  "S26 CONTIGUITY CLOSED. socketsFor() now returns a=GRIP_OFFSET (the hit capsule runs grip->tip) instead of a=capsule-hitbox_span_m. Measured with the critic's OWN kritik-reach.mjs: non-contiguous C1 [] , non-contiguous C2 [] (was AXE/HLB/SPR), reach_min>0.60 [] (was AXE 0.85, GHM 0.80, HLB 1.00, MCE 0.75, SPR 1.40). hitbox_span_m keeps a consumer: it is now the EDGED span and a contact inboard of it deals classes.json haft_damage_mult (0.25-0.90 per class).",
+  "ARC CLOSED on the class baselines. Critic's OWN kritik-arc.mjs: arc_nonconforming 0/28 (was 24/28); recovery_exceeds_active 12/28 (was 21/28). Thrusts thrust: TSW r1.1 6.5 declared / 6.5 measured (was 69.6); SPR r1.1 19/19 (was 62.8).",
+  "MECHANISM: swing.js now (a) scales the shoulder roll with the declared arc instead of a fixed 32+8e deg, (b) SOLVES a yaw gain per clip against the real rig so measured==declared (calibrateYawGain), (c) settles the recovery near the follow-through instead of resetting the pose.",
+  "The calibration needs a NEGATIVE branch: extending an arm sweeps the blade 20-35 deg even with the arc chain off, and 5 spears + 2 thrusting swords declare 0-10 deg, BELOW that floor. A negative gain counter-rotates the torso into the extension, which is what a fencer does. measure(k) is V-shaped across the sign change so the solve is a fixed 40-point scan + 22-step bisection, not a bare bisection.",
+  "DATA DEFECT FOUND: the clip registry's profile.arc_deg disagrees with the slot's arc_sweep_deg on 1090 of 2689 slots (up to 65 deg), because clips are SHARED and weapons declare per-weapon arc deviations. Calibration targets the SLOT (what D6/G3/E.2 all read). A clip id already denoted a family here (frames and root_dz come from the slot), so this follows the existing pattern.",
+  "FULL 606-CLIP CENSUS (tools/weapons/motion-census.mjs): arc nonconforming 44/606 = 7.26% (E.2 fails above 2%), of which 25 have a swing plane >70 deg where a horizontal-bearing arc is degenerate and 14 are `plunge` (plane 91.6 deg). Only 5 of 87 r1.1 fail. distinct keyframes <3: 0%.",
+  "BAR CONTRADICTION (amendment filed): RI-WPN05 E.2's pose row caps ANY tracked bone at 0.25 m/frame = 15 m/s, while E's peak tip-speed band REQUIRES 14-20 (light) to 26-40 (ultra) m/s. A weapon tip cannot be both. Measured on BONES the build has 0 clips over 1.00 m (worst 0.9975); measured on the weapon SOCKET, 31.",
+  "WHP IS OVER-DETERMINED BY THE CORPUS. RI-WPN02 B pins WHP r1.1 at arc 200 deg, reach 3.60 m and frames 40/10/58 simultaneously. 200 deg on a 3.31 m tip radius in 10 active frames is 69.3 m/s, against RI-WPN05 E's medium band ceiling of 32.5. Retiming the active window fixes it but breaks RI-WPN04 A's gated 70-cell table (verify-frames goes 70/70 -> 64/70), so it was REVERTED. This needs a corpus ruling, not a builder edit."
  ],
- "next_step": "S26 contiguity (hitbox_span_m), then arc/recovery-arc/pose-teleport in swing.js, then grammar + CR + RI-WPN07",
+ "next_step": "regression (equip/CFS/determinism), browser confirmation, CR connect rate, D_min, blind pack, deletion test, amendments, report",
  "notes_for_successor": "Round 3 targets: (1) impact+material model consumption (biggest gap, blocking, AR-3 seam_sterile), (2) S26 contiguity dead bands on 11 weapons (hard fail), (3) measured-vs-declared arc on 28 clips, (4) recovery>active arc 21/28, (5) whp_hide_lash pose teleport 1.026 m, (6) mace-vs-axe grammar not weight, (7) RI-WPN07 weapon character. Do NOT regress r2's wins: CFS_live 1.0, equipped_ok 87/87, moveset consumption 7/7, Dg_min 1.598."
 }

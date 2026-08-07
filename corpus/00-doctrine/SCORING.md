@@ -204,6 +204,52 @@ Every item's aggregation rule (`weighted-sum`, `min-over-axes`, `band`, `count-o
 `gate`, `cap`) is stated immediately under its row. §3's choice of aggregation applies only
 to combining *items*, never to computing one.
 
+### 1.2b AMENDED wave 1 — BAR-CRITIQUE-W1-07-R1 §R5. **The rungs below 4, and the hard-fail cap's missing instrument.**
+
+Two rules in this file were binding, correct, and unenforced, and the same three verdict lines
+violated both.
+
+**1. An anchor row must cover 0 and 2 wherever the item's aggregation can produce them.**
+
+Form A was specified as `| Ladder | 4 | 6 | 8 |`, so on a `min-over-axes` item — where a *single*
+axis at its 0 band sets the whole native score to 0, which is the entire purpose of a min rule —
+the row said nothing at all about the region the item actually lands in. `W1-07` round 2 recorded
+`native_score: 0` for **`RI-CHR01`, `RI-CHR02` and `RI-CHR03`** and translated all three to ladder
+**4**, which §1.2 step 1's "the native band is a ceiling" permits only because the anchor row was
+silent and the critic had to fall back on §1's prose. The effect is that min-over-axes stopped
+being dispositive: an axis at 0 cost six ladder points in principle and none in practice.
+
+> **Any item whose aggregation is `min-over-axes`, or which carries a binary axis, or which can
+> otherwise produce a native score below its ladder-4 anchor, MUST extend Form A to cover the
+> **0** and **2** rungs:**
+>
+> ```
+> | Ladder | 0 | 2 | 4 | 6 | 8 |
+> |---|---|---|---|---|---|
+> | Native | <…to 0> | <…to 2> | <…to 4> | <…to 6> | <…to 8> |
+> ```
+>
+> Extra rungs are permitted on any item and encouraged everywhere. `tools/corpus-index.mjs`'s C6
+> check accepts any `Ladder`-headed row whose rungs **cover** 4, 6 and 8; it previously required
+> the first three cells to be *exactly* 4, 6, 8 and would have rejected the wider row, which is
+> how a mandatory format quietly forbade the better version of itself.
+
+**2. §1.1's hard-fail cap now has an instrument.** *"Any triggered hard fail caps the whole item at
+2, no matter how many other checks passed."* `W1-07` round 2 recorded two triggered hard fails
+against `RI-CHR01` — in the verdict's own `reference_items[].hard_fails[]` array — and scored the
+item **4**. `tools/verdict-validate.mjs` **read that array**, used it to force `status: FAIL`, and
+never checked the cap. A binding, fail-closed rule with its data already in hand went unenforced for
+a whole wave, which is exactly the false-enforcement pattern §1.2a was written to end.
+
+> `verdict-validate.mjs` now **errors** when an item carries a non-empty `hard_fails[]`, or any
+> `checks[].hard_fail === true`, and `score_0_10 > 2`. It also errors when an item's
+> `native_score` is 0 and its `score_0_10` exceeds 4, because §1.2 step 1 makes the item's own
+> band a **ceiling** and a native 0 is never above the "loses outright" band.
+
+**Neither rule lowers anything.** Both make existing rules bite where they were being averaged
+away, and both make wave-1 scores *worse* when re-applied: `RI-CHR01` at round 2 goes from 4 to
+**2**, and `RI-CHR02`/`RI-CHR03` from 4 to their true native translation.
+
 ---
 
 ## 2. Worked calibration examples

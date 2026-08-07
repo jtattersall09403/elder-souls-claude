@@ -216,6 +216,55 @@ non-violent resolutions). This is the intended repair path and it is content, no
 
 #### 4c. Dialogue that differs — five channels, all data-driven
 
+> **AMENDED wave 1 — `BAR-CRITIQUE-W1-07-R1` §R5. The "≥ 20% headroom" band on this axis is struck
+> and replaced, because it was uncomputable on three of its five rows and pointed at the wrong
+> quantity on all five.**
+>
+> The Scoring row read: *"Dialogue volume — 10: all §4c minimums met with ≥ 20% headroom; 6: all
+> minimums met."* Round 2 measured greetings **1,500 / 1,500 (0%)**, race-gated topics 96/90
+> (6.7%), `forbids` 32/30 (6.7%), rumours **16 / 16 (0%)**, slavery lines 61/60 (1.7%) — every
+> floor cleared, none by 20% — and the axis was scored 6 with the reasoning *"hitting five floors
+> to within one unit is a decision about where to stop."*
+>
+> **That reading is wrong and the fault is the band's.** Three of those five minimums are not
+> floors a builder chose to sit on; they are **exact products this item computes for them**:
+>
+> - greetings: §4c states `12 groups × 5 bands × 5 classes = 300 cells, 1,500 lines` at ≥ 5 per
+>   cell. **1,500 is simultaneously the floor and the natural exact value.** Twenty per cent
+>   headroom means writing a sixth line into every one of 300 cells for no stated reason, and the
+>   only thing it measures is willingness to pad.
+> - rumours: `≥ 2 per settlement × 8 settlements = 16`. Headroom of 20% is **19.2**, which is not
+>   expressible as a per-settlement rule at all.
+> - `forbids` is a sub-count of the topic count, so headroom on it double-counts headroom on its
+>   parent.
+>
+> A band asking for 20% more of a number the item itself derives as a product is not a bar; it is
+> an invitation to generate. **Passing five floors by 0–6.7% is what this band's structure
+> produces, not evidence of tuning to it** — and the tuning charge, if it were made, would be made
+> against a bar that named the target to the unit.
+>
+> It was also pointed away from the property that matters. The round-2 verdict spent a section
+> defending the 1,500 lines as *"a combinatorial expansion of 300 authored stances × 60 authored
+> addresses"* — correctly, on evidence — and in the same verdict recorded that **`greetings.json`
+> has zero world-side consumers, so 1,500 lines and 0 lines are the same thing from the player's
+> chair.** The axis rewarded the count and was blind to the delivery.
+>
+> **The replacement takes points out of volume and puts them into distribution and consumption. It
+> is strictly harder, and round 2 fails it.**
+>
+> | Sub-axis | 10 | 6 (pass floor) | 0 |
+> |---|---|---|---|
+> | **Volume** | every §4c minimum met | every §4c minimum met | any minimum missed, or zero `forbids.race` records |
+> | **Distribution** | no `(group, band, player_race_class)` cell below 5 distinct lines; per-cell distinct counts vary with **a stated authored reason for every cell sitting at the floor** | no cell below 5 distinct; ≥ 250 of 300 cells populated | any cell empty at bands 3–5, or **every cell exactly equal in size** — a generator's signature |
+> | **Consumption** | ≥ 1 line from each of **≥ 250 of the 300 cells** observed *selected and drawn in play*, and the race-gated topic filter observed changing a **live** NPC's offered topic list | ≥ 1 line observed drawn from ≥ 100 cells, and the topic filter demonstrated once | **`coupling == 0` on `greetings.json` or on the race-gated topics ⇒ 0**, per `RI-MTH07`, whatever the volume |
+>
+> Volume keeps its floors **verbatim — not one minimum is reduced** — and loses only its 10 band,
+> which was unearnable honestly. Applied to round 2: Volume 6, Distribution ≥ 6 (5–25 distinct per
+> cell, and RG-COURT's 5 is explained by its all-zero matrix row), **Consumption 0** — the topic
+> list is byte-identical for a Dunmer and a Saxhleel and no harness verb matches `/greet/`. Under
+> min-over-axes this axis is **0** where it was scored **6**. **This amendment lowers round 2's
+> score.**
+
 | Channel | Rule | Minimum shipped volume |
 |---|---|---:|
 | **Greetings** | `greetings.json` pools keyed `(reaction_group, disposition_band, player_race_class)` where `player_race_class ∈ {saxhleel, naga, dunmer, imperial, other-foreign}` | ≥ 5 lines per cell; 12 groups × 5 bands × 5 classes = **300 cells, 1,500 lines** |
@@ -406,7 +455,7 @@ Executable by a fresh agent with this file, `game/data/`, and the harness.
 | Matrix shape | σ ≥ 12, all rows & columns distinct, ≥ 1 neutral row | σ ≥ 9, rows distinct | any two foreign races share a column, or σ < 5 |
 | Disposition spread | ≥ 60-point Saxhleel/Dunmer gap, 3+ bands represented | ≥ 60-point gap, 2 bands | < 25 points — race is flavour |
 | NPC coverage | 100% tagged, shares within ±2 pts | 100% tagged, ±4 pts | > 40% of NPCs in one group |
-| Dialogue volume | all §4c minimums met with ≥ 20% headroom | all minimums met | < 50% of any minimum, or zero `forbids.race` records |
+| **Dialogue delivery** *(replaces "Dialogue volume", wave 1, `BAR-CRITIQUE-W1-07-R1` §R5)* | §4c's Volume / Distribution / Consumption sub-table, all three at 10 | all three at 6 | any sub-axis at 0 — including **`coupling == 0` on greetings or race-gated topics, whatever the line count** |
 | Register (method 6) | ≤ 60% blind sorting accuracy | ≤ 70% | ≥ 85% — our Argonians are not Argonians |
 | Prices | all three quotes within 1%, par clause holds | within 3%, par clause holds | no race term in pricing at all |
 | **AR-3 encounter test** | three distinct opening behaviours, identical movesets | same | **any moveset/archetype difference (AR-1 fail), or zero behavioural difference (AR-3 sterile) → item fails** |
@@ -421,11 +470,43 @@ are binary and cannot be traded against the others.
 Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
 **No threshold in this item was changed.**
 
-| Ladder | 4 | 6 | 8 |
-|---|---|---|---|
-| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+| Ladder | 0 | 2 | 4 | 6 | 8 |
+|---|---|---|---|---|---|
+| Native | 0 / 10 | 2 / 10 | 4 / 10 | 6 / 10 | 8 / 10 |
 
-**Aggregation (a property of this item, not of the critic):** min-over-axes.
+> **AMENDED wave 1 — `BAR-CRITIQUE-W1-07-R1` §R5.** The 0 and 2 rungs are added for the reason
+> given in full at `RI-CHR01`: this item aggregates **min-over-axes** and therefore produces a
+> native 0 routinely, the row was silent below 4, and `W1-07` round 2 translated a recorded
+> `native_score: 0` to ladder **4**. With the rungs filled in, an axis at its 0 band costs what a
+> min rule is for.
+
+**Aggregation (a property of this item, not of the critic):** min-over-axes, over the axes that are
+**measurable**; axes in `corpus_debt` are excluded from the min and reported separately.
+
+### CONSUMPTION (`RI-MTH07` / `ARBITRATION` §3) — *(ADDED wave 1, `BAR-CRITIQUE-W1-07-R1` §R4)*
+
+This item is the corpus's **worked example** of the failure `RI-MTH07` exists for, and it reached
+this item's text only in this pass.
+
+1. **Enumerate exhaustively:** `races.json`, `race-reactions.json` (120 cells), the upbringing
+   table, `greetings.json` (300 cells / 1,500 lines), the 96 race-gated topic records and their 32
+   `forbids`, `rumours.json`'s race gates, the slavery-line set, the surcharge formula, the guard
+   `lawFactor` and `suspicionMultiplier` tables, and the raid encounter's race branch.
+2. **Perturb and observe** per `RI-MTH07` §B, entity-side, with the null control.
+3. **Apply the consequence:** any `coupling == 0` scores **that axis 0**, fail-closed. There is no
+   `partial`.
+4. **The wave-1 measurements, kept here so nobody re-derives them:**
+
+| Model | Perturbation | World-side consumer | `coupling` |
+|---|---|---|---:|
+| `race-reactions.json` | RG-DEEP/dunmer −40 → +14 | `npcDisposition(eid)` on a live NPC; `getPriceQuote` moved 92 g → 68 g | **> 0** |
+| `greetings.json` | — | **none.** `engine.js:3706` is the only occurrence of `greetings` in `game/src/**`; `playerRaceClass()` is called only from a harness oracle and an analysis script; no harness verb matches `/greet/` | **0** |
+| race-gated topics | Dunmer vs Saxhleel at `helstrom-market` | **none.** `sim/npc.js` copies `spec.topics` verbatim and nothing filters `requires.race` / `forbids.race`; the offered list is byte-identical | **0** |
+| guard `lawFactor` / `suspicionMultiplier` | — | **none.** `stepNPCs`' `post` behaviour counts `loiter_frames` race-blind; `suspicionMultiplier` has no reader | **0** |
+
+Three `coupling == 0` results on models §4c, §5 and the Guard-thresholds axis all **require to
+act**. Under `RI-MTH07`'s binary threshold that is three axes at 0, and under min-over-axes it is
+the item. It was scored **4**.
 
 ## How we lose
 

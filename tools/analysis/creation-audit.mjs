@@ -594,10 +594,29 @@ if (run('birthsigns')) {
     `second sign power scale ${halfPower ? halfPower.scale : 'n/a'}, drawback scale ${fullDraw ? fullDraw.scale : 'n/a'}`,
     'power halved (0.5), drawback at FULL magnitude (1.0) — RI-CHR03 method 9');
   // The Dry Well removes a system, and the sheet says so.
+  //
+  // S27 (wave 1) moved which system. The wave-0 wording of this assertion wanted
+  // `removes_system: "focus_regeneration"`, and S27 ruled that Focus never regenerates for
+  // ANYBODY — so a drawback removing regeneration removed a system nobody had and was
+  // definitionally unobservable. That was half of what S27 was referred to settle, and the
+  // ruling's answer is that the Dry Well takes the one route S27 leaves open: the hearth.
+  // The assertion is therefore RE-POINTED, not relaxed, and it is now three clauses where it
+  // was one — the sign must take the hearth, no sign anywhere may grant Focus as a RATE, and
+  // the old wording must be gone from the roster so it cannot come back by copy-paste.
   const dry = composeCharacter(data, { race: 'breton', upbringing: 'lukiul', classId: 'sap-reader', birthsign: 'nu-ixtu', givenName: 'Audit' });
-  check('CHR03-dry-well-removes-focus', dry.drawbacks.some((d) => d.drawback.removes_system === 'focus_regeneration'),
+  check('CHR03-dry-well-takes-the-hearth', dry.drawbacks.some((d) => d.drawback.removes_system === 'hearth_focus_restore'),
     `Dry Well drawbacks: ${dry.drawbacks.map((d) => d.drawback.removes_system || d.drawback.kind).join(', ')}`,
-    'removes focus_regeneration — the Atronach ported and not softened');
+    'removes hearth_focus_restore — ARBITRATION S27: Focus comes back at the hearth and nowhere else, so the Dry Well takes the hearth');
+  const rateGrants = [];
+  for (const s of signs) {
+    for (const e of ((s.power && s.power.effects) || [])) {
+      if (/focus/.test(String(e.kind)) && /per_second|per_frame|regen|rate/.test(String(e.kind))) rateGrants.push(`${s.id}.${e.kind}`);
+    }
+    if (s.drawback && s.drawback.removes_system === 'focus_regeneration') rateGrants.push(`${s.id}.drawback:focus_regeneration`);
+  }
+  check('CHR03-S27-no-focus-rate', rateGrants.length === 0,
+    rateGrants.length ? rateGrants.join(', ') : 'no sign grants Focus as a rate and no sign still claims to remove focus_regeneration',
+    'S27: a birthsign may grant Focus as a discrete, consumed, one-shot effect, never as a rate');
   // The Grey Sap's -25 rootkeeper term must actually fire in the disposition model.
   const withSign = derivedDisposition(data, { group: 'RG-ROOT', race: 'saxhleel', upbringing: 'interior', baseDisposition: 50, birthsign: 'shuja-vei' });
   const without = derivedDisposition(data, { group: 'RG-ROOT', race: 'saxhleel', upbringing: 'interior', baseDisposition: 50, birthsign: 'raj-xul' });

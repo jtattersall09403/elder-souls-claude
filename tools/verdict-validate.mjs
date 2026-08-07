@@ -125,6 +125,20 @@ function validate(file) {
       if (r.measured === 'unmeasurable' && r.score_0_10 !== 0) E(`reference_items ${tag}: measured=unmeasurable requires score_0_10=0 (fail-closed, never "unknown")`);
       if (r.score_0_10 >= 7 && !r.justification) E(`reference_items ${tag}: score ${r.score_0_10} >= 7 requires a justification naming the artifact that proves it (SCORING.md §1.1)`);
       if (r.score_0_10 >= 9) W(`reference_items ${tag}: score ${r.score_0_10} claims we BEAT the reference — expected rare-to-never; artifacts must show the reference losing`);
+      // SCORING.md §1.1 / §1.2b — the hard-fail cap and the native-0 ceiling.
+      // Added wave 1 by BAR-CRITIQUE-W1-07-R1 §R5. Both rules were binding, both had their data
+      // in this file already, and neither was checked: W1-07 round 2 carried two triggered hard
+      // fails on RI-CHR01 in hard_fails[] and scored it 4, and recorded native_score 0 on three
+      // items and scored all three 4.
+      {
+        const hf = (r.hard_fails || []).length > 0 || (r.checks || []).some((c) => c && c.hard_fail === true);
+        if (hf && r.score_0_10 > 2) {
+          E(`reference_items ${tag}: a hard fail is recorded and score_0_10 is ${r.score_0_10}. SCORING.md §1.1: "any triggered hard fail caps the whole item at 2, no matter how many other checks passed."`);
+        }
+        if (typeof r.native_score === 'number' && r.native_score === 0 && r.score_0_10 > 4) {
+          E(`reference_items ${tag}: native_score is 0 and score_0_10 is ${r.score_0_10}. SCORING.md §1.2 step 1 makes the item's own band a CEILING — a native 0 is the "loses outright" band, ceiling 4 — and §1.2b requires the item's anchor row to carry a 0 rung so this is read off the item rather than guessed.`);
+        }
+      }
       if (!Array.isArray(r.evidence) || r.evidence.length === 0) E(`reference_items ${tag}: evidence[] required`);
       checkEvidence(r.evidence, `reference_items ${tag}`);
       for (const c of r.checks || []) checkEvidence(c.evidence, `reference_items ${tag} check ${c.id}`);

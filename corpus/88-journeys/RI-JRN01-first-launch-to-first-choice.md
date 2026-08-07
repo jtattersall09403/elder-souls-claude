@@ -136,27 +136,86 @@ node tools/journey/journey-run.mjs --journey jrn01-opening --seed 4711 \
      --out reports/journeys/<runId>
 ```
 
-Requires harness amendment **`A-JRN1`** (real input path + first-input timing + the new trace
-events). Until it exists every check below is `unmeasurable` and scores **0**, fail-closed
-(CRITIC-DOCTRINE §7.3).
+> ### §0.1 — AMENDED wave 1, `BAR-CRITIQUE-W1-07-R1` §R1/§R2. **The fail-closed clause is narrowed, and the blocked weight becomes `corpus_debt` rather than a zero charged to the build.**
+>
+> As originally written this preamble read: *"Requires harness amendment `A-JRN1` … Until it
+> exists every check below is `unmeasurable` and scores 0, fail-closed."* That rule ran for two
+> rounds and returned **0 for round 1's twenty byte-identical grey frames and 0 for round 2's
+> nineteen distinct frames of a named interior with two present NPCs and legible dialogue.** A
+> scale returning the same number for those two builds is measuring the toolchain. `A-JRN1`,
+> `A-JRN2`, `A-JRN4` and `beat-extract.mjs` have never been written, are filed as `RI-MTH06`, and
+> are **not a builder's deliverable**; two builders have now been charged for their absence.
+>
+> **Three rules replace it, and none of them lowers a threshold.**
+>
+> **(a) Which checks are released, and which are not.** The round-2 proposal
+> (`AMENDMENT-PROPOSAL-JRN01-01`) asked to release M4–M11, M13 and M15. It is **granted in part
+> and refused in part**, per check, on the evidence of whether the released instrument can
+> actually see the thing:
+>
+> | Check | Disposition | Reason |
+> |---|---|---|
+> | **M1, M2, M3, M12, M14** | **stay blocked** on `A-JRN1` | real-input dispatch and `first_input`/`first_control` timing; nothing substitutes |
+> | **M4** | **SPLIT.** Clause 2 (≥1 NPC and ≥1 takeable entity present) is **released**. Clause 1 (**≥ 60 s of available play before the first character-defining question**) **stays blocked** | the ≥60 s threshold is the interval between `first_control` and the first field-writing `dialogue_open`, and **neither event exists**. The proposal listed M4 as released; round 2 measured only clause 2 and the headline threshold went unmeasured. Releasing it would convert *the item's own How-we-lose #5* — "control arrives after definition", Morrowind's actual trick — from a timing bar into an entity count |
+> | **M5** | **released, stiffened** — see M5's own amended text | screenshot and frame-area, measurable today, and it was measured twice from two capture paths |
+> | **M6** | **released** | `getCensusState().speaker` against `sim.npcs`, entity-side |
+> | **M7** | **released** | it is the check that caught the ten undrawn questions; "as presented in play" is the whole of its value |
+> | **M8** | **released, stiffened** — see M8's own amended text | as written it is satisfied by a string in a return value, which is How-we-lose #10 verbatim |
+> | **M9, M15** | **released ONLY against a declared, enumerable rendered-text accessor** | both are greps over "every string rendered". This build draws **all** of its text into a canvas: `document.body.innerText` is `""` and the accessibility tree has no children. A grep over an empty string returns **0 hits and passes**. `RI-MTH06` §B names this exact failure. **A build that exposes no enumerable rendered-text surface scores M9 and M15 `unmeasurable ⇒ 0`, never pass.** The critic names the accessor it used |
+> | **M10, M11** | **released** | entity-side (`kind: inscription`) and image-side (`RI-WLD06` M31) respectively |
+> | **M13** | **SPLIT.** The **reachability** legs (can the journey be completed on keyboard / mouse+keyboard / gamepad / touch) are **released**; the **descriptor** claim stays blocked on `A-JRN2` | the round-2 finding is upheld and is good work: `__HARNESS.gamepad(state)` → `RealInput.pushGamepadState()` → **the same `pollGamepad()`** the engine's `beforeTick` calls for a physical pad, so a `tools/` shim could only drift from a path that already exists. **But** `A-JRN2` requires injection at the `navigator.getGamepads()` seam and a `mapping:''` non-standard descriptor, and this path is one layer inside that seam. Standard-mapping reachability: released. Non-standard descriptors and hot-plug: `RI-JRN04`'s, and still blocked |
+>
+> **A critic measuring a released check MUST name the instrument it used**, in
+> `method_deviations`, exactly as for any substitution. The `gamepad-shim.mjs` reference in M13 is
+> struck in favour of `__HARNESS.gamepad()` for the released leg only.
+>
+> **(b) The blocked weight is `corpus_debt`, not a zero against the build.** While
+> `A-JRN1`/`A-JRN2`/`A-JRN4`/`beat-extract.mjs` are absent, the weight of every still-blocked
+> check — M1, M2, M3, M12, M14, M4 clause 1, the naive pass M16–M19, and the blind pair — is
+> **removed from the numerator *and* the denominator**, the native score is reported as
+> `raw / runnable` on the same line, and the debt is filed against **`RI-MTH06`** in the piece's
+> `status_reasons` as `corpus_debt`, never absorbed into the build's mean. This is
+> `CRITIC-DOCTRINE` §7's own instruction — *"if an item cannot reach 10 because the corpus is
+> broken … do not absorb it into the piece's score"* — and it is the mechanism
+> `BAR-CRITIQUE-W1-09-R1` §R2.3 established for `RI-CMB07` M1. **No band moves and no check is
+> dropped.** Runnable weight in wave 1 is **67 of 100** — Diegesis 35, Restraint 20, M13's
+> reachability legs 7, M20 5 — and a build must still earn the same **fraction** of the runnable
+> total to escape each band (≥ 0.90 meets the bar, ≥ 0.70 below-bar, ≥ 0.50 attempting, < 0.50 we
+> lose). A build that would have scored 30/100 scores 30/67 → 45% → still "We lose". Where the
+> build exposes no rendered-text accessor, M9 and M15 score **0 inside the runnable denominator**
+> — that is a build defect, not a corpus one, and it is not relieved.
+>
+> **(c) The debt has an expiry and an owner.** `RI-MTH06`'s standing rule §D applies: this is
+> wave 1, the blocking was first recorded in `W1-07.json`, and `RI-MTH06`'s own scoring puts
+> *"absent — `RI-JRN01` scores 0 for a second wave"* at its 0 band. That band is **already
+> reached**. The instruments are the corpus's deliverable with `RI-MTH06` as owner; a builder who
+> writes them is doing the corpus's work and it is credited there, not here.
+
+Requires harness amendment **`A-JRN1`** for **M1, M2, M3, M12, M14 and M4 clause 1**, and the
+isolated naive-agent channel for **M16–M19**, and `beat-extract.mjs` for the blind pair. Those
+checks are `unmeasurable` and score **0**, fail-closed (CRITIC-DOCTRINE §7.3), and their weight is
+`corpus_debt` per §0.1(b). **M4 clause 2, M5, M6, M7, M8, M10, M11, M13's reachability legs, and —
+subject to §0.1(a)'s accessor condition — M9 and M15 are measurable today against
+`window.__HARNESS` and a screenshot; a critic measuring them MUST name the instrument it used.**
 
 | # | Check | Procedure | Threshold |
 |---|---|---|---|
 | **M1** | Surfaces to control | From the trace and a screenshot every 250 ms, count distinct full-viewport UI states with no 3D world rendered behind them, from `navigationStart` to the `first_control` event. | ≤ 2 (O1). **Hard fail ≥ 4.** |
 | **M2** | Unskippable time | For each surface, dispatch a real input on its first rendered frame; measure frames until the surface is gone. | 0 surfaces exceed 30 frames after an input (O2). **Hard fail:** any surface that ignores input entirely. |
 | **M3** | Title composition | Screenshot the title; enumerate every focusable element via the accessibility tree (`page.accessibility.snapshot()`). | Exactly the O3 set. **Hard fail:** a `Play` button whose activation leads to another menu rather than to the world. |
-| **M4** | Control-before-definition | From the trace: frame of `first_control`, frame of the first `dialogue_open` event whose node writes a character field. Convert to available play seconds. | ≥ 60 s (O6). Also assert ≥ 1 other NPC entity and ≥ 1 takeable item entity exist in `listEntities()` during that window. |
-| **M5** | Creation diegesis | For every character-defining input, capture a screenshot at the moment of the input and compute the fraction of the frame occupied by opaque non-world UI, plus whether any 3D entity is visible. | 100% of inputs occur with world visible; opaque UI ≤ **55%** of frame area; **0** frames with a uniform background covering ≥ 90%. **Hard fail:** any creation input taken on a screen with no world behind it (O8). |
+| **M4** | Control-before-definition | **Clause 1 (blocked, `corpus_debt`):** from the trace, frame of `first_control` to frame of the first `dialogue_open` event whose node writes a character field, converted to available play seconds. **Clause 2 (released):** assert ≥ 1 other NPC entity and ≥ 1 takeable item entity exist in `listEntities()` during that window. | Clause 1: ≥ 60 s (O6). Clause 2: ≥ 1 and ≥ 1. *AMENDED wave 1 (§0.1a): the two clauses are scored separately and clause 2 passing is **not** evidence for clause 1. Round 2 measured "min 1 NPC, 3 entities at boot" and recorded M4 as agreeing with the build's instrument; the ≥ 60 s threshold — the item's whole claim that you get a body before you get a character — was never measured by anyone.* |
+| **M5** | Creation diegesis | For every character-defining input, capture a screenshot at the moment of the input and compute, **from the captured frame's pixels**, the fraction of the frame occupied by opaque non-world UI, plus whether any 3D entity is visible. | 100% of inputs occur with world visible; opaque UI ≤ **55%** of frame area; **0** frames with a uniform background covering ≥ 90%. **Hard fail:** any creation input taken on a screen with no world behind it (O8). *AMENDED wave 1 (`BAR-CRITIQUE-W1-07-R1` §R2.2): the UI-area fraction is **measured from a readback of the frame and never taken from the build's own layout report.** Round 2's figure (0.136–0.336) was the build's self-report of its own layout; the critic's independent pixel measurement of the same frames read 0.17–0.49, and the item as written did not say which one it meant. A number the party under measurement computes is a free parameter, and this item had one for two rounds.* **M5 measures the background only.** It is passed in full by a scene whose authored text has been deleted — round 2 scored 19 of 19 distinct frames, world visible at every node, UI area inside the ceiling, with **0 of 10 dilemma questions drawn**. The foreground is `RI-JRN09` `ES-LEGIBLE/1`, which a verdict on this journey must cite (§0.2). |
 | **M6** | Named interlocutor | For each character-defining input, resolve the speaking entity to an `npcs/*.json` record with a `name`, a `settlement` and ≥ 3 topics. | 100%. **Hard fail:** any field set by a menu with no speaker. |
 | **M7** | Class routes | Enumerate the routes offered at the class node from the dialogue graph *as presented in play* (not from the data file). | ≥ 3 routes; the questionnaire route present with ≥ 8 questions; **0** questions containing the tokens `Strength`, `Endurance`, `skill`, `+`, `%`, or any numeral used as a stat (O9). |
-| **M8** | The carried object | After creation, `getPlayerStats()` / inventory contains the O10 object; open it and assert its text contains the player's name, origin and profession as given. | Present and correct. **Hard fail:** absent. |
-| **M9** | Instruction budget | Grep the captured UI text stream (every string rendered outside a dialogue/journal/book surface) over the whole journey for imperative second-person instruction and for the substrings `Press `, `Tap `, `Click `, `Tutorial`, `Objective`, `Quest added`, `New quest`, `Tip:`. | **0 hits** (O11, O13). **Hard fail:** any hit. |
+| **M8** | The carried object | After creation, `getPlayerStats()` / inventory contains the O10 object; open it and assert its text contains the player's name, origin and profession as given — **and assert that text reaches the frame**: the object is openable through the same input path a player has, and its rendered-text set at the open node is non-empty and contains the answers. | Present, correct, **and drawn**. **Hard fail:** absent, **or present only as an API return value**. *AMENDED wave 1 (`BAR-CRITIQUE-W1-07-R1` §R2.3): as originally written this check was satisfied by a string in `readWrit()`, which is How-we-lose #10 — "the stamped document is a flag, not an object … exists in the save file, is never rendered, cannot be read" — reproduced word for word by the check meant to prevent it. Round 2: the writ is complete and correct in the API, and at the stamped node the surface draws `rendered_text: []`. The item's own predicted failure passed its own check.* |
+| **M9** | Instruction budget | Grep the captured UI text stream (every string rendered outside a dialogue/journal/book surface) over the whole journey for imperative second-person instruction and for the substrings `Press `, `Tap `, `Click `, `Tutorial`, `Objective`, `Quest added`, `New quest`, `Tip:`. **The critic must first name the accessor that enumerates rendered text and demonstrate it is non-empty on at least one frame known to carry text.** | **0 hits** (O11, O13). **Hard fail:** any hit. *AMENDED wave 1 (§0.1a): **a build exposing no enumerable rendered-text surface scores M9 `unmeasurable ⇒ 0`, never pass.** This build draws every string into a canvas — `document.body.innerText` is `""`, the accessibility tree is `{role: WebArea}` with no children — so the obvious instrument returns an empty set and a grep over an empty set returns 0 hits and reads as a clean pass. `RI-MTH06` §B names this failure in advance. An instrument that cannot see the thing it greps is not evidence of absence.* |
 | **M10** | In-world inscriptions | Count entities of kind `inscription` encountered before the first meaningful choice; for each, assert it is a world entity with a position, is readable via `interact`, and is placed within **8 m** of the first situation requiring its verb. | ≤ 6, ≥ 1, 100% placed (O12). |
 | **M11** | Marker sweep | `RI-WLD06` M31 run over this journey's HUD frames. | 0 markers/arrows/minimap/compass. **Hard fail:** any (AR-2). |
 | **M12** | Loading discontinuities | From the trace, count gaps where the sim advanced 0 frames for ≥ 120 render frames between `first_control` and the `region_stream_in` for the exterior. | ≤ 1 (O15). |
-| **M13** | Modality parity | Re-run the whole journey four times: keyboard-only, mouse+keyboard, gamepad-only (via `tools/journey/gamepad-shim.mjs`), touch-only (CDP touch emulation, 390×844 → landscape 844×390). | 4/4 complete. **Hard fail:** any run that cannot complete (O17). |
+| **M13** | Modality parity | **Reachability legs (released):** re-run the whole journey four times — keyboard-only, mouse+keyboard, gamepad-only (via `__HARNESS.gamepad()` where the build routes it into the same `pollGamepad()` a physical pad drives, and the critic states that it verified this), touch-only (CDP touch emulation, 390×844 → landscape 844×390). **Descriptor leg (blocked on `A-JRN2`, `corpus_debt`):** the same journey under a `mapping:'standard'` and a `mapping:''` descriptor injected at the `navigator.getGamepads()` seam, plus hot-plug — owned by `RI-JRN04`. | 4/4 complete. **Hard fail:** any run that cannot complete (O17). *AMENDED wave 1 (§0.1a): the `tools/journey/gamepad-shim.mjs` reference is struck for the reachability legs. A shim living in `tools/` can only simulate the path the engine takes; a harness verb that **is** that path cannot drift from it, and round 2 verified the shared `pollGamepad()` call. This is not a relaxation: the released legs are **four**, round 2 completed **two** (keyboard 17 presses, gamepad 28 presses + 1 stick walk; mouse+keyboard and touch never run), and releasing the check therefore fires **HF5** on a build that previously scored 0 fail-closed with no named defect.* |
 | **M14** | Second-run skip cost | Start a new game from an existing save state; count inputs to reach `first_control`. | ≤ 5 (O18). |
-| **M15** | Chosen-one sweep | Grep every string rendered before minute 45 for the prophecy vocabulary registered in `RI-LOR01`. | 0 hits (O14). **Hard fail:** any. |
+| **M15** | Chosen-one sweep | Grep every string rendered before minute 45 for the prophecy vocabulary registered in `RI-LOR01`, **through the same named accessor M9 requires**. | 0 hits (O14). **Hard fail:** any. *AMENDED wave 1 (§0.1a): same accessor condition as M9. Without an enumerable rendered-text surface this check scores `unmeasurable ⇒ 0` rather than passing on an empty grep.* |
+| **M20** | **Title surface exists at all** *(ADDED wave 1, `BAR-CRITIQUE-W1-07-R1` §R2.4)* | From a **fresh browser profile with an existing save present in IndexedDB**, assert a title surface is reached before control, that it offers the exact O3 set, and that `Continue` loads that save. | Present, O3-conformant, `Continue` works. **Hard fail (HF9):** no title surface exists, or a save exists and there is no route to it before control. |
 
 ### Naive pass (isolation: `enforced`)
 
@@ -195,24 +254,73 @@ own?"*
 
 If the judge picks ours, CRITIC-DOCTRINE §2.5 applies in full.
 
+### CONSUMPTION (`RI-MTH07` / `ARBITRATION` §3) — *(ADDED wave 1, `BAR-CRITIQUE-W1-07-R1` §R4)*
+
+`ARBITRATION` §3's CONSUMPTION check reached the **critics** and reached **none of the fourteen
+items** judging the opening, character creation or the journeys — `grep -cE
+'RI-MTH07|CONSUMPTION|world-side consumer'` returned **0 for every one of `RI-JRN01`–`RI-JRN08`,
+`RI-CHR01`–`RI-CHR03`, `RI-PRG02`, `RI-PRG03` and `RI-EXP01`**. This is the second area in which a
+bar critic has found the identical stalled correction. So, for this item:
+
+1. **Enumerate exhaustively** every model the opening ships that the running world must read — the
+   census node graph, the class-route table, the questionnaire weightings, the writ record, the
+   creation-name ledger, the title/save manifest — and list it in the verdict. A sample is not an
+   enumeration.
+2. **Perturb and observe** per `RI-MTH07` §B: two well-separated values, everything else held
+   fixed, an **entity-side or frame-side** observable, plus the null control. For this journey the
+   admissible observable is *what the player could see or do*: a drawn string, a rendered object, a
+   surface that appears, an input that is accepted. **A `getCensusState()` return value is not an
+   observable** — it is the trace, and `RI-MTH07` §B1 says the trace is an observer.
+3. **Apply the consequence.** Any `coupling == 0` scores **that dimension 0**, fail-closed, and
+   appears in `status_reasons`. There is no `partial`.
+4. **The worked instance is in this journey.** Round 2 shipped ten authored dilemma questions
+   carried correctly in `getCensusState().question.text` and read by nothing that draws — `coupling
+   == 0` on the single most Morrowind-defining model in the piece, passed by the build's own
+   instrument because that instrument counted characters and the *answers* differed.
+
 ## Scoring
 
 Native scale: **0–100**, weighted, plus hard fails that cap the item at **2** regardless.
 
-| Block | Weight | Checks |
-|---|---|---|
-| **Diegesis** — creation is a scene, not a screen | **35** | M5 (15), M6 (8), M7 (7), M8 (5) |
-| **Flow** — nothing between the click and the body | 25 | M1 (10), M2 (5), M3 (5), M12 (5) |
-| **Restraint** — the game explains nothing it should not | 20 | M9 (10), M10 (4), M11 (3), M15 (3) |
-| **Reach** — everyone can actually do it | 12 | M13 (10), M14 (2) |
-| **Naive corroboration** | 8 | M16 (4), M18 (2), M19 (2) |
+> **Piece decomposition, `CORPUS-CONTRACT` §4 as amended** *(ADDED wave 1, `BAR-CRITIQUE-W1-07-R1`
+> §R6).* This item judges **three** paths: `journey.firstlaunch.flow`, `journey.chargen.diegesis`
+> and `journey.onboarding.explanation`. `W1-07` declares **only `journey.chargen.diegesis`**, and
+> **no wave-1 piece declares the other two at all.** Measured across every verdict in
+> `corpus/90-verdicts/wave1/`: `journey.firstlaunch.flow` and `journey.onboarding.explanation` are
+> owned by nobody, as are all seven other `journey.*` paths and all ten `input.*` paths.
+>
+> Under §4 rule 1, the Flow block (title, surfaces, unskippable time, loading discontinuities —
+> 25 points) and the Restraint block (instruction budget, inscriptions, markers, prophecy — 20
+> points) are **not W1-07's to be charged for**: **45 of this item's 100 points measure paths the
+> piece does not own.** They are recorded as a **cross-piece coupling debt owned by the
+> `journey.firstlaunch.flow` seam**, at their measured value, and the seam has no owner today —
+> which is `RI-MTH07` "How we lose" clause 2 exactly. Under §4 rule 2 the remedy is **not** to drop
+> them: `journey.firstlaunch.flow` must be declared by a piece, because the build ships a boot path
+> and has therefore silently escaped the item that judges it for two rounds. **Both halves, or
+> this is a relaxation.**
 
-| Native | Band | Ladder ceiling |
+| Block | Weight | Checks | Runnable in wave 1? |
+|---|---|---|---|
+| **Diegesis** — creation is a scene, not a screen | **35** | M5 (15), M6 (8), M7 (7), M8 (5) | **all runnable** |
+| **Flow** — nothing between the click and the body | 25 | M1 (8), M2 (4), M3 (4), M12 (4), **M20 (5)** | M20 runnable; M1/M2/M3/M12 `corpus_debt` |
+| **Restraint** — the game explains nothing it should not | 20 | M9 (10), M10 (4), M11 (3), M15 (3) | **all runnable**, M9/M15 subject to §0.1(a)'s accessor condition |
+| **Reach** — everyone can actually do it | 12 | M13 reachability (7), M13 descriptor (3), M14 (2) | reachability runnable; descriptor + M14 `corpus_debt` |
+| **Naive corroboration** | 8 | M16 (4), M18 (2), M19 (2) | `corpus_debt` — the isolated channel does not exist |
+
+*Weights re-cut wave 1 (`BAR-CRITIQUE-W1-07-R1` §R2.4) to pay for **M20**: 5 points taken out of
+the Flow block proportionally (M1 10→8, M2 5→4, M3 5→4, M12 5→4). The block total is unchanged at
+25 and the item total is unchanged at 100. M13's 10 is split 7/3 between the two claims it was
+already making. **No band moved and no check was dropped.***
+
+**Bands are applied to the runnable fraction** per §0.1(b), not to the raw total, and both numbers
+are reported:
+
+| Native fraction of runnable | Band | Ladder ceiling |
 |---|---|---|
-| ≥ 90 | Meets the bar | 8 |
-| 70–89 | Below bar — named remedy required | 6 |
-| 50–69 | Recognisably attempting it | 5 |
-| < 50 | **We lose** | 4 |
+| ≥ 0.90 | Meets the bar | 8 |
+| 0.70–0.89 | Below bar — named remedy required | 6 |
+| 0.50–0.69 | Recognisably attempting it | 5 |
+| < 0.50 | **We lose** | 4 |
 
 **Hard fails (any one caps the item at 2 and sets `status: FAIL`):**
 
@@ -225,9 +333,42 @@ Native scale: **0–100**, weighted, plus hard fails that cap the item at **2** 
 - **HF6** — The naive agent's answer to "what were you asked, and by whom" names a menu (M16).
 - **HF7** — No questionnaire route to the profession (M7).
 - **HF8** — A defect in the confusion census that blocked progress (M19).
+- **HF9** *(ADDED wave 1, `BAR-CRITIQUE-W1-07-R1` §R2.4)* — **No title surface exists at all, or a
+  save exists and there is no route to it before control** (M20). O1 bounds surfaces from *above*
+  and nothing bounded them from below: a build that boots straight into the world scores M1
+  perfectly (0 surfaces ≤ 2), while O3 — `Continue`, `New`, `Load`, `Settings`, `Quit-to-menu` —
+  is unbuilt and M3 is fail-closed at 0 with no consequence. Round 1 and round 2 are both that
+  build, both verdicts record *"no title surface of any kind"* as a secondary observation, and no
+  check in the item fired on it for two rounds. A game a player cannot return to a save from is
+  not a shipped opening.
 
-**Ladder mapping (per `SCORING.md` §1.2 / BAR-CRITIQUE W7):** native 50 → ladder **4**;
-native 75 → ladder **6**; native 92 → ladder **8**.
+**Ladder mapping (per `SCORING.md` §1.2 / BAR-CRITIQUE W7), on the runnable fraction:**
+0.50 → ladder **4**; 0.75 → ladder **6**; 0.92 → ladder **8**. **Below 0.30 → ladder 0–2**, and a
+build with no rendered-text accessor and no title surface cannot exceed **2** by HF9 alone.
+
+**Aggregation (a property of this item, not of the critic):** `weighted-sum` over runnable weight,
+with `corpus_debt` removed from numerator and denominator per §0.1(b).
+
+> ### §0.2 — Mandatory citations in a verdict on this journey *(ADDED wave 1, `BAR-CRITIQUE-W1-07-R1` §R3, §R7)*
+>
+> Three numbers exist elsewhere in the corpus that this journey is *about* and that no `W1-07`
+> verdict has ever contained. Citing them is not duplication; not citing them is how the seam
+> stays empty.
+>
+> 1. **`RI-JRN09`'s `DTR`, `AC` and `NAMED`** — whether the scene's authored text reached the
+>    player, whether the player's answers were consumed inside the scene, and whether the naming
+>    moment occurred. This item measures the *frame*; `RI-JRN09` measures the *exchange*. A
+>    verdict citing M5 without `DTR` has reported that the room was visible and not that anything
+>    was said in it.
+> 2. **`RI-PLT03` P1's measured `T_control`** (O5 already delegates the number and never asks for
+>    it) — or `blocked_on_hardware` with a wave. **Two `W1-07` verdicts exist with no figure for
+>    how long it takes to get a body**, in an item whose first requirement is the time to a
+>    controllable body.
+> 3. **`RI-EXP01`'s `N_found`, `T_lie` and `T_refusal`** — the corpus's only instrument that asks
+>    whether the opening is *any good*, on paths (`experience.opening.hook`,
+>    `experience.opening.beats`) that **no wave-1 piece declares** and that have therefore never
+>    been measured on any build. Cite them or record the seam debt against the piece that should
+>    own them.
 
 ## How we lose
 
@@ -275,6 +416,29 @@ Written pessimistically, in advance, so a critic can tick them off.
     no save present, first-ever pointer lock request. The critic must always measure with a fresh
     browser profile — recorded in the artifact or the measurement is void.
 
+*The following four were added wave 1 by `BAR-CRITIQUE-W1-07-R1`. Each is a way this item was
+already being passed, not a prediction.*
+
+14. **The room is built and the room is silent.** Every clause of M5 is about the *background* —
+    world visible, UI under 55%, no uniform frame. A build can render a named interior with two
+    present NPCs, score 19 of 19 distinct frames, and deliver **0 of 10 authored questions to the
+    player**, because the model carries the text and the surface never reads it. This is not a
+    prediction: it is round 2, and the item scored M5 at full marks in the same verdict that named
+    it as the piece's biggest gap. `RI-JRN09` `ES-LEGIBLE/1` exists for it.
+15. **The instrument is blind and the grep comes back clean.** M9 and M15 count hits in "every
+    string rendered". A canvas-only build returns an empty string set to the obvious accessor, so
+    both checks pass by having nothing to search. **An empty result from a blind instrument reads
+    identically to a clean build**, and there is no third state unless the item demands the
+    accessor be named and shown non-empty first.
+16. **There is no title screen and nothing notices.** O1 caps surfaces at two and nothing sets a
+    floor. A build that boots into the world has zero surfaces, passes M1 outright, and offers a
+    returning player no route to their save. Two verdicts recorded it as an observation; no check
+    fired. **HF9.**
+17. **The item scores the same for a slideshow and a scene, because its tool was never written.**
+    The failure this item spent two rounds demonstrating on itself. `A-JRN1` is not a builder's
+    deliverable and two builders have been charged for it. §0.1's `corpus_debt` rule exists so the
+    third is not.
+
 ## Provenance note
 
 - **`canonical-recall`, confidence medium** — everything in **§A** (`MW/OPEN`) and **§B**
@@ -293,8 +457,20 @@ Written pessimistically, in advance, so a critic can tick them off.
   M31. Journal voice and the first entry → `RI-DLG05`. Origin/birthsign table content →
   `RI-CHR01` (proposed by BAR-CRITIQUE-01 rank 10; if it does not exist, O7 still binds on
   *delivery* and the *content* is a corpus hole to be reported, not invented here).
-- **Harness dependency.** Checks M1–M15 require amendment **`A-JRN1`** (real-input mode,
-  `first_input`/`first_control` trace events, UI-text stream capture) and M13 requires
-  **`A-JRN2`** (gamepad shim) and **`A-JRN4`** (viewport/orientation control). Until those land,
-  this item is **unmeasurable** and scores **0**, fail-closed. The full request is in the reply
-  that accompanied this item's creation and in `JOURNEY-CRITIC-FLEET.md` §7.
+- **Harness dependency — AMENDED wave 1, `BAR-CRITIQUE-W1-07-R1` §R1/§R2, and this paragraph is
+  the one that changed.** It previously read *"Checks M1–M15 require `A-JRN1` … until those land,
+  this item is unmeasurable and scores 0, fail-closed."* That is now confined to **M1, M2, M3,
+  M12, M14, M4 clause 1, M13's descriptor leg and M16–M19**, whose weight is `corpus_debt` per
+  §0.1(b) and is filed against **`RI-MTH06`**, not against the build. The remaining checks are
+  measurable today and the instrument must be named. The full amendment request is in
+  `JOURNEY-CRITIC-FLEET.md` §7 and the tools are `RI-MTH06`'s deliverable.
+- **The thresholds introduced or moved in this pass, and what they cost.** `M20`/`HF9` and the
+  weight re-cut of the Flow block are `constructed`, confidence high — M20 is an existence check
+  over a surface the item already specified in O1/O3 and never required. The M13 7/3 split is
+  `constructed`, confidence medium, and is a split of an existing 10 rather than an addition.
+  **No band in this item was lowered.** The bands now apply to the runnable fraction, which is
+  arithmetically the same test on a smaller, honestly-declared denominator, and the re-cut takes
+  its five points *out of* the Flow block rather than adding them. Applied to round 2, the amended
+  item fires **HF5** (2 of 4 modality legs), **HF9** (no title surface) and **HF7** (no
+  questionnaire route reaching a profession, 0 of 14 over 240 runs) — three hard fails where the
+  unamended item recorded none, because the unamended item recorded nothing at all.

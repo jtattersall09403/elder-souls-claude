@@ -1,2290 +1,2346 @@
 {
-  "schema": "elder-souls/data-index@1",
-  "generated_by": "tools/analysis/data-index.mjs",
-  "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 324,
-  "files": [
-    {
-      "path": "books/the-drowned-ford.json",
-      "schema": "elder-souls/book@1",
-      "id": "the-drowned-ford",
-      "bytes": 841,
-      "sha256": "fb0e38e389a2c802",
-      "declared_incomplete": true
-    },
-    {
-      "path": "camera/cells.json",
-      "schema": "elder-souls/camera-cells@1",
-      "id": null,
-      "bytes": 79065,
-      "sha256": "cd1049c8f5ec4c8b"
-    },
-    {
-      "path": "camera/reference-framing.json",
-      "schema": "elder-souls/camera-reference-framing@1",
-      "id": null,
-      "bytes": 4789,
-      "sha256": "9855854c0fcb126a"
-    },
-    {
-      "path": "camera/rig.json",
-      "schema": "elder-souls/camera@1",
-      "id": "ES-CAM/1",
-      "bytes": 12818,
-      "sha256": "69088ef6106391f0"
-    },
-    {
-      "path": "camera/targets.json",
-      "schema": "elder-souls/camera-targets@1",
-      "id": null,
-      "bytes": 837,
-      "sha256": "944f999482d0670f"
-    },
-    {
-      "path": "combat/clips.json",
-      "schema": "elder-souls/clips@1",
-      "id": null,
-      "bytes": 77721,
-      "sha256": "926de83934add132"
-    },
-    {
-      "path": "combat/enemies/beast_slitherfang.json",
-      "schema": "elder-souls/enemy@1",
-      "id": "beast_slitherfang",
-      "bytes": 2300,
-      "sha256": "d877b1c8e24e3373"
-    },
-    {
-      "path": "combat/enemies/cam_boss_great.json",
-      "schema": "elder-souls/enemy@1",
-      "id": "cam_boss_great",
-      "bytes": 1570,
-      "sha256": "41d5b68eb56165c2"
-    },
-    {
-      "path": "combat/enemies/cam_boss_mid.json",
-      "schema": "elder-souls/enemy@1",
-      "id": "cam_boss_mid",
-      "bytes": 1568,
-      "sha256": "b8439646b2c17771"
-    },
-    {
-      "path": "combat/enemies/cam_elite.json",
-      "schema": "elder-souls/enemy@1",
-      "id": "cam_elite",
-      "bytes": 1566,
-      "sha256": "b8895926b571c6e4"
-    },
-    {
-      "path": "combat/enemies/cam_levy.json",
-      "schema": "elder-souls/enemy@1",
-      "id": "cam_levy",
-      "bytes": 1564,
-      "sha256": "cb3246647abd25a9"
-    },
-    {
-      "path": "combat/enemies/cam_rat.json",
-      "schema": "elder-souls/enemy@1",
-      "id": "cam_rat",
-      "bytes": 1563,
-      "sha256": "25e7e55be9e91150"
-    },
-    {
-      "path": "combat/enemies/champion_hist_marked.json",
-      "schema": "elder-souls/enemy@1",
-      "id": "champion_hist_marked",
-      "bytes": 3647,
-      "sha256": "80b5ed4980d619d3"
-    },
-    {
-      "path": "combat/enemies/cst_sap_speaker.json",
-      "schema": "elder-souls/enemy@1",
-      "id": "cst_sap_speaker",
-      "bytes": 6041,
-      "sha256": "07a3dc593de33f13"
-    },
-    {
-      "path": "combat/enemies/drowned_greater.json",
-      "schema": "elder-souls/enemy@1",
-      "id": "drowned_greater",
-      "bytes": 3288,
-      "sha256": "ad81f82691e483c0"
-    },
-    {
-      "path": "combat/enemies/drowned_lesser.json",
-      "schema": "elder-souls/enemy@1",
-      "id": "drowned_lesser",
-      "bytes": 3303,
-      "sha256": "26a08825f9621607"
-    },
-    {
-      "path": "combat/enemies/dummy_passive.json",
-      "schema": "elder-souls/enemy@1",
-      "id": "dummy_passive",
-      "bytes": 1465,
-      "sha256": "737c96036e2bd9ae"
-    },
-    {
-      "path": "combat/enemies/guard_legion.json",
-      "schema": "elder-souls/enemy@1",
-      "id": "guard_legion",
-      "bytes": 3878,
-      "sha256": "b19ca311b5aeb364"
-    },
-    {
-      "path": "combat/enemies/inf_trash.json",
-      "schema": "elder-souls/enemy@1",
-      "id": "inf_trash",
-      "bytes": 4239,
-      "sha256": "41d161cd5ebf9734"
-    },
-    {
-      "path": "combat/enemies/probe_pulse.json",
-      "schema": "elder-souls/enemy@1",
-      "id": "probe_pulse",
-      "bytes": 2146,
-      "sha256": "ae6a618f5eb6ebc3"
-    },
-    {
-      "path": "combat/flask.json",
-      "schema": "elder-souls/flask@1",
-      "id": "Hist-sap Flask",
-      "bytes": 2930,
-      "sha256": "35ca0553f470edf2"
-    },
-    {
-      "path": "combat/frames.json",
-      "schema": "elder-souls/frames@1",
-      "id": "ES-FRAMES/1",
-      "bytes": 12460,
-      "sha256": "4147a94fc038c176"
-    },
-    {
-      "path": "combat/hitgeometry.json",
-      "schema": "elder-souls/hitgeometry@1",
-      "id": null,
-      "bytes": 15109,
-      "sha256": "536f3b285ad5a1c6"
-    },
-    {
-      "path": "combat/input.json",
-      "schema": "elder-souls/input@1",
-      "id": null,
-      "bytes": 620,
-      "sha256": "5952ea08af20b0da"
-    },
-    {
-      "path": "combat/lockon.json",
-      "schema": "elder-souls/lockon@1",
-      "id": "ES-LOCK/1",
-      "bytes": 6792,
-      "sha256": "ee95d6a784277fa9"
-    },
-    {
-      "path": "combat/movesets/axe_bog_cleaver.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 28101,
-      "sha256": "f252339e9d422bd4"
-    },
-    {
-      "path": "combat/movesets/axe_hatchet_pair.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 28048,
-      "sha256": "b23eaa6623bf87d4"
-    },
-    {
-      "path": "combat/movesets/axe_kings_bite.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 28161,
-      "sha256": "70cfa20af4d4d7ad"
-    },
-    {
-      "path": "combat/movesets/axe_ridge_axe.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 27968,
-      "sha256": "a897cbb47c855102"
-    },
-    {
-      "path": "combat/movesets/axe_shell_reaper.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 28065,
-      "sha256": "50f6ff5ebe8c84a6"
-    },
-    {
-      "path": "combat/movesets/axe_shell_splitter.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 28063,
-      "sha256": "c574dddac4889603"
-    },
-    {
-      "path": "combat/movesets/bow_chitin_recurve.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 7493,
-      "sha256": "3919f31be841aa07"
-    },
-    {
-      "path": "combat/movesets/bow_horn_sinew.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 6386,
-      "sha256": "fc18f8409fbde7d4"
-    },
-    {
-      "path": "combat/movesets/bow_kings_horn.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 6555,
-      "sha256": "99079233cba91306"
-    },
-    {
-      "path": "combat/movesets/bow_marsh_longbow.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 6564,
-      "sha256": "ec4825a3438e8446"
-    },
-    {
-      "path": "combat/movesets/bow_reed_shortbow.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 6493,
-      "sha256": "2fd316d5fbac83b6"
-    },
-    {
-      "path": "combat/movesets/cgs_drowned_reaper.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26359,
-      "sha256": "c9b056ccaaa4ff31"
-    },
-    {
-      "path": "combat/movesets/cgs_harvest_edge.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26423,
-      "sha256": "6ee72329ea8f8c5e"
-    },
-    {
-      "path": "combat/movesets/cgs_kings_crescent.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26499,
-      "sha256": "44aec2aa03391306"
-    },
-    {
-      "path": "combat/movesets/cgs_mire_scythe.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26421,
-      "sha256": "ddcfba6ae5e85b3b"
-    },
-    {
-      "path": "combat/movesets/cgs_tide_falx.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26380,
-      "sha256": "9038a9f36fc079a2"
-    },
-    {
-      "path": "combat/movesets/csw_drowned_kris.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 28174,
-      "sha256": "009d3d8b3d18ae8d"
-    },
-    {
-      "path": "combat/movesets/csw_mangrove_hook.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 27882,
-      "sha256": "114d91401f852fb8"
-    },
-    {
-      "path": "combat/movesets/csw_naga_sickle.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 27816,
-      "sha256": "77ae1a378d75abcd"
-    },
-    {
-      "path": "combat/movesets/csw_reaver_blade.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 27955,
-      "sha256": "5e858affcf69f243"
-    },
-    {
-      "path": "combat/movesets/csw_saltmarsh_sabre.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 27985,
-      "sha256": "649d4bc0ea895cbd"
-    },
-    {
-      "path": "combat/movesets/csw_tide_falchion.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 27935,
-      "sha256": "d01d3001e8059894"
-    },
-    {
-      "path": "combat/movesets/dgr_bone_awl.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26277,
-      "sha256": "12dd214b4e22decb"
-    },
-    {
-      "path": "combat/movesets/dgr_hist_barb.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26296,
-      "sha256": "f832b50cada472f3"
-    },
-    {
-      "path": "combat/movesets/dgr_kings_needle.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26497,
-      "sha256": "cc2e747fa9d6a437"
-    },
-    {
-      "path": "combat/movesets/dgr_reed_dirk.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26268,
-      "sha256": "4186f585f6127678"
-    },
-    {
-      "path": "combat/movesets/dgr_shell_knife.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26294,
-      "sha256": "0830c0a26b00e533"
-    },
-    {
-      "path": "combat/movesets/dgr_thornfang.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26346,
-      "sha256": "11a45c8f29141487"
-    },
-    {
-      "path": "combat/movesets/fst_hist_talon.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 28494,
-      "sha256": "94bf24807b64d727"
-    },
-    {
-      "path": "combat/movesets/fst_marsh_claw.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 28524,
-      "sha256": "cc25167109c90d9b"
-    },
-    {
-      "path": "combat/movesets/fst_quarry_caestus.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 28506,
-      "sha256": "9915fad40e4efa55"
-    },
-    {
-      "path": "combat/movesets/fst_wrapped_fists.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 28452,
-      "sha256": "d50bbbf95421bc58"
-    },
-    {
-      "path": "combat/movesets/ghm_bog_maul.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 24802,
-      "sha256": "76b57630a361b7a2"
-    },
-    {
-      "path": "combat/movesets/ghm_kings_ruin.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 29251,
-      "sha256": "aa2c468bb8652019"
-    },
-    {
-      "path": "combat/movesets/ghm_pile_driver.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 24756,
-      "sha256": "cc20b791b1187b6f"
-    },
-    {
-      "path": "combat/movesets/ghm_root_hammer.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 24779,
-      "sha256": "1b5011efc0eac8f5"
-    },
-    {
-      "path": "combat/movesets/ghm_stone_breaker.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 24860,
-      "sha256": "65b3c3b6da82dda4"
-    },
-    {
-      "path": "combat/movesets/gsw_drowned_greatblade.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25781,
-      "sha256": "c2bd2084672016de"
-    },
-    {
-      "path": "combat/movesets/gsw_fen_claymore.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25722,
-      "sha256": "50e6ee7cf0ff47c5"
-    },
-    {
-      "path": "combat/movesets/gsw_hist_greatblade.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25850,
-      "sha256": "bdb9cda0a5fe29c3"
-    },
-    {
-      "path": "combat/movesets/gsw_memorial_blade.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25720,
-      "sha256": "2e0d99d2b9da80a5"
-    },
-    {
-      "path": "combat/movesets/gsw_oath_of_ash.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25756,
-      "sha256": "ed48ff23cfe04d9a"
-    },
-    {
-      "path": "combat/movesets/gsw_reed_bastard.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25741,
-      "sha256": "388a3b565f9b0b8a"
-    },
-    {
-      "path": "combat/movesets/gsw_saltwind.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25689,
-      "sha256": "158608acbe0f4f55"
-    },
-    {
-      "path": "combat/movesets/gsw_tomb_guard.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25783,
-      "sha256": "dee1560eea7abcd9"
-    },
-    {
-      "path": "combat/movesets/hlb_fen_hook.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 27723,
-      "sha256": "8d48fe15c6e84cb3"
-    },
-    {
-      "path": "combat/movesets/hlb_garrison_bill.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 27690,
-      "sha256": "e2a33983310fa2b2"
-    },
-    {
-      "path": "combat/movesets/hlb_lane_keeper.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 27990,
-      "sha256": "dc893eb1770b6fa7"
-    },
-    {
-      "path": "combat/movesets/hlb_marsh_glaive.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 27975,
-      "sha256": "623796efc6b7e67b"
-    },
-    {
-      "path": "combat/movesets/hlb_reed_partisan.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 27745,
-      "sha256": "38289bfce3cb5529"
-    },
-    {
-      "path": "combat/movesets/hlb_saltcutter.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 32668,
-      "sha256": "33e184552fbecf29"
-    },
-    {
-      "path": "combat/movesets/mce_bog_iron_mace.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26813,
-      "sha256": "d558f0ec177b286f"
-    },
-    {
-      "path": "combat/movesets/mce_bone_hammer.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26857,
-      "sha256": "e05a32e2f8f587e8"
-    },
-    {
-      "path": "combat/movesets/mce_chain_flail.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26802,
-      "sha256": "9bd9efba69912b90"
-    },
-    {
-      "path": "combat/movesets/mce_pilgrim_club.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26863,
-      "sha256": "73d4939315cb49c4"
-    },
-    {
-      "path": "combat/movesets/mce_root_maul.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26749,
-      "sha256": "d3ae36cd7cc559da"
-    },
-    {
-      "path": "combat/movesets/mce_stone_answer.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26947,
-      "sha256": "60dc29db2972b4b4"
-    },
-    {
-      "path": "combat/movesets/spell-ask_the_dead.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-ask_the_dead",
-      "bytes": 634,
-      "sha256": "d9fa68bae2494685"
-    },
-    {
-      "path": "combat/movesets/spell-burden.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-burden",
-      "bytes": 702,
-      "sha256": "abfe1fca4e9fc8f7"
-    },
-    {
-      "path": "combat/movesets/spell-call_the_deep_drowned.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-call_the_deep_drowned",
-      "bytes": 718,
-      "sha256": "f115d2cb4174c623"
-    },
-    {
-      "path": "combat/movesets/spell-call_the_drowned.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-call_the_drowned",
-      "bytes": 661,
-      "sha256": "34ca8be9501758fc"
-    },
-    {
-      "path": "combat/movesets/spell-chameleon.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-chameleon",
-      "bytes": 592,
-      "sha256": "f6ecc23c614db74b"
-    },
-    {
-      "path": "combat/movesets/spell-charm.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-charm",
-      "bytes": 650,
-      "sha256": "a7c259e7b5b876ea"
-    },
-    {
-      "path": "combat/movesets/spell-clean_blood.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-clean_blood",
-      "bytes": 622,
-      "sha256": "0bb8ae111cbb9c12"
-    },
-    {
-      "path": "combat/movesets/spell-clean_lungs.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-clean_lungs",
-      "bytes": 622,
-      "sha256": "8821dc26aba33621"
-    },
-    {
-      "path": "combat/movesets/spell-demoralise.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-demoralise",
-      "bytes": 710,
-      "sha256": "babe821bcf22e62f"
-    },
-    {
-      "path": "combat/movesets/spell-draw_the_sting.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-draw_the_sting",
-      "bytes": 628,
-      "sha256": "6a36262c677ed12f"
-    },
-    {
-      "path": "combat/movesets/spell-ember_spit.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-ember_spit",
-      "bytes": 735,
-      "sha256": "075fecd7fb4d5f9b"
-    },
-    {
-      "path": "combat/movesets/spell-false_face.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-false_face",
-      "bytes": 649,
-      "sha256": "8156cff0ba6c6a47"
-    },
-    {
-      "path": "combat/movesets/spell-feather.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-feather",
-      "bytes": 615,
-      "sha256": "1438fc7f129a0cb9"
-    },
-    {
-      "path": "combat/movesets/spell-frenzy.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-frenzy",
-      "bytes": 702,
-      "sha256": "1a75a0e60a6e60a5"
-    },
-    {
-      "path": "combat/movesets/spell-gill_speech.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-gill_speech",
-      "bytes": 622,
-      "sha256": "509c780a269a5df6"
-    },
-    {
-      "path": "combat/movesets/spell-hist_sight.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-hist_sight",
-      "bytes": 630,
-      "sha256": "6a38e165fce7d2ed"
-    },
-    {
-      "path": "combat/movesets/spell-intervention_imperial.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-intervention_imperial",
-      "bytes": 651,
-      "sha256": "78c7556867b1fb4a"
-    },
-    {
-      "path": "combat/movesets/spell-intervention_root.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-intervention_root",
-      "bytes": 644,
-      "sha256": "1cace23393e54e02"
-    },
-    {
-      "path": "combat/movesets/spell-kiln_breath.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-kiln_breath",
-      "bytes": 793,
-      "sha256": "2fb7a85a01bb8cfe"
-    },
-    {
-      "path": "combat/movesets/spell-leap.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-leap",
-      "bytes": 608,
-      "sha256": "22be9505a5dac398"
-    },
-    {
-      "path": "combat/movesets/spell-leech.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-leech",
-      "bytes": 624,
-      "sha256": "4ed39e7e2f5bd115"
-    },
-    {
-      "path": "combat/movesets/spell-levitate.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-levitate",
-      "bytes": 590,
-      "sha256": "dcf90a0b5ec2ecee"
-    },
-    {
-      "path": "combat/movesets/spell-long_hand.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-long_hand",
-      "bytes": 618,
-      "sha256": "7048fc36fabc64a9"
-    },
-    {
-      "path": "combat/movesets/spell-loosen_the_joint.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-loosen_the_joint",
-      "bytes": 632,
-      "sha256": "cbd674bf4bed8c0f"
-    },
-    {
-      "path": "combat/movesets/spell-loosen_the_joint_touch.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-loosen_the_joint_touch",
-      "bytes": 684,
-      "sha256": "545df0a63fbb17e7"
-    },
-    {
-      "path": "combat/movesets/spell-make_it_whole.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-make_it_whole",
-      "bytes": 640,
-      "sha256": "7ce5395aa079f696"
-    },
-    {
-      "path": "combat/movesets/spell-mark.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-mark",
-      "bytes": 617,
-      "sha256": "3d1fd5406e063492"
-    },
-    {
-      "path": "combat/movesets/spell-marshfire.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-marshfire",
-      "bytes": 708,
-      "sha256": "e16561fcc5a0dbe5"
-    },
-    {
-      "path": "combat/movesets/spell-mend_flesh.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-mend_flesh",
-      "bytes": 620,
-      "sha256": "8845a09b7a91f733"
-    },
-    {
-      "path": "combat/movesets/spell-muffle.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-muffle",
-      "bytes": 612,
-      "sha256": "8dd90c5fb93cc1ad"
-    },
-    {
-      "path": "combat/movesets/spell-night_eye.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-night_eye",
-      "bytes": 618,
-      "sha256": "9a8731892caeb911"
-    },
-    {
-      "path": "combat/movesets/spell-open.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-open",
-      "bytes": 723,
-      "sha256": "3a8270cee25292b2"
-    },
-    {
-      "path": "combat/movesets/spell-put_it_back.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-put_it_back",
-      "bytes": 595,
-      "sha256": "c743e5e4c3262a4d"
-    },
-    {
-      "path": "combat/movesets/spell-recall.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-recall",
-      "bytes": 622,
-      "sha256": "ad9bd409e55e94c7"
-    },
-    {
-      "path": "combat/movesets/spell-rime_touch.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-rime_touch",
-      "bytes": 660,
-      "sha256": "11206586a9f71155"
-    },
-    {
-      "path": "combat/movesets/spell-root_theft.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-root_theft",
-      "bytes": 710,
-      "sha256": "a87cb51ea2faffa2"
-    },
-    {
-      "path": "combat/movesets/spell-rot_bloom.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-rot_bloom",
-      "bytes": 733,
-      "sha256": "fee96e7ce5e84737"
-    },
-    {
-      "path": "combat/movesets/spell-saltrime.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-saltrime",
-      "bytes": 706,
-      "sha256": "cecbee0b5190c8b6"
-    },
-    {
-      "path": "combat/movesets/spell-sap_and_salt.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-sap_and_salt",
-      "bytes": 598,
-      "sha256": "5c9ae0bfbab9cad9"
-    },
-    {
-      "path": "combat/movesets/spell-sap_blade.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-sap_blade",
-      "bytes": 592,
-      "sha256": "a0b359982ec1c5a9"
-    },
-    {
-      "path": "combat/movesets/spell-sap_thief.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-sap_thief",
-      "bytes": 632,
-      "sha256": "79bfc9e9cf35d218"
-    },
-    {
-      "path": "combat/movesets/spell-seal.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-seal",
-      "bytes": 648,
-      "sha256": "ef930d12bc70b8cf"
-    },
-    {
-      "path": "combat/movesets/spell-shell_splitter.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-shell_splitter",
-      "bytes": 770,
-      "sha256": "9621037bc32bc2d6"
-    },
-    {
-      "path": "combat/movesets/spell-silence.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-silence",
-      "bytes": 704,
-      "sha256": "a112b182d42185ea"
-    },
-    {
-      "path": "combat/movesets/spell-skin_of_air.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-skin_of_air",
-      "bytes": 596,
-      "sha256": "b1f8275be159a36e"
-    },
-    {
-      "path": "combat/movesets/spell-slowfall.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-slowfall",
-      "bytes": 616,
-      "sha256": "3da45d042711d5f7"
-    },
-    {
-      "path": "combat/movesets/spell-spark_dart.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-spark_dart",
-      "bytes": 735,
-      "sha256": "4ecec58a47127b00"
-    },
-    {
-      "path": "combat/movesets/spell-spring_the_trap.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-spring_the_trap",
-      "bytes": 745,
-      "sha256": "d75f50f82b0a73bb"
-    },
-    {
-      "path": "combat/movesets/spell-still_the_beast.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-still_the_beast",
-      "bytes": 720,
-      "sha256": "7cf03707fed371c9"
-    },
-    {
-      "path": "combat/movesets/spell-stone_skin.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-stone_skin",
-      "bytes": 594,
-      "sha256": "27ddfc904467b041"
-    },
-    {
-      "path": "combat/movesets/spell-sure_hand.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-sure_hand",
-      "bytes": 592,
-      "sha256": "dc1e6cc1ae20e46e"
-    },
-    {
-      "path": "combat/movesets/spell-the_borrowed_scale.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_borrowed_scale",
-      "bytes": 666,
-      "sha256": "19ad7f41e47d1380"
-    },
-    {
-      "path": "combat/movesets/spell-the_broken_wall.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_broken_wall",
-      "bytes": 801,
-      "sha256": "58d8b3f08523baa5"
-    },
-    {
-      "path": "combat/movesets/spell-the_deep_chameleon.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_deep_chameleon",
-      "bytes": 665,
-      "sha256": "ad226a60056659b0"
-    },
-    {
-      "path": "combat/movesets/spell-the_drowning.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_drowning",
-      "bytes": 810,
-      "sha256": "0fd67bb05d3b4b11"
-    },
-    {
-      "path": "combat/movesets/spell-the_greater_mending.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_greater_mending",
-      "bytes": 612,
-      "sha256": "b9d66f1e941c7f4b"
-    },
-    {
-      "path": "combat/movesets/spell-the_greater_opening.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_greater_opening",
-      "bytes": 728,
-      "sha256": "8b76db0629c131d0"
-    },
-    {
-      "path": "combat/movesets/spell-the_grey_fuzz.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_grey_fuzz",
-      "bytes": 768,
-      "sha256": "10febfb853eb9567"
-    },
-    {
-      "path": "combat/movesets/spell-the_hists_patience.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_hists_patience",
-      "bytes": 710,
-      "sha256": "b658914aeb888cc3"
-    },
-    {
-      "path": "combat/movesets/spell-the_key_sense.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_key_sense",
-      "bytes": 600,
-      "sha256": "ed252b72d233863e"
-    },
-    {
-      "path": "combat/movesets/spell-the_long_flight.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_long_flight",
-      "bytes": 660,
-      "sha256": "eeca07d786f51459"
-    },
-    {
-      "path": "combat/movesets/spell-the_long_slowfall.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_long_slowfall",
-      "bytes": 608,
-      "sha256": "ae540bc4fe4a97e4"
-    },
-    {
-      "path": "combat/movesets/spell-the_long_stillness.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_long_stillness",
-      "bytes": 806,
-      "sha256": "8f89079f234c01dd"
-    },
-    {
-      "path": "combat/movesets/spell-the_short_hop.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_short_hop",
-      "bytes": 626,
-      "sha256": "b994616d837dd2ad"
-    },
-    {
-      "path": "combat/movesets/spell-the_still_water.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_still_water",
-      "bytes": 847,
-      "sha256": "425e624786bac490"
-    },
-    {
-      "path": "combat/movesets/spell-the_strong_arm.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_strong_arm",
-      "bytes": 602,
-      "sha256": "464057eb97965a80"
-    },
-    {
-      "path": "combat/movesets/spell-the_unmaking.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_unmaking",
-      "bytes": 766,
-      "sha256": "1c2d7a4eb7f5afb4"
-    },
-    {
-      "path": "combat/movesets/spell-the_water_film.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-the_water_film",
-      "bytes": 602,
-      "sha256": "ad9e0b59bdd1f9d1"
-    },
-    {
-      "path": "combat/movesets/spell-thick_skin.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-thick_skin",
-      "bytes": 620,
-      "sha256": "e6818ee2e4812af8"
-    },
-    {
-      "path": "combat/movesets/spell-verdigris.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-verdigris",
-      "bytes": 632,
-      "sha256": "fe4c1f811b5007fc"
-    },
-    {
-      "path": "combat/movesets/spell-wamasu_arc.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-wamasu_arc",
-      "bytes": 735,
-      "sha256": "ed639880a0eb76cd"
-    },
-    {
-      "path": "combat/movesets/spell-warm_smudges.json",
-      "schema": "elder-souls/spell-moveset@1",
-      "id": "spell-warm_smudges",
-      "bytes": 598,
-      "sha256": "aa6ece5097f20e06"
-    },
-    {
-      "path": "combat/movesets/spr_drowned_harpoon.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25335,
-      "sha256": "ccca9216e08b2094"
-    },
-    {
-      "path": "combat/movesets/spr_fishers_gig.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25092,
-      "sha256": "c30100ccbcaff1aa"
-    },
-    {
-      "path": "combat/movesets/spr_marsh_lance.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25277,
-      "sha256": "2dc2b5130056e4f1"
-    },
-    {
-      "path": "combat/movesets/spr_mire_trident.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25117,
-      "sha256": "e010acd165e58bc2"
-    },
-    {
-      "path": "combat/movesets/spr_reed_gig.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25132,
-      "sha256": "3519ab9de9cf4271"
-    },
-    {
-      "path": "combat/movesets/spr_root_pike.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 29630,
-      "sha256": "b97c176c912c9c9c"
-    },
-    {
-      "path": "combat/movesets/spr_xanmeer_sting.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25286,
-      "sha256": "c3ac38b230e8a49d"
-    },
-    {
-      "path": "combat/movesets/ssw_barsaebic_warblade.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25593,
-      "sha256": "c23743e13b02bad7"
-    },
-    {
-      "path": "combat/movesets/ssw_fen_wardens.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25327,
-      "sha256": "9a8914a114401ec0"
-    },
-    {
-      "path": "combat/movesets/ssw_garrison_sword.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25524,
-      "sha256": "8b9a55224ba3ad97"
-    },
-    {
-      "path": "combat/movesets/ssw_hist_sap_blade.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25490,
-      "sha256": "f4ae2febfae959b4"
-    },
-    {
-      "path": "combat/movesets/ssw_kothringi_bronze.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25623,
-      "sha256": "b8fe94ec63150647"
-    },
-    {
-      "path": "combat/movesets/ssw_marsh_shortsword.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25388,
-      "sha256": "ab7c3e0a79087ab7"
-    },
-    {
-      "path": "combat/movesets/ssw_oath_of_drowned.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25769,
-      "sha256": "58f10f8b20e2201d"
-    },
-    {
-      "path": "combat/movesets/ssw_rusted_levy.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25394,
-      "sha256": "c37c7eb0bc6ea386"
-    },
-    {
-      "path": "combat/movesets/tsw_bog_rapier.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26480,
-      "sha256": "44c96d97a2a00550"
-    },
-    {
-      "path": "combat/movesets/tsw_duelling_pick.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26518,
-      "sha256": "4f9be2873ed83c65"
-    },
-    {
-      "path": "combat/movesets/tsw_oath_of_salt.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26555,
-      "sha256": "febec4e1659a7d8f"
-    },
-    {
-      "path": "combat/movesets/tsw_reed_estoc.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26427,
-      "sha256": "6b4036f9792e5fbb"
-    },
-    {
-      "path": "combat/movesets/tsw_xanmeer_needle.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26439,
-      "sha256": "29b184031bcc6e50"
-    },
-    {
-      "path": "combat/movesets/ugs_drowned_slab.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25093,
-      "sha256": "8938503abdbaf996"
-    },
-    {
-      "path": "combat/movesets/ugs_fen_zwei.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25032,
-      "sha256": "cc2b312354e682c9"
-    },
-    {
-      "path": "combat/movesets/ugs_golem_sword.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25023,
-      "sha256": "c662a85fc0bc4833"
-    },
-    {
-      "path": "combat/movesets/ugs_oath_of_root.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25182,
-      "sha256": "de3be95721b6cdf5"
-    },
-    {
-      "path": "combat/movesets/ugs_saltiron_greatsword.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 25036,
-      "sha256": "aa9822a2134564ad"
-    },
-    {
-      "path": "combat/movesets/ugs_tomb_colossus.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 24967,
-      "sha256": "9f7fe6c11ffcdcc6"
-    },
-    {
-      "path": "combat/movesets/whp_hide_lash.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26383,
-      "sha256": "0bf4dca7c0f99c8e"
-    },
-    {
-      "path": "combat/movesets/whp_hist_bindings.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26561,
-      "sha256": "f29926e5a6c9452d"
-    },
-    {
-      "path": "combat/movesets/whp_root_tendril.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26483,
-      "sha256": "2483ef1064323265"
-    },
-    {
-      "path": "combat/movesets/whp_salt_scourge.json",
-      "schema": "elder-souls/moveset@1",
-      "id": null,
-      "bytes": 26456,
-      "sha256": "bf651c9a693ba816"
-    },
-    {
-      "path": "combat/parley.json",
-      "schema": "elder-souls/parley@1",
-      "id": null,
-      "bytes": 6830,
-      "sha256": "3e49155601f29148"
-    },
-    {
-      "path": "combat/poise.json",
-      "schema": "elder-souls/poise@1",
-      "id": "ES-POISE/1",
-      "bytes": 7616,
-      "sha256": "5bac6889f67e6ea9"
-    },
-    {
-      "path": "combat/roll.json",
-      "schema": "elder-souls/roll@1",
-      "id": "ES-ROLL/1",
-      "bytes": 5630,
-      "sha256": "c7feae84781a110b"
-    },
-    {
-      "path": "combat/skeleton.json",
-      "schema": "elder-souls/skeleton@1",
-      "id": null,
-      "bytes": 4305,
-      "sha256": "20d4cd1e2fc84c94"
-    },
-    {
-      "path": "combat/spine/axe.json",
-      "schema": "elder-souls/moveset@1",
-      "id": "axe",
-      "bytes": 3622,
-      "sha256": "e0c7debc5f3bdddf"
-    },
-    {
-      "path": "combat/spine/dagger.json",
-      "schema": "elder-souls/moveset@1",
-      "id": "dagger",
-      "bytes": 4034,
-      "sha256": "1763b1b2db03b01c"
-    },
-    {
-      "path": "combat/spine/greatsword.json",
-      "schema": "elder-souls/moveset@1",
-      "id": "greatsword",
-      "bytes": 4146,
-      "sha256": "9695313943549ed9"
-    },
-    {
-      "path": "combat/spine/halberd.json",
-      "schema": "elder-souls/moveset@1",
-      "id": "halberd",
-      "bytes": 3631,
-      "sha256": "06df0ca672e45a47"
-    },
-    {
-      "path": "combat/spine/spear.json",
-      "schema": "elder-souls/moveset@1",
-      "id": "spear",
-      "bytes": 3593,
-      "sha256": "220a1e9a16e01e9a"
-    },
-    {
-      "path": "combat/spine/straight-sword.json",
-      "schema": "elder-souls/moveset@1",
-      "id": "straight-sword",
-      "bytes": 3711,
-      "sha256": "088b4b43ac28de99"
-    },
-    {
-      "path": "combat/spine/ultra-greatsword.json",
-      "schema": "elder-souls/moveset@1",
-      "id": "ultra-greatsword",
-      "bytes": 4205,
-      "sha256": "b37c787be9739821"
-    },
-    {
-      "path": "combat/stamina.json",
-      "schema": "elder-souls/stamina@1",
-      "id": "ES-STAM/1",
-      "bytes": 7892,
-      "sha256": "c87e26f06836fb5b"
-    },
-    {
-      "path": "crime/bounty.json",
-      "schema": "elder-souls/crime-bounty@1",
-      "id": "bounty",
-      "bytes": 5641,
-      "sha256": "6992ca959267fbde"
-    },
-    {
-      "path": "crime/fences.json",
-      "schema": "elder-souls/crime-fences@1",
-      "id": "fences",
-      "bytes": 4205,
-      "sha256": "807394c919545332"
-    },
-    {
-      "path": "crime/justice.json",
-      "schema": "elder-souls/crime-justice@1",
-      "id": "justice",
-      "bytes": 13493,
-      "sha256": "92d82d189866f45c"
-    },
-    {
-      "path": "crime/sanction.json",
-      "schema": "elder-souls/crime-sanction@1",
-      "id": "sanction",
-      "bytes": 11892,
-      "sha256": "dc25551718fe3cd6"
-    },
-    {
-      "path": "dialogue/creation-names.json",
-      "schema": "elder-souls/creation-names@1",
-      "id": "creation-names",
-      "bytes": 3554,
-      "sha256": "94ea07a991bac971"
-    },
-    {
-      "path": "dialogue/creation-questions.json",
-      "schema": "elder-souls/creation-questions@1",
-      "id": "creation-questions",
-      "bytes": 13722,
-      "sha256": "0212ca08d675e8b7"
-    },
-    {
-      "path": "dialogue/faction-reactions.json",
-      "schema": "elder-souls/faction-reactions@1",
-      "id": "faction-reactions",
-      "bytes": 9161,
-      "sha256": "d4597b7504109863"
-    },
-    {
-      "path": "dialogue/greetings/00-priority-classes.json",
-      "schema": "elder-souls/greetings@2",
-      "id": null,
-      "bytes": 7311,
-      "sha256": "3b2f40d9ca227817"
-    },
-    {
-      "path": "dialogue/greetings/20-tier-a.json",
-      "schema": "elder-souls/greetings@2",
-      "id": null,
-      "bytes": 22387,
-      "sha256": "986dcdfdb0deaed6"
-    },
-    {
-      "path": "dialogue/greetings.json",
-      "schema": "elder-souls/greetings@2",
-      "id": "greetings",
-      "bytes": 186802,
-      "sha256": "de9beeb0ca1dc1ca"
-    },
-    {
-      "path": "dialogue/persuasion-gmst.json",
-      "schema": "elder-souls/persuasion-gmst@1",
-      "id": "ES-DISP/1",
-      "bytes": 3630,
-      "sha256": "ee82e650e9ffa846"
-    },
-    {
-      "path": "dialogue/rumours.json",
-      "schema": "elder-souls/rumours@1",
-      "id": null,
-      "bytes": 4842,
-      "sha256": "e8fc6089028a8e1e",
-      "declared_incomplete": true
-    },
-    {
-      "path": "dialogue/slavery-lines.json",
-      "schema": "elder-souls/slavery-lines@1",
-      "id": "slavery-lines",
-      "bytes": 15303,
-      "sha256": "cde1467e0ed6f23b"
-    },
-    {
-      "path": "dialogue/speakers.json",
-      "schema": "elder-souls/dialogue-speakers@1",
-      "id": "speakers",
-      "bytes": 9186,
-      "sha256": "84285c586a688c1e"
-    },
-    {
-      "path": "dialogue/topics/00-roots.json",
-      "schema": "elder-souls/dialogue-topics@2",
-      "id": null,
-      "bytes": 16418,
-      "sha256": "f8d2011766180f49"
-    },
-    {
-      "path": "dialogue/topics/10-global.json",
-      "schema": "elder-souls/dialogue-topics@2",
-      "id": null,
-      "bytes": 40790,
-      "sha256": "1ca1176511da1764"
-    },
-    {
-      "path": "dialogue/topics/20-tier-a.json",
-      "schema": "elder-souls/dialogue-topics@2",
-      "id": null,
-      "bytes": 21361,
-      "sha256": "0ec4d580c2a922f1"
-    },
-    {
-      "path": "dialogue/topics/21-tier-b.json",
-      "schema": "elder-souls/dialogue-topics@2",
-      "id": null,
-      "bytes": 14219,
-      "sha256": "9aa874260a0e4a1e"
-    },
-    {
-      "path": "dialogue/topics/22-tier-c.json",
-      "schema": "elder-souls/dialogue-topics@2",
-      "id": null,
-      "bytes": 10296,
-      "sha256": "1e640a10f53261cb"
-    },
-    {
-      "path": "dialogue/topics/30-texture.json",
-      "schema": "elder-souls/dialogue-topics@2",
-      "id": null,
-      "bytes": 22970,
-      "sha256": "42f48f4c5e23814e"
-    },
-    {
-      "path": "dialogue/topics/40-race-gated.json",
-      "schema": "elder-souls/topics@1",
-      "id": null,
-      "bytes": 40013,
-      "sha256": "f1db046a2e754425"
-    },
-    {
-      "path": "dialogue/topics/thorn.json",
-      "schema": "elder-souls/topics@1",
-      "id": null,
-      "bytes": 1252,
-      "sha256": "b8e7f92b08d908a7",
-      "declared_incomplete": true
-    },
-    {
-      "path": "dialogue/topics/writ-house.json",
-      "schema": "elder-souls/topics@1",
-      "id": null,
-      "bytes": 18625,
-      "sha256": "fc74a1210e2da0ee"
-    },
-    {
-      "path": "items/thorn.json",
-      "schema": "elder-souls/items@1",
-      "id": null,
-      "bytes": 678,
-      "sha256": "73802c0694f2e61a",
-      "declared_incomplete": true
-    },
-    {
-      "path": "items/writ.json",
-      "schema": "elder-souls/items@1",
-      "id": null,
-      "bytes": 2749,
-      "sha256": "d982cecd158822d7"
-    },
-    {
-      "path": "magic/cast-classes.json",
-      "schema": "elder-souls/magic-cast-classes@1",
-      "id": "magic-cast-classes",
-      "bytes": 9851,
-      "sha256": "6425f32bd92d93ea"
-    },
-    {
-      "path": "magic/cast-clips.json",
-      "schema": "elder-souls/magic-cast-clips@1",
-      "id": "magic-cast-clips",
-      "bytes": 8877,
-      "sha256": "18f6233b14e24849"
-    },
-    {
-      "path": "magic/effects.json",
-      "schema": "elder-souls/magic-effects@1",
-      "id": "magic-effects",
-      "bytes": 67060,
-      "sha256": "44ea365d4b5b57d4"
-    },
-    {
-      "path": "magic/enchant-services.json",
-      "schema": "elder-souls/magic-enchant-services@1",
-      "id": "magic-enchant-services",
-      "bytes": 10792,
-      "sha256": "e61577a27cfe44e8"
-    },
-    {
-      "path": "magic/enchanting.json",
-      "schema": "elder-souls/magic-enchanting@1",
-      "id": "magic-enchanting",
-      "bytes": 13591,
-      "sha256": "37e42fcbeaa553fc"
-    },
-    {
-      "path": "magic/spells.json",
-      "schema": "elder-souls/magic-spells@1",
-      "id": "magic-spells",
-      "bytes": 75209,
-      "sha256": "92f1b358afc5b0c2"
-    },
-    {
-      "path": "magic/traversal-routes.json",
-      "schema": "elder-souls/magic-traversal-routes@1",
-      "id": "magic-traversal-routes",
-      "bytes": 4641,
-      "sha256": "fe5d9e5bf1f2be3a"
-    },
-    {
-      "path": "magic/vfx.json",
-      "schema": "elder-souls/magic-vfx@1",
-      "id": "magic-vfx",
-      "bytes": 7559,
-      "sha256": "050eacfe7525a01f"
-    },
-    {
-      "path": "magic/wards.json",
-      "schema": "elder-souls/magic-wards@1",
-      "id": "magic-wards",
-      "bytes": 6544,
-      "sha256": "dbd59a220a420611"
-    },
-    {
-      "path": "npcs/named-states.json",
-      "schema": "elder-souls/npcs@1",
-      "id": null,
-      "bytes": 5581,
-      "sha256": "a39a005d5cf6ba5f"
-    },
-    {
-      "path": "npcs/thorn.json",
-      "schema": "elder-souls/npcs@1",
-      "id": null,
-      "bytes": 1827,
-      "sha256": "8fe57c93865db7a6",
-      "declared_incomplete": true
-    },
-    {
-      "path": "npcs/writ-house.json",
-      "schema": "elder-souls/npcs@1",
-      "id": null,
-      "bytes": 4550,
-      "sha256": "72cd801430743613",
-      "declared_incomplete": true
-    },
-    {
-      "path": "progression/KNOWN-GAPS.json",
-      "schema": "elder-souls/known-gaps@1",
-      "id": "known-gaps",
-      "bytes": 4829,
-      "sha256": "a699c7fce36ac6ba"
-    },
-    {
-      "path": "progression/attributes.json",
-      "schema": "elder-souls/attributes@1",
-      "id": "attributes",
-      "bytes": 4593,
-      "sha256": "7e9b25abd152a78a"
-    },
-    {
-      "path": "progression/birthsigns.json",
-      "schema": "elder-souls/birthsigns@1",
-      "id": "birthsigns",
-      "bytes": 14761,
-      "sha256": "473c6a18cbe58af9"
-    },
-    {
-      "path": "progression/classes.json",
-      "schema": "elder-souls/classes@1",
-      "id": "classes",
-      "bytes": 12271,
-      "sha256": "0aa35558d4e8a405"
-    },
-    {
-      "path": "progression/creation.json",
-      "schema": "elder-souls/creation@1",
-      "id": "creation",
-      "bytes": 9686,
-      "sha256": "f19c26140c6c3f38",
-      "declared_incomplete": true
-    },
-    {
-      "path": "progression/factions.json",
-      "schema": "elder-souls/factions@1",
-      "id": null,
-      "bytes": 586,
-      "sha256": "22c0c3abd2fdf8e7"
-    },
-    {
-      "path": "progression/levels.json",
-      "schema": "elder-souls/levels@1",
-      "id": null,
-      "bytes": 667,
-      "sha256": "911c9ce7c43ccd37"
-    },
-    {
-      "path": "progression/race-reactions.json",
-      "schema": "elder-souls/race-reactions@1",
-      "id": "race-reactions",
-      "bytes": 11326,
-      "sha256": "3eabc6d54862836c",
-      "declared_incomplete": true
-    },
-    {
-      "path": "progression/races.json",
-      "schema": "elder-souls/races@1",
-      "id": "races",
-      "bytes": 9665,
-      "sha256": "b7a0c0cf8307cc83"
-    },
-    {
-      "path": "progression/skills.json",
-      "schema": "elder-souls/skills@1",
-      "id": "skills",
-      "bytes": 5673,
-      "sha256": "fef05242d2cece6d"
-    },
-    {
-      "path": "quests/blackmarsh-coast.json",
-      "schema": "elder-souls/quests@1",
-      "id": "blackmarsh-coast",
-      "bytes": 63587,
-      "sha256": "c2b1957b2ad02350"
-    },
-    {
-      "path": "quests/blackmarsh-core.json",
-      "schema": "elder-souls/quests@1",
-      "id": "blackmarsh-core",
-      "bytes": 35833,
-      "sha256": "482aa96f0de2e97d"
-    },
-    {
-      "path": "quests/closure-registry.json",
-      "schema": "elder-souls/closure-registry@1",
-      "id": null,
-      "bytes": 4839,
-      "sha256": "2e59e4471a1c698d"
-    },
-    {
-      "path": "quests/faction-gates.json",
-      "schema": "elder-souls/faction-gates@1",
-      "id": "faction-gates",
-      "bytes": 22163,
-      "sha256": "4cf1f6d248da580c"
-    },
-    {
-      "path": "quests/hooks.json",
-      "schema": "elder-souls/quest-hooks@1",
-      "id": "quest-hooks",
-      "bytes": 6469,
-      "sha256": "d4d28330b0650042"
-    },
-    {
-      "path": "quests/magic-utility.json",
-      "schema": "elder-souls/quests@1",
-      "id": "magic-utility-quests",
-      "bytes": 109751,
-      "sha256": "046e9288bc388fe4"
-    },
-    {
-      "path": "quests/the-boards.json",
-      "schema": "elder-souls/quest@1",
-      "id": "the-boards",
-      "bytes": 1493,
-      "sha256": "40d950572e6e6afa",
-      "declared_incomplete": true
-    },
-    {
-      "path": "save-manifest.json",
-      "schema": "elder-souls/save-manifest@1",
-      "id": null,
-      "bytes": 12212,
-      "sha256": "bf60d79bc20ba93d",
-      "declared_incomplete": true
-    },
-    {
-      "path": "states/arena_champion.json",
-      "schema": "elder-souls/state@1",
-      "id": "arena_champion",
-      "bytes": 1155,
-      "sha256": "4ba5ce9b4613d648"
-    },
-    {
-      "path": "states/arena_duel.json",
-      "schema": "elder-souls/state@1",
-      "id": "arena_duel",
-      "bytes": 1599,
-      "sha256": "29deef6ab40e452b"
-    },
-    {
-      "path": "states/arena_flat.json",
-      "schema": "elder-souls/state@1",
-      "id": "arena_flat",
-      "bytes": 1357,
-      "sha256": "e5b340d8060f16e5"
-    },
-    {
-      "path": "states/arena_probe.json",
-      "schema": "elder-souls/state@1",
-      "id": "arena_probe",
-      "bytes": 1150,
-      "sha256": "880f8004f4570387"
-    },
-    {
-      "path": "states/barge-hold.json",
-      "schema": "elder-souls/state@1",
-      "id": "barge-hold",
-      "bytes": 1652,
-      "sha256": "26d67deeaede5610"
-    },
-    {
-      "path": "states/cam_boardwalk.json",
-      "schema": "elder-souls/state@1",
-      "id": "cam_boardwalk",
-      "bytes": 1282,
-      "sha256": "ea6a8034799e881e"
-    },
-    {
-      "path": "states/cam_boss_arena.json",
-      "schema": "elder-souls/state@1",
-      "id": "cam_boss_arena",
-      "bytes": 1259,
-      "sha256": "d5a8654eca3978eb"
-    },
-    {
-      "path": "states/cam_cistern.json",
-      "schema": "elder-souls/state@1",
-      "id": "cam_cistern",
-      "bytes": 1294,
-      "sha256": "e73d90ee4e66f3d9"
-    },
-    {
-      "path": "states/cam_collision_rig.json",
-      "schema": "elder-souls/state@1",
-      "id": "cam_collision_rig",
-      "bytes": 1257,
-      "sha256": "a2c5e0bb64eac243"
-    },
-    {
-      "path": "states/cam_flat_plain.json",
-      "schema": "elder-souls/state@1",
-      "id": "cam_flat_plain",
-      "bytes": 1256,
-      "sha256": "eae82d6cfcc6ce0e"
-    },
-    {
-      "path": "states/cam_mangrove.json",
-      "schema": "elder-souls/state@1",
-      "id": "cam_mangrove",
-      "bytes": 1265,
-      "sha256": "e8a072dcee7a7989"
-    },
-    {
-      "path": "states/cam_pinch.json",
-      "schema": "elder-souls/state@1",
-      "id": "cam_pinch",
-      "bytes": 1272,
-      "sha256": "f5001633b777a9df"
-    },
-    {
-      "path": "states/cam_stair.json",
-      "schema": "elder-souls/state@1",
-      "id": "cam_stair",
-      "bytes": 1260,
-      "sha256": "e52db8c1278e0433"
-    },
-    {
-      "path": "states/default.json",
-      "schema": "elder-souls/state@1",
-      "id": "default",
-      "bytes": 979,
-      "sha256": "39b1ff1a2ce49ac3"
-    },
-    {
-      "path": "states/dungeon_primary.json",
-      "schema": "elder-souls/state@1",
-      "id": "dungeon_primary",
-      "bytes": 764,
-      "sha256": "685fcefc4dde9946"
-    },
-    {
-      "path": "states/endgame-200q.json",
-      "schema": "elder-souls/state@1",
-      "id": "endgame-200q",
-      "bytes": 667815,
-      "sha256": "3c4f91dd9e4549f4"
-    },
-    {
-      "path": "states/helstrom-market.json",
-      "schema": "elder-souls/state@1",
-      "id": "helstrom-market",
-      "bytes": 2125,
-      "sha256": "01af3be9c24727e1"
-    },
-    {
-      "path": "states/interior_firelit.json",
-      "schema": "elder-souls/state@1",
-      "id": "interior_firelit",
-      "bytes": 764,
-      "sha256": "98608c8951209f43"
-    },
-    {
-      "path": "states/material_showcase.json",
-      "schema": "elder-souls/state@1",
-      "id": "material_showcase",
-      "bytes": 1320,
-      "sha256": "5ab5e870c66b7565"
-    },
-    {
-      "path": "states/npc_showcase.json",
-      "schema": "elder-souls/state@1",
-      "id": "npc_showcase",
-      "bytes": 1300,
-      "sha256": "3178285ddb0e6647"
-    },
-    {
-      "path": "states/rootlands-well-graph.json",
-      "schema": "elder-souls/state@1",
-      "id": "rootlands-well-graph",
-      "bytes": 2270,
-      "sha256": "457148253a614124"
-    },
-    {
-      "path": "states/settlement_primary_street.json",
-      "schema": "elder-souls/state@1",
-      "id": "settlement_primary_street",
-      "bytes": 1232,
-      "sha256": "1d17e8e6d96a5bea"
-    },
-    {
-      "path": "states/showcase_patch.json",
-      "schema": "elder-souls/state@1",
-      "id": "showcase_patch",
-      "bytes": 905,
-      "sha256": "2135f122e5c356a0"
-    },
-    {
-      "path": "states/stormhold-street.json",
-      "schema": "elder-souls/state@1",
-      "id": "stormhold-street",
-      "bytes": 1867,
-      "sha256": "8899143edc05323f"
-    },
-    {
-      "path": "states/sv1-midquest.json",
-      "schema": "elder-souls/state@1",
-      "id": "sv1-midquest",
-      "bytes": 2101,
-      "sha256": "7c9907e4ce369b2a"
-    },
-    {
-      "path": "states/sv5-journal-bloodstain.json",
-      "schema": "elder-souls/state@1",
-      "id": "sv5-journal-bloodstain",
-      "bytes": 10833,
-      "sha256": "4d427031af460e54"
-    },
-    {
-      "path": "states/swamp_canopy.json",
-      "schema": "elder-souls/state@1",
-      "id": "swamp_canopy",
-      "bytes": 1222,
-      "sha256": "8fe43c695278da85"
-    },
-    {
-      "path": "states/thorn-hall.json",
-      "schema": "elder-souls/state@1",
-      "id": "thorn-hall",
-      "bytes": 530,
-      "sha256": "4ab0e0aab53ea8cb"
-    },
-    {
-      "path": "states/vista_primary.json",
-      "schema": "elder-souls/state@1",
-      "id": "vista_primary",
-      "bytes": 1260,
-      "sha256": "1b2b98243a9140e2"
-    },
-    {
-      "path": "states/water_shallows.json",
-      "schema": "elder-souls/state@1",
-      "id": "water_shallows",
-      "bytes": 1243,
-      "sha256": "5b9c6b90bfdd676a"
-    },
-    {
-      "path": "states/wld-dres-raid-road.json",
-      "schema": "elder-souls/state@1",
-      "id": "wld-dres-raid-road",
-      "bytes": 1807,
-      "sha256": "5aa28761c01ab7fe"
-    },
-    {
-      "path": "states/wpn-dummy-arena.json",
-      "schema": "elder-souls/state@1",
-      "id": "wpn-dummy-arena",
-      "bytes": 1353,
-      "sha256": "029d062bd4c9fe86"
-    },
-    {
-      "path": "states/wpn-loadout-o1_sword_shield.json",
-      "schema": "elder-souls/state@1",
-      "id": "wpn-loadout-o1_sword_shield",
-      "bytes": 1131,
-      "sha256": "14e69990ca62e8f5"
-    },
-    {
-      "path": "states/wpn-loadout-o2_dual.json",
-      "schema": "elder-souls/state@1",
-      "id": "wpn-loadout-o2_dual",
-      "bytes": 1150,
-      "sha256": "f7d5bd4ea5bd6318"
-    },
-    {
-      "path": "states/wpn-loadout-o3_twohand.json",
-      "schema": "elder-souls/state@1",
-      "id": "wpn-loadout-o3_twohand",
-      "bytes": 1077,
-      "sha256": "4ffa5322ebad2f48"
-    },
-    {
-      "path": "states/wpn-material-range.json",
-      "schema": "elder-souls/state@1",
-      "id": "wpn-material-range",
-      "bytes": 1904,
-      "sha256": "2a6d0d37c6f7160f"
-    },
-    {
-      "path": "states/writ-house.json",
-      "schema": "elder-souls/state@1",
-      "id": "writ-house",
-      "bytes": 2021,
-      "sha256": "ea308dc6ea1d552e"
-    },
-    {
-      "path": "stealth/detection.json",
-      "schema": "elder-souls/stealth-detection@1",
-      "id": "detection",
-      "bytes": 12883,
-      "sha256": "b555243b6c18260d"
-    },
-    {
-      "path": "stealth/locks.json",
-      "schema": "elder-souls/stealth-locks@1",
-      "id": "locks",
-      "bytes": 5580,
-      "sha256": "5dbeed590a1cf12c"
-    },
-    {
-      "path": "stealth/search.json",
-      "schema": "elder-souls/stealth-search@1",
-      "id": "search",
-      "bytes": 3169,
-      "sha256": "44f7c3db180a59f3"
-    },
-    {
-      "path": "stealth/theft.json",
-      "schema": "elder-souls/stealth-theft@1",
-      "id": "theft",
-      "bytes": 10911,
-      "sha256": "7dde3ad4b1cbe98f"
-    },
-    {
-      "path": "weapons/classes.json",
-      "schema": "elder-souls/weapon-classes@1",
-      "id": "weapon-classes",
-      "bytes": 22639,
-      "sha256": "8d17d12b0832cf1c"
-    },
-    {
-      "path": "weapons/clip-registry.json",
-      "schema": "elder-souls/clip-registry@1",
-      "id": "clip-registry",
-      "bytes": 751600,
-      "sha256": "9ef0d883739a9467"
-    },
-    {
-      "path": "weapons/fp-sd.json",
-      "schema": "elder-souls/fp-sd@1",
-      "id": "fp-sd",
-      "bytes": 452,
-      "sha256": "797f2527a36c5faf"
-    },
-    {
-      "path": "weapons/input-map.json",
-      "schema": "elder-souls/weapon-input-map@1",
-      "id": "weapon-input-map",
-      "bytes": 7748,
-      "sha256": "1e1d9ca18fdcfeca"
-    },
-    {
-      "path": "weapons/offhand.json",
-      "schema": "elder-souls/offhand@1",
-      "id": "offhand",
-      "bytes": 6908,
-      "sha256": "84448beaf5fb28cf"
-    },
-    {
-      "path": "weapons/pose-library.json",
-      "schema": "elder-souls/pose-library@1",
-      "id": "pose-library",
-      "bytes": 21877,
-      "sha256": "deea016565dc8508"
-    },
-    {
-      "path": "weapons/roster.json",
-      "schema": "elder-souls/weapon-roster@1",
-      "id": "weapon-roster",
-      "bytes": 53794,
-      "sha256": "612529e3f912ab5a"
-    },
-    {
-      "path": "world/encounters.json",
-      "schema": "elder-souls/encounters@1",
-      "id": "encounters",
-      "bytes": 5177,
-      "sha256": "989dc5df824fb93b"
-    },
-    {
-      "path": "world/hazards.json",
-      "schema": "elder-souls/hazards@1",
-      "id": null,
-      "bytes": 11114,
-      "sha256": "21bba2e855a71c2c"
-    },
-    {
-      "path": "world/interiors/thorn-hall.json",
-      "schema": "elder-souls/interior@1",
-      "id": "thorn-hall",
-      "bytes": 1047,
-      "sha256": "44f7c350b25a7055",
-      "declared_incomplete": true
-    },
-    {
-      "path": "world/interiors/writ-house.json",
-      "schema": "elder-souls/interior@1",
-      "id": "writ-house",
-      "bytes": 1969,
-      "sha256": "e7b62f8ff5714e2f",
-      "declared_incomplete": true
-    },
-    {
-      "path": "world/landmask.json",
-      "schema": "elder-souls/landmask@1",
-      "id": null,
-      "bytes": 7847,
-      "sha256": "2b0127b3822be51f"
-    },
-    {
-      "path": "world/pois.json",
-      "schema": "elder-souls/pois@1",
-      "id": null,
-      "bytes": 16110,
-      "sha256": "56d039ae14c0bb16",
-      "declared_incomplete": true
-    },
-    {
-      "path": "world/property/archon.json",
-      "schema": "elder-souls/property@1",
-      "id": "property-archon",
-      "bytes": 135895,
-      "sha256": "42e344ce7887a83b"
-    },
-    {
-      "path": "world/property/blackrose.json",
-      "schema": "elder-souls/property@1",
-      "id": "property-blackrose",
-      "bytes": 144123,
-      "sha256": "7dc25069be412e1c"
-    },
-    {
-      "path": "world/property/gideon.json",
-      "schema": "elder-souls/property@1",
-      "id": "property-gideon",
-      "bytes": 142915,
-      "sha256": "c4106386c336821b"
-    },
-    {
-      "path": "world/property/helstrom.json",
-      "schema": "elder-souls/property@1",
-      "id": "property-helstrom",
-      "bytes": 147969,
-      "sha256": "a2477dacd59c0bd6"
-    },
-    {
-      "path": "world/property/lilmoth.json",
-      "schema": "elder-souls/property@1",
-      "id": "property-lilmoth",
-      "bytes": 136121,
-      "sha256": "da24db3303e051e7"
-    },
-    {
-      "path": "world/property/soulrest.json",
-      "schema": "elder-souls/property@1",
-      "id": "property-soulrest",
-      "bytes": 136289,
-      "sha256": "54bb8d76757f8c86"
-    },
-    {
-      "path": "world/property/stormhold.json",
-      "schema": "elder-souls/property@1",
-      "id": "property-stormhold",
-      "bytes": 157415,
-      "sha256": "3066572520fa42c9"
-    },
-    {
-      "path": "world/property/thorn.json",
-      "schema": "elder-souls/property@1",
-      "id": "property-thorn",
-      "bytes": 134902,
-      "sha256": "9d71ed4e40f6f122"
-    },
-    {
-      "path": "world/regions.json",
-      "schema": "elder-souls/regions@2",
-      "id": null,
-      "bytes": 42998,
-      "sha256": "2a05b4631a4d877c"
-    },
-    {
-      "path": "world/roads.json",
-      "schema": "elder-souls/roads@1",
-      "id": null,
-      "bytes": 153744,
-      "sha256": "4f2e03ee776dfd9c"
-    },
-    {
-      "path": "world/settlements/thorn.json",
-      "schema": "elder-souls/settlement@1",
-      "id": "thorn",
-      "bytes": 2161,
-      "sha256": "3011cf23b15172b2",
-      "declared_incomplete": true
-    },
-    {
-      "path": "world/signatures.json",
-      "schema": "elder-souls/signatures@1",
-      "id": null,
-      "bytes": 109453,
-      "sha256": "b23a649b61f10581"
-    },
-    {
-      "path": "world/terrain.json",
-      "schema": "elder-souls/terrain@1",
-      "id": null,
-      "bytes": 872599,
-      "sha256": "cd070cf25d85e8a3"
-    },
-    {
-      "path": "world/travel/lines.json",
-      "schema": "elder-souls/travel-lines@1",
-      "id": null,
-      "bytes": 10942,
-      "sha256": "cd51360acbf604c8"
-    },
-    {
-      "path": "world/travel/services.json",
-      "schema": "elder-souls/travel-services@1",
-      "id": null,
-      "bytes": 116608,
-      "sha256": "9e694f4eebde2b57"
-    },
-    {
-      "path": "world/travel/stations.json",
-      "schema": "elder-souls/travel-stations@1",
-      "id": null,
-      "bytes": 10180,
-      "sha256": "1cd0c574fe7df7b5"
-    },
-    {
-      "path": "world/travel/tariff.json",
-      "schema": "elder-souls/tariff@1",
-      "id": null,
-      "bytes": 1526,
-      "sha256": "f79459db29837f17"
-    },
-    {
-      "path": "world/traversal.json",
-      "schema": "elder-souls/traversal@1",
-      "id": null,
-      "bytes": 4463,
-      "sha256": "cfea6c409532dfdb"
-    },
-    {
-      "path": "world/water.json",
-      "schema": "elder-souls/water@1",
-      "id": null,
-      "bytes": 8669,
-      "sha256": "ff446f8b72588b64"
-    }
-  ]
+ "schema": "elder-souls/data-index@1",
+ "generated_by": "tools/analysis/data-index.mjs",
+ "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
+ "file_count": 332,
+ "files": [
+  {
+   "path": "books/the-drowned-ford.json",
+   "schema": "elder-souls/book@1",
+   "id": "the-drowned-ford",
+   "bytes": 841,
+   "sha256": "fb0e38e389a2c802",
+   "declared_incomplete": true
+  },
+  {
+   "path": "camera/cells.json",
+   "schema": "elder-souls/camera-cells@1",
+   "id": null,
+   "bytes": 79065,
+   "sha256": "cd1049c8f5ec4c8b"
+  },
+  {
+   "path": "camera/reference-framing.json",
+   "schema": "elder-souls/camera-reference-framing@1",
+   "id": null,
+   "bytes": 4789,
+   "sha256": "9855854c0fcb126a"
+  },
+  {
+   "path": "camera/rig.json",
+   "schema": "elder-souls/camera@1",
+   "id": "ES-CAM/1",
+   "bytes": 12818,
+   "sha256": "69088ef6106391f0"
+  },
+  {
+   "path": "camera/targets.json",
+   "schema": "elder-souls/camera-targets@1",
+   "id": null,
+   "bytes": 837,
+   "sha256": "944f999482d0670f"
+  },
+  {
+   "path": "combat/clips.json",
+   "schema": "elder-souls/clips@1",
+   "id": null,
+   "bytes": 77721,
+   "sha256": "926de83934add132"
+  },
+  {
+   "path": "combat/enemies/beast_slitherfang.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "beast_slitherfang",
+   "bytes": 3310,
+   "sha256": "931d3bdf72ff9c69"
+  },
+  {
+   "path": "combat/enemies/cam_boss_great.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "cam_boss_great",
+   "bytes": 2384,
+   "sha256": "5afa7166e0996d64"
+  },
+  {
+   "path": "combat/enemies/cam_boss_mid.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "cam_boss_mid",
+   "bytes": 2386,
+   "sha256": "832cfc733c72304e"
+  },
+  {
+   "path": "combat/enemies/cam_elite.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "cam_elite",
+   "bytes": 2384,
+   "sha256": "7a1719a9508dfceb"
+  },
+  {
+   "path": "combat/enemies/cam_levy.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "cam_levy",
+   "bytes": 2382,
+   "sha256": "dae0407c01aa87b3"
+  },
+  {
+   "path": "combat/enemies/cam_rat.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "cam_rat",
+   "bytes": 2434,
+   "sha256": "0412ce4a97a656b1"
+  },
+  {
+   "path": "combat/enemies/champion_hist_marked.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "champion_hist_marked",
+   "bytes": 4592,
+   "sha256": "a916174c8d8aa22c"
+  },
+  {
+   "path": "combat/enemies/cst_sap_speaker.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "cst_sap_speaker",
+   "bytes": 6547,
+   "sha256": "a5dba56306815553"
+  },
+  {
+   "path": "combat/enemies/drowned_greater.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "drowned_greater",
+   "bytes": 4003,
+   "sha256": "86e9533b331540b1"
+  },
+  {
+   "path": "combat/enemies/drowned_lesser.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "drowned_lesser",
+   "bytes": 4094,
+   "sha256": "ba204f9a9bcba78f"
+  },
+  {
+   "path": "combat/enemies/dummy_passive.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "dummy_passive",
+   "bytes": 2709,
+   "sha256": "51d89f5e283ebd86"
+  },
+  {
+   "path": "combat/enemies/guard_legion.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "guard_legion",
+   "bytes": 4699,
+   "sha256": "e2d0cdcd42e5a603"
+  },
+  {
+   "path": "combat/enemies/inf_trash.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "inf_trash",
+   "bytes": 4911,
+   "sha256": "d9cf333f3f3f0fda"
+  },
+  {
+   "path": "combat/enemies/mat_chitin.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "mat_chitin",
+   "bytes": 2370,
+   "sha256": "547d82908e68ab7f"
+  },
+  {
+   "path": "combat/enemies/mat_flesh.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "mat_flesh",
+   "bytes": 2358,
+   "sha256": "cf667018a217eb22"
+  },
+  {
+   "path": "combat/enemies/mat_metal.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "mat_metal",
+   "bytes": 2365,
+   "sha256": "1747988df25d8fc0"
+  },
+  {
+   "path": "combat/enemies/mat_plant.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "mat_plant",
+   "bytes": 2357,
+   "sha256": "111a8a8639240187"
+  },
+  {
+   "path": "combat/enemies/mat_shield.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "mat_shield",
+   "bytes": 2555,
+   "sha256": "5fb44cebb0b87806"
+  },
+  {
+   "path": "combat/enemies/mat_stone.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "mat_stone",
+   "bytes": 2371,
+   "sha256": "92d8bc79e5842787"
+  },
+  {
+   "path": "combat/enemies/mat_water.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "mat_water",
+   "bytes": 2363,
+   "sha256": "38b7eaf6ca866a18"
+  },
+  {
+   "path": "combat/enemies/mat_wood.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "mat_wood",
+   "bytes": 2349,
+   "sha256": "dbc746676ba99471"
+  },
+  {
+   "path": "combat/enemies/probe_pulse.json",
+   "schema": "elder-souls/enemy@1",
+   "id": "probe_pulse",
+   "bytes": 2248,
+   "sha256": "c2013365653a7a49"
+  },
+  {
+   "path": "combat/flask.json",
+   "schema": "elder-souls/flask@1",
+   "id": "Hist-sap Flask",
+   "bytes": 2930,
+   "sha256": "35ca0553f470edf2"
+  },
+  {
+   "path": "combat/frames.json",
+   "schema": "elder-souls/frames@1",
+   "id": "ES-FRAMES/1",
+   "bytes": 12460,
+   "sha256": "4147a94fc038c176"
+  },
+  {
+   "path": "combat/hitgeometry.json",
+   "schema": "elder-souls/hitgeometry@1",
+   "id": null,
+   "bytes": 15109,
+   "sha256": "536f3b285ad5a1c6"
+  },
+  {
+   "path": "combat/input.json",
+   "schema": "elder-souls/input@1",
+   "id": null,
+   "bytes": 620,
+   "sha256": "5952ea08af20b0da"
+  },
+  {
+   "path": "combat/lockon.json",
+   "schema": "elder-souls/lockon@1",
+   "id": "ES-LOCK/1",
+   "bytes": 6792,
+   "sha256": "ee95d6a784277fa9"
+  },
+  {
+   "path": "combat/movesets/axe_bog_cleaver.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 28101,
+   "sha256": "f252339e9d422bd4"
+  },
+  {
+   "path": "combat/movesets/axe_hatchet_pair.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 28048,
+   "sha256": "b23eaa6623bf87d4"
+  },
+  {
+   "path": "combat/movesets/axe_kings_bite.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 28161,
+   "sha256": "70cfa20af4d4d7ad"
+  },
+  {
+   "path": "combat/movesets/axe_ridge_axe.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 27968,
+   "sha256": "a897cbb47c855102"
+  },
+  {
+   "path": "combat/movesets/axe_shell_reaper.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 28065,
+   "sha256": "50f6ff5ebe8c84a6"
+  },
+  {
+   "path": "combat/movesets/axe_shell_splitter.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 28063,
+   "sha256": "c574dddac4889603"
+  },
+  {
+   "path": "combat/movesets/bow_chitin_recurve.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 7493,
+   "sha256": "3919f31be841aa07"
+  },
+  {
+   "path": "combat/movesets/bow_horn_sinew.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 6386,
+   "sha256": "fc18f8409fbde7d4"
+  },
+  {
+   "path": "combat/movesets/bow_kings_horn.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 6555,
+   "sha256": "99079233cba91306"
+  },
+  {
+   "path": "combat/movesets/bow_marsh_longbow.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 6564,
+   "sha256": "ec4825a3438e8446"
+  },
+  {
+   "path": "combat/movesets/bow_reed_shortbow.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 6493,
+   "sha256": "2fd316d5fbac83b6"
+  },
+  {
+   "path": "combat/movesets/cgs_drowned_reaper.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26359,
+   "sha256": "c9b056ccaaa4ff31"
+  },
+  {
+   "path": "combat/movesets/cgs_harvest_edge.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26423,
+   "sha256": "6ee72329ea8f8c5e"
+  },
+  {
+   "path": "combat/movesets/cgs_kings_crescent.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26499,
+   "sha256": "44aec2aa03391306"
+  },
+  {
+   "path": "combat/movesets/cgs_mire_scythe.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26421,
+   "sha256": "ddcfba6ae5e85b3b"
+  },
+  {
+   "path": "combat/movesets/cgs_tide_falx.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26380,
+   "sha256": "9038a9f36fc079a2"
+  },
+  {
+   "path": "combat/movesets/csw_drowned_kris.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 28174,
+   "sha256": "009d3d8b3d18ae8d"
+  },
+  {
+   "path": "combat/movesets/csw_mangrove_hook.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 27882,
+   "sha256": "114d91401f852fb8"
+  },
+  {
+   "path": "combat/movesets/csw_naga_sickle.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 27816,
+   "sha256": "77ae1a378d75abcd"
+  },
+  {
+   "path": "combat/movesets/csw_reaver_blade.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 27955,
+   "sha256": "5e858affcf69f243"
+  },
+  {
+   "path": "combat/movesets/csw_saltmarsh_sabre.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 27985,
+   "sha256": "649d4bc0ea895cbd"
+  },
+  {
+   "path": "combat/movesets/csw_tide_falchion.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 27935,
+   "sha256": "d01d3001e8059894"
+  },
+  {
+   "path": "combat/movesets/dgr_bone_awl.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26277,
+   "sha256": "12dd214b4e22decb"
+  },
+  {
+   "path": "combat/movesets/dgr_hist_barb.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26296,
+   "sha256": "f832b50cada472f3"
+  },
+  {
+   "path": "combat/movesets/dgr_kings_needle.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26497,
+   "sha256": "cc2e747fa9d6a437"
+  },
+  {
+   "path": "combat/movesets/dgr_reed_dirk.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26268,
+   "sha256": "4186f585f6127678"
+  },
+  {
+   "path": "combat/movesets/dgr_shell_knife.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26294,
+   "sha256": "0830c0a26b00e533"
+  },
+  {
+   "path": "combat/movesets/dgr_thornfang.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26346,
+   "sha256": "11a45c8f29141487"
+  },
+  {
+   "path": "combat/movesets/fst_hist_talon.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 28494,
+   "sha256": "94bf24807b64d727"
+  },
+  {
+   "path": "combat/movesets/fst_marsh_claw.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 28524,
+   "sha256": "cc25167109c90d9b"
+  },
+  {
+   "path": "combat/movesets/fst_quarry_caestus.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 28506,
+   "sha256": "9915fad40e4efa55"
+  },
+  {
+   "path": "combat/movesets/fst_wrapped_fists.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 28452,
+   "sha256": "d50bbbf95421bc58"
+  },
+  {
+   "path": "combat/movesets/ghm_bog_maul.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 24802,
+   "sha256": "76b57630a361b7a2"
+  },
+  {
+   "path": "combat/movesets/ghm_kings_ruin.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 29251,
+   "sha256": "aa2c468bb8652019"
+  },
+  {
+   "path": "combat/movesets/ghm_pile_driver.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 24756,
+   "sha256": "cc20b791b1187b6f"
+  },
+  {
+   "path": "combat/movesets/ghm_root_hammer.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 24779,
+   "sha256": "1b5011efc0eac8f5"
+  },
+  {
+   "path": "combat/movesets/ghm_stone_breaker.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 24860,
+   "sha256": "65b3c3b6da82dda4"
+  },
+  {
+   "path": "combat/movesets/gsw_drowned_greatblade.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25781,
+   "sha256": "c2bd2084672016de"
+  },
+  {
+   "path": "combat/movesets/gsw_fen_claymore.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25722,
+   "sha256": "50e6ee7cf0ff47c5"
+  },
+  {
+   "path": "combat/movesets/gsw_hist_greatblade.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25850,
+   "sha256": "bdb9cda0a5fe29c3"
+  },
+  {
+   "path": "combat/movesets/gsw_memorial_blade.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25720,
+   "sha256": "2e0d99d2b9da80a5"
+  },
+  {
+   "path": "combat/movesets/gsw_oath_of_ash.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25756,
+   "sha256": "ed48ff23cfe04d9a"
+  },
+  {
+   "path": "combat/movesets/gsw_reed_bastard.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25741,
+   "sha256": "388a3b565f9b0b8a"
+  },
+  {
+   "path": "combat/movesets/gsw_saltwind.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25689,
+   "sha256": "158608acbe0f4f55"
+  },
+  {
+   "path": "combat/movesets/gsw_tomb_guard.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25783,
+   "sha256": "dee1560eea7abcd9"
+  },
+  {
+   "path": "combat/movesets/hlb_fen_hook.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 27723,
+   "sha256": "8d48fe15c6e84cb3"
+  },
+  {
+   "path": "combat/movesets/hlb_garrison_bill.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 27690,
+   "sha256": "e2a33983310fa2b2"
+  },
+  {
+   "path": "combat/movesets/hlb_lane_keeper.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 27990,
+   "sha256": "dc893eb1770b6fa7"
+  },
+  {
+   "path": "combat/movesets/hlb_marsh_glaive.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 27975,
+   "sha256": "623796efc6b7e67b"
+  },
+  {
+   "path": "combat/movesets/hlb_reed_partisan.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 27745,
+   "sha256": "38289bfce3cb5529"
+  },
+  {
+   "path": "combat/movesets/hlb_saltcutter.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 32668,
+   "sha256": "33e184552fbecf29"
+  },
+  {
+   "path": "combat/movesets/mce_bog_iron_mace.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26813,
+   "sha256": "d558f0ec177b286f"
+  },
+  {
+   "path": "combat/movesets/mce_bone_hammer.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26857,
+   "sha256": "e05a32e2f8f587e8"
+  },
+  {
+   "path": "combat/movesets/mce_chain_flail.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26802,
+   "sha256": "9bd9efba69912b90"
+  },
+  {
+   "path": "combat/movesets/mce_pilgrim_club.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26863,
+   "sha256": "73d4939315cb49c4"
+  },
+  {
+   "path": "combat/movesets/mce_root_maul.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26749,
+   "sha256": "d3ae36cd7cc559da"
+  },
+  {
+   "path": "combat/movesets/mce_stone_answer.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26947,
+   "sha256": "60dc29db2972b4b4"
+  },
+  {
+   "path": "combat/movesets/spell-ask_the_dead.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-ask_the_dead",
+   "bytes": 634,
+   "sha256": "d9fa68bae2494685"
+  },
+  {
+   "path": "combat/movesets/spell-burden.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-burden",
+   "bytes": 702,
+   "sha256": "abfe1fca4e9fc8f7"
+  },
+  {
+   "path": "combat/movesets/spell-call_the_deep_drowned.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-call_the_deep_drowned",
+   "bytes": 718,
+   "sha256": "f115d2cb4174c623"
+  },
+  {
+   "path": "combat/movesets/spell-call_the_drowned.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-call_the_drowned",
+   "bytes": 661,
+   "sha256": "34ca8be9501758fc"
+  },
+  {
+   "path": "combat/movesets/spell-chameleon.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-chameleon",
+   "bytes": 592,
+   "sha256": "f6ecc23c614db74b"
+  },
+  {
+   "path": "combat/movesets/spell-charm.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-charm",
+   "bytes": 650,
+   "sha256": "a7c259e7b5b876ea"
+  },
+  {
+   "path": "combat/movesets/spell-clean_blood.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-clean_blood",
+   "bytes": 622,
+   "sha256": "0bb8ae111cbb9c12"
+  },
+  {
+   "path": "combat/movesets/spell-clean_lungs.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-clean_lungs",
+   "bytes": 622,
+   "sha256": "8821dc26aba33621"
+  },
+  {
+   "path": "combat/movesets/spell-demoralise.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-demoralise",
+   "bytes": 710,
+   "sha256": "babe821bcf22e62f"
+  },
+  {
+   "path": "combat/movesets/spell-draw_the_sting.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-draw_the_sting",
+   "bytes": 628,
+   "sha256": "6a36262c677ed12f"
+  },
+  {
+   "path": "combat/movesets/spell-ember_spit.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-ember_spit",
+   "bytes": 735,
+   "sha256": "075fecd7fb4d5f9b"
+  },
+  {
+   "path": "combat/movesets/spell-false_face.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-false_face",
+   "bytes": 649,
+   "sha256": "8156cff0ba6c6a47"
+  },
+  {
+   "path": "combat/movesets/spell-feather.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-feather",
+   "bytes": 615,
+   "sha256": "1438fc7f129a0cb9"
+  },
+  {
+   "path": "combat/movesets/spell-frenzy.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-frenzy",
+   "bytes": 702,
+   "sha256": "1a75a0e60a6e60a5"
+  },
+  {
+   "path": "combat/movesets/spell-gill_speech.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-gill_speech",
+   "bytes": 622,
+   "sha256": "509c780a269a5df6"
+  },
+  {
+   "path": "combat/movesets/spell-hist_sight.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-hist_sight",
+   "bytes": 630,
+   "sha256": "6a38e165fce7d2ed"
+  },
+  {
+   "path": "combat/movesets/spell-intervention_imperial.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-intervention_imperial",
+   "bytes": 651,
+   "sha256": "78c7556867b1fb4a"
+  },
+  {
+   "path": "combat/movesets/spell-intervention_root.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-intervention_root",
+   "bytes": 644,
+   "sha256": "1cace23393e54e02"
+  },
+  {
+   "path": "combat/movesets/spell-kiln_breath.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-kiln_breath",
+   "bytes": 793,
+   "sha256": "2fb7a85a01bb8cfe"
+  },
+  {
+   "path": "combat/movesets/spell-leap.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-leap",
+   "bytes": 608,
+   "sha256": "22be9505a5dac398"
+  },
+  {
+   "path": "combat/movesets/spell-leech.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-leech",
+   "bytes": 624,
+   "sha256": "4ed39e7e2f5bd115"
+  },
+  {
+   "path": "combat/movesets/spell-levitate.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-levitate",
+   "bytes": 590,
+   "sha256": "dcf90a0b5ec2ecee"
+  },
+  {
+   "path": "combat/movesets/spell-long_hand.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-long_hand",
+   "bytes": 618,
+   "sha256": "7048fc36fabc64a9"
+  },
+  {
+   "path": "combat/movesets/spell-loosen_the_joint.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-loosen_the_joint",
+   "bytes": 632,
+   "sha256": "cbd674bf4bed8c0f"
+  },
+  {
+   "path": "combat/movesets/spell-loosen_the_joint_touch.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-loosen_the_joint_touch",
+   "bytes": 684,
+   "sha256": "545df0a63fbb17e7"
+  },
+  {
+   "path": "combat/movesets/spell-make_it_whole.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-make_it_whole",
+   "bytes": 640,
+   "sha256": "7ce5395aa079f696"
+  },
+  {
+   "path": "combat/movesets/spell-mark.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-mark",
+   "bytes": 617,
+   "sha256": "3d1fd5406e063492"
+  },
+  {
+   "path": "combat/movesets/spell-marshfire.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-marshfire",
+   "bytes": 708,
+   "sha256": "e16561fcc5a0dbe5"
+  },
+  {
+   "path": "combat/movesets/spell-mend_flesh.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-mend_flesh",
+   "bytes": 620,
+   "sha256": "8845a09b7a91f733"
+  },
+  {
+   "path": "combat/movesets/spell-muffle.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-muffle",
+   "bytes": 612,
+   "sha256": "8dd90c5fb93cc1ad"
+  },
+  {
+   "path": "combat/movesets/spell-night_eye.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-night_eye",
+   "bytes": 618,
+   "sha256": "9a8731892caeb911"
+  },
+  {
+   "path": "combat/movesets/spell-open.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-open",
+   "bytes": 723,
+   "sha256": "3a8270cee25292b2"
+  },
+  {
+   "path": "combat/movesets/spell-put_it_back.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-put_it_back",
+   "bytes": 595,
+   "sha256": "c743e5e4c3262a4d"
+  },
+  {
+   "path": "combat/movesets/spell-recall.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-recall",
+   "bytes": 622,
+   "sha256": "ad9bd409e55e94c7"
+  },
+  {
+   "path": "combat/movesets/spell-rime_touch.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-rime_touch",
+   "bytes": 660,
+   "sha256": "11206586a9f71155"
+  },
+  {
+   "path": "combat/movesets/spell-root_theft.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-root_theft",
+   "bytes": 710,
+   "sha256": "a87cb51ea2faffa2"
+  },
+  {
+   "path": "combat/movesets/spell-rot_bloom.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-rot_bloom",
+   "bytes": 733,
+   "sha256": "fee96e7ce5e84737"
+  },
+  {
+   "path": "combat/movesets/spell-saltrime.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-saltrime",
+   "bytes": 706,
+   "sha256": "cecbee0b5190c8b6"
+  },
+  {
+   "path": "combat/movesets/spell-sap_and_salt.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-sap_and_salt",
+   "bytes": 598,
+   "sha256": "5c9ae0bfbab9cad9"
+  },
+  {
+   "path": "combat/movesets/spell-sap_blade.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-sap_blade",
+   "bytes": 592,
+   "sha256": "a0b359982ec1c5a9"
+  },
+  {
+   "path": "combat/movesets/spell-sap_thief.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-sap_thief",
+   "bytes": 632,
+   "sha256": "79bfc9e9cf35d218"
+  },
+  {
+   "path": "combat/movesets/spell-seal.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-seal",
+   "bytes": 648,
+   "sha256": "ef930d12bc70b8cf"
+  },
+  {
+   "path": "combat/movesets/spell-shell_splitter.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-shell_splitter",
+   "bytes": 770,
+   "sha256": "9621037bc32bc2d6"
+  },
+  {
+   "path": "combat/movesets/spell-silence.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-silence",
+   "bytes": 704,
+   "sha256": "a112b182d42185ea"
+  },
+  {
+   "path": "combat/movesets/spell-skin_of_air.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-skin_of_air",
+   "bytes": 596,
+   "sha256": "b1f8275be159a36e"
+  },
+  {
+   "path": "combat/movesets/spell-slowfall.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-slowfall",
+   "bytes": 616,
+   "sha256": "3da45d042711d5f7"
+  },
+  {
+   "path": "combat/movesets/spell-spark_dart.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-spark_dart",
+   "bytes": 735,
+   "sha256": "4ecec58a47127b00"
+  },
+  {
+   "path": "combat/movesets/spell-spring_the_trap.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-spring_the_trap",
+   "bytes": 745,
+   "sha256": "d75f50f82b0a73bb"
+  },
+  {
+   "path": "combat/movesets/spell-still_the_beast.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-still_the_beast",
+   "bytes": 720,
+   "sha256": "7cf03707fed371c9"
+  },
+  {
+   "path": "combat/movesets/spell-stone_skin.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-stone_skin",
+   "bytes": 594,
+   "sha256": "27ddfc904467b041"
+  },
+  {
+   "path": "combat/movesets/spell-sure_hand.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-sure_hand",
+   "bytes": 592,
+   "sha256": "dc1e6cc1ae20e46e"
+  },
+  {
+   "path": "combat/movesets/spell-the_borrowed_scale.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_borrowed_scale",
+   "bytes": 666,
+   "sha256": "19ad7f41e47d1380"
+  },
+  {
+   "path": "combat/movesets/spell-the_broken_wall.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_broken_wall",
+   "bytes": 801,
+   "sha256": "58d8b3f08523baa5"
+  },
+  {
+   "path": "combat/movesets/spell-the_deep_chameleon.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_deep_chameleon",
+   "bytes": 665,
+   "sha256": "ad226a60056659b0"
+  },
+  {
+   "path": "combat/movesets/spell-the_drowning.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_drowning",
+   "bytes": 810,
+   "sha256": "0fd67bb05d3b4b11"
+  },
+  {
+   "path": "combat/movesets/spell-the_greater_mending.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_greater_mending",
+   "bytes": 612,
+   "sha256": "b9d66f1e941c7f4b"
+  },
+  {
+   "path": "combat/movesets/spell-the_greater_opening.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_greater_opening",
+   "bytes": 728,
+   "sha256": "8b76db0629c131d0"
+  },
+  {
+   "path": "combat/movesets/spell-the_grey_fuzz.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_grey_fuzz",
+   "bytes": 768,
+   "sha256": "10febfb853eb9567"
+  },
+  {
+   "path": "combat/movesets/spell-the_hists_patience.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_hists_patience",
+   "bytes": 710,
+   "sha256": "b658914aeb888cc3"
+  },
+  {
+   "path": "combat/movesets/spell-the_key_sense.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_key_sense",
+   "bytes": 600,
+   "sha256": "ed252b72d233863e"
+  },
+  {
+   "path": "combat/movesets/spell-the_long_flight.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_long_flight",
+   "bytes": 660,
+   "sha256": "eeca07d786f51459"
+  },
+  {
+   "path": "combat/movesets/spell-the_long_slowfall.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_long_slowfall",
+   "bytes": 608,
+   "sha256": "ae540bc4fe4a97e4"
+  },
+  {
+   "path": "combat/movesets/spell-the_long_stillness.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_long_stillness",
+   "bytes": 806,
+   "sha256": "8f89079f234c01dd"
+  },
+  {
+   "path": "combat/movesets/spell-the_short_hop.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_short_hop",
+   "bytes": 626,
+   "sha256": "b994616d837dd2ad"
+  },
+  {
+   "path": "combat/movesets/spell-the_still_water.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_still_water",
+   "bytes": 847,
+   "sha256": "425e624786bac490"
+  },
+  {
+   "path": "combat/movesets/spell-the_strong_arm.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_strong_arm",
+   "bytes": 602,
+   "sha256": "464057eb97965a80"
+  },
+  {
+   "path": "combat/movesets/spell-the_unmaking.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_unmaking",
+   "bytes": 766,
+   "sha256": "1c2d7a4eb7f5afb4"
+  },
+  {
+   "path": "combat/movesets/spell-the_water_film.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-the_water_film",
+   "bytes": 602,
+   "sha256": "ad9e0b59bdd1f9d1"
+  },
+  {
+   "path": "combat/movesets/spell-thick_skin.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-thick_skin",
+   "bytes": 620,
+   "sha256": "e6818ee2e4812af8"
+  },
+  {
+   "path": "combat/movesets/spell-verdigris.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-verdigris",
+   "bytes": 632,
+   "sha256": "fe4c1f811b5007fc"
+  },
+  {
+   "path": "combat/movesets/spell-wamasu_arc.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-wamasu_arc",
+   "bytes": 735,
+   "sha256": "ed639880a0eb76cd"
+  },
+  {
+   "path": "combat/movesets/spell-warm_smudges.json",
+   "schema": "elder-souls/spell-moveset@1",
+   "id": "spell-warm_smudges",
+   "bytes": 598,
+   "sha256": "aa6ece5097f20e06"
+  },
+  {
+   "path": "combat/movesets/spr_drowned_harpoon.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25335,
+   "sha256": "ccca9216e08b2094"
+  },
+  {
+   "path": "combat/movesets/spr_fishers_gig.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25092,
+   "sha256": "c30100ccbcaff1aa"
+  },
+  {
+   "path": "combat/movesets/spr_marsh_lance.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25277,
+   "sha256": "2dc2b5130056e4f1"
+  },
+  {
+   "path": "combat/movesets/spr_mire_trident.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25117,
+   "sha256": "e010acd165e58bc2"
+  },
+  {
+   "path": "combat/movesets/spr_reed_gig.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25132,
+   "sha256": "3519ab9de9cf4271"
+  },
+  {
+   "path": "combat/movesets/spr_root_pike.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 29630,
+   "sha256": "b97c176c912c9c9c"
+  },
+  {
+   "path": "combat/movesets/spr_xanmeer_sting.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25286,
+   "sha256": "c3ac38b230e8a49d"
+  },
+  {
+   "path": "combat/movesets/ssw_barsaebic_warblade.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25593,
+   "sha256": "c23743e13b02bad7"
+  },
+  {
+   "path": "combat/movesets/ssw_fen_wardens.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25327,
+   "sha256": "9a8914a114401ec0"
+  },
+  {
+   "path": "combat/movesets/ssw_garrison_sword.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25524,
+   "sha256": "8b9a55224ba3ad97"
+  },
+  {
+   "path": "combat/movesets/ssw_hist_sap_blade.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25490,
+   "sha256": "f4ae2febfae959b4"
+  },
+  {
+   "path": "combat/movesets/ssw_kothringi_bronze.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25623,
+   "sha256": "b8fe94ec63150647"
+  },
+  {
+   "path": "combat/movesets/ssw_marsh_shortsword.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25388,
+   "sha256": "ab7c3e0a79087ab7"
+  },
+  {
+   "path": "combat/movesets/ssw_oath_of_drowned.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25769,
+   "sha256": "58f10f8b20e2201d"
+  },
+  {
+   "path": "combat/movesets/ssw_rusted_levy.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25394,
+   "sha256": "c37c7eb0bc6ea386"
+  },
+  {
+   "path": "combat/movesets/tsw_bog_rapier.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26480,
+   "sha256": "44c96d97a2a00550"
+  },
+  {
+   "path": "combat/movesets/tsw_duelling_pick.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26518,
+   "sha256": "4f9be2873ed83c65"
+  },
+  {
+   "path": "combat/movesets/tsw_oath_of_salt.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26555,
+   "sha256": "febec4e1659a7d8f"
+  },
+  {
+   "path": "combat/movesets/tsw_reed_estoc.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26427,
+   "sha256": "6b4036f9792e5fbb"
+  },
+  {
+   "path": "combat/movesets/tsw_xanmeer_needle.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26439,
+   "sha256": "29b184031bcc6e50"
+  },
+  {
+   "path": "combat/movesets/ugs_drowned_slab.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25093,
+   "sha256": "8938503abdbaf996"
+  },
+  {
+   "path": "combat/movesets/ugs_fen_zwei.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25032,
+   "sha256": "cc2b312354e682c9"
+  },
+  {
+   "path": "combat/movesets/ugs_golem_sword.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25023,
+   "sha256": "c662a85fc0bc4833"
+  },
+  {
+   "path": "combat/movesets/ugs_oath_of_root.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25182,
+   "sha256": "de3be95721b6cdf5"
+  },
+  {
+   "path": "combat/movesets/ugs_saltiron_greatsword.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 25036,
+   "sha256": "aa9822a2134564ad"
+  },
+  {
+   "path": "combat/movesets/ugs_tomb_colossus.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 24967,
+   "sha256": "9f7fe6c11ffcdcc6"
+  },
+  {
+   "path": "combat/movesets/whp_hide_lash.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26383,
+   "sha256": "0bf4dca7c0f99c8e"
+  },
+  {
+   "path": "combat/movesets/whp_hist_bindings.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26561,
+   "sha256": "f29926e5a6c9452d"
+  },
+  {
+   "path": "combat/movesets/whp_root_tendril.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26483,
+   "sha256": "2483ef1064323265"
+  },
+  {
+   "path": "combat/movesets/whp_salt_scourge.json",
+   "schema": "elder-souls/moveset@1",
+   "id": null,
+   "bytes": 26456,
+   "sha256": "bf651c9a693ba816"
+  },
+  {
+   "path": "combat/parley.json",
+   "schema": "elder-souls/parley@1",
+   "id": null,
+   "bytes": 6830,
+   "sha256": "3e49155601f29148"
+  },
+  {
+   "path": "combat/poise.json",
+   "schema": "elder-souls/poise@1",
+   "id": "ES-POISE/1",
+   "bytes": 7616,
+   "sha256": "5bac6889f67e6ea9"
+  },
+  {
+   "path": "combat/roll.json",
+   "schema": "elder-souls/roll@1",
+   "id": "ES-ROLL/1",
+   "bytes": 5630,
+   "sha256": "c7feae84781a110b"
+  },
+  {
+   "path": "combat/skeleton.json",
+   "schema": "elder-souls/skeleton@1",
+   "id": null,
+   "bytes": 4305,
+   "sha256": "20d4cd1e2fc84c94"
+  },
+  {
+   "path": "combat/spine/axe.json",
+   "schema": "elder-souls/moveset@1",
+   "id": "axe",
+   "bytes": 3622,
+   "sha256": "e0c7debc5f3bdddf"
+  },
+  {
+   "path": "combat/spine/dagger.json",
+   "schema": "elder-souls/moveset@1",
+   "id": "dagger",
+   "bytes": 4034,
+   "sha256": "1763b1b2db03b01c"
+  },
+  {
+   "path": "combat/spine/greatsword.json",
+   "schema": "elder-souls/moveset@1",
+   "id": "greatsword",
+   "bytes": 4146,
+   "sha256": "9695313943549ed9"
+  },
+  {
+   "path": "combat/spine/halberd.json",
+   "schema": "elder-souls/moveset@1",
+   "id": "halberd",
+   "bytes": 3631,
+   "sha256": "06df0ca672e45a47"
+  },
+  {
+   "path": "combat/spine/spear.json",
+   "schema": "elder-souls/moveset@1",
+   "id": "spear",
+   "bytes": 3593,
+   "sha256": "220a1e9a16e01e9a"
+  },
+  {
+   "path": "combat/spine/straight-sword.json",
+   "schema": "elder-souls/moveset@1",
+   "id": "straight-sword",
+   "bytes": 3711,
+   "sha256": "088b4b43ac28de99"
+  },
+  {
+   "path": "combat/spine/ultra-greatsword.json",
+   "schema": "elder-souls/moveset@1",
+   "id": "ultra-greatsword",
+   "bytes": 4205,
+   "sha256": "b37c787be9739821"
+  },
+  {
+   "path": "combat/stamina.json",
+   "schema": "elder-souls/stamina@1",
+   "id": "ES-STAM/1",
+   "bytes": 7892,
+   "sha256": "c87e26f06836fb5b"
+  },
+  {
+   "path": "crime/bounty.json",
+   "schema": "elder-souls/crime-bounty@1",
+   "id": "bounty",
+   "bytes": 5641,
+   "sha256": "6992ca959267fbde"
+  },
+  {
+   "path": "crime/fences.json",
+   "schema": "elder-souls/crime-fences@1",
+   "id": "fences",
+   "bytes": 4205,
+   "sha256": "807394c919545332"
+  },
+  {
+   "path": "crime/justice.json",
+   "schema": "elder-souls/crime-justice@1",
+   "id": "justice",
+   "bytes": 13493,
+   "sha256": "92d82d189866f45c"
+  },
+  {
+   "path": "crime/sanction.json",
+   "schema": "elder-souls/crime-sanction@1",
+   "id": "sanction",
+   "bytes": 11892,
+   "sha256": "dc25551718fe3cd6"
+  },
+  {
+   "path": "dialogue/creation-names.json",
+   "schema": "elder-souls/creation-names@1",
+   "id": "creation-names",
+   "bytes": 3554,
+   "sha256": "94ea07a991bac971"
+  },
+  {
+   "path": "dialogue/creation-questions.json",
+   "schema": "elder-souls/creation-questions@1",
+   "id": "creation-questions",
+   "bytes": 15787,
+   "sha256": "c382c51838736f47"
+  },
+  {
+   "path": "dialogue/faction-reactions.json",
+   "schema": "elder-souls/faction-reactions@1",
+   "id": "faction-reactions",
+   "bytes": 9161,
+   "sha256": "d4597b7504109863"
+  },
+  {
+   "path": "dialogue/greetings.json",
+   "schema": "elder-souls/greetings@2",
+   "id": "greetings",
+   "bytes": 186802,
+   "sha256": "de9beeb0ca1dc1ca"
+  },
+  {
+   "path": "dialogue/greetings/00-priority-classes.json",
+   "schema": "elder-souls/greetings@2",
+   "id": null,
+   "bytes": 7311,
+   "sha256": "3b2f40d9ca227817"
+  },
+  {
+   "path": "dialogue/greetings/20-tier-a.json",
+   "schema": "elder-souls/greetings@2",
+   "id": null,
+   "bytes": 22387,
+   "sha256": "986dcdfdb0deaed6"
+  },
+  {
+   "path": "dialogue/persuasion-gmst.json",
+   "schema": "elder-souls/persuasion-gmst@1",
+   "id": "ES-DISP/1",
+   "bytes": 3630,
+   "sha256": "ee82e650e9ffa846"
+  },
+  {
+   "path": "dialogue/rumours.json",
+   "schema": "elder-souls/rumours@1",
+   "id": null,
+   "bytes": 4842,
+   "sha256": "e8fc6089028a8e1e",
+   "declared_incomplete": true
+  },
+  {
+   "path": "dialogue/slavery-lines.json",
+   "schema": "elder-souls/slavery-lines@1",
+   "id": "slavery-lines",
+   "bytes": 15303,
+   "sha256": "cde1467e0ed6f23b"
+  },
+  {
+   "path": "dialogue/speakers.json",
+   "schema": "elder-souls/dialogue-speakers@1",
+   "id": "speakers",
+   "bytes": 9186,
+   "sha256": "84285c586a688c1e"
+  },
+  {
+   "path": "dialogue/topics/00-roots.json",
+   "schema": "elder-souls/dialogue-topics@2",
+   "id": null,
+   "bytes": 16418,
+   "sha256": "f8d2011766180f49"
+  },
+  {
+   "path": "dialogue/topics/10-global.json",
+   "schema": "elder-souls/dialogue-topics@2",
+   "id": null,
+   "bytes": 40790,
+   "sha256": "1ca1176511da1764"
+  },
+  {
+   "path": "dialogue/topics/20-tier-a.json",
+   "schema": "elder-souls/dialogue-topics@2",
+   "id": null,
+   "bytes": 21361,
+   "sha256": "0ec4d580c2a922f1"
+  },
+  {
+   "path": "dialogue/topics/21-tier-b.json",
+   "schema": "elder-souls/dialogue-topics@2",
+   "id": null,
+   "bytes": 14219,
+   "sha256": "9aa874260a0e4a1e"
+  },
+  {
+   "path": "dialogue/topics/22-tier-c.json",
+   "schema": "elder-souls/dialogue-topics@2",
+   "id": null,
+   "bytes": 10296,
+   "sha256": "1e640a10f53261cb"
+  },
+  {
+   "path": "dialogue/topics/30-texture.json",
+   "schema": "elder-souls/dialogue-topics@2",
+   "id": null,
+   "bytes": 22970,
+   "sha256": "42f48f4c5e23814e"
+  },
+  {
+   "path": "dialogue/topics/40-race-gated.json",
+   "schema": "elder-souls/topics@1",
+   "id": null,
+   "bytes": 40013,
+   "sha256": "f1db046a2e754425"
+  },
+  {
+   "path": "dialogue/topics/thorn.json",
+   "schema": "elder-souls/topics@1",
+   "id": null,
+   "bytes": 1252,
+   "sha256": "b8e7f92b08d908a7",
+   "declared_incomplete": true
+  },
+  {
+   "path": "dialogue/topics/writ-house.json",
+   "schema": "elder-souls/topics@1",
+   "id": null,
+   "bytes": 18916,
+   "sha256": "90cab8b96b40d9eb"
+  },
+  {
+   "path": "items/thorn.json",
+   "schema": "elder-souls/items@1",
+   "id": null,
+   "bytes": 678,
+   "sha256": "73802c0694f2e61a",
+   "declared_incomplete": true
+  },
+  {
+   "path": "items/writ.json",
+   "schema": "elder-souls/items@1",
+   "id": null,
+   "bytes": 2749,
+   "sha256": "d982cecd158822d7"
+  },
+  {
+   "path": "magic/cast-classes.json",
+   "schema": "elder-souls/magic-cast-classes@1",
+   "id": "magic-cast-classes",
+   "bytes": 9851,
+   "sha256": "6425f32bd92d93ea"
+  },
+  {
+   "path": "magic/cast-clips.json",
+   "schema": "elder-souls/magic-cast-clips@1",
+   "id": "magic-cast-clips",
+   "bytes": 8877,
+   "sha256": "18f6233b14e24849"
+  },
+  {
+   "path": "magic/effects.json",
+   "schema": "elder-souls/magic-effects@1",
+   "id": "magic-effects",
+   "bytes": 67060,
+   "sha256": "44ea365d4b5b57d4"
+  },
+  {
+   "path": "magic/enchant-services.json",
+   "schema": "elder-souls/magic-enchant-services@1",
+   "id": "magic-enchant-services",
+   "bytes": 10792,
+   "sha256": "e61577a27cfe44e8"
+  },
+  {
+   "path": "magic/enchanting.json",
+   "schema": "elder-souls/magic-enchanting@1",
+   "id": "magic-enchanting",
+   "bytes": 13591,
+   "sha256": "37e42fcbeaa553fc"
+  },
+  {
+   "path": "magic/spells.json",
+   "schema": "elder-souls/magic-spells@1",
+   "id": "magic-spells",
+   "bytes": 75209,
+   "sha256": "92f1b358afc5b0c2"
+  },
+  {
+   "path": "magic/traversal-routes.json",
+   "schema": "elder-souls/magic-traversal-routes@1",
+   "id": "magic-traversal-routes",
+   "bytes": 4641,
+   "sha256": "fe5d9e5bf1f2be3a"
+  },
+  {
+   "path": "magic/vfx.json",
+   "schema": "elder-souls/magic-vfx@1",
+   "id": "magic-vfx",
+   "bytes": 7559,
+   "sha256": "050eacfe7525a01f"
+  },
+  {
+   "path": "magic/wards.json",
+   "schema": "elder-souls/magic-wards@1",
+   "id": "magic-wards",
+   "bytes": 6544,
+   "sha256": "dbd59a220a420611"
+  },
+  {
+   "path": "npcs/named-states.json",
+   "schema": "elder-souls/npcs@1",
+   "id": null,
+   "bytes": 5581,
+   "sha256": "a39a005d5cf6ba5f"
+  },
+  {
+   "path": "npcs/thorn.json",
+   "schema": "elder-souls/npcs@1",
+   "id": null,
+   "bytes": 1827,
+   "sha256": "8fe57c93865db7a6",
+   "declared_incomplete": true
+  },
+  {
+   "path": "npcs/writ-house.json",
+   "schema": "elder-souls/npcs@1",
+   "id": null,
+   "bytes": 4550,
+   "sha256": "72cd801430743613",
+   "declared_incomplete": true
+  },
+  {
+   "path": "progression/KNOWN-GAPS.json",
+   "schema": "elder-souls/known-gaps@1",
+   "id": "known-gaps",
+   "bytes": 4829,
+   "sha256": "a699c7fce36ac6ba"
+  },
+  {
+   "path": "progression/attributes.json",
+   "schema": "elder-souls/attributes@1",
+   "id": "attributes",
+   "bytes": 4593,
+   "sha256": "7e9b25abd152a78a"
+  },
+  {
+   "path": "progression/birthsigns.json",
+   "schema": "elder-souls/birthsigns@1",
+   "id": "birthsigns",
+   "bytes": 17128,
+   "sha256": "4f351badfe7723f8"
+  },
+  {
+   "path": "progression/classes.json",
+   "schema": "elder-souls/classes@1",
+   "id": "classes",
+   "bytes": 12271,
+   "sha256": "0aa35558d4e8a405"
+  },
+  {
+   "path": "progression/creation.json",
+   "schema": "elder-souls/creation@1",
+   "id": "creation",
+   "bytes": 9686,
+   "sha256": "f19c26140c6c3f38",
+   "declared_incomplete": true
+  },
+  {
+   "path": "progression/factions.json",
+   "schema": "elder-souls/factions@1",
+   "id": null,
+   "bytes": 586,
+   "sha256": "22c0c3abd2fdf8e7"
+  },
+  {
+   "path": "progression/levels.json",
+   "schema": "elder-souls/levels@1",
+   "id": null,
+   "bytes": 667,
+   "sha256": "911c9ce7c43ccd37"
+  },
+  {
+   "path": "progression/race-reactions.json",
+   "schema": "elder-souls/race-reactions@1",
+   "id": "race-reactions",
+   "bytes": 11326,
+   "sha256": "3eabc6d54862836c",
+   "declared_incomplete": true
+  },
+  {
+   "path": "progression/races.json",
+   "schema": "elder-souls/races@1",
+   "id": "races",
+   "bytes": 9665,
+   "sha256": "b7a0c0cf8307cc83"
+  },
+  {
+   "path": "progression/skills.json",
+   "schema": "elder-souls/skills@1",
+   "id": "skills",
+   "bytes": 5673,
+   "sha256": "fef05242d2cece6d"
+  },
+  {
+   "path": "quests/blackmarsh-coast.json",
+   "schema": "elder-souls/quests@1",
+   "id": "blackmarsh-coast",
+   "bytes": 63587,
+   "sha256": "c2b1957b2ad02350"
+  },
+  {
+   "path": "quests/blackmarsh-core.json",
+   "schema": "elder-souls/quests@1",
+   "id": "blackmarsh-core",
+   "bytes": 35833,
+   "sha256": "482aa96f0de2e97d"
+  },
+  {
+   "path": "quests/closure-registry.json",
+   "schema": "elder-souls/closure-registry@1",
+   "id": null,
+   "bytes": 4839,
+   "sha256": "2e59e4471a1c698d"
+  },
+  {
+   "path": "quests/faction-gates.json",
+   "schema": "elder-souls/faction-gates@1",
+   "id": "faction-gates",
+   "bytes": 22163,
+   "sha256": "4cf1f6d248da580c"
+  },
+  {
+   "path": "quests/hooks.json",
+   "schema": "elder-souls/quest-hooks@1",
+   "id": "quest-hooks",
+   "bytes": 6946,
+   "sha256": "07c075e4c7cdf51d"
+  },
+  {
+   "path": "quests/magic-utility.json",
+   "schema": "elder-souls/quests@1",
+   "id": "magic-utility-quests",
+   "bytes": 133208,
+   "sha256": "ff498d91e1c3523d"
+  },
+  {
+   "path": "quests/the-boards.json",
+   "schema": "elder-souls/quest@1",
+   "id": "the-boards",
+   "bytes": 1493,
+   "sha256": "40d950572e6e6afa",
+   "declared_incomplete": true
+  },
+  {
+   "path": "save-manifest.json",
+   "schema": "elder-souls/save-manifest@1",
+   "id": null,
+   "bytes": 12212,
+   "sha256": "bf60d79bc20ba93d",
+   "declared_incomplete": true
+  },
+  {
+   "path": "states/arena_champion.json",
+   "schema": "elder-souls/state@1",
+   "id": "arena_champion",
+   "bytes": 1155,
+   "sha256": "4ba5ce9b4613d648"
+  },
+  {
+   "path": "states/arena_duel.json",
+   "schema": "elder-souls/state@1",
+   "id": "arena_duel",
+   "bytes": 1599,
+   "sha256": "29deef6ab40e452b"
+  },
+  {
+   "path": "states/arena_flat.json",
+   "schema": "elder-souls/state@1",
+   "id": "arena_flat",
+   "bytes": 1357,
+   "sha256": "e5b340d8060f16e5"
+  },
+  {
+   "path": "states/arena_probe.json",
+   "schema": "elder-souls/state@1",
+   "id": "arena_probe",
+   "bytes": 1150,
+   "sha256": "880f8004f4570387"
+  },
+  {
+   "path": "states/barge-hold.json",
+   "schema": "elder-souls/state@1",
+   "id": "barge-hold",
+   "bytes": 1652,
+   "sha256": "26d67deeaede5610"
+  },
+  {
+   "path": "states/cam_boardwalk.json",
+   "schema": "elder-souls/state@1",
+   "id": "cam_boardwalk",
+   "bytes": 1282,
+   "sha256": "ea6a8034799e881e"
+  },
+  {
+   "path": "states/cam_boss_arena.json",
+   "schema": "elder-souls/state@1",
+   "id": "cam_boss_arena",
+   "bytes": 1259,
+   "sha256": "d5a8654eca3978eb"
+  },
+  {
+   "path": "states/cam_cistern.json",
+   "schema": "elder-souls/state@1",
+   "id": "cam_cistern",
+   "bytes": 1294,
+   "sha256": "e73d90ee4e66f3d9"
+  },
+  {
+   "path": "states/cam_collision_rig.json",
+   "schema": "elder-souls/state@1",
+   "id": "cam_collision_rig",
+   "bytes": 1257,
+   "sha256": "a2c5e0bb64eac243"
+  },
+  {
+   "path": "states/cam_flat_plain.json",
+   "schema": "elder-souls/state@1",
+   "id": "cam_flat_plain",
+   "bytes": 1256,
+   "sha256": "eae82d6cfcc6ce0e"
+  },
+  {
+   "path": "states/cam_mangrove.json",
+   "schema": "elder-souls/state@1",
+   "id": "cam_mangrove",
+   "bytes": 1265,
+   "sha256": "e8a072dcee7a7989"
+  },
+  {
+   "path": "states/cam_pinch.json",
+   "schema": "elder-souls/state@1",
+   "id": "cam_pinch",
+   "bytes": 1272,
+   "sha256": "f5001633b777a9df"
+  },
+  {
+   "path": "states/cam_stair.json",
+   "schema": "elder-souls/state@1",
+   "id": "cam_stair",
+   "bytes": 1260,
+   "sha256": "e52db8c1278e0433"
+  },
+  {
+   "path": "states/default.json",
+   "schema": "elder-souls/state@1",
+   "id": "default",
+   "bytes": 979,
+   "sha256": "39b1ff1a2ce49ac3"
+  },
+  {
+   "path": "states/dungeon_primary.json",
+   "schema": "elder-souls/state@1",
+   "id": "dungeon_primary",
+   "bytes": 764,
+   "sha256": "685fcefc4dde9946"
+  },
+  {
+   "path": "states/endgame-200q.json",
+   "schema": "elder-souls/state@1",
+   "id": "endgame-200q",
+   "bytes": 667815,
+   "sha256": "3c4f91dd9e4549f4"
+  },
+  {
+   "path": "states/helstrom-market.json",
+   "schema": "elder-souls/state@1",
+   "id": "helstrom-market",
+   "bytes": 2125,
+   "sha256": "01af3be9c24727e1"
+  },
+  {
+   "path": "states/interior_firelit.json",
+   "schema": "elder-souls/state@1",
+   "id": "interior_firelit",
+   "bytes": 764,
+   "sha256": "98608c8951209f43"
+  },
+  {
+   "path": "states/material_showcase.json",
+   "schema": "elder-souls/state@1",
+   "id": "material_showcase",
+   "bytes": 1320,
+   "sha256": "5ab5e870c66b7565"
+  },
+  {
+   "path": "states/npc_showcase.json",
+   "schema": "elder-souls/state@1",
+   "id": "npc_showcase",
+   "bytes": 1300,
+   "sha256": "3178285ddb0e6647"
+  },
+  {
+   "path": "states/rootlands-well-graph.json",
+   "schema": "elder-souls/state@1",
+   "id": "rootlands-well-graph",
+   "bytes": 2270,
+   "sha256": "457148253a614124"
+  },
+  {
+   "path": "states/settlement_primary_street.json",
+   "schema": "elder-souls/state@1",
+   "id": "settlement_primary_street",
+   "bytes": 1232,
+   "sha256": "1d17e8e6d96a5bea"
+  },
+  {
+   "path": "states/showcase_patch.json",
+   "schema": "elder-souls/state@1",
+   "id": "showcase_patch",
+   "bytes": 905,
+   "sha256": "2135f122e5c356a0"
+  },
+  {
+   "path": "states/stormhold-street.json",
+   "schema": "elder-souls/state@1",
+   "id": "stormhold-street",
+   "bytes": 1867,
+   "sha256": "8899143edc05323f"
+  },
+  {
+   "path": "states/sv1-midquest.json",
+   "schema": "elder-souls/state@1",
+   "id": "sv1-midquest",
+   "bytes": 2101,
+   "sha256": "7c9907e4ce369b2a"
+  },
+  {
+   "path": "states/sv5-journal-bloodstain.json",
+   "schema": "elder-souls/state@1",
+   "id": "sv5-journal-bloodstain",
+   "bytes": 10833,
+   "sha256": "4d427031af460e54"
+  },
+  {
+   "path": "states/swamp_canopy.json",
+   "schema": "elder-souls/state@1",
+   "id": "swamp_canopy",
+   "bytes": 1222,
+   "sha256": "8fe43c695278da85"
+  },
+  {
+   "path": "states/thorn-hall.json",
+   "schema": "elder-souls/state@1",
+   "id": "thorn-hall",
+   "bytes": 530,
+   "sha256": "4ab0e0aab53ea8cb"
+  },
+  {
+   "path": "states/vista_primary.json",
+   "schema": "elder-souls/state@1",
+   "id": "vista_primary",
+   "bytes": 1260,
+   "sha256": "1b2b98243a9140e2"
+  },
+  {
+   "path": "states/water_shallows.json",
+   "schema": "elder-souls/state@1",
+   "id": "water_shallows",
+   "bytes": 1243,
+   "sha256": "5b9c6b90bfdd676a"
+  },
+  {
+   "path": "states/wld-dres-raid-road.json",
+   "schema": "elder-souls/state@1",
+   "id": "wld-dres-raid-road",
+   "bytes": 1807,
+   "sha256": "5aa28761c01ab7fe"
+  },
+  {
+   "path": "states/wpn-dummy-arena.json",
+   "schema": "elder-souls/state@1",
+   "id": "wpn-dummy-arena",
+   "bytes": 1353,
+   "sha256": "029d062bd4c9fe86"
+  },
+  {
+   "path": "states/wpn-loadout-o1_sword_shield.json",
+   "schema": "elder-souls/state@1",
+   "id": "wpn-loadout-o1_sword_shield",
+   "bytes": 1131,
+   "sha256": "14e69990ca62e8f5"
+  },
+  {
+   "path": "states/wpn-loadout-o2_dual.json",
+   "schema": "elder-souls/state@1",
+   "id": "wpn-loadout-o2_dual",
+   "bytes": 1150,
+   "sha256": "f7d5bd4ea5bd6318"
+  },
+  {
+   "path": "states/wpn-loadout-o3_twohand.json",
+   "schema": "elder-souls/state@1",
+   "id": "wpn-loadout-o3_twohand",
+   "bytes": 1077,
+   "sha256": "4ffa5322ebad2f48"
+  },
+  {
+   "path": "states/wpn-material-range.json",
+   "schema": "elder-souls/state@1",
+   "id": "wpn-material-range",
+   "bytes": 2053,
+   "sha256": "b67d088a13ddab0a"
+  },
+  {
+   "path": "states/writ-house.json",
+   "schema": "elder-souls/state@1",
+   "id": "writ-house",
+   "bytes": 2021,
+   "sha256": "ea308dc6ea1d552e"
+  },
+  {
+   "path": "stealth/detection.json",
+   "schema": "elder-souls/stealth-detection@1",
+   "id": "detection",
+   "bytes": 12883,
+   "sha256": "b555243b6c18260d"
+  },
+  {
+   "path": "stealth/locks.json",
+   "schema": "elder-souls/stealth-locks@1",
+   "id": "locks",
+   "bytes": 5580,
+   "sha256": "5dbeed590a1cf12c"
+  },
+  {
+   "path": "stealth/search.json",
+   "schema": "elder-souls/stealth-search@1",
+   "id": "search",
+   "bytes": 3169,
+   "sha256": "44f7c3db180a59f3"
+  },
+  {
+   "path": "stealth/theft.json",
+   "schema": "elder-souls/stealth-theft@1",
+   "id": "theft",
+   "bytes": 10911,
+   "sha256": "7dde3ad4b1cbe98f"
+  },
+  {
+   "path": "weapons/classes.json",
+   "schema": "elder-souls/weapon-classes@1",
+   "id": "weapon-classes",
+   "bytes": 22139,
+   "sha256": "52870afd8640525a"
+  },
+  {
+   "path": "weapons/clip-registry.json",
+   "schema": "elder-souls/clip-registry@1",
+   "id": "clip-registry",
+   "bytes": 751600,
+   "sha256": "9ef0d883739a9467"
+  },
+  {
+   "path": "weapons/fp-sd.json",
+   "schema": "elder-souls/fp-sd@1",
+   "id": "fp-sd",
+   "bytes": 452,
+   "sha256": "797f2527a36c5faf"
+  },
+  {
+   "path": "weapons/input-map.json",
+   "schema": "elder-souls/weapon-input-map@1",
+   "id": "weapon-input-map",
+   "bytes": 7748,
+   "sha256": "1e1d9ca18fdcfeca"
+  },
+  {
+   "path": "weapons/offhand.json",
+   "schema": "elder-souls/offhand@1",
+   "id": "offhand",
+   "bytes": 6908,
+   "sha256": "84448beaf5fb28cf"
+  },
+  {
+   "path": "weapons/pose-library.json",
+   "schema": "elder-souls/pose-library@1",
+   "id": "pose-library",
+   "bytes": 21877,
+   "sha256": "deea016565dc8508"
+  },
+  {
+   "path": "weapons/roster.json",
+   "schema": "elder-souls/weapon-roster@1",
+   "id": "weapon-roster",
+   "bytes": 53794,
+   "sha256": "612529e3f912ab5a"
+  },
+  {
+   "path": "world/encounters.json",
+   "schema": "elder-souls/encounters@1",
+   "id": "encounters",
+   "bytes": 5177,
+   "sha256": "989dc5df824fb93b"
+  },
+  {
+   "path": "world/hazards.json",
+   "schema": "elder-souls/hazards@1",
+   "id": null,
+   "bytes": 11782,
+   "sha256": "a755474b92833b00"
+  },
+  {
+   "path": "world/interiors/thorn-hall.json",
+   "schema": "elder-souls/interior@1",
+   "id": "thorn-hall",
+   "bytes": 1047,
+   "sha256": "44f7c350b25a7055",
+   "declared_incomplete": true
+  },
+  {
+   "path": "world/interiors/writ-house.json",
+   "schema": "elder-souls/interior@1",
+   "id": "writ-house",
+   "bytes": 1969,
+   "sha256": "e7b62f8ff5714e2f",
+   "declared_incomplete": true
+  },
+  {
+   "path": "world/landmask.json",
+   "schema": "elder-souls/landmask@1",
+   "id": null,
+   "bytes": 7847,
+   "sha256": "2b0127b3822be51f"
+  },
+  {
+   "path": "world/pois.json",
+   "schema": "elder-souls/pois@1",
+   "id": null,
+   "bytes": 16110,
+   "sha256": "56d039ae14c0bb16",
+   "declared_incomplete": true
+  },
+  {
+   "path": "world/property/archon.json",
+   "schema": "elder-souls/property@1",
+   "id": "property-archon",
+   "bytes": 135895,
+   "sha256": "42e344ce7887a83b"
+  },
+  {
+   "path": "world/property/blackrose.json",
+   "schema": "elder-souls/property@1",
+   "id": "property-blackrose",
+   "bytes": 144123,
+   "sha256": "7dc25069be412e1c"
+  },
+  {
+   "path": "world/property/gideon.json",
+   "schema": "elder-souls/property@1",
+   "id": "property-gideon",
+   "bytes": 142915,
+   "sha256": "c4106386c336821b"
+  },
+  {
+   "path": "world/property/helstrom.json",
+   "schema": "elder-souls/property@1",
+   "id": "property-helstrom",
+   "bytes": 147969,
+   "sha256": "a2477dacd59c0bd6"
+  },
+  {
+   "path": "world/property/lilmoth.json",
+   "schema": "elder-souls/property@1",
+   "id": "property-lilmoth",
+   "bytes": 136121,
+   "sha256": "da24db3303e051e7"
+  },
+  {
+   "path": "world/property/soulrest.json",
+   "schema": "elder-souls/property@1",
+   "id": "property-soulrest",
+   "bytes": 136289,
+   "sha256": "54bb8d76757f8c86"
+  },
+  {
+   "path": "world/property/stormhold.json",
+   "schema": "elder-souls/property@1",
+   "id": "property-stormhold",
+   "bytes": 157415,
+   "sha256": "3066572520fa42c9"
+  },
+  {
+   "path": "world/property/thorn.json",
+   "schema": "elder-souls/property@1",
+   "id": "property-thorn",
+   "bytes": 134902,
+   "sha256": "9d71ed4e40f6f122"
+  },
+  {
+   "path": "world/regions.json",
+   "schema": "elder-souls/regions@2",
+   "id": null,
+   "bytes": 49663,
+   "sha256": "147ca7ad3baaf3cf"
+  },
+  {
+   "path": "world/roads.json",
+   "schema": "elder-souls/roads@1",
+   "id": null,
+   "bytes": 157034,
+   "sha256": "498db8a2f1bbdf52"
+  },
+  {
+   "path": "world/settlements/thorn.json",
+   "schema": "elder-souls/settlement@1",
+   "id": "thorn",
+   "bytes": 2161,
+   "sha256": "3011cf23b15172b2",
+   "declared_incomplete": true
+  },
+  {
+   "path": "world/signatures.json",
+   "schema": "elder-souls/signatures@1",
+   "id": null,
+   "bytes": 109413,
+   "sha256": "05f160b12891b4a4"
+  },
+  {
+   "path": "world/terrain.json",
+   "schema": "elder-souls/terrain@1",
+   "id": null,
+   "bytes": 872594,
+   "sha256": "e4149a3183326552"
+  },
+  {
+   "path": "world/travel/lines.json",
+   "schema": "elder-souls/travel-lines@1",
+   "id": null,
+   "bytes": 10942,
+   "sha256": "cd51360acbf604c8"
+  },
+  {
+   "path": "world/travel/services.json",
+   "schema": "elder-souls/travel-services@1",
+   "id": null,
+   "bytes": 116608,
+   "sha256": "9e694f4eebde2b57"
+  },
+  {
+   "path": "world/travel/stations.json",
+   "schema": "elder-souls/travel-stations@1",
+   "id": null,
+   "bytes": 10180,
+   "sha256": "1cd0c574fe7df7b5"
+  },
+  {
+   "path": "world/travel/tariff.json",
+   "schema": "elder-souls/tariff@1",
+   "id": null,
+   "bytes": 1526,
+   "sha256": "f79459db29837f17"
+  },
+  {
+   "path": "world/traversal.json",
+   "schema": "elder-souls/traversal@1",
+   "id": null,
+   "bytes": 5222,
+   "sha256": "c25d15172090a025"
+  },
+  {
+   "path": "world/water.json",
+   "schema": "elder-souls/water@1",
+   "id": null,
+   "bytes": 8669,
+   "sha256": "ff446f8b72588b64"
+  }
+ ]
 }

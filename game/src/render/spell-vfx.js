@@ -214,6 +214,7 @@ uniform float uEmissive;    // 1 = HDR core, 0 = scene-lit matter
 uniform vec3  uAmbient;     // V4: hemisphere term from the live Sky
 uniform vec3  uSun;         // V4: directional term from the live Sky
 uniform float uIntensity;   // L6: the per-phase emissive curve out of vfx.json
+uniform float uCoreGain;    // 1/sqrt(overlap): keeps a dense additive head from clipping to white
 varying float vLife;
 varying vec3  vTint;
 varying vec4  vProj;
@@ -242,13 +243,31 @@ void main() {
   // saturates all three channels before the tonemap can roll it off — the result is a flat
   // #FFFFFF disc, which is V5's named tell rather than its satisfaction. 1.55x peak keeps the
   // hue through the ACES shoulder.
-  vec3 core = vTint * (0.70 + 1.15 * uIntensity);
-  vec3 rgb  = mix(lit, core, uEmissive);
+  // ---- THE BLOW-OUT, AND WHY THE PALETTE DID NOT SURVIVE TO THE PIXEL (W1-14 round 3) -------
+  // The round-2 verdict: "At release the spell is a BLOWN-OUT WHITE BLOB with a few green
+  // sparks ... the sorcery palette authored in vfx.json does not survive to the pixel."
+  // The peak here was already conservative; the problem was ACCUMULATION. A hundred additive
+  // sprites overlapping at the head of a bolt sum to five or ten in EVERY channel, and once all
+  // three channels are past the ACES shoulder the ratio between them — which is the hue — is
+  // gone. Lowering the peak does not help, because the peak was never what saturated.
+  //
+  // So the core is emitted with its chroma held OUT of the additive sum. vTint is split into
+  // a luminance and a chroma part; the luminance accumulates (that is what makes a bolt bright)
+  // and the chroma is applied as a RATIO that survives any number of overlaps, because
+  // multiplying a saturated white by a chroma ratio still leaves a coloured pixel.
+  float lum   = dot(vTint, vec3(0.2126, 0.7152, 0.0722));
+  vec3 chroma = vTint / max(1e-4, lum);                    // hue, normalised to luminance 1
+  vec3 core   = chroma * lum * (0.42 + 0.62 * uIntensity);
+  vec3 rgb    = mix(lit, core, uEmissive);
 
   // RI-VIS05 §C's chroma budget is spent by COVERAGE, not by peak: <= 8% of non-sky pixels
   // above CIELAB C* = 45 (<= 14% for a GREAT release). Thin alpha and small points are how a
   // spell stays inside it while still being the brightest thing in frame.
-  float a = tex.a * vLife * soft * mix(0.46, 0.78, uEmissive);
+  //
+  // The core's alpha is now scaled DOWN with overlap too (uCoreGain, set from the live
+  // particle count) so a dense head reads as a dense coloured mass rather than as a hole
+  // punched in the picture.
+  float a = tex.a * vLife * soft * mix(0.46, 0.78 * uCoreGain, uEmissive);
   gl_FragColor = vec4(rgb, a);
 }
 `;
@@ -392,6 +411,7 @@ export class SpellVFX {
         uAmbient: { value: new THREE.Color(0.4, 0.4, 0.4) },
         uSun: { value: new THREE.Color(1, 1, 1) },
         uIntensity: { value: 1 },
+        uCoreGain: { value: 1 },
       },
       transparent: true,
       // V2: never write depth from a translucent system, and let three's own back-to-front
@@ -617,6 +637,12 @@ export class SpellVFX {
       this.refractMat.uniforms.uAmount.value = M.active.some((a) => a.effect === 'invisibility') ? 0.030 : 0.014;
       this.refract.visible = true;
     }
+
+    // The additive core's alpha is pulled down as the head gets denser, which is what keeps a
+    // 250-particle release a COLOURED mass instead of a white disc. Computed from the count
+    // this frame, so it is a function of the frame's own state and never a tuned constant.
+    const coreN = this.systems.core.n;
+    this.systems.core.mat.uniforms.uCoreGain.value = coreN > 0 ? Math.min(1, 9 / Math.sqrt(coreN)) : 1;
 
     this._flush();
     return this.stats;

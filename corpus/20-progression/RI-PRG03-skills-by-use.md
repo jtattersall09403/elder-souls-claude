@@ -301,11 +301,34 @@ attempt* the move; the frame data decides whether the attempt worked.
 Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
 **No threshold in this item was changed.**
 
-| Ladder | 4 | 6 | 8 |
-|---|---|---|---|
-| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+| Ladder | 0 | 2 | 4 | 6 | 8 |
+|---|---|---|---|---|---|
+| Native | 0 / 10 | 2 / 10 | 4 / 10 | 6 / 10 | 8 / 10 |
 
-**Aggregation (a property of this item, not of the critic):** min-over-axes.
+> **AMENDED wave 1 — `BAR-CRITIQUE-W1-07-R1` §R5.** 0 and 2 rungs added. This item aggregates
+> min-over-axes and has a binary axis with no 6; the row was silent below 4. Reasoning in full at
+> `RI-CHR01`.
+
+**Aggregation (a property of this item, not of the critic):** min-over-axes, over the axes that are
+**measurable**; axes in `corpus_debt` are excluded from the min and reported separately.
+
+### CONSUMPTION (`RI-MTH07` / `ARBITRATION` §3) — *(ADDED wave 1, `BAR-CRITIQUE-W1-07-R1` §R4)*
+
+1. **Enumerate exhaustively:** the 19 skill definitions and their governing attributes, the growth
+   curve, the Cost Gate, the grade-shift table, every skill gate in `game/data/**`, and the
+   no-lockout alternates.
+2. **Perturb and observe** per `RI-MTH07` §B, entity-side, with the null control. A `skill_use`
+   event appearing in the trace is **not** consumption — the trace is an observer. The observables
+   are: the sheet value moves, a lock that refused now opens, a damage number changes by the
+   grade-shift, a price changes.
+3. **Apply the consequence:** any `coupling == 0` scores **that axis 0**, fail-closed. There is no
+   `partial`.
+4. **The half wave 1 left unmeasured, named so it is not left again.** Round 2 established that
+   `skill_use` fires on every connecting hit in the browser and that the Cost Gate refuses
+   `cost: 0` and grants at `cost: 1` — both real, both entity-side. It did **not** run M7's
+   5-vs-100 damage test, so **the grade-shift axis — the only place skill is allowed to touch the
+   fight at all, and the one axis S1 purity constrains — has never been measured on any build.**
+   That is the axis to run first.
 
 ## How we lose
 

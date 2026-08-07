@@ -2,8 +2,8 @@
   "task_id": "W1-07-r3",
   "brief": "W1-07 round 3 at ULTRACODE. Round 2 scored 3.8/10. Close GAP-W1-questionnaire-route-is-unreadable-and-unnamed plus the consumption failures.",
   "started": "wave-3",
-  "state": "researching",
-  "gap": "GAP-W1-questionnaire-route-is-unreadable-and-unnamed — 0 of 10 question texts reach the frame; 0 of 14 named classes over 240 runs.",
+  "state": "building",
+  "gap": "GAP-W1-questionnaire-route-is-unreadable-and-unnamed \u2014 0 of 10 question texts reach the frame; 0 of 14 named classes over 240 runs.",
   "plan": [
     "P0 confirm boot (smoke.mjs) before touching anything",
     "P1 draw state.question.text at questionnaire nodes (buildCensusModel scene.js:267)",
@@ -19,8 +19,32 @@
     "P11 tools/journey/journey-run.mjs + beat-extract.mjs + gamepad-shim.mjs (RI-JRN01 A-JRN1)",
     "P12 delete-the-fix regression check on every fix"
   ],
-  "findings": [],
-  "outputs_written": [],
-  "next_step": "smoke test, then read game/src/character/scene.js and census data",
+  "findings": [
+    "smoke.mjs PASS at session start (6/6, chromium 141, SwiftShader).",
+    "MEASURED, as shipped: questionnaire.reachableClasses() exhaustive over all 40 race x upbringing pairs (41,943,040 routes) reaches 11 of 14 named classes IN PRINCIPLE, but exact-set matching means a random-answer sweep of 1,600 runs produces 0 exact matches. Both the critic's 0/240 and the item's >=10/14 metric are true at once: the route can reach 11 but never does.",
+    "ROOT CAUSE of 0/14 in play: matchNamedClass() requires SET EQUALITY of both the top-3 and the top-2 skill sets against a class. C(19,3)*C(16,2) = 116,280 shapes, 14 of them named. Exact match is a measure-zero event in play.",
+    "CANDIDATE MATCHER MEASURED: bias-corrected nearest-profession fit. E[s] = expected weight of skill s under uniform answering over the ASKED question set (sum over answers weighting s, /4); w'[s] = w[s]-E[s]; fit(c) = sum over c's skills of (3 if 25 else 2) * w'[s]. Over all 41,943,040 routes this reaches 14 of 14 distinct classes. Over a 240-run random sweep it also reaches 14 of 14, histogram min 4 max 35. Naive unnormalised affinity reaches only 5 of 14 \u2014 the bias correction is what does the work.",
+    "fit percentiles over 4,000 random runs: p1 3.00, p5 4.75, p10 5.75, p25 7.50, p50 9.75, p90 15.75. A floor of 4.0 leaves roughly 4% of routes unnamed (the honest 'I do not have a word for that' band).",
+    "ROOT CAUSE of the custom-route throw: census.js _options() for source 'progression/attributes.json#attributes' and '#skills' returns EVERY option and ignores inp.excludes ('favoured_attributes' / 'primary_skills'). Only the birthsign branch honours excludes. So the pick node offers already-taken attributes and _requirePick throws out of stepFrames.",
+    "buildCensusModel (scene.js) never reads state.question \u2014 census.state() DOES return {question:{id,index,text,answers}} at questionnaire nodes. One field.",
+    "FIXED + MEASURED: question texts reaching the frame 0 of 10 -> 10 of 10. buildCensusModel now sets line = state.question.text at questionnaire nodes, with the scribe's stock framing demoted to a `preamble` drawn once at question one. Live Census walk shows 10 distinct question bodies (q1..q8,q10,q11 for a saxhleel/interior character), 17 distinct drawn lines over the scene.",
+    "FIXED + MEASURED: named classes 0 of 14 -> 12 of 14 over the critic's own 240-run sweep shape (10 races x 4 upbringings x 6 answer patterns, verified even histogram a/b/c/d = 600/600/600/600), and 14 of 14 exhaustively over all 41,943,040 routes. 97.10% of routes name a class; the other 2.90% get the authored 'I do not have a word for that'.",
+    "FIXED: census.js _options() now honours inp.excludes via _excluded(); the neglected node offers 8 attributes not 10, secondary offers 16 skills not 19. Pad walk (caret-at-top + interact on every node) completes the custom route with 0 throws and attribute total 112.",
+    "FIXED: Engine._censusApplyPending() now catches, emits a `census_refused` event and shows the refusal as the scribe's aside instead of throwing out of the fixed step.",
+    "FOUND + FIXED (second-order, same defect class as the headline gap): every REPLY in the census graph was written to the transcript and never drawn \u2014 on_answer, on_refusal, birthsign scribe_line, the writ.strange-check conditional branches, and on_match_named_class itself, which RI-CHR01 SS4 calls 'the moment the route is for'. census.state() now carries `spoken` and ui.js draws it above the rule.",
+    "creation-audit: CHR03-dry-well-removes-focus was stale against ARBITRATION S27 and was the one hard failure at 88/90. Re-pointed to CHR03-dry-well-takes-the-hearth plus a new CHR03-S27-no-focus-rate sweep over all 9 signs. Now 90/91 PASS, 0 hard failures, 1 declared XFAIL (the corpus's own Nord/Orsimer collision)."
+  ],
+  "outputs_written": [
+    "game/src/character/questionnaire.js (nearestProfession, expectedWeights, professionFloor; reachableClasses now reports named reachability too)",
+    "game/src/character/census.js (adopt the named profession; spoken replies; _excluded)",
+    "game/src/character/scene.js (buildCensusModel draws the question, the preamble, the replies and the refusal)",
+    "game/src/render/ui.js (spoken/preamble block with a declared overflow sacrifice order)",
+    "game/src/engine.js (_censusApplyPending cannot throw out of the fixed step)",
+    "game/data/dialogue/creation-questions.json (#scoring.nearest_profession* incl. the runtime floor)",
+    "game/data/dialogue/topics/writ-house.json (on_nearest_named_class)",
+    "game/data/progression/birthsigns.json (kaal-kaal detail re-pointed to S27)",
+    "tools/analysis/creation-audit.mjs (S27 assertions)"
+  ],
+  "next_step": "greetings.json consumer + race-gated topic consumer, with perturbation evidence",
   "notes_for_successor": ""
 }

@@ -328,6 +328,46 @@ one to be lobbied against.
    ability at simulated levels 1/20/40/60. **Assert ≥ 486 signatures pass all four §5 criteria**,
    and **print every failing signature with the gate that stopped it.** A failure list is the
    useful output; a pass/fail summary is not.
+
+   > **AMENDED wave 1 — `BAR-CRITIQUE-W1-07-R1` §R2.5. While `tools/analysis/build-viability.mjs`
+   > does not exist, the Distinctness axis is `corpus_debt`: removed from the min-over-axes
+   > aggregation entirely, reported at its measured value of `unmeasurable`, and filed against
+   > `RI-MTH06` — not scored as a 0 against the build.**
+   >
+   > The reason is arithmetic, not charity. This item aggregates **min-over-axes**. An axis that no
+   > build can measure is an axis every build fails, so **`RI-CHR01`'s native score has been pinned
+   > at 0 since wave 0 for every build that will ever be written**, and it was: `W1-07` rounds 1
+   > and 2 both record `native_score: 0` with the stated reason *"distinctness axis unmeasurable
+   > (build-viability.mjs absent)"*. `RI-MTH06` itself records the same observation about round 1
+   > — *"an item whose other nine axes scored between 5 and 8 aggregated to 0 by its own
+   > min-over-axes rule, because one axis could not be measured at all"* — and then left the
+   > mechanism in place for a second wave.
+   >
+   > `CRITIC-DOCTRINE` §7 already rules this case: *"if an item cannot reach 10 because the corpus
+   > is broken — an unmeasurable metric, a missing constant … file it as `corpus_extended`, do not
+   > absorb it into the piece's score."* §7.3's fail-closed 0 governs a **harness gap the piece
+   > could close**; a tool the corpus mandated, assigned to nobody, and never wrote is not that.
+   >
+   > **Nothing is relaxed.** The axis keeps its bands, its 486/540 target and its `< 70%` floor
+   > verbatim, and returns to the aggregation the day the tool exists — at which point a build that
+   > cannot clear it fails on it. What changes is only that the debt is charged to the party that
+   > incurred it. This is the mechanism `BAR-CRITIQUE-W1-09-R1` §R2.3 established for `RI-CMB07`
+   > M1 and it is applied here unchanged.
+
+11. **The naming moment, and the delivered scene** *(ADDED wave 1, `BAR-CRITIQUE-W1-07-R1` §R3).*
+    Method 4 enumerates `4^10` answer combinations **against the data file** and asserts named
+    classes are reachable *in principle*. A route can be reachable in principle and never taken,
+    and this build proved it: the round-3 builder's own measurement is that
+    `reachableClasses()` reaches **11 of 14 in principle** while a 1,600-run play sweep produces
+    **0**, because the matcher requires set equality on a space of 116,280 shapes. Method 4 could
+    not tell those two apart, and the item's most important sentence — *"the Warden-Scribe says the
+    name aloud, which is the moment the route is for"* — had no check at all.
+    **Run `RI-JRN09` M3 (`ES-NAMED/1`) and M1 (`ES-LEGIBLE/1`) and cite both here.** Specifically:
+    **assert ≥ 6 distinct named `class_id` values over a ≥ 240-run sweep with a published a/b/c/d
+    histogram**, **assert `on_match_named_class`'s line reaches the frame on 100% of named
+    matches**, and **assert the ten dilemma questions reach the frame at 10 of 10 questionnaire
+    nodes.** Method 4's in-principle enumeration remains, and is now explicitly *not* sufficient
+    for the Questionnaire or Class-roster axes.
 7. **Legibility (blind, manual, `blind_pair` at the trace level).** Sample 20 signatures. For
    each, produce 5 minutes of harness trace of ordinary play (walk into a settlement, talk to
    three NPCs, buy something, open one lock, fight one trash enemy) with all creation metadata
@@ -352,6 +392,28 @@ one to be lobbied against.
     (`interior` Dunmer, `foreign-born` Saxhleel, `blackrose` Khajiit), **assert a dedicated
     Warden-Scribe exchange exists** and **assert ≥ 1 later NPC references it.**
 
+### CONSUMPTION (`RI-MTH07` / `ARBITRATION` §3) — *(ADDED wave 1, `BAR-CRITIQUE-W1-07-R1` §R4)*
+
+`ARBITRATION` §3's CONSUMPTION check reached the critics and reached **none** of the fourteen items
+judging creation, the opening or the journeys. Which models must be enumerated, and what a zero
+costs, are properties of the item and not of a critic's diligence. For this item:
+
+1. **Enumerate exhaustively** — `creation.json`, `classes.json`, `creation-questions.json` and its
+   48 weighted answers, the upbringing table, the custom-route option sets, `creation-names.json`,
+   the writ record, and the three caste topics. A sample is not an enumeration.
+2. **Perturb and observe** per `RI-MTH07` §B: two well-separated values, everything else fixed, an
+   **entity-side or frame-side** observable, plus the null control. For creation the admissible
+   observables are what a save file or a frame can prove — an attribute a fight reads, a price a
+   merchant quotes, a topic an NPC offers, **a string a player can see**. This item's §The-bar
+   clause 2 already says it: *"an input with no downstream read is a decoration and a lie."*
+3. **Apply the consequence.** Any `coupling == 0` scores **that axis 0**, fail-closed, and appears
+   in `status_reasons`. There is no `partial`.
+4. **The fourth shape of the failure lives here.** `RI-MTH07` §A names orphan model, orphan data
+   and orphan predicate. This item produced **orphan text** — ten authored dilemmas, computed
+   correctly, carried in `getCensusState().question.text`, exposed to the harness, and drawn
+   **zero** times. From the player's chair that is identical to their never having been written.
+   `RI-JRN09` `ES-LEGIBLE/1` is its instrument.
+
 ## Scoring
 
 | Axis | 10 | 6 (pass floor) | 0 (we lose) |
@@ -359,10 +421,10 @@ one to be lobbied against.
 | Inputs | all 8, all diegetic, all with a named asker | all 8 present | ≥ 2 delivered as a menu with no speaker → also a `RI-JRN01` hard fail |
 | Consequence | every input has ≥ 1 measurable downstream read; hatch-name used by ≥ 11 NPCs | every input except sex has ≥ 1 read | any input with zero reads (a decorative field) |
 | Attribute/skill arithmetic | 112 points and 5–10 raised skills for all 150 pairs | same, ≤ 2 exceptions documented | classes grant net attribute points |
-| Class roster | 14 unique, ≥ 10 questionnaire-reachable, ≤ 3 weapon-first | 12 unique, ≥ 6 reachable | classes are Souls' ten with new names |
-| Questionnaire | 12 questions, zero stat tokens, all 19 skills ≥ 5 answers | 8 questions, zero stat tokens | questionnaire cut, or questions read "Do you prefer Strength or Agility?" |
+| Class roster | 14 unique, ≥ 10 questionnaire-reachable **in play (method 11)**, ≤ 3 weapon-first | 12 unique, ≥ 6 reachable **in play** | classes are Souls' ten with new names, **or reachable only in principle: 0 in a published-histogram sweep** |
+| Questionnaire | 12 questions, zero stat tokens, all 19 skills ≥ 5 answers, **`DTR_q = 1.00` (method 11)** | 8 questions, zero stat tokens, **`DTR_q = 1.00`** | questionnaire cut, questions read "Do you prefer Strength or Agility?", **or the questions are computed and never drawn** |
 | Custom route | present, unhidden, 0 dominated configs | present and unhidden | absent, or gated behind "advanced" |
-| Distinctness | 540 signatures, ≥ 486 viable | 540 constructible, ≥ 70% viable | < 400 signatures — the axes are not independent |
+| Distinctness | 540 signatures, ≥ 486 viable | 540 constructible, ≥ 70% viable | < 400 signatures — the axes are not independent. *`corpus_debt` while `build-viability.mjs` is absent — see method 6* |
 | Legibility | ≥ 16/20 at ≥ 3 of 4 | ≥ 14/20 | ≤ 8/20 — nothing about the character is visible in play |
 | **Class never locks** | all five prohibitions hold, and §6.5's visibility holds | all five prohibitions hold | **any content gate reading class → automatic fail of the piece** |
 | Irreversibility | audit clean, both reversible services exist and fire once | audit clean | a race-change or respec item exists → automatic fail |
@@ -374,11 +436,38 @@ audit are binary.
 Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own bands above.
 **No threshold in this item was changed.**
 
-| Ladder | 4 | 6 | 8 |
-|---|---|---|---|
-| Native | 4 / 10 | 6 / 10 | 8 / 10 |
+| Ladder | 0 | 2 | 4 | 6 | 8 |
+|---|---|---|---|---|---|
+| Native | 0 / 10 | 2 / 10 | 4 / 10 | 6 / 10 | 8 / 10 |
 
-**Aggregation (a property of this item, not of the critic):** min-over-axes.
+> **AMENDED wave 1 — `BAR-CRITIQUE-W1-07-R1` §R5. The 0 and 2 rungs are added, and the reason is
+> that their absence was load-bearing.** The row as originally written spanned 4, 6 and 8 only, on
+> an item whose aggregation is **min-over-axes** and which therefore produces a native **0**
+> routinely. It produced one three times: `W1-07` round 2 records `native_score: 0` for
+> `RI-CHR01`, `RI-CHR02` **and** `RI-CHR03`, and all three were translated to ladder **4** — a
+> number the row does not license and which `SCORING` §1.2's "the native band is a ceiling" only
+> permits by accident, because the anchor row was silent below 4 and the critic had to fall back
+> on §1's prose.
+>
+> The consequence is not cosmetic: **min-over-axes stopped being dispositive.** An axis at its 0
+> band — the whole point of a min rule — cost the item six ladder points in principle and zero in
+> practice. With the rungs filled in, a native 0 is a ladder 0 and the aggregation means what it
+> says.
+>
+> **Two further rules, neither of which lowers anything:**
+>
+> 1. **`SCORING` §1.1's hard-fail cap binds here and is now checkable.** *"Any triggered hard fail
+>    caps the whole item at 2."* Round 2 recorded **two** triggered hard fails against this item
+>    (`questionnaire-route-unreadable`, `questionnaire-names-no-class`), in the verdict's own
+>    `hard_fails[]` array, and scored the item **4**. `tools/verdict-validate.mjs` reads that array
+>    to force `status: FAIL` and **never checked the cap**, so a binding rule with its data
+>    already in hand went unenforced. It is enforced from this pass — the correct score for round 2
+>    on this item is **2**, and this amendment therefore makes the piece score *lower*, not higher.
+> 2. **An axis in `corpus_debt` (method 6) is removed from the min, not scored 0 into it.** See
+>    method 6's amendment for why, and for why nothing is relaxed by it.
+
+**Aggregation (a property of this item, not of the critic):** min-over-axes, over the axes that are
+**measurable**; axes in `corpus_debt` are excluded from the min and reported separately.
 
 ## How we lose
 
@@ -394,6 +483,20 @@ Added wave-1-prep to close BAR-CRITIQUE-02 **C1**; derived from this item's own 
   creating the character* — Q3 tells you slavery is current, Q6 tells you the roots are failing,
   Q9 tells you the Empire is illiterate in its own province. Cutting it turns creation into a
   spreadsheet and drops three world facts the first hour otherwise has to deliver another way.
+- **The questionnaire is written, is excellent, and is never drawn.** *(ADDED wave 1,
+  `BAR-CRITIQUE-W1-07-R1`.)* Worse than cutting it, because cutting it is visible. Twelve authored
+  dilemmas exist, are in the register, are computed per race and upbringing, are returned through
+  the harness — and the surface that draws the scene reads a different field, so ten nodes print
+  one identical stock line above four answers with no question attached. The route's own reachability
+  check passes (it enumerates the data), the diegesis checks pass (the room is there, the speaker
+  resolves, the world is behind the panel), and **the player is shown forty answers to questions
+  nobody asked**. This is not a prediction; it is `W1-07` round 2, and no check in this item or in
+  `RI-JRN01` owned it until method 11 and `RI-JRN09` existed.
+- **The route is reachable in principle and never in play.** A matcher requiring set equality
+  against fourteen classes in a space of 116,280 shapes is *provably* able to reach eleven of them
+  and *measurably* reaches none, because exact match is a measure-zero event under real answering.
+  Method 4's `4^10` enumeration returns a comfortable number and method 11's sweep returns zero,
+  and only one of the two is a fact about the game a player plays.
 - **Class gets a gate.** Somebody writes a Fighters-Guild-equivalent quest that requires a
   Fighter-family class, because it is one line of JSON and it feels like flavour. It is the
   exact thing §6 prohibits, it silently deletes ~4/6 of the class axis for that content, and it

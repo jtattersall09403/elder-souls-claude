@@ -462,9 +462,20 @@ const SUB = ['FIRM', 'SILT', 'SUCK'];
 const substrate = new Uint8Array(COLS * ROWS);
 for (let z = 0; z < ROWS; z++) for (let x = 0; x < COLS; x++) {
   const i = z * COLS + x;
+  // THE LIST IS ORDERED BY PREVALENCE, and reading it as a uniform pick was a defect with a
+  // measured consequence. RI-WLD10 §8 gives each region an ORDERED substrate list — the Eastern
+  // Rootlands are ['SILT','SUCK'] and the Deep Marshes are ['SUCK','SILT'], and the order is the
+  // difference between a delta with mud in it and a delta made of mud. Picked uniformly, half of
+  // the Eastern Rootlands (the region the START TOWN stands in) was sucking mud, and RI-WLD10 §4's
+  // mire — six footfalls, 5.4 m — turned it into a fence: every one of the thirteen S9 walked
+  // reachability legs died inside it. 0.62 / 0.28 / 0.10 keeps the Deep Marshes an animal and
+  // makes the Rootlands a silt delta with mud in the hollows, which is what the table says.
   const list = REG[region[i]].water.substrates;
   const n = noise2(x * CELL / 180, z * CELL / 180, 5501);
-  substrate[i] = SUB.indexOf(list[Math.min(list.length - 1, Math.floor(n * list.length))]);
+  const share = list.length === 1 ? [1] : list.length === 2 ? [0.62, 0.38] : [0.62, 0.28, 0.10];
+  let acc = 0, pick = list[list.length - 1];
+  for (let k = 0; k < list.length; k++) { acc += share[k]; if (n < acc) { pick = list[k]; break; } }
+  substrate[i] = SUB.indexOf(pick);
 }
 
 const woff = woffG;

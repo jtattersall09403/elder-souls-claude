@@ -146,10 +146,20 @@ function ladderAnchorForm(section) {
     if (!(j < lines.length && /^\s*\|[\s:|-]+\|\s*$/.test(lines[j]))) continue;
     const rows = []; j++;
     while (j < lines.length && /^\s*\|/.test(lines[j])) { rows.push(tableCells(lines[j]).map(bare)); j++; }
-    // Form A — the mandated row.
-    if (/^ladder$/i.test(head[0]) && head.slice(1, 4).join(',') === '4,6,8') {
-      const nat = rows.find((r) => /^native/i.test(r[0]));
-      if (nat && nat.slice(1, 4).every((c) => c && c.length)) return 'A';
+    // Form A — the mandated row. The header must be `Ladder` and its rungs must COVER 4, 6 and 8;
+    // extra rungs are allowed and are encouraged on min-over-axes items.
+    //
+    // AMENDED wave 1 (BAR-CRITIQUE-W1-07-R1 §R5, SCORING.md §1.2b): the check previously required
+    // the rungs to be EXACTLY `4,6,8` in the first three cells, which silently rejected the wider
+    // `| Ladder | 0 | 2 | 4 | 6 | 8 |` row. That row is now the required form for any item whose
+    // aggregation can produce a native 0 — five items scored a native 0 in wave 1 and three of
+    // them were translated to ladder 4 because their anchor row said nothing below 4.
+    if (/^ladder$/i.test(head[0])) {
+      const rungs = head.slice(1).map((h) => Number(h)).filter((n) => Number.isFinite(n));
+      if ([4, 6, 8].every((v) => rungs.includes(v))) {
+        const nat = rows.find((r) => /^native/i.test(r[0]));
+        if (nat && nat.slice(1, head.length).every((c) => c && c.length)) return 'A';
+      }
     }
     // Form B — a ladder-titled column covering 4, 6 and 8.
     const li = head.findIndex((h) => /ladder/i.test(h));
@@ -375,6 +385,42 @@ if (constants) {
     if (d.item && !knownIds.has(d.item)) {
       problems.push({ file: 'corpus/00-doctrine/constants.json', level: 'error', message: `deliberate divergence names \`${d.item}\`, which is not a reference item id (RI-MTH05 C4)` });
     }
+  }
+}
+
+// C8 — the phantom-command sweep (RI-MTH06 method 1 / §E.1).
+// Added wave 1 by BAR-CRITIQUE-W1-07-R1. RI-MTH06 method 1 had existed since wave 0 and had
+// never been run; when it was, 74 of 137 tool paths named in `## Comparison method` sections
+// did not exist on disk, including every quality instrument pointed at the opening. A sweep run
+// once and never again is how 74 accumulated, so it lives in the gate now.
+//
+// Level is `warn` in wave 1 and becomes `error` at wave 2 (RI-MTH06 §E.1). It is deliberately
+// not blocking today: 74 pre-existing misses would fail the coherence gate for every agent in
+// the tree on the pass that first counted them, which is a way to get the check deleted rather
+// than paid down. The number being visible is the change.
+const phantomTools = new Map(); // toolPath -> Set(item file)
+{
+  const TOOL_RX = /tools\/[A-Za-z0-9_\-/.]*\.(?:mjs|cjs|js|py)/g;
+  for (const it of items) {
+    const text = readFileSync(it.path, 'utf8');
+    const i = text.indexOf('## Comparison method');
+    if (i < 0) continue;
+    let body = text.slice(i);
+    const end = body.indexOf('\n## Scoring');
+    if (end > 0) body = body.slice(0, end);
+    for (const m of body.matchAll(TOOL_RX)) {
+      const p = m[0];
+      if (existsSync(join(ROOT, p))) continue;
+      if (!phantomTools.has(p)) phantomTools.set(p, new Set());
+      phantomTools.get(p).add(rel(it.path));
+    }
+  }
+  for (const [tool, where] of [...phantomTools].sort()) {
+    problems.push({
+      file: [...where].sort().join(', '),
+      level: 'warn',
+      message: `names phantom tool \`${tool}\` in its \`## Comparison method\` — the command does not exist on disk (RI-MTH06 §D/§E, C8). A dimension blocked ONLY by this is \`corpus_debt\`, not a zero against the build.`,
+    });
   }
 }
 
@@ -608,6 +654,7 @@ console.log(`  CORPUS HOLES    : ${holes.length}`);
 console.log(`  legacy aliases  : ${aliasUses.size} in use`);
 console.log(`  unresolved paths: ${unresolved.length}`);
 console.log(`  ladder anchors  : ${items.filter((i) => i.anchorForm).length}/${items.length} items carry a native→ladder row (C6)`);
+console.log(`  phantom tools   : ${phantomTools.size} named in Comparison methods but absent from disk (C8, RI-MTH06 §E) — warn in wave 1, error from wave 2`);
 {
   const w = {};
   for (const s of subsystems) w[s.wave === undefined ? '?' : s.wave] = (w[s.wave === undefined ? '?' : s.wave] || 0) + 1;

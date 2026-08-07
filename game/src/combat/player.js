@@ -293,6 +293,39 @@ export class PlayerController {
     const tier = this.tier();
     const emit = ctx.emit;
 
+    // ---- S25: THE WORLD DENIES ACTIONS, AND IT HAS TO DO IT HERE -----------------------------
+    //
+    // Round 3 implemented this in `sim/player.js`. `stepPlayer` is exported from that file and
+    // IMPORTED BY NOTHING — the live player is this class — so the whole block was dead: the
+    // water-band denial of sprint and roll, and, worse, the MIRE STRUGGLE. RI-WLD10 §4 makes
+    // MIRED escapable by pressing roll three times at 25 stamina each; with the only
+    // implementation on a dead call site, MIRED had no exit at all, and every one of the
+    // thirteen S9 walked-reachability legs aborted inside it. `AGENT-PROTOCOL` names this exact
+    // failure mode: "the verdict may name a dead call site ... confirm the code you are about to
+    // change actually runs."
+    //
+    // `engine._settleWorld` publishes the world's verdict onto the body every frame as
+    // `b.worldDeny`. Read it at the input gate, where a denial is legible, and never as a silent
+    // speed reduction — which is S25's own distinction.
+    const wd = b.worldDeny;
+    if (wd) {
+      const name = nameOfBit(bit);
+      const mired = wd.mired;
+      const denied = mired
+        || (bit === BIT.roll && wd.roll)
+        || (bit === BIT.sprint && wd.sprint)
+        || (wd.band === 'W5' && bit !== BIT.roll);
+      if (denied) {
+        const e = emit(frame, 'action_denied_by_water');
+        e.button = name; e.band = wd.band || 'W0'; e.mired = !!mired;
+        // While MIRED the roll press is not a roll, it is a STRUGGLE. `sim/traversal.js` owns the
+        // counter (one per 30 f, 25 stamina, three of them break you out); this only reports the
+        // press, and it is the ONLY thing in the running build that does.
+        if (mired && bit === BIT.roll) { b.mireStruggle = true; e.struggle = true; }
+        return;
+      }
+    }
+
     // RI-MAG02 §F3 — AIRBORNE IS DEFENCELESS, and it is defenceless here, at the input gate,
     // rather than in a comment. The wave-1 verdict measured `roll` -> BACKSTEP, `block` ->
     // BACKSTEP and `parry` -> PARRY_ACTIVE while levitating, plus `iframe: true`. The list is

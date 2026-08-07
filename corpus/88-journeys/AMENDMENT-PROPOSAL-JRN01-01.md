@@ -3,10 +3,40 @@ id: AMENDMENT-PROPOSAL-JRN01-01
 title: Split RI-JRN01's fail-closed clause — the tool owns the timing checks, not the whole item
 kind: text
 side: neutral
-status: PROPOSED — not applied. Requires the RI-JRN01 owner or the orchestrator to adopt.
+status: RULED — GRANTED IN PART, wave 1, by BAR-CRITIQUE-W1-07-R1 §R1. Applied to RI-JRN01 §0.1.
 proposed_by: crit-w1-07-r2-3e7c (W1-07 round-2 critic)
+ruled_by: bar-critic, journeys/creation pass 1 (BAR-CRITIQUE-W1-07-R1)
 wave: 1
 ---
+
+# RULING — **GRANTED IN PART**, and applied in `RI-JRN01` §0.1 so builders read amended text
+
+**The diagnosis is upheld in full and the remedy is not adopted as proposed.** Clause by clause,
+so a reader of this file reads the disposition rather than a cross-reference:
+
+| Proposed | Ruling | Reason |
+|---|---|---|
+| The item cannot distinguish twenty grey frames from a rendered scene | **UPHELD.** It is the finding of the pass | Round 1 and round 2 both scored 0 for the absence of a tool neither builder was assigned to write |
+| Release **M5, M6, M7, M10, M11** | **GRANTED**, with M5 and M8 stiffened | All are screenshot/entity-side and the round-2 critic measured them from scratch |
+| Release **M4** | **GRANTED IN PART — clause 2 only.** Clause 1 stays blocked | M4's threshold is *"≥ 60 s of available play before the first character-defining question"*, i.e. the interval between `first_control` and the first field-writing `dialogue_open` — **neither event exists**. The proposal listed M4 as released and round 2 measured only "≥1 NPC and ≥1 takeable entity", which is the *other* clause. Releasing the whole check would have converted the item's own How-we-lose #5 — *"control arrives after definition"*, Morrowind's actual trick and the cheapest, best part of its opening — from a timing bar into an entity count. **This is the sharpest thing in the ruling and the proposal missed it** |
+| Release **M8** | **GRANTED, STIFFENED.** The writ's text must reach the frame | As written M8 is satisfied by a string in `readWrit()`, which is How-we-lose #10 word for word — *"exists in the save file, is never rendered, cannot be read"*. Round 2: the writ is complete and correct in the API and the stamped node draws `rendered_text: []`. The item's own predicted failure was passing its own check |
+| Release **M9** and **M15** | **GRANTED ONLY against a named, demonstrated rendered-text accessor** | Both are greps over "every string rendered". This build draws all text into a canvas: `document.body.innerText` is `""` and the accessibility tree has no children. **A grep over an empty set returns 0 hits and reads as a clean pass.** `RI-MTH06` §B names this exact failure. Released as proposed, M9 would have been a 10-point check that a canvas-only build passes by being unreadable. A build with no enumerable rendered-text surface now scores M9/M15 `unmeasurable ⇒ 0` |
+| Release **M13**, and strike `gamepad-shim.mjs` | **GRANTED for the reachability legs; the descriptor leg stays blocked on `A-JRN2`** | The evidence is good and is accepted: `__HARNESS.gamepad(state)` → `RealInput.pushGamepadState()` → **the same `pollGamepad()`** `engine.loop.beforeTick` calls for a physical pad, so a `tools/` shim could only drift from a path that already exists. **But** `A-JRN2` requires injection at the `navigator.getGamepads()` seam and a `mapping:''` non-standard descriptor, and this path sits one layer inside that seam. Standard-mapping reachability: released. Descriptors and hot-plug: `RI-JRN04`'s, still blocked |
+| *"It does not weaken the bar"* | **UPHELD, and the proposal understated it.** Applied honestly the amendment makes round 2 fail **harder** | M13 has four legs and round 2 completed **two** (keyboard, gamepad; mouse+keyboard and touch never run) ⇒ **HF5** fires. M7's questionnaire produced **0 of 14** professions ⇒ **HF7** fires. And the pass added **HF9** for a defect two verdicts recorded as an observation and no check owned: **there is no title surface at all**, so a returning player has no route to their save, while M1 scores the build perfectly because 0 surfaces ≤ 2 |
+| Do not retroactively raise round 2's score | **UPHELD** | Correct, and the round-2 critic was right to score the item 0 as written and record the direct measurements separately |
+| Do not cancel `A-JRN1` | **UPHELD**, and made an owned debt | The blocked weight is `corpus_debt` under `RI-JRN01` §0.1(b) and `RI-MTH06` §E.2 — removed from numerator *and* denominator, filed against `RI-MTH06`, **never absorbed into the build's mean**. Two builders have been charged for a tool the corpus mandated and assigned to nobody |
+
+**What the proposal did not see, and what the ruling adds beyond it.** Releasing the checks does
+not fix the item, because **even fully released it cannot tell a rendered scene from a rendered
+scene with its authored text deleted.** Every clause of M5 is about the *background* — world
+visible, UI under 55%, no uniform frame — and round 2 scored 19 of 19 distinct frames at full marks
+in the same verdict that found **0 of 10 dilemma questions reaching the player**. The foreground has
+no instrument, so `RI-JRN09` was filed for it (`ES-LEGIBLE/1`, `ES-ANSWERED/1`, `ES-NAMED/1`), and
+`RI-JRN01` §0.2 now requires a verdict on this journey to cite it.
+
+---
+
+## The proposal as filed follows, unaltered.
 
 ## What is being proposed
 

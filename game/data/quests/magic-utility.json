@@ -3420,7 +3420,452 @@
           "irreversible": true
         }
       ]
+    },
+    {
+      "id": "Q-MAG-25",
+      "title": "The Weight in the Well",
+      "category": "side",
+      "discovery": "given",
+      "giver": {
+        "npc_id": "widow-ineel",
+        "location": "gideon-lowmarket",
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the weight in the well"
+      },
+      "task_kind": "recovery",
+      "stakes": 4,
+      "directions": "Ineel keeps the second house on the shelf road above Gideon, the one with the drowned garden. The well is behind it, under the fig, and the rope has been cut for two seasons.",
+      "journal": [
+        {
+          "index": 10,
+          "text": "Ineel's husband went into the well after a bucket and did not come out of it. She wants what he was carrying, and she does not want the well opened.",
+          "state": "active"
+        },
+        {
+          "index": 30,
+          "text": "The shaft is nine metres of black water over a stone lip. There is more than one way at this; the trick is noticing the second one before you have used the first.",
+          "state": "active"
+        },
+        {
+          "index": 70,
+          "text": "The parish had the well filled while I was elsewhere. Ineel does not raise it now, and I did not ask twice.",
+          "state": "failure"
+        },
+        {
+          "index": 90,
+          "text": "I went down breathing the water like a fish and came up with the strongbox and both of his hands still on it. Ineel washed them before she opened it.",
+          "state": "success"
+        },
+        {
+          "index": 91,
+          "text": "I had the well broken open from the side and the shaft came down with it. The box is out. So is everything else that was down there, and the garden is a slick of it.",
+          "state": "success"
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "mag_the_weight_in_the_well__magic",
+          "method": "magic_utility",
+          "requires": {
+            "skills": {
+              "root-speech": 45
+            },
+            "spell_effects": [
+              "breathe_water"
+            ]
+          },
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "I went down breathing the water like a fish and came up with the strongbox and both of his hands still on it. Ineel washed them before she opened it.",
+          "morally_better": true
+        },
+        {
+          "id": "mag_the_weight_in_the_well__combat",
+          "method": "combat",
+          "violence_required": true,
+          "journal_index": 91,
+          "outcome": "I had the well broken open from the side and the shaft came down with it. The box is out. So is everything else that was down there, and the garden is a slick of it.",
+          "morally_better": null
+        }
+      ],
+      "can_fail": true,
+      "failure_states": [
+        {
+          "id": "mag_the_weight_in_the_well__too_late",
+          "cause": "The situation resolves itself, badly, without you.",
+          "journal_index": 70,
+          "recoverable": false,
+          "consequence": "The giver stops raising the topic. Nobody explains why.",
+          "silent": true
+        }
+      ],
+      "deceit": null,
+      "kill_required_npcs": [],
+      "rewards": [
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 210
+        }
+      ],
+      "consequences": {
+        "npc_disposition": {
+          "widow-ineel": 10
+        },
+        "faction_reputation": {
+          "the_rootkeepers": 4
+        }
+      },
+      "notes": "RI-MAG04 shape S2. Magic is the ONLY non-violent route here: the alternative is breaking the shaft, which is violence done to the place. Authoring slug: mag_the_weight_in_the_well.",
+      "branches": [
+        {
+          "id": "Q-MAG-25__fork",
+          "at_journal_index": 30,
+          "condition": "The box is in reach and the water is not: go down through it, or take the shaft apart",
+          "leads_to": [
+            "mag_the_weight_in_the_well__magic",
+            "mag_the_weight_in_the_well__combat"
+          ],
+          "irreversible": true
+        }
+      ]
+    },
+    {
+      "id": "Q-MAG-26",
+      "title": "What the Kiln Kept",
+      "category": "side",
+      "discovery": "given",
+      "giver": {
+        "npc_id": "potter-mek",
+        "location": "gideon-lowmarket",
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "what the kiln kept"
+      },
+      "task_kind": "recovery",
+      "stakes": 5,
+      "directions": "Mek's yard is the long one on the south side of the flats, past the drying racks. The old kiln is the squat one at the back that nobody has drawn from in eleven years, and its flue still runs hot.",
+      "journal": [
+        {
+          "index": 10,
+          "text": "Mek walled a firing into the old kiln when his brother died and now wants it out. The flue has never gone cold and the yard men will not go near it.",
+          "state": "active"
+        },
+        {
+          "index": 30,
+          "text": "The heat inside the flue is the whole problem. There is more than one way at this; the trick is noticing the second one before you have used the first.",
+          "state": "active"
+        },
+        {
+          "index": 70,
+          "text": "Mek had the kiln pulled down by a crew from the coast. Whatever was in it came out in pieces and he has not spoken of it since.",
+          "state": "failure"
+        },
+        {
+          "index": 90,
+          "text": "I walked into the flue with my skin cold and lifted the firing off the shelf whole. Mek would not look at it for a long moment, and then he did.",
+          "state": "success"
+        },
+        {
+          "index": 91,
+          "text": "The kiln came apart under the hammer and the firing with it. Mek paid, and swept, and did not say anything at all.",
+          "state": "success"
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "mag_what_the_kiln_kept__magic",
+          "method": "magic_utility",
+          "requires": {
+            "skills": {
+              "root-speech": 45
+            },
+            "spell_effects": [
+              "resist_element"
+            ]
+          },
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "I walked into the flue with my skin cold and lifted the firing off the shelf whole. Mek would not look at it for a long moment, and then he did.",
+          "morally_better": true
+        },
+        {
+          "id": "mag_what_the_kiln_kept__combat",
+          "method": "combat",
+          "violence_required": true,
+          "journal_index": 91,
+          "outcome": "The kiln came apart under the hammer and the firing with it. Mek paid, and swept, and did not say anything at all.",
+          "morally_better": null
+        }
+      ],
+      "can_fail": true,
+      "failure_states": [
+        {
+          "id": "mag_what_the_kiln_kept__too_late",
+          "cause": "The situation resolves itself, badly, without you.",
+          "journal_index": 70,
+          "recoverable": false,
+          "consequence": "The giver stops raising the topic. Nobody explains why.",
+          "silent": true
+        }
+      ],
+      "deceit": null,
+      "kill_required_npcs": [],
+      "rewards": [
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 240
+        }
+      ],
+      "consequences": {
+        "npc_disposition": {
+          "potter-mek": 9
+        },
+        "faction_reputation": {
+          "the_dockhands": 3
+        }
+      },
+      "notes": "RI-MAG04 shape S3. Magic is the ONLY non-violent route: the alternative is demolition. Authoring slug: mag_what_the_kiln_kept.",
+      "branches": [
+        {
+          "id": "Q-MAG-26__fork",
+          "at_journal_index": 30,
+          "condition": "The firing is behind live heat: go through it, or take the kiln down",
+          "leads_to": [
+            "mag_what_the_kiln_kept__magic",
+            "mag_what_the_kiln_kept__combat"
+          ],
+          "irreversible": true
+        }
+      ]
+    },
+    {
+      "id": "Q-MAG-27",
+      "title": "The High Ledger",
+      "category": "side",
+      "discovery": "given",
+      "giver": {
+        "npc_id": "scribe-hulen",
+        "location": "gideon-lowmarket",
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the high ledger"
+      },
+      "task_kind": "recovery",
+      "stakes": 5,
+      "directions": "Hulen writes out of the upper room at the assize hall, on the landward side. The ledger loft is the one above it with no stair, reached in better years by a hoist that the assize took away.",
+      "journal": [
+        {
+          "index": 10,
+          "text": "Hulen needs the season's tally out of a loft whose stair was taken out to stop exactly this. He is not asking me to be clever about it; he is asking me to reach it.",
+          "state": "active"
+        },
+        {
+          "index": 30,
+          "text": "Eleven metres of dressed wall and no purchase on any of it. There is more than one way at this; the trick is noticing the second one before you have used the first.",
+          "state": "active"
+        },
+        {
+          "index": 70,
+          "text": "The assize moved the ledgers before I got to them. Hulen has stopped writing to me about it.",
+          "state": "failure"
+        },
+        {
+          "index": 90,
+          "text": "I went up the face of the wall on nothing at all, put the tally under my arm and came down slower than I went up. Nobody in the yard looked up once.",
+          "state": "success"
+        },
+        {
+          "index": 91,
+          "text": "I took the door at the bottom off its pins and went up through the hall. The tally is on Hulen's desk and there are two men from the assize who will remember me.",
+          "state": "success"
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "mag_the_high_ledger__magic",
+          "method": "magic_utility",
+          "requires": {
+            "skills": {
+              "warding": 45
+            },
+            "spell_effects": [
+              "levitate"
+            ]
+          },
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "I went up the face of the wall on nothing at all, put the tally under my arm and came down slower than I went up. Nobody in the yard looked up once.",
+          "morally_better": true
+        },
+        {
+          "id": "mag_the_high_ledger__combat",
+          "method": "combat",
+          "violence_required": true,
+          "journal_index": 91,
+          "outcome": "I took the door at the bottom off its pins and went up through the hall. The tally is on Hulen's desk and there are two men from the assize who will remember me.",
+          "morally_better": null
+        }
+      ],
+      "can_fail": true,
+      "failure_states": [
+        {
+          "id": "mag_the_high_ledger__too_late",
+          "cause": "The situation resolves itself, badly, without you.",
+          "journal_index": 70,
+          "recoverable": false,
+          "consequence": "The giver stops raising the topic. Nobody explains why.",
+          "silent": true
+        }
+      ],
+      "deceit": null,
+      "kill_required_npcs": [],
+      "rewards": [
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 260
+        }
+      ],
+      "consequences": {
+        "npc_disposition": {
+          "scribe-hulen": 10
+        },
+        "faction_reputation": {
+          "the_imperial_assize": -6
+        }
+      },
+      "notes": "RI-MAG04 shape S1. Magic is the ONLY non-violent route: the stair was deliberately removed. Authoring slug: mag_the_high_ledger.",
+      "branches": [
+        {
+          "id": "Q-MAG-27__fork",
+          "at_journal_index": 30,
+          "condition": "The loft has no stair: go up the outside, or go through the hall",
+          "leads_to": [
+            "mag_the_high_ledger__magic",
+            "mag_the_high_ledger__combat"
+          ],
+          "irreversible": true
+        }
+      ]
+    },
+    {
+      "id": "Q-MAG-28",
+      "title": "The Netted Calf",
+      "category": "side",
+      "discovery": "given",
+      "giver": {
+        "npc_id": "warden-eshi",
+        "location": "gideon-lowmarket",
+        "honest": true
+      },
+      "opens_by": {
+        "topic": "the netted calf"
+      },
+      "task_kind": "rescue",
+      "stakes": 4,
+      "directions": "Eshi wardens the reed pasture east of the causeway, an hour's walk past the last cut. The calf is in the standing water beyond the third net line, and its mother has not left it.",
+      "journal": [
+        {
+          "index": 10,
+          "text": "A guar calf is fouled in a net line in deep water and its mother will not let anyone near it. Eshi will not kill a breeding cow for a calf.",
+          "state": "active"
+        },
+        {
+          "index": 30,
+          "text": "The cow is between me and the net and she is not going to stop being between me and the net. There is more than one way at this; the trick is noticing the second one before you have used the first.",
+          "state": "active"
+        },
+        {
+          "index": 70,
+          "text": "The tide came up over the line before I got out there. Eshi cut the net himself and has not mentioned the calf.",
+          "state": "failure"
+        },
+        {
+          "index": 90,
+          "text": "I put the cow down into her own quiet, cut the calf loose, and was well clear of the line before she came back up out of it. Eshi counted them both back into the pasture.",
+          "state": "success"
+        },
+        {
+          "index": 91,
+          "text": "I killed the cow and cut the calf out of the net. Eshi took the calf. He did not take my hand afterwards.",
+          "state": "success"
+        }
+      ],
+      "resolutions": [
+        {
+          "id": "mag_the_netted_calf__magic",
+          "method": "magic_utility",
+          "requires": {
+            "skills": {
+              "root-speech": 45
+            },
+            "spell_effects": [
+              "calm_beast"
+            ]
+          },
+          "violence_required": false,
+          "journal_index": 90,
+          "outcome": "I put the cow down into her own quiet, cut the calf loose, and was well clear of the line before she came back up out of it. Eshi counted them both back into the pasture.",
+          "morally_better": true
+        },
+        {
+          "id": "mag_the_netted_calf__combat",
+          "method": "combat",
+          "violence_required": true,
+          "journal_index": 91,
+          "outcome": "I killed the cow and cut the calf out of the net. Eshi took the calf. He did not take my hand afterwards.",
+          "morally_better": null
+        }
+      ],
+      "can_fail": true,
+      "failure_states": [
+        {
+          "id": "mag_the_netted_calf__too_late",
+          "cause": "The situation resolves itself, badly, without you.",
+          "journal_index": 70,
+          "recoverable": false,
+          "consequence": "The giver stops raising the topic. Nobody explains why.",
+          "silent": true
+        }
+      ],
+      "deceit": null,
+      "kill_required_npcs": [],
+      "rewards": [
+        {
+          "type": "gold",
+          "unique_named": false,
+          "amount": 195
+        }
+      ],
+      "consequences": {
+        "npc_disposition": {
+          "warden-eshi": 12
+        },
+        "faction_reputation": {
+          "the_rootkeepers": 6
+        }
+      },
+      "notes": "RI-MAG04 shape S4. Magic is the ONLY non-violent route: the cow cannot be talked to, bribed or sneaked past. Authoring slug: mag_the_netted_calf.",
+      "branches": [
+        {
+          "id": "Q-MAG-28__fork",
+          "at_journal_index": 30,
+          "condition": "The cow will not let go of the calf: quiet her, or put her down",
+          "leads_to": [
+            "mag_the_netted_calf__magic",
+            "mag_the_netted_calf__combat"
+          ],
+          "irreversible": true
+        }
+      ]
     }
   ],
-  "w1_15_r2_note": "W1-15 round 2. Added by the piece that owns the verb: RI-STL01 \u00a79 SNEAK-QUESTS and RI-QST05 both want sneak and steal to be ROUTES rather than flags, and until this round they could not be \u2014 the round-1 verdict recorded that a  resolution was \"a flag rather than a route, because you cannot sneak past the enemy it would route you around\". Each gate below is against a quantity the perception model now actually consumes."
+  "w1_15_r2_note": "W1-15 round 2. Added by the piece that owns the verb: RI-STL01 \u00a79 SNEAK-QUESTS and RI-QST05 both want sneak and steal to be ROUTES rather than flags, and until this round they could not be \u2014 the round-1 verdict recorded that a  resolution was \"a flag rather than a route, because you cannot sneak past the enemy it would route you around\". Each gate below is against a quantity the perception model now actually consumes.",
+  "w1_14_r3_note": "Four quests added by the W1-14 round-3 builder. Commit 54a4145 restored nine hand-authored sneak/steal routes to existing magic quests \u2014 which is right, and they are kept \u2014 but it took RI-MAG04's Q6 (quests where magic is the ONLY non-violent route) from inside its 4-10 band down to 2. These four restore the band by ADDITION rather than by deleting anybody's restored route: in each one the alternative to the spell is breaking something or killing something, which is what makes the spell the only way through that does not cost."
 }
