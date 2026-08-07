@@ -1,0 +1,17 @@
+{
+  "task_id": "critic-w1-factions",
+  "brief": "critic with fresh context on W1-FACTIONS (RI-QST01 faction escalation shape, RI-QST02, RI-CRM02)",
+  "started": "wave-1",
+  "state": "researching",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-FACTIONS-r1.md",
+    "corpus/90-verdicts/wave1/W1-FACTIONS-r1.json",
+    "reports/blog-feed.jsonl (one appended line)"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "method_deviations": [],
+  "next_step": "read TOOL-LOOP.md, ARBITRATION.md s3, RI-MTH04, then RI-QST01/QST02/CRM02",
+  "notes_for_successor": "Contention at start: pgrep -c headless_shell = 0, loadavg 1.07. Plan: authoring/reading phase first with no browser, then ONE browser for the reputation-112 arbitration (attack #1) and CONSUMPTION probes."
+}

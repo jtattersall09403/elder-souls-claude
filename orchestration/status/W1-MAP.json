@@ -2,7 +2,7 @@
   "task_id": "W1-MAP",
   "brief": "inline (owner overruled S30 via S35): build a discovery map that records where you have been, with no possible quest-marker surface",
   "started": "wave-1",
-  "state": "building",
+  "state": "verifying",
   "outputs_expected": [
     "corpus/00-doctrine/AMENDMENT-W1-MAP-01.md (RI-UIX04 JU8 amendment)",
     "game/src/sim/discovery.js (discovery model, in the fixed step)",
@@ -56,8 +56,9 @@
     "map-probe clean run 29/29 at the point S11 was added; S11 itself failed FIRST TIME and correctly - queueInputs `f` is RELATIVE to the call (pipeline.js stores scriptBase=frame), so `f: getFrame()+1` scheduled the press thousands of frames out. A check that catches its own driver is the one you want.",
     "tools/capture arrival gate REFUSED my first declaration: evidence_of must be an exact token of a closed vocabulary and 'menu-appearance' is not one. 'menu' is. The gate is real and it fired on a builder acting in good faith.",
     "Capture pass is the slow part: 43 teleports per shot each drain 25 province tiles, and one frame already came back UNSETTLED (the capture daemon refuses it rather than passing it quietly - S34). If a successor has to redo this, cut tools/harness/map-shots.mjs `legs` to ~16 and drop to 1024x576 before anything else.",
-    "Convention check: RI-STL01 carries NO pointer to its (still 'proposed') AMENDMENT-W1-15-01, so the project's convention is that a builder files the amendment and does NOT edit the item. I followed that - the RI-UIX04 edit is a NOTICE block that changes no clause and says so, added only because a critic scoring JU8's existence clause verbatim would hard-fail a build that S35 requires, costing a round."
+    "Convention check: RI-STL01 carries NO pointer to its (still 'proposed') AMENDMENT-W1-15-01, so the project's convention is that a builder files the amendment and does NOT edit the item. I followed that - the RI-UIX04 edit is a NOTICE block that changes no clause and says so, added only because a critic scoring JU8's existence clause verbatim would hard-fail a build that S35 requires, costing a round.",
+    "SUCCESSOR-2 RESUME: box is QUIET (pgrep headless_shell=0, loadavg 0.53) - the exact condition the predecessor was waiting for. All three gates clean on this quiet box BEFORE any of my changes: check-data 503/503 (503 not 500 - other agents added data since), check-quests 94, boot-check PASS including its new rendered_a_frame assertion."
   ],
-  "next_step": "shots landing, then blog line + final gate run",
+  "next_step": "map-probe confirming run (S11 fix), then capture pass for docs/shots, then blog line",
   "notes_for_successor": "Decision taken: roads are NOT drawn on the map. S35 forbids 'a route, path, trail or line of any kind' and a drawn road is the first thing a hostile critic will call a line. Wayfinding stays with signposts (already in the world).\nSTATE AT HANDOVER: everything is built and verified EXCEPT the docs/shots PNGs. map-probe.mjs was 29/29 with S11 failing once on its own driver bug (now fixed, needs ONE more confirming run). All three --break self-tests go red correctly.\nTHE ONLY OUTSTANDING RISK is the capture pass: 48 headless_shell on four cores and other agents editing game/ every few minutes, which drops the shared capture browser mid-job (BUILD CHANGED in reports/runs/.capture/capd.log). tools/harness/map-shots.mjs now retries 3x per shot at 960x540 with 16 stops. If it still fails, wait for a quiet box rather than lowering the settle threshold - S34 says an unsettled frame is an error, never a quiet pass."
 }
