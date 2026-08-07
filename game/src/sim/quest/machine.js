@@ -879,6 +879,13 @@ export class QuestEngine {
       const e = (this.book.get(row.quest).journal || []).find((x) => x.index === row.journal);
       if (!e) { out.refused.push({ ...pick(row), why: `journal ${row.journal} does not exist` }); continue; }
       if (e.state === 'success' || e.state === 'failure') { out.refused.push({ ...pick(row), why: `journal ${row.journal} is terminal` }); continue; }
+      // The journal is append-only and monotonic within a quest, and `journal.js` THROWS on a
+      // backwards write. A player who is already past this entry learned the truth late; the
+      // reveal still lands (they know it), the entry does not (they did not write it then).
+      // Pre-checked here rather than caught, because a throw is how a world action takes the
+      // engine down and `note()` is entitled to throw at a caller that should have known.
+      const lastWritten = this.journal.lastIndexOf(row.quest);
+      if (row.journal <= lastWritten) { out.refused.push({ ...pick(row), why: `journal ${row.journal} is behind ${lastWritten}; the journal is append-only` }); continue; }
       const w = this.note(row.quest, row.journal);
       if (w.ok) out.journal.push({ quest: row.quest, index: row.journal });
       else out.refused.push({ ...pick(row), why: `journal ${row.journal}: ${w.reason}` });

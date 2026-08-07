@@ -359,6 +359,21 @@ for (const def of allDefs) {
   qe.presenceMode = 'off';
   qe.revealRoutes = NO_ROUTER ? new Map() : routeIndex;
   qe.rec(def.id, true).opened = true;
+  // A row marked `before_point_of_no_return: false` is a truth that only arrives after the
+  // crossing, and `learnFrom()` holds it back until the flag is up. The leg therefore has to be
+  // stood in the world where that row is reachable — and it gets there by PLAYING the quest whose
+  // consequences raise it, through the same `_applyConsequences` path sections B and C use.
+  // Nothing is granted.
+  let crossedPonr = false;
+  if (personRows.some((r) => r.before_point_of_no_return === false)) {
+    const p = (raisedByConsequence.get('point_of_no_return_crossed') || [])[0];
+    if (p) {
+      const pDef = book.get(p.quest);
+      qe.rec(p.quest, true).opened = true;
+      qe._applyConsequences(pDef, (pDef.resolutions || []).find((r) => r.id === p.res));
+      crossedPonr = !!sim.quest.flags['point_of_no_return_crossed'];
+    }
+  }
   const targets = (def.resolutions || []).filter((r) => (r.requires_knowing || []).some((k) => personRows.some((p) => p.id === k)));
   const namesBefore = (r) => (canResolveD(r, qe.context()).why || []).filter((w) => personRows.some((p) => w.includes(p.id)));
   const before = targets.reduce((n, r) => n + namesBefore(r).length, 0);
@@ -377,7 +392,7 @@ for (const def of allDefs) {
   people.cases.push({
     quest: def.id, sources, reveals: personRows.map((r) => r.id),
     demanded_by_a_resolution: personRows.filter((r) => demanded.has(r.id)).map((r) => r.id),
-    learned, journal_entries_written: wroteJournal, refusals,
+    learned, journal_entries_written: wroteJournal, refusals, crossed_ponr: crossedPonr,
     refusals_before: before, refusals_after: after,
     sample_refusal: sample[0] || null,
     leg_ran: ran,
@@ -463,6 +478,25 @@ else {
   }
   console.log(`     demonstrable cases (a gate actually demands it)  ${e2e.demonstrable}`);
   console.log(`     all demonstrable end-to-end cases pass ......... ${e2e.ok}`);
+  console.log(`\n  D. the people channel — talk to the person the file names, does the gate stop refusing?`);
+  console.log(`     quests with a person-channel reveal whose source exists  ${people.legs_total}`);
+  console.log(`     legs RUN (the gate refused by name before the act) ..... ${people.legs_run}`);
+  for (const c of people.cases.filter((x) => x.leg_ran)) {
+    console.log(`       ${c.quest.padEnd(11)} talk to ${c.sources.join(', ').padEnd(26)} refusals ${c.refusals_before} -> ${c.refusals_after}  journal +${c.journal_entries_written.length}  ${c.passed ? 'PASS' : 'FAIL'}`);
+    if (!c.passed) console.log(`         learned ${c.learned}; refused: ${c.refusals.join(' | ') || '(nothing)'}`);
+  }
+  if (people.not_run.length) console.log(`     not run (no resolution names the reveal): ${people.not_run.length} — ${people.not_run.slice(0, 6).join(', ')}${people.not_run.length > 6 ? ' …' : ''}`);
+  console.log(`     journal entries written by note() from play .... ${people.journal_writes}`);
+  console.log(`     Engine.talkTo() calls questEngine.learnFrom() .. ${people.call_site.calls_learn_from}  (static; browser proof under reports/runs/W1-18-R2/)`);
+  console.log(`     every run leg passes ........................... ${people.ok}`);
+  if (personSourceMissing.length) {
+    console.log(`     person routes naming somebody who is NOT in game/data/npcs/** (counted UNROUTED): ${personSourceMissing.length}`);
+    for (const m of personSourceMissing.slice(0, 12)) console.log(`       ${m.quest.padEnd(11)} ${m.reveal.padEnd(26)} ${m.source}`);
+  }
+  if (NO_ROUTER) {
+    const stillPassing = peopleRun.filter((c) => c.passed);
+    console.log(`\n     [falsify no-router] revealRoutes emptied. legs still passing: ${stillPassing.length} (MUST be 0)`);
+  }
   if (!coupling.coupled && coupling.setflag_works) {
     console.log(`\n     DIAGNOSIS: the hook table WORKS and nothing in play calls it.`);
     console.log(`     QuestEngine._applyConsequences writes q.flags[wf] = 1 directly instead of`);
@@ -475,5 +509,8 @@ fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(path.join(outDir, 'reveal-route-audit.json'), JSON.stringify(report, null, 2));
 console.log(`\nwrote reports/runs/W1-19-R3/reveal-route-audit.json`);
 
-const ok = report.unrouted === 0 && coupling.coupled && e2e.ok;
+// `--falsify no-router` INVERTS the verdict for section D: the arm is a success when every leg
+// goes red, so a run that still passes there is the failure.
+const ok = report.unrouted === 0 && coupling.coupled && e2e.ok
+  && (NO_ROUTER ? peopleRun.every((c) => !c.passed) : (people.ok && people.call_site.calls_learn_from));
 process.exit(ok ? 0 : 1);

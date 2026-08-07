@@ -146,6 +146,58 @@ class MeshBuilder {
 }
 
 // ---------------------------------------------------------------------------------------
+// The waterline.
+//
+// ARBITRATION S25: "Depth is read off the player's own silhouette against anatomical
+// landmarks... which is why S18's permanent third person is load-bearing for water." RI-WLD10
+// §10 point 3 is not a suggestion: "The waterline is on the character. A meniscus band on the
+// mesh at height `d`, wet-shading below it that persists 20 s after leaving the water and dries
+// visibly. This is the player's only depth readout and it is not optional." Before this,
+// `game/src/render/` had no code anywhere that read water state and changed how the character
+// was drawn — confirmed by grep across the whole render tree.
+//
+// WHY A SHADER AND NOT A SECOND MESH. The skinned geometry above is built ONCE per actor (see
+// `poseFromRig`'s own header) and is skinned to a live rig every frame after that; there is no
+// per-frame re-cut of the mesh, and the water surface the body is standing in moves every
+// frame. A per-fragment world-space cutoff, fed a uniform, is the only place a dynamic waterline
+// can live without rebuilding the character sixty times a second.
+//
+// WHY THE VERTEX SHADER'S "transformed" IS ALREADY WORLD SPACE. `poseFromRig`'s own header
+// explains the trick this depends on: the bones are written as WORLD matrices, and the actor's
+// own `group`/mesh transforms are pinned to identity (`group.position.set(0,0,0)` etc., below).
+// So `boneMatrix * bindMatrix`, i.e. the position after `#include <skinning_vertex>`, already
+// IS the world-space vertex position — there is no separate model matrix to fold in.
+function installWaterline(mat, sharedUniforms) {
+  mat.onBeforeCompile = (shader) => {
+    shader.uniforms.uWaterY = sharedUniforms.uWaterY;
+    shader.uniforms.uWetness = sharedUniforms.uWetness;
+    shader.vertexShader = 'varying float vEsWaterY;\n' + shader.vertexShader.replace(
+      '#include <skinning_vertex>',
+      '#include <skinning_vertex>\n\tvEsWaterY = transformed.y;',
+    );
+    shader.fragmentShader = 'varying float vEsWaterY;\nuniform float uWaterY;\nuniform float uWetness;\n'
+      + shader.fragmentShader
+        .replace('#include <clipping_planes_fragment>', '#include <clipping_planes_fragment>\n'
+          // `esBand`: metres BELOW the waterline (positive = submerged). The meniscus itself is a
+          // ~5 cm soft band either side of the line, per §1's own "hard and hysteretic" boundary
+          // language for the GAMEPLAY band — the RENDERED line is deliberately a hair softer than
+          // that so it does not shimmer at 60 Hz the way a one-pixel hard edge would.
+          + '\tfloat esBand = uWaterY - vEsWaterY;\n'
+          + '\tfloat esWet = smoothstep(-0.06, 0.02, esBand) * uWetness;\n'
+          + '\tfloat esMeniscus = (1.0 - smoothstep(0.0, 0.05, abs(esBand))) * uWetness;\n')
+        .replace('#include <color_fragment>', '#include <color_fragment>\n'
+          + '\tdiffuseColor.rgb *= mix(1.0, 0.42, esWet);\n'
+          + '\tdiffuseColor.rgb += vec3(0.07, 0.10, 0.09) * esMeniscus;\n')
+        .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\n'
+          // Wet skin/cloth reads shinier, dry the same roughness it always was — RI-WLD10 §10.2
+          // forbids a full-screen blue filter, not a material response, and this is bounded to
+          // the band the fragment is actually inside.
+          + '\troughnessFactor = mix(roughnessFactor, roughnessFactor * 0.30, esWet);\n');
+  };
+  mat.needsUpdate = true;
+}
+
+// ---------------------------------------------------------------------------------------
 // The body plan.
 //
 // Every length here is read from skeleton.json's own bone offsets at build time, never
@@ -297,12 +349,18 @@ function buildSkeleton(rig, mats, tintHex, skinHex) {
   const group = new THREE.Group();
   group.add(rootBone);
 
+  // One pair of uniforms per ACTOR, shared by both its materials (skin and cloth wet and dry
+  // together — they are one body), and updated once a frame by `poseFromRig`'s caller. -9999 so
+  // an actor nobody has fed water data to this frame draws bone dry, not soaked at y=0.
+  const waterU = { uWaterY: { value: -9999 }, uWetness: { value: 0 } };
+
   const meshes = [];
   for (const key of ['cloth', 'skin']) {
     if (B[key].count === 0) continue;
     const mat = (key === 'skin' ? mats.skin : mats.cloth).clone();
     if (key === 'skin' && skinHex !== undefined) mat.color.setHex(skinHex);
     if (key === 'cloth' && tintHex !== undefined) mat.color.setHex(tintHex);
+    installWaterline(mat, waterU);
     const mesh = new THREE.SkinnedMesh(B[key].build(), mat);
     mesh.castShadow = true;
     mesh.receiveShadow = true;
@@ -318,7 +376,7 @@ function buildSkeleton(rig, mats, tintHex, skinHex) {
     meshes.push(mesh);
   }
 
-  return { group, bones, index, skeleton, meshes, rootBone };
+  return { group, bones, index, skeleton, meshes, rootBone, waterU };
 }
 
 // ---------------------------------------------------------------------------------------
@@ -585,8 +643,13 @@ export function isBuilt(group) {
  *
  * @param {THREE.Group} group  from makeRiggedActor
  * @param {object} body        a CombatBody — needs `.rig`, `.socketA/B`, `.moves._weapon`
+ * @param {{y:number, wetness:number}} [water]  RI-WLD10 §10.3's waterline: `y` is the water
+ *        surface's world-space height at this body's position (any finite number; unreachable
+ *        while `wetness` is 0), `wetness` is 0..1 — 1 while at or below the surface, fading to 0
+ *        over the drying window. Omitted (or `wetness` 0) draws the body exactly as before this
+ *        existed.
  */
-export function poseFromRig(group, body) {
+export function poseFromRig(group, body, water) {
   const A = group.userData.actor;
   if (!A || !body || !body.rig) return false;
   const rig = body.rig;
@@ -595,6 +658,10 @@ export function poseFromRig(group, body) {
     group.add(A.built.group);
   }
   const S = A.built;
+  if (S.waterU) {
+    S.waterU.uWaterY.value = water ? water.y : -9999;
+    S.waterU.uWetness.value = water ? water.wetness : 0;
+  }
 
   // ---- the body ------------------------------------------------------------------------
   // `rig.world[i]` is a 3x4 row-major [m00..m22, tx,ty,tz]; THREE.Matrix4.elements is

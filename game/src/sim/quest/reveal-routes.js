@@ -93,9 +93,13 @@ export const CHANNEL_READERS = {
  * Build the index `QuestEngine.learnFrom()` consults: `"<kind>:<source>"` -> the reveal rows that
  * source can produce. Pure over the quest definitions, so a tool can build it with no engine.
  *
- * Rows are returned in quest-then-reveal order so that a run is deterministic — two reveals from
- * the same person land in the same order every time, and the journal entries they write land in
- * the order the file declares.
+ * Rows are returned in JOURNAL ORDER, then quest, then reveal id. Journal order first is not
+ * cosmetic: the journal is append-only and monotonic within a quest (`journal.js` THROWS on a
+ * backwards write, RI-DLG05 §A.1), and one person can be the source of two reveals of the same
+ * quest — Ee-Vashum tells you both `rev_vashum_wrote_it` (entry 46) and `rev_the_daughter`
+ * (entry 54) in Q-XULA-03. Sorted by reveal id those land 54 before 46 and the second write
+ * throws inside a world action. Sorted by the entry they write, one conversation writes the
+ * journal in the order the quest file tells it.
  */
 export function buildRevealRoutes(defs) {
   const idx = new Map();
@@ -121,9 +125,14 @@ export function buildRevealRoutes(defs) {
       });
     }
   }
-  for (const rows of idx.values()) {
-    rows.sort((a, b) => (a.quest < b.quest ? -1 : a.quest > b.quest ? 1 : (a.reveal < b.reveal ? -1 : a.reveal > b.reveal ? 1 : 0)));
-  }
+  const cmp = (a, b) => {
+    const aj = a.journal == null ? Infinity : a.journal;
+    const bj = b.journal == null ? Infinity : b.journal;
+    if (aj !== bj) return aj - bj;
+    if (a.quest !== b.quest) return a.quest < b.quest ? -1 : 1;
+    return a.reveal < b.reveal ? -1 : a.reveal > b.reveal ? 1 : 0;
+  };
+  for (const rows of idx.values()) rows.sort(cmp);
   return idx;
 }
 

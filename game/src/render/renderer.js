@@ -13,6 +13,7 @@
 import * as THREE from '../../vendor/three/three.module.js';
 const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 import { buildScene, makeActor, terrainHeight } from './scene.js';
+import { buildInterior, clearInterior } from './interior.js';
 import { makeRiggedActor, poseFromRig, poseStatic } from './actor.js';
 import { Sky, WEATHER } from './sky.js';
 import { Province } from '../world/province.js';
@@ -65,6 +66,12 @@ export class Renderer {
     this.cell = 'exterior';
     this.province = null;
     this.field = null;
+    // W1-04 r2 — which named interior the generic `interior` cell currently IS. Null means the
+    // cell still holds `scene.js`'s firelit hall, which is what every one of the 113 unnamed
+    // interiors used to be.
+    this.interiorId = null;
+    this.interiorRecord = null;
+    this.interiorSummary = null;
     this.setCell('exterior');
 
     this.sky = new Sky(this.scene);
@@ -149,6 +156,11 @@ export class Renderer {
     // The province is authored, not generated, so a seed change must not rebuild it — but the
     // scene graph it was attached to has just been replaced, so it is re-parented.
     if (this.province) { old.remove(this.province.group); this.scene.add(this.province.group); this.cells.province = this.province.group; }
+    // The room the player is standing in was built into the OLD `cells.interior`, which has just
+    // been replaced by a fresh one holding `buildHall()`'s output. Without this line a seed
+    // change inside an interior silently puts the generic hall back — the exact defect this
+    // round exists to remove, reintroduced through a side door.
+    if (this.interiorRecord) { const rec = this.interiorRecord; this.interiorId = null; this.setInteriorRecord(rec); }
     this.setCell(this.cell);
     disposeGraph(old);
     return this.seed;
@@ -178,6 +190,34 @@ export class Renderer {
     for (const k of Object.keys(this.cells)) this.cells[k].visible = (k === name);
     this.cell = name;
     return name;
+  }
+
+  /**
+   * WHICH ROOM the generic `interior` cell is currently the room OF.
+   *
+   * `Engine.cellFor()` folds 113 of the 115 named interiors onto one cell, and that cell was
+   * `scene.js buildHall()` — one 249-triangle hall with one light, drawn for the alchemist's
+   * shop, the gaol, the shrine and the great-hall alike. `render/interior.js` builds the room
+   * the record describes; this is where the record arrives.
+   *
+   * Idempotent on the id, because `Engine._syncCell()` asks every frame and rebuilding a room
+   * sixty times a second would be the most expensive thing in the project. Rebuilt on a genuine
+   * change only, and the previous room's geometry and materials are disposed rather than leaked.
+   */
+  setInteriorRecord(rec) {
+    const id = rec && rec.id ? String(rec.id) : null;
+    // No record — a state file or a census staging naming a cell the settlement table has never
+    // heard of. Leave whatever is in the group standing. On a cold boot that is `scene.js`'s
+    // firelit hall, which is exactly the behaviour this replaced, so an unknown id is no worse
+    // off than it was; it is simply not improved.
+    if (!id) return this.interiorSummary || null;
+    if (id === this.interiorId) return this.interiorSummary;
+    this.interiorId = id;
+    this.interiorRecord = rec;
+    const root = this.cells.interior;
+    clearInterior(root);
+    this.interiorSummary = buildInterior(root, rec);
+    return this.interiorSummary;
   }
 
   setProp(name, visible) {

@@ -2,10 +2,10 @@
   "task_id": "critic-w1-13-r3",
   "role": "critic",
   "judges": "W1-13-r3",
-  "state": "writing",
+  "state": "done",
   "started": "2026-08-07",
   "commit": "b1c92d1 at start; HEAD moved to 3ba93e0 mid-run (other agents banking). W1-13 files themselves are committed and clean in git status.",
-  "next_step": "waiting on aim-only dark + eye-only x2; then copy the factorial into the verdict artifacts dir, patch the two sweep numbers, re-validate the JSON, done. Verdict md, json, shot and blog line are already written.",
+  "next_step": "none \u2014 verdict delivered",
   "files_touched": [
     "orchestration/status/critic-w1-13-r3.json",
     "tools/harness/critic-w1-13-r3.mjs",
@@ -39,7 +39,12 @@
     "pre-r3-render is 8/8 DAYLIGHT and 8/8 DARK. The committed renderer change (0b2d6ef: _drawnGroundY lift + the 1.9 m hum) is INERT for M-D14: with the corrected camera the knot, cap and halo alone read from all eight bearings in both conditions. RULES 6, and the delete-the-fix arm was written by the builder and left switched off.",
     "boot-check PASS (exit 0) on the tree I measured.",
     "aim-only daylight 2/8 \u2014 IDENTICAL to as-placed. The aim change buys zero bearings across the whole sweep, confirming the 2x2 at scale.",
-    "aim-only dark 3/8 \u2014 identical to as-placed dark. Across the full sweep the 0.8 m aim change buys ZERO bearings in either condition."
+    "aim-only dark 3/8 \u2014 identical to as-placed dark. Across the full sweep the 0.8 m aim change buys ZERO bearings in either condition.",
+    "FULL 2x2 COMPLETE: as-placed 2/8+3/8, aim-only 2/8+3/8 (IDENTICAL \u2014 the aim is worth zero), eye-only 8/8+8/8, player-eye 8/8+8/8. No interaction. The eye is the whole story in both conditions.",
+    "pre-r3-render 8/8+8/8: renderer_fix_earned_its_place.inert = true on M-D14 bearings. QUALIFIED: it does buy a 4-7x larger margin (worst daylight 193 px without vs 874 with), which m_d14 does not measure.",
+    "FINAL: 6/10 FAIL (round 2 was 5). RI-JRN06 native 88 -> ladder 6; RI-PRG04 6, min set by Clock cost. Biggest gap GAP-W1-13-clock-consequences-never-fire: RI-PRG04 Comparison method #8 has never been run in three rounds.",
+    "NEXT-DISPATCH \u00a7P: condition 5 (a level is spendable) MET and verified at the entity level; condition 6 (unassisted play session) NOT met and not claimed.",
+    "verdict-validate: OK. publish score chart: plots as Death & progression, round 3, score 6, fail."
   ],
   "contention_note": "36 headless_shell, loadavg 30 at 22:05. Every figure I cite is a pixel count, a soul count, a metre or a boolean and is load-independent. No timing figure is cited as evidence anywhere.",
   "provisional_score": "6/10 FAIL (round 2 was 5). RI-JRN06 native 88 -> ladder 6; RI-PRG04 min-over-axes 6, set by Clock cost, the axis nobody has measured in three rounds.",

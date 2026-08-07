@@ -206,7 +206,7 @@ export class PopulationSystem {
     for (const eid of eids) {
       const e = sim.findEntity(eid);
       if (!e) continue;
-      // DELETE-THE-FIX: the world forgets who it left dead.
+      if (e.hp <= 0) down.add(eid);
       try { engine.despawn(eid); } catch { /* already gone */ }
     }
     if (down.size) this.down.set(id, down); else this.down.delete(id);

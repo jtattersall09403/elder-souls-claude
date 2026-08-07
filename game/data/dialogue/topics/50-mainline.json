@@ -103,6 +103,7 @@
     },
     {
       "id": "the-ninth-clause-of-the-drowned-tally",
+      "note": "W1-DLG-SHADOWS. The rootkeeper (d:20) info that used to sit here is retired, not narrowed: `ixtu-meer` (game/data/npcs/mainline.json) is the ONLY actor='rootkeeper' NPC record whose own `topics[]` names this id, and `main-quest-argument.json` authored his real, knowledge-gated answer to it. The two tied on specificity (neither carried a `requires`/`cell`, only `d`) and this file's entry, loading first, silently won for every disposition >=20 and below main-quest-argument's `d:20` gate — the eleven-year-old placeholder outscoring the Act V scene's own text. See corpus/90-verdicts/wave1/W1-17-act5-r1.md.",
       "infos": [
         {
           "a": "archivist",
@@ -119,14 +120,6 @@
           "to": [
             "the-thread-is-cut",
             "the-cold-well"
-          ]
-        },
-        {
-          "a": "rootkeeper",
-          "d": 20,
-          "x": "The clause is not the Court's. The clause is older, supplicant, and the Court only wrote it down. Ask a keeper what it said before there was ink.",
-          "to": [
-            "the-eleven-live-roots"
           ]
         }
       ]
@@ -826,16 +819,8 @@
     },
     {
       "id": "the-steward-of-the-count",
+      "note": "W1-DLG-SHADOWS. The rootkeeper (d:20) info retired — see the-ninth-clause-of-the-drowned-tally's note above for why. This was the exact GAP-W1-act5-argument-entry-shadowed instance: Q-MAIN-26's own entry topic, an eleven-year-old third-person stub outscoring main-quest-argument.json's race-specific first-person greeting for every warmblood race and every saxhleel/naga/dunmer above disposition 20.",
       "infos": [
-        {
-          "a": "rootkeeper",
-          "d": 20,
-          "x": "Ixtu-Meer. He has kept the Count since before the ninth recension and he has been waiting for a visitor to come down and ask him one honest question about it.",
-          "to": [
-            "the-sill",
-            "the-opening-of-the-count"
-          ]
-        },
         {
           "a": "archivist",
           "x": "There is a name on the fourth recension that appears again on the ninth, four hundred years apart, and every archivist in the province has decided it is two men.",
@@ -847,15 +832,8 @@
     },
     {
       "id": "the-sill",
+      "note": "W1-DLG-SHADOWS. The rootkeeper (d:25) info retired — see the-ninth-clause-of-the-drowned-tally's note above.",
       "infos": [
-        {
-          "a": "rootkeeper",
-          "d": 25,
-          "x": "The lip of the Count. You cross it once. There is nothing dramatic about it and that is the part people are not ready for.",
-          "to": [
-            "the-opening-of-the-count"
-          ]
-        },
         {
           "a": "deep-elder",
           "d": 30,
@@ -868,16 +846,8 @@
     },
     {
       "id": "the-opening-of-the-count",
+      "note": "W1-DLG-SHADOWS. The rootkeeper (d:25) info retired — see the-ninth-clause-of-the-drowned-tally's note above.",
       "infos": [
-        {
-          "a": "rootkeeper",
-          "d": 25,
-          "x": "Open it, take his place, or walk out. He will tell you all three and he will not tell you which. He does not know which, supplicant. He has been down there a long time.",
-          "to": [
-            "what-the-wells-do-now",
-            "the-eleven-live-roots"
-          ]
-        },
         {
           "a": "deep-elder",
           "d": 30,
@@ -1242,48 +1212,6 @@
           "to": [
             "the-ninth-recension",
             "the-tree-at-thorn"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "the-chain-on-the-wall",
-      "infos": [
-        {
-          "a": "rootkeeper",
-          "d": 20,
-          "x": "It is not holding him in and it never was. He put it there himself so that whoever came down would ask about it before they asked about him.",
-          "to": [
-            "the-steward-of-the-count",
-            "the-sill"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "the-three-things-i-checked-myself",
-      "infos": [
-        {
-          "a": "rootkeeper",
-          "d": 20,
-          "x": "The intake at the third bay, the weight of a sealed box, and the ink. He checked all three himself before he wrote to Ashul-Tei. The Court has checked none of the three in four hundred years.",
-          "to": [
-            "the-intakes",
-            "the-empty-boxes",
-            "the-ninth-recension"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "what-does-the-marsh-owe-you",
-      "infos": [
-        {
-          "a": "rootkeeper",
-          "d": 25,
-          "x": "He will ask it and he will wait for the answer, and the answer decides what he offers you. There is no wrong one. There is only the one you meant.",
-          "to": [
-            "the-opening-of-the-count"
           ]
         }
       ]

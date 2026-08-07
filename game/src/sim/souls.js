@@ -112,6 +112,25 @@
 //     it can be seen, and not be silently absorbed here. `tools/progression/souls-ledger-oracle.mjs`
 //     asserts all three invariants over arbitrary event sequences for that reason.
 //
+// **HOW LOAD-BEARING IS THIS, MEASURED RATHER THAN ASSERTED — AND THE ANSWER IS "NOT VERY, TODAY".**
+// `tools/progression/souls-ledger-oracle.mjs` was re-run with this key REMOVED (back to round 2's
+// `if (rec === undefined)`) over all 343 exhaustive length-3 world routes, and it came back
+// **GREEN on all three invariants**. That is not a typo and it is not buried: with the boundary
+// registry clearing the ledger at both scenario boundaries, and with `world/population.js` no
+// longer resurrecting the dead at a released post, **there is currently no route in that set on
+// which a recycled eid reaches this scan attached to a live body**. The same ablation on the
+// world's register (`population.js`'s `down`) goes RED on 11 counts across 2 routes, including
+// HF-2's own `kill_some > release > materialise` — so of the three changes, that is the one
+// carrying the class today.
+//
+// This key is therefore **defence in depth and is described as such**, not as the mechanism. It is
+// kept because the two fixes that currently cover it are both somebody remembering something — a
+// list to be added to, and a register to be maintained — and this one is a property of the data
+// structure that holds whether or not anybody remembers. The next subsystem that learns to rebuild
+// a body (a dungeon reset, a quest re-staging an ambush, a region streamed out and back) pays
+// correctly without having to know this file exists. An honest claim about a redundant guard is
+// worth more than an inflated claim about a load-bearing one.
+//
 // LAZY SEEDING is unchanged and still carries the save. The first time a body-life is seen, if
 // it is already dead it is recorded as settled and never paid: a blob that restores a corpse
 // restores a corpse, not 136 free souls. No new durable field, so no change to the save

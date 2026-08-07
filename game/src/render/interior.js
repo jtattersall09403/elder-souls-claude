@@ -1,0 +1,665 @@
+// The room behind the door, built from the record that describes it.
+//
+// Owner: wave-1 piece W1-04, round 2. Binding: RI-WLD03 (settlement anatomy, R2 the service
+// rule, R5 the architecture kit), RI-WLD07 (verticality and interiors), RI-WLD13 (interior /
+// exterior continuity, N1 footprint, N4 windows, N5 storeys).
+//
+// WHY THIS FILE EXISTS, and it is the same sentence as `sim/settlement.js`'s, one layer up.
+//
+// `Engine.cellFor()` maps five interiors to hand-built rooms and returns the generic `interior`
+// cell for everything else. Over the shipped list that is **113 of 115**, and the generic cell
+// was `scene.js buildHall()` — 249 triangles, one light, one hearth, six benches. So the Crimson
+// Apothecary, a dye-town alchemist's shop in Archon, and Thorn Hall, a rotted Argonian
+// great-hall in a village four kilometres away, were the same room; the only difference between
+// two captures of them was which people were standing in it.
+//
+// Meanwhile `interior.props`, `interior.lights`, `interior.containers` and `interior.unique_item`
+// had **zero** consumers anywhere in `game/src`, and `bounds_m` was read at exactly one site — to
+// derive an NPC's hash offset. `archon-apothecary` declares 18 props, 10 lights and a unique item
+// and drew one light and none of the props. That is `RI-MTH07` §A orphan data at the scale of
+// 2,000-odd props and 115 rooms, and ARBITRATION §3 is explicit that from the player's chair it
+// is identical to a model that was never written.
+//
+// This module is the consumer. Nothing here invents a room: every dimension, every lamp, every
+// piece of furniture and every partition is read off the interior record.
+//
+//   * the SHELL is `bounds_m` — floor, four walls, ceiling, and a doorway cut in the wall
+//     `continuity.entry_side` names, so the door you came in by is on the side the file says.
+//   * the LIGHTS are `lights[]` — every declared lamp is a visible lamp; the first few are real
+//     point lights (a shadow-casting hearth), the rest are emissive fittings, because 591
+//     shadow-casting oil lamps is a slideshow and an unlit lamp mesh is still a lamp you can see.
+//   * the FURNITURE is `props[]`, through `PROPS` below. 148 distinct prop ids ship in the tree.
+//   * the KIT is `props[]` too: `tho_*`, `hel_*`, `lil_*`, `sto_*`, `arc_*`, `bla_*`, `gid_*`,
+//     `sou_*` are the eight settlements' architecture kits (RI-WLD03 R5's silhouette elements),
+//     and they are built as structure rather than as furniture.
+//   * CONTAINERS and `unique_item` get bodies, so the thirty unique items RI-QST08 counts are
+//     things in a room rather than rows in a file.
+//   * `interior_kind` and the settlement choose the PALETTE, so a gaol in Stormhold and a shrine
+//     in Helstrom are not the same browns.
+//
+// WHAT IS DERIVED RATHER THAN READ, stated plainly so nobody has to reverse-engineer it: the
+// ARRANGEMENT. Which wall a given counter stands against is a hash of the interior's id, because
+// the records declare a prop LIST and not a floor plan. Two records with byte-identical bounds
+// and byte-identical prop lists therefore lay out differently — an apothecary in Archon and one
+// in Gideon are different rooms — and that is procedural variation seeded by identity, not
+// content. The record-derived half is counted separately wherever this is measured.
+//
+// Determinism: an integer hash of the interior id and nothing else. No `Math.random`, no
+// simulation draw, no clock. The same record builds the same room every time, which is what
+// makes a pixel-hash sweep over 115 rooms a measurement rather than a mood.
+'use strict';
+
+import * as THREE from '../../vendor/three/three.module.js';
+
+/** The same string hash the Engine uses for NPC offsets, so the two agree on their arithmetic. */
+function hashStr(s) {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+
+/* ================================================================================================
+ * PALETTE
+ * ==============================================================================================*/
+
+/** What kind of room this is. Base albedos for shell and furniture. */
+const KIND_PALETTE = {
+  dwelling: { wall: 0x6d5c45, floor: 0x584734, roof: 0x3c3327, wood: 0x5a4a35, cloth: 0x6a4a2c, accent: 0x7d8a52 },
+  shop:     { wall: 0x6a5b48, floor: 0x4e4132, roof: 0x39312a, wood: 0x4d3d2a, cloth: 0x7a5230, accent: 0xa9873f },
+  tavern:   { wall: 0x6f5238, floor: 0x503c28, roof: 0x3a2c20, wood: 0x452f1e, cloth: 0x7d3626, accent: 0xc08a3a },
+  guild:    { wall: 0x5d5850, floor: 0x413c36, roof: 0x33302c, wood: 0x3f3830, cloth: 0x3f4a6b, accent: 0x9aa0a8 },
+  temple:   { wall: 0x7e7c6e, floor: 0x63604f, roof: 0x4a483d, wood: 0x5d5442, cloth: 0x4d6a4a, accent: 0xc9c08a },
+  shrine:   { wall: 0x5b6a4c, floor: 0x46503a, roof: 0x38412f, wood: 0x4a4130, cloth: 0x59713f, accent: 0x9fc06a },
+  travel:   { wall: 0x6b5a3c, floor: 0x54462e, roof: 0x3d3324, wood: 0x574529, cloth: 0x8a6a30, accent: 0xd0a44a },
+  prison:   { wall: 0x3f4044, floor: 0x36373a, roof: 0x2c2d30, wood: 0x38312a, cloth: 0x4a4640, accent: 0x8d939a },
+  hold:     { wall: 0x4a3c2c, floor: 0x3d3123, roof: 0x2f261c, wood: 0x453728, cloth: 0x5c4a30, accent: 0x8a7448 },
+  hall:     { wall: 0x5f4e3a, floor: 0x4b3d2c, roof: 0x362c21, wood: 0x453728, cloth: 0x6b3c28, accent: 0xb08040 },
+  gate:     { wall: 0x585a52, floor: 0x46473f, roof: 0x35362f, wood: 0x453d2e, cloth: 0x5a5b4a, accent: 0x9a9c86 },
+};
+const DEFAULT_PALETTE = KIND_PALETTE.dwelling;
+
+/**
+ * The eight architecture kits, from `settlement.architecture_kit`. Each town's rule pulls the
+ * whole room a fixed distance towards its own material, which is why the same shop in two towns
+ * is not the same shop. RI-WLD03 R5's `silhouette` — "the one element no other settlement uses"
+ * — is the mesh family in `KIT`, below.
+ */
+const TOWN_TINT = {
+  archon:    { tint: 0x8e3a5a, mix: 0.30 },   // dye vats; everything is stained
+  blackrose: { tint: 0x4a4038, mix: 0.34 },   // fortress stone, furred with damp
+  gideon:    { tint: 0xa9713e, mix: 0.24 },   // imperial timber frame and tile
+  helstrom:  { tint: 0x4d6b32, mix: 0.34 },   // grown, not built: living bole
+  lilmoth:   { tint: 0x38574f, mix: 0.34 },   // sunk, drowned, green water light
+  soulrest:  { tint: 0xbdb49a, mix: 0.30 },   // bone and salt bleach
+  stormhold: { tint: 0x6b6f78, mix: 0.30 },   // legion block, grid barrack
+  thorn:     { tint: 0x2e2a24, mix: 0.36 },   // black needle-wood thatch
+};
+
+function mixHex(a, b, t) {
+  const ar = (a >> 16) & 255, ag = (a >> 8) & 255, ab = a & 255;
+  const br = (b >> 16) & 255, bg = (b >> 8) & 255, bb = b & 255;
+  const r = Math.round(ar + (br - ar) * t), g = Math.round(ag + (bg - ag) * t), bl = Math.round(ab + (bb - ab) * t);
+  return (r << 16) | (g << 8) | bl;
+}
+
+/** The materials for one room. Built per room and disposed with it. */
+function paletteFor(rec) {
+  const base = KIND_PALETTE[rec.interior_kind] || DEFAULT_PALETTE;
+  const town = TOWN_TINT[rec.settlement] || { tint: 0x000000, mix: 0 };
+  const c = (k) => mixHex(base[k], town.tint, town.mix);
+  const std = (col, rough, metal) => new THREE.MeshStandardMaterial({ color: col, roughness: rough, metalness: metal || 0 });
+  return {
+    wall: std(c('wall'), 0.90),
+    floor: std(c('floor'), 0.93),
+    roof: std(c('roof'), 0.95),
+    wood: std(c('wood'), 0.90),
+    cloth: std(c('cloth'), 0.94),
+    accent: std(c('accent'), 0.55, 0.35),
+    stone: std(mixHex(0x7a7a70, town.tint, town.mix * 0.7), 0.78, 0.03),
+    metal: std(0x9aa0a6, 0.35, 0.72),
+    // Anything that is meant to be SEEN as a light rather than lit by one.
+    flame: new THREE.MeshBasicMaterial({ color: 0xffb066 }),
+    ember: new THREE.MeshBasicMaterial({ color: 0xff8a3a }),
+    glass: new THREE.MeshBasicMaterial({ color: 0xbcd6e0 }),
+  };
+}
+
+/* ================================================================================================
+ * SHAPES — the small vocabulary every prop is assembled from.
+ * ==============================================================================================*/
+
+const box = (w, h, d, m) => new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
+const cyl = (rt, rb, h, seg, m) => new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg), m);
+const ico = (r, d, m) => new THREE.Mesh(new THREE.IcosahedronGeometry(r, d || 0), m);
+
+function part(g, mesh, x, y, z, ry) {
+  mesh.position.set(x, y, z);
+  if (ry) mesh.rotation.y = ry;
+  mesh.castShadow = true; mesh.receiveShadow = true;
+  g.add(mesh);
+  return mesh;
+}
+
+/* ================================================================================================
+ * THE PROP TABLE — 148 declared ids, and what each of them looks like.
+ *
+ * `place` says where in the room the thing belongs, which is the difference between a room and a
+ * heap: a counter goes against a wall, a hearth goes in the middle, a hanging lamp goes on the
+ * ceiling, a basket goes on the floor wherever there is space.
+ * ==============================================================================================*/
+
+/** Shorthand builders, so the table stays readable at 148 rows. */
+const B = {
+  counter: (P) => { const g = new THREE.Group(); part(g, box(2.6, 0.12, 0.7, P.wood), 0, 1.0, 0); for (const sx of [-1.1, 1.1]) part(g, box(0.14, 1.0, 0.6, P.wood), sx, 0.5, 0); part(g, box(2.5, 0.5, 0.1, P.wood), 0, 0.55, -0.28); return g; },
+  shelves: (P, n = 4, w = 2.0) => { const g = new THREE.Group(); for (let i = 0; i < n; i++) part(g, box(w, 0.07, 0.34, P.wood), 0, 0.5 + i * 0.55, 0); for (const sx of [-w / 2 + 0.06, w / 2 - 0.06]) part(g, box(0.1, 0.5 + n * 0.55, 0.34, P.wood), sx, (0.5 + n * 0.55) / 2, 0); return g; },
+  table: (P, w = 1.6, d = 1.0, h = 0.78) => { const g = new THREE.Group(); part(g, box(w, 0.1, d, P.wood), 0, h, 0); for (const sx of [-1, 1]) for (const sz of [-1, 1]) part(g, box(0.1, h, 0.1, P.wood), sx * (w / 2 - 0.14), h / 2, sz * (d / 2 - 0.14)); return g; },
+  bench: (P, w = 1.8) => { const g = new THREE.Group(); part(g, box(w, 0.09, 0.42, P.wood), 0, 0.45, 0); for (const sx of [-1, 1]) part(g, box(0.1, 0.45, 0.38, P.wood), sx * (w / 2 - 0.15), 0.22, 0); return g; },
+  stool: (P, h = 0.46) => { const g = new THREE.Group(); part(g, cyl(0.19, 0.19, 0.07, 8, P.wood), 0, h, 0); for (let i = 0; i < 3; i++) { const a = i * 2.094; part(g, cyl(0.03, 0.03, h, 5, P.wood), Math.cos(a) * 0.12, h / 2, Math.sin(a) * 0.12); } return g; },
+  chest: (P, w = 0.9, h = 0.55, m) => { const g = new THREE.Group(); part(g, box(w, h, 0.5, m || P.wood), 0, h / 2, 0); part(g, box(w * 1.02, 0.07, 0.52, P.metal), 0, h, 0); part(g, box(0.1, 0.12, 0.06, P.metal), 0, h * 0.6, 0.26); return g; },
+  barrel: (P, r = 0.32, h = 0.86) => { const g = new THREE.Group(); part(g, cyl(r * 0.9, r, h, 10, P.wood), 0, h / 2, 0); part(g, cyl(r * 1.02, r * 1.02, 0.06, 10, P.metal), 0, h * 0.75, 0); part(g, cyl(r * 1.02, r * 1.02, 0.06, 10, P.metal), 0, h * 0.25, 0); return g; },
+  sack: (P) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) { const s = ico(0.24 + (i % 2) * 0.05, 0, P.cloth); s.scale.set(1, 1.35, 1); part(g, s, (i - 1) * 0.42, 0.3, (i % 2) * 0.16); } return g; },
+  basket: (P) => { const g = new THREE.Group(); part(g, cyl(0.24, 0.18, 0.34, 9, P.cloth), 0, 0.17, 0); return g; },
+  pot: (P) => { const g = new THREE.Group(); const b = ico(0.26, 1, P.stone); b.scale.set(1, 0.8, 1); part(g, b, 0, 0.22, 0); part(g, cyl(0.13, 0.16, 0.08, 9, P.stone), 0, 0.42, 0); return g; },
+  bed: (P, w = 1.0, l = 2.0) => { const g = new THREE.Group(); part(g, box(w, 0.24, l, P.wood), 0, 0.3, 0); const m = box(w * 0.92, 0.16, l * 0.92, P.cloth); part(g, m, 0, 0.5, 0); part(g, box(w * 0.6, 0.12, 0.34, P.cloth), 0, 0.6, -l / 2 + 0.3); return g; },
+  mat: (P) => { const g = new THREE.Group(); const m = box(0.9, 0.04, 1.7, P.cloth); part(g, m, 0, 0.02, 0); return g; },
+  rack: (P, h = 1.7) => { const g = new THREE.Group(); for (const sx of [-0.5, 0.5]) part(g, cyl(0.045, 0.045, h, 6, P.wood), sx, h / 2, 0); for (let i = 0; i < 3; i++) part(g, box(1.1, 0.05, 0.05, P.wood), 0, 0.5 + i * 0.55, 0); return g; },
+  post: (P, h = 2.2, r = 0.14) => { const g = new THREE.Group(); part(g, cyl(r, r * 1.15, h, 8, P.wood), 0, h / 2, 0); return g; },
+  board: (P, w = 1.2, h = 0.9) => { const g = new THREE.Group(); part(g, box(w, h, 0.06, P.wood), 0, 1.35, 0); for (let i = 0; i < 3; i++) part(g, box(w * 0.28, h * 0.24, 0.02, P.cloth), (i - 1) * w * 0.3, 1.35 + ((i % 2) - 0.5) * 0.2, 0.04); return g; },
+  hearth: (P) => { const g = new THREE.Group(); part(g, cyl(0.95, 1.1, 0.34, 12, P.stone), 0, 0.17, 0); const f = ico(0.36, 1, P.flame); part(g, f, 0, 0.52, 0); for (let i = 0; i < 5; i++) { const a = i * 1.257; part(g, cyl(0.05, 0.05, 0.5, 5, P.wood), Math.cos(a) * 0.2, 0.42, Math.sin(a) * 0.2); } return g; },
+  brazier: (P) => { const g = new THREE.Group(); part(g, cyl(0.05, 0.05, 0.85, 6, P.metal), 0, 0.42, 0); part(g, cyl(0.3, 0.16, 0.22, 9, P.metal), 0, 0.95, 0); part(g, ico(0.16, 0, P.ember), 0, 1.04, 0); return g; },
+  lampHung: (P) => { const g = new THREE.Group(); part(g, cyl(0.012, 0.012, 0.7, 4, P.metal), 0, -0.35, 0); part(g, cyl(0.13, 0.09, 0.2, 8, P.metal), 0, -0.78, 0); part(g, ico(0.09, 0, P.flame), 0, -0.8, 0); return g; },
+  lampStand: (P) => { const g = new THREE.Group(); part(g, cyl(0.11, 0.13, 0.04, 8, P.metal), 0, 0.02, 0); part(g, cyl(0.03, 0.03, 0.5, 6, P.metal), 0, 0.27, 0); part(g, ico(0.09, 0, P.flame), 0, 0.56, 0); return g; },
+  altar: (P) => { const g = new THREE.Group(); part(g, box(1.5, 0.85, 0.7, P.stone), 0, 0.42, 0); part(g, box(1.7, 0.1, 0.85, P.stone), 0, 0.9, 0); part(g, box(0.5, 0.12, 0.3, P.accent), 0, 1.01, 0); return g; },
+  root: (P, h = 2.6) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) { const a = i * 2.094; const s = cyl(0.1, 0.24, h, 6, P.wood); s.rotation.z = Math.cos(a) * 0.16; s.rotation.x = Math.sin(a) * 0.16; part(g, s, Math.cos(a) * 0.22, h / 2, Math.sin(a) * 0.22); } return g; },
+  grate: (P) => { const g = new THREE.Group(); part(g, box(1.5, 0.1, 0.1, P.metal), 0, 2.1, 0); for (let i = 0; i < 7; i++) part(g, cyl(0.035, 0.035, 2.1, 5, P.metal), -0.6 + i * 0.2, 1.05, 0); return g; },
+  bunk: (P) => { const g = new THREE.Group(); for (const y of [0.4, 1.35]) { part(g, box(0.85, 0.12, 1.9, P.wood), 0, y, 0); part(g, box(0.8, 0.1, 1.8, P.cloth), 0, y + 0.11, 0); } for (const sx of [-0.4, 0.4]) part(g, cyl(0.05, 0.05, 1.8, 5, P.wood), sx, 0.9, -0.9); return g; },
+  line: (P, w = 2.4) => { const g = new THREE.Group(); part(g, cyl(0.012, 0.012, w, 4, P.cloth), 0, 0, 0).rotation.z = Math.PI / 2; for (let i = 0; i < 4; i++) { const c = box(0.3, 0.42, 0.02, P.cloth); part(g, c, -w / 2 + 0.4 + i * (w / 5), -0.24, 0); } return g; },
+  small: (P, m) => { const g = new THREE.Group(); part(g, box(0.22, 0.14, 0.16, m || P.accent), 0, 0.07, 0); return g; },
+  tiny: (P, m) => { const g = new THREE.Group(); part(g, ico(0.1, 0, m || P.accent), 0, 0.1, 0); return g; },
+};
+
+/**
+ * The table. `[placement, builder]`. Placement is one of:
+ *   wall    — flush against a wall, facing into the room
+ *   centre  — on the room's spine
+ *   floor   — loose on the floor, anywhere clear
+ *   ceiling — hung
+ *   surface — small; goes ON a wall prop if one has been placed, otherwise against a wall
+ *   arch    — settlement architecture kit: structure, built large and against the shell
+ */
+const PROPS = {
+  // ---- trade ---------------------------------------------------------------------------------
+  counter_long: ['wall', (P) => B.counter(P)],
+  shelf_stack: ['wall', (P) => B.shelves(P, 4, 2.0)],
+  shelf_deed: ['wall', (P) => B.shelves(P, 5, 1.5)],
+  scale_brass: ['surface', (P) => { const g = new THREE.Group(); part(g, cyl(0.03, 0.03, 0.34, 5, P.accent), 0, 0.17, 0); part(g, box(0.44, 0.02, 0.03, P.accent), 0, 0.34, 0); for (const sx of [-0.2, 0.2]) part(g, cyl(0.07, 0.07, 0.02, 8, P.accent), sx, 0.28, 0); return g; }],
+  coin_tray: ['surface', (P) => { const g = new THREE.Group(); part(g, box(0.32, 0.05, 0.22, P.wood), 0, 0.03, 0); part(g, cyl(0.05, 0.05, 0.03, 8, P.accent), 0, 0.06, 0); return g; }],
+  ledger_stand: ['wall', (P) => { const g = new THREE.Group(); part(g, cyl(0.06, 0.09, 1.05, 6, P.wood), 0, 0.52, 0); const t = box(0.5, 0.04, 0.36, P.wood); t.rotation.x = -0.35; part(g, t, 0, 1.06, 0); part(g, box(0.3, 0.05, 0.24, P.cloth), 0, 1.11, 0); return g; }],
+  strongbox: ['wall', (P) => B.chest(P, 0.62, 0.46, P.metal)],
+  chest_small: ['wall', (P) => B.chest(P, 0.7, 0.44)],
+  chest_iron: ['wall', (P) => B.chest(P, 0.8, 0.5, P.metal)],
+  chest_large: ['wall', (P) => B.chest(P, 1.3, 0.7)],
+  crate_sealed: ['floor', (P) => { const g = new THREE.Group(); part(g, box(0.7, 0.6, 0.7, P.wood), 0, 0.3, 0); part(g, box(0.74, 0.05, 0.74, P.wood), 0, 0.6, 0); return g; }],
+  sack_row: ['floor', (P) => B.sack(P)],
+  floor_basket: ['floor', (P) => B.basket(P)],
+  barrel_row: ['wall', (P) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) g.add(Object.assign(B.barrel(P), { position: new THREE.Vector3((i - 1) * 0.72, 0, (i % 2) * 0.1) })); return g; }],
+  hook_rail: ['wall', (P) => { const g = new THREE.Group(); part(g, box(1.6, 0.08, 0.08, P.wood), 0, 1.75, 0); for (let i = 0; i < 5; i++) part(g, cyl(0.02, 0.02, 0.16, 4, P.metal), -0.64 + i * 0.32, 1.65, 0); return g; }],
+  key_rail: ['wall', (P) => { const g = new THREE.Group(); part(g, box(0.9, 0.07, 0.05, P.wood), 0, 1.6, 0); for (let i = 0; i < 6; i++) part(g, box(0.03, 0.12, 0.02, P.metal), -0.36 + i * 0.145, 1.5, 0.03); return g; }],
+  stool_high: ['floor', (P) => B.stool(P, 0.72)],
+  stool_low: ['floor', (P) => B.stool(P, 0.42)],
+  sample_board: ['wall', (P) => B.board(P, 1.1, 0.8)],
+  measure_jug: ['surface', (P) => { const g = new THREE.Group(); part(g, cyl(0.1, 0.13, 0.28, 9, P.stone), 0, 0.14, 0); part(g, box(0.03, 0.14, 0.03, P.stone), 0.13, 0.16, 0); return g; }],
+  sweep_broom: ['wall', (P) => { const g = new THREE.Group(); const s = cyl(0.025, 0.025, 1.5, 5, P.wood); s.rotation.z = 0.16; part(g, s, 0, 0.75, 0); part(g, box(0.26, 0.3, 0.1, P.cloth), -0.12, 0.16, 0); return g; }],
+  tally_brass: ['wall', (P) => B.board(P, 0.8, 0.6)],
+  tally_board: ['wall', (P) => B.board(P, 1.0, 0.7)],
+  tally_scratch: ['wall', (P) => B.board(P, 0.7, 0.5)],
+  notice_board: ['wall', (P) => B.board(P, 1.5, 1.05)],
+  muster_board: ['wall', (P) => B.board(P, 1.4, 1.0)],
+  fare_board: ['wall', (P) => B.board(P, 1.3, 0.95)],
+  charter_frame: ['wall', (P) => { const g = new THREE.Group(); part(g, box(0.9, 1.2, 0.05, P.accent), 0, 1.6, 0); part(g, box(0.78, 1.06, 0.02, P.cloth), 0, 1.6, 0.04); return g; }],
+  banner_wall: ['wall', (P) => { const g = new THREE.Group(); part(g, box(0.9, 2.0, 0.03, P.cloth), 0, 1.6, 0); part(g, box(1.0, 0.06, 0.06, P.wood), 0, 2.6, 0); return g; }],
+  cloth_hanging: ['wall', (P) => { const g = new THREE.Group(); part(g, box(1.2, 1.6, 0.03, P.cloth), 0, 1.5, 0); return g; }],
+  shield_wall: ['wall', (P) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) { const s = cyl(0.3, 0.3, 0.07, 8, P.metal); s.rotation.x = Math.PI / 2; part(g, s, (i - 1) * 0.75, 1.7, 0); } return g; }],
+  weapon_rack: ['wall', (P) => { const g = new THREE.Group(); part(g, B.rack(P, 1.9), 0, 0, 0); for (let i = 0; i < 4; i++) part(g, box(0.05, 1.3, 0.05, P.metal), -0.42 + i * 0.28, 0.75, 0.06); return g; }],
+  spear_rack: ['wall', (P) => { const g = new THREE.Group(); part(g, box(1.3, 0.08, 0.14, P.wood), 0, 0.9, 0); for (let i = 0; i < 5; i++) part(g, cyl(0.03, 0.03, 2.1, 5, P.wood), -0.5 + i * 0.25, 1.05, 0); return g; }],
+  irons_set: ['wall', (P) => { const g = new THREE.Group(); for (let i = 0; i < 2; i++) { const r = new THREE.Mesh(new THREE.TorusGeometry(0.1, 0.02, 4, 9), P.metal); part(g, r, (i - 0.5) * 0.3, 1.2, 0); } return g; }],
+  chain_ring: ['wall', (P) => { const g = new THREE.Group(); const r = new THREE.Mesh(new THREE.TorusGeometry(0.14, 0.03, 4, 10), P.metal); part(g, r, 0, 1.4, 0); return g; }],
+  // ---- home ----------------------------------------------------------------------------------
+  clay_hearth: ['centre', (P) => B.hearth(P)],
+  hearth_open: ['centre', (P) => B.hearth(P)],
+  cook_pot: ['centre', (P) => { const g = new THREE.Group(); part(g, cyl(0.24, 0.2, 0.26, 10, P.metal), 0, 0.6, 0); for (const sx of [-1, 1]) { const l = cyl(0.03, 0.03, 0.9, 4, P.metal); l.rotation.z = sx * 0.2; part(g, l, sx * 0.16, 0.45, 0); } return g; }],
+  stew_pot: ['centre', (P) => B.pot(P)],
+  water_butt: ['wall', (P) => B.barrel(P, 0.38, 1.0)],
+  reed_mat: ['floor', (P) => B.mat(P)],
+  floor_rush: ['floor', (P) => B.mat(P)],
+  sleeping_shelf: ['wall', (P) => B.bed(P, 0.95, 1.9)],
+  bed_rentable: ['wall', (P) => B.bed(P, 1.0, 2.0)],
+  bunk_plank: ['wall', (P) => B.bunk(P)],
+  wall_peg: ['wall', (P) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) part(g, cyl(0.025, 0.025, 0.18, 4, P.wood), (i - 1) * 0.3, 1.7, 0).rotation.x = Math.PI / 2; return g; }],
+  cloak_hook: ['wall', (P) => { const g = new THREE.Group(); part(g, box(0.5, 0.08, 0.06, P.wood), 0, 1.75, 0); part(g, box(0.34, 0.7, 0.12, P.cloth), 0, 1.4, 0.06); return g; }],
+  hanging_bundle: ['ceiling', (P) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) { part(g, cyl(0.01, 0.01, 0.3, 4, P.cloth), (i - 1) * 0.14, -0.15, 0); const b = ico(0.09, 0, P.accent); b.scale.set(1, 1.5, 1); part(g, b, (i - 1) * 0.14, -0.36, 0); } return g; }],
+  washing_line: ['ceiling', (P) => B.line(P, 2.4)],
+  child_toy: ['floor', (P) => B.tiny(P, P.cloth)],
+  bone_comb: ['surface', (P) => B.small(P, P.stone)],
+  slop_bucket: ['floor', (P) => { const g = new THREE.Group(); part(g, cyl(0.16, 0.13, 0.3, 8, P.wood), 0, 0.15, 0); return g; }],
+  lime_bucket: ['floor', (P) => { const g = new THREE.Group(); part(g, cyl(0.16, 0.13, 0.3, 8, P.stone), 0, 0.15, 0); return g; }],
+  rope_coil: ['floor', (P) => { const g = new THREE.Group(); const r = new THREE.Mesh(new THREE.TorusGeometry(0.26, 0.05, 4, 10), P.cloth); r.rotation.x = Math.PI / 2; part(g, r, 0, 0.06, 0); return g; }],
+  // ---- tavern --------------------------------------------------------------------------------
+  bar_long: ['wall', (P) => { const g = new THREE.Group(); part(g, box(3.4, 0.14, 0.8, P.wood), 0, 1.05, 0); part(g, box(3.3, 1.0, 0.6, P.wood), 0, 0.5, -0.05); return g; }],
+  bench_pair: ['centre', (P) => { const g = new THREE.Group(); for (const sz of [-0.75, 0.75]) g.add(Object.assign(B.bench(P, 1.7), { position: new THREE.Vector3(0, 0, sz) })); return g; }],
+  bench_row: ['wall', (P) => B.bench(P, 2.2)],
+  bench_wait: ['wall', (P) => B.bench(P, 1.9)],
+  bench_stone: ['wall', (P) => { const g = new THREE.Group(); part(g, box(1.8, 0.44, 0.44, P.stone), 0, 0.22, 0); return g; }],
+  table_round: ['centre', (P) => { const g = new THREE.Group(); part(g, cyl(0.62, 0.62, 0.1, 12, P.wood), 0, 0.76, 0); part(g, cyl(0.12, 0.18, 0.76, 8, P.wood), 0, 0.38, 0); return g; }],
+  long_table: ['centre', (P) => B.table(P, 3.0, 1.0, 0.78)],
+  map_table: ['centre', (P) => { const g = new THREE.Group(); g.add(B.table(P, 1.9, 1.2, 0.86)); part(g, box(1.5, 0.02, 0.9, P.cloth), 0, 0.92, 0); return g; }],
+  desk_writing: ['wall', (P) => { const g = new THREE.Group(); g.add(B.table(P, 1.5, 0.8, 0.75)); part(g, box(1.4, 0.35, 0.1, P.wood), 0, 0.94, -0.32); return g; }],
+  guard_desk: ['wall', (P) => B.table(P, 1.4, 0.8, 0.78)],
+  warden_desk: ['wall', (P) => B.table(P, 1.6, 0.9, 0.78)],
+  chair_formal: ['floor', (P) => { const g = new THREE.Group(); part(g, box(0.46, 0.08, 0.46, P.wood), 0, 0.46, 0); part(g, box(0.46, 0.9, 0.08, P.wood), 0, 0.9, -0.19); for (const sx of [-1, 1]) for (const sz of [-1, 1]) part(g, box(0.06, 0.46, 0.06, P.wood), sx * 0.19, 0.23, sz * 0.19); return g; }],
+  high_seat: ['wall', (P) => { const g = new THREE.Group(); part(g, box(1.0, 0.14, 0.9, P.wood), 0, 0.62, 0); part(g, box(1.0, 1.8, 0.14, P.wood), 0, 1.4, -0.38); part(g, box(0.8, 0.5, 0.03, P.cloth), 0, 1.5, -0.28); return g; }],
+  tankard_shelf: ['wall', (P) => { const g = new THREE.Group(); g.add(B.shelves(P, 3, 1.6)); for (let i = 0; i < 5; i++) part(g, cyl(0.06, 0.055, 0.14, 7, P.accent), -0.6 + i * 0.3, 0.62, 0); return g; }],
+  keg_tap: ['wall', (P) => { const g = new THREE.Group(); const k = B.barrel(P, 0.34, 0.72); k.rotation.z = Math.PI / 2; part(g, k, 0, 0.5, 0); part(g, box(0.6, 0.16, 0.5, P.wood), 0, 0.08, 0); part(g, cyl(0.03, 0.03, 0.14, 4, P.metal), 0.36, 0.5, 0).rotation.z = Math.PI / 2; return g; }],
+  dice_cup: ['surface', (P) => B.small(P, P.wood)],
+  drinking_horn: ['surface', (P) => { const g = new THREE.Group(); const h = cyl(0.03, 0.07, 0.3, 6, P.accent); h.rotation.z = 1.2; part(g, h, 0, 0.06, 0); return g; }],
+  // ---- writing, law, record ------------------------------------------------------------------
+  record_press: ['wall', (P) => { const g = new THREE.Group(); part(g, box(0.8, 1.5, 0.5, P.wood), 0, 0.75, 0); part(g, cyl(0.05, 0.05, 0.7, 6, P.metal), 0, 1.8, 0); part(g, box(0.5, 0.1, 0.4, P.metal), 0, 1.55, 0); return g; }],
+  seal_press: ['surface', (P) => { const g = new THREE.Group(); part(g, cyl(0.09, 0.11, 0.14, 8, P.metal), 0, 0.07, 0); part(g, cyl(0.02, 0.02, 0.16, 4, P.metal), 0, 0.2, 0); return g; }],
+  inkstand: ['surface', (P) => { const g = new THREE.Group(); part(g, box(0.2, 0.04, 0.14, P.wood), 0, 0.02, 0); part(g, cyl(0.04, 0.05, 0.08, 7, P.metal), -0.04, 0.08, 0); part(g, cyl(0.006, 0.006, 0.22, 4, P.cloth), 0.05, 0.13, 0).rotation.z = 0.4; return g; }],
+  gaol_book: ['surface', (P) => B.small(P, P.cloth)],
+  name_book: ['surface', (P) => B.small(P, P.cloth)],
+  // ---- shrine and temple ---------------------------------------------------------------------
+  altar_low: ['centre', (P) => B.altar(P)],
+  kneel_step: ['centre', (P) => { const g = new THREE.Group(); part(g, box(1.4, 0.16, 0.5, P.stone), 0, 0.08, 0); return g; }],
+  kneel_root: ['centre', (P) => { const g = new THREE.Group(); part(g, cyl(0.2, 0.3, 0.3, 7, P.wood), 0, 0.15, 0); part(g, box(1.1, 0.14, 0.44, P.wood), 0, 0.32, 0); return g; }],
+  censer_stand: ['floor', (P) => { const g = new THREE.Group(); part(g, cyl(0.04, 0.04, 1.1, 6, P.metal), 0, 0.55, 0); part(g, ico(0.14, 0, P.metal), 0, 1.18, 0); return g; }],
+  offering_bowl: ['surface', (P) => { const g = new THREE.Group(); const b = ico(0.16, 1, P.accent); b.scale.set(1, 0.5, 1); part(g, b, 0, 0.08, 0); return g; }],
+  offering_shelf: ['wall', (P) => B.shelves(P, 2, 1.3)],
+  candle_rack: ['wall', (P) => { const g = new THREE.Group(); part(g, box(0.9, 0.06, 0.3, P.metal), 0, 0.9, 0); for (let i = 0; i < 6; i++) { part(g, cyl(0.02, 0.02, 0.16, 4, P.cloth), -0.36 + i * 0.145, 1.0, (i % 2) * 0.08); part(g, ico(0.03, 0, P.flame), -0.36 + i * 0.145, 1.1, (i % 2) * 0.08); } return g; }],
+  lamp_votive: ['wall', (P) => B.lampStand(P)],
+  votive_rag: ['ceiling', (P) => B.line(P, 1.8)],
+  water_stoup: ['wall', (P) => { const g = new THREE.Group(); part(g, cyl(0.16, 0.22, 0.9, 9, P.stone), 0, 0.45, 0); const b = ico(0.22, 1, P.stone); b.scale.set(1, 0.45, 1); part(g, b, 0, 0.95, 0); return g; }],
+  reliquary_case: ['wall', (P) => { const g = new THREE.Group(); part(g, box(0.7, 1.1, 0.4, P.wood), 0, 0.55, 0); part(g, box(0.5, 0.5, 0.03, P.glass), 0, 0.85, 0.21); return g; }],
+  wall_niche: ['wall', (P) => { const g = new THREE.Group(); part(g, box(0.5, 0.8, 0.14, P.stone), 0, 1.5, 0); part(g, ico(0.1, 0, P.accent), 0, 1.4, 0.06); return g; }],
+  sermon_lectern: ['centre', (P) => { const g = new THREE.Group(); part(g, cyl(0.16, 0.24, 1.1, 8, P.wood), 0, 0.55, 0); const t = box(0.6, 0.05, 0.44, P.wood); t.rotation.x = -0.32; part(g, t, 0, 1.14, 0); return g; }],
+  bell_small: ['ceiling', (P) => { const g = new THREE.Group(); part(g, cyl(0.06, 0.16, 0.24, 8, P.metal), 0, -0.3, 0); return g; }],
+  ash_tray: ['surface', (P) => B.small(P, P.stone)],
+  stone_marker: ['floor', (P) => { const g = new THREE.Group(); const s = box(0.34, 0.9, 0.2, P.stone); s.rotation.z = 0.06; part(g, s, 0, 0.45, 0); return g; }],
+  wind_chime: ['ceiling', (P) => { const g = new THREE.Group(); for (let i = 0; i < 4; i++) part(g, cyl(0.012, 0.012, 0.3 + i * 0.06, 4, P.metal), (i - 1.5) * 0.09, -0.3, 0); return g; }],
+  sapling_pot: ['floor', (P) => { const g = new THREE.Group(); part(g, cyl(0.16, 0.12, 0.26, 8, P.stone), 0, 0.13, 0); part(g, cyl(0.02, 0.03, 0.6, 5, P.wood), 0, 0.55, 0); part(g, ico(0.16, 0, P.accent), 0, 0.86, 0); return g; }],
+  bark_strip: ['wall', (P) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) part(g, box(0.14, 0.9, 0.05, P.wood), (i - 1) * 0.22, 1.3, 0); return g; }],
+  // ---- travel post, sapwell ------------------------------------------------------------------
+  root_socket: ['centre', (P) => B.root(P, 2.4)],
+  sap_tap: ['wall', (P) => { const g = new THREE.Group(); part(g, cyl(0.24, 0.3, 1.3, 9, P.wood), 0, 0.65, 0); part(g, cyl(0.04, 0.04, 0.3, 5, P.metal), 0, 1.1, 0.2).rotation.x = Math.PI / 2; part(g, cyl(0.14, 0.11, 0.24, 8, P.metal), 0, 0.14, 0.34); return g; }],
+  root_kerb: ['wall', (P) => { const g = new THREE.Group(); part(g, box(2.2, 0.32, 0.4, P.wood), 0, 0.16, 0); return g; }],
+  baggage_rail: ['wall', (P) => { const g = new THREE.Group(); part(g, box(2.0, 0.1, 0.1, P.wood), 0, 0.9, 0); for (let i = 0; i < 3; i++) part(g, box(0.4, 0.34, 0.3, P.cloth), -0.6 + i * 0.6, 0.3, 0); return g; }],
+  lantern_signal: ['ceiling', (P) => B.lampHung(P)],
+  toll_bar: ['centre', (P) => { const g = new THREE.Group(); const b = cyl(0.07, 0.07, 3.0, 6, P.wood); b.rotation.z = Math.PI / 2; part(g, b, 0, 1.1, 0); part(g, cyl(0.1, 0.13, 1.2, 6, P.wood), -1.4, 0.6, 0); return g; }],
+  gate_winch: ['wall', (P) => { const g = new THREE.Group(); const d = cyl(0.3, 0.3, 0.5, 10, P.wood); d.rotation.z = Math.PI / 2; part(g, d, 0, 1.1, 0); part(g, cyl(0.04, 0.04, 0.8, 5, P.metal), 0.4, 1.1, 0).rotation.z = Math.PI / 2; return g; }],
+  watch_stool: ['floor', (P) => B.stool(P, 0.5)],
+  stair_narrow: ['wall', (P) => { const g = new THREE.Group(); for (let i = 0; i < 8; i++) part(g, box(0.9, 0.16, 0.3, P.wood), 0, 0.08 + i * 0.3, -i * 0.3); return g; }],
+  ladder_steep: ['wall', (P) => { const g = new THREE.Group(); for (const sx of [-0.2, 0.2]) { const r = cyl(0.04, 0.04, 2.6, 5, P.wood); r.rotation.x = 0.22; part(g, r, sx, 1.3, 0); } for (let i = 0; i < 7; i++) part(g, cyl(0.03, 0.03, 0.4, 4, P.wood), 0, 0.3 + i * 0.34, -0.07 - i * 0.075).rotation.z = Math.PI / 2; return g; }],
+  deck_hatch: ['floor', (P) => { const g = new THREE.Group(); part(g, box(1.0, 0.1, 1.0, P.wood), 0, 0.05, 0); part(g, cyl(0.05, 0.05, 0.1, 6, P.metal), 0, 0.12, 0); return g; }],
+  bilge_plank: ['floor', (P) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) part(g, box(0.3, 0.06, 2.2, P.wood), (i - 1) * 0.34, 0.04, 0); return g; }],
+  hull_rib: ['wall', (P) => { const g = new THREE.Group(); const r = cyl(0.1, 0.14, 3.0, 6, P.wood); r.rotation.z = 0.24; part(g, r, 0, 1.5, 0); return g; }],
+  egg_crate: ['floor', (P) => { const g = new THREE.Group(); part(g, box(0.8, 0.4, 0.6, P.wood), 0, 0.2, 0); for (let i = 0; i < 3; i++) { const e = ico(0.12, 1, P.cloth); e.scale.set(1, 1.3, 1); part(g, e, (i - 1) * 0.22, 0.5, 0); } return g; }],
+  cell_grate: ['wall', (P) => B.grate(P)],
+  door_iron: ['wall', (P) => { const g = new THREE.Group(); part(g, box(1.0, 2.1, 0.1, P.metal), 0, 1.05, 0); part(g, box(0.3, 0.16, 0.12, P.metal), 0, 1.5, 0.06); return g; }],
+  lamp_caged: ['wall', (P) => { const g = new THREE.Group(); part(g, cyl(0.12, 0.12, 0.26, 6, P.metal), 0, 1.8, 0); part(g, ico(0.07, 0, P.flame), 0, 1.8, 0); return g; }],
+  lamp_hanging: ['ceiling', (P) => B.lampHung(P)],
+  lamp_desk: ['surface', (P) => B.lampStand(P)],
+  oil_lamp: ['surface', (P) => B.lampStand(P)],
+  brazier_iron: ['floor', (P) => B.brazier(P)],
+};
+
+/**
+ * THE ARCHITECTURE KIT — RI-WLD03 R5. Each settlement's `architecture_kit.meshes` names eight
+ * bespoke elements and its `silhouette` names the one no other town uses. The interiors carry
+ * four of each town's eight in their prop lists, and these are the first implementation any of
+ * them has had. Built as STRUCTURE: large, against the shell, load-bearing to look at.
+ */
+const KIT = {
+  // Thorn: black needle-wood thatch over a rotted great-hall. Nothing free-standing.
+  tho_rotted_hall: ['arch', (P) => { const g = new THREE.Group(); for (let i = 0; i < 4; i++) { const r = cyl(0.18, 0.3, 4.2, 6, P.wood); r.rotation.z = 0.3 - (i % 2) * 0.6; part(g, r, (i - 1.5) * 0.9, 2.0, 0); } return g; }],
+  tho_thorn_thatch: ['arch', (P) => { const g = new THREE.Group(); for (let i = 0; i < 14; i++) { const n = cyl(0.012, 0.03, 0.7, 4, P.roof); n.rotation.z = 0.5; n.rotation.x = (i % 3) * 0.12; part(g, n, -1.3 + i * 0.2, 0.3, 0); } return g; }],
+  tho_lean_to: ['arch', (P) => { const g = new THREE.Group(); const s = box(2.4, 0.14, 2.6, P.roof); s.rotation.x = 0.42; part(g, s, 0, 1.7, 0); part(g, cyl(0.1, 0.12, 1.6, 5, P.wood), -1.1, 0.8, 1.0); part(g, cyl(0.1, 0.12, 1.6, 5, P.wood), 1.1, 0.8, 1.0); return g; }],
+  tho_stilt_house: ['arch', (P) => { const g = new THREE.Group(); for (const sx of [-0.7, 0.7]) for (const sz of [-0.7, 0.7]) part(g, cyl(0.09, 0.11, 1.5, 5, P.wood), sx, 0.75, sz); part(g, box(1.9, 0.14, 1.9, P.wood), 0, 1.55, 0); return g; }],
+  // Helstrom: grown, not built. A living bole with a shell roof.
+  hel_bole_arch: ['arch', (P) => { const g = new THREE.Group(); for (const sx of [-1, 1]) { const l = cyl(0.24, 0.4, 3.4, 7, P.wood); l.rotation.z = sx * 0.24; part(g, l, sx * 1.0, 1.7, 0); } const t = new THREE.Mesh(new THREE.TorusGeometry(1.1, 0.22, 5, 10, Math.PI), P.wood); part(g, t, 0, 3.2, 0); return g; }],
+  hel_grown_wall_a: ['arch', (P) => { const g = new THREE.Group(); for (let i = 0; i < 5; i++) { const f = cyl(0.14, 0.2, 2.8 - (i % 2) * 0.4, 6, P.wood); part(g, f, (i - 2) * 0.44, 1.3, 0); } return g; }],
+  hel_grown_wall_b: ['arch', (P) => { const g = new THREE.Group(); for (let i = 0; i < 4; i++) { const b = ico(0.4, 1, P.accent); b.scale.set(1, 1.6, 0.5); part(g, b, (i - 1.5) * 0.6, 1.1 + (i % 2) * 0.3, 0); } return g; }],
+  hel_shell_roof: ['arch', (P) => { const g = new THREE.Group(); const s = ico(1.5, 1, P.roof); s.scale.set(1, 0.34, 1); part(g, s, 0, 2.9, 0); return g; }],
+  // Lilmoth: half-sunk. Facades under the waterline, stilts and reed shacks above it.
+  lil_sunk_facade: ['arch', (P) => { const g = new THREE.Group(); const w = box(3.0, 2.4, 0.3, P.stone); w.rotation.z = 0.07; part(g, w, 0, 1.1, 0); part(g, box(0.8, 1.2, 0.34, P.roof), -0.8, 1.3, 0); return g; }],
+  lil_drowned_window: ['arch', (P) => { const g = new THREE.Group(); part(g, box(0.9, 1.2, 0.12, P.stone), 0, 1.5, 0); part(g, box(0.66, 0.96, 0.05, P.glass), 0, 1.5, 0.08); return g; }],
+  lil_stilt_platform: ['arch', (P) => { const g = new THREE.Group(); for (let i = 0; i < 4; i++) part(g, cyl(0.1, 0.13, 1.2, 5, P.wood), (i - 1.5) * 0.7, 0.6, 0); part(g, box(3.0, 0.12, 1.2, P.wood), 0, 1.25, 0); return g; }],
+  lil_reed_shack: ['arch', (P) => { const g = new THREE.Group(); for (let i = 0; i < 9; i++) part(g, cyl(0.02, 0.03, 2.0, 4, P.cloth), -0.8 + i * 0.2, 1.0, 0); const r = box(2.0, 0.1, 1.4, P.roof); r.rotation.x = 0.3; part(g, r, 0, 2.1, 0); return g; }],
+  // Stormhold: legion block on a bloom course. A grid, and it shows.
+  sto_legion_block: ['arch', (P) => { const g = new THREE.Group(); for (let r = 0; r < 4; r++) for (let c = 0; c < 3; c++) part(g, box(0.86, 0.42, 0.5, P.stone), (c - 1) * 0.92 + (r % 2) * 0.2, 0.24 + r * 0.46, 0); return g; }],
+  sto_bloom_course: ['arch', (P) => { const g = new THREE.Group(); for (let i = 0; i < 7; i++) part(g, box(0.4, 0.22, 0.34, P.accent), (i - 3) * 0.44, 1.9, 0); return g; }],
+  sto_grid_barrack: ['arch', (P) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) { part(g, box(0.16, 2.8, 0.16, P.stone), (i - 1) * 1.1, 1.4, 0); } part(g, box(2.6, 0.2, 0.24, P.stone), 0, 2.8, 0); return g; }],
+  sto_wall_lean: ['arch', (P) => { const g = new THREE.Group(); const w = box(2.6, 2.6, 0.28, P.stone); w.rotation.z = -0.08; part(g, w, 0, 1.3, 0); return g; }],
+  // Archon: dye town. Vats, drying racks and a stain line the water left on every wall.
+  arc_clay_dome: ['arch', (P) => { const g = new THREE.Group(); const d = ico(1.2, 1, P.roof); d.scale.set(1, 0.6, 1); part(g, d, 0, 2.3, 0); part(g, cyl(1.2, 1.3, 0.4, 10, P.wall), 0, 1.9, 0); return g; }],
+  arc_stain_line: ['arch', (P) => { const g = new THREE.Group(); part(g, box(3.2, 0.16, 0.06, P.accent), 0, 1.2, 0); part(g, box(3.2, 0.08, 0.05, P.cloth), 0, 1.05, 0); return g; }],
+  arc_dye_vat: ['arch', (P) => { const g = new THREE.Group(); part(g, cyl(0.7, 0.78, 1.1, 12, P.stone), 0, 0.55, 0); const s = cyl(0.66, 0.66, 0.04, 12, P.accent); part(g, s, 0, 1.06, 0); return g; }],
+  arc_drying_rack: ['arch', (P) => { const g = new THREE.Group(); for (const sx of [-1.2, 1.2]) part(g, cyl(0.07, 0.07, 2.4, 5, P.wood), sx, 1.2, 0); for (let i = 0; i < 4; i++) part(g, box(0.5, 1.3, 0.03, P.cloth), -0.9 + i * 0.6, 1.5, 0); return g; }],
+  // Blackrose: a fortress the marsh has furred over.
+  bla_fortress_wall: ['arch', (P) => { const g = new THREE.Group(); for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) part(g, box(1.0, 0.62, 0.6, P.stone), (c - 1) * 1.05 + (r % 2) * 0.3, 0.34 + r * 0.66, 0); return g; }],
+  bla_furred_parapet: ['arch', (P) => { const g = new THREE.Group(); for (let i = 0; i < 5; i++) { part(g, box(0.42, 0.5, 0.4, P.stone), (i - 2) * 0.62, 2.3, 0); const m = ico(0.2, 0, P.accent); m.scale.set(1, 0.4, 1); part(g, m, (i - 2) * 0.62, 2.56, 0); } return g; }],
+  bla_corridor_gate: ['arch', (P) => { const g = new THREE.Group(); for (const sx of [-0.9, 0.9]) part(g, box(0.36, 2.8, 0.5, P.stone), sx, 1.4, 0); part(g, box(2.2, 0.4, 0.5, P.stone), 0, 2.9, 0); for (let i = 0; i < 5; i++) part(g, cyl(0.04, 0.04, 1.0, 4, P.metal), -0.6 + i * 0.3, 2.3, 0); return g; }],
+  bla_prison_block: ['arch', (P) => { const g = new THREE.Group(); part(g, box(2.2, 2.6, 0.4, P.stone), 0, 1.3, 0); g.add(Object.assign(B.grate(P), { position: new THREE.Vector3(0, 0, 0.2) })); return g; }],
+  // Gideon: Imperial timber frame, tile roof, a market cross and an arcaded square.
+  gid_timber_frame: ['arch', (P) => { const g = new THREE.Group(); part(g, box(2.8, 2.6, 0.14, P.wall), 0, 1.3, 0); for (const sx of [-1.3, 0, 1.3]) part(g, box(0.16, 2.6, 0.2, P.wood), sx, 1.3, 0.06); part(g, box(2.8, 0.16, 0.2, P.wood), 0, 1.3, 0.06); const d = box(2.9, 0.16, 0.2, P.wood); d.rotation.z = 0.72; part(g, d, -0.65, 1.9, 0.06); return g; }],
+  gid_tile_roof: ['arch', (P) => { const g = new THREE.Group(); for (let r = 0; r < 4; r++) for (let c = 0; c < 6; c++) { const t = box(0.44, 0.06, 0.3, P.roof); t.rotation.x = 0.34; part(g, t, (c - 2.5) * 0.46, 2.5 + r * 0.16, r * 0.28); } return g; }],
+  gid_market_cross: ['arch', (P) => { const g = new THREE.Group(); part(g, cyl(0.9, 1.0, 0.3, 8, P.stone), 0, 0.15, 0); part(g, cyl(0.16, 0.2, 2.6, 8, P.stone), 0, 1.5, 0); part(g, box(0.9, 0.18, 0.18, P.stone), 0, 2.5, 0); return g; }],
+  gid_square_arcade: ['arch', (P) => { const g = new THREE.Group(); for (let i = 0; i < 3; i++) { part(g, cyl(0.16, 0.18, 2.4, 8, P.stone), (i - 1) * 1.3, 1.2, 0); const a = new THREE.Mesh(new THREE.TorusGeometry(0.5, 0.13, 4, 8, Math.PI), P.stone); part(g, a, (i - 0.5) * 1.3, 2.4, 0); } return g; }],
+  // Soulrest: bone and salt. Ribs for frames, bleached walls.
+  sou_rib_frame: ['arch', (P) => { const g = new THREE.Group(); for (const sx of [-1, 1]) { const r = new THREE.Mesh(new THREE.TorusGeometry(1.3, 0.14, 4, 9, Math.PI * 0.6), P.stone); r.rotation.z = sx * 0.5; part(g, r, sx * 0.5, 1.4, 0); } return g; }],
+  sou_salt_block: ['arch', (P) => { const g = new THREE.Group(); for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) { const b = box(0.8, 0.6, 0.6, P.stone); part(g, b, (c - 1) * 0.86, 0.34 + r * 0.64, (r % 2) * 0.08); } return g; }],
+  sou_bleached_wall: ['arch', (P) => { const g = new THREE.Group(); part(g, box(3.0, 2.6, 0.24, P.stone), 0, 1.3, 0); for (let i = 0; i < 4; i++) part(g, box(0.1, 2.4, 0.06, P.accent), (i - 1.5) * 0.7, 1.3, 0.14); return g; }],
+  sou_bone_stack: ['arch', (P) => { const g = new THREE.Group(); for (let i = 0; i < 9; i++) { const b = cyl(0.07, 0.09, 0.9, 5, P.stone); b.rotation.z = Math.PI / 2; part(g, b, 0, 0.1 + Math.floor(i / 3) * 0.22, (i % 3) * 0.22 - 0.22); } return g; }],
+};
+
+Object.assign(PROPS, KIT);
+
+/** Anything the record names that this table has no body for still gets a body. */
+function fallbackProp(P, id) {
+  const g = new THREE.Group();
+  const h = hashStr(id);
+  const w = 0.4 + ((h >>> 3) % 60) / 100, hh = 0.3 + ((h >>> 9) % 90) / 100;
+  part(g, box(w, hh, w * 0.7, P.wood), 0, hh / 2, 0);
+  part(g, box(w * 1.05, 0.05, w * 0.75, P.accent), 0, hh, 0);
+  return g;
+}
+
+/* ================================================================================================
+ * THE ROOM
+ * ==============================================================================================*/
+
+/** The four walls, as slot rings a prop can be stood against. */
+function wallSlots(bx, bz, step) {
+  const slots = [];
+  const inset = 0.55;
+  const x0 = bx[0] + inset, x1 = bx[1] - inset, z0 = bz[0] + inset, z1 = bz[1] - inset;
+  const nx = Math.max(2, Math.floor((x1 - x0) / step));
+  const nz = Math.max(2, Math.floor((z1 - z0) / step));
+  for (let i = 0; i < nx; i++) slots.push({ x: x0 + (i + 0.5) * ((x1 - x0) / nx), z: z0, yaw: 0 });          // north wall, facing +z
+  for (let i = 0; i < nz; i++) slots.push({ x: x1, z: z0 + (i + 0.5) * ((z1 - z0) / nz), yaw: -Math.PI / 2 }); // east wall
+  for (let i = 0; i < nx; i++) slots.push({ x: x1 - (i + 0.5) * ((x1 - x0) / nx), z: z1, yaw: Math.PI });      // south wall
+  for (let i = 0; i < nz; i++) slots.push({ x: x0, z: z1 - (i + 0.5) * ((z1 - z0) / nz), yaw: Math.PI / 2 });  // west wall
+  return slots;
+}
+
+/** A grid of clear floor, for things that are not against anything. */
+function floorSlots(bx, bz, step) {
+  const slots = [];
+  const x0 = bx[0] + 1.5, x1 = bx[1] - 1.5, z0 = bz[0] + 1.5, z1 = bz[1] - 1.5;
+  for (let x = x0; x <= x1; x += step) for (let z = z0; z <= z1; z += step) slots.push({ x, z, yaw: 0 });
+  return slots.length ? slots : [{ x: 0, z: 0, yaw: 0 }];
+}
+
+/**
+ * Build the room this record describes into `root`.
+ *
+ * Returns a summary of WHAT WAS READ — every number in it is a count of record fields that
+ * reached the scene graph, which is what a consumption probe needs and what an unconsumed model
+ * cannot produce.
+ */
+export function buildInterior(root, rec) {
+  const summary = {
+    id: rec && rec.id ? rec.id : null, name: (rec && rec.name) || null,
+    kind: (rec && rec.interior_kind) || null, settlement: (rec && rec.settlement) || null,
+    bounds: null, props_declared: 0, props_built: 0, props_fallback: 0,
+    kit_meshes: 0, lights_declared: 0, lights_lit: 0, lamps_built: 0,
+    containers: 0, unique_item: false, readable: false,
+    windows: 0, storeys: 1, back_room: false, meshes: 0, triangles: 0,
+  };
+  if (!rec) { summary.error = 'no record'; return summary; }
+
+  const P = paletteFor(rec);
+  const bounds = rec.bounds_m || { x: [-6, 6], y: [0, 3.2], z: [-9, 9] };
+  const bx = bounds.x, by = bounds.y, bz = bounds.z;
+  const W = bx[1] - bx[0], H = by[1] - by[0], D = bz[1] - bz[0];
+  summary.bounds = { w: +W.toFixed(2), h: +H.toFixed(2), d: +D.toFixed(2) };
+  const h = hashStr(rec.id || 'interior');
+
+  // ---- the shell ----------------------------------------------------------------------------
+  // RI-WLD13 N1: `bounds_m` IS the room, rather than a number a check divides by itself.
+  const floor = box(W, 0.3, D, P.floor);
+  floor.position.set((bx[0] + bx[1]) / 2, by[0] - 0.15, (bz[0] + bz[1]) / 2);
+  floor.receiveShadow = true; root.add(floor);
+  const ceil = box(W, 0.3, D, P.roof);
+  ceil.position.set((bx[0] + bx[1]) / 2, by[1] + 0.15, (bz[0] + bz[1]) / 2);
+  ceil.receiveShadow = true; root.add(ceil);
+
+  // The doorway goes in the wall `continuity.entry_side` names, which is the same field
+  // `interior_spawn` is derived from — so the door you came in by is the door you can see.
+  const entry = (rec.continuity && rec.continuity.entry_side) || 'south';
+  const DOOR_W = 1.4;
+  const addWall = (cx, cz, w, d, side) => {
+    if (side !== entry) { part(root, box(w, H, d, P.wall), cx, by[0] + H / 2, cz); return; }
+    // Split, and put a lintel over the gap.
+    const along = w > d;
+    const span = along ? w : d;
+    const seg = (span - DOOR_W) / 2;
+    for (const s of [-1, 1]) {
+      const off = s * (DOOR_W / 2 + seg / 2);
+      part(root, box(along ? seg : w, H, along ? d : seg, P.wall), cx + (along ? off : 0), by[0] + H / 2, cz + (along ? 0 : off));
+    }
+    part(root, box(along ? DOOR_W : w, H - 2.1, along ? d : DOOR_W, P.wall), cx, by[0] + 2.1 + (H - 2.1) / 2, cz);
+    const frame = P.wood;
+    part(root, box(along ? DOOR_W + 0.3 : d + 0.1, 0.18, along ? d + 0.1 : DOOR_W + 0.3, frame), cx, by[0] + 2.1, cz);
+  };
+  addWall((bx[0] + bx[1]) / 2, bz[0], W, 0.3, 'north');
+  addWall((bx[0] + bx[1]) / 2, bz[1], W, 0.3, 'south');
+  addWall(bx[0], (bz[0] + bz[1]) / 2, 0.3, D, 'west');
+  addWall(bx[1], (bz[0] + bz[1]) / 2, 0.3, D, 'east');
+
+  // Beams. Count follows the room's depth, so a long hall reads as a long hall.
+  const beams = Math.max(2, Math.min(9, Math.round(D / 3)));
+  for (let i = 0; i < beams; i++) {
+    part(root, box(W, 0.28, 0.28, P.wood), (bx[0] + bx[1]) / 2, by[1] - 0.32, bz[0] + (i + 0.5) * (D / beams));
+  }
+
+  // ---- windows — RI-WLD13 N4, which had no field and now has a rule --------------------------
+  // A gaol, a barge hold and an undertemple do not have them; everything else does, and how many
+  // follows the wall it is in.
+  const WINDOWLESS = new Set(['prison', 'hold']);
+  if (!WINDOWLESS.has(rec.interior_kind) && H >= 2.4) {
+    const n = Math.max(1, Math.min(4, Math.round(W / 3.4)));
+    for (const side of [-1, 1]) {
+      for (let i = 0; i < n; i++) {
+        const x = bx[0] + (i + 0.5) * (W / n);
+        const z = side < 0 ? bz[0] + 0.2 : bz[1] - 0.2;
+        if (((side < 0 ? 'north' : 'south') === entry) && Math.abs(x - (bx[0] + bx[1]) / 2) < DOOR_W) continue;
+        part(root, box(0.9, 0.8, 0.06, P.glass), x, by[0] + 1.75, z);
+        part(root, box(1.06, 0.12, 0.12, P.wood), x, by[0] + 2.2, z);
+        summary.windows++;
+      }
+    }
+  }
+
+  // ---- the props ------------------------------------------------------------------------------
+  const declared = (rec.props || []).slice();
+  summary.props_declared = declared.length;
+  const wSlots = wallSlots(bx, bz, 2.2);
+  const fSlots = floorSlots(bx, bz, 2.4);
+  let wi = h % Math.max(1, wSlots.length);
+  let fi = (h >>> 7) % Math.max(1, fSlots.length);
+  let ci = 0;
+  let lastWall = null;
+  const spine = (i) => ({ x: (bx[0] + bx[1]) / 2 + ((i % 2) ? 1.4 : -1.4), z: bz[0] + 1.8 + (i * 2.6) % Math.max(1.0, D - 3.6), yaw: 0 });
+  let centreN = 0;
+
+  for (let i = 0; i < declared.length; i++) {
+    const id = declared[i];
+    const entryDef = PROPS[id];
+    const cls = entryDef ? entryDef[0] : 'floor';
+    let obj;
+    try { obj = entryDef ? entryDef[1](P) : fallbackProp(P, id); } catch { obj = fallbackProp(P, id); }
+    if (!entryDef) summary.props_fallback++;
+    if (KIT[id]) summary.kit_meshes++;
+    obj.name = `prop:${id}`;
+    if (cls === 'wall' || cls === 'arch') {
+      const s = wSlots[wi % wSlots.length]; wi += 1 + (h % 3);
+      obj.position.set(s.x, by[0], s.z); obj.rotation.y = s.yaw;
+      lastWall = { x: s.x, z: s.z, yaw: s.yaw };
+    } else if (cls === 'centre') {
+      const s = spine(centreN++);
+      obj.position.set(s.x, by[0], s.z);
+      obj.rotation.y = ((h >>> (i % 12)) % 8) * 0.785;
+    } else if (cls === 'ceiling') {
+      const s = spine(centreN);
+      obj.position.set(s.x, by[1] - 0.35, s.z + 1.2);
+    } else if (cls === 'surface' && lastWall) {
+      // Small things go ON the last thing that had a top, which is the difference between a
+      // shop and a warehouse: the scales stand on the counter.
+      obj.position.set(lastWall.x + Math.cos(lastWall.yaw) * 0.3, by[0] + 1.06, lastWall.z + Math.sin(lastWall.yaw) * 0.3);
+      obj.rotation.y = lastWall.yaw;
+    } else {
+      const s = fSlots[fi % fSlots.length]; fi += 1 + ((h >>> 4) % 3);
+      obj.position.set(s.x, by[0], s.z);
+      obj.rotation.y = ((h >>> (i % 10)) % 12) * 0.523;
+    }
+    obj.traverse((m) => { if (m.isMesh) { m.castShadow = true; m.receiveShadow = true; } });
+    root.add(obj);
+    summary.props_built++;
+    ci++;
+  }
+
+  // ---- verticality — RI-WLD07 and RI-WLD13 N5 -------------------------------------------------
+  // A record that declares a stair HAS an upper floor. Thirteen do; before this they had a stair
+  // that led to the ceiling.
+  if (declared.includes('stair_narrow') || declared.includes('ladder_steep')) {
+    const my0 = by[0] + Math.min(2.3, H - 0.9);
+    const deck = box(W * 0.42, 0.16, D * 0.34, P.wood);
+    part(root, deck, bx[1] - W * 0.21, my0, bz[1] - D * 0.17);
+    for (let i = 0; i < 5; i++) part(root, cyl(0.07, 0.07, my0 - by[0], 5, P.wood), bx[1] - 0.4 - i * (W * 0.4 / 5), by[0] + (my0 - by[0]) / 2, bz[1] - D * 0.34);
+    part(root, box(W * 0.42, 0.5, 0.1, P.wood), bx[1] - W * 0.21, my0 + 0.33, bz[1] - D * 0.34);
+    summary.storeys = 2;
+  }
+
+  // ---- the back room — RI-WLD03 R2 -------------------------------------------------------------
+  // "A shop that is one room with a counter is half a shop." A trading floor with a service and
+  // the depth to spare gets a partition and a door through it.
+  const SERVICED = new Set(['shop', 'guild', 'tavern', 'travel']);
+  if (SERVICED.has(rec.interior_kind) && D >= 11 && rec.service) {
+    const pz = bz[0] + D * 0.28;
+    const seg = (W - 1.2) / 2;
+    for (const s of [-1, 1]) part(root, box(seg, H, 0.22, P.wall), (bx[0] + bx[1]) / 2 + s * (0.6 + seg / 2), by[0] + H / 2, pz);
+    part(root, box(1.2, H - 2.1, 0.22, P.wall), (bx[0] + bx[1]) / 2, by[0] + 2.1 + (H - 2.1) / 2, pz);
+    part(root, box(1.5, 0.16, 0.3, P.wood), (bx[0] + bx[1]) / 2, by[0] + 2.1, pz);
+    summary.back_room = true;
+  }
+
+  // ---- the lights ------------------------------------------------------------------------------
+  // `lights[]` is authored per PROPERTY ZONE, so a three-zone interior declares three hearths at
+  // the same spot. Dedupe on position; every survivor gets a fitting you can see, and the first
+  // few get real illumination. 591 shadow-casting oil lamps across the province is a slideshow.
+  const declaredLights = (rec.lights || []).slice();
+  summary.lights_declared = declaredLights.length;
+  const seen = new Set();
+  const unique = [];
+  for (const L of declaredLights) {
+    const p = L.pos || [0, 1.4, 0];
+    const key = `${Math.round(p[0] * 10)},${Math.round(p[1] * 10)},${Math.round(p[2] * 10)}`;
+    if (seen.has(key)) continue;
+    seen.add(key); unique.push(L);
+  }
+  const LIT_CAP = 5;
+  let lit = 0;
+  for (const L of unique) {
+    const p = L.pos || [0, 1.4, 0];
+    const hearth = L.kind === 'hearth';
+    const fitting = hearth ? B.hearth(P) : B.lampStand(P);
+    fitting.position.set(p[0], hearth ? by[0] : Math.max(by[0], p[1] - 0.56), p[2]);
+    fitting.name = `light:${L.id || L.kind}`;
+    fitting.traverse((m) => { if (m.isMesh && m.material !== P.flame) { m.castShadow = true; m.receiveShadow = true; } });
+    root.add(fitting);
+    summary.lamps_built++;
+    if (lit < LIT_CAP) {
+      const intensity = Number(L.intensity === undefined ? 0.7 : L.intensity);
+      const colour = hearth ? 0xffa050 : 0xffc890;
+      const pl = new THREE.PointLight(colour, intensity * (hearth ? 22 : 9), hearth ? 22 : 11, 2);
+      pl.position.set(p[0], p[1] + (hearth ? 0.5 : 0), p[2]);
+      if (lit === 0) { pl.castShadow = true; pl.shadow.mapSize.set(512, 512); pl.shadow.bias = -0.004; }
+      root.add(pl);
+      lit++;
+    }
+  }
+  // A room with no declared light is not a room in the dark by accident: one hearth, so the
+  // fail-open case is a lit room rather than a black frame.
+  if (!lit) {
+    const key = rec.light || { pos: [0, 0.7, 0], intensity: 1.0 };
+    const f = B.hearth(P); f.position.set(key.pos[0], by[0], key.pos[2]); root.add(f);
+    const pl = new THREE.PointLight(0xffa050, 20, 22, 2);
+    pl.position.set(key.pos[0], by[0] + 1.0, key.pos[2]);
+    pl.castShadow = true; pl.shadow.mapSize.set(512, 512); pl.shadow.bias = -0.004;
+    root.add(pl); lit = 1; summary.lamps_built++;
+  }
+  summary.lights_lit = lit;
+
+  // ---- containers and the unique item -----------------------------------------------------------
+  // RI-QST08: thirty unique items declared, none of them reachable through a door. They are in
+  // the room now, on something, lit, and distinguishable from the furniture.
+  const containers = (rec.containers || []).slice();
+  summary.containers = containers.length;
+  for (let i = 0; i < containers.length; i++) {
+    const s = wSlots[(wi + i * 2) % wSlots.length];
+    const c = B.chest(P, 0.72, 0.46);
+    c.name = `container:${containers[i]}`;
+    c.position.set(s.x, by[0], s.z); c.rotation.y = s.yaw;
+    c.traverse((m) => { if (m.isMesh) { m.castShadow = true; m.receiveShadow = true; } });
+    root.add(c);
+  }
+  if (rec.unique_item) {
+    const g = new THREE.Group();
+    g.name = `unique:${rec.unique_item.id || 'unique'}`;
+    part(g, cyl(0.26, 0.32, 0.86, 8, P.stone), 0, 0.43, 0);
+    part(g, box(0.5, 0.06, 0.5, P.stone), 0, 0.89, 0);
+    const it = ico(0.13, 1, P.accent);
+    part(g, it, 0, 1.02, 0);
+    part(g, ico(0.05, 0, P.glass), 0, 1.02, 0);
+    const s = spine(centreN + 1);
+    g.position.set(s.x, by[0], s.z);
+    root.add(g);
+    summary.unique_item = true;
+  }
+  if (rec.readable) {
+    const g = new THREE.Group();
+    g.name = `readable:${rec.readable.id || 'readable'}`;
+    const bk = box(0.3, 0.07, 0.22, P.cloth);
+    part(g, bk, 0, 0.04, 0);
+    const s = wSlots[(wi + 3) % wSlots.length];
+    g.position.set(s.x + Math.cos(s.yaw) * 0.25, by[0] + 1.06, s.z + Math.sin(s.yaw) * 0.25);
+    root.add(g);
+    summary.readable = true;
+  }
+
+  // ---- what got built --------------------------------------------------------------------------
+  let meshes = 0, tris = 0;
+  root.traverse((m) => {
+    if (!m.isMesh || !m.geometry) return;
+    meshes++;
+    const g = m.geometry;
+    tris += g.index ? g.index.count / 3 : (g.attributes.position ? g.attributes.position.count / 3 : 0);
+  });
+  summary.meshes = meshes;
+  summary.triangles = Math.round(tris);
+  return summary;
+}
+
+/** Free everything a previous room allocated. Called before the next one is built. */
+export function clearInterior(root) {
+  const dead = [];
+  root.traverse((o) => { if (o !== root) dead.push(o); });
+  for (const o of dead) {
+    if (o.geometry) o.geometry.dispose();
+    if (o.material) {
+      const ms = Array.isArray(o.material) ? o.material : [o.material];
+      for (const m of ms) if (m && m.dispose) m.dispose();
+    }
+  }
+  root.clear();
+}

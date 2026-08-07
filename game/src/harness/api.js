@@ -2175,6 +2175,33 @@ export function installHarness(engine, bootPromise) {
     enterInterior(id) { return engine.enterInterior(String(id)); },
     /** RI-WLD13: back out onto the doorstep you came in by. */
     exitInterior() { return engine.exitInterior(); },
+    /**
+     * WHAT IS ACTUALLY ON THE SCREEN, as opposed to where the world thinks you are.
+     *
+     * The round-1 verdict on W1-04 turned on the gap between those two, and the reason the
+     * builder's own probe could not see it is that there was no harness surface that read the
+     * renderer at all: every check went `HARNESS -> Engine -> sim/settlement.js` and back, and
+     * all thirteen would still have passed on a build where no door had ever shown anyone a
+     * room. This is that surface. `drawn_cell` is the cell the renderer has visible; `env_cell`
+     * is what `cellFor(env)` says it should be; `agrees` is the whole finding in one boolean.
+     * `interior` reports which record built the room and how much of it reached the scene graph.
+     */
+    getDrawnInterior() {
+      const r = engine.renderer;
+      if (!r) return { drawn_cell: null, env_cell: engine.cellFor(engine.sim.env), agrees: false, reason: 'no renderer' };
+      const visible = Object.keys(r.cells).filter((k) => r.cells[k].visible);
+      const env = engine.cellFor(engine.sim.env);
+      return {
+        drawn_cell: r.cell,
+        visible_cells: visible,
+        env_cell: env,
+        env_interior: engine.sim.env.interior,
+        agrees: r.cell === env && visible.length === 1 && visible[0] === env,
+        // Which named interior the generic cell currently IS, and the record fields that reached it.
+        interior_id: r.interiorId || null,
+        interior: r.interiorSummary || null,
+      };
+    },
     /** RI-STL02 §4: is the cell this zone is a room of open at the current hour? */
     isOpenNow(zoneOrInterior) { return engine.isOpenNow(String(zoneOrInterior)); },
     /** RI-WLD08: everybody's day, off the LIVE npc list — `at`, `present`, and the slot count. */
