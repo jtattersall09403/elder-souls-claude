@@ -98,26 +98,75 @@ The five rebuild lists in `corpus/80-methods/TOOL-COVERAGE-R1..R4` stay on the r
 their individual findings remain true of the screen.
 
 
-## S. Referred for a seam ruling: RI-WPN02 §B against RI-WPN05 §E.2
+## ~~S. Referred for a seam ruling: RI-WPN02 §B against RI-WPN05 §E.2~~ — RULED. **ARBITRATION S36.**
 
-Raised by the W1-MASS builder, which refused to decide it and was right to. **107 of 2,689 weapon
-slots cannot satisfy both items at any tuning** — worst case 4.81× over — in the curved-sword,
-curved-greatsword and whip families. Another ~538 are reachable, at a median cost of five extra
-active `f@60` or by keeping 75% of the declared arc.
+**Closed by `arbiter-wpn-s36` at `4698888`. Read `corpus/00-doctrine/ARBITRATION.md` §2 S36.**
+RI-WPN02 §B governs the arc; RI-WPN05 §E.2's tip-speed ceiling yields and is re-derived per slot.
+Both items are amended on disk. Compliance instrument: **`node tools/wpn-tipspeed-s36.mjs --gate`**.
 
-One item governs the arc a weapon must sweep; the other caps how fast its tip may travel. For those
-107, honouring the arc requires a tip speed the other item forbids, and honouring the speed requires
-an arc the first one forbids. That is not a builder's edit — whichever gives way, some declared
-figure in a shipped item becomes wrong, and the corpus is supposed to be the thing that does not
-quietly move.
+**The referred figure was wrong and the correction is the interesting part.** §S said *"107 of 2,689
+slots cannot satisfy both items at any tuning"*. That sentence came from `orchestration/status/W1-MASS.json`
+finding 77 — *"107 are over 2x … those last are the ones no tuning reaches"* — which is a **severity
+bucket relabelled as an impossibility proof**. Recomputed: the ">2×" bucket is **125**; the truly
+unsatisfiable set is **465** (or **152** if you also shrink the arc to M5's floor); and the two sets
+**overlap on 31 slots**. 94 of the "impossible" slots were tunable; 121 impossible ones were invisible.
+The contradiction was never in a tail — **five of RI-WPN02 §B's own published melee `r1.1` cells** and
+**13 of the 28 clips RI-WPN05 §E samples** could not satisfy §E.2 either.
 
-`reports/W1-MASS-guard.json` names every affected slot with the frames it would need and the arc it
-would then be allowed, so the ruling can be made against real numbers rather than in principle.
-**Do not let a builder resolve this by tuning; refer it.**
+*(A second, unrelated `107` sits in the same status file at finding 55. Two of them one paragraph
+apart is very likely why the figure travelled three documents unchecked. **A number that arrives
+already corroborated is the one to re-derive first.**)*
 
-Also recorded there and not fixed: the bow's null ceiling and a 20.56 m blade capsule; the `plunge`
-family dominating arc nonconformance; and a flat-rate lever that would fix one row by likely
-breaking another that has no instrument at all.
+Still open from §S and **not** settled by S36, now filed as §S1–§S3 below.
+
+
+## S1. Referred: RI-CMB04 §B/§C against RI-WPN02 §B — the substep count rests on a tip speed that is 6× wrong
+
+**The same contradiction shape as §S, found while ruling it, and left for an arbiter rather than
+decided.** `RI-CMB04` §B publishes a `Peak tip speed (m/s)` column topping out at **UGS 26.0**, and
+§C derives `SUBSTEPS = 4` from it in as many words — *"Worst case (UGS, 0.433 m/frame) → 0.108 m per
+substep ≈ one capsule radius"*. But `RI-WPN02` §B's published arc and reach columns force far more
+than 26.0 m/s, and S36 has now ruled that §B's geometry governs.
+
+Measured at `4698888` over the 2,054 swept-capsule slots on disk:
+
+- **1,312 of them (63.9%)** travel more than one capsule radius **per substep**, which is the exact
+  condition §C's rationale was written to prevent.
+- The worst is `whp_hist_bindings/r2` at **156.5 m/s** — 2.608 m per frame, 0.652 m per substep
+  against a 0.09 m radius, **7.24 capsule radii**.
+- Honouring §C's own stated rationale at the real worst case needs **29 substeps, not 4**.
+
+This is worse than §S was, because §S was a bar nobody could pass while this is a bar that **passes
+while under-sampling the sweep** — S26's hole-in-the-hitbox failure with a different cause, on the
+classes that most need continuous collision. Note also that `RI-CMB04` §B has **no row for any of the
+eight classes `RI-WPN02` added** (CSW, TSW, FST, MCE, WHP, CGS, GHM, BOW), so the spin classes were
+never in the substep derivation at all. Whichever way it goes, a published column moves — refer it,
+do not let a builder pick a substep count.
+
+## S2. Referred: RI-WPN05 §E has no `ranged` row, and a tool invented one
+
+§E publishes four tier rows — light, medium, heavy, ultra. `BOW` is `ranged`. **35 BOW slots
+therefore have no tip-speed ceiling anywhere in the corpus**, which is the "bow's null ceiling"
+§S recorded. `tools/weapons/build-movesets.mjs` has since added `ranged: 20` to its own `BAND_TOP`,
+**a figure no reference item publishes** — a tool legislating for the corpus it measures. S36
+explicitly declined to invent the band. Either §E gains a fifth row or it states that ranged has no
+band and says why; until then `tools/wpn-tipspeed-s36.mjs` reports those 35 as `UNCEILED` rather
+than passing them. *(The related 20.56 m blade capsule is fixed: BOW `reach_m` on disk is now
+1.28–1.81 m, not 22.0.)*
+
+## S3. Not referred, recorded: three loose ends from the S36 ruling
+
+1. **603 slots declare an arc outside their shape's `RI-WPN02` M5 band** (e.g. `whp_hist_bindings/r2`,
+   a `spin` at 289.8° on a whip). A **defect under M5**, judged there — S36 neither excuses nor
+   punishes it, but nobody has yet been told to fix it.
+2. **`RI-WPN02` contradicts itself**: §B publishes UGS as `slash_v` at 210° while M5 requires
+   `slash_v < 130°`. One item, so not a seam — it needs an item amendment, not an arbiter.
+3. **`reports/W1-MASS-guard.json` is stale and its stamps are wrong.** 746 slots exceed §E.2 as
+   published, not the 645 recorded; **239 of the 645 `peak_tip_speed_mps_implied` stamps disagree
+   with the arc their own file publishes**, because `build-movesets.mjs:739` evaluates the guard on
+   the one-handed `slotArc` while line 774 publishes `prof.arc_deg`, which for a two-handed slot is
+   `slotArc × 1.18`. 238 of the 239 are `2h.*`. Also, that tool cites
+   `reports/W1-MASS-RECONCILIATION.md`, **which does not exist on disk.**
 
 ## 0a. The level-up screen is refused everywhere — ULTRACODE
 

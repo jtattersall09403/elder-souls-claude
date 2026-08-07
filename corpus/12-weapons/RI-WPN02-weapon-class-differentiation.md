@@ -119,6 +119,27 @@ One-handed, first hit of the chain, at 60 Hz — all frame counts `f@60`.
 >    1.2 m hole S26 was written for — so this is the first place in the corpus a hitbox with a
 >    hole in it should be expected. See M1 sub-probe C as amended.
 
+> ### The `Arc sweep (°)` column governs the tip speed — ARBITRATION seam **S36**, wave 1
+>
+> **This column won an arbitration and a builder needs to know it did.** `RI-WPN05` §E.2 capped
+> peak tip speed at 1.25× a per-weight-tier band, and tip speed is not independent of this table:
+> `peak = 1.5 · arc_rad · reach_m · 60 / active_f`, so that cap was a cap on **this column**.
+> **S36 rules that §B governs and §E.2's ceiling is re-derived beneath it.**
+>
+> The decisive measurement is against this table's own spine: at the longest active window §B's
+> own `active / total ≤ 0.16` allows, **five of the fourteen melee `r1.1` cells below could not
+> meet §E.2 at any tuning** — CSW 42.6 vs 25, SSW 30.6 vs 25, HLB 38.2 vs 32.5, WHP 66.5 vs 32.5,
+> CGS 69.9 vs 40 m/s — and three of those five (CSW, WHP, CGS) are classes whose whole §A identity
+> is a wide arc. **No cell in this table moves.** `RI-WPN05` §E's peak-tip-speed band ceases to
+> bound the roster and survives only as a floor; see that item's §E/§E.2 amendment boxes.
+>
+> **What S36 does not give this item.** It does **not** excuse a declared arc that sits outside its
+> shape's **M5** band — 603 slots currently do, and that is a mislabelling defect judged under M5 at
+> the severity its consequence deserves, exactly as M5 says (*"mislabelled data is how a critic gets
+> lied to without anyone lying"*). It does **not** settle §B publishing UGS as `slash_v` at 210°
+> against M5's `slash_v < 130°`, which is a contradiction **inside this item** and is referred, not
+> ruled. Compliance instrument: **`node tools/wpn-tipspeed-s36.mjs --gate`**.
+
 Derived constraints that must hold after any retune (recomputed by the critic, never trusted):
 
 | Quantity | Requirement | Rationale |

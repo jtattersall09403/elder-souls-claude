@@ -1,0 +1,68 @@
+{
+  "task_id": "arbiter-wpn-s36",
+  "role": "arbiter",
+  "state": "done",
+  "started_at": "2026-08-07",
+  "commit_at_start": "b926e95",
+  "objective": "Resolve the RI-WPN02 §B / RI-WPN05 §E.2 contradiction referred in NEXT-DISPATCH §S; write it as seam ruling S36.",
+  "next_step": "DONE. S36 is ruled and on disk. Three referrals filed as NEXT-DISPATCH §S1 (RI-CMB04 substeps vs RI-WPN02 §B geometry — the same shape, worse), §S2 (RI-WPN05 §E has no ranged row; build-movesets invented `ranged: 20`), §S3 (603 M5-offband arcs; RI-WPN02 internal slash_v contradiction; W1-MASS-guard stale stamps + a cited report that does not exist). Not done by me and deliberately: the 381 slots that need +1,673 f@60 of active window are a builder job.",
+  "files_touched": [
+    "corpus/00-doctrine/ARBITRATION.md",
+    "corpus/12-weapons/RI-WPN02-weapon-class-differentiation.md",
+    "corpus/12-weapons/RI-WPN05-weapon-feel-impact.md",
+    "orchestration/NEXT-DISPATCH.md",
+    "orchestration/INDEX.md",
+    "orchestration/status/arbiter-wpn-s36.json",
+    "tools/wpn-tipspeed-s36.mjs",
+    "reports/W1-S36-tipspeed.json",
+    "reports/blog-feed.jsonl",
+    "docs/index.html",
+    "docs/progress.html"
+  ],
+  "files_claimed": [],
+  "findings": [
+    "THE 107 DOES NOT REPRODUCE, AND ITS PROVENANCE IS A RELABELLED SEVERITY BUCKET. orchestration/status/W1-MASS.json finding 77 reads '107 are over 2x (worst 4.81x) - those last are the ones no tuning reaches'. NEXT-DISPATCH §S restated that as '107 of 2,689 weapon slots cannot satisfy both items at any tuning'. Those are different claims. 'Over 2x the ceiling' is a severity band; it is not a proof that no legal (arc, active_f) pair exists.",
+    "RECOMPUTED AT b926e95 AGAINST THE PUBLISHED MOVESETS: the >2x bucket is 125 slots, not 107 (the worst ratio 4.81x reproduces exactly, which is why the figure looked corroborated). The genuinely unsatisfiable set - M5 shape floor at the longest active window RI-WPN02 §B permits, still over §E.2's ceiling - is 152 slots. INTERSECTION OF THE TWO SETS: 31. So 94 of the referral's 'impossible' slots are perfectly tunable and 121 genuinely impossible slots were invisible to it. The count was nearly right and the set was almost entirely wrong.",
+    "A SECOND, INDEPENDENT 107 EXISTS IN THE SAME STATUS FILE (finding 55: 'of the 263 tip-speed violations, only 107 have a MEAN active-window speed above the ceiling'). Two unrelated 107s, one paragraph apart, is very likely why nobody re-derived it.",
+    "§E.2's VIOLATION COUNT IS ALSO WRONG ON DISK. 746 of 2,689 slots exceed the ceiling when computed from the published arc, not 645. Only 645 carry the peak_tip_speed_mps_implied stamp, 239 of those stamps disagree with the arc the same file publishes, and 101 over-ceiling slots carry no stamp at all. Cause: build-movesets.mjs:739 evaluates the guard on `slotArc` (one-handed) while line 774 publishes `prof.arc_deg`, which for a two-handed slot is slotArc x pose-library two_hand_transform.arc_scale_mult = 1.18. 238 of the 239 stale stamps are 2h.* slots.",
+    "THE CONTRADICTION IS NOT IN A 107-SLOT TAIL. IT IS IN RI-WPN02 §B's OWN PUBLISHED SPINE. Five of §B's fourteen melee r1.1 class cells - CSW, SSW, HLB, WHP, CGS - cannot meet §E.2 at ANY active window legal under §B's own `active/total <= 0.16` constraint. CSW 42.6 m/s vs 25, SSW 30.6 vs 25, HLB 38.2 vs 32.5, WHP 66.5 vs 32.5, CGS 69.9 vs 40. Three of those five (CSW, WHP, CGS) are classes whose entire §A identity is a wide arc.",
+    "AND IN RI-WPN05 §E's OWN SAMPLE. 13 of the 28 clips §E samples (baseline r1.1 and r2) exceed §E's raw band; 11 exceed even §E.2's 1.25x. The item's headline band is contradicted by the clips the item itself measures.",
+    "THE BAND IS IN THE WRONG TABLE. Tip speed is arc x reach / active window. Arc and reach are per-CLASS columns of RI-WPN02 §B and they vary far more within a weight tier than between tiers: within 'medium', SPR forces 3.2 m/s and WHP forces 66.5. Re-deriving §E's ceilings from §B's own cells gives light 42.6, medium 66.5, heavy 69.9, ultra 37.4 - non-monotone, because a curved greatsword's 340-degree spin is genuinely the fastest tip in the game and an ultra greatsword's overhead is not. §E put a per-class quantity in a per-tier table. That is the category error under everything.",
+    "S31 IS ON POINT AND DECIDES IT. Both items are `side: souls` and both are inside the fight, so ARBITRATION §1 is silent and §5 sends the question to the seam rulings. S31's general rule - 'a bar that exists to justify another number yields to a bar that describes what the player perceives' - fits exactly: §E.2's ceiling is `1.25 x the tier's §E peak band ceiling`, a derived figure over a band whose own provenance note says it was 'set by the internal logic of the tables rather than by observation' at confidence medium; §B's arc column is confidence high, is fingerprint dimension D6 and grammar dimension G3, and is what a player watches.",
+    "THE YIELD GIVES UP NOTHING §E.2 ACTUALLY NEEDED. §E.2 names three motivating failures: a straight sword sweeping 615 degrees where 110 was declared (caught by §E.2's ARC CONFORMANCE row, untouched), poses moving 2.5 m in one frame (caught by the POSE DISCONTINUITY row, untouched), and a tip speed 2.69x its declared value (2.69 > 1.25, so still caught under the re-derived form). All three survive.",
+    "THE RE-DERIVED FORM LEAVES NOBODY STRANDED. ceiling(slot) = max(1.25 x tier band top, 1.25 x the speed the slot's own declared geometry forces at the longest active window §B permits). Failures fall 746 -> 381, the 381 are a strict subset of the 746 (so S36 can never make a compliant slot non-compliant), and the count of slots no legal tuning reaches falls from 152 to ZERO. Remedy for all 381 is lengthening the active window: median +5 f@60, total +1,992 f@60 across the roster.",
+    "SECOND PAIR OF THE SAME SHAPE, FOUND AND NOT RULED ON (referred): RI-CMB04 §B/§C against RI-WPN02 §B. RI-CMB04 §B publishes UGS 26.0 m/s as the worst tip speed in the game and derives SUBSTEPS = 4 from it ('0.433 m/frame -> 0.108 m per substep ~ one capsule radius'). RI-WPN02 §B's published geometry forces up to 156.5 m/s. 1,312 of 2,054 swept-capsule slots (63.9%) break RI-CMB04 §C's own stated rationale; honouring it at the real worst case needs 29 substeps, not 4. RI-CMB04 §B also has no row for any of the eight classes RI-WPN02 added.",
+    "corpus-index.mjs --strict PASSES and CANNOT SEE ANY OF THIS. It checks structure - judged paths, ladder anchors, wave assignment, phantom tools - and performs no arithmetic cross-check between items. Both this contradiction and the RI-CMB04 one are invisible to it by construction."
+  ],
+  "notes": [
+    "RULES.md 28 says 'Do not commit. The orchestrator banks the tree.' The dispatching brief instructs me to commit to the current branch. RULES.md is named binding by that same brief, so I am flagging the conflict rather than resolving it silently; see the final report.",
+    "No browser launched - text and data only, as instructed."
+  ],
+  "gates": {
+    "node tools/corpus-index.mjs --strict": "PASS (0 error, 49 warn — all pre-existing phantom-tool warnings; no new one, tools/wpn-tipspeed-s36.mjs exists)",
+    "node tools/publish.mjs": "PASS (42 verdicts, all plotted)",
+    "node tools/ownership.mjs": "run before starting; no conflict on any claimed file",
+    "node tools/wpn-tipspeed-s36.mjs --gate": "exit 1 as intended — 381 slots fail S36 and 239 shipped stamps are stale"
+  },
+  "instrument": {
+    "tool": "tools/wpn-tipspeed-s36.mjs",
+    "commit": "4698888",
+    "shipped_arm": {
+      "fail": 381,
+      "stranded": 0,
+      "worst": "1.96x",
+      "remedy": "median +4 f@60, total +1673 f@60"
+    },
+    "control_pre_s36": {
+      "fail": 281,
+      "stranded": 465,
+      "worst": "4.81x",
+      "note": "the arm S36 replaces — worse on both axes"
+    },
+    "control_halve_active": {
+      "fail": 1598,
+      "note": "perturbation; instrument goes red (RULES.md 4)"
+    },
+    "subset_property": "the 381 are a STRICT SUBSET of §E.2s 746, so S36 can never make a compliant slot non-compliant"
+  }
+}

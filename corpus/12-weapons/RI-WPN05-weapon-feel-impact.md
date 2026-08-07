@@ -157,12 +157,22 @@ Measured from the weapon's **tip bone** world position, sampled every simulated 
 
 | Quantity | Definition | light | medium | heavy | ultra |
 |---|---|---|---|---|---|
-| Peak tip speed (m/s) | max over the animation | 14–20 | 18–26 | 22–32 | 26–40 |
+| Peak tip speed (m/s) ~~bound~~ **FLOOR ONLY — S36** | max over the animation | 14–20 | 18–26 | 22–32 | 26–40 |
 | **Anticipation fraction** | fraction of startup frames in which the tip's component along the swing direction is **negative** | ≥ 0.08 | ≥ 0.15 | ≥ 0.25 | ≥ 0.30 |
 | **Follow-through fraction** | fraction of recovery frames in which the tip still travels along the swing direction before reversing | ≥ 0.20 | ≥ 0.20 | ≥ 0.25 | ≥ 0.30 |
 | **Deceleration ratio** | tip speed at (impact frame + hitstop) ÷ peak tip speed, on a hit | ≤ 0.45 | ≤ 0.40 | ≤ 0.35 | ≤ 0.30 |
 | **Settle** | number of sign changes in the root's forward velocity during recovery | ≥ 0 | ≥ 1 | ≥ 1 | ≥ 2 |
 | Tip speed continuity | max frame-to-frame change in tip speed ÷ peak | ≤ 0.35 | ≤ 0.35 | ≤ 0.30 | ≤ 0.30 |
+
+> **The `Peak tip speed` row is no longer a ceiling on the roster — ARBITRATION S36.** It is
+> contradicted by five of `RI-WPN02` §B's fourteen published melee `r1.1` cells and by 13 of the
+> 28 clips this section itself samples, and it was filed **per weight tier** when tip speed is a
+> **per-class** quantity: inside `medium`, SPR's geometry forces 3.2 m/s and WHP's forces 66.5.
+> Re-derived from §B's cells the tier ceilings would read light 42.6 / medium 66.5 / heavy 69.9 /
+> ultra 37.4 — **non-monotone**, because a curved greatsword's 340° spin is the fastest tip in the
+> game and an ultra greatsword's overhead is not. The band survives as the **floor** in §E.2's
+> re-derived ceiling, protecting slow-geometry weapons from being whipped, and binds nothing above
+> that. **Every other row in this table is untouched and still binds.**
 
 **Anticipation is the diagnostic.** An animation with zero anticipation frames — the weapon
 starts moving forward on frame 1 — is not an animation with a mass problem; it is an
@@ -184,7 +194,7 @@ of that. It is also invisible in a screenshot, which is why it is a number here.
 > | Quantity | Definition | Requirement |
 > |---|---|---|
 > | **Pose discontinuity** | max per-frame world displacement of any tracked bone | **≤ 0.25 m** at 60 Hz (15 m/s of bone travel). A larger jump is a pose snap, not motion |
-> | **Tip-speed ceiling** | max tip speed over the clip | ≤ **1.25 ×** the tier's §E peak band ceiling. A clip 2.69× its declared speed is a retimed clip, and it will feel like one |
+> | **Tip-speed ceiling** ~~overruled~~ **SUPERSEDED BY S36** | max tip speed over the clip | ~~≤ **1.25 ×** the tier's §E peak band ceiling.~~ **See the S36 box below — the row survives, its ceiling is re-derived per slot.** A clip 2.69× its declared speed is a retimed clip, and it will feel like one — and it still fails, because 2.69 > 1.25 |
 > | **Arc conformance** | measured `arc_sweep_deg` vs the slot's declared value | within **±10°**, on every slot of every weapon — not only on `r1.1`. A `slash_h` that sweeps 615° is five revolutions of a hitbox and passes `shape ⇒ 90–200°` only because nobody measured the slot |
 > | **Distinct keyframes** | number of frames at which the tip's velocity direction changes | **≥ 3** per clip. A two-pose lerp has one, and it is the cheapest animation a build can ship while claiming 1 133 of them |
 >
@@ -197,6 +207,45 @@ of that. It is also invisible in a screenshot, which is why it is a number here.
 > This is the check that catches the failure mode this whole area is least protected against:
 > the corpus measures clip *identity* exhaustively (`ARI`, `UNQ`, `SHARE`, forgery, normalised
 > shape) and clip *quality* on a sample of 28.
+>
+> ---
+>
+> #### AMENDED wave 1 — ARBITRATION seam **S36**. The tip-speed row yields; the other three do not.
+>
+> **This item lost the tip-speed ceiling to `RI-WPN02` §B and the reasoning is in S36.** In short:
+> a tip sweeps its arc at its reach inside its active window and there is no third thing to tune,
+> `peak = 1.5 · arc_rad · reach_m · 60 / active_f`, so **capping the speed was capping the arc** —
+> and `RI-WPN02` §B owns the arc, which is its fingerprint dimension D6 and its grammar dimension
+> G3. The ceiling as written was unreachable from **five of §B's own fourteen published melee
+> `r1.1` cells** (CSW 42.6 vs 25, SSW 30.6 vs 25, HLB 38.2 vs 32.5, WHP 66.5 vs 32.5, CGS 69.9 vs
+> 40 m/s) at any active window `active / total ≤ 0.16` permits — and **13 of the 28 clips §E
+> samples exceed §E's own raw band.** A bar its own sample fails is not a bar.
+>
+> **The re-derived row, and it is the binding form:**
+>
+> ```
+> ceiling(slot) = max( 1.25 × tier_band_top ,
+>                      1.25 × 1.5 · arc_rad · reach_m · 60 / active_f_max )
+> active_f_max  = floor( 0.16/0.84 × (startup_f + recovery_f) )     ← RI-WPN02 §B, active/total ≤ 0.16
+> ```
+>
+> A slot may exceed the tier band by whatever its own declared geometry compels, plus a quarter,
+> and no further. **Checkable: `node tools/wpn-tipspeed-s36.mjs --gate`.** At `4698888`: 381 slots
+> fail and **none is unsatisfiable**, against 746 failures and 465 unsatisfiable under the old row.
+>
+> **What this item gives up, and it should be stated here rather than only in the ruling:** §E's
+> `Peak tip speed (m/s)` band **is no longer a bound on the roster**. It is a floor under the guard
+> for slow-geometry weapons and nothing more; a curved greatsword's spin peaks near 70–80 m/s and
+> that is now legal. This item keeps no absolute claim about how fast a weapon should look — only
+> the relative one, that a clip may not outrun its own declaration by more than a quarter.
+>
+> **What this item keeps, in full:** pose discontinuity, arc conformance and distinct keyframes are
+> **untouched**, and every failure this section was written against still fails — the 615° straight
+> sword on arc conformance, the 2.5 m single-frame pose on discontinuity, and the 2.69× clip on the
+> re-derived ceiling. S36 cost §E.2 nothing it was built to catch.
+>
+> **Not settled by S36, and still open against this item:** §E publishes four tier rows and **no
+> `ranged` row**, so 35 BOW slots have no ceiling in the corpus at all — see `NEXT-DISPATCH` §S2.
 
 ### F. The headline measurable — Impact Legibility Score
 
