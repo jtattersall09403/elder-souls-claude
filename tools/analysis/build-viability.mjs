@@ -2505,6 +2505,240 @@ function selfTest() {
     return r;
   };
 
+  // =============================================================================================
+  // THE CHEAP FALSIFICATIONS RUN FIRST. ROUND 5.
+  //
+  // Everything in this block is a pure function of the tree — the grant ledger, the cross-check
+  // row accounting, the anchors, the attestation key, and four probes of the synthetic
+  // character's own collections. None of it walks the grid, so it lands in seconds.
+  //
+  // The ordering is not cosmetic. Each of the fixtures BELOW is a full 540-cell walk (~70 s on a
+  // quiet box, several minutes on a loaded one), so the battery does not finish inside ten
+  // minutes and a reader who has to kill it used to get nothing at all. Cheap checks first means
+  // an interrupted run still carries evidence, and the numbered progress lines below tell a
+  // critic which walk it died on rather than leaving them to guess between slow and hung.
+  // =============================================================================================
+  // R5-1. The cross-check's row accounting, exercised through THE SHIPPING FUNCTION.
+  //
+  // Round 4's version of this check re-implemented the accounting inline, so it proved a
+  // property of the battery rather than of `crossCheck()`. It now calls `crossCheckVerdict()`,
+  // which is the same function the live mode calls, and the fixtures are shaped the way the
+  // push site shapes them: an unresolved row is not a row with `agrees: null`, it is a row in a
+  // DIFFERENT ARRAY that no count named "compared" can reach.
+  {
+    const cmp = (n, agrees) => Array.from({ length: n }, (_, i) => ({ quest: 'q' + i, agrees }));
+    const unres = (n) => Array.from({ length: n }, (_, i) => ({ quest: 'u' + i, why_unresolved: 'modelled:false' }));
+
+    const dead = crossCheckVerdict([], unres(240));            // R3's broken tree: nothing modelled
+    const live = crossCheckVerdict(cmp(240, true), []);        // the sound tree
+    const bad = crossCheckVerdict([...cmp(239, true), ...cmp(1, false)], []);
+    const mixed = crossCheckVerdict(cmp(12, true), unres(228));
+
+    ok('R5: 240 unresolved rows are UNMEASURABLE, never "AGREES on 240 pairs"',
+      dead.unmeasurable === true && dead.agrees === false && dead.rows_compared === 0
+        && dead.pairs_enumerated === 240,
+      `240 unresolved -> agrees=${dead.agrees}, unmeasurable=${dead.unmeasurable}, ` +
+      `rows_compared=${dead.rows_compared}, pairs_enumerated=${dead.pairs_enumerated}. ` +
+      'R3 printed "AGREES on 240 pairs".');
+    ok('R5: the same accounting still passes 240 genuinely-compared rows (null control)',
+      live.agrees === true && live.unmeasurable === false && live.rows_compared === 240,
+      `rows_compared=${live.rows_compared}, agrees=${live.agrees} — the fix is not vacuous`);
+    ok('R5: one real disagreement still goes red among 239 agreements',
+      bad.agrees === false && bad.unmeasurable === false && bad.rows_compared === 240,
+      `agrees=${bad.agrees}, unmeasurable=${bad.unmeasurable}`);
+    ok('R5: a partly-modelled sweep reports 12 compared and 228 unresolved, not 240 of anything',
+      mixed.rows_compared === 12 && mixed.rows_unresolved === 228 && mixed.pairs_enumerated === 240
+        && mixed.accounting_holds === true,
+      `rows_compared=${mixed.rows_compared}, rows_unresolved=${mixed.rows_unresolved}, ` +
+      `pairs_enumerated=${mixed.pairs_enumerated}`);
+    // The fuse. A row without a boolean verdict must not be countable as compared.
+    const smuggled = crossCheckVerdict([...cmp(239, true), { quest: 'x', agrees: null }], []);
+    ok('R5: a row with agrees:null cannot enter a count called "compared" — the tool REFUSES',
+      smuggled.refused === true && smuggled.rows_compared === 0 && smuggled.agrees === false,
+      `refused=${smuggled.refused}, rows_compared=${smuggled.rows_compared} — 239 real agreements ` +
+      'are discarded rather than published beside one uncomparable row');
+  }
+
+  // R4-3. The attestation must be keyed to the source it attests, or a one-line regression to
+  // the model files carries the old verdict forward — which is the entire R3 defect with extra
+  // steps.
+  {
+    const h1 = modelSourceHash();
+    const h2 = modelSourceHash();
+    const tmp = path.join(REPO_ROOT, MODEL_SOURCE_FILES[0]);
+    const orig = fs.readFileSync(tmp, 'utf8');
+    let h3;
+    try {
+      fs.writeFileSync(tmp, orig + '\n// self-test perturbation\n');
+      h3 = modelSourceHash();
+    } finally { fs.writeFileSync(tmp, orig); }
+    const h4 = modelSourceHash();
+    ok('R4: the attestation key is stable and reproducible', h1 === h2 && h1 === h4, `${h1}`);
+    ok('R4: ONE BYTE added to engine.js invalidates the attestation key (falsification)',
+      h3 !== h1, `${h1} -> ${h3} -> restored ${h4}`);
+  }
+
+  // R4-4. The model is per-giver, not a global string. R3: "a single global model string is the
+  // wrong shape for it to begin with."
+  ok('R4: the model is reported PER-GIVER, not as one global string',
+    OFFER_MODEL.per_giver && Number.isFinite(OFFER_MODEL.per_giver.gated_givers) &&
+    OFFER_MODEL.per_giver.modelled + OFFER_MODEL.per_giver.unmodelled === OFFER_MODEL.per_giver.gated_givers,
+    `${OFFER_MODEL.per_giver.gated_givers} gated givers: ${OFFER_MODEL.per_giver.modelled} modelled, ` +
+    `${OFFER_MODEL.per_giver.unmodelled} unmodelled` +
+    (OFFER_MODEL.per_giver.mixed ? ' — MIXED (engine.js:4863 returns null without reaction_group)' : ''));
+
+  // R4-5. The fourth anchor exists AND its limit is declared. An anchor sold as proof of
+  // something it cannot prove is how round 3 bought its false pass; this asserts the honesty of
+  // the label as well as the presence of the check.
+  ok('R4: a fourth anchor checks the ARITHMETIC, not only the plumbing',
+    !!OFFER_MODEL.anchors.applies_arithmetic && OFFER_MODEL.anchors_total === 4,
+    `applies_arithmetic matched=${OFFER_MODEL.anchors.applies_arithmetic.matched}, ` +
+    `${OFFER_MODEL.anchors_matched}/${OFFER_MODEL.anchors_total} anchors`);
+  ok('R4: the fourth anchor does NOT claim to prove the arithmetic is reached',
+    /NOT arithmetic-reached/.test(OFFER_MODEL.anchors.applies_arithmetic.proves) &&
+    /NO REGEX OVER SOURCE CAN PROVE A FUNCTION'S ARITHMETIC IS REACHED/.test(OFFER_MODEL.anchor_limit),
+    'a guarded early return leaves it matching; the tool says so rather than selling it as closure');
+
+  // R4-6. The guarded-early-return break, simulated against the anchors themselves. This proves
+  // in-process that the static detector CANNOT see R3's regression, which is the justification
+  // for making the live attestation mandatory rather than optional.
+  {
+    const engineSrc = fs.readFileSync(path.join(REPO_ROOT, 'game/src/engine.js'), 'utf8');
+    const broken = engineSrc.replace(
+      /(_questDispositionModel\s*\(\s*\)\s*\{\s*\n\s*return\s*\([^)]*\)\s*=>\s*\{)/,
+      '$1\n      if (!this.__raceGatesEnabled) return null;');
+    const changed = broken !== engineSrc;
+    const stillMatch = changed && Object.values(OFFER_MODEL_ANCHORS)
+      .filter((a) => a.file === 'game/src/engine.js').every((a) => a.rx.test(broken));
+    ok('R4: R3\'s exact break leaves EVERY source anchor matching (why live verification is mandatory)',
+      changed && stillMatch,
+      changed
+        ? 'injected `if (!this.__raceGatesEnabled) return null;` into the model closure: both ' +
+          'engine.js anchors still match. No static check can close this; --verify-model can.'
+        : 'COULD NOT INJECT — the closure shape changed; re-derive this falsification');
+  }
+
+  // R4-7. An unverified model must be visible in the artifact and must not exit 0.
+  ok('R4: a run with no live attestation stamps model_verified:false',
+    loadAttestation().status !== 'VALID' || fs.existsSync(ATTEST_PATH),
+    `attestation status would be "${loadAttestation().status}"`);
+
+  // =============================================================================================
+  // ROUND 5 — THE GRANT LEDGER. Every check below exists because the last four rejections were
+  // all the same defect: a value invented inside this file and reported as if measured.
+  // =============================================================================================
+
+  // R5-2. No field is handed a bare constant. The ledger is the register and this is the fuse.
+  {
+    const gl = grantLedger();
+    ok('R5: the grant ledger declares ZERO substitutions',
+      gl.substitutions_remaining === 0 && gl.rows.length >= 14,
+      `${gl.rows.length} granted fields, ${gl.substitutions_remaining} substitution(s); ` +
+      `player-optimal bounds declared: ${gl.player_optimal_bounds.join(', ')}`);
+    ok('R5: the ledger names what round 4 handed the gate, so the regression is legible',
+      gl.rows.filter((r) => r.was_round4).length >= 9,
+      `${gl.rows.filter((r) => r.was_round4).length} fields carry their round-4 value`);
+  }
+
+  // R5-5. RANK IS DERIVED THROUGH THE SHIPPING LADDER, not granted as 7.
+  {
+    const sheet = (() => {
+      const spec = representativeStart(RACES[0], FAMILIES[0], SIGN_FAMILIES[0], UP_CLASSES[0]);
+      const ch = composeCharacter(data, spec);
+      return { race: RACES[0], family: FAMILIES[0], birthsign: spec.birthsign, upbringing: spec.upbringing,
+        base_attributes: ch.attributes, base_skills: ch.skills };
+    })();
+    const ctx = bestCaseCtx(sheet, 55);
+    const vals = Object.values(ctx.ranks);
+    ok('R5: ranks come from FactionGates.highestQualifying(), not the constant 7',
+      vals.length === gates.ids().length && vals.some((v) => v !== 7),
+      `${JSON.stringify(ctx.ranks)} — round 4 handed every faction rank 7`);
+    ok('R5: a faction whose attainable reputation cannot clear rank 1 is derived at rank 0',
+      ctx.ranks.deep_kin === undefined || ctx.ranks.deep_kin === 0 || (attainableReputation(null).deep_kin ?? 0) >= gates.row('deep_kin', 1).reputation,
+      `deep_kin: attainable reputation ${attainableReputation(null).deep_kin}, rank-1 row asks ` +
+      `${gates.row('deep_kin', 1).reputation}, derived rank ${ctx.ranks.deep_kin}`);
+  }
+
+  // R5-6. THE FOUR UNIVERSAL `has: () => true` COLLECTIONS ARE GONE — and the difference is
+  // load-bearing, not cosmetic. Three of them stood over an EMPTY Set for three rounds, so every
+  // items/knowledge/spell_effects requirement in the tree was satisfied by a collection that
+  // contained nothing at all.
+  {
+    const sheet = (() => {
+      const spec = representativeStart(RACES[0], FAMILIES[0], SIGN_FAMILIES[0], UP_CLASSES[0]);
+      const ch = composeCharacter(data, spec);
+      return { race: RACES[0], family: FAMILIES[0], birthsign: spec.birthsign, upbringing: spec.upbringing,
+        base_attributes: ch.attributes, base_skills: ch.skills };
+    })();
+    const prov = bestCaseCtx(sheet, 55);
+    const omni = bestCaseCtx(sheet, 55, {}, null, { omniscient: true });
+    const fake = 'no_such_token_' + Math.random().toString(36).slice(2);
+    ok('R5: the provable context answers NO to a token nothing produces; the omniscient arm answers yes',
+      prov.items.has(fake) === false && omni.items.has(fake) === true
+      && prov.knowledge.has(fake) === false && prov.spellEffects.has(fake) === false
+      && prov.worldFlags.has(fake) === false,
+      `provable items/knowledge/spellEffects/worldFlags all refuse "${fake}"; the omniscient arm ` +
+      'still grants it, which is the only thing it is for');
+    ok('R5: and the provable collections are NOT empty — refusing everything would be as useless',
+      prov.items.size > 0 && prov.knowledge.size > 0 && prov.spellEffects.size > 0
+      && prov.worldFlags.size > 0 && prov.topicsKnown.size > 0,
+      `items ${prov.items.size}, knowledge ${prov.knowledge.size}, effects ${prov.spellEffects.size}, ` +
+      `flags ${prov.worldFlags.size}, topics ${prov.topicsKnown.size}`);
+    ok('R5: topicsKnown holds RAW authored spellings so canOffer\'s slug/prose fold still runs',
+      [...prov.topicsKnown].some((t) => /-/.test(t)) && [...prov.topicsKnown].some((t) => / /.test(t)),
+      'both dashed (dialogue) and spaced (quest) spellings are present; a pre-folded set could ' +
+      'not exercise topicsInclude()');
+  }
+
+  // R5-7. THE GRANT-DEPENDENCY TEST FIRES, and it fires on a REAL ungrounded token from this
+  // tree rather than on a fixture of the battery's own invention.
+  {
+    const un = UNSOURCED.items[0] || UNSOURCED.knowledge[0];
+    const sheet = (() => {
+      const spec = representativeStart(RACES[0], FAMILIES[0], SIGN_FAMILIES[0], UP_CLASSES[0]);
+      const ch = composeCharacter(data, spec);
+      return { race: RACES[0], family: FAMILIES[0], birthsign: spec.birthsign, upbringing: spec.upbringing,
+        base_attributes: ch.attributes, base_skills: ch.skills };
+    })();
+    if (!un) {
+      ok('R5: grant-dependency test fires on an ungrounded token', false,
+        'no ungrounded token on this tree — re-derive this falsification against one that is');
+    } else {
+      const isItem = UNSOURCED.items.includes(un);
+      const q = { id: '__r5_probe', category: 'probe', resolutions: [
+        { id: 'only', requires: isItem ? { items: [un] } : { knowledge: [un] } }] };
+      const r = questClearable(sheet, q, 55);
+      const control = questClearable(sheet, { id: '__r5_control', category: 'probe',
+        resolutions: [{ id: 'only', requires: {} }] }, 55);
+      ok('R5: a quest whose only route needs an UNGROUNDED token is UNMEASURABLE, not FAIL and not PASS',
+        r.status === UNMEASURABLE && Array.isArray(r.stopped_at.ungrounded_tokens)
+        && r.stopped_at.ungrounded_tokens.length > 0,
+        `requires ${JSON.stringify(un)} -> ${r.status}; tokens named: ` +
+        `${JSON.stringify((r.stopped_at || {}).ungrounded_tokens)}`);
+      ok('R5: null control — the same probe with no requirement PASSES, so the mechanism is not blanket',
+        control.status === PASS, `control -> ${control.status}`);
+    }
+  }
+
+  // R5-8. THE STAGE-SHAPED QUEST. `loadQuests()` admits two document shapes and this tool has a
+  // predicate for one of them. It must refuse the other rather than charge it.
+  {
+    const staged = quests.filter((q) => !(q.resolutions || []).length && Array.isArray(q.stages) && q.stages.length);
+    const sheet = (() => {
+      const spec = representativeStart(RACES[0], FAMILIES[0], SIGN_FAMILIES[0], UP_CLASSES[0]);
+      const ch = composeCharacter(data, spec);
+      return { race: RACES[0], family: FAMILIES[0], birthsign: spec.birthsign, upbringing: spec.upbringing,
+        base_attributes: ch.attributes, base_skills: ch.skills };
+    })();
+    const probe = questClearable(sheet, { id: '__r5_staged', category: 'probe',
+      stages: [{ index: 10, flags: ['x'] }], outcomes: [{ id: 'o', requires: [] }] }, 55);
+    ok('R5: a stage-shaped quest is UNMEASURABLE ("no predicate"), never "declares no resolutions"',
+      probe.status === UNMEASURABLE && /stage-shaped/i.test(String(probe.stopped_at.why)),
+      `${probe.status}: ${String(probe.stopped_at.why).slice(0, 120)}` +
+      ` — ${staged.length} stage-shaped quest(s) on this tree`);
+  }
+
+
   const base = walk(null, "baseline");
   const baseViable = base.filter((r) => r.viable).length;
   const baseUnm = base.filter((r) => r.unmeasurable).length;
@@ -2754,47 +2988,6 @@ function selfTest() {
   // ROUND 4 — THE R3 §1 FALSIFICATIONS. Every one of these is a check the round-3 tool failed.
   // =============================================================================================
 
-  // R5-1. The cross-check's row accounting, exercised through THE SHIPPING FUNCTION.
-  //
-  // Round 4's version of this check re-implemented the accounting inline, so it proved a
-  // property of the battery rather than of `crossCheck()`. It now calls `crossCheckVerdict()`,
-  // which is the same function the live mode calls, and the fixtures are shaped the way the
-  // push site shapes them: an unresolved row is not a row with `agrees: null`, it is a row in a
-  // DIFFERENT ARRAY that no count named "compared" can reach.
-  {
-    const cmp = (n, agrees) => Array.from({ length: n }, (_, i) => ({ quest: 'q' + i, agrees }));
-    const unres = (n) => Array.from({ length: n }, (_, i) => ({ quest: 'u' + i, why_unresolved: 'modelled:false' }));
-
-    const dead = crossCheckVerdict([], unres(240));            // R3's broken tree: nothing modelled
-    const live = crossCheckVerdict(cmp(240, true), []);        // the sound tree
-    const bad = crossCheckVerdict([...cmp(239, true), ...cmp(1, false)], []);
-    const mixed = crossCheckVerdict(cmp(12, true), unres(228));
-
-    ok('R5: 240 unresolved rows are UNMEASURABLE, never "AGREES on 240 pairs"',
-      dead.unmeasurable === true && dead.agrees === false && dead.rows_compared === 0
-        && dead.pairs_enumerated === 240,
-      `240 unresolved -> agrees=${dead.agrees}, unmeasurable=${dead.unmeasurable}, ` +
-      `rows_compared=${dead.rows_compared}, pairs_enumerated=${dead.pairs_enumerated}. ` +
-      'R3 printed "AGREES on 240 pairs".');
-    ok('R5: the same accounting still passes 240 genuinely-compared rows (null control)',
-      live.agrees === true && live.unmeasurable === false && live.rows_compared === 240,
-      `rows_compared=${live.rows_compared}, agrees=${live.agrees} — the fix is not vacuous`);
-    ok('R5: one real disagreement still goes red among 239 agreements',
-      bad.agrees === false && bad.unmeasurable === false && bad.rows_compared === 240,
-      `agrees=${bad.agrees}, unmeasurable=${bad.unmeasurable}`);
-    ok('R5: a partly-modelled sweep reports 12 compared and 228 unresolved, not 240 of anything',
-      mixed.rows_compared === 12 && mixed.rows_unresolved === 228 && mixed.pairs_enumerated === 240
-        && mixed.accounting_holds === true,
-      `rows_compared=${mixed.rows_compared}, rows_unresolved=${mixed.rows_unresolved}, ` +
-      `pairs_enumerated=${mixed.pairs_enumerated}`);
-    // The fuse. A row without a boolean verdict must not be countable as compared.
-    const smuggled = crossCheckVerdict([...cmp(239, true), { quest: 'x', agrees: null }], []);
-    ok('R5: a row with agrees:null cannot enter a count called "compared" — the tool REFUSES',
-      smuggled.refused === true && smuggled.rows_compared === 0 && smuggled.agrees === false,
-      `refused=${smuggled.refused}, rows_compared=${smuggled.rows_compared} — 239 real agreements ` +
-      'are discarded rather than published beside one uncomparable row');
-  }
-
   // R4-2. The reconciliation. `model="derived"` and a RACE-INVARIANT running gate is the
   // contradiction R3 §1 printed on one screen and exited 0 on. It must now refuse.
   {
@@ -2818,87 +3011,6 @@ function selfTest() {
       reconcileModel(null, { fatal: false }).checked === false &&
       reconcileModel({ race_sensitive: 'maybe' }, { fatal: false }).checked === false,
       'no live observation -> checked:false, not a silent agreement');
-  }
-
-  // R4-3. The attestation must be keyed to the source it attests, or a one-line regression to
-  // the model files carries the old verdict forward — which is the entire R3 defect with extra
-  // steps.
-  {
-    const h1 = modelSourceHash();
-    const h2 = modelSourceHash();
-    const tmp = path.join(REPO_ROOT, MODEL_SOURCE_FILES[0]);
-    const orig = fs.readFileSync(tmp, 'utf8');
-    let h3;
-    try {
-      fs.writeFileSync(tmp, orig + '\n// self-test perturbation\n');
-      h3 = modelSourceHash();
-    } finally { fs.writeFileSync(tmp, orig); }
-    const h4 = modelSourceHash();
-    ok('R4: the attestation key is stable and reproducible', h1 === h2 && h1 === h4, `${h1}`);
-    ok('R4: ONE BYTE added to engine.js invalidates the attestation key (falsification)',
-      h3 !== h1, `${h1} -> ${h3} -> restored ${h4}`);
-  }
-
-  // R4-4. The model is per-giver, not a global string. R3: "a single global model string is the
-  // wrong shape for it to begin with."
-  ok('R4: the model is reported PER-GIVER, not as one global string',
-    OFFER_MODEL.per_giver && Number.isFinite(OFFER_MODEL.per_giver.gated_givers) &&
-    OFFER_MODEL.per_giver.modelled + OFFER_MODEL.per_giver.unmodelled === OFFER_MODEL.per_giver.gated_givers,
-    `${OFFER_MODEL.per_giver.gated_givers} gated givers: ${OFFER_MODEL.per_giver.modelled} modelled, ` +
-    `${OFFER_MODEL.per_giver.unmodelled} unmodelled` +
-    (OFFER_MODEL.per_giver.mixed ? ' — MIXED (engine.js:4863 returns null without reaction_group)' : ''));
-
-  // R4-5. The fourth anchor exists AND its limit is declared. An anchor sold as proof of
-  // something it cannot prove is how round 3 bought its false pass; this asserts the honesty of
-  // the label as well as the presence of the check.
-  ok('R4: a fourth anchor checks the ARITHMETIC, not only the plumbing',
-    !!OFFER_MODEL.anchors.applies_arithmetic && OFFER_MODEL.anchors_total === 4,
-    `applies_arithmetic matched=${OFFER_MODEL.anchors.applies_arithmetic.matched}, ` +
-    `${OFFER_MODEL.anchors_matched}/${OFFER_MODEL.anchors_total} anchors`);
-  ok('R4: the fourth anchor does NOT claim to prove the arithmetic is reached',
-    /NOT arithmetic-reached/.test(OFFER_MODEL.anchors.applies_arithmetic.proves) &&
-    /NO REGEX OVER SOURCE CAN PROVE A FUNCTION'S ARITHMETIC IS REACHED/.test(OFFER_MODEL.anchor_limit),
-    'a guarded early return leaves it matching; the tool says so rather than selling it as closure');
-
-  // R4-6. The guarded-early-return break, simulated against the anchors themselves. This proves
-  // in-process that the static detector CANNOT see R3's regression, which is the justification
-  // for making the live attestation mandatory rather than optional.
-  {
-    const engineSrc = fs.readFileSync(path.join(REPO_ROOT, 'game/src/engine.js'), 'utf8');
-    const broken = engineSrc.replace(
-      /(_questDispositionModel\s*\(\s*\)\s*\{\s*\n\s*return\s*\([^)]*\)\s*=>\s*\{)/,
-      '$1\n      if (!this.__raceGatesEnabled) return null;');
-    const changed = broken !== engineSrc;
-    const stillMatch = changed && Object.values(OFFER_MODEL_ANCHORS)
-      .filter((a) => a.file === 'game/src/engine.js').every((a) => a.rx.test(broken));
-    ok('R4: R3\'s exact break leaves EVERY source anchor matching (why live verification is mandatory)',
-      changed && stillMatch,
-      changed
-        ? 'injected `if (!this.__raceGatesEnabled) return null;` into the model closure: both ' +
-          'engine.js anchors still match. No static check can close this; --verify-model can.'
-        : 'COULD NOT INJECT — the closure shape changed; re-derive this falsification');
-  }
-
-  // R4-7. An unverified model must be visible in the artifact and must not exit 0.
-  ok('R4: a run with no live attestation stamps model_verified:false',
-    loadAttestation().status !== 'VALID' || fs.existsSync(ATTEST_PATH),
-    `attestation status would be "${loadAttestation().status}"`);
-
-  // =============================================================================================
-  // ROUND 5 — THE GRANT LEDGER. Every check below exists because the last four rejections were
-  // all the same defect: a value invented inside this file and reported as if measured.
-  // =============================================================================================
-
-  // R5-2. No field is handed a bare constant. The ledger is the register and this is the fuse.
-  {
-    const gl = grantLedger();
-    ok('R5: the grant ledger declares ZERO substitutions',
-      gl.substitutions_remaining === 0 && gl.rows.length >= 14,
-      `${gl.rows.length} granted fields, ${gl.substitutions_remaining} substitution(s); ` +
-      `player-optimal bounds declared: ${gl.player_optimal_bounds.join(', ')}`);
-    ok('R5: the ledger names what round 4 handed the gate, so the regression is legible',
-      gl.rows.filter((r) => r.was_round4).length >= 9,
-      `${gl.rows.filter((r) => r.was_round4).length} fields carry their round-4 value`);
   }
 
   // R5-3. REPUTATION IS READ, NOT PINNED. This is the round-4 defect's direct falsification.
@@ -2929,104 +3041,6 @@ function selfTest() {
         ? `STILL STOPPING: ${stops112[0].stopped_at.why}`
         : 'the derived attainable reputation clears 112, which is what the faction critic ' +
           'measured live (W1-FACTIONS-r1 §1: term present at 111, absent at 112)');
-  }
-
-  // R5-5. RANK IS DERIVED THROUGH THE SHIPPING LADDER, not granted as 7.
-  {
-    const sheet = (() => {
-      const spec = representativeStart(RACES[0], FAMILIES[0], SIGN_FAMILIES[0], UP_CLASSES[0]);
-      const ch = composeCharacter(data, spec);
-      return { race: RACES[0], family: FAMILIES[0], birthsign: spec.birthsign, upbringing: spec.upbringing,
-        base_attributes: ch.attributes, base_skills: ch.skills };
-    })();
-    const ctx = bestCaseCtx(sheet, 55);
-    const vals = Object.values(ctx.ranks);
-    ok('R5: ranks come from FactionGates.highestQualifying(), not the constant 7',
-      vals.length === gates.ids().length && vals.some((v) => v !== 7),
-      `${JSON.stringify(ctx.ranks)} — round 4 handed every faction rank 7`);
-    ok('R5: a faction whose attainable reputation cannot clear rank 1 is derived at rank 0',
-      ctx.ranks.deep_kin === undefined || ctx.ranks.deep_kin === 0 || (attainableReputation(null).deep_kin ?? 0) >= gates.row('deep_kin', 1).reputation,
-      `deep_kin: attainable reputation ${attainableReputation(null).deep_kin}, rank-1 row asks ` +
-      `${gates.row('deep_kin', 1).reputation}, derived rank ${ctx.ranks.deep_kin}`);
-  }
-
-  // R5-6. THE FOUR UNIVERSAL `has: () => true` COLLECTIONS ARE GONE — and the difference is
-  // load-bearing, not cosmetic. Three of them stood over an EMPTY Set for three rounds, so every
-  // items/knowledge/spell_effects requirement in the tree was satisfied by a collection that
-  // contained nothing at all.
-  {
-    const sheet = (() => {
-      const spec = representativeStart(RACES[0], FAMILIES[0], SIGN_FAMILIES[0], UP_CLASSES[0]);
-      const ch = composeCharacter(data, spec);
-      return { race: RACES[0], family: FAMILIES[0], birthsign: spec.birthsign, upbringing: spec.upbringing,
-        base_attributes: ch.attributes, base_skills: ch.skills };
-    })();
-    const prov = bestCaseCtx(sheet, 55);
-    const omni = bestCaseCtx(sheet, 55, {}, null, { omniscient: true });
-    const fake = 'no_such_token_' + Math.random().toString(36).slice(2);
-    ok('R5: the provable context answers NO to a token nothing produces; the omniscient arm answers yes',
-      prov.items.has(fake) === false && omni.items.has(fake) === true
-      && prov.knowledge.has(fake) === false && prov.spellEffects.has(fake) === false
-      && prov.worldFlags.has(fake) === false,
-      `provable items/knowledge/spellEffects/worldFlags all refuse "${fake}"; the omniscient arm ` +
-      'still grants it, which is the only thing it is for');
-    ok('R5: and the provable collections are NOT empty — refusing everything would be as useless',
-      prov.items.size > 0 && prov.knowledge.size > 0 && prov.spellEffects.size > 0
-      && prov.worldFlags.size > 0 && prov.topicsKnown.size > 0,
-      `items ${prov.items.size}, knowledge ${prov.knowledge.size}, effects ${prov.spellEffects.size}, ` +
-      `flags ${prov.worldFlags.size}, topics ${prov.topicsKnown.size}`);
-    ok('R5: topicsKnown holds RAW authored spellings so canOffer\'s slug/prose fold still runs',
-      [...prov.topicsKnown].some((t) => /-/.test(t)) && [...prov.topicsKnown].some((t) => / /.test(t)),
-      'both dashed (dialogue) and spaced (quest) spellings are present; a pre-folded set could ' +
-      'not exercise topicsInclude()');
-  }
-
-  // R5-7. THE GRANT-DEPENDENCY TEST FIRES, and it fires on a REAL ungrounded token from this
-  // tree rather than on a fixture of the battery's own invention.
-  {
-    const un = UNSOURCED.items[0] || UNSOURCED.knowledge[0];
-    const sheet = (() => {
-      const spec = representativeStart(RACES[0], FAMILIES[0], SIGN_FAMILIES[0], UP_CLASSES[0]);
-      const ch = composeCharacter(data, spec);
-      return { race: RACES[0], family: FAMILIES[0], birthsign: spec.birthsign, upbringing: spec.upbringing,
-        base_attributes: ch.attributes, base_skills: ch.skills };
-    })();
-    if (!un) {
-      ok('R5: grant-dependency test fires on an ungrounded token', false,
-        'no ungrounded token on this tree — re-derive this falsification against one that is');
-    } else {
-      const isItem = UNSOURCED.items.includes(un);
-      const q = { id: '__r5_probe', category: 'probe', resolutions: [
-        { id: 'only', requires: isItem ? { items: [un] } : { knowledge: [un] } }] };
-      const r = questClearable(sheet, q, 55);
-      const control = questClearable(sheet, { id: '__r5_control', category: 'probe',
-        resolutions: [{ id: 'only', requires: {} }] }, 55);
-      ok('R5: a quest whose only route needs an UNGROUNDED token is UNMEASURABLE, not FAIL and not PASS',
-        r.status === UNMEASURABLE && Array.isArray(r.stopped_at.ungrounded_tokens)
-        && r.stopped_at.ungrounded_tokens.length > 0,
-        `requires ${JSON.stringify(un)} -> ${r.status}; tokens named: ` +
-        `${JSON.stringify((r.stopped_at || {}).ungrounded_tokens)}`);
-      ok('R5: null control — the same probe with no requirement PASSES, so the mechanism is not blanket',
-        control.status === PASS, `control -> ${control.status}`);
-    }
-  }
-
-  // R5-8. THE STAGE-SHAPED QUEST. `loadQuests()` admits two document shapes and this tool has a
-  // predicate for one of them. It must refuse the other rather than charge it.
-  {
-    const staged = quests.filter((q) => !(q.resolutions || []).length && Array.isArray(q.stages) && q.stages.length);
-    const sheet = (() => {
-      const spec = representativeStart(RACES[0], FAMILIES[0], SIGN_FAMILIES[0], UP_CLASSES[0]);
-      const ch = composeCharacter(data, spec);
-      return { race: RACES[0], family: FAMILIES[0], birthsign: spec.birthsign, upbringing: spec.upbringing,
-        base_attributes: ch.attributes, base_skills: ch.skills };
-    })();
-    const probe = questClearable(sheet, { id: '__r5_staged', category: 'probe',
-      stages: [{ index: 10, flags: ['x'] }], outcomes: [{ id: 'o', requires: [] }] }, 55);
-    ok('R5: a stage-shaped quest is UNMEASURABLE ("no predicate"), never "declares no resolutions"',
-      probe.status === UNMEASURABLE && /stage-shaped/i.test(String(probe.stopped_at.why)),
-      `${probe.status}: ${String(probe.stopped_at.why).slice(0, 120)}` +
-      ` — ${staged.length} stage-shaped quest(s) on this tree`);
   }
 
   // R5-9. MODEL DEPENDENCE IS MEASURED. Round 4 inferred it from "did a disposition stop occur",

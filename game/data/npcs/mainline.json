@@ -13,7 +13,7 @@
       "race": "breton",
       "class": "undersexton",
       "faction": "the_drowned_court",
-      "settlement": "soulrest",
+      "settlement": null,
       "disposition": 45,
       "topics": [
         "the drowned tally",
@@ -32,38 +32,6 @@
       },
       "reaction_group": "RG-COURT",
       "actor": "mudborn",
-      "post": {
-        "settlement": "soulrest",
-        "at_building": "soulrest-court-steps",
-        "at_building_name": "The Drowned Court Steps",
-        "pos": [
-          631.56,
-          7.91,
-          4888.01
-        ],
-        "yaw": 66,
-        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from soulrest-court-steps's door."
-      },
-      "schedule": [
-        {
-          "from": "00:00",
-          "to": "07:00",
-          "at": "soulrest-grey-hist",
-          "activity": "home"
-        },
-        {
-          "from": "07:00",
-          "to": "19:00",
-          "at": null,
-          "activity": "post"
-        },
-        {
-          "from": "19:00",
-          "to": "00:00",
-          "at": "soulrest-grey-hist",
-          "activity": "tavern"
-        }
-      ],
       "home_interior": "soulrest-grey-hist"
     },
     {

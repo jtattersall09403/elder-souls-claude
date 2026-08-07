@@ -2,7 +2,7 @@
   "task_id": "W1-22",
   "brief": "docs/PLAN.md \u00a73 W1-22 (audio bed)",
   "started": "wave-1",
-  "state": "researching",
+  "state": "building",
   "declared_paths": [
     "audio.ambience.region"
   ],
@@ -17,7 +17,14 @@
     "audio.voice.policy": "RI-AUD05 -- no wave-1 owner"
   },
   "outputs_expected": [],
-  "outputs_written": [],
+  "outputs_written": [
+    "game/data/audio/ambience/*.json x13 (four-layer beds, 36.9 KB total)",
+    "game/src/audio/synth.js (procedural Web Audio graph builder)",
+    "game/src/audio/ambience.js (AmbienceDriver, LayerClock, emitterPlacement, renderBedOffline)",
+    "game/src/engine.js (loader branch, constructor, _stepAmbience from _afterStep, getAmbienceState/ambienceLog/ambienceCapture/ambienceEmitters, getWorldStats audio fields)",
+    "game/src/harness/api.js (4 surfaces; getUnimplemented audio entry split into 4 specific absences)",
+    "tools/analysis/ambience-census.mjs (RI-AUD03 B4 + prose checks)"
+  ],
   "findings": [
     "SURVEY-1 (engine): ZERO audio code exists. `grep -rn AudioContext|createOscillator|createGain|decodeAudioData|new Audio(` across game/src returns NOTHING. No file in game/ has audio/sound/sfx/ambien in its name.",
     "SURVEY-2 (assets): ZERO audio assets on disk. find for mp3/ogg/wav/m4a/opus/webm across the repo (minus node_modules) returns nothing. `audioMB 0` was literally true.",
@@ -28,8 +35,12 @@
     "SURVEY-7 (the consumer slot): Engine._afterStep() (game/src/engine.js:3942) is the one slot every way the world advances passes through (stepFrames, rAF accumulator, walkRoute, walkPath, travelRide), and it is OUTSIDE armSim()'s determinism guard. It is where _streamProvince() lives and is the correct home for a non-simulation ambience driver.",
     "SURVEY-8 (region resolution is live): WorldField.regionAt(x,z) / regionIndexAt(x,z) (game/src/world/field.js:216-217) read the terrain.json region raster and are already used by province.js, signature.js and engine.js:2874. Ambience needs no new position model.",
     "SURVEY-9 (the loader drops unclaimed files): loadData() in engine.js ~7150 dispatches index entries through an if/else chain; the code's own comments record that world/opacity.json, dialogue/persuasion-gmst.json and dialogue/faction-reactions.json each spent a round being fetched, counted in the byte total, and DROPPED because they matched no branch -- 'indistinguishable from shipping nothing'. Any audio/ambience/*.json MUST get its own branch.",
-    "SURVEY-10 (budget headroom): RI-AUD02 D-table caps the ambience bus at V5 <= 8 concurrent voices; RI-AUD03 bed sits -28..-24 LUFS-S. There is no asset budget problem because there are no assets: a PROCEDURAL bed costs 0 bytes of audio and cannot breach any MB ceiling."
+    "SURVEY-10 (budget headroom): RI-AUD02 D-table caps the ambience bus at V5 <= 8 concurrent voices; RI-AUD03 bed sits -28..-24 LUFS-S. There is no asset budget problem because there are no assets: a PROCEDURAL bed costs 0 bytes of audio and cannot breach any MB ceiling.",
+    "BUILT: 13 beds at 36.9 KB TOTAL for the whole province. One 30 s stereo Vorbis loop is ~500 KB, so a sampled bed for 13 regions is ~6.5 MB. Synthesis makes RI-AUD02's byte budget a non-issue; audioMB stays 0 and is now accompanied by audioSynthesised/ambienceBeds/ambienceDataKB in getWorldStats() so nobody reads `audioMB 0` as `no audio` again.",
+    "CORPUS CONTRADICTION FOUND (RI-AUD03 internal): \u00a7B gives Western Rootlands' hide-drum 'a 90-second beat' and puts it in the L3 column; \u00a7A caps EVERY L3 interval at 8-40 s. They cannot both hold. Resolved by moving the drum to an R7 positional emitter (period_s 90) -- it keeps the exact beat, stops breaking the band, and gains a bearing, which is what \u00a7C actually needs from it to separate Western Rootlands from the three other (wet,open,living) regions. Census C4 is what found it.",
+    "VOICE BUDGET, correctly modelled: counting all L2 sublayers as concurrent is wrong because R5 makes day and night selections mutually exclusive. Naive counting flagged 3 regions over V5's cap of 8 and would have pushed a builder to DELETE night content to satisfy a cap night content never breaches. maxConcurrentL2() takes the worse of the two time-of-day worlds. Western Rootlands then sits at exactly 8 (L1 1 + L2 2 + L3 2 + L4 2 + drum 1).",
+    "CENSUS IS FALSIFIABLE (proved, not asserted): forced all 13 L1s to one asset -> C3 HARD FAIL naming all 13 regions; added a songbird to Thornmarsh -> C5 FAIL 'the standard layer being quietly wired up into the region whose identity is that it has none'; deleted hive.json -> C1 FAIL. All three are RI-AUD03's own named failure modes. Restored, PASS."
   ],
-  "next_step": "author game/data/audio/ambience/<region>.json x13 (four-layer bed, procedural synth specs, denies[] for absence)",
+  "next_step": "write game/data/audio/ambience/README.md (schema + voice definition), then tools/analysis/ambience-render.mjs (real PCM in browser), then boot-check + browser verification when pgrep -c headless_shell < 8",
   "notes_for_successor": "Design decision forming: there are no audio assets and none can be added within RI-AUD02's budget, so the bed must be PROCEDURAL (Web Audio synthesis: noise buffers + filters + oscillators). That makes the sceptic-proof evidence possible: render each region's bed in an OfflineAudioContext, capture real PCM, and measure spectral separation between regions. An event count is not a sound; a waveform is. Sabotage control: force all 13 L1s to identical params and the separation metric MUST collapse."
 }

@@ -2,8 +2,9 @@
   "schema_version": "1.0.0",
   "corpus_item": "RI-LOR06",
   "era": "3E 427",
-  "generated": "2026-08-07",
+  "generated": "2026-08-05",
   "purpose": "The single machine-readable registry of what is true, what is contested, and what is ours. A coherence critic uses this file to tell a DELIBERATE in-world contradiction from a MISTAKE. If a contradiction is not in here, it is a mistake.",
+
   "tier_definitions": {
     "hard-canon": "Stated repeatedly and consistently across shipped Bethesda/ZOS material. The authorial world model obeys it. An in-world speaker may doubt it; narration may not.",
     "soft-canon": "Stated once, or only by an unreliable in-world source, or era-scoped. We may take a side; the side must be registered.",
@@ -17,6 +18,7 @@
     "constructed": "Ours."
   },
   "verification_note": "Direct fetches to en.uesp.net, elderscrolls.fandom.com, imperial-library.info and lagbt.wiwiland.net were all refused (HTTP 403 at the agent proxy gateway) on 2026-08-05. All 'community-data' entries rest on search-result summaries. An agent with unblocked access should re-verify CF-025, CF-044 and CF-050 before wave 2.",
+
   "field_schema": {
     "id": "CF-nnn hard/soft canon | CF-Dnnn disputed | CF-Cnnn constructed",
     "claim": "one sentence, the fact itself",
@@ -32,2226 +34,544 @@
     "contradicts_ok": "may our fiction contradict this? false = never",
     "invention_space": "boolean — canon leaves room here",
     "player_discoverable": "early | mid | late | never | n-a",
-    "judges": "subsystem paths this fact constrains",
-    "dispute_kind": "fact | judgment — only `fact` disputes belong in this registry; see `not_disputes`",
-    "topics": "dialogue topic ids this dispute is argued on, resolved against the build at boot",
-    "holders": "{actors[], factions[], races[], settlements[]} — the machine half of `held_by`. game/src/world/canon.js#stanceOf reads it; races and settlements NARROW an actor/faction match and are never a stance on their own.",
-    "voiced_by": "book:<id> | dialogue:<topic>#<actor> | npc:<id> — shipped sources that actually say this. Resolved against the build at boot; a dangle throws."
+    "judges": "subsystem paths this fact constrains"
   },
+
   "facts": [
     {
       "id": "CF-001",
       "claim": "The Hist are giant sentient spore-trees native to Black Marsh, growing chiefly in the interior swamps.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Hist (search snippet 2026-08-05)",
-        "Pocket Guide to the Empire 3rd ed., Argonia"
-      ],
-      "in_world_sources": [
-        "The Sap and the Ledger",
-        "The Egg Speaks Twice"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.hist",
-        "world.flora"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Hist (search snippet 2026-08-05)", "Pocket Guide to the Empire 3rd ed., Argonia"],
+      "in_world_sources": ["The Sap and the Ledger", "The Egg Speaks Twice"],
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "early", "judges": ["lore.hist", "world.flora"]
     },
     {
       "id": "CF-002",
       "claim": "Argonian hatchlings drink Hist sap at hatching; the sap confers the hatchling's soul.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Hist",
-        "UESP Lore:Hatching Pools (snippets)"
-      ],
-      "in_world_sources": [
-        "The Egg Speaks Twice (First Song)",
-        "The Sap and the Ledger"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Hist", "UESP Lore:Hatching Pools (snippets)"],
+      "in_world_sources": ["The Egg Speaks Twice (First Song)", "The Sap and the Ledger"],
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
       "player_discoverable": "early",
-      "judges": [
-        "lore.hist",
-        "lore.metaphysics",
-        "progression.souls"
-      ],
+      "judges": ["lore.hist", "lore.metaphysics", "progression.souls"],
       "notes": "Load-bearing for the entire souls-as-levelling diegesis (RI-LOR05)."
     },
     {
       "id": "CF-003",
       "claim": "When an Argonian dies its soul returns to its Hist, is held there, and may be issued again to a later hatchling.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Hist (snippet): 'Argonian souls return to the Hist after death... the sap becomes the Argonian's blood, essence, and soul'"
-      ],
-      "in_world_sources": [
-        "The Egg Speaks Twice (Third Song)",
-        "The Sap and the Ledger"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Hist (snippet): 'Argonian souls return to the Hist after death... the sap becomes the Argonian's blood, essence, and soul'"],
+      "in_world_sources": ["The Egg Speaks Twice (Third Song)", "The Sap and the Ledger"],
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
       "player_discoverable": "early",
-      "judges": [
-        "lore.metaphysics",
-        "progression.bonfires",
-        "combat.respawn"
-      ],
+      "judges": ["lore.metaphysics", "progression.bonfires", "combat.respawn"],
       "notes": "THE most load-bearing canon fact in this corpus. Bethesda built a souls-and-respawn metaphysics into Black Marsh and never made a game of it."
     },
     {
       "id": "CF-004",
       "claim": "The Hist shapes Argonian bodies, deciding what hatches, and can reshape Argonians to meet need.",
-      "tier": "hard-canon",
-      "provenance": "canonical-recall",
-      "confidence": "medium",
-      "sources_real": [
-        "Recurrent in ESO Murkmire and UESP Lore:Argonian"
-      ],
-      "in_world_sources": [
-        "The Egg Speaks Twice (First Song)"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
+      "tier": "hard-canon", "provenance": "canonical-recall", "confidence": "medium",
+      "sources_real": ["Recurrent in ESO Murkmire and UESP Lore:Argonian"],
+      "in_world_sources": ["The Egg Speaks Twice (First Song)"],
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
       "player_discoverable": "mid",
-      "judges": [
-        "lore.hist",
-        "progression.levelling"
-      ],
+      "judges": ["lore.hist", "progression.levelling"],
       "notes": "Anchor for levelling-as-regrowth. Because the Hist edits bodies, levelling is broad (attributes), not a score."
     },
     {
       "id": "CF-005",
       "claim": "Hist sap carries the Hist's communication — visions, warning, summons — to an Argonian who drinks or licks it.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Hist Sap (snippet)"
-      ],
-      "in_world_sources": [
-        "The Sap and the Ledger (the flood anecdote)"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.hist",
-        "progression.bonfires",
-        "dialogue.hist"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Hist Sap (snippet)"],
+      "in_world_sources": ["The Sap and the Ledger (the flood anecdote)"],
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "early", "judges": ["lore.hist", "progression.bonfires", "dialogue.hist"]
     },
     {
       "id": "CF-006",
       "claim": "Hist sap consumed by a NON-Argonian is a hallucinogen causing bloodlust; the drinker does not perceive what they are killing.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "Oblivion quest 'Infiltration'; UESP Lore:Blackwood Company (snippets) — the Water's Edge massacre"
-      ],
-      "in_world_sources": [
-        "A Practical Handling of the Marsh-Fevers, section 10"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["Oblivion quest 'Infiltration'; UESP Lore:Blackwood Company (snippets) — the Water's Edge massacre"],
+      "in_world_sources": ["A Practical Handling of the Marsh-Fevers, section 10"],
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
       "player_discoverable": "early",
-      "judges": [
-        "lore.metaphysics",
-        "progression.bonfires",
-        "combat.status"
-      ],
+      "judges": ["lore.metaphysics", "progression.bonfires", "combat.status"],
       "notes": "The entire sap-taint system rests on this. Softening it into a stat malus wastes hard canon."
     },
     {
       "id": "CF-007",
       "claim": "Hist sap increases the combat prowess of those who drink it; Argonian shamans use it ritually.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Hist Sap, Oblivion:Blackwood Company (snippets)"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "mid",
-      "judges": [
-        "lore.hist",
-        "items.consumables"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Hist Sap, Oblivion:Blackwood Company (snippets)"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "mid", "judges": ["lore.hist", "items.consumables"]
     },
     {
       "id": "CF-010",
       "claim": "The Hist say the Void is 'where all roots lead' and that they rejoin it; they speak of invoking the 'Songs of Sithis' in vengeance.",
-      "tier": "soft-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Sithis / Lore:Hist (snippets)"
-      ],
-      "in_world_sources": [
-        "The Egg Speaks Twice (Eighth Song)"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "mid",
-      "judges": [
-        "lore.religion",
-        "lore.metaphysics"
-      ],
+      "tier": "soft-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Sithis / Lore:Hist (snippets)"],
+      "in_world_sources": ["The Egg Speaks Twice (Eighth Song)"],
+      "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "mid", "judges": ["lore.religion", "lore.metaphysics"],
       "notes": "Attributed to the Hist THEMSELVES — in-world testimony, not narration."
     },
     {
       "id": "CF-011",
       "claim": "During the Oblivion Crisis (3E 433+) the Hist withdrew the Argonians and organised a counter-invasion of the Deadlands so ferocious that Dagon's lieutenants sealed the gates.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:An-Xileel (snippet)"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:An-Xileel (snippet)"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": false,
       "player_discoverable": "never",
-      "judges": [
-        "lore.era"
-      ],
+      "judges": ["lore.era"],
       "notes": "AFTER our era. Never referenced in game. Establishes only that the Hist can act at continental scale when it chooses."
     },
     {
       "id": "CF-020",
       "claim": "Argonians are reptilian, breathe water, and resist disease.",
-      "tier": "hard-canon",
-      "provenance": "canonical-recall",
-      "confidence": "high",
-      "sources_real": [
-        "All shipped games"
-      ],
-      "in_world_sources": [
-        "Ledger and Journal of Andrel Vorin"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.argonian",
-        "player.race"
-      ]
+      "tier": "hard-canon", "provenance": "canonical-recall", "confidence": "high",
+      "sources_real": ["All shipped games"], "in_world_sources": ["Ledger and Journal of Andrel Vorin"],
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "early", "judges": ["lore.argonian", "player.race"]
     },
     {
       "id": "CF-022",
       "claim": "Jel is the Argonian root-tongue; it runs on idiom and metaphor, is near-untranslatable without Black Marsh cultural knowledge, and forms words chiefly by compounding.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Jel; The Sharper Tongue: A Jel Primer (snippets)"
-      ],
-      "in_world_sources": [
-        "The Egg Speaks Twice (translator's foreword)"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.language",
-        "world.placenames",
-        "npc.names"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Jel; The Sharper Tongue: A Jel Primer (snippets)"],
+      "in_world_sources": ["The Egg Speaks Twice (translator's foreword)"],
+      "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "early", "judges": ["lore.language", "world.placenames", "npc.names"]
     },
     {
       "id": "CF-023",
       "claim": "Argonians carry both Jel names and Tamrielic names, the latter often direct translations of the former.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Argonian Names (snippet)"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.names",
-        "npc.names"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Argonian Names (snippet)"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "early", "judges": ["lore.names", "npc.names"]
     },
     {
       "id": "CF-024",
       "claim": "Hyphenated Tamrielic Argonian names may encode gender through the possessive (Lifts-Her-Tail, Hides-His-Eyes).",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Argonian Names (snippet)"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.names",
-        "npc.names"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Argonian Names (snippet)"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "early", "judges": ["lore.names", "npc.names"]
     },
     {
       "id": "CF-025",
       "claim": "Attested Jel roots include beeko (friend), deelith (teacher), ku-vastei (needed change), xanmeer (stone-nest), lukiul (assimilated Argonian), kaoc (curse), thtithil (egg).",
-      "tier": "soft-canon",
-      "provenance": "community-data",
-      "confidence": "medium",
-      "sources_real": [
-        "The Sharper Tongue: A Jel Primer; UESP Lore:Shadowscales; UESP Lore:Ixtaxh Xanmeer (snippets)"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "n-a",
-      "judges": [
-        "lore.language"
-      ],
+      "tier": "soft-canon", "provenance": "community-data", "confidence": "medium",
+      "sources_real": ["The Sharper Tongue: A Jel Primer; UESP Lore:Shadowscales; UESP Lore:Ixtaxh Xanmeer (snippets)"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "n-a", "judges": ["lore.language"],
       "notes": "RE-VERIFY FIRST. Glosses came from summaries, not the primer's own text."
     },
     {
       "id": "CF-026",
       "claim": "The Naga are a scaled, serpentine Argonian form. Imperial sources characterise them as thugs responsible for banditry.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Naga; Pocket Guide 3rd ed. ('Argonian \"Naga\" thugs') (snippets)"
-      ],
-      "in_world_sources": [
-        "The Blessings of the Coast"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.argonian",
-        "creatures.humanoid",
-        "dialogue.claims"
-      ],
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Naga; Pocket Guide 3rd ed. ('Argonian \"Naga\" thugs') (snippets)"],
+      "in_world_sources": ["The Blessings of the Coast"],
+      "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "early", "judges": ["lore.argonian", "creatures.humanoid", "dialogue.claims"],
       "notes": "The EXISTENCE of the Naga is hard canon; the 'thug' characterisation is Imperial contempt and must be depicted as such, never voiced as narration."
     },
     {
       "id": "CF-028",
       "claim": "Argonians born under the sign of the Shadow are taken at birth and given to the Dark Brotherhood as Shadowscales; survivors to adulthood become full members.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Shadowscales (snippet)"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "mid",
-      "judges": [
-        "lore.factions",
-        "quests.factions"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Shadowscales (snippet)"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "mid", "judges": ["lore.factions", "quests.factions"]
     },
     {
       "id": "CF-029",
       "claim": "Shadowscales may leave the Brotherhood to serve Black Marsh as ku-vastei — agents of needed change and arbiters who act with impunity.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Shadowscales (snippet)"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "mid",
-      "judges": [
-        "lore.factions",
-        "quests.factions",
-        "dialogue.questgivers"
-      ],
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Shadowscales (snippet)"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "mid", "judges": ["lore.factions", "quests.factions", "dialogue.questgivers"],
       "notes": "A ready-made quest-giving institution with zero invention cost."
     },
     {
       "id": "CF-040",
       "claim": "Duskfall ended the ancient high Argonian civilisation; the knowledge of how the xanmeers were built was lost with it and no living Argonian has it.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Xanmeer (snippet)"
-      ],
-      "in_world_sources": [
-        "The Egg Speaks Twice (Seventh Song)",
-        "Inscription, Third Terrace, Ixt-Shaneekh"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.history",
-        "world.ruins"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Xanmeer (snippet)"],
+      "in_world_sources": ["The Egg Speaks Twice (Seventh Song)", "Inscription, Third Terrace, Ixt-Shaneekh"],
+      "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "early", "judges": ["lore.history", "world.ruins"]
     },
     {
       "id": "CF-041",
       "claim": "Xanmeers ('stone-nests') are pre-Duskfall Argonian stepped ziggurats, often in symmetrical complexes joined by elevated stone walkways, carved with geometric patterns and images of the ancient Argonians. Many are sunken or buried.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Xanmeer; Lore:Ixtaxh Xanmeer (snippets)"
-      ],
-      "in_world_sources": [
-        "Inscription, Third Terrace, Ixt-Shaneekh"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.history",
-        "world.ruins",
-        "visual.architecture"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Xanmeer; Lore:Ixtaxh Xanmeer (snippets)"],
+      "in_world_sources": ["Inscription, Third Terrace, Ixt-Shaneekh"],
+      "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "early", "judges": ["lore.history", "world.ruins", "visual.architecture"]
     },
     {
       "id": "CF-042",
       "claim": "Many xanmeers are shrines erected in both reverence to and fear of Sithis; the purpose of many is lost.",
-      "tier": "soft-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Xanmeer (snippet)"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "mid",
-      "judges": [
-        "lore.religion",
-        "world.ruins",
-        "quests.main"
-      ],
+      "tier": "soft-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Xanmeer (snippet)"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "mid", "judges": ["lore.religion", "world.ruins", "quests.main"],
       "notes": "Direct anchor for CF-C010, the soul-reservoir below the Stone Wastes."
     },
     {
       "id": "CF-043",
       "claim": "Xanmeer names are Jel compounds, e.g. Ixtaxh-Thitithil-Meht ≈ 'Exact Egg-Cracker'.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Ixtaxh Xanmeer (snippet)"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "n-a",
-      "judges": [
-        "lore.language",
-        "world.placenames"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Ixtaxh Xanmeer (snippet)"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "n-a", "judges": ["lore.language", "world.placenames"]
     },
     {
       "id": "CF-044",
       "claim": "The Ruddy Man is a figure of ancient Black Marsh legend associated with the deep past and a stone or ruddy body.",
-      "tier": "soft-canon",
-      "provenance": "canonical-recall",
-      "confidence": "low",
-      "sources_real": [
-        "UNVERIFIED — search this session returned no corroboration"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": true,
-      "invention_space": true,
+      "tier": "soft-canon", "provenance": "canonical-recall", "confidence": "low",
+      "sources_real": ["UNVERIFIED — search this session returned no corroboration"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": true, "invention_space": true,
       "player_discoverable": "never",
-      "judges": [
-        "lore.history"
-      ],
+      "judges": ["lore.history"],
       "notes": "DO NOT build load-bearing plot on this until verified. Low confidence; may be misremembered."
     },
     {
       "id": "CF-045",
       "claim": "The Knahaten Flu began at Stormhold in 2E 560 and persisted 41 years, to 2E 601.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Knahaten Flu (snippet)"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.history",
-        "world.settlements"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Knahaten Flu (snippet)"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "early", "judges": ["lore.history", "world.settlements"]
     },
     {
       "id": "CF-046",
       "claim": "The Knahaten Flu drove the Kothringi and the Lilmothiit to extinction; Argonians were unaffected.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Knahaten Flu / Lore:Kothringi (snippets)"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.history"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Knahaten Flu / Lore:Kothringi (snippets)"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "early", "judges": ["lore.history"]
     },
     {
       "id": "CF-047",
       "claim": "The Kothringi were silver-skinned humans native to Black Marsh, of Nedic descent, and notable sailors.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Kothringi (snippet)"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "mid",
-      "judges": [
-        "lore.history",
-        "npc.names"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Kothringi (snippet)"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "mid", "judges": ["lore.history", "npc.names"]
     },
     {
       "id": "CF-049",
       "claim": "A small number of Kothringi survived the Flu 'through unnatural means'.",
-      "tier": "soft-canon",
-      "provenance": "community-data",
-      "confidence": "medium",
-      "sources_real": [
-        "UESP Lore:Kothringi (snippet)"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "late",
-      "judges": [
-        "lore.history",
-        "npc.unique"
-      ],
+      "tier": "soft-canon", "provenance": "community-data", "confidence": "medium",
+      "sources_real": ["UESP Lore:Kothringi (snippet)"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "late", "judges": ["lore.history", "npc.unique"],
       "notes": "OPEN HOOK: one living Kothringi in 3E 427 is canon-legal and exactly the kind of impossible person Morrowind would have placed."
     },
     {
       "id": "CF-050",
       "claim": "Blackrose prison was built by Potentate Versidae-Shae on the ruins of a Lilmothiit settlement called Blackrose.",
-      "tier": "soft-canon",
-      "provenance": "canonical-recall",
-      "confidence": "medium",
-      "sources_real": [
-        "Partial corroboration in search snippet; primary source unverified"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "mid",
-      "judges": [
-        "lore.history",
-        "world.settlements"
-      ],
+      "tier": "soft-canon", "provenance": "canonical-recall", "confidence": "medium",
+      "sources_real": ["Partial corroboration in search snippet; primary source unverified"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "mid", "judges": ["lore.history", "world.settlements"],
       "notes": "RE-VERIFY."
     },
     {
       "id": "CF-060",
       "claim": "The Empire holds the coasts of Black Marsh and uses the interior for prisons; the heart of the province remains solely Argonian and is not under Imperial control.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "Pocket Guide to the Empire 3rd ed., Argonia (snippet)"
-      ],
-      "in_world_sources": [
-        "The Blessings of the Coast"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.politics",
-        "world.settlements",
-        "quests.factions"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["Pocket Guide to the Empire 3rd ed., Argonia (snippet)"],
+      "in_world_sources": ["The Blessings of the Coast"],
+      "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "early", "judges": ["lore.politics", "world.settlements", "quests.factions"]
     },
     {
       "id": "CF-062",
       "claim": "House Dres of Morrowind has raided Black Marsh for slaves for centuries and slavery remains legal in Morrowind in 3E 427.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Black Marsh; Morrowind (3E 427) (snippets + shipped game)"
-      ],
-      "in_world_sources": [
-        "Ledger and Journal of Andrel Vorin",
-        "The Egg Speaks Twice (Sixth Song)",
-        "The Blessings of the Coast (denies it)"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Black Marsh; Morrowind (3E 427) (snippets + shipped game)"],
+      "in_world_sources": ["Ledger and Journal of Andrel Vorin", "The Egg Speaks Twice (Sixth Song)", "The Blessings of the Coast (denies it)"],
+      "disputed": false, "contradicts_ok": false, "invention_space": true,
       "player_discoverable": "early",
-      "judges": [
-        "lore.politics",
-        "quests.factions",
-        "dialogue.claims"
-      ],
+      "judges": ["lore.politics", "quests.factions", "dialogue.claims"],
       "notes": "The era's central grievance. Must be depicted as CURRENT, never as history."
     },
     {
       "id": "CF-064",
       "claim": "The Blackwood Company is a Leyawiin mercenary outfit, chiefly Khajiit and Argonian, that secretly doses its members with sap from a Hist kept in its hall cellar.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Blackwood Company; Oblivion:Infiltration (snippets)"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "mid",
-      "judges": [
-        "lore.factions",
-        "quests.factions"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Blackwood Company; Oblivion:Infiltration (snippets)"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": true,
+      "player_discoverable": "mid", "judges": ["lore.factions", "quests.factions"]
     },
     {
       "id": "CF-067",
       "claim": "The An-Xileel formed during the Oblivion Crisis (3E 433+) and therefore DO NOT EXIST in 3E 427.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:An-Xileel (snippet)"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:An-Xileel (snippet)"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": false, "invention_space": false,
       "player_discoverable": "never",
-      "judges": [
-        "lore.era",
-        "lore.factions"
-      ],
+      "judges": ["lore.era", "lore.factions"],
       "notes": "MOST LIKELY CANON BREAK. A builder searching 'Argonian faction' finds the wiki page and uses it. Naming them is an automatic 0."
     },
     {
       "id": "CF-071",
       "claim": "REJECTED SOURCE: claims that Gideon is 'ruled by a Root-Assembly' and Blackrose 'governed by a Warden-Brood' originate from an AI-generated worldbuilding site (fables.gg), not from canon.",
-      "tier": "apocryphal",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "fables.gg — REJECTED, non-canonical, do not re-import"
-      ],
-      "in_world_sources": [],
-      "disputed": false,
-      "contradicts_ok": true,
-      "invention_space": false,
-      "player_discoverable": "n-a",
-      "judges": [
-        "lore.politics"
-      ],
+      "tier": "apocryphal", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["fables.gg — REJECTED, non-canonical, do not re-import"],
+      "in_world_sources": [], "disputed": false, "contradicts_ok": true, "invention_space": false,
+      "player_discoverable": "n-a", "judges": ["lore.politics"],
       "notes": "Logged so no later agent re-imports it. Fluent, confident, entirely fabricated — the exact failure mode this registry exists to catch, encountered on day one."
     },
     {
       "id": "CF-088",
       "claim": "Binding place names from the project map: Lilmoth, Soulrest, Blackrose, Gideon, Stormhold, Thorn, Archon, Helstrom; regions Valus Ridge, Blackwood, The Hive, Marauder's Coast, Stone Wastes, Western Rootlands, Eastern Rootlands, The Deep Marshes, The Stone Forest, The Clay Moor, Crimson Coast; waters Topal Bay, Padomaic Ocean.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "corpus/50-world/black-marsh-map-source.jpg (project canon)"
-      ],
-      "in_world_sources": [
-        "The Blessings of the Coast"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "judges": [
-        "world.placenames",
-        "world.settlements"
-      ],
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["corpus/50-world/black-marsh-map-source.jpg (project canon)"],
+      "in_world_sources": ["The Blessings of the Coast"],
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "early", "judges": ["world.placenames", "world.settlements"],
       "notes": "No builder may rename, respell or 'improve' these. Helstrom is rendered on the map in an uncial face where H reads as b."
     },
     {
       "id": "CF-089",
       "claim": "The interior of Black Marsh is functionally impassable to outsiders — no roads, shifting water, disease, and navigation by knowledge no foreigner has.",
-      "tier": "hard-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "Pocket Guide 3rd ed.; project map (tracks terminate at the coasts)"
-      ],
-      "in_world_sources": [
-        "A Practical Handling of the Marsh-Fevers"
-      ],
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "judges": [
-        "world.travel",
-        "lore.politics"
-      ]
+      "tier": "hard-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["Pocket Guide 3rd ed.; project map (tracks terminate at the coasts)"],
+      "in_world_sources": ["A Practical Handling of the Marsh-Fevers"],
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "early", "judges": ["world.travel", "lore.politics"]
     },
+
     {
       "id": "CF-D001",
       "claim": "What survives when an Argonian soul returns to the Hist?",
-      "tier": "soft-canon",
-      "provenance": "constructed",
-      "confidence": "high",
-      "sources_real": [
-        "Canon establishes the return (CF-003) but never adjudicates what persists."
-      ],
+      "tier": "soft-canon", "provenance": "constructed", "confidence": "high",
+      "sources_real": ["Canon establishes the return (CF-003) but never adjudicates what persists."],
       "disputed": true,
-      "in_world_sources": [
-        "The Sap and the Ledger",
-        "The Egg Speaks Twice"
-      ],
+      "in_world_sources": ["The Sap and the Ledger", "The Egg Speaks Twice"],
       "positions": [
         {
           "id": "A",
           "in_world_source": "The Sap and the Ledger (Sergius Verrent)",
           "stance": "The sap is a solvent. The individual dissolves into a common stock; what is issued to a new egg is MADE OF the dead, as a second loaf is made of the same flour. Argonians have no life after this one, only a contribution.",
-          "held_by": [
-            "Imperial scholars",
-            "the Imperial Cult",
-            "most educated foreigners",
-            "some lukiul"
-          ],
-          "holders": {
-            "actors": [
-              "archivist",
-              "clerk",
-              "notary",
-              "scribe"
-            ]
-          },
-          "voiced_by": [
-            "book:the-sap-and-the-ledger",
-            "book:a-tract-for-the-marsh",
-            "dialogue:the-marsh-burial#clerk"
-          ]
+          "held_by": ["Imperial scholars", "the Imperial Cult", "most educated foreigners", "some lukiul"]
         },
         {
           "id": "B",
           "in_world_source": "The Egg Speaks Twice (Third Song)",
           "stance": "The tree gives him out again; that is the whole promise. The question 'is it the same person' is a foreign question the language does not contain.",
-          "held_by": [
-            "interior Argonians",
-            "rootkeepers",
-            "the Deep-Kin"
-          ],
-          "holders": {
-            "actors": [
-              "rootkeeper",
-              "deep-elder",
-              "naga-elder"
-            ]
-          },
-          "voiced_by": [
-            "book:the-egg-speaks-twice",
-            "dialogue:the-marsh-burial#rootkeeper"
-          ]
+          "held_by": ["interior Argonians", "rootkeepers", "the Deep-Kin"]
         }
       ],
       "authorially_true": "partial:The PATTERN survives; the MEMORY does not. Verent is right that nothing individual is recalled and wrong that nothing individual persists. The root-song is right that the promise was never memory. NEITHER source is corrected in game, and the third position — that WELLS remember what the tree forgets — is voiced only by drunks and by the Drowned Court.",
-      "deliberately_open": false,
-      "contradicts_ok": false,
-      "invention_space": false,
+      "deliberately_open": false, "contradicts_ok": false, "invention_space": false,
       "player_discoverable": "late",
-      "judges": [
-        "lore.metaphysics",
-        "progression.bonfires",
-        "books.content"
-      ],
-      "topics": [
-        "the-hist",
-        "the-marsh-burial",
-        "the-quiet-grave"
-      ],
-      "dispute_kind": "fact"
+      "judges": ["lore.metaphysics", "progression.bonfires", "books.content"]
     },
     {
       "id": "CF-D002",
       "claim": "Who cut the first sapwell, and why?",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
       "disputed": true,
-      "in_world_sources": [
-        "The Sap and the Ledger (records only that rootkeepers refuse to say)",
-        "oral tradition, Helstrom",
-        "Drowned Court commonplace book"
-      ],
+      "in_world_sources": ["The Sap and the Ledger (records only that rootkeepers refuse to say)", "oral tradition, Helstrom", "Drowned Court commonplace book"],
       "positions": [
-        {
-          "id": "A",
-          "in_world_source": "oral tradition, Helstrom",
-          "stance": "The Hist cut itself, and the keepers only keep the cut open.",
-          "held_by": [
-            "rootkeepers",
-            "Deep-Kin"
-          ],
-          "holders": {
-            "actors": [
-              "rootkeeper",
-              "deep-elder"
-            ],
-            "settlements": [
-              "helstrom",
-              "stormhold",
-              "thorn"
-            ]
-          },
-          "voiced_by": [
-            "dialogue:the-cut-roots#rootkeeper"
-          ]
-        },
-        {
-          "id": "B",
-          "in_world_source": "Drowned Court commonplace book",
-          "stance": "The Kothringi cut the first, and the Knahaten Flu was the payment.",
-          "held_by": [
-            "Drowned Court",
-            "some Soulrest families"
-          ],
-          "holders": {
-            "actors": [
-              "mudborn"
-            ],
-            "factions": [
-              "drowned-court"
-            ]
-          },
-          "voiced_by": [
-            "book:the-commonplace-book-of-ivo-sarn",
-            "dialogue:the-cut-roots#mudborn"
-          ]
-        },
-        {
-          "id": "C",
-          "in_world_source": "The Sap and the Ledger",
-          "stance": "Nobody will say, and they become genuinely angry when pressed.",
-          "held_by": [
-            "Imperial scholarship"
-          ],
-          "holders": {
-            "actors": [
-              "archivist"
-            ]
-          },
-          "voiced_by": [
-            "book:the-sap-and-the-ledger"
-          ]
-        }
+        {"id": "A", "in_world_source": "oral tradition, Helstrom", "stance": "The Hist cut itself, and the keepers only keep the cut open.", "held_by": ["rootkeepers", "Deep-Kin"]},
+        {"id": "B", "in_world_source": "Drowned Court commonplace book", "stance": "The Kothringi cut the first, and the Knahaten Flu was the payment.", "held_by": ["Drowned Court", "some Soulrest families"]},
+        {"id": "C", "in_world_source": "The Sap and the Ledger", "stance": "Nobody will say, and they become genuinely angry when pressed.", "held_by": ["Imperial scholarship"]}
       ],
       "authorially_true": null,
       "deliberately_open": true,
-      "contradicts_ok": false,
-      "invention_space": false,
+      "contradicts_ok": false, "invention_space": false,
       "player_discoverable": "never",
-      "judges": [
-        "lore.metaphysics",
-        "quests.main"
-      ],
-      "notes": "NO ANSWER EXISTS. Do not resolve this in any quest, book or ending. A future writer WILL want to; this flag is the refusal.",
-      "topics": [
-        "the-sapwells",
-        "the-cut-roots"
-      ],
-      "dispute_kind": "fact"
+      "judges": ["lore.metaphysics", "quests.main"],
+      "notes": "NO ANSWER EXISTS. Do not resolve this in any quest, book or ending. A future writer WILL want to; this flag is the refusal."
     },
     {
       "id": "CF-D003",
       "claim": "Were the xanmeers built by Argonians, or built by someone older and merely occupied by them?",
-      "tier": "hard-canon",
-      "provenance": "constructed",
-      "confidence": "high",
+      "tier": "hard-canon", "provenance": "constructed", "confidence": "high",
       "disputed": true,
-      "in_world_sources": [
-        "An Imperial antiquarian's survey (T1, to be written)",
-        "The Egg Speaks Twice (Seventh Song)"
-      ],
+      "in_world_sources": ["An Imperial antiquarian's survey (T1, to be written)", "The Egg Speaks Twice (Seventh Song)"],
       "positions": [
-        {
-          "id": "A",
-          "in_world_source": "Imperial antiquarian survey",
-          "stance": "The present Argonians cannot build such things and never could; the xanmeers are the work of a vanished people whose ruins the natives inherited.",
-          "held_by": [
-            "Imperial antiquarians",
-            "some Telvanni"
-          ],
-          "holders": {
-            "actors": [
-              "archivist",
-              "clerk",
-              "notary"
-            ]
-          },
-          "voiced_by": [
-            "book:the-stone-nests-ii",
-            "book:on-the-tally-stones",
-            "dialogue:the-xanmeers#archivist"
-          ]
-        },
-        {
-          "id": "B",
-          "in_world_source": "The Egg Speaks Twice (Seventh Song)",
-          "stance": "'Our grandmothers stacked the world into steps and walked up it. We do not know how.'",
-          "held_by": [
-            "all Argonians"
-          ],
-          "holders": {
-            "actors": [
-              "rootkeeper",
-              "mudborn",
-              "naga-elder",
-              "deep-elder"
-            ],
-            "races": [
-              "saxhleel",
-              "naga"
-            ]
-          },
-          "voiced_by": [
-            "book:the-egg-speaks-twice",
-            "book:the-duskfall-chronicle",
-            "dialogue:the-xanmeers#rootkeeper"
-          ]
-        }
+        {"id": "A", "in_world_source": "Imperial antiquarian survey", "stance": "The present Argonians cannot build such things and never could; the xanmeers are the work of a vanished people whose ruins the natives inherited.", "held_by": ["Imperial antiquarians", "some Telvanni"]},
+        {"id": "B", "in_world_source": "The Egg Speaks Twice (Seventh Song)", "stance": "'Our grandmothers stacked the world into steps and walked up it. We do not know how.'", "held_by": ["all Argonians"]}
       ],
       "authorially_true": "B",
-      "deliberately_open": false,
-      "contradicts_ok": false,
-      "invention_space": false,
+      "deliberately_open": false, "contradicts_ok": false, "invention_space": false,
       "player_discoverable": "mid",
-      "judges": [
-        "lore.history",
-        "world.ruins",
-        "dialogue.claims"
-      ],
-      "notes": "B matches hard canon CF-040/CF-041. Position A is a WRONG view held by real NPCs, and its wrongness is racial condescension. A critic must not flag A as an error — it is registered.",
-      "topics": [
-        "the-xanmeers",
-        "the-stone-forest",
-        "the-old-ground"
-      ],
-      "dispute_kind": "fact"
+      "judges": ["lore.history", "world.ruins", "dialogue.claims"],
+      "notes": "B matches hard canon CF-040/CF-041. Position A is a WRONG view held by real NPCs, and its wrongness is racial condescension. A critic must not flag A as an error — it is registered."
     },
     {
       "id": "CF-D004",
       "claim": "Is the Hist one mind or many trees?",
-      "tier": "soft-canon",
-      "provenance": "constructed",
-      "confidence": "high",
+      "tier": "soft-canon", "provenance": "constructed", "confidence": "high",
       "disputed": true,
-      "in_world_sources": [
-        "The Sap and the Ledger",
-        "rootkeepers of Helstrom",
-        "the Lilmoth keepers"
-      ],
+      "in_world_sources": ["The Sap and the Ledger", "rootkeepers of Helstrom", "the Lilmoth keepers"],
       "positions": [
-        {
-          "id": "A",
-          "in_world_source": "Imperial usage",
-          "stance": "'The Hist' is a species. Trees are individuals, like any grove.",
-          "held_by": [
-            "Imperial scholars",
-            "naturalists"
-          ],
-          "holders": {
-            "actors": [
-              "archivist",
-              "healer"
-            ]
-          },
-          "voiced_by": [
-            "book:of-the-beasts-of-the-southern-marsh",
-            "dialogue:the-great-hist#archivist"
-          ]
-        },
-        {
-          "id": "B",
-          "in_world_source": "rootkeepers of Helstrom",
-          "stance": "There is one tree. What you see are its fingers.",
-          "held_by": [
-            "interior rootkeepers",
-            "Deep-Kin"
-          ],
-          "holders": {
-            "actors": [
-              "rootkeeper",
-              "deep-elder"
-            ],
-            "settlements": [
-              "helstrom",
-              "stormhold",
-              "thorn",
-              "archon"
-            ]
-          },
-          "voiced_by": [
-            "dialogue:the-great-hist#rootkeeper"
-          ]
-        },
-        {
-          "id": "C",
-          "in_world_source": "the Lilmoth keepers",
-          "stance": "There was one. Some fingers have stopped listening.",
-          "held_by": [
-            "coastal keepers",
-            "Drowned Court"
-          ],
-          "holders": {
-            "actors": [
-              "rootkeeper",
-              "naga-elder"
-            ],
-            "settlements": [
-              "lilmoth",
-              "soulrest",
-              "gideon",
-              "blackrose",
-              "tidewrack"
-            ]
-          },
-          "voiced_by": [
-            "book:the-fingers-and-the-hand",
-            "dialogue:the-eleven-wells#rootkeeper"
-          ]
-        }
+        {"id": "A", "in_world_source": "Imperial usage", "stance": "'The Hist' is a species. Trees are individuals, like any grove.", "held_by": ["Imperial scholars", "naturalists"]},
+        {"id": "B", "in_world_source": "rootkeepers of Helstrom", "stance": "There is one tree. What you see are its fingers.", "held_by": ["interior rootkeepers", "Deep-Kin"]},
+        {"id": "C", "in_world_source": "the Lilmoth keepers", "stance": "There was one. Some fingers have stopped listening.", "held_by": ["coastal keepers", "Drowned Court"]}
       ],
       "authorially_true": "C",
-      "deliberately_open": false,
-      "contradicts_ok": false,
-      "invention_space": false,
+      "deliberately_open": false, "contradicts_ok": false, "invention_space": false,
       "player_discoverable": "late",
-      "judges": [
-        "lore.hist",
-        "quests.main"
-      ],
-      "notes": "Our resolution, chosen because canon uses both singular and plural and never adjudicates (CF-008). C preserves both usages and is the only one that leaves room for CF-009's rogue trees.",
-      "topics": [
-        "the-great-hist",
-        "the-hist",
-        "the-eleven-wells"
-      ],
-      "dispute_kind": "fact"
+      "judges": ["lore.hist", "quests.main"],
+      "notes": "Our resolution, chosen because canon uses both singular and plural and never adjudicates (CF-008). C preserves both usages and is the only one that leaves room for CF-009's rogue trees."
     },
     {
       "id": "CF-D005",
       "claim": "What caused the Knahaten Flu?",
-      "tier": "soft-canon",
-      "provenance": "community-data",
-      "confidence": "high",
-      "sources_real": [
-        "UESP Lore:Knahaten Flu (snippet): one account blames an Argonian shaman who manipulated the spore-trees in revenge; another attributes it to natural causes. Canon does not adjudicate."
-      ],
+      "tier": "soft-canon", "provenance": "community-data", "confidence": "high",
+      "sources_real": ["UESP Lore:Knahaten Flu (snippet): one account blames an Argonian shaman who manipulated the spore-trees in revenge; another attributes it to natural causes. Canon does not adjudicate."],
       "disputed": true,
-      "in_world_sources": [
-        "An Imperial history (T7, to be written)",
-        "Argonian oral account, Stormhold"
-      ],
+      "in_world_sources": ["An Imperial history (T7, to be written)", "Argonian oral account, Stormhold"],
       "positions": [
-        {
-          "id": "A",
-          "in_world_source": "Imperial history",
-          "stance": "An Argonian shaman engineered it through a manipulation of the Hist, in revenge for the treatment of his people.",
-          "held_by": [
-            "Imperial historians",
-            "most foreigners",
-            "many Dunmer"
-          ],
-          "holders": {
-            "actors": [
-              "archivist",
-              "legionary",
-              "clerk",
-              "dres-factor",
-              "merchant"
-            ]
-          },
-          "voiced_by": [
-            "book:the-knahaten-years",
-            "dialogue:the-fever-year#archivist"
-          ]
-        },
-        {
-          "id": "B",
-          "in_world_source": "Argonian oral account",
-          "stance": "Natural. The marsh is full of fevers and this one travelled.",
-          "held_by": [
-            "Argonians",
-            "some Imperial physicians"
-          ],
-          "holders": {
-            "actors": [
-              "rootkeeper",
-              "mudborn",
-              "healer",
-              "fisher"
-            ]
-          },
-          "voiced_by": [
-            "book:what-the-water-went-round",
-            "dialogue:the-fever-year#mudborn"
-          ]
-        }
+        {"id": "A", "in_world_source": "Imperial history", "stance": "An Argonian shaman engineered it through a manipulation of the Hist, in revenge for the treatment of his people.", "held_by": ["Imperial historians", "most foreigners", "many Dunmer"]},
+        {"id": "B", "in_world_source": "Argonian oral account", "stance": "Natural. The marsh is full of fevers and this one travelled.", "held_by": ["Argonians", "some Imperial physicians"]}
       ],
       "authorially_true": "partial:It was Hist-borne but not authored by any single person. Position A's slander is that it names a culprit; position B's evasion is that it denies the tree's involvement. NEITHER is corrected in game.",
-      "deliberately_open": false,
-      "contradicts_ok": false,
-      "invention_space": true,
+      "deliberately_open": false, "contradicts_ok": false, "invention_space": true,
       "player_discoverable": "late",
-      "judges": [
-        "lore.history",
-        "books.content"
-      ],
-      "notes": "CANON ITSELF leaves this contradiction standing. It is the proof-of-convention for this whole registry.",
-      "topics": [
-        "the-fever-year",
-        "the-thin-years"
-      ],
-      "dispute_kind": "fact"
+      "judges": ["lore.history", "books.content"],
+      "notes": "CANON ITSELF leaves this contradiction standing. It is the proof-of-convention for this whole registry."
     },
     {
       "id": "CF-D006",
       "claim": "Why has the Rootward Tide begun to fail?",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
       "disputed": true,
-      "in_world_sources": [
-        "Deep-Kin testimony",
-        "Wet Ledger commissioned survey",
-        "Drowned Court burial ledgers"
-      ],
+      "in_world_sources": ["Deep-Kin testimony", "Wet Ledger commissioned survey", "Drowned Court burial ledgers"],
       "positions": [
-        {
-          "id": "A",
-          "in_world_source": "Deep-Kin testimony",
-          "stance": "Root-theft. The soul-gem trade intercepts the fall. Foreigners are drinking the marsh.",
-          "held_by": [
-            "Deep-Kin",
-            "most interior Argonians"
-          ],
-          "holders": {
-            "actors": [
-              "deep-elder"
-            ],
-            "factions": [
-              "the_xul_aneekh"
-            ]
-          },
-          "voiced_by": [
-            "book:the-gem-and-the-root",
-            "dialogue:the-thinning#deep-elder"
-          ]
-        },
-        {
-          "id": "B",
-          "in_world_source": "Wet Ledger commissioned survey",
-          "stance": "Too many wounds. Thirty years of Sap-Cutters opening wells for sale; the tree is bleeding capacity.",
-          "held_by": [
-            "Wet Ledger",
-            "middle-river rootkeepers",
-            "Imperial naturalists"
-          ],
-          "holders": {
-            "actors": [
-              "clerk",
-              "merchant"
-            ],
-            "factions": [
-              "wet-ledger"
-            ]
-          },
-          "voiced_by": [
-            "book:the-articles-of-the-wet-ledger",
-            "dialogue:the-thinning#clerk"
-          ]
-        },
-        {
-          "id": "C",
-          "in_world_source": "Drowned Court burial ledgers",
-          "stance": "It started before the cutting and before the gem trade. Something below the Stone Wastes is filling.",
-          "held_by": [
-            "Drowned Court"
-          ],
-          "holders": {
-            "actors": [
-              "mudborn"
-            ],
-            "factions": [
-              "drowned-court"
-            ]
-          },
-          "voiced_by": [
-            "book:the-commonplace-book-of-ivo-sarn",
-            "dialogue:the-thinning#mudborn"
-          ]
-        }
+        {"id": "A", "in_world_source": "Deep-Kin testimony", "stance": "Root-theft. The soul-gem trade intercepts the fall. Foreigners are drinking the marsh.", "held_by": ["Deep-Kin", "most interior Argonians"]},
+        {"id": "B", "in_world_source": "Wet Ledger commissioned survey", "stance": "Too many wounds. Thirty years of Sap-Cutters opening wells for sale; the tree is bleeding capacity.", "held_by": ["Wet Ledger", "middle-river rootkeepers", "Imperial naturalists"]},
+        {"id": "C", "in_world_source": "Drowned Court burial ledgers", "stance": "It started before the cutting and before the gem trade. Something below the Stone Wastes is filling.", "held_by": ["Drowned Court"]}
       ],
       "authorially_true": "C",
-      "deliberately_open": false,
-      "contradicts_ok": false,
-      "invention_space": false,
+      "deliberately_open": false, "contradicts_ok": false, "invention_space": false,
       "player_discoverable": "late",
-      "judges": [
-        "quests.main",
-        "lore.metaphysics"
-      ],
-      "notes": "A and B must be given GENUINELY GOOD evidence — both are real aggravations, and a player who acts on either does real good and fixes nothing. See CF-C010.",
-      "topics": [
-        "the-thinning",
-        "why-it-is-filling-now",
-        "the-sapwells"
-      ],
-      "dispute_kind": "fact"
+      "judges": ["quests.main", "lore.metaphysics"],
+      "notes": "A and B must be given GENUINELY GOOD evidence — both are real aggravations, and a player who acts on either does real good and fixes nothing. See CF-C010."
     },
+
     {
       "id": "CF-C001",
       "claim": "Legion strength in Black Marsh in 3E 427 is thin because reserves were redeployed to the Vvardenfell crisis.",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.politics",
-        "world.settlements"
-      ]
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "early", "judges": ["lore.politics", "world.settlements"]
     },
     {
       "id": "CF-C002",
       "claim": "In 3E 427 the Blackwood Company is a young Leyawiin outfit operating in Black Marsh, hunting for a Hist to take. It has not yet acquired the tree it is documented as holding in 3E 433.",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "mid",
-      "judges": [
-        "lore.factions",
-        "quests.factions"
-      ],
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "mid", "judges": ["lore.factions", "quests.factions"],
       "notes": "Canon-compatible prequel to CF-064. Canon states no founding date (CF-065)."
     },
     {
       "id": "CF-C003",
       "claim": "In 3E 427 there is an isolationist current in the interior — the Xul-Aneekh, 'the Deep-Kin' — a consensus, not a party, from which An-Xileel sentiment later grows. They are NEVER called the An-Xileel.",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.factions",
-        "lore.era",
-        "quests.factions"
-      ]
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "early", "judges": ["lore.factions", "lore.era", "quests.factions"]
     },
     {
       "id": "CF-C004",
       "claim": "The Wet Ledger is a compact of lukiul river-factors and Imperial merchants controlling Gideon's tolls, warehouses and the Governor's debts.",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.factions",
-        "quests.factions",
-        "economy.gold"
-      ]
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "early", "judges": ["lore.factions", "quests.factions", "economy.gold"]
     },
     {
       "id": "CF-C005",
       "claim": "The Ixtu-Vakh (Sap-Cutters) are Argonian heretics who cut sapwells for profit and sell hist-sap phials to foreigners.",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "mid",
-      "judges": [
-        "lore.factions",
-        "quests.factions",
-        "progression.bonfires"
-      ]
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "mid", "judges": ["lore.factions", "quests.factions", "progression.bonfires"]
     },
     {
       "id": "CF-C006",
       "claim": "The Drowned Court of Soulrest is a mixed-race mortuary order, four centuries old, that buries or burns the dead of every people for a fee.",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.factions",
-        "lore.religion",
-        "quests.main"
-      ]
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "early", "judges": ["lore.factions", "lore.religion", "quests.main"]
     },
     {
       "id": "CF-C007",
       "claim": "The Blackrose Prefect runs a labour-lease scheme renting prisoners to coastal plantations and, through intermediaries, to Dres factors. Legal on paper; slavery in fact.",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "mid",
-      "judges": [
-        "lore.politics",
-        "quests.factions"
-      ]
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "mid", "judges": ["lore.politics", "quests.factions"]
     },
     {
       "id": "CF-C008",
       "claim": "The Rootward Tide: everything that dies in Black Marsh leaks soul-stuff downward into a water table threaded with Hist root, which drinks it and holds it as pattern (eixa). Sap is soul in liquid form; Jel has one word, vei, for blood and sap.",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
       "player_discoverable": "early",
-      "judges": [
-        "lore.metaphysics",
-        "progression.souls",
-        "progression.bonfires"
-      ],
+      "judges": ["lore.metaphysics", "progression.souls", "progression.bonfires"],
       "notes": "In-world this is an Argonian IDIOM, not established Tamrielic scholarship. No foreign scholar may state it as settled."
     },
     {
       "id": "CF-C009",
       "claim": "A sapwell (ixtu-xul) is a Hist root deliberately cut and kept open. Wells remember what the tree forgets, because a wound is a place where something happened. This is why a well can re-issue a specific person.",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
       "player_discoverable": "mid",
-      "judges": [
-        "progression.bonfires",
-        "combat.death",
-        "combat.respawn"
-      ],
+      "judges": ["progression.bonfires", "combat.death", "combat.respawn"],
       "notes": "The single constructed claim the entire checkpoint system rests on. In-world it is voiced only by drunks (per The Sap and the Ledger) and by the Drowned Court."
     },
     {
       "id": "CF-C010",
       "claim": "Beneath the Stone Wastes near Soulrest, a pre-Duskfall xanmeer engine built to HOLD souls is filling. It is the true cause of the Tide's failure — and the sapwells work because of it.",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
       "player_discoverable": "late",
-      "judges": [
-        "quests.main",
-        "lore.metaphysics",
-        "progression.bonfires"
-      ],
+      "judges": ["quests.main", "lore.metaphysics", "progression.bonfires"],
       "notes": "BINDING AND SECRET. No NPC may state this before the registered discovery point. Anchored in CF-042 (xanmeers as shrines in reverence and fear of Sithis). Resolving it should be able to switch off respawning — a Morrowind quest decision reaching into a Souls mechanic."
     },
     {
       "id": "CF-C011",
       "claim": "Sap-taint (teekh-kaoc): a non-Argonian who rests at sapwells accumulates corruption in five bands, ending in the Hist addressing them directly. At band 3 enemy SKINS lie; frames, hitboxes, telegraphs, damage and AI never change.",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
       "player_discoverable": "early",
-      "judges": [
-        "progression.bonfires",
-        "combat.status",
-        "player.race"
-      ],
+      "judges": ["progression.bonfires", "combat.status", "player.race"],
       "notes": "Derives directly from hard canon CF-006. Altering combat behaviour under taint is an AR-1 automatic fail."
     },
     {
       "id": "CF-C012",
       "claim": "Travel is by poled barge along Hist-advised routes: a poler asks the tree each morning which way the water moved in the night. Purchasable with gold, schedule-bound, refusable, severable as a plot event. Sapwells never teleport.",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "judges": [
-        "world.travel",
-        "progression.bonfires"
-      ],
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "early", "judges": ["world.travel", "progression.bonfires"],
       "notes": "Satisfies ARBITRATION seam S7."
     },
     {
       "id": "CF-C013",
       "claim": "Xul-hesh (root-theft): soul-gem trapping intercepts soul-stuff that would have gone down to the roots. Argonians regard it as somewhere between poisoning a well and kidnapping, and its Daedric patron is Molag Bal.",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "mid",
-      "judges": [
-        "lore.religion",
-        "lore.metaphysics",
-        "economy.items",
-        "quests.factions"
-      ],
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "mid", "judges": ["lore.religion", "lore.metaphysics", "economy.items", "quests.factions"],
       "notes": "Molag Bal's patronage of soul gems is canon; the Argonian reading of the trade is ours."
     },
     {
       "id": "CF-C014",
       "claim": "The year 3E 427 is known in interior Argonian reckoning as the Ninth Sap-Fall since the Rootless Egg. Interior Argonians count by the Hist's cycle, not the Imperial calendar.",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "disputed": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "judges": [
-        "lore.era",
-        "dialogue.voice"
-      ],
+      "tier": "constructed", "provenance": "constructed", "confidence": "high",
+      "disputed": false, "contradicts_ok": false, "invention_space": false,
+      "player_discoverable": "early", "judges": ["lore.era", "dialogue.voice"],
       "notes": "An NPC who gives you an Imperial date is telling you something about themselves."
-    },
-    {
-      "id": "CF-D007",
-      "claim": "What was the house under the Stone Wastes built to do?",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "sources_real": [],
-      "in_world_sources": [
-        "Of the House Under the Wastes, Which Was Built in Reverence",
-        "Of the House Under the Wastes, Which Was Built in Fear"
-      ],
-      "disputed": true,
-      "dispute_kind": "fact",
-      "positions": [
-        {
-          "id": "A",
-          "in_world_source": "Of the House Under the Wastes, Which Was Built in Reverence (Ojal-Weeth)",
-          "stance": "It was raised to hold and to honour, and the burying that goes on above it now is the same act continued.",
-          "held_by": [
-            "the Drowned Court",
-            "the Soulrest burial families",
-            "Ojal-Weeth and the readers who follow him"
-          ],
-          "holders": {
-            "actors": [
-              "mudborn"
-            ],
-            "factions": [
-              "drowned-court"
-            ]
-          },
-          "voiced_by": [
-            "book:the-house-built-in-reverence"
-          ]
-        },
-        {
-          "id": "B",
-          "in_world_source": "Of the House Under the Wastes, Which Was Built in Fear (Undersexton Bel Mourne)",
-          "stance": "It was raised to keep something where it was put, and every feature she can measure is a feature for keeping in.",
-          "held_by": [
-            "the undersextons who keep the current leaves",
-            "the Gideon archive",
-            "Imperial antiquarians who have read her"
-          ],
-          "holders": {
-            "actors": [
-              "archivist",
-              "clerk"
-            ]
-          },
-          "voiced_by": [
-            "book:the-house-built-in-fear"
-          ]
-        }
-      ],
-      "authorially_true": "partial:Neither author is describing the building. Both are reasoning from the habits of people four hundred years and one culture downstream of whoever laid the floor, and the floor was laid for a third reason neither has considered.",
-      "deliberately_open": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "late",
-      "topics": [
-        "the-house-under-the-wastes",
-        "the-stone-wastes"
-      ],
-      "judges": [
-        "lore.canon.registry",
-        "lore.canon.history",
-        "lore.religion.metaphysics"
-      ],
-      "notes": "Registered by W1-23 from the shipped pair, which was carrying `cf: CF-042` — a fact that is not marked disputed and has no positions. The books were arguing and the registry could not tell a reader that they were."
-    },
-    {
-      "id": "CF-D008",
-      "claim": "Are subjects of the Empire held as property in this province?",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "sources_real": [],
-      "in_world_sources": [
-        "The Blessings of the Coast",
-        "Ledger and Journal of Andrel Vorin, Salt-Factor"
-      ],
-      "disputed": true,
-      "dispute_kind": "fact",
-      "positions": [
-        {
-          "id": "A",
-          "in_world_source": "The Blessings of the Coast: An Address to the Free Peoples of Argonia",
-          "stance": "The Empire does not permit one of its subjects to be owned, and what is done at Blackrose is a lease of labour under an instrument a court will read.",
-          "held_by": [
-            "the Provincial Office",
-            "the Imperial Assize at Gideon",
-            "most officers of the Ninth on the coast"
-          ],
-          "holders": {
-            "actors": [
-              "archivist",
-              "clerk",
-              "notary",
-              "legionary"
-            ],
-            "factions": [
-              "the-imperial-assize",
-              "provincial-office",
-              "ninth-cohort"
-            ]
-          },
-          "voiced_by": [
-            "book:the-blessings-of-the-coast",
-            "dialogue:the-labour-lease#clerk"
-          ]
-        },
-        {
-          "id": "B",
-          "in_world_source": "Ledger and Journal of Andrel Vorin, Salt-Factor",
-          "stance": "The House enters people in the stock column and takes them out of it, and the only thing a lease changes is which word the paper uses.",
-          "held_by": [
-            "House Dres factors",
-            "the underwriters of the Wet Ledger",
-            "every soul who has been on the Blackrose roll"
-          ],
-          "holders": {
-            "actors": [
-              "dres-factor",
-              "sapcutter",
-              "mudborn",
-              "outlaw"
-            ],
-            "factions": [
-              "house-dres",
-              "wet-ledger"
-            ]
-          },
-          "voiced_by": [
-            "book:ledger-and-journal-of-andrel-vorin",
-            "book:the-account-the-marsh-keeps",
-            "dialogue:the-labour-lease#outlaw"
-          ]
-        }
-      ],
-      "authorially_true": "B",
-      "deliberately_open": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "topics": [
-        "slavery",
-        "the-labour-lease",
-        "the-lease-roll",
-        "the-soul-trade"
-      ],
-      "judges": [
-        "lore.canon.registry",
-        "lore.canon.factions",
-        "lore.canon.history",
-        "quests.faction.escalation"
-      ],
-      "notes": "The province's central moral fact and it had no registry entry. The two books carried `cf: CF-062`, which records that the Empire abolished slavery in most of Tamriel — a true fact that is not the thing they disagree about. Registered by W1-23. The ruling is B and is sealed out of the shipped build; no text in the game says so."
-    },
-    {
-      "id": "CF-D009",
-      "claim": "Does the labour-lease at Blackrose raise any question of consent?",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "sources_real": [],
-      "in_world_sources": [
-        "The Casebook of the Assize at Gideon, Volume the Second: Of the Lease",
-        "Of the Labour-Lease at Blackrose, and Why It Is Not What You Have Been Told"
-      ],
-      "disputed": true,
-      "dispute_kind": "fact",
-      "positions": [
-        {
-          "id": "A",
-          "in_world_source": "The Casebook of the Assize at Gideon, Volume the Second",
-          "stance": "A lease is signed. A signed instrument answers the question and does not raise it, and a court that reopens it has stopped being a court.",
-          "held_by": [
-            "the Assize at Gideon",
-            "the clerks who draw the instruments",
-            "the Provincial Office"
-          ],
-          "holders": {
-            "actors": [
-              "clerk",
-              "notary"
-            ],
-            "factions": [
-              "the-imperial-assize",
-              "provincial-office"
-            ]
-          },
-          "voiced_by": [
-            "book:the-casebook-ii",
-            "dialogue:the-lease-roll#clerk"
-          ]
-        },
-        {
-          "id": "B",
-          "in_world_source": "Of the Labour-Lease at Blackrose",
-          "stance": "The mark is made by people with one place to go, and a court that will not ask what the alternative was has decided in advance not to know.",
-          "held_by": [
-            "the leased at Blackrose",
-            "the river bands",
-            "junior clerks who have stopped saying it out loud"
-          ],
-          "holders": {
-            "actors": [
-              "mudborn",
-              "sapcutter",
-              "outlaw"
-            ],
-            "factions": [
-              "river-bands"
-            ]
-          },
-          "voiced_by": [
-            "book:the-lease-and-what-it-costs",
-            "dialogue:the-lease-roll#sapcutter"
-          ]
-        }
-      ],
-      "authorially_true": "B",
-      "deliberately_open": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "topics": [
-        "the-labour-lease",
-        "the-lease-roll",
-        "the-clause",
-        "the-heirs-clause"
-      ],
-      "judges": [
-        "lore.canon.registry",
-        "lore.canon.factions",
-        "quests.faction.escalation"
-      ],
-      "notes": "Distinct from CF-D008 and deliberately so: D008 is about what a person IS under the law, D009 about what a signature MEANS. The Assize can hold A and B at once without noticing, and does."
-    },
-    {
-      "id": "CF-D010",
-      "claim": "Does the Legion go inland?",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "sources_real": [],
-      "in_world_sources": [
-        "The Blessings of the Coast",
-        "A Short Account of the Pacification of the Argonian Coast"
-      ],
-      "disputed": true,
-      "dispute_kind": "fact",
-      "positions": [
-        {
-          "id": "A",
-          "in_world_source": "The Blessings of the Coast",
-          "stance": "The province is garrisoned and the Legion's writ runs to its borders, as it does in every province.",
-          "held_by": [
-            "the Provincial Office",
-            "the address as it was published at Gideon",
-            "readers who have not been past Thorn"
-          ],
-          "holders": {
-            "actors": [
-              "archivist",
-              "clerk",
-              "merchant"
-            ],
-            "factions": [
-              "provincial-office"
-            ]
-          },
-          "voiced_by": [
-            "book:the-blessings-of-the-coast",
-            "dialogue:the-imperial-claim#archivist"
-          ]
-        },
-        {
-          "id": "B",
-          "in_world_source": "A Short Account of the Pacification of the Argonian Coast",
-          "stance": "The coast is held. The interior is visited. Between the two is a hundred miles of water no cohort has marched and none is going to.",
-          "held_by": [
-            "the Ninth Cohort",
-            "every serjeant who has been asked to try",
-            "the rootkeepers, who count it differently and get the same answer"
-          ],
-          "holders": {
-            "actors": [
-              "legionary",
-              "mercenary"
-            ],
-            "factions": [
-              "ninth-cohort",
-              "legion"
-            ]
-          },
-          "voiced_by": [
-            "book:a-short-account-of-the-pacification",
-            "dialogue:the-interiors-consent#rootkeeper"
-          ]
-        }
-      ],
-      "authorially_true": "B",
-      "deliberately_open": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "early",
-      "topics": [
-        "the-imperial-claim",
-        "the-interiors-consent",
-        "the-ninth-cohort",
-        "the-cohorts-stormhold-does-not-have"
-      ],
-      "judges": [
-        "lore.canon.registry",
-        "lore.canon.factions",
-        "lore.canon.geography"
-      ],
-      "notes": "Resolves to CF-C001, the thin Legion. Carried `cf: CF-C001` on the book edge, which is our invention rather than a dispute; the invention says the Legion IS thin, and what the two books argue about is whether anybody will say so."
-    },
-    {
-      "id": "CF-D011",
-      "claim": "What drowned the relief column at Reman's Ford?",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "sources_real": [],
-      "in_world_sources": [
-        "A Short Account of the Pacification",
-        "The Water Does Not Take Sides",
-        "Nine Stanzas Upon the Drowning of Reman's Ford"
-      ],
-      "disputed": true,
-      "dispute_kind": "fact",
-      "positions": [
-        {
-          "id": "A",
-          "in_world_source": "A Short Account of the Pacification, and the Cohort's received papers",
-          "stance": "An ambush above the ford, and the water afterwards. The column was fought and then it was drowned.",
-          "held_by": [
-            "the Provincial Office",
-            "the received account",
-            "most of the Cohort's own officers"
-          ],
-          "holders": {
-            "actors": [
-              "legionary",
-              "archivist",
-              "magister"
-            ],
-            "factions": [
-              "ninth-cohort",
-              "provincial-office"
-            ]
-          },
-          "voiced_by": [
-            "book:a-short-account-of-the-pacification",
-            "book:the-relief-of-the-reman-ford",
-            "dialogue:the-drowning-at-the-ford#archivist"
-          ]
-        },
-        {
-          "id": "B",
-          "in_world_source": "The Water Does Not Take Sides",
-          "stance": "Nobody fought. The weir was lifted, the ford filled in the time it takes to walk it, and the marsh does not take sides.",
-          "held_by": [
-            "the weir families above the ford",
-            "the villages that keep the lifting"
-          ],
-          "holders": {
-            "actors": [
-              "mudborn",
-              "fisher",
-              "villager"
-            ],
-            "settlements": [
-              "gideon",
-              "thorn"
-            ]
-          },
-          "voiced_by": [
-            "book:the-water-does-not-take-sides",
-            "dialogue:the-weeping-ford#mudborn"
-          ]
-        },
-        {
-          "id": "C",
-          "in_world_source": "Nine Stanzas Upon the Drowning of Reman's Ford",
-          "stance": "It was done, on purpose, by hands the poem names and the record does not.",
-          "held_by": [
-            "the singers",
-            "some of the river bands",
-            "the men in the depots who will not have it sung"
-          ],
-          "holders": {
-            "actors": [
-              "outlaw",
-              "naga-elder"
-            ],
-            "factions": [
-              "river-bands"
-            ]
-          },
-          "voiced_by": [
-            "book:nine-stanzas-upon-the-drowning",
-            "book:the-drowned-ford",
-            "dialogue:what-people-say-happened#outlaw"
-          ]
-        }
-      ],
-      "authorially_true": "partial:The weir was lifted and it was lifted on purpose, and the party who lifted it did not know a column was in the ford. A is wrong about the ambush, B is wrong about the accident, and C has the hand right and the intent wrong.",
-      "deliberately_open": false,
-      "contradicts_ok": false,
-      "invention_space": false,
-      "player_discoverable": "mid",
-      "topics": [
-        "the-drowning-at-the-ford",
-        "the-weeping-ford",
-        "what-people-say-happened"
-      ],
-      "judges": [
-        "lore.canon.registry",
-        "lore.canon.history",
-        "quests.lore.hooks"
-      ],
-      "notes": "Five shipped books argue this and four of the edges carried no `cf` at all. It is the province's founding grievance and it was the largest unregistered contradiction in the build."
-    },
-    {
-      "id": "CF-D012",
-      "claim": "Has the Drowned Tally ever had a ninth clause?",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "sources_real": [],
-      "in_world_sources": [
-        "The Seventh Recension of the Drowned Tally",
-        "That the Ninth Clause Is Old",
-        "On the Ninth Clause, and What Was Done to the Fair Copies"
-      ],
-      "disputed": true,
-      "dispute_kind": "fact",
-      "positions": [
-        {
-          "id": "A",
-          "in_world_source": "That the Ninth Clause Is Old: An Answer to the Archive",
-          "stance": "It is old. The fair copies the archive holds were made after it was struck, which is why they do not have it.",
-          "held_by": [
-            "the Court's advocates",
-            "the scribes of the eleventh volume",
-            "the Soulrest houses"
-          ],
-          "holders": {
-            "actors": [
-              "mudborn",
-              "rootkeeper"
-            ],
-            "factions": [
-              "drowned-court"
-            ]
-          },
-          "voiced_by": [
-            "book:for-the-ninth-clause",
-            "dialogue:the-ninth-clause-of-the-drowned-tally#mudborn"
-          ]
-        },
-        {
-          "id": "B",
-          "in_world_source": "The Seventh Recension, entire; and On the Ninth Clause, and What Was Done to the Fair Copies",
-          "stance": "The Recension is entire and it has eight. A clause nobody can produce is a clause nobody wrote.",
-          "held_by": [
-            "the archive at Gideon",
-            "the Assize",
-            "the Court's own archivists, awkwardly"
-          ],
-          "holders": {
-            "actors": [
-              "archivist",
-              "clerk"
-            ],
-            "factions": [
-              "the-imperial-assize"
-            ]
-          },
-          "voiced_by": [
-            "book:the-seventh-recension",
-            "book:against-the-ninth-clause",
-            "dialogue:the-ninth-clause-of-the-drowned-tally#archivist"
-          ]
-        }
-      ],
-      "authorially_true": "partial:There was a ninth and it was never struck, because it was never written. The clause is a thing the Court does and not a thing the Court has. Both sides are arguing about a document and the document was never where it lived.",
-      "deliberately_open": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "late",
-      "topics": [
-        "the-ninth-recension",
-        "the-ninth-clause-of-the-drowned-tally",
-        "the-drowned-tally"
-      ],
-      "judges": [
-        "lore.canon.registry",
-        "lore.religion.metaphysics",
-        "quests.lore.hooks"
-      ],
-      "notes": "Three shipped books, four edges, no `cf` on any of them."
-    },
-    {
-      "id": "CF-D013",
-      "claim": "Has the Drowned Court's unit of return drifted between the sixth volume and the eleventh?",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "medium",
-      "sources_real": [],
-      "in_world_sources": [
-        "The Drowned Tally, Sixth Volume",
-        "The Drowned Tally, Eleventh Volume",
-        "The Soulrest Sheet, for the week of the ninth"
-      ],
-      "disputed": true,
-      "dispute_kind": "fact",
-      "positions": [
-        {
-          "id": "A",
-          "in_world_source": "The Drowned Tally, Sixth Volume: the disputed leaves, with the archive's note",
-          "stance": "The unit is what it has always been. The disputed leaves are a copying error and the archive said so at the time.",
-          "held_by": [
-            "the archive",
-            "the Court's older sextons"
-          ],
-          "holders": {
-            "actors": [
-              "archivist"
-            ],
-            "factions": [
-              "the-imperial-assize"
-            ]
-          },
-          "voiced_by": [
-            "book:the-drowned-tally-sixth-volume",
-            "dialogue:the-drowned-tally#archivist"
-          ]
-        },
-        {
-          "id": "B",
-          "in_world_source": "The Drowned Tally, Eleventh Volume, and the Soulrest Sheet",
-          "stance": "It has moved. The current leaves will not reconcile with the sixth however they are read, and the sheet for the week of the ninth is where it shows.",
-          "held_by": [
-            "the Soulrest counting house",
-            "the undersextons who keep the current leaves"
-          ],
-          "holders": {
-            "actors": [
-              "mudborn",
-              "clerk"
-            ],
-            "settlements": [
-              "soulrest"
-            ]
-          },
-          "voiced_by": [
-            "book:the-drowned-tally-eleventh-volume",
-            "book:the-soulrest-sheet",
-            "dialogue:the-tally-of-the-dead#mudborn"
-          ]
-        }
-      ],
-      "authorially_true": "partial:Both volumes are counted correctly. They are not counting the same thing, and neither house has ever asked the other what it means by a return.",
-      "deliberately_open": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "late",
-      "topics": [
-        "the-drowned-tally",
-        "the-tally-of-the-dead",
-        "the-count-itself"
-      ],
-      "judges": [
-        "lore.canon.registry",
-        "lore.religion.metaphysics"
-      ],
-      "notes": "Registered with `confidence: medium` because the arithmetic is authored across three books by two pieces and has not been reconciled leaf by leaf."
-    },
-    {
-      "id": "CF-D014",
-      "claim": "Were the long reaping blades weapons before the Duskfall, or farm tools that were picked up in a bad year?",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "sources_real": [],
-      "in_world_sources": [
-        "The Reaper and the Scythe",
-        "A Letter to Teeus-Ahai, Who Should Have Asked Somebody Who Cuts Rice"
-      ],
-      "disputed": true,
-      "dispute_kind": "fact",
-      "positions": [
-        {
-          "id": "A",
-          "in_world_source": "The Reaper and the Scythe: On the Long Curved Blades",
-          "stance": "They were carried in the Duskfall. The rice came to them afterwards, the way rice comes to everything here.",
-          "held_by": [
-            "the Lilmoth yards",
-            "the men who teach the long curved blade"
-          ],
-          "holders": {
-            "actors": [
-              "mercenary",
-              "legionary"
-            ],
-            "settlements": [
-              "lilmoth",
-              "gideon"
-            ]
-          },
-          "voiced_by": [
-            "book:the-reaper-and-the-scythe"
-          ]
-        },
-        {
-          "id": "B",
-          "in_world_source": "A Letter to Teeus-Ahai, Who Should Have Asked Somebody Who Cuts Rice",
-          "stance": "It is a harvest edge. It went to war in a bad year the way a boat-hook does, and anyone who has cut a season could have told him.",
-          "held_by": [
-            "the rice villages of the Blackwood",
-            "most sapcutters",
-            "Teeus-Ahai's correspondent"
-          ],
-          "holders": {
-            "actors": [
-              "sapcutter",
-              "villager",
-              "fisher"
-            ]
-          },
-          "voiced_by": [
-            "book:the-harvest-edge-is-a-farm-tool"
-          ]
-        }
-      ],
-      "authorially_true": "partial:The blade is a farm tool and the grip is not. Somebody in the Duskfall put a soldier's handle on a harvester's edge, and each author is describing the half of the object they have held.",
-      "deliberately_open": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "mid",
-      "topics": [],
-      "judges": [
-        "lore.canon.registry",
-        "lore.canon.history"
-      ],
-      "notes": "The one martial edge that is a disagreement about a FACT rather than about what is worth doing. See `not_disputes` for the four that are not."
-    },
-    {
-      "id": "CF-D015",
-      "claim": "In what order do the landmarks of the Topal shore run actually stand?",
-      "tier": "constructed",
-      "provenance": "constructed",
-      "confidence": "high",
-      "sources_real": [],
-      "in_world_sources": [
-        "A Progress Through the Southern Marsh, Volume the Second",
-        "The Topal Shore Run, as it is Actually Sailed"
-      ],
-      "disputed": true,
-      "dispute_kind": "fact",
-      "positions": [
-        {
-          "id": "A",
-          "in_world_source": "A Progress Through the Southern Marsh, Volume the Second",
-          "stance": "The order given in the Progress, taken down from the deck of a hired boat on one passage in fair weather.",
-          "held_by": [
-            "the Provincial Office's reading public",
-            "travellers who buy the Progress before they arrive"
-          ],
-          "holders": {
-            "actors": [
-              "merchant",
-              "innkeeper",
-              "townsman"
-            ],
-            "settlements": [
-              "gideon",
-              "lilmoth"
-            ]
-          },
-          "voiced_by": [
-            "book:a-progress-ii"
-          ]
-        },
-        {
-          "id": "B",
-          "in_world_source": "The Topal Shore Run, as it is Actually Sailed",
-          "stance": "The order the pilots keep, which differs because two of the marks move with the season and one of them is no longer there.",
-          "held_by": [
-            "the Topal pilots",
-            "the boat guilds at Lilmoth"
-          ],
-          "holders": {
-            "actors": [
-              "fisher",
-              "dockhand",
-              "harbourmistress"
-            ]
-          },
-          "voiced_by": [
-            "book:pilots-chart-book"
-          ]
-        }
-      ],
-      "authorially_true": "B",
-      "deliberately_open": false,
-      "contradicts_ok": false,
-      "invention_space": true,
-      "player_discoverable": "early",
-      "topics": [],
-      "judges": [
-        "lore.canon.registry",
-        "lore.canon.geography"
-      ],
-      "notes": "Kept, against RI-LOR06 \"How we lose\" #8, because it is PERCEIVABLE: a player who sails or walks the shore can settle it without being told. A dispute the player can check is texture; a dispute over a date they cannot reach is a typo with a schema."
     }
-  ],
-  "not_disputes": {
-    "what_this_is": "Contradiction edges declared between shipped books that were EXAMINED and ruled not to be contradictions. RI-LOR06 §1 admits two categories, registered or bug; this is the ruling that an edge belongs to neither because the two texts are not disagreeing about a fact of the world. Recorded so the finding is durable and the same four edges are not re-litigated every wave. `tools/lore/canon-census.mjs` reads this list and stops reporting the edge.",
-    "ruled_by": "W1-23",
-    "rule": "A contradiction is a disagreement about what is the case. A disagreement about what is worth doing, what is fit, or what a man ought to carry is an ARGUMENT, and the province should be full of them. Registering an argument as a contradiction is how a registry fills up with forty entries the player cannot perceive (RI-LOR06 \"How we lose\" #8), and it also makes the registry useless for its actual job, which is telling a critic a mistake from a design.",
-    "entries": [
-      {
-        "books": [
-          "the-door-that-walks",
-          "the-buckler-and-the-hand"
-        ],
-        "on": "whether a shield that cannot parry is worth carrying",
-        "reason": "Worth. Both texts agree on the fact — the great shields of the stone nests cannot turn a blow aside — and disagree about whether that settles the question of carrying one. Nobody is wrong about the world."
-      },
-      {
-        "books": [
-          "the-fen-zweihander-and-why-it-wins",
-          "on-the-hanging-guard"
-        ],
-        "on": "whether the high grip on the ricasso is worth the reach it gives up",
-        "reason": "Worth, and an explicit trade: both authors state the same exchange and price it differently. That is two schools, which RI-LOR03 asks for."
-      },
-      {
-        "books": [
-          "the-axe-in-the-hand-of-a-fool",
-          "a-bill-mans-answer-to-his-betters"
-        ],
-        "on": "whether a hooked weapon is fit for a soldier",
-        "reason": "Fitness. An uncle and a nephew disagreeing about what a soldier ought to carry. No fact of the province is at stake and the letters are better for it."
-      },
-      {
-        "books": [
-          "standing-instruction-for-auxiliaries",
-          "the-serjeants-answer"
-        ],
-        "on": "whether the shield line may be opened in standing water",
-        "reason": "Not a contradiction at all: it is a regulation against a practice. The Standing Instruction correctly states what the Instruction says; Serjeant Brell correctly states what the men do. Both are true and the gap between them is the subject."
-      }
-    ]
-  }
+  ]
 }

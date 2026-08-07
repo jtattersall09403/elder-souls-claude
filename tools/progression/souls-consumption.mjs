@@ -88,6 +88,14 @@ try {
      */
     const killOne = (eid) => {
       const before = stats().souls, goldBefore = gold();
+      // A body can go between the listing and the kill — the world clock keeps running and dead
+      // bodies are cleaned up. Report that as a skipped kill rather than throwing: a probe that
+      // crashes instead of failing tells a reader nothing, and the delete-the-fix arm is exactly
+      // the run where a crash would be mistaken for the deletion working.
+      if (!E.combat.bodyOf(String(eid))) {
+        return { eid, skipped: 'no body at kill time', souls_before: before, souls_after: before,
+          delta: 0, gold_before: goldBefore, gold_after: goldBefore, events: [] };
+      }
       H.killEntity(eid);
       const evs = [];
       // The award is a post-step observer, so a frame has to actually run. Events are read off
@@ -305,10 +313,12 @@ try {
   const ok = (name, cond, detail) => { v.push({ name, pass: !!cond, detail: String(detail) }); return !!cond; };
   const A = probe.A, B = probe.B, C = probe.C, D = probe.D, E = probe.E, F = probe.F, G = probe.G, H = probe.H, I = probe.I;
 
-  const aPaid = (A.kills || []).filter((k) => k.delta === A.declared_souls).length;
+  const aReal = (A.kills || []).filter((k) => !k.skipped);
+  const aPaid = aReal.filter((k) => k.delta === A.declared_souls).length;
   ok('A  the source exists: every kill pays exactly the statblock value',
-    A.kills.length > 0 && aPaid === A.kills.length && A.souls_at_end > A.souls_at_start,
-    `${aPaid}/${A.kills.length} kills paid ${A.declared_souls}; souls ${A.souls_at_start} -> ${A.souls_at_end}, next level costs ${A.souls_to_next}`);
+    aReal.length > 0 && aPaid === aReal.length && A.souls_at_end > A.souls_at_start,
+    `${aPaid}/${aReal.length} kills paid ${A.declared_souls} (${A.kills.length - aReal.length} skipped, no body); `
+    + `souls ${A.souls_at_start} -> ${A.souls_at_end}, next level costs ${A.souls_to_next}`);
 
   const bMoved = (B.kills || []).filter((k) => k.delta !== 0).length;
   ok('B  ABLATION: with sim/souls.js switched off the counter is DEAD (if this passes while A passes, A is real)',
