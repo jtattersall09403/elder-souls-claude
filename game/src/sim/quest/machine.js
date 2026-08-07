@@ -23,7 +23,11 @@
 import { Journal } from './journal.js';
 import { canOffer, canResolve } from './gate.js';
 import { dateOf } from './calendar.js';
+import { PONR_FLAG } from './reveal-routes.js';
 import { SAP_TAINT_DISPOSITION } from '../dialogue/disposition.js';
+
+/** The identifying half of a reveal route row, for a refusal line that says which row refused. */
+const pick = (row) => ({ quest: row.quest, reveal: row.reveal, channel: row.channel, source: row.source });
 
 /** Morrowind's `fDispDiseaseMod`, per active disease. Cure it and the door opens again. */
 const DISEASE_DISPOSITION_PER = -12;
@@ -125,6 +129,13 @@ export class QuestEngine {
     // Left empty this changes nothing: an engine that installs no index behaves exactly as it
     // did before, which is what keeps it out of the "fail-closed before its data exists" trap.
     this.bookKnowledge = new Map();
+
+    // W1-18 round 2. `"<kind>:<source>"` -> the `deceit.revealed_by` rows that source produces.
+    // Installed by `Engine._installRevealRoutes()` from `sim/quest/reveal-routes.js`, which is
+    // also where the reasoning about which channels are routable lives. Left empty this changes
+    // nothing: `learnFrom()` finds no rows and returns an empty result, so an engine that
+    // installs no index behaves exactly as it did before.
+    this.revealRoutes = new Map();
 
     this.flagHooks = new Map();     // world flag -> hook[]
     this.entryTopics = new Map();   // "questId#index" -> topic ids (RI-DLG05 §A.3 AddTopic edge)
@@ -818,6 +829,62 @@ export class QuestEngine {
   noteTopicLearned(topic, source, npcId = null) {
     this._emit('topic_add', { quest: null, npc: npcId, topic, source: source || 'WORLD' });
     return { topic, source };
+  }
+
+  /**
+   * THE WORLD PRODUCED A SOURCE. W1-18 round 2, and the world-side reader for
+   * `deceit.revealed_by[].channel` / `.source` — 186 authored rows that nothing in `game/src/`
+   * had ever read. See `sim/quest/reveal-routes.js` for which channels are routed and why the
+   * other four are not.
+   *
+   * `kind` is the world action that happened (`'person'` today, from `Engine.talkTo()`), `source`
+   * is the thing it happened to. Every reveal row the index has for that pair is offered, and
+   * each one is REFUSED OR TAKEN for a stated reason — the return value names the refusals as
+   * well as the grants, because a route that silently declines is indistinguishable from a route
+   * that is not wired, and this whole round exists because six of those went unnoticed.
+   *
+   * Three conditions, and none of them is decoration:
+   *
+   *   1. **The quest must be OPEN.** `reveal()` on its own mints a row (`rec(id, true)`) —
+   *      foreknowledge — which is right for a harness verb and wrong for the world: without this
+   *      line every person in the province would spill the middle of every quest they are named
+   *      in to a player who has accepted nothing, and 30 of the 40 routed rows would fire on a
+   *      character with an empty journal. GAP-FCT-01 made the same distinction for `resolve()`.
+   *   2. **`before_point_of_no_return: false` waits for the crossing.** The schema's own gloss is
+   *      *"true if this reveal is reachable while the player can still act on it"*, so a `false`
+   *      row is a truth that arrives too late by design. Handing it over early would move an
+   *      authored beat, not fix a bug. Three of the routed rows say false.
+   *   3. **A `journal` index is written if the row declares one, and only if `note()` accepts
+   *      it.** Terminal entries are refused by `note()` and pre-checked here for the same reason
+   *      `setFlag()`'s journal branch pre-checks them: an authored index pointing at a `success`
+   *      entry is a content defect that belongs in `tools/check-quests.mjs`, not in a throw
+   *      inside a world action every agent's boot-check walks through.
+   *
+   * No new event name. `reveal()` emits `reveal` and `note()` emits `quest_stage`, both already
+   * in this stream, and `sim/events.js` is a closed vocabulary (RULES.md rule 15).
+   */
+  learnFrom(kind, source, opts = {}) {
+    const key = `${kind}:${source}`;
+    const rows = this.revealRoutes.get(key) || [];
+    const out = { kind, source, offered: rows.length, learned: [], journal: [], refused: [] };
+    if (!rows.length) return out;
+    const ponr = !!this.sim.quest.flags[PONR_FLAG];
+    for (const row of rows) {
+      if (!this.isOpen(row.quest)) { out.refused.push({ ...pick(row), why: 'quest not open' }); continue; }
+      if (!row.before_point_of_no_return && !ponr) { out.refused.push({ ...pick(row), why: 'not until the point of no return is crossed' }); continue; }
+      const r = this.reveal(row.quest, row.reveal);
+      if (!r.ok) { out.refused.push({ ...pick(row), why: r.reason }); continue; }
+      out.learned.push({ quest: row.quest, reveal: row.reveal, channel: row.channel, source: row.source });
+      if (row.journal == null) continue;
+      const e = (this.book.get(row.quest).journal || []).find((x) => x.index === row.journal);
+      if (!e) { out.refused.push({ ...pick(row), why: `journal ${row.journal} does not exist` }); continue; }
+      if (e.state === 'success' || e.state === 'failure') { out.refused.push({ ...pick(row), why: `journal ${row.journal} is terminal` }); continue; }
+      const w = this.note(row.quest, row.journal);
+      if (w.ok) out.journal.push({ quest: row.quest, index: row.journal });
+      else out.refused.push({ ...pick(row), why: `journal ${row.journal}: ${w.reason}` });
+    }
+    if (opts.trace) out.trace = key;
+    return out;
   }
 
   /** The wordless indicator, as a number of frames remaining. Never a string. */

@@ -2,10 +2,10 @@
   "task_id": "critic-w1-13-r3",
   "role": "critic",
   "judges": "W1-13-r3",
-  "state": "running",
+  "state": "writing",
   "started": "2026-08-07",
   "commit": "b1c92d1 at start; HEAD moved to 3ba93e0 mid-run (other agents banking). W1-13 files themselves are committed and clean in git status.",
-  "next_step": "factorial (pre-r3-render / aim-only / eye-only) still running; then 2x2 shot, finish verdict md+json, validate, blog line",
+  "next_step": "waiting on aim-only dark + eye-only x2; then copy the factorial into the verdict artifacts dir, patch the two sweep numbers, re-validate the JSON, done. Verdict md, json, shot and blog line are already written.",
   "files_touched": [
     "orchestration/status/critic-w1-13-r3.json",
     "tools/harness/critic-w1-13-r3.mjs",
@@ -37,8 +37,17 @@
     "THE 2x2 AT BEARING 0 SETTLES IT AND IT IS THE EYE, NOT THE AIM. OLD eye+OLD aim margin 0 BLIND; OLD eye+NEW aim margin 0 BLIND; NEW eye+OLD aim margin 4324 READS; NEW eye+NEW aim margin 4264 READS. The 0.8 m aim change buys nothing; the 0.19 m eye change buys everything. The picture shows why: the old eye is INSIDE A BOULDER. The builder guessed the right factor with the wrong mechanism (it said buried under the ground).",
     "pre-r3-render (DELETE THE RENDERER FIX: drawn-ground lift + 1.9 m hum both removed) reads 8/8 DAYLIGHT with the corrected camera. The committed renderer change may be INERT for M-D14. Waiting on the dark arm.",
     "pre-r3-render is 8/8 DAYLIGHT and 8/8 DARK. The committed renderer change (0b2d6ef: _drawnGroundY lift + the 1.9 m hum) is INERT for M-D14: with the corrected camera the knot, cap and halo alone read from all eight bearings in both conditions. RULES 6, and the delete-the-fix arm was written by the builder and left switched off.",
-    "boot-check PASS (exit 0) on the tree I measured."
+    "boot-check PASS (exit 0) on the tree I measured.",
+    "aim-only daylight 2/8 \u2014 IDENTICAL to as-placed. The aim change buys zero bearings across the whole sweep, confirming the 2x2 at scale."
   ],
   "contention_note": "36 headless_shell, loadavg 30 at 22:05. Every figure I cite is a pixel count, a soul count, a metre or a boolean and is load-independent. No timing figure is cited as evidence anywhere.",
-  "provisional_score": "6/10 FAIL (round 2 was 5). RI-JRN06 native 88 -> ladder 6; RI-PRG04 min-over-axes 6, set by Clock cost, the axis nobody has measured in three rounds."
+  "provisional_score": "6/10 FAIL (round 2 was 5). RI-JRN06 native 88 -> ladder 6; RI-PRG04 min-over-axes 6, set by Clock cost, the axis nobody has measured in three rounds.",
+  "deliverables_written": [
+    "corpus/90-verdicts/wave1/W1-13-r3.md",
+    "corpus/90-verdicts/wave1/W1-13-r3.json",
+    "docs/shots/2026-08-07-w1-13-r3-critic-which-half-of-the-camera.png",
+    "reports/blog-feed.jsonl (one line)",
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r3/ (6 artifacts)"
+  ],
+  "score": "6/10 FAIL, gate 7.0, round 2 was 5"
 }

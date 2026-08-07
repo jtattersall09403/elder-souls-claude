@@ -108,6 +108,7 @@ const SIGN_REACH_M = 2.6;
 import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, topicsFor, greetingBand, rootTopicIds } from './character/converse.js';
 import { topicKey } from './core/topics.js';
 import { buildOverheardIndex, buildDirectionsIndex, RumourBook, RoadBook, learnTopics, RUMOUR_TOPIC } from './sim/quest/topic-supply.js';
+import { buildRevealRoutes } from './sim/quest/reveal-routes.js';
 import { makeNPC, normaliseSchedule, slotAt } from './sim/npc.js';
 import { derivePools, applyBirthsignToPools, hpMaxFor, staminaMaxFor as staminaMaxForVig, progressToNext, bankProgress, USE_EVENTS } from './character/derive.js';
 import { grantUse, governingMap } from './character/skilluse.js';
@@ -528,6 +529,12 @@ export class Engine {
     // `q.directions` (32 strings) and `dialogue/rumours.json` — and the consequence was that
     // 0 of 32 main quests were offerable at a cold start. See sim/quest/topic-supply.js.
     this._installTopicSupply();
+    // W1-18 round 2: the world-side reader for `deceit.revealed_by[].channel` / `.source`. 186
+    // authored rows, zero readers in `game/src/` before this line, and 113 of the 121 reveals a
+    // resolution demands had no route in play at all. Installed after the quest book is loaded
+    // because the index is built out of the quest definitions themselves.
+    // See `sim/quest/reveal-routes.js`; the standing check is `tools/quests/reveal-route-audit.mjs`.
+    this._installRevealRoutes();
     // W1-OPACITY. The opacity register, and its fail-closed reader. RI-MTH07/ARBITRATION §3:
     // a register nothing reads is a text file. `_installOpacity` resolves every anchor,
     // evidence id and false-account id against the data that actually loaded and THROWS on a
@@ -2107,7 +2114,24 @@ export class Engine {
       const got = learnTopics(this.sim.quest.topicsKnown, overheard.map((o) => o.topic));
       for (const t of got) this.questEngine.noteTopicLearned(t, 'OVERHEARD', n.eid);
     }
+    // W1-18 round 2 — TALKING TO THE TARGET, which is what `quest.schema.json` says the model is
+    // for: `requires_knowing` is *"the mechanism by which talking to the target before killing
+    // them opens a door"*. `deceit.revealed_by` names, for every truth a resolution demands, the
+    // person who is the source of it, and nothing in `game/src/` had ever read that field — so
+    // `QuestEngine.reveal()` was reachable only from `window.__HARNESS.questReveal` and 113 of
+    // the 121 demanded reveals had no route in play.
+    //
+    // It sits here, beside the `overheard_from` block above, because it is the same claim about
+    // the world: walking up to the person who knows is how you come to know. `learnFrom()` does
+    // the refusing — the quest must be open, so nobody spills the middle of a job you have not
+    // taken — and it is the only thing this line can do. See `sim/quest/reveal-routes.js`.
+    const revealed = this.questEngine.learnFrom('person', n.eid);
     const st = this.conversation.state();
+    // The observable. `getQuestState().active[].knows` and the `reveal` events on
+    // `questEventsDrain()` are the durable record; this is what the caller of `talkTo` sees
+    // without having to drain anything, and it carries the REFUSALS too, because a route that
+    // silently declines reads exactly like a route that was never wired.
+    st.learned = revealed;
     const ev = this.bus.emit(this.sim.frame, 'dialogue_open');
     ev.npc = n.eid; ev.greeting_cell = st.greeting_cell; ev.disposition = d.disposition;
     ev.band = greetingBand(this.chData, d.disposition); ev.topics_offered = st.topics.length;
@@ -2160,6 +2184,21 @@ export class Engine {
       },
     });
     return { overheard: this.overheardIndex.size, directions: this.directionsIndex.size, rumours: this.rumourBook.size, roads: this.roadBook.size };
+  }
+
+  /**
+   * Install the reveal-route index. W1-18 round 2.
+   *
+   * NOT fail-closed, and deliberately, for the same reason as `_bookKnowledgeIndex()`: a route
+   * whose `source` names nobody in this build is a person who has not been written yet, and 10
+   * of the 28 `talk_to_target` sources are exactly that today. Throwing on one would take the
+   * engine — and every agent's boot-check with it — down for a cast that is merely incomplete.
+   * `tools/quests/reveal-route-audit.mjs` counts them and refuses to call them routed.
+   */
+  _installRevealRoutes() {
+    const defs = this.questBook.ids.map((id) => this.questBook.get(id));
+    this.questEngine.revealRoutes = buildRevealRoutes(defs);
+    return { sources: this.questEngine.revealRoutes.size };
   }
 
   /**

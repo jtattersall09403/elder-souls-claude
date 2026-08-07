@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `5f302b7`: 478 tools, 153 reference
+so it cannot drift. Generated at `016bd4a`: 478 tools, 153 reference
 items, 25 pieces in flight.
 
 Its purpose is to stop 25+ concurrent agents each paying separately to discover the
@@ -756,9 +756,9 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-04-r2` | building | 1. sim.applyCell hook: door verbs reach _applyCell (deferred to _afterStep, outside the ar | — |
 | `critic-w1-13-r3` | writing | waiting on aim-only dark + eye-only x2; then copy the factorial into the verdict artifacts | `orchestration/status/critic-w1-13-r3.json` `tools/harness/critic-w1-13-r3.mjs` `tools/harness/critic-w1-13-r3-shot.mjs` `corpus/90-verdicts/wave1/W1-13-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-13-r3/` |
 | `W1-18-r2` | building | build game/src/sim/quest/reveal-routes.js + QuestEngine.learnFrom(); wire to Engine.talkTo | `orchestration/status/W1-18-r2.json` |
-| `W1-04-r2` | starting | Read orchestration/INDEX.md, then corpus/90-verdicts/wave1/W1-04-r1.md (the specification) | — |
 | `W1-06` | partial | SUPERSEDED by successor4_log below and by orchestration/status/W1-06-r2.json (the live thr | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` `corpus/80-methods/m-cam05-world-camera.mjs` `corpus/80-methods/m-cam06-feel.mjs` |
 | `W1-06-r2` | partial | 1) tools/harness/w1-13-r3-bloom-sight.mjs still has its aim-only/eye-only arms written and | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` `corpus/80-methods/m-cam05-world-camera.mjs` `corpus/80-methods/m-cam06-feel.mjs` |
 | `W1-03` | surveyed | Not fixed yet, in priority order per reports/w1-03-survey.md S9: (1) wire race into game/s | `reports/w1-03-survey.md` `reports/blog-feed.jsonl` `docs/shots/2026-08-07-w1-03-hip-deep-water-no-waterline.png` |
