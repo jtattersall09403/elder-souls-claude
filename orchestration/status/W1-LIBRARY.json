@@ -1,0 +1,15 @@
+{
+  "task_id": "W1-LIBRARY",
+  "brief": "in-world library: books, notes, inscriptions, unreliable written record",
+  "started": "wave-1",
+  "state": "researching",
+  "gap": "RI-UIX05 D fails on content: book-to-item ratio 1.57 vs bar >=15; game/data/books/ holds 1930 words",
+  "outputs_expected": [
+    "game/data/books/*.json (new hand-authored volumes)",
+    "tools/ book-corpus measurement tool if RI-UIX05 D names one that does not exist"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read RI-UIX05 D, existing books, corpus/60-lore, mainline acts, dialogue topics for voice",
+  "notes_for_successor": "Do NOT let a generator overwrite hand-authored books. Run tools/check-content.mjs and tools/harness/boot-check.mjs before finishing."
+}
