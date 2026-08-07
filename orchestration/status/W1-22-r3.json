@@ -2,30 +2,49 @@
   "task_id": "W1-22-r3",
   "brief": "orchestration/status/W1-22-r2.json handoff IS the spec; corpus/90-verdicts/wave1/W1-22-r1.md is the round-1 verdict behind it",
   "started": "wave-1 round 3",
-  "state": "starting",
+  "state": "in-progress",
   "outputs_expected": [
-    "root cause + fix for non-deterministic render of `street` and `well` beds (R3 / RI-AUD03)",
-    "an instrument that reproduces the non-determinism BEFORE any fix (rule 4)",
+    "root cause + fix for non-deterministic render of `street` and `well` (R3) — DONE",
     "ambience-render --calibrate pass: clay-moor back inside B5, deep-marshes off the fence",
     "ambience-onsets --calibrate pass: clay-moor L3/L4, stone-forest L4 into SecA band",
     "amendment proposal for the B2 crest-heuristic vs SecA level-band contradiction (referred, not silently decided)",
     "reports/blog-feed.jsonl line"
   ],
+  "outputs_written": [
+    "tools/analysis/ambience-determinism.mjs (new instrument: D0 platform control, D1 bit identity, D2 order independence, D3 localisation ladder, 2 falsifier arms)",
+    "game/src/audio/synth.js — joinChain(), DeterministicMixer, sinkFor(); drone chord, grain partials and grain repeats now sum two at a time",
+    "game/src/audio/ambience.js — the offline renderer and the live driver both mix through DeterministicMixer",
+    "reports/w1-22/ambience-determinism.json"
+  ],
   "findings": [
     "PICKUP: no prior r3 status file, so I am the first r3 agent. Round 2 handed off THREE FAILING GATES (O1/O2/O3) plus a determinism defect it found and did not root-cause, plus a B5 regression it introduced.",
-    "ORDER IS FROM R2's OWN HANDOFF: (1) determinism of `street` and `well`, (2) bed loudness recalibrate, (3) event level recalibrate, (4) salt-hills + market/night silent clips. Determinism first because every blind measurement of this piece rests on it."
+    "START CONDITIONS: pgrep -c headless_shell = 12-18, loadavg 9-10 on 4 cores, above AGENT-PROTOCOL's cap of 8 throughout. Every number in this file is a byte comparison, a level, a spectrum or a boolean; none is a wall-clock time, and none is quotable as one. One browser per tool invocation, kept for the whole run.",
+    "DEFECT 1 REPRODUCED BEFORE ANY FIX (rule 4). tools/analysis/ambience-determinism.mjs at 3ba93e0: street|day and well|day differ across three back-to-back captures with identical arguments and nothing touched between them. street: 7 differing 16-bit samples of 128000, first at 0.5833 s. well: 61-65, first at 0.235 s. Max difference 1 LSB in both. market, writ_house, barge_hold, dungeon and interior were bit-identical in the same run, so it is those two beds and not the harness.",
+    "1 LSB IS A FACT ABOUT THE QUANTISER, NOT ABOUT THE RENDERER, so I measured the float domain instead: street diverges by up to 2.98e-8 (-150.5 dBFS) on 30313 of 64000 samples starting at sample 0; well by 1.64e-7 (-135.7 dBFS). That rules out a scheduling divergence (which would be order 1e-1 and late) and points at arithmetic.",
+    "LOCALISATION (D3): the instability is in the CONTINUOUS BED, not the events. well is unstable with L1 ALONE (a four-partial drone). street is stable with L1 alone and stable with L2 alone, and unstable only once all three continuous layers are present.",
+    "ROOT CAUSE, AND IT IS NOT OURS — PROVED FROM OUTSIDE OUR CODE BEFORE A LINE WAS CHANGED (rule 10). D0 renders bare OscillatorNode/GainNode graphs containing no Elder Souls code at all, twice each, and compares floats: 1 source into one node IDENTICAL; 2 sources IDENTICAL; 3 sources DIVERGES by 1.49e-8; 8 sources DIVERGES by 4.47e-8. One and two are exact because IEEE-754 addition is commutative and x+0 is x. Three is where it breaks because addition is NOT ASSOCIATIVE. The platform sums a node's inputs in an order the graph does not fix, and the run-to-run difference is exactly one float32 ULP.",
+    "IT IS ALSO INTERMITTENT, which is why two rounds of gates never saw it: in one control run the 4-source case diverged and in the next it was clean, same commit, same browser. A green from a flat topology is worth nothing on its own, and no check in rounds 1 or 2 repeated a render at all.",
+    "REMEDY TESTED IN THE CONTROL BEFORE IT WAS WRITTEN INTO THE SYNTHESISER. The same D0 probe renders a `chained` arm where no node receives more than two connections: IDENTICAL at n = 1, 2, 3, 4 and 8, on both control runs. Two arms of one probe, on one tree, disagreeing — which is what says the topology is the mechanism.",
+    "FIX: DeterministicMixer + joinChain in synth.js. Every place three or more signals met now meets them two at a time in an order the graph fixes — the drone chord's partials, a grain's oscillator partials, a grain's repeats (roof_rat is six taps 0.09 s apart with a 0.10 s decay, so they really do overlap), and the ambience bus itself, which becomes a fixed ladder of 16 lanes (twice RI-AUD02 SecD V5's eight-voice cap). Continuous voices reserve a lane; grains take a rotating one. Reservations reset on a region swap so the outgoing and incoming generations share a lane during the 4 s crossfade, which is two simultaneously sounding signals in one node, which is exact.",
+    "THE FIX CHANGES THE AUDIO BY AT MOST ONE ULP. street's post-fix digest is identical to one of the two orderings it was already producing, i.e. the fix pinned the render rather than altering it. No level, spectrum or loudness this project reports has that precision, so no calibrated number in the bed data is invalidated.",
+    "ACCEPTANCE: all 20 beds (13 region + 7 interior) bit-identical over three captures each. D1 PASS, D2 PASS, D0 control PASS. boot-check PASS after the audio graph change.",
+    "DELETE-THE-FIX (rule 6), on the same tree at the same commit with nothing staged (rule 17): globalThis.__ES_AUDIO_FLAT_MIX restores a flat N-input summation at every site the fix chained. street, well AND valus-ridge all go red again. THE TWO ARMS DIFFER: fix in, those three are `same`; fix deleted, all three DIFFER.",
+    "THE FIRST VERSION OF MY OWN DELETE-THE-FIX ARM WAS HALF AN ARM, and I am recording it because it nearly shipped as a pass. It gated only the bus ladder, so street went red and well stayed GREEN — well's half of the defect is the four-partial chord, which was still chained. Two beds, two different halves of one defect. The flag now covers both sites.",
+    "A THIRD BED ROUND 2 NEVER NAMED. Under the delete-the-fix arm `valus-ridge` — a REGION bed, not an interior — also fails, at 2.53e-7 (-131.9 dBFS) on 55091 of 64000 samples, and it is the worst of the three. So the defect was never confined to the two new interior beds; it was latent in the region beds that every B1/B2/B3 pack is built from, and round 2 saw only the two that happened to tip a rounding boundary on the day it measured. This is the reason the fix had to be topological rather than a patch to two bed files.",
+    "SENSITIVITY ARM: --sabotage gain leaks Math.random()*0.01 dB into the master trim between captures. All four beds tested go red at 3-6 LSB. So D1 catches an unseeded quantity roughly 40 dB below anything a listener could hear, which is the right sensitivity for a bit-identity gate."
   ],
-  "next_step": "read INDEX.md, the r1 verdict, then reproduce the street/well non-determinism with an instrument before touching anything",
-  "notes_for_successor": "Do NOT touch tools/blind/audio-pack-b2.mjs or its pack directory, and do not answer it.",
-  "files_touched": [],
-  "files_claimed": [
+  "next_step": "(2) ambience-render --calibrate: clay-moor 5.8 LU under its own target, deep-marshes 0.003 outside the fence. (3) ambience-onsets --calibrate for clay-moor L3/L4 and stone-forest L4. (4) salt-hills and market/night silent clips. (5) the B2 crest heuristic vs SecA level band contradiction — propose the amendment in the item's own words and REFER it, do not pick a side. (6) project gates + blog line.",
+  "notes_for_successor": "Do NOT touch tools/blind/audio-pack-b2.mjs or its pack directory, and do not answer it. The determinism fix is topological and lives in synth.js; anything that adds a new place where three signals meet must route through DeterministicMixer/joinChain or it reopens the defect. tools/analysis/ambience-determinism.mjs is the fence.",
+  "files_touched": [
     "tools/analysis/ambience-determinism.mjs",
+    "game/src/audio/synth.js",
+    "game/src/audio/ambience.js",
+    "reports/w1-22/"
+  ],
+  "files_claimed": [
     "tools/analysis/ambience-onsets.mjs",
     "tools/analysis/ambience-render.mjs",
-    "game/src/audio/ambience.js",
-    "game/src/audio/synth.js",
     "game/data/audio/ambience/",
-    "reports/w1-22/",
     "reports/blog-feed.jsonl",
     "docs/shots/"
   ],

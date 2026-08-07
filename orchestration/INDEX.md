@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `3ba93e0`: 475 tools, 153 reference
-items, 26 pieces in flight.
+so it cannot drift. Generated at `9de10c3`: 476 tools, 153 reference
+items, 25 pieces in flight.
 
-Its purpose is to stop 26+ concurrent agents each paying separately to discover the
+Its purpose is to stop 25+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -407,13 +407,14 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/platform/perf-run.mjs` — RI-PLT01's frame-budget runner, AND the enforcer of RI-PLT01 rule T1.
 - `tools/platform/stream-audit.mjs` — ABSENCE-REPORTER.
 
-### `tools/progression/` — 5
+### `tools/progression/` — 6
 
 - `tools/progression/critic-souls-r1.mjs` — the W1-SOULS round-1 critic's OWN instrument.
 - `tools/progression/critic-souls-r2.mjs` — the W1-SOULS ROUND-2 critic's OWN instrument.
 - `tools/progression/derive-soul-values.mjs` — the soul value of every shipped enemy, DERIVED from its own statblock, and written back into `game/data/combat/enemies/*.json` as a `souls` field.
 - `tools/progression/souls-consumption.mjs` — the CONSUMPTION probe for the soul economy.
 - `tools/progression/souls-ledger-oracle.mjs` — THE INVARIANT, NOT THE INSTANCES.
+- `tools/progression/souls-r3-shot.mjs` — one picture of what W1-SOULS round 3 changed.
 
 ### `tools/prose/` — 9
 
@@ -763,7 +764,6 @@ work is the difference between resuming and starting over.
 | `W1-19-r3` | running | land the _applyConsequences -> setFlag mechanism fix; delete-the-fix; prove one reveal fir | `orchestration/status/W1-19-r3.json` `tools/quests/reveal-route-audit.mjs` `reports/runs/W1-19-R3/reveal-route-audit.json` |
 | `W1-06-r2` | partial | 1) confirm the pitch-pin fix live in the browser (cam-probe.mjs --probe pitchlaw,lock, and | — |
 | `W1-03` | researching | read RULES/INDEX (done); read docs/PLAN.md S3 W1-03 entry, ARBITRATION S25, reports/w1-05- | — |
-| `critic-w1-23` | researching | read RI-LOR04, canon-facts.json disputes, run census/consumption, check hash absence, 336/ | — |
 | `W1-VIABILITY-SPLIT` | done | none -- hand to a tool critic. Do NOT let the critic grade this piece against the screen f | `orchestration/status/W1-VIABILITY-SPLIT.json` `tools/analysis/impossibility-screen.mjs` `tools/quests/viability-walk.mjs` `tools/quests/viability-split-shot.mjs` `corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md` `corpus/22-character/RI-CHR01-character-creation.md` |
 | `W1-13-r3` | done | critic | `game/src/sim/environment.js` `game/src/harness/api.js` `tools/journey/jrn06-death.mjs` `tools/journey/journey-run.mjs` `tools/harness/w1-13-r3-bloom-sight.mjs` `tools/harness/w1-13-r3-clock.mjs` |
 | `tool-build-viability-r6` | researching | choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items | — |

@@ -5,7 +5,7 @@
   "state": "running",
   "started": "2026-08-07",
   "commit": "b1c92d1 at start; HEAD moved to 3ba93e0 mid-run (other agents banking). W1-13 files themselves are committed and clean in git status.",
-  "next_step": "factorial running; then critic probe (C1 pool consumption / C2 projectPoint / C3 purse); then verdict md+json, image, blog line",
+  "next_step": "factorial arms 5/12 done (as-placed 2/8+3/8 REPRODUCED, player-eye 8/8+8/8 REPRODUCED, no-bloom 0/8); waiting on pre-r3-render + aim-only + eye-only. Then critic-w1-13-r3.mjs (C1 pool consumption / C2 projectPoint / C3 purse / C4 clock night-window consumer), then the 2x2 shot, then verdict.",
   "files_touched": [
     "orchestration/status/critic-w1-13-r3.json",
     "tools/harness/critic-w1-13-r3.mjs"
@@ -27,5 +27,7 @@
     "levelling.json and levelling-r3b.json carry NO git field (RULES 12).",
     "the leg that leaves the inventory screen open is still not fixed: world_runs_legs_jrn06-death reports ui_mode_on_entry inventory. The gate catches it.",
     "aggregation re-counted by hand: 42 rows, 23 pass, 0 fail, 4 unmeasurable, 15 descriptive. ok:false is !anyUnmeasurable \u2014 the builder reading is literally correct."
-  ]
+  ],
+  "contention_note": "36 headless_shell, loadavg 30 at 22:05. Every figure I cite is a pixel count, a soul count, a metre or a boolean and is load-independent. No timing figure is cited as evidence anywhere.",
+  "provisional_score": "6/10 FAIL (round 2 was 5). RI-JRN06 native 88 -> ladder 6; RI-PRG04 min-over-axes 6, set by Clock cost, the axis nobody has measured in three rounds."
 }

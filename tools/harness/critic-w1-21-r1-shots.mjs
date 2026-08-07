@@ -99,9 +99,31 @@ if (hf < 0.05) fail.push(`honest frame is ${(hf * 100).toFixed(1)}% non-ground â
 if (fail.length) { log('REFUSED:\n  ' + fail.join('\n  ')); process.exit(1); }
 
 // ---- compose ---------------------------------------------------------------------------------
-const GAP = 8, TOP = 0;
-const out = new PNG({ width: honest.width + forged.width + GAP, height: Math.max(honest.height, forged.height) + TOP });
-out.data.fill(0x12);
+// The pooled service and my own browser do not necessarily hand back the same pixel dimensions
+// (the daemon has its own device-pixel handling), and a side-by-side in which one half is half
+// the size of the other reads as a broken image rather than as a comparison. Scale to a common
+// height with nearest-neighbour, which is the only resampling that cannot invent a pixel â€” this
+// picture's whole subject is which cells are painted and which are not.
+const scaleToHeight = (src, hh) => {
+  const ww = Math.round((src.width / src.height) * hh);
+  const dst = new PNG({ width: ww, height: hh });
+  for (let y = 0; y < hh; y++) {
+    const sy = Math.min(src.height - 1, Math.floor((y * src.height) / hh));
+    for (let x = 0; x < ww; x++) {
+      const sx = Math.min(src.width - 1, Math.floor((x * src.width) / ww));
+      const a = (sy * src.width + sx) * 4, b = (y * ww + x) * 4;
+      dst.data[b] = src.data[a]; dst.data[b + 1] = src.data[a + 1];
+      dst.data[b + 2] = src.data[a + 2]; dst.data[b + 3] = 255;
+    }
+  }
+  return dst;
+};
+const HH = Math.max(honest.height, forged.height);
+const L = honest.height === HH ? honest : scaleToHeight(honest, HH);
+const R = forged.height === HH ? forged : scaleToHeight(forged, HH);
+const GAP = 10, TOP = 0;
+const out = new PNG({ width: L.width + R.width + GAP, height: HH + TOP });
+for (let i = 0; i < out.data.length; i += 4) { out.data[i] = 0x0b; out.data[i + 1] = 0x0a; out.data[i + 2] = 0x09; out.data[i + 3] = 255; }
 const blit = (src, ox) => {
   for (let y = 0; y < src.height; y++) {
     for (let x = 0; x < src.width; x++) {
@@ -110,8 +132,9 @@ const blit = (src, ox) => {
     }
   }
 };
-blit(honest, 0);
-blit(forged, honest.width + GAP);
+blit(L, 0);
+blit(R, L.width + GAP);
+log(`  composed: left ${honest.width}x${honest.height} -> ${L.width}x${L.height}, right ${forged.width}x${forged.height} -> ${R.width}x${R.height}`);
 const dest = path.join(REPO_ROOT, 'docs/shots/2026-08-07-w1-21-critic-map-forged-save.png');
 fs.writeFileSync(dest, PNG.sync.write(out));
 log(`\nwrote ${dest}`);

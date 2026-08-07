@@ -1,16 +1,32 @@
 {
-  "task_id": "critic-w1-11",
-  "role": "critic",
-  "judges": "W1-11",
-  "state": "running",
-  "started": "2026-08-07",
-  "next_step": "read INDEX.md, RULES.md done; then W1-11 status + PLAN §3 + ARBITRATION S22",
-  "files_touched": ["orchestration/status/critic-w1-11.json"],
-  "files_claimed": [
-    "corpus/90-verdicts/wave1/W1-11-r1.md",
-    "corpus/90-verdicts/wave1/W1-11-r1.json",
-    "docs/shots/",
-    "reports/blog-feed.jsonl"
-  ],
-  "notes": []
+ "task_id": "critic-w1-11",
+ "role": "critic",
+ "judges": "W1-11",
+ "state": "writing-verdict",
+ "started": "2026-08-07",
+ "next_step": "write corpus/90-verdicts/wave1/W1-11-r1.{md,json}, validate, blog line",
+ "files_touched": [
+  "orchestration/status/critic-w1-11.json",
+  "tools/audio/critic-m6-fixture-sweep.mjs",
+  "corpus/90-verdicts/wave1/artifacts/W1-11-r1/",
+  "docs/shots/2026-08-07-W1-11-r1-critic-m6-passes-on-the-broken-panner.png"
+ ],
+ "files_claimed": [
+  "corpus/90-verdicts/wave1/W1-11-r1.md",
+  "corpus/90-verdicts/wave1/W1-11-r1.json",
+  "reports/blog-feed.jsonl"
+ ],
+ "notes": [
+  "M6 FIXTURE FINDING (mine, HEAD 5c4c5b0, node arena): the legacy attacker-position pan rule scores r from -0.0759 to +1.0000 across five fixtures. On 'enemy stationary in the world, player turning on the spot' the BROKEN rule passes M6 outright (r=1.0000, 100 impacts). distance_m_max is 0.0000 on every legacy arm and is the only invariant that discriminates. Tool: tools/audio/critic-m6-fixture-sweep.mjs, exits 3 on the finding.",
+  "RI-AUD01 is 7 of 9, not 5 of 5: M2 (blind distinguishability) and M8 (sparseness/LUFS) have no instrument. tools/blind/audio-pack.mjs is still an absence-reporter and now reports UNCONFIRMED (exit 20) because audio shipped and its declaration was not updated.",
+  "HITSTOP CONFIRMED BY MY OWN PERTURBATION: heavy/flesh holds the attacker anim for exactly 12 f@60 and the victim for 16; zeroing the table takes 28 of 35 cells to 0. The 7 ranged cells DO NOT go to zero -- bow_chitin_recurve carries its own per-slot hitstop_f table. 4 weapons / 102 slots override RI-WPN05 SectionA on every material column; M1's tolerance is +-0 f.",
+  "MATERIAL CONFIRMED BY MY OWN PERTURBATION: shield -> `blocked` (gain 0.2335, all-lowpass, no high transient), flesh -> `hit_flesh_heavy` (gain 0.4461, bandpass transients + 94.5 Hz body). Guard up vs guard down on the SAME body flips the class.",
+  "CAMERA SHAKE IS A MODEL WITH NO WORLD-SIDE CONSUMER: triggerShake() in game/src/sim/camera.js has exactly one caller in the tree, Engine.triggerCameraShake() (game/src/engine.js:5932), documented as 'RI-CAM06 M7's fixture'. resolve.js:378 writes e.shake_deg and nothing reads it. game/src/save/state.js:432 already says 'Nothing in wave 1 calls triggerShake()'.",
+  "MASS STILL LIVE AT HEAD AFTER W1-MASS COMPLETED: motion-census at 5c4c5b0 -- 63 clips over the SectionE.2 1.00 m socket HARD FAIL (worst cgs_drowned_reaper/r1.2 1.524 m, whp 2.5869 m), tip speed over 1.25x band 41.42%, arc nonconforming 3.96%.",
+  "CONTENTION: no browser launched. pgrep headless_shell was 12 at start and 24 at the M6 work, loadavg 13.52 -- above AGENT-PROTOCOL's ~8 ceiling. Every figure I report is a count, a rate, a frame count or a correlation; no timing figure is claimed. M3's offline render is NOT independently re-verified and is recorded as carried from the builder's browser artifact."
+ ],
+ "redundant_with": [
+  "W1-11",
+  "W1-MASS"
+ ]
 }

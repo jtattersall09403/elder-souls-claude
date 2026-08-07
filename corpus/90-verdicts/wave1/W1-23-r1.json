@@ -1,0 +1,661 @@
+{
+  "schema_version": 1,
+  "piece_id": "w1-23-lore-registry-and-the-provinces-canon",
+  "piece_title": "W1-23 — the lore registry and the province's canon (RI-LOR06 + RI-LOR01 + RI-LOR04)",
+  "subsystem_paths": [
+    "lore.canon.registry",
+    "lore.canon.argonian",
+    "lore.canon.history",
+    "lore.canon.factions",
+    "lore.naming.conventions",
+    "dialogue.topics.truth",
+    "coherence.lore.consistency"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-23-r1",
+    "role": "critic.lore.canon",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-07T19:05:00Z",
+    "finished_at": "2026-08-07T20:20:00Z",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true
+  },
+  "build": {
+    "commit_sha": "5c4c5b004ec890d6a2e93f864563f0075137e15c",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "harness_commands": [
+      {
+        "command": "node tools/lore/critic-w1-23-r1.mjs --self-test",
+        "exit_code": 0,
+        "stdout_artifact": "SELF-TEST: PASS — 6/6, each of the five checks broken on purpose (seal invertible / seal not invertible, untagged voice caught / clean voice silent, falsified `measured: ZERO` caught / true one silent)"
+      },
+      {
+        "command": "node tools/lore/critic-w1-23-r1.mjs --out corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json",
+        "exit_code": 1,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json — 35 findings"
+      },
+      {
+        "command": "node tools/lore/critic-w1-23-r1-ablate.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-23-r1/voices.txt §2 — the-thinning 5 answers and slavery 3 answers, identical with the register and with canon=null"
+      },
+      {
+        "command": "node tools/lore/critic-w1-23-r1-voices.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-23-r1/voices.txt §1 — every distinct answer to `slavery` per player race; 227 Argonian NPCs, 66 with any answer, 3 distinct sentences"
+      },
+      {
+        "command": "node tools/lore/canon-census.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "CANON CENSUS: PASS — 27/27 fully voiced, 57/57 edges registered, 10 stale cross-references"
+      },
+      {
+        "command": "node tools/lore/canon-census.mjs --self-test",
+        "exit_code": 0,
+        "stdout_artifact": "SELF-TEST: PASS 10/10 — verified independently; the list omits a check for a voiced_by naming an info that carries no cf tag, of which 20 are live on disk"
+      },
+      {
+        "command": "node tools/lore/canon-consumption.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "CANON CONSUMPTION: PASS — 141 references resolve, 43/43 registered lines vanish under perturbation, 409 untagged answers byte-identical, 347/347 hold a position"
+      },
+      {
+        "command": "node tools/lore/build-canon.mjs --check",
+        "exit_code": 0,
+        "stdout_artifact": "up to date (83 facts, 27 disputed)"
+      },
+      {
+        "command": "node tools/lore/tribe-census.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "TRIBE CENSUS: PASS — 6 peoples, 15 pairs, worst overlap 0 of 5"
+      },
+      {
+        "command": "python3 corpus/80-methods/canon-check.py --validate-registry",
+        "exit_code": 0,
+        "stdout_artifact": "REGISTRY: PASS — 83 facts, 27 disputed, 1 deliberately open, 1 expected WARN on CF-D003"
+      },
+      {
+        "command": "python3 corpus/80-methods/canon-check.py --validate-registry --books-manifest game/data/books/manifest.json",
+        "exit_code": 1,
+        "stdout_artifact": "FileNotFoundError: game/data/books/manifest.json — RI-LOR06 comparison method §1, the gate that 'runs in CI, blocks the wave', names a path that does not exist"
+      },
+      {
+        "command": "python3 corpus/80-methods/canon-check.py --claims game/data/dialogue/topics/70-disputes.json game/data/dialogue/topics/75-tribes.json --strict",
+        "exit_code": 0,
+        "stdout_artifact": "texts scanned 7, registry touches 0 — the triage is blind to the `cf` tag; 50 infos carrying explicit CF ids register as zero touches"
+      },
+      {
+        "command": "python3 corpus/80-methods/canon-check.py --claims $(find game/data/dialogue game/data/books -name '*.json') --strict",
+        "exit_code": 1,
+        "stdout_artifact": "3337+ keyword hits; 657 texts touch a deliberately-open or late/never fact. Exit code read directly, not through a pipe (INDEX.md warning)."
+      },
+      {
+        "command": "python3 corpus/80-methods/jel-phonotactics.py --extract $(find game/data -name '*.json') --threshold 0.05",
+        "exit_code": 1,
+        "stdout_artifact": "violation rate 73.8% over 1258 'unknown' + 616 'jel' names — the harvester classifies book titles and NPC descriptions as names; instrument defect, predates this piece"
+      },
+      {
+        "command": "node tools/lore/critic-w1-23-r1-shot.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "docs/shots/2026-08-07-w1-23-critic-r1-what-the-canon-register-changes.png"
+      }
+    ],
+    "depends_on": [
+      "corpus/00-doctrine/SCORING.md",
+      "corpus/60-lore/RI-LOR01-canon-dossier.md",
+      "corpus/60-lore/RI-LOR04-naming-and-language.md",
+      "corpus/60-lore/RI-LOR06-contradiction-discipline.md",
+      "corpus/60-lore/data/canon-facts.json",
+      "corpus/80-methods/canon-check.py",
+      "corpus/80-methods/jel-phonotactics.py",
+      "game/data/dialogue/topics/**",
+      "game/data/lore/canon.json",
+      "game/data/npcs/**",
+      "game/data/books/**",
+      "game/data/progression/factions.json",
+      "game/src/character/converse.js",
+      "game/src/engine.js",
+      "game/src/world/canon.js",
+      "tools/lore/build-canon.mjs",
+      "tools/lore/canon-census.mjs",
+      "tools/lore/canon-consumption.mjs",
+      "tools/lore/tribe-census.mjs",
+      "tools/lore/critic-w1-23-r1.mjs",
+      "tools/lore/critic-w1-23-r1-ablate.mjs",
+      "tools/lore/critic-w1-23-r1-voices.mjs",
+      "tools/lore/critic-w1-23-r1-shot.mjs"
+    ],
+    "depends_on_note": "The critic instruments import game/src/world/canon.js and game/src/character/converse.js directly — the same modules Engine._installCanon() and Conversation use — so the ablation and the reach census run the shipping code path with no browser. Git archaeology reads corpus/60-lore/data/canon-facts.json and game/data/books/** at b96de7c, 86366ea and cdb2938."
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "None of the three items is judged on fidelity or art direction. RI-LOR06 is a structure item over JSON, RI-LOR01 is a text dossier, RI-LOR04 is phonotactics. The one image declared in artifacts[] is a bar chart of counts drawn in node from critic-probe.json for the blog; it depicts no rendered frame, cites no visual reference, and restates numbers rather than carrying them."
+  },
+  "reference_items": [
+    {
+      "id": "RI-LOR06",
+      "path": "corpus/60-lore/RI-LOR06-contradiction-discipline.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "0-5 band",
+      "native_score": 4,
+      "native_max": 5,
+      "native_verdict": "Band 4 — registry passes, well past the 8-dispute bar, zero adjudicators. Held off 5 because band 5 additionally requires every sampled claim to map to a registry entry and >=95% of §3 adjudications to land PASS/NEW-LORE, and §3 could not be run at all (§2's triage yields 657 unreviewable secret-adjacent hits); because one registration is an argument by the item's own published rule; and because the registry now ships a constructed fact the tree has falsified.",
+      "score_0_10": 7,
+      "measured": "partial",
+      "justification": "27 fully-voiced disputes against a bar of 8 and a band-5 bar of 10, independently recounted by tools/lore/critic-w1-23-r1.mjs and by a re-run of tools/lore/canon-census.mjs; every one of the 27 anchored on at least one shipped book, verified per-position in artifacts/W1-23-r1/critic-probe.json. Zero narrator adjudicators after reading all six ADJUDGE hits the census prints.",
+      "why_not_ten": "The 27 is computed over `voiced_by` strings and 20 of the 70 declared dialogue voices name an info that carries no `cf` tag, so they are counted as voices and gated by nothing — including every dialogue voice of CF-D002, CF-D003, CF-D004 and CF-D005, four of the six disputes the item itself seeds as load-bearing. CF-D021 is an argument by the not_disputes rule. CF-C023 is a constructed fact the shipped tree contradicts and no gate can see it.",
+      "checks": [
+        {
+          "id": "method1-registry-integrity-gate",
+          "result": "fail",
+          "hard_fail": false,
+          "value": "canon-check.py --validate-registry alone: PASS, 83 facts, 27 disputed, 1 deliberately open, 1 expected WARN. With --books-manifest game/data/books/manifest.json as the method writes it: FileNotFoundError, exit 1.",
+          "threshold": "Exit 1 -> FAIL",
+          "note": "The manifest clause is the half that enforces 'a contradiction whose sources do not exist is not tracked, it is claimed'. The path has never existed. Recorded as a fail of the METHOD as written, not of the registry, which passes on the half that runs. Named at §9.3 of the builder's own report and still open.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-23-r1/voices.txt"
+          ]
+        },
+        {
+          "id": "method2-triage-sweep",
+          "result": "unmeasurable",
+          "hard_fail": false,
+          "value": "Over the two files this piece and its successor authored: `texts scanned 7, registry touches 0` across 50 infos that carry explicit `cf: CF-Dnnn` fields — the triage matches on keyword overlap and does not read the tag. Over the whole lore tree: exit 1, 3337+ hits, 657 texts touching a deliberately-open or late/never fact.",
+          "threshold": "Unreviewed secret hits -> FAIL",
+          "note": "657 is not a reviewable set and the tool cannot see the piece's own content, so the 'zero secret leaks' clause of band 4 is not a finding here. I reviewed the one that matters by hand instead: CF-D007, the dispute nearest CF-C010 (the registry's one secret, player_discoverable: late), states nothing of it in either position and carries a long `partial:` ruling that is not recoverable. No leak found; no leak ruled out."
+        },
+        {
+          "id": "method3-adjudication-pass",
+          "result": "unmeasurable",
+          "hard_fail": false,
+          "value": "Not run — requires a sample of >=30 triage hits and method 2 cannot produce a reviewable set.",
+          "threshold": ">=95% of adjudications land PASS or NEW-LORE for band 5"
+        },
+        {
+          "id": "method4-contradiction-census",
+          "result": "pass",
+          "hard_fail": true,
+          "value": "27 of 27 disputes fully voiced (bar >=8; band-5 bar >=10). Every dispute carries at least one shipped BOOK on at least one position; none is voiced entirely by dialogue the two lore pieces wrote. No position is voiced zero times.",
+          "threshold": "<8 fully-voiced disputes -> FAIL",
+          "note": "The 'before' column of 0 of 6 is a schema artifact, not a measurement. `voiced_by` and `holders` are fields this piece invented and the fully-voiced test is defined over `voiced_by`; at b96de7c the registry had 0 voiced_by entries and 0 positions with holders. 112 books were already on disk, and backfilling the field alone makes CF-D001, CF-D003, CF-D005 and CF-D006 fully voiced at b96de7c. The honest delta is 4 of 6 -> 27 of 27. The bar itself was genuinely unreachable at 6 disputes, so new registrations were the right remedy and the after number is sound.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-23-r1/voices.txt"
+          ]
+        },
+        {
+          "id": "method5-adjudicator-hunt",
+          "result": "pass",
+          "hard_fail": true,
+          "value": "Six hits printed by the census ADJUDGE section, all read by hand. Four are in-world book idiom ('being in truth a hatchet', 'doing in fact since my fourth'); one is a drill sergeant refusing to have a martial question argued in his depot; one is an NPC saying an argument at Soulrest 'has been settled by each house separately', i.e. not settled. Zero narration, journal or UI text settles a registered dispute.",
+          "threshold": "Narration or journal settling a registered dispute -> FAIL",
+          "note": "One text does the opposite and does it well: a-progress-iii has an in-world author write 'the truth is that we do not agree about it and have not agreed about it for four thousand years'."
+        },
+        {
+          "id": "method6-open-question-guard",
+          "result": "pass",
+          "hard_fail": true,
+          "value": "CF-D002 (who cut the first sapwell) remains disputed with three positions, deliberately_open: true, authorially_true null, and ships with truth_seal: null — the one unsealed dispute in the register, and the projector's own honest signal that there is nothing to seal.",
+          "threshold": "Any content supplying an answer -> FAIL, severity high"
+        },
+        {
+          "id": "method7-invention-opacity",
+          "result": "pass",
+          "hard_fail": false,
+          "value": "Sampled CF-C001, CF-C002, CF-C007, CF-C010, CF-C023, CF-C024. None is asserted in-world in the register of established scholarship. CF-C023 and CF-C024 carry no in_world_sources at all — they are registry-internal measurements of our own build.",
+          "threshold": "A constructed fact asserted as Tamrielic consensus -> FAIL"
+        },
+        {
+          "id": "method8-drift-check",
+          "result": "fail",
+          "hard_fail": false,
+          "value": "No tier moved from constructed to hard-canon and no authorially_true changed after content shipped against it. But CF-C023, tier constructed, ships a `measured:` field asserting Agacephs, Paatru, Archein, Sarpa, Dead-Water and Miredancers all score ZERO. At HEAD they score 53, 34, 50, 26, 10 and 47. RI-LOR06 §3 step 6: 'tier=constructed and the claim contradicts it? -> FAIL. Our inventions bind us exactly as canon does.'",
+          "threshold": "Retconning our own registry -> FAIL",
+          "note": "Scored as a check fail rather than an item-level 0 because the content that falsifies it belongs to the tribes piece, not to W1-23, and because CF-C023 is a registry-internal measurement rather than an in-world assertion. The gap it exposes is W1-23's: canon-census.mjs checks disputes and contradiction edges and never a `measured:` claim on an undisputed fact, so the registry can be falsified by the tree with every gate green. staleMeasured() in tools/lore/critic-w1-23-r1.mjs catches it in eleven lines and self-tests both ways.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json"
+          ]
+        },
+        {
+          "id": "critic-the-is-the-case-rule-applied-to-the-piece",
+          "result": "fail",
+          "hard_fail": false,
+          "value": "CF-D021 ('Is sight in this province a competence the country takes away, or the wrong sense to have trained on?') is an ARGUMENT by the piece's own not_disputes rule. Position A ends 'The fault is the province's'; position B ends 'a person taught properly here is not working round a defect'. Neither denies what the other asserts; both agree you cannot see far in the marsh and price it differently. That is the same shape as the ricasso edge the piece correctly excluded as 'Worth, and an explicit trade: both authors state the same exchange and price it differently.'",
+          "threshold": "a contradiction is a disagreement about what IS THE CASE",
+          "note": "1 of 27. CF-D009 is the same family and is left standing because position B makes a factual claim about what a mark on a paper records. CF-D021 is the entry the builder's report holds up as the model registration."
+        },
+        {
+          "id": "critic-seal-invertibility",
+          "result": "fail",
+          "hard_fail": false,
+          "value": "9 of 26 sealed disputes have their ruling recovered from the shipped bytes alone by hashing the position ids the same file publishes: CF-D003=B, CF-D004=C, CF-D006=C, CF-D008=B, CF-D009=B, CF-D010=C, CF-D020=B, CF-D021=B, CF-D023=C. The 17 `partial:` rulings hold.",
+          "threshold": "the running game cannot state the ruling, because the string is not in the build",
+          "note": "Both leak checks are blind to exactly this case by construction: build-canon.mjs:122 and canon-consumption.mjs:118 both guard with a >=24-character length test, which excludes every one-character ruling. Two of the nine are CF-D008 (the registry's own 'central moral fact') and CF-D003 (whose losing position the item describes as racial condescension). Remedy: salt the seal with the fact id and a corpus-side secret; nothing in the build reads it, so it costs nothing.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-23-r1/voices.txt",
+        "tools/lore/critic-w1-23-r1.mjs"
+      ]
+    },
+    {
+      "id": "RI-LOR01",
+      "path": "corpus/60-lore/RI-LOR01-canon-dossier.md",
+      "side": "morrowind",
+      "kind": "text",
+      "native_scale": "0-5, min over three axes",
+      "native_score": 0,
+      "native_max": 5,
+      "native_verdict": "Min over axes: canon fidelity 4, provenance legibility 4, invention density UNMEASURABLE -> 0 fail-closed. The item's aggregation is min-over-axes and is a property of the item, not of the critic.",
+      "score_0_10": 4,
+      "measured": "partial",
+      "why_not_ten": "The invention-density axis is unmeasurable by its own comparison method: §4 counts named factions in `game/data/factions/`, which does not exist. game/data/progression/factions.json carries two ids (house-dres, shadowscale-order) and the six Argonian peoples the tribes piece landed have none.",
+      "checks": [
+        {
+          "id": "axis-canon-fidelity",
+          "result": "pass",
+          "hard_fail": true,
+          "value": "No hard-canon contradiction found. CF-062 (Dres raids, slavery legal at 3E 427) is depicted as current, not history, and is the subject of CF-D008. CF-D003's WARN is expected and correct — a resolution OF canon carrying constructed provenance. The tribes landing improves fidelity to CF-027, which is hard-canon on the NAMES.",
+          "threshold": "Any hard-canon contradiction about the Hist, or >=2 anywhere -> 0"
+        },
+        {
+          "id": "axis-invention-density",
+          "result": "unmeasurable",
+          "hard_fail": true,
+          "value": "game/data/factions/ does not exist. The axis's borrowed/total ratio cannot be computed by the method as written.",
+          "threshold": "borrowed/total > 0.25 -> FAIL for under-invention",
+          "note": "What can be seen without the directory: the borrowings are registered rather than silent — the young Blackwood Company is CF-C002/CF-066 and explicitly constructed, the thin Legion is CF-C001, no An-Xileel exists. The four constructed bodies (Deep-Kin, Drowned Court, Wet Ledger, Xul-Aneekh) are ours. I did not build a substitute census because choosing its denominator is choosing the answer; the directory is a builder's obligation, not a critic's."
+        },
+        {
+          "id": "axis-provenance-legibility",
+          "result": "pass",
+          "hard_fail": true,
+          "value": "Materially improved and this is the piece's clearest win. 50 dialogue infos now carry a `cf` naming the registry entry a line argues and a `pos` naming the side, against 11 distinct CF ids cited anywhere in the tree before. The shipped register carries a consumed_by list and an id_scheme. A reader can go from a line to its registry entry in one lookup.",
+          "threshold": "Every lore claim traceable to a registry entry in <30s for 5",
+          "note": "Held at 4, not 5: 50 of 1221 infos carry a tag, and 20 of the 70 declared dialogue voices point at infos that carry none, so the trace runs one way only for those."
+        },
+        {
+          "id": "method5-place-name-lock",
+          "result": "pass",
+          "hard_fail": true,
+          "value": "No CF-080..CF-088 map name is renamed or respelled. The six tribes are placed at helstrom, blackrose, soulrest, gideon, lilmoth and thorn — all canonical settlements.",
+          "threshold": "Any renaming or 'correction' of a map name -> FAIL"
+        }
+      ],
+      "hard_fails": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-23-r1/voices.txt",
+        "tools/lore/critic-w1-23-r1.mjs"
+      ]
+    },
+    {
+      "id": "RI-LOR04",
+      "path": "corpus/60-lore/RI-LOR04-naming-and-language.md",
+      "side": "morrowind",
+      "kind": "structure",
+      "native_scale": "0-5 band",
+      "native_score": 3,
+      "native_max": 5,
+      "native_verdict": "Band 3 on the one gate that can be read cleanly. The item's headline instrument returns an unusable number over the whole tree for reasons that predate this piece, and this piece's own naming contribution is small (ten NPC names) and clean.",
+      "score_0_10": 6,
+      "measured": "partial",
+      "why_not_ten": "§§1-2 unusable, §5 and §6 not run. The item's own harvester classifies book titles and NPC descriptions as names and returns 73.8% violations against a 5% threshold over the whole shipped tree; this piece's ten names are invisible inside that number.",
+      "checks": [
+        {
+          "id": "method3-argonian-apostrophe-gate",
+          "result": "pass",
+          "hard_fail": true,
+          "value": "0 apostrophes in 227 Argonian NPC names.",
+          "threshold": "Any apostrophe in an Argonian name -> FAIL, no threshold"
+        },
+        {
+          "id": "method1-2-harvester",
+          "result": "unmeasurable",
+          "hard_fail": true,
+          "value": "73.8% violation rate over 2180 harvested 'names', of which 1258 are 'unknown'. Sample offenders: '40 treads at 0.18 m rise / 0.312 m going = 30.0 degrees, in a 4.00 m clear stairwell.' and 'A 1.20 m doorway between two walls. A test rig, not an interior'. The harvester pulls the `title` and description keys the method tells it to and receives sentences.",
+          "threshold": "violation rate > 5% -> exit 1, the critic fails the piece",
+          "note": "Instrument defect, whole-tree, predates W1-23. Scored unmeasurable rather than 0-band because the number is not a measurement of naming."
+        },
+        {
+          "id": "critic-the-new-names",
+          "result": "pass",
+          "hard_fail": false,
+          "value": "Ten tribe NPC names: Sheem, Neekhu, Otokh, Wux-Ei, Xeeth, Omu-Ei, Neekh-Otei, Koor-Nakh are Jel-shaped with the x/long-vowel texture RI-LOR04 §5 asks for; Archein Weighs-The-Season and Archein Salts-Her-Own-Reeds are CF-024 hyphenated Tamrielic forms and encode gender by possessive as CF-024 requires.",
+          "threshold": "culture-forced pass on Argonian NPCs"
+        },
+        {
+          "id": "critic-race-id-not-folded",
+          "result": "fail",
+          "hard_fail": false,
+          "value": "179 NPCs carry `race: \"argonian\"`, 46 carry `race: \"saxhleel\"`, 2 carry `naga`. The register's `holders.races` lists only `saxhleel` and `naga`, and `canon.js stanceOf():153` matches race with a raw `h.races.includes(race)` — no fold(), while lines 152 and 154 do fold faction and settlement. Three positions narrow by race (CF-D003/B, CF-D016/B, CF-D021/B), each of them the Argonian side of an Argonian-versus-Imperial dispute. Folding the exonym to the endonym adds 56 held stances.",
+          "threshold": "one people, one id",
+          "note": "The exact defect the builder's report names for faction ids — 'sees a fraction of the people it is talking about, and it sees it silently' — one field over, in the module written to fix it.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-23-r1/voices.txt",
+        "tools/lore/critic-w1-23-r1.mjs"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json",
+      "kind": "report",
+      "produced_by": "node tools/lore/critic-w1-23-r1.mjs --out corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json",
+      "what_it_shows": "The five questions neither of the piece's own green instruments asks: 9 of 26 seals invertible; the register changes 31 of 161,702 npc-topic answers and all 31 are silencings; 20 of 70 declared dialogue voices name an info with no cf tag; 156 of 347 people hold a position they also have a line for, and 30 of 66 positions have no dialogue voice at all; CF-C023 asserts six tribe names score ZERO and the tree scores 53/34/50/26/10/47."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-23-r1/voices.txt",
+      "kind": "text-excerpt",
+      "produced_by": "node tools/lore/critic-w1-23-r1-voices.mjs && node tools/lore/critic-w1-23-r1-ablate.mjs (concatenated, plus the git-history table for the registry's voiced_by/holders fields)",
+      "what_it_shows": "Every distinct answer the province gives to `slavery` at five player races; the two registered positions are an Imperial clerk and a House Dres factor and the only Argonian line is an untagged refusal. Then the delete-the-fix: the-thinning and slavery answered identically with the register and with canon=null. Then the registry's own history showing voiced_by went 0 -> 93 -> 136, and that 4 of the 6 seeded disputes were already fully voiced by books on disk at b96de7c."
+    },
+    {
+      "path": "tools/lore/critic-w1-23-r1.mjs",
+      "kind": "log",
+      "produced_by": "node tools/lore/critic-w1-23-r1.mjs --self-test",
+      "what_it_shows": "The critic's instrument and its falsification: 6/6, each of the five checks broken on purpose in both directions (a seal that must invert and one that must not; an untagged voice that must be caught and a clean one that must not be; a falsified `measured: ZERO` claim that must fire and a true one that must not). The tool exits non-zero only when a finding is present, so a tree that closes all five reads as clean rather than as a probe that cannot fail."
+    },
+    {
+      "path": "docs/shots/2026-08-07-w1-23-critic-r1-what-the-canon-register-changes.png",
+      "kind": "graph",
+      "produced_by": "node tools/lore/critic-w1-23-r1-shot.mjs",
+      "what_it_shows": "The six numbers this verdict turns on, as bars: 27/27 fully voiced and a real boot-time consumer in green; 50/70 voices gated and 156/347 people able to speak in amber; 17/26 seals holding and 31/161,702 answers changed in red. Drawn pixel by pixel in node with pngjs because no browser was available under contention; it is a restatement of critic-probe.json, not independent evidence."
+    }
+  ],
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "checks": [
+        {
+          "id": "A-scope",
+          "result": "not_applicable",
+          "not_run_reason": "No item here touches combat. Contradiction discipline, canon provenance and phonotactics are all on the Morrowind side of ARBITRATION §1. No frame number, hitbox, stamina cost or enemy behaviour is in scope."
+        }
+      ],
+      "not_applicable_reason": "No item in this verdict touches combat. RI-LOR06 is contradiction discipline over JSON, RI-LOR01 is a canon dossier and RI-LOR04 is phonotactics; all three sit on the Morrowind side of ARBITRATION §1 ('Lore: unreliable in-world books, contradictory accounts'). No frame number, hitbox, stamina cost, i-frame window or enemy behaviour appears anywhere in the piece under judgement or in this verdict, and the piece ships no combat data."
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "B-no-adjudicator-in-narration",
+          "result": "pass",
+          "observed": "Zero narration, journal or UI strings settle a registered dispute. RI-LOR06 §1.2 holds across all six census ADJUDGE hits, each read by hand.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json"
+          ]
+        },
+        {
+          "id": "B-no-marker-or-objective-language",
+          "result": "pass",
+          "observed": "The 50 cf-tagged dialogue infos contain no marker, waypoint, objective or compass language. They are answers to questions."
+        }
+      ]
+    },
+    "ar3": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "C-consumption",
+          "result": "pass",
+          "observed": "The registry is genuinely consumed. game/src/engine.js:2269 _installCanon() builds a CanonRegistry from game/data/lore/canon.json, resolves 141 references against the data that actually loaded, THROWS on a dangle, and calls conversation.setCanon(); converse.js:230 consults canon.allows() on every info; engine.js getCanonState() publishes it on the harness. Fail-closed in both directions: a voiced_by naming a book nobody wrote goes red, and a position with no holders goes red. This is a real world-side consumer and it is the defect the piece existed to close.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json",
+            "corpus/90-verdicts/wave1/artifacts/W1-23-r1/voices.txt"
+          ]
+        },
+        {
+          "id": "C-consumption-magnitude",
+          "result": "fail",
+          "observed": "Real but narrow, and narrower than the report's numbers read. Delete-the-fix over the whole province: 161,702 (npc,topic) pairs evaluated with the register and with canon=null; the register changes 31 (0.019%), all of them silencings, none of them a swap. It can only take dialogue away. The headline demonstration — 'the province disagrees with itself' — is byte-identical without the register (the-thinning 5 answers, slavery 3 answers, both arms). Every cf-tagged info also carries an actor field and converse.js:246 already refuses an info written for somebody else's mouth, so the perturbation is measuring a second lock on a door that was already shut. RULES #6's second clause — 'then check the two arms actually differ' — is where this lands.",
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-23-r1/voices.txt",
+            "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json"
+          ]
+        }
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 5,
+    "pass_threshold": 7,
+    "aggregation": "mean",
+    "aggregation_note": "mean of RI-LOR06 7, RI-LOR01 4 (min-over-axes native 0 because the invention-density axis names a directory that does not exist; the item publishes no 0 rung so the generic native-0 ceiling of 4 applies), RI-LOR04 6 => 5.67 -> 5. SCORING §3: mean is the default when the items measure different dimensions of the same piece rather than gates, which is the case here — contradiction discipline, canon provenance and phonotactics are three dimensions, not three gates.",
+    "band_label": "The register is real, is read by the engine, and throws when it lies — and it changes 31 answers in 161,702, cannot be told from its own absence on the two topics its report leads with, and leaves the province's own subjects with a refusal where it gave two colonists a position each",
+    "confidence": "high",
+    "confidence_note": "Every figure is a count or a boolean over the shipped data, taken through the same engine modules the game loads, with no browser and no timing. The ablation, the reach census and the seal brute-force were each re-derived by a tool that shares no code with the builder's, and each self-tests in both directions. Where my numbers overlap the builder's they agree (141 references, 409 untagged controls, 27 fully voiced). NOT CLAIMED: whether the eighteen dialogue infos read well, which is a blind-pack question; whether any secret leaks, which method 2 cannot answer."
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "below_wave_1_gate:7.0",
+    "consumption_narrow:the register changes 31 of 161,702 npc-topic answers (0.019%), all silencings, and both topics the report leads with are byte-identical with canon=null",
+    "check_fail:RI-LOR06/method1 the registry gate as written invokes game/data/books/manifest.json, which does not exist — FileNotFoundError",
+    "check_fail:RI-LOR06/method8 CF-C023 ships a constructed `measured:` claim of ZERO for six tribe names that now score 53/34/50/26/10/47, and no gate in the piece can see a falsified measured claim",
+    "check_fail:RI-LOR06/critic-seal-invertibility 9 of 26 sealed rulings recover from the shipped bytes in three guesses, and both leak checks are blind to them by a >=24-character guard",
+    "check_fail:RI-LOR06/critic-the-is-the-case-rule-applied-to-the-piece CF-D021 is an argument by the piece's own not_disputes rule",
+    "check_fail:RI-LOR04/critic-race-id-not-folded 179 of 227 Argonian NPCs are indexed under a race id the register does not list, silently, and fold() covers faction and settlement but not race",
+    "unmeasurable:RI-LOR01/axis-invention-density — game/data/factions/ does not exist and RI-LOR01 comparison method §4 counts factions in it",
+    "unmeasurable:RI-LOR06/method2 and method3 — the triage returns `registry touches: 0` on 50 infos carrying explicit CF ids, and 657 unreviewable secret-adjacent hits over the whole tree",
+    "unmeasurable:RI-LOR04/method1-2-harvester — 73.8% violations because the harvester classifies book titles and NPC descriptions as names",
+    "headline_inflated:the `0 of 6` before-column is a schema artifact; `voiced_by` and `holders` are fields this piece invented and 4 of the 6 seeded disputes were already fully voiced by books on disk at b96de7c"
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-23-both-registered-voices-on-slavery-are-colonists",
+    "subsystem_path": "lore.canon.registry",
+    "severity": "major",
+    "what": "The piece diagnosed the province's worst authorial habit exactly right — 'a province that only ever says lease has adopted the Provincial Office's vocabulary as narration' — and prescribed exactly the right remedy: 'the euphemism must be somebody's POSITION and not the world's voice'. CF-D008 was then registered with two positions, and BOTH are voiced in dialogue by the coloniser. Position A is an Imperial clerk: 'No subject of the Empire may be held as property inside the Empire's law. Where it happens it happens outside that law, off foreign keels, and the Office has made representations. I've copied three of them myself.' Position B is a House Dres slave-factor: 'The House keeps a stock column and people are entered in it and taken out of it, and the law you are quoting changes the word on the paper and nothing else.' Both books voicing B are Dunmer and Imperial hands — a salt-factor's ledger and marginalia in a borrowed Imperial address. Of 347 people in the province, 227 are Argonian; 66 of those have any answer to the topic `slavery`; between them they give three distinct sentences, and the only one written for an Argonian mouth is untagged and is a refusal to speak: 'This one will not discuss it with you standing there, and this one is sorry.' Carrying no `cf`, it contributes nothing to the 27-of-27 census, nothing to the 43/43 perturbation, and nothing to the register. Meanwhile CF-D008/B's held_by names 'every soul who has been on the Blackrose roll' and its machine holders list `dres-factor, sapcutter, mudborn, outlaw` — of which only dres-factor has a line. The registry credits the enslaved with a position and the build gives them no sentence. And the ruling on this dispute, which the registry's own note calls 'the province's central moral fact', is one of the nine that recover from the shipped bytes in three guesses.",
+    "why_it_matters": "RI-LOR06 §1.2 forbids the world from correcting a contradiction, and §2 gives held_by one job: to stop a dispute nobody actually holds. Both rules are satisfied on paper and inverted in practice. The register was built to move the euphemism from narration into somebody's mouth; it moved it into two colonists' mouths and left the people it is about exactly where they were, which is silent. That is not a small authorial miss — it is the difference between a province that depicts a colonial vocabulary and a province that has adopted one, and RI-LOR01's 'How we lose' #7 names precisely this failure ('Imperial contempt swallowed whole ... the game must know the difference even when the book does not'). It is also the piece's own thesis failing on its own headline example, which is the strongest possible argument that the register's 0.019% behavioural footprint is a real limit and not a technicality.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-23-r1/voices.txt",
+      "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json",
+      "tools/lore/critic-w1-23-r1.mjs",
+      "docs/shots/2026-08-07-w1-23-critic-r1-what-the-canon-register-changes.png"
+    ],
+    "remedy": {
+      "action": "Three edits, all in data. (1) Tag the existing Saxhleel refusal in game/data/dialogue/topics/40-race-gated.json with `cf: CF-D008` and a third position C — a refusal to answer an Imperial question in front of an Imperial building is a claim about what is the case, held by the people it is the case about — and register position C with holders drawn from Argonian actors. (2) Write one cf-tagged CF-D008/B line for `mudborn`, `sapcutter` or `outlaw`, actors the registry ALREADY declares hold that position and which no line reaches. (3) Salt the truth_seal (`sha256(id + '|' + ruling + '|' + corpus-side salt)`) so CF-D008's ruling stops recovering in three guesses, and drop the >=24-character guard from both leak checks so the instrument can see the case it is currently blind to.",
+      "targets": [
+        "game/data/dialogue/topics/40-race-gated.json",
+        "game/data/dialogue/topics/70-disputes.json",
+        "corpus/60-lore/data/canon-facts.json (CF-D008)",
+        "tools/lore/build-canon.mjs",
+        "tools/lore/canon-consumption.mjs"
+      ],
+      "acceptance": "node tools/lore/critic-w1-23-r1-voices.mjs reports at least one distinct answer to `slavery` that is cf-tagged AND written for an Argonian actor, in addition to the clerk and the dres-factor. For CF-D008, the set of actors that can be OFFERED a cf-tagged line is no longer a subset of {clerk, dres-factor}: at least one of mudborn, sapcutter or outlaw is in it. node tools/lore/critic-w1-23-r1.mjs reports 0 of 26 sealed rulings recoverable (currently 9), and its --self-test still passes 6/6. node tools/lore/canon-census.mjs and node tools/lore/canon-consumption.mjs still PASS, and the untagged-voice count from the critic probe falls from 20 toward 0."
+    }
+  },
+  "secondary_observations": [
+    {
+      "id": "OBS-1",
+      "what": "THE CENSUS AND THE CONSUMER MEASURE TWO DIFFERENT POPULATIONS. 20 of the 70 declared dialogue voices point at an info carrying no `cf` tag: the census counts them, resolve() passes them because it checks only that an info exists for that actor, and the register gates nothing there. All of CF-D002, CF-D003, CF-D004 and CF-D005 are in this set — four of the six disputes RI-LOR06 §2 seeds as load-bearing, the ones the world is actually about. canon-census.mjs --self-test has a check for 'a voice attributed to an actor with no info there' and none for 'a voice attributed to an info that makes no claim', which is why it reads 10/10 with 20 live instances on disk. Two lines in the census close it."
+    },
+    {
+      "id": "OBS-2",
+      "what": "THE SIX TRIBES WERE APPENDED, NOT ABSORBED. Ten NPCs across six peoples — Agacephs 2, Paatru 2, Archein 2, Sarpa 1, Miredancers 2, Dead-Water 1 — in a province of 347, with one or two speakers each and no faction record anywhere: game/data/factions/ does not exist and game/data/progression/factions.json lists only house-dres and shadowscale-order. Six disputes were added to the headline while the population able to argue them grew by ten. CF-C023's own condition was 'If tribes are wanted, they need a faction each, not a mention each'; they got a mention each plus a speaker each. The dialogue itself is good and the tribe-census's five-axis differentiation (worst overlap 0 of 5) is real work — the criticism is of scale, not of craft."
+    },
+    {
+      "id": "OBS-3",
+      "what": "WHAT THE REGISTER DOES DO, AND IT IS WORTH KEEPING. Of the 31 answers it changes, several are stanceOf()'s deliberate 'a speaker who matches two positions holds NEITHER' rule catching real authorial collisions: four Wet Ledger clerks match CF-D008 position A by actor and position B by faction, and are therefore given neither, rather than being handed the Provincial Office's denial by an accident of the actor field. That is a genuine correctness property and no other mechanism in the build provides it. It argues for widening the register's reach, not for removing it."
+    },
+    {
+      "id": "OBS-4",
+      "what": "THE SEAL IS STRONGEST WHERE IT MATTERS MOST, WHICH IS WHY THE HOLE IS FIXABLE. All 17 unrecoverable seals are `partial:` rulings, including CF-D001 (what survives in the sap), CF-D005 (the Flu, the item's proof-of-convention) and CF-D007 — the dispute nearest CF-C010, the registry's one late-discoverable secret, whose positions state nothing of it. The design instinct was right and the implementation shipped a three-guess back door on the nine rulings that happen to be a single letter."
+    },
+    {
+      "id": "OBS-5",
+      "what": "TWO PHANTOM PATHS AND A BLIND TRIAGE, ALL INSIDE GATES. game/data/books/manifest.json does not exist and RI-LOR06 method §1 — 'runs in CI, blocks the wave' — invokes it, so the anti-forgery clause ('a contradiction whose sources do not exist is not tracked, it is claimed') has never run. game/data/factions/ does not exist and RI-LOR01 method §4 counts it. And canon-check.py --claims reports `registry touches: 0` over 50 infos that carry explicit CF-Dnnn tags, because it matches keywords and does not read the field this piece invented. Three gates, three instruments that cannot fire."
+    },
+    {
+      "id": "OBS-6",
+      "what": "THE CENSUS STILL IS NOT A GATE, AND THE BUILDER SAID SO. tools/lore/canon-census.mjs exits non-zero and nothing runs it: grep across tools/, .githooks/ and package.json finds one reference, in build-canon.mjs's header prose. check-content.mjs contains the string 'canon' zero times. The builder's stated reason — a hard gate landed mid-wave would fail another builder's in-flight book — was sound at the time and the wave's library work has now landed. CF-C023's falsification is what the absence of the gate costs, one wave later, and staleMeasured() shows the check is eleven lines."
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "canon-registry-has-no-world-side-consumer",
+      "claimed_by_builder": "nothing in game/ had ever opened canon-facts.json; now three readers, 141 references resolved at boot, throws on a dangle",
+      "status": "closed",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-23-r1/voices.txt"
+      ],
+      "note": "Verified end to end by importing the shipping modules. Engine._installCanon() is real, the throw is real, converse.js consults the register on every info, and both fail-closed arms go red when broken. The consumption gap is genuinely closed. Its MAGNITUDE is the finding: 31 of 161,702 answers, all silencings, and the disagreements the report offers as evidence survive the register's deletion unchanged."
+    },
+    {
+      "gap_id": "RI-LOR06-method-4-never-run",
+      "claimed_by_builder": "0 of 6 -> 21 of 21 fully-voiced disputes",
+      "status": "partially-closed",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-23-r1/voices.txt"
+      ],
+      "note": "The after number is right and is now 27 of 27, and every dispute is anchored on a shipped book. The before number is not a measurement: `voiced_by` and `holders` are fields this piece invented and the fully-voiced test is defined over `voiced_by`, so any registry lacking them scores 0 by construction. At b96de7c the registry had 0 voiced_by entries, 112 books were on disk, and 4 of the 6 seeded disputes were already fully voiced by them. The honest delta is 4 of 6 -> 27 of 27."
+    },
+    {
+      "gap_id": "the-registry-goes-stale-within-minutes",
+      "claimed_by_builder": "CF-D021 registered four minutes after its books landed; the census flipped PASS->FAIL->PASS in one session; wire it where check-content runs",
+      "status": "open",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-23-r1/critic-probe.json"
+      ],
+      "note": "Verified and already recurred. It is not wired, and CF-C023 has been falsified by the tribes piece in the interval — in a category the census cannot see at all, because it checks disputes and edges and never a `measured:` claim on an undisputed fact."
+    }
+  ],
+  "corpus_extended": [
+    {
+      "kind": "instrument-gap",
+      "item": "RI-LOR06",
+      "what": "Comparison method §4 counts disputes 'whose positions are both actually voiced in shipped content by a real book or NPC'. It does not say that a dialogue voice must be a line the register can gate, and the shipped census therefore accepts a voiced_by naming an info that carries no cf tag. Twenty such voices exist today. Suggested amendment: method §4 should require that every `dialogue:` voice name an info carrying the matching `cf` and `pos`, so that the census's population and the consumer's are the same set."
+    },
+    {
+      "kind": "instrument-gap",
+      "item": "RI-LOR06",
+      "what": "Check 8 (drift) covers `tier` moves and `authorially_true` changes. It does not cover a `measured:` claim on an undisputed fact being falsified by the shipped tree, which is how CF-C023 went false with every gate green. Suggested amendment: check 8 should re-evaluate any registry field that asserts a count over game/data."
+    },
+    {
+      "kind": "phantom-path",
+      "item": "RI-LOR01",
+      "what": "Comparison method §4 counts named factions in `game/data/factions/`, which does not exist in this build; factions live as string ids on NPC records and as two entries in game/data/progression/factions.json. Either the item's path or the build's layout needs to move, and until one does the invention-density axis is unmeasurable and the item scores 0 by min-over-axes."
+    }
+  ],
+  "method_deviations": [
+    {
+      "ref_item": "RI-LOR06",
+      "deviation": "Wrote tools/lore/critic-w1-23-r1.mjs, a critic-owned instrument sharing no code with the builder's two tools, covering five questions neither of them asks: seal invertibility, whole-province ablation, voice-versus-gate, reach-versus-speech, and falsified `measured:` claims. It self-tests all five in both directions and exits non-zero only when a finding is present.",
+      "why": "RULES #4 and #6. The piece's own instruments are green and well made; a critic that re-runs them has measured nothing. The ablation in particular is the delete-the-fix the piece did not run, and RULES #6's second clause ('then check the two arms actually differ') is exactly what it answers.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-LOR06",
+      "deviation": "Took the 'before' column from git rather than from the report, reconstructing the registry at b96de7c and 86366ea and the book set on disk at b96de7c.",
+      "why": "RULES #18 — the file is authoritative and a summary of it is not. The before/after is the piece's headline and it is the one number no instrument in the tree can reproduce, because it describes a tree that no longer exists.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-LOR04",
+      "deviation": "Did not run comparison method §5 (x-density and long-vowel coverage over Jel-classified names) or §6 (blind culture-attribution).",
+      "why": "§§1-2's harvester feeds §5 its Jel-classified set and that set is 616 'names' of which 552 violate, most of them sentences. §5 computed over that set would be a statistic about book titles. §6 requires a fresh judge and no fresh-judge channel exists to a critic in this harness (the same constraint the W1-LIBRARY round-1 verdict recorded). Both are recorded not-run rather than passed.",
+      "affects_scores": true
+    },
+    {
+      "ref_item": "RI-LOR06",
+      "deviation": "No browser was used and no engine-level boot measurement was taken; the consumption evidence comes from importing game/src/world/canon.js and game/src/character/converse.js directly in node.",
+      "why": "RULES #21 — 18 headless_shell were live at loadavg 9.99 when this run began, above the ~8 threshold, and contention has cost two pieces their headline numbers. Every figure in this verdict is a count or a boolean, which survive contention; none is a timing. The engine-level half (that _installCanon runs at boot and throws) is verified by reading engine.js:2269-2281 and by the fail-closed arms of resolve(), not by observing a boot, and that limit is stated here rather than papered over.",
+      "affects_scores": false
+    }
+  ],
+  "arbitration_questions": [
+    {
+      "question": "CF-C023 is a W1-23 registration that the tribes piece falsified without updating. Which piece owns the failure: the registry that wrote a dated measurement into a binding constructed fact, or the piece that changed the tree under it? I have scored it against W1-23 as a check fail rather than an item-level 0, on the ground that the gap it exposes — a census that cannot see a falsified `measured:` claim — is W1-23's instrument, not the tribes piece's content.",
+      "for": "orchestrator"
+    }
+  ],
+  "source_reads": [
+    {
+      "path": "corpus/60-lore/RI-LOR06-contradiction-discipline.md",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "corpus/60-lore/RI-LOR01-canon-dossier.md",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "corpus/60-lore/RI-LOR04-naming-and-language.md",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "corpus/00-doctrine/SCORING.md",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "reports/lore/W1-23-registry-report.md",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "orchestration/status/W1-23.json",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "corpus/60-lore/data/canon-facts.json",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "game/data/lore/canon.json",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "game/data/dialogue/topics/70-disputes.json",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "game/data/dialogue/topics/40-race-gated.json",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "game/src/world/canon.js",
+      "purpose": "locate-harness"
+    },
+    {
+      "path": "game/src/character/converse.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "game/src/engine.js",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "tools/lore/build-canon.mjs",
+      "purpose": "diagnose-after-demonstrating"
+    },
+    {
+      "path": "tools/lore/canon-consumption.mjs",
+      "purpose": "diagnose-after-demonstrating"
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": true,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "`ran_every_assigned_method` is false and the exceptions are named in status_reasons and in the checks: RI-LOR06 methods 2 and 3 (the triage cannot produce a reviewable set and is blind to the cf tag), RI-LOR01's invention-density axis (its directory does not exist), RI-LOR04 §§1-2, §5 and §6. `blind_done_where_required` is true because none of the three items sets blind_pair: yes; no blind pack was built and none is claimed. Every number was re-derived by a tool sharing no code with the builder's, and where mine overlap the builder's they agree — 141 references, 409 untagged controls, the 27-of-27 census — which is the reason I trust the ones that disagree. No source file was read to establish a fact; source was read only to locate a consumer already measured to exist, and to find the leak guard after the brute-force had already succeeded."
+  },
+  "notes": "Nothing was committed. Four critic tools were added to the working tree (tools/lore/critic-w1-23-r1.mjs and its -ablate, -voices and -shot siblings), two artifacts under corpus/90-verdicts/wave1/artifacts/W1-23-r1/, one image under docs/shots/, and one line in reports/blog-feed.jsonl. tools/lore/ is the W1-23 builder's directory and the overlap is declared as redundant_with in orchestration/status/critic-w1-23.json; the builder's piece is complete and no file of theirs was modified. The commit sha recorded is HEAD at the time of every measurement and HEAD did not move during the run."
+}
