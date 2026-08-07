@@ -42,6 +42,13 @@ export class InputPipeline {
     this.moveX = 0; this.moveY = 0;
     this.lookX = 0; this.lookY = 0;
 
+    // RI-JRN04 M-P4 / §D `T_full`. An analog trigger held past 0.85 is a CHARGED heavy; the
+    // same trigger held at 0.5 fires the heavy and never charges it. A key, a mouse button and
+    // a touch button have no analog travel, so for them intent is 1 whenever `heavy` is held —
+    // which is why this defaults to 1 and only the pad ever lowers it.
+    // Consumed by combat/player.js `_chargeTick`: it gates the promotion to `r2.charged`.
+    this.chargeIntent = 1;
+
     // Edges received since the last step but not yet latched (real-input path).
     this.pendingPress = 0;
     this.pendingRelease = 0;
@@ -65,6 +72,7 @@ export class InputPipeline {
   }
 
   reset(frame = 0) {
+    this.chargeIntent = 1;
     this.held = this.pressed = this.released = 0;
     this.moveX = this.moveY = this.lookX = this.lookY = 0;
     this.pendingPress = this.pendingRelease = this.deferredRelease = 0;

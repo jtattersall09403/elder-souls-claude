@@ -59,6 +59,11 @@ export function stepOnce(sim, input, combat, bus) {
   armSim();
   try {
     bus.clear();
+    // RI-JRN03 §B / RI-JRN04 §C: the hold gates (`G` held 12 f for two_hand, `Mouse1` held
+    // 12 f for lock_on, the pad's B tap/hold roll-sprint, the touch button's) are counted in
+    // FIXED SIM FRAMES, so they are promoted here — before the latch that consumes them —
+    // and not on a render tick whose rate is decoupled from the sim (HARNESS.md R2).
+    if (sim.realInput) sim.realInput.tick(sim.frame);
     input.latchForStep(sim.frame);
     sim.input = input;
     // W1-07: the dialogue surface consumes the latched input BEFORE the fight sees it. It is

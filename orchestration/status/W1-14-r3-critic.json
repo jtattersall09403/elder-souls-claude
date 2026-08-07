@@ -1,0 +1,15 @@
+{
+  "task_id": "W1-14-r3-critic",
+  "brief": "CRITIC round 3 for wave-1 piece W1-14 (magic, seam S19). Prior: 2.7 (r1), 4.4 (r2).",
+  "started": "wave-1 round 3",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-14-r3.json",
+    "corpus/90-verdicts/wave1/W1-14-r3.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-14-r3/"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "confirm boot with smoke.mjs, then write my OWN RI-MAG06 D census (do not run the builder's)",
+  "notes_for_successor": ""
+}

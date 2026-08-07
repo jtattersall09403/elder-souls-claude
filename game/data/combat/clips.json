@@ -23,12 +23,12 @@
   "interpolation": "smoothstep (3u^2 - 2u^3) between adjacent keys, clamped outside the key range. Deterministic, allocation-free, and NON-LINEAR, which is what makes the per-frame root delta a speed curve rather than a translate (RI-CMB01 M3, RI-CMB02 M3).",
   "not_a_reskin": "RI-CMB02's automatic-fail list forbids 'a single attack animation shared by all weapon classes with the numbers swapped'. Classes therefore select DIFFERENT pose archetypes (cut_diagonal / thrust / chop_overhead / sweep_wide), with per-class amplitude and stance, on top of their own frame counts. The archetype assignment is in each moveset file.",
   "cross_fade": {
-    "_source": "The W1-09 round-2 verdict, \u00a76: \"Poses are instantiated, never blended, at every state boundary.\" Worst measured single-frame weapon-socket displacement over five fights: RUN\u2192ROLL_STARTUP 2.528 m (74 occurrences), SPRINT\u2192ROLL_STARTUP 2.521 m, ATK_RECOVER\u2192ATK_STARTUP 2.293 m (65 occurrences, inside ONE chained attack), against a declared straight-sword per-frame tip travel of 0.308 m. 152 m/s of pose discontinuity.",
-    "_why_the_termination_rule_was_not_enough": "\u00a7termination_rule made the ATTACK\u2192IDLE boundary continuous by pinning every archetype's phase-3.0 pose to the idle stance. That fixes exactly one of the boundaries, the one where the outgoing clip ENDS. It cannot fix a boundary an INTERRUPTION creates \u2014 a roll entered from a run, a chained attack entered from the middle of the previous recovery, a stagger entered from anywhere \u2014 because the outgoing pose there is whatever frame it happened to be on. Only a cross-fade can.",
-    "frames": 10,
-    "curve": "smoothstep on the remaining weight, so the blend leaves the old pose gently and arrives on the new one gently",
-    "what_it_blends": "the per-bone Euler pose, and nothing else. Root motion, animation frame counts, hitbox activation windows, i-frame windows and state boundaries are untouched and are still integer frame windows; a cross-fade that moved any of those would be a cancel (RI-CMB02 \u00a7D) wearing a blend.",
-    "hurtboxes_follow": "Hurtboxes and weapon sockets are rebuilt from the BLENDED pose, because that is the pose the character is in. A hitbox that used the un-blended pose while the model showed the blended one would be RI-CMB04 'how we lose' #6 with extra steps."
+   "_source": "The W1-09 round-2 verdict, §6: \"Poses are instantiated, never blended, at every state boundary.\" Worst measured single-frame weapon-socket displacement over five fights: RUN→ROLL_STARTUP 2.528 m (74 occurrences), SPRINT→ROLL_STARTUP 2.521 m, ATK_RECOVER→ATK_STARTUP 2.293 m (65 occurrences, inside ONE chained attack), against a declared straight-sword per-frame tip travel of 0.308 m. 152 m/s of pose discontinuity.",
+   "_why_the_termination_rule_was_not_enough": "§termination_rule made the ATTACK→IDLE boundary continuous by pinning every archetype's phase-3.0 pose to the idle stance. That fixes exactly one of the boundaries, the one where the outgoing clip ENDS. It cannot fix a boundary an INTERRUPTION creates — a roll entered from a run, a chained attack entered from the middle of the previous recovery, a stagger entered from anywhere — because the outgoing pose there is whatever frame it happened to be on. Only a cross-fade can.",
+   "frames": 10,
+   "curve": "smoothstep on the remaining weight, so the blend leaves the old pose gently and arrives on the new one gently",
+   "what_it_blends": "the per-bone Euler pose, and nothing else. Root motion, animation frame counts, hitbox activation windows, i-frame windows and state boundaries are untouched and are still integer frame windows; a cross-fade that moved any of those would be a cancel (RI-CMB02 §D) wearing a blend.",
+   "hurtboxes_follow": "Hurtboxes and weapon sockets are rebuilt from the BLENDED pose, because that is the pose the character is in. A hitbox that used the un-blended pose while the model showed the blended one would be RI-CMB04 'how we lose' #6 with extra steps."
   },
   "termination_rule": "BINDING. Every non-looping archetype whose clip can be followed by free locomotion must have, at phase 3.0, exactly the value the `idle_ready` stance layer holds for that bone (0 where idle_ready is silent). The attack/idle boundary is then continuous by construction. Before this rule, a straight-sword R1 moved its tip 1.42 m and a halberd R1 2.54 m in the single frame the move retired — 85 to 152 m/s of pose discontinuity, W1-09 verdict §2.5."
  },
@@ -36,11 +36,14 @@
   "cut_diagonal": {
    "note": "Authored from corpus/70-visual/refs/souls-behaviour/anim/attacks/er-ER_Moveset_Neutral_Attack_Chain_Longsword.gif (81 frames, 14.286 fps, MANIFEST record). What that clip shows and what this curve now reproduces: the blade drops back and down behind the right hip, rises to an overhead cock with the torso rotated away and the weight on the back foot, and the cut is a DIAGONAL arc through the centreline led by the hips. The recovery is a short follow-through that DECELERATES onto the ready pose — the reference clip's own per-frame motion energy decays monotonically to its resting baseline over the last third of the animation and ends at rest, which the previous curve did not: it over-rotated to a peak at phase 2.4 and then snapped back.",
    "solved": {
-    "startup_blend": 0.32,
-    "swing_scale": 0.56,
-    "elbow_extension_deg": 0
+    "startup_blend": 0.7,
+    "swing_scale": 0.22,
+    "elbow_extension_deg": 0,
+    "bury": 1,
+    "chamber": 0,
+    "hit_phase_fraction": 0.2
    },
-   "solved_note": "Solved by tools/harness/anim-author.mjs against two of the corpus's own columns at once: RI-CMB04 §B's peak_tip_speed_mps (a ceiling, measured over the ACTIVE frames only) and RI-CMB02 §A's reach_m (a floor, measured as the furthest forward point the weapon capsule occupies near the centreline during the active window). The search takes the LARGEST swing and the SMALLEST elbow extension that satisfy both for every class using this archetype.",
+   "solved_note": "Solved by tools/harness/anim-author.mjs against THREE of the corpus's own numbers at once, for every player class AND every enemy statblock that selects this archetype: (1) RI-CMB04 §B's peak_tip_speed_mps as a ceiling, measured over EVERY frame of the clip and not only the active ones — the round-3 build satisfied it on the active window and ran at x2.4 in the startup of a chain clip; (2) RI-CMB02 §A's reach_m as a floor; and (3) min_axis — the distance from the swept hitbox capsule's SURFACE to the attacker's own root axis at its closest approach during the active window — as a ceiling of `bodies.player_radius_m + bodies.default_enemy_radius_m - torso_upper.radius_m` = 0.43 m, so that anything the attacker's body can shove, its weapon can also cut. The search takes the LARGEST swing and the SMALLEST elbow extension that satisfy all three.",
    "root_forward": [
     [
      0,
@@ -104,39 +107,51 @@
       ],
       [
        0.45,
-       -9.84
+       -5.08
       ],
       [
        1,
-       -4.82
+       -0.77
       ],
       [
-       1.25,
-       -2.16
+       1.0666666666666667,
+       -0.15
       ],
       [
-       1.5,
-       0.51
+       1.1333333333333333,
+       0.46
       ],
       [
-       1.75,
-       3.17
+       1.2,
+       1.08
+      ],
+      [
+       1.4,
+       1.08
+      ],
+      [
+       1.6,
+       1.08
+      ],
+      [
+       1.8,
+       1.08
       ],
       [
        2,
-       5.84
+       1.08
       ],
       [
        2.2,
-       8.08
+       1.96
       ],
       [
        2.56,
-       3.64
+       0.88
       ],
       [
        2.824,
-       0.97
+       0.24
       ],
       [
        3,
@@ -152,39 +167,51 @@
       ],
       [
        0.45,
-       -3.6
+       -0.2
       ],
       [
        1,
-       -0.02
+       2.88
       ],
       [
-       1.25,
-       1.89
+       1.0666666666666667,
+       3.32
       ],
       [
-       1.5,
-       3.79
+       1.1333333333333333,
+       3.76
       ],
       [
-       1.75,
-       5.7
+       1.2,
+       4.2
+      ],
+      [
+       1.4,
+       6.65
+      ],
+      [
+       1.6,
+       9.1
+      ],
+      [
+       1.8,
+       11.55
       ],
       [
        2,
-       7.6
+       14
       ],
       [
        2.2,
-       9.28
+       10.7
       ],
       [
        2.56,
-       5.83
+       6.46
       ],
       [
        2.824,
-       3.75
+       3.92
       ],
       [
        3,
@@ -198,39 +225,51 @@
       ],
       [
        0.45,
-       -12.52
+       -6.74
       ],
       [
        1,
-       -6.43
+       -1.5
       ],
       [
-       1.25,
-       -3.19
+       1.0666666666666667,
+       -0.76
       ],
       [
-       1.5,
-       0.05
+       1.1333333333333333,
+       -0.01
       ],
       [
-       1.75,
-       3.28
+       1.2,
+       0.74
+      ],
+      [
+       1.4,
+       0.74
+      ],
+      [
+       1.6,
+       0.74
+      ],
+      [
+       1.8,
+       0.74
       ],
       [
        2,
-       6.52
+       0.74
       ],
       [
        2.2,
-       8.76
+       1.62
       ],
       [
        2.56,
-       3.94
+       0.73
       ],
       [
        2.824,
-       1.05
+       0.19
       ],
       [
        3,
@@ -246,39 +285,51 @@
       ],
       [
        0.45,
-       -22.12
+       -12.94
       ],
       [
        1,
-       -12.44
+       -4.62
       ],
       [
-       1.25,
-       -7.3
+       1.0666666666666667,
+       -3.44
       ],
       [
-       1.5,
-       -2.16
+       1.1333333333333333,
+       -2.25
       ],
       [
-       1.75,
-       2.98
+       1.2,
+       -1.06
+      ],
+      [
+       1.4,
+       -1.06
+      ],
+      [
+       1.6,
+       -1.06
+      ],
+      [
+       1.8,
+       -1.06
       ],
       [
        2,
-       8.12
+       -1.06
       ],
       [
        2.2,
-       11.48
+       0.26
       ],
       [
        2.56,
-       1.87
+       -3.18
       ],
       [
        2.824,
-       -3.9
+       -5.25
       ],
       [
        3,
@@ -292,39 +343,81 @@
       ],
       [
        0.45,
-       -7.16
+       -3.42
       ],
       [
        1,
-       -3.22
+       -0.03
       ],
       [
-       1.25,
-       -1.12
+       1.0666666666666667,
+       0.45
       ],
       [
-       1.5,
-       0.97
+       1.1333333333333333,
+       0.94
       ],
       [
-       1.75,
-       3.07
+       1.2,
+       1.42
+      ],
+      [
+       1.4,
+       1.42
+      ],
+      [
+       1.6,
+       1.42
+      ],
+      [
+       1.8,
+       1.42
       ],
       [
        2,
-       5.16
+       1.42
       ],
       [
        2.2,
-       6.28
+       1.86
       ],
       [
        2.56,
-       2.83
+       0.84
       ],
       [
        2.824,
-       0.75
+       0.22
+      ],
+      [
+       3,
+       0
+      ]
+     ],
+     "rx": [
+      [
+       0,
+       0
+      ],
+      [
+       0.45,
+       0
+      ],
+      [
+       1,
+       0
+      ],
+      [
+       2,
+       8
+      ],
+      [
+       2.2,
+       5.6
+      ],
+      [
+       2.56,
+       2.52
       ],
       [
        3,
@@ -340,39 +433,51 @@
       ],
       [
        0.45,
-       16.08
+       9.96
       ],
       [
        1,
-       9.63
+       4.42
       ],
       [
-       1.25,
-       6.2
+       1.0666666666666667,
+       3.62
       ],
       [
-       1.5,
-       2.77
+       1.1333333333333333,
+       2.83
       ],
       [
-       1.75,
-       -0.65
+       1.2,
+       2.04
+      ],
+      [
+       1.4,
+       2.04
+      ],
+      [
+       1.6,
+       2.04
+      ],
+      [
+       1.8,
+       2.04
       ],
       [
        2,
-       -4.08
+       2.04
       ],
       [
        2.2,
-       -1.84
+       2.92
       ],
       [
        2.56,
-       -0.83
+       1.31
       ],
       [
        2.824,
-       -0.22
+       0.35
       ],
       [
        3,
@@ -388,39 +493,51 @@
       ],
       [
        0.45,
-       -17.64
+       -11.18
       ],
       [
        1,
-       -10.83
+       -5.33
       ],
       [
-       1.25,
-       -7.21
+       1.0666666666666667,
+       -4.49
       ],
       [
-       1.5,
-       -3.6
+       1.1333333333333333,
+       -3.66
       ],
       [
-       1.75,
-       0.02
+       1.2,
+       -2.82
+      ],
+      [
+       1.4,
+       -1.11
+      ],
+      [
+       1.6,
+       0.59
+      ],
+      [
+       1.8,
+       2.3
       ],
       [
        2,
-       3.64
+       4
       ],
       [
        2.2,
-       5.32
+       2.8
       ],
       [
        2.56,
-       2.39
+       1.26
       ],
       [
        2.824,
-       0.64
+       0.34
       ],
       [
        3,
@@ -436,39 +553,51 @@
       ],
       [
        0.45,
-       -88.6
+       -76.7
       ],
       [
        1,
-       -76.06
+       -65.92
       ],
       [
-       1.25,
-       -69.39
+       1.0666666666666667,
+       -64.38
       ],
       [
-       1.5,
-       -62.73
+       1.1333333333333333,
+       -62.84
       ],
       [
-       1.75,
-       -56.06
+       1.2,
+       -61.3
+      ],
+      [
+       1.4,
+       -39.72
+      ],
+      [
+       1.6,
+       -18.15
+      ],
+      [
+       1.8,
+       3.42
       ],
       [
        2,
-       -49.4
+       25
       ],
       [
        2.2,
-       -38.2
+       12.1
       ],
       [
        2.56,
-       -27.09
+       -4.46
       ],
       [
        2.824,
-       -20.42
+       -14.39
       ],
       [
        3,
@@ -482,39 +611,51 @@
       ],
       [
        0.45,
-       -13.64
+       -7.18
       ],
       [
        1,
-       -6.83
+       -1.33
       ],
       [
-       1.25,
-       -3.21
+       1.0666666666666667,
+       -0.49
       ],
       [
-       1.5,
-       0.4
+       1.1333333333333333,
+       0.34
       ],
       [
-       1.75,
-       4.02
+       1.2,
+       1.18
+      ],
+      [
+       1.4,
+       -2.11
+      ],
+      [
+       1.6,
+       -5.41
+      ],
+      [
+       1.8,
+       -8.7
       ],
       [
        2,
-       7.64
+       -12
       ],
       [
        2.2,
-       10.44
+       -10.2
       ],
       [
        2.56,
-       1.4
+       -7.89
       ],
       [
        2.824,
-       -4.03
+       -6.5
       ],
       [
        3,
@@ -530,39 +671,51 @@
       ],
       [
        0.45,
-       -33.4
+       -28.3
       ],
       [
        1,
-       -28.02
+       -23.68
       ],
       [
-       1.25,
-       -25.17
+       1.0666666666666667,
+       -23.02
       ],
       [
-       1.5,
-       -22.31
+       1.1333333333333333,
+       -22.36
       ],
       [
-       1.75,
-       -19.46
+       1.2,
+       -21.7
+      ],
+      [
+       1.4,
+       -36.27
+      ],
+      [
+       1.6,
+       -50.85
+      ],
+      [
+       1.8,
+       -65.42
       ],
       [
        2,
-       -16.6
+       -80
       ],
       [
        2.2,
-       -21.08
+       -67.4
       ],
       [
        2.56,
-       -30.39
+       -51.23
       ],
       [
        2.824,
-       -35.97
+       -41.53
       ],
       [
        3,
@@ -578,39 +731,51 @@
       ],
       [
        0.45,
-       -11.58
+       -9.71
       ],
       [
        1,
-       -9.61
+       -8.02
       ],
       [
-       1.25,
-       -8.56
+       1.0666666666666667,
+       -7.77
       ],
       [
-       1.5,
-       -7.51
+       1.1333333333333333,
+       -7.53
       ],
       [
-       1.75,
-       -6.47
+       1.2,
+       -7.29
+      ],
+      [
+       1.4,
+       -5.47
+      ],
+      [
+       1.6,
+       -3.64
+      ],
+      [
+       1.8,
+       -1.82
       ],
       [
        2,
-       -5.42
+       0
       ],
       [
        2.2,
-       -1.5
+       0
       ],
       [
        2.56,
-       -0.68
+       0
       ],
       [
        2.824,
-       -0.18
+       0
       ],
       [
        3,
@@ -624,39 +789,51 @@
       ],
       [
        0.45,
-       -6.48
+       -3.76
       ],
       [
        1,
-       -3.61
+       -1.3
       ],
       [
-       1.25,
-       -2.09
+       1.0666666666666667,
+       -0.94
       ],
       [
-       1.5,
-       -0.57
+       1.1333333333333333,
+       -0.59
       ],
       [
-       1.75,
-       0.96
+       1.2,
+       -0.24
+      ],
+      [
+       1.4,
+       -0.24
+      ],
+      [
+       1.6,
+       -0.24
+      ],
+      [
+       1.8,
+       -0.24
       ],
       [
        2,
-       2.48
+       -0.24
       ],
       [
        2.2,
-       3.04
+       -0.02
       ],
       [
        2.56,
-       1.37
+       -0.01
       ],
       [
        2.824,
-       0.36
+       0
       ],
       [
        3,
@@ -672,39 +849,51 @@
       ],
       [
        0.45,
-       -24.2
+       -25.9
       ],
       [
        1,
-       -25.99
+       -27.44
       ],
       [
-       1.25,
-       -26.94
+       1.0666666666666667,
+       -27.66
       ],
       [
-       1.5,
-       -27.9
+       1.1333333333333333,
+       -27.88
       ],
       [
-       1.75,
-       -28.85
+       1.2,
+       -28.1
+      ],
+      [
+       1.4,
+       -27.08
+      ],
+      [
+       1.6,
+       -26.05
+      ],
+      [
+       1.8,
+       -25.02
       ],
       [
        2,
-       -29.8
+       -24
       ],
       [
        2.2,
-       -27.56
+       -20.4
       ],
       [
        2.56,
-       -19
+       -15.78
       ],
       [
        2.824,
-       -13.87
+       -13.01
       ],
       [
        3,
@@ -718,39 +907,51 @@
       ],
       [
        0.45,
-       11.16
+       7.42
       ],
       [
        1,
-       7.22
+       4.03
       ],
       [
-       1.25,
-       5.12
+       1.0666666666666667,
+       3.55
       ],
       [
-       1.5,
-       3.03
+       1.1333333333333333,
+       3.06
       ],
       [
-       1.75,
-       0.93
+       1.2,
+       2.58
+      ],
+      [
+       1.4,
+       2.58
+      ],
+      [
+       1.6,
+       2.58
+      ],
+      [
+       1.8,
+       2.58
       ],
       [
        2,
-       -1.16
+       2.58
       ],
       [
        2.2,
-       0.52
+       3.24
       ],
       [
        2.56,
-       3.53
+       4.76
       ],
       [
        2.824,
-       5.34
+       5.67
       ],
       [
        3,
@@ -766,39 +967,51 @@
       ],
       [
        0.45,
-       -48.2
+       -49.9
       ],
       [
        1,
-       -49.99
+       -51.44
       ],
       [
-       1.25,
-       -50.94
+       1.0666666666666667,
+       -51.66
       ],
       [
-       1.5,
-       -51.9
+       1.1333333333333333,
+       -51.88
       ],
       [
-       1.75,
-       -52.85
+       1.2,
+       -52.1
+      ],
+      [
+       1.4,
+       -53.57
+      ],
+      [
+       1.6,
+       -55.05
+      ],
+      [
+       1.8,
+       -56.52
       ],
       [
        2,
-       -53.8
+       -58
       ],
       [
        2.2,
-       -50.44
+       -49.6
       ],
       [
        2.56,
-       -39.2
+       -38.82
       ],
       [
        2.824,
-       -32.45
+       -32.35
       ],
       [
        3,
@@ -814,39 +1027,51 @@
       ],
       [
        0.45,
-       -10.28
+       -5.86
       ],
       [
        1,
-       -5.62
+       -1.86
       ],
       [
-       1.25,
-       -3.15
+       1.0666666666666667,
+       -1.28
       ],
       [
-       1.5,
-       -0.67
+       1.1333333333333333,
+       -0.71
       ],
       [
-       1.75,
-       1.8
+       1.2,
+       -0.14
+      ],
+      [
+       1.4,
+       3.4
+      ],
+      [
+       1.6,
+       6.93
+      ],
+      [
+       1.8,
+       10.47
       ],
       [
        2,
-       4.28
+       14
       ],
       [
        2.2,
-       5.96
+       9.8
       ],
       [
        2.56,
-       2.68
+       4.41
       ],
       [
        2.824,
-       0.72
+       1.18
       ],
       [
        3,
@@ -862,39 +1087,51 @@
       ],
       [
        0.45,
-       8.96
+       3.52
       ],
       [
        1,
-       3.23
+       -1.41
       ],
       [
-       1.25,
-       0.18
+       1.0666666666666667,
+       -2.11
       ],
       [
-       1.5,
-       -2.87
+       1.1333333333333333,
+       -2.82
       ],
       [
-       1.75,
-       -5.91
+       1.2,
+       -3.52
+      ],
+      [
+       1.4,
+       -6.14
+      ],
+      [
+       1.6,
+       -8.76
+      ],
+      [
+       1.8,
+       -11.38
       ],
       [
        2,
-       -8.96
+       -14
       ],
       [
        2.2,
-       -11.2
+       -9.8
       ],
       [
        2.56,
-       -5.04
+       -4.41
       ],
       [
        2.824,
-       -1.34
+       -1.18
       ],
       [
        3,
@@ -910,39 +1147,51 @@
       ],
       [
        0.45,
-       9.6
+       6.2
       ],
       [
        1,
-       6.02
+       3.12
       ],
       [
-       1.25,
-       4.11
+       1.0666666666666667,
+       2.68
       ],
       [
-       1.5,
-       2.21
+       1.1333333333333333,
+       2.24
       ],
       [
-       1.75,
-       0.3
+       1.2,
+       1.8
+      ],
+      [
+       1.4,
+       -0.65
+      ],
+      [
+       1.6,
+       -3.1
+      ],
+      [
+       1.8,
+       -5.55
       ],
       [
        2,
-       -1.6
+       -8
       ],
       [
        2.2,
-       0.08
+       -5.6
       ],
       [
        2.56,
-       0.04
+       -2.52
       ],
       [
        2.824,
-       0.01
+       -0.67
       ],
       [
        3,
@@ -958,39 +1207,51 @@
       ],
       [
        0.45,
-       -6.96
+       -1.52
       ],
       [
        1,
-       -1.23
+       3.41
       ],
       [
-       1.25,
-       1.82
+       1.0666666666666667,
+       4.11
       ],
       [
-       1.5,
-       4.87
+       1.1333333333333333,
+       4.82
       ],
       [
-       1.75,
-       7.91
+       1.2,
+       5.52
+      ],
+      [
+       1.4,
+       8.64
+      ],
+      [
+       1.6,
+       11.76
+      ],
+      [
+       1.8,
+       14.88
       ],
       [
        2,
-       10.96
+       18
       ],
       [
        2.2,
-       8.72
+       12.6
       ],
       [
        2.56,
-       3.92
+       5.67
       ],
       [
        2.824,
-       1.05
+       1.51
       ],
       [
        3,
@@ -1003,11 +1264,14 @@
   "chop_overhead": {
    "note": "Axe. Authored against ds1-boss-moves/Gargoyle-Smash.gif and Artorias_-_Heavy_Slam.gif: the head is raised straight over the shoulder, held, and driven down the centreline with almost no torso twist, and the settle is LONG — the head buries low and the body is pulled back off it. The settle is now authored as a deceleration onto the ready pose rather than a second excursion.",
    "solved": {
-    "startup_blend": 0.32,
-    "swing_scale": 0.46,
-    "elbow_extension_deg": 0
+    "startup_blend": 0.6,
+    "swing_scale": 0.22,
+    "elbow_extension_deg": 10,
+    "bury": 1,
+    "chamber": 0,
+    "hit_phase_fraction": 0.2
    },
-   "solved_note": "Solved by tools/harness/anim-author.mjs against two of the corpus's own columns at once: RI-CMB04 §B's peak_tip_speed_mps (a ceiling, measured over the ACTIVE frames only) and RI-CMB02 §A's reach_m (a floor, measured as the furthest forward point the weapon capsule occupies near the centreline during the active window). The search takes the LARGEST swing and the SMALLEST elbow extension that satisfy both for every class using this archetype.",
+   "solved_note": "Solved by tools/harness/anim-author.mjs against THREE of the corpus's own numbers at once, for every player class AND every enemy statblock that selects this archetype: (1) RI-CMB04 §B's peak_tip_speed_mps as a ceiling, measured over EVERY frame of the clip and not only the active ones — the round-3 build satisfied it on the active window and ran at x2.4 in the startup of a chain clip; (2) RI-CMB02 §A's reach_m as a floor; and (3) min_axis — the distance from the swept hitbox capsule's SURFACE to the attacker's own root axis at its closest approach during the active window — as a ceiling of `bodies.player_radius_m + bodies.default_enemy_radius_m - torso_upper.radius_m` = 0.43 m, so that anything the attacker's body can shove, its weapon can also cut. The search takes the LARGEST swing and the SMALLEST elbow extension that satisfy all three.",
    "root_forward": [
     [
      0,
@@ -1071,39 +1335,51 @@
       ],
       [
        0.5,
-       -5.74
+       -2.07
       ],
       [
        1,
-       -0.73
+       2.42
       ],
       [
-       1.25,
-       1.93
+       1.0666666666666667,
+       3.42
       ],
       [
-       1.5,
-       4.58
+       1.1333333333333333,
+       4.42
       ],
       [
-       1.75,
-       7.24
+       1.2,
+       5.41
+      ],
+      [
+       1.4,
+       7.56
+      ],
+      [
+       1.6,
+       9.71
+      ],
+      [
+       1.8,
+       11.85
       ],
       [
        2,
-       9.9
+       14
       ],
       [
        2.3,
-       12.2
+       10.7
       ],
       [
        2.6149999999999998,
-       7.14
+       6.46
       ],
       [
        2.846,
-       4.1
+       3.92
       ],
       [
        3,
@@ -1119,39 +1395,51 @@
       ],
       [
        0.5,
-       -4.17
+       -1.58
       ],
       [
        1,
-       -0.64
+       1.59
       ],
       [
-       1.25,
-       1.24
+       1.0666666666666667,
+       2.3
       ],
       [
-       1.5,
-       3.12
+       1.1333333333333333,
+       3
       ],
       [
-       1.75,
-       5
+       1.2,
+       3.7
+      ],
+      [
+       1.4,
+       4.78
+      ],
+      [
+       1.6,
+       5.85
+      ],
+      [
+       1.8,
+       6.93
       ],
       [
        2,
-       6.87
+       8
       ],
       [
        2.3,
-       8.25
+       5.6
       ],
       [
        2.6149999999999998,
-       3.71
+       2.52
       ],
       [
        2.846,
-       0.99
+       0.67
       ],
       [
        3,
@@ -1165,39 +1453,51 @@
       ],
       [
        0.5,
-       -9.14
+       -6.98
       ],
       [
        1,
-       -6.2
+       -4.34
       ],
       [
-       1.25,
-       -4.63
+       1.0666666666666667,
+       -3.75
       ],
       [
-       1.5,
-       -3.07
+       1.1333333333333333,
+       -3.17
       ],
       [
-       1.75,
-       -1.5
+       1.2,
+       -2.58
+      ],
+      [
+       1.4,
+       -2.58
+      ],
+      [
+       1.6,
+       -2.58
+      ],
+      [
+       1.8,
+       -2.58
       ],
       [
        2,
-       0.06
+       -2.58
       ],
       [
        2.3,
-       0.98
+       -2.14
       ],
       [
        2.6149999999999998,
-       -2.86
+       -4.26
       ],
       [
        2.846,
-       -5.16
+       -5.54
       ],
       [
        3,
@@ -1213,39 +1513,51 @@
       ],
       [
        0.5,
-       -24.77
+       -20.66
       ],
       [
        1,
-       -19.17
+       -15.65
       ],
       [
-       1.25,
-       -16.2
+       1.0666666666666667,
+       -14.53
       ],
       [
-       1.5,
-       -13.23
+       1.1333333333333333,
+       -13.42
       ],
       [
-       1.75,
-       -10.26
+       1.2,
+       -12.3
+      ],
+      [
+       1.4,
+       -8.23
+      ],
+      [
+       1.6,
+       -4.15
+      ],
+      [
+       1.8,
+       -0.08
       ],
       [
        2,
-       -7.29
+       4
       ],
       [
        2.3,
-       -6.37
+       2.8
       ],
       [
        2.6149999999999998,
-       -2.86
+       1.26
       ],
       [
        2.846,
-       -0.76
+       0.34
       ],
       [
        3,
@@ -1261,39 +1573,51 @@
       ],
       [
        0.5,
-       -92.73
+       -91.5
       ],
       [
        1,
-       -77.42
+       -77.77
       ],
       [
-       1.25,
-       -69.29
+       1.0666666666666667,
+       -74.72
       ],
       [
-       1.5,
-       -61.15
+       1.1333333333333333,
+       -71.67
       ],
       [
-       1.75,
-       -53.02
+       1.2,
+       -68.62
+      ],
+      [
+       1.4,
+       -45.21
+      ],
+      [
+       1.6,
+       -21.81
+      ],
+      [
+       1.8,
+       1.6
       ],
       [
        2,
-       -44.89
+       25
       ],
       [
        2.3,
-       -37.53
+       12.1
       ],
       [
        2.6149999999999998,
-       -26.79
+       -4.46
       ],
       [
        2.846,
-       -20.34
+       -14.39
       ],
       [
        3,
@@ -1307,39 +1631,51 @@
       ],
       [
        0.5,
-       -6.11
+       -4.38
       ],
       [
        1,
-       -3.76
+       -2.27
       ],
       [
-       1.25,
-       -2.51
+       1.0666666666666667,
+       -1.8
       ],
       [
-       1.5,
-       -1.25
+       1.1333333333333333,
+       -1.33
       ],
       [
-       1.75,
-       0
+       1.2,
+       -0.86
+      ],
+      [
+       1.4,
+       -3.65
+      ],
+      [
+       1.6,
+       -6.43
+      ],
+      [
+       1.8,
+       -9.22
       ],
       [
        2,
-       1.25
+       -12
       ],
       [
        2.3,
-       2.63
+       -10.2
       ],
       [
        2.6149999999999998,
-       -2.12
+       -7.89
       ],
       [
        2.846,
-       -4.96
+       -6.5
       ],
       [
        3,
@@ -1355,39 +1691,51 @@
       ],
       [
        0.5,
-       -27.2
+       -18.17
       ],
       [
        1,
-       -23.07
+       -14.48
       ],
       [
-       1.25,
-       -20.88
+       1.0666666666666667,
+       -13.65
       ],
       [
-       1.5,
-       -18.7
+       1.1333333333333333,
+       -12.83
       ],
       [
-       1.75,
-       -16.51
+       1.2,
+       -12.01
+      ],
+      [
+       1.4,
+       -29.01
+      ],
+      [
+       1.6,
+       -46.01
+      ],
+      [
+       1.8,
+       -63
       ],
       [
        2,
-       -14.32
+       -80
       ],
       [
        2.3,
-       -18
+       -67.4
       ],
       [
        2.6149999999999998,
-       -29
+       -51.23
       ],
       [
        2.846,
-       -35.6
+       -41.53
       ],
       [
        3,
@@ -1403,31 +1751,43 @@
       ],
       [
        0.5,
-       -10.11
+       -8.38
       ],
       [
        1,
-       -7.76
+       -6.27
       ],
       [
-       1.25,
-       -6.51
+       1.0666666666666667,
+       -5.8
       ],
       [
-       1.5,
-       -5.25
+       1.1333333333333333,
+       -5.33
       ],
       [
-       1.75,
-       -4
+       1.2,
+       -4.86
+      ],
+      [
+       1.4,
+       -3.65
+      ],
+      [
+       1.6,
+       -2.43
+      ],
+      [
+       1.8,
+       -1.22
       ],
       [
        2,
-       -2.75
+       0
       ],
       [
        2.3,
-       0.01
+       0
       ],
       [
        2.6149999999999998,
@@ -1451,39 +1811,51 @@
       ],
       [
        0.5,
-       -31.94
+       -32.81
       ],
       [
        1,
-       -33.12
+       -33.86
       ],
       [
-       1.25,
-       -33.75
+       1.0666666666666667,
+       -34.1
       ],
       [
-       1.5,
-       -34.37
+       1.1333333333333333,
+       -34.33
       ],
       [
-       1.75,
-       -35
+       1.2,
+       -34.57
+      ],
+      [
+       1.4,
+       -31.93
+      ],
+      [
+       1.6,
+       -29.28
+      ],
+      [
+       1.8,
+       -26.64
       ],
       [
        2,
-       -35.62
+       -24
       ],
       [
        2.3,
-       -32.86
+       -20.4
       ],
       [
        2.6149999999999998,
-       -21.39
+       -15.78
       ],
       [
        2.846,
-       -14.5
+       -13.01
       ],
       [
        3,
@@ -1509,39 +1881,51 @@
       ],
       [
        0.5,
-       -54.43
+       -55.51
       ],
       [
        1,
-       -55.9
+       -56.83
       ],
       [
-       1.25,
-       -56.68
+       1.0666666666666667,
+       -57.12
       ],
       [
-       1.5,
-       -57.47
+       1.1333333333333333,
+       -57.42
       ],
       [
-       1.75,
-       -58.25
+       1.2,
+       -57.71
+      ],
+      [
+       1.4,
+       -57.78
+      ],
+      [
+       1.6,
+       -57.85
+      ],
+      [
+       1.8,
+       -57.93
       ],
       [
        2,
-       -59.03
+       -58
       ],
       [
        2.3,
-       -55.35
+       -49.6
       ],
       [
        2.6149999999999998,
-       -41.41
+       -38.82
       ],
       [
        2.846,
-       -33.04
+       -32.35
       ],
       [
        3,
@@ -1557,39 +1941,51 @@
       ],
       [
        0.5,
-       -6.17
+       -3.58
       ],
       [
        1,
-       -2.64
+       -0.41
       ],
       [
-       1.25,
-       -0.76
+       1.0666666666666667,
+       0.3
       ],
       [
-       1.5,
-       1.12
+       1.1333333333333333,
+       1
       ],
       [
-       1.75,
-       3
+       1.2,
+       1.7
+      ],
+      [
+       1.4,
+       4.78
+      ],
+      [
+       1.6,
+       7.85
+      ],
+      [
+       1.8,
+       10.93
       ],
       [
        2,
-       4.87
+       14
       ],
       [
        2.3,
-       6.71
+       9.8
       ],
       [
        2.6149999999999998,
-       3.02
+       4.41
       ],
       [
        2.846,
-       0.81
+       1.18
       ],
       [
        3,
@@ -1605,39 +2001,51 @@
       ],
       [
        0.5,
-       6.17
+       3.58
       ],
       [
        1,
-       2.64
+       0.41
       ],
       [
-       1.25,
-       0.76
+       1.0666666666666667,
+       -0.3
       ],
       [
-       1.5,
-       -1.12
+       1.1333333333333333,
+       -1
       ],
       [
-       1.75,
-       -3
+       1.2,
+       -1.7
+      ],
+      [
+       1.4,
+       -4.78
+      ],
+      [
+       1.6,
+       -7.85
+      ],
+      [
+       1.8,
+       -10.93
       ],
       [
        2,
-       -4.87
+       -14
       ],
       [
        2.3,
-       -6.71
+       -9.8
       ],
       [
        2.6149999999999998,
-       -3.02
+       -4.41
       ],
       [
        2.846,
-       -0.81
+       -1.18
       ],
       [
        3,
@@ -1653,39 +2061,51 @@
       ],
       [
        0.5,
-       7.14
+       4.98
       ],
       [
        1,
-       4.2
+       2.34
       ],
       [
-       1.25,
-       2.63
+       1.0666666666666667,
+       1.75
       ],
       [
-       1.5,
-       1.07
+       1.1333333333333333,
+       1.17
       ],
       [
-       1.75,
-       -0.5
+       1.2,
+       0.58
+      ],
+      [
+       1.4,
+       -1.57
+      ],
+      [
+       1.6,
+       -3.71
+      ],
+      [
+       1.8,
+       -5.85
       ],
       [
        2,
-       -2.06
+       -8
       ],
       [
        2.3,
-       -0.68
+       -5.6
       ],
       [
        2.6149999999999998,
-       -0.31
+       -2.52
       ],
       [
        2.846,
-       -0.08
+       -0.67
       ],
       [
        3,
@@ -1701,39 +2121,51 @@
       ],
       [
        0.5,
-       -4.22
+       -0.77
       ],
       [
        1,
-       0.49
+       3.46
       ],
       [
-       1.25,
-       2.99
+       1.0666666666666667,
+       4.39
       ],
       [
-       1.5,
-       5.49
+       1.1333333333333333,
+       5.33
       ],
       [
-       1.75,
-       7.99
+       1.2,
+       6.27
+      ],
+      [
+       1.4,
+       9.2
+      ],
+      [
+       1.6,
+       12.14
+      ],
+      [
+       1.8,
+       15.07
       ],
       [
        2,
-       10.5
+       18
       ],
       [
        2.3,
-       8.2
+       12.6
       ],
       [
        2.6149999999999998,
-       3.69
+       5.67
       ],
       [
        2.846,
-       0.98
+       1.51
       ],
       [
        3,
@@ -1746,11 +2178,14 @@
   "thrust": {
    "note": "Spear and dagger. Authored against ds1-boss-moves/Ornstein-Thrust.gif and Kings-Thrust.gif: the weapon is chambered beside the hip with the point already on line, the body drops into a lunge, and the whole displacement is LINEAR along the point. Almost no arc — which is exactly why a spear's swept volume is a narrow tube and why stepping 20 cm sideways beats it. The recovery pulls the point back off line and settles on the ready pose.",
    "solved": {
-    "startup_blend": 0.32,
-    "swing_scale": 0.52,
-    "elbow_extension_deg": 0
+    "startup_blend": 0.5,
+    "swing_scale": 1.12,
+    "elbow_extension_deg": 0,
+    "bury": 0,
+    "chamber": 1,
+    "hit_phase_fraction": 1
    },
-   "solved_note": "Solved by tools/harness/anim-author.mjs against two of the corpus's own columns at once: RI-CMB04 §B's peak_tip_speed_mps (a ceiling, measured over the ACTIVE frames only) and RI-CMB02 §A's reach_m (a floor, measured as the furthest forward point the weapon capsule occupies near the centreline during the active window). The search takes the LARGEST swing and the SMALLEST elbow extension that satisfy both for every class using this archetype.",
+   "solved_note": "Solved by tools/harness/anim-author.mjs against THREE of the corpus's own numbers at once, for every player class AND every enemy statblock that selects this archetype: (1) RI-CMB04 §B's peak_tip_speed_mps as a ceiling, measured over EVERY frame of the clip and not only the active ones — the round-3 build satisfied it on the active window and ran at x2.4 in the startup of a chain clip; (2) RI-CMB02 §A's reach_m as a floor; and (3) min_axis — the distance from the swept hitbox capsule's SURFACE to the attacker's own root axis at its closest approach during the active window — as a ceiling of `bodies.player_radius_m + bodies.default_enemy_radius_m - torso_upper.radius_m` = 0.43 m, so that anything the attacker's body can shove, its weapon can also cut. The search takes the LARGEST swing and the SMALLEST elbow extension that satisfy all three.",
    "root_forward": [
     [
      0,
@@ -1814,23 +2249,23 @@
       ],
       [
        0.5,
-       -15.44
+       -28.64
       ],
       [
        1,
-       -11.78
+       -16.32
       ],
       [
        1.25,
-       -9.83
+       -13.24
       ],
       [
        1.5,
-       -7.89
+       -10.16
       ],
       [
        1.75,
-       -5.94
+       -7.08
       ],
       [
        2,
@@ -1838,15 +2273,15 @@
       ],
       [
        2.2,
-       -5.04
+       -6.24
       ],
       [
        2.56,
-       -2.27
+       -2.81
       ],
       [
        2.824,
-       -0.6
+       -0.75
       ],
       [
        3,
@@ -1862,23 +2297,23 @@
       ],
       [
        0.5,
-       10.8
+       4.8
       ],
       [
        1,
-       12.46
+       2
       ],
       [
        1.25,
-       13.35
+       5.5
       ],
       [
        1.5,
-       14.23
+       9
       ],
       [
        1.75,
-       15.12
+       12.5
       ],
       [
        2,
@@ -1886,15 +2321,15 @@
       ],
       [
        2.2,
-       17.04
+       18.24
       ],
       [
        2.56,
-       9.32
+       9.86
       ],
       [
        2.824,
-       4.68
+       4.83
       ],
       [
        3,
@@ -1908,23 +2343,23 @@
       ],
       [
        0.5,
-       -9.52
+       -25.12
       ],
       [
        1,
-       -5.19
+       -10.56
       ],
       [
        1.25,
-       -2.9
+       -6.92
       ],
       [
        1.5,
-       -0.6
+       -3.28
       ],
       [
        1.75,
-       1.7
+       0.36
       ],
       [
        2,
@@ -1932,15 +2367,15 @@
       ],
       [
        2.2,
-       2.96
+       1.76
       ],
       [
        2.56,
-       1.33
+       0.79
       ],
       [
        2.824,
-       0.36
+       0.21
       ],
       [
        3,
@@ -1956,23 +2391,23 @@
       ],
       [
        0.5,
-       -12.72
+       -34.32
       ],
       [
        1,
-       -6.73
+       -14.16
       ],
       [
        1.25,
-       -3.55
+       -9.12
       ],
       [
        1.5,
-       -0.36
+       -4.08
       ],
       [
        1.75,
-       2.82
+       0.96
       ],
       [
        2,
@@ -1980,19 +2415,41 @@
       ],
       [
        2.2,
-       7.04
+       8.24
       ],
       [
        2.56,
-       -0.13
+       0.41
       ],
       [
        2.824,
-       -4.44
+       -4.29
       ],
       [
        3,
        -6
+      ]
+     ],
+     "rx": [
+      [
+       0,
+       0
+      ],
+      [
+       0.5,
+       1
+      ],
+      [
+       1,
+       1
+      ],
+      [
+       2,
+       0
+      ],
+      [
+       3,
+       0
       ]
      ]
     },
@@ -2004,23 +2461,23 @@
       ],
       [
        0.5,
-       4.48
+       -11.12
       ],
       [
        1,
-       8.81
+       3.44
       ],
       [
        1.25,
-       11.1
+       7.08
       ],
       [
        1.5,
-       13.4
+       10.72
       ],
       [
        1.75,
-       15.7
+       14.36
       ],
       [
        2,
@@ -2028,15 +2485,15 @@
       ],
       [
        2.2,
-       19.04
+       20.24
       ],
       [
        2.56,
-       8.57
+       9.11
       ],
       [
        2.824,
-       2.28
+       2.43
       ],
       [
        3,
@@ -2052,23 +2509,23 @@
       ],
       [
        0.5,
-       -64.24
+       -41.44
       ],
       [
        1,
-       -70.56
+       20
       ],
       [
        1.25,
-       -73.92
+       -6
       ],
       [
        1.5,
-       -77.28
+       -32
       ],
       [
        1.75,
-       -80.64
+       -58
       ],
       [
        2,
@@ -2076,15 +2533,15 @@
       ],
       [
        2.2,
-       -80.88
+       -77.28
       ],
       [
        2.56,
-       -46.3
+       -44.68
       ],
       [
        2.824,
-       -25.55
+       -25.11
       ],
       [
        3,
@@ -2098,23 +2555,23 @@
       ],
       [
        0.5,
-       6.48
+       20.88
       ],
       [
        1,
-       2.49
+       7.44
       ],
       [
        1.25,
-       0.36
+       4.08
       ],
       [
        1.5,
-       -1.76
+       0.72
       ],
       [
        1.75,
-       -3.88
+       -2.64
       ],
       [
        2,
@@ -2122,15 +2579,15 @@
       ],
       [
        2.2,
-       -4.96
+       -3.76
       ],
       [
        2.56,
-       -2.23
+       -1.69
       ],
       [
        2.824,
-       -0.6
+       -0.45
       ],
       [
        3,
@@ -2140,6 +2597,18 @@
      "rz": [
       [
        0,
+       -6
+      ],
+      [
+       0.5,
+       -8
+      ],
+      [
+       1,
+       -8
+      ],
+      [
+       2,
        -6
       ],
       [
@@ -2156,23 +2625,23 @@
       ],
       [
        0.5,
-       -36
+       -66
       ],
       [
        1,
-       -27.68
+       -70
       ],
       [
        1.25,
-       -23.26
+       -55
       ],
       [
        1.5,
-       -18.84
+       -40
       ],
       [
        1.75,
-       -14.42
+       -25
       ],
       [
        2,
@@ -2180,15 +2649,15 @@
       ],
       [
        2.2,
-       -12.08
+       -14.48
       ],
       [
        2.56,
-       -26.34
+       -27.42
       ],
       [
        2.824,
-       -34.89
+       -35.18
       ],
       [
        3,
@@ -2204,23 +2673,23 @@
       ],
       [
        0.5,
-       13.32
+       22.92
       ],
       [
        1,
-       10.66
+       -20
       ],
       [
        1.25,
-       9.24
+       -13.75
       ],
       [
        1.5,
-       7.83
+       -7.5
       ],
       [
        1.75,
-       6.41
+       -1.25
       ],
       [
        2,
@@ -2228,15 +2697,15 @@
       ],
       [
        2.2,
-       6.56
+       8.36
       ],
       [
        2.56,
-       2.95
+       3.76
       ],
       [
        2.824,
-       0.79
+       1
       ],
       [
        3,
@@ -2252,23 +2721,23 @@
       ],
       [
        0.5,
-       -61.52
+       -47.12
       ],
       [
        1,
-       -65.51
+       -30
       ],
       [
        1.25,
-       -67.64
+       -41
       ],
       [
        1.5,
-       -69.76
+       -52
       ],
       [
        1.75,
-       -71.88
+       -63
       ],
       [
        2,
@@ -2276,15 +2745,15 @@
       ],
       [
        2.2,
-       -69.84
+       -65.04
       ],
       [
        2.56,
-       -38.03
+       -35.87
       ],
       [
        2.824,
-       -18.94
+       -18.36
       ],
       [
        3,
@@ -2310,23 +2779,23 @@
       ],
       [
        0.5,
-       -50.72
+       -72.32
       ],
       [
        1,
-       -44.73
+       -62
       ],
       [
        1.25,
-       -41.55
+       -54.5
       ],
       [
        1.5,
-       -38.36
+       -47
       ],
       [
        1.75,
-       -35.18
+       -39.5
       ],
       [
        2,
@@ -2334,15 +2803,15 @@
       ],
       [
        2.2,
-       -34.08
+       -36.48
       ],
       [
        2.56,
-       -31.84
+       -32.92
       ],
       [
        2.824,
-       -30.49
+       -30.78
       ],
       [
        3,
@@ -2358,23 +2827,23 @@
       ],
       [
        0.5,
-       4.24
+       -18.56
       ],
       [
        1,
-       10.56
+       2.72
       ],
       [
        1.25,
-       13.92
+       8.04
       ],
       [
        1.5,
-       17.28
+       13.36
       ],
       [
        1.75,
-       20.64
+       18.68
       ],
       [
        2,
@@ -2382,15 +2851,15 @@
       ],
       [
        2.2,
-       25.04
+       26.24
       ],
       [
        2.56,
-       11.27
+       11.81
       ],
       [
        2.824,
-       3
+       3.15
       ],
       [
        3,
@@ -2406,23 +2875,23 @@
       ],
       [
        0.5,
-       -3.12
+       23.28
       ],
       [
        1,
-       -10.44
+       -1.36
       ],
       [
        1.25,
-       -14.33
+       -7.52
       ],
       [
        1.5,
-       -18.22
+       -13.68
       ],
       [
        1.75,
-       -22.11
+       -19.84
       ],
       [
        2,
@@ -2430,15 +2899,15 @@
       ],
       [
        2.2,
-       -27.04
+       -28.24
       ],
       [
        2.56,
-       -12.17
+       -12.71
       ],
       [
        2.824,
-       -3.24
+       -3.39
       ],
       [
        3,
@@ -2454,23 +2923,23 @@
       ],
       [
        0.5,
-       -4.4
+       13.6
       ],
       [
        1,
-       -9.39
+       -3.2
       ],
       [
        1.25,
-       -12.04
+       -7.4
       ],
       [
        1.5,
-       -14.7
+       -11.6
       ],
       [
        1.75,
-       -17.35
+       -15.8
       ],
       [
        2,
@@ -2478,15 +2947,15 @@
       ],
       [
        2.2,
-       -17.92
+       -15.52
       ],
       [
        2.56,
-       -8.06
+       -6.98
       ],
       [
        2.824,
-       -2.15
+       -1.86
       ],
       [
        3,
@@ -2502,23 +2971,23 @@
       ],
       [
        0.5,
-       4
+       -26
       ],
       [
        1,
-       12.32
+       2
       ],
       [
        1.25,
-       16.74
+       9
       ],
       [
        1.5,
-       21.16
+       16
       ],
       [
        1.75,
-       25.58
+       23
       ],
       [
        2,
@@ -2526,15 +2995,15 @@
       ],
       [
        2.2,
-       26.88
+       23.28
       ],
       [
        2.56,
-       12.1
+       10.48
       ],
       [
        2.824,
-       3.23
+       2.79
       ],
       [
        3,
@@ -2547,11 +3016,14 @@
   "sweep_wide": {
    "note": "Halberd. Authored against ds1-boss-moves/Kings-Horizontal.gif and Golem-Side-Slash.gif: drawn to the right rear at shoulder height and swept HORIZONTALLY across the front arc. The old curve over-rotated PAST the target and then unwound, which is how a 108-frame R1 came to sweep 665° at 59.1 m/s. It now arrives on line as the hitbox opens, carries through the arc at a bounded rate, and unwinds onto the ready pose.",
    "solved": {
-    "startup_blend": 0.32,
-    "swing_scale": 0.34,
-    "elbow_extension_deg": 0
+    "startup_blend": 0.1,
+    "swing_scale": 0.13,
+    "elbow_extension_deg": 0,
+    "bury": 0.4,
+    "chamber": 0,
+    "hit_phase_fraction": 0.45
    },
-   "solved_note": "Solved by tools/harness/anim-author.mjs against two of the corpus's own columns at once: RI-CMB04 §B's peak_tip_speed_mps (a ceiling, measured over the ACTIVE frames only) and RI-CMB02 §A's reach_m (a floor, measured as the furthest forward point the weapon capsule occupies near the centreline during the active window). The search takes the LARGEST swing and the SMALLEST elbow extension that satisfy both for every class using this archetype.",
+   "solved_note": "Solved by tools/harness/anim-author.mjs against THREE of the corpus's own numbers at once, for every player class AND every enemy statblock that selects this archetype: (1) RI-CMB04 §B's peak_tip_speed_mps as a ceiling, measured over EVERY frame of the clip and not only the active ones — the round-3 build satisfied it on the active window and ran at x2.4 in the startup of a chain clip; (2) RI-CMB02 §A's reach_m as a floor; and (3) min_axis — the distance from the swept hitbox capsule's SURFACE to the attacker's own root axis at its closest approach during the active window — as a ceiling of `bodies.player_radius_m + bodies.default_enemy_radius_m - torso_upper.radius_m` = 0.43 m, so that anything the attacker's body can shove, its weapon can also cut. The search takes the LARGEST swing and the SMALLEST elbow extension that satisfy all three.",
    "root_forward": [
     [
      0,
@@ -2615,39 +3087,51 @@
       ],
       [
        0.45,
-       -5.09
+       -0.22
       ],
       [
        1,
-       -0.04
+       0.39
       ],
       [
-       1.25,
-       2.64
+       1.15,
+       2.2
       ],
       [
-       1.5,
-       5.32
+       1.3,
+       4.01
       ],
       [
-       1.75,
-       8.01
+       1.45,
+       5.82
+      ],
+      [
+       1.5875,
+       5.82
+      ],
+      [
+       1.725,
+       5.82
+      ],
+      [
+       1.8625,
+       5.82
       ],
       [
        2,
-       10.69
+       5.82
       ],
       [
        2.25,
-       12.73
+       6.6
       ],
       [
        2.5875,
-       5.73
+       2.97
       ],
       [
        2.835,
-       1.53
+       0.79
       ],
       [
        3,
@@ -2663,39 +3147,51 @@
       ],
       [
        0.45,
-       -4.81
+       -0.3
       ],
       [
        1,
-       -0.13
+       0.26
       ],
       [
-       1.25,
-       2.35
+       1.15,
+       1.94
       ],
       [
-       1.5,
-       4.84
+       1.3,
+       3.62
       ],
       [
-       1.75,
-       7.32
+       1.45,
+       5.3
+      ],
+      [
+       1.5875,
+       5.3
+      ],
+      [
+       1.725,
+       5.3
+      ],
+      [
+       1.8625,
+       5.3
       ],
       [
        2,
-       9.81
+       5.3
       ],
       [
        2.25,
-       11.51
+       5.95
       ],
       [
        2.5875,
-       5.18
+       2.68
       ],
       [
        2.835,
-       1.38
+       0.71
       ],
       [
        3,
@@ -2706,6 +3202,26 @@
       [
        0,
        3
+      ],
+      [
+       0.45,
+       3
+      ],
+      [
+       1,
+       3
+      ],
+      [
+       2,
+       7.4
+      ],
+      [
+       2.25,
+       6.08
+      ],
+      [
+       2.5875,
+       4.39
       ],
       [
        3,
@@ -2721,39 +3237,51 @@
       ],
       [
        0.45,
-       -6.41
+       -1.96
       ],
       [
        1,
-       -1.79
+       -1.4
       ],
       [
-       1.25,
-       0.66
+       1.15,
+       0.25
       ],
       [
-       1.5,
-       3.11
+       1.3,
+       1.9
       ],
       [
-       1.75,
-       5.56
+       1.45,
+       3.56
+      ],
+      [
+       1.5875,
+       3.56
+      ],
+      [
+       1.725,
+       3.56
+      ],
+      [
+       1.8625,
+       3.56
       ],
       [
        2,
-       8.01
+       3.56
       ],
       [
        2.25,
-       10.05
+       4.34
       ],
       [
        2.5875,
-       1.22
+       -1.35
       ],
       [
        2.835,
-       -4.07
+       -4.76
       ],
       [
        3,
@@ -2767,39 +3295,51 @@
       ],
       [
        0.45,
-       0.17
+       1.08
       ],
       [
        1,
-       1.12
+       1.2
       ],
       [
-       1.25,
-       1.62
+       1.15,
+       1.54
       ],
       [
-       1.5,
-       2.12
+       1.3,
+       1.88
       ],
       [
-       1.75,
-       2.63
+       1.45,
+       2.22
+      ],
+      [
+       1.5875,
+       2.79
+      ],
+      [
+       1.725,
+       3.37
+      ],
+      [
+       1.8625,
+       3.95
       ],
       [
        2,
-       3.13
+       4.53
       ],
       [
        2.25,
-       3.81
+       3.17
       ],
       [
        2.5875,
-       1.71
+       1.43
       ],
       [
        2.835,
-       0.46
+       0.38
       ],
       [
        3,
@@ -2815,39 +3355,51 @@
       ],
       [
        0.45,
-       9.33
+       5.36
       ],
       [
        1,
-       5.21
+       4.87
       ],
       [
-       1.25,
-       3.03
+       1.15,
+       3.39
       ],
       [
-       1.5,
-       0.84
+       1.3,
+       1.92
       ],
       [
-       1.75,
-       -1.34
+       1.45,
+       0.44
+      ],
+      [
+       1.5875,
+       0.44
+      ],
+      [
+       1.725,
+       0.44
+      ],
+      [
+       1.8625,
+       0.44
       ],
       [
        2,
-       -3.53
+       0.44
       ],
       [
        2.25,
-       -1.83
+       1.09
       ],
       [
        2.5875,
-       -0.82
+       0.49
       ],
       [
        2.835,
-       -0.22
+       0.13
       ],
       [
        3,
@@ -2863,39 +3415,51 @@
       ],
       [
        0.45,
-       -0.42
+       2.46
       ],
       [
        1,
-       2.57
+       2.82
       ],
       [
-       1.25,
-       4.16
+       1.15,
+       3.89
       ],
       [
-       1.5,
-       5.75
+       1.3,
+       4.97
       ],
       [
-       1.75,
-       7.34
+       1.45,
+       6.04
+      ],
+      [
+       1.5875,
+       5.83
+      ],
+      [
+       1.725,
+       5.63
+      ],
+      [
+       1.8625,
+       5.43
       ],
       [
        2,
-       8.92
+       5.22
       ],
       [
        2.25,
-       10.28
+       3.66
       ],
       [
        2.5875,
-       4.63
+       1.65
       ],
       [
        2.835,
-       1.23
+       0.44
       ],
       [
        3,
@@ -2911,39 +3475,51 @@
       ],
       [
        0.45,
-       -69.88
+       -73.66
       ],
       [
        1,
-       -73.8
+       -74.13
       ],
       [
-       1.25,
-       -75.88
+       1.15,
+       -75.53
       ],
       [
-       1.5,
-       -77.96
+       1.3,
+       -76.94
       ],
       [
-       1.75,
-       -80.04
+       1.45,
+       -78.34
+      ],
+      [
+       1.5875,
+       -68.01
+      ],
+      [
+       1.725,
+       -57.67
+      ],
+      [
+       1.8625,
+       -47.34
       ],
       [
        2,
-       -82.12
+       -37
       ],
       [
        2.25,
-       -70.56
+       -31.3
       ],
       [
        2.5875,
-       -41.65
+       -23.99
       ],
       [
        2.835,
-       -24.31
+       -19.6
       ],
       [
        3,
@@ -2957,39 +3533,51 @@
       ],
       [
        0.45,
-       -7.07
+       -2.83
       ],
       [
        1,
-       -2.67
+       -2.3
       ],
       [
-       1.25,
-       -0.34
+       1.15,
+       -0.73
       ],
       [
-       1.5,
-       2
+       1.3,
+       0.85
       ],
       [
-       1.75,
-       4.33
+       1.45,
+       2.43
+      ],
+      [
+       1.5875,
+       0.98
+      ],
+      [
+       1.725,
+       -0.46
+      ],
+      [
+       1.8625,
+       -1.9
       ],
       [
        2,
-       6.67
+       -3.34
       ],
       [
        2.25,
-       9.05
+       -4.14
       ],
       [
        2.5875,
-       0.77
+       -5.16
       ],
       [
        2.835,
-       -4.19
+       -5.78
       ],
       [
        3,
@@ -3005,39 +3593,51 @@
       ],
       [
        0.45,
-       -21.42
+       -18.69
       ],
       [
        1,
-       -18.59
+       -18.35
       ],
       [
-       1.25,
-       -17.09
+       1.15,
+       -17.34
       ],
       [
-       1.5,
-       -15.59
+       1.3,
+       -16.32
       ],
       [
-       1.75,
-       -14.08
+       1.45,
+       -15.31
+      ],
+      [
+       1.5875,
+       -21.78
+      ],
+      [
+       1.725,
+       -28.25
+      ],
+      [
+       1.8625,
+       -34.72
       ],
       [
        2,
-       -12.58
+       -41.19
       ],
       [
        2.25,
-       -18.02
+       -40.23
       ],
       [
        2.5875,
-       -29.01
+       -39
       ],
       [
        2.835,
-       -35.6
+       -38.27
       ],
       [
        3,
@@ -3053,39 +3653,81 @@
       ],
       [
        0.45,
-       -6.79
+       -2.91
       ],
       [
        1,
-       -2.76
+       -2.42
       ],
       [
-       1.25,
-       -0.63
+       1.15,
+       -0.98
       ],
       [
-       1.5,
-       1.51
+       1.3,
+       0.46
       ],
       [
-       1.75,
-       3.65
+       1.45,
+       1.91
+      ],
+      [
+       1.5875,
+       1.91
+      ],
+      [
+       1.725,
+       1.91
+      ],
+      [
+       1.8625,
+       1.91
       ],
       [
        2,
-       5.79
+       1.91
       ],
       [
        2.25,
-       7.15
+       2.43
       ],
       [
        2.5875,
-       3.22
+       1.09
       ],
       [
        2.835,
-       0.86
+       0.29
+      ],
+      [
+       3,
+       0
+      ]
+     ],
+     "rx": [
+      [
+       0,
+       0
+      ],
+      [
+       0.45,
+       0
+      ],
+      [
+       1,
+       0
+      ],
+      [
+       2,
+       0
+      ],
+      [
+       2.25,
+       0
+      ],
+      [
+       2.5875,
+       0
       ],
       [
        3,
@@ -3101,39 +3743,51 @@
       ],
       [
        0.45,
-       -49.12
+       -51.76
       ],
       [
        1,
-       -51.86
+       -52.09
       ],
       [
-       1.25,
-       -53.31
+       1.15,
+       -53.07
       ],
       [
-       1.5,
-       -54.77
+       1.3,
+       -54.06
       ],
       [
-       1.75,
-       -56.23
+       1.45,
+       -55.04
+      ],
+      [
+       1.5875,
+       -51.93
+      ],
+      [
+       1.725,
+       -48.83
+      ],
+      [
+       1.8625,
+       -45.73
       ],
       [
        2,
-       -57.68
+       -42.62
       ],
       [
        2.25,
-       -53.6
+       -33.44
       ],
       [
        2.5875,
-       -30.72
+       -21.65
       ],
       [
        2.835,
-       -16.99
+       -14.57
       ],
       [
        3,
@@ -3147,39 +3801,51 @@
       ],
       [
        0.45,
-       8.39
+       4.57
       ],
       [
        1,
-       4.43
+       4.09
       ],
       [
-       1.25,
-       2.32
+       1.15,
+       2.67
       ],
       [
-       1.5,
-       0.22
+       1.3,
+       1.25
       ],
       [
-       1.75,
-       -1.88
+       1.45,
+       -0.17
+      ],
+      [
+       1.5875,
+       -0.17
+      ],
+      [
+       1.725,
+       -0.17
+      ],
+      [
+       1.8625,
+       -0.17
       ],
       [
        2,
-       -3.99
+       -0.17
       ],
       [
        2.25,
-       -1.95
+       0.61
       ],
       [
        2.5875,
-       2.42
+       3.58
       ],
       [
        2.835,
-       5.05
+       5.35
       ],
       [
        3,
@@ -3195,39 +3861,51 @@
       ],
       [
        0.45,
-       -40.05
+       -40.67
       ],
       [
        1,
-       -40.69
+       -40.74
       ],
       [
-       1.25,
-       -41.03
+       1.15,
+       -40.97
       ],
       [
-       1.5,
-       -41.37
+       1.3,
+       -41.2
       ],
       [
-       1.75,
-       -41.71
+       1.45,
+       -41.43
+      ],
+      [
+       1.5875,
+       -43.09
+      ],
+      [
+       1.725,
+       -44.75
+      ],
+      [
+       1.8625,
+       -46.4
       ],
       [
        2,
-       -42.05
+       -48.06
       ],
       [
        2.25,
-       -40.69
+       -42.64
       ],
       [
        2.5875,
-       -34.81
+       -35.69
       ],
       [
        2.835,
-       -31.28
+       -31.52
       ],
       [
        3,
@@ -3243,39 +3921,51 @@
       ],
       [
        0.45,
-       -4.87
+       -2.54
       ],
       [
        1,
-       -2.46
+       -2.25
       ],
       [
-       1.25,
-       -1.18
+       1.15,
+       -1.39
       ],
       [
-       1.5,
-       0.11
+       1.3,
+       -0.52
       ],
       [
-       1.75,
-       1.39
+       1.45,
+       0.34
+      ],
+      [
+       1.5875,
+       1.71
+      ],
+      [
+       1.725,
+       3.07
+      ],
+      [
+       1.8625,
+       4.44
       ],
       [
        2,
-       2.67
+       5.81
       ],
       [
        2.25,
-       3.69
+       4.06
       ],
       [
        2.5875,
-       1.66
+       1.83
       ],
       [
        2.835,
-       0.44
+       0.49
       ],
       [
        3,
@@ -3291,39 +3981,51 @@
       ],
       [
        0.45,
-       2.23
+       -0.94
       ],
       [
        1,
-       -1.05
+       -1.33
       ],
       [
-       1.25,
-       -2.8
+       1.15,
+       -2.51
       ],
       [
-       1.5,
-       -4.54
+       1.3,
+       -3.69
       ],
       [
-       1.75,
-       -6.29
+       1.45,
+       -4.86
+      ],
+      [
+       1.5875,
+       -5.78
+      ],
+      [
+       1.725,
+       -6.69
+      ],
+      [
+       1.8625,
+       -7.6
       ],
       [
        2,
-       -8.03
+       -8.52
       ],
       [
        2.25,
-       -9.39
+       -5.96
       ],
       [
        2.5875,
-       -4.23
+       -2.68
       ],
       [
        2.835,
-       -1.13
+       -0.72
       ],
       [
        3,
@@ -3339,39 +4041,51 @@
       ],
       [
        0.45,
-       4.19
+       2.28
       ],
       [
        1,
-       2.21
+       2.05
       ],
       [
-       1.25,
-       1.16
+       1.15,
+       1.34
       ],
       [
-       1.5,
-       0.11
+       1.3,
+       0.63
       ],
       [
-       1.75,
-       -0.94
+       1.45,
+       -0.08
+      ],
+      [
+       1.5875,
+       -0.87
+      ],
+      [
+       1.725,
+       -1.67
+      ],
+      [
+       1.8625,
+       -2.46
       ],
       [
        2,
-       -1.99
+       -3.25
       ],
       [
        2.25,
-       -0.97
+       -2.27
       ],
       [
        2.5875,
-       -0.44
+       -1.02
       ],
       [
        2.835,
-       -0.12
+       -0.27
       ],
       [
        3,
@@ -3387,39 +4101,51 @@
       ],
       [
        0.45,
-       -0.23
+       2.94
       ],
       [
        1,
-       3.05
+       3.33
       ],
       [
-       1.25,
-       4.8
+       1.15,
+       4.51
       ],
       [
-       1.5,
-       6.54
+       1.3,
+       5.69
       ],
       [
-       1.75,
-       8.29
+       1.45,
+       6.86
+      ],
+      [
+       1.5875,
+       7.98
+      ],
+      [
+       1.725,
+       9.09
+      ],
+      [
+       1.8625,
+       10.2
       ],
       [
        2,
-       10.03
+       11.32
       ],
       [
        2.25,
-       8.33
+       7.92
       ],
       [
        2.5875,
-       3.75
+       3.57
       ],
       [
        2.835,
-       1
+       0.95
       ],
       [
        3,

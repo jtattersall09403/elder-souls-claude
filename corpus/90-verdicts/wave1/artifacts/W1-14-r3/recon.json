@@ -1,0 +1,274 @@
+{
+  "steps": [
+    {
+      "label": "state:default",
+      "skills": {
+        "sorcery": 5,
+        "root-speech": 10,
+        "warding": 5,
+        "veiling": 5
+      },
+      "magic_skills": null,
+      "focus": 94,
+      "focus_max": 94,
+      "attunable": null
+    },
+    {
+      "label": "state:arena_flat",
+      "skills": {
+        "sorcery": 5,
+        "root-speech": 10,
+        "warding": 5,
+        "veiling": 5
+      },
+      "magic_skills": null,
+      "focus": 94,
+      "focus_max": 94,
+      "attunable": null
+    },
+    {
+      "label": "state:dungeon_primary",
+      "skills": {
+        "sorcery": 5,
+        "root-speech": 10,
+        "warding": 5,
+        "veiling": 5
+      },
+      "magic_skills": null,
+      "focus": 94,
+      "focus_max": 94,
+      "attunable": null
+    },
+    {
+      "label": "sap-reader@creation",
+      "skills": {
+        "sorcery": 25,
+        "root-speech": 5,
+        "warding": 25,
+        "veiling": 15
+      },
+      "magic_skills": null,
+      "focus": 56,
+      "focus_max": 56,
+      "attunable": null
+    },
+    {
+      "label": "after builder practice loop (2800 grants + 700 hearth rests)",
+      "skills": {
+        "sorcery": 100,
+        "root-speech": 99,
+        "warding": 100,
+        "veiling": 100
+      },
+      "magic_skills": null,
+      "focus": 56,
+      "focus_max": 56,
+      "attunable": null
+    }
+  ],
+  "effects_count": 55,
+  "spells_count": 72,
+  "practice_loop_ms": 162,
+  "sap_taint_after_practice": {
+    "band": 4,
+    "rests": 700,
+    "warded": 0,
+    "wardUsesLeft": 3,
+    "immune": false
+  },
+  "practice_ladder": [
+    {
+      "label": "practice:0",
+      "skills": {
+        "sorcery": 25,
+        "root-speech": 5,
+        "warding": 25,
+        "veiling": 15
+      },
+      "magic_skills": null,
+      "focus": 56,
+      "focus_max": 56,
+      "attunable": null,
+      "attunable_of": "72/72"
+    },
+    {
+      "label": "practice:1",
+      "skills": {
+        "sorcery": 25,
+        "root-speech": 5,
+        "warding": 25,
+        "veiling": 15
+      },
+      "magic_skills": null,
+      "focus": 56,
+      "focus_max": 56,
+      "attunable": null,
+      "attunable_of": "72/72"
+    },
+    {
+      "label": "practice:5",
+      "skills": {
+        "sorcery": 26,
+        "root-speech": 8,
+        "warding": 26,
+        "veiling": 16
+      },
+      "magic_skills": null,
+      "focus": 56,
+      "focus_max": 56,
+      "attunable": null,
+      "attunable_of": "72/72"
+    },
+    {
+      "label": "practice:10",
+      "skills": {
+        "sorcery": 27,
+        "root-speech": 11,
+        "warding": 27,
+        "veiling": 18
+      },
+      "magic_skills": null,
+      "focus": 56,
+      "focus_max": 56,
+      "attunable": null,
+      "attunable_of": "72/72"
+    },
+    {
+      "label": "practice:25",
+      "skills": {
+        "sorcery": 31,
+        "root-speech": 17,
+        "warding": 31,
+        "veiling": 23
+      },
+      "magic_skills": null,
+      "focus": 56,
+      "focus_max": 56,
+      "attunable": null,
+      "attunable_of": "72/72"
+    },
+    {
+      "label": "practice:50",
+      "skills": {
+        "sorcery": 36,
+        "root-speech": 25,
+        "warding": 36,
+        "veiling": 29
+      },
+      "magic_skills": null,
+      "focus": 56,
+      "focus_max": 56,
+      "attunable": null,
+      "attunable_of": "72/72"
+    },
+    {
+      "label": "practice:100",
+      "skills": {
+        "sorcery": 44,
+        "root-speech": 36,
+        "warding": 44,
+        "veiling": 39
+      },
+      "magic_skills": null,
+      "focus": 56,
+      "focus_max": 56,
+      "attunable": null,
+      "attunable_of": "72/72"
+    },
+    {
+      "label": "practice:200",
+      "skills": {
+        "sorcery": 58,
+        "root-speech": 52,
+        "warding": 58,
+        "veiling": 54
+      },
+      "magic_skills": null,
+      "focus": 56,
+      "focus_max": 56,
+      "attunable": null,
+      "attunable_of": "72/72"
+    },
+    {
+      "label": "practice:400",
+      "skills": {
+        "sorcery": 79,
+        "root-speech": 74,
+        "warding": 79,
+        "veiling": 76
+      },
+      "magic_skills": null,
+      "focus": 56,
+      "focus_max": 56,
+      "attunable": null,
+      "attunable_of": "72/72"
+    },
+    {
+      "label": "practice:700",
+      "skills": {
+        "sorcery": 100,
+        "root-speech": 99,
+        "warding": 100,
+        "veiling": 100
+      },
+      "magic_skills": null,
+      "focus": 56,
+      "focus_max": 56,
+      "attunable": null,
+      "attunable_of": "72/72"
+    }
+  ],
+  "cheapest_warding": [
+    {
+      "id": "open",
+      "tier": 1,
+      "skill_req": 0
+    },
+    {
+      "id": "the_greater_opening",
+      "tier": 2,
+      "skill_req": 25
+    },
+    {
+      "id": "seal",
+      "tier": 1,
+      "skill_req": 0
+    },
+    {
+      "id": "spring_the_trap",
+      "tier": 1,
+      "skill_req": 0
+    }
+  ],
+  "attune_cheapest": [
+    "open"
+  ],
+  "real_cast_probe": {
+    "casts": 60,
+    "delivered": 0,
+    "label": "after 60 real casts",
+    "skills": {
+      "sorcery": 25,
+      "root-speech": 5,
+      "warding": 37,
+      "veiling": 15
+    },
+    "magic_skills": null,
+    "focus": 59,
+    "focus_max": 59,
+    "attunable": null
+  },
+  "real_cast_before": {
+    "label": "before real casts",
+    "skills": {
+      "sorcery": 25,
+      "root-speech": 5,
+      "warding": 25,
+      "veiling": 15
+    },
+    "magic_skills": null,
+    "focus": 124,
+    "focus_max": 124,
+    "attunable": null
+  }
+}

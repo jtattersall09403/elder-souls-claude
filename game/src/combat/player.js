@@ -882,7 +882,12 @@ export class PlayerController {
         : m.slot === 'bow.draw' ? { at: 9, to: 'bow.aimed', why: 'bow.aimed' }
           : null;
     if (!promote || nf !== promote.at) return;
-    if (!(input.held & BIT.heavy)) return;
+    // RI-JRN04 §D / M-P4: on an analog trigger the CHARGE is gated at `T_full` (0.85), not at
+    // the fire threshold. `chargeIntent` is 1 for every digital control — a key, a mouse
+    // button, a touch button — and only a pad ever lowers it, so this changes nothing for a
+    // keyboard player and makes `buttons[7].value = 0.5` fire an r2 that never becomes an
+    // r2.charged, which is exactly what M-P4 measures.
+    if (!(input.held & BIT.heavy) || !(input.chargeIntent === undefined || input.chargeIntent > 0)) return;
     const cm = b.moves[promote.to];
     if (!cm) return;
     const extra = Math.max(0, cm.stamina - m.stamina);

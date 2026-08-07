@@ -18,7 +18,7 @@ import { Engine, BUILD } from '../engine.js';
 import { FIXED_HZ } from '../core/loop.js';
 import { violations } from '../core/guards.js';
 import { ACTIONS } from '../input/actions.js';
-import { DEFAULT_BINDINGS, RESERVED_CONTROLS, auditBindings } from '../input/bindings.js';
+import { DEFAULT_BINDINGS, MOVE_BINDINGS, RESERVED_CONTROLS, auditBindings, rolloverAudit } from '../input/bindings.js';
 import { canonicalise, stateDiff, leafPaths } from '../core/canonical.js';
 import { VOLATILE_PATHS } from '../save/state.js';
 import { installWeaponsHarness } from './weapons.js';
@@ -308,12 +308,65 @@ export function installHarness(engine, bootPromise) {
       return {
         actions: ACTIONS.slice(),
         bindings: DEFAULT_BINDINGS,
+        moveBindings: MOVE_BINDINGS,
+        padProfiles: engine.data.inputProfiles.pad_profiles,
+        padQuirks: engine.data.padQuirks,
+        analog: engine.data.inputProfiles.analog,
+        touchLayout: engine.data.inputProfiles.touch,
         reserved: RESERVED_CONTROLS,
         audit: auditBindings(),
+        rollover: rolloverAudit(),
         bufferFrames: engine.data.input.buffer_frames,
         bufferSlots: engine.data.input.buffer_slots,
         catchupCap: engine.data.input.catchup_cap_steps,
       };
+    },
+
+    // ---- A-JRN4: viewport / orientation / safe-area control (RI-JRN04 §F) ---------------
+    //
+    // Declared ABSENT by this file's own capability report for the whole of wave 1, which made
+    // M-P16..M-P19 `unmeasurable` and therefore 0 fail-closed. It overrides the four things a
+    // headless Chromium cannot be asked for: logical size, orientation, pointer coarseness and
+    // the safe-area insets. Everything downstream — the touch layout, the HUD, the rotate
+    // state, the device class — reads the SAME Viewport object the real media queries feed, so
+    // this drives the shipped path and not a parallel one.
+    setViewport(o) {
+      if (!engine.real) throw new Error('setViewport(): no real input path on this engine');
+      return engine.real.viewport.setOverride(o);
+    },
+    getViewport() {
+      if (!engine.real) throw new Error('getViewport(): no real input path on this engine');
+      return engine.real.viewport.state();
+    },
+
+    // ---- RI-JRN03 §E / RI-JRN04 M-P23: the rebinding surface ----------------------------
+    openRebinding(device) { return engine.real ? engine.real.openRebinding(device) : null; },
+    closeRebinding() { return engine.real ? engine.real.closeRebinding() : null; },
+    rebindView() { return engine.real ? engine.real.rebinder.view(engine.real.layoutMap) : null; },
+    rebindStep() { return engine.real ? engine.real.rebinder.step(engine.input) : null; },
+    rebindOffer(control) { return engine.real ? engine.real.rebinder.offer(control) : null; },
+    rebindCommit(take) { return engine.real ? engine.real.rebinder.commit(take !== false) : null; },
+    rebindBegin(action, slot) { return engine.real ? engine.real.rebinder.beginCapture(action, slot | 0) : null; },
+    rebindUnbind(action, slot) { return engine.real ? engine.real.rebinder.unbind(action, slot | 0) : null; },
+    rebindSerialise() { return engine.real ? engine.real.rebinder.serialise() : null; },
+    rebindRestore(doc) { return engine.real ? engine.real.rebinder.restore(doc) : null; },
+
+    // ---- RI-JRN04 §G: the touch fallback ------------------------------------------------
+    //
+    // Injected as POINTER EVENTS at the same seam the browser delivers them, so the whole
+    // hit-testing, floating-stick and multi-touch path runs. `touchState()` reports what the
+    // build believes; `touchLayout()` reports what it would draw, which is what M-P17 measures
+    // against the insets.
+    touchDown(id, x, y) { return engine.real ? engine.real.touch.down(id, x, y) : null; },
+    touchMove(id, x, y) { return engine.real ? engine.real.touch.move(id, x, y) : null; },
+    touchUp(id) { return engine.real ? engine.real.touch.up(id) : null; },
+    touchLayout() { return engine.real ? engine.real.touch.layout() : null; },
+    touchState() { return engine.real ? engine.real.touch.state() : null; },
+    setTouchEnabled(on) {
+      if (!engine.real) return null;
+      engine.real.touch.enabled = !!on;
+      if (on) engine.real.touch.attach(); else engine.real.touch.detach();
+      return engine.real.touch.enabled;
     },
 
     // A-JRN10 — in-world clock advance that does NOT perturb the fixed step or the hash.
@@ -357,6 +410,78 @@ export function installHarness(engine, bootPromise) {
     censusAnswer(value) { return engine.censusAnswer(value); },
     /** What a renderer draws and what a critic screenshots. `full_screen_panels` is 0. */
     getCensusState() { return engine.getCensusState(); },
+
+    // ================= W1-26 — the opening, as a played scene ==================================
+    // `RI-JRN01` M20/HF9 (the title surface) and §0.1(a) M9/M15 (the rendered-text accessor
+    // condition), plus `RI-JRN09` M1's `DTR`.
+
+    /**
+     * The title surface. `present` is true in every mode; `shown` says whether it is up.
+     * `option_ids` is the set M20 checks against O3 — always the same five at the root page,
+     * with `enabled` telling the truth about each rather than the row being hidden.
+     */
+    getTitleState() { return engine.getTitleState(); },
+    /** Raise it in any mode. Refreshes the save list, so `Continue` is never a stale claim. */
+    titleShow() { return engine.titleShow(); },
+    titleDismiss(by) { return engine.titleDismiss(by); },
+    /**
+     * Commit to a row through the same entry point a player's `interact` reaches. Returns a
+     * promise for `continue` / `slot:*` because IndexedDB is async. M20's "and `Continue`
+     * loads that save" is this call plus a `getPlayerStats()`.
+     */
+    titleActivate(id) { return engine.titleActivate(id); },
+
+    /**
+     * **THE RENDERED-TEXT ACCESSOR.** `RI-JRN01` §0.1(a) refuses to score M9 and M15 at all
+     * against a build that cannot enumerate what its frame says — this game draws every
+     * string into the WebGL canvas, so `document.body.innerText` is `""`, the accessibility
+     * tree is a childless `WebArea`, and a grep over either returns zero hits and reads as a
+     * clean pass. `RI-MTH06` §B names that failure in advance.
+     *
+     * This register is fed by the **draw call**: `render/text-register.js` wraps every 2D
+     * context the renderer owns, so nothing can appear here that was not handed to
+     * `fillText`, and nothing handed to one can fail to appear. It also shadows the clip
+     * state, so a string painted outside its surface's clip region comes back
+     * `clipped: true` and is excluded from `entries` — orphan text one layer below the
+     * round-2 defect.
+     *
+     * @param {object} [opts]
+     *   `since` (entry index), `sinceFrame`, `surface` / `notSurface`
+     *   ('dialogue' | 'title'), `includeClipped` (default false).
+     */
+    getRenderedText(opts) {
+      const o = opts || {};
+      const reg = engine.renderer.textRegister;
+      const entries = o.includeClipped ? reg.all(o) : reg.drawn(o);
+      const distinct = [];
+      const seen = new Set();
+      for (const e of entries) if (!seen.has(e.text)) { seen.add(e.text); distinct.push(e.text); }
+      return {
+        accessor: 'window.__HARNESS.getRenderedText()',
+        source: 'CanvasRenderingContext2D.fillText, instrumented at the draw call (game/src/render/text-register.js)',
+        surfaces_instrumented: ['dialogue', 'title'],
+        next_index: reg.seq,
+        entries,
+        distinct,
+        distinct_count: distinct.length,
+        clipped_excluded: !o.includeClipped,
+        summary: reg.summary(),
+      };
+    },
+    /** Reset the register — a probe measuring one node clears, steps, then reads. */
+    renderedTextClear() { return engine.renderer.textRegister.clear(); },
+
+    /**
+     * `first_input`, `first_control` and the first field-writing node, as frames.
+     *
+     * `RI-JRN01` M4 clause 1 is the interval between the second and the third, in available
+     * play seconds, and `BAR-CRITIQUE-W1-07-R1` §R1 blocked it on the ground that **neither
+     * event existed** — both types have been in the closed A-JRN7 vocabulary since it was
+     * written and were emitted by nothing. They are emitted now (`Engine._journeyStamps`),
+     * so O6 — the item's own best idea, and the only bar in this corpus that measures
+     * Morrowind's "you get a body before you get a character" — is measurable.
+     */
+    getJourneyStamps() { return engine.getJourneyStamps(); },
 
     /**
      * The MODEL the surface was built from — RI-JRN09 M1's "the distinct authored strings the
@@ -491,6 +616,16 @@ export function installHarness(engine, bootPromise) {
     },
     /** The object you carry out of the room (RI-JRN01 O10). */
     readWrit() { return engine.readWrit(); },
+
+    /**
+     * OPEN the carried writ and draw it. RI-JRN01 M8 (amended wave 1) hard-fails an O10 object
+     * that is "present only as an API return value" — which `readWrit()` alone is — and
+     * requires the rendered-text set at the open node to be non-empty and to contain the
+     * player's answers. In play the same thing happens on `use_item`; this is the harness seam.
+     */
+    openWrit() { return engine.openWrit(); },
+    closeWrit() { return engine.closeWrit(); },
+    getWritReaderState() { return engine.getWritReaderState(); },
 
     /** Disposition with the race and upbringing terms in front of it (RI-CHR02 §4a). */
     getReaction(q) { return engine.getReaction(q || {}); },
@@ -1120,11 +1255,11 @@ export function installHarness(engine, bootPromise) {
           { what: 'dialogue, topics, journal writing at runtime', owner: 'wave-1 pieces W1-11..W1-13', surfaced_as: 'data files exist and are analysable; getDialogueState() (A-JRN13) is absent' },
           { what: 'the province: 13 regions, 8 settlements, 250 interiors, roads', owner: 'wave-1 pieces W1-01..W1-05', surfaced_as: 'getWorldStats()._declared_incomplete — counts come from game/data/**, which is the corpus transcription plus one worked settlement' },
           { what: 'audio', owner: 'RI-AUD01..03 / wave-1 piece W1-25', surfaced_as: 'audioMB: 0. RI-AUD02 is unmeasurable in this piece and scores 0, fail-closed' },
-          { what: 'a gamepad shim (A-JRN2), viewport control (A-JRN4), heap/GC access (A-JRN9), keyboard-layout emulation (A-JRN12), dialogue state (A-JRN13), resource registry (A-JRN14)', owner: 'runner-side or later pieces', surfaced_as: 'the methods are absent rather than present-and-lying' },
+          { what: 'heap/GC access (A-JRN9), dialogue state (A-JRN13), resource registry (A-JRN14). A-JRN2 (gamepad) and A-JRN4 (viewport/orientation/safe-area) landed with W1-08/W1-29; A-JRN12 (keyboard layout) is driven runner-side through CDP by tools/journey/journey-run.mjs', owner: 'runner-side or later pieces', surfaced_as: 'the methods are absent rather than present-and-lying' },
           { what: 'Tier-H performance numbers (fps, frame time, TTFP wall clock, hitch durations)', owner: 'attested real hardware', surfaced_as: 'getPerfStats()._unmeasurable / getLoadState()._unmeasurable. RI-PLT01 rule T1 forbids emitting these from a SwiftShader run at all' },
         ],
-        harness_amendments_implemented: ['A-JRN1 (partial: play-instrumented mode, no UI-text stream)', 'A-JRN3', 'A-JRN5 (partial: Tier-S fields only)', 'A-JRN6', 'A-JRN7', 'A-JRN8', 'A-JRN10', 'A-JRN11', 'A-JRN15 (partial)'],
-        harness_amendments_absent: ['A-JRN2', 'A-JRN4', 'A-JRN9', 'A-JRN12', 'A-JRN13', 'A-JRN14'],
+        harness_amendments_implemented: ['A-JRN1 (partial: play-instrumented mode, no UI-text stream)', 'A-JRN3', 'A-JRN5 (partial: Tier-S fields only)', 'A-JRN6', 'A-JRN7', 'A-JRN8', 'A-JRN10', 'A-JRN11', 'A-JRN15 (partial)', 'A-JRN2 (gamepad, W1-29)', 'A-JRN4 (viewport/orientation/safe-area, W1-29)', 'A-JRN12 (runner-side via CDP Input.dispatchKeyEvent, W1-08)'],
+        harness_amendments_absent: ['A-JRN9', 'A-JRN13', 'A-JRN14'],
       };
     },
   };

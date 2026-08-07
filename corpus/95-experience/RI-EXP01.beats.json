@@ -1,0 +1,526 @@
+{
+  "schema": "elder-souls/beat-sheet@1",
+  "generated_by": "tools/experience/beats-from-md.mjs",
+  "generated_from": "corpus/95-experience/RI-EXP01-first-hour-beat-sheet.md",
+  "source_table_line": 118,
+  "item": "RI-EXP01 §D",
+  "do_not_edit": "Generated from the reference item so the two cannot drift (RI-EXP01 step 3). Edit the item, then regenerate. `--check` fails the gate when they disagree.",
+  "generated_at": "2026-08-07T07:07:32.298Z",
+  "beats": [
+    {
+      "id": "B01",
+      "t_target_min": 0,
+      "tol": {
+        "plus": 0,
+        "minus": 0
+      },
+      "beat": "The hold of the tithe-barge. A sick fellow prisoner (proposed: Wujeel-Ei) asks your hatch-name. No cutscene, no camera fly-through.",
+      "sb": [
+        "SB1"
+      ],
+      "verbs": [],
+      "given_or_found": "G",
+      "odd": false,
+      "lethal": false,
+      "lethal_raw": null
+    },
+    {
+      "id": "B02",
+      "t_target_min": 2,
+      "tol": {
+        "plus": 1,
+        "minus": 1
+      },
+      "beat": "Up, out, onto the Tidewrack boardwalk. First unobstructed vista: the root-road, the tide out, a moth-tower on the horizon you will not reach for six hours.",
+      "sb": [
+        "SB1"
+      ],
+      "verbs": [
+        "move"
+      ],
+      "given_or_found": "G",
+      "odd": false,
+      "lethal": false,
+      "lethal_raw": null
+    },
+    {
+      "id": "B03",
+      "t_target_min": 4,
+      "tol": {
+        "plus": 2,
+        "minus": 2
+      },
+      "beat": "The Writ House. A Warden-Scribe (proposed: Ollo Vantine) takes name, hatch-name, origin and a set of questions that resolve into skills. Per RI-CHR01.",
+      "sb": [
+        "SB2"
+      ],
+      "verbs": [],
+      "given_or_found": "G",
+      "odd": false,
+      "lethal": false,
+      "lethal_raw": null
+    },
+    {
+      "id": "B04",
+      "t_target_min": 8,
+      "tol": {
+        "plus": 2,
+        "minus": 2
+      },
+      "beat": "The found thing. An unattended sack in the Writ House holds a marked object belonging to a named local you have not met. Nobody mentions it.",
+      "sb": [
+        "SB5"
+      ],
+      "verbs": [
+        "take"
+      ],
+      "given_or_found": "F",
+      "odd": false,
+      "lethal": false,
+      "lethal_raw": null
+    },
+    {
+      "id": "B05",
+      "t_target_min": 11,
+      "tol": {
+        "plus": 2,
+        "minus": 2
+      },
+      "beat": "The sealed reed-case you may not open, a small gold disbursement, and a name in Lilmoth.",
+      "sb": [
+        "SB3"
+      ],
+      "verbs": [],
+      "given_or_found": "G",
+      "odd": false,
+      "lethal": false,
+      "lethal_raw": null
+    },
+    {
+      "id": "B06",
+      "t_target_min": 13,
+      "tol": {
+        "plus": 3,
+        "minus": 3
+      },
+      "beat": "Outside, the object's owner greets you and asks after it. They are lying about something else. Return / keep / sell it to the third party.",
+      "sb": [
+        "SB4"
+      ],
+      "verbs": [
+        "talk",
+        "lie"
+      ],
+      "given_or_found": "G",
+      "odd": false,
+      "lethal": false,
+      "lethal_raw": null
+    },
+    {
+      "id": "B07",
+      "t_target_min": 16,
+      "tol": {
+        "plus": 4,
+        "minus": 4
+      },
+      "beat": "A second local offers you a cut to watch the first one. First social lock: they will not talk to you at low disposition.",
+      "sb": [
+        "SB6",
+        "SB10"
+      ],
+      "verbs": [
+        "ask",
+        "bribe"
+      ],
+      "given_or_found": "G",
+      "odd": false,
+      "lethal": false,
+      "lethal_raw": null
+    },
+    {
+      "id": "B08",
+      "t_target_min": 19,
+      "tol": {
+        "plus": 4,
+        "minus": 4
+      },
+      "beat": "First fight. One trivial hostile, in the open, with room to retreat. Roll, light attack, stamina — all taught by consequence, none by text.",
+      "sb": [],
+      "verbs": [
+        "roll",
+        "attack"
+      ],
+      "given_or_found": "F",
+      "odd": false,
+      "lethal": false,
+      "lethal_raw": null
+    },
+    {
+      "id": "B09",
+      "t_target_min": 22,
+      "tol": {
+        "plus": 5,
+        "minus": 5
+      },
+      "beat": "The unexplained. An authored event with no quest, no journal entry and no explanation — proposal: a body in the mangrove crown, still falling gear, holding three Scrolls of the Drowned Step (Fortify Athletics 1000 / 6 s) that will kill anyone who reads one near open water.",
+      "sb": [
+        "SB7"
+      ],
+      "verbs": [
+        "read"
+      ],
+      "given_or_found": "F",
+      "odd": true,
+      "lethal": true,
+      "lethal_raw": "✅"
+    },
+    {
+      "id": "B10",
+      "t_target_min": 25,
+      "tol": {
+        "plus": 5,
+        "minus": 5
+      },
+      "beat": "Found before told. A corpse in the reeds — the tithe-taker. No quest points here. The quest becomes available only after discovery.",
+      "sb": [
+        "SB5"
+      ],
+      "verbs": [
+        "search"
+      ],
+      "given_or_found": "F",
+      "odd": false,
+      "lethal": false,
+      "lethal_raw": null
+    },
+    {
+      "id": "B11",
+      "t_target_min": 28,
+      "tol": {
+        "plus": 6,
+        "minus": 6
+      },
+      "beat": "T-death. Something lethal is reachable, legible, and unfenced by now: the scroll, a drowning tide channel, or a tier-3 wanderer on the wrong path.",
+      "sb": [
+        "SB8"
+      ],
+      "verbs": [
+        "die"
+      ],
+      "given_or_found": "F",
+      "odd": false,
+      "lethal": true,
+      "lethal_raw": "✅"
+    },
+    {
+      "id": "B12",
+      "t_target_min": 31,
+      "tol": {
+        "plus": 6,
+        "minus": 6
+      },
+      "beat": "The tithe-taker's killer is findable, and is right about the tithe. Two resolutions, both costly, neither endorsed.",
+      "sb": [
+        "SB4"
+      ],
+      "verbs": [
+        "choose"
+      ],
+      "given_or_found": "G",
+      "odd": false,
+      "lethal": false,
+      "lethal_raw": null
+    },
+    {
+      "id": "B13",
+      "t_target_min": 34,
+      "tol": {
+        "plus": 6,
+        "minus": 6
+      },
+      "beat": "The hub reveals its exits. ≥3 routes leave Tidewrack; ≥1 is lethal at level 1; none is fenced, walled, or refused by a message.",
+      "sb": [
+        "SB9"
+      ],
+      "verbs": [
+        "choose"
+      ],
+      "given_or_found": "F",
+      "odd": false,
+      "lethal": true,
+      "lethal_raw": "✅"
+    },
+    {
+      "id": "B14",
+      "t_target_min": 38,
+      "tol": {
+        "plus": 6,
+        "minus": 6
+      },
+      "beat": "The transport node: the beast-caravan / river-barge is here, costs gold, is stationed, and drops you at a station — not an objective (S7). Walking remains real and comparable.",
+      "sb": [],
+      "verbs": [
+        "pay"
+      ],
+      "given_or_found": "G",
+      "odd": false,
+      "lethal": false,
+      "lethal_raw": null
+    },
+    {
+      "id": "B15",
+      "t_target_min": 42,
+      "tol": {
+        "plus": 8,
+        "minus": 8
+      },
+      "beat": "Second found thing, off the route, requiring a departure from the road: a named interior, a cache, a person nobody mentioned.",
+      "sb": [
+        "SB5"
+      ],
+      "verbs": [
+        "explore"
+      ],
+      "given_or_found": "F",
+      "odd": false,
+      "lethal": false,
+      "lethal_raw": null
+    },
+    {
+      "id": "B16",
+      "t_target_min": 50,
+      "tol": {
+        "plus": 8,
+        "minus": 8
+      },
+      "beat": "Road incident between Tidewrack and Lilmoth: one authored encounter on the way that is not a random spawn.",
+      "sb": [],
+      "verbs": [
+        "fight",
+        "avoid"
+      ],
+      "given_or_found": "F",
+      "odd": false,
+      "lethal": true,
+      "lethal_raw": "maybe"
+    },
+    {
+      "id": "B17",
+      "t_target_min": 55,
+      "tol": {
+        "plus": 5,
+        "minus": 5
+      },
+      "beat": "Arrival at Lilmoth. Silhouette legible from outside; ≥3 named landmarks visible from the gate (RI-WLD06).",
+      "sb": [
+        "SB11"
+      ],
+      "verbs": [],
+      "given_or_found": "F",
+      "odd": false,
+      "lethal": false,
+      "lethal_raw": null
+    },
+    {
+      "id": "B18",
+      "t_target_min": 58,
+      "tol": {
+        "plus": 5,
+        "minus": 5
+      },
+      "beat": "The handler refuses to be impressed. (proposed contact) takes the case, does not open it in front of you, and tells you to go be useful somewhere else and come back. No title is conferred. Nothing calls you chosen.",
+      "sb": [
+        "SB11",
+        "SB10"
+      ],
+      "verbs": [],
+      "given_or_found": "G",
+      "odd": false,
+      "lethal": false,
+      "lethal_raw": null
+    }
+  ],
+  "derived_targets": [
+    {
+      "metric": "T_choice",
+      "definition": "minutes to the first decision with two consequences that persist ≥ 30 min",
+      "target": {
+        "op": "<=",
+        "value": 14,
+        "raw": "<= 14"
+      },
+      "fail": {
+        "op": ">",
+        "value": 20,
+        "raw": "> 20"
+      }
+    },
+    {
+      "metric": "T_found",
+      "definition": "minutes to the first content discovered, not handed",
+      "target": {
+        "op": "<=",
+        "value": 10,
+        "raw": "<= 10"
+      },
+      "fail": {
+        "op": ">",
+        "value": 15,
+        "raw": "> 15"
+      }
+    },
+    {
+      "metric": "T_death",
+      "definition": "minutes to the first player death",
+      "target": {
+        "op": "between",
+        "min": 18,
+        "max": 32,
+        "raw": "18-32"
+      },
+      "fail": {
+        "op": "prose",
+        "raw": "0 deaths, or > 40"
+      }
+    },
+    {
+      "metric": "T_odd",
+      "definition": "minutes to the first authored event with no explanation and no quest",
+      "target": {
+        "op": "<=",
+        "value": 25,
+        "raw": "<= 25"
+      },
+      "fail": {
+        "op": ">",
+        "value": 35,
+        "raw": "> 35"
+      }
+    },
+    {
+      "metric": "T_refusal",
+      "definition": "minutes to the first time the world says no for a stateful reason",
+      "target": {
+        "op": "<=",
+        "value": 20,
+        "raw": "<= 20"
+      },
+      "fail": {
+        "op": ">",
+        "value": 30,
+        "raw": "> 30"
+      }
+    },
+    {
+      "metric": "T_lie",
+      "definition": "minutes to the first NPC statement the player can verify is false",
+      "target": {
+        "op": "<=",
+        "value": 20,
+        "raw": "<= 20"
+      },
+      "fail": {
+        "op": "prose",
+        "raw": "none in the hour"
+      }
+    },
+    {
+      "metric": "V_taught",
+      "definition": "distinct player verbs exercised ≥ 2× (move, roll, attack, block, heal, rest, talk, barter, take, read, search, pay, sneak)",
+      "target": {
+        "op": ">=",
+        "value": 7,
+        "raw": ">= 7"
+      },
+      "fail": {
+        "op": "<=",
+        "value": 4,
+        "raw": "<= 4"
+      }
+    },
+    {
+      "metric": "N_odd",
+      "definition": "authored events with no explanation and no quest attached",
+      "target": {
+        "op": ">=",
+        "value": 2,
+        "raw": ">= 2"
+      },
+      "fail": {
+        "op": "<=",
+        "value": 1,
+        "raw": "<= 1"
+      }
+    },
+    {
+      "metric": "N_persons",
+      "definition": "named NPCs with ≥ 3 topics and a stated opinion about another named NPC",
+      "target": {
+        "op": ">=",
+        "value": 4,
+        "raw": ">= 4"
+      },
+      "fail": {
+        "op": "<=",
+        "value": 2,
+        "raw": "<= 2"
+      }
+    },
+    {
+      "metric": "N_found",
+      "definition": "discovered-not-given content items",
+      "target": {
+        "op": ">=",
+        "value": 3,
+        "raw": ">= 3"
+      },
+      "fail": {
+        "op": "<=",
+        "value": 1,
+        "raw": "<= 1"
+      }
+    },
+    {
+      "metric": "beats_hit",
+      "definition": "of B01–B18, beats whose trace evidence lands inside tolerance",
+      "target": {
+        "op": ">=",
+        "value": 15,
+        "raw": ">= 15/18"
+      },
+      "fail": {
+        "op": "<=",
+        "value": 11,
+        "raw": "<= 11/18"
+      }
+    },
+    {
+      "metric": "order_violations",
+      "definition": "pairs of beats observed in an order the partial order forbids",
+      "target": {
+        "op": "==",
+        "value": 0,
+        "raw": "0"
+      },
+      "fail": {
+        "op": ">=",
+        "value": 2,
+        "raw": ">= 2"
+      }
+    },
+    {
+      "metric": "tutorial_text_chars",
+      "definition": "characters of non-diegetic instructional UI text shown in the hour",
+      "target": {
+        "op": "<=",
+        "value": 400,
+        "raw": "<= 400"
+      },
+      "fail": {
+        "op": ">",
+        "value": 1500,
+        "raw": "> 1500"
+      }
+    }
+  ]
+}

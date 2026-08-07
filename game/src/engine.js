@@ -33,6 +33,7 @@ import { beginRoute, endRoute, groundYInCell } from './sim/route.js';
 import { makeEntity, reanchorFreeRunning } from './sim/entities.js';
 import { InputPipeline } from './input/pipeline.js';
 import { RealInput } from './input/real.js';
+import { setProfiles } from './input/bindings.js';
 import { Renderer } from './render/renderer.js';
 import { WEATHER } from './render/sky.js';
 import { WorldField } from './world/field.js';
@@ -61,6 +62,9 @@ const DEFAULT_START = Object.freeze({ race: 'saxhleel', class_id: 'reed-walker' 
 import { derivedDisposition, priceQuote, guardTerms, raceTerm, matrixSigma, meanRaceGap, playerRaceClass } from './character/reaction.js';
 import { encounterById, openingFor, defeatOutcome } from './character/encounter.js';
 import { CensusSurface, buildCensusModel, CENSUS_PLACES, CENSUS_CAST, CENSUS_ACTIONS, placeOfNode } from './character/scene.js';
+
+/** Lines of the writ visible at once in the reader. The document scrolls; it never clips. */
+const WRIT_WINDOW = 9;
 import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, topicsFor, greetingBand } from './character/converse.js';
 import { makeNPC } from './sim/npc.js';
 import { derivePools, applyBirthsignToPools, hpMaxFor, staminaMaxFor as staminaMaxForVig, progressToNext, USE_EVENTS } from './character/derive.js';
@@ -205,7 +209,13 @@ export class Engine {
     this.cells = buildCells(this.data.cameraCells);
     this.sim.cameraTargets = this.data.cameraTargets.heights_m;
     this.sim.cameraTargets._default = this.data.cameraTargets._default;
-    this.real = new RealInput(this.input, this.canvas);
+    // The binding table is DATA (game/data/input/profiles.json). setProfiles() must run before
+    // the input path is built; RealInput throws if it has not, so a missing data file is a loud
+    // boot failure rather than a game that silently falls back to a hard-coded literal.
+    setProfiles(this.data.inputProfiles);
+    this.real = new RealInput(this.input, this.canvas, this.data);
+    this.real.frameOf = () => this.sim.frame;
+    this.sim.realInput = this.real;
 
     this.loadState_.phase = 'opening-store';
     await this.store.open();
@@ -229,6 +239,7 @@ export class Engine {
     this.topicIndex = buildTopicIndex(this.data.character.topicDocs);
     this.conversation = new Conversation(this.data.character, this.topicIndex);
     this._greetCount = new Map();
+    this.writReader = { open: false, lines: [], top: 0 };
     // W1-2x's machine, W1-14's reason for turning it on. The QuestBook load is FAIL-LOUD by
     // design (defs.js): a quest whose journal indices are out of band, whose prose trips
     // RI-DLG05 §D, or whose hooks point at an entry that does not exist stops the game booting
@@ -245,6 +256,25 @@ export class Engine {
     this._boundaryEnd('initial');
 
     this.setMode(opts.mode || 'harness');
+
+    // ---- W1-26: the title surface (RI-JRN01 M20 / HF9) -------------------------------
+    // The surface is CONSTRUCTED in every mode — `getTitleState().present` is true whether
+    // or not it is up — and it is SHOWN in play mode, which is the mode M20 measures ("from
+    // a fresh browser profile with an existing save present in IndexedDB"). Under `harness`
+    // it starts down unless `?title=1`, because thirty-odd probes in `tools/` boot the game
+    // and immediately drive the world, and a surface that ate their first frame would be a
+    // measurement change dressed as a feature. `titleShow()` raises it in any mode, so the
+    // check is runnable under automation without a mode nobody plays.
+    const wantTitle = opts.title === true
+      || (typeof location !== 'undefined' && new URLSearchParams(location.search).get('title') === '1');
+    try {
+      this.renderer.title.setSaves(await this.store.listSlots());
+    } catch { /* a browser with no IndexedDB still gets a title, with Continue disabled */ }
+    this.renderer.title.inSession = false;
+    if ((opts.mode || 'harness') === 'play' || wantTitle) {
+      this.renderer.title.show({ frame: this.sim.frame });
+    }
+
     // The gamepad is polled from the animation frame, not from the fixed step: a pad's state
     // is a device reading and belongs on the same side of the seam a keydown is on.
     this.loop.beforeTick = () => { if (this.real && this.real.attached) this.real.pollGamepad(); };
@@ -1095,6 +1125,86 @@ export class Engine {
 
   getConversationState() { return this.conversation.state(); }
 
+  // ---- the writ you carry (RI-JRN01 O10 / M8) ---------------------------------------------
+
+  _hasWrit() { return this.sim.inventory.some((i) => i.id === 'stamped-writ'); }
+
+  /**
+   * Open the reed-case and read it. The document is longer than the panel, so it SCROLLS
+   * rather than being clipped — a written record the player cannot reach the bottom of would
+   * be the same orphan-text failure with a scrollbar.
+   */
+  openWrit() {
+    if (!this._hasWrit()) return { open: false, refused: 'not_carried' };
+    const text = this.sim.character && this.sim.character.writ_text ? this.sim.character.writ_text : '';
+    const lines = String(text).split('\n');
+    if (!lines.length) return { open: false, refused: 'no_text' };
+    this.writReader = { open: true, lines, top: 0 };
+    const ev = this.bus.emit(this.sim.frame, 'item');
+    ev.item = 'stamped-writ'; ev.how = 'opened';
+    this._writSync();
+    return this.getWritReaderState();
+  }
+
+  closeWrit() {
+    this.writReader = { open: false, lines: [], top: 0 };
+    this._writSync();
+    return { open: false };
+  }
+
+  getWritReaderState() {
+    const w = this.writReader;
+    if (!w.open) return { open: false };
+    return { open: true, lines: w.lines.slice(), top: w.top, window: WRIT_WINDOW, total: w.lines.length };
+  }
+
+  _writSync() {
+    if (!this.renderer) return null;
+    const w = this.writReader;
+    if (!w.open) {
+      if ((!this.censusSurface || !this.censusSurface.open) && !this.conversation.open) this.renderer.ui.setModel(null);
+      return null;
+    }
+    const shown = w.lines.slice(w.top, w.top + WRIT_WINDOW);
+    const more = w.lines.length > w.top + WRIT_WINDOW;
+    const model = {
+      node: 'writ:read',
+      speaker_name: 'REED-CASE WRIT, STAMPED',
+      speaker_title: null,
+      place_name: null,
+      spoken: [],
+      preamble: null,
+      // Drawn through the same `record` block the stamp node uses, so the document looks like
+      // the same document in both places.
+      record: { name: 'stamped-writ', lines: shown },
+      line: '',
+      aside: more || w.top > 0 ? `${w.top + 1}–${Math.min(w.lines.length, w.top + WRIT_WINDOW)} of ${w.lines.length}` : null,
+      input_kind: 'choice',
+      options: [{ id: 'close', text: 'Fold it away.' }],
+      selected: 0, picked: [], typed: '',
+    };
+    this.renderer.ui.setModel(model);
+    return model;
+  }
+
+  _writReaderStep(input) {
+    const w = this.writReader;
+    const y = input.moveY || 0;
+    const dir = y > 0.45 ? -1 : y < -0.45 ? 1 : 0;
+    if (dir !== this._writAxis) {
+      this._writAxis = dir;
+      if (dir) {
+        w.top = Math.max(0, Math.min(w.lines.length - 1, w.top + dir));
+        this._writSync();
+      }
+    }
+    if (input.pressedName('block') || input.pressedName('interact') || input.pressedName('use_item')) {
+      this._writPending = false;
+      this.closeWrit();
+    }
+    input.consumeUI(CENSUS_ACTIONS);
+  }
+
   _conversationSync() {
     if (!this.renderer) return null;
     if (!this.conversation.open) {
@@ -1127,6 +1237,14 @@ export class Engine {
   /** Rebuild the drawn surface from the census's current node. Never inside the fixed step. */
   _censusSync() {
     const st = this.census.state();
+    // W1-26 / RI-JRN01 M4 clause 1: the RIGHT end of O6's interval. The first moment the
+    // scene puts a node that writes a character field in front of the player and takes input
+    // for it. `sets` is the census graph's own word for "this node writes a field", so the
+    // stamp cannot drift from the graph.
+    if (this._firstFieldFrame == null && st && !st.done && st.input && !st.paused) {
+      const node = this.census.node();
+      if (node && node.sets) { this._firstFieldFrame = this.sim.frame; this._firstFieldNode = node.id; }
+    }
     this.censusSurface.sync(st, this.census);
     const rec = st.speaker ? this._npcRecord(st.speaker) : null;
     const model = buildCensusModel(this.chData, st, this.censusSurface, rec);
@@ -1145,6 +1263,16 @@ export class Engine {
    * frame's events.
    */
   _censusStep(input) {
+    // W1-26: the title surface has the buttons before anything else does, on exactly the
+    // terms the census has them — the same latched input, the same closed action set, the
+    // same "commit is queued out of the fixed step" rule (activating `continue` opens a
+    // load boundary, and a load boundary may not happen under the armed guard).
+    if (this.renderer && this.renderer.title && this.renderer.title.shown) {
+      const t = this.renderer.title.step(input);
+      input.consumeUI(CENSUS_ACTIONS);
+      if (t && t.activated) this._titlePending = t;
+      return;
+    }
     // A conversation with somebody who is not the Warden-Scribe has the buttons while it is
     // open, on exactly the terms the census does.
     if (this.conversation && this.conversation.open) { this._conversationStep(input); return; }
@@ -1163,6 +1291,14 @@ export class Engine {
           ev.surface = 'barge-hold'; ev.to = 'writ-house'; ev.by = 'walked';
         }
       }
+      // The writ you are carrying, opened with the verb that opens carried things. RI-JRN01
+      // M8 (amended): "the object is openable through the same input path a player has, and
+      // its rendered-text set at the open node is non-empty and contains the answers" — a
+      // hard fail if it is "present only as an API return value", which is what `readWrit()`
+      // alone was. No new action: HARNESS.md §4's set is closed and `use_item` already means
+      // this.
+      if (this.writReader.open) { this._writReaderStep(input); return; }
+      if (input.pressedName('use_item') && this._hasWrit()) { this._writPending = true; input.consumeUI(CENSUS_ACTIONS); return; }
       if (!this._propPending && !this._talkPending && input.pressedName('interact')) {
         const p = this.sim.player;
         let best = null, bestD = Infinity;
@@ -1303,6 +1439,143 @@ export class Engine {
       routes_offered: this.chData.writHouse.nodes.find((n) => n.id === 'writ.class-routes').input.options.map((o) => o.id),
       full_screen_panels: 0,
     };
+  }
+
+  /**
+   * `first_input` and `first_control` — W1-26.
+   *
+   * Both event types have been in the closed A-JRN7 vocabulary (`sim/events.js`) since it was
+   * written and **were emitted by nothing**. `BAR-CRITIQUE-W1-07-R1` §R1 is precise about the
+   * cost: `RI-JRN01` M4's headline threshold — O6's *"≥ 60 s of available play before the
+   * first character-defining question"*, the item's own best idea and the one bar that
+   * measures Morrowind's actual trick — *"is the interval between `first_control` and the
+   * first field-writing `dialogue_open`, and **neither event exists**"*. So M4 clause 1 stayed
+   * blocked and nobody has ever measured it. These two lines are that interval's left end.
+   *
+   * `first_input` is the first step in which any input at all was latched. `first_control` is
+   * the first step in which an input MOVED THE BODY — the item's words, and the reason the
+   * check is not satisfied by a menu that accepts a keypress. Both are one-shot and both
+   * carry the frame, so the interval is a subtraction over the trace.
+   */
+  _journeyStamps() {
+    const inp = this.input;
+    if (!inp) return;
+    const active = !!(inp.held || inp.pressed || inp.moveX || inp.moveY || inp.lookX || inp.lookY);
+    if (this._firstInputFrame == null && active) {
+      this._firstInputFrame = this.sim.frame;
+      const ev = this.bus.emit(this.sim.frame, 'first_input');
+      ev.device = this.real ? this.real.activeDevice : 'scripted';
+    }
+    if (this._firstControlFrame == null) {
+      const p = this.sim.player;
+      const prev = this._journeyPrevPose;
+      if (prev && active) {
+        const moved = Math.abs(p.pos[0] - prev[0]) > 1e-6 || Math.abs(p.pos[1] - prev[1]) > 1e-6
+          || Math.abs(p.pos[2] - prev[2]) > 1e-6 || Math.abs(p.yaw - prev[3]) > 1e-6;
+        if (moved) {
+          this._firstControlFrame = this.sim.frame;
+          const ev = this.bus.emit(this.sim.frame, 'first_control');
+          ev.device = this.real ? this.real.activeDevice : 'scripted';
+          ev.moved_m = +Math.hypot(p.pos[0] - prev[0], p.pos[2] - prev[2]).toFixed(4);
+        }
+      }
+      this._journeyPrevPose = [p.pos[0], p.pos[1], p.pos[2], p.yaw];
+    }
+  }
+
+  /** The two stamps, for a tool that would rather subtract than scan a trace. */
+  getJourneyStamps() {
+    return {
+      first_input_frame: this._firstInputFrame == null ? null : this._firstInputFrame,
+      first_control_frame: this._firstControlFrame == null ? null : this._firstControlFrame,
+      first_field_frame: this._firstFieldFrame == null ? null : this._firstFieldFrame,
+      first_field_node: this._firstFieldNode || null,
+      // O6 is stated in "available play seconds", and the fixed step is 60 Hz by contract.
+      available_play_s_before_first_field: (this._firstControlFrame == null || this._firstFieldFrame == null)
+        ? null : +((this._firstFieldFrame - this._firstControlFrame) / 60).toFixed(2),
+      fixed_step_hz: 60,
+      frame: this.sim.frame,
+    };
+  }
+
+  // ---- W1-26: the title surface (RI-JRN01 O1-O4, O18, M20, HF9) -----------------------
+
+  /** Raise the title. Refreshes the save list first, so `Continue` is never a stale claim. */
+  async titleShow() {
+    const t = this.renderer.title;
+    try { t.setSaves(await this.store.listSlots()); } catch { t.setSaves([]); }
+    t.inSession = !!(this.sim.character || this.censusPlace);
+    return t.show({ frame: this.sim.frame });
+  }
+
+  titleDismiss(by) { return this.renderer.title.dismiss(by || 'harness'); }
+
+  /** What M20 reads: the surface, its exact option set, what is focused, what a save says. */
+  getTitleState() {
+    const t = this.renderer && this.renderer.title;
+    if (!t) return { present: false, shown: false, options: [], option_ids: [] };
+    return t.state();
+  }
+
+  /**
+   * Act on a title row. Public because M20 has to be able to assert that `Continue` LOADS
+   * THE SAVE, and asserting that through the same entry point the player's `interact`
+   * reaches is the only version of the check that means anything.
+   *
+   * Returns a promise for the rows that touch storage, and a plain value for the rest.
+   */
+  titleActivate(id) {
+    const t = this.renderer.title;
+    const rows = t.options();
+    const row = rows.find((r) => r.id === id);
+    if (!row) throw new Error(`title: no row '${id}'. The surface offers: ${rows.map((r) => r.id).join(', ')}`);
+    if (!row.enabled) return { id, refused: 'not available', reason: id === 'continue' || id === 'load' ? 'no save exists' : 'no session to leave' };
+    return this._titleApply({ activated: id, value: null });
+  }
+
+  _titleApply(t) {
+    const title = this.renderer.title;
+    const id = t.activated;
+    if (id === 'look-sensitivity') {
+      // The one setting that is applied to something real. RI-CAM02 §A's constants are the
+      // 1.00x row; the scale multiplies them and nothing else changes.
+      const scale = t.value || 1;
+      this.real.lookSensitivity = 0.120 * scale;
+      this.real.lookSensitivityY = 0.100 * scale;
+      return { id, look_sensitivity: this.real.lookSensitivity, look_sensitivity_y: this.real.lookSensitivityY };
+    }
+    if (id === 'new') {
+      title.dismiss('new');
+      title.inSession = true;
+      // O6's walk starts here: the hold of the barge, a body you control, and somebody on
+      // the other bench who wants your hatch-name. Nothing is explained.
+      const st = this.censusBegin({});
+      const ev = this.bus.emit(this.sim.frame, 'surface_exit');
+      ev.surface = 'title'; ev.to = 'barge-hold'; ev.by = 'new';
+      return { id, began: true, node: st.node };
+    }
+    if (id === 'quit-to-menu') {
+      title.inSession = false;
+      this.titleShow();
+      return { id, returned: true };
+    }
+    if (id === 'continue' || id.startsWith('slot:')) {
+      const slot = id === 'continue'
+        ? (title.saves.length ? title.saves[0].slot : null)
+        : id.slice('slot:'.length);
+      if (!slot) return { id, refused: 'no save exists' };
+      title.dismiss(id === 'continue' ? 'continue' : 'load');
+      title.inSession = true;
+      const ev = this.bus.emit(this.sim.frame, 'surface_exit');
+      ev.surface = 'title'; ev.to = 'world'; ev.by = id === 'continue' ? 'continue' : 'load';
+      // `readSave` is async because IndexedDB is. The promise is returned AND parked, so a
+      // player's button press and a critic's `titleActivate('continue')` take the same path
+      // and a probe can await the one it started.
+      const p = this.readSave(slot).then((r) => ({ id, slot, loaded: true, ...r }));
+      this._titleLoad = p;
+      return p;
+    }
+    return { id, handled: false };
   }
 
   /** What is drawn over the world right now, measured from the layout that drew it. */
@@ -1623,8 +1896,10 @@ export class Engine {
    */
   _afterStep() {
     if (this.firstControlAt === null && this.sim.frame > 0) this.firstControlAt = wallNow();
+    this._journeyStamps();
     // A census commit latched inside the step is applied here — outside the armed guard, and
     // strictly before the frame record, so its `creation_field` event is in this frame.
+    if (this._titlePending) { const t = this._titlePending; this._titlePending = null; this._titleApply(t); }
     if (this._censusPending) this._censusApplyPending();
     // An earned attribute point changed the sheet; the pools it feeds are re-derived once,
     // here, rather than every frame.
@@ -1632,6 +1907,7 @@ export class Engine {
     if (this._propPending) this._takePropPending();
     if (this._talkPending) { const w = this._talkPending; this._talkPending = null; try { this.talkTo(w); } catch { /* they walked off */ } }
     if (this._convPending) { const t = this._convPending; this._convPending = null; try { this.conversationSay(t); } catch { /* nothing to say */ } }
+    if (this._writPending) { this._writPending = false; this.openWrit(); }
     if (this._censusEnterPending) { this._censusEnterPending = false; this.censusEnter(); }
     if (this.sim.captureRequest) this._resolveCapture();
     this._travelTick();
@@ -3966,6 +4242,8 @@ async function loadData(onBytes) {
     else if (entry.path.startsWith('world/property/')) { out.property = out.property || {}; out.property[doc.settlement] = doc; }
     else if (entry.path === 'world/hazards.json') out.hazards = doc;
     else if (entry.path === 'world/landmask.json') out.landmask = doc;
+    else if (entry.path === 'input/profiles.json') out.inputProfiles = doc;
+    else if (entry.path === 'input/pad-quirks.json') out.padQuirks = doc;
     else if (entry.path === 'camera/cells.json') out.cameraCells = doc;
     else if (entry.path === 'camera/rig.json') out.cameraRig = doc;
     else if (entry.path === 'camera/targets.json') out.cameraTargets = doc;

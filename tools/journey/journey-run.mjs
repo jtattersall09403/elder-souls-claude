@@ -873,13 +873,23 @@ async function selfTest() {
     //    it is returning something other than what was drawn and every later grep is void.
     const pre = await sampleUIText(handle);
     ok('accessor empty before any surface', pre.text.length === 0,
-      `pre-surface text array has ${pre.text.length} entries, open=${pre.open}`);
+      `pre-surface text array has ${pre.text.length} entries via ${pre.accessor}, open=${pre.open}`);
 
-    // 2. And NON-EMPTY once a surface is open — the demonstration RI-JRN01 M9 demands.
-    const began = await handle.hOpt('censusBegin', {});
-    const post = await sampleUIText(handle);
-    ok('accessor non-empty on a frame known to carry text', !!began && post.text.length > 0,
-      `censusBegin -> ${post.text.length} strings, first: ${JSON.stringify(post.text[0] || null)}`);
+    // 2. THE REAL-INPUT CHECK GOES FIRST, before any surface is opened. A dialogue surface
+    //    legitimately blocks locomotion, so testing movement with the census open would
+    //    measure the surface, not the input path. (This ordering bug was in the first version
+    //    of this self-test and the self-test caught it — which is the argument for having one.)
+    const b0 = await handle.hOpt('snapshot');
+    await handle.page.keyboard.down('w');
+    await handle.h('stepFrames', 60);
+    await handle.page.keyboard.up('w');
+    const b1 = await handle.hOpt('snapshot');
+    const moved = (b0 && b1 && b0.player && b1.player && b0.player.pos && b1.player.pos)
+      ? Math.abs(b1.player.pos[0] - b0.player.pos[0]) + Math.abs(b1.player.pos[2] - b0.player.pos[2]) : 0;
+    ok('real keyboard input reaches the world (entity-side)', moved > 1e-3,
+      `player moved ${moved.toFixed(4)} m under a real page.keyboard 'w' with no surface open. ` +
+      (moved > 1e-3 ? '' : 'At 0, the real input path is detached: journey-run reports ' +
+        'control_observed unmeasurable rather than asserting first_control.'));
 
     // 3. The null control for input: with NO input dispatched, the player must not move.
     const a0 = await handle.hOpt('snapshot');
@@ -890,33 +900,36 @@ async function selfTest() {
     ok('null control: no input, no movement', drift !== null && drift < 1e-3,
       `player drifted ${drift} over 60 uncommanded frames`);
 
-    // 4. A blinded accessor must be reported unmeasurable, never pass. This is the exact
-    //    failure RI-JRN01 §0.1(a) names: a grep over an empty set returns 0 hits and reads clean.
+    // 4. And the accessor must be NON-EMPTY once a surface is open — the demonstration
+    //    RI-JRN01 M9 demands before any grep result may be reported.
+    const began = await handle.hOpt('censusBegin', {});
+    const post = await sampleUIText(handle);
+    ok('accessor non-empty on a frame known to carry text', !!began && post.text.length > 0,
+      `censusBegin -> ${post.text.length} strings via ${post.accessor}, first: ${JSON.stringify(post.text[0] || null)}`);
+
+    // 5. A blinded accessor must be reported unmeasurable, never pass. This is the exact
+    //    failure RI-JRN01 §0.1(a) names: a grep over an empty set returns 0 hits and reads
+    //    clean. BOTH accessors are blinded — blinding only one proved nothing once the build
+    //    grew the second, which is how the first version of this test passed vacuously.
     await handle.page.evaluate(() => {
       const H = window.__HARNESS;
-      const orig = H.getUIState.bind(H);
-      window.__ORIG_GETUISTATE = orig;
-      H.getUIState = () => ({ ...orig(), text: [], text_chars: 0 });
+      window.__ORIG_ACCESSORS = {};
+      for (const m of ['getUIState', 'getRenderedText']) {
+        if (typeof H[m] !== 'function') continue;
+        const orig = H[m].bind(H);
+        window.__ORIG_ACCESSORS[m] = orig;
+        H[m] = m === 'getUIState'
+          ? () => ({ ...orig(), text: [], text_chars: 0 })
+          : () => [];
+      }
     });
     const blinded = await sampleUIText(handle);
-    ok('blinded accessor is detected as empty', blinded.text.length === 0,
-      `with getUIState().text forced to [], the sampler reports ${blinded.text.length} strings — ` +
-      `journey-run reports this as unmeasurable, never as "0 instruction hits"`);
-    await handle.page.evaluate(() => { window.__HARNESS.getUIState = window.__ORIG_GETUISTATE; });
-
-    // 5. Real input must actually reach the build. Dispatch through the browser and require
-    //    an entity-side change; if none, the real path is detached and M2 is not claimable.
-    const b0 = await handle.hOpt('snapshot');
-    await handle.page.keyboard.down('w');
-    await handle.h('stepFrames', 60);
-    await handle.page.keyboard.up('w');
-    const b1 = await handle.hOpt('snapshot');
-    const moved = (b0 && b1 && b0.player && b1.player && b0.player.pos && b1.player.pos)
-      ? Math.abs(b1.player.pos[0] - b0.player.pos[0]) + Math.abs(b1.player.pos[2] - b0.player.pos[2]) : 0;
-    ok('real keyboard input reaches the world (entity-side)', moved > 1e-3,
-      `player moved ${moved.toFixed(4)} m under a real page.keyboard 'w'. ` +
-      (moved > 1e-3 ? '' : 'If 0, the real input path is detached and M2/M4 are NOT claimable — ' +
-        'journey-run reports control_observed unmeasurable rather than asserting first_control.'));
+    ok('blinded accessor is detected as empty (both accessors)', blinded.text.length === 0,
+      `with every rendered-text accessor forced empty, the sampler reports ${blinded.text.length} strings ` +
+      `via ${blinded.accessor} — journey-run reports this as unmeasurable, never as "0 instruction hits"`);
+    await handle.page.evaluate(() => {
+      for (const [m, fn] of Object.entries(window.__ORIG_ACCESSORS || {})) window.__HARNESS[m] = fn;
+    });
   } finally { await handle.close(); }
 
   for (const l of lines) process.stdout.write(l + '\n');

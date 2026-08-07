@@ -127,6 +127,27 @@ function ctxFrames(base, m) {
   };
 }
 
+/**
+ * RI-CMB02 §C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 §R1): the chain rows are DEFAULTS and a
+ * class may declare its own hit-2 / hit-3 **startup and recovery** multipliers within ±0.20.
+ *
+ * *"The two chain rows above were class-uniform, and that made every combo in the game share one
+ * rhythm envelope by corpus construction … at the level of rhythm this table guaranteed that no
+ * weapon owned its combo."* Active, stamina, motion value and poise stay on the shared rows, so
+ * this is a tempo axis and not a balance lever — `chainOf` therefore takes ONLY `startup` and
+ * `recovery` from the class and always takes `mv` from the shared row.
+ */
+function chainOf(cls, key) {
+  const base = CHAINM[key];
+  const o = cls && cls.chain && cls.chain[key];
+  if (!o) return base;
+  return {
+    startup: o.startup !== undefined ? o.startup : base.startup,
+    recovery: o.recovery !== undefined ? o.recovery : base.recovery,
+    mv: base.mv,
+  };
+}
+
 /** Apply an RI-CMB02 §C chain multiplier row. Active is unchanged down a chain. */
 function chainFrames(base, m) {
   return { s: Math.max(CTX.startup_floor_f, rhu(base.s * m.startup)), a: base.a, r: rhu(base.r * m.recovery) };
@@ -260,11 +281,19 @@ function slotSpecsFor(code, maxChainForClass) {
   const slotsToBuild = Math.min(5, Math.max(3, maxChainForClass === undefined ? chainLen : maxChainForClass));
   for (let i = 1; i <= slotsToBuild; i++) {
     const fam = g.r1[Math.min(i - 1, g.r1.length - 1)];
-    const f = i === 1 ? B.r1 : chainFrames(B.r1, CHAINM[chainKeys[i - 2]]);
-    const mvm = i === 1 ? 1 : CHAINM[chainKeys[i - 2]].mv;
+    const f = i === 1 ? B.r1 : chainFrames(B.r1, chainOf(c, chainKeys[i - 2]));
+    const mvm = i === 1 ? 1 : chainOf(c, chainKeys[i - 2]).mv;
+    // RI-CMB02 M4b measures the ratio between one LINK and the next, to +-0 frames, on the
+    // weapon that ships. The per-weapon frame scale `fk` is applied at emission, so computing
+    // the chain here from the CLASS base and scaling afterwards double-rounds:
+    // round(round(s1 x m) x fk) != round(round(s1 x fk) x m), and the roster measured 6-14
+    // links per class off by one or two frames from its own declared pair. Carrying the
+    // UNCHAINED base and the multiplier row forward lets the emitter scale FIRST and chain
+    // SECOND, which is the order the ratio is defined in.
+    const chainKey = i === 1 ? null : chainKeys[i - 2];
     const next = i < chainLen ? `r1.${i + 1}` : null;
     put(`r1.${i}`, {
-      fam, f, shape: POSES.families[fam].shape, mv: c.mv_r1 * mvm,
+      fam, f, fbase: B.r1, chainKey, shape: POSES.families[fam].shape, mv: c.mv_r1 * mvm,
       stam: rhu(c.stamina_r1 * (1 + 0.08 * (i - 1))), poise: rhu(c.poise_dmg_r1 * (i === 3 ? 1.15 : i === 1 ? 1 : 0.95)),
       root: c.root_dz_r1, arc, chains: next, ci: i,
       trig: i === 1
@@ -286,7 +315,7 @@ function slotSpecsFor(code, maxChainForClass) {
     trig: { button: 'heavy', modifier: 'hold', state: 'IDLE' }, req: [], answers: ['TURTLE', 'POISE_MONSTER'],
   });
   put('r2.follow', {
-    fam: g.follow, f: chainFrames(B.r2, CHAINM.r1_2), shape: POSES.families[g.follow].shape,
+    fam: g.follow, f: chainFrames(B.r2, chainOf(c, 'r1_2')), shape: POSES.families[g.follow].shape,
     mv: c.mv_r1 * 1.40, stam: rhu(c.stamina_r1 * 1.5), poise: rhu(c.poise_dmg_r1 * 1.60),
     root: c.root_dz_r1 * 1.3, arc, chains: null, ci: 2,
     trig: { button: 'heavy', modifier: 'none', state: 'ATTACK_RECOVERY' }, req: [], answers: ['INFANTRY', 'ELITE'],
@@ -382,7 +411,7 @@ function slotSpecsFor(code, maxChainForClass) {
     for (let k = 0; k < 3; k++) {
       const id = k < 2 ? `off.r1.${k + 1}` : 'off.r2';
       const famName = offFams[k];
-      const f = k === 2 ? chainFrames(B.r2, CHAINM.r1_2) : chainFrames(B.r1, CHAINM[k === 0 ? 'r1_2' : 'r1_3']);
+      const f = k === 2 ? chainFrames(B.r2, chainOf(c, 'r1_2')) : chainFrames(B.r1, chainOf(c, k === 0 ? 'r1_2' : 'r1_3'));
       put(id, {
         fam: famName, f, shape: POSES.families[famName].shape, mv: c.mv_r1 * (k === 2 ? 1.25 : 0.85),
         stam: rhu(c.stamina_r1 * 0.9), poise: rhu(c.poise_dmg_r1 * 0.85), root: c.root_dz_r1 * 0.8,
@@ -619,12 +648,26 @@ for (const w of ROSTER.weapons) {
 
     const fdelta = (d.f || 0);
     const applyF = true;
-    const fk = applyF && fdelta ? (spec.f.s + fdelta) / spec.f.s : 1;
-    const f = {
-      s: clamp(Math.round(spec.f.s * fk), 6, 180),
-      a: clamp(spec.f.a, 2, 32),
-      r: clamp(Math.round(spec.f.r * fk), 6, 180),
-    };
+    // `fk` is the weapon's per-weapon frame scale and it must be the SAME on every link of a
+    // chain, or the ratio between links is not the class's declared pair. Derived from `spec.f.s`
+    // it was not: `spec.f.s` is the already-CHAINED startup for links 2 and 3, so a weapon whose
+    // `d.f` was +2 frames got a different scale on every link and RI-CMB02 M4b's ±0-frame
+    // comparison failed on 100 of 261 links across the roster. Take it from the UNCHAINED base.
+    const fkBase = spec.fbase ? spec.fbase.s : spec.f.s;
+    const fk = applyF && fdelta ? (fkBase + fdelta) / fkBase : 1;
+    // Scale FIRST, chain SECOND — see the note at the r1 chain spec above (RI-CMB02 M4b).
+    let f;
+    if (spec.chainKey && spec.fbase) {
+      const wb = { s: clamp(Math.round(spec.fbase.s * fk), 6, 180), a: spec.fbase.a, r: clamp(Math.round(spec.fbase.r * fk), 6, 180) };
+      const cf = chainFrames(wb, chainOf(c, spec.chainKey));
+      f = { s: clamp(cf.s, 6, 180), a: clamp(spec.f.a, 2, 32), r: clamp(cf.r, 6, 180) };
+    } else {
+      f = {
+        s: clamp(Math.round(spec.f.s * fk), 6, 180),
+        a: clamp(spec.f.a, 2, 32),
+        r: clamp(Math.round(spec.f.r * fk), 6, 180),
+      };
+    }
     const rootM = clamp(Math.round(((isR1 ? spec.root : spec.root * prof.root_scale) + (d.root || 0)) * 1000) / 1000, -2.0, 6.0);
     const baseHa = !!spec.ha || (g.ha_extra || []).includes(slotId);
     const ha = haFlip.has(slotId) ? !baseHa : baseHa;

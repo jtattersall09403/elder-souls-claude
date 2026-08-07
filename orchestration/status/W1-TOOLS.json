@@ -8,7 +8,13 @@
   ],
   "outputs_written": [
     "tools/lib/gamedata.mjs",
-    "tools/analysis/build-viability.mjs"
+    "tools/analysis/build-viability.mjs",
+    "tools/journey/gamepad-shim.mjs",
+    "tools/journey/journey-run.mjs",
+    "tools/journey/beat-extract.mjs",
+    "corpus/88-journeys/data/mw-open-beats.json",
+    "tools/journey/cadence.mjs",
+    "tools/journey/competence.mjs"
   ],
   "findings": [
     "Baseline: node tools/corpus-index.mjs reports 67 phantom tools (C8), 0 errors.",
@@ -18,8 +24,15 @@
     "DATA DEFECT: progression/levels.json stops at level 5 (declared wave-1 skeleton) so there is no shipped level->attribute curve for the level-55 projection. Model parameters declared in report.model.",
     "DATA DEFECT: progression/factions.json holds 2 factions (house-dres, shadowscale-order) which appear NOWHERE in quests/faction-gates.json's 9 ladders. The two files disagree about which factions exist.",
     "game/src/sim/quest/gate.js exports FactionGates, canOffer, canResolve - the shipping gate predicates. Any tool asking about gates should import these, not reimplement.",
-    "Harness surface is 264 methods. Includes gamepad, gamepadPoll, getUIState, setUIVisible, getPerfStats, stallMainThread, getStorageInfo, listSaveSlots, screenshot, getCaptureState, streamAround, advanceWallClock - the journey/platform/ui tools have real seams."
+    "Harness surface is 264 methods. Includes gamepad, gamepadPoll, getUIState, setUIVisible, getPerfStats, stallMainThread, getStorageInfo, listSaveSlots, screenshot, getCaptureState, streamAround, advanceWallClock - the journey/platform/ui tools have real seams.",
+    "C8 count 67 -> 61 after the journey block.",
+    "gamepad-shim.mjs self-test 5/5 incl. null control. KEY FINDING for RI-JRN04: the shim installs above navigator.getGamepads() and works (mapping:'' preserved, hot-plug fires both events). journey-run's jrn04 leg reports getgamepads_calls: if the BUILD never calls navigator.getGamepads(), its pad path starts below that seam and the descriptor leg is not passable - a build defect, not a tool gap.",
+    "beat-extract.mjs self-test 6/6 incl. leak-detector falsification. Reference side committed ONCE at corpus/88-journeys/data/mw-open-beats.json (MW/OPEN rows 3-12 in the same 4-field form as our side) per RI-MTH06 §C. beat-extract refuses to write that file.",
+    "cadence.mjs self-test 5/5. Falsifications: 300s dead gap turns C1 red; pure locomotion is NOT counted as activity (an hour walking in a circle must not read as engaged); empty trace is unmeasurable not a pass.",
+    "competence.mjs self-test 5/5. Falsifications: K7 VOIDS an improvement measured against a weaker late enemy; a build declaring enemy DECISION-MAKING absent cannot claim a competence curve at all (K6's punish window does not exist against a scripted enemy).",
+    "BLOCKER (transient, another agent): game/src/render/renderer.js imports ./title.js which does not exist yet -> the game does not boot. W1-26 is mid-write on render/text-register.js + title.js. journey-run --self-test cannot complete until that lands. RETRY IT.",
+    "W1-26 is adding __HARNESS.getRenderedText() (render/text-register.js): fillText-level and CLIP-AWARE. journey-run.mjs already prefers it over getUIState().text and names which accessor it used + how strong it is."
   ],
-  "next_step": "tools/journey/journey-run.mjs (+beat-extract, gamepad-shim, cadence, competence) - unblocks all 9 RI-JRN items",
+  "next_step": "RETRY journey-run --self-test once game/src/render/title.js lands. Then tools/experience/* (~20 tools, RI-EXP01 has NEVER been run).",
   "notes_for_successor": "build-viability is complete and self-testing. Do not rewrite it. Its --fixture keys (tier5_damage_multiplier, tier5_hp_multiplier, player_damage_multiplier, quest_disposition_floor, impossible_resolution_gate, faction_rank5_attribute_floor) are the falsification harness; keep them all."
 }

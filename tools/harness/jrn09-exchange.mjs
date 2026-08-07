@@ -112,7 +112,7 @@ function answerFor(model, pattern, qi) {
  * RI-JRN01 O6's hand-back, where the player walks out of the hold and into the Writ House, and
  * it is crossed with `censusEnter()` rather than an answer.
  */
-async function walk(h, { state = 'barge-hold', pattern = () => 0, begin = {}, steer = {} } = {}) {
+async function walk(h, { state = 'barge-hold', pattern = () => 0, begin = {}, steer = {}, light = false } = {}) {
   await h.h('loadState', state);
   await h.h('censusBegin', begin);
   const nodes = []; let qi = 0; let guard = 0; let entered = false;
@@ -121,8 +121,11 @@ async function walk(h, { state = 'barge-hold', pattern = () => 0, begin = {}, st
     const drawnRows = (st.surface && st.surface.rendered_text) || [];
     const blob = norm(drawnRows.join('  '));
     // COMPUTED comes from the model; DRAWN comes from the surface the model was drawn onto.
-    const model = (await h.h('getCensusModel')) || st;
-    const uniq = authoredAt(model);
+    // `light` skips the model round trip: M3 only needs the drawn rows and the final sheet, and
+    // at 240 completions x 19 nodes the extra evaluate is a third of the tool's whole runtime.
+    // A tool a critic will not wait for is a tool a critic will not run.
+    const model = light ? st : ((await h.h('getCensusModel')) || st);
+    const uniq = light ? [] : authoredAt(model);
     const hit = uniq.filter((x) => delivered(x.s, blob));
     const missed = uniq.filter((x) => !delivered(x.s, blob));
     const kind = st.input ? st.input.kind : null;
@@ -268,7 +271,7 @@ try {
   for (const race of races) for (const up of ups) for (let k = 0; k < perPair; k++) {
     const picks = [];
     const w = await walk(h, {
-      begin: { race },
+      begin: { race }, light: true,
       steer: { 'writ.upbringing': up, 'writ.class-routes': 'questionnaire' },
       pattern: () => { const j = Math.floor(rnd() * 4); picks.push(j); return j; },
     });

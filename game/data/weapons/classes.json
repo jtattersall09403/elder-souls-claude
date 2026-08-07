@@ -35,7 +35,18 @@
    "problem": "Can you get behind it?",
    "haft_damage_mult": 0.7,
    "peak_tip_speed_mps": 14.0,
-   "_peak_tip_speed_source": "RI-CMB04 \u00a7B, verbatim"
+   "_peak_tip_speed_source": "RI-CMB04 \u00a7B, verbatim",
+   "chain": {
+    "r1_2": {
+     "startup": 0.68,
+     "recovery": 1.0
+    },
+    "r1_3": {
+     "startup": 0.72,
+     "recovery": 1.2
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
   },
   "FST": {
    "name": "Fist / claw",
@@ -66,7 +77,18 @@
    "problem": "Can you live at zero range?",
    "haft_damage_mult": 0.9,
    "peak_tip_speed_mps": 13.0,
-   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only"
+   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only",
+   "chain": {
+    "r1_2": {
+     "startup": 0.9,
+     "recovery": 0.95
+    },
+    "r1_3": {
+     "startup": 0.9,
+     "recovery": 1.18
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
   },
   "CSW": {
    "name": "Curved sword",
@@ -97,7 +119,18 @@
    "problem": "Can you fight a crowd without a big weapon?",
    "haft_damage_mult": 0.6,
    "peak_tip_speed_mps": 19.5,
-   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only"
+   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only",
+   "chain": {
+    "r1_2": {
+     "startup": 0.7,
+     "recovery": 1.0
+    },
+    "r1_3": {
+     "startup": 0.74,
+     "recovery": 1.22
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
   },
   "TSW": {
    "name": "Thrusting sword",
@@ -230,7 +263,18 @@
    "problem": "Can you trade once and win?",
    "haft_damage_mult": 0.3,
    "peak_tip_speed_mps": 17.0,
-   "_peak_tip_speed_source": "RI-CMB04 \u00a7B, verbatim"
+   "_peak_tip_speed_source": "RI-CMB04 \u00a7B, verbatim",
+   "chain": {
+    "r1_2": {
+     "startup": 0.72,
+     "recovery": 1.1
+    },
+    "r1_3": {
+     "startup": 0.65,
+     "recovery": 1.5
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
   },
   "MCE": {
    "name": "Mace",
@@ -298,7 +342,18 @@
    "problem": "Can you control a lane?",
    "haft_damage_mult": 0.35,
    "peak_tip_speed_mps": 22.0,
-   "_peak_tip_speed_source": "RI-CMB04 \u00a7B, verbatim"
+   "_peak_tip_speed_source": "RI-CMB04 \u00a7B, verbatim",
+   "chain": {
+    "r1_2": {
+     "startup": 0.85,
+     "recovery": 1.0
+    },
+    "r1_3": {
+     "startup": 0.9,
+     "recovery": 1.25
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
   },
   "WHP": {
    "name": "Whip",
@@ -329,7 +384,18 @@
    "problem": "Can you use a weapon with no defensive answer?",
    "haft_damage_mult": 0.45,
    "peak_tip_speed_mps": 24.0,
-   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only"
+   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only",
+   "chain": {
+    "r1_2": {
+     "startup": 0.62,
+     "recovery": 0.92
+    },
+    "r1_3": {
+     "startup": 0.6,
+     "recovery": 1.16
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
   },
   "GSW": {
    "name": "Greatsword",
@@ -431,7 +497,18 @@
    "problem": "Can you break something that will not break?",
    "haft_damage_mult": 0.25,
    "peak_tip_speed_mps": 22.0,
-   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only"
+   "_peak_tip_speed_source": "PROVISIONAL, constructed for this class by RI-CMB04 \u00a7B's own pattern; \u00a7B tabulates the seven-class spine only",
+   "chain": {
+    "r1_2": {
+     "startup": 0.9,
+     "recovery": 1.18
+    },
+    "r1_3": {
+     "startup": 0.95,
+     "recovery": 1.5
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
   },
   "UGS": {
    "name": "Ultra greatsword",
@@ -465,7 +542,18 @@
    "problem": "Can you be right once?",
    "haft_damage_mult": 0.5,
    "peak_tip_speed_mps": 26.0,
-   "_peak_tip_speed_source": "RI-CMB04 \u00a7B, verbatim"
+   "_peak_tip_speed_source": "RI-CMB04 \u00a7B, verbatim",
+   "chain": {
+    "r1_2": {
+     "startup": 0.92,
+     "recovery": 1.2
+    },
+    "r1_3": {
+     "startup": 0.98,
+     "recovery": 1.52
+    }
+   },
+   "_chain_source": "RI-CMB02 \u00a7C as AMENDED wave 1 (BAR-CRITIQUE-W1-09-R1 \u00a7R1): per-class hit-2/hit-3 startup and recovery multipliers, within \u00b10.20 of the \u00a7C default, active/stamina/motion-value/poise NOT overridable. Each pair is checked against this class's own base row for the per-link recovery/startup \u2265 1.40 rule."
   },
   "BOW": {
    "name": "Bow",
@@ -564,7 +652,7 @@
    "mv": 0.95
   },
   "r1_3": {
-   "startup": 0.9,
+   "startup": 0.78,
    "recovery": 1.35,
    "mv": 1.05
   },
@@ -577,7 +665,8 @@
    "startup": 0.7,
    "recovery": 1.4,
    "mv": 0.85
-  }
+  },
+  "_per_class_override": "RI-CMB02 \u00a7C AMENDED wave 1. These four rows are now DEFAULTS. A class may declare `chain.r1_2` / `chain.r1_3` startup and recovery multipliers within \u00b10.20 and must prove the realised per-link `recovery/startup` clears 1.40 on its OWN base row \u2014 the worst legal corner of the budget (startup \u00d70.98 with recovery \u00d70.85) is illegal. \u22656 of the 14 melee classes must deviate or chain tempo is a permission nobody used; 8 do. Verified and reported by tools/harness/cmb-chain.mjs."
  },
  "two_hand_multipliers": {
   "owner": "RI-CMB02 \u00a7C two-handed row. RI-WPN06 \u00a7B: these apply ONLY to slots that do not diverge; a diverging slot carries its own authored table.",

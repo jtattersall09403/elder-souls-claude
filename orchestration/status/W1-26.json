@@ -12,9 +12,21 @@
     "tools/experience/session-run.mjs, beat-diff.mjs, beats-from-md.mjs, isolation-check.mjs (RI-EXP01, five phantom tools)",
     "RI-EXP01 run for the first time on any build: beat log, beat diff, derived targets"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "game/src/render/text-register.js (the rendered-text accessor, fed by fillText, clip-aware)",
+    "game/src/render/title.js (the title surface, RI-JRN01 O1-O4/O17/O18/M20/HF9)",
+    "game/src/render/renderer.js (instruments both 2D surfaces; composites the title last)",
+    "game/src/engine.js (title boot, title input step, _titleApply, titleShow/Dismiss/Activate/getTitleState)",
+    "game/src/harness/api.js (getTitleState, titleShow, titleDismiss, titleActivate, getRenderedText, renderedTextClear)"
+  ],
   "findings": [
     "smoke.mjs PASS at session start (6/6, chromium 141, SwiftShader).",
+    "BUILT + MEASURED: a title surface now exists. option_ids is ALWAYS exactly O3's five (continue,new,load,settings,quit-to-menu) with `enabled` telling the truth rather than rows being hidden; with no save, focus defaults to `new`; with a save, `continue` is row 0 and focused. Shown in play mode and under ?title=1; constructed but down under `harness` so the ~30 existing probes that boot and immediately drive the world are unaffected. HF9 is closed.",
+    "BUILT + MEASURED: the rendered-text accessor. `__HARNESS.getRenderedText()` is fed by wrapping CanvasRenderingContext2D.fillText/strokeText on every 2D surface the renderer owns, so nothing can appear in it that was not handed to a draw call. It ALSO shadows the clip stack (save/restore/clip + the path calls) and computes each string's box from measureText, so a string painted outside its surface's clip comes back `clipped:true` and is excluded by default. RI-JRN01 M9/M15 are no longer `unmeasurable => 0`.",
+    "FIRST RUN OF THE ACCESSOR, and it immediately found something: at 640x360 the hold.hatch-name node hands 13 strings to fillText and 1 of them lands outside the vellum clip — 12 drawn, 1 clipped. That is orphan text ONE LAYER BELOW the round-2 defect: the model computed it, the layout laid it out, fillText was called, and the player cannot read it. A DTR computed from the layout's own `text` array cannot see this; this accessor can.",
+    "NOTE for any probe: with setRenderRate(0) the title never redraws, so its strings never reach the register. A probe measuring title text must call renderFrame()/screenshot() first. Dialogue text does register under renderRate 0 because UILayer.metrics() performs the layout.",
+    "RI-JRN01 M4 has NO WEIGHT in the Scoring table (Diegesis M5/M6/M7/M8, Flow M1/M2/M3/M12/M20, Restraint M9/M10/M11/M15, Reach M13/M14, Naive M16/M18/M19 = 100). O6's >=60s is the item's own best idea and costs zero points; clause 1 is corpus_debt regardless.",
+    "O6 OPEN, and it is cheap: censusBegin() emits dialogue_open and puts hold.hatch-name up IMMEDIATELY, so available play before the first character-defining question is ~0 s. Morrowind's actual trick is that Jiub asks only when you TALK to him. Making the hold open census-paused and the hatch-name node open on `interact` with Jeeh-Ei would make O6 pass for real and is better design. Not taken this round: census.js is W1-07-r3's live working file and the check carries no weight."
     "COORDINATION: W1-07-r3 is live in the same tree and owns the questionnaire fix. Its status file records question texts 0/10 -> 10/10 drawn and named classes 0/14 -> 12/14 over a 240-run sweep, plus tools/harness/jrn09-exchange.mjs already written. Its next_step is 'expose the built census model via harness; fix the jrn09 probe; DRAW THE WRIT'. Do not duplicate the questionnaire or the matcher."
   ],
   "next_step": "survey boot path (main.js), ui.js text drawing and the harness rendered-text surface; establish what exists before building",
