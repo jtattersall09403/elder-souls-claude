@@ -1591,8 +1591,15 @@ async function touchChecks(page, h, ev) {
 async function viewportChecks(page, h, ev) {
   const v = await ev(() => {
     const H = window.__HARNESS;
+    // PROBE HYGIENE, and it cost a false FAIL the first time this group ran after the touch
+    // group. `M-P21a` drives every drawer petal, one of which is `menu` — so the interface is
+    // left on a screen, and outside a fight a screen PAUSES THE SIMULATION (S14 / RI-UIX03 §A,
+    // working exactly as specified). `M-P18` then measured 0 sim frames across the chrome
+    // collapse and reported the pause as lost frames. `reset()` does not close a screen, so the
+    // screen is closed explicitly and the mode is asserted before anything is timed.
+    H.closeMenu();
     H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
-    const out = {};
+    const out = { mode_at_start: H.getUIState().mode, ui_pauses_at_start: H.getUIPauseReport().pauses_now };
     // M-P16 — portrait produces a rotate state that is an in-world illustration, and recovers.
     H.setViewport({ size: { w: 390, h: 844, dpr: 3 }, pointer: 'coarse', orientation: 'portrait', insets: { top: 47, right: 0, bottom: 34, left: 0 } });
     H.stepFrames(2);
@@ -1612,6 +1619,8 @@ async function viewportChecks(page, h, ev) {
     const cam1 = H.getCameraFrame().camera;
     out.chrome_collapse = {
       frames_advanced: H.getFrame() - f0,
+      mode: H.getUIState().mode,
+      ui_pauses_now: H.getUIPauseReport().pauses_now,
       camera_delta: { yaw: Number((cam1.yaw_deg - cam0.yaw_deg).toFixed(6)), pitch: Number((cam1.pitch_deg - cam0.pitch_deg).toFixed(6)) },
       resizes: H.getViewport().resizes,
     };
@@ -1672,16 +1681,23 @@ async function viewportChecks(page, h, ev) {
 async function mp14(page, h, ev) {
   const r = await ev(() => {
     const H = window.__HARNESS;
-    H.reset({ state: 'npc_showcase' }); H.setMode('play-instrumented'); H.setRenderRate(0);
-    H.setViewport({ pointer: 'coarse', size: { w: 844, h: 390, dpr: 2 }, orientation: 'landscape', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
-    H.stepFrames(2);
-    // Stand on something interactable so a prompt exists to carry a glyph.
-    const target = H.listEntities().find((e) => e.kind === 'npc' || e.kind === 'object');
-    if (!target) return { no_interactable: true };
-    H.teleport(target.pos[0] + 0.6, target.pos[2] + 0.6);
-    H.stepFrames(2);
+    // A prompt has to EXIST before its affordance can be checked, and not every shipped state
+    // has an interactable within reach. The states are swept until one does; `barge-hold` is
+    // the opening's own room and always has three.
     const promptOf = () => (H.getUIState().elements || []).find((e) => e.id === 'hud.prompt') || null;
-    if (!promptOf()) return { no_prompt: true, target: target.eid };
+    let target = null, state = null;
+    for (const st of ['barge-hold', 'helstrom-market', 'settlement_primary_street', 'npc_showcase']) {
+      H.reset({ state: st }); H.setMode('play-instrumented'); H.setRenderRate(0);
+      H.setViewport({ pointer: 'coarse', size: { w: 844, h: 390, dpr: 2 }, orientation: 'landscape', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
+      H.stepFrames(2);
+      for (const e of H.listEntities().filter((x) => x.kind === 'npc' || x.kind === 'object').slice(0, 5)) {
+        H.teleport(e.pos[0] + 0.5, e.pos[2] + 0.5);
+        H.stepFrames(2);
+        if (promptOf()) { target = e; state = st; break; }
+      }
+      if (target) break;
+    }
+    if (!target) return { no_prompt: true };
 
     const legs = [];
     const drive = (name, fn) => {
@@ -1711,7 +1727,7 @@ async function mp14(page, h, ev) {
       window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyE', bubbles: true, cancelable: true }));
       window.dispatchEvent(new KeyboardEvent('keyup', { code: 'KeyE', bubbles: true }));
     });
-    return { legs, target: target.eid };
+    return { legs, target: target.eid, state };
   });
 
   if (r.no_interactable || r.no_prompt) {
@@ -1725,8 +1741,15 @@ async function mp14(page, h, ev) {
   const distinctGlyphs = new Set(r.legs.map((l) => l.glyph));
 
   // The DRAWN half: pin the sim and hash the frame under each device.
-  const drawn = await ev(() => {
+  const drawn = await ev((state) => {
     const H = window.__HARNESS;
+    H.reset({ state }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.setViewport({ pointer: 'coarse', size: { w: 844, h: 390, dpr: 2 }, orientation: 'landscape', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
+    H.stepFrames(2);
+    for (const e of H.listEntities().filter((x) => x.kind === 'npc' || x.kind === 'object').slice(0, 5)) {
+      H.teleport(e.pos[0] + 0.5, e.pos[2] + 0.5); H.stepFrames(2);
+      if ((H.getUIState().elements || []).find((x) => x.id === 'hud.prompt')) break;
+    }
     const out = [];
     const hash = (s) => { let x = 5381; for (let i = 0; i < s.length; i++) x = ((x * 33) ^ s.charCodeAt(i)) >>> 0; return x.toString(16); };
     for (const [name, fn] of [
@@ -1748,10 +1771,10 @@ async function mp14(page, h, ev) {
         for (let i = 0; i < d.data.length; i += 17) s += String.fromCharCode(d.data[i]);
         px = hash(s);
       }
-      out.push({ device: name, prompt_rect_hash: px, canvas: [canvas.width, canvas.height] });
+      out.push({ device: name, prompt_rect_hash: px, canvas: [canvas.width, canvas.height], rect: el ? el.rect : null });
     }
     return out;
-  });
+  }, r.state);
   const distinctPixels = new Set(drawn.map((d) => d.prompt_rect_hash));
   record('M-P14', 'RI-JRN04', 'the interaction prompt\'s affordance tracks the active device within 2 frames',
     matched.length === 3 && distinctGlyphs.size === 3 && distinctPixels.size === 3,

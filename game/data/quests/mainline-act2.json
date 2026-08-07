@@ -267,8 +267,10 @@
       "giver": {
         "npc_id": "neeja-xul",
         "location": "Blackrose, the cutting yard behind the reed-walk",
-        "disposition_min": 20,
-        "honest": true
+        "disposition_min": 14,
+        "honest": true,
+        "disposition_min_round1": 20,
+        "disposition_min_note": "W1-19 round 2 re-clamp. Round 1 set every clamped gate to the WORST signature's COLD-START standing at this giver, measured by an offer-gate probe that only ever looks at frame zero. That left all nine clamped gates with a worst-case margin of exactly 0, and the piece's own first quest then moved the derived faction term by -12, so eleven of forty signatures could not finish and the main quest closed itself twenty-two quests later. This number is set from `tools/quests/mainline-chain-floor.mjs`, which measures the standing at this giver at EVERY STEP of both chains for all forty signatures, with consequences accumulating and no topic hand-fed. The rule: a gate keeps its rank order and its race discrimination, and sits far enough below the measured chain floor that the shortfall left is one a purse can close (RI-DLG04 §C, seam S15). Availability is never a function of birth; price is."
       },
       "opens_by": {
         "topic": "the cutting yard",
@@ -499,10 +501,11 @@
       "giver": {
         "npc_id": "harbourmaster-cuiro-vaneth",
         "location": "Archon, the tide-house at the head of the stone quay",
-        "disposition_min": 26,
+        "disposition_min": 20,
         "honest": false,
         "disposition_min_race_blind": 30,
-        "disposition_min_note": "W1-07 round 4. This gate was authored against a disposition register that ignored race; the RI-CHR02 matrix now reaches gate.js canOffer(), and at this giver the 12x10 row spans up to 64 points, so the authored bar excluded named races permanently with no route through. RI-CHR01 §5 criterion 3 forbids a gate with no route a signature can take, so a category:\"main\" bar is clamped to the cold-start standing of the WORST of the 540 signatures at this giver. The main quest is a writ, not a favour: what the province thinks of your race changes what else it will let you do, never whether you can finish. The gate still bites — quest consequences subtract, and a player who has burned this person falls under it. The race-blind value is preserved beside it."
+        "disposition_min_note": "W1-19 round 2 re-clamp. Round 1 set every clamped gate to the WORST signature's COLD-START standing at this giver, measured by an offer-gate probe that only ever looks at frame zero. That left all nine clamped gates with a worst-case margin of exactly 0, and the piece's own first quest then moved the derived faction term by -12, so eleven of forty signatures could not finish and the main quest closed itself twenty-two quests later. This number is set from `tools/quests/mainline-chain-floor.mjs`, which measures the standing at this giver at EVERY STEP of both chains for all forty signatures, with consequences accumulating and no topic hand-fed. The rule: a gate keeps its rank order and its race discrimination, and sits far enough below the measured chain floor that the shortfall left is one a purse can close (RI-DLG04 §C, seam S15). Availability is never a function of birth; price is.",
+        "disposition_min_round1": 26
       },
       "opens_by": {
         "topic": "the gem shipping",
@@ -1044,10 +1047,11 @@
       "giver": {
         "npc_id": "rootkeeper-ashul-tei",
         "location": "Helstrom, the root gallery under the eastern terrace",
-        "disposition_min": 1,
+        "disposition_min": 0,
         "honest": true,
         "disposition_min_race_blind": 30,
-        "disposition_min_note": "W1-07 round 4. This gate was authored against a disposition register that ignored race; the RI-CHR02 matrix now reaches gate.js canOffer(), and at this giver the 12x10 row spans up to 64 points, so the authored bar excluded named races permanently with no route through. RI-CHR01 §5 criterion 3 forbids a gate with no route a signature can take, so a category:\"main\" bar is clamped to the cold-start standing of the WORST of the 540 signatures at this giver. The main quest is a writ, not a favour: what the province thinks of your race changes what else it will let you do, never whether you can finish. The gate still bites — quest consequences subtract, and a player who has burned this person falls under it. The race-blind value is preserved beside it."
+        "disposition_min_note": "W1-19 round 2 re-clamp. Round 1 set every clamped gate to the WORST signature's COLD-START standing at this giver, measured by an offer-gate probe that only ever looks at frame zero. That left all nine clamped gates with a worst-case margin of exactly 0, and the piece's own first quest then moved the derived faction term by -12, so eleven of forty signatures could not finish and the main quest closed itself twenty-two quests later. This number is set from `tools/quests/mainline-chain-floor.mjs`, which measures the standing at this giver at EVERY STEP of both chains for all forty signatures, with consequences accumulating and no topic hand-fed. The rule: a gate keeps its rank order and its race discrimination, and sits far enough below the measured chain floor that the shortfall left is one a purse can close (RI-DLG04 §C, seam S15). Availability is never a function of birth; price is.",
+        "disposition_min_round1": 1
       },
       "opens_by": {
         "topic": "the root gallery",

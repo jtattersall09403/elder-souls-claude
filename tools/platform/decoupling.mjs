@@ -110,6 +110,22 @@ const CADENCE = String(args.cadence || 'sim');
 if (!['sim', 'call'].includes(CADENCE)) usage(USAGE, EXIT.USAGE);
 const SCENARIO_ID = String(args.scenario || 'cmb-duel-infantry');
 
+// ROUND 4 — M6's own terms, as constants the verdict is computed against rather than as prose in
+// a footnote. `m6_asks_for` was already reported and then not used; now it gates `pass`.
+const M6_ASKS_FOR = 3600;
+// RI-PLT01 M6 names scenario F3, "boss arena, 1 boss, active fight". Detected, not assumed: if
+// somebody authors F3 (TOOL-COVERAGE-R3 Referral 1 rules that they should), this goes true on its
+// own and the deviation clears without this file being edited.
+const scenarioIsF3 = (() => {
+  if (/^f3\b/i.test(SCENARIO_ID)) return true;
+  try {
+    const s = loadScenario(SCENARIO_ID);
+    // A boss arena is one boss-tier combatant in a fight. Read from the scenario, not asserted.
+    const roles = JSON.stringify(s).toLowerCase();
+    return /"f3"|boss_arena|\bboss\b/.test(roles) && /champion|boss/.test(roles);
+  } catch { return false; }
+})();
+
 // ---------------------------------------------------------------------------------------------
 // The injected failure. It runs IN THE PAGE, above the harness, and makes the SIMULATION depend
 // on the render rate — which is precisely what HF2 exists to catch. Two independent breakages so
@@ -258,18 +274,83 @@ function judge(rows) {
   }
   const m7Ok = drift.length === 0;
 
+  // =============================================================================================
+  // ROUND 4 — TOOL-COVERAGE-R3 §6. THE DEVIATION IS CARRIED INTO THE VERDICT.
+  //
+  // The instrument is sound and R3 confirmed it: the red genuinely goes red, the green is green,
+  // the control is not vacuous. The defect was that **the shipped artifact of record said
+  // `pass: true` for a bar that was not met**:
+  //
+  //     "sim_frames_per_rate": 300,  "m6_asks_for": 3600,
+  //     "verdict": {"m6_step_count": {"pass": true, "expected": 300, ...}},
+  //     "pass": true, "hard_fails": []
+  //
+  // M6's threshold is "EXACTLY 3 600 steps at every rate". This ran 300 — 8.3% of the specified
+  // duration — on a SUBSTITUTED scenario, and set `expected` to whatever it happened to run. The
+  // shortfall was declared twice elsewhere, which is why R3 called this narrow. But TOOL-LOOP.md
+  // rule 4 is the whole point of the loop: "a number on that page means something." A consumer
+  // reading `pass` on a 10-POINT item — the largest single entry in the 26-point sim-integrity
+  // axis — got a green.
+  //
+  // So: `meets_item_duration` and `scenario_as_specified` are computed, and `pass` is no longer
+  // `true` when either is false. The measured property is still reported separately as
+  // `invariance_holds`, because it IS a real result and losing it would be the opposite mistake.
+  // =============================================================================================
+  const meetsDuration = SIM_FRAMES >= M6_ASKS_FOR;
+  const scenarioAsSpecified = scenarioIsF3;
+  const itemSatisfied = meetsDuration && scenarioAsSpecified;
+  const deviation = [
+    meetsDuration ? null
+      : `ran ${SIM_FRAMES} steps per rate; M6 asks for EXACTLY ${M6_ASKS_FOR} ` +
+        `(${(100 * SIM_FRAMES / M6_ASKS_FOR).toFixed(1)}% of the specified duration)`,
+    scenarioAsSpecified ? null
+      : `scenario "${SCENARIO_ID}" was substituted for M6's named F3 ("boss arena, 1 boss, ` +
+        'active fight"), which has no file. Sim/render coupling surfaces under LOAD AND ' +
+        'COMPLEXITY, so substituting a flat-ground trash duel is a substitution in the ' +
+        'PERMISSIVE direction (TOOL-COVERAGE-R3, Referral 1)',
+  ].filter(Boolean);
+
+  /** `pass` is only true when the property holds AND the item's own terms were met. */
+  const gated = (propertyHolds) => propertyHolds && itemSatisfied;
+
   return {
     m6_step_count: {
-      pass: stepsOk,
+      // The property, unchanged and still reported.
+      invariance_holds: stepsOk,
+      // The VERDICT, which is what a consumer reads. Not true on a short or substituted run.
+      pass: gated(stepsOk),
+      meets_item_duration: meetsDuration,
+      scenario_as_specified: scenarioAsSpecified,
+      item_satisfied: itemSatisfied,
+      deviation_from_item: deviation.length ? deviation : null,
+      steps_run_per_rate: SIM_FRAMES,
+      m6_asks_for: M6_ASKS_FOR,
       expected: SIM_FRAMES,
       observed: rows.map((r) => ({ rate: r.render_rate_hz, steps: r.sim_steps_observed })),
       hard_fail: stepsOk ? null : 'HF2 — the simulation step count changes with the render rate.',
+      why_not_pass: gated(stepsOk) ? null
+        : stepsOk
+          ? `the step count IS invariant across render rates — that result stands — but this run ` +
+            `does not meet M6's own terms: ${deviation.join('; ')}. Reporting pass:true here is ` +
+            `how a 10-point bar relaxes without anyone deciding to relax it. Re-run with ` +
+            `--sim-frames ${M6_ASKS_FOR} against scenario F3.`
+          : 'the step count is NOT invariant across render rates.',
     },
     m6_trace_hash: {
-      pass: hashOk,
+      invariance_holds: hashOk,
+      pass: gated(hashOk),
+      meets_item_duration: meetsDuration,
+      scenario_as_specified: scenarioAsSpecified,
+      item_satisfied: itemSatisfied,
+      deviation_from_item: deviation.length ? deviation : null,
       distinct_hashes: hashes.length,
       observed: rows.map((r) => ({ rate: r.render_rate_hz, body_sha256: r.body_sha256, records: r.trace_records })),
       hard_fail: hashOk ? null : 'HF2 — the trace body hash changes with the render rate.',
+      why_not_pass: gated(hashOk) ? null
+        : hashOk
+          ? `the trace body hash IS invariant across render rates — that result stands — but ` +
+            `this run does not meet M6's own terms: ${deviation.join('; ')}.`
+          : 'the trace body hash is NOT invariant across render rates.',
     },
     control_render_counts_vary: {
       pass: controlOk,
@@ -294,32 +375,82 @@ function judge(rows) {
 // ---------------------------------------------------------------------------------------------
 if (args['self-test']) {
   let failed = 0;
+  // Flush as produced. R3: "--self-test did not complete in two attempts — once crashing with
+  // `Target page ... has been closed` at load 19, once still unfinished after ~28 minutes at
+  // load 5. A falsification a critic cannot re-run is a falsification on trust."
   const ok = (name, pass, detail) => {
     process.stdout.write(`${pass ? 'PASS' : 'FAIL'} ${name} — ${detail}\n`);
     if (!pass) failed++;
   };
 
-  const clean = await sweep(false);
-  const cv = judge(clean.rows);
-  ok('GREEN: the shipped build passes M6 (step count)', cv.m6_step_count.pass,
+  // ---- ROUND 4: THE SELF-TEST IS CAPPED so a critic can re-run it. -------------------------
+  // R3's rebuild list, last clause: "cap the self-test's step count." It ran EIGHT full browser
+  // sweeps at the run's own --sim-frames. The falsification it performs — does the verdict flip
+  // between a sound build and a broken one — is a property of the FIRST FEW FRAMES (the broken
+  // build diverges at 61 steps vs 60), so a long sweep buys nothing and costs a critic the
+  // ability to check the work. Override with --self-test-frames if you want the long form.
+  const ST_FRAMES = Number.isFinite(Number(args['self-test-frames']))
+    ? Number(args['self-test-frames']) : 60;
+  const ST_RATES = args['self-test-rates'] ? String(args['self-test-rates']) : '60,0';
+  process.stdout.write(
+    `decoupling --self-test: capped at ${ST_FRAMES} steps/rate over rates [${ST_RATES}] ` +
+    `(--self-test-frames / --self-test-rates to widen). The verdict flip is visible at 60 steps; ` +
+    `R3 could not complete the uncapped form in two attempts.\n`);
+
+  const clean = await sweep(false, { simFrames: ST_FRAMES, rates: ST_RATES });
+  const cv = judge(clean.rows, { simFrames: ST_FRAMES });
+  ok('GREEN: the shipped build passes M6 (step count)', cv.m6_step_count.invariance_holds,
     JSON.stringify(cv.m6_step_count.observed));
-  ok('GREEN: the shipped build passes M6 (one trace hash at all rates)', cv.m6_trace_hash.pass,
+  ok('GREEN: the shipped build passes M6 (one trace hash at all rates)', cv.m6_trace_hash.invariance_holds,
     `${cv.m6_trace_hash.distinct_hashes} distinct hash over ${clean.rows.length} rates: ${clean.rows[0].body_sha256.slice(0, 16)}…`);
   ok('CONTROL: the render rate actually changed the amount of rendering', cv.control_render_counts_vary.pass,
     JSON.stringify(cv.control_render_counts_vary.observed));
   ok('GREEN: M7 — no gameplay quantity drifts with the render rate', cv.m7_frame_rate_independence.pass,
     `${cv.m7_frame_rate_independence.quantities.join(', ')} identical to 6 dp at all rates`);
 
-  const broken = await sweep(true);
-  const bv = judge(broken.rows);
+  const broken = await sweep(true, { simFrames: ST_FRAMES, rates: ST_RATES });
+  const bv = judge(broken.rows, { simFrames: ST_FRAMES });
   ok('RED: with the sim made to depend on the render rate, M6 step count FAILS',
-    bv.m6_step_count.pass === false, JSON.stringify(bv.m6_step_count.observed));
+    bv.m6_step_count.invariance_holds === false, JSON.stringify(bv.m6_step_count.observed));
   ok('RED: and the trace hash diverges too',
-    bv.m6_trace_hash.pass === false, `${bv.m6_trace_hash.distinct_hashes} distinct hashes`);
+    bv.m6_trace_hash.invariance_holds === false, `${bv.m6_trace_hash.distinct_hashes} distinct hashes`);
   ok('the verdict FLIPPED between the two runs (the gate is a check, not a constant)',
-    cv.m6_step_count.pass !== bv.m6_step_count.pass && cv.m6_trace_hash.pass !== bv.m6_trace_hash.pass,
-    `clean {steps: ${cv.m6_step_count.pass}, hash: ${cv.m6_trace_hash.pass}} vs ` +
-    `broken {steps: ${bv.m6_step_count.pass}, hash: ${bv.m6_trace_hash.pass}}`);
+    cv.m6_step_count.invariance_holds !== bv.m6_step_count.invariance_holds &&
+    cv.m6_trace_hash.invariance_holds !== bv.m6_trace_hash.invariance_holds,
+    `clean {steps: ${cv.m6_step_count.invariance_holds}, hash: ${cv.m6_trace_hash.invariance_holds}} vs ` +
+    `broken {steps: ${bv.m6_step_count.invariance_holds}, hash: ${bv.m6_trace_hash.invariance_holds}}`);
+
+  // ---- ROUND 4: the verdict-field falsification. TOOL-COVERAGE-R3 §6. ----------------------
+  // The shipped artifact said `pass: true` for a bar that was not met. These checks are
+  // arithmetic over `judge()` and need no browser, so they run even when a sweep cannot.
+  ok('R4: a SHORT run does NOT report pass:true, even when the invariance holds (the R3 defect)',
+    cv.m6_step_count.invariance_holds === true && cv.m6_step_count.pass === false &&
+    cv.m6_step_count.meets_item_duration === false && !!cv.m6_step_count.why_not_pass,
+    `${ST_FRAMES} of ${M6_ASKS_FOR} steps: invariance_holds=${cv.m6_step_count.invariance_holds}, ` +
+    `pass=${cv.m6_step_count.pass}. The shipped artifact reported 300 of 3600 as "pass": true.`);
+  ok('R4: the real result is not LOST — invariance_holds still reports it separately',
+    cv.m6_trace_hash.invariance_holds === true && cv.m6_trace_hash.pass === false,
+    'gating `pass` on the item\'s terms must not throw away the measurement that WAS taken');
+  ok('R4: the deviation is NAMED in the verdict, not only in a footnote',
+    Array.isArray(cv.m6_step_count.deviation_from_item) &&
+    cv.m6_step_count.deviation_from_item.some((d) => /asks for EXACTLY/.test(d)) &&
+    cv.m6_step_count.deviation_from_item.some((d) => /F3/.test(d)),
+    JSON.stringify(cv.m6_step_count.deviation_from_item));
+  {
+    // The null control for the gate: a full-length run against F3 must be able to reach
+    // pass:true, or the gate is a constant `false` and the bar becomes unpassable — which is
+    // the OPPOSITE mistake and one this loop has already made twice.
+    const full = judge(clean.rows, { simFrames: M6_ASKS_FOR, scenarioIsF3: true });
+    ok('R4: NULL CONTROL — a full-length run on scenario F3 CAN still reach pass:true',
+      full.m6_step_count.pass === true && full.m6_step_count.item_satisfied === true &&
+      full.m6_step_count.deviation_from_item === null,
+      `at ${M6_ASKS_FOR} steps with F3 authored: pass=${full.m6_step_count.pass}. The gate is a ` +
+      'condition, not a permanent refusal.');
+    const brokenFull = judge(broken.rows, { simFrames: M6_ASKS_FOR, scenarioIsF3: true });
+    ok('R4: and a BROKEN build at full length still fails (the gate did not swallow the red)',
+      brokenFull.m6_step_count.pass === false && !!brokenFull.m6_step_count.hard_fail,
+      brokenFull.m6_step_count.hard_fail || '');
+  }
 
   process.stdout.write(`\ndecoupling self-test: ${failed === 0 ? 'PASS' : 'FAIL'}\n`);
   process.exit(failed === 0 ? 0 : 1);

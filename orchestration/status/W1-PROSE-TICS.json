@@ -8,14 +8,22 @@
     "reports/prose-tics/W1-PROSE-TICS-report.md",
     "reports/packs/prose-tics-r2/ (blind packs for a round-2 judge)"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "tools/prose/tic-detector.mjs",
+    "tools/prose/rules.pre-registered.json",
+    "reports/prose-tics/baseline.json"
+  ],
   "findings": [
     "Player-facing text registers found: BOOKS game/data/books/*.json books[].text (37.7k w); DIALOGUE dialogue/topics/*.json topics[].infos[].x (26.8k) + greetings.json pools[].lines[] (20.6k) + greetings/*.json greetings[].x + rumours.json + race_gated[].x + slavery-lines + npcs[].lines.greeting + world mysteries refusals[].x; JOURNAL game/data/quests/*.json quests[].journal[].text (25.0k w); ITEM items[].description + weapons[].line.",
     "REFERENCE (journal register) EXISTS and nobody had used it: the vendored UESP extract has 393 Morrowind: quest pages carrying {{Journal Entries|id=...|<stage>|<yes>|<text>}} templates. That gives real Morrowind journal prose to compare quest journal entries against, journal-vs-journal.",
     "morrowind-dialogue.csv.gz is NPC dialogue only (69,876 rows, 42,258 with empty SpeakerId but still NPC lines/expulsion messages). No journal entries in it.",
     "Extract namespaces: Morrowind 3513, Online 1151, Lore 982, Bloodmoon 331, Tribunal 295, Stormhold 25, Arena 2.",
-    "PRE-REGISTRATION: 46 rules written to tools/prose/rules.pre-registered.json BEFORE any measurement. sha256=45d4d8f32b3d6f16fed90bb430e77f3b1fe88d98b7e096ea323bd3c4609eef19. Multiple-comparisons count for this run is 46 and all 46 are reported."
+    "PRE-REGISTRATION: 46 rules written to tools/prose/rules.pre-registered.json BEFORE any measurement. sha256=45d4d8f32b3d6f16fed90bb430e77f3b1fe88d98b7e096ea323bd3c4609eef19. Multiple-comparisons count for this run is 46 and all 46 are reported.",
+    "BASELINE, books register (ours 64 docs/37,561 w vs Morrowind 242/185,612 w). Top separators by presence-accuracy: RULE-39 nobody/anybody/somebody 34.61 vs 0.22 per 10k = 160x, presence 73.4% vs 1.7%, acc 0.931 (BEATS 'eleven'); RULE-01 eleven 31.95 vs 0.38 = 84.7x, 76.6% vs 2.9%, acc 0.928 (reproduces W1-LIBRARY r1 exactly); RULE-21 em dash 39.14 vs 0.75 = 51.9x, 54.7% vs 1.7%; RULE-08 round hundreds 27x; RULE-22 paired em-dash aside 25.9x; RULE-18 'that is what/why/all' 20.1x; RULE-44 'is not a X' 14.8x. Baseline majority class 0.791.",
+    "BASELINE, dialogue register (ours 2,769 lines/56,077 w vs 69,876 rows/1,860,069 w): em dash 16.76 vs 0.00 (Morrowind dialogue has ZERO em dashes); 'that is what/why' 61x; ',which is' 52x; teens 83x; eleven 79x; nobody/anybody/somebody 38x; contraction avoidance 9.4x; contractions PRESENT 19.26 vs 327.77 = 0.06x. Document-level lift is meaningless here because the class imbalance baseline is 0.962 - use rate ratio and the bundled statistic.",
+    "BASELINE, journal register (ours 677 entries/28,189 w vs Morrowind 3,183/92,387 w): nobody/anybody/somebody 260x; contraction avoidance 7.3x; spelled counts 8.4x; teens INF (Morrowind journal contains ZERO of eleven/thirteen/seventeen/nineteen); eleven 39.02 vs 0.00; round hundreds 167x; em dash inf (zero on their side).",
+    "PRIORS FALSIFIED (report these, they are the honest half of a pre-registered run): RULE-10 'not X but Y' 0.4x - MORROWIND uses it MORE; RULE-26 tricolon 0.5x - they use it more; RULE-15 'which is to say' ZERO in our books; RULE-13 neither/nor zero in ours; RULE-31 'of course' 0.1x; RULE-25 parentheses 0.1x; RULE-46 sentence-length stdev ours 14.33 vs 9.46 - our books vary MORE, not less. The em-dash prior held; the 'balanced figure' priors did not."
   ],
-  "next_step": "write tools/prose/tic-detector.mjs (--self-test) and run baseline",
+  "next_step": "add balanced accuracy + symmetric bundling; then rewrite the offending prose",
   "notes_for_successor": ""
 }

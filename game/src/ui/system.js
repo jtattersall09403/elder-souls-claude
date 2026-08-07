@@ -132,6 +132,14 @@ export class UISystem {
       if (!b) throw new Error(`openMenu('book', {id:'${id}'}): no such book in game/data/books/`);
       this.bookId = b.id;
       this.focus.book.page = this.bookPages[b.id] || 0;
+      // W1-LIBRARY round 2. THE READ SITE, and it is here rather than in `Engine.openMenu()`
+      // because `Engine.openMenu()` is the HARNESS door. A player reads a book by selecting a
+      // readable in the inventory and pressing confirm — `_confirm()` calls `this.open('book',
+      // …)` directly and never goes near the engine wrapper — so the recorder that used to sit
+      // in the wrapper could not see the only route a person actually takes. Both routes pass
+      // through this line. `onBookOpened` is installed by the Engine; the UI does not know what
+      // reading means, only that it happened.
+      if (this.onBookOpened) this.onBookOpened(b);
     }
     if (n === 'container') this.containerEid = (opts && opts.eid) || null;
     if (this.isMenu() && this.mode !== n) this.stack.push(this.mode);

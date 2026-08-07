@@ -42,7 +42,7 @@ try {
     const s1 = []; for (let i = 0; i < 90; i++) s1.push({ f: i, move: [0.15, 0.5], look: [0.25, 0] });
     H.queueInputs(s1); H.stepFrames(90);
     H.renderFrame();
-    r.hold = { png: H.screenshot(), node: st0.node, paused: !!st0.paused, question: !!st0.input };
+    r.hold = { png: await H.screenshot(), node: st0.node, paused: !!st0.paused, question: !!st0.input };
 
     // Walk to her, talk, and play the scene through to the verdict.
     for (let a = 0; a < 40 && H.getCensusState().paused; a++) {
@@ -70,7 +70,7 @@ try {
       st = await H.censusAnswer(v);
     }
     H.stepFrames(2); H.renderFrame();
-    r.named = { png: H.screenshot(), node: st.node, line: st.line };
+    r.named = { png: await H.screenshot(), node: st.node, line: st.line };
 
     // And the node the round-1 verdict measured at 0.33: her reply and the question together.
     while (st && !st.done && g++ < 90 && st.node !== 'writ.birthsign') {
@@ -81,7 +81,7 @@ try {
       st = await H.censusAnswer(v);
     }
     H.stepFrames(2); H.renderFrame();
-    r.birthsign = { png: H.screenshot(), node: st.node, spoken: (st.spoken || []).map((x) => x.line) };
+    r.birthsign = { png: await H.screenshot(), node: st.node, spoken: (st.spoken || []).map((x) => x.line) };
     return r;
   });
   say(`hold: node=${shots.hold.node} paused=${shots.hold.paused} question_on_frame=${shots.hold.question}`);

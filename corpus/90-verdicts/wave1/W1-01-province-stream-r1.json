@@ -36,6 +36,11 @@
         "stdout_artifact": "boot-check: PASS - the engine constructed and the harness answers. Run before AND after every measurement below."
       },
       {
+        "command": "node tools/harness/boot-check.mjs (working tree, after another agent landed the missing function, 13:44Z)",
+        "exit_code": 0,
+        "stdout_artifact": "boot-check: PASS. The break was transient. The code under test is byte-identical either way: the _streamProvince() body and the whole of game/src/world/province.js diff clean against HEAD, so every measurement in this verdict describes the tree that is on disk now."
+      },
+      {
         "command": "node tools/world/critic-prov-r1.mjs --mode modality --out <path>",
         "exit_code": 0,
         "stdout_artifact": "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/modality.json"
@@ -708,7 +713,7 @@
   },
   "secondary_observations": [
     {
-      "what": "The working tree does not boot. node tools/harness/boot-check.mjs exits 12 with 'this._installTopicSupply is not a function' (engine.js:320); a concurrent agent's in-flight edit to engine.js + character/converse.js with sim/quest/topic-supply.js untracked. Every measurement in this verdict was taken on a shadow tree pinned at HEAD=8734986. Any agent that uses smoke.mjs as a boot check will report green against a build no player could launch.",
+      "what": "The working tree does not boot. node tools/harness/boot-check.mjs exits 12 with 'this._installTopicSupply is not a function' (engine.js:320); a concurrent agent's in-flight edit to engine.js + character/converse.js with sim/quest/topic-supply.js untracked. Every measurement in this verdict was taken on a shadow tree pinned at HEAD=8734986. Any agent that uses smoke.mjs as a boot check will report green against a build no player could launch. FIXED MID-SESSION by another agent: boot-check PASSES on the working tree at 13:44Z, and the _streamProvince() body plus the whole of game/src/world/province.js diff clean against HEAD, so the measurements describe the tree on disk now. Recorded because a manifest/definition consistency check belongs in tools/corpus-index.mjs --check: nothing in the repository would have caught it, and it was found by a critic tripping over it.",
       "evidence": [
         "node tools/harness/boot-check.mjs, exit 12"
       ],

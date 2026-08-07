@@ -233,6 +233,15 @@ export function makeQuestState() {
     journal: [],                // append-only, ordered: [{n, date, quest, text}]
     flags: {},
     topicsKnown: [],
+    // W1-LIBRARY round 2. The book ids this character has OPENED, and the reason it lives in
+    // `sim.quest` rather than on the Engine is that `Engine._booksRead` was a Set on the engine
+    // object: it survived `sim.reset()` (so a state load carried the previous run's reading) and
+    // it was in no save blob at all (so a load closed every door the reading had opened). The
+    // round-1 verdict's ARBITRATION §3 finding turns on this array — `QuestEngine.context()`
+    // unions each read book's `knowledge_key` into `ctx.knowledge`, which is what makes the
+    // three non-violent `lore_knowledge` resolutions reachable. Serialised as
+    // `dialogue.books_read` (game/data/save-manifest.json, Dialogue group, id-sorted).
+    booksRead: [],
     dispositions: {},
     factions: {},
     crime: { bounty: {}, witnesses: [], stolen: [], hunting: [] },
@@ -373,6 +382,7 @@ export function quantiseColdState(sim) {
   // an order the round trip changed — the census caught `quest.topicsKnown` doing exactly
   // that on sv1-midquest. Canonicalise the live copy instead of relaxing the check.
   sim.quest.topicsKnown.sort();
+  sim.quest.booksRead.sort();
   // A person's topic and service lists are DECLARED id-sorted by the save (world.npcs[].topics)
   // and arrive from npcs/*.json in authored order, so the round trip reordered them and the
   // durable-field census reported `npcs[].topics[]` swapping places on every settlement state.

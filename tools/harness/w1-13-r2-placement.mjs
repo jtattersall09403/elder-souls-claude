@@ -33,6 +33,10 @@ import { parseArgs, wantsHelp, usage, log, writeJson } from '../lib/cli.mjs';
 const args = parseArgs(process.argv.slice(2));
 if (wantsHelp(args)) { usage('w1-13-r2-placement.mjs [--out <file>] [--delete-the-fix]'); process.exit(0); }
 const deleteTheFix = !!args['delete-the-fix'];
+// `--only fall,drown,fog,drift` runs a subset. The whole file is ~20 minutes on a loaded box and
+// re-running four passing sections to re-measure a fifth is how a measurement budget disappears.
+const ONLY = args.only ? String(args.only).split(',').map((s) => s.trim()) : null;
+const want = (s) => !ONLY || ONLY.includes(s);
 const out = { schema: 'w1-13/r2-placement@1', delete_the_fix: deleteTheFix, fall: null, drown: null, fog: [], drift: [] };
 let handle;
 
@@ -73,7 +77,7 @@ try {
   // =============================================================================================
   // A. A REAL LETHAL FALL. No cause is supplied by anything but the world.
   // =============================================================================================
-  {
+  if (want('fall')) {
     await rested();
     // Walk out to a spot away from the basin, note where the ground is, and drop from 120 m.
     const gx = well.pos[0] + 55, gz = well.pos[2] + 55;
@@ -120,7 +124,7 @@ try {
   // =============================================================================================
   // B. DROWNING. Hunt for water deep enough to submerge in; drown in it for real if it exists.
   // =============================================================================================
-  {
+  if (want('drown')) {
     await rested();
     let site = null;
     // A coarse spiral out from the well, reading the LIVE traversal band rather than a data file.
@@ -161,12 +165,24 @@ try {
     } else {
       out.drown = { found_deep_water_within_420m_of_hearth_archon: true, site };
       await rested();
-      // OVERLOADED. `RI-WLD10` §3: past 100% load "you cannot swim. You walk the bottom, with a
-      // breath clock" — the item cites Hallgerd's Tale for it. A body that can swim floats with
-      // its head out, which costs stamina and not breath, so an unburdened probe stands in W5
-      // water forever and never drowns: that is what 4,000 frames of the first attempt measured.
-      // This is the world's own drowning route and it needs no harness cause.
-      await h.h('setBurden', 3.0);
+      // OVERLOADED, THROUGH THE PACK AND NOT THROUGH A KNOB. `RI-WLD10` §3: past 100% load "you
+      // cannot swim. You walk the bottom, with a breath clock" — the item cites Hallgerd's Tale
+      // for it. A body that CAN swim floats with its head above the waterline by construction,
+      // which costs stamina and not breath, so an unburdened probe stands in W5 water forever
+      // and never drowns: 4,000 frames of the first attempt measured exactly that.
+      //
+      // `__HARNESS.setBurden()` cannot be used for this and that is itself a finding:
+      // `Engine._recomputeBurden()` runs from `_afterStep()` on EVERY frame and recomputes
+      // `burdenRatio` from the inventory's weights, so a burden set by the verb is gone before
+      // the next traversal step reads it. The weight has to be real, so it is put in the pack.
+      {
+        const bb = await h.h('saveState');
+        bb.character.souls_held = 900;
+        bb.inventory = [...(bb.inventory || []), { id: 'bog-iron-maul', count: 40, condition: 1, charge: 0, stolen: false, owner_of_record: null, equipped_slot: null, quick_slot: null }];
+        await h.h('restoreState', bb);
+        await h.h('stepFrames', 3);
+      }
+      out.drown.burden = await h.h('getPlayerStats').then((s) => ({ ratio: s.burden_ratio, tier: s.burden_tier }));
       // Stand on dry land first so `lastGrounded` is a real ledge, then wade in and drown.
       await h.h('teleport', well.pos[0], well.pos[2]);
       await h.h('stepFrames', 20);
@@ -197,7 +213,7 @@ try {
   // =============================================================================================
   // C. THE FOG GATE, INCLUDING THE EXACT CENTRE. Offsets are chosen to straddle the singularity.
   // =============================================================================================
-  {
+  if (want('fog')) {
     const gates = await h.h('getFogGates');
     for (const g of gates.gates) {
       for (const off of [0, 0.001, 0.5, 12, 25]) {
@@ -229,7 +245,7 @@ try {
   // =============================================================================================
   // D. DOES THE BODY STAY AT THE WELL? Six wells, each with a matched no-death control.
   // =============================================================================================
-  {
+  if (want('drift')) {
     const wells = ['hearth-archon', 'hearth-stormhold', 'hearth-gideon', 'hearth-lilmoth', 'hearth-blackrose']
       .map((id) => list.hearths.find((x) => x.id === id)).filter(Boolean);
     if (wells.length < 6 && list.hearths[5]) wells.push(list.hearths.find((x) => !wells.includes(x)));

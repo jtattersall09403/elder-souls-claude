@@ -171,14 +171,20 @@ export async function runJrn06(h, args, led, ctx = {}) {
     await h.h('setRenderRate', 0);
     // three ordinary hostiles, one boss by statblock, one ordinary archetype flagged named,
     // and one fixture. Every branch of `DeathSystem.respawns()` has a body in the world.
+    // ROUND 2: `named-a` and `quest-a` are flagged THROUGH THE SPAWN, which is the route
+    // `game/data/world/respawn.json` documents and which round 1 could not use because
+    // `engine.spawn()` copied only `opts.as` and `opts.yaw`. The verdict scored M-D5 zero
+    // for exactly that: the guarantee held only via `setEntityNamed()`, a harness verb, which
+    // is `RI-MTH07` §A's orphan predicate. `setEntityNamed()` is deliberately NOT called here
+    // any more — if the world cannot write the flag, this check must go red.
     const spawned = [
-      ['inf_trash', 'ord-a', 6, 6], ['inf_trash', 'ord-b', -6, 6], ['drowned_lesser', 'ord-c', 0, 9],
-      ['champion_hist_marked', 'boss-a', 10, -8],
-      ['inf_trash', 'named-a', -10, -8],
-      ['dummy_passive', 'fix-a', 3, -10],
+      ['inf_trash', 'ord-a', 6, 6, {}], ['inf_trash', 'ord-b', -6, 6, {}], ['drowned_lesser', 'ord-c', 0, 9, {}],
+      ['champion_hist_marked', 'boss-a', 10, -8, {}],
+      ['inf_trash', 'named-a', -10, -8, { named: true }],
+      ['inf_trash', 'quest-a', -13, -4, { questActor: true }],
+      ['dummy_passive', 'fix-a', 3, -10, {}],
     ];
-    for (const [id, as, x, z] of spawned) await h.h('spawn', id, x, z, { as });
-    await h.h('setEntityNamed', 'named-a', { named: true });
+    for (const [id, as, x, z, flags] of spawned) await h.h('spawn', id, x, z, { as, ...flags });
     const scope = (await h.h('getDeathState')).respawn_scope;
     for (const [, as] of spawned) await h.h('killEntity', as);
     await h.h('stepFrames', 2);
@@ -192,7 +198,7 @@ export async function runJrn06(h, args, led, ctx = {}) {
     const afterDeath = (await h.h('listEntities')).map((e) => ({ eid: e.eid, hp: e.hp, state: e.state }));
     const back = afterDeath.filter((e) => e.hp > 0).map((e) => e.eid).sort();
     const stillDead = afterDeath.filter((e) => e.hp <= 0).map((e) => e.eid).sort();
-    const namedRespawned = back.filter((e) => ['boss-a', 'named-a', 'fix-a'].includes(e));
+    const namedRespawned = back.filter((e) => ['boss-a', 'named-a', 'quest-a', 'fix-a'].includes(e));
     const ordinaryHeld = stillDead.filter((e) => ['ord-a', 'ord-b', 'ord-c'].includes(e));
     put('m_d5_respawn_scope', 'M-D5 world reset scope (D9, seam S5)', {
       classification: scope,
@@ -217,7 +223,7 @@ export async function runJrn06(h, args, led, ctx = {}) {
     const regs = await h.h('getWorldRegisters');
     put('m_d6_named_stays_dead', 'M-D6 dead named NPC stays dead, across rest and death', {
       after_rest_alive: backRest,
-      named_back_after_rest: backRest.filter((e) => ['boss-a', 'named-a', 'fix-a'].includes(e)),
+      named_back_after_rest: backRest.filter((e) => ['boss-a', 'named-a', 'quest-a', 'fix-a'].includes(e)),
       rest_respawned_count: rest.world_reset ? rest.world_reset.respawned.length : 0,
       rest_held_dead: rest.world_reset ? rest.world_reset.held_dead : [],
       npcs_dead_register: regs.npcs_dead,

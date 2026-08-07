@@ -224,6 +224,43 @@ export function stripWiki(t) {
   return s.replace(/[ \t]+/g, ' ').trim();
 }
 
+// Return the inner body of every `{{Name ...}}` template on the page, brace-matched.
+export function braceTemplates(text, opener) {
+  const out = [];
+  let i = 0;
+  for (;;) {
+    i = text.indexOf(opener, i);
+    if (i < 0) break;
+    let depth = 0;
+    let j = i;
+    while (j < text.length) {
+      if (text.startsWith('{{', j)) { depth++; j += 2; }
+      else if (text.startsWith('}}', j)) { depth--; j += 2; if (depth === 0) break; }
+      else j++;
+    }
+    out.push(text.slice(i + 2, Math.max(i + 2, j - 2)));
+    i = j;
+  }
+  return out;
+}
+
+// Split a template body on top-level `|`, ignoring pipes inside nested {{ }} and [[ ]].
+// Drops the template name (the first field).
+export function templateParams(body) {
+  const out = [];
+  let cur = '';
+  let d = 0;
+  let i = 0;
+  while (i < body.length) {
+    if (body.startsWith('{{', i) || body.startsWith('[[', i)) { d++; cur += body.slice(i, i + 2); i += 2; }
+    else if (body.startsWith('}}', i) || body.startsWith(']]', i)) { d--; cur += body.slice(i, i + 2); i += 2; }
+    else if (body[i] === '|' && d === 0) { out.push(cur); cur = ''; i++; }
+    else { cur += body[i]; i++; }
+  }
+  out.push(cur);
+  return out.slice(1);
+}
+
 function buildReference() {
   if (!fs.existsSync(EXTRACT)) throw new Error(`reference extract missing: ${EXTRACT}`);
   if (!fs.existsSync(DIALOGUE_CSV)) throw new Error(`reference dialogue missing: ${DIALOGUE_CSV}`);
@@ -253,28 +290,25 @@ function buildReference() {
     books.push({ id: name, text: normalise(body) });
   }
 
-  // --- journal: {{Journal Entries|id=..|<stage>|<flag>|<text> ...}} on Morrowind:/Tribunal:/Bloodmoon: quest pages
+  // --- journal: {{Journal Entries|id=..|<stage>|<flag>|<text> ...}} on Morrowind:/Tribunal:/Bloodmoon:
+  // quest pages. The wiki writes the triples both as three lines and as `|1||text` on one line, so
+  // the parameters must be split at depth 0 rather than on newlines — splitting on "\n|" finds only
+  // 906 of the 3,183 entries and silently under-reports the reference by two thirds.
   const journal = [];
   for (const [title, text] of pages) {
     const ns = title.slice(0, title.indexOf(':'));
     if (!GAMES.includes(ns)) continue;
-    const re = /\{\{Journal Entries\b([\s\S]*?)\n\}\}/g;
-    let m;
-    while ((m = re.exec(text)) !== null) {
-      const body = m[1];
-      const parts = body.split('\n|').slice(1);
-      // parts run: id=..., then repeating (stage, flag, text)
+    for (const body of braceTemplates(text, '{{Journal Entries')) {
+      const ps = templateParams(body);
       let qid = title;
       const fields = [];
-      for (const p of parts) {
-        if (/^id\s*=/.test(p.trim())) { qid = p.trim().replace(/^id\s*=\s*/, ''); continue; }
+      for (const p of ps) {
+        if (/^id\s*=/i.test(p.trim())) { qid = p.trim().replace(/^id\s*=\s*/i, ''); continue; }
         fields.push(p);
       }
-      for (let k = 0; k + 2 < fields.length + 1; k += 3) {
-        const stage = (fields[k] || '').trim();
-        const body2 = fields[k + 2];
-        if (body2 == null) break;
-        const t = normalise(stripWiki(body2.trim()));
+      for (let k = 0; k + 2 < fields.length; k += 3) {
+        const stage = fields[k].trim();
+        const t = normalise(stripWiki(fields[k + 2].trim()));
         if (words(t) >= 5) journal.push({ id: `${qid}#${stage}`, text: t });
       }
     }
@@ -362,16 +396,38 @@ export function measure(rule, docs) {
 }
 
 // Accuracy of "presence >= 1 => ours" over the pooled document sets, against the majority baseline.
+// balanced_accuracy is the honest number when the two sets are wildly different sizes: our 2,769
+// dialogue lines against Morrowind's 69,876 give a 0.962 majority baseline, so raw accuracy says
+// nothing and every rule looks like it "fails".
 export function separation(ours, ref) {
   const n = ours.docs + ref.docs;
-  if (!n) return { accuracy: 0, baseline: 0, lift: 0 };
+  if (!n) return { accuracy: 0, baseline: 0, lift: 0, balanced_accuracy: 0 };
   const correct = ours.present + (ref.docs - ref.present);
   const baseline = Math.max(ours.docs, ref.docs) / n;
+  const sens = ours.docs ? ours.present / ours.docs : 0;
+  const spec = ref.docs ? 1 - ref.present / ref.docs : 0;
   return {
     accuracy: correct / n,
     baseline,
     lift: correct / n - baseline,
+    balanced_accuracy: (sens + spec) / 2,
   };
+}
+
+// Concatenate a register's documents into bundles of at least `target` words, applied identically
+// to both sides. A dialogue line is too short to carry a tic; a 250-word bundle of lines is the
+// same size as a short book and makes the presence statistic mean something again.
+export function bundle(docs, target) {
+  const out = [];
+  let cur = [];
+  let w = 0;
+  for (const d of docs) {
+    cur.push(d.text);
+    w += words(d.text);
+    if (w >= target) { out.push({ id: `bundle${out.length}`, text: cur.join(' ') }); cur = []; w = 0; }
+  }
+  if (cur.length) out.push({ id: `bundle${out.length}`, text: cur.join(' ') });
+  return out;
 }
 
 // Two-proportion z-test on document presence. Reported so the reader can apply Bonferroni at 46.
@@ -385,16 +441,18 @@ export function zTest(a, b) {
 }
 
 const REGISTERS = [
-  ['books', 'books'],
-  ['dialogue', 'dialogue'],
-  ['journal', 'journal'],
+  ['books', 'books', 0],
+  ['dialogue', 'dialogue', 250],
+  ['journal', 'journal', 250],
 ];
 
 export function runAll({ ours, ref, rules }) {
   const out = { schema: 'elder-souls/prose-tics@1', rules_sha256: null, registers: {} };
-  for (const [ourKey, refKey] of REGISTERS) {
+  for (const [ourKey, refKey, bundleTo] of REGISTERS) {
     const o = ours[ourKey];
     const r = ref[refKey];
+    const ob = bundleTo ? bundle(o, bundleTo) : o;
+    const rb = bundleTo ? bundle(r, bundleTo) : r;
     const rows = [];
     for (const rule of rules) {
       const mo = measure(rule, o);
@@ -417,6 +475,17 @@ export function runAll({ ours, ref, rules }) {
         ref_presence_pct: mr.presence_pct,
         ...separation(mo, mr),
         z: zTest(mo, mr),
+        bundled: bundleTo
+          ? (() => {
+              const a = measure(rule, ob);
+              const b = measure(rule, rb);
+              return {
+                ours_presence_pct: a.presence_pct,
+                ref_presence_pct: b.presence_pct,
+                ...separation(a, b),
+              };
+            })()
+          : null,
       });
     }
     out.registers[ourKey] = {
@@ -424,6 +493,9 @@ export function runAll({ ours, ref, rules }) {
       ours_words: o.reduce((a, d) => a + words(d.text), 0),
       ref_docs: r.length,
       ref_words: r.reduce((a, d) => a + words(d.text), 0),
+      bundle_words: bundleTo || null,
+      ours_bundles: bundleTo ? ob.length : null,
+      ref_bundles: bundleTo ? rb.length : null,
       rows,
     };
   }
@@ -498,8 +570,14 @@ function selfTest() {
   ok &= assert(mi.per10k > 0, 'mutation: rate is non-zero after injection');
   const sepAfter = separation(mo, mi);
   ok &= assert(sepAfter.accuracy < sep.accuracy, `mutation: separation degrades when the reference is infected (${sep.accuracy.toFixed(3)} -> ${sepAfter.accuracy.toFixed(3)})`);
-  const sepClean = separation(measure(byId['RULE-01'], clean), clean);
+  const sepClean = separation(measure(byId['RULE-01'], clean), measure(byId['RULE-01'], clean));
   ok &= assert(sepClean.accuracy === 0.5, 'a rule that fires on neither side scores 0.50, not 1.00');
+
+  // 6b. the template parser the journal reference depends on
+  const tmpl = braceTemplates('x {{Journal Entries\n|id=Q\n|1||He said {{Small|so}}.\n}} y', '{{Journal Entries');
+  ok &= assert(tmpl.length === 1, 'braceTemplates() finds one template');
+  ok &= assert(templateParams(tmpl[0]).join('¦') === 'id=Q\n¦1¦¦He said {{Small|so}}.\n',
+    'templateParams() splits at depth 0 and keeps a nested template whole');
 
   // 7. the reference corpora must actually be there. Vacuous pass is a failure.
   let ref;
@@ -511,9 +589,9 @@ function selfTest() {
   }
   ok &= assert(ref.books.length >= 200, `Morrowind book reference loaded (${ref.books.length} books, expect ~241)`);
   ok &= assert(ref.dialogue.length >= 60000, `Morrowind dialogue reference loaded (${ref.dialogue.length} rows, expect 69,876)`);
-  ok &= assert(ref.journal.length >= 1000, `Morrowind journal reference loaded (${ref.journal.length} entries from {{Journal Entries}})`);
+  ok &= assert(ref.journal.length >= 3000, `Morrowind journal reference loaded (${ref.journal.length} entries from {{Journal Entries}})`);
   const jw = ref.journal.reduce((a, d) => a + words(d.text), 0);
-  ok &= assert(jw > 50000, `journal reference has real text (${jw} words)`);
+  ok &= assert(jw > 80000, `journal reference has real text (${jw} words)`);
   ok &= assert(!ref.journal.some((d) => /\{\{|\[\[/.test(d.text)), 'journal reference has no leftover wikitext');
 
   // 8. our corpus must be non-empty in every register
@@ -577,15 +655,17 @@ function main() {
   fs.writeFileSync(path.join(ROOT, out), JSON.stringify(res, null, 2) + '\n');
 
   for (const [reg, r] of Object.entries(res.registers)) {
-    console.log(`\n== ${reg}: ours ${r.ours_docs} docs / ${r.ours_words} words   ref ${r.ref_docs} docs / ${r.ref_words} words`);
-    const rows = r.rows.filter((x) => !x.metric).slice().sort((a, b) => b.lift - a.lift).slice(0, top);
-    console.log('  rule      lift   acc    base   ours/10k  ref/10k   ratio  ours%  ref%   z      name');
+    console.log(`\n== ${reg}: ours ${r.ours_docs} docs / ${r.ours_words} words   ref ${r.ref_docs} docs / ${r.ref_words} words` +
+      (r.bundle_words ? `   [bundled to ${r.bundle_words} w: ${r.ours_bundles} vs ${r.ref_bundles}]` : ''));
+    const key = (x) => (x.bundled ? x.bundled.balanced_accuracy : x.balanced_accuracy);
+    const rows = r.rows.filter((x) => !x.metric).slice().sort((a, b) => key(b) - key(a)).slice(0, top);
+    console.log('  rule      bAcc   acc    base   ours/10k  ref/10k   ratio  ours%  ref%   z      name');
     for (const x of rows) {
       console.log(
-        `  ${x.id}  ${fmt(x.lift, 3)}  ${fmt(x.accuracy, 3)}  ${fmt(x.baseline, 3)}  ` +
+        `  ${x.id}  ${fmt(key(x), 3)}  ${fmt(x.bundled ? x.bundled.accuracy : x.accuracy, 3)}  ${fmt(x.bundled ? x.bundled.baseline : x.baseline, 3)}  ` +
         `${fmt(x.ours_per10k).padStart(8)}  ${fmt(x.ref_per10k).padStart(7)}  ` +
-        `${(x.ratio == null ? 'inf' : fmt(x.ratio, 1)).padStart(6)}  ${fmt(x.ours_presence_pct, 1).padStart(5)}  ` +
-        `${fmt(x.ref_presence_pct, 1).padStart(5)}  ${fmt(x.z, 1).padStart(5)}  ${x.name}`
+        `${(x.ratio == null ? 'inf' : fmt(x.ratio, 1)).padStart(6)}  ${fmt(x.bundled ? x.bundled.ours_presence_pct : x.ours_presence_pct, 1).padStart(5)}  ` +
+        `${fmt(x.bundled ? x.bundled.ref_presence_pct : x.ref_presence_pct, 1).padStart(5)}  ${fmt(x.z, 1).padStart(5)}  ${x.name}`
       );
     }
     for (const x of r.rows.filter((y) => y.metric)) {

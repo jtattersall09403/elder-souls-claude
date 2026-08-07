@@ -83,6 +83,17 @@ export class QuestEngine {
     // who you are. `Engine` installs that term here; see `_dispositionToward`.
     this.dispositionModel = null;
 
+    // W1-LIBRARY round 2. book id -> `knowledge_key`, installed by `Engine` from
+    // `game/data/books/**`. `context()` resolves `sim.quest.booksRead` through it, which is what
+    // makes `requires.knowledge: ["book_the_court_and_the_tide"]` satisfiable by READING THE
+    // BOOK. Before this, `ctx.knowledge` unioned only per-quest `know:` flags, whose sole writer
+    // is `reveal()`, which throws unless the id is in that quest's `deceit.revealed_by` — and
+    // none of the three book keys appears in any `revealed_by` in any quest file. Three of the
+    // game's non-violent exits were therefore permanently closed and the round-1 critic measured
+    // them so. Left empty, this changes nothing: an engine that installs no map behaves exactly
+    // as it did before.
+    this.bookKnowledge = new Map();
+
     this.flagHooks = new Map();     // world flag -> hook[]
     this.entryTopics = new Map();   // "questId#index" -> topic ids (RI-DLG05 §A.3 AddTopic edge)
     this.deadlines = [];
@@ -148,6 +159,14 @@ export class QuestEngine {
     const know = new Set();
     for (const id of Object.keys(q.quests)) {
       for (const k of Object.keys(q.quests[id].flags || {})) if (k.startsWith('know:')) know.add(k.slice(5));
+    }
+    // ...and what you have READ. `book.knowledge_key` had zero readers in `game/src/`; this is
+    // the reader. It is a union rather than a second gate so that `requires.knowledge` does not
+    // have to know where the knowledge came from — a truth learned from a person and the same
+    // truth learned from a book satisfy the same clause, which is the point of a lore gate.
+    for (const bid of q.booksRead || []) {
+      const k = this.bookKnowledge.get(bid);
+      if (k) know.add(k);
     }
     const reputation = {}, ranks = {};
     for (const f of Object.keys(q.factions)) {

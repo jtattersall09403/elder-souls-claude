@@ -327,6 +327,12 @@ export class Engine {
     // W1-07 round 4: the race/upbringing/faction term on the offer gate. Installed before the
     // first seed so no window exists in which a gate is evaluated on the raw register.
     this.questEngine.dispositionModel = this._questDispositionModel();
+    // W1-LIBRARY round 2: what each book teaches a quest gate, installed before the first gate
+    // is ever evaluated. FAIL-LOUD on a dangling key, in the same spirit as `_installOpacity`:
+    // a `knowledge_key` no quest asks for is a book that thinks it opens a door that is not
+    // there, and it is exactly how this model came to have no reader without anybody noticing.
+    // The check runs the other way too, in `tools/check-content.mjs`.
+    this.questEngine.bookKnowledge = this._bookKnowledgeIndex();
     this._assertGiversAreVisibleToRace();
     // W1-19: the authored NPC disposition table, copied into the register the quest gates read.
     // Without this every `giver.disposition_min` in game/data/quests/** is unreachable.
@@ -340,7 +346,6 @@ export class Engine {
     // a register nothing reads is a text file. `_installOpacity` resolves every anchor,
     // evidence id and false-account id against the data that actually loaded and THROWS on a
     // dangle, then hands the register to the conversation so the world can decline.
-    this._booksRead = this._booksRead || new Set();
     this._installOpacity();
     this.sim.questEngine = this.questEngine;
     this.real.onTextChar = (ch) => this._censusTypeChar(ch);
@@ -2298,6 +2303,7 @@ export class Engine {
       items, books, attributes: attrs, skills, quests,
       levels: (this.data.progression && this.data.progression.levels) || null,
     });
+    this.ui.onBookOpened = (b) => this._readBook(b);
     this.renderer.uiBuild = (force) => this.ui.build(this._uiCtx(), force);
     // Inside the fixed step, through the same latch a swing arrives on (sim/step.js runs it
     // right after `censusDriver`). A menu press is therefore frame-exact and scriptable.
@@ -2608,22 +2614,56 @@ export class Engine {
     return rows;
   }
 
+  /**
+   * A book was opened. THE WORLD-SIDE CONSUMER OF `topics_taught` AND `knowledge_key`, and the
+   * whole of the W1-LIBRARY round-1 verdict's `GAP-W1-LIBRARY-the-library-has-no-reader-on-the-
+   * world-side`.
+   *
+   * Before this existed, 37,819 words in 65 texts reached nothing: `topics_taught` (60 books,
+   * 116 topics) and `knowledge_key` (8 books) were read by ZERO code in `game/src/`, so the
+   * critic could open all sixty books in the engine and read `topicsKnown: []` after, and the
+   * three non-violent `lore_knowledge` resolutions returned the byte-identical refusal
+   * `you have not learned book_the_court_and_the_tide` before and after the book was read to its
+   * last page. A model with no reader is a text file (RI-MTH07 / ARBITRATION §3).
+   *
+   * Three things happen, and no fourth:
+   *
+   *   1. the book id enters `sim.quest.booksRead`, which the save carries and
+   *      `QuestEngine.context()` resolves into `ctx.knowledge` through `bookKnowledge`;
+   *   2. every topic the book declares enters `topicsKnown` through `topic-supply.js`'s
+   *      fold-safe appender — RI-UIX05 R3's ONE permitted exception, which the item names as
+   *      its entire AR-3 seam crossing: *"reading a book may add a dialogue topic ... a name the
+   *      player can now ask people about"*. A topic, not an objective;
+   *   3. the opacity register records the encounter and attributes it to the `book` route.
+   *
+   * What deliberately does NOT happen: no toast, no "you have learned", no journal line, no
+   * marker, no read/unread mark, no codex entry. R3 permits a topic and nothing else, R4 forbids
+   * the pin, R6 forbids the checklist, and RI-UIX02 §E's differential on the reading screen is
+   * what catches a violation. `topicsKnown` is not drawn on the reading screen.
+   */
+  _readBook(b) {
+    if (!b || !b.id) return null;
+    const q = this.sim.quest;
+    const first = !q.booksRead.includes(b.id);
+    if (first) { q.booksRead.push(b.id); q.booksRead.sort(); }
+    // W1-OPACITY. RI-WLD09 M-OP2 attributes each encounter to a route and `book` is one of the
+    // four that count as unprompted discovery. Idempotent, so re-reading is not a second
+    // encounter.
+    if (this.opacity) this.opacity.met(`book:${b.id}`, 'book');
+    // No trace event. `topic_add` is not in HARNESS.md §5's closed vocabulary for this call site
+    // and the bus refuses it; inventing an event type is an amendment somebody else owns
+    // (HARNESS §10). `getQuestState()` is the observable.
+    const learned = learnTopics(q.topicsKnown, b.topics_taught || []);
+    if (learned.length) q.topicsKnown.sort();
+    return { book: b.id, first, topics_learned: learned, knowledge: b.knowledge_key || null };
+  }
+
   /** RI-UIX03's `openMenu(name)` / `closeMenu()`. `map` is refused, with the reason. */
   openMenu(name, opts) {
+    // `UISystem.open()` fires `onBookOpened` -> `_readBook()`. It is deliberately NOT done here:
+    // this wrapper is the harness door, and a player reads through `UISystem._confirm()`, which
+    // never passes this line. The recorder used to live here and could not see a real reader.
     const mode = this.ui.open(name, opts || {}, this._uiCtx());
-    // W1-OPACITY. Opening a book is how most of the register's evidence is actually met.
-    // RI-WLD09 M-OP2 attributes each encounter to a route and `book` is one of the four that
-    // count as unprompted discovery; without this the route attribution is not computable from
-    // a run, only guessed at from static data. `booksRead` (RI-WLD09's requested harness
-    // extension 3) is the same set, and `getOpacityState()` is where it surfaces.
-    if (mode === 'book' && this.ui.bookId) {
-      this._booksRead.add(this.ui.bookId);
-      // No trace event. `topic_add` is not in HARNESS.md §5's closed vocabulary for this call
-      // site and the bus refuses it, and inventing an event type is an amendment somebody else
-      // owns (HARNESS §10). `getOpacityState()` is the observable; RI-WLD09's requested
-      // `discover` event is listed in the report as an outstanding harness extension.
-      if (this.opacity) this.opacity.met(`book:${this.ui.bookId}`, 'book');
-    }
     // RI-CAM05 §F's closed camera vocabulary: a menu is `menu`, and the camera knows it.
     cameraOpenUI(this.sim, 'menu');
     this.ui._surfaceChanged(this.real);
@@ -5998,7 +6038,17 @@ export class Engine {
       topicsKnown: q.topicsKnown.slice().sort(),
       // RI-WLD09's requested harness extension 3, so M-OP4's derivation test can confirm what
       // the agent had actually read rather than what it was given.
-      booksRead: [...(this._booksRead || [])].sort(),
+      // W1-LIBRARY r2: read off `sim.quest`, which the SAVE carries. It used to read
+      // `Engine._booksRead`, a Set on the engine object that no save blob mentioned and that
+      // `sim.reset()` could not clear — so it survived a state load it should not have and did
+      // not survive a save/load it must.
+      booksRead: q.booksRead.slice().sort(),
+      // What reading those books has actually unlocked, resolved through the same map
+      // `QuestEngine.context()` uses. Reported so a probe can see the gate move, not just the
+      // list grow.
+      bookKnowledge: [...new Set(q.booksRead
+        .map((id) => this.questEngine && this.questEngine.bookKnowledge && this.questEngine.bookKnowledge.get(id))
+        .filter(Boolean))].sort(),
       dispositions: { ...q.dispositions },
       factions: JSON.parse(JSON.stringify(q.factions)),
       crime: JSON.parse(JSON.stringify(q.crime)),

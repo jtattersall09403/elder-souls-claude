@@ -67,6 +67,22 @@ const EXPLICIT = {
   emitStealthSound: 'mutate-world', trapSoul: 'mutate-world', setZoneAmbient: 'mutate-world',
   fogGate: 'mutate-world', lockGate: 'mutate-world', skipDeathSurface: 'mutate-world',
   resetSapTaint: 'mutate-world', renderedTextClear: 'mutate-world',
+
+  // ---- ROUND 4: the seven the fail-closed fuse caught -----------------------------------------
+  // The surface grew from 327 to 334 between round 3 and round 4 and the fuse refused all seven,
+  // exactly as designed. Classified here against the precedent already in this table rather than
+  // being waved through — TOOL-COVERAGE-R3's warning applies: never move a method to `observe` to
+  // make a run go green.
+  //
+  //   setFogGateBoss   changes which boss stands behind a fog gate. `fogGate` and `lockGate` are
+  //                    already mutate-world; this is the same act one field deeper.
+  //   uiToast          writes a toast the game did not raise. RI-JRN01 M9/M15 GREP RENDERED TEXT,
+  //                    so a driver that can post its own strings can author the very evidence
+  //                    those bars read. Same family as `renderedTextClear`.
+  //   drawOnMenus      draws arbitrary glyphs onto the menus canvas and into the text register.
+  //   drawSentinels    the same, with sentinel tags. Both are render-surface mutations.
+  setFogGateBoss: 'mutate-world', uiToast: 'mutate-world',
+  drawOnMenus: 'mutate-world', drawSentinels: 'mutate-world',
   // Quest writes. A driver that opens, resolves, fails, reveals or flags a quest has authored
   // the journey RI-EXP01 is trying to observe.
   questOpen: 'mutate-world', questResolve: 'mutate-world', questFail: 'mutate-world',
@@ -116,6 +132,11 @@ const EXPLICIT = {
   openMenu: 'drive-input', closeMenu: 'drive-input', setUIVisible: 'drive-input',
   uiOpen: 'drive-input', uiClose: 'drive-input', uiFocus: 'drive-input', uiSearch: 'drive-input',
   talkTo: 'drive-input', conversationSay: 'drive-input', conversationClose: 'drive-input',
+  // ROUND 4. `conversationPersuade(verb)` is the SHIPPING player verb — admire/taunt/bribeN —
+  // routed through the real persuasion GMST, refusing when the purse is short. A player does
+  // this; refusing it would stop a driver playing dialogue at all, which is the "cannot pass"
+  // failure this loop keeps having to undo. Sibling of conversationSay, same class.
+  conversationPersuade: 'drive-input',
   censusBegin: 'drive-input', censusAnswer: 'drive-input', censusEnter: 'drive-input',
   titleShow: 'drive-input', titleActivate: 'drive-input', titleDismiss: 'drive-input',
   openWrit: 'drive-input', closeWrit: 'drive-input', readWrit: 'observe',
@@ -144,6 +165,9 @@ const EXPLICIT = {
   rebindSerialise: 'observe', rebindView: 'observe',
 
   // ---- observe: reads whose names do not begin get/list/is -----------------------------------
+  // ROUND 4. Both are pure reads: registerSurfaces is textRegister.coverage(), and
+  // provinceResidency reads the loaded province's field stats. Neither writes anything.
+  registerSurfaces: 'observe', provinceResidency: 'observe',
   npcDisposition: 'observe', questBook: 'observe', questOffers: 'observe',
   questResolutions: 'observe', questResolutionRequirements: 'observe', questVerbCensus: 'observe',
   canJoinFaction: 'observe', coverAt: 'observe', darkCoverage: 'observe', solidAt: 'observe',

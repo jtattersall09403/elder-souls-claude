@@ -2,7 +2,7 @@
   "task_id": "critic-province-stream",
   "brief": "critic with fresh context on W1-01 province streaming pump (Engine._streamProvince from _afterStep + release hysteresis)",
   "started": "wave-1",
-  "state": "measuring",
+  "state": "complete",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-01-province-stream-r1.md",
     "corpus/90-verdicts/wave1/W1-01-province-stream-r1.json",
@@ -10,10 +10,15 @@
     "reports/blog-feed.jsonl (one line)"
   ],
   "outputs_written": [
-    "corpus/90-verdicts/wave1/W1-01-province-stream-r1.md (WIP, sections 0-4)",
-    "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/{modality,fight,displace,posed,settle}.json",
-    "tools/world/critic-prov-r1.mjs",
-    "tools/world/critic-prov-shot.mjs"
+    "corpus/90-verdicts/wave1/W1-01-province-stream-r1.md (FAIL 5/10)",
+    "corpus/90-verdicts/wave1/W1-01-province-stream-r1.json (verdict-validate: OK)",
+    "corpus/90-verdicts/wave1/artifacts/W1-01-province-stream-r1/ (15 json + 4 shot metadata)",
+    "docs/shots/2026-08-07-province-walk-750m-{with,without}-pump.png",
+    "docs/shots/2026-08-07-province-walk-1500m-{with,without}-pump.png",
+    "tools/world/critic-prov-r1.mjs (modes modality|fight|displace|loop|posed|settle|raf|ride|tilem, --break-fix)",
+    "tools/world/critic-prov-shot.mjs",
+    "orchestration/amendments/AM-W1-01-PS-01-plt03-needs-a-motion-axis.md",
+    "reports/blog-feed.jsonl (one line appended)"
   ],
   "findings": [
     "ENVIRONMENT: the working tree at /home/user/elder-souls-claude DOES NOT BOOT. `node tools/harness/boot-check.mjs` exits 12: 'this._installTopicSupply is not a function' (engine.js:321 calls it; nothing defines it). This is a concurrent agent's in-flight edit to game/src/engine.js + game/src/character/converse.js, NOT the province work. All my measurements are therefore taken on a shadow tree pinned at HEAD=8734986 (git archive HEAD), which boot-checks PASS.",
@@ -37,8 +42,15 @@
     "TRAVELRIDE IS THE MODALITY THE FIX DOES NOT SURVIVE. rootspeak svc-065 at 40 m/s, 3293.7 m in 4940 steps: residency is FINE (0 samples with no ground, worst near-3x3 unbuilt 0, end ring 25/25) but the cost is not \u2014 mean 8.06 ms/step, p99 212.67, p99.9 399.79, MAX 674.76 ms, 327 of 4940 steps over 16.7 ms (6.6%, vs 0.32% walking = 20x) and 273 over 50 ms (5.5%). 3293.7 m / SKIN_REBUILD_M 11 = 299 predicted skin rebuilds against 327 observed hitches: the hitch count IS the skin-rebuild count. The whole 82-second ride is one continuous stutter. (loadavg 12.5 \u2014 the RATE is robust, the absolute ms are not.)",
     "travelRide is fare-gated at a cold start: boardTravel refuses every service with 'You have not walked the <leg> road. No one sells passage over ground you have not crossed.' I granted travel.walked for all legs to open the door (declared as a method deviation) \u2014 it opens the fare gate, it does not touch the streamer.",
     "The builder's own AFTER-crossing.json verifies Q6: walkRoute teleports ONCE to pts[0] on (re)start and never again (engine.js:4586); the crossing artifact's speed histogram puts 33,074 of 33,078 samples in the 1.99-2.01 m/s band, walk.done true, path_m 6615.1, minutes 55.131. Genuinely walked. NOTE: the builder's status says 35 samples, the artifact's summary.samples says 34.",
-    "shoot.mjs settleFrames default is 24 (viewpoints-province.json capture block); all 17 province viewpoints inherit it and declare anchors region_* that do not exist in game/data/states."
+    "shoot.mjs settleFrames default is 24 (viewpoints-province.json capture block); all 17 province viewpoints inherit it and declare anchors region_* that do not exist in game/data/states.",
+    "RELEASE HYSTERESIS DOES NOT LEAK: 8 laps of a closed 1.4 km circuit, 834,176 fixed steps (3.86 simulated hours). tiles_resident flat 28-34 against a ceiling of (2*KEEP+1)^2 = 49; province meshes flat 180-230; usedJSHeapSize flat at 109,000,000; underfoot built at every lap. It DOES churn: 36-42 tile builds per lap, i.e. the same tiles destroyed and rebuilt every time round, ~2.6 s of rebuild work per lap.",
+    "rAF ACCUMULATOR: 25 s of real-time walking in mode 'play' loses 8 simulated frames with 3 catch-up clamps and 129 ms dropped, against 3 / 1 / 25.9 ms with the pump neutered (matched control, back to back, same load). Confirms the mechanism: streaming hitches become LOST SIMULATION TIME, not late frames. Applied to the respawn burst: 2,283 ms of arrears, MAX_CATCHUP 5, so ~83 ms of world advances and ~2.2 s is dropped.",
+    "province.tileM PROVED ORPHAN BY MEASUREMENT (not by reading source, which verdict-validate refuses as an artifact kind): two identical 400 m walks from a cold province, tileM 300 then 150. stats() reports tileSizeM 300 then 150; the set of built tile keys is BYTE-IDENTICAL (['5,0','5,1',...] both arms), tiles_resident 30 both. Halving the tile size must change every key floor(x/tileSize); it changed none.",
+    "RI-PLT03's S4 IS THE METRIC NOBODY COMPUTED: 'frames > 50 ms outside declared boundaries per minute of continuous walking', budget <= 1.0, fail > 3.0. My walk: 38 over 50 ms in 14,689 frames = 4.08 traversal min = 9.3/min. The builder's own attribution gives 8.7/min from the other direction. '0.32% of steps over 16.7 ms' and '9.3 hitches per traversal minute' are the same measurement and only one is in the corpus. RI-PLT03 HF4 and HF6 both trigger, capping the item at 2.",
+    "SCORING: RI-PLT03 2 (hard-fail capped), RI-MTH07 6 (4 of 5 knobs couple), RI-WLD01 traversal axis 8. Mean 5.33 -> 5. AR-1 FAIL (448.95 ms frame inside ROLL_IFRAME). AR-2 pass. AR-3 seam_sterile FALSE.",
+    "THE WORKING TREE'S BOOT BREAK WAS TRANSIENT: another agent landed _installTopicSupply mid-run and boot-check PASSES at 13:44Z. The code under test is byte-identical either way - the _streamProvince() body and the whole of game/src/world/province.js diff clean against HEAD - so every measurement describes the tree on disk now.",
+    "PICTURES: the 1500 m pair is the decisive one (with pump: a stone forest of trees, boulders and flagstones; without: a blank grey slope, underfoot_built FALSE, discs 1083.6 m behind). The 750 m pair is deliberately subtler and instructive - at 750 m the GROUND is still there, because with the pump neutered nothing ever calls request() and therefore nothing ever RELEASES either; what has gone is the ground-cover fringe. The defect arrives as missing detail before it arrives as missing ground."
   ],
-  "next_step": "loop leak result; quiet re-run of fight+displace timing; raf accumulator; before/after shots; finish verdict md+json+blog",
-  "notes_for_successor": "load at start 2.15. Must write own probes; must break-the-instrument before trusting."
+  "next_step": "none - complete",
+  "notes_for_successor": "BIGGEST GAP: GAP-W1-provstream-arrival-burst. The urgent branch in Engine._streamProvince (`if (pv.queue[0].d <= STREAM_NEAR_D2) { pump(STREAM_URGENT_TILES); return; }`) sits ABOVE `if (discWork) return;`, so an ARRIVAL frame pays a ~30-tile release + updateSkin(15,625 verts) + updateCover + updateNear + two _buildTile calls at once. Measured on a real death respawn: six frames of 337/405/484/362/223/472 ms. One-line fix: move the discWork guard above the urgent branch, or make the urgent budget `discWork ? 1 : STREAM_URGENT_TILES`. SECOND: skip the request() refocus while combat.player.state is ATK_*/ROLL_* - that is the AR-1 remedy and it is far cheaper than making updateSkin fast. THIRD: budget by metres-since-last-rebuild, not by frames, or travelRide at 40 m/s keeps getting a 2 m/s walk's throughput. Re-run with: node tools/world/critic-prov-r1.mjs --mode displace|ride|fight|loop|raf|settle|tilem, each with --break-fix as the falsification control. Acceptance thresholds are in the verdict's biggest_gap.remedy.acceptance. TAKE THE TIMING RUNS ON A QUIET BOX - mine were at loadavg 12-26 and the absolute milliseconds are upper bounds (the rates and the hard-fail triggers are not: S5's threshold is 100 ms and the smallest arrival-burst frame measured is 222.64 ms)."
 }

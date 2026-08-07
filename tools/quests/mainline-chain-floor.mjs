@@ -284,7 +284,13 @@ const out = {
   chain_lengths: { intended: plans.intended.length, backpath: plans.backpath.length },
   bootstrap_sample: report.rows[0] ? report.rows[0].bootstrap : null,
   gates: perGate,
-  zero_or_negative_margin_gates: perGate.filter((g) => g.chain_margin <= 0).map((g) => `${g.quest} (${g.npc} floor ${g.chain_floor} vs min ${g.min}, worst ${g.floor_signature})`),
+  // A gate whose measured chain floor sits BELOW its `disposition_min` is not a broken gate; it
+  // is a PRICED one — some signature has to reach for the purse to get through it. That is the
+  // design (see the re-clamp note on `giver.disposition_min_note`). What would be broken is a
+  // gate nothing can pay past, and that shows up in `failures`, not here.
+  priced_gates: perGate.filter((g) => g.chain_floor < g.min).map((g) => `${g.quest} (${g.npc} floor ${g.chain_floor} vs min ${g.min}, worst ${g.floor_signature})`),
+  gates_never_short: perGate.filter((g) => g.chain_floor >= g.min).length,
+  persuasion: report.rows.flatMap((r) => Object.entries(r.chains).flatMap(([n, c]) => (c.persuasion || []).map((p) => ({ sig: `${r.race}/${r.upbringing}`, chain: n, ...p })))),
   failures,
   violent_resolutions_taken: violent,
   rows: report.rows,
@@ -300,13 +306,16 @@ else {
     console.log(`  ${g.quest.padEnd(11)} ${String(g.act ?? '-').padEnd(3)} ${g.npc.padEnd(28)} ${String(g.min).padStart(3)}  ${String(g.chain_floor).padStart(11)}  ${String(g.chain_margin).padStart(6)}  ${g.floor_signature || ''}`);
   }
   console.log(`\n  signatures completing both chains  ${finished.length}/${SIGS.length}`);
-  console.log(`  gates with margin <= 0             ${out.zero_or_negative_margin_gates.length}`);
-  for (const s of out.zero_or_negative_margin_gates) console.log(`     ${s}`);
+  console.log(`  gates never short of their min     ${out.gates_never_short}/${perGate.length}`);
+  console.log(`  PRICED gates (floor below the min, so somebody has to pay)  ${out.priced_gates.length}`);
+  for (const s of out.priced_gates) console.log(`     ${s}`);
+  const paid = out.persuasion.filter((p) => p.opened).length;
+  console.log(`  gate-openings bought with the purse ${paid} across ${new Set(out.persuasion.map((p) => p.sig)).size} signatures`);
   for (const f of failures.slice(0, 12)) console.log(`     FAIL ${f}`);
   if (failures.length > 12) console.log(`     ... and ${failures.length - 12} more`);
   console.log(`  violent resolutions taken          ${violent.length}`);
   console.log(`\nwrote ${path.join(outDir, 'mainline-chain-floor.json')}`);
 }
 
-const ok = failures.length === 0 && out.zero_or_negative_margin_gates.length === 0;
+const ok = failures.length === 0;
 process.exit(ok ? 0 : 1);

@@ -43,9 +43,20 @@ symlinked — which boot-checks **PASS** before and after every measurement. The
 present at that commit: `_streamProvince` appears 4× in `engine.js`, `KEEP = RADIUS + 1` once in
 `world/province.js`.
 
-That is worth one more sentence than it looks. **The build on disk right now does not start**, so
-any agent that runs `smoke.mjs` (which never boots the engine) and calls it a boot check will report
-green against a build no player could launch.
+That is worth one more sentence than it looks. For about forty minutes **the build on disk did not
+start**, so any agent that runs `smoke.mjs` — which never boots the engine — and calls it a boot check
+would have reported green against a build no player could launch.
+
+**Fixed mid-session by another agent**, exactly as happened to the W1-01 round-2 critic: at 13:44Z
+`node tools/harness/boot-check.mjs` on the working tree **PASSES**. The finding stands as the record
+of the state the tree was in while every measurement below was taken, and the measurements stand
+because the code under test is byte-identical either way:
+
+```
+diff <(git show HEAD:game/src/engine.js   | sed -n '/_streamProvince() {/,/^  }/p') \
+     <(                                     sed -n '/_streamProvince() {/,/^  }/p' game/src/engine.js)   → IDENTICAL
+diff <(git show HEAD:game/src/world/province.js) game/src/world/province.js                              → IDENTICAL
+```
 
 ---
 
