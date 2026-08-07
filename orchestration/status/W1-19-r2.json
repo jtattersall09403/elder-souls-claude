@@ -2,8 +2,8 @@
   "task_id": "W1-19-r2",
   "brief": "corpus/90-verdicts/wave1/W1-19-r1.md",
   "started": "wave-1 round 2",
-  "state": "building",
-  "successor_generation": 2,
+  "state": "verifying",
+  "successor_generation": 3,
   "files_i_am_editing": [
     "game/data/quests/hooks.json",
     "game/data/quests/*.json (main + the three Q-*-08 journal writes)",
@@ -36,28 +36,31 @@
   ],
   "findings": [
     "REPRO gen-1: cold-boot offerability 0/32; gate margins all exactly 0 at 9 clamped gates; Q-MAIN-01/res_carry drives faction 0 -> -12.",
-    "info.to (Morrowind AddTopic) was authored on 456 of 638 infos with ZERO code consumers — the largest dead model in this area.",
-    "ROOT CAUSE of the faction cliff: factionTerm() read any reputation ROW as a MEMBERSHIP (never read `member`), then argmin'd — monotonically non-increasing in quests completed.",
-    "GEN-2 MEASURED 2026-08-07: gate.js DOES import topicsInclude from core/topics.js — the fold is wired to the quest gate now.",
+    "info.to (Morrowind AddTopic) was authored on 456 of 638 infos with ZERO code consumers \u2014 the largest dead model in this area.",
+    "ROOT CAUSE of the faction cliff: factionTerm() read any reputation ROW as a MEMBERSHIP (never read `member`), then argmin'd \u2014 monotonically non-increasing in quests completed.",
+    "GEN-2 MEASURED 2026-08-07: gate.js DOES import topicsInclude from core/topics.js \u2014 the fold is wired to the quest gate now.",
     "GEN-2 MEASURED: findability --state soulrest-quay: cold 0 topics / 0 offerable / 32 blocked; after greeting the 5 people present and asking what they discuss -> 26 topics, Q-MAIN-01 offerable, 13/32 still blocked. Nothing hand-fed.",
     "GEN-2 CLOSED BY ANOTHER AGENT: the 3 Q-*-08 journal-write topic seeds (Q-ASSZ-08, Q-LEDG-08, Q-XULA-08) were landed by W1-FACTIONS in commit a827645. check-quests is clean; not my work, do not redo it.",
-    "GEN-2 HEADLINE: mainline-chain-floor.mjs — 40/40 signatures complete BOTH chains, 0 violent resolutions, ZERO topics hand-fed. Round 1 was 29/40.",
+    "GEN-2 HEADLINE: mainline-chain-floor.mjs \u2014 40/40 signatures complete BOTH chains, 0 violent resolutions, ZERO topics hand-fed. Round 1 was 29/40.",
     "GEN-2 CONTROL (--sabotage no-bootstrap): 0/40, every signature blocked at Q-MAIN-01 on 'the topic \"the drowned tally\" has not come up yet'. Greeting one carter is the whole load-bearing world action; the instrument goes red on demand.",
-    "GEN-2 TOOL BUG FOUND AND FIXED: mainline-findability.mjs TRANSCRIBED the fold rule instead of importing it, and the transcription had drifted — topicKey DROPS apostrophes, the copy only normalised curly-to-straight. Every possessive topic (the whole of Act IV) was scored unmatched. True numbers with the imported rule: world-suppliable 30/32, exists-as-dialogue-topic 32/32, supplied_only_by_itself 0, no_supplier_at_all 0. Both of the verdict's acceptance metrics are met.",
+    "GEN-2 TOOL BUG FOUND AND FIXED: mainline-findability.mjs TRANSCRIBED the fold rule instead of importing it, and the transcription had drifted \u2014 topicKey DROPS apostrophes, the copy only normalised curly-to-straight. Every possessive topic (the whole of Act IV) was scored unmatched. True numbers with the imported rule: world-suppliable 30/32, exists-as-dialogue-topic 32/32, supplied_only_by_itself 0, no_supplier_at_all 0. Both of the verdict's acceptance metrics are met.",
     "GEN-2 CONSUMPTION PROOF for q.directions: opened Q-MAIN-01 by playing, asked the giver 'the way to reading of the count', got the authored string verbatim and the flag directions_heard:Q-MAIN-01. Perturbed the string in mainline-act1.json -> the NPC's spoken line changed with it. File restored.",
     "GEN-2 chain floor leaves 8 PRICED gates (floor below min); 4 saxhleel signatures buy Q-MAIN-23 open with one bribe1000. --sabotage no-purse measures what that is worth."
   ],
   "controls_run": {
     "default": "40/40 both chains, 0 violent, 0 hand-fed topics",
-    "--sabotage no-bootstrap": "0/40, all blocked at Q-MAIN-01 on the topic — the instrument goes red",
-    "--sabotage hand-feed": "40/40, IDENTICAL to the unfed run — the forward AddTopic graph, not the hand-feed, is carrying the chain",
+    "--sabotage no-bootstrap": "0/40, all blocked at Q-MAIN-01 on the topic \u2014 the instrument goes red",
+    "--sabotage hand-feed": "40/40, IDENTICAL to the unfed run \u2014 the forward AddTopic graph, not the hand-feed, is carrying the chain",
     "--sabotage no-purse (before the re-clamp)": "36/40; exactly ONE gate in 31 arrived-at short: Q-MAIN-23 by 1.96, for all four saxhleel signatures",
     "--sabotage no-purse (AFTER the re-clamp)": "40/40, 0 gates arrived short, 0 gate-openings bought, 0 violent resolutions. Every race and upbringing finishes both chains with NO money at all and NO topic hand-fed."
   },
   "findings_2": [
     "GEN-2 NEW METRIC `arrival_floor`: the standing the worst signature walks up to a gate WITH, as opposed to `chain_floor` (min over all steps) or the round-1 cold start. chain_floor called 8 gates 'priced'; only 1 of those 31 is actually arrived-at short. A gate has to be passable when you reach it, not at every instant.",
-    "GEN-2 CLAMP DECISION: Q-MAIN-23 giver.disposition_min 12 -> 8, set from the measured worst arrival 10.04 (saxhleel, no purse, nothing hand-fed), reserve 2.04. Round 1 set it from the cold start (margin 0); the round-2 pass set it from chain_floor (still 1.96 short). disposition_min_race_blind is read by NO engine code — it is provenance only, and the note used to overclaim that it carried the discrimination. Corrected in place."
+    "GEN-2 CLAMP DECISION: Q-MAIN-23 giver.disposition_min 12 -> 8, set from the measured worst arrival 10.04 (saxhleel, no purse, nothing hand-fed), reserve 2.04. Round 1 set it from the cold start (margin 0); the round-2 pass set it from chain_floor (still 1.96 short). disposition_min_race_blind is read by NO engine code \u2014 it is provenance only, and the note used to overclaim that it carried the discrimination. Corrected in place."
   ],
-  "next_step": "confirm no-purse is 40/40 after the re-clamp, re-run the default, boot-check, blog line",
-  "notes_for_successor": "gen-1 died mid-run; it had ALREADY landed the factionTerm split and written mainline-chain-floor.mjs even though its next_step said otherwise. Read the code before redoing anything. S35: a map exists but no quest may put anything on it — findability must NOT route through the map."
+  "next_step": "GEN-3: re-run mainline-chain-floor default + --sabotage no-purse; then the 34 bodiless quest topics + 35 hooks self-loops; then checkers + boot-check + blog",
+  "notes_for_successor": "gen-1 died mid-run; it had ALREADY landed the factionTerm split and written mainline-chain-floor.mjs even though its next_step said otherwise. Read the code before redoing anything. S35: a map exists but no quest may put anything on it \u2014 findability must NOT route through the map.",
+  "findings_3": [
+    "GEN-3 START 2026-08-07: container restarted twice; picking up from gen-2 next_step. Tree at 2623123."
+  ]
 }

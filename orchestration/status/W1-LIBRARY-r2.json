@@ -42,7 +42,7 @@
     "P90 FIXED BY WRITING, NOT BY ARITHMETIC: the corpus had NO book between 944 and 1,316 words, which is why the two estimators disagreed by 150 words. Three new 1,281-1,357-word volumes fill the hole; p90 is now 1,317.3 under linear interpolation, with the floor index no longer flattering it. S6 IQR 6.0 -> 6.6.",
     "BOTH NEW book-stats CHECKS GO RED ON THE CRITIC'S OWN DERANGED CORPUS: S8 (books anchoring >=1 declared topic in their own prose) 76.9% -> 10%, S9 (contradiction edges whose subject both texts engage) 89.2% -> 29.4%, S10 (books flagged Argonian whose byline names a Tamrielic author) 0 -> 30. self-test is 10/10 RED including the two mutations the critic invented."
   ],
-  "next_step": "book-budget.mjs estimator + a derangement-sensitive check; then the K5/K6/K7 probe and the delete-the-fix runs",
-  "notes_for_successor": "",
+  "next_step": "SUCCESSOR-2 RESUMED 2026-08-07. Confirmed in tree: bookKnowledge/_bookKnowledgeIndex/_readBook/UISystem.onBookOpened/save field/orchestrator guard removed. Remaining: (a) book-budget.mjs estimator + derangement-sensitive check, (b) K5/K6/K7/K10 probes, (c) delete-the-fix runs, (d) RI-LOR03 \u00a72 112 texts + skill-book overlay >=26.",
+  "notes_for_successor": "Successor-2 starting. Predecessor-1 landed the consumer chain (verified by grep in engine.js/machine.js/ui/system.js) and book-stats.py S8/S9/S10 + linear pct(). book-budget.mjs is NOT yet fixed.",
   "files_touched_prose": []
 }
