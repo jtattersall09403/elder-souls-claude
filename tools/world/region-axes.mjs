@@ -478,6 +478,34 @@ if (existsSync(join(ROOT, shotsDir, 'ANSWERS.json'))) {
   }
 }
 
+// ---- rendered SOUND, if a spectra pack is present ---------------------------------------------
+//
+// W1-22. This file's own header explains why `audio` was dropped: "The audio axis is the sharpest
+// illustration — getWorldStats() reports audioMB: 0. There is no audio in this build at all, and
+// the audio axis still scores 78/78." That was right, and it stopped being right when the beds
+// were built. What is loaded here is not a table of strings — it is the level-normalised 24-band
+// spectrum of PCM that `Engine.ambienceCapture()` actually rendered, written by
+// `tools/analysis/ambience-render.mjs`.
+//
+// It is OPTIONAL and fails OPEN. With no sidecar the axis stays dropped and this tool behaves
+// exactly as it did before, which matters because every other agent runs it. An audio axis that
+// hard-failed the whole M18 measurement whenever nobody had re-rendered would be a fail-closed
+// assertion landed ahead of its data, and that has taken this engine down four times in two days.
+let audioSpec = null, audioSpecMeta = null;
+{
+  const p = join(ROOT, 'reports/w1-22/ambience-spectra.json');
+  if (existsSync(p)) {
+    const doc = rd('reports/w1-22/ambience-spectra.json');
+    if (doc && doc.regions && Object.keys(doc.regions).length >= 2) {
+      audioSpec = {};
+      for (const [k, v] of Object.entries(doc.regions)) audioSpec[k] = v.bands;
+      audioSpecMeta = { seconds: doc.seconds, sample_rate: doc.sample_rate, bands: doc.bands,
+                        regions: Object.keys(doc.regions).length,
+                        source: 'reports/w1-22/ambience-spectra.json (tools/analysis/ambience-render.mjs)' };
+    }
+  }
+}
+
 // ---- the axes ---------------------------------------------------------------------------------------
 const AXES = [
   { id: 'slope_histogram', source: 'built terrain (field.slopeAt over 900 in-region samples)',
@@ -556,10 +584,33 @@ const RENDERED_AXES = [
   { id: 'rendered_vertical_structure', source: 'rendered pixels: the sky/canopy/ground CIELAB profile down the frame',
     d: (a, b) => { let s = 0; for (let i = 0; i < 4; i++) s += dE(a.slice(i * 3, i * 3 + 3), b.slice(i * 3, i * 3 + 3)); return s / 4; }, min: 10.0 },
 ];
+/**
+ * The audio axis, measured off rendered sound rather than dropped. W1-22.
+ *
+ * Cosine distance between two regions' level-normalised 24-band spectra. Level is normalised out
+ * on purpose: two regions must not count as different because one is louder, which is the audio
+ * equivalent of the pooling mistake the `rendered` loader above warns about.
+ *
+ * The 0.15 minimum is constructed. It is the same threshold `ambience-render.mjs` G3 uses, and
+ * its justification is empirical rather than theoretical: with every L1 forced to one shared
+ * asset — RI-AUD03's own "one swamp loop" failure — the fraction of pairs clearing 0.15 collapses.
+ * A threshold that survives its own sabotage control is worth more than a rounder number.
+ */
+const AUDIO_AXIS = {
+  id: 'audio_spectrum',
+  source: 'rendered sound: level-normalised 24-band spectrum of the PCM Engine.ambienceCapture() rendered for this region',
+  d: (a, b) => {
+    let dot = 0, na = 0, nb = 0;
+    for (let i = 0; i < a.length; i++) { dot += a[i] * b[i]; na += a[i] * a[i]; nb += b[i] * b[i]; }
+    return (na === 0 || nb === 0) ? 1 : 1 - dot / Math.sqrt(na * nb);
+  },
+  min: 0.15,
+};
+
 const DROPPED = [
   { axis: 'fauna', reason: 'no enemy or creature is placed in any region in this build; a fauna axis scored off a table row would read 78/78 on an empty province' },
 
-  { axis: 'audio', reason: 'getWorldStats() reports audioMB 0. There is no audio in this build at all (verdict W1-01 §4d)' },
+  ...(audioSpec ? [] : [{ axis: 'audio', reason: 'no reports/w1-22/ambience-spectra.json on disk. The beds exist (game/data/audio/ambience/) but nobody has re-rendered them; run `node tools/analysis/ambience-render.mjs --seconds 20` and this axis becomes measurable. Historically: "getWorldStats() reports audioMB 0. There is no audio in this build at all" (verdict W1-01 §4d) — that is no longer the reason.' }]),
   { axis: 'weather', reason: 'weather is a per-frame capture parameter, not a property of the built world; it enters through rendered_palette when the M17 night and worst-weather passes are captured' },
 
 ];
@@ -567,7 +618,8 @@ const DROPPED = [
 const ids = regions.map((r) => r.id);
 const pairs = [];
 const axisCounts = {};
-for (const a of [...AXES, ...RENDERED_AXES]) axisCounts[a.id] = 0;
+const AUDIO_AXES = audioSpec ? [AUDIO_AXIS] : [];
+for (const a of [...AXES, ...RENDERED_AXES, ...AUDIO_AXES]) axisCounts[a.id] = 0;
 let minAxes = Infinity, minPair = null;
 for (let i = 0; i < ids.length; i++) {
   for (let j = i + 1; j < ids.length; j++) {
@@ -587,13 +639,20 @@ for (let i = 0; i < ids.length; i++) {
       available++;
       if (v >= ax.min) { k++; axisCounts[ax.id]++; }
     }
+    for (const ax of AUDIO_AXES) {
+      if (!audioSpec[ids[i]] || !audioSpec[ids[j]]) { per[ax.id] = null; continue; }
+      const v = ax.d(audioSpec[ids[i]], audioSpec[ids[j]]);
+      per[ax.id] = +v.toFixed(4);
+      available++;
+      if (v >= ax.min) { k++; axisCounts[ax.id]++; }
+    }
     pairs.push({ a: ids[i], b: ids[j], axes_differing: k, axes_available: available, per_axis: per });
     if (k < minAxes) { minAxes = k; minPair = `${ids[i]} / ${ids[j]}`; }
   }
 }
 pairs.sort((p, q) => p.axes_differing - q.axes_differing);
 
-const available = AXES.length + (rendered ? RENDERED_AXES.length : 0);
+const available = AXES.length + (rendered ? RENDERED_AXES.length : 0) + AUDIO_AXES.length;
 const BAR = Math.max(5, Math.round(available * 6 / 9));   // RI-WLD04 M18's ">= 6 of 9", pro rata
 const doc = {
   schema: 'elder-souls/region-axes@2',

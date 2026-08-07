@@ -19,7 +19,10 @@
     "game/src/world/canon.js (CanonRegistry: resolve/stanceOf/allows/noteHeard/state + faction id folding)",
     "game/data/lore/canon.json (generated)",
     "corpus/60-lore/data/canon-facts.json (54 -> 68 facts, 6 -> 20 disputes, holders/voiced_by/topics/dispute_kind, not_disputes block)",
-    "game/data/dialogue/topics/70-disputes.json (18 position-bearing infos, each tagged cf+pos)"
+    "game/data/dialogue/topics/70-disputes.json (18 position-bearing infos, each tagged cf+pos)",
+    "tools/lore/canon-consumption.mjs (RI-MTH07 demonstration; PASS)",
+    "game/src/engine.js (_installCanon, _canonWorldIndex, getCanonState, lore/canon.json loader branch, topics_offered threads the register)",
+    "game/src/character/converse.js (infoFor/topicsFor take the register; setCanon; say() notes what was heard; cf/pos carried out)"
   ],
   "findings": [
     "canon-facts.json (54 facts) lives ONLY in corpus/60-lore/data/. NOTHING in game/ reads it. Its only consumers are two critic scripts: corpus/80-methods/canon-check.py and book-stats.py. This is the exact RI-MTH07 consumption failure: 'a registry nothing reads is a document'.",
@@ -36,8 +39,11 @@
     "THE RULING that does the work: a contradiction is a disagreement about what IS THE CASE; a disagreement about what is WORTH DOING is an argument and does not belong in the registry. Four martial edges are arguments (shield worth carrying / high grip worth the reach / hooked weapon fit for a soldier / shield line in standing water, which is a regulation against a practice).",
     "ONE EDGE IS MIS-DECLARED: the-sap-and-the-knife <-> what-the-hollow-has-to-trade are ON THE SAME SIDE. Both argue the terms are depth-and-season and that 'whether' is not in them. The real opponent is the keepers, who had no book. Registered as CF-D017 with both texts under position A.",
     "READING THE BOOKS REVERSED SEVERAL FIRST-PASS ATTRIBUTIONS, and this is the argument for reading them. The Blessings of the Coast AGREES the Legion does not go inland ('This is true, and we say so proudly') - so the dispute is not WHETHER but WHY, which is where the politics live. Prefect Arn's lease book is the DEFENCE, not the critique; the Casebook is the one that notices the consent question. On the Ninth Clause both dialogue voices treat the clause as existing, so both are position A.",
-    "FACTION IDS ARE SPELLED TWO WAYS ON NPC RECORDS: drowned-court 17 / the_drowned_court 11, wet-ledger 23 / the_wet_ledger 6, rootkeepers 22 / the_rootkeepers 4, ninth-cohort 44 / ninth_cohort 1, house_dres 1 / house-dres 1. Any matcher comparing exactly sees a fraction of the population and sees it silently. game/src/world/canon.js#fold() normalises; other pieces should check whether they do."
+    "FACTION IDS ARE SPELLED TWO WAYS ON NPC RECORDS: drowned-court 17 / the_drowned_court 11, wet-ledger 23 / the_wet_ledger 6, rootkeepers 22 / the_rootkeepers 4, ninth-cohort 44 / ninth_cohort 1, house_dres 1 / house-dres 1. Any matcher comparing exactly sees a fraction of the population and sees it silently. game/src/world/canon.js#fold() normalises; other pieces should check whether they do.",
+    "CONSUMPTION DEMONSTRATED (tools/lore/canon-consumption.mjs, PASS): 141 references resolve; a voiced_by naming a book nobody wrote goes red; a position with no holders goes red; 4 topics on which two REAL shipped people give incompatible registered answers (the-thinning 3 sides, the-weeping-ford, slavery, the-count-itself); 11/11 registered lines VANISH when the speaker is struck out of the register; 409 untagged answers byte-identical with and without it (the control); 336/336 people hold at least one registered position.",
+    "MY OWN PERTURBATION WAS WRONG FIRST TIME and its output told me: removing the actor alone left 4 of 11 lines standing because the speaker also matched by faction. A perturbation that leaves a second route open measures the route it forgot.",
+    "The shipped register carries NO ruling: 0 facts with authorially_true, 19 sha256 seals, 1 deliberately-open dispute unsealed. The game cannot adjudicate because the answer is not in the binary."
   ],
-  "next_step": "wire engine (_installCanon + loader branch + getCanonState) and converse.js stance gate; then perturbation demo; then checks",
+  "next_step": "deep-time audit; Hist/tribes/Empire/Dres check; report; blog line; browser verification when load drops",
   "notes_for_successor": "Fresh start 2026-08-07. No predecessor status file existed."
 }

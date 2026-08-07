@@ -204,7 +204,23 @@ function runBiquad(x, b0, b1, b2, a1, a2) {
   return y;
 }
 
+/**
+ * Mono sum of a capture. Accepts either the plain-array form or the base64 16-bit interleaved
+ * form the engine returns by default — see `Engine.ambienceCapture()` for why the compact form
+ * exists. Decoding happens here, in Node, on samples the browser produced; nothing in this path
+ * asks the engine to summarise itself.
+ */
 function mono(cap) {
+  if (cap.pcm16_interleaved_b64) {
+    const raw = Buffer.from(cap.pcm16_interleaved_b64, 'base64');
+    const n = raw.length >> 2;                       // 2 channels x 2 bytes
+    const m = new Float64Array(n);
+    for (let i = 0; i < n; i++) {
+      const l = raw.readInt16LE(i * 4) / 32767, r = raw.readInt16LE(i * 4 + 2) / 32767;
+      m[i] = 0.5 * (l + r);
+    }
+    return m;
+  }
   const n = cap.L.length;
   const m = new Float64Array(n);
   for (let i = 0; i < n; i++) m[i] = 0.5 * (cap.L[i] + cap.R[i]);
@@ -338,14 +354,13 @@ try {
       for (const [id, t] of Object.entries(trims)) {
         E.ambience.beds[id].bed_gain_db = t;
         const c = await E.ambienceCapture({ region: id, seconds, sampleRate: rate, tod: 'day' });
-        res[id] = c.ok ? { L: c.L, R: c.R, sampleRate: c.sampleRate } : null;
+        res[id] = c.ok ? { pcm16_interleaved_b64: c.pcm16_interleaved_b64, sampleRate: c.sampleRate } : null;
       }
       return res;
     }, { trims, seconds: SECONDS, rate: RATE });
     for (const [id, c] of Object.entries(re)) {
       if (!c) continue;
-      const m = new Float64Array(c.L.length);
-      for (let i = 0; i < m.length; i++) m[i] = 0.5 * (c.L[i] + c.R[i]);
+      const m = mono(c);
       out.regions[id].lufs_i_before_trim = out.regions[id].lufs_i;
       out.regions[id].bed_gain_db = trims[id];
       out.regions[id].lufs_i = +lufsIntegrated(m, c.sampleRate).toFixed(2);
@@ -377,7 +392,7 @@ try {
     const caps = {};
     for (const id of ids) {
       const c = await E.ambienceCapture({ region: id, seconds, sampleRate: rate, tod: 'day' });
-      caps[id] = c.ok ? { L: c.L, R: c.R, sampleRate: c.sampleRate } : null;
+      caps[id] = c.ok ? { pcm16_interleaved_b64: c.pcm16_interleaved_b64, sampleRate: c.sampleRate } : null;
     }
     for (const id of ids) beds[id].layers.L1 = saved[id];
     return caps;
@@ -386,9 +401,7 @@ try {
   const ctlBands = {};
   for (const [id, c] of Object.entries(ctlSpecs)) {
     if (!c) continue;
-    const m = new Float64Array(c.L.length);
-    for (let i = 0; i < m.length; i++) m[i] = 0.5 * (c.L[i] + c.R[i]);
-    ctlBands[id] = bandSpectrum(m, c.sampleRate).bands;
+    ctlBands[id] = bandSpectrum(mono(c), c.sampleRate).bands;
   }
   const cIds = Object.keys(ctlBands);
   let cPairs = 0, cSep = 0;
@@ -506,14 +519,14 @@ try {
     bed.layers.L1.synth.partials_hz = saved;
     const restored = await E.ambienceCapture({ region: 'valus-ridge', seconds, sampleRate: rate, tod: 'day' });
     return {
-      before: { L: before.L, R: before.R, sampleRate: before.sampleRate },
-      after: { L: after.L, R: after.R, sampleRate: after.sampleRate },
-      restored: { L: restored.L, R: restored.R, sampleRate: restored.sampleRate },
+      before: { pcm16_interleaved_b64: before.pcm16_interleaved_b64, sampleRate: before.sampleRate },
+      after: { pcm16_interleaved_b64: after.pcm16_interleaved_b64, sampleRate: after.sampleRate },
+      restored: { pcm16_interleaved_b64: restored.pcm16_interleaved_b64, sampleRate: restored.sampleRate },
       from: saved, to: saved.map((f) => f * 3),
     };
   }, { seconds: SECONDS, rate: RATE });
 
-  const pm = (c) => { const m = new Float64Array(c.L.length); for (let i = 0; i < m.length; i++) m[i] = 0.5 * (c.L[i] + c.R[i]); return m; };
+  const pm = mono;
   const sBefore = bandSpectrum(pm(perturb.before), perturb.before.sampleRate);
   const sAfter = bandSpectrum(pm(perturb.after), perturb.after.sampleRate);
   const sRestored = bandSpectrum(pm(perturb.restored), perturb.restored.sampleRate);

@@ -194,6 +194,14 @@ function clone(docs) { return JSON.parse(JSON.stringify(docs)); }
 function selfTest() {
   const docs = loadTopicDocs();
   const npcs = loadNpcs();
+  // A root's infos are spread over SEVERAL files and only the declaring file carries
+  // `root: true` — `buildTopicIndex` ORs the flag onto the merged record, so `06-opening-roots`
+  // and `07-root-coverage` add root infos without re-declaring it. A mutation that filters on
+  // `t.root` therefore misses every file but `00-roots.json`, and the first version of M3 did:
+  // it left the villager and clerk halves untouched and plateaued at 51.9% instead of 100%,
+  // which reads exactly like a broken metric. Take the roster off the index instead.
+  const rootKeys = new Set((buildTopicIndex(clone(docs)).roots || []).map((r) => r.key));
+  const isRoot = (t) => t && typeof t.id === 'string' && rootKeys.has(topicKey(t.id));
   const base = run(buildTopicIndex(clone(docs)), npcs, { quiet: true });
   let pass = 0, fail = 0;
   const check = (name, cond, detail) => {
@@ -206,7 +214,7 @@ function selfTest() {
   // M1 — strip the generic (actorless) tier.
   {
     const d = clone(docs);
-    for (const doc of d) for (const t of (doc.topics || [])) if (t.root) t.infos = (t.infos || []).filter((i) => i.a);
+    for (const doc of d) for (const t of (doc.topics || [])) if (isRoot(t)) t.infos = (t.infos || []).filter((i) => i.a);
     const r = run(buildTopicIndex(d), npcs, { quiet: true });
     check('M1 removing every generic info lowers coverage', r.answering_any < base.answering_any,
       `${base.answering_any} -> ${r.answering_any}`);
@@ -214,7 +222,7 @@ function selfTest() {
   // M2 — strip the actor tier.
   {
     const d = clone(docs);
-    for (const doc of d) for (const t of (doc.topics || [])) if (t.root) t.infos = (t.infos || []).filter((i) => !i.a);
+    for (const doc of d) for (const t of (doc.topics || [])) if (isRoot(t)) t.infos = (t.infos || []).filter((i) => !i.a);
     const r = run(buildTopicIndex(d), npcs, { quiet: true });
     const lostVoices = r.dullness > base.dullness;
     check('M2 removing every actor info makes the province duller', lostVoices,
@@ -223,7 +231,7 @@ function selfTest() {
   // M3 — collapse every root answer to one string. Coverage must NOT move; sameness must.
   {
     const d = clone(docs);
-    for (const doc of d) for (const t of (doc.topics || [])) if (t.root) for (const i of (t.infos || [])) i.x = 'One sentence for everybody.';
+    for (const doc of d) for (const t of (doc.topics || [])) if (isRoot(t)) for (const i of (t.infos || [])) i.x = 'One sentence for everybody.';
     // Tier 1 of the precedence ladder is a line on the person's OWN record, which the topic
     // index cannot reach. Left in place, the fixture's dullness plateaus around 52% and the
     // check "passes" for a reason that has nothing to do with the mutation — the first version
@@ -231,10 +239,10 @@ function selfTest() {
     const flat = npcs.map((n) => ({ ...n, lines: null }));
     const r = run(buildTopicIndex(d), flat, { quiet: true });
     const baseFlat = run(buildTopicIndex(clone(docs)), flat, { quiet: true });
-    check('M3 one string for everybody leaves COVERAGE untouched', r.answering_any === base.answering_any,
-      `${r.answering_any}`);
+    check('M3 one string for everybody leaves COVERAGE untouched', r.answering_any === baseFlat.answering_any,
+      `${baseFlat.answering_any} -> ${r.answering_any}`);
     check('M3 one string for everybody drives DULLNESS to 100%', r.dullness > 0.999,
-      `${(base.dullness * 100).toFixed(1)}% -> ${(r.dullness * 100).toFixed(1)}%`);
+      `${(baseFlat.dullness * 100).toFixed(1)}% -> ${(r.dullness * 100).toFixed(1)}%`);
   }
   // M4 — move everybody to a settlement that exists but is not theirs.
   {

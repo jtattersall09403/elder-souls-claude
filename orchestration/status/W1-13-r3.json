@@ -1,0 +1,20 @@
+{
+  "task_id": "W1-13-r3",
+  "brief": "death, recovery, hearth loop, levelling — round 3 after FAIL 5/10",
+  "started": "wave-1 round 3",
+  "state": "researching",
+  "outputs_expected": [
+    "fix: applyDerivedPools works without sim.character",
+    "fix: level-up screen attribute vocabulary == character attributes",
+    "fix: bloodstain visible from all bearings",
+    "fix: second death places a stain (or arbitration filed)",
+    "fix/answer: respawn drift with axis held",
+    "fix: central world-runs-on-entry gate in journey-run.mjs",
+    "docs/shots/<image>.png",
+    "reports/blog-feed.jsonl line"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read r2 status file, NEXT-DISPATCH §P, check contention",
+  "notes_for_successor": "Round 2 FAILED 5/10. Verdict corpus/90-verdicts/wave1/W1-13-r2.md path_to_ten is the spec. DO NOT claim the respawn drift fix again without a held-axis delete-the-fix comparison."
+}

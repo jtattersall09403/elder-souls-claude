@@ -2,7 +2,7 @@
   "task_id": "W1-GIVER-PRESENCE",
   "brief": "dispatch: GAP-W1-quest-givers-not-in-the-world (top open defect, from corpus/90-verdicts/wave1/W1-19-r2.md \u00a72)",
   "started": "wave-1",
-  "state": "verifying",
+  "state": "complete",
   "outputs_expected": [
     "tools/world/build-giver-posts.mjs (generator: a post in the world for every quest giver)",
     "game/data/npcs/*.json (giver records gain `post` + `schedule`)",
@@ -28,7 +28,15 @@
     "game/src/harness/api.js (questPresenceGate, populateSite, travelToGiver)",
     "tools/quests/mainline-chain-floor.mjs (conjuring removed -> travelToGiver)",
     "tools/quests/utility-findability.mjs (--state crash fixed; a quest counts only after talkTo(giver))",
-    "tools/quests/critic-giver-presence.mjs (default state list DERIVED from the build; --legacy-states added; questions and control untouched)"
+    "tools/quests/critic-giver-presence.mjs (default state list DERIVED from the build; --legacy-states added; questions and control untouched)",
+    "game/data/dialogue/topics/56-writ-house-open.json (NEW: the 6 real missing topic bodies)",
+    "tools/harness/viewpoints.json (VP04-settlement-street repointed at town-thorn)",
+    "tools/quests/w1-giver-presence-consumption.mjs (NEW: RI-MTH07 probe, 5/5 CONSUMED, 5/5 red under --self-test)",
+    "docs/shots/2026-08-07-giver-presence-before-vp04-empty-origin.png",
+    "docs/shots/2026-08-07-giver-presence-after-vp04-thorn-street.png",
+    "docs/shots/2026-08-07-giver-presence-thorn-hall-populated.png",
+    "reports/blog-feed.jsonl (one line)",
+    "reports/runs/W1-GIVER-PRESENCE/{final,legacy,delete-the-fix,floor-red}/"
   ],
   "findings": [
     "START CONTENTION: pgrep -c headless_shell = 14, loadavg 11.81 -> above the 8 cap. Authoring phase first, no browser. git working tree CLEAN at start; W1-04, W1-FACTIONS, W1-ATTR-SCALE all report state=complete, so the NPC and quest files are not being written under me right now.",
@@ -61,7 +69,11 @@
     "--state NOW WORKS and thorn-hall was measured for the first time: 4 towns (town-helstrom, town-gideon, town-thorn, thorn-hall) give 23 quests opened by playing, all with the giver present. Thorn alone goes 2 cold -> 7 after, learning 12 quest keywords.",
     "mainline-chain-floor with the conjuring removed and the presence term ARMED still reports 40/40 signatures completing both chains, 0/31 gates arriving short, 0 bought, 0 violent \u2014 and 0 giver_absent entries. The chain is now walked against real people rather than against bodies the probe made up.",
     "RED CONTROL MIS-AIMED FIRST TIME, recorded rather than hidden: stripping undersexton-aveline-rell's settlement/post did NOT make the chain-floor go red, because soulrest-quay's `npcs:` block HAND-PLACES her. That is itself the shape of the original defect \u2014 the one giver who was always in the world was the one somebody had typed into a state file. Re-aimed at neeja-xul (Q-MAIN-07/14/19/29), who is hand-placed in no state.",
-    "THE BOX BROKE UNDER ME MID-RUN, and it was not mine: `ReferenceError: ImpactAudio is not defined at engine.js:290` on a fresh boot, while `import { ImpactAudio } from './audio/impact-audio.js'` is present on line 40. Another agent was mid-write on game/src/engine.js and game/src/world/field.js (W1-PROSE-R2 status file moving at the same time). boot-check PASSes again afterwards. If you see this error, re-run before believing it."
+    "THE BOX BROKE UNDER ME MID-RUN, and it was not mine: `ReferenceError: ImpactAudio is not defined at engine.js:290` on a fresh boot, while `import { ImpactAudio } from './audio/impact-audio.js'` is present on line 40. Another agent was mid-write on game/src/engine.js and game/src/world/field.js (W1-PROSE-R2 status file moving at the same time). boot-check PASSes again afterwards. If you see this error, re-run before believing it.",
+    "RED CONTROL ON THE REPAIRED CHAIN-FLOOR INSTRUMENT, second aim, decisive. Strip neeja-xul (Q-MAIN-07/14/19/29, hand-placed in no state) of settlement+post and mainline-chain-floor goes 40/40 -> 0/40, every one of the 40 signatures blocked at Q-MAIN-07 with `giver absent: neeja-xul is not in this world`, 80 giver_absent entries recorded carrying `why: neeja-xul has no place in the world (settlement=null, site=null)`. The OLD tool would have conjured him at [0,0,2] and carried on. Record restored, index regenerated, 40/40 again.",
+    "FOUR GATES CLEAN AT HANDOFF: check-data 542 files / 336 NPC records all resolving, check-quests 120 quests, check-content 383 resolutions, boot-check PASS with a rendered frame. The `--sabotage assume-present` control still runs and now agrees with the live run at 120/120, which is correct and is why it must NOT be cited as the falsifier \u2014 delete-the-fix (9/120) and the consumption probe's self-test are.",
+    "boot-check went RED once more mid-run and again it was not mine: `canon register: 15 unresolved reference(s) in game/data/lore/canon.json` thrown from a NEWLY ADDED Engine._installCanon() (W1-23, uncommitted, 83 insertions in the working tree) against disputes whose `positions[].held_by` are prose group names ('Imperial scholars', 'the Deep-Kin') that cannot resolve to a speaker id. It cleared on the next run. W1-23 should know their boot-time throw fires on the shipped canon.json.",
+    "MY ENGINE/HARNESS/MACHINE EDITS WERE SWEPT INTO IN-FLIGHT ORCHESTRATOR COMMITS (313bcb8 / 5ab39f9) \u2014 I did not commit, as instructed, but `git show HEAD:` confirms populateSite, presenceMode and travelToGiver are all in HEAD."
   ],
   "files_touched": [
     "game/data/npcs/quest-givers.json",
@@ -79,6 +91,6 @@
     "tools/quests/utility-findability.mjs",
     "tools/quests/critic-giver-presence.mjs"
   ],
-  "next_step": "re-run the four gates, then the shot and the blog line",
-  "notes_for_successor": "Both halves or neither. Author the population FIRST, prove the presence term is silent on the shipped tree, THEN arm it. The mechanism to fill a town already exists (Engine.populateSettlement, W1-04) \u2014 the work is (a) making a state load reach it, (b) giving the 39 givers a place to stand, (c) bootable states for the 4 towns that have none."
+  "next_step": "none \u2014 piece complete. Open items handed on: (a) W1-23's canon register throws at boot on the shipped canon.json; (b) the 5 wilderness/site givers are reachable only via the two new site states, not from any town, which is correct but means 14 quests need a journey the travel system does not yet model; (c) soulrest-quay/helstrom-market/stormhold-street still stand the player at the world ORIGIN rather than in their town \u2014 the 8 new town-<id> states do it properly and the old four should probably be retired.",
+  "notes_for_successor": "The fix is two halves and both are load-bearing. DATA: `post` on 34 giver records (a spot outside a real building's door in their own town, generated by tools/world/build-giver-posts.mjs) + `site` posts for the 4 wilderness givers + 8 town-<id> states + env.settlement on the 3 old town states. ENGINE: applyNamedState now resolves the settlement and calls populateSettlement \u2014 that ONE call is the whole difference between 9 and 52 on the original four states. GATE: QuestEngine.open() refuses `giver absent` when sim.findNPC(giver) is null; H.questPresenceGate('on'|'report'|'off') is the perturbation handle and 'report' is there so it can be measured before it is allowed to refuse. If you add a state file, RE-RUN tools/analysis/data-index.mjs or loadState will say `no such named state`."
 }

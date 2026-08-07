@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-FACTIONS",
+  "piece_title": "Faction questlines — the Wet Ledger, the Imperial Assize, the Xul-Aneekh",
+  "round": 2,
+  "subsystem_paths": ["quests.faction", "quests.deceit", "crime.faction_sanction"],
+  "wave": 1,
+  "critic": {
+    "context": "fresh",
+    "wrote_the_thing_under_judgement": false,
+    "verdict_path": "corpus/90-verdicts/wave1/W1-FACTIONS-r2.md",
+    "previous_verdict": "corpus/90-verdicts/wave1/W1-FACTIONS-r1.md"
+  },
+  "build": {
+    "commit": "e1661f46df21e5089b4b6085665ec8188e95cae7",
+    "branch": "claude/morrowind-souls-threejs-game-mou39v",
+    "dirty": true,
+    "dirty_note": "The working tree churned continuously under other agents (engine.js, harness/api.js, sim/events.js, sim/step.js, data/books/**, tools/analysis/build-viability.mjs). `git worktree add` to isolate a clean tree TIMED OUT at 2 minutes on this 11 GB repo and was abandoned. The round-2 faction work is COMMITTED at e1661f4; none of the dirty paths is a faction quest file, faction-gates.json, sanction.json, sim/quest/gate.js, sim/quest/machine.js or sim/crime/**. Per RI-MTH04 'How we lose' #5 every claim is confidence: medium at best.",
+    "boot_check_before": "FAIL-then-PASS",
+    "boot_check_before_note": "First run exited 12 with `ReferenceError: SoulsSystem is not defined` at engine.js:375 — a CONCURRENT agent's uncommitted in-flight edit (W1-SOULS added `new SoulsSystem(...)` with no import), not the faction round. It self-repaired ~4 minutes later. No faction measurement was taken against the broken tree.",
+    "boot_check_after": "PASS",
+    "contention": "HIGH AND DECLARED. pgrep -c headless_shell was 11 at start and 12/16/18/24/30 at successive checks; loadavg 9.83 -> 16.45 on four cores, above the AGENT-PROTOCOL cap of ~8. All authoring, static and data work was done FIRST with no browser open. Browser work was taken one page at a time, sequentially, never concurrently, at --width 320 --height 240 with setRenderRate(0). NO TIMING FIGURE IS CLAIMED ANYWHERE; every browser number is a rank, count, boolean or gate string."
+  },
+  "bifurcation": {
+    "axis": "not-applicable",
+    "declared_before_citation": true,
+    "note": "This piece ships no visual output. Judgement is against RI-QST01/RI-QST02/RI-CRM02 measurements and against Morrowind's own journal corpus for the prose register (tic-detector journal reference: 3,183 Morrowind journal entries)."
+  },
+  "reference_items": [
+    {
+      "id": "RI-QST01",
+      "path": "corpus/30-quests/RI-QST01-faction-escalation.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 7,
+      "previous_score_0_10": 3,
+      "measured": "full",
+      "native_verdict": "Both round-1 hard fails cleared and independently re-derived. Held off higher by sitting exactly on the 18 floor against a 24-28 target, a deceit rate falling 88%->65% in the new material, and a refusal route built to one template three times.",
+      "checks": [
+        {"id": "quests-per-line", "result": "pass", "target": "24-28, hard fail <18", "observed": "18 / 18 / 18 including pre-existing tagged quests", "was": "10 / 9 / 9"},
+        {"id": "mean-quests-per-rank", "result": "pass", "target": ">=2.0", "observed": "2.250 on all three lines", "was": "1.25 / 1.125 / 1.125"},
+        {"id": "per-rank-distribution", "result": "pass", "observed": "ledger 2/2/3/2/3/2/2/2, assize 2/2/2/3/2/2/2/2, xul-aneekh 2/3/2/2/3/2/2/2 — the flat 1/1/1/1/2/1/1/1 'spreadsheet' shape is gone"},
+        {"id": "hidden-weird-quests", "result": "pass", "target": "+2 per line", "observed": "2 per line (discovery found|overheard), was 0"},
+        {"id": "rank-7-deceit", "result": "pass", "observed": "Q-LEDG-08 now D4,D12 and Q-XULA-08 now D6,D12; both were deceit:null in r1 (path_to_ten #8)"},
+        {"id": "deceit-rate-in-new-material", "result": "concern", "observed": "88.0% (22/25) in round-1 quests vs 65.4% (17/26) in round-2; 9 of the 26 new quests are deceit:null"},
+        {"id": "refusal-route-shape", "result": "concern", "observed": "Q-LEDG-14 and Q-ASSZ-14 are the same quest with different nouns: both rank 6 / rep 90, both deceit D10 only, both [expose,persuade,refuse], reputation 30/22/8 vs 28/22/10. Q-XULA-13 is the same with [refuse,persuade,refuse]."},
+        {"id": "prose-quality-old-vs-new", "result": "pass", "observed": "positional sample (lowest/median/highest new id per line). The new two-thirds is not worse; Q-LEDG-09, Q-LEDG-17 and Q-XULA-16 are as strong as anything in round 1."}
+      ]
+    },
+    {
+      "id": "RI-QST02",
+      "path": "corpus/30-quests/RI-QST02-deceit-patterns.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 7,
+      "previous_score_0_10": 7,
+      "measured": "full",
+      "native_verdict": "Real fixes offset by a new instrument hole and an unfalsifiable metric.",
+      "checks": [
+        {"id": "pre-PONR-invariant-on-this-census", "result": "pass", "observed": "11 zero-pre-PONR quests remain game-wide and ALL are the magic piece's (Q-MAG-02/04/05/06/07/13/16/18/19/24, Q-MAIN-32). Q-MAG-10, the one inside the Assize census that hard-failed this piece in r1, is fixed.", "was": "FAIL"},
+        {"id": "D6-talk-to-target-floor", "result": "pass", "target": ">=30%", "observed": "32% (8/25) — Q-XULA-01 given a mouth", "note": "clears by two points; round 2 also added 26 quests with zero violent resolutions, which does not change D6's denominator but does thin the seam"},
+        {"id": "imperative-journal-openings", "result": "pass", "observed": "0 in 1005 entries"},
+        {"id": "journal-entry-count", "result": "pass", "observed": "1005 — independently confirmed via tic-detector's journal register doc count"},
+        {"id": "records_belief", "result": "fail-soft", "observed": "19.7% (r1 material) -> 56.8% (r2 material) against a >=15% target. Under a deliberately generous first-person-epistemic-marker test the flag-to-text correspondence FELL from 37.0% to 13.4%. NOTHING anywhere validates records_belief against the text; it is a self-declared authorial boolean that RI-QST02 scores on."},
+        {"id": "GAP-FCT-02-method-vocabulary", "result": "fail", "observed": "five new method values (comply 17, expose 10, lie 7, sabotage 3, investigate 1) are absent from RES_METHODS_NONVIOLENT (defs.js:27). 38 of 87 round-2 faction resolutions = 43.7% carry an unknown method, and all 38 unknown-method resolutions in the whole game (of 383) are this round's. Confirmed with a passing control: the same mutation goes RED on method 'refuse' and GREEN on method 'comply'."}
+      ]
+    },
+    {
+      "id": "RI-CRM02",
+      "path": "corpus/30-quests/RI-CRM02-faction-crime.md",
+      "side": "morrowind",
+      "kind": "number",
+      "score_0_10": 3,
+      "previous_score_0_10": 2,
+      "measured": "full",
+      "native_verdict": "Expulsion built and live; factionLawFactor no longer an orphan and confirmed by my own perturbation. Still hard-failed twice on volume, and four of seven standing_ids rows point at factions that do not exist.",
+      "checks": [
+        {"id": "sanctioned-murder-quests", "result": "hard-fail", "target": 27, "hard_fail_below": 15, "observed": 3, "detail": "Q-ASSZ-05, Q-XULA-06, Q-MAIN-31"},
+        {"id": "sanctioning-authorities", "result": "hard-fail", "target": 4, "hard_fail_below": 3, "observed": 1},
+        {"id": "favour_owed-call-ins", "result": "fail", "target": "4/4", "observed": 0, "detail": "the string appears in ZERO quests build-wide"},
+        {"id": "expulsion-readmission", "result": "pass", "observed": "built and live in ctx.locked + QuestEngine.readmit(); it bit the builder's own walk unprompted (16/16 -> 9/16), which is the round's best evidence of consumption"},
+        {"id": "factionLawFactor-consumed", "result": "pass", "observed": "after a walk that joined through a QUEST, sim.stealth.p.standings = {\"wet-ledger\":4} with 0 harness pokes counted at the boundary. Engine.syncFactionStandings() (engine.js:3956, called from _afterStep) is a real world-side writer. r1 scored this 0-orphan."},
+        {"id": "factionLawFactor-spread", "result": "pass-with-correction", "target": "5.3x", "hard_fail_below": "2x", "observed": "3.90x REACHABLE BY PLAY", "detail": "live arrest_at at bounty 500: none 405, wet-ledger:1-2 506, wet-ledger:3+ 709, xul-aneekh:1-3 263, xul-aneekh:4+ 182, ninth-cohort:1-3 648, ninth-cohort:4+ 972. All-rows spread 972/182 = 5.34x confirms the declared 5.33x. Reachable spread 709/182 = 3.90x, confirmed statically as 1.75/0.45 = 3.889x. The builder's 1.92x is also reproduced (1.25/0.65).", "correction_to_builder": "The top of the declared range is NOT 'in the table and not walked to' — it is unreachable by construction. the_ninth_cohort appears in zero quest files and has no joins_faction anywhere."},
+        {"id": "standing_ids-orphan-rows", "result": "fail", "observed": "4 of 7 standing_ids entries (the_ninth_cohort, the_morag_tong, shadowscale_order, the_sap_cutters) point at factions that appear in zero quest files. the_imperial_assize is NOT IN THE MAP AT ALL, nor are the_ixtu_vakh or the_dockhands (both joinable via Q-MAIN-19/21). Only 2 of the 5 joinable factions are wired to the guard ladder."}
+      ]
+    }
+  ],
+  "arbitration": {
+    "ar1": {"status": "pass", "observed": "Nothing here touches frames, dice or level-scaling. Round 2 added ZERO violent resolutions to 87."},
+    "ar2": {"status": "pass", "observed": "0 imperative journal openings in 1005 entries; no objective markers; advancement is reputation + attribute + skill + world state, never character level."},
+    "ar3": {
+      "status": "not-sterile",
+      "seam_sterile": false,
+      "observed": "The syncFactionStandings -> standingKey -> thresholds.arrest_at chain is a genuine, newly-live crossing and the round's best structural work: a faction rank now changes what a guard does. Against that, round 2 added 26 quests and 87 resolutions of which NOT ONE is violent (round 1: 5 of 91), so the piece's only encounter-touching crossings are still the round-1 ones — and the Imperial Assize's eighteen quests cross the seam NOWHERE, because the faction is absent from standing_ids."
+    },
+    "consumption": {
+      "doctrine": "ARBITRATION.md s3 CONSUMPTION / RI-MTH07",
+      "models": [
+        {"model": "machine.js r.opened (the round's GAP-FCT-01 fix)", "consumer": "resolve() / note() / takeBranch() / isOpen()", "perturbation": "builder's delete-the-fix reproduces the r1 verdict exactly; bypass probe 6/6", "coupling": 1, "rederived_by_critic": false},
+        {"model": "faction-*.json consequences.faction_reputation", "consumer": "QuestMachine._applyConsequences() -> sim.quest.factions", "perturbation": "live standing 192 == sum of taken resolutions' declared deltas 192, with setFactionStanding x0 / setFactionStandings x0 counted by monkey-patching the harness boundary", "coupling": 1, "rederived_by_critic": true},
+        {"model": "faction-gates.json ladder", "consumer": "FactionGates.evaluate() -> canOffer()", "perturbation": "walk stalls with the gate speaking 'the_wet_ledger rank 3/4'", "coupling": 1, "rederived_by_critic": true},
+        {"model": "faction-gates.json exclusivity", "consumer": "context() -> ctx.locked -> canOffer()", "perturbation": "joining the Assize closed 7 Ledger offers with a spoken reason", "coupling": 1, "rederived_by_critic": false},
+        {"model": "sanction.json standing_ids", "consumer": "Engine.syncFactionStandings() -> sim.stealth.p.standings", "perturbation": "walk joined by quest -> {\"wet-ledger\":4}, 0 harness pokes", "coupling": 1, "rederived_by_critic": true},
+        {"model": "sanction.json faction_law_factor rows (reachable)", "consumer": "standingKey() -> thresholds.arrest_at", "perturbation": "709 / 506 / 405 / 263 / 182 by standing at fixed bounty 500", "coupling": 1, "rederived_by_critic": true},
+        {"model": "sanction.json faction_law_factor rows for ninth-cohort, morag-tong, ku-vastei, sap-cutters", "consumer": "standingKey() — but NO faction reaches them", "perturbation": "priced (972, 648) and unreachable by any play", "coupling": 0, "verdict": "orphan rows"},
+        {"model": "RI-QST03 sD expulsion / readmission", "consumer": "ctx.locked, QuestEngine.readmit()", "perturbation": "bit the builder's own walk unprompted, 16/16 -> 9/16", "coupling": 1, "rederived_by_critic": false},
+        {"model": "resolutions[].method", "consumer": "defs.js:113 violence-consistency guard", "perturbation": "control RED on 'refuse', GREEN on 'comply'", "coupling": 0, "verdict": "no consumer for the new vocabulary — 43.7% of new resolutions"},
+        {"model": "journal[].records_belief", "consumer": "none found", "perturbation": "no checker validates the flag against the text", "coupling": 0, "verdict": "unfalsifiable"}
+      ]
+    }
+  },
+  "score": {
+    "overall_0_10": 5.4,
+    "previous_overall_0_10": 4.1,
+    "pass_threshold": 7,
+    "aggregation": "mean of the three items (7 + 7 + 3) / 3 = 5.67, less 0.3 for measurement integrity (RI-MTH04)",
+    "band_label": "A real and substantial round that cannot currently be believed on its own numbers",
+    "confidence": "medium",
+    "confidence_reason": "the tree was dirty under concurrent agents throughout and the box ran at 11-30 browsers; all figures are ranks, counts, booleans and gate strings"
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "RI-CRM02 sanctioned-murder quests 3 against a hard-fail floor of 15",
+    "RI-CRM02 sanctioning authorities 1 against a hard-fail floor of 3",
+    "GAP-FCT-03: the round's headline artifacts assert claims the shipped build does not support"
+  ],
+  "hard_fail_checks": {
+    "RI-QST01 quests-per-line < 18": "PASS (was FAIL)",
+    "RI-QST01 mean quests per rank < 2.0": "PASS (was FAIL)",
+    "RI-QST01 all-honest line": "pass",
+    "RI-QST01 level-gated advancement": "pass",
+    "RI-QST02 reachable-reveal invariant on this piece's census": "PASS (was FAIL)",
+    "RI-QST02 D6 < 30%": "PASS at 32%",
+    "RI-QST02 zero refuse resolutions": "pass",
+    "RI-CRM02 sanctioned-murder quests < 15": "FAIL (3)",
+    "RI-CRM02 sanctioning authorities < 3": "FAIL (1)",
+    "RI-CRM02 factionLawFactor spread < 2x": "pass at 3.90x",
+    "AR-1": "pass",
+    "AR-2": "pass"
+  },
+  "biggest_gap": {
+    "gap_id": "GAP-FCT-03",
+    "subsystem_path": "quests.faction.measurement",
+    "severity": "blocking",
+    "what": "The round's headline measurements were taken in a world with nobody in it and no longer reproduce on the build that ships. machine.js:472 added a giver-presence term to open() — `giver absent: <npc> is not in this world`, gate 'giver_presence', with presenceMode defaulting to 'on' at machine.js:93 — after the round-2 numbers were taken. Neither faction-probe.mjs nor faction-seam-probe.mjs calls questPresenceGate, and both boot a bare world. Re-running the builder's own tool with its own command line takes the Wet Ledger from the 16/16 recorded on disk to 8/16: P3 7/18 quests offerable (was 18/18), P4 top derived rank 4 (was 7), P13 the seat is NOT vacated by play, P14 rank-7-and-non-violent FAIL, P15 17 questOpen calls refused, and P16 — the round's strongest claim — flips from 'the walk wrote no reputation at all; 398 was paid entirely by the quests' own consequences' to 'the walk WROTE reputation 10, 22, 36, 52, 70, 90, 112'. The cascade is causal: because open() refuses, faction-probe's grantRep() fallback fires to satisfy rank terms by hand, so the no-reputation-writes property was never independent of the gate.",
+    "what_it_is_not": "It is NOT that the faction content is unreachable. tools/quests/critic-giver-presence.mjs across every bootable state reports faction givers present 62/62 and talkable 62 — a better record than the mainline's 27/32. The content is placed; the instrument is not standing in the world.",
+    "remedy": "Make faction-probe.mjs and faction-seam-probe.mjs boot an inhabited state, or call questPresenceGate('report') and publish the miss list. Then re-run all three lines and EXPECT the report to change — a probe that returns 16/16 unchanged is still not standing in the world. Until then no reports/faction-probe-*.json figure may be cited, including every headline in orchestration/status/W1-FACTIONS-r2.json.",
+    "evidence": ["reports/faction-probe-the_wet_ledger.json", "reports/critic-faction-r2-ledger.json", "game/src/sim/quest/machine.js:93", "game/src/sim/quest/machine.js:472"]
+  },
+  "secondary_observations": [
+    {"id": "GAP-FCT-02", "what": "Vocabulary drift silently disabled the build's only method/violence consistency guard on 43.7% of the round's new resolutions. Five new method values (comply, expose, lie, sabotage, investigate) are absent from RES_METHODS_NONVIOLENT. Broken on purpose with a passing control: the same defect goes RED on 'refuse' and GREEN on 'comply'. No resolution is currently mis-declared, so the harm today is entirely to the instrument — 'check-quests 120 quests PASS' is, for 38 of 87 resolutions, a pass the checker could not withhold.", "remedy": "Make an UNRECOGNISED method a problem in its own right, rather than only adding the five values."},
+    {"id": "eleven-fingerprint", "what": "The tic the prose sweep exists to catch got WORSE in material written after it was found. Journal register: ours 29.89 per 10k vs Morrowind's 0.00 across 3,183 reference entries. Splitting the faction lines, round-1 material runs 23.55/10k and round-2 material runs 30.90/10k — 1.31x. Raw: 22 instances / 12 quests (r1) vs 27 / 10 (r2). Q-ASSZ-12 uses 'eleven' NINE times, is titled 'Eleven Years of Not Asking', and contains the journal line 'she said the number eleven three times'. 'eleven years' appears 23 times across three unrelated fictions.", "remedy": "27 instances is an afternoon. Keep the Assize's eleven-year gap, which is load-bearing; re-roll the rest per line."},
+    {"id": "records_belief-unfalsifiable", "what": "Tripled from 19.7% to 56.8% of journal entries against a >=15% target while the flag-to-text correspondence fell from 37.0% to 13.4% under a generous test. Nothing validates the flag against the text.", "remedy": "A checker that requires a first-person epistemic marker, or stop scoring the flag."},
+    {"id": "refusal-route-template", "what": "Q-LEDG-14 and Q-ASSZ-14 are the same quest with different nouns — same rank, same reputation, same single deceit pattern D10, same [expose, persuade, refuse], middle resolution paying 22 in both. The fiction differs; the scaffolding does not.", "remedy": "Give one of the three a different rank, pattern set and resolution count."},
+    {"id": "seam-probe-order-dependence", "what": "Section D's fix is `questSetFlag(flag, false)` before the reading, but that CANNOT un-seed a topic — the probe's own comment says topics are permanent. The clean `before` reading is guaranteed by nothing except D having been moved to the top of the file. It fails SAFE (contamination goes red, not green), so it is a fragility rather than a false pass, and is not scored as one.", "remedy": "A forgetTopic harness call, or a fresh world per case."},
+    {"id": "chooser-optimises-the-reported-metric", "what": "The round-2 chooser ranks violence 100000, expels 50000, does-not-raise-a-ladder-flag 20000, unavailable 1000 — an optimiser pointed at the exact metric being reported. Reading the avoided set out of the live gate rather than hardcoding it is the right shape, and reporting it as expulsion_causes_avoided_by_the_walk is honest. But whether a TYPICAL character can walk the line remains untaken."}
+  ],
+  "gap_closure": {
+    "GAP-FCT-01": {"status": "closed", "note": "resolve() now gates on r.opened AND re-runs the offer predicate; open() refuses only on r.opened. The builder found a SECOND and worse bug in the same conflation while fixing it — a reveal()-minted row made a quest permanently unopenable, so foreknowledge destroyed it — and fixed that too, including opened round-tripping through the save with old saves deriving it from stage>0. Accepted on the builder's delete-the-fix falsification; not re-derived by me."},
+    "r1_path_to_ten_1_gate_resolve": "done",
+    "r1_path_to_ten_2_walk_to_the_seat": "done in the artifact, NOT REPRODUCIBLE on the shipped build — see GAP-FCT-03",
+    "r1_path_to_ten_3_expose_resolutions_and_consequences": "done — questResolutionConsequences() and questEndings() added and used by my own probe",
+    "r1_path_to_ten_4_volume_9_to_18": "done and independently re-derived — 18/18/18, mean 2.250",
+    "r1_path_to_ten_5_Q-XULA-01_gets_a_mouth": "done — D6 28% -> 32%",
+    "r1_path_to_ten_6_refusal_must_not_end_the_ladder": "built and sound by construction (flag -> hooks adds_topics -> topic -> alternative rank-6 quest that vacates the seat); the END-TO-END REFUSING WALK IS STILL UNMEASURED, by the builder and by me",
+    "r1_path_to_ten_7_RI-CRM02_second_authority": "NOT DONE — still 1 of 4; the ku-vastei Ruling is still unwritten while shadowscale_order -> ku-vastei sits in standing_ids pointing at nothing",
+    "r1_path_to_ten_8_deceit_at_rank_7": "done — Q-LEDG-08 D4,D12 and Q-XULA-08 D6,D12",
+    "r1_path_to_ten_9_file_the_D6_method_defect": "done — filed in corpus/30-quests/RI-QST02"
+  },
+  "path_to_ten": [
+    "GAP-FCT-03 first, because every number in the round depends on it. Make faction-probe.mjs and faction-seam-probe.mjs boot an inhabited state, or call questPresenceGate('report') and publish the miss list. Then re-run all three lines and EXPECT the report to change.",
+    "The refusing walk, end to end. Add --refuse to faction-probe.mjs: take the rank-6 refuse ending on purpose and assert rank 7 anyway. Unmeasured by the builder, who said so, and by me, whose chooser stalled at rank 4. It is the one claim of round 2 that rests entirely on construction.",
+    "Put the_imperial_assize into sanction.json standing_ids with its own table row. Eighteen quests ending in a court's seal currently move no guard in the province. One map entry and one row is the largest AR-3 gain available in this piece.",
+    "Delete or fund the four orphan standing_ids rows (the_ninth_cohort, the_morag_tong, shadowscale_order, the_sap_cutters appear in zero quest files). The ku-vastei Ruling is round 1's path_to_ten #7 and is still the highest-value single addition.",
+    "GAP-FCT-02: make an unrecognised resolution method a problem, not just add the five values. A set that silently ignores what it does not know will drift again.",
+    "Re-roll the elevens — 27 instances, one afternoon. Keep the Assize's eleven-year gap; change the rest.",
+    "Give records_belief a test or stop scoring it.",
+    "Break the refusal template so three institutions read as three institutions rather than one function.",
+    "RI-CRM02 volume: 3 of 27 writs and 1 of 4 authorities are the two hard fails that survive the round. Neither moves without new content."
+  ],
+  "artifacts": [
+    {"path": "reports/critic-faction-r2-ledger.json", "produced_by": "tools/quests/critic-faction-r2.mjs", "result": "11/16"},
+    {"path": "reports/faction-probe-the_wet_ledger.json", "produced_by": "builder", "note": "READ, NOT REPRODUCIBLE — asserts 16/16; the same command yields 8/16 today"}
+  ],
+  "method_deviations": [
+    {"tool": "tools/quests/critic-faction-r2.mjs", "status": "written mid-critique per TOOL-LOOP.md rule 1", "measures": "C0 giver-presence census through the shipped gate; C1 a reputation audit that MONKEY-PATCHES every reputation-writing harness method at the boundary rather than trusting faction-probe's own repWrites list, reconciling the live standing against the sum of the taken resolutions' declared deltas; C2 a refusing walk; C3 an 8-signature sweep; C4 factionLawFactor perturbed BY PLAY plus a per-row pricing of the whole table. It suspends the presence gate for C1-C4 deliberately and says so in its output, to separate the faction round's own work from a gate it did not introduce."},
+    {"tool": "scratchpad/break-method.mjs", "status": "written mid-critique", "measures": "the GAP-FCT-02 instrument test: mutates one resolution to violence_required:true and asks whether QuestBook throws, once for a known method (control, must go red) and once for a round-2 method. Exit 3 encodes 'control red, test green'."},
+    {"tool": "scratchpad/prose-split.mjs", "status": "written mid-critique", "measures": "applies tools/prose/rules.pre-registered.json UNMODIFIED, separately to round-1 and round-2 faction journal and directions text."},
+    {"tool": "scratchpad/struct.mjs", "status": "written mid-critique", "measures": "static re-derivation of the RI-QST01/RI-QST02 count tables per half, independent of faction-probe.mjs."},
+    {"tool": "tools/quests/faction-probe.mjs", "status": "existing, run UNMODIFIED", "measures": "the decisive run — the builder's own tool on the shipped build"},
+    {"tool": "tools/quests/critic-giver-presence.mjs", "status": "existing, not mine, run unmodified", "measures": "giver presence across every bootable state; it is what stopped me publishing a wrong finding"},
+    {"tool": "tools/prose/tic-detector.mjs", "status": "existing, run unmodified", "measures": "pre-registered prose tics against Morrowind's own corpora"}
+  ],
+  "unmeasured": [
+    {"claim": "The end-to-end REFUSING walk (refuse at rank 6, still reach rank 7)", "reason": "MY INSTRUMENT, NOT THE BUILD. My walk chooser raises attributes only for a resolution's `requires` and never for the RANK gate, and never sets disposition, so it stalled at Q-LEDG-04 on 'the_wet_ledger rank 3/4' having applied 9/18 and never reached the rank-6 quest. C2c and C3a are inconclusive and are NOT scored against the build."},
+    {"claim": "The multi-signature sweep across the 18-quest lines", "reason": "same stall — all 8 signatures reached rank 4, which measures my chooser and not the ladder."},
+    {"claim": "The Imperial Assize and Xul-Aneekh lines re-run under the presence gate", "reason": "one line was enough to establish non-reproducibility and the box was at 24-30 browsers."},
+    {"claim": "The builder's delete-the-fix falsification of GAP-FCT-01", "reason": "I read the fix and the bypass tool and accepted the builder's 6/6 rather than re-deriving it; my browser budget went to the claims nobody had checked."},
+    {"claim": "RI-QST01 s7 blind-band test and RI-QST02 s8 blind read", "reason": "blind_pair: yes on both items; I am not blind to either. Same as round 1."},
+    {"claim": "Any timing or throughput figure", "reason": "box at 11-30 browsers and loadavg 9.8-16.5 throughout."}
+  ],
+  "blind_comparisons": {"required": true, "done": false, "reason": "both RI-QST01 s7 and RI-QST02 s8 require a judge with no exposure to the lines; not available. My prose reading is not a substitute and is not scored as one."},
+  "self_audit": {
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "broke_the_instrument_on_purpose": true,
+    "rederived_a_builder_number_independently": true,
+    "no_banned_reasoning_used": true,
+    "self_audit_note": "TWO OF MY OWN INSTRUMENTS WENT RED FOR THEIR OWN REASONS AND BOTH ARE REPORTED. (1) My first critic-faction-r2 run reported '0/17 givers, 53 of 53 quests given by nobody' and I was one paragraph from filing 'the faction content is unreachable' as the biggest gap; critic-giver-presence.mjs — a tool written by a different critic for a different piece — showed 62/62 faction givers present and talkable across the build's states, and the finding became a much narrower and more accurate one about the PROBE's boot condition. (2) My records_belief marker regex initially missed 'I do not think', reporting 4.2% where a corrected generous test reports 13.4%; only the corrected number is published. ran_every_assigned_method is false: the refusing walk and the multi-signature sweep stalled on my own chooser and are declared unmeasured rather than scored. I re-derived four builder numbers independently (18-per-line, 1005 journal entries, the 1.92x probe spread, the 5.33x declared spread) and DISAGREED with one (the reachable spread is 3.90x, not 5.33x and not 1.92x)."
+  },
+  "notes": "Round 2 is a real round. GAP-FCT-01 is closed and the builder found a worse bug inside its own fix while closing it; both RI-QST01 hard fails are genuinely cleared and I re-derived them from the data without touching the builder's probe; the round-1 orphan factionLawFactor now has a world-side writer that I confirmed by my own perturbation with zero harness pokes. The score moves 4.1 -> 5.4. It does not reach the gate because two RI-CRM02 hard fails survive untouched, and because the artifacts that carry the round's best claims assert things the shipped build does not support and nothing in the tree says so."
+}

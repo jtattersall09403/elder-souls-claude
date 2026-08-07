@@ -4421,14 +4421,32 @@ export class Engine {
       seed: opts.seed === undefined ? 0xa3b1 : opts.seed,
       listener: opts.listener || null,
     });
-    const L = Array.from(buf.getChannelData(0));
-    const R = Array.from(buf.getChannelData(1));
-    return {
-      ok: true, region: id, seconds, sampleRate, samples: L.length,
-      fired: buf.__fired || [], L, R,
+    const cl = buf.getChannelData(0), cr = buf.getChannelData(1);
+    const res = {
+      ok: true, region: id, seconds, sampleRate, samples: cl.length,
+      fired: buf.__fired || [],
       bed_lufs_target: bed.bed_lufs_target,
+      bed_gain_db: bed.bed_gain_db || 0,
       key: bed.key,
     };
+    // TRANSPORT. Twenty seconds of stereo at 16 kHz is 640,000 numbers, and handing that across
+    // the CDP bridge as a JSON array of doubles is what turned a thirteen-region render into a
+    // ten-minute job on a loaded box. Base64 16-bit PCM is the same samples at about a twentieth
+    // of the bytes. `--arrays` restores the plain arrays for a caller that wants them; the
+    // measurement path uses the compact form and decodes it in Node, so nothing here is a number
+    // the engine computed about itself.
+    if (opts.arrays) { res.L = Array.from(cl); res.R = Array.from(cr); return res; }
+    const n = cl.length;
+    const i16 = new Int16Array(n * 2);
+    for (let i = 0; i < n; i++) {
+      i16[i * 2] = Math.max(-32768, Math.min(32767, Math.round(cl[i] * 32767)));
+      i16[i * 2 + 1] = Math.max(-32768, Math.min(32767, Math.round(cr[i] * 32767)));
+    }
+    const bytes = new Uint8Array(i16.buffer);
+    let s = '';
+    for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    res.pcm16_interleaved_b64 = btoa(s);
+    return res;
   }
 
   /**

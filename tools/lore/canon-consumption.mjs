@@ -105,8 +105,14 @@ function main() {
   // ---------------------------------------------------------------- 2. no answers are shipped
   console.log('\nSEALED   the shipped register carries no ruling on any dispute');
   const text = JSON.stringify(doc);
-  if (text.includes('authorially_true')) bad('`authorially_true` is present in the shipped file');
-  else ok('`authorially_true` is absent from the shipped file');
+  // The header PROSE names the field, on purpose, to say where the answers live. What must not
+  // exist is the field itself on any fact, or any ruling's words anywhere in the bytes.
+  const carrying = doc.facts.filter((f) => Object.prototype.hasOwnProperty.call(f, 'authorially_true'));
+  if (carrying.length) bad(`${carrying.length} fact(s) ship an \`authorially_true\` field`);
+  else ok('no fact in the shipped file carries an `authorially_true` field');
+  const seals = doc.facts.filter((f) => f.disputed && !f.deliberately_open && typeof f.truth_seal === 'string' && f.truth_seal.length === 64);
+  if (seals.length === doc.facts.filter((f) => f.disputed && !f.deliberately_open).length) ok(`${seals.length} disputes carry a sha256 seal instead`);
+  else bad('a dispute with a ruling is shipping without its seal');
   const src = read('corpus/60-lore/data/canon-facts.json');
   const leaks = src.facts.filter((f) => f.disputed && !f.deliberately_open)
     .map((f) => String(f.authorially_true).replace(/^partial:/, '').trim())
@@ -158,10 +164,16 @@ function main() {
       const before = infoFor(idx, topic, { ...who, topics: [topic] }, PLAYER, reg);
       if (!before || before.pos !== row.pos) continue;
       tried++;
+      // Strike this speaker out of EVERY holder list on the position, not just `actors`. A
+      // first version removed the actor alone and 4 of 11 lines survived — correctly, because
+      // the speaker also matched by faction. A perturbation that leaves another route open
+      // measures the route it forgot, not the model.
       const cut = JSON.parse(JSON.stringify(doc));
       const f = cut.facts.find((x) => x.id === row.cf);
       const p = f.positions.find((x) => x.id === row.pos);
-      p.holders.actors = (p.holders.actors || []).filter((a) => a !== who.actor);
+      const foldId = (x) => String(x || '').toLowerCase().replace(/^the[_\s-]+/, '').replace(/[_\s-]+/g, '-');
+      if (p.holders.actors) p.holders.actors = p.holders.actors.filter((a) => a !== who.actor);
+      if (p.holders.factions) p.holders.factions = p.holders.factions.filter((x) => foldId(x) !== foldId(who.faction));
       const after = infoFor(idx, topic, { ...who, topics: [topic] }, PLAYER, new CanonRegistry(cut));
       const changed = !after || after.text !== before.text;
       if (changed) moved++;

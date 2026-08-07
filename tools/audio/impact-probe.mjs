@@ -132,7 +132,7 @@ for (const tier of ['light', 'medium', 'heavy', 'ultra']) {
   // C10 — the enemy swings and connects. `player_hurt` is the class §A marks "hit
   // (owner=enemy)" and it is the one class the player hears about themselves.
   FIXTURES.push({
-    name: 'player_hurt', weapon: (byTier.light || [])[0], target: 'drowned_lesser', dist: 1.6,
+    name: 'player_hurt', weapon: (byTier.light || [])[0], target: 'inf_trash', dist: 1.6,
     yaw: 180, script: [{ f: 10, move: 'chop' }, { f: 200, move: 'chop' }, { f: 390, move: 'chop' },
                        { f: 580, move: 'thrust' }, { f: 760, move: 'combo_b' }, { f: 920, move: 'chop' }],
     inputs: [], frames: 1150, invulnPlayer: false, produces: ['IMPACT'],
@@ -142,14 +142,20 @@ for (const tier of ['light', 'medium', 'heavy', 'ultra']) {
   // is the readability keystone (§A C06: "the single brightest, cleanest transient in the
   // entire game") so it gets its own fixture rather than being hoped for.
   FIXTURES.push({
-    name: 'parry_riposte', weapon: (byTier.light || [])[0], shield: 'buckler', target: 'drowned_lesser',
+    name: 'parry_riposte', weapon: (byTier.light || [])[0], shield: 'buckler', target: 'inf_trash',
     dist: 1.6, yaw: 180,
     script: [{ f: 10, move: 'chop' }, { f: 220, move: 'chop' }, { f: 430, move: 'chop' }, { f: 640, move: 'chop' }],
     // The chop's startup is 68 f@60, so the parry has to be pressed late enough that its own
     // window is open on the attacker's first ACTIVE frame — RI-CMB05 §D.
+    // The riposte has to arrive inside the parried target's critical window (RI-CMB05 §D), and
+    // the window is short. Three attempts are queued behind each parry rather than one, because
+    // a fixture that lands the riposte on exactly one frame is a fixture that is measuring the
+    // author's arithmetic rather than the game's window.
     inputs: [60, 270, 480, 690].flatMap((f) => ([
       { f, press: ['parry'] }, { f: f + 4, release: ['parry'] },
-      { f: f + 22, press: ['light'] }, { f: f + 24, release: ['light'] },
+      { f: f + 14, press: ['light'] }, { f: f + 16, release: ['light'] },
+      { f: f + 40, press: ['light'] }, { f: f + 42, release: ['light'] },
+      { f: f + 70, press: ['light'] }, { f: f + 72, release: ['light'] },
     ])),
     frames: 900, produces: ['PARRY', 'CRIT_HIT'],
   });
@@ -157,7 +163,7 @@ for (const tier of ['light', 'medium', 'heavy', 'ultra']) {
   // C08 — the target's back. Spawned facing AWAY (yaw 0 with the player at the origin looking
   // down +z), which is the geometric condition `criticalKind()` reads.
   FIXTURES.push({
-    name: 'backstab', weapon: (byTier.light || [])[0], target: 'drowned_lesser', dist: 1.1, yaw: 0,
+    name: 'backstab', weapon: (byTier.light || [])[0], target: 'inf_trash', dist: 1.1, yaw: 0,
     inputs: Array.from({ length: 6 }, (_, i) => [
       { f: 20 + i * 90, press: ['light'] }, { f: 22 + i * 90, release: ['light'] }]).flat(),
     frames: 620, produces: ['CRIT_HIT'],
@@ -194,7 +200,11 @@ for (const tier of ['light', 'medium', 'heavy', 'ultra']) {
 function runFixture(fx, audioData, opts) {
   const a = new NodeArena({ data: D, loadout: { weapon: fx.weapon } });
   const audio = new ImpactAudio(audioData, {
-    seed: opts.seed, playerId: 'player',
+    // The player body's id is `P` (CombatSystem.createPlayer), not `'player'`. It matters:
+    // C10 `player_hurt` is selected by `e.dst === playerId`, so a wrong id voices every blow
+    // the player TAKES as a blow the player LANDS — the same class of mislabel as playing the
+    // flesh sample into a shield.
+    seed: opts.seed, playerId: a.player.id,
     trigger_source: opts.sabotage === 'anim' ? 'anim' : 'resolution',
   });
   if (opts.sabotage !== 'silent') a.cs.setAudio(audio);
@@ -221,7 +231,14 @@ function runFixture(fx, audioData, opts) {
   const trace = [];
   for (let i = 0; i < fx.frames; i++) {
     a.step();
-    if (fx.guard && e && !e.dead) e.guardRaised = true;   // hold the guard up all run
+    if (fx.guard && e && !e.dead) {
+      e.guardRaised = true;                                  // hold the guard up all run
+      // C05 `guard_break` is "the block timbre failing". Holding the shield's stamina near
+      // empty is what a long exchange against a heavy weapon does to it; pinning it here
+      // reaches the same branch of `resolveBlock` in a fixture instead of in ninety seconds.
+      // The break itself is the game's, not the probe's.
+      if (e.stamina > 10) e.stamina = 10;
+    }
     for (const ev of a.drain()) trace.push({ ...ev, fixture: fx.name });
   }
   return { trace, log: audio.audioLog({}), stats: audio.audioStats(), audio };
@@ -251,7 +268,7 @@ for (const fx of FIXTURES) {
   const w = (byTier.medium || [])[0];
   if (w) {
     const a = new NodeArena({ data: D, loadout: { weapon: w } });
-    const audio = new ImpactAudio(audioData, { seed: SEED, playerId: 'player' });
+    const audio = new ImpactAudio(audioData, { seed: SEED, playerId: a.player.id });
     if (SABOTAGE !== 'silent') a.cs.setAudio(audio);
     for (let k = 0; k < 6; k++) {
       const b = a.spawn(`t${k}`, 'mat_flesh', (k - 2.5) * 0.45, 1.15, 180);

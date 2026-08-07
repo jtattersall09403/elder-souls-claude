@@ -128,7 +128,11 @@ export function stingKinds(text) {
   const out = [];
   if (STING_TRAILING.test(L)) out.push('trailing-clause');
   if (STING_RECAST.test(L)) out.push('recast');
-  if (s.length >= 2 && words(L) <= 14 && STING_OPENERS.test(L)) out.push('fragment-close');
+  // `!L.endsWith('?')` for the same reason `countFragOpen` has it: "Which is it?" and "That's a
+  // fair question — is it?" are a speaker turning the conversation back on the player, which is
+  // the opposite of a closing sting and the thing this round is trying to add. Charging a line for
+  // it would aim the next writer at exactly the wrong target.
+  if (s.length >= 2 && words(L) <= 14 && !L.endsWith('?') && STING_OPENERS.test(L)) out.push('fragment-close');
   return out;
 }
 export function countSting(t) { return stingKinds(t).length ? 1 : 0; }
