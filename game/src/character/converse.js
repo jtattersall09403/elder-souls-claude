@@ -556,6 +556,16 @@ export class Conversation {
       greeting_key: this.greeting ? [this.greeting.reaction_group, this.greeting.disposition_band, this.greeting.player_race_class] : null,
       said: this.said ? this.said.text : null,
       said_topic: this.said ? this.said.topic : null,
+      // WHICH SETTLEMENT'S ANSWER THIS WAS, or null for one that is true anywhere. `infoFor()`
+      // has returned `cell` since the gate was turned on, and nothing could see it: a probe
+      // asking "did this person give me GIDEON's line?" had to match on the prose, which passes
+      // whenever any line happens to contain the town's name and cannot tell a cell-gated answer
+      // from an actor row that merely mentions the place. That is not a hypothetical — this
+      // round's own harness scored `services` as a town answer on exactly that test, and the
+      // check that moved the speaker to another town then failed, because the line it was
+      // watching was a merchant's actor row with no `cell` on it at all and was RIGHT to follow
+      // them. Mirrors `greeting_cell`, which has always been reported for the same reason.
+      said_cell: this.said ? (this.said.cell || null) : null,
       // `root` is carried through because a reader has to be able to tell the nine words the
       // character was GIVEN from the subjects this particular person advertises — they are
       // offered by different rules and a probe that cannot separate them cannot measure either.

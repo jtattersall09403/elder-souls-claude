@@ -263,6 +263,14 @@ export function ourText(root = ROOT) {
     for (const [town, arr] of Object.entries(d.rumours || {})) if (Array.isArray(arr)) arr.forEach((r, i) => push(`rumour:${town}#${i}`, typeof r === 'string' ? r : r?.x));
     for (const [i, q] of (d.questions || []).entries()) { push(`q${i}`, q.text); for (const [j, a] of (q.answers || []).entries()) push(`q${i}a${j}`, a.text); }
     for (const [i, l] of (d.slavery_lines_sample?.lines || []).entries()) push(`slave${i}`, l.text);
+    // W1-05. `dialogue/road-directions.json` holds spoken directions in a shape this reader did
+    // not know — `routes[].answers[].x` — so its 46 lines were not "a file with zero lines", they
+    // were not a file at all: `--file game/data/dialogue/road-directions.json` printed the whole
+    // corpus and nothing about the file. That is the silent pass the comment above warns about,
+    // arriving through the collector rather than the scorer. Only `x` is spoken; `answers[].tell`
+    // is authoring metadata naming what in the world contradicts a wrong answer, is never said to
+    // anyone, and is deliberately left unmeasured.
+    for (const r of d.routes || []) for (const [i, a] of (r.answers || []).entries()) push(`route:${r.id || 'route'}#${i}`, a.x);
   }
   for (const f of walk(path.join(root, 'game/data/npcs'))) {
     const d = readJSON(f); if (!d) continue;

@@ -24,7 +24,8 @@
  *
  * Usage: node tools/world/region-axes.mjs [--out reports/region-axes.json] [--shots <dir>]
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
@@ -491,6 +492,17 @@ if (existsSync(join(ROOT, shotsDir, 'ANSWERS.json'))) {
 // exactly as it did before, which matters because every other agent runs it. An audio axis that
 // hard-failed the whole M18 measurement whenever nobody had re-rendered would be a fail-closed
 // assertion landed ahead of its data, and that has taken this engine down four times in two days.
+/** Digest of the bed files as they stand right now. Mirrors bedsDigest() in ambience-render.mjs. */
+function bedsDigestNow() {
+  try {
+    const dir = join(ROOT, 'game/data/audio/ambience');
+    const names = readdirSync(dir).filter((n) => n.endsWith('.json')).sort();
+    const h = createHash('sha256');
+    for (const n of names) { h.update(n); h.update(readFileSync(join(dir, n))); }
+    return { sha256: h.digest('hex').slice(0, 16), files: names.length };
+  } catch { return null; }
+}
+
 let audioSpec = null, audioSpecMeta = null;
 {
   const p = join(ROOT, 'reports/w1-22/ambience-spectra.json');
@@ -501,7 +513,26 @@ let audioSpec = null, audioSpecMeta = null;
       for (const [k, v] of Object.entries(doc.regions)) audioSpec[k] = v.bands;
       audioSpecMeta = { seconds: doc.seconds, sample_rate: doc.sample_rate, bands: doc.bands,
                         regions: Object.keys(doc.regions).length,
+                        rendered_at_commit: (doc.git && doc.git.commit) || null,
+                        rendered_dirty: doc.git ? doc.git.dirty : null,
+                        taken_at: doc.taken_at || null,
                         source: 'reports/w1-22/ambience-spectra.json (tools/analysis/ambience-render.mjs)' };
+      // STALENESS, reported and never enforced. The sidecar records a digest of the bed files it
+      // was rendered from; if the beds have since changed, this axis is scoring sound the engine
+      // would no longer make. That is worth shouting about — it is the same class of defect as
+      // scoring strings out of regions.json — but it must NOT fail the run, because every other
+      // agent in the project runs this tool and none of them owns the audio.
+      const want = bedsDigestNow();
+      const have = doc.beds_digest && doc.beds_digest.sha256;
+      if (want && have && want.sha256 !== have) {
+        audioSpecMeta.STALE = true;
+        audioSpecMeta.stale_note = `the ambience beds have changed since this spectra sidecar was rendered `
+          + `(beds now ${want.sha256}, sidecar rendered from ${have}). The audio axis below is scored off `
+          + `sound the engine no longer makes. Re-run: node tools/analysis/ambience-render.mjs --seconds 20`;
+        console.warn(`region-axes: WARNING — ${audioSpecMeta.stale_note}`);
+      } else if (want && have) {
+        audioSpecMeta.beds_digest_matches = true;
+      }
     }
   }
 }

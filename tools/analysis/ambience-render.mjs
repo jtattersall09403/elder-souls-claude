@@ -40,6 +40,7 @@
 
 import { writeFileSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { execSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { launchGame } from '../lib/browser.mjs';
@@ -239,6 +240,17 @@ function gitStamp() {
     const sh = (c) => execSync(c, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
     return { commit: sh('git rev-parse --short HEAD'), dirty: sh('git status --porcelain') !== '' };
   } catch { return { commit: null, dirty: null }; }
+}
+
+/** SHA-256 over the thirteen bed files, in name order. Changes iff the beds change. */
+function bedsDigest() {
+  try {
+    const dir = join(ROOT, 'game/data/audio/ambience');
+    const names = readdirSync(dir).filter((n) => n.endsWith('.json')).sort();
+    const h = createHash('sha256');
+    for (const n of names) { h.update(n); h.update(readFileSync(join(dir, n))); }
+    return { sha256: h.digest('hex').slice(0, 16), files: names.length };
+  } catch { return null; }
 }
 
 const out = {
@@ -649,8 +661,14 @@ if (args.out) {
 // lets that axis be scored off rendered sound instead of dropped — or off nothing, if this file
 // is absent, in which case region-axes.mjs behaves exactly as it did before.
 if (out.pass !== undefined && Object.keys(out.regions).length) {
-  const spectra = { schema: 'elder-souls/ambience-spectra@1',
+  // The sidecar carries the commit it was rendered at AND a digest of the bed data it was rendered
+  // FROM. Without the digest a sidecar silently outlives the beds: someone retunes a bed, never
+  // re-renders, and `region-axes.mjs` goes on scoring the audio axis off sound that no longer
+  // exists — which is precisely the "scored against a declaration, not the world" defect this
+  // whole piece was opened to kill, reintroduced one level up. Consumers compare and say so.
+  const spectra = { schema: 'elder-souls/ambience-spectra@2',
     source: 'tools/analysis/ambience-render.mjs — level-normalised 24-band spectra of the rendered PCM',
+    taken_at: new Date().toISOString(), git: gitStamp(), beds_digest: bedsDigest(),
     seconds: SECONDS, sample_rate: RATE, bands: NBANDS, f_min_hz: FMIN, f_max_hz: FMAX, regions: {} };
   for (const [id, r] of Object.entries(out.regions)) {
     if (r._bands) spectra.regions[id] = { bands: r._bands.map((v) => +v.toFixed(6)), centroid_hz: r.centroid_hz, lufs_i: r.lufs_i };

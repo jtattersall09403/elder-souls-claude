@@ -64,6 +64,11 @@ import { loadQuests } from '../lib/gamedata.mjs';
 // record carries no frame key; `eventFrameOf` reads the event's own `f` first. See
 // TOOL-COVERAGE-R3 §3 and the note at `evOf` below.
 import { frameOf, eventFrameOf } from '../lib/trace-schema.mjs';
+// W1-13 round 3. ONE implementation of "is the simulation actually advancing?", applied to every
+// journey rather than to the one that happened to notice. See `world-runs-gate.mjs` for the
+// measurement that forced it — 12 of 12 state x screen combinations freeze the world and
+// `loadState` rescues none of them, so a screen left open by one leg voids every leg after it.
+import { gateOrRefuse } from './world-runs-gate.mjs';
 const PADS = SHIM.PADS;
 const observePads = SHIM.observe;
 const installShim = SHIM.installShim
@@ -569,6 +574,12 @@ async function runJourney() {
     const wantTrace = args['trace-events'] !== false;
     if (wantTrace) await handle.hOpt('traceStart', { all: true });
 
+    // --- THE WORLD-RUNS GATE, site 1 of 3: boot -------------------------------------------
+    // Before anything is measured. `--state` may have loaded a save that boots into a screen,
+    // and `loadState` does not close one. If the world will not run here, nothing below this
+    // line means anything.
+    await gateOrRefuse(handle, led, 'boot');
+
     // --- the UI-text stream, and the proof that it is live ---------------------------------
     const uiStream = [];
     const before = await sampleUIText(handle);
@@ -826,6 +837,22 @@ async function driveBeats(handle, o) {
     await handle.h('stepFrames', 12);
     await record('first_input', { device: 'scripted', via: 'queueInputs' });
     await o.onFirstInput();
+  }
+
+  // --- THE WORLD-RUNS GATE, site 2 of 3: immediately before the null control ---------------
+  //
+  // `control_observed` is this driver's OWN null control — the row that proves the input path
+  // reaches the body at all — and in the W1-13 round-2 aggregation it went `unmeasurable` with
+  // the player at [2766.5,2.68,5011] before and after 60 frames of forward input. The body did
+  // not refuse the input; the world was not running, because a screen was open and S14 stops it.
+  //
+  // So: close what is up, prove the world moves, and only then ask whether the body responded.
+  // A "the player did not move" verdict taken on a frozen world is a charge against the build
+  // for something the harness did. The row below records what was open, so the leg that leaves
+  // it open stays visible rather than being quietly repaired.
+  const gControl = await gateOrRefuse(handle, led, 'before_first_control');
+  if (gControl.screen_was_open) {
+    await record('world_runs_gate', { site: 'before_first_control', closed: gControl.ui_mode_on_entry, advanced: gControl.advanced });
   }
 
   // --- first control ----------------------------------------------------------------------
