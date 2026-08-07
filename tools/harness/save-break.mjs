@@ -104,11 +104,29 @@ try {
       { f: 70, press: ['light'] }, { f: 73, release: ['light'] },
       { f: 150, press: ['roll'] }, { f: 153, release: ['roll'] },
     ];
+    /**
+     * The trace body, joined. THE RE-BASE IS THE WHOLE POINT and the first version of this
+     * tool got it wrong: `loadState()` resets the frame to 0 (RI-MTH01 A07), so the control
+     * run's records are stamped from the pre-roll length and the loaded run's from 0. Comparing
+     * them raw makes EVERY record differ, the baseline never comes up clean, and the tool
+     * reports every repair as inert — which is a falsifier that always says yes. Same rule as
+     * `tools/journey/state-diff.mjs rebase()`: subtract the first record's frame, drop `t_ms`
+     * (a pure function of `f`), and re-base the event and entity frame stamps with it.
+     */
     const sha = (recs) => {
-      // The trace body, joined, is what M5 compares. A plain string join is enough here: the
-      // comparison is control-vs-loaded within one page, not across runs.
+      if (!recs.length) return '';
+      const o = recs[0].f;
       let s = '';
-      for (const r of recs) { const c = JSON.parse(JSON.stringify(r)); delete c.t_ms; s += JSON.stringify(c) + '\n'; }
+      for (const r of recs) {
+        const c = JSON.parse(JSON.stringify(r));
+        c.f -= o;
+        delete c.t_ms;
+        for (const e of c.events || []) if (typeof e.f === 'number') e.f -= o;
+        for (const e of c.enemies || []) {
+          if (typeof e.state_entered_f === 'number') e.state_entered_f = e.state_entered_f < o ? 'pre-window' : e.state_entered_f - o;
+        }
+        s += JSON.stringify(c) + '\n';
+      }
       return s;
     };
 
@@ -185,6 +203,17 @@ try {
         return { undo: () => { E._restoreFightFromSave = orig; }, applied: E._restoreFightFromSave !== orig };
       },
       // B4. saveCreation/loadCreation drop the birthsign terms again.
+      //
+      // ROUND 1 OF THIS TOOL REPORTED THIS REPAIR INERT, AND THE TOOL WAS WRONG: the break was
+      // run on `arena_flat`, which ships NO CHARACTER, so `identity.creation.created` is false
+      // and `powers`/`drawbacks` are already empty — blanking two empty arrays changes nothing
+      // and the build stayed clean. A break that cannot take is not evidence that a repair is
+      // inert, which is why `applied` is checked separately from the failure returning. The
+      // break now writes a character first, and the observable is seam S27's own field rather
+      // than the round-trip diff: blanking the terms in the BLOB makes save == load == blanked,
+      // so M1/M2 could never have caught it. `focusRestoresAtHearth` is what the Dry Well
+      // takes away, and `save-consume.mjs C1` measures the same thing through a cast the
+      // player presses for.
       'creation-terms': () => {
         const orig = E.saveState.bind(E);
         E.saveState = function () {
@@ -193,7 +222,24 @@ try {
           b.identity.creation.drawbacks = [];
           return b;
         };
-        return { undo: () => { E.saveState = orig; }, applied: E.saveState !== orig };
+        return {
+          undo: () => { E.saveState = orig; },
+          applied: E.saveState !== orig,
+          observe: () => {
+            H.setSeed(4711);
+            H.loadState('default');
+            H.setCharacter({ race: 'saxhleel', upbringing: 'interior', class: 'deelith', birthsign: 'nu-ixtu', given_name: 'Break' });
+            const blob = JSON.parse(JSON.stringify(H.saveState()));
+            H.loadState(blob);
+            const p = window.__ENGINE.sim.player;
+            const ch = window.__ENGINE.sim.character;
+            return {
+              drawbacks_after_load: (ch && ch.drawbacks ? ch.drawbacks.length : 0),
+              dry_well_drawback_alive: p.focusRestoresAtHearth === false,
+              focus_max_after_load: p.focusMax,
+            };
+          },
+        };
       },
       // B5. The manifest goes back to declaring `crime.ledger` as one path.
       'manifest-ledger': () => {
@@ -224,13 +270,20 @@ try {
             set(v) { hidden = v; },
           });
         };
-        // A cheaper and more honest break: nudge every body off the grid every step.
+        // Nudge every body OFF the 6-dp save grid after the grid has run, which is exactly the
+        // state the world was in before `quantiseSaveGrid()` learned about the bodies.
+        //
+        // ROUND 1 USED 1e-9 AND THE BREAK DID NOT TAKE: 1e-9 is three orders of magnitude below
+        // the declared grid, so `r6()` rounds it straight back and the save is lossless again.
+        // 4.9e-7 is just under half a grid cell — the largest error the projection can carry
+        // and the worst case the grid exists to prevent — and it accumulates, so the save point
+        // is genuinely unrepresentable.
         const stepOrig = E.stepFrames.bind(E);
         E.stepFrames = function (n) {
           for (let i = 0; i < n; i++) {
             stepOrig(1);
             const bs = this.sim._combat && this.sim._combat.bodies;
-            if (bs) for (const b of bs) { b.pos[0] += 1e-9; b.pos[2] += 1e-9; }
+            if (bs) for (const b of bs) { b.pos[0] += 4.9e-7; b.pos[2] -= 4.9e-7; }
           }
           return this.sim.frame;
         };
@@ -254,7 +307,12 @@ try {
         E.saveState = function () {
           const b = orig();
           const f = this.sim.frame;
-          const bump = (rec) => { if (rec) for (const k of ['regenBlockUntil', 'actionableAt', 'poiseRegenBlockUntil', 'staggerUntil', 'hitstopUntil']) if (typeof rec[k] === 'number' && rec[k] > 0) rec[k] += f; };
+          // ROUND 1 GUARDED ON `rec[k] > 0` AND THE BREAK DID NOT TAKE: after a pre-roll that
+          // ends standing still, every one of these stamps has already expired and is stored as
+          // its <= 0 sentinel, so there was nothing to bump. Written unconditionally now — a
+          // stamp restored in the SAVE's frame numbering instead of the loaded one is exactly
+          // the defect, and `f + 120` is a regen block that outlives the whole window.
+          const bump = (rec) => { if (rec) for (const k of ['regenBlockUntil', 'actionableAt', 'poiseRegenBlockUntil']) rec[k] = f + 120; };
           if (b.fight) { bump(b.fight.player); for (const e of b.fight.enemies || []) bump(e.body); }
           return b;
         };
@@ -272,13 +330,21 @@ try {
       const h = mk();
       const per = {};
       let err = null;
-      try { for (const seed of o.seeds) per[seed] = measure(seed); } catch (e) { err = String(e && e.message || e); }
+      let observedBroken = null, observedFixed = null;
+      try {
+        for (const seed of o.seeds) per[seed] = measure(seed);
+        // Some repairs are invisible to the round-trip diff BY CONSTRUCTION: blanking a field
+        // in the blob makes the save and the reload agree about the blank. Those breaks carry
+        // their own observer, and the observer is what the verdict reads.
+        if (h.observe) observedBroken = h.observe();
+      } catch (e) { err = String(e && e.message || e); }
       h.undo();
+      if (h.observe) { try { observedFixed = h.observe(); } catch (e) { observedFixed = { error: String(e && e.message || e) }; } }
       // And the repair must come BACK when the break is undone — otherwise the tool has
       // damaged the session and every later break is measured against a broken build.
       const after = {};
       for (const seed of o.seeds) after[seed] = measure(seed);
-      out.breaks.push({ id, applied: !!h.applied, error: err, broken: per, after_undo: after });
+      out.breaks.push({ id, applied: !!h.applied, error: err, broken: per, after_undo: after, observed_broken: observedBroken, observed_fixed: observedFixed });
     }
     return out;
   }, { state: STATE, seeds: SEEDS, frames: FRAMES, only: ONLY });
@@ -294,8 +360,16 @@ try {
   if (!baselineClean) log('BASELINE IS NOT CLEAN — every break below is measured against a build that already fails.');
 
   for (const b of result.breaks) {
-    const failedSeeds = SEEDS.filter((s) => b.error || !clean(b.broken[s]));
-    const restored = SEEDS.every((s) => clean(b.after_undo[s]));
+    // A break with its own observer is judged on the observer: the two readings must differ,
+    // and the FIXED reading must be the correct one. A break without one is judged on the
+    // round trip, as every other break is.
+    const observerUsed = !!b.observed_broken;
+    const observerFired = observerUsed
+      && JSON.stringify(b.observed_broken) !== JSON.stringify(b.observed_fixed);
+    const failedSeeds = observerUsed
+      ? (observerFired ? SEEDS.slice() : [])
+      : SEEDS.filter((s) => b.error || !clean(b.broken[s]));
+    const restored = observerUsed ? observerFired : SEEDS.every((s) => clean(b.after_undo[s]));
     const row = {
       id: b.id,
       break_applied: b.applied,
@@ -303,6 +377,9 @@ try {
       failure_returned_on_seeds: failedSeeds,
       failure_returned: failedSeeds.length === SEEDS.length,
       repair_restored_after_undo: restored,
+      observer_used: observerUsed,
+      observed_with_the_repair_deleted: b.observed_broken || null,
+      observed_with_the_repair_present: b.observed_fixed || null,
       evidence: SEEDS.map((s) => ({
         seed: s,
         m1: b.broken[s] ? b.broken[s].m1 : null,

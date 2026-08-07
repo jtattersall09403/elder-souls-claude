@@ -61,6 +61,17 @@ try {
     });
   };
 
+  // Three frames A(t), B(t+g), C(t+2g). d1 = |A-B|, d2 = |B-C|, excess = max(0, d1-d2).
+  // d2 is the scene's OWN ambient-motion floor measured over the same gap, in the same place,
+  // under the same conditions — so `excess` is d1 with the world's liveness subtracted out.
+  const record = (population, region, cond, A, B, C, resid) => {
+    const f1 = metricFamily(A.px, B.px), f2 = metricFamily(B.px, C.px);
+    const excess = {};
+    for (const k of Object.keys(f1)) if (!k.includes('_')) excess[k] = Math.max(0, f1[k] - f2[k]);
+    log(`${population.padEnd(9)} ${region.padEnd(18)} d1.b24=${f1.b24.toFixed(4)} d2.b24=${f2.b24.toFixed(4)} excess.b24=${excess.b24.toFixed(4)} queued=${resid.queued}`);
+    return { population, region, cond, d1: f1, d2: f2, excess, resid };
+  };
+
   // ---------- population 1: SETTLED (and a weather/night spread, because rain moves) ----------
   const conds = [
     { time: 11.0, weather: 'clear', tag: 'day-clear' },
@@ -85,9 +96,10 @@ try {
     await h.h('stepFrames', GAP);
     await h.h('renderFrame');
     const B = await thumbnail(h.page, THUMB_W, THUMB_H);
-    const d = diff(A.px, B.px), fam = metricFamily(A.px, B.px);
-    rows.push({ population: 'settled', region: r.id, cond: c.tag, ...d, fam, resid });
-    log(`settled  ${r.id} ${c.tag} b24=${fam.b24.toFixed(4)} px=${fam.px.toFixed(4)} queued=${resid.queued}`);
+    await h.h('stepFrames', GAP);
+    await h.h('renderFrame');
+    const C = await thumbnail(h.page, THUMB_W, THUMB_H);
+    rows.push(record('settled', r.id, c.tag, A, B, C, resid));
   }
 
   // ---------- population 1b: LIGHTING NOT YET CONVERGED — what G3 actually exists for ----------
@@ -112,9 +124,10 @@ try {
     await h.h('stepFrames', GAP);
     await h.h('renderFrame');
     const B = await thumbnail(h.page, THUMB_W, THUMB_H);
-    const d = diff(A.px, B.px), fam = metricFamily(A.px, B.px);
-    rows.push({ population: 'lighting', region: r.id, cond: 'noon->01:00 no settle', ...d, fam, resid });
-    log(`lighting ${r.id} b24=${fam.b24.toFixed(4)} px=${fam.px.toFixed(4)} queued=${resid.queued}`);
+    await h.h('stepFrames', GAP);
+    await h.h('renderFrame');
+    const C = await thumbnail(h.page, THUMB_W, THUMB_H);
+    rows.push(record('lighting', r.id, 'noon->01:00 no settle', A, B, C, resid));
   }
 
   // ---------- population 2: STREAMING — the world arriving between the two frames ----------
@@ -139,9 +152,10 @@ try {
     await h.h('stepFrames', GAP);
     await h.h('renderFrame');
     const B = await thumbnail(h.page, THUMB_W, THUMB_H);
-    const d = diff(A.px, B.px), fam = metricFamily(A.px, B.px);
-    rows.push({ population: 'streaming', region: r.id, cond: 'partial-stream', ...d, fam, resid: residA });
-    log(`streaming ${r.id} b24=${fam.b24.toFixed(4)} px=${fam.px.toFixed(4)} queued=${residA.queued}`);
+    await h.h('stepFrames', GAP);
+    await h.h('renderFrame');
+    const C = await thumbnail(h.page, THUMB_W, THUMB_H);
+    rows.push(record('streaming', r.id, 'partial-stream', A, B, C, residA));
   }
 
   // ---------- population 3: ABSENT — the control that damns image-stability-only ----------
@@ -161,28 +175,32 @@ try {
     await h.h('stepFrames', GAP);
     await h.h('renderFrame');
     const B = await thumbnail(h.page, THUMB_W, THUMB_H);
-    const d = diff(A.px, B.px), fam = metricFamily(A.px, B.px);
+    await h.h('stepFrames', GAP);
+    await h.h('renderFrame');
+    const C = await thumbnail(h.page, THUMB_W, THUMB_H);
     const resid = await residency(h, p.x, p.z);
-    rows.push({ population: 'absent', region: r.id, cond: 'never-streamed', ...d, fam, resid });
-    log(`absent   ${r.id} b24=${fam.b24.toFixed(4)} px=${fam.px.toFixed(4)} queued=${resid.queued}`);
+    rows.push(record('absent', r.id, 'never-streamed', A, B, C, resid));
   }
 } finally { await h.close(); }
 
 const POPS = ['settled', 'lighting', 'streaming', 'absent'];
 const METRICS = ['px', 'b4', 'b8', 'b12', 'b24', 'b48'];
-const by = (p, m) => rows.filter((r) => r.population === p).map((r) => r.fam[m]).sort((a, b) => a - b);
-const summ = (a) => a.length ? { n: a.length, min: +a[0].toFixed(6), median: +a[Math.floor(a.length / 2)].toFixed(6), max: +a[a.length - 1].toFixed(6) } : { n: 0 };
+const by = (p, m, field) => rows.filter((r) => r.population === p).map((r) => r[field][m]).sort((a, b) => a - b);
+const summ = (a) => a.length ? { n: a.length, min: +a[0].toFixed(6), median: +a[Math.floor(a.length / 2)].toFixed(6), p90: +a[Math.min(a.length - 1, Math.floor(a.length * 0.9))].toFixed(6), max: +a[a.length - 1].toFixed(6) } : { n: 0 };
 const table = {};
-for (const m of METRICS) {
-  table[m] = Object.fromEntries(POPS.map((p) => [p, summ(by(p, m))]));
-  // separation: does a threshold exist strictly between the settled max and the min of the
-  // populations this gate must catch? (`absent` is G1's job, not G3's, and is excluded.)
-  const s = by('settled', m), bad = [...by('lighting', m), ...by('streaming', m)].sort((a, b) => a - b);
-  table[m].separated = s.length && bad.length ? s[s.length - 1] < bad[0] : null;
-  table[m].band = s.length && bad.length ? [+s[s.length - 1].toFixed(6), +bad[0].toFixed(6)] : null;
+for (const field of ['d1', 'excess']) {
+  table[field] = {};
+  for (const m of METRICS) {
+    const t = Object.fromEntries(POPS.map((p) => [p, summ(by(p, m, field))]));
+    const s0 = by('settled', m, field);
+    const bad = by('streaming', m, field);
+    t.separated = s0.length && bad.length ? s0[s0.length - 1] < bad[0] : null;
+    t.band = s0.length && bad.length ? [+s0[s0.length - 1].toFixed(6), +bad[0].toFixed(6)] : null;
+    table[field][m] = t;
+  }
 }
 const out = {
-  schema: 'elder-souls/settle-calibration@2',
+  schema: 'elder-souls/settle-calibration@3',
   measured_at: new Date().toISOString(),
   gap_frames: GAP,
   thumb: [THUMB_W, THUMB_H],
@@ -191,8 +209,11 @@ const out = {
   rows,
 };
 fs.writeFileSync(path.join(OUT, 'SETTLE-CALIBRATION.json'), JSON.stringify(out, null, 2));
-for (const m of METRICS) {
-  const t = table[m];
-  process.stdout.write(`${m.padEnd(4)} settled<=${String(t.settled.max).padEnd(10)} lighting>=${String(t.lighting.min).padEnd(10)} streaming>=${String(t.streaming.min).padEnd(10)} separated=${t.separated} band=${JSON.stringify(t.band)}\n`);
+for (const field of ['d1', 'excess']) {
+  process.stdout.write('== ' + field + ' ==\n');
+  for (const m of METRICS) {
+    const t = table[field][m];
+    process.stdout.write(`${m.padEnd(4)} settled_max=${String(t.settled.max).padEnd(10)} streaming_min=${String(t.streaming.min).padEnd(10)} streaming_med=${String(t.streaming.median).padEnd(10)} absent_max=${String(t.absent.max).padEnd(10)} separated=${t.separated} band=${JSON.stringify(t.band)}\n`);
+  }
 }
 process.stdout.write('absent queued: ' + JSON.stringify(out.absent_queued) + '\n');

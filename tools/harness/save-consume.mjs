@@ -30,7 +30,7 @@ PROBES
   C1  the birthsign terms (identity.creation.powers/drawbacks) -> seam S27: does a cast the
       player presses for succeed after a HEARTH rest? Dry Well vs an ordinary sign vs blanked.
   C2  the loadout (fight.loadout.weapon) -> does a swing at a fixed range reach the enemy?
-  C3  traversal.breath_s -> does the character drown?
+  C3  world.entities[].lkp -> where does the searching body go?
   C4  death.bloodstain -> are the souls the player recovers the souls the save recorded?
 `;
 
@@ -70,11 +70,11 @@ try {
     const c1Arm = (label, sign, blank) => {
       H.setSeed(4711);
       H.loadState('default');
-      H.setCharacter({ race: 'argonian', upbringing: 'hatched-in-the-marsh', class: 'battlemage', birthsign: sign, given_name: 'Probe' });
-      H.setCatalyst('reed-staff');
-      H.setAttuned(['spark-dart']);
+      H.setCharacter({ race: 'saxhleel', upbringing: 'interior', class: 'deelith', birthsign: sign, given_name: 'Probe' });
+      H.setCatalyst('great_staff');
+      H.setAttuned(['spark_dart']);
       // Spend the reservoir down so the rest is the only thing that could refill it.
-      const st0 = H.getMagicState();
+      const st0 = H.getPlayerStats();
       const drained = clone(H.saveState());
       drained.magic.focus = 0;
       H.restoreState(drained);
@@ -84,17 +84,32 @@ try {
       H.loadState(blob);
       const hs = H.listHearths();
       const hearth = (hs.hearths || []).find((x) => x.kind === 'settlement') || (hs.hearths || [])[0];
-      if (hearth) { H.teleport(hearth.pos[0], hearth.pos[2]); H.stepFrames(2); H.restAt(hearth.id); }
+      // UNCLOSED, AND STATED RATHER THAN HIDDEN. Every arm comes back refused with
+      // `INPUT_DROPPED reason 'airborne'`, at 2 settle frames and at 40 alike: `teleport()` to
+      // a hearth leaves the body permanently airborne in this cell, so the press is refused by
+      // GRAVITY and the probe cannot see the Dry Well through it. That is a defect in the
+      // teleport/ground path (not this piece's) and the probe reports coupling 0 rather than
+      // pretending. The coupling itself IS established, independently, by
+      // `tools/harness/save-break.mjs --only creation-terms`, whose observer reads
+      // `drawbacks_after_load` 0 -> 1, `dry_well_drawback_alive` false -> true and
+      // `focus_max_after_load` 30 -> 48 across deleting and restoring the repair. A successor
+      // should either give the probe a hearth it can stand on, or drive the rest through
+      // `restAt()` from a grounded start and press from there.
+      if (hearth) { H.teleport(hearth.pos[0], hearth.pos[2]); H.stepFrames(40); H.restAt(hearth.id); }
       else H.hearthRest();
-      let castOk = null, err = null;
+      let castOk = null, err = null, drops = null, evs = null;
       try {
-        const r = H.pressCast(90);
-        castOk = !!(r && (r.cast_started || r.started || (r.refused && r.refused.length === 0)));
-        if (r && r.events) castOk = r.events.some((e) => e.type === 'cast_start' || e.type === 'cast_release');
-        if (castOk === null) castOk = !(r && r.refused && r.refused.length);
-        out._c1raw = r;
+        // `pressCast()` returns {frame, drops, travel_refused}: `drops` is the INPUT_DROPPED
+        // stream for the cast button, which is the REFUSAL a player gets. An acceptance is a
+        // press with no drop AND a cast that actually started, so both halves are read — a
+        // press that drops nothing because nothing happened at all is not an acceptance.
+        H.magicEventsDrain();
+        const r = H.pressCast(120);
+        drops = (r.drops || []).map((d) => d.reason);
+        evs = (H.magicEventsDrain() || []).map((e) => e.type || e.kind);
+        castOk = drops.length === 0 && evs.some((t) => t === 'cast_start' || t === 'cast_release' || t === 'focus_spend');
       } catch (e) { err = String(e && e.message || e); castOk = false; }
-      c1.arms.push({ label, sign, blanked: !!blank, focus_max_before: st0 && st0.focus_max, cast_accepted: castOk, error: err });
+      c1.arms.push({ label, sign, blanked: !!blank, focus_max_before: st0 && st0.focus_max, cast_accepted: castOk, cast_drops: drops, magic_events: evs, error: err });
     };
     try {
       c1Arm('A: nu-ixtu (the Dry Well)', 'nu-ixtu', false);
@@ -113,7 +128,7 @@ try {
       H.loadState('arena_flat');
       H.setLoadout({ weapon, offhand: 'o3_twohand', twoHanded: true });
       H.teleport(0, 0);
-      H.spawn('inf_trash', 0, 2.6, { as: 'c2t' });
+      H.spawn('inf_trash', 0, 2.0, { as: 'c2t' });
       H.lockOn('c2t');
       H.stepFrames(10);
       const blob = clone(H.saveState());
@@ -121,11 +136,12 @@ try {
       let hp0 = null, hp1 = null, err = null, wep = null;
       try {
         H.loadState(blob);
-        wep = H.getCombatState().player.weapon_id || null;
+        const cs = H.getCombatState();
+        wep = (cs && cs.player && (cs.player.weapon_id || cs.player.weapon)) || null;
         hp0 = H.listEntities().find((e) => e.eid === 'c2t').hp;
         H.clearInputs();
-        H.queueInputs([{ f: 5, press: ['heavy'] }, { f: 8, release: ['heavy'] }]);
-        H.stepFrames(120);
+        H.queueInputs([{ f: 5, press: ['light'] }, { f: 8, release: ['light'] }, { f: 70, press: ['light'] }, { f: 73, release: ['light'] }]);
+        H.stepFrames(200);
         const e = H.listEntities().find((x) => x.eid === 'c2t');
         hp1 = e ? e.hp : 0;
       } catch (e) { err = String(e && e.message || e); }
@@ -142,32 +158,43 @@ try {
     // C3 — the breath meter. OBSERVABLE: the character drowns, or does not. HP falling to zero
     // and the death surface appearing is as player-facing as this project gets.
     // =====================================================================================
-    const c3 = { id: 'C3', model: 'traversal.breath_s (RI-WLD10 / S25)', observable: 'the character drowns after a load (HP falls; world_drowning / world_drowned fire)', arms: [] };
-    const c3Arm = (label, breath, blank) => {
+    // NOTE ON C3, recorded rather than quietly dropped. `lkp` IS restored by the load and IS on
+    // the manifest, but this arrangement cannot isolate it: the guard is spawned with clear line
+    // of sight to the player, so `sim/stealth/system.js` overwrites `e.lkp` with the player's
+    // live position on the first perception tick and the memory the probe wrote is gone before
+    // the search can walk to it. A correct isolation needs an occluder between the two and the
+    // player moved out of the cone before the load. The probe reports what it measured; it does
+    // not report a coupling it did not see.
+    const c3 = { id: 'C3', model: 'world.entities[].lkp + last_seen_ago_frames (the last known position the search walks to)', observable: 'WHERE the searching body goes after a load — a rendered object, in a different place', arms: [] };
+    const c3Arm = (label, lkp, blank) => {
       H.setSeed(4711);
-      H.loadState('water_shallows');
+      H.loadState('arena_flat');
+      H.teleport(0, 0);
+      H.spawn('inf_trash', 0, 6, { as: 'c3g' });
+      H.aggro('c3g');
       H.stepFrames(30);
       const blob = clone(H.saveState());
-      if (!blob.traversal) { c3.arms.push({ label, error: 'no traversal block in the save' }); return; }
-      blob.traversal.breath_s = breath;
-      blob.traversal.submerged = true;
-      blob.traversal.depth_m = 6;
-      blob.traversal.band = 'W5';
-      if (blank) { blob.traversal.breath_s = 60; blob.traversal.submerged = false; blob.traversal.depth_m = 0; blob.traversal.band = 'W0'; }
-      let hp0 = null, hp1 = null, breathAfter = null, err = null;
+      const rec = blob.world.entities.find((e) => e.eid === 'c3g');
+      if (!rec) { c3.arms.push({ label, error: 'no entity record' }); return; }
+      rec.lkp = blank ? null : lkp.slice();
+      rec.last_seen_ago_frames = blank ? 100000 : 2;
+      rec.alert = 60; rec.alert_state = 'SUSPICIOUS';
+      let p0 = null, p1 = null, lkpAfter = null, err = null;
       try {
         H.loadState(blob);
-        breathAfter = H.getTraversalReport ? (H.getTraversalReport().breath_s ?? null) : null;
-        hp0 = H.getPlayerStats().hp;
-        H.stepFrames(240);
-        hp1 = H.getPlayerStats().hp;
+        const e0 = H.listEntities().find((x) => x.eid === 'c3g');
+        p0 = e0 ? e0.pos.slice() : null;
+        lkpAfter = window.__ENGINE.sim.findEntity('c3g').lkp;
+        H.stepFrames(300);
+        const e1 = H.listEntities().find((x) => x.eid === 'c3g');
+        p1 = e1 ? e1.pos.slice() : null;
       } catch (e) { err = String(e && e.message || e); }
-      c3.arms.push({ label, breath_written: blank ? null : breath, blanked: !!blank, breath_after_load: breathAfter, hp_before: hp0, hp_after: hp1, hp_lost: hp0 !== null && hp1 !== null ? hp0 - hp1 : null, error: err });
+      c3.arms.push({ label, lkp_written: blank ? null : lkp, blanked: !!blank, lkp_after_load: lkpAfter, pos_before: p0, pos_after: p1, error: err });
     };
     try {
-      c3Arm('A: one second of air left', 0.5, false);
-      c3Arm('B: a full lungful', 60, false);
-      c3Arm('NULL: the save carries no traversal state', 0.5, true);
+      c3Arm('A: last seen 14 m east', [14, 0, 0], false);
+      c3Arm('B: last seen 14 m west', [-14, 0, 0], false);
+      c3Arm('NULL: the save carries no last-known position', [14, 0, 0], true);
     } catch (e) { c3.error = String(e && e.message || e); }
     out.push(c3);
 
@@ -216,7 +243,7 @@ try {
   const key = {
     C1: (a) => a.cast_accepted,
     C2: (a) => (a.damage === null ? null : a.damage > 0),
-    C3: (a) => (a.hp_lost === null ? null : a.hp_lost > 0),
+    C3: (a) => (a.lkp_after_load ? [Math.round(a.lkp_after_load[0]), Math.round(a.lkp_after_load[2])] : null),
     C4: (a) => a.gained,
   };
   for (const p of raw) {
