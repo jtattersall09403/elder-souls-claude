@@ -1,0 +1,372 @@
+{
+  "schema": "elder-souls/tool-coverage@1",
+  "id": "TOOL-COVERAGE-R2",
+  "round": 2,
+  "role": "tool critic",
+  "authority": "orchestration/TOOL-LOOP.md rule 3",
+  "verdict": "NOT_SATISFIED",
+  "summary": "Eight instruments must be rebuilt, including one the round-1 critic accepted as 'the best of the twelve'. Four of the five R1 rejections are materially repaired and journey-run is this round's best work. The repeated pattern is R1's inverted: R1 found tools that substituted PERMISSIVELY and passed; round 2 fixed the permissiveness by substituting RESTRICTIVELY and refusing. Three of the eight refuse a measurement the running build answers determinately, and one of those converts a live build failure into corpus_debt.",
+  "worst_instrument": "tools/analysis/build-viability.mjs",
+  "worst_instrument_why": "Second round running. Its refusal REASON is true — the quest-offer path is genuinely race-invariant, which I confirmed by driving six character signatures through __HARNESS.questOffers() in the running build — but the CONCLUSION is false. The tool fabricates ctx.dispositions from a derived race ceiling; the shipping build's Engine.seedDispositions() (engine.js:4563) writes rec.disposition RAW and canOffer reads exactly that, so the tool models an offer gate the build does not have. Its flagship independent falsification (mint an npc record, 36 dunmer signatures go red at Q-DEEP-01) was reproduced and then driven through THE ENGINE on the same patched tree: the engine blocked nobody, and the disposition clause vanished for all five signatures. And the nine givers with no npc record are, in the running build, a hard race-invariant unpassable gate — a FAIL — which the tool reports as unmeasurable, charging corpus_debt where the build should be charged.",
+  "harness_state": "node tools/harness/boot-check.mjs PASS before every measurement. Recorded because smoke.mjs never boots the engine, which is how a broken build once passed every check on this tree.",
+  "c8": {
+    "now": 26,
+    "errors": 0,
+    "all_genuinely_missing": true,
+    "verification": "Every one of the 26 resolved against the tree and searched for a same-basename file anywhere under tools/ (excluding node_modules). No matches — no further path errors remain.",
+    "r1_regex_fix_applied": "tools/corpus-index.mjs:407 now carries /tools\\/[A-Za-z0-9_\\-/.]*\\.(?:mjs|cjs|js|py)(?![A-Za-z0-9_])/g with the reasoning in a comment. The viewpoints.js false positive is gone.",
+    "by_area": {
+      "experience": 14,
+      "composition": 5,
+      "corpus": 5,
+      "analysis": 2
+    },
+    "standing_warning": "A cleared C8 warning is not a capability. Twelve absence-reporters cleared twelve warnings this round and NONE of them measures anything — which is correct and honest, and the Build status page must not read those twelve as coverage. RI-CMP03 step 2 still carries PATH CORRECTED, CONTRACT STILL OPEN: build-viability has no --chains mode and that step stays corpus_debt whatever the counter says."
+  },
+  "tools": [
+    {
+      "path": "tools/analysis/build-viability.mjs",
+      "items": ["RI-CHR01 M6", "RI-CHR03 M5", "RI-MTH06 §A", "RI-CMP03 step 2"],
+      "ruling": "REBUILD",
+      "q1_measures_specified_thing": "FAIL — models a disposition path game/src does not implement",
+      "q2_can_fail": "PASS, but it can also go red on a mechanism the build does not have",
+      "q3_reads_world": "FAIL — legitimate static exception per RI-MTH06 §A, but it models the design document's disposition rule rather than seedDispositions()'s",
+      "q4_self_blinding": "PASS — the R1 best-over-all-groups fallback is gone; no ceiling is granted",
+      "q5_flags_work": "PASS except --signatures, advertised and never read",
+      "self_test_as_run": "14/14 PASS",
+      "real_data_result": "0/540 viable, 0 not viable, 540 unmeasurable, exit 20",
+      "verified_claims": [
+        "The quest-offer path IS race-invariant in the running build — CONFIRMED independently. Six signatures (dunmer/lukiul, dunmer/foreign-born, saxhleel/interior, saxhleel/lukiul, imperial/blackrose, nord/foreign-born) driven through __HARNESS.questOffers() after reset produce a byte-identical disposition-clause set and identical offerable counts.",
+        "The giver census is right: 0 of 40 givers with a disposition_min resolve to a reaction group; 9 have no npc record at all.",
+        "The tier-5 cohort now resolves from danger_tier == 5 and the war-brood is fought as a GROUP. The R1 substitution is gone and the false 'regions.json declares no tier' note is deleted.",
+        "--data-root is a real and useful falsification handle; I used it for the shadow-tree work.",
+        "--signature, --explain, --fixture, --out, --target, --levels, --quiet all reach real behaviour."
+      ],
+      "defects": [
+        {
+          "id": "R2-BV-A",
+          "severity": "critical",
+          "title": "It fabricates the one input the item turns on",
+          "detail": "questClearableInner() computes dispositionCeiling(...) and assigns ctx.dispositions = { [npc]: ceiling } before calling the shipping canOffer(). Engine.seedDispositions() writes q.dispositions[rec.id] = rec.disposition, raw, with no group/race/upbringing term. derivedDisposition() reaches the world in exactly two places in game/src — Engine.npcDisposition() (a read-only surface) and character/encounter.js openingFor() (encounter hostility). Neither is a quest gate.",
+          "measured": "Shadow tree at scratchpad/shadow with speaker-teel-ashaan minted (reaction_group RG-DEEP, disposition 50), i.e. the builder's own falsification #1. TOOL: 36 signatures not viable, dunmer/lukiul 'ceiling 34' vs disposition_min 50. ENGINE booted on the same tree: Q-DEEP-01's why-list is identical for dunmer/lukiul, dunmer/blackrose, dunmer/foreign-born, dunmer/interior and saxhleel/interior — two unlearned topics and a rank gate, and NO disposition clause at all, because 50 >= 50."
+        },
+        {
+          "id": "R2-BV-B",
+          "severity": "critical",
+          "title": "The refusal converts a live build failure into corpus_debt",
+          "detail": "Nine quest givers carry a disposition_min and have no npc record. In the running build that is num(undefined) === 0: a hard, race-invariant, unpassable gate on nine quests for all 540 signatures. The tool calls them unmeasurable. The correct verdict on the shipping build is FAIL. unmeasurable charges nobody; fail charges the build.",
+          "measured": "Nine 'disposition 0/N' clauses observed in questOffers(), identical across all six signatures."
+        },
+        {
+          "id": "R2-BV-C",
+          "severity": "minor",
+          "title": "--signatures is advertised and inert",
+          "detail": "args['signatures'] is never read; the tool walks all 540 by default. Harmless in effect but it is the cmb-reach --verify shape, and RI-MTH06 §A's own contract line is `--signatures all`."
+        }
+      ],
+      "rebuild_instructions": [
+        "Build ctx.dispositions the way Engine.seedDispositions() does — raw from the record — so the criterion answers the question the shipping build answers.",
+        "Report the nine unreachable-for-everyone quests as FAIL, not unmeasurable.",
+        "Report the race-distinctness finding separately and by name: the reaction matrix does not reach the quest-offer path, so RI-CHR01 Distinctness is unmeasurable BECAUSE THE BUILD DOES NOT IMPLEMENT IT — not because a data field is missing.",
+        "Keep the derived-ceiling walk if useful, but label it a COUNTERFACTUAL and never let it produce the primary verdict.",
+        "Implement or delete --signatures."
+      ],
+      "scoring_consequence": "RI-CHR01 Distinctness and RI-CHR03 Decidability must NOT be scored from this run. They remain corpus_debt — but the debt is owed by game/src, not by game/data."
+    },
+    {
+      "path": "tools/lib/absence.mjs (+ its 12 reporters)",
+      "items": ["TOOL-COVERAGE-R1 Ruling 2", "RI-PLT01", "RI-AUD01..03", "RI-WLD*"],
+      "ruling": "REBUILD",
+      "q1_measures_specified_thing": "PARTIAL — the contract shape (3 outcomes, none of them 0) is right",
+      "q2_can_fail": "FAIL for 8 of 12 — surfaceSaysAbsent rests on a constant",
+      "q3_reads_world": "PASS — it boots the game, which is the right architecture",
+      "q4_self_blinding": "FAIL",
+      "q5_flags_work": "PASS",
+      "credit": "The builder found two real bugs in this library by pointing it at an implemented system and said so. That was the right instinct and it is the only reason I looked for more.",
+      "defects": [
+        {
+          "id": "R2-ABS-3",
+          "severity": "critical",
+          "title": "THE THIRD BUG — `needs` is a list of guesses the library never validates",
+          "detail": "surfaceSaysAbsent is an OR over 'is any name in spec.needs missing from the harness'. Nothing checks that a name in needs is a method the build would ever have. For 8 of the 12 shipped reporters EVERY name in needs is absent from the 322-method surface — getHeapSnapshot, gc, getHeapStats, getStreamingState, getResidentAssets, getResourceRegistry, getAssetManifest, getAudioStats, getAudioLog, audioState, musicState, getMusicLog, recordAudio — so the term is a CONSTANT TRUE and cannot fail. The EXIT 21 ARRIVED fuse, the entire reason these files are defensible rather than notes, is unreachable by construction for two thirds of them unless a future author picks the builder's guessed names exactly. Only the four Tier-H reporters rest on a live signal (getPerfStats()._unmeasurable / getLoadState()._unmeasurable). It went unnoticed because the builder's implemented-system falsification used 'gamepad', the one case where the method names are real.",
+          "measured": "reportAbsence({ system: 'a quest runtime', needs: ['questOffers','questBook','getQuestLedger'] }) -> ABSENT, exit 20, quoting 'the harness methods the real instrument needs are absent: getQuestLedger' — about a system I had just driven 69 quests through in the same pass."
+        },
+        {
+          "id": "R2-ABS-4",
+          "severity": "critical",
+          "title": "The substring->prefix fix over-corrected and now lies the other way",
+          "detail": "The build packs three absent systems into one not_implemented entry: 'heap/GC access (A-JRN9), dialogue state (A-JRN13), resource registry (A-JRN14). A-JRN2 (gamepad) and A-JRN4 ... landed with W1-08/W1-29 ...'. A prefix match makes buildSaysAbsent FALSE for dialogue state and resource registry — both genuinely absent and both named right there. Bug 1 said ABSENT while quoting 'it landed'; bug 4 says ARRIVED while quoting 'it is not implemented'. Neither matcher reads that entry as the list it is. Exit 21 is the 'go delete this file' code.",
+          "measured": "reportAbsence({ system: 'dialogue state', needs: ['getUIState','getRenderedText'] }) -> ARRIVED, exit 21, 'REPLACE IT with a real one'. Control: system 'gamepad' with real method names still returns ARRIVED/21 correctly, so the builder's own falsification holds — it just did not generalise."
+        }
+      ],
+      "rebuild_instructions": [
+        "Validate every `needs` entry at startup against the live harness surface AND a declared source (the amendment id, HARNESS.md), and refuse loudly when a required name matches nothing and is not traceable to a named amendment.",
+        "Parse not_implemented[].what as a LIST of systems, not a string — or better, ask for a harness change emitting one entry per system.",
+        "Fail closed on ambiguity: ARRIVED must require positive evidence that the system works, not merely the absence of a declaration."
+      ]
+    },
+    {
+      "path": "tools/platform/perf-run.mjs",
+      "items": ["RI-PLT01 T1", "RI-PLT01 M1-M15"],
+      "ruling": "REBUILD",
+      "q1_measures_specified_thing": "PASS for the four-marker rule; FAIL for what the rule is FOR",
+      "q2_can_fail": "PASS — the gate is a check, not a constant",
+      "q3_reads_world": "FAIL — it reads the page, and the page is the side under test",
+      "q4_self_blinding": "FAIL",
+      "q5_flags_work": "PASS — --t1-only, --attest-renderer, --device-class, --out, --help all real; every path exits 20, never 0",
+      "verified_claims": [
+        "SwiftShader/llvmpipe/Mesa strings REFUSED with the marker named.",
+        "A valid GPU in an invalid device class (gaming-pc) REFUSED.",
+        "A valid GPU in a valid class (desktop-discrete) ADMISSIBLE.",
+        "Omitting --device-class refuses — conservative, correct direction.",
+        "ADMISSIBLE still exits 20 and still withholds every Tier-H field."
+      ],
+      "defects": [
+        {
+          "id": "R2-T1-SPOOF",
+          "severity": "critical",
+          "title": "The gate is defeated by twenty lines running in the page",
+          "detail": "readRenderer() asks the page through WEBGL_debug_renderer_info. A single init script patching WebGLRenderingContext.prototype.getParameter turns SwiftShader into an RTX 4070 in the tool's own artifact and nothing notices. tools/lib/browser.mjs launches Chromium with --use-angle=swiftshader in DETERMINISTIC_CHROMIUM_ARGS, on the NODE side where the page cannot reach it, and the gate never consults it. R1 praised session-run for putting checks where the party under test cannot walk past them; this tool needs the same lesson in the opposite direction.",
+          "measured": "honest page -> 'ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero)...), SwiftShader driver)', tier_h_admissible=false. Page with the patch -> 'NVIDIA GeForce RTX 4070/PCIe/SSE2', tier_h_admissible=TRUE, markers=[]."
+        },
+        {
+          "id": "R2-T1-ALLOWLIST",
+          "severity": "major",
+          "title": "'Not on the ban list' is treated as 'attested GPU'",
+          "detail": "tier_h_admissible = hit.length === 0 && classOk && s.length > 0. Any non-empty string missing four substrings is admitted. T1's direction is 'may not produce a Tier-H score AT ALL', so the safe default on an unidentifiable renderer is refusal. This is a denylist where the rule calls for a fail-closed allowlist. The four markers are RI-PLT01's own, so the narrow blame is the corpus's — raise it as an amendment.",
+          "measured": "ADMISSIBLE: 'Microsoft Basic Render Driver' (WARP, pure software); 'WebKit WebGL' (the masked string a browser returns when it REFUSES to identify the GPU); 'Google Inc. (Google)' (masked vendor); 'ANGLE (Google, Vulkan 1.3.0 (Subzero Device (0x0000C0DE)))' (SwiftShader's own backend, named without the word)."
+        },
+        {
+          "id": "R2-T1-NOCROSSCHECK",
+          "severity": "major",
+          "title": "--attest-renderer is never checked against the environment it attests for",
+          "detail": "In the full run the tool holds BOTH facts in one artifact — live_evidence.renderer (the page's real renderer) and enforcement.tier_h_admissible (computed from the attestation) — and never compares them. A `source:` field is not a check. In --t1-only mode with an attestation it does not boot at all."
+        }
+      ],
+      "rebuild_instructions": [
+        "Cross-check --attest-renderer against the page's own renderer; when the environment is software and an attestation says otherwise, record attestation_contradicts_environment and refuse.",
+        "Read the Chromium launch arguments Node-side and refuse whenever the harness itself requested a software backend, whatever the page says.",
+        "Refuse unidentifiable and known-software-but-unlisted renderer strings; report identified:false alongside the marker hit.",
+        "File the four-marker list as an RI-PLT01 amendment."
+      ]
+    },
+    {
+      "path": "tools/platform/decoupling.mjs",
+      "items": ["RI-PLT01 M6"],
+      "ruling": "REBUILD AS A REAL INSTRUMENT",
+      "q1_measures_specified_thing": "FAIL — it refuses a Tier-S measurement as a Tier-H absence",
+      "q2_can_fail": "n/a — it measures nothing",
+      "q3_reads_world": "PASS (it boots)",
+      "q4_self_blinding": "n/a",
+      "q5_flags_work": "PASS",
+      "detail": "It declares system 'Tier-H performance numbers' and needs ['getPerfStats'] — a method M6 does not use — and refuses on a marker belonging to the other tier. RI-PLT01 line 110 classifies sim/render decoupling as Tier-S: 'a structural property ... Measuring it under SwiftShader gives the same answer as measuring it on real hardware. Scoreable HERE, in this container, today.' M6 is worth 10 points, the largest single entry in the 26-point sim-integrity axis.",
+      "measured": "setRenderRate 60/30/15/0 all read back correctly and stepFrames(600) gives exactly 600 sim steps at every rate. --trace-events supplies the body_sha256 half. Nothing is missing.",
+      "wider_ruling": "All four Tier-H reporters (perf-run, hitch-census, load-run, decoupling) declare the same `system` string and each thereby refuses the TIER-S HALF OF ITS OWN ITEM — P7 makes GC pause counts and attribution Tier-S, P9 makes the body_sha256 load test Tier-S. Split the other three the same way: refuse the Tier-H number, measure the Tier-S quantity."
+    },
+    {
+      "path": "tools/journey/cadence.mjs",
+      "items": ["RI-JRN02 §B C1-C10"],
+      "ruling": "REBUILD (narrow)",
+      "q1_measures_specified_thing": "PARTIAL",
+      "q2_can_fail": "PASS",
+      "q3_reads_world": "FAIL for C7 — it reads the input log, not the world",
+      "q4_self_blinding": "PASS",
+      "q5_flags_work": "PASS",
+      "self_test_as_run": "10/10 PASS",
+      "r1_defect_status": "FIXED. LOCOMOTION_ACTIONS is derived from game/src/input/actions.js, membership asserted at module load, an action outside the closed set makes C1 unmeasurable rather than pass, and the dead `analyse` export is importable — I imported it.",
+      "defects": [
+        {
+          "id": "R2-CAD-ROLL",
+          "severity": "major",
+          "title": "The rebuilt exclusion set is {sprint, jump}; in a souls game the traversal verb is roll",
+          "measured": "An hour in an empty room pressing one button 6x/s, player advancing 2160 m in a straight line throughout: roll -> C1 PASS, gap 0.17 s, traversal_fraction 0. Same for menu, lock_on, spell_cycle. Correct: sprint and jump -> fail, gap 3600 s, traversal 1.0; interact -> fail (the no-op corroboration rule works); light and block -> pass. An hour of dodge-rolling across the map, and an hour of opening and closing the inventory, both read as maximally engaged — the exact reading the file's header says it exists to prevent."
+        },
+        {
+          "id": "R2-CAD-C7",
+          "severity": "minor",
+          "title": "traversal_fraction is computed from the input log, not from the world",
+          "detail": "C7 is excluded inputs over all inputs. My fixture's player moves 2160 m at 4.5 m/s for an hour and C7 reads 0. The trace carries player.pos and player.speed_mps on every frame and C7 reads neither. C9 already refuses to compute proximity from world/** because that would measure the design document; the same instinct belongs here."
+        }
+      ]
+    },
+    {
+      "path": "tools/journey/competence.mjs",
+      "items": ["RI-JRN02 §C K1-K7"],
+      "ruling": "REBUILD (narrow)",
+      "q1_measures_specified_thing": "PARTIAL",
+      "q2_can_fail": "PASS — it now cannot PASS, which is the new problem",
+      "q3_reads_world": "PASS",
+      "q4_self_blinding": "PASS",
+      "q5_flags_work": "PASS",
+      "self_test_as_run": "9/9 PASS",
+      "r1_defect_status": "FIXED, and fixed well. changed===true -> GEAR_CHANGED, changed===null -> GEAR_UNCHECKABLE, changed===false -> proceed; both blocking states in the self-test; plus a fourth stale-observation state the R1 critic did not name. K7 reports the hp spread as R1 recommended without moving the threshold.",
+      "defects": [
+        {
+          "id": "R2-CMP-LOADOUT",
+          "severity": "major",
+          "title": "It requires a trace field that has never existed",
+          "detail": "compareLoadouts() looks for player.loadout. No trace in this tree carries it, so on EVERY real run the clause returns GEAR_UNCHECKABLE and voids the comparison — and the tool names 'the trace' as owner for data the trace is already emitting. R1 found a clause that could not fail; round 2 shipped one that cannot pass.",
+          "measured": "reports/journeys/w1-13-jrn06/trace.jsonl, 3780 records: 0 with player.loadout. player.* keys actually emitted include weapon_id, weapon_class, stance, offhand_kind, roll_class, equip_load_pct, estus, attuned.",
+          "fix": "Map {weapon_id, offhand_kind, stance, equip_load_pct} to the loadout; keep GEAR_UNCHECKABLE for when even those are missing."
+        }
+      ],
+      "note": "Against the real trace the run blocks earlier at NO_AI and NO_ENCOUNTER_PAIR, both correctly reported with owners. Those are build gaps, not tool gaps."
+    },
+    {
+      "path": "tools/journey/gamepad-shim.mjs",
+      "items": ["RI-JRN04 M13", "A-JRN2"],
+      "ruling": "REBUILD (narrow)",
+      "q1_measures_specified_thing": "PARTIAL",
+      "q2_can_fail": "PASS",
+      "q3_reads_world": "FAIL — it stops at the input layer",
+      "q4_self_blinding": "PASS",
+      "q5_flags_work": "PASS",
+      "self_test_as_run": "8/8 PASS, lines flushed as produced, every failure through die(EXIT..)",
+      "r1_defect_status": "FIXED. It runs. The root cause the builder found is correct — launchGame() does its own goto, so install-then-reload could never fire load — and initScripts before the goto is the right fix and is additive.",
+      "verified_claims": [
+        "__HARNESS.gamepadPoll() IS RealInput.pollGamepad() (game/src/input/real.js:128), called from Engine's beforeTick every frame. The engine-side check is genuinely engine-side."
+      ],
+      "defects": [
+        {
+          "id": "R2-PAD-ENTITY",
+          "severity": "major",
+          "title": "None of the eight checks looks at the world",
+          "detail": "All eight observe navigator.getGamepads(), mapping, button/axis counts, descriptor strings, and gamepadPoll()'s RETURN VALUE. A build whose pollGamepad() returns a perfect observation and whose router then discards the axes passes 8/8, and RI-JRN04 M13 is reported green for a pad that moves nothing. R1's own praise for journey-run is the standard: 'it observes an entity-side quantity (the player moved 2.24 m) rather than the model's own return value.' The pattern is in the next file in the same directory.",
+          "fix": "Add a ninth check: hold the shim's stick, step frames, assert the player's position changed — with the null control (stick at rest -> no drift) journey-run already carries."
+        }
+      ]
+    },
+    {
+      "path": "tools/experience/session-run.mjs",
+      "items": ["RI-EXP01", "RI-CMP03"],
+      "ruling": "REBUILD — an R1 ACCEPT, and it is broken",
+      "q1_measures_specified_thing": "FAIL",
+      "q2_can_fail": "PASS",
+      "q3_reads_world": "PASS",
+      "q4_self_blinding": "FAIL",
+      "q5_flags_work": "PASS",
+      "self_test_as_run": "6/6 PASS, including the page.evaluate bypass case it was praised for",
+      "architecture_upheld": "Installing the prohibitions IN THE PAGE is right and must not change. R1 was correct about that.",
+      "defects": [
+        {
+          "id": "R2-SESS-NAMELIST",
+          "severity": "critical",
+          "title": "The profile is six names on a 328-method surface",
+          "detail": "RI-EXP01's six names were written against a smaller harness. The enforcement is a NAME LIST where the item means a CAPABILITY LIST, and the surface grew underneath it. spawn is prohibited; spawnNPC, spawnEncounter, spawnCivilian, spawnGuard and spawnProp are not. loadState is prohibited; restoreState is not. teleport is prohibited; travelRide, boardTravel, setTravelMark and a method literally named __breakTravelFence are not.",
+          "measured": "First-hour prohibitions installed exactly as session-run does. listNPCs() -> 0. __HARNESS.spawn(...) refused and recorded. __HARNESS.spawnNPC({id:'critic-ghost',...}) RETURNED an eid. listNPCs() -> 1. Violations recorded: 1 — only the refused one. The run would complete, exit 0, record no violation, and be certified as a clean first-hour session with an agent-authored NPC standing in it.",
+          "fix": "Classify the whole surface by capability (mutate-world, teleport-player, grant-resource, set-time/weather, load-state, ...), derive the refusal set from the classification, and FAIL CLOSED on any method the classification does not cover. Add __breakTravelFence to every profile."
+        },
+        {
+          "id": "R2-SESS-CAPTURED",
+          "severity": "minor",
+          "title": "A reference captured before install still works",
+          "detail": "Recorded, not charged. session-run keeps no such handle so nothing in the tree exploits it today, but the prohibition is a property of the object's current shape rather than of the capability."
+        }
+      ]
+    },
+    {
+      "path": "tools/journey/journey-run.mjs",
+      "items": ["RI-JRN01..RI-JRN09", "A-JRN1"],
+      "ruling": "ACCEPT — the R1 defect is genuinely repaired, and this is the round's best work",
+      "q1_measures_specified_thing": "PASS",
+      "q2_can_fail": "PASS",
+      "q3_reads_world": "PASS",
+      "q4_self_blinding": "PASS",
+      "q5_flags_work": "PASS",
+      "verified_claims": [
+        "The five RI-JRN07 §B stratum predicates are faithful. I reimplemented all five from the raw quest JSON — a THIRD independent implementation, after the tool's and the builder's Python one — and got {Q1:32, Q2:0, Q3:2, Q4:9, Q5:0}, agreeing exactly with both.",
+        "The draw is live and seeded: --seed 4711 -> [Q-MAIN-10, Q-ARCH-01, Q-MAIN-01]; --seed 99 -> [Q-MAIN-01, Q-BLAK-01, Q-ARCH-01]. Recorded in the artifact BEFORE the run per Rule S1, and checked against the running build's 69-id quest book.",
+        "With the flags absent the m_quest_sample rows do not appear at all — the sample is not silently manufactured.",
+        "m_quest_sample_complete reports UNMEASURABLE, names both empty strata and their reasons, states the sample is NOT topped up from a populated stratum, exit 1, never ok.",
+        "It failed honestly on something else in the same run: control_observed went N/A with 'the player did not move between [2766.5,2.68,5011] and [2766.5,2.68,5011] after 60 frames of forward input' — an entity-side observation refusing to claim first_control."
+      ]
+    },
+    { "path": "tools/journey/beat-extract.mjs", "ruling": "ACCEPT", "self_test_as_run": "6/6 PASS", "note": "still refuses to write the committed reference file" },
+    { "path": "tools/experience/beat-extract.mjs", "ruling": "ACCEPT", "self_test_as_run": "8/8 PASS" },
+    { "path": "tools/experience/beat-diff.mjs", "ruling": "ACCEPT", "self_test_as_run": "9/9 PASS" },
+    { "path": "tools/experience/isolation-check.mjs", "ruling": "ACCEPT", "self_test_as_run": "6/6 PASS" },
+    { "path": "tools/experience/log-lint.mjs", "ruling": "ACCEPT", "self_test_as_run": "8/8 PASS" },
+    { "path": "corpus/88-journeys/data/mw-open-beats.json", "ruling": "ACCEPT", "note": "unchanged, still committed once" },
+    { "path": "tools/experience/lib/md.mjs", "ruling": "ACCEPT (library)", "note": "R1's note STANDS, uncorrected: --help exits 0 and prints nothing. R1's honest fix — stop counting a library among the commands — was not applied either way." }
+  ],
+  "referred_judgements": [
+    {
+      "id": "REFERRAL-1",
+      "subject": "RI-JRN07 §B strata Q2 and Q5 reported unimplementable as written",
+      "ruling": "GENUINE CONTENT GAP. Not a corpus defect in the strata themselves, and NOT a builder giving up.",
+      "measured": "Over all 69 shipped quests: 4 carry a rank_gate at all, min_rank values present [1,2], max 2 -> Q2 has 0 candidates. Quests with q.region set: 0. Quests with any destination field: 0 -> Q5 has 0 candidates.",
+      "reasoning": "The builder undersold it. It is not that q.region is 'set on almost no quest' — there is NO destination field of any kind on any quest. The only spatial information is giver.location and a free-text `directions` string. Q5's predicate cannot fire, ever, under this schema. Widening it to 'any quest with a long directions string' would be exactly the illegitimate substitution R1 ruled on, and the builder was right to refuse it.",
+      "consequence": "corpus_debt charged to CONTENT, not to the tool and not to any builder. Rule S1 makes the five binding, so RI-JRN07's instrumented pass is unmeasurable until Q2 and Q5 are populated.",
+      "corpus_rider": "§B Q5 asks for geometry ('>= 15 walk-minutes away, crossing a region border') while §C U1 requires 100% directions_coverage from the same information AS PROSE. One item wants that fact in two incompatible forms and ships neither the field nor a region-to-region walk table. File as a corpus defect alongside the content gap. The tool's phrasing should be corrected to 'no quest carries any destination-region field'."
+    },
+    {
+      "id": "REFERRAL-2",
+      "subject": "RI-MTH06 §A's worked example not producible on shipped data by any correct tool",
+      "ruling": "CONFIRMED. It is a GAME defect, owned by game/src, and it is WORSE than reported. The builder's proposed fix would not work.",
+      "measured": "Six signatures through questOffers() in the running build: byte-identical disposition clauses. Then the builder's own remedy applied on a shadow tree — speaker-teel-ashaan minted with reaction_group RG-DEEP and disposition 50 — and the ENGINE booted on it: the offer gate did not move for any race; the disposition clause vanished for ALL five signatures, because seedDispositions() writes the raw 50 and never consults the matrix.",
+      "reasoning": "The defect is not a missing field. It is that the reaction matrix is not wired to the quest path at all. derivedDisposition() reaches the world in exactly two places in game/src — Engine.npcDisposition() (a read-only surface) and character/encounter.js openingFor() (encounter hostility). No quest gate calls it. Adding reaction_group to 31 records would make build-viability go red for race-gated blocks THE GAME DOES NOT HAVE — strictly worse than today.",
+      "dispatch_correction": "orchestration/NEXT-DISPATCH.md §1b must be amended. The fix belongs in one of two places: seedDispositions() applies derivedDisposition() against the character, or canOffer/_dispositionToward derive at read time. Either is a few lines. The data work (records + reaction_group fields) is NECESSARY BUT NOT SUFFICIENT, and dispatching it alone would produce a build that still ignores race while every instrument reported that it did not.",
+      "nuance_in_the_build_s_favour": "Race is not wholly inert. openingFor() gates encounter hostility on the matrix, so a Dunmer and a Saxhleel can be MET differently in the world. It is the QUEST path that is blind. _dispositionToward() also carries a sap-taint term that non-Argonians accumulate — a race-correlated penalty, but earned through play, not a creation-time bar, and it touches resolutions rather than offers."
+    },
+    {
+      "id": "REFERRAL-3",
+      "subject": "RI-PLT01 M6 (sim/render decoupling) — should decoupling.mjs be a real instrument?",
+      "ruling": "AGREED. Rebuild it as a real instrument. The builder is right and the item said so first.",
+      "measured": "setRenderRate 60/30/15/0 all read back correctly; stepFrames(600) gives exactly 600 sim steps at every rate. --trace-events supplies the body_sha256 half.",
+      "reasoning": "RI-PLT01 line 110 classifies sim/render decoupling as Tier-S: 'a structural property ... Measuring it under SwiftShader gives the same answer as measuring it on real hardware. Scoreable HERE, in this container, today.' M6 is worth 10 points, the largest single entry in the 26-point sim-integrity axis. The exit-21 fuse the builder wrote to make someone come back has done its job: someone came back."
+    }
+  ],
+  "corpus_debt": [
+    { "item": "RI-CHR01 Distinctness / RI-CHR03 Decidability", "blocked_by": "the reaction matrix is not wired to the quest-offer path", "owner": "game/src (NEXT-DISPATCH §1b, amended)", "never": "a zero against any builder" },
+    { "item": "RI-JRN07 instrumented pass", "blocked_by": "strata Q2 and Q5 have zero candidates in shipped content", "owner": "content" },
+    { "item": "RI-CMP03 step 2", "blocked_by": "build-viability has no --chains mode; path corrected in R1, contract still open", "owner": "W1-TOOLS" },
+    { "item": "RI-PLT01 Tier-H dimensions", "blocked_by": "no attested hardware", "owner": "unowned — TOOL-COVERAGE-R1 Ruling 2 asked for an owner and still none is assigned" },
+    { "item": "RI-AUD01..03", "blocked_by": "audio is not implemented", "owner": "W1-25" }
+  ],
+  "rebuild_list": [
+    "tools/analysis/build-viability.mjs — model the shipping offer gate (raw seeded disposition); report the nine unreachable-for-everyone quests as FAIL; demote the derived-ceiling walk to a labelled counterfactual; implement or delete --signatures.",
+    "tools/lib/absence.mjs — validate `needs` against the live surface and refuse when a name matches nothing; parse not_implemented[].what as a list; require positive evidence for ARRIVED.",
+    "tools/platform/perf-run.mjs — cross-check --attest-renderer against the page; read the Chromium launch args Node-side; refuse unidentifiable renderer strings.",
+    "tools/platform/decoupling.mjs — rebuild as a real Tier-S instrument (M6); split the Tier-S half out of hitch-census and load-run while you are there.",
+    "tools/journey/cadence.mjs — classify roll and the surface toggles against C1's five clauses; compute traversal_fraction from player.pos, not from the input log.",
+    "tools/journey/competence.mjs — read the loadout from the fields the trace actually emits.",
+    "tools/journey/gamepad-shim.mjs — one entity-side check with a null control.",
+    "tools/experience/session-run.mjs — capability-derived refusal set over the whole 328-method surface, fail-closed on anything unclassified."
+  ],
+  "do_not_touch": [
+    "tools/journey/journey-run.mjs",
+    "tools/journey/beat-extract.mjs",
+    "tools/experience/beat-extract.mjs",
+    "tools/experience/beat-diff.mjs",
+    "tools/experience/isolation-check.mjs",
+    "tools/experience/log-lint.mjs",
+    "corpus/88-journeys/data/mw-open-beats.json"
+  ],
+  "also_filed": [
+    "BUILD DEFECT (game/src): the reaction matrix does not reach the quest-offer path. seedDispositions() seeds rec.disposition raw; canOffer reads it; derivedDisposition() is never applied. The quest-offer path is race-invariant for all 540 signatures. Owner: whoever holds character.race.access.",
+    "BUILD DEFECT (game/data): 9 quest givers with a disposition_min have no npc record, so their quests are unofferable for EVERY signature — a hard unpassable gate on nine quests today: dyer-sallis, undertaker-vaskh, prefect-hallow, quartermaster-sedd, harbourmistress-tesh, cutter-neeth, factor-belliene, npc-porter-eeja, speaker-teel-ashaan.",
+    "HARNESS DEFECT: getCapabilityReport().not_implemented packs three distinct systems into one entry's `what` string, which no matcher can read correctly. Emit one entry per system.",
+    "HARNESS SURFACE HAZARD: __breakTravelFence is on the public harness surface and is prohibited by no profile.",
+    "CORPUS: RI-PLT01 T1's four-marker denylist admits WARP, masked renderer strings and SwiftShader's Subzero backend. Needs an amendment to a fail-closed form.",
+    "CORPUS: RI-JRN07 §B Q5 and §C U1 want the same fact as geometry and as prose, and the schema supplies neither the field nor a walk table."
+  ],
+  "provenance": {
+    "status": "measured",
+    "harness_check": "node tools/harness/boot-check.mjs PASS before every measurement",
+    "falsifications_constructed_by_this_critic": [
+      "six-signature questOffers() invariance sweep in the running build",
+      "shadow-tree NPC mint driven through the ENGINE, not only the tool",
+      "twelve-reporter `needs`-versus-surface census over the 322-method harness",
+      "three reportAbsence() probes: control (gamepad -> ARRIVED), third bug (running system + invented name -> ABSENT), prefix over-correction (absent system named mid-string -> ARRIVED)",
+      "four-renderer-string T1 sweep plus an init-script renderer spoof",
+      "nine-action cadence sweep via the now-importable analyse()",
+      "player.loadout census over a 3780-record real trace",
+      "third independent reimplementation of the five RI-JRN07 strata predicates",
+      "four-render-rate M6 decoupling run",
+      "spawnNPC bypass of session-run's first-hour profile"
+    ],
+    "self_test_results": "quoted from runs I executed, not from the builder's record",
+    "data_safety": "Shadow data patches were made under /tmp/.../scratchpad/shadow/. game/data on this tree was NOT modified.",
+    "not_done": ["git commit", "tools/publish.mjs", "deleting any indexed data file"]
+  }
+}

@@ -104,10 +104,26 @@ whole setting rests on — an Argonian at home versus a Dunmer abroad — and it
 the two defects already found and fixed nearby: the reaction matrix that was a pure oracle, and the
 Argonian who was offered nothing because a differentiation check passed by subtraction.
 
-The builder proved either fix unblocks it immediately, against a patched data root. Owner: whoever
-holds `character.race.access`/`character.race.dialogue` — note the decomposition audit found those
-two paths were dropped from W1-07's declared set while the item judging them was scored into it
-three times.
+**AMENDED after the round-2 tool critic tested the proposed fix and it did not work.** The builder
+claimed either data fix unblocks this immediately. The critic applied it — minted the missing NPC
+record on a shadow tree — and then **booted the engine on that same patched tree: it blocked nobody,
+and the disposition clause was gone for all five signatures.** The data work is necessary and
+**not sufficient**.
+
+**The real cause is one layer deeper: `derivedDisposition()` never touches the quest path at all.**
+`seedDispositions()` writes `rec.disposition` **raw** into the table the offer gate reads, so no
+race or upbringing term is ever applied to a quest offer, regardless of how complete the NPC records
+are. Confirmed in the running world rather than from source — six character signatures driven
+through `questOffers()` returned byte-identical disposition clauses.
+
+So dispatch **both halves or neither**: wire the derived disposition into the offer path, *and* fill
+the missing records. Doing the data alone produces a build that still ignores race while every
+instrument reports success — which is the exact failure this project keeps finding, bought at the
+price of a dispatch.
+
+Owner: whoever holds `character.race.access`/`character.race.dialogue` — the decomposition audit
+found both paths were dropped from W1-07's declared set while the item judging them was scored into
+it three times.
 
 ## 2b. The Act V conversation nobody wrote
 

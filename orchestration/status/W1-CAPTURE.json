@@ -2,18 +2,38 @@
   "task_id": "W1-CAPTURE",
   "brief": "shared warm cached screenshot service (S34)",
   "started": "wave-1",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "tools/capture/server.mjs",
     "tools/capture/client.mjs",
     "tools/harness/shot.mjs",
     "tools/capture/cache.mjs",
-    "tools/capture/protocol.md"
+    "reports/capture/SETTLE-CALIBRATION.json"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "tools/capture/buildkey.mjs",
+    "tools/capture/protocol.mjs",
+    "tools/capture/arrival.mjs",
+    "tools/capture/settle.mjs",
+    "tools/capture/calibrate-settle.mjs",
+    "tools/capture/server.mjs",
+    "tools/capture/client.mjs",
+    "tools/harness/shot.mjs",
+    "reports/capture/SETTLE-CALIBRATION.json"
+  ],
   "findings": [
-    "S34 read: (a) appearance captures may be placed+cached; (b) arrival captures may not. Settle proof mandatory. Provenance: arrival|placed, build sha, settle proof, cache hit."
+    "S34: (a) appearance captures may be placed+cached; (b) arrival captures may not. Settle proof mandatory.",
+    "MEASURED: the province streamer is pumped ONLY from engine.teleport() and engine._applyCell(); sim/step.js never touches renderer.province. So a camera posed where the player has never been looks at an EMPTY world forever, and two frames 12 apart are BYTE-IDENTICAL. Naive 'two stable frames = settled' passes a photograph of nothing. 5/5 'absent' controls: changed_frac=0.000000 with 19-25 tiles unbuilt. IMAGE STABILITY ALONE IS NOT A SUFFICIENT SETTLE GATE.",
+    "MEASURED: this world is ALIVE. A legitimately settled frame moves up to 8.7% of pixels / 20% of 24px blocks in 12 frames (ground cover sway, ashfall, rain, water). Naive two-frame stability CANNOT separate settled from streaming at any block size (separated=false for px,b4,b8,b12,b24,b48).",
+    "SOLUTION: three frames A(t),B(t+12),C(t+24). excess = max(0, d(A,B) - d(B,C)) subtracts the scene's own ambient-motion floor. At 4x4 blocks of a 384x216 thumbnail, delta>8/255: settled excess <= 0.00251 (n=13), streaming excess in [0.01157, 0.1412] (n=5). CLEAN BAND. Threshold 0.005 (2.0x margin below, 2.3x above).",
+    "MEASURED: lighting converges in ONE frame in this build (noon->01:00 + storm, zero settle frames: excess=0 in 5/5). G3 has no lighting-convergence case to catch here.",
+    "Gates: G1 residency (streamAround(x,z,0).queued must be 0 -- budget 0 builds nothing so it is a pure read), G2 quiescence (built==0 && tilesQueued==0), G3 stability (excess <= 0.005).",
+    "boot-check baseline: PASS in 13.6 s. Box load ~6 on 4 cores at start.",
+    "The 117-frame pack is tools/world/province-shots.mjs: 13 regions x 3 per x 3 passes (day,night,worst).",
+    "MEASURED end-to-end: cold start (spawn daemon + boot browser + 1 capture) 10.2-15.4 s. Warm cache MISS at 1280x720: 0.86-0.94 s. Cache HIT: 12-13 ms in-daemon, 93 ms wall incl. node startup.",
+    "PERF TRAP FOUND AND FIXED: marshalling a 384x216 RGBA thumbnail out of the page as a JSON array (~330k numbers) cost ~2 s per frame - MORE than the render it measures. Warm capture was 7.0 s. Moving the block-mean diff in-page (__CAPD_SNAP/__CAPD_DIFF, only aggregates cross CDP) took it to 0.86 s. 8x.",
+    "Daemon: unix socket reports/runs/.capture/capd.sock, O_EXCL lock file for race-free idempotent start, per-connection FIFOs with round-robin scheduling for fairness, build stat-signature watch, two-stage idle (browser 180 s / daemon 1800 s)."
   ],
-  "next_step": "read tools/harness/shoot.mjs and lib to learn launchGame/teleport/camera API",
-  "notes_for_successor": "Box load ~6 at start. 4 cores."
+  "next_step": "add read-only query op to daemon; write falsify.mjs (2 anti-loophole demos); route province-shots/shoot/r4-shots through the service; run the 117-frame pack",
+  "notes_for_successor": "settle.mjs needs updating from the 2-frame form to the 3-frame excess form + block=4 + threshold 0.005. Calibration data is in reports/capture/SETTLE-CALIBRATION.json."
 }

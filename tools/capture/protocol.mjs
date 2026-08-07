@@ -25,8 +25,8 @@ export const DEFAULTS = {
   seed: 1337,
   ui: false,
   settle_frames: 24,
-  settle_gap: 12,
-  settle_threshold: 0.010,
+  settle_gap: 12,          // settle.mjs GAP — see its calibration note
+  settle_threshold: 0.005, // settle.mjs THRESHOLD — measured, see SETTLE-CALIBRATION.json
 };
 
 const r4 = (n) => (n === null || n === undefined ? null : Math.round(Number(n) * 1e4) / 1e4);
@@ -47,13 +47,25 @@ export function canonicalSpec(spec = {}) {
     state: spec.state !== undefined ? String(spec.state) : DEFAULTS.state,
     seed: Number(spec.seed ?? DEFAULTS.seed),
     place: spec.place ? { x: r4(spec.place.x), z: r4(spec.place.z), y: spec.place.y === undefined ? null : r4(spec.place.y) } : null,
-    camera: spec.camera ? {
+    // A ground-relative pose. The daemon resolves eye height against the terrain it teleported
+    // onto, which a client cannot do without an engine. Every field is in the key.
+    pose: spec.pose ? {
+      yaw_deg: r4(spec.pose.yaw_deg ?? 0),
+      pitch_deg: r4(spec.pose.pitch_deg ?? 0),
+      eye_m: r4(spec.pose.eye_m ?? 1.7),
+      fov: r4(spec.pose.fov ?? 70),
+    } : null,
+    // Only the keys the caller actually set. `__HARNESS.camera()` rejects unknown pose keys
+    // outright (engine.js:3345 — deliberately, because silently ignoring one froze the camera and
+    // returned a plausible state), so emitting `dir: null` here would fail every explicit pose.
+    camera: spec.camera ? Object.fromEntries(Object.entries({
       pos: vec(spec.camera.pos),
       look: vec(spec.camera.look),
       dir: vec(spec.camera.dir),
       fov: r4(spec.camera.fov),
-      up: vec(spec.camera.up),
-    } : null,
+      mode: spec.camera.mode === undefined ? null : String(spec.camera.mode),
+      lockOn: spec.camera.lockOn === undefined ? null : spec.camera.lockOn,
+    }).filter(([, v]) => v !== null && v !== undefined)) : null,
     time: spec.time === undefined || spec.time === null ? null : r4(spec.time),
     weather: spec.weather === undefined || spec.weather === null ? null : String(spec.weather),
     tide: spec.tide === undefined || spec.tide === null ? null : String(spec.tide),
