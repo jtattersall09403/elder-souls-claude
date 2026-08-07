@@ -529,22 +529,43 @@ try {
       + 'against the same render with the event layers muted.',
     what: 'the event layers measurably change the dynamics of the bed they sit on',
   };
+  // O3 IS PER BED AND PER LAYER, not a province median, and that is a correction to this tool.
+  //
+  // The first version took the median of every measured event in the province and asked whether
+  // THAT sat in §A's band. It passed — at -2.12 dB for L3 and +0.32 for L4 — while four bed/layer
+  // pairs sat outside it (clay-moor L3 at +4.91 and L4 at +9.56, marauders-coast L4 at -10.81,
+  // stone-forest L4 at -10.15). A province median is exactly the statistic that lets a loud bed
+  // and a quiet bed cancel into a green, and §A's band is written per layer of a region, not over
+  // an average of thirteen. Gating the average was measuring the wrong thing.
   const bandFails = [];
-  for (const [layer, band] of Object.entries(BANDS)) {
-    const xs = relByLayer[layer];
-    if (!xs.length) { bandFails.push(`${layer}: no events measured`); continue; }
-    const m = +median(xs).toFixed(2);
-    if (m < band[0] - TOL_DB || m > band[1] + TOL_DB) {
-      bandFails.push(`${layer}: median ${m} dB outside ${band[0]}..${band[1]} +/-${TOL_DB}`);
+  const perBed = {};
+  for (const [id, rec] of Object.entries(out.regions)) {
+    for (const layer of Object.keys(BANDS)) {
+      const xs = [];
+      for (const t of Object.values(rec.tod)) {
+        if (t.error) continue;
+        for (const e of t._all || t.events || []) if (e.layer === layer) xs.push(e.rel_db);
+      }
+      if (!xs.length) continue;
+      const m = +median(xs).toFixed(2);
+      const [lo, hi] = BANDS[layer];
+      (perBed[id] = perBed[id] || {})[layer] = { n: xs.length, median_rel_db: m };
+      if (m < lo - TOL_DB || m > hi + TOL_DB) {
+        bandFails.push(`${id}/${layer}: ${m} dB outside ${lo}..${hi} +/-${TOL_DB}`);
+      }
     }
   }
+  if (!Object.keys(perBed).length) bandFails.push('no events measured anywhere');
   out.gates.O3_level_in_band = {
     pass: bandFails.length === 0,
-    measured: Object.fromEntries(Object.entries(relByLayer).map(([k, xs]) =>
+    per_bed: perBed,
+    province_median: Object.fromEntries(Object.entries(relByLayer).map(([k, xs]) =>
       [k, xs.length ? { n: xs.length, median_rel_db: +median(xs).toFixed(2) } : null])),
     failures: bandFails,
-    what: 'measured event level relative to the rendered bed sits inside RI-AUD03 SectionA\'s own '
-      + `bands (L3 -6..+2, L4 -4..+4) within the declared +/-${TOL_DB} dB tolerance`,
+    what: 'EVERY bed\'s measured event level, per layer, sits inside RI-AUD03 §A\'s own bands '
+      + `(L3 -6..+2, L4 -4..+4) within the declared +/-${TOL_DB} dB tolerance. Checked per bed `
+      + 'rather than over a province median, because an average lets a loud bed and a quiet bed '
+      + 'cancel into a green.',
   };
 
   if (pageErrors.length) { out.page_errors = pageErrors; exitCode = 1; }
