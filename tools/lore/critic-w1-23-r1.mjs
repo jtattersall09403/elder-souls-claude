@@ -232,7 +232,14 @@ function main(argv) {
 
   const out = { commit, seal: S, ablation: A, voice_vs_gate: V, reach: R, stale_measured: E };
   const dest = argv.includes('--out') ? argv[argv.indexOf('--out') + 1] : null;
-  if (dest) { fs.mkdirSync(path.dirname(path.join(ROOT, dest)), { recursive: true }); fs.writeFileSync(path.join(ROOT, dest), `${JSON.stringify(out, null, 2)}\n`); console.log(`\nwrote ${dest}`); }
+  if (dest) {
+    // Resolve against the repo root for a relative path and leave an absolute one alone, so
+    // `--out /tmp/x.json` does not silently land inside the working tree.
+    const abs = path.isAbsolute(dest) ? dest : path.join(ROOT, dest);
+    fs.mkdirSync(path.dirname(abs), { recursive: true });
+    fs.writeFileSync(abs, `${JSON.stringify(out, null, 2)}\n`);
+    console.log(`\nwrote ${abs}`);
+  }
 
   // This tool REPORTS; it does not gate. Non-zero only when a finding is present, so a future
   // tree that closes all five reads as exit 0 and this cannot become a probe that never fires.

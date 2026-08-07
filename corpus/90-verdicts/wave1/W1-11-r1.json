@@ -1,0 +1,817 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-11",
+  "piece_title": "W1-11 — Impact: hitstop, mass, material, audio",
+  "round": 1,
+  "wave": 1,
+  "subsystem_paths": [
+    "combat.feedback.hitstop",
+    "weapon.feel.hitstop",
+    "weapon.feel.mass",
+    "weapon.feel.material",
+    "weapon.feel.whiff",
+    "audio.combat.impact"
+  ],
+  "critic": {
+    "run_id": "critic-w1-11-r1",
+    "role": "critic.combat",
+    "model": "claude-opus-5",
+    "started_at": "2026-08-07T21:20:00Z",
+    "finished_at": "2026-08-07T22:20:00Z",
+    "conflict_of_interest": false,
+    "fresh_context": true,
+    "saw_builder_notes_before_blind": true,
+    "saw_builder_notes_note": "No blind pack was run this round (see self_audit), so there was no blind to contaminate. The builder's status file was read as the piece's declaration of what it shipped, per the dispatch."
+  },
+  "build": {
+    "commit_sha": "5c4c5b0",
+    "dirty": true,
+    "dirty_note": "Many agents editing concurrently. Every W1-11 audio deliverable is committed; game/src/combat/swing.js and game/data/combat/movesets/ moved after the builder's own headline run at 78aebc7 (W1-MASS), which is why the motion census is re-run here at 5c4c5b0 rather than quoted.",
+    "builder_headline_commit": "78aebc7",
+    "harness_commands": [
+      {
+        "command": "node tools/boot-check.mjs",
+        "exit_code": 0,
+        "when": "before measurement",
+        "stdout_artifact": "boot-check: PASS — the engine constructed and the harness answers."
+      },
+      {
+        "command": "node tools/check-data.mjs",
+        "exit_code": 0,
+        "when": "before measurement"
+      },
+      {
+        "command": "node tools/audio/impact-probe.mjs --seed 1337 --out <scratch>/run-critic",
+        "exit_code": 0,
+        "when": "critic's own regeneration of the RI-AUD01 run at HEAD"
+      },
+      {
+        "command": "node tools/analysis/audio-sync.mjs --run <scratch>/run-critic",
+        "exit_code": 0,
+        "when": "RI-AUD01 M1/M4/M5/M6/M7 at HEAD"
+      },
+      {
+        "command": "node tools/analysis/audio-budget.mjs --run <scratch>/run-critic",
+        "exit_code": 0,
+        "when": "RI-AUD02 row check at HEAD"
+      },
+      {
+        "command": "node tools/blind/audio-pack.mjs --run reports/runs/aud-impact-matrix-1337 --out <scratch>/pack-test",
+        "exit_code": 20,
+        "when": "RI-AUD01 M2 — reports UNCONFIRMED: the build and its own surface disagree about audio"
+      },
+      {
+        "command": "node tools/weapons/motion-census.mjs <scratch>/motion-census.json",
+        "exit_code": 0,
+        "when": "RI-WPN05 §E / §E.2 at HEAD"
+      },
+      {
+        "command": "node tools/audio/critic-m6-fixture-sweep.mjs corpus/90-verdicts/wave1/artifacts/W1-11-r1/m6-fixture-sweep.json",
+        "exit_code": 3,
+        "when": "the biggest gap; exit 3 means it FOUND a fixture on which the broken rule passes M6"
+      }
+    ],
+    "browser_used": false,
+    "browser_note": "AGENT-PROTOCOL rule 21: pgrep headless_shell was 12 at start and 24 during the M6 work with loadavg 13.52, above the ~8 ceiling. No browser was launched. Every figure below is a count, a rate, an integer frame count or a correlation — no timing figure is claimed. RI-AUD01 M3's offline render is therefore NOT independently re-verified and is recorded as carried from the builder's browser artifact at 78aebc7."
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "Every measurement in this verdict is a frame count, a dB figure, a correlation or a class id. The one image cited is a plot of this verdict's own numbers, not a pixel judgement of the game."
+  },
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-11-r1/m6-fixture-sweep.json",
+      "kind": "report",
+      "produced_by": "node tools/audio/critic-m6-fixture-sweep.mjs corpus/90-verdicts/wave1/artifacts/W1-11-r1/m6-fixture-sweep.json",
+      "seed": 1337,
+      "what": "THE BIGGEST GAP. Five fixtures × two pan rules. The legacy attacker-position rule scores r from −0.0759 to +1.0000; on 'target stands still, player turns on the spot' it PASSES M6 (r=1.0000, 100 impacts). distance_m_max is 0.0000 on every legacy arm."
+    },
+    {
+      "path": "docs/shots/2026-08-07-W1-11-r1-critic-m6-passes-on-the-broken-panner.png",
+      "kind": "graph",
+      "produced_by": "python3 (PIL) over corpus/90-verdicts/wave1/artifacts/W1-11-r1/m6-fixture-sweep.json",
+      "what": "The five-fixture sweep plotted against M6's 0.80 bar, with the distance_m column that does discriminate."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-11-r1/hitstop-census-shipped.json",
+      "kind": "trace",
+      "produced_by": "critic's own probe over tools/lib/combat-node.mjs: 35 (tier × material) cells, attacker animation hold measured as consecutive frames on which player.animFrame does not advance from its value on the IMPACT frame",
+      "what": "Hitstop is REAL. 27 of 35 cells exact against RI-WPN05 §A; the two 'stone' misses are the ×1.5 deflection multiplier and are correct; the 6 'ranged' misses are bow_chitin_recurve's own per-slot table."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-11-r1/hitstop-census-delete-the-fix.json",
+      "kind": "negative-evidence",
+      "produced_by": "the same probe with --zero, which sets every cell of weaponClasses.hitstop.attacker and victim_delta to 0 on a loaded copy",
+      "what": "DELETE-THE-FIX. 28 of 35 cells go to 0 frames — the freeze is genuinely driven by the §A table. The 7 ranged cells do NOT go to zero, which is how the per-slot override was found."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-11-r1/material-changes-the-voice.txt",
+      "kind": "log",
+      "produced_by": "critic's own probe: same weapon, same seed, same script, six targets/guard states, comparing the ImpactAudio log row and the class's synth recipe",
+      "what": "MATERIAL CHANGES WHAT YOU HEAR. shield → `blocked` (gain 0.23346, three lowpassed layers, no high transient). flesh → `hit_flesh_heavy` (gain 0.44614, two bandpass transients over a 94.5 Hz body). Guard up vs guard down on the SAME body flips the class."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-11-r1/audio-sync-at-5c4c5b0.json",
+      "kind": "report",
+      "produced_by": "node tools/analysis/audio-sync.mjs --run <scratch>/run-critic (run regenerated by the critic at HEAD)",
+      "what": "RI-AUD01 M1/M4/M5/M6/M7 at HEAD. M1 offset p50/p95/p99/max all 0, orphans 0, fired_on_anim_start 0. Note `checks_total: 5` — the tool covers five of the item's NINE checks."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-11-r1/motion-census-at-5c4c5b0.json",
+      "kind": "report",
+      "produced_by": "node tools/weapons/motion-census.mjs <out>",
+      "what": "RI-WPN05 §E/§E.2 at HEAD, after W1-MASS reported complete. 63 clips over the 1.00 m socket HARD FAIL, worst 2.5869 m; tip speed over 1.25× band 41.42%; arc nonconforming 3.96%; follow-through under band 7.59% with 14 dead."
+    },
+    {
+      "path": "reports/runs/aud-impact-browser/browser-report.json",
+      "kind": "report",
+      "produced_by": "node tools/audio/impact-browser.mjs (BUILDER-produced, at 78aebc7-dirty) — cited as the only evidence for M3 and read, not re-run",
+      "what": "The builder's browser half. P0 attached_to_fight true; P2 M3 11/11 rows at 0.00 dB worst error; P4 M6 PASS."
+    },
+    {
+      "path": "reports/runs/aud-impact-matrix-1337/audio-log.json",
+      "kind": "trace",
+      "produced_by": "node tools/audio/impact-probe.mjs --seed 1337 (builder-produced; the critic re-ran the same command at HEAD and the 78-row sample_id sequence reproduced exactly)",
+      "what": "RI-AUD01 M9. Two of the critic's own runs at seed 1337 are identical to each other and to this committed artifact."
+    }
+  ],
+  "reference_items": [
+    {
+      "id": "RI-AUD01",
+      "path": "corpus/87-audio/RI-AUD01-combat-impact-audio.md",
+      "side": "souls",
+      "kind": "number",
+      "measured": "partial",
+      "native_scale": "checks passed / 9",
+      "native_score": 7,
+      "native_max": 9,
+      "native_verdict": "6–8/9 → below bar, named remedy required (ceiling 6)",
+      "score_0_10": 6,
+      "band": "below bar, named remedy required",
+      "checks": [
+        {
+          "id": "M1",
+          "what": "frame offset ≤1 at p99, ≤2 max",
+          "result": "pass",
+          "value": "p50/p95/p99/max all 0 over 82 resolution events, orphans 0",
+          "threshold": "p99 ≤ 1 and max ≤ 2",
+          "hard_fail": true,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-11-r1/audio-sync-at-5c4c5b0.json"
+          ]
+        },
+        {
+          "id": "M2",
+          "what": "blind class distinguishability, 12×12 confusion matrix over 600 ms clips",
+          "result": "unmeasurable",
+          "value": "no instrument. tools/blind/audio-pack.mjs is still the absence-reporter written when audio did not exist; run against the shipped build it now reports UNCONFIRMED and exits 20 — 'the build and its own surface disagree about audio … Something has moved and the declaration was not updated.'",
+          "threshold": "accuracy ≥ 0.85, no pair confused > 15%",
+          "hard_fail": true,
+          "score_contribution": 0,
+          "evidence_note": "tools/blind/audio-pack.mjs exit 20"
+        },
+        {
+          "id": "M3",
+          "what": "dynamic range, every §C relative value within ±3 dB",
+          "result": "pass",
+          "value": "11/11 rows, worst error 0.00 dB (builder, browser, 48 OfflineAudioContext renders at 78aebc7). Critic re-derived the DATA side at HEAD: all 12 classes carry §C's exact peak_dbfs and all 48 variants carry a solved norm_db spanning −3.28 (parried, out of clipping) to +12.91 (whiff, out of inaudibility).",
+          "threshold": "±3 dB relative; hard fail if peak(whiff) ≥ peak(C01) − 6 dB",
+          "hard_fail": true,
+          "carried": true,
+          "carried_note": "NOT independently re-rendered — no browser was launched (24 headless_shell, loadavg 13.52). The arithmetic is verifiable from the data and is: rendered = raw + peak_dbfs + norm_db, with norm_db = −raw, so rendered == declared BY CONSTRUCTION. The measurement that earns the pass is the 48 raw peaks, and those are the builder's.",
+          "evidence": [
+            "reports/runs/aud-impact-browser/browser-report.json"
+          ]
+        },
+        {
+          "id": "M4",
+          "what": "all 9 mandatory classes present, distinct assets",
+          "result": "pass",
+          "value": "11 of 12 classes voiced, all 9 mandatory, 0 aliased pairs. Only C11 stamina_break (not mandatory) unexercised.",
+          "threshold": "9 mandatory present and distinct",
+          "hard_fail": true,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-11-r1/audio-sync-at-5c4c5b0.json"
+          ]
+        },
+        {
+          "id": "M5",
+          "what": "≥4 variants per class, 0 immediate repeats",
+          "result": "pass",
+          "value": "4 declared variants on every class, 0 immediate repeats",
+          "threshold": "≥4 per class, 0 immediate repeats",
+          "hard_fail": true,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-11-r1/audio-sync-at-5c4c5b0.json"
+          ]
+        },
+        {
+          "id": "M6",
+          "what": "spatialisation, Pearson r(pan, bearing) ≥ 0.8 over ≥20 events",
+          "result": "pass",
+          "value": "The SHIPPED rule holds r ≥ 0.9999 on all five fixtures the critic ran, with real distance_m (1.13–1.45 m). The rule is right. The CHECK is not: see biggest_gap — the same measurement scores the rule this piece replaced anywhere from −0.0759 to +1.0000, and passes it outright on one ordinary fixture.",
+          "threshold": "r ≥ 0.8 over ≥ 20 events",
+          "hard_fail": true,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-11-r1/m6-fixture-sweep.json"
+          ]
+        },
+        {
+          "id": "M7",
+          "what": "source of truth — fired_on_anim_start == 0",
+          "result": "pass",
+          "value": "0 at HEAD. Sabotage confirmed: setAudioTriggerSource('anim') gives p50 41 p99 129 and fired_on_anim_start 64 in the node arena and p50 24 f@60 in the browser, so the detector goes red.",
+          "threshold": "fired_on_anim_start == 0",
+          "hard_fail": true,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-11-r1/audio-sync-at-5c4c5b0.json"
+          ]
+        },
+        {
+          "id": "M8",
+          "what": "sparseness — voicesPeak per context and integrated LUFS-S over exploration/combat/boss windows against §D's three bands",
+          "result": "unmeasurable",
+          "value": "no instrument anywhere in the tree. `grep -rn 'lufs' tools/ game/src/` finds a working integrated-LUFS implementation in tools/blind/audio-pack-b2.mjs and tools/analysis/ambience-onsets.mjs — both W1-22's — and nothing that measures §D's three-row budget. voicesPeak is reported against RI-AUD02's caps, which is a different question.",
+          "threshold": "all three §D rows in band",
+          "hard_fail": true,
+          "score_contribution": 0,
+          "evidence_note": "absence: no §D/LUFS-S measurement in tools/audio/ or tools/analysis/audio-*.mjs"
+        },
+        {
+          "id": "M9",
+          "what": "determinism — two runs, same seed, identical sample_id sequence",
+          "result": "pass",
+          "value": "The critic's two runs at seed 1337 produced identical 78-row sample_id sequences, and both reproduce the committed artifact byte-for-byte.",
+          "threshold": "identical sequence",
+          "hard_fail": true,
+          "evidence": [
+            "reports/runs/aud-impact-matrix-1337/audio-log.json"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "'We score audio by listening to it ourselves' — narrowly avoided. There IS an artifact for every scored check. But the item's answer to that failure mode is M2's blind confusion matrix, and M2 is the one check with no instrument."
+      ],
+      "why_not_ten": "M2 and M8 have no instrument and score 0 fail-closed. M2 is the item's own headline bar — 'blindfold the critic and it must still score the fight' — and it is the check the item says exists precisely because 'sounds punchy' and 'carries twelve distinguishable states' are unrelated properties. The machinery is not missing: this build renders real 48 kHz stereo PCM through OfflineAudioContext (the builder proved it), and a working WAV writer and integrated-LUFS meter already sit in tools/blind/audio-pack-b2.mjs. Ungated hard-fail gates: M2 and M8.",
+      "justification_note": "Score 6 is below the ≥7 threshold that would require an artifact-naming justification; it is read straight off the item's own anchor row (7/9 → ladder 6).",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-11-r1/audio-sync-at-5c4c5b0.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-11-r1/m6-fixture-sweep.json",
+        "reports/runs/aud-impact-browser/browser-report.json",
+        "reports/runs/aud-impact-matrix-1337/audio-log.json"
+      ]
+    },
+    {
+      "id": "RI-AUD02",
+      "path": "corpus/87-audio/RI-AUD02-web-audio-budget.md",
+      "side": "souls",
+      "kind": "number",
+      "measured": "partial",
+      "native_scale": "rows passed / 29",
+      "native_score": 27,
+      "native_max": 29,
+      "native_verdict": "22–28 → below bar, remedy required (ceiling 6)",
+      "score_0_10": 6,
+      "band": "below bar, remedy required",
+      "checks": [
+        {
+          "id": "A1-A7,B1-B6,C-D1/D2/D3,V1-V9,S1-S6",
+          "what": "the 29 scored budget rows",
+          "result": "pass",
+          "value": "27 of 27 scorable rows pass at HEAD, 0 hard fails; 3 rows honestly N/A. Static lint clean: 0 `new Audio(`, 0 requestAnimationFrame under game/src/audio.",
+          "threshold": "29/29 for the bar",
+          "hard_fail": false,
+          "evidence_note": "node tools/analysis/audio-budget.mjs --run <scratch>/run-critic, exit 0"
+        },
+        {
+          "id": "A3",
+          "what": "ctx.state == 'running' at the first combat frame (gate HF3)",
+          "result": "unmeasurable",
+          "value": "needs a live AudioContext; this box has no audio device, so the row is N/A in Node AND in the browser. The gate has no instrument that could ever fire it.",
+          "threshold": "ctx.state == 'running'",
+          "hard_fail": true,
+          "score_contribution": 0,
+          "evidence_note": "audio-budget.mjs rows_na 3"
+        },
+        {
+          "id": "S6",
+          "what": "the listener is at the CHARACTER, not the orbit camera",
+          "result": "pass",
+          "value": "reported 'character'. RECORDED WITH A CAVEAT: the item says this row is a self-report and must be scored by the camera-orbit pan measurement 'which cannot be self-reported wrongly'. That backstop is RI-AUD01 M6's P4, and this verdict's biggest gap shows P4 can go green on a build that positions every voice at the listener. S6's non-self-report backstop is currently as strong as M6 is, which is not strong enough.",
+          "threshold": "listener at the character",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-11-r1/m6-fixture-sweep.json"
+          ]
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [],
+      "why_not_ten": "27/29 with three rows that no instrument on this box can reach, one of which (A3) is the HF3 gate. Ungated hard-fail gate: A3.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-11-r1/audio-sync-at-5c4c5b0.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-11-r1/m6-fixture-sweep.json"
+      ]
+    },
+    {
+      "id": "RI-WPN05",
+      "path": "corpus/12-weapons/RI-WPN05-weapon-feel-impact.md",
+      "side": "souls",
+      "kind": "number",
+      "measured": "partial",
+      "native_scale": "0-100 weighted (M1 25, M2 15, M3 10, M4 15, M5 14, M5b 6, M6 15)",
+      "native_score": 25,
+      "native_max": 100,
+      "native_verdict": "< 58 → loses outright",
+      "score_0_10": 2,
+      "band": "loses outright; capped at 2 by a triggered hard fail",
+      "checks": [
+        {
+          "id": "M1",
+          "what": "hitstop census, all 35 attacker and 35 victim cells exact against §A, tolerance ±0 f@60",
+          "result": "fail",
+          "value": "The §A grid IS genuinely consumed: on a weapon that does not override it, heavy/flesh holds the attacker's animFrame for exactly 12 f@60 and the victim for 16 (attacker+4), light/flesh 4, ultra/water 4, and zeroing the table on a loaded copy takes 28 of 35 cells to 0. But 4 weapons (bow_chitin_recurve, ghm_kings_ruin, hlb_saltcutter, spr_root_pike) carry per-slot `hitstop_f` tables across 102 slots that deviate from §A on EVERY material column — heavy §A 12/16/22/18/20/10/4 shipped as 10/13/19/15/17/8/3, medium §A 8/10/16/12/14/6/2 shipped as the SAME 10/13/19/15/17/8/3, ranged §A 2/4/6/4/6/2/2 shipped as 3/5/8/6/7/3/2. Three of the four declare the identical table across two different weight tiers, which reads as a copy rather than a designed identity. M1's tolerance is ±0 f.",
+          "threshold": "all 70 cells exact",
+          "hard_fail": false,
+          "evidence_note": "corpus/90-verdicts/wave1/artifacts/W1-11-r1/hitstop-census-shipped.json + hitstop-census-delete-the-fix.json"
+        },
+        {
+          "id": "M1-bar",
+          "what": "provenance of the override licence",
+          "result": "fail",
+          "value": "game/src/combat/impact.js:110 comments 'The per-slot table wins over the class table when a slot declares one (RI-WPN05 §A: a weapon may carry its own impact row — ghm_kings_ruin does)'. RI-WPN05 contains no such sentence: `grep -n 'ghm_kings_ruin|impact row|per-slot' corpus/12-weapons/RI-WPN05-weapon-feel-impact.md` returns nothing. The escape hatch may well be the right design; it is not in the bar, and it is attributed to the bar.",
+          "threshold": "an override licence must exist in the item before code cites it",
+          "hard_fail": false,
+          "evidence_note": "corpus/12-weapons/RI-WPN05-weapon-feel-impact.md, game/src/combat/impact.js:110"
+        },
+        {
+          "id": "M2",
+          "what": "material multipliers, all 18 cells exact, every statblock declares a material, zero variance",
+          "result": "pass",
+          "value": "Carried from W1-10-r3 (22/22 statblocks declare a material; mce_bog_iron_mace 64.64 on stone against tsw_bog_rapier 0 with +16 f@60 recovery). Independently corroborated here at HEAD by perturbation rather than by census: forcing a flesh dummy's material to chitin and to stone changes the resolved impact class and the audio recipe; guard up vs guard down on the same body flips flesh→shield.",
+          "threshold": "18/18 exact",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-11-r1/material-changes-the-voice.txt"
+          ]
+        },
+        {
+          "id": "M3",
+          "what": "deflection deterministic, correct bypass, exactly +16 f@60",
+          "result": "pass",
+          "value": "Measured as a side effect of the hitstop census: light/stone held 15 f@60 = ceil(10 × 1.5) and medium/stone 24 = 16 × 1.5, i.e. the ×1.5 deflect multiplier is live and integral. Bypass and +16 f recovery carried from W1-10-r3.",
+          "threshold": "TSW and SSW deflect, MCE does not, +16 f@60 exactly",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-11-r1/hitstop-census-shipped.json"
+          ]
+        },
+        {
+          "id": "M4",
+          "what": "whiff arithmetic — total_on_hit − total_on_whiff == attacker_hitstop, all 15 classes",
+          "result": "unmeasurable",
+          "value": "Not run this round and not run by the builder. `weapon.feel.whiff` is one of this piece's six declared paths and no measurement of it appears in the piece's outputs.",
+          "threshold": "exact equality on all 15 classes",
+          "hard_fail": false,
+          "score_contribution": 0,
+          "evidence_note": "absence: no whiff-arithmetic run in the piece's outputs_written"
+        },
+        {
+          "id": "M5",
+          "what": "mass census — every class inside its §E bands",
+          "result": "fail",
+          "value": "At HEAD 5c4c5b0, AFTER W1-MASS reported complete: tip speed over 1.25× the tier band on 41.42% of 606 clips, worst whp_hist_bindings/r2 at 155.22 m/s against a medium band ceiling of 26; follow-through under band on 7.59%, with 14 clips whose tip is dead through recovery.",
+          "threshold": "no class violating anticipation, follow-through, deceleration or settle",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-11-r1/motion-census-at-5c4c5b0.json"
+          ]
+        },
+        {
+          "id": "M5b",
+          "what": "§E.2 per-clip motion integrity over every clip in the game",
+          "result": "fail",
+          "value": "63 clips exceed §E.2's 1.00 m per-frame HARD FAIL on the weapon socket — worst ten: whp_hist_bindings/r2 2.5869 m, cgs_drowned_reaper/r1.2 1.524 m, cgs_drowned_reaper/r2 1.4545 m, cgs_drowned_reaper/roll.r1 1.4175 m, cgs_drowned_reaper/r1.1 1.3306 m, cgs_drowned_reaper/2h.r1.1 1.3106 m, cgs_drowned_reaper/2h.r1.2 1.3043 m, cgs_drowned_reaper/2h.r2 1.2659 m, cgs_drowned_reaper/r2.follow 1.2603 m, bow_chitin_recurve/plunge 1.0715 m. Bone-level pose step over 0.25 m on 17.16% of clips (bar: 2%). Arc nonconforming 3.96% (bar: 2%). Distinct keyframes clean at 0%.",
+          "threshold": "≤2% violating any row; HARD FAIL if any clip exceeds 1.0 m in a frame",
+          "hard_fail": true,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-11-r1/motion-census-at-5c4c5b0.json"
+          ]
+        },
+        {
+          "id": "M6",
+          "what": "Impact Legibility Score over 35 cells from the observable triple (attacker_hitstop, camera_shake_peak, knockback_m)",
+          "result": "unmeasurable",
+          "value": "Not run. And one of the three observables is not observable: RI-WPN05 §C's camera-shake channel reaches the IMPACT event (resolve.js:378 `e.shake_deg = imp.shake_deg`) and reaches nothing else. `triggerShake()` in game/src/sim/camera.js has exactly one caller in the whole tree — Engine.triggerCameraShake() at game/src/engine.js:5932, documented as 'RI-CAM06 M7's fixture' — so the fight never fires it, and game/src/save/state.js:432 already records 'Nothing in wave 1 calls triggerShake()'. An ILS computed today would be a two-channel classifier wearing a three-channel label.",
+          "threshold": "ILS ≥ 0.80 and the blind test agrees",
+          "hard_fail": false,
+          "score_contribution": 0,
+          "evidence_note": "game/src/engine.js:5932, game/src/sim/camera.js:1106, game/src/save/state.js:432, game/src/combat/resolve.js:378"
+        }
+      ],
+      "hard_fails": [
+        "M5b"
+      ],
+      "how_we_lose_hits": [
+        "#11 'Weapon trail as the whole of feel' — inverted, but the same shape: hitstop and material are built and correct, mass is not, and the piece's own survey says so.",
+        "#9 'Tip bone never exposed so M5 cannot run' — averted: the tip IS exposed and the census DOES run. That is why the failure is visible instead of deniable."
+      ],
+      "why_not_ten": "A triggered §E.2 hard fail (63 clips whose weapon socket travels more than a metre in one 60 Hz frame) caps this item at 2 under SCORING §1.1. Underneath the cap the native tally is 25/100.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-11-r1/hitstop-census-shipped.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-11-r1/hitstop-census-delete-the-fix.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-11-r1/material-changes-the-voice.txt",
+        "corpus/90-verdicts/wave1/artifacts/W1-11-r1/motion-census-at-5c4c5b0.json"
+      ]
+    },
+    {
+      "id": "RI-CAM06",
+      "path": "corpus/15-camera/RI-CAM06-camera-feel.md",
+      "side": "souls",
+      "kind": "number",
+      "measured": "partial",
+      "native_scale": "0-100 weighted over M1-M9; only M6 (hitstop, weight 10) and M7 (damage shake, weight 10) are in this piece's remit via combat.feedback.hitstop",
+      "score_0_10": 4,
+      "band": "in-remit rows only; the other seven belong to the camera piece and are not scored here",
+      "checks": [
+        {
+          "id": "M6",
+          "what": "hitstop — the rig HOLDS and the look delta is buffered, not dropped, and applied on the first non-hitstop frame",
+          "result": "pass",
+          "value": "Implemented and structurally correct: game/src/sim/camera.js:442 holds on `sim.hitstopUntil > sim.frame`, sets c.hitstop, buffers the look delta, and releases it at line 463 on the first non-hitstop frame. `sim.hitstopUntil` is written by resolve.js:applyHitstop from the same §A numbers the bodies hold on, so the camera and the world freeze on one clock — RI-CAM06's automatic fail 'hitstop that freezes the world but not the camera (or vice versa)' is avoided by construction. NOT run as RI-CAM06's own fixture: no browser.",
+          "threshold": "freeze bars held; look buffered and applied in 1 frame",
+          "hard_fail": false,
+          "evidence_note": "game/src/sim/camera.js:439-463"
+        },
+        {
+          "id": "M7",
+          "what": "damage shake — amplitude, duration, decay, rotational-only, seeded",
+          "result": "fail",
+          "value": "The shake MODEL is correct and careful — rotational only, seeded, decaying, 12 frames hard, deliberately kept out of the rig basis so Σ|Δcamera.pos| attributable to shake is 0. It has no world-side consumer. Its only caller is a harness accessor. This is RULES rule 5 / RI-MTH07 verbatim: a correct, instrumented model that nothing in the running world reads. Separately, RI-WPN05 §C asks this item for a 0.25° × tier_index impulse on the blow you LAND, decaying over hitstop+8 frames; what exists is an hp-fraction-scaled shake on damage you TAKE, which is a different channel and is also unfired.",
+          "threshold": "the shake fires from damage resolution",
+          "hard_fail": false,
+          "evidence_note": "game/src/engine.js:5932 is the sole caller of triggerShake(); game/src/save/state.js:432"
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [],
+      "why_not_ten": "M7's channel is dead in the world and M6 was verified by reading the shipped code path rather than by running RI-CAM06's own fixture, because no browser could be launched at this load. The remaining seven checks are the camera piece's and are not scored here.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-11-r1/hitstop-census-shipped.json"
+      ]
+    }
+  ],
+  "score": {
+    "overall_0_10": 4,
+    "pass_threshold": 7,
+    "aggregation": "weighted-mean",
+    "weights": {
+      "RI-AUD01": 1,
+      "RI-AUD02": 1,
+      "RI-WPN05": 1,
+      "RI-CAM06": 0.5
+    },
+    "arithmetic": "(6·1 + 6·1 + 2·1 + 4·0.5) / 3.5 = 16/3.5 = 4.57 → 4",
+    "band_label": "below bar",
+    "confidence": "high on the audio half and on hitstop/material, which were re-measured with the critic's own probes at HEAD; medium on M3, which is carried from the builder's browser artifact and was not independently re-rendered."
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "hard_fail:RI-WPN05/M5b",
+    "below_threshold",
+    "ungated_hard_fail:RI-AUD01/M2",
+    "ungated_hard_fail:RI-AUD01/M8",
+    "ungated_hard_fail:RI-AUD02/A3"
+  ],
+  "biggest_gap": {
+    "gap_id": "GAP-W1-m6-pan-correlation-passes-the-panner-it-was-built-to-catch",
+    "subsystem_path": "audio.combat.impact",
+    "severity": "major",
+    "size": "S",
+    "what": "This piece's headline artifact is a three-arm experiment showing the shipped panner at r = 0.9999 and the rule it replaced at r = −0.5207 on the same fixture, and it concludes `detector_goes_red = true`. The −0.5207 is a property of that fixture, not of the rule. Under the legacy rule a blow the player lands is positioned at the attacker, so dx = dz = 0 and pan = sin(atan2(0,0) − playerYaw) = sin(−playerYaw): the target's position is NEVER READ, and the correlation with the target's true bearing is therefore whatever the fixture's player-yaw history happens to make it. Sweeping the fixture on the shipped code at HEAD 5c4c5b0, the same broken rule scores r = −0.0759 (orbit anchored to player facing), +0.7768 (orbit anchored to world — within 0.03 of the bar), +0.6034 (stationary target, player free to turn), null (still target), and +1.0000 with 100 impacts, 99 distinct pan values and a 70° bearing spread on 'stationary enemy, player turning on the spot'. On that last fixture the BROKEN rule PASSES M6 outright and the shipped `detector_goes_red` predicate reports green. That fixture is not exotic: it is a player circling a standing enemy, which is what M6's own method text ('correlate audioLog.pan against the enemy's bearing from the player') invites a critic to build. The invariant that does discriminate is already in every log row and is not in the pass condition: distance_m_max is 0.0000 on all five legacy arms and 1.13–1.45 m on all five shipped arms.",
+    "why_it_matters": "The shipped panner is correct — that is not in dispute and the fix was a real one. What is broken is the thing that certifies it. A check that reports green on the exact anti-pattern the piece exists to have removed is worse than no check, because the next critic will run M6 the obvious way, get r ≈ 1.0, and bank a regression as a pass. RI-AUD02 S6 explicitly delegates its own non-self-report backstop to this measurement ('the camera-orbit pan measurement, which cannot be self-reported wrongly'), so two items rest on it. And the shipped sabotage switch — setAudioPanSource('attacker'), the mechanism that exists so a build cannot run the defect quietly — is only as good as the predicate reading it. AGENT-PROTOCOL rule 4: a probe that cannot fail is worse than no probe, and this one cannot fail on a fixture a reasonable person would choose.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-11-r1/m6-fixture-sweep.json",
+      "docs/shots/2026-08-07-W1-11-r1-critic-m6-passes-on-the-broken-panner.png"
+    ],
+    "remedy": {
+      "action": "Make M6's pass condition test the property that is actually invariant, and make the fixture sweep part of the check rather than a single hand-picked orbit. Concretely: (1) add `distance_m` to the P4 pass condition — a player-landed impact must report a non-zero distance to the listener, and the legacy rule cannot satisfy that on any fixture; (2) run P4 over at least the 'stationary target, player turning' fixture in addition to the orbit, and require the shipped rule to pass ALL of them and the sabotaged rule to fail ALL of them, rather than requiring one arm to go red; (3) fold tools/audio/critic-m6-fixture-sweep.mjs (or its logic) into tools/audio/impact-browser.mjs so the sweep runs where the real WebAudio panner does. The tool already exits 3 when it finds a fixture on which the broken rule passes, so it is its own regression test.",
+      "targets": [
+        "tools/audio/impact-browser.mjs",
+        "tools/audio/critic-m6-fixture-sweep.mjs",
+        "corpus/87-audio/RI-AUD01-combat-impact-audio.md"
+      ],
+      "acceptance": "node tools/audio/critic-m6-fixture-sweep.mjs exits 0 with finding 'LEGACY_NEVER_PASSES' — i.e. no fixture in the sweep passes the acceptance criterion under panSource='attacker' — while the shipped rule passes every fixture in the sweep; and impact-browser.mjs P4 reports the same across at least two fixture geometries.",
+      "ref_item": "RI-AUD01",
+      "estimated_size": "S"
+    }
+  },
+  "why_the_biggest_gap_is_not_the_mass_defect": "It is the larger defect and it is recorded as this verdict's only triggered hard fail (RI-WPN05/M5b: 63 clips whose weapon socket moves over a metre in one 60 Hz frame, worst 2.5869 m), which is why the piece's status is FAIL. It is not named as biggest_gap because it already has a full diagnosis, a named successor and a written handover — and the successor, W1-MASS, reports `state: complete` while the census at HEAD is unchanged on every row. Naming it again would add no information the next builder does not have. The M6 gap is this piece's own, is unowned, and is the kind that causes a FALSE PASS rather than a visible failure.",
+  "secondary_observations": [
+    {
+      "id": "OBS-W1-11-r1-01",
+      "what": "RI-AUD01's native scale is checks passed / NINE, and the piece's own instrument counts five. tools/analysis/audio-sync.mjs reports `checks_total: 5` and the status file reads 'NODE RESULT (RI-AUD01): 5/5 checks pass'. Adding the browser's M3 gives seven. M2 (blind distinguishability) and M8 (sparseness / LUFS-S) have no instrument at all — tools/blind/audio-pack.mjs is still the absence-reporter written when audio did not exist, and run against the shipped build it now reports UNCONFIRMED, exit 20: 'the build and its own surface disagree about audio … Something has moved and the declaration was not updated.' That is TOOL-LOOP's own tripwire firing and it was not answered.",
+      "why_it_is_not_the_gap": "It is a scoring correction rather than a defect in the build, and it is already priced into RI-AUD01's 7/9 → 6. But M2 is the item's stated bar — 'blindfold the critic and it must still score the fight' — and it is now cheap: this build renders real 48 kHz stereo PCM offline, and a WAV writer and an integrated-LUFS meter already exist in tools/blind/audio-pack-b2.mjs."
+    },
+    {
+      "id": "OBS-W1-11-r1-02",
+      "what": "MASS, RECORDED IN FULL BECAUSE IT IS THE HARD FAIL. At HEAD 5c4c5b0, after W1-MASS reported complete: 63 clips over §E.2's 1.00 m socket hard fail (worst whp_hist_bindings/r2 2.5869 m; eight of the worst ten are cgs_drowned_reaper, the baseline heavy greatsword, at 1.26–1.52 m per frame — 76–91 m/s of socket travel); tip speed over 1.25× the tier band on 41.42% of 606 clips (the builder measured 43.4% at 0b2d6ef, so it has moved 2 points, not been fixed); arc nonconforming 3.96% against a 2% bar; follow-through under band 7.59% with 14 clips dead. The root cause the builder found is correct and worth keeping: game/src/combat/swing.js `calibrateYawGain` solves for the DECLARED arc over the ACTIVE WINDOW ALONE, and its objective contains no tip-speed, no continuity and no recovery term, so the one thing that is solved is the one thing that passes.",
+      "why_it_is_not_the_gap": "Named owner, finished handover, and a written open question for an arbiter (W1-MASS's next_step names 645 of 2,689 slots, ~107 of them unreachable by any gain). Recorded here as the triggered hard fail so the ledger carries it against W1-11's declared path rather than disappearing between two pieces."
+    },
+    {
+      "id": "OBS-W1-11-r1-03",
+      "what": "RI-WPN05 §C's camera-shake channel is authored, correct, and dead. resolve.js:378 writes `e.shake_deg` onto every IMPACT event from a table (0.25° × tier_index, ×1.5 on a deflect) and nothing reads it. game/src/sim/camera.js has a careful, seeded, rotational-only, deliberately non-positional shake, and `triggerShake()` has exactly one caller in the tree: Engine.triggerCameraShake(), whose own docstring calls it 'RI-CAM06 M7's fixture'. game/src/save/state.js:432 already states 'Nothing in wave 1 calls triggerShake()'. So one of the three observables RI-WPN05 §F's Impact Legibility Score is defined over produces no observation.",
+      "why_it_is_not_the_gap": "The ownership is genuinely split — RI-WPN05 §C says 'RI-CAM06 is authoritative; this item only requests the magnitude' — so the fix belongs to the camera piece with W1-11 as the caller. It is recorded because it makes RI-WPN05 M6 unmeasurable rather than merely unrun."
+    },
+    {
+      "id": "OBS-W1-11-r1-04",
+      "what": "HITSTOP AND MATERIAL BOTH CONFIRMED BY THE CRITIC'S OWN PERTURBATION, and they are good. Heavy/flesh holds the attacker's animFrame at 57 for frames 60–71 — exactly 12 f@60, exactly §A — and holds the victim to frame 76, exactly attacker+4; light/flesh 4, ultra/water 4, stone deflects at ×1.5. Zeroing the table on a loaded copy takes 28 of 35 cells to 0, so the freeze is driven by the data and not by a constant. Shield versus flesh produces a genuinely different sound rather than a relabelled one: `blocked` at gain 0.23346 with three lowpassed layers and no high transient, against `hit_flesh_heavy` at 0.44614 with two bandpass transients over a 94.5 Hz body — which is §A C04's 'damped thud, absorbed, energy present but no high transient' as written. Raising and lowering the guard on the SAME body flips the class, so the audio tracks what the weapon met and not what the statblock says.",
+      "why_it_is_not_the_gap": "It is the opposite of a gap and is recorded so the next round does not re-litigate it."
+    },
+    {
+      "id": "OBS-W1-11-r1-05",
+      "what": "The delete-the-fix on hitstop found something the shipped census would not have: zeroing every §A cell leaves the seven `ranged` cells still freezing (3/5/12/6/7/3/2 f@60). game/src/combat/impact.js:110 lets a per-slot `hitstop_f` table win over §A, and four weapons use it across 102 slots — bow_chitin_recurve, ghm_kings_ruin, hlb_saltcutter, spr_root_pike — deviating from §A on every material column. Three of them ship the IDENTICAL table (10/13/19/15/17/8/3) across two different weight tiers, which reads as a copy rather than a weapon identity. The override may be right; the code attributes the licence for it to RI-WPN05 §A, and §A does not contain it.",
+      "why_it_is_not_the_gap": "102 of 2,689 slots, and the mechanism is defensible. It is a bar-attribution defect and a small conformance defect, not a feel defect."
+    },
+    {
+      "id": "OBS-W1-11-r1-06",
+      "what": "`weapon.feel.whiff` is one of the piece's six declared paths and carries no measurement in this round from either side. RI-WPN05 M4's exact-equality test (total_on_hit − total_on_whiff == attacker_hitstop, all 15 classes) is the only thing that catches 'recovery shortened on hit', which the item lists as failure mode #7 and describes as something that 'will be proposed sincerely'.",
+      "why_it_is_not_the_gap": "Unrun rather than known-broken, and it scores 0 fail-closed through the ordinary path."
+    }
+  ],
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-weapon-impact-and-material-model-has-no-consumer",
+      "status": "closed",
+      "measured_value": "Perturbing the victim's material on a loaded copy changes the resolved impact class, the audio recipe and the gain; zeroing the §A hitstop table on a loaded copy takes 28 of 35 attacker cells from their declared frame counts to 0. Both are behavioural changes in the running arena, not changes to a record.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-11-r1/hitstop-census-delete-the-fix.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-11-r1/material-changes-the-voice.txt"
+      ],
+      "closed_by_builder_of_fix": false,
+      "note": "Opened by W1-10-r2, reported closed by W1-10-r3. Independently re-confirmed here by a critic who did not write either the model or the earlier closure."
+    }
+  ],
+  "consumption": {
+    "binding": "RI-MTH07 via ARBITRATION §3",
+    "models_claimed_by_builder": 3,
+    "models_re_derived_by_this_critic": 3,
+    "re_derivations": [
+      {
+        "model": "game/data/audio/impact/classes.json → game/src/audio/impact-audio.js → CombatSystem's emit closure",
+        "my_perturbation": "Six arms in the node arena on the shipped code: flesh dummy, shield dummy, live blocker with guard up, the same blocker with guard down, and the flesh dummy with its `material` field forced to chitin and to stone.",
+        "result": "COUPLED. flesh → hit_flesh_heavy, shield → blocked, guard-up → blocked, guard-down → hit_flesh_heavy, chitin → hit_chitin_light, stone → hit_chitin_light. The class, the gain and the layer recipe all move with the world."
+      },
+      {
+        "model": "game/data/weapons/classes.json `hitstop.attacker` → game/src/combat/impact.js resolveImpact → resolve.js applyHitstop → the bodies' animation clocks",
+        "my_perturbation": "Zeroed every attacker cell and every victim delta on a loaded copy and re-ran all 35 (tier × material) cells.",
+        "result": "COUPLED on 28 of 35. The 7 `ranged` cells are UNCOUPLED from §A and read a per-slot table instead — see OBS-W1-11-r1-05."
+      },
+      {
+        "model": "game/data/weapons/classes.json `camera_shake_deg_per_tier` → resolve.js `e.shake_deg` → the camera",
+        "my_perturbation": "Traced the consumer statically rather than by perturbation, because there is nothing downstream to perturb: `triggerShake()` has one caller and it is a harness accessor.",
+        "result": "ORPHAN. The value reaches the event record and stops. RULES rule 5 / RI-MTH07 §A."
+      }
+    ],
+    "note": "The audio driver's own consumption is genuinely good and the hook is the right one: CombatSystem.step drains `_audioPending` at the END of the frame, after resolve.js has filled every field, in the same call stack as the geometry decision. The builder found and recorded the bug where classifying at emit time saw only {f, kind} and voiced 50 impacts across 7 materials as one class — the one-sword.wav failure, reproduced and fixed in its own code."
+  },
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "A1",
+          "what": "no randomness in damage, deflection or hitstop",
+          "result": "pass",
+          "evidence_note": "impact.js resolveImpact is a pure table lookup over (tier, material, shape, poise_damage); deflects() has no random term. The only RNG in the audio path is the seeded variant chooser, and M9 shows two runs at seed 1337 are byte-identical."
+        },
+        {
+          "id": "A2",
+          "what": "geometry alone decides hit-or-miss; the material multiplier is applied after",
+          "result": "pass",
+          "evidence_note": "resolveImpact is called from resolve.js step 1b, after the sweep test has already resolved."
+        }
+      ]
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "B1",
+          "what": "no floating damage numbers (RI-WPN05 §C, AR-2)",
+          "result": "pass",
+          "evidence_note": "no damage-number emitter in the impact path; the feedback channels are hitstop, decal, knockback and audio."
+        },
+        {
+          "id": "B2",
+          "what": "the Morrowind-shaped material depth layer never touches whether the swing connects",
+          "result": "pass",
+          "evidence_note": "materialAt() is read at resolution time on an already-connected hit."
+        }
+      ]
+    },
+    "ar3": {
+      "status": "pass",
+      "note": "Not sterile. The lore fact (a root-warden is plant, a golem is stone) is a combat answer and now an AUDIBLE one — but only two-thirds of the way: §A gives the material twelve classes and no stone or metal among them, so mat_stone and mat_metal both route to C02 while correctly carrying their own material on the event. The builder declared that limit honestly rather than hiding it, and it belongs in a wave-2 §A extension."
+    }
+  },
+  "arbitration_questions": [
+    {
+      "id": "AQ-W1-11-r1-01",
+      "question": "RI-WPN05 §A publishes a 5×7 grid and M1 diffs against it at ±0 f@60, but game/src/combat/impact.js honours a per-slot `hitstop_f` override and cites §A as the licence for it. §A contains no such licence. Is a per-weapon impact row legal (and if so, does M1 diff the CLASS table or the EFFECTIVE table), or is the override a defect? Four weapons and 102 slots turn on the answer, and three of them ship the same override table across two weight tiers.",
+      "filed_not_resolved": true
+    },
+    {
+      "id": "AQ-W1-11-r1-02",
+      "question": "RI-WPN05 §F defines the Impact Legibility Score over the observable triple (attacker_hitstop, camera_shake_peak, knockback_m), and §C hands the shake row to RI-CAM06. RI-CAM06's shake has no world-side caller. Does ILS get computed from the impact RECORD's shake_deg (in which case the 'observable' in §F means 'recorded'), or is ILS unmeasurable until the camera actually shakes on a landed blow? This verdict scored it unmeasurable; the ruling should be written down.",
+      "filed_not_resolved": true
+    }
+  ],
+  "corpus_debt": [
+    {
+      "item": "RI-AUD01/M2",
+      "reason": "tools/blind/audio-pack.mjs is still an absence-reporter and now reports UNCONFIRMED against a build that HAS audio. The real instrument is buildable today: offline PCM render exists, and a WAV writer and an integrated-LUFS meter exist in tools/blind/audio-pack-b2.mjs."
+    },
+    {
+      "item": "RI-AUD01/M8",
+      "reason": "no instrument measures §D's three sparseness rows (concurrent non-combat voices and LUFS-S over exploration / combat / boss windows). Owner is the audio area, not this builder alone."
+    },
+    {
+      "item": "RI-AUD02/A3",
+      "reason": "gate HF3 (ctx.state == 'running' at the first combat frame) has no instrument on a box with no audio device, in Node or in a browser. It is ungated, not passed."
+    },
+    {
+      "item": "RI-CAM06/M1-M5,M8,M9",
+      "reason": "out of this piece's remit; belongs to the camera piece. Only M6 and M7 are scored here."
+    }
+  ],
+  "corpus_extended": [
+    {
+      "id": "RI-AUD01-M6-AMENDMENT-PROPOSED",
+      "ref_item": "RI-AUD01",
+      "path": "corpus/87-audio/RI-AUD01-combat-impact-audio.md",
+      "reason": "sharper_discriminator",
+      "what": "M6 is specified as 'correlate audioLog.pan against the enemy's bearing from the player in the trace frame. Pearson r over >=20 events', pass at r >= 0.8, hard fail 'no panner at all'. Demonstrated here: a build that positions EVERY voice at the listener - the exact one-sword-at-your-own-feet failure the item's How-we-lose section is about - scores r = 1.0000 over 100 events on an ordinary fixture (stationary enemy, player turning), and scores anywhere from -0.0759 to +0.7768 on four others. The correlation is a property of the fixture because the broken rule never reads the target's position at all. PROPOSED AMENDMENT, not applied by this critic: M6 gains a second, fixture-independent condition - for an impact whose victim is not the listener, audioLog.distance_m must equal the true world distance from the listener to the victim to within a stated tolerance and must be non-zero - and M6's method requires the correlation to be taken over at least two fixture geometries, one with the target moving and one with the player turning.",
+      "why_the_item_and_not_the_build": "The shipped panner is correct on every fixture tried. What fails is the check, and the check is the item's, so the correction belongs in the item rather than in a builder's remedy. CORPUS-CONTRACT: a constructed threshold that cannot separate the failure it names is a bar defect.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-11-r1/m6-fixture-sweep.json"
+      ],
+      "index_regenerated": false,
+      "filed_not_applied": true,
+      "note": "Not applied by this critic: RI-AUD01 is judged by this verdict, and a critic editing the bar it is scoring against in the same round is exactly the move CORPUS-CONTRACT forbids. Filed for the corpus owner with the reproduction in hand."
+    }
+  ],
+  "method_deviations": [
+    {
+      "what": "RI-AUD01 M2 and RI-WPN05 M6's blind half were not run.",
+      "why": "M2's pack tool does not exist as an instrument (it is an absence-reporter) and RI-WPN05's blind half needs 8-frame impact screenshot sequences, which needs a browser. AGENT-PROTOCOL rule 21: the box was at 12→24 headless_shell and loadavg 13.52, above the ~8 ceiling, and contention has already cost two pieces their headline numbers. Reported rather than faked."
+    },
+    {
+      "what": "RI-AUD01 M3 was not independently re-rendered.",
+      "why": "Same browser ceiling. The DATA side was re-derived at HEAD (all 12 classes carry §C's exact peak_dbfs; all 48 variants carry a solved norm_db) and the pass is recorded as carried from the builder's browser artifact at 78aebc7, with the note that rendered == declared holds by construction once norm_db = −raw."
+    },
+    {
+      "what": "The M6 fixture sweep was run in the node arena, not the browser.",
+      "why": "`row.pan` is plain arithmetic in game/src/audio/impact-audio.js and needs no AudioContext, so the shipped rule and the sabotage switch are exercised exactly as in the browser; only the WebAudio node graph is absent, and no claim here depends on it. The target's position and the player's yaw are written by the probe rather than produced by locomotion — the same intervention the builder's own P4 uses for the orbit — and the fully-hands-off variant of the decisive fixture ('player free to move') still reaches r = +0.6034 on the broken rule."
+    },
+    {
+      "what": "RI-WPN05 M2 and M3 are recorded as passing partly on W1-10-r3's measurements.",
+      "why": "Stated rather than hidden. Both were corroborated here by the critic's own perturbation, but neither full census was re-run this round."
+    }
+  ],
+  "source_reads": [
+    {
+      "path": "game/src/audio/impact-audio.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read after the fixture sweep showed the legacy r was fixture-dependent, to establish WHY: pan = sin(atan2(0,0) − playerYaw)."
+    },
+    {
+      "path": "game/src/combat/impact.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read after the delete-the-fix showed the ranged cells not going to zero."
+    },
+    {
+      "path": "game/src/sim/camera.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read after grepping for a consumer of shake_deg and finding none."
+    },
+    {
+      "path": "game/src/engine.js",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read to identify the sole caller of triggerShake()."
+    },
+    {
+      "path": "game/src/combat/resolve.js",
+      "purpose": "locate-harness",
+      "note": "to find where hitstop is applied and where shake_deg is written."
+    },
+    {
+      "path": "game/src/combat/system.js",
+      "purpose": "locate-harness",
+      "note": "to find the audio hook and the _audioWorld wiring."
+    },
+    {
+      "path": "tools/audio/impact-browser.mjs",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read the P4 fixture and its pass predicate after reproducing its result and finding the predicate's blind spot."
+    },
+    {
+      "path": "tools/analysis/audio-sync.mjs",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read to establish which of the item's nine checks it covers (five)."
+    },
+    {
+      "path": "tools/blind/audio-pack.mjs",
+      "purpose": "diagnose-after-demonstrating",
+      "note": "read after running it and getting exit 20 UNCONFIRMED."
+    },
+    {
+      "path": "tools/weapons/motion-census.mjs",
+      "purpose": "locate-harness",
+      "note": "to confirm SOCKET vs BONE semantics before quoting the 63 hard fails."
+    },
+    {
+      "path": "tools/lib/combat-node.mjs",
+      "purpose": "locate-harness",
+      "note": "to drive the arena for the critic's own probes."
+    },
+    {
+      "path": "corpus/12-weapons/RI-WPN05-weapon-feel-impact.md",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "corpus/87-audio/RI-AUD01-combat-impact-audio.md",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "corpus/87-audio/RI-AUD02-web-audio-budget.md",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "corpus/15-camera/RI-CAM06-camera-feel.md",
+      "purpose": "quote-written-content"
+    },
+    {
+      "path": "corpus/00-doctrine/ARBITRATION.md",
+      "purpose": "quote-written-content",
+      "note": "S22 — every frame figure in this verdict is written f@60."
+    }
+  ],
+  "path_to_ten": [
+    {
+      "step": 1,
+      "what": "Make M6 discriminate. Add `distance_m > 0` for player-landed impacts to P4's pass condition and run P4 over at least two fixture geometries, requiring the shipped rule to pass all and the sabotaged rule to fail all. Acceptance: tools/audio/critic-m6-fixture-sweep.mjs exits 0 with LEGACY_NEVER_PASSES.",
+      "unlocks": "RI-AUD01 M6 and RI-AUD02 S6 stop resting on a fixture accident",
+      "size": "S"
+    },
+    {
+      "step": 2,
+      "what": "Build the M2 instrument. Replace tools/blind/audio-pack.mjs's absence-reporter with a real pack: slice the offline render at each audio-log timestamp into 600 ms clips, normalise, strip metadata, shuffle, and spawn one fresh judge per clip against the item's verbatim 12-way prompt. The WAV writer and the LUFS meter already exist in tools/blind/audio-pack-b2.mjs.",
+      "unlocks": "RI-AUD01 M2 — the item's own stated bar, and the only check that can tell 'sounds punchy' from 'carries twelve distinguishable states'. 7/9 → 8/9.",
+      "size": "M"
+    },
+    {
+      "step": 3,
+      "what": "Build the M8 instrument: voicesPeak per context and integrated LUFS-S over exploration / combat / boss windows against §D's three rows. Run it with W1-22's ambience beds live, because §D is a budget and a budget only ever approached from below has not been tested.",
+      "unlocks": "RI-AUD01 M8. 8/9 → 9/9, ladder 8.",
+      "size": "M"
+    },
+    {
+      "step": 4,
+      "what": "Fire the camera shake from damage resolution — the RI-WPN05 §C impulse (0.25° × tier_index, decaying over hitstop+8 f@60) on the blow you land, and the RI-CAM06 §G damage shake on the blow you take — and assert Σ|Δcamera.pos| attributable to shake is 0.",
+      "unlocks": "RI-CAM06 M7, and makes RI-WPN05 §F's ILS a three-channel measurement instead of a two-channel one",
+      "size": "S"
+    },
+    {
+      "step": 5,
+      "what": "Run RI-WPN05 M4's whiff arithmetic across all 15 classes and assert total_on_hit − total_on_whiff == attacker_hitstop exactly. It is the only detector for 'recovery shortened on hit', which the item predicts will be proposed sincerely.",
+      "unlocks": "weapon.feel.whiff, currently declared and unmeasured, and 15 native points",
+      "size": "S"
+    },
+    {
+      "step": 6,
+      "what": "Resolve AQ-W1-11-r1-01 and bring the 102 overriding slots into conformance with whatever §A ends up saying.",
+      "unlocks": "RI-WPN05 M1, 25 native points",
+      "size": "S"
+    },
+    {
+      "step": 7,
+      "what": "Fix mass. Give calibrateYawGain a tip-speed and a continuity term, or move the arc / active window / tier declarations, so that no clip exceeds §E.2's 1.00 m per-frame socket step and under 2% exceed 1.25× the tier band. W1-MASS's reports/W1-MASS-guard.json already names every slot with the active_f it would need and the arc it would be allowed, including the ~107 it says are unreachable by any gain.",
+      "unlocks": "the triggered hard fail clears; RI-WPN05 M5 and M5b, 20 native points, and the piece stops failing on a defect a player sees",
+      "size": "L"
+    }
+  ],
+  "self_audit": {
+    "judged_output_not_source": true,
+    "judged_output_not_source_note": "Every score rests on a run: my own hitstop census and delete-the-fix, my own material perturbation, my own regeneration of the RI-AUD01 run and audio-sync at HEAD, my own M9 double-run, my own motion census at HEAD, and my own five-fixture M6 sweep. Source was read only after a measurement pointed at it, except where noted as locate-harness.",
+    "ran_every_assigned_method": false,
+    "blind_done_where_required": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "self_audit_note": "TWO FALSE, both for the same reason and both reported rather than worked around. `ran_every_assigned_method` is false: RI-AUD01 M2 and M8 have no instrument in the tree (recorded as unmeasurable, scored 0 fail-closed, filed as corpus_debt and as steps 2 and 3 of path_to_ten); RI-WPN05 M4 and M6 were not run (M4 unrun, M6 unmeasurable because one of its three observables has no world-side consumer); RI-CAM06's other seven checks are out of remit. `blind_done_where_required` is false: all three of RI-AUD01, RI-WPN05 and RI-CAM06 are `blind_pair: yes`, and no blind pack was run. RI-AUD01's pack tool is an absence-reporter; RI-WPN05's and RI-CAM06's packs need a browser, and AGENT-PROTOCOL rule 21's ~8-browser ceiling was exceeded (12 at start, 24 during the M6 work, loadavg 13.52). Because no blind ran, `critic.saw_builder_notes_before_blind` is recorded true conservatively and there was no blind for it to contaminate. Escalation ladder, in order: (1) re-ran the piece's own headline instruments at HEAD and reproduced them; (2) perturbed the tables the piece says are consumed and confirmed the world moved — hitstop and material both pass; (3) deleted the fix and confirmed the old number returns, which is where the ranged-override finding came from; (4) stopped trusting the reported number and asked whether the FIXTURE, not the build, produced it — which is where the biggest gap is; (5) ran the aggregation (boot-check, check-data, motion-census, audio-sync, audio-budget) rather than only the standalone probes."
+  }
+}

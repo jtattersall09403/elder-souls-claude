@@ -126,7 +126,8 @@
       "tools/lore/critic-w1-23-r1-voices.mjs",
       "tools/lore/critic-w1-23-r1-shot.mjs"
     ],
-    "depends_on_note": "The critic instruments import game/src/world/canon.js and game/src/character/converse.js directly — the same modules Engine._installCanon() and Conversation use — so the ablation and the reach census run the shipping code path with no browser. Git archaeology reads corpus/60-lore/data/canon-facts.json and game/data/books/** at b96de7c, 86366ea and cdb2938."
+    "depends_on_note": "The critic instruments import game/src/world/canon.js and game/src/character/converse.js directly — the same modules Engine._installCanon() and Conversation use — so the ablation and the reach census run the shipping code path with no browser. Git archaeology reads corpus/60-lore/data/canon-facts.json and game/data/books/** at b96de7c, 86366ea and cdb2938.",
+    "commit_note": "HEAD moved four times under this run (5c4c5b0 -> 07f8b75 -> 3ba93e0 -> 9de10c3 -> dc713e4) as the orchestrator banked other agents' work. `git diff 5c4c5b0..dc713e4` over game/data/lore, game/data/dialogue, game/data/npcs, game/data/books, corpus/60-lore/data, game/src/world/canon.js, game/src/character/converse.js and game/src/engine.js is EMPTY: the surface this verdict measures never moved. tools/lore/critic-w1-23-r1.mjs was re-run at dc713e4 and all five findings — seal, ablation, voice_vs_gate, reach, stale_measured — are byte-identical to the artifact taken at 3ba93e0. The sha recorded is the one HEAD carried when the run began (RULES #12); the findings hold across the whole range and the re-run is the evidence."
   },
   "bifurcation": {
     "axis": "not-visual",

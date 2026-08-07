@@ -5,10 +5,13 @@
   "state": "running",
   "started": "2026-08-07",
   "commit": "b1c92d1 at start; HEAD moved to 3ba93e0 mid-run (other agents banking). W1-13 files themselves are committed and clean in git status.",
-  "next_step": "factorial arms 5/12 done (as-placed 2/8+3/8 REPRODUCED, player-eye 8/8+8/8 REPRODUCED, no-bloom 0/8); waiting on pre-r3-render + aim-only + eye-only. Then critic-w1-13-r3.mjs (C1 pool consumption / C2 projectPoint / C3 purse / C4 clock night-window consumer), then the 2x2 shot, then verdict.",
+  "next_step": "two browser runs in flight in parallel under loadavg ~28 / 54 headless_shell: the 6-arm bloom factorial and critic-w1-13-r3.mjs (C1-C4). Then the 2x2 shot, then finish W1-13-r3.md + .json, validate, blog line.",
   "files_touched": [
     "orchestration/status/critic-w1-13-r3.json",
-    "tools/harness/critic-w1-13-r3.mjs"
+    "tools/harness/critic-w1-13-r3.mjs",
+    "tools/harness/critic-w1-13-r3-shot.mjs",
+    "corpus/90-verdicts/wave1/W1-13-r3.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-13-r3/"
   ],
   "files_claimed": [
     "corpus/90-verdicts/wave1/W1-13-r3.md",
