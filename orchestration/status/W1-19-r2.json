@@ -51,7 +51,8 @@
     "default": "40/40 both chains, 0 violent, 0 hand-fed topics",
     "--sabotage no-bootstrap": "0/40, all blocked at Q-MAIN-01 on the topic — the instrument goes red",
     "--sabotage hand-feed": "40/40, IDENTICAL to the unfed run — the forward AddTopic graph, not the hand-feed, is carrying the chain",
-    "--sabotage no-purse (before the re-clamp)": "36/40; exactly ONE gate in 31 arrived-at short: Q-MAIN-23 by 1.96, for all four saxhleel signatures"
+    "--sabotage no-purse (before the re-clamp)": "36/40; exactly ONE gate in 31 arrived-at short: Q-MAIN-23 by 1.96, for all four saxhleel signatures",
+    "--sabotage no-purse (AFTER the re-clamp)": "40/40, 0 gates arrived short, 0 gate-openings bought, 0 violent resolutions. Every race and upbringing finishes both chains with NO money at all and NO topic hand-fed."
   },
   "findings_2": [
     "GEN-2 NEW METRIC `arrival_floor`: the standing the worst signature walks up to a gate WITH, as opposed to `chain_floor` (min over all steps) or the round-1 cold start. chain_floor called 8 gates 'priced'; only 1 of those 31 is actually arrived-at short. A gate has to be passable when you reach it, not at every instant.",

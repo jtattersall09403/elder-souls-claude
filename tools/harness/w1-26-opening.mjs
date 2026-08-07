@@ -376,6 +376,9 @@ try {
     for (let i = 0; i < 60; i++) {
       const st = H.getCensusState();
       if (!st || st.done) break;
+      // Same hand-back as the grep walker above: a paused node draws no question because there
+      // is no question yet, and it is resumed by the act the graph names, not by answering it.
+      if (st.paused) { H.censusEnter(st.resume_by); continue; }
       H.renderedTextClear();
       H.renderFrame();
       const model0 = H.getCensusModel() || {};

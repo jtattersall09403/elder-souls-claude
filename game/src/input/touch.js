@@ -93,12 +93,32 @@ export class TouchInput {
     return { x: this.viewport.w - this.insets.right, y: this.viewport.h - this.insets.bottom };
   }
 
+  /**
+   * SEAM S35 — reduce the arc to the drawer while a READING surface is open.
+   *
+   * Set by `Engine._touchOverlayModel()` from `UISystem.mode`; `null` restores the full arc. It
+   * is a field on the input model rather than a filter in the renderer for one reason, and it is
+   * the reason the whole overlay works: **`layout()` is read by the hit test as well as by the
+   * drawing**, so a control filtered out of the picture alone would be invisible and still
+   * pressable. The property the overlay rests on is that what is drawn is what is pressable, in
+   * both directions; a filter applied to only one of the two readers breaks it.
+   *
+   * The drawer itself is never suppressed — `menu` lives in it, the touch profile declares no
+   * gestures, and a player who could open the map but not close it is a worse defect than the
+   * one this rule exists to fix.
+   *
+   * @type {?string} the reading surface currently up ('map' | 'journal' | 'book'), or null
+   */
+  suppressToDrawer = null;
+
   /** @returns {Array<{action,x,y,r,down}>} laid out in CSS px. The renderer draws exactly this. */
   layout() {
     const o = this._origin();
     const out = [];
-    for (const b of this.cfg.buttons) {
-      out.push({ action: b.action, x: o.x + b.cx, y: o.y + b.cy, r: b.r, held: !!b.held, gate: b.hold_gate || null, down: this.held.has(b.action) });
+    if (!this.suppressToDrawer) {
+      for (const b of this.cfg.buttons) {
+        out.push({ action: b.action, x: o.x + b.cx, y: o.y + b.cy, r: b.r, held: !!b.held, gate: b.hold_gate || null, down: this.held.has(b.action) });
+      }
     }
     const d = this.cfg.drawer;
     out.push({ action: '__drawer', x: o.x + d.cx, y: o.y + d.cy, r: d.r, drawer: true, down: this.drawerOpen });

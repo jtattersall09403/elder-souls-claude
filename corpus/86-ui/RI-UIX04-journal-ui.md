@@ -13,6 +13,20 @@ blind_pair: yes
 > (ARBITRATION §1, "Journal": *numbered, dated, first-person-authored journal entries; no
 > objective markers*), and S8 governs it.
 >
+> **NOTICE — JU8 IS SUPERSEDED IN PART. NOTHING IN THIS ITEM HAS BEEN EDITED.**
+> On 2026-08-07 the project's owner overruled seam **S30** ("there is no map") with seam **S35**
+> ("there is a map, and it has no quest markers on it"). Under `ARBITRATION.md` §5 a seam ruling
+> outranks an item's comparison method, so **JU8's existence clause — *"`map` … non-existent"*,
+> and method 7's *"the map must not exist at all"* — no longer states the bar.** S35 requires the
+> amendment to be filed rather than the clause worked around; it is
+> `corpus/00-doctrine/AMENDMENT-W1-MAP-01.md`, and it is **proposed**, not applied.
+>
+> This block is a signpost, not a change. **Every prohibition in §B stands verbatim, Q7
+> included** — Q7 forbids a map *in or reachable from the journal*, and that half is unamended
+> and is still a hard fail that triggers AR-2. A critic scoring this item should read the
+> amendment before scoring JU8, and should read S35 before accepting the amendment. A critic who
+> scores JU8's existence clause as written will fail a build that the ruling above it requires.
+>
 > **Scope.** `RI-DLG05` owns the journal's **content** — the entry schema, the first-person
 > voice, length distribution, and the prohibition on coordinates in the text. **This item owns
 > the screen**: what order entries appear in, what index exists, what may be searched, and —

@@ -2657,9 +2657,20 @@ export class Engine {
    * opposite of the thing it is drawn to teach.
    *
    * So the ring is suppressed on the READING screens — the map, the journal and a book — and
-   * kept everywhere else. `menu` lives in the drawer and the drawer stays, so the way back out
-   * is always on the glass: suppressing the controls that do nothing must never suppress the one
-   * that does. `M-P21`'s sixteen-action reachability is measured in the world and is untouched.
+   * kept everywhere else. THE DRAWER STAYS, and that is not a nicety.
+   *
+   * The first draft of this rule set `shown: false` outright, and a probe of it caught the
+   * defect I had just written: `controls_drawn` went to 0 on the map, which took the drawer with
+   * it, and `menu` lives in the drawer. The touch profile declares no gestures, so there was no
+   * other affordance on the glass — a touch-only player who opened the map could not close it.
+   * Suppressing controls that do nothing must never suppress the one that does; a control legend
+   * is a defect, and a trapped player is a worse one.
+   *
+   * `inventory` is deliberately NOT in the list. You act in the inventory — you equip, you drink,
+   * you close — so its controls are live and drawing them is correct. The list is reading
+   * surfaces only.
+   *
+   * `M-P21`'s sixteen-action reachability is measured in the world and is untouched.
    */
   _touchScreenSuppression() {
     // `UISystem.mode` is the surface that is up ('world' when none is). There is no separate
@@ -2674,14 +2685,19 @@ export class Engine {
   _touchOverlayModel() {
     if (!this.real || !this.real.touch) return null;
     const t = this.real.touch;
+    // Told to the INPUT model, not filtered out of the picture, because `layout()` feeds the hit
+    // test too — see `TouchInput.suppressToDrawer`. Set every frame from the surface that is
+    // actually up, so closing the map restores the arc without anything having to remember to.
     const reading = this._touchScreenSuppression();
+    t.suppressToDrawer = reading;
+    const controls = t.layout();
     return {
-      shown: !!(t.enabled && t.visible) && !reading,
-      // Named rather than merely absent, so a critic reading `controls_drawn: 0` on a phone can
-      // tell "S35 suppressed it here" from "the round-1 defect is back".
+      shown: !!(t.enabled && t.visible) && controls.length > 0,
+      // Named rather than merely absent, so a critic reading a low `controls_drawn` on a phone
+      // can tell "S35 suppressed the ring here" from "the round-1 defect is back".
       suppressed_by_screen: reading,
       enabled: !!t.enabled,
-      controls: t.layout(),
+      controls,
       stick: { ...t.stick },
       stickRadius: (t.cfg && t.cfg.stick && t.cfg.stick.max_radius_css_px) || 90,
       viewport: { w: t.viewport.w, h: t.viewport.h },

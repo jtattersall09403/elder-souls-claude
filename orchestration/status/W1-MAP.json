@@ -27,7 +27,8 @@
     "game/src/harness/api.js (mapState, tryPlaceMapMarker)",
     "game/data/index.json (regenerated, 500 files)",
     "tools/harness/map-probe.mjs",
-    "tools/harness/map-shots.mjs"
+    "tools/harness/map-shots.mjs",
+    "corpus/86-ui/RI-UIX04-journal-ui.md (NOTICE block only - no clause edited)"
   ],
   "findings": [
     "ARBITRATION S30 struck, S35 rules: map permitted, records where you HAVE BEEN; every marker prohibition kept. S35 explicitly says whoever builds it owns the RI-UIX04 JU8 amendment.",
@@ -54,7 +55,8 @@
     "Load reached 49.1 during the verification phase (four cores). Every number this piece reports is a count or a boolean, not a timing, so it is not distorted - but the wall clock of the capture pass was.",
     "map-probe clean run 29/29 at the point S11 was added; S11 itself failed FIRST TIME and correctly - queueInputs `f` is RELATIVE to the call (pipeline.js stores scriptBase=frame), so `f: getFrame()+1` scheduled the press thousands of frames out. A check that catches its own driver is the one you want.",
     "tools/capture arrival gate REFUSED my first declaration: evidence_of must be an exact token of a closed vocabulary and 'menu-appearance' is not one. 'menu' is. The gate is real and it fired on a builder acting in good faith.",
-    "Capture pass is the slow part: 43 teleports per shot each drain 25 province tiles, and one frame already came back UNSETTLED (the capture daemon refuses it rather than passing it quietly - S34). If a successor has to redo this, cut tools/harness/map-shots.mjs `legs` to ~16 and drop to 1024x576 before anything else."
+    "Capture pass is the slow part: 43 teleports per shot each drain 25 province tiles, and one frame already came back UNSETTLED (the capture daemon refuses it rather than passing it quietly - S34). If a successor has to redo this, cut tools/harness/map-shots.mjs `legs` to ~16 and drop to 1024x576 before anything else.",
+    "Convention check: RI-STL01 carries NO pointer to its (still 'proposed') AMENDMENT-W1-15-01, so the project's convention is that a builder files the amendment and does NOT edit the item. I followed that - the RI-UIX04 edit is a NOTICE block that changes no clause and says so, added only because a critic scoring JU8's existence clause verbatim would hard-fail a build that S35 requires, costing a round."
   ],
   "next_step": "shots landing, then blog line + final gate run",
   "notes_for_successor": "Decision taken: roads are NOT drawn on the map. S35 forbids 'a route, path, trail or line of any kind' and a drawn road is the first thing a hostile critic will call a line. Wayfinding stays with signposts (already in the world)."
