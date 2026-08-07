@@ -127,8 +127,12 @@ export class Discovery {
    * than a promise about the authors.
    */
   observe() {
-    if (this.#suspended || this.#env.interior) return;
-    const p = this.#player;
+    // Read through the sim every time. `sim.player` and `sim.env` are REPLACED by
+    // `SimState.reset()`, so these two lookups are the difference between a map that records
+    // where you went and one that freezes on the frame the last save was loaded.
+    const env = this.#sim.env;
+    if (this.#suspended || (env && env.interior)) return;
+    const p = this.#sim.player;
     if (!p || !p.pos) return;
     const x = p.pos[0], z = p.pos[2];
 

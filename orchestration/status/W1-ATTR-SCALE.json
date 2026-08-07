@@ -1,0 +1,17 @@
+{
+  "task_id": "W1-ATTR-SCALE",
+  "brief": "attribute-scale sweep: census every attribute/skill demand in game/data/quests/**, classify against real 240-sheet ceilings, fix root cause, write validator",
+  "started": "2026-08-07",
+  "state": "researching",
+  "outputs_expected": [
+    "tools/quests/attr-scale-audit.mjs (validator with --self-test)",
+    "tools/check-quests.mjs (warning wiring)",
+    "game/data/quests/** (rescaled demands)",
+    "orchestration/status/W1-ATTR-SCALE.json"
+  ],
+  "outputs_written": [],
+  "files_touched": [],
+  "findings": [],
+  "next_step": "read RI-PRG02, RI-PRG03, derive.js; then census quest demands",
+  "notes_for_successor": "Do NOT clamp to max — zero-margin is the defect that shut Act IV for 11/40 signatures one point lower. Set from ceiling WITH RESERVE."
+}

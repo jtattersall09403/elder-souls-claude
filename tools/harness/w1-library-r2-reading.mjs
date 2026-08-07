@@ -87,9 +87,22 @@ const out = await page.evaluate(async ({ BOOK, OTHER, noHook }) => {
   // between turns is the stick being released, not a second input: `UISystem._edge` fires on a
   // CHANGE of axis value, so one deflection is one turn.
   const rest = () => { H.queueInputs([{ f: 0, move: [0, 0] }]); H.stepFrames(1); };
+  // Back to the front before counting anything, and count in the right unit — see below.
+  const rewind = () => { for (let i = 0; i < 60; i++) { rest(); H.queueInputs([{ f: 0, move: [-1, 0] }]); H.stepFrames(2); } rest(); };
   const turns = [];
   const pages = first ? first.pages : 0;
-  for (let t = 0; t < Math.min(20, Math.max(0, pages - 1)); t++) {
+  // A TURN IS A SPREAD, NOT A PAGE. `getUIState().book.page` is a 1-based page number derived
+  // from the spread index (`focus.book.page * 2 + 1`) and §A B6 prefers the two-page Morrowind
+  // spread, so an 11-page book has SIX spreads and exactly FIVE turns in it. This loop used to
+  // ask for `pages - 1` = ten, and the five turns past the end used to be scored as landing —
+  // because `UISystem._move` floored the spread index and never capped it, so the model walked
+  // past the last spread while `drawBook()` went on drawing the last one. W1-LIBRARY round 2
+  // capped it, at which point those five phantom turns correctly stopped happening and this
+  // probe correctly started failing. The probe was wrong, not the fix: an instrument that scores
+  // a turn onto a page that is not there was never measuring T2.
+  const spreads = Math.max(1, Math.ceil(pages / 2));
+  rewind();
+  for (let t = 0; t < Math.min(20, Math.max(0, spreads - 1)); t++) {
     rest();
     const before = bookOf().page;
     H.queueInputs([{ f: 0, move: [1, 0] }]);          // ONE input — T2
@@ -120,6 +133,9 @@ const out = await page.evaluate(async ({ BOOK, OTHER, noHook }) => {
   // T4: two turns queued two frames apart — the second must be honoured, i.e. no animation
   // swallows an input. A page turn that drops the second press is an unskippable animation.
   {
+    // Rewind first: the T2/T3 loop above deliberately ran to the last spread, and a book at its
+    // end cannot exhibit a second turn — the clamp would be measured instead of the animation.
+    rewind();
     rest();
     const start = bookOf().page;
     // Two deflections two steps apart. If a page-turn animation swallowed the second, the book
@@ -137,6 +153,7 @@ const out = await page.evaluate(async ({ BOOK, OTHER, noHook }) => {
   try {
     H.closeMenu();
     H.openMenu('book', { id: BOOK });
+    rewind();
     for (let i = 0; i < 2; i++) {
       H.queueInputs([{ f: 0, move: [0, 0] }]); H.stepFrames(1);
       H.queueInputs([{ f: 0, move: [1, 0] }]); H.stepFrames(1);

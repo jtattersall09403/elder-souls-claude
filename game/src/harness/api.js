@@ -31,6 +31,7 @@ import { drawText as drawGlyphText, faceOf } from '../ui/glyphs.js';
 import { HANDLERS as MAGIC_HANDLERS, DAMAGE_EFFECTS as MAGIC_DAMAGE_EFFECTS } from '../sim/magic/apply.js';
 import { mitigate } from '../combat/resolve.js';
 import { mirror as mirrorView } from '../sim/combat-bridge.js';
+import { mergeConsequences } from '../sim/quest/machine.js';
 
 // W1-14: RI-MAG01's harness amendments are ADDITIONS, so the contract moves 1 -> 2 exactly as
 // that item's provenance note requires. Everything `@1` emitted is still emitted, unchanged.
@@ -1534,6 +1535,45 @@ export function installHarness(engine, bootPromise) {
       const r = (q.resolutions || []).find((x) => x.id === String(resolutionId));
       if (!r) throw new Error(`questResolutionRequirements: ${questId} has no resolution '${resolutionId}'`);
       return { ...(r.requires || {}), requires_knowing: r.requires_knowing || [], method: r.method, journal_index: r.journal_index, violence_required: !!r.violence_required };
+    },
+    /**
+     * W1-FACTIONS round 2, `path_to_ten` #3. WHAT AN ENDING CHANGES.
+     *
+     * `questDef()` carried neither `resolutions` nor `consequences`, so a probe inside the
+     * running build could see which endings were *available* and nothing about what any of them
+     * *did*. The round-1 walk therefore chose the cheapest ending at every rank — always the
+     * refusal, because a refusal asks for nothing — and then poked the rank-7 world flag in by
+     * hand to get past the gate it had just declined to open. "Rank 7 reached" and "walked
+     * without killing" were each true and had never been true together.
+     *
+     * With this a chooser can ask the question the player asks — *which of these ends with the
+     * first chair empty?* — from inside the engine, off the shipped data, with no disk read.
+     * Quest-level consequences are merged in exactly as `QuestMachine.resolve()` merges them
+     * (`mergeConsequences`), so what is reported here is what would actually be applied.
+     */
+    questResolutionConsequences(questId, resolutionId) {
+      const q = engine.questEngine.book.get(String(questId));
+      const base = q.consequences || {};
+      if (resolutionId == null) return JSON.parse(JSON.stringify(base));
+      const r = (q.resolutions || []).find((x) => x.id === String(resolutionId));
+      if (!r) throw new Error(`questResolutionConsequences: ${questId} has no resolution '${resolutionId}'`);
+      const merged = mergeConsequences({
+        faction_reputation: { ...(base.faction_reputation || {}) },
+        npc_disposition: { ...(base.npc_disposition || {}) },
+        unlocks: [...(base.unlocks || [])], locks: [...(base.locks || [])],
+        world_flags: [...(base.world_flags || [])], kills_npc: [...(base.kills_npc || [])],
+        joins_faction: [...(base.joins_faction || [])],
+      }, r.consequences || null);
+      return { resolution: r.id, method: r.method, violence_required: !!r.violence_required, ...merged };
+    },
+    /** Every ending of a quest with both halves — what it costs and what it changes. */
+    questEndings(questId) {
+      const q = engine.questEngine.book.get(String(questId));
+      return (q.resolutions || []).map((r) => ({
+        ...H.questResolutionRequirements(q.id, r.id),
+        ...H.questResolutionConsequences(q.id, r.id),
+        id: r.id, exclusive_with: (r.exclusive_with || []).slice(),
+      }));
     },
     /**
      * W1-19. READ and WRITE the disposition register the quest gates read.

@@ -97,6 +97,15 @@ const out = await page.evaluate((FIXTURE) => {
   // The experiment below is the proof rather than the argument: with the world paused, queue the
   // turn at `f: 0` (which CAN match the frozen frame) and again at `f: 1` (which cannot). If the
   // f:0 turn lands and the f:1 turn does not, the frame-keying is the cause and the UI is fine.
+  //
+  // THERE IS A WORKAROUND, and a successor should reach for it before reaching for combat:
+  // RE-QUEUE AT `f: 0` BEFORE EVERY SINGLE STEP. Because `f: 0` always matches whatever the
+  // frozen frame currently is, `queueInputs([{f:0, move:[1,0]}]); stepFrames(1);` lands every
+  // time, and alternating that with `move:[0,0]` gives the axis the edge it needs. That is how
+  // `tools/harness/w1-library-r2-reading.mjs` drives the reading screen out of combat, and it
+  // measures the same six-frame bar. This probe keeps the in-combat route as well, because the
+  // two agreeing is worth more than either alone: T3 reads max 2 frames in combat and max 1 out
+  // of it, against a bar of 6, on the same build.
   try {
     const w = { book: FIXTURE[FIXTURE.length - 1].id };
     try { H.closeMenu(); } catch {}

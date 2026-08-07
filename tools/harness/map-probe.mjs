@@ -115,6 +115,32 @@ async function run(h, brk) {
       return st;
     };
 
+    // ---- C0. THE SHIPPED MODEL RECORDS, AFTER A LOAD. Run before the probe touches anything.
+    //
+    // This check exists because everything below it used to be worthless, and nothing below it
+    // could have told you. C1 rebuilds `sim.discovery` for its radius sweep and the old code
+    // never put the engine's own object back, so C2, C3, C4 and the whole of S, D and L measured
+    // a model THE PROBE HAD WIRED ITSELF. It read 30/30 green while the shipped map recorded 255
+    // cells and could not name a single place for the whole run.
+    //
+    // So: touch nothing, load a state the way the game and the capture daemon both do, then walk
+    // to real site centres taken from the built world, and require that the object the ENGINE
+    // constructed moved. The bug it catches is `SimState.reset()` replacing `sim.player` and
+    // `sim.env`, which left the model observing a body that could never move again.
+    await H.loadState('default');
+    const shipped = sim.discovery;
+    const c0Before = { revealed: shipped.revealedCells, places: shipped.placeCount };
+    const c0Sites = eng.field.sites.slice(0, 6);
+    for (const s of c0Sites) walkTo(s.x, s.z);
+    const c0After = { revealed: shipped.revealedCells, places: shipped.placeCount };
+    A('C0', 'THE SHIPPED MODEL — the object engine.js built — still records after a state load',
+      `revealed ${c0Before.revealed} -> ${c0After.revealed}, places ${c0Before.places} -> ${c0After.places}`,
+      c0After.revealed > c0Before.revealed && c0After.places > c0Before.places,
+      'both rise; a frozen count means the model is watching a body reset() replaced');
+    A('C0b', 'and it is still the object the engine hung on the sim, not one the probe swapped in',
+      `sim.discovery === engine-built: ${sim.discovery === shipped}`, sim.discovery === shipped,
+      'true');
+
     // ---- C1. Perturbing the RADIUS changes how much ground is revealed and drawn -----------
     //
     // The radius is not a constant in the screen: it is `regions.json sightline_m` clamped by
@@ -130,7 +156,7 @@ async function run(h, brk) {
       // The model reads the doc at CONSTRUCTION, so rebuild it the way the engine does. This is
       // the same constructor the game runs; nothing here is a scratch model.
       const Disc = d.constructor;
-      const fresh = new Disc({ field: eng.field, player: sim.player, env: sim.env, doc: eng.data.mapUI, pois: eng.data.pois });
+      const fresh = new Disc({ field: eng.field, sim, doc: eng.data.mapUI, pois: eng.data.pois });
       sim.discovery = fresh;
       if (breakMode === 'discovery') fresh.suspend();
       // Walk a line across the salt hills — an open region, so the region's own sightline is
@@ -147,12 +173,18 @@ async function run(h, brk) {
       sweep.every((s) => s.revealed === 0 ? s.drawn === 0 : s.drawn > 0) && sweep[0].drawn > sweep[2].drawn,
       'drawn > 0 wherever revealed > 0, and falls with it');
 
-    // Restore the shipped numbers and a fresh model for everything below.
+    // PUT THE ENGINE'S OWN MODEL BACK. Everything below this line measures the object
+    // `engine.js` constructed and the fixed step drives — not a replacement built here. The
+    // radius sweep above has to construct models because `min_m`/`max_m` are read at
+    // construction, but it is the only part of this file allowed to, and it hands the sim back.
+    // The previous version left its last scratch model installed for the whole rest of the run,
+    // which is how this probe scored 30/30 against a map that recorded nothing.
     if (breakMode !== 'radius') { eng.data.mapUI.reveal.min_m = 40; eng.data.mapUI.reveal.max_m = 450; }
-    const Disc = d.constructor;
-    let D = new Disc({ field: eng.field, player: sim.player, env: sim.env, doc: eng.data.mapUI, pois: eng.data.pois });
-    sim.discovery = D;
-    if (breakMode === 'discovery') D.suspend();
+    sim.discovery = d;
+    d.restore(null);                     // the save path with no save: a clean raster, no mutator
+    const D = d;
+    const Disc = d.constructor;          // still needed by S12, which wants a genuinely empty one
+    if (breakMode === 'discovery') D.suspend(); else D.resume();
 
     // ---- C2. The map is drawn from the WORLD, so moving a site moves the square ------------
     //
@@ -166,8 +198,7 @@ async function run(h, brk) {
     const before = H.getUIState().elements.find((e) => e.id === 'map.place.stormhold');
     H.closeMenu();
     site.x += 900; site.z += 600;                       // move the province
-    D = new Disc({ field: eng.field, player: sim.player, env: sim.env, doc: eng.data.mapUI, pois: eng.data.pois });
-    sim.discovery = D;
+    D.restore(null); sim.discovery = D;   // clean raster, still the ENGINE's object
     if (breakMode === 'discovery') D.suspend();
     walkTo(site.x, site.z);
     H.openMenu('map', {});
@@ -180,8 +211,7 @@ async function run(h, brk) {
       moved, 'the drawn square follows the world data');
 
     // ---- C3. The terrain colour is the REGION's, not the screen's --------------------------
-    D = new Disc({ field: eng.field, player: sim.player, env: sim.env, doc: eng.data.mapUI, pois: eng.data.pois });
-    sim.discovery = D;
+    D.restore(null); sim.discovery = D;   // clean raster, still the ENGINE's object
     if (breakMode === 'discovery') D.suspend();
     for (let i = 0; i < 8; i++) walkTo(2000 + i * 150, 800);
     // Real pixels off the interface's own 2D canvas — the bitmap `UISurface.render()` composites
@@ -220,8 +250,7 @@ async function run(h, brk) {
       worst > 0.05, 'a channel moves by more than 5% when the region palette changes');
 
     // ---- C4. A place appears only after the body has been inside it ------------------------
-    D = new Disc({ field: eng.field, player: sim.player, env: sim.env, doc: eng.data.mapUI, pois: eng.data.pois });
-    sim.discovery = D;
+    D.restore(null); sim.discovery = D;   // clean raster, still the ENGINE's object
     if (breakMode === 'discovery') D.suspend();
     const thorn = eng.field.sites.find((s) => s.id === 'thorn');
     // Stand OUTSIDE the built pad — just beyond r_flat, so "near" is genuinely not "in".
@@ -331,7 +360,7 @@ async function run(h, brk) {
     // "Open the game, walk nowhere, open the map. If it shows you the province, this amendment
     // has been implemented as a repeal rather than as a narrowing." A character who has
     // discovered nothing must get an empty screen — not a loading state, not a dimmed province.
-    const empty = new Disc({ field: eng.field, player: sim.player, env: sim.env, doc: eng.data.mapUI, pois: eng.data.pois });
+    const empty = new Disc({ field: eng.field, sim, doc: eng.data.mapUI, pois: eng.data.pois });
     const keep = sim.discovery;
     sim.discovery = empty;
     H.openMenu('map', {});
@@ -382,8 +411,7 @@ async function run(h, brk) {
     // =========================================================================================
     // L — THE LIVE-WORLD LOAD AUDIT. Not the bytes.
     // =========================================================================================
-    D = new Disc({ field: eng.field, player: sim.player, env: sim.env, doc: eng.data.mapUI, pois: eng.data.pois });
-    sim.discovery = D;
+    D.restore(null); sim.discovery = D;   // clean raster, still the ENGINE's object
     if (breakMode === 'discovery') D.suspend();
     for (let i = 0; i < 10; i++) walkTo(2000 + i * 130, 800);
     walkTo(site.x, site.z);
@@ -447,7 +475,7 @@ for (const rep of reports) {
     // Under a break the expected outcome is INVERTED: at least one assertion must have failed,
     // and it must be one of the ones the break is supposed to reach. A break that leaves the
     // probe green means the probe was not measuring what it claims to measure.
-    const expect = { discovery: ['C1', 'C4', 'L1'], radius: ['C1'], world: ['C3'] }[brk] || [];
+    const expect = { discovery: ['C0', 'C1', 'C4', 'L1'], radius: ['C1'], world: ['C3'] }[brk] || [];
     const red = rep.checks.filter((c) => !c.pass).map((c) => c.id);
     const hit = expect.filter((id) => red.includes(id));
     if (hit.length) log(`SELF-TEST OK — breaking '${brk}' turned ${hit.join(', ')} red.`);

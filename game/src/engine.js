@@ -325,13 +325,18 @@ export class Engine {
     // system only the engine can see is a system the fixed step cannot run — the same reason
     // `sim.settlements` is hung there twenty lines above.
     //
-    // The player object and `sim.env` are CAPTURED here and never passed again: `observe()`
-    // takes no arguments, which is the whole of the "a quest cannot place a marker" guarantee.
-    // See game/src/sim/discovery.js's header and AMENDMENT-W1-MAP-01 §3b.
+    // The SIM is CAPTURED here and never passed again: `observe()` takes no arguments, which is
+    // the whole of the "a quest cannot place a marker" guarantee. See
+    // game/src/sim/discovery.js's header and AMENDMENT-W1-MAP-01 §3b.
+    //
+    // It captures `this.sim` and NOT `this.sim.player` / `this.sim.env`, and that is load-bearing
+    // rather than stylistic: `SimState.reset()` replaces both of those objects, so a model
+    // holding them directly observes a dead body from the first `loadState()` onward. That was
+    // the shipped behaviour until it was measured — 255 revealed cells and zero named places for
+    // the rest of the run. Same hazard as `_rebindQuestRuntime()` below.
     this.sim.discovery = new Discovery({
       field: this.field,
-      player: this.sim.player,
-      env: this.sim.env,
+      sim: this.sim,
       doc: this.data.mapUI || {},
       pois: this.data.pois,
     });
@@ -587,6 +592,12 @@ export class Engine {
     // whatever ran before it." A scenario boundary that does not clear a subsystem is not a
     // scenario boundary, and the cost is measured in wrong verdicts rather than in bugs.
     if (sim.stealth) sim.stealth.resetSubsystem();
+    // W1-MAP, and for exactly the reason given directly above: a scenario boundary that does not
+    // clear a subsystem is not a scenario boundary. The discovery raster is "where THIS character
+    // has been", so carrying it into a freshly loaded named state would show the previous run's
+    // travels on the new one's map. `restore(null)` is the save path run with no save — it is the
+    // arity-1 loader, not a mutator that can name a place, so clearing costs no guarantee.
+    if (sim.discovery) sim.discovery.restore(null);
     if (patch.env) Object.assign(sim.env, {
       timeOfDay: patch.env.timeOfDay ?? sim.env.timeOfDay,
       weather: patch.env.weather ?? sim.env.weather,

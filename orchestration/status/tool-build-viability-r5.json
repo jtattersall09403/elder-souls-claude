@@ -8,7 +8,15 @@
     "reports/blog-feed.jsonl (one line)"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read TOOL-COVERAGE-R1/R2/R3 build-viability sections + W1-FACTIONS-r1.md verdict",
-  "notes_for_successor": "Box at loadavg 10.6, 6 headless_shell at start. Node-side work preferred."
+  "findings": [
+    "BASELINE reproduced: `node tools/analysis/build-viability.mjs --signatures all` prints `0/540 viable`, all 540 stopped by `Q-ASSZ-08 [offer] the_imperial_assize reputation 100/112`. Exit 1. That is the R4 stub colliding with itself (line 1191 Proxy get:()=>100).",
+    "boot-check PASS at start. C8 = 26 (grep -c 'C8)' on corpus-index output). loadavg 10.6, 6 headless_shell at start.",
+    "SYNTHETIC FIELD AUDIT (bestCaseCtx, build-viability.mjs:1144-1194). Fields granted a constant/Proxy/infinity: reputation=Proxy(100) CONSTANT; ranks=Proxy(7) CONSTANT; gold=1e9 INFINITY; topicsKnown=grantAll(authored topics) has()->true UNIVERSAL YES; knowledge=grantAll(EMPTY) has()->true UNIVERSAL YES over an empty set; items=grantAll(EMPTY) same; spellEffects=grantAll(EMPTY) same; worldFlags=grantAll(authored flags) has()->true; completed=every quest but the target and its exclusives; locked=empty Set; disposition (scalar, read by canResolve req.disposition) = 0 and NEVER RAISED -> 28 shipped resolutions carry requires.disposition 20..70 and are silently unavailable.",
+    "GATE VOCABULARY (game/src/sim/quest/gate.js): canOffer reads completed, locked, topicsKnown (via topicsInclude, ITERATES), dispositions[npc], ranks[f], reputation[f], and gates.evaluate reads reputation/attributes/skills/worldFlags. canResolve reads skills, attributes, items, knowledge, spellEffects, disposition, gold, ranks.",
+    "DEAD READ FOUND (same class as the r.frame bug): build-viability reads `q.stages` in bestCaseCtx (topics + world_flags) and in questClearableInner (`!resolutions.length && !q.stages`). ZERO of 94 shipped quests have a `stages` field. Every stage-derived topic/flag is empty and the resolution-absence branch can never see a stage.",
+    "DERIVABLE SOURCES exist for every constant: gold from quest `rewards[].{type:'gold',amount,on_resolution}` (49 rewards, raw sum 14040); faction reputation from `resolutions[].consequences.faction_reputation`; ranks from FactionGates.highestQualifying() which the ENGINE ITSELF now uses (machine.js context()); world flags from `consequences.world_flags`; knowledge from `deceit.revealed_by[].id` (69 quests) + book knowledge_key; items from `rewards[].{type:'item',id}`; npc disposition from `consequences.npc_disposition`.",
+    "ENGINE PARITY LEVER: QuestEngine.context() derives ranks via `gates.highestQualifying(f, lite)` — so granting ranks=7 is not just a constant, it contradicts the shipping derivation. Using highestQualifying() in the tool makes the rank grant a MEASUREMENT through the shipped predicate."
+  ],
+  "next_step": "write the derived-attainment module + grant-dependency test (load-bearing substitution => unmeasurable), then shadow-tree falsification of the model detector",
+  "notes_for_successor": "Design decision: keep the walk player-optimal (viability = does ANY route exist) but every grant must be DERIVED from shipped data. Where a token is granted without a producing source in data, evaluate the quest twice (full grant vs provable-only grant); if the verdicts differ the criterion is `unmeasurable` and the token is named. That makes a permissive substitution structurally unable to produce a silent pass."
 }

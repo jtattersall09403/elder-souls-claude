@@ -170,21 +170,41 @@ try {
     const probeSetFlags = new Set();
     const setFlag = (f) => { probeSetFlags.add(f); return H.questSetFlag(f, true); };
     function needOf(qid, rid) { try { return H.questResolutionRequirements(qid, rid); } catch (e) { return {}; } }
+    function conseqOf(qid, rid) { try { return H.questResolutionConsequences(qid, rid); } catch (e) { return {}; } }
     function cost(need) {
       return Object.values(need.skills || {}).reduce((a, b) => a + b, 0)
         + Object.values(need.attributes || {}).reduce((a, b) => a + b, 0) * 10
         + (need.gold || 0) / 100
         + (need.requires_knowing || []).length;   // a reveal is cheap but not free
     }
+    // W1-FACTIONS round 2. THE FLAGS THE LADDER ITSELF ASKS FOR, read off the shipped gate rather
+    // than named here. Every rank of every faction carries a `world_state` term, and the rank-7
+    // term is "the first chair of the Ledger is empty and you emptied it". Round 1's chooser took
+    // the CHEAPEST ending, a refusal asks for nothing, and a refusal is precisely the ending that
+    // does not empty the chair — so all three lines ended by poking the rank-7 flag in by hand.
+    // "Rank 7 reached" and "walked without killing" were each true and never true together.
+    const LADDER_FLAGS = new Set();
+    {
+      const fx = (H.factionGates().factions || []).find((f) => f.id === LINE) || {};
+      for (const row of fx.ranks || []) if (row && row.world_state && row.world_state.flag) LADDER_FLAGS.add(row.world_state.flag);
+    }
+    const flagsUp = () => new Set(H.questWorldFlags());
     function finish(id) {
       const rows = H.questResolutions(id) || [];
       if (!rows.length) { resolveLog.push({ quest: id, refused: 'the book offers no resolutions' }); return null; }
       const needs = new Map(rows.map((r) => [r.id, needOf(id, r.id)]));
-      // Prefer, in order: a resolution already available; one that needs no violence; the
-      // cheapest to become able to do. A player who does not want to kill anybody plays exactly
-      // this way, so a line that can only be finished with a sword shows up as P9 going red.
-      const rank = (row) => (row.available ? 0 : 1000)
-        + (row.violence_required || needs.get(row.id).violence_required ? 10000 : 0)
+      const gives = new Map(rows.map((r) => [r.id, conseqOf(id, r.id)]));
+      const up = flagsUp();
+      // A ladder flag this ending would raise that is not up yet. This is the whole of the fix:
+      // the chooser now plays for the SEAT rather than for the cheapest exit, and it still refuses
+      // violence outright — the two preferences are ordered so that a line which can only be
+      // vacated with a sword shows up as the walk stopping at rank 6, not as a silent poke.
+      const wanted = (rid) => ((gives.get(rid) || {}).world_flags || []).filter((f) => LADDER_FLAGS.has(f) && !up.has(f)).length;
+      // Prefer, in order: no violence (never); an ending that advances the ladder; one already
+      // available; the cheapest to become able to do.
+      const rank = (row) => (row.violence_required || needs.get(row.id).violence_required ? 100000 : 0)
+        + (wanted(row.id) ? 0 : 20000)
+        + (row.available ? 0 : 1000)
         + cost(needs.get(row.id));
       const order = rows.slice().sort((a, b) => rank(a) - rank(b));
       for (const row of order) {
@@ -208,9 +228,14 @@ try {
         const after = (H.questResolutions(id) || []).find((x) => x.id === row.id);
         if (!after || !after.available) continue;
         const done = H.questResolve(id, row.id);
+        // GAP-FCT-01. `resolve()` now runs the offer gate, so a refusal here is a real refusal and
+        // is recorded as one. Round 1 discarded this return value entirely; every resolution in
+        // every walk it reported had been applied outside every gate this system has.
+        if (!done || !done.ok) { resolveLog.push({ quest: id, resolution: row.id, refused_by_the_gate: (done || {}).reason || 'no return' }); continue; }
         resolveLog.push({
           quest: id, resolution: row.id, method: need.method,
           violence_required: !!(row.violence_required || need.violence_required),
+          ladder_flags_raised: ((gives.get(row.id) || {}).world_flags || []).filter((f) => LADDER_FLAGS.has(f)),
           paid_for: Object.keys(need).filter((k) => k !== 'method' && k !== 'journal_index' && k !== 'violence_required'),
         });
         return done && (done.resolution || row.id);
@@ -233,6 +258,8 @@ try {
 
     // ---- WALK THE LADDER, only ever granting things play grants. --------------------------
     const walk = [];
+    const unmetWorldState = [];
+    const openLog = [];
     for (const d of line) {
       // (a) THE WORDS. Only ever the topics the quest itself declares it opens on. The forward
       //     `hooks.json` edges would grant these by playing; the probe short-circuits the
@@ -243,9 +270,10 @@ try {
       // (b) THE PREREQUISITE QUESTS, finished the way finishing them would.
       for (const pq of (d.opens_by && d.opens_by.prerequisite_quests) || []) {
         try {
-          H.questOpen(pq);
-          finish(pq);
-        } catch (e) { /* already closed, or opened another way */ }
+          const o = H.questOpen(pq);
+          openLog.push({ quest: pq, as: 'prerequisite', ...o });
+          if (o && o.ok) finish(pq);
+        } catch (e) { openLog.push({ quest: pq, as: 'prerequisite', threw: String(e).slice(0, 160) }); }
       }
       // (c) THE SHEET AND THE STANDING, to whatever the LADDER asks for — read out of the
       //     refusal's own four-part statement, never guessed. Rank is NEVER set: it is derived.
@@ -260,7 +288,10 @@ try {
             const best = (t.what || []).slice().sort((a, b) => (cur[b] || 0) - (cur[a] || 0));
             raise(best[t.kind === 'skill_1' ? 0 : 1], t.need);
           }
-          if (!t.met && t.kind === 'world_state') setFlag(t.what);
+          // THE FLAG IS NOT POKED ANY MORE. A rank's world_state term is raised by finishing the
+          // quest that raises it, or it is not raised at all and the walk stops there and says so.
+          // Round 1 poked all three lines' rank-7 flags and then reported "top derived rank 7".
+          if (!t.met && t.kind === 'world_state') unmetWorldState.push({ quest: d.id, flag: t.what, text: t.need });
           // The attribute term is NEVER set. It rises only where `raise()` above made a
           // governed skill cross a multiple of 15, which is the one route the game has.
         }
@@ -291,8 +322,11 @@ try {
       const isLast = d === line[line.length - 1];
       if (o && o.offerable && !isLast) {
         try {
-          H.questOpen(d.id);
-          walk[walk.length - 1].resolved = finish(d.id);
+          const op = H.questOpen(d.id);
+          openLog.push({ quest: d.id, as: 'line', ...op });
+          walk[walk.length - 1].opened = !!(op && op.ok);
+          if (op && op.ok) walk[walk.length - 1].resolved = finish(d.id);
+          else walk[walk.length - 1].open_refusal = (op || {}).reason;
         } catch (e) { walk[walk.length - 1].resolve_error = String(e).slice(0, 200); }
       }
     }
@@ -341,9 +375,14 @@ try {
     const top = line[line.length - 1];
     const topOffer = H.questOffers().find((x) => x.id === top.id);
     if (topOffer && topOffer.offerable) {
-      try { H.questOpen(top.id); res.ceiling_resolved = finish(top.id); }
-      catch (e) { res.ceiling_error = String(e).slice(0, 200); }
-    }
+      try {
+        const op = H.questOpen(top.id);
+        openLog.push({ quest: top.id, as: 'ceiling', ...op });
+        if (op && op.ok) res.ceiling_resolved = finish(top.id); else res.ceiling_open_refusal = (op || {}).reason;
+      } catch (e) { res.ceiling_error = String(e).slice(0, 200); }
+    } else { res.ceiling_open_refusal = `never became offerable: ${JSON.stringify((topOffer || {}).why)}`; }
+    res.opens = openLog;
+    res.unmet_world_state = unmetWorldState;
     const st = walk.find((s) => s.id === top.id); if (st) st.resolved = res.ceiling_resolved;
 
     // ---- THE CONSEQUENCE, READ OFF THE LIVE WORLD -------------------------------------------
@@ -385,9 +424,26 @@ try {
     `${nonviolent.length}/${taken.length} resolutions the walk actually took required no violence: ${taken.map((x) => `${x.quest}:${x.resolution}${x.violence_required ? '(VIOLENT)' : ''}`).join(' ')}`);
   check('P10_the_world_changed', (r.flags_raised_by_the_quests || []).length > 0,
     `${(r.flags_raised_by_the_quests || []).length} world flag(s) are set in sim.quest.flags that the probe never wrote — i.e. raised by the resolutions themselves: ${(r.flags_raised_by_the_quests || []).join(', ') || 'NONE — the line is a journal and nothing else'} (the probe poked in ${(r.flags_the_probe_set_itself || []).join(', ') || 'nothing'} to clear rank world_state terms)`);
-  const refused = (r.resolutions || []).filter((x) => x.refused);
+  const refused = (r.resolutions || []).filter((x) => x.refused || x.refused_by_the_gate);
   check('P11_every_quest_taken_could_be_finished', refused.length === 0,
-    refused.length ? `${refused.length} quest(s) had no reachable resolution: ${refused.map((x) => x.quest).join(', ')}` : `all ${taken.length} quests opened on the walk reached a resolution`);
+    refused.length ? `${refused.length} quest(s) had no reachable resolution: ${refused.map((x) => `${x.quest}${x.refused_by_the_gate ? ` (gate: ${x.refused_by_the_gate})` : ''}`).join(', ')}` : `all ${taken.length} quests opened on the walk reached a resolution`);
+  // ---- W1-FACTIONS round 2 -----------------------------------------------------------------
+  // The three checks the round-1 verdict says were never taken together. P4 and P9 were each
+  // true and jointly untested, because the walk poked the rank-7 flag in and then read the rank
+  // back out of the gate it had just satisfied by hand.
+  check('P12_no_rank_flag_was_poked', (r.flags_the_probe_set_itself || []).length === 0,
+    (r.flags_the_probe_set_itself || []).length
+      ? `the probe wrote ${(r.flags_the_probe_set_itself || []).join(', ')} into sim.quest.flags — every rank derived above it is the probe's own arithmetic`
+      : `the probe wrote no world flag; every world_state term the ladder asked for was raised by a resolution or was not raised at all`);
+  const ladderFlags = (r.final && (r.final.ranks || []).map((x) => x && x.world_state && x.world_state.flag).filter(Boolean)) || [];
+  const rank7Flag = ladderFlags[ladderFlags.length - 1];
+  check('P13_the_seat_was_vacated_by_PLAY', !!rank7Flag && (r.flags_raised_by_the_quests || []).includes(rank7Flag),
+    `the rank-7 world_state term is ${JSON.stringify(rank7Flag)}; raised by a resolution the walk took: ${(r.flags_raised_by_the_quests || []).includes(rank7Flag)}. Endings that raised a ladder flag: ${(r.resolutions || []).filter((x) => (x.ladder_flags_raised || []).length).map((x) => `${x.quest}:${x.resolution}->${x.ladder_flags_raised.join('+')}`).join(' ') || 'NONE'}`);
+  check('P14_rank7_AND_nonviolent_together', r.final && r.final.derived_rank >= 7 && taken.length > 0 && nonviolent.length === taken.length && (r.flags_the_probe_set_itself || []).length === 0,
+    `derived rank ${r.final && r.final.derived_rank}, ${nonviolent.length}/${taken.length} endings non-violent, ${(r.flags_the_probe_set_itself || []).length} flags poked — the three claims held at the same time on the same character`);
+  const badOpen = (r.opens || []).filter((o) => o.ok === false || o.threw);
+  check('P15_every_open_went_through_the_offer_gate', badOpen.length === 0,
+    badOpen.length ? `${badOpen.length} questOpen call(s) were refused or threw and the walk carried on regardless: ${badOpen.map((o) => `${o.quest}: ${o.reason || o.threw}`).join(' | ')}` : `all ${(r.opens || []).length} questOpen calls returned ok — the walk never resolved a quest it had not been given`);
 
   out.ok = out.failures.length === 0;
   if (args.out) writeJson(args.out, out);
