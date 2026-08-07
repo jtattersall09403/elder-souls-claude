@@ -128,6 +128,24 @@ function applyFilter(ctx, node, spec) {
  * `depth: 1.0` gain modulation reaches silence at the trough rather than clipping at the peak.
  * Ambience that modulates ABOVE its declared level is how a bed eats RI-AUD01's combat headroom
  * without any single number in the data looking wrong (RI-AUD03 §How we lose, item 3).
+ *
+ * ROUND 2, AND THIS IS THE BUG THE ROUND-1 CRITIC ROOT-CAUSED. `amt.gain.value` is an ABSOLUTE
+ * number and `amt.connect(targets.gain.gain)` is an ADDITIVE AudioParam connection, so the swing
+ * is not a fraction of anything once someone multiplies the static term afterwards. Round 1's
+ * `buildBedContinuous()` did exactly that — it scaled `h.gain.gain.value` by `level_db` and the
+ * bed trim AFTER this function had run — so the layer's instantaneous gain was
+ *
+ *     base·(1 − d/2)·L·trim   +   sin(2πft)·base·(d/2)
+ *     └── follows the trim ──┘       └── did not ──────┘
+ *
+ * A declared 42 % tremolo on Valus Ridge was running at an effective 155 % and the gain parameter
+ * went NEGATIVE at every trough, phase-inverting the rock-flute chord once every nine seconds; and
+ * `bed_gain_db` was a scalar on one term and a no-op on the other, which is why `--calibrate`'s
+ * one-shot `target − measured` correction under-corrected and had to be iterated.
+ *
+ * The fix is the `gainMul` argument to `buildContinuous()`: every static factor is folded into
+ * `out.gain.value` BEFORE this function reads it, so `base` is the layer's true final level and
+ * the swing scales with it. Nothing downstream may touch `out.gain.value` again.
  */
 function attachMod(ctx, mod, targets, t0) {
   if (!mod) return null;
@@ -157,9 +175,14 @@ function attachMod(ctx, mod, targets, t0) {
  * Returns a handle whose `gain` node is the layer's fader — the crossfade in `ambience.js`
  * ramps that and nothing else, so a region change is one automatable parameter per layer.
  */
-export function buildContinuous(ctx, synth, dest, rng, t0 = 0) {
+ * `gainMul` is every STATIC factor the caller wants applied to this layer — `level_db` and the
+ * bed's master trim — and it must be passed here rather than multiplied into `gain` afterwards,
+ * because `attachMod()` below splits `out.gain.value` into a biased static term and an absolute
+ * LFO swing and a later multiplication only reaches the first of the two. See `attachMod`.
+ */
+export function buildContinuous(ctx, synth, dest, rng, t0 = 0, gainMul = 1) {
   const out = ctx.createGain();
-  out.gain.value = dbToGain(synth.gain_db || 0);
+  out.gain.value = dbToGain(synth.gain_db || 0) * gainMul;
   out.connect(dest);
 
   const started = [];

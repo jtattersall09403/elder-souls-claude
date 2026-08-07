@@ -614,7 +614,21 @@ async function calibrate() {
       // Both ends. Zero across 7,648 words was the defect; 34.7 against 21.3 in the swept
       // generator was the opposite defect, and the seam between them is worse than either.
       exclamations: { kind: 'band', target: R.exclamations, ours: O.exclamations, lo: R.exclamations * 0.25, hi: R.exclamations * 2 },
-      sting: { kind: 'cap', target: R.sting, ours: O.sting, ceiling: Math.max(R.sting * 3, 6) },
+      // THE CAP TRACKS OUR OWN IMPROVEMENT, or the ratchet is not a ratchet.
+      //
+      // The bars above and below are pure multiples of the reference, and that was the right fix
+      // for the vacuous percentile version — but it left the "refuse to loosen" guard with nothing
+      // to bite on, because a reference-derived number never moves when OUR corpus moves. Measured
+      // live: this round took the dialogue sting rate from 43.47 per 10k to 1.12, a 39x
+      // improvement, and the ceiling sat at 6.00 throughout. A regression all the way back to 5.9
+      // — five times our current rate — would have been invisible to the check built to catch it.
+      //
+      // So the sting cap, the one bar this whole round exists for, is now the tightest of:
+      //   * the reference multiple (never looser than that), and
+      //   * twice our current rate (so an improvement locks in with slack for one new file),
+      // and is NEVER tighter than the reference rate itself — a corpus writing at Morrowind's own
+      // rate must not be red, or the check is measuring taste rather than the gap.
+      sting: { kind: 'cap', target: R.sting, ours: O.sting, ceiling: Math.max(R.sting, Math.min(Math.max(R.sting * 3, 6), O.sting * 2)) },
       // `Math.max(..., 1.5)` because the reference rate here is at or near zero in two registers,
       // and a cap of zero is not a bar — it is an assertion that one occurrence anywhere is a bug.
       fragopen: { kind: 'cap', target: R.fragopen, ours: O.fragopen, ceiling: Math.max(R.fragopen * 3, 1.5) },

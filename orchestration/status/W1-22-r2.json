@@ -2,12 +2,15 @@
   "task_id": "W1-22-r2",
   "brief": "corpus/90-verdicts/wave1/W1-22-r1.md (the verdict IS the spec)",
   "started": "wave-1 round 2",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [],
   "outputs_written": [],
   "findings": [
-    "START: pgrep -c headless_shell = 24, loadavg 19.70 18.40 15.95 on 4 cores. WAY above the cap of 8. Doing synthesis/authoring first, browser phase later. No timing figure taken now is citable."
+    "START: pgrep -c headless_shell = 24, loadavg 19.70 18.40 15.95 on 4 cores. WAY above the cap of 8. Doing synthesis/authoring first, browser phase later. No timing figure taken now is citable.",
+    "READ THE VERDICT. Path to ten, in priority order: (1) GAP-W1-audio-emitter-consumption - emitters computed every frame, report audible/gain/pan, count voices, schedule NO grain; +40dB on bell_buoy leaves live render bit-identical. (2) attachMod unscaled LFO swing (synth.js:139-143) - 3 lines. (3) B5 marauders-coast -23.991, 0.009 LU out. (4) content-stats.mjs --audio is a phantom flag that exits 0. (5) R4 interior beds. (6) night never rendered. (7) census: flat 15s L3 interval still green.",
+    "R4 JUDGEMENT (mine, not inherited): I AGREE WITH THE CRITIC. R4 reads \"Interiors get their own bed, not the exterior bed at -12 dB.\" The main clause is positive and imperative - interiors GET a bed; the subordinate clause forbids one particular wrong bed. R1s null permission is explicitly per-LAYER inside a declared bed (\"Every region declares all four layers, and a layer may be declared null\"), not a licence for a whole cell to have no bed. The ARBITRATION note about silence being a design statement is scoped to a REGION (\"silence in a dry region\") and cites R1, i.e. layers. And RI-WLD08 §6 independently mandates \">=13 (one per region) + >=8 settlement beds + >=4 interior beds\" - a positive count that silence cannot satisfy. Round 1s \"interiors go silent and report suppressed\" is therefore not permitted by the item. Building interior beds.",
+    "THE CRITICS OWN PROBE IS THE RIGHT ACCEPTANCE INSTRUMENT: tools/analysis/critic-w1-22-probe.mjs section B already does perturb/observe/restore on bell_buoy +40 dB across four paths (offline no-listener, control L1, offline with listener, LIVE attach+stepFrames+render) and prints the L1 control. I will re-run it UNCHANGED after the fix. Builder does not grade itself; a red->green on an instrument I did not write is the strongest evidence available to me."
   ],
-  "next_step": "read corpus/90-verdicts/wave1/W1-22-r1.md in full, then orchestration/status/W1-22.json",
-  "notes_for_successor": "Do not touch tools/blind/audio-pack-b2.mjs or its pack dir - a fresh judge is answering it right now."
+  "next_step": "fix synth.js attachMod scaling, then wire emitters into AmbienceDriver.step",
+  "notes_for_successor": "Do not touch tools/blind/audio-pack-b2.mjs or its pack dir (fresh judge answering it now). Files I am touching: game/src/audio/{ambience,synth}.js, game/src/engine.js (_stepAmbience/ambienceCapture), game/src/harness/api.js (getUnimplemented), game/data/audio/ambience/*.json, NEW game/data/audio/ambience/interiors/, tools/analysis/{ambience-census,ambience-render,content-stats}.mjs."
 }

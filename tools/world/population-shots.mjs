@@ -58,24 +58,31 @@ const base = {
   width: W, height: H, ui: false,
 };
 
-const specs = [
+const ONLY = String(args.only || 'both');
+const allSpecs = [
   {
-    name: `${DATE}-population-road-before-empty.png`,
-    spec: {
-      ...base,
-      claim: 'how a stretch of the trunk highway is composed with the hostile population system switched off — the empty frame, for comparison with the populated one',
-      ops: [['setPopulation', { enabled: false, reset: true }]],
-    },
-  },
-  {
+    key: 'after',
     name: `${DATE}-population-road-after-populated.png`,
     spec: {
       ...base,
-      claim: 'how the same stretch of trunk highway is composed with the hostile population resident beside it — two posts, eight bodies, at the density the model sets for a tier-2 region',
+      claim: 'how a stretch of trunk highway is composed with the hostile population resident beside it — two posts, eight bodies, at the density the model sets for a tier-2 region',
       ops: [['setPopulation', { enabled: true, reset: true }]],
     },
   },
+  {
+    key: 'before',
+    name: `${DATE}-population-road-before-empty.png`,
+    spec: {
+      ...base,
+      claim: 'how the same stretch of trunk highway is composed with the hostile population system switched off — the empty frame, for comparison with the populated one',
+      ops: [['setPopulation', { enabled: false, reset: true }]],
+    },
+  },
 ];
+// The populated frame is the deliverable and is taken FIRST; the empty comparison frame is a
+// bonus. On a box carrying thirty concurrent browsers a 1280x720 capture queues for many
+// minutes, and a run that renders the optional frame first is a run that ships neither.
+const specs = ONLY === 'both' ? allSpecs : allSpecs.filter((s) => s.key === ONLY);
 
 (async () => {
   const out = [];
