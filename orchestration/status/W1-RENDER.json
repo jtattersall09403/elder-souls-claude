@@ -1,0 +1,17 @@
+{
+  "task_id": "W1-RENDER",
+  "brief": "orchestration/NEXT-DISPATCH.md §1 — character and weapon renderer",
+  "started": "wave-1 round-1",
+  "state": "researching",
+  "outputs_expected": [
+    "game/src/render/ — skinned character + weapon mesh driven by CombatBody rig sockets",
+    "tools/harness/ — capture probe proving three weapon classes differ",
+    "corpus finding notes"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "load average at start: 7.43 (four cores) — capture will be expensive; plan for it"
+  ],
+  "next_step": "read game/src/render/renderer.js makeActor + CombatBody.evaluateRig to find the socket buffer",
+  "notes_for_successor": ""
+}

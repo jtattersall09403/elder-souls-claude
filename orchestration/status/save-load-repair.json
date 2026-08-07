@@ -1,0 +1,15 @@
+{
+  "task_id": "save-load-repair",
+  "brief": "inline dispatch: repair the save/load round trip (RI-JRN05)",
+  "started": "wave-1 repair",
+  "state": "researching",
+  "outputs_expected": [
+    "corpus/*/RI-JRN05* (manifest repair)",
+    "game/src/**/save* (writer/mirror repairs)",
+    "tools/... round-trip instrument"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "confirm boot; locate save/load code and RI-JRN05 manifest",
+  "notes_for_successor": ""
+}
