@@ -16,18 +16,18 @@
     "living_dead": "living"
   },
   "bed_lufs_target": -26,
-  "crossfade_s": 4.0,
+  "crossfade_s": 4,
   "max_voices": 8,
   "denies": [
     {
       "class": "standing_water",
-      "why": "RI-WLD10 \u00a77: no standing water. The Stone Forest is a dry petrified wood."
+      "why": "RI-WLD10 §7: no standing water. The Stone Forest is a dry petrified wood."
     }
   ],
   "layers": {
     "L1": {
       "id": "l1_hist_choral_hum",
-      "text": "a low choral hum from the Hist \u2014 pitched, chord-like, unsettling. THE HEALTHY INSTRUMENT (R6): Stone Wastes L4 is this, broken.",
+      "text": "a low choral hum from the Hist — pitched, chord-like, unsettling. THE HEALTHY INSTRUMENT (R6): Stone Wastes L4 is this, broken.",
       "level_db": 0,
       "voices": 1,
       "classes": [
@@ -38,9 +38,9 @@
         "kind": "drone",
         "waveform": "sine",
         "partials_hz": [
-          110.0,
+          110,
           164.81,
-          220.0,
+          220,
           329.63
         ],
         "partial_gains_db": [
@@ -90,7 +90,7 @@
     },
     "L3": {
       "id": "l3_stone_tick",
-      "text": "stone tick as boles cool \u2014 rate RISES after dusk",
+      "text": "stone tick as boles cool — rate RISES after dusk",
       "interval_s": [
         9,
         32
@@ -118,7 +118,7 @@
             "filter": {
               "type": "bandpass",
               "hz": 2700,
-              "q": 9.0
+              "q": 9
             },
             "env": {
               "attack_s": 0.001,
@@ -164,7 +164,7 @@
             },
             "env": {
               "attack_s": 0.15,
-              "decay_s": 1.0
+              "decay_s": 1
             },
             "gain_db": -7,
             "repeats": {
@@ -181,8 +181,8 @@
           ],
           "weight": 2,
           "pan": [
-            -1.0,
-            1.0
+            -1,
+            1
           ],
           "synth": {
             "kind": "grain",
@@ -191,7 +191,7 @@
             "filter": {
               "type": "bandpass",
               "hz": 4200,
-              "q": 6.0
+              "q": 6
             },
             "env": {
               "attack_s": 0.02,
@@ -204,5 +204,7 @@
     }
   },
   "emitters": [],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "bed_gain_db": -10.97,
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
 }

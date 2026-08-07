@@ -16,16 +16,16 @@
     "living_dead": "dead"
   },
   "bed_lufs_target": -28,
-  "crossfade_s": 4.0,
+  "crossfade_s": 4,
   "max_voices": 8,
   "denies": [
     {
       "class": "birdsong",
-      "why": "RI-AUD03 \u00a7B: \"NO birds.\" The Deep Marshes are tier 5 and the silence IS the lethality warning (\u00a7Seam 3). A bird here would undo the only warning the player is given that this region is beyond them."
+      "why": "RI-AUD03 §B: \"NO birds.\" The Deep Marshes are tier 5 and the silence IS the lethality warning (§Seam 3). A bird here would undo the only warning the player is given that this region is beyond them."
     },
     {
       "class": "birds",
-      "why": "as above \u2014 no avian content of any kind, day or night."
+      "why": "as above — no avian content of any kind, day or night."
     },
     {
       "class": "insect_layer",
@@ -100,7 +100,7 @@
     },
     "L3": {
       "id": "l3_near_empty",
-      "text": "NO birds. L3 is near-empty by design: 1 per 30\u201340 s",
+      "text": "NO birds. L3 is near-empty by design: 1 per 30–40 s",
       "interval_s": [
         30,
         40
@@ -124,7 +124,7 @@
             "filter": {
               "type": "lowpass",
               "hz": 400,
-              "q": 1.0
+              "q": 1
             },
             "env": {
               "attack_s": 0.09,
@@ -137,7 +137,7 @@
     },
     "L4": {
       "id": "l4_breathing_not_yours",
-      "text": "a sound like breathing that is not yours \u2014 sourceless, never resolves to an entity, and in no bestiary (RI-AUD03 R6)",
+      "text": "a sound like breathing that is not yours — sourceless, never resolves to an entity, and in no bestiary (RI-AUD03 R6)",
       "interval_s": [
         70,
         180
@@ -180,5 +180,7 @@
     }
   },
   "emitters": [],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "bed_gain_db": -4.11,
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
 }

@@ -16,12 +16,12 @@
     "living_dead": "living"
   },
   "bed_lufs_target": -26,
-  "crossfade_s": 4.0,
+  "crossfade_s": 4,
   "max_voices": 8,
   "denies": [
     {
       "class": "standing_water",
-      "why": "RI-WLD10 \u00a77 records the Clay Moor with no standing water at all. No lap, no drip, no frogs \u2014 the wet layer every \"swamp province\" reflex would add here is the exact failure RI-AUD03 \u00a7S24 struck out."
+      "why": "RI-WLD10 §7 records the Clay Moor with no standing water at all. No lap, no drip, no frogs — the wet layer every \"swamp province\" reflex would add here is the exact failure RI-AUD03 §S24 struck out."
     }
   ],
   "layers": {
@@ -106,7 +106,7 @@
             "filter": {
               "type": "bandpass",
               "hz": 1900,
-              "q": 5.0
+              "q": 5
             },
             "env": {
               "attack_s": 0.001,
@@ -145,7 +145,7 @@
     },
     "L4": {
       "id": "l4_naga_speech",
-      "text": "untranslated naga speech \u2014 see RI-AUD05 \u00a7D. Never subtitled, never resolved.",
+      "text": "untranslated naga speech — see RI-AUD05 §D. Never subtitled, never resolved.",
       "interval_s": [
         60,
         170
@@ -223,5 +223,7 @@
       }
     }
   ],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "bed_gain_db": -0.65,
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
 }

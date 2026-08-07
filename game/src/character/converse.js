@@ -163,6 +163,31 @@ export function infoAllowed(info, { race, upbringing, disposition, knows }) {
 function lineKey(topicId) { return topicKey(topicId).split(' ').join('_'); }
 
 /**
+ * Morrowind filter field 6 — Cell — against the SPEAKER's place.
+ *
+ * A settlement id in `cell` matches every cell inside it, per `00-roots.json#key_legend`, so
+ * `cell: "gideon"` matches a person whose settlement is `gideon` and one standing in
+ * `gideon-tollhouse`. The person's own `settlement` is tried first because it is the field the
+ * population data actually carries; the interior names are tried after it so a record that
+ * names only a room still resolves.
+ *
+ * A person with NO place at all fails every cell gate. That is deliberate and it is the
+ * fail-closed direction: 15 of the 336 records carry no settlement, and the alternative —
+ * letting a placeless speaker match every town — would hand them all eight settlements' answers
+ * and let the first authored one win, which is the defect this function exists to remove.
+ */
+function inCell(npc, cell) {
+  if (!cell) return true;
+  const want = String(cell).toLowerCase();
+  for (const v of [npc.settlement, npc.cell, npc.interior, npc.home_interior, npc.work_interior]) {
+    if (!v) continue;
+    const s = String(v).toLowerCase();
+    if (s === want || s.startsWith(want + '-') || s.startsWith(want + '.')) return true;
+  }
+  return false;
+}
+
+/**
  * The info this person would give on this topic, or null if there is nothing they are willing
  * or able to say.
  *
@@ -186,7 +211,7 @@ function lineKey(topicId) { return topicKey(topicId).split(' ').join('_'); }
  * Player gates (`requires` / `forbids`) are checked at every level, so a person's own line is
  * still refusable by race — specificity buys precedence, not an exemption.
  */
-export function infoFor(topicIndex, topicId, npc, player) {
+export function infoFor(topicIndex, topicId, npc, player, canon = null) {
   const own = npc.lines ? npc.lines[lineKey(topicId)] : null;
   if (own) return { topic: topicId, actor: npc.actor || null, text: own, gated: false, source: 'npc', to: [] };
   const t = topicIndex.get(topicKey(topicId));
@@ -195,6 +220,28 @@ export function infoFor(topicIndex, topicId, npc, player) {
   let best = null, bestScore = -1;
   for (const info of t.infos) {
     if (!infoAllowed(info, player)) continue;
+    // W1-23. RI-LOR06 §1: a contradiction lives at the SOURCE level, and a source is a person.
+    // An info tagged `cf`/`pos` claims a side of a registered dispute, and only somebody the
+    // canon register says holds that side may say it — so putting `the-thinning` to a Deep-Kin
+    // elder and to a Ledger clerk gets two incompatible answers and nothing corrects either.
+    // Untagged infos are not touched, so installing the register cannot silence a line that
+    // never made a claim. `canon` is absent in a bare unit test and every existing caller
+    // behaves exactly as it did before this round.
+    if (canon && !canon.allows(info, npc)) continue;
+    // W1-SPEAKERS. Filter field 6 — Cell. `cell` is authored on **267 of the 1,065 infos** in
+    // `game/data/dialogue/topics/**` and was read by NOTHING: `infoAllowed()` checks
+    // requires/forbids/`d`/`knows` and never the place, and the specificity score below never
+    // mentioned it. A quarter of the province's dialogue carried a place gate that did not
+    // close, which does not read as "no gate" — it reads as the WRONG PLACE, because among
+    // several equally-scoring infos the first authored one wins. Measured before this line
+    // existed: a legionary standing in Thorn answered `specific place` with
+    // *"Stormhold is four streets and a wall"*, and every settlement-specific root answer in
+    // the build was delivered in the seven towns it was not written for.
+    //
+    // Prefix match, per `00-roots.json#key_legend`: a settlement id matches every cell inside
+    // it, so `cell: "gideon"` covers `gideon-inn` and `gideon-tollhouse`. Tested against the
+    // SPEAKER's place, not the player's, because it is field 6 of the speaker's filter.
+    if (info.cell && !inCell(npc, info.cell)) continue;
     const matchesActor = actor && info.a === actor;
     if (!matchesActor && info.a) continue;         // written for somebody else's mouth
     // Specificity, high to low: an actor-matched info beats an actorless one, and among those
@@ -224,6 +271,9 @@ export function infoFor(topicIndex, topicId, npc, player) {
     topic: topicId, actor: best.a || null, text: best.x,
     gated: !!(best.requires || best.forbids),
     source: best.a ? 'actor' : 'generic',
+    // W1-23. Which registered dispute this line argues, and which side of it. Carried out so a
+    // probe can see that the answer moved rather than merely that an answer arrived.
+    cf: best.cf || null, pos: best.pos || null,
     // Morrowind's AddTopic, which this corpus has been authoring all along under the name `to`.
     // 456 of the 638 infos in `game/data/dialogue/topics/**` carry one and NOTHING read it, so
     // the province's entire keyword graph — 181 distinct targets — was a diagram. It is
@@ -263,11 +313,11 @@ export function infoFor(topicIndex, topicId, npc, player) {
  * The person's own subjects come first. Specific before general is the order the scene reads in
  * and the order Morrowind's own list resolves to.
  */
-export function topicsFor(topicIndex, npc, player) {
+export function topicsFor(topicIndex, npc, player, canon = null) {
   const out = [];
   const seen = new Set();
   for (const id of (npc.topics || [])) {
-    const info = infoFor(topicIndex, id, npc, player);
+    const info = infoFor(topicIndex, id, npc, player, canon);
     if (info) { out.push({ id, text: topicLabel(id), gated: info.gated }); seen.add(topicKey(id)); }
   }
   const known = player && player.topics_known;
@@ -275,7 +325,7 @@ export function topicsFor(topicIndex, npc, player) {
     const heldKeys = new Set(known.map(topicKey));
     for (const r of topicIndex.roots) {
       if (seen.has(r.key) || !heldKeys.has(r.key)) continue;
-      const info = infoFor(topicIndex, r.id, npc, player);
+      const info = infoFor(topicIndex, r.id, npc, player, canon);
       if (!info) continue;
       out.push({ id: r.id, text: topicLabel(r.id), gated: info.gated, root: true });
       seen.add(r.key);
@@ -395,6 +445,15 @@ export class Conversation {
    */
   setOpacity(reg) { this.opacity = reg || null; return this; }
 
+  /**
+   * The canon register (`game/src/world/canon.js`), installed by `Engine._installCanon()`.
+   *
+   * Absent in a bare unit test, in which case every info is offered to everyone exactly as it
+   * was before this round — the register can only ever REMOVE a line from a speaker who does
+   * not hold its position, never invent one.
+   */
+  setCanon(reg) { this.canon = reg || null; return this; }
+
   say(topicId, player) {
     if (!this.open || !this.npc) return null;
     // The way there, and what the town is saying. Both return their text VERBATIM out of the
@@ -413,8 +472,16 @@ export class Conversation {
     // knowledge set, which the caller does not have. A caller-supplied view is merged over it
     // so a probe can still perturb race or upbringing mid-conversation and watch the list move.
     const view = player ? { ...this.player, ...player } : this.player;
-    const info = infoFor(this.topics, topicId, this.npc, view);
-    if (info) { this.said = info; return info; }
+    const info = infoFor(this.topics, topicId, this.npc, view, this.canon || null);
+    if (info) {
+      // RI-LOR06's texture is only worth anything if it reaches a player, so record that a side
+      // was actually argued out loud. `getCanonState()` reports how many disputes this
+      // playthrough has heard from more than one side, which is the number that says whether the
+      // province argued with itself in front of anybody.
+      if (this.canon && info.cf && info.pos) this.canon.noteHeard(info.cf, info.pos);
+      this.said = info;
+      return info;
+    }
     // RI-WLD09 §B1, the consumer. Nothing to say is the world's answer to two completely
     // different situations — nobody wrote anything, and nobody is going to tell you — and from
     // inside the game they are the same silence. That equivalence is the failure the opacity

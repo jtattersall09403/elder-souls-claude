@@ -21,18 +21,18 @@
     "voiced_by": "book:<book id> | dialogue:<topic id>#<actor> | npc:<npc id>"
   },
   "counts": {
-    "facts": 54,
+    "facts": 68,
     "by_tier": {
       "hard-canon": 28,
       "soft-canon": 9,
       "apocryphal": 1,
-      "constructed": 16
+      "constructed": 30
     },
-    "disputed": 6,
+    "disputed": 20,
     "deliberately_open": 1,
-    "positions": 15,
-    "voiced_sources": 0,
-    "argued_on_topics": 0
+    "positions": 46,
+    "voiced_sources": 91,
+    "argued_on_topics": 40
   },
   "facts": [
     {
@@ -575,8 +575,19 @@
             "most educated foreigners",
             "some lukiul"
           ],
-          "holders": null,
-          "voiced_by": []
+          "holders": {
+            "actors": [
+              "archivist",
+              "clerk",
+              "notary",
+              "scribe"
+            ]
+          },
+          "voiced_by": [
+            "book:the-sap-and-the-ledger",
+            "book:a-tract-for-the-marsh",
+            "dialogue:the-marsh-burial#clerk"
+          ]
         },
         {
           "id": "B",
@@ -587,8 +598,17 @@
             "rootkeepers",
             "the Deep-Kin"
           ],
-          "holders": null,
-          "voiced_by": []
+          "holders": {
+            "actors": [
+              "rootkeeper",
+              "deep-elder",
+              "naga-elder"
+            ]
+          },
+          "voiced_by": [
+            "book:the-egg-speaks-twice",
+            "dialogue:the-marsh-burial#rootkeeper"
+          ]
         }
       ],
       "deliberately_open": false,
@@ -600,6 +620,12 @@
         "progression.bonfires",
         "books.content"
       ],
+      "topics": [
+        "the-hist",
+        "the-marsh-burial",
+        "the-quiet-grave"
+      ],
+      "dispute_kind": "fact",
       "truth_seal": "2e5c8017f8a037f8e70d2cdcc95b7de0b14ce44ac3804e9cbe66fc7b1c72df5f"
     },
     {
@@ -621,8 +647,20 @@
             "rootkeepers",
             "Deep-Kin"
           ],
-          "holders": null,
-          "voiced_by": []
+          "holders": {
+            "actors": [
+              "rootkeeper",
+              "deep-elder"
+            ],
+            "settlements": [
+              "helstrom",
+              "stormhold",
+              "thorn"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:the-cut-roots#rootkeeper"
+          ]
         },
         {
           "id": "B",
@@ -632,8 +670,18 @@
             "Drowned Court",
             "some Soulrest families"
           ],
-          "holders": null,
-          "voiced_by": []
+          "holders": {
+            "actors": [
+              "mudborn"
+            ],
+            "factions": [
+              "drowned-court"
+            ]
+          },
+          "voiced_by": [
+            "book:the-commonplace-book-of-ivo-sarn",
+            "dialogue:the-cut-roots#mudborn"
+          ]
         },
         {
           "id": "C",
@@ -642,8 +690,14 @@
           "held_by": [
             "Imperial scholarship"
           ],
-          "holders": null,
-          "voiced_by": []
+          "holders": {
+            "actors": [
+              "archivist"
+            ]
+          },
+          "voiced_by": [
+            "book:the-sap-and-the-ledger"
+          ]
         }
       ],
       "deliberately_open": true,
@@ -654,6 +708,11 @@
         "lore.metaphysics",
         "quests.main"
       ],
+      "topics": [
+        "the-sapwells",
+        "the-cut-roots"
+      ],
+      "dispute_kind": "fact",
       "truth_seal": null
     },
     {
@@ -674,8 +733,18 @@
             "Imperial antiquarians",
             "some Telvanni"
           ],
-          "holders": null,
-          "voiced_by": []
+          "holders": {
+            "actors": [
+              "archivist",
+              "clerk",
+              "notary"
+            ]
+          },
+          "voiced_by": [
+            "book:the-stone-nests-ii",
+            "book:on-the-tally-stones",
+            "dialogue:the-xanmeers#archivist"
+          ]
         },
         {
           "id": "B",
@@ -684,8 +753,23 @@
           "held_by": [
             "all Argonians"
           ],
-          "holders": null,
-          "voiced_by": []
+          "holders": {
+            "actors": [
+              "rootkeeper",
+              "mudborn",
+              "naga-elder",
+              "deep-elder"
+            ],
+            "races": [
+              "saxhleel",
+              "naga"
+            ]
+          },
+          "voiced_by": [
+            "book:the-egg-speaks-twice",
+            "book:the-duskfall-chronicle",
+            "dialogue:the-xanmeers#rootkeeper"
+          ]
         }
       ],
       "deliberately_open": false,
@@ -697,6 +781,12 @@
         "world.ruins",
         "dialogue.claims"
       ],
+      "topics": [
+        "the-xanmeers",
+        "the-stone-forest",
+        "the-old-ground"
+      ],
+      "dispute_kind": "fact",
       "truth_seal": "df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"
     },
     {
@@ -718,8 +808,16 @@
             "Imperial scholars",
             "naturalists"
           ],
-          "holders": null,
-          "voiced_by": []
+          "holders": {
+            "actors": [
+              "archivist",
+              "healer"
+            ]
+          },
+          "voiced_by": [
+            "book:of-the-beasts-of-the-southern-marsh",
+            "dialogue:the-great-hist#archivist"
+          ]
         },
         {
           "id": "B",
@@ -729,8 +827,21 @@
             "interior rootkeepers",
             "Deep-Kin"
           ],
-          "holders": null,
-          "voiced_by": []
+          "holders": {
+            "actors": [
+              "rootkeeper",
+              "deep-elder"
+            ],
+            "settlements": [
+              "helstrom",
+              "stormhold",
+              "thorn",
+              "archon"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:the-great-hist#rootkeeper"
+          ]
         },
         {
           "id": "C",
@@ -740,8 +851,23 @@
             "coastal keepers",
             "Drowned Court"
           ],
-          "holders": null,
-          "voiced_by": []
+          "holders": {
+            "actors": [
+              "rootkeeper",
+              "naga-elder"
+            ],
+            "settlements": [
+              "lilmoth",
+              "soulrest",
+              "gideon",
+              "blackrose",
+              "tidewrack"
+            ]
+          },
+          "voiced_by": [
+            "book:the-fingers-and-the-hand",
+            "dialogue:the-eleven-wells#rootkeeper"
+          ]
         }
       ],
       "deliberately_open": false,
@@ -752,6 +878,12 @@
         "lore.hist",
         "quests.main"
       ],
+      "topics": [
+        "the-great-hist",
+        "the-hist",
+        "the-eleven-wells"
+      ],
+      "dispute_kind": "fact",
       "truth_seal": "6b23c0d5f35d1b11f9b683f0b0a617355deb11277d91ae091d399c655b87940d"
     },
     {
@@ -773,8 +905,19 @@
             "most foreigners",
             "many Dunmer"
           ],
-          "holders": null,
-          "voiced_by": []
+          "holders": {
+            "actors": [
+              "archivist",
+              "legionary",
+              "clerk",
+              "dres-factor",
+              "merchant"
+            ]
+          },
+          "voiced_by": [
+            "book:the-knahaten-years",
+            "dialogue:the-fever-year#archivist"
+          ]
         },
         {
           "id": "B",
@@ -784,8 +927,18 @@
             "Argonians",
             "some Imperial physicians"
           ],
-          "holders": null,
-          "voiced_by": []
+          "holders": {
+            "actors": [
+              "rootkeeper",
+              "mudborn",
+              "healer",
+              "fisher"
+            ]
+          },
+          "voiced_by": [
+            "book:what-the-water-went-round",
+            "dialogue:the-fever-year#mudborn"
+          ]
         }
       ],
       "deliberately_open": false,
@@ -796,6 +949,11 @@
         "lore.history",
         "books.content"
       ],
+      "topics": [
+        "the-fever-year",
+        "the-thin-years"
+      ],
+      "dispute_kind": "fact",
       "truth_seal": "a15e2cd8474313f59559d85510b7630aa0899ccf1ae0e38da70241393043488d"
     },
     {
@@ -817,8 +975,18 @@
             "Deep-Kin",
             "most interior Argonians"
           ],
-          "holders": null,
-          "voiced_by": []
+          "holders": {
+            "actors": [
+              "deep-elder"
+            ],
+            "factions": [
+              "the_xul_aneekh"
+            ]
+          },
+          "voiced_by": [
+            "book:the-gem-and-the-root",
+            "dialogue:the-thinning#deep-elder"
+          ]
         },
         {
           "id": "B",
@@ -829,8 +997,19 @@
             "middle-river rootkeepers",
             "Imperial naturalists"
           ],
-          "holders": null,
-          "voiced_by": []
+          "holders": {
+            "actors": [
+              "clerk",
+              "merchant"
+            ],
+            "factions": [
+              "wet-ledger"
+            ]
+          },
+          "voiced_by": [
+            "book:the-articles-of-the-wet-ledger",
+            "dialogue:the-thinning#clerk"
+          ]
         },
         {
           "id": "C",
@@ -839,8 +1018,18 @@
           "held_by": [
             "Drowned Court"
           ],
-          "holders": null,
-          "voiced_by": []
+          "holders": {
+            "actors": [
+              "mudborn"
+            ],
+            "factions": [
+              "drowned-court"
+            ]
+          },
+          "voiced_by": [
+            "book:the-commonplace-book-of-ivo-sarn",
+            "dialogue:the-thinning#mudborn"
+          ]
         }
       ],
       "deliberately_open": false,
@@ -851,6 +1040,12 @@
         "quests.main",
         "lore.metaphysics"
       ],
+      "topics": [
+        "the-thinning",
+        "why-it-is-filling-now",
+        "the-sapwells"
+      ],
+      "dispute_kind": "fact",
       "truth_seal": "6b23c0d5f35d1b11f9b683f0b0a617355deb11277d91ae091d399c655b87940d"
     },
     {
@@ -1044,6 +1239,1101 @@
         "lore.era",
         "dialogue.voice"
       ]
+    },
+    {
+      "tier": "constructed",
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "topics": [
+        "the-house-under-the-wastes",
+        "the-stone-wastes"
+      ],
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.history",
+        "lore.religion.metaphysics"
+      ],
+      "id": "CF-D007",
+      "claim": "What was the house under the Stone Wastes built to do?",
+      "in_world_sources": [
+        "Of the House Under the Wastes, Which Was Built in Reverence",
+        "Of the House Under the Wastes, Which Was Built in Fear"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "Of the House Under the Wastes, Which Was Built in Reverence (Ojal-Weeth, of the Drowned Court)",
+          "stance": "It was raised to hold and to honour, and the burying that goes on above it now is the same act continued.",
+          "held_by": [
+            "the Drowned Court",
+            "the Soulrest burial families",
+            "the readers who follow Ojal-Weeth"
+          ],
+          "holders": {
+            "actors": [
+              "mudborn"
+            ],
+            "factions": [
+              "drowned-court"
+            ]
+          },
+          "voiced_by": [
+            "book:the-house-built-in-reverence"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "Of the House Under the Wastes, Which Was Built in Fear (Undersexton Bel Mourne)",
+          "stance": "It was raised to keep something where it was put, and every feature she can measure is a feature for keeping in.",
+          "held_by": [
+            "the undersextons who keep the current leaves",
+            "the Gideon archive",
+            "Imperial antiquarians who have read her"
+          ],
+          "holders": {
+            "actors": [
+              "archivist",
+              "clerk"
+            ]
+          },
+          "voiced_by": [
+            "book:the-house-built-in-fear"
+          ]
+        }
+      ],
+      "player_discoverable": "late",
+      "truth_seal": "8ea1da0f55dc4b4cca205c5cccc2807942844a0bc7eaa94ec505bbaefeb97429"
+    },
+    {
+      "tier": "constructed",
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "topics": [
+        "slavery",
+        "the-soul-trade",
+        "the-lease-roll"
+      ],
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.history",
+        "quests.faction.escalation"
+      ],
+      "id": "CF-D008",
+      "claim": "Are subjects of the Empire held as property in this province?",
+      "in_world_sources": [
+        "The Blessings of the Coast",
+        "Ledger and Journal of Andrel Vorin, Salt-Factor",
+        "Marginalia, in a borrowed copy of the Blessings of the Coast"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "The Blessings of the Coast: An Address to the Free Peoples of Argonia",
+          "stance": "No subject of the Empire may be held as property within the borders of the Empire's law. Where it has happened it has happened beyond that law, at the hands of foreign vessels.",
+          "held_by": [
+            "the Provincial Office",
+            "the Imperial Assize at Gideon",
+            "most officers of the Ninth on the coast"
+          ],
+          "holders": {
+            "actors": [
+              "archivist",
+              "clerk",
+              "notary",
+              "legionary"
+            ],
+            "factions": [
+              "the-imperial-assize",
+              "provincial-office",
+              "ninth-cohort"
+            ]
+          },
+          "voiced_by": [
+            "book:the-blessings-of-the-coast",
+            "dialogue:slavery#clerk"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "Ledger and Journal of Andrel Vorin, Salt-Factor; and the marginalia in a borrowed copy of the Blessings",
+          "stance": "Morrowind is in the Empire and Tear is in Morrowind. The House enters people in the stock column and takes them out of it, and the only thing the law changes is which word the paper uses.",
+          "held_by": [
+            "House Dres factors",
+            "the underwriters of the Wet Ledger",
+            "every soul who has been on the Blackrose roll",
+            "the second hand in the margin"
+          ],
+          "holders": {
+            "actors": [
+              "dres-factor",
+              "sapcutter",
+              "mudborn",
+              "outlaw"
+            ],
+            "factions": [
+              "house-dres",
+              "wet-ledger"
+            ]
+          },
+          "voiced_by": [
+            "book:ledger-and-journal-of-andrel-vorin",
+            "book:marginalia-in-a-borrowed-book",
+            "dialogue:slavery#dres-factor"
+          ]
+        }
+      ],
+      "player_discoverable": "early",
+      "truth_seal": "df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"
+    },
+    {
+      "tier": "constructed",
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "topics": [
+        "the-labour-lease",
+        "the-lease-roll",
+        "the-clause",
+        "the-heirs-clause"
+      ],
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "quests.faction.escalation"
+      ],
+      "id": "CF-D009",
+      "claim": "Does the labour-lease at Blackrose raise any question of consent?",
+      "in_world_sources": [
+        "Of the Labour-Lease at Blackrose",
+        "The Casebook of the Assize at Gideon, Volumes the Second and Third",
+        "The Account the Marsh Keeps"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "Of the Labour-Lease at Blackrose, and Why It Is Not What You Have Been Told (Prefect Galvus Arn)",
+          "stance": "A prisoner under sentence works; that is the sentence. Every difficulty in the arrangement is a difficulty about counting, and there is no other kind.",
+          "held_by": [
+            "the prefecture at Blackrose",
+            "the Provincial Office",
+            "the clerks who draw the instruments"
+          ],
+          "holders": {
+            "actors": [
+              "clerk",
+              "notary",
+              "legionary"
+            ],
+            "factions": [
+              "provincial-office"
+            ]
+          },
+          "voiced_by": [
+            "book:the-lease-and-what-it-costs",
+            "dialogue:the-labour-lease#clerk"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "The Casebook of the Assize at Gideon, Volumes the Second and Third",
+          "stance": "It arises, it has always arisen, and the reason neither Arn nor the bench raised it is that it did not occur to either of them that there was a question. The mark on the paper is the mark of a woman answering a different one.",
+          "held_by": [
+            "the judge at Gideon, late",
+            "the interior, who have said it from the start",
+            "junior clerks who have stopped saying it out loud"
+          ],
+          "holders": {
+            "actors": [
+              "mudborn",
+              "sapcutter",
+              "outlaw",
+              "rootkeeper"
+            ],
+            "factions": [
+              "the-imperial-assize",
+              "river-bands"
+            ]
+          },
+          "voiced_by": [
+            "book:the-casebook-ii",
+            "book:the-casebook-iii",
+            "book:the-account-the-marsh-keeps",
+            "dialogue:the-lease-roll#sapcutter"
+          ]
+        }
+      ],
+      "player_discoverable": "early",
+      "truth_seal": "df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"
+    },
+    {
+      "tier": "constructed",
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "topics": [
+        "the-imperial-claim",
+        "the-interiors-consent",
+        "the-ninth-cohort",
+        "the-cohorts-stormhold-does-not-have"
+      ],
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.canon.geography",
+        "lore.canon.history"
+      ],
+      "id": "CF-D010",
+      "claim": "Why does the Empire not hold the interior of this province?",
+      "in_world_sources": [
+        "The Blessings of the Coast",
+        "A Short Account of the Pacification of the Argonian Coast",
+        "The Account the Marsh Keeps",
+        "The Casebook of the Assize at Gideon, Volume the Third"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "The Blessings of the Coast",
+          "stance": "Because it does not wish to. The Empire does not go where it is not wanted, and the address says so proudly.",
+          "held_by": [
+            "the Provincial Office",
+            "the address as it was published at the chartered markets"
+          ],
+          "holders": {
+            "actors": [
+              "archivist",
+              "merchant",
+              "innkeeper"
+            ],
+            "factions": [
+              "provincial-office"
+            ]
+          },
+          "voiced_by": [
+            "book:the-blessings-of-the-coast",
+            "dialogue:the-imperial-claim#merchant"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "A Short Account of the Pacification of the Argonian Coast (Tribune Vell)",
+          "stance": "Because a charter requires a signatory and the interior does not produce them. The province was contracted for, harbour by harbour, and inland there was nobody to contract with.",
+          "held_by": [
+            "the Ninth Cohort",
+            "the officer schools",
+            "every serjeant who has been asked to try"
+          ],
+          "holders": {
+            "actors": [
+              "legionary",
+              "mercenary"
+            ],
+            "factions": [
+              "ninth-cohort",
+              "legion"
+            ]
+          },
+          "voiced_by": [
+            "book:a-short-account-of-the-pacification",
+            "dialogue:the-ninth-cohort#legionary"
+          ]
+        },
+        {
+          "id": "C",
+          "in_world_source": "The Account the Marsh Keeps; and the Casebook, Volume the Third",
+          "stance": "Because it was refused. Courteously, for an afternoon at a time, on behalf of no office, in a manner that cannot be appealed — and the difference between \"no signatory\" and \"a refusal you cannot file\" is the whole province.",
+          "held_by": [
+            "the interior",
+            "the rootkeepers",
+            "the judge at Gideon in his last volume"
+          ],
+          "holders": {
+            "actors": [
+              "rootkeeper",
+              "deep-elder",
+              "naga-elder",
+              "town-elder"
+            ],
+            "factions": [
+              "rootkeepers"
+            ]
+          },
+          "voiced_by": [
+            "book:the-account-the-marsh-keeps",
+            "book:the-casebook-iii",
+            "dialogue:the-interiors-consent#rootkeeper"
+          ]
+        }
+      ],
+      "player_discoverable": "mid",
+      "truth_seal": "6b23c0d5f35d1b11f9b683f0b0a617355deb11277d91ae091d399c655b87940d"
+    },
+    {
+      "tier": "constructed",
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": false,
+      "topics": [
+        "the-drowning-at-the-ford",
+        "the-weeping-ford",
+        "what-people-say-happened"
+      ],
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.history",
+        "quests.lore.hooks"
+      ],
+      "id": "CF-D011",
+      "claim": "What happened to the relief column at Reman's Ford?",
+      "in_world_sources": [
+        "A Short Account of the Pacification",
+        "The Relief of the Reman Ford",
+        "The Water Does Not Take Sides",
+        "On the Drowning at the Ford",
+        "Nine Stanzas Upon the Drowning of Reman's Ford"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "A Short Account of the Pacification (Tribune Vell), issued to every officer at the schools",
+          "stance": "A flood surge. No enemy, no engagement, an accident of water in a province where water has accidents. Two hundred at muster and forty-nine at the far bank.",
+          "held_by": [
+            "the Provincial Office",
+            "the officer schools",
+            "most of the Cohort's own officers"
+          ],
+          "holders": {
+            "actors": [
+              "legionary",
+              "magister"
+            ],
+            "factions": [
+              "ninth-cohort",
+              "provincial-office"
+            ]
+          },
+          "voiced_by": [
+            "book:a-short-account-of-the-pacification",
+            "dialogue:the-weeping-ford#legionary"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "The Relief of the Reman Ford, assembled from the Cohort's own papers",
+          "stance": "There was a fight before the water came. The day-books at Gideon say so, Vell never read them, and the province will not admit it.",
+          "held_by": [
+            "the prefect at Gideon who wrote it",
+            "the officers who have read the day-books"
+          ],
+          "holders": {
+            "actors": [
+              "archivist",
+              "clerk"
+            ],
+            "factions": [
+              "the-imperial-assize"
+            ]
+          },
+          "voiced_by": [
+            "book:the-relief-of-the-reman-ford"
+          ]
+        },
+        {
+          "id": "C",
+          "in_world_source": "The Water Does Not Take Sides; and On the Drowning at the Ford",
+          "stance": "The gates were opened, by our people, and nothing else was done. Thirty at the weirs against two hundred with iron on could not have fought and did not try.",
+          "held_by": [
+            "the weir families above the ford",
+            "the villages that keep the lifting"
+          ],
+          "holders": {
+            "actors": [
+              "mudborn",
+              "fisher",
+              "villager"
+            ],
+            "settlements": [
+              "gideon",
+              "thorn"
+            ]
+          },
+          "voiced_by": [
+            "book:the-water-does-not-take-sides",
+            "book:the-drowned-ford",
+            "dialogue:the-weeping-ford#fisher"
+          ]
+        },
+        {
+          "id": "D",
+          "in_world_source": "Nine Stanzas Upon the Drowning of Reman's Ford",
+          "stance": "More was done than the gates, and by hands the poem names and the record does not.",
+          "held_by": [
+            "the singers",
+            "some of the river bands",
+            "the depot men who will not have it sung"
+          ],
+          "holders": {
+            "actors": [
+              "outlaw",
+              "naga-elder"
+            ],
+            "factions": [
+              "river-bands"
+            ]
+          },
+          "voiced_by": [
+            "book:nine-stanzas-upon-the-drowning",
+            "dialogue:what-people-say-happened#outlaw"
+          ]
+        }
+      ],
+      "player_discoverable": "mid",
+      "truth_seal": "0f2b685ba71ab98e949158963d293deecd8b5bac3e4743b4e47c2a76ee8a2044"
+    },
+    {
+      "tier": "constructed",
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "topics": [
+        "the-ninth-recension",
+        "the-ninth-clause-of-the-drowned-tally",
+        "the-drowned-tally"
+      ],
+      "judges": [
+        "lore.canon.registry",
+        "lore.religion.metaphysics",
+        "quests.lore.hooks"
+      ],
+      "id": "CF-D012",
+      "claim": "Has the Drowned Tally ever had a ninth clause?",
+      "in_world_sources": [
+        "The Seventh Recension of the Drowned Tally",
+        "That the Ninth Clause Is Old",
+        "On the Ninth Clause, and What Was Done to the Fair Copies"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "That the Ninth Clause Is Old: An Answer to the Archive",
+          "stance": "It is old. The fair copies the archive holds were made after it was struck, which is precisely why they do not carry it.",
+          "held_by": [
+            "the Court's advocates",
+            "the scribes of the eleventh volume",
+            "the Soulrest houses"
+          ],
+          "holders": {
+            "actors": [
+              "mudborn",
+              "rootkeeper"
+            ],
+            "factions": [
+              "drowned-court"
+            ]
+          },
+          "voiced_by": [
+            "book:for-the-ninth-clause",
+            "dialogue:the-ninth-clause-of-the-drowned-tally#mudborn",
+            "dialogue:the-ninth-clause-of-the-drowned-tally#archivist"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "The Seventh Recension, entire; and On the Ninth Clause, and What Was Done to the Fair Copies",
+          "stance": "The Recension is entire and it has eight. A clause nobody can produce is a clause nobody wrote.",
+          "held_by": [
+            "the archive at Gideon",
+            "the Assize",
+            "the Court's own archivists, awkwardly"
+          ],
+          "holders": {
+            "actors": [
+              "archivist",
+              "clerk"
+            ],
+            "factions": [
+              "the-imperial-assize"
+            ]
+          },
+          "voiced_by": [
+            "book:the-seventh-recension",
+            "book:against-the-ninth-clause"
+          ]
+        }
+      ],
+      "player_discoverable": "late",
+      "truth_seal": "a927b4cfcce3daff37562235b40ff940508c3579a338097f303aff98c43dde5f"
+    },
+    {
+      "tier": "constructed",
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "topics": [
+        "the-drowned-tally",
+        "the-tally-of-the-dead",
+        "the-count-itself"
+      ],
+      "judges": [
+        "lore.canon.registry",
+        "lore.religion.metaphysics"
+      ],
+      "id": "CF-D013",
+      "claim": "Has the Drowned Court's unit of return drifted between the sixth volume and the eleventh?",
+      "in_world_sources": [
+        "The Drowned Tally, Sixth Volume",
+        "The Drowned Tally, Eleventh Volume"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "The Drowned Tally, Sixth Volume: the disputed leaves, with the archive's note",
+          "stance": "The unit is what it has always been. The disputed leaves are a copying error and the archive said so at the time.",
+          "held_by": [
+            "the archive",
+            "the Court's older sextons"
+          ],
+          "holders": {
+            "actors": [
+              "archivist"
+            ],
+            "factions": [
+              "the-imperial-assize"
+            ]
+          },
+          "voiced_by": [
+            "book:the-drowned-tally-sixth-volume",
+            "dialogue:the-count-itself#archivist"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "The Drowned Tally, Eleventh Volume: the current leaves",
+          "stance": "A return of four is an ordinary return on this coast and has been for as long as either of us has been a sexton. Two of us drew together and got the same. The measure is not at fault.",
+          "held_by": [
+            "the sextons keeping the current leaves",
+            "the Soulrest houses"
+          ],
+          "holders": {
+            "actors": [
+              "mudborn"
+            ],
+            "factions": [
+              "drowned-court"
+            ]
+          },
+          "voiced_by": [
+            "book:the-drowned-tally-eleventh-volume",
+            "dialogue:the-count-itself#mudborn"
+          ]
+        }
+      ],
+      "player_discoverable": "late",
+      "truth_seal": "d410962128e70bf6fac94b0ab5185f05a09394aa10303ddc21596d2552c22cfc"
+    },
+    {
+      "tier": "constructed",
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "topics": [
+        "the-empty-boxes",
+        "the-tally-of-the-dead"
+      ],
+      "judges": [
+        "lore.canon.registry",
+        "quests.lore.hooks"
+      ],
+      "id": "CF-D014",
+      "claim": "Did the Drowned Court confirm that eleven burial boxes came up carrying nothing?",
+      "in_world_sources": [
+        "The Soulrest Sheet, for the week of the ninth",
+        "The Drowned Tally, Eleventh Volume"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "The Soulrest Sheet, for the week of the ninth",
+          "stance": "The Court has confirmed it, an undersexton found the weight in person, and readers will draw their own conclusions.",
+          "held_by": [
+            "the Soulrest sheet and its readers",
+            "the yard"
+          ],
+          "holders": {
+            "actors": [
+              "townsman",
+              "merchant",
+              "innkeeper"
+            ],
+            "settlements": [
+              "soulrest"
+            ]
+          },
+          "voiced_by": [
+            "book:the-soulrest-sheet",
+            "dialogue:the-empty-boxes#townsman"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "The Drowned Tally, Eleventh Volume: the current leaves",
+          "stance": "Nothing of the kind is entered. A sexton speaking in a yard is not the Court, and the Court speaks in the volume or it has not spoken.",
+          "held_by": [
+            "the sextons keeping the current leaves",
+            "the Court"
+          ],
+          "holders": {
+            "actors": [
+              "mudborn",
+              "clerk"
+            ],
+            "factions": [
+              "drowned-court"
+            ]
+          },
+          "voiced_by": [
+            "book:the-drowned-tally-eleventh-volume",
+            "dialogue:the-empty-boxes#clerk"
+          ]
+        }
+      ],
+      "player_discoverable": "mid",
+      "truth_seal": "dad27290bf3501eba7171acb5e725e0d17d3e9e9da1844b1cacb5ba53a7365cc"
+    },
+    {
+      "tier": "constructed",
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "topics": [
+        "the-xanmeers",
+        "the-stone-forest"
+      ],
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.geography",
+        "lore.canon.history"
+      ],
+      "id": "CF-D015",
+      "claim": "Do the stone nests have chambers inside them?",
+      "in_world_sources": [
+        "The Stone Nests of Argonia, Volume the First",
+        "A Progress Through the Southern Marsh, Volume the Third"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "The Stone Nests of Argonia, Volume the First: A Survey of Eleven Sites",
+          "stance": "The mass is solid and the proportion is constant. What visitors take for chambers are collapse voids and robbers' cuts, and he has measured eleven sites with the same rod.",
+          "held_by": [
+            "Serjo Fals Rethan",
+            "the Provincial Office's antiquaries",
+            "anyone who has read the survey and not been inside one"
+          ],
+          "holders": {
+            "actors": [
+              "archivist",
+              "notary"
+            ]
+          },
+          "voiced_by": [
+            "book:the-stone-nests-i",
+            "dialogue:the-xanmeers#notary"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "A Progress Through the Southern Marsh, Volume the Third",
+          "stance": "There are chambers, and he stood in one, and he will not be told otherwise by a man who measured the outside.",
+          "held_by": [
+            "the Progress and its readers",
+            "the guides who take travellers in",
+            "the people who sell what is in them"
+          ],
+          "holders": {
+            "actors": [
+              "merchant",
+              "innkeeper",
+              "townsman",
+              "outlaw"
+            ]
+          },
+          "voiced_by": [
+            "book:a-progress-iii",
+            "dialogue:the-xanmeers#merchant"
+          ]
+        }
+      ],
+      "player_discoverable": "mid",
+      "truth_seal": "85f538a7279340ff0f89894c44d1ff119105478f7ce9c9eb8536cd59dc9ef393"
+    },
+    {
+      "tier": "constructed",
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "topics": [
+        "the-hist",
+        "the-first-molt",
+        "the-naming"
+      ],
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.argonian",
+        "lore.religion.hist"
+      ],
+      "id": "CF-D016",
+      "claim": "What happens at a drinking?",
+      "in_world_sources": [
+        "A Progress Through the Southern Marsh, Volume the Third",
+        "The Egg Speaks Twice"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "A Progress Through the Southern Marsh, Volume the Third",
+          "stance": "A ceremony, observed from the bank by a gentleman with a notebook, and reported in the terms a gentleman had available.",
+          "held_by": [
+            "the Progress and its readers",
+            "travellers",
+            "the Provincial Office's file on the interior"
+          ],
+          "holders": {
+            "actors": [
+              "merchant",
+              "innkeeper",
+              "archivist"
+            ]
+          },
+          "voiced_by": [
+            "book:a-progress-iii"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "The Egg Speaks Twice: Nine Root-Songs of the Deep Marshes (First Song, Of the Drinking)",
+          "stance": "Before the drinking you were water. The tree put its finger in the water and the water stood up, and the word for that is not in the visitor's language and is not \"birth\".",
+          "held_by": [
+            "the interior",
+            "rootkeepers",
+            "anyone who has been at one"
+          ],
+          "holders": {
+            "actors": [
+              "rootkeeper",
+              "deep-elder",
+              "naga-elder"
+            ],
+            "races": [
+              "saxhleel",
+              "naga"
+            ]
+          },
+          "voiced_by": [
+            "book:the-egg-speaks-twice",
+            "dialogue:the-hist#rootkeeper"
+          ]
+        }
+      ],
+      "player_discoverable": "mid",
+      "truth_seal": "88c337d20dfaaeecf30e5767177a15eb86d99f603e50d4c5a06cd11dee10aeec"
+    },
+    {
+      "tier": "constructed",
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "topics": [
+        "the-sap-cutters",
+        "the-cutters-terms",
+        "the-cut-roots"
+      ],
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.factions",
+        "lore.religion.hist"
+      ],
+      "id": "CF-D017",
+      "claim": "May a sapwell be cut for sale at all, under the old terms?",
+      "in_world_sources": [
+        "The Sap and the Knife: the Old Terms of Cutting",
+        "What the Hollow Has to Trade"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "The Sap and the Knife: the Old Terms of Cutting",
+          "stance": "Everyone argues whether, and whether is not in the terms. The terms are depth and season, they are four hundred years old, and a cut made to them is lawful whoever buys it.",
+          "held_by": [
+            "the cutters who were taught the three places",
+            "the Sap-Cutters",
+            "the hollows that have nothing else"
+          ],
+          "holders": {
+            "actors": [
+              "sapcutter"
+            ],
+            "factions": [
+              "wet-ledger"
+            ]
+          },
+          "voiced_by": [
+            "book:the-sap-and-the-knife",
+            "book:what-the-hollow-has-to-trade",
+            "dialogue:the-cutters-terms#sapcutter"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "the keepers who taught the three places, against the man who wrote them down",
+          "stance": "The terms are silent on selling because selling was unthinkable, and a silence is not a permission. Writing the three places into one book is itself the offence.",
+          "held_by": [
+            "rootkeepers",
+            "the Deep-Kin",
+            "the keepers who taught him and have stopped speaking to him"
+          ],
+          "holders": {
+            "actors": [
+              "rootkeeper",
+              "deep-elder"
+            ],
+            "factions": [
+              "rootkeepers"
+            ]
+          },
+          "voiced_by": [
+            "dialogue:the-cutters-terms#rootkeeper",
+            "dialogue:the-sap-cutters#rootkeeper"
+          ]
+        }
+      ],
+      "player_discoverable": "mid",
+      "truth_seal": "583dda4585143c1015708c127528f84775eb552705e4fbf461ae33a3d6614008"
+    },
+    {
+      "tier": "constructed",
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "topics": [
+        "reading-the-count",
+        "the-count-itself"
+      ],
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.history",
+        "lore.canon.geography"
+      ],
+      "id": "CF-D018",
+      "claim": "Are the notched stones on the third terrace Imperial boundary stones?",
+      "in_world_sources": [
+        "The Casebook of the Assize at Gideon, Volume the First",
+        "On the Tally-Stones of the Blackwood"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "The Casebook of the Assize at Gideon, Volume the First: Of the Forms",
+          "stance": "They are boundary stones. The court has taken them as such in evidence, which is what a boundary stone is.",
+          "held_by": [
+            "the Assize at Gideon",
+            "the holders whose claims rest on them"
+          ],
+          "holders": {
+            "actors": [
+              "notary",
+              "clerk",
+              "townsman"
+            ],
+            "factions": [
+              "the-imperial-assize"
+            ]
+          },
+          "voiced_by": [
+            "book:the-casebook-i",
+            "dialogue:reading-the-count#notary"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "On the Tally-Stones of the Blackwood, with a Note on Their Ornament (Aurelia Sitte)",
+          "stance": "They are tallies. Every measurement in her paper is correct and she counted the notches before she decided what they were, which is the wrong order and gets the right count.",
+          "held_by": [
+            "the Surveyor",
+            "the Office's expenses clerk, who paid for it",
+            "the rootkeepers, for entirely different reasons"
+          ],
+          "holders": {
+            "actors": [
+              "archivist",
+              "rootkeeper"
+            ]
+          },
+          "voiced_by": [
+            "book:on-the-tally-stones",
+            "dialogue:reading-the-count#archivist"
+          ]
+        }
+      ],
+      "player_discoverable": "mid",
+      "truth_seal": "ae1731f4cbd96c4f8d0f8d22e05348c3caad1dd03461ef2ecd050b56b6deb7b9"
+    },
+    {
+      "tier": "constructed",
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "topics": [],
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.history"
+      ],
+      "id": "CF-D019",
+      "claim": "Were the long reaping blades weapons before the Duskfall, or farm tools picked up in a bad year?",
+      "in_world_sources": [
+        "The Reaper and the Scythe",
+        "A Letter to Teeus-Ahai, Who Should Have Asked Somebody Who Cuts Rice"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "The Reaper and the Scythe: On the Long Curved Blades",
+          "stance": "They were carried in the Duskfall. The rice came to them afterwards, the way rice comes to everything here.",
+          "held_by": [
+            "the Lilmoth yards",
+            "the men who teach the long curved blade"
+          ],
+          "holders": {
+            "actors": [
+              "mercenary",
+              "legionary"
+            ],
+            "settlements": [
+              "lilmoth",
+              "gideon"
+            ]
+          },
+          "voiced_by": [
+            "book:the-reaper-and-the-scythe"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "A Letter to Teeus-Ahai, Who Should Have Asked Somebody Who Cuts Rice",
+          "stance": "It is a harvest edge. It went to war in a bad year the way a boat-hook does, and anyone who has cut a season could have said so.",
+          "held_by": [
+            "the rice villages of the Blackwood",
+            "most sapcutters",
+            "Teeus-Ahai's correspondent"
+          ],
+          "holders": {
+            "actors": [
+              "sapcutter",
+              "villager",
+              "fisher"
+            ]
+          },
+          "voiced_by": [
+            "book:the-harvest-edge-is-a-farm-tool"
+          ]
+        }
+      ],
+      "player_discoverable": "mid",
+      "truth_seal": "09f12d49835292471f9fa5fe01e283a775f7d282a57171ee24bdf7c3297b6f9c"
+    },
+    {
+      "tier": "constructed",
+      "disputed": true,
+      "dispute_kind": "fact",
+      "deliberately_open": false,
+      "contradicts_ok": false,
+      "invention_space": true,
+      "topics": [],
+      "judges": [
+        "lore.canon.registry",
+        "lore.canon.geography"
+      ],
+      "id": "CF-D020",
+      "claim": "In what order do the landmarks of the Topal shore run actually stand?",
+      "in_world_sources": [
+        "A Progress Through the Southern Marsh, Volume the Second",
+        "The Topal Shore Run, as it is Actually Sailed"
+      ],
+      "positions": [
+        {
+          "id": "A",
+          "in_world_source": "A Progress Through the Southern Marsh, Volume the Second",
+          "stance": "The order given in the Progress, taken from the deck of a hired boat on one passage in fair weather.",
+          "held_by": [
+            "the reading public",
+            "travellers who buy the Progress before they arrive"
+          ],
+          "holders": {
+            "actors": [
+              "merchant",
+              "innkeeper",
+              "townsman"
+            ],
+            "settlements": [
+              "gideon",
+              "lilmoth"
+            ]
+          },
+          "voiced_by": [
+            "book:a-progress-ii"
+          ]
+        },
+        {
+          "id": "B",
+          "in_world_source": "The Topal Shore Run, as it is Actually Sailed",
+          "stance": "The order the pilots keep, which differs because two of the marks move with the season and one of them is not there any more.",
+          "held_by": [
+            "the Topal pilots",
+            "the boat guilds at Lilmoth"
+          ],
+          "holders": {
+            "actors": [
+              "fisher",
+              "dockhand",
+              "harbourmistress"
+            ]
+          },
+          "voiced_by": [
+            "book:pilots-chart-book"
+          ]
+        }
+      ],
+      "player_discoverable": "early",
+      "truth_seal": "df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"
     }
   ]
 }

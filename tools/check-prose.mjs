@@ -148,9 +148,18 @@ export function countEpigramEcho(text) {
 
 // Sentence-initial `Which` used as a fragment. Round 1 promoted `…, which is X` to `. Which is X.`
 // on nearly every line it touched and manufactured a construction we now use at 11x the reference.
+// AN INTERROGATIVE `Which` IS NOT THE TIC AND MUST NOT BE COUNTED AS ONE.
+// The first version counted every sentence-initial `Which`, which put "Which is it?", "Which one,
+// citizen?" and "Which tide were you drawn on?" in the same bucket as "Which is deliberate." Those
+// are the opposite thing: they are a character asking the player something, the single defect this
+// whole round exists to fix. A gate that charged a file for asking questions would have pushed the
+// next writer away from the fix — so the interrogative is excluded, by the question mark.
 export function countFragOpen(text) {
   let n = 0;
-  for (const s of sentences(text)) if (/^which\b/i.test(s.trim())) n++;
+  for (const s of sentences(text)) {
+    const t = s.trim();
+    if (/^which\b/i.test(t) && !t.endsWith('?')) n++;
+  }
   return n;
 }
 
@@ -354,6 +363,7 @@ function selfTest() {
   t(countSting('That is not a mistake. A mistake happens once.') === 0, 'epigram-echo is NOT counted as a sting (it is at parity with the reference)');
 
   t(countFragOpen('Which is deliberate. And which is not.') === 1, 'fragopen: counts a sentence-initial Which');
+  t(countFragOpen('Which is it? Which one, citizen?') === 0, 'fragopen: QUIET on an interrogative Which — a character asking the player something is the fix, not the defect');
   t(countFragOpen('The cart, which is late, has the salt.') === 0, 'fragopen: QUIET on a mid-sentence relative clause');
 
   t(countAndOpen('And he left. But he came back. So we waited.') === 3, 'andopen: counts all three conjunction openers');

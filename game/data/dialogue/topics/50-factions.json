@@ -1,1126 +1,1126 @@
 {
- "schema": "elder-souls/topics@1",
- "group": "faction-lines",
- "owner": "W1-FACTIONS — the three carried faction questlines",
- "key_legend_ref": "00-roots.json#key_legend",
- "hand_authored": true,
- "generated_by": null,
- "why": [
-  "Every `opens_by.topic` and `opens_by.prerequisite_topics` value on the Wet Ledger, Imperial",
-  "Assize and Xul-Aneekh questlines has its body here. The project's most expensive defect was",
-  "that 74 of 76 `opens_by.topic` values could not be satisfied by any edge the machine can",
-  "fire, and it was invisible because every quest tool seeded the gate with the quest's own",
-  "string. So: a topic with no info is a keyword nobody in the province can say out loud, and",
-  "a keyword nobody can say is a quest nobody can be offered.",
-  "",
-  "Each topic carries at least two infos from different actors, because RI-DLG01 requires a",
-  "keyword to be answerable by more than one kind of person, and because a line spoken only by",
-  "the quest giver is a briefing rather than a conversation. `to` edges are the AddTopic graph",
-  "topic-supply.js reads: asking about one thing teaches you the words for the next.",
-  "",
-  "Disposition gates (`d`) are real. The Ledger will not discuss its second set of weights with",
-  "somebody it does not like, and that is the gate on the quest, not a separate check."
- ],
- "also_repairs": [
-  "Three topics below are not mine: `the-tolls` opens Q-LEDG-01 (rank 1 of the Wet Ledger line,",
-  "written by W1-18) and `the-cut-roots` and `the-hollow` open Q-DEEP-01 (rank 2 of the",
-  "Xul-Aneekh line). All three had NO BODY ANYWHERE in game/data/dialogue/topics/**, so neither",
-  "quest could be opened by anything a player does. They are written here because these two",
-  "quests are ranks of lines this piece carries and a line with a hole in it is not a line.",
-  "",
-  "`tools/quests/topic-supply-audit.mjs` reports the other 34 quest topics in this tree that",
-  "still have no body — all of them on quests owned by other pieces — and the 37 hooks.json",
-  "entry_topics rows that are still self-loops after W1-19 repaired the Q-MAIN ones."
- ],
- "topics": [
-  {
-   "id": "the-tolls",
-   "infos": [
+  "schema": "elder-souls/topics@1",
+  "group": "faction-lines",
+  "owner": "W1-FACTIONS — the three carried faction questlines",
+  "key_legend_ref": "00-roots.json#key_legend",
+  "hand_authored": true,
+  "generated_by": null,
+  "why": [
+    "Every `opens_by.topic` and `opens_by.prerequisite_topics` value on the Wet Ledger, Imperial",
+    "Assize and Xul-Aneekh questlines has its body here. The project's most expensive defect was",
+    "that 74 of 76 `opens_by.topic` values could not be satisfied by any edge the machine can",
+    "fire, and it was invisible because every quest tool seeded the gate with the quest's own",
+    "string. So: a topic with no info is a keyword nobody in the province can say out loud, and",
+    "a keyword nobody can say is a quest nobody can be offered.",
+    "",
+    "Each topic carries at least two infos from different actors, because RI-DLG01 requires a",
+    "keyword to be answerable by more than one kind of person, and because a line spoken only by",
+    "the quest giver is a briefing rather than a conversation. `to` edges are the AddTopic graph",
+    "topic-supply.js reads: asking about one thing teaches you the words for the next.",
+    "",
+    "Disposition gates (`d`) are real. The Ledger will not discuss its second set of weights with",
+    "somebody it does not like, and that is the gate on the quest, not a separate check."
+  ],
+  "also_repairs": [
+    "Three topics below are not mine: `the-tolls` opens Q-LEDG-01 (rank 1 of the Wet Ledger line,",
+    "written by W1-18) and `the-cut-roots` and `the-hollow` open Q-DEEP-01 (rank 2 of the",
+    "Xul-Aneekh line). All three had NO BODY ANYWHERE in game/data/dialogue/topics/**, so neither",
+    "quest could be opened by anything a player does. They are written here because these two",
+    "quests are ranks of lines this piece carries and a line with a hole in it is not a line.",
+    "",
+    "`tools/quests/topic-supply-audit.mjs` reports the other 34 quest topics in this tree that",
+    "still have no body — all of them on quests owned by other pieces — and the 37 hooks.json",
+    "entry_topics rows that are still self-loops after W1-19 repaired the Q-MAIN ones."
+  ],
+  "topics": [
     {
-     "a": "clerk",
-     "cell": "gideon",
-     "x": "Every barge that comes up this river pays at the gate and the gate writes it in the book, and the book goes to the Assize once a season and to the table every night. Two readers, one book. You would think that was safe.",
-     "to": [
-      "the-short-weight",
-      "the-second-set-of-weights"
-     ]
+      "id": "the-tolls",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "x": "Every barge that comes up this river pays at the gate and the gate writes it in the book. The book goes to the Assize once a season and to the table every night. Two readers, one book.",
+          "to": [
+            "the-short-weight",
+            "the-second-set-of-weights"
+          ]
+        },
+        {
+          "a": "townsman",
+          "cell": "gideon",
+          "x": "I've carried up that ramp for twenty years and I've watched the same barge weighed twice and written down once. I said so. Do you want to know where the man I said it to went? Neither does anyone else on this quay.",
+          "to": [
+            "the-short-weight",
+            "the-wharf-debt"
+          ]
+        },
+        {
+          "a": "merchant",
+          "x": "The tolls are the only tax in this province that actually gets collected. Whoever holds the gates holds the province. But it isn't the man in the compound.",
+          "to": [
+            "the-wet-ledger",
+            "the-short-weight"
+          ]
+        }
+      ]
     },
     {
-     "a": "townsman",
-     "cell": "gideon",
-     "x": "I have carried up that ramp for twenty years and I have watched the same barge weighed twice and written down once, and I have said so, and the man I said it to is not on the quay any more.",
-     "to": [
-      "the-short-weight",
-      "the-wharf-debt"
-     ]
+      "id": "the-cut-roots",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 30,
+          "x": "A well is opened, not cut. What the Ixtu-Vakh do to a well is what a butcher does to a thing that is still standing. And I have to tell you that the wells they never touched have stopped as well.",
+          "to": [
+            "the-hollow",
+            "the-taking-below"
+          ]
+        },
+        {
+          "a": "sapcutter",
+          "x": "We cut clean and we cut the same wells our fathers cut, and those wells are still giving. Ask any man who's actually walked out there. Have you been east of the track yourself?",
+          "to": [
+            "the-hollow",
+            "the-taking-below"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "x": "There were four cut on the east track this season and none of them by us. Helstrom has decided that is the Ixtu-Vakh because the alternative is worse.",
+          "to": [
+            "the-hollow"
+          ]
+        }
+      ]
     },
     {
-     "a": "merchant",
-     "x": "The tolls are the only tax in this province that gets collected, which tells you who is really running it and it is not the man in the compound.",
-     "to": [
-      "the-wet-ledger",
-      "the-short-weight"
-     ]
+      "id": "the-hollow",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 30,
+          "x": "Not a hall and not a council. A place a day east on the root track where the ones who have been named go to argue, and where what we have all stopped arguing about becomes what we do.",
+          "to": [
+            "the-hollow-that-eats",
+            "the-consensus"
+          ]
+        },
+        {
+          "a": "merchant",
+          "cell": "helstrom",
+          "x": "Half this town has been down there and none of them will take you. It isn't secrecy, dry-one. Walking you in makes you theirs, and they haven't decided about you. Have they spoken to you at all?",
+          "to": [
+            "the-hollow-that-eats",
+            "the-root-track"
+          ]
+        },
+        {
+          "a": "legionary",
+          "x": "The Cohort has never had a man in it and has stopped pretending it might. Whatever gets decided about the coast gets decided down there. And we find out when Thorn goes quiet.",
+          "to": [
+            "the-consensus"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-second-set-of-weights",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "d": 35,
+          "x": "Every gate keeps two sets. One for the book and one for the barge, and a good clerk can tell you which is which by the sound they make on the stone. A bad clerk finds out when he is weighed.",
+          "to": [
+            "the-wharf-debt",
+            "the-short-weight"
+          ]
+        },
+        {
+          "a": "townsman",
+          "cell": "gideon",
+          "x": "Eeja says the stones under the counting floor ring wrong. He's said it for two years and no one has gone down to look. He won't go himself, because he can't read what's chalked on them.",
+          "to": [
+            "the-second-set-of-weights",
+            "the-wharf-debt"
+          ]
+        },
+        {
+          "a": "outlaw",
+          "x": "You want to know about weights, do you? Ask who sells the brass. There's one caster in Gideon and he's never once been asked to make a matched pair.",
+          "to": [
+            "the-wharf-debt"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-wharf-debt",
+      "infos": [
+        {
+          "a": "townsman",
+          "cell": "gideon",
+          "x": "The wharf is owed. It's been owed since before my hatching. Every season the Ledger writes the debt forward, the men who carry the crates get eleven gold, and the men who write it down get the rest.",
+          "to": [
+            "the-quiet-partner"
+          ]
+        },
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "d": 40,
+          "x": "It is not a debt. It is a float. The distinction matters to exactly one person in this province and she keeps the book it is written in.",
+          "to": [
+            "the-quiet-partner",
+            "the-second-set-of-weights"
+          ]
+        },
+        {
+          "a": "merchant",
+          "x": "I sell rope to the wharf and the wharf pays me in chits that are good at three shops. Have a guess who owns the three shops?",
+          "to": [
+            "the-quiet-partner"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-quiet-partner",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "d": 45,
+          "x": "There is a chair at the table that none sit in and all argue with. That is the quiet partner. When the Ledger votes, it votes seven and one, and the one is never in the room.",
+          "to": [
+            "the-water-call",
+            "the-first-chair"
+          ]
+        },
+        {
+          "a": "outlaw",
+          "x": "I've fenced for the Ledger fifteen years and I've never met the quiet partner. I've twice been told to stop asking, in words that weren't friendly.",
+          "to": [
+            "the-water-call"
+          ]
+        },
+        {
+          "a": "merchant",
+          "cell": "lilmoth",
+          "x": "Lilmoth pays a quiet partner too. Different chair, same silence. Tesh signs for it and doesn't look at what she's signing.",
+          "to": [
+            "the-water-call"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-water-call",
+      "infos": [
+        {
+          "a": "fisher",
+          "cell": "archon",
+          "x": "You see that hull out on the bar? A ship puts in for water. They fill four barrels, they lie at anchor nine days, and they leave heavier than they came. This beach knows.",
+          "to": [
+            "the-archon-question",
+            "the-coast-wound"
+          ]
+        },
+        {
+          "a": "dres-factor",
+          "cell": "archon",
+          "x": "Water is a right of the sea. No charter in the Empire denies a ship water. You will find the law on it goes no further than that.",
+          "to": [
+            "the-archon-question"
+          ]
+        },
+        {
+          "a": "clerk",
+          "cell": "archon",
+          "d": 40,
+          "x": "I write the water-call in the bond book as a call for water. What is in the hold when it leaves is a question for the harbour, and the harbour has never once asked it.",
+          "to": [
+            "the-archon-question",
+            "the-quiet-partner"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "x": "My sister's egg-clutch went off that beach in a water-call. Nine days at anchor, dry-one. I was on the sand for six of them.",
+          "to": [
+            "the-coast-wound"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-underwriters-gate",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "d": 45,
+          "x": "An underwriter holds a gate. Not the guild's gate — a gate, one gate, and the toll off it comes to their hand before it comes to the table. It is how the Ledger makes a person expensive to lose.",
+          "to": [
+            "the-archon-question",
+            "the-first-chair"
+          ]
+        },
+        {
+          "a": "merchant",
+          "x": "You want a gate of your own? Then you'd better have something the table wants more than it wants the gate. There are only two things on that list.",
+          "to": [
+            "the-first-chair"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-archon-question",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "archon",
+          "d": 40,
+          "x": "The question is whether Archon is a harbour or a hole. It has been asked at the table four times in twenty years and answered the same way four times. The answer is worth about nine thousand a season.",
+          "to": [
+            "the-first-chair",
+            "the-coast-wound"
+          ]
+        },
+        {
+          "a": "fisher",
+          "cell": "archon",
+          "x": "Ask a captain here what he thinks of the question and he'll ask you what you think of your teeth. The captains take the money and every soul on this beach knows it.",
+          "to": [
+            "the-first-chair"
+          ]
+        },
+        {
+          "a": "legionary",
+          "cell": "archon",
+          "x": "One cohort, under strength, and a beach twelve barges wide. If the Assize wants Archon closed it can send a cohort to close it. It hasn't.",
+          "to": [
+            "the-lease-roll"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-veto-minute",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "d": 45,
+          "x": "Four years ago the first chair vetoed a seat and four seats overruled her, and the minute of it is in the book because the minute of everything is in the book. It has not been looked at since, including by the four.",
+          "to": [
+            "the-first-chair",
+            "the-quiet-partner"
+          ]
+        },
+        {
+          "a": "archivist",
+          "x": "A veto that is overruled is still a veto and it is still minuted. A minuted veto is the only place in a merchant house's paper where a name is on record as having objected.",
+          "to": [
+            "the-first-chair"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-first-chair",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "d": 50,
+          "x": "The first chair has been held by one person for nineteen years and she has outlived two governors and a plague. She does not eat with us. She reads what we write and then she tells us what we meant.",
+          "to": [
+            "the-quiet-partner"
+          ]
+        },
+        {
+          "a": "outlaw",
+          "x": "The first chair isn't taken. It's taken from the person sitting in it. The last three who tried are on the tally at Soulrest under names that aren't theirs. You're not thinking of it, are you?",
+          "to": [
+            "the-quiet-partner"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-assize",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "x": "The Assize is the court and the customs and the toll book, and in this province those are one office because there was only ever budget for one. If you want a thing to be legal you come to us. We open at the second bell.",
+          "to": [
+            "the-toll-book",
+            "the-lease-roll"
+          ]
+        },
+        {
+          "a": "legionary",
+          "x": "Cohort holds the wall, Assize holds the pen. Do you know which of the two has ever lost an argument?",
+          "to": [
+            "the-toll-book"
+          ]
+        },
+        {
+          "a": "townsman",
+          "cell": "gideon",
+          "x": "You can be robbed in Gideon and get a hearing for it. That's more than they manage in Lilmoth. Whether the hearing goes your way is written down in a book you aren't allowed to read.",
+          "to": [
+            "the-toll-book",
+            "the-struck-off-notary"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-toll-book",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "d": 30,
+          "x": "The toll book is the Assize's memory. Everything that has come up this river for forty years is in it, in the hand of whichever notary was awake. It is also the only complete record of what House Dres has moved through Archon.",
+          "to": [
+            "the-lease-roll",
+            "the-water-call"
+          ]
+        },
+        {
+          "a": "archivist",
+          "x": "Two books, in fact — the fair copy that the Governor signs and the day-book the notary actually writes in. They differ, often, by exactly one entry.",
+          "to": [
+            "the-blackrose-day-book",
+            "the-struck-off-notary"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-lease-roll",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "d": 35,
+          "x": "Blackrose leases its prisoners out. It is lawful, it is audited, and the audit is done by the office that writes the leases. I have read the roll. I would rather not have.",
+          "to": [
+            "the-blackrose-day-book",
+            "the-struck-off-notary"
+          ]
+        },
+        {
+          "a": "legionary",
+          "cell": "blackrose",
+          "x": "Labour lease. Men go out on a chit and come back on a chit, and the number that go out is the number that come back — because the same man writes both numbers.",
+          "to": [
+            "the-blackrose-day-book"
+          ]
+        },
+        {
+          "a": "sapcutter",
+          "cell": "blackrose",
+          "x": "We take the yard hands the lease sends and we don't ask where last season's went. And no one asks anything else in this yard either. Are you looking for work?",
+          "to": [
+            "the-blackrose-day-book",
+            "the-coast-wound"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-struck-off-notary",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "x": "Sedda Vell. Struck off the roll eleven years ago for what the finding called a persistent irregularity of temper. She kept her day-books. The court will not say that part out loud.",
+          "to": [
+            "the-blackrose-day-book"
+          ]
+        },
+        {
+          "a": "innkeeper",
+          "x": "She drinks here. She won't talk about the court unless you buy the second one, and then she doesn't stop.",
+          "to": [
+            "the-blackrose-day-book",
+            "the-lease-roll"
+          ]
+        },
+        {
+          "a": "archivist",
+          "x": "A notary struck off keeps nothing by right and everything in practice. The office has never asked for the books back.",
+          "to": [
+            "the-blackrose-day-book"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-blackrose-day-book",
+      "infos": [
+        {
+          "a": "archivist",
+          "d": 40,
+          "x": "Eleven years of leases, in a hand that got steadier the angrier she got. If it ever reaches the Elder Council it ends four careers. Three of those four have made their peace with that.",
+          "to": [
+            "the-warrant-of-attainder",
+            "the-lease-vote"
+          ]
+        },
+        {
+          "a": "clerk",
+          "d": 40,
+          "x": "I have been told twice, by people who were being kind, that the day-book does not exist. Both of them said it in the same words.",
+          "to": [
+            "the-warrant-of-attainder"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-warrant-of-attainder",
+      "infos": [
+        {
+          "a": "legionary",
+          "d": 35,
+          "x": "A warrant makes a killing lawful inside Imperial ground and nowhere else, and four of the people on the current roll do not live inside Imperial ground. Getting them onto it is the job. The killing is the easy part and it is not the part that goes wrong.",
+          "to": [
+            "the-prefects-return",
+            "the-lease-vote"
+          ]
+        },
+        {
+          "a": "clerk",
+          "d": 35,
+          "x": "It clears the bounty on the name written on it. It clears nothing else — not the door you broke, not the man who got in the way, not the fourteen days after which the office takes it back and tells your target who you are.",
+          "to": [
+            "the-prefects-return"
+          ]
+        },
+        {
+          "a": "outlaw",
+          "x": "Paper that says you may. I've seen three men wave one at a militia sergeant in Soulrest. But Soulrest isn't Imperial ground. Two of them are on the tally.",
+          "to": [
+            "the-prefects-return"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-prefects-return",
+      "infos": [
+        {
+          "a": "legionary",
+          "cell": "blackrose",
+          "d": 40,
+          "x": "Hallow comes up to Gideon once a season to sign the roll, and once a season the roll is already signed when he gets there. He's stopped remarking on it.",
+          "to": [
+            "the-lease-vote"
+          ]
+        },
+        {
+          "a": "clerk",
+          "d": 40,
+          "x": "The Prefect's return is the document that says the lease is sound. It is two pages, it is signed at Blackrose, and it has been copied out in the same Gideon hand for six seasons.",
+          "to": [
+            "the-lease-vote",
+            "the-blackrose-day-book"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-lease-vote",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "d": 45,
+          "x": "The Assize sits on it in Second Seed. Four seats. Two of them owe money to a body that is not the Empire and one of them is honest, and the honest one is not sure which way honest goes here.",
+          "to": [
+            "the-legates-seal"
+          ]
+        },
+        {
+          "a": "archivist",
+          "x": "If the lease falls, six hundred people walk out of Blackrose into a province with no work in it. If it stands, six hundred people do not walk anywhere. The vote will be put as a choice between the two.",
+          "to": [
+            "the-legates-seal",
+            "the-coast-wound"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-legates-seal",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "d": 50,
+          "x": "There is one seal in the province that closes a finding for good, and the Legate keeps it in a drawer he does not lock. In nineteen years no one has been mad enough to take it.",
+          "to": [
+            "the-lease-vote"
+          ]
+        },
+        {
+          "a": "archivist",
+          "x": "The Legate of the Assize answers to the Elder Council in theory and to the boat schedule in practice. Two letters a year. He has learned to write them in a way that requires no reply.",
+          "to": [
+            "the-lease-vote"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-hollow-that-eats",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 30,
+          "x": "East of Helstrom on the root track there is a hollow that takes what it is given and gives back a name. I will say no more of it to a stranger, and I have said more than I should.",
+          "to": [
+            "the-root-track",
+            "the-cut-roots"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "x": "The Deep-Kin do not have a hall, dry-one. They have a hollow, a day east on the root track. You do not visit it. You are brought.",
+          "to": [
+            "the-root-track"
+          ]
+        },
+        {
+          "a": "merchant",
+          "cell": "helstrom",
+          "x": "Everyone in this town knows where it is and not one of us will walk you there. Work out what that costs and then double it!",
+          "to": [
+            "the-root-track"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-root-track",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "The track is not cut. It is agreed. Where the roots have agreed to lie flat you may walk. Everywhere else you should not.",
+          "to": [
+            "the-cut-roots",
+            "the-lukiul-question"
+          ]
+        },
+        {
+          "a": "fisher",
+          "cell": "helstrom",
+          "x": "Follow the black water east until the trees stop being separate trees. Then keep the sound of the water on the same side of you the whole way. And don't put your hand on anything.",
+          "to": [
+            "the-hollow-that-eats"
+          ]
+        },
+        {
+          "a": "outlaw",
+          "x": "I've run cargo on the root track twice and I won't do it again for money. The second time the track wasn't where it was the first time. Are you going out there?",
+          "to": [
+            "the-lukiul-question"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-lukiul-question",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 35,
+          "x": "The question is what a lukiul is. Kin who went to the coast, or coast that wears kin. Teel-Ashaan has an answer. Ee-Vashum has a different one and she buried a daughter for it.",
+          "to": [
+            "the-coast-wound",
+            "the-taking-below"
+          ]
+        },
+        {
+          "a": "townsman",
+          "cell": "gideon",
+          "x": "They call us lukiul like it's a word for a thing that broke. My grandmother was born in Gideon! Where exactly was she supposed to go?",
+          "to": [
+            "the-coast-wound"
+          ]
+        },
+        {
+          "a": "naga-elder",
+          "x": "The river bands do not use the word. We say those who trade and those who do not. We have both in the same clutch.",
+          "to": [
+            "the-coast-wound"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-coast-wound",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 35,
+          "x": "The saying is that the coast cities are a wound and wounds are cut out. It is newer than people think. I heard it first nine years ago from a man who had lost four of his line at Archon, and it was not a policy then, it was a grief.",
+          "to": [
+            "the-taking-below",
+            "the-water-call"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "x": "Cut the coast off and the takers stop coming. Cut the coast off and eleven thousand of our own starve behind the cut. I have said the second one in the hollow twice.",
+          "to": [
+            "the-taking-below"
+          ]
+        },
+        {
+          "a": "merchant",
+          "x": "Bad for freight. Bad for everyone. Who do you suppose profits from a shut coast?",
+          "to": [
+            "the-taking-below"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-taking-below",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 40,
+          "x": "The sap-wells are giving back nothing. The Court at Soulrest has it as a curve. We have it as a hollow that has stopped answering and a clutch that came out wrong twice in one season.",
+          "to": [
+            "the-ku-vastei",
+            "the-consensus"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "cell": "soulrest",
+          "x": "We burn them and we count them and the count does not arrive anywhere. I have written that sentence in a ledger a dozen times, and each time a sexton has told me to write it differently.",
+          "to": [
+            "the-ku-vastei"
+          ]
+        },
+        {
+          "a": "sapcutter",
+          "x": "Thirty years we've cut and nothing happened. Show me one well we killed and I'll stop!",
+          "to": [
+            "the-consensus"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-ku-vastei",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 35,
+          "x": "A ku-vastei is not called and does not refuse. When a thing has gone too far one arrives, hears it, and rules, and the ruling ends the blood-price whichever way it falls. You do not thank them. Thanking them suggests you had a preference.",
+          "to": [
+            "the-consensus",
+            "the-speakers-silence"
+          ]
+        },
+        {
+          "a": "naga-elder",
+          "x": "Egg-born under the sign, given to the shadow, and sent back to us to do the one thing none of us can do without starting the next feud. I have seen two rulings. Both went against my own band.",
+          "to": [
+            "the-consensus"
+          ]
+        },
+        {
+          "a": "legionary",
+          "x": "Argonian arbiter. No standing in Imperial law whatsoever. The Cohort has stopped saying so out loud in the interior, because saying so out loud was getting people hurt.",
+          "to": [
+            "the-consensus"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-consensus",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 40,
+          "x": "The Xul-Aneekh do not vote and do not command. A thing becomes consensus when the arguing stops, and there are two ways to arrive at the arguing stopping.",
+          "to": [
+            "the-speakers-silence"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "x": "They will tell you it is not a government. They are right. The coast finds that more frightening than the alternative.",
+          "to": [
+            "the-speakers-silence"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-speakers-silence",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 45,
+          "x": "Teel-Ashaan has spoken for the hollow for twenty-two years. A speaker stops when the hollow stops listening, and the hollow has never yet stopped listening on its own.",
+          "to": [
+            "the-consensus",
+            "the-ku-vastei"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "x": "The last speaker before this one went quiet inside a season. How it happened has never been said aloud.",
+          "to": [
+            "the-consensus"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-empty-chair",
+      "why": "Q-LEDG-08 seeds this at journal 10. RI-DLG05 A.3: the ceiling quest is the longest one on the line and used to be the only one you could not ask a soul about.",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "d": 50,
+          "x": "The first chair is empty and the table has asked an outsider to sit in it. That has not happened in nineteen years. Whoever sits there decides whether the eighth gate at Archon stays in the book.",
+          "to": [
+            "the-first-chair",
+            "the-veto-minute"
+          ]
+        },
+        {
+          "a": "merchant",
+          "d": 35,
+          "x": "Ask what a chair is worth. Seven of the Governor's debts, four toll gates and a bond room at Lilmoth. Ask what it costs and none of them will answer you.",
+          "to": [
+            "the-first-chair"
+          ]
+        },
+        {
+          "a": "outlaw",
+          "x": "Wuleen-Kus walked up onto the counting floor to watch, first time in nine years. He didn't ask for anything. And he came to see which of them it was going to be. Do you know his face?",
+          "to": [
+            "the-first-chair"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-head-of-the-assize",
+      "why": "Q-ASSZ-08 seeds this at journal 10.",
+      "infos": [
+        {
+          "a": "legionary",
+          "cell": "gideon",
+          "d": 45,
+          "x": "The Legate went home on the winter packet and the Elder Council has sent no replacement. So the province has a court and no head to it, and the seal that closes a finding for good is sitting in a drawer that any man with a key can open.",
+          "to": [
+            "the-legates-seal",
+            "the-warrant-of-attainder"
+          ]
+        },
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "d": 40,
+          "x": "Four findings are open. The lease, the Archon toll book, the two hundred and nine renewals, and the Ledger's eighth chair. A seal shuts any of them where no court in this province can reopen it.",
+          "to": [
+            "the-legates-seal",
+            "the-lease-vote"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "Forty times that seal has been used and thirty-nine were a man covering his own back. Would you want the fortieth on you?",
+          "to": [
+            "the-legates-seal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-fourth-day",
+      "why": "Q-XULA-08 seeds this at journal 10.",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "cell": "helstrom",
+          "d": 45,
+          "x": "The hollow has been sitting three days and the bands are in off the Rootlands. Ee-Vashum says they are not waiting for a speaker. They are waiting for a question, and the one they have been asking for nine years is the coast.",
+          "to": [
+            "the-speakers-silence",
+            "the-coast-wound"
+          ]
+        },
+        {
+          "a": "naga-elder",
+          "d": 40,
+          "x": "If the question stays the coast then the answer stays the cut, and the war-broods will make it inside the year whether the hollow agrees or not. Change the question and you change what they are allowed to do about it.",
+          "to": [
+            "the-speakers-silence",
+            "the-taking-below"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "x": "His daughter came up from Gideon for the fourth day. She is lukiul and she stood on the rim with the rest of us. I do not know who invited her.",
+          "to": [
+            "the-speakers-silence"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-ninth-column",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "x": "Nine columns ruled and eight of them headed, and the ninth has been in that book since before I could write. I was told once it was for the tide. I have never seen anyone write a tide in it.",
+          "to": [
+            "the-toll-book",
+            "the-tolls"
+          ]
+        },
+        {
+          "a": "townsman",
+          "cell": "gideon",
+          "x": "You want to know what's in the ninth column? Ask what time the gate is empty. Same answer.",
+          "to": [
+            "the-man-off-the-quay"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-bond-berth",
+      "infos": [
+        {
+          "a": "dockhand",
+          "cell": "gideon",
+          "x": "A salt-wife bond passes to the wife when the man drowns. The Ledger calls that compassion. It's a berth, a debt, and a woman who can't leave the river.",
+          "to": [
+            "the-wharf-debt",
+            "the-quiet-partner"
+          ]
+        },
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "x": "There are four of those bonds on the roll and every one of them is being paid down on time. The table does not like to have them counted.",
+          "to": [
+            "the-lease-roll"
+          ]
+        },
+        {
+          "a": "merchant",
+          "x": "She reads. The table did not plan for that. Have you met her?",
+          "to": [
+            "the-bond-berth"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-man-off-the-quay",
+      "infos": [
+        {
+          "a": "townsman",
+          "cell": "gideon",
+          "x": "There was a man who said what he'd seen at the gate, once, out loud, and he isn't on the quay any more. Everyone here can tell you that, and not one of us can tell you where he went.",
+          "to": [
+            "the-tolls",
+            "the-ninth-column"
+          ]
+        },
+        {
+          "a": "dockhand",
+          "cell": "gideon",
+          "x": "His room is still paid for. Four seasons! If they'd done what you think they did, why would they still be paying the rent on it?",
+          "to": [
+            "the-quiet-partner"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-second-refusal",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "x": "You said no to the table and the table wrote it down and did nothing, and now you want to know what that means. It means they are waiting to see whether you have a second one in you.",
+          "to": [
+            "the-first-chair",
+            "the-veto-minute"
+          ]
+        },
+        {
+          "a": "harbourmistress",
+          "cell": "gideon",
+          "x": "A chair falls vacant three ways and only one of them needs a knife. The other two are in the articles, and no one at that table has opened the articles in forty years.",
+          "to": [
+            "the-first-chair"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-room-with-no-case",
+      "infos": [
+        {
+          "a": "notary",
+          "cell": "gideon",
+          "x": "On the half-landing, grey door, same grey as the wall. Two chairs in it and years of wear on the floor. Every plan of this building says there is nothing there.",
+          "to": [
+            "the-assize",
+            "the-struck-off-notary"
+          ]
+        },
+        {
+          "a": "scribe",
+          "cell": "gideon",
+          "x": "It is a store. It has been a store since before I came. Nothing has ever been stored in it.",
+          "to": [
+            "the-prefects-return"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-removal-that-is-not-one",
+      "infos": [
+        {
+          "a": "notary",
+          "cell": "gideon",
+          "x": "No one in this province can remove a prefect. That is true and it is not the sentence you want. A prefect can vacate, and a commission has a term on it, and terms end whether anyone reads them or not.",
+          "to": [
+            "the-prefects-return",
+            "the-legates-seal"
+          ]
+        },
+        {
+          "a": "scribe",
+          "cell": "gideon",
+          "x": "The commission is in the box marked for the last Legate's attention. That box has not been opened since there was a Legate to attend to it.",
+          "to": [
+            "the-head-of-the-assize"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-sound-below",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "cell": "rootlands",
+          "x": "Between the tides, at the eastern well, there is a knocking in the ground that was not there two seasons ago. The old word for it is the taking-below being heard.",
+          "to": [
+            "the-taking-below",
+            "the-cut-roots"
+          ]
+        },
+        {
+          "a": "walker",
+          "cell": "rootlands",
+          "x": "It keeps time. I have counted it against a glass twice and it does not drift.",
+          "to": [
+            "the-hollow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-drowned-post",
+      "infos": [
+        {
+          "a": "walker",
+          "cell": "rootlands",
+          "x": "At the sluice crossing there is a post with marks on the far side, and the far side is under water except on the lowest tide of the season. Nine marks. One a year, and each one higher.",
+          "to": [
+            "the-coast-wound",
+            "the-taking-below"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "cell": "rootlands",
+          "x": "Someone cuts them. I know who, and I am not going to say. She has never asked anyone to look, and that is her right.",
+          "to": [
+            "the-hollow"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-fourth-silence",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "cell": "rootlands",
+          "x": "A speaker falls silent when four fourth-days pass and no hollow puts a question to them. Not a vote. An absence, counted, on a post that no one alive has seen used.",
+          "to": [
+            "the-speakers-silence",
+            "the-consensus"
+          ]
+        },
+        {
+          "a": "walker",
+          "cell": "rootlands",
+          "x": "Three have gone by. And every hollow is waiting for a different hollow to speak first.",
+          "to": [
+            "the-empty-chair"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-witness",
+      "infos": [
+        {
+          "a": "clerk",
+          "cell": "gideon",
+          "x": "She gave a statement and she gave it twice, and both times it was the same words in the same order. The court took that for honesty. I have heard a practised statement before.",
+          "to": [
+            "the-assize",
+            "the-struck-off-notary"
+          ]
+        },
+        {
+          "a": "notary",
+          "cell": "gideon",
+          "x": "They have asked her many times what she saw. What she is afraid of is a question the court has not put to her.",
+          "to": [
+            "the-room-with-no-case"
+          ]
+        },
+        {
+          "a": "townsman",
+          "cell": "gideon",
+          "x": "She still walks the same way home past the same door. If she were lying about what she saw she'd have changed the road. Have you walked it with her?",
+          "to": [
+            "the-assize"
+          ]
+        }
+      ]
     }
-   ]
-  },
-  {
-   "id": "the-cut-roots",
-   "infos": [
-    {
-     "a": "rootkeeper",
-     "d": 30,
-     "x": "A well is opened, not cut. What the Ixtu-Vakh do to a well is what a butcher does to a thing that is still standing. And I have to tell you that the wells they never touched have stopped as well.",
-     "to": [
-      "the-hollow",
-      "the-taking-below"
-     ]
-    },
-    {
-     "a": "sapcutter",
-     "x": "We cut clean and we cut the same wells our fathers cut and those wells are still giving. Ask any man who has actually walked out there instead of arguing about it in a gallery.",
-     "to": [
-      "the-hollow",
-      "the-taking-below"
-     ]
-    },
-    {
-     "a": "mudborn",
-     "x": "There were four cut on the east track this season and none of them by us, and Helstrom has decided that is the Ixtu-Vakh because the alternative is worse.",
-     "to": [
-      "the-hollow"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-hollow",
-   "infos": [
-    {
-     "a": "rootkeeper",
-     "d": 30,
-     "x": "Not a hall and not a council. A place a day east on the root track where the ones who have been named go to argue, and where what we have all stopped arguing about becomes what we do.",
-     "to": [
-      "the-hollow-that-eats",
-      "the-consensus"
-     ]
-    },
-    {
-     "a": "merchant",
-     "cell": "helstrom",
-     "x": "Half this town has been down there and none of them will take you. It is not secrecy, dry-one. It is that walking you in makes you theirs and they have not decided about you.",
-     "to": [
-      "the-hollow-that-eats",
-      "the-root-track"
-     ]
-    },
-    {
-     "a": "legionary",
-     "x": "The Cohort has never had a man in it and has stopped pretending it might. Whatever gets decided about the coast gets decided down there and we find out when Thorn goes quiet.",
-     "to": [
-      "the-consensus"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-second-set-of-weights",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "d": 35,
-     "x": "Every gate keeps two sets. One for the book and one for the barge, and a good clerk can tell you which is which by the sound they make on the stone. A bad clerk finds out when he is weighed.",
-     "to": [
-      "the-wharf-debt",
-      "the-short-weight"
-     ]
-    },
-    {
-     "a": "townsman",
-     "cell": "gideon",
-     "x": "Eeja says the stones under the counting floor ring wrong. He has said it for two years and none have gone down to look, and he will not go himself because he cannot read what is chalked on them.",
-     "to": [
-      "the-second-set-of-weights",
-      "the-wharf-debt"
-     ]
-    },
-    {
-     "a": "outlaw",
-     "x": "You want to know about weights, do you. Ask who sells the brass. There is one caster in Gideon and he has never once been asked to make a matched pair.",
-     "to": [
-      "the-wharf-debt"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-wharf-debt",
-   "infos": [
-    {
-     "a": "townsman",
-     "cell": "gideon",
-     "x": "The wharf is owed. It has been owed since before my hatching. Every season the Ledger writes the debt forward and every season the men who carry the crates get eleven gold and the men who write it down get the rest.",
-     "to": [
-      "the-quiet-partner"
-     ]
-    },
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "d": 40,
-     "x": "It is not a debt. It is a float. The distinction matters to exactly one person in this province and she keeps the book it is written in.",
-     "to": [
-      "the-quiet-partner",
-      "the-second-set-of-weights"
-     ]
-    },
-    {
-     "a": "merchant",
-     "x": "I sell rope to the wharf and the wharf pays me in chits that are good at three shops. Work out for yourself who owns the three shops.",
-     "to": [
-      "the-quiet-partner"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-quiet-partner",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "d": 45,
-     "x": "There is a chair at the table that none sit in and all argue with. That is the quiet partner. When the Ledger votes, it votes seven and one, and the one is never in the room.",
-     "to": [
-      "the-water-call",
-      "the-first-chair"
-     ]
-    },
-    {
-     "a": "outlaw",
-     "x": "I have fenced for the Ledger fifteen years and I have never met the quiet partner, and I have twice been told to stop asking in words that were not friendly.",
-     "to": [
-      "the-water-call"
-     ]
-    },
-    {
-     "a": "merchant",
-     "cell": "lilmoth",
-     "x": "Lilmoth pays a quiet partner too. Different chair, same silence. Tesh signs for it and does not look at what she is signing, which is a skill.",
-     "to": [
-      "the-water-call"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-water-call",
-   "infos": [
-    {
-     "a": "fisher",
-     "cell": "archon",
-     "x": "A ship puts in for water. That is all it is. They fill four barrels and they lie at anchor nine days and they leave heavier than they came, and this beach knows and this beach eats.",
-     "to": [
-      "the-archon-question",
-      "the-coast-wound"
-     ]
-    },
-    {
-     "a": "dres-factor",
-     "cell": "archon",
-     "x": "Water is a right of the sea. No charter in the Empire denies a ship water. You will find that is the whole of the law on it, and I have found the whole of the law on it very restful.",
-     "to": [
-      "the-archon-question"
-     ]
-    },
-    {
-     "a": "clerk",
-     "cell": "archon",
-     "d": 40,
-     "x": "I write the water-call in the bond book as a call for water. What is in the hold when it leaves is a question for the harbour, and the harbour has never once asked it.",
-     "to": [
-      "the-archon-question",
-      "the-quiet-partner"
-     ]
-    },
-    {
-     "a": "mudborn",
-     "x": "My sister's egg-clutch went off that beach in a water-call. Nine days at anchor, dry-one. Nine days is not water.",
-     "to": [
-      "the-coast-wound"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-underwriters-gate",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "d": 45,
-     "x": "An underwriter holds a gate. Not the guild's gate — a gate, one gate, and the toll off it comes to their hand before it comes to the table. It is how the Ledger makes a person expensive to lose.",
-     "to": [
-      "the-archon-question",
-      "the-first-chair"
-     ]
-    },
-    {
-     "a": "merchant",
-     "x": "You want a gate of your own? Then you had better have something the table wants more than it wants the gate, and there are only two things on that list.",
-     "to": [
-      "the-first-chair"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-archon-question",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "archon",
-     "d": 40,
-     "x": "The question is whether Archon is a harbour or a hole. It has been asked at the table four times in twenty years and it has been answered the same way four times, and the answer is worth about nine thousand a season.",
-     "to": [
-      "the-first-chair",
-      "the-coast-wound"
-     ]
-    },
-    {
-     "a": "fisher",
-     "cell": "archon",
-     "x": "Ask a captain here what he thinks of the question and he will ask you what you think of your teeth. The captains take the money. That is not a secret, it is an arrangement.",
-     "to": [
-      "the-first-chair"
-     ]
-    },
-    {
-     "a": "legionary",
-     "cell": "archon",
-     "x": "One cohort, under strength, and a beach twelve barges wide. If the Assize wants Archon closed it can send a cohort to close it. It has not.",
-     "to": [
-      "the-lease-roll"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-veto-minute",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "d": 45,
-     "x": "Four years ago the first chair vetoed a seat and four seats overruled her, and the minute of it is in the book because the minute of everything is in the book. It has not been looked at since, including by the four.",
-     "to": [
-      "the-first-chair",
-      "the-quiet-partner"
-     ]
-    },
-    {
-     "a": "archivist",
-     "x": "A veto that is overruled is still a veto and it is still minuted, and a minuted veto is the only place in a merchant house's paper where a name is on record as having objected.",
-     "to": [
-      "the-first-chair"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-first-chair",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "d": 50,
-     "x": "The first chair has been held by one person for nineteen years and she has outlived two governors and a plague. She does not eat with us. She reads what we write and then she tells us what we meant.",
-     "to": [
-      "the-quiet-partner"
-     ]
-    },
-    {
-     "a": "outlaw",
-     "x": "The first chair is not taken. It is taken from the person in it, and the last three people who tried are on the tally at Soulrest under names that are not theirs.",
-     "to": [
-      "the-quiet-partner"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-assize",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "x": "The Assize is the court and the customs and the toll book, and in this province those are one office because there was only ever budget for one. If you want a thing to be legal you come to us. If you want it to be just you go somewhere else.",
-     "to": [
-      "the-toll-book",
-      "the-lease-roll"
-     ]
-    },
-    {
-     "a": "legionary",
-     "x": "Cohort holds the wall, Assize holds the pen. Ask any legionary which of the two has ever lost an argument.",
-     "to": [
-      "the-toll-book"
-     ]
-    },
-    {
-     "a": "townsman",
-     "cell": "gideon",
-     "x": "You can be robbed in Gideon and get a hearing for it, which is more than they manage in Lilmoth. Whether the hearing goes your way is a different question and it has an answer, and the answer is written down in a book you are not allowed to read.",
-     "to": [
-      "the-toll-book",
-      "the-struck-off-notary"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-toll-book",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "d": 30,
-     "x": "The toll book is the Assize's memory. Everything that has come up this river for forty years is in it, in the hand of whichever notary was awake. It is also, and this is not written anywhere, the only complete record of what House Dres has moved through Archon.",
-     "to": [
-      "the-lease-roll",
-      "the-water-call"
-     ]
-    },
-    {
-     "a": "archivist",
-     "x": "Two books, in fact — the fair copy that the Governor signs and the day-book the notary actually writes in, and the interesting thing about the pair is how often they differ by exactly one entry.",
-     "to": [
-      "the-blackrose-day-book",
-      "the-struck-off-notary"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-lease-roll",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "d": 35,
-     "x": "Blackrose leases its prisoners out. It is lawful, it is audited, and the audit is done by the office that writes the leases. I have read the roll. I would rather not have.",
-     "to": [
-      "the-blackrose-day-book",
-      "the-struck-off-notary"
-     ]
-    },
-    {
-     "a": "legionary",
-     "cell": "blackrose",
-     "x": "Labour lease. Men go out on a chit and come back on a chit and the number that go out is the number that come back, because the number that come back is written by the man who writes the number that go out.",
-     "to": [
-      "the-blackrose-day-book"
-     ]
-    },
-    {
-     "a": "sapcutter",
-     "cell": "blackrose",
-     "x": "We take the yard hands the lease sends and we do not ask where the ones from last season went. No question is asked in this yard. It is a very quiet yard.",
-     "to": [
-      "the-blackrose-day-book",
-      "the-coast-wound"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-struck-off-notary",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "x": "Sedda Vell. Struck off the roll eleven years ago for what the finding called a persistent irregularity of temper. She kept her day-books. That is the part the court will not say out loud.",
-     "to": [
-      "the-blackrose-day-book"
-     ]
-    },
-    {
-     "a": "innkeeper",
-     "x": "She drinks here. She does not talk about the court unless you buy the second one, and then she does not stop.",
-     "to": [
-      "the-blackrose-day-book",
-      "the-lease-roll"
-     ]
-    },
-    {
-     "a": "archivist",
-     "x": "A notary struck off keeps nothing by right and everything in practice, because the office never asks for the books back — asking would concede the books existed.",
-     "to": [
-      "the-blackrose-day-book"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-blackrose-day-book",
-   "infos": [
-    {
-     "a": "archivist",
-     "d": 40,
-     "x": "Eleven years of leases, in a hand that got steadier the angrier she got. If it ever reaches the Elder Council it ends four careers, and three of those four have made their peace with that and the fourth has not.",
-     "to": [
-      "the-warrant-of-attainder",
-      "the-lease-vote"
-     ]
-    },
-    {
-     "a": "clerk",
-     "d": 40,
-     "x": "I have been told twice, by people who were being kind, that the day-book does not exist. Both of them said it in the same words, which is how I know it does.",
-     "to": [
-      "the-warrant-of-attainder"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-warrant-of-attainder",
-   "infos": [
-    {
-     "a": "legionary",
-     "d": 35,
-     "x": "A warrant makes a killing lawful inside Imperial ground and nowhere else, and four of the people on the current roll do not live inside Imperial ground. Getting them onto it is the job. The killing is the easy part and it is not the part that goes wrong.",
-     "to": [
-      "the-prefects-return",
-      "the-lease-vote"
-     ]
-    },
-    {
-     "a": "clerk",
-     "d": 35,
-     "x": "It clears the bounty on the name written on it. It clears nothing else — not the door you broke, not the man who got in the way, not the fourteen days after which the office takes it back and tells your target who you are.",
-     "to": [
-      "the-prefects-return"
-     ]
-    },
-    {
-     "a": "outlaw",
-     "x": "Paper that says you may. I have seen three men wave one at a militia sergeant in Soulrest. Soulrest is not Imperial ground. Two of them are on the tally.",
-     "to": [
-      "the-prefects-return"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-prefects-return",
-   "infos": [
-    {
-     "a": "legionary",
-     "cell": "blackrose",
-     "d": 40,
-     "x": "Hallow comes up to Gideon once a season to sign the roll and once a season the roll is already signed when he gets there. He has stopped remarking on it. That is the thing to notice.",
-     "to": [
-      "the-lease-vote"
-     ]
-    },
-    {
-     "a": "clerk",
-     "d": 40,
-     "x": "The Prefect's return is the document that says the lease is sound. It is two pages, it is signed at Blackrose, and it has been copied out in the same Gideon hand for six seasons.",
-     "to": [
-      "the-lease-vote",
-      "the-blackrose-day-book"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-lease-vote",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "d": 45,
-     "x": "The Assize sits on it in Second Seed. Four seats. Two of them owe money to a body that is not the Empire and one of them is honest, and the honest one is not sure which way honest goes here.",
-     "to": [
-      "the-legates-seal"
-     ]
-    },
-    {
-     "a": "archivist",
-     "x": "If the lease falls, six hundred people walk out of Blackrose into a province with no work in it. If it stands, six hundred people do not walk anywhere. Neither of those is the good answer and the vote will pretend one of them is.",
-     "to": [
-      "the-legates-seal",
-      "the-coast-wound"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-legates-seal",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "d": 50,
-     "x": "There is one seal in the province that closes a finding for good, and the Legate keeps it in a drawer he does not lock, because in nineteen years none has been mad enough to take it.",
-     "to": [
-      "the-lease-vote"
-     ]
-    },
-    {
-     "a": "archivist",
-     "x": "The Legate of the Assize answers to the Elder Council in theory and to the boat schedule in practice. Two letters a year. He has learned to write them in a way that requires no reply.",
-     "to": [
-      "the-lease-vote"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-hollow-that-eats",
-   "infos": [
-    {
-     "a": "rootkeeper",
-     "d": 30,
-     "x": "East of Helstrom on the root track there is a hollow that takes what it is given and gives back a name. That is all I will say to a stranger, and I have said more than I should.",
-     "to": [
-      "the-root-track",
-      "the-cut-roots"
-     ]
-    },
-    {
-     "a": "mudborn",
-     "x": "The Deep-Kin do not have a hall, dry-one. They have a hollow, and a hollow is not a place you visit, it is a place that decides whether you arrived.",
-     "to": [
-      "the-root-track"
-     ]
-    },
-    {
-     "a": "merchant",
-     "cell": "helstrom",
-     "x": "Everyone in this town knows where it is and none in this town will walk you there. Work out what that costs and then double it, because the price is not gold.",
-     "to": [
-      "the-root-track"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-root-track",
-   "infos": [
-    {
-     "a": "rootkeeper",
-     "x": "The track is not cut. It is agreed. Where the roots have agreed to lie flat you may walk, and where they have not you may also walk, once.",
-     "to": [
-      "the-cut-roots",
-      "the-lukiul-question"
-     ]
-    },
-    {
-     "a": "fisher",
-     "cell": "helstrom",
-     "x": "Follow the black water east until the trees stop being separate trees. Then keep the sound of the water on the same side of you the whole way, and do not put your hand on anything.",
-     "to": [
-      "the-hollow-that-eats"
-     ]
-    },
-    {
-     "a": "outlaw",
-     "x": "I have run cargo on the root track twice and I will not do it again for money. The second time the track was not where it was the first time.",
-     "to": [
-      "the-lukiul-question"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-lukiul-question",
-   "infos": [
-    {
-     "a": "rootkeeper",
-     "d": 35,
-     "x": "The question is what a lukiul is. Kin who went to the coast, or coast that wears kin. Teel-Ashaan has an answer. Ee-Vashum has a different one and she buried a daughter for it.",
-     "to": [
-      "the-coast-wound",
-      "the-taking-below"
-     ]
-    },
-    {
-     "a": "townsman",
-     "cell": "gideon",
-     "x": "They call us lukiul like it is a word for a thing that broke. My grandmother was born in Gideon. Where exactly was she supposed to go.",
-     "to": [
-      "the-coast-wound"
-     ]
-    },
-    {
-     "a": "naga-elder",
-     "x": "The river bands do not use the word. We say those who trade and those who do not, and we have both in the same clutch, and we manage.",
-     "to": [
-      "the-coast-wound"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-coast-wound",
-   "infos": [
-    {
-     "a": "rootkeeper",
-     "d": 35,
-     "x": "The saying is that the coast cities are a wound and wounds are cut out. It is newer than people think. I heard it first nine years ago from a man who had lost four of his line at Archon, and it was not a policy then, it was a grief.",
-     "to": [
-      "the-taking-below",
-      "the-water-call"
-     ]
-    },
-    {
-     "a": "mudborn",
-     "x": "Cut the coast off and the takers stop coming. Cut the coast off and eleven thousand of our own starve behind the cut. Both of those are true and the hollow only says the first one aloud.",
-     "to": [
-      "the-taking-below"
-     ]
-    },
-    {
-     "a": "merchant",
-     "x": "Bad for freight. Bad for everyone. Whoever is saying it has never had to move salt.",
-     "to": [
-      "the-taking-below"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-taking-below",
-   "infos": [
-    {
-     "a": "rootkeeper",
-     "d": 40,
-     "x": "The sap-wells are giving back nothing. The Court at Soulrest has it as a curve. We have it as a hollow that has stopped answering and a clutch that came out wrong twice in one season.",
-     "to": [
-      "the-ku-vastei",
-      "the-consensus"
-     ]
-    },
-    {
-     "a": "mudborn",
-     "cell": "soulrest",
-     "x": "We burn them and we count them and the count does not arrive anywhere. I have written that sentence in a ledger a dozen times and each time a sexton has told me to write it differently.",
-     "to": [
-      "the-ku-vastei"
-     ]
-    },
-    {
-     "a": "sapcutter",
-     "x": "Thirty years we have cut and nothing happened. Prove it was us. I will wait.",
-     "to": [
-      "the-consensus"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-ku-vastei",
-   "infos": [
-    {
-     "a": "rootkeeper",
-     "d": 35,
-     "x": "A ku-vastei is not called and does not refuse. When a thing has gone too far one arrives, hears it, and rules, and the ruling ends the blood-price whichever way it falls. You do not thank them. Thanking them suggests you had a preference.",
-     "to": [
-      "the-consensus",
-      "the-speakers-silence"
-     ]
-    },
-    {
-     "a": "naga-elder",
-     "x": "Egg-born under the sign, given to the shadow, and sent back to us to do the one thing none of us can do without starting the next feud. I have seen two rulings. Both were correct and neither was kind.",
-     "to": [
-      "the-consensus"
-     ]
-    },
-    {
-     "a": "legionary",
-     "x": "Argonian arbiter. No standing in Imperial law whatsoever. The Cohort has stopped saying so out loud in the interior because saying so out loud was getting people hurt.",
-     "to": [
-      "the-consensus"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-consensus",
-   "infos": [
-    {
-     "a": "rootkeeper",
-     "d": 40,
-     "x": "The Xul-Aneekh do not vote and do not command. A thing becomes consensus when the arguing stops, and there are two ways to arrive at the arguing stopping.",
-     "to": [
-      "the-speakers-silence"
-     ]
-    },
-    {
-     "a": "mudborn",
-     "x": "They will tell you it is not a government. They are right. That is what frightens the people on the coast, not the other thing.",
-     "to": [
-      "the-speakers-silence"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-speakers-silence",
-   "infos": [
-    {
-     "a": "rootkeeper",
-     "d": 45,
-     "x": "Teel-Ashaan has spoken for the hollow for twenty-two years. A speaker stops when the hollow stops listening, and the hollow has never yet stopped listening on its own.",
-     "to": [
-      "the-consensus",
-      "the-ku-vastei"
-     ]
-    },
-    {
-     "a": "mudborn",
-     "x": "The last speaker before this one went quiet in a season and how has not been said, and how has not been said in a way that means it is known.",
-     "to": [
-      "the-consensus"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-empty-chair",
-   "why": "Q-LEDG-08 seeds this at journal 10. RI-DLG05 A.3: the ceiling quest is the longest one on the line and used to be the only one you could not ask a soul about.",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "d": 50,
-     "x": "The first chair is empty and the table has asked an outsider to sit in it, which has not happened in nineteen years. Whoever sits there decides whether the eighth gate at Archon stays in the book. That is the whole of it, and it is enough.",
-     "to": [
-      "the-first-chair",
-      "the-veto-minute"
-     ]
-    },
-    {
-     "a": "merchant",
-     "d": 35,
-     "x": "Ask what a chair is worth. Seven of the Governor's debts, four toll gates and a bond room at Lilmoth. Ask what it costs and none will answer you, which should tell you the figure.",
-     "to": [
-      "the-first-chair"
-     ]
-    },
-    {
-     "a": "outlaw",
-     "x": "Wuleen-Kus walked up onto the counting floor to watch, first time in nine years. He did not ask for anything. He came to see which of them it was going to be.",
-     "to": [
-      "the-first-chair"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-head-of-the-assize",
-   "why": "Q-ASSZ-08 seeds this at journal 10.",
-   "infos": [
-    {
-     "a": "legionary",
-     "cell": "gideon",
-     "d": 45,
-     "x": "The Legate went home on the winter packet and the Elder Council has sent no replacement. So the province has a court and no head to it, and the seal that closes a finding for good is sitting in a drawer that any man with a key can open.",
-     "to": [
-      "the-legates-seal",
-      "the-warrant-of-attainder"
-     ]
-    },
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "d": 40,
-     "x": "Four findings are open. The lease, the Archon toll book, the two hundred and nine renewals, and the Ledger's eighth chair. A seal shuts any of them where no court in this province can reopen it.",
-     "to": [
-      "the-legates-seal",
-      "the-lease-vote"
-     ]
-    },
-    {
-     "a": "townsman",
-     "x": "Forty times that seal has been used and thirty-nine were a man covering his own back. I would not want the fortieth on me either way.",
-     "to": [
-      "the-legates-seal"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-fourth-day",
-   "why": "Q-XULA-08 seeds this at journal 10.",
-   "infos": [
-    {
-     "a": "rootkeeper",
-     "cell": "helstrom",
-     "d": 45,
-     "x": "The hollow has been sitting three days and the bands are in off the Rootlands. Ee-Vashum says they are not waiting for a speaker. They are waiting for a question, and the one they have been asking for nine years is the coast.",
-     "to": [
-      "the-speakers-silence",
-      "the-coast-wound"
-     ]
-    },
-    {
-     "a": "naga-elder",
-     "d": 40,
-     "x": "If the question stays the coast then the answer stays the cut, and the war-broods will make it inside the year whether the hollow agrees or not. Change the question and you change what they are allowed to do about it.",
-     "to": [
-      "the-speakers-silence",
-      "the-taking-below"
-     ]
-    },
-    {
-     "a": "mudborn",
-     "x": "His daughter came up from Gideon for the fourth day. Lukiul, and standing on the rim of a hollow that has argued for nine years about what to do with lukiul.",
-     "to": [
-      "the-speakers-silence"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-ninth-column",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "x": "Nine columns ruled and eight of them headed, and the ninth has been in that book since before I could write. I was told once it was for the tide and I have never once seen anybody write a tide in it.",
-     "to": [
-      "the-toll-book",
-      "the-tolls"
-     ]
-    },
-    {
-     "a": "townsman",
-     "cell": "gideon",
-     "x": "You want to know what is in the ninth column, ask what time the gate is empty. That is a different question and it has the same answer.",
-     "to": [
-      "the-man-off-the-quay"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-bond-berth",
-   "infos": [
-    {
-     "a": "dockhand",
-     "cell": "gideon",
-     "x": "A salt-wife bond passes to the wife when the man drowns, and the Ledger will tell you that is compassion, and it is a berth, a debt and a woman who cannot leave the river.",
-     "to": [
-      "the-wharf-debt",
-      "the-quiet-partner"
-     ]
-    },
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "x": "There are four of those bonds on the roll and every one of them is being paid down on time, which is the part the table does not like to have counted.",
-     "to": [
-      "the-lease-roll"
-     ]
-    },
-    {
-     "a": "merchant",
-     "x": "She reads. That is what nobody planned for.",
-     "to": [
-      "the-bond-berth"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-man-off-the-quay",
-   "infos": [
-    {
-     "a": "townsman",
-     "cell": "gideon",
-     "x": "There was a man who said what he had seen at the gate, once, out loud, and he is not on the quay any more. That is the whole of it and everybody here can tell it to you and not one of us can tell you where he went.",
-     "to": [
-      "the-tolls",
-      "the-ninth-column"
-     ]
-    },
-    {
-     "a": "dockhand",
-     "cell": "gideon",
-     "x": "His room is still paid for. Four seasons. If they had done what you think they did, why would they still be paying the rent on it.",
-     "to": [
-      "the-quiet-partner"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-second-refusal",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "x": "You said no to the table and the table wrote it down and did nothing, and now you want to know what that means. It means they are waiting to see whether you have a second one in you.",
-     "to": [
-      "the-first-chair",
-      "the-veto-minute"
-     ]
-    },
-    {
-     "a": "harbourmistress",
-     "cell": "gideon",
-     "x": "A chair falls vacant three ways and only one of them needs a knife. The other two are in the articles and nobody at that table has opened the articles in forty years.",
-     "to": [
-      "the-first-chair"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-room-with-no-case",
-   "infos": [
-    {
-     "a": "notary",
-     "cell": "gideon",
-     "x": "On the half-landing, grey door, same grey as the wall. Two chairs in it and eleven chairs of wear on the floor, and every plan of this building says there is nothing there.",
-     "to": [
-      "the-assize",
-      "the-struck-off-notary"
-     ]
-    },
-    {
-     "a": "scribe",
-     "cell": "gideon",
-     "x": "It is a store. It has been a store since before I came. Nobody stores anything in it.",
-     "to": [
-      "the-prefects-return"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-removal-that-is-not-one",
-   "infos": [
-    {
-     "a": "notary",
-     "cell": "gideon",
-     "x": "No one in this province can remove a prefect. That is true and it is not the sentence you want. A prefect can vacate, and a commission has a term on it, and terms end whether anybody reads them or not.",
-     "to": [
-      "the-prefects-return",
-      "the-legates-seal"
-     ]
-    },
-    {
-     "a": "scribe",
-     "cell": "gideon",
-     "x": "The commission is in the box marked for the last Legate's attention, which has not been opened since there was a Legate to attend to it.",
-     "to": [
-      "the-head-of-the-assize"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-sound-below",
-   "infos": [
-    {
-     "a": "rootkeeper",
-     "cell": "rootlands",
-     "x": "Between the tides, at the eastern well, there is a knocking in the ground that was not there two seasons ago. The old word for it is the taking-below being heard.",
-     "to": [
-      "the-taking-below",
-      "the-cut-roots"
-     ]
-    },
-    {
-     "a": "walker",
-     "cell": "rootlands",
-     "x": "It keeps time. Whatever else it is, it keeps better time than anything alive.",
-     "to": [
-      "the-hollow"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-drowned-post",
-   "infos": [
-    {
-     "a": "walker",
-     "cell": "rootlands",
-     "x": "At the sluice crossing there is a post with marks on the far side, and the far side is under water except on the lowest tide of the season. Nine marks. One a year, and each one higher.",
-     "to": [
-      "the-coast-wound",
-      "the-taking-below"
-     ]
-    },
-    {
-     "a": "rootkeeper",
-     "cell": "rootlands",
-     "x": "Somebody cuts them. I know who and I am not going to say, because she has never asked anybody to look and that is her right.",
-     "to": [
-      "the-hollow"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-fourth-silence",
-   "infos": [
-    {
-     "a": "rootkeeper",
-     "cell": "rootlands",
-     "x": "A speaker falls silent when four fourth-days pass and no hollow puts a question to them. Not a vote. An absence, counted, on a post that nobody alive has seen used.",
-     "to": [
-      "the-speakers-silence",
-      "the-consensus"
-     ]
-    },
-    {
-     "a": "walker",
-     "cell": "rootlands",
-     "x": "Three have gone by. Every hollow is waiting for a different hollow to speak first, and that is how the count keeps running.",
-     "to": [
-      "the-empty-chair"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "the-witness",
-   "infos": [
-    {
-     "a": "clerk",
-     "cell": "gideon",
-     "x": "She gave a statement and she gave it twice and both times it was the same words in the same order, which the court took for honesty and I took for something a person has practised.",
-     "to": [
-      "the-assize",
-      "the-struck-off-notary"
-     ]
-    },
-    {
-     "a": "notary",
-     "cell": "gideon",
-     "x": "Nobody has asked her what she is afraid of. They have asked her eleven times what she saw. Those are different questions and only one of them has an answer she is allowed to give.",
-     "to": [
-      "the-room-with-no-case"
-     ]
-    },
-    {
-     "a": "townsman",
-     "cell": "gideon",
-     "x": "She still walks the same way home past the same door. If she were lying about what she saw she would have changed the road.",
-     "to": [
-      "the-assize"
-     ]
-    }
-   ]
-  }
- ]
+  ]
 }

@@ -16,13 +16,13 @@
     "living_dead": "living"
   },
   "bed_lufs_target": -25,
-  "crossfade_s": 4.0,
+  "crossfade_s": 4,
   "max_voices": 8,
   "denies": [],
   "layers": {
     "L1": {
       "id": "l1_jelly_hum",
-      "text": "low jelly-hum \u2014 a pitched, almost-musical drone",
+      "text": "low jelly-hum — a pitched, almost-musical drone",
       "level_db": 0,
       "voices": 1,
       "classes": [
@@ -106,7 +106,7 @@
             "filter": {
               "type": "bandpass",
               "hz": 380,
-              "q": 2.0
+              "q": 2
             },
             "env": {
               "attack_s": 0.02,
@@ -137,7 +137,7 @@
             "filter": {
               "type": "bandpass",
               "hz": 420,
-              "q": 6.0
+              "q": 6
             },
             "env": {
               "attack_s": 0.1,
@@ -218,5 +218,7 @@
     }
   },
   "emitters": [],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "bed_gain_db": -7.52,
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
 }

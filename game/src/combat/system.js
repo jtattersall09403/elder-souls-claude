@@ -64,6 +64,8 @@ export class CombatSystem {
     this.frame = 0;
     /** W1-11 — `audio.combat.impact`. Set by `Engine` (or a probe) via `setAudio()`. */
     this.audio = null;
+    /** [frame, kind, event] triples emitted this step, drained by `_flushAudio()`. */
+    this._audioPending = [];
     this.world = { gold: 0, dispositions: {}, factions: {}, topicsKnown: [] };
     this.stats = { hitsLanded: 0, iframeNegates: 0, blocks: 0, guardBreaks: 0, parries: 0, whiffs: 0, staminaDrops: 0 };
   }
@@ -317,16 +319,25 @@ export class CombatSystem {
       //
       // RI-AUD01 §B: "`audio.frame` for an impact event MUST equal the `f` of the trace event
       // that caused it. Not the animation-start frame. Not the next frame. Not 'whenever the
-      // rAF callback got round to it'." This call is INSIDE `sweepAndResolve`'s call stack —
-      // the geometry has decided, the event object is filled, and the audio decision is taken
-      // before the resolver returns. There is no queue between the two and there cannot be one.
+      // rAF callback got round to it'."
       //
-      // The named failure this placement forecloses is §B's: firing off the animation event
-      // track, which plays the impact on a whiff, plays it before the geometry decided, and
-      // plays the same sound into flesh, chitin and a raised shield. `ImpactAudio` keeps that
-      // defect behind `trigger_source: 'anim'` precisely so the probe that detects it can be
-      // shown going red — see tools/audio/impact-probe.mjs --sabotage anim.
-      if (this.audio) this.audio.onEvent(f, kind, e, this._audioWorld());
+      // The event is REFERENCED here and READ at the end of this same `step(frame)` call, and
+      // the reason is a defect this hook shipped with for one probe run and is worth recording
+      // rather than quietly fixing: every call site in `resolve.js` has the shape
+      //
+      //     const e = emit(frame, 'IMPACT');  e.material = ...;  e.tier = ...;
+      //
+      // so at the instant `emit` returns, the event carries `{f, kind}` and NOTHING ELSE. A
+      // classifier reading it there sees no material and no tier, and cheerfully voices every
+      // impact in the game as C01 `hit_flesh_light` — which is RI-AUD01's "one sword.wav"
+      // failure arriving through the one door that looked safest. The first probe run said
+      // `{"hit_flesh_light":50,"whiff":5}` across seven materials and four weight tiers, and
+      // that number is the only reason it was caught.
+      //
+      // Draining at the END of the step keeps the decision on frame `f` — the frame the
+      // geometry decided — while reading events that are actually filled in. It is still not
+      // the animation track, still not the next frame, and still not rAF.
+      if (this.audio) this._audioPending.push([f, kind, e]);
       return e;
     };
     const lockedBody = this.lock.target ? this.bodyOf(this.lock.target) : null;
@@ -349,7 +360,7 @@ export class CombatSystem {
       b.hitstop = (b.hitstopUntil || 0) > frame;
       if (b.hitstop) heldCount++;
     }
-    if (heldCount === this.bodies.length && sim.hitstopUntil > frame) return;
+    if (heldCount === this.bodies.length && sim.hitstopUntil > frame) { this._flushAudio(); return; }
     for (const b of this.bodies) b._yawIn = b.yaw;
 
     // A hitstun state begins when the hold releases, never inside it — CombatBody.queueReaction.
@@ -434,6 +445,28 @@ export class CombatSystem {
     if (brk) { const e = emit(frame, 'LOCK_BREAK'); e.reason = brk; }
     if (camera) this.lock.measureFraming(camera, this.player, this.lock.target ? this.bodyOf(this.lock.target) : null, camera.fov, 16 / 9);
 
+    // W1-11. Every event this frame emitted, now fully filled, in emission order, on frame
+    // `frame`. See the note in the `emit` closure above for why this is here and not there.
+    this._flushAudio();
+  }
+
+  /**
+   * Hand this frame's events to the impact-audio driver, in emission order.
+   *
+   * Order matters and is not incidental: RI-AUD02 V9's same-frame same-class collapse and the
+   * V7 steal policy both depend on which of two simultaneous events arrived first, and the
+   * emission order is the resolver's iteration order, which is itself a function of state alone
+   * (resolve.js's header: "even the ORDER of the emitted tuples is a function of the state").
+   * So the audio decisions are as deterministic as the fight is.
+   */
+  _flushAudio() {
+    const q = this._audioPending;
+    if (!q.length) return;
+    if (this.audio) {
+      const world = this._audioWorld();
+      for (let i = 0; i < q.length; i++) this.audio.onEvent(q[i][0], q[i][1], q[i][2], world);
+    }
+    q.length = 0;
   }
 
   /**

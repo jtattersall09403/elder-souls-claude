@@ -15,12 +15,12 @@
     "living_dead": "dead"
   },
   "bed_lufs_target": -34,
-  "crossfade_s": 4.0,
+  "crossfade_s": 4,
   "max_voices": 8,
   "denies": [
     {
       "class": "insect_layer",
-      "why": "nothing lives here to make one. Stone Wastes is tier 5 and its silence is the S9 lethality warning (\u00a7Seam 3)."
+      "why": "nothing lives here to make one. Stone Wastes is tier 5 and its silence is the S9 lethality warning (§Seam 3)."
     },
     {
       "class": "birdsong",
@@ -28,13 +28,13 @@
     },
     {
       "class": "standing_water",
-      "why": "RI-WLD10 \u00a77: one of the two regions with no standing water at all."
+      "why": "RI-WLD10 §7: one of the two regions with no standing water at all."
     }
   ],
   "layers": {
     "L1": {
       "id": "l1_near_silence",
-      "text": "near-silence \u2014 the quietest L1 in the game, \u221234 LUFS-S",
+      "text": "near-silence — the quietest L1 in the game, −34 LUFS-S",
       "level_db": 0,
       "voices": 1,
       "classes": [
@@ -58,10 +58,10 @@
       }
     },
     "L2": null,
-    "L2_null_reason": "RI-AUD03 R1: a layer may be declared null and null is a design statement. The Stone Wastes have no moving texture at all \u2014 no wind band, no water, no insect mass. The salt-storm is an L3 EVENT, weather-gated, not a continuous mid layer. A texture here would be the additive reflex R1 exists to stop.",
+    "L2_null_reason": "RI-AUD03 R1: a layer may be declared null and null is a design statement. The Stone Wastes have no moving texture at all — no wind band, no water, no insect mass. The salt-storm is an L3 EVENT, weather-gated, not a continuous mid layer. A texture here would be the additive reflex R1 exists to stop.",
     "L3": {
       "id": "l3_cooling_stone_and_saltstorm",
-      "text": "tick of cooling stone, then the salt-storm roar \u2014 the loudest ambience event in the game, weather-gated",
+      "text": "tick of cooling stone, then the salt-storm roar — the loudest ambience event in the game, weather-gated",
       "interval_s": [
         14,
         40
@@ -75,8 +75,8 @@
           ],
           "weight": 6,
           "pan": [
-            -1.0,
-            1.0
+            -1,
+            1
           ],
           "synth": {
             "kind": "grain",
@@ -85,7 +85,7 @@
             "filter": {
               "type": "bandpass",
               "hz": 2400,
-              "q": 8.0
+              "q": 8
             },
             "env": {
               "attack_s": 0.001,
@@ -127,7 +127,7 @@
     },
     "L4": {
       "id": "l4_dying_hist",
-      "text": "the last dying Hist \u2014 a FAILING version of the Stone Forest's choral hum. The two must be recognisably the same instrument, one of them broken (R6). The Hist's decline stated in sound before it is stated in any book.",
+      "text": "the last dying Hist — a FAILING version of the Stone Forest's choral hum. The two must be recognisably the same instrument, one of them broken (R6). The Hist's decline stated in sound before it is stated in any book.",
       "interval_s": [
         90,
         180
@@ -155,9 +155,9 @@
             "kind": "drone",
             "waveform": "sine",
             "partials_hz": [
-              110.0,
+              110,
               164.81,
-              220.0,
+              220,
               329.63
             ],
             "partial_gains_db": [
@@ -177,8 +177,10 @@
         }
       ]
     },
-    "L4_note": "L4 is a DRONE grain: the dying Hist sustains rather than calls. Its interval band is still checked against \u00a7A L4 (45\u2013180 s)."
+    "L4_note": "L4 is a DRONE grain: the dying Hist sustains rather than calls. Its interval band is still checked against §A L4 (45–180 s)."
   },
   "emitters": [],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "bed_gain_db": 2.48,
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
 }

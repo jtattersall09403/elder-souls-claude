@@ -16,7 +16,7 @@
     "living_dead": "living"
   },
   "bed_lufs_target": -24,
-  "crossfade_s": 4.0,
+  "crossfade_s": 4,
   "max_voices": 8,
   "denies": [],
   "layers": {
@@ -37,7 +37,7 @@
           "q": 0.4
         },
         "gain_db": -5,
-        "width": 1.0,
+        "width": 1,
         "mod": {
           "target": "filter_hz",
           "lfo_hz": 0.061,
@@ -132,7 +132,7 @@
             "filter": {
               "type": "bandpass",
               "hz": 520,
-              "q": 7.0
+              "q": 7
             },
             "env": {
               "attack_s": 0.14,
@@ -145,7 +145,7 @@
     },
     "L4": {
       "id": "l4_gulls_or_drowned",
-      "text": "gull-cry (day) / drowned-things (night) \u2014 R5: a different SELECTION, not a filter",
+      "text": "gull-cry (day) / drowned-things (night) — R5: a different SELECTION, not a filter",
       "interval_s": [
         45,
         130
@@ -160,8 +160,8 @@
           ],
           "weight": 1,
           "pan": [
-            -1.0,
-            1.0
+            -1,
+            1
           ],
           "when": {
             "tod": "day"
@@ -217,7 +217,7 @@
             "filter": {
               "type": "lowpass",
               "hz": 350,
-              "q": 1.0
+              "q": 1
             },
             "env": {
               "attack_s": 0.4,
@@ -232,7 +232,7 @@
   "emitters": [
     {
       "id": "bell_buoy",
-      "text": "one bell buoy audible from 600 m \u2014 a fixed POSITIONAL landmark (R7). A player who has learned the bell can locate themselves in fog, which is the ambience contribution to S8: the world tells you where you are by sound because it is not allowed to tell you with an arrow.",
+      "text": "one bell buoy audible from 600 m — a fixed POSITIONAL landmark (R7). A player who has learned the bell can locate themselves in fog, which is the ambience contribution to S8: the world tells you where you are by sound because it is not allowed to tell you with an arrow.",
       "pos_m": [
         398,
         4486
@@ -243,7 +243,7 @@
       "classes": [
         "navigation"
       ],
-      "period_s": 13.0,
+      "period_s": 13,
       "synth": {
         "kind": "grain",
         "source": "osc",
@@ -262,5 +262,7 @@
       }
     }
   ],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "bed_gain_db": -1.05,
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
 }

@@ -16,7 +16,7 @@
     "living_dead": "living"
   },
   "bed_lufs_target": -25,
-  "crossfade_s": 4.0,
+  "crossfade_s": 4,
   "max_voices": 8,
   "denies": [],
   "layers": {
@@ -33,7 +33,7 @@
         "waveform": "triangle",
         "partials_hz": [
           130.81,
-          196.0,
+          196,
           261.63
         ],
         "partial_gains_db": [
@@ -159,7 +159,7 @@
             "filter": {
               "type": "bandpass",
               "hz": 2300,
-              "q": 6.0
+              "q": 6
             },
             "env": {
               "attack_s": 0.001,
@@ -227,7 +227,7 @@
             "filter": {
               "type": "bandpass",
               "hz": 600,
-              "q": 2.0
+              "q": 2
             },
             "env": {
               "attack_s": 0.05,
@@ -258,7 +258,7 @@
             "filter": {
               "type": "bandpass",
               "hz": 3800,
-              "q": 5.0
+              "q": 5
             },
             "env": {
               "attack_s": 0.001,
@@ -279,8 +279,8 @@
           ],
           "weight": 1,
           "pan": [
-            -1.0,
-            1.0
+            -1,
+            1
           ],
           "synth": {
             "kind": "grain",
@@ -294,7 +294,7 @@
             "filter": {
               "type": "bandpass",
               "hz": 1300,
-              "q": 3.0
+              "q": 3
             },
             "env": {
               "attack_s": 0.01,
@@ -309,7 +309,7 @@
   "emitters": [
     {
       "id": "hide_drum",
-      "text": "the hide-drum on its 90-second beat \u2014 the region's signature and a metronome no other region has. Moved here from L3 because \u00a7A caps L3 at 8\u201340 s and \u00a7B gives the drum 90; as an R7 emitter it keeps the beat AND gains a bearing, which is what actually separates the Western Rootlands from the three other (wet, open, living) regions in \u00a7C's key.",
+      "text": "the hide-drum on its 90-second beat — the region's signature and a metronome no other region has. Moved here from L3 because §A caps L3 at 8–40 s and §B gives the drum 90; as an R7 emitter it keeps the beat AND gains a bearing, which is what actually separates the Western Rootlands from the three other (wet, open, living) regions in §C's key.",
       "pos_m": [
         1727,
         4716
@@ -320,7 +320,7 @@
       "classes": [
         "people"
       ],
-      "period_s": 90.0,
+      "period_s": 90,
       "synth": {
         "kind": "grain",
         "source": "osc",
@@ -348,5 +348,7 @@
       }
     }
   ],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "bed_gain_db": -6.76,
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
 }

@@ -16,13 +16,13 @@
     "living_dead": "living"
   },
   "bed_lufs_target": -25,
-  "crossfade_s": 4.0,
+  "crossfade_s": 4,
   "max_voices": 8,
   "denies": [],
   "layers": {
     "L1": {
       "id": "l1_vat_bubble",
-      "text": "vat-bubble \u2014 slow, organic, wet",
+      "text": "vat-bubble — slow, organic, wet",
       "level_db": 0,
       "voices": 1,
       "classes": [
@@ -83,7 +83,7 @@
     },
     "L3": {
       "id": "l3_lichen_scream",
-      "text": "the lichen's thin scream when trodden \u2014 L3 triggered by the PLAYER, not the clock",
+      "text": "the lichen's thin scream when trodden — L3 triggered by the PLAYER, not the clock",
       "interval_s": [
         10,
         34
@@ -113,7 +113,7 @@
             "filter": {
               "type": "bandpass",
               "hz": 2600,
-              "q": 8.0
+              "q": 8
             },
             "env": {
               "attack_s": 0.012,
@@ -167,8 +167,8 @@
           ],
           "weight": 1,
           "pan": [
-            -1.0,
-            1.0
+            -1,
+            1
           ],
           "when": {
             "tod": "day"
@@ -185,7 +185,7 @@
             "filter": {
               "type": "bandpass",
               "hz": 1400,
-              "q": 4.0
+              "q": 4
             },
             "env": {
               "attack_s": 0.01,
@@ -203,5 +203,7 @@
     }
   },
   "emitters": [],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "bed_gain_db": -5.56,
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
 }

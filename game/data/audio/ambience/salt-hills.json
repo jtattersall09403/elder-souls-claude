@@ -16,12 +16,12 @@
     "living_dead": "living"
   },
   "bed_lufs_target": -26,
-  "crossfade_s": 4.0,
+  "crossfade_s": 4,
   "max_voices": 8,
   "denies": [
     {
       "class": "insect_layer",
-      "why": "RI-AUD03 \u00a7B and regions.json both: \"wind with no insect layer under it\". The absence IS the identity \u2014 it is what separates the Salt Hills from every other open region in the province."
+      "why": "RI-AUD03 §B and regions.json both: \"wind with no insect layer under it\". The absence IS the identity — it is what separates the Salt Hills from every other open region in the province."
     }
   ],
   "layers": {
@@ -82,7 +82,7 @@
     },
     "L3": {
       "id": "l3_legion_horn",
-      "text": "legion horn on the hour \u2014 a diegetic clock",
+      "text": "legion horn on the hour — a diegetic clock",
       "interval_s": [
         12,
         38
@@ -179,7 +179,7 @@
             "filter": {
               "type": "lowpass",
               "hz": 300,
-              "q": 1.0
+              "q": 1
             },
             "env": {
               "attack_s": 0.2,
@@ -205,7 +205,7 @@
       "classes": [
         "navigation"
       ],
-      "period_s": 3600.0,
+      "period_s": 3600,
       "on_the_hour": true,
       "synth": {
         "kind": "grain",
@@ -214,7 +214,7 @@
         "freq_hz": 146.83,
         "partials_hz": [
           146.83,
-          220.0,
+          220,
           293.66
         ],
         "filter": {
@@ -230,5 +230,7 @@
       }
     }
   ],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "bed_gain_db": -2.47,
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
 }

@@ -55,6 +55,7 @@ import { WEATHER } from './render/sky.js';
 import { WorldField } from './world/field.js';
 import { SignatureField, SIGNATURE_KINDS } from './world/signature.js';
 import { OpacityRegister } from './world/opacity.js';
+import { CanonRegistry } from './world/canon.js';
 import { Environment } from './sim/environment.js';
 import { BorderField } from './world/borders.js';
 import { Traversal } from './sim/traversal.js';
@@ -507,6 +508,11 @@ export class Engine {
     // evidence id and false-account id against the data that actually loaded and THROWS on a
     // dangle, then hands the register to the conversation so the world can decline.
     this._installOpacity();
+    // W1-23. RI-LOR06 / RI-MTH07: the canon register. Same discipline as the line above —
+    // it resolves every source the registry says holds a position and throws if one of them is
+    // not in this build, then installs itself on the conversation so a speaker's registered
+    // stance decides which side of a dispute the player hears.
+    this._installCanon();
     this.sim.questEngine = this.questEngine;
     this.real.onTextChar = (ch) => this._censusTypeChar(ch);
     this.applyNamedState(opts.state || 'default');
@@ -1742,7 +1748,7 @@ export class Engine {
       // about THIS person's regard for you, so a list computed without it would disagree with
       // what `talkTo(eid)` then offers — the two must be the same list or a probe is measuring
       // a surface the player never sees.
-      topics_offered: topicsFor(this.topicIndex, n, { ...p, disposition: this.npcDisposition(n.eid).disposition }).map((t) => t.id),
+      topics_offered: topicsFor(this.topicIndex, n, { ...p, disposition: this.npcDisposition(n.eid).disposition }, this.canon || null).map((t) => t.id),
       services: n.services.slice(),
       base_disposition: n.base_disposition, loiter_frames: n.loiter_frames,
     }));
@@ -1911,6 +1917,77 @@ export class Engine {
     }
     this.conversation.setOpacity(this.opacity);
     return { present: true, checked: r.checked, mysteries: this.opacity.size };
+  }
+
+  /**
+   * The id index the canon register resolves against — books, dialogue topics with the actors
+   * who have an info there, and NPCs. Built out of the data that ACTUALLY LOADED for the reason
+   * `_opacityWorldIndex()` gives: a file listed in `index.json` and dropped by `loadData`'s
+   * branch chain would otherwise still resolve, and catching exactly that is the point.
+   */
+  _canonWorldIndex() {
+    const books = new Set();
+    for (const doc of Object.values(this.data.books || {})) {
+      if (Array.isArray(doc.books)) for (const b of doc.books) { if (b.id) books.add(b.id); }
+      else if (doc.id) books.add(doc.id);
+    }
+    /** folded topic key -> Set of actors with an info written there (plus null for actorless). */
+    const topics = new Map();
+    for (const doc of Object.values(this.data.topics || {})) {
+      for (const t of (doc.topics || [])) {
+        if (!t || typeof t.id !== 'string') continue;
+        const k = topicKey(t.id);
+        const set = topics.get(k) || new Set();
+        for (const i of (t.infos || [])) set.add(i.a || null);
+        topics.set(k, set);
+      }
+    }
+    const npcs = new Set();
+    for (const doc of Object.values(this.data.npcs || {})) {
+      for (const n of (doc.npcs || [])) if (n && n.id) npcs.add(n.id);
+    }
+    return { books, topics, npcs };
+  }
+
+  /**
+   * Install the canon register (RI-LOR06 §2) and prove the province's arguments are held by
+   * somebody who is really in the build.
+   *
+   * The throw is the point, and it is the same argument `_installOpacity` makes one method up.
+   * `game/data/lore/canon.json` says of every registered dispute which shipped book, dialogue
+   * info or person takes each side. A `voiced_by` that names a book nobody wrote, or an actor
+   * with no info on that topic, is RI-LOR06's "a note dressed as a dispute": it scores as
+   * texture, it is paperwork, and it is invisible from every other instrument in the project.
+   * The registry spent its whole life until this round being read by two critic scripts and
+   * nothing in the game, which is exactly how it came to describe a build it had never met.
+   *
+   * A build with NO register boots and reports `present:false`. A build with a register that
+   * lies does not boot.
+   */
+  _installCanon() {
+    this.canon = new CanonRegistry(this.data.canon);
+    if (!this.canon.present()) return { present: false, checked: 0 };
+    const r = this.canon.resolve(this._canonWorldIndex());
+    if (!r.ok) {
+      throw new Error(
+        `canon register: ${r.unresolved.length} unresolved reference(s) in game/data/lore/canon.json.\n`
+        + '  A dispute whose sides are held by nobody in the build is not texture, it is paperwork '
+        + '(RI-LOR06 §2, `positions[].held_by`).\n  - '
+        + r.unresolved.slice(0, 24).join('\n  - '));
+    }
+    this.conversation.setCanon(this.canon);
+    return { present: true, checked: r.checked, facts: this.canon.size, disputes: this.canon.disputes().length };
+  }
+
+  /**
+   * RI-LOR06's texture, from the running world: which registered disputes this character has
+   * heard argued, and from how many sides. Reports NO rulings, and cannot — `authorially_true`
+   * is replaced by a sha256 before the file is shipped, so the answer to every one of these
+   * questions is absent from the build this process is running.
+   */
+  getCanonState() {
+    if (!this.canon) return { present: false, note: 'the engine has not installed a register' };
+    return this.canon.state();
   }
 
   /**
@@ -7575,6 +7652,12 @@ async function loadData(onBytes) {
     // dropped on the floor, which is exactly how `dialogue/persuasion-gmst.json` and
     // `dialogue/faction-reactions.json` spent a round being loaded and unreadable.
     else if (entry.path === 'world/opacity.json') out.opacity = doc;
+    // W1-23. RI-LOR06's registry, projected by tools/lore/build-canon.mjs. It MUST have a branch
+    // here for the reason the comment above gives, and it is under `lore/` rather than `world/`
+    // because it is the province's canon and not its geography. Consumed by
+    // `world/canon.js` (the register), `_installCanon()` (the boot resolve) and
+    // `character/converse.js#infoFor` (which side of a dispute a given speaker will argue).
+    else if (entry.path === 'lore/canon.json') out.canon = doc;
     // W1-MAP. The discovery map's numbers. It MUST have a branch here for the reason the
     // `world/opacity.json` comment above gives: a data file that matches no branch is fetched,
     // counted in the byte total, and then dropped, which is indistinguishable from shipping

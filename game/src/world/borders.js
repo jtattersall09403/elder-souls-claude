@@ -65,15 +65,57 @@ export class BorderField {
   }
 
   /**
+   * The signed distance through the border, BILINEARLY INTERPOLATED, and this is load-bearing
+   * rather than a smoothing nicety.
+   *
+   * The distance raster is stored at the terrain's own 25 m cell. Read nearest-neighbour, every
+   * point inside one cell has the same distance — so nine axis crossovers spread 5.5 m apart all
+   * land in the same cell and hand over at the same coordinate. Measured on the first build:
+   * twenty-three of twenty-four borders had five or six axis pairs crossing within 3 m of each
+   * other, against RI-WLD12 §2's limit of two, and the declared offsets were all correct. The
+   * border was staggered in the data and a step function in the world, which is the same defect as
+   * the texture swap wearing a wider coat. It also made the ground colour change in 25 m squares.
+   *
+   * Interpolating over the four surrounding cells that belong to THIS border (a neighbour in a
+   * third region, or outside the band, contributes nothing and its weight is redistributed) makes
+   * the distance continuous, so the axes hand over where they say they do.
+   *
+   * @returns {null|{pair:number, d:number}} pair is the 1-based border id as stored
+   */
+  _sample(x, z) {
+    const fx = x / this.cell - 0.5, fz = z / this.cell - 0.5;
+    const x0 = Math.floor(fx), z0 = Math.floor(fz);
+    const tx = fx - x0, tz = fz - z0;
+    // The pair is decided by the NEAREST cell — a point either is in a border band or is not, and
+    // that is not a quantity to average.
+    const ncx = Math.max(0, Math.min(this.cols - 1, Math.round(fx)));
+    const ncz = Math.max(0, Math.min(this.rows - 1, Math.round(fz)));
+    const pair = this.pairU[ncz * this.cols + ncx];
+    if (!pair) return null;
+    let acc = 0, w = 0;
+    for (let j = 0; j <= 1; j++) {
+      for (let i = 0; i <= 1; i++) {
+        const cx = x0 + i, cz = z0 + j;
+        if (cx < 0 || cz < 0 || cx >= this.cols || cz >= this.rows) continue;
+        const k = cz * this.cols + cx;
+        if (this.pairU[k] !== pair) continue;
+        const ww = (i ? tx : 1 - tx) * (j ? tz : 1 - tz);
+        acc += this.distI[k] * ww; w += ww;
+      }
+    }
+    if (w <= 1e-6) return { pair, d: this.distI[ncz * this.cols + ncx] / 10 };
+    return { pair, d: acc / w / 10 };
+  }
+
+  /**
    * Where in a transition this point is.
    * @returns {null|{border, index, distance_m, a, b}} null when the point is not in any border band
    */
   at(x, z) {
-    const i = this._cell(x, z);
-    const p = this.pairU[i];
-    if (!p) return null;
-    const b = this.borders[p - 1];
-    return { border: b, index: p - 1, distance_m: this.distI[i] / 10, a: b.a_index, b: b.b_index };
+    const s = this._sample(x, z);
+    if (!s) return null;
+    const b = this.borders[s.pair - 1];
+    return { border: b, index: s.pair - 1, distance_m: +s.d.toFixed(2), a: b.a_index, b: b.b_index };
   }
 
   /**
@@ -88,14 +130,12 @@ export class BorderField {
    * @param {number} fallbackIndex the raster's own answer, used away from every border
    */
   axisRegionIndexAt(x, z, axis, fallbackIndex) {
-    const i = this._cell(x, z);
-    const p = this.pairU[i];
-    if (!p) return fallbackIndex;
+    const s = this._sample(x, z);
+    if (!s) return fallbackIndex;
     const j = BORDER_AXES.indexOf(axis);
     if (j < 0) return fallbackIndex;
-    const b = this.borders[p - 1];
-    const d = this.distI[i] / 10;
-    return d > this.off[(p - 1) * BORDER_AXES.length + j] ? b.b_index : b.a_index;
+    const b = this.borders[s.pair - 1];
+    return s.d > this.off[(s.pair - 1) * BORDER_AXES.length + j] ? b.b_index : b.a_index;
   }
 
   /** The same answer as a region record. */
@@ -113,12 +153,11 @@ export class BorderField {
    * @returns {{from:number,to:number,t:number}} region indices and the blend between them
    */
   gradeBlendAt(x, z, fallbackIndex) {
-    const i = this._cell(x, z);
-    const p = this.pairU[i];
-    if (!p) return { from: fallbackIndex, to: fallbackIndex, t: 0 };
-    const b = this.borders[p - 1];
-    const d = this.distI[i] / 10;
-    const centre = this._gradeCentre(p - 1);
+    const s = this._sample(x, z);
+    if (!s) return { from: fallbackIndex, to: fallbackIndex, t: 0 };
+    const b = this.borders[s.pair - 1];
+    const d = s.d;
+    const centre = this._gradeCentre(s.pair - 1);
     const half = 48;
     const t = Math.max(0, Math.min(1, (d - (centre - half)) / (half * 2)));
     return { from: b.a_index, to: b.b_index, t };
@@ -184,7 +223,23 @@ export class BorderField {
       let fwd = 0, back = 0;
       for (let s = this.cell; s <= 240; s += this.cell) { if (this._signed(x + g[0] * s, z + g[1] * s, b.index) === null) break; fwd = s; }
       for (let s = this.cell; s <= 240; s += this.cell) { if (this._signed(x - g[0] * s, z - g[1] * s, b.index) === null) break; back = s; }
-      const score = Math.min(fwd, back);
+      // LINEARITY, and it is not a refinement — it is the difference between measuring the world
+      // and measuring the walk. The traverse advances by ARC LENGTH while the axes hand over by
+      // SIGNED DISTANCE, and on a curved or pinched frontier those come apart: a 400 m walk can
+      // cover 40 m of distance, in which case all nine axes appear to cross at the same place and
+      // the border reports itself as a texture swap it is not. One border did exactly that
+      // (`crimson-coast--eastern-rootlands`, stddev 0.00 with correct declared offsets) and
+      // another compressed three axis pairs inside 3 m. So the anchor is chosen where a metre
+      // walked is close to a metre of distance.
+      const reach = Math.min(fwd, back);
+      if (reach < this.cell * 2) continue;
+      const probe = Math.min(80, reach);
+      const dp = this._signed(x + g[0] * probe, z + g[1] * probe, b.index);
+      const dm = this._signed(x - g[0] * probe, z - g[1] * probe, b.index);
+      if (dp === null || dm === null) continue;
+      const linearity = Math.min(1, Math.abs(dp - dm) / (2 * probe));
+      if (linearity < 0.55) continue;
+      const score = reach * linearity;
       if (score > atScore) { atScore = score; at = { x, z }; ux = g[0]; uz = g[1]; }
     }
     if (!at) {
@@ -240,9 +295,9 @@ export class BorderField {
   }
 
   _signed(x, z, borderIndex) {
-    const i = this._cell(x, z);
-    if (this.pairU[i] !== borderIndex + 1) return null;
-    return this.distI[i] / 10;
+    const s = this._sample(x, z);
+    if (!s || s.pair !== borderIndex + 1) return null;
+    return s.d;
   }
 
   /**

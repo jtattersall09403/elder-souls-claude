@@ -16,7 +16,7 @@
     "living_dead": "dead"
   },
   "bed_lufs_target": -26,
-  "crossfade_s": 4.0,
+  "crossfade_s": 4,
   "max_voices": 8,
   "denies": [
     {
@@ -25,13 +25,13 @@
     },
     {
       "class": "standing_water",
-      "why": "RI-WLD10 \u00a77: no standing water."
+      "why": "RI-WLD10 §7: no standing water."
     }
   ],
   "layers": {
     "L1": {
       "id": "l1_rock_flute_chord",
-      "text": "wind through rock flutes \u2014 a REAL AUDIBLE CHORD. The only tonal L1 with a defined pitch set: D3 F3 A3 C4, a D-minor seventh, blown rather than played.",
+      "text": "wind through rock flutes — a REAL AUDIBLE CHORD. The only tonal L1 with a defined pitch set: D3 F3 A3 C4, a D-minor seventh, blown rather than played.",
       "level_db": 0,
       "voices": 1,
       "classes": [
@@ -43,7 +43,7 @@
         "partials_hz": [
           146.83,
           174.61,
-          220.0,
+          220,
           261.63
         ],
         "partial_gains_db": [
@@ -112,8 +112,8 @@
           ],
           "weight": 1,
           "pan": [
-            -1.0,
-            1.0
+            -1,
+            1
           ],
           "synth": {
             "kind": "grain",
@@ -122,7 +122,7 @@
             "filter": {
               "type": "lowpass",
               "hz": 900,
-              "q": 1.0
+              "q": 1
             },
             "env": {
               "attack_s": 0.01,
@@ -140,7 +140,7 @@
     },
     "L4": {
       "id": "l4_hackwing_screams",
-      "text": "hackwing screams with a LONG REVERB TAIL \u2014 the only region with real distance",
+      "text": "hackwing screams with a LONG REVERB TAIL — the only region with real distance",
       "interval_s": [
         48,
         150
@@ -154,8 +154,8 @@
           ],
           "weight": 1,
           "pan": [
-            -1.0,
-            1.0
+            -1,
+            1
           ],
           "reverb_tail_s": 2.6,
           "synth": {
@@ -183,5 +183,7 @@
     }
   },
   "emitters": [],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "bed_gain_db": -9.43,
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
 }

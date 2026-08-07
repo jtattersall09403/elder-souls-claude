@@ -14,7 +14,7 @@
     "living_dead": "living"
   },
   "bed_lufs_target": -25,
-  "crossfade_s": 4.0,
+  "crossfade_s": 4,
   "max_voices": 8,
   "denies": [
     {
@@ -25,7 +25,7 @@
   "layers": {
     "L1": {
       "id": "l1_hive_chord_gradient",
-      "text": "a single sustained insect chord that SHIFTS PITCH WITH DISTANCE TO THE QUEEN \u2014 the only L1 in the game that is a gradient, not a loop",
+      "text": "a single sustained insect chord that SHIFTS PITCH WITH DISTANCE TO THE QUEEN — the only L1 in the game that is a gradient, not a loop",
       "level_db": 0,
       "voices": 1,
       "classes": [
@@ -61,7 +61,7 @@
         "span_m": 700,
         "pitch_cents_near": -420,
         "pitch_cents_far": 260,
-        "note": "RI-AUD03 \u00a7B. The queen is the anchor; the chord flattens as you approach her. A player who has learned it can walk to her with the screen off, which is the S8 no-markers ruling paid for in sound."
+        "note": "RI-AUD03 §B. The queen is the anchor; the chord flattens as you approach her. A player who has learned it can walk to her with the screen off, which is the S8 no-markers ruling paid for in sound."
       }
     },
     "L2": {
@@ -81,13 +81,13 @@
             "filter": {
               "type": "bandpass",
               "hz": 1500,
-              "q": 1.0
+              "q": 1
             },
             "gain_db": -9,
             "width": 0.55,
             "mod": {
               "target": "gain",
-              "lfo_hz": 11.0,
+              "lfo_hz": 11,
               "depth": 0.28
             }
           }
@@ -120,7 +120,7 @@
             "filter": {
               "type": "bandpass",
               "hz": 3400,
-              "q": 7.0
+              "q": 7
             },
             "env": {
               "attack_s": 0.001,
@@ -178,8 +178,8 @@
           ],
           "weight": 1,
           "pan": [
-            -1.0,
-            1.0
+            -1,
+            1
           ],
           "doppler": true,
           "synth": {
@@ -207,5 +207,7 @@
     }
   },
   "emitters": [],
-  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
+  "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md §B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset.",
+  "bed_gain_db": -5.39,
+  "bed_gain_db_note": "Master trim, in dB, that lands this bed on its own bed_lufs_target. Calibrated by measurement (tools/analysis/ambience-render.mjs --calibrate), not guessed. Once written it is a regression fence: change a layer gain and the next render shows the bed off target. The run that writes it and re-measures it is self-fulfilling and proves nothing on its own; the value is in every later run."
 }
