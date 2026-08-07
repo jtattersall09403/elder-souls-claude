@@ -1,0 +1,20 @@
+{
+  "task_id": "W1-04-r2",
+  "title": "Settlements, interiors and the people in them - round 2",
+  "state": "starting",
+  "started_at": "2026-08-07",
+  "next_step": "Read orchestration/INDEX.md, then corpus/90-verdicts/wave1/W1-04-r1.md (the specification).",
+  "spec": "corpus/90-verdicts/wave1/W1-04-r1.md",
+  "prior_round": "W1-04 (FAIL 3.2/10)",
+  "objectives": [
+    "P-blocker: door verbs must reach the renderer cell setter; entering and leaving must change what is drawn",
+    "Fix own consumption tool so it reads the renderer (it currently passes 13/13 without doing so)",
+    "113/115 interiors resolve to one generic hall - give interiors distinct geometry",
+    "Interior props/lights/containers/unique items have zero consumers - wire them",
+    "Schedules: NPCs must actually move position, be outdoors, stand on streets"
+  ],
+  "do_not_rederive": ["ownership", "locks", "shop hours"],
+  "files_touched": [],
+  "files_claimed": [],
+  "notes": []
+}
