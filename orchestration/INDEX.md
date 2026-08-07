@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `bfa9e4a`: 485 tools, 153 reference
+so it cannot drift. Generated at `d5b9bb1`: 485 tools, 153 reference
 items, 26 pieces in flight.
 
 Its purpose is to stop 26+ concurrent agents each paying separately to discover the
@@ -763,10 +763,10 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-06-r3` | done | DONE. If a successor picks this up: the amendment (reports/w1-06/AMENDMENT-W1-06-02-projec | `game/src/engine.js` `game/src/sim/camera.js` `tools/camera/cam-projectpoint-fix.mjs` `tools/camera/cam-projectpoint-r3-shot.mjs` `reports/w1-06/AMENDMENT-W1-06-02-projectPoint.md` `reports/w1-06/cam-projectpoint-r3-shot.json` |
 | `W1-18-r2` | done | hand to a critic. NOT DONE and not faked: 73 demanded reveals still have no route. The mai | `orchestration/status/W1-18-r2.json` `game/src/sim/quest/reveal-routes.js` `game/src/sim/quest/machine.js` `game/src/engine.js` `game/data/quests/faction-imperial-assize.json` `game/data/quests/faction-wet-ledger.json` |
 | `W1-13-r4` | running | run w1-13-r4-clock-consequences.mjs; fix env/souls award clock landed | `orchestration/status/W1-13-r4.json` `game/src/sim/environment.js` `game/src/sim/souls.js` `tools/harness/w1-13-r4-clock-consequences.mjs` |
 | `W1-04-r2` | measuring | 1. sim.applyCell hook: door verbs reach _applyCell (deferred to _afterStep, outside the ar | — |
-| `W1-06-r3` | in_progress | 1) read engine.js camera()/projectPoint(), sim/camera.js project()/viewBasis()/basisAt() t | — |
 | `critic-w1-13-r3` | done | none — verdict delivered | `orchestration/status/critic-w1-13-r3.json` `tools/harness/critic-w1-13-r3.mjs` `tools/harness/critic-w1-13-r3-shot.mjs` `corpus/90-verdicts/wave1/W1-13-r3.md` `corpus/90-verdicts/wave1/artifacts/W1-13-r3/` |
 | `W1-23-r2` | ? | none — round complete. A round-3 critic should re-run tools/lore/critic-w1-23-r1.mjs (or a | `corpus/60-lore/data/canon-facts.json` `game/data/lore/canon.json` `game/data/dialogue/topics/40-race-gated.json` `game/data/dialogue/topics/70-disputes.json` `game/data/factions/argonian-tribes.json` `tools/lore/build-canon.mjs` |
 | `W1-06` | partial | SUPERSEDED by successor4_log below and by orchestration/status/W1-06-r2.json (the live thr | `game/src/sim/camera.js` `corpus/80-methods/m-cam01-rig.mjs` `corpus/80-methods/m-cam03-lockon-framing.mjs` `corpus/80-methods/m-cam04-locked-movement.mjs` `corpus/80-methods/m-cam05-world-camera.mjs` `corpus/80-methods/m-cam06-feel.mjs` |

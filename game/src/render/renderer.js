@@ -13,7 +13,7 @@
 import * as THREE from '../../vendor/three/three.module.js';
 const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 import { buildScene, makeActor, terrainHeight } from './scene.js';
-import { buildInterior, clearInterior } from './interior.js';
+import { buildInterior, clearInterior, buildGenericHall } from './interior.js';
 import { makeRiggedActor, poseFromRig, poseStatic } from './actor.js';
 import { Sky, WEATHER } from './sky.js';
 import { Province } from '../world/province.js';
@@ -206,11 +206,16 @@ export class Renderer {
    */
   setInteriorRecord(rec) {
     const id = rec && rec.id ? String(rec.id) : null;
-    // No record — a state file or a census staging naming a cell the settlement table has never
-    // heard of. Leave whatever is in the group standing. On a cold boot that is `scene.js`'s
-    // firelit hall, which is exactly the behaviour this replaced, so an unknown id is no worse
-    // off than it was; it is simply not improved.
-    if (!id) return this.interiorSummary || null;
+    // No record — a state file naming a cell no interior claims (`cistern`, `stairwell`: W1-06's
+    // camera fixtures). Put the generic hall back rather than leaving the last room the player
+    // walked into standing there under another cell's name.
+    if (!id) {
+      if (this.interiorId === null) return this.interiorSummary || null;   // already the hall
+      this.interiorId = null; this.interiorRecord = null;
+      clearInterior(this.cells.interior);
+      this.interiorSummary = buildGenericHall(this.cells.interior);
+      return this.interiorSummary;
+    }
     if (id === this.interiorId) return this.interiorSummary;
     this.interiorId = id;
     this.interiorRecord = rec;
@@ -397,14 +402,34 @@ export class Renderer {
    *     province at 51°.
    *
    * So the bloom was drawn at the bottom of the tussocks. Its knot stands 0.37 m over its origin
-   * and its ground halo 0.035 m, against 0.34 m of drawn relief that the placement cannot see —
-   * which is why it read from **1 of 8** bearings in daylight at 12 m and 3 of 8 in the dark at
-   * 6 m, and why the ones it read from were a function of bearing: the line of sight from an eye
-   * 1.6 m up, 12 m away, grazes several metres of sedge dome on the way in.
+   * and its ground halo 0.035 m, against 0.34 m of drawn relief that the placement cannot see.
    *
    * The sapwell basins had the same defect and are lifted by the same call. Collision is
    * untouched: this changes only where a thing is DRAWN, which is the same decision
    * `Province._placeSite()` and the ground-cover instancing already made.
+   *
+   * ---------------------------------------------------------------------------------------------
+   * WHAT THIS CHANGE IS *NOT* THE FIX FOR. Corrected in W1-13 round 4, and it was my claim.
+   * ---------------------------------------------------------------------------------------------
+   *
+   * This comment used to say the lift and the hum below are why the bloom read from 1 of 8
+   * bearings in daylight. **They are not.** The round-3 critic ran the two arms round 3 wrote and
+   * left switched off (`tools/harness/w1-13-r3-bloom-sight.mjs`, `--arms pre-r3-render,eye-only`)
+   * and the answer is unambiguous:
+   *
+   *   - `pre-r3-render` — this lift and the hum both DELETED, shot with the corrected camera —
+   *     still reads **8/8 daylight and 8/8 dark**. The change buys **ZERO bearings**.
+   *   - `eye-only` — the camera's 0.19 m eye correction alone, this renderer change absent —
+   *     also reads 8/8 + 8/8. **The bearings came from the camera and from nothing else.** The
+   *     old camera was not buried under the ground; it was 19 cm too low and therefore inside a
+   *     boulder.
+   *
+   * What the lift and the hum DO buy is margin, and that is worth having rather than pretending
+   * about: the worst daylight bearing goes from **193 px** over the detector's control to
+   * **874 px**, and the dark band from 285–4,100 to 16,310–27,134 — a 4–7x multiplication.
+   * 193 px is 153 px over the check's 40 px threshold, which is a sighting that would not survive
+   * much fog or much distance. So `jrn06-death.mjs m_d14` now scores `min_margin_px` against a
+   * floor as well as counting bearings, because a bearing count cannot see this at all.
    */
   _drawnGroundY(x, z, fallbackY) {
     const p = this.province;

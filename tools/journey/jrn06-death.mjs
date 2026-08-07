@@ -1533,6 +1533,25 @@ async function surfaceAndVisibilityShots(h, ctx) {
     daylight_12m_visible: `${day.filter((v) => v.visible).length}/${day.length}`,
     dark_6m_visible: `${night.filter((v) => v.visible).length}/${night.length}`,
     margin_px: MARGIN,
+    // ---- W1-13 round 4: MARGIN AS A SCORED QUANTITY, not only a bearing count ----------------
+    //
+    // The round-3 critic ran the two arms round 3 wrote and left switched off, and they say the
+    // renderer half of round 3's bloom work — `renderer.js _drawnGroundY` + the 1.9 m hum — buys
+    // ZERO BEARINGS. Deleting it still reads 8/8 daylight and 8/8 dark. What it buys is MARGIN:
+    // the worst daylight bearing goes 193 px -> 874 px and the dark band 285-4,100 -> 16,310-27,134.
+    // A bearing count cannot see a 4-7x change and therefore cannot defend it, which is how a
+    // renderer change came to be documented as the fix for a visibility gap it does not fix.
+    //
+    // So the floors are scored. 400 px daylight is over twice the 193 px the pre-round-3 bloom
+    // manages and five times the 40 px detection threshold; 2,000 px dark is under the 16,310 the
+    // shipped bloom's worst dark bearing reads and well over the 4,100 the pre-round-3 one does.
+    // Deleting the renderer change now turns this row RED instead of leaving it green.
+    min_margin_px_daylight: day.length ? Math.min(...day.map((v) => v.margin)) : null,
+    min_margin_px_dark: night.length ? Math.min(...night.map((v) => v.margin)) : null,
+    margin_floor_daylight_px: 400,
+    margin_floor_dark_px: 2000,
+    margin_floors_met: (day.length ? Math.min(...day.map((v) => v.margin)) : 0) >= 400
+      && (night.length ? Math.min(...night.map((v) => v.margin)) : 0) >= 2000,
     null_control_bloom_removed_from_the_world: nullViews.length === 8,
     null_control_why_not: nullViews.length === 8 ? null
       : 'the bloom was still in the world after two attempts to drink it, so the null control '
@@ -1549,7 +1568,9 @@ async function surfaceAndVisibilityShots(h, ctx) {
     pass: day.length === 8 && night.length === 8
       && day.every((v) => v.visible) && night.every((v) => v.visible)
       && views.every((v) => v.aimed_at_the_drawn_bloom)
-      && nullSilent,
+      && nullSilent
+      && (day.length ? Math.min(...day.map((v) => v.margin)) : 0) >= 400
+      && (night.length ? Math.min(...night.map((v) => v.margin)) : 0) >= 2000,
     control_note: 'Two controls, not one. (1) Each viewpoint is shot twice — at the bloom and '
       + 'turned 180 deg away — so a detector firing on the marsh shows as a non-zero control, and '
       + 'a sighting now needs ' + MARGIN + ' px over it rather than the single pixel that used to '
@@ -1565,9 +1586,12 @@ async function surfaceAndVisibilityShots(h, ctx) {
       + 'at the ground under the bloom rather than at the bloom. '
       + 'old_eye_above_observer_ground_m is that camera\'s height over the ground the observer is '
       + 'standing on, per bearing; it runs 1.35-1.71 m in bloom-sight.json, which REFUTES the '
-      + '"the eye was buried" explanation this correction was first offered with. Which of the two '
-      + 'remaining differences — ~0.25 m of eye height, 0.8 m of aim — loses the bloom is NOT '
-      + 'established here and is not claimed.',
+      + '"the eye was buried" explanation this correction was first offered with. W1-13 ROUND 4: '
+      + 'the 2x2 that settles the remaining question HAS now been run (the round-3 critic ran the '
+      + 'arms round 3 left switched off). IT IS THE EYE. 0.19 m of eye height buys all six missing '
+      + 'bearings in both conditions; the 0.8 m of aim buys ZERO — aim-only reads 2/8 and 3/8, '
+      + 'exactly as-placed, and eye-only reads 8/8 and 8/8, exactly the shipped camera. The old '
+      + 'camera was not under the ground, it was inside a boulder.',
   };
   await h.h('setRenderRate', 0);
   return { surface, visibility };

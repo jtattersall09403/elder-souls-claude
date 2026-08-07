@@ -102,8 +102,31 @@ function mixHex(a, b, t) {
   return (r << 16) | (g << 8) | bl;
 }
 
-/** The materials for one room. Built per room and disposed with it. */
+/**
+ * THE PALETTE IS CACHED, AND THE REASON IS A HITCH ON EVERY DOOR.
+ *
+ * A `MeshStandardMaterial` is a shader program the first time it is drawn, and building a fresh
+ * set per room means every doorway in the game pays a program compile. Measured while writing
+ * this: a sweep of all 115 rooms went from seconds to minutes, and what a probe feels as a slow
+ * sweep the player feels as a stall on the threshold — the same class of defect as W1-01's
+ * 133.8 ms ground-skin frame, arriving at the exact moment the player presses a button.
+ *
+ * A palette is a pure function of `(interior_kind, settlement)`, so there are at most eleven
+ * kinds times eight towns of them and in practice about forty. They are cached for the life of
+ * the renderer and NOT disposed with the room; `clearInterior()` frees geometry only.
+ */
+const PALETTE_CACHE = new Map();
+
 function paletteFor(rec) {
+  const key = `${rec.interior_kind || '?'}|${rec.settlement || '?'}`;
+  const hit = PALETTE_CACHE.get(key);
+  if (hit) return hit;
+  const made = makePalette(rec);
+  PALETTE_CACHE.set(key, made);
+  return made;
+}
+
+function makePalette(rec) {
   const base = KIND_PALETTE[rec.interior_kind] || DEFAULT_PALETTE;
   const town = TOWN_TINT[rec.settlement] || { tint: 0x000000, mix: 0 };
   const c = (k) => mixHex(base[k], town.tint, town.mix);
@@ -650,16 +673,49 @@ export function buildInterior(root, rec) {
   return summary;
 }
 
-/** Free everything a previous room allocated. Called before the next one is built. */
+/**
+ * THE GENERIC HALL, kept on purpose.
+ *
+ * `scene.js buildHall()` is what every one of the 113 unnamed interiors used to be, and this is
+ * a copy of it. It is still needed, because `sim.env.interior` has writers other than the door:
+ * `game/data/states/cam_cistern.json` sets it to `"cistern"` and `cam_stair.json` to
+ * `"stairwell"`, and neither is an id the settlement table has ever heard of — they are W1-06's
+ * camera fixtures. Without this, loading one of those states after visiting a real interior
+ * would photograph the last room the player was in, which is the same class of defect as the
+ * one this round exists to remove, only pointing the other way.
+ *
+ * So an unknown id gets the hall back, deterministically, rather than whatever was there.
+ */
+export function buildGenericHall(root) {
+  const P = paletteFor({ interior_kind: 'hall', settlement: null, id: 'generic' });
+  const floor = box(12, 0.3, 18, P.floor); floor.position.y = -0.15; floor.receiveShadow = true; root.add(floor);
+  for (const [w, h, d, px, py, pz] of [[12, 4.4, 0.35, 0, 2.2, -9], [12, 4.4, 0.35, 0, 2.2, 9], [0.35, 4.4, 18, -6, 2.2, 0], [0.35, 4.4, 18, 6, 2.2, 0]]) {
+    part(root, box(w, h, d, P.wall), px, py, pz);
+  }
+  const ceiling = box(12, 0.3, 18, P.roof); ceiling.position.y = 4.4; root.add(ceiling);
+  for (let i = 0; i < 5; i++) part(root, box(12, 0.34, 0.34, P.wood), 0, 4.05, -7 + i * 3.5);
+  const hearth = cyl(1.0, 1.15, 0.5, 12, P.stone); hearth.position.set(0, 0.25, 3.0); hearth.receiveShadow = true; root.add(hearth);
+  const fire = ico(0.45, 1, P.flame); fire.position.set(0, 0.72, 3.0); root.add(fire);
+  const light = new THREE.PointLight(0xffa050, 26, 26, 2);
+  light.position.set(0, 1.0, 3.0);
+  light.castShadow = true; light.shadow.mapSize.set(512, 512); light.shadow.bias = -0.004;
+  root.add(light);
+  for (let i = 0; i < 6; i++) part(root, box(1.2, 0.8, 2.8, P.wall), -3.4 + (i % 3) * 3.4, 0.4, -5.5 + Math.floor(i / 3) * 2.4);
+  part(root, box(1.4, 2.2, 1.2, P.wood), 0, 1.1, 7.4);
+  return { id: null, generic: true, note: 'scene.js buildHall(), for a cell id no interior record claims' };
+}
+
+/**
+ * Free everything a previous room allocated. Called before the next one is built.
+ *
+ * GEOMETRY ONLY. The materials belong to `PALETTE_CACHE` and are shared by every room of the
+ * same kind in the same town — disposing them here would free a program that the next room is
+ * about to need and put the compile back that the cache exists to remove. Forty-odd materials
+ * held for the life of the renderer is the whole cost.
+ */
 export function clearInterior(root) {
   const dead = [];
   root.traverse((o) => { if (o !== root) dead.push(o); });
-  for (const o of dead) {
-    if (o.geometry) o.geometry.dispose();
-    if (o.material) {
-      const ms = Array.isArray(o.material) ? o.material : [o.material];
-      for (const m of ms) if (m && m.dispose) m.dispose();
-    }
-  }
+  for (const o of dead) if (o.geometry) o.geometry.dispose();
   root.clear();
 }

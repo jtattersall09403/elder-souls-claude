@@ -120,7 +120,7 @@ const M8_ARM = async ({ rest, restsInRow, tag }) => {
       const roster = {};
       for (const n of (H.whereIsEveryone() || [])) roster[n.eid] = n.at;
       let book = null;
-      try { book = H.questBook(); } catch (e) { book = null; }
+      try { book = eng.questEngine ? eng.questEngine.report() : null; } catch (e) { book = null; }
       return {
         label,
         hour: env.time_of_day !== undefined ? env.time_of_day : env.timeOfDay,
@@ -133,7 +133,7 @@ const M8_ARM = async ({ rest, restsInRow, tag }) => {
         shops_total: Object.keys(shops).length,
         roster,
         roster_n: Object.keys(roster).length,
-        journal_date: book && (book.today || (book.journal && book.journal.today)) || null,
+        journal_date: (book && book.today) || null,
       };
     };
 
@@ -213,7 +213,7 @@ const DEADLINE_ARM = async () => {
   const r = {};
   try {
     H.loadState('default'); H.setRenderRate(0); H.stepFrames(2);
-    const qm = eng.quests;
+    const qm = eng.questEngine;
     r.deadlines_declared_in_shipped_content = (qm.deadlines || []).length;
 
     const wells = (H.listHearths().hearths || []);
@@ -222,15 +222,36 @@ const DEADLINE_ARM = async () => {
     H.setTimeOfDay(17.0); H.stepFrames(4);
 
     // Open a real quest so there is a record with an `opened_day` on it.
-    const offers = H.questOffers ? H.questOffers() : null;
-    const qid = (qm.defs && [...qm.defs.keys()][0]) || null;
+    // Open a real quest if one will open here. Most will not: `open()` carries W1-19's giver
+    // presence term and the giver has to be standing in the world. Whichever way it goes, the
+    // record is REPORTED rather than assumed, because the point of this arm is to tell "the
+    // deadline model is wrong" apart from "the deadline model has no caller".
+    const ids = H.questBook() || [];
+    let qid = null, opened = null;
+    for (const id of ids.slice(0, 40)) {
+      let res = null;
+      try { res = H.questOpen(id); } catch (e) { res = { ok: false, reason: String(e) }; }
+      if (res && res.ok) { qid = id; opened = res; break; }
+      if (!r.first_refusal) r.first_refusal = { quest: id, reason: res && res.reason };
+    }
     r.quest = qid;
-    if (qid) { try { H.questOpen(qid); } catch (e) { r.open_note = String(e); } }
+    r.opened_by_the_world = !!opened;
     H.stepFrames(2);
-    const rec = qm.rec ? qm.rec(qid) : null;
+    let rec = qid ? qm.rec(qid) : null;
+    if (!qid) {
+      // No quest in this state will open through the world's own gate. The deadline model still
+      // has to be exercised, so the record is BUILT BY HAND and labelled as such — this arm is
+      // then a statement about `onDay()` and nothing else.
+      qid = ids[0];
+      r.quest = qid;
+      rec = qm.rec(qid, true);
+      rec.opened = true;
+      rec.flags['opened_day'] = Math.floor(eng.sim.env.dayCount || 0);
+      r.record_built_by_hand = true;
+    }
     r.opened_day = rec && rec.flags ? rec.flags['opened_day'] : null;
     r.day_before = Math.floor(eng.sim.env.dayCount || 0);
-    r.journal_date_before = (qm.book ? qm.book().today : null);
+    r.journal_date_before = qm.report().today;
 
     // Install a ONE-DAY deadline on it. This is the shape `hooks.json` declares and never fills.
     qm.deadlines.push({ quest: qid, days: 1, failure: null });
@@ -238,13 +259,13 @@ const DEADLINE_ARM = async () => {
     // Four rests: 24 hours, one whole day.
     for (let i = 0; i < 4; i++) { H.restAt(well.id); H.stepFrames(4); }
     r.day_after = Math.floor(eng.sim.env.dayCount || 0);
-    r.journal_date_after = (qm.book ? qm.book().today : null);
+    r.journal_date_after = qm.report().today;
     r.days_consumed_by_four_rests = r.day_after - r.day_before;
 
     // Now call the consumer BY HAND, because the world never does.
     const fired = qm.onDay(r.day_after) || [];
     r.on_day_fired = fired.length;
-    r.quest_closed_after_on_day = qm.isClosed ? !!qm.isClosed(qid) : null;
+    r.quest_closed_after_on_day = !!qm.isClosed(qid);
     r.the_model_works = fired.length > 0;
     return r;
   } catch (e) {
@@ -356,10 +377,17 @@ try {
     const four = await h.page.evaluate(M8_ARM, { rest: true, restsInRow: 4, tag: 'rest4' });
     const deadline = await h.page.evaluate(DEADLINE_ARM);
 
-    const c1 = Math.abs(rested.after.hour - 23) < 1e-3;
+    // The rest itself is the assertion; the 12 frames this arm steps around its own readings are
+    // 11 seconds of game time and are not the rest. Both are reported, and both are asserted:
+    // every rest moved the clock EXACTLY six hours, and the clock afterwards READS 23:00 to
+    // within 36 seconds of game time.
+    const restsExactly6h = rested.rest_returns.length > 0
+      && rested.rest_returns.every((x) => x.hours === 6);
+    const c1 = Math.abs(rested.after.hour - 23) < 0.01 && restsExactly6h;
     const c2 = rested.npcs_moved_n > 0 && control.npcs_moved_n === 0;
     const c3 = rested.shops_closed_n > 0 && control.shops_closed_n === 0;
-    const c5 = Math.abs(four.hours_moved - 24) < 1e-3 && four.days_moved === 1;
+    const fourExactly6h = four.rest_returns.length === 4 && four.rest_returns.every((x) => x.hours === 6);
+    const c5 = Math.abs(four.hours_moved - 24) < 0.02 && four.days_moved === 1 && fourExactly6h;
     const c6 = four.shop_state_identical && four.roster_identical;
     const c7 = rested.souls_ratio !== null && Math.abs(rested.souls_ratio - 1.35) < 0.02
       && control.souls_ratio === 1;
@@ -368,7 +396,10 @@ try {
       method: 'RI-PRG04 Comparison method 8, verbatim, with the rest removed as the control arm.',
       rested, control, four_rests: four, deadline,
       clauses: {
-        'c1_clock_reads_23_00': { pass: c1, got: rested.after.hour, control: control.after.hour },
+        'c1_clock_reads_23_00': {
+          pass: c1, got: rested.after.hour, control: control.after.hour,
+          rest_moved_exactly_6h: restsExactly6h, rest_returns: rested.rest_returns,
+        },
         'c2_night_roster_active': {
           pass: c2, npcs_moved: rested.npcs_moved_n, control_npcs_moved: control.npcs_moved_n,
           examples: rested.npcs_moved_by_the_rest.slice(0, 5),
@@ -405,6 +436,7 @@ try {
         'c5_four_rests_advance_24h': {
           pass: c5, hours: four.hours_moved, days: four.days_moved,
           from: four.before.hour, to: four.after.hour,
+          every_rest_exactly_6h: fourExactly6h, rest_returns: four.rest_returns,
         },
         'c6_same_shop_state_after_the_round_trip': {
           pass: c6, shops_changed: four.shops_closed_n + four.shops_opened_by_the_rest.length,
