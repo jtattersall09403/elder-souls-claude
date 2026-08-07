@@ -2,7 +2,7 @@
   "task_id": "W1-FACTIONS-r2",
   "brief": "corpus/90-verdicts/wave1/W1-FACTIONS-r1.md",
   "started": "wave-1 round 2",
-  "state": "building",
+  "state": "complete",
   "outputs_expected": [
     "engine fix: quest resolve() offer gate (GAP-FCT-01, machine.js:540)",
     "re-verified probe claims after engine fix",
@@ -26,7 +26,15 @@
     "game/data/quests/faction-imperial-assize.json (+8: Q-ASSZ-09..16)",
     "game/data/quests/faction-xul-aneekh.json (+9: Q-XULA-02 and Q-XULA-09..16)",
     "game/data/dialogue/topics/50-factions.json (+9 topic bodies)",
-    "game/data/quests/hooks.json (+26 entry_topics, +3 refusal consequence edges)"
+    "game/data/quests/hooks.json (+26 entry_topics, +3 refusal consequence edges)",
+    "game/data/progression/faction-discipline.json (RI-QST03 \u00a7D expulsion + readmission)",
+    "game/src/sim/quest/machine.js (expulsion into ctx.locked; QuestEngine.readmit())",
+    "game/src/engine.js (Engine.syncFactionStandings() \u2014 the world's writer for the guard ladder's faction term)",
+    "game/data/crime/sanction.json (standing_ids map)",
+    "game/src/harness/api.js (factionDiscipline, factionReadmit, syncFactionStandings, questTopicsKnown)",
+    "tools/quests/faction-seam-probe.mjs + reports/faction-seam-probe.json (15/15)",
+    "corpus/30-quests/RI-QST02-*.md (D6 method defect filed)",
+    "corpus/30-quests/FACTION-ROSTER-DESIGN.md \u00a78 rewritten"
   ],
   "findings": [
     "contention at start: pgrep headless_shell=12, loadavg 12.36 - authoring/code phase first, browser later",
@@ -39,8 +47,13 @@
     "P16 is the surprise: the reputation grant in the walk NEVER FIRES now. Round 1's setFactionStanding calls were only ever needed because the walk was refusing quests (and refusals pay little). Playing for the seat pays the ladder by itself.",
     "VOLUME: all three lines are now 18 quests, mean 2.250 per rank, 2 hidden (found/overheard) each. Both RI-QST01 hard fails (quests-per-line < 18, mean-per-rank < 2.0) are cleared. Q-XULA-02, which did not exist anywhere, is written.",
     "THE REFUSAL NO LONGER CAPS THE LADDER. res_refuse / res_refuse_hulen / res_tell_the_hollow now each raise a *_refused flag; a hooks.json adds_topics edge turns it into a topic; the topic opens a NEW rank-6 quest (Q-LEDG-14 / Q-ASSZ-14 / Q-XULA-13) that vacates the same seat by a different mechanism - a two-house clause in the articles, an expired prefect's commission, four unasked fourth-days. All three routes are non-violent and none needs the player to have said yes.",
-    "check-data 505 files, check-quests 120 quests, check-content 382 resolutions, boot-check PASS after all of it."
+    "check-data 505 files, check-quests 120 quests, check-content 382 resolutions, boot-check PASS after all of it.",
+    "AR-3 WAS HALF-BUILT AND NOBODY COULD SEE IT. RI-CRM02 \u00a75 factionLawFactor is implemented in sim/crime/justice.js and reads sim.stealth.p.standings, which is initialised {} and had EXACTLY ONE WRITER in the whole build: __HARNESS.setFactionStandings(). The arrest threshold moved for a probe and never for a player. Engine.syncFactionStandings() derives it from the quest system's own context().ranks through a map in sanction.json, every step. Measured live at a fixed bounty of 500: no faction arrest_at 405 band 2; Wet Ledger arrest_at 506 band 1 (greeting_only); Xul-Aneekh arrest_at 263 band 2. Control: reputation 300 with member:false moves nothing.",
+    "factionLawFactor DECLARED table spread is 5.33x (RI-CRM02 target 5.3x, hard fail < 2x). The spread REACHABLE in the probe's short setup was 1.92x because it only reached derived ranks 1-2; the extreme rows (ninth-cohort 4+, xul-aneekh 4+) are in the table and were not walked to. Reported as two different numbers on purpose.",
+    "EXPULSION IS LIVE AND IT BIT MY OWN WALK, which is the best evidence it is consumed. The first re-run of faction-probe went 9/16 on two lines because the chooser picked res_publish_the_rooms and res_to_the_assize - both excellent endings, both a career ending. The chooser now avoids declared expulsion causes for the line it is walking; those endings are exercised on purpose in faction-seam-probe instead.",
+    "MY OWN INSTRUMENT READ ITS OWN POKE TWICE. faction-seam-probe section D measures whether a REFUSAL seeds the second-route topic; section B's control raises ledger_first_chair_refused, and topics are permanent, so D saw known=true before it started. Fixed by moving D to the top of the probe, not by relaxing the check.",
+    "FINAL: faction-probe 16/16 on all three lines at 18 quests each - rank 7, 18/18 non-violent, 0 flags poked, 0 reputation writes, every questOpen through the gate. faction-seam-probe 15/15. critic-faction-gate-bypass 6/6."
   ],
-  "next_step": "Q-XULA-01 mouth (D6), rank-7 deceit on Q-LEDG-08/Q-XULA-08, D6 game-wide count, factionLawFactor, expulsion/readmission, re-run probes",
-  "notes_for_successor": ""
+  "next_step": "none \u2014 a critic should re-run: node tools/quests/faction-probe.mjs --line <id>, node tools/quests/faction-seam-probe.mjs, node tools/quests/critic-faction-gate-bypass.mjs",
+  "notes_for_successor": "THE LARGEST REMAINING GAP IS RI-CRM02: 1 of 27 sanctioned-murder writ quests, 1 of 4 sanctioning authorities (the ku-vastei Ruling is the highest-value single addition), 0 of 4 favour_owed call-ins. Untouched this round and declared in FACTION-ROSTER-DESIGN \u00a78. Also still open, none of it mine: 11 quests carry deceit with no reveal flagged before_point_of_no_return and all 11 are magic-piece quests (Q-MAG-02/04/05/06/07/13/16/18/19/24 and Q-MAIN-32); D6 is 8/25 = 32%, above the 30% floor but only because I fixed Q-XULA-01 - 17 of the 17 remaining failures are magic quests. DO NOT regenerate hooks.json. faction-gates.json IS generated and its attribute column reads reports/faction-signature-sweep.json. One thing I did NOT do and a critic should: the walk uses a single character signature (saxhleel/lukiul/ledger-hand/raj-xul). The round-1 verdict warns about best-case signatures; a sweep of the 18-quest lines across many signatures has not been run. The refuser's route is proven by construction and by S12-S14 (the flag seeds the topic, the topic opens the quest, the quest's endings vacate the seat non-violently) but NOT by an end-to-end walk that refuses at rank 6 and then reaches rank 7 - faction-probe has no --refuse mode. That is the cheapest remaining measurement."
 }

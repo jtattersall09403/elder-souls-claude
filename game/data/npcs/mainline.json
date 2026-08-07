@@ -31,7 +31,40 @@
         "greeting": "You will be the one off the customs bench. Sit down where I can see the stair."
       },
       "reaction_group": "RG-COURT",
-      "actor": "mudborn"
+      "actor": "mudborn",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-court-steps",
+        "at_building_name": "The Drowned Court Steps",
+        "pos": [
+          631.56,
+          7.91,
+          4888.01
+        ],
+        "yaw": 66,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from soulrest-court-steps's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "soulrest-grey-hist",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "soulrest-grey-hist"
     },
     {
       "id": "undersexton-bel-mourne",
@@ -51,7 +84,40 @@
         "greeting": "Come down before the tide or not at all, and come down alone."
       },
       "reaction_group": "RG-COURT",
-      "actor": "mudborn"
+      "actor": "mudborn",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-court-steps",
+        "at_building_name": "The Drowned Court Steps",
+        "pos": [
+          633.08,
+          7.91,
+          4886.2
+        ],
+        "yaw": 66,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from soulrest-court-steps's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "soulrest-grey-hist",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "soulrest-grey-hist"
     },
     {
       "id": "ledgerer-hosk-vei",
@@ -72,7 +138,40 @@
         "greeting": "Thirty years and none have read past the sixth volume. Wedge the door behind you."
       },
       "reaction_group": "RG-COURT",
-      "actor": "archivist"
+      "actor": "archivist",
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-court-steps",
+        "at_building_name": "The Drowned Court Steps",
+        "pos": [
+          631.91,
+          7.91,
+          4888.11
+        ],
+        "yaw": 66,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from soulrest-court-steps's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "soulrest-grey-hist",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "soulrest-grey-hist"
     },
     {
       "id": "ojal-weeth",
@@ -204,7 +303,40 @@
         "greeting": "You walk slowly for a courier. I noticed that four days ago."
       },
       "reaction_group": "RG-LEDGER",
-      "actor": "clerk"
+      "actor": "clerk",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-grange",
+        "at_building_name": "The Grange",
+        "pos": [
+          403.55,
+          2.72,
+          2905.18
+        ],
+        "yaw": 258,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from gideon-grange's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "gideon-inn"
     },
     {
       "id": "gideon-quay-porter",
@@ -241,7 +373,17 @@
         "greeting": "Whose count are you carrying?"
       },
       "reaction_group": "RG-ROOT",
-      "actor": "rootkeeper"
+      "actor": "rootkeeper",
+      "post": {
+        "site": "stone-wastes-count",
+        "pos": [
+          -2.9,
+          0,
+          1.2
+        ],
+        "yaw": 120,
+        "note": "Not a townsperson. This person is at a named site their own quests declare; see game/data/states/stone-wastes-count.json."
+      }
     },
     {
       "id": "bone-ladder-carter",
@@ -282,7 +424,40 @@
         "greeting": "I cut wells for money and I don't pretend otherwise. So what does the Court say we've done?"
       },
       "reaction_group": "RG-VAKH",
-      "actor": "sapcutter"
+      "actor": "sapcutter",
+      "post": {
+        "settlement": "blackrose",
+        "at_building": "blackrose-shrine",
+        "at_building_name": "The Lime-Pit Hist-Shrine",
+        "pos": [
+          1885.56,
+          2.68,
+          4436
+        ],
+        "yaw": 234,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from blackrose-shrine's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "blackrose-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "blackrose-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "blackrose-inn"
     },
     {
       "id": "blackrose-yard-hands",
@@ -321,7 +496,40 @@
         "greeting": "The manifests are public. A hundred and fifty says you would rather not read them in public."
       },
       "reaction_group": "RG-LEDGER",
-      "actor": "clerk"
+      "actor": "clerk",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-guild-office",
+        "at_building_name": "The Dyers’ Guild Office",
+        "pos": [
+          3786.34,
+          3.42,
+          3787.06
+        ],
+        "yaw": 180,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from archon-guild-office's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "archon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "archon-inn"
     },
     {
       "id": "archon-crane-crew",
@@ -379,7 +587,40 @@
         "greeting": "I do not care about your tide. I care what sixty hands under an Imperial writ does to the price of stock."
       },
       "reaction_group": "RG-DRES",
-      "actor": "dres-factor"
+      "actor": "dres-factor",
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-vat-house",
+        "at_building_name": "The Great Vat House",
+        "pos": [
+          3815.99,
+          3.42,
+          3843.5
+        ],
+        "yaw": 57,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from archon-vat-house's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "archon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "archon-inn"
     },
     {
       "id": "rootkeeper-ashul-tei",
@@ -399,7 +640,40 @@
         "greeting": "The roots said you were coming. Come without the Court's mark and do not write in my gallery."
       },
       "reaction_group": "RG-ROOT",
-      "actor": "rootkeeper"
+      "actor": "rootkeeper",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-undertemple",
+        "at_building_name": "The Undertemple",
+        "pos": [
+          2298.07,
+          27.22,
+          2779.91
+        ],
+        "yaw": 79,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from helstrom-undertemple's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "helstrom-hollow-bole"
     },
     {
       "id": "helstrom-gallery-keepers",
@@ -417,7 +691,40 @@
         "greeting": "The coast is a wound and wounds are cut out."
       },
       "reaction_group": "RG-ROOT",
-      "actor": "rootkeeper"
+      "actor": "rootkeeper",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-undertemple",
+        "at_building_name": "The Undertemple",
+        "pos": [
+          2297.79,
+          27.22,
+          2780.43
+        ],
+        "yaw": 79,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from helstrom-undertemple's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "helstrom-hollow-bole"
     },
     {
       "id": "rootkeeper-sesh-anaat",
@@ -437,7 +744,40 @@
         "greeting": "The tree has asked for you. Trees do not do this."
       },
       "reaction_group": "RG-ROOT",
-      "actor": "rootkeeper"
+      "actor": "rootkeeper",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-sapwell",
+        "at_building_name": "The Thorn Sapwell",
+        "pos": [
+          3824.71,
+          13.31,
+          877.75
+        ],
+        "yaw": 13,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from thorn-sapwell's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "thorn-hall",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "thorn-hall",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "thorn-hall"
     },
     {
       "id": "factor-ruvela-sath",
@@ -458,7 +798,40 @@
         "greeting": "The compact does not vote on theology and will not be asked to."
       },
       "reaction_group": "RG-LEDGER",
-      "actor": "clerk"
+      "actor": "clerk",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-grange",
+        "at_building_name": "The Grange",
+        "pos": [
+          403,
+          2.72,
+          2905.45
+        ],
+        "yaw": 258,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from gideon-grange's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "gideon-inn"
     },
     {
       "id": "prefect-galvus-arn",
@@ -477,7 +850,40 @@
         "greeting": "A writ of works normally requires four things. You have none of them. Sit down anyway."
       },
       "reaction_group": "RG-EMPIRE",
-      "actor": "legionary"
+      "actor": "legionary",
+      "post": {
+        "settlement": "stormhold",
+        "at_building": "stormhold-praetorium",
+        "at_building_name": "The Praetorium",
+        "pos": [
+          2218.5,
+          141.12,
+          771.04
+        ],
+        "yaw": 79,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from stormhold-praetorium's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "stormhold-inn-pass",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "stormhold-inn-pass",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "stormhold-inn-pass"
     },
     {
       "id": "dockmaster-weeja-sen",
@@ -496,7 +902,40 @@
         "greeting": "Sixty hands. I have already been told what the work is. Tell me again and we will see which of you is lying."
       },
       "reaction_group": "RG-TOWN",
-      "actor": "townsman"
+      "actor": "townsman",
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-customs",
+        "at_building_name": "The Customs Hall",
+        "pos": [
+          2800.86,
+          0.37,
+          5027.81
+        ],
+        "yaw": 90,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from lilmoth-customs's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "lilmoth-inn-drowned"
     },
     {
       "id": "lilmoth-rootkeepers",
@@ -658,7 +1097,17 @@
         "greeting": "I wrote that letter. Is Ashul-Tei well? Sit down; we have time."
       },
       "reaction_group": "RG-DEEP",
-      "actor": "rootkeeper"
+      "actor": "rootkeeper",
+      "post": {
+        "site": "stone-wastes-count",
+        "pos": [
+          2.6,
+          0,
+          3.4
+        ],
+        "yaw": 190,
+        "note": "Not a townsperson. This person is at a named site their own quests declare; see game/data/states/stone-wastes-count.json."
+      }
     },
     {
       "id": "npc-sesh-weth",
@@ -732,5 +1181,6 @@
       "actor": "townsman"
     }
   ],
-  "reaction_group_note": "W1-07 round 4. The group is the FACTION the person belongs to read as a social body, except where the person's own trade reads differently: a rootkeeper of the Xul-Aneekh is RG-ROOT (a well-keeper, wherever they draw their pay) rather than RG-DEEP, and the intake keepers of the gallery are RG-DEEP because the gallery is the interior's own. The Drowned Court maps to RG-COURT, the one all-zero row in the 12x10 matrix — which is why ten of the thirty-two main-quest stages are race-blind by authorship rather than by exemption."
+  "reaction_group_note": "W1-07 round 4. The group is the FACTION the person belongs to read as a social body, except where the person's own trade reads differently: a rootkeeper of the Xul-Aneekh is RG-ROOT (a well-keeper, wherever they draw their pay) rather than RG-DEEP, and the intake keepers of the gallery are RG-DEEP because the gallery is the interior's own. The Drowned Court maps to RG-COURT, the one all-zero row in the 12x10 matrix — which is why ten of the thirty-two main-quest stages are race-blind by authorship rather than by exemption.",
+  "giver_posts_note": "Some records in this file carry a `post` block and a `schedule` written by tools/world/build-giver-posts.mjs. Re-run it after moving a settlement; do not hand-edit `post`."
 }

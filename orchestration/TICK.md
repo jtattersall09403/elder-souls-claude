@@ -30,6 +30,27 @@ If `boot-check` is red, find the call site that landed ahead of its method and g
 site* with a note to remove the guard. Do not wait: every agent boot-checks, so a broken engine is
 not one agent's problem, it is all of them.
 
+## 2a. The floor — this is the part that makes it stick
+
+> Owner, verbatim: *"I want you to **always** be **absolutely maximising** our compute use and
+> running **as much in parallel simultaneously as is absolutely possible**… as long as you **do**
+> achieve it, and it **sticks**."*
+
+**Never fewer than 12 agents running.** Of those, **up to 8 may be browser-heavy**; the rest must be
+work that needs no browser, and there is always some. If the count is below 12, dispatching is the
+first thing you do — before writing a reply, before reading the next result.
+
+Two things make this achievable rather than aspirational:
+
+- **A browser is the only scarce thing.** Authoring, corpus work, data audits, tool building,
+  prose, judging, planning and blogging all cost nothing but thinking. The 8 is a real ceiling; the
+  12 is a floor with no ceiling above it.
+- **Every piece splits.** If nothing is ready to dispatch, that is a queue failure, not a capacity
+  one. Take any piece and separate its authoring half from its verification half — the authoring
+  half needs no browser and can start immediately.
+
+Never "wait for results before starting more". Results arrive continuously; the box does not care.
+
 ## 3. Top up, in this order of preference
 
 1. **A critic owed a piece that has reported.** A finished builder with no critic dispatched is the

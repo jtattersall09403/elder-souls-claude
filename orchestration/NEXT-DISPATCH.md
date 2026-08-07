@@ -1,5 +1,36 @@
 # Next dispatches, in priority order
 
+## P. The playable build — when the owner gets to have a go
+
+> Owner: *"once the game is 'playable' in some way (i.e. I could have a go at running it in the
+> browser, go through the new game flow, and walk around the world to the different regions at
+> least) I want to be able to have a go at it. I **do not** want anything to be gated on that or
+> dependent on me doing any testing."*
+
+Nothing waits on the owner and nothing is asked of them. This is a gift, not a test. The moment the
+gate below is met, **write `README.md` at the repo root** — how to run it, what to expect, what is
+known to be broken, and what is simply not built yet — and tell them.
+
+**The gate. All six, each proven by a critic who did not build it:**
+
+1. **It starts.** Clone, one command, a browser window, a character, a world. No harness verbs, no
+   probe, no flags.
+2. **The new-game flow plays as a scene** — W1-26 is at 1.3/10 today and is the lowest score in the
+   project. This is the binding one.
+3. **The controls are drawn.** W1-08/W1-29 found them "correctly laid out and drawn nowhere". A
+   player who cannot see the controls has not been given a game.
+4. **You can walk between regions and the ground is there.** Met — the province streams from the
+   fixed step, a walked crossing is 6,615 m with zero samples missing ground. Residual: a 133.8 ms
+   worst frame.
+5. **A fight is survivable and a level is spendable.** The hearth opens; **souls have no source**,
+   so the loop does not close yet. Dispatched.
+6. **An unassisted play session by a fresh critic** — start to a first quest to a first fight to a
+   first level, driven only through input, nothing set by a harness verb, with the session recorded
+   as frames. If a critic cannot play it, the owner cannot either.
+
+Do **not** hold this until wave 1 passes. The bar is "a person can have a go and it is recognisably
+the game", not "it is good". Everything else keeps running while this is assembled.
+
 The orchestration tick reads this before choosing what to start. Delete a line when it is dispatched
 and its status file exists. Respect the concurrency cap in `AGENT-PROTOCOL.md` — six or seven agents
 doing browser work, no more; the cap exists because fourteen agents on four cores cost a builder its

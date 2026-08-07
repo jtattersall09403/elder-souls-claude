@@ -188,6 +188,19 @@ try {
       const fx = (H.factionGates().factions || []).find((f) => f.id === LINE) || {};
       for (const row of fx.ranks || []) if (row && row.world_state && row.world_state.flag) LADDER_FLAGS.add(row.world_state.flag);
     }
+    // W1-FACTIONS r2, found by this probe going red on two lines the moment expulsion shipped.
+    // RI-QST03 §D expulsion is now a live consumer: an ending that hands the house's own papers
+    // to its rival raises a flag that closes the whole line. The round-2 chooser was picking
+    // `res_publish_the_rooms` and `res_to_the_assize` — both excellent endings, both a career
+    // ending — and then reporting the ladder unreachable. A player walking a CAREER does not take
+    // those, so neither does the walk. They are still reachable, still authored, and the seam
+    // probe (tools/quests/faction-seam-probe.mjs) is where they are exercised on purpose.
+    const EXPELS = new Set();
+    for (const row of (H.factionDiscipline().declared || [])) {
+      if (row.faction !== LINE) continue;
+      for (const f of row.expelled_by || []) EXPELS.add(f);
+    }
+    res.expulsion_causes_avoided_by_the_walk = [...EXPELS];
     const flagsUp = () => new Set(H.questWorldFlags());
     function finish(id) {
       const rows = H.questResolutions(id) || [];
@@ -202,7 +215,9 @@ try {
       const wanted = (rid) => ((gives.get(rid) || {}).world_flags || []).filter((f) => LADDER_FLAGS.has(f) && !up.has(f)).length;
       // Prefer, in order: no violence (never); an ending that advances the ladder; one already
       // available; the cheapest to become able to do.
+      const expels = (rid) => ((gives.get(rid) || {}).world_flags || []).some((f) => EXPELS.has(f));
       const rank = (row) => (row.violence_required || needs.get(row.id).violence_required ? 100000 : 0)
+        + (expels(row.id) ? 50000 : 0)
         + (wanted(row.id) ? 0 : 20000)
         + (row.available ? 0 : 1000)
         + cost(needs.get(row.id));
@@ -236,6 +251,7 @@ try {
           quest: id, resolution: row.id, method: need.method,
           violence_required: !!(row.violence_required || need.violence_required),
           ladder_flags_raised: ((gives.get(row.id) || {}).world_flags || []).filter((f) => LADDER_FLAGS.has(f)),
+          would_have_been_expelled: expels(row.id),
           paid_for: Object.keys(need).filter((k) => k !== 'method' && k !== 'journal_index' && k !== 'violence_required'),
         });
         return done && (done.resolution || row.id);

@@ -458,7 +458,10 @@ export class Conversation {
       greeting_key: this.greeting ? [this.greeting.reaction_group, this.greeting.disposition_band, this.greeting.player_race_class] : null,
       said: this.said ? this.said.text : null,
       said_topic: this.said ? this.said.topic : null,
-      topics: this.list.map((t) => ({ id: t.id, text: t.text, gated: t.gated })),
+      // `root` is carried through because a reader has to be able to tell the nine words the
+      // character was GIVEN from the subjects this particular person advertises — they are
+      // offered by different rules and a probe that cannot separate them cannot measure either.
+      topics: this.list.map((t) => ({ id: t.id, text: t.text, gated: t.gated, root: !!t.root })),
       selected: this.sel,
     };
   }

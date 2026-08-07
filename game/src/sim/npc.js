@@ -76,6 +76,17 @@ export function makeNPC(spec) {
     // read by nothing — `makeNPC` did not even copy the field. Copying it is the smaller half;
     // `stepSchedule()` below is the half that makes a person go home.
     schedule: normaliseSchedule(spec.schedule),
+    // ---- W1-GIVER-PRESENCE: the street. ------------------------------------------------------
+    // GAP-W1-quest-givers-not-in-the-world. A quest giver stands OUTSIDE, at a post derived from
+    // a real building's door in their own town (`tools/world/build-giver-posts.mjs`). That is a
+    // third kind of place, and the schedule model only had two: a named cell, or `null`.
+    //
+    // `null` already meant "present wherever the player is", which is right for a scenario NPC a
+    // state file put in the room by hand and wrong for somebody standing in a market square —
+    // without this field a posted person would be visible inside every locked cellar in the
+    // province. So `post` is what turns `at: null` from *everywhere* into *outdoors*, and it
+    // changes nothing for the 336 records that do not carry one.
+    post: spec.post || null,
     home_interior: spec.home_interior || spec.interior || null,
     work_interior: spec.work_interior || spec.interior || null,
     owns_zones: (spec.owns_zones || []).slice(),
@@ -150,7 +161,15 @@ export function stepSchedule(sim, n, bus) {
   // Presence. `sim.env.interior` is the cell the player is standing in; a person whose day has
   // them somewhere else is not in the room with you, and `visible` is what the renderer and
   // every perception cast read.
-  const here = n.at === null || n.at === sim.env.interior;
+  // W1-GIVER-PRESENCE. Three cases, not two. `at` names a cell -> you are in that cell. `at` is
+  // null and the person has a POST -> they are outdoors, so they are in the world when the player
+  // is too and not otherwise. `at` is null and they have no post -> the old meaning, kept
+  // verbatim: a scenario NPC a state file placed by hand is wherever the scene is.
+  // A post with a `settlement` is a spot on that town's street; a post with a `site` is a named
+  // place that is not a town at all (the hollow above the sap-line), and the only thing that ever
+  // spawns one of those is the state file that names the site — so it keeps the old meaning.
+  const here = n.at !== null ? n.at === sim.env.interior
+    : (n.post && n.post.settlement ? sim.env.interior === null : true);
   if (here !== n.present) {
     n.present = here;
     n.visible = here;

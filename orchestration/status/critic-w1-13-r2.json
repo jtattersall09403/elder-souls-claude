@@ -1,18 +1,25 @@
 {
-  "task_id": "critic-w1-13-r2",
-  "brief": "critic with fresh context, W1-13 round 2",
-  "started": "2026-08-07",
-  "state": "researching",
-  "outputs_expected": [
-    "corpus/90-verdicts/wave1/W1-13-r2.md",
-    "corpus/90-verdicts/wave1/W1-13-r2.json",
-    "docs/shots/<dated>.png",
-    "reports/blog-feed.jsonl (one appended line)"
-  ],
-  "outputs_written": [],
-  "findings": [
-    "start: pgrep -c headless_shell = 12, loadavg 9.85 -- ABOVE the binding cap of 8. Doing read/analyse phase first per AGENT-PROTOCOL."
-  ],
-  "next_step": "read TOOL-LOOP.md, ARBITRATION.md s3, RI-MTH04, W1-13-r1.md, status/W1-13-r2.json",
-  "notes_for_successor": "Attack order from brief: (1) run the jrn06 aggregation the builder could not, (2) audit the journey's own screen-open refusal by breaking it, and check sibling journeys in tools/journey/, (3) sweep for more constant-printed counts, (4) two purses fenceSell->sim.stealth.p.gold vs save sim.progression.gold, (5) respawn drift 0.00m at 6/6 - fix moved body or measurement?, (6) re-derive 2 CONSUMPTION couplings, (7) M-D5 world-side consumer of named-NPC guarantee."
+ "task_id": "critic-w1-13-r2",
+ "brief": "critic with fresh context, W1-13 round 2",
+ "started": "2026-08-07",
+ "state": "researching",
+ "outputs_expected": [
+  "corpus/90-verdicts/wave1/W1-13-r2.md",
+  "corpus/90-verdicts/wave1/W1-13-r2.json",
+  "docs/shots/<dated>.png",
+  "reports/blog-feed.jsonl (one appended line)"
+ ],
+ "outputs_written": [],
+ "findings": [
+  "start: pgrep -c headless_shell = 12, loadavg 9.85 -- ABOVE the binding cap of 8. Doing read/analyse phase first per AGENT-PROTOCOL.",
+  "READ-PHASE F1 (STRONG, needs live confirm): _spendSouls(attrId) in game/src/engine.js:3345 does prog.attributes[attrId] = (prog.attributes[attrId] || 10) + 1 with NO validation. The level-up screen's row list is game/data/progression/attributes.json (TEN ids: strength endurance agility speed vigour willpower intellect hist-bond personality luck). The DEFAULT character (sim/state.js:214) has SIX and they are Souls names: vigour endurance strength dexterity intelligence faith. So dexterity/intelligence/faith are NOT on the screen and cannot be raised, while 7 of the 10 rows show a constant 10 for an attribute the character does not have, and confirming one MINTS it at 11.",
+  "READ-PHASE F2: the builder's own headline artifact reports_runs/W1-13-R2/levelling-loop.json shows this happening: hearth-archon raised endurance (real), hearth-lilmoth raised AGILITY (new key), hearth-gideon raised SPEED (new key). Two of the three demonstration spends bought an attribute the character did not have, and both were scored pass:true with souls_matches_cost:true.",
+  "READ-PHASE F3: consumers of progression.attributes by NAME across game/src: derivePools() reads vigour/endurance/willpower/strength only; character/reaction.js reads personality; engine.js:1945 reads personality+luck; quest/gate.js reads faction favoured_attributes and quest requires.attributes. faction-gates.json names agility/endurance/hist-bond/intellect/personality/strength/willpower; quest requires name strength/hist-bond/personality/willpower/intellect. SPEED IS NAMED BY NOTHING - no pool, no reaction, no faction gate, no quest requirement. Souls spent on speed buy a level number and nothing else.",
+  "READ-PHASE F4: game/data/states/*.json declare 18 spawn entries and ZERO of them carry any of the six S5 classification flags. The 'world can write it in DATA' route the builder added (engine.js:661-667) has no user in shipped data. The statblock route (2 bosses) and the hearths.json fog_gates[].boss route ARE real.",
+  "READ-PHASE F5: M-D1's constants ARE fixed (trials_* are now rows.length - failLeg.length). population_* remaining as rows.length is legitimate.",
+  "READ-PHASE F6: journey-run.mjs:986-990 calls led.ok('m_jrn06_summary', ...) UNCONDITIONALLY, even when runJrn06 returned early with unmeasurable:true. On an unmeasurable run the summary line still reads [OK] with checks:{}. The refusal is recorded in the ledger but the summary surface a human reads still says OK.",
+  "READ-PHASE F7: TREE IS DIRTY. Another agent is mid-edit on game/src/harness/api.js (adds factionDiscipline/factionReadmit) plus tools/analysis/build-viability.mjs and tools/harness/w1-26-opening.mjs. Per RI-MTH04 'How we lose' #5 every measurement I take is on a dirty tree and must be declared. Note the new code introduces a THIRD gold holder: engine.magic.gold, mirrored from sim.progression.gold."
+ ],
+ "next_step": "browser phase: boot-check, then jrn06 aggregation, gate falsification, two-purse drive, drift, consumption re-derive, levelup attribute vocabulary live probe",
+ "notes_for_successor": "Attack order from brief: (1) run the jrn06 aggregation the builder could not, (2) audit the journey's own screen-open refusal by breaking it, and check sibling journeys in tools/journey/, (3) sweep for more constant-printed counts, (4) two purses fenceSell->sim.stealth.p.gold vs save sim.progression.gold, (5) respawn drift 0.00m at 6/6 - fix moved body or measurement?, (6) re-derive 2 CONSUMPTION couplings, (7) M-D5 world-side consumer of named-NPC guarantee."
 }

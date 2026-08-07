@@ -4,22 +4,23 @@
   "owner": "W1-07 — character creation / race and standing",
   "title": "The market square at Helstrom. RI-CHR02 method 7 loads this: three player configurations, one 60 g healing draught, three different prices, and a merchant standing behind each of them.",
   "env": {
-    "timeOfDay": 11.0,
+    "timeOfDay": 11,
     "weather": "clear",
     "region": "rootlands",
-    "interior": "helstrom-market"
+    "interior": "helstrom-market",
+    "settlement": "helstrom"
   },
   "player": {
     "pos": [
       0,
       0,
-      -3.0
+      -3
     ],
-    "yaw": 0.0
+    "yaw": 0
   },
   "camera": {
-    "yaw": 0.0,
-    "pitch": -6.0,
+    "yaw": 0,
+    "pitch": -6,
     "mode": "free"
   },
   "npcs": [
@@ -99,9 +100,10 @@
     "endurance": 20,
     "hpMax": 620,
     "armourPoise": 28,
-    "equipLoadPct": 24.0,
+    "equipLoadPct": 24,
     "flaskLevel": 0,
     "estus": 5,
     "gold": 600
-  }
+  },
+  "settlement_note": "W1-GIVER-PRESENCE: this state named a cell and a region but never its town, so Engine.applyNamedState() had nothing to hand populateSettlement() and the state held only the people its `npcs:` block types out by hand. Naming the town is what makes the rest of it exist."
 }

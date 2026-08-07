@@ -36,7 +36,40 @@
       "services": [],
       "lines": {
         "greeting": "Mind the run-off. It takes the colour out of boots and it does not come back."
-      }
+      },
+      "post": {
+        "settlement": "archon",
+        "at_building": "archon-vat-house",
+        "at_building_name": "The Great Vat House",
+        "pos": [
+          3817.12,
+          3.42,
+          3842.5
+        ],
+        "yaw": 57,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from archon-vat-house's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "archon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "archon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "archon-inn"
     },
     {
       "id": "undertaker-vaskh",
@@ -57,7 +90,40 @@
       "services": [],
       "lines": {
         "greeting": "Everyone comes down this yard eventually and the fee is the same for all of you."
-      }
+      },
+      "post": {
+        "settlement": "soulrest",
+        "at_building": "soulrest-court-steps",
+        "at_building_name": "The Drowned Court Steps",
+        "pos": [
+          632.25,
+          7.91,
+          4887.26
+        ],
+        "yaw": 66,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from soulrest-court-steps's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "soulrest-grey-hist",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "soulrest-grey-hist",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "soulrest-grey-hist"
     },
     {
       "id": "prefect-hallow",
@@ -78,7 +144,40 @@
       "services": [],
       "lines": {
         "greeting": "The lease is up in seven months and no clerk in Cyrodiil has read the clause. Sit."
-      }
+      },
+      "post": {
+        "settlement": "blackrose",
+        "at_building": "blackrose-prison",
+        "at_building_name": "Blackrose Prison",
+        "pos": [
+          1863.4,
+          2.68,
+          4436.27
+        ],
+        "yaw": 252,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from blackrose-prison's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "blackrose-prison",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "blackrose-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "blackrose-prison"
     },
     {
       "id": "quartermaster-sedd",
@@ -101,7 +200,40 @@
       ],
       "lines": {
         "greeting": "Stores gate. If you are not carrying a chit you are carrying an excuse."
-      }
+      },
+      "post": {
+        "settlement": "stormhold",
+        "at_building": "stormhold-archive",
+        "at_building_name": "The Cohort Archive",
+        "pos": [
+          2136.12,
+          141.12,
+          729.87
+        ],
+        "yaw": 229,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from stormhold-archive's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "stormhold-inn-pass",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "stormhold-inn-pass",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "stormhold-inn-pass"
     },
     {
       "id": "harbourmistress-tesh",
@@ -122,7 +254,40 @@
       "services": [],
       "lines": {
         "greeting": "Everything on this wharf is declared. That is not the same as everything being true."
-      }
+      },
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-customs",
+        "at_building_name": "The Customs Hall",
+        "pos": [
+          2800.35,
+          0.37,
+          5028.79
+        ],
+        "yaw": 90,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from lilmoth-customs's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "lilmoth-customs",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "lilmoth-customs"
     },
     {
       "id": "cutter-neeth",
@@ -144,7 +309,40 @@
       ],
       "lines": {
         "greeting": "Up the outside stair. The room over the sap-house, and do not touch the phials on the sill."
-      }
+      },
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-apothecary",
+        "at_building_name": "Sap and Simples",
+        "pos": [
+          2287.05,
+          27.22,
+          2837.29
+        ],
+        "yaw": 21,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from helstrom-apothecary's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "helstrom-hollow-bole"
     },
     {
       "id": "factor-belliene",
@@ -167,7 +365,40 @@
       ],
       "lines": {
         "greeting": "The counting floor is above the toll gate, which tells you everything about the arithmetic."
-      }
+      },
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-grange",
+        "at_building_name": "The Grange",
+        "pos": [
+          402.53,
+          2.72,
+          2907.02
+        ],
+        "yaw": 258,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from gideon-grange's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "gideon-inn"
     },
     {
       "id": "npc-porter-eeja",
@@ -187,7 +418,40 @@
       "services": [],
       "lines": {
         "greeting": "Eleven gold a week and the crane takes a finger off a man every winter."
-      }
+      },
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-court",
+        "at_building_name": "The County Court",
+        "pos": [
+          452.97,
+          2.72,
+          2920.83
+        ],
+        "yaw": 60,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from gideon-court's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "gideon-inn"
     },
     {
       "id": "speaker-teel-ashaan",
@@ -208,6 +472,16 @@
       "services": [],
       "lines": {
         "greeting": "You walked a day east on the root track to be told a number. Sit where the water is shallow."
+      },
+      "post": {
+        "site": "rootlands-hollow",
+        "pos": [
+          4.2,
+          0,
+          1.6
+        ],
+        "yaw": 200,
+        "note": "Not a townsperson. This person is at a named site their own quests declare; see game/data/states/rootlands-hollow.json."
       }
     },
     {
@@ -228,7 +502,40 @@
       "services": [],
       "lines": {
         "greeting": "They seized the hull and left the yard the debt. That is the whole of it."
-      }
+      },
+      "post": {
+        "settlement": "lilmoth",
+        "at_building": "lilmoth-yard",
+        "at_building_name": "The Wet Yard",
+        "pos": [
+          2798.95,
+          7.37,
+          5035.19
+        ],
+        "yaw": 79,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from lilmoth-yard's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "lilmoth-yard",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "lilmoth-inn-drowned",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "lilmoth-yard"
     },
     {
       "id": "fence-ashul",
@@ -250,7 +557,40 @@
       ],
       "lines": {
         "greeting": "Low market. Nothing here has a provenance and nothing here has a warranty."
-      }
+      },
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-lowmarket",
+        "at_building_name": "The Low Market",
+        "pos": [
+          424.87,
+          2.72,
+          2905.86
+        ],
+        "yaw": 240,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from gideon-lowmarket's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-lowmarket",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "gideon-lowmarket"
     },
     {
       "id": "widow-ineel",
@@ -271,7 +611,40 @@
       "lines": {
         "greeting": "The stilts hold. It is the wreck under them that does not."
       },
-      "settlement_note": "W1-19 round 2 gen 3: was `thornmarsh`, which is not a settlement — game/data/world/settlements/ has eight and thornmarsh is not one of them. RumourBook.pick() and RoadBook.forNpc() both key on this string, so this person could never tell you what the town was saying or the way out of it. Thornmarsh is the stilt district of Thorn."
+      "settlement_note": "W1-19 round 2 gen 3: was `thornmarsh`, which is not a settlement — game/data/world/settlements/ has eight and thornmarsh is not one of them. RumourBook.pick() and RoadBook.forNpc() both key on this string, so this person could never tell you what the town was saying or the way out of it. Thornmarsh is the stilt district of Thorn.",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-apothecary",
+        "at_building_name": "The Needle Apothecary",
+        "pos": [
+          3827.63,
+          13.31,
+          869.71
+        ],
+        "yaw": 39,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from thorn-apothecary's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "thorn-hall",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "thorn-hall",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "thorn-hall"
     },
     {
       "id": "rootkeeper-jeen",
@@ -292,7 +665,40 @@
       "services": [],
       "lines": {
         "greeting": "The shelf is older than the temple over it and it is counted every year without fail."
-      }
+      },
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-undertemple",
+        "at_building_name": "The Undertemple",
+        "pos": [
+          2297.75,
+          27.22,
+          2779.03
+        ],
+        "yaw": 79,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from helstrom-undertemple's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-undertemple",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "helstrom-undertemple"
     },
     {
       "id": "xul-aneekh-speaker",
@@ -312,6 +718,16 @@
       "services": [],
       "lines": {
         "greeting": "The conclave sits when the water is low. You have come at the water being low."
+      },
+      "post": {
+        "site": "rootlands-hollow",
+        "pos": [
+          -3.4,
+          0,
+          3.1
+        ],
+        "yaw": 150,
+        "note": "Not a townsperson. This person is at a named site their own quests declare; see game/data/states/rootlands-hollow.json."
       }
     },
     {
@@ -333,7 +749,40 @@
       "services": [],
       "lines": {
         "greeting": "Quietly. The floor above is the Assize and the floor below is damp."
-      }
+      },
+      "post": {
+        "settlement": "stormhold",
+        "at_building": "stormhold-archive",
+        "at_building_name": "The Cohort Archive",
+        "pos": [
+          2137.06,
+          141.12,
+          729.02
+        ],
+        "yaw": 229,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from stormhold-archive's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "stormhold-archive",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "stormhold-inn-pass",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "stormhold-archive"
     },
     {
       "id": "assizer-corvo",
@@ -354,7 +803,40 @@
       "services": [],
       "lines": {
         "greeting": "A witness is a person who will still say it tomorrow. Are you a witness?"
-      }
+      },
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-court",
+        "at_building_name": "The County Court",
+        "pos": [
+          452.77,
+          2.72,
+          2921.27
+        ],
+        "yaw": 60,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from gideon-court's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-court",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "gideon-court"
     },
     {
       "id": "herbwife-ossa",
@@ -377,7 +859,40 @@
       "lines": {
         "greeting": "Rot house is the third stilt along. Do not breathe through your mouth in it."
       },
-      "settlement_note": "W1-19 round 2 gen 3: was `thornmarsh`, which is not a settlement — game/data/world/settlements/ has eight and thornmarsh is not one of them. RumourBook.pick() and RoadBook.forNpc() both key on this string, so this person could never tell you what the town was saying or the way out of it. Thornmarsh is the stilt district of Thorn."
+      "settlement_note": "W1-19 round 2 gen 3: was `thornmarsh`, which is not a settlement — game/data/world/settlements/ has eight and thornmarsh is not one of them. RumourBook.pick() and RoadBook.forNpc() both key on this string, so this person could never tell you what the town was saying or the way out of it. Thornmarsh is the stilt district of Thorn.",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-apothecary",
+        "at_building_name": "The Needle Apothecary",
+        "pos": [
+          3826.89,
+          13.31,
+          869.83
+        ],
+        "yaw": 39,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from thorn-apothecary's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "thorn-hall",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "thorn-hall",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "thorn-hall"
     },
     {
       "id": "innkeeper-veth",
@@ -399,7 +914,40 @@
       ],
       "lines": {
         "greeting": "Two brothers, one bed, and neither of them has paid. Sit anywhere but there."
-      }
+      },
+      "post": {
+        "settlement": "blackrose",
+        "at_building": "blackrose-inn",
+        "at_building_name": "The Visitors’ House",
+        "pos": [
+          1863.74,
+          2.68,
+          4454.67
+        ],
+        "yaw": 276,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from blackrose-inn's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "blackrose-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "blackrose-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "blackrose-inn"
     },
     {
       "id": "potter-mek",
@@ -409,7 +957,7 @@
       "class": "potter",
       "faction": null,
       "reaction_group": "RG-DEEP",
-      "settlement": null,
+      "settlement": "gideon",
       "interior": null,
       "disposition": 40,
       "topics": [
@@ -421,7 +969,42 @@
       ],
       "lines": {
         "greeting": "The kiln draws wrong since the flues cracked and everything comes out the colour of ash."
-      }
+      },
+      "settlement_note": "W1-GIVER-PRESENCE: Q-MAG-26 declares this person at gideon-lowmarket; the record carried settlement:null, which RumourBook and RoadBook both read as \"answers nothing\".",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-lowmarket",
+        "at_building_name": "The Low Market",
+        "pos": [
+          424.94,
+          2.72,
+          2906.08
+        ],
+        "yaw": 240,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from gideon-lowmarket's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "gideon-inn"
     }
-  ]
+  ],
+  "giver_posts_note": "Some records in this file carry a `post` block and a `schedule` written by tools/world/build-giver-posts.mjs. Re-run it after moving a settlement; do not hand-edit `post`."
 }

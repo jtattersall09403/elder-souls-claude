@@ -2,7 +2,7 @@
   "task_id": "W1-SOULS",
   "brief": "souls economy: souls have no source; wire kill-award, verify levelling loop end-to-end",
   "started": "wave-1",
-  "state": "researching",
+  "state": "designing",
   "outputs_expected": [
     "game/src/** kill-award soul source",
     "tools/** soul economy instrument (breakable)",
@@ -12,8 +12,14 @@
   ],
   "outputs_written": [],
   "findings": [
-    "START: pgrep -c headless_shell = 12, loadavg 11.27 10.19 8.22 -- ABOVE the cap of 8. Doing design+data phase first with no browser."
+    "START: pgrep -c headless_shell = 12, loadavg 11.27 10.19 8.22 -- ABOVE the cap of 8. Doing design+data phase first with no browser.",
+    "RI-PRG06 is a complete yield spec: R1 12,665 souls / 93 enemies = 136 souls per average R1 trash kill; bands R1 trash 35-190, miniboss 700-900, boss 3000. Night x1.35 (21:00-05:00). Quests pay ZERO souls. No level scaling (S9).",
+    "RI-PRG01 curve is SHIPPED and correct: game/data/progression/levels.json, 139 rows, cost(n)=round(0.015n^3+2n^2+55n+300); engine.soulsToNextLevel() reads it and falls back to the formula past 140. cost(2)=418.",
+    "SHIPPED ENEMY ROSTER IS 7 FIGHTABLE + 16 PROPS, not 576. game/data/combat/enemies/*.json. No `souls` field on any of them. Props are hp=99999 DUMMY/FIXTURE -> MUST yield 0 or a training dummy is an infinite farm.",
+    "ONLY 9 ENEMIES ARE PLACED IN THE WORLD (game/data/world/encounters.json: dres-raid-party 6x inf_trash, deep-kin-war-brood 3x inf_trash). So RI-PRG06 method 1 (world-total -> L93) CANNOT be asserted; a fail-closed world-budget assertion would be a fail-closed assertion before its data exists. Per-kill anchoring only.",
+    "Death sites are plural: combat/resolve.js killed() (weapon), combat/player.js _critDamage (backstab/riposte), sim/combat-bridge.js spell damage, sim/hazards.js. A single award site must be a POST-STEP transition scan (!dead -> dead), not a hook in one of them.",
+    "regions.json carries danger_tier 1..5 per region (western-rootlands=1). inf_trash is placed in the tier-1 region -> it is the R1 baseline trash anchor."
   ],
-  "next_step": "read RI-PRG01/02/04 and ARBITRATION S2/S6",
+  "next_step": "design souls-per-kill derivation; check world clock for night x1.35; check hearth level-up path",
   "notes_for_successor": ""
 }

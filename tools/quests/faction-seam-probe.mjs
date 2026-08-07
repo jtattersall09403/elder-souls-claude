@@ -48,6 +48,33 @@ try {
     const H = window.__HARNESS; H.setRenderRate(0); const R = {};
     H.setCharacter({ race: 'saxhleel', upbringing: 'lukiul', class: 'ledger-hand', birthsign: 'raj-xul' });
 
+    // ---- D. THE REFUSER'S ROUTE — path_to_ten #6. RUNS FIRST, and that is not cosmetic:
+    // topics are permanent, and section B's own control raises `ledger_first_chair_refused`,
+    // which seeds "the second refusal" through the exact edge this section exists to measure.
+    // The probe read its own poke twice before this section was moved to the top. ---------------------------------------------
+    // Round 1: refusing at rank 6 capped the ladder at 6 forever, because the rank-7 gate's
+    // world_state term is the vacancy and the refusal is the one ending that does not create it.
+    // The route out is authored as `discovery: "consequence"`: the refusal raises a flag, a
+    // hooks.json adds_topics edge turns the flag into a topic, and the topic is the only way in
+    // to a second rank-6 quest that empties the seat by a different mechanism. Nothing here pokes
+    // a topic; the point is that the WORLD seeds it.
+    const D = {};
+    for (const [flag, topic, quest, faction] of [
+      ['ledger_first_chair_refused', 'the-second-refusal', 'Q-LEDG-14', 'the_wet_ledger'],
+      ['assize_prefect_refused', 'the-removal-that-is-not-one', 'Q-ASSZ-14', 'the_imperial_assize'],
+      ['deepkin_speaker_refused', 'the-fourth-silence', 'Q-XULA-13', 'the_xul_aneekh'],
+    ]) {
+      H.questSetFlag(flag, false);
+      const before = { known: H.questTopicsKnown().includes(topic), why: (H.questOffers().find((o) => o.id === quest) || {}).why };
+      H.questSetFlag(flag, true);
+      const after = { known: H.questTopicsKnown().includes(topic), why: (H.questOffers().find((o) => o.id === quest) || {}).why };
+      // and what that quest's endings actually do, read off the shipped data through the engine.
+      const vacates = H.questEndings(quest).filter((e) => (e.world_flags || []).some((f) => /_vacant$/.test(f)));
+      D[faction] = { flag, topic, quest, before, after,
+        vacating_endings: vacates.map((e) => ({ id: e.id, method: e.method, violence_required: e.violence_required, flags: e.world_flags })) };
+    }
+    R.d_refusers_route = D;
+
     // ---- A. THE GUARD LADDER ---------------------------------------------------------------
     // Bounty held constant at 500 throughout. Only the standing moves.
     const band = () => H.getGuardBand({ bounty: 500 });
@@ -83,6 +110,11 @@ try {
     // learned first, and the gate is then left to refuse or permit on its own terms.
     const ledgerIds = H.questBook().filter((id) => { try { const d = H.questDef(id); return d.rank_gate && d.rank_gate.faction === 'the_wet_ledger'; } catch (e) { return false; } });
     for (const id of ledgerIds) {
+      // ...except the second-route quest. Section D below measures whether the WORLD seeds
+      // "the second refusal" off the refusal flag, and a topic learned here would already be
+      // known when D starts — the probe would be reading its own poke. Topics are permanent, so
+      // this cannot be undone once done; it has to be not done.
+      if (id === 'Q-LEDG-14') continue;   // section D already measured it; see the note there
       const d = H.questDef(id);
       for (const t of [d.opens_by && d.opens_by.topic, ...((d.opens_by && d.opens_by.prerequisite_topics) || [])]) {
         if (t) { try { H.learnTopic(t); } catch (e) { /* not a topic this build knows */ } }
@@ -121,6 +153,7 @@ try {
     R.c_offerable_after_paying = ledgerOffers().filter((o) => o.offerable).map((o) => o.id);
     // CONTROL: a faction that never expelled you cannot be readmitted to.
     R.c_control_not_expelled = H.factionReadmit('the_imperial_assize');
+
     return R;
   });
 
@@ -155,7 +188,18 @@ try {
     `paid ${r.c_gold_spent} gold, reputation ${r.c_paid && r.c_paid.reputation_after}, expelled now ${JSON.stringify(r.c_expelled_after_paying)}, ${(r.c_offerable_after_paying || []).length} Wet Ledger quests offerable again`);
   check('S11_CONTROL_cannot_be_readmitted_where_you_were_never_expelled', r.c_control_not_expelled && r.c_control_not_expelled.ok === false,
     `factionReadmit on a faction that never threw you out -> ${JSON.stringify(r.c_control_not_expelled)}`);
-  check('S12_page_errors_zero', perr.length === 0, `${perr.length} page errors${perr.length ? `: ${perr.join(' | ')}` : ''}`);
+  const D = r.d_refusers_route || {};
+  const rows = Object.values(D);
+  check('S12_the_refusal_seeds_the_topic_and_nothing_else_does',
+    rows.length === 3 && rows.every((x) => x.before.known === false && x.after.known === true),
+    rows.map((x) => `${x.flag} -> "${x.topic}" known ${x.before.known}->${x.after.known}`).join(' | '));
+  check('S13_the_second_route_opens_only_after_a_refusal',
+    rows.every((x) => (x.before.why || []).some((w) => /has not come up yet/.test(w)) && !(x.after.why || []).some((w) => new RegExp(`"${x.topic.replace(/-/g, '[- ]')}"`).test(w))),
+    rows.map((x) => `${x.quest}: before ${JSON.stringify(x.before.why)} -> after ${JSON.stringify(x.after.why)}`).join(' | '));
+  check('S14_every_second_route_vacates_the_seat_without_violence',
+    rows.every((x) => x.vacating_endings.length > 0 && x.vacating_endings.every((e) => !e.violence_required)),
+    rows.map((x) => `${x.quest}: ${x.vacating_endings.map((e) => `${e.id}/${e.method}${e.violence_required ? '(VIOLENT)' : ''}->${e.flags.filter((f) => /_vacant$/.test(f)).join('+')}`).join(', ') || 'NONE'}`).join(' | '));
+  check('S15_page_errors_zero', perr.length === 0, `${perr.length} page errors${perr.length ? `: ${perr.join(' | ')}` : ''}`);
 
   out.ok = out.failures.length === 0;
   if (args.out) writeJson(args.out, out);

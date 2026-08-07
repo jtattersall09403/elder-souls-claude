@@ -1656,6 +1656,13 @@ export function installHarness(engine, bootPromise) {
       return JSON.parse(JSON.stringify(q.factions[f]));
     },
 
+    /**
+     * READ what the character has been told. `learnTopic` below is a poke; this is the only way to
+     * see what the WORLD has seeded — a `hooks.json` `adds_topics` edge firing off a world flag is
+     * how a `discovery: "consequence"` quest becomes reachable, and with no reader a probe could
+     * not tell that edge from its own poke.
+     */
+    questTopicsKnown() { return engine.sim.quest.topicsKnown.slice(); },
     /** Seed a dialogue topic. The topic gate on `opens_by` is what makes a quest offerable. */
     learnTopic(topic) {
       const t = String(topic);

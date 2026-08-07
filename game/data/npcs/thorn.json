@@ -44,14 +44,22 @@
       "interior": null,
       "schedule": [
         {
-          "from": "06:00",
-          "to": "20:00",
-          "at": "thorn-gate"
+          "from": "00:00",
+          "to": "07:00",
+          "at": "thorn-hall",
+          "activity": "home"
         },
         {
-          "from": "20:00",
-          "to": "06:00",
-          "at": "thorn-hall"
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "thorn-hall",
+          "activity": "tavern"
         }
       ],
       "topics": [
@@ -60,7 +68,20 @@
         "little-advice"
       ],
       "services": [],
-      "reaction_group": "RG-DEEP"
+      "reaction_group": "RG-DEEP",
+      "post": {
+        "settlement": "thorn",
+        "at_building": "thorn-gate",
+        "at_building_name": "The Thorn Gate",
+        "pos": [
+          3811.19,
+          13.31,
+          869.04
+        ],
+        "yaw": 321,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from thorn-gate's door."
+      },
+      "home_interior": "thorn-hall"
     }
   ],
   "declared_incomplete": {
@@ -69,5 +90,6 @@
       "the other 28 named NPCs of a village-tier settlement"
     ]
   },
-  "reaction_group_note": "W1-07 added reaction_group to every record here. RI-CHR02 method 4 asserts 100% of NPCs under game/data/npcs/** carry one from §2, because the 12x10 matrix indexes that field and an untagged NPC is an NPC the whole race system cannot see. Thorn is an interior village on the back tracks, which is RG-DEEP's stated territory. The rest of these records belong to W1-04."
+  "reaction_group_note": "W1-07 added reaction_group to every record here. RI-CHR02 method 4 asserts 100% of NPCs under game/data/npcs/** carry one from §2, because the 12x10 matrix indexes that field and an untagged NPC is an NPC the whole race system cannot see. Thorn is an interior village on the back tracks, which is RG-DEEP's stated territory. The rest of these records belong to W1-04.",
+  "giver_posts_note": "Some records in this file carry a `post` block and a `schedule` written by tools/world/build-giver-posts.mjs. Re-run it after moving a settlement; do not hand-edit `post`."
 }

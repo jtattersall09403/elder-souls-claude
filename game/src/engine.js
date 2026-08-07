@@ -87,7 +87,7 @@ const SIGN_REACH_M = 2.6;
 import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, topicsFor, greetingBand, rootTopicIds } from './character/converse.js';
 import { topicKey } from './core/topics.js';
 import { buildOverheardIndex, buildDirectionsIndex, RumourBook, RoadBook, learnTopics } from './sim/quest/topic-supply.js';
-import { makeNPC } from './sim/npc.js';
+import { makeNPC, normaliseSchedule, slotAt } from './sim/npc.js';
 import { derivePools, applyBirthsignToPools, hpMaxFor, staminaMaxFor as staminaMaxForVig, progressToNext, bankProgress, USE_EVENTS } from './character/derive.js';
 import { grantUse, governingMap } from './character/skilluse.js';
 
@@ -653,6 +653,30 @@ export class Engine {
     // in it is the round-1 failure in data form.
     this.censusPlace = null;
     for (const n of patch.npcs || []) this.spawnNPC(n);
+    // ---- W1-GIVER-PRESENCE. The town, not just the scene. ---------------------------------
+    //
+    // GAP-W1-quest-givers-not-in-the-world. This was the whole defect. `game/data/npcs/` holds
+    // 336 records; the inhabited world was TWELVE PEOPLE, because the only thing that had ever
+    // put a body in a named state was the `npcs:` block above and four state files between them
+    // declare twelve. W1-04 built `populateSettlement()` — the machine that fills a town from its
+    // records — and wired it to `stepSettlement`, which fires it on a settlement CROSSING. No
+    // bootable state stands the player inside a settlement radius, so the crossing never
+    // happened, and a probe that loads a state and asks the world a question without stepping
+    // (which is every quest probe in the tree) could not have reached it even if one did.
+    //
+    // A state names its town either outright (`env.settlement`) or by naming a cell that belongs
+    // to one; `site` names a place that is not a town at all. Populating here rather than on the
+    // first step is deliberate: `loadState()` must leave the world in the state it describes, and
+    // "the market square, once you have taken a step" is not a market square.
+    {
+      let sid = this.sim.env.settlement || null;
+      if (!sid && this.sim.env.interior && this.settlements) {
+        const d = this.settlements.interior(this.sim.env.interior);
+        if (d && d.settlement) sid = d.settlement;
+      }
+      if (sid) { this.sim.env.settlement = sid; this.populateSettlement(sid); }
+      if (patch.site) this.populateSite(patch.site);
+    }
     for (const o of patch.props || []) this.spawnProp(o);
     this._spawnInscriptions(name);
     // W1-13 r2: a state file's `spawn:` block may declare the six S5 classification flags, so
@@ -1409,6 +1433,10 @@ export class Engine {
         // the same shape of defect as `topics_taught`. These four lines are what make a person
         // have somewhere to be; `sim/npc.js stepSchedule()` is what makes them go there.
         merged.schedule = spec.schedule || rec2.schedule || null;
+        // W1-GIVER-PRESENCE: the place in the world this person stands when they are not indoors.
+        // Same failure shape as `schedule` above — the field would have been written on 39 records
+        // and read by nobody, which is the thirteenth time this project has done that.
+        merged.post = spec.post || rec2.post || null;
         merged.home_interior = spec.home_interior || rec2.home_interior || rec2.interior || null;
         merged.work_interior = spec.work_interior || rec2.work_interior || rec2.interior || null;
         merged.owns_zones = spec.owns_zones || rec2.owns_zones || [];
@@ -6399,22 +6427,62 @@ export class Engine {
    */
   populateSettlement(sid) {
     const out = [];
+    const hour = this.sim.env.timeOfDay;
     for (const group of Object.values(this.data.npcs)) {
       if (!group || !group.npcs) continue;
       for (const rec of group.npcs) {
         if (rec.settlement !== sid) continue;
         if (this.sim.findNPC(rec.id)) { out.push(rec.id); continue; }
-        const cell = (rec.schedule && rec.schedule.length ? rec.schedule[0].at : null) || rec.interior || null;
-        const d = cell ? this.settlements.interior(cell) : null;
+        // W1-GIVER-PRESENCE, defect 1: this read `schedule[0].at` — the FIRST row of the day,
+        // whatever hour it is. A person whose midnight slot is their house was placed in their
+        // house at noon and then walked out of it on the first step, so their body and the cell
+        // the clock said they were in disagreed for as long as nobody stepped. Ask the clock.
+        const slot = slotAt(normaliseSchedule(rec.schedule), hour);
+        const cell = (slot >= 0 ? rec.schedule[slot].at : undefined) ?? rec.interior ?? null;
         const h = ENG_hash(rec.id);
-        const bx = d ? d.bounds_m.x[1] - 1.2 : 3;
-        const bz = d ? d.bounds_m.z[1] - 1.2 : 4;
-        const pos = [
-          Math.round((((h % 200) / 100) - 1) * bx * 100) / 100,
-          0,
-          Math.round(((((h >>> 8) % 200) / 100) - 1) * bz * 100) / 100,
-        ];
-        this.spawnNPC({ ...rec, eid: rec.id, from_record: rec.id, pos, yaw: (h >>> 16) % 360 });
+        let pos;
+        if (cell === null && rec.post && Array.isArray(rec.post.pos)) {
+          // W1-GIVER-PRESENCE, defect 2, and it is the one that made the whole mechanism dead
+          // weight: the block below derives a position from an INTERIOR's bounds — a cell-local
+          // frame centred on nothing — and a settlement stands at world coordinates
+          // (helstrom is at [2262.5, 27.22, 2773.5]). So `populateSettlement` placed the people
+          // of every town in a heap around the world origin, kilometres from the town they
+          // belong to. Someone standing outdoors goes at their authored post.
+          pos = [rec.post.pos[0], rec.post.pos[1], rec.post.pos[2]];
+        } else {
+          const d = cell ? this.settlements.interior(cell) : null;
+          const bx = d ? d.bounds_m.x[1] - 1.2 : 3;
+          const bz = d ? d.bounds_m.z[1] - 1.2 : 4;
+          pos = [
+            Math.round((((h % 200) / 100) - 1) * bx * 100) / 100,
+            0,
+            Math.round(((((h >>> 8) % 200) / 100) - 1) * bz * 100) / 100,
+          ];
+        }
+        const yaw = (cell === null && rec.post && rec.post.yaw != null) ? rec.post.yaw : (h >>> 16) % 360;
+        this.spawnNPC({ ...rec, eid: rec.id, from_record: rec.id, pos, yaw });
+        out.push(rec.id);
+      }
+    }
+    return out;
+  }
+
+  /**
+   * Everyone the build declares at a NAMED SITE that is not a settlement — the hollow above the
+   * sap-line, the counting chamber under the Stone Wastes. W1-04's rule stands: `settlement: null`
+   * is the correct record for somebody who belongs to no town, and a hermit is not a signpost. But
+   * eight faction quests and four main ones are given by four such people, and until this existed
+   * they had nowhere to be at all. A state file names the site; this puts its people in it.
+   */
+  populateSite(siteId) {
+    const out = [];
+    for (const group of Object.values(this.data.npcs)) {
+      if (!group || !group.npcs) continue;
+      for (const rec of group.npcs) {
+        if (!rec.post || rec.post.site !== siteId) continue;
+        if (this.sim.findNPC(rec.id)) { out.push(rec.id); continue; }
+        const p = rec.post.pos || [0, 0, 2];
+        this.spawnNPC({ ...rec, eid: rec.id, from_record: rec.id, pos: [p[0], p[1], p[2]], yaw: rec.post.yaw ?? 180 });
         out.push(rec.id);
       }
     }

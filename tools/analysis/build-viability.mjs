@@ -4,6 +4,48 @@
 // Named by:  RI-CHR01 method 6, RI-CHR03 method 5, RI-CMP03, and specified in full by
 //            corpus/80-methods/RI-MTH06 §A.
 //
+// =============================================================================================
+// ROUND 5. Four rejections, four different lines, ONE defect: a check that reports a confident
+// number while measuring nothing.
+//
+//   R1  "regions.json declares no tier on any region" — printed on a tree where all thirteen
+//       carry danger_tier 1-5.
+//   R2  0 of 41 quest givers resolved to a reaction group and the tool substituted a
+//       best-over-all-groups ceiling.
+//   R3  `--cross-check` printed "AGREES on 240 pairs, 0 disagreements" on a run where ZERO rows
+//       were compared, and the three source anchors matched a race term that was dead.
+//   R4  `c.reputation = new Proxy({}, { get: () => 100 })` — the top row of a rank ladder that
+//       had since moved to 112. The headline `0 of 540 viable` and the three quests declared
+//       unreachable by anybody were the tool colliding with its own stub; the faction critic
+//       settled it in the running engine (W1-FACTIONS-r1 §1).
+//
+// Round 5 does not fix line 1191. It removes the CLASS:
+//
+//   1. THE GRANT LEDGER. Every value the synthetic character is handed is derived from shipped
+//      data or computed by the game's own predicate, each row carries its basis and its source,
+//      `--audit-grants` prints the whole table, and `substitutions_remaining` must be 0. Gone:
+//      reputation=Proxy(100), ranks=Proxy(7), gold=1e9, and four `has: () => true` collections —
+//      three of which stood over an EMPTY Set, so every items / knowledge / spell_effects
+//      requirement in the tree was satisfied by a collection containing nothing at all.
+//   2. THE GRANT-DEPENDENCY TEST. A requirement token nothing in the tree produces is neither
+//      granted nor failed on. The quest is re-run with the token granted; if the verdict flips,
+//      it is `unmeasurable` with the token named. A permissive substitution can no longer
+//      produce a silent pass, and a census gap of this tool's own can no longer charge the build.
+//   3. COUNTS ARE TRACEABLE BY SHAPE, NOT BY ARITHMETIC. `crossCheckVerdict()` builds compared
+//      and unresolved rows into DIFFERENT ARRAYS at the push site, `rows_compared` is the length
+//      of the compared array and nothing else can be assigned to it, the enumerated count is
+//      called `pairs_enumerated`, and a row without a boolean verdict makes the whole check
+//      refuse. `--self-test` exercises that function rather than a copy of it.
+//   4. MODEL DEPENDENCE IS MEASURED. The grid is walked under both offer models and the tool
+//      reports how many verdicts move. Round 4 inferred dependence from "did a disposition stop
+//      occur", which is silent about every signature that PASSES because of the model.
+//
+// The one substitution that survives is declared as one: reputation, gold, `completed` and
+// `locked` are player-optimal upper bounds, taken per faction and per pot independently. That
+// direction is what criterion 3 requires — a gate this bound cannot clear is a gate no play can
+// clear — and it is printed in the ledger rather than buried.
+// =============================================================================================
+//
 // ROUND 2. corpus/80-methods/TOOL-COVERAGE-R1.md §1 rejected round 1 for two permissive
 // substitutions, both of which are gone:
 //
@@ -104,8 +146,24 @@ OPTIONS
                             "faction_rank5_attribute_floor": 500,
                             "reputation_scale": 0,   // scale the DERIVED attainable reputation
                             "gold_scale": 0 }        // scale the DERIVED attainable gold
+  --audit-grants        print the GRANT LEDGER and exit. Every value the synthetic character is
+                        handed, its basis (derived-from-data / shipping-predicate /
+                        model-parameter / player-optimal-bound / SUBSTITUTION) and the data path
+                        it came from, plus every requirement token no shipped file produces.
+                        Exits non-zero if any field is still a bare substitution. This is the
+                        mode to run first: four rounds of this tool were rejected for a value
+                        invented in the middle of the file and reported as if measured.
+  --no-model-sensitivity
+                        skip the second walk that measures how many verdicts move when the offer
+                        model is swapped. The artifact is stamped
+                        model_sensitivity.measured=false and the run cannot exit 0, because a run that did not measure its
+                        dependence on the model has not established independence from it.
   --self-test           run the falsification battery and exit non-zero if any check fails to
-                        move the number it is supposed to move.
+                        move the number it is supposed to move. EXPENSIVE BY DESIGN — every
+                        fixture is a full 540-cell walk and shrinking the grid would shrink the
+                        evidence, so it does not finish inside ten minutes on a loaded box. It
+                        prints a numbered, timed progress line per walk with a running projection
+                        so a reader can tell slow from hung.
   --levels 1,20,40,60   the simulated levels gates are evaluated at (RI-CHR01 M6's default)
   --target 486          viability floor for the exit code (RI-CHR01 §5's 90% of 540)
   --quiet               suppress the per-signature failure lines on stdout
@@ -2317,7 +2375,16 @@ function report(records, fixture) {
             'disposition plus the best positive npc_disposition consequence any other quest can ' +
             'contribute. Race-invariant, so the count is the same for all 540 signatures.',
       quests_blocked: allUnpassable.length,
-      signatures_affected: allUnpassable.length ? records.length : 0,
+      // ROUND 5. This was `allUnpassable.length ? records.length : 0` — an INFERENCE dressed as
+      // a count ("if any gate is unpassable then all of them are affected"), which is the same
+      // shape as `rows_compared: 240` beside zero comparisons. It is now counted off the walk:
+      // the signatures whose recorded stop is one of these gates.
+      signatures_affected: records.filter((r) => r.stopped_at && allUnpassable
+        .some((g) => r.stopped_at.quest === g.quest && r.stopped_at.npc_id === g.npc_id)).length,
+      signatures_affected_note:
+        'counted from the recorded first-stops, not inferred. A quest can be unpassable and not ' +
+        'appear here if every signature stopped at an earlier gate — read `quests_blocked` for ' +
+        'the gate count and this for the observed blame.',
       gates: allUnpassable,
       first_stop_histogram: [...unpassable.values()],
       // ROUND 4 SUCCESSOR — the scope of the three fields above, stated where a consumer reads
@@ -2434,14 +2501,31 @@ function selfTest() {
 
   const blockedGivers = (recs) => new Set(recs.map((r) => r.stopped_at && r.stopped_at.npc_id).filter(Boolean));
 
-  ok('the tool never REFUSES: every signature gets a definite verdict on the offer gate',
-    base.every((r) => r.criteria.no_unpassable_gate !== UNMEASURABLE),
-    `${nFail(base, 'no_unpassable_gate')} FAIL / ${base.length - nFail(base, 'no_unpassable_gate')} pass / ` +
-    `0 unmeasurable; ${ug.quests_blocked} gates unpassable for EVERY signature; ` +
-    `${baseReport.giver_census.resolving_to_a_reaction_group}/` +
-    `${baseReport.giver_census.quests_with_a_giver_disposition_min} givers resolve to a reaction group. ` +
-    'TOOL-COVERAGE-R2 §1: `unmeasurable` routes to corpus_debt and charges nobody, `fail` charges ' +
-    'the build, and a giver the world cannot reach is the build\'s.');
+  // ROUND 5. The assertion is unchanged in intent — R2 §1: a giver the world cannot reach is the
+  // BUILD's failure and must be `fail`, never `unmeasurable`, because `unmeasurable` routes to
+  // corpus_debt and charges nobody. What changed is that `unmeasurable` acquired a SECOND and
+  // legitimate cause this round (a requirement token with no producer, or a quest shape this
+  // tool has no predicate for), so the check now discriminates by GATE rather than counting.
+  //
+  // The old detail string also printed the literal "0 unmeasurable" regardless of the walk — a
+  // hard-coded number in a self-test's own evidence line, which is this tool's whole disease in
+  // miniature. It is computed now.
+  {
+    const unm = base.filter((r) => r.criteria.no_unpassable_gate === UNMEASURABLE);
+    const byGate = {};
+    for (const r of unm) { const g = (r.stopped_at && r.stopped_at.gate) || 'unstated'; byGate[g] = (byGate[g] || 0) + 1; }
+    const legitimate = new Set(['ungrounded requirement', 'quest shape not modelled']);
+    const illegitimate = Object.keys(byGate).filter((g) => !legitimate.has(g));
+    ok('the tool never REFUSES over a giver it could have decided (R2 §1)',
+      illegitimate.length === 0,
+      `${nFail(base, 'no_unpassable_gate')} FAIL / ` +
+      `${base.length - nFail(base, 'no_unpassable_gate') - unm.length} pass / ${unm.length} unmeasurable ` +
+      `${JSON.stringify(byGate)}; ${ug.quests_blocked} gates unpassable for EVERY signature; ` +
+      `${baseReport.giver_census.resolving_to_a_reaction_group}/` +
+      `${baseReport.giver_census.quests_with_a_giver_disposition_min} givers resolve to a reaction group. ` +
+      (illegitimate.length ? `ILLEGITIMATE unmeasurable gates: ${illegitimate.join(', ')}` :
+       'every unmeasurable verdict names a token or a document shape, not a giver.'));
+  }
 
   // RED. Reproduce the defect this tree shipped at the start of tool round 3: givers with no NPC
   // record, so `seedDispositions()` writes nothing and `gate.js num(undefined)` reads 0.
@@ -3479,6 +3563,31 @@ if (!QUIET) {
   if (rep.tier5.unresolved_region_or_statblock_names.length) {
     process.stdout.write(`  DATA DEFECT, unresolvable names: ${rep.tier5.unresolved_region_or_statblock_names.join(', ')}\n`);
   }
+  // ---- ROUND 5. THE SUBSTITUTIONS SAY SO, ON EVERY RUN, WITHOUT BEING ASKED. ---------------
+  // Four rejections in a row turned on a value invented inside this file. The ledger is not
+  // buried in the JSON; the operator-facing summary states what was granted, on what basis, and
+  // what could not be grounded at all.
+  {
+    const gl = rep.grant_ledger;
+    process.stdout.write(
+      `  grants: ${gl.rows.length} fields handed to the synthetic character, ` +
+      `${gl.substitutions_remaining} SUBSTITUTION(S); player-optimal upper bounds (declared): ` +
+      `${gl.player_optimal_bounds.join(', ')} — see --audit-grants\n`);
+    const rl = gl.rows.find((r) => r.field === 'reputation');
+    const gd = gl.rows.find((r) => r.field === 'gold');
+    process.stdout.write(
+      `    derived, not granted: reputation ${JSON.stringify(rl && rl.value)}; gold ${gd && gd.value}; ` +
+      `ranks via FactionGates.highestQualifying()\n`);
+    if (UNSOURCED.total) {
+      process.stdout.write(
+        `  UNGROUNDED REQUIREMENTS — ${UNSOURCED.total} token(s) a shipped gate asks for that NO ` +
+        `file under ${path.relative(REPO_ROOT, ROOT) || 'game/data'} produces. Not granted, not ` +
+        `failed on; any verdict that turns on one is UNMEASURABLE:\n`);
+      for (const k of ['topics', 'world_flags', 'knowledge', 'items', 'spell_effects']) {
+        if (UNSOURCED[k].length) process.stdout.write(`    ${k}: ${UNSOURCED[k].join(', ')}\n`);
+      }
+    }
+  }
   process.stdout.write(
     `  giver census: ${rep.giver_census.resolving_to_a_reaction_group}/` +
     `${rep.giver_census.quests_with_a_giver_disposition_min} quest givers resolve to a reaction ` +
@@ -3560,8 +3669,11 @@ if (!QUIET) {
 }
 if (modelUnverified && modelDependentVerdicts > 0 && !QUIET) {
   process.stdout.write(
-    `  MODEL UNVERIFIED (${rep.model_attestation.status}) — ${modelDependentVerdicts} of ` +
-    `${records.length} signature verdicts MOVE when the offer model changes, and this run never ` +
+    `  MODEL UNVERIFIED (${rep.model_attestation.status}) — ${MODEL_SENSITIVITY.measured
+      ? `${modelDependentVerdicts} of ${records.length} signature verdicts MOVE when the offer ` +
+        'model changes'
+      : `dependence on the offer model was NOT MEASURED (--no-model-sensitivity), so all ` +
+        `${records.length} verdicts are treated as dependent`}, and this run never ` +
     `observed which model the running build implements.\n` +
     `    ${rep.model_attestation.why}\n` +
     `    RI-CHR01 Distinctness and RI-CHR03 Decidability MUST NOT be scored from this run.\n`);
@@ -3574,7 +3686,9 @@ if (rep.unmeasurable === records.length) {
 }
 if (modelUnverified && modelDependentVerdicts > 0) {
   process.stderr.write(
-    `[harness] ERROR: ${modelDependentVerdicts} verdicts MOVE with the offer model and it is ` +
+    `[harness] ERROR: ${MODEL_SENSITIVITY.measured
+      ? `${modelDependentVerdicts} verdicts MOVE with the offer model`
+      : 'model dependence was not measured (--no-model-sensitivity)'} and the model is ` +
     `UNVERIFIED ` +
     `(attestation ${rep.model_attestation.status}). Run --verify-model or --cross-check first.\n`);
   process.exit(EXIT.MEASUREMENT_FAIL);

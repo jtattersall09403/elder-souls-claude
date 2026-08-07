@@ -11,7 +11,11 @@
   "topic_note": "Every topic on every record has a body in game/data/dialogue/topics/50-factions.json or in the shipped corpus. A person who advertises a subject and has nothing to say on it is the 47-topic defect core/topics.js exists to have closed.",
   "declared_incomplete": {
     "owner": "W1-04 (settlement population), W1-17 (dialogue volume)",
-    "missing": ["schedules", "per-topic lines on the record for anything beyond the greeting", "the households these five live in"]
+    "missing": [
+      "schedules",
+      "per-topic lines on the record for anything beyond the greeting",
+      "the households these five live in"
+    ]
   },
   "npcs": [
     {
@@ -25,12 +29,50 @@
       "settlement": "gideon",
       "interior": null,
       "disposition": 40,
-      "topics": ["the-second-set-of-weights", "the-wharf-debt", "the-quiet-partner", "the-water-call"],
+      "topics": [
+        "the-second-set-of-weights",
+        "the-wharf-debt",
+        "the-quiet-partner",
+        "the-water-call"
+      ],
       "services": [],
       "lines": {
         "greeting": "You are the third one they have sent to look at the tolls. I remember the other two. One of them was decent about it."
       },
-      "note": "The Wet Ledger's dissenter — RI-QST02 D3, the Percius Mercius slot. Ledger porter for nineteen years, put off the quay for a theft the Ledger's own factor committed in Lilmoth, and correct about all of it. He appears as a rival_npc reveal on four quests and two resolutions cite his reveal in requires_knowing, because RI-QST01 is explicit that a dissenter who only talks is not a dissenter."
+      "note": "The Wet Ledger's dissenter — RI-QST02 D3, the Percius Mercius slot. Ledger porter for nineteen years, put off the quay for a theft the Ledger's own factor committed in Lilmoth, and correct about all of it. He appears as a rival_npc reveal on four quests and two resolutions cite his reveal in requires_knowing, because RI-QST01 is explicit that a dissenter who only talks is not a dissenter.",
+      "post": {
+        "settlement": "gideon",
+        "at_building": "gideon-grange",
+        "at_building_name": "The Grange",
+        "pos": [
+          403.08,
+          2.72,
+          2906.15
+        ],
+        "yaw": 258,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from gideon-grange's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "gideon-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "gideon-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "gideon-inn"
     },
     {
       "id": "master-anse",
@@ -44,8 +86,14 @@
       "settlement": "gideon",
       "interior": null,
       "disposition": 35,
-      "topics": ["the-second-set-of-weights", "the-wharf-debt", "the-short-weight"],
-      "services": ["barter"],
+      "topics": [
+        "the-second-set-of-weights",
+        "the-wharf-debt",
+        "the-short-weight"
+      ],
+      "services": [
+        "barter"
+      ],
       "lines": {
         "greeting": "The Wren pays what she is asked and gets a chit for it. Whether the chit is worth anything is the harbour's business and not mine."
       },
@@ -63,12 +111,50 @@
       "settlement": "blackrose",
       "interior": null,
       "disposition": 30,
-      "topics": ["the-struck-off-notary", "the-blackrose-day-book", "the-lease-roll", "the-toll-book"],
+      "topics": [
+        "the-struck-off-notary",
+        "the-blackrose-day-book",
+        "the-lease-roll",
+        "the-toll-book"
+      ],
       "services": [],
       "lines": {
         "greeting": "I was struck off for a persistent irregularity of temper. The finding is public. What the finding does not say is what I was irregular about."
       },
-      "note": "The Imperial Assize's dissenter — RI-QST02 D3. Struck off the notarial roll eleven years ago; kept every day-book she ever wrote, which is the only complete record of the Blackrose labour-lease that the office did not draft. Hostile-coded by presentation, correct by content, and she supplies alternate resolutions rather than opinions."
+      "note": "The Imperial Assize's dissenter — RI-QST02 D3. Struck off the notarial roll eleven years ago; kept every day-book she ever wrote, which is the only complete record of the Blackrose labour-lease that the office did not draft. Hostile-coded by presentation, correct by content, and she supplies alternate resolutions rather than opinions.",
+      "post": {
+        "settlement": "blackrose",
+        "at_building": "blackrose-warders-hall",
+        "at_building_name": "The Warders' Hall",
+        "pos": [
+          1863.97,
+          2.68,
+          4456.48
+        ],
+        "yaw": 277,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from blackrose-warders-hall's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "blackrose-inn",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "blackrose-inn",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "blackrose-inn"
     },
     {
       "id": "ee-vashum",
@@ -81,12 +167,50 @@
       "settlement": "helstrom",
       "interior": null,
       "disposition": 35,
-      "topics": ["the-lukiul-question", "the-coast-wound", "the-taking-below", "the-consensus"],
+      "topics": [
+        "the-lukiul-question",
+        "the-coast-wound",
+        "the-taking-below",
+        "the-consensus"
+      ],
       "services": [],
       "lines": {
         "greeting": "I lost a daughter to the coast. Everyone here tells me that is why I should want it drowned. It has not yet been explained to me why that is not the reason I do not."
       },
-      "note": "The Xul-Aneekh's dissenter — RI-QST02 D3. She is inside the faction, senior, and against its central position, and her grief is the reason people can dismiss her rather than the reason she is right. The hollow's argument for cutting the coast off is hers first; the answer to it is also hers."
+      "note": "The Xul-Aneekh's dissenter — RI-QST02 D3. She is inside the faction, senior, and against its central position, and her grief is the reason people can dismiss her rather than the reason she is right. The hollow's argument for cutting the coast off is hers first; the answer to it is also hers.",
+      "post": {
+        "settlement": "helstrom",
+        "at_building": "helstrom-apothecary",
+        "at_building_name": "Sap and Simples",
+        "pos": [
+          2288.5,
+          27.22,
+          2836.24
+        ],
+        "yaw": 21,
+        "note": "W1-GIVER-PRESENCE: a quest giver with no place to stand cannot be found. Post derived from helstrom-apothecary's door."
+      },
+      "schedule": [
+        {
+          "from": "00:00",
+          "to": "07:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "home"
+        },
+        {
+          "from": "07:00",
+          "to": "19:00",
+          "at": null,
+          "activity": "post"
+        },
+        {
+          "from": "19:00",
+          "to": "00:00",
+          "at": "helstrom-hollow-bole",
+          "activity": "tavern"
+        }
+      ],
+      "home_interior": "helstrom-hollow-bole"
     },
     {
       "id": "ku-vastei-ixakh",
@@ -100,12 +224,19 @@
       "settlement": null,
       "interior": null,
       "disposition": 50,
-      "topics": ["the-ku-vastei", "the-taking-below", "the-consensus"],
-      "services": ["ruling"],
+      "topics": [
+        "the-ku-vastei",
+        "the-taking-below",
+        "the-consensus"
+      ],
+      "services": [
+        "ruling"
+      ],
       "lines": {
         "greeting": "I was not sent for. I am not sent for. A thing went far enough that I am standing here, and you may take that as the finding before I have made it."
       },
       "note": "RI-CRM02 §1 row 3 and RI-LOR02 §4.8: the Shadowscales are a SERVICE, not a ladder. Ixakh issues a Ruling, which extinguishes the blood-price a killing creates in the interior jurisdiction and is honoured in no other. Reachable by a player who has joined nothing, which is what makes the Xul-Aneekh line's rank-6 non-violent resolution available to a character with no standing at all."
     }
-  ]
+  ],
+  "giver_posts_note": "Some records in this file carry a `post` block and a `schedule` written by tools/world/build-giver-posts.mjs. Re-run it after moving a settlement; do not hand-edit `post`."
 }

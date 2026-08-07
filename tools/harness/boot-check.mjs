@@ -93,9 +93,9 @@ try {
   // and nothing is claimed either way.
   const STRICT_RENDER = true;
   if (alive && drew === false) {
-    log.err(`[harness] boot-check: the engine constructed but no frame came out.`);
-    if (drawError) log.err(`  ${drawError}`);
-    for (const e of errors.slice(0, 8)) log.err(`  [${e.kind}] ${e.text}`);
+    log(`[harness] boot-check: the engine constructed but no frame came out.`);
+    if (drawError) log(`  ${drawError}`);
+    for (const e of errors.slice(0, 8)) log(`  [${e.kind}] ${e.text}`);
     if (STRICT_RENDER) {
       console.log(JSON.stringify(report));
       await handle.close().catch(() => { });

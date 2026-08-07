@@ -84,6 +84,13 @@ empties on save, or the level-up screen is refused at every well, is owed the en
 blog is a list of complaints and the reader has no way to tell a project that fixes things from one
 that only notices them.
 
+**One post can close several stories at once.** The owner's words: *"you wouldn't have to do one
+post per ending — you could have the agent decide to do a single post that wraps up a batch of
+them."* A round-up of four defects the reader was told about and has not heard the end of is often a
+better post than four thin ones, and it is the right shape when the fixes share a cause. Use your
+judgement: one story gets its own post when the story is worth it, several share one when the
+through-line is the interesting part.
+
 **The rule: at least one post in every four is a follow-up.** Write it as `kind: followup`, and:
 
 1. **Name the earlier post and link it** — `[the post where we found it](#slug)`. The slug is the

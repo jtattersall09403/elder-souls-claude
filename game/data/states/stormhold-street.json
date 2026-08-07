@@ -4,29 +4,30 @@
   "owner": "W1-07 — character creation / race and standing",
   "title": "The street up to the Stormhold gate. RI-CHR02 method 9 loads this: two guards at a post, a bounty, and ten races' worth of loiter tolerance.",
   "env": {
-    "timeOfDay": 9.0,
+    "timeOfDay": 9,
     "weather": "overcast",
     "region": "stormhold",
-    "interior": "stormhold-street"
+    "interior": "stormhold-street",
+    "settlement": "stormhold"
   },
   "player": {
     "pos": [
       0,
       0,
-      26.0
+      26
     ],
-    "yaw": 0.0
+    "yaw": 0
   },
   "camera": {
-    "yaw": 0.0,
-    "pitch": -6.0,
+    "yaw": 0,
+    "pitch": -6,
     "mode": "free"
   },
   "npcs": [
     {
       "from_record": "stormhold-gate-guard",
       "pos": [
-        -2.0,
+        -2,
         0,
         32.4
       ],
@@ -51,7 +52,7 @@
       "pos": [
         -5.4,
         0,
-        20.0
+        20
       ],
       "yaw": 90,
       "behaviour": "stand",
@@ -87,9 +88,10 @@
     "endurance": 20,
     "hpMax": 620,
     "armourPoise": 28,
-    "equipLoadPct": 24.0,
+    "equipLoadPct": 24,
     "flaskLevel": 0,
     "estus": 5,
     "gold": 600
-  }
+  },
+  "settlement_note": "W1-GIVER-PRESENCE: this state named a cell and a region but never its town, so Engine.applyNamedState() had nothing to hand populateSettlement() and the state held only the people its `npcs:` block types out by hand. Naming the town is what makes the rest of it exist."
 }
