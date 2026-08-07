@@ -4,16 +4,26 @@
   "started": "wave-1",
   "state": "researching",
   "outputs_expected": [
-    "corpus amendment record to RI-UIX04 JU8",
-    "discovery model (world-side, save-durable)",
-    "world map drawn from game/data/world/",
-    "local (cell) view",
-    "hostile probe: quest attempts to place a marker and fails",
-    "docs/shots/ screenshots (early + explored)",
+    "corpus/00-doctrine/AMENDMENT-W1-MAP-01.md (RI-UIX04 JU8 amendment)",
+    "game/src/sim/discovery.js (discovery model, in the fixed step)",
+    "game/src/ui/screens/map.js (world + local view, drawn from world data)",
+    "game/data/ui/map.json (+ index.json entry)",
+    "save/state.js discovery block + live-world load audit",
+    "tools/harness/map-probe.mjs (consumption + hostile quest-marker probe)",
+    "docs/shots/*.png early + explored",
     "reports/blog-feed.jsonl line"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read ARBITRATION.md S30 and S35, then RI-UIX03/RI-UIX04, then game/data/world/",
-  "notes_for_successor": ""
+  "findings": [
+    "ARBITRATION S30 struck, S35 rules: map permitted, records where you HAVE BEEN; every marker prohibition kept. S35 explicitly says whoever builds it owns the RI-UIX04 JU8 amendment.",
+    "RI-UIX04 JU8 = 'No map anywhere (Q7)': pass = `map` unreachable AND non-existent; hard fail = a map exists. Q7 row in §B is 'Any map, minimap, or map page in or reachable from the journal'. Scoring note: Q3/Q6/Q7 hits trigger AR-2.",
+    "game/src/ui/system.js is the whole UI: MODES/OPENABLE closed lists, `open()` THROWS on 'map'|'minimap'|'worldmap', state() reports map_exists:false, navigable() never contains map. Header comment rule 3 is 'THERE IS NO MAP'. This is the file to amend.",
+    "RI-UIX03 §A pause rule: menu pauses OUTSIDE combat, runs at 60Hz INSIDE combat. UISystem.pausesSimulation(inCombat) = mode!=='world' && mode!=='dialogue' && !inCombat — a new 'map' mode inherits the correct rule for free.",
+    "World data: terrain.json is a 193x222 grid at cell_m=25 over 4825x5540 m, base64 channels (base_dm int16, region uint8, ocean uint8, land bits) decoded by game/src/world/field.js (WorldField). regions.json has 13 regions each with palette_hex. pois.json: 8 settlement + 16 minor-settlement + 10 landmark + 8 waystation = 42 places.",
+    "Existing discovery precedent: sim.progression.hearthsDiscovered (array, saved in save/state.js progression.hearths_discovered, written by sim/death.js restAt). sim.env.settlement/.interior written every frame by sim/settlement.js stepSettlement.",
+    "game/src/world/province.js setSignposts() ALREADY cites seam S35 in its header — 'Seam S35 permits a map but confines it to ground the player has already walked, so the map is blank in the one direction the player needs it.' Wayfinding-without-map is already built (signposts).",
+    "AGENT-PROTOCOL: audit the LIVE WORLD after a load, not the blob — a written-never-read field re-serialises and passes forever. Vary WHEN you save, not just the seed."
+  ],
+  "next_step": "read save-manifest, check-data/index.json conventions, quest machine API surface (to prove no map call exists), then write the amendment",
+  "notes_for_successor": "Decision taken: roads are NOT drawn on the map. S35 forbids 'a route, path, trail or line of any kind' and a drawn road is the first thing a hostile critic will call a line. Wayfinding stays with signposts (already in the world)."
 }

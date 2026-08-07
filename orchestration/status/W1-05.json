@@ -1,6 +1,6 @@
 {
   "task_id": "W1-05",
-  "brief": "docs/PLAN.md §3 W1-05 — roads, signposts, wayfinding without a marker (seam S30, AR-2)",
+  "brief": "docs/PLAN.md §3 W1-05 — roads, signposts, wayfinding without a marker (seam S35 supersedes S30; AR-2)",
   "started": "wave-1",
   "state": "authoring",
   "outputs_expected": [
@@ -21,8 +21,9 @@
     "SURVEY F3: roads.json waystations are ORPHAN DATA in the running game. Only tools read them (build-pois, build-hearths, scale-audit). Nothing in game/src places or draws a waystation. Same defect class as the 60 books' topics_taught.",
     "SURVEY F4: tools/harness/viewpoints-province.json's 17 viewpoints carry anchor: 'region_blackwood' etc. None of those 13 states exist in game/data/states. They are ALSO never read: the file's own consumer, tools/world/province-shots.mjs, calls loadState('default') and ignores anchor entirely; and shoot.mjs would call hOpt('loadState', ...) which swallows the failure AND the file has 0 viewpoints with a `camera` key, so shoot.mjs cannot shoot it at all. The anchors are orphan fields, not missing states.",
     "SURVEY F5: the renderer consumes roads.json properly — field.setRoads() builds roadSegs/roadGrid/spans, province.js _spans() builds deck slabs, parapets and piers per tile. That is the pattern a signpost consumer must copy: a per-tile procedural build off world data.",
-    "SURVEY F6: the pattern for a READABLE world object already exists — engine.openWrit()/_writSync() pushes a model with a `record: {name, lines}` block into renderer.ui.setModel(). A signpost reader can mirror it exactly, which makes the sign's text DRAWN rather than orphan text (RI-JRN07 §CONSUMPTION item 4)."
+    "SURVEY F6: the pattern for a READABLE world object already exists — engine.openWrit()/_writSync() pushes a model with a `record: {name, lines}` block into renderer.ui.setModel(). A signpost reader can mirror it exactly, which makes the sign's text DRAWN rather than orphan text (RI-JRN07 §CONSUMPTION item 4).",
+    "MID-RUN CORRECTION: S30 (no map at all) was OVERRULED BY THE OWNER 2026-08-07 and superseded by S35 — there IS a map, confined to a record of ground already walked, with no marker, route line, distance readout, or square for a place never stood in. Four comments I had already written asserting no map exists were corrected (build-signposts.mjs, province.js _signposts, engine.js signRead, field.js setSignposts). NOTHING in this piece was wasted: S35 states outright that wayfinding must still work with the map closed, because a map showing only where you have been cannot get you anywhere new. Signposts, prose directions and steer-by landmarks are unaffected and are still the whole of this piece."
   ],
-  "next_step": "read dialogue topic schema + quest directions strings; then build signposts.json from roads.json junctions with true bearings",
+  "next_step": "write game/data/dialogue/road-directions.json (20 routes, 4 wrong with world-side tells) + RoadBook reader in topic-supply.js + wire into _installTopicSupply",
   "notes_for_successor": "Phase 1 = authoring, no browser (load was 20.09 at start). Phase 2 = engine journey + capture service. Do NOT land a fail-closed assert before data exists."
 }

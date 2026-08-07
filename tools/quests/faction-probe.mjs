@@ -64,6 +64,52 @@ try {
     H.setCharacter({ race: 'saxhleel', upbringing: 'lukiul', class: 'ledger-hand', birthsign: 'raj-xul' });
     res.attrs = H.getPlayerStats().attributes;
 
+    // ---- RAISING A SKILL THE WAY PLAY RAISES ONE ------------------------------------------
+    // `setSkills()` writes the register directly and grants NOTHING to the governing attribute,
+    // so a probe that uses it can never clear an attribute gate and would report the ladder
+    // unreachable when it is not. `grantSkillUse()` is the play path: `character/skilluse.js`
+    // banks progress through `derive.js bankProgress`, which applies RI-PRG03 §4's +3-levels-
+    // per-rest clamp and RI-PRG02 §2's earned-attribute grant at every multiple of 15. So this
+    // rests at the hearth between batches exactly as a player would, and every attribute point
+    // the character ends with was earned by a skill crossing 15/30/45/60/75/90.
+    const USE_FOR = {
+      security: ['lock_picked', { cost: 1 }],
+      sneak: ['stealth_opener', { cost: 1 }],
+      speechcraft: ['persuade_success', { cost: 1 }],
+      mercantile: ['barter_turnover', { cost: 1, gold: 2500 }],
+      acrobatics: ['drop_landed', { cost: 1 }],
+      athletics: ['sprint_interval', { cost: 1 }],
+      survival: ['flora_gathered', { cost: 1 }],
+      alchemy: ['potion_brewed', { cost: 1 }],
+      shieldcraft: ['parry', { cost: 1 }],
+      sorcery: ['cast_effective', { cost: 1, spell_skill: 'sorcery' }],
+      warding: ['cast_effective', { cost: 1, spell_skill: 'warding' }],
+      veiling: ['cast_effective', { cost: 1, spell_skill: 'veiling' }],
+      'root-speech': ['cast_effective', { cost: 1, spell_skill: 'root-speech' }],
+      blades: ['weapon_hit', { cost: 40, weapon_class: 'straight_sword' }],
+      'axes-maces': ['weapon_hit', { cost: 40, weapon_class: 'axe' }],
+      polearms: ['weapon_hit', { cost: 40, weapon_class: 'spear' }],
+      greatweapons: ['weapon_hit', { cost: 40, weapon_class: 'greatsword' }],
+      'claw-fang': ['weapon_hit', { cost: 40, weapon_class: 'FST' }],
+      marksman: ['marksman_hit', { cost: 40, range_m: 20 }],
+    };
+    const raiseLog = [];
+    function raise(skill, target) {
+      const row = USE_FOR[skill];
+      if (!row) { raiseLog.push({ skill, refused: 'no use event maps to this skill' }); return; }
+      const attrBefore = { ...H.getPlayerStats().attributes };
+      let uses = 0, rests = 0, guard = 0;
+      while ((H.getSkills()[skill] || 0) < target && guard++ < 4000) {
+        const r = H.grantSkillUse(row[0], row[1]);
+        uses++;
+        if (r && r.rest_clamped) { H.hearthRest(); rests++; }
+        else if (r && r.granted === 0 && r.gained === 0 && !r.refused && uses > 3000) break;
+      }
+      const attrAfter = H.getPlayerStats().attributes;
+      const moved = Object.keys(attrAfter).filter((k) => attrAfter[k] !== attrBefore[k]).map((k) => `${k} ${attrBefore[k]}->${attrAfter[k]}`);
+      raiseLog.push({ skill, to: H.getSkills()[skill], target, uses, rests, attributes_earned: moved });
+    }
+
     const defs = {};
     for (const id of H.questBook()) defs[id] = H.questDef(id);
     const inLine = (id) => defs[id] && defs[id].rank_gate && defs[id].rank_gate.faction === LINE;
@@ -104,10 +150,11 @@ try {
           if (!t.met && (t.kind === 'skill_1' || t.kind === 'skill_2')) {
             const cur = H.getSkills();
             const best = (t.what || []).slice().sort((a, b) => (cur[b] || 0) - (cur[a] || 0));
-            const patch = {}; patch[best[t.kind === 'skill_1' ? 0 : 1]] = t.need; H.setSkills(patch);
+            raise(best[t.kind === 'skill_1' ? 0 : 1], t.need);
           }
           if (!t.met && t.kind === 'world_state') H.questSetFlag(t.what, true);
-          if (!t.met && t.kind === 'attribute') { /* creation-time; recorded below, never forced */ }
+          // The attribute term is NEVER set. It rises only where `raise()` above made a
+          // governed skill cross a multiple of 15, which is the one route the game has.
         }
         if (d.rank_gate && d.rank_gate.min_reputation != null) {
           const st = H.getFactionStanding()[LINE] || {};
@@ -137,6 +184,9 @@ try {
       }
     }
     res.steps = walk;
+    res.skill_raises = raiseLog;
+    res.attrs_end = H.getPlayerStats().attributes;
+    res.skills_end = H.getSkills();
     const gatesNow = H.factionGates();
     res.final = (gatesNow.factions || []).find((f) => f.id === LINE) || null;
 
@@ -177,7 +227,10 @@ try {
   check('P2_cold_start_closed', (r.cold.offerable || []).length === 0, `cold start offers ${(r.cold.offerable || []).length} of ${r.cold.n} ${LINE} quests — a line handed to you for free is not a ladder`);
   const walked = (r.steps || []).filter((s) => s.offerable).length;
   check('P3_every_rank_reachable', walked === (r.steps || []).length, `${walked}/${(r.steps || []).length} quests in the line became offerable by playing`);
-  check('P4_ladder_reaches_ceiling', r.final && r.final.derived_rank >= 7, `top derived rank ${r.final && r.final.derived_rank} (${r.final && r.final.ranks && r.final.ranks[r.final.derived_rank] ? r.final.ranks[r.final.derived_rank].name : '?'}) at reputation ${r.final && r.final.reputation}`);
+  const favA = (r.final && r.final.favoured_attributes) || [];
+  check('P4_ladder_reaches_ceiling', r.final && r.final.derived_rank >= 7, `top derived rank ${r.final && r.final.derived_rank} (${r.final && r.final.ranks && r.final.ranks[r.final.derived_rank] ? r.final.ranks[r.final.derived_rank].name : '?'}) at reputation ${r.final && r.final.reputation}; favoured attributes now ${favA.map((a) => `${a} ${r.attrs_end[a]}`).join(', ')} against a rank-7 demand of ${r.final && r.final.ranks ? r.final.ranks[7].attribute : '?'}`);
+  check('P8_attributes_were_EARNED', (r.skill_raises || []).some((x) => (x.attributes_earned || []).length),
+    `attribute points granted by skill use, never set: ${(r.skill_raises || []).flatMap((x) => x.attributes_earned || []).join('; ') || 'NONE'}`);
   check('P5_ladder_perturbation_bites', (r.perturb_ladder.closed || []).length > 0 && r.perturb_ladder.rank_after < r.perturb_ladder.rank_before,
     `zeroing reputation moved the DERIVED rank ${r.perturb_ladder.rank_before} -> ${r.perturb_ladder.rank_after} and closed ${(r.perturb_ladder.closed || []).length} offers`);
   check('P6_exclusion_bites', (r.perturb_exclusion.closed || []).length > 0,

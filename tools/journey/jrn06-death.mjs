@@ -42,8 +42,25 @@ export const DEATH_VOLATILE = [
   // to a body that died in one place and stood up in another. The S6 conclusion was unaffected
   // (zero quest, journal, faction, disposition, crime or world-mutation paths moved) but a
   // number a critic cannot reproduce is exactly the instrument decay RI-MTH07 §D exists for.
+  //
+  // THE LIST IS STILL CLOSED AND EACH ENTRY IS STILL A NAME. What is added below is the PLAYER'S
+  // OWN BODY and nothing else: where it is, which way it faces, which frame of which animation it
+  // is on, and whether it can act. `RI-JRN06` D8 enumerates exactly that as what a respawn
+  // restores, and the body demonstrably died in one place and stood up in another. Nothing here
+  // is a quest stage, a journal entry, a faction number, a disposition, a crime record, a world
+  // mutation or an NPC-death register, and none of those moved on any seed. `fight.player.hp`,
+  // `.stamina`, `.estus` are deliberately NOT added — they are already named above under
+  // `character.*` and adding a second spelling would hide a divergence between the two copies.
   'fight.player.rig.',             // bone rotations and previous-pose hurtboxes — the same body, moved
   'fight.player.pos', 'fight.player.yaw',
+  'fight.player.prevA', 'fight.player.prevB',      // last frame's weapon sockets — a position
+  'fight.player.socketA', 'fight.player.socketB',  // this frame's weapon sockets — a position
+  'fight.player.animFrame', 'fight.player._loopFrame', 'fight.player._lastRootDy',  // animation phase
+  'fight.player.actionableAt', 'fight.player.stagger', 'fight.player.yawExempt',    // D8: control returns
+  // NOT a death effect: an ELAPSED-TIME counter. The across-death transition spans the 150-frame
+  // surface plus the settle, so anything measured in "frames ago" moves by that many frames
+  // whether anybody died or not. It is named here rather than quietly tolerated.
+  'traversal.last_escape_ago_frames',
   'death.in_flight',               // the surface is up at the save and down after the respawn
   'death.deaths_this_session', 'death.stains_lost_to_second_death', 'death.last_grounded',
   'world.entities',                // ordinary-enemy alive flags: D9 says they come back

@@ -208,6 +208,17 @@ export function buildSave(sim, build) {
         // role of null selects no infos at all, which is a settlement of mutes.
         actor: n.actor === undefined ? null : n.actor,
         lines: n.lines === undefined ? null : n.lines,
+        // W1-04. A person's DAY. The protocol's own warning is that a round trip which
+        // re-serialises cannot see a field nobody reads back — so these are written here AND
+        // read back into the live object below, and the probe that checks them audits
+        // `Engine.whereIsEveryone()` after the load rather than the blob.
+        schedule: (n.schedule || []).map((s) => ({ from: r6(s.from), to: r6(s.to), at: s.at, activity: s.activity })),
+        home_interior: n.home_interior || null,
+        work_interior: n.work_interior || null,
+        owns_zones: (n.owns_zones || []).slice().sort(),
+        at: n.at === undefined ? null : n.at,
+        activity: n.activity === undefined ? null : n.activity,
+        present: n.present !== false,
       })).sort((a, b) => (a.eid < b.eid ? -1 : a.eid > b.eid ? 1 : 0)),
       props: sim.props.map((o) => ({
         eid: o.eid, name: o.name, item: o.item, pos: vec(o.pos), yaw_deg: r6(o.yaw),
@@ -315,6 +326,11 @@ export function buildSave(sim, build) {
       yaw_deg: r6(p.yaw),
       region: sim.env.region,
       interior: sim.env.interior,
+      // W1-04. Which town you are standing in. `sim/quest/topic-supply.js` keys the whole
+      // per-town rumour book on it (RI-DLG02), and before this piece nothing in the world
+      // wrote it and nothing in the save carried it — so a reload put you nowhere in
+      // particular and every town's rumours became the same town's.
+      settlement: sim.env.settlement,
       camera_yaw_deg: r6(c.yaw),
       camera_pitch_deg: r6(c.pitch),
       camera_dist_m: r6(c.dist),
@@ -643,6 +659,18 @@ export function applySave(sim, blob, moves, statFor) {
       height_scale: n.height_scale, notice_radius_m: n.notice_radius_m,
       visible: n.visible, loiter_frames: n.loiter_frames, noticing: n.noticing, speaking: false,
       actor: n.actor, lines: n.lines,
+      // W1-04: read BACK, into the live person. The load path rebuilds NPCs inline rather than
+      // through `makeNPC`, so a field added only to the writer would round-trip perfectly and
+      // still be destroyed in the running world on every load — which is the exact failure the
+      // save-repair critic found with the purse.
+      schedule: (n.schedule || []).map((s) => ({ from: s.from, to: s.to, at: s.at, activity: s.activity })),
+      home_interior: n.home_interior || null,
+      work_interior: n.work_interior || null,
+      owns_zones: [...(n.owns_zones || [])],
+      at: n.at === undefined ? null : n.at,
+      activity: n.activity === undefined ? null : n.activity,
+      present: n.present !== false,
+      _slot: -1,
     });
   }
   sim.props.length = 0;
@@ -689,6 +717,7 @@ export function applySave(sim, blob, moves, statFor) {
   sim.env.weather = blob.clock.weather;
   sim.env.region = blob.pose.region;
   sim.env.interior = blob.pose.interior;
+  sim.env.settlement = blob.pose.settlement === undefined ? null : blob.pose.settlement;
 
   p.pos[0] = blob.pose.pos[0]; p.pos[1] = blob.pose.pos[1]; p.pos[2] = blob.pose.pos[2];
   p.yaw = blob.pose.yaw_deg;
