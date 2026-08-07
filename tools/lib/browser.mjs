@@ -74,11 +74,18 @@ export async function launchGame(args = {}) {
     url = server.origin + entry.route;
   }
 
+  // The exact flag list handed to Chromium, kept on the handle. TOOL-COVERAGE-R2 §3: the T1 gate
+  // asked the PAGE what renderer it had, and the page is the side under test — twenty lines
+  // patching `getParameter` turned SwiftShader into an RTX 4070. `--use-angle=swiftshader` lives
+  // here, Node-side, where nothing running in the page can reach it. A gate that consults this
+  // cannot be spoofed from inside the browser.
+  const launchArgs = Array.isArray(args.chromiumArgs) ? args.chromiumArgs.map(String) : DETERMINISTIC_CHROMIUM_ARGS.slice();
+
   let browser;
   try {
     browser = await chromium.launch({
       headless: true,
-      args: Array.isArray(args.chromiumArgs) ? args.chromiumArgs : DETERMINISTIC_CHROMIUM_ARGS,
+      args: launchArgs,
       executablePath: args.chromium ? String(args.chromium) : undefined,
     });
   } catch (e) {
@@ -125,6 +132,8 @@ export async function launchGame(args = {}) {
 
   const handle = {
     page, browser, context, server, url,
+    /** Node-side truth about how this browser was launched. See the comment at the launch call. */
+    chromiumArgs: launchArgs,
     console: consoleLog, errors,
     async close() {
       try { await context.close(); } catch { /* ignore */ }

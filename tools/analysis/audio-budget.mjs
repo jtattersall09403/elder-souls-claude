@@ -56,7 +56,21 @@ const exit = await reportAbsence({
   system: 'audio',
   owner: 'RI-AUD01..03 / wave-1 piece W1-25',
   measures: 'concurrent voice count, decoded audio bytes resident, and AudioContext node count against RI-AUD02\'s ceilings, from audio-stats.json and audio-log.json',
-  needs: ["getAudioStats", "getAudioLog"],
+  // No amendment declares an audio surface, so there are no absent methods to name and
+  // inventing some would be TOOL-COVERAGE-R2 §2 bug 3 again. The absence rests on a LIVE signal
+  // instead: the build declares "audio" not_implemented and surfaces it as audioMB: 0, which
+  // this reporter reads out of getWorldStats() in its probe.
+  needs: ['getWorldStats'],
+  // The live signal, read from the running build rather than asserted: the engine reports
+  // audioMB: 0 and getCapabilityReport() declares "audio" not_implemented (owner W1-25). The
+  // day either changes, this reporter stops saying ABSENT.
+  probe: async ({ handle }) => {
+    const ws = await handle.hOpt('getWorldStats');
+    const markers = [];
+    if (ws && Number(ws.audioMB) === 0) markers.push('getWorldStats().audioMB === 0');
+    if (ws && ws._declared_incomplete) markers.push('getWorldStats()._declared_incomplete');
+    return { audioMB: ws ? ws.audioMB : null, _unmeasurable_markers: markers };
+  },
 }, args);
 
 process.exit(exit);

@@ -1,0 +1,3936 @@
+{
+  "schema": "elder-souls/save-live-audit@1",
+  "item": "RI-JRN05 M1/M3-shaped/M5, measured on the live world through the public harness",
+  "written_by": "W1-SAVE round-1 critic (method_deviations)",
+  "seeds": [
+    4711,
+    1337,
+    90210,
+    2147483647,
+    7,
+    101,
+    31337,
+    555,
+    12345,
+    777
+  ],
+  "scenarios": [
+    "idle",
+    "mid-swing-hitactive",
+    "mid-cast",
+    "mid-parry",
+    "mid-death",
+    "mid-menu",
+    "at-hearth",
+    "mid-crime",
+    "deep-water-drowning"
+  ],
+  "settle_frames": 60,
+  "declared_exclusions": {
+    "trace_events": [
+      "first_input",
+      "first_control"
+    ],
+    "reason": "Engine.firstControlAt is a per-PAGE latch (RI-PLT03 TTFP) that no reset clears, so the second arm in one browser never re-fires it. An artifact of the instrument, declared rather than hidden.",
+    "stale_check_skips": "paths under .const. / .budget. / .declared / .rules / .policy / .thresholds — data constants, not frame stamps"
+  },
+  "trials": [
+    {
+      "scenario": "idle",
+      "seed": 4711,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "62fedc8d0f0b7245c6c597ba1d6ae5ce9d8e798a41a0d1b931c0df1dd040cd78",
+      "engine_hash_after": "62fedc8d0f0b7245c6c597ba1d6ae5ce9d8e798a41a0d1b931c0df1dd040cd78",
+      "live_at_save_point": {
+        "compared": 1239,
+        "equal_abs": 1235,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1244,
+        "equal_abs": 1238,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "ca68c5d88f38772973e6297f72b8d09d29dc4e950f2bb24675598280d85e8dad",
+      "trace_loaded_sha256": "ca68c5d88f38772973e6297f72b8d09d29dc4e950f2bb24675598280d85e8dad",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "idle",
+      "seed": 1337,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "1451518cd4d4eb3fe9e8e4e0888e2baa53bc1df3c261d17b0425306d6da0f25b",
+      "engine_hash_after": "1451518cd4d4eb3fe9e8e4e0888e2baa53bc1df3c261d17b0425306d6da0f25b",
+      "live_at_save_point": {
+        "compared": 1239,
+        "equal_abs": 1235,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1244,
+        "equal_abs": 1238,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "66f1c839aab284da6ba55811d0310e8b2461039c9a32bf0ec06f192ffa09e4b7",
+      "trace_loaded_sha256": "66f1c839aab284da6ba55811d0310e8b2461039c9a32bf0ec06f192ffa09e4b7",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "idle",
+      "seed": 90210,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "ceca969e69c5c2876ac67ad7fa05860727ab19a9a640d480e02bc7298824a5b3",
+      "engine_hash_after": "ceca969e69c5c2876ac67ad7fa05860727ab19a9a640d480e02bc7298824a5b3",
+      "live_at_save_point": {
+        "compared": 1239,
+        "equal_abs": 1235,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1244,
+        "equal_abs": 1238,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "fe3fa1a63b5df11d0c25ffde4a931e78407db7012268307df1c57d5c8948ca4f",
+      "trace_loaded_sha256": "fe3fa1a63b5df11d0c25ffde4a931e78407db7012268307df1c57d5c8948ca4f",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "idle",
+      "seed": 2147483647,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "610ea7b05ea18fb7fb918fce0cb8ed1a239e08170d6d8c129a9aba0c0083accf",
+      "engine_hash_after": "610ea7b05ea18fb7fb918fce0cb8ed1a239e08170d6d8c129a9aba0c0083accf",
+      "live_at_save_point": {
+        "compared": 1239,
+        "equal_abs": 1235,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1244,
+        "equal_abs": 1238,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "c88f59a170667e9dd4fd8fd2380e457c6ababeb89cb39988b3dce6249cc2c9b5",
+      "trace_loaded_sha256": "c88f59a170667e9dd4fd8fd2380e457c6ababeb89cb39988b3dce6249cc2c9b5",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "idle",
+      "seed": 7,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "825c236bebd6b48f7f4b156dcc68e1809a539622a73ea78a81fa06d3f836312d",
+      "engine_hash_after": "825c236bebd6b48f7f4b156dcc68e1809a539622a73ea78a81fa06d3f836312d",
+      "live_at_save_point": {
+        "compared": 1239,
+        "equal_abs": 1235,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1244,
+        "equal_abs": 1238,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "ac4ec46be4e2ade1949777dfdccff0b1c63f8230c653920376910129bd9207f7",
+      "trace_loaded_sha256": "ac4ec46be4e2ade1949777dfdccff0b1c63f8230c653920376910129bd9207f7",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "idle",
+      "seed": 101,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "6a5b5650d5ed6401f0845318ce265704fc02759964767b1541e154824ea50333",
+      "engine_hash_after": "6a5b5650d5ed6401f0845318ce265704fc02759964767b1541e154824ea50333",
+      "live_at_save_point": {
+        "compared": 1239,
+        "equal_abs": 1235,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1244,
+        "equal_abs": 1238,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "1d45bd01bca44e49aa3976c6b65145a45e392752237aa4ebe4c47eaaac9e1927",
+      "trace_loaded_sha256": "1d45bd01bca44e49aa3976c6b65145a45e392752237aa4ebe4c47eaaac9e1927",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "idle",
+      "seed": 31337,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "e99c77e643b205266565e3d1e87c05bc7dbede47b2518fd5a6463a80940c7292",
+      "engine_hash_after": "e99c77e643b205266565e3d1e87c05bc7dbede47b2518fd5a6463a80940c7292",
+      "live_at_save_point": {
+        "compared": 1239,
+        "equal_abs": 1235,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1244,
+        "equal_abs": 1238,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "f3447acab4dfd572c82e84f17adaf750a75ffe30973f44752e99c5d08fbd18a5",
+      "trace_loaded_sha256": "f3447acab4dfd572c82e84f17adaf750a75ffe30973f44752e99c5d08fbd18a5",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "idle",
+      "seed": 555,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "dd47acbd4630f7c97339e4d0f28ab4938ce9d10035223993ebfa09eef564f73f",
+      "engine_hash_after": "dd47acbd4630f7c97339e4d0f28ab4938ce9d10035223993ebfa09eef564f73f",
+      "live_at_save_point": {
+        "compared": 1239,
+        "equal_abs": 1235,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1244,
+        "equal_abs": 1238,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e44366aa44549c23196eccbcb33b54af0dbe063dcf812ce06c3202b8f7560893",
+      "trace_loaded_sha256": "e44366aa44549c23196eccbcb33b54af0dbe063dcf812ce06c3202b8f7560893",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "idle",
+      "seed": 12345,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "29718ce055852c67bf40b81c13c88faa1cfc0c3097751be70a83e7d50cc51e3c",
+      "engine_hash_after": "29718ce055852c67bf40b81c13c88faa1cfc0c3097751be70a83e7d50cc51e3c",
+      "live_at_save_point": {
+        "compared": 1239,
+        "equal_abs": 1235,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1244,
+        "equal_abs": 1238,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "78abcbb72f3482a15f2fd8bedd6bbb0a5e7f115f13ec4708357b3650f5b4d3b9",
+      "trace_loaded_sha256": "78abcbb72f3482a15f2fd8bedd6bbb0a5e7f115f13ec4708357b3650f5b4d3b9",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "idle",
+      "seed": 777,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "6f5f1d3774b0849cf66c19094877f96ad6a664eeae866316557fb7be3af5dfd8",
+      "engine_hash_after": "6f5f1d3774b0849cf66c19094877f96ad6a664eeae866316557fb7be3af5dfd8",
+      "live_at_save_point": {
+        "compared": 1239,
+        "equal_abs": 1235,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1244,
+        "equal_abs": 1238,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "136981bfc0464810f5e148bbcba0eb3019e2329f8d2f0dc8b217d8c36c8009cd",
+      "trace_loaded_sha256": "136981bfc0464810f5e148bbcba0eb3019e2329f8d2f0dc8b217d8c36c8009cd",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-swing-hitactive",
+      "seed": 4711,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "a18748b455028767a1b6f66604220896476662cc9d82628df89aa00156acf3cf",
+      "engine_hash_after": "a18748b455028767a1b6f66604220896476662cc9d82628df89aa00156acf3cf",
+      "live_at_save_point": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "0f2599e10ab04fb865ac341683d1a7892dc86a3f73f1ee1c4a82d4cbc4ebcfe4",
+      "trace_loaded_sha256": "0f2599e10ab04fb865ac341683d1a7892dc86a3f73f1ee1c4a82d4cbc4ebcfe4",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-swing-hitactive",
+      "seed": 1337,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "fd7d872a6e73255a626007beef4de8af8d76802e511675b2953021c25ffaf918",
+      "engine_hash_after": "fd7d872a6e73255a626007beef4de8af8d76802e511675b2953021c25ffaf918",
+      "live_at_save_point": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "366b9166c01943d5deaf2f84b61a6d2b56a4a1fdc3cf566a08317d2690c0ac85",
+      "trace_loaded_sha256": "366b9166c01943d5deaf2f84b61a6d2b56a4a1fdc3cf566a08317d2690c0ac85",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-swing-hitactive",
+      "seed": 90210,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "3167633bd24d4625cbca08251252becfc5b5466b4355e53144fb10d1683a2d57",
+      "engine_hash_after": "3167633bd24d4625cbca08251252becfc5b5466b4355e53144fb10d1683a2d57",
+      "live_at_save_point": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "4544e1ce5dfaee439355e671fed2e7972a3c8882846620492414c6d09137a9f6",
+      "trace_loaded_sha256": "4544e1ce5dfaee439355e671fed2e7972a3c8882846620492414c6d09137a9f6",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-swing-hitactive",
+      "seed": 2147483647,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "311c3bcb3d6391e8cf57f666bca66c00f669c56f3fd2d670c2c8f04e4c82234a",
+      "engine_hash_after": "311c3bcb3d6391e8cf57f666bca66c00f669c56f3fd2d670c2c8f04e4c82234a",
+      "live_at_save_point": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "09cb3d36bd00a636dd6a0ffaef3c1a002bbccf7a8e2b8689d0426a599d9e59d6",
+      "trace_loaded_sha256": "09cb3d36bd00a636dd6a0ffaef3c1a002bbccf7a8e2b8689d0426a599d9e59d6",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-swing-hitactive",
+      "seed": 7,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "dea33edf9da0a90fb6b88c4a5b5ac47ddb298b09050d182e292b4a55162a828b",
+      "engine_hash_after": "dea33edf9da0a90fb6b88c4a5b5ac47ddb298b09050d182e292b4a55162a828b",
+      "live_at_save_point": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "68acf0491cec0a7f60bd2bf30f65034afcc07069ff6ca0446d4110d5440ca004",
+      "trace_loaded_sha256": "68acf0491cec0a7f60bd2bf30f65034afcc07069ff6ca0446d4110d5440ca004",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-swing-hitactive",
+      "seed": 101,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "3f456374f279039d7abcf5392334da7af80946ea23acd136f2ac283af60ddf8c",
+      "engine_hash_after": "3f456374f279039d7abcf5392334da7af80946ea23acd136f2ac283af60ddf8c",
+      "live_at_save_point": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "9055a59a21f0dedf2457cdaa9510819a51881521ebbabb7b7895b43ff95388f8",
+      "trace_loaded_sha256": "9055a59a21f0dedf2457cdaa9510819a51881521ebbabb7b7895b43ff95388f8",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-swing-hitactive",
+      "seed": 31337,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "36f0639eafb951d008e2953033ea1fbb2359579c640cfa6ce5dfab7413a810c4",
+      "engine_hash_after": "36f0639eafb951d008e2953033ea1fbb2359579c640cfa6ce5dfab7413a810c4",
+      "live_at_save_point": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "2588935e5b07bc49a74d26b04e3ea0193716f06e1773c039c932617ba3d9a466",
+      "trace_loaded_sha256": "2588935e5b07bc49a74d26b04e3ea0193716f06e1773c039c932617ba3d9a466",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-swing-hitactive",
+      "seed": 555,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "4fe84b23d86fac6b762da57539aba710f88781ff78ae0172a3e8d822cc36f9c4",
+      "engine_hash_after": "4fe84b23d86fac6b762da57539aba710f88781ff78ae0172a3e8d822cc36f9c4",
+      "live_at_save_point": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "57d055c031017ca0deb5b8453e2ccfe9a5ef712beffd10b56be590c64709a6a1",
+      "trace_loaded_sha256": "57d055c031017ca0deb5b8453e2ccfe9a5ef712beffd10b56be590c64709a6a1",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-swing-hitactive",
+      "seed": 12345,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "8c17529966194661c6b04d9063133f60654cf9eaf0d0d96f9160e749a33ebdf1",
+      "engine_hash_after": "8c17529966194661c6b04d9063133f60654cf9eaf0d0d96f9160e749a33ebdf1",
+      "live_at_save_point": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "366972ab06310ae291a40a9b0280442949ee16786f3a5fc93be7c0b0c05c6e68",
+      "trace_loaded_sha256": "366972ab06310ae291a40a9b0280442949ee16786f3a5fc93be7c0b0c05c6e68",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-swing-hitactive",
+      "seed": 777,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "4a0edb1c89f0f331b447f079639d1da684fe40832cd36e7252c69d45555d0e68",
+      "engine_hash_after": "4a0edb1c89f0f331b447f079639d1da684fe40832cd36e7252c69d45555d0e68",
+      "live_at_save_point": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "9f05a5f84774342e51fb67acd3e59fe5ea66dcf8d8caeb5e69283a11b5a30411",
+      "trace_loaded_sha256": "9f05a5f84774342e51fb67acd3e59fe5ea66dcf8d8caeb5e69283a11b5a30411",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-cast",
+      "seed": 4711,
+      "notes": [
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "ee6fe293c4f15dae789204840c063f79c9850e94a135c92f3236f7a144b99aa5",
+      "engine_hash_after": "ee6fe293c4f15dae789204840c063f79c9850e94a135c92f3236f7a144b99aa5",
+      "live_at_save_point": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "34af8db8927e0d4068f9a7f7c00ab6176580b2417467f811a3a4eed819c87dee",
+      "trace_loaded_sha256": "34af8db8927e0d4068f9a7f7c00ab6176580b2417467f811a3a4eed819c87dee",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-cast",
+      "seed": 1337,
+      "notes": [
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "9771ead8f0c784de761e80e1c2ccd1b1fd8061dd85bf2bdced703c649ea1f1e0",
+      "engine_hash_after": "9771ead8f0c784de761e80e1c2ccd1b1fd8061dd85bf2bdced703c649ea1f1e0",
+      "live_at_save_point": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "049639b35259e5cc5b32b20f7d96330a286553a270f4a607b96b29598eceb001",
+      "trace_loaded_sha256": "049639b35259e5cc5b32b20f7d96330a286553a270f4a607b96b29598eceb001",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-cast",
+      "seed": 90210,
+      "notes": [
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "c6e66a19c9a326495a6d170b2c103635114cfce5108819df8b23936d07961f33",
+      "engine_hash_after": "c6e66a19c9a326495a6d170b2c103635114cfce5108819df8b23936d07961f33",
+      "live_at_save_point": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "c450ace7f0ea33f92d63421ffc3d66694f7b6619b63216b1f816f17494c6d1a7",
+      "trace_loaded_sha256": "c450ace7f0ea33f92d63421ffc3d66694f7b6619b63216b1f816f17494c6d1a7",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-cast",
+      "seed": 2147483647,
+      "notes": [
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "6b546d1002430f230d1a8d843db39762115d5d9b2d006f09ebf0a7482737a48a",
+      "engine_hash_after": "6b546d1002430f230d1a8d843db39762115d5d9b2d006f09ebf0a7482737a48a",
+      "live_at_save_point": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "c972a46a86ba37a0715ecfbc39aa97f5b0692019a875afef56502076af62fa86",
+      "trace_loaded_sha256": "c972a46a86ba37a0715ecfbc39aa97f5b0692019a875afef56502076af62fa86",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-cast",
+      "seed": 7,
+      "notes": [
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "3613facbe6c16cfea638f3f50f1467b81423f4ffd763a7f0abe0bb0e648845a1",
+      "engine_hash_after": "3613facbe6c16cfea638f3f50f1467b81423f4ffd763a7f0abe0bb0e648845a1",
+      "live_at_save_point": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "f78856afa6dcd3ac908e3ba09fd88b4b4cdec52b2cda52545ea3c50e60261b3e",
+      "trace_loaded_sha256": "f78856afa6dcd3ac908e3ba09fd88b4b4cdec52b2cda52545ea3c50e60261b3e",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-cast",
+      "seed": 101,
+      "notes": [
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "fce7aa8e946c653f1923d10249c09bc391ec6cc30faa3ffe9f5b8dad76e01d03",
+      "engine_hash_after": "fce7aa8e946c653f1923d10249c09bc391ec6cc30faa3ffe9f5b8dad76e01d03",
+      "live_at_save_point": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "a59a981ac009f1a0e789c7313523b9974b70c560cb2d8bd9d747e42c85c6c213",
+      "trace_loaded_sha256": "a59a981ac009f1a0e789c7313523b9974b70c560cb2d8bd9d747e42c85c6c213",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-cast",
+      "seed": 31337,
+      "notes": [
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "16181df5f708e39f903c21990701ba0f1e43bbd216455da3cff12346b6781118",
+      "engine_hash_after": "16181df5f708e39f903c21990701ba0f1e43bbd216455da3cff12346b6781118",
+      "live_at_save_point": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "cbf8f0c522014b77f44abf0a4696b03a6cb29bbb19b78f3908a8ff6943058d62",
+      "trace_loaded_sha256": "cbf8f0c522014b77f44abf0a4696b03a6cb29bbb19b78f3908a8ff6943058d62",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-cast",
+      "seed": 555,
+      "notes": [
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "3da61693248325238a23f39c98cdd980297f50b1931e54332ccc0ec357242d55",
+      "engine_hash_after": "3da61693248325238a23f39c98cdd980297f50b1931e54332ccc0ec357242d55",
+      "live_at_save_point": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "86de0c7f04375cba997a55f6c54a99095ba898d8a956e8c1bc1240265e897428",
+      "trace_loaded_sha256": "86de0c7f04375cba997a55f6c54a99095ba898d8a956e8c1bc1240265e897428",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-cast",
+      "seed": 12345,
+      "notes": [
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "75d3ac1fea9385b256207421f9d32901e4f4bd8cf1a59a437e25622769d369c4",
+      "engine_hash_after": "75d3ac1fea9385b256207421f9d32901e4f4bd8cf1a59a437e25622769d369c4",
+      "live_at_save_point": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "ac9ea3d6c02d3f44a6bca206f1c50bd11062fad68656349f2be1a986f7d889a6",
+      "trace_loaded_sha256": "ac9ea3d6c02d3f44a6bca206f1c50bd11062fad68656349f2be1a986f7d889a6",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-cast",
+      "seed": 777,
+      "notes": [
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire",
+        "cast spell marshfire"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "a673ba6b3d0f12ba87c2999aa2a2e185aa2f05a1ef9b08ecf69c0ecd2cf1d193",
+      "engine_hash_after": "a673ba6b3d0f12ba87c2999aa2a2e185aa2f05a1ef9b08ecf69c0ecd2cf1d193",
+      "live_at_save_point": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1245,
+        "equal_abs": 1239,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "40f85e8b3536cd50a64f2212747408b0aa3f1daa4e3a67c0d91aabd7612c13be",
+      "trace_loaded_sha256": "40f85e8b3536cd50a64f2212747408b0aa3f1daa4e3a67c0d91aabd7612c13be",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-parry",
+      "seed": 4711,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "828b4eb05db517f52f1af29e0447c8d82b7b64eaa1d8c94ef0642960c2eef0d2",
+      "engine_hash_after": "828b4eb05db517f52f1af29e0447c8d82b7b64eaa1d8c94ef0642960c2eef0d2",
+      "live_at_save_point": {
+        "compared": 1375,
+        "equal_abs": 1371,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "adbb3af42149844ed4eb3a6809628d3f8019c4d132a755f21c26063d55a2e064",
+      "trace_loaded_sha256": "adbb3af42149844ed4eb3a6809628d3f8019c4d132a755f21c26063d55a2e064",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-parry",
+      "seed": 1337,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "7b7093a515307662f392f99f50ba5cec21d54f7f42abf3d9fc8f1f5e84c37937",
+      "engine_hash_after": "7b7093a515307662f392f99f50ba5cec21d54f7f42abf3d9fc8f1f5e84c37937",
+      "live_at_save_point": {
+        "compared": 1375,
+        "equal_abs": 1371,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "308bdf2aca3bf458a3bb84eb329be31d380b7923fa333658796d9c9bcd031779",
+      "trace_loaded_sha256": "308bdf2aca3bf458a3bb84eb329be31d380b7923fa333658796d9c9bcd031779",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-parry",
+      "seed": 90210,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "a06d67f5e80ec8526c8b764ff58ffca8790a6e5589eeb6cd1fe628abf7c48b87",
+      "engine_hash_after": "a06d67f5e80ec8526c8b764ff58ffca8790a6e5589eeb6cd1fe628abf7c48b87",
+      "live_at_save_point": {
+        "compared": 1375,
+        "equal_abs": 1371,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "a09fce5d5a4df2a9f2047dc3b578d51f744f5f08c5555d5e4d11403e62b721f0",
+      "trace_loaded_sha256": "a09fce5d5a4df2a9f2047dc3b578d51f744f5f08c5555d5e4d11403e62b721f0",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-parry",
+      "seed": 2147483647,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "7466d981e8cc290da9f65e73ad49fd1cd2214c231f780824c80524cbcf6d44aa",
+      "engine_hash_after": "7466d981e8cc290da9f65e73ad49fd1cd2214c231f780824c80524cbcf6d44aa",
+      "live_at_save_point": {
+        "compared": 1375,
+        "equal_abs": 1371,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "b8b2fbe6de1655e5fd5d42a83a1a2e2593386eb6c6fe04258912df7136547d00",
+      "trace_loaded_sha256": "b8b2fbe6de1655e5fd5d42a83a1a2e2593386eb6c6fe04258912df7136547d00",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-parry",
+      "seed": 7,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "fabaae86b99cd7200f81cb58a17f8443d63810f11823e64584f9b1d826a23440",
+      "engine_hash_after": "fabaae86b99cd7200f81cb58a17f8443d63810f11823e64584f9b1d826a23440",
+      "live_at_save_point": {
+        "compared": 1375,
+        "equal_abs": 1371,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "ddc96813605bb6871df9ea85bcc15a99a4b05bfb719bbbdf49d9a6aae193bfdc",
+      "trace_loaded_sha256": "ddc96813605bb6871df9ea85bcc15a99a4b05bfb719bbbdf49d9a6aae193bfdc",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-parry",
+      "seed": 101,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "359c0c0a0ca08b2027c74a7c4614f06ddc36b2cb6074d590f2e52323fbed2c2b",
+      "engine_hash_after": "359c0c0a0ca08b2027c74a7c4614f06ddc36b2cb6074d590f2e52323fbed2c2b",
+      "live_at_save_point": {
+        "compared": 1375,
+        "equal_abs": 1371,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "49a06c86893f46f5f8d6e0ce97fe2c42ad5f4d876b4e0dd23293d3faf099afaf",
+      "trace_loaded_sha256": "49a06c86893f46f5f8d6e0ce97fe2c42ad5f4d876b4e0dd23293d3faf099afaf",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-parry",
+      "seed": 31337,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "1a4a4b9e81718b7f1fa97074eab38ebe68c5d806563170a773b3dfc456de4f3d",
+      "engine_hash_after": "1a4a4b9e81718b7f1fa97074eab38ebe68c5d806563170a773b3dfc456de4f3d",
+      "live_at_save_point": {
+        "compared": 1375,
+        "equal_abs": 1371,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "95b79362853be5d62c37037fd21a449e779dcccfc37f0b24f4551a5bf9071d47",
+      "trace_loaded_sha256": "95b79362853be5d62c37037fd21a449e779dcccfc37f0b24f4551a5bf9071d47",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-parry",
+      "seed": 555,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "160b8d68be1c44e6419cc5cec4ea469ab0f02fb43885b9993e1e96c859195396",
+      "engine_hash_after": "160b8d68be1c44e6419cc5cec4ea469ab0f02fb43885b9993e1e96c859195396",
+      "live_at_save_point": {
+        "compared": 1375,
+        "equal_abs": 1371,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "2b219217e1e0f2eae64928fef612b183b0aff659d1b20151d59e3bb9e48393cd",
+      "trace_loaded_sha256": "2b219217e1e0f2eae64928fef612b183b0aff659d1b20151d59e3bb9e48393cd",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-parry",
+      "seed": 12345,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "567a447145ae46fe54e0468516b2c80f7896f4d8e0a6f5aca3817b4783792ec7",
+      "engine_hash_after": "567a447145ae46fe54e0468516b2c80f7896f4d8e0a6f5aca3817b4783792ec7",
+      "live_at_save_point": {
+        "compared": 1375,
+        "equal_abs": 1371,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "09bec30dc3eb27b65a6f85982a4c87f1e3b260edf0188c70cb399219802141e8",
+      "trace_loaded_sha256": "09bec30dc3eb27b65a6f85982a4c87f1e3b260edf0188c70cb399219802141e8",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-parry",
+      "seed": 777,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "5ef33bdd49432e9b77855282a1bcc9bd788c0d1681a5524a00214b666c76858a",
+      "engine_hash_after": "5ef33bdd49432e9b77855282a1bcc9bd788c0d1681a5524a00214b666c76858a",
+      "live_at_save_point": {
+        "compared": 1375,
+        "equal_abs": 1371,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1380,
+        "equal_abs": 1374,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "2d1001769da21ae8c6af0b04f7a9f03e72c3fe837f964c89f7479f8090c99aee",
+      "trace_loaded_sha256": "2d1001769da21ae8c6af0b04f7a9f03e72c3fe837f964c89f7479f8090c99aee",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-death",
+      "seed": 4711,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": false,
+      "engine_hash_before": "ca30ec86afaf694edb0e7ebbb97df573ace61e63e86c745b71a8e03167906736",
+      "engine_hash_after": "4d2beedb8142283e3d9279fbd82dacfea24c3c1be17d355b40f9e9c03658e5f2",
+      "live_at_save_point": {
+        "compared": 1386,
+        "equal_abs": 1375,
+        "equal_rebased": 6,
+        "unrebased_stamps": [
+          {
+            "path": "death.controllable_at",
+            "value": 161,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.death_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": [
+          {
+            "path": "death.surface_frames_left",
+            "control": 137,
+            "loaded": 161
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1403,
+        "equal_abs": 1392,
+        "equal_rebased": 9,
+        "unrebased_stamps": [
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": []
+      },
+      "trace_control_sha256": "867dca32a5e86f0410ce20ac610a35a4832caea26c141921599835b619e3bced",
+      "trace_loaded_sha256": "a20e5cbddb654daafa72903c24a710fe7894bb38a9129cbdc9076eb8824026c1",
+      "trace_identical": false,
+      "trace_census": {
+        "frames": 60,
+        "fields": {
+          "events[].time_dead_frames": 1
+        },
+        "first": {
+          "frame": 40,
+          "field": "events[].time_dead_frames",
+          "control": 54,
+          "loaded": 30
+        },
+        "len_control": 60,
+        "len_loaded": 60
+      },
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-death",
+      "seed": 1337,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": false,
+      "engine_hash_before": "d0f54afd9fb035d7c8f63d7608d25c88cfdf8877a784632434c7d2969a052dee",
+      "engine_hash_after": "7509ce21c8c6d4b33a3b8e58498aae0e100a9b20aec88d551370ddf578c09aac",
+      "live_at_save_point": {
+        "compared": 1386,
+        "equal_abs": 1375,
+        "equal_rebased": 6,
+        "unrebased_stamps": [
+          {
+            "path": "death.controllable_at",
+            "value": 161,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.death_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": [
+          {
+            "path": "death.surface_frames_left",
+            "control": 137,
+            "loaded": 161
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1403,
+        "equal_abs": 1392,
+        "equal_rebased": 9,
+        "unrebased_stamps": [
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": []
+      },
+      "trace_control_sha256": "3c4a9276071721907a2744d09c3bd60dcdda8213ae8ef7ce5f8d501a3f34abb1",
+      "trace_loaded_sha256": "bef77cf64e305bcc265da4d1096fd4d617a6dece2a0d3ed1540fe5b453b8115e",
+      "trace_identical": false,
+      "trace_census": {
+        "frames": 60,
+        "fields": {
+          "events[].time_dead_frames": 1
+        },
+        "first": {
+          "frame": 40,
+          "field": "events[].time_dead_frames",
+          "control": 54,
+          "loaded": 30
+        },
+        "len_control": 60,
+        "len_loaded": 60
+      },
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-death",
+      "seed": 90210,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": false,
+      "engine_hash_before": "8e22edbd77ff2c306729cb2d0c5f17f943449a77e927cd318c4b3e799baf53ba",
+      "engine_hash_after": "a5ed601b8ac2b9440de5f564f606be242683061099a11f5ec2d8c09c90742533",
+      "live_at_save_point": {
+        "compared": 1386,
+        "equal_abs": 1375,
+        "equal_rebased": 6,
+        "unrebased_stamps": [
+          {
+            "path": "death.controllable_at",
+            "value": 161,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.death_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": [
+          {
+            "path": "death.surface_frames_left",
+            "control": 137,
+            "loaded": 161
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1403,
+        "equal_abs": 1392,
+        "equal_rebased": 9,
+        "unrebased_stamps": [
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": []
+      },
+      "trace_control_sha256": "f83910a8f65aa077f88c278f7d1ccb3458273492bc5b72a96dc8fa6ff55acf03",
+      "trace_loaded_sha256": "d9031d556d6806b4304be7e359911b7747e8b9b09f194498f56fc9649e794eb1",
+      "trace_identical": false,
+      "trace_census": {
+        "frames": 60,
+        "fields": {
+          "events[].time_dead_frames": 1
+        },
+        "first": {
+          "frame": 40,
+          "field": "events[].time_dead_frames",
+          "control": 54,
+          "loaded": 30
+        },
+        "len_control": 60,
+        "len_loaded": 60
+      },
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-death",
+      "seed": 2147483647,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": false,
+      "engine_hash_before": "d739e47d7e851b0d8f083be2ae9e46faa701157d4c14cd32eaa3b50b3c561f3e",
+      "engine_hash_after": "8b4b026b842563bdacfcba2a3646ff6437b6d0961996d75dd7d84c3ec4ff9abe",
+      "live_at_save_point": {
+        "compared": 1386,
+        "equal_abs": 1375,
+        "equal_rebased": 6,
+        "unrebased_stamps": [
+          {
+            "path": "death.controllable_at",
+            "value": 161,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.death_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": [
+          {
+            "path": "death.surface_frames_left",
+            "control": 137,
+            "loaded": 161
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1403,
+        "equal_abs": 1392,
+        "equal_rebased": 9,
+        "unrebased_stamps": [
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": []
+      },
+      "trace_control_sha256": "8ebb6bc4e3579662df6825943da743da5c104f2d5573d21d615e726b967936a6",
+      "trace_loaded_sha256": "47f993ab6d0ca26aa7b56688cbd06f6a5d160b074268fc471ab72eb10f71b3bc",
+      "trace_identical": false,
+      "trace_census": {
+        "frames": 60,
+        "fields": {
+          "events[].time_dead_frames": 1
+        },
+        "first": {
+          "frame": 40,
+          "field": "events[].time_dead_frames",
+          "control": 54,
+          "loaded": 30
+        },
+        "len_control": 60,
+        "len_loaded": 60
+      },
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-death",
+      "seed": 7,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": false,
+      "engine_hash_before": "65a7fdd94fcd01a249500eea1f85025087c5cd0f0f5032cd9d254851a5646e26",
+      "engine_hash_after": "21b96e6dfee7d0f6c61184eb903edf096beeaa5e922e72a6f14b5bb61072b086",
+      "live_at_save_point": {
+        "compared": 1386,
+        "equal_abs": 1375,
+        "equal_rebased": 6,
+        "unrebased_stamps": [
+          {
+            "path": "death.controllable_at",
+            "value": 161,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.death_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": [
+          {
+            "path": "death.surface_frames_left",
+            "control": 137,
+            "loaded": 161
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1403,
+        "equal_abs": 1392,
+        "equal_rebased": 9,
+        "unrebased_stamps": [
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": []
+      },
+      "trace_control_sha256": "70918dc110f039b273ec5a85ad83809b3e6e8f025343b5153a7b09aebd33abb3",
+      "trace_loaded_sha256": "ea5898c756446c6ca108e475e1a315e55095f884321195a378e7e77953dbe82b",
+      "trace_identical": false,
+      "trace_census": {
+        "frames": 60,
+        "fields": {
+          "events[].time_dead_frames": 1
+        },
+        "first": {
+          "frame": 40,
+          "field": "events[].time_dead_frames",
+          "control": 54,
+          "loaded": 30
+        },
+        "len_control": 60,
+        "len_loaded": 60
+      },
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-death",
+      "seed": 101,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": false,
+      "engine_hash_before": "7e868574288a26e5b745dddc18fc1c8559ecb3282133432ca148dea4b3c58a2e",
+      "engine_hash_after": "c97275d2e8cde6cf500129dad43a344fb6d5ccc4070a5458ca37d9dcd89ffe9d",
+      "live_at_save_point": {
+        "compared": 1386,
+        "equal_abs": 1375,
+        "equal_rebased": 6,
+        "unrebased_stamps": [
+          {
+            "path": "death.controllable_at",
+            "value": 161,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.death_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": [
+          {
+            "path": "death.surface_frames_left",
+            "control": 137,
+            "loaded": 161
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1403,
+        "equal_abs": 1392,
+        "equal_rebased": 9,
+        "unrebased_stamps": [
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": []
+      },
+      "trace_control_sha256": "83fa0b4bec8eceda9c6aa673e42a997ca0c2fb216094313b3b967bdb84bf9667",
+      "trace_loaded_sha256": "95f5c2cbb7b0aa89c683556e55a6bd4be00726363fa6d6855cdbefcf40dc6a35",
+      "trace_identical": false,
+      "trace_census": {
+        "frames": 60,
+        "fields": {
+          "events[].time_dead_frames": 1
+        },
+        "first": {
+          "frame": 40,
+          "field": "events[].time_dead_frames",
+          "control": 54,
+          "loaded": 30
+        },
+        "len_control": 60,
+        "len_loaded": 60
+      },
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-death",
+      "seed": 31337,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": false,
+      "engine_hash_before": "c0461cb48a337ba6e284c4628b68131140166d10546b502d1d28615a884487ab",
+      "engine_hash_after": "59b58c276b31d943ad06e2039e0a0ced7a88844194dd9e07e1ebf415cc40f7f1",
+      "live_at_save_point": {
+        "compared": 1386,
+        "equal_abs": 1375,
+        "equal_rebased": 6,
+        "unrebased_stamps": [
+          {
+            "path": "death.controllable_at",
+            "value": 161,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.death_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": [
+          {
+            "path": "death.surface_frames_left",
+            "control": 137,
+            "loaded": 161
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1403,
+        "equal_abs": 1392,
+        "equal_rebased": 9,
+        "unrebased_stamps": [
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": []
+      },
+      "trace_control_sha256": "b595530d37ed04bc9cabf7d77663f31449c0c834f76f44680ee3f37726350fd1",
+      "trace_loaded_sha256": "dbf45bb4e5518f9fed097bbe48076003165bb0a1cb841293005b1cd06af50075",
+      "trace_identical": false,
+      "trace_census": {
+        "frames": 60,
+        "fields": {
+          "events[].time_dead_frames": 1
+        },
+        "first": {
+          "frame": 40,
+          "field": "events[].time_dead_frames",
+          "control": 54,
+          "loaded": 30
+        },
+        "len_control": 60,
+        "len_loaded": 60
+      },
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-death",
+      "seed": 555,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": false,
+      "engine_hash_before": "52c79ef656e6a496e13c3e2072581fed71c7a9a4855509f5150bd09e4f657524",
+      "engine_hash_after": "957fe636d28cc59b2d1a066ed55cb8aca3bc8c9fef8ee19b53e469d6dc0dac16",
+      "live_at_save_point": {
+        "compared": 1386,
+        "equal_abs": 1375,
+        "equal_rebased": 6,
+        "unrebased_stamps": [
+          {
+            "path": "death.controllable_at",
+            "value": 161,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.death_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": [
+          {
+            "path": "death.surface_frames_left",
+            "control": 137,
+            "loaded": 161
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1403,
+        "equal_abs": 1392,
+        "equal_rebased": 9,
+        "unrebased_stamps": [
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": []
+      },
+      "trace_control_sha256": "2a401727da655d7c4a804d9ef98a3f29429244da87943092dadf88ee741984fd",
+      "trace_loaded_sha256": "5a23a8ba3f9403b7ce8e47375aee150390d4e9b8a8a8724c9826c715ee80d858",
+      "trace_identical": false,
+      "trace_census": {
+        "frames": 60,
+        "fields": {
+          "events[].time_dead_frames": 1
+        },
+        "first": {
+          "frame": 40,
+          "field": "events[].time_dead_frames",
+          "control": 54,
+          "loaded": 30
+        },
+        "len_control": 60,
+        "len_loaded": 60
+      },
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-death",
+      "seed": 12345,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": false,
+      "engine_hash_before": "a267d0cd5a510ea4d84d72bf26b3a6b449058be320ddc925438a70438b6d05bf",
+      "engine_hash_after": "0d962ae83f66137f4ecfe8af2ef9602c679a5a692f4668cb9079ac29db29090b",
+      "live_at_save_point": {
+        "compared": 1386,
+        "equal_abs": 1375,
+        "equal_rebased": 6,
+        "unrebased_stamps": [
+          {
+            "path": "death.controllable_at",
+            "value": 161,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.death_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": [
+          {
+            "path": "death.surface_frames_left",
+            "control": 137,
+            "loaded": 161
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1403,
+        "equal_abs": 1392,
+        "equal_rebased": 9,
+        "unrebased_stamps": [
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": []
+      },
+      "trace_control_sha256": "ae86ce85865abbea9d3113de1de2286eccc75011c3092783bccad7067bb075d4",
+      "trace_loaded_sha256": "7e61cbe9146d07831093e11142276bb817174d52c82b3c37f98abaa96d582e27",
+      "trace_identical": false,
+      "trace_census": {
+        "frames": 60,
+        "fields": {
+          "events[].time_dead_frames": 1
+        },
+        "first": {
+          "frame": 40,
+          "field": "events[].time_dead_frames",
+          "control": 54,
+          "loaded": 30
+        },
+        "len_control": 60,
+        "len_loaded": 60
+      },
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-death",
+      "seed": 777,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": false,
+      "engine_hash_before": "8d177c26120369cd646aba9dc46a013bab873d51acff04af71cd30c8fb9ba056",
+      "engine_hash_after": "0c5404768806c45d1b2112bfbfe54bc9a621d75e85ae7308145c39de43c6cdad",
+      "live_at_save_point": {
+        "compared": 1386,
+        "equal_abs": 1375,
+        "equal_rebased": 6,
+        "unrebased_stamps": [
+          {
+            "path": "death.controllable_at",
+            "value": 161,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.death_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 24,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": [
+          {
+            "path": "death.surface_frames_left",
+            "control": 137,
+            "loaded": 161
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1403,
+        "equal_abs": 1392,
+        "equal_rebased": 9,
+        "unrebased_stamps": [
+          {
+            "path": "death.deaths[0].frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          },
+          {
+            "path": "death.last_damage_frame",
+            "value": 11,
+            "control_frame": 84,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": []
+      },
+      "trace_control_sha256": "268a7cb42cbbb1d5092ae592bf83f10d733a3de72bfe8d870964ab4116291873",
+      "trace_loaded_sha256": "f9ec7c548f0800f40af00d8798a315ffadf7c1e14dcb8dd059596fb34c87107c",
+      "trace_identical": false,
+      "trace_census": {
+        "frames": 60,
+        "fields": {
+          "events[].time_dead_frames": 1
+        },
+        "first": {
+          "frame": 40,
+          "field": "events[].time_dead_frames",
+          "control": 54,
+          "loaded": 30
+        },
+        "len_control": 60,
+        "len_loaded": 60
+      },
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-menu",
+      "seed": 4711,
+      "notes": [],
+      "preroll_reproducible": false,
+      "preroll_repeat_diff": [
+        {
+          "path": "crime.zones",
+          "control": null,
+          "loaded": "{}"
+        },
+        {
+          "path": "crime.zones.null.baseline",
+          "control": 0,
+          "loaded": null
+        },
+        {
+          "path": "crime.zones.null.baseline_until_f",
+          "control": -1,
+          "loaded": null
+        },
+        {
+          "path": "crime.zones.null.ctx_mult",
+          "control": 1,
+          "loaded": null
+        },
+        {
+          "path": "crime.zones.null.ctx_until_f",
+          "control": -1,
+          "loaded": null
+        },
+        {
+          "path": "crime.zones.null.searches",
+          "control": 0,
+          "loaded": null
+        },
+        {
+          "path": "quest.crime.bounty",
+          "control": null,
+          "loaded": "{}"
+        },
+        {
+          "path": "quest.crime.bounty.imperial",
+          "control": 0,
+          "loaded": null
+        }
+      ],
+      "engine_hash_equal": true,
+      "engine_hash_before": "c3768861c82fccd973136a17b8f8d82ff81e60d5ea14d3c1ab39cc583dcffa9b",
+      "engine_hash_after": "c3768861c82fccd973136a17b8f8d82ff81e60d5ea14d3c1ab39cc583dcffa9b",
+      "live_at_save_point": {
+        "compared": 1528,
+        "equal_abs": 1528,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1532,
+        "equal_abs": 1532,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": false,
+      "verdict": "unmeasurable-preroll-not-reproducible"
+    },
+    {
+      "scenario": "mid-menu",
+      "seed": 1337,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "ffaf6fb4916b3ee3a474079da9b14f1bd104cb29544f04e08b8033f43bcee72b",
+      "engine_hash_after": "ffaf6fb4916b3ee3a474079da9b14f1bd104cb29544f04e08b8033f43bcee72b",
+      "live_at_save_point": {
+        "compared": 1528,
+        "equal_abs": 1528,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1532,
+        "equal_abs": 1532,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-menu",
+      "seed": 90210,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "6e0bd4157ff5b04ab21ddf7c6b12204bb7277e7838bfb7dc0f87655c5a339788",
+      "engine_hash_after": "6e0bd4157ff5b04ab21ddf7c6b12204bb7277e7838bfb7dc0f87655c5a339788",
+      "live_at_save_point": {
+        "compared": 1528,
+        "equal_abs": 1528,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1532,
+        "equal_abs": 1532,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-menu",
+      "seed": 2147483647,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "0935774e48053945780858b5b096e5e1ee0e5ffbfa0f5eb663b8e33c6aba1609",
+      "engine_hash_after": "0935774e48053945780858b5b096e5e1ee0e5ffbfa0f5eb663b8e33c6aba1609",
+      "live_at_save_point": {
+        "compared": 1528,
+        "equal_abs": 1528,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1532,
+        "equal_abs": 1532,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-menu",
+      "seed": 7,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "e6648def142396020926a7385d3ee70a3671dc7db2f8636493d0d13bd400e97c",
+      "engine_hash_after": "e6648def142396020926a7385d3ee70a3671dc7db2f8636493d0d13bd400e97c",
+      "live_at_save_point": {
+        "compared": 1528,
+        "equal_abs": 1528,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1532,
+        "equal_abs": 1532,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-menu",
+      "seed": 101,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "ea3fdab7f84fbe45d108508c6af54af5bcbcb514d6a45a59448753d398d3a54a",
+      "engine_hash_after": "ea3fdab7f84fbe45d108508c6af54af5bcbcb514d6a45a59448753d398d3a54a",
+      "live_at_save_point": {
+        "compared": 1528,
+        "equal_abs": 1528,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1532,
+        "equal_abs": 1532,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-menu",
+      "seed": 31337,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "00837338cd71fcdf3acdd9975e2b8623b94f82d319241dce74a82fdb2e1810b8",
+      "engine_hash_after": "00837338cd71fcdf3acdd9975e2b8623b94f82d319241dce74a82fdb2e1810b8",
+      "live_at_save_point": {
+        "compared": 1528,
+        "equal_abs": 1528,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1532,
+        "equal_abs": 1532,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-menu",
+      "seed": 555,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "4875961f592fc4f928d7444fab2bb9a2599f14870bf868c6772a34ba0a631be0",
+      "engine_hash_after": "4875961f592fc4f928d7444fab2bb9a2599f14870bf868c6772a34ba0a631be0",
+      "live_at_save_point": {
+        "compared": 1528,
+        "equal_abs": 1528,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1532,
+        "equal_abs": 1532,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-menu",
+      "seed": 12345,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "badc9d8a1a9ffdf230ea012c36851cbfca06e186151907888d810fbf1f73ad11",
+      "engine_hash_after": "badc9d8a1a9ffdf230ea012c36851cbfca06e186151907888d810fbf1f73ad11",
+      "live_at_save_point": {
+        "compared": 1528,
+        "equal_abs": 1528,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1532,
+        "equal_abs": 1532,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-menu",
+      "seed": 777,
+      "notes": [],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "7e53f373e8fabaa13f8fe984540aae0eff77c63939b0c22a06d9a8b86d1ee588",
+      "engine_hash_after": "7e53f373e8fabaa13f8fe984540aae0eff77c63939b0c22a06d9a8b86d1ee588",
+      "live_at_save_point": {
+        "compared": 1528,
+        "equal_abs": 1528,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1532,
+        "equal_abs": 1532,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "at-hearth",
+      "seed": 4711,
+      "notes": [
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "619ac10334f79a35f611c44895952293c630f4645b6549734ca1581850d91b24",
+      "engine_hash_after": "619ac10334f79a35f611c44895952293c630f4645b6549734ca1581850d91b24",
+      "live_at_save_point": {
+        "compared": 1535,
+        "equal_abs": 1535,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1539,
+        "equal_abs": 1539,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "at-hearth",
+      "seed": 1337,
+      "notes": [
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "cfc58b751f7f964d66c59f9f831432582ed85ceb41525998ddaa8d89d13ff74a",
+      "engine_hash_after": "cfc58b751f7f964d66c59f9f831432582ed85ceb41525998ddaa8d89d13ff74a",
+      "live_at_save_point": {
+        "compared": 1535,
+        "equal_abs": 1535,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1539,
+        "equal_abs": 1539,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "at-hearth",
+      "seed": 90210,
+      "notes": [
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "a150dbe4a358cf723755aeb0f769fbef5493f44bb9fa788da15d8a82bdb44930",
+      "engine_hash_after": "a150dbe4a358cf723755aeb0f769fbef5493f44bb9fa788da15d8a82bdb44930",
+      "live_at_save_point": {
+        "compared": 1535,
+        "equal_abs": 1535,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1539,
+        "equal_abs": 1539,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "at-hearth",
+      "seed": 2147483647,
+      "notes": [
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "a4abc49a99310759473bee26bbfbbdc9414a6df905a554b703d39f307538c5e0",
+      "engine_hash_after": "a4abc49a99310759473bee26bbfbbdc9414a6df905a554b703d39f307538c5e0",
+      "live_at_save_point": {
+        "compared": 1535,
+        "equal_abs": 1535,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1539,
+        "equal_abs": 1539,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "at-hearth",
+      "seed": 7,
+      "notes": [
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "f90bc81f3b3547dade7c36fae68530df6f64be452b016b9e010de106ca71121d",
+      "engine_hash_after": "f90bc81f3b3547dade7c36fae68530df6f64be452b016b9e010de106ca71121d",
+      "live_at_save_point": {
+        "compared": 1535,
+        "equal_abs": 1535,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1539,
+        "equal_abs": 1539,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "at-hearth",
+      "seed": 101,
+      "notes": [
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "95c43bb3efba34bbbd89a69f37da4b862862997fde05535e4445c7f98b4b771f",
+      "engine_hash_after": "95c43bb3efba34bbbd89a69f37da4b862862997fde05535e4445c7f98b4b771f",
+      "live_at_save_point": {
+        "compared": 1535,
+        "equal_abs": 1535,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1539,
+        "equal_abs": 1539,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "at-hearth",
+      "seed": 31337,
+      "notes": [
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "afacf9886d3dc3e4ad13492b7da7cc1c3eb8ae84ee337e78776976c7ba534b64",
+      "engine_hash_after": "afacf9886d3dc3e4ad13492b7da7cc1c3eb8ae84ee337e78776976c7ba534b64",
+      "live_at_save_point": {
+        "compared": 1535,
+        "equal_abs": 1535,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1539,
+        "equal_abs": 1539,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "at-hearth",
+      "seed": 555,
+      "notes": [
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "7455c3982fb07bc28de876eb15dc581c41e7d96b61eac2e49a41c52fd82132b2",
+      "engine_hash_after": "7455c3982fb07bc28de876eb15dc581c41e7d96b61eac2e49a41c52fd82132b2",
+      "live_at_save_point": {
+        "compared": 1535,
+        "equal_abs": 1535,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1539,
+        "equal_abs": 1539,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "at-hearth",
+      "seed": 12345,
+      "notes": [
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "b84a69a7ec5d24e8f55d40a15accc01ae98fa7e23abfaf8439b5843891f7890f",
+      "engine_hash_after": "b84a69a7ec5d24e8f55d40a15accc01ae98fa7e23abfaf8439b5843891f7890f",
+      "live_at_save_point": {
+        "compared": 1535,
+        "equal_abs": 1535,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1539,
+        "equal_abs": 1539,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "at-hearth",
+      "seed": 777,
+      "notes": [
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "d0dd617f6d064d24e7c8d18996e345975e1f9250a70b5593729eedfe99337b66",
+      "engine_hash_after": "d0dd617f6d064d24e7c8d18996e345975e1f9250a70b5593729eedfe99337b66",
+      "live_at_save_point": {
+        "compared": 1535,
+        "equal_abs": 1535,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1539,
+        "equal_abs": 1539,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "mid-crime",
+      "seed": 4711,
+      "notes": [
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "b2762873e6063e9de53b01350452d925b35f9547396b211445cad649a3fbdb79",
+      "engine_hash_after": "b2762873e6063e9de53b01350452d925b35f9547396b211445cad649a3fbdb79",
+      "live_at_save_point": {
+        "compared": 1854,
+        "equal_abs": 1851,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1858,
+        "equal_abs": 1855,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-crime",
+      "seed": 1337,
+      "notes": [
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "e7661e224d594c5e04a77c5946aad3a20f646e2ed494e26bed68b535589a8bf8",
+      "engine_hash_after": "e7661e224d594c5e04a77c5946aad3a20f646e2ed494e26bed68b535589a8bf8",
+      "live_at_save_point": {
+        "compared": 1854,
+        "equal_abs": 1851,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1858,
+        "equal_abs": 1855,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-crime",
+      "seed": 90210,
+      "notes": [
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "63fd7c7210f2c62fc128bba7739b898e6d21d716e597101b51398a32bc38b551",
+      "engine_hash_after": "63fd7c7210f2c62fc128bba7739b898e6d21d716e597101b51398a32bc38b551",
+      "live_at_save_point": {
+        "compared": 1854,
+        "equal_abs": 1851,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1858,
+        "equal_abs": 1855,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-crime",
+      "seed": 2147483647,
+      "notes": [
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "6db3522cfdb5d690da42005808e036269d6cdbe6a471ee65b32fc9abf797a96e",
+      "engine_hash_after": "6db3522cfdb5d690da42005808e036269d6cdbe6a471ee65b32fc9abf797a96e",
+      "live_at_save_point": {
+        "compared": 1854,
+        "equal_abs": 1851,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1858,
+        "equal_abs": 1855,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-crime",
+      "seed": 7,
+      "notes": [
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "96da0bce9c5adaa7393071b05bb36ae51b2792fe13707d2b157244f2302cf938",
+      "engine_hash_after": "96da0bce9c5adaa7393071b05bb36ae51b2792fe13707d2b157244f2302cf938",
+      "live_at_save_point": {
+        "compared": 1854,
+        "equal_abs": 1851,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1858,
+        "equal_abs": 1855,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-crime",
+      "seed": 101,
+      "notes": [
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "73125e85b6491e29604eed095217b331b614604d7e488d73b670414e07d0a395",
+      "engine_hash_after": "73125e85b6491e29604eed095217b331b614604d7e488d73b670414e07d0a395",
+      "live_at_save_point": {
+        "compared": 1854,
+        "equal_abs": 1851,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1858,
+        "equal_abs": 1855,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-crime",
+      "seed": 31337,
+      "notes": [
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "8fe2bfac438fd0ffab96b7f3ae14d43e333c9d7a17fcf04a885c6fb7176005dd",
+      "engine_hash_after": "8fe2bfac438fd0ffab96b7f3ae14d43e333c9d7a17fcf04a885c6fb7176005dd",
+      "live_at_save_point": {
+        "compared": 1854,
+        "equal_abs": 1851,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1858,
+        "equal_abs": 1855,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-crime",
+      "seed": 555,
+      "notes": [
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "8ff20f7e29d11904c6122031230c3f33b0f4475e7d2538fc124ac53ae3558527",
+      "engine_hash_after": "8ff20f7e29d11904c6122031230c3f33b0f4475e7d2538fc124ac53ae3558527",
+      "live_at_save_point": {
+        "compared": 1854,
+        "equal_abs": 1851,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1858,
+        "equal_abs": 1855,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-crime",
+      "seed": 12345,
+      "notes": [
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "29f79db066a0d03352e4c9359f045f20fd35bad825499a6cfd72a8aa55d47e8d",
+      "engine_hash_after": "29f79db066a0d03352e4c9359f045f20fd35bad825499a6cfd72a8aa55d47e8d",
+      "live_at_save_point": {
+        "compared": 1854,
+        "equal_abs": 1851,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1858,
+        "equal_abs": 1855,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-crime",
+      "seed": 777,
+      "notes": [
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":0,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "b354855e7bc323dcc3aad7458f4f2b993273d8eecc533b58057e49d0d244fffa",
+      "engine_hash_after": "b354855e7bc323dcc3aad7458f4f2b993273d8eecc533b58057e49d0d244fffa",
+      "live_at_save_point": {
+        "compared": 1854,
+        "equal_abs": 1851,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1858,
+        "equal_abs": 1855,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "deep-water-drowning",
+      "seed": 4711,
+      "notes": [
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "e99ab8cf06bb243004eebe93ad5906a1203f2fba94b79d05338b8318c82fb615",
+      "engine_hash_after": "e99ab8cf06bb243004eebe93ad5906a1203f2fba94b79d05338b8318c82fb615",
+      "live_at_save_point": {
+        "compared": 1530,
+        "equal_abs": 1530,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1534,
+        "equal_abs": 1534,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "deep-water-drowning",
+      "seed": 1337,
+      "notes": [
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "5c6c4035aed96b9f409556cb8c4cd3c36452213c75dee406ed5ad4e1b8117ecc",
+      "engine_hash_after": "5c6c4035aed96b9f409556cb8c4cd3c36452213c75dee406ed5ad4e1b8117ecc",
+      "live_at_save_point": {
+        "compared": 1530,
+        "equal_abs": 1530,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1534,
+        "equal_abs": 1534,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "deep-water-drowning",
+      "seed": 90210,
+      "notes": [
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "708f434b0af83d267fc65bafc03335a25a20bbe71d0aa894a6e26f01e6715f64",
+      "engine_hash_after": "708f434b0af83d267fc65bafc03335a25a20bbe71d0aa894a6e26f01e6715f64",
+      "live_at_save_point": {
+        "compared": 1530,
+        "equal_abs": 1530,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1534,
+        "equal_abs": 1534,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "deep-water-drowning",
+      "seed": 2147483647,
+      "notes": [
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "41b13a0afbbdb0db5e40b8f1c5925e425e8b81e9805883b3c8300ffdc1d359df",
+      "engine_hash_after": "41b13a0afbbdb0db5e40b8f1c5925e425e8b81e9805883b3c8300ffdc1d359df",
+      "live_at_save_point": {
+        "compared": 1530,
+        "equal_abs": 1530,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1534,
+        "equal_abs": 1534,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "deep-water-drowning",
+      "seed": 7,
+      "notes": [
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "380a9852bc60df73657f34fcd779ae1a7088ddf7eb3773460cf9c91379de6fcc",
+      "engine_hash_after": "380a9852bc60df73657f34fcd779ae1a7088ddf7eb3773460cf9c91379de6fcc",
+      "live_at_save_point": {
+        "compared": 1530,
+        "equal_abs": 1530,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1534,
+        "equal_abs": 1534,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "deep-water-drowning",
+      "seed": 101,
+      "notes": [
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "da71c951383a83340781e16592e69ba5b5c27ba178f90bd3632af3ba4de7e000",
+      "engine_hash_after": "da71c951383a83340781e16592e69ba5b5c27ba178f90bd3632af3ba4de7e000",
+      "live_at_save_point": {
+        "compared": 1530,
+        "equal_abs": 1530,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1534,
+        "equal_abs": 1534,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "deep-water-drowning",
+      "seed": 31337,
+      "notes": [
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "02772902144d9ddc2dc0c96bf8ead86ede3d6173ffb2b6036e12550a748f4e70",
+      "engine_hash_after": "02772902144d9ddc2dc0c96bf8ead86ede3d6173ffb2b6036e12550a748f4e70",
+      "live_at_save_point": {
+        "compared": 1530,
+        "equal_abs": 1530,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1534,
+        "equal_abs": 1534,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "deep-water-drowning",
+      "seed": 555,
+      "notes": [
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "f9b79f3281f0c731e57e859ec63855eb987b6a3dff41966bfbb58af4462bee59",
+      "engine_hash_after": "f9b79f3281f0c731e57e859ec63855eb987b6a3dff41966bfbb58af4462bee59",
+      "live_at_save_point": {
+        "compared": 1530,
+        "equal_abs": 1530,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1534,
+        "equal_abs": 1534,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "deep-water-drowning",
+      "seed": 12345,
+      "notes": [
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "f9e44e26dc92b02f5d668725107c821fd23677c9a0dbcb7eec91d80a55473c9f",
+      "engine_hash_after": "f9e44e26dc92b02f5d668725107c821fd23677c9a0dbcb7eec91d80a55473c9f",
+      "live_at_save_point": {
+        "compared": 1530,
+        "equal_abs": 1530,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1534,
+        "equal_abs": 1534,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    },
+    {
+      "scenario": "deep-water-drowning",
+      "seed": 777,
+      "notes": [
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]",
+        "deep water at [-900,-900,41.317]"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "8ed4f2f99301fe6a2dbf74a1a9598afabc0c1b0393692cae3969095e33427acd",
+      "engine_hash_after": "8ed4f2f99301fe6a2dbf74a1a9598afabc0c1b0393692cae3969095e33427acd",
+      "live_at_save_point": {
+        "compared": 1530,
+        "equal_abs": 1530,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "live_after_settle": {
+        "compared": 1534,
+        "equal_abs": 1534,
+        "equal_rebased": 0,
+        "unrebased_stamps": [],
+        "differing": []
+      },
+      "trace_control_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_loaded_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": true,
+      "verdict": "clean"
+    }
+  ],
+  "page_errors": [],
+  "trials_passed": 69,
+  "trials_defect": 20,
+  "trials_unmeasurable": 1,
+  "trials_total": 90,
+  "pass": false
+}

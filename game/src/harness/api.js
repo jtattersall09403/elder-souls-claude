@@ -1121,6 +1121,18 @@ export function installHarness(engine, bootPromise) {
      * go red is not measuring the gate.
      */
     getDispositions() { return { ...engine.sim.quest.dispositions }; },
+    /**
+     * W1-07 round 4. The register is what is WRITTEN DOWN; this is what the gate actually
+     * reads — the register with the RI-CHR02 race and upbringing terms and RI-DLG04 §B's
+     * movable terms on it. `getDispositions()` and this method returning different numbers for
+     * the same person is the whole of the fix, and a probe should be able to see both.
+     */
+    getGateDispositions() { return engine.questEngine ? engine.questEngine.dispositionView() : {}; },
+    /** The same number with every term named, so a critic never has to infer one. */
+    explainDisposition(npcId) {
+      if (!engine.questEngine) return { _declared_incomplete: 'no quest runtime' };
+      return engine.questEngine.explainDisposition(String(npcId));
+    },
     setDisposition(npcId, v) {
       engine.sim.quest.dispositions[String(npcId)] = Math.max(0, Math.min(100, Number(v)));
       return engine.sim.quest.dispositions[String(npcId)];

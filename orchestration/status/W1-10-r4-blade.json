@@ -1,0 +1,19 @@
+{
+  "task_id": "W1-10-r4-blade",
+  "brief": "orchestration/NEXT-DISPATCH.md §1 — the blade is underground",
+  "started": "wave-1 round 4",
+  "state": "researching",
+  "outputs_expected": [
+    "game/src/combat/* (upstream fix: reach_m / _bladeLength / rest pose / proportions)",
+    "tools/weapons/blade-height.mjs (measure tip height + inclination per weapon class)",
+    "corpus/12-weapons/RI-WPN0x amendment documenting the lever chosen"
+  ],
+  "outputs_written": [],
+  "findings": [
+    "boot-check PASS at start. loadavg 4.61 on 4 cores at start.",
+    "skeleton.json: blade_axis_local = [0,-1,0]; grip hand_r rest y = 0.91 m on a 1.78 m skeleton (height_m 1.78, not 1.75). A 3.098 m blade along -Y from y=0.91 puts the tip at y=-2.19.",
+    "_bladeLength solves the HORIZONTAL radius (x,z only — `seg` drops y) to equal reach_m. So a blade inclined d degrees below horizontal must be inflated by 1/cos(d) to hit the same horizontal radius. Downward pitch and inflated blade length are COUPLED: pitch inflates b, and a longer b drives the tip deeper. That is the mechanism."
+  ],
+  "next_step": "read swing.js pose generation + wpn-render-look.mjs to reproduce the tip-height measurement",
+  "notes_for_successor": "Do NOT attempt a pitch calibration in swing.js — a previous round did and reverted it at 40.4% arc nonconformance and 118 pose teleports."
+}

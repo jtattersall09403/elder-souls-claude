@@ -1,0 +1,300 @@
+{
+ "m3": [
+  {
+   "state": "arena_flat",
+   "h0": "220a9a1e9802293c928b80f21c3eecb81e6d81254fd98046926aa4f3b68ab94b",
+   "h1": "220a9a1e9802293c928b80f21c3eecb81e6d81254fd98046926aa4f3b68ab94b",
+   "equal": true,
+   "gold_before": 0,
+   "gold_after": 0,
+   "read": {
+    "ok": true,
+    "gen": 1,
+    "degraded": false
+   },
+   "slots": [
+    {
+     "slot": "slot-m3",
+     "gen": 1,
+     "bytes": 11448,
+     "header": {
+      "name": "Nameless",
+      "level": 1,
+      "region": "arena",
+      "journal_entries": 0
+     },
+     "writtenAt": "2026-08-07T10:35:35.866Z"
+    }
+   ],
+   "warm_rt_equal": true,
+   "warm_rt_diff": []
+  },
+  {
+   "state": "sv1-midquest",
+   "h0": "fd894db021448f40abe0827d22be3e0fad43bc6b30fefb6ad7aa71206fd11c8e",
+   "h1": "fd894db021448f40abe0827d22be3e0fad43bc6b30fefb6ad7aa71206fd11c8e",
+   "equal": true,
+   "gold_before": 0,
+   "gold_after": 0,
+   "read": {
+    "ok": true,
+    "gen": 2,
+    "degraded": false
+   },
+   "slots": [
+    {
+     "slot": "slot-m3",
+     "gen": 2,
+     "bytes": 12205,
+     "header": {
+      "name": "Nameless",
+      "level": 1,
+      "region": "thornmarsh",
+      "journal_entries": 3
+     },
+     "writtenAt": "2026-08-07T10:35:50.484Z"
+    }
+   ],
+   "warm_rt_equal": true,
+   "warm_rt_diff": []
+  },
+  {
+   "state": "sv5-journal-bloodstain",
+   "h0": "7a71850e55cd856b93bff7128f9e7f8628401229eba379a874b36d272e061932",
+   "h1": "7a71850e55cd856b93bff7128f9e7f8628401229eba379a874b36d272e061932",
+   "equal": true,
+   "gold_before": 0,
+   "gold_after": 0,
+   "read": {
+    "ok": true,
+    "gen": 3,
+    "degraded": false
+   },
+   "slots": [
+    {
+     "slot": "slot-m3",
+     "gen": 3,
+     "bytes": 21206,
+     "header": {
+      "name": "Nameless",
+      "level": 9,
+      "region": "thornmarsh",
+      "journal_entries": 42
+     },
+     "writtenAt": "2026-08-07T10:36:05.964Z"
+    }
+   ],
+   "warm_rt_equal": true,
+   "warm_rt_diff": []
+  },
+  {
+   "state": "stormhold-street",
+   "h0": "fe64f802697f7c7376bded4e0fef22d7c5a922b0cef8e2b9fb6aac45ef992c8e",
+   "h1": "fe64f802697f7c7376bded4e0fef22d7c5a922b0cef8e2b9fb6aac45ef992c8e",
+   "equal": true,
+   "gold_before": 600,
+   "gold_after": 0,
+   "read": {
+    "ok": true,
+    "gen": 4,
+    "degraded": false
+   },
+   "slots": [
+    {
+     "slot": "slot-m3",
+     "gen": 4,
+     "bytes": 15404,
+     "header": {
+      "name": "Unwritten",
+      "level": 1,
+      "region": "stormhold",
+      "journal_entries": 0
+     },
+     "writtenAt": "2026-08-07T10:36:19.386Z"
+    }
+   ],
+   "warm_rt_equal": true,
+   "warm_rt_diff": []
+  }
+ ],
+ "fall": [
+  {
+   "seed": 4711,
+   "saved_first": {
+    "mid": {
+     "hp": 620,
+     "airborne": true,
+     "vel": 2.126
+    },
+    "just": {
+     "airborne": false,
+     "vel": 0,
+     "peak": 0
+    },
+    "landed_hp": 0,
+    "y": 2.68
+   },
+   "control_second": {
+    "mid": {
+     "hp": 620,
+     "airborne": true,
+     "vel": 2.126
+    },
+    "just": {
+     "airborne": true,
+     "vel": 2.126,
+     "peak": 0
+    },
+    "landed_hp": 620,
+    "y": 2.68
+   },
+   "control_first": {
+    "mid": {
+     "hp": 620,
+     "airborne": true,
+     "vel": 2.126
+    },
+    "just": {
+     "airborne": true,
+     "vel": 2.126,
+     "peak": 0
+    },
+    "landed_hp": 620,
+    "y": 2.68
+   },
+   "saved_second": {
+    "mid": {
+     "hp": 620,
+     "airborne": true,
+     "vel": 2.126
+    },
+    "just": {
+     "airborne": false,
+     "vel": 0,
+     "peak": 0
+    },
+    "landed_hp": 0,
+    "y": 2.68
+   }
+  },
+  {
+   "seed": 1337,
+   "saved_first": {
+    "mid": {
+     "hp": 620,
+     "airborne": true,
+     "vel": 2.126
+    },
+    "just": {
+     "airborne": false,
+     "vel": 0,
+     "peak": 0
+    },
+    "landed_hp": 0,
+    "y": 2.68
+   },
+   "control_second": {
+    "mid": {
+     "hp": 620,
+     "airborne": true,
+     "vel": 2.126
+    },
+    "just": {
+     "airborne": true,
+     "vel": 2.126,
+     "peak": 0
+    },
+    "landed_hp": 620,
+    "y": 2.68
+   },
+   "control_first": {
+    "mid": {
+     "hp": 620,
+     "airborne": true,
+     "vel": 2.126
+    },
+    "just": {
+     "airborne": true,
+     "vel": 2.126,
+     "peak": 0
+    },
+    "landed_hp": 620,
+    "y": 2.68
+   },
+   "saved_second": {
+    "mid": {
+     "hp": 620,
+     "airborne": true,
+     "vel": 2.126
+    },
+    "just": {
+     "airborne": false,
+     "vel": 0,
+     "peak": 0
+    },
+    "landed_hp": 0,
+    "y": 2.68
+   }
+  },
+  {
+   "seed": 90210,
+   "saved_first": {
+    "mid": {
+     "hp": 620,
+     "airborne": true,
+     "vel": 2.126
+    },
+    "just": {
+     "airborne": false,
+     "vel": 0,
+     "peak": 0
+    },
+    "landed_hp": 0,
+    "y": 2.68
+   },
+   "control_second": {
+    "mid": {
+     "hp": 620,
+     "airborne": true,
+     "vel": 2.126
+    },
+    "just": {
+     "airborne": true,
+     "vel": 2.126,
+     "peak": 0
+    },
+    "landed_hp": 620,
+    "y": 2.68
+   },
+   "control_first": {
+    "mid": {
+     "hp": 620,
+     "airborne": true,
+     "vel": 2.126
+    },
+    "just": {
+     "airborne": true,
+     "vel": 2.126,
+     "peak": 0
+    },
+    "landed_hp": 620,
+    "y": 2.68
+   },
+   "saved_second": {
+    "mid": {
+     "hp": 620,
+     "airborne": true,
+     "vel": 2.126
+    },
+    "just": {
+     "airborne": false,
+     "vel": 0,
+     "peak": 0
+    },
+    "landed_hp": 0,
+    "y": 2.68
+   }
+  }
+ ],
+ "storage": null
+}

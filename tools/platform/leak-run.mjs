@@ -58,7 +58,8 @@ const exit = await reportAbsence({
   system: 'heap/GC access',
   owner: 'A-JRN9 / runner-side or later pieces (RI-PLT02)',
   measures: 'JS heap and GPU memory across N load/play/unload loops, and whether the resting heap returns to its first-loop level',
-  needs: ["getHeapSnapshot", "gc", "getHeapStats"],
+  amendment: 'A-JRN9',
+  needs: [{ method: 'forceGC', amendment: 'A-JRN9' }, 'getPerfStats'],
 }, args);
 
 process.exit(exit);

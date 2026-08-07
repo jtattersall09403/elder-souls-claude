@@ -61,7 +61,8 @@ const exit = await reportAbsence({
   system: 'the province: 13 regions, 8 settlements, 250 interiors, roads',
   owner: 'wave-1 pieces W1-01..W1-05 (the asset tree RI-PLT02 B.2 budgets)',
   measures: 'RI-PLT02 B.2 rows D1-D5 and D8 over the shipped build, plus a texture-format census for D6 (>= 90% compressed)',
-  needs: ["getResourceRegistry", "getAssetManifest"],
+  amendment: 'A-JRN14',
+  needs: [{ method: 'getResourceRegistry', amendment: 'A-JRN14' }, 'getWorldStats'],
 }, args);
 
 process.exit(exit);

@@ -1,0 +1,668 @@
+{
+  "schema": "elder-souls/save-consume-critic@1",
+  "item": "RI-JRN05 CONSUMPTION (RI-MTH07 §B) — independent of tools/harness/save-consume.mjs",
+  "written_by": "W1-SAVE round-1 critic (method_deviations)",
+  "seeds": [
+    4711
+  ],
+  "runs": [
+    {
+      "seed": 4711,
+      "P1_purse": {
+        "service": "svc-001-rootway-stormhold-ixtaxh-tzil",
+        "fare_gold": 15,
+        "arms": {
+          "gold_0": {
+            "before": {
+              "gold": 0,
+              "quote": {
+                "gold": 0,
+                "purchasable": false,
+                "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+              }
+            },
+            "after": {
+              "gold": 0,
+              "quote": {
+                "gold": 0,
+                "purchasable": false,
+                "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+              }
+            },
+            "blob_progression_gold": 0,
+            "blob_fight_loadout_gold": 0
+          },
+          "gold_4000": {
+            "before": {
+              "gold": 4000,
+              "quote": {
+                "gold": 0,
+                "purchasable": false,
+                "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+              }
+            },
+            "after": {
+              "gold": 4000,
+              "quote": {
+                "gold": 4000,
+                "purchasable": false,
+                "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+              }
+            },
+            "blob_progression_gold": 4000,
+            "blob_fight_loadout_gold": 4000
+          },
+          "null_control": {
+            "gold": 0,
+            "quote": {
+              "gold": 0,
+              "purchasable": false,
+              "refusal": "You have not walked the stormhold-thorn road. No one sells passage over ground you have not crossed."
+            }
+          }
+        }
+      },
+      "P2_fall": {
+        "control_no_save": {
+          "mid": {
+            "hp": 620,
+            "airborne": true,
+            "vel_mps": 2.126,
+            "y": 42.075417,
+            "traversal_vy": null
+          },
+          "justAfter": {
+            "hp": 620,
+            "airborne": true,
+            "vel_mps": 2.126,
+            "y": 42.075417
+          },
+          "landed": {
+            "hp": 620,
+            "y": 2.68
+          }
+        },
+        "saved_mid_air": {
+          "mid": {
+            "hp": 620,
+            "airborne": true,
+            "vel_mps": 2.126,
+            "y": 42.075417,
+            "traversal_vy": null
+          },
+          "justAfter": {
+            "hp": 620,
+            "airborne": false,
+            "vel_mps": 0,
+            "y": 42.075417
+          },
+          "landed": {
+            "hp": 0,
+            "y": 2.68
+          }
+        }
+      },
+      "P3_death": [
+        {
+          "state": "arena_flat",
+          "frames_after_death": 0,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "fight.player.pendingReaction.move.clip",
+              "a": "{\"__move\":\"stagger_medium\"}",
+              "b": "null"
+            }
+          ],
+          "surface_frames_left_before": 0,
+          "surface_frames_left_after": 0
+        },
+        {
+          "state": "arena_flat",
+          "frames_after_death": 1,
+          "m1_hash_equal": true,
+          "m2_diff": [],
+          "surface_frames_left_before": 150,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "arena_flat",
+          "frames_after_death": 3,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "2",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 148,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "arena_flat",
+          "frames_after_death": 10,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "9",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 141,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "arena_flat",
+          "frames_after_death": 40,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "39",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 111,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "arena_flat",
+          "frames_after_death": 100,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "99",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 51,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "arena_flat",
+          "frames_after_death": 150,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "149",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 1,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "arena_flat",
+          "frames_after_death": 170,
+          "m1_hash_equal": true,
+          "m2_diff": [],
+          "surface_frames_left_before": 0,
+          "surface_frames_left_after": 0
+        },
+        {
+          "state": "arena_flat",
+          "frames_after_death": 250,
+          "m1_hash_equal": true,
+          "m2_diff": [],
+          "surface_frames_left_before": 0,
+          "surface_frames_left_after": 0
+        },
+        {
+          "state": "default",
+          "frames_after_death": 0,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "fight.player.pendingReaction.move.clip",
+              "a": "{\"__move\":\"stagger_medium\"}",
+              "b": "null"
+            }
+          ],
+          "surface_frames_left_before": 0,
+          "surface_frames_left_after": 0
+        },
+        {
+          "state": "default",
+          "frames_after_death": 1,
+          "m1_hash_equal": true,
+          "m2_diff": [],
+          "surface_frames_left_before": 150,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "default",
+          "frames_after_death": 3,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "2",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 148,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "default",
+          "frames_after_death": 10,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "9",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 141,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "default",
+          "frames_after_death": 40,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "39",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 111,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "default",
+          "frames_after_death": 100,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "99",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 51,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "default",
+          "frames_after_death": 150,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "149",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 1,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "default",
+          "frames_after_death": 170,
+          "m1_hash_equal": true,
+          "m2_diff": [],
+          "surface_frames_left_before": 0,
+          "surface_frames_left_after": 0
+        },
+        {
+          "state": "default",
+          "frames_after_death": 250,
+          "m1_hash_equal": true,
+          "m2_diff": [],
+          "surface_frames_left_before": 0,
+          "surface_frames_left_after": 0
+        },
+        {
+          "state": "sv1-midquest",
+          "frames_after_death": 0,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "fight.player.pendingReaction.move.clip",
+              "a": "{\"__move\":\"stagger_medium\"}",
+              "b": "null"
+            }
+          ],
+          "surface_frames_left_before": 0,
+          "surface_frames_left_after": 0
+        },
+        {
+          "state": "sv1-midquest",
+          "frames_after_death": 1,
+          "m1_hash_equal": true,
+          "m2_diff": [],
+          "surface_frames_left_before": 150,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "sv1-midquest",
+          "frames_after_death": 3,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "2",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 148,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "sv1-midquest",
+          "frames_after_death": 10,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "9",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 141,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "sv1-midquest",
+          "frames_after_death": 40,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "39",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 111,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "sv1-midquest",
+          "frames_after_death": 100,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "99",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 51,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "sv1-midquest",
+          "frames_after_death": 150,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "149",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 1,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "sv1-midquest",
+          "frames_after_death": 170,
+          "m1_hash_equal": true,
+          "m2_diff": [],
+          "surface_frames_left_before": 0,
+          "surface_frames_left_after": 0
+        },
+        {
+          "state": "sv1-midquest",
+          "frames_after_death": 250,
+          "m1_hash_equal": true,
+          "m2_diff": [],
+          "surface_frames_left_before": 0,
+          "surface_frames_left_after": 0
+        },
+        {
+          "state": "sv5-journal-bloodstain",
+          "frames_after_death": 0,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "fight.player.pendingReaction.move.clip",
+              "a": "{\"__move\":\"stagger_medium\"}",
+              "b": "null"
+            }
+          ],
+          "surface_frames_left_before": 0,
+          "surface_frames_left_after": 0
+        },
+        {
+          "state": "sv5-journal-bloodstain",
+          "frames_after_death": 1,
+          "m1_hash_equal": true,
+          "m2_diff": [],
+          "surface_frames_left_before": 150,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "sv5-journal-bloodstain",
+          "frames_after_death": 3,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "2",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 148,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "sv5-journal-bloodstain",
+          "frames_after_death": 10,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "9",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 141,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "sv5-journal-bloodstain",
+          "frames_after_death": 40,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "39",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 111,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "sv5-journal-bloodstain",
+          "frames_after_death": 100,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "99",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 51,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "sv5-journal-bloodstain",
+          "frames_after_death": 150,
+          "m1_hash_equal": false,
+          "m2_diff": [
+            {
+              "path": "pose.camera_death_frames_ago",
+              "a": "149",
+              "b": "-1"
+            }
+          ],
+          "surface_frames_left_before": 1,
+          "surface_frames_left_after": 161
+        },
+        {
+          "state": "sv5-journal-bloodstain",
+          "frames_after_death": 170,
+          "m1_hash_equal": true,
+          "m2_diff": [],
+          "surface_frames_left_before": 0,
+          "surface_frames_left_after": 0
+        },
+        {
+          "state": "sv5-journal-bloodstain",
+          "frames_after_death": 250,
+          "m1_hash_equal": true,
+          "m2_diff": [],
+          "surface_frames_left_before": 0,
+          "surface_frames_left_after": 0
+        }
+      ],
+      "P4_identity_fields": [
+        {
+          "field": "progression.gold",
+          "where": "sim.progression.gold / combat.world.gold",
+          "identity_value": 0,
+          "driven_value": 2750,
+          "after_load": 2750,
+          "could_be_driven": true,
+          "survived_load": true
+        },
+        {
+          "field": "player.carriedWeight + player.burdenRatio",
+          "where": "sim.player",
+          "identity_value": {
+            "ratio": 0
+          },
+          "driven_value": {
+            "ratio": 0
+          },
+          "after_load": {
+            "ratio": 0
+          },
+          "could_be_driven": false,
+          "survived_load": true
+        },
+        {
+          "field": "progression.sap_taint",
+          "where": "sim.progression.sapTaint",
+          "identity_value": null,
+          "driven_value": {
+            "band": 1,
+            "rests": 4,
+            "warded": 0,
+            "wardUsesLeft": 3,
+            "immune": false
+          },
+          "after_load": {
+            "band": 1,
+            "rests": 4,
+            "warded": 0,
+            "wardUsesLeft": 3,
+            "immune": false
+          },
+          "could_be_driven": true,
+          "survived_load": true
+        },
+        {
+          "field": "entities[].lkp / lastSeenF / percept_*",
+          "where": "sim.entities[]",
+          "identity_value": null,
+          "driven_value": {
+            "last_seen": "absent"
+          },
+          "after_load": {
+            "last_seen": "absent"
+          },
+          "could_be_driven": true,
+          "survived_load": true
+        },
+        {
+          "field": "entities[].encounter*",
+          "where": "sim.entities[]",
+          "identity_value": [
+            {
+              "eid": "dres-raid-party-infantry-0"
+            },
+            {
+              "eid": "dres-raid-party-infantry-1"
+            },
+            {
+              "eid": "dres-raid-party-infantry-2"
+            }
+          ],
+          "driven_value": [
+            {
+              "eid": "dres-raid-party-infantry-0"
+            },
+            {
+              "eid": "dres-raid-party-infantry-1"
+            },
+            {
+              "eid": "dres-raid-party-infantry-2"
+            }
+          ],
+          "after_load": [
+            {
+              "eid": "dres-raid-party-infantry-0"
+            },
+            {
+              "eid": "dres-raid-party-infantry-1"
+            },
+            {
+              "eid": "dres-raid-party-infantry-2"
+            }
+          ],
+          "could_be_driven": false,
+          "survived_load": true
+        },
+        {
+          "field": "skills[].levels_since_rest / rest_clamped",
+          "where": "sim.character.skills",
+          "identity_value": {},
+          "driven_value": {},
+          "after_load": {},
+          "could_be_driven": false,
+          "survived_load": true
+        },
+        {
+          "field": "fight.player.worldDeny / mireStruggle",
+          "where": "CombatBody",
+          "identity_value": {},
+          "driven_value": {},
+          "after_load": {},
+          "could_be_driven": false,
+          "survived_load": true
+        },
+        {
+          "field": "traversal.breath_s (drowning)",
+          "where": "sim._traversal",
+          "identity_value": {},
+          "driven_value": {},
+          "after_load": {},
+          "could_be_driven": false,
+          "survived_load": true
+        }
+      ]
+    }
+  ],
+  "page_errors": []
+}

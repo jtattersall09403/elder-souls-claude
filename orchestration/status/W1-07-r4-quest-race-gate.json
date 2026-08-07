@@ -1,8 +1,8 @@
 {
   "task_id": "W1-07-r4-quest-race-gate",
-  "brief": "NEXT-DISPATCH §1b (AMENDED) — make race and upbringing actually change whether a quest is offered. Two layers: (1) wire derivedDisposition() into the quest-offer path (seedDispositions writes rec.disposition raw); (2) fill the 31 quest givers with no reaction_group and the 9 with no NPC record at all.",
+  "brief": "NEXT-DISPATCH \u00a71b (AMENDED) \u2014 make race and upbringing actually change whether a quest is offered. Two layers: (1) wire derivedDisposition() into the quest-offer path (seedDispositions writes rec.disposition raw); (2) fill the 31 quest givers with no reaction_group and the 9 with no NPC record at all.",
   "started": "wave-3",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "game/src/engine.js (derived disposition on the offer path)",
     "game/data/npcs/* (missing records + reaction_group)",
@@ -10,7 +10,19 @@
     "reports/W1-07-r4/*.json"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "boot-check.mjs, then read engine.js questOffers/seedDispositions/derivedDisposition and gate.js canOffer",
-  "notes_for_successor": "The data fix ALONE is known not to work — a round-2 tool critic minted the missing record on a shadow tree, booted, and it blocked nobody. Both layers or neither."
+  "findings": [
+    "CONFIRMED from source, matches the round-2 tool critic: QuestEngine.context() returns `dispositions: q.dispositions` RAW (machine.js:139). gate.js canOffer() reads ctx.dispositions[giver.npc_id]. seedDispositions() (engine.js:4563) copies rec.disposition verbatim. No race term anywhere on that path.",
+    "The reaction matrix reaches the world through exactly TWO consumers today: Engine.npcDisposition() (read-only surface) and character/encounter.js openingFor(). Neither is a gate.",
+    "game/src/sim/dialogue/disposition.js is a FULL RI-DLG04 \u00a7B transcription (race+upbringing pre-term, personality, faction, bounty, same-race, disease, weapon-drawn, charm, sap taint) and NOTHING imports it except machine.js taking the SAP_TAINT constant. It is the 11th shipped-model-with-no-reader.",
+    "game/data/dialogue/persuasion-gmst.json and dialogue/faction-reactions.json are BOTH in index.json, both fetched at boot, and both DROPPED on the floor by loadData() \u2014 they fall through every else-if branch. So even a consumer could not reach them.",
+    "CENSUS (mine, static): 33 distinct quest givers. 19 have NO npc record at all (9 of them carry a disposition_min: the ones the dispatch names, + 10 magic-utility givers with none). 13 have a record with NO reaction_group. 1 (warden-eshi) has a group. 52 npc records total, 37 with no reaction_group.",
+    "RI-MTH06 \u00a7A's ceiling arithmetic decoded: ceiling = derivedDisposition(base=50, otherTerms=+40). dunmer/lukiul vs RG-DEEP = 50+40-40-16 = 34; dunmer/interior = 50+40-40+10 = 60. Q-DEEP-01 asks 50 at speaker-teel-ashaan. So the minted record must be reaction_group RG-DEEP, disposition 50.",
+    "race-reactions.json ships a `repair_paths` block and the ONLY one that moves disposition is `faction-rank`: '(0.5*rank+1)*3*reaction; Deep-Kin rank 6 against a Deep-Kin NPC is +48, which fully covers a Dunmer's -40.' That is RI-DLG04 \u00a7B's factionTerm, which is in the orphan module. Making it live is what stops the race fix from failing BY SUBTRACTION.",
+    "faction-reactions.json diagonals are non-zero (xul-aneekh +4, rootkeepers +4, drowned-court +3), so even rank 0 MEMBERSHIP is worth (0+1)*3*4 = +12. Membership is created the moment a quest grants faction_reputation, and the mainline grants 174 reputation deltas across 8 factions.",
+    "VOCABULARY MISMATCH found: quests/faction-gates use underscore ids (the_xul_aneekh, the_drowned_court, the_dockhands, the_imperial_assize, deep_kin, house_dres); faction-reactions.json matrix uses hyphen ids and a different roster (xul-aneekh, sap-cutters, ninth-cohort, provincial-office...). the_dockhands and the_imperial_assize have NO row at all. So factionTerm would resolve to 0 for the live vocabulary even if it were wired.",
+    "machine.js _applyConsequences writes faction REPUTATION but never rank; context() reads ranks[f] = q.factions[f].rank which is ALWAYS 0. FactionGates.highestQualifying() exists and is dead code. So every rank_gate in the quest data is also unpassable \u2014 the same defect one door along.",
+    "Main-quest giver groups by faction: the_drowned_court -> RG-COURT, which is the one all-zero row in the matrix ('buries everyone for a fee'). 10 of 32 main quests hang off RG-COURT givers, so the main chain's spine is race-blind BY AUTHORSHIP. neeja-xul (sap-cutter, RG-VAKH) is 0..+4 for every race. That is what makes 'every race can finish' achievable without gutting the matrix."
+  ],
+  "next_step": "implement movableTerms + normaliseFactionId in sim/dialogue/disposition.js; inject a disposition model into QuestEngine; load the two dropped data files",
+  "notes_for_successor": "The data fix ALONE is known not to work \u2014 a round-2 tool critic minted the missing record on a shadow tree, booted, and it blocked nobody. Both layers or neither."
 }

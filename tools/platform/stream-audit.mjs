@@ -57,7 +57,11 @@ const exit = await reportAbsence({
   system: 'the province: 13 regions, 8 settlements, 250 interiors, roads',
   owner: 'wave-1 pieces W1-01..W1-05',
   measures: 'what is resident, requested and evicted as the player crosses region borders, and whether any asset is fetched twice or held after its region is four cells behind',
-  needs: ["getStreamingState", "getResidentAssets"],
+  amendment: 'A-JRN14',
+  // `getStreamingState`/`getResidentAssets` were invented. `getResourceRegistry` is what
+  // A-JRN14's register row actually names; `getLoadState` and `getWorldStats` are live and
+  // carry the build's own `_unmeasurable`/`_declared_incomplete` markers.
+  needs: [{ method: 'getResourceRegistry', amendment: 'A-JRN14' }, 'getLoadState', 'getWorldStats'],
 }, args);
 
 process.exit(exit);

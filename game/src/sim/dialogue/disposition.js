@@ -63,8 +63,31 @@ export function fatigueTerm(actor, G) {
  * engine picks the WORST reaction the npc's faction has toward any of them — joining a rival
  * costs you. Expelled memberships are skipped on BOTH branches.
  */
+/**
+ * The quest files, `faction-gates.json` and the NPC records all name factions in an
+ * UNDERSCORE vocabulary (`the_xul_aneekh`, `house_dres`, `deep_kin`); `faction-reactions.json`
+ * indexes its matrix in a HYPHEN vocabulary with a partly different roster (`xul-aneekh`,
+ * `sap-cutters`). Nothing reconciled them, so `factionTerm` would have resolved every live
+ * faction id to `undefined` — a silent 0 — the moment anyone wired it up.
+ *
+ * `aliases` in `faction-reactions.json` is the authored half of the reconciliation and wins;
+ * this is the mechanical fallback (`the_` prefix dropped, `_` → `-`) so a faction added later
+ * whose name already matches resolves without an entry.
+ */
+export function normaliseFactionId(id, reactions) {
+  if (!id) return null;
+  const s = String(id);
+  const table = (reactions && reactions.aliases) || null;
+  if (table && Object.prototype.hasOwnProperty.call(table, s)) return table[s];
+  const m = reactions && reactions.matrix;
+  if (m && Object.prototype.hasOwnProperty.call(m, s)) return s;
+  const guess = s.replace(/^the_/, '').replace(/_/g, '-');
+  if (m && Object.prototype.hasOwnProperty.call(m, guess)) return guess;
+  return null;
+}
+
 export function factionTerm(npc, player, reactions) {
-  const npcFac = npc.faction || null;
+  const npcFac = normaliseFactionId(npc.faction, reactions);
   const mine = player.factions || {};
   const react = (a, b) => {
     const row = reactions && reactions.matrix ? reactions.matrix[a] : null;
@@ -74,15 +97,25 @@ export function factionTerm(npc, player, reactions) {
   };
   if (!npcFac) return { reaction: 0, rank: 0, source: null };
 
-  const mem = mine[npcFac];
-  if (mem && !mem.expelled) {
-    return { reaction: react(npcFac, npcFac), rank: Number(mem.rank || 0), source: npcFac };
-  }
-  // argmin over the player's factions of factionReaction(npc.faction, f)
-  let best = null;
+  // The player's memberships are keyed in the live (underscore) vocabulary too, so the
+  // membership test has to be done on normalised ids or a Xul-Aneekh member reads as a
+  // stranger to a Xul-Aneekh NPC.
+  const norm = new Map();
   for (const f of Object.keys(mine)) {
     const m = mine[f];
     if (!m || m.expelled) continue;
+    const key = normaliseFactionId(f, reactions);
+    if (!key) continue;
+    const prev = norm.get(key);
+    if (!prev || Number(m.rank || 0) > Number(prev.rank || 0)) norm.set(key, m);
+  }
+
+  const mem = norm.get(npcFac);
+  if (mem) return { reaction: react(npcFac, npcFac), rank: Number(mem.rank || 0), source: npcFac };
+
+  // argmin over the player's factions of factionReaction(npc.faction, f)
+  let best = null;
+  for (const [f, m] of norm) {
     const r = react(npcFac, f);
     if (best === null || r < best.reaction) best = { reaction: r, rank: Number(m.rank || 0), source: f };
   }
@@ -111,23 +144,24 @@ export function raceTerm(npc, player, rr) {
 }
 
 /**
- * RI-DLG04 §B — derivedDisposition. Returns clamp(trunc(x), 0, 100).
+ * RI-DLG04 §B **minus the base and minus W1-07's race/upbringing pre-term**: everything about
+ * this meeting that a character can MOVE. Split out of `derivedDisposition` — same lines, same
+ * order, same arithmetic — so that the quest-offer gate can lay these terms on top of
+ * `character/reaction.js`'s race arithmetic without either module reimplementing the other.
  *
- * `explain` carries every term so the harness can show a critic why a number is what it is,
- * which is the difference between a disposition system and a disposition number.
+ * This split is load-bearing, not tidiness. `race-reactions.json` §repair_paths names the
+ * faction term as the one path that pays off a -40 race row —
+ * *"Deep-Kin rank 6 against a Deep-Kin NPC is +48, which fully covers a Dunmer's -40"* — and a
+ * quest gate that applies the race term without the terms that repair it is a gate that
+ * differentiates **by subtraction**: real difference, no route through it.
+ *
+ * @returns {{total:number, terms:Array, faction:object}}
  */
-export function derivedDisposition(npc, player, ctx = {}) {
+export function movableTerms(npc, player, ctx = {}) {
   const G = ctx.gmst;
-  const rr = ctx.raceReactions || null;
   const reactions = ctx.factionReactions || null;
-
-  const rt = raceTerm(npc, player, rr);
   const terms = [];
-  let x = Number(npc.baseDisposition ?? npc.disposition ?? 40);
-  terms.push(['base', x]);
-  // W1-07's pre-term, applied before every other term exactly as race-reactions.json declares.
-  if (rt.race) { x += rt.race; terms.push(['race_reaction', rt.race]); }
-  if (rt.upbringing) { x += rt.upbringing; terms.push(['upbringing', rt.upbringing]); }
+  let x = 0;
 
   const crimeMod = Number(npc.crimeDispositionModifier ?? 0);
   if (crimeMod) { x += crimeMod; terms.push(['crimeDispositionModifier', crimeMod]); }
@@ -170,6 +204,31 @@ export function derivedDisposition(npc, player, ctx = {}) {
     const t = isRootkeeper ? SAP_TAINT_ROOTKEEPER[taint] : SAP_TAINT_DISPOSITION[taint];
     if (t) { x += t; terms.push([isRootkeeper ? 'sap_taint_rootkeeper' : 'sap_taint', t]); }
   }
+
+  return { total: x, terms, faction: ft };
+}
+
+/**
+ * RI-DLG04 §B — derivedDisposition. Returns clamp(trunc(x), 0, 100).
+ *
+ * `explain` carries every term so the harness can show a critic why a number is what it is,
+ * which is the difference between a disposition system and a disposition number.
+ */
+export function derivedDisposition(npc, player, ctx = {}) {
+  const rr = ctx.raceReactions || null;
+
+  const rt = raceTerm(npc, player, rr);
+  const terms = [];
+  let x = Number(npc.baseDisposition ?? npc.disposition ?? 40);
+  terms.push(['base', x]);
+  // W1-07's pre-term, applied before every other term exactly as race-reactions.json declares.
+  if (rt.race) { x += rt.race; terms.push(['race_reaction', rt.race]); }
+  if (rt.upbringing) { x += rt.upbringing; terms.push(['upbringing', rt.upbringing]); }
+
+  const mv = movableTerms(npc, player, ctx);
+  x += mv.total;
+  for (const t of mv.terms) terms.push(t);
+  const ft = mv.faction;
 
   const out = Math.max(0, Math.min(100, Math.trunc(x)));
   return ctx.explain ? { value: out, raw: x, terms, faction: ft, race: rt } : out;

@@ -247,9 +247,60 @@ export class MovesetLibrary {
   }
 
   /**
-   * The solved blade length for one WEAPON, cached — the socket-B distance at which the tip's
-   * horizontal radius from the actor's own root, at its widest over the lead slot's active
-   * window, equals the weapon's declared `reach_m`.
+   * The vertical band a standing body occupies, derived from the shipped hurtboxes on the
+   * shipped skeleton at the identity pose — `[lowest hurtbox − its radius, highest + its radius]`.
+   *
+   * `_bladeLength` needs it because `reach_m` is defined by `RI-WPN02` M1 sub-probe C1 as *"the
+   * largest distance at which a hit fires"* against a standing target, and a hit fires against a
+   * BODY. Nothing here is invented: the numbers are `hitgeometry.json §hurtboxes` evaluated on
+   * `skeleton.json`, so a change to either moves this band with it.
+   */
+  _bodyBand() {
+    if (this._band) return this._band;
+    const rig = new Rig(this.skeleton, this.hitGeometry);
+    for (let i = 0; i < rig.rx.length; i++) { rig.rx[i] = 0; rig.ry[i] = 0; rig.rz[i] = 0; }
+    rig.evaluate([0, 0, 0], 0, 0, 0, 0);
+    let lo = Infinity, hi = -Infinity;
+    for (const h of rig.hurtboxes) {
+      lo = Math.min(lo, h.a[1] - h.r, h.b[1] - h.r);
+      hi = Math.max(hi, h.a[1] + h.r, h.b[1] + h.r);
+    }
+    this._band = { lo, hi };
+    return this._band;
+  }
+
+  /**
+   * The solved blade length for one WEAPON, cached — the socket-B distance at which the widest
+   * horizontal radius the weapon's hit capsule reaches **at the height of a standing body**,
+   * over the lead slot's active window, equals the weapon's declared `reach_m`.
+   *
+   * ### The clause that says "at the height of a standing body", and why it is load-bearing
+   *
+   * This solve used to fit the TIP's bare horizontal radius, with no height term of any kind.
+   * That is the wrong quantity and it fed a runaway:
+   *
+   *   * The rest pose hangs the weapon along the grip hand's local −Y, and over the shipped
+   *     roster the blade ran **25.8° below horizontal on average through the active window**.
+   *     A blade inclined `d` below horizontal spends `cos d` of its length on reach, so fitting
+   *     a horizontal radius inflates the blade by `1/d`'s cosine — and every extra metre of that
+   *     inflation points at the floor.
+   *   * `cgs_drowned_reaper` therefore solved to **3.098 m of blade**, from a hand at 0.94 m, at
+   *     −41°: a tip 1.09 m UNDERGROUND at the widest active frame, sweeping a perfectly
+   *     conforming 340° at a perfectly conforming 2.75 m radius. On 22 of 82 weapons the tip was
+   *     underground on **every** active frame. The renderer, once it landed, drew exactly that.
+   *   * And the reach was a fiction in the fight as well as on the screen: the round-3 census
+   *     measured `|threat_m − (reach_m + root_dz_m)|` outside its 0.10 m tolerance on **10 of 14
+   *     classes**, every one of them SHORT (TSW −0.60, GSW −0.52, UGS −0.40), because a tip two
+   *     metres under the floor does not hit a man standing at the radius it claims.
+   *
+   * With the body band in, `reach(b)` **saturates**: once the blade has passed out of the band,
+   * more length adds no reach at all. So the solve cannot buy reach by ploughing — the lever that
+   * produced the defect is gone, not merely re-tuned — and a pose that points the weapon at the
+   * ground now fails visibly as an unreachable `reach_m` instead of quietly as a longer blade.
+   *
+   * `reach(b)` is non-decreasing in `b` (raising `b` only extends the interval the maximum is
+   * taken over), which is a stronger property than the old radius had, so the bisection below is
+   * sound where the old scan-for-the-last-crossing was a workaround.
    *
    * Why a solve rather than a number in the data. The tip sits at `hand + direction × b`, and
    * both the hand's position and the direction come out of the pose, so the radius a given `b`
@@ -258,12 +309,6 @@ export class MovesetLibrary {
    * the defect this replaces. Solving inverts it: the DECLARATION is fixed and the geometry is
    * fitted to it, so `reach_m` becomes a contract the fight honours instead of a column the
    * fingerprint reads and the player never feels.
-   *
-   * `r(b)` is `|hand_h + dir_h·b|` maximised over the active frames — a max of convex functions,
-   * so it is convex in `b` and generally increasing over the region of interest, but it is NOT
-   * guaranteed monotone (a pose whose hand is outboard of the tip's axis has a minimum at
-   * positive `b`). So the solve is a coarse scan for the last crossing followed by a bisection,
-   * the same shape `swing.js calibrateYawGain` uses and for the same reason.
    *
    * A library built without a skeleton (several offline tools construct one purely to read slot
    * tables) returns null and `socketsFor` falls back to the clip's own length, declared here
@@ -300,43 +345,76 @@ export class MovesetLibrary {
     const last = startup + slot.active_f;
     const pos = [0, 0, 0];
     // The pose is independent of `b`, so walk the active window ONCE and keep, per frame, the
-    // hand origin and the unit direction the socket runs along. `radius(b)` is then closed form
-    // and the solve costs no further rig evaluations.
+    // hand origin and the unit direction the socket runs along, in THREE dimensions — the height
+    // term is what the body band is read against. `reach(b)` is then closed form and the solve
+    // costs no further rig evaluations.
     const seg = [];
     for (let f = startup + 1; f <= last && f <= clip.total; f++) {
       pos[2] = clip.rootForwardAt(f);
       clip.applyPose(rig, f);
       rig.evaluate(pos, 0, clip.rootOffsetYAt(f), 0, 1);
-      const o = [rig.socketB[0] - pos[0], rig.socketB[2] - pos[2]];
+      const o = [rig.socketB[0] - pos[0], rig.socketB[1], rig.socketB[2] - pos[2]];
       rig.evaluate(pos, 0, clip.rootOffsetYAt(f), 0, 2);
-      const p = [rig.socketB[0] - pos[0], rig.socketB[2] - pos[2]];
-      // socketB(b) is affine in b: socketB(1) + (socketB(2) - socketB(1)) * (b - 1)
-      seg.push({ ox: o[0] - (p[0] - o[0]), oz: o[1] - (p[1] - o[1]), dx: p[0] - o[0], dz: p[1] - o[1] });
+      const p = [rig.socketB[0] - pos[0], rig.socketB[1], rig.socketB[2] - pos[2]];
+      // socketB(d) is affine in d: socketB(1) + (socketB(2) - socketB(1)) * (d - 1)
+      const dx = p[0] - o[0], dy = p[1] - o[1], dz = p[2] - o[2];
+      seg.push({ ox: o[0] - dx, oy: o[1] - dy, oz: o[2] - dz, dx, dy, dz });
     }
     if (!seg.length) { this._bladeCache.set(weaponId, null); return null; }
-    const radius = (b) => {
+    const band = this._bodyBand();
+    const A = GRIP_OFFSET_M;
+    /**
+     * The widest horizontal radius any point of the hit capsule `[A, b]` reaches while it is at
+     * the height of a standing body, maximised over the active window.
+     *
+     * Per frame the capsule is the affine ray `P(d) = o + dir·d`. `y(d)` is affine, so the set of
+     * `d` inside the band is a single interval; `r(d)` is convex, so its maximum over an interval
+     * is at an endpoint. Four scalar evaluations per frame, no search.
+     */
+    const reach = (b) => {
       let m = 0;
-      for (const s of seg) { const r = Math.hypot(s.ox + s.dx * b, s.oz + s.dz * b); if (r > m) m = r; }
+      for (const s of seg) {
+        let d0 = A, d1 = b;
+        if (Math.abs(s.dy) > 1e-9) {
+          const t0 = (band.lo - s.oy) / s.dy, t1 = (band.hi - s.oy) / s.dy;
+          d0 = Math.max(d0, Math.min(t0, t1));
+          d1 = Math.min(d1, Math.max(t0, t1));
+        } else if (s.oy < band.lo || s.oy > band.hi) {
+          continue;                       // the whole blade is above or below a body this frame
+        }
+        if (d1 < d0) continue;            // no part of this frame's capsule is at body height
+        const r0 = Math.hypot(s.ox + s.dx * d0, s.oz + s.dz * d0);
+        const r1 = Math.hypot(s.ox + s.dx * d1, s.oz + s.dz * d1);
+        if (r0 > m) m = r0;
+        if (r1 > m) m = r1;
+      }
       return m;
     };
-    let lo = 0.05, hi = 12.0, found = false;
-    // last crossing: scan down from the top so a convex r(b) with two roots takes the outer one,
-    // which is the one that is a blade rather than a hand held behind the body.
-    const STEPS = 240, step = (hi - lo) / STEPS;
-    for (let i = STEPS; i >= 1; i--) {
-      const b1 = lo + step * (i - 1), b2 = lo + step * i;
-      if ((radius(b1) - target) * (radius(b2) - target) <= 0) { lo = b1; hi = b2; found = true; break; }
-    }
+    // `reach` is non-decreasing, so a plain bisection is valid. `LIMIT` is the longest blade the
+    // solve will consider; it is far beyond any weapon and exists so the no-crossing branch is
+    // reached rather than the loop running away.
+    const LO = 0.05, LIMIT = 12.0;
     let b;
-    if (!found) {
-      // The declaration is out of the rig's range in this pose. Take the end of the range that
-      // gets closest and record it by returning it — a conformance probe then reports the miss
-      // rather than the library silently inventing a length.
-      b = Math.abs(radius(0.05) - target) < Math.abs(radius(12) - target) ? 0.05 : 12;
-    } else {
+    if (reach(LIMIT) < target) {
+      // The declaration is UNREACHABLE in this pose: the weapon runs out of body to hit before it
+      // runs out of length. Return the SHORTEST blade that achieves everything achievable, so the
+      // miss is reported by a conformance probe as a short reach rather than absorbed as an
+      // arbitrarily long blade pointing at the floor — which is precisely the failure this solve
+      // used to convert into 3.098 m of sword. Bisect on the saturation point instead.
+      const cap = reach(LIMIT);
+      let lo = LO, hi = LIMIT;
       for (let i = 0; i < 40; i++) {
         const mid = (lo + hi) / 2;
-        if ((radius(lo) - target) * (radius(mid) - target) <= 0) hi = mid; else lo = mid;
+        if (reach(mid) >= cap - 1e-4) hi = mid; else lo = mid;
+      }
+      b = hi;
+    } else if (reach(LO) >= target) {
+      b = LO;
+    } else {
+      let lo = LO, hi = LIMIT;
+      for (let i = 0; i < 40; i++) {
+        const mid = (lo + hi) / 2;
+        if (reach(mid) >= target) hi = mid; else lo = mid;
       }
       b = (lo + hi) / 2;
     }

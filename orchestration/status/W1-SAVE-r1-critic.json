@@ -1,0 +1,39 @@
+{
+  "task_id": "W1-SAVE-r1-critic",
+  "brief": "inline dispatch: critique the wave-1 save/load repair against RI-JRN05",
+  "started": "wave-1",
+  "state": "complete",
+  "outputs_expected": [
+    "corpus/90-verdicts/wave1/W1-SAVE-r1.json",
+    "corpus/90-verdicts/wave1/W1-SAVE-r1.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/**"
+  ],
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/W1-SAVE-r1.json (schema-valid)",
+    "corpus/90-verdicts/wave1/W1-SAVE-r1.md",
+    "corpus/90-verdicts/wave1/artifacts/W1-SAVE-r1/ (12 artifacts)",
+    "tools/journey/save-live-audit.mjs (NEW - live-world round-trip instrument, critic-written)",
+    "tools/harness/save-consume-critic.mjs (NEW - independent CONSUMPTION falsification)",
+    "tools/harness/save-break-critic.mjs (NEW - four breaks asking which shipped instrument notices)"
+  ],
+  "findings": [
+    "VERDICT: 2/10, FAIL, HF1 triggered. RI-JRN05 native 2/100.",
+    "HF1 (a): pose.camera_death_frames_ago collapses to the -1 'never died' sentinel. save/state.js:356 tests `c.deathFrame < 0` while restoreCameraRig (state.js:741) legitimately produces a NEGATIVE deathFrame after the frame reset. 24 of 36 death-window trials mismatch on M1, 4 of 4 states, 3-150 frames after death. Reproduced with the BUILDER'S OWN __HARNESS.saveRoundTrip().",
+    "HF1 (b): fight.player.pendingReaction.move.clip {'__move':'stagger_medium'} -> null on a save taken on the killing-blow frame. Same wrong-key move-reference class the repair fixed for pose.move and not for the nested one. 4 of 4 states.",
+    "BIGGEST GAP GAP-W1-save-purse-has-no-writer: combat.world.gold / sim.stealth.p.gold are the spendable purse and neither is written back to sim.progression.gold, the only gold register the save carries. 3 of the 38 shipped states (helstrom-market, rootlands-well-graph, stormhold-street) lose 600 gold on a plain round trip AND on a real cold reload, with M1 equal, M2 empty, M4 empty both ways, census ok and the M5 trace byte-identical. Null control: blanking the field out of the blob produces the identical world = CONSUMPTION coupling 0.",
+    "AR-2 FAIL: combat/parley.js:97 tests (world.gold||0) >= enemy.parley.gold_price as the GOLD ground of ARBITRATION section 1's mandatory non-lethal exit. inf_trash gold_price 180; 600 gold before the save, 0 after. Also S6: a save inside the death sequence does not round-trip, and death.controllable_at is restored unrebased so surface_frames_left goes 137 -> 161.",
+    "76/76 does NOT survive. My instrument: 9 scenarios x 10 seeds = 90 trials. mid-death 0/10 and mid-crime 0/10; the other seven scenarios 10/10 clean (incl. mid-cast, mid-parry, save inside an active hitbox window). Seeds were never the weakness - the builder's ONE pre-roll applied to all 38 states was.",
+    "MID-AIR SAVE IS LETHAL: 40 m fall, 3 seeds x both arm orders = 6/6. Control lands hp 620; saved-and-loaded mid-air lands hp 0. engine.magic.airborne / magic.fall.velMps / magic.peakY are a SECOND fall model on no manifest row. The post-load trace is byte-identical, so M5 is blind to it.",
+    "IDENTITY FIELDS: 7 of 9 carry information and are restored. traversal.breath_s stays 60.0 and submerged stays false after 3,000 frames in 40.3 m of water (band W5) - the character floats, so the repair's headline drowning claim describes an unreachable state. player.burdenRatio is derived (recomputed every step by _recomputeBurden) so saving it is neither right nor wrong.",
+    "NEGATIVE EVIDENCE FOR THE BUILDER: the traversal restore IS real (perturb-then-load puts breath 3.25 -> 60, mire 0.77 -> 0, slide 4.5 -> 0 back). M3 - which the builder never ran - PASSES on 4/4 states across a real page reload through IndexedDB. The schema-2 refusal happens before any mutation. save-break.mjs re-run by me: 8/8, baseline_clean true, all three rewritten breaks genuinely take.",
+    "save-break-critic.mjs: of four breaks, no-gold is BLIND to M1, M4 and the census while changing the live world; no-encounter-latches and no-lkp are caught by the census; no-traversal-restore is caught only by M4 and only because I blanked the blob node.",
+    "getDurableFieldCensus() shot() walks sim.* + the combat bodies and NOT engine.combat.world, engine.crime, engine.travel, engine.conversation or sim._traversal. Its own comment warns that a census walking a subset certifies a subset. The purse fell into exactly that hole.",
+    "rules.dynamic_containers exempts 20 paths from M4 by declaring them leaves, six of them this repair's own additions. Declared honestly, but it means M4 never looks inside the combat body.",
+    "No falsification found on the volatile list: it is unchanged from RI-JRN05 section B and nothing was moved onto it.",
+    "SCENARIO CONTAMINATION: loadState('<name>') does not clear the fall model. 3 of 5 province scenarios failed my instrument's two-identical-prerolls reproducibility control - one gave a live player in one repeat and a corpse in the other. Any critic running two arms in one page on a province state is measuring contamination unless it checks.",
+    "CORPUS DEBT: RI-JRN05's ladder anchor table (Form B, 'Ladder ceiling' column) covers 8/6/5/4 and has no 0 or 2 rung, while its own hard fails cap the item at 2. SCORING section 1.2b requires the 0 and 2 rungs on any item that can produce a score below its ladder-4 anchor.",
+    "GAP-W1-platform-save-drops-entity-prev-state: CLOSED. prev_state carried, no post-load divergence on 90/90 trials."
+  ],
+  "next_step": "none - verdict written and schema-valid",
+  "notes_for_successor": "The three critic tools live at tools/journey/save-live-audit.mjs, tools/harness/save-consume-critic.mjs and tools/harness/save-break-critic.mjs. save-live-audit's reproducibility control is the important part: three province scenarios are unmeasurable without it and would otherwise read as save defects. For the next builder: the two HF1 causes are one-line-ish (a sentinel that collides with a rebased negative, and a nested move reference resolved by the wrong key); the purse is a three-register authority problem and the census widening is the thing that stops the class recurring."
+}

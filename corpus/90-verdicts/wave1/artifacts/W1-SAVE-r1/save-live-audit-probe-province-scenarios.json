@@ -1,0 +1,2002 @@
+{
+  "schema": "elder-souls/save-live-audit@1",
+  "item": "RI-JRN05 M1/M3-shaped/M5, measured on the live world through the public harness",
+  "written_by": "W1-SAVE round-1 critic (method_deviations)",
+  "seeds": [
+    4711
+  ],
+  "scenarios": [
+    "in-water",
+    "mid-fall",
+    "at-hearth",
+    "mid-crime",
+    "mid-travel"
+  ],
+  "settle_frames": 60,
+  "declared_exclusions": {
+    "trace_events": [
+      "first_input",
+      "first_control"
+    ],
+    "reason": "Engine.firstControlAt is a per-PAGE latch (RI-PLT03 TTFP) that no reset clears, so the second arm in one browser never re-fires it. An artifact of the instrument, declared rather than hidden.",
+    "stale_check_skips": "paths under .const. / .budget. / .declared / .rules / .policy / .thresholds — data constants, not frame stamps"
+  },
+  "trials": [
+    {
+      "scenario": "in-water",
+      "seed": 4711,
+      "notes": [],
+      "preroll_reproducible": false,
+      "preroll_repeat_diff": [
+        {
+          "path": "afflictions[0].stamina",
+          "control": 113.94,
+          "loaded": 113.6
+        },
+        {
+          "path": "camera_frame.camera.pivot[0]",
+          "control": -4.1332,
+          "loaded": -3.2932
+        },
+        {
+          "path": "camera_frame.camera.pivot[2]",
+          "control": -0.1332,
+          "loaded": 0.7068
+        },
+        {
+          "path": "camera_frame.camera.pos[0]",
+          "control": -6.6102,
+          "loaded": -5.7701
+        },
+        {
+          "path": "camera_frame.camera.pos[2]",
+          "control": -3.2041,
+          "loaded": -2.3641
+        },
+        {
+          "path": "camera_frame.player_pos[0]",
+          "control": -4.1332,
+          "loaded": -3.2932
+        },
+        {
+          "path": "camera_frame.player_pos[2]",
+          "control": -0.1332,
+          "loaded": 0.7068
+        },
+        {
+          "path": "combat.player.pos[0]",
+          "control": -4.13322,
+          "loaded": -3.293169
+        },
+        {
+          "path": "combat.player.pos[2]",
+          "control": -0.13322,
+          "loaded": 0.706831
+        },
+        {
+          "path": "combat.player.stamina",
+          "control": 113.93997,
+          "loaded": 113.599968
+        },
+        {
+          "path": "magic.status[0].stamina",
+          "control": 113.94,
+          "loaded": 113.6
+        },
+        {
+          "path": "player.pos[0]",
+          "control": -4.13322,
+          "loaded": -3.293169
+        },
+        {
+          "path": "player.pos[2]",
+          "control": -0.13322,
+          "loaded": 0.706831
+        },
+        {
+          "path": "player.stamina",
+          "control": 113.93997,
+          "loaded": 113.599968
+        },
+        {
+          "path": "status[0].stamina",
+          "control": 113.94,
+          "loaded": 113.6
+        },
+        {
+          "path": "traversal.observed.depth_m",
+          "control": 41.032,
+          "loaded": 41.056
+        },
+        {
+          "path": "traversal.observed.slope_deg",
+          "control": 3.24,
+          "loaded": 4.18
+        }
+      ],
+      "engine_hash_equal": true,
+      "engine_hash_before": "10efb6f0ab44453da280cdacf4c9fd825c5a953918369ce377bb10cdd90b662b",
+      "engine_hash_after": "10efb6f0ab44453da280cdacf4c9fd825c5a953918369ce377bb10cdd90b662b",
+      "live_at_save_point": {
+        "compared": 1264,
+        "equal_abs": 1246,
+        "equal_rebased": 5,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "camera_frame.camera.pivot[0]",
+            "control": -2.9151,
+            "loaded": -2.4512
+          },
+          {
+            "path": "camera_frame.camera.pivot[2]",
+            "control": 1.0849,
+            "loaded": 1.5204
+          },
+          {
+            "path": "camera_frame.camera.pos[0]",
+            "control": -5.3921,
+            "loaded": -4.9282
+          },
+          {
+            "path": "camera_frame.camera.pos[2]",
+            "control": -1.9861,
+            "loaded": -1.5505
+          },
+          {
+            "path": "camera_frame.player_pos[0]",
+            "control": -2.9151,
+            "loaded": -2.4512
+          },
+          {
+            "path": "camera_frame.player_pos[2]",
+            "control": 1.0849,
+            "loaded": 1.5204
+          },
+          {
+            "path": "combat.player.pos[0]",
+            "control": -2.915146,
+            "loaded": -2.451225
+          },
+          {
+            "path": "combat.player.pos[2]",
+            "control": 1.084854,
+            "loaded": 1.520444
+          },
+          {
+            "path": "player.pos[0]",
+            "control": -2.915146,
+            "loaded": -2.451225
+          },
+          {
+            "path": "player.pos[2]",
+            "control": 1.084854,
+            "loaded": 1.520444
+          },
+          {
+            "path": "traversal.observed.depth_m",
+            "control": 41.045,
+            "loaded": 41.009
+          },
+          {
+            "path": "traversal.observed.slope_deg",
+            "control": 5.64,
+            "loaded": 7.91
+          },
+          {
+            "path": "ui.elements[1].fill",
+            "control": 0.9495,
+            "loaded": 0.946666
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1264,
+        "equal_abs": 1241,
+        "equal_rebased": 5,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "afflictions[0].stamina",
+            "control": 109.77,
+            "loaded": 109.83
+          },
+          {
+            "path": "camera_frame.camera.pivot[0]",
+            "control": -2.2622,
+            "loaded": -1.7983
+          },
+          {
+            "path": "camera_frame.camera.pivot[2]",
+            "control": 1.6748,
+            "loaded": 2.1104
+          },
+          {
+            "path": "camera_frame.camera.pos[0]",
+            "control": -4.8965,
+            "loaded": -4.4326
+          },
+          {
+            "path": "camera_frame.camera.pos[2]",
+            "control": -1.2623,
+            "loaded": -0.8267
+          },
+          {
+            "path": "camera_frame.player_pos[0]",
+            "control": -2.2622,
+            "loaded": -1.7983
+          },
+          {
+            "path": "camera_frame.player_pos[2]",
+            "control": 1.6748,
+            "loaded": 2.1104
+          },
+          {
+            "path": "combat.player.pos[0]",
+            "control": -2.262233,
+            "loaded": -1.798312
+          },
+          {
+            "path": "combat.player.pos[2]",
+            "control": 1.674808,
+            "loaded": 2.110398
+          },
+          {
+            "path": "combat.player.stamina",
+            "control": 109.769949,
+            "loaded": 109.826616
+          },
+          {
+            "path": "magic.status[0].stamina",
+            "control": 109.77,
+            "loaded": 109.83
+          },
+          {
+            "path": "player.pos[0]",
+            "control": -2.262233,
+            "loaded": -1.798312
+          },
+          {
+            "path": "player.pos[2]",
+            "control": 1.674808,
+            "loaded": 2.110398
+          },
+          {
+            "path": "player.stamina",
+            "control": 109.769949,
+            "loaded": 109.826616
+          },
+          {
+            "path": "status[0].stamina",
+            "control": 109.77,
+            "loaded": 109.83
+          },
+          {
+            "path": "traversal.observed.depth_m",
+            "control": 40.99,
+            "loaded": 40.914
+          },
+          {
+            "path": "traversal.observed.slope_deg",
+            "control": 8.09,
+            "loaded": 7.09
+          },
+          {
+            "path": "ui.elements[1].fill",
+            "control": 0.91475,
+            "loaded": 0.915222
+          }
+        ]
+      },
+      "trace_control_sha256": "bae1a4ea4619636058663b17832f1b4aad95226fca0e149857ae50202e5e2c53",
+      "trace_loaded_sha256": "6267072ebd7695517326577d26f620495ead859c1dcf0c4d8b35dbd61e8d3713",
+      "trace_identical": false,
+      "trace_census": {
+        "frames": 60,
+        "fields": {
+          "player.pos[]": 120,
+          "player.weapon_tip[]": 120,
+          "player.weapon_guard[]": 120,
+          "camera.pos[]": 120,
+          "camera.pivot[]": 120,
+          "player.stamina": 4
+        },
+        "first": {
+          "frame": 0,
+          "field": "player.pos[]",
+          "control": -2.8944,
+          "loaded": -2.4305
+        },
+        "len_control": 60,
+        "len_loaded": 60
+      },
+      "pass": false,
+      "verdict": "unmeasurable-preroll-not-reproducible"
+    },
+    {
+      "scenario": "mid-fall",
+      "seed": 4711,
+      "notes": [],
+      "preroll_reproducible": false,
+      "preroll_repeat_diff": [
+        {
+          "path": "afflictions[0].hp",
+          "control": 620,
+          "loaded": 0
+        },
+        {
+          "path": "camera_frame.camera.arm_cast_m",
+          "control": 3.9927,
+          "loaded": 3.9842
+        },
+        {
+          "path": "camera_frame.camera.arm_clear_frames",
+          "control": 0,
+          "loaded": 14
+        },
+        {
+          "path": "camera_frame.camera.arm_desired_m",
+          "control": 3.9927,
+          "loaded": 3.9842
+        },
+        {
+          "path": "camera_frame.camera.arm_len_m",
+          "control": 3.9927,
+          "loaded": 3.9842
+        },
+        {
+          "path": "camera_frame.camera.dist_m",
+          "control": 3.9927,
+          "loaded": 3.9842
+        },
+        {
+          "path": "camera_frame.camera.pitch_deg",
+          "control": -8,
+          "loaded": -8.6322
+        },
+        {
+          "path": "camera_frame.camera.pos[0]",
+          "control": 2766.92,
+          "loaded": 2766.9131
+        },
+        {
+          "path": "camera_frame.camera.pos[1]",
+          "control": 44.4169,
+          "loaded": 44.4594
+        },
+        {
+          "path": "camera_frame.camera.pos[2]",
+          "control": 5007.0323,
+          "loaded": 5007.0452
+        },
+        {
+          "path": "camera_frame.camera.yaw_deg",
+          "control": 0,
+          "loaded": 0.1
+        },
+        {
+          "path": "combat.player.actionable_at",
+          "control": 0,
+          "loaded": 151
+        },
+        {
+          "path": "combat.player.hp",
+          "control": 620,
+          "loaded": 0
+        },
+        {
+          "path": "death.bloodstain",
+          "control": null,
+          "loaded": null
+        },
+        {
+          "path": "death.bloodstain.death_index",
+          "control": null,
+          "loaded": 1
+        },
+        {
+          "path": "death.bloodstain.pos[0]",
+          "control": null,
+          "loaded": 2766.5
+        },
+        {
+          "path": "death.bloodstain.pos[1]",
+          "control": null,
+          "loaded": 2.68
+        },
+        {
+          "path": "death.bloodstain.pos[2]",
+          "control": null,
+          "loaded": 5011
+        },
+        {
+          "path": "death.bloodstain.souls",
+          "control": null,
+          "loaded": 0
+        },
+        {
+          "path": "death.bloodstain_count",
+          "control": 0,
+          "loaded": 1
+        },
+        {
+          "path": "death.cause",
+          "control": null,
+          "loaded": "combat"
+        },
+        {
+          "path": "death.controllable_at",
+          "control": null,
+          "loaded": 151
+        },
+        {
+          "path": "death.death_frame",
+          "control": null,
+          "loaded": 1
+        },
+        {
+          "path": "death.deaths",
+          "control": "[]",
+          "loaded": null
+        },
+        {
+          "path": "death.deaths[0].cause",
+          "control": null,
+          "loaded": "combat"
+        },
+        {
+          "path": "death.deaths[0].death_index",
+          "control": null,
+          "loaded": 1
+        },
+        {
+          "path": "death.deaths[0].death_pos[0]",
+          "control": null,
+          "loaded": 2766.5
+        },
+        {
+          "path": "death.deaths[0].death_pos[1]",
+          "control": null,
+          "loaded": 2.68
+        },
+        {
+          "path": "death.deaths[0].death_pos[2]",
+          "control": null,
+          "loaded": 5011
+        },
+        {
+          "path": "death.deaths[0].frame",
+          "control": null,
+          "loaded": 1
+        },
+        {
+          "path": "death.deaths[0].frames_since_last_damage",
+          "control": null,
+          "loaded": null
+        },
+        {
+          "path": "death.deaths[0].placement_rule",
+          "control": null,
+          "loaded": "death_point"
+        },
+        {
+          "path": "death.deaths[0].relocated_m",
+          "control": null,
+          "loaded": 0
+        },
+        {
+          "path": "death.deaths[0].replaced_stain_souls",
+          "control": null,
+          "loaded": null
+        },
+        {
+          "path": "death.deaths[0].respawn_hearth",
+          "control": null,
+          "loaded": "hearth-lilmoth"
+        },
+        {
+          "path": "death.deaths[0].souls_held_at_death",
+          "control": null,
+          "loaded": 0
+        },
+        {
+          "path": "death.deaths[0].souls_in_stain",
+          "control": null,
+          "loaded": 0
+        },
+        {
+          "path": "death.deaths[0].stain_offset_m",
+          "control": null,
+          "loaded": 0
+        },
+        {
+          "path": "death.deaths[0].stain_pos[0]",
+          "control": null,
+          "loaded": 2766.5
+        },
+        {
+          "path": "death.deaths[0].stain_pos[1]",
+          "control": null,
+          "loaded": 2.68
+        }
+      ],
+      "engine_hash_equal": true,
+      "engine_hash_before": "6f706a67188969c1e1a017848dfc6b566acd99418a2b34be063dd33c25bd24c7",
+      "engine_hash_after": "6f706a67188969c1e1a017848dfc6b566acd99418a2b34be063dd33c25bd24c7",
+      "live_at_save_point": {
+        "compared": 1278,
+        "equal_abs": 1222,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "afflictions[0].hp",
+            "control": 0,
+            "loaded": 620
+          },
+          {
+            "path": "camera_frame.camera.arm_cast_m",
+            "control": 3.9842,
+            "loaded": 3.9927
+          },
+          {
+            "path": "camera_frame.camera.arm_clear_frames",
+            "control": 14,
+            "loaded": 0
+          },
+          {
+            "path": "camera_frame.camera.arm_desired_m",
+            "control": 3.9842,
+            "loaded": 3.9927
+          },
+          {
+            "path": "camera_frame.camera.arm_len_m",
+            "control": 3.9842,
+            "loaded": 3.9927
+          },
+          {
+            "path": "camera_frame.camera.dist_m",
+            "control": 3.9842,
+            "loaded": 3.9927
+          },
+          {
+            "path": "camera_frame.camera.pitch_deg",
+            "control": -8.6322,
+            "loaded": -8
+          },
+          {
+            "path": "camera_frame.camera.pos[0]",
+            "control": 2766.9131,
+            "loaded": 2766.92
+          },
+          {
+            "path": "camera_frame.camera.pos[1]",
+            "control": 44.4594,
+            "loaded": 44.4169
+          },
+          {
+            "path": "camera_frame.camera.pos[2]",
+            "control": 5007.0452,
+            "loaded": 5007.0323
+          },
+          {
+            "path": "camera_frame.camera.yaw_deg",
+            "control": 0.1,
+            "loaded": 0
+          },
+          {
+            "path": "combat.player.actionable_at",
+            "control": 151,
+            "loaded": 0
+          },
+          {
+            "path": "combat.player.hp",
+            "control": 0,
+            "loaded": 620
+          },
+          {
+            "path": "death.bloodstain",
+            "control": null,
+            "loaded": null
+          },
+          {
+            "path": "death.bloodstain.death_index",
+            "control": 1,
+            "loaded": null
+          },
+          {
+            "path": "death.bloodstain.pos[0]",
+            "control": 2766.5,
+            "loaded": null
+          },
+          {
+            "path": "death.bloodstain.pos[1]",
+            "control": 2.68,
+            "loaded": null
+          },
+          {
+            "path": "death.bloodstain.pos[2]",
+            "control": 5011,
+            "loaded": null
+          },
+          {
+            "path": "death.bloodstain.souls",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.bloodstain_count",
+            "control": 1,
+            "loaded": 0
+          },
+          {
+            "path": "death.cause",
+            "control": "combat",
+            "loaded": null
+          },
+          {
+            "path": "death.controllable_at",
+            "control": 151,
+            "loaded": null
+          },
+          {
+            "path": "death.death_frame",
+            "control": 1,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths",
+            "control": null,
+            "loaded": "[]"
+          },
+          {
+            "path": "death.deaths[0].cause",
+            "control": "combat",
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].death_index",
+            "control": 1,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].death_pos[0]",
+            "control": 2766.5,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].death_pos[1]",
+            "control": 2.68,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].death_pos[2]",
+            "control": 5011,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].frame",
+            "control": 1,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].frames_since_last_damage",
+            "control": null,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].placement_rule",
+            "control": "death_point",
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].relocated_m",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].replaced_stain_souls",
+            "control": null,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].respawn_hearth",
+            "control": "hearth-lilmoth",
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].souls_held_at_death",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].souls_in_stain",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].stain_offset_m",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].stain_pos[0]",
+            "control": 2766.5,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].stain_pos[1]",
+            "control": 2.68,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].stain_pos[2]",
+            "control": 5011,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths_this_session",
+            "control": 1,
+            "loaded": 0
+          },
+          {
+            "path": "death.surface_active",
+            "control": true,
+            "loaded": false
+          },
+          {
+            "path": "death.surface_frames_left",
+            "control": 135,
+            "loaded": 0
+          },
+          {
+            "path": "death.surface_line",
+            "control": "YOU WENT DOWN",
+            "loaded": null
+          },
+          {
+            "path": "fall.airborne",
+            "control": true,
+            "loaded": false
+          },
+          {
+            "path": "fall.vel_mps",
+            "control": 2.453,
+            "loaded": 0
+          },
+          {
+            "path": "magic.airborne",
+            "control": true,
+            "loaded": false
+          },
+          {
+            "path": "magic.status[0].hp",
+            "control": 0,
+            "loaded": 620
+          },
+          {
+            "path": "player.airborne",
+            "control": true,
+            "loaded": false
+          },
+          {
+            "path": "player.hp",
+            "control": 0,
+            "loaded": 620
+          },
+          {
+            "path": "status[0].hp",
+            "control": 0,
+            "loaded": 620
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1327,
+        "equal_abs": 1180,
+        "equal_rebased": 5,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "afflictions[0].hp",
+            "control": 0,
+            "loaded": 620
+          },
+          {
+            "path": "afflictions[0].stamina",
+            "control": 120,
+            "loaded": 100
+          },
+          {
+            "path": "camera_frame.camera.arm_cast_m",
+            "control": 4.5398,
+            "loaded": 3.9927
+          },
+          {
+            "path": "camera_frame.camera.arm_clear_frames",
+            "control": 74,
+            "loaded": 0
+          },
+          {
+            "path": "camera_frame.camera.arm_desired_m",
+            "control": 4.9246,
+            "loaded": 3.9927
+          },
+          {
+            "path": "camera_frame.camera.arm_len_m",
+            "control": 4.5398,
+            "loaded": 3.9927
+          },
+          {
+            "path": "camera_frame.camera.dist_m",
+            "control": 4.5398,
+            "loaded": 3.9927
+          },
+          {
+            "path": "camera_frame.camera.mode",
+            "control": "death",
+            "loaded": "free"
+          },
+          {
+            "path": "camera_frame.camera.pitch_deg",
+            "control": -16.1813,
+            "loaded": -8
+          },
+          {
+            "path": "camera_frame.camera.pivot[0]",
+            "control": 2766.17,
+            "loaded": 2766.5341
+          },
+          {
+            "path": "camera_frame.camera.pivot[1]",
+            "control": 4.23,
+            "loaded": 24.7635
+          },
+          {
+            "path": "camera_frame.camera.pivot[2]",
+            "control": 5145.5,
+            "loaded": 5011.6505
+          },
+          {
+            "path": "camera_frame.camera.pos[0]",
+            "control": 2766.2137,
+            "loaded": 2766.7459
+          },
+          {
+            "path": "camera_frame.camera.pos[1]",
+            "control": 5.3991,
+            "loaded": 25.2202
+          },
+          {
+            "path": "camera_frame.camera.pos[2]",
+            "control": 5141.0923,
+            "loaded": 5007.6662
+          },
+          {
+            "path": "camera_frame.camera.yaw_deg",
+            "control": 4.9,
+            "loaded": 3
+          },
+          {
+            "path": "camera_frame.player_pos[0]",
+            "control": 2766.17,
+            "loaded": 2766.5341
+          },
+          {
+            "path": "camera_frame.player_pos[1]",
+            "control": 2.68,
+            "loaded": 22.6635
+          },
+          {
+            "path": "camera_frame.player_pos[2]",
+            "control": 5145.5,
+            "loaded": 5011.6505
+          },
+          {
+            "path": "camera_frame.player_yaw_deg",
+            "control": 3.1,
+            "loaded": 3
+          },
+          {
+            "path": "combat.player.actionable_at",
+            "control": 208,
+            "loaded": 114
+          },
+          {
+            "path": "combat.player.anim",
+            "control": "idle",
+            "loaded": "clip_w_ssw_garrison_sword_r1_1"
+          },
+          {
+            "path": "combat.player.anim_frame",
+            "control": 75,
+            "loaded": 20
+          },
+          {
+            "path": "combat.player.hp",
+            "control": 0,
+            "loaded": 620
+          },
+          {
+            "path": "combat.player.move",
+            "control": null,
+            "loaded": null
+          },
+          {
+            "path": "combat.player.move.active",
+            "control": null,
+            "loaded": 10
+          },
+          {
+            "path": "combat.player.move.id",
+            "control": null,
+            "loaded": "r1.1"
+          },
+          {
+            "path": "combat.player.move.iframes",
+            "control": null,
+            "loaded": null
+          },
+          {
+            "path": "combat.player.move.recovery",
+            "control": null,
+            "loaded": 40
+          },
+          {
+            "path": "combat.player.move.startup",
+            "control": null,
+            "loaded": 24
+          },
+          {
+            "path": "combat.player.move.total",
+            "control": null,
+            "loaded": 74
+          },
+          {
+            "path": "combat.player.pos[0]",
+            "control": 2766.17,
+            "loaded": 2766.534086
+          },
+          {
+            "path": "combat.player.pos[1]",
+            "control": 2.68,
+            "loaded": 22.663531
+          },
+          {
+            "path": "combat.player.pos[2]",
+            "control": 5145.5,
+            "loaded": 5011.650455
+          },
+          {
+            "path": "combat.player.stamina",
+            "control": 120,
+            "loaded": 100
+          },
+          {
+            "path": "combat.player.state",
+            "control": "IDLE",
+            "loaded": "FALL"
+          },
+          {
+            "path": "combat.player.yaw_deg",
+            "control": 3.1,
+            "loaded": 3
+          },
+          {
+            "path": "death.bloodstain",
+            "control": null,
+            "loaded": null
+          },
+          {
+            "path": "death.bloodstain.death_index",
+            "control": 2,
+            "loaded": null
+          },
+          {
+            "path": "death.bloodstain.pos[0]",
+            "control": 2766.17,
+            "loaded": null
+          },
+          {
+            "path": "death.bloodstain.pos[1]",
+            "control": 2.68,
+            "loaded": null
+          },
+          {
+            "path": "death.bloodstain.pos[2]",
+            "control": 5145.5,
+            "loaded": null
+          },
+          {
+            "path": "death.bloodstain.souls",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.bloodstain_count",
+            "control": 1,
+            "loaded": 0
+          },
+          {
+            "path": "death.cause",
+            "control": "combat",
+            "loaded": null
+          },
+          {
+            "path": "death.controllable_at",
+            "control": 208,
+            "loaded": null
+          },
+          {
+            "path": "death.death_frame",
+            "control": 58,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths",
+            "control": null,
+            "loaded": "[]"
+          },
+          {
+            "path": "death.deaths[0].cause",
+            "control": "combat",
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].death_index",
+            "control": 1,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].death_pos[0]",
+            "control": 2766.5,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].death_pos[1]",
+            "control": 2.68,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].death_pos[2]",
+            "control": 5011,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].enemies_respawned",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].frame",
+            "control": 1,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].frames_since_last_damage",
+            "control": null,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].named_held_dead",
+            "control": "[]",
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].placement_rule",
+            "control": "death_point",
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].relocated_m",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].replaced_stain_souls",
+            "control": null,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].respawn_frame",
+            "control": 57,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].respawn_hearth",
+            "control": "hearth-lilmoth",
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].respawn_pos[0]",
+            "control": 2766.17,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].respawn_pos[1]",
+            "control": 2.68,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].respawn_pos[2]",
+            "control": 5145.5,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].souls_held_at_death",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].souls_in_stain",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].stain_offset_m",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].stain_pos[0]",
+            "control": 2766.5,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].stain_pos[1]",
+            "control": 2.68,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].stain_pos[2]",
+            "control": 5011,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[0].time_dead_frames",
+            "control": 56,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].cause",
+            "control": "combat",
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].death_index",
+            "control": 2,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].death_pos[0]",
+            "control": 2766.17,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].death_pos[1]",
+            "control": 2.68,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].death_pos[2]",
+            "control": 5145.5,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].frame",
+            "control": 58,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].frames_since_last_damage",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].placement_rule",
+            "control": "death_point",
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].relocated_m",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].replaced_stain_souls",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].respawn_hearth",
+            "control": "hearth-lilmoth",
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].souls_held_at_death",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].souls_in_stain",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].stain_offset_m",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].stain_pos[0]",
+            "control": 2766.17,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].stain_pos[1]",
+            "control": 2.68,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths[1].stain_pos[2]",
+            "control": 5145.5,
+            "loaded": null
+          },
+          {
+            "path": "death.deaths_this_session",
+            "control": 2,
+            "loaded": 0
+          },
+          {
+            "path": "death.frames_since_last_damage",
+            "control": 18,
+            "loaded": null
+          },
+          {
+            "path": "death.last_damage_frame",
+            "control": 58,
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn",
+            "control": null,
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn.afflictions_retained",
+            "control": "[]",
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn.at",
+            "control": "hearth-lilmoth",
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn.closed_by",
+            "control": "input",
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn.event",
+            "control": "respawn",
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn.flask_charges",
+            "control": 5,
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn.focus_restored",
+            "control": true,
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn.hp",
+            "control": 620,
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn.hp_max",
+            "control": 620,
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn.souls_held",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn.stamina",
+            "control": 120,
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn.time_dead_frames",
+            "control": 56,
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn.timed_effects_expired",
+            "control": "[]",
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn.world_reset.held_dead",
+            "control": "[]",
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn.world_reset.respawned",
+            "control": "[]",
+            "loaded": null
+          },
+          {
+            "path": "death.last_respawn.world_reset.why",
+            "control": "player_death",
+            "loaded": null
+          },
+          {
+            "path": "death.stains_lost_to_second_death",
+            "control": 1,
+            "loaded": 0
+          },
+          {
+            "path": "death.surface_active",
+            "control": true,
+            "loaded": false
+          },
+          {
+            "path": "death.surface_frames_left",
+            "control": 132,
+            "loaded": 0
+          },
+          {
+            "path": "death.surface_line",
+            "control": "YOU WENT DOWN",
+            "loaded": null
+          },
+          {
+            "path": "fall.pos_y_m",
+            "control": 2.68,
+            "loaded": 22.6635
+          },
+          {
+            "path": "fall.vel_mps",
+            "control": 12.263,
+            "loaded": 9.81
+          },
+          {
+            "path": "magic.pos_y_m",
+            "control": 2.68,
+            "loaded": 22.6635
+          },
+          {
+            "path": "magic.status[0].hp",
+            "control": 0,
+            "loaded": 620
+          },
+          {
+            "path": "magic.status[0].stamina",
+            "control": 120,
+            "loaded": 100
+          },
+          {
+            "path": "player.anim",
+            "control": "idle",
+            "loaded": "clip_w_ssw_garrison_sword_r1_1"
+          },
+          {
+            "path": "player.anim_frame",
+            "control": 75,
+            "loaded": 20
+          },
+          {
+            "path": "player.hp",
+            "control": 0,
+            "loaded": 620
+          },
+          {
+            "path": "player.pos[0]",
+            "control": 2766.17,
+            "loaded": 2766.534086
+          },
+          {
+            "path": "player.pos[1]",
+            "control": 2.68,
+            "loaded": 22.663531
+          },
+          {
+            "path": "player.pos[2]",
+            "control": 5145.5,
+            "loaded": 5011.650455
+          },
+          {
+            "path": "player.stamina",
+            "control": 120,
+            "loaded": 100
+          },
+          {
+            "path": "player.state",
+            "control": "IDLE",
+            "loaded": "FALL"
+          },
+          {
+            "path": "player.yaw_deg",
+            "control": 3.1,
+            "loaded": 3
+          },
+          {
+            "path": "status[0].hp",
+            "control": 0,
+            "loaded": 620
+          },
+          {
+            "path": "status[0].stamina",
+            "control": 120,
+            "loaded": 100
+          },
+          {
+            "path": "stealth.V",
+            "control": 0.5335,
+            "loaded": 1.3
+          },
+          {
+            "path": "stealth.V_raw",
+            "control": 0.5335,
+            "loaded": 1.4065
+          },
+          {
+            "path": "stealth.motion",
+            "control": "still",
+            "loaded": "walk"
+          },
+          {
+            "path": "stealth.sound_r_m",
+            "control": 0,
+            "loaded": 5.85
+          },
+          {
+            "path": "stealth.terms.M",
+            "control": 0.55,
+            "loaded": 1.45
+          },
+          {
+            "path": "traversal.observed.airborne",
+            "control": false,
+            "loaded": true
+          },
+          {
+            "path": "traversal.observed.last_fall",
+            "control": null,
+            "loaded": null
+          },
+          {
+            "path": "traversal.observed.last_fall.damage",
+            "control": 620,
+            "loaded": null
+          },
+          {
+            "path": "traversal.observed.last_fall.distance_m",
+            "control": 39.99,
+            "loaded": null
+          },
+          {
+            "path": "traversal.observed.last_fall.softened",
+            "control": false,
+            "loaded": null
+          },
+          {
+            "path": "traversal.observed.last_fall.water_depth_m",
+            "control": 0,
+            "loaded": null
+          },
+          {
+            "path": "traversal.observed.vertical_mps",
+            "control": 0,
+            "loaded": -23.847
+          },
+          {
+            "path": "ui.elements[0].fill",
+            "control": 0,
+            "loaded": 1
+          },
+          {
+            "path": "ui.elements[1].fill",
+            "control": 1,
+            "loaded": 0.833333
+          }
+        ]
+      },
+      "trace_control_sha256": "d94dac36a16ffa8e453c88d75d7c7cb922274580f4e041bf3deb58c00c1e3aaf",
+      "trace_loaded_sha256": "56b5a4b97d77bffe9ff0aaae26e636a6927b0ed398bd13ba4b701c588275757f",
+      "trace_identical": false,
+      "trace_census": {
+        "frames": 60,
+        "fields": {
+          "player.pos[]": 125,
+          "player.yaw_deg": 60,
+          "player.move_dir_deg": 60,
+          "player.anim": 37,
+          "player.weapon_tip[]": 176,
+          "player.weapon_guard[]": 179,
+          "player.hp": 59,
+          "camera.pos[]": 180,
+          "camera.pivot[]": 124,
+          "camera.yaw_deg": 60,
+          "camera.pitch_deg": 60,
+          "camera.dist_m": 60,
+          "camera.arm_len_m": 60,
+          "camera.arm_desired_m": 60,
+          "camera.arm_cast_m": 60,
+          "camera.arm_clear_frames": 60,
+          "player.state": 20,
+          "player.anim_len": 20,
+          "player.phase": 20,
+          "player.anim_slot": 20,
+          "player.hitstop_f": 20,
+          "player.chains_to": 20,
+          "player.stamina": 20,
+          "events[].f": 8,
+          "events[].type": 8,
+          "events[].surface": 2,
+          "events[].closed_by": 2,
+          "events[].hearth": 1,
+          "events[].time_dead_frames": 1,
+          "events[].enemies_respawned": 1,
+          "events[].named_held_dead": 1,
+          "events[].focus_restored": 1,
+          "player.anim_frame": 19,
+          "player.speed_mps": 19,
+          "player.stealth.V": 18,
+          "player.stealth.V_raw": 18,
+          "player.stealth.sound_r_m": 18,
+          "player.stealth.motion": 18,
+          "events[].distance_m": 2,
+          "events[].damage": 2,
+          "events[].souls": 1,
+          "events[].x": 1,
+          "events[].y": 1,
+          "events[].z": 1,
+          "events[].death_index": 1,
+          "events[].placement_rule": 1,
+          "events[].relocated_m": 1,
+          "events[].replaced_souls": 1,
+          "events[].replaced": 1,
+          "events[].eid": 1,
+          "events[].cause": 1,
+          "events[].frames_since_last_damage": 1,
+          "events[].line": 1,
+          "events[].max_frames": 1,
+          "events": 1,
+          "camera.mode": 18
+        },
+        "first": {
+          "frame": 0,
+          "field": "player.pos[]",
+          "control": 41.7405,
+          "loaded": 41.7813
+        },
+        "len_control": 60,
+        "len_loaded": 60
+      },
+      "pass": false,
+      "verdict": "unmeasurable-preroll-not-reproducible"
+    },
+    {
+      "scenario": "at-hearth",
+      "seed": 4711,
+      "notes": [
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon",
+        "hearth hearth-archon"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "d0eacc9cb3270aa56589d2a401a5b7c8583fd7a0baea0b60643609fca26b8227",
+      "engine_hash_after": "d0eacc9cb3270aa56589d2a401a5b7c8583fd7a0baea0b60643609fca26b8227",
+      "live_at_save_point": {
+        "compared": 1261,
+        "equal_abs": 1253,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "fall.airborne",
+            "control": true,
+            "loaded": false
+          },
+          {
+            "path": "fall.vel_mps",
+            "control": 3.597,
+            "loaded": 0
+          },
+          {
+            "path": "magic.airborne",
+            "control": true,
+            "loaded": false
+          },
+          {
+            "path": "player.airborne",
+            "control": true,
+            "loaded": false
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1266,
+        "equal_abs": 1259,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "fall.vel_mps",
+            "control": 13.407,
+            "loaded": 9.81
+          }
+        ]
+      },
+      "trace_control_sha256": "2c812217e7ffd8072d276207cbed25619927ff1a78e7e568c03ed0805103a40a",
+      "trace_loaded_sha256": "2c812217e7ffd8072d276207cbed25619927ff1a78e7e568c03ed0805103a40a",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-crime",
+      "seed": 4711,
+      "notes": [
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":4,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":4,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":4,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su",
+        "crime {\"id\":1,\"crime_id\":\"theft\",\"n\":4,\"frame\":4,\"jurisdiction\":\"imperial\",\"settlement\":null,\"value_g\":0,\"cargo_g\":0,\"victim\":null,\"family\":null,\"lawful\":false,\"lawful_by\":null,\"quote\":25,\"landed\":false,\"su"
+      ],
+      "preroll_reproducible": true,
+      "preroll_repeat_diff": [],
+      "engine_hash_equal": true,
+      "engine_hash_before": "a756d2ceecbbee8685bc0e1360c5d85b04ea40eec327bd2e6de6b1bbd4c930e8",
+      "engine_hash_after": "a756d2ceecbbee8685bc0e1360c5d85b04ea40eec327bd2e6de6b1bbd4c930e8",
+      "live_at_save_point": {
+        "compared": 1579,
+        "equal_abs": 1571,
+        "equal_rebased": 4,
+        "unrebased_stamps": [
+          {
+            "path": "crime.crimes[0].frame",
+            "value": 4,
+            "control_frame": 44,
+            "loaded_frame": 0,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1584,
+        "equal_abs": 1574,
+        "equal_rebased": 6,
+        "unrebased_stamps": [
+          {
+            "path": "crime.crimes[0].frame",
+            "value": 4,
+            "control_frame": 104,
+            "loaded_frame": 60,
+            "note": "raw value identical across a load that reset the frame — the stamp was not rebased"
+          }
+        ],
+        "differing": [
+          {
+            "path": "combat.world_knowledge.gold",
+            "control": 600,
+            "loaded": 0
+          },
+          {
+            "path": "crime.witnesses[0].eid",
+            "control": "<undefined>",
+            "loaded": null
+          },
+          {
+            "path": "travel.gold",
+            "control": 600,
+            "loaded": 0
+          }
+        ]
+      },
+      "trace_control_sha256": "b283d56b6288ffaea9d8b7d8b3e0957cb1110e2c238c45fe5a891127d36441e7",
+      "trace_loaded_sha256": "b283d56b6288ffaea9d8b7d8b3e0957cb1110e2c238c45fe5a891127d36441e7",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": false,
+      "verdict": "defect"
+    },
+    {
+      "scenario": "mid-travel",
+      "seed": 4711,
+      "notes": [
+        "travel service null",
+        "travel service null",
+        "travel service null",
+        "travel service null"
+      ],
+      "preroll_reproducible": false,
+      "preroll_repeat_diff": [
+        {
+          "path": "afflictions[0].stamina",
+          "control": 120,
+          "loaded": 119.6
+        },
+        {
+          "path": "camera_frame.camera.pivot[0]",
+          "control": 3122.8329,
+          "loaded": 2926.8498
+        },
+        {
+          "path": "camera_frame.camera.pivot[1]",
+          "control": 3.022,
+          "loaded": 1.1654
+        },
+        {
+          "path": "camera_frame.camera.pivot[2]",
+          "control": 4636.8344,
+          "loaded": 4842.6255
+        },
+        {
+          "path": "camera_frame.camera.pos[0]",
+          "control": 3123.2529,
+          "loaded": 2927.2698
+        },
+        {
+          "path": "camera_frame.camera.pos[1]",
+          "control": 3.4786,
+          "loaded": 1.6221
+        },
+        {
+          "path": "camera_frame.camera.pos[2]",
+          "control": 4632.8666,
+          "loaded": 4838.6577
+        },
+        {
+          "path": "camera_frame.player_pos[0]",
+          "control": 3122.8329,
+          "loaded": 2926.8498
+        },
+        {
+          "path": "camera_frame.player_pos[1]",
+          "control": 1.472,
+          "loaded": -0.3846
+        },
+        {
+          "path": "camera_frame.player_pos[2]",
+          "control": 4636.8344,
+          "loaded": 4842.6255
+        },
+        {
+          "path": "combat.player.pos[0]",
+          "control": 3122.832852,
+          "loaded": 2926.849783
+        },
+        {
+          "path": "combat.player.pos[1]",
+          "control": 1.472001,
+          "loaded": -0.384581
+        },
+        {
+          "path": "combat.player.pos[2]",
+          "control": 4636.834362,
+          "loaded": 4842.625463
+        },
+        {
+          "path": "combat.player.regen_blocked_until",
+          "control": 0,
+          "loaded": 7
+        },
+        {
+          "path": "combat.player.stamina",
+          "control": 120,
+          "loaded": 119.599998
+        },
+        {
+          "path": "combat.player.state",
+          "control": "IDLE",
+          "loaded": "SWIM"
+        },
+        {
+          "path": "fall.airborne",
+          "control": true,
+          "loaded": false
+        },
+        {
+          "path": "fall.pos_y_m",
+          "control": 1.472,
+          "loaded": -0.3846
+        },
+        {
+          "path": "fall.vel_mps",
+          "control": 0.818,
+          "loaded": 0
+        },
+        {
+          "path": "magic.airborne",
+          "control": true,
+          "loaded": false
+        },
+        {
+          "path": "magic.pos_y_m",
+          "control": 1.472,
+          "loaded": -0.3846
+        },
+        {
+          "path": "magic.status[0].stamina",
+          "control": 120,
+          "loaded": 119.6
+        },
+        {
+          "path": "player.airborne",
+          "control": true,
+          "loaded": false
+        },
+        {
+          "path": "player.denied_by_water.roll",
+          "control": false,
+          "loaded": true
+        },
+        {
+          "path": "player.denied_by_water.sprint",
+          "control": false,
+          "loaded": true
+        },
+        {
+          "path": "player.pos[0]",
+          "control": 3122.832852,
+          "loaded": 2926.849783
+        },
+        {
+          "path": "player.pos[1]",
+          "control": 1.472001,
+          "loaded": -0.384581
+        },
+        {
+          "path": "player.pos[2]",
+          "control": 4636.834362,
+          "loaded": 4842.625463
+        },
+        {
+          "path": "player.stamina",
+          "control": 120,
+          "loaded": 119.599998
+        },
+        {
+          "path": "player.state",
+          "control": "IDLE",
+          "loaded": "SWIM"
+        },
+        {
+          "path": "player.water_band",
+          "control": "W1",
+          "loaded": "W5"
+        },
+        {
+          "path": "status[0].stamina",
+          "control": 120,
+          "loaded": 119.6
+        },
+        {
+          "path": "travel.leg_progress_m.lilmoth-archon",
+          "control": null,
+          "loaded": 25
+        },
+        {
+          "path": "traversal.observed.band",
+          "control": "W1",
+          "loaded": "W5"
+        },
+        {
+          "path": "traversal.observed.denies.attack",
+          "control": false,
+          "loaded": true
+        },
+        {
+          "path": "traversal.observed.denies.roll",
+          "control": false,
+          "loaded": true
+        },
+        {
+          "path": "traversal.observed.denies.sprint",
+          "control": false,
+          "loaded": true
+        },
+        {
+          "path": "traversal.observed.depth_m",
+          "control": 0.14,
+          "loaded": 6.852
+        },
+        {
+          "path": "traversal.observed.regen_suppressed",
+          "control": false,
+          "loaded": true
+        },
+        {
+          "path": "traversal.observed.slope_deg",
+          "control": 1.27,
+          "loaded": 42.09
+        }
+      ],
+      "engine_hash_equal": true,
+      "engine_hash_before": "851647da19562fdc6dc2d08ea761b57f8cfad752facd203bb2fdf45342f6284b",
+      "engine_hash_after": "851647da19562fdc6dc2d08ea761b57f8cfad752facd203bb2fdf45342f6284b",
+      "live_at_save_point": {
+        "compared": 1257,
+        "equal_abs": 1249,
+        "equal_rebased": 4,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "fall.airborne",
+            "control": true,
+            "loaded": false
+          },
+          {
+            "path": "fall.vel_mps",
+            "control": 0.818,
+            "loaded": 0
+          },
+          {
+            "path": "magic.airborne",
+            "control": true,
+            "loaded": false
+          },
+          {
+            "path": "player.airborne",
+            "control": true,
+            "loaded": false
+          }
+        ]
+      },
+      "live_after_settle": {
+        "compared": 1262,
+        "equal_abs": 1255,
+        "equal_rebased": 6,
+        "unrebased_stamps": [],
+        "differing": [
+          {
+            "path": "fall.vel_mps",
+            "control": 10.628,
+            "loaded": 9.81
+          }
+        ]
+      },
+      "trace_control_sha256": "69232bb4ab490f7744af083b7b86ea26a6c445d3bb367bd8093d24babcb25f50",
+      "trace_loaded_sha256": "69232bb4ab490f7744af083b7b86ea26a6c445d3bb367bd8093d24babcb25f50",
+      "trace_identical": true,
+      "trace_census": null,
+      "pass": false,
+      "verdict": "unmeasurable-preroll-not-reproducible"
+    }
+  ],
+  "page_errors": [],
+  "trials_passed": 0,
+  "trials_defect": 2,
+  "trials_unmeasurable": 3,
+  "trials_total": 5,
+  "pass": false
+}

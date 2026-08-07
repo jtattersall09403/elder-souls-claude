@@ -336,6 +336,117 @@ function dispositionCeiling(base, race, upbringing, birthsign, group) {
 }
 
 // ---------------------------------------------------------------------------------------------
+// ROUND 3 — THE SHIPPING OFFER GATE, MODELLED AS THE BUILD IMPLEMENTS IT.
+//
+// TOOL-COVERAGE-R2 §1: round 2 fabricated `ctx.dispositions` from a DERIVED race ceiling and
+// handed that to the shipping `canOffer`. The shipping build does no such thing:
+//
+//   Engine.seedDispositions()  (game/src/engine.js:4563)
+//     for (const group of Object.values(this.data.npcs))
+//       for (const rec of group.npcs || [])
+//         if (typeof rec.disposition === 'number') q.dispositions[rec.id] = rec.disposition;
+//                                                  ^^^^ RAW. no group, no race, no upbringing.
+//
+//   gate.js num(v) -> Number.isFinite(v) ? v : 0     — an unseeded id reads 0, not "unknown".
+//
+// `derivedDisposition()` is never applied to the quest path — not in `canOffer`, not in
+// `canResolve`, not in `QuestEngine._dispositionToward()`. In the whole of game/src the reaction
+// matrix reaches the world in exactly two places, `Engine.npcDisposition()` (a read-only
+// surface) and `character/encounter.js openingFor()` (encounter hostility). Neither is a quest
+// gate. So the quest-offer path is RACE-INVARIANT in this build, and modelling a race ceiling
+// here produces a FALSE RED — the round-2 critic reproduced exactly that, by minting an NPC
+// record and booting the engine on the patched tree: the engine blocked nobody.
+//
+// The derived-ceiling walk is preserved, but as a labelled COUNTERFACTUAL (what the gate WOULD
+// do if the matrix were wired in) and it never produces a criterion verdict.
+// ---------------------------------------------------------------------------------------------
+
+/** `Engine.seedDispositions()`, reproduced. id -> raw authored disposition. */
+const SEED_DISPOSITIONS = (() => {
+  const m = new Map();
+  for (const rec of npcRecords.values()) {
+    if (rec && typeof rec.disposition === 'number') m.set(rec.id, rec.disposition);
+  }
+  return m;
+})();
+
+/**
+ * `machine.js:424` — a quest's consequences may ADD to an npc's disposition:
+ *   q.dispositions[n] = (q.dispositions[n] || 0) + d
+ * That is a real in-play route to a giver's bar and this model would be over-restrictive if it
+ * ignored it. Indexed here per npc, as the BEST positive delta a single quest can contribute
+ * (quest-level consequences merged with the best of its resolutions — the player picks).
+ */
+const DISPOSITION_GIFTS = (() => {
+  const m = new Map();   // npcId -> [{ quest, delta }]
+  for (const q of quests) {
+    const per = new Map();
+    const take = (c) => {
+      for (const [n, d] of Object.entries((c && c.npc_disposition) || {})) {
+        if (!Number.isFinite(d)) continue;
+        per.set(n, Math.max(per.get(n) ?? -Infinity, d));
+      }
+    };
+    take(q.consequences);
+    for (const r of q.resolutions || []) take(r.consequences);
+    for (const [n, d] of per) {
+      if (d <= 0) continue;
+      if (!m.has(n)) m.set(n, []);
+      m.get(n).push({ quest: q.id, delta: d });
+    }
+  }
+  return m;
+})();
+
+/**
+ * The most disposition ANY play can put on `npcId` before being offered `forQuest`.
+ *
+ * This is a deliberate UPPER BOUND, and the direction matters: the same player-optimal premise
+ * `bestCaseCtx()` already uses (every other quest completed) is applied to the gifts, so every
+ * donor quest is granted for free. A gate that this bound cannot clear is a gate NO play can
+ * clear, which is what RI-CHR01 criterion 3 — "never encounter a gate with no route it can
+ * take" — actually asks. The bound is race-invariant because the build's gate is.
+ *
+ * Charm (`sim/magic/apply.js:880`) is the one other writer of `q.dispositions`. It is recorded
+ * as a route and applies only to an NPC that EXISTS in the world: it writes `q.dispositions[b.id]`
+ * for a targeted entity `b`. An id with no record is spawned by nothing — verified in the
+ * running build, where `__HARNESS.npcDisposition('speaker-teel-ashaan')` answers "nobody by that
+ * name is in the world" for all nine record-less givers — so Charm cannot reach them either.
+ */
+function achievableDisposition(npcId, forQuest) {
+  // `seed_disposition` fixture: mint the seed the shipping data does not carry. This is the GREEN
+  // half of the falsification — a gate the tool calls unpassable must become passable the moment
+  // the record exists, or the FAIL is a constant rather than a measurement.
+  const fxSeed = FIXTURE && FIXTURE.seed_disposition;
+  let seeded = SEED_DISPOSITIONS.has(npcId);
+  let seed = seeded ? SEED_DISPOSITIONS.get(npcId) : 0;
+  if (fxSeed !== undefined && fxSeed !== null) {
+    const v = typeof fxSeed === 'number' ? fxSeed : fxSeed[npcId];
+    if (Number.isFinite(v)) { seeded = true; seed = v; }
+  }
+  const excluded = new Set([forQuest ? forQuest.id : null, ...((forQuest && forQuest.mutually_exclusive_with) || [])]);
+  const gifts = (DISPOSITION_GIFTS.get(npcId) || []).filter((g) => !excluded.has(g.quest));
+  const selfOnly = (DISPOSITION_GIFTS.get(npcId) || []).filter((g) => excluded.has(g.quest));
+  const gain = gifts.reduce((a, g) => a + g.delta, 0);
+  return {
+    npc_id: npcId,
+    seeded,
+    seed,
+    gifts,
+    gifts_excluded_as_circular: selfOnly,
+    value: Math.min(100, seed + gain),
+    charmable: seeded,   // no record -> no entity in the world -> nothing to charm
+  };
+}
+
+/** The disposition table the engine would hand `canOffer`, with the bound applied to the giver. */
+function seededDispositionCtx(giverId, reach) {
+  const t = Object.fromEntries(SEED_DISPOSITIONS);
+  if (giverId) t[giverId] = reach.value;
+  return t;
+}
+
+// ---------------------------------------------------------------------------------------------
 // Criterion 4 — the tier-5 cohort, resolved from the world the build actually reads.
 //
 // `world/regions.json` declares `danger_tier` on every region and `engine.js:3306` consumes it
@@ -719,41 +830,44 @@ function questClearableInner(sheet, q, level) {
   }
   const ctx = bestCaseCtx(sheet, level, want, q);
 
-  // The permanent bar. RI-MTH06 §A's worked example lives here, or nowhere.
+  // THE OFFER GATE, exactly as the build runs it. `ctx.dispositions` is the seeded table, not a
+  // derived ceiling; the giver's entry is the player-optimal upper bound from quest gifts. The
+  // shipping `canOffer` does the comparison and produces its own reason string — this tool does
+  // not pre-empt the predicate it imported.
+  let reach = null;
   if (q.giver && q.giver.disposition_min != null) {
-    const g = resolveGiver(q.giver.npc_id);
-    if (g.status !== 'resolved') {
-      return {
-        status: UNMEASURABLE,
-        giver: { quest: q.id, npc_id: q.giver.npc_id, disposition_min: q.giver.disposition_min, absence: g.status },
-        stopped_at: {
-          quest: q.id, stage: null,
-          gate: `giver ${q.giver.npc_id} requires disposition >= ${q.giver.disposition_min}`,
-          why: g.why,
-        },
-      };
-    }
-    const ceiling = dispositionCeiling(g.base, sheet.race, sheet.upbringing, sheet.birthsign, g.group);
-    if (ceiling < q.giver.disposition_min) {
-      const t = raceTerm(data, g.group, sheet.race, sheet.upbringing);
-      return {
-        status: FAIL,
-        stopped_at: {
-          quest: q.id, stage: null, npc_id: q.giver.npc_id,
-          gate: `requires.disposition >= ${q.giver.disposition_min} with ${g.group}`,
-          why: `race term ${t.race} + upbringing ${t.upbringing} puts the ceiling at ${ceiling}`,
-        },
-      };
-    }
-    ctx.dispositions = { [q.giver.npc_id]: ceiling };
+    reach = achievableDisposition(q.giver.npc_id, q);
+    ctx.dispositions = seededDispositionCtx(q.giver.npc_id, reach);
   }
 
   const offer = canOffer(q, ctx, gates);
   if (!offer.offerable) {
-    return {
-      status: FAIL,
-      stopped_at: { quest: q.id, stage: null, gate: 'offer', why: offer.why.join('; ') },
-    };
+    const dispClause = offer.why.find((w) => /\bdisposition \d+\/\d+/.test(String(w)));
+    const st = { quest: q.id, stage: null, gate: 'offer', why: offer.why.join('; ') };
+    if (dispClause && reach) {
+      // The one gate this build has that no signature can pass. Name it with its arithmetic so a
+      // reader can act on it without re-deriving anything.
+      st.npc_id = reach.npc_id;
+      st.gate = `giver ${reach.npc_id} requires disposition >= ${q.giver.disposition_min}`;
+      st.race_invariant = true;
+      st.why =
+        (reach.seeded
+          ? `seedDispositions() writes ${reach.seed} for "${reach.npc_id}" (npcs/** record, raw)`
+          : `no NPC record anywhere in npcs/** carries id "${reach.npc_id}", so seedDispositions() ` +
+            `seeds nothing and gate.js num(undefined) reads 0`) +
+        `; the best any play can add through quest npc_disposition consequences is +${reach.value - reach.seed}` +
+        (reach.gifts.length ? ` (${reach.gifts.map((g) => `${g.quest} +${g.delta}`).join(', ')})` : ' — no quest gives this npc disposition') +
+        (reach.gifts_excluded_as_circular.length
+          ? `; ${reach.gifts_excluded_as_circular.map((g) => `${g.quest} +${g.delta}`).join(', ')} excluded as circular (that quest is gated on this same bar)`
+          : '') +
+        `, reaching ${reach.value} against a required ${q.giver.disposition_min}. ` +
+        `This gate is RACE-INVARIANT: the build never applies derivedDisposition() to the quest ` +
+        `path, so every one of the 540 signatures reads the identical number. ` +
+        (reach.seeded ? '' : `And nobody by that id exists in the world, so Charm ` +
+          `(sim/magic/apply.js:880) cannot reach them either. `) +
+        `UNPASSABLE — RI-CHR01 §5 criterion 3, "never encounter a gate with no route it can take".`;
+    }
+    return { status: FAIL, stopped_at: st, unpassable_for_all: !!dispClause };
   }
 
   const resolutions = q.resolutions || [];
@@ -775,6 +889,45 @@ function questClearableInner(sheet, q, level) {
     }
   }
   return { status: PASS };
+}
+
+// ---------------------------------------------------------------------------------------------
+// THE COUNTERFACTUAL. Labelled, secondary, and it never touches a criterion verdict.
+//
+// This is round 2's primary model, demoted. It answers: "if `seedDispositions()` applied
+// `derivedDisposition()` against the character — one of the two one-line fixes TOOL-COVERAGE-R2
+// referral 2 names — WHICH signatures would the race+upbringing bar then stop?" That is a useful
+// question about a build we do not have, and reporting it as the answer about the build we DO
+// have is exactly the false red the round-2 critic reproduced against the engine.
+// ---------------------------------------------------------------------------------------------
+function counterfactualRaceGate(sheet) {
+  const blocked = [];
+  const unresolvable = [];
+  for (const q of quests) {
+    if (!(q.giver && q.giver.disposition_min != null)) continue;
+    const g = resolveGiver(q.giver.npc_id);
+    if (g.status !== 'resolved') { unresolvable.push({ quest: q.id, npc_id: q.giver.npc_id, absence: g.status }); continue; }
+    const ceiling = dispositionCeiling(g.base, sheet.race, sheet.upbringing, sheet.birthsign, g.group);
+    if (ceiling < q.giver.disposition_min) {
+      const t = raceTerm(data, g.group, sheet.race, sheet.upbringing);
+      blocked.push({
+        quest: q.id, npc_id: q.giver.npc_id, group: g.group,
+        gate: `requires.disposition >= ${q.giver.disposition_min} with ${g.group}`,
+        why: `race term ${t.race} + upbringing ${t.upbringing} puts the ceiling at ${ceiling}`,
+      });
+    }
+  }
+  return {
+    label: 'COUNTERFACTUAL — NOT A VERDICT ON THIS BUILD',
+    hypothesis: 'seedDispositions() applies derivedDisposition() against the character, or ' +
+                'canOffer()/_dispositionToward() derive at read time (TOOL-COVERAGE-R2 referral 2)',
+    would_block: blocked.length > 0,
+    blocked_at: blocked,
+    givers_whose_group_cannot_be_resolved: unresolvable.length,
+    note: 'The shipping build applies no race term to any quest gate, so this list is empty of ' +
+          'consequence today. It is reported so that whoever wires the matrix in can see what ' +
+          'lands the moment they do.',
+  };
 }
 
 /** Walk a quest list at the best simulated level; FAIL beats UNMEASURABLE beats PASS. */
@@ -957,7 +1110,8 @@ function evaluateSignature(race, family, signFamily, upClass, fixture, cohortInf
     stopped_at: first ? (first.stopped_at || { quest: null, stage: null, gate: first.status, why: first.why }) : null,
   };
   if (rec.unmeasurable) rec.unmeasurable_why = firstUnm.why || (firstUnm.stopped_at && firstUnm.stopped_at.why);
-  if (EXPLAIN) rec.working = { class_id: spec.classId, main_quest: c1, factions: c2, gates: c3, lethality: c4, sheet_at_55: { attributes: sheet.attributes, skills: sheet.skills } };
+  rec.counterfactual_race_gate = withFixture(fixture, () => counterfactualRaceGate(sheet));
+  if (EXPLAIN) rec.working ={ class_id: spec.classId, main_quest: c1, factions: c2, gates: c3, lethality: c4, sheet_at_55: { attributes: sheet.attributes, skills: sheet.skills } };
   return rec;
 }
 
@@ -1010,20 +1164,55 @@ function report(records, fixture) {
   const cohortInfo = records.__cohort || withFixture(fixture, () => resolveTier5Cohort());
   const census = withFixture(fixture, () => giverCensus());
   const because = [];
-  if (census.resolving_to_a_reaction_group < census.quests_with_a_giver_disposition_min) {
-    because.push(
-      `${census.quests_with_a_giver_disposition_min - census.resolving_to_a_reaction_group} of ` +
-      `${census.quests_with_a_giver_disposition_min} quests with a giver disposition_min have no ` +
-      `resolvable reaction group (${census.giver_has_no_npc_record} givers have no NPC record at ` +
-      `all; ${census.giver_has_a_record_but_no_reaction_group} have a record with no ` +
-      `reaction_group field). derivedDisposition() cannot be called without a group, so the ` +
-      `permanent race+upbringing bar — RI-CHR01's central claim and RI-MTH06 §A's worked ` +
-      `example — cannot be evaluated. This tool does NOT substitute a best-over-all-groups ` +
-      `ceiling for it; TOOL-COVERAGE-R1 §1 defect B rules that substitution illegitimate.`);
-  }
   if (!cohortInfo.cohort.length) {
     because.push('no fight is authored in any danger_tier 5 region, so criterion 4 has no cohort.');
   }
+
+  // The unpassable-gate roll-up. This is the product of the round-3 rebuild: a live build
+  // failure that round 2 reported as `unmeasurable` and therefore charged to the corpus.
+  const unpassable = new Map();
+  for (const r of records) {
+    const s = r.stopped_at;
+    if (!s || !s.race_invariant) continue;
+    if (!unpassable.has(s.gate)) unpassable.set(s.gate, { gate: s.gate, npc_id: s.npc_id, quest: s.quest, why: s.why, signatures: 0 });
+    unpassable.get(s.gate).signatures++;
+  }
+  // Every quest carrying such a gate, not merely the first one each signature stopped at.
+  const allUnpassable = [];
+  for (const q of quests) {
+    if (!(q.giver && q.giver.disposition_min != null)) continue;
+    const reach = withFixture(fixture, () => achievableDisposition(q.giver.npc_id, q));
+    if (reach.value < q.giver.disposition_min) {
+      allUnpassable.push({
+        quest: q.id, npc_id: q.giver.npc_id, requires: q.giver.disposition_min,
+        seeded: reach.seeded, seed: reach.seed, best_achievable: reach.value,
+        gifts: reach.gifts, circular_gifts: reach.gifts_excluded_as_circular,
+      });
+    }
+  }
+
+  const raceDistinctness = {
+    finding: 'RI-CHR01 Distinctness is not measurable from the quest-offer path BECAUSE THE ' +
+             'BUILD DOES NOT IMPLEMENT IT — not because a data field is missing.',
+    evidence: [
+      'Engine.seedDispositions() (engine.js:4563) writes q.dispositions[rec.id] = rec.disposition, raw.',
+      'derivedDisposition() is called nowhere on the quest path: not canOffer(), not canResolve(), ' +
+      'not QuestEngine._dispositionToward().',
+      'In game/src the reaction matrix reaches the world in exactly two places: ' +
+      'Engine.npcDisposition() (a read-only surface) and character/encounter.js openingFor() ' +
+      '(encounter hostility). Neither is a quest gate.',
+    ],
+    consequence: 'The quest-offer path is race-invariant in this build: all 540 signatures read ' +
+                 'the identical disposition number at every giver. Adding reaction_group to the ' +
+                 `${census.giver_has_a_record_but_no_reaction_group} records that lack it, or minting the ` +
+                 `${census.giver_has_no_npc_record} missing records, is NECESSARY BUT NOT SUFFICIENT ` +
+                 '(TOOL-COVERAGE-R2 referral 2): the field would still not be read.',
+    owner: 'game/src — one of seedDispositions() deriving against the character, or ' +
+           'canOffer()/_dispositionToward() deriving at read time.',
+    scoring: 'RI-CHR01 Distinctness and RI-CHR03 Decidability remain corpus_debt, and the debt is ' +
+             'owed by game/src, not by game/data.',
+  };
+
   return {
     schema: 'elder-souls/build-viability@2',
     tool: 'tools/analysis/build-viability.mjs',
@@ -1038,6 +1227,22 @@ function report(records, fixture) {
     levels_simulated: LEVELS,
     fixture: fixture || null,
     giver_census: census,
+    // ROUND 3. The build failure round 2 reported as `unmeasurable` and thereby charged to the
+    // corpus. `unmeasurable` routes to corpus_debt and charges nobody; `fail` charges the build.
+    unpassable_gates: {
+      note: 'Gates no signature can pass, computed from the SHIPPING offer path: the seeded raw ' +
+            'disposition plus the best positive npc_disposition consequence any other quest can ' +
+            'contribute. Race-invariant, so the count is the same for all 540 signatures.',
+      quests_blocked: allUnpassable.length,
+      signatures_affected: allUnpassable.length ? records.length : 0,
+      gates: allUnpassable,
+      first_stop_histogram: [...unpassable.values()],
+    },
+    race_distinctness: raceDistinctness,
+    counterfactual_race_gate_note:
+      'Every record carries `counterfactual_race_gate`: what the bar WOULD stop if the reaction ' +
+      'matrix were wired into the quest path. It is not a verdict on this build and no criterion ' +
+      'reads it.',
     tier5: cohortInfo,
     model: {
       ...MODEL,
@@ -1084,55 +1289,91 @@ function selfTest() {
     true,
     `${baseViable} viable / ${base.length - baseViable - baseUnm} not viable / ${baseUnm} unmeasurable`);
 
-  // ---- the giver-group mechanism, at a floor inside the range the defect lives in ----------
+  // ---- ROUND 3: THE SHIPPING OFFER GATE. Red on the tree as it stands, green when fixed. ----
+  //
+  // TOOL-COVERAGE-R2 §1: round 2 reported the record-less givers as `unmeasurable`, which routes
+  // to corpus_debt and charges nobody. They are a hard, race-invariant, unpassable gate in the
+  // running build and the correct verdict is FAIL. These four checks are the primary path.
+  const baseReport = report(base, null);
+  const ug = baseReport.unpassable_gates;
+  ok('RED — the shipping offer gate is measured and it FAILS on this tree',
+    ug.quests_blocked > 0 && nFail(base, 'no_unpassable_gate') === base.length && baseUnm === 0,
+    `${ug.quests_blocked} quests carry a giver bar no play can reach ` +
+    `(${ug.gates.map((g) => `${g.npc_id} ${g.best_achievable}/${g.requires}`).join(', ')}); ` +
+    `no_unpassable_gate FAIL for ${nFail(base, 'no_unpassable_gate')} of ${base.length}, ` +
+    `${baseUnm} unmeasurable`);
+
+  ok('the gate is RACE-INVARIANT and the tool says so rather than inventing a race term',
+    new Set(base.map((r) => r.stopped_at && r.stopped_at.why)).size === 1,
+    `all ${base.length} signatures stop at the identical clause: ` +
+    `"${String((base[0].stopped_at || {}).why || '').slice(0, 120)}…"`);
+
+  // GREEN. Mint the seed the data does not carry and the same gate must open. A FAIL that
+  // survives the fix is a constant, not a measurement.
+  const seeded = walkAll({ seed_disposition: 100 });
+  const seededRep = report(seeded, { seed_disposition: 100 });
+  ok('GREEN — seed every giver at 100 and the unpassable gates disappear',
+    seededRep.unpassable_gates.quests_blocked === 0 && nFail(seeded, 'no_unpassable_gate') < nFail(base, 'no_unpassable_gate'),
+    `seed_disposition=100: unpassable gates ${ug.quests_blocked} -> ` +
+    `${seededRep.unpassable_gates.quests_blocked}; no_unpassable_gate FAIL ` +
+    `${nFail(base, 'no_unpassable_gate')} -> ${nFail(seeded, 'no_unpassable_gate')} of ${seeded.length}`);
+
+  // And it is not a step function on "a record exists": the NUMBER must be read. Seed each of
+  // the nine at exactly one below its own requirement, then at exactly its requirement. Blocking
+  // at N-1 and opening at N is the difference between a bar and a presence check. The gifts are
+  // subtracted first so this tests the bar and not the gift arithmetic twice.
+  const seedAt = (delta) => Object.fromEntries(ug.gates.map((g) => [g.npc_id, g.requires - (g.best_achievable - g.seed) + delta]));
+  const fxUnder = { seed_disposition: seedAt(-1) };
+  const fxOver = { seed_disposition: seedAt(0) };
+  const nUnder = report(walkAll(fxUnder), fxUnder).unpassable_gates.quests_blocked;
+  const nOver = report(walkAll(fxOver), fxOver).unpassable_gates.quests_blocked;
+  ok('the bar is READ, not merely the presence of a record (N-1 blocks, N opens)',
+    nUnder === ug.quests_blocked && nOver === 0,
+    `each of the nine seeded at (requirement - gifts - 1): ${nUnder}/${ug.quests_blocked} still ` +
+    `unpassable; at (requirement - gifts): ${nOver} unpassable`);
+
+  // The gifts model is live: a giver seeded just below its bar must be opened by a quest gift.
+  ok('quest npc_disposition consequences are counted as a route (machine.js:424)',
+    ug.gates.every((g) => Array.isArray(g.gifts))
+    && ug.gates.some((g) => g.circular_gifts.length > 0),
+    `${ug.gates.filter((g) => g.circular_gifts.length).length} of ${ug.gates.length} blocked gates ` +
+    `have a positive gift that is CIRCULAR — the only quest that raises the giver is the quest ` +
+    `the giver gates. e.g. ` +
+    (ug.gates.find((g) => g.circular_gifts.length)
+      ? `${ug.gates.find((g) => g.circular_gifts.length).npc_id}: ` +
+        ug.gates.find((g) => g.circular_gifts.length).circular_gifts.map((c) => `${c.quest} +${c.delta}`).join(', ')
+      : 'n/a'));
+
+  // ---- the COUNTERFACTUAL race bar. Labelled, and it must never be the verdict. -------------
   const FLOOR = 50;   // the maximum disposition_min shipped anywhere in game/data/quests/**
+  ok('the counterfactual is carried on every record and is NOT a criterion',
+    base.every((r) => r.counterfactual_race_gate && r.counterfactual_race_gate.label.startsWith('COUNTERFACTUAL'))
+    && !Object.values(base[0].criteria).includes(undefined)
+    && base.every((r) => r.counterfactual_race_gate.would_block === false),
+    `all ${base.length} records carry counterfactual_race_gate; on shipped data it blocks nobody ` +
+    `because 0 of ${baseReport.giver_census.quests_with_a_giver_disposition_min} givers resolve to a ` +
+    `reaction group at all`);
+
   const granted = walkAll({ giver_reaction_group: 'RG-DEEP', quest_disposition_floor: FLOOR });
-  const gFail = nFail(granted, 'no_unpassable_gate');
-  ok('giver-group resolution is live (bar fires at the shipped floor, not at 200)',
-    gFail > 0 && gFail < granted.length,
-    `every giver -> RG-DEEP with disposition_min ${FLOOR}: no_unpassable_gate FAIL for ${gFail} ` +
-    `of ${granted.length} signatures (a PARTIAL count is the point — 0 or 540 would both mean ` +
-    `the group is not being read)`);
-
-  const dunmerBlocked = granted.filter((r) => r.signature.startsWith('dunmer/') && r.criteria.no_unpassable_gate === FAIL).length;
-  const saxOpen = granted.filter((r) => r.signature.startsWith('saxhleel/') && r.criteria.no_unpassable_gate !== FAIL).length;
-  const example = granted.find((r) => r.signature.startsWith('dunmer/') && r.criteria.no_unpassable_gate === FAIL);
-  ok('the bar DISCRIMINATES by race+upbringing (RI-MTH06 §A\'s worked example)',
-    dunmerBlocked > 0 && saxOpen > 0,
-    `against RG-DEEP at ${FLOOR}: ${dunmerBlocked} dunmer signatures blocked, ${saxOpen} saxhleel ` +
-    `signatures not. e.g. ${example ? example.signature + ' :: ' + example.stopped_at.why : 'n/a'}`);
-
-  const upbringingSplit = new Map();
-  for (const r of granted.filter((x) => x.signature.startsWith('dunmer/'))) {
-    const up = r.signature.split('/')[3];
-    if (!upbringingSplit.has(up)) upbringingSplit.set(up, { fail: 0, n: 0 });
-    const e = upbringingSplit.get(up); e.n++; if (r.criteria.no_unpassable_gate === FAIL) e.fail++;
-  }
-  ok('the UPBRINGING term is read, not only the race term',
-    new Set([...upbringingSplit.values()].map((v) => v.fail === v.n)).size > 1
-      || [...upbringingSplit.values()].some((v) => v.fail > 0 && v.fail < v.n)
-      || (() => {
-        // Different upbringings must produce different ceilings even when all three block.
-        const cs = [...new Set(UP_CLASSES.map((uc) => {
-          const up = UPBRINGINGS.find((u) => u.signature_class === uc);
-          return dispositionCeiling(50, 'dunmer', up.id, null, 'RG-DEEP');
-        }))];
-        return cs.length > 1;
-      })(),
+  const cfBlocked = granted.filter((r) => r.counterfactual_race_gate.would_block).length;
+  const cfDunmer = granted.filter((r) => r.signature.startsWith('dunmer/') && r.counterfactual_race_gate.would_block).length;
+  const cfSax = granted.filter((r) => r.signature.startsWith('saxhleel/') && !r.counterfactual_race_gate.would_block).length;
+  ok('the counterfactual DISCRIMINATES by race+upbringing (RI-MTH06 §A\'s worked example)',
+    cfBlocked > 0 && cfBlocked < granted.length && cfDunmer > 0 && cfSax > 0,
+    `givers -> RG-DEEP at ${FLOOR}: the counterfactual would block ${cfBlocked}/${granted.length} ` +
+    `(${cfDunmer} dunmer blocked, ${cfSax} saxhleel not). THE PRIMARY VERDICT IS UNMOVED by the ` +
+    `race term, and that is the point: the build does not read it.`);
+  const upSplit = [...new Set(UP_CLASSES.map((uc) => {
+    const up = UPBRINGINGS.find((u) => u.signature_class === uc);
+    return dispositionCeiling(50, 'dunmer', up.id, null, 'RG-DEEP');
+  }))];
+  ok('the counterfactual reads the UPBRINGING term, not only the race term',
+    upSplit.length > 1,
     `dunmer ceilings against RG-DEEP by upbringing: ` +
     UP_CLASSES.map((uc) => {
       const up = UPBRINGINGS.find((u) => u.signature_class === uc);
       return `${up.id}=${dispositionCeiling(50, 'dunmer', up.id, null, 'RG-DEEP')}`;
     }).join(' '));
-
-  // ---- and with no group resolvable, it must NOT pass -------------------------------------
-  ok('an unresolvable giver group is UNMEASURABLE, never a pass',
-    nUnm(base, 'no_unpassable_gate') + nFail(base, 'no_unpassable_gate') === base.length
-    || base.every((r) => r.criteria.no_unpassable_gate === PASS && report(base, null).giver_census.resolving_to_a_reaction_group === report(base, null).giver_census.quests_with_a_giver_disposition_min),
-    `on this data root ${report(base, null).giver_census.resolving_to_a_reaction_group}/` +
-    `${report(base, null).giver_census.quests_with_a_giver_disposition_min} givers resolve; ` +
-    `no_unpassable_gate is unmeasurable for ${nUnm(base, 'no_unpassable_gate')} and fails for ` +
-    `${nFail(base, 'no_unpassable_gate')} of ${base.length}`);
 
   // ---- criterion 4: the cohort resolution path --------------------------------------------
   const cohort = base.__cohort;
@@ -1165,18 +1406,23 @@ function selfTest() {
     `x0.01: criterion-4 FAIL ${nFail(base, 'tier5_survivable')} -> ${nFail(easy, 'tier5_survivable')}`);
 
   // ---- criteria 1-3 remain independently falsifiable ---------------------------------------
-  const resBroken = walkAll({ impossible_resolution_gate: true, giver_reaction_group: 'RG-TOWN' });
-  const resBase = walkAll({ giver_reaction_group: 'RG-TOWN' });
-  ok('criterion 3 falsifiable (resolution walk)',
+  // Both run on top of `seed_disposition: 100`, so the offer gate is OPEN and the walk actually
+  // reaches the clause under test. Perturbing a criterion that is already red at an earlier gate
+  // proves nothing — that was round 1's "floor 200" mistake in a different coat.
+  const resBroken = walkAll({ impossible_resolution_gate: true, seed_disposition: 100 });
+  const resBase = walkAll({ seed_disposition: 100 });
+  ok('criterion 3 falsifiable at the RESOLUTION clause (offer gate held open)',
     nFail(resBroken, 'no_unpassable_gate') > nFail(resBase, 'no_unpassable_gate'),
-    `every resolution gated on luck 9999 (givers granted RG-TOWN so the walk reaches the ` +
-    `resolutions): no_unpassable_gate FAIL ${nFail(resBase, 'no_unpassable_gate')} -> ` +
+    `every resolution gated on luck 9999, givers seeded 100 so the walk reaches them: ` +
+    `no_unpassable_gate FAIL ${nFail(resBase, 'no_unpassable_gate')} -> ` +
     `${nFail(resBroken, 'no_unpassable_gate')}`);
 
-  const mainBroken = walkAll({ giver_reaction_group: 'RG-DEEP', quest_disposition_floor: FLOOR });
+  const mainBase = walkAll({ seed_disposition: 100 });
+  const mainBroken = walkAll({ seed_disposition: 100, quest_disposition_floor: 101 });
   ok('criterion 1 falsifiable (main-quest walk)',
-    nFail(mainBroken, 'main_quest') > nFail(base, 'main_quest'),
-    `givers -> RG-DEEP at ${FLOOR}: main_quest FAIL ${nFail(base, 'main_quest')} -> ${nFail(mainBroken, 'main_quest')}`);
+    nFail(mainBroken, 'main_quest') > nFail(mainBase, 'main_quest'),
+    `givers seeded 100, every disposition_min raised to 101: main_quest FAIL ` +
+    `${nFail(mainBase, 'main_quest')} -> ${nFail(mainBroken, 'main_quest')}`);
 
   const rankBroken = walkAll({ faction_rank5_attribute_floor: 500 });
   ok('criterion 2 falsifiable (faction ladder)',
@@ -1202,6 +1448,23 @@ if (args['self-test']) process.exit(selfTest());
 
 const fixture = args.fixture ? JSON.parse(fs.readFileSync(path.resolve(String(args.fixture)), 'utf8')) : null;
 
+// `--signatures` — advertised since round 1, in RI-CHR01 M6's own contract line, and never read
+// until now (TOOL-COVERAGE-R2 §1, "it is the --verify shape"). It now has a value, it is
+// validated, and an unknown value is a usage error rather than a silently ignored flag.
+let SIGNATURE_SUBSET = null;
+if (args.signatures !== undefined) {
+  const v = String(args.signatures);
+  if (v === 'all' || v === 'true') SIGNATURE_SUBSET = null;
+  else if (/^[a-z-]+$/.test(v) && RACES.includes(v)) SIGNATURE_SUBSET = { race: v };
+  else if (/^\d+$/.test(v)) SIGNATURE_SUBSET = { first: parseInt(v, 10) };
+  else {
+    die(EXIT.USAGE,
+      `--signatures ${JSON.stringify(v)} is not recognised. Use "all", a race id ` +
+      `(${RACES.join('|')}), or a count. A flag that accepts anything and does nothing is the ` +
+      `defect TOOL-COVERAGE-R2 §1 charged this tool with.`);
+  }
+}
+
 let records;
 if (args.signature) {
   const parts = String(args.signature).split(/[|/]/);
@@ -1211,6 +1474,15 @@ if (args.signature) {
   records.__cohort = cohortInfo;
 } else {
   records = walkAll(fixture);
+  if (SIGNATURE_SUBSET) {
+    const cohort = records.__cohort;
+    const filtered = SIGNATURE_SUBSET.race
+      ? records.filter((r) => r.signature.startsWith(SIGNATURE_SUBSET.race + '/'))
+      : records.slice(0, SIGNATURE_SUBSET.first);
+    filtered.__cohort = cohort;
+    records = filtered;
+    log(`--signatures ${args.signatures}: walking ${records.length} of 540 cells`);
+  }
 }
 
 const rep = report(records, fixture);
@@ -1238,6 +1510,21 @@ if (!QUIET) {
     `${rep.giver_census.giver_has_a_record_but_no_reaction_group} record without reaction_group); ` +
     `max disposition_min shipped ${rep.giver_census.max_disposition_min_shipped}\n`);
   for (const b of rep.unmeasurable_because) process.stdout.write(`  UNMEASURABLE: ${b}\n`);
+  if (rep.unpassable_gates.quests_blocked) {
+    process.stdout.write(
+      `  BUILD FAIL — ${rep.unpassable_gates.quests_blocked} quests carry a giver disposition bar ` +
+      `NO PLAY CAN REACH, identically for all ${records.length} signatures:\n`);
+    for (const g of rep.unpassable_gates.gates) {
+      process.stdout.write(
+        `    ${g.quest}: ${g.npc_id} needs ${g.requires}, best achievable ${g.best_achievable} ` +
+        `(${g.seeded ? 'seeded ' + g.seed : 'NO NPC RECORD -> seeds nothing -> num(undefined)=0'}` +
+        `${g.gifts.length ? ', gifts ' + g.gifts.map((x) => x.quest + '+' + x.delta).join(' ') : ''}` +
+        `${g.circular_gifts.length ? ', circular ' + g.circular_gifts.map((x) => x.quest + '+' + x.delta).join(' ') : ''})\n`);
+    }
+    process.stdout.write(
+      `  RACE-INVARIANT: the build never applies derivedDisposition() to the quest path, so this ` +
+      `is a BUILD failure charged to game/src+game/data, not corpus_debt.\n`);
+  }
 
   const fails = records.filter((r) => !r.viable);
   const shown = EXPLAIN ? fails : fails.slice(0, 20);

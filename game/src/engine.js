@@ -67,6 +67,7 @@ import { DeathSystem, SURFACE_FRAMES, DEATH_LINE } from './sim/death.js';
 const DEFAULT_START = Object.freeze({ race: 'saxhleel', class_id: 'reed-walker' });
 
 import { derivedDisposition, priceQuote, guardTerms, raceTerm, matrixSigma, meanRaceGap, playerRaceClass } from './character/reaction.js';
+import { movableTerms as dlgMovableTerms } from './sim/dialogue/disposition.js';
 import { encounterById, openingFor, defeatOutcome } from './character/encounter.js';
 import { CensusSurface, buildCensusModel, CENSUS_PLACES, CENSUS_CAST, CENSUS_ACTIONS, placeOfNode } from './character/scene.js';
 
@@ -276,6 +277,10 @@ export class Engine {
     this.questBook = new QuestBook(this.data.quests);
     this.factionGates = new FactionGates(this.data.quests['faction-gates'] || { factions: [] });
     this.questEngine = new QuestEngine(this.questBook, this.factionGates, this.data.quests['quest-hooks'], this.sim);
+    // W1-07 round 4: the race/upbringing/faction term on the offer gate. Installed before the
+    // first seed so no window exists in which a gate is evaluated on the raw register.
+    this.questEngine.dispositionModel = this._questDispositionModel();
+    this._assertGiversAreVisibleToRace();
     // W1-19: the authored NPC disposition table, copied into the register the quest gates read.
     // Without this every `giver.disposition_min` in game/data/quests/** is unreachable.
     this.seedDispositions();
@@ -4539,6 +4544,10 @@ export class Engine {
     if (!this.questEngine) return null;
     this.questEngine.sim = this.sim;
     this.questEngine.journal = new Journal(this.sim.quest.journal);
+    // The model closes over `this`, not over `this.sim`, so a state load cannot leave it
+    // pointing at the previous world — but re-install anyway, because a rebind that half
+    // survives is exactly the contamination W1-15 round 2 found in the stealth subsystem.
+    this.questEngine.dispositionModel = this._questDispositionModel();
     this.seedDispositions();
     return true;
   }
@@ -4572,6 +4581,116 @@ export class Engine {
       }
     }
     return n;
+  }
+
+  /**
+   * **The quest-offer path's race term, which until W1-07 round 4 did not exist.**
+   *
+   * `seedDispositions()` above writes the register — the world's *written* opinion. This is
+   * the function that turns a written number into what the person in front of you actually
+   * feels, and installing it on `QuestEngine` is what makes `gate.js canOffer()` see race at
+   * all. Two layers were needed and the data layer alone was measured, on a shadow tree, to
+   * block nobody: filling in a missing NPC record changes what `seedDispositions()` writes and
+   * nothing else, because nothing downstream of it read the matrix.
+   *
+   * The arithmetic is borrowed, never re-derived:
+   *
+   *   * `character/reaction.js derivedDisposition` — RI-CHR02 §3's 12x10 matrix, the upbringing
+   *     table, and RI-CHR03's birthsign term. This is the function `creation-audit.mjs` and
+   *     `npcDisposition()` already agree with, so the number on a quest gate and the number on
+   *     a price quote come from one place.
+   *   * `sim/dialogue/disposition.js movableTerms` — RI-DLG04 §B's Personality, faction,
+   *     same-race, bounty and crime terms, supplied as `otherTerms`. Without them the fix
+   *     differentiates BY SUBTRACTION: a Dunmer would be permanently refused in the interior
+   *     with no route through, which `race-reactions.json` §repair_paths explicitly rejects
+   *     ("Deep-Kin rank 6 against a Deep-Kin NPC is +48, which fully covers a Dunmer's -40").
+   *
+   * Sap taint and disease are deliberately NOT passed: `QuestEngine._dispositionToward()` has
+   * applied both since W1-14 round 3 and paying them twice would be a silent double-count.
+   */
+  _questDispositionModel() {
+    return (npcId, base) => {
+      const rec = this._anyNpcRecord(npcId);
+      const group = rec && (rec.reaction_group || null);
+      if (!group) return null;
+      const ch = this.sim.character;
+      const race = ch ? ch.race : this.sim.identity.race;
+      const upbringing = ch ? ch.upbringing : this.sim.identity.upbringing;
+      if (!race || !upbringing) return null;
+      const gmst = this.data.persuasionGmst && this.data.persuasionGmst.gmst;
+      let other = 0, otherTerms = [];
+      if (gmst) {
+        const mv = dlgMovableTerms(
+          { id: npcId, race: rec.race, faction: rec.faction || null, reaction_group: group },
+          this._questPlayerView(),
+          { gmst, factionReactions: this.data.factionReactions || null },
+        );
+        other = mv.total;
+        otherTerms = mv.terms;
+      }
+      const d = derivedDisposition(this.chData, {
+        group, race, upbringing,
+        baseDisposition: Number(base) || 0,
+        otherTerms: other,
+        birthsign: ch ? ch.birthsign : this.sim.identity.sign,
+      });
+      return {
+        value: d.value, band: d.band, group, base: d.base,
+        race_term: d.race_term, upbringing_term: d.upbringing_term,
+        birthsign_term: d.birthsign_term, other_terms: d.other_terms,
+        movable: otherTerms, player_race: race, player_upbringing: upbringing,
+      };
+    };
+  }
+
+  /** The character as RI-DLG04 §B's movable terms read them, from live sim state only. */
+  _questPlayerView() {
+    const ch = this.sim.character;
+    const attrs = (this.sim.progression && this.sim.progression.attributes) || {};
+    const crime = this.sim.quest && this.sim.quest.crime;
+    const bounty = crime && crime.bounty
+      ? Object.values(crime.bounty).reduce((a, b) => a + (Number(b) || 0), 0) : 0;
+    return {
+      race: ch ? ch.race : this.sim.identity.race,
+      upbringing: ch ? ch.upbringing : this.sim.identity.upbringing,
+      Personality: Number(attrs.personality || 0),
+      factions: (this.sim.quest && this.sim.quest.factions) || {},
+      bounty,
+      // Charm writes straight into the register (`sim/magic/apply.js`), so counting it here
+      // as well would pay for one spell twice.
+      charmMagnitude: 0,
+      weaponDrawn: false,
+      sapTaintBand: 0,
+      hasCommonDisease: false,
+    };
+  }
+
+  /**
+   * Fail loud when a quest giver cannot be seen by the race system. `gate.js` reads
+   * `num(undefined) === 0`, so a giver with no record is an unpassable gate that *looks* like
+   * an ordinary standing shortfall, and a giver with no `reaction_group` is a giver every race
+   * meets identically. Both shipped for a whole wave, invisible to every instrument. A boot
+   * that throws is how they stay fixed.
+   */
+  _assertGiversAreVisibleToRace() {
+    const missing = [], ungrouped = [];
+    for (const id of this.questBook.ids) {
+      const def = this.questBook.get(id);
+      const g = def.giver && def.giver.npc_id;
+      if (!g) continue;
+      const rec = this._anyNpcRecord(g);
+      if (!rec) { if (!missing.includes(g)) missing.push(g); continue; }
+      if (!rec.reaction_group && !ungrouped.includes(g)) ungrouped.push(g);
+    }
+    if (missing.length || ungrouped.length) {
+      throw new Error(
+        'quest givers invisible to the RI-CHR02 reaction matrix — '
+        + `${missing.length} with no NPC record (${missing.slice(0, 8).join(', ')}), `
+        + `${ungrouped.length} with a record and no reaction_group (${ungrouped.slice(0, 8).join(', ')}). `
+        + 'A giver in either list gates every race identically; see game/data/npcs/**.',
+      );
+    }
+    return { givers_checked: this.questBook.ids.length, missing: 0, ungrouped: 0 };
   }
 
   histSightWrite(frame) {
@@ -5346,6 +5465,12 @@ async function loadData(onBytes) {
     else if (entry.path.startsWith('combat/movesets/')) out.weaponMovesets[doc.weapon_id] = doc;
     else if (entry.path.startsWith('weapons/')) out.weapons[entry.path.slice('weapons/'.length).replace(/\.json$/, '')] = doc;
     else if (entry.path.startsWith('combat/')) out.combat[entry.path.slice('combat/'.length).replace(/\.json$/, '')] = doc;
+    // W1-07 round 4: both of these were fetched at boot and then DROPPED — they matched no
+    // branch below and fell off the end of the chain. RI-DLG04 §B's whole term set was
+    // therefore unreachable by any consumer, which is one of the reasons `derivedDisposition`
+    // never made it onto the quest path.
+    else if (entry.path === 'dialogue/persuasion-gmst.json') out.persuasionGmst = doc;
+    else if (entry.path === 'dialogue/faction-reactions.json') out.factionReactions = doc;
     else if (entry.path === 'dialogue/greetings.json') out.greetings = doc;
     else if (entry.path === 'dialogue/rumours.json') out.rumours = doc;
     else if (entry.path === 'dialogue/creation-questions.json') out.creationQuestions = doc;

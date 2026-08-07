@@ -78,6 +78,10 @@ OPTIONS
   --status           print the running daemon's status as JSON and exit
   --stop             ask the running daemon to shut down
   --no-cache         serve nothing from cache and write nothing to it
+  --pin-build        freeze the build key at boot: do not drop the browser when game/ changes.
+                     For a long coherent pack (a 117-frame region pack must be drawn by ONE build
+                     or it is a mixture of games). Every capture then records build_pinned: true
+                     and, if the tree has since moved, tree_has_since_moved_to.
 
 CLIENTS
   node tools/harness/shot.mjs --viewpoint VP01           one command, prints a path
@@ -93,6 +97,7 @@ const IDLE_MS = Number(args.idle || 1800) * 1000;
 const BROWSER_IDLE_MS = Number(args['browser-idle'] || 180) * 1000;
 const JOB_TIMEOUT_MS = Number(args['job-timeout'] || 300) * 1000;
 const USE_CACHE = !args['no-cache'];
+const PIN_BUILD = !!args['pin-build'];
 
 ensureDir(CAPD_DIR);
 ensureDir(CACHE_DIR);
@@ -141,6 +146,7 @@ if (args.daemon) {
     '--browser-idle', String(BROWSER_IDLE_MS / 1000),
     '--job-timeout', String(JOB_TIMEOUT_MS / 1000),
     ...(USE_CACHE ? [] : ['--no-cache']),
+    ...(PIN_BUILD ? ['--pin-build'] : []),
   ], { detached: true, stdio: ['ignore', fd, fd], cwd: REPO_ROOT });
   child.unref();
   for (let i = 0; i < 200; i++) {
@@ -211,14 +217,34 @@ let BUILD = buildKey();
 let BUILD_SIG = statSignature().sig;
 logLine('build', BUILD.build_key, 'git', BUILD.git_sha && BUILD.git_sha.slice(0, 8), BUILD.git_dirty ? '(dirty)' : '');
 
-/** Cheap; called before every job. Returns true if the browser must be thrown away. */
+/** Set when --pin-build is in force and the tree has moved on since the daemon booted. */
+let DRIFTED_TO = null;
+
+/**
+ * Cheap; called before every job. Returns true if the browser must be thrown away.
+ *
+ * Under --pin-build the browser is NOT thrown away and the cache key does NOT move: the daemon
+ * goes on serving the build it booted with, so a long pack is drawn by one game rather than by
+ * four. This is not a convenience — measured during this piece's own headline run, another
+ * builder edited game/ four times in three minutes, and an unpinned daemon correctly threw the
+ * browser away each time, which makes a 117-frame pack a mixture of four different games.
+ *
+ * It still notices the drift and RECORDS it, because the alternative — serving a picture that
+ * silently claims to be of the current tree — is exactly what S34's build key exists to prevent.
+ * A pinned capture says "drawn by build X, and the tree has since moved to Y".
+ */
 function refreshBuild() {
   const sig = statSignature().sig;
   if (sig === BUILD_SIG) return false;
   BUILD_SIG = sig;
   const next = buildKey();
-  if (next.build_key === BUILD.build_key) return false;   // mtimes moved, content did not
-  logLine('BUILD CHANGED', BUILD.build_key, '->', next.build_key, '— dropping the browser');
+  if (next.build_key === BUILD.build_key) { DRIFTED_TO = null; return false; }  // mtimes moved, content did not
+  if (PIN_BUILD) {
+    if (DRIFTED_TO !== next.build_key) logLine('build drifted to', next.build_key, '- PINNED to', BUILD.build_key, ', not dropping the browser');
+    DRIFTED_TO = next.build_key;
+    return false;
+  }
+  logLine('BUILD CHANGED', BUILD.build_key, '->', next.build_key, '- dropping the browser');
   BUILD = next;
   return true;
 }
@@ -261,23 +287,58 @@ const stats = {
   browser_boots: 0, boot_ms_total: 0, capture_ms_total: 0, captures: 0,
 };
 
+/**
+ * `launchGame()` reports every failure through `die()`, which calls `process.exit()`. For a
+ * one-shot tool that is right. For a shared daemon it is fatal in the literal sense: while this
+ * was being built another builder's in-flight edit left `game/` throwing at boot
+ * (`_assertGiversAreVisibleToRace`), and the daemon died, respawned, died again — a flap that
+ * would have taken every other agent's captures down with it.
+ *
+ * So the boot is run with `process.exit` swapped for a throw, restored in a `finally`. The
+ * failure then becomes an ordinary job error (`GAME_BROKEN`) that names the reason, and the
+ * daemon stays up to serve cache hits and to answer `--status`. A broken game/ is the game's
+ * problem; it must not also be an outage.
+ */
+async function guardedBoot(fn) {
+  const realExit = process.exit;
+  process.exit = (code) => { const e = new Error('launchGame() exited with code ' + code); e.bootExit = code; throw e; };
+  try { return await fn(); } finally { process.exit = realExit; }
+}
+
+/** Backoff after a failed boot, so a broken game/ is not re-booted once per queued job. */
+let bootFailedAt = 0, bootFailReason = null;
+const BOOT_BACKOFF_MS = 15000;
+
 async function ensureBrowser(width, height) {
   if (booting) await booting;
   if (handle && handleBuild !== BUILD.build_key) await dropBrowser('build changed');
   if (!handle) {
+    if (bootFailedAt && Date.now() - bootFailedAt < BOOT_BACKOFF_MS) {
+      const e = new Error(bootFailReason); e.gameBroken = true; throw e;
+    }
     booting = (async () => {
       const t0 = Date.now();
       stats.browser_boots++;
       logLine('booting browser', `${width}x${height}`);
-      const h = await launchGame({ width, height });
+      const h = await guardedBoot(() => launchGame({ width, height }));
       await h.page.addInitScript(THUMB_SOURCE);
       await h.page.evaluate(THUMB_SOURCE);
       await hx(h, 'setRenderRate', 0);   // AGENT-PROTOCOL: never step with the renderer live
       handle = h; handleW = width; handleH = height; handleBuild = BUILD.build_key;
+      bootFailedAt = 0; bootFailReason = null;
       stats.boot_ms_total += Date.now() - t0;
       logLine('browser up in', (Date.now() - t0) + 'ms');
     })();
-    try { await booting; } finally { booting = null; }
+    try { await booting; }
+    catch (e) {
+      stats.boot_failures = (stats.boot_failures || 0) + 1;
+      bootFailedAt = Date.now();
+      bootFailReason = 'the game does not boot on this build (' + BUILD.build_key + '): ' + String(e && e.message || e) +
+        ' — see ' + LOG_PATH + '. The capture daemon is still up; it cannot render until game/ boots.';
+      logLine('BOOT FAILED:', bootFailReason);
+      const err = new Error(bootFailReason); err.gameBroken = true; throw err;
+    }
+    finally { booting = null; }
   }
   if (handleW !== width || handleH !== height) {
     // The page listens for `resize` (game/src/main.js) and calls renderer.setSize(), so the
@@ -293,38 +354,66 @@ async function dropBrowser(why) {
   if (!handle) return;
   logLine('closing browser:', why);
   const h = handle; handle = null; handleBuild = null; handleW = handleH = 0;
+  loadedState = null; loadedSeed = null; worldDirty = false;   // a new browser is a new world
   try { await h.close(); } catch { /* */ }
 }
 
 // ---- the capture itself -------------------------------------------------------------------------
 let loadedState = null;
 let loadedSeed = null;
+/**
+ * Set whenever a job leaves the world in a state its spec does not fully describe — a spawned
+ * entity, an opened menu, an arbitrary `ops` call. The next job then reloads before it starts.
+ *
+ * This is a CACHE-SOUNDNESS requirement, not tidiness. The cache promises that a key determines a
+ * picture; if a capture's result depended on which job ran before it, two agents asking the same
+ * question on the same build would get different pictures and one of them would be cached as the
+ * answer. So: a capture that does not itself say where the player is (no `place`) reloads, and a
+ * capture that follows a world-mutating one reloads. A `place` capture after a clean `place`
+ * capture does not — which is the whole of the region pack, and its fast path is preserved.
+ */
+let worldDirty = false;
 
 async function performCapture(spec, raw, outPng) {
+  const T = {};
+  const tick = (k, t) => { T[k] = (T[k] || 0) + (Date.now() - t); };
   const h = await ensureBrowser(spec.width, spec.height);
+  if (h !== handle) worldDirty = true;   // a fresh browser is a fresh world; belt and braces
 
+  let t = Date.now();
   if (loadedSeed !== spec.seed) { await hx(h, 'setSeed', spec.seed); loadedSeed = spec.seed; }
-  if (loadedState !== spec.state) { await hx(h, 'loadState', spec.state); loadedState = spec.state; }
+  const mustReload = loadedState !== spec.state || worldDirty || !spec.place;
+  if (mustReload) {
+    await hx(h, 'loadState', spec.state);
+    loadedState = spec.state; worldDirty = false;
+  }
   await hxOpt(h, 'setUIVisible', !!spec.ui);
+  tick('setup_ms', t);
 
   // ---- placement. Everything this daemon does is PLACED (S34); there is no walking mode. ----
+  t = Date.now();
   let camX = null, camZ = null;
   if (spec.place) {
+    // `teleport()` streams and drains around the BODY (engine.js), which is where most of the
+    // cost of a fresh location lives: 25 province tiles built from nothing.
     await hx(h, 'teleport', spec.place.x, spec.place.z, spec.place.y === null ? {} : { y: spec.place.y });
     camX = spec.place.x; camZ = spec.place.z;
   }
   if (spec.time !== null) await hxOpt(h, 'setTimeOfDay', spec.time);
   if (spec.weather !== null) await hxOpt(h, 'setWeather', spec.weather);
   if (spec.tide !== null) await hxOpt(h, 'setTide', spec.tide);
+  if (spec.ops.length || spec.menu) worldDirty = true;
   for (const op of spec.ops) await hx(h, op[0], ...op.slice(1));
   if (spec.menu) await hxOpt(h, 'openMenu', spec.menu.name, spec.menu.opts || {});
+  tick('place_ms', t);
 
+  t = Date.now();
   if (spec.pose) {
     // Ground-relative: resolve the eye height against the terrain the body is standing on, then
     // build the same pose shoot.mjs and province-shots.mjs build by hand.
     const at = spec.place ? spec.place : null;
     let gy = 0;
-    if (at) { const t = await hx(h, 'getTerrainAt', at.x, at.z); gy = t && t.y !== undefined ? t.y : 0; }
+    if (at) { const tt = await hx(h, 'getTerrainAt', at.x, at.z); gy = tt && tt.y !== undefined ? tt.y : 0; }
     const yaw = spec.pose.yaw_deg * Math.PI / 180, pitch = spec.pose.pitch_deg * Math.PI / 180;
     const R = 40, ex = at ? at.x : 0, ez = at ? at.z : 0, ey = gy + spec.pose.eye_m;
     await hx(h, 'camera', {
@@ -339,50 +428,93 @@ async function performCapture(spec, raw, outPng) {
   }
   if (camX === null) {
     const p = await h.page.evaluate(() => {
-      const s = window.__HARNESS.snapshot ? window.__HARNESS.snapshot({ minimal: true }) : null;
-      const q = s && s.player && s.player.pos;
+      const st = window.__HARNESS.snapshot ? window.__HARNESS.snapshot({ minimal: true }) : null;
+      const q = st && st.player && st.player.pos;
       return q ? [q[0], q[1], q[2]] : null;
     });
     if (p) { camX = p[0]; camZ = p[2]; }
   }
+  tick('pose_ms', t);
 
   // Stream around the CAMERA, not around the player. A pose is allowed to sit a long way from the
   // body, and `teleport()` only streams around the body — which is exactly how a capture ends up
   // being a photograph of nothing. This is the remedy; G1 below is the check that it worked.
-  // `__no_camera_stream` is a FALSIFICATION HOOK, and it is here on purpose. It removes the
-  // remedy above — nothing else. It does not touch G1/G2/G3, so a request that sets it must be
-  // REFUSED by the settle gate; that is how an independent critic confirms the gate is real
-  // rather than decorative. See tools/capture/falsify.mjs. TOOL-LOOP rule 3.2: a probe that
-  // cannot fail is worse than no probe.
+  //
+  // `__no_camera_stream` is a FALSIFICATION HOOK, and it is here on purpose. It removes this
+  // remedy — nothing else. It does not touch G1/G2/G3, so a request that sets it must be REFUSED
+  // by the settle gate; that is how an independent critic confirms the gate is real rather than
+  // decorative. See tools/capture/falsify.mjs. TOOL-LOOP rule 3.2: a probe that cannot fail is
+  // worse than no probe.
+  t = Date.now();
   const inProvince = camX !== null && !raw.__no_camera_stream;
   if (inProvince) { try { await hx(h, 'streamAround', camX, camZ); } catch { /* not in the province */ } }
-
-  if (spec.settle_frames > 0) await hx(h, 'stepFrames', spec.settle_frames);
-  await hx(h, 'renderFrame');
+  tick('stream_ms', t);
 
   // ---- the settle proof: A(t), B(t+gap), C(t+2gap) ----
+  //
+  // RETRY, AND WHY IT IS NOT A WEAKENING OF THE GATE.
+  // G3 compares the first interval's change against the second, and the second is a ONE-SAMPLE
+  // estimate of a noisy quantity. On a coast under weather that estimate is occasionally low
+  // enough to make a perfectly settled frame look unsettled: measured once in ~40 frames of the
+  // region pack (d1=0.0293, ambient floor d2=0.0174, excess=0.0120 against a 0.005 threshold).
+  // The correct response to "something may still have been arriving" is to WAIT LONGER AND
+  // RE-PROVE — that is what a settle test is for — not to raise the threshold until nothing
+  // fires. So: up to SETTLE_ATTEMPTS attempts, each stepping four more gaps of settle frames than
+  // the last, and the frame is delivered only if an attempt PASSES all three gates. The number of
+  // attempts and the frames actually spent are recorded in the proof, so a reader can see a frame
+  // that needed persuading. A capture that never passes is still an error, never a quiet pass.
+  const SETTLE_ATTEMPTS = 3;
   const gap = spec.settle_gap;
-  await snap(h.page, 'A');
-  let resid = { queued: 0, built: 0, tiles_queued: 0, tiles_resident: null, not_in_province: true };
-  if (camX !== null) {
-    try { resid = await residency({ h: (m, ...a) => hx(h, m, ...a), hOpt: (m, ...a) => hxOpt(h, m, ...a) }, camX, camZ); }
-    catch (e) { resid = { queued: 0, built: 0, tiles_queued: 0, tiles_resident: null, not_in_province: true, note: String(e.message) }; }
+  let proof = null, resid = null, lastErr = null, attempts = 0, framesSpent = 0;
+  for (let a = 0; a < SETTLE_ATTEMPTS; a++) {
+    attempts++;
+    const extra = a === 0 ? spec.settle_frames : gap * 4;
+    framesSpent += extra;
+    t = Date.now();
+    if (extra > 0) await hx(h, 'stepFrames', extra);
+    await hx(h, 'renderFrame');
+    await snap(h.page, 'A');
+    resid = { queued: 0, built: 0, tiles_queued: 0, tiles_resident: null, not_in_province: true };
+    if (camX !== null) {
+      try { resid = await residency({ h: (m, ...ar) => hx(h, m, ...ar), hOpt: (m, ...ar) => hxOpt(h, m, ...ar) }, camX, camZ); }
+      catch (e) { resid = { queued: 0, built: 0, tiles_queued: 0, tiles_resident: null, not_in_province: true, note: String(e.message) }; }
+    }
+    await hx(h, 'stepFrames', gap);
+    await hx(h, 'renderFrame');
+    await snap(h.page, 'B');
+    framesSpent += gap;
+    // B is the DELIVERED frame, and it is written to disk before C is taken. What the settle proof
+    // judges is therefore the picture that ships, not a neighbour of it.
+    const ts = Date.now();
+    await h.page.screenshot({ path: outPng, type: 'png', animations: 'disabled', caret: 'hide', timeout: JOB_TIMEOUT_MS });
+    tick('screenshot_ms', ts);
+    await hx(h, 'stepFrames', gap);
+    await hx(h, 'renderFrame');
+    await snap(h.page, 'C');
+    framesSpent += gap;
+    const d1 = await diffSlots(h.page, 'A', 'B');
+    const d2 = await diffSlots(h.page, 'B', 'C');
+    tick('settle_ms', t);
+    try {
+      proof = judge({ resid, d1, d2, threshold: spec.settle_threshold, gap, frames: spec.settle_frames });
+      break;
+    } catch (e) {
+      if (!(e instanceof UnsettledError)) throw e;
+      lastErr = e;
+      // A residency failure is NOT a "wait longer" problem — the world is absent, not late — so
+      // do not burn two more attempts pretending it might settle.
+      if (!e.proof.gates.G1_residency.pass || !e.proof.gates.G2_quiescence.pass) break;
+    }
   }
-  await hx(h, 'stepFrames', gap);
-  await hx(h, 'renderFrame');
-  await snap(h.page, 'B');
-  // B is the DELIVERED frame, and it is written to disk before C is taken. What the settle proof
-  // judges is therefore the picture that ships, not a neighbour of it.
-  await h.page.screenshot({ path: outPng, type: 'png', animations: 'disabled', caret: 'hide', timeout: JOB_TIMEOUT_MS });
-  await hx(h, 'stepFrames', gap);
-  await hx(h, 'renderFrame');
-  await snap(h.page, 'C');
+  if (!proof) {
+    lastErr.proof.settle_attempts = attempts;
+    lastErr.proof.settle_frames_spent = framesSpent;
+    throw lastErr;
+  }
+  proof.settle_attempts = attempts;
+  proof.settle_frames_spent = framesSpent;
 
-  const d1 = await diffSlots(h.page, 'A', 'B');
-  const d2 = await diffSlots(h.page, 'B', 'C');
-  const proof = judge({ resid, d1, d2, threshold: spec.settle_threshold, gap, frames: spec.settle_frames });
-
-  return { proof, resid, camera_at: camX === null ? null : [camX, camZ], page_errors: handle.errors.length };
+  return { proof, resid, camera_at: camX === null ? null : [camX, camZ], page_errors: h.errors.length, phases: T };
 }
 
 /**
@@ -416,9 +548,14 @@ async function runQuery(job) {
         'Put a mutating call in a capture spec\'s `ops`, where it is part of the cache key.' };
   }
   if (refreshBuild()) await dropBrowser('build changed');
-  const h = await ensureBrowser(job.raw.width || 1280, job.raw.height || 720);
+  let h;
+  try { h = await ensureBrowser(job.raw.width || 1280, job.raw.height || 720); }
+  catch (e) { return { ok: false, code: e.gameBroken ? 'GAME_BROKEN' : 'QUERY_ERROR', error: String(e && e.message || e) }; }
   if (loadedSeed !== (job.raw.seed ?? 1337)) { await hx(h, 'setSeed', job.raw.seed ?? 1337); loadedSeed = job.raw.seed ?? 1337; }
-  if (loadedState !== (job.raw.state ?? 'default')) { await hx(h, 'loadState', job.raw.state ?? 'default'); loadedState = job.raw.state ?? 'default'; }
+  if (loadedState !== (job.raw.state ?? 'default') || worldDirty) {
+    await hx(h, 'loadState', job.raw.state ?? 'default');
+    loadedState = job.raw.state ?? 'default'; worldDirty = false;
+  }
   const out = await h.page.evaluate((cs) => cs.map((c) => {
     try { return { ok: true, value: window.__HARNESS[c[0]](...c.slice(1)) }; }
     catch (e) { return { ok: false, error: String(e && e.message || e) }; }
@@ -469,6 +606,10 @@ async function runJob(job) {
       // NOT a picture. S34: "an unsettled frame is an error, never a quiet pass."
       return { ok: false, code: 'UNSETTLED', error: e.message, detail: { settle: e.proof, spec: canon, ruling: 'ARBITRATION.md S34 anti-loophole' } };
     }
+    if (e.gameBroken) {
+      stats.errors++;
+      return { ok: false, code: 'GAME_BROKEN', error: String(e && e.message || e), detail: { build_key: BUILD.build_key, log: LOG_PATH } };
+    }
     stats.errors++;
     await dropBrowser('capture threw: ' + e.message);   // never let one bad job wedge the queue
     return { ok: false, code: 'CAPTURE_ERROR', error: String(e && e.message || e), detail: { spec: canon } };
@@ -495,6 +636,8 @@ async function runJob(job) {
       git_dirty: BUILD.git_dirty,
       game_content_sha256: BUILD.game_content_sha256,
       served_from_cache: false,
+      build_pinned: PIN_BUILD,
+      tree_has_since_moved_to: DRIFTED_TO,
       ruling: 'ARBITRATION.md S34(a) — admissible as evidence of APPEARANCE only. A verdict citing ' +
         'this capture for an ARRIVAL claim (reachability, traversal, the crossing, RI-JRN*, or ' +
         'anything timing something) is VOID.',
@@ -502,6 +645,7 @@ async function runJob(job) {
     },
     build: BUILD,
     settle: out.proof,
+    phase_ms: out.phases,
     page_errors: out.page_errors,
     render_ms: Date.now() - t0,
   };
@@ -607,7 +751,7 @@ function handleMessage(connId, c, msg) {
       return safeWrite(c.sock, {
         id: msg.id, ok: true, running: true, protocol: PROTOCOL, pid: process.pid,
         uptime_s: Math.round((Date.now() - started) / 1000),
-        build: { build_key: BUILD.build_key, git_sha: BUILD.git_sha, git_dirty: BUILD.git_dirty },
+        build: { build_key: BUILD.build_key, git_sha: BUILD.git_sha, git_dirty: BUILD.git_dirty, pinned: PIN_BUILD, drifted_to: DRIFTED_TO },
         browser: handle ? { up: true, viewport: [handleW, handleH], build: handleBuild } : { up: false },
         clients: conns.size, queue_depth: queueDepth(), inflight,
         cache_dir: CACHE_DIR, cache_enabled: USE_CACHE,
@@ -669,5 +813,6 @@ process.on('unhandledRejection', (e) => { logLine('UNHANDLED', e && e.stack || e
 server.listen(SOCK_PATH, () => {
   fs.chmodSync(SOCK_PATH, 0o600);
   logLine('listening on', SOCK_PATH, '| idle', IDLE_MS / 1000 + 's', '| browser-idle', BROWSER_IDLE_MS / 1000 + 's');
-  logLine('settle threshold', THRESHOLD, 'gap', GAP, '| cache', USE_CACHE ? CACHE_DIR : 'DISABLED');
+  logLine('settle threshold', THRESHOLD, 'gap', GAP, '| cache', USE_CACHE ? CACHE_DIR : 'DISABLED',
+    PIN_BUILD ? '| BUILD PINNED' : '');
 });

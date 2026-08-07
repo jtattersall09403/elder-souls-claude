@@ -71,6 +71,12 @@ export class QuestEngine {
     this.events = [];
     this.glyphUntilFrame = -1;
 
+    // W1-07 round 4. The register (`sim.quest.dispositions`) is what the WORLD has written
+    // down about you — the giver's authored base plus every delta a quest or a Charm has
+    // added. It is not what the person in front of you feels, because it contains no term for
+    // who you are. `Engine` installs that term here; see `_dispositionToward`.
+    this.dispositionModel = null;
+
     this.flagHooks = new Map();     // world flag -> hook[]
     this.entryTopics = new Map();   // "questId#index" -> topic ids (RI-DLG05 §A.3 AddTopic edge)
     this.deadlines = [];
@@ -130,13 +136,30 @@ export class QuestEngine {
       reputation[f] = q.factions[f].reputation || 0;
       ranks[f] = q.factions[f].rank || 0;
     }
+    const attributes = this.sim.progression.attributes;
+    const skills = Object.fromEntries(Object.entries(this.sim.progression.skills || {}).map(([k, v]) => [k, v && v.value != null ? v.value : v]));
+    const worldFlags = new Set(Object.keys(q.flags).filter((k) => q.flags[k]));
+    // RI-QST03 §B: a rank is *"a four-part statement — reputation, attribute, two distinct
+    // favoured skills, world state"*, which is to say a rank is EARNED and therefore DERIVED.
+    // `q.factions[f].rank` is written by nothing in the build (`_applyConsequences` writes
+    // reputation and never rank), so every `rank_gate` read 0 and `FactionGates
+    // .highestQualifying()` — which exists precisely to answer this — was dead code. The
+    // stored rank still wins where something ever sets it; the ladder fills the gap.
+    if (this.gates) {
+      const lite = { reputation, attributes, skills, worldFlags };
+      for (const f of this.gates.ids()) {
+        const earned = this.gates.highestQualifying(f, lite);
+        if (earned > (ranks[f] || 0)) ranks[f] = earned;
+      }
+    }
     return {
-      reputation, ranks,
-      attributes: this.sim.progression.attributes,
-      skills: Object.fromEntries(Object.entries(this.sim.progression.skills || {}).map(([k, v]) => [k, v && v.value != null ? v.value : v])),
-      worldFlags: new Set(Object.keys(q.flags).filter((k) => q.flags[k])),
+      reputation, ranks, attributes, skills, worldFlags,
       topicsKnown: new Set(q.topicsKnown),
-      dispositions: q.dispositions,
+      // NOT the raw register. `_dispositionToward` is the whole of what this person feels
+      // about this character, and the offer gate reads the same number the resolution gate
+      // does. Before W1-07 round 4 this line was `q.dispositions`, so no race term, no
+      // upbringing term and no faction term ever reached `canOffer`.
+      dispositions: this.dispositionView(),
       completed: new Set(q.completed),
       locked: new Set(Object.keys(q.flags).filter((k) => k.startsWith('locked:') && q.flags[k]).map((k) => k.slice(7))),
       knowledge: know,
@@ -175,6 +198,17 @@ export class QuestEngine {
    */
   _dispositionToward(npcId) {
     let d = (this.sim.quest.dispositions || {})[npcId] || 0;
+    // W1-07 round 4 — THE fix. `derivedDisposition()` never touched this path: the register
+    // went to `canOffer` raw, so six character signatures produced byte-identical disposition
+    // clauses and race was invisible to every quest in the build. The model is installed by
+    // `Engine` (`_questDispositionModel`) because the arithmetic belongs to
+    // `character/reaction.js` (RI-CHR02 §3, the 12x10 matrix) and `sim/dialogue/disposition.js`
+    // (RI-DLG04 §B, the movable terms) and the quest machine owns neither.
+    const model = this.dispositionModel;
+    if (model) {
+      const r = model(npcId, d);
+      if (r && Number.isFinite(r.value)) d = r.value;
+    }
     const t = this.sim.progression && this.sim.progression.sapTaint;
     if (t && t.band) d += SAP_TAINT_DISPOSITION[t.band] || 0;
     // Morrowind's own `fDispDiseaseMod`: a visibly sick stranger is a worse guest. This is the
@@ -184,6 +218,39 @@ export class QuestEngine {
     const sick = (this.sim.quest.afflictions || []).filter((a) => a.kind === 'disease').length;
     if (sick) d += DISEASE_DISPOSITION_PER * sick;
     return Math.max(0, Math.min(100, d));
+  }
+
+  /**
+   * The disposition table as the gates read it: every person the register knows about, plus
+   * every quest giver in the book, each run through `_dispositionToward`.
+   *
+   * The givers are included even when the register is silent about them, because
+   * `num(undefined) === 0` in `gate.js` and a giver with no entry is a hard, race-invariant,
+   * unpassable gate that reports itself as a disposition shortfall. Better to name them: a
+   * giver with no NPC record now shows a `0/N` clause whose reason `Engine` asserts against at
+   * boot, rather than one that looks like an ordinary standing problem.
+   */
+  dispositionView() {
+    const out = {};
+    for (const id of Object.keys(this.sim.quest.dispositions || {})) out[id] = this._dispositionToward(id);
+    for (const def of this.book.all()) {
+      const g = def.giver && def.giver.npc_id;
+      if (g && out[g] === undefined) out[g] = this._dispositionToward(g);
+    }
+    return out;
+  }
+
+  /** The same number with its terms shown, for the harness and for a critic. */
+  explainDisposition(npcId) {
+    const base = (this.sim.quest.dispositions || {})[npcId];
+    const r = this.dispositionModel ? this.dispositionModel(npcId, base || 0) : null;
+    return {
+      npc: npcId,
+      register: base === undefined ? null : base,
+      value: this._dispositionToward(npcId),
+      modelled: !!r,
+      ...(r || {}),
+    };
   }
 
   /** The resolutions reachable right now, with the shortfall spelled out for each that is not. */

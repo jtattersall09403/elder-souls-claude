@@ -56,7 +56,17 @@ const exit = await reportAbsence({
   system: 'audio',
   owner: 'RI-AUD01..03 / wave-1 piece W1-25',
   measures: 'the fraction of a session with music playing, by state, from music-log.json sampled off musicState() - RI-AUD04 wants silence to be the default and music to be an event',
-  needs: ["musicState", "getMusicLog"],
+  needs: ['getWorldStats'],
+  // The live signal, read from the running build rather than asserted: the engine reports
+  // audioMB: 0 and getCapabilityReport() declares "audio" not_implemented (owner W1-25). The
+  // day either changes, this reporter stops saying ABSENT.
+  probe: async ({ handle }) => {
+    const ws = await handle.hOpt('getWorldStats');
+    const markers = [];
+    if (ws && Number(ws.audioMB) === 0) markers.push('getWorldStats().audioMB === 0');
+    if (ws && ws._declared_incomplete) markers.push('getWorldStats()._declared_incomplete');
+    return { audioMB: ws ? ws.audioMB : null, _unmeasurable_markers: markers };
+  },
 }, args);
 
 process.exit(exit);

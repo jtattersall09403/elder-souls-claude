@@ -149,7 +149,18 @@ in wave 1 and a hard error from wave 2.
 2. **A probe that cannot fail is worse than no probe.** Several wave-1 probes passed against
    disconnected models, empty result lists and vacuous controls. Before trusting your own
    instrument, break the thing it measures on purpose and confirm the instrument goes red.
-3. **A still target hides every steering defect.** A spell's tracking cutoff was applied to the
+3. **A round trip that re-serialises cannot see a field nobody reads back.** The save repair
+   reported 76 of 76 trials clean across every shipped state and two seeds. A critic pointed out
+   that the headline check is a *fixed-point test on the serialiser*: a field that is written and
+   never read back into the live world still re-serialises to exactly what was saved, so it passes
+   forever. It then audited the **live world** after a load instead of the blob, and found the
+   spendable purse is destroyed on a plain round trip while every existing check reports clean.
+   **Audit the running world after the load, not the bytes.**
+   The same critic's other half is worth as much: widening the seed sweep from 2 to 10 changed
+   **nothing**, and widening the *moment* the save is taken changed everything — the builder's
+   single pre-roll never died, never fell and never held money, and both failing scenarios were
+   moments rather than seeds. **Vary when you save, not just what.**
+4. **A still target hides every steering defect.** A spell's tracking cutoff was applied to the
    flight a bolt *would* have had if it hit nothing, rather than the flight it actually had — so it
    was still steering well past its fence. Against a stationary target the arc closes in about 15
    frames and the defect is invisible, which is exactly how wave 1 recorded it as "0.000 °/s" and

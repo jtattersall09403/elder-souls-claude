@@ -47,6 +47,7 @@ export async function ensureServer(opts = {}) {
   if (opts.idle) argv.push('--idle', String(opts.idle));
   if (opts.browserIdle) argv.push('--browser-idle', String(opts.browserIdle));
   if (opts.noCache) argv.push('--no-cache');
+  if (opts.pinBuild) argv.push('--pin-build');
   const child = spawn(process.execPath, argv, { detached: true, stdio: ['ignore', fd, fd], cwd: REPO_ROOT });
   child.unref();
   const deadline = Date.now() + (opts.startTimeoutMs || 30000);

@@ -56,7 +56,17 @@ const exit = await reportAbsence({
   system: 'audio',
   owner: 'RI-AUD01..03 / wave-1 piece W1-25',
   measures: 'the offset between each hit frame and its impact sample onset, per weapon class and material, against RI-AUD01\'s tolerance',
-  needs: ["getAudioLog", "getAudioStats", "audioState"],
+  needs: ['getWorldStats', 'getCombatState'],
+  // The live signal, read from the running build rather than asserted: the engine reports
+  // audioMB: 0 and getCapabilityReport() declares "audio" not_implemented (owner W1-25). The
+  // day either changes, this reporter stops saying ABSENT.
+  probe: async ({ handle }) => {
+    const ws = await handle.hOpt('getWorldStats');
+    const markers = [];
+    if (ws && Number(ws.audioMB) === 0) markers.push('getWorldStats().audioMB === 0');
+    if (ws && ws._declared_incomplete) markers.push('getWorldStats()._declared_incomplete');
+    return { audioMB: ws ? ws.audioMB : null, _unmeasurable_markers: markers };
+  },
 }, args);
 
 process.exit(exit);

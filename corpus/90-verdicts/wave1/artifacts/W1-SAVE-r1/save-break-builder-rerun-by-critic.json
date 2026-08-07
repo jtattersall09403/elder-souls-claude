@@ -1,0 +1,317 @@
+{
+  "schema": "elder-souls/save-break@1",
+  "item": "RI-JRN05 — falsification of the wave-1 save/load repair",
+  "method": "monkey-patch the running build to delete one repair, re-run the round trip, and require the named failure to return. No file is edited.",
+  "state": "arena_flat",
+  "seeds": [
+    4711
+  ],
+  "frames": 240,
+  "breaks": [
+    {
+      "id": "camera-settle-order",
+      "break_applied": true,
+      "threw": null,
+      "failure_returned_on_seeds": [
+        4711
+      ],
+      "failure_returned": true,
+      "repair_restored_after_undo": true,
+      "observer_used": false,
+      "observed_with_the_repair_deleted": null,
+      "observed_with_the_repair_present": null,
+      "evidence": [
+        {
+          "seed": 4711,
+          "m1": false,
+          "m2_diff": [
+            "pose.camera_dist_m",
+            "pose.camera_pos",
+            "pose.camera_pivot_snap",
+            "pose.camera_arm_len_m",
+            "pose.camera_arm_desired_m",
+            "pose.camera_arm_eased_m",
+            "pose.camera_arm_cast_m",
+            "pose.camera_clear_frames",
+            "pose.camera_dist_target_m",
+            "pose.camera_contain_arm_m",
+            "pose.camera_contain_pitch_deg"
+          ],
+          "m4_extra": [],
+          "m4_missing": [],
+          "m5_identical": false,
+          "mirrored_absent": 0,
+          "census_unaccounted": [
+            "camera.pos[]",
+            "camera.pos[]",
+            "camera.pos[]",
+            "camera.dist",
+            "camera.distTarget",
+            "camera.armLen",
+            "camera.armDesired",
+            "camera.armEased"
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "camera-rig-writer",
+      "break_applied": true,
+      "threw": null,
+      "failure_returned_on_seeds": [
+        4711
+      ],
+      "failure_returned": true,
+      "repair_restored_after_undo": true,
+      "observer_used": false,
+      "observed_with_the_repair_deleted": null,
+      "observed_with_the_repair_present": null,
+      "evidence": [
+        {
+          "seed": 4711,
+          "m1": true,
+          "m2_diff": [],
+          "m4_extra": [],
+          "m4_missing": [],
+          "m5_identical": false,
+          "mirrored_absent": 0,
+          "census_unaccounted": [
+            "camera.pivot[]",
+            "camera.pivot[]",
+            "camera.pos[]",
+            "camera.pos[]",
+            "camera.pos[]",
+            "camera.distTarget",
+            "camera.armLen",
+            "camera.armDesired"
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "no-remirror",
+      "break_applied": true,
+      "threw": null,
+      "failure_returned_on_seeds": [
+        4711
+      ],
+      "failure_returned": true,
+      "repair_restored_after_undo": true,
+      "observer_used": false,
+      "observed_with_the_repair_deleted": null,
+      "observed_with_the_repair_present": null,
+      "evidence": [
+        {
+          "seed": 4711,
+          "m1": false,
+          "m2_diff": [
+            "fight.player.actionableAt",
+            "fight.player.moveStartFrame",
+            "fight.player.regenBlockUntil",
+            "fight.player_ctl.chainUntil",
+            "fight.player_ctl.lastLightPress"
+          ],
+          "m4_extra": [],
+          "m4_missing": [],
+          "m5_identical": false,
+          "mirrored_absent": 18,
+          "census_unaccounted": [
+            "player.focus",
+            "player.focusMax",
+            "player.attuned",
+            "player.animSlot",
+            "player.weaponId",
+            "player.weaponClass",
+            "player.stance",
+            "player.offhandKind"
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "creation-terms",
+      "break_applied": true,
+      "threw": null,
+      "failure_returned_on_seeds": [
+        4711
+      ],
+      "failure_returned": true,
+      "repair_restored_after_undo": true,
+      "observer_used": true,
+      "observed_with_the_repair_deleted": {
+        "drawbacks_after_load": 0,
+        "dry_well_drawback_alive": false,
+        "focus_max_after_load": 30
+      },
+      "observed_with_the_repair_present": {
+        "drawbacks_after_load": 1,
+        "dry_well_drawback_alive": true,
+        "focus_max_after_load": 48
+      },
+      "evidence": [
+        {
+          "seed": 4711,
+          "m1": true,
+          "m2_diff": [],
+          "m4_extra": [],
+          "m4_missing": [],
+          "m5_identical": true,
+          "mirrored_absent": 0,
+          "census_unaccounted": []
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "manifest-ledger",
+      "break_applied": true,
+      "threw": null,
+      "failure_returned_on_seeds": [
+        4711
+      ],
+      "failure_returned": true,
+      "repair_restored_after_undo": true,
+      "observer_used": false,
+      "observed_with_the_repair_deleted": null,
+      "observed_with_the_repair_present": null,
+      "evidence": [
+        {
+          "seed": 4711,
+          "m1": true,
+          "m2_diff": [],
+          "m4_extra": [
+            "crime.ledger.bounty.imperial",
+            "crime.ledger.bounty.interior",
+            "crime.ledger.crimes",
+            "crime.ledger.deaths",
+            "crime.ledger.favours_owed",
+            "crime.ledger.hunters"
+          ],
+          "m4_missing": [
+            "crime.ledger"
+          ],
+          "m5_identical": true,
+          "mirrored_absent": 0,
+          "census_unaccounted": []
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "no-body-grid",
+      "break_applied": true,
+      "threw": null,
+      "failure_returned_on_seeds": [
+        4711
+      ],
+      "failure_returned": true,
+      "repair_restored_after_undo": true,
+      "observer_used": false,
+      "observed_with_the_repair_deleted": null,
+      "observed_with_the_repair_present": null,
+      "evidence": [
+        {
+          "seed": 4711,
+          "m1": true,
+          "m2_diff": [],
+          "m4_extra": [],
+          "m4_missing": [],
+          "m5_identical": false,
+          "mirrored_absent": 0,
+          "census_unaccounted": []
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "no-rig-state",
+      "break_applied": true,
+      "threw": null,
+      "failure_returned_on_seeds": [
+        4711
+      ],
+      "failure_returned": true,
+      "repair_restored_after_undo": true,
+      "observer_used": false,
+      "observed_with_the_repair_deleted": null,
+      "observed_with_the_repair_present": null,
+      "evidence": [
+        {
+          "seed": 4711,
+          "m1": true,
+          "m2_diff": [],
+          "m4_extra": [],
+          "m4_missing": [],
+          "m5_identical": false,
+          "mirrored_absent": 0,
+          "census_unaccounted": [
+            "fight.player.rig.has_last_pose",
+            "fight.enemies.bkA.rig.has_last_pose",
+            "fight.enemies.bkB.rig.has_last_pose"
+          ]
+        }
+      ],
+      "pass": true
+    },
+    {
+      "id": "no-stamp-rebase",
+      "break_applied": true,
+      "threw": null,
+      "failure_returned_on_seeds": [
+        4711
+      ],
+      "failure_returned": true,
+      "repair_restored_after_undo": true,
+      "observer_used": false,
+      "observed_with_the_repair_deleted": null,
+      "observed_with_the_repair_present": null,
+      "evidence": [
+        {
+          "seed": 4711,
+          "m1": false,
+          "m2_diff": [
+            "pose.regen_block_in_frames",
+            "pose.actionable_in_frames",
+            "fight.player.actionableAt",
+            "fight.player.poiseRegenBlockUntil",
+            "fight.player.regenBlockUntil",
+            "fight.enemies"
+          ],
+          "m4_extra": [],
+          "m4_missing": [],
+          "m5_identical": false,
+          "mirrored_absent": 0,
+          "census_unaccounted": [
+            "player.regenBlockUntil",
+            "player.actionableAt",
+            "fight.player.actionableAt",
+            "fight.player.poiseRegenBlockUntil",
+            "fight.player.regenBlockUntil",
+            "fight.enemies.bkA.actionableAt",
+            "fight.enemies.bkA.poiseRegenBlockUntil",
+            "fight.enemies.bkA.regenBlockUntil"
+          ]
+        }
+      ],
+      "pass": true
+    }
+  ],
+  "baseline": {
+    "4711": {
+      "m1": true,
+      "m2_diff": [],
+      "m4_extra": [],
+      "m4_missing": [],
+      "m5_identical": true,
+      "mirrored_fields_absent_after_load": [],
+      "census_ok": true,
+      "census_unaccounted": []
+    }
+  },
+  "baseline_clean": true,
+  "page_errors": [],
+  "pass": true
+}

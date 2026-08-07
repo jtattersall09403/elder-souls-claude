@@ -91,8 +91,15 @@ if (args.viewpoint) {
   const vpFile = args.viewpoints ? path.resolve(String(args.viewpoints)) : path.join(TOOLS_DIR, 'harness', 'viewpoints.json');
   if (!fs.existsSync(vpFile)) die(EXIT.INTERNAL, `viewpoints file missing: ${vpFile}`);
   const doc = readJson(vpFile);
-  const v = (doc.viewpoints || []).find((x) => x.id === String(args.viewpoint));
-  if (!v) die(EXIT.USAGE, `no viewpoint ${JSON.stringify(String(args.viewpoint))} in ${vpFile}`);
+  // Prefix match, exactly as shoot.mjs --only does: the ids are `VP01-vista-wide`, and asking for
+  // `VP01` must work or the "one command, no ceremony" promise is a lie.
+  const want = String(args.viewpoint);
+  const cands = (doc.viewpoints || []).filter((x) => x.id === want || x.id.startsWith(want));
+  if (!cands.length) die(EXIT.USAGE, `no viewpoint ${JSON.stringify(want)} in ${vpFile} (try --list on shoot.mjs)`);
+  if (cands.length > 1 && !cands.some((x) => x.id === want)) {
+    die(EXIT.USAGE, `--viewpoint ${JSON.stringify(want)} is ambiguous: ${cands.map((x) => x.id).join(', ')}`);
+  }
+  const v = cands.find((x) => x.id === want) || cands[0];
   const cap = Object.assign({ width: 1920, height: 1080, settleFrames: 24 }, doc.capture || {});
   spec.viewpoint = v.id;
   spec.viewpoints_file = path.relative(path.dirname(TOOLS_DIR), vpFile);

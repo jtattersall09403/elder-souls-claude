@@ -2,7 +2,7 @@
   "task_id": "W1-TOOLS-r3",
   "brief": "inline (round 3 tool builder; rebuild the 8 tools TOOL-COVERAGE-R2 rejected)",
   "started": "wave-1 round 3",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "tools/analysis/build-viability.mjs (raw seeded disposition; record-less givers = FAIL)",
     "tools/lib/absence.mjs (validate needs against live surface; parse not_implemented as a list)",
@@ -13,8 +13,27 @@
     "tools/journey/gamepad-shim.mjs (entity-side check + null control)",
     "tools/experience/session-run.mjs (capability-derived refusal set, fail-closed)"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "boot-check baseline, then tool 1 (build-viability)",
+  "outputs_written": [
+    "tools/analysis/build-viability.mjs",
+    "tools/lib/absence.mjs",
+    "tools/lib/browser.mjs (additive: handle.chromiumArgs)"
+  ],
+  "findings": [
+    "BASELINE r3: node tools/harness/boot-check.mjs PASS at start of pass. Load 1.19-5.6 on four cores.",
+    "TOOL 1 build-viability REBUILT. ctx.dispositions is now built the way Engine.seedDispositions() builds it (raw record disposition; unseeded id -> gate.js num(undefined)=0). The derived-ceiling walk is DEMOTED to record.counterfactual_race_gate, labelled COUNTERFACTUAL, and never produces a criterion verdict.",
+    "NEW MODEL: quest npc_disposition consequences (machine.js:424) are counted as a real in-play route, as a player-optimal UPPER BOUND (seed + every positive gift from every quest except the target and its mutual exclusives). A gate this bound cannot clear is a gate no play can clear.",
+    "RESULT on this tree: 0/540 viable, 540 NOT VIABLE (FAIL, not unmeasurable), exit 1. 9 quests carry a giver disposition bar no play can reach: Q-ARCH-01/dyer-sallis 0/30, Q-SOUL-02/undertaker-vaskh 0/40, Q-BLAK-01/prefect-hallow 0/20, Q-STRM-01/quartermaster-sedd 0/25, Q-LILM-01/harbourmistress-tesh 16/45, Q-SAP-01/cutter-neeth 0/40, Q-LEDG-01/factor-belliene 0/35, Q-DOCK-01/npc-porter-eeja 0/30, Q-DEEP-01/speaker-teel-ashaan 0/50. THE RECORD-LESS GIVERS ARE NOW A BUILD FAIL, not corpus debt.",
+    "WHY THE FAIL IS AIRTIGHT: for 8 of the 9 the ONLY positive npc_disposition consequence is authored on the quest the giver themself gates (circular). harbourmistress-tesh gets +8 from Q-MAG-01 and +8 from Q-MAG-20, total 16, against a required 45. And __HARNESS.npcDisposition() answers 'nobody by that name is in the world' for all nine in the RUNNING build, so Charm (sim/magic/apply.js:880) cannot reach them either.",
+    "RED, on the running engine (independent of the self-test): __HARNESS.questOffers() reports exactly nine `X disposition 0/N` clauses, one per record-less giver, matching the tool's list id for id.",
+    "GREEN, on the running engine: shadow tree (scratchpad/shadow/game) with the nine records minted at disposition 60 -> questOffers() reports ZERO disposition clauses; the tool at --data-root on the same tree reports 540/540 viable, 0 unpassable gates.",
+    "RED AGAIN on a working tree: shadow2 lowers speaker-teel-ashaan 60 -> 10. Engine: 'speaker-teel-ashaan disposition 10/50'. Tool: 1 unpassable gate, 0/540 viable. Tool and engine agree in all three states.",
+    "build-viability --self-test 18/18, including an explicit RED check, an explicit GREEN check (seed_disposition fixture), and an N-1-blocks/N-opens bar check so the FAIL is not a constant.",
+    "--signatures is now READ: 'all', a race id (walks 54 cells), or a count; an unrecognised value is a usage error. It was advertised and inert for two rounds.",
+    "TOOL 2 tools/lib/absence.mjs REBUILT. (a) needs is VALIDATED at load against the live surface AND the amendment register corpus/88-journeys/JOURNEY-CRITIC-FLEET.md, cross-checked against the running build's harness_amendments_absent; an unvalidated name refuses the run with EXIT 22 NEEDS_UNVALIDATED and NO absence verdict. (b) not_implemented[].what is PARSED AS A LIST (sentences, drop the sentences declaring something landed, split on the build's own separators, strip amendment parentheticals) - exported as parseDeclaredSystems() so a critic can run it on any string. (c) ARRIVED now requires a positive-evidence probe spec.arrived(); without one the best state available is UNCONFIRMED.",
+    "The invented needs names are gone. The register names __HARNESS.forceGC() on A-JRN9's row and getResourceRegistry() on A-JRN14's row; those are what heap-walk/leak-run/stream-audit/asset-budget now declare. The four audio reporters declare NO absent method (no amendment declares an audio surface) and rest on the live signal getWorldStats().audioMB === 0.",
+    "browser.mjs: additive handle.chromiumArgs \u2014 the exact Chromium flag list, Node-side, so the T1 gate can consult the launch flags the page cannot reach.",
+    "*** BLOCKER, NOT MINE, LANDED MID-PASS: game/src/engine.js (uncommitted, M) grew Engine._assertGiversAreVisibleToRace() at line 4686, which THROWS in _boot: '19 quest givers with no NPC record, 13 with a record and no reaction_group'. __HARNESS.ready() rejects, so EVERY browser-based tool in the tree exits 12 and boot-check FAILS. This is the same data defect build-viability measures; the assertion is correct and its owner is mid-write on the npc records. Retry boot-check."
+  ],
+  "next_step": "blocked on boot: retry boot-check; meanwhile write perf-run, decoupling, session-run, cadence, competence, gamepad-shim code",
   "notes_for_successor": "Work tool by tool. Each tool: rebuild, then falsify BOTH ways (break->red, fix->green) on the running engine. Shadow tree for data patches, never game/data."
 }

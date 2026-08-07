@@ -1,0 +1,1250 @@
+{
+  "schema": "elder-souls/save-break-critic@1",
+  "seed": 4711,
+  "written_by": "W1-SAVE round-1 critic (method_deviations)",
+  "baseline": {
+    "drowning": {
+      "m1_equal": true,
+      "m2_diff": [],
+      "m4_extra": [],
+      "m4_missing": [],
+      "census_ok": true,
+      "census_unaccounted": [],
+      "world_before": {
+        "band": "W5",
+        "breath_s": 60,
+        "submerged": false,
+        "mire": 0,
+        "denies": {
+          "sprint": true,
+          "roll": true,
+          "attack": true
+        },
+        "depth_m": 41.82,
+        "vertical_mps": 0
+      },
+      "world_after": {
+        "band": "W5",
+        "breath_s": 60,
+        "submerged": false,
+        "mire": 0,
+        "denies": {
+          "sprint": true,
+          "roll": true,
+          "attack": true
+        },
+        "depth_m": 41.82,
+        "vertical_mps": 0
+      },
+      "world_changed": false
+    },
+    "raid": {
+      "m1_equal": true,
+      "m2_diff": [],
+      "m4_extra": [],
+      "m4_missing": [],
+      "census_ok": true,
+      "census_unaccounted": [],
+      "world_before": [
+        {
+          "eid": "dres-raid-party-infantry-0",
+          "encounterId": "dres-raid-party",
+          "encounterRole": "infantry",
+          "encLeader": true,
+          "encAggroed": false,
+          "encHailed": false,
+          "lkp": null,
+          "lastSeenF": -1
+        },
+        {
+          "eid": "dres-raid-party-infantry-1",
+          "encounterId": "dres-raid-party",
+          "encounterRole": "infantry",
+          "encLeader": false,
+          "encAggroed": false,
+          "encHailed": false,
+          "lkp": null,
+          "lastSeenF": -1
+        },
+        {
+          "eid": "dres-raid-party-infantry-2",
+          "encounterId": "dres-raid-party",
+          "encounterRole": "infantry",
+          "encLeader": false,
+          "encAggroed": false,
+          "encHailed": false,
+          "lkp": null,
+          "lastSeenF": -1
+        },
+        {
+          "eid": "dres-raid-party-infantry-3",
+          "encounterId": "dres-raid-party",
+          "encounterRole": "infantry",
+          "encLeader": false,
+          "encAggroed": false,
+          "encHailed": false,
+          "lkp": null,
+          "lastSeenF": -1
+        },
+        {
+          "eid": "dres-raid-party-net-thrower-0",
+          "encounterId": "dres-raid-party",
+          "encounterRole": "net-thrower",
+          "encLeader": false,
+          "encAggroed": false,
+          "encHailed": false,
+          "lkp": null,
+          "lastSeenF": -1
+        },
+        {
+          "eid": "dres-raid-party-net-thrower-1",
+          "encounterId": "dres-raid-party",
+          "encounterRole": "net-thrower",
+          "encLeader": false,
+          "encAggroed": false,
+          "encHailed": false,
+          "lkp": null,
+          "lastSeenF": -1
+        }
+      ],
+      "world_after": [
+        {
+          "eid": "dres-raid-party-infantry-0",
+          "encounterId": "dres-raid-party",
+          "encounterRole": "infantry",
+          "encLeader": true,
+          "encAggroed": false,
+          "encHailed": false,
+          "lkp": null,
+          "lastSeenF": -91
+        },
+        {
+          "eid": "dres-raid-party-infantry-1",
+          "encounterId": "dres-raid-party",
+          "encounterRole": "infantry",
+          "encLeader": false,
+          "encAggroed": false,
+          "encHailed": false,
+          "lkp": null,
+          "lastSeenF": -91
+        },
+        {
+          "eid": "dres-raid-party-infantry-2",
+          "encounterId": "dres-raid-party",
+          "encounterRole": "infantry",
+          "encLeader": false,
+          "encAggroed": false,
+          "encHailed": false,
+          "lkp": null,
+          "lastSeenF": -91
+        },
+        {
+          "eid": "dres-raid-party-infantry-3",
+          "encounterId": "dres-raid-party",
+          "encounterRole": "infantry",
+          "encLeader": false,
+          "encAggroed": false,
+          "encHailed": false,
+          "lkp": null,
+          "lastSeenF": -91
+        },
+        {
+          "eid": "dres-raid-party-net-thrower-0",
+          "encounterId": "dres-raid-party",
+          "encounterRole": "net-thrower",
+          "encLeader": false,
+          "encAggroed": false,
+          "encHailed": false,
+          "lkp": null,
+          "lastSeenF": -91
+        },
+        {
+          "eid": "dres-raid-party-net-thrower-1",
+          "encounterId": "dres-raid-party",
+          "encounterRole": "net-thrower",
+          "encLeader": false,
+          "encAggroed": false,
+          "encHailed": false,
+          "lkp": null,
+          "lastSeenF": -91
+        }
+      ],
+      "world_changed": true
+    },
+    "purse": {
+      "m1_equal": true,
+      "m2_diff": [],
+      "m4_extra": [],
+      "m4_missing": [],
+      "census_ok": true,
+      "census_unaccounted": [],
+      "world_before": {
+        "gold_getGold": 0,
+        "gold_travel": 600,
+        "gold_world": 600
+      },
+      "world_after": {
+        "gold_getGold": 0,
+        "gold_travel": 0,
+        "gold_world": 0
+      },
+      "world_changed": true
+    }
+  },
+  "breaks": [
+    {
+      "id": "no-traversal-restore",
+      "point": "drowning",
+      "applied": true,
+      "err": null,
+      "baseline": {
+        "m1_equal": true,
+        "m2_diff": [],
+        "m4_extra": [],
+        "m4_missing": [],
+        "census_ok": true,
+        "census_unaccounted": [],
+        "world_before": {
+          "band": "W5",
+          "breath_s": 60,
+          "submerged": false,
+          "mire": 0,
+          "denies": {
+            "sprint": true,
+            "roll": true,
+            "attack": true
+          },
+          "depth_m": 41.82,
+          "vertical_mps": 0
+        },
+        "world_after": {
+          "band": "W5",
+          "breath_s": 60,
+          "submerged": false,
+          "mire": 0,
+          "denies": {
+            "sprint": true,
+            "roll": true,
+            "attack": true
+          },
+          "depth_m": 41.82,
+          "vertical_mps": 0
+        },
+        "world_changed": false
+      },
+      "broken": {
+        "m1_equal": true,
+        "m2_diff": [],
+        "m4_extra": [
+          "traversal"
+        ],
+        "m4_missing": [
+          "traversal.airborne",
+          "traversal.apex_y",
+          "traversal.band",
+          "traversal.blocked_by_slope",
+          "traversal.breath_s",
+          "traversal.breathes_water",
+          "traversal.buoyant",
+          "traversal.depth_m",
+          "traversal.escape_pressed",
+          "traversal.foot_accum",
+          "traversal.last_escape_ago_frames",
+          "traversal.mire",
+          "traversal.mire_escapes",
+          "traversal.mire_last_footfall",
+          "traversal.mire_recovery",
+          "traversal.mire_refractory",
+          "traversal.mired",
+          "traversal.slide",
+          "traversal.submerged",
+          "traversal.vy"
+        ],
+        "census_ok": true,
+        "census_unaccounted": [],
+        "world_before": {
+          "band": "W5",
+          "breath_s": 60,
+          "submerged": false,
+          "mire": 0,
+          "denies": {
+            "sprint": true,
+            "roll": true,
+            "attack": true
+          },
+          "depth_m": 41.82,
+          "vertical_mps": 0
+        },
+        "world_after": {
+          "band": "W5",
+          "breath_s": 60,
+          "submerged": false,
+          "mire": 0,
+          "denies": {
+            "sprint": true,
+            "roll": true,
+            "attack": true
+          },
+          "depth_m": 41.82,
+          "vertical_mps": 0
+        },
+        "world_changed": false
+      },
+      "restored": {
+        "m1_equal": true,
+        "m2_diff": [],
+        "m4_extra": [],
+        "m4_missing": [],
+        "census_ok": true,
+        "census_unaccounted": [],
+        "world_before": {
+          "band": "W5",
+          "breath_s": 60,
+          "submerged": false,
+          "mire": 0,
+          "denies": {
+            "sprint": true,
+            "roll": true,
+            "attack": true
+          },
+          "depth_m": 41.82,
+          "vertical_mps": 0
+        },
+        "world_after": {
+          "band": "W5",
+          "breath_s": 60,
+          "submerged": false,
+          "mire": 0,
+          "denies": {
+            "sprint": true,
+            "roll": true,
+            "attack": true
+          },
+          "depth_m": 41.82,
+          "vertical_mps": 0
+        },
+        "world_changed": false
+      },
+      "detected": {
+        "m1": false,
+        "m4": true,
+        "census": false,
+        "live_world": false
+      },
+      "detected_by_any_shipped_instrument": true,
+      "undo_restored_baseline": true
+    },
+    {
+      "id": "no-encounter-latches",
+      "point": "raid",
+      "applied": true,
+      "err": null,
+      "baseline": {
+        "m1_equal": true,
+        "m2_diff": [],
+        "m4_extra": [],
+        "m4_missing": [],
+        "census_ok": true,
+        "census_unaccounted": [],
+        "world_before": [
+          {
+            "eid": "dres-raid-party-infantry-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": true,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-2",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-3",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          }
+        ],
+        "world_after": [
+          {
+            "eid": "dres-raid-party-infantry-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": true,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-infantry-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-infantry-2",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-infantry-3",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          }
+        ],
+        "world_changed": true
+      },
+      "broken": {
+        "m1_equal": true,
+        "m2_diff": [],
+        "m4_extra": [],
+        "m4_missing": [],
+        "census_ok": false,
+        "census_unaccounted": [
+          "entities[].encLeader"
+        ],
+        "world_before": [
+          {
+            "eid": "dres-raid-party-infantry-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": true,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-2",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-3",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          }
+        ],
+        "world_after": [
+          {
+            "eid": "dres-raid-party-infantry-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-infantry-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-infantry-2",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-infantry-3",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          }
+        ],
+        "world_changed": true
+      },
+      "restored": {
+        "m1_equal": true,
+        "m2_diff": [],
+        "m4_extra": [],
+        "m4_missing": [],
+        "census_ok": false,
+        "census_unaccounted": [
+          "player.airborne"
+        ],
+        "world_before": [
+          {
+            "eid": "dres-raid-party-infantry-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": true,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-2",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-3",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          }
+        ],
+        "world_after": [
+          {
+            "eid": "dres-raid-party-infantry-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": true,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-infantry-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-infantry-2",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-infantry-3",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          }
+        ],
+        "world_changed": true
+      },
+      "detected": {
+        "m1": false,
+        "m4": false,
+        "census": true,
+        "live_world": true
+      },
+      "detected_by_any_shipped_instrument": true,
+      "undo_restored_baseline": false
+    },
+    {
+      "id": "no-gold",
+      "point": "purse",
+      "applied": true,
+      "err": null,
+      "baseline": {
+        "m1_equal": true,
+        "m2_diff": [],
+        "m4_extra": [],
+        "m4_missing": [],
+        "census_ok": true,
+        "census_unaccounted": [],
+        "world_before": {
+          "gold_getGold": 0,
+          "gold_travel": 600,
+          "gold_world": 600
+        },
+        "world_after": {
+          "gold_getGold": 0,
+          "gold_travel": 0,
+          "gold_world": 0
+        },
+        "world_changed": true
+      },
+      "broken": {
+        "m1_equal": true,
+        "m2_diff": [],
+        "m4_extra": [],
+        "m4_missing": [],
+        "census_ok": true,
+        "census_unaccounted": [],
+        "world_before": {
+          "gold_getGold": 0,
+          "gold_travel": 600,
+          "gold_world": 600
+        },
+        "world_after": {
+          "gold_getGold": 0,
+          "gold_travel": 0,
+          "gold_world": 0
+        },
+        "world_changed": true
+      },
+      "restored": {
+        "m1_equal": true,
+        "m2_diff": [],
+        "m4_extra": [],
+        "m4_missing": [],
+        "census_ok": true,
+        "census_unaccounted": [],
+        "world_before": {
+          "gold_getGold": 0,
+          "gold_travel": 600,
+          "gold_world": 600
+        },
+        "world_after": {
+          "gold_getGold": 0,
+          "gold_travel": 0,
+          "gold_world": 0
+        },
+        "world_changed": true
+      },
+      "detected": {
+        "m1": false,
+        "m4": false,
+        "census": false,
+        "live_world": true
+      },
+      "detected_by_any_shipped_instrument": false,
+      "undo_restored_baseline": true
+    },
+    {
+      "id": "no-lkp",
+      "point": "raid",
+      "applied": true,
+      "err": null,
+      "baseline": {
+        "m1_equal": true,
+        "m2_diff": [],
+        "m4_extra": [],
+        "m4_missing": [],
+        "census_ok": true,
+        "census_unaccounted": [],
+        "world_before": [
+          {
+            "eid": "dres-raid-party-infantry-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": true,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-2",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-3",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          }
+        ],
+        "world_after": [
+          {
+            "eid": "dres-raid-party-infantry-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": true,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-infantry-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-infantry-2",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-infantry-3",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          }
+        ],
+        "world_changed": true
+      },
+      "broken": {
+        "m1_equal": true,
+        "m2_diff": [],
+        "m4_extra": [],
+        "m4_missing": [],
+        "census_ok": false,
+        "census_unaccounted": [
+          "player.airborne",
+          "entities[].lastSeenF",
+          "entities[].lastSeenF",
+          "entities[].lastSeenF",
+          "entities[].lastSeenF",
+          "entities[].lastSeenF",
+          "entities[].lastSeenF"
+        ],
+        "world_before": [
+          {
+            "eid": "dres-raid-party-infantry-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": true,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-2",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-3",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          }
+        ],
+        "world_after": [
+          {
+            "eid": "dres-raid-party-infantry-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": true,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": 1
+          },
+          {
+            "eid": "dres-raid-party-infantry-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": 1
+          },
+          {
+            "eid": "dres-raid-party-infantry-2",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": 1
+          },
+          {
+            "eid": "dres-raid-party-infantry-3",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": 1
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": 1
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": 1
+          }
+        ],
+        "world_changed": true
+      },
+      "restored": {
+        "m1_equal": true,
+        "m2_diff": [],
+        "m4_extra": [],
+        "m4_missing": [],
+        "census_ok": false,
+        "census_unaccounted": [
+          "player.airborne"
+        ],
+        "world_before": [
+          {
+            "eid": "dres-raid-party-infantry-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": true,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-2",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-infantry-3",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -1
+          }
+        ],
+        "world_after": [
+          {
+            "eid": "dres-raid-party-infantry-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": true,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-infantry-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-infantry-2",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-infantry-3",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "infantry",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-0",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          },
+          {
+            "eid": "dres-raid-party-net-thrower-1",
+            "encounterId": "dres-raid-party",
+            "encounterRole": "net-thrower",
+            "encLeader": false,
+            "encAggroed": false,
+            "encHailed": false,
+            "lkp": null,
+            "lastSeenF": -91
+          }
+        ],
+        "world_changed": true
+      },
+      "detected": {
+        "m1": false,
+        "m4": false,
+        "census": true,
+        "live_world": true
+      },
+      "detected_by_any_shipped_instrument": true,
+      "undo_restored_baseline": false
+    }
+  ],
+  "page_errors": []
+}

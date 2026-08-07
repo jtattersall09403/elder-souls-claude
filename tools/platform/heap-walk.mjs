@@ -56,7 +56,11 @@ const exit = await reportAbsence({
   system: 'heap/GC access',
   owner: 'A-JRN9 / runner-side or later pieces (RI-PLT02)',
   measures: 'a heap-snapshot diff across a session loop: retained-by-constructor, detached DOM/GL objects, and which constructor grew between snapshots',
-  needs: ["getHeapSnapshot", "gc", "getHeapStats"],
+  amendment: 'A-JRN9',
+  // ROUND 3. Round 2's list was three invented names, none of which this build would ever have
+  // had (TOOL-COVERAGE-R2 §2 bug 3). `forceGC` is the method the amendment register names on
+  // A-JRN9's row; `getPerfStats` is live and carries the `_unmeasurable` marker.
+  needs: [{ method: 'forceGC', amendment: 'A-JRN9' }, 'getPerfStats'],
 }, args);
 
 process.exit(exit);
