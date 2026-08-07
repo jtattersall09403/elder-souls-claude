@@ -25,13 +25,14 @@
 //                              text into a canvas, so `document.body.innerText` is "" and a grep
 //                              over an empty set returns 0 hits and reads as a clean pass —
 //                              RI-MTH06 §B names that failure and RI-JRN01 §0.1(a) makes it
-//                              `unmeasurable ⇒ 0, never pass`. The accessor here is
-//                              `__HARNESS.getUIState().text`, the exact string array that went
-//                              through `fillText`, sampled every frame; and the driver PROVES
-//                              the accessor is live by requiring it non-empty on at least one
-//                              frame known to carry text before any grep result is reported.
-//                              If it cannot prove that, the grep checks are reported
-//                              `unmeasurable`, never `pass`.
+//                              `unmeasurable ⇒ 0, never pass`. This driver prefers
+//                              `__HARNESS.getRenderedText()` (W1-26's render/text-register.js —
+//                              fed by `fillText` itself and clip-aware) and falls back to
+//                              `__HARNESS.getUIState().text` (the layout's intent) while naming
+//                              which it used and how strong it is. It PROVES the accessor is
+//                              live by requiring it non-empty on at least one frame known to
+//                              carry text before any grep result is reported; if it cannot
+//                              prove that, the grep checks are `unmeasurable`, never `pass`.
 //
 // WHAT THIS TOOL DOES NOT DO. It does not score. It produces the artifacts a journey critic
 // scores from, and it marks every check it could not instrument as `unmeasurable` with the
@@ -178,10 +179,42 @@ class Ledger {
 async function sampleUIText(handle) {
   const ui = await handle.hOpt('getUIState');
   const dom = await handle.page.evaluate(() => (document.body && document.body.innerText) || '');
+
+  // TWO accessors, in strict order of strength, and the one actually used is named in the
+  // return value because RI-JRN01 M9 requires the critic to name it.
+  //
+  //   1. `__HARNESS.getRenderedText()` — W1-26's `render/text-register.js`. Fed by the 2D
+  //      context's `fillText`/`strokeText` themselves and clip-aware, so a line handed to
+  //      fillText but painted outside its panel is marked `clipped` and excluded. Nothing can
+  //      be in it that was not painted, and nothing painted can be missing from it.
+  //   2. `__HARNESS.getUIState().text` — the LAYOUT's own string array. Weaker: it is what the
+  //      layout intended to draw, and round 2's whole defect was a divergence between intention
+  //      and paint. Used only when (1) is absent, and the weakness is stated in the output.
+  const reg = await handle.hOpt('getRenderedText');
+  if (reg !== undefined && reg !== null) {
+    const entries = Array.isArray(reg) ? reg : (reg.drawn || reg.entries || reg.all || []);
+    const texts = entries.map((e) => (typeof e === 'string' ? e : (e.text || ''))).filter(Boolean);
+    const clipped = Array.isArray(entries) ? entries.filter((e) => e && e.clipped).length : 0;
+    return {
+      accessor: '__HARNESS.getRenderedText()',
+      accessor_strength: 'fillText-level, clip-aware',
+      text: texts,
+      chars: texts.join(' ').length,
+      clipped_entries: clipped,
+      open: !!(ui && ui.open),
+      opaque_area_frac: ui ? ui.opaque_area_frac : null,
+      dom_inner_text_len: dom.length,
+    };
+  }
   return {
     accessor: '__HARNESS.getUIState().text',
+    accessor_strength: 'layout-level — this is what the layout INTENDED to draw, not what the ' +
+      'frame painted. A string laid out and then clipped away is present here and invisible to ' +
+      'the player. Prefer __HARNESS.getRenderedText() (render/text-register.js) when the build ' +
+      'exposes it; this is the fallback.',
     text: (ui && Array.isArray(ui.text)) ? ui.text.slice() : [],
     chars: (ui && ui.text_chars) || 0,
+    clipped_entries: null,
     open: !!(ui && ui.open),
     opaque_area_frac: ui ? ui.opaque_area_frac : null,
     dom_inner_text_len: dom.length,
@@ -472,7 +505,8 @@ async function runJourney() {
     const accessorLive = nonEmpty.length > 0;
     if (accessorLive) {
       led.ok('ui_text_accessor', 'rendered-text accessor demonstrated live', {
-        accessor: '__HARNESS.getUIState().text',
+        accessor: nonEmpty[0].accessor,
+        accessor_strength: nonEmpty[0].accessor_strength,
         frames_sampled: uiStream.length,
         frames_with_text: nonEmpty.length,
         example: nonEmpty[0].text.slice(0, 3),
@@ -500,7 +534,7 @@ async function runJourney() {
       led.ok('m15_chosen_one', 'prophecy vocabulary in rendered text', { hits: hits15.length, examples: hits15.slice(0, 5), threshold: 0 });
     } else {
       led.unmeasurable('ui_text_accessor', 'rendered-text accessor',
-        `no sampled frame carried any string through __HARNESS.getUIState().text ` +
+        `no sampled frame carried any string through ${uiStream[0] ? uiStream[0].accessor : 'any accessor'} ` +
         `(${uiStream.length} frames sampled; document.body.innerText length ` +
         `${uiStream[uiStream.length - 1].dom_inner_text_len}). RI-JRN01 §0.1(a): a build exposing ` +
         `no enumerable rendered-text surface scores M9 and M15 unmeasurable => 0, NEVER pass. ` +

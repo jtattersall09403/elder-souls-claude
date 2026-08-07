@@ -52,6 +52,7 @@ SECTIONS
   scene          RI-JRN01 O6-O10 — every node has a speaker, a place and a line
   npcs           RI-CHR02 M4  — 100% of NPC records carry a reaction group
   prohibitions   RI-CHR01 M8  — class never gates content
+  dialogue       RI-CHR02 §4c/§5 — topic coverage, nobody mute, greeting cells complete
   all            everything (default)
 `;
 
@@ -759,6 +760,103 @@ if (run('npcs')) {
   // The population-share half of method 4 needs a populated world; this piece does not own one.
   note(`population shares are NOT asserted: ${all.length} NPC records exist against RI-CHR02 §2's twelve-group ` +
     'distribution, which needs the settlement rosters W1-04 and W1-11..13 own. Declared as GAP-W1-07-npc-population.');
+}
+
+// ============================================================================================
+// Round 3. The consumers for `greetings.json` and the race-gated topics were written this round
+// and immediately exposed a second-order defect the consumer's own existence created: a
+// Saxhleel — the province's native race — was offered ZERO topics by three of the four people
+// in Helstrom market, because every info on those topics carried a `requires.race` naming the
+// eight warmblood races. "Race changes the topic list" passed while the native race could talk
+// to nobody, which is the W1-09 failure mode: the named gap closed by moving the defect.
+//
+// These assertions are the guard so it cannot come back quietly. They are data-level on
+// purpose — `tools/harness/chr-talk-probe.mjs` measures the same facts in the browser, and a
+// check that needs a browser is a check that stops being run.
+sec('dialogue', 'RI-CHR02 §4c/§5 — nobody advertises a subject they cannot discuss, and nobody is mute');
+if (run('dialogue')) {
+  const topicFiles = walk(path.join(DATA_DIR, 'dialogue/topics'));
+  const topicIdx = new Map();
+  for (const f of topicFiles) {
+    const doc = JSON.parse(fs.readFileSync(f, 'utf8'));
+    for (const t of doc.topics || []) {
+      if (typeof t.id !== 'string') continue;      // topics/thorn.json is a quest-link schema
+      const cur = topicIdx.get(t.id) || [];
+      for (const i of t.infos || []) cur.push(i);
+      topicIdx.set(t.id, cur);
+    }
+  }
+  const npcFiles = walk(path.join(DATA_DIR, 'npcs'));
+  const people = [];
+  for (const f of npcFiles) {
+    const doc = JSON.parse(fs.readFileSync(f, 'utf8'));
+    for (const n of doc.npcs || []) people.push({ file: path.basename(f), ...n });
+  }
+  const allowed = (info, race) => {
+    const r = info.requires || {}; const fb = info.forbids || {};
+    if (Array.isArray(r.race) && r.race.indexOf(race) < 0) return false;
+    if (Array.isArray(fb.race) && fb.race.indexOf(race) >= 0) return false;
+    return true;
+  };
+  // The same precedence character/converse.js infoFor() applies: the person's own line, then an
+  // info written for their actor row, then an actorless one.
+  const canSay = (n, topic, race) => {
+    if (n.lines && n.lines[String(topic).split('-').join('_')]) return true;
+    return (topicIdx.get(topic) || []).some((i) => allowed(i, race) && (i.a === n.actor || !i.a));
+  };
+
+  const actorless = people.filter((n) => !n.actor);
+  check('CHR02-every-npc-has-an-actor', actorless.length === 0,
+    `${people.length - actorless.length}/${people.length} NPC records name an actor row` +
+    (actorless.length ? ` (missing: ${actorless.map((n) => n.id).join(', ')})` : ''),
+    '100% — infoFor() resolves a topic through the actor row, so an actorless NPC either says nothing or says somebody else\'s lines');
+
+  const dangling = [];
+  for (const n of people) for (const t of n.topics || []) {
+    if (!RACES.some((r) => canSay(n, t, r))) dangling.push(`${n.id}/${t}`);
+  }
+  check('CHR02-no-dangling-topic', dangling.length === 0,
+    `${dangling.length} (npc, topic) pairs advertise a subject nobody can hear` +
+    (dangling.length ? `: ${dangling.slice(0, 10).join(', ')}` : ''),
+    'zero — a topic in an NPC\'s list with no info their actor can deliver is a subject the person raises and then has nothing to say about');
+
+  const mute = [];
+  for (const n of people) for (const r of RACES) {
+    if (!(n.topics || []).some((t) => canSay(n, t, r))) mute.push(`${n.id}/${r}`);
+  }
+  check('CHR02-nobody-is-mute', mute.length === 0,
+    `${mute.length} of ${people.length * RACES.length} (npc, race) pairs have nothing to talk about` +
+    (mute.length ? `: ${mute.slice(0, 10).join(', ')}` : ''),
+    'zero — the race system may change what a person will discuss and may not leave a whole race with nobody to talk to');
+
+  // The gates have to still be DOING something after the coverage work, or the fix for muteness
+  // would have been "delete the gates", which passes both checks above and is worthless.
+  let varying = 0, pairs = 0;
+  for (const n of people) for (const t of n.topics || []) {
+    pairs++;
+    const said = new Set(RACES.map((r) => {
+      if (n.lines && n.lines[String(t).split('-').join('_')]) return 'own';
+      const hit = (topicIdx.get(t) || []).find((i) => allowed(i, r) && (i.a === n.actor || !i.a));
+      return hit ? hit.x : null;
+    }));
+    if (said.size > 1) varying++;
+  }
+  check('CHR02-race-still-changes-the-answer', varying >= Math.ceil(pairs * 0.30),
+    `${varying}/${pairs} (npc, topic) pairs give a different answer to a different race (${(varying / (pairs || 1) * 100).toFixed(1)}%)`,
+    '>= 30% — closing the mute-natives gap by deleting the race gates would satisfy every other check in this section and destroy the thing they exist for');
+
+  const greetings = rd('dialogue/greetings.json');
+  const cells = new Set((greetings.pools || []).map((p) => `${p.reaction_group}|${p.disposition_band}|${p.player_race_class}`));
+  const bands = (greetings.keying.bands || []).map((b) => b.id);
+  const prClasses = greetings.keying.player_race_classes || [];
+  const needed = [];
+  for (const n of people) for (const b of bands) for (const pc of prClasses) {
+    if (n.reaction_group && !cells.has(`${n.reaction_group}|${b}|${pc}`)) needed.push(`${n.reaction_group}|${b}|${pc}`);
+  }
+  check('CHR02-greeting-cell-for-every-person', needed.length === 0,
+    `${cells.size} authored cells cover every (reaction_group, band, player_race_class) reachable by the ${people.length} people in the build` +
+    (needed.length ? `; missing ${[...new Set(needed)].slice(0, 6).join(', ')}` : ''),
+    'complete — a missing cell drops a live NPC onto the hand-written fallback with no warning');
 }
 
 // ============================================================================================
