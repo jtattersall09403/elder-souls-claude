@@ -133,6 +133,9 @@ async function walk(h, { state = 'barge-hold', pattern = () => 0, begin = {}, st
       spoken: (st.spoken || []).slice(),
       drawn_rows: drawnRows.slice(),
       computed: uniq.length, drawn_count: hit.length,
+      // Carried so raising the panel's height budget to buy delivery cannot quietly break the
+      // bar it trades against. RI-JRN01 M5 caps opaque UI at 0.55 of frame AREA.
+      opaque_area_frac: (st.surface && st.surface.opaque_area_frac) || 0,
       dtr: uniq.length ? +(hit.length / uniq.length).toFixed(4) : 1,
       missed: missed.map((m) => ({ kind: m.kind, s: m.s.slice(0, 100) })),
     });
@@ -190,6 +193,18 @@ try {
   else pass('DTR_q = 1.0000');
   if (dtrScene < 0.90) fail(`DTR_scene = ${dtrScene.toFixed(4)}, item requires >= 0.90`);
   else pass(`DTR_scene = ${dtrScene.toFixed(4)}`);
+
+  // The counter-check on this round's own fix. DTR was bought partly by widening the option
+  // window and the panel's height budget; if that pushed the drawn surface through RI-JRN01
+  // M5's 0.55 AREA ceiling it would be the W1-09 failure mode — the named gap closed by moving
+  // the defect into the bar next door. Measured here, in the same run, from the same frames.
+  const areas = nodes.map((n) => n.opaque_area_frac).filter((x) => x > 0);
+  const maxArea = areas.length ? Math.max(...areas) : 0;
+  out.m1.opaque_area_frac_max = +maxArea.toFixed(4);
+  out.m1.opaque_area_frac_min = areas.length ? +Math.min(...areas).toFixed(4) : 0;
+  say(`  opaque UI area fraction over the scene: ${out.m1.opaque_area_frac_min}–${out.m1.opaque_area_frac_max}  (RI-JRN01 M5 ceiling 0.55)`);
+  if (maxArea > 0.55) fail(`opaque UI area ${maxArea.toFixed(4)} exceeds RI-JRN01 M5's 0.55 ceiling — delivery was bought with the UI-footprint bar`);
+  else pass(`opaque UI area peaks at ${maxArea.toFixed(4)}, inside M5's 0.55 ceiling`);
   const worst = nodes.reduce((a, n) => (n.dtr < a.dtr ? n : a), { dtr: 1, node: '-' });
   if (worst.dtr < 0.50) hard('HF1', `DTR ${worst.dtr.toFixed(3)} at ${worst.node} — the scene computed twice what it showed`);
 
@@ -200,13 +215,19 @@ try {
   // that cannot fail.
   say('\n== M2 ES-ANSWERED — did the person who asked use what you told them? ==');
   const ch = await h.h('getCharacter');
+  // A value is "used" if the DISPLAY NAME the world would speak appears in a drawn row, not if
+  // the slug does. The scribe says "The Full Root", never "raj-xul", and a probe that only
+  // matched slugs would score a consumed birthsign as unconsumed. Names are resolved from the
+  // same tables the scene interpolates from.
+  const cd = await h.h('getCreationData');
+  const nameOf = (list, id) => { const x = (list || []).find((y) => y.id === id); return x ? (x.name || '') : ''; };
   const FIELDS = [
     { id: 'hatch_name', value: ch.hatch_name, alt: [] },
     { id: 'given_name', value: ch.given_name, alt: [] },
-    { id: 'race', value: ch.race, alt: [(ch.race_name || '')] },
-    { id: 'upbringing', value: ch.upbringing, alt: [(ch.upbringing_name || '')] },
-    { id: 'birthsign', value: ch.birthsign, alt: [(ch.birthsign_name || '')] },
-    { id: 'class', value: ch.class_id, alt: [(ch.class_name || '')] },
+    { id: 'race', value: ch.race, alt: [nameOf(cd.races.races, ch.race)] },
+    { id: 'upbringing', value: ch.upbringing, alt: [nameOf(cd.reactions.upbringings, ch.upbringing), ((cd.reactions.upbringings || []).find((u) => u.id === ch.upbringing) || {}).given_as || ''] },
+    { id: 'birthsign', value: ch.birthsign, alt: [nameOf(cd.birthsigns.signs, ch.birthsign)] },
+    { id: 'class', value: ch.class_id, alt: [ch.class_name || ''] },
     { id: 'route', value: ch.class_route, alt: [] },
   ];
   const rows = [];

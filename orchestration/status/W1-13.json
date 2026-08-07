@@ -1,11 +1,27 @@
 {
   "task_id": "W1-13",
-  "brief": "inline (dispatch message) — death, recovery and the hearth loop",
+  "brief": "inline dispatch — death, recovery and the hearth loop (RI-JRN06 + RI-PRG04)",
   "started": "wave-1",
   "state": "researching",
-  "outputs_expected": [],
+  "outputs_expected": [
+    "game/data/world/hearths.json",
+    "game/src/sim/death.js (bloodstain + respawn model)",
+    "game/src/sim/hearth.js (hearth registry + rest)",
+    "harness verbs: listHearths/hearthRest(at)/getDeathState/killPlayer/recoverBloodstain",
+    "tools/journey/journey-run.mjs (RI-JRN06 named tool, absent)",
+    "reports/journeys/<runId>"
+  ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read docs/PLAN.md §3 W1-13 definition",
-  "notes_for_successor": ""
+  "findings": [
+    "BOOT OK before work: node tools/harness/smoke.mjs passes (playwright 1.56.1, chromium 141, WebGL2 SwiftShader).",
+    "PRE-EXISTING STATE: sim.quest.death.bloodstain field EXISTS in game/src/sim/state.js:204, is serialised in game/src/save/state.js:212-215 and restored at :397 — but NOTHING in the tree ever writes it. grep 'bloodstain' over game/src returns only state.js/save/state.js/events.js. It is an orphan field: the save round-trips a value that no code path can produce. Classic CONSUMPTION defect #8.",
+    "PRE-EXISTING: trace event names 'bloodstain_create' and 'bloodstain_recover' are declared in game/src/sim/events.js:39-40 and never emitted anywhere.",
+    "PRE-EXISTING: engine.hearthRest() exists (engine.js:756) and does 4 things: resets RI-PRG03 rest clamp, refills Focus unless Dry Well, refills HP/stamina, advances sap taint. It does NOT respawn enemies, does NOT advance the clock, does NOT set a respawn point, and takes no hearth id — sim.progression.hearthLastRested exists (state.js:187) and is never written.",
+    "PRE-EXISTING: no hearth entities/placements anywhere in game/data. hearthsDiscovered/hearthLastRested are free-form strings; sv5 state names 'hearth-thorn'/'hearth-drowned-ford' which resolve to nothing.",
+    "PRE-EXISTING: no player death->respawn path at all. sim/traversal.js:401 sets player state DEATH on a fall and pushes a 'fall_death' event; nothing consumes it.",
+    "TOOL ABSENT: tools/journey/journey-run.mjs, named by RI-JRN06's Comparison method, does not exist. tools/journey/state-diff.mjs exists but only implements --mode-less RI-JRN05 round-trip; RI-JRN06 calls it with --in <dir> --mode across-death, neither flag implemented.",
+    "tools/harness/save-audit.mjs:158,164 already declares M7 (bloodstain souls) and M19 (second-death rule) as deferred to RI-JRN06."
+  ],
+  "next_step": "survey world/province for placeable hearth anchors + travel network; read RI-JRN05 §B World group (D10 must be the identical list)",
+  "notes_for_successor": "The bloodstain save field is already written and read; do NOT change its shape without re-checking tools/journey/state-diff.mjs and the sv5-journal-bloodstain named state."
 }

@@ -1,0 +1,89 @@
+{
+  "schema": "elder-souls/pad-quirks@1",
+  "id": "pad-quirks",
+  "owner": "W1-29",
+  "binding_source": "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md §C rule G2",
+  "purpose": "When `gamepad.mapping !== 'standard'` the button order is the raw HID report order, not the W3C one. This table maps a normalised gamepad.id onto the §B standard layout. A build that assumes mapping==='standard' delivers a scrambled map on the exact device the project owner holds, and RI-JRN04 HF2 exists for it.",
+
+  "normalisation": "lowercase; `vendor: XXXX` and `product: XXXX` extracted where present and joined as `vid:pid`; otherwise the id string with the parenthesised suffix and the literal 'standard gamepad' removed, collapsed whitespace. Matching tries vid:pid first, then a substring match on `id_match`, then falls back to the generic HID profile.",
+
+  "entries": [
+    {
+      "key": "3537:1004",
+      "id_match": "gamesir-x2s",
+      "device": "GameSir X2s Type-C",
+      "mode": "generic HID (Bluetooth, desktop Chrome, or Android before the VID/PID is recognised)",
+      "mapping": "",
+      "buttons": 18,
+      "axes": 6,
+      "button_permutation": {
+        "0": 1, "1": 2, "2": 0, "3": 3,
+        "4": 4, "5": 5, "6": 6, "7": 7,
+        "8": 8, "9": 9, "10": 10, "11": 11,
+        "16": 12
+      },
+      "dpad_from_hat_axis": 9,
+      "axis_permutation": { "0": 0, "1": 1, "2": 2, "3": 5 },
+      "analog_trigger_axes": { "6": 3, "7": 4 },
+      "note": "The DirectInput/HID report order every DualSense-like pad uses: raw 0 is the WEST face button (Square), raw 1 SOUTH (Cross), raw 2 EAST (Circle), raw 3 NORTH (Triangle). Standard index 0 is SOUTH, 1 EAST, 2 WEST, 3 NORTH, so the face cluster is permuted and nothing else on the shoulder row is. Raw 12 is the PS/Guide key and lands on standard 16, which is unbound always. The D-pad arrives as a hat axis in [-1,1] with 8 detents rather than as buttons 12-15. Triggers additionally report on axes 3 and 4 in [-1,1]; the button `.value` is preferred and the axes are the fallback for a descriptor whose trigger buttons are digital.",
+      "provenance": "canonical-recall, confidence medium. RI-JRN04 §A's rows came from vendor and review pages that 403'd to direct fetch; this permutation is the standard HID gamepad report order, not a measurement of this pad. RI-JRN04 §C G2.3 is the guard: an id that does not match, or one that matches and still produces a map the player disagrees with, reaches the calibration sequence."
+    },
+    {
+      "key": "3537:1004:standard",
+      "id_match": "gamesir-x2s type-c (standard gamepad",
+      "device": "GameSir X2s Type-C",
+      "mode": "USB-C into Android; Chromium recognises the VID/PID and remaps to standard",
+      "mapping": "standard",
+      "buttons": 17,
+      "axes": 4,
+      "button_permutation": null,
+      "note": "Identity. Present so that the table is a complete statement about this device rather than a list of the cases that went wrong (RI-JRN04 G2.2: 'X2s entries are present for both its enumeration modes')."
+    },
+    {
+      "key": "054c:0ce6",
+      "id_match": "dualsense",
+      "device": "Sony DualSense",
+      "mode": "generic HID",
+      "mapping": "",
+      "buttons": 18,
+      "axes": 6,
+      "button_permutation": {
+        "0": 1, "1": 2, "2": 0, "3": 3,
+        "4": 4, "5": 5, "6": 6, "7": 7,
+        "8": 8, "9": 9, "10": 10, "11": 11,
+        "16": 12
+      },
+      "dpad_from_hat_axis": 9,
+      "axis_permutation": { "0": 0, "1": 1, "2": 2, "3": 5 },
+      "analog_trigger_axes": { "6": 3, "7": 4 },
+      "note": "The X2s presents as a DualSense-like HID device (RI-JRN04 §A, SlashGear review), so the same entry serves a real DualSense."
+    }
+  ],
+
+  "generic_hid_fallback": {
+    "button_permutation": {
+      "0": 1, "1": 2, "2": 0, "3": 3,
+      "4": 4, "5": 5, "6": 6, "7": 7,
+      "8": 8, "9": 9, "10": 10, "11": 11,
+      "16": 12
+    },
+    "dpad_from_hat_axis": 9,
+    "axis_permutation": { "0": 0, "1": 1, "2": 2, "3": 5 },
+    "confidence": "guess",
+    "note": "Applied to an unknown mapping:'' pad so the game RUNS rather than refuses (G2.4 bans a refusal). Because it is a guess it is NOT trusted: an unknown id also opens the calibration sequence, and the calibration result overwrites this. The fallback is what the player plays with while they calibrate."
+  },
+
+  "calibration": {
+    "owner": "RI-JRN04 §C G2.3",
+    "prompts": [
+      { "action": "light",    "line": "Swing." },
+      { "action": "roll",     "line": "Get out of the way." },
+      { "action": "block",    "line": "Take it on the shield." },
+      { "action": "interact", "line": "Reach for it." },
+      { "action": "menu",     "line": "Stop and think." },
+      { "action": "lock_on",  "line": "Fix your eye on it." }
+    ],
+    "input_budget": 8,
+    "note": "Six prompts, completable on the pad alone in <= 8 inputs (M-P15). Each names a thing done in the world, never a control, so the sequence does not spend RI-JRN01 O11's instruction budget (M-P24 exempts the calibration sequence explicitly). No raw index table is ever shown. The result is written to the profile record and the sequence never runs again for that id (G2.3, L5)."
+  }
+}

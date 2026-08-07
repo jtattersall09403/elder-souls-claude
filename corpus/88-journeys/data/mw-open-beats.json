@@ -1,0 +1,111 @@
+{
+  "schema": "elder-souls/beats@1",
+  "id": "mw-open-rows-3-12",
+  "side": "reference",
+  "source": "corpus/88-journeys/RI-JRN01-first-launch-to-first-choice.md §A, rows 3-12",
+  "provenance": "canonical-recall",
+  "confidence": "medium",
+  "owner": "RI-MTH06 §C",
+  "note": [
+    "RI-MTH06 §C: the wave-1 RI-JRN01 blind pack recorded `reference-wins-on-review` partly",
+    "because the pack was unfair in FORM — our side was verbatim transcript from the running",
+    "build, the reference side was §A's recalled beat TABLE, which is narration. A pack in which",
+    "one side is dialogue and the other is stage direction is discriminable on register, not on",
+    "the property under test.",
+    "",
+    "So this file is §A rows 3-12 re-expressed in the SAME four-field form beat-extract.mjs emits",
+    "for our side: actor, place, utterance, fields_set. It is committed once so that every future",
+    "critic compares against the same text, per RI-MTH06's How-we-lose #5.",
+    "",
+    "`utterance` is what a person in the world SAYS or DOES at that beat. Where §A's table gives",
+    "narration rather than a line, the utterance is the recalled line if the item quotes one and",
+    "otherwise the action stated in the third person, which is the same treatment beat-extract",
+    "gives our own side's non-speech beats. Nothing here is invented beyond §A: every row's",
+    "content is traceable to the row of the same number.",
+    "",
+    "DO NOT REGENERATE. This file is hand-authored from the corpus table and beat-extract.mjs",
+    "reads it; it will refuse to overwrite it."
+  ],
+  "beats": [
+    {
+      "n": 3,
+      "actor": "the player",
+      "place": "the hold of a ship",
+      "utterance": "You are in control, standing, undefined. A prisoner you do not know is standing there. Crates. A door.",
+      "fields_set": [],
+      "property": "you get a body before you get a character"
+    },
+    {
+      "n": 4,
+      "actor": "Jiub, a fellow prisoner",
+      "place": "the hold of a ship",
+      "utterance": "You finally woke up. What's your name?",
+      "fields_set": ["name"],
+      "property": "the name is asked by a person who then uses it"
+    },
+    {
+      "n": 5,
+      "actor": "a guard on the deck",
+      "place": "the deck, in weather, above a coastline",
+      "utterance": "This is where you get off. Come with us.",
+      "fields_set": [],
+      "property": "the world is shown before it is explained"
+    },
+    {
+      "n": 6,
+      "actor": "Socucius Ergalla, a census officer",
+      "place": "the Census and Excise Office, behind a desk",
+      "utterance": "Ah yes, we've been expecting you. You'll have to be recorded before you're officially released.",
+      "fields_set": [],
+      "property": "the interface for creation is a desk"
+    },
+    {
+      "n": 7,
+      "actor": "Socucius Ergalla, a census officer",
+      "place": "the Census and Excise Office, behind a desk",
+      "utterance": "...and your race? Yes, of course. I'll just note that down.",
+      "fields_set": ["race"],
+      "property": "race is a fact recorded on a form"
+    },
+    {
+      "n": 8,
+      "actor": "Socucius Ergalla, a census officer",
+      "place": "the Census and Excise Office, behind a desk",
+      "utterance": "Under which sign were you born?",
+      "fields_set": ["birthsign"],
+      "property": "the birthsign is asked as small talk"
+    },
+    {
+      "n": 9,
+      "actor": "Socucius Ergalla, a census officer",
+      "place": "the Census and Excise Office, behind a desk",
+      "utterance": "You may name a profession, or describe yourself in detail, or answer some questions. A wounded dog lies in the road, whimpering. What do you do?",
+      "fields_set": ["class"],
+      "property": "the class system is a personality quiz administered by a customs officer"
+    },
+    {
+      "n": 10,
+      "actor": "Socucius Ergalla, a census officer",
+      "place": "the Census and Excise Office, behind a desk",
+      "utterance": "He reads the record back aloud, stamps it, and hands it to you. Take this and see Sellus Gravius in the next room.",
+      "fields_set": [],
+      "property": "creation ends with an object you carry"
+    },
+    {
+      "n": 11,
+      "actor": "Sellus Gravius, an officer",
+      "place": "the next room of the Census and Excise Office",
+      "utterance": "This package came for you. Go to Balmora and find a man named Caius Cosades. Tell him what I have told you.",
+      "fields_set": [],
+      "property": "the main quest arrives as a job, not a prophecy"
+    },
+    {
+      "n": 12,
+      "actor": "the player",
+      "place": "a door onto Seyda Neen",
+      "utterance": "You open a door and are outside, with no objective marker and no instruction.",
+      "fields_set": [],
+      "property": "the tutorial ends by ending"
+    }
+  ]
+}

@@ -133,6 +133,13 @@ in wave 1 and a hard error from wave 2.
 2. **A probe that cannot fail is worse than no probe.** Several wave-1 probes passed against
    disconnected models, empty result lists and vacuous controls. Before trusting your own
    instrument, break the thing it measures on purpose and confirm the instrument goes red.
+3. **A still target hides every steering defect.** A spell's tracking cutoff was applied to the
+   flight a bolt *would* have had if it hit nothing, rather than the flight it actually had — so it
+   was still steering well past its fence. Against a stationary target the arc closes in about 15
+   frames and the defect is invisible, which is exactly how wave 1 recorded it as "0.000 °/s" and
+   passed. The same trap applies to reach, aggro, perception and hit resolution: **if the thing you
+   are measuring responds to motion, the target must move.** A control that cannot exhibit the
+   failure is not a control.
 
 ## Network access (updated mid-wave)
 

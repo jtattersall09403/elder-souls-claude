@@ -18,6 +18,8 @@ import { Province } from '../world/province.js';
 import { SIGNATURE_KINDS } from '../world/signature.js';
 import { SpellVFX } from './spell-vfx.js';
 import { UILayer } from './ui.js';
+import { TitleLayer } from './title.js';
+import { textRegister } from './text-register.js';
 
 // Skin tints so the people in a room are people rather than six copies of one silhouette.
 // Keyed by the `race` field on the NPC record; unknown races fall back to the first.
@@ -73,6 +75,14 @@ export class Renderer {
     // The dialogue surface. Drawn INTO this canvas, not into the DOM — see render/ui.js.
     this.ui = new UILayer(canvas.width, canvas.height);
     this.uiVisible = true;
+    // The title surface. Same argument, same canvas — see render/title.js. `RI-JRN01` M20.
+    this.title = new TitleLayer(canvas.width, canvas.height);
+    // Every 2D surface this renderer owns is registered against the one rendered-text
+    // register, so `__HARNESS.getRenderedText()` enumerates the frame's strings rather than
+    // an empty accessibility tree. `RI-JRN01` §0.1(a) refuses to score M9/M15 without this.
+    this.textRegister = textRegister;
+    textRegister.instrument(this.ui.ctx, 'dialogue');
+    textRegister.instrument(this.title.ctx, 'title');
     this.lastStats = { drawCalls: 0, triangles: 0, programs: 0, geometries: 0, textures: 0 };
     this._look = new THREE.Vector3();
     this._focus = new THREE.Vector3();
@@ -125,6 +135,7 @@ export class Renderer {
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
     this.ui.setSize(w, h);
+    if (this.title) this.title.setSize(w, h);
     if (this.vfx) this.vfx.setSize(w, h);
     return { width: w, height: h };
   }
@@ -275,6 +286,9 @@ export class Renderer {
    * @param {SimState} sim
    */
   render(sim) {
+    // Every string painted from here on belongs to this simulation frame, so a critic can
+    // ask the register what the frame said at the node it screenshotted.
+    textRegister.setFrame(sim.frame);
     const c = sim.camera;
     this.playerMesh.position.set(sim.player.pos[0], sim.player.pos[1], sim.player.pos[2]);
     this.playerMesh.rotation.y = (sim.player.yaw * Math.PI) / 180;
@@ -343,6 +357,11 @@ export class Renderer {
     };
     this.ui.setVisible(this.uiVisible);
     this.ui.render(this.three);
+    // The title composites LAST, over the dialogue surface and over the world. It is the
+    // only surface allowed above the scene, and it is still a surface with the live world
+    // behind it — `RI-JRN01` M1 counts "full-viewport UI states with no 3D world rendered
+    // behind them", and this one never qualifies.
+    this.title.render(this.three);
     this.lastStats = {
       drawCalls: world.calls + (this.ui.model && this.uiVisible ? info.render.calls : 0),
       triangles: world.triangles + (this.ui.model && this.uiVisible ? info.render.triangles : 0),

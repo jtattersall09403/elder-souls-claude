@@ -147,7 +147,7 @@ export class MovesetLibrary {
     // in classes.json). An axe still only really hurts at the head. It no longer has a hole
     // where its handle is.
     return {
-      a: Math.max(GRIP_OFFSET_M, Math.round((b - span) * 1000) / 1000),
+      a: GRIP_OFFSET_M,
       b: Math.round(b * 1000) / 1000,
       edge_from: Math.max(GRIP_OFFSET_M, Math.round((b - span) * 1000) / 1000),
       span_m: span,

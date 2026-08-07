@@ -208,6 +208,7 @@ for (const r of regions) {
     // micro-relief removed, and arrangement is the renderer's own lattice with the renderer's own
     // rolls, scored by nearest-neighbour distance and Clark-Evans dispersion.
     micro_relief: microRelief(r),
+    ground_skin: groundSkin(r),
     arrangement: arrangementStats(r),
     signature_relief: signatureRelief(r),
     architecture_placed: architecturePlaced(r),
@@ -250,6 +251,57 @@ function microRelief(r) {
     dominant: dom ? dom.kind : null,
     declared_amp_m: (r.terrain.micro && r.terrain.micro.amp_m) || 0,
     declared_mix: (r.terrain.micro && r.terrain.micro.weights) || {},
+  };
+}
+
+/**
+ * The SURFACE of the ordinary ground: the region's ground SKIN, at the scale a standing player
+ * reads it, measured rather than declared.
+ *
+ * `micro_relief` above is landform at 11-46 m and lives in `heightAt`. This is the other half, at
+ * 1.2-3.2 m, and it exists because the first half does not appear in a frame: measured over the
+ * 39 day frames of round 4's own capture, Sobel edge density in the bottom quarter of the image —
+ * the ground 2 to 8 m from the eye, most of every frame — carried a between-region to
+ * within-region ratio of 0.91, i.e. no regional signal at all.
+ *
+ * Sampled on the skin mesh's OWN cell (0.55 m) along four 110 m transects, so what is measured is
+ * what is drawn: the standard deviation of the surface, its realised gradient per cell, its sign
+ * skew (a tussock field is domes above a mean, a fractured pavement is joints below one) and the
+ * roughness the descriptor actually sees — the mean absolute second difference, which is what
+ * separates a smooth swell from a broken surface at the same amplitude.
+ */
+function groundSkin(r) {
+  const bb = r.bounds_m;
+  const cx = (bb.x[0] + bb.x[1]) / 2, cz = (bb.z[0] + bb.z[1]) / 2;
+  const CELL = 0.55;
+  const vals = [], grads = [], curv = [];
+  for (let t = 0; t < 4; t++) {
+    const th = t * Math.PI / 4;
+    const line = [];
+    for (let d = -55; d <= 55; d += CELL) {
+      const x = cx + Math.cos(th) * d, z = cz + Math.sin(th) * d;
+      if (field.regionIndexAt(x, z) !== r.index) { line.push(null); continue; }
+      line.push(field.skin.at(x, z)[0]);
+    }
+    for (let i = 1; i < line.length - 1; i++) {
+      if (line[i - 1] === null || line[i] === null || line[i + 1] === null) continue;
+      vals.push(line[i]);
+      grads.push(Math.abs(line[i + 1] - line[i - 1]) / (2 * CELL));
+      curv.push(Math.abs(line[i + 1] - 2 * line[i] + line[i - 1]));
+    }
+  }
+  const sk = r.terrain.skin || null;
+  if (!vals.length) return { kind: sk && sk.kind, sd_m: 0, mean_abs_grad: 0, roughness_m: 0, skew: 0, declared_amp_m: 0, declared_len_m: 0 };
+  const m = vals.reduce((a, b) => a + b, 0) / vals.length;
+  const sd = Math.sqrt(vals.reduce((a, b) => a + (b - m) ** 2, 0) / vals.length) || 1e-6;
+  return {
+    kind: field.skin.kindAt(cx, cz),
+    sd_m: +sd.toFixed(4),
+    mean_abs_grad: +(grads.reduce((a, b) => a + b, 0) / grads.length).toFixed(4),
+    roughness_m: +(curv.reduce((a, b) => a + b, 0) / curv.length).toFixed(4),
+    skew: +(vals.reduce((a, b) => a + ((b - m) / sd) ** 3, 0) / vals.length).toFixed(3),
+    declared_amp_m: sk ? sk.amp_m : 0,
+    declared_len_m: sk ? sk.len_m : 0,
   };
 }
 
@@ -452,6 +504,13 @@ const AXES = [
       const A = a.micro_relief, B = b.micro_relief;
       return 6 * Math.abs(A.sd_m - B.sd_m) + 30 * Math.abs(A.mean_abs_grad - B.mean_abs_grad)
         + 0.8 * Math.abs(A.skew - B.skew) + (A.dominant === B.dominant ? 0 : 1.4);
+    }, min: 1.0 },
+  { id: 'ground_skin', source: 'built ground skin: the region\u2019s own sub-metre surface sampled on the skin mesh\u2019s own 0.55 m cell along four 110 m transects \u2014 the ordinary ground at the scale a standing player reads it, which is what the bottom half of every frame is made of',
+    d: (a, b) => {
+      const A = a.ground_skin, B = b.ground_skin;
+      return 8 * Math.abs(A.sd_m - B.sd_m) + 6 * Math.abs(A.mean_abs_grad - B.mean_abs_grad)
+        + 20 * Math.abs(A.roughness_m - B.roughness_m) + 0.5 * Math.abs(A.skew - B.skew)
+        + (A.kind === B.kind ? 0 : 1.2);
     }, min: 1.0 },
   { id: 'prop_arrangement', source: 'the renderer\u2019s own scatter lattice with the renderer\u2019s own rolls: nearest-neighbour distance, its coefficient of variation and the Clark-Evans dispersion index',
     d: (a, b) => {

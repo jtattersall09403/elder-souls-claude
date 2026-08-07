@@ -1,12 +1,27 @@
 {
   "task_id": "W1-29",
   "title": "Mobile, touch and the attached gamepad (GameSir X2s Type-C)",
-  "judged_by": ["corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md"],
+  "judged_by": [
+    "corpus/88-journeys/RI-JRN04-mobile-and-gamepad.md"
+  ],
   "started": "wave-1",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read docs/PLAN.md S3 for W1-29 paths; survey RealInput.pollGamepad",
+  "findings": [
+    "BOOT CONFIRMED before work: node tools/harness/smoke.mjs passes 6/6 (chromium 141, SwiftShader).",
+    "tools/journey/gamepad-shim.mjs EXISTS and is real (14.4 KB) \u2014 injects at the navigator.getGamepads() seam with x2s-standard / x2s-hid-dualsense / xbox-standard presets, dispatches real GamepadEvents, has --self-test. NOT phantom. tools/journey/journey-run.mjs IS phantom \u2014 mine to write.",
+    "DEFECT (desktop, hard): game/src/input/bindings.js binds spell_cycle:['KeyR'] and heavy:['KeyR','Mouse3']. buildControlMap() iterates in key order so spell_cycle OVERWRITES heavy on KeyR \u2014 the heavy attack is unreachable on its normative primary key. RI-JRN03 M-K1 hard fail.",
+    "DEFECT (pad, HF1): GAMEPAD_BINDINGS does not bind sprint, swap_left or swap_right at all. RI-JRN04 G1/M-P1 hard fail (any of the fourteen unbound).",
+    "DEFECT (pad): block=6(LT) and parry=4(LB) are SWAPPED vs RI-JRN04 \u00a7C (block must be LB=4 held, parry LT=6). jump on 3(Y) not 10(L3); two_hand on 8(Back) which \u00a7C reserves for journal; lock_on on 10(L3) not 11(R3).",
+    "DEFECT (pad, HF8): triggers read `b.pressed || b.value > 0.5` \u2014 no T_fire 0.35 / T_release 0.20 hysteresis, no T_full 0.85 charge gate. RI-JRN04 G0 says reading .pressed on a trigger is a defect.",
+    "DEFECT (pad, HF-most-load-bearing): no roll/sprint 12-frame tap/hold discriminator on button 1. roll is a plain discrete; sprint has no pad control at all.",
+    "DEFECT (pad, HF2): no mapping!=='standard' path. pushGamepadState() hard-codes mapping:'standard' and boolean-only buttons, so it cannot even express the X2s' DualSense-like HID mode. No pad-quirks.json, no calibration sequence.",
+    "DEFECT (pad lifecycle): no gamepadconnected/gamepaddisconnected listeners anywhere. Disconnect is only noticed at the next poll; L6 (two pads) takes the first connected, not the most recently active.",
+    "ABSENT ENTIRELY: touch input (RI-JRN04 \u00a7G, 14 actions, T1-T10) \u2014 zero touch code in the tree. Rebinding model (RI-JRN03 \u00a7E RB1-RB11) \u2014 zero. Mobile viewport/orientation/safe-area (\u00a7F H1-H12) \u2014 game/index.html uses 100vh (H4 bans it, `RI-JRN04` How-we-lose #8) and has no env(safe-area-inset-*) use.",
+    "HARNESS GAPS: A-JRN4 (viewport/orientation/safe-area control) and A-JRN12 (keyboard-layout emulation) are declared absent by api.js's own capability report. M-P16..M-P19 and M-K2 need them.",
+    "CORPUS CONFLICT: RI-JRN04 \u00a7D sets the right-stick inner deadzone at 0.10 and curve m'^2.0; the shipped shapeLookStick() implements RI-CAM02 \u00a7A's 0.15/0.95/quadratic. RI-JRN04's own header cedes camera behaviour to RI-CAM02 but claims the stick transform (deadzone, curve, sensitivity). Recorded as corpus debt; see report."
+  ],
+  "next_step": "build game/data/input/profiles.json + pad-quirks.json, then game/src/input/gamepad.js",
   "notes_for_successor": "Split out of W1-08 on the owner's explicit requirement: mobile + attached controller. platform.mobile.viewport promoted from wave 2 to wave 1 and is owned here."
 }

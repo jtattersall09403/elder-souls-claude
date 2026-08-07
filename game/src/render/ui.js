@@ -29,8 +29,19 @@
 
 import * as THREE from '../../vendor/three/three.module.js';
 
-const PANEL_MAX_FRAC = 0.42;      // of frame height. M5's ceiling is 0.55 of frame AREA.
-const OPTION_WINDOW = 5;          // options visible at once; longer lists scroll.
+// Both of these are DELIVERY budgets, not taste. RI-JRN09 M1 counts an authored string that
+// did not reach the frame at its node as undelivered, and both of these were quietly costing
+// delivery: the panel's height cap sacrificed the scribe's previous reply, and a 5-option
+// window hid 4 of the 9 hatch-names and 4 of the 9 birthsigns at the node that offers them.
+// Measured before the change: DTR_scene 0.8288, with HF1 tripped at `hold.hatch-name` (0.400).
+//
+// The panel is 80% of frame width, so its AREA fraction is roughly 0.8x its height fraction —
+// 0.48 of height is ~0.38 of area, comfortably inside RI-JRN01 M5's 0.55 AREA ceiling, which
+// the build measures at 0.14–0.34 today. The area figure is re-measured after every change to
+// these two numbers; raising delivery by breaking the UI-footprint bar would just move the
+// defect, which is the failure mode three W1-09 rounds shipped in a row.
+const PANEL_MAX_FRAC = 0.48;      // of frame height. M5's ceiling is 0.55 of frame AREA.
+const OPTION_WINDOW = 9;          // options visible at once; longer lists (19 skills) scroll.
 
 /** The parchment palette. One ink, one vellum, one rule. Nothing glows. */
 const INK = '#efe4cd';

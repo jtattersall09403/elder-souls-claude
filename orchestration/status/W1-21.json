@@ -18,7 +18,18 @@
     "tools/metrics/ui-metrics.mjs"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read RI-UIX01..06, existing game/src/render/ui.js, harness api",
-  "notes_for_successor": ""
+  "findings": [
+    "ARCHITECTURE (binding): __HARNESS.screenshot() is renderer.screenshotDataURL() = canvas.toDataURL(). game/src/render/ui.js (W1-07's dialogue surface) draws into an offscreen 2D canvas, wraps it in THREE.CanvasTexture on a 2-unit PlaneGeometry with an OrthographicCamera(-1,1,1,-1), and composites with autoClear=false + clearDepth() AFTER three.render(scene,camera) in Renderer.render(). ALL new UI must follow this. Never DOM.",
+    "Renderer.setSize() calls this.ui.setSize(w,h) so the UI canvas is always exactly the drawing-buffer size => 1:1 texel:pixel. That is what makes RI-UIX06 FD2 (DPR-2 stem sharpness) passable from a canvas path: the canvas is resized, not upscaled. three.setPixelRatio(1) currently, so DPR-2 capture needs the canvas element sized 2x.",
+    "getUIState() ALREADY EXISTS in engine.js:1309 but returns only the dialogue surface metrics (surfaces/full_screen_panels:0/hud_elements:0/markers:0 hardcoded). It has NO elements[], no mode, no navigable[], no fonts, no book, no textRenderPath. RI-UIX01/02/03/04/06 all need those. Must be rewritten, not added to.",
+    "uiOpen(id)/uiClose() exist but only drive the CAMERA mode (cameraOpenUI in sim/camera.js) and accept only 'dialogue'|'menu'|'rest'. RI-UIX03 needs openMenu(name)/closeMenu() with name in {inventory,journal,book,levelup,dialogue,map} (map must NOT resolve - JU8).",
+    "Closed action set (input/actions.js) is 16 verbs; GAMEPAD_BINDINGS already maps A=interact, B=roll, start=menu, dpad+left stick=move. So every menu can be driven by menu/move/interact/roll with NO new button. Do not extend the action set.",
+    "sim.progression = {level:1, soulsHeld, soulsSpent, attributes:{vigour,endurance,strength,dexterity,intelligence,faith} (6, SOULS-style), skills, hearthsDiscovered, upgrades}. BUT game/data/progression/attributes.json declares TEN Morrowind attributes (strength,endurance,agility,speed,vigour,willpower,intellect,hist-bond,personality,luck) with soft_caps. RI-UIX03 L5 requires all TEN on the level-up screen simultaneously. The runtime progression object and the shipped data file disagree about which attributes exist.",
+    "game/data/progression/levels.json: soul_cost_formula 'round(0.02*L^3 + 3.06*L^2 + 105.6*L - 895)' but the levels[] table only goes to 5 and its values (673,689,706,723) DO NOT match the formula (formula at L=2 gives -671). RI-UIX03 L3 cross-checks displayed souls-to-next against RI-PRG01's curve; the shipped table is a wave-1 skeleton and is internally inconsistent.",
+    "game/data/items/ holds 2 files, 3 items total, all with kind/name/placed_at and NO weight, NO value_gold, NO description. RI-UIX03 C1/C2/C5/C10 and §C's description budget are unmeasurable against that. Items are declared_incomplete owner 'wave-1 piece W1-08'.",
+    "game/data/books/ holds 1 book (the-drowned-ford, 68 words). RI-UIX05 §D needs >=8 contradicting books etc. Owner declared W1-17.",
+    "Tools: NONE of ui-census.mjs, ui-forbidden.mjs, marker-scan.mjs, marker-diff.mjs, ui-layer.mjs, journal-ui.mjs, text-metrics.mjs, ui-metrics.mjs exist. tools/analysis/content-stats.mjs DOES exist. W1-TOOLS status says it is working the journey tools, not the UI ones."
+  ],
+  "next_step": "check harness runner/shoot/viewpoints, then write game/src/ui/* (style kit, hud, screens) and rewire getUIState",
+  "notes_for_successor": "Order: (1) game/src/ui/style.js material chrome + text engine; (2) hud.js; (3) screens (inventory/journal/book/levelup/sheet/spells/container); (4) game/src/ui/layer.js compositor following render/ui.js's quad recipe; (5) engine wiring openMenu/closeMenu + pause rule + getUIState rewrite; (6) the eight tools; (7) probes."
 }

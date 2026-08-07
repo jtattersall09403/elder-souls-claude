@@ -284,6 +284,7 @@ function sweep(runOne) {
 /** The distance set that connects, as a canonical string — M9 compares these for equality. */
 function hitSetOf(s) { return s.row.filter((r) => r.hit).map((r) => r.d).join(','); }
 
+const fails = [];
 const R = { schema: 'es-combat-reach/1', ruling: 'ARBITRATION.md S26', enemy: ENEMY, step_m: STEP, max_m: MAXD, acceptance: ACCEPT, probes: {} };
 const want = (n) => WHICH === 'all' || WHICH.split(',').includes(n);
 
@@ -432,6 +433,95 @@ if (want('substep')) {
   }
 }
 
+if (want('corridor')) {
+  // ---- S26's CORRIDOR, DEMONSTRATED — and RI-MTH07's CONSUMPTION check on its own numbers ----
+  //
+  // At zero lateral offset the corridor is invisible, and that is CORRECT rather than broken:
+  // `§E` rule 3 de-dups one event per (attack instance, target), and once the blade connects the
+  // swing is spent. So the `--probe ablate` attribution table shows `weapon` only, and a reader
+  // could conclude the corridor is inert. It is not — it is SHADOWED.
+  //
+  // Where it fires is where the blade misses and the body does not: a target standing OFF the
+  // swing plane that a lunging attacker runs down. This probe sweeps lateral offset as well as
+  // distance, so S26's positive requirement is demonstrated on an entity-side observable rather
+  // than asserted, and then perturbs `§body_hazard.damage`'s own constants and watches the
+  // damage move. `RI-MTH07` §B: two well-separated values, everything else held, plus the null
+  // control.
+  const dmgVariant = (patch) => {
+    if (!patch) return data;
+    const d = JSON.parse(JSON.stringify(data));
+    Object.assign(d.hitgeometry.body_hazard.damage, patch);
+    return d;
+  };
+  const runOne = (dv, x, z, move) => {
+    const a = new NodeArena({ data: dv, loadout: { weapon: 'straight-sword' } });
+    a.player.pos[0] = x; a.player.pos[2] = z; a.player.yaw = 180; a.player.evaluateRig(0);
+    a.spawn('E1', ENEMY, 0, 0, 0);
+    a.lockOn('E1');
+    a.script('E1', [{ f: 4, move }]);
+    a.queueInputs([{ f: 1, move: [0, 0] }]);
+    const P = a.cs.bodyOf('P');
+    const evs = [];
+    for (let i = 0; i < 170; i++) {
+      a.step();
+      for (const e of a.drain()) if (e.kind === 'HIT' && e.dst === 'P') evs.push({ via: e.via, dmg: e.dmg, pd: e.pd, dmg_if_weapon: e.dmg_if_weapon });
+    }
+    return evs;
+  };
+  const cells = [];
+  for (const move of Object.keys(data._enemies[ENEMY].attacks)) {
+    for (let x = 0; x <= 1.6001; x += 0.2) {
+      for (const z of [0.05, 0.5, 1.0]) cells.push({ move, x: +x.toFixed(2), z });
+    }
+  }
+  const shipped = [];
+  for (const c of cells) for (const e of runOne(data, c.x, c.z, c.move)) shipped.push({ ...c, ...e });
+  const body = shipped.filter((e) => e.via === 'body');
+  const violations = body.filter((e) => e.dmg_if_weapon !== undefined && e.dmg >= e.dmg_if_weapon);
+
+  // CONSUMPTION: two well-separated values per constant, held against the shipped run, on the
+  // cells where the corridor actually fires. The null control re-runs the shipped data.
+  const cellsWithBody = [];
+  const seen = new Set();
+  for (const e of body) { const k = e.move + '|' + e.x + '|' + e.z; if (!seen.has(k)) { seen.add(k); cellsWithBody.push({ move: e.move, x: e.x, z: e.z }); } }
+  const totalBody = (dv) => {
+    let dmg = 0, pd = 0, n = 0;
+    for (const c of cellsWithBody) for (const e of runOne(dv, c.x, c.z, c.move)) if (e.via === 'body') { dmg += e.dmg; pd += e.pd; n++; }
+    return { events: n, dmg, pd };
+  };
+  const base = totalBody(data);
+  const coupling = {
+    null_control: totalBody(dmgVariant(null)),
+    'base_hp=0': totalBody(dmgVariant({ base_hp: 0, per_mps: 0 })),
+    'base_hp=30': totalBody(dmgVariant({ base_hp: 30 })),
+    'per_mps=0': totalBody(dmgVariant({ per_mps: 0 })),
+    'per_mps=12': totalBody(dmgVariant({ per_mps: 12 })),
+    'poise_damage=0': totalBody(dmgVariant({ poise_damage: 0 })),
+    'poise_damage=60': totalBody(dmgVariant({ poise_damage: 60 })),
+    'hard_cap_fraction=0.05': totalBody(dmgVariant({ hard_cap_fraction_of_weapon: 0.05 })),
+  };
+  R.probes.corridor = {
+    cells_swept: cells.length, hit_events: shipped.length, body_events: body.length,
+    cells_where_corridor_fires: cellsWithBody.length,
+    body_dmg_range: body.length ? [Math.min(...body.map((e) => e.dmg)), Math.max(...body.map((e) => e.dmg))] : null,
+    weapon_dmg_for_same_attacks: body.length ? [Math.min(...body.map((e) => e.dmg_if_weapon)), Math.max(...body.map((e) => e.dmg_if_weapon))] : null,
+    body_poise_damage: [...new Set(body.map((e) => e.pd))],
+    m8_4_violations: violations,
+    shipped_totals: base,
+    coupling,
+    sample: body.slice(0, 12),
+  };
+  if (!body.length) fails.push('S26: the body corridor never fired at any (distance, lateral offset) in the sweep — coupling 0 on a model the ruling requires to act');
+  if (violations.length) fails.push(`M8.4: ${violations.length} corridor hits paid >= the blade`);
+  for (const k of Object.keys(coupling)) {
+    if (k === 'null_control') {
+      if (coupling[k].dmg !== base.dmg) fails.push('CONSUMPTION: the null control disagreed with the shipped run — the measurement is noise');
+      continue;
+    }
+    if (coupling[k].dmg === base.dmg && coupling[k].pd === base.pd) fails.push(`CONSUMPTION: perturbing ${k} changed nothing — coupling 0`);
+  }
+}
+
 if (want('radius')) {
   // ---- RI-CMB04 M8.5 — ONE BODY, ONE RADIUS ----------------------------------------------
   // "a player who is 0.30 m wide to a sword and 0.55 m wide to a wall is two different
@@ -522,7 +612,6 @@ if (argv.includes('--verify')) {
 }
 
 // ---- verdict --------------------------------------------------------------------------------
-const fails = [];
 if (R.verify) {
   for (const v of R.verify.rows) {
     if (!v.agree) fails.push(`VERIFY ${v.case}: node says ${v.node}, the browser says ${v.browser} — combat-node.mjs is not the game`);
@@ -646,6 +735,19 @@ if (R.verify) {
   lines.push('    attack / distance                node        browser     agree');
   for (const v of R.verify.rows) {
     lines.push(`    ${v.case.padEnd(30)} ${String(v.node).padEnd(11)} ${String(v.browser).padEnd(11)} ${v.agree ? 'yes' : 'NO'}`);
+  }
+}
+if (R.probes.corridor) {
+  const c = R.probes.corridor;
+  lines.push('\n  S26 CORRIDOR — demonstrated, priced, and perturbed');
+  lines.push(`    cells swept ${c.cells_swept}   hit events ${c.hit_events}   via:body ${c.body_events}   cells where it fires ${c.cells_where_corridor_fires}`);
+  lines.push(`    body damage ${JSON.stringify(c.body_dmg_range)}  vs the same attacks' blade ${JSON.stringify(c.weapon_dmg_for_same_attacks)}   body poise dmg ${JSON.stringify(c.body_poise_damage)}`);
+  lines.push(`    M8.4 violations (body >= weapon): ${c.m8_4_violations.length}`);
+  lines.push('    CONSUMPTION — perturb §body_hazard.damage, observe the entity');
+  lines.push(`      shipped                     events ${c.shipped_totals.events}  total dmg ${c.shipped_totals.dmg}  total poise ${c.shipped_totals.pd}`);
+  for (const k of Object.keys(c.coupling)) {
+    const v = c.coupling[k];
+    lines.push(`      ${k.padEnd(26)} events ${String(v.events).padStart(3)}  total dmg ${String(v.dmg).padStart(5)}  total poise ${String(v.pd).padStart(5)}  ${k === 'null_control' ? (v.dmg === c.shipped_totals.dmg ? '(control OK)' : '(CONTROL DIVERGED)') : ((v.dmg !== c.shipped_totals.dmg || v.pd !== c.shipped_totals.pd) ? 'coupled' : 'COUPLING 0')}`);
   }
 }
 lines.push('');
