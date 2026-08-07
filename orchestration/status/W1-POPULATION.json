@@ -44,6 +44,6 @@
     "S5 HAS A HALF THAT LIVES OUTSIDE sim.entities. DeathSystem.respawnOrdinary() revives ordinary hostiles that are still ENTITIES -- i.e. within ~260 m. RI-PRG04 \u00a71 says every non-unique hostile returns INCLUDING ONES KILLED HOURS AGO, and a post cleared two kilometres back is not in that array. Coupled with a COUNTER (death.ordinaryRespawnEpoch), deliberately not a callback, so respawnOrdinary still touches only sim.entities and the combat bodies and the seam stays structural.",
     "GATES AFTER THE WIRING: check-data 0 (545 indexed files), check-quests 0 (120 quests), check-content 0 (383 resolutions), boot-check PASS. Taken at pgrep -c headless_shell = 24 and loadavg 21.47 -- booleans only, no timing claimed."
   ],
-  "next_step": "write tools/world/population-consumption.mjs (authoring), then take ONE browser when pgrep < 8: baseline walk / ablation / model perturbation regenerate+reload / composition swap / S5 respawn / still-vs-walking / delete-the-fix. Then docs/shots + blog line.",
+  "next_step": "SUCCESSOR-2 RESUMED at 0b2d6ef, pgrep=0 loadavg 0.80 (quiet box, browser phase viable). Writing tools/world/population-consumption.mjs now, then ONE browser for: baseline walk / ablation / model perturbation regenerate+reload / composition swap / S5 respawn / still-vs-walking. Then docs/shots + blog line.",
   "notes_for_successor": "Do NOT touch quest givers - W1-GIVER-PRESENCE owns those. I own hostiles + encounters."
 }

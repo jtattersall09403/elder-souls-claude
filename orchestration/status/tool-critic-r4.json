@@ -2,8 +2,8 @@
   "task_id": "tool-critic-r4",
   "brief": "inline: critique tools/analysis/build-viability.mjs round 5",
   "started": "wave-tool-r4",
-  "state": "researching",
-  "commit_at_start": "e29ec21",
+  "state": "researching (successor #2, container restart)",
+  "commit_at_start": "0b2d6ef (predecessor worked at e29ec21; tree moved)",
   "outputs_expected": [
     "corpus/80-methods/TOOL-COVERAGE-R4.md",
     "corpus/80-methods/TOOL-COVERAGE-R4.json",
@@ -25,7 +25,8 @@
     "DEFECT C (attack 7, a LIVE phantom read the sweep missed): PRODUCERS' npcs/** branch is `for (const g of Object.values(d)) if (g && Array.isArray(g.npcs)) ...` \u2014 a nested-group shape. All 14 shipped npcs/*.json carry `npcs` at the TOP level, which is what loadNPCs() reads (`doc.npcs || doc.records`). Measured inside the tool's own module state: the branch collects 0 topic mentions; the loader shape holds 719 across 336 records. The grant ledger prints topicsKnown ... 'from: ... npcs[].topics ...' \u2014 a cited source contributing nothing. The builder's round-5 sweep recorded 'npc record fields ... topics 336/336', a FIELD census, while its own code path reached 0 of those records: the builder's own lesson ('read the loader') was not applied to its own producer branch.",
     "DEFECT C impact, measured honestly: exactly one shipped gate names a topic produced only by an npc record \u2014 Q-LILM-01.opens_by.prerequisite_topics[0] = 'the rotting quarter'. Repairing the branch in a probe copy moves GRANTED_TOPICS 226 -> 227 and adds that topic. On THIS tree the verdict does not move (Q-LILM-01 already passes, because the dialogue layer separately produces the slug 'the-rotting-quarter' and canOffer's topicsInclude() folds it). So the read is dead, cited, and currently harmless \u2014 a false red waiting for a topic that only an NPC teaches.",
     "SWEEP RESULT (attack 7): I re-ran the shape check across every PRODUCERS branch against its loader. dialogue/topics, books/, items/, magic/, hooks are all shape-correct. npcs/** is the only dead branch, and it is dead for all 14 files / 336 records.",
-    "ATTACK 2 (rows_compared) largely SATISFIED by shape: crossCheckVerdict() takes comparedRows.length, refuses on a non-boolean `agrees`, and returns agrees:false when nothing was compared. TWO TAUTOLOGIES remain: (a) `pairs_enumerated` is DEFINED as comparedRows.length + unresolvedRows.length (line 3309), so `accounting_holds: comparedRows.length + unresolvedRows.length === pairsEnumerated` (line 3332) is identically true and can never fail \u2014 the self-test asserts it; (b) the loop at 3412 `if (engineValue === undefined) continue;` drops pairs into NEITHER array, so the `why` string's claim that '${pairsEnumerated} (signature, giver) pairs were enumerated' under-reports the real enumeration."
+    "ATTACK 2 (rows_compared) largely SATISFIED by shape: crossCheckVerdict() takes comparedRows.length, refuses on a non-boolean `agrees`, and returns agrees:false when nothing was compared. TWO TAUTOLOGIES remain: (a) `pairs_enumerated` is DEFINED as comparedRows.length + unresolvedRows.length (line 3309), so `accounting_holds: comparedRows.length + unresolvedRows.length === pairsEnumerated` (line 3332) is identically true and can never fail \u2014 the self-test asserts it; (b) the loop at 3412 `if (engineValue === undefined) continue;` drops pairs into NEITHER array, so the `why` string's claim that '${pairsEnumerated} (signature, giver) pairs were enumerated' under-reports the real enumeration.",
+    "SUCCESSOR #2 RESUMED at commit 0b2d6ef. Predecessor's numbers are stamped e29ec21; 10 commits and ~11000 lines landed since, including game/src/engine.js (+566) and game/src/sim/quest/{defs,topic-supply}.js. All headline numbers re-checked at 0b2d6ef below."
   ],
   "next_step": "attack 4: break the model detector with a fire-but-wrong-value break on a shadow tree; then write TOOL-COVERAGE-R4.{md,json}",
   "notes_for_successor": "Probe copies live at tools/analysis/.r4probe/ (bv-probe.mjs, bv-orig.mjs) \u2014 DELETE before finishing, they are inside the repo. Scratch probes at scratchpad/r4/.",
