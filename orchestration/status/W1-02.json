@@ -3,7 +3,7 @@
   "title": "Regions, borders and the strange",
   "brief": "docs/PLAN.md \u00a73 W1-02",
   "started": "wave-1 round-1 (2026-08-07)",
-  "state": "researching",
+  "state": "building",
   "paths": [
     "world.region.identity",
     "world.region.transition",
@@ -12,7 +12,18 @@
     "world.strangeness.budget",
     "world.strangeness.architecture"
   ],
-  "outputs_expected": [],
+  "outputs_expected": [
+    "game/data/world/weather.json (13 per-region state machines, >=4 states each)",
+    "tools/world/build-weather.mjs",
+    "game/src/sim/environment.js (clock at 20x + regional weather machine) wired into sim/step.js",
+    "game/src/render/sky.js height fog (fog.height_falloff_m) + new named weather states",
+    "game/data/world/borders.json + tools/world/build-borders.mjs",
+    "game/src/world/borders.js (staggered per-axis crossover) + consumers in province/renderer/field",
+    "harness verbs getEnvironment / getBorderCrossover",
+    "tools/world/env-consumption.mjs (RI-MTH07 perturb-and-watch)",
+    "tools/world/border-traverse.mjs (RI-WLD12 M65 staggered crossover)",
+    "docs/shots/ region images + reports/blog-feed.jsonl line"
+  ],
   "outputs_written": [],
   "findings": [
     "Prior round measured RI-WLD04 and found 8/9 axes read strings out of regions.json rather than measuring the world; an audio axis scored 78/78 with audioMB 0. Assume nothing measured.",
@@ -21,9 +32,17 @@
     "JUDGES assembled from front-matter: RI-AUD03[audio.ambience.region,world.region.identity], RI-WLD11[+world.weather.systems,world.region.identity], RI-WLD08[world.weather.systems,world.time.daynight], RI-TRV01[world.time.daynight], RI-WLD12[world.region.transition SOLE], RI-WLD09[world.strangeness.budget], RI-WLD14[world.strangeness.architecture SOLE]. RI-WLD04 and RI-WLD05 judge only LEGACY path names (world.regions/world.weather/world.strangeness/world.architecture) not the current taxonomy paths - corpus hole worth flagging.",
     "W1-01-r4 handover: fog.height_falloff_m 45-340m is DECLARED PER REGION AND READ BY NOBODY (render/sky.js uses FogExp2, no height term). Their measured descriptor says the VERTICAL LUMINANCE PROFILE is the only half of the colour-stripped descriptor that carries signal (lum-only Fisher 1.528 vs edge-only 0.987). Height fog is therefore the highest-value region.identity lever available and it is squarely mine.",
     "W1-01-r4 measured colour-stripped day structure on 39 frames: LOO 7.7% / Fisher 1.326. 3 frames/region makes LOO a coin flip.",
-    "Engine grep: region field 'fauna' is read by ZERO files. 'architecture' only by ui/surface.js. 'only_here' appears in renderer.js+engine.js (verify real). These are candidate CONSUMPTION failures for strangeness.architecture."
+    "Engine grep: region field 'fauna' is read by ZERO files. 'architecture' only by ui/surface.js. 'only_here' appears in renderer.js+engine.js (verify real). These are candidate CONSUMPTION failures for strangeness.architecture.",
+    "MEASURED CONSUMPTION FAILURE #1 (world.time.daynight): sim.env.timeOfDay is initialised to 12.0 in sim/state.js:182 and is NEVER advanced by the fixed step. grep of sim/step.js shows no env clock at all. Its ONLY writers are engine.js:4731 setTimeOfDay (harness verb), engine.js:4465/7118 (rest/advanceTime), and save/state.js:748 (load). This is exactly the RI-MTH07 pattern the brief named: a model whose only writer is a harness verb. There is no day/night CYCLE in the build.",
+    "MEASURED CONSUMPTION FAILURE #2 (world.weather.systems): sim.env.weather's only writers are engine.js:4737 setWeather (harness verb) and save load. No transition machine, no per-region weather selection, nothing reads regions.json .weather[] at runtime. render/sky.js's own comment says 'W1-02 owns the transition machine' - it was left for me.",
+    "GOOD NEWS - the downstream consumers are REAL and behavioural, so a clock/weather that moves will be demonstrable: sim/stealth/system.js:880-881 reads env.timeOfDay AND env.weather for detection; sim/souls.js:81-96 awards differently at night; sim/npc.js:147 picks a schedule slot from env.timeOfDay; sim/settlement.js:243 opens doors by hour; sim/hazards.js:154 stamps weather/hour. Perturbing the clock therefore changes entity behaviour.",
+    "render/sky.js DOES consume regionFog.colour/.extinction/.glow (per-region fog hue + night hue). It does NOT consume fog.height_falloff_m (FogExp2 has no height term) - confirms W1-01-r4's handover.",
+    "ALREADY BUILT BY W1-01, DO NOT REBUILD: only_here signatures are REAL - game/data/world/signatures.json has 840 instances, 13/13 regions, declared==placed for every region, 13 distinct kinds with real geometry in world/signature.js + signature-geo.js. world.strangeness.architecture EXISTENCE is met; the gap is grammar (RI-WLD14 F1-F8) not existence.",
+    "ALREADY BUILT: game/data/world/opacity.json (24 sealed mysteries) consumed by world/opacity.js OpacityRegister. world.strangeness.budget has a spine.",
+    "MEASURED CONSUMPTION FAILURE #3 (world.region.transition): field.regionAt(x,z) is a bare raster read - this.regions[this.regionU[cellIndex]]. All nine RI-WLD04 axes are fields of that one object, so ALL NINE CROSS AT EXACTLY THE SAME COORDINATE. stddev(c)=0 by construction, which is RI-WLD12's named AUTOMATIC FAIL ('the texture swap'). There is no border data anywhere in game/data/world.",
+    "RI-WLD08 \u00a71 fixes the numbers I must build to: timescale 20x, full day/night 72 real minutes, 60/40 day-night split, 6-real-minute dawn/dusk, tide 12 real min (already built). \u00a75: each region declares a weather state machine with >=4 STATES on a 20-real-minute tick, and no region shares another's full state set. regions.json currently declares 1-3 states (hive declares exactly one) - below the bar for all 13."
   ],
-  "next_step": "read RI-WLD12 (borders, sole judge), RI-WLD14 (architecture, sole judge), RI-WLD09 (opacity), RI-WLD08 (weather/daynight), RI-AUD03; then verify consumption of weather/time/only_here/architecture in engine",
+  "next_step": "build environment.js (clock+weather) first - two paths, cheapest consumption demo via stealth/npc/souls",
   "notes_for_successor": "Load was 9.13 / 12 headless_shell at start \u2014 authoring phase first, browser only for verification.",
   "method_deviations": []
 }

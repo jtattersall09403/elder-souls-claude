@@ -32,7 +32,9 @@
     "tools/verdict-validate.mjs (an UNGATED hard-fail gate must now be NAMED in status_reasons/why_not_ten/biggest_gap, or it warns)",
     "game/src/engine.js (_touchScreenSuppression — S35: the thumb ring is not drawn over map/journal/book)",
     "game/src/input/gamepad.js (a completed calibration now applies ONLY to the pad id it was learned on)",
-    "tools/journey/input-checks.mjs (successor-3: reattach arity fix, group-boundary re-sample, mp20 census+screen stand-down, rebind preconditions + both pad profiles + pad mapping proved before measuring, 4 self-test legs repaired, self-test hygiene)"
+    "tools/journey/input-checks.mjs (successor-3: reattach arity fix, group-boundary re-sample, mp20 census+screen stand-down, rebind preconditions + both pad profiles + pad mapping proved before measuring, 4 self-test legs repaired, self-test hygiene)",
+    "reports/W1-08-W1-29-R2.md (section 3b: the full self-test, the five false-negative causes, the calibration defect, the leg repairs, and a run-by-run provenance table)",
+    "reports/blog-feed.jsonl (successor-3 line: the calibration that outlived its pad)"
   ],
   "findings": [
     "boot-check PASS before work; load 3.05 at start",
@@ -70,8 +72,10 @@
     "SUCCESSOR-3 REAL BUILD DEFECT FOUND BY THE REPAIRED INSTRUMENT: a calibration learned on an unrecognised pad was applied to EVERY pad afterwards. gamepad.js _adoptPad drops the old pads profile and quirk map on an id change (its comment says so) but calibrationResult is instance state and was never cleared. MEASURED: calibrate Some Unknown Pad 9000 (6 inputs), unplug, plug in a standard GameSir -> index 0 fired ROLL and index 5 fired LOCK_ON. With the one-line fix (perm applies only when calibrationResult.id === st.id): index 0 interact, index 5 light, and L5 still holds — the stranger returning keeps its own map (raw 0 light). DELETE-THE-FIX reproduces roll/lock_on exactly.",
     "SUCCESSOR-3: M-K18/M-P23 were FALSE FAILS three times over — an open book screen, an entered census holding the keyboard, the handheld pad profile, a one-frame read window, and finally the calibration leak. Each was made visible rather than papered over: the check now records preconditions (ui mode, device class, pad profile, census) and PROVES the profiles interact index fires interact before it measures; if it cannot, it reports unmeasurable naming the action the pad actually fired.",
     "SUCCESSOR-3 SELF-TEST PROGRESSION across four complete runs: 9/16 red (7 vacuous: M-P5,M-K20,M-K20/empty,M-P14,M-P24,M-K22,M-K9) -> 12/16 after the reattach arity fix restored window.__IC -> 15/16 after repairing the M-K22/M-P14 prompt precondition and moving the M-K9 perturbation to the layer HF4 rests on. M-P5 was the last one and the cause is the self-test inheriting pointer:coarse (souls-handheld active while the leg perturbs souls-default); hygiene added at the top of runSelfTest.",
-    "boot-check PASS after the gamepad.js change; check-data and check-quests clean (their counts have moved under sibling work: 336 NPC records / 120 quests)."
+    "boot-check PASS after the gamepad.js change; check-data and check-quests clean (their counts have moved under sibling work: 336 NPC records / 120 quests).",
+    "SUCCESSOR-3 CONFIRMED POST-FIX: --group pad,rebind = 20/20 pass, 0 fail, 0 unmeasurable. M-K18 and M-P23 are GREEN after the pad group for the first time, M-P15 (the calibration itself) still passes, and the rebind check records preconditions {world, desktop, souls-default, census false}. Before the gamepad.js fix the same pairing reported unmeasurable with the reason \"souls-default fired [roll]\".",
+    "CONTENTION NOTE: one full --self-test run was killed by my own pkill (its pattern matched my polling shells) and one died on a TRANSIENT BROKEN TREE from a sibling mid-edit (Engine._boot: SoulsSystem is not defined; boot-check passed again minutes later). The killed run is still evidence for one thing: the browser died mid-suite and checks.json was STILL written, with the groups that did not run typed unmeasurable."
   ],
-  "next_step": "final full --self-test + boot-check; then report, blog line, shot",
+  "next_step": "one clean full --self-test on a quiet box would witness M-P5 red; everything else is measured and written",
   "notes_for_successor": ""
 }

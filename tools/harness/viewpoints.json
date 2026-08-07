@@ -97,19 +97,19 @@
     },
     {
       "id": "VP04-settlement-street",
-      "anchor": "settlement_primary_street",
+      "anchor": "town-thorn",
       "purpose": "art-direction",
-      "note": "Eye-height street view in the flagship settlement: architecture legibility, prop density, NPC placement.",
+      "note": "Eye-height street view in the flagship settlement: architecture legibility, prop density, NPC placement. W1-GIVER-PRESENCE: this pointed at `settlement_primary_street` with a camera hardcoded at [4,1.7,-6] — the WORLD ORIGIN — while Thorn stands at [3820,13.31,859], so the one viewpoint named for settlements rendered empty terrain and sky and was cited as evidence of a settlement. Repointed at `town-thorn`, which stands in the town and populates it from its own records.",
       "camera": {
         "pos": [
-          4,
-          1.7,
-          -6
+          3825.5,
+          15.1,
+          879
         ],
         "look": [
-          4,
-          1.6,
-          18
+          3820.5,
+          14,
+          864
         ],
         "fov": 60
       },

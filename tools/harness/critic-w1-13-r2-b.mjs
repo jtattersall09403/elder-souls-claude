@@ -42,8 +42,8 @@ try {
       H.loadState('default'); H.setRenderRate(0); H.stepFrames(2);
       if (mk) {
         // The route the game itself uses at the end of the census: a written-down character.
-        try { H.setCharacter({ race: 'saxhleel', class_id: 'salt-blade', birthsign: 'the-lord' }); }
-        catch (e) { try { H.setCharacter({}); } catch (e2) { return { label: 'setCharacter failed', why: String(e.message || e) + ' / ' + String(e2.message || e2) }; } }
+        try { H.setCharacter({ race: 'saxhleel', class: 'salt-blade', birthsign: 'raj-xul' }); }
+        catch (e) { return { label: 'setCharacter failed', why: String(e.message || e) }; }
         H.stepFrames(2);
       }
       const b0 = H.saveState(); b0.character.souls_held = 400000; H.restoreState(b0); H.stepFrames(1);

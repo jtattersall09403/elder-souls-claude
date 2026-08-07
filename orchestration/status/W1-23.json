@@ -5,7 +5,11 @@
   "state": "researching",
   "outputs_expected": [],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read docs/PLAN.md W1-23 entry + corpus/60-lore/ RI-LOR01/04/06 + corpus/50-world/RI-WLD09 + game/data/world/opacity.json",
+  "findings": [
+    "canon-facts.json (54 facts) lives ONLY in corpus/60-lore/data/. NOTHING in game/ reads it. Its only consumers are two critic scripts: corpus/80-methods/canon-check.py and book-stats.py. This is the exact RI-MTH07 consumption failure: 'a registry nothing reads is a document'.",
+    "opacity.json (game/data/world/) BY CONTRAST is genuinely consumed: game/src/world/opacity.js OpacityRegister, engine.js throws on dangling anchor at boot, character/converse.js returns registered refusals. That is the model to copy.",
+    "W1-19-r1 verdict already prescribed: registry entries for Ixtu-Meer/Drowned Tally/Ninth Recension/Steward of the Count + a provenance block in game/data/quests/mainline.json naming registry ids per act."
+  ],
+  "next_step": "read RI-LOR06 + RI-LOR01 procedures; audit 28 book contradictions; survey deep-time timeline existence",
   "notes_for_successor": "Fresh start 2026-08-07. No predecessor status file existed."
 }

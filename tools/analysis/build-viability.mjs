@@ -1554,7 +1554,7 @@ function ctxAt(sheet, level, want = {}) {
  * `omniscient: true` restores the round-4 behaviour for the SECOND ARM of the grant-dependency
  * test only. It never produces a criterion verdict.
  */
-function bestCaseCtx(sheet, level, want = {}, forQuest = null, { omniscient = false } = {}) {
+function bestCaseCtx(sheet, level, want = {}, forQuest = null, { omniscient = false, rankFactions = null } = {}) {
   const c = ctxAt(sheet, level, want);
   if (forQuest) {
     const excluded = excludedFor(forQuest);
@@ -1586,9 +1586,21 @@ function bestCaseCtx(sheet, level, want = {}, forQuest = null, { omniscient = fa
   // the build ever writes `q.factions[f].rank`. Granting 7 was not merely a constant; it
   // contradicted the shipping derivation, and it hid the fact that every faction's rank 5 row
   // carries a `world_state.flag` (faction-gates.json), twelve of which no quest sets.
+  //
+  // COST NOTE, because it is a real constraint on a tool RI-MTH06 §A requires to run in CI:
+  // `highestQualifying` walks up to 8 rank rows and each row evaluates reputation, an attribute,
+  // two favoured skills and a world flag. Deriving all eight ladders on every one of the ~260 000
+  // context builds a full walk makes was measured at several times the cost of the entire
+  // round-4 walk. `rankFactions` narrows it to the ladders the caller's gate can actually read —
+  // `canOffer` touches `ctx.ranks[def.rank_gate.faction]` and `canResolve` touches
+  // `ctx.ranks[requires.faction_rank.faction]`, and nothing else in gate.js reads the table — so
+  // the narrowed derivation is COMPLETE for those callers, not a sample of it. Callers that pass
+  // nothing still get all eight.
   const lite = { reputation: c.reputation, attributes: c.attributes, skills: c.skills, worldFlags: c.worldFlags };
   c.ranks = {};
-  for (const fid of gates.ids()) c.ranks[fid] = gates.highestQualifying(fid, lite);
+  for (const fid of (rankFactions || gates.ids())) {
+    if (gates.factions.has(fid)) c.ranks[fid] = gates.highestQualifying(fid, lite);
+  }
   // A faction with no ladder row can still be named by a `requires.faction_rank`; those read 0
   // through `gate.js num()`, which is what the engine does, so nothing is invented for them.
 
@@ -1703,7 +1715,7 @@ function questClearableInner(sheet, q, level, { omniscient = false } = {}) {
     want.attributes.push(...f.favoured_attributes);
     want.skills.push(...f.favoured_skills);
   }
-  const ctx = bestCaseCtx(sheet, level, want, q, { omniscient });
+  const ctx = bestCaseCtx(sheet, level, want, q, { omniscient, rankFactions: [...ladderFactions] });
 
   // THE OFFER GATE, exactly as the build runs it. `ctx.dispositions` is the seeded table, not a
   // derived ceiling; the giver's entry is the player-optimal upper bound from quest gifts. The
@@ -1970,7 +1982,7 @@ function criterionThreeFactionsRank5(sheet) {
   const rankFloor = fxNum('faction_rank5_attribute_floor');
   for (const id of ids) {
     const f = gates.get(id);
-    const ctx = bestCaseCtx(sheet, top, { skills: f.favoured_skills, attributes: f.favoured_attributes });
+    const ctx = bestCaseCtx(sheet, top, { skills: f.favoured_skills, attributes: f.favoured_attributes }, null, { rankFactions: [id] });
     let ev;
     if (rankFloor !== null) {
       const row = gates.row(id, 5);

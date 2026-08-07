@@ -41,7 +41,7 @@ utility-findability.mjs — can a player be offered the NON-main quests by stand
 
 A quest counts as findable here only when the person who gives it is in the world and
 H.talkTo(giver) opens a conversation. Quests the gate would offer with nobody to say the words
-to are counted under `blocked NO GIVER HERE`, not under `offerable`.
+to are counted under "blocked NO GIVER HERE", not under "offerable".
 `;
 
 const args = parseArgs();

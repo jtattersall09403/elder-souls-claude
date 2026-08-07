@@ -1,8 +1,8 @@
 {
   "task_id": "W1-GIVER-PRESENCE",
-  "brief": "dispatch: GAP-W1-quest-givers-not-in-the-world (top open defect, from corpus/90-verdicts/wave1/W1-19-r2.md §2)",
+  "brief": "dispatch: GAP-W1-quest-givers-not-in-the-world (top open defect, from corpus/90-verdicts/wave1/W1-19-r2.md \u00a72)",
   "started": "wave-1",
-  "state": "building",
+  "state": "built-awaiting-verification",
   "outputs_expected": [
     "tools/world/build-giver-posts.mjs (generator: a post in the world for every quest giver)",
     "game/data/npcs/*.json (giver records gain `post` + `schedule`)",
@@ -15,21 +15,54 @@
     "docs/shots/<dated>-populated-*.png",
     "reports/blog-feed.jsonl (one line)"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "tools/world/build-giver-posts.mjs (NEW generator: 34 givers posted in 8 towns, 4 at 2 named sites, 1 already in writ-house)",
+    "game/data/npcs/{quest-givers,mainline,faction-givers,thorn}.json (39 giver records gain `post` + `schedule`; potter-mek settlement null -> gideon)",
+    "tools/world/build-town-states.mjs (NEW generator)",
+    "game/data/states/town-{archon,blackrose,gideon,helstrom,lilmoth,soulrest,stormhold,thorn}.json (NEW, 8)",
+    "game/data/states/{rootlands-hollow,stone-wastes-count}.json (NEW, 2 named sites)",
+    "game/data/states/{helstrom-market,stormhold-street,thorn-hall}.json (+env.settlement)",
+    "game/src/sim/npc.js (post field; 3-way presence)",
+    "game/src/engine.js (spawnNPC carries post; populateSettlement fixed; populateSite NEW; applyNamedState populates)",
+    "game/src/sim/quest/machine.js (THE PRESENCE TERM in open(); presenceMode on|report|off)",
+    "game/src/harness/api.js (questPresenceGate, populateSite, travelToGiver)",
+    "tools/quests/mainline-chain-floor.mjs (conjuring removed -> travelToGiver)",
+    "tools/quests/utility-findability.mjs (--state crash fixed; a quest counts only after talkTo(giver))",
+    "tools/quests/critic-giver-presence.mjs (default state list DERIVED from the build; --legacy-states added; questions and control untouched)"
+  ],
   "findings": [
     "START CONTENTION: pgrep -c headless_shell = 14, loadavg 11.81 -> above the 8 cap. Authoring phase first, no browser. git working tree CLEAN at start; W1-04, W1-FACTIONS, W1-ATTR-SCALE all report state=complete, so the NPC and quest files are not being written under me right now.",
-    "THE TREE HAS MOVED SINCE THE VERDICT. 120 quests now (was 94): side 25, faction 62, hidden 1, main 32. All 120 name a giver. 39 UNIQUE giver ids, and ALL 39 HAVE AN NPC RECORD. So the defect is not missing records — it is that a record is not a spawn.",
-    "WHY THE WORLD IS EMPTY, exactly. Engine.applyNamedState() spawns ONLY `patch.npcs` from the state file. helstrom-market declares 4, stormhold-street 3, soulrest-quay 5, thorn-hall 0 -> the twelve. W1-04 built Engine.populateSettlement(sid), which spawns everyone whose record names that town, and sim/settlement.js:161 calls it — but ONLY on a settlement CROSSING (`if (want !== sim.env.settlement)`). No bootable state stands the player inside a settlement radius, and applyNamedState never calls populate at all. So the mechanism to fill a town exists and is never reached from a state load. critic-giver-presence.mjs calls loadState then listNPCs with NO steps, so even the crossing path could not fire.",
+    "THE TREE HAS MOVED SINCE THE VERDICT. 120 quests now (was 94): side 25, faction 62, hidden 1, main 32. All 120 name a giver. 39 UNIQUE giver ids, and ALL 39 HAVE AN NPC RECORD. So the defect is not missing records \u2014 it is that a record is not a spawn.",
+    "WHY THE WORLD IS EMPTY, exactly. Engine.applyNamedState() spawns ONLY `patch.npcs` from the state file. helstrom-market declares 4, stormhold-street 3, soulrest-quay 5, thorn-hall 0 -> the twelve. W1-04 built Engine.populateSettlement(sid), which spawns everyone whose record names that town, and sim/settlement.js:161 calls it \u2014 but ONLY on a settlement CROSSING (`if (want !== sim.env.settlement)`). No bootable state stands the player inside a settlement radius, and applyNamedState never calls populate at all. So the mechanism to fill a town exists and is never reached from a state load. critic-giver-presence.mjs calls loadState then listNPCs with NO steps, so even the crossing path could not fire.",
     "STATE ENV AUDIT: of the four town states only soulrest-quay declares env.settlement. helstrom-market/stormhold-street declare env.interior = 'helstrom-market'/'stormhold-street', which are NOT real interiors (game/data/world/interiors/ has 115 and neither is among them). thorn-hall and writ-house and barge-hold ARE real interiors.",
     "GIVER SETTLEMENTS (39 unique): gideon 7, helstrom 5, soulrest 4, blackrose 4, thorn 4, stormhold 3, archon 3, lilmoth 3, tidewrack 1, null 5. Only 4 of the 8 settlements have any bootable state, so half the givers had nowhere to be placed even if populate ran.",
-    "THE 5 NULL-SETTLEMENT GIVERS ARE NOT A DATA ERROR. speaker-teel-ashaan (5 quests) and xul-aneekh-speaker (3) are declared at 'the hollow, a day east of Helstrom on the root track'; ixtu-meer (3) 'Under the Stone Wastes, the counting chamber'; keeper-teeja-lun (1) 'The Bone Ladder, the sapwell under the rib'. These are wilderness/dungeon givers and W1-04's rule (settlement:null is correct for someone who belongs to no town) applies. Only potter-mek is a genuine miss — one of its two quests is located at gideon-lowmarket, where fence-ashul already stands.",
-    "talkTo() HAS NO DISTANCE TERM AND NO CELL TERM — it only requires sim.findNPC(eid). So the critic's `talkable` is, today, exactly `in sim.npcs`. listNPCs() likewise returns every entity, visible or not.",
-    "PRESENCE IS ALREADY MODELLED, and well: sim/npc.js stepSchedule() sets n.at from the schedule slot for the hour and n.present/n.visible from `n.at === null || n.at === sim.env.interior`. So spawning a whole town is safe — people in other cells are invisible. The `at === null => present everywhere` branch is what an outdoor person needs fixing for.",
+    "THE 5 NULL-SETTLEMENT GIVERS ARE NOT A DATA ERROR. speaker-teel-ashaan (5 quests) and xul-aneekh-speaker (3) are declared at 'the hollow, a day east of Helstrom on the root track'; ixtu-meer (3) 'Under the Stone Wastes, the counting chamber'; keeper-teeja-lun (1) 'The Bone Ladder, the sapwell under the rib'. These are wilderness/dungeon givers and W1-04's rule (settlement:null is correct for someone who belongs to no town) applies. Only potter-mek is a genuine miss \u2014 one of its two quests is located at gideon-lowmarket, where fence-ashul already stands.",
+    "talkTo() HAS NO DISTANCE TERM AND NO CELL TERM \u2014 it only requires sim.findNPC(eid). So the critic's `talkable` is, today, exactly `in sim.npcs`. listNPCs() likewise returns every entity, visible or not.",
+    "PRESENCE IS ALREADY MODELLED, and well: sim/npc.js stepSchedule() sets n.at from the schedule slot for the hour and n.present/n.visible from `n.at === null || n.at === sim.env.interior`. So spawning a whole town is safe \u2014 people in other cells are invisible. The `at === null => present everywhere` branch is what an outdoor person needs fixing for.",
     "populateSettlement() PLACES PEOPLE IN THE WRONG SPACE for an exterior: positions are derived from the interior's bounds around the ORIGIN, and settlements stand at world coordinates (helstrom [2262.5,27.22,2773.5]). It also reads schedule[0].at rather than the slot for the current hour.",
-    "utility-findability.mjs --state CRASH CONFIRMED at line 51: `(args.state ? String(args.state).split(',') : '<defaults>').split(',')` — the ternary yields an ARRAY when --state is given and .split is then called on it.",
-    "mainline-chain-floor.mjs:198 conjures the giver: `H.spawnNPC({ from_record: giver, pos: [0,0,2] })`, guarded only by the standing-refusal branch."
+    "utility-findability.mjs --state CRASH CONFIRMED at line 51: `(args.state ? String(args.state).split(',') : '<defaults>').split(',')` \u2014 the ternary yields an ARRAY when --state is given and .split is then called on it.",
+    "mainline-chain-floor.mjs:198 conjures the giver: `H.spawnNPC({ from_record: giver, pos: [0,0,2] })`, guarded only by the standing-refusal branch.",
+    "TWO ROOT CAUSES IN populateSettlement(), both found by reading rather than measuring, both now fixed. (1) it read schedule[0].at \u2014 the FIRST row of the day whatever the hour \u2014 so a person whose midnight slot is their house was placed in their house at noon. (2) it derived every position from an INTERIOR's bounds_m, a cell-local frame centred on nothing, and settlements stand at world coordinates (helstrom [2262.5,27.22,2773.5]) \u2014 so it would have heaped every town's people around the world origin, kilometres from the town.",
+    "EVERY PRE-EXISTING TOWN STATE IS A SCENE AT THE WORLD ORIGIN. soulrest-quay declares settlement:soulrest and stands the player at [0,0,-4]; Soulrest is at [610.5,7.91,4877]. That is why four state files could hold twelve people between them: a hand-placed scene is exactly as populated as somebody remembered to type. The 8 new town-<id> states stand at the town's own coordinates and declare nobody by hand.",
+    "presenceMode has THREE settings deliberately \u2014 on | report | off. `report` exists so the term can be measured against the whole tree before it is allowed to refuse anything; the dispatch's warning that landing it fail-closed early has taken the engine down four times is the reason it is a field and not an if.",
+    "CONTENTION during the build phase: headless_shell went 14 -> 12 -> 30 and loadavg 11.8 -> 9.6 -> 19.35. Browser phase deferred; all of the above is authoring done with no browser open."
   ],
-  "files_touched": [],
-  "next_step": "write tools/world/build-giver-posts.mjs, then the engine/npc changes, then states, then the gate",
-  "notes_for_successor": "Both halves or neither. Author the population FIRST, prove the presence term is silent on the shipped tree, THEN arm it. The mechanism to fill a town already exists (Engine.populateSettlement, W1-04) — the work is (a) making a state load reach it, (b) giving the 39 givers a place to stand, (c) bootable states for the 4 towns that have none."
+  "files_touched": [
+    "game/data/npcs/quest-givers.json",
+    "game/data/npcs/mainline.json",
+    "game/data/npcs/faction-givers.json",
+    "game/data/npcs/thorn.json",
+    "game/data/states/*.json (8 new town-*, 2 new sites, 3 patched)",
+    "game/src/sim/npc.js",
+    "game/src/engine.js",
+    "game/src/sim/quest/machine.js",
+    "game/src/harness/api.js",
+    "tools/world/build-giver-posts.mjs (new)",
+    "tools/world/build-town-states.mjs (new)",
+    "tools/quests/mainline-chain-floor.mjs",
+    "tools/quests/utility-findability.mjs",
+    "tools/quests/critic-giver-presence.mjs"
+  ],
+  "next_step": "browser phase when pgrep -c headless_shell < 8: boot-check, then critic-giver-presence (default + --legacy-states + --sabotage assume-present), then delete-the-fix on each number, then the shot",
+  "notes_for_successor": "Both halves or neither. Author the population FIRST, prove the presence term is silent on the shipped tree, THEN arm it. The mechanism to fill a town already exists (Engine.populateSettlement, W1-04) \u2014 the work is (a) making a state load reach it, (b) giving the 39 givers a place to stand, (c) bootable states for the 4 towns that have none."
 }

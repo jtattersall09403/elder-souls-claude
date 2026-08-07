@@ -15,6 +15,6 @@
       "note": "pgrep -c headless_shell = 11, loadavg 9.83 12.38 11.44 at start. Above the 8-browser rule. Doing read/analyse and node-only work first; will re-check before any browser launch."
     }
   ],
-  "next_step": "read W1-FACTIONS-r1 verdict, r2 status, ARBITRATION s3, RI-MTH04",
-  "notes_for_successor": ""
+  "next_step": "prose sample old-vs-new; then re-derive P16 no-reputation-writes independently",
+  "notes_for_successor": "The faction r2 work IS COMMITTED at e1661f4. The working tree is dirty from OTHER agents (W1-SOULS on engine.js, api.js). At my first boot-check the build was BROKEN (SoulsSystem referenced with no import, engine.js:375) - a concurrent agent's in-flight edit, not the faction round. It self-repaired ~4 min later and boot-check PASSes. A 11G repo makes `git worktree add` time out (>2 min); do not try."
 }

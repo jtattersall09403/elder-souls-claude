@@ -54,7 +54,33 @@ const sabotage = args.sabotage ? String(args.sabotage) : null;
 // NOTE: `utility-findability.mjs` advertises `--state <id>` and CRASHES on it —
 // `String(args.state).split(',')` yields an array and the code calls `.split(',')` on the array.
 // So that tool has only ever run on its three hardcoded defaults. Parse ours once.
-const rawStates = args.states === undefined ? 'helstrom-market,stormhold-street,soulrest-quay,thorn-hall' : String(args.states);
+const LEGACY_STATES = ['helstrom-market', 'stormhold-street', 'soulrest-quay', 'thorn-hall'];
+
+/** Every state file that claims to be a place with people in it. See the note in USAGE. */
+function inhabitedStates() {
+  const SD = path.join(process.cwd(), 'game/data/states');
+  const ID = path.join(process.cwd(), 'game/data/world/interiors');
+  const interiorTown = new Map();
+  for (const f of fs.readdirSync(ID)) {
+    if (!f.endsWith('.json')) continue;
+    const d = JSON.parse(fs.readFileSync(path.join(ID, f), 'utf8'));
+    if (d.settlement) interiorTown.set(d.id, d.settlement);
+  }
+  const out = [];
+  for (const f of fs.readdirSync(SD).sort()) {
+    if (!f.endsWith('.json')) continue;
+    const s = JSON.parse(fs.readFileSync(path.join(SD, f), 'utf8'));
+    const env = s.env || {};
+    const named = env.settlement || s.site || (env.interior && interiorTown.get(env.interior)) || null;
+    if (named || (s.npcs || []).length) out.push(s.id);
+  }
+  for (const l of LEGACY_STATES) if (!out.includes(l)) out.push(l);
+  return out;
+}
+
+const rawStates = args.states === undefined
+  ? (args['legacy-states'] ? LEGACY_STATES.join(',') : inhabitedStates().join(','))
+  : String(args.states);
 const STATES = rawStates.split(',').map((s) => s.trim()).filter(Boolean);
 
 const QDIR = path.join(process.cwd(), 'game/data/quests');
