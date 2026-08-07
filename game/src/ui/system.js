@@ -35,8 +35,9 @@ import { drawHUD } from './hud.js';
 import { drawInventory, drawContainer, sortRows, SORTS, CATEGORIES } from './screens/inventory.js';
 import { drawJournal, drawBook, chronicle, interleaveRatio, bookPagination } from './screens/text.js';
 import { drawLevelUp, drawSheet, drawSpells } from './screens/progress.js';
-import { RING, RING_COLS } from './chrome.js';
+import { RING, RING_COLS, screenRect, COMBAT_ALPHA, CALM_ALPHA } from './chrome.js';
 import { barContrasts, MATERIALS } from './theme.js';
+import { BODY } from './type.js';
 import { MONTHS, EPOCH } from '../sim/quest/calendar.js';
 import { BOX } from './chrome.js';
 
@@ -89,6 +90,24 @@ export class UISystem {
   isMenu() { return this.mode !== 'world' && this.mode !== 'dialogue'; }
 
   // ---- opening and closing -----------------------------------------------------------------
+
+  /**
+   * Tell the input layer that a cursor-driven surface is open.
+   *
+   * `input/gamepad.js` only maps the D-PAD onto `move` while `pad.uiMode` is set — "the D-pad
+   * drives `move` while a cursor-driven surface is open, so every list in the game is walkable
+   * with a thumb". Without this call the left stick walks the menus and the D-pad does nothing,
+   * which is exactly the half-working pad support that gets shipped and then discovered by the
+   * one person who plays with a d-pad.
+   */
+  _surfaceChanged(real) {
+    if (!real) return;
+    const open = this.isMenu();
+    if (real.pad) real.pad.uiMode = open || !!real.menuOpen;
+    if (open && real.pointerLocked && typeof document !== 'undefined' && document.exitPointerLock) {
+      try { document.exitPointerLock(); } catch { /* PL5 */ }
+    }
+  }
 
   open(name, opts, ctx) {
     const n = String(name);
@@ -170,8 +189,13 @@ export class UISystem {
     // P6: `roll` stays live in a fight. Out of one it is "back", which is Souls' own B button.
     if (!inCombat) taken.push('roll');
 
+    // The move axes are the PIPELINE's: +y is forward, i.e. the stick pushed AWAY from you.
+    // A list walks the other way — stick up goes to the earlier row — which is the convention
+    // `character/scene.js` already set for the census surface ("stick up = earlier option").
+    // Both surfaces therefore feel the same on the same pad, which is the whole point of there
+    // being one convention rather than two.
     const dx = this._edge('x', input.moveX, ctx.frame);
-    const dy = this._edge('y', input.moveY, ctx.frame);
+    const dy = this._edge('y', -input.moveY, ctx.frame);
     if (dx || dy) this._move(dx, dy, ctx);
     if (input.pressedName('interact')) this._confirm(ctx);
     if (!inCombat && input.pressedName('roll')) this.back();
@@ -330,6 +354,11 @@ export class UISystem {
     // The HUD is drawn in the world and behind a menu, exactly as Souls does: opening the
     // inventory mid-fight does not hide your health.
     drawHUD(S, this._hudModel(ctx));
+    // The screen's translucency is applied ONCE, over the screen's own rectangle, after it is
+    // drawn — see UISurface.beginScreen(). The HUD is drawn first and outside that rectangle,
+    // so opening the inventory mid-fight dims the screen and not your health bar.
+    const alpha = ctx.inCombat ? COMBAT_ALPHA : CALM_ALPHA;
+    if (this.isMenu()) S.beginScreen(screenRect(S), alpha);
     switch (this.mode) {
       case 'inventory': drawInventory(S, this._inventoryModel(ctx)); break;
       case 'container': drawContainer(S, this._containerModel(ctx)); break;
@@ -340,6 +369,7 @@ export class UISystem {
       case 'spells': drawSpells(S, this._spellModel(ctx)); break;
       default: break;
     }
+    if (this.isMenu()) S.endScreen();
     this.builtFrame = ctx.frame;
     this.lastMode = this.mode;
   }
@@ -557,7 +587,9 @@ export class UISystem {
     const hudUnion = S.unionArea((e) => persistent.has(e.kind));
     const allHudUnion = S.unionArea((e) => e.id.startsWith('hud.'));
     const nonWorld = S.unionArea(() => true);
-    const bodyPx = 17 * S.s, labelPx = 15 * S.s;
+    // The size actually set on this screen, not a nominal figure — B4 is measured against
+    // what the player reads.
+    const bodyPx = (this.mode === 'book' ? BODY.book : BODY.screen) * S.s, labelPx = BODY.label * S.s;
     const bk = this.mode === 'book' && this.bookId ? this.data.books.get(this.bookId) : null;
     return {
       mode: this.mode,
@@ -583,6 +615,7 @@ export class UISystem {
         paused: this.pausesSimulation(!!(ctx && ctx.inCombat)),
       },
       book: bk ? { id: bk.id, page: this.focus.book.page * 2 + 1, ...bookPagination(bk.text, S) } : null,
+      focus: this.focus[this.mode] ? { ...this.focus[this.mode] } : null,
       journal: this.mode === 'journal' ? {
         chronological: true,
         interleave_ratio: this._journalModel(ctx).interleave_ratio,

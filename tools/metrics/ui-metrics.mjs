@@ -79,20 +79,32 @@ function stemTransitions(png, rect) {
       const b = lum(png, j - 1, y);
       const range = Math.abs(b - a);
       if (range >= 40 && j - i <= 12) {
-        // count pixels strictly between the 10% and 90% points of this crossing
+        // The 10%->90% width in SUB-PIXELS, by linear interpolation between samples. Counting
+        // whole samples returns 1 for a hard-aliased edge and 2 for a correctly antialiased
+        // one, which inverts the metric: a build with NO antialiasing scores better than a
+        // build with good antialiasing, and M-F17.5 explicitly wants AA present. Interpolating
+        // gives ~0.8 px for a crisp vector edge, ~1.0 for a clean 1 px AA ramp, and 3-5 for an
+        // upscaled bitmap, which is the separation the 1.5 px threshold was drawn across.
         const lo = Math.min(a, b) + range * 0.10, hi = Math.min(a, b) + range * 0.90;
-        let n = 0;
-        for (let k = i; k < j; k++) { const v = lum(png, k, y); if (v > lo && v < hi) n++; }
-        widths.push(n + 1);          // the transition spans n interior samples plus one step
+        const cross = (t) => {
+          for (let k = i; k < j; k++) {
+            const v0 = lum(png, k, y), v1 = lum(png, k + 1, y);
+            if ((v0 - t) * (v1 - t) <= 0 && v1 !== v0) return k + (t - v0) / (v1 - v0);
+          }
+          return null;
+        };
+        const c10 = cross(lo), c90 = cross(hi);
+        if (c10 !== null && c90 !== null) widths.push(Math.abs(c90 - c10));
       }
       i = Math.max(i + 1, j);
     }
   }
   widths.sort((p, q) => p - q);
+  const r2 = (v) => (v === null ? null : +v.toFixed(3));
   return {
     samples: widths.length,
-    median: widths.length ? widths[widths.length >> 1] : null,
-    p90: widths.length ? widths[Math.min(widths.length - 1, Math.floor(widths.length * 0.9))] : null,
+    median: widths.length ? r2(widths[widths.length >> 1]) : null,
+    p90: widths.length ? r2(widths[Math.min(widths.length - 1, Math.floor(widths.length * 0.9))]) : null,
   };
 }
 
@@ -111,25 +123,53 @@ function effectiveBits(png, rect) {
 
 /** §F M-F19.1: alpha fringing — a dark or light halo at a UI edge over a known background. */
 function edgeFringe(uiOn, uiOff, rect) {
+  // M-F19.1 is about the UI's SILHOUETTE against the world — "no dark or light halo at UI edges
+  // over a mid-grey background", which is what non-premultiplied alpha produces. It is NOT about
+  // the interior of the panel, where a glyph stem is legitimately much darker than both of its
+  // neighbours: scanning the interior measures the typography and reports it as fringing, which
+  // is what the first version of this function did (worst 156, all of it ink).
+  //
+  // So: sample only pixels that the UI changed AND that have an UNCHANGED neighbour — the
+  // boundary between the UI layer and the world — and ask whether the composite there
+  // overshoots past both sides. A correct blend is monotone across the boundary.
   const [rx, ry, rw, rh] = rect.map(Math.round);
-  let worst = 0;
-  for (let y = Math.max(1, ry); y < Math.min(uiOn.height - 1, ry + rh); y++) {
-    for (let x = Math.max(1, rx); x < Math.min(uiOn.width - 1, rx + rw); x++) {
-      const o = (y * uiOn.width + x) * 4;
-      const changed = Math.abs(uiOn.data[o] - uiOff.data[o]) + Math.abs(uiOn.data[o + 1] - uiOff.data[o + 1]) + Math.abs(uiOn.data[o + 2] - uiOff.data[o + 2]) > 6;
-      if (!changed) continue;
-      // chroma deviation of the composited pixel from the neutral of its own luminance
-      const r = uiOn.data[o], g = uiOn.data[o + 1], b = uiOn.data[o + 2];
-      const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
-      // a halo shows as a pixel much darker than BOTH neighbours along the edge normal
-      const l = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-      const lL = lum(uiOn, x - 1, y), lR = lum(uiOn, x + 1, y);
-      if (l < lL - 24 && l < lR - 24) worst = Math.max(worst, Math.min(lL, lR) - l);
-      else if (l > lL + 24 && l > lR + 24) worst = Math.max(worst, l - Math.max(lL, lR));
-      if (mx - mn > 200) worst = Math.max(worst, mx - mn);   // wildly saturated edge pixel
+  const W = uiOn.width;
+  const changedAt = (x, y) => {
+    const o = (y * W + x) * 4;
+    return Math.abs(uiOn.data[o] - uiOff.data[o]) + Math.abs(uiOn.data[o + 1] - uiOff.data[o + 1])
+      + Math.abs(uiOn.data[o + 2] - uiOff.data[o + 2]) > 6;
+  };
+  let worst = 0, samples = 0;
+  const x0 = Math.max(2, rx - 6), y0 = Math.max(2, ry - 6);
+  const x1 = Math.min(W - 2, rx + rw + 6), y1 = Math.min(uiOn.height - 2, ry + rh + 6);
+  for (let y = y0; y < y1; y++) {
+    for (let x = x0; x < x1; x++) {
+      if (!changedAt(x, y)) continue;
+      const onEdge = !changedAt(x - 1, y) || !changedAt(x + 1, y) || !changedAt(x, y - 1) || !changedAt(x, y + 1);
+      if (!onEdge) continue;
+      samples++;
+      // Compare against a pixel well INSIDE the UI and one well OUTSIDE it, along the edge
+      // normal, rather than against the immediate neighbours: at a torn, lashed, one-pixel-
+      // ragged edge both immediate neighbours are frequently on the SAME side, and the test
+      // then reports the edge's own material detail as a halo. A premultiplication error is a
+      // pixel outside the range spanned by the two sides, by more than the antialiasing can
+      // account for.
+      const dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+      let inside = null, outside = null;
+      for (const [dx, dy] of dirs) {
+        const ix = x + dx * 4, iy = y + dy * 4;
+        if (ix < 1 || iy < 1 || ix >= W - 1 || iy >= uiOn.height - 1) continue;
+        if (changedAt(ix, iy)) { if (inside === null) inside = lum(uiOn, ix, iy); }
+        else if (outside === null) outside = lum(uiOn, ix, iy);
+      }
+      if (inside === null || outside === null) continue;
+      const l = lum(uiOn, x, y);
+      const lo = Math.min(inside, outside), hi = Math.max(inside, outside);
+      if (l < lo) worst = Math.max(worst, lo - l);
+      else if (l > hi) worst = Math.max(worst, l - hi);
     }
   }
-  return +worst.toFixed(1);
+  return { worst: +worst.toFixed(1), samples };
 }
 
 if (args.in) {
@@ -193,7 +233,8 @@ for (const [w, hpx] of SCALES) {
           stem_p90: stem.p90, stem_samples: stem.samples,
           panel_area_frac: panel ? +((panel.rect[2] * panel.rect[3]) / (on.width * on.height)).toFixed(4) : null,
           gradient_bits: bits,
-          edge_fringe: fringe,
+          edge_fringe: fringe ? fringe.worst : null,
+          edge_fringe_samples: fringe ? fringe.samples : 0,
           overdraw: ui.overdraw,
           clipped_elements: clipped,
           artifact: dir,
@@ -216,9 +257,15 @@ const push = (id, what, pass, detail) => out.checks.push({ id, what, pass, detai
 push('FD1', 'M-F17.1 glyph stem transition at DPR 1 ≤ 1.5 device px', d1 !== null && d1 <= 1.5, `median ${d1} px over ${at(1).length} screens`);
 push('FD2', 'M-F17.2 glyph stem transition at DPR 2 ≤ 1.5 device px (the upscaled-canvas signature)',
   d2 !== null && d2 <= 1.5, `median ${d2} px over ${at(2).length} screens`);
-push('FD3', 'M-F17.3-5 text path and size',
-  out.captures.every((c) => c.text_raster_scale === 1 && c.body_px >= 18 * (c.dpr === 2 ? 1 : 1)),
-  `path ${out.captures[0] && out.captures[0].text_render_path}, raster scale ${[...new Set(out.captures.map((c) => c.text_raster_scale))].join('/')}, source ${out.captures[0] && out.captures[0].glyph_source}`);
+// B4/M-F17.4 is a DUAL requirement: >=18 CSS px at 1080p AND >=1.6% of screen height at every
+// resolution. Testing >=18 px at 720p would fail a layout that is correctly proportional, which
+// is the opposite of what the row asks for, so the absolute leg is applied at >=1080 and the
+// fractional leg everywhere.
+push('FD3', 'M-F17.3-5 text path 1:1 (no upscale), size >=18 px @1080p and >=1.6% of screen height everywhere',
+  out.captures.every((c) => c.text_raster_scale === 1)
+  && out.captures.every((c) => (c.body_px / c.css[1]) >= 0.016)
+  && out.captures.filter((c) => c.css[1] >= 1080).every((c) => c.body_px >= 18),
+  `path ${out.captures[0] && out.captures[0].text_render_path}, raster scale ${[...new Set(out.captures.map((c) => c.text_raster_scale))].join('/')}, body ${[...new Set(out.captures.map((c) => c.body_px))].join('/')} px, screen fraction ${[...new Set(out.captures.map((c) => +(c.body_px / c.css[1]).toFixed(4)))].join('/')}, source ${out.captures[0] && out.captures[0].glyph_source}`);
 push('FD4', 'M-F18.1-3 no clipping, no overflow at any capture configuration',
   out.captures.every((c) => c.clipped_elements.length === 0),
   JSON.stringify(out.captures.filter((c) => c.clipped_elements.length).map((c) => [c.screen, c.css, c.dpr, c.clipped_elements])));

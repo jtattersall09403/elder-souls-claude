@@ -125,6 +125,34 @@ async function main() {
   await ev(() => { window.__HARNESS.setMode('play-instrumented'); window.__HARNESS.setRenderRate(0); return true; });
   await page.evaluate(PAGE_HELPERS);
 
+  // THE TITLE SURFACE HAS THE BUTTONS. W1-26's title screen consumes every action of the closed
+  // set every frame (`engine._censusStep` -> `input.consumeUI(CENSUS_ACTIONS)`), which is
+  // correct — a menu that let the body walk behind it would be the defect. But it means a probe
+  // that starts measuring input while the title is up measures the TITLE, and reads a working
+  // control layer as sixteen dead buttons. Every check below therefore starts in the world.
+  const dismissed = await ev(() => {
+    const H = window.__HARNESS;
+    const before = H.getUIState ? H.getUIState() : null;
+    try { H.titleActivate('new'); } catch (e) { return { ok: false, why: String(e && e.message), before }; }
+    H.stepFrames(4);
+    return { ok: true, before, after: H.getUIState ? H.getUIState() : null };
+  });
+  if (!dismissed.ok) log(`  [note] title surface not dismissed: ${dismissed.why}`);
+  // `reset()` puts the title back, so every check that resets must dismiss it again. Rather than
+  // audit thirty call sites, the reset is wrapped once here.
+  await ev(() => {
+    const H = window.__HARNESS;
+    const raw = H.reset.bind(H);
+    H.reset = (opts) => {
+      const r = raw(opts);
+      H.setMode('play-instrumented'); H.setRenderRate(0);
+      try { H.titleActivate('new'); } catch { /* already in the world */ }
+      H.stepFrames(4);
+      return r;
+    };
+    return true;
+  });
+
   const groups = args.group ? new Set(String(args.group).split(',').map((s) => s.trim())) : null;
   const want = (g) => !groups || groups.has(g);
   try {

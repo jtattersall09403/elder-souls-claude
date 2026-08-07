@@ -1,0 +1,389 @@
+{
+  "resolutions_gated_on_a_magic_flag": [],
+  "flag_to_resolution": [
+    {
+      "effect": "open_lock",
+      "cast": {
+        "range": "touch",
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "lock_opened",
+          "world_flag",
+          "effect_apply",
+          "spell_impact"
+        ]
+      },
+      "flipped_resolutions": []
+    },
+    {
+      "effect": "shatter",
+      "cast": {
+        "range": "touch",
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "object_shattered",
+          "world_flag",
+          "effect_apply",
+          "spell_impact"
+        ]
+      },
+      "flipped_resolutions": []
+    },
+    {
+      "effect": "ward_trap",
+      "cast": {
+        "range": "touch",
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "sap_ward",
+          "world_flag",
+          "needle",
+          "collapse",
+          "effect_apply",
+          "spell_impact"
+        ]
+      },
+      "flipped_resolutions": []
+    }
+  ],
+  "calm_vs_demoralise": [
+    {
+      "effect": "control",
+      "cast": {
+        "control": true
+      },
+      "pos_start": [
+        0,
+        1.3
+      ],
+      "pos_end": [
+        0,
+        1.3
+      ],
+      "displacement_m": 0,
+      "distance_from_player_start_m": 1.3,
+      "distance_from_player_end_m": 1.3,
+      "yielded": false,
+      "in_combat": true,
+      "track": [
+        {
+          "f": 60,
+          "pos": [
+            0,
+            1.3
+          ]
+        },
+        {
+          "f": 240,
+          "pos": [
+            0,
+            1.3
+          ]
+        },
+        {
+          "f": 420,
+          "pos": [
+            0,
+            1.3
+          ]
+        },
+        {
+          "f": 600,
+          "pos": [
+            0,
+            1.3
+          ]
+        }
+      ]
+    },
+    {
+      "effect": "calm_beast",
+      "cast": {
+        "range": "target",
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "fight_ended",
+          "world_flag",
+          "effect_apply",
+          "spell_impact"
+        ]
+      },
+      "pos_start": [
+        0,
+        1.3
+      ],
+      "pos_end": [
+        0,
+        1.3
+      ],
+      "displacement_m": 0,
+      "distance_from_player_start_m": 1.3,
+      "distance_from_player_end_m": 1.3,
+      "yielded": true,
+      "in_combat": false,
+      "track": [
+        {
+          "f": 60,
+          "pos": [
+            0,
+            1.3
+          ]
+        },
+        {
+          "f": 240,
+          "pos": [
+            0,
+            1.3
+          ]
+        },
+        {
+          "f": 420,
+          "pos": [
+            0,
+            1.3
+          ]
+        },
+        {
+          "f": 600,
+          "pos": [
+            0,
+            1.3
+          ]
+        }
+      ]
+    },
+    {
+      "effect": "demoralise",
+      "cast": {
+        "range": "touch",
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "fight_ended",
+          "world_flag",
+          "effect_apply",
+          "spell_impact"
+        ]
+      },
+      "pos_start": [
+        0,
+        1.3
+      ],
+      "pos_end": [
+        0,
+        1.3
+      ],
+      "displacement_m": 0,
+      "distance_from_player_start_m": 1.3,
+      "distance_from_player_end_m": 1.3,
+      "yielded": true,
+      "in_combat": false,
+      "track": [
+        {
+          "f": 60,
+          "pos": [
+            0,
+            1.3
+          ]
+        },
+        {
+          "f": 240,
+          "pos": [
+            0,
+            1.3
+          ]
+        },
+        {
+          "f": 420,
+          "pos": [
+            0,
+            1.3
+          ]
+        },
+        {
+          "f": 600,
+          "pos": [
+            0,
+            1.3
+          ]
+        }
+      ]
+    },
+    {
+      "effect": "charm",
+      "cast": {
+        "range": "touch",
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "cast_release",
+          "fight_ended",
+          "world_flag",
+          "effect_apply",
+          "spell_impact"
+        ]
+      },
+      "pos_start": [
+        0,
+        1.3
+      ],
+      "pos_end": [
+        0,
+        1.3
+      ],
+      "displacement_m": 0,
+      "distance_from_player_start_m": 1.3,
+      "distance_from_player_end_m": 1.3,
+      "yielded": true,
+      "in_combat": false,
+      "track": [
+        {
+          "f": 60,
+          "pos": [
+            0,
+            1.3
+          ]
+        },
+        {
+          "f": 240,
+          "pos": [
+            0,
+            1.3
+          ]
+        },
+        {
+          "f": 420,
+          "pos": [
+            0,
+            1.3
+          ]
+        },
+        {
+          "f": 600,
+          "pos": [
+            0,
+            1.3
+          ]
+        }
+      ]
+    }
+  ],
+  "binds": [
+    {
+      "effect": "bind_lesser",
+      "magnitude": 1,
+      "cast": {
+        "range": "self",
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "effect_apply",
+          "cast_release"
+        ]
+      },
+      "new_entities": [
+        {
+          "eid": "e0",
+          "kind": "enemy",
+          "archetype": "INFANTRY",
+          "hp": 260
+        }
+      ],
+      "summons": [
+        {
+          "eid": "e0",
+          "kind": "lesser",
+          "unfold_f": 40,
+          "expires_f": 1830
+        }
+      ]
+    },
+    {
+      "effect": "bind_lesser",
+      "magnitude": 90,
+      "cast": {
+        "range": "self",
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "effect_apply",
+          "cast_release"
+        ]
+      },
+      "new_entities": [
+        {
+          "eid": "e0",
+          "kind": "enemy",
+          "archetype": "INFANTRY",
+          "hp": 260
+        }
+      ],
+      "summons": [
+        {
+          "eid": "e0",
+          "kind": "lesser",
+          "unfold_f": 40,
+          "expires_f": 1830
+        }
+      ]
+    },
+    {
+      "effect": "bind_greater",
+      "magnitude": 1,
+      "cast": {
+        "range": "self",
+        "delivered": true,
+        "kinds": [
+          "cast_start",
+          "focus_spend",
+          "effect_apply",
+          "cast_release"
+        ]
+      },
+      "new_entities": [
+        {
+          "eid": "e0",
+          "kind": "enemy",
+          "archetype": "INFANTRY",
+          "hp": 640
+        }
+      ],
+      "summons": [
+        {
+          "eid": "e0",
+          "kind": "greater",
+          "unfold_f": 40,
+          "expires_f": 1830
+        }
+      ]
+    },
+    {
+      "effect": "bind_greater",
+      "magnitude": 90,
+      "cast": {
+        "range": "self",
+        "delivered": false,
+        "kinds": []
+      },
+      "new_entities": [],
+      "summons": []
+    }
+  ]
+}

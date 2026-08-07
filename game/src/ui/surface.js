@@ -89,6 +89,39 @@ export class UISurface {
     this.elements = [];
     this.drawn = false;
     this.overdrawPx = 0;
+    this.screenAlpha = null;        // set between beginScreen()/endScreen()
+    this.screenRect = null;
+  }
+
+  /**
+   * Open a translucent screen. Everything drawn until `endScreen()` is painted at FULL alpha and
+   * the whole rectangle is then knocked back to `alpha` in one operation.
+   *
+   * This is a correctness fix, not a tidy-up, and RI-UIX03 P5's perturbation test is what found
+   * it. Setting `globalAlpha = 0.5` per element COMPOUNDS: a panel, a header, a divider and a
+   * row stacked in the same pixel composite to 1 − 0.5⁴ = 0.94, so a "50% opacity" screen was
+   * opaque over its own centre and the world behind the fight was gone. Measured: the world
+   * moved 0.0% of the centre 40%×40% pixels under a perturbation that moved 99.8% of the pixels
+   * outside the screen.
+   *
+   * `destination-in` with a flat `rgba(0,0,0,alpha)` multiplies the alpha channel of everything
+   * already in the rectangle by exactly `alpha` and touches nothing outside it — so the HUD,
+   * which is drawn before the screen and lives at the frame's edges, keeps its full opacity.
+   */
+  beginScreen(rect, alpha) {
+    this.screenAlpha = alpha;
+    this.screenRect = rect.slice();
+  }
+
+  endScreen() {
+    if (this.screenAlpha === null || this.screenAlpha >= 1) { this.screenAlpha = null; return; }
+    const c = this.ctx, r = this.screenRect;
+    c.save();
+    c.globalCompositeOperation = 'destination-in';
+    c.fillStyle = `rgba(0,0,0,${this.screenAlpha})`;
+    c.fillRect(r[0] - 8, r[1] - 8, r[2] + 16, r[3] + 16);
+    c.restore();
+    this.screenAlpha = null;
   }
 
   /**
@@ -160,7 +193,9 @@ export class UISurface {
     if (!record.visible || record.opacity <= 0 || !draw) return record;
     const c = this.ctx;
     c.save();
-    c.globalAlpha = record.opacity;
+    // Inside a translucent screen every element paints at FULL alpha; `endScreen()` knocks the
+    // whole rectangle back once. `record.opacity` still reports the alpha the player sees.
+    c.globalAlpha = this.screenAlpha === null ? record.opacity : 1;
     // The declared rect IS the clip. An element cannot paint outside what it declared.
     c.beginPath();
     c.rect(r[0] - 0.5, r[1] - 0.5, r[2] + 1, r[3] + 1);

@@ -46,6 +46,7 @@ try {
   say(`surfaces the register instruments  : ${rec.surfaces.instrumented.join(', ')}`);
 
   // ---- BEFORE: what the shipped accessor reports over the opening -------------------------
+  // Force a full HUD repaint first, so 'before' is a fair reading of a frame that HAS a HUD.
   await h.h('loadState', 'barge-hold');
   await h.h('censusBegin', { race: 'saxhleel' });
   await h.h('renderedTextClear');
@@ -66,8 +67,11 @@ try {
   });
   say(`\ninstrumented renderer.menus as surface 'menus': ${JSON.stringify(ok)}`);
   await h.h('renderedTextClear');
-  // Force the HUD to redraw: the menus surface is repainted every frame the HUD is up.
-  await h.h('stepFrames', 2);
+  // The menus surface repaints on the render pass; step a couple of sim frames so the HUD is
+  // marked dirty, then render twice, so a one-frame cache cannot hide the strings.
+  await h.h('stepFrames', 4);
+  await h.h('renderFrame');
+  await h.h('stepFrames', 4);
   await h.h('renderFrame');
   const after = await h.h('getRenderedText', {});
   const afterND = await h.h('getRenderedText', { notSurface: ['dialogue'] });
@@ -87,7 +91,7 @@ try {
 
   // ---- and the same question for the menu SCREENS, which is where instruction text lives ---
   const screens = [];
-  for (const id of ['inventory', 'progress', 'journal', 'map', 'book']) {
+  for (const id of ['menu', 'rest', 'dialogue']) {
     try {
       await h.h('uiOpen', id);
       await h.h('renderedTextClear');

@@ -114,7 +114,8 @@ try {
     await h.h('teleport', 0, 0);
     await h.h('setTimeOfDay', 13);
     await h.h('setWeather', 'clear');
-    await h.h('camera', { pos: [0, 1.6, -4.2], pivot: [0, 1.55, 0], fov: 50 });
+    // `camera()` takes [pos, look, fov, mode, lockOn] only — the rig solves yaw and pitch.
+    await h.h('camera', { pos: [0, 1.6, -4.2], look: [0, 1.55, 0], fov: 50 });
     await h.h('closeMenu');
     await h.h('stepFrames', 24);
   };
@@ -140,12 +141,21 @@ try {
     for (const stage of [0, 3, 7]) {
       await pin();
       // The quest state, and NOTHING else, is what differs between these three captures.
+      // It goes in through the SAVE — `getQuestState()` returns a read-only projection, and
+      // §E's own wording is `loadState('quest_stage_3')`, i.e. a named state per stage. Taking
+      // the state, editing one quest's stage and loading it back IS that, without asking the
+      // quest builder for fifteen fixture files.
       await h.page.evaluate(({ id, st }) => {
         const H = window.__HARNESS;
-        const s = H.getQuestState();
-        s.quests[id] = { stage: st, flags: {}, branch: null, failed: false };
-        if (st === 0) delete s.quests[id];
+        const blob = H.saveState();
+        if (st === 0) delete blob.quests[id];
+        else blob.quests[id] = { stage: st, flags: {}, branch: null, failed: false, started_at: 0 };
+        H.loadState(blob);
       }, { id: q, st: stage });
+      // loadState resets the pose, so re-pin everything that is not quest state, then settle.
+      await h.h('setTimeOfDay', 13);
+      await h.h('setWeather', 'clear');
+      await h.h('camera', { pos: [0, 1.6, -4.2], look: [0, 1.55, 0], fov: 50 });
       await h.h('stepFrames', 24);
       shots.push(decode(await h.h('screenshot')));
     }
@@ -184,7 +194,7 @@ try {
     const moved = [];
     for (let i = 0; i < 24; i++) {
       const yaw = (i * 360) / 24;
-      await h.h('camera', { pos: [Math.sin(yaw * Math.PI / 180) * -4.2, 1.6, Math.cos(yaw * Math.PI / 180) * -4.2], pivot: [0, 1.55, 0], fov: 50 });
+      await h.h('camera', { pos: [Math.sin(yaw * Math.PI / 180) * -4.2, 1.6, Math.cos(yaw * Math.PI / 180) * -4.2], look: [0, 1.55, 0], fov: 50 });
       await h.h('stepFrames', 1);
       const ui = await h.h('getUIState');
       for (const e of ui.elements) {

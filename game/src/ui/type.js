@@ -9,6 +9,16 @@
 
 import { measure, drawText, faceOf, CAP_EM } from './glyphs.js';
 
+/**
+ * The body sizes, in 1080p units, in ONE place.
+ *
+ * B4/M-F17.4 is a dual requirement: >=18 CSS px at 1080p AND >=1.6% of screen height at every
+ * resolution. `SCREEN` was 17, which is 17 px at 1080p (under the absolute floor) and 0.0157 of
+ * screen height at 720p (under the fractional floor) — it failed both legs by a hair, in the
+ * direction nobody looks. 19 clears both at every resolution this build captures.
+ */
+export const BODY = { screen: 19, book: 26, label: 15 };
+
 /** RI-UIX05 §A. Bands, not targets — the layout aims for the middle of each. */
 export const BANDS = {
   words_per_page: [120, 180],

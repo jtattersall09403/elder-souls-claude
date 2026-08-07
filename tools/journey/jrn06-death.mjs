@@ -984,9 +984,14 @@ async function runBack(h) {
       const bad = await probeRay(th);
       if (bad.length) { bearings.push({ deg: Math.round(th * 180 / Math.PI), rejected_at: bad[0] }); continue; }
       const x = hearth.pos[0] + Math.cos(th) * dist, z = hearth.pos[2] + Math.sin(th) * dist;
+      // `walkPath` returns `arrived`, `path_m`, `frames` and `minutes`. It does NOT return
+      // `distance_m`, which is what the first version tested — so `undefined > 90` was false,
+      // every SUCCESSFUL walk was discarded as too short, and the check reported "no walkable
+      // bearing" at three radii while the body had in fact walked all three. A probe reading a
+      // field the API does not have is the quietest way to measure nothing at all.
       const r = await h.hOpt('walkPath', [[hearth.pos[0], hearth.pos[2]], [x, z]], WOPT);
-      if (r && !r.aborted && r.distance_m > dist * 0.6) { out = r; site = [x, z]; bearings.push({ deg: Math.round(th * 180 / Math.PI), walked: true, frames: r.frames }); }
-      else { bearings.push({ deg: Math.round(th * 180 / Math.PI), walk_aborted: r ? r.aborted : 'no result' }); await h.h('teleport', hearth.pos[0], hearth.pos[2]); await h.h('stepFrames', 2); }
+      if (r && !r.aborted && r.arrived && r.path_m > dist * 0.6) { out = r; site = [x, z]; bearings.push({ deg: Math.round(th * 180 / Math.PI), walked: true, frames: r.frames, path_m: r.path_m }); }
+      else { bearings.push({ deg: Math.round(th * 180 / Math.PI), walk_aborted: r ? (r.aborted || (r.arrived ? `short: ${r.path_m} m` : 'did not arrive')) : 'no result' }); await h.h('teleport', hearth.pos[0], hearth.pos[2]); await h.h('stepFrames', 2); }
     }
     if (!out) { trials.push({ dist, ok: false, why: 'no walkable bearing at this radius', bearings_tried: bearings }); continue; }
     const blob = await h.h('saveState');
@@ -1008,10 +1013,13 @@ async function runBack(h) {
       dist, ok: true,
       bearings_tried: bearings.length, bearings_rejected_by_ground: bearings.filter((b) => b.rejected_at).length,
       respawned_at: from ? from.at : null,
-      approach_frames: out.frames, approach_min: +(out.frames / 3600).toFixed(3), approach_m: +out.distance_m.toFixed(1),
+      approach_frames: out.frames, approach_min: out.minutes, approach_m: out.path_m,
+      approach_mean_speed_mps: out.mean_speed_mps,
       run_back_frames: back ? back.frames : null,
-      run_back_min: back ? +(back.frames / 3600).toFixed(3) : null,
-      run_back_m: back ? +back.distance_m.toFixed(1) : null,
+      run_back_min: back ? back.minutes : null,
+      run_back_m: back ? back.path_m : null,
+      run_back_arrived: back ? back.arrived : null,
+      run_back_aborted: back ? back.aborted : null,
       ratio: back && out.frames ? +(back.frames / out.frames).toFixed(3) : null,
       recovered_on_arrival: afterWalk.souls_held === 4200 && afterWalk.bloodstain_count === 0,
       souls_after: afterWalk.souls_held,

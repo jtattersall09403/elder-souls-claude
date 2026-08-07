@@ -1,0 +1,479 @@
+{
+  "no_dice": {
+    "n": 40,
+    "distinct": [
+      80
+    ],
+    "pass": true
+  },
+  "cast_iframe_seen": false,
+  "cast_census": {
+    "classes": [
+      {
+        "cls": "0",
+        "declared": {
+          "startup": 14,
+          "active": 3,
+          "recovery": 20,
+          "hard_until": 29
+        }
+      },
+      {
+        "cls": "1",
+        "declared": {
+          "startup": 24,
+          "active": 4,
+          "recovery": 28,
+          "hard_until": 45
+        }
+      },
+      {
+        "cls": "2",
+        "declared": {
+          "startup": 36,
+          "active": 6,
+          "recovery": 40,
+          "hard_until": 66
+        }
+      },
+      {
+        "cls": "3",
+        "declared": {
+          "startup": 52,
+          "active": 8,
+          "recovery": 60,
+          "hard_until": 96
+        }
+      },
+      {
+        "cls": "4",
+        "declared": {
+          "startup": 150,
+          "active": 12,
+          "recovery": 48,
+          "hard_until": 191
+        }
+      }
+    ],
+    "first_frame_a_roll_executes": 45,
+    "cast_iframes_observed": false
+  },
+  "levitation": {
+    "altitude_gain_m": 0,
+    "focus_spent": 36,
+    "focus_per_metre": null,
+    "drift_mps": 1.4,
+    "walk_mps": 3.173,
+    "iframe_frames_of_240": 0,
+    "buttons": {
+      "light": {
+        "state_before": "AIRBORNE",
+        "state_after": "AIRBORNE"
+      },
+      "heavy": {
+        "state_before": "AIRBORNE",
+        "state_after": "AIRBORNE"
+      },
+      "block": {
+        "state_before": "AIRBORNE",
+        "state_after": "AIRBORNE"
+      },
+      "roll": {
+        "state_before": "AIRBORNE",
+        "state_after": "AIRBORNE"
+      },
+      "parry": {
+        "state_before": "AIRBORNE",
+        "state_after": "AIRBORNE"
+      }
+    },
+    "still_levitating_after_hit": false,
+    "hp_lost_to_hit": 37
+  },
+  "s27": {
+    "series": [
+      {
+        "at": "start",
+        "focus": 124
+      },
+      {
+        "at": "after cast",
+        "focus": 80
+      },
+      {
+        "at": "after 3600 idle frames",
+        "focus": 80
+      },
+      {
+        "at": "after time change + 600",
+        "focus": 80
+      },
+      {
+        "at": "after hearth rest",
+        "focus": 88,
+        "rest": {
+          "rested": true,
+          "focus_restored": true,
+          "focus": 88,
+          "focus_max": 88,
+          "why": null,
+          "rest_clamp_reset": true,
+          "sap_taint": {
+            "band": 4,
+            "rests": 702,
+            "immune": false,
+            "ward_uses_left": 3
+          },
+          "note": "RI-MAG01 §A: the reservoir refills here and nowhere else — and for one birthsign in nine, not even here."
+        }
+      }
+    ],
+    "monotone_non_increasing": true,
+    "dry_well": {
+      "sign": "nu-ixtu",
+      "focus_before": 90,
+      "after_cast": 133,
+      "after_hearth": 133,
+      "rest": {
+        "rested": true,
+        "focus_restored": false,
+        "focus": 133,
+        "focus_max": 141,
+        "why": "The Dry Well. RI-CHR03: the wells do not fill you. AMENDMENT-W1-07-03.",
+        "rest_clamp_reset": true,
+        "sap_taint": {
+          "band": 4,
+          "rests": 702,
+          "immune": false,
+          "ward_uses_left": 3
+        },
+        "note": "RI-MAG01 §A: the reservoir refills here and nowhere else — and for one birthsign in nine, not even here."
+      },
+      "hearth_restored": false
+    }
+  },
+  "s29": [
+    {
+      "mode": "fight",
+      "moved_m": 0,
+      "drops": [
+        {
+          "reason": "travel_in_combat",
+          "spell": "custom_1_s29_fight",
+          "fence": "in_combat",
+          "text": "Not with them on you. The roots do not carry bodies out of a fight."
+        }
+      ],
+      "travel_refused": [
+        {
+          "spell": "custom_1_s29_fight",
+          "fence": "in_combat",
+          "text": "Not with them on you. The roots do not carry bodies out of a fight.",
+          "ruling": "S29"
+        }
+      ]
+    },
+    {
+      "mode": "cooldown",
+      "moved_m": 84.926,
+      "drops": [],
+      "travel_refused": []
+    },
+    {
+      "mode": "quiet",
+      "moved_m": 84.926,
+      "drops": [],
+      "travel_refused": []
+    }
+  ],
+  "s29_break": {
+    "moved_m": 84.926
+  },
+  "ward_matrix_real_hits": [
+    {
+      "ward": "control",
+      "physical": 100,
+      "fire": 100,
+      "frost": 100,
+      "shock": 100,
+      "poison": 100,
+      "disease": 100,
+      "magic": 100
+    },
+    {
+      "ward": "shield",
+      "physical": 11,
+      "fire": 100,
+      "frost": 100,
+      "shock": 100,
+      "poison": 100,
+      "disease": 100,
+      "magic": 100
+    },
+    {
+      "ward": "resist_element",
+      "physical": 100,
+      "fire": 15,
+      "frost": 15,
+      "shock": 15,
+      "poison": 100,
+      "disease": 100,
+      "magic": 100
+    },
+    {
+      "ward": "resist_disease",
+      "physical": 100,
+      "fire": 100,
+      "frost": 100,
+      "shock": 100,
+      "poison": 15,
+      "disease": 15,
+      "magic": 100
+    },
+    {
+      "ward": "sap_ward",
+      "physical": 100,
+      "fire": 100,
+      "frost": 100,
+      "shock": 100,
+      "poison": 100,
+      "disease": 100,
+      "magic": 100
+    }
+  ],
+  "status_procs": [
+    {
+      "kind": "fire",
+      "treatment": {
+        "hp": 352,
+        "stamina_max": 100,
+        "poise_health": 32,
+        "move_speed_mult": 1,
+        "heal_blocked": false,
+        "frostbitten": false,
+        "concussed": false,
+        "paralysed": false,
+        "state": "REPOSITION",
+        "procs": {
+          "fire": 270
+        }
+      },
+      "control": {
+        "hp": 412,
+        "stamina_max": 100,
+        "poise_health": 32,
+        "move_speed_mult": 1,
+        "heal_blocked": false,
+        "frostbitten": false,
+        "concussed": false,
+        "paralysed": false,
+        "state": "REPOSITION",
+        "procs": {}
+      },
+      "differs": true
+    },
+    {
+      "kind": "frost",
+      "treatment": {
+        "hp": 412,
+        "stamina_max": 100,
+        "poise_health": 32,
+        "move_speed_mult": 1,
+        "heal_blocked": false,
+        "frostbitten": false,
+        "concussed": false,
+        "paralysed": false,
+        "state": "REPOSITION",
+        "procs": {}
+      },
+      "control": {
+        "hp": 412,
+        "stamina_max": 100,
+        "poise_health": 32,
+        "move_speed_mult": 1,
+        "heal_blocked": false,
+        "frostbitten": false,
+        "concussed": false,
+        "paralysed": false,
+        "state": "REPOSITION",
+        "procs": {}
+      },
+      "differs": false
+    },
+    {
+      "kind": "shock",
+      "treatment": {
+        "hp": 412,
+        "stamina_max": 100,
+        "poise_health": 29.67,
+        "move_speed_mult": 1,
+        "heal_blocked": false,
+        "frostbitten": false,
+        "concussed": false,
+        "paralysed": false,
+        "state": "REPOSITION",
+        "procs": {}
+      },
+      "control": {
+        "hp": 412,
+        "stamina_max": 100,
+        "poise_health": 32,
+        "move_speed_mult": 1,
+        "heal_blocked": false,
+        "frostbitten": false,
+        "concussed": false,
+        "paralysed": false,
+        "state": "REPOSITION",
+        "procs": {}
+      },
+      "differs": true
+    },
+    {
+      "kind": "poison",
+      "treatment": {
+        "hp": 400,
+        "stamina_max": 100,
+        "poise_health": 32,
+        "move_speed_mult": 1,
+        "heal_blocked": true,
+        "frostbitten": false,
+        "concussed": false,
+        "paralysed": false,
+        "state": "REPOSITION",
+        "procs": {
+          "poison": 630
+        }
+      },
+      "control": {
+        "hp": 412,
+        "stamina_max": 100,
+        "poise_health": 32,
+        "move_speed_mult": 1,
+        "heal_blocked": false,
+        "frostbitten": false,
+        "concussed": false,
+        "paralysed": false,
+        "state": "REPOSITION",
+        "procs": {}
+      },
+      "differs": true
+    },
+    {
+      "kind": "paralysis",
+      "treatment": {
+        "hp": 412,
+        "stamina_max": 100,
+        "poise_health": 32,
+        "move_speed_mult": 1,
+        "heal_blocked": false,
+        "frostbitten": false,
+        "concussed": false,
+        "paralysed": true,
+        "state": "PARALYSED",
+        "procs": {
+          "paralysis": 210
+        }
+      },
+      "control": {
+        "hp": 412,
+        "stamina_max": 100,
+        "poise_health": 32,
+        "move_speed_mult": 1,
+        "heal_blocked": false,
+        "frostbitten": false,
+        "concussed": false,
+        "paralysed": false,
+        "state": "REPOSITION",
+        "procs": {}
+      },
+      "differs": true
+    }
+  ],
+  "enemy_casters": {
+    "archetype": "cst_sap_speaker",
+    "frames": 1200,
+    "distinct_states": [
+      "REPOSITION/e_idle"
+    ],
+    "magic_cast_events": 0,
+    "player_hp_lost": 0,
+    "trace_records": 1200
+  },
+  "spellmaking": [
+    {
+      "tuple": "frost_damage+burden@LIGHT/projectile",
+      "quote_refused": false,
+      "gate": null,
+      "tier": 3,
+      "focus_cost": 23,
+      "gold": 3779,
+      "cast": {
+        "applied": [
+          "frost_damage",
+          "burden"
+        ]
+      }
+    },
+    {
+      "tuple": "shock_damage@HEAVY/area_at_range",
+      "quote_refused": false,
+      "gate": null,
+      "tier": 3,
+      "focus_cost": 69,
+      "gold": 7304,
+      "cast": {
+        "applied": []
+      }
+    },
+    {
+      "tuple": "levitate+night_eye+feather@RITUAL/self",
+      "quote_refused": false,
+      "gate": null,
+      "tier": 4,
+      "focus_cost": 39,
+      "gold": 7987,
+      "cast": {
+        "applied": []
+      }
+    },
+    {
+      "tuple": "silence@CANTRIP/touch",
+      "quote_refused": false,
+      "gate": null,
+      "tier": 3,
+      "focus_cost": 1,
+      "gold": 193,
+      "cast": {
+        "applied": []
+      }
+    },
+    {
+      "tuple": "chameleon@LIGHT/self",
+      "quote_refused": false,
+      "gate": null,
+      "tier": 2,
+      "focus_cost": 14,
+      "gold": 2019,
+      "cast": {
+        "applied": [
+          "chameleon"
+        ]
+      }
+    },
+    {
+      "tuple": "soul_trap+damage_health@HEAVY/projectile",
+      "quote_refused": false,
+      "gate": null,
+      "tier": 3,
+      "focus_cost": 65,
+      "gold": 6646,
+      "cast": {
+        "applied": []
+      }
+    }
+  ],
+  "spellmaking_survives_save": {
+    "custom_before": 0,
+    "custom_after": 0
+  }
+}

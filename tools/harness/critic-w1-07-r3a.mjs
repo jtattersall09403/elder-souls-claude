@@ -128,6 +128,27 @@ try {
     st = await h.h('censusAnswer', v);
   }
 
+  // ---- M4 clause 1: the item's headline number, never measured by anyone ------------------
+  // "the interval between `first_control` and the first field-writing `dialogue_open`, in
+  // available play seconds. Neither event exists." Both exist now (W1-26's Engine._journeyStamps).
+  try {
+    out.journey_stamps = await h.h('getJourneyStamps');
+    say(`\njourney stamps: ${JSON.stringify(out.journey_stamps)}`);
+  } catch (e) { out.journey_stamps = { error: String(e).slice(0, 200) }; }
+
+  // ---- M8 / M2(c): the writ, opened by the input path a player has -------------------------
+  try {
+    out.writ_api = await h.h('readWrit');
+    await h.h('openWrit');
+    await h.h('renderedTextClear');
+    await h.h('renderFrame');
+    const wr = await h.h('getRenderedText', {});
+    out.writ_open = { reader: await h.h('getWritReaderState'), drawn: wr.distinct, rows: (wr.entries || []).length };
+    say(`\nM8 writ opened: ${out.writ_open.rows} rendered rows, ${wr.distinct.length} distinct`);
+    for (const t of wr.distinct) say(`   "${t.slice(0, 100)}"`);
+    say(`readWrit() body lines: ${(out.writ_api && out.writ_api.lines || []).length}`);
+  } catch (e) { out.writ_open = { error: String(e).slice(0, 300) }; say('M8 writ probe failed: ' + e); }
+
   const agg = (key) => {
     const c = out.nodes.reduce((a, n) => a + n[key].computed, 0);
     const d = out.nodes.reduce((a, n) => a + n[key].drawn, 0);

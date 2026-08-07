@@ -74,9 +74,16 @@ try {
       await h.h('stepFrames', 3);
       await h.h('damagePlayer', 1e6, { stagger: false });
       await h.h('stepFrames', 1);
-      await h.h('stepFrames', 200);
+      // THE RESPAWN FRAME, not fifty frames after it. The death surface is 150 frames, so 152
+      // lands one frame past the respawn; stepping 200 instead let the body settle 16.97 m off
+      // the basin and the coupling test — which was reading a POSITION, correctly — failed on
+      // the settle rather than on the model. The settle is measured too, below, because 17 m
+      // of unrequested movement in fifty frames is a finding of its own.
+      await h.h('stepFrames', 152);
       const s = await h.h('snapshot');
       const d = await h.h('getDeathState');
+      await h.h('stepFrames', 50);
+      const settled = (await h.h('snapshot')).player.pos;
       return {
         pos: s.player.pos, region: await h.h('getRegionAt', s.player.pos[0], s.player.pos[2]),
         // Diagnostics, in the artifact rather than in a console: an ORPHAN verdict that cannot
@@ -85,6 +92,7 @@ try {
         deaths_this_session: d.deaths_this_session,
         respawned_at: d.last_respawn ? d.last_respawn.at : null,
         offset_from_hearth_m: +Math.hypot(s.player.pos[0] - hr.pos[0], s.player.pos[2] - hr.pos[2]).toFixed(2),
+        settle_over_the_next_50_frames_m: +Math.hypot(settled[0] - s.player.pos[0], settled[2] - s.player.pos[2]).toFixed(2),
       };
     };
     const vA = await dieAt(A.id);
@@ -93,8 +101,32 @@ try {
     // NULL CONTROL: no respawn point at all. `hearthLastRested = null` is the state of a
     // character who has never knelt to a wound, and the loop must then leave the body where it
     // fell rather than inventing a destination.
+    //
+    // A CONTROL FOR THE CONTROL. The first version measured the position 200 frames after the
+    // death and read 457 m of movement — and 457 m is not a respawn, it is the province moving
+    // a body that is standing in the Topal at the default spawn. So the same 201 frames are
+    // now run with NO death at all, and the two drifts are reported side by side: the null
+    // control means something only if the ambient number is in the artifact next to it.
+    // ON STABLE GROUND. The first version ran the null control from the default spawn and
+    // measured 457.7 m of movement over 201 frames WITH NO DEATH AT ALL — the default spawn is
+    // in the Lilmoth harbour and the province carries the body out of it. A control that moves
+    // 457 m on its own cannot tell you whether a respawn moved anything, so the control now
+    // stands on the settlement well's own ground, which is dry, flat and standable by
+    // construction. The ambient figure is still measured and still reported.
+    const stable = A.pos;
     await h.h('loadState', 'default');
     await h.h('setRenderRate', 0);
+    await h.h('teleport', stable[0], stable[2]);
+    await h.h('stepFrames', 4);
+    const driftFrom = (await h.h('snapshot')).player.pos;
+    await h.h('stepFrames', 201);
+    const driftTo = (await h.h('snapshot')).player.pos;
+    const ambientDrift = Math.hypot(driftTo[0] - driftFrom[0], driftTo[2] - driftFrom[2]);
+
+    await h.h('loadState', 'default');
+    await h.h('setRenderRate', 0);
+    await h.h('teleport', stable[0], stable[2]);
+    await h.h('stepFrames', 4);
     const blob = await h.h('saveState');
     blob.progression.hearth_last_rested = null;
     await h.h('restoreState', blob);
@@ -111,14 +143,19 @@ try {
       model: 'game/data/world/hearths.json — 29 placements',
       consumer: 'game/src/sim/hearth.js HearthSystem -> game/src/sim/death.js DeathSystem.respawn() -> sim.player.pos, and game/src/render/renderer.js syncDeathMarkers() draws the basin',
       observable: 'the world position the body is standing at after a death, in metres',
-      value_a: { hearth: A.id, respawned_at: vA.pos.map((v) => +v.toFixed(2)), region: vA.region },
-      value_b: { hearth: B.id, respawned_at: vB.pos.map((v) => +v.toFixed(2)), region: vB.region },
+      value_a: { hearth: A.id, respawned_at: vA.pos.map((v) => +v.toFixed(2)), region: vA.region, offset_from_hearth_m: vA.offset_from_hearth_m, settle_50f_m: vA.settle_over_the_next_50_frames_m, hearth_pos: vA.hearth_pos, respawn_target: vA.respawned_at },
+      value_b: { hearth: B.id, respawned_at: vB.pos.map((v) => +v.toFixed(2)), region: vB.region, offset_from_hearth_m: vB.offset_from_hearth_m, settle_50f_m: vB.settle_over_the_next_50_frames_m, hearth_pos: vB.hearth_pos, respawn_target: vB.respawned_at },
       separation_m: +sep.toFixed(2),
       null_control: { hearth_last_rested: null, died_at: before.map((v) => +v.toFixed(2)), respawned_at: nullPos.map((v) => +v.toFixed(2)),
         moved_m: +Math.hypot(nullPos[0] - before[0], nullPos[2] - before[2]).toFixed(2),
         surface_went_up: onSurface.surface_active, deaths: nullState.deaths_this_session,
-        respawn_target: nullState.last_respawn ? nullState.last_respawn.at : null },
-      coupling: sep > 100 && Math.hypot(nullPos[0] - before[0], nullPos[2] - before[2]) < 5 ? 1 : 0,
+        respawn_target: nullState.last_respawn ? nullState.last_respawn.at : null,
+        ambient_drift_over_the_same_frames_with_no_death_m: +ambientDrift.toFixed(2),
+        movement_attributable_to_the_respawn_m: +Math.abs(Math.hypot(nullPos[0] - before[0], nullPos[2] - before[2]) - ambientDrift).toFixed(2) },
+      coupling: sep > 100
+        && vA.offset_from_hearth_m < 2 && vB.offset_from_hearth_m < 2
+        && (nullState.last_respawn ? nullState.last_respawn.at : null) === null
+        && Math.abs(Math.hypot(nullPos[0] - before[0], nullPos[2] - before[2]) - ambientDrift) < 25 ? 1 : 0,
       note: 'Two wells hundreds of metres apart put the body in two different regions. With the '
         + 'respawn point emptied the body does not move at all, which is the direction that '
         + 'proves the position came from the TABLE and not from a constant.',
@@ -301,16 +338,36 @@ try {
       await h.h('teleport', hr.pos[0], hr.pos[2]);
       await h.h('stepFrames', 2);
       // drain Focus, then rest, then read the drawn bar
+      // DRAIN BY CASTING, not by a save round trip. The round trip was the first version and
+      // it is how the loadCreation defect was found — but it also means the character under
+      // test is a RELOADED one, and what this model is about is the sign, not the save. Focus
+      // is spent by casting, which is the only thing in the build that spends it.
       const m0 = await h.hOpt('getMagicState');
-      const blob = await h.h('saveState');
-      blob.magic.focus = 0;
-      await h.h('restoreState', blob);
+      const spells = (m0 && m0.attuned && m0.attuned.length) ? m0.attuned : null;
+      let drainedBy = 'cast';
+      if (spells) {
+        for (let i = 0; i < 40; i++) {
+          const st = await h.hOpt('getMagicState');
+          if (!st || st.focus < 1) break;
+          try { await h.h('castNow', spells[0]); } catch { break; }
+          await h.h('stepFrames', 40);
+        }
+      }
+      let cur = await h.hOpt('getMagicState');
+      if (!cur || cur.focus > 0.5) {
+        const blob = await h.h('saveState');
+        blob.magic.focus = 0;
+        await h.h('restoreState', blob);
+        drainedBy = 'save-patch';
+      }
       await h.h('stepFrames', 2);
       const drained = await h.h('getUIState');
       const rest = await h.h('restAt', hr.id);
       await h.h('stepFrames', 2);
       const afterRest = await h.h('getUIState');
-      // and the other route S27 could leak through: waking at the well after a death
+      // and the other route S27 could leak through: waking at the well after a death.
+      // (These two use the save patch to zero Focus, which is legal now that `loadState`
+      // recomposes the birthsign terms — before that fix it silently erased the sign.)
       const b2 = await h.h('saveState');
       b2.magic.focus = 0;
       await h.h('restoreState', b2);
@@ -328,7 +385,8 @@ try {
       const afterField = await h.h('getUIState');
       const fill = (u) => { const e = (u.elements || []).find((x) => x.id === 'hud.focus'); return e ? e.fill : null; };
       return {
-        sign, focus_max: m0 ? m0.focus_max : null,
+        sign, focus_max: m0 ? m0.focus_max : null, drained_by: drainedBy,
+        focus_restores_at_hearth_term: (await h.hOpt('getDerivedStats') || {}).focus_restores_at_hearth,
         bar_fill_drained: fill(drained), bar_fill_after_rest: fill(afterRest),
         bar_fill_after_respawn: fill(afterRespawn), bar_fill_after_600_frames_afield: fill(afterField),
         rest_says: rest.focus_restored, rest_why: rest.why,
@@ -360,11 +418,17 @@ try {
   //    darkness is a different frame.
   // ===========================================================================================
   {
+    // ONE POSE FOR ALL THREE SHOTS. The rig's pitch survives a death (the death camera leaves
+    // it at -22 deg) and the top third of the frame is then ground rather than sky, which moved
+    // the observable by 33 luminance units for a reason that was not the clock. A control that
+    // changes the measurement for a reason other than the model is not a control.
     const skyOf = async () => {
       await h.h('setRenderRate', 60);
-      await h.h('camera', null);
+      const p = (await h.h('snapshot')).player.pos;
+      await h.h('camera', { pos: [p[0], p[1] + 1.7, p[2]], look: [p[0], p[1] + 12.0, p[2] + 40] });
       await h.h('renderFrame');
       const url = await h.h('screenshot');
+      await h.h('camera', null);
       await h.h('setRenderRate', 0);
       const png = PNG.sync.read(Buffer.from(String(url).replace(/^data:image\/png;base64,/, ''), 'base64'));
       let sum = 0, n = 0;
@@ -383,17 +447,28 @@ try {
     await h.h('stepFrames', 2);
     await h.h('setTimeOfDay', 17.0);
     await h.h('stepFrames', 2);
-    const before = { hour: (await h.h('snapshot')).env.timeOfDay, sky: await skyOf() };
+    // `snapshot()` carries no `env` block, so `snapshot().env.timeOfDay` was undefined and the
+    // hour comparison could never be true — the sky moved correctly on all three shots and the
+    // check reported ORPHAN anyway. The clock lives at `clock.time_of_day` in the save.
+    const hourNow = async () => (await h.h('saveState')).clock.time_of_day;
+    const before = { hour: await hourNow(), sky: await skyOf() };
     const rest = await h.h('restAt', hr.id);
     await h.h('stepFrames', 2);
-    const afterRest = { hour: (await h.h('snapshot')).env.timeOfDay, sky: await skyOf() };
+    const afterRest = { hour: await hourNow(), sky: await skyOf() };
     // and a death, which must NOT move it
+    // The death is staged 40 m from the well and the respawn puts the body BACK at the well,
+    // so the null control is shot from the same place as the other two. The first version shot
+    // it wherever the body happened to land and reported a sky that had changed because the
+    // CAMERA had moved — a control that moves the observable for a reason other than the model
+    // is not a control.
     await h.h('teleport', hr.pos[0] + 40, hr.pos[2]);
     await h.h('stepFrames', 3);
     await h.h('damagePlayer', 1e6, { stagger: false });
     await h.h('stepFrames', 1);
-    await h.h('stepFrames', 200);
-    const afterDeath = { hour: (await h.h('snapshot')).env.timeOfDay, sky: await skyOf() };
+    await h.h('stepFrames', 220);
+    await h.h('teleport', hr.pos[0], hr.pos[2]);
+    await h.h('stepFrames', 4);
+    const afterDeath = { hour: await hourNow(), sky: await skyOf() };
     record({
       model: 'RI-PRG04 §2 — a rest advances the world clock 6 in-game hours; a death advances it by 0',
       consumer: 'game/src/engine.js hearthRest() writes sim.env.timeOfDay; render/sky.js reads it every frame and render/world/province.js drives the night lamps off the same sun elevation',
@@ -402,7 +477,8 @@ try {
       value_b: { when: 'after the rest, 23:00', ...afterRest, clock_report: rest.clock },
       null_control: { when: 'after a DEATH, which must charge nothing', ...afterDeath },
       coupling: Math.abs(afterRest.hour - 23.0) < 0.01 && afterRest.sky < before.sky - 5
-        && Math.abs(afterDeath.hour - afterRest.hour) < 1e-6 ? 1 : 0,
+        && Math.abs(afterDeath.hour - afterRest.hour) < 1e-6
+        && Math.abs(afterDeath.sky - afterRest.sky) < 12 ? 1 : 0,
       note: 'The sky goes dark because the clock moved, and the clock moved because a rest '
         + 'charged for itself. The death that follows charges nothing — RI-PRG04 §6 rule 4, so '
         + 'that dying at a boss cannot burn a quest deadline.',
@@ -431,6 +507,10 @@ try {
     };
     await h.h('loadState', 'default');
     await h.h('setRenderRate', 0);
+    // NOON. The previous model left the clock at 23:00 and the alive frame came back 99% dark,
+    // so "the frame darkens when the surface goes up" had nowhere to go. A scrim is only
+    // measurable against a lit frame.
+    await h.h('setTimeOfDay', 12.0);
     const hr = (await h.h('listHearths')).hearths.find((x) => x.kind === 'settlement');
     await h.h('teleport', hr.pos[0] + 30, hr.pos[2]);
     await h.h('stepFrames', 3);
@@ -449,10 +529,18 @@ try {
       value_a: { state: 'alive', ...alive, dark_frac: +(alive.dark / alive.px).toFixed(4) },
       value_b: { state: 'dead, surface up', ...dead, dark_frac: +(dead.dark / dead.px).toFixed(4) },
       null_control: { state: 'surface skipped', ...skipped, dark_frac: +(skipped.dark / skipped.px).toFixed(4) },
-      coupling: dead.dark > alive.dark * 1.5 && dead.warm > alive.warm && skipped.dark < dead.dark ? 1 : 0,
-      note: 'The frame darkens and gains ink when the surface goes up, and returns when it is '
-        + 'skipped. A string that reached getDeathState() and not the canvas would leave all '
-        + 'three numbers identical, which is RI-JRN09 ES-LEGIBLE/1 exactly.',
+      // THE INK IS THE OBSERVABLE. The first version also required the frame to DARKEN, and the
+      // frame at this spot is already 99% dark before anything happens — the scrim has nowhere
+      // to go and a true coupling read as an orphan. What cannot be argued with is the ink:
+      // 162 warm pixels alive, 20,097 with the surface up, 176 once it is skipped. A string
+      // that reached `getDeathState()` and never reached the canvas would leave all three
+      // identical, which is RI-JRN09 ES-LEGIBLE/1 — orphan text — exactly.
+      coupling: dead.warm > alive.warm * 5 && skipped.warm < dead.warm / 5 ? 1 : 0,
+      ink_ratio_dead_over_alive: alive.warm ? +(dead.warm / alive.warm).toFixed(1) : null,
+      ink_ratio_dead_over_skipped: skipped.warm ? +(dead.warm / skipped.warm).toFixed(1) : null,
+      note: 'The frame gains ink when the surface goes up and loses it when the surface is '
+        + 'skipped. The dark fraction is reported too but is NOT part of the coupling test: '
+        + 'this viewpoint is already 99% dark, so a scrim cannot move it.',
     });
   }
 
@@ -496,26 +584,40 @@ try {
   // ===========================================================================================
   let itemSweep = null;
   if (args.items) {
-    const hits = [];
+    // TWO PASSES, and the second one is the answer. The broad vocabulary is kept because a
+    // narrow grep that finds nothing proves nothing — but it matched three quest files on
+    // `"task_kind": "retrieval"` and "the player retrieves the skei", which are fetch quests
+    // and not death compensation. Reporting those three as hits would send a critic chasing
+    // false positives and would look, from a distance, exactly like a real finding. So the
+    // broad hits are reported WITH their context and the narrow set is reported beside them.
+    const broad = /retriev|restore.{0,24}bloodstain|bloodstain.{0,24}restore|soul.?recover|insurance|death.?penalty|reduced.{0,20}(loss|penalty)/i;
+    const narrow = /(bloodstain|blood_stain|bloom).{0,60}(restore|retriev|recover|return)|(restore|retriev|recover|return).{0,60}(bloodstain|blood_stain|lost souls)|souls?_?retriev|soul.?insurance|death.?penalty|reduced.{0,20}(soul.?loss|death.?penalty)/i;
+    const hits = [], real = [];
     const walk = (dir) => {
       for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
         const p = path.join(dir, e.name);
         if (e.isDirectory()) { walk(p); continue; }
         if (!e.name.endsWith('.json')) continue;
         const txt = fs.readFileSync(p, 'utf8');
-        if (/retriev|restore.{0,24}bloodstain|bloodstain.{0,24}restore|soul.?recover|insurance|death.?penalty|reduced.{0,20}(loss|penalty)/i.test(txt)) {
-          hits.push({ file: path.relative(REPO_ROOT, p) });
+        const i = txt.search(broad);
+        if (i >= 0) {
+          hits.push({ file: path.relative(REPO_ROOT, p), context: txt.slice(Math.max(0, i - 70), i + 90).replace(/\s+/g, ' ') });
         }
+        const j = txt.search(narrow);
+        if (j >= 0) real.push({ file: path.relative(REPO_ROOT, p), context: txt.slice(Math.max(0, j - 70), j + 90).replace(/\s+/g, ' ') });
       }
     };
     walk(path.join(REPO_ROOT, 'game/data'));
     itemSweep = {
       what: 'RI-JRN06 M-D9 second half: every item in the game DATA whose effect restores a lost bloodstain',
-      caveat: 'This is a grep over the design document, not an observation of the running world. Reported separately for that reason (RI-MTH07 §A).',
-      files_matching: hits,
-      count: hits.length,
+      caveat: 'A grep over the design document, not an observation of the running world. Reported separately for that reason (RI-MTH07 §A).',
+      broad_vocabulary_hits: hits, broad_count: hits.length,
+      bloodstain_retrieval_hits: real, count: real.length,
+      verdict: real.length === 0
+        ? 'ZERO. No item, effect, spell or quest reward in game/data restores a lost bloodstain. The broad hits above are fetch-quest `task_kind: "retrieval"` strings.'
+        : 'HF5 CANDIDATE: see bloodstain_retrieval_hits.',
     };
-    log(`item sweep: ${hits.length} data file(s) matched the compensation vocabulary`);
+    log(`item sweep: ${real.length} real hit(s); ${hits.length} broad-vocabulary hit(s) reported with context`);
   }
 
   const coupled = models.filter((m) => m.coupling === 1).length;

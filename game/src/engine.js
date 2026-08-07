@@ -53,7 +53,7 @@ import { canonicalise } from './core/canonical.js';
 import { Census, renderWrit } from './character/census.js';
 import * as STL_PER from './sim/stealth/perception.js';
 import { StealthCrime, DET as STL_DET, THF as STL_THF, PP as STL_PP, JUS as STL_JUS, SAN as STL_SAN, WIT as STL_WIT, LockAttempt as STL_LockAttempt, lockGate as STL_lockGate, lockTolerance as STL_lockTolerance } from './sim/stealth/system.js';
-import { composeCharacter, signatureOf, composeSkills } from './character/sheet.js';
+import { composeCharacter, signatureOf, composeSkills, birthsignById, birthsignPowers, birthsignDrawbacks } from './character/sheet.js';
 import { taintOf, bandFromRests } from './sim/magic/apply.js';
 import { HearthSystem, REST_HOURS } from './sim/hearth.js';
 import { DeathSystem, SURFACE_FRAMES, DEATH_LINE } from './sim/death.js';
@@ -1894,8 +1894,13 @@ export class Engine {
     // right after `censusDriver`). A menu press is therefore frame-exact and scriptable.
     this.sim.uiDriver = (input) => {
       if (this.censusSurface && this.censusSurface.takesInput) return;   // the census has the input
+      const wasMenu = this.ui.isMenu();
       const taken = this.ui.step(input, this._uiCtx());
       if (taken.length) input.consumeUI(taken);
+      if (this.ui.isMenu() !== wasMenu) {
+        if (this.ui.isMenu()) cameraOpenUI(this.sim, 'menu'); else cameraCloseUI(this.sim);
+        this.ui._surfaceChanged(this.real);
+      }
     };
     this._spentFrom = null;
     this._lastRegenBlock = 0;
@@ -2109,6 +2114,7 @@ export class Engine {
     const mode = this.ui.open(name, opts || {}, this._uiCtx());
     // RI-CAM05 §F's closed camera vocabulary: a menu is `menu`, and the camera knows it.
     cameraOpenUI(this.sim, 'menu');
+    this.ui._surfaceChanged(this.real);
     this.ui.build(this._uiCtx(), true);
     return { ok: true, mode, paused: this.ui.pausesSimulation(this.inCombat()) };
   }
@@ -2116,6 +2122,7 @@ export class Engine {
   closeMenu() {
     const mode = this.ui.close();
     cameraCloseUI(this.sim);
+    this.ui._surfaceChanged(this.real);
     this.ui.build(this._uiCtx(), true);
     return { ok: true, mode };
   }
@@ -3355,6 +3362,27 @@ export class Engine {
   }
 
   /**
+   * Put the birthsign's powers and drawbacks back on a character that came out of a save.
+   *
+   * `loadCreation()` carries the sign IDS and drops the composed terms. Everything downstream
+   * — `applyBirthsignToPools`, `focusRegenAllowed`, the Focus reservoir, spell absorption, the
+   * respawn rank — reads the terms and not the ids, so a loaded character silently had none.
+   * Rebuilt from the same two functions `composeCharacter()` uses, so there is one definition
+   * of what a sign does and a load cannot drift from a creation.
+   */
+  _recomposeBirthsignTerms() {
+    const ch = this.sim.character;
+    if (!ch || !ch.birthsign) return null;
+    const sign = birthsignById(this.chData, ch.birthsign);
+    if (!sign) return null;
+    const second = ch.birthsign_second ? birthsignById(this.chData, ch.birthsign_second) : null;
+    ch.powers = birthsignPowers(sign, second);
+    ch.drawbacks = birthsignDrawbacks(sign, second);
+    this.applyDerivedPools({ refill: false, why: 'load_recompose' });
+    return { sign: ch.birthsign, second: ch.birthsign_second || null, powers: ch.powers.length, drawbacks: ch.drawbacks.length };
+  }
+
+  /**
    * The well you were issued from.
    *
    * RI-JRN06 D6 is exact — respawn is at "the last HEARTH rested at" — but a character who has
@@ -3559,6 +3587,17 @@ export class Engine {
       // a load that restored a body at 40 HP would otherwise read as 460 points of damage on
       // the next frame and stamp `last_damage_frame`. Cleared, exactly as the input pipeline is.
       if (this.death) { this.death.lastHp = null; this.death.lastGrounded = null; }
+      // W1-13, and it is not W1-13's field. `save/state.js loadCreation()` rebuilds the
+      // character from the save WITHOUT `powers` or `drawbacks` — the two arrays every
+      // birthsign term is read out of. So after ANY load, `applyBirthsignToPools()` iterated
+      // two undefined lists and silently returned the base pools: the x1.60 Focus reservoir,
+      // the 55% spell absorption and, most visibly, THE DRY WELL'S WHOLE DRAWBACK were gone,
+      // and a Dry Well character's hearth rest refilled Focus like anyone else's. Found by
+      // W1-13's CONSUMPTION probe on seam S27 — `focus_restores_at_hearth` measured TRUE for
+      // `nu-ixtu` after a save round trip. Recomposed here, from the sign ids the save DOES
+      // carry, because this is the only place holding both the restored character and the
+      // creation data. The deeper fix belongs in saveCreation/loadCreation; this is the seam.
+      this._recomposeBirthsignTerms();
       // The camera rig recomputes pivot and pos INSIDE the step (sim/camera.js), so between
       // a load and the first step they still held makeCamera()'s defaults: a snapshot() taken
       // straight after a load reported a camera at the world origin. One settle costs nothing

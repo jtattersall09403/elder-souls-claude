@@ -24,7 +24,7 @@
 import { C, Ca, boneRule, panel, shellInlay, idHash } from '../theme.js';
 import { screen, row, extent, hint, letterRing, ink, inkDim, accent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
 import { drawText, faceOf, measure, wrap, writeLines, ellipsise } from '../type.js';
-import { pageMetrics, paginate, wordsOn } from '../type.js';
+import { pageMetrics, paginate, wordsOn, BODY } from '../type.js';
 
 /**
  * Chronological order, and the only order. `(date_written, index)` ascending, both numeric.
@@ -81,7 +81,7 @@ export function drawJournal(S, m) {
 
   // ---- the chronicle: one continuous document, every quest interleaved --------------------
   const px = ix + idxW + 40 * s, pw = iw - idxW - 40 * s;
-  const size = 17 * s, lh = size * 1.46, dateSize = 14 * s;
+  const size = BODY.screen * s, lh = size * 1.46, dateSize = 14 * s;
   const colW = (pw - 46 * s) / 2;                    // two pages, the Morrowind spread (J9/B6)
 
   // lay every entry out into columns, then page. The layout is done over the WHOLE document so
@@ -180,7 +180,7 @@ function drawSearch(S, m, sc, alpha) {
     drawText(c, `${m.results.length} found`, r[0], r[1] + 19 * s, faceOf('bone'), 15 * s, inkDim());
     boneRule(c, r[0], r[1] + 24 * s, r[2], s, 19);
   });
-  const size = 15 * s, lh = size * 1.42;
+  const size = (BODY.screen - 3) * s, lh = size * 1.42;
   let y = iy + 40 * s;
   for (const res of m.results.slice(0, 12)) {
     const lines = wrap(res.context, faceOf('ink'), size, rw);
@@ -272,7 +272,7 @@ export function drawBook(S, m) {
 export function bookLayout(S, inner) {
   const s = S.s;
   const [, , iw, ih] = inner;
-  const size = 26 * s, lh = size * 1.46;         // leading 1.46, inside B3's 1.35-1.65
+  const size = BODY.book * s, lh = size * 1.46;   // leading 1.46, inside B3's 1.35-1.65
   const pad = 34 * s, gutter = 76 * s;
   const colW = (iw - pad * 2 - gutter) / 2;
   const textTop = ih * 0.08;

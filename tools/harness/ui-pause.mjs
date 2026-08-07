@@ -49,18 +49,26 @@ if (wantsHelp(args)) usage(USAGE);
 
 const RUN = path.join(RUNS_DIR, String(args.out || 'UI-PAUSE'));
 const width = Number(args.width || 1280), height = Number(args.height || 720);
-const state = String(args.state || 'arena_champion');
+// ui-journal carries the 44-item inventory M-P5 needs and the journal JU-checks use.
+const state = String(args.state || 'ui-journal');
 
 function decode(u) { return PNG.sync.read(Buffer.from(u.split(',')[1], 'base64')); }
 
 /** GameSir X2s Type-C / W3C standard mapping. Index -> the action GAMEPAD_BINDINGS gives it. */
 const PAD = { A: 0, B: 1, X: 2, Y: 3, START: 9, DUP: 12, DDOWN: 13, DLEFT: 14, DRIGHT: 15 };
+let PAD_TS = 1000;
 function padState(pressed, axes) {
-  const buttons = new Array(17).fill(0).map(() => ({ pressed: false, touched: false, value: 0 }));
-  for (const i of pressed) buttons[i] = { pressed: true, touched: true, value: 1 };
+  // BOOLEANS, not objects. `RealInput.pushGamepadState` reads each entry as
+  // `typeof v === 'number' ? {...} : {pressed: !!v}` — an object is TRUTHY, so a "released"
+  // button expressed as `{pressed:false}` arrives at the router as PRESSED. The first poll then
+  // reports all seventeen buttons rising at once and no button ever rises again, which looks
+  // exactly like a build whose menus ignore the pad. It cost one debugging round; the note is
+  // here so it costs nobody else one.
+  const buttons = new Array(17).fill(false);
+  for (const i of pressed) buttons[i] = true;
   return {
     index: 0, id: 'GameSir-X2s Type-C (STANDARD GAMEPAD Vendor: 3537 Product: 1001)',
-    mapping: 'standard', connected: true, timestamp: 0,
+    mapping: 'standard', connected: true, timestamp: (PAD_TS += 16),
     axes: axes || [0, 0, 0, 0], buttons,
   };
 }
@@ -94,9 +102,11 @@ try {
   // ---- M-P2: inside combat, the world does NOT stop ------------------------------------------
   await h.h('closeMenu');
   await h.h('stepFrames', 2);
+  // `inf_trash` declares ai='hold_ground' and never attacks (AGENT-PROTOCOL). That is exactly
+  // what these legs need: `inCombat()` is true because a live hostile is inside 30 m, and the
+  // player is not being killed while we measure whether the menu ate their dodge.
   let eid = null;
-  try { eid = (await h.h('spawn', 'champion_hist_marked', 0, 4.6, { as: 'p2' })).eid || 'p2'; }
-  catch { try { eid = (await h.h('spawn', 'inf_trash', 0, 4.6, { as: 'p2' })).eid || 'p2'; } catch { /* */ } }
+  try { eid = (await h.h('spawn', 'inf_trash', 0, 4.6, { as: 'p2' })).eid || 'p2'; } catch { /* */ }
   if (eid) await h.h('aggro', eid);
   await h.h('stepFrames', 4);
   rep = await h.h('getUIPauseReport');
@@ -117,26 +127,53 @@ try {
     c1 - c0 === 37, `${c0} -> ${c1}`);
 
   // ---- P5: occlusion, from pixels -------------------------------------------------------------
+  //
+  // "assert the centre 40%x40% has >= 30% of its pixels contributed by the world layer."
+  //
+  // The first version of this compared the composited pixel against the world pixel and called
+  // the world "visible" when they were close. That is wrong and it failed a correct build: over
+  // a dark interior (world luma ~10) a 50%-opacity parchment panel composites to ~95, which is
+  // an enormous relative change and a perfectly visible world.
+  //
+  // The honest test is a PERTURBATION. Change the world and nothing else, with the same screen
+  // open, and count the centre pixels that move. A pixel that still responds to the world is a
+  // pixel the world is contributing to; a pixel behind an opaque panel does not move at all.
+  // Two time-of-day settings are the cheapest perturbation that reaches every surface.
   const uiState = await h.h('getUIState');
   await h.h('setUIVisible', true);
+  await h.h('setTimeOfDay', 13);
+  await h.h('stepFrames', 1);
+  const dayShot = decode(await h.h('screenshot'));
+  await h.h('setTimeOfDay', 1);
+  await h.h('stepFrames', 1);
+  const nightShot = decode(await h.h('screenshot'));
+  await h.h('setTimeOfDay', 13);
+  await h.h('stepFrames', 1);
+  // and the plain UI-on/UI-off pair, for the panel's own footprint
   const on = decode(await h.h('screenshot'));
   await h.h('setUIVisible', false);
   const off = decode(await h.h('screenshot'));
   await h.h('setUIVisible', true);
   const cx = Math.round(on.width * 0.30), cy = Math.round(on.height * 0.30);
   const cw = Math.round(on.width * 0.40), ch = Math.round(on.height * 0.40);
-  let centreDiff = 0, centreTotal = 0, centreWorldVisible = 0;
-  for (let y = cy; y < cy + ch; y++) {
-    for (let x = cx; x < cx + cw; x++) {
+  let centreTotal = 0, centreWorldVisible = 0, centreCovered = 0;
+  // How much the world itself moves outside the panel, as the control: the centre's response is
+  // reported as a FRACTION of the response of the same perturbation with no UI over it.
+  let ctrlTotal = 0, ctrlMoved = 0;
+  for (let y = 0; y < on.height; y++) {
+    for (let x = 0; x < on.width; x++) {
       const o = (y * on.width + x) * 4;
-      centreTotal++;
-      const d = Math.abs(on.data[o] - off.data[o]) + Math.abs(on.data[o + 1] - off.data[o + 1]) + Math.abs(on.data[o + 2] - off.data[o + 2]);
-      if (d > 6) centreDiff++;
-      // "≥30% of its pixels contributed by the world layer" — a pixel whose composited value is
-      // still within 55% of the world's own value has the world contributing at least 45% of it.
-      const wl = 0.2126 * off.data[o] + 0.7152 * off.data[o + 1] + 0.0722 * off.data[o + 2];
-      const ol = 0.2126 * on.data[o] + 0.7152 * on.data[o + 1] + 0.0722 * on.data[o + 2];
-      if (wl === 0 ? ol < 8 : Math.abs(ol - wl) / Math.max(8, wl) < 1.0) centreWorldVisible++;
+      const moved = Math.abs(dayShot.data[o] - nightShot.data[o])
+        + Math.abs(dayShot.data[o + 1] - nightShot.data[o + 1])
+        + Math.abs(dayShot.data[o + 2] - nightShot.data[o + 2]) > 6;
+      const inCentre = x >= cx && x < cx + cw && y >= cy && y < cy + ch;
+      const underUI = Math.abs(on.data[o] - off.data[o]) + Math.abs(on.data[o + 1] - off.data[o + 1])
+        + Math.abs(on.data[o + 2] - off.data[o + 2]) > 6;
+      if (inCentre) {
+        centreTotal++;
+        if (underUI) centreCovered++;
+        if (moved) centreWorldVisible++;
+      } else if (!underUI) { ctrlTotal++; if (moved) ctrlMoved++; }
     }
   }
   const panel = uiState.elements.find((e) => e.kind === 'panel');
@@ -145,28 +182,44 @@ try {
     panel_area_frac: +areaFrac.toFixed(4),
     declared_opacity: uiState.menu.opacity,
     centre_box: [cx, cy, cw, ch],
-    centre_changed_frac: +(centreDiff / centreTotal).toFixed(4),
-    centre_world_still_visible_frac: +(centreWorldVisible / centreTotal).toFixed(4),
+    centre_under_ui_frac: +(centreCovered / centreTotal).toFixed(4),
+    centre_world_responds_frac: +(centreWorldVisible / centreTotal).toFixed(4),
+    control_world_responds_frac: ctrlTotal ? +(ctrlMoved / ctrlTotal).toFixed(4) : null,
+    perturbation: 'setTimeOfDay 13 -> 1, screen open, nothing else changed',
   };
-  push('M-P4', 'P5 occlusion: ≤55% opacity, ≤60% of screen area, world still visible in the centre 40%×40%',
+  push('M-P4', 'P5 occlusion: <=55% opacity, <=60% of screen area, and the world still reaches >=30% of the centre 40%x40%',
     uiState.menu.opacity <= 0.55 && areaFrac <= 0.60 && centreWorldVisible / centreTotal >= 0.30,
-    `opacity ${uiState.menu.opacity}, area ${(areaFrac * 100).toFixed(1)}%, world visible in ${(100 * centreWorldVisible / centreTotal).toFixed(1)}% of centre pixels`);
+    `opacity ${uiState.menu.opacity}, area ${(areaFrac * 100).toFixed(1)}%, the world moves ${(100 * centreWorldVisible / centreTotal).toFixed(1)}% of centre pixels under a screen covering ${(100 * centreCovered / centreTotal).toFixed(1)}% of them (control, outside the screen: ${ctrlTotal ? (100 * ctrlMoved / ctrlTotal).toFixed(1) : 'n/a'}%)`);
 
   // ---- P6: input liveness. `roll` must still fire with the menu open in a fight. --------------
   const rollFired = await h.page.evaluate(() => {
     const H = window.__HARNESS;
-    H.combatTraceStart({});
+    const before = H.getPlayerStats();
+    if (before.hp <= 0) return { rolled: false, error: 'the player is dead; the leg cannot be measured' };
+    // Watch the PLAYER STATE, not a trace regex. `getCombatState()` is not attached in every
+    // named state, and a probe that reports "no roll" when it means "no combat trace here" is
+    // reporting the instrument.
     H.queueInputs([{ f: 1, press: ['roll'] }, { f: 4, release: ['roll'] }]);
-    H.stepFrames(40);
-    const rec = H.combatTraceDrain();
-    H.combatTraceStop();
-    const s = JSON.stringify(rec);
-    return { rolled: /ROLL|roll/.test(s), mode: H.getUIState().mode };
+    const seen = [];
+    let stam0 = before.stamina, stamMin = before.stamina;
+    for (let i = 0; i < 40; i++) {
+      H.stepFrames(1);
+      const p = H.getPlayerStats();
+      seen.push(p.state);
+      if (p.stamina < stamMin) stamMin = p.stamina;
+    }
+    return {
+      rolled: seen.includes('ROLL'),
+      states: [...new Set(seen)],
+      stamina_before: stam0, stamina_min: stamMin, stamina_spent: +(stam0 - stamMin).toFixed(2),
+      mode: H.getUIState().mode,
+      hp: H.getPlayerStats().hp,
+    };
   });
   out.raw.input_liveness = rollFired;
   push('M-P3', 'P6 input liveness: `roll` is not swallowed by the menu in combat',
-    rollFired.rolled && rollFired.mode !== 'world',
-    `roll seen in the combat trace: ${rollFired.rolled}; menu still open: ${rollFired.mode}`);
+    (rollFired.rolled || rollFired.stamina_spent > 0) && rollFired.mode !== 'world',
+    `player states seen: ${JSON.stringify(rollFired.states)}; stamina spent ${rollFired.stamina_spent}; menu still open: ${rollFired.mode}${rollFired.error ? ' — ' + rollFired.error : ''}`);
 
   // ---- P4: combat begins while the screen is open ---------------------------------------------
   await h.h('closeMenu');
@@ -194,11 +247,14 @@ try {
     const H = window.__HARNESS;
     H.openMenu('inventory');
     const ui = H.getUIState();
-    const rows = ui.elements.filter((e) => e.kind === 'list_row' && e.meta && (e.meta.category === 'weapon' || e.meta.category === 'armour'));
-    if (!rows.length) return { error: 'no equippable row on the screen' };
-    // focus that row and confirm, through the same path a button press takes
-    const all = ui.elements.filter((e) => e.kind === 'list_row');
-    H.uiFocus({ col: 1, rowIdx: all.indexOf(rows[0]) });
+    // The category tags make this deterministic: switch to Weapon, and every row on the screen
+    // is equippable. Walking the 'all' list and hoping row N is a weapon is how a probe passes
+    // on one fixture and fails on the next.
+    H.uiFocus({ col: 0, tagIdx: 1, rowIdx: 0 });
+    const ui2 = H.getUIState();
+    const rows = ui2.elements.filter((e) => e.kind === 'list_row' && e.meta && e.meta.item_id);
+    if (!rows.length) return { error: 'the Weapon category is empty on this fixture' };
+    H.uiFocus({ col: 1, rowIdx: 0 });
     H.traceStart({});
     const before = H.getFrame();
     H.queueInputs([{ f: 1, press: ['interact'] }, { f: 3, release: ['interact'] }]);
@@ -208,7 +264,7 @@ try {
     const s = JSON.stringify(tr);
     const start = /equip_start/.test(s), end = /equip_end/.test(s);
     const m = /"commit_frames":(\d+)/.exec(s);
-    return { item: rows[0].meta.item_id, before, equip_start: start, equip_end: end, commit_frames: m ? Number(m[1]) : null };
+    return { item: rows[0].meta.item_id, category: rows[0].meta.category, before, equip_start: start, equip_end: end, commit_frames: m ? Number(m[1]) : null };
   });
   out.raw.equip = equip;
   push('M-P5', 'P7 equipping in a fight is an animation-committed action of ≥30 frames',
@@ -238,21 +294,25 @@ try {
   await pad([], [0, 1, 0, 0]);                     // left stick down: walk the list
   await pad([], [0, 1, 0, 0]);
   reach.push({ after: 'stick down x2', focus: (await h.h('getUIState')).elements.filter((e) => e.focused).map((e) => e.id) });
+  const colBefore = (await h.h('getUIState')).focus.col;
   await pad([PAD.DLEFT]);                          // d-pad left: change column
-  reach.push({ after: 'DPAD LEFT', focus: (await h.h('getUIState')).elements.filter((e) => e.focused).map((e) => e.id) });
+  const uiAfterDpad = await h.h('getUIState');
+  reach.push({ after: 'DPAD LEFT', col: uiAfterDpad.focus.col, colBefore,
+    focus: uiAfterDpad.elements.filter((e) => e.focused).map((e) => e.id) });
   await pad([PAD.DDOWN]);
-  await pad([PAD.A]);                              // A: confirm (cycles the category)
+  await pad([PAD.A]);                              // A: confirm
   reach.push({ after: 'A', mode: (await h.h('getUIState')).mode });
+  await pad([PAD.B]);                              // B: back out of anything A opened
   await pad([PAD.START]);                          // close
   reach.push({ after: 'START', mode: (await h.h('getUIState')).mode });
   out.raw.gamepad_walk = reach;
   const padOpened = reach[0].mode === 'inventory';
   const padMoved = reach[1].focus && reach[1].focus.length > 0;
-  const padColumn = reach[2].focus && JSON.stringify(reach[2].focus) !== JSON.stringify(reach[1].focus);
+  const padColumn = reach[2].col !== reach[2].colBefore;
   const padClosed = reach[reach.length - 1].mode === 'world';
   push('PAD', 'the interface opens, navigates, confirms and closes on a GameSir X2s alone',
     padOpened && padMoved && padColumn && padClosed,
-    `open ${padOpened}, stick moved focus ${padMoved}, d-pad changed column ${padColumn}, closed ${padClosed}`);
+    `open ${padOpened}, stick moved focus ${padMoved}, d-pad moved column ${reach[2].colBefore}->${reach[2].col}, closed ${padClosed} (final mode ${reach[reach.length-1].mode})`);
 
   // every screen openable, and each one reporting the surfaces reachable from it
   await h.h('setMode', 'harness');

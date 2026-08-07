@@ -38,10 +38,17 @@
 //     at or under RI-CMB04 §B's declared column, with a 1 % margin. One parameter, solved
 //     against the item's own number, not fourteen hand-tuned curves.
 //
-// Run: node tools/harness/anim-author.mjs [--write]   (default is a dry run)
+// Run: node tools/harness/anim-author.mjs [--write | --out <path>] [--only <arch,...>]
+//                                          [--gate [--gate-k <n>]]
+//   --write        overwrite game/data/combat/clips.json in place
+//   --out <path>   write the solve somewhere else, so it can be graded before it ships
+//   --only <a,b>   re-solve only these archetypes; the rest are copied from the shipped file
+//   --gate         choose among the ranked shortlist with `cmb-exchange.mjs --probe react`,
+//                  i.e. with RI-CMB12's own instrument rather than with this file's pose proxy
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
 import { Clip, LoopClip, addPose } from '../../game/src/combat/clips.js';
 import { Rig } from '../../game/src/combat/skeleton.js';
 
@@ -726,7 +733,79 @@ function better(a, b) {                     // true when `a` beats `b`
   for (let i = 0; i < ka.length; i++) { if (ka[i] < kb[i] - 1e-9) return true; if (ka[i] > kb[i] + 1e-9) return false; }
   return false;
 }
+
+// ---- `--gate`: let the instrument that SCORES the build choose, not the proxy ---------------
+//
+// The ranking above uses this file's `lie`, which is §A.1's POSE metric only. Measured (r4b),
+// that proxy MISRANKS on two of the four archetypes, and not by a constant:
+//
+//   chop_overhead   proxy prefers swing 0.29 / bury 0.85 (lie 8, min_axis 0.188)
+//                   -> `cmb-exchange` reads lie 9 on champion:chop.  REJECTED.
+//   sweep_wide      proxy prefers swing 0.11 / hitFrac 0.40 (lie 5)
+//                   -> `cmb-exchange` reads lie 14 on champion:combo_a.  REJECTED.
+//
+// So the solver keeps a ranked SHORTLIST rather than a single winner, and `--gate` walks it in
+// rank order, writing each candidate to a scratch file and grading it with
+// `cmb-exchange.mjs --probe react --clips <that file>`. The first candidate whose champion rows
+// clear RI-CMB12 §A's own budgets wins. This is slow — about 25 s a candidate — and it is the
+// only way the answer is not a hand-pick.
+const GATE = process.argv.includes('--gate');
+const GATE_K = Number(process.argv.includes('--gate-k') ? process.argv[process.argv.indexOf('--gate-k') + 1] : 24);
+const ONLY = process.argv.includes('--only') ? String(process.argv[process.argv.indexOf('--only') + 1]).split(',') : null;
+const SHORTLIST = [];
+/** Keep the best GATE_K distinct (t, swing, ext, bury, cham, hitFrac) points, in rank order. */
+function shortlistPush(list, c) {
+  const k = [c.t, c.swing, c.ext, c.bury, c.cham, c.hitFrac].map((v) => Number(v).toFixed(3)).join('|');
+  if (list.some((x) => x._k === k)) return;
+  c._k = k;
+  list.push(c);
+  list.sort((a, b) => (better(a, b) ? -1 : better(b, a) ? 1 : 0));
+  if (list.length > GATE_K) list.length = GATE_K;
+}
+/**
+ * Grade a shortlist with `cmb-exchange.mjs` and return the first candidate that clears
+ * `RI-CMB12` §A on every champion attack this archetype drives. Returns null when none does,
+ * in which case the proxy's own winner stands and the report has to say so.
+ */
+function gate(name, list) {
+  const tmp = path.join(ROOT, 'reports/w1-09/_gate-candidate.json');
+  const moves = [];
+  for (const eid of Object.keys(ENEMIES)) {
+    if (eid !== 'champion_hist_marked') continue;
+    for (const k of Object.keys(ENEMIES[eid].attacks || {})) {
+      if ((ENEMIES[eid].attacks[k].archetype || 'cut_diagonal') === name) moves.push(k);
+    }
+  }
+  if (!moves.length) return null;
+  let bestGraded = null;
+  for (let i = 0; i < list.length; i++) {
+    const c = list[i];
+    const doc = JSON.parse(fs.readFileSync(clipsPath, 'utf8'));
+    doc.archetypes[name] = c.a;
+    fs.writeFileSync(tmp, JSON.stringify(doc, null, 1) + '\n');
+    const r = spawnSync(process.execPath, [path.join(ROOT, 'tools/harness/cmb-exchange.mjs'),
+      '--probe', 'react', '--moves', moves.join(','), '--clips', tmp, '--out', tmp + '.out'],
+    { encoding: 'utf8', timeout: 300000 });
+    if (r.status !== 0 && !fs.existsSync(tmp + '.out')) continue;
+    const R = JSON.parse(fs.readFileSync(tmp + '.out', 'utf8'));
+    const per = (R.probes && R.probes.react && R.probes.react.per_attack) || [];
+    const lie = Math.max(...per.map((p) => p.lie));
+    const react = Math.min(...per.map((p) => p.t_react));
+    const ok = lie <= 8 && per.every((p) => p.declared_reactable === false || p.t_react >= 19);
+    console.log(`    gate ${name} #${i} swing=${c.swing.toFixed(2)} ext=${c.ext} bury=${c.bury} hf=${c.hitFrac}  proxy lie ${c.m.lie} -> LIVE lie ${lie}, t_react ${react}  ${ok ? 'PASS' : 'reject'}`);
+    if (!bestGraded || lie < bestGraded.lie) bestGraded = { lie, react, c };
+    if (ok) { try { fs.unlinkSync(tmp); fs.unlinkSync(tmp + '.out'); } catch (e) { /* */ } return c; }
+  }
+  try { fs.unlinkSync(tmp); fs.unlinkSync(tmp + '.out'); } catch (e) { /* */ }
+  if (bestGraded) {
+    console.log(`    gate ${name}: NO candidate clears RI-CMB12 §A; best live lie ${bestGraded.lie}, t_react ${bestGraded.react}`);
+    return bestGraded.c;
+  }
+  return null;
+}
+
 for (const name of Object.keys(ARCH)) {
+  if (ONLY && !ONLY.includes(name)) { solved[name] = clipsDoc.archetypes[name]; continue; }
   const _t0 = Date.now();
   const rows = rowsFor(name);
   const def = ARCH[name];
@@ -754,7 +833,7 @@ for (const name of Object.keys(ARCH)) {
      for (let t = 0.00; t <= 0.801; t += 0.10) {
       for (let ext = 0; ext <= 70; ext += 10) {
         const hit = cell(t, 1.30, 0.05, 0.09, ext, bury, cham, hitFrac);
-        if (hit && better(hit, best)) best = hit;
+        if (hit) { if (better(hit, best)) best = hit; if (GATE) shortlistPush(SHORTLIST, hit); }
       }
      }
     }
@@ -780,8 +859,13 @@ for (const name of Object.keys(ARCH)) {
     for (const t of tS) for (const ext of eS) for (const hitFrac of hS) for (const bury of bS) for (const cham of cS) {
       const hit = cell(t, Math.min(1.30, b0.swing + 0.09), Math.max(0.05, b0.swing - 0.09), 0.01,
         ext, bury, cham, hitFrac);
-      if (hit && better(hit, best)) best = hit;
+      if (hit) { if (better(hit, best)) best = hit; if (GATE) shortlistPush(SHORTLIST, hit); }
     }
+  }
+  if (GATE && SHORTLIST.length) {
+    const g = gate(name, SHORTLIST);
+    if (g) best = g;
+    SHORTLIST.length = 0;
   }
   solved[name] = best.a;
   console.log(`[${((Date.now() - _t0) / 1000).toFixed(0)}s] ${name.padEnd(16)} t=${best.t.toFixed(2)} swing=${best.swing.toFixed(2)} ext=${best.ext} bury=${best.bury} chamber=${best.cham} hitFrac=${best.hitFrac}  ` +

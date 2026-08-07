@@ -141,7 +141,7 @@ try {
       series.push({ at: 'after hearth rest', focus: H.getMagicState().focus, rest });
       const monotone = series.slice(0, 4).every((v, i, a) => i === 0 || v.focus <= a[i - 1].focus);
       // the Dry Well
-      mage('arena_flat', 'the-dry-well');
+      mage('arena_flat', 'nu-ixtu');
       const dwSign = H.getCharacter && H.getCharacter().birthsign;
       const dw0 = H.getMagicState().focus;
       const s2 = make({ class: 'LIGHT', range: 'projectile', effects: [{ effect: 'fire_damage', magnitude: 30, duration_s: 0, area_r_m: 0 }] }, 's27dw');

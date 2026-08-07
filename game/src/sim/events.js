@@ -138,6 +138,17 @@ export const EVENT_TYPES = new Set([
   'theft', 'pickpocket', 'lock_attempt', 'lock_ward_set', 'lock_open', 'pick_break', 'trespass_enter', 'fence_sale',
   'crime', 'witness', 'report', 'bounty_change', 'arrest', 'jail_serve', 'corpse_found', 'bloodprice', 'death_flag',
   'writ',
+  // ---- W1-21 / AMENDMENT AM-W1-21-01 — the interface -------------------------------------
+  // HARNESS.md §5 declares the vocabulary "a closed vocabulary, EXTENSIBLE BY AMENDMENT".
+  // RI-UIX03 P7 requires that "changing an equipped weapon or armour piece costs an
+  // ANIMATION-COMMITTED action of >= 30 frames during which the player is vulnerable", and its
+  // Comparison method step 5 says "assert the trace shows a committed state of >= 30 frames
+  // with iframe: false". A commitment that leaves no trace record is unmeasurable, so the two
+  // ends of it are events: `equip_start` carries `commit_frames` and `iframe`, `equip_end`
+  // fires on the frame the swap actually happens. `item_used` and `item_moved` are the other
+  // two things a player can do from the inventory screen; without them a take-and-put across a
+  // container screen (C8) is invisible to every instrument in the project.
+  'equip_start', 'equip_end', 'item_used', 'item_moved',
   // W1-15 round 2. Two more, and both exist because the round-2 build derives from the world
   // what the round-1 build was handed:
   //   `report_route`  — WHICH of RI-CRM01 §3a's five routes a witness took, the guard they are

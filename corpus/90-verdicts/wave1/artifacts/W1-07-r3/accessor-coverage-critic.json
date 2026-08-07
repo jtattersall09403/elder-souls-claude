@@ -1,0 +1,71 @@
+{
+  "generated_by": "tools/harness/critic-w1-07-r3e.mjs",
+  "surfaces": {
+    "renderer_2d_surfaces": [
+      "ui",
+      "title",
+      "menus"
+    ],
+    "instrumented": [
+      "dialogue",
+      "title"
+    ]
+  },
+  "before": {
+    "all": [
+      "JEEH-EI",
+      "THE HOLD, TWO DAYS OUT OF GIDEON   ·   1 of 13",
+      "They will take the other one off you at the writ house. Tell me the one they cannot.",
+      "— Silence-Under-Salt",
+      "  Waits-For-The-Second-Tide",
+      "  Counts-The-Drowned",
+      "  Small-Root-Deep-Water",
+      "  Hears-The-Barge-Coming",
+      "  Does-Not-Answer-Twice",
+      "  Walks-Where-It-Is-Dry",
+      "  Keeps-The-Egg-Warm",
+      "  Three-Names-One-Mouth"
+    ],
+    "non_dialogue": []
+  },
+  "after": {
+    "all": [
+      "JEEH-EI",
+      "THE HOLD, TWO DAYS OUT OF GIDEON   ·   1 of 13",
+      "They will take the other one off you at the writ house. Tell me the one they cannot.",
+      "— Silence-Under-Salt",
+      "  Waits-For-The-Second-Tide",
+      "  Counts-The-Drowned",
+      "  Small-Root-Deep-Water",
+      "  Hears-The-Barge-Coming",
+      "  Does-Not-Answer-Twice",
+      "  Walks-Where-It-Is-Dry",
+      "  Keeps-The-Egg-Warm",
+      "  Three-Names-One-Mouth"
+    ],
+    "non_dialogue": []
+  },
+  "only_after": [],
+  "m9_hits_after": [],
+  "menus_entries": [],
+  "screens": [
+    {
+      "screen": "menu",
+      "distinct_total": 12,
+      "on_menus_surface": 0,
+      "sample": []
+    },
+    {
+      "screen": "rest",
+      "distinct_total": 12,
+      "on_menus_surface": 0,
+      "sample": []
+    },
+    {
+      "screen": "dialogue",
+      "distinct_total": 12,
+      "on_menus_surface": 0,
+      "sample": []
+    }
+  ]
+}

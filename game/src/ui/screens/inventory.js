@@ -18,7 +18,7 @@
 
 import { C, Ca, boneRule, bonePip, panel, chitinPath, idHash } from '../theme.js';
 import { screen, column, tagColumn, row, extent, hint, ink, inkDim, accent, CALM_ALPHA, COMBAT_ALPHA } from '../chrome.js';
-import { drawText, faceOf, measure, wrap, writeLines, ellipsise } from '../type.js';
+import { drawText, faceOf, measure, wrap, writeLines, ellipsise, BODY } from '../type.js';
 
 export const SORTS = [
   { id: 'name', label: 'name' },
@@ -78,7 +78,7 @@ export function drawInventory(S, m) {
   for (let i = win.from; i < win.to; i++) {
     const it = m.rows[i];
     row(S, 'inventory.row.' + it.id, 'list_row', lx, iy + 34 * s + (i - win.from) * rowH, lw, rowH, [
-      { text: it.equipped ? '— ' + it.name : it.name, w: 330 },
+      { text: it.equipped ? '— ' + it.name : it.name, w: 330, size: BODY.screen },
       { text: it.count > 1 ? '×' + it.count : '', w: 46, align: 'right', face: 'bone', size: 14 },
       { text: fmt(it.weight), w: 100, align: 'right', face: 'bone', size: 15 },
       { text: it.value_gold ? String(it.value_gold) : '—', w: 110, align: 'right', face: 'bone', size: 15 },
@@ -217,7 +217,7 @@ function detail(S, id, x, y, w, h, it, alpha, focused) {
       yy += 22 * s;
     }
     yy += 10 * s;
-    const size = 16 * s, lh = size * 1.48;
+    const size = BODY.screen * s, lh = size * 1.48;
     const lines = wrap(it.description, f, size, r[2]);
     writeLines(c, lines, r[0], yy, 'ink', size, lh, ink());
     yy += lines.length * lh + 16 * s;
