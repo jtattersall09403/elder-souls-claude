@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `45df863`: 460 tools, 153 reference
-items, 20 pieces in flight.
+so it cannot drift. Generated at `b926e95`: 460 tools, 153 reference
+items, 21 pieces in flight.
 
-Its purpose is to stop 20+ concurrent agents each paying separately to discover the
+Its purpose is to stop 21+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -738,6 +738,7 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-19-r3` | reading | read W1-VIABILITY-SPLIT.json, W1-19-r2 verdict, INDEX.md; then diff the two instruments | `orchestration/status/W1-19-r3.json` |
 | `critic-w1-13-r3` | running | read RULES, INDEX, W1-13-r2 verdict, W1-13-r3 status | — |
 | `W1-VIABILITY-SPLIT` | done | none -- hand to a tool critic. Do NOT let the critic grade this piece against the screen f | `orchestration/status/W1-VIABILITY-SPLIT.json` `tools/analysis/impossibility-screen.mjs` `tools/quests/viability-walk.mjs` `tools/quests/viability-split-shot.mjs` `corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md` `corpus/22-character/RI-CHR01-character-creation.md` |
 | `W1-SOULS-r3` | running | browser: run souls-ledger-oracle (invariant over 463 routes) + its --self-break; then soul | `orchestration/status/W1-SOULS-r3.json` `game/src/sim/souls.js` `game/src/engine.js` `game/src/world/population.js` `tools/progression/derive-soul-values.mjs` `tools/check-souls-corpus.mjs` |
