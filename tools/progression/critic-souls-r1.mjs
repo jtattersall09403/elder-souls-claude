@@ -211,24 +211,72 @@ try {
     K8.frames_to_death === null && K8.delta === 0,
     `no-attack control: frames_to_death=${K8.frames_to_death}, souls delta ${K8.delta}, swings ${K8.swings}`);
 
+  // ---- K3, REPOLARISED (W1-SOULS round 3). ------------------------------------------------
+  // The observation is kept; the ASSERTION was inverted by the thing it caused.
+  //
+  // Round 1 wrote `ent.hp = 0` on a `sim.entities` record — which is what `sim/hazards.js` H9
+  // did at the time — and measured hp 412 -> 0 -> **412** with zero souls. Round 2 fixed the
+  // CAUSE: `HazardSystem._hurtEntity()` now damages the combat body, the authority, because
+  // `combat-bridge.js mirror()` restores `e.hp` from that body every step. So this arm's old
+  // predicate ("this write must pay") asserts a code shape that was deliberately removed, and
+  // it has been reporting a false red at everyone who runs this tool ever since — which the
+  // W1-SOULS round-2 verdict charged, correctly, as a tool that fails for reasons that no
+  // longer exist.
+  //
+  // Repolarised rather than deleted, because the measurement is the single most useful thing
+  // this instrument found: **a write to `sim.entities` on a body that has a combat body is a
+  // write to a cache.** It is now the CONTROL that proves that, and it goes red if a future
+  // change ever makes the mirror authoritative — at which point half the probes in this tree
+  // would silently start measuring the wrong object.
   const K3 = R.K3;
-  ok('K3 the HAZARD death path pays — `ent.hp = 0` on a sim.entities record, as sim/hazards.js does',
-    K3.souls_after_31_frames > 0,
-    `wrote hp ${K3.entity_hp_before} -> 0; after 1 frame hp=${K3.entity_hp_after_1_frame} souls+${K3.souls_after_1_frame}; `
-    + `after 31 frames hp=${K3.entity_hp_after_31_frames} souls+${K3.souls_after_31_frames}; combat body hp=${K3.body_hp}`);
+  ok('K3 CONTROL: a write to the sim.entities MIRROR is a write to a cache — it must NOT pay',
+    K3.souls_after_31_frames === 0 && K3.entity_hp_after_31_frames > 0,
+    `wrote hp ${K3.entity_hp_before} -> 0 on the sim record; after 1 frame hp=${K3.entity_hp_after_1_frame} `
+    + `souls+${K3.souls_after_1_frame}; after 31 frames hp=${K3.entity_hp_after_31_frames} `
+    + `souls+${K3.souls_after_31_frames}; combat body hp=${K3.body_hp}. The corpse resurrects because the `
+    + 'AUTHORITY was never touched. sim/hazards.js damages the combat body since round 2.');
 
+  // ---- K5, RE-POINTED (W1-SOULS round 3), and this is a change of ANSWER, not of wording. --
+  //
+  // K5 drives `despawn` + `spawnEncounter` under the same tag and asked: does the reward refuse
+  // to pay? Round 1 measured +816, +816, +816 and charged an unlimited farm. Round 2 answered it
+  // inside `sim/souls.js`, by refusing to re-arm a recycled eid without a rest — and that answer
+  // is what round 3 removed, deliberately, because it was WRONG IN THE OTHER DIRECTION: it also
+  // refused to pay for five live full-HP hostiles at a road post the player had half cleared
+  // (`W1-SOULS-r2` HF-2). A reward system cannot price a respawn it did not authorise.
+  //
+  // So the property K5 exists to protect — ARBITRATION S5, "a respawn costs a rest" — has moved
+  // to where it can actually be kept, and this arm follows it. The route below rebuilds bodies
+  // by hand, so under round 3 it SHOULD pay: those are new bodies. What must not happen is the
+  // WORLD rebuilding them for free, and that is now `world/population.js`'s register of who was
+  // down at a released post. K5 is therefore reported as an OBSERVATION, and the S5 assertion
+  // that replaced it lives in `tools/progression/souls-ledger-oracle.mjs` invariant I3, which
+  // checks it over every route rather than over this one.
   const K5 = R.K5;
-  ok('K5 S5: an ordinary enemy pays again only after a HEARTH rest',
-    !(K5.pass2 && K5.pass2.paid > 0),
+  ok('K5 OBSERVATION (not an assertion since r3): a hand-rebuilt body is a NEW body and pays',
+    true,
     `despawn+respawn with no rest: pass1 +${K5.pass1 && K5.pass1.paid}, pass2 +${K5.pass2 && K5.pass2.paid}, `
-    + `pass3 +${K5.pass3 && K5.pass3.paid}; same eids reused: ${K5.same_eids}; ${K5.hearth_rests} rests; total ${K5.total}`);
+    + `pass3 +${K5.pass3 && K5.pass3.paid}; same eids reused: ${K5.same_eids}; ${K5.hearth_rests} rests; `
+    + `total ${K5.total}. S5 is asserted by souls-ledger-oracle I3, over arbitrary routes, not here.`);
 
-  ok('K6 souls-consumption arm D can fail when the dummy cannot be spawned',
-    R.K6.arm_d_would_pass === false,
-    `spawn threw ("${R.K6.D && R.K6.D.error}") and arm D's predicate returns ${R.K6.arm_d_would_pass}`);
-  ok('K7 souls-consumption arms B and I can fail when no kill happened',
-    R.K7.arm_i_would_pass === false && R.K7.arm_b_would_pass === false,
-    `arm I with 0 kills -> ${R.K7.arm_i_would_pass}; arm B with ${R.K7.arm_b_real_kills} real kills -> ${R.K7.arm_b_would_pass}`);
+  // ---- K6/K7, RETIRED. ---------------------------------------------------------------------
+  // Both replayed the LITERAL PREDICATES of `souls-consumption.mjs` arms B, D and I as round 1
+  // found them, to prove those arms could fail. Round 2 rewrote all three predicates in response
+  // (arm B now filters skipped kills and requires `bReal.length > 0`; D requires
+  // `!!D.kill && !D.kill.skipped`; I requires `!I.the_kill.skipped && I.the_kill.delta > 0`), and
+  // the suite grew its own unfalsifiability gate that fails the run if A passes while the
+  // ablation does not go red. So these two arms test text that no longer exists, and they have
+  // been reporting false reds at everyone who runs this tool. They are retired here rather than
+  // deleted, with the reason, because the round-2 verdict is right that a tool which cannot fail
+  // is worse than no probe — and so is one that fails for reasons that no longer exist.
+  v.push({ name: 'K6 RETIRED — replayed souls-consumption arm D\'s round-1 predicate, which round 2 replaced',
+    pass: true, retired: true,
+    detail: 'de-vacuuming arms B/D/I is now checked by the suite\'s OWN unfalsifiability gate '
+      + '(A cannot pass while the ablation stays green) and by its delete-the-fix leg. Nothing is lost.' });
+  v.push({ name: 'K7 RETIRED — replayed souls-consumption arms B and I\'s round-1 predicates, likewise',
+    pass: true, retired: true,
+    detail: 'same reason as K6. The observations R.K6/R.K7 are still written to the report for anyone '
+      + 'who wants the numbers; they are no longer scored.' });
 
   ok('K4 the player is not swept into the kill scan',
     R.K4.player_in_entities === false,

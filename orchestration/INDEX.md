@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `b926e95`: 460 tools, 153 reference
-items, 21 pieces in flight.
+so it cannot drift. Generated at `5c4c5b0`: 460 tools, 153 reference
+items, 24 pieces in flight.
 
-Its purpose is to stop 21+ concurrent agents each paying separately to discover the
+Its purpose is to stop 24+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -738,12 +738,15 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `critic-w1-17-act5` | ? | read W1-17-act5-argument.json handover, main-quest-argument.json, RI-DLG items; re-measure | — |
+| `critic-w1-11` | running | read INDEX.md, RULES.md done; then W1-11 status + PLAN §3 + ARBITRATION S22 | `orchestration/status/critic-w1-11.json` |
+| `critic-w1-04` | running | read INDEX.md, RULES.md done; then W1-04.json, reports/w1-04-survey.md, docs/PLAN.md S3 W1 | `orchestration/status/critic-w1-04.json` |
+| `W1-22-r2` | building | HANDOFF. (1) root-cause street/well render non-reproducibility - it breaks R3 and would co | `game/src/audio/ambience.js` `game/src/audio/synth.js` `game/src/engine.js` `game/src/harness/api.js` `game/data/audio/ambience/*.json` `game/data/audio/ambience/interiors/*.json` |
 | `W1-19-r3` | reading | read W1-VIABILITY-SPLIT.json, W1-19-r2 verdict, INDEX.md; then diff the two instruments | `orchestration/status/W1-19-r3.json` |
 | `critic-w1-13-r3` | running | read RULES, INDEX, W1-13-r2 verdict, W1-13-r3 status | — |
 | `W1-VIABILITY-SPLIT` | done | none -- hand to a tool critic. Do NOT let the critic grade this piece against the screen f | `orchestration/status/W1-VIABILITY-SPLIT.json` `tools/analysis/impossibility-screen.mjs` `tools/quests/viability-walk.mjs` `tools/quests/viability-split-shot.mjs` `corpus/80-methods/RI-MTH06-build-viability-and-journey-instrumentation.md` `corpus/22-character/RI-CHR01-character-creation.md` |
 | `W1-SOULS-r3` | running | browser: run souls-ledger-oracle (invariant over 463 routes) + its --self-break; then soul | `orchestration/status/W1-SOULS-r3.json` `game/src/sim/souls.js` `game/src/engine.js` `game/src/world/population.js` `tools/progression/derive-soul-values.mjs` `tools/check-souls-corpus.mjs` |
 | `W1-13-r3` | done | critic | `game/src/sim/environment.js` `game/src/harness/api.js` `tools/journey/jrn06-death.mjs` `tools/journey/journey-run.mjs` `tools/harness/w1-13-r3-bloom-sight.mjs` `tools/harness/w1-13-r3-clock.mjs` |
-| `W1-22-r2` | building | event-level calibration running; then acceptance run + both sabotage arms; then re-run the | `game/src/audio/ambience.js` `game/src/audio/synth.js` `game/src/engine.js` `game/src/harness/api.js` `game/data/audio/ambience/*.json` `game/data/audio/ambience/interiors/*.json` |
 | `tool-build-viability-r6` | researching | choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items | — |
 | `W1-JOURNAL-PROSE` | researching | state the closing-line rule, then rewrite file by file, re-running the FULL gate after eve | — |
 | `judge-prose-r4` | researching | read t01-books A.txt and B.txt; answer; then t02..t15 | — |
