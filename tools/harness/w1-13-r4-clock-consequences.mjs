@@ -524,9 +524,17 @@ try {
         !exit.award_clock_deleted.equal || !entry.award_clock_deleted.equal,
       arms_differ: (exit.shipped.dying_paid !== exit.award_clock_deleted.dying_paid)
         || (entry.shipped.dying_paid !== entry.award_clock_deleted.dying_paid),
-      the_deadline_burn_was_not_given_back: exit.shipped.world_clock_burned_by_dying_h === 0
-        && entry.shipped.world_clock_burned_by_dying_h === 0
-        && exit.clock_hold_deleted.deadline_burn_returned,
+      // The round-3 predicate, applied correctly. A perfect zero is the WRONG target and round 3
+      // worked out why: the clock runs first in `sim/step.js`'s frame order, so on the one frame
+      // the killing blow lands the player was still alive when it ticked. FORTY deaths therefore
+      // cost forty frames, and 41 frames is 0.003796 h. Demanding 0.000000 would be demanding an
+      // implausible number and would make this row fail on a world that is behaving correctly.
+      deadline_burn_ceiling_h: Math.round((DEATHS + 1) / 10800 * 1e6) / 1e6,
+      the_deadline_burn_was_not_given_back:
+        exit.shipped.world_clock_burned_by_dying_h <= (DEATHS + 1) / 10800
+        && entry.shipped.world_clock_burned_by_dying_h <= (DEATHS + 1) / 10800
+        && exit.clock_hold_deleted.world_clock_burned_by_dying_h
+             > 10 * exit.shipped.world_clock_burned_by_dying_h,
     };
     log(`B exit(04:30): shipped dying ${exit.shipped.dying_paid} vs alive ${exit.shipped.alive_paid} | del dying ${exit.award_clock_deleted.dying_paid} vs alive ${exit.award_clock_deleted.alive_paid}`);
     log(`B entry(20:58): shipped dying ${entry.shipped.dying_paid} vs alive ${entry.shipped.alive_paid} | del dying ${entry.award_clock_deleted.dying_paid} vs alive ${entry.award_clock_deleted.alive_paid}`);
@@ -543,7 +551,8 @@ try {
     deadline_protection_intact: bb ? bb.the_deadline_burn_was_not_given_back : null,
   };
   // An absence-reporter, not a stub: if the method cannot be run the file says so and exits non-zero.
-  out.ok = (!a || a.clauses_passing >= 5) && (!bb || (bb.shipped_invariant_holds && bb.arms_differ));
+  out.ok = (!a || a.clauses_passing >= 6)
+    && (!bb || (bb.shipped_invariant_holds && bb.arms_differ && bb.the_deadline_burn_was_not_given_back));
 } catch (err) {
   out.error = String(err && err.stack ? err.stack : err);
   out.ok = false;

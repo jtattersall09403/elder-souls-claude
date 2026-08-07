@@ -314,6 +314,132 @@ export async function runJrn06(h, args, led, ctx = {}) {
     });
   }
 
+  // ---- RI-PRG04 COMPARISON METHOD #8 — the clock's consequence chain -------------------------
+  //
+  // W1-13 ROUND 4. This is the method that had never been run. It is printed in the item:
+  //
+  //   > **8. Clock consequence.** Rest at in-game 17:00. Assert the clock reads 23:00, the night
+  //   > roster is active, merchants are closed, and any active timed quest has consumed 6 hours.
+  //   > Rest 4x in a row: assert the clock advances 24 h and returns to the same shop state.
+  //
+  // Three rounds of this piece measured the FIRST clause and no other. `Clock cost` is the axis
+  // those assertions score, its 10 rung is "full consequence chain fires", and it was the minimum
+  // over RI-PRG04's eight axes for three rounds — so this one instrument is what the whole item's
+  // score has been standing on.
+  //
+  // EVERY CLAUSE CARRIES ITS CONTROL. The control is not "delete a fix" — it is THE SAME ARM WITH
+  // THE REST REMOVED, stepping the same frames. A shop that is shut at 23:00 proves nothing until
+  // you have shown it was open at 17:00 and would have stayed open without the rest.
+  {
+    await h.h('loadState', 'default');
+    await h.h('setRenderRate', 0);
+    await h.h('stepFrames', 2);
+    const wells8 = (await h.h('listHearths')).hearths || [];
+    const well8 = wells8.find((x) => x.kind === 'settlement') || wells8[0];
+    const interiorIds = ((await h.h('listInteriors')) || [])
+      .map((x) => (typeof x === 'string' ? x : x.id)).filter(Boolean);
+
+    const readWorld8 = async () => {
+      const env = await h.h('getEnvironment');
+      const shops = {};
+      for (const id of interiorIds) {
+        const open = await h.hOpt('isOpenNow', id);
+        if (open !== null && open !== undefined) shops[id] = !!open;
+      }
+      const roster = {};
+      for (const n of ((await h.h('whereIsEveryone')) || [])) roster[n.eid] = n.at;
+      return { hour: env.time_of_day, day: env.day, phase: env.phase, shops, roster };
+    };
+    // The rate, driven through an ENTITY rather than read off a field (RI-MTH07 / ARBITRATION §3):
+    // spawn one ordinary enemy, kill it, and read what the purse was paid.
+    let seq8 = 0;
+    const ordinaryKill8 = async () => {
+      const as = `m8-ord-${seq8++}`;
+      const before = (await h.h('getDeathState')).souls_held;
+      await h.h('spawn', 'inf_trash', well8.pos[0] + 4, well8.pos[2] + 4, { as });
+      await h.h('stepFrames', 2);
+      await h.h('killEntity', as);
+      await h.h('stepFrames', 20);
+      return (await h.h('getDeathState')).souls_held - before;
+    };
+    const diff8 = (a, b) => {
+      const closed = [], opened = [], moved = [];
+      for (const id of Object.keys(a.shops)) {
+        if (a.shops[id] && !b.shops[id]) closed.push(id);
+        if (!a.shops[id] && b.shops[id]) opened.push(id);
+      }
+      for (const eid of Object.keys(a.roster)) if (a.roster[eid] !== b.roster[eid]) moved.push({ eid, from: a.roster[eid], to: b.roster[eid] });
+      return { closed, opened, moved };
+    };
+
+    const runArm8 = async (rests) => {
+      await h.h('loadState', 'default');
+      await h.h('setRenderRate', 0);
+      await h.h('teleport', well8.pos[0], well8.pos[2]);
+      await h.h('stepFrames', 4);
+      await h.h('setTimeOfDay', 17.0);
+      await h.h('stepFrames', 8);
+      const before = await readWorld8();
+      before.souls_for_one_ordinary_kill = await ordinaryKill8();
+      const clocks = [];
+      for (let i = 0; i < Math.max(rests, 1); i++) {
+        if (rests > 0) clocks.push((await h.h('restAt', well8.id)).clock);
+        await h.h('stepFrames', 4);
+      }
+      const after = await readWorld8();
+      after.souls_for_one_ordinary_kill = await ordinaryKill8();
+      const d = diff8(before, after);
+      return {
+        rests, before, after, rest_clocks: clocks,
+        hours_moved: Math.round(((((after.hour - before.hour) % 24) + 24) % 24 + (after.day - before.day) * 24) * 1e6) / 1e6,
+        days_moved: after.day - before.day,
+        shops_closed: d.closed, shops_opened: d.opened, npcs_moved: d.moved.slice(0, 20),
+        shops_closed_n: d.closed.length, shops_opened_n: d.opened.length, npcs_moved_n: d.moved.length,
+        shops_total: Object.keys(before.shops).length,
+        souls_ratio: before.souls_for_one_ordinary_kill > 0
+          ? Math.round(after.souls_for_one_ordinary_kill / before.souls_for_one_ordinary_kill * 1e4) / 1e4 : null,
+      };
+    };
+
+    const rested8 = await runArm8(1);
+    const control8 = await runArm8(0);
+    const four8 = await runArm8(4);
+
+    const c1 = Math.abs(rested8.after.hour - 23) < 0.01
+      && rested8.rest_clocks.every((x) => x.hours === 6);
+    const c2 = rested8.npcs_moved_n > 0 && control8.npcs_moved_n === 0;
+    const c3 = rested8.shops_closed_n > 0 && control8.shops_closed_n === 0;
+    const c5 = Math.abs(four8.hours_moved - 24) < 0.02 && four8.days_moved === 1
+      && four8.rest_clocks.length === 4 && four8.rest_clocks.every((x) => x.hours === 6);
+    const c6 = four8.shops_closed_n === 0 && four8.shops_opened_n === 0 && four8.npcs_moved_n === 0;
+    const c7 = rested8.souls_ratio !== null && Math.abs(rested8.souls_ratio - 1.35) < 0.02
+      && control8.souls_ratio === 1;
+
+    put('m_prg04_m8_clock_consequence', 'RI-PRG04 method 8 — rest at 17:00 and the world at 23:00', {
+      rested: rested8, no_rest_control: control8, four_rests: four8,
+      c1_clock_reads_23_00: c1,
+      c2_night_roster_active: c2,
+      c3_merchants_closed: c3,
+      c4_timed_quest_consumed_6h: null,
+      c4_why_unmeasurable: 'NO TIMED QUEST EXISTS AND ITS CONSUMER HAS NO CALLER. '
+        + 'game/data/quests/hooks.json declares "deadlines": []; QuestMachine.onDay(dayCount) '
+        + '(sim/quest/machine.js:712) is the only thing that reads a deadline and `grep -rn onDay` '
+        + 'over game/ and tools/ returns exactly one line — its own definition. Reported as an '
+        + 'absence rather than passed vacuously (RULES.md 24, 26). The clock reader the quest '
+        + 'layer DOES have is the journal date stamp, and four rests move it by exactly one day: '
+        + 'see four_rests.days_moved.',
+      c5_four_rests_advance_24h: c5,
+      c6_same_shop_state_after_the_round_trip: c6,
+      c7_souls_rate_1_35x_after_the_rest: c7,
+      clauses_measurable: 6,
+      clauses_passing: [c1, c2, c3, c5, c6, c7].filter(Boolean).length,
+      pass: c1 && c2 && c3 && c5 && c6 && c7,
+      control_note: 'Every clause is scored against an arm that stepped the same frames and did '
+        + 'NOT rest. no_rest_control must show 0 shops closing and 0 people moving, or the rest '
+        + 'was never the cause and this row is void.',
+    });
+  }
+
   // ---- M-D7: sell to a merchant, die, respawn — the trade survives -------------------------
   //
   // ROUND 2. The round-1 verdict scored this **0, never run**: the check simply was not in this

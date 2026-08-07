@@ -1,27 +1,42 @@
 {
   "task_id": "W1-06-r3",
-  "brief": "camera, round 3 -- fix engine.projectPoint() being blind to every posed camera (W1-13-r3.md path_to_ten #3): engine.camera({pos, look}) never writes c.yaw/c.pitch, so projectNDC()/project() build the view basis from whatever yaw the follow rig last solved (observed pinned at 15 deg on all bearings), and 0 of 96 W1-13-r3 bloom-sight rows reported on_screen:true including 0 of 58 rows independently scored visible from the pixels.",
+  "brief": "camera, round 3 -- fix engine.projectPoint() being blind to every posed camera (W1-13-r3.md path_to_ten #3): engine.camera({pos, look}) never wrote c.yaw/c.pitch, so projectNDC()/project() built the view basis from whatever yaw the follow rig last solved (observed pinned at 15 deg on all bearings), and 0 of 96 W1-13-r3 bloom-sight rows reported on_screen:true including 0 of 58 rows independently scored visible from the pixels.",
   "started": "2026-08-07",
-  "state": "in_progress",
+  "state": "done",
   "redundant_with": ["W1-06", "W1-06-r2"],
-  "note_on_redundancy": "same piece, third status file in the chain (W1-06.json successor-3, W1-06-r2.json successor-4). Continuing rather than restarting per RULES 3. The bloom-sight aim-only/eye-only arms r2 left unrun (its next_step item 1) have since been run by the W1-13-r3 death critic -- NOT repeating that; see corpus/90-verdicts/wave1/W1-13-r3.md section 0/section 5.",
+  "note_on_redundancy": "same piece, third status file in the chain (W1-06.json successor-3, W1-06-r2.json successor-4). Continued rather than restarted per RULES 3. r2's next_step item 1 (bloom-sight aim-only/eye-only arms) had already been run by the W1-13-r3 death critic before this round started -- NOT repeated; see corpus/90-verdicts/wave1/W1-13-r3.md section 0/section 5, and RULES 3.",
   "files_claimed": [
-    "game/src/engine.js",
     "reports/blog-feed.jsonl",
     "reports/w1-06/",
-    "docs/shots/",
-    "tools/camera/"
+    "docs/shots/"
   ],
-  "files_touched": [],
-  "outputs_expected": [
-    "engine.camera({pos, look}) solves and writes c.yaw/c.pitch from the pose, so engine.projectPoint() / projectNDC() build the view basis from the camera actually placed",
-    "falsifier: point a posed camera at something known off-screen and confirm projectPoint still says on_screen:false (RULES 4)",
-    "delete-the-fix arm (RULES 6)",
-    "grep for every caller of engine.camera()/projectPoint() and enumerate which recorded measurements are void",
-    "docs/shots/ image, reports/blog-feed.jsonl line"
+  "files_touched": [
+    "game/src/engine.js",
+    "game/src/sim/camera.js",
+    "tools/camera/cam-projectpoint-fix.mjs",
+    "tools/camera/cam-projectpoint-r3-shot.mjs",
+    "reports/w1-06/AMENDMENT-W1-06-02-projectPoint.md",
+    "reports/w1-06/cam-projectpoint-r3-shot.json",
+    "docs/shots/2026-08-07-w1-06-r3-projectpoint-sees-a-posed-camera.png",
+    "reports/blog-feed.jsonl"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "1) read engine.js camera()/projectPoint(), sim/camera.js project()/viewBasis()/basisAt() to find exact write site. 2) implement yaw/pitch solve from pos->look (or pos->pivot). 3) delete-the-fix + falsifier per RULES 4/6. 4) grep callers of engine.camera( across tools/ and corpus/ for void-measurement enumeration. 5) shot + blog line.",
-  "notes_for_successor": "if killed mid-round, read this file's next_step and continue; do not restart."
+  "outputs_written": [
+    "game/src/sim/camera.js: applyOverride() exported (was module-private) -- the exact function stepCamera() already called every fixed step to solve c.yaw/c.pitch/c.dist/c.armLen from c.override.pos/look",
+    "game/src/engine.js: camera() method now calls applyCameraOverride(c) immediately after installing the override, instead of hand-copying only c.pos/c.pivot/c.fov and leaving c.yaw/c.pitch stale until the next step",
+    "tools/camera/cam-projectpoint-fix.mjs: bare-Node falsifier + delete-the-fix probe against the unmodified production sim/camera.js -- 4/4 bearings on_screen:true post-fix (was 1/4 pre-fix, reproducing the reported one-lucky-bearing shape), two falsifiers correctly go red",
+    "tools/camera/cam-projectpoint-r3-shot.mjs: same shape confirmed through the real browser build via the shared capture daemon (no new browser launched) -- 4/4 on_screen:true, falsifier red, wrote the docs/shots image",
+    "reports/w1-06/AMENDMENT-W1-06-02-projectPoint.md: full defect/fix/falsifier/delete-the-fix writeup plus the grepped void-caller enumeration",
+    "reports/blog-feed.jsonl: one line"
+  ],
+  "findings": [
+    "ROOT CAUSE: engine.camera({pos,look}) wrote c.pos/c.pivot/c.fov but never c.yaw/c.pitch. projectNDC()/project() (sim/camera.js) build the view basis from c.yaw/c.pitch ALONE via viewBasis()/basisAt(), never from c.pos/c.pivot directly. stepCamera() already solves c.yaw/c.pitch correctly from an installed override via a (previously private) function applyOverride(c) -- but only once a fixed step runs. A caller that poses the camera and reads projectPoint() back off a DRAW (renderFrame(), or a tools/capture/ shot) rather than a STEP never ran that step, so c.yaw/c.pitch held whatever the follow rig had solved BEFORE the override -- plausible, structurally wrong.",
+    "FIX: exported applyOverride from sim/camera.js and had engine.camera() call it directly in place of its own 3-field copy. Not a second, divergable derivation of yaw/pitch -- the same function stepCamera() already calls every frame an override is installed, called one step early.",
+    "FALSIFIED + DELETE-THE-FIX (RULES 4/6): tools/camera/cam-projectpoint-fix.mjs, bare Node against the unmodified sim/camera.js. Fixed arm: 4/4 bearings on_screen:true, 4 distinct solved yaws. Pre-fix arm (old engine.camera() body, kept only as a copy for this one probe per RULES 17): yaw pinned at a single stale value on all 4 bearings, on_screen:true on exactly 1 of 4 -- reproducing the verdict's own description ('on the one bearing where the stale yaw happened to be nearly right it agrees with the pixels'). Two falsifiers (a point behind the camera, a point 90 deg off-aim) both correctly report on_screen:false/in_front:false under the FIXED code, so the instrument can still fail.",
+    "BROWSER CONFIRMATION: tools/camera/cam-projectpoint-r3-shot.mjs, via the shared capture daemon (tools/capture/, RULES 20 -- no new browser launched; box was at 24-30 concurrent headless_shell / loadavg 11-24 on 4 cores throughout, RULES 21 observed). Real engine.camera()/engine.projectPoint(), pose-then-read-no-step, same shape as w1-13-r3-bloom-sight.mjs: 4/4 bearings on_screen:true, falsifier (90 deg off-aim) on_screen:false. Image written non-blank (5,989 distinct sampled colours, luma stddev ~51).",
+    "boot-check: PASS, unaffected.",
+    "VOID ENUMERATION (grepped every caller of engine.camera() and projectPoint() in tools/ and corpus/, checked whether a stepFrames() ran between the pose and the read -- any step self-heals the reading, since stepCamera's applyOverride recomputes from the same override every frame it is installed): VOID -- (1) tools/harness/w1-13-r3-bloom-sight.mjs, all 48 rows, already named in W1-13-r3.md itself (the defect's discovery site -- not re-judged here, W1-13's own owners re-run it); (2) tools/harness/critic-w1-13-r3.mjs's own 4-row projectPoint table, void BY DESIGN -- it IS the demonstration of the bug in the verdict, not a mistaken conclusion; (3) corpus/90-verdicts/wave1/artifacts/W1-14-r3/camera.json row 'builder_pose_nostep' -- its projected_target_ndc is contaminated (proven by its own file: 0 pixel diff vs the correctly-projected builder_pose row, yet a completely different NDC) but W1-14-r3.md's verdict text never cites projectPoint or that field anywhere, so NO SCORED CONCLUSION in that verdict is void -- only the raw artifact JSON is, flagged for any future reader. CLEAR (step always ran first, or no override camera was ever posed): tools/harness/wpn-render-look.mjs, tools/harness/wpn-render-motion.mjs (stepFrames(1) precedes every projectPoint in-loop), tools/camera/cam-consume.mjs (never poses an override), tools/camera/cam-probe.mjs (its one camera() call tests mode-refusal, never followed by projectPoint), tools/analysis/ui-forbidden.mjs (calls projectPoint but never poses an override), tools/harness/critic-w1-14-r3-camera.mjs (4 of 5 pose rows step 24 frames first; only the 5th is void, already covered by item 3 above).",
+    "RELATED, NOT FIXED, OUT OF SCOPE: sim/camera.js's c.onscreen field (RI-CAM03 SS measurables, read via getCameraFrame().camera.onscreen) is set only inside stepCamera()'s locked-mode branch, which a posed override camera never reaches -- the same 'read immediately after pose, no step' shape, but a DIFFERENT field. Checked every tools/ caller of .onscreen (cam-probe.mjs, cam-pitch-instrument.mjs, cam-shots.mjs) -- all three measure the locked-mode follow rig, never a posed override, so nothing is void today. Named in the amendment so a future round does not have to rediscover it."
+  ],
+  "next_step": "DONE. If a successor picks this up: the amendment (reports/w1-06/AMENDMENT-W1-06-02-projectPoint.md) has the full writeup; nothing outstanding on THIS defect. Broader open W1-06 items are r2's own next_step (clip_through under lock beyond the crawl-space amendment, the renderer's separate blindness to enemy height at render.fidelity.character, corpus_debt already closed) -- unrelated to this round's fix.",
+  "notes_for_successor": "if killed mid-round, read this file (state:done) -- nothing to resume on the projectPoint defect specifically. The orchestrator auto-banks the tree periodically (observed: engine.js/sim/camera.js edits from this round were already committed into a broad multi-agent sweep, commit bfa9e4a, before this status file was written) -- do not assume `git diff HEAD` on a touched file means the edit is lost; check `git show HEAD:<path>` first."
 }

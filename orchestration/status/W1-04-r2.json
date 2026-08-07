@@ -48,7 +48,35 @@
     "reports/blog-feed.jsonl",
     "docs/shots/"
   ],
-  "files_touched": [],
+  "files_touched": [
+    "game/src/sim/settlement.js",
+    "game/src/engine.js",
+    "game/src/render/interior.js",
+    "game/src/render/renderer.js",
+    "game/src/harness/api.js",
+    "game/src/sim/npc.js",
+    "game/data/npcs/pop-archon.json",
+    "game/data/npcs/pop-blackrose.json",
+    "game/data/npcs/pop-gideon.json",
+    "game/data/npcs/pop-helstrom.json",
+    "game/data/npcs/pop-lilmoth.json",
+    "game/data/npcs/pop-soulrest.json",
+    "game/data/npcs/pop-stormhold.json",
+    "game/data/npcs/pop-thorn.json",
+    "tools/world/build-street-life.mjs",
+    "tools/world/w1-04-consumption.mjs",
+    "tools/world/w1-04-interior-sweep.mjs",
+    "tools/world/w1-04-r2-shots.mjs"
+  ],
+  "falsifications_done": [
+    "build-street-life.mjs: set thorn radius_m to 1 -> exit 3, 15 records named as unplaceable. Restored; git diff and git diff --cached both empty (RULES.md rule 17).",
+    "All 115 interiors built headless with no browser: 0 failures, 0 props with no table entry."
+  ],
+  "method_deviations": [
+    "Another agent's blanket commit swept my files into commits 0c8acfa/7d9a8e1 while I was working. I ran `git commit` at no point (RULES.md rule 28). This is the fourth time the pattern is on record.",
+    "The box was at 13-16 load and 18-30 headless_shell for this whole run, above RULES.md rule 21's ~8 cap. I launched ONE browser and kept it, and publish no timing figure.",
+    "The first sweep run was killed at 9m48s and restarted, because it was measuring a build without the palette cache and without the generic-hall restore, and would have been a number about code that is not shipped."
+  ],
   "overlap_notes": "game/src/engine.js is claimed by W1-05, W1-22-r2 (handed-off), W1-GIVER-PRESENCE (complete) and W1-SOULS-r3 (running). The blocking defect is in engine.js by construction (renderer.setCell has exactly one caller and it lives there), so the overlap is unavoidable rather than incidental. My edits are additive and confined to _applyCell/_afterStep and the sim hook block; I do not commit.",
   "redundant_with": ["W1-SOULS-r3"],
   "notes": []
