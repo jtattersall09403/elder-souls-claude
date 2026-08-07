@@ -174,6 +174,16 @@ export function buildSave(sim, build) {
       npcs_dead: [...sim.world.npcsDead].sort(),
       enemies_dead_until_rest: [...sim.world.enemiesDeadUntilRest].sort(),
       fog_gates_passed: [...sim.world.fogGatesPassed].sort(),
+      // W1-07 AR-3: being taken is an OUTCOME THAT IS NOT A DEATH, and it decides where you
+      // wake up, whether you still have your writ and what the gaoler says. It lived only on
+      // the live sim, so a save taken in the Archon Hold reloaded as a free citizen.
+      capture: sim.captured ? {
+        by: sim.captured.by,
+        destination: sim.captured.destination,
+        writ_confiscated: !!sim.captured.writ_confiscated,
+        how: sim.captured.how === undefined ? null : sim.captured.how,
+        frames_ago: f - sim.captured.frame,
+      } : null,
       // W1-07: the people and the things in the room. Durable because a person's facing and a
       // loiter clock are simulation state a reload must not forget, and because a world object
       // you already picked up must stay picked up. Sorted by eid, like every incidental array.
@@ -578,6 +588,13 @@ export function applySave(sim, blob, moves, statFor) {
   sim.world.npcsDead = [...blob.world.npcs_dead];
   sim.world.enemiesDeadUntilRest = [...blob.world.enemies_dead_until_rest];
   sim.world.fogGatesPassed = [...blob.world.fog_gates_passed];
+  sim.captured = blob.world.capture ? {
+    by: blob.world.capture.by, destination: blob.world.capture.destination,
+    writ_confiscated: blob.world.capture.writ_confiscated, how: blob.world.capture.how,
+    frame: f - blob.world.capture.frames_ago,
+  } : null;
+  sim.captureRequest = null;
+  sim.menuOpen = false;
 
   sim.npcs.length = 0;
   for (const n of blob.world.npcs || []) {

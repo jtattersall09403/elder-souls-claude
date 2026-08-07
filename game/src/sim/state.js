@@ -431,6 +431,18 @@ export class SimState {
     // and reachable state: RI-JRN01 O6 requires the player to be controllable, in a body,
     // with a walkable space and another person in it, BEFORE anything defines them.
     this.character = null;
+    // W1-07 AR-3's capture outcome, and the request that produces it. Neither was cleared by
+    // reset() and neither was in the save, so (a) a scenario that ran after a capture started
+    // still captured — the same contamination W1-15 found in the stealth subsystem and W1-13
+    // in the death runtime — and (b) a save taken in the Archon Hold reloaded as a free
+    // citizen. `captured` is durable and is carried as `world.capture`; `captureRequest` is a
+    // single-step intent resolved by the next step and is deliberately NOT.
+    this.captured = null;
+    this.captureRequest = null;
+    // A UI surface, not simulation state. Declared here so the live object's key set does not
+    // depend on whether anyone has pressed the menu button, and cleared by every load for the
+    // same reason the input pipeline is: a load does not land you inside an open menu.
+    this.menuOpen = false;
     return { ok: true, frame: 0, seed: this.seed };
   }
 

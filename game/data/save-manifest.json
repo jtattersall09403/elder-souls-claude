@@ -49,7 +49,8 @@
       "identity.creation.skills",
       "progression.sap_taint",
       "progression.upgrades",
-      "quests"
+      "quests",
+      "world.capture"
     ],
     "dynamic_containers_note": "A path here is a LEAF for RI-JRN05 M4: either a map whose keys are data (a bounty per jurisdiction, a per-zone alert baseline) or a record that is null until something happens (the jail term, the sap taint, a combat body before a fight is built). Its INSIDE is checked by a record-field declaration and getDurableFieldCensus(), not by the path-level set difference — the same division the World group already uses for world.entities."
   },
@@ -221,6 +222,7 @@
       "group": "World",
       "class": "durable",
       "paths": [
+        "world.capture",
         "world.containers_emptied",
         "world.doors_unlocked",
         "world.dropped_items",

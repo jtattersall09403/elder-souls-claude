@@ -19,7 +19,8 @@
     "tools/harness/wpn-render-look.mjs (NEW) \u2014 side-on swing capture with projected tip per frame",
     "tools/harness/wpn-render-motion.mjs (NEW) \u2014 pixel motion of a 60-frame attack in the character box",
     "tools/harness/wpn-render-control.mjs (NEW) \u2014 perturb + delete-the-fix controls, backup/restore with sha verification",
-    "tools/harness/wpn-render-crop.mjs (NEW) \u2014 delete-the-fix decided on the character region"
+    "tools/harness/wpn-render-crop.mjs (NEW) \u2014 delete-the-fix decided on the character region",
+    "tools/harness/wpn-render-crop.mjs (NEW) \u2014 delete-the-fix decided on the character region at 8/255 tolerance"
   ],
   "findings": [
     "load average at start: 7.43 (four cores) \u2014 capture expensive; plan for it",
@@ -53,7 +54,10 @@
     "Final smoke PASS before and after. No page errors in any of the four browser runs. classes.json verified restored (CGS 2.75/1.55, HLB 2.85/0.75).",
     "ENEMIES are rigged too, measured not asserted: spawned mat_flesh, aggro'd, 90 frames. enemy:e0 built=true rigged=true, its own weapon mesh, drawn tip travels 0.506 m and matches ITS OWN socketB to 0.00068 mm. So the thing swinging at you is drawn from the same rig that hits you as well.",
     "Enemy weapons are NOT from the 87-weapon roster - CombatSystem.spawn reads game/data/combat/enemies/*.json `weapon` blocks, which carry no `class`. Before the fix for this, every enemy drew the same default blade. Now classOfUnrostered() reads the DECLARED socket_a/socket_b names (wpn_head_a/wpn_head_b = headed weapon -> AXE family; wpn_guard/wpn_tip = bladed) and capsule_length_m as the edged span. cam_* enemies at 1.45 m now read as greatswords, which is what their own _peak_declared_note says they are.",
-    "Cache-key bug found and fixed during that work: the weapon mesh cache was keyed on roster-only fields, so EVERY unrostered enemy weapon collapsed to the key '||1.45||0.095'. weaponKeyOf() now includes capsule_length_m and the socket names."
+    "Cache-key bug found and fixed during that work: the weapon mesh cache was keyed on roster-only fields, so EVERY unrostered enemy weapon collapsed to the key '||1.45||0.095'. weaponKeyOf() now includes capsule_length_m and the socket names.",
+    "md5 REPRODUCIBILITY confirmed: the three baseline md5s were re-taken in a second, independent browser launch after all later code edits and came back BIT-IDENTICAL (ddc3a027.../90e661b0.../8083d265...). Tip error re-measured identically at 0.0008 mm max.",
+    "NPC REGRESSION CHECK: writ-house loads with 2 NPCs, 3 actors drawn, all 3 BUILT as humanoid meshes, 1 rigged (the player). NPCs use the static path by design (no combat body) so they stand at the rest pose. Zero page errors across writ-house and arena_flat.",
+    "NOT CLOSED (declared, not discovered): NPCs have no idle animation - they are correctly-shaped humanoids standing perfectly still. Previously they were static boxes, so this is an improvement, but a villager does not breathe."
   ],
   "next_step": "none \u2014 reporting",
   "notes_for_successor": "ARCHITECTURE: render/actor.js consumes Rig.world[] (world-space 3x4 per bone) directly by writing THREE.Bone.matrixWorld, with EVERY bone's matrixAutoUpdate AND matrixWorldAutoUpdate set false (see the long comment - setting only the root silently rebuilds the rest pose). SkinnedMesh is bound with an IDENTITY bindMatrix and the actor group is held at identity, so the shader resolves to boneWorld*restInverse and the character lands in world space with no group transform. The weapon rides rig.world[gripIdx] as its matrix and is authored along local -Y, so its tip is socketB through the same matrix - do NOT 'fix' blade pitch here, it would break that invariant. OPEN: the underground blade is a DATA defect (blade longer than the character is tall + point-down rest pose); it belongs to whoever owns _bladeLength/reach_m, not the renderer. NOT DONE: foot IK (RI-CAM07 D), cloth/secondary motion (E5 - the tail is rigid, skinned to pelvis, skeleton.json has no tail bones), equipment slots (E3/E4), sheathed weapons (E1), armour variation."

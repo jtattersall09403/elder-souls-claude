@@ -2574,7 +2574,13 @@ export class Engine {
     // A save written before the fight was durable has no `fight` block. There is no silent
     // partial load here: `applySave` refuses any schema it cannot read whole, so reaching
     // this line with no block means the block is empty by construction (no combat system).
-    if (!fight || !fight.player) { if (this.combat) mirror(sim, this.combat); return null; }
+    // A blob with no `fight` block can only be one written before a combat system existed
+    // (a save taken at boot, before any named state). `applySave` refuses any schema it
+    // cannot read whole, so this is not a partial-load path. It deliberately does NOT
+    // `mirror()`: mirroring a fight the blob did not describe would overwrite the player
+    // state `applySave` had just restored with whatever body happened to be lying around,
+    // which is the exact failure mode this method exists to remove.
+    if (!fight || !fight.player) return null;
 
     const l = fight.loadout || {};
     this._loadout = Object.assign({}, this._loadout || {}, {
@@ -3853,7 +3859,7 @@ export class Engine {
     // frames ago" would be inventing history), while `state_entered_ago_frames` is a plain
     // difference and re-bases plainly.
     const FRAME_ABSOLUTE_CLAMPED = ['hitstopUntil', 'player.regenBlockUntil', 'player.actionableAt', 'camera.shakeUntil', 'entities[].staggerUntil'];
-    const FRAME_ABSOLUTE_PLAIN = ['entities[].stateEnteredF', 'entities[].lastSeenF'];
+    const FRAME_ABSOLUTE_PLAIN = ['entities[].stateEnteredF', 'entities[].lastSeenF', 'captured.frame'];
     // The manifest declares 6 dp (rules.float_precision_dp). The projection is therefore
     // lossy by construction below that, and the census compares AT the declared precision
     // rather than pretending the loss is not there: what it reports instead is the largest
@@ -3905,6 +3911,12 @@ export class Engine {
       world: clone(sim.world), progression: clone(sim.progression), quest: clone(sim.quest),
       inventory: clone(sim.inventory), identity: clone(sim.identity),
       character: sim.character ? clone(sim.character) : null,
+      // W1-07 AR-3's outcome-that-is-not-a-death, and the two session flags beside it. All
+      // three were live fields on the sim that this census did not walk and that nothing
+      // cleared at a scenario boundary.
+      captured: sim.captured ? clone(sim.captured) : null,
+      captureRequest: sim.captureRequest ? clone(sim.captureRequest) : null,
+      menuOpen: !!sim.menuOpen,
       npcs: sim.npcs.map((n) => clone(n)), props: sim.props.map((o) => clone(o)),
       magic: magicShot(sim.magic),
       fight: bodyShot(this.combat, sim.frame),
@@ -3919,6 +3931,7 @@ export class Engine {
       o.hitstopUntil = clamped(o.hitstopUntil);
       o.player.regenBlockUntil = clamped(o.player.regenBlockUntil);
       delete o.player.frameNow;
+      if (o.captured && typeof o.captured.frame === 'number') o.captured.frame = plain(o.captured.frame);
       o.player.actionableAt = clamped(o.player.actionableAt);
       o.camera.shakeUntil = clamped(o.camera.shakeUntil);
       for (const e of o.entities) {

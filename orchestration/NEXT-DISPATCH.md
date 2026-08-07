@@ -53,6 +53,29 @@ critic re-checks — the builder never checks its own tools.
 - **`cadence.mjs`** — its exclusion list is not the shipped action set.
 - **`competence.mjs`** — the gear clause cannot fail.
 
+## 1b. Race does not affect whether a quest is offered to you
+
+Found by the tool builder in round 2, while establishing that a reference item's own worked example
+**cannot be produced on shipped data by any correct tool**:
+
+- `engine.js:1147` resolves an NPC's reaction group **from the NPC record field alone** — there is
+  no faction-to-group table anywhere in `game/src`.
+- `seedDispositions()` seeds `rec.disposition` **raw** into the table the offer gate reads.
+- **31 quest givers have a record with no `reaction_group`. Nine have no record at all**
+  (`dyer-sallis`, `undertaker-vaskh`, `prefect-hallow`, `quartermaster-sedd`, `harbourmistress-tesh`,
+  `cutter-neeth`, `factor-belliene`, `npc-porter-eeja`, `speaker-teel-ashaan`), so the gate reads
+  disposition **0 for every character signature alike**.
+
+**So the quest-offer path is race-invariant in the running build.** That contradicts the premise the
+whole setting rests on — an Argonian at home versus a Dunmer abroad — and it is the same shape as
+the two defects already found and fixed nearby: the reaction matrix that was a pure oracle, and the
+Argonian who was offered nothing because a differentiation check passed by subtraction.
+
+The builder proved either fix unblocks it immediately, against a patched data root. Owner: whoever
+holds `character.race.access`/`character.race.dialogue` — note the decomposition audit found those
+two paths were dropped from W1-07's declared set while the item judging them was scored into it
+three times.
+
 ## 2b. The Act V conversation nobody wrote
 
 `Q-MAIN-26` declares a twelve-topic Act V conversation and
