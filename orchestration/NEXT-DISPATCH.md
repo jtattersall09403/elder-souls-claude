@@ -54,6 +54,49 @@ zero samples with no ground. Delete-the-fix returns 0 tiles built and ring 0/25.
 `updateSkin` calibration. A hitch of eight frames during a swing is a Souls-side failure, so the
 critic has been asked whether that boundary is fair or a handoff of the actual defect.
 
+
+## R. Orchestrator ruling: stop rebuilding build-viability, and stop granting
+
+`tools/analysis/build-viability.mjs` has now been rejected **five times**, and the round-4 tool
+critic asked the right question instead of just extending the rebuild list: after five rejections,
+*"rebuild again" may be the wrong reflex.* Round 6 argues, citing the place W1-FACTIONS' own live
+walk failed in this exact class, that a live in-engine probe **relocates** the substitution inside
+the engine rather than removing it. That argument deserved an answer rather than another round, so
+here it is.
+
+**The ruling: the granted character is the defect, not any particular grant.**
+
+Every rejection has been the same shape wearing different clothes — a constant, a Proxy, an
+infinity, a union, a "derived" value computed from an optimistic assumption. The newest is the
+clearest proof available that the whole approach is unsound: `worldFlags` is granted as the union
+of every resolution of every quest, so the tool asks *"can this character finish the game?"* of a
+world holding **601 contested flags at once**, in which `archon_vats_open` and
+`archon_vats_burned` are simultaneously true, and `ixtu_vakh_trusts_player` sits beside
+`ixtu_vakh_closed_to_player`. There is no grant that makes that world real. There is only a
+smaller lie.
+
+**So the tool stops answering the question it cannot answer.** Two instruments, and the split is
+the point:
+
+1. **A screen.** The existing walk, kept, fast, and **renamed to say what it is** — a *lower bound
+   on obvious impossibility*. It may report that a demand exceeds every ceiling, or that a gate has
+   no producing resolution anywhere. It may never report that a build **is** viable, and its output
+   must not be quotable as a viability figure by any item or verdict.
+2. **A walk.** Viability is measured by *playing*: real character signatures driven through the
+   shipping gates from a cold start, in the engine, granted nothing. Expensive, slow, and the only
+   thing that is not a fiction. `mainline-chain-floor.mjs` already does this for 40 signatures on
+   the main quest and is the shape to follow — including its own history, since its first version
+   conjured the giver it was testing for.
+
+**What this costs, stated plainly:** the wide grid over 540 signatures × every quest is not
+affordable as a walk, so the walk covers a stratified sample and says so, and the screen covers the
+rest and is labelled a screen. A narrow honest number and a wide labelled screen beat one wide
+number that has been wrong five times.
+
+Whoever picks this up owns the rename, the "may never report viable" fence, and the sampled walk.
+The five rebuild lists in `corpus/80-methods/TOOL-COVERAGE-R1..R4` stay on the record; most of
+their individual findings remain true of the screen.
+
 ## 0a. The level-up screen is refused everywhere — ULTRACODE
 
 `engine.js:2011` gates levelling on `this.hearths.atHearth(...)`; **`HearthSystem` has no such

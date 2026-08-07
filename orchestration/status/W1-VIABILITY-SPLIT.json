@@ -1,0 +1,17 @@
+{
+  "task_id": "W1-VIABILITY-SPLIT",
+  "state": "in_progress",
+  "started": "2026-08-07",
+  "summary": "Split build-viability into two instruments: a screen (lower bound on impossibility, may never say viable) and a walk (viability by playing real signatures from a cold start, granted nothing).",
+  "next_step": "read RULES/INDEX/NEXT-DISPATCH R/TOOL-COVERAGE-R4/r6 objection",
+  "files_touched": [
+    "orchestration/status/W1-VIABILITY-SPLIT.json"
+  ],
+  "files_claimed": [
+    "tools/quests/",
+    "corpus/80-methods/",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": ["tool-build-viability-r6"],
+  "notes": "Successor to five rejected rebuilds. Not round 6 of the same rebuild."
+}

@@ -241,6 +241,34 @@ function armC3() {
 }
 
 // =================================================================================================
+// C7 — method 6, the assertion the new region binding is built on and nobody runs
+// =================================================================================================
+// The whole point of §2 is stated in §2: "the bands are deliberately non-overlapping at the edges
+// so that 'am I in the right region' is answerable from a single kill", and method 6 asserts the
+// overlap is at most 25% of the lower band's width. Round 2's F-5 remedy binds every shipped value
+// to one of these bands. So: do they separate?
+
+function armC7() {
+  say('\nC7  RI-PRG06 method 6 — band separation, which nothing in the tree has ever run');
+  const { published } = parseItemMarkdown();
+  const rows = []; let over = 0;
+  const keys = Object.keys(published).sort();
+  for (let i = 0; i + 1 < keys.length; i++) {
+    const lo = published[keys[i]].trash, hi = published[keys[i + 1]].trash;
+    const overlap = Math.max(0, lo[1] - hi[0]);
+    const pct = (overlap / (lo[1] - lo[0])) * 100;
+    if (pct > 25) over++;
+    rows.push({ pair: `${keys[i]}/${keys[i + 1]}`, lower: lo, upper: hi, overlap, pct_of_lower_width: Number(pct.toFixed(1)) });
+    say(`    ${keys[i]} ${lo[0]}-${lo[1]}  vs  ${keys[i + 1]} ${hi[0]}-${hi[1]}   overlap ${overlap} = ${pct.toFixed(1)}% of the lower band's width`);
+  }
+  out.arms.C7 = { rows, pairs_over_25pct: over, note: 'scale-invariant: §7 multiplies both bands by the same factor, so these percentages are identical before and after the rescale' };
+  verdict('C7', over === 0,
+    `${over} of ${rows.length} adjacent trash-band pairs overlap by more than method 6's 25% ceiling `
+    + `(up to ${Math.max(...rows.map((r) => r.pct_of_lower_width))}%), so §2's "answerable from a single kill" is false `
+    + 'in the item as published. Round 2\'s region binding is built on these bands and no mode of any tool runs method 6.');
+}
+
+// =================================================================================================
 // C4 / C5 / C6 — the live world
 // =================================================================================================
 
@@ -379,6 +407,51 @@ async function browserArms() {
     verdict('C6', R.C6.delta_with_no_kill === 0 && R.C6.alive > 0,
       `${R.C6.bodies} bodies spawned, ${R.C6.alive} alive, 60 frames stepped, nothing killed, souls +${R.C6.delta_with_no_kill}. `
       + 'C4 and C5 measure kills and not spawns.');
+
+    // ---- THE PICTURE -------------------------------------------------------------------------
+    // Taken in the browser this run already has open (AGENT-PROTOCOL's named exception), with
+    // rendering off for the whole stepping run and turned back on only for these frames.
+    const shot = arg('shot', null);
+    if (shot) {
+      try {
+        await page.setViewportSize({ width: 1280, height: 720 });
+        const tableau = await page.evaluate(async () => {
+          const H = window.__HARNESS, E = window.__ENGINE;
+          H.loadState('arena_flat');
+          E.sim.souls.reset();
+          E.sim.progression.soulsHeld = 0; E.sim.progression.level = 1; E.sim.progression.soulsSpent = 0;
+          H.setTimeOfDay(14);
+          const POST = 'shot-post-7';
+          const a = H.spawnEncounter('dres-raid-party', 0, 12, { tag: POST });
+          H.stepFrames(2);
+          const partial = a.eids.slice(0, a.eids.length - 1);
+          for (const eid of partial) { try { H.killEntity(eid); } catch { /* npc */ } }
+          H.stepFrames(4);
+          const earned_first_visit = E.sim.progression.soulsHeld;
+          // the release, and the return — exactly what world/population.js steps (3) and (4) do
+          for (const eid of a.eids) { try { H.despawn(eid); } catch { /* gone */ } }
+          H.stepFrames(2);
+          H.spawnEncounter('dres-raid-party', 0, 12, { tag: POST });
+          H.stepFrames(2);
+          E.sim.progression.soulsHeld = 0;                 // the second visit, on its own
+          for (const eid of partial) { try { H.killEntity(eid); } catch { /* gone */ } }
+          H.stepFrames(4);
+          H.setAtHearth(true);
+          H.openMenu('levelup');
+          H.setRenderRate(60);
+          H.stepFrames(4);
+          const st = H.getPlayerStats();
+          return { bodies: a.eids.length, killed_again: partial.length, earned_first_visit,
+            souls: st.souls, price: st.souls_to_next, level: st.level, mode: H.getUIState().mode };
+        });
+        await page.waitForTimeout(600);
+        fs.mkdirSync(path.dirname(path.join(ROOT, shot)), { recursive: true });
+        await page.screenshot({ path: path.join(ROOT, shot) });
+        out.shot = { path: shot, tableau };
+        say(`\nshot: ${shot} — ${tableau.killed_again} live hostiles killed on the second visit earned ${tableau.souls} souls `
+          + `(the first visit's identical five earned ${tableau.earned_first_visit}); next level ${tableau.price}, screen '${tableau.mode}'`);
+      } catch (e) { say(`shot failed: ${e.message || e}`); out.shot_error = String(e.message || e); }
+    }
   } finally {
     await handle.close();
   }
@@ -389,6 +462,7 @@ async function browserArms() {
 armC1();
 armC2();
 armC3();
+armC7();
 if (!has('offline')) await browserArms();
 
 const outPath = arg('out', 'reports/critic-souls-r2.json');

@@ -31,7 +31,7 @@ and −1 means they move in exact opposition: the fixed version comes out at 0.9
 perfect. Put the old, unfixed rule through the identical swings and it comes out at −0.52 — not
 merely careless, but running backwards more often than not.
 
-![The arena rig used to test impact sound: the player mid-swing against a stationary dummy. Standing the target still in front of you, like this, turns out to be the one test that cannot tell a correctly positioned hit from a backwards one.](../shots/2026-08-07-W1-11-impact-audio-pan.png)
+![The arena rig used to measure impact sound: the player mid-swing against a target dummy. A fight framed like this, target square on, is exactly the shape of test that cannot tell a correctly positioned hit from a backwards one.](../shots/2026-08-07-W1-11-impact-audio-pan.png)
 
 The fix now places the sound at the body the weapon actually met, and only falls back to the
 attacker's own position for a genuine miss, where there is nothing else for the sound to come from.

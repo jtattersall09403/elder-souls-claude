@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `6190592`: 448 tools, 153 reference
+so it cannot drift. Generated at `28909e1`: 449 tools, 153 reference
 items, 23 pieces in flight.
 
 Its purpose is to stop 23+ concurrent agents each paying separately to discover the
@@ -475,7 +475,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/weapons/validate-schema.mjs` — A JSON-Schema draft-07 subset validator, sufficient for corpus/12-weapons/moveset.schema.json.
 - `tools/weapons/verify-frames.mjs` — Re-derive RI-WPN04 §A's whole published contextual table from the SHIPPED roster and diff it cell by cell, plus RI-WPN02 §B's own R1/R2 rows and RI-CMB02 §B's R
 
-### `tools/world/` — 73
+### `tools/world/` — 74
 
 - `tools/world/arrangement-audit.mjs` — **no header comment**
 - `tools/world/border-traverse.mjs` — RI-WLD12 M65 — the staggered-crossover traverse.
@@ -502,6 +502,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/critic-camera-relative-probe.mjs` — **no header comment**
 - `tools/world/critic-drowned-road-shots.mjs` — **no header comment**
 - `tools/world/critic-locomotion-probe.mjs` — **no header comment**
+- `tools/world/critic-population-r1.mjs` — **no header comment**
 - `tools/world/critic-prov-r1.mjs` — **no header comment**
 - `tools/world/critic-prov-shot.mjs` — **no header comment**
 - `tools/world/critic-road-water-probe.mjs` — **no header comment**
@@ -552,7 +553,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/world/wld12-blind-pack.mjs` — RI-WLD12 M68 — "is this one place or two?" — the blind pack.
 
 
-> **104 tools have no header comment**, so nobody can tell what they do without
+> **105 tools have no header comment**, so nobody can tell what they do without
 > reading them. That is a rediscovery tax paid by every agent that meets one.
 
 
@@ -726,11 +727,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-VIABILITY-SPLIT` | in_progress | read RULES/INDEX/NEXT-DISPATCH R/TOOL-COVERAGE-R4/r6 objection | `orchestration/status/W1-VIABILITY-SPLIT.json` |
 | `W1-MASS` | verifying | SUCCESSOR-2 RESUMED at git 88ee56d. P1/P2/P3 confirmed COMMITTED and on disk (swing.js:447 | `game/src/combat/swing.js` `tools/weapons/motion-census.mjs` `tools/weapons/build-movesets.mjs` `tools/weapons/mass-browser.mjs` `game/data/combat/movesets/` `game/data/weapons/clip-registry.json` |
 | `critic-w1-02` | in-progress | read the ten judging items; pre-register blind procedure; audit wld12 blind pack for leaks | `orchestration/status/critic-w1-02.json` |
 | `critic-w1-population` | running | read RULES/INDEX done; read W1-POPULATION.json, RI-PRG06, RI-AI05, PLAN W1-12/W1-27 | — |
 | `W1-22-r2` | building | build tools/analysis/ambience-onsets.mjs (measures RENDERED event level vs RENDERED bed by | — |
-| `tool-critic-r4` | in-progress (successor #3: re-baselining verdict at HEAD) | re-baseline tree-dependent numbers at 88ee56d; assess r6 status file; re-stamp deliverable | `corpus/80-methods/TOOL-COVERAGE-R4.md` `corpus/80-methods/TOOL-COVERAGE-R4.json` `reports/blog-feed.jsonl` `orchestration/status/tool-critic-r4.json` |
 | `W1-13-r3` | building | Diagnose the three aggregation reds (m_d14 named gap first, then m_d4, then m_d10_d11) and | `orchestration/status/W1-13-r3.json` |
 | `critic-w1-souls-r2` | started | read RULES/INDEX, r1 verdict, W1-SOULS-r2.json status, the item, then run the builder's su | `orchestration/status/critic-w1-souls-r2.json` |
 | `tool-build-viability-r6` | researching | choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items | — |

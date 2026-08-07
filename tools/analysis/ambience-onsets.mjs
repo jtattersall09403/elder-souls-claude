@@ -294,6 +294,9 @@ try {
         onsets: det.slice(0, 8),
         events: levels.slice(0, 12),
       };
+      // The report keeps a readable sample; --calibrate needs every measurement, so the full list
+      // rides along non-enumerably and never reaches the JSON on disk.
+      Object.defineProperty(rec.tod[tod], '_all', { value: levels, enumerable: false });
       allOnsetTotals.push(det.length);
       allCrest.push(crest);
       firedTotal += fired.length;
@@ -368,7 +371,7 @@ try {
         const xs = [];
         for (const t of Object.values(rec.tod)) {
           if (t.error) continue;
-          for (const e of t.events || []) if (e.layer === layer) xs.push(e.rel_db);
+          for (const e of t._all || t.events || []) if (e.layer === layer) xs.push(e.rel_db);
         }
         if (!xs.length || !bed.layers[layer]) continue;
         const measured = median(xs);
