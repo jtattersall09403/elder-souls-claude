@@ -188,7 +188,15 @@ is what makes divergence attributable to the build rather than to the world's ra
 `RI-CMP03.builds.json` is generated from §A by `tools/experience/builds-from-md.mjs` and carries each
 archetype's investment envelope and its refusal list, which the driver enforces.
 
-**Step 2 — viability.** `tools/analysis/build-viability.mjs --chains … --out build-viability.json`
+**Step 2 — viability.** `tools/quests/viability-walk.mjs --out <dir>`
+
+> **RETARGETED — wave 1, `NEXT-DISPATCH.md` §R (the viability split).** This step named
+> the pre-split static build-viability tool, which was rejected five times and has been split. The
+> static half survives as `tools/analysis/impossibility-screen.mjs` and is **forbidden in code to
+> report that a build works**, so it cannot answer this step at all. The step now names the walk,
+> which plays real signatures through the shipping gates from a cold start with nothing granted —
+> over a **stratified sample it declares**, and **not** covering `tier5_survivable`. The
+> contract below is still open: neither instrument implements `--chains`.
 
 > **PATH CORRECTED, CONTRACT STILL OPEN — wave 1 (`TOOL-COVERAGE-R1`, tool critic).** This step
 > named the tool under `tools/experience/`; it was written under `tools/analysis/`, which is where

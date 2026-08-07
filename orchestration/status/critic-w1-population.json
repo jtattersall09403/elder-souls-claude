@@ -3,23 +3,29 @@
   "role": "critic",
   "judges": "W1-POPULATION",
   "commit_at_start": "8fa946c",
-  "commit_at_measure": "28909e1",
-  "state": "running",
+  "commit_at_measure": "aaa2f1f (started 8fa946c; measured across 28909e1 and aaa2f1f)",
+  "state": "complete",
   "started": "2026-08-07",
-  "next_step": "C1 (crossing walked end to end) still running; re-run C3/C4 with the two instrument bugs fixed; then finish verdict md+json, shot, blog line.",
+  "next_step": "DONE. Verdict FAIL 4/10 written and verdict-validate clean. Round 2 should start from biggest_gap GAP-W1-population-save-reload-repays-every-corpse (remedy + acceptance test are in the JSON), then the introduction-rule re-sort.",
   "files_touched": [
     "orchestration/status/critic-w1-population.json",
     "tools/world/critic-population-r1.mjs",
-    "reports/world/population/critic-r1.json"
-  ],
-  "files_claimed": [
+    "tools/world/critic-population-r1-diag.mjs",
+    "tools/world/critic-population-r1-shot.mjs",
+    "reports/world/population/critic-r1.json",
+    "reports/world/population/critic-r1b.json",
+    "reports/world/population/critic-r1-diag.json",
     "corpus/90-verdicts/wave1/W1-POPULATION-r1.md",
     "corpus/90-verdicts/wave1/W1-POPULATION-r1.json",
-    "docs/shots/",
+    "docs/shots/2026-08-07-w1-population-r1-the-tier-is-a-label.png",
     "reports/blog-feed.jsonl"
   ],
+  "files_claimed": [],
   "redundant_with": [],
   "findings": [
+    "HEADLINE, DRIVEN, WITH A CONTROL THAT WENT THE OTHER WAY: a save and a load re-pays every corpse in the province. Arm C3 on pop-0001, no hearth rest and no harness respawn verb anywhere: L1 kill 2 bodies -> +98 souls; L2 CONTROL walk out past release_radius_m and back -> post stays CLEARED, 0 bodies, delta 0 (correctly refused, reproducing the builder's A8); L3 saveState -> loadState -> the post re-materialises with 2 bodies -> kill again -> +98 souls with death.ordinaryRespawnEpoch UNMOVED at 0. Unbounded. Mechanism: sim.souls.reset() (W1-SOULS's) empties the eid ledger the S5 epoch gate is keyed on, and population.reset() (THIS PIECE'S line, in applySave and loadState) sets all 144 posts back to DORMANT. Neither is wrong alone. The justification written on the line is the error: 'which ordinary mobs are dead is exactly what S5 says a rest restores anyway' -- S5 says a REST restores them, and a load is not a rest. It defeats a gate SoulsSystem's header says was built because W1-POPULATION landed.",
+    "THE CROSSING, ACTUALLY WALKED (arm C1 re-run at aaa2f1f, contention pgrep 14-24 / loadavg 13-15, counts and frames only): 5,999.4 m at 2.0 m/s, no top-ups, `enabled` ASSERTED armed at arm start. 32 posts materialised, 31 released behind, 0 faults, 200 samples. The composition gradient is REAL and legible in play -- the first half is guard_legion and drowned_greater, the last third is drowned_lesser and nothing else -- and resident posts fall 4-5 -> 1-2 across the walk. AND THE ROAD FIGHTS BACK EXACTLY ONCE: the walker lost 446.4 HP in four hits of 111.6 between 479 m and 689 m, then took ZERO damage for the remaining 5,310 m while 28 further posts materialised around it. I could not determine why; the arm that would have told me is void. It is the most interesting unanswered question in the piece.",
+    "MY C4 IS VOID BY MY OWN FIXTURE, AND IT IS THE EXACT MISTAKE THE BUILDER WARNED ME ABOUT IN notes_for_successor. I stood ~14 m from a 4-body tier-5 post and swung 424 times across 240 sim-seconds: HP 620 -> 620, 8 bodies alive at start and 8 at the end, passive control byte-identical. Player reach is 2.4 m, so those were swings at air, and 14 m is AT the edge of drowned_greater's 14 m sight radius. The builder's A6 lesson was 'a behaviour probe must CLOSE THE DISTANCE'; I read it and made a smaller version of the same error. Reported, not dressed up. The survivability question is still open.",
     "CONTENTION THROUGHOUT: pgrep -c headless_shell 18-36, loadavg 12-22 on four cores. Every number in this critique is a COUNT, a BOOLEAN or a FRAME count. No wall-clock timing is claimed anywhere.",
     "HARD FAIL (RI-AI05 M4 / §D introduction rule, 'any violation is a hard fail'): the placement satisfies the rule only in an order NO PLAYER WALKS. The generator's post-pass tags 5 posts `introduces` and all 5 are solo -- but it sorts by (danger_tier, distance-from-safety). Walked along the game's own canonical critical-path route (roads.json named_routes.crossing, RI-WLD01 §5 'Stormhold south gate to Lilmoth harbour steps'), guard_legion debuts in a PAIR at stormhold-helstrom 1450 m and drowned_lesser debuts in a PAIR at helstrom-blackrose 875 m. Walked the OTHER way -- which is the direction the shipped default state forces, player start [2766.5, 5011] is 16.5 m from the Lilmoth end -- guard_legion debuts in a group of THREE (wl-legion-line) at helstrom-blackrose 295 m. The violation survives both directions.",
     "The builder KNEW about walk order and moved the label instead of the placement: its own finding says the first pass 'introduced inf_trash in a TIER-4 region, because that is simply where the crossing's first leg starts', and the remedy was to re-sort the TAG by tier. That makes the `introduces` field internally consistent and detaches it from what the player meets. RULES 7 exactly: a field written and never read back re-serialises to what was saved and passes forever.",
@@ -35,7 +41,9 @@
     "CONTROLS THAT WENT THE RIGHT WAY (C2, at 36 browsers / loadavg 20): the STILL control materialised 0 posts with measured drift 0.00 m after clearInputs -- the builder's own warning that walkRoute leaves the stick latched is real and is guarded here by an asserted drift, not by hope. The ABLATION control walked 1,199 m of the crossing with setPopulation({enabled:false}) and materialised 0 posts / 0 bodies.",
     "SMALL DEFECT FOUND BY READING THE CONTROL'S OUTPUT: PopulationSystem.reset() clears state, live, focus, epochSeen, stats and candidates but NOT this.faults. So populationReport().faults accumulates for the life of the page across every loadState, and my ablation arm -- which spawned nothing at all -- reported faults: 2 inherited from two arms earlier. A fault count that cannot be zeroed by a scenario boundary is not a fault count.",
     "GATES AT 28909e1: check-data 0, check-quests 0, check-content 0. Generator --check exit 0, so the shipped posts file does still regenerate from the shipped model.",
-    "SOUL TOTALS ARE NOT STALE AT HEAD, checked rather than trusted: population-posts.json report.souls says 16,335 and recomputing from the shipped statblocks gives 16,335. The builder's mid-run re-anchor is reflected. 16,335 souls = level 16 on game/data/progression/levels.json, and is 2.15% of the 759,447 souls RI-PRG06 §1 needs for its typical first clear at L82."
+    "SOUL TOTALS ARE NOT STALE AT HEAD, checked rather than trusted: population-posts.json report.souls says 16,335 and recomputing from the shipped statblocks gives 16,335. The builder's mid-run re-anchor is reflected. 16,335 souls = level 16 on game/data/progression/levels.json, and is 2.15% of the 759,447 souls RI-PRG06 §1 needs for its typical first clear at L82.",
+    "DELIVERABLES: corpus/90-verdicts/wave1/W1-POPULATION-r1.md + .json (verdict-validate OK, 1 warning answered in prose), docs/shots/2026-08-07-w1-population-r1-the-tier-is-a-label.png (a DIAGRAM drawn from the shipped data with pngjs -- no browser, which also freed the box), one appended line in reports/blog-feed.jsonl. NOT COMMITTED (RULES 28).",
+    "TWO THINGS I DID NOT DO AND SOMEBODY SHOULD. (1) tools/publish.mjs reports that w1-population plots on no chart because its piece id maps to no domain, and asks for an entry in DOMAIN in tools/scores.mjs -- but ownership.mjs shows blog-2026-08-07-e and critic-w1-souls-r2 both live on that file, so I left it to them rather than land a third hand in it. (2) I narrowed my own files_claimed to the specific shot rather than docs/shots/, which removes four of the fifteen undeclared overlaps ownership.mjs reports; docs/shots/ and reports/blog-feed.jsonl are shared by MANDATE (RULES 27) and every agent claiming the whole directory manufactures a conflict."
   ],
   "notes_for_successor": "One browser held for the whole run (RULES 21). The C1 arm walks the full 6,825 m crossing in 900-frame chunks with NO top-ups, which is the expensive one; C3 and C4 are cheap and decisive and should be run first on a contended box. tools/world/critic-population-r1.mjs is mine, shares no code with the builder's suite, and every arm has a control that must go the other way."
 }

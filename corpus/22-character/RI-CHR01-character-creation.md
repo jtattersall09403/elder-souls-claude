@@ -320,16 +320,43 @@ one to be lobbied against.
 5. **Signature coverage.** Enumerate the 540 signatures from shipped data. **Assert all 540 are
    constructible** (no signature is unreachable because, e.g., no Root-family class exists for a
    given race). Print the empty cells.
-6. **Viability sim.** For each of the 540 signatures, run the static viability checker:
+6. **Viability sim.** Two instruments, and the split is the point (see the amendment below).
+   The screen, over all 540 signatures, for the signatures it can prove impossible:
    ```
-   node tools/analysis/build-viability.mjs --signatures all --out reports/viability.json
+   node tools/analysis/impossibility-screen.mjs --signatures all --out reports/impossibility-screen.json
    ```
-   which walks `game/data/quests/**` stage graphs against the configuration's gate-passing
-   ability at simulated levels 1/20/40/60. **Assert ≥ 486 signatures pass all four §5 criteria**,
-   and **print every failing signature with the gate that stopped it.** A failure list is the
-   useful output; a pass/fail summary is not.
+   which walks `game/data/quests/**` stage graphs against a deliberately over-generous ceiling at
+   simulated levels 1/20/40/60. **Assert every signature it condemns is printed with the gate that
+   stopped it.** Then the walk, which is the only instrument that may answer the threshold:
+   ```
+   node tools/quests/viability-walk.mjs
+   ```
+   **Assert ≥ 90% of the walked sample pass the criteria the walk actually walks**, over the
+   sample the walk declares, and **print every failing signature with the gate that stopped it.**
+   A failure list is the useful output; a pass/fail summary is not.
 
-   > **AMENDED wave 1 — `BAR-CRITIQUE-W1-07-R1` §R2.5. While `tools/analysis/build-viability.mjs`
+   > **AMENDED wave 1 — `NEXT-DISPATCH.md` §R, the viability split.** `build-viability.mjs` was
+   > rejected five times (`TOOL-COVERAGE-R1`..`R4`) and has been **split in two**, because the defect
+   > was never a particular grant but the granted character itself: its last version asked "can this
+   > character finish the game?" of a world holding **601 contested world flags at once**, in which
+   > `archon_vats_open` and `archon_vats_burned` were both true.
+   >
+   > * `tools/analysis/impossibility-screen.mjs` — the old static walk, kept and fast, **renamed to
+   >   say what it is: a lower bound on obvious impossibility.** It may report that a demand exceeds
+   >   every ceiling or that a gate has no producing resolution. **It may never report that a build
+   >   is sound, and its output may not be quoted as a figure of build health by this or any item.**
+   >   That prohibition is enforced in the tool's code (vocabulary, row-verdict shape and exit code),
+   >   and `--self-test-fence` breaks it eight ways to show the enforcement fires.
+   > * `tools/quests/viability-walk.mjs` — **the walk.** Real character signatures played through the
+   >   shipping gates in the running engine, from a cold start, granted nothing. It covers a
+   >   **stratified sample and says so**, and it does **not** walk criterion 4 (`tier5_survivable`) at
+   >   all.
+   >
+   > **Consequence for this method's thresholds.** A count of signatures the screen failed to condemn
+   > is not the count this method asks for and must not be substituted for it. The threshold below is
+   > answerable only from the walk, over the sample the walk declares.
+
+   > **AMENDED wave 1 — `BAR-CRITIQUE-W1-07-R1` §R2.5. While the build-viability tool
    > does not exist, the Distinctness axis is `corpus_debt`: removed from the min-over-axes
    > aggregation entirely, reported at its measured value of `unmeasurable`, and filed against
    > `RI-MTH06` — not scored as a 0 against the build.**
@@ -424,7 +451,7 @@ costs, are properties of the item and not of a critic's diligence. For this item
 | Class roster | 14 unique, ≥ 10 questionnaire-reachable **in play (method 11)**, ≤ 3 weapon-first | 12 unique, ≥ 6 reachable **in play** | classes are Souls' ten with new names, **or reachable only in principle: 0 in a published-histogram sweep** |
 | Questionnaire | 12 questions, zero stat tokens, all 19 skills ≥ 5 answers, **`DTR_q = 1.00` (method 11)** | 8 questions, zero stat tokens, **`DTR_q = 1.00`** | questionnaire cut, questions read "Do you prefer Strength or Agility?", **or the questions are computed and never drawn** |
 | Custom route | present, unhidden, 0 dominated configs | present and unhidden | absent, or gated behind "advanced" |
-| Distinctness | 540 signatures, ≥ 486 viable | 540 constructible, ≥ 70% viable | < 400 signatures — the axes are not independent. *`corpus_debt` while `build-viability.mjs` is absent — see method 6* |
+| Distinctness | 540 signatures, ≥ 90% of the walked sample viable **on the walk** | 540 constructible, ≥ 70% of the walked sample | < 400 signatures — the axes are not independent. *`corpus_debt` while the walk is absent — see method 6. A survivor count from `impossibility-screen.mjs` may NOT be substituted: the screen is forbidden to report this and its numbers are not this number.* |
 | Legibility | ≥ 16/20 at ≥ 3 of 4 | ≥ 14/20 | ≤ 8/20 — nothing about the character is visible in play |
 | **Class never locks** | all five prohibitions hold, and §6.5's visibility holds | all five prohibitions hold | **any content gate reading class → automatic fail of the piece** |
 | Irreversibility | audit clean, both reversible services exist and fire once | audit clean | a race-change or respec item exists → automatic fail |

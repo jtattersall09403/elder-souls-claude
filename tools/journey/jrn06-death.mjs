@@ -1422,19 +1422,29 @@ async function surfaceAndVisibilityShots(h, ctx) {
   //
   // THE CAMERA THIS CHECK USED TO PLACE, and why it is not that camera any more.
   //
-  // Rounds 1-3 shot from `[x, stain.pos[1] + 1.6, z]`, aimed at `stain.pos[1] + 0.3`. All three
-  // numbers are the STAIN's y — `field.heightAt`, the collision surface, sampled at the stain and
-  // then used twelve metres away at the observer's coordinates. The drawn ground is
-  // `renderer._drawnGroundY`, which that file's header says departs from the collision surface
-  // "by up to 6.80 m in the Stone Forest and 2.61 m in the Hive" before the 0.34 m ground skin is
-  // added. So on any bearing where the ground rises the eye was UNDER IT, and a frame of dirt
-  // scores exactly the control floor, because dirt is not amber. That is what "the bloom is
-  // invisible from seven of eight bearings" was measuring.
+  // Rounds 1-3 shot from `[x, stain.pos[1] + 1.6, z]`, aimed at `[stain.x, stain.pos[1] + 0.3,
+  // stain.z]`. Both heights are the STAIN's y — `field.heightAt`, the COLLISION surface — sampled
+  // at the stain and then used at the observer's coordinates twelve metres away. So the eye sat
+  // at ONE CONSTANT ALTITUDE on all eight bearings whatever the ground under the observer was
+  // doing, and the aim went to the ground UNDER the bloom rather than to the bloom.
   //
-  // `tools/harness/w1-13-r3-bloom-sight.mjs` put the two cameras side by side on one browser:
-  // the old one reproduces 2/8 and 3/8, and the eye at the OBSERVER's own ground aimed at the
-  // bloom's DRAWN origin reads 8/8 in daylight. The camera below is the second one — where a
-  // player standing there actually has their head, looking at where the thing actually is.
+  // `tools/harness/w1-13-r3-bloom-sight.mjs` put the two cameras side by side — one browser, one
+  // bloom, one set of bearings, one detector (`reports/runs/W1-13-R3/bloom-sight.json`):
+  //
+  //   as-placed    2/8 daylight, 3/8 dark        REPRODUCES the round-3 aggregation
+  //   player-eye   8/8 daylight, 8/8 dark        874 to 27,134 px over the 180-away control
+  //   no-bloom     0/8 and 0/8, max margin 1 px  the same camera, bloom deleted from the scene
+  //
+  // THE BLOOM IS DRAWN AND IT READS FROM ALL EIGHT BEARINGS. Round 2's reading of this — "the
+  // whole piece is a run back to a thing that is not drawn" — is false about the world.
+  //
+  // WHAT IS NOT ESTABLISHED, and is deliberately not claimed: which half of the old camera lost
+  // it. The first guess was that the eye was buried in a rising bearing, and THIS PROBE'S OWN
+  // NUMBERS REFUTE THAT — `eye_above_observer_ground_m` runs 1.346 to 1.705 m across all sixteen
+  // as-placed views, so the eye was never under the ground. What is left is a ~0.25 m difference
+  // in eye height and a 0.8 m lower aim point, and this run does not separate them.
+  // `old_eye_above_observer_ground_m` is carried per row so the refuted explanation stays
+  // refutable instead of being quietly dropped.
   //
   // A camera correction that turns a red green is exactly the move a critic should distrust, so
   // this check now carries its OWN null control, driven by the world rather than by the probe:
@@ -1453,7 +1463,11 @@ async function surfaceAndVisibilityShots(h, ctx) {
     const snap = await h.hOpt('snapshot');
     const groundY = snap && snap.player && snap.player.pos ? snap.player.pos[1] : st.pos[1];
     const drawn = await h.hOpt('getDrawnMarkers');
-    const target = (drawn && drawn.stain && drawn.stain.pos) ? drawn.stain.pos : [st.pos[0], st.pos[1], st.pos[2]];
+    const aimedAtDrawn = !!(drawn && drawn.stain && drawn.stain.pos);
+    // The fallback is the MODEL's position, which is the camera that produced the gap. If this
+    // is ever false on a `bloom`-tagged row the check is measuring the old defect again, so it
+    // is recorded rather than left to be inferred from a y that happens to match.
+    const target = aimedAtDrawn ? drawn.stain.pos : [st.pos[0], st.pos[1], st.pos[2]];
     const eye = [x, groundY + 1.6, z];
     const look = [target[0], target[1] + 0.9, target[2]];
     await h.h('camera', { pos: eye, look });
@@ -1469,8 +1483,12 @@ async function surfaceAndVisibilityShots(h, ctx) {
       visible: bp.count > ctrl.count + MARGIN,
       eye_y: +eye[1].toFixed(3), observer_ground_y: +groundY.toFixed(3),
       stain_model_y: +st.pos[1].toFixed(3),
-      drawn_bloom_y: drawn && drawn.stain && drawn.stain.pos ? +drawn.stain.pos[1].toFixed(3) : null,
+      drawn_bloom_y: aimedAtDrawn ? +drawn.stain.pos[1].toFixed(3) : null,
+      aimed_at_the_drawn_bloom: aimedAtDrawn,
       bloom_in_scene: !!(drawn && drawn.stain && drawn.stain.in_scene),
+      // The mechanism, per row: how far the camera rounds 1-3 used would have been above the
+      // ground the observer is standing on. Below ~0 it was buried and the frame was dirt.
+      old_eye_above_observer_ground_m: +((st.pos[1] + 1.6) - groundY).toFixed(3),
     };
   };
   const nullViews = [];
@@ -1487,7 +1505,17 @@ async function surfaceAndVisibilityShots(h, ctx) {
     await h.h('stepFrames', 30);
     recovered = await h.hOpt('recoverBloodstain');
     await h.h('stepFrames', 4);
-    const gone = !(await h.h('getDeathState')).bloodstain;
+    let gone = !(await h.h('getDeathState')).bloodstain;
+    // Recovery is by proximity in the fixed loop, so a body that has not quite arrived has not
+    // drunk it. Give it a second run at the basin before concluding anything: a null control
+    // that silently did not happen is worse than one that fails loudly.
+    if (!gone) {
+      await h.h('teleport', st.pos[0], st.pos[2]);
+      await h.h('stepFrames', 60);
+      await h.hOpt('recoverBloodstain');
+      await h.h('stepFrames', 4);
+      gone = !(await h.h('getDeathState')).bloodstain;
+    }
     if (gone) {
       await h.h('setTimeOfDay', 1);
       for (let a = 0; a < 8; a++) nullViews.push(await shootBearing({ id: 'dark_6m', d: 6, hour: 1 }, a, 'no-bloom'));
@@ -1506,10 +1534,21 @@ async function surfaceAndVisibilityShots(h, ctx) {
     dark_6m_visible: `${night.filter((v) => v.visible).length}/${night.length}`,
     margin_px: MARGIN,
     null_control_bloom_removed_from_the_world: nullViews.length === 8,
+    null_control_why_not: nullViews.length === 8 ? null
+      : 'the bloom was still in the world after two attempts to drink it, so the null control '
+        + 'never ran and this check refuses to pass on the sixteen views alone',
     null_control_silent: nullSilent,
     null_control_max_margin: nullViews.length ? Math.max(...nullViews.map((v) => v.margin)) : null,
+    // The mechanism, kept in the row so a reader does not have to take the camera change on
+    // trust: the eye rounds 1-3 used, expressed against the ground the observer stands on.
+    old_camera_eye_above_observer_ground_m: views.map((v) => v.old_eye_above_observer_ground_m),
+    // Kept because it REFUTES the first explanation offered for this gap, not because it supports
+    // one: if the old camera had been buried these would go negative, and they do not.
+    old_camera_buried_on_n_bearings: views.filter((v) => v.old_eye_above_observer_ground_m < 0).length,
+    every_row_aimed_at_the_drawn_bloom: views.every((v) => v.aimed_at_the_drawn_bloom),
     pass: day.length === 8 && night.length === 8
       && day.every((v) => v.visible) && night.every((v) => v.visible)
+      && views.every((v) => v.aimed_at_the_drawn_bloom)
       && nullSilent,
     control_note: 'Two controls, not one. (1) Each viewpoint is shot twice — at the bloom and '
       + 'turned 180 deg away — so a detector firing on the marsh shows as a non-zero control, and '
@@ -1517,9 +1556,18 @@ async function surfaceAndVisibilityShots(h, ctx) {
       + 'count. (2) The bloom is then DRUNK and the eight dark bearings re-shot: if the detector '
       + 'still finds amber with no bloom in the world, every row above it is void and this check '
       + 'fails whatever the first sixteen said.',
-    camera_note: 'The eye is at the OBSERVER\'s own ground + 1.6 m and aims at the bloom\'s DRAWN '
+    camera_note: 'RI-JRN06 M-D14 reads "From 8 viewpoints at 12 m WITH LOS (and 6 m in RN1\'s dark '
+      + 'cave)", and D14 itself says "visible from >= 12 m WITH CLEAR LINE OF SIGHT". A viewpoint '
+      + 'under the ground has no line of sight and is not one of the eight the item asks for. The '
+      + 'eye is therefore at the OBSERVER\'s own ground + 1.6 m and aims at the bloom\'s DRAWN '
       + 'origin (getDrawnMarkers, read off matrixWorld). Rounds 1-3 put it at the STAIN\'s '
-      + 'COLLISION y and aimed 0.3 m over that, which on a rising bearing is underground.',
+      + 'COLLISION y — one constant altitude for all eight bearings — and aimed 0.3 m over that, '
+      + 'at the ground under the bloom rather than at the bloom. '
+      + 'old_eye_above_observer_ground_m is that camera\'s height over the ground the observer is '
+      + 'standing on, per bearing; it runs 1.35-1.71 m in bloom-sight.json, which REFUTES the '
+      + '"the eye was buried" explanation this correction was first offered with. Which of the two '
+      + 'remaining differences — ~0.25 m of eye height, 0.8 m of aim — loses the bloom is NOT '
+      + 'established here and is not claimed.',
   };
   await h.h('setRenderRate', 0);
   return { surface, visibility };

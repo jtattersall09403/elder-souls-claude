@@ -1,0 +1,47 @@
+{
+  "task_id": "W1-SOULS-r3",
+  "item": "RI-PRG06 / W1-SOULS",
+  "round": 3,
+  "state": "running",
+  "started_at": "2026-08-07",
+  "git_at_start": { "commit": "5de8f79", "dirty_paths": "~30, all neighbours (audio ambience, W1-POPULATION verdict in flight)" },
+  "contention_at_start": { "headless_shell": 18, "loadavg": "11.10 12.11 12.71" },
+  "spec": "corpus/90-verdicts/wave1/W1-SOULS-r2.md path_to_ten",
+  "path_to_ten": [
+    "1 close GAP-W1-souls-alive-keyed-on-eid AS A CLASS (boundary + body identity)",
+    "2 arm the L120 guard (F-6) - the axis round 1 returned the piece on",
+    "3 assert the census scale's own premise (F-5)",
+    "4 re-derive the anchor to the R1 TRASH mean + add a mean assertion (F-3/F-4)",
+    "5 guard the other 23 corpus rows in tools/check-*.mjs (F-3)",
+    "6 retire or repair tools/progression/critic-souls-r1.mjs",
+    "7 file region 1's missing boss",
+    "8 AQ-1 method 6 instrument (NOT mine unless cheap)"
+  ],
+  "the_class": {
+    "root": "SoulsSystem._alive asks 'have I seen this NAME before', not 'have I paid for this BODY'. eid is a name; the ledger's lifetime is not the body's lifetime.",
+    "faces": [
+      "F1 applyNamedState() does not clear the observer -> the same fight pays +384 then +0 (W1-SOULS-r2 HF-1)",
+      "F2 post release + re-materialise under the stable post-id tag recycles eids onto NEW full-HP bodies -> 5 live hostiles worth 0 (W1-SOULS-r2 HF-2)",
+      "F3 applySave() DOES clear it while death.ordinaryRespawnEpoch does not move -> unbounded save/load farm (W1-POPULATION-r1 §2, GAP-W1-population-save-reload-repays-every-corpse)"
+    ],
+    "note": "F2 and F3 pull in OPPOSITE directions off the same key. That is the proof the key is wrong rather than the sign being wrong.",
+    "fix_shape": [
+      "identity: the ledger records the BODY (the entity object minted by makeEntity), not the name. A recycled eid on a new record is a new body and pays; a revived record is the same body and stays gated on the S5 rest epoch.",
+      "boundary: ONE list of per-session observers shared by applyNamedState() and the blob path, instead of two hand-maintained lists that have already drifted (souls is in one, not the other)."
+    ]
+  },
+  "next_step": "enumerate every eid-keyed per-session observer in the tree (souls, engine._greetCount, magic.soulHistory, renderer meshes); then write the fix",
+  "files_touched": ["orchestration/status/W1-SOULS-r3.json"],
+  "files_claimed": [
+    "game/src/sim/souls.js",
+    "game/src/engine.js",
+    "tools/progression/derive-soul-values.mjs",
+    "tools/progression/souls-consumption.mjs",
+    "tools/progression/critic-souls-r1.mjs",
+    "tools/check-souls-corpus.mjs",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ],
+  "redundant_with": ["critic-w1-population"],
+  "redundant_note": "docs/shots/ and reports/blog-feed.jsonl are append-only shared surfaces claimed by five live pieces; the overlap is the project's convention, not a collision."
+}

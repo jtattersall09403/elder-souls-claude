@@ -38,8 +38,11 @@
 // the corroboration, and the crest-factor gate agrees with both without a detector at all.
 //
 //   node tools/analysis/ambience-onsets.mjs [--seconds 120] [--rate 16000] [--json]
-//   node tools/analysis/ambience-onsets.mjs --sabotage silent   # events muted -> MUST go red
-//   node tools/analysis/ambience-onsets.mjs --sabotage quiet    # events -20 dB -> MUST go red
+//   node tools/analysis/ambience-onsets.mjs --sabotage silent     # events muted -> MUST go red
+//   node tools/analysis/ambience-onsets.mjs --sabotage quiet      # events -20 dB -> MUST go red
+//   node tools/analysis/ambience-onsets.mjs --sabotage untrimmed  # DELETE THE FIX: event_gain_db
+//                                                                 # forced to 0 in the page, which
+//                                                                 # is the round-1 build exactly
 //
 // Exit 0 = every gate passed. 1 = a gate failed. 2 = the build could not be driven.
 
@@ -66,6 +69,10 @@ GATES
       L3 in -6..+2 dB and L4 in -4..+4 dB, with a stated +/-2 dB measurement tolerance
 
 --sabotage exists so the gates can be shown to fail. A probe that cannot go red is not a probe.
+  silent     the event layers are muted in the measured mix
+  quiet      the recovered event signal is attenuated 20 dB and re-mixed
+  untrimmed  DELETE-THE-FIX: event_gain_db is forced to 0 in the page, reproducing round 1's
+             build exactly, on today's tree. Nothing on disk is touched.
 
 Exit 0 = every gate passed. 1 = a gate failed. 2 = the build could not be driven.
 `;
@@ -75,8 +82,8 @@ if (wantsHelp(args)) { usage(USAGE); process.exit(0); }
 const SECONDS = Number(args.seconds || 120);
 const RATE = Number(args.rate || 16000);
 const SABOTAGE = args.sabotage || null;
-if (SABOTAGE && !['silent', 'quiet'].includes(SABOTAGE)) {
-  console.error(`ambience-onsets: --sabotage must be 'silent' or 'quiet', got ${JSON.stringify(SABOTAGE)}`);
+if (SABOTAGE && !['silent', 'quiet', 'untrimmed'].includes(SABOTAGE)) {
+  console.error(`ambience-onsets: --sabotage must be 'silent', 'quiet' or 'untrimmed', got ${JSON.stringify(SABOTAGE)}`);
   process.exit(2);
 }
 
@@ -219,28 +226,53 @@ function onsets(x, fs) {
   // high-pass for exactly this reason. 300 Hz keeps every event synth in the province (the
   // lowest-centred is a 145 Hz band-passed door at Stormhold, whose attack still carries well
   // above 300) and removes the L1 rumble that every bed is mostly made of.
+  // TWO TIMESCALES, and this widening was made AFTER the first acceptance run rather than before
+  // it. Saying so plainly, because a detector changed after seeing its own result is exactly the
+  // move that needs justifying, and the justification has to be the item rather than the score.
+  //
+  // The 10 ms-only version reported zero events for Marauder's Coast and the Salt Hills. Their L3
+  // signatures are `rope_creak` (attack 0.14 s) and `dry_grass_gust` (attack 0.45 s) — §B's own
+  // words for those two regions — and a 10 ms rise test cannot see a sound that takes half a
+  // second to arrive. It was measuring TRANSIENTS, and the question the B2 judge actually asked
+  // was "does anything happen", whose own phrasing is "not one bird, drip, gust or creak". A gust
+  // is an event. A detector that structurally cannot register the signature the item assigns to a
+  // region is not a strict gate, it is a broken one.
+  //
+  // So: a fast pass on 10 ms frames for drips, snaps and bells, and a slow pass on 100 ms frames
+  // for gusts, creaks and swells. An event counts if either sees it. What stops this from being a
+  // fudge is `--sabotage silent`, which mutes the event layers and must still report zero — if the
+  // slow pass had started firing on the bed's own wander, that arm would go green and say so.
   const hp = highpass(x, fs, 300);
-  const H = Math.round(fs * 0.01);                       // 10 ms frames
-  const env = [];
-  for (let o = 0; o + H <= hp.length; o += H) env.push(rms(hp, o, o + H));
-  if (env.length < 3) return [];
-  const med = median(env) || 1e-9;
+  const found = [];
+  for (const [win, riseK, name] of [[0.01, 1.5, 'fast'], [0.1, 1.35, 'slow']]) {
+    const H = Math.round(fs * win);
+    const env = [];
+    for (let o = 0; o + H <= hp.length; o += H) env.push(rms(hp, o, o + H));
+    if (env.length < 3) continue;
+    const med = median(env) || 1e-9;
+    let i = 1;
+    while (i < env.length) {
+      // 3x the clip's own median frame energy (+9.5 dB over the floor), reached with a real rise.
+      // Both conditions matter: the level alone fires on a slow swell of the floor itself, the
+      // rise alone fires on noise. The slow pass uses a gentler rise because a 100 ms frame has
+      // already integrated most of a gust's attack.
+      if (env[i] > med * 3 && env[i] > env[i - 1] * riseK) {
+        let j = i;
+        while (j < env.length && env[j] > med * 1.5) j++;
+        found.push({ at_s: +(i * H / fs).toFixed(2), duration_s: +((j - i) * H / fs).toFixed(2),
+                     over_floor_db: +db(env[i] / med).toFixed(1), scale: name });
+        i = j + 1;
+      } else i++;
+    }
+  }
+  // One sound may be seen by both passes. Merge anything within 250 ms so an event is counted
+  // once — otherwise the wide-timescale pass would inflate the count it was added to fix.
+  found.sort((a, b) => a.at_s - b.at_s);
   const out = [];
-  let i = 1;
-  while (i < env.length) {
-    // 3x the clip's own median frame energy (+9.5 dB over the floor) reached in one 10 ms frame
-    // with at least a 1.5x jump. Both conditions matter: the first alone fires on a slow swell,
-    // the second alone fires on noise.
-    if (env[i] > med * 3 && env[i] > env[i - 1] * 1.5) {
-      let j = i;
-      while (j < env.length && env[j] > med * 1.5) j++;
-      out.push({
-        at_s: +(i * H / fs).toFixed(2),
-        duration_s: +((j - i) * H / fs).toFixed(2),
-        over_floor_db: +db(env[i] / med).toFixed(1),
-      });
-      i = j + 1;
-    } else i++;
+  for (const f of found) {
+    const prev = out[out.length - 1];
+    if (prev && f.at_s - prev.at_s < 0.25) { if (f.over_floor_db > prev.over_floor_db) Object.assign(prev, f); continue; }
+    out.push(f);
   }
   return out;
 }
@@ -316,6 +348,30 @@ try {
     console.error('ambience-onsets: ambienceCapture({mute}) is not honoured by this build — '
       + JSON.stringify(muteWorks) + '. Every subtraction below would be vacuous. Refusing to report.');
     process.exit(2);
+  }
+
+  // DELETE-THE-FIX (AGENT-PROTOCOL rule 6). Zero every `event_gain_db` IN THE PAGE — the files on
+  // disk are never touched, so a kill halfway leaves the tree exactly as it was — and re-measure.
+  // This is the round-1 build reproduced on today's tree, which is a stronger control than the
+  // round-1 numbers themselves: it holds the 30 s loop buffers, the recalibrated bed trims and the
+  // corrected onset detector fixed, and moves only the thing being claimed.
+  if (SABOTAGE === 'untrimmed') {
+    out.untrimmed = await page.evaluate(() => {
+      let n = 0;
+      for (const bed of Object.values(window.__ENGINE.ambience.beds)) {
+        for (const L of ['L3', 'L4']) {
+          const layer = bed.layers && bed.layers[L];
+          if (layer && layer.event_gain_db) { layer.event_gain_db = 0; n++; }
+        }
+        for (const e of bed.emitters || []) if (e.event_gain_db) { e.event_gain_db = 0; n++; }
+      }
+      return { layers_zeroed: n };
+    });
+    if (!out.untrimmed.layers_zeroed) {
+      console.error('ambience-onsets --sabotage untrimmed: nothing to zero — no bed carries an '
+        + 'event_gain_db, so deleting the fix would delete nothing and the control is vacuous.');
+      process.exit(2);
+    }
   }
 
   const allOnsetTotals = [], allCrest = [], relByLayer = { L3: [], L4: [], R7: [] };

@@ -6,7 +6,7 @@ streaming consumer).
 (started at `8fa946c`; a neighbour's in-flight commit moved the tree mid-run — no population
 file changed content across the move).
 **Status: FAIL — 4/10** against a pass threshold of 7.
-**Band: the province is populated; the danger tier is a label.**
+**Band: the province is populated; the danger tier is a label, and a save re-arms every corpse.**
 
 Every number below is a **count, a boolean or a frame count**. The box carried 18–36 concurrent
 `headless_shell` processes at loadavg 12–22 on four cores for the whole run. **No wall-clock
@@ -31,11 +31,12 @@ The streaming consumer is in the right slot (`Engine._afterStep()` → `_streamP
 is province-cell gated so it cannot contaminate the arena fixtures, it carries an ablation
 switch, and the S5 coupling is a counter rather than a callback so `DeathSystem` keeps touching
 only `sim.entities`. I reproduced the consumption independently with my own instrument
-(`tools/world/critic-population-r1.mjs`, arm C2): **1,199 m of the crossing walked with
-`setPopulation({enabled:false})` materialises 0 posts and 0 bodies**, and the still control —
-`clearInputs()` with the drift *asserted* at **0.00 m**, not assumed — materialises 0 posts.
-The builder's own warning that `walkRoute()` leaves the stick latched is real, and this critique
-guarded against it rather than trusting it.
+(`tools/world/critic-population-r1.mjs`), on a walk the builder did not take: **5,999.4 m of the
+crossing materialises 32 posts and releases 31 behind the player, with 0 faults** (§6.2). Both
+controls go the other way: **1,199 m walked with `setPopulation({enabled:false})` yields 0 posts
+and 0 bodies**, and the still control — `clearInputs()` with the drift *asserted* at **0.00 m**,
+not assumed — yields 0 posts. The builder's warning that `walkRoute()` leaves the stick latched is
+real, and this critique guarded against it rather than trusting it.
 
 The declared density band is genuinely hit: 0.884 encounters per traversal minute of wilderness
 road against RI-AI07 §D's `[0.59, 1.29]` and RI-WLD02 D9's `[0.7, 1.2]`; 1.598 enemies per TM
@@ -49,7 +50,47 @@ gives 16,335. The mid-run re-anchor is reflected.
 
 ---
 
-## 2. The hard fail: the introduction rule is satisfied in an order no player walks
+## 2. The biggest gap, driven: a save and a load re-pays every corpse in the province
+
+`SoulsSystem`'s header names this piece by name. It records that the re-arm used to be a
+boolean, that *"then W1-POPULATION landed `PopulationSystem`, a distance-driven pump… That turns
+it into **walk 170 m away, walk back, kill again, for ever**"*, and that the fix was to gate the
+re-arm on `death.ordinaryRespawnEpoch` — the S5 rest counter — so that *"a body that leaves the
+entity array and comes back under the same eid without a rest in between stays settled and pays
+nothing."*
+
+That gate holds against a walk. It does not hold against a save. Measured, at `aaa2f1f`, arm C3,
+standing on `pop-0001`, **no harness respawn verb and no hearth rest anywhere in the sequence**:
+
+| leg | what was done | bodies present | killed | souls | epoch |
+|---|---|---:|---:|---:|---:|
+| L1 | kill the post's bodies | 2 | 2 | 0 → **98** | 0 |
+| **L2 — CONTROL** | walk out past `release_radius_m`, walk back, kill again | **0** (post stayed CLEARED) | 0 | 98 → **98** (Δ0) | 0 |
+| **L3** | `saveState()` → `loadState(blob)` → the post re-materialises → kill again | **2** | 2 | 98 → **196** (Δ **+98**) | **0 — unmoved** |
+
+**The control went the other way and the door opened anyway.** L2 is the case the builder's A8
+proved and it is correctly refused. L3 is a different door, it costs no world clock, and the
+verb is one every player has.
+
+The mechanism is two correct-looking lines that are only a farm together:
+
+- `sim.souls.reset()` — clears `_alive`, the eid ledger the epoch gate is keyed on. W1-SOULS's.
+- `population.reset()` in `applySave` **and** `loadState` — sets all 144 posts back to `DORMANT`.
+  **This piece's.**
+
+Neither is wrong alone. Together, a load hands the streamer a virgin province and hands the souls
+scan an empty memory, so every re-materialised body is a "first sight" that is alive, and killing
+it pays again — at the same epoch, with no rest, indefinitely. The reasoning error is written on
+the line itself: *"which ordinary mobs are dead is exactly what S5 says a rest restores anyway."*
+S5 says a **rest** restores them. **A load is not a rest.**
+
+RI-AI05 M6 fails on any farm rate ≥ 3× the clear rate; this one is unbounded. RI-PRG06's own
+"How we lose" is unambiguous about what that costs: *"every number in this file is instantly
+fiction."*
+
+---
+
+## 3. The hard fail: the introduction rule is satisfied in an order no player walks
 
 RI-AI05 §D: *"The first instance of any archetype in the game must be presented **solo**, in a
 lit, open, non-ambush position, with retreat available… **it is a hard fail if violated**."*
@@ -98,7 +139,7 @@ table, never against a body in motion.
 
 ---
 
-## 3. The density is uniform, and the justification does not hold on this roster
+## 4. The density is uniform, and the justification does not hold on this roster
 
 Thirteen regions declare `danger_tier` 1–5. Here is everything the tier changes:
 
@@ -130,7 +171,7 @@ uniform world. It is a world whose only escalation is *how many of the same ques
 
 ---
 
-## 4. More bodies, not more kinds — and RI-PRG06's tiers are unreadable
+## 5. More bodies, not more kinds — and RI-PRG06's tiers are unreadable
 
 The souls tool's report was right. **Five R1-mass trash statblocks and two under-massed bosses**,
 and this piece added **none**. All fourteen new templates are permutations of the same five
@@ -168,9 +209,9 @@ which needs 759,447. The exterior slice is **2.15%** of the soul budget.
 
 ---
 
-## 5. What I could not measure, said as plainly as what I could
+## 6. What the walk showed, and what I still could not measure
 
-### 5.1 The arm that measured a switched-off world, and the defect that let it
+### 6.1 The arm that measured a switched-off world, and the defect that let it
 
 My first C1 walked **5,999.4 m** of the crossing and reported `spawned: 0` at **all 200
 samples** — an empty road across six regions. I nearly filed that. It would have been the most
@@ -208,12 +249,55 @@ than no probe*; this is its twin, a probe that cannot succeed.
 The re-run (`--arms C1,C3,C4`, C1 first, with `setPopulation({enabled:true})` and an **asserted**
 `enabled_at_start`) was still walking when this verdict was written.
 
-### 5.2 Still unmeasured
+### 6.2 The crossing, actually walked — what it showed
 
-- **The felt density across the walk.** Everything in §3's realised-density table is computed from
-  the shipped placement, not driven. The tier-1/tier-5 *composition* difference is from the data;
-  the *felt* difference across a 57-minute walk is unmeasured, and that is the one place in this
-  verdict where I did arithmetic instead of driving.
+The re-run landed. **5,999.4 m of `named_routes.crossing` at 2.0 m·s⁻¹, no top-ups, no harness
+healing, no kill verbs, `enabled_at_start` asserted true**, 200 samples:
+
+| m | resident posts | bodies | player HP | what is standing there |
+|---:|---:|---:|---:|---|
+| 29 | 0 | 0 | 620 | — |
+| 539 | 4 | 4 | 396.8 | t3/t4 — slitherfang, inf_trash, **drowned_greater** |
+| 1,049 | 4 | 9 | 173.6 | t3 — slitherfang ×8 |
+| 1,559 | 5 | 8 | 173.6 | t3 — **guard_legion ×3**, inf_trash, slitherfang |
+| 2,579 | 3 | 4 | 173.6 | t3 — guard_legion ×4 |
+| 3,599 | 3 | 4 | 173.6 | **t2** — slitherfang, drowned_lesser |
+| 4,619 | 2 | 3 | 173.6 | **t1** — drowned_lesser, slitherfang |
+| 5,999 | 1 | 1 | 173.6 | **t1** — drowned_lesser |
+
+**32 posts materialised, 31 released behind, 0 faults.** Two things the data alone could not
+settle, now driven:
+
+1. **The composition gradient is real and it is legible in play.** The first half of the walk is
+   `guard_legion` and `drowned_greater`; the last third is `drowned_lesser` and nothing else.
+   §4's credit for lever 2 stands, and it stands on a walk rather than on a table.
+2. **The resident-post count falls from 4–5 to 1–2** across the walk. That is a real gradient of
+   roughly 3× — larger than the declared `tier_multiplier` range of 1.29× would suggest, because
+   post *count* per leg does more work than the multiplier does. But note which way it runs: the
+   walk gets **emptier and cheaper** as it goes, because the canonical route runs t3 → t4 → t3 →
+   t5 → t2 → t1, and the shipped default start is at the **t1 end**.
+
+**And one thing I did not expect: the road fights back exactly once.** The walker lost
+**446.4 HP in four hits of 111.6, all between 479 m and 689 m**, and then took **zero damage for
+the remaining 5,310 m** while 28 further posts materialised around it. The builder's headline —
+"the walker lost 446 HP over 1,229 m without ever attacking" — is true and I reproduce it exactly;
+what a 6 km walk adds is that *all* of it is one encounter, and the rest of the province lets a
+walking body past. **I could not determine why**, because the arm that would have told me (C4)
+is void — see below. It is the most interesting unanswered question in this piece.
+
+### 6.3 Still unmeasured, and one of them is my own fault twice over
+
+- **Whether a tier-5 encounter is survivable at the level the crossing pays — VOID, my fixture.**
+  Arm C4 stood the player ~14 m from `pop-0042` (`wl-deep-drowned-and-pack`, 4 bodies, tier 5,
+  the richest tier-5 post on the road) and swung for **424 swings across 240 sim-seconds**.
+  Result: HP 620 → 620, 8 bodies alive at start, **8 alive at the end**, and the passive control
+  is byte-identical. That is not a finding about the world, it is a finding about my arm: player
+  reach is 2.4 m, so 424 swings at 14 m were swings at air, and 14 m sits *at* the edge of
+  `drowned_greater`'s 14 m sight radius. **This is precisely the mistake the builder recorded in
+  its own A6** — *"the arm watched a slitherfang standing 170.08 m away for 600 frames… they
+  behaved correctly; the probe was 150 m too far away to see it"* — and it left the warning in
+  `notes_for_successor`, where I read it and then made a smaller version of the same error.
+  Reported rather than dressed up. **The survivability question this critique owes is still open.**
 - **Survivability at the level the crossing pays is unmeasured.** The crossing's 38 bodies are
   worth 2,149 souls = **level 5** on the shipped curve (`levels.json` cumulative 2,081 at L5).
   Arm C4 was written to fight a tier-5 crossing encounter at that level; its round-1 run died on
@@ -238,9 +322,9 @@ The re-run (`--arms C1,C3,C4`, C1 first, with `setPopulation({enabled:true})` an
 
 ---
 
-## 6. Secondary observations
+## 7. Secondary observations
 
-- **`PopulationSystem.reset()` misses two fields, not one.** `enabled` is §5.1 and is the
+- **`PopulationSystem.reset()` misses two fields, not one.** `enabled` is §6.1 and is the
   serious one. `this.faults` is the other: it accumulates for the life of the page across every
   `loadState`, so my ablation arm — which spawned nothing at all — reported `faults: 2` inherited
   from two arms earlier in the same browser. A fault count a scenario boundary cannot zero is not
@@ -262,66 +346,91 @@ The re-run (`--arms C1,C3,C4`, C1 first, with `setPopulation({enabled:true})` an
 
 ---
 
-## 7. Score
+## 8. Score
 
 | item | native | 0–10 | why |
 |---|---|---:|---|
 | **RI-AI05** roster archetypes | ≤28/44 ("loses outright") | **2** | M4 introduction rule hard-fails in both walk directions; <8 distinct archetypes hard-fails structurally; M3 region mix 0% on six roles; M8 illegal pairings |
-| **RI-PRG06** souls yield & pace | axis = 0 (min-over-axes) | **3** | band separation 100%/67%/100%/100% against a ≤25% threshold; 94% of bodies out of band. Most other axes are not this piece's to satisfy |
+| **RI-PRG06** souls yield & pace | axis = 0 (min-over-axes) | **2** | an unbounded save/load farm (§2) makes the supply unfalsifiable, which is what this item exists to prevent; band separation 100%/67%/100%/100% against a ≤25% threshold; 94% of bodies out of band |
 | **RI-MTH07** consumption | 3/5 knobs coupled | **6** | the *runtime* half (post table, stream radii, enabled flag) couples and I reproduced the ablation independently; the *design* half (tier multipliers, composition, safety) is consumed by a build-time script and its file→world path (arm A5) was attempted three times and never obtained |
 | RI-AI07 §D / RI-WLD02 D9 density band | in band on all four figures | **8** | genuinely hit, and re-derivable from the shipped table |
 
-**Overall 4/10** (mean 4.75, capped by two triggered RI-AI05 hard fails). Aggregation: mean of
-the four ladder scores, hard-fail capped. Confidence: **high** on the placement-data findings
-(§2, §3, §4 — all re-derived from the shipped tree with my own script), **high** on the two
-controls in §1, **not claimed** on §5.
+**Overall 4/10** (mean 4.5, capped by two triggered RI-AI05 hard fails and one ARBITRATION S5
+violation). Aggregation: mean of the four ladder scores, hard-fail capped.
+
+Confidence: **high** on §2 (driven, with a control that refused correctly), **high** on the
+placement-data findings (§3, §4, §5 — all re-derived from the shipped tree with a script sharing
+no code with the builder's), **high** on §6.2's walk and the three controls; **not claimed** on
+survivability, which §6.3 records as void by my own fixture.
 
 ---
 
-## 8. Biggest gap
+## 9. Biggest gap
 
-**`GAP-W1-population-introduction-rule-sorted-not-walked`** — `combat.encounter.placement`.
+**`GAP-W1-population-save-reload-repays-every-corpse`** — `combat.encounter.placement`
+(with `progression.souls.economy`).
 
-The introduction rule is enforced against a **sorted table** instead of a **walked route**. The
-generator orders the province by `(danger_tier, d_safety)` and tags the first solo instance of
-each archetype; a player orders the province by *the road under their feet*, and on the game's
-own named critical path `guard_legion` debuts in a pair (or a line of three, from the shipped
-start position) and `drowned_lesser` debuts in a pair. RI-AI05 calls this a hard fail because an
-archetype introduced in a group *"has not been taught, only survived"*.
+`Engine.applySave()` and `Engine.loadState()` both call `PopulationSystem.reset()`, which sets all
+144 posts back to `DORMANT`, while `SoulsSystem.reset()` empties the eid ledger the S5 epoch gate
+is keyed on and `death.ordinaryRespawnEpoch` never moves. Kill a post, save, load, kill it again:
+**+98 souls, epoch unmoved, no rest** (§2, arm C3, with the walk-away control refusing correctly
+at Δ0). Repeatable without bound.
 
-It is the biggest gap and not merely the loudest because the remedy is small, the piece already
-owns the code, and **the same defect shape is what §5 could not close**: three separate things in
-this piece are asserted by construction over a still table — the introduction rule, the tier
-gradient, and the cleared-post state across a load — and a still target hides every steering
-defect.
+**Why it is the biggest.** ARBITRATION S5 and RI-PRG06 §4 both say a respawn costs a rest, and the
+rest is what makes the world clock a price. This removes the price. RI-PRG06 exists because *"a
+soul curve without a soul supply is unfalsifiable"*, and an unbounded farm makes the supply
+unfalsifiable again — its own "How we lose" says *"every number in this file is instantly
+fiction."* It also defeats a fix a neighbouring piece built **specifically in response to this
+one**: `SoulsSystem`'s header names `W1-POPULATION` as the reason the boolean re-arm became an
+epoch gate. The gate holds against the door that piece anticipated and not against the one this
+piece opened.
 
----
+**Why it is this piece's.** The `population.reset()` call in `applySave`/`loadState` is this
+piece's line, added by this piece, with this piece's justification written on it: *"which ordinary
+mobs are dead is exactly what S5 says a rest restores anyway."* S5 says a **rest** restores them.
+The remedy is small and belongs here.
 
-## 9. `path_to_ten`
+**Runner-up, and still a hard fail in its own right:**
+`GAP-W1-population-introduction-rule-sorted-not-walked` (§3) — RI-AI05 M4 hard-fails in both
+directions of the game's own canonical route, because the rule is enforced against a table sorted
+by `(danger_tier, d_safety)` instead of against a walk.
 
-1. **Sort the introduction pass by traversal, not by tier.** Walk `named_routes.crossing` from
+**What the two have in common, and it is the thing to fix behind both:** three separate properties
+of this piece are asserted by construction over a still table — the introduction rule, the tier
+gradient, and cleared-post state across a load. Every one of them survives inspection and fails
+under motion. A still target hides every steering defect.
+
+## 10. `path_to_ten`
+
+1. **Persist the cleared-post set, or re-seed the souls ledger against it.** The narrowest fix
+   that closes §2: on `applySave`, restore each post's `CLEARED`/`DORMANT` state from the save
+   rather than resetting all 144 to `DORMANT` — which is also what a player expects, since a
+   reloaded save should not hand back a province they had cleared. If persisting is out of scope,
+   the alternative is to make `SoulsSystem`'s "first sight" seed a body as **settled at the current
+   epoch** when it belongs to a post the save recorded as cleared. Prove it with arm C3's three
+   legs: L1 must pay, L2 must refuse, **L3 must refuse**.
+2. **Sort the introduction pass by traversal, not by tier.** Walk `named_routes.crossing` from
    the shipped default start, then the remaining legs in road order, and tag the first *walked*
    instance of each archetype. Where the first walked instance is a group, **move the post** —
    demote it to the solo template and promote a solo post upstream. Then assert it in
    `tools/check-*.mjs` (RULES 14) so it cannot silently regress, with the assertion armed only
    after the data satisfies it (RULES 13).
-2. **Make the tier legible from one kill.** Re-weight the composition tables so adjacent tiers
+3. **Make the tier legible from one kill.** Re-weight the composition tables so adjacent tiers
    draw from disjoint slices of the roster — t1 {24, 34}, t2 {34, 64}, t3 {64}, t4 {83}, t5
    {157} — which takes the realised spread from 2.37× to about 5.4× and restores monotonicity,
    with no new statblock and no new soul value. This is the highest-value change available to
    this piece today and it costs one table.
-3. **Build one archetype, not one hundred more bodies.** A RANGED body is the single change that
+4. **Build one archetype, not one hundred more bodies.** A RANGED body is the single change that
    moves RI-AI05 most: it is required at 10–12% in *every* region, it is §D's most-likely silent
    drop ("How we lose" #4), and it is the only way this placement can ever ask a second question.
-4. **Drive the crossing end to end at the level it pays**, with no top-ups, and publish where the
+5. **Drive the crossing end to end at the level it pays**, with no top-ups, and publish where the
    walker falls. That is the survivability number this critique owes and could not take.
-5. **Close arm A5 and the save/load door.** A5 (perturb the model file, regenerate, reboot,
+6. **Close arm A5.** A5 (perturb the model file, regenerate, reboot,
    re-census) is the only demonstration that the *design* half of the model reaches the world;
-   it now costs two browser boots and no walking. Then kill a post, save, load, and re-kill,
-   and prove the epoch gate holds through `applySave` as well as through a walk.
-6. **Restore `enabled` and clear `faults` in `PopulationSystem.reset()`.** Two lines, and the
+   it now costs two browser boots and no walking.
+7. **Restore `enabled` and clear `faults` in `PopulationSystem.reset()`.** Two lines, and the
    first of them stops a whole class of neighbouring suite from silently measuring an empty
-   province (§5.1). Then add the check that would have caught it: an arm that ablates must
+   province (§6.1). Then add the check that would have caught it: an arm that ablates must
    re-arm and **assert** it is armed before the next arm trusts a count.
 
 ---
@@ -331,7 +440,7 @@ defect.
 `tools/world/critic-population-r1.mjs` was written by this critic under `TOOL-LOOP` rule 1 and is
 cited as evidence. It shares no code with the builder's `tools/world/population-consumption.mjs`.
 Arms C2 (still control with asserted drift; ablation control) returned. Arm C1's first run is
-VOID and the reason is a finding in its own right (§5.1); its re-run and arms C3/C4 did not land
+VOID and the reason is a finding in its own right (§6.1); its re-run and arms C3/C4 did not land
 inside budget and are reported as unmeasured rather than scored. `tools/world/critic-population-r1-diag.mjs`
 is the six-probe diagnostic that proved the pump works and stopped a false headline; its output is
 `reports/world/population/critic-r1-diag.json`. Three instrument bugs of mine are recorded in §5

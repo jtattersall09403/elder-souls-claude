@@ -4,7 +4,14 @@
   "started": "wave-1 round 2",
   "state": "building",
   "outputs_expected": [],
-  "outputs_written": [],
+  "outputs_written": [
+    "tools/analysis/ambience-onsets.mjs (new instrument, 3 gates + 3 sabotage arms)",
+    "tools/analysis/mk-interior-beds.mjs (7 interior/settlement beds)",
+    "tools/analysis/ambience-onsets-chart.mjs",
+    "game/data/audio/ambience/interiors/*.json (7 beds)",
+    "ambience-census C14 (interiors) + C15 (degenerate interval band)",
+    "reports/w1-22/ambience-onsets.json"
+  ],
   "findings": [
     "START: pgrep -c headless_shell = 24, loadavg 19.70 18.40 15.95 on 4 cores. WAY above the cap of 8. Doing synthesis/authoring first, browser phase later. No timing figure taken now is citable.",
     "READ THE VERDICT. Path to ten, in priority order: (1) GAP-W1-audio-emitter-consumption - emitters computed every frame, report audible/gain/pan, count voices, schedule NO grain; +40dB on bell_buoy leaves live render bit-identical. (2) attachMod unscaled LFO swing (synth.js:139-143) - 3 lines. (3) B5 marauders-coast -23.991, 0.009 LU out. (4) content-stats.mjs --audio is a phantom flag that exits 0. (5) R4 interior beds. (6) night never rendered. (7) census: flat 15s L3 interval still green.",
@@ -27,7 +34,11 @@
     "SECOND DEFECT FROM MY OWN INSTRUMENT, and it is the one the loop-seam fix did NOT cover: SecA requires L1 \"looped, gapless, >=30 s of material\" and round 1 used SIX. Six seconds of brown noise is one random walk with two or three big slow excursions in it; looping it repeats those excursions on a 6 s cycle forever. Localised by muting: stone-wastes clicks arrived at 0.77 and 3.12 past EVERY buffer boundary (0.77, 3.12, 6.77, 9.12, 15.12, 21.12) and muting L1 removed all of them. LOOP_SECONDS is now 30, the items own number. Cost is generated memory (~11.5 MB per noise layer at 48 kHz), not shipped bytes.",
     "AND A DEFECT IN MY OWN TOOL, found and corrected before any number was quoted from it: the first onset detector ran on the broadband mix and reported 98 onsets in the Stone Wastes and zero everywhere else - every one of the 98 false. That bed is a brown drone lowpassed at 70 Hz, and at 70 Hz a 10 ms frame is most of a cycle, so the 1.5x rise test fired on the carrier itself. It now detects on a 300 Hz-highpassed signal, which is what a discrete event actually is and what perceptual onset detectors do. Recorded because a tool that needed fixing before its first citation is exactly the thing RULES 4 exists for.",
     "INTERIOR BEDS BUILT: 7 in game/data/audio/ambience/interiors/ via tools/analysis/mk-interior-beds.mjs. 5 interior (barge_hold, writ_house, well, dungeon, interior) satisfies RI-WLD08 SEC6 >=4; 2 settlement (market, street) is SHORT of its >=8 and the shortfall is the WORLDs - Engine.cellFor() returns exactly two settlement cells, so eight beds would mean authoring six settlements that do not exist. Census C14 WARNS rather than fails so the gap is charged where it lives. Engine._stepAmbience now looks a bed up by cell instead of setting suppressed; arena stays suppressed deliberately (its sound is the combat mix).",
-    "BED LEVELS RECALIBRATED after the 30 s buffer change (the longer random walk normalises differently). ambience-render --calibrate: G4_level now 13/13 (was 12/13 - B5s 0.009 LU miss is gone), G1/G2/G3/G5/G6/G7/G8/G9 all PASS."
+    "BED LEVELS RECALIBRATED after the 30 s buffer change (the longer random walk normalises differently). ambience-render --calibrate: G4_level now 13/13 (was 12/13 - B5s 0.009 LU miss is gone), G1/G2/G3/G5/G6/G7/G8/G9 all PASS.",
+    "CENSUS C15 ADDED, closing the one hole the round-1 critic PROVED (verdict SEC3: it broke the census four ways and got red, then found \"setting an L3 interval to a flat 15 s -> still green\"). Stated precisely so as not to overclaim: C4s band() helper already requires v[0]<v[1], so exactly-flat [15,15] fails C4 today. What C4 CANNOT see is a band that is a range in form and a metronome in effect - [15,16] is inside 8-40, strictly increasing, and fires a signature every 15.5 s forever. Both arms run: [15,15] fails C4+C15, [15,16] fails C15 alone. Two checks that never disagree would be one check. Floor is 25% of the bands own midpoint; narrowest shipped layer is deep-marshes L3 [30,40] at 28.6%.",
+    "EVENT CALIBRATION COMPLETE across all 20 beds (13 region + 7 interior). Corrections range from +4.97 dB (thornmarsh L3) to +30.55 dB (stone-forest L3) - the spread is itself the finding, because it shows the deficit was never a single global constant anyone could have guessed, which is why it had to be measured per layer against a rendered bed.",
+    "NIGHT IS NOW RENDERED. Verdict SEC7: \"The night world has never been rendered. Every capture in ambience-render.mjs is tod: day. Six night-only L2 sublayers and every night-gated L3/L4 event are absent from all thirteen spectra... R5 is the rule the item cares most about after R2, and no measurement in this piece has ever seen it.\" ambience-onsets.mjs renders EVERY bed at BOTH tod bands and gates both.",
+    "PROJECT-WIDE GATES after the new data files and the regenerated index: check-data PASS, check-quests PASS, check-content PASS, check-prose PASS. boot-check PASS. ambience-census B4 PASS. ambience-render all 9 gates PASS with G4_level 13/13."
   ],
   "next_step": "event-level calibration running; then acceptance run + both sabotage arms; then re-run the critics own probe unchanged; then blog line + image",
   "notes_for_successor": "Do not touch tools/blind/audio-pack-b2.mjs or its pack dir (fresh judge answering it now). Files I am touching: game/src/audio/{ambience,synth}.js, game/src/engine.js (_stepAmbience/ambienceCapture), game/src/harness/api.js (getUnimplemented), game/data/audio/ambience/*.json, NEW game/data/audio/ambience/interiors/, tools/analysis/{ambience-census,ambience-render,content-stats}.mjs.",
@@ -35,15 +46,18 @@
     "game/src/audio/ambience.js",
     "game/src/audio/synth.js",
     "game/src/engine.js",
-    "tools/analysis/ambience-onsets.mjs"
+    "game/src/harness/api.js",
+    "game/data/audio/ambience/*.json",
+    "game/data/audio/ambience/interiors/*.json",
+    "game/data/index.json",
+    "tools/analysis/ambience-onsets.mjs",
+    "tools/analysis/ambience-onsets-chart.mjs",
+    "tools/analysis/mk-interior-beds.mjs",
+    "tools/analysis/ambience-census.mjs"
   ],
   "files_claimed": [
-    "game/data/audio/ambience/",
-    "game/data/audio/ambience/interiors/",
-    "game/data/index.json",
-    "tools/analysis/ambience-census.mjs",
-    "tools/analysis/ambience-render.mjs",
     "reports/blog-feed.jsonl",
-    "docs/shots/"
+    "docs/shots/",
+    "reports/w1-22/"
   ]
 }

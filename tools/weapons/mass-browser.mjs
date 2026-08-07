@@ -194,6 +194,14 @@ try {
       const eid = H.spawn('mat_flesh', 0, 1.6, { as: 'MASS' });
       const R = 1.6;
       let theta = moving ? -40 : 0, dir = 1;
+      // ---- WITHOUT THIS LINE BOTH ARMS OF THIS PROBE ARE THE SAME FIXTURE. ------------------
+      // player.js:183 calls `lock.steerDuringAttack(body, tgt, ...)` and lockon.js:105 returns 0
+      // immediately `if (!targetBody)`. With no lock target the character NEVER turns, so moving
+      // the enemy around it changes nothing that reaches the blade: the first run of this tool
+      // reported player_yaw_travel 0 and a still/moving peak ratio of EXACTLY x1.000 on both
+      // subjects — two fixtures, twice the data, no distinction. That is RULES.md 8 catching the
+      // instrument rather than the build, and it is why the ratio is reported rather than assumed.
+      H.lockOn(eid);
       H.queueInputs([{ f: 1, press: [heavy ? 'heavy' : 'light'] }, { f: 4, release: [heavy ? 'heavy' : 'light'] }]);
       const tips = [], yaws = [], frames = [];
       let sawMove = false;
@@ -211,6 +219,7 @@ try {
         yaws.push(cs.player.yaw_deg);
         frames.push({
           st: cs.player.state, af: cs.player.anim_frame,
+          lock: cs.lock ? cs.lock.target : null,
           move: m ? m.id : null,
           startup: m ? m.startup : null, active: m ? m.active : null,
           recovery: m ? m.recovery : null, total: m ? m.total : null,
@@ -269,16 +278,36 @@ try {
               if (!broke && (v[0] * dirOut[0] + v[1] * dirOut[1] + v[2] * dirOut[2]) > 0) folN++; else broke = true;
             }
           }
-          // How much the character TURNED while the blade was live. This is the term the node
-          // arena cannot produce and the still target cannot exhibit.
-          let yawTravel = 0;
-          if (a0 !== null) {
-            for (let i = a0 + 1; i <= a1 && i < yaws.length; i++) {
+          // How much the character TURNED, and WHEN. This is the term the node arena cannot
+          // produce and a still target cannot exhibit.
+          //
+          // IT HAS TO BE MEASURED OVER STARTUP, NOT OVER THE ACTIVE WINDOW. lockon.js:105
+          // `steerDuringAttack` snaps on animFrame 1 and is FROZEN after
+          // Tc = min(floor(0.80 * startup), startup - 8), with a 45 deg global cap — so all of
+          // the steering happens inside startup and yaw travel during the active window is zero
+          // BY DESIGN. Measuring it over the active window (as the first cut of this tool did)
+          // reports 0 for a correctly-steering character and looks exactly like a fixture that
+          // is not steering at all. RI-WPN05 §E's peak is "max over the animation", so the
+          // startup contribution is in scope for the row regardless.
+          const yawIn = (lo, hi) => {
+            let t = 0;
+            for (let i = Math.max(1, lo); i <= hi && i < yaws.length; i++) {
               let d = yaws[i] - yaws[i - 1];
               while (d > 180) d -= 360; while (d < -180) d += 360;
-              yawTravel += Math.abs(d);
+              t += Math.abs(d);
             }
-          }
+            return +t.toFixed(2);
+          };
+          const stu = [];
+          for (let i = 0; i < frames.length; i++) if (frames[i].move && frames[i].af <= frames[i].startup) stu.push(i);
+          const s0 = stu.length ? stu[0] : null, s1 = stu.length ? stu[stu.length - 1] : null;
+          const yawTravel = a0 === null ? 0 : yawIn(a0 + 1, a1);
+          const yawStartup = s0 === null ? 0 : yawIn(s0 + 1, s1);
+          const peakIn = (idx) => {
+            let p = 0;
+            for (const i of idx) if (spd[i] !== null && spd[i] > p) p = spd[i];
+            return +p.toFixed(2);
+          };
           const spdA = spd.filter((v) => v !== null);
           out.series.push({
             weapon: s.id, class: s.cls, tier: s.tier, moving,
@@ -289,8 +318,15 @@ try {
             recovery_frames_observed: rec.length,
             peak_drawn_tip_mps: +peak.toFixed(2),
             peak_drawn_tip_mps_active_window: +peakActive.toFixed(2),
+            // Where in the clip the peak actually lives. §E's row is "max over the animation",
+            // so a peak sitting in startup or recovery is still a violation — and W1-11 found
+            // 156 of 263 census violations peaking OUTSIDE the active window.
+            peak_by_phase_mps: { startup: peakIn(stu), active: peakIn(act), recovery: peakIn(rec) },
             mean_drawn_tip_mps: spdA.length ? +(spdA.reduce((a, b) => a + b, 0) / spdA.length).toFixed(2) : null,
-            player_yaw_travel_deg_during_active: +yawTravel.toFixed(2),
+            startup_frames_observed: stu.length,
+            lock_target: (frames[0] && frames[0].lock) || null,
+            player_yaw_travel_deg_during_startup: yawStartup,
+            player_yaw_travel_deg_during_active: yawTravel,
             follow_through_frac: folD ? +(folN / folD).toFixed(3) : null,
             recovery_frames_counted: folD,
             recovery_frames_moving: rec.filter((i) => spd[i] !== null && spd[i] > 0.05).length,
@@ -321,8 +357,11 @@ try {
         out.live[s.id] = {
           weapon_loaded: H.getCombatState().player.weapon,
           weapon_class: H.getCombatState().player.weapon_class,
-          socket_a_dist_m: g ? g.weapon.socket_a : null,
-          socket_b_dist_m: g ? g.weapon.socket_b : null,
+          // NOTE: getHitGeometry's weapon.socket_a/socket_b are BONE IDS ('wpn_guard'/'wpn_tip'),
+          // not distances. The distances live on the drawn record as drawn_length_m.
+          socket_a_bone: g ? g.weapon.socket_a : null,
+          socket_b_bone: g ? g.weapon.socket_b : null,
+          hitbox_radius_m: g ? g.weapon.r : null,
           drawn_length_m: P ? P.drawn_length_m : null,
           tip_vs_socket_b_mm: P ? P.tip_vs_socket_b_mm : null,
         };
@@ -370,7 +409,10 @@ try {
         document.body.appendChild(d);
         await new Promise((r) => setTimeout(r, 120));
       }, { subject: SHOT_SUBJECT, atFrame: shotFrame(report, SHOT_SUBJECT), panelHTML: buildPanel(report, SHOT_SUBJECT) });
-      await handle.page.screenshot({ path: shotPath });
+      // 30 s is Playwright's default and it is not enough on a box running 24 other browsers —
+      // the first attempt at this shot died on "page.screenshot: Timeout 30000ms exceeded"
+      // AFTER the whole measurement had succeeded, which is an expensive way to lose a picture.
+      await handle.page.screenshot({ path: shotPath, timeout: 180000, animations: 'disabled' });
       report.shot = path.relative(process.cwd(), shotPath);
     } catch (e) { report.shot_error = String(e && e.message).slice(0, 300); }
   }
@@ -414,9 +456,14 @@ report.still_target_understates_peak_by = move.map((m) => {
   const s = still.find((x) => x.weapon === m.weapon);
   return s ? { weapon: m.weapon, still_mps: s.peak_drawn_tip_mps, moving_mps: m.peak_drawn_tip_mps,
     ratio: +(m.peak_drawn_tip_mps / (s.peak_drawn_tip_mps || 1)).toFixed(3),
-    still_yaw_travel_deg: s.player_yaw_travel_deg_during_active,
-    moving_yaw_travel_deg: m.player_yaw_travel_deg_during_active } : null;
+    still_yaw_startup_deg: s.player_yaw_travel_deg_during_startup,
+    moving_yaw_startup_deg: m.player_yaw_travel_deg_during_startup,
+    // A ratio of EXACTLY 1.000 with both yaw travels at 0 does not mean "steering does not
+    // matter". It means the two arms were the same fixture and the comparison decided nothing.
+    fixture_actually_differed: (s.player_yaw_travel_deg_during_startup !== m.player_yaw_travel_deg_during_startup),
+  } : null;
 });
+report.control_is_live = report.still_target_understates_peak_by.every((r) => r && r.fixture_actually_differed);
 
 const outPath = path.join(outDir, `mass-browser-${tag}.json`);
 writeJson(outPath, report);
@@ -426,8 +473,12 @@ for (const s of report.series) {
   console.log(`  ${s.weapon.padEnd(20)} moving=${String(s.moving).padEnd(5)} ${String(s.move_id).padEnd(10)}`
     + ` S/A/R ${d ? d.startup + '/' + d.active + '/' + d.recovery : '-'} f@60`
     + `  act_obs ${String(s.active_frames_observed).padStart(3)} rec_obs ${String(s.recovery_frames_observed).padStart(3)}`);
+  const p = s.peak_by_phase_mps || {};
   console.log(`  ${' '.repeat(20)} peak_drawn ${String(s.peak_drawn_tip_mps).padStart(7)} m/s`
-    + `  yaw_during_active ${String(s.player_yaw_travel_deg_during_active).padStart(6)} deg`
+    + `  [startup ${p.startup} / active ${p.active} / recovery ${p.recovery}]`
+    + `  lock ${s.lock_target === null ? 'NONE' : s.lock_target}`);
+  console.log(`  ${' '.repeat(20)} yaw travel: startup ${String(s.player_yaw_travel_deg_during_startup).padStart(6)} deg,`
+    + ` active ${String(s.player_yaw_travel_deg_during_active).padStart(6)} deg`
     + `  follow_frac ${s.follow_through_frac}  (recovery frames moving ${s.recovery_frames_moving}/${s.recovery_frames_counted})`);
 }
 for (const v of report.verdict) {
@@ -436,7 +487,9 @@ for (const v of report.verdict) {
     + `  follow ${v.follow_ok === null ? 'N/A' : v.follow_ok ? 'PASS' : 'FAIL'} (>= ${v.follow_min})`);
 }
 for (const r of report.still_target_understates_peak_by) {
-  if (r) console.log(`  STILL-vs-MOVING ${r.weapon}: ${r.still_mps} -> ${r.moving_mps} m/s (x${r.ratio}), yaw ${r.still_yaw_travel_deg} -> ${r.moving_yaw_travel_deg} deg`);
+  if (r) console.log(`  STILL-vs-MOVING ${r.weapon}: ${r.still_mps} -> ${r.moving_mps} m/s (x${r.ratio}),`
+    + ` startup yaw ${r.still_yaw_startup_deg} -> ${r.moving_yaw_startup_deg} deg`
+    + `  ${r.fixture_actually_differed ? '' : '  <-- THE TWO ARMS ARE THE SAME FIXTURE; THIS COMPARISON DECIDES NOTHING'}`);
 }
 if (report.errors && report.errors.length) for (const e of report.errors) console.log('  ERROR ' + e);
 console.log(`  written ${outPath}`);

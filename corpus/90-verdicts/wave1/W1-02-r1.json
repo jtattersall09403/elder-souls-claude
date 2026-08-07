@@ -1,0 +1,903 @@
+{
+ "schema_version": 1,
+ "piece_id": "W1-02-r1",
+ "piece_title": "Regions, borders and the strange \u2014 round 1 critique",
+ "subsystem_paths": [
+  "world.region.identity",
+  "world.region.transition",
+  "world.weather.systems",
+  "world.time.daynight",
+  "world.strangeness.budget",
+  "world.strangeness.architecture"
+ ],
+ "wave": 1,
+ "critic": {
+  "run_id": "crit-w1-02-r1-3c19",
+  "role": "critic.world",
+  "model": "claude-opus-5",
+  "started_at": "2026-08-07T20:44:00Z",
+  "finished_at": "2026-08-07T21:25:00Z",
+  "conflict_of_interest": false,
+  "saw_builder_notes_before_blind": true
+ },
+ "build": {
+  "commit_sha": "6b1a142",
+  "branch": "claude/morrowind-souls-threejs-game-mou39v",
+  "note": "Working tree dirty (5 files) throughout, and being rewritten by ~20 concurrent pieces. Load 14.8-22.8 and 24-36 headless_shell processes for the whole run, far above RULES.md rule 21's ~8 cap, so I launched NO browser and took every number from node processes over files on disk. No timing figure is reported anywhere in this verdict, so contention affects nothing in it. The W1-02 builder was mid round-3 during my run: its blind-pack process (pid 3888) was capturing when I started and died at 20:59:22 after 24 of 48 frames.",
+  "harness_commands": [
+   {
+    "command": "node /scratch/c-evt.mjs   (critic instrument: 300k-frame Environment step, event vocabulary)",
+    "seed": null,
+    "exit_code": 0
+   },
+   {
+    "command": "node /scratch/c-evt.mjs --drop-vocab   (delete-the-fix arm)",
+    "seed": null,
+    "exit_code": 0
+   },
+   {
+    "command": "node /scratch/c-m65b.mjs   (critic instrument: RI-WLD12 M65 rescored over the shipped traverse)",
+    "seed": null,
+    "exit_code": 0
+   },
+   {
+    "command": "node /scratch/c-m65b.mjs --collapse-offsets   (sabotage arm: 24/24 texture swaps)",
+    "seed": null,
+    "exit_code": 0
+   }
+  ],
+  "depends_on": [
+   "W1-01 (regions.json, signatures.json, terrain.json, region-axes.mjs)",
+   "W1-05 (travel services \u2014 the RI-TRV01 day/night gate seam)",
+   "W1-SOULS (commit dcf1d36, which repaired this piece's event-vocabulary breach)"
+  ],
+  "depends_on_note": "world.strangeness.budget was inherited intact from the opacity register and W1-02 added nothing to it; world.region.identity leans on W1-01's region-axes instrument, which W1-02 did not re-arm."
+ },
+ "bifurcation": {
+  "axis": "not-visual",
+  "declared_before_citation": true,
+  "note": "This piece is judged on structure and measurement, not on fidelity or art direction. The one image-based check, RI-WLD12 M68, is a PERCEPTUAL question about whether a border is legible ('is this one place or two?'), not a fidelity or art-direction comparison, and is scored on its own bars rather than on a bifurcated visual axis. Declared before any frame was opened, in reports/critic-w1-02/PREREGISTRATION.md."
+ },
+ "reference_items": [
+  {
+   "id": "RI-WLD12",
+   "path": "corpus/50-world/RI-WLD12-region-borders.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "0-100 weighted sum over M64-M70",
+   "native_score": 48,
+   "native_max": 100,
+   "native_verdict": "Below the item's own '< 70 - we lose' line, on the strength of its best work: M64 (16) and M65 (30) pass, M66 (16) partly fails and is partly unmeasured, M67 (14) and M69 (6) have no instrument at all, M68 (16) fails as run.",
+   "score_0_10": 5,
+   "measured": "partial",
+   "evidence": [
+    "reports/critic-w1-02/c-m65b.json",
+    "reports/critic-w1-02/c-m65-sabotage.json",
+    "reports/wld12-blind/ANSWERS.json",
+    "reports/critic-w1-02/m68-diagnostics.txt",
+    "reports/critic-w1-02/marker-contrast.txt"
+   ],
+   "checks": [
+    {
+     "id": "M64-inventory-B1-B5",
+     "result": "pass",
+     "observed": "24 walkable adjacencies; 14 HARD / 10 MARKED = 58.3% HARD against a >=40% bar; 8 distinct threshold-object types in use against a >=6 bar (210 objects); ZERO borders with neither a landform nor an object (B2). B3 is VACUOUS: there are no GRADED borders in the province."
+    },
+    {
+     "id": "M64-MARKED-width-out-of-band",
+     "result": "fail",
+     "observed": "All 10 MARKED borders are 123-172 m wide. RI-WLD12 \u00a71's table puts MARKED at 60-120 m. The builder's status file reports these as 'graded widths 123-172 m (bar 120-180)' \u2014 the number was checked against the GRADED row while the borders are labelled MARKED."
+    },
+    {
+     "id": "M65-staggered-crossover",
+     "result": "pass",
+     "observed": "INDEPENDENTLY REPLICATED. My own scorer over the shipped BorderField.traverse: 24/24 borders measurable, stddev(c) min 16.49 / median 22.82 / max 62.03 m, span 54-214 m, ZERO automatic fails (stddev<5m), zero failures of the per-kind stddev bar (25 m marked / 8 m hard), zero span failures, zero violations of the 3 m pair rule, one partial (marauders-coast--western-rootlands, 6/9 axes). Matches the builder's numbers exactly."
+    },
+    {
+     "id": "M65-sabotage-control",
+     "result": "pass",
+     "observed": "Collapsing every axis_offsets_m to 0 takes my instrument to 24 of 24 automatic fails with stddev 0 \u2014 the instrument can fail, and the control also reproduces the pre-W1-02 baseline exactly."
+    },
+    {
+     "id": "M66-T1-two-channels",
+     "result": "partial",
+     "observed": "All 7 jumps with |dtier|>=2 declare two channels (threshold_object + remains), and 110 objects stand on those borders. But T1 is scored off the DECLARED announcement.channels array that build-borders.mjs wrote, not off the world, and the item's 'within 100 m of the crossing' clause is never checked by any tool."
+    },
+    {
+     "id": "M66-T2-40m-grace",
+     "result": "fail",
+     "observed": "5 of the 7 announced tier jumps are violated by the live population, worst 0.69 m against a declared 40 m. Measured and DECLARED by the builder in reports/tier-announcement.json rather than concealed; the fix belongs to whoever owns population-posts.json."
+    },
+    {
+     "id": "M66-T3-T4-T5",
+     "result": "fail",
+     "observed": "UNMEASURED. T3 (nothing gates the crossing \u2014 no level check, soft wall or scaled enemy) is one of RI-WLD12's AUTOMATIC FAILS and no tool in the repo measures it. T4 (sightline >=100 m into the far region) and T5 (>=3 borders descending in tier) likewise."
+    },
+    {
+     "id": "M67-continuity-C1-C5",
+     "result": "fail",
+     "observed": "UNMEASURED, weight 14. grep of tools/ finds no instrument for M67, C2's 150 m streaming-vs-visual separation or C4's 80 m grade interpolation."
+    },
+    {
+     "id": "M68-one-place-or-two",
+     "result": "fail",
+     "observed": "52.6% answered 'two' (10 of 19 usable frames) against a >=80% bar; the >=25%-answer-'one' fail clause FIRES at 47.4%. The cue bar PASSES: 80% of 'two' answers named an object or a landform, and the most common cue is a built object (6 of 10) with ZERO frames decided by fog or colour \u2014 RI-WLD12's 'fog border' failure mode does not occur. Pack shipped 24 of 48 frames."
+    },
+    {
+     "id": "M68-diagnosis-occlusion",
+     "result": "fail",
+     "observed": "16 of 24 frames have a foreground boulder within metres of the lens; 5 are unreadable. Two-rate is 75.0% on the 8 unoccluded frames and 36.4% on the 11 usable occluded ones. The camera pose is computed from node with no occlusion test, and the province scatters props in the renderer from noise. MARKED borders read 'two' 50% of the time, no better than HARD at 54.5%."
+    },
+    {
+     "id": "M69-interleave-with-WLD04",
+     "result": "fail",
+     "observed": "UNMEASURED, weight 6. No instrument."
+    },
+    {
+     "id": "M70-declared-audio-change",
+     "result": "pass",
+     "observed": "The declared ambient bed differs across borders and the thirteen regions do not share one bed."
+    },
+    {
+     "id": "automatic-fail-list",
+     "result": "pass",
+     "observed": "NONE of RI-WLD12's six 'Automatic fail regardless of score' conditions is triggered: no border has stddev(c)<5 m (min 16.49, replicated by me); no border lacks both a landform and an object (B2=0); no loading screen, fade or invisible wall was observed or reported; and fog/colour is the only cue on ZERO borders, against a threshold of 3 \u2014 in the whole blind pack not one frame was decided by a grade. The unmeasured one is the level-check/soft-wall/scaled-enemy condition (T3), recorded as a hole rather than as a pass. M68 missing its 80% bar costs the item its 16 points but is NOT on the automatic-fail list."
+    }
+   ],
+   "hard_fails": [],
+   "why_not_ten": "The weight-30 core check is genuinely solid and independently replicated, but 20 of the item's 100 points have no instrument at all, M66 is partly failing and partly unmeasured, and the item's primary perceptual test fails because more than half the pack photographs a rock.",
+   "path_to_ten": "Re-shoot M68 with an occlusion test and finish all 48 frames; build M67 and M69; finish M66's T3/T4/T5; bring the 10 MARKED widths inside 60-120 m or reclassify them.",
+   "ten_by_wave": 3
+  },
+  {
+   "id": "RI-WLD08",
+   "path": "corpus/50-world/RI-WLD08-the-living-world.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "0-10 band over M40-M46",
+   "native_score": 6,
+   "native_max": 10,
+   "native_verdict": "The clock and the weather machine are correct to the item's own numbers and the clock is genuinely consumed; the effect table beyond sightline is not.",
+   "score_0_10": 6,
+   "measured": "partial",
+   "evidence": [
+    "reports/critic-w1-02/consumption-census.txt",
+    "game/data/world/weather.json",
+    "game/src/sim/environment.js"
+   ],
+   "checks": [
+    {
+     "id": "S1-timescale-and-day-length",
+     "result": "pass",
+     "observed": "timescale 20, real_minutes_per_game_day 72, dawn_dusk_real_minutes 6. environment.js puts dawn at 4.8-6.8 h and dusk at 17.2-19.2 h = 2 game-hours each = exactly 6 real minutes; 4.8->19.2 is exactly 14.4 h = a 60/40 day-night split. Exactly the item's \u00a71 numbers."
+    },
+    {
+     "id": "M43-weather-machine-audit",
+     "result": "pass",
+     "observed": "AUDITED INDEPENDENTLY. 13 regions, every one with >=4 states (41 distinct states province-wide); NO unreachable state; NO transition probability of 0 or 1.0; every transition row sums to 1.0; no region shares another's full state set; every region's declared 'worst' state carries a non-empty effect. The Hive's departure from \u00a75's 'one state' is declared in the data file itself."
+    },
+    {
+     "id": "M43-effect-actually-fires",
+     "result": "partial",
+     "observed": "Sightline is real: env.sightlineM is read by render/sky.js:245 as a Beer-Lambert extinction, so every region's worst state does change the frame, and M43's literal fail clause does NOT fire. But the rest of the effect table is inert \u2014 see the CONSUMPTION block."
+    },
+    {
+     "id": "closed-event-vocabulary",
+     "result": "pass",
+     "observed": "environment.js emits day_phase (:153) and weather_change (:197). Neither was in game/src/sim/events.js's closed vocabulary when this piece shipped them, and Environment.step() runs FIRST in stepOnce(), so every stepping probe in the project died on the frame the clock rolled while boot-check stayed green. NOW FIXED: my probe steps 300,000 frames clean (4 day_phase, 1 weather_change, no throw), and deleting the two entries throws on the first roll. The repair is commit dcf1d36 by W1-SOULS, NOT by W1-02, and W1-02's status file records none of it across 50 findings."
+    }
+   ],
+   "hard_fails": [],
+   "why_not_ten": "The model is well-formed and the clock is genuinely consumed, but 11 of 12 declared mechanical-effect keys have no reader in the running world, and M40/M41/M42/M44/M45 (ambient events, schedules, ecology, day/night proof, audio liveness) are other pieces' and were not exercised here.",
+   "path_to_ten": "Wire stamina_regen_mult, chip_dps and disease_buildup_per_s into the player and hazard ticks and demonstrate each with an RI-MTH07 perturbation.",
+   "ten_by_wave": 3
+  },
+  {
+   "id": "RI-WLD14",
+   "path": "corpus/50-world/RI-WLD14-built-alienness.md",
+   "side": "morrowind",
+   "kind": "structure",
+   "native_scale": "0-10 band over M78-M84",
+   "native_score": 0,
+   "native_max": 10,
+   "native_verdict": "Unmeasured. The sole judge of world.strangeness.architecture has no instrument and the data file its census loads does not exist.",
+   "score_0_10": 0,
+   "measured": "unmeasurable",
+   "evidence": [
+    "reports/critic-w1-02/consumption-census.txt",
+    "reports/critic-w1-02/consumption-census.txt"
+   ],
+   "checks": [
+    {
+     "id": "M78-grammar-census",
+     "result": "fail",
+     "observed": "UNMEASURED. M78 loads architecture.json, which does not exist on disk. F1-F8 (right-angle fraction, true-vertical fraction, silhouette turning, opening rectangularity, mesh reuse ceiling, top-10 volume share, door-height variance, process legibility) are all unmeasured."
+    },
+    {
+     "id": "builder-claim-of-coverage",
+     "result": "fail",
+     "observed": "The builder's status file says 'world.strangeness.architecture EXISTENCE is met; the gap is grammar (RI-WLD14 F1-F8) not existence'. That conflates signatures.json \u2014 RI-WLD04 M19's ONLY-HERE elements, which genuinely pass \u2014 with RI-WLD14's BUILDING grammar, which is a different measurement over different data."
+    }
+   ],
+   "hard_fails": [
+    "A declared subsystem path with a sole judge that has no instrument and no input data."
+   ],
+   "why_not_ten": "Nothing was built or measured for this path in this piece.",
+   "path_to_ten": "Author architecture.json and an M78-M80 census, or amend docs/PLAN.md to defer the path to wave 3 and remove it from W1-02's declared six.",
+   "ten_by_wave": 3
+  },
+  {
+   "id": "RI-WLD11",
+   "path": "corpus/50-world/RI-WLD11-environmental-hazards.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "0-10 band",
+   "native_score": 3,
+   "native_max": 10,
+   "native_verdict": "This item owns 'what weather DOES to you'. Across a 41-state weather model the answer is one hazard gate in one region.",
+   "score_0_10": 3,
+   "measured": "partial",
+   "evidence": [
+    "reports/critic-w1-02/consumption-census.txt",
+    "reports/critic-w1-02/consumption-census.txt",
+    "reports/critic-w1-02/consumption-census.txt"
+   ],
+   "checks": [
+    {
+     "id": "weather-mechanical-reach",
+     "result": "fail",
+     "observed": "env.weatherEffect is written at environment.js:217 and read at :273 by the harness reporter \u2014 nowhere else in game/src. Of 12 declared effect keys across 41 states, ZERO have a simulation-side reader. sim/player.js:212 computes stamina regen as stamina_regen_per_frame * (guarding ? guard_mult : 1) with no weather term, so stamina_regen_mult (18 states) multiplies nothing. chip_dps (4 states, the Stone Wastes salt-storm chip damage RI-WLD04 names), disease_buildup_per_s (2 states, the Deep Marshes fever-fog's named disease), hides_enemies, aggro_radius_mult, navigation_degraded, tracks_washed, lightning_damage_mult, falling_hazards_active, sight_aid and bioluminescent all have no reader."
+    },
+    {
+     "id": "what-weather-does-reach",
+     "result": "partial",
+     "observed": "Three real couplings exist and are credited: env.weatherLight -> stealth ambient (stealth/system.js:890, and the builder found and fixed a genuine defect there \u2014 only 3 of 20 weather ids were classified, so salt-storms were lit as midday sun while the renderer drew a black sky); env.sightlineM -> sky.js:245 Beer-Lambert extinction; and exactly one hazard gate, hazards.js:55 'ash-lung' on ashfall/dust_devil in Thornmarsh."
+    }
+   ],
+   "hard_fails": [],
+   "why_not_ten": "The weather model is a well-formed state machine whose mechanical consequences are almost entirely undelivered.",
+   "path_to_ten": "Give the effect table a reader and demonstrate each with a perturbation.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-WLD04",
+   "path": "corpus/50-world/RI-WLD04-region-identity.md",
+   "side": "morrowind",
+   "kind": "structure",
+   "native_scale": "0-10 band over M17-M21",
+   "native_score": 6,
+   "native_max": 10,
+   "native_verdict": "M19 passes cleanly. M18 passes on the axes that are armed, but W1-02 made the weather axis measurable and did not re-arm it. Binds to this piece only by legacy path alias.",
+   "score_0_10": 6,
+   "measured": "partial",
+   "evidence": [
+    "game/data/world/signatures.json",
+    "reports/region-axes.json"
+   ],
+   "checks": [
+    {
+     "id": "M19-only-here-audit",
+     "result": "pass",
+     "observed": "AUDITED INDEPENDENTLY. 840 instances, 13/13 regions, NO kind appears in more than one region (M19's straight fail does not occur), every region >=8 instances. Built by W1-01 and correctly not rebuilt by W1-02."
+    },
+    {
+     "id": "M18-differentiation-matrix",
+     "result": "partial",
+     "observed": "reports/region-axes.json reports min_axes_differing 10 against a bar of 9 over 14 available axes, and the instrument was correctly rewritten after a prior round found 8 of 9 axes were string comparisons against regions.json. BUT it still lists the weather axis in dropped_axes with the reason 'weather is a per-frame capture parameter, not a property of the built world' \u2014 which W1-02 falsified by shipping 13 per-region machines. The two rendered axes (rendered_palette, rendered_vertical_structure) scored 0 pairs; rendered_capture_pass is null."
+    },
+    {
+     "id": "M17-blind-region-test",
+     "result": "partial",
+     "observed": "Not re-run by this piece. W1-01-r4's colour-stripped day measurement of LOO 7.7% on 39 frames is chance for 13 regions, and 3 frames per region makes leave-one-out a coin flip; the handover names the vertical luminance profile as the only half of the descriptor carrying signal, and the height-fog lever it depends on (fog.height_falloff_m, declared 45-340 m per region) is still read by nobody \u2014 render/sky.js uses FogExp2, which has no height term."
+    }
+   ],
+   "hard_fails": [],
+   "why_not_ten": "The headline bar of the whole piece \u2014 thirteen regions distinguishable without the map \u2014 was not measured by this piece, and the instrument that measures it was left with a now-false exclusion in it.",
+   "path_to_ten": "Re-arm the weather axis in region-axes.mjs and capture the two rendered axes; build the height fog.",
+   "ten_by_wave": 3
+  },
+  {
+   "id": "RI-AUD03",
+   "path": "corpus/87-audio/RI-AUD03-regional-ambience.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "0-10 band",
+   "native_score": 5,
+   "native_max": 10,
+   "native_verdict": "Judged by W1-22's own critic, not re-run here. Its verdict stands: thirteen audibly separable beds with no event layer in any of them.",
+   "score_0_10": 5,
+   "measured": "partial",
+   "evidence": [
+    "corpus/90-verdicts/wave1/W1-22-B2-blind.md"
+   ],
+   "checks": [
+    {
+     "id": "B2-separation",
+     "result": "pass",
+     "observed": "Not re-measured by me. The W1-22 B2 blind judge scored 32/32 with separation 1.0000 and recorded, correctly under CORPUS-CONTRACT \u00a76, that the result is a reason to distrust the pack rather than to celebrate: zero transient onsets in all 64 recordings, so the regions differ in the colour of a hum and nothing happens in any of them."
+    }
+   ],
+   "hard_fails": [],
+   "why_not_ten": "Owned and already judged elsewhere; W1-02 added nothing to it.",
+   "path_to_ten": "W1-22's own path_to_ten applies.",
+   "ten_by_wave": 3
+  },
+  {
+   "id": "RI-WLD09",
+   "path": "corpus/50-world/RI-WLD09-the-opacity-budget.md",
+   "side": "morrowind",
+   "kind": "structure",
+   "native_scale": "0-10 band",
+   "native_score": 6,
+   "native_max": 10,
+   "native_verdict": "Inherited intact. The opacity register exists, is consumed, and W1-02 neither improved nor damaged it.",
+   "score_0_10": 6,
+   "measured": "partial",
+   "evidence": [
+    "game/data/world/opacity.json",
+    "tools/world/opacity-consumption.mjs",
+    "tools/world/opacity-resolve.mjs"
+   ],
+   "checks": [
+    {
+     "id": "register-exists-and-is-consumed",
+     "result": "pass",
+     "observed": "24 sealed mysteries in opacity.json, consumed by world/opacity.js's OpacityRegister, with a consumption instrument already in tools/. Pre-existing; W1-02 correctly identified it as already built and did not rebuild it."
+    }
+   ],
+   "hard_fails": [],
+   "why_not_ten": "Not this piece's work and not advanced by this piece.",
+   "path_to_ten": "Owned elsewhere.",
+   "ten_by_wave": 3
+  },
+  {
+   "id": "RI-TRV01",
+   "path": "corpus/50-world/RI-TRV01-transport-network.md",
+   "side": "morrowind",
+   "kind": "number",
+   "native_scale": "0-10 band",
+   "native_score": 3,
+   "native_max": 10,
+   "native_verdict": "Its world.time.daynight slice is unbuilt: the item's N-fail condition \u2014 every mode available at any hour, in any weather \u2014 is the shipped state.",
+   "score_0_10": 3,
+   "measured": "partial",
+   "evidence": [
+    "reports/critic-w1-02/consumption-census.txt",
+    "reports/critic-w1-02/consumption-census.txt"
+   ],
+   "checks": [
+    {
+     "id": "M3-rootway-closes-at-night",
+     "result": "fail",
+     "observed": "RI-TRV01 M3 requires 'night: the roots close 20:00-05:00' and N-fails on 'any gate has no effect \u2014 every mode available always, at any hour, in any weather'. That sentence exists as PROSE in game/data/world/travel/services.json:36 and is parsed by nothing; no travel code reads a clock. A seam between W1-02 (owns world.time.daynight) and W1-05 (owns the transport) that neither has claimed."
+    }
+   ],
+   "hard_fails": [],
+   "why_not_ten": "The clock exists and the one consumer this item names does not use it.",
+   "path_to_ten": "Gate the Rootway on env.timeOfDay and the barge on env.weather, and demonstrate both by perturbation.",
+   "ten_by_wave": 2
+  },
+  {
+   "id": "RI-WLD05",
+   "path": "corpus/50-world/RI-WLD05-strangeness-bar.md",
+   "side": "morrowind",
+   "kind": "structure",
+   "native_scale": "0-10 band",
+   "native_score": 5,
+   "native_max": 10,
+   "native_verdict": "Binds only by legacy path alias. Existence of the strange is met through signatures.json; density is explicitly wave 3.",
+   "score_0_10": 5,
+   "measured": "partial",
+   "evidence": [
+    "game/data/world/signatures.json",
+    "game/data/world/borders.json"
+   ],
+   "checks": [
+    {
+     "id": "existence-of-the-strange",
+     "result": "pass",
+     "observed": "13 ONLY-HERE kinds with real geometry, plus 12 border-marker silhouettes across 8 peoples' threshold vocabularies \u2014 RI-WLD12 \u00a71's 'eight different peoples' markers is RI-WLD05-grade strangeness for almost no cost' is delivered. Density is wave 3 by the plan's own text."
+    },
+    {
+     "id": "marker-contrast-against-ground",
+     "result": "fail",
+     "observed": "Measured by me on RI-WLD04 M18's own dE>12 yardstick against ground.albedo: imperial_border_cairn #BFB9A6 on valus-ridge #C6BCA2 is dE 4.2, and corpse_in_a_cage #2E2A24 on blackwood #14231A is dE 10.8. Two of eight threshold types are below the project's own 'different colour' threshold against the ground they stand on. The builder's distinctness proof was explicitly 'colour-free, size-free' and so could not see this."
+    }
+   ],
+   "hard_fails": [],
+   "why_not_ten": "Density is deferred by design; the contrast defect is real and cheap to fix.",
+   "path_to_ten": "Raise the two low-contrast marker types and re-run the distinctness proof with size and colour in it.",
+   "ten_by_wave": 3
+  },
+  {
+   "id": "RI-PRG04",
+   "path": "corpus/20-progression/RI-PRG04-hearth-and-death.md",
+   "side": "souls",
+   "kind": "number",
+   "native_scale": "0-10 band",
+   "native_score": 7,
+   "native_max": 10,
+   "native_verdict": "Binds only by legacy alias (world.time, not world.time.daynight). Its night window is genuinely driven by the new clock.",
+   "score_0_10": 7,
+   "measured": "partial",
+   "evidence": [
+    "reports/critic-w1-02/consumption-census.txt"
+   ],
+   "checks": [
+    {
+     "id": "night-window-consumes-the-clock",
+     "result": "pass",
+     "observed": "sim/souls.js awards differently between 21:00 and 05:00 off env.timeOfDay, which the fixed step now advances. The builder's own C2 check caught and fixed a vacuous version of this test that called awardFor on a statblock with no .souls field and passed against a placeholder."
+    }
+   ],
+   "hard_fails": [],
+   "why_not_ten": "Only the day/night slice of this item is W1-02's and only that slice was examined.",
+   "path_to_ten": "Owned by W1-13/W1-SOULS.",
+   "ten_by_wave": 2,
+   "justification": "Scored 7 on the single slice of this item that is W1-02's: sim/souls.js reads env.timeOfDay for RI-PRG06 \u00a74's 21:00-05:00 night multiplier, and the fixed step now advances that clock, which it did not before this piece. Proved in reports/critic-w1-02/consumption-census.txt (the souls.js clock reads) and in the builder's own C2 check, which fires the night multiplier at 22:00 and does not fire it on an in-band frozen-clock control. The builder also caught and rewrote a vacuous earlier version of that check that passed against a placeholder statblock with no .souls field. Only this slice is scored; the rest of RI-PRG04 is W1-13/W1-SOULS's."
+  }
+ ],
+ "artifacts": [
+  {
+   "path": "reports/critic-w1-02/PREREGISTRATION.md",
+   "kind": "report",
+   "produced_by": "critic",
+   "source": "written and hashed (832e72dbcb01d64abbc7ef2f9b868553b50a87be110deb57cfc5ae494f24d1fc) before any blind frame was opened"
+  },
+  {
+   "path": "reports/wld12-blind/ANSWERS.json",
+   "kind": "blind-pack",
+   "produced_by": "critic",
+   "source": "24 blind answers, hashed be6fe0e26089401712a00ef8e841711be548bc9cf04e2e13872868e390d26d8f at 21:05:28Z, before any key existed or was derived"
+  },
+  {
+   "path": "reports/critic-w1-02/DERIVED-KEY.json",
+   "kind": "report",
+   "produced_by": "critic",
+   "source": "the pack key re-derived from the shot list AFTER the answers were hashed; the builder's KEY.json was never written because its process died mid-capture"
+  },
+  {
+   "path": "reports/critic-w1-02/c-m65b.json",
+   "kind": "report",
+   "produced_by": "critic",
+   "source": "RI-WLD12 M65 rescored over the shipped BorderField.traverse by an independent scorer"
+  },
+  {
+   "path": "reports/critic-w1-02/c-m65-sabotage.json",
+   "kind": "negative-evidence",
+   "produced_by": "critic",
+   "source": "the same instrument with every axis offset collapsed to 0 \u2014 24/24 texture swaps, proving it can fail"
+  },
+  {
+   "path": "reports/critic-w1-02/m68-diagnostics.txt",
+   "kind": "report",
+   "produced_by": "critic",
+   "source": "two-rate stratified by occlusion and by border kind, after the reveal"
+  },
+  {
+   "path": "reports/critic-w1-02/marker-contrast.txt",
+   "kind": "report",
+   "produced_by": "critic",
+   "source": "CIE76 dE of every threshold-object colour against the ground albedo it stands on"
+  },
+  {
+   "path": "docs/shots/2026-08-07-w1-02-critic-m68-blind-contact-sheet.png",
+   "kind": "screenshot",
+   "produced_by": "critic",
+   "source": "all 24 blind frames, composited from the builder's captures; green stripe = I answered 'two', amber = 'one', red = unusable; red corner = occluded lens",
+   "camera_pose": "composite \u2014 24 separate poses, each eye 1.7 m, pitch -2 deg, FOV 70, at the crossover point of a border, yaw across or along it; the per-frame poses are in reports/critic-w1-02/DERIVED-KEY.json",
+   "resolution": "1962x790 (24 source frames at 1280x720, downscaled 4x)"
+  },
+  {
+   "path": "docs/shots/2026-08-07-w1-02-critic-border-reads-vs-border-invisible.png",
+   "kind": "screenshot",
+   "produced_by": "critic",
+   "source": "f14 (hive--western-rootlands, reads as two places at a glance) beside f16 (marauders-coast--stone-wastes, a MARKED border at an announced 3-tier jump, clean unobstructed frame, reads as one)",
+   "camera_pose": "left: hive--western-rootlands crossover, eye 1.7 m, pitch -2 deg, FOV 70, facing across. right: marauders-coast--stone-wastes crossover, same rig, facing across",
+   "resolution": "1298x372 (two source frames at 1280x720, downscaled 2x)"
+  },
+  {
+   "path": "corpus/90-verdicts/wave1/W1-22-B2-blind.md",
+   "kind": "report",
+   "produced_by": "builder",
+   "source": "cited as evidence; present on disk at the judged commit"
+  },
+  {
+   "path": "game/data/world/borders.json",
+   "kind": "report",
+   "produced_by": "builder",
+   "source": "cited as evidence; present on disk at the judged commit"
+  },
+  {
+   "path": "game/data/world/opacity.json",
+   "kind": "report",
+   "produced_by": "builder",
+   "source": "cited as evidence; present on disk at the judged commit"
+  },
+  {
+   "path": "game/data/world/signatures.json",
+   "kind": "report",
+   "produced_by": "builder",
+   "source": "cited as evidence; present on disk at the judged commit"
+  },
+  {
+   "path": "game/data/world/weather.json",
+   "kind": "report",
+   "produced_by": "builder",
+   "source": "cited as evidence; present on disk at the judged commit"
+  },
+  {
+   "path": "game/src/sim/environment.js",
+   "kind": "report",
+   "produced_by": "builder",
+   "source": "cited as evidence; present on disk at the judged commit"
+  },
+  {
+   "path": "reports/critic-w1-02/consumption-census.txt",
+   "kind": "report",
+   "produced_by": "critic",
+   "source": "cited as evidence; present on disk at the judged commit"
+  },
+  {
+   "path": "reports/region-axes.json",
+   "kind": "report",
+   "produced_by": "builder",
+   "source": "cited as evidence; present on disk at the judged commit"
+  },
+  {
+   "path": "reports/threshold-consumption.json",
+   "kind": "report",
+   "produced_by": "builder",
+   "source": "cited as evidence; present on disk at the judged commit"
+  },
+  {
+   "path": "reports/threshold-live.json",
+   "kind": "report",
+   "produced_by": "builder",
+   "source": "cited as evidence; present on disk at the judged commit"
+  },
+  {
+   "path": "reports/tier-announcement.json",
+   "kind": "report",
+   "produced_by": "builder",
+   "source": "cited as evidence; present on disk at the judged commit"
+  },
+  {
+   "path": "reports/w1-02-live.json",
+   "kind": "report",
+   "produced_by": "builder",
+   "source": "cited as evidence; present on disk at the judged commit"
+  },
+  {
+   "path": "tools/world/opacity-consumption.mjs",
+   "kind": "report",
+   "produced_by": "builder",
+   "source": "cited as evidence; present on disk at the judged commit"
+  },
+  {
+   "path": "tools/world/opacity-resolve.mjs",
+   "kind": "report",
+   "produced_by": "builder",
+   "source": "cited as evidence; present on disk at the judged commit"
+  },
+  {
+   "path": "tools/world/wld12-blind-pack.mjs",
+   "kind": "report",
+   "produced_by": "builder",
+   "source": "cited as evidence; present on disk at the judged commit"
+  }
+ ],
+ "blind_comparisons": [
+  {
+   "ref_item": "RI-WLD12",
+   "status": "done",
+   "question": "For each unlabeled frame: is this one place, or two? If two, what told you?",
+   "pack_artifacts": [
+    "reports/wld12-blind/ANSWERS.json",
+    "reports/critic-w1-02/DERIVED-KEY.json",
+    "docs/shots/2026-08-07-w1-02-critic-m68-blind-contact-sheet.png"
+   ],
+   "assignment_seed": 45341,
+   "blind_pick": "none",
+   "blind_rationale": "blind_pick is 'none' because RI-WLD12 M68 is not an A/B design \u2014 there is no 'ours vs reference' side to pick, only a distribution of per-frame answers against the item's own bars. The result: 10 'two', 9 'one', 5 unusable over 24 frames = 52.6% 'two' on usable frames against an 80% bar, with the >=25%-'one' fail clause firing at 47.4%; cues were 6 object, 2 landform, 2 flora and ZERO colour or fog. Procedure pre-registered and hashed before any frame was opened. Verdict per frame required a spatially localised discontinuity \u2014 two different ground materials meeting, two plant populations, a built object on a line, a landform edge. Free-text cue written first, classified afterwards from the noun written first, with flora resolved strictly AGAINST us because M68's pass clause names only an object or a landform. 5 frames declared unusable rather than guessed. Answers hashed before the key was derived; the builder's KEY.json never existed because its process died at 24 of 48 frames.",
+   "reveal": {
+    "method": "key re-derived from the shot list (a pure function of shipped borders.json + terrain.json and the constant seed 0xb11d) AFTER answers were hashed",
+    "two_rate_unoccluded_frames": 0.75,
+    "two_rate_occluded_frames": 0.364,
+    "two_rate_MARKED_borders": 0.5,
+    "two_rate_HARD_borders": 0.545,
+    "clean_frames_that_still_read_as_one": [
+     "f16 marauders-coast--stone-wastes (MARKED, dtier 3, announced) \u2014 a salt_glass_marker 9.4 m from the lens, 1.14 m tall, near-white and glossy on a sunlit near-white plain",
+     "f03 crimson-coast--stone-forest (MARKED) \u2014 nearest declared object 82.7 m from the crossover point the tool chose"
+    ]
+   },
+   "picked": {
+    "outcome": "fails-the-bar",
+    "note": "There is no 'ours vs reference' side in this design, so RI-MTH03 \u00a7E's picked-ours second-pass row is n/a."
+   },
+   "rerun_triggered": false,
+   "rerun": {},
+   "not_possible_reason": "",
+   "blind_pick_detail": {
+    "two": 10,
+    "one": 9,
+    "unusable": 5,
+    "two_rate_over_usable": 0.5263,
+    "cue_object": 6,
+    "cue_landform": 2,
+    "cue_flora": 2,
+    "cue_colour_or_fog": 0
+   }
+  }
+ ],
+ "arbitration": {
+  "ar1": {
+   "status": "not_applicable",
+   "checks": [],
+   "note": "S9's no-level-scaling rule reaches this piece through RI-WLD12 T3, which is UNMEASURED \u2014 nothing here measures whether a level check, soft wall or scaled enemy stands at a crossing. Recorded as a hole in an automatic-fail check rather than as a pass.",
+   "not_applicable_reason": "S9's no-level-scaling rule reaches this piece only through RI-WLD12 T3, and T3 is UNMEASURED \u2014 no tool in the repo checks whether a level check, soft wall or scaled enemy stands at a crossing. I am recording that as a hole in an automatic-fail check rather than claiming an AR-1 pass I did not measure. AR-1 is not_applicable to what I measured, not satisfied by it."
+  },
+  "ar2": {
+   "status": "pass",
+   "checks": [],
+   "note": "Seam S35 makes region identity MORE load-bearing, not less: the map shows only travelled terrain, so it cannot tell a player where they are going. The piece is aligned with that \u2014 it invests in borders and threshold objects rather than in markers, and M68's cue result (zero frames decided by colour, six by a built object) is the AR-2-positive finding: where the world announces a boundary it does so with a thing, not a HUD element."
+  },
+  "ar3": {
+   "status": "pass",
+   "seam_sterile": false,
+   "crossings_demonstrated": [
+    "world.time.daynight -> stealth detection (stealth/system.js reads env.timeOfDay and env.weatherLight)",
+    "world.time.daynight -> souls award (souls.js night multiplier)",
+    "world.time.daynight -> NPC schedule slot (npc.js:147) and settlement door hours (settlement.js:243)",
+    "world.weather.systems -> render fog extinction (sky.js:245 reads env.sightlineM)",
+    "world.weather.systems -> hazard gate (hazards.js:55, ash-lung on ashfall/dust_devil)",
+    "world.region.transition -> traversal collision (sim/traversal.js step 4b makes border markers solid)"
+   ],
+   "note": "The seam is not sterile. The clock crosses into five subsystems and the border markers cross into the collision frame."
+  },
+  "consumption": {
+   "status": "partial",
+   "models": [
+    {
+     "model": "world clock (env.timeOfDay)",
+     "consumer": "souls.js, npc.js, settlement.js, stealth/system.js, hazards.js",
+     "demonstrated": true,
+     "note": "Builder demonstrated 9/9 with an in-band frozen-clock negative control and a sabotage run that takes it to 5/9. I re-confirmed the step advances the clock over 300k frames."
+    },
+    {
+     "model": "weather light class + sightline (env.weatherLight, env.sightlineM)",
+     "consumer": "stealth/system.js:890, render/sky.js:245",
+     "demonstrated": true,
+     "note": "Real, and the builder found and fixed a genuine cross-system defect here."
+    },
+    {
+     "model": "weather EFFECT table (env.weatherEffect, 12 keys over 41 states)",
+     "consumer": "NONE",
+     "demonstrated": false,
+     "note": "Written at environment.js:217, read at :273 by the harness reporter, and nowhere else in game/src. This is the ARBITRATION \u00a73 / RI-MTH07 failure in this piece."
+    },
+    {
+     "model": "announcement.first_hostile_min_m",
+     "consumer": "NONE",
+     "demonstrated": false,
+     "note": "Declared 40 m on all 7 announced jumps; the only reader is the line in build-borders.mjs that writes it. Measured and DECLARED by the builder rather than concealed."
+    },
+    {
+     "model": "border threshold markers",
+     "consumer": "world/province.js instancing + sim/traversal.js collision",
+     "demonstrated": true,
+     "note": "Round 2 fixed a real consumption failure here \u2014 217 rows of coordinates that nothing drew \u2014 and the builder then found, by reading the release path rather than by probing, that the shared-geometry flag was missing and all 217 markers' buffers would have been freed the first time a border tile left the resident ring."
+    }
+   ],
+   "note": "CONSUMPTION was taken seriously and demonstrated for most of what shipped. It was not demonstrated for the weather effect table, which is the piece's headline new model."
+  }
+ },
+ "score": {
+  "overall_0_10": 5,
+  "pass_threshold": 7,
+  "aggregation": "weighted-mean",
+  "band_label": "Recognisably attempting the thing, and succeeding on two of six paths \u2014 the province has real, measured, staggered borders and a real clock, and its own primary perceptual test fails because the camera photographs rocks",
+  "confidence": "high"
+ },
+ "status": "FAIL",
+ "status_reasons": [
+  "RI-WLD12 M68, the item's primary perceptual test and its second-heaviest check, FAILS as run: 52.6% of usable frames read as 'two' against an 80% bar, and the >=25%-answer-'one' fail clause fires at 47.4%.",
+  "world.strangeness.architecture, one of six declared paths, is unmeasured: its sole judge RI-WLD14 has no instrument anywhere in tools/ and the architecture.json its M78 loads does not exist.",
+  "env.weatherEffect is write-only. 11 of 12 declared mechanical-effect keys across 41 weather states have no reader in game/src, so RI-WLD11's slice \u2014 what weather does to you \u2014 is one hazard gate in one region.",
+  "20 of RI-WLD12's 100 points (M67 continuity, M69 in-zone identification) have no instrument at all, and M66's T3 \u2014 an AUTOMATIC FAIL check \u2014 is unmeasured.",
+  "Against those: RI-WLD12 M65, the weight-30 core check, is genuinely solid and I replicated it independently with a working sabotage control; the clock is correct to RI-WLD08 \u00a71's exact numbers and is consumed by five systems; M19's ONLY-HERE audit passes cleanly."
+ ],
+ "biggest_gap": {
+  "gap_id": "GAP-W1-02-m68-unanswerable",
+  "subsystem_path": "world.region.transition",
+  "severity": "blocking",
+  "what": "The RI-WLD12 M68 blind pack cannot answer the question it exists to ask, because the camera is standing inside the scenery. Of 24 frames shipped, 16 have a foreground boulder within a few metres of the lens and 5 are unreadable; I answered 'two places' on 52.6% of usable frames against an 80% bar, and the >=25%-'one' fail clause fired at 47.4%. Stratified by whether the lens was blocked, the two-rate is 75.0% on the 8 unoccluded frames and 36.4% on the 11 usable occluded ones. The pose is computed in node at the crossover coordinate with no occlusion test, and the province scatters its props in the renderer from noise, so nothing on the node side knows what is in front of the lens. The pack is also half-built \u2014 the builder's process died at 24 of 48 frames, so KEY.json and QUESTION.md were never written \u2014 and the frames are 1280x720 where M68 specifies 1920x1080.",
+  "why_it_matters": "This is the check that decides whether the piece's headline bar is met at all, and seam S35 raised its stakes: the map now shows only terrain already travelled, so it cannot tell a player where they are going, and region identity has to carry that load alone. The measurement currently cannot be cited in either direction \u2014 it is not evidence that the borders fail, and it is not evidence that they work. Worse, the builder itself wrote the warning that predicts this exactly in its round-2 handover \u2014 'at a border the flora is dense BY CONSTRUCTION, and nothing on the node side knows what is between the lens and the subject, since the scatter happens in the renderer from noise' \u2014 after losing two frames to it, and then built the pack tool without carrying that lesson into it. The same lesson was lost twice inside one piece. The positive half of the result should not be lost either: where a border IS visible, zero frames were decided by fog or colour and six of ten by a built object, so RI-WLD12's 'fog border' failure mode and S24's 'a region only distinguishable by fog colour is a defect' do not occur anywhere in this pack.",
+  "owner_piece": "W1-02",
+  "evidence": [
+   "reports/wld12-blind/ANSWERS.json",
+   "reports/critic-w1-02/PREREGISTRATION.md",
+   "reports/critic-w1-02/m68-diagnostics.txt",
+   "reports/critic-w1-02/DERIVED-KEY.json",
+   "docs/shots/2026-08-07-w1-02-critic-m68-blind-contact-sheet.png"
+  ],
+  "remedy": {
+   "action": "Add an occlusion test to tools/world/wld12-blind-pack.mjs: before accepting a pose, cast from the eye toward the intended subject and reject or re-place any pose with geometry inside the first 4 m, reusing the --candidates=N sweep threshold-shots.mjs already has. Shoot at 1920x1080 as M68 specifies, complete all 48 frames, write KEY.json into a sibling wld12-blind.reveal/ directory rather than inside the pack, and remove the scoring rule from QUESTION.md so the judge is not told which cue loses.",
+   "acceptance": "48 frames at 1920x1080, no more than 4 of them with geometry inside 4 m of the lens; KEY.json outside the pack directory; QUESTION.md silent on scoring; and a fresh judge who did not build the pack answers >=80% 'two' with >=70% naming an object or a landform. Re-running the same judgement on the CURRENT 24 frames must still reproduce 52.6%, so the change is demonstrably the camera and not the scoring.",
+   "targets": [
+    "tools/world/wld12-blind-pack.mjs (pose acceptance, output resolution, key location, prompt text)",
+    "game/src/world/threshold.js (imperial_border_cairn and corpse_in_a_cage colours; salt_glass_marker height)",
+    "game/data/world/borders.json (threshold_vocabulary heights)"
+   ]
+  }
+ },
+ "secondary_observations": [
+  "RULE 15 BREACH, SHIPPED AND REPAIRED BY SOMEBODY ELSE. sim/environment.js emits day_phase and weather_change; neither name was in game/src/sim/events.js's closed vocabulary, and Environment.step() runs first in stepOnce(), so every stepping probe in the project threw on the frame the clock rolled while boot-check stayed green. Repaired at commit dcf1d36 by W1-SOULS. W1-02's status file records none of it across 50 findings. My probe confirms the fix (300k frames clean) and goes red when the two entries are deleted.",
+  "All 10 MARKED borders are 123-172 m wide against RI-WLD12 \u00a71's 60-120 m band for MARKED. The builder's status file reports them as 'graded widths 123-172 m (bar 120-180)' \u2014 the number was checked against the GRADED row of the item's own table. There are ZERO GRADED borders in the province, so B3 is vacuous and the three-kind taxonomy ships as two.",
+  "Two of eight threshold-object types are the colour of the ground they stand on, measured against ground.albedo on RI-WLD04 M18's own dE>12 yardstick: imperial_border_cairn dE 4.2 on Valus Ridge, corpse_in_a_cage dE 10.8 on Blackwood. The builder's distinctness proof was explicitly 'colour-free, size-free' and structurally could not catch this. salt_glass_marker is also the shortest of the twelve types at a median 1.11 m against root_gate's 4.27 m.",
+  "RI-WLD04 M18's weather axis is still listed in reports/region-axes.json dropped_axes with the reason 'weather is a per-frame capture parameter, not a property of the built world'. W1-02 falsified that by shipping 13 per-region state machines and did not re-arm the instrument.",
+  "RI-TRV01's day/night gate is prose: 'night: the roots close 20:00-05:00' sits in game/data/world/travel/services.json:36 and no travel code reads a clock. The item N-fails on 'every mode available always, at any hour, in any weather'. A seam between W1-02 and W1-05 that neither has claimed.",
+  "CORPUS HOLE: three of the ten items docs/PLAN.md \u00a73 names as W1-02's judges bind only by legacy path alias \u2014 RI-WLD04 judges world.regions/world.weather, RI-WLD05 judges world.strangeness/world.architecture, RI-PRG04 judges world.time. Assembled by me from every judges: line in corpus/*/RI-*.md. RI-WLD04 is the item that owns the phrase 'thirteen regions distinguishable without the map' and by front-matter it does not judge this piece. CORPUS-CONTRACT \u00a74 rule 2 amendment recommended.",
+  "The builder's status file twice describes its own blind pack as asking 'whether a stranger can NAME the object at a border'. That is a provenance-shaped question where the item specifies a perceptual one \u2014 the exact error that voided a third comparison in this project. The TOOL does not make that mistake: QUESTION.md asks M68 verbatim. The prose is wrong and the artifact is right, and this is recorded in the builder's favour.",
+  "CREDIT WHERE DUE. This piece found three consumption failures by measurement and fixed them; found a real cross-system defect nobody had noticed (stealth classifying only 3 of 20 weather ids, lighting salt-storms as midday sun while the renderer drew a black sky); found a live bug by READING the release path that no probe would have caught, then wrote the probe that catches it; self-caught three probe defects including one where a check took its scope from the table it was testing and passed 8/8 against a build where nothing was solid; and declared M66 T3 failing rather than editing another piece's data mid-session."
+ ],
+ "gap_closure": [
+  {
+   "gap_id": "GAP-W1-region-axes-read-from-json",
+   "status": "closed",
+   "note": "The prior round's finding that 8 of 9 RI-WLD04 axes were string comparisons against regions.json is closed: region-axes.mjs was rewritten to measure the built world, drops unmeasurable axes explicitly rather than scoring them 78/78, and now reports min_axes_differing 10 against a bar of 9. Not W1-02's work, but verified standing at this commit.",
+   "evidence": [
+    "reports/region-axes.json"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-blind-pack-unshuffled",
+   "status": "closed",
+   "note": "The prior round's pack shipped in declaration order and 39 of 39 answers came off the file index. This pack is a genuine deterministic Fisher-Yates shuffle on seed 0xb11d with opaque filenames; I verified the shuffle in the source and found no ordering signal. The builder also did not judge its own pack.",
+   "evidence": [
+    "tools/world/wld12-blind-pack.mjs",
+    "reports/critic-w1-02/DERIVED-KEY.json"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-02-texture-swap-all-nine-axes",
+   "status": "closed",
+   "note": "field.regionAt was a bare raster read, so all nine RI-WLD04 axes crossed at exactly one coordinate and stddev(c) was 0 by construction on all 24 borders \u2014 RI-WLD12's named automatic fail. Now 16.49-62.03 m with zero automatic fails, independently replicated by me, with a sabotage control that reproduces the old state exactly.",
+   "evidence": [
+    "reports/critic-w1-02/c-m65b.json",
+    "reports/critic-w1-02/c-m65-sabotage.json"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-02-thresholds-not-drawn",
+   "status": "closed",
+   "note": "217 threshold markers were coordinates that nothing drew or collided with. Now 12 instanced silhouettes, solid at the collision frame, with a browser probe at 6/6 including a 2.4 km round trip that catches the shared-geometry release bug.",
+   "evidence": [
+    "reports/threshold-consumption.json",
+    "reports/threshold-live.json"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-02-clock-never-advances",
+   "status": "closed",
+   "note": "sim.env.timeOfDay was initialised to 12.0 and advanced only by harness verbs. The fixed step now advances it and five systems change behaviour.",
+   "evidence": [
+    "reports/critic-w1-02/consumption-census.txt",
+    "reports/w1-02-live.json"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-02-first-hostile-min-m",
+   "status": "open",
+   "note": "5 of 7 announced tier jumps violated, worst 0.69 m against a declared 40 m. Measured, named and handed over by the builder; the fix belongs to whoever owns population-posts.json.",
+   "evidence": [
+    "reports/tier-announcement.json"
+   ]
+  },
+  {
+   "gap_id": "GAP-W1-02-height-fog-unread",
+   "status": "open",
+   "note": "fog.height_falloff_m is declared 45-340 m per region and read by nobody; render/sky.js uses FogExp2, which has no height term. W1-01-r4 measured the vertical luminance profile as the only half of the colour-stripped descriptor carrying signal, so this remains the highest-value unbuilt region-identity lever. Carried forward from round 1 untouched.",
+   "evidence": [
+    "reports/region-axes.json"
+   ]
+  }
+ ],
+ "corpus_extended": [
+  {
+   "what": "A corpus routing hole, found by assembling W1-02's judge list from every judges: line in corpus/*/RI-*.md rather than from docs/PLAN.md \u00a73.",
+   "where": "corpus/50-world/RI-WLD04-region-identity.md, RI-WLD05-strangeness-bar.md, corpus/20-progression/RI-PRG04-hearth-and-death.md (front-matter judges:)",
+   "detail": "PLAN \u00a73 names ten items as W1-02's judges. Only seven bind to a path W1-02 declares. RI-WLD04 judges world.regions/world.weather, RI-WLD05 judges world.strangeness/world.architecture, RI-PRG04 judges world.time \u2014 all legacy aliases, none of them W1-02's current taxonomy paths. This is worse than a hole in the RI-MTH05 \u00a7C sense the corpus already records: RI-WLD04 is the item that OWNS the phrase 'thirteen regions distinguishable without the map' that this piece's whole bar is written around, and by front-matter it does not judge this piece at all.",
+   "proposed": "Amend the three items' judges: onto the current taxonomy (world.region.identity, world.weather.systems, world.strangeness.budget, world.strangeness.architecture, world.time.daynight), or regenerate PLAN \u00a73's judge lists from front-matter so the two cannot disagree silently. CORPUS-CONTRACT \u00a74 rule 2.",
+   "status": "reported, not applied \u2014 amending three reference items mid-wave is not a critic's call"
+  },
+  {
+   "what": "An internal contradiction in RI-WLD12 \u00a71's border taxonomy as built.",
+   "where": "corpus/50-world/RI-WLD12-region-borders.md \u00a71 and \u00a7Comparison method B3",
+   "detail": "\u00a71's table gives MARKED a 60-120 m transition width; the province ships all 10 MARKED borders at 123-172 m and zero GRADED borders. B3 bars only the GRADED width, so with no GRADED borders in existence B3 is vacuous and the MARKED width has no bar enforcing it. A builder can therefore satisfy every numbered bar while every border in the province is outside the table it was built from \u2014 which is what happened, and the builder's own status file scored the widths against the GRADED row.",
+   "proposed": "Either give B3 a MARKED clause, or state in \u00a71 that MARKED inherits GRADED's width band when it carries an object.",
+   "status": "reported; feeds arbitration_questions"
+  }
+ ],
+ "method_deviations": [
+  {
+   "method": "RULES.md rule 21 (browser contention)",
+   "deviation": "I launched no browser at all. Every number in this verdict is from a node process reading files on disk, and the two images are composited from frames the builder's capture daemon had already produced.",
+   "why": "pgrep -c headless_shell read 24-36 and loadavg 14.8-22.8 for the whole run, three to four times the protocol's ~8 cap. No timing figure is reported anywhere in this verdict, so contention affects nothing in it."
+  },
+  {
+   "method": "RI-WLD12 M68 (blind pack completeness)",
+   "deviation": "Judged 24 of 48 frames. The builder's capture process died mid-run, so KEY.json and QUESTION.md were never written and half the shot list was never captured. I judged what shipped and state the real denominator in every figure.",
+   "why": "Re-running the capture would have meant judging a pack I had just built, which rule 25 forbids, and the load above made a 48-frame browser sweep unreliable anyway."
+  },
+  {
+   "method": "RI-MTH03 M3 (reveal)",
+   "deviation": "The reveal key did not exist, so I re-derived it from the shot list \u2014 a pure function of shipped borders.json and terrain.json and the constant seed 0xb11d \u2014 after hashing my answers. This is itself a leak I am reporting: any judge performing the mandatory M6 leak audit can reconstruct the key from the builder's source.",
+   "why": "Without a key the result is scoreable against M68's bars (which are distributional, not per-frame ground truth) but not diagnosable. The derivation is what produced the occlusion and border-kind stratification, which is the useful half of the finding."
+  },
+  {
+   "method": "Independent M65 replication",
+   "deviation": "My first instrument walked a straight perpendicular and produced two spurious automatic fails. I discarded it rather than reporting them: the builder had already documented that a straight perpendicular bends on a curving frontier. I also checked 12 apparent canonical-order violations and found all 12 to be hazard/tier transpositions the builder's declared tie accommodates. Both are recorded so the retraction is auditable.",
+   "why": "A critic finding is only worth reporting if the instrument that found it is the right one. Rules 4 and 8."
+  },
+  {
+   "method": "RI-WLD04 M17/M18/M20/M21, RI-WLD08 M40/M41/M42/M44/M45/M46, RI-WLD14 M78-M84",
+   "deviation": "Not exercised. M17 and M20 need a fresh judge and a browser; M40-M46 are largely other pieces' paths; M78-M84 have no instrument and no input data, which is itself the finding.",
+   "why": "Load, and scope. None is load-bearing for the FAIL, which rests on measurements taken."
+  }
+ ],
+ "arbitration_questions": [
+  "docs/PLAN.md \u00a73 names RI-WLD04, RI-WLD05 and RI-PRG04 among W1-02's ten judges, but their front-matter judges: lines name only legacy path aliases and bind to none of W1-02's six declared paths. Should the items' front-matter be amended onto the current taxonomy, or should PLAN \u00a73's judge lists be regenerated from front-matter? RI-WLD04 owns the phrase this piece's brief is written around.",
+  "RI-WLD12 \u00a71 gives MARKED a 60-120 m transition width and the province ships all 10 MARKED borders at 123-172 m with zero GRADED borders. Is the correct repair to narrow the borders, to reclassify them as GRADED-with-an-object, or to amend \u00a71's table?",
+  "world.strangeness.architecture has a sole judge with no instrument and no input data. Should it be deferred to wave 3 in PLAN \u00a73 and removed from W1-02's declared paths, or built now?"
+ ],
+ "source_reads": [
+  {
+   "path": "game/src/sim/environment.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/sim/events.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/world/borders.js",
+   "purpose": "locate-harness"
+  },
+  {
+   "path": "game/src/world/threshold.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/sim/player.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "game/src/sim/hazards.js",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "tools/world/wld12-blind-pack.mjs",
+   "purpose": "locate-harness"
+  },
+  {
+   "path": "tools/world/region-axes.mjs",
+   "purpose": "diagnose-after-demonstrating"
+  },
+  {
+   "path": "tools/world/tier-announcement.mjs",
+   "purpose": "diagnose-after-demonstrating"
+  }
+ ],
+ "self_audit": {
+  "judged_output_not_source": true,
+  "ran_every_assigned_method": false,
+  "blind_done_where_required": true,
+  "named_exactly_one_gap": true,
+  "remedy_is_buildable": true,
+  "no_banned_reasoning_used": true,
+  "escalation_ladder_used_if_gap_seemed_small": true,
+  "self_audit_note": "ran_every_assigned_method is false: RI-WLD04 M17/M20/M21, RI-WLD08 M40-M46 and RI-WLD14 M78-M84 were not exercised, each named in method_deviations; none is load-bearing for the FAIL. blind_done_where_required is true \u2014 RI-WLD12 is the only blind_pair item among the ten whose pack existed, I did not build it, I pre-registered and hashed my procedure before opening a frame, and I hashed my answers before deriving any key. Two claims were retracted before they were charged: my straight-line M65 traverse produced two spurious automatic fails and 12 apparent canonical-order violations, and both were withdrawn after I found the defect was in my instrument, not the world. I judged 24 of 48 frames because that is what shipped, and every figure states the real denominator rather than the intended one."
+ },
+ "notes": "Written under an actively rewritten tree with ~20 concurrent pieces. I did not commit. The W1-02 builder was mid round-3 throughout and its blind-pack process died at 20:59:22; nothing in this verdict assumes the piece is finished, and a successor should re-read orchestration/status/W1-02.json, which is unusually candid and is authoritative over this summary."
+}

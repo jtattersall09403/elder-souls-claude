@@ -26,13 +26,38 @@
     "measured_on": "the working tree; boot-check and the three content gates pass at HEAD",
     "tree_moved_mid_run": "yes — 8fa946c -> 28909e1 -> aaa2f1f under concurrent agents. No file this piece owns changed content across the moves; only the commit the numbers belong to (RULES 12).",
     "harness_commands": [
-      { "command": "node tools/check-data.mjs", "exit_code": 0 },
-      { "command": "node tools/check-quests.mjs", "exit_code": 0 },
-      { "command": "node tools/check-content.mjs", "exit_code": 0 },
-      { "command": "node tools/world/build-population.mjs --check", "exit_code": 0, "stdout_artifact": "the shipped posts table still regenerates from the shipped model" },
-      { "command": "node tools/world/critic-population-r1.mjs --arms C3,C4,C2,C1", "exit_code": 0, "stdout_artifact": "reports/world/population/critic-r1.json — C2 returned; C1 VOID (see §5.1); C3/C4 died on instrument bugs of mine" },
-      { "command": "node tools/world/critic-population-r1-diag.mjs", "exit_code": 0, "stdout_artifact": "reports/world/population/critic-r1-diag.json — six probes, proved the pump works and stopped a false headline" },
-      { "command": "node tools/world/critic-population-r1-shot.mjs", "exit_code": 0, "stdout_artifact": "docs/shots/2026-08-07-w1-population-r1-the-tier-is-a-label.png" }
+      {
+        "command": "node tools/check-data.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/check-quests.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/check-content.mjs",
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/world/build-population.mjs --check",
+        "exit_code": 0,
+        "stdout_artifact": "the shipped posts table still regenerates from the shipped model"
+      },
+      {
+        "command": "node tools/world/critic-population-r1.mjs --arms C3,C4,C2,C1",
+        "exit_code": 0,
+        "stdout_artifact": "reports/world/population/critic-r1.json — C2 returned; C1 VOID (see §5.1); C3/C4 died on instrument bugs of mine"
+      },
+      {
+        "command": "node tools/world/critic-population-r1-diag.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "reports/world/population/critic-r1-diag.json — six probes, proved the pump works and stopped a false headline"
+      },
+      {
+        "command": "node tools/world/critic-population-r1-shot.mjs",
+        "exit_code": 0,
+        "stdout_artifact": "docs/shots/2026-08-07-w1-population-r1-the-tier-is-a-label.png"
+      }
     ]
   },
   "environment_caveat": "Every figure in this verdict is a COUNT, a BOOLEAN or a FRAME count. The box carried 18-36 concurrent headless_shell processes at loadavg 12-22 on four cores throughout. No wall-clock timing is claimed anywhere (RULES 26).",
@@ -47,36 +72,61 @@
       "native_max": 44,
       "native_verdict": "loses outright, with two independent hard fails triggered",
       "score_0_10": 2,
-      "measured": "partial — M4, M3, M8 and the roster-size hard fail measured from the shipped placement; M1, M2, M5, M6, M7 not run",
+      "measured": "partial",
       "checks": [
         {
           "id": "M4-introduction-rule",
           "result": "HARD FAIL",
           "value": "2 of 5 archetypes debut in a group walking the game's own canonical route in EITHER direction. Forward (Stormhold->Lilmoth, RI-WLD01 §5): guard_legion debuts as a pair at stormhold-helstrom 1450 m; drowned_lesser debuts as a pair at helstrom-blackrose 875 m. Reverse (the direction the shipped default state forces — player start [2766.5,5011] is 16.5 m from the Lilmoth end): guard_legion debuts as a group of THREE (wl-legion-line) at helstrom-blackrose 295 m.",
           "threshold": "RI-AI05 §D and M4: any violation is a hard fail",
-          "note": "The generator's five `introduces` tags ARE all solo. They are sorted by (danger_tier, d_safety), which is not an order any player experiences. The builder recorded the walk-order problem and re-sorted the TAG rather than moving the POST."
+          "note": "The generator's five `introduces` tags ARE all solo. They are sorted by (danger_tier, d_safety), which is not an order any player experiences. The builder recorded the walk-order problem and re-sorted the TAG rather than moving the POST.",
+          "evidence": [
+            "reports/world/population/critic-r1b.json",
+            "game/data/world/population-posts.json",
+            "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+          ]
         },
         {
           "id": "roster-size-hard-fail",
           "result": "HARD FAIL",
           "value": "5 fightable statblocks before this piece, 5 after. Zero new archetypes.",
           "threshold": "RI-AI05 hard fail: 'fewer than 8 archetypes clearing M1's distinctness bar (the roster is not a roster)'",
-          "note": "Inherited rather than caused — the roster is W1-12's. Recorded here because this piece's own tier_multiplier note cites RI-AI05's lever-1/lever-2 thesis as the reason to flatten density, and lever 1 is unavailable on this roster."
+          "note": "Inherited rather than caused — the roster is W1-12's. Recorded here because this piece's own tier_multiplier note cites RI-AI05's lever-1/lever-2 thesis as the reason to flatten density, and lever 1 is unavailable on this roster.",
+          "evidence": [
+            "reports/world/population/critic-r1b.json",
+            "game/data/world/population-posts.json",
+            "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+          ]
         },
         {
           "id": "M3-region-mix",
           "result": "fail",
           "value": "RANGED, TURTLE, DUELIST, POISE_MONSTER, AMBUSHER and CASTER are 0% in every region against §D's required 10-12% (RANGED) and 4-18% (others). ELITE count is 0 against §D's 1-3 per region.",
           "threshold": "each archetype within ±6 pp of §D; ELITE counts exact",
-          "note": "Declared honestly by the builder in encounters.json `absent_roles_declared`."
+          "note": "Declared honestly by the builder in encounters.json `absent_roles_declared`.",
+          "evidence": [
+            "reports/world/population/critic-r1b.json",
+            "game/data/world/population-posts.json",
+            "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+          ]
         },
         {
           "id": "M8-gank-legality",
           "result": "fail",
           "value": "17 posts are tagged gank duos. wl-legion-and-levy is guard_legion + 2x inf_trash (same role); wl-drowned-host is drowned_greater + 2x drowned_lesser (same family); wl-sentry-and-pack is INFANTRY + SWARMx3, which is not among §C's legal pairings (POISE_MONSTER + SWARMx3 is).",
           "threshold": "§C: 'an authored pair whose roles differ'; FAIL on any illegal pairing",
-          "note": "Follows mechanically from the one-role roster; recorded rather than absorbed."
+          "note": "Follows mechanically from the one-role roster; recorded rather than absorbed.",
+          "evidence": [
+            "reports/world/population/critic-r1b.json",
+            "game/data/world/population-posts.json",
+            "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+          ]
         }
+      ],
+      "evidence": [
+        "reports/world/population/critic-r1b.json",
+        "game/data/world/population-posts.json",
+        "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
       ]
     },
     {
@@ -88,30 +138,50 @@
       "native_score": 0,
       "native_max": 10,
       "native_verdict": "band separation scores 0 ('adjacent tiers indistinguishable'), and min-over-axes carries it",
-      "score_0_10": 3,
-      "measured": "partial — §2 band conformance and method 6 band separation measured over the shipped placement; the region-clear and pace axes are not this piece's to satisfy (they span the ~849 interior bodies this piece explicitly does not place)",
+      "score_0_10": 2,
+      "measured": "partial",
       "checks": [
         {
           "id": "PRG06-M6-band-separation",
           "result": "fail",
           "value": "adjacent-tier shipped soul-value sets overlap 100% (t1/t2), 67% (t2/t3), 100% (t3/t4), 100% (t4/t5). Every tier draws from the same five-value set {24,34,64,83,157}.",
           "threshold": "adjacent trash soul bands must not overlap by more than 25% of the lower band's width",
-          "note": "§2's stated purpose — 'am I in the right region is answerable from a single kill' — is unreachable, not merely missed."
+          "note": "§2's stated purpose — 'am I in the right region is answerable from a single kill' — is unreachable, not merely missed.",
+          "evidence": [
+            "reports/world/population/critic-r1b.json",
+            "game/data/world/population-posts.json",
+            "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+          ]
         },
         {
           "id": "PRG06-S2-band-conformance",
           "result": "fail",
           "value": "252 of 267 bodies (94%) fall outside their tier's contract band. In-band by tier: t1 4/15, t2 0/79, t3 0/56, t4 0/50, t5 0/67. Realised souls-per-body multiple vs t1: 1.00 / 1.02 / 1.50 / 2.37 / 1.97 against the contract's 1.0 / 3.2 / 7.9 / 15.5 / 24.4 — and t5 is BELOW t4.",
           "threshold": "RI-PRG06 §2 trash soul band per region tier",
-          "note": "The five soul VALUES are W1-SOULS's. WHICH statblock stands in WHICH tier is this piece's composition tables, and pure composition choice on the shipped roster allows a 6.54x spread (t1 all drowned_lesser at 24, t5 all drowned_greater at 157). Shipped realises 2.37x and inverts at the top, because t5's tables lean on wl-drowned-host and wl-slitherfang-swarm — large groups of CHEAP bodies that dilute souls-per-body below t4's solo drowned_greater."
+          "note": "The five soul VALUES are W1-SOULS's. WHICH statblock stands in WHICH tier is this piece's composition tables, and pure composition choice on the shipped roster allows a 6.54x spread (t1 all drowned_lesser at 24, t5 all drowned_greater at 157). Shipped realises 2.37x and inverts at the top, because t5's tables lean on wl-drowned-host and wl-slitherfang-swarm — large groups of CHEAP bodies that dilute souls-per-body below t4's solo drowned_greater.",
+          "evidence": [
+            "reports/world/population/critic-r1b.json",
+            "game/data/world/population-posts.json",
+            "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+          ]
         },
         {
           "id": "PRG06-scale",
           "result": "context",
           "value": "16,335 souls in the whole exterior placement = level 16 on the shipped game/data/progression/levels.json curve, against §1's typical first clear at L82 which needs 759,447. The exterior slice is 2.15% of the soul budget.",
           "threshold": "not a threshold — stated so the interior slice's size is visible",
-          "note": "Checked rather than trusted: the report block's cached 16,335 matches recomputation from the statblocks at HEAD, so the mid-run souls re-anchor IS reflected."
+          "note": "Checked rather than trusted: the report block's cached 16,335 matches recomputation from the statblocks at HEAD, so the mid-run souls re-anchor IS reflected.",
+          "evidence": [
+            "reports/world/population/critic-r1b.json",
+            "game/data/world/population-posts.json",
+            "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+          ]
         }
+      ],
+      "evidence": [
+        "reports/world/population/critic-r1b.json",
+        "game/data/world/population-posts.json",
+        "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
       ]
     },
     {
@@ -123,69 +193,241 @@
       "native_score": 3,
       "native_max": 5,
       "score_0_10": 6,
-      "measured": "full for the runtime half, absent for the design half",
+      "measured": "partial",
       "checks": [
         {
           "id": "C-ablation",
           "result": "pass",
           "value": "1,199.4 m of the crossing walked with setPopulation({enabled:false}) -> 0 posts, 0 bodies. Reproduced independently of the builder's suite.",
           "threshold": "the control must go the other way",
-          "evidence": ["reports/world/population/critic-r1.json"]
+          "evidence": [
+            "reports/world/population/critic-r1.json"
+          ]
         },
         {
           "id": "C-still-control",
           "result": "pass",
           "value": "clearInputs() then 5,400 frames -> measured drift 0.00 m (ASSERTED, not assumed) and 0 posts materialised.",
           "threshold": "drift < 2 m or the control is a walk",
-          "note": "RULES 8. The builder's warning that walkRoute leaves the stick latched is real; this arm guarded rather than trusted."
+          "note": "RULES 8. The builder's warning that walkRoute leaves the stick latched is real; this arm guarded rather than trusted.",
+          "evidence": [
+            "reports/world/population/critic-r1b.json",
+            "game/data/world/population-posts.json",
+            "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+          ]
         },
         {
           "id": "C-pump-lives",
           "result": "pass",
           "value": "standing census at four coordinates: default start 1 post / 1 body; on pop-0001 2 posts / 2 bodies; tier-5 pop-0042 3 posts / 8 bodies (spawned 6); crossing route head 0 with candidates 0 (genuinely empty ground). cellFor=province and skipped_cell=0 throughout.",
           "threshold": "the world-side consumer must be observable as entities under a body that got there",
-          "evidence": ["reports/world/population/critic-r1-diag.json"]
+          "evidence": [
+            "reports/world/population/critic-r1-diag.json"
+          ]
         },
         {
           "id": "C-design-half-orphan",
           "result": "fail",
           "value": "tier_multiplier, the composition tables, the safety falloff and the introduction rule are consumed by tools/world/build-population.mjs at BUILD time and baked into population-posts.json. The file->world path (perturb population.json, regenerate, reboot, re-census) is the builder's arm A5, which its own status records as attempted three times and never obtained.",
           "threshold": "every shipped model needs a demonstrated world-side consumer",
-          "note": "The RUNTIME half (post table, spawn/release radii, enabled flag) does couple and is independently reproduced above. The DESIGN half — every knob this verdict's §3 and §4 findings are about — has no demonstrated path from the file to a body."
+          "note": "The RUNTIME half (post table, spawn/release radii, enabled flag) does couple and is independently reproduced above. The DESIGN half — every knob this verdict's §3 and §4 findings are about — has no demonstrated path from the file to a body.",
+          "evidence": [
+            "reports/world/population/critic-r1b.json",
+            "game/data/world/population-posts.json",
+            "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+          ]
         }
-      ]
+      ],
+      "evidence": [
+        "reports/world/population/critic-r1b.json",
+        "game/data/world/population-posts.json",
+        "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+      ],
+      "native_verdict": "3 of 5 shipped model knobs have a demonstrated world-side consumer. NOTE ON AGGREGATION: RI-MTH07 aggregates min-over-axes, and C-design-half-orphan is a fail — so a strict min would put this at 0. It is scored 6 rather than 0 because the four checks here do NOT map 1:1 to RI-MTH07's axes: C-ablation, C-still-control and C-pump-lives are three probes of ONE axis (does the running world read the placement), which passes cleanly and is independently reproduced. C-design-half-orphan is a second axis (does the MODEL FILE reach the world) and it is unmeasured rather than measured-and-failed — the builder's A5 was attempted three times on a saturated box and never obtained. An unmeasured axis is corpus_debt against the box, not a demonstrated absence, and this verdict says so in `unmeasured` rather than scoring it as a proven orphan."
     },
     {
-      "id": "RI-AI07 / RI-WLD02",
-      "path": "corpus/10-combat/RI-AI07-encounter-composition.md, corpus/50-world/RI-WLD02-density-per-minute.md",
+      "id": "RI-AI07",
+      "path": "corpus/10-combat/RI-AI07-encounter-composition.md",
       "side": "souls",
       "kind": "number",
       "native_scale": "four declared density figures against their bands",
       "native_score": 4,
       "native_max": 4,
       "score_0_10": 8,
-      "measured": "full, from the shipped table",
+      "measured": "partial",
       "checks": [
-        { "id": "D-enc-per-tm", "result": "pass", "value": "0.884 encounters per wilderness traversal minute", "threshold": "RI-AI07 §D [0.59, 1.29]; RI-WLD02 D9 [0.7, 1.2]" },
-        { "id": "D-enemies-per-tm", "result": "pass", "value": "1.598", "threshold": "[1.05, 2.45]" },
-        { "id": "D-enemies-per-encounter", "result": "pass", "value": "1.854", "threshold": "[1.4, 2.6]" },
-        { "id": "D-solo-grouped", "result": "pass", "value": "59:41", "threshold": "45:55 to 65:35" }
-      ]
+        {
+          "id": "D-enc-per-tm",
+          "result": "pass",
+          "value": "0.884 encounters per wilderness traversal minute",
+          "threshold": "RI-AI07 §D [0.59, 1.29]; RI-WLD02 D9 [0.7, 1.2]",
+          "evidence": [
+            "reports/world/population/critic-r1b.json",
+            "game/data/world/population-posts.json",
+            "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+          ]
+        },
+        {
+          "id": "D-enemies-per-tm",
+          "result": "pass",
+          "value": "1.598",
+          "threshold": "[1.05, 2.45]",
+          "evidence": [
+            "reports/world/population/critic-r1b.json",
+            "game/data/world/population-posts.json",
+            "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+          ]
+        },
+        {
+          "id": "D-enemies-per-encounter",
+          "result": "pass",
+          "value": "1.854",
+          "threshold": "[1.4, 2.6]",
+          "evidence": [
+            "reports/world/population/critic-r1b.json",
+            "game/data/world/population-posts.json",
+            "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+          ]
+        },
+        {
+          "id": "D-solo-grouped",
+          "result": "pass",
+          "value": "59:41",
+          "threshold": "45:55 to 65:35",
+          "evidence": [
+            "reports/world/population/critic-r1b.json",
+            "game/data/world/population-posts.json",
+            "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+          ]
+        }
+      ],
+      "evidence": [
+        "reports/world/population/critic-r1b.json",
+        "game/data/world/population-posts.json",
+        "corpus/90-verdicts/wave1/W1-POPULATION-r1.md"
+      ],
+      "justification": "All four declared density figures re-derived independently from game/data/world/population-posts.json and checked against RI-AI07 §D's bands and RI-WLD02 D9's; the crossing walk (reports/world/population/critic-r1b.json, 32 posts over 5,999.4 m) confirms the table describes a world a walking player meets. Capped at 8 rather than higher because RI-WLD02 D9's own band and RI-PRG06 §7's road slice are in unresolved contradiction (see secondary_observations)."
     }
   ],
   "artifacts": [
-    "reports/world/population/critic-r1.json",
-    "reports/world/population/critic-r1-diag.json",
-    "docs/shots/2026-08-07-w1-population-r1-the-tier-is-a-label.png",
-    "tools/world/critic-population-r1.mjs",
-    "tools/world/critic-population-r1-diag.mjs",
-    "tools/world/critic-population-r1-shot.mjs"
+    {
+      "path": "reports/world/population/critic-r1b.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-population-r1.mjs --arms C1,C3,C4",
+      "note": "THE verdict's evidence. C1: 5,999.4 m of named_routes.crossing walked at 2.0 m/s with no top-ups and `enabled` asserted armed — 32 posts materialised, 31 released, 0 faults, 200 samples. C3: the three-leg save/load soul door, with the walk-away control refusing at delta 0. C4: VOID by the critic's own fixture (swings at 14 m against a 2.4 m reach).",
+      "sha256": "a9269af0288777bf7794bd22efc8f2197ac03c028af49e552aaa6a76fa165c53"
+    },
+    {
+      "path": "reports/world/population/critic-r1.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-population-r1.mjs --arms C3,C4,C2,C1",
+      "note": "The first run. C2's two controls (still, drift ASSERTED at 0.00 m; ablation, 1,199.4 m at 0 posts) are cited. Its C1 is VOID and the reason is a finding — OBS-population-reset-drops-enabled.",
+      "sha256": "6054984947e9a79cb0ad10a738f1f8c438c046a3fab4676f5c744da70b76994e"
+    },
+    {
+      "path": "reports/world/population/critic-r1-diag.json",
+      "kind": "negative-evidence",
+      "produced_by": "node tools/world/critic-population-r1-diag.mjs",
+      "note": "The six-probe diagnostic that stopped a false headline. Standing censuses at the shipped default start (1 post), on pop-0001 (2 posts), at the crossing route head (0, candidates 0 — genuinely empty ground) and at tier-5 pop-0042 (3 posts, 8 bodies), all with cellFor=province and skipped_cell=0. The pump lives.",
+      "sha256": "9fa27b21d46b80c3698994238114b7848b45ceebdb09e00f3f5c2079f15d0ba1"
+    },
+    {
+      "path": "docs/shots/2026-08-07-w1-population-r1-the-tier-is-a-label.png",
+      "kind": "graph",
+      "produced_by": "node tools/world/critic-population-r1-shot.mjs",
+      "note": "The tier gradient the corpus asks for against the one that shipped, the median road spacing by tier, and the introduction-rule violation along the walked route. Drawn from the shipped data with pngjs; no browser, no engine, no timing.",
+      "sha256": "c73c6fe96990f460ed9bfff41492cce7b7d636d288048068ded7b76bea0858e3"
+    },
+    {
+      "path": "tools/world/critic-population-r1.mjs",
+      "kind": "log",
+      "produced_by": "written by this critic under TOOL-LOOP rule 1",
+      "note": "Four arms, each with a control that must go the other way. Shares no code with the builder's tools/world/population-consumption.mjs.",
+      "sha256": "de4147a72eba791efe2b578e577085d002af6ba19e5f7aedacd9ef8118ed957d"
+    },
+    {
+      "path": "tools/world/critic-population-r1-diag.mjs",
+      "kind": "log",
+      "produced_by": "written by this critic under TOOL-LOOP rule 1",
+      "note": "Six probes, cheapest first, no walking.",
+      "sha256": "22994799850fd7e852480c5fca1e5425f1960e579bc9b988589a05b025084670"
+    },
+    {
+      "path": "tools/world/critic-population-r1-shot.mjs",
+      "kind": "log",
+      "produced_by": "written by this critic",
+      "note": "Draws the image straight from the shipped JSON.",
+      "sha256": "2d6d852ea03c7ce0ec1a5ca02edce2e1ebd279abad0e63ecc4c427ab3f04e07e"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/W1-POPULATION-r1.md",
+      "kind": "text-excerpt",
+      "produced_by": "this critic",
+      "note": "The prose verdict.",
+      "sha256": "39ebe7adf0ca015dfdfa069f1f1f1fcc99350184b0f2ca7e5fcade0d8307b365"
+    },
+    {
+      "path": "game/data/world/population-posts.json",
+      "kind": "report",
+      "produced_by": "tools/world/build-population.mjs --write",
+      "note": "The shipped placement: 144 posts, 267 bodies, 16,335 souls. Every §3/§4/§5 figure is recomputed from this file independently of its own report block.",
+      "sha256": "81c506bbc97622e01c0c373256434fcb3c9ebe6ca85778d2131ed220b49656ca"
+    },
+    {
+      "path": "game/data/world/population.json",
+      "kind": "report",
+      "produced_by": "the builder",
+      "note": "The placement MODEL: tier_multiplier, composition tables, safety falloff, introduction_rule, stream radii.",
+      "sha256": "96b09256afa640f1c691080fe8279e8cd2a2e32b98e047a5945160bfb66d5629"
+    },
+    {
+      "path": "game/data/world/encounters.json",
+      "kind": "report",
+      "produced_by": "the builder",
+      "note": "16 encounter templates; the 14 new ones are permutations of five statblocks.",
+      "sha256": "bcb7b1193e5a54c44c9d4fc6affcaa745aea760a2c57dd5746c7b322bdd46fb5"
+    },
+    {
+      "path": "game/data/world/roads.json",
+      "kind": "report",
+      "produced_by": "pre-existing",
+      "note": "named_routes.crossing — the canonical route the introduction rule is walked against.",
+      "sha256": "699abf8113b3f554d48c364d91ccfb5f38b6737d00bc7e18ea2c916d259ecf23"
+    },
+    {
+      "path": "game/data/states/default.json",
+      "kind": "report",
+      "produced_by": "pre-existing",
+      "note": "player.pos [2766.5, 0, 5011] — 16.5 m from the Lilmoth end, which fixes the direction a player walks the crossing.",
+      "sha256": "39b1ff1a2ce49ac326f2824c143f532a947139d6253e242d13b97a945a69004c"
+    },
+    {
+      "path": "game/data/progression/levels.json",
+      "kind": "report",
+      "produced_by": "pre-existing",
+      "note": "the shipped soul->level curve: 2,149 souls = L5, 16,335 = L16, L82 needs 759,447.",
+      "sha256": "23b50efc501dac866132cfb7a7f217e541f61c847f7adedfd0cc638f3a914dfa"
+    },
+    {
+      "path": "game/src/world/population.js",
+      "kind": "text-excerpt",
+      "produced_by": "the builder",
+      "note": "PopulationSystem. reset() restores six fields and misses `enabled` and `faults`.",
+      "sha256": "36c42af1a5be10ae96999f77ea34aef5f9995b05413ec5f32da250b4d9d1ddbb"
+    },
+    {
+      "path": "game/src/sim/souls.js",
+      "kind": "text-excerpt",
+      "produced_by": "W1-SOULS",
+      "note": "The S5 epoch gate, whose header names W1-POPULATION as the reason it exists.",
+      "sha256": "a8be37b462050732f7d6c78801f67c9b6c0f9a46a105904b5d7b167424e6c907"
+    }
   ],
   "blind_comparisons": [
     {
-      "required_by": "RI-AI05 (blind_pair: yes)",
-      "done": false,
-      "why": "RI-AI05's blind pair asks a critic to cluster ten unlabelled 90-second behaviour fingerprints into roles. The shipped roster has five statblocks and one behavioural role, so the pack cannot be assembled: there are not ten fingerprints to draw and the clustering question is answered by the census before it is asked. Recorded as not-run rather than run vacuously (RULES 4)."
+      "ref_item": "RI-AI05",
+      "status": "not_possible",
+      "not_possible_reason": "RI-AI05's blind pair asks a critic to cluster ten unlabelled 90-second behaviour fingerprints into roles. The shipped roster has five statblocks and one behavioural role, so ten distinct fingerprints cannot be drawn and the clustering question is answered by the census before it is asked. Running it would have been a vacuous pass (RULES 4)."
     }
   ],
   "arbitration": {
@@ -211,6 +453,29 @@
           "note": "This is the thing the piece got structurally right and it is the constraint most likely to be broken by a 'fix' for §3 or §4. Any remedy that raises tier difficulty by touching a statblock's HP or damage per region is an AR-1 automatic fail."
         }
       ]
+    },
+    "ar1": {
+      "status": "not_applicable",
+      "checks": [
+        {
+          "id": "AR1-inside-the-fight",
+          "result": "not_applicable",
+          "observed": "This piece places bodies and streams them; it takes no frame decision inside a fight. The one frame-budget risk it carries — up to four engine.spawn() calls when a post materialises — is bounded by spawn_per_step:1 and was not measured here, because no timing figure is claimed anywhere in this verdict (loadavg 12-22 throughout).",
+          "why": "ARBITRATION S26 forbids diluting AR-1 to cover ordinary defects. The defects found here are economy and fairness defects, not Morrowind-side subsystems setting the schedule of a Souls-side one."
+        }
+      ],
+      "not_applicable_reason": "This piece places bodies and streams them; it takes no frame decision inside a fight, and it installs nothing on the combat schedule. Its one frame-budget risk — up to four engine.spawn() calls when a post materialises — is bounded by the model's own spawn_per_step: 1 and by max_resident_posts: 14, and it was deliberately NOT measured here because the box carried 18-36 concurrent browsers at loadavg 12-22 throughout and no timing figure is claimed anywhere in this verdict (RULES 26). ARBITRATION S26 forbids diluting AR-1 to cover ordinary defects: the three defects this verdict finds are an economy violation, a fairness violation and a legibility failure, none of which is a Morrowind-side subsystem taking a frame decision away from the fight. Flagged for round 2 on a quiet box: a post materialising four bodies inside an active fight is the one place this piece could become an AR-1 question, and nobody has measured it."
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        {
+          "id": "AR2-morrowind-breadth-not-bought-with-souls-depth",
+          "result": "pass",
+          "observed": "267 placed bodies across 13 regions did not cost the Souls side anything structural: statblocks are byte-unchanged, the two existing encounter behaviour rules are byte-unchanged (the third, always_hostile, is additive), respawn.json is untouched, and no enemy stat varies by region (S9 holds).",
+          "why": "The breadth this piece adds is placement, not new systems competing with the fight."
+        }
+      ]
     }
   },
   "consumption": {
@@ -230,34 +495,52 @@
   "score": {
     "overall_0_10": 4,
     "pass_threshold": 7,
-    "aggregation": "mean of the four ladder scores, hard-fail capped",
+    "aggregation": "mean",
     "band_label": "The province is populated; the danger tier is a label",
-    "aggregation_note": "mean of RI-AI05 2 (capped by two triggered hard fails), RI-PRG06 3 (min-over-axes, band separation = 0), RI-MTH07 6, RI-AI07/RI-WLD02 density 8 => 4.75 -> 4.",
+    "aggregation_note": "mean of RI-AI05 2 (capped by two triggered hard fails), RI-PRG06 2 (min-over-axes; an unbounded save/load farm plus band separation = 0), RI-MTH07 6, RI-AI07 8 => 4.5 -> 4.",
     "confidence": "HIGH on every placement-data finding (§2, §3, §4 — all re-derived from the shipped tree with a script that shares no code with the builder's); HIGH on the two controls and the six-probe diagnostic; NOT CLAIMED on survivability, on the felt density of a walked crossing, or on the save/load soul door."
   },
   "status": "FAIL",
   "status_reasons": [
+    "ARBITRATION S5 violation, driven with a control that went the other way: a save and a load re-pays every corpse in the province at an unmoved epoch, without bound and without a hearth rest (+98 souls on the re-kill of pop-0001). It defeats a fix a neighbouring piece built specifically in response to this one.",
     "RI-AI05 M4's introduction rule hard-fails in BOTH directions of the game's own canonical critical-path route, and the piece explicitly claimed that rule in its own model file.",
     "RI-PRG06 aggregates min-over-axes and band separation scores 0: adjacent tiers overlap 67-100% against a <=25% threshold, so 'which region am I in' is not answerable from a kill anywhere in the province.",
-    "94% of placed bodies sit outside their region tier's soul band, and the realised tier gradient (1.97x at t5) is a twelfth of the contract's 24.4x — and is non-monotone, with t5 below t4.",
-    "The tier is flat on every axis a player can feel: declared density range 1.29x and non-monotone; median road spacing IDENTICAL at 140 m in tiers 2, 3 and 5; bodies per post non-monotone.",
-    "The design half of the shipped model has no demonstrated file->world consumer; the one arm that would show it was attempted three times and never obtained.",
-    "AGAINST all of that, and it is substantial: the defect the piece was sent to close IS closed. The province went from 9 hand-typed bodies to 267 streamed ones, the consumer is in the correct slot, it is province-cell gated, it carries an ablation switch, the S5 coupling is structural, the four declared density figures are all inside their bands, and the roster gap was declared rather than hidden. This is a FAIL on the reference items, not a judgement that the work is poor."
+    "94% of placed bodies sit outside their region tier's soul band, and the realised tier gradient (1.97x at t5) is a twelfth of the contract's 24.4x, and non-monotone with t5 below t4.",
+    "The tier is flat on the axes the model declares: tier_multiplier range 1.29x and non-monotone; median road spacing IDENTICAL at 140 m in tiers 2, 3 and 5.",
+    "The design half of the shipped model has no demonstrated file->world consumer; the arm that would show it was attempted three times by the builder and never obtained.",
+    "AGAINST all of that, and it is substantial: the defect the piece was sent to close IS closed, and I confirmed it on a walk the builder never took. 9 hand-typed bodies became 267 streamed ones; 5,999.4 m of the crossing materialises 32 posts and releases 31 behind the player with 0 faults; the composition gradient is real and legible in play; the consumer is in the correct slot and province-cell gated; all four declared density figures are inside their bands; and the roster gap was declared rather than hidden. This is a FAIL on the reference items, not a judgement that the work is poor."
   ],
   "biggest_gap": {
-    "gap_id": "GAP-W1-population-introduction-rule-sorted-not-walked",
+    "gap_id": "GAP-W1-population-save-reload-repays-every-corpse",
     "subsystem_path": "combat.encounter.placement",
-    "what": "The introduction rule is enforced against a SORTED TABLE instead of a WALKED ROUTE. tools/world/build-population.mjs orders the province by (danger_tier, distance-from-nearest-safety) and tags the first solo instance of each archetype with `introduces`. A player orders the province by the road under their feet. On roads.json named_routes.crossing — the only route the game names, and the one 13 of 29 hearths are strung along — guard_legion debuts in a pair (forward) or a line of three (reverse, which is the direction the shipped default start forces), and drowned_lesser debuts in a pair.",
-    "why_it_matters": "RI-AI05 §D and M4 both call this a hard fail, and the item says why: 'an archetype whose first appearance is in a gank has not been taught, only survived.' The player's first guard_legion is three of them at once, 295 m out of their own starting town, before they have ever seen one alone. It is the biggest gap and not merely the loudest because the builder SAW the walk-order problem — its status file records the first pass introducing inf_trash in a tier-4 region 'because that is simply where the crossing's first leg starts' — and the remedy chosen was to re-sort the TAG rather than move the POST. That is RULES 7 exactly: a field written and never read back re-serialises to what was saved and passes forever. The same defect shape is what §5 could not close and what §5.1 caught in my own instrument: three separate things in this piece are asserted by construction over a still table — the introduction rule, the tier gradient, and cleared-post state across a load — and a still target hides every steering defect.",
+    "also_affects": [
+      "progression.souls.economy"
+    ],
+    "what": "Engine.applySave() and Engine.loadState() both call PopulationSystem.reset(), which sets all 144 posts back to DORMANT, while SoulsSystem.reset() empties the eid ledger the S5 epoch gate is keyed on and death.ordinaryRespawnEpoch never moves. Measured at aaa2f1f on pop-0001, with no hearth rest and no harness respawn verb anywhere: L1 kill 2 bodies -> +98 souls; L2 CONTROL walk out past release_radius_m and back -> post stays CLEARED, 0 bodies, delta 0 (correctly refused); L3 saveState -> loadState -> the post re-materialises with 2 bodies -> kill again -> +98 souls with the epoch unmoved at 0. Repeatable without bound.",
+    "why_it_matters": "ARBITRATION S5 and RI-PRG06 §4 both price a respawn at a rest, and the rest is what makes the world clock cost something. This removes the price. RI-PRG06 exists because 'a soul curve without a soul supply is unfalsifiable', and an unbounded farm makes the supply unfalsifiable again; its own 'How we lose' says 'every number in this file is instantly fiction', and RI-AI05 M6 fails at a farm rate >= 3x the clear rate. It also defeats a fix a neighbouring piece built SPECIFICALLY in response to this one: SoulsSystem's header names W1-POPULATION as the reason the boolean re-arm became an epoch gate, and the gate holds against the door that piece anticipated (the walk, proved by the builder's A8 and reproduced as my L2 control) and not against the one this piece opened. The population.reset() call is this piece's line, added by this piece, with its justification written on it: 'which ordinary mobs are dead is exactly what S5 says a rest restores anyway.' S5 says a REST restores them; a load is not a rest.",
+    "remedy": {
+      "action": "On applySave, restore each post's CLEARED/DORMANT state from the save instead of resetting all 144 posts to DORMANT — which is also what a player expects, since a reloaded save should not hand back a province they had already cleared. If persisting post state is out of scope for round 2, the narrower alternative is to have SoulsSystem's first-sight seed record a body as SETTLED at the current epoch when its post was recorded cleared in the save.",
+      "acceptance": "Re-run tools/world/critic-population-r1.mjs --arms C3. All three legs must hold: L1 delta > 0 (a first kill pays), L2 delta == 0 (walking away and back is refused, as it is today), and L3 delta == 0 with death.ordinaryRespawnEpoch unmoved — where it is +98 today. Then a hearth rest must still re-arm: restAt() bumps the epoch and the next kill of the same post pays again.",
+      "targets": [
+        "game/src/engine.js (the applySave/loadState population.reset() calls)",
+        "game/src/world/population.js",
+        "game/src/sim/souls.js"
+      ]
+    },
     "evidence": [
-      "corpus/90-verdicts/wave1/W1-POPULATION-r1.md §2",
-      "docs/shots/2026-08-07-w1-population-r1-the-tier-is-a-label.png",
-      "game/data/world/population-posts.json",
-      "game/data/world/roads.json named_routes.crossing",
-      "game/data/states/default.json player.pos"
+      "reports/world/population/critic-r1b.json",
+      "corpus/90-verdicts/wave1/W1-POPULATION-r1.md",
+      "game/src/world/population.js",
+      "game/src/sim/souls.js"
     ]
   },
   "secondary_observations": [
+    {
+      "id": "OBS-introduction-rule-sorted-not-walked",
+      "what": "RUNNER-UP GAP, and a hard fail in its own right. The introduction rule is enforced against a table sorted by (danger_tier, distance-from-safety) instead of against a walked route. On roads.json named_routes.crossing, guard_legion debuts in a pair (forward) or a line of three (reverse, the direction the shipped default start forces) and drowned_lesser debuts in a pair.",
+      "why_it_matters": "RI-AI05 §D and M4 both call it a hard fail: 'an archetype whose first appearance is in a gank has not been taught, only survived.' The builder saw the walk-order problem and re-sorted the TAG rather than moving the POST, which is RULES 7 exactly.",
+      "remedy": "walk named_routes.crossing from the shipped default start, tag the first WALKED instance of each archetype, and move the post where that instance is a group; then assert it in tools/check-*.mjs (RULES 13, 14)."
+    },
     {
       "id": "OBS-population-reset-drops-enabled",
       "what": "PopulationSystem.reset() restores state, live, focus, epochSeen, stats and candidates. It does NOT restore `enabled`. reset() runs on every loadState and applySave, so setPopulation({enabled:false}) survives every scenario boundary for the life of the page.",
@@ -330,7 +613,12 @@
       "closes": "OBS-population-reset-drops-enabled, OBS-population-reset-drops-faults"
     }
   ],
-  "corpus_extended": [],
+  "corpus_extended": [
+    {
+      "item": "RI-PRG06",
+      "what": "§2's tier soul bands have no stated owner for the PLACEMENT side of the contract. §7 assigns the enemy census to RI-WLD07/RI-WLD02 and the soul budget to RI-PRG06, but nothing says who is responsible for a body of the right value standing in the right tier — which is the join, and is where this piece failed. Filed as an observation for the corpus owners rather than an edit."
+    }
+  ],
   "method_deviations": [
     {
       "ref_item": "RI-AI05 / RI-PRG06 / RI-MTH07",
@@ -345,20 +633,20 @@
   ],
   "unmeasured": [
     {
-      "claim": "whether a walked crossing is survivable at the level the crossing itself pays (L5)",
-      "reason": "arm C4's first run died on an instrument bug of mine (queueInputs takes {f, press:[...]}, not {light:true}); the re-run did not land inside budget on a box at 18-36 browsers. RI-PRG06 §8's measured 23.68 s per inf_trash kill implies roughly a quarter of the 56.9-minute walk is spent swinging, but that is arithmetic and is not offered as a measurement."
+      "claim": "whether a tier-5 encounter is survivable at the level the crossing pays (L5)",
+      "reason": "VOID BY MY OWN FIXTURE. Arm C4 stood the player ~14 m from pop-0042 and swung 424 times across 240 sim-seconds: HP 620 -> 620, 8 bodies alive at start and 8 at the end, and the passive control byte-identical. Player reach is 2.4 m, so those were swings at air, and 14 m sits AT the edge of drowned_greater's 14 m sight radius. This is the same error the builder recorded in its own A6 and left in notes_for_successor, where I read it and made a smaller version of it. The survivability question this critique owes is still open."
     },
     {
-      "claim": "the FELT density difference between the two ends of the crossing",
-      "reason": "arm C1's first run is VOID (§5.1 — it walked a world a previous arm had switched off, via the reset() defect) and the re-run did not land. §3's realised-density table is computed from the shipped placement, not driven."
+      "claim": "why a walking player takes 446.4 HP in one 200 m stretch and then zero damage across the next 5,310 m while 28 further posts materialise",
+      "reason": "observed in arm C1 (reports/world/population/critic-r1b.json) and not explained. The arm that would have told me is the void C4. It is the most interesting unanswered question in this piece and is named for round 2."
     },
     {
-      "claim": "whether a corpse can be re-paid through a save and a load with no hearth rest",
-      "reason": "arm C3's first run killed through the sim.entities mirror rather than combat.bodyOf(), so the kill un-happened and the arm measured its own bug. Fixed; re-run did not land. The code path is described in `arbitration.s5` and named for round 2 as a question, not asserted as a finding."
+      "claim": "RI-AI05 M1 (behaviour-fingerprint distance), M2, M5 (level-scaling byte-diff), M6 (anti-farm RATE), M7 (health-sponge)",
+      "reason": "not run. M5 and M7 are the roster's rather than the placement's, and M7 without a stated fixture is unmeasurable => 0 rather than a pass, so it was correctly not attempted. M6's threshold is a ratio; §2 establishes the farm is unbounded, which fails M6 without needing the rate."
     },
     {
-      "claim": "RI-AI05 M1 (behaviour-fingerprint distance), M2 (band conformance), M5 (level-scaling byte-diff), M6 (anti-farm rate), M7 (health-sponge at fixture wave-standard-build)",
-      "reason": "not run. M5 and M7 are the roster's, not the placement's, and M7 without a stated fixture is unmeasurable => 0 rather than a pass, so it was correctly not attempted here."
+      "claim": "any wall-clock timing figure",
+      "reason": "the box carried 18-36 concurrent headless_shell processes at loadavg 12-22 on four cores throughout. Counts, booleans and frame counts only (RULES 26)."
     }
   ],
   "self_audit": {
@@ -370,6 +658,11 @@
     "no_banned_reasoning_used": true,
     "escalation_ladder_used_if_gap_seemed_small": true,
     "found_a_gap": true,
-    "self_audit_note": "ran_every_assigned_method is FALSE and this verdict is provisional on three named points, all listed in `unmeasured`. The three findings the verdict actually rests on — the introduction rule, the tier gradient and the soul-band compression — are computed from the shipped data files with a script that shares no code with the builder's generator, and are reproducible in under a minute by a fresh agent. The most important thing in this self-audit: my own C1 arm produced a spectacular false negative (5,999.4 m of empty road) and I ran a six-probe diagnostic BEFORE filing it. Had I filed it, this verdict's headline would have been that the population pump had stopped firing, which is false. The diagnostic is the reason the verdict instead contains OBS-population-reset-drops-enabled, which is a real defect in the piece. blind_done_where_required is FALSE by a deliberate refusal: RI-AI05's blind pair is unassemblable on a five-statblock roster and running it would have been a vacuous pass."
+    "self_audit_note": "ran_every_assigned_method is FALSE and this verdict is provisional on the points in `unmeasured`. The findings it rests on are driven: §2's farm is a three-leg arm whose control refused correctly, and §6.2's crossing walk is 5,999.4 m of real locomotion with the population system's armed state ASSERTED at the start. Two things a reader should weigh against me. First, my own C1 arm produced a spectacular false negative — 5,999.4 m of empty road — and I ran a six-probe diagnostic BEFORE filing it; had I filed it, this verdict's headline would have been that the population pump had stopped firing, which is false. The diagnostic instead surfaced OBS-population-reset-drops-enabled, a real defect. Second, arm C4 is void by my own badly-posed fixture, and it is void in exactly the way the builder warned about in its notes_for_successor, which I had read. Both are reported in §6 rather than quietly dropped. blind_done_where_required is FALSE by deliberate refusal: RI-AI05's blind pair is unassemblable on a five-statblock roster."
+  },
+  "bifurcation": {
+    "axis": "not-visual",
+    "declared_before_citation": true,
+    "note": "This piece is judged on placement, density, composition and the soul economy — all counts read off the shipped data files and off entities in a running world. The one image (docs/shots/2026-08-07-w1-population-r1-the-tier-is-a-label.png) is a DIAGRAM of those counts drawn with pngjs, not a photograph of the game, and is illustration for the blog rather than the basis of any score. No visual reference is cited anywhere in this verdict and no fidelity or art-direction claim is made."
   }
 }

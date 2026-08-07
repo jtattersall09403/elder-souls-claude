@@ -570,9 +570,13 @@ export function installHarness(engine, bootPromise) {
         g.traverse((o) => { if (o.isMesh) parts.push({ name: o.name || o.type, y: +(o.position.y).toFixed(4), visible: !!o.visible }); });
         return { pos: worldPos(g), visible: !!g.visible, in_scene: !!g.parent, parts, part_count: parts.length };
       };
-      const wells = [];
-      for (const [id, g] of (M.wells || new Map())) wells.push({ id, ...describe(g) });
-      return { present: true, stain: describe(M.stain), wells };
+      try {
+        const wells = [];
+        for (const [id, g] of (M.wells || new Map())) wells.push({ id, ...describe(g) });
+        return { present: true, stain: describe(M.stain), wells };
+      } catch (err) {
+        return { present: true, stain: null, wells: [], error: String(err && err.message ? err.message : err) };
+      }
     },
 
     renderFrame() { engine.loop.renderNow(); return true; },

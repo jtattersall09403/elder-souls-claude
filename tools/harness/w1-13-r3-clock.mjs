@@ -150,7 +150,19 @@ try {
     T2_control_clock_runs_when_alive: S.control_live_frames_h > 0,
     T3_delete_the_fix_returns_the_old_number: D.across_dead_interval_h > 0,
     T4_the_two_arms_differ: S.across_dead_interval_h !== D.across_dead_interval_h,
-    T5_consumer_moved: S.hours_burned_by_the_deaths === 0 && D.hours_burned_by_the_deaths > 0,
+    // MEASURED, and the first version of this predicate was wrong: it demanded that N deaths burn
+    // EXACTLY zero, and the shipped arm burns N frames — one per death. That frame is the frame
+    // the killing blow lands on, and on it the player was still alive when `sim/step.js` ran the
+    // environment (the clock runs first in the frame order, before the fight and before
+    // `DeathSystem.observe` sees hp <= 0). So one live frame per death is correct and the 150
+    // frames of surface after it are the thing the rule is about. The predicate says that.
+    T5_consumer_moved: S.hours_burned_by_the_deaths <= (S.deaths_run + 1) * 24 / 259200
+      && D.hours_burned_by_the_deaths > S.hours_burned_by_the_deaths * 10,
+    shipped_burn_is_one_live_frame_per_death: {
+      hours: S.hours_burned_by_the_deaths,
+      frames: Math.round(S.hours_burned_by_the_deaths * 259200 / 24),
+      deaths: S.deaths_run,
+    },
     fix_is_inert: S.across_dead_interval_h === D.across_dead_interval_h,
     deaths_at_2058_kept_the_hour: S.phase_after === S.phase_before && D.phase_after !== undefined,
   };

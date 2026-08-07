@@ -3887,7 +3887,7 @@ const MODEL_SENSITIVITY = (() => {
   return {
     measured: true,
     method: `the same grid walked twice, once under the detected offer model ("${detected}") and ` +
-            `once under "${other}", comparing each signature's viability, four criteria and stop.`,
+            `once under "${other}", comparing each signature's screen verdict, four criteria and stop.`,
     detected_model: detected, compared_against: other,
     signatures_whose_verdict_moves: moved.length,
     signatures_walked: records.length,

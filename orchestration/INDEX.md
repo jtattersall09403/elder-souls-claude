@@ -2,7 +2,7 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `3b9b4de`: 454 tools, 153 reference
+so it cannot drift. Generated at `5de8f79`: 457 tools, 153 reference
 items, 21 pieces in flight.
 
 Its purpose is to stop 21+ concurrent agents each paying separately to discover the
@@ -60,9 +60,11 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/verdict-staleness.mjs` — which verdicts are still standing on the code that is actually at HEAD.
 - `tools/verdict-validate.mjs` — **no header comment**
 
-### `tools/analysis/` — 34
+### `tools/analysis/` — 36
 
 - `tools/analysis/ambience-census.mjs` — RI-AUD03 B4 — the layer census.
+- `tools/analysis/ambience-interior-consumption.mjs` — CONSUMPTION for the interior ambience beds.
+- `tools/analysis/ambience-onsets-chart.mjs` — Draw the W1-22 round-2 headline as a picture: how far the ambience event layers sit above or below the bed they land on, per region, before and after.
 - `tools/analysis/ambience-onsets.mjs` — DOES ANYTHING ACTUALLY HAPPEN?
 - `tools/analysis/ambience-render.mjs` — RI-AUD03 — THE AUDIBILITY EVIDENCE.
 - `tools/analysis/ambience-spectrogram.mjs` — A picture of the thirteen regions' sound.
@@ -412,7 +414,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/prose/strip-line-markers.mjs` — tools/prose/strip-line-markers.mjs — remove the em dash used as a LINE MARKER (a bullet, a ledger column rule, an inscription lead-in) from shipped text.
 - `tools/prose/tic-detector.mjs` — tools/prose/tic-detector.mjs — measure machine-writing tics in EVERY player-facing text we ship, against Morrowind's own text, register by register.
 
-### `tools/quests/` — 25
+### `tools/quests/` — 26
 
 - `tools/quests/act5-argument-probe.mjs` — read Q-MAIN-26's conversation out of the RUNNING BUILD.
 - `tools/quests/attr-scale-audit.mjs` — every attribute and skill demand in the quest tree, against the ceiling a real character can actually reach, with reserve.
@@ -438,6 +440,7 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/resolution-reachability.mjs` — can the player ACTUALLY take any of the endings a quest offers?
 - `tools/quests/topic-supply-audit.mjs` — can a player be OFFERED each quest by playing?
 - `tools/quests/utility-findability.mjs` — can a player be OFFERED the quests that are NOT the main quest?
+- `tools/quests/viability-walk.mjs` — build viability measured by PLAYING.
 - `tools/quests/w1-giver-presence-consumption.mjs` — RI-MTH07 / ARBITRATION §3 for GAP-W1-quest-givers-not-in-the-world.
 
 ### `tools/refs/` — 1
@@ -732,12 +735,12 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
-| `W1-22-r2` | building | event-level calibration running; then acceptance run + both sabotage arms; then re-run the | `game/src/audio/ambience.js` `game/src/audio/synth.js` `game/src/engine.js` `tools/analysis/ambience-onsets.mjs` |
-| `W1-VIABILITY-SPLIT` | in_progress | run the screen end-to-end so the fence scrubs the residual claim strings; then build the w | `orchestration/status/W1-VIABILITY-SPLIT.json` `tools/analysis/impossibility-screen.mjs` |
 | `W1-13-r3` | building | bloom-sight null control -> clock.mjs (delete-the-fix + consumption) -> boot-check -> FULL | `orchestration/status/W1-13-r3.json` |
+| `W1-SOULS-r3` | running | enumerate every eid-keyed per-session observer in the tree (souls, engine._greetCount, mag | `orchestration/status/W1-SOULS-r3.json` |
+| `W1-22-r2` | building | event-level calibration running; then acceptance run + both sabotage arms; then re-run the | `game/src/audio/ambience.js` `game/src/audio/synth.js` `game/src/engine.js` `game/src/harness/api.js` `game/data/audio/ambience/*.json` `game/data/audio/ambience/interiors/*.json` |
 | `W1-MASS` | verifying | SUCCESSOR-2 RESUMED at git 88ee56d. P1/P2/P3 confirmed COMMITTED and on disk (swing.js:447 | `game/src/combat/swing.js` `tools/weapons/motion-census.mjs` `tools/weapons/build-movesets.mjs` `tools/weapons/mass-browser.mjs` `game/data/combat/movesets/` `game/data/weapons/clip-registry.json` |
+| `W1-VIABILITY-SPLIT` | in_progress | run the screen end-to-end so the fence scrubs the residual claim strings; then build the w | `orchestration/status/W1-VIABILITY-SPLIT.json` `tools/analysis/impossibility-screen.mjs` |
 | `critic-w1-02` | in-progress | Blind M68: pack shipped INCOMPLETE (24 of 48 frames, builder pid 3888 died 20:59:22, no KE | `orchestration/status/critic-w1-02.json` `reports/critic-w1-02/c-m65.json` `reports/critic-w1-02/c-m65b.json` `reports/critic-w1-02/c-m65-sabotage.json` |
-| `critic-w1-population` | running | C1 (crossing walked end to end) still running; re-run C3/C4 with the two instrument bugs f | `orchestration/status/critic-w1-population.json` `tools/world/critic-population-r1.mjs` `reports/world/population/critic-r1.json` |
 | `tool-build-viability-r6` | researching | choose (a) rebuild; run baseline --audit-grants and full walk; then implement the 9 items | — |
 | `W1-JOURNAL-PROSE` | researching | state the closing-line rule, then rewrite file by file, re-running the FULL gate after eve | — |
 | `judge-prose-r4` | researching | read t01-books A.txt and B.txt; answer; then t02..t15 | — |

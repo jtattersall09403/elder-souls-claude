@@ -13,7 +13,8 @@ blind_pair: no
 
 Two reference items in this corpus name a tool by its path, make an assertion that only that
 tool can settle, and the tool has never been written. `RI-CHR01` method 6 says
-`node tools/analysis/build-viability.mjs --signatures all --out reports/viability.json` and then
+`node tools/analysis/build-viability.mjs --signatures all --out reports/viability.json` (the
+pre-split name; see §A) and then
 asserts *"≥ 486 signatures pass all four §5 criteria"*. `RI-JRN01` says its entire instrumented
 pass *"requires harness amendment `A-JRN1`"* and that *"until it exists every check below is
 `unmeasurable` and scores 0, fail-closed"*. `RI-CHR03` method 5 depends on the first;
@@ -33,7 +34,23 @@ one wave after the blocking is first recorded in a verdict.**
 
 ## The reference artifact
 
-### A. `tools/analysis/build-viability.mjs` — required by `RI-CHR01` M6, `RI-CHR03` M5
+### A. The build-viability artifact — **now TWO tools** — required by `RI-CHR01` M6, `RI-CHR03` M5
+
+> **AMENDED wave 1 — `orchestration/NEXT-DISPATCH.md` §R, and this is the biggest amendment this
+> item carries.** §A used to specify ONE static tool. That tool was rejected five times
+> (`TOOL-COVERAGE-R1`..`R4`) and every rejection had the same shape: a value the tool handed to a
+> synthetic character and then measured. A constant, a Proxy, an infinity, a union, a "derived"
+> value computed from an optimistic assumption. Each rebuild replaced one fiction with a smaller
+> one.
+>
+> The fifth rejection contains the proof that the approach, and not any one grant, was the defect:
+> `worldFlags` was granted as the union of every resolution of every quest, so the tool asked *"can
+> this character finish the game?"* of a world holding **601 contested flags at once**, in which
+> `archon_vats_open` and `archon_vats_burned` are both true and `ixtu_vakh_trusts_player` sits
+> beside `ixtu_vakh_closed_to_player`. **There is no grant that makes that world real; there is
+> only a smaller lie.** So the artifact is split, and the split is the point.
+
+#### A1. `tools/analysis/impossibility-screen.mjs` — **the screen**
 
 **Input.** The shipped `game/data/progression/**` and `game/data/quests/**`. No browser needed;
 this is a static walk, and it must stay static so it can run in CI on every data change.
@@ -41,31 +58,70 @@ this is a static walk, and it must stay static so it can run in CI on every data
 **Contract.**
 
 ```
-node tools/analysis/build-viability.mjs --signatures all --out reports/viability.json
-node tools/analysis/build-viability.mjs --signature saxhleel/fighter/given/interior --explain
+node tools/analysis/impossibility-screen.mjs --signatures all --out reports/impossibility-screen.json
+node tools/analysis/impossibility-screen.mjs --signature saxhleel/fighter/given/interior --explain
+node tools/analysis/impossibility-screen.mjs --self-test-fence
 ```
+
+**What it is.** A **lower bound on obvious impossibility**. Every value it hands the synthetic
+character is a permissive upper bound, which is what makes its negatives sound and its positives
+worthless: a demand that fails against a world more generous than the game fails everywhere.
 
 **Output shape**, one record per signature, and the *failure list is the product*:
 
 ```json
 { "signature": "dunmer/mage/withheld/foreign",
-  "viable": false,
-  "criteria": { "main_quest": true, "three_factions_rank5": true,
-                "no_unpassable_gate": false, "tier5_survivable": true },
+  "screen": "impossible",
+  "criteria": { "main_quest": "pass", "three_factions_rank5": "pass",
+                "no_unpassable_gate": "fail", "tier5_survivable": "pass" },
   "stopped_at": { "quest": "q-cold-ledger", "stage": 4,
                   "gate": "requires.disposition >= 45 with RG-DEEP",
                   "why": "race term -40 + upbringing -4 puts the ceiling at 41" } }
 ```
+
+`screen` is one of `impossible` | `abstained` | `not_screened_out`, and **never a boolean**.
+
+**THE BINDING PROHIBITION.** *The screen may report that a demand exceeds every ceiling, or that a
+gate has no producing resolution anywhere. It may never report that a build is sound, and no item
+and no verdict may quote any of its numbers as a figure of build health.* `not_screened_out` is a
+statement about four checks, not about the game. This prohibition is **enforced in the tool's
+code** — a claim-word ban over everything it emits, a three-value row verdict that cannot be a
+boolean, a forbidden-key list that includes `target`, and an exit code that cannot mean "sound" —
+and `--self-test-fence` breaks all of it on purpose and requires the enforcement to fire.
+
+**Exit code 1** when the screen condemned or abstained on anything; 0 means *it condemned nothing*,
+which is not the same sentence as *the build is sound* and may not be reported as if it were.
+
+#### A2. `tools/quests/viability-walk.mjs` — **the walk**
+
+**Input.** The running engine. Real character signatures created at a cold start and driven through
+the shipping gates, **granted nothing** — the grant fence is an enumerated allow-list of harness
+verbs, and every verb that hands the character something it did not earn (`setGold`, `setSkills`,
+`setFactionStanding`, `questSetFlag`, `learnTopic`, `spawnNPC`, …) is a throwing stub.
+
+**Contract.**
+
+```
+node tools/quests/viability-walk.mjs
+node tools/quests/viability-walk.mjs --falsify grant-fence
+node tools/quests/viability-walk.mjs --sabotage grant-everything
+```
+
+**What it costs, stated plainly.** The wide grid of 540 signatures × every quest is not affordable
+as a played walk, so the walk covers a **stratified sample and says so**, computing and printing
+its coverage rather than asserting it, and the screen covers the rest and is labelled a screen.
+**A narrow honest number and a wide labelled screen beat one wide number that has been wrong five
+times.**
 
 **The four criteria are `RI-CHR01` §5's and are not restated here**, with one binding clarification
 that item asks for: **criterion 4 (`survive the tier-5 region at level ≥ 55 in ≤ 3 attempts per
 encounter in the sim model`) may not be stubbed to `true`.** `RI-CHR01`'s own *How we lose* says
 so: *"Method 6 is a static walk and will not catch a lethality problem; the viability checker's
 criterion 4 exists for it and must actually be implemented rather than stubbed."* A checker that
-returns `viable: true` for every signature is worse than no checker, because it converts an
-unmeasured dimension into a measured-and-passing one.
-
-**Exit code 1** when fewer than 486 of 540 signatures are viable, so it can gate.
+answers `true` for every signature is worse than no checker, because it converts an unmeasured
+dimension into a measured-and-passing one. **The walk does not walk criterion 4 either** — it says
+so on every artifact under `criteria_not_walked`, which is the honest form of the same rule: an
+unmeasured dimension declared as unmeasured, rather than stubbed or quietly folded into a pass.
 
 ### B. `A-JRN1` — `tools/journey/journey-run.mjs`
 
@@ -203,13 +259,20 @@ area, one wave later.
 2. **Exit-code contract.** For each resolved tool, run it with `--help`. **Assert exit 0 and a
    usage block.** A tool that cannot describe itself will not be run by a critic under time
    pressure.
-3. **Viability checker liveness.** Run `build-viability.mjs --signatures all`. **Assert the output
-   contains at least one `viable: false` record with a populated `stopped_at`**, or that a
-   `--explain` run on a deliberately over-gated fixture produces one. An all-true result on real
-   data is only credible after the fixture proves the checker can say no.
-4. **Criterion-4 liveness.** Run the checker twice: once as shipped, once with every tier-5
-   encounter's damage multiplied by 10 in a fixture overlay. **Assert the viable count falls.**
-   If it does not, criterion 4 is a stub and the tool fails this item.
+3. **Screen liveness, and the fence on it.** Run `impossibility-screen.mjs --self-test-fence`
+   and **assert it exits 0 with every deliberate break caught and every green control silent** —
+   the screen is forbidden to publish a positive and a prohibition that cannot fire is a comment.
+   Then run `impossibility-screen.mjs --signatures all` and **assert the output contains at least
+   one `"screen": "impossible"` record with a populated `stopped_at`**, or that a `--explain` run
+   on a deliberately over-gated fixture produces one. A run that condemns nothing on real data is
+   only credible after the fixture proves the screen can say no.
+4. **Walk liveness, and the grant fence on it.** Run `viability-walk.mjs --falsify grant-fence`
+   and **assert every denied verb throws and the allowed control verb does not.** Then run the
+   walk twice — as shipped, and under `--sabotage grant-everything`. **Assert the results
+   differ.** If handing a real character everything the screen hands its synthetic one does not
+   move the walk, then either the walk is not reading the gates or the grants never mattered, and
+   both are findings. **Assert `criteria_not_walked` is present and names `tier5_survivable`**: a
+   walk that quietly stopped declaring what it does not cover has failed this item.
 5. **Journey instrument liveness.** Run `journey-run.mjs --journey jrn01-opening`. **Assert the
    trace contains `first_input` and `first_control` events, that the UI-text stream is non-empty
    for at least one frame, and that a real input dispatched on the first rendered frame of each
@@ -260,7 +323,7 @@ a stub scores 0 regardless of the rest.
 the output shapes, the five scoring axes, the standing rule in §D and all six method steps.
 
 The *facts* that motivated it are measured, not constructed, and are cited rather than recalled:
-`tools/analysis/build-viability.mjs`, `tools/journey/journey-run.mjs`,
+the pre-split build-viability tool (§A), `tools/journey/journey-run.mjs`,
 `tools/journey/beat-extract.mjs` and `tools/journey/gamepad-shim.mjs` were each found absent at
 commit `65275dc` by `tools/analysis/critic-w1-07-audit.mjs`, recorded in
 `corpus/90-verdicts/wave1/artifacts/W1-07/audit/critic-audit.txt`, and the resulting zeroes are

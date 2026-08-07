@@ -181,13 +181,21 @@ appears on the character sheet has failed (`RI-CHR01` §6.5).
    with both `obey` and `refuse` outcomes**, that `refuse` sets Reputation −15 and spawns a
    named persistent hostile, and that **no data path clears `shadowscale-claim`.** Dynamic:
    refuse once, then **assert the named assassin appears in ≥ 3 later encounter tables.**
-5. **Balance decidability.** For each sign, run the `build-viability` checker (`RI-CHR01`
-   method 6) restricted to that sign across all 6 class families. **Assert every sign is
-   end-to-end viable with ≥ 4 of the 6 families**, and **assert The Dry Well is viable with ≥ 1
-   family and non-viable with ≥ 2** — the trap must be a real trap and must not be a universal
-   one. A sign viable with 6/6 families has no drawback that matters.
+5. **Balance decidability.** For each sign, play it (`RI-CHR01` method 6's walk,
+   `node tools/quests/viability-walk.mjs`) across the class families the walk's declared sample
+   reaches. **Assert every sign is end-to-end viable with ≥ 4 of the 6 families**, and **assert
+   The Dry Well is viable with ≥ 1 family and non-viable with ≥ 2** — the trap must be a real trap
+   and must not be a universal one. A sign viable with 6/6 families has no drawback that matters.
 
-   > **AMENDED wave 1 — `BAR-CRITIQUE-W1-07-R1` §R2.5. While `tools/analysis/build-viability.mjs`
+   > **AMENDED wave 1 — `NEXT-DISPATCH.md` §R, the viability split.** This method used to name the
+   > static checker. That tool was rejected five times and is now
+   > `tools/analysis/impossibility-screen.mjs`, **a screen**: it may say a sign's demands are
+   > impossible, and it is forbidden in code to say a sign is decidable. Decidability is a positive
+   > claim, so it is answerable **only** from the walk, and only over the sample the walk declares.
+   > If the walk's sample does not reach 6 families for a sign, that is `unmeasurable` for that
+   > sign — not a pass and not a fail.
+
+   > **AMENDED wave 1 — `BAR-CRITIQUE-W1-07-R1` §R2.5. While the build-viability tool
    > does not exist, the Decidability axis is `corpus_debt`: removed from the min-over-axes
    > aggregation, reported at `unmeasurable`, and filed against `RI-MTH06` — not scored 0 against
    > the build.** The reasoning is `RI-CHR01` method 6's, in full, and the effect here is the same:

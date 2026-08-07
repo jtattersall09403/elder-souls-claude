@@ -305,6 +305,51 @@ for (const r of regions) {
   if (b.brief !== r.ambient_text) fail('C11', `${r.id}: the bed's brief has drifted from regions.json's ambient_text. RI-AUD03's own provenance note: "If regions.json changes, this table follows it, not the reverse."`);
 }
 
+// ---- C15: THE INTERVAL BAND MUST BE A BAND — the hole the round-1 critic proved ---------------
+//
+// The critic broke this census on purpose four ways and got red each time, and then found the one
+// that stayed green: "**Setting an L3 interval to a flat 15 s → still green**, because 15 is
+// inside the item's own 8–40 s band. RI-AUD03's 'How we lose' names *'raises the rate to every 15
+// seconds'* as the signature-becomes-wallpaper failure and asserts '§A L3/L4 interval bands are
+// checked in B4 for this reason'. They are not sufficient to catch it."
+//
+// Stated precisely, because half of it is already covered and saying otherwise would be claiming
+// a fix that is not this check's: C4's `band()` helper does require `v[0] < v[1]`, so the exactly
+// flat `[15, 15]` fails C4 today. What C4 cannot see is a band that is a range in form and a
+// metronome in effect — `[15, 16]` is inside 8–40, is strictly increasing, and delivers a
+// signature every fifteen and a half seconds forever. Both arms were run: `[15, 15]` fails C4 and
+// C15; `[15, 16]` fails C15 alone. Two checks that never disagree would be one check.
+//
+// R3 says the interval "comes from the seeded PRNG", and a band this narrow makes the draw
+// contribute nothing worth drawing, so the layer stops being a seeded event stream. The one place
+// a degenerate band is correct is an R7 emitter, which IS a metronome by design — §B gives the
+// hide-drum "a 90-second beat" — and C13 checks those instead.
+//
+// The floor is 25% of the band's own midpoint, which every layer in the build clears with room
+// (the narrowest is deep-marshes' L3 at [30, 40], 28.6%) and which `[15, 16]` fails at 6.5%.
+const SPREAD_MIN = 0.25;
+function checkSpread(id, layerName, field, iv) {
+  if (!Array.isArray(iv) || iv.length !== 2) return;
+  const [lo, hi] = iv, mid = (lo + hi) / 2;
+  if (!(mid > 0)) return;
+  const spread = (hi - lo) / mid;
+  if (spread < SPREAD_MIN) {
+    fail('C15', `${id}: ${layerName} ${field} ${JSON.stringify(iv)} spans ${(spread * 100).toFixed(1)}% of its own midpoint, `
+      + `under the ${SPREAD_MIN * 100}% floor. A band this narrow is a metronome, not a seeded interval: R3 says the `
+      + 'interval "comes from the seeded PRNG", and a flat band makes the draw contribute nothing. '
+      + 'RI-AUD03 §How we lose names "raises the rate to every 15 seconds" as the moment identity '
+      + 'becomes irritation, and a flat [15, 15] sits inside §A\'s 8-40 s band, so C4 cannot see it.');
+  }
+}
+for (const [id, b] of Object.entries(beds)) {
+  for (const L of ['L3', 'L4']) {
+    const layer = b.layers && b.layers[L];
+    if (!layer) continue;
+    checkSpread(id, L, 'interval_s', layer.interval_s);
+    if (layer.night_interval_s) checkSpread(id, L, 'night_interval_s', layer.night_interval_s);
+  }
+}
+
 // ---- C14: INTERIOR AND SETTLEMENT BEDS (R4, RI-WLD08 §6) --------------------------------------
 //
 // ROUND 2. Round 1 shipped thirteen exteriors and nothing indoors, on a reading of R4 under which
