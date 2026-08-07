@@ -25,7 +25,8 @@
   "notes": "Successor to five rejected rebuilds. Not round 6 of the same rebuild.",
   "start_commit": "a5a637d",
   "findings": [
-    "BASELINE at a5a637d: node tools/corpus-index.mjs C8 = 26 warn / 0 error; check-quests PASS.",
+    "EVERY NUMBER IN THIS FILE IS RE-STAMPED AT 37d64e3. The tree moved three commits under this piece while it ran (e06f551, d17f207, 37d64e3, touching game/src/engine.js, souls.js, population.js and the enemy statblocks), and other agents' `git add -A` banked the rename and the item edits before I finished. All four walk arms and the full 540-cell screen were re-run at 37d64e3 and every figure reproduced unchanged. Box at re-run: 12 headless_shell, loadavg 7.56.",
+    "GATES AT 37d64e3: boot-check PASS, check-quests PASS (120 quests), check-content PASS (383 resolutions), corpus-index C8 = 26 warn / 0 error (unchanged from the pre-rename baseline).",
     "Box loaded at start: pgrep -c headless_shell = 42, loadavg 23.19 -> Node-side work first.",
     "FENCE FALSIFIER FOUND A REAL HOLE IN THE FENCE: case F3 ({signatures_playable: 486}) walked straight through, because `_` is a word character so \\bplayable\\b never matches inside a snake_case key -- and every key in the artifact is snake_case. Fixed by normalising `_` before the scan. Rule 4 paid for itself on its first run.",
     "The renamed screen is 4 rules: vocabulary (claim words, on artifact + stdout + stderr), shape (row verdict is a 3-value string, never a boolean; forbidden keys incl. `target`), exit (0 only when nothing condemned and nothing abstained), and one enumerable exemption for the pointer literal `tools/quests/viability-walk.mjs`.",
@@ -50,6 +51,8 @@
     "The screen's own --self-test is still red at 49/51 (R4 item 7, seed ladder cannot saturate). Not run to completion this pass -- it is a ~37-minute battery of full 540-cell walks and the box was at loadavg 10-15. The failure is printed on every screen run under KNOWN BLIND SPOT.",
     "TOOL-COVERAGE-R4 rebuild items 1, 4, 5, 6, 7 and 9 are NOT fixed. They are true of the screen, they are printed on every run and carried on every artifact under known_limits, and items 2/3/8/10 stop mattering once the tool cannot publish a positive.",
     "The walk does not cover RI-CHR01 criterion 4 (tier5_survivable) at all. Declared on every artifact.",
-    "reports/viability.json (untracked, pre-rename schema, regenerated at 16:58 by another process) was left in place -- it is a neighbour's live output, and it is the last quotable viability figure on this tree."
-  ]
+    "reports/viability.json (untracked, pre-rename schema, regenerated at 16:58 by another process) was left in place -- it is a neighbour's live output, and it is the last quotable viability figure on this tree.",
+    "The screen's model attestation is deliberately NOT minted. --verify-model would write a VALID attestation from the very detector R4 item 1 shows is a threshold of one giver, so the screen is left refusing a clean exit and saying why (exit 20, 'attestation ABSENT, 18 verdicts move with the offer model'). That is the fail-closed direction and it is the honest one."
+  ],
+  "commit_under_test": "37d64e3"
 }

@@ -1,0 +1,17 @@
+{
+  "task_id": "critic-w1-13-r3",
+  "role": "critic",
+  "judges": "W1-13-r3",
+  "state": "running",
+  "started": "2026-08-07",
+  "commit": "b1c92d1",
+  "next_step": "read RULES, INDEX, W1-13-r2 verdict, W1-13-r3 status",
+  "files_touched": [],
+  "files_claimed": [
+    "corpus/90-verdicts/wave1/W1-13-r3.md",
+    "corpus/90-verdicts/wave1/W1-13-r3.json",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "notes": "Fresh-context critic. Must test r3's overturn of r2's named gap (bloodstain visibility 1/8 vs 8/8), the two unrun arms, world-clock-stops-in-death, input-refusal claim, items 7 and 8 scoring, and ok:false semantics."
+}

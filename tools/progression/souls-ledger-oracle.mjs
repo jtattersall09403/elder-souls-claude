@@ -41,6 +41,15 @@
 //                              S5 and `RI-PRG06` §4 stated as a property of the world, and it is
 //                              the WORLD's to keep, not the reward's.
 //
+// I3's REACH IS DECLARED, because a probe that overstates what it covers is worse than one that
+// covers less. These routes run in `arena_flat`, and `PopulationSystem` is province-cell gated
+// out of every fixture cell by design — so the oracle drives the release/re-materialise mechanism
+// DIRECTLY (`despawn` on every body, then `spawnEncounter` under the same stable tag, which is
+// exactly what `_materialise()` passes) and it does NOT drive the population pump end to end.
+// Instance 3 — the save/load farm — is a province route belonging to W1-POPULATION and is
+// measured in their own suite; what this oracle can say about it is that `applySave` restores a
+// corpse as a corpse in a fixture cell, which it does.
+//
 // I1 and I2 are `game/src/sim/souls.js`'s. **I3 is not**, and separating them is the point of
 // this tool. Round 2's epoch gate was the souls ledger trying to enforce I3 by refusing to pay —
 // which is why it broke in the opposite direction the first time somebody tried a route it had
@@ -249,7 +258,18 @@ async function main() {
               H.setTimeOfDay(12);
               try { H.spawnEncounter(ENC, 0, 12, { tag: TAG }); } catch { /* n/a */ }
               H.stepFrames(2);
-              newLives();                       // sim.reset() emptied sim.entities
+              // A NAMED STATE LOAD IS THE PROBE RE-STAGING, NOT THE WORLD RESURRECTING, and the
+              // oracle's first run charged itself an I3 violation for it on every route that
+              // contained one. `loadState('<named>')` is a harness verb: no player can reach it,
+              // it throws the scenario away and builds a declared one, and this arm then puts a
+              // fresh encounter on the ground itself. Holding "this eid was a corpse" across it
+              // would be the oracle asserting that a NEW SCENARIO must remember the old one's
+              // dead. So the bookkeeping is dropped and re-seeded, exactly as the world is.
+              //
+              // I1 and I2 still cross the boundary and are still the whole of HF-1: if the ledger
+              // survived the reset, the fight staged after it would pay nothing and I2 goes red.
+              life.clear();
+              for (const e of ents()) { const r = touch(e.eid); r.lastSeenDead = e.dead; }
             } else if (ev === 'save_load') {
               const blob = H.saveState();
               H.loadState(blob);
