@@ -358,9 +358,43 @@ function selfTest() {
     id: 'd' + i, file: 'synthetic/defective.json',
     text: `The count was short again this season and the ledger was not corrected, which is how the matter came to the Court. Somebody had been at it for eleven years. Which is deliberate.`,
   }));
-  const clean = Array.from({ length: 40 }, (_, i) => ({
-    id: 'c' + i, file: 'synthetic/clean.json',
-    text: `It's a day east, past the ford. Ask at the customs post — they keep the road book there. Are you walking it alone? Take water!`,
+  // THE CLEAN CONTROL, and the first version of it was wrong in a way worth recording.
+  // It was one line repeated forty times — a line that happened to carry an exclamation mark and a
+  // conjunction opener, so at forty copies the fixture ran at 370 exclamations per 10k and tripped
+  // the OVERSHOOT half of the very band it was meant to pass. A control has to be a distribution,
+  // not a sample. This one is a spread of flat service dialogue in the reference's register:
+  // directions, prices, a shopkeeper's stock, one person who is curious about you and one who is
+  // alarmed. Nothing in it lands a punchline. It must trip nothing.
+  const CLEAN_FIXTURE = [
+    "He's a bookworm. Try a bookseller.",
+    "It's white and wet. What more can I tell you?",
+    "A miserable place, from what I've heard. Too cold for me.",
+    'Nothing there but a big rock. I never saw the point of it.',
+    "Are you well? You don't look it.",
+    'Go east past the ford, then ask at the customs post.',
+    'I sell rope, lamp oil and salt. Nothing on credit.',
+    'Watch yourself out there!',
+    'And who told you that?',
+    'The muster is on the board. Copy it down before you go.',
+    'The ferry runs at dawn and at dusk. Miss it and you walk.',
+    'Ten drakes for the room. Twelve if you want the shutters mended.',
+    'She keeps the ledger in the back room. Knock first.',
+    'Bandits on the north road. Two of them were taken last week.',
+    'My cousin works the kiln. He says the clay is going bad.',
+    'Buy a lamp. It gets dark early down there.',
+    'The Assize sits on the first of the month. Bring your papers.',
+    'So you are the one they sent for the ledger.',
+    'Salt, rope, oil. Nothing else.',
+    'I have not been down there. My sister has, and she will not go again.',
+    'Three days by cart, longer if the river is up.',
+    'The smith is out at the ford until the seventh.',
+    'Room and board, six drakes. The stable is extra.',
+    'They took the roof off the granary last winter.',
+    'Speak to the harbourmaster. He has the manifest.',
+    'I have salt fish and hard bread. Take it or leave it.',
+  ];
+  const clean = Array.from({ length: 78 }, (_, i) => ({
+    id: 'c' + i, file: 'synthetic/clean.json', text: CLEAN_FIXTURE[i % CLEAN_FIXTURE.length],
   }));
 
   const bars = loadBars();
@@ -519,4 +553,8 @@ async function main() {
   return 0;
 }
 
-process.exit(await main());
+// Only run when executed directly. The metric functions above are exported so other tools (and
+// the pack builder) can reuse them; importing this file must not run the gate and call exit().
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  process.exit(await main());
+}

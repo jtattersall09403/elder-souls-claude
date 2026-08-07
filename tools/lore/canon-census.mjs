@@ -148,17 +148,66 @@ export function censusVoiced(reg, world) {
   return rows;
 }
 
-/** §1. Every contradiction edge in a shipped book is registered, or it is a bug. */
+/**
+ * §1. Every contradiction edge in a shipped book is registered, or it is a bug.
+ *
+ * REGISTRATION IS BY COVERAGE, NOT BY BACK-POINTER, and the reason matters. A book's
+ * `contradicts[].cf` is one copy of the registration and `positions[].voiced_by` is another, and
+ * two copies of a fact drift. The registry is the authority — RI-LOR06 §1 asks that the
+ * contradiction "be registered as disputed, with the in-world sources that disagree named", and
+ * a registry naming both books in different positions of one dispute IS that. So an edge is
+ * registered when some disputed fact voices both of its books on opposite sides. A `cf` on the
+ * book side that names the right dispute counts too; a `cf` naming something that is not a
+ * dispute is reported as a stale cross-reference rather than as an unregistered contradiction,
+ * because the contradiction may be perfectly well registered elsewhere and usually is.
+ *
+ * `not_disputes` in the registry rules an edge out entirely: two texts that disagree about what
+ * is WORTH doing are not disagreeing about the world. See the `rule` field there.
+ */
 export function censusEdges(reg, world) {
   const byId = new Map(reg.facts.map((f) => [f.id, f]));
+  const ruled = new Set();
+  for (const e of ((reg.not_disputes && reg.not_disputes.entries) || [])) {
+    const [a, b] = e.books;
+    ruled.add(`${a}|${b}`); ruled.add(`${b}|${a}`);
+  }
+  /** book id -> [{fact, position}] */
+  const voices = new Map();
+  for (const f of reg.facts) {
+    if (!f.disputed) continue;
+    for (const p of (f.positions || [])) {
+      for (const v of (p.voiced_by || [])) {
+        if (!String(v).startsWith('book:')) continue;
+        const id = String(v).slice(5);
+        voices.set(id, (voices.get(id) || []).concat([{ fact: f.id, position: p.id }]));
+      }
+    }
+  }
+  const coveredBy = (a, b) => {
+    for (const x of (voices.get(a) || [])) {
+      for (const y of (voices.get(b) || [])) if (x.fact === y.fact && x.position !== y.position) return x.fact;
+    }
+    return null;
+  };
+
   const edges = [];
-  for (const [id, b] of world.books) {
-    for (const c of b.contradicts) {
-      const e = { from: id, to: c.book, on: c.on || null, cf: c.cf || null, file: b.file, problems: [] };
-      if (!world.books.has(c.book)) e.problems.push(`names \`${c.book}\`, which is not a book in this build`);
-      if (!c.cf) e.problems.push('carries no `cf` — an unregistered contradiction is a bug by RI-LOR06 §1');
-      else if (!byId.has(c.cf)) e.problems.push(`cites \`${c.cf}\`, which is not in the registry`);
-      else if (!byId.get(c.cf).disputed) e.problems.push(`cites \`${c.cf}\`, which is not marked \`disputed\``);
+  for (const [id, bk] of world.books) {
+    for (const c of bk.contradicts) {
+      const e = { from: id, to: c.book, on: c.on || null, cf: c.cf || null, file: bk.file, registered_by: null, problems: [], warnings: [] };
+      if (!world.books.has(c.book)) { e.problems.push(`names \`${c.book}\`, which is not a book in this build`); edges.push(e); continue; }
+      if (ruled.has(`${id}|${c.book}`)) { e.registered_by = 'not-a-dispute (ruled)'; edges.push(e); continue; }
+      const cov = coveredBy(id, c.book);
+      if (cov) e.registered_by = cov;
+      else if (c.cf && byId.has(c.cf) && byId.get(c.cf).disputed) e.registered_by = `${c.cf} (cross-reference only; the registry does not name both books)`;
+      if (!e.registered_by) {
+        e.problems.push(c.cf
+          ? `cites \`${c.cf}\`, which is not a registered dispute, and no dispute names both books — unregistered by RI-LOR06 §1`
+          : 'carries no `cf` and no registered dispute names both books — an unregistered contradiction is a bug by RI-LOR06 §1');
+      } else if (c.cf && byId.has(c.cf) && !byId.get(c.cf).disputed) {
+        e.warnings.push(`cross-reference \`${c.cf}\` records a fact, not this dispute; the registration is \`${e.registered_by}\``);
+      } else if (c.cf && !byId.has(c.cf)) {
+        e.warnings.push(`cross-reference \`${c.cf}\` is not in the registry at all`);
+      }
       edges.push(e);
     }
   }
@@ -213,8 +262,10 @@ function main(argv) {
     fully_voiced: fully.length,
     bar_fully_voiced: BAR,
     contradiction_edges: edges.length,
-    unregistered_edges: edges.filter((e) => !e.cf).length,
-    bad_edges: badEdges.length,
+    registered_edges: edges.filter((e) => e.registered_by).length,
+    ruled_not_disputes: edges.filter((e) => e.registered_by === 'not-a-dispute (ruled)').length,
+    unregistered_edges: badEdges.length,
+    stale_cross_references: edges.filter((e) => e.warnings.length).length,
     dangling_voices: dangling.length,
     adjudicator_hits: adj.length,
   };
@@ -239,9 +290,10 @@ function main(argv) {
   console.log(`  fully voiced: ${fully.length} / ${voiced.length}   bar ≥${BAR}  ${fully.length >= BAR ? 'PASS' : 'FAIL'}\n`);
 
   console.log(`EDGES    RI-LOR06 §1 — every contradiction in shipped content is registered, or it is a bug.`);
-  console.log(`  edges: ${edges.length}   unregistered: ${summary.unregistered_edges}   malformed: ${badEdges.length}`);
-  for (const e of badEdges.slice(0, 40)) console.log(`    ${e.from} -> ${e.to}  (${e.on})\n      ${e.problems.join('\n      ')}`);
+  console.log(`  edges ${edges.length}   registered ${summary.registered_edges} (of which ${summary.ruled_not_disputes} ruled not a dispute)   unregistered ${badEdges.length}   stale cross-references ${summary.stale_cross_references}`);
+  for (const e of badEdges.slice(0, 40)) console.log(`    UNREGISTERED  ${e.from} -> ${e.to}  (${e.on})\n      ${e.problems.join('\n      ')}`);
   if (badEdges.length > 40) console.log(`    … and ${badEdges.length - 40} more`);
+  for (const e of edges.filter((x) => x.warnings.length)) console.log(`    warn  ${e.from} -> ${e.to}: ${e.warnings.join('; ')}`);
   console.log('');
 
   console.log(`ADJUDGE  RI-LOR06 method §5 — text that settles a registered dispute. Reported, not graded.`);

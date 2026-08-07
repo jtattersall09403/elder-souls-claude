@@ -231,12 +231,19 @@ export class Sky {
       // Three's `FogExp2` transmits `exp(-(density * d)^2)`, so the density at which 2% of a
       // silhouette survives at distance S is `sqrt(-ln 0.02) / S = 1.978 / S`.
       //
-      // It is a MAX against the region's own extinction, not a replacement, and that is S24: the
-      // region owns its haze and its hue, and the weather may only ever make it worse. Blackwood
-      // in a clear spell is still Blackwood's 110 m; a salt-storm in the Stone Wastes overrides the
-      // region's 521 m down to 60 m because that is what a salt-storm is.
+      // The two extinctions ADD, because that is what extinction coefficients do, and the
+      // arithmetic is load-bearing rather than pedantic. The first version of this took `max()`
+      // of the region's haze and the weather's, and W1-02's own consumption probe caught what
+      // that costs: in the four regions whose own extinction is already high — Blackwood at
+      // 0.018/m, the Hive, Marauder's Coast, the Stone Forest — the region term won against
+      // EVERY state its machine can roll, so weather changed the frame by exactly nothing in four
+      // of thirteen regions. That is `RI-WLD08` §5's "weather as a colour grade" arriving through
+      // a `Math.max`.
+      //
+      // Adding them keeps S24 intact: the region still owns the hue and still sets the floor, and
+      // weather can only ever make the air thicker, never clearer than the region's own.
       const sightline = env && Number.isFinite(env.sightlineM) ? env.sightlineM : 0;
-      this.scene.fog.density = sightline > 0 ? Math.max(base, 1.978 / sightline) : base;
+      this.scene.fog.density = sightline > 0 ? base + 1.978 / sightline : base;
     } else {
       this.scene.fog.density = w.fogDensity;
       this.scene.fog.color.copy(hor).multiplyScalar(0.92);

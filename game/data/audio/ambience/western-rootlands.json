@@ -24,7 +24,7 @@
       "id": "l1_warm_reed_hum",
       "text": "warm low reed-hum",
       "level_db": 0,
-      "voices": 2,
+      "voices": 1,
       "classes": [
         "flora"
       ],
@@ -134,48 +134,64 @@
       ]
     },
     "L3": {
-      "id": "l3_hide_drum",
-      "text": "hide-drum on a 90-second beat \u2014 the region's signature, a metronome no other region has. It is distinctive BECAUSE it is rare (\u00a7How we lose).",
+      "id": "l3_reeds_and_shallows_oneshots",
+      "text": "reed-snap and shallow-water slap: the ordinary punctuation under the drum",
       "interval_s": [
-        85,
-        95
+        9,
+        26
       ],
-      "level_db": -2,
+      "level_db": -4,
       "events": [
         {
-          "id": "hide_drum",
+          "id": "reed_snap",
           "classes": [
-            "people"
+            "flora"
           ],
-          "weight": 1,
+          "weight": 3,
           "pan": [
-            -0.4,
-            0.4
+            -0.9,
+            0.9
           ],
           "synth": {
             "kind": "grain",
-            "source": "osc",
-            "waveform": "sine",
-            "freq_hz": 96,
-            "glide_hz": [
-              96,
-              70
-            ],
+            "source": "noise",
+            "colour": "white",
             "filter": {
-              "type": "lowpass",
-              "hz": 400,
-              "q": 1.4
+              "type": "bandpass",
+              "hz": 2300,
+              "q": 6.0
             },
             "env": {
-              "attack_s": 0.002,
-              "decay_s": 0.55
+              "attack_s": 0.001,
+              "decay_s": 0.06
             },
-            "gain_db": -6,
-            "repeats": {
-              "n": 3,
-              "gap_s": 0.5,
-              "gap_jitter_s": 0.02
-            }
+            "gain_db": -11
+          }
+        },
+        {
+          "id": "shallow_slap",
+          "classes": [
+            "water"
+          ],
+          "weight": 2,
+          "pan": [
+            -0.7,
+            0.7
+          ],
+          "synth": {
+            "kind": "grain",
+            "source": "noise",
+            "colour": "pink",
+            "filter": {
+              "type": "lowpass",
+              "hz": 900,
+              "q": 1.2
+            },
+            "env": {
+              "attack_s": 0.004,
+              "decay_s": 0.18
+            },
+            "gain_db": -10
           }
         }
       ]
@@ -290,6 +306,47 @@
       ]
     }
   },
-  "emitters": [],
+  "emitters": [
+    {
+      "id": "hide_drum",
+      "text": "the hide-drum on its 90-second beat \u2014 the region's signature and a metronome no other region has. Moved here from L3 because \u00a7A caps L3 at 8\u201340 s and \u00a7B gives the drum 90; as an R7 emitter it keeps the beat AND gains a bearing, which is what actually separates the Western Rootlands from the three other (wet, open, living) regions in \u00a7C's key.",
+      "pos_m": [
+        1727,
+        4716
+      ],
+      "audible_m": 750,
+      "ref_m": 50,
+      "level_db": -2,
+      "classes": [
+        "people"
+      ],
+      "period_s": 90.0,
+      "synth": {
+        "kind": "grain",
+        "source": "osc",
+        "waveform": "sine",
+        "freq_hz": 96,
+        "glide_hz": [
+          96,
+          70
+        ],
+        "filter": {
+          "type": "lowpass",
+          "hz": 400,
+          "q": 1.4
+        },
+        "env": {
+          "attack_s": 0.002,
+          "decay_s": 0.55
+        },
+        "gain_db": -6,
+        "repeats": {
+          "n": 3,
+          "gap_s": 0.5,
+          "gap_jitter_s": 0.02
+        }
+      }
+    }
+  ],
   "provenance": "brief and layer intent quoted from corpus/87-audio/RI-AUD03-regional-ambience.md \u00a7B, which quotes game/data/world/regions.json. Synth parameters constructed by W1-22: this build has no audio assets and the bed is synthesised, so a synth spec IS the asset."
 }

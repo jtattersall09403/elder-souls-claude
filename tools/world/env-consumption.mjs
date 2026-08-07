@@ -136,18 +136,27 @@ const pass = (name, detail) => results.push({ check: name, pass: true, detail })
 }
 
 // ---------------------------------------------------------------------------------------------
-// C2. SOULS. `awardFor(stat, timeOfDay)` pays differently at night; the clock must reach night.
+// C2. SOULS. `awardFor(stat, timeOfDay)` pays a night multiplier; the clock must reach night.
+//     The stat is a real shipped statblock, not a placeholder — `awardFor` returns zero souls for
+//     anything with no `souls` field, which is how the first version of this check passed
+//     vacuously against `'str'` and had to be rewritten. That is the point of a negative control.
 // ---------------------------------------------------------------------------------------------
 {
-  const live = run('thornmarsh', 120000, { startHour: 21 });   // 33 real min from 21:00
-  const nightNow = isNight(live.report.time_of_day);
-  const dayAward = awardFor('str', 12);
-  const nightAward = awardFor('str', live.report.time_of_day);
-  const differs = JSON.stringify(dayAward) !== JSON.stringify(nightAward);
-  (nightNow && differs ? pass : fail)('C2 the soul award changes because the clock reached night', {
+  const stat = { souls: 120 };
+  // 20:00 + 21,600 frames (6 real minutes = 2 game hours) lands at 22:00, inside RI-PRG04's
+  // 21:00-05:00 night window, without wrapping past dawn the way the first version did.
+  const live = run('thornmarsh', 21600, { startHour: 20 });
+  const frozen = run('thornmarsh', 21600, { startHour: 20, paused: true });
+  const before = awardFor(stat, 20);
+  const after = awardFor(stat, live.report.time_of_day);
+  const control = awardFor(stat, frozen.report.time_of_day);
+  const moved = after.souls !== before.souls && after.night === true;
+  const held = control.souls === before.souls;
+  (moved && held ? pass : fail)('C2 the soul award changes because the clock reached night', {
     consumer: 'game/src/sim/souls.js#awardFor(stat, sim.env.timeOfDay)',
-    hour_after: live.report.time_of_day, is_night: nightNow,
-    award_at_noon: dayAward, award_now: nightAward,
+    hour_before: 20, hour_after: live.report.time_of_day,
+    award_before: before, award_after: after,
+    frozen_control_hour: frozen.report.time_of_day, frozen_control_award: control, control_held: held,
   });
 }
 
@@ -180,26 +189,50 @@ const pass = (name, detail) => results.push({ check: name, pass: true, detail })
 }
 
 // ---------------------------------------------------------------------------------------------
-// C4. SIGHTLINE. The declared metres become a fog density the frame is drawn with — the number is
-//     the distance, not a label. Checked as arithmetic here; the frame is checked by capture.
+// C4. SIGHTLINE. The declared metres become a fog density the frame is drawn with.
+//
+//     The first version of this check asserted that every region's WORST state cuts that region's
+//     own sightline, and four regions failed it — Blackwood, the Hive, Marauder's Coast and the
+//     Stone Forest. The check was wrong, twice over, and both corrections are real:
+//
+//     (a) RI-WLD08 §5 requires the worst state to change ONE of sightline, stamina, damage,
+//         disease, enemy behaviour or navigation. The Hive's `queen_agitation` is worst because it
+//         doubles the drone aggro radius, not because it is foggy. So the bar is "some channel",
+//         and this check now enumerates WHICH.
+//     (b) The renderer was combining the region's haze and the weather's with `max()`, which meant
+//         that in a region whose own extinction is high — Blackwood at 0.018/m — NO weather state
+//         could change the fog at all. Extinction coefficients ADD; `max()` was not a
+//         simplification, it was weather-as-decoration in the four densest regions. sky.js now
+//         adds them, so every state changes the frame in every region.
 // ---------------------------------------------------------------------------------------------
 {
   const rows = [];
   for (const m of weather.regions) {
     const r = regions.regions.find((x) => x.id === m.region);
-    const base = r.fog.extinction_per_m;
+    const base = r.fog.extinction_per_m * 1.22;
+    const seen = new Set();
+    for (const s of m.states) {
+      const realised = 1.978 / (base + 1.978 / s.sightline_m);
+      seen.add(Math.round(realised));
+    }
     const worst = m.states.find((s) => s.id === m.worst);
-    const dens = Math.max(base * 1.22, 1.978 / worst.sightline_m);
-    // Distance at which 2% of a silhouette survives, i.e. what the frame really shows.
-    const realised = 1.978 / dens;
-    rows.push({ region: m.region, worst: m.worst, declared_m: worst.sightline_m, realised_m: +realised.toFixed(1),
-      region_only_m: +(1.978 / (base * 1.22)).toFixed(1) });
+    const channels = Object.keys(worst.effect || {});
+    const worstRealised = 1.978 / (base + 1.978 / worst.sightline_m);
+    const clearest = Math.max(...m.states.map((s) => 1.978 / (base + 1.978 / s.sightline_m)));
+    if (worstRealised < clearest - 1) channels.push('sightline');
+    rows.push({
+      region: m.region, worst: m.worst,
+      worst_channels: channels,
+      distinct_realised_sightlines: seen.size, states: m.states.length,
+      realised_range_m: [Math.min(...seen), Math.max(...seen)],
+    });
   }
-  // The worst state must actually cut the region's own visibility, in every region.
-  const noCut = rows.filter((r) => r.realised_m >= r.region_only_m - 1);
-  (noCut.length === 0 ? pass : fail)('C4 the worst weather cuts the region\'s own sightline', {
-    consumer: 'game/src/render/sky.js — scene.fog.density = max(regionExtinction, 1.978 / sightline_m)',
-    regions_where_the_worst_weather_changes_nothing: noCut.map((n) => n.region),
+  const cosmetic = rows.filter((r) => r.worst_channels.length === 0);
+  const flat = rows.filter((r) => r.distinct_realised_sightlines < r.states);
+  (cosmetic.length === 0 && flat.length === 0 ? pass : fail)('C4 weather is mechanical, and every state changes the frame', {
+    consumer: 'game/src/render/sky.js — scene.fog.density = regionExtinction + 1.978 / sightline_m',
+    worst_state_with_no_mechanical_channel: cosmetic.map((c) => c.region),
+    regions_where_two_states_draw_the_same_fog: flat.map((f) => f.region),
     rows,
   });
 }
@@ -213,7 +246,10 @@ const pass = (name, detail) => results.push({ check: name, pass: true, detail })
   const b = run('deep-marshes', weather.tick_frames * 6 + 17, { startHour: 3 });
   const same = JSON.stringify(a.samples) === JSON.stringify(b.samples);
   const src = readFileSync(resolve(ROOT, 'game/src/sim/environment.js'), 'utf8');
-  const clean = !/Math\.random|Date\.now|performance\.now|new Date\(/.test(src);
+  // Strip comments first: the file's own header NAMES `Math.random` while explaining why it does
+  // not call it, and the first version of this check failed on its own documentation.
+  const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  const clean = !/Math\.random|Date\.now|performance\.now|new Date\(/.test(code);
   (same && clean ? pass : fail)('C5 deterministic and guard-safe', { identical_runs: same, no_rng_no_clock: clean });
 }
 

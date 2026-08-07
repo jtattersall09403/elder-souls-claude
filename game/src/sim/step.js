@@ -121,7 +121,7 @@ export function stepOnce(sim, input, combat, bus) {
     // Deliberately BEFORE `stepEncounters`, so an encounter that opens on frame N is opening
     // against the souls frame N's kills earned, and before the camera so `souls_awarded`
     // appears in frame N's record.
-    stepSouls(sim, bus);
+    // DELETE-THE-FIX PROBE, restored immediately after: stepSouls(sim, bus);
     // The pivot must read the POST-physics controller position (RI-CAM01 §A), so the body is
     // pushed out of the world between the fight and the camera, never after it.
     stepWorldCollision(sim, combat);

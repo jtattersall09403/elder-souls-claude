@@ -17,7 +17,10 @@
     "game/src/sim/step.js   (stepSouls after stampHostileAction)",
     "game/src/engine.js     (construct, reset on loadState, reset on applySave)",
     "game/src/sim/events.js (+'souls_awarded' vocabulary amendment)",
-    "tools/progression/souls-consumption.mjs + reports/souls-consumption.json (12/12 arms, 0 unfalsifiable)"
+    "tools/progression/souls-consumption.mjs + reports/souls-consumption.json (12/12 arms, 0 unfalsifiable)",
+    "tools/quests/faction-signature-sweep.mjs (+bought_stream, derived from placed enemies; +ceiling_at_design_budget)",
+    "game/src/sim/events.js (+day_phase/+weather_change \u2014 W1-02's names, missing, throwing inside the fixed step)",
+    "tools/progression/derive-soul-values.mjs --pace (the balance table)"
   ],
   "findings": [
     "START: pgrep -c headless_shell = 12, loadavg 11.27 10.19 8.22 -- ABOVE the cap of 8. Doing design+data phase first with no browser.",
@@ -36,8 +39,13 @@
     "PROBE GOTCHA worth keeping: spawn-then-kill inside ONE frame pays nothing, by design -- the lazy seeding rule treats a body it never saw alive as already settled (that is what stops a loaded save paying out its corpses). Round 1 of the probe did this and misread it as a passing delete-the-fix. Any successor probe must step 1 frame after spawning.",
     "PROBE GOTCHA 2: H.writeSave/H.readSave are ASYNC; calling them synchronously inside page.evaluate silently does nothing. Also H.getFrame() returns a NUMBER, not a record -- read events via traceStart/traceDrain.",
     "PROBE GOTCHA 3: hearthRest() refuses from anywhere not near a real well ('No sapwell within reach'); setAtHearth(true) only flips the UI gate. Teleport to listHearths()[0].pos first.",
-    "PROBE GOTCHA 4: without H.setCharacter(...) the engine carries a placeholder SIX-attribute Souls sheet and vigour feeds nothing -- hp_max sat at 620 and did not move. With a real sheet it is 196 -> 222."
+    "PROBE GOTCHA 4: without H.setCharacter(...) the engine carries a placeholder SIX-attribute Souls sheet and vigour feeds nothing -- hp_max sat at 620 and did not move. With a real sheet it is 196 -> 222.",
+    "BALANCE (first pass): level 2 = 418 souls = 3.1 sentry kills = 4.6 min; level 10 = 7.8 kills = 11.7 min; level 14 (end of R1) = 11.1 kills = 16.5 min. Averages to RI-PRG06 \u00a75's 10.8 min/level over R1 BY CONSTRUCTION, because the anchor is RI-PRG06's own R1 mean kill. Minutes use RI-PRG06's 108 min / 72.5 killed = 1.49 min per killed enemy, NOT a node-arena TTK.",
+    "NODE TTK cross-check (combat-node, straight sword vs inf_trash): 21.7-23.4 s of continuous swinging, 15 landed hits through armour_rating 30. NOT used for any published number -- the node arena runs no stealth perception so the enemy never turns.",
+    "THE CROSSING pays 816 souls -> level 2 with 398 of the next 483 in hand; at night 1,102 -> level 3.",
+    "HEADLINE: every hand-placed enemy in the world (9) is worth 1,224 souls = level 3. RI-PRG06 \u00a77 plans ~1,230 placed enemies for a first clear at L82. The curve, the values and the loop are correct and THE WORLD IS EMPTY -- the progression ceiling is a world-population problem now, not a soul-economy one.",
+    "BLOCKER HIT (another agent's, in-flight): W1-02 landed sim/environment.js emitting 'day_phase' and 'weather_change' with NO vocabulary entry. Environment.step() runs FIRST in stepOnce(), so it threw inside the fixed step and EVERY stepping probe in the project died. boot-check stayed green because boot does not step. Added both names as the additive repair events.js itself prescribes. Their engine.js also transiently called _stepAmbience before defining it."
   ],
-  "next_step": "delete-the-fix: comment out stepSouls in step.js, rerun probe, confirm ALL arms go red; then attr-scale sweep+audit; then checkers, shot, blog",
+  "next_step": "browser batch when contention drops: delete-the-fix run, faction-signature-sweep, attr-scale-audit, boot-check, screenshot, blog line",
   "notes_for_successor": ""
 }

@@ -102,14 +102,14 @@ try {
   if (only.has('d2')) {
     const rows = [];
     for (const wid of String(args.wells || 'hearth-archon,hearth-stormhold,hearth-gideon').split(',')) {
-      for (const mode of ['released', 'held', 'released-no-traversal-reset']) {
+      for (const mode of ['released', 'held', 'released-no-traversal-reset', 'held-no-traversal-reset']) {
         const r = await h.page.evaluate(async ({ w, m }) => {
           const eng = window.__ENGINE || (window.__HARNESS && window.__HARNESS._engine);
           const H = window.__HARNESS;
           let restored = null;
           try {
             H.loadState('default'); H.setRenderRate(0);
-            if (m === 'released-no-traversal-reset') {
+            if (m.endsWith('-no-traversal-reset')) {
               // THE PERTURBATION: take away the line round 2 added. If the 0.00 m is the fix
               // and not the measurement, the drift must come back.
               const t = eng.traversal;
@@ -122,7 +122,7 @@ try {
             H.teleport(well.pos[0] + 40, well.pos[2] + 40); H.stepFrames(20);
             H.restAt(w); H.stepFrames(2);
             H.teleport(well.pos[0] + 120, well.pos[2] + 120); H.stepFrames(20);
-            if (m === 'held') H.queueInputs([{ f: 0, move: [0, 1] }]);
+            if (m.startsWith('held')) H.queueInputs([{ f: 0, move: [0, 1] }]);
             H.stepFrames(10);
             H.killPlayer('combat');
             H.stepFrames(1); H.stepFrames(200);

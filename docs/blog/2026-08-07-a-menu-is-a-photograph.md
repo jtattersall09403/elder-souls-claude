@@ -1,7 +1,7 @@
 ---
 title: Every paused screen in the game was a photograph
 date: 2026-08-07
-time: 16:52Z
+time: 16:41Z
 summary: Press a button on the map or turn a page of the journal and the game changed what it thought you were looking at, and the picture stayed exactly as it was. No screen that pauses the world had ever redrawn itself.
 kind: dispatch
 ---

@@ -381,6 +381,42 @@ try {
   for (const r of v) say(`${r.pass ? 'PASS' : 'FAIL'}  ${r.name}\n        ${r.detail}`);
   const bad = v.filter((r) => !r.pass).length;
 
+  // ---- THE PICTURE ---------------------------------------------------------------------------
+  // Taken in the browser this run already has open, per AGENT-PROTOCOL "Do not launch a browser
+  // for a photograph" — the exception it names is exactly this ("you already have the world
+  // open"). Rendering is off for the whole stepping run and is turned back on only for these
+  // frames, which is the other half of the same rule.
+  const shot = arg('shot', null);
+  if (shot) {
+    try {
+      await page.setViewportSize({ width: 1280, height: 720 });
+      const tableau = await page.evaluate(async () => {
+        const H = window.__HARNESS, E = window.__ENGINE;
+        // A clean tableau, and every soul in it EARNED: reset the purse, put a real encounter in
+        // front of the player, kill it, then open the screen the souls are spent at.
+        E.sim.progression.soulsHeld = 0; E.sim.progression.level = 1; E.sim.progression.soulsSpent = 0;
+        H.setTimeOfDay(14);
+        for (const e of H.listEntities() || []) { try { H.despawn(e.eid || e.id); } catch { /* gone */ } }
+        const p = H.getPlayerStats().pos;
+        H.spawnEncounter('dres-raid-party', p[0], p[2]);
+        H.stepFrames(1);
+        const eids = (H.listEntities() || []).map((e) => e.eid || e.id).filter((x) => x && !!E.combat.bodyOf(String(x)));
+        for (const eid of eids) { H.killEntity(eid); H.stepFrames(2); }
+        H.setAtHearth(true);
+        H.openMenu('levelup');
+        H.setRenderRate(60);
+        H.stepFrames(4);
+        const st = H.getPlayerStats();
+        return { kills: eids.length, souls: st.souls, price: st.souls_to_next, level: st.level, mode: H.getUIState().mode };
+      });
+      await page.waitForTimeout(600);
+      fs.mkdirSync(path.dirname(path.join(ROOT, shot)), { recursive: true });
+      await page.screenshot({ path: path.join(ROOT, shot) });
+      out.shot = { path: shot, tableau };
+      say(`shot: ${shot} — ${tableau.kills} kills earned ${tableau.souls} souls, next level ${tableau.price}, screen '${tableau.mode}'`);
+    } catch (e) { say(`shot failed: ${e.message || e}`); out.shot_error = String(e.message || e); }
+  }
+
   // The falsifiability gate. A passes only if B goes red; C's two arms must disagree with each
   // other; F's day arm must differ from its night arm. A suite where every arm passes because
   // nothing is coupled to anything is exactly the failure this file exists to refuse.

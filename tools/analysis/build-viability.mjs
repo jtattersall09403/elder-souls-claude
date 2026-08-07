@@ -2482,6 +2482,10 @@ function selfTest() {
   // and shrinking the grid would shrink the evidence. That judgement stands. What was missing is
   // that a critic watching a silent terminal cannot tell slow from hung, so every walk now
   // announces itself, times itself, and projects the remainder from walks already done.
+  // The two gates whose `unmeasurable` verdict is NOT a refusal to decide a giver: an ungrounded
+  // requirement token, and a quest document shape this tool has no predicate for. Both are named
+  // absences that exit non-zero; neither is the corpus_debt laundering R2 §1 forbids.
+  const UNMEASURABLE_NOT_ABOUT_GIVERS = new Set(['ungrounded requirement', 'quest shape not modelled']);
   const SEED_LADDER = [0, 15, 30, 45, 60, 100];
   const WALKS_EXPECTED = 13 + SEED_LADDER.length + 4;   // +4: the round-5 reputation and model-differential walks
   let walkN = 0;
@@ -2584,11 +2588,20 @@ function selfTest() {
     unseededBlocked.size > baseBlocked.size
     && grew.length > 0
     && [...baseBlocked].every((g) => unseededBlocked.has(g))
-    && unseeded.filter((r) => r.unmeasurable).length === 0
+    // ROUND 5. The clause was `unseeded.filter(r => r.unmeasurable).length === 0`. R2 §1's rule
+    // is about GIVERS — a giver the world cannot reach is the build's failure and must be `fail`,
+    // because `unmeasurable` routes to corpus_debt and charges nobody. `unmeasurable` now has two
+    // other, legitimate causes that have nothing to do with givers (a requirement token with no
+    // producer; a quest document shape this tool has no predicate for), so the clause is scoped
+    // to the gates it was always about instead of counting every refusal in the walk.
+    && unseeded.filter((r) => r.unmeasurable && !UNMEASURABLE_NOT_ABOUT_GIVERS
+      .has((r.stopped_at && r.stopped_at.gate) || '')).length === 0
     && nFail(unseeded, 'no_unpassable_gate') >= nFail(base, 'no_unpassable_gate'),
     `givers whose disposition bar stops at least one signature: ${baseBlocked.size} -> ` +
     `${unseededBlocked.size} (NEW: ${grew.slice(0, 6).join(', ')}); ` +
-    `${unseeded.filter((r) => r.unmeasurable).length} unmeasurable; ` +
+    `${unseeded.filter((r) => r.unmeasurable).length} unmeasurable, of which ` +
+    `${unseeded.filter((r) => r.unmeasurable && !UNMEASURABLE_NOT_ABOUT_GIVERS.has((r.stopped_at && r.stopped_at.gate) || '')).length} ` +
+    `are about a giver (must be 0); ` +
     `no_unpassable_gate FAIL ${nFail(base, 'no_unpassable_gate')} -> ${nFail(unseeded, 'no_unpassable_gate')} ` +
     `of ${base.length}`);
 

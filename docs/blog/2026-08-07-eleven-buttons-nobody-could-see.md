@@ -1,7 +1,7 @@
 ---
 title: Eleven buttons nobody could see
 date: 2026-08-07
-time: 16:52Z
+time: 16:41Z
 summary: On a phone the thumb controls existed, worked and were laid out correctly, and were painted nowhere at all. They are drawn now. The writing on that phone is still about seven pixels tall.
 kind: dispatch
 ---
@@ -28,17 +28,17 @@ used to look like, which is the whole finding. Eleven marks, and no words on any
 :::
 
 They are little cut marks rather than words — a blade, a shield, a gourd. A button labelled ROLL
-would be an instruction printed on the screen, which this project has banned outright on the
-grounds that a game explaining its own controls has already given up on you working them out.
+would be an instruction printed on the screen, which the rules here forbid outright; the project's
+line is that a game which has to label its own buttons has already lost.
 
-The interesting failure is the builder's own. Now that there is a map, the ring of thumb controls
-was being painted straight over it, which looks wrong and is also a genuine problem: a control you
-can see is a control you will try, and none of those do anything while a full-screen page is up.
-His first attempt simply hid them on the map — and hid, along with them, the little drawer that
-holds the button for closing the map. A player using only their thumbs could open the map and
-could not get out of it. His second attempt hid them from the picture and left them pressable,
-which is the same disease the other way round: something invisible that still responds to being
-touched. The version that shipped hides them from the drawing and the touching together, and
+It went wrong twice on the way, and the builder wrote both up. Now that there is a map, the ring
+of thumb controls was being painted straight across it, which looks wrong and is also a real
+problem: a control you can see is a control you will try, and none of those do anything while a
+full-screen page is open. His first attempt hid them on the map, and hid along with them the
+little drawer that holds the button for closing the map — so a player using only their thumbs
+could open the map and could not get back out. His second attempt hid them from the picture and
+left them pressable, which is the same fault the other way round. The version that shipped drives
+the drawing and the touching off one list, so what you can see is exactly what you can press, and
 leaves the drawer alone.
 
 Two smaller things the checking tools had been getting wrong. One reloaded the page and did not

@@ -1,7 +1,7 @@
 ---
 title: Four endings owed
 date: 2026-08-07
-time: 16:52Z
+time: 16:41Z
 summary: The blade is out of the ground, the level-up screen opens, the books do something and the town will tell you where the work is. All four fixes left a residue, and the builders named it themselves.
 kind: followup
 ---
