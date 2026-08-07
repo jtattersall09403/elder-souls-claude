@@ -1,0 +1,32 @@
+{
+  "task_id": "W1-SOULS-r2",
+  "brief": "corpus/90-verdicts/wave1/W1-SOULS-r1.md (verdict is the spec)",
+  "started": "wave-1 round 2",
+  "state": "researching",
+  "git_at_start": { "commit": "19706e7", "dirty_paths": 13 },
+  "contention_at_start": { "headless_shell": 19, "loadavg": "16.50 16.23 10.33" },
+  "path_to_ten": [
+    "1 re-anchor to RI-PRG06 s7 (GAP-W1-SOULS-01)",
+    "2 fix hazard death path (hazards must damage the combat body)",
+    "3 gate respawn re-arm on a rest epoch",
+    "4 de-vacuum consumption arms B, D, I",
+    "5 land >=1 real-fight arm in souls-consumption.mjs (no harness kill verb)",
+    "6 bind band check to region tier",
+    "7 file the TTK tension (F-6)",
+    "8 correct the death-path list in souls.js header"
+  ],
+  "outputs_expected": [
+    "tools/progression/derive-soul-values.mjs (re-anchored + --census + region-tier band check)",
+    "game/data/combat/enemies/*.json (re-derived values)",
+    "game/src/sim/hazards.js or souls.js (hazard death path)",
+    "game/src/sim/souls.js (respawn rest gate + header fix)",
+    "tools/progression/souls-consumption.mjs (de-vacuumed arms + real-fight arm)",
+    "corpus TTK tension filing",
+    "docs/shots/<dated>.png",
+    "reports/blog-feed.jsonl line"
+  ],
+  "outputs_written": [],
+  "findings": [],
+  "next_step": "read W1-POPULATION status, population.json, souls.js, derive-soul-values.mjs",
+  "notes_for_successor": "Browser contention 19 at start — do all derivation/data first, take browser last. Do NOT self-grade."
+}

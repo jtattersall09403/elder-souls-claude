@@ -11,7 +11,9 @@
     "reports/blog-feed.jsonl line"
   ],
   "outputs_written": [
-    "corpus/60-lore/RI-LOR08-argonian-tribes.md \u2014 the design note. Six peoples, ALL canon-named, zero invented; five-axis differentiation (diet/Hist/Empire/lukiul/refusal); Xul-Aneekh reframed as a consensus OF peoples; 6 new disputes CF-D022..D027 and 5 arguments deliberately NOT registered; rejected-names table so omissions are decisions."
+    "corpus/60-lore/RI-LOR08-argonian-tribes.md \u2014 the design note. Six peoples, ALL canon-named, zero invented; five-axis differentiation (diet/Hist/Empire/lukiul/refusal); Xul-Aneekh reframed as a consensus OF peoples; 6 new disputes CF-D022..D027 and 5 arguments deliberately NOT registered; rejected-names table so omissions are decisions.",
+    "game/data/npcs/tribes.json \u2014 11 NPCs: 2 Agaceph, 2 Paatru, 1 Sarpa, 2 Archein, 2 Miredancer, 1 Dead-Water, 1 Provincial-Office antiquarian. New faction ids agacephs/paatru/sarpa/archein/miredancers/dead-water so canon.js#stanceOf can match a people to a position. check-data 347 NPCs, settlements resolve.",
+    "game/data/dialogue/topics/75-tribes.json \u2014 12 topics, 62 infos, 2771 w. 7 dispute topics (cf+pos on CF-D022..D027) and 5 argument topics deliberately carrying NO cf. check-prose on this file: questions 50.5 (floor 39.8), exclamations 14.4 (band 5.3-42.6), sting 0.00 (ceiling 6.0), fragopen 0.00, andopen 36.1 (band 16-128), contractions 115.5 (band 43.8-365.4), zero tics \u2014 every gated bar green."
   ],
   "findings": [
     "W1-23 report \u00a76 is the binding context: province is organised by 4 CONSTRUCTED bodies (Deep-Kin 87, Xul-Aneekh 84, Drowned Court 64, Sap-Cutters 53, Wet Ledger 45), not tribes. Its explicit warning: 'If tribes are wanted, they need a faction each, not a mention each.'",
@@ -27,7 +29,7 @@
     "GEOGRAPHY: region->settlement map is blackwood>Gideon, crimson-coast>Archon, stone-forest>Helstrom, stone-wastes>Soulrest, thornmarsh>Thorn, western-rootlands>Lilmoth+Blackrose, salt-hills>Stormhold. clay-moor, deep-marshes, eastern-rootlands, hive, marauders-coast, valus-ridge have NO settlement \u2014 those are the tribes' ground.",
     "PROSE BARS (tools/check-prose.mjs): questions floor 39.8/10k (ref 159.2), exclamations band floor 5.3 (ref 21.3), sting ceiling 6.0 (ref 3.4), andopen band floor 16.0 (ref 64.0), contractions band 43.8-365.4 (ref 292.3). Tics: 'that is what/why/all', -body forms, 'eleven', sentence-initial 'Which' fragments."
   ],
-  "next_step": "author game/data/npcs/tribes.json + game/data/dialogue/topics/75-tribes.json + game/data/books/the-tribes.json BEFORE touching canon-facts.json (resolve() throws at boot on a dangle)",
+  "next_step": "write game/data/books/the-tribes.json, then register CF-D022..D027 + CF-C025..C030 in corpus/60-lore/data/canon-facts.json, then build-canon + census",
   "notes_for_successor": "DESIGN DECIDED (write it down before authoring): six peoples, ALL canon-named, none invented \u2014 Agacephs (Deep Marshes), Paatru (Clay Moor), Sarpa (Stone Forest), Archein (Blackwood/Gideon estates), Gee-Rusleel/Miredancers (Eastern Rootlands), Naga-Kur/Dead-Water (Thornmarsh+Hive). The hinge: the Xul-Aneekh is a CONSENSUS OF tribes, not a people, which is why it is fragile. New files only (no collision): corpus/60-lore/RI-LOR08-argonian-tribes.md, game/data/npcs/tribes.json, game/data/dialogue/topics/75-tribes.json, game/data/books/the-tribes.json. Prose builder holds 10-global/50-mainline/30-texture/20-tier-a/greetings/40-race-gated; martial library holds the-drill-book/the-arms-of-the-province/the-ford-arguments.",
   "files_touching": [
     "corpus/60-lore/RI-LOR08-argonian-tribes.md",

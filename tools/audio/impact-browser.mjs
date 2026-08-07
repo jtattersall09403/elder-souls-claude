@@ -260,9 +260,10 @@ try {
   // The bearing is taken from the WORLD (the enemy's own position on the frame the voice was
   // decided on), never from the audio row, so the correlation is a join between two independent
   // streams rather than a restatement of one.
-  const panRun = async (moving) => page.evaluate((mv) => {
+  const panRun = async (moving, panSource) => page.evaluate(({ mv, ps }) => {
     const H = window.__HARNESS;
     H.setSeed(1337); H.loadState('arena_duel'); H.stepFrames(4);
+    H.setAudioPanSource(ps);
     for (const e of H.listEntities()) if (e.kind === 'enemy') H.despawn(e.eid);
     const eid = H.spawn('mat_flesh', 0, 1.4, { as: 'AUD' });
     const R = 1.4;
@@ -277,7 +278,7 @@ try {
     // target at (player + R at bearing pyaw+theta) keeps it inside the arc and makes `theta`
     // the relative bearing the pan is supposed to track.
     let theta = mv ? -40 : 0;
-    for (let k = 0; k < 40; k++) {
+    for (let k = 0; k < 64; k++) {
       H.queueInputs([{ f: 1, press: ['light'] }, { f: 3, release: ['light'] }]);
       for (let f = 0; f < 46; f++) {
         if (mv) { theta += 0.9; if (theta > 40) theta = -40; }
@@ -291,8 +292,9 @@ try {
       }
     }
     const rows = H.audioLog().slice(from);
-    return { rows, world, moving: mv };
-  }, moving);
+    H.setAudioPanSource('impact');
+    return { rows, world, moving: mv, pan_source: ps };
+  }, { mv: moving, ps: panSource });
 
   const pearson = (xs, ys) => {
     const n = xs.length; if (n < 2) return null;
@@ -327,21 +329,36 @@ try {
       sample: pts.slice(0, 8),
     };
   };
-  const mvRun = await panRun(true);
-  const stRun = await panRun(false);
+  // Three series, and the three of them together are the argument:
+  //   moving + impact    the shipped rule against a target that moves        -> must pass
+  //   moving + attacker  the rule this build had, same fixture               -> must fail
+  //   still  + impact    the fixture a probe reaches for by default          -> cannot decide
+  const mvRun = await panRun(true, 'impact');
+  const mvLegacy = await panRun(true, 'attacker');
+  const stRun = await panRun(false, 'impact');
   report.phases.P4_pan_M6 = {
-    moving: analysePan(mvRun),
+    moving_shipped: analysePan(mvRun),
+    moving_legacy_attacker_position: analysePan(mvLegacy),
     still_control: analysePan(stRun),
   };
   {
-    const m = report.phases.P4_pan_M6.moving, s = report.phases.P4_pan_M6.still_control;
-    report.phases.P4_pan_M6.M6 = (m.r_pan_vs_sin_bearing !== null && m.r_pan_vs_sin_bearing >= 0.8) ? 'PASS' : 'FAIL';
-    // The point of the control: with the target parked, pan is a CONSTANT, Pearson r is
-    // undefined, and a panner hard-wired to 0 is indistinguishable from a correct one.
+    const m = report.phases.P4_pan_M6.moving_shipped;
+    const l = report.phases.P4_pan_M6.moving_legacy_attacker_position;
+    const st = report.phases.P4_pan_M6.still_control;
+    report.phases.P4_pan_M6.M6 = (m.r_pan_vs_sin_bearing !== null && m.r_pan_vs_sin_bearing >= 0.8 && m.impacts >= 20) ? 'PASS' : 'FAIL';
+    report.phases.P4_pan_M6.events_ge_20 = m.impacts >= 20;
+    // The detector must be seen going red. The legacy rule on the SAME fixture is the red.
+    report.phases.P4_pan_M6.detector_goes_red =
+      l.r_pan_vs_sin_bearing === null || l.r_pan_vs_sin_bearing < 0.8;
+    // And the point of the still control: with the target parked, pan is a CONSTANT, Pearson r
+    // is undefined, and a panner hard-wired to 0 is indistinguishable from a correct one.
     report.phases.P4_pan_M6.still_control_is_degenerate =
-      s.pan_distinct <= 1 && s.r_pan_vs_sin_bearing === null;
+      st.pan_distinct <= 1 && st.r_pan_vs_sin_bearing === null;
   }
-  console.log('P4 M6:', JSON.stringify(report.phases.P4_pan_M6.moving), '\n   still control:', JSON.stringify(report.phases.P4_pan_M6.still_control));
+  console.log('P4 M6 shipped :', JSON.stringify(report.phases.P4_pan_M6.moving_shipped).slice(0, 300));
+  console.log('P4 M6 legacy  :', JSON.stringify(report.phases.P4_pan_M6.moving_legacy_attacker_position).slice(0, 300));
+  console.log('P4 M6 still   :', JSON.stringify(report.phases.P4_pan_M6.still_control).slice(0, 300));
+  console.log('P4 verdict    :', report.phases.P4_pan_M6.M6, 'red-on-legacy', report.phases.P4_pan_M6.detector_goes_red, 'still-degenerate', report.phases.P4_pan_M6.still_control_is_degenerate);
   save();
 
   // ── P5 ─ the sabotage, in the browser ─────────────────────────────────────────────────────

@@ -38,6 +38,18 @@ export function applyOne(doc, topicId, index, before, after) {
   return { ok: true };
 }
 
+// The second address shape: a record in a `greetings` array, by its own id. Greetings files are
+// appended to and partly generator-fed, so an index into them is not a stable address; the id is.
+export function applyOneGreeting(doc, id, before, after) {
+  const g = (doc.greetings || []).find((x) => x.id === id);
+  if (!g) return { ok: false, why: `no greeting "${id}"` };
+  if (before != null && g.x !== before) {
+    return { ok: false, why: `greeting ${id} is not what the rewrite expected — it has been edited since. On disk: ${JSON.stringify(g.x).slice(0, 120)}` };
+  }
+  g.x = after;
+  return { ok: true };
+}
+
 function selfTest() {
   let bad = 0;
   const t = (c, m) => { console.log(`  ${c ? 'ok  ' : 'FAIL'}  ${m}`); if (!c) bad++; };
@@ -53,6 +65,14 @@ function selfTest() {
   t(!stale.ok && /edited since/.test(stale.why), 'refuses when the line on disk is not what the rewrite expected (concurrent edit)');
   d = mk();
   t(applyOne(d, 'a', 0, null, 'X').ok, 'a null `before` means "apply regardless", for a deliberate override');
+
+  const mkg = () => ({ greetings: [{ id: 'g1', x: 'one' }, { id: 'g2', x: 'two' }] });
+  let gd = mkg();
+  t(applyOneGreeting(gd, 'g2', 'two', 'TWO').ok && gd.greetings[1].x === 'TWO', 'applies the addressed greeting by id');
+  t(gd.greetings[0].x === 'one', 'and leaves its sibling greeting alone');
+  t(!applyOneGreeting(mkg(), 'nope', 'one', 'X').ok, 'refuses an unknown greeting id');
+  const gstale = applyOneGreeting(mkg(), 'g1', 'SOMETHING ELSE', 'X');
+  t(!gstale.ok && /edited since/.test(gstale.why), 'refuses a greeting whose text has changed under it (concurrent edit)');
   console.log(bad ? `SELF-TEST FAILED (${bad})` : 'self-test passed');
   return bad ? 1 : 0;
 }
@@ -78,6 +98,13 @@ function main() {
     const raw = fs.readFileSync(abs, 'utf8');
     const doc = JSON.parse(raw);
     for (const r of list) {
+      if (r.greeting != null) {
+        const before = (doc.greetings || []).find((x) => x.id === r.greeting)?.x;
+        const res = applyOneGreeting(doc, r.greeting, r.before ?? before, r.after);
+        if (!res.ok) { problems.push(`${rel} greeting ${r.greeting}: ${res.why}`); continue; }
+        records.push({ file: rel, greeting: r.greeting, rule: spec.rule, before, after: r.after });
+        continue;
+      }
       const t = (doc.topics || []).find((x) => x.id === r.topic);
       const before = t?.infos?.[r.index]?.x;
       const res = applyOne(doc, r.topic, r.index, r.before ?? before, r.after);

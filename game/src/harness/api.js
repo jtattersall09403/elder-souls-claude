@@ -1972,6 +1972,25 @@ export function installHarness(engine, bootPromise) {
       return { ok: true, trigger_source: mode };
     },
 
+    /**
+     * The SECOND sabotage switch — M6's, and it exists for the same reason as the first.
+     *
+     * `'impact'` (shipped) positions a voice at the body the weapon met. `'attacker'` restores
+     * the rule this build actually had until W1-11 measured it: a blow the player lands was
+     * placed at the PLAYER'S OWN FEET, so `distance_m` was 0 and the "pan" was driven by the
+     * player's own facing and by nothing else. Against a target parked dead ahead that yields
+     * pan 0 and looks perfectly correct, which is how it survived — so M6's before-picture has
+     * to be MEASURED, in the same run, against a target that moves.
+     */
+    setAudioPanSource(mode) {
+      if (mode !== 'impact' && mode !== 'attacker') {
+        return { ok: false, why: `pan_source must be 'impact' or 'attacker', got ${JSON.stringify(mode)}` };
+      }
+      if (!engine.impactAudio) return { ok: false, why: 'no impact audio driver' };
+      engine.impactAudio.panSource = mode;
+      return { ok: true, pan_source: mode };
+    },
+
     // ================= W1-15 — stealth, theft, crime and justice ==============================
     // The extensions RI-STL01, RI-STL02, RI-CRM01 and RI-CRM02 name in their Comparison
     // methods. Each item says in as many words that without them its checks are unmeasurable

@@ -158,6 +158,13 @@ export class ImpactAudio {
     // the default and `audioStats().trigger_source` reports it, so a build running the defect
     // cannot hide.
     this.triggerSource = opts.trigger_source || 'resolution';
+    // The second sabotage switch, and the reason it ships next to the first. `'impact'` is the
+    // shipped rule — a voice is positioned at the body the weapon MET. `'attacker'` restores
+    // the rule this file had before the M6 defect was found, where a blow you land is placed at
+    // your own feet. It exists so the "before" in any M6 comparison is MEASURED in the same run
+    // rather than remembered from a previous one, and so the correlation has something it can
+    // fail against. Default is the correct rule; nothing in the game changes this.
+    this.panSource = opts.pan_source || 'impact';
 
     this.rng = new Rng(this.seed);
     /** M5: the last variant index played per class — never repeat it immediately. */
@@ -324,8 +331,8 @@ export class ImpactAudio {
     // a blow landed ON the listener, where the sound must come from whoever swung it. The
     // player-side classes C10/C11 are `spatialised: false` and take neither branch.
     const victim = e.dst;
-    const srcId = meta.kind === 'WHIFF'
-      ? (e.src || e.who)
+    const srcId = (this.panSource === 'attacker' || meta.kind === 'WHIFF')
+      ? (e.src || e.who || e.dst)
       : ((victim && victim !== this.playerId) ? victim : (e.src || e.who || e.dst));
     const srcPos = world && world.posOf ? world.posOf(srcId) : null;
     if (spec.spatialised && srcPos && world && world.playerPos) {
@@ -473,6 +480,9 @@ export class ImpactAudio {
       panner: { ...PANNER, panningModel: PANNER.model, hrtf: false },
       listenerAttachedTo: 'character',
       trigger_source: this.triggerSource,
+      // Reported for the same reason as `trigger_source`: a build must not be able to run
+      // either sabotage quietly.
+      pan_source: this.panSource,
       classes: Object.keys(this.data.classes).length,
       variants: Object.values(this.data.classes).reduce((a, c) => a + c.variants.length, 0),
       events: this.log.length,
