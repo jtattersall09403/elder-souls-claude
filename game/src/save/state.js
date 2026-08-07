@@ -263,11 +263,35 @@ export function buildSave(sim, build) {
         lkp: e.lkp ? vec(e.lkp) : null,
       })).sort((a, b) => (a.eid < b.eid ? -1 : a.eid > b.eid ? 1 : 0)),
     },
-    death: { bloodstain: sim.quest.death.bloodstain ? {
-      pos: vec(sim.quest.death.bloodstain.pos),
-      souls: sim.quest.death.bloodstain.souls,
-      death_index: sim.quest.death.bloodstain.death_index,
-    } : null },
+    death: {
+      bloodstain: sim.quest.death.bloodstain ? {
+        pos: vec(sim.quest.death.bloodstain.pos),
+        souls: sim.quest.death.bloodstain.souls,
+        death_index: sim.quest.death.bloodstain.death_index,
+      } : null,
+      // W1-13 round 2. THE DEATH ITSELF IS DURABLE, not only its bloom.
+      //
+      // Round 1 saved `bloodstain` and `character.hp = 0` and nothing else. `DeathSystem`'s
+      // in-flight state — `active`, `deathFrame`, `controllableAt` — lived only on the system
+      // object, so on the first frame after a load taken while the death surface was up,
+      // `observe()` saw `hp <= 0` with `!this.active` and fired a FRESH `die()`. That death
+      // carried `soulsHeld = 0` and took D16's second-death branch against a death that never
+      // happened: 4,200 souls in, 0 recoverable, on both the browser-restart route and the
+      // same-session `loadState(blob)` route. The critic measured it with a matched control
+      // (the same save taken 150 frames later) that returned all 4,200.
+      //
+      // Frame stamps are stored RELATIVE, exactly as `pose.camera_death_frames_ago` is, because
+      // `applySave` rebases the frame counter and an absolute index reloads as a wild number.
+      in_flight: sim._death && sim._death.active ? {
+        cause: sim._death.cause || 'combat',
+        death_frames_ago: Math.max(0, f - (sim._death.deathFrame === null ? f : sim._death.deathFrame)),
+        controllable_in_frames: rel(sim._death.controllableAt === null ? f : sim._death.controllableAt, f),
+        skip_requested: sim._death.skipRequestedAt !== null,
+      } : null,
+      deaths_this_session: sim._death ? sim._death.deaths : 0,
+      stains_lost_to_second_death: sim._death ? sim._death.stainsLostToSecondDeath : 0,
+      last_grounded: sim._death && sim._death.lastGrounded ? vec(sim._death.lastGrounded) : null,
+    },
     afflictions: sim.quest.afflictions.map((a) => ({
       id: a.id, kind: a.kind, incubation_in_frames: a.incubation_in_frames, duration_in_frames: a.duration_in_frames,
     })).sort(byId),
@@ -578,6 +602,11 @@ export function applySave(sim, blob, moves, statFor) {
   sim.quest.travel.nodesVisited = [...blob.travel.nodes_visited];
   sim.quest.travel.mark = blob.travel.mark ? [...blob.travel.mark] : null;
   sim.quest.death.bloodstain = blob.death.bloodstain ? { ...blob.death.bloodstain, pos: [...blob.death.bloodstain.pos] } : null;
+  // W1-13 r2: put the DEATH back, not only the bloom it left. Without this the next frame's
+  // `observe()` re-kills a body that is already dead and destroys the bloom it just restored.
+  if (sim._death && typeof sim._death.restoreInFlight === 'function') {
+    sim._death.restoreInFlight(blob.death, f);
+  }
 
   sim.worldSeed = blob.world.gen_seed === undefined ? null : blob.world.gen_seed;
   sim.world.containersEmptied = [...blob.world.containers_emptied];

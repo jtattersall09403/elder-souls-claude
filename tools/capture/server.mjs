@@ -407,6 +407,28 @@ let loadedSeed = null;
  */
 let worldDirty = false;
 
+/**
+ * WHICH ENVIRONMENT DIMENSIONS THE LAST JOB LEFT SET, AND WHY THIS EXISTS.
+ *
+ * `setTimeOfDay`, `setWeather` and `setTide` write `sim.env` and NOTHING PUTS THEM BACK. The R1
+ * critic broke the cache's central promise with exactly that: `place(A)` with no time and no
+ * weather, then `place(A)` with `time: 1, weather: storm`, then the byte-identical first spec again
+ * — three renders, and rows 1 and 3 came out as different pictures (`54822b05d5de` vs
+ * `ce6b6e011369`, against a control of the same spec three times running at `3da4742d0c0d` x3).
+ * The mechanism was that a `place` -> `place` sequence never reloads, so a spec that omits a
+ * condition INHERITS the previous job's condition, and `canonicalSpec` banked a night storm under
+ * `time: null, weather: null`. That is not an exotic path: it is what `shot.mjs --at <x>,<z>` sends
+ * whenever the caller does not pass `--time`, which is the documented headline usage.
+ *
+ * The fix is per-dimension rather than a blanket reload, because a blanket reload would destroy the
+ * region pack's fast path (its whole cost is the 25 province tiles a `loadState` throws away). A
+ * dimension is DIRTY once some job has set it. The next job must reload if, and only if, it leaves a
+ * dirty dimension UNPINNED — because only then does its picture depend on a job it never named.
+ * Pin all three and the fast path is preserved; pin none and nothing was dirtied and it is also
+ * preserved. Reloading clears all three.
+ */
+const envDirty = { time: false, weather: false, tide: false };
+
 async function performCapture(spec, raw, outPng) {
   const T = {};
   const tick = (k, t) => { T[k] = (T[k] || 0) + (Date.now() - t); };
@@ -521,15 +543,44 @@ async function performCapture(spec, raw, outPng) {
     const ts = Date.now();
     await h.page.screenshot({ path: outPng, type: 'png', animations: 'disabled', caret: 'hide', timeout: JOB_TIMEOUT_MS });
     tick('screenshot_ms', ts);
-    await hx(h, 'stepFrames', gap);
-    await hx(h, 'renderFrame');
-    await snap(h.page, 'C');
-    framesSpent += gap;
-    const d1 = await diffSlots(h.page, 'A', 'B');
-    const d2 = await diffSlots(h.page, 'B', 'C');
+    // ---- G3's EVIDENCE IS A TRIAD, NOT A PAIR. --------------------------------------------------
+    //
+    // The rebuilt judge() needs |A-C| as well as |A-B| and |B-C|, because a steady arrival and a
+    // live-but-settled scene are INDISTINGUISHABLE in (d1, d2) — measured, the settled
+    // marauders-coast frame is (0.0644, 0.0640) and the critic's slow loader is (0.060, 0.055).
+    // Ambient motion is stationary, so |A-C| stays at the size of one interval; arrival accumulates,
+    // so |A-C| approaches their sum. This is where that third comparison is taken, and it costs no
+    // extra frame: A and C are frames the proof already holds.
+    //
+    // Until this call existed, server.mjs computed only two diffSlots() and handed judge() no d13 at
+    // all, so the rebuilt gate would have failed CLOSED on every capture with any motion in it. A
+    // gate wired to nothing refuses everything, which is a different way of not working.
+    let d1 = await diffSlots(h.page, 'A', 'B');
+    let d2 = null, d13 = null, set = null, frameC = true;
+
+    // THE SKIP. See SKIP_RULE in settle.mjs: C is taken UNLESS A and B are block-identical and the
+    // streamer is both fully resident and idle, in which case there is no source of arrival left to
+    // see. Measured across the 18 G1-clean calibration frames: d1 = 0 in 10 of them and every one of
+    // those 10 also had d2 = 0. `settle_always_c` in the spec disables the skip (and is in the cache
+    // key, because it changes what is PROVED about the picture).
+    const g1g2Clean = resid && resid.ran === true && resid.queued === 0 &&
+      resid.built === 0 && resid.tiles_queued === 0;
+    if (!spec.settle_always_c && d1.frac === 0 && g1g2Clean) {
+      frameC = false;
+    } else {
+      await hx(h, 'stepFrames', gap);
+      await hx(h, 'renderFrame');
+      await snap(h.page, 'C');
+      framesSpent += gap;
+      const tri = await triad(h.page, 'A', 'B', 'C');
+      d1 = tri.d1; d2 = tri.d2; d13 = tri.d13; set = tri.set;
+    }
     tick('settle_ms', t);
     try {
-      proof = judge({ resid, d1, d2, threshold: spec.settle_threshold, gap, frames: spec.settle_frames });
+      proof = judge({
+        resid, d1, d2, d13, set, frame_c: frameC,
+        threshold: spec.settle_threshold, gap, frames: spec.settle_frames,
+      });
       break;
     } catch (e) {
       if (!(e instanceof UnsettledError)) throw e;

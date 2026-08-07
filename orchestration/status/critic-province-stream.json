@@ -2,7 +2,7 @@
   "task_id": "critic-province-stream",
   "brief": "critic with fresh context on W1-01 province streaming pump (Engine._streamProvince from _afterStep + release hysteresis)",
   "started": "wave-1",
-  "state": "researching",
+  "state": "measuring",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-01-province-stream-r1.md",
     "corpus/90-verdicts/wave1/W1-01-province-stream-r1.json",
@@ -10,7 +10,17 @@
     "reports/blog-feed.jsonl (one line)"
   ],
   "outputs_written": [],
-  "findings": [],
-  "next_step": "read ARBITRATION.md S3 CONSUMPTION rule, RI-MTH04, TOOL-LOOP, builder status file, then the diff",
+  "findings": [
+    "ENVIRONMENT: the working tree at /home/user/elder-souls-claude DOES NOT BOOT. `node tools/harness/boot-check.mjs` exits 12: 'this._installTopicSupply is not a function' (engine.js:321 calls it; nothing defines it). This is a concurrent agent's in-flight edit to game/src/engine.js + game/src/character/converse.js, NOT the province work. All my measurements are therefore taken on a shadow tree pinned at HEAD=8734986 (git archive HEAD), which boot-checks PASS.",
+    "The province fix IS in HEAD 8734986: engine.js has 4 mentions of _streamProvince, province.js has the KEEP = RADIUS + 1 hysteresis. Last commit touching those two files is bd3630e.",
+    "Shadow tree needs tools/node_modules symlinked (playwright lives in tools/, not repo root).",
+    "FixedLoop.MAX_CATCHUP = 5 (game/src/core/loop.js). A 133.8 ms hitch is 8 fixed steps of arrears; the accumulator can only run 5 and then DROPS the surplus (stats.catchupDroppedMs / catchupClamps). So the builder's max frame is not merely a dropped frame, it is dropped SIMULATION TIME in play mode. Must measure catchupClamps under real rAF.",
+    "Engine.stepFrames() times only loop.stepMsTotal, accumulated by FixedLoop.stepOnce() around the STEP ALONE. _afterStep() -- and therefore _streamProvince() -- is OUTSIDE that window. So engine.perf/getPerfStats() CANNOT see the streaming cost at all. The builder correctly used its own performance.now() around stepOnce()+_afterStep() in walkTimed(); anything reading perf.simMsWindow() would report the streamer as free.",
+    "URGENT PATH IS UNBOUNDED AND COMES BEFORE THE DISC GUARD: in _streamProvince, `if (pv.queue[0].d <= STREAM_NEAR_D2) { ...pump(2); return; }` runs BEFORE `if (discWork) return;`. So a frame that just paid ~59 ms for the skin+cover rebuild can also pay 2 tile builds (~138 ms) = ~197 ms. The 'one unit of streaming work per step' claim is true only on the trickle path.",
+    "province.tileM is a dead knob: request() computes tx0/tz0 from the MODULE constant TILE_M, not this.tileM. stats() reports tileSizeM: this.tileM. Perturbing tileM would desynchronise the reported geometry from the built geometry.",
+    "Release hysteresis cannot leak by construction: KEEP is an absolute Chebyshev distance from the CURRENT focus tile, so residency is hard-bounded at (2*KEEP+1)^2 = 49. Still to measure: meshes/instances/heap growth over a long loop.",
+    "travelRide moves the body by direct position assignment at mode speed; rootspeak = 40 m/s = 0.667 m/frame. STREAM_REFOCUS_M=2 -> refocus every 3 frames; SKIN_REBUILD_M=11 -> a ~59 ms skin rebuild every ~17 frames. Must measure."
+  ],
+  "next_step": "write tools/world/critic-prov-r1.mjs (own probe, modes: modality sweep / fight / loop / posed) and falsify it by breaking the fix",
   "notes_for_successor": "load at start 2.15. Must write own probes; must break-the-instrument before trusting."
 }

@@ -73,6 +73,48 @@ export class DeathSystem {
     this.log = [];                    // per-death records, for the journey tool
   }
 
+  /**
+   * Put a death that was IN FLIGHT when the save was taken back on its feet. W1-13 round 2,
+   * the round-1 verdict's `secondary_observations[0]`.
+   *
+   * The blob carries `character.hp = 0` and the bloom. Without the four fields below, the very
+   * next `observe()` sees `hp <= 0 && !this.active`, calls `die()` with `soulsHeld = 0`, and
+   * D16's second-death branch destroys a 4,200-soul bloom against a death that never happened.
+   * Measured: 4,200 in, 0 out, on both the browser-restart and the same-session route.
+   *
+   * Frame stamps arrive RELATIVE (the save rebases the frame counter), so they are rebased
+   * against the frame the load reset to. A save taken 149 frames into a 150-frame surface
+   * reloads with one frame of surface left, which is the honest answer.
+   *
+   * @param {object} d    blob.death
+   * @param {number} f    the frame the load has reset the simulation to
+   */
+  restoreInFlight(d, f) {
+    if (!d) return null;
+    this.deaths = Number(d.deaths_this_session) || 0;
+    this.stainsLostToSecondDeath = Number(d.stains_lost_to_second_death) || 0;
+    this.lastGrounded = d.last_grounded ? [...d.last_grounded] : null;
+    const inf = d.in_flight;
+    if (!inf) {
+      this.active = false;
+      this.deathFrame = null;
+      this.controllableAt = null;
+      this.cause = null;
+      this.skipRequestedAt = null;
+      return null;
+    }
+    this.active = true;
+    this.cause = inf.cause || 'combat';
+    this.deathFrame = f - (Number(inf.death_frames_ago) || 0);
+    this.controllableAt = f + Math.max(0, Number(inf.controllable_in_frames) || 0);
+    this.skipRequestedAt = inf.skip_requested ? f : null;
+    // `lastHp` is what `observe()` diffs against. Leaving it null after a load makes the first
+    // frame look like "HP has not moved" rather than "HP is 0 and the surface is up"; the
+    // surface flag above is what stops the re-kill, and this stops a phantom damage event.
+    this.lastHp = 0;
+    return { active: true, death_frame: this.deathFrame, controllable_at: this.controllableAt };
+  }
+
   // ---- classification (seam S5) -----------------------------------------------------------
 
   /**
