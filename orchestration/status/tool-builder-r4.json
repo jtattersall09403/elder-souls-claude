@@ -13,7 +13,8 @@
     "tools-tree sweep for r.frame / field-shape assumptions"
   ],
   "outputs_written": [
-    "tools/lib/trace-schema.mjs"
+    "tools/lib/trace-schema.mjs",
+    "tools/analysis/build-viability.mjs"
   ],
   "findings": [
     "BUILT tools/lib/trace-schema.mjs \u2014 the versioned single reader R3 called 'the highest-value thing this loop could produce next'. frameOf() returns NULL, never 0, on a missing frame key. requireFrames() is a fail-closed gate. --census over reports/**. --verify a.b,c.d exits 1 on an absent path. self-test 25/25 including an explicit R3 REGRESSION GUARD that demonstrates the old `r.frame ?? 0` reader collapsing a 27-minute gap to 0.",
@@ -21,8 +22,14 @@
     "SWEEP RESULT (whole tools tree, not just the named instances): on the ARTIFACT side the `.frame` defect has exactly the three instances R3 named (experience/beat-extract, journey-run, cadence's FLAG_FIELDS) and no more. tools/lib/scenario.mjs:67 `raw.f ?? raw.frame ?? 0` is an AUTHORED input script where 0 is a legitimate default, not a trace read. tools/world/hazard-fire.mjs:114 `r.frame ?? r.f` is backwards but functionally correct (falls through to r.f, then the event spread overrides with e.f).",
     "FULL CENSUS over every reports/**/*.jsonl confirms all 8 historically-invented paths absent: player.region, world.region, player.crouched, player.two_handed, player.loadout, ui.menu_open, ui.dialogue_open, ui.surface. Real paths: env.region, player.stealth.crouched, player.stance, events[].f.",
     "cadence.mjs:319-320 does not merely LIST the absent ui fields in FLAG_FIELDS, it actively reads r.ui.dialogue_open and r.ui.menu_open. No trace record in the tree carries a `ui` subtree at all.",
-    "boot-check PASS before work started."
+    "boot-check PASS before work started.",
+    "build-viability REBUILT and DEMONSTRATED on a shadow tree. Shadow B = full tree copy + R3's exact injection `if (!this.__raceGatesEnabled) return null;` at the top of the model closure. BROKEN tree: `verify-model: RACE-INVARIANT (0/22 gated givers moved)`, `per-giver live: 0 modelled, 22 unmodelled`, `static anchors say derived (4/4): CONTRADICTED BY THE RUNNING GATE`, EXIT 20. A plain static walk on the broken tree also REFUSES with exit 20 instead of printing 504/540. SOUND tree: RACE-SENSITIVE (16/22 moved), anchors AGREE, exit 0. R3's tool exited 0 on both.",
+    "The key design decision, and it departs from the R3 verdict's letter: R3 asked for a 4th source anchor on `derivedDisposition` being called, saying 'it would have caught this break'. IT WOULD NOT. The `derivedDisposition(` call text is still present under the injected guard. I added the anchor (it catches a different break \u2014 the arithmetic being deleted) but labelled it `proves: 'arithmetic-present (NOT arithmetic-reached)'` and asserted that honesty in the self-test. No regex over source can prove a function's arithmetic is REACHED. The closure is --verify-model: a live two-signature differential on getGateDispositions() varying RACE ALONE. A model that returns null cannot move a number, so the break is caught by construction.",
+    "SEPARATE PRE-EXISTING CRASH FOUND AND FIXED in build-viability, same defect class (a SHAPE assumption), and it was fatal: bestCaseCtx() set `c.topicsKnown = { has: () => true }`, a one-method duck. gate.js moved topic gates to topicsInclude() (core/topics.js) which ITERATES \u2014 `for (const k of it)` \u2014 so every --self-test and every full walk on this tree died with `TypeError: it is not iterable` BEFORE round 4 touched the file. Verified pre-existing by git stash. Replaced with grantAll(): a real Set (iterable, .values(), .has()->true) seeded with every topic/flag the quest book gates on.",
+    "Live model attestation is keyed by sha256 over engine.js + quest/machine.js + character/reaction.js. The staleness check FIRED UNPROMPTED during this run: another agent edited engine.js at 13:24:49 mid-session and the tool refused the attestation it had minted minutes earlier rather than trusting it. Not a constructed test \u2014 a real concurrent edit.",
+    "The gate IS genuinely race-sensitive on the real tree: 16 of 22 gated givers change their getGateDispositions() number when race goes dunmer->nord with everything else held fixed. 22/22 modelled, so per-giver is not mixed TODAY \u2014 but the shape is now reported, and engine.js:4863 returns null without reaction_group so it can become mixed at any time.",
+    "LOAD WARNING: /proc/loadavg reached 13.7-17.0 during the browser work (other agents active). All build-viability measurements are boolean/structural differentials, not timings, so they are not distorted by load. No timing number is reported from this session."
   ],
-  "next_step": "rebuild build-viability.mjs (cross-check reconciliation + derivedDisposition anchor + per-giver model)",
+  "next_step": "rebuild tools/experience/beat-extract.mjs on trace-schema",
   "notes_for_successor": ""
 }

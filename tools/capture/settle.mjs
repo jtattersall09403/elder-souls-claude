@@ -40,8 +40,38 @@
 //
 // And the calibration that justified the threshold was void as a validation of G3: all five
 // streaming samples had d2 = 0 and `queued` of 18-23, so **G1 refuses all five on its own**. There
-// was not one sample in which G3 was the gate that had to fire. See SETTLE-CALIBRATION-R2.json,
-// which fixes that.
+// was not one sample in which G3 was the gate that had to fire.
+//
+// -------------------------------------------------------------------------------------------------
+// WHAT IS MEASURED HERE AND WHAT IS NOT. READ THIS BEFORE CITING A BOUND.
+// -------------------------------------------------------------------------------------------------
+// An earlier draft of this file cited `reports/capture/SETTLE-CALIBRATION-R2.json` as the source of
+// all four G3 bounds. THAT FILE DOES NOT EXIST and never did. Naming a report that was never
+// produced is the same defect as naming a tool that was never written, so the citation is corrected
+// here rather than left to look authoritative:
+//
+//   MEASURED, and re-verified against reports/capture/SETTLE-CALIBRATION.json:
+//     THRESHOLD, RISE_ABS, RISE_RATIO. The R1 file has 18 G1-clean frames. Exactly ONE has
+//     rise > 0.005 (settled eastern-rootlands day-clear: d1 = 0.1281, d2 = 0.1429, rise = 0.0149,
+//     ratio 1.116), and exactly one settled frame exceeds ratio 1.5 (thornmarsh night-clear, 1.769,
+//     whose rise is only 0.0019). Those two frames are why G3b ANDs an absolute bound with a ratio
+//     bound instead of using either alone, and each is a real observation.
+//
+//   NOT MEASURED: ACC_RATIO and ACC_FLOOR. The R1 calibration recorded d1 and d2 ONLY — it never
+//     computed |A-C| — so there is no observed gamma anywhere in this project's data, for any
+//     population. The 1.35 bound rests on (i) the physical argument below, that stationary motion
+//     re-moves the same blocks while arrival accumulates into new ones, and (ii) the two-sided
+//     falsification in `tools/capture/settle-shapes.mjs` / `reports/capture/SETTLE-SHAPES.json`,
+//     which shows the bound sits in a non-empty band: at 3.0 it certifies steady arrival as settled,
+//     and at 1.01 it refuses three frames the R1 calibration measured as genuinely settled. A band
+//     with a real edge on each side is better than a guess and is NOT the same thing as a
+//     calibration.
+//
+//   HOW TO CLOSE IT: `calibrate-settle.mjs` now records d13 and gamma per row, so re-running it
+//     produces the missing distribution. The population that matters is one G1 does NOT already
+//     catch — a steadily changing scene with the streamer clean and idle. The `lighting` population
+//     (a hard time-of-day swing, streaming complete, lighting not converged) is the honest candidate;
+//     the `streaming` population is not, because G1 refuses all five of those on its own.
 //
 // -------------------------------------------------------------------------------------------------
 // G3 IS NOW THREE SUB-GATES OVER THE SAME THREE FRAMES. NO EXTRA FRAME IS TAKEN.
@@ -115,11 +145,15 @@ export const BLOCK = 4;
 
 /** G3a. The deceleration threshold. Unchanged from R1: measured band [0.00251, 0.01157]. */
 export const THRESHOLD = 0.005;
-/** G3b. Absolute floor below which a rise is noise. See SETTLE-CALIBRATION-R2.json. */
+/** G3b. Absolute floor below which a rise is noise. MEASURED: SETTLE-CALIBRATION.json, the one
+ *  settled frame in 18 that exceeds it (eastern-rootlands, rise 0.0149, ratio 1.116). */
 export const RISE_ABS = 0.005;
 /** G3b. A rise must ALSO be this multiple of d1 before it fails. */
 export const RISE_RATIO = 1.5;
-/** G3c. gamma = |A-C| / max(|A-B|, |B-C|). Stationary ~1, accumulating ~2. Calibrated in R2. */
+/** G3c. gamma = |A-C| / max(|A-B|, |B-C|). Stationary ~1, accumulating ~2.
+ *  NOT CALIBRATED — no observed gamma exists in this project's data, because the R1 calibration
+ *  never computed |A-C|. Bounded, not fitted: see the header note "WHAT IS MEASURED HERE AND WHAT
+ *  IS NOT" and reports/capture/SETTLE-SHAPES.json. */
 export const ACC_RATIO = 1.35;
 /** G3c. Below this much total motion gamma is meaningless (a handful of blocks). */
 export const ACC_FLOOR = 0.004;
@@ -510,6 +544,13 @@ export function judge({
         'see reports/capture/SETTLE-CALIBRATION.json, population "absent".)');
     }
     if (!g1.read_only) {
+      // AND THE GATE MUST RECORD ITS OWN FAILURE. This used to push onto `failed` while leaving
+      // g1.pass at `resid.queued === 0`, so a proof could come back settled:false with every gate
+      // in `gates` reporting pass:true and no reader able to see which one objected. That is the
+      // same shape of defect as R1's "G1 fails open and the proof cannot tell you", just inverted —
+      // found by tools/capture/settle-shapes.mjs, case `mutating-probe`.
+      g1.pass = false;
+      g1.why = 'the residency probe did not declare itself read-only';
       failed.push('G1 residency: the probe did not declare itself read-only. A residency probe that ' +
         'mutates the scene between frames A and B puts its own side effect into d1.');
     }
@@ -652,7 +693,12 @@ export function judge({
     bounds: { threshold, rise_abs, rise_ratio, acc_ratio, acc_floor },
     metric: `|X-Y| = fraction of ${BLOCK}x${BLOCK} blocks of a ${THUMB_W}x${THUMB_H} thumbnail whose ` +
       `mean RGB moved > ${DELTA}/255 on any channel`,
-    calibration: 'reports/capture/SETTLE-CALIBRATION-R2.json (and SETTLE-CALIBRATION.json for the R1 band)',
+    calibration: {
+      measured: 'reports/capture/SETTLE-CALIBRATION.json — threshold, rise_abs, rise_ratio',
+      not_measured: 'acc_ratio and acc_floor: no observed gamma exists in this project\'s data, ' +
+        'because the R1 calibration never computed |A-C|. Bounded two-sidedly in ' +
+        'reports/capture/SETTLE-SHAPES.json, not fitted to a population.',
+    },
     measured: {
       d1: d1 ? n6(d1.frac) : null,
       d2: d2 ? n6(d2.frac) : null,
@@ -690,8 +736,9 @@ export function judge({
  * of them and every one of those 10 also has d2 = 0. Not one frame was still, then moved. That is
  * 10 of 13 settled + lighting frames paying two frames instead of three — MORE saving than the
  * critic's rule, from a strictly stronger precondition. It is re-checked in
- * SETTLE-CALIBRATION-R2.json, and if any frame is ever observed with d1 = 0 and d2 > 0 this rule
- * must be withdrawn: pass `settle_always_c: true` in the spec to disable it now.
+ * `calibrate-settle.mjs` (which now records d13 and gamma per row), and if any frame is ever
+ * observed with d1 = 0 and d2 > 0 this rule must be withdrawn: pass `settle_always_c: true` in the
+ * spec to disable it now.
  */
 export const SKIP_RULE =
   'frame C may be skipped only when d1 === 0 exactly (A and B are block-identical) AND G1 and G2 ' +

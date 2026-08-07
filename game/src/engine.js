@@ -42,6 +42,7 @@ import { Renderer } from './render/renderer.js';
 import { WEATHER } from './render/sky.js';
 import { WorldField } from './world/field.js';
 import { SignatureField, SIGNATURE_KINDS } from './world/signature.js';
+import { OpacityRegister } from './world/opacity.js';
 import { Traversal } from './sim/traversal.js';
 import { Hazards } from './sim/hazards.js';
 import { SaveStore } from './save/store.js';
@@ -74,6 +75,7 @@ import { CensusSurface, buildCensusModel, CENSUS_PLACES, CENSUS_CAST, CENSUS_ACT
 /** Lines of the writ visible at once in the reader. The document scrolls; it never clips. */
 const WRIT_WINDOW = 9;
 import { Conversation, buildConversationModel, buildTopicIndex, greetingFor, topicsFor, greetingBand } from './character/converse.js';
+import { topicKey } from './core/topics.js';
 import { buildOverheardIndex, buildDirectionsIndex, RumourBook, learnTopics } from './sim/quest/topic-supply.js';
 import { makeNPC } from './sim/npc.js';
 import { derivePools, applyBirthsignToPools, hpMaxFor, staminaMaxFor as staminaMaxForVig, progressToNext, USE_EVENTS } from './character/derive.js';
@@ -258,7 +260,22 @@ export class Engine {
       // everything is standable, which is true and is why the test is asked of the cell.
       standable: (x, z) => this._standableAt(x, z),
       groundAt: (x, z) => this.groundInActiveCell(x, z),
+      // W1-13 r2: a respawn is a PLACEMENT, and `teleport()` already knows what a placement
+      // has to clear. `respawn()` wrote the position and nothing else, so the body arrived at
+      // the well carrying the velocity, the mire counter, the breath clock and the fall in
+      // progress from wherever it died — and slid 5-22 m off the basin over the next 220
+      // frames at three of six wells, against a no-death control that moved 0.00 m at all six.
+      // In the walked loop that carried the player 89.4 m back TOWARD the death point before
+      // the run back began, silently shortening it.
+      placed: () => this._afterRespawnPlacement(),
+      // Only the province has sapwells. `respawnHearth()`'s nearest-well FLOOR must not fling
+      // a probe dying in `arena_flat` three kilometres across the map.
+      inProvince: () => this.cellFor(this.sim.env) === 'province',
     });
+    // The save needs to reach the death system: `RI-JRN06`'s bloom is durable but the DEATH
+    // was not, and a save taken with the surface up reloaded into a fresh `die()` that
+    // destroyed 4,200 souls. `sim._traversal` set the precedent for this handle.
+    this.sim._death = this.death;
     this.renderer.setWorld(this.field, this.data.roads);
     // W1-13: the renderer draws the wells and the bloom off the same registry the simulation
     // respawns you at. One source, so a well you can see is a well you can rest at.
@@ -319,6 +336,12 @@ export class Engine {
     // `q.directions` (32 strings) and `dialogue/rumours.json` — and the consequence was that
     // 0 of 32 main quests were offerable at a cold start. See sim/quest/topic-supply.js.
     this._installTopicSupply();
+    // W1-OPACITY. The opacity register, and its fail-closed reader. RI-MTH07/ARBITRATION §3:
+    // a register nothing reads is a text file. `_installOpacity` resolves every anchor,
+    // evidence id and false-account id against the data that actually loaded and THROWS on a
+    // dangle, then hands the register to the conversation so the world can decline.
+    this._booksRead = this._booksRead || new Set();
+    this._installOpacity();
     this.sim.questEngine = this.questEngine;
     this.real.onTextChar = (ch) => this._censusTypeChar(ch);
     this.applyNamedState(opts.state || 'default');
@@ -481,6 +504,11 @@ export class Engine {
       weather: patch.env.weather ?? sim.env.weather,
       region: patch.env.region ?? sim.env.region,
       interior: patch.env.interior === undefined ? sim.env.interior : patch.env.interior,
+      // W1-19 round 2: which town you are standing in. `dialogue/rumours.json` is keyed by
+      // settlement (RI-DLG02 — rumours MUST differ per town) and until this line the only
+      // settlement the engine could name was whichever one an NPC record happened to carry, so
+      // a person with no `settlement` field had nothing to gossip about.
+      settlement: patch.env.settlement === undefined ? sim.env.settlement : patch.env.settlement,
     });
     if (patch.player) {
       const p = sim.player;
@@ -523,7 +551,17 @@ export class Engine {
     this.censusPlace = null;
     for (const n of patch.npcs || []) this.spawnNPC(n);
     for (const o of patch.props || []) this.spawnProp(o);
-    for (const s of patch.spawn || []) this.spawn(s.id, s.x, s.z, { as: s.as });
+    // W1-13 r2: a state file's `spawn:` block may declare the six S5 classification flags, so
+    // "a quest places an ordinary archetype as a named actor" is expressible in DATA and not
+    // only through a harness call. Round 1 dropped everything but `as` on the floor.
+    for (const s of patch.spawn || []) {
+      const o = { as: s.as };
+      if (s.yaw !== undefined) o.yaw = s.yaw;
+      for (const f of ['named', 'unique', 'boss', 'merchant', 'trainer', 'questActor']) {
+        if (s[f]) o[f] = true;
+      }
+      this.spawn(s.id, s.x, s.z, o);
+    }
     for (const e of patch.encounters || []) this.spawnEncounter(e.id, e.x, e.z, e);
     // Put the player on the ground of whatever cell the state names.
     sim.player.pos[1] = this.groundAt(sim.player.pos[0], sim.player.pos[2]);
@@ -1088,12 +1126,36 @@ export class Engine {
     };
   }
 
+  /**
+   * W1-13 r2: THE ARGUMENT IS NOW HONOURED. Round 1's `killPlayer(cause)` took a cause,
+   * discarded it, and returned it in its own report — `_deathTick()` called
+   * `death.observe(sim, combat, bus)` with no opts, so `opts.cause` had no supplier anywhere in
+   * the build. `TOOL-LOOP` rule 3 q5, a flag that lies, and the round-1 builder criticised the
+   * same shape elsewhere in the same session.
+   *
+   * It is written where the WORLD writes it (`sim.player.lethalCause`, the field `traversal.js`
+   * sets when a fall or a drown lands the killing blow) rather than through a private harness
+   * channel, so the harness route and the world route are the same route and a probe cannot
+   * exercise a path a player cannot.
+   */
   killPlayer(cause) {
     const b = this.combat && this.combat.player;
     if (!b) throw new Error('killPlayer: no combat body');
+    const LEGAL = ['combat', 'fall', 'hazard', 'drown'];
+    if (cause !== undefined && cause !== null && !LEGAL.includes(String(cause))) {
+      throw new Error(`killPlayer('${cause}'): unknown cause. Legal: ${LEGAL.join(', ')}. `
+        + "`placeStain()` branches on it, so a cause it does not know would silently take the "
+        + 'death_point branch and the call would look like it had worked.');
+    }
     b.hp = 0; b.dead = true;
     this.sim.player.hp = 0;
-    return { hp: 0, cause: cause || 'combat', note: 'The death itself fires from _afterStep, on the next stepFrames(1).' };
+    this.sim.player.lethalCause = cause ? String(cause) : null;
+    return {
+      hp: 0, cause: cause || 'combat', cause_honoured: !!cause,
+      note: 'The death itself fires from _afterStep, on the next stepFrames(1). The cause is '
+        + 'written to sim.player.lethalCause — the same field traversal.js writes on a fall or a '
+        + 'drown — and _inferCause() reads it there.',
+    };
   }
 
   recoverBloodstain() {
@@ -1135,8 +1197,17 @@ export class Engine {
     // byte-identical frames of an empty field. The census now MOVES you into the room it is
     // set in, and puts the people who speak in it into it.
     this._censusPlace(placeOfNode(this.census.node()));
-    const ev = this.bus.emit(this.sim.frame, 'dialogue_open');
-    ev.npc = 'jeeh-ei'; ev.scene = 'census';
+    // `dialogue_open` when a dialogue actually opens, and not before. The scene now STARTS
+    // paused — `hold.come-to` hands control back with nobody talking — so emitting the event
+    // here unconditionally would have put a dialogue on the trace at frame 0 of a scene whose
+    // whole point is that there is no dialogue at frame 0. `censusEnter()` emits it when she
+    // speaks. RI-JRN01 M4 clause 1 measures the interval to the first FIELD-WRITING
+    // `dialogue_open`, so a false one at the origin would have made the measurement meaningless
+    // in the direction that flatters us.
+    if (!this.census.paused) {
+      const ev = this.bus.emit(this.sim.frame, 'dialogue_open');
+      ev.npc = (this.census.node() || {}).speaker || 'jeeh-ei'; ev.scene = 'census';
+    }
     this._censusSync();
     return this.getCensusState();
   }
@@ -1409,10 +1480,7 @@ export class Engine {
     const overheard = (this.overheardIndex && this.overheardIndex.get(n.eid)) || [];
     if (overheard.length) {
       const got = learnTopics(this.sim.quest.topicsKnown, overheard.map((o) => o.topic));
-      for (const t of got) {
-        const te = this.bus.emit(this.sim.frame, 'topic_add');
-        te.npc = n.eid; te.topic = t; te.source = 'OVERHEARD';
-      }
+      for (const t of got) this.questEngine.noteTopicLearned(t, 'OVERHEARD', n.eid);
     }
     const st = this.conversation.state();
     const ev = this.bus.emit(this.sim.frame, 'dialogue_open');
@@ -1448,10 +1516,79 @@ export class Engine {
       rumourFor: (npc, player, nth) => {
         const settlement = npc.settlement || (npc.record && npc.record.settlement) || this.sim.env.settlement || null;
         const r = this.rumourBook.pick(settlement, player, npc.eid, nth);
-        return r ? { id: 'latest rumours', ...r } : null;
+        return r ? { ...r, id: 'latest rumours', rumour_id: r.id || null } : null;
       },
     });
     return { overheard: this.overheardIndex.size, directions: this.directionsIndex.size, rumours: this.rumourBook.size };
+  }
+
+  /**
+   * Build the id index the opacity register resolves against, out of the data that ACTUALLY
+   * LOADED rather than out of the index manifest — a file listed in `index.json` and dropped by
+   * `loadData`'s branch chain would otherwise still resolve, and the whole point of this check
+   * is to catch a model with no reader.
+   */
+  _opacityWorldIndex() {
+    const books = new Set();
+    for (const doc of Object.values(this.data.books || {})) {
+      if (Array.isArray(doc.books)) for (const b of doc.books) { if (b.id) books.add(b.id); }
+      else if (doc.id) books.add(doc.id);
+    }
+    const topics = new Set();
+    for (const doc of Object.values(this.data.topics || {})) {
+      for (const t of (doc.topics || [])) if (t && typeof t.id === 'string') topics.add(topicKey(t.id));
+    }
+    const npcs = new Set();
+    for (const doc of Object.values(this.data.npcs || {})) {
+      for (const n of (doc.npcs || [])) if (n && n.id) npcs.add(n.id);
+    }
+    const items = new Set();
+    for (const doc of Object.values(this.data.items || {})) {
+      for (const it of (doc.items || [])) if (it && it.id) items.add(it.id);
+    }
+    const pois = new Set(((this.data.pois && this.data.pois.pois) || []).map((p) => p.id));
+    const regions = new Set(((this.data.regions && this.data.regions.regions) || []).map((r) => r.id));
+    const enemies = new Set(Object.keys(this.data.enemies || {}));
+    return { books, topics, npcs, items, pois, regions, enemies };
+  }
+
+  /**
+   * Install the opacity register (RI-WLD09 §B1) and prove it points at real content.
+   *
+   * The throw is the point. `game/data/world/opacity.json` names 24 mysteries and, for each, the
+   * shipped books, dialogue topics, NPCs, landmarks and items that constitute the evidence a
+   * player can find. If any of those ids does not name a record in this build, the mystery is
+   * not designed opacity, it is a JSON entry in front of nothing — the same defect as the 74
+   * `opens_by.topic` gates no AddTopic edge could satisfy, and it is worth a hard boot failure
+   * for the same reason: it is invisible from every other instrument.
+   *
+   * A build with NO register boots fine and reports `present:false`. A build with a register
+   * that lies does not boot.
+   */
+  _installOpacity() {
+    this.opacity = new OpacityRegister(this.data.opacity);
+    if (!this.opacity.present()) return { present: false, checked: 0 };
+    const r = this.opacity.resolve(this._opacityWorldIndex());
+    if (!r.ok) {
+      const lines = r.unresolved.concat(r.notes);
+      throw new Error(
+        `opacity register: ${lines.length} unresolved reference(s) in game/data/world/opacity.json.\n`
+        + '  A mystery whose evidence is a dangling id scores as designed opacity and is not '
+        + '(RI-WLD09 §B1, "the evidence chain must already exist in game/data/**").\n  - '
+        + lines.slice(0, 24).join('\n  - '));
+    }
+    this.conversation.setOpacity(this.opacity);
+    return { present: true, checked: r.checked, mysteries: this.opacity.size };
+  }
+
+  /**
+   * RI-WLD09 M-OP2's discovery log, from the running world. Reports which of the 24 the
+   * character has actually met and by which route, and reports NO answers, because the answers
+   * are not in the build and this process could not state one if it tried.
+   */
+  getOpacityState() {
+    if (!this.opacity) return { present: false, note: 'the engine has not installed a register' };
+    return this.opacity.state();
   }
 
   /** Say a topic. Returns the info, or a refusal naming why there is nothing to hear. */
@@ -1472,14 +1609,22 @@ export class Engine {
     // the topic of the quest whose own journal fired them.
     const learned = learnTopics(this.sim.quest.topicsKnown, [topicId, ...(info.to || [])]);
     for (const t of learned) {
-      const te = this.bus.emit(this.sim.frame, 'topic_add');
-      te.npc = this.conversation.npc.eid; te.topic = t; te.source = info.source === 'rumour' ? 'RUMOUR' : 'CONVERSATION';
+      this.questEngine.noteTopicLearned(t, info.source === 'rumour' ? 'RUMOUR' : 'CONVERSATION', this.conversation.npc.eid);
     }
     // `topic_select` is already in HARNESS.md §5's closed vocabulary (A-JRN7) and is exactly
     // this event; an earlier draft invented `dialogue_topic`, which the bus refused. Reuse the
     // vocabulary rather than extending it — an amendment is for what the list cannot say.
     const ev = this.bus.emit(this.sim.frame, 'topic_select');
     ev.npc = this.conversation.npc.eid; ev.topic = topicId; ev.gated = info.gated;
+    // W1-OPACITY. A topic that is declared evidence for a registered mystery has now been met,
+    // and by which route. A refusal counts as `npc`; a rumour counts as `overheard`; anything
+    // else the person volunteered counts as `npc` too. `signposted` and `journal` are NOT
+    // reachable from here, deliberately — RI-WLD09 M-OP2 requires >=12 of the 24 to be findable
+    // only by the unprompted routes, and a mystery this path could mark `signposted` would be
+    // legible content wearing a costume.
+    if (this.opacity) {
+      this.opacity.met(`dialogue:${topicId}`, info.source === 'rumour' ? 'overheard' : 'npc');
+    }
     // The one observable that proves `q.directions` reached a person's mouth. A probe asserts
     // against it; `mainline-findability.mjs` counts it.
     if (info.source === 'directions' && info.quest) this.sim.quest.flags[`directions_heard:${info.quest}`] = 1;
@@ -1658,16 +1803,46 @@ export class Engine {
     if (!this.censusSurface || !this.censusSurface.takesInput) {
       // Not in a conversation: `interact` reaches for whatever is in front of you. The take
       // itself is deferred out of the step for the same reason a census commit is.
-      // The door out of the hold. RI-JRN01 O6: control precedes definition, and the way from
-      // "somebody asked me my hatch-name" to "somebody is writing me down" is a WALK — up the
-      // companionway, down the gangplank, into the Writ House. Reaching the ladder is the
-      // transition; nothing has to be pressed, and nothing is explained.
+      //
+      // THE TWO PLACES THE SCENE HANDS CONTROL BACK. RI-JRN01 O6 — "the player is controllable,
+      // in a body, before anything defines them" — and the one property the round-1 verdict
+      // said this opening loses to Morrowind outright: you are a body on a boat for two minutes
+      // before anybody asks you anything, and Jiub asks your name **because you talked to him**.
+      //
+      //   * `hold.come-to` (resume_by 'talk'): the hold opens with control in the player's
+      //     hands, Jeeh-Ei sitting at the crates, and no question anywhere. She speaks when you
+      //     walk over and reach for her. Nothing is pressed, nothing is explained, and the
+      //     interval before the first character-defining question is however long the player
+      //     spends being a body.
+      //   * `hold.out` (resume_by 'walk'): the way from "somebody asked me my hatch-name" to
+      //     "somebody is writing me down" is a WALK up the companionway. Reaching the ladder is
+      //     the transition; nothing has to be pressed.
+      //
+      // Both targets come out of the graph (`resume` / `resume_by`), so adding a third does not
+      // mean editing this function.
       if (this.census && this.census.paused && !this._censusEnterPending) {
+        const st = this.census.state();
         const p = this.sim.player;
-        if (p.pos[2] >= 4.2 && Math.abs(p.pos[0]) <= 1.6) {
-          this._censusEnterPending = true;
-          const ev = this.bus.emit(this.sim.frame, 'surface_exit');
-          ev.surface = 'barge-hold'; ev.to = 'writ-house'; ev.by = 'walked';
+        if (st.resume_by === 'walk') {
+          if (p.pos[2] >= 4.2 && Math.abs(p.pos[0]) <= 1.6) {
+            this._censusEnterPending = 'walk';
+            const ev = this.bus.emit(this.sim.frame, 'surface_exit');
+            ev.surface = 'barge-hold'; ev.to = 'writ-house'; ev.by = 'walked';
+          }
+        } else if (st.resume_by === 'talk' && input.pressedName('interact')) {
+          // Reaching for the person the paused node is waiting on. Checked BEFORE the generic
+          // prop/NPC reach below, so the scene's own speaker is not answered by the ordinary
+          // conversation surface — but still range-gated, so `interact` across the hold picks
+          // up the knife instead, exactly as it would if she were not there.
+          const who = this.sim.findNPC(st.speaker);
+          if (who && who.visible !== false
+              && Math.hypot(who.pos[0] - p.pos[0], who.pos[2] - p.pos[2]) <= Math.min(who.notice_radius_m || 3.0, 3.0)) {
+            this._censusEnterPending = 'talk';
+            const ev = this.bus.emit(this.sim.frame, 'input_action');
+            ev.action = 'interact'; ev.surface = 'world'; ev.node = st.node; ev.via = 'talk';
+            input.consumeUI(CENSUS_ACTIONS);
+            return;
+          }
         }
       }
       // The writ you are carrying, opened with the verb that opens carried things. RI-JRN01
@@ -1773,12 +1948,23 @@ export class Engine {
     return this.getCensusState();
   }
 
-  /** The player has walked into the Writ House. Only reachable after O6's >= 60 s of play. */
-  censusEnter() {
-    this.census.enter();
-    this._censusPlace('writ-house');
+  /**
+   * The player has done the thing the paused node was waiting for — spoken to the woman in the
+   * hold, or walked up the companionway into the Writ House.
+   *
+   * The place is taken from the node the scene resumes INTO rather than hardcoded to
+   * 'writ-house': `hold.come-to` resumes into `hold.wake`, which is still in the hold, and
+   * teleporting the player into the Writ House because they said hello on the barge would have
+   * been a very funny bug to find in a verdict.
+   *
+   * @param {'talk'|'walk'|null} [by]
+   */
+  censusEnter(by) {
+    this.census.enter(by || undefined);
+    const node = this.census.node();
+    this._censusPlace(placeOfNode(node));
     const ev = this.bus.emit(this.sim.frame, 'dialogue_open');
-    ev.npc = 'warden-scribe-tuleeh-ma'; ev.scene = 'census';
+    ev.npc = (node && node.speaker) || 'warden-scribe-tuleeh-ma'; ev.scene = 'census'; ev.by = by || 'walk';
     this._censusSync();
     return this.getCensusState();
   }
@@ -1979,7 +2165,11 @@ export class Engine {
     const st = this.ui.state(ctx);
     st.dialogue_surface = dlg && dlg.open ? {
       open: true, opaque_area_frac: dlg.opaque_area_frac, panel_height_frac: dlg.panel_height_frac,
-      rendered_text: dlg.text, option_count: dlg.option_count,
+      rendered_text: dlg.text, option_count: dlg.option_count, options_shown: dlg.options_shown,
+      // The overflow policy, showing its work — see render/ui.js. `spoken_lines > 0` is the
+      // defect round 1 measured, and it is on the surface's own state so nobody has to infer it
+      // from a DTR that came out low.
+      sacrificed: dlg.sacrificed || null,
     } : { open: false };
     // The dialogue surface is a UI surface too, so its area belongs in the non-world total that
     // RI-JRN01 M5 caps. Reported as a sum of two measured areas rather than as one guess.
@@ -2035,6 +2225,29 @@ export class Engine {
     };
     this._spentFrom = null;
     this._lastRegenBlock = 0;
+  }
+
+  /**
+   * What the touch overlay would draw, read from the ONE layout the hit test uses.
+   *
+   * `shown` is the gate and it is `enabled && visible`, not `visible` alone. The round-1 critic
+   * recorded `touchState().visible === true` on `deviceClass: 'desktop'` as a minor observation
+   * — "harmless while nothing is drawn, wrong once something is". Something is drawn now, so
+   * the gate is the conjunction: `enabled` is set by L9/H2 from the pointer media query (never
+   * from the gamepad list), and `visible` is T7's 2-second fade while a pad is active.
+   */
+  _touchOverlayModel() {
+    if (!this.real || !this.real.touch) return null;
+    const t = this.real.touch;
+    return {
+      shown: !!(t.enabled && t.visible),
+      enabled: !!t.enabled,
+      controls: t.layout(),
+      stick: { ...t.stick },
+      stickRadius: (t.cfg && t.cfg.stick && t.cfg.stick.max_radius_css_px) || 90,
+      viewport: { w: t.viewport.w, h: t.viewport.h },
+      insets: { ...t.insets },
+    };
   }
 
   /** The read-only view of the world the interface draws from. Assembled fresh, never cached. */
@@ -2128,6 +2341,17 @@ export class Engine {
       dpr: this._dpr || 1,
       drawingBufferWidth: this.renderer.canvas.width,
       spentFrom: this._spentFrom,
+      // ---- RI-JRN04 §G / H1. The two models that had no consumer. ------------------------
+      //
+      // W1-29 round 1 shipped `TouchInput.layout()` and `Viewport.rotateState()` complete and
+      // correct and connected them to NOTHING: the round-1 critic's ablation put a desktop and
+      // a handheld arm on the same pinned sim frame with no held actions and got byte-identical
+      // framebuffers. These two lines are the join. `ui/touch-overlay.js` is the renderer and
+      // `ui/system.js build()` is the call site; there is no second copy of the layout anywhere,
+      // because the picture and the hit test must be the same object or the player presses the
+      // drawing and misses the control.
+      touch: this._touchOverlayModel(),
+      rotate: this.real ? this.real.viewport.rotateState() : null,
     };
   }
 
@@ -2226,16 +2450,45 @@ export class Engine {
    */
   _interactPrompt() {
     const p = this.sim.player;
+    // RI-JRN04 L7 / RI-JRN03 DS5. The prompt names the ACTION IN THE WORLD and never the
+    // control — "Press E to pull" is an instruction and costs the item HF5 — but the affordance
+    // beside it tracks the ACTIVE DEVICE, because "a build showing `E` to a gamepad player is a
+    // defect". The two rules only look contradictory: the device-specific part is a GLYPH, a
+    // drawn mark, and never a string, so it changes with the device and never enters the
+    // rendered-text stream that M-K20/M-P24 grep. `device` is read from the input layer's own
+    // `activeDevice`, which the real path sets on the first event of each kind.
+    const device = this.real ? this.real.activeDevice : 'keyboard';
+    const glyph = device === 'gamepad' ? 'face_button' : device === 'touch' ? 'fingertip' : 'keycap';
     for (const o of this.sim.props) {
       if (o.taken) continue;
       const d = Math.hypot(o.pos[0] - p.pos[0], o.pos[2] - p.pos[2]);
-      if (d <= (o.reach_m || 1.6)) return { text: String(o.name || 'It'), verb: 'take', range_m: +d.toFixed(2) };
+      if (d <= (o.reach_m || 1.6)) return { text: String(o.name || 'It'), verb: 'take', range_m: +d.toFixed(2), device, glyph };
     }
     for (const n of this.sim.npcs) {
       const d = Math.hypot(n.pos[0] - p.pos[0], n.pos[2] - p.pos[2]);
-      if (d <= 2.2) return { text: String(n.name || n.eid), verb: 'talk', range_m: +d.toFixed(2) };
+      if (d <= 2.2) return { text: String(n.name || n.eid), verb: 'talk', range_m: +d.toFixed(2), device, glyph };
     }
     return null;
+  }
+
+  /**
+   * RI-UIX01 E11's toast, given a way in.
+   *
+   * The element has been in `ui/hud.js` since W1-21 and nothing could ever raise one:
+   * `UISystem.toastUntil` was never assigned, so `m.toast` was permanently null and a shipped,
+   * budgeted, laid-out HUD element was unreachable. It is reachable now, and the first thing it
+   * is used for is the POSITIVE CONTROL for M-K20: a probe raises a toast reading "Press E to
+   * open", which is DS1's forbidden thing drawn through the ordinary path, and the instruction
+   * budget check must go red. A check whose positive control cannot be constructed is a check
+   * nobody can trust.
+   */
+  uiToast(text, frames) {
+    if (!this.ui) return null;
+    const t = text === null || text === undefined ? null : { text: String(text) };
+    this.ui.toast = t;
+    this.ui.toastUntil = t ? this.sim.frame + (Number(frames) || 180) : -1;
+    this.ui.build(this._uiCtx(), true);
+    return { text: t ? t.text : null, until: this.ui.toastUntil, frame: this.sim.frame };
   }
 
   /** RI-PRG01's curve, read from game/data/progression/levels.json and never re-derived here. */
@@ -2270,6 +2523,20 @@ export class Engine {
   /** RI-UIX03's `openMenu(name)` / `closeMenu()`. `map` is refused, with the reason. */
   openMenu(name, opts) {
     const mode = this.ui.open(name, opts || {}, this._uiCtx());
+    // W1-OPACITY. Opening a book is how most of the register's evidence is actually met.
+    // RI-WLD09 M-OP2 attributes each encounter to a route and `book` is one of the four that
+    // count as unprompted discovery; without this the route attribution is not computable from
+    // a run, only guessed at from static data. `booksRead` (RI-WLD09's requested harness
+    // extension 3) is the same set, and `getOpacityState()` is where it surfaces.
+    if (mode === 'book' && this.ui.bookId) {
+      this._booksRead.add(this.ui.bookId);
+      if (this.opacity) {
+        for (const mid of this.opacity.met(`book:${this.ui.bookId}`, 'book')) {
+          const ev = this.bus.emit(this.sim.frame, 'topic_add');
+          ev.npc = null; ev.topic = `opacity:${mid}`; ev.source = 'BOOK';
+        }
+      }
+    }
     // RI-CAM05 §F's closed camera vocabulary: a menu is `menu`, and the camera knows it.
     cameraOpenUI(this.sim, 'menu');
     this.ui._surfaceChanged(this.real);
@@ -2891,6 +3158,10 @@ export class Engine {
     if (this.ui && this.ui.pausesSimulation(this.inCombat())) {
       this.uiPausedFrames = (this.uiPausedFrames || 0) + 1;
       this._pausedThisStep = true;
+      // How full the bus was BEFORE this paused frame could add to it. `stepOnce()` clears the
+      // bus and does not run on a paused frame, so "did anything happen here" is a delta and
+      // not a count. See `_afterStep`'s paused branch.
+      this._busAtPause = this.bus.count;
       this.input.latchForStep(this.sim.frame);
       if (this.sim.uiDriver) this.sim.uiDriver(this.input);
       return;
@@ -2941,12 +3212,28 @@ export class Engine {
     // no trace record is written. Otherwise a trace taken over an open menu would carry N
     // identical records at one frame number, and travel, death and capture would all tick for
     // however long the player spent reading.
-    if (this._pausedThisStep) return;
+    if (this._pausedThisStep) {
+      // W1-13 r2: A PAUSED FRAME IS NOT A FRAME, BUT A MENU ACTION IS STILL A THING THAT
+      // HAPPENED. `level_up` is emitted from `_applyUIPending()` two statements above, and the
+      // whole levelling transaction runs on paused frames (S14 stops the world outside a
+      // fight). Round 1 emitted that event into a bus that `stepOnce()` clears at the top of
+      // the next unpaused step, BEFORE any record is built — so the one event that says "the
+      // player spent souls" could not reach a trace at all, and the verdict's own acceptance
+      // ("a `level_up` trace event fires from a well and from nowhere else") was unmeasurable.
+      //
+      // One record, only on a paused frame that actually produced an event. The failure mode
+      // the original `return` guards against — N identical records at one frame number while
+      // the player reads a book — is still guarded, because a still surface emits nothing.
+      if (this.trace && this.bus.count > (this._busAtPause || 0)) {
+        this.trace.records.push(makeRecord(this.sim, this.input, this.bus, this.trace.opts, this.tracePerf ? this._perfBlock() : null));
+      }
+      return;
+    }
     if (this._propPending) this._takePropPending();
     if (this._talkPending) { const w = this._talkPending; this._talkPending = null; try { this.talkTo(w); } catch { /* they walked off */ } }
     if (this._convPending) { const t = this._convPending; this._convPending = null; try { this.conversationSay(t); } catch { /* nothing to say */ } }
     if (this._writPending) { this._writPending = false; this.openWrit(); }
-    if (this._censusEnterPending) { this._censusEnterPending = false; this.censusEnter(); }
+    if (this._censusEnterPending) { const by = this._censusEnterPending; this._censusEnterPending = false; this.censusEnter(by === true ? null : by); }
     if (this.sim.captureRequest) this._resolveCapture();
     this._travelTick();
     // W1-13. Death, the bloom and recovery, observed strictly AFTER the step for the same
@@ -3458,6 +3745,57 @@ export class Engine {
 
   // ---- world manipulation ----------------------------------------------------------------
 
+  /**
+   * WHO IS THIS, as far as seam S5 is concerned. W1-13 round 2, `RI-JRN06` M-D5.
+   *
+   * `game/data/world/respawn.json` has always said, in words, that the six never-respawn flags
+   * are "set per SPAWN (engine.spawn(id, x, z, {named: true}))". `spawn()` read `opts.as` and
+   * `opts.yaw` and copied NONE of them, so six of six entities flagged through the documented
+   * route stood back up after a hearth rest and after a player death. The only route that
+   * worked was `__HARNESS.setEntityNamed()` — a harness verb — which makes the predicate
+   * `RI-MTH07` §A's ORPHAN: a rule that decides something, that nothing in the world ever
+   * supplies, and that only a critic hand-feeds. The round-1 verdict scored the axis 0.
+   *
+   * Three world-side writers now supply it, in increasing order of "nobody had to remember":
+   *
+   *   1. THE STATBLOCK. `game/data/combat/enemies/<id>.json` may declare any of the six, and
+   *      `champion_hist_marked` and `cst_sap_speaker` now declare `boss` and `unique`. A boss
+   *      is content; it should not depend on the caller knowing that.
+   *   2. THE WORLD MAP. `game/data/world/hearths.json`'s fog gates each name their `boss`
+   *      statblock. Anything spawned from a statblock the map calls a boss IS one. This is the
+   *      coupling `RI-MTH07` asks to be demonstrated: repoint a fog gate at a different
+   *      statblock and an ordinary mob stops respawning, with no code change and no harness
+   *      call anywhere in the path.
+   *   3. THE CALLER. `spawn(id, x, z, {questActor: true})` — the route the data file documents
+   *      and the one a quest placing a named actor will use — now actually works, and so does
+   *      the `spawn:` block of a named state, which is how it reaches DATA.
+   *
+   * The flag set is read from `respawn.json` rather than written out here, so the file stays
+   * the single enumeration `w1-13-consume.mjs` perturbs.
+   */
+  _classifyOnSpawn(e, statId, opts) {
+    const flags = (this.data.respawn && this.data.respawn.rules
+      && this.data.respawn.rules.never_respawn_entity_flags) || [];
+    const stat = this.data.enemies[statId] || {};
+    const sources = { statblock: [], world_map: [], spawn_opts: [] };
+    for (const f of flags) {
+      if (stat[f]) { e[f] = true; sources.statblock.push(f); }
+      if (opts && opts[f]) { e[f] = true; sources.spawn_opts.push(f); }
+    }
+    // The world map's own word on who the bosses are.
+    if (flags.includes('boss') && this.hearths) {
+      for (const g of (this.hearths.gates || [])) {
+        if (g.boss && String(g.boss) === String(statId)) {
+          e.boss = true; sources.world_map.push('boss');
+          e.bossOfGate = g.id;
+          break;
+        }
+      }
+    }
+    e.classifiedBy = sources;
+    return sources;
+  }
+
   spawn(id, x, z, opts = {}) {
     const eid = opts.as || `e${this.sim.nextEid}`;
     if (this.sim.findEntity(eid)) throw new Error(`spawn: eid '${eid}' is already in use`);
@@ -3475,6 +3813,7 @@ export class Engine {
     // RI-STL01 method 4 is "1.0 m BEHIND a stationary enemy" and there is no way to express it
     // otherwise. Default unchanged (180°, looking back down -z at the origin).
     if (opts.yaw !== undefined) e.yaw = Number(opts.yaw);
+    this._classifyOnSpawn(e, id, opts);
     this.sim.addEntity(e);
     const body = this.combat.spawnEnemy(eid, this.data.enemies[id], e.pos[0], e.pos[2], e.yaw);
     body.pos[1] = e.pos[1];
@@ -3507,6 +3846,49 @@ export class Engine {
     this.combat.setLock(eid);
     this.sim.player.lockOn = eid;
     this.sim.camera.mode = eid ? 'locked' : 'free';
+    return true;
+  }
+
+  /**
+   * The half of a respawn that only the engine knows how to do. W1-13 round 2.
+   *
+   * `DeathSystem.respawn()` writes the position and it cannot do more, because everything below
+   * belongs to the engine's cells and systems. Round 1 therefore left the body arriving at the
+   * sapwell carrying the velocity, the mire counter, the breath clock and the fall in progress
+   * of wherever it died: 0.00 m off the basin on the respawn frame at all six wells measured,
+   * and 5.09 / 19.09 / 22.27 m off it 220 frames later at three of them, against a no-death
+   * control that moved 0.00 m at all six. D6's "they are standing at the HEARTH" was true for
+   * exactly one frame.
+   *
+   * This is `teleport()`'s discontinuity block and nothing else — the same resets, for the same
+   * reason, on the one other call site that moves the body without walking it.
+   */
+  _afterRespawnPlacement() {
+    const p = this.sim.player;
+    p.pos[1] = this.groundInActiveCell(p.pos[0], p.pos[2]);
+    this._prevX = p.pos[0]; this._prevZ = p.pos[2];
+    if (this.traversal) this.traversal.reset();
+    if (this.hazards) this.hazards.reset();
+    p.strandedBy = null;
+    p.lethalCause = null;
+    const b = this.combat && this.combat.player;
+    if (b) {
+      b.pos[0] = p.pos[0]; b.pos[1] = p.pos[1]; b.pos[2] = p.pos[2];
+      b.hasPrev = false;
+      if (b.move) b.move = null;
+      if (b.vel) { b.vel[0] = 0; b.vel[1] = 0; b.vel[2] = 0; }
+      if (typeof b.evaluateRig === 'function') b.evaluateRig(0);
+    }
+    // THE PROVINCE MUST EXIST UNDER THE BODY. `_streamProvince()` runs from `_afterStep()`
+    // immediately after the death tick, but the ground query above happens now, so the region
+    // the well sits in is requested here for the same reason `teleport()` requests it.
+    if (this.renderer && this.renderer.province && this.cellFor(this.sim.env) === 'province') {
+      this.renderer.province.request(p.pos[0], p.pos[2]);
+      this.renderer.province.drain();
+      p.pos[1] = this.groundInActiveCell(p.pos[0], p.pos[2]);
+      if (b) b.pos[1] = p.pos[1];
+      this.loadState_.regionsResident = [this.field.regionAt(p.pos[0], p.pos[2]).id];
+    }
     return true;
   }
 
@@ -4018,7 +4400,37 @@ export class Engine {
       // W1-13. The death observer's HP baseline is a per-session observation, not save state:
       // a load that restored a body at 40 HP would otherwise read as 460 points of damage on
       // the next frame and stamp `last_damage_frame`. Cleared, exactly as the input pipeline is.
-      if (this.death) { this.death.lastHp = null; this.death.lastGrounded = null; }
+      //
+      // ROUND 2 — but NOT the in-flight death, and not the last grounded position. Clearing
+      // those two unconditionally is half of why a save taken with the death surface up came
+      // back with 0 of 4,200 souls: `applySave` had just restored them (see
+      // `DeathSystem.restoreInFlight`) and this line threw them away one statement later, so
+      // `observe()` re-killed a body that was already dead and D16 ate the bloom. `lastHp = 0`
+      // is the truthful baseline for a body the save says is at zero HP.
+      if (this.death) {
+        if (this.death.active) this.death.lastHp = 0;
+        else { this.death.lastHp = null; this.death.lastGrounded = null; }
+      }
+      // The death SURFACE is a renderer object and a camera mode, and neither is save state.
+      // `_deathTick()` installs them on the transition into `active`, and after a load there is
+      // no transition — the death is already in flight. Put them up here so a mid-death load
+      // shows the same screen the death itself did, rather than a live world behind a body
+      // that cannot move.
+      if (this.death && this.death.active) {
+        beginDeathCamera(this.sim);
+        if (this.renderer) this.renderer.ui.setModel(this._deathSurfaceModel());
+        this.sim.player.state = 'DEATH';
+        this.sim.player.actionableAt = this.death.controllableAt;
+        if (this.combat && this.combat.player) {
+          this.combat.player.state = 'DEATH';
+          this.combat.player.actionableAt = this.death.controllableAt;
+        }
+      }
+      // W1-13 r2, the fail-open floor. `_seedStartingHearth()` guards the NAMED-STATE path and
+      // was never called here, so a blob carrying a null respawn point loaded into a world
+      // where dying cost nothing: the body did not move, the bloom landed at its feet and every
+      // soul was back within five frames.
+      this._seedStartingHearth();
       // The rig, then the saved rig on top of it. `_settleCamera()` clears the transients a
       // fresh session would not have (the dialogue walk, the containment integrators, the
       // recentre gate); `restoreCameraRig()` then puts back the spring arm and everything
@@ -4892,6 +5304,34 @@ export class Engine {
     };
   }
 
+  /**
+   * The player's factions with the EARNED rank folded in. Kept separate from the register so
+   * that a rank something actually stored still wins, and so that a probe can see which of the
+   * two a number came from.
+   */
+  _questFactionsView() {
+    const live = (this.sim.quest && this.sim.quest.factions) || {};
+    const qe = this.questEngine;
+    if (!qe || !qe.gates) return live;
+    const out = {};
+    // The ladder needs the same four inputs `canOffer` gives it, and only those: reputation,
+    // attributes, skills, world flags. Deliberately NOT `qe.context()` — that calls
+    // `dispositionView()`, which calls this, which would be an infinite regress.
+    const q = this.sim.quest;
+    const reputation = {};
+    for (const f of Object.keys(q.factions || {})) reputation[f] = q.factions[f].reputation || 0;
+    const skills = Object.fromEntries(Object.entries(this.sim.progression.skills || {})
+      .map(([k, v]) => [k, v && v.value != null ? v.value : v]));
+    const lite = { reputation, attributes: this.sim.progression.attributes, skills,
+      worldFlags: new Set(Object.keys(q.flags || {}).filter((k) => q.flags[k])) };
+    for (const [f, m] of Object.entries(live)) {
+      let rank = Number(m.rank || 0);
+      try { rank = Math.max(rank, qe.gates.highestQualifying(f, lite)); } catch { /* not a laddered faction */ }
+      out[f] = { ...m, rank, stored_rank: Number(m.rank || 0) };
+    }
+    return out;
+  }
+
   /** The character as RI-DLG04 §B's movable terms read them, from live sim state only. */
   _questPlayerView() {
     const ch = this.sim.character;
@@ -4913,7 +5353,15 @@ export class Engine {
       // works: persuasion, barter and greetings. Naming this rather than dropping it silently,
       // because "the gate moved and we do not know why" is how the last three rounds were lost.
       Personality: (this.data.persuasionGmst && this.data.persuasionGmst.gmst.fDispPersonalityBase) || 50,
-      factions: (this.sim.quest && this.sim.quest.factions) || {},
+      // W1-19 round 2: the LADDER's ranks, not the stored ones. `_applyConsequences()` writes
+      // reputation and never rank, so `q.factions[f].rank` is 0 for every faction in every save
+      // in this build — which meant `factionTerm`'s rank amplification was dead and, worse, that
+      // its membership test (see `sim/dialogue/disposition.js`) had nothing but a reputation row
+      // to go on. `QuestEngine.context()` already derives the rank a character has EARNED from
+      // `faction-gates.json` (reputation + attribute + two favoured skills + world state) and
+      // uses it for `rank_gate`; the same number belongs here, because rank 0 on that ladder is
+      // named "Stranger" and rank 1 is the first rank at which a faction has admitted you.
+      factions: this._questFactionsView(),
       bounty,
       // Charm writes straight into the register (`sim/magic/apply.js`), so counting it here
       // as well would pay for one spell twice.
@@ -5461,6 +5909,9 @@ export class Engine {
       journal: q.journal.map((e) => ({ n: e.n, date: e.date, quest: e.quest, text: e.text })),
       flags: { ...q.flags },
       topicsKnown: q.topicsKnown.slice().sort(),
+      // RI-WLD09's requested harness extension 3, so M-OP4's derivation test can confirm what
+      // the agent had actually read rather than what it was given.
+      booksRead: [...(this._booksRead || [])].sort(),
       dispositions: { ...q.dispositions },
       factions: JSON.parse(JSON.stringify(q.factions)),
       crime: JSON.parse(JSON.stringify(q.crime)),
@@ -5498,7 +5949,11 @@ export class Engine {
       // `reach_m` is the field `_censusStep` actually tests when `interact` is pressed, and it
       // is the register `telekinesis` was moved onto in W1-14 round 3. Reporting it here is what
       // makes "an object outside melee reach becomes takeable" (RI-MAG06 §B) a readable check.
-      out.push({ eid: o.eid, kind: 'object', archetype: 'OBJECT', name: o.name, takeable: !!o.takeable, taken: !!o.taken, reach_m: o.reach_m, pos: [o.pos[0], o.pos[1], o.pos[2]], hp: null });
+      // `readable` is the field RI-JRN03 DS2's inscription census (M-K21) counts: an inscription
+      // is a physical entity with a position, readable via `interact`, that teaches a verb. It
+      // was carried on the prop and reported nowhere, so the census had nothing to count and
+      // could only have returned a vacuous 0.
+      out.push({ eid: o.eid, kind: 'object', archetype: 'OBJECT', name: o.name, takeable: !!o.takeable, taken: !!o.taken, reach_m: o.reach_m, readable: o.readable || null, pos: [o.pos[0], o.pos[1], o.pos[2]], hp: null });
     }
     return out;
   }
@@ -5553,6 +6008,12 @@ export class Engine {
       hp: p.hp, hp_max: p.hpMax, stamina: p.stamina, stamina_max: p.staminaMax,
       poise_cur: p.poise, poise_max: p.poiseMax, estus: p.estus, locked_on: p.lockOn,
       level: this.sim.progression.level, souls: this.sim.progression.soulsHeld,
+      // W1-13 r2: the PRICE of the next level and the running total spent. `RI-JRN06` M-D1 and
+      // `RI-PRG04` §1 both turn on "souls held falls by exactly `soulsToNextLevel()`", and
+      // round 1 had no way to read either without going through the level-up screen — which is
+      // the thing under test.
+      souls_to_next: this.soulsToNextLevel(),
+      souls_spent: this.sim.progression.soulsSpent || 0,
       attributes: { ...this.sim.progression.attributes },
       equip_load_pct: p.equipLoadPct, roll_class: p.rollClass,
       burden_ratio: +(p.burdenRatio || 0).toFixed(6), burden_tier: burdenTierOf(p.burdenRatio || 0).id,
@@ -5719,6 +6180,11 @@ async function loadData(onBytes) {
     else if (entry.path === 'world/hearths.json') out.hearths = doc;
     else if (entry.path === 'world/respawn.json') out.respawn = doc;
     else if (entry.path === 'world/landmask.json') out.landmask = doc;
+    // W1-OPACITY. RI-WLD09 §B1's register of the 24 things this world refuses to explain.
+    // It MUST have a branch here: a world/*.json that matches nothing is fetched and then
+    // dropped on the floor, which is exactly how `dialogue/persuasion-gmst.json` and
+    // `dialogue/faction-reactions.json` spent a round being loaded and unreadable.
+    else if (entry.path === 'world/opacity.json') out.opacity = doc;
     else if (entry.path === 'input/profiles.json') out.inputProfiles = doc;
     else if (entry.path === 'input/pad-quirks.json') out.padQuirks = doc;
     else if (entry.path === 'camera/cells.json') out.cameraCells = doc;

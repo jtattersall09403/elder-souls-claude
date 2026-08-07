@@ -1,23 +1,39 @@
 {
  "schema": "elder-souls/respawn@1",
  "owner": "wave-1 piece W1-13 (combat.death.worldreset, progression.bonfire.function)",
- "binding": "ARBITRATION seam S5, RI-PRG04 §1 and §6.3, RI-JRN06 D9 / M-D5 / M-D6 / M-D7. RI-LOR05 §4: 'A named person's pattern belongs to their own tree and their own hatching pool. A local root will not issue another tree's egg. Only the tribeless, the un-named, and the hatchling-stock re-grow.'",
+ "binding": "ARBITRATION seam S5, RI-PRG04 \u00a71 and \u00a76.3, RI-JRN06 D9 / M-D5 / M-D6 / M-D7. RI-LOR05 \u00a74: 'A named person's pattern belongs to their own tree and their own hatching pool. A local root will not issue another tree's egg. Only the tribeless, the un-named, and the hatchling-stock re-grow.'",
  "_why_this_file_exists": "The respawn rule is the single place where a careless implementation destroys a Morrowind world, so the classification is DATA that a probe can enumerate and perturb rather than a condition buried in a loop. game/src/sim/death.js is the only consumer; tools/harness/w1-13-consume.mjs perturbs this file and watches an entity change behaviour.",
-
  "rules": {
-  "respawning_tiers": ["trash", "elite"],
+  "respawning_tiers": [
+   "trash",
+   "elite"
+  ],
   "_respawning_tiers_note": "Ordinary hostiles. Elite mobs respawn in Souls; bosses do not, and a boss is marked by `never_respawn_ids` or by the entity's own `named` flag, not by its tier.",
-  "never_respawn_tiers": ["prop"],
+  "never_respawn_tiers": [
+   "prop"
+  ],
   "_never_respawn_tiers_note": "`prop` is the test-fixture tier (dummies, material posts, the camera boxes). Respawn logic does not touch a fixture: a probe that killed a dummy on purpose must find it still dead.",
-  "never_respawn_archetypes": ["FIXTURE"],
-  "never_respawn_ids": ["champion_hist_marked", "cst_sap_speaker"],
+  "never_respawn_archetypes": [
+   "FIXTURE"
+  ],
+  "never_respawn_ids": [
+   "champion_hist_marked",
+   "cst_sap_speaker"
+  ],
   "_never_respawn_ids_note": "The two bosses behind the two fog gates in game/data/world/hearths.json. A boss is content, not a patrol.",
-  "never_respawn_entity_flags": ["named", "unique", "boss", "merchant", "trainer", "questActor"],
-  "_never_respawn_entity_flags_note": "Set per SPAWN (engine.spawn(id, x, z, {named: true})) so a quest can place an ordinary archetype as a named actor. Any one of them true and the entity is outside respawn logic forever.",
+  "never_respawn_entity_flags": [
+   "named",
+   "unique",
+   "boss",
+   "merchant",
+   "trainer",
+   "questActor"
+  ],
+  "_never_respawn_entity_flags_note": "WHO WRITES THESE, and it is not a harness. Round 1 documented `engine.spawn(id, x, z, {named: true})` as the producer and `spawn()` copied none of the six, so the only route that worked was __HARNESS.setEntityNamed() and the predicate was RI-MTH07 \u00a7A's ORPHAN \u2014 a rule that decides something, that nothing in the world supplies, that only a critic hand-feeds. It scored 0. Three world-side writers now supply it, all through engine._classifyOnSpawn(): (1) THE STATBLOCK \u2014 game/data/combat/enemies/<id>.json may declare any of the six, and champion_hist_marked and cst_sap_speaker declare boss+unique; (2) THE WORLD MAP \u2014 game/data/world/hearths.json's fog gates each name their `boss` statblock, and anything spawned from a statblock the map calls a boss is flagged `boss` with `bossOfGate` recording which gate said so; (3) THE CALLER \u2014 spawn(id, x, z, {questActor: true}) now works, and a named state's `spawn:` block carries the six through, so a quest can place an ordinary archetype as a named actor in DATA. Any one of them true and the entity is outside respawn logic forever. tools/harness/w1-13-consume.mjs perturbs route (2) \u2014 repoint a fog gate at inf_trash and an ordinary mob stops standing back up, with no code change and no harness verb anywhere in the path.",
   "npc_records_are_never_touched": true,
-  "_npc_records_note": "sim.npcs — the people: merchants, trainers, quest-givers, the Warden-Scribe — are a separate array from sim.entities and NO respawn code path iterates it. This is structural, not a rule that can be got wrong by a typo; it is declared here so a critic can check the claim by reading one function."
+  "_npc_records_note": "sim.npcs \u2014 the people: merchants, trainers, quest-givers, the Warden-Scribe \u2014 are a separate array from sim.entities and NO respawn code path iterates it. This is structural, not a rule that can be got wrong by a typo; it is declared here so a critic can check the claim by reading one function.",
+  "_classification_provenance": "Every entity carries `classifiedBy: {statblock: [], world_map: [], spawn_opts: []}` naming which of the three writers set which flag, so respawnReport() can show that a protection came from the world and not from a probe."
  },
-
  "what_a_respawn_restores": [
   "hp to hpMax on both the sim entity and the combat body (the body is the authority)",
   "state to IDLE, alert to 0, alertState to IDLE",
@@ -26,15 +42,14 @@
  ],
  "what_a_respawn_never_touches": [
   "sim.npcs (every named person)",
-  "sim.world.npcsDead — a named NPC killed stays killed, across every rest and every death, forever",
+  "sim.world.npcsDead \u2014 a named NPC killed stays killed, across every rest and every death, forever",
   "sim.world.containersEmptied, doorsUnlocked, shortcutsOpened, itemsTaken, fogGatesPassed",
-  "sim.quest.* — stages, flags, journal, factions, dispositions, topics, crime, afflictions, travel",
+  "sim.quest.* \u2014 stages, flags, journal, factions, dispositions, topics, crime, afflictions, travel",
   "sim.progression.* except soulsHeld, which death zeroes and the bloodstain holds",
-  "sim.env.timeOfDay — RI-PRG04 §6 rule 4: only RESTING moves the clock; dying at a boss must not burn a quest deadline"
+  "sim.env.timeOfDay \u2014 RI-PRG04 \u00a76 rule 4: only RESTING moves the clock; dying at a boss must not burn a quest deadline"
  ],
-
  "triggers": {
-  "hearth_rest": "RI-PRG04 §1: every non-unique hostile in the world returns, including ones killed hours ago.",
-  "player_death": "RI-PRG04 §6.3: all ordinary enemies respawn, including everything killed since the last rest."
+  "hearth_rest": "RI-PRG04 \u00a71: every non-unique hostile in the world returns, including ones killed hours ago.",
+  "player_death": "RI-PRG04 \u00a76.3: all ordinary enemies respawn, including everything killed since the last rest."
  }
 }

@@ -19,6 +19,12 @@
 import { composeCharacter, birthsignById, classById, familyOfSkills } from './sheet.js';
 import { selectQuestions, scoreAnswers } from './questionnaire.js';
 
+/** What a paused node is waiting for, said in the scene's own terms. Keyed by `resume_by`. */
+const AWAITING = {
+  talk: 'the player crosses the hold and speaks to her. Nothing is asked until they do. RI-JRN01 O6.',
+  walk: 'the player walks out of the hold, up the companionway and into the Writ House. RI-JRN01 O6.',
+};
+
 export class Census {
   constructor(data) {
     this.data = data;
@@ -51,6 +57,10 @@ export class Census {
     this.done = false;
     this.paused = false;
     this.writ = null;
+    // The line in which she tells you what you are, composed at the moment the class is
+    // decided and drawn at `writ.class-verdict`. See `_nameYou()`.
+    this.classVerdict = null;
+    this.resumedBy = null;
     this._autoAdvance();
     return this.state();
   }
@@ -73,7 +83,13 @@ export class Census {
     const out = {
       done: false,
       paused: this.paused,
-      awaiting: this.paused ? 'the player walks out of the hold, down the gangplank and into the Writ House. RI-JRN01 O6.' : null,
+      // What the scene is waiting for, in the node's own words, and the ACT it is waiting for
+      // in one machine-readable token. There are two paused nodes now — the hold opens on one
+      // (RI-JRN01 O6: a body before a character) and leaves the hold through the other — so
+      // "awaiting" can no longer be one hardcoded sentence about a gangplank.
+      awaiting: this.paused ? (AWAITING[n.resume_by || 'walk'] || AWAITING.walk) : null,
+      resume_by: this.paused ? (n.resume_by || 'walk') : null,
+      resumes_to: this.paused ? (n.resume || 'writ.enter') : null,
       node: n.id,
       speaker: n.speaker,
       place: n.place,
@@ -231,7 +247,8 @@ export class Census {
         const c = classById(this.data, value);
         this.spec.classId = c.id;
         rec.line = c.scribe_line;
-        this._advance('writ.birthsign');
+        this._nameYou(n, 'named');
+        this._advance('writ.class-verdict');
         break;
       }
       case 'writ.class-custom-name': {
@@ -257,7 +274,8 @@ export class Census {
       }
       case 'writ.class-custom-secondary': {
         this.spec.custom.secondary = this._requirePick(n, value, 2, this.spec.custom.primary);
-        this._advance('writ.birthsign');
+        this._nameYou(n, 'custom');
+        this._advance('writ.class-verdict');
         break;
       }
       case 'writ.class-questions': {
@@ -286,21 +304,31 @@ export class Census {
             const c = classById(this.data, s.named_class);
             this.spec.classId = c.id;
             this.spec.custom = null;
-            const tmpl = s.named_via === 'exact'
-              ? n.on_match_named_class
-              : (n.on_nearest_named_class || n.on_match_named_class);
-            rec.line = tmpl.replace(/%ClassName/g, c.name);
+            // THE NAMING LINE IS NO LONGER A `spoken` ROW. It is `writ.class-verdict`'s own
+            // `line`, and `spoken` is the one thing render/ui.js is allowed to sacrifice when
+            // the page overflows — which is exactly what it did, at every node, in every walk,
+            // so `NAMED_line` measured 0% against fourteen correctly computed classes. See the
+            // node's `note` in writ-house.json.
+            this._nameYou(n, s.named_via === 'exact' ? 'match' : 'nearest');
+            rec.line = null;
             rec.named_class = c.id;
             rec.named_via = s.named_via;
             rec.named_fit = s.nearest_profession ? s.nearest_profession.fit : null;
           } else {
-            rec.line = n.on_no_match;
+            this._nameYou(n, 'none');
+            rec.line = null;
             rec.named_class = null;
             rec.named_via = null;
             rec.named_fit = s.nearest_profession ? s.nearest_profession.fit : null;
           }
-          this._advance('writ.birthsign');
+          this._advance('writ.class-verdict');
         }
+        break;
+      }
+      // She has said the word. The player closes the beat; nothing else happens here.
+      case 'writ.class-verdict': {
+        this._requireOption(n, value);
+        this._advance('writ.birthsign');
         break;
       }
       case 'writ.birthsign': {
@@ -393,11 +421,29 @@ export class Census {
     throw new Error('census: the graph did not settle in 16 hops — a node cycle');
   }
 
-  /** The player has walked into the Writ House. RI-JRN01 O6's >= 60 s has elapsed in play. */
-  enter() {
+  /**
+   * The player has done the thing the paused node was waiting for — walked into the Writ House,
+   * or turned round in the hold and spoken to the woman at the crates.
+   *
+   * The target used to be a hardcoded `'writ.enter'`, because there was exactly one place the
+   * scene ever handed control back. There are two now: `hold.come-to` opens the game with a body
+   * and no question in it (`RI-JRN01` O6) and resumes on `talk`; `hold.out` resumes on `walk`.
+   * Both carry their own `resume` in the graph, so the engine waits for whatever the node says
+   * it is waiting for rather than for the one case somebody wrote down in code.
+   *
+   * @param {string} [by] the act that resumed it — 'talk' | 'walk'. Recorded, not trusted: a
+   *   caller cannot resume a node by naming an act the node did not ask for.
+   */
+  enter(by) {
     if (!this.paused) return this.state();
+    const n = this.node();
+    const want = (n && n.resume_by) || 'walk';
+    if (by && by !== want) {
+      throw new Error(`census: ${n ? n.id : '(no node)'} is waiting to be resumed by '${want}', not by '${by}'`);
+    }
+    this.resumedBy = by || want;
     this.paused = false;
-    this.nodeId = 'writ.enter';
+    this.nodeId = (n && n.resume) || 'writ.enter';
     this._autoAdvance();
     return this.state();
   }
@@ -442,6 +488,38 @@ export class Census {
     return this.writ;
   }
 
+  /**
+   * Compose the line in which a functionary tells you what you are, and hang it on the node
+   * that draws it.
+   *
+   * RI-CHR01 §4 calls this "the moment the route is for" and the round-1 verdict is that we
+   * lose it to Morrowind outright: fourteen classes computed, all fourteen reachable, the right
+   * one in 96.25% of runs, and the line saying so drawn **0%** of the time with a coupling of 0
+   * against a passing null control. The text existed. It was authored, interpolated and carried
+   * — into `spoken`, which is the one region of the panel the height cap is allowed to
+   * sacrifice, and which it sacrificed every time. `RI-JRN09`'s fourth consumption shape,
+   * ORPHAN TEXT, on the single densest string in the scene.
+   *
+   * So the line becomes `writ.class-verdict`'s own `line`. A node's `line` is never sacrificed
+   * — render/ui.js's policy drops the type scale, then the option window, then the writ block,
+   * and it never touches the thing being said now. The coupling is direct: `%ClassName` is
+   * interpolated from `spec.classId` (or the player's own words on the custom route), so the
+   * drawn string cannot agree with a class the census did not compute.
+   *
+   * @param {object} node  the node whose authored text names you
+   * @param {'named'|'custom'|'match'|'nearest'|'none'} via  which route produced the name
+   */
+  _nameYou(node, via) {
+    const routeLines = (this.nodesById.get('writ.class-verdict') || {}).route_lines || {};
+    const tmpl = via === 'match' ? node.on_match_named_class
+      : via === 'nearest' ? (node.on_nearest_named_class || node.on_match_named_class)
+        : via === 'none' ? node.on_no_match
+          : routeLines[via];
+    if (!tmpl) throw new Error(`census: no naming line for route '${via}' — the scene must never reach the verdict node with nothing to say`);
+    this.classVerdict = { via, line: this._interpolate(tmpl) };
+    return this.classVerdict;
+  }
+
   _finish() {
     this._prepareWrit();
     this.transcript.push({ node: 'writ.stamp', line: this._interpolate(this.nodesById.get('writ.stamp').line), grants_item: 'stamped-writ' });
@@ -457,7 +535,11 @@ export class Census {
       .replace(/%Race/g, c.race ? raceName(this.data, c.race) : '')
       .replace(/%Upbringing/g, c.upbringing || '')
       .replace(/%ClassName/g, c.classId ? classById(this.data, c.classId).name : (c.custom && c.custom.name) || '')
-      .replace(/%Birthsign/g, c.birthsign ? birthsignById(this.data, c.birthsign).name : '');
+      .replace(/%Birthsign/g, c.birthsign ? birthsignById(this.data, c.birthsign).name : '')
+      // The naming line, already interpolated by `_nameYou()` at the moment the class was
+      // decided. It is substituted rather than stored in the graph because the three routes
+      // reach the same node with three different sentences.
+      .replace(/%ClassVerdict/g, this.classVerdict ? this.classVerdict.line : '');
   }
 }
 

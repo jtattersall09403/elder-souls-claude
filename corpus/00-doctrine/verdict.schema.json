@@ -292,7 +292,8 @@
                 },
                 "hard_fail": {
                   "type": "boolean",
-                  "default": false
+                  "default": false,
+                  "description": "TRUE means this check IS a hard-fail gate, not that the gate fired. Whether it fired is `result`: 'fail' = TRIGGERED (list the id in hard_fails[] too; the item caps at 2). 'unmeasurable' = UNGATED \u2014 the gate exists and no instrument could fire it, which scores 0 fail-closed and must be named in why_not_ten or biggest_gap, never banked as clean. Filed by the W1-08/W1-29 round-1 critic: verdict-validate.mjs:134 used to read the flag itself as 'triggered', so a critic could not record five gates that had no instrument without fabricating five hard fails the build never tripped."
                 },
                 "evidence": {
                   "type": "array",

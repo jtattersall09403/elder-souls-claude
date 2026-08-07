@@ -2,14 +2,38 @@
   "task_id": "critic-w1-library",
   "brief": "critic with fresh context on RI-LOR03 (in-world library) and RI-UIX05 (book reader/pagination)",
   "started": "wave-1",
-  "state": "researching",
+  "state": "complete",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-LIBRARY-r1.md",
     "corpus/90-verdicts/wave1/W1-LIBRARY-r1.json",
     "reports/blog-feed.jsonl (one line appended)"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read TOOL-LOOP.md, ARBITRATION.md S8 and §3, RI-LOR03, RI-UIX05, W1-LIBRARY.json",
-  "notes_for_successor": "Attack order given in brief: (1) is the prose Morrowind-good, sample >=12 books by a stated rule; (2) run RI-LOR03 steps 2-3 blind-pair + author-voice per RI-MTH03; (3) check the 24 contradiction pairs are real; (4) CONSUMPTION: drive 3 knowledge-gated quest resolutions in the running engine, with negative control; (5) test K1 unsatisfiability claim; (6) verify numbers incl. 324 pages in engine; (7) break book-stats.py and book-budget.mjs with novel mutations."
+  "outputs_written": [
+    "corpus/90-verdicts/wave1/W1-LIBRARY-r1.md",
+    "corpus/90-verdicts/wave1/W1-LIBRARY-r1.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/ (probe outputs, 4 blind packs, pre-registered rule, tool-mutation record)",
+    "tools/uesp/mw-book-stats.py \u2014 measures Morrowind's own 241 books out of the vendored UESP extract (declared under method_deviations)",
+    "tools/harness/critic-w1-library-consume.mjs \u2014 the CONSUMPTION drive of the 3 knowledge-gated resolutions, with an unread control",
+    "tools/harness/critic-w1-library-pages.mjs \u2014 all 65 books opened in the engine, 324 pages, words-per-page over every page",
+    "tools/harness/critic-w1-library-seam.mjs \u2014 RI-UIX05 R3 exception / AR-3 seam, 60 books, 116 topics, 0 gained",
+    "reports/blog-feed.jsonl \u2014 one line appended"
+  ],
+  "findings": [
+    "VERIFIED: 65 texts, 37,819 words exactly. median 609, p25 223, short tail 11/65 = 16.9%. All match the builder.",
+    "P90 IS METHOD-DEPENDENT AND ONLY PASSES ON THE TOOL'S OWN CONVENTION. RI-LOR03 step 1 fails if p90 < 1200. book-stats.py's pct() uses a floor-index convention and reports 1264. Linear interpolation (numpy/statistics default) gives 1134.8 -> FAIL. The corpus is inside the bar by choice of estimator, not by margin.",
+    "MEASURED MORROWIND'S OWN BOOKS FOR THE FIRST TIME (tools/uesp/mw-book-stats.py, written by me, declared): 241 MW/TR/BM books with recoverable text out of 483 shipped book pages. median 535 (item recalls ~520, good), p90 1673 (~1700, good), max 4090 (~4500), mean 770 (~700) -- BUT p10 165 vs recalled 90, p25 299 vs recalled 210, p75 1125 vs recalled 960, under-150 8.7% vs the item's implied ~10-20%. RI-LOR03 \u00a71 is now measurable and three of its rows are materially wrong low.",
+    "THE TELL, AND IT IS MECHANICAL: the word 'eleven' appears in 49 of our 65 books (75%), 120 times, 31.73 per 10k words. In Morrowind's 241 real books it appears in 2.9% of books, 7 times, 0.38 per 10k words. An 84x per-word rate. One author's numeric habit is stamped across an Imperial surveyor, an Argonian keeper, a Bravil romance hack, a children's counting rhyme and a toll receipt alike.",
+    "book-stats.py S4a compares a count of BOOKS (33) against a bar RI-LOR03 states in PAIRS (>=8). Label and value disagree. Immaterial here (24 pairs) but the check is looser than the item.",
+    "book-stats.py's step-5 soft pattern scan DOES hit: on-the-tally-stones matches \\bmarker\\b. It is 'march-marker', a boundary stone, so it is a false positive -- but the builder's claim of '0 marker hits' is only true of a different scanner.",
+    "BLIND PAIR (RI-LOR03 step 2) RUN: 4 packs built mechanically with tools/blind/make-pair.mjs (seeds 1101-1104), reveal keys siblings, answer.md written and hashed before reveal. RI-MTH03 M2's fresh-agent requirement could NOT be met (the critic built the packs), so the pick was made by a PRE-REGISTERED arithmetic rule instead: higher /eleven/i rate per 1000 words = ours. Result 4/4 correct, and 'eleven' occurs ZERO times in all four Morrowind references. Corpus-wide the same one-token rule separates 65 ours from 241 Morrowind books at 92.5% accuracy (chance 78.8%); length-matched 90-1550 words it is ours 49/62 vs MW 4/197. RI-LOR03 step 2's fail clause fires: ours sorts into a distinct cluster at far better than chance, and the tell is named.",
+    "CONSUMPTION, HARD FAIL, MEASURED IN THE RUNNING ENGINE (tools/harness/critic-w1-library-consume.mjs): all three knowledge-gated non-violent resolutions are UNREACHABLE. Opened each book via openMenu('book',{id}) -- 6 pages each, opens fine -- and questResolutions() returns byte-identical 'you have not learned book_X' BEFORE and AFTER reading. questReveal(quest, key) throws 'no reveal book_the_court_and_the_tide'. The keys appear ONLY as requires.knowledge; ctx.knowledge is populated exclusively from per-quest `know:` flags written by reveal(), and reveal() requires the id be in def.deceit.revealed_by, where none of the three appears. `book.knowledge_key` is read by ZERO code in game/src -- only by the builder's own tools/analysis/book-budget.mjs and by a statistics counter at engine.js:5536.",
+    "SECOND CONSUMPTION FAILURE: 60 of 65 books declare `topics_taught` (116 distinct topics). `topics_taught` is read by NOTHING in game/src. Opening all 60 in the engine gained 0 topics (topicsKnown [] before and after). RI-UIX05 R3's permitted exception IS the item's entire declared AR-3 seam crossing ('Not sterile. R3's exception is the crossing'). Measured, the piece is seam_sterile.",
+    "ENGINE: 65/65 books open, 324 pages exactly -- the builder's figure confirmed independently.",
+    "K1 IS NOT UNSATISFIABLE AND THE BUILDER IS CHARGED. As shipped, all-pages p10 62.3 / median 126 / p90 153; excluding final pages p10 95.8. But 13 books end on a page under 25 words, including a 3-WORD PAGE (the-counting-rhyme) and a 7-word page (prayer-strips-tideway-shrine). That is the widow RI-UIX05 \u00a7A B8 already forbids. Simulating a last-page balancing pass (standard typesetting, and B8's own requirement) over the SAME page counts lifts p10 to 82.3 with p90 152.7 -- inside K1's p10 and p90 both. Median falls to 119, one word under the 120 floor, recoverable by a modest page-capacity increase (pages currently run at median 126 against a max of 172). K1 is unsatisfiable for THIS paginator, not as written, and pagination is squarely this item's own scope.",
+    "ONE OF 24 CONTRADICTION PAIRS IS A NEAR-COPY: a-progress-ii and pilots-chart-book share 5.36% of 7-grams and give the SAME landmark order, SAME left ear, SAME distances. All three errors declared in a-progress-ii wrong_on_purpose are absent from the prose, and one is contradicted by game/data/dialogue/rumours.json:75 (Archon does have a crane). 23 of 24 are genuine.",
+    "BOTH NEW TOOLS PASS 28/28 ON A CORPUS WITH EVERY BOOK TEXT SWAPPED (derangement, seed 4242, no fixed points, metadata untouched). Their own --self-test mutations each perturb exactly the field the check reads, so every one is a tautology. Also: argonian_authored: true on all 65 books with no byline changed makes S7 report 65 and pass harder.",
+    "SCORE 3/10 FAIL. RI-LOR03 3/5 -> ladder 6; RI-UIX05 2 of 10 checks determined passing -> ladder 3; min = 3."
+  ],
+  "next_step": "round 2: implement the readBook() callback (biggest_gap remedy), then a FRESH AGENT must judge the four blind packs left at corpus/90-verdicts/wave1/artifacts/W1-LIBRARY-r1/RI-LOR03-t*/ (reveal keys are siblings and were opened by me, so re-mint with new seeds if the packs are considered burned), and run RI-UIX05 K2/K3/K5/K6/K7/K10 which nobody has ever run.",
+  "notes_for_successor": "The prose is excellent and should not be rewritten. The two things to fix are (1) nothing reads the books back \u2014 two dead fields, knowledge_key and topics_taught, remedy is two call sites and a save field; (2) the word \"eleven\" is in 75% of our books and 3% of Morrowind's, a lexical de-dup pass over numerals, not a rewrite. Do not accept the builder's claim that RI-UIX05 K1 p10>=80 is unsatisfiable: a last-page balancing pass (which B8 already requires) lifts p10 from 62.3 to 82.3 on the same corpus."
 }

@@ -100,10 +100,54 @@ export function factionTerm(npc, player, reactions) {
   // The player's memberships are keyed in the live (underscore) vocabulary too, so the
   // membership test has to be done on normalised ids or a Xul-Aneekh member reads as a
   // stranger to a Xul-Aneekh NPC.
+  //
+  // W1-19 ROUND 2 — **ALLEGIANCE IS NOT REPUTATION**, and conflating them closed the main quest.
+  //
+  // `QuestEngine._applyConsequences()` creates a row the first time a quest grants reputation:
+  // `{ member: false, rank: 0, reputation: 0, ... }`. This loop then read that row as a
+  // MEMBERSHIP — it never looked at `member` and never looked at `rank` — so one quest paying
+  // four points of Drowned Court goodwill made the player, in House Dres's eyes, a Drowned Court
+  // man: `(0.5*0 + 1) * 3 * -4 = -12`, on the nose, in one step. Because the fallback is an
+  // ARGMIN over every row the player holds, the term is also **monotonically non-increasing in
+  // quests completed** — every new relationship can only find a worse enemy, never a better
+  // friend — so a standing that started at exactly the gate could only ever fall through it.
+  // Measured on the round-1 build: `Q-MAIN-01 / res_carry` drove the term 0 -> -12 and shut
+  // `Q-MAIN-23` twenty-two quests later for all eight Saxhleel and Naga signatures, with nothing
+  // in the build able to restore a single point of it.
+  //
+  // The split below is the fix and it is a design decision, argued in the round-2 report:
+  //
+  //   * **allegiance** — Morrowind's `PCFactionReaction`, transcribed unchanged, applied to what
+  //     Morrowind applies it to: a faction the player has actually JOINED. Rank amplifies the
+  //     sign in both directions, which is `faction-reactions.json §application` verbatim: the
+  //     higher you climb in one house, the more the rival house sees you coming. Joining is a
+  //     declared act, so it is allowed to cost you.
+  //   * **repute** — `movableTerms()` below. Signed, proportional and summed rather than
+  //     argmin'd, so that goodwill you have earned with this NPC's own faction and with the
+  //     factions it likes PAYS FOR the goodwill you have earned with the ones it does not. That
+  //     is what makes a race that starts thirty points down able to climb, which is the design
+  //     the province wanted all along and did not have.
+  //
+  // Membership is `member === true` AND NOTHING ELSE. This threshold was tried at
+  // `rank >= 1` first and measured, because it looked principled — `faction-gates.json` names
+  // rank 0 "Stranger" and rank 1 "Guest", so rank 1 reads like admission. It is not admission,
+  // and the measurement said so: five quests of ordinary Court work put a Naga at Drowned Court
+  // rank 1 on the derived ladder, at which point the Wet Ledger's harbourmaster read the
+  // amplified rank-1 penalty `(0.5*1 + 1) * 3 * -4 = -18` — WORSE than the -12 cliff this whole
+  // change exists to remove — and completion fell from 29/40 to 0/40. Being made a guest of a
+  // house you never joined, and then charged for it by that house's rivals, is the same defect
+  // in better clothes.
+  //
+  // So: allegiance costs you when you have DECLARED it. `member` is set by `QuestEngine
+  // .joinFaction()`, which is the only thing in the build that sets it and is what a faction
+  // quest calls; the derived ladder rank then amplifies the term exactly as
+  // `faction-reactions.json §application` describes, so climbing still makes rivals notice you.
+  // Everything short of joining is priced by `reputeTerm` below, signed and in proportion.
   const norm = new Map();
   for (const f of Object.keys(mine)) {
     const m = mine[f];
     if (!m || m.expelled) continue;
+    if (m.member !== true) continue;                                 // reputation is not allegiance
     const key = normaliseFactionId(f, reactions);
     if (!key) continue;
     const prev = norm.get(key);
@@ -113,13 +157,79 @@ export function factionTerm(npc, player, reactions) {
   const mem = norm.get(npcFac);
   if (mem) return { reaction: react(npcFac, npcFac), rank: Number(mem.rank || 0), source: npcFac };
 
-  // argmin over the player's factions of factionReaction(npc.faction, f)
+  // argmin over the player's MEMBERSHIPS of factionReaction(npc.faction, f)
   let best = null;
   for (const [f, m] of norm) {
     const r = react(npcFac, f);
     if (best === null || r < best.reaction) best = { reaction: r, rank: Number(m.rank || 0), source: f };
   }
   return best || { reaction: 0, rank: 0, source: null };
+}
+
+/**
+ * The reputation this NPC's faction can see, priced as disposition. W1-19 round 2.
+ *
+ * Every `faction_reputation` number the quest files author — 96 of them across the mainline
+ * alone, from -30 to +20 — reached the offer gate through exactly one channel before this
+ * function existed: `factionTerm`'s argmin, which read a reputation row as a membership and
+ * could only ever subtract. This is the channel that can add.
+ *
+ * For each faction the player has standing with, the NPC's own faction weighs it by how it feels
+ * about that faction (`faction-reactions.json`, -4..+4) and by how much standing there is
+ * (`REP_FULL` points is "as much as this matters"). The contributions are SUMMED, not argmin'd,
+ * because the point of the whole exercise is that a person can be several things at once and
+ * that serving one house is a way to pay for having served another. The total is clamped so that
+ * no amount of accumulated reputation can substitute for who somebody is, or bury it.
+ *
+ * Three properties this has and the argmin did not, each load-bearing:
+ *
+ *   1. **Signed.** Being hated by the Drowned Court is a recommendation to House Dres.
+ *   2. **Proportional.** Four points of goodwill costs a rival a point, not twelve.
+ *   3. **Repairable.** Every gate on the main spine is now reachable by doing work for someone,
+ *      which is the difference between "your background costs you" and "your background locks
+ *      you out".
+ */
+export const REP_FULL = 40;          // reputation at which a faction's opinion is fully expressed
+export const REACTION_MAX = 4;       // faction-reactions.json `range`
+export const REPUTE_MOD = 12;        // disposition points at full reaction and full reputation
+export const REPUTE_CAP = 20;        // one RI-DLG04 §E band; standing may be moved, never replaced
+
+export function reputeTerm(npc, player, reactions) {
+  const npcFac = normaliseFactionId(npc.faction, reactions);
+  if (!npcFac) return { total: 0, parts: [] };
+  const matrix = (reactions && reactions.matrix) || null;
+  if (!matrix) return { total: 0, parts: [] };
+  const row = matrix[npcFac];
+  if (!row) return { total: 0, parts: [] };
+
+  const parts = [];
+  let x = 0;
+  const seen = new Map();
+  for (const [f, m] of Object.entries(player.factions || {})) {
+    if (!m) continue;
+    const rep = Number(m.reputation || 0);
+    if (!rep) continue;
+    const key = normaliseFactionId(f, reactions);
+    if (!key) continue;
+    // Two live ids can alias onto one matrix row (`deep_kin` and `the_xul_aneekh` both mean
+    // `xul-aneekh`); the standing is the sum, not the last one seen.
+    seen.set(key, (seen.get(key) || 0) + rep);
+  }
+  for (const [key, rep] of seen) {
+    // An expelled faction's goodwill is spent, but its enemies do not forget you had it. That is
+    // a judgement call and it is made in favour of the simpler rule: expulsion is handled on the
+    // allegiance side, and reputation is a record of what you did.
+    const reaction = key === npcFac ? Number(row[npcFac] ?? REACTION_MAX) : Number(row[key] ?? 0);
+    if (!reaction) continue;
+    const w = Math.max(-1, Math.min(1, reaction / REACTION_MAX));
+    const r = Math.max(-1, Math.min(1, rep / REP_FULL));
+    const v = REPUTE_MOD * w * r;
+    if (!v) continue;
+    x += v;
+    parts.push([key, Math.round(v * 100) / 100, rep, reaction]);
+  }
+  const total = Math.max(-REPUTE_CAP, Math.min(REPUTE_CAP, x));
+  return { total, parts, uncapped: x };
 }
 
 /**
@@ -175,6 +285,13 @@ export function movableTerms(npc, player, ctx = {}) {
   const fac = (G.fDispFactionRankMult * ft.rank + G.fDispFactionRankBase) * G.fDispFactionMod * ft.reaction;
   x += fac; terms.push(['faction', fac]);
 
+  // W1-19 round 2. The reputation channel — see `reputeTerm` above for why it exists and what
+  // the argmin it replaces did to the main quest. It is reported as its own term rather than
+  // folded into `faction`, so that `explainDisposition()` and every probe can still see the
+  // transcribed §B number on its own line.
+  const rep = reputeTerm(npc, player, reactions);
+  if (rep.total) { x += rep.total; terms.push(['repute', Math.round(rep.total * 100) / 100]); }
+
   const bountyTerm = -G.fDispCrimeMod * Number(player.bounty || 0);
   if (bountyTerm) { x += bountyTerm; terms.push(['bounty', bountyTerm]); }
 
@@ -205,7 +322,7 @@ export function movableTerms(npc, player, ctx = {}) {
     if (t) { x += t; terms.push([isRootkeeper ? 'sap_taint_rootkeeper' : 'sap_taint', t]); }
   }
 
-  return { total: x, terms, faction: ft };
+  return { total: x, terms, faction: ft, repute: rep };
 }
 
 /**

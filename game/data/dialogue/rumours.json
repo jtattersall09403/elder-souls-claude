@@ -1,14 +1,124 @@
 {
   "schema": "elder-souls/rumours@1",
   "note": "RI-DLG02: rumours MUST differ per town. RI-CHR02 §4c: '>= 2 race-specific rumours per settlement = 16'. Round 1 shipped 0 race-gated. A race-gated rumour is the same town gossiping differently at you: the square does not say the same sentence to a Saxhleel and to a Dunmer, and what it declines to say is the content.",
+  "w1_19_note": "W1-19 round 2 added the main-quest rumours and the `adds_topics` field. Round 1 measurement: **0 rumour lines anywhere in game/data/dialogue/** named a main-quest noun**, and this file had no code consumer at all — it was loaded into `data.rumours` at engine.js and read by nothing after that. Under seam S8 there are no markers, so gossip is not decoration: it is the only thing that can tell a player who has just stepped off a barge what words to say to the Undersexton at Soulrest. A rumour carrying `adds_topics` puts those words into `sim.quest.topicsKnown` (see `game/src/sim/quest/topic-supply.js RumourBook`, read by `Conversation` via `Engine._installTopicSupply`), which is the only route into `Q-MAIN-01` that owes nothing to a prior quest. Existing rows are untouched; every addition is additive and the file is still declared incomplete for W1-11's own coverage.",
   "rumours": {
     "thorn": [
       "The king pays in fish because he has nothing else, and he pays.",
-      "Something took the Ghen boy's boat and left the boy."
+      "Something took the Ghen boy's boat and left the boy.",
+      {
+        "id": "thorn-tally",
+        "x": "Soulrest has not read the Drowned Tally on time and the king's own dead are in it. He has said nothing about that in the hall and he has said a great deal about it in the yard.",
+        "adds_topics": ["the-drowned-tally", "soulrest"]
+      },
+      {
+        "id": "thorn-tree",
+        "x": "The tree behind the hall has been saying the same four words since Second Seed and Sesh-Anaat has stopped writing them down.",
+        "adds_topics": ["the-tree-at-thorn"]
+      }
     ],
     "stormhold": [
       "The Legion has not been paid since Sun's Height and the customs house knows it.",
-      "There is a milestone on the pass road that gives a distance to a place nobody can find."
+      "There is a milestone on the pass road that gives a distance to a place nobody can find.",
+      {
+        "id": "stormhold-tally",
+        "x": "There is a mortuary town down the coast that has missed a reading of the Drowned Tally for the first time in four hundred years, and the prefect has been sent three letters about it and answered none.",
+        "adds_topics": ["the-drowned-tally", "the-writ-of-works"]
+      },
+      {
+        "id": "stormhold-boxes",
+        "x": "Eleven boxes came off an imperial bond at Archon and got to Soulrest weighing what an empty box weighs. That is a customs matter and nobody wants it to be a customs matter.",
+        "adds_topics": ["the-empty-boxes", "the-gem-shipping"]
+      }
+    ],
+    "soulrest": [
+      {
+        "id": "soulrest-tally",
+        "x": "The Undersexton has been asking after somebody off the customs bench who can count and cannot be leaned on. Her name is Rell and she takes the reading room after noon.",
+        "adds_topics": ["the-drowned-tally", "the-drowned-court"]
+      },
+      {
+        "id": "soulrest-boxes",
+        "x": "Eleven boxes came up from the quay and went into the low chapel and a sexton has been on that door ever since.",
+        "adds_topics": ["the-empty-boxes", "the-low-chapel"]
+      },
+      {
+        "id": "soulrest-well",
+        "x": "The Ladder well has gone cold and the keeper has not left the rim. The carters will tell you so on the coast road and will not tell you so in here.",
+        "adds_topics": ["the-cold-well"]
+      }
+    ],
+    "gideon": [
+      {
+        "id": "gideon-tally",
+        "x": "Soulrest is late with the Drowned Tally and the Wet Ledger has already worked out what that is worth. Ask the porter on the quay; he said it once and will not say it twice.",
+        "adds_topics": ["the-drowned-tally", "the-ledgers-terms"]
+      },
+      {
+        "id": "gideon-name",
+        "x": "You cannot walk into the Archon bond store as yourself. Four houses in this town will lend you a name and every one of them wants a different thing back.",
+        "adds_topics": ["a-name-for-cover"]
+      },
+      {
+        "id": "gideon-market-cross",
+        "x": "The market cross is where the coast road ends and the crypt road starts, and only one of those two is on a chart.",
+        "adds_topics": ["the-crypt-road"]
+      }
+    ],
+    "archon": [
+      {
+        "id": "archon-tally",
+        "x": "The Court's reading is late and the Salt Factor has not stopped smiling about it since Second Seed. Somebody down there is going to come and ask him for water.",
+        "adds_topics": ["the-drowned-tally", "the-salt-factor"]
+      },
+      {
+        "id": "archon-crane",
+        "x": "The crane crew know what the sealed crates sound like when they land and will tell you for the price of a drink, provided nothing is written down.",
+        "adds_topics": ["the-gem-shipping"]
+      }
+    ],
+    "blackrose": [
+      {
+        "id": "blackrose-tally",
+        "x": "The yards send their dead down to Soulrest with everybody else's and the Drowned Tally has not been read this year, so nobody's been told where they are.",
+        "adds_topics": ["the-drowned-tally", "the-cutting-yard"]
+      },
+      {
+        "id": "blackrose-skei",
+        "x": "Neeja-Xul lost a blade out of the third yard in Rain's Hand and has not reported it, which is not like her at all.",
+        "adds_topics": ["the-skei", "the-cutters-terms"]
+      }
+    ],
+    "helstrom": [
+      {
+        "id": "helstrom-tally",
+        "x": "A Court letter came up the market stair asking after the root gallery, on account of the Drowned Tally not balancing, and Ashul-Tei has had it a month and not opened it.",
+        "adds_topics": ["the-drowned-tally", "the-root-gallery"]
+      },
+      {
+        "id": "helstrom-gallery",
+        "x": "Something in the gallery has been writing letters out for two hundred years and one of them arrived here.",
+        "adds_topics": ["the-root-gallery", "the-steward-of-the-count"]
+      }
+    ],
+    "lilmoth": [
+      {
+        "id": "lilmoth-tally",
+        "x": "Weeja-Sen has eleven names short on the hiring list every morning and they are the same eleven, and every one of them has a family sitting in the Drowned Tally waiting to be read.",
+        "adds_topics": ["the-drowned-tally", "the-hiring-list"]
+      },
+      {
+        "id": "lilmoth-company",
+        "x": "The Company hires off the same wharf at a better rate and a worse contract and the wharf has started counting.",
+        "adds_topics": ["the-hiring-list", "the-cutters-terms"]
+      }
+    ],
+    "tidewrack": [
+      {
+        "id": "tidewrack-tally",
+        "x": "Everything that comes off a barge here is written down twice, and the second copy goes to Soulrest to be read against the Drowned Tally. It has not been read against anything since Second Seed.",
+        "adds_topics": ["the-drowned-tally", "soulrest"]
+      }
     ]
   },
   "declared_incomplete": {
@@ -171,6 +281,41 @@
         ]
       },
       "x": "Nobody off a barge leaves Tidewrack the same shape they arrived, and the Office writes the new shape down."
+    },
+    {
+      "id": "soulrest-tally-marshborn",
+      "settlement": "soulrest",
+      "requires": { "race": ["saxhleel", "naga"] },
+      "x": "Egg-sibling, the Court has stopped saying the number out loud at the readings. Ask the undersexton what the number is and watch what her hands do.",
+      "adds_topics": ["the-drowned-tally", "the-ninth-clause-of-the-drowned-tally"]
+    },
+    {
+      "id": "soulrest-tally-outlander",
+      "settlement": "soulrest",
+      "forbids": { "race": ["saxhleel", "naga"] },
+      "x": "They will not hire one of their own onto the Drowned Tally this year. That is why there is work here for somebody like you and it is not a compliment.",
+      "adds_topics": ["the-drowned-tally", "the-drowned-court"]
+    },
+    {
+      "id": "gideon-tally-marshborn",
+      "settlement": "gideon",
+      "requires": { "race": ["saxhleel", "naga"] },
+      "x": "The porter on the quay is one of ours and he has been down the crypt road this season, which nobody does in this season. Ask him about the tally and let him decide.",
+      "adds_topics": ["the-drowned-tally", "the-crypt-road"]
+    },
+    {
+      "id": "archon-tally-dunmer",
+      "settlement": "archon",
+      "requires": { "race": ["dunmer"] },
+      "x": "The Factor will see a Dunmer. The Factor will not see a Dunmer who came down here on Court business and is pretending otherwise, so pick one before you knock.",
+      "adds_topics": ["the-salt-factor", "a-name-for-cover"]
+    },
+    {
+      "id": "helstrom-gallery-marshborn",
+      "settlement": "helstrom",
+      "requires": { "race": ["saxhleel", "naga"] },
+      "x": "The gallery will hear you out because of what you are. It will not agree with you because of what you are, and the keepers would rather you knew that at the top of the stair.",
+      "adds_topics": ["the-root-gallery", "the-interiors-consent"]
     }
   ]
 }

@@ -2,7 +2,7 @@
   "schema": "elder-souls/data-index@1",
   "generated_by": "tools/analysis/data-index.mjs",
   "note": "Generated from the tree. Do not hand-edit. `declared_incomplete: true` marks a file whose owning wave-1 piece is not W1-00 and which says so in its own body.",
-  "file_count": 360,
+  "file_count": 365,
   "files": [
     {
       "path": "books/a-progress-through-the-southern-marsh.json",
@@ -170,15 +170,15 @@
       "path": "combat/enemies/champion_hist_marked.json",
       "schema": "elder-souls/enemy@1",
       "id": "champion_hist_marked",
-      "bytes": 5103,
-      "sha256": "26e5a5ef4011b0d0"
+      "bytes": 5609,
+      "sha256": "9a297d1c8d6e0e91"
     },
     {
       "path": "combat/enemies/cst_sap_speaker.json",
       "schema": "elder-souls/enemy@1",
       "id": "cst_sap_speaker",
-      "bytes": 7034,
-      "sha256": "2ea5ae568f593df9"
+      "bytes": 7540,
+      "sha256": "59529f0772c3af71"
     },
     {
       "path": "combat/enemies/drowned_greater.json",
@@ -1591,8 +1591,8 @@
       "path": "dialogue/rumours.json",
       "schema": "elder-souls/rumours@1",
       "id": null,
-      "bytes": 4842,
-      "sha256": "e8fc6089028a8e1e",
+      "bytes": 12987,
+      "sha256": "6c91cd2790345497",
       "declared_incomplete": true
     },
     {
@@ -1666,6 +1666,20 @@
       "sha256": "0290c7181be6bfa0"
     },
     {
+      "path": "dialogue/topics/50-factions.json",
+      "schema": "elder-souls/topics@1",
+      "id": null,
+      "bytes": 22660,
+      "sha256": "efa7aa62adc7df42"
+    },
+    {
+      "path": "dialogue/topics/50-mainline.json",
+      "schema": "elder-souls/dialogue-topics@1",
+      "id": null,
+      "bytes": 46799,
+      "sha256": "3ef13584470889ef"
+    },
+    {
       "path": "dialogue/topics/main-quest-argument.json",
       "schema": "elder-souls/dialogue-topics@2",
       "id": "main-quest-argument",
@@ -1684,8 +1698,8 @@
       "path": "dialogue/topics/writ-house.json",
       "schema": "elder-souls/topics@1",
       "id": null,
-      "bytes": 21994,
-      "sha256": "78cfbf557717b28a"
+      "bytes": 24853,
+      "sha256": "5b2629cd18becc57"
     },
     {
       "path": "input/pad-quirks.json",
@@ -1785,6 +1799,14 @@
       "id": "magic-wards",
       "bytes": 6544,
       "sha256": "dbd59a220a420611"
+    },
+    {
+      "path": "npcs/faction-givers.json",
+      "schema": "elder-souls/npcs@1",
+      "id": null,
+      "bytes": 7001,
+      "sha256": "064a2fdfcaaeefb5",
+      "declared_incomplete": true
     },
     {
       "path": "npcs/mainline.json",
@@ -1922,15 +1944,15 @@
       "path": "quests/faction-gates.json",
       "schema": "elder-souls/faction-gates@1",
       "id": "faction-gates",
-      "bytes": 22163,
-      "sha256": "4cf1f6d248da580c"
+      "bytes": 23638,
+      "sha256": "8cdc0b6d704c6f52"
     },
     {
       "path": "quests/hooks.json",
       "schema": "elder-souls/quest-hooks@1",
       "id": "quest-hooks",
-      "bytes": 11765,
-      "sha256": "fe07528a95c9cfb8"
+      "bytes": 13856,
+      "sha256": "6a6de376b8a2512c"
     },
     {
       "path": "quests/magic-utility.json",
@@ -1964,8 +1986,8 @@
       "path": "quests/mainline-act4.json",
       "schema": "elder-souls/quest-file@1",
       "id": "mainline-act4",
-      "bytes": 101840,
-      "sha256": "a766621e456889ab"
+      "bytes": 105373,
+      "sha256": "35accad868a544ca"
     },
     {
       "path": "quests/mainline-act5.json",
@@ -2001,8 +2023,8 @@
       "path": "save-manifest.json",
       "schema": "elder-souls/save-manifest@1",
       "id": null,
-      "bytes": 26594,
-      "sha256": "9198de4fad4611f0",
+      "bytes": 27799,
+      "sha256": "839d3de38463b064",
       "declared_incomplete": true
     },
     {
@@ -2165,6 +2187,13 @@
       "id": "showcase_patch",
       "bytes": 905,
       "sha256": "2135f122e5c356a0"
+    },
+    {
+      "path": "states/soulrest-quay.json",
+      "schema": "elder-souls/state@1",
+      "id": "soulrest-quay",
+      "bytes": 3159,
+      "sha256": "2254d5acaab87c36"
     },
     {
       "path": "states/stormhold-street.json",
@@ -2393,6 +2422,13 @@
       "sha256": "2b0127b3822be51f"
     },
     {
+      "path": "world/opacity.json",
+      "schema": "opacity@1",
+      "id": "opacity",
+      "bytes": 32336,
+      "sha256": "ee4e9ebd99dfc4bf"
+    },
+    {
       "path": "world/pois.json",
       "schema": "elder-souls/pois@1",
       "id": null,
@@ -2467,8 +2503,8 @@
       "path": "world/respawn.json",
       "schema": "elder-souls/respawn@1",
       "id": null,
-      "bytes": 3360,
-      "sha256": "575767eae67cea86"
+      "bytes": 4829,
+      "sha256": "4600fce70660ba3d"
     },
     {
       "path": "world/roads.json",

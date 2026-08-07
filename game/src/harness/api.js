@@ -187,6 +187,17 @@ export function installHarness(engine, bootPromise) {
     openMenu(name, opts) { return engine.openMenu(name, opts || {}); },
     closeMenu() { return engine.closeMenu(); },
     openContainer(name, contents) { return engine.openContainer(name, contents || []); },
+    /**
+     * Raise (or clear) RI-UIX01 E11's toast through the shipped HUD path.
+     *
+     * This is the POSITIVE CONTROL for RI-JRN03 M-K20 / RI-JRN04 M-P24, and it is the reason
+     * those two checks can now fail. Both are greps over the rendered-text stream for
+     * instruction tokens, and a grep is only worth its threshold if somebody has demonstrated
+     * that a violation would be caught: `--self-test` draws "Press E to open" here, on a
+     * non-settings surface, through `ui/hud.js`'s ordinary element, and asserts both checks go
+     * red. `uiToast(null)` clears it.
+     */
+    uiToast(text, frames) { return engine.uiToast(text === undefined ? null : text, frames); },
     uiFocus(patch) { return engine.uiFocus(patch || {}); },
     uiSearch(q) { return engine.uiSearch(q); },
     setAtHearth(v) { return engine.setAtHearth(v); },
@@ -632,7 +643,13 @@ export function installHarness(engine, bootPromise) {
     /** Open the census scene. Returns the first node: a speaker, a place, and a line. */
     censusBegin(opts) { return engine.censusBegin(opts || {}); },
     /** The player reached the Writ House. RI-JRN01 O6 puts >= 60 s of play before this. */
-    censusEnter() { return engine.censusEnter(); },
+    /**
+     * Resume a paused census node. `by` is the act the node is waiting for — `getCensusState()`
+     * publishes it as `resume_by` ('talk' in the hold, 'walk' at the companionway) — and the
+     * census REFUSES a resume that names the wrong act, so a probe cannot skip the walk by
+     * asserting it talked. Omit it to accept whatever the node is asking for.
+     */
+    censusEnter(by) { return engine.censusEnter(by); },
     /** Answer the node in front of you. Throws on an illegal answer. */
     censusAnswer(value) { return engine.censusAnswer(value); },
     /** What a renderer draws and what a critic screenshots. `full_screen_panels` is 0. */
@@ -752,6 +769,27 @@ export function installHarness(engine, bootPromise) {
      * regression that re-blinds the glyph path shows up as `vector.seen: false` rather than as
      * a quietly smaller number somewhere downstream.
      */
+    /**
+     * Draw one exact string onto the HUD/menus surface through the VECTOR glyph path — the path
+     * the whole interface really uses — and report what the register saw.
+     *
+     * For a delete-the-fix: put a string a repair removed back on the frame, through the real
+     * draw path, and check that the grep it was supposed to trip actually trips. A probe that
+     * asserts a bad string is gone without ever showing that its check would have caught the
+     * string is asserting its own diligence.
+     */
+    drawOnMenus(text) {
+      const s = String(text);
+      const reg = engine.renderer.textRegister;
+      const ctx = engine.renderer.menus.ctx;
+      const mark = reg.seq;
+      ctx.save();
+      drawGlyphText(ctx, s, 20, 120, faceOf('bone'), 16, '#fff');
+      ctx.restore();
+      const rows = reg.all({ since: mark });
+      return { text: s, seen: rows.some((e) => e.text === s), surface: 'menus', entries: rows.length };
+    },
+
     drawSentinels(tag) {
       const t = String(tag || 'ES-SENTINEL');
       const reg = engine.renderer.textRegister;
@@ -826,6 +864,17 @@ export function installHarness(engine, bootPromise) {
     conversationSay(topic) { return engine.conversationSay(topic); },
     conversationClose() { return engine.conversationClose(); },
     getConversationState() { return engine.getConversationState(); },
+
+    /**
+     * RI-WLD09 §B1's opacity register, as the running world sees it: which of the twenty-four
+     * mysteries the character has met, by which route, and how many times somebody has declined
+     * to discuss one. It reports NO answers and there is no call that could — the sealed half
+     * lives in `corpus/50-world/sealed/` and is never shipped.
+     *
+     * M-OP2's discovery diff is not computable without this. `getQuestState().booksRead` is the
+     * same evidence set seen from the other side.
+     */
+    getOpacityState() { return engine.getOpacityState(); },
 
     /** Put a person in the world (a state file's `npcs` array uses the same path). */
     spawnNPC(spec) { return engine.spawnNPC(spec || {}); },
@@ -1053,6 +1102,31 @@ export function installHarness(engine, bootPromise) {
     setRespawnRules(patch) {
       Object.assign(engine.death.d.rules, patch || {});
       return JSON.parse(JSON.stringify(engine.death.d.rules));
+    },
+
+    /**
+     * THE WORLD MAP'S KNOB, and the reason `RI-JRN06` M-D5 is no longer an orphan predicate.
+     *
+     * `never_respawn_entity_flags` decides whether a body ever stands back up, and in round 1
+     * the ONLY thing that could set one of those flags was `setEntityNamed()` above — a harness
+     * verb. That is `RI-MTH07` §A's orphan: a rule that decides something, that nothing in the
+     * world supplies, that only a critic hand-feeds. The verdict scored it 0.
+     *
+     * `game/data/world/hearths.json`'s fog gates each name their `boss` statblock, and
+     * `engine._classifyOnSpawn()` now flags anything spawned from a statblock the map calls a
+     * boss. This verb repoints a gate at a DIFFERENT statblock, so a CONSUMPTION probe can
+     * perturb the WORLD MAP and watch an ordinary mob stop standing back up — no harness flag
+     * anywhere in the path, and the observable is a silhouette.
+     */
+    setFogGateBoss(gateId, statblockId) {
+      const g = (engine.hearths ? engine.hearths.gates : []).find((x) => x.id === String(gateId));
+      if (!g) {
+        throw new Error(`setFogGateBoss('${gateId}'): no such fog gate. Known: `
+          + (engine.hearths ? engine.hearths.gates.map((x) => x.id).join(', ') : '(no hearth registry)'));
+      }
+      const was = g.boss;
+      g.boss = statblockId === null || statblockId === undefined ? null : String(statblockId);
+      return { gate: g.id, was, now: g.boss };
     },
 
     /** The catalogue, the shipped shelf and the cast class table, for offline recomputation. */

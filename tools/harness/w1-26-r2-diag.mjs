@@ -32,7 +32,7 @@ try {
   out.d1 = await h.page.evaluate(async () => {
     const H = window.__HARNESS;
     await H.setRenderRate(0);
-    const eng = H._engine ? H._engine() : (window.__ENGINE || null);
+    const eng = window.__ENGINE;
     const r = { engine_reachable: !!eng };
     const rt = H.getRenderedText({});
     r.reported_surfaces = rt.surfaces_instrumented || rt.surfaces || null;
@@ -128,12 +128,14 @@ try {
     // register and reports DTR 0.00 for a scene that drew everything.
     let mark = H.getRenderedText({}).next_index;
     await H.censusBegin({ race: 'saxhleel' });
-    let st = H.getCensusState(); let guard = 0, qi = 0, entered = false;
+    let st = H.getCensusState(); let guard = 0, qi = 0;
     const rows = [];
     while (st && !st.done && guard++ < 80) {
       const inp = st.input;
       if (!inp) {
-        if (!entered) { entered = true; mark = H.getRenderedText({}).next_index; st = await H.censusEnter(); continue; }
+        // Two nodes hand control back now, not one: the hold OPENS paused and is resumed by
+        // talking to her, and leaving the hold is resumed by walking.
+        if (st.paused) { mark = H.getRenderedText({}).next_index; st = await H.censusEnter(st.resume_by); continue; }
         break;
       }
       const model = H.getCensusModel() || {};
@@ -153,7 +155,7 @@ try {
         n: want.length, drawn: want.length - miss.length,
         dtr: want.length ? +((want.length - miss.length) / want.length).toFixed(4) : 1,
         undrawn: miss.map((m) => `${m.role}: ${String(m.s).slice(0, 70)}`),
-        panel_frac: (H.getUIState().dialogue || {}).panel_height_frac || null,
+        surface: (() => { const d = H.getUIState().dialogue_surface || {}; return { h: d.panel_height_frac, area: d.opaque_area_frac, sac: d.sacrificed }; })(),
       });
       let v;
       if (inp.kind === 'text') v = st.node === 'hold.hatch-name' ? 'Silence-Under-Salt' : 'Keeps-The-Tally';
@@ -168,7 +170,8 @@ try {
     return { rows, worst: rows.slice().sort((a, b) => (a.dtr ?? 1) - (b.dtr ?? 1))[0] || null };
   });
   for (const r of out.d3.rows) {
-    say(`  ${String(r.node).padEnd(28)} DTR ${String(r.dtr).padEnd(7)} ${r.drawn}/${r.n}  panel ${r.panel_frac}`);
+    const sc = (r.surface && r.surface.sac) || {};
+    say(`  ${String(r.node).padEnd(26)} DTR ${String(r.dtr).padEnd(7)} ${r.drawn}/${r.n}  h=${r.surface && r.surface.h}  k=${sc.type_scale} win=${sc.option_window} rec-${sc.record_lines} spoken-${sc.spoken_lines} ${sc.content_px}/${sc.max_px}`);
     for (const u of (r.undrawn || [])) say(`      UNDRAWN  ${u}`);
   }
 } finally {

@@ -269,6 +269,106 @@ try {
   }
 
   // ===========================================================================================
+  // 2b. game/data/world/hearths.json's FOG GATES, as the world-side writer of the seam-S5
+  //     never-respawn ENTITY FLAGS. Round 2, and the reason M-D5 was scored 0.
+  //
+  //     The round-1 verdict accepted model 2 above and then rejected it as a whole, because the
+  //     enumeration is at FILE granularity and the perturbation drove `respawning_tiers`, while
+  //     inside the same file sat `never_respawn_entity_flags` with NO world-side writer: six of
+  //     six entities flagged through the route the data file documents stood back up, and the
+  //     only route that worked was `__HARNESS.setEntityNamed()`. RI-MTH07 §A's orphan predicate,
+  //     and RI-MTH07's own "How we lose": *"Coupling is demonstrated once, on the happy path.
+  //     One consumer wired, twelve orphans behind it."*
+  //
+  //     So the sub-predicate gets its own model and its own perturbation, and the perturbation
+  //     is THE WORLD MAP: each fog gate names its `boss` statblock, and `engine._classifyOnSpawn`
+  //     flags anything spawned from a statblock the map calls a boss. Repoint a gate at
+  //     `inf_trash` and an ordinary trash mob — one that comes back in every shipped condition —
+  //     stops standing back up. No harness flag anywhere in the path.
+  //
+  //     Observable: WHICH SILHOUETTES ARE STANDING, as states and as rendered pixels, exactly as
+  //     in model 2.
+  // ===========================================================================================
+  {
+    const shotArena = async () => {
+      await h.h('setRenderRate', 60);
+      await h.h('camera', { pos: [0, 3.2, -6], look: [0, 1.0, 7] });
+      await h.h('renderFrame');
+      const url = await h.h('screenshot');
+      await h.h('camera', null);
+      await h.h('setRenderRate', 0);
+      return PNG.sync.read(Buffer.from(String(url).replace(/^data:image\/png;base64,/, ''), 'base64'));
+    };
+    const frameDiff = (p, q) => {
+      if (!p || !q || p.width !== q.width || p.height !== q.height) return null;
+      let n = 0;
+      const lim = Math.floor(p.height * 0.72) * p.width * 4;
+      for (let i = 0; i < lim; i += 4) {
+        if (Math.abs(p.data[i] - q.data[i]) > 12 || Math.abs(p.data[i + 1] - q.data[i + 1]) > 12
+          || Math.abs(p.data[i + 2] - q.data[i + 2]) > 12) n++;
+      }
+      return n;
+    };
+    /** Spawn one ordinary trash mob, kill it, kill the player, and see whether it came back. */
+    const trial = async () => {
+      await h.h('loadState', 'arena_flat');
+      await h.h('setRenderRate', 0);
+      await h.h('spawn', 'inf_trash', 0, 6, { as: 'ord' });
+      const scope = (await h.h('getDeathState')).respawn_scope.find((r) => r.eid === 'ord');
+      await h.h('killEntity', 'ord');
+      await h.h('stepFrames', 2);
+      await h.h('damagePlayer', 1e6, { stagger: false });
+      await h.h('stepFrames', 1);
+      await h.h('stepFrames', 200);
+      const e = (await h.h('listEntities')).find((x) => x.eid === 'ord');
+      const px = await shotArena();
+      return { standing: e && e.hp > 0, flags: scope ? scope.flags : null, classified_by: scope ? scope.classified_by : null, px };
+    };
+
+    const gates = await h.h('getFogGates');
+    const gateId = gates.gates[0].id;
+    const originalBoss = gates.gates[0].boss;
+
+    // (a) THE SHIPPED MAP. `inf_trash` is nobody's boss; it comes back.
+    const shipped = await trial();
+
+    // (b) PERTURBATION — the map now says the trash mob IS the boss behind the Drowned Xanmeer.
+    await h.h('setFogGateBoss', gateId, 'inf_trash');
+    const asBoss = await trial();
+
+    // (c) NULL CONTROL — the gate names nobody at all. Back to standing.
+    await h.h('setFogGateBoss', gateId, null);
+    const noBoss = await trial();
+
+    await h.h('setFogGateBoss', gateId, originalBoss);
+
+    const dShippedVsBoss = frameDiff(shipped.px, asBoss.px);
+    const dSelf = frameDiff(shipped.px, noBoss.px);
+    record({
+      model: 'game/data/world/hearths.json fog_gates[].boss -> respawn.json never_respawn_entity_flags '
+        + '(the seam-S5 sub-predicate the round-1 verdict scored 0 as an ORPHAN)',
+      consumer: 'game/src/engine.js _classifyOnSpawn() sets entity.boss from the world map at spawn '
+        + 'time -> game/src/sim/death.js respawns() refuses it -> respawnOrdinary() leaves it down '
+        + '-> render/renderer.js syncEntities() draws it collapsed (mesh.scale.y 0.18)',
+      observable: 'whether an ordinary trash mob is standing up after the player dies, as a state '
+        + 'and as rendered pixels',
+      shipped: { gate: gateId, boss: originalBoss, ord_standing_after_player_death: shipped.standing, flags: shipped.flags, classified_by: shipped.classified_by },
+      value_a: { gate_boss: 'inf_trash', ord_standing: asBoss.standing, flags: asBoss.flags, classified_by: asBoss.classified_by },
+      value_b: { gate_boss: null, ord_standing: noBoss.standing, flags: noBoss.flags, classified_by: noBoss.classified_by },
+      frame_diff_shipped_vs_map_says_boss_px: dShippedVsBoss,
+      frame_diff_shipped_vs_null_control_px: dSelf,
+      null_control: { what: 'the gate names nobody: the mob is ordinary again and stands back up', standing: noBoss.standing },
+      coupling: shipped.standing === true && asBoss.standing === false && noBoss.standing === true
+        && dShippedVsBoss > 200 && dSelf === 0 ? 1 : 0,
+      note: 'The flag is written by the WORLD MAP and by the statblock, not by a probe. '
+        + '`classified_by.world_map` names which writer set it, so a protection that came from a '
+        + 'harness call is distinguishable from one the world supplied. `setEntityNamed()` still '
+        + 'exists for a quest that recruits a mob mid-session, but it is no longer the only writer '
+        + 'and this measurement does not touch it.',
+    });
+  }
+
+  // ===========================================================================================
   // 3. The bloodstain — souls stored and returned.
   //    Observable: the FILL of the drawn heal-charge/HUD row is not it; the honest player-visible
   //    consequence of souls is that they are spendable, and the level-up station reads them. What

@@ -131,7 +131,36 @@ function validate(file) {
       // fails on RI-CHR01 in hard_fails[] and scored it 4, and recorded native_score 0 on three
       // items and scored all three 4.
       {
-        const hf = (r.hard_fails || []).length > 0 || (r.checks || []).some((c) => c && c.hard_fail === true);
+        // `hard_fail: true` MARKS A GATE, IT DOES NOT REPORT ONE AS TRIGGERED.
+        //
+        // Filed by the W1-08/W1-29 round-1 critic. This line used to read
+        //   `(r.checks||[]).some((c) => c && c.hard_fail === true)`
+        // and treat any check CARRYING a hard-fail flag as a TRIGGERED hard fail, which is a
+        // category error with a real cost. The schema's `hard_fail` says "this check is a hard
+        // fail gate"; whether the gate fired is `result`. Under the old reading a critic could
+        // not write down the state five of that verdict's gates were actually in — an EXISTING
+        // gate with NO INSTRUMENT that could ever fire it — because marking the check at all
+        // capped the item at 2 as though the build had failed it, and leaving the flag off
+        // erased the gate from the record. The critic had to explain the distinction in prose
+        // ("no hard fail is recorded as triggered; five are recorded as ungated") with nothing
+        // in the machine-readable file to carry it.
+        //
+        // A gate is triggered when its check FAILED. A gate whose check is `unmeasurable` is
+        // UNGATED: it scores 0 fail-closed through the ordinary `measured`/native-score path,
+        // it is surfaced as a warning so it cannot be quietly banked, and it does not fabricate
+        // a triggered hard fail the build never actually tripped.
+        const gates = (r.checks || []).filter((c) => c && c.hard_fail === true);
+        const triggered = gates.filter((c) => c.result === 'fail');
+        const ungated = gates.filter((c) => c.result === 'unmeasurable');
+        if (ungated.length) {
+          W(`reference_items ${tag}: ${ungated.length} hard-fail gate(s) are UNGATED — the check exists and is marked hard_fail but reports 'unmeasurable', so no instrument could fire it: ${ungated.map((c) => c.id).join(', ')}. That is not a pass. SCORING.md: unmeasurable scores 0 fail-closed, and the gate must be named in why_not_ten or biggest_gap rather than banked as clean.`);
+        }
+        for (const c of gates) {
+          if (c.result === 'fail' && !(r.hard_fails || []).includes(c.id)) {
+            W(`reference_items ${tag}: check ${c.id} is marked hard_fail and its result is 'fail', but ${c.id} is not listed in hard_fails[]. A triggered gate belongs in both places.`);
+          }
+        }
+        const hf = (r.hard_fails || []).length > 0 || triggered.length > 0;
         if (hf && r.score_0_10 > 2) {
           E(`reference_items ${tag}: a hard fail is recorded and score_0_10 is ${r.score_0_10}. SCORING.md §1.1: "any triggered hard fail caps the whole item at 2, no matter how many other checks passed."`);
         }

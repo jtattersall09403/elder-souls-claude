@@ -538,8 +538,12 @@
             ],
             "npc_disposition": {
               "factor-ruvela-sath": 10
-            }
-          }
+            },
+            "joins_faction": [
+              "the_wet_ledger"
+            ]
+          },
+          "joins_faction_note": "W1-19 round 2. This resolution is named `..._rank`: the player TAKES THE RANK. Until now that granted reputation and nothing else, and `sim.quest.factions[f].member` was set true by nothing in the build, so RI-DLG04 §B's faction term — the one thing `race-reactions.json` §repair_paths names as the route through a -40 race row — had no world-side way to fire at all. Joining is a declared act and it is allowed to cost you with the rivals; that is the design in `faction-reactions.json §application`, and it is why the ordinary route through this quest does not join and this one does."
         },
         {
           "id": "res_ledger_surety",
@@ -901,8 +905,12 @@
             "npc_disposition": {
               "rootkeeper-ashul-tei": 18,
               "rootkeeper-sesh-anaat": 6
-            }
-          }
+            },
+            "joins_faction": [
+              "the_xul_aneekh"
+            ]
+          },
+          "joins_faction_note": "W1-19 round 2. This resolution is named `..._rank`: the player TAKES THE RANK. Until now that granted reputation and nothing else, and `sim.quest.factions[f].member` was set true by nothing in the build, so RI-DLG04 §B's faction term — the one thing `race-reactions.json` §repair_paths names as the route through a -40 race row — had no world-side way to fire at all. Joining is a declared act and it is allowed to cost you with the rivals; that is the design in `faction-reactions.json §application`, and it is why the ordinary route through this quest does not join and this one does."
         }
       ],
       "failure_states": [
@@ -1180,8 +1188,12 @@
             "npc_disposition": {
               "neeja-xul": 10,
               "rootkeeper-sesh-anaat": -10
-            }
-          }
+            },
+            "joins_faction": [
+              "the_ixtu_vakh"
+            ]
+          },
+          "joins_faction_note": "W1-19 round 2. This resolution is named `..._rank`: the player TAKES THE RANK. Until now that granted reputation and nothing else, and `sim.quest.factions[f].member` was set true by nothing in the build, so RI-DLG04 §B's faction term — the one thing `race-reactions.json` §repair_paths names as the route through a -40 race row — had no world-side way to fire at all. Joining is a declared act and it is allowed to cost you with the rivals; that is the design in `faction-reactions.json §application`, and it is why the ordinary route through this quest does not join and this one does."
         }
       ],
       "failure_states": [
@@ -1453,8 +1465,12 @@
             ],
             "npc_disposition": {
               "prefect-galvus-arn": 15
-            }
-          }
+            },
+            "joins_faction": [
+              "the_imperial_assize"
+            ]
+          },
+          "joins_faction_note": "W1-19 round 2. This resolution is named `..._rank`: the player TAKES THE RANK. Until now that granted reputation and nothing else, and `sim.quest.factions[f].member` was set true by nothing in the build, so RI-DLG04 §B's faction term — the one thing `race-reactions.json` §repair_paths names as the route through a -40 race row — had no world-side way to fire at all. Joining is a declared act and it is allowed to cost you with the rivals; that is the design in `faction-reactions.json §application`, and it is why the ordinary route through this quest does not join and this one does."
         }
       ],
       "failure_states": [
@@ -1728,8 +1744,12 @@
             ],
             "npc_disposition": {
               "dockmaster-weeja-sen": 10
-            }
-          }
+            },
+            "joins_faction": [
+              "the_dockhands"
+            ]
+          },
+          "joins_faction_note": "W1-19 round 2. This resolution is named `..._rank`: the player TAKES THE RANK. Until now that granted reputation and nothing else, and `sim.quest.factions[f].member` was set true by nothing in the build, so RI-DLG04 §B's faction term — the one thing `race-reactions.json` §repair_paths names as the route through a -40 race row — had no world-side way to fire at all. Joining is a declared act and it is allowed to cost you with the rivals; that is the design in `faction-reactions.json §application`, and it is why the ordinary route through this quest does not join and this one does."
         }
       ],
       "failure_states": [

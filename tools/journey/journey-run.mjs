@@ -606,10 +606,29 @@ async function runJourney() {
     }
 
     // --- first_input / first_control, from the trace AND from the driver --------------------
+    //
+    // ROUND 4 — TOOL-COVERAGE-R3 §3. These three sites read `r.frame ?? e.frame`, and RECORDS
+    // AND EVENTS ARE BOTH KEYED `f`, so BOTH operands were `undefined` and the `??` fallback
+    // saved nothing. A real event from a shipped trace:
+    //     {"f":61,"type":"first_input","device":"keyboard"}
+    //
+    // It was latent only because no shipped journey emits `creation_field`. The R3 critic ran a
+    // shadow tree whose engine emits one, through the real `jrn01-opening` journey, and got:
+    //     {"id":"m4_clause1", ..., "status":"measured", "value":{"seconds":null, ...}}
+    // `status: "measured"`, seconds null, because the guard was `fcFrame !== null` and
+    // `undefined !== null` is true, `(undefined - undefined)/60` is NaN, and JSON.stringify
+    // silently DROPS the two undefined frame fields from the artifact. M4 clause 1 is described
+    // in this file as "the >= 60 s bar nobody has ever measured", and the tool was positioned to
+    // report that it had.
+    //
+    // Repair: read through `tools/lib/trace-schema.mjs` (the one documented reader for
+    // `elder-souls/trace@1`), and guard on `Number.isFinite`, not `!== null`.
     const evOf = (kind) => {
       for (const r of traceRecords) {
-        if (r && r.type === kind) return r;
-        for (const e of (r && r.events) || []) if (e && e.type === kind) return { ...e, frame: r.frame ?? e.frame };
+        if (r && r.type === kind) return { ...r, frame: frameOf(r) };
+        for (const e of (r && r.events) || []) {
+          if (e && e.type === kind) return { ...e, frame: eventFrameOf(e, r) };
+        }
       }
       return null;
     };
@@ -645,13 +664,19 @@ async function runJourney() {
       for (const r of traceRecords) {
         for (const e of (r && r.events) || [r]) {
           if (!e) continue;
-          if (e.type === 'creation_field') return { frame: r.frame ?? e.frame, event: 'creation_field' };
-          if (e.type === 'dialogue_open' && e.scene === 'census') return { frame: r.frame ?? e.frame, event: 'dialogue_open(census)' };
+          if (e.type === 'creation_field') return { frame: eventFrameOf(e, r), event: 'creation_field' };
+          if (e.type === 'dialogue_open' && e.scene === 'census') return { frame: eventFrameOf(e, r), event: 'dialogue_open(census)' };
         }
       }
       return null;
     })();
-    if (fcFrame !== null && firstDefining) {
+    // `Number.isFinite`, NOT `!== null`. R3 §3: `undefined !== null` is true, so the round-3
+    // guard admitted a pair of undefined frames, computed NaN seconds, and stamped the clause
+    // `status: "measured"` with `seconds: null` — a bar reported as met that was never taken.
+    // A frame we cannot read is `unmeasurable`, and it says which half was missing.
+    const fcOk = Number.isFinite(fcFrame);
+    const fdOk = !!firstDefining && Number.isFinite(firstDefining.frame);
+    if (fcOk && fdOk) {
       led.ok('m4_clause1', 'control precedes definition (seconds of available play)', {
         first_control_frame: fcFrame, first_defining_frame: firstDefining.frame,
         seconds: +((firstDefining.frame - fcFrame) / 60).toFixed(2),
@@ -659,7 +684,13 @@ async function runJourney() {
       });
     } else {
       led.unmeasurable('m4_clause1', 'control precedes definition',
-        fcFrame === null ? 'no first_control frame' : 'no character-field-writing event in the trace',
+        !fcOk
+          ? `no readable first_control frame (got ${JSON.stringify(fcFrame)}); ` +
+            'elder-souls/trace@1 numbers frames `f` — see tools/lib/trace-schema.mjs'
+          : !firstDefining
+            ? 'no character-field-writing event in the trace'
+            : `a character-field-writing event (${firstDefining.event}) was found but carries no ` +
+              `readable frame (got ${JSON.stringify(firstDefining.frame)})`,
         'A-JRN1/A-JRN7');
     }
 

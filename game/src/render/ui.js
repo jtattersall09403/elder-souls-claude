@@ -41,7 +41,67 @@ import * as THREE from '../../vendor/three/three.module.js';
 // these two numbers; raising delivery by breaking the UI-footprint bar would just move the
 // defect, which is the failure mode three W1-09 rounds shipped in a row.
 const PANEL_MAX_FRAC = 0.48;      // of frame height. M5's ceiling is 0.55 of frame AREA.
-const OPTION_WINDOW = 9;          // options visible at once; longer lists (19 skills) scroll.
+// The MOST options the surface will try to show at once, not the number it shows. The layout
+// search below starts here and gives ground — type scale first, then the window — so this is an
+// upper bound on ambition rather than a fixed frame. It was 9, chosen when every list was drawn
+// in one column at one size; 20 covers the longest list in the scene (nineteen skills at
+// `writ.class-custom-primary`) so that list gets the chance to be wholly on the page.
+const OPTION_WINDOW = 20;
+
+// ---- the overflow policy. THIS IS THE ROUND-2 REPAIR AND IT IS NOT A TASTE DECISION. -------
+//
+// The round-1 verdict measured the shape of the failure exactly: "Everything the scribe ASKS is
+// drawn. Everything she SAYS BACK is what goes." `hold.wake`'s line — the first thing anyone
+// says in the game — was undrawn at `hold.hatch-name` in every walk. The reply to the upbringing
+// answer was undrawn at `writ.given-name`. `on_match_named_class`, the line RI-CHR01 §4 calls
+// "the moment the route is for" and the whole reason a fourteen-class census exists, was undrawn
+// at `writ.birthsign`. All three for one reason: `spoken` was the FIRST thing sacrificed when the
+// content exceeded the panel's height cap. "A scene that asks perfectly and never answers is a
+// form with good questions on it."
+//
+// THE FIX IS NOT MORE PANEL. The obvious move — raise `PANEL_MAX_FRAC` — is closed. The critic
+// measured the build's non-world area at 0.498 against RI-JRN01 M5's 0.55 ceiling, so there are
+// about five points of area in hand and the panel is 0.8 of frame width; every point of height
+// costs 0.8 of a point of area. Buying delivery by breaking the UI-footprint bar just moves the
+// defect, which is the failure three W1-09 rounds shipped in a row.
+//
+// SO THE RELIEF COMES FROM THE TYPE, THEN THE WINDOW, AND HER REPLY GOES LAST. In order:
+//
+//   1. TYPE SCALE. Shrink every dimension on the panel together — sizes, leading, padding — by
+//      the largest factor in [TYPE_FLOOR, 1] that makes everything fit. A denser page is not a
+//      lost line. This alone fits every node in the scene except the two with a fourteen- and a
+//      nineteen-item list.
+//   2. OPTION WINDOW. Then narrow the list, never below MIN_OPTION_WINDOW. This is the trade the
+//      whole policy turns on, and the argument is one sentence: **a scrolled option is still
+//      reachable and a dropped line is gone forever.** The caret pages the list, the caret-resync
+//      fix shipped last round works, and "3 of 14" rides in the header where the cap cannot clip
+//      it. Nothing is lost; something is one press further away.
+//   3. THE WRIT'S IDENTITY BLOCK, from the bottom — it is redrawn in full by the carried object.
+//   4. HER REPLY, a line at a time, and only when 1-3 together cannot fit the page. `metrics()`
+//      reports it as `sacrificed.spoken_lines` so this is visible in the artifact rather than
+//      inferred from a DTR that came out low.
+//
+// TYPE_FLOOR is 0.78 because 30 px body type at 1080p becomes 23 px, which is still larger than
+// the 22 px this surface already uses for the speaker line and her asides.
+const TYPE_FLOOR = 0.78;
+const TYPE_STEPS = 12;            // scales tried between 1.0 and TYPE_FLOOR, coarse to fine
+const MIN_OPTION_WINDOW = 5;
+
+// TWO COLUMNS FOR A LONG LIST OF SHORT NAMES, which is what the two longest lists in the scene
+// actually are: thirteen hatch-names at `hold.hatch-name` and nineteen skills at
+// `writ.class-custom-primary`. Rows, not options, is what the height cap spends, so a list laid
+// out two-up costs half the page and the whole list is on it — which is better than a scrolled
+// one on every reading of the delivered-text ratio, not just the generous one.
+//
+// It is also simply what the object is. A form on a desk lists a column of names down the left
+// and a column down the right; it does not show you nine of thirteen and make you page. The
+// caret is still one index moved by the closed action set (O8) and reading order is still
+// top-to-bottom then over, so nothing about the gamepad path changes.
+//
+// GUARDED ON MEASUREMENT, NOT ON GUESSWORK: two columns only if EVERY visible label already fits
+// a half-width column. A name that would have to be ellipsised into ambiguity — "Waits-For-The-
+// Second-Ti…" — is worth more page than it costs, so that list stays single-column.
+const TWO_COLUMN_MIN = 10;
 
 /** The parchment palette. One ink, one vellum, one rule. Nothing glows. */
 const INK = '#efe4cd';
@@ -138,78 +198,115 @@ export class UILayer {
 
     const m = this.model;
     if (m.kind === 'death') { this._redrawDeath(m, W, H); return; }
-    const s = H / 1080;                                   // one scale factor, so 4K reads the same
-    const pad = Math.round(34 * s);
-    const bodySize = Math.round(30 * s);
-    const nameSize = Math.round(22 * s);
-    const optSize = Math.round(27 * s);
-    const lineH = Math.round(bodySize * 1.36);
-    const optH = Math.round(optSize * 1.62);
-
+    const base = H / 1080;                                // one scale factor, so 4K reads the same
+    const maxH = Math.round(H * PANEL_MAX_FRAC);
     const marginX = Math.round(W * 0.10);
-    const panelW = W - marginX * 2;
-    const textW = panelW - pad * 2;
-
-    // --- measure first, then place. The panel is exactly as tall as its contents.
-    // `spoken` is what she said about your last answer and `preamble` is her framing of a new
-    // set of questions; both are hers, both are drawn quieter than the thing she is asking
-    // now, and neither existed before round 3 — the graph wrote them and nothing drew them.
-    c.font = italicFont(nameSize);
-    const spokenLines = [];
-    for (const s of (Array.isArray(m.spoken) ? m.spoken : [])) for (const ln of wrap(c, s, textW)) spokenLines.push(ln);
-    if (m.preamble) { spokenLines.push(''); for (const ln of wrap(c, m.preamble, textW)) spokenLines.push(ln); }
-    const spokenH = Math.round(nameSize * 1.32);
-
-    // The writ, at the node that stamps it. Drawn as a document — its own rule, its own
-    // smaller face — so it reads as a thing on the desk rather than as more of her talking.
-    c.font = smallFont(nameSize);
-    const recordLines = [];
-    if (m.record && Array.isArray(m.record.lines)) {
-      for (const ln of m.record.lines) for (const w of wrap(c, ln, textW)) recordLines.push(w);
-    }
-    const recordH = Math.round(nameSize * 1.30);
-
-    c.font = bodyFont(bodySize);
-    const lines = wrap(c, m.line || '', textW);
-    const asideLines = m.aside ? wrap(c, m.aside, textW) : [];
+    const panelW = W - marginX * 2;                       // the panel's WIDTH never changes
     const opts = Array.isArray(m.options) ? m.options : [];
     const sel = clampInt(m.selected, 0, Math.max(0, opts.length - 1));
-    const win = windowOf(opts.length, sel, OPTION_WINDOW);
-    const shownOpts = opts.slice(win.from, win.to);
 
-    let contentH = pad;
-    contentH += nameSize + Math.round(14 * s);                       // speaker line + rule
-    if (spokenLines.length) contentH += spokenLines.length * spokenH + Math.round(14 * s);
-    if (recordLines.length) contentH += recordLines.length * recordH + Math.round(20 * s);
-    contentH += lines.length * lineH;
-    if (asideLines.length) contentH += Math.round(10 * s) + asideLines.length * Math.round(nameSize * 1.34);
-    if (m.input_kind === 'text') contentH += Math.round(18 * s) + Math.round(bodySize * 1.7);
-    if (shownOpts.length) contentH += Math.round(16 * s) + shownOpts.length * optH;
-    // (the scroll note moved into the header row, which is already budgeted, so it no
-    //  longer adds height and can no longer be the line the height cap clips away)
-    contentH += pad;
+    /**
+     * Lay the whole panel out at a type scale and an option-window size, and return everything
+     * the paint pass needs plus the height it came to. Nothing is drawn here.
+     *
+     * Every dimension on the surface is a multiple of `s`, so one factor moves the type, the
+     * leading, the padding and the gaps together and the page stays in proportion.
+     */
+    const layout = (k, winSize) => {
+      const s = base * k;
+      const pad = Math.round(34 * s);
+      const bodySize = Math.max(11, Math.round(30 * s));
+      const nameSize = Math.max(9, Math.round(22 * s));
+      const optSize = Math.max(10, Math.round(27 * s));
+      const lineH = Math.round(bodySize * 1.36);
+      const optH = Math.round(optSize * 1.62);
+      const spokenH = Math.round(nameSize * 1.32);
+      const recordH = Math.round(nameSize * 1.30);
+      const textW = panelW - pad * 2;
 
-    // The panel is capped at 42% of frame height and CLIPS, so anything that would push the
-    // answers off the bottom has to go instead. The order of sacrifice is fixed and is the
-    // order of importance: the thing being asked and the answers to it always survive; her
-    // reply to the previous answer is dropped a line at a time until they fit. Without this
-    // rule, adding `spoken` in round 3 would have re-created the round-2 defect one layer
-    // down — a question that is computed, sent to the surface, and clipped off the vellum.
-    const maxH = Math.round(H * PANEL_MAX_FRAC);
-    while (contentH > maxH && spokenLines.length) {
-      spokenLines.shift();
-      contentH -= spokenH;
-      if (!spokenLines.length) contentH -= Math.round(14 * s);
+      // `spoken` is what she said about your last answer and `preamble` is her framing of a new
+      // set of questions; both are hers, both are drawn quieter than the thing she is asking
+      // now.
+      c.font = italicFont(nameSize);
+      const spokenLines = [];
+      for (const t of (Array.isArray(m.spoken) ? m.spoken : [])) for (const ln of wrap(c, t, textW)) spokenLines.push(ln);
+      if (m.preamble) { spokenLines.push(''); for (const ln of wrap(c, m.preamble, textW)) spokenLines.push(ln); }
+
+      // The writ, at the node that stamps it. Drawn as a document — its own rule, its own
+      // smaller face — so it reads as a thing on the desk rather than as more of her talking.
+      c.font = smallFont(nameSize);
+      const recordLines = [];
+      if (m.record && Array.isArray(m.record.lines)) {
+        for (const ln of m.record.lines) for (const w of wrap(c, ln, textW)) recordLines.push(w);
+      }
+
+      c.font = bodyFont(bodySize);
+      const lines = wrap(c, m.line || '', textW);
+      const asideLines = m.aside ? wrap(c, m.aside, textW) : [];
+      const win = windowOf(opts.length, sel, Math.max(1, winSize));
+      const shownOpts = opts.slice(win.from, win.to);
+      // Two columns if the list is long and every label already fits half the width. Measured at
+      // the option face, at this scale, against this column — never assumed from a character
+      // count, because the face is not monospaced and the aside is glued on after the label.
+      const colGap = Math.round(28 * s);
+      const colW = Math.floor((textW - colGap) / 2);
+      c.font = bodyFont(optSize);
+      const twoCol = shownOpts.length >= TWO_COLUMN_MIN
+        && shownOpts.every((o) => c.measureText('— ' + o.text + (o.aside ? '   ' + o.aside : '')).width <= colW);
+      const optRows = twoCol ? Math.ceil(shownOpts.length / 2) : shownOpts.length;
+      const L = {
+        k, s, pad, bodySize, nameSize, optSize, lineH, optH, spokenH, recordH, textW,
+        spokenLines, recordLines, lines, asideLines, win, shownOpts,
+        twoCol, optRows, colW, colGap,
+        spokenDropped: 0, recordDropped: 0,
+      };
+      L.height = () => {
+        let h = L.pad * 2;
+        h += L.nameSize + Math.round(14 * L.s);                        // speaker line + rule
+        if (L.spokenLines.length) h += L.spokenLines.length * L.spokenH + Math.round(14 * L.s);
+        if (L.recordLines.length) h += L.recordLines.length * L.recordH + Math.round(20 * L.s);
+        h += L.lines.length * L.lineH;
+        if (L.asideLines.length) h += Math.round(10 * L.s) + L.asideLines.length * Math.round(L.nameSize * 1.34);
+        if (m.input_kind === 'text') h += Math.round(18 * L.s) + Math.round(L.bodySize * 1.7);
+        if (L.shownOpts.length) h += Math.round(16 * L.s) + L.optRows * L.optH;
+        // (the scroll note lives in the header row, which is already budgeted, so it no longer
+        //  adds height and can no longer be the line the height cap clips away)
+        return h;
+      };
+      return L;
+    };
+
+    // ---- the four reliefs, in order. See the note beside TYPE_FLOOR for the argument. -------
+    const fullWindow = Math.min(OPTION_WINDOW, Math.max(1, opts.length));
+    let L = null;
+    // 1. the largest type scale at which EVERYTHING fits — every reply, every line, the full
+    //    option window. This is the one that fires at almost every node in the scene.
+    for (let i = 0; i <= TYPE_STEPS; i++) {
+      const k = 1 - (1 - TYPE_FLOOR) * (i / TYPE_STEPS);
+      const cand = layout(k, fullWindow);
+      if (cand.height() <= maxH) { L = cand; break; }
     }
-    // The writ's identity block is sacrificed AFTER her previous reply and BEFORE the line
-    // being spoken now or the answers to it, which never go. It is dropped from the BOTTOM,
-    // so the heading and the name survive longest — a clipped document should still be
-    // recognisably this player's document.
-    while (contentH > maxH && recordLines.length) {
-      recordLines.pop();
-      contentH -= recordH;
-      if (!recordLines.length) contentH -= Math.round(20 * s);
+    // 2. no scale fits the whole window: take the floor — where the smallest type buys the most
+    //    rows — and narrow the list until the page closes. A scrolled option is still reachable.
+    if (!L) {
+      let win = fullWindow;
+      L = layout(TYPE_FLOOR, win);
+      while (L.height() > maxH && win > MIN_OPTION_WINDOW) { win--; L = layout(TYPE_FLOOR, win); }
     }
+    // 3. the writ's identity block, from the BOTTOM, so the heading and the name survive longest
+    //    — a clipped document should still be recognisably this player's document. It is the
+    //    cheapest thing on the page to lose because the carried object redraws it in full.
+    while (L.height() > maxH && L.recordLines.length) { L.recordLines.pop(); L.recordDropped++; }
+    // 4. LAST: her reply, a line at a time. Reaching this line at all is the defect round 1
+    //    measured, so it is counted and published in `metrics()` rather than left to be
+    //    inferred from a DTR that came out low.
+    while (L.height() > maxH && L.spokenLines.length) { L.spokenLines.shift(); L.spokenDropped++; }
+
+    const {
+      s, pad, bodySize, nameSize, optSize, lineH, optH, spokenH, recordH, textW,
+      spokenLines, recordLines, lines, asideLines, win, shownOpts, twoCol, optRows, colW, colGap,
+    } = L;
+    const contentH = L.height();
     const panelH = Math.min(contentH, maxH);
     const x0 = marginX, y0 = H - panelH - Math.round(H * 0.045);
 
@@ -303,6 +400,9 @@ export class UILayer {
     if (shownOpts.length) {
       y += Math.round(20 * s);
       c.font = bodyFont(optSize);
+      // Reading order is DOWN the first column and then down the second, so a caret moved by
+      // one index walks the list the way the eye reads it.
+      const perCol = twoCol ? optRows : shownOpts.length;
       for (let i = 0; i < shownOpts.length; i++) {
         const o = shownOpts[i];
         const isSel = (win.from + i) === sel;
@@ -311,9 +411,12 @@ export class UILayer {
         const mark = isSel ? '— ' : (picked ? '· ' : '  ');
         let label = mark + o.text;
         if (o.aside) label += '   ' + o.aside;
-        c.fillText(ellipsise(c, label, textW), x0 + pad, y);
-        y += optH;
+        const col = twoCol ? Math.floor(i / perCol) : 0;
+        const row = twoCol ? i % perCol : i;
+        const cx = x0 + pad + col * (colW + colGap);
+        c.fillText(ellipsise(c, label, twoCol ? colW : textW), cx, y0 + (y - y0) + row * optH);
       }
+      y += optRows * optH;
       // (the scroll position is drawn in the header — see the note there)
     }
     c.restore();
@@ -339,6 +442,28 @@ export class UILayer {
       option_count: opts.length,
       options_shown: shownOpts.length,
       selected_index: sel,
+      /**
+       * THE OVERFLOW POLICY, SHOWING ITS WORK.
+       *
+       * Round 1's defect was invisible from outside: the panel silently shifted her replies off
+       * the top and reported a healthy `text` array of everything else. So the relief that was
+       * applied is published. `type_scale < 1` means the page was set denser to keep a line;
+       * `option_window < option_count` means the list is paged and the header says so;
+       * `spoken_lines` above zero means the last resort fired and something she said did not
+       * reach the frame — which is the number this round exists to hold at 0.
+       */
+      sacrificed: {
+        type_scale: +L.k.toFixed(4),
+        type_floor: TYPE_FLOOR,
+        option_window: shownOpts.length,
+        option_window_from: win.from,
+        option_columns: twoCol ? 2 : 1,
+        option_rows: optRows,
+        record_lines: L.recordDropped,
+        spoken_lines: L.spokenDropped,
+        content_px: contentH,
+        max_px: maxH,
+      },
       text,
       text_chars: text.join(' ').length,
     };

@@ -1,0 +1,1344 @@
+{
+  "schema": "elder-souls/dialogue-topics@1",
+  "group": "mainline",
+  "owner": "W1-19 round 2 — the main quest, end to end",
+  "hand_authored": true,
+  "do_not_regenerate": true,
+  "note": "The words a person would have to hear somebody say before they could say them back. Round 1 shipped 32 main quests whose `opens_by.topic` existed as a dialogue topic id 0 times out of 32, so the offer gate asked for a keyword no mouth in the province could produce: 0 of 32 main quests were offerable at a cold start and all 32 were refused on the topic. Every info here is spoken by an actor row that somebody in `game/data/npcs/**` actually answers with, and every `to` is Morrowind's AddTopic — read since W1-19 round 2 by `Engine.conversationSay()` via `character/converse.js infoFor()`. Asking is how the keyword enters `sim.quest.topicsKnown`; that is the whole bootstrap, and it is why the province is now a thing you can be told about rather than a thing a harness can be told to know.",
+  "key_legend_ref": "game/data/dialogue/topics/10-global.json",
+  "topics": [
+    {
+      "id": "the-drowned-tally",
+      "note": "The one topic in the build that owes nothing to any quest. It is the entry to the whole chain, so it is spoken by seven actor rows and gated on nothing at the bottom: a stranger in any market in the province can be told this much.",
+      "infos": [
+        {
+          "a": "townsman",
+          "x": "The Court's book of the dead. Every drowned soul in the province gets a line in it and the line is the whole of what they are owed. They have been carting boxes up from Soulrest to be read against it and the carting has not stopped since Sun's Height.",
+          "to": [
+            "the-empty-boxes",
+            "the-drowned-court",
+            "soulrest"
+          ]
+        },
+        {
+          "a": "clerk",
+          "x": "A register, and the only one the Court will read from. It is kept at Soulrest and it is read by an undersexton named Rell, who has been asking after somebody off a customs bench who can count and cannot be leaned on.",
+          "to": [
+            "the-empty-boxes",
+            "soulrest"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "d": 20,
+          "x": "You say it like a book. It is not a book, dry-one, it is a debt. Eleven thousand names and the Court has told every one of those families that the water is holding them until the reading. The reading is late.",
+          "to": [
+            "the-ninth-clause-of-the-drowned-tally",
+            "the-drowned-court"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 30,
+          "x": "The Court counts what the marsh keeps. That was the arrangement and it was an old one before there was a Court to make it. Ask why the wells went cold in the same season the tally stopped balancing and then ask me again.",
+          "to": [
+            "the-cold-well",
+            "the-eleven-live-roots"
+          ]
+        },
+        {
+          "a": "sapcutter",
+          "x": "Their book. We are in it, friend, whether we asked to be or not — the yards send their dead down to Soulrest with the rest and the Court reads them the same way it reads its own.",
+          "to": [
+            "the-cutting-yard",
+            "the-drowned-court"
+          ]
+        },
+        {
+          "a": "legionary",
+          "x": "Local religion with a ledger. The Assize does not touch it. What the Assize does touch is that eleven boxes came off an imperial bond and arrived at Soulrest weighing what an empty box weighs.",
+          "to": [
+            "the-empty-boxes",
+            "the-writ-of-works"
+          ]
+        },
+        {
+          "a": "archivist",
+          "d": 25,
+          "x": "Nine recensions in four hundred years and the ninth is the one that matters, because the ninth is the one that added the clause about what the Count is owed when the reading is not made on time. Nobody has needed that clause before.",
+          "to": [
+            "the-ninth-recension",
+            "the-ninth-clause-of-the-drowned-tally"
+          ]
+        },
+        {
+          "a": "townsman",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          },
+          "x": "Egg-sibling, you know what it is. What you may not know is that the Court has stopped saying the number out loud at the readings, and a Court that will not say a number has one it does not like.",
+          "to": [
+            "the-empty-boxes",
+            "the-ninth-clause-of-the-drowned-tally"
+          ]
+        },
+        {
+          "a": "townsman",
+          "forbids": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          },
+          "x": "Dry-one's question. It is the count of the drowned and you are not in it and neither am I, and that is meant to be a comfort. Go to Soulrest and ask the undersexton and see whether it comforts you.",
+          "to": [
+            "soulrest",
+            "the-drowned-court"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-ninth-clause-of-the-drowned-tally",
+      "infos": [
+        {
+          "a": "archivist",
+          "x": "It says the Count is owed the reading, not the counting. Four hundred years of undersextons have read that as a formality and one of them is about to find out it was a term.",
+          "to": [
+            "the-ninth-recension",
+            "reading-the-count"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "d": 25,
+          "x": "If the reading is not made, the water keeps what it is holding and keeps it on its own terms. That is the clause. We do not say it at the door and we do not say it to the families.",
+          "to": [
+            "the-thread-is-cut",
+            "the-cold-well"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 20,
+          "x": "The clause is not the Court's. The clause is older and the Court wrote it down, which is a different thing from making it.",
+          "to": [
+            "the-eleven-live-roots"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-empty-boxes",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "Eleven of them off the Archon bond, sealed at the far end and signed for at Soulrest, and the weight on the manifest is not the weight that came off the cart. Nobody at either end has asked the obvious question in writing.",
+          "to": [
+            "the-gem-shipping",
+            "a-name-for-cover"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "x": "They were not empty when they were sealed. I carried the fourth one and I will say that much where the sound is, and no further.",
+          "to": [
+            "the-low-chapel",
+            "the-cold-well"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "The carters know. A box that weighs nothing rides differently and every man on that road felt it and said nothing, because the Court pays on delivery and does not pay for questions.",
+          "to": [
+            "the-crypt-road"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-cold-well",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "A well goes cold when the root under it stops drinking. The Ladder well went cold in Second Seed and its keeper has not left the rim since, which is not devotion, supplicant. It is a person waiting to be told they are not to blame.",
+          "to": [
+            "the-eleven-live-roots",
+            "the-intakes"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "Ladder well. It ran sweet in my father's time and it runs cold now and the water is fine, that is the thing nobody says — the water is fine. It is the well that has gone.",
+          "to": [
+            "the-root-gallery"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "d": 15,
+          "x": "Three have gone cold. The Court has recorded one. Work out for yourself which of those two numbers is the interesting one.",
+          "to": [
+            "the-intakes",
+            "the-root-channels"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a-name-for-cover",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "Nobody walks into the Archon bond store as themselves. You want a house behind you when you ask a factor a question, and the four that will lend you one all want something different for it.",
+          "to": [
+            "the-gem-shipping",
+            "the-ledgers-terms",
+            "the-writ-of-works"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "A borrowed name. The Ledger will sell you one, the Assize will lend you one and write it down, the dockhands will give you one for nothing and expect you to remember it.",
+          "to": [
+            "the-hiring-list",
+            "the-ledgers-terms"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 20,
+          "x": "The Deep-Kin do not lend names. They give them, and a given name is not returned.",
+          "to": [
+            "the-interiors-consent",
+            "the-root-gallery"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "d": 20,
+          "x": "She will not tell you to take one and she will not stop you. What she will do is look at whose name you came back with, and remember it for the rest of this.",
+          "to": [
+            "the-ledgers-terms",
+            "the-writ-of-works"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-ninth-recension",
+      "infos": [
+        {
+          "a": "archivist",
+          "x": "The current text of the Tally, set down in the ninth revision and not touched since. There is one fair copy at Soulrest and the undersextons read from it aloud, which means the ink on it is four hundred years old and has been believed for four hundred years.",
+          "to": [
+            "reading-the-count",
+            "the-ninth-clause-of-the-drowned-tally"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "d": 30,
+          "x": "Ask about the ink. That is all I will say to you in this room. Ask somebody about the ink.",
+          "to": [
+            "the-cutting-yard",
+            "the-root-gallery"
+          ]
+        },
+        {
+          "a": "sapcutter",
+          "x": "Sap ink, friend, and the yards make it, and there is only one stand of tree it has ever come off. Somebody at Soulrest is going to have to say that out loud eventually.",
+          "to": [
+            "the-cutting-yard",
+            "the-tree-at-thorn"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-cutting-yard",
+      "infos": [
+        {
+          "a": "sapcutter",
+          "x": "Blackrose. Eleven stands under lease and the leases are read to us once a year in a language none of the cutting crews speak. Neeja-Xul runs the third yard and she is the one who reads them anyway.",
+          "to": [
+            "the-cutters-terms",
+            "the-skei",
+            "the-fourth-yard"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "Blackrose yards. Go up the coast road and inland at the burnt jetty; you will smell it before the road turns.",
+          "to": [
+            "the-cutters-terms"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 25,
+          "x": "They cut a living thing on a schedule set by a house that has never been in the interior. Ask what the fourth stand is and then watch the cutters' faces.",
+          "to": [
+            "the-tree-at-thorn",
+            "the-eleven-live-roots"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-gem-shipping",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "The Archon bond runs a sealed consignment down the coast four times a year and the manifests are public. A hundred and fifty septims says you would rather not read them in public.",
+          "to": [
+            "the-salt-factor",
+            "the-ledgers-terms"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "We load it and we do not open it. The crane crew will tell you what the crates sound like when they land, for the price of a drink and no writing down.",
+          "to": [
+            "the-salt-factor",
+            "the-hiring-list"
+          ]
+        },
+        {
+          "a": "dres-factor",
+          "d": 40,
+          "x": "You are asking a House question in a House town. The consignment is bonded, the bond is imperial and the water it crosses is not. Which of those three do you imagine is the problem?",
+          "to": [
+            "the-salt-factor",
+            "the-writ-of-works"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-low-chapel",
+      "infos": [
+        {
+          "a": "mudborn",
+          "x": "Under the mortuary floor. It is where the Court keeps what it has read and cannot file, and there has been a sexton on the door since the boxes came up.",
+          "to": [
+            "the-crypt-road",
+            "the-empty-boxes"
+          ]
+        },
+        {
+          "a": "clerk",
+          "x": "There is a second opinion to be had at Soulrest and it is not in the reading room. Bel-Mourne holds it and Bel-Mourne is not on speaking terms with Rell.",
+          "to": [
+            "the-ash-gallery",
+            "the-crypt-road"
+          ]
+        },
+        {
+          "a": "archivist",
+          "d": 20,
+          "x": "Two undersextons, two fair copies, one of them wrong. The interesting question is not which. The interesting question is how long both have been read from.",
+          "to": [
+            "reading-the-count",
+            "the-ninth-recension"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-root-gallery",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "Helstrom. The gallery is the interior's own reading room and the Deep-Kin keep it, and they will not open it to a person who came with a Court letter and no Court in their mouth.",
+          "to": [
+            "the-interiors-consent",
+            "the-eleven-live-roots"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "Helstrom market, and then down. There is a keeper there called Ashul-Tei who does not take appointments and does not take offence either, which is worse.",
+          "to": [
+            "the-interiors-consent"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "d": 25,
+          "x": "The Court has not had an answer out of the gallery in two hundred years. It has also not asked in two hundred years. Both of those are on the Court.",
+          "to": [
+            "the-crypt-road"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-crypt-road",
+      "infos": [
+        {
+          "a": "townsman",
+          "x": "The road under the road. The carters use it in flood season and hate it, and it comes up inside Soulrest without passing a gate, which is the whole reason it is still open.",
+          "to": [
+            "the-intakes",
+            "the-low-chapel"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "x": "Rell will want it walked and she will want it walked by somebody the Court has not walked before. Take Sarn up with you if she offers; do not take him up if she does not.",
+          "to": [
+            "the-intakes"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 20,
+          "x": "It runs beside four channels and crosses two. A person who walks it and does not look sideways learns nothing and gets home.",
+          "to": [
+            "the-root-channels",
+            "the-intakes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-intakes",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "Where the marsh takes its water in. Somebody has been throttling them and the throttle is not on any survey the Court owns.",
+          "to": [
+            "reading-the-count",
+            "the-root-channels"
+          ]
+        },
+        {
+          "a": "archivist",
+          "x": "There is arithmetic that answers this and a test that answers it faster, and the test costs the keepers a season. Rell will not tell you that; she does not know it.",
+          "to": [
+            "reading-the-count"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "Water goes in slower than it used to. Ask a fisher, not a sexton.",
+          "to": [
+            "the-cold-well"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "x": "The Court has a figure for what goes in and the figure has been copied forward for eleven years without anybody standing at an intake. That is the whole of the Court's hydrology.",
+          "to": [
+            "reading-the-count",
+            "the-cold-well"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reading-the-count",
+      "infos": [
+        {
+          "a": "archivist",
+          "x": "Hosk-Vei can read the Count and will not say so in front of Rell. If you want it read you will have to make him say it, or go in with him, and going in with him is not the safe one of those two.",
+          "to": [
+            "the-skei",
+            "the-steward-of-the-count"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "d": 30,
+          "x": "The Count is read by tasting. That is not a figure of speech and I am sorry that it is not.",
+          "to": [
+            "the-skei"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 25,
+          "x": "The Count has been read once in living memory and the reader did not come back up the same. Ask at Thorn what the tree said afterwards.",
+          "to": [
+            "the-tree-at-thorn"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-skei",
+      "infos": [
+        {
+          "a": "sapcutter",
+          "x": "A cutting tool and it is the only one of its kind, and the yards have been short one since Rain's Hand. Neeja-Xul knows exactly where it is and is waiting to be asked politely.",
+          "to": [
+            "the-tree-at-thorn",
+            "the-cutters-terms"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "x": "It is not a tool. It was made to open one thing, once, and the yards have been trimming stands with it for two hundred years because nobody told them.",
+          "to": [
+            "the-tree-at-thorn",
+            "the-eleven-live-roots"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "Blackrose lost a blade and Thorn found one. That is the whole of what the coast road has to say about it.",
+          "to": [
+            "the-tree-at-thorn"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-tree-at-thorn",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "Sesh-Anaat keeps it and it has been saying the same four words since Second Seed. Three of them are a place. She will not tell you the fourth unless she believes you will carry it whole.",
+          "to": [
+            "the-chapters-vote",
+            "the-keepers-leave",
+            "the-interiors-consent"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "Thorn. Up the pass road past the milestone that gives a distance to nowhere. There is a hall and behind the hall there is a tree and people go quiet about the tree.",
+          "to": [
+            "the-keepers-leave"
+          ]
+        },
+        {
+          "a": "naga-elder",
+          "d": 20,
+          "x": "A Hist that has begun repeating itself is not being poetic. It is a thing that has been asked a question it cannot finish answering.",
+          "to": [
+            "the-eleven-live-roots"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-chapters-vote",
+      "infos": [
+        {
+          "a": "mudborn",
+          "x": "The Court decides by chapter and the chapter is eleven sextons who owe money to four different houses. Rell can carry one vote. She cannot carry the room.",
+          "to": [
+            "the-ledgers-terms",
+            "the-works"
+          ]
+        },
+        {
+          "a": "archivist",
+          "x": "Two of the eleven are in debt to the Wet Ledger and one of the two is in debt on paper you could buy. That is not advice.",
+          "to": [
+            "the-ledgers-terms"
+          ]
+        },
+        {
+          "a": "clerk",
+          "x": "A vote at Soulrest, and the Assize will recognise the outcome whichever way it falls, which is exactly why nobody at Soulrest is in a hurry to hold it.",
+          "to": [
+            "the-writ-of-works"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-ledgers-terms",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "Ruvela Sath speaks for the Wet Ledger at Gideon and she will give you terms in an afternoon. Whether you can carry those terms back to the Court is a separate afternoon.",
+          "to": [
+            "the-hiring-list",
+            "the-works"
+          ]
+        },
+        {
+          "a": "merchant",
+          "x": "The Ledger does not lend to the works. The Ledger lends to whoever will be standing after the works, which it has already worked out and you have not.",
+          "to": [
+            "the-writ-of-works"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "Half the arithmetic is cheaper and the wharf pays for the other half. Say that to Sath and watch her not deny it.",
+          "to": [
+            "the-hiring-list"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-interiors-consent",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "The interior does not vote and cannot be outvoted. Ashul-Tei will walk the eleven with you or she will not, and there is no third answer and no appeal.",
+          "to": [
+            "the-eleven-live-roots",
+            "the-keepers-leave"
+          ]
+        },
+        {
+          "a": "deep-elder",
+          "d": 30,
+          "x": "Consent is given by the ones who will bear it. Name the fourth stand to her and you will have it in one hour, and you will have spent something you cannot get back.",
+          "to": [
+            "the-tree-at-thorn"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "Helstrom will not say yes to a Court letter. Everybody knows that. Everybody also knows the Court has never sent anything but a letter.",
+          "to": [
+            "the-root-gallery"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-cutters-terms",
+      "infos": [
+        {
+          "a": "sapcutter",
+          "x": "The yards want the leases read in a language the crews speak and they want the Company off the third stand. Neeja-Xul will say the first out loud and not the second.",
+          "to": [
+            "the-hiring-list",
+            "the-cutting-yard"
+          ]
+        },
+        {
+          "a": "mercenary",
+          "x": "The Company holds a lease at Blackrose and holds it legally. You can outbid us. You cannot embarrass us.",
+          "to": [
+            "the-writ-of-works"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "Expose the yard or outbid the Company. Blackrose has an opinion about which of those a stranger should be doing and Blackrose will not tell you what it is.",
+          "to": [
+            "the-cutting-yard"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-writ-of-works",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "Prefect Galvus Arn at Stormhold issues it and he issues it on a finding of fact or on a paragraph, and the paragraph is faster and the finding is the one that holds.",
+          "to": [
+            "the-works",
+            "the-hiring-list"
+          ]
+        },
+        {
+          "a": "clerk",
+          "x": "A works writ. It is the only imperial paper the Court would accept and the only Court business the Assize would put its name on, which makes it worth exactly as much as both of them want it to be.",
+          "to": [
+            "the-works"
+          ]
+        },
+        {
+          "a": "archivist",
+          "x": "There is a paragraph in the provincial code that would carry it and using that paragraph tells the interior what the Empire thinks the interior is.",
+          "to": [
+            "the-interiors-consent"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-hiring-list",
+      "infos": [
+        {
+          "a": "townsman",
+          "x": "Lilmoth wharf. Weeja-Sen keeps the list and the list is eleven names short every morning, and the eleven are always the same eleven.",
+          "to": [
+            "the-works",
+            "the-cutters-terms"
+          ]
+        },
+        {
+          "a": "merchant",
+          "x": "The Company hires off the same wharf at a better rate and a worse contract. Outbid them and the wharf will remember it; take the eleven off the list and the wharf will remember that longer.",
+          "to": [
+            "the-works"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "d": 15,
+          "x": "The eleven off the list are the eleven whose families are in the Tally and have not been read. That is not a coincidence and Weeja-Sen has known it for a year.",
+          "to": [
+            "the-drowned-tally"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-keepers-leave",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "Sesh-Anaat can give the keepers' leave and she will ask you your reason first. There is a true one and there is a silence and the silence is also an answer.",
+          "to": [
+            "the-works",
+            "the-interiors-consent"
+          ]
+        },
+        {
+          "a": "naga-elder",
+          "d": 25,
+          "x": "Leave is not permission. Leave is the keepers agreeing not to stand in the water in front of you, which they would otherwise do, and which they have done before.",
+          "to": [
+            "the-eleven-live-roots"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "Thorn hall. Ask for the leave and do not ask for it twice.",
+          "to": [
+            "the-tree-at-thorn"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-salt-factor",
+      "infos": [
+        {
+          "a": "dres-factor",
+          "x": "Neloth Vaun holds the water rights at Archon for the House and holds them on a clause nobody has tested. Sign it, buy it or turn a writ on it. He has an opinion about which of those he respects.",
+          "to": [
+            "the-works",
+            "the-gem-shipping"
+          ]
+        },
+        {
+          "a": "clerk",
+          "x": "The Salt Factor. He is the last signature the works needs and he is the only one of the eight who has nothing to gain from it.",
+          "to": [
+            "the-works"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "Archon. Ask at the crane and buy the crew a drink first; the factor's own people will tell you nothing and the crane crew will tell you when he sails.",
+          "to": [
+            "the-gem-shipping"
+          ]
+        },
+        {
+          "a": "dres-factor",
+          "requires": {
+            "race": [
+              "saxhleel",
+              "naga"
+            ]
+          },
+          "x": "The House does business with the marsh. It does not do business across a table with the marsh. If you have a name behind you, put it on the table before you sit down.",
+          "to": [
+            "a-name-for-cover"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-works",
+      "infos": [
+        {
+          "a": "mudborn",
+          "x": "The Bone Ladder works. Everything the eight voices were for. Rell will not start until she has all eight and she will start the morning she has them, whatever the tide is doing.",
+          "to": [
+            "the-ash-gallery",
+            "the-drowned-tally"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "They are opening the Ladder. There are people on that road who have not been on that road since they were children and are going anyway.",
+          "to": [
+            "the-ash-gallery"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 20,
+          "x": "The works will reach the gallery and the gallery is not empty. The Court has been told this. The Court has written it down.",
+          "to": [
+            "the-ash-gallery",
+            "the-steward-of-the-count"
+          ]
+        },
+        {
+          "a": "mercenary",
+          "x": "Eight signatures and then a great deal of digging, and the Company will be hired for the digging whichever way the vote goes. That is why we are relaxed about the vote.",
+          "to": [
+            "the-hiring-list",
+            "the-cutters-terms"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-ash-gallery",
+      "infos": [
+        {
+          "a": "mudborn",
+          "x": "Below the counting floor. Bel-Mourne has the plan of it and the plan has three ways down and one of them is not on the plan.",
+          "to": [
+            "the-steward-of-the-count",
+            "the-sill"
+          ]
+        },
+        {
+          "a": "archivist",
+          "x": "It was a gallery before it was ash. The ash is what four hundred years of readings leave and somebody has been walking in it recently, in the third bay, and the prints are not right.",
+          "to": [
+            "the-steward-of-the-count"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 25,
+          "x": "There is a steward down there and he has been down there the whole time and he wrote a letter once. Ashul-Tei still has it.",
+          "to": [
+            "the-steward-of-the-count",
+            "the-interiors-consent"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-steward-of-the-count",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 20,
+          "x": "Ixtu-Meer. He has kept the Count since before the ninth recension and he has been waiting for somebody to come down and ask him one honest question about it.",
+          "to": [
+            "the-sill",
+            "the-opening-of-the-count"
+          ]
+        },
+        {
+          "a": "archivist",
+          "x": "There is a name on the fourth recension that appears again on the ninth, four hundred years apart, and every archivist in the province has decided it is two men.",
+          "to": [
+            "the-sill"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-sill",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 25,
+          "x": "The lip of the Count. You cross it once. There is nothing dramatic about it and that is the part people are not ready for.",
+          "to": [
+            "the-opening-of-the-count"
+          ]
+        },
+        {
+          "a": "deep-elder",
+          "d": 30,
+          "x": "Past the sill nothing you left behind can be sent for. Say what you have to say to the people above the sill before you go down.",
+          "to": [
+            "the-opening-of-the-count"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-opening-of-the-count",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 25,
+          "x": "Open it, take his place, or walk out. He will tell you all three and he will not tell you which. That is not him being coy; he genuinely does not know.",
+          "to": [
+            "what-the-wells-do-now",
+            "the-eleven-live-roots"
+          ]
+        },
+        {
+          "a": "deep-elder",
+          "d": 30,
+          "x": "What is opened is not a door and does not stay open, and the province gets whichever season follows from it.",
+          "to": [
+            "what-the-wells-do-now"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-eleven-live-roots",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "Eleven still drink. There were forty. Neeja-Xul has a blade that will cut one and a reason she thinks is good, and I will not tell you she is wrong.",
+          "to": [
+            "the-root-channels",
+            "the-thread-is-cut"
+          ]
+        },
+        {
+          "a": "sapcutter",
+          "x": "Eleven. Friend, we can count. The yards have known the number for three seasons and have not said it to a keeper once.",
+          "to": [
+            "the-root-channels"
+          ]
+        },
+        {
+          "a": "naga-elder",
+          "d": 25,
+          "x": "A root that is cut is not a root that is dead. It is a root that has been told the answer is no.",
+          "to": [
+            "the-thread-is-cut"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-root-channels",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "Cut the eleven and the channels drain past instead of through, and the Count fills from the drain rather than from the marsh. That is the other way and it is not the wrong way. It is only the other way.",
+          "to": [
+            "what-the-wells-do-now",
+            "the-thread-is-cut"
+          ]
+        },
+        {
+          "a": "sapcutter",
+          "x": "Water goes where you leave it room to go. Everything after that is argument.",
+          "to": [
+            "what-the-wells-do-now"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-thread-is-cut",
+      "infos": [
+        {
+          "a": "mudborn",
+          "x": "When the Court cannot read the clause the way the Court reads it, the mandate is void and Hosk-Vei is the only one left who can say what happens next. He has been rehearsing it.",
+          "to": [
+            "reading-the-count",
+            "the-root-channels"
+          ]
+        },
+        {
+          "a": "archivist",
+          "x": "A void mandate is not the end of the Tally. It is the end of the Court's claim to be the one reading it, which is a smaller and much worse thing.",
+          "to": [
+            "the-drowned-tally"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "what-the-wells-do-now",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "Some run and some do not and the ones that do not are not going to be argued back. Teeja-Lun is sitting at one of them and will tell you what she is hearing if you sit down first.",
+          "to": [
+            "the-cold-well"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "The Ladder well came back in Sun's Dusk. The Hollow-Reeds well did not. Nobody is claiming credit for either.",
+          "to": [
+            "the-cold-well"
+          ]
+        },
+        {
+          "a": "naga-elder",
+          "d": 20,
+          "x": "What the wells do now is what the wells were always going to do. What changed is that somebody was there to see it and can say so.",
+          "to": []
+        }
+      ]
+    },
+    {
+      "id": "what-the-tide-does-now",
+      "infos": [
+        {
+          "a": "townsman",
+          "x": "It came in the same as it always did and everybody stood on the wall to watch it do it. That is the story and it is a better one than it sounds.",
+          "to": [
+            "what-the-wells-do-now"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 20,
+          "x": "The season after is the part nobody writes down. Walk it, or sit at a well and let it be told to you.",
+          "to": [
+            "what-the-wells-do-now"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-drowned-court",
+      "infos": [
+        {
+          "a": "mudborn",
+          "x": "Eleven sextons, four undersextons and a mandate to read the dead. It is not a faith and it has never claimed to be one, which is the only honest thing about it.",
+          "to": [
+            "the-drowned-tally",
+            "the-chapters-vote"
+          ]
+        },
+        {
+          "a": "clerk",
+          "x": "The Court holds the register and the Assize holds the Court's charter, and neither has read the other's document this century.",
+          "to": [
+            "the-drowned-tally",
+            "the-writ-of-works"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 20,
+          "x": "They keep an old promise badly, supplicant, which is better than the alternative and worse than they think.",
+          "to": [
+            "the-drowned-tally"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-count-of-forty",
+      "infos": [
+        {
+          "a": "mudborn",
+          "x": "Forty roots when the fourth recension was written. Nobody has said forty out loud at Soulrest in my lifetime and the number is still in the book, in the part we read from.",
+          "to": [
+            "the-eleven-live-roots",
+            "the-ninth-recension"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 20,
+          "x": "Forty, then twenty-two, then eleven. We have never once been asked by the Court what the falling number meant. We were asked what it was.",
+          "to": [
+            "the-eleven-live-roots"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "what-people-say-happened",
+      "infos": [
+        {
+          "a": "mudborn",
+          "x": "That a cart went into the channel and the boxes came up light. Everybody believes it and nobody has said which channel, which is how you know.",
+          "to": [
+            "the-empty-boxes",
+            "the-crypt-road"
+          ]
+        },
+        {
+          "a": "townsman",
+          "x": "Depends which side of the market you ask on. The east side says the Court lost them and the west side says the Court sold them, and neither side has been down the crypt road.",
+          "to": [
+            "the-empty-boxes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-three-previous-severances",
+      "infos": [
+        {
+          "a": "archivist",
+          "x": "Three times the mandate has been void and three times a ledgerer has stood up and said what happens next. Two of the three are in the record. The third is why the record has a gap in it.",
+          "to": [
+            "the-thread-is-cut",
+            "the-ninth-recension"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "d": 25,
+          "x": "We do not teach them. A sexton who knows how the Court has ended three times already is a sexton who is counting.",
+          "to": [
+            "the-thread-is-cut"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-clause",
+      "infos": [
+        {
+          "a": "dres-factor",
+          "x": "The water clause. It was written to keep a channel open for a House barge in a dry season and it has never been read since, and it is now the only thing standing between the Court and its works.",
+          "to": [
+            "the-salt-factor",
+            "the-works"
+          ]
+        },
+        {
+          "a": "clerk",
+          "d": 25,
+          "x": "Nobody has tested it because testing it would tell everybody what it is worth. The Factor knows exactly what it is worth.",
+          "to": [
+            "the-salt-factor"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-eleven-wells",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "One well to a live root. That is the whole of the arrangement and it is why the count of the wells and the count of the roots have never once disagreed.",
+          "to": [
+            "the-eleven-live-roots",
+            "the-cold-well"
+          ]
+        },
+        {
+          "a": "deep-elder",
+          "d": 25,
+          "x": "When a well goes cold the root has not died. It has been asked for more than it has and has answered honestly.",
+          "to": [
+            "the-cold-well"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-leave-book",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "x": "Every leave the keepers have given, and the reason given for it, going back further than the Court. There are eleven entries in four hundred years and four of them are the same reason.",
+          "to": [
+            "the-keepers-leave",
+            "the-tree-at-thorn"
+          ]
+        },
+        {
+          "a": "naga-elder",
+          "d": 20,
+          "x": "The book is not a rule. It is a list of the times the keepers were persuaded, kept so that they can see what persuades them.",
+          "to": [
+            "the-keepers-leave"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-compact",
+      "infos": [
+        {
+          "a": "clerk",
+          "x": "The Wet Ledger's own charter, and it says the Ledger will not lend against a mortuary. Sath has been looking for a way round that sentence for six years.",
+          "to": [
+            "the-ledgers-terms",
+            "the-drowned-court"
+          ]
+        },
+        {
+          "a": "merchant",
+          "x": "A compact is what you call a contract when you would rather not be sued on it.",
+          "to": [
+            "the-ledgers-terms"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-cohorts-stormhold-does-not-have",
+      "infos": [
+        {
+          "a": "legionary",
+          "x": "Two on the rolls, one in the barracks, and the pay for both goes somewhere. Arn signs for it every quarter and has stopped pretending he does not know.",
+          "to": [
+            "the-writ-of-works",
+            "the-provincial-office"
+          ]
+        },
+        {
+          "a": "clerk",
+          "d": 20,
+          "x": "The customs house knows. That is the leverage and it is the only leverage anybody in this town has on a prefect.",
+          "to": [
+            "the-writ-of-works"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-rotting-quarter",
+      "infos": [
+        {
+          "a": "townsman",
+          "x": "Lilmoth below the boards. Eleven families off the hiring list live down there and the wharf pretends it does not know which eleven.",
+          "to": [
+            "the-hiring-list",
+            "the-drowned-tally"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 20,
+          "x": "There was a well there. It is under the water now and it is still tended, and the tending is the only reason the quarter has a name and not a number.",
+          "to": [
+            "the-cold-well"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-fourth-yard",
+      "infos": [
+        {
+          "a": "sapcutter",
+          "x": "Blackrose has three yards and a fourth stand nobody cuts. The Company has been trying to lease it for two years and the cutters have been losing the paperwork for two years.",
+          "to": [
+            "the-cutters-terms",
+            "the-tree-at-thorn"
+          ]
+        },
+        {
+          "a": "mercenary",
+          "x": "There is a stand at Blackrose under no lease at all. That is not piety, that is a gap in a register, and the Company reads registers.",
+          "to": [
+            "the-cutters-terms"
+          ]
+        },
+        {
+          "a": "rootkeeper",
+          "d": 25,
+          "x": "The fourth is the one the ink comes off. Say that to a sexton and watch four hundred years of reading go quiet.",
+          "to": [
+            "the-ninth-recension",
+            "the-tree-at-thorn"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-chain-on-the-wall",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 20,
+          "x": "It is not holding him in and it never was. He put it there himself so that anybody who came down would ask about it before they asked about him.",
+          "to": [
+            "the-steward-of-the-count",
+            "the-sill"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-three-things-i-checked-myself",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 20,
+          "x": "The intake at the third bay, the weight of a sealed box, and the ink. He checked all three before he wrote to Ashul-Tei, which is more than the Court has done in four hundred years.",
+          "to": [
+            "the-intakes",
+            "the-empty-boxes",
+            "the-ninth-recension"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "what-does-the-marsh-owe-you",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 25,
+          "x": "He will ask it and he will wait for the answer, and the answer decides what he offers you. There is no wrong one. There is only the one you meant.",
+          "to": [
+            "the-opening-of-the-count"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-house-under-the-wastes",
+      "note": "Closes a dangling AddTopic authored in `main-quest-argument.json` by the Act V conversation. Added, not overwritten.",
+      "infos": [
+        {
+          "a": "rootkeeper",
+          "d": 20,
+          "x": "The Dres keep their salt houses over the old channels because the old channels are the only cold thing in the Stone Wastes. Nobody built them there. They were found there.",
+          "to": [
+            "the-salt-factor",
+            "the-root-channels"
+          ]
+        },
+        {
+          "a": "dres-factor",
+          "d": 35,
+          "x": "There is a cellar under every House holding on that road and the survey does not have them. The House did not dig them and the House does not discuss them.",
+          "to": [
+            "the-salt-factor"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "soulrest",
+      "infos": [
+        {
+          "a": "townsman",
+          "x": "Down the coast. Mortuary town, and the reading room is on the quay side with the Court's mark over the door. Ask for Rell and do not ask for her before noon.",
+          "to": [
+            "the-drowned-tally",
+            "the-drowned-court"
+          ]
+        },
+        {
+          "a": "clerk",
+          "x": "Soulrest ships more bodies than cargo and the customs bench there is the dullest posting in the province, which is why the clerk on it notices things.",
+          "to": [
+            "the-drowned-tally",
+            "the-empty-boxes"
+          ]
+        },
+        {
+          "a": "mudborn",
+          "x": "Home. You will find it by the quiet, dry-one; there is a whole town down there that has learned to keep its voice down and does not remember starting.",
+          "to": [
+            "the-low-chapel",
+            "the-drowned-tally"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -62,7 +62,7 @@ const MARK = 'ink';
  */
 const MARKS = {
   light: (c) => { line(c, -0.45, 0.55, 0.45, -0.6); line(c, -0.62, 0.3, -0.18, 0.72); },
-  heavy: (c) => { line(c, -0.45, 0.6, 0.45, -0.55); line(c, -0.62, 0.34, -0.18, 0.76); line(c, -0.2, 0.35, 0.6, -0.3); },
+  heavy: (c) => { line(c, -0.42, 0.62, 0.5, -0.5); line(c, -0.62, 0.38, -0.14, 0.8); arc(c, -0.1, 0.15, 0.72, -1.15, 0.25); },
   block: (c) => { shield(c, 0.78); },
   parry: (c) => { shield(c, 0.62); arc(c, 0, 0, 0.95, -0.9, 0.45); },
   roll: (c) => { arc(c, 0, 0.05, 0.6, -2.6, 1.9); arrowHead(c, 0.52, -0.28, 0.9); },
@@ -70,7 +70,10 @@ const MARKS = {
   jump: (c) => { chevron(c, 0, -0.15, 0.55, -1); line(c, -0.6, 0.62, 0.6, 0.62); },
   crouch: (c) => { chevron(c, 0, 0.15, 0.55, 1); line(c, -0.6, -0.62, 0.6, -0.62); },
   interact: (c) => { arc(c, 0, 0, 0.62, 0, Math.PI * 2); line(c, 0, -0.62, 0, -0.95); },
-  use_item: (c) => { line(c, -0.28, -0.7, 0.28, -0.7); line(c, -0.18, -0.7, -0.32, 0.1); line(c, 0.18, -0.7, 0.32, 0.1); arc(c, 0, 0.34, 0.48, -2.6, -0.55); },
+  // the same gourd the heal-charge element draws, so the item you drink and the button you
+  // drink it with are recognisably the same object (RI-UIX06 A6: a gourd, drawn, not a flask
+  // pictogram)
+  use_item: (c) => { gourd(c); },
   lock_on: (c) => { bracket(c, 0.8); arc(c, 0, 0, 0.22, 0, Math.PI * 2); },
   two_hand: (c) => { line(c, -0.15, 0.7, -0.15, -0.7); line(c, 0.15, 0.7, 0.15, -0.7); line(c, -0.5, -0.35, 0.5, -0.35); },
   swap_left: (c) => { line(c, 0.6, 0, -0.6, 0); arrowHead(c, -0.6, 0, Math.PI); },
@@ -93,7 +96,22 @@ export function drawTouchOverlay(S, m) {
   const vw = Math.max(1, (m.viewport && m.viewport.w) || S.W);
   const vh = Math.max(1, (m.viewport && m.viewport.h) || S.H);
   const sx = S.W / vw, sy = S.H / vh;
+  // ONE scale for the arc, and it is anchored at the SAFE-AREA CORNER rather than at the
+  // frame's origin. `TouchInput.layout()` expresses every control as an offset from the bottom
+  // right of the safe area — that is what makes H3/T8 true by construction — so the drawing has
+  // to reproduce the same anchor. Scaling x and y independently would preserve the anchor and
+  // shear the arc whenever the drawing buffer's aspect differs from the logical viewport's,
+  // which is every harness capture and every phone whose URL bar is halfway collapsed; the
+  // controls would then be ellipses drawn away from their own circular hit boxes, and the
+  // player would press the picture and miss. `min` keeps the arc inside the frame on either
+  // mismatch.
   const sr = Math.min(sx, sy);
+  const ox = S.W - (m.insets ? m.insets.right : 0) * sr;
+  const oy = S.H - (m.insets ? m.insets.bottom : 0) * sr;
+  const cssOx = vw - (m.insets ? m.insets.right : 0);
+  const cssOy = vh - (m.insets ? m.insets.bottom : 0);
+  const px = (x) => ox + (x - cssOx) * sr;
+  const py = (y) => oy + (y - cssOy) * sr;
   let n = 0;
 
   // ---- T2: the floating stick, drawn where the thumb actually landed --------------------
@@ -101,6 +119,8 @@ export function drawTouchOverlay(S, m) {
   // position, so the picture and the hit model are the same object.
   if (m.stick && m.stick.active) {
     const R = (m.stickRadius || 90) * sr;
+    // The stick is a REAL POINTER POSITION anywhere in the left half, not an offset from
+    // the arc's corner, so it maps through the plain viewport scale.
     const cx = m.stick.ox * sx, cy = m.stick.oy * sy;
     S.el({
       id: 'touch.stick', kind: 'touch_stick',
@@ -123,7 +143,7 @@ export function drawTouchOverlay(S, m) {
   // ---- T4/T1: the button arc, and the drawer's petals when it is open -------------------
   for (const ctl of m.controls) {
     const r = ctl.r * sr;
-    const cx = ctl.x * sx, cy = ctl.y * sy;
+    const cx = px(ctl.x), cy = py(ctl.y);
     const mark = MARKS[ctl.action] || MARKS.interact;
     const down = !!ctl.down;
     S.el({
@@ -243,4 +263,17 @@ function arrowHead(c, x, y, ang) {
   c.lineTo(x - Math.cos(ang + 0.5) * h, y - Math.sin(ang + 0.5) * h);
   c.closePath(); c.fill();
 }
+function gourd(c) {
+  c.beginPath();
+  c.moveTo(-0.22, -0.35);
+  c.quadraticCurveTo(-0.78, 0.05, -0.52, 0.62);
+  c.quadraticCurveTo(0, 1.02, 0.52, 0.62);
+  c.quadraticCurveTo(0.78, 0.05, 0.22, -0.35);
+  c.closePath(); c.stroke();
+  c.beginPath();
+  c.moveTo(-0.22, -0.35); c.lineTo(-0.22, -0.72);
+  c.lineTo(0.22, -0.72); c.lineTo(0.22, -0.35);
+  c.stroke();
+}
+
 function round4(v) { return Math.round(Number(v) * 10000) / 10000; }

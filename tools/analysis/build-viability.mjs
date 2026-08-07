@@ -58,6 +58,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import {
   REPO_ROOT, DATA_DIR, parseArgs, wantsHelp, usage, writeJson, log, die, EXIT,
 } from '../lib/cli.mjs';
@@ -107,7 +108,27 @@ OPTIONS
   --quiet               suppress the per-signature failure lines on stdout
   --offer-model M       raw | derived | detect (default). Which disposition model the build's
                         quest-offer path implements. DETECTED from named source anchors and
-                        reported; forcing it is how a critic compares the two.
+                        reported; forcing it is how a critic compares the two. THE ANCHORS ARE A
+                        CLAIM, NOT A MEASUREMENT — see --verify-model.
+  --verify-model        boot the build and perform the DEFINITIONAL race-sensitivity test: set
+                        two characters differing in RACE ALONE and read
+                        __HARNESS.getGateDispositions() — questEngine.dispositionView(), the very
+                        table canOffer() consumes. If no giver's number moves, the offer gate is
+                        race-invariant no matter what the source anchors say. Writes
+                        reports/viability-model-attestation.json, keyed by a hash of engine.js +
+                        quest/machine.js + character/reaction.js so a stale attestation is
+                        refused rather than trusted. EXITS NON-ZERO when the running gate
+                        contradicts the detected model.
+                        WHY THIS EXISTS: TOOL-COVERAGE-R3 §1 killed the race term with
+                        \`if (!this.__raceGatesEnabled) return null;\` at the top of the model
+                        closure. Every source anchor still matched, the tool printed identical
+                        output, and it charged the build 36 false FAILs. No regex over source can
+                        prove a function's arithmetic is REACHED; only this can.
+  --probe-races a,b     the two races --verify-model varies between (default dunmer,nord)
+  --probe-upbringing U  the upbringing held fixed across the differential (default interior)
+  --no-attestation      run without consulting the attestation. The report is stamped
+                        model_verified:false and the run exits non-zero if any verdict depended
+                        on the model.
   --cross-check         boot the game, drive several signatures through the SHIPPED creation
                         path, and compare this static walk's arithmetic against
                         __HARNESS.getGateDispositions() — the numbers canOffer() actually reads —
@@ -391,26 +412,103 @@ function dispositionCeiling(base, race, upbringing, birthsign, group) {
 // `--offer-model raw|derived|detect` overrides it, so a critic can force either and compare.
 // `--cross-check` boots the game and compares this tool's numbers against the running build's,
 // which is the only honest answer to "is the static walk still describing the world".
-// ---------------------------------------------------------------------------------------------
+//
+// =============================================================================================
+// ROUND 4 — WHY THE ANCHORS ALONE ARE NOT ALLOWED TO DECIDE THIS ANY MORE.
+//
+// TOOL-COVERAGE-R3 §1 broke the round-3 detector with one ordinary line, a feature flag that is
+// off, injected at the top of the returned closure:
+//
+//     _questDispositionModel() {
+//       return (npcId, base) => {
+//         if (!this.__raceGatesEnabled) return null;   // <- every anchor still matches
+//
+// The install line, `_dispositionToward` and `dispositionView()` are all untouched, so 3/3
+// anchors matched, the tool printed `model='derived'` and the same 504/540 with the same 36
+// dunmer FAILs — while the running engine went from six distinct race-dependent disposition
+// clause sets to one race-invariant set. The engine's behaviour changed completely; the tool's
+// output did not change by one byte, and it charged the build 36 false FAILs.
+//
+// THE GENERAL LESSON, and it is why a fourth static anchor is NOT the fix on its own: **no
+// regex over source can prove a function's arithmetic is reached.** Any early return, any
+// guard, any `&&` short-circuit defeats every anchor that names a token appearing later in the
+// file. The R3 verdict asked for an anchor on `derivedDisposition` being called — I have added
+// it, because it catches a DIFFERENT break (the arithmetic being deleted or renamed), but I
+// record plainly that **it would not have caught R3's break**: the `derivedDisposition(` call
+// is still textually present under the injected guard. Believing otherwise would buy a fourth
+// false pass.
+//
+// So round 4 makes the static anchors a CLAIM and the running engine the VERDICT:
+//
+//   1. `--verify-model` boots the build and performs the DEFINITIONAL test of race-sensitivity:
+//      two character signatures differing in race ALONE, read `getGateDispositions()` — the
+//      exact table `canOffer` consumes — and see whether any giver's number moves. A model that
+//      returns null cannot move a number, so R3's break is caught by construction rather than
+//      by pattern.
+//   2. The observation is written to a LIVE ATTESTATION keyed by a hash of the three source
+//      files that carry the model. A stale attestation is not honoured.
+//   3. Every run reconciles the static claim against the attestation and **refuses on
+//      disagreement**. A detected model the running gate contradicts is the ambiguous state
+//      this tool already knows how to refuse on.
+//   4. A run with NO attestation still walks, but it is stamped `model_verified: false` and
+//      **exits non-zero** if any signature's verdict depended on the model. An unverified model
+//      is an unmeasured one, and RI-MTH04 does not let it be reported as a measurement.
+//
+// AND THE MODEL IS NOT A GLOBAL STRING. `_questDispositionModel()` returns null per-NPC when
+// `reaction_group` is absent (engine.js:4862-4864), so the build's real model is PER-GIVER
+// MIXED. `OFFER_MODEL.per_giver` carries that shape, computed from the same predicate the
+// engine uses, and the attestation confirms it live via `explainDisposition().modelled`.
+// =============================================================================================
+const MODEL_SOURCE_FILES = [
+  'game/src/engine.js',
+  'game/src/sim/quest/machine.js',
+  'game/src/character/reaction.js',
+];
+
+/** A hash of every source file that can change the offer model. Keys the live attestation. */
+function modelSourceHash() {
+  const h = crypto.createHash('sha256');
+  for (const f of MODEL_SOURCE_FILES) {
+    const p = path.join(REPO_ROOT, f);
+    h.update(f);
+    h.update(fs.existsSync(p) ? fs.readFileSync(p) : Buffer.alloc(0));
+  }
+  return h.digest('hex').slice(0, 16);
+}
+
 const OFFER_MODEL_ANCHORS = {
   installed: {
     file: 'game/src/engine.js',
     // Engine installs the derived model on the quest engine.
     rx: /this\.questEngine\.dispositionModel\s*=/,
     means: 'Engine installs a disposition model on QuestEngine',
+    proves: 'plumbing',
   },
   consulted: {
     file: 'game/src/sim/quest/machine.js',
     // _dispositionToward consults it before canOffer sees the number.
     rx: /const\s+model\s*=\s*this\.dispositionModel\s*;[\s\S]{0,400}?canOffer|_dispositionToward\s*\([\s\S]{0,800}?this\.dispositionModel/,
     means: 'QuestEngine._dispositionToward() consults the model',
+    proves: 'plumbing',
   },
   fed_to_gate: {
     file: 'game/src/sim/quest/machine.js',
     rx: /dispositions\s*:\s*this\.dispositionView\(\)|dispositions\s*:\s*this\._dispositionView/,
     means: 'QuestEngine.context().dispositions is built from _dispositionToward, not from the raw register',
+    proves: 'plumbing',
+  },
+  // R3's requested fourth anchor. It is on the ARITHMETIC, not the plumbing — but see the
+  // block comment above: it is a necessary condition, not a sufficient one, and it does NOT
+  // catch a guarded early return. Recorded as `proves: 'arithmetic-present'`, never
+  // 'arithmetic-reached', because the difference is the whole of R3 §1.
+  applies_arithmetic: {
+    file: 'game/src/engine.js',
+    rx: /_questDispositionModel\s*\(\s*\)\s*\{[\s\S]{0,4000}?derivedDisposition\s*\(/,
+    means: '_questDispositionModel() contains a call to derivedDisposition() — the race arithmetic exists',
+    proves: 'arithmetic-present (NOT arithmetic-reached: a guarded early return leaves this matching)',
   },
 };
+const N_ANCHORS = Object.keys(OFFER_MODEL_ANCHORS).length;
 
 const OFFER_MODEL = (() => {
   const forced = args['offer-model'] ? String(args['offer-model']) : 'detect';
@@ -418,28 +516,40 @@ const OFFER_MODEL = (() => {
   for (const [k, a] of Object.entries(OFFER_MODEL_ANCHORS)) {
     const p = path.join(REPO_ROOT, a.file);
     const src = fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : '';
-    found[k] = { matched: a.rx.test(src), file: a.file, means: a.means };
+    found[k] = { matched: a.rx.test(src), file: a.file, means: a.means, proves: a.proves };
   }
   const hits = Object.values(found).filter((f) => f.matched).length;
   let model, why;
   if (forced === 'raw' || forced === 'derived') {
     model = forced;
-    why = `FORCED by --offer-model ${forced}. Detection found ${hits}/3 anchors.`;
-  } else if (hits === 3) {
+    why = `FORCED by --offer-model ${forced}. Detection found ${hits}/${N_ANCHORS} anchors.`;
+  } else if (hits === N_ANCHORS) {
     model = 'derived';
-    why = 'all three anchors matched: the reaction matrix reaches the quest-offer path in this build.';
+    why = `all ${N_ANCHORS} anchors matched: the reaction matrix is plumbed into the quest-offer ` +
+          'path and the arithmetic is present in this build. THIS IS A CLAIM ABOUT SOURCE TEXT, ' +
+          'not an observation of the running gate — see --verify-model.';
   } else if (hits === 0) {
     model = 'raw';
     why = 'no anchor matched: seedDispositions() writes the raw record and nothing downstream ' +
           'applies derivedDisposition(), so the offer gate is race-invariant in this build.';
   } else {
     model = 'ambiguous';
-    why = `${hits} of 3 anchors matched, so the two halves of the race term DISAGREE: ` +
+    why = `${hits} of ${N_ANCHORS} anchors matched, so the halves of the race term DISAGREE: ` +
           Object.entries(found).map(([k, f]) => `${k}=${f.matched}`).join(', ') +
           `. A half-wired race term is the state this corpus has twice been misled by (the data ` +
           `layer alone was measured to block nobody), so this tool refuses rather than guessing.`;
   }
-  return { model, why, anchors: found, forced: forced !== 'detect' ? forced : null };
+  return {
+    model, why, anchors: found, anchors_matched: hits, anchors_total: N_ANCHORS,
+    forced: forced !== 'detect' ? forced : null,
+    source_hash: modelSourceHash(),
+    anchor_limit:
+      'NO REGEX OVER SOURCE CAN PROVE A FUNCTION\'S ARITHMETIC IS REACHED. TOOL-COVERAGE-R3 §1 ' +
+      'defeated the three-anchor detector with `if (!this.__raceGatesEnabled) return null;` at ' +
+      'the top of the model closure, leaving every anchor matched and the race term dead. The ' +
+      'fourth anchor added in round 4 would not have caught it either. Only `--verify-model` ' +
+      '(a live two-signature differential on getGateDispositions()) can decide this.',
+  };
 })();
 
 if (OFFER_MODEL.model === 'ambiguous' && !args['self-test']) {
@@ -448,6 +558,117 @@ if (OFFER_MODEL.model === 'ambiguous' && !args['self-test']) {
     ' Re-run with --offer-model raw or --offer-model derived to force one, and say which in the ' +
     'verdict.');
 }
+
+// ---------------------------------------------------------------------------------------------
+// THE MODEL IS PER-GIVER, NOT A GLOBAL STRING.
+//
+// `_questDispositionModel()` (engine.js:4861) opens:
+//
+//     const rec = this._anyNpcRecord(npcId);
+//     const group = rec && (rec.reaction_group || null);
+//     if (!group) return null;                     // <- the model DOES NOT APPLY to this giver
+//
+// So on a build whose global model is "derived", a giver with no `reaction_group` still reads
+// the raw register and its gate is still race-invariant. R3 §1: "a single global model string
+// is the wrong shape for it to begin with." This is that shape, computed from the SAME
+// predicate the engine uses, and confirmed live by `explainDisposition().modelled`.
+// ---------------------------------------------------------------------------------------------
+const GATED_GIVERS = [...new Set(
+  quests.filter((q) => q.giver && q.giver.disposition_min != null).map((q) => q.giver.npc_id))].sort();
+
+// Lazy: `resolveGiver()` consults FIXTURE, which is bound further down the file, and a critic
+// must be able to see this shape under a fixture as well as on the bare tree.
+function perGiverModel() {
+  const modelled = [], unmodelled = [];
+  for (const id of GATED_GIVERS) {
+    const g = resolveGiver(id);
+    // `derived` globally is a precondition; `reaction_group` present is the per-giver condition.
+    if (OFFER_MODEL.model === 'derived' && g.status === 'resolved') modelled.push(id);
+    else unmodelled.push({ npc_id: id, why: g.status === 'resolved' ? 'global model is raw' : g.status });
+  }
+  return {
+    gated_givers: GATED_GIVERS.length,
+    modelled: modelled.length,
+    unmodelled: unmodelled.length,
+    mixed: modelled.length > 0 && unmodelled.length > 0,
+    modelled_ids: modelled,
+    unmodelled_givers: unmodelled,
+    note: 'The build\'s offer model is per-giver. A giver without reaction_group reads the raw ' +
+          'register no matter what the global model is, and its gate is race-invariant.',
+  };
+}
+Object.defineProperty(OFFER_MODEL, 'per_giver', {
+  enumerable: true, configurable: true, get: perGiverModel,
+});
+
+// ---------------------------------------------------------------------------------------------
+// THE LIVE ATTESTATION — the only thing that can actually decide whether the race term is wired.
+//
+// Written by `--verify-model` (and by `--cross-check`, which subsumes it). Keyed by
+// `modelSourceHash()`, so touching engine.js / machine.js / reaction.js invalidates it: a stale
+// attestation is refused rather than trusted, because the whole point is that source text and
+// running behaviour can diverge.
+// ---------------------------------------------------------------------------------------------
+const ATTEST_PATH = path.join(REPO_ROOT, 'reports', 'viability-model-attestation.json');
+
+function loadAttestation() {
+  if (args['no-attestation']) return { status: 'DISABLED', why: '--no-attestation was passed' };
+  if (!fs.existsSync(ATTEST_PATH)) {
+    return { status: 'ABSENT', why:
+      `no live attestation at ${path.relative(REPO_ROOT, ATTEST_PATH)}. Mint one with ` +
+      '`node tools/analysis/build-viability.mjs --verify-model`, which boots the build and ' +
+      'performs the two-signature differential on getGateDispositions().' };
+  }
+  let a;
+  try { a = JSON.parse(fs.readFileSync(ATTEST_PATH, 'utf8')); }
+  catch (e) { return { status: 'UNREADABLE', why: `${ATTEST_PATH}: ${e.message}` }; }
+  if (a.source_hash !== OFFER_MODEL.source_hash) {
+    return { status: 'STALE', why:
+      `the attestation was taken against model source ${a.source_hash} and the tree is now ` +
+      `${OFFER_MODEL.source_hash} (${MODEL_SOURCE_FILES.join(', ')}). A stale attestation is ` +
+      'refused, not trusted — a one-line change to any of those files is exactly how the race ' +
+      'term went dead under R3 with every anchor still matching.', taken_at: a.at || null };
+  }
+  return { status: 'VALID', ...a };
+}
+
+/**
+ * Reconcile the static claim against the live observation and REFUSE when they disagree.
+ * R3 §1's first rebuild bullet. `race_sensitive` from the engine is the ground truth; the
+ * detected model is a hypothesis about it.
+ */
+function reconcileModel(live, { fatal = true } = {}) {
+  if (!live || typeof live.race_sensitive !== 'boolean') return { checked: false };
+  const claims_derived = OFFER_MODEL.model === 'derived';
+  const agree = live.race_sensitive === claims_derived;
+  const r = {
+    checked: true, agree,
+    static_claim: OFFER_MODEL.model,
+    static_anchors: `${OFFER_MODEL.anchors_matched}/${OFFER_MODEL.anchors_total}`,
+    live_race_sensitive: live.race_sensitive,
+    live_evidence: live.evidence || null,
+    why: agree
+      ? `the running gate is ${live.race_sensitive ? 'RACE-SENSITIVE' : 'RACE-INVARIANT'}, which ` +
+        `is what offer model "${OFFER_MODEL.model}" predicts.`
+      : `MODEL CONTRADICTED BY THE RUNNING BUILD. Source anchors say "${OFFER_MODEL.model}" ` +
+        `(${OFFER_MODEL.anchors_matched}/${OFFER_MODEL.anchors_total} matched) but the live gate is ` +
+        `${live.race_sensitive ? 'RACE-SENSITIVE' : 'RACE-INVARIANT'}. This is precisely the ` +
+        'half-wired state TOOL-COVERAGE-R3 §1 constructed: every anchor matching over a dead ' +
+        'race term. The static walk is describing a build that is not running, so its ' +
+        'disposition verdicts are refused rather than published.',
+  };
+  if (!agree && fatal && !args['self-test']) {
+    process.stderr.write(`[build-viability] REFUSING: ${r.why}\n`);
+    process.stderr.write(`[build-viability]   live evidence: ${JSON.stringify(live.evidence)}\n`);
+    die(EXIT.MEASUREMENT_FAIL,
+      'the detected offer model and the running gate disagree. Fix the build or force the model ' +
+      'explicitly with --offer-model and declare it in the verdict.');
+  }
+  return r;
+}
+
+const ATTESTATION = args['self-test'] ? { status: 'SKIPPED (self-test)' } : loadAttestation();
+if (ATTESTATION.status === 'VALID') reconcileModel(ATTESTATION.live);
 
 /** `Engine.seedDispositions()`, reproduced. id -> raw authored disposition. */
 const SEED_DISPOSITIONS = (() => {
@@ -884,6 +1105,24 @@ function fightEncounter(sheet, entry, fixture) {
 
 // ---------------------------------------------------------------------------------------------
 // The four criteria
+/**
+ * An "everything is known" collection that is a REAL Set — iterable, `.values()`-bearing,
+ * `.has()`-bearing — rather than a one-method duck. See the note in bestCaseCtx().
+ *
+ * `has()` answers true for anything, which is what "best case" means; iteration yields the real
+ * authored contents, which is what `topicsInclude()` needs and what a duck could not supply.
+ */
+function grantAll(contents) {
+  const s = new Set(contents);
+  return new Proxy(s, {
+    get(t, k, r) {
+      if (k === 'has') return () => true;
+      const v = Reflect.get(t, k, t);
+      return typeof v === 'function' ? v.bind(t) : v;
+    },
+  });
+}
+
 // ---------------------------------------------------------------------------------------------
 function ctxAt(sheet, level, want = {}) {
   const attributes = projectAttributes(sheet.base_attributes, sheet.family, level, want.attributes || []);
@@ -908,11 +1147,46 @@ function bestCaseCtx(sheet, level, want = {}, forQuest = null) {
     const excluded = new Set([forQuest.id, ...(forQuest.mutually_exclusive_with || [])]);
     c.completed = new Set(quests.map((q) => q.id).filter((id) => !excluded.has(id)));
   }
-  c.topicsKnown = { has: () => true };
-  c.knowledge = { has: () => true };
-  c.items = { has: () => true };
-  c.spellEffects = { has: () => true };
-  c.worldFlags = { has: () => true };
+  // ---- ROUND 4: A SHAPE ASSUMPTION THAT HAD BECOME A CRASH ----------------------------------
+  //
+  // These were `{ has: () => true }` — a duck-typed Set stand-in carrying ONE method. That was
+  // sound while `gate.js` tested membership with `Set.has`. It stopped being sound when gate.js
+  // moved the topic gates to `topicsInclude()` (core/topics.js), which ITERATES:
+  //
+  //     const it = typeof known.values === 'function' ? known.values() : known;
+  //     for (const k of it) ...                  // TypeError: it is not iterable
+  //
+  // A plain object has no `.values` method and is not iterable, so every `--self-test` and every
+  // full walk on this tree crashed with `TypeError: it is not iterable` before this round
+  // touched the file. Same class as the `r.frame` bug the R3 verdict is built on — a tool
+  // assuming a SHAPE that the thing it measures does not have — but louder, because it throws
+  // instead of quietly returning 0.
+  //
+  // The repair is to grant the real thing rather than a stand-in: an actual Set containing every
+  // topic and flag the quest book can gate on. `topicsInclude` folds both spellings, so a real
+  // Set is also the only form that exercises the fold the way the running gate does. An
+  // omniscient duck could never have caught a folding bug; this can.
+  const allTopics = new Set();
+  for (const q of quests) {
+    const ob = q.opens_by || {};
+    if (ob.topic) allTopics.add(ob.topic);
+    for (const t of ob.prerequisite_topics || []) allTopics.add(t);
+    for (const s of q.stages || []) for (const t of (s.requires && s.requires.topics) || []) allTopics.add(t);
+  }
+  const allFlags = new Set();
+  for (const q of quests) {
+    for (const s of q.stages || []) for (const f of (s.requires && s.requires.world_flags) || []) allFlags.add(f);
+    for (const f of (q.opens_by && q.opens_by.world_flags) || []) allFlags.add(f);
+  }
+  // `has: () => true` is KEPT ALONGSIDE the iterable contents, so a consumer that still calls
+  // `.has()` for a token the book never names (knowledge ids, item ids, spell effects — open
+  // vocabularies, unlike topics) is answered "yes" as before. Both contracts are honoured; only
+  // the iterable half was missing, and only the iterable half was ever going to crash.
+  c.topicsKnown = grantAll(allTopics);
+  c.knowledge = grantAll(new Set());
+  c.items = grantAll(new Set());
+  c.spellEffects = grantAll(new Set());
+  c.worldFlags = grantAll(allFlags);
   c.gold = 1e9;
   c.reputation = new Proxy({}, { get: () => 100 });
   c.ranks = new Proxy({}, { get: () => 7 });
@@ -1409,6 +1683,28 @@ function report(records, fixture) {
     levels_simulated: LEVELS,
     fixture: fixture || null,
     offer_model: OFFER_MODEL,
+    // ---- ROUND 4: the model's provenance, stated on every artifact -------------------------
+    // A consumer must be able to tell, from the artifact alone, whether the offer model behind
+    // these numbers was OBSERVED on the running build or merely pattern-matched out of source
+    // text. R3 §1 proved those are different things and that the second can be wrong while
+    // looking identical. `model_verified: false` means the disposition verdicts below are
+    // conditional on an unverified hypothesis and must not be scored.
+    model_attestation: {
+      status: ATTESTATION.status,
+      model_verified: ATTESTATION.status === 'VALID',
+      why: ATTESTATION.why || null,
+      taken_at: ATTESTATION.at || null,
+      source_hash_now: OFFER_MODEL.source_hash,
+      live: ATTESTATION.live || null,
+      reconciliation: ATTESTATION.reconciliation || null,
+      how_to_mint: 'node tools/analysis/build-viability.mjs --verify-model',
+      what_it_gates:
+        'RI-CHR01 Distinctness and RI-CHR03 Decidability read the per-signature disposition ' +
+        'verdicts. Those verdicts are a function of the offer model. Without a live attestation ' +
+        'the model is a source-text hypothesis, and TOOL-COVERAGE-R3 §1 demonstrated a one-line ' +
+        'regression that leaves every source anchor matched while the race term is dead — the ' +
+        'tool printed byte-identical output and charged the build 36 false FAILs.',
+    },
     giver_census: census,
     // ROUND 3. The build failure round 2 reported as `unmeasurable` and thereby charged to the
     // corpus. `unmeasurable` routes to corpus_debt and charges nobody; `fail` charges the build.
@@ -1646,6 +1942,126 @@ function selfTest() {
       === JSON.stringify(base.map((r) => r.signature + r.viable + r.unmeasurable)),
     `two unperturbed runs agree on all ${base.length} cells`);
 
+  // =============================================================================================
+  // ROUND 4 — THE R3 §1 FALSIFICATIONS. Every one of these is a check the round-3 tool failed.
+  // =============================================================================================
+
+  // R4-1. The cross-check's row accounting. This is R3's headline defect reproduced in-process:
+  // when the engine stops modelling, every row's `agrees` is null, `null !== false`, and the
+  // round-3 tool printed "AGREES on 240 pairs; 0 disagreements" having compared nothing.
+  {
+    const mkRows = (n, agrees) => Array.from({ length: n }, (_, i) => ({ quest: 'q' + i, agrees }));
+    const verdict = (rows) => {
+      const resolved = rows.filter((r) => r.agrees !== null);
+      const dis = rows.filter((r) => r.agrees === false);
+      const allUnresolved = rows.length > 0 && resolved.length === 0;
+      return { agrees: allUnresolved ? false : dis.length === 0, unmeasurable: allUnresolved,
+        rows_compared: rows.length, rows_resolved: resolved.length, rows_unresolved: rows.length - resolved.length };
+    };
+    const dead = verdict(mkRows(240, null));       // the broken tree: nothing modelled
+    const live = verdict(mkRows(240, true));       // the sound tree: everything modelled
+    const bad = verdict([...mkRows(239, true), ...mkRows(1, false)]);
+    ok('R4: 240 unresolved rows are UNMEASURABLE, never "AGREES on 240 pairs"',
+      dead.unmeasurable === true && dead.agrees === false && dead.rows_resolved === 0,
+      `240 null rows -> agrees=${dead.agrees}, unmeasurable=${dead.unmeasurable}, ` +
+      `resolved=${dead.rows_resolved}/${dead.rows_compared}. R3 printed "AGREES on 240 pairs".`);
+    ok('R4: the same accounting still passes 240 genuinely-resolved rows (null control)',
+      live.agrees === true && live.unmeasurable === false && live.rows_resolved === 240,
+      `resolved=${live.rows_resolved}, agrees=${live.agrees} — the fix does not make the check vacuous`);
+    ok('R4: one real disagreement still goes red among 239 agreements',
+      bad.agrees === false && bad.unmeasurable === false && bad.rows_resolved === 240,
+      `agrees=${bad.agrees}, unmeasurable=${bad.unmeasurable}`);
+  }
+
+  // R4-2. The reconciliation. `model="derived"` and a RACE-INVARIANT running gate is the
+  // contradiction R3 §1 printed on one screen and exited 0 on. It must now refuse.
+  {
+    const saved = OFFER_MODEL.model;
+    OFFER_MODEL.model = 'derived';
+    const contra = reconcileModel({ race_sensitive: false, evidence: { distinct_disposition_clause_sets: 1 } }, { fatal: false });
+    const consis = reconcileModel({ race_sensitive: true, evidence: { distinct_disposition_clause_sets: 6 } }, { fatal: false });
+    OFFER_MODEL.model = 'raw';
+    const rawContra = reconcileModel({ race_sensitive: true, evidence: {} }, { fatal: false });
+    const rawConsis = reconcileModel({ race_sensitive: false, evidence: {} }, { fatal: false });
+    OFFER_MODEL.model = saved;
+    ok('R4: model="derived" + RACE-INVARIANT running gate is a CONTRADICTION (the R3 break)',
+      contra.checked === true && contra.agree === false,
+      `agree=${contra.agree} — R3 printed both on one screen and exited 0`);
+    ok('R4: model="derived" + RACE-SENSITIVE running gate is consistent (null control)',
+      consis.checked === true && consis.agree === true, `agree=${consis.agree}`);
+    ok('R4: reconciliation is symmetric — model="raw" over a race-SENSITIVE gate also contradicts',
+      rawContra.agree === false && rawConsis.agree === true,
+      'a detector that only catches one direction of drift catches half the drift');
+    ok('R4: reconciliation refuses to decide when the live side is absent',
+      reconcileModel(null, { fatal: false }).checked === false &&
+      reconcileModel({ race_sensitive: 'maybe' }, { fatal: false }).checked === false,
+      'no live observation -> checked:false, not a silent agreement');
+  }
+
+  // R4-3. The attestation must be keyed to the source it attests, or a one-line regression to
+  // the model files carries the old verdict forward — which is the entire R3 defect with extra
+  // steps.
+  {
+    const h1 = modelSourceHash();
+    const h2 = modelSourceHash();
+    const tmp = path.join(REPO_ROOT, MODEL_SOURCE_FILES[0]);
+    const orig = fs.readFileSync(tmp, 'utf8');
+    let h3;
+    try {
+      fs.writeFileSync(tmp, orig + '\n// self-test perturbation\n');
+      h3 = modelSourceHash();
+    } finally { fs.writeFileSync(tmp, orig); }
+    const h4 = modelSourceHash();
+    ok('R4: the attestation key is stable and reproducible', h1 === h2 && h1 === h4, `${h1}`);
+    ok('R4: ONE BYTE added to engine.js invalidates the attestation key (falsification)',
+      h3 !== h1, `${h1} -> ${h3} -> restored ${h4}`);
+  }
+
+  // R4-4. The model is per-giver, not a global string. R3: "a single global model string is the
+  // wrong shape for it to begin with."
+  ok('R4: the model is reported PER-GIVER, not as one global string',
+    OFFER_MODEL.per_giver && Number.isFinite(OFFER_MODEL.per_giver.gated_givers) &&
+    OFFER_MODEL.per_giver.modelled + OFFER_MODEL.per_giver.unmodelled === OFFER_MODEL.per_giver.gated_givers,
+    `${OFFER_MODEL.per_giver.gated_givers} gated givers: ${OFFER_MODEL.per_giver.modelled} modelled, ` +
+    `${OFFER_MODEL.per_giver.unmodelled} unmodelled` +
+    (OFFER_MODEL.per_giver.mixed ? ' — MIXED (engine.js:4863 returns null without reaction_group)' : ''));
+
+  // R4-5. The fourth anchor exists AND its limit is declared. An anchor sold as proof of
+  // something it cannot prove is how round 3 bought its false pass; this asserts the honesty of
+  // the label as well as the presence of the check.
+  ok('R4: a fourth anchor checks the ARITHMETIC, not only the plumbing',
+    !!OFFER_MODEL.anchors.applies_arithmetic && OFFER_MODEL.anchors_total === 4,
+    `applies_arithmetic matched=${OFFER_MODEL.anchors.applies_arithmetic.matched}, ` +
+    `${OFFER_MODEL.anchors_matched}/${OFFER_MODEL.anchors_total} anchors`);
+  ok('R4: the fourth anchor does NOT claim to prove the arithmetic is reached',
+    /NOT arithmetic-reached/.test(OFFER_MODEL.anchors.applies_arithmetic.proves) &&
+    /NO REGEX OVER SOURCE CAN PROVE A FUNCTION'S ARITHMETIC IS REACHED/.test(OFFER_MODEL.anchor_limit),
+    'a guarded early return leaves it matching; the tool says so rather than selling it as closure');
+
+  // R4-6. The guarded-early-return break, simulated against the anchors themselves. This proves
+  // in-process that the static detector CANNOT see R3's regression, which is the justification
+  // for making the live attestation mandatory rather than optional.
+  {
+    const engineSrc = fs.readFileSync(path.join(REPO_ROOT, 'game/src/engine.js'), 'utf8');
+    const broken = engineSrc.replace(
+      /(_questDispositionModel\s*\(\s*\)\s*\{\s*\n\s*return\s*\([^)]*\)\s*=>\s*\{)/,
+      '$1\n      if (!this.__raceGatesEnabled) return null;');
+    const changed = broken !== engineSrc;
+    const stillMatch = changed && Object.values(OFFER_MODEL_ANCHORS)
+      .filter((a) => a.file === 'game/src/engine.js').every((a) => a.rx.test(broken));
+    ok('R4: R3\'s exact break leaves EVERY source anchor matching (why live verification is mandatory)',
+      changed && stillMatch,
+      changed
+        ? 'injected `if (!this.__raceGatesEnabled) return null;` into the model closure: both ' +
+          'engine.js anchors still match. No static check can close this; --verify-model can.'
+        : 'COULD NOT INJECT — the closure shape changed; re-derive this falsification');
+  }
+
+  // R4-7. An unverified model must be visible in the artifact and must not exit 0.
+  ok('R4: a run with no live attestation stamps model_verified:false',
+    loadAttestation().status !== 'VALID' || fs.existsSync(ATTEST_PATH),
+    `attestation status would be "${loadAttestation().status}"`);
+
   process.stdout.write(`\nbuild-viability self-test: ${failed === 0 ? 'PASS' : 'FAIL'} (${lines.length - failed}/${lines.length})\n`);
   return failed === 0 ? 0 : 1;
 }
@@ -1693,6 +2109,144 @@ if (args.signature) {
     log(`--signatures ${args.signatures}: walking ${records.length} of 540 cells`);
   }
 }
+
+// ---------------------------------------------------------------------------------------------
+// --verify-model — THE DEFINITIONAL TEST, and the thing R3 §1 proved the anchors cannot do.
+//
+// Race-sensitivity is not a property of source text; it is the statement "changing the player's
+// race, and nothing else, changes the number `canOffer` reads." So measure exactly that:
+//
+//   setCharacter({race: A, upbringing: U, class: C, birthsign: B})  -> getGateDispositions()
+//   setCharacter({race: B, upbringing: U, class: C, birthsign: B})  -> getGateDispositions()
+//
+// `getGateDispositions()` is `questEngine.dispositionView()` (harness/api.js:1315) — literally
+// the table `context().dispositions` is built from, not a reconstruction of it. If the two
+// tables are identical, the offer gate is race-invariant, FULL STOP, whatever the source says.
+//
+// R3's break (`if (!this.__raceGatesEnabled) return null;`) is caught by construction here: a
+// model that returns null cannot move a number, so the two tables come back identical and the
+// probe reports RACE-INVARIANT while the anchors still say "derived". `reconcileModel()` then
+// refuses. That is the closure the three anchors could never provide.
+//
+// The probe also reads `explainDisposition(id).modelled` per giver, which is the per-giver
+// model shape the R3 verdict asked for, taken live rather than inferred.
+// ---------------------------------------------------------------------------------------------
+const RACE_PROBE_PAIR = (() => {
+  const a = args['probe-races'] ? String(args['probe-races']).split(',').map((s) => s.trim()) : null;
+  return (a && a.length === 2) ? a : ['dunmer', 'nord'];
+})();
+
+async function verifyModelLive(handle) {
+  const surface = await handle.page.evaluate(
+    () => Object.keys(window.__HARNESS || {}).filter((k) => typeof window.__HARNESS[k] === 'function'));
+  const needed = ['getGateDispositions', 'setCharacter', 'explainDisposition'];
+  const missing = needed.filter((m) => !surface.includes(m));
+  if (missing.length) {
+    return { measurable: false, why:
+      `--verify-model needs ${needed.join(', ')} and this build does not expose ${missing.join(', ')}. ` +
+      'Reporting that absence rather than falling back to the source anchors, which R3 §1 ' +
+      'demonstrated cannot decide this question.' };
+  }
+  const classId = (data.classes.classes[0] || {}).id;
+  const signId = (data.birthsigns.signs[0] || {}).id;
+  const upbringing = args['probe-upbringing'] ? String(args['probe-upbringing']) : 'interior';
+
+  const arms = [];
+  for (const race of RACE_PROBE_PAIR) {
+    const arm = await handle.page.evaluate((o) => {
+      try {
+        window.__HARNESS.setCharacter({ race: o.race, upbringing: o.upbringing, class: o.classId, birthsign: o.signId });
+      } catch (e) { return { error: String((e && e.message) || e) }; }
+      const gate = window.__HARNESS.getGateDispositions();
+      const explain = {};
+      for (const id of o.givers) {
+        try { const x = window.__HARNESS.explainDisposition(id); explain[id] = { modelled: !!(x && x.modelled), value: x && x.value, race_term: x && x.race_term }; }
+        catch { explain[id] = null; }
+      }
+      return { gate, explain };
+    }, { race, upbringing, classId, signId, givers: GATED_GIVERS });
+    if (arm.error) return { measurable: false, why: `setCharacter(${race}/${upbringing}) threw: ${arm.error}` };
+    arms.push({ race, ...arm });
+  }
+
+  // The differential, over the gated givers only — those are the ids whose numbers can decide a
+  // quest offer, and therefore the only ones whose race-sensitivity changes a verdict.
+  const moved = [];
+  for (const id of GATED_GIVERS) {
+    const a = arms[0].gate[id], b = arms[1].gate[id];
+    if (a === undefined && b === undefined) continue;
+    if (a !== b) moved.push({ npc_id: id, [arms[0].race]: a, [arms[1].race]: b, delta: (Number(b) || 0) - (Number(a) || 0) });
+  }
+  // Per-giver model shape, live. Both arms must agree on WHICH givers are modelled; if they do
+  // not, the build is doing something race-dependent to the model itself and that is reportable.
+  const liveModelled = GATED_GIVERS.filter((id) => arms.every((x) => x.explain[id] && x.explain[id].modelled));
+  const liveUnmodelled = GATED_GIVERS.filter((id) => arms.every((x) => x.explain[id] && !x.explain[id].modelled));
+  const liveInconsistent = GATED_GIVERS.filter((id) => !liveModelled.includes(id) && !liveUnmodelled.includes(id));
+
+  return {
+    measurable: true,
+    method: 'setCharacter() twice, varying RACE ALONE, then getGateDispositions() — ' +
+            'questEngine.dispositionView(), the table context().dispositions is built from. ' +
+            'A model that returns null cannot move a number, so a dead race term is caught by ' +
+            'construction rather than by pattern-matching source.',
+    races_compared: RACE_PROBE_PAIR, upbringing, gated_givers: GATED_GIVERS.length,
+    race_sensitive: moved.length > 0,
+    evidence: {
+      givers_whose_gate_number_moved: moved.length,
+      moved: moved.slice(0, 12),
+      live_modelled_givers: liveModelled.length,
+      live_unmodelled_givers: liveUnmodelled.length,
+      live_inconsistent_givers: liveInconsistent,
+      unmodelled_ids: liveUnmodelled.slice(0, 20),
+    },
+    per_giver_live: {
+      modelled: liveModelled.length, unmodelled: liveUnmodelled.length,
+      mixed: liveModelled.length > 0 && liveUnmodelled.length > 0,
+    },
+  };
+}
+
+/** Boot, probe, reconcile, and write the attestation. Returns the exit code for --verify-model. */
+async function verifyModelMode() {
+  const { launchGame } = await import('../lib/browser.mjs');
+  const handle = await launchGame({ ...args, width: 320, height: 240, timeout: Number(args.timeout || 120000) });
+  let live;
+  try {
+    await handle.page.evaluate(() => { try { window.__HARNESS.setRenderRate(0); } catch { /* ignore */ } });
+    live = await verifyModelLive(handle);
+  } finally { await handle.close().catch(() => {}); }
+
+  if (!live.measurable) {
+    process.stderr.write(`[build-viability] --verify-model UNMEASURABLE: ${live.why}\n`);
+    return EXIT.MEASUREMENT_FAIL;
+  }
+  const rec = reconcileModel(live, { fatal: false });
+  const att = {
+    schema: 'elder-souls/viability-model-attestation@1',
+    at: new Date().toISOString(),
+    source_hash: OFFER_MODEL.source_hash,
+    source_files: MODEL_SOURCE_FILES,
+    static_claim: { model: OFFER_MODEL.model, anchors: OFFER_MODEL.anchors, matched: OFFER_MODEL.anchors_matched },
+    live,
+    reconciliation: rec,
+  };
+  writeJson(ATTEST_PATH, att);
+  process.stdout.write(
+    `verify-model: the running gate is ${live.race_sensitive ? 'RACE-SENSITIVE' : 'RACE-INVARIANT'} ` +
+    `(${live.evidence.givers_whose_gate_number_moved}/${live.gated_givers} gated givers moved when ` +
+    `race went ${RACE_PROBE_PAIR[0]} -> ${RACE_PROBE_PAIR[1]}, nothing else changed)\n`);
+  process.stdout.write(
+    `  per-giver, live: ${live.per_giver_live.modelled} modelled, ${live.per_giver_live.unmodelled} ` +
+    `unmodelled${live.per_giver_live.mixed ? ' — MIXED, the model is not a global property' : ''}\n`);
+  process.stdout.write(
+    `  static anchors say "${OFFER_MODEL.model}" (${OFFER_MODEL.anchors_matched}/${OFFER_MODEL.anchors_total}): ` +
+    `${rec.agree ? 'AGREES with the running gate' : 'CONTRADICTED BY THE RUNNING GATE'}\n`);
+  if (!rec.agree) process.stderr.write(`[build-viability] ${rec.why}\n`);
+  log(`wrote ${ATTEST_PATH}`);
+  return rec.agree ? 0 : EXIT.MEASUREMENT_FAIL;
+}
+
+if (args['verify-model']) process.exit(await verifyModelMode());
 
 // ---------------------------------------------------------------------------------------------
 // --cross-check. RI-MTH06 §A requires this tool to be a STATIC walk so it can run in CI, and
@@ -1787,16 +2341,63 @@ async function crossCheck() {
       }
     }
     const distinct = new Set(perSignature.map((s) => JSON.stringify(s.disposition_clauses))).size;
+
+    // ---- ROW ACCOUNTING. TOOL-COVERAGE-R3 §1, second rebuild bullet. -------------------------
+    // The R3 headline was "AGREES on 240 (signature, giver) pairs; 0 disagreements" — printed
+    // unchanged on a tree whose race term was dead. The reason was three lines: when the engine
+    // stops modelling, `explainDisposition()` returns `modelled: false`, every row becomes
+    // `agrees: null`, and `null` is not `false`, so ZERO rows were actually compared while
+    // `rows.push(row)` still ran and `rows_compared` still said 240.
+    //
+    // `agrees: null` is UNRESOLVED, not agreement. It is counted as such, reported as such, and
+    // an all-unresolved cross-check is `unmeasurable` — never a green.
+    const resolved = rows.filter((r) => r.agrees !== null);
+    const unresolved = rows.filter((r) => r.agrees === null);
+    const allUnresolved = rows.length > 0 && resolved.length === 0;
+
+    // ---- MODEL RECONCILIATION. R3 §1, first rebuild bullet. -----------------------------------
+    // The artifact used to print `model="derived"` and `RACE-INVARIANT: 1 distinct clause set`
+    // in the same screen and exit 0. It already held its own disconfirming evidence and never
+    // reconciled it. Now it does, and refuses.
+    const liveFromSweep = {
+      race_sensitive: distinct > 1,
+      evidence: {
+        distinct_disposition_clause_sets: distinct,
+        signatures: perSignature.map((s) => ({ signature: s.signature, clauses: s.disposition_clauses.length })),
+        rows_resolved: resolved.length, rows_unresolved: unresolved.length,
+      },
+    };
+    const reconciliation = reconcileModel(liveFromSweep, { fatal: false });
+
     return {
       method: 'setCharacter() -> getGateDispositions() / explainDisposition(), the numbers canOffer ' +
               'actually reads. Nothing about the gate is reconstructed here.',
       signatures_swept: perSignature,
       distinct_disposition_clause_sets: distinct,
       race_sensitive: distinct > 1,
+      // Three separate numbers, because R3 proved one number cannot carry this.
       rows_compared: rows.length,
+      rows_resolved: resolved.length,
+      rows_unresolved: unresolved.length,
+      unresolved_reason: unresolved.length
+        ? 'explainDisposition().modelled was false (the engine did not model this giver) or the ' +
+          'giver did not resolve to a reaction group. An unresolved row compares NOTHING and is ' +
+          'never counted as agreement.'
+        : null,
       rows,
       disagreements,
-      agrees: disagreements.length === 0,
+      // agrees is FALSE, not true, when nothing was resolved. A comparison of zero pairs is not
+      // a pass.
+      agrees: allUnresolved ? false : disagreements.length === 0,
+      unmeasurable: allUnresolved,
+      why: allUnresolved
+        ? `CROSS-CHECK UNMEASURABLE: ${rows.length} (signature, giver) pairs were enumerated and ` +
+          `ZERO were resolved — every one came back \`modelled: false\` from the running engine. ` +
+          `Nothing was compared, so nothing agrees. This is the exact state TOOL-COVERAGE-R3 §1 ` +
+          `constructed by killing the race term behind an intact set of source anchors, and the ` +
+          `round-3 tool reported it as "AGREES on ${rows.length} pairs; 0 disagreements".`
+        : null,
+      model_reconciliation: reconciliation,
       note: 'Agreement is checked on the PERMANENT terms: the tool recomputes the engine\'s own ' +
             'value from the engine\'s own base and movable total through the same shipping ' +
             'derivedDisposition(). The static walk additionally applies a player-optimal movable ' +
@@ -1813,9 +2414,12 @@ if (args['cross-check']) {
   if (cc.unmeasurable) {
     process.stdout.write(`cross-check: UNMEASURABLE — ${cc.why}\n`);
   } else {
+    // NEVER "AGREES on N pairs" when N is the enumerated count. The verdict is stated over
+    // RESOLVED rows, and the unresolved count is printed alongside it whether or not it is 0.
     process.stdout.write(
       `cross-check against the running gate: ${cc.agrees ? 'AGREES' : 'DISAGREES'} ` +
-      `on ${cc.rows_compared} (signature, giver) pairs; ${cc.disagreements.length} disagreement(s). ` +
+      `on ${cc.rows_resolved} RESOLVED of ${cc.rows_compared} enumerated (signature, giver) pairs ` +
+      `(${cc.rows_unresolved} unresolved — nothing compared); ${cc.disagreements.length} disagreement(s). ` +
       `The offer path is ${cc.race_sensitive ? 'RACE-SENSITIVE' : 'RACE-INVARIANT'}: ` +
       `${cc.distinct_disposition_clause_sets} distinct disposition-clause set(s) over ` +
       `${cc.signatures_swept.length} signatures.\n`);
@@ -1826,6 +2430,35 @@ if (args['cross-check']) {
     for (const d of cc.disagreements.slice(0, 10)) {
       process.stdout.write(`  DISAGREE ${d.signature} ${d.npc_id}: engine ${d.engine_gate_value} vs tool ${d.tool_same_terms} (terms ${JSON.stringify(d.engine_terms)})\n`);
     }
+  }
+  const mr = cc.model_reconciliation;
+  if (mr && mr.checked) {
+    process.stdout.write(
+      `  model reconciliation: static "${mr.static_claim}" (${mr.static_anchors} anchors) vs live ` +
+      `${mr.live_race_sensitive ? 'RACE-SENSITIVE' : 'RACE-INVARIANT'} -> ` +
+      `${mr.agree ? 'CONSISTENT' : 'CONTRADICTION'}\n`);
+    if (!mr.agree) {
+      // The whole R3 §1 defect, closed. A tool that holds its own refutation and prints both as
+      // findings has not measured anything (RI-MTH04). It refuses instead.
+      process.stderr.write(`[build-viability] ${mr.why}\n`);
+      writeJson(args.out ? path.resolve(String(args.out)) : path.join(REPO_ROOT, 'reports', 'viability.json'), rep);
+      die(EXIT.MEASUREMENT_FAIL,
+        'the detected offer model and the running gate contradict each other. The disposition ' +
+        'verdicts in this run describe a build that is not running and must not be scored. ' +
+        'RI-CHR01 Distinctness and RI-CHR03 Decidability are UNMEASURABLE from this run.');
+    }
+  }
+  // A cross-check IS a live observation, so it mints the attestation too — a critic who ran
+  // --cross-check should not have to run --verify-model as well.
+  if (!cc.unmeasurable && mr && mr.checked && mr.agree) {
+    writeJson(ATTEST_PATH, {
+      schema: 'elder-souls/viability-model-attestation@1',
+      at: new Date().toISOString(),
+      source_hash: OFFER_MODEL.source_hash, source_files: MODEL_SOURCE_FILES,
+      static_claim: { model: OFFER_MODEL.model, anchors: OFFER_MODEL.anchors, matched: OFFER_MODEL.anchors_matched },
+      live: { race_sensitive: cc.race_sensitive, evidence: { via: '--cross-check clause-set sweep', distinct_disposition_clause_sets: cc.distinct_disposition_clause_sets, rows_resolved: cc.rows_resolved } },
+      reconciliation: mr,
+    });
   }
 }
 const outPath = args.out ? path.resolve(String(args.out)) : path.join(REPO_ROOT, 'reports', 'viability.json');
@@ -1879,9 +2512,36 @@ if (!QUIET) {
 }
 log(`wrote ${outPath}`);
 
+// ---------------------------------------------------------------------------------------------
+// ROUND 4 — AN UNVERIFIED MODEL CANNOT EXIT 0 IF ANY VERDICT DEPENDED ON IT.
+//
+// TOOL-LOOP.md: "Never stub it to pass ... make it report that absence and exit non-zero."
+// R3 §1's break produced `exit 0` on both the sound tree and the broken one. The difference
+// between those two trees is only observable live, so a run that never looked at the running
+// build must not close with a clean exit while it is charging signatures a disposition FAIL.
+// ---------------------------------------------------------------------------------------------
+const modelDependentVerdicts = records.filter(
+  (r) => r.stopped_at && r.stopped_at.offer_model !== undefined).length;
+const modelUnverified = rep.model_attestation.status !== 'VALID';
+
+if (modelUnverified && modelDependentVerdicts > 0 && !QUIET) {
+  process.stdout.write(
+    `  MODEL UNVERIFIED (${rep.model_attestation.status}) — ${modelDependentVerdicts} of ` +
+    `${records.length} signature verdicts stopped at a disposition gate, and every one of them ` +
+    `is a function of an offer model this run never observed on the running build.\n` +
+    `    ${rep.model_attestation.why}\n` +
+    `    RI-CHR01 Distinctness and RI-CHR03 Decidability MUST NOT be scored from this run.\n`);
+}
+
 if (rep.unmeasurable === records.length) {
   process.stderr.write('[harness] ERROR: the measurement could not be taken for ANY signature.\n');
   for (const b of rep.unmeasurable_because) process.stderr.write('[harness]   ' + b + '\n');
+  process.exit(EXIT.MEASUREMENT_FAIL);
+}
+if (modelUnverified && modelDependentVerdicts > 0) {
+  process.stderr.write(
+    `[harness] ERROR: ${modelDependentVerdicts} verdicts depend on an UNVERIFIED offer model ` +
+    `(attestation ${rep.model_attestation.status}). Run --verify-model or --cross-check first.\n`);
   process.exit(EXIT.MEASUREMENT_FAIL);
 }
 process.exit(rep.viable >= TARGET && rep.unmeasurable === 0 ? 0 : 1);

@@ -36,6 +36,16 @@ export const DEATH_VOLATILE = [
   'character.souls_held',          // dropped as the bloom — D3
   'character.hp', 'character.stamina', 'character.poise', 'character.estus',
   'pose.',                         // position, facing, animation, and the death camera's orbit
+  // ROUND 2. Another piece added `fight.*` to the save after round 1's run, and this list named
+  // `pose.` but not `fight.player.rig.` — so the builder's cited "8/8 clean" did not reproduce
+  // on HEAD: 108 paths, every one of them a bone rotation or a previous-pose hurtbox belonging
+  // to a body that died in one place and stood up in another. The S6 conclusion was unaffected
+  // (zero quest, journal, faction, disposition, crime or world-mutation paths moved) but a
+  // number a critic cannot reproduce is exactly the instrument decay RI-MTH07 §D exists for.
+  'fight.player.rig.',             // bone rotations and previous-pose hurtboxes — the same body, moved
+  'fight.player.pos', 'fight.player.yaw',
+  'death.in_flight',               // the surface is up at the save and down after the respawn
+  'death.deaths_this_session', 'death.stains_lost_to_second_death', 'death.last_grounded',
   'world.entities',                // ordinary-enemy alive flags: D9 says they come back
   'world.enemies_dead_until_rest',
   'death.bloodstain',              // the stain IS the death's product
@@ -310,11 +320,36 @@ export async function runJrn06(h, args, led, ctx = {}) {
       });
     }
 
+    // M-D1, ROUND 2. The round-1 instrument was `rows.filter(r => !r.second_death)`, which drops
+    // a doubled death ENTIRELY — so "souls conservation 20/20" was measured 14/14 and six deaths'
+    // conservation was never asserted at all, on the one check whose own text hard-fails on any
+    // discrepancy including a rounding one. The verdict re-ran it with the doubles put back and
+    // found no discrepancy: the number was right and the instrument was not.
+    //
+    // A doubled death has THREE legs and only the third is legitimately void — D16 destroyed the
+    // bloom, so nothing can be returned from it. So check the legs that exist on every row and
+    // the return leg on the rows where a return is possible, and report the populations
+    // separately rather than silently shrinking one of them.
+    const bankedLeg = rows.filter((r) => !(r.banked === r.held_at_death));
+    const storedLeg = rows.filter((r) => !(r.held_at_death === r.stain_souls));
     const conserved = rows.filter((r) => !r.second_death);
-    const mismatches = conserved.filter((r) => !(r.banked === r.held_at_death && r.held_at_death === r.stain_souls && r.stain_souls === r.returned));
+    const returnLeg = conserved.filter((r) => !(r.stain_souls === r.returned));
+    const mismatches = [...bankedLeg, ...storedLeg, ...returnLeg];
     put('m_d1_souls_conservation', 'M-D1 souls held == souls stored == souls returned', {
-      trials: conserved.length, mismatches: mismatches.length, rows: mismatches.slice(0, 5),
-      sample: conserved.slice(0, 3).map((r) => ({ banked: r.banked, held: r.held_at_death, stain: r.stain_souls, returned: r.returned })),
+      trials: rows.length,
+      trials_banked_eq_held: rows.length,
+      trials_held_eq_stored: rows.length,
+      trials_stored_eq_returned: conserved.length,
+      doubled_deaths_excluded_from_return_leg_only: rows.length - conserved.length,
+      _why: 'A second death destroys the first bloom (D16), so `stored == returned` is void for a '
+        + 'doubled death and the other two legs are not. Round 1 dropped the whole row and '
+        + 'measured 14 of 20.',
+      mismatches: mismatches.length,
+      mismatches_banked_eq_held: bankedLeg.length,
+      mismatches_held_eq_stored: storedLeg.length,
+      mismatches_stored_eq_returned: returnLeg.length,
+      rows: mismatches.slice(0, 5),
+      sample: rows.slice(0, 3).map((r) => ({ banked: r.banked, held: r.held_at_death, stain: r.stain_souls, returned: r.returned, second_death: !!r.second_death })),
       pass: mismatches.length === 0, hard_fail_HF1: mismatches.length > 0,
     });
 

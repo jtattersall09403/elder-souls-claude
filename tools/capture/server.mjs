@@ -437,10 +437,15 @@ async function performCapture(spec, raw, outPng) {
 
   let t = Date.now();
   if (loadedSeed !== spec.seed) { await hx(h, 'setSeed', spec.seed); loadedSeed = spec.seed; }
-  const mustReload = loadedState !== spec.state || worldDirty || !spec.place;
+  // A dirty environment dimension this spec does not pin is inherited condition — see `envDirty`.
+  const inheritsEnv = (envDirty.time && spec.time === null)
+    || (envDirty.weather && spec.weather === null)
+    || (envDirty.tide && spec.tide === null);
+  const mustReload = loadedState !== spec.state || worldDirty || !spec.place || inheritsEnv;
   if (mustReload) {
     await hx(h, 'loadState', spec.state);
     loadedState = spec.state; worldDirty = false;
+    envDirty.time = envDirty.weather = envDirty.tide = false;
   }
   await hxOpt(h, 'setUIVisible', !!spec.ui);
   tick('setup_ms', t);
@@ -454,9 +459,9 @@ async function performCapture(spec, raw, outPng) {
     await hx(h, 'teleport', spec.place.x, spec.place.z, spec.place.y === null ? {} : { y: spec.place.y });
     camX = spec.place.x; camZ = spec.place.z;
   }
-  if (spec.time !== null) await hxOpt(h, 'setTimeOfDay', spec.time);
-  if (spec.weather !== null) await hxOpt(h, 'setWeather', spec.weather);
-  if (spec.tide !== null) await hxOpt(h, 'setTide', spec.tide);
+  if (spec.time !== null) { await hxOpt(h, 'setTimeOfDay', spec.time); envDirty.time = true; }
+  if (spec.weather !== null) { await hxOpt(h, 'setWeather', spec.weather); envDirty.weather = true; }
+  if (spec.tide !== null) { await hxOpt(h, 'setTide', spec.tide); envDirty.tide = true; }
   if (spec.ops.length || spec.menu) worldDirty = true;
   for (const op of spec.ops) await hx(h, op[0], ...op.slice(1));
   if (spec.menu) await hxOpt(h, 'openMenu', spec.menu.name, spec.menu.opts || {});
@@ -504,6 +509,15 @@ async function performCapture(spec, raw, outPng) {
   const inProvince = camX !== null && !raw.__no_camera_stream;
   if (inProvince) { try { await hx(h, 'streamAround', camX, camZ); } catch { /* not in the province */ } }
   tick('stream_ms', t);
+
+  // THE CONDITIONS THE FRAME WAS ACTUALLY TAKEN IN, read back off the engine rather than copied
+  // from the request. `spec.time: null` means "the caller did not pin it", which is not the same
+  // statement as "it was noon", and the R1 critic's P4 turned exactly that silence into a night
+  // storm banked under a daylight key. The reload rule above is what makes the picture
+  // deterministic; this is what makes it AUDITABLE — a reader of the sidecar can see the conditions
+  // without re-deriving them, and a future divergence between `spec.time` and
+  // `env_observed.time_of_day` is visible instead of silent.
+  const envObserved = (await hxOpt(h, 'getEnvConditions')) || null;
 
   // ---- the settle proof: A(t), B(t+gap), C(t+2gap) ----
   //
@@ -598,7 +612,10 @@ async function performCapture(spec, raw, outPng) {
   proof.settle_attempts = attempts;
   proof.settle_frames_spent = framesSpent;
 
-  return { proof, resid, camera_at: camX === null ? null : [camX, camZ], page_errors: h.errors.length, phases: T };
+  return {
+    proof, resid, env_observed: envObserved, reloaded: mustReload,
+    camera_at: camX === null ? null : [camX, camZ], page_errors: h.errors.length, phases: T,
+  };
 }
 
 /**
@@ -647,6 +664,165 @@ async function runQuery(job) {
   return { ok: true, result: { results: out, build_key: BUILD.build_key } };
 }
 
+// =================================================================================================
+// THE CACHE IS NOT A SOURCE OF PROVENANCE. It is a store of PIXELS.
+// =================================================================================================
+// The single worst finding in CAPTURE-SERVICE-R1: `runJob()` read the sidecar `.json` out of the
+// cache bucket, checked two fields, and returned `{...man}` — the whole manifest, verbatim — as the
+// service's OWN answer. The critic wrote a manifest by hand next to a 1x1 PNG and asked for it
+// through the ordinary client API:
+//
+//     SERVED in 24 ms: arrival=walked, evidence_of=arrival, settled=true,
+//     sha256 recorded=not-even-the-hash-of-this-file, actual=c414cd0e204de974...
+//
+// No browser booted, no gate ran, and the caller was handed "the player walked here from the south
+// gate, unaided" over the service's own front door. S34(b) broken by writing a file.
+//
+// THREE INDEPENDENT LAYERS NOW STAND BETWEEN THE BUCKET AND THE CALLER, and they are ordered so
+// that the load-bearing one needs no secret:
+//
+//   1. THE DAEMON RE-DERIVES PROVENANCE, ALWAYS. `provenanceBlock()` below is the ONLY thing that
+//      ever constructs a provenance block, on a render and on a hit alike, and it stamps
+//      `arrival: 'placed'` unconditionally because this daemon knows unconditionally that it has no
+//      walking mode. Nothing read off disk can contribute to it. Even a perfectly-signed manifest
+//      claiming `walked` cannot make the service say `walked`, because the field is not copied from
+//      anywhere — it is asserted. This layer holds against an attacker who has everything.
+//   2. THE BYTES ARE CHECKED. `sha256(png)` must equal the manifest's own recorded hash. This is not
+//      only an attack surface: a truncated, half-copied or foreign PNG in a gitignored directory
+//      shared by every agent on this box was previously served as a settled capture under an
+//      authoritative-looking hash. The daemon's own write path is not atomic across the pair
+//      (rename the png, then write the json), so it can produce a mismatched pair by being killed.
+//   3. THE MANIFEST IS AUTHENTICATED. Every manifest this daemon writes carries an HMAC over the
+//      fields that matter; a manifest without a valid one was not written by this daemon and is a
+//      MISS. Defence in depth, and the honest limit is stated where the key is generated.
+//
+// A failure of any layer is a CACHE MISS — re-render, re-prove, overwrite — not an error and not a
+// refusal. The world is allowed to have a corrupt file in it; what it is not allowed to do is
+// believe one.
+
+/**
+ * The daemon's manifest-signing key.
+ *
+ * HONEST LIMIT, STATED HERE RATHER THAN IMPLIED: this authenticates "this daemon wrote this
+ * manifest", nothing more. Every agent on this box runs as the same user, so anyone who can write
+ * the cache directory can also read this file. It is not a defence against a hostile local process
+ * and is not claimed as one — layer 1 above is what holds in that case. What it IS a defence
+ * against is the thing that actually happens: a stray, half-written, hand-edited or foreign
+ * `.json` in a shared gitignored bucket being replayed as the service's own testimony.
+ *
+ * Losing the key invalidates every cached manifest (they all become misses and are re-rendered).
+ * That is the safe direction, and it is the same direction the build key already errs in.
+ */
+let MAC_KEY = null;
+function macKey() {
+  if (MAC_KEY) return MAC_KEY;
+  try {
+    MAC_KEY = fs.readFileSync(CACHE_KEY_PATH);
+    if (MAC_KEY.length >= 32) return MAC_KEY;
+  } catch { /* first run */ }
+  MAC_KEY = crypto.randomBytes(32);
+  ensureDir(path.dirname(CACHE_KEY_PATH));
+  fs.writeFileSync(CACHE_KEY_PATH, MAC_KEY, { mode: 0o600 });
+  logLine('generated a new cache manifest signing key at', CACHE_KEY_PATH,
+    '- every manifest signed with the previous key is now a miss');
+  return MAC_KEY;
+}
+
+/**
+ * What is signed. Deliberately NOT the whole manifest: `provenance` is excluded because it is
+ * re-derived rather than trusted, and including it would invite a future reader to think a valid
+ * MAC made it safe to copy. Signing exactly what is later relied upon, and nothing else, is the
+ * point — a signature over fields nobody checks is the cryptographic form of a gate that cannot
+ * fail.
+ */
+function macPayload(man) {
+  return stableJson({
+    protocol: PROTOCOL,
+    cache_key: man.cache_key,
+    sha256: man.sha256,
+    bytes: man.bytes,
+    spec: man.spec,
+    settle: man.settle,
+    build_key: man.build && man.build.build_key,
+    captured_at: man.captured_at,
+  });
+}
+
+function signManifest(man) {
+  return crypto.createHmac('sha256', macKey()).update(macPayload(man)).digest('hex');
+}
+
+function macValid(man) {
+  if (!man || typeof man.mac !== 'string' || man.mac.length !== 64) return false;
+  const want = Buffer.from(signManifest(man), 'hex');
+  let got;
+  try { got = Buffer.from(man.mac, 'hex'); } catch { return false; }
+  if (got.length !== want.length) return false;
+  return crypto.timingSafeEqual(got, want);
+}
+
+/**
+ * THE ONLY CONSTRUCTOR OF A PROVENANCE BLOCK. Called on a fresh render and on a cache hit, and it
+ * takes nothing from disk. `arrival` is not a parameter — there is no argument you can pass this
+ * function that makes it say anything other than `placed`.
+ *
+ * @param evidenceOf  the purpose the CURRENT request declared and the arrival gate accepted. Note
+ *                    it is the current caller's declaration, not the one banked with the pixels:
+ *                    two callers may legitimately want the same picture for different appearance
+ *                    purposes, and each one's sidecar should record its own.
+ */
+function provenanceBlock({ evidenceOf, cameraAt, fromCache }) {
+  return {
+    arrival: 'placed',
+    evidence_of: evidenceOf,
+    placement: 'teleport + camera pose; the player did not walk here',
+    build_key: BUILD.build_key,
+    git_sha: BUILD.git_sha,
+    git_dirty: BUILD.git_dirty,
+    game_content_sha256: BUILD.game_content_sha256,
+    // S34 names this flag and HARNESS.md 6 repeats it. It used to be written once at render time
+    // and replayed unchanged, so the sidecar on disk said `false` for ever and a reader doing what
+    // the documentation told them to do could never learn that a capture came from cache.
+    served_from_cache: !!fromCache,
+    build_pinned: PIN_BUILD,
+    tree_has_since_moved_to: DRIFTED_TO,
+    ruling: 'ARBITRATION.md S34(a) — admissible as evidence of APPEARANCE only. A verdict citing ' +
+      'this capture for an ARRIVAL claim (reachability, traversal, the crossing, RI-JRN*, or ' +
+      'anything timing something) is VOID.',
+    camera_at: cameraAt,
+  };
+}
+
+/**
+ * Read a cache entry, or explain why it is a miss. Never throws, never trusts, never returns a
+ * provenance block: the caller re-derives that.
+ */
+function readCache(paths, key) {
+  let man;
+  try { man = JSON.parse(fs.readFileSync(paths.json, 'utf8')); }
+  catch (e) { return { hit: false, why: 'manifest unreadable: ' + (e && e.message) }; }
+
+  if (!man || typeof man !== 'object') return { hit: false, why: 'manifest is not an object' };
+  if (man.cache_key !== key) return { hit: false, why: 'manifest is filed under a different cache key' };
+  if (!man.build || man.build.build_key !== BUILD.build_key) {
+    return { hit: false, why: 'manifest was written by a different build' };
+  }
+  if (!man.settle || man.settle.settled !== true) return { hit: false, why: 'manifest carries no passing settle proof' };
+  if (!macValid(man)) {
+    return { hit: false, why: 'manifest is not signed by this daemon — it was not written by the ' +
+      'thing that takes the pictures, so nothing in it is this service\'s testimony' };
+  }
+  let bytes;
+  try { bytes = fs.readFileSync(paths.png); }
+  catch (e) { return { hit: false, why: 'image unreadable: ' + (e && e.message) }; }
+  const actual = sha256(bytes);
+  if (actual !== man.sha256) {
+    return { hit: false, why: `image bytes contradict the manifest's own sha256 (recorded ` +
+      `${String(man.sha256).slice(0, 16)}, actual ${actual.slice(0, 16)})` };
+  }
+  return { hit: true, man, bytes: bytes.length, sha256: actual };
+}
+
 // ---- jobs ---------------------------------------------------------------------------------------
 async function runJob(job) {
   const t0 = Date.now();
@@ -668,18 +844,51 @@ async function runJob(job) {
 
   // 2. Cache.
   if (USE_CACHE && !job.raw.no_cache && fs.existsSync(paths.png) && fs.existsSync(paths.json)) {
-    try {
-      const man = JSON.parse(fs.readFileSync(paths.json, 'utf8'));
-      if (man.build && man.build.build_key === BUILD.build_key && man.settle && man.settle.settled) {
-        stats.cache_hits++;
-        return { ok: true, result: { ...man, cached: true, cache_key: key, path: paths.png, manifest: paths.json, served_in_ms: Date.now() - t0 } };
-      }
-    } catch { /* corrupt manifest: re-render */ }
+    const c = readCache(paths, key);
+    if (c.hit) {
+      stats.cache_hits++;
+      // RE-DERIVED, NOT REPLAYED. The pixels come from the bucket; every claim made about them is
+      // made here, now, by the thing that is answering. `provenance` and `arrival` are rebuilt from
+      // this daemon's own knowledge, and the manifest's own copies are dropped on the floor.
+      const provenance = provenanceBlock({
+        evidenceOf: verdict.evidence_of,
+        cameraAt: (c.man.provenance && c.man.provenance.camera_at) || null,
+        fromCache: true,
+      });
+      const served = {
+        ...c.man,
+        provenance,
+        arrival_gate: { evidence_of: verdict.evidence_of, purpose_class: verdict.purpose_class, audit: verdict.audit },
+        cached: true,
+        cache_key: key,
+        path: paths.png,
+        manifest: paths.json,
+        served_in_ms: Date.now() - t0,
+      };
+      delete served.mac;   // the signature authenticates the entry on disk; it is not a wire field
+      // The sidecar must agree with what the caller was told (HARNESS.md 6 tells readers to read
+      // the sidecar). Rewrite it with the cache flag set and re-sign, so disk and answer match.
+      try {
+        const onDisk = { ...c.man, provenance, served_from_cache_last: new Date().toISOString() };
+        onDisk.mac = signManifest(onDisk);
+        fs.writeFileSync(paths.json, JSON.stringify(onDisk, null, 2));
+      } catch { /* a read-only bucket is not a reason to refuse a good picture */ }
+      return { ok: true, result: served };
+    }
+    stats.cache_rejects = (stats.cache_rejects || 0) + 1;
+    logLine('cache MISS on an existing entry:', c.why, '-', key.slice(0, 12));
   }
   stats.cache_misses++;
 
   // 3. Render.
-  const tmp = paths.png + '.' + process.pid + '.tmp';
+  //
+  // A capture that will not be banked does not get to touch the banked filename either. `no_cache`
+  // used to render straight over `paths.png` and only decline to READ, so a request that altered
+  // how the picture was produced could destroy a good cache entry as well as poison one. It renders
+  // to its own name now, and the bucket's signed pair is left exactly as it was.
+  const banking = USE_CACHE && !job.raw.no_cache;
+  const finalPng = banking ? paths.png : paths.png.replace(/\.png$/, `.nocache.${process.pid}.${stats.requests}.png`);
+  const tmp = finalPng + '.' + process.pid + '.tmp';
   let out;
   try {
     out = await performCapture(spec, job.raw, tmp);
@@ -699,44 +908,49 @@ async function runJob(job) {
     return { ok: false, code: 'CAPTURE_ERROR', error: String(e && e.message || e), detail: { spec: canon } };
   }
 
-  fs.renameSync(tmp, paths.png);
-  const bytes = fs.statSync(paths.png).size;
+  fs.renameSync(tmp, finalPng);
+  const bytes = fs.statSync(finalPng).size;
   const manifest = {
     schema: 'elder-souls/capture@1',
     protocol: PROTOCOL,
     cache_key: key,
-    path: paths.png,
+    path: finalPng,
     bytes,
-    sha256: sha256(fs.readFileSync(paths.png)),
+    sha256: sha256(fs.readFileSync(finalPng)),
     captured_at: new Date().toISOString(),
     spec: canon,
-    // ---- PROVENANCE. S34 requires all four of these on every capture. ----
-    provenance: {
-      arrival: 'placed',
-      evidence_of: 'appearance',
-      placement: 'teleport + camera pose; the player did not walk here',
-      build_key: BUILD.build_key,
-      git_sha: BUILD.git_sha,
-      git_dirty: BUILD.git_dirty,
-      game_content_sha256: BUILD.game_content_sha256,
-      served_from_cache: false,
-      build_pinned: PIN_BUILD,
-      tree_has_since_moved_to: DRIFTED_TO,
-      ruling: 'ARBITRATION.md S34(a) — admissible as evidence of APPEARANCE only. A verdict citing ' +
-        'this capture for an ARRIVAL claim (reachability, traversal, the crossing, RI-JRN*, or ' +
-        'anything timing something) is VOID.',
-      camera_at: out.camera_at,
-    },
+    // The conditions the frame was ACTUALLY taken in, read off the engine — not the ones the caller
+    // did or did not ask for. See performCapture().
+    env_observed: out.env_observed,
+    world_reloaded: out.reloaded,
+    // ---- PROVENANCE. S34 requires all four of these on every capture. Derived, never copied. ----
+    provenance: provenanceBlock({
+      evidenceOf: verdict.evidence_of,
+      cameraAt: out.camera_at,
+      fromCache: false,
+    }),
+    // R3(f): acceptance used to be SILENT — a laundered capture left no trace of what it was
+    // requested for and no later audit could find one. The gate's own audit block is now banked
+    // beside the picture.
+    arrival_gate: { evidence_of: verdict.evidence_of, purpose_class: verdict.purpose_class, audit: verdict.audit },
     build: BUILD,
     settle: out.proof,
     phase_ms: out.phases,
     page_errors: out.page_errors,
     render_ms: Date.now() - t0,
   };
-  fs.writeFileSync(paths.json, JSON.stringify(manifest, null, 2));
+  manifest.mac = signManifest(manifest);
+  // `no_cache` means WHAT IT SAYS. It used to mean "do not read" while still writing, so a request
+  // that deliberately altered how the picture was produced — `__no_camera_stream` removes the
+  // camera stream-drain and photographs an emptier world — could bank the result under the
+  // legitimate key. That is a cache-poisoning primitive, and G1 closed it only by luck (the emptier
+  // world usually fails residency). It does not write now.
+  if (banking) fs.writeFileSync(paths.json, JSON.stringify(manifest, null, 2));
   stats.captures++;
   stats.capture_ms_total += Date.now() - t0;
-  return { ok: true, result: { ...manifest, cached: false, manifest: paths.json, served_in_ms: Date.now() - t0 } };
+  const served = { ...manifest, cached: false, manifest: banking ? paths.json : null, banked: banking, served_in_ms: Date.now() - t0 };
+  delete served.mac;   // the signature authenticates the entry on disk; it is not a wire field
+  return { ok: true, result: served };
 }
 
 // ---- the scheduler -------------------------------------------------------------------------------

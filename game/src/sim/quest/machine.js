@@ -45,10 +45,16 @@ export function mergeConsequences(base, extra) {
     locks: [...(base.locks || [])],
     world_flags: [...(base.world_flags || [])],
     kills_npc: [...(base.kills_npc || [])],
+    // W1-19 round 2. The one consequence that makes the RI-DLG04 §B faction term reachable by
+    // playing: a resolution where the player TAKES THE RANK is a resolution where the player
+    // joins. Before this, `sim.quest.factions[f].member` was created `false` by this very
+    // function and set true by nothing in the build, so `factionTerm`'s membership branch was
+    // unreachable from the world and the term had to be faked out of a reputation row instead.
+    joins_faction: [...(base.joins_faction || [])],
   };
   for (const [k, v] of Object.entries(extra.faction_reputation || {})) out.faction_reputation[k] = (out.faction_reputation[k] || 0) + v;
   for (const [k, v] of Object.entries(extra.npc_disposition || {})) out.npc_disposition[k] = (out.npc_disposition[k] || 0) + v;
-  for (const k of ['unlocks', 'locks', 'world_flags', 'kills_npc']) {
+  for (const k of ['unlocks', 'locks', 'world_flags', 'kills_npc', 'joins_faction']) {
     for (const v of extra[k] || []) if (!out[k].includes(v)) out[k].push(v);
   }
   return out;
@@ -490,7 +496,13 @@ export class QuestEngine {
     // second, which is why AM-QST04-W1-18-01 added `resolutions[].consequences`.
     const c = mergeConsequences(def.consequences || {}, res && res.consequences);
     const q = this.sim.quest;
-    const changed = { faction_reputation: {}, world_flags: [], unlocked: [], locked: [], npc_disposition: {}, kills_npc: [] };
+    const changed = { faction_reputation: {}, world_flags: [], unlocked: [], locked: [], npc_disposition: {}, kills_npc: [], joined: [] };
+    // Joining is applied BEFORE reputation, so that the reputation this same resolution pays
+    // lands on a row that already knows it is a membership.
+    for (const f of c.joins_faction || []) {
+      if (!q.factions[f]) q.factions[f] = { member: false, rank: 0, reputation: 0, expelled: false, rivalry_locked: [] };
+      if (!q.factions[f].member) { q.factions[f].member = true; changed.joined.push(f); }
+    }
     for (const n of c.kills_npc || []) {
       if (!this.sim.world.npcsDead.includes(n)) { this.sim.world.npcsDead.push(n); changed.kills_npc.push(n); }
     }
@@ -519,6 +531,20 @@ export class QuestEngine {
   }
 
   drainEvents() { const e = this.events; this.events = []; return e; }
+
+  /**
+   * A topic entered `topicsKnown` from somewhere that is not a journal entry — somebody said it
+   * out loud to you. W1-19 round 2; the callers are `Engine.talkTo()` (an `opens_by
+   * .overheard_from` NPC greeting you) and `Engine.conversationSay()` (asking, and every
+   * AddTopic on the info you heard). It reports on the QUEST event stream and not on the
+   * `sim/events.js` bus, because that bus is a closed vocabulary (HARNESS.md §5 / A-JRN7) and
+   * `topic_add` already lives here — the journal AddTopic edge has emitted it since W1-19
+   * round 1, and one topic must not have two event names.
+   */
+  noteTopicLearned(topic, source, npcId = null) {
+    this._emit('topic_add', { quest: null, npc: npcId, topic, source: source || 'WORLD' });
+    return { topic, source };
+  }
 
   /** The wordless indicator, as a number of frames remaining. Never a string. */
   glyph(frame) {

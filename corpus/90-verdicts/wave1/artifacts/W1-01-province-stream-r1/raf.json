@@ -1,0 +1,91 @@
+{
+  "tool": "critic-prov-r1.mjs",
+  "mode": "raf",
+  "state": "default",
+  "break_fix": false,
+  "started_at": "2026-08-07T13:25:22.621Z",
+  "git": {
+    "commit": null,
+    "branch": null,
+    "dirty": false
+  },
+  "loadavg": "14.46 15.04 10.89 20/372 17826",
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 360
+  },
+  "raf": {
+    "wall_ms": 25000,
+    "sim_frames": 1492,
+    "expected_sim_frames": 1500,
+    "sim_frames_lost": 8,
+    "real_time_ratio": 0.9947,
+    "catchup_clamps": 3,
+    "catchup_dropped_ms": 129,
+    "raf_ticks": 1461,
+    "before": {
+      "province": true,
+      "frame": 0,
+      "at": [
+        2171.5,
+        761
+      ],
+      "underfoot_built": true,
+      "ring_want": 25,
+      "ring_built": 25,
+      "ring_unbuilt": 0,
+      "near9_want": 9,
+      "near9_unbuilt": 0,
+      "tiles_resident": 25,
+      "tiles_queued": 0,
+      "tiles_built_total": 50,
+      "focus_lag_m": 0,
+      "skin_lag_m": 0,
+      "near_lag_m": 0,
+      "cover_lag_m": 0,
+      "skin_vertices": 15625,
+      "cover_instances": 2476,
+      "near_instances": 99,
+      "province_meshes": 210,
+      "region": "salt-hills"
+    },
+    "after": {
+      "province": true,
+      "frame": 1492,
+      "at": [
+        2197,
+        803
+      ],
+      "underfoot_built": true,
+      "ring_want": 25,
+      "ring_built": 25,
+      "ring_unbuilt": 0,
+      "near9_want": 9,
+      "near9_unbuilt": 0,
+      "tiles_resident": 25,
+      "tiles_queued": 0,
+      "tiles_built_total": 50,
+      "focus_lag_m": 0.5,
+      "skin_lag_m": 0.5,
+      "near_lag_m": 4.5,
+      "cover_lag_m": 0.5,
+      "skin_vertices": 15625,
+      "cover_instances": 2403,
+      "near_instances": 89,
+      "province_meshes": 210,
+      "region": "salt-hills"
+    }
+  },
+  "page_errors": 0,
+  "errors": [],
+  "wall_ms": 39293,
+  "loadavg_end": "16.11 15.36 11.10 26/624 20718"
+}

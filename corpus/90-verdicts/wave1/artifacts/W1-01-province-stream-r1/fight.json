@@ -1,0 +1,498 @@
+{
+  "tool": "critic-prov-r1.mjs",
+  "mode": "fight",
+  "state": "default",
+  "break_fix": false,
+  "started_at": "2026-08-07T13:15:40.465Z",
+  "git": {
+    "commit": null,
+    "branch": null,
+    "dirty": false
+  },
+  "loadavg": "13.18 8.64 6.69 10/341 14908",
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 360
+  },
+  "fight": {
+    "how": "fight while walking, streamer live",
+    "frames": 9000,
+    "eid": "e0,e1,e2,e3",
+    "walked_m": 267,
+    "step_ms": {
+      "n": 9000,
+      "mean_ms": 0.9436,
+      "p50_ms": 0.125,
+      "p99_ms": 12.42,
+      "p999_ms": 189.23,
+      "max_ms": 448.95,
+      "over_8_3": 133,
+      "over_16_7": 53,
+      "over_50": 29
+    },
+    "streaming_frames": 33,
+    "streaming_step_ms": {
+      "n": 33,
+      "mean_ms": 138.3905,
+      "p50_ms": 142.16,
+      "p99_ms": 448.95,
+      "p999_ms": 448.95,
+      "max_ms": 448.95,
+      "over_8_3": 30,
+      "over_16_7": 26,
+      "over_50": 25
+    },
+    "non_streaming_step_ms": {
+      "n": 8967,
+      "mean_ms": 0.4378,
+      "p50_ms": 0.125,
+      "p99_ms": 8.81,
+      "p999_ms": 36.615,
+      "max_ms": 139.56,
+      "over_8_3": 103,
+      "over_16_7": 27,
+      "over_50": 4
+    },
+    "phases_seen": {
+      "ROLL_STARTUP": 160,
+      "ROLL_IFRAME": 1040,
+      "ROLL_RECOVER": 572,
+      "ATK_STARTUP": 1741,
+      "ATK_ACTIVE": 902,
+      "ATK_RECOVER": 3573,
+      "WALK": 1012
+    },
+    "hitches_over_16_7_by_phase": {
+      "ROLL_STARTUP": 4,
+      "ROLL_IFRAME": 17,
+      "ROLL_RECOVER": 9,
+      "ATK_RECOVER": 16,
+      "ATK_STARTUP": 4,
+      "ATK_ACTIVE": 1,
+      "WALK": 2
+    },
+    "worst_ms_by_phase": {
+      "ROLL_STARTUP": 178.42,
+      "ROLL_IFRAME": 448.95,
+      "ROLL_RECOVER": 235.94,
+      "ATK_STARTUP": 189.23,
+      "ATK_ACTIVE": 23.91,
+      "ATK_RECOVER": 225.64,
+      "WALK": 249.46
+    },
+    "iframe_frames": 1040,
+    "iframe_frames_over_16_7": 17,
+    "worst_ms_in_iframes": 448.95,
+    "hitches": [
+      {
+        "i": 3,
+        "ms": 178.42,
+        "did": 7,
+        "phase": "ROLL_STARTUP",
+        "iframes": false
+      },
+      {
+        "i": 8,
+        "ms": 21.39,
+        "did": 0,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 31,
+        "ms": 20.52,
+        "did": 0,
+        "phase": "ROLL_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 75,
+        "ms": 29.57,
+        "did": 0,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 214,
+        "ms": 157.5,
+        "did": 5,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 251,
+        "ms": 73.32,
+        "did": 0,
+        "phase": "ATK_STARTUP",
+        "iframes": false
+      },
+      {
+        "i": 421,
+        "ms": 23.91,
+        "did": 0,
+        "phase": "ATK_ACTIVE",
+        "iframes": false
+      },
+      {
+        "i": 591,
+        "ms": 19.2,
+        "did": 2,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 605,
+        "ms": 205.73,
+        "did": 5,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 996,
+        "ms": 33.32,
+        "did": 0,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 1042,
+        "ms": 24.53,
+        "did": 0,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 1089,
+        "ms": 342.31,
+        "did": 5,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 1122,
+        "ms": 36.62,
+        "did": 0,
+        "phase": "ATK_STARTUP",
+        "iframes": false
+      },
+      {
+        "i": 1155,
+        "ms": 36.68,
+        "did": 0,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 1188,
+        "ms": 29.72,
+        "did": 0,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 1262,
+        "ms": 44.66,
+        "did": 0,
+        "phase": "ROLL_STARTUP",
+        "iframes": false
+      },
+      {
+        "i": 1303,
+        "ms": 56.37,
+        "did": 0,
+        "phase": "ROLL_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 1337,
+        "ms": 32.5,
+        "did": 0,
+        "phase": "ATK_STARTUP",
+        "iframes": false
+      },
+      {
+        "i": 1356,
+        "ms": 20.36,
+        "did": 0,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 1393,
+        "ms": 19.07,
+        "did": 0,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 1429,
+        "ms": 20.34,
+        "did": 0,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 1449,
+        "ms": 28.5,
+        "did": 0,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 1478,
+        "ms": 448.95,
+        "did": 5,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 1490,
+        "ms": 42.23,
+        "did": 0,
+        "phase": "ROLL_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 1503,
+        "ms": 20.18,
+        "did": 0,
+        "phase": "ROLL_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 1512,
+        "ms": 29.3,
+        "did": 0,
+        "phase": "WALK",
+        "iframes": false
+      },
+      {
+        "i": 1562,
+        "ms": 20.64,
+        "did": 0,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 1646,
+        "ms": 48.54,
+        "did": 0,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 1766,
+        "ms": 77.09,
+        "did": 5,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 2630,
+        "ms": 93.28,
+        "did": 5,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 2930,
+        "ms": 210.9,
+        "did": 5,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 3318,
+        "ms": 171.34,
+        "did": 5,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 3825,
+        "ms": 84.68,
+        "did": 0,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 4077,
+        "ms": 139.56,
+        "did": 0,
+        "phase": "ROLL_STARTUP",
+        "iframes": false
+      },
+      {
+        "i": 4106,
+        "ms": 235.94,
+        "did": 5,
+        "phase": "ROLL_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 4331,
+        "ms": 28.86,
+        "did": 0,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 4430,
+        "ms": 18.54,
+        "did": 0,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 4502,
+        "ms": 141.95,
+        "did": 7,
+        "phase": "ROLL_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 5138,
+        "ms": 19.2,
+        "did": 0,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 5164,
+        "ms": 164.05,
+        "did": 5,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 5420,
+        "ms": 249.46,
+        "did": 8,
+        "phase": "WALK",
+        "iframes": false
+      },
+      {
+        "i": 5450,
+        "ms": 120.01,
+        "did": 8,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 5452,
+        "ms": 165.99,
+        "did": 7,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 5480,
+        "ms": 189.23,
+        "did": 8,
+        "phase": "ATK_STARTUP",
+        "iframes": false
+      },
+      {
+        "i": 5510,
+        "ms": 171.21,
+        "did": 8,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 5540,
+        "ms": 225.64,
+        "did": 8,
+        "phase": "ATK_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 5852,
+        "ms": 218.18,
+        "did": 5,
+        "phase": "ROLL_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 6336,
+        "ms": 123.18,
+        "did": 5,
+        "phase": "ROLL_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 6725,
+        "ms": 82.16,
+        "did": 5,
+        "phase": "ROLL_RECOVER",
+        "iframes": false
+      },
+      {
+        "i": 7295,
+        "ms": 107.88,
+        "did": 5,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 7776,
+        "ms": 142.16,
+        "did": 5,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 8368,
+        "ms": 152.89,
+        "did": 5,
+        "phase": "ROLL_IFRAME",
+        "iframes": true
+      },
+      {
+        "i": 8731,
+        "ms": 104.09,
+        "did": 5,
+        "phase": "ROLL_STARTUP",
+        "iframes": false
+      }
+    ],
+    "end": {
+      "province": true,
+      "frame": 21019,
+      "at": [
+        2101.1,
+        1269.9
+      ],
+      "underfoot_built": true,
+      "ring_want": 25,
+      "ring_built": 25,
+      "ring_unbuilt": 0,
+      "near9_want": 9,
+      "near9_unbuilt": 0,
+      "tiles_resident": 30,
+      "tiles_queued": 0,
+      "tiles_built_total": 60,
+      "focus_lag_m": 1.05,
+      "skin_lag_m": 7.17,
+      "near_lag_m": 3.05,
+      "cover_lag_m": 7.17,
+      "skin_vertices": 15625,
+      "cover_instances": 2398,
+      "near_instances": 208,
+      "province_meshes": 263,
+      "region": "valus-ridge"
+    }
+  },
+  "page_errors": 0,
+  "errors": [],
+  "wall_ms": 27812,
+  "loadavg_end": "15.43 9.44 6.99 19/423 17881"
+}

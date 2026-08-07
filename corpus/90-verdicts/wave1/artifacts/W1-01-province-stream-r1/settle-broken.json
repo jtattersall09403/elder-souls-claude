@@ -1,0 +1,648 @@
+{
+  "tool": "critic-prov-r1.mjs",
+  "mode": "settle",
+  "state": "default",
+  "break_fix": true,
+  "started_at": "2026-08-07T13:19:17.594Z",
+  "git": {
+    "commit": null,
+    "branch": null,
+    "dirty": false
+  },
+  "loadavg": "14.85 10.68 7.86 22/441 14256",
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 360
+  },
+  "broken": true,
+  "settle": {
+    "how": "settle curve at a cold posed eye",
+    "shoot_default_settle_frames": 24,
+    "poses": [
+      {
+        "eye": [
+          2294.4,
+          1919.9
+        ],
+        "cold": {
+          "province": true,
+          "frame": 60,
+          "at": [
+            2294.4,
+            1919.9
+          ],
+          "underfoot_built": false,
+          "ring_want": 25,
+          "ring_built": 5,
+          "ring_unbuilt": 20,
+          "near9_want": 9,
+          "near9_unbuilt": 9,
+          "tiles_resident": 25,
+          "tiles_queued": 0,
+          "tiles_built_total": 50,
+          "focus_lag_m": 1165.37,
+          "skin_lag_m": 1165.37,
+          "near_lag_m": 1165.37,
+          "cover_lag_m": 1165.37,
+          "skin_vertices": 15625,
+          "cover_instances": 2476,
+          "near_instances": 99,
+          "province_meshes": 210,
+          "region": "stone-forest"
+        },
+        "curve": [
+          {
+            "frames": 1,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 2,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 4,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 8,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 16,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 24,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 32,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 48,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 64,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 96,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 128,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 192,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 256,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 384,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 512,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 768,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          },
+          {
+            "frames": 1024,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 5,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 1165.37,
+            "cover_lag_m": 1165.37
+          }
+        ]
+      },
+      {
+        "eye": [
+          2093.6,
+          3398.9
+        ],
+        "cold": {
+          "province": true,
+          "frame": 1144,
+          "at": [
+            2093.6,
+            3398.9
+          ],
+          "underfoot_built": false,
+          "ring_want": 25,
+          "ring_built": 0,
+          "ring_unbuilt": 25,
+          "near9_want": 9,
+          "near9_unbuilt": 9,
+          "tiles_resident": 25,
+          "tiles_queued": 0,
+          "tiles_built_total": 50,
+          "focus_lag_m": 2639.08,
+          "skin_lag_m": 2639.08,
+          "near_lag_m": 2639.08,
+          "cover_lag_m": 2639.08,
+          "skin_vertices": 15625,
+          "cover_instances": 2476,
+          "near_instances": 99,
+          "province_meshes": 210,
+          "region": "blackwood"
+        },
+        "curve": [
+          {
+            "frames": 1,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 2,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 4,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 8,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 16,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 24,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 32,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 48,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 64,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 96,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 128,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 192,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 256,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 384,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 512,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 768,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          },
+          {
+            "frames": 1024,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 2639.08,
+            "cover_lag_m": 2639.08
+          }
+        ]
+      },
+      {
+        "eye": [
+          2167,
+          4623.9
+        ],
+        "cold": {
+          "province": true,
+          "frame": 2228,
+          "at": [
+            2167,
+            4623.9
+          ],
+          "underfoot_built": false,
+          "ring_want": 25,
+          "ring_built": 0,
+          "ring_unbuilt": 25,
+          "near9_want": 9,
+          "near9_unbuilt": 9,
+          "tiles_resident": 25,
+          "tiles_queued": 0,
+          "tiles_built_total": 50,
+          "focus_lag_m": 3862.94,
+          "skin_lag_m": 3862.94,
+          "near_lag_m": 3862.94,
+          "cover_lag_m": 3862.94,
+          "skin_vertices": 15625,
+          "cover_instances": 2476,
+          "near_instances": 99,
+          "province_meshes": 210,
+          "region": "western-rootlands"
+        },
+        "curve": [
+          {
+            "frames": 1,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 2,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 4,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 8,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 16,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 24,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 32,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 48,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 64,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 96,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 128,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 192,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 256,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 384,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 512,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 768,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          },
+          {
+            "frames": 1024,
+            "underfoot": false,
+            "near9_unbuilt": 9,
+            "ring_built": 0,
+            "ring_want": 25,
+            "queued": 0,
+            "skin_lag_m": 3862.94,
+            "cover_lag_m": 3862.94
+          }
+        ]
+      }
+    ]
+  },
+  "page_errors": 0,
+  "errors": [],
+  "wall_ms": 24515,
+  "loadavg_end": "15.90 10.97 7.97 24/536 15187"
+}

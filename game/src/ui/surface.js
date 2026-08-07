@@ -44,6 +44,13 @@ export const KINDS = new Set([
   'attribute_preview', 'souls_held', 'souls_to_next', 'level_value', 'skill_row',
   'spell_row', 'sheet_row', 'search_field', 'scroll_extent', 'selection', 'divider',
   'hint', 'gold', 'container_panel', 'topic_link', 'entry_glyph',
+  // W1-29 / RI-JRN04 §G and H1. Added deliberately, and they are here rather than in a
+  // separate surface because RI-UIX01's sixth "how we lose" is "everything drawn straight to
+  // canvas is invisible": the touch controls are non-world UI on a phone, they occupy frame
+  // area, and they must be in the same census every other element is in. `touch_button`
+  // carries `text: null` by construction — a labelled touch control is a control legend and
+  // is RI-JRN03 DS1's hard fail drawn sixteen times.
+  'touch_button', 'touch_stick', 'rotate_illustration',
 ]);
 
 /**

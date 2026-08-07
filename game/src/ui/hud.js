@@ -228,11 +228,18 @@ export function drawHUD(S, m) {
     S.el({
       id: 'hud.prompt', kind: 'interact_prompt',
       rect: [(W - L.promptW * s) / 2, L.promptY * s, L.promptW * s, L.promptH * s],
-      text: m.prompt.text, meta: { range_m: m.prompt.range_m },
+      text: m.prompt.text,
+      // RI-JRN04 L7. The glyph is declared so M-P14 can read which device the affordance is
+      // drawn for without a pixel diff, and the pixel diff still has to agree with it.
+      meta: { range_m: m.prompt.range_m, device: m.prompt.device || 'keyboard', glyph: m.prompt.glyph || 'keycap' },
     }, (c, r) => {
       const f = faceOf('bone'), sz = 15 * s;
       const t = m.prompt.text;
-      drawText(c, t, r[0] + r[2] / 2 - measure(t, f, sz) / 2, r[1] + r[3] * 0.72, f, sz, C('bone'));
+      const gw = 22 * s;
+      const tw = measure(t, f, sz);
+      const x0 = r[0] + r[2] / 2 - (tw + gw * 1.4) / 2;
+      deviceGlyph(c, m.prompt.glyph || 'keycap', x0 + gw * 0.5, r[1] + r[3] * 0.60, gw * 0.5, s);
+      drawText(c, t, x0 + gw * 1.4, r[1] + r[3] * 0.72, f, sz, C('bone'));
       boneRule(c, r[0] + r[2] * 0.22, r[1] + r[3] * 0.90, r[2] * 0.56, s, 88);
     });
   }
@@ -313,4 +320,44 @@ function bar(S, o) {
       c.strokeStyle = Ca('bone_dim', 0.45); c.lineWidth = 1.2 * s; c.stroke();
     }
   });
+}
+
+/**
+ * RI-JRN04 L7 — the device affordance beside an interaction prompt.
+ *
+ * THREE MARKS, NO LETTERS. This is the one place in the game where the interface is allowed to
+ * say something about the control, and RI-JRN03 DS5 makes it legal only because it is a
+ * picture: a key cap, a face button, a fingertip. The instant it becomes the letter `E` it is
+ * an instruction (M-K22), it is wrong for a gamepad player (L7), and it is wrong again for
+ * anyone playing on a layout where that key is not where the label says.
+ *
+ * @param {CanvasRenderingContext2D} c
+ * @param {'keycap'|'face_button'|'fingertip'} kind
+ */
+export function deviceGlyph(c, kind, cx, cy, r, s) {
+  c.save();
+  c.lineWidth = Math.max(1, 1.6 * s);
+  c.strokeStyle = Ca('bone', 0.85);
+  c.fillStyle = Ca('bone', 0.16);
+  if (kind === 'face_button') {
+    c.beginPath(); c.arc(cx, cy, r * 0.86, 0, Math.PI * 2); c.fill(); c.stroke();
+    c.beginPath(); c.arc(cx, cy, r * 0.40, 0, Math.PI * 2); c.stroke();
+  } else if (kind === 'fingertip') {
+    // a fingertip on glass: the pad, and the ring of the press
+    c.beginPath(); c.ellipse(cx, cy + r * 0.12, r * 0.46, r * 0.62, 0, 0, Math.PI * 2); c.fill(); c.stroke();
+    c.beginPath(); c.arc(cx, cy + r * 0.12, r * 0.92, 0, Math.PI * 2);
+    c.strokeStyle = Ca('bone', 0.45); c.stroke();
+  } else {
+    // a key cap, seen slightly from above: a rounded top face over a short skirt
+    const w = r * 1.5, h = r * 1.25;
+    c.beginPath();
+    c.moveTo(cx - w / 2, cy - h / 2); c.lineTo(cx + w / 2, cy - h / 2);
+    c.lineTo(cx + w / 2, cy + h * 0.20); c.lineTo(cx - w / 2, cy + h * 0.20);
+    c.closePath(); c.fill(); c.stroke();
+    c.beginPath();
+    c.moveTo(cx - w / 2, cy + h * 0.20); c.lineTo(cx - w * 0.36, cy + h / 2);
+    c.lineTo(cx + w * 0.36, cy + h / 2); c.lineTo(cx + w / 2, cy + h * 0.20);
+    c.strokeStyle = Ca('bone', 0.55); c.stroke();
+  }
+  c.restore();
 }

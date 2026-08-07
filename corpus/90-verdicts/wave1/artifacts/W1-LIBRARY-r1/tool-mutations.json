@@ -1,0 +1,8 @@
+{
+ "mutation": "derange: every book's text swapped with another book's (seed 4242, no fixed points); every other field untouched",
+ "book_stats_py": "13/13 PASS, exit 0",
+ "book_budget_mjs": "15/15 PASS, exit 0",
+ "expected": "S4a/S4d/D4 should go red \u2014 every declared contradiction now points at prose that says something else, every wrong_on_purpose book is now wrong about nothing",
+ "mutation_2": "argonian_authored: true on all 65 books, every byline untouched",
+ "book_stats_S7": "PASS, value 65 (bar >= 14) \u2014 passes HARDER than the unmutated corpus"
+}

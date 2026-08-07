@@ -276,7 +276,14 @@ export class TouchInput {
   /** A-JRN6 */
   state() {
     return {
-      enabled: this.enabled, visible: this.visible, pointers: this.pointers.size,
+      enabled: this.enabled, visible: this.visible,
+      // `visible` is T7's fade timer alone and it is true on a desktop, which the round-1
+      // critic recorded as harmless-until-something-is-drawn. Something is drawn now
+      // (`ui/touch-overlay.js`), so the value the RENDERER gates on is reported under its own
+      // name: `shown` is the conjunction, and it is the one field that answers "is there
+      // anything on the glass".
+      shown: this.enabled && this.visible,
+      pointers: this.pointers.size,
       lastTouchFrame: this.lastTouchFrame, hideAfterFrames: this.hideAfterFrames,
       stick: { ...this.stick }, drawerOpen: this.drawerOpen,
       held: Array.from(this.held.keys()),

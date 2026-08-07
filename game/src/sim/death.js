@@ -70,6 +70,7 @@ export class DeathSystem {
     this.lastRespawn = null;
     this.lastRecovery = null;
     this.skipRequestedAt = null;
+    this.respawnFallbacks = 0;        // times the nearest-well FLOOR caught a null respawn point
     this.log = [];                    // per-death records, for the journey tool
   }
 
@@ -144,6 +145,10 @@ export class DeathSystem {
     return sim.entities.map((e) => ({
       eid: e.eid, id: e.id, archetype: e.archetype, tier: e.tier,
       flags: (this.d.rules.never_respawn_entity_flags || []).filter((f) => e[f]),
+      // WHO said so. A protection that came from the world map or from a statblock is a
+      // different fact from one a probe hand-fed, and `RI-MTH07` §A is the difference.
+      classified_by: e.classifiedBy || null,
+      boss_of_gate: e.bossOfGate || null,
       respawns: this.respawns(e, null),
       alive: e.hp > 0,
     }));
@@ -214,11 +219,30 @@ export class DeathSystem {
     const gate = this.hearths && this.hearths.gateAt(x, z);
     if (gate) {
       // Push out along the bearing from the arena centre to the player, past the gate radius.
+      //
+      // W1-13 r2: `Math.hypot(dx,dz) || 1` DEGENERATES AT THE CENTRE. Dying on the exact
+      // middle of the arena gave (0,0)/1 = (0,0), so the bloom landed at the centre — inside
+      // the gate — while the record still read `outside_fog_gate`. Measure-zero in play, and
+      // exactly the shape that survives a review because it reports having done the thing it
+      // did not do. The fix is a DEFINED bearing rather than a bigger epsilon: when there is
+      // no bearing from the centre, push out toward the sapwell the gate is paired with, which
+      // is where the player is about to respawn and therefore the direction they will walk
+      // back from. Every gate in `hearths.json` names its `hearth`.
       const dx = x - gate.pos[0], dz = z - gate.pos[2];
-      const l = Math.hypot(dx, dz) || 1;
+      let l = Math.hypot(dx, dz);
+      let ux, uz;
+      if (l > 1e-6) { ux = dx / l; uz = dz / l; } else {
+        const well = gate.hearth && this.hearths ? this.hearths.get(gate.hearth) : null;
+        const hx = well ? well.pos[0] - gate.pos[0] : 0;
+        const hz = well ? well.pos[2] - gate.pos[2] : 0;
+        l = Math.hypot(hx, hz);
+        // Last resort +x, so the answer is defined even for a gate with no paired well.
+        if (l > 1e-6) { ux = hx / l; uz = hz / l; } else { ux = 1; uz = 0; }
+        rule = 'outside_fog_gate_from_centre';
+      }
       const r = (gate.radius_m || 26) + 3.0;
-      x = gate.pos[0] + (dx / l) * r; z = gate.pos[2] + (dz / l) * r;
-      rule = 'outside_fog_gate';
+      x = gate.pos[0] + ux * r; z = gate.pos[2] + uz * r;
+      if (rule === 'death_point') rule = 'outside_fog_gate';
     } else if ((cause === 'fall' || cause === 'hazard' || cause === 'drown') && this.lastGrounded) {
       x = this.lastGrounded[0]; z = this.lastGrounded[2];
       rule = 'last_grounded';
@@ -270,7 +294,14 @@ export class DeathSystem {
       this.lastDamageAmount = this.lastHp - hp;
     }
     this.lastHp = hp;
-    if (hp > 0 && sim.player.grounded !== false && sim.player.state !== 'FALL') {
+    // W1-13 r2: "grounded" for the purpose of the fall rule means STANDABLE, not "touching
+    // something". The capsule is grounded while wading into water deep enough to drown in, so
+    // the round-1 test would have recorded the drowning spot as the last safe ground and put
+    // the bloom back in the water the player just died in. `standable` is the same predicate
+    // the locomotion uses and it excludes water past the W3/W4 boundary.
+    const standable = this.ctx.standable || (() => true);
+    if (hp > 0 && sim.player.grounded !== false && sim.player.state !== 'FALL'
+        && standable(sim.player.pos[0], sim.player.pos[2])) {
       this.lastGrounded = [sim.player.pos[0], sim.player.pos[1], sim.player.pos[2]];
     }
     // The kill register. `sim.world.enemiesDeadUntilRest` has been in the state model and in
@@ -301,10 +332,25 @@ export class DeathSystem {
     return this.tryRecover(sim, bus);
   }
 
+  /**
+   * What killed you.
+   *
+   * W1-13 round 2. Round 1 read `sim.player.state === 'FALL'`, which is the one thing that is
+   * NEVER true by the time this runs: `traversal._land()` sets the state to DEATH on the same
+   * frame it applies the lethal damage, and the death loop runs from `_afterStep()`. A 90 m
+   * drop recorded `cause: 'combat'`, `placement_rule: 'death_point'`, so two of `placeStain()`'s
+   * four branches were unreachable and one of them (`'drown'`) could not be reached at all.
+   *
+   * `p.lethalCause` is written by whatever dealt the killing blow (`sim/traversal.js`, in both
+   * the fall and the drown path) and cleared by `die()`. The old state test is kept as the
+   * second reading, because a body that is still falling when something else kills it did in
+   * fact die to the fall.
+   */
   _inferCause(sim) {
-    const s = sim.player.state;
-    if (s === 'FALL') return 'fall';
-    if (sim.player.strandedBy) return 'hazard';
+    const p = sim.player;
+    if (p.lethalCause) return p.lethalCause;
+    if (p.state === 'FALL') return 'fall';
+    if (p.strandedBy) return 'hazard';
     return 'combat';
   }
 
@@ -323,6 +369,8 @@ export class DeathSystem {
     this.cause = cause;
     this.skipRequestedAt = null;
     this.deaths++;
+    // Consumed. A cause left standing would make the NEXT death a fall.
+    sim.player.lethalCause = null;
 
     const hearth = this.respawnHearth(sim);
     const prev = sim.quest.death.bloodstain;
@@ -378,10 +426,38 @@ export class DeathSystem {
     return { event: 'death', ...rec };
   }
 
-  /** D6: the last HEARTH rested at. Not the nearest, not the last one walked past. */
+  /**
+   * D6: the last HEARTH rested at. Not the nearest, not the last one walked past.
+   *
+   * W1-13 r2 — THE FLOOR UNDER IT. With `hearthLastRested` null the round-1 code returned null,
+   * `respawn()` did `if (hearth) { move }` with no `else`, the body did not move, the bloom
+   * landed at its feet and 4,200 souls were back within five frames: DEATH WAS FREE. The
+   * round-1 builder then used that path as its CONSUMPTION null control, reading a missing
+   * floor as a clean control. `_seedStartingHearth()` guards the named-state path and was not
+   * called on the `loadState(blob)` path, so any save carrying a null respawn point loaded into
+   * a world where dying cost nothing.
+   *
+   * The fallback is the NEAREST well, and only in the province — an arena or a camera fixture
+   * has no wells within kilometres and a probe that dies in one must not be flung across the
+   * map. `RI-PRG04` §5's worst time-to-nearest is 10.42 minutes, so the fallback is still a
+   * real cost; it is a floor, not a convenience.
+   */
   respawnHearth(sim) {
     const id = sim.progression.hearthLastRested;
-    return id ? (this.hearths ? this.hearths.get(id) : null) : null;
+    const named = id && this.hearths ? this.hearths.get(id) : null;
+    if (named) return named;
+    if (!this.hearths || !this.hearths.count()) return null;
+    const inProvince = this.ctx.inProvince ? this.ctx.inProvince() : false;
+    if (!inProvince) return null;
+    const n = this.hearths.nearest(sim.player.pos[0], sim.player.pos[2]);
+    if (!n) return null;
+    // Falling back also DISCOVERS it — you wake there, so you know it.
+    sim.progression.hearthLastRested = n.hearth.id;
+    if (!sim.progression.hearthsDiscovered.includes(n.hearth.id)) {
+      sim.progression.hearthsDiscovered.push(n.hearth.id);
+    }
+    this.respawnFallbacks = (this.respawnFallbacks || 0) + 1;
+    return n.hearth;
   }
 
   /** D7/D8/D9. Close the surface, put the body back at the well, re-grow what was pruned. */
@@ -400,6 +476,11 @@ export class DeathSystem {
         combat.player.pos[2] = hearth.pos[2];
       }
       sim.camera.pivotSnap = true;
+      // The body must ARRIVE, not be dragged. `teleport()` resets the traversal and the hazard
+      // volumes for exactly this reason ("a teleport is an instrument, not a journey"); a
+      // respawn is the same kind of discontinuity and was doing none of it. See the `placed`
+      // hook in engine.js, which is the only thing here that knows what a cell reset means.
+      if (typeof this.ctx.placed === 'function') this.ctx.placed(sim, combat);
     }
 
     const restored = this.restorePlayer(sim, combat);

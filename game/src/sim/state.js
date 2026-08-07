@@ -66,6 +66,12 @@ export function makePlayer() {
     iframe: false,
     iframeKind: null,
     grounded: true,
+    // W1-13 r2. WHAT KILLED YOU, written by whatever landed the killing blow and consumed by
+    // `DeathSystem.die()` on the same frame. It exists because `_inferCause()` read
+    // `player.state === 'FALL'` and traversal sets the state to DEATH on the landing frame, so
+    // a 90 m drop recorded `cause: 'combat'` and `placeStain()`'s fall and drown branches were
+    // both unreachable. Null except for the one frame between the blow and the death tick.
+    lethalCause: null,
     estus: PLAYER_CONST.estus_max,
     lockOn: null,
     hitboxes: [],
@@ -178,6 +184,10 @@ export function makeEnvironment() {
     dayCount: 0,
     region: 'thornmarsh',
     interior: null,
+    // Which town you are standing in, when you are standing in one. Read by the rumour book
+    // (`sim/quest/topic-supply.js`), which is keyed by settlement because RI-DLG02 requires
+    // rumours to differ per town.
+    settlement: null,
     wallClockOffsetMs: 0,       // A-JRN10 advanceWallClock; never read by the sim
   };
 }

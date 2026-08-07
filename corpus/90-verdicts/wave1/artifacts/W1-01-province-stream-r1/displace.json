@@ -1,0 +1,674 @@
+{
+  "tool": "critic-prov-r1.mjs",
+  "mode": "displace",
+  "state": "default",
+  "break_fix": false,
+  "started_at": "2026-08-07T13:15:44.681Z",
+  "git": {
+    "commit": null,
+    "branch": null,
+    "dirty": false
+  },
+  "loadavg": "13.57 8.80 6.75 18/347 16346",
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 360
+  },
+  "displace": {
+    "death_respawn": {
+      "before_death": {
+        "province": true,
+        "frame": 9019,
+        "at": [
+          2259,
+          1034.1
+        ],
+        "underfoot_built": true,
+        "ring_want": 25,
+        "ring_built": 25,
+        "ring_unbuilt": 0,
+        "near9_want": 9,
+        "near9_unbuilt": 0,
+        "tiles_resident": 30,
+        "tiles_queued": 0,
+        "tiles_built_total": 55,
+        "focus_lag_m": 1.03,
+        "skin_lag_m": 9.1,
+        "near_lag_m": 11.1,
+        "cover_lag_m": 9.1,
+        "skin_vertices": 15625,
+        "cover_instances": 2395,
+        "near_instances": 105,
+        "province_meshes": 253,
+        "region": "salt-hills"
+      },
+      "death_surface_at_frame": 0,
+      "body_jumped_at_frame": 6,
+      "jump_m": 4142.6,
+      "frames_until_ground_underfoot": 0,
+      "frames_until_near9_complete": 5,
+      "frames_until_ring_complete": 455,
+      "frames_standing_on_no_ground": 0,
+      "frames_with_a_hole_in_the_3x3": 5,
+      "worst_step_ms_after_jump": 483.96,
+      "first_40_after_jump": [
+        {
+          "i": 6,
+          "ms": 337.01,
+          "jump_m": 4142.6,
+          "underfoot": true,
+          "near9_unbuilt": 7,
+          "ring_unbuilt": 18,
+          "queued": 18,
+          "at": [
+            2766.2,
+            5145.5
+          ]
+        },
+        {
+          "i": 7,
+          "ms": 405.43,
+          "jump_m": 1864.2,
+          "underfoot": true,
+          "near9_unbuilt": 7,
+          "ring_unbuilt": 23,
+          "queued": 23,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 8,
+          "ms": 483.96,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 5,
+          "ring_unbuilt": 21,
+          "queued": 21,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 9,
+          "ms": 361.98,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 3,
+          "ring_unbuilt": 19,
+          "queued": 19,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 10,
+          "ms": 222.64,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 1,
+          "ring_unbuilt": 17,
+          "queued": 17,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 11,
+          "ms": 472.46,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 12,
+          "ms": 0.37,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 13,
+          "ms": 0.18,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 14,
+          "ms": 0.24,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 15,
+          "ms": 0.14,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 16,
+          "ms": 0.14,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 17,
+          "ms": 0.21,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 18,
+          "ms": 0.16,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 19,
+          "ms": 0.11,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 20,
+          "ms": 0.09,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 21,
+          "ms": 0.11,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 22,
+          "ms": 0.14,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 23,
+          "ms": 0.11,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 24,
+          "ms": 0.08,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 25,
+          "ms": 0.16,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 26,
+          "ms": 0.12,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 27,
+          "ms": 0.09,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 28,
+          "ms": 0.15,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 29,
+          "ms": 0.14,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 30,
+          "ms": 0.14,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 31,
+          "ms": 0.13,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 32,
+          "ms": 0.17,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 33,
+          "ms": 0.1,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 34,
+          "ms": 0.09,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 35,
+          "ms": 0.14,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 36,
+          "ms": 0.1,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 37,
+          "ms": 0.09,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 38,
+          "ms": 0.12,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 39,
+          "ms": 0.09,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 40,
+          "ms": 0.09,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 15,
+          "queued": 15,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 41,
+          "ms": 375.78,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 14,
+          "queued": 14,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 42,
+          "ms": 1.08,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 14,
+          "queued": 14,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 43,
+          "ms": 0.14,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 14,
+          "queued": 14,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 44,
+          "ms": 0.15,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 14,
+          "queued": 14,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        },
+        {
+          "i": 45,
+          "ms": 0.09,
+          "jump_m": 0,
+          "underfoot": true,
+          "near9_unbuilt": 0,
+          "ring_unbuilt": 14,
+          "queued": 14,
+          "at": [
+            2537.9,
+            3295.4
+          ]
+        }
+      ]
+    },
+    "posed_then_released": {
+      "body_before_pose": {
+        "province": true,
+        "frame": 10039,
+        "at": [
+          2171.5,
+          761
+        ],
+        "underfoot_built": true,
+        "ring_want": 25,
+        "ring_built": 25,
+        "ring_unbuilt": 0,
+        "near9_want": 9,
+        "near9_unbuilt": 0,
+        "tiles_resident": 25,
+        "tiles_queued": 0,
+        "tiles_built_total": 107,
+        "focus_lag_m": 0,
+        "skin_lag_m": 0,
+        "near_lag_m": 0,
+        "cover_lag_m": 0,
+        "skin_vertices": 15625,
+        "cover_instances": 2476,
+        "near_instances": 99,
+        "province_meshes": 210,
+        "region": "salt-hills"
+      },
+      "body_while_posed": {
+        "province": true,
+        "frame": 10063,
+        "at": [
+          2171.5,
+          761
+        ],
+        "underfoot_built": false,
+        "ring_want": 25,
+        "ring_built": 0,
+        "ring_unbuilt": 25,
+        "near9_want": 9,
+        "near9_unbuilt": 9,
+        "tiles_resident": 10,
+        "tiles_queued": 15,
+        "tiles_built_total": 117,
+        "focus_lag_m": 2902.04,
+        "skin_lag_m": 2902.04,
+        "near_lag_m": 2902.04,
+        "cover_lag_m": 2902.04,
+        "skin_vertices": 15625,
+        "cover_instances": 2134,
+        "near_instances": 540,
+        "province_meshes": 130,
+        "region": "salt-hills"
+      },
+      "frames_until_ground_underfoot": 0,
+      "frames_until_near9_complete": 4,
+      "frames_until_ring_complete": 454,
+      "frames_standing_on_no_ground": 0,
+      "body_after_600": {
+        "province": true,
+        "frame": 10663,
+        "at": [
+          2171.5,
+          761
+        ],
+        "underfoot_built": true,
+        "ring_want": 25,
+        "ring_built": 25,
+        "ring_unbuilt": 0,
+        "near9_want": 9,
+        "near9_unbuilt": 0,
+        "tiles_resident": 25,
+        "tiles_queued": 0,
+        "tiles_built_total": 142,
+        "focus_lag_m": 0,
+        "skin_lag_m": 0,
+        "near_lag_m": 0,
+        "cover_lag_m": 0,
+        "skin_vertices": 15625,
+        "cover_instances": 2476,
+        "near_instances": 99,
+        "province_meshes": 210,
+        "region": "salt-hills"
+      }
+    }
+  },
+  "page_errors": 0,
+  "errors": [],
+  "wall_ms": 33047,
+  "loadavg_end": "15.20 9.59 7.07 20/338 19582"
+}

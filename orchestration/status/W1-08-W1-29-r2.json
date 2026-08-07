@@ -2,7 +2,7 @@
   "task_id": "W1-08-W1-29-r2",
   "brief": "builder round 2 on W1-08 (desktop controls) + W1-29 (mobile/touch/gamepad), after FAIL 5/10",
   "started": "2026-08-07",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
     "tools/journey/input-checks.mjs (13 missing check ids implemented + self-test legs)",
     "game/src/render/text-register.js (register sees all drawn text; empty != clean)",
@@ -12,13 +12,31 @@
     "reports/blog-feed.jsonl (one line)",
     "reports/W1-08-W1-29-R2.md"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "game/src/ui/touch-overlay.js (NEW \u2014 the renderer for touchLayout() and rotateState())",
+    "game/src/ui/system.js (build() draws it; cache key includes the touch signature; state().touch)",
+    "game/src/ui/surface.js (touch_button/touch_stick/rotate_illustration kinds)",
+    "game/src/ui/hud.js (deviceGlyph on the interact prompt \u2014 RI-JRN04 L7 / M-P14)",
+    "game/src/engine.js (_touchOverlayModel, _uiCtx().touch/.rotate, _interactPrompt device+glyph, uiToast)",
+    "game/src/input/viewport.js (onDeviceClass \u2014 L9 is a standing rule, not a boot-time one)",
+    "game/src/input/real.js (applyDeviceClass)",
+    "game/src/input/touch.js (state().shown = enabled && visible)",
+    "game/src/harness/api.js (uiToast \u2014 the M-K20 positive control)",
+    "tools/harness/w1-08-29-r2-coupling.mjs (NEW \u2014 RI-MTH07 coupling + delete-the-fix)",
+    "docs/shots/2026-08-07-w1-29-touch-overlay-{handheld,desktop}.png"
+  ],
   "findings": [
     "boot-check PASS before work; load 3.05 at start",
     "verdict: 13 unimplemented ids = M-K8,M-K9,M-K21,M-K22,M-N1,M-N2,M-N3,M-N5,M-N7 (JRN03) + M-P14,M-P20,M-P24,M-P25 (JRN04)",
     "M-K20 passes on an empty getRenderedText() register; text-register.js only instruments 'dialogue' and 'title' surfaces",
-    "touch overlay + rotateState have zero renderer consumers; desktop vs handheld framebuffers byte-identical"
+    "touch overlay + rotateState have zero renderer consumers; desktop vs handheld framebuffers byte-identical",
+    "COUPLING PROVED: desktop 73c633ee15bc82aa vs handheld 0d084ea28c3d9caf; null control stable; 0 held actions in every arm.",
+    "LAYOUT DATA COUPLED: perturbing touch.buttons.2.cx/cy moves the picture (2de304e154d44a9b).",
+    "ROTATE COUPLED: portrait 3cf4307910309435 vs landscape 6cf0c0d22ebf5bf0.",
+    "DELETE-THE-FIX: severing Engine._uiCtx().touch/.rotate returns the handheld hash to EXACTLY the desktop hash (73c633ee15bc82aa) \u2014 the round-1 byte-identical failure reproduces.",
+    "ROOT CAUSE FOUND BEYOND THE MISSING DRAW: L9 (coarse pointer => touch fallback) was applied ONCE in RealInput.attach(), so a device-class change afterwards (incl. the critic ablation) left the fallback off. Now a Viewport.onDeviceClass subscription.",
+    "SIBLING COLLISION: W1-26-r2 owns game/src/render/text-register.js, glyphs.js, renderer.js and getRenderedText(). It has landed declare()/coverage()/complete/blind and the ctx.__esNoteText vector hook. Do NOT duplicate; consume it."
   ],
-  "next_step": "read tools/journey/input-checks.mjs, game/src/render/{ui,text-register}.js, game/src/input/{touch,viewport}.js",
+  "next_step": "implement the 13 missing check ids in tools/journey/input-checks.mjs with self-test legs; then tools/verdict-validate.mjs ungated hard fail",
   "notes_for_successor": ""
 }

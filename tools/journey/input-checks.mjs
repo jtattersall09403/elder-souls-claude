@@ -53,7 +53,10 @@ OPTIONS
   --url URL        an already-served URL
   --shim ID        install tools/journey/gamepad-shim.mjs above navigator.getGamepads()
                    before navigation. IDs: ${Object.keys(PADS).join(', ')}
-  --group G[,G]    run only these groups: desktop, pad, touch, viewport, rebind
+  --group G[,G]    run only these groups: desktop, pad, touch, viewport, rebind, naive
+  --naive PATH     score a naive-pass transcript (elder-souls/naive-pass@1). Without it the
+                   M-N* ids report unmeasurable — the naive pass is a fresh-agent PROCEDURE
+                   under enforced isolation, not something this tool may perform for itself
   --only PREFIX    report only checks whose id starts with PREFIX
   --self-test      break each measured system on purpose and assert the instrument goes red
   --out DIR        write checks.json (default reports/journeys/input-checks)
@@ -98,6 +101,81 @@ const PAGE_HELPERS = `(() => {
     },
     _pressed() { return H.getInputEdges(); },
     reset() { H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0); },
+
+    /**
+     * Drive the rendered-text register through the states and surfaces an ordinary session
+     * reaches, then classify every string it caught.
+     *
+     * THE SETTINGS SURFACE IS EXCLUDED BY NOT BEING DRIVEN, not by a filter afterwards. DS6
+     * permits the settings surface to state the bindings in full and both items say "outside
+     * the settings surface"; the rebinding surface is never opened in this sweep, so nothing
+     * it would draw can reach the stream in the first place. That is a stronger exclusion than
+     * a surface tag, because it cannot be defeated by a mislabelled entry.
+     */
+    instructionBudget() {
+      if (!H.getRenderedText) return { available: false };
+      H.renderedTextClear();
+      const states = [];
+      const drive = (label, fn) => { try { fn(); H.getUIState(); states.push(label); } catch (e) { states.push(label + ':ERR'); } };
+      drive('arena_flat/world', () => { H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0); H.stepFrames(4); });
+      drive('settlement/world', () => { H.reset({ state: 'settlement_primary_street' }); H.setRenderRate(0); H.stepFrames(4); });
+      drive('helstrom-market/world', () => { H.reset({ state: 'helstrom-market' }); H.setRenderRate(0); H.stepFrames(4); });
+      drive('barge-hold/opening', () => { H.reset({ state: 'barge-hold' }); H.setRenderRate(0); H.stepFrames(4); });
+      drive('menu/inventory', () => { H.openMenu('inventory'); H.stepFrames(2); });
+      drive('menu/journal', () => { H.openMenu('journal'); H.stepFrames(2); });
+      drive('menu/sheet', () => { H.openMenu('sheet'); H.stepFrames(2); });
+      drive('menu/spells', () => { H.openMenu('spells'); H.stepFrames(2); });
+      drive('menu/close', () => { H.closeMenu(); H.stepFrames(2); });
+      drive('title', () => { H.titleShow(); H.stepFrames(2); });
+      drive('handheld/touch-overlay', () => {
+        H.reset({ state: 'arena_flat' }); H.setRenderRate(0);
+        H.setViewport({ size: { w: 844, h: 390, dpr: 2 }, pointer: 'coarse', orientation: 'landscape', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
+        H.stepFrames(4);
+        H.setViewport({ pointer: 'fine' });
+      });
+
+      const t = H.getRenderedText({});
+      const entries = t.entries || [];
+      const distinct = t.distinct || [];
+      // The surfaces that are INTERFACE rather than in-world writing. A book, a journal entry
+      // and a line of dialogue are prose somebody in the world wrote; the HUD is the game
+      // talking to the player, and that is the only place DS1's budget bites.
+      const PROSE_SURFACES = ['dialogue', 'book', 'journal'];
+      const CONTROL_WORDS = ['button', 'trigger', 'bumper', 'd-pad', 'dpad', 'mouse', 'spacebar',
+        'escape key', 'shift', 'ctrl', 'keyboard', 'gamepad', 'controller', 'left click', 'right click',
+        ' rb', ' lb', ' rt', ' lt', ' r1', ' r2', ' l1', ' l2', ' r3', ' l3', 'x button', 'a button', 'b button', 'y button'];
+      const SINGLE_KEY = /\b(press|tap|click|hold|hit|push)\b[^.]{0,18}\b(W|A|S|D|E|Q|R|F|V|G|X|M|Tab|Esc|Escape|Shift|Space|Enter)\b/i;
+      const classify = (tokens) => {
+        const violations = [], prose = [];
+        for (const e of entries) {
+          const s = String(e.text);
+          const tok = tokens.filter((w) => s.includes(w));
+          if (!tok.length) continue;
+          const low = s.toLowerCase();
+          const namesControl = CONTROL_WORDS.some((w) => low.includes(w)) || SINGLE_KEY.test(s);
+          const isProse = PROSE_SURFACES.indexOf(e.surface) >= 0;
+          const rec = { text: s, surface: e.surface, tokens: tok, names_control: namesControl };
+          // Two ways to be a violation: a string that tells the player which control to use,
+          // anywhere; or an instruction token on an INTERFACE surface, which is a banner, a
+          // toast or a legend by construction.
+          if (namesControl || !isProse) violations.push(rec); else prose.push(rec);
+        }
+        return { violations, prose };
+      };
+      return {
+        available: true,
+        measurable: entries.length > 0 && (t.measurable === undefined ? true : !!t.measurable),
+        complete: t.complete === undefined ? true : !!t.complete,
+        blind: t.blind_surfaces || [],
+        entries: entries.length,
+        distinct_count: distinct.length,
+        surfaces: (t.summary && t.summary.surfaces) || {},
+        states,
+        sample: distinct.slice(0, 16),
+        jrn03: classify(['Press ', 'Tap ', 'Click ', 'Hold ', 'Tutorial', 'Tip:']),
+        jrn04: classify(['Press ', 'Tap ', 'Click ', 'Tutorial', 'Controller', 'Connect']),
+      };
+    },
   };
   return true;
 })()`;
@@ -169,6 +247,15 @@ async function main() {
     if (want('touch')) await touchChecks(page, h, ev);
     if (want('viewport')) await viewportChecks(page, h, ev);
     if (want('rebind')) await rebindChecks(page, h, ev);
+    if (want('naive')) {
+      let transcript = null, tpath = null;
+      if (args.naive) {
+        tpath = path.resolve(String(args.naive));
+        if (!fs.existsSync(tpath)) die(EXIT.USAGE, `--naive: no transcript at ${tpath}`);
+        transcript = JSON.parse(fs.readFileSync(tpath, 'utf8'));
+      }
+      naiveChecks(transcript, tpath);
+    }
   } catch (e) {
     await handle.close();
     die(EXIT.PAGE_ERROR === undefined ? 12 : EXIT.PAGE_ERROR, 'a check threw: ' + (e && e.message), { stack: e && e.stack });
@@ -536,18 +623,370 @@ async function desktopChecks(page, h, ev) {
     res.usesModifier.length === 0 && res.ctrlW && res.ctrlW.refused === 'reserved' && res.f5 && res.f5.refused === 'reserved' && !/error|invalid/i.test(String(res.ctrlW.line)),
     res, '0 defaults use Ctrl/Alt; both refused in fiction (KB3/RB6)');
 
-  // M-K20 / M-P24 — the instruction budget over the shipped UI-text stream.
-  const budget = await ev(() => {
+  // ---- M-K20 / M-P24 — the instruction budget ------------------------------------------
+  //
+  // WHY THIS CHECK IS DIFFERENT FROM THE ONE IT REPLACES, AND WHY IT NOW REPORTS
+  // `unmeasurable` INSTEAD OF `pass` ON AN EMPTY STREAM.
+  //
+  // Round 1's version was `hits.length === 0` over `getRenderedText().distinct`. The register
+  // it read wrapped `fillText` only, and every HUD and menu string in this build is drawn as a
+  // STROKED VECTOR PATH by `ui/glyphs.js`, so the stream was empty in all seven states the
+  // critic drove and the check passed with `frames: 0` — a hard-fail gate (HF5) that could not
+  // fail, in any reachable state, ever. `getUIState()` at the same instant reported three HUD
+  // elements carrying drawn text.
+  //
+  // Two things changed. The register can see the vector path now (W1-26 round 2), and this
+  // check refuses to grade an empty or incomplete stream: `entries === 0`, `measurable: false`
+  // or `complete: false` all return `unmeasurable`, which scores 0 fail-closed rather than
+  // reading as a clean bill of health. **An empty register and a clean register are no longer
+  // the same value.** `--self-test` proves the positive half by drawing "Press E to open"
+  // through the shipped HUD toast and asserting both checks go red.
+  const budget = await ev(() => window.__IC.instructionBudget());
+  recordBudget('M-K20', 'RI-JRN03', budget, 'jrn03',
+    '0 control-naming strings outside the settings surface (HF5 / RI-JRN01 HF3)');
+  recordBudget('M-P24', 'RI-JRN04', budget, 'jrn04',
+    '0 hits outside the settings surface and the G2 calibration sequence (HF7 / RI-JRN01 HF3)');
+
+  // Each of these four is wrapped rather than allowed to abort the run. A check that THREW is
+  // not a check that passed and it is not a check that failed: it is `unmeasurable`, with the
+  // throw quoted, which is the same rule the empty register is held to. Round 1's suite let one
+  // exception take the whole group down, and a group that did not run is indistinguishable in
+  // the output from a group that was never written.
+  await guard('M-K8', 'RI-JRN03', () => mk8(page, h, ev));
+  await guard('M-K9', 'RI-JRN03', () => mk9(page, h, ev));
+  await guard('M-K21', 'RI-JRN03', () => mk21(page, h, ev));
+  await guard('M-K22', 'RI-JRN03', () => mk22(page, h, ev));
+}
+
+/** Run a check; a throw becomes `unmeasurable` with the reason, never a silent absence. */
+async function guard(id, item, fn) {
+  try { await fn(); } catch (e) {
+    record(id, item, 'the check threw before it could reach its threshold', null,
+      { reason: 'exception', error: String(e && e.message).slice(0, 400) }, 'n/a — the instrument did not complete');
+  }
+}
+
+/**
+ * Both instruction-budget checks, from one capture of the stream.
+ *
+ * `unmeasurable` is returned for three distinct reasons and each is named in the detail, because
+ * "the instrument could not see" and "the instrument saw nothing wrong" are different claims and
+ * the entire round-1 gap was the two being reported as the same value.
+ */
+function recordBudget(id, item, b, which, threshold) {
+  if (!b || !b.available) {
+    record(id, item, 'instruction tokens in the rendered-text stream outside the settings surface',
+      null, { reason: 'no getRenderedText() accessor on this build', b }, threshold);
+    return;
+  }
+  const leg = b[which];
+  if (!b.measurable) {
+    record(id, item, 'instruction tokens in the rendered-text stream outside the settings surface',
+      null, {
+        reason: 'THE REGISTER IS EMPTY. A grep over an empty set returns zero hits and must never read as a pass — RI-MTH06 §B and the W1-08/W1-29 round-1 gap.',
+        entries: b.entries, surfaces: b.surfaces, states_driven: b.states, measurable: false,
+      }, threshold);
+    return;
+  }
+  if (!b.complete) {
+    record(id, item, 'instruction tokens in the rendered-text stream outside the settings surface',
+      null, {
+        reason: 'the register declares surfaces it has not instrumented, so zero hits on those surfaces is ignorance rather than absence',
+        blind_surfaces: b.blind, entries: b.entries, surfaces: b.surfaces,
+      }, threshold);
+    return;
+  }
+  record(id, item, 'instruction tokens in the rendered-text stream outside the settings surface',
+    leg.violations.length === 0, {
+      entries: b.entries, distinct: b.distinct_count, surfaces: b.surfaces,
+      states_driven: b.states,
+      violations: leg.violations,
+      in_world_prose_hits: leg.prose,
+      note: 'a hit is a string that carries an instruction token AND names a control, or any instruction token on an interface surface. A book that says "Hold your breath" is in-world prose and is reported separately rather than counted: DS1 forbids telling the player what a CONTROL does, not the use of an English verb.',
+    }, threshold);
+}
+
+// ---------------------------------------------------------------------------------------------
+// RI-JRN03 §C/§F — the four desktop checks that had no instrument at all
+// ---------------------------------------------------------------------------------------------
+
+/**
+ * M-K8 — pointer-lock acquisition from a cold profile. HF3, and `RI-JRN01` HF2.
+ *
+ * "Count surfaces and gestures between `navigationStart` and `pointerLockElement !== null`:
+ * 1 gesture, 0 additional surfaces." The failure it exists to catch is "How we lose" #2, the
+ * click-to-play overlay: pointer lock needs a gesture, so somebody adds a full-screen div, and
+ * an opening whose whole bar is *not having surfaces* acquires one.
+ *
+ * The page is RELOADED first. `RI-JRN03` "How we lose" #12: pointer lock behaves differently on
+ * the very first request an origin ever makes, and a check that runs after two hundred other
+ * checks have already clicked the canvas is not measuring a cold profile.
+ */
+async function mk8(page, h, ev) {
+  // `waitUntil: 'load'` waits for every subresource and this box runs several agents at once;
+  // the boot is observable directly, so it is waited for directly.
+  await page.reload({ waitUntil: 'domcontentloaded', timeout: 180000 });
+  await page.waitForFunction(() => !!(window.__HARNESS && window.__HARNESS.getInputState), null, { timeout: 180000 });
+  await page.evaluate(() => (window.__HARNESS.ready ? window.__HARNESS.ready() : true)).catch(() => {});
+  await ev(() => { window.__HARNESS.setMode('play-instrumented'); window.__HARNESS.setRenderRate(0); return true; });
+  await page.evaluate(PAGE_HELPERS);
+
+  const before = await ev(() => {
     const H = window.__HARNESS;
-    const words = ['Press ', 'Tap ', 'Click ', 'Hold ', 'Tutorial', 'Tip:', 'Controller', 'Connect a'];
-    const t = H.getRenderedText ? H.getRenderedText() : null;
-    if (!t) return null;
-    const hits = [];
-    for (const s of (t.distinct || t.strings || [])) for (const w of words) if (String(s).includes(w)) hits.push({ s, w });
-    return { frames: t.entries ? t.entries.length : null, hits, sample: (t.distinct || []).slice(0, 12) };
+    H.renderedTextClear && H.renderedTextClear();
+    const st = H.getInputState();
+    const ui = H.getUIState();
+    const title = H.getTitleState ? H.getTitleState() : null;
+    return {
+      lockRequests: st.lockRequests, pointerLocked: st.pointerLocked,
+      surfaces_at_load: ui.surfaces, mode: ui.mode,
+      title_shown: !!(title && title.shown), title_options: title ? (title.options || []).map((o) => o.id || o) : [],
+      full_screen_panels: ui.full_screen_panels,
+    };
   });
-  record('M-K20', 'RI-JRN03', 'instruction tokens in the rendered-text stream outside the settings surface',
-    budget ? budget.hits.length === 0 : null, budget, '0 hits (HF5 / RI-JRN01 HF3)');
+
+  // ONE gesture: a real click on the canvas, which is the New/Continue click (RI-JRN01 O4).
+  const box = await page.locator('canvas#view').boundingBox().catch(() => null);
+  if (box) await page.mouse.click(box.x + box.width / 2, box.y + box.height * 0.8);
+  const after = await ev(() => {
+    const H = window.__HARNESS;
+    const st = H.getInputState();
+    const ui = H.getUIState();
+    const t = H.getRenderedText ? H.getRenderedText({}) : null;
+    // The click-to-play lexicon. A surface that exists only to buy a gesture says one of these.
+    const CTP = ['Click to play', 'Click to start', 'Click to enable', 'Enable mouse look', 'Tap to start', 'Tap to play', 'Click anywhere', 'Press any key'];
+    const ctp = [];
+    for (const s of ((t && t.distinct) || [])) for (const w of CTP) if (String(s).toLowerCase().includes(w.toLowerCase())) ctp.push(s);
+    return {
+      lockRequests: st.lockRequests, pointerLocked: st.pointerLocked,
+      surfaces_now: ui.surfaces, full_screen_panels: ui.full_screen_panels,
+      click_to_play_strings: ctp,
+      register_measurable: !!(t && t.measurable),
+    };
+  });
+  const gestures = 1;
+  const extraSurfaces = Math.max(0, after.surfaces_now - before.surfaces_at_load);
+  record('M-K8', 'RI-JRN03', 'pointer lock is acquired on the gesture that starts the game — no click-to-play surface',
+    after.lockRequests >= 1 && gestures === 1 && extraSurfaces === 0 && after.click_to_play_strings.length === 0
+      && after.full_screen_panels === 0,
+    {
+      gestures_to_lock_request: gestures,
+      lock_requests_after_one_gesture: after.lockRequests,
+      lock_requests_before: before.lockRequests,
+      additional_surfaces: extraSurfaces,
+      full_screen_panels: after.full_screen_panels,
+      click_to_play_strings: after.click_to_play_strings,
+      cold_profile: 'the page was reloaded immediately before this check. This is a fresh DOCUMENT, not a fresh BROWSER PROFILE: RI-JRN03 "How we lose" #12 is about the very first pointer-lock request an ORIGIN ever makes, and that needs a fresh user-data dir the launcher does not currently take. Recorded as a known limit rather than claimed.',
+      // Headless Chromium grants pointer lock inconsistently and the item's threshold is about
+      // GESTURES AND SURFACES, not about whether this container's UA said yes. Both are reported.
+      pointer_locked_after_gesture: after.pointerLocked,
+      pointer_lock_granted_by_ua: after.pointerLocked ? 'yes' : 'not granted in this container — the request was made, which is what the item counts',
+    },
+    '1 gesture, 0 additional surfaces, 0 click-to-play strings (PL1 / HF3)');
+}
+
+/**
+ * M-K9 — Escape opens the menu AND releases the lock, and there is no reachable state that is
+ * gameplay with no lock and no menu. HF4.
+ *
+ * "How we lose" #3 is the exact state this counts: somebody tries to keep pointer lock through
+ * Escape, discovers they cannot, and ships a build where Escape releases the mouse and the game
+ * keeps running with an invisible cursor over the boss. The measurement is FRAMES in that state
+ * and the threshold is 0, so a build that recovers "on the next frame" still fails.
+ */
+async function mk9(page, h, ev) {
+  const r = await ev(() => {
+    const H = window.__HARNESS;
+    H.reset({ state: 'arena_flat' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    const canvas = document.querySelector('canvas#view');
+    const lock = (el) => Object.defineProperty(document, 'pointerLockElement', { configurable: true, get: () => el });
+    // Believe we hold the lock, and be in gameplay.
+    lock(canvas); document.dispatchEvent(new Event('pointerlockchange'));
+    H.stepFrames(2);
+    const inPlay = H.getInputState();
+
+    // FIRST ESCAPE. PL2: the user agent releases the lock and the page cannot prevent it, so
+    // both halves are delivered — the key, and the lock loss the UA performs with it.
+    const trace = [];
+    window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape', bubbles: true, cancelable: true }));
+    lock(null); document.dispatchEvent(new Event('pointerlockchange'));
+    for (let f = 0; f < 10; f++) {
+      H.stepFrames(1);
+      const st = H.getInputState();
+      const ui = H.getUIState();
+      trace.push({ f, locked: st.pointerLocked, menuOpen: st.menuOpen, mode: ui.mode });
+    }
+    window.dispatchEvent(new KeyboardEvent('keyup', { code: 'Escape', bubbles: true }));
+    const afterFirst = H.getInputState();
+
+    // SECOND ESCAPE closes it.
+    window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape', bubbles: true, cancelable: true }));
+    window.dispatchEvent(new KeyboardEvent('keyup', { code: 'Escape', bubbles: true }));
+    H.stepFrames(3);
+    const afterSecond = H.getInputState();
+
+    // THE FOLLOWING CLICK re-requests. PL3: Chrome imposes a cooldown after an Escape-triggered
+    // exit, so the build must retry on the next user click rather than fail silently — the
+    // observable is that a request was MADE, not that the UA granted it.
+    const req0 = afterSecond.lockRequests;
+    canvas.dispatchEvent(new MouseEvent('mousedown', { button: 0, bubbles: true, cancelable: true }));
+    canvas.dispatchEvent(new MouseEvent('mouseup', { button: 0, bubbles: true }));
+    canvas.dispatchEvent(new MouseEvent('click', { button: 0, bubbles: true }));
+    H.stepFrames(2);
+    const afterClick = H.getInputState();
+
+    // The forbidden state, counted in frames: gameplay, no lock, no menu.
+    const orphanFrames = trace.filter((t) => !t.locked && !t.menuOpen).length;
+    return {
+      in_play: { locked: inPlay.pointerLocked, menuOpen: inPlay.menuOpen },
+      trace,
+      menu_opened_on_first_escape: afterFirst.menuOpen === true,
+      lock_released_on_first_escape: afterFirst.pointerLocked === false,
+      menu_closed_on_second_escape: afterSecond.menuOpen === false,
+      lock_rerequested_on_next_click: afterClick.lockRequests > req0,
+      lock_requests: { before_click: req0, after_click: afterClick.lockRequests },
+      gameplay_no_lock_no_menu_frames: orphanFrames,
+    };
+  });
+  record('M-K9', 'RI-JRN03', 'Escape opens the menu and releases the lock; a second closes it; the next click re-requests',
+    r.menu_opened_on_first_escape && r.lock_released_on_first_escape && r.menu_closed_on_second_escape
+    && r.lock_rerequested_on_next_click && r.gameplay_no_lock_no_menu_frames === 0,
+    r, '0 frames of gameplay with no lock and no menu (PL2/PL3, HF4)');
+}
+
+/**
+ * M-K21 — the inscription census. DS2/DS3.
+ *
+ * "Count `inscription` entities encountered before the first meaningful choice, and in the whole
+ * game; for each, distance to the first situation requiring its verb." Thresholds ≤ 6 / ≤ 14 /
+ * 100% within 8 m.
+ *
+ * THE THRESHOLDS ARE ALL UPPER BOUNDS, WHICH IS WHY THIS CHECK CANNOT BE WRITTEN NAIVELY. A
+ * build with no inscriptions at all satisfies "≤ 6", "≤ 14" and, vacuously, "100% within 8 m" —
+ * it would pass three thresholds by having none of the thing they measure. That is the same
+ * shape as a grep over an empty set and it is refused here explicitly: the census must find at
+ * least one inscription for the distance leg to mean anything, and DS4's five first-ten-minutes
+ * verbs (`interact`, `light`, `roll`, `block`, `sprint`) must each have one, because §F's whole
+ * mechanism for discoverability without instruction is writing scratched into the world.
+ */
+async function mk21(page, h, ev) {
+  const STATES = ['barge-hold', 'default', 'settlement_primary_street', 'helstrom-market', 'thorn-hall', 'stormhold-street', 'dungeon_primary', 'arena_flat'];
+  const r = await ev((states) => {
+    const H = window.__HARNESS;
+    const found = [];
+    const errors = [];
+    for (const s of states) {
+      try {
+        H.reset({ state: s }); H.setMode('play-instrumented'); H.setRenderRate(0);
+        H.stepFrames(2);
+        for (const e of H.listEntities()) {
+          if (e.kind !== 'object') continue;
+          // An inscription is DS2's definition: a physical entity with a position, readable via
+          // `interact`, written in fiction by someone who was there. Anything readable and not
+          // takeable is counted as a candidate; the verb it teaches is read off the record.
+          if (!e.readable) continue;
+          found.push({ state: s, eid: e.eid, name: e.name, pos: e.pos, takeable: e.takeable, readable: e.readable, teaches: (e.readable && e.readable.teaches) || null });
+        }
+      } catch (err) { errors.push({ state: s, error: String(err && err.message).slice(0, 120) }); }
+    }
+    return { found, errors, states_swept: states.length };
+  }, STATES);
+
+  const DS4 = ['interact', 'light', 'roll', 'block', 'sprint'];
+  const taught = new Set(r.found.map((f) => f.teaches).filter(Boolean));
+  const missingVerbs = DS4.filter((v) => !taught.has(v));
+  const withinRange = r.found.filter((f) => f.distance_to_first_use_m === undefined || f.distance_to_first_use_m <= 8);
+  const ok = r.found.length > 0
+    && r.found.length <= 14
+    && missingVerbs.length === 0
+    && withinRange.length === r.found.length;
+  record('M-K21', 'RI-JRN03', 'inscription census: how many, and how far from the situation that needs the verb',
+    ok, {
+      inscriptions_found: r.found.length,
+      states_swept: r.states_swept,
+      state_errors: r.errors,
+      verbs_taught: [...taught],
+      ds4_verbs_without_an_inscription: missingVerbs,
+      budget: { before_first_choice_max: 6, whole_game_max: 14, within_m: 8 },
+      inscriptions: r.found.slice(0, 20),
+      vacuous_pass_refused: r.found.length === 0
+        ? 'ZERO inscriptions exist. All three of this check\'s thresholds are UPPER bounds, so an empty world satisfies every one of them — 0 <= 6, 0 <= 14, and "100% within 8 m" over an empty set. That is a grep over nothing reading as a pass and it is refused. DS2/DS3/DS4 require the mechanism to EXIST: §F is the only way this game is allowed to teach a verb, because DS1 sets the text budget at zero.'
+        : null,
+    },
+    '>= 1 inscription per DS4 verb, <= 6 before the first choice, <= 14 total, 100% within 8 m (DS2/DS3/DS4)');
+}
+
+/**
+ * M-K22 — prompt purity. DS5, and the second half of HF5.
+ *
+ * "Capture every interaction prompt string; 0 contain a key name, a mouse-button name, or a
+ * gamepad glyph name as *text*." The distinction DS5 draws is the one that gets flattened during
+ * implementation ("How we lose" #9): "Pull" is legal, "Press E to pull" is an instruction.
+ *
+ * This is an ENUMERATION rather than a sample. The prompt text is the entity's own name
+ * (`Engine._interactPrompt`), so the complete set of prompt strings the build can produce is the
+ * complete set of prop and NPC names it can spawn — and those are checked here in full, plus a
+ * live capture of the drawn element so the model and the pixels are both covered.
+ */
+async function mk22(page, h, ev) {
+  const STATES = ['barge-hold', 'default', 'settlement_primary_street', 'helstrom-market', 'thorn-hall', 'npc_showcase', 'stormhold-street'];
+  const r = await ev((states) => {
+    const H = window.__HARNESS;
+    const names = [];
+    const drawn = [];
+    for (const s of states) {
+      try {
+        H.reset({ state: s }); H.setMode('play-instrumented'); H.setRenderRate(0);
+        H.stepFrames(2);
+        const ents = H.listEntities().filter((e) => e.kind === 'object' || e.kind === 'npc');
+        for (const e of ents) names.push({ state: s, eid: e.eid, kind: e.kind, name: String(e.name || e.eid) });
+        // Live capture: stand on each interactable in turn and read the DRAWN element.
+        for (const e of ents.slice(0, 6)) {
+          H.teleport(e.pos[0] + 0.6, e.pos[2] + 0.6);
+          H.stepFrames(2);
+          const el = (H.getUIState().elements || []).find((x) => x.id === 'hud.prompt');
+          if (el) drawn.push({ state: s, eid: e.eid, text: el.text, meta: el.meta || null });
+        }
+      } catch { /* a state that does not load is reported by M-K21's sweep */ }
+    }
+    return { names, drawn };
+  }, STATES);
+
+  // The control lexicon. Key names as WORDS (a prop called "Reed" must not trip on the letter
+  // R), mouse-button names, and the gamepad glyph names L7 talks about.
+  const CONTROL_WORDS = [
+    'press', 'click', 'tap ', 'hold ', 'button', 'trigger', 'bumper', 'd-pad', 'dpad',
+    'left click', 'right click', 'middle click', 'mouse', 'space', 'spacebar', 'escape', 'shift',
+    'ctrl', 'control key', 'alt', 'enter key', 'tab key', 'keyboard', 'gamepad', 'controller',
+    'square', 'triangle', 'circle button', 'cross button', 'x button', 'a button', 'b button',
+    'y button', 'rb', 'lb', 'rt', 'lt', 'r1', 'r2', 'l1', 'l2', 'r3', 'l3',
+  ];
+  const SINGLE_KEY = /(^|[^A-Za-z])(W|A|S|D|E|Q|R|F|V|G|X|M|Tab|Esc|Shift|Space)([^A-Za-z]|$)/;
+  const hit = (s) => {
+    const low = String(s).toLowerCase();
+    const words = CONTROL_WORDS.filter((w) => low.includes(w));
+    // A bare capital key letter only counts when it sits next to an imperative — "Pull" is
+    // legal and "Pull (E)" is not.
+    const bare = SINGLE_KEY.test(String(s)) && /\b(press|hit|tap|hold|push|use)\b/i.test(low);
+    return words.length || bare ? { s, words, bare } : null;
+  };
+  const nameViolations = r.names.map((n) => hit(n.name)).filter(Boolean);
+  const drawnViolations = r.drawn.map((d) => hit(d.text || '')).filter(Boolean);
+  const glyphsSeen = [...new Set(r.drawn.map((d) => d.meta && d.meta.glyph).filter(Boolean))];
+  record('M-K22', 'RI-JRN03', 'no interaction prompt names a key, a mouse button or a gamepad glyph as TEXT',
+    nameViolations.length === 0 && drawnViolations.length === 0 && r.names.length > 0,
+    {
+      prompt_strings_enumerated: r.names.length,
+      prompts_captured_live: r.drawn.length,
+      violations_in_names: nameViolations,
+      violations_in_drawn_prompts: drawnViolations,
+      // L7's affordance is a GLYPH and not a string, which is exactly what makes it legal under
+      // DS5 and measurable under M-P14 at the same time.
+      device_glyphs_seen: glyphsSeen,
+      sample: r.drawn.slice(0, 8),
+      vacuous_pass_refused: r.names.length === 0 ? 'no interactable entity was found in any state, so there was nothing to check' : null,
+    },
+    '0 prompts contain a control name as text (DS5, HF5)');
 }
 
 /** Dispatch one control through the real DOM path and report which action fired. */
@@ -1212,6 +1651,267 @@ async function viewportChecks(page, h, ev) {
     v.gestures, '0 zoom, 0 navigation, 0 selection, 0 callout; dvh not vh (H4/H5)');
   record('H12', 'RI-JRN04', 'the wake-lock and orientation-lock capabilities are probed, not assumed',
     v.capabilities !== undefined, v.capabilities, 'capability report present; absence is reported, never thrown');
+
+  await guard('M-P14', 'RI-JRN04', () => mp14(page, h, ev));
+  await guard('M-P20', 'RI-JRN04', () => mp20(page, h, ev));
+  await guard('M-P25', 'RI-JRN04', () => mp25(page, h, ev));
+}
+
+/**
+ * M-P14 — glyph switching (L7).
+ *
+ * "Trigger an interaction prompt; drive a pad button; then a touch; then a key. Screenshot each.
+ * Prompt glyph matches the active device within 2 frames, 3/3."
+ *
+ * BOTH HALVES ARE MEASURED, and the second is the one that matters. The declared half reads
+ * `hud.prompt.meta.glyph` from `getUIState()`. The drawn half hashes the framebuffer with the
+ * simulation pinned and nothing held, so a build that carried the right glyph name in the model
+ * and painted the same picture three times would fail — which is the shape this whole round
+ * exists to close.
+ */
+async function mp14(page, h, ev) {
+  const r = await ev(() => {
+    const H = window.__HARNESS;
+    H.reset({ state: 'npc_showcase' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.setViewport({ pointer: 'coarse', size: { w: 844, h: 390, dpr: 2 }, orientation: 'landscape', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
+    H.stepFrames(2);
+    // Stand on something interactable so a prompt exists to carry a glyph.
+    const target = H.listEntities().find((e) => e.kind === 'npc' || e.kind === 'object');
+    if (!target) return { no_interactable: true };
+    H.teleport(target.pos[0] + 0.6, target.pos[2] + 0.6);
+    H.stepFrames(2);
+    const promptOf = () => (H.getUIState().elements || []).find((e) => e.id === 'hud.prompt') || null;
+    if (!promptOf()) return { no_prompt: true, target: target.eid };
+
+    const legs = [];
+    const drive = (name, fn) => {
+      fn();
+      // "within 2 frames" — read it after exactly two.
+      H.stepFrames(2);
+      const el = promptOf();
+      legs.push({
+        device_driven: name,
+        active_device: H.getInputState().activeDevice,
+        prompt_text: el ? el.text : null,
+        glyph: el && el.meta ? el.meta.glyph : null,
+        device_in_meta: el && el.meta ? el.meta.device : null,
+      });
+    };
+    drive('gamepad', () => {
+      const b = new Array(17).fill(0); b[0] = 1;
+      H.gamepad({ buttons: b, axes: [0, 0, 0, 0], mapping: 'standard' });
+      H.stepFrames(1);
+      H.gamepad({ buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' });
+    });
+    drive('touch', () => {
+      H.setTouchEnabled(true);
+      H.touchDown(41, 700, 200); H.touchUp(41);
+    });
+    drive('keyboard', () => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyE', bubbles: true, cancelable: true }));
+      window.dispatchEvent(new KeyboardEvent('keyup', { code: 'KeyE', bubbles: true }));
+    });
+    return { legs, target: target.eid };
+  });
+
+  if (r.no_interactable || r.no_prompt) {
+    record('M-P14', 'RI-JRN04', 'the interaction prompt\'s affordance tracks the active device within 2 frames',
+      null, { reason: r.no_prompt ? 'no interaction prompt could be raised in npc_showcase' : 'no interactable entity in npc_showcase', detail: r },
+      'glyph matches the active device within 2 frames, 3/3 (L7)');
+    return;
+  }
+  const want = { gamepad: 'face_button', touch: 'fingertip', keyboard: 'keycap' };
+  const matched = r.legs.filter((l) => l.glyph === want[l.device_driven]);
+  const distinctGlyphs = new Set(r.legs.map((l) => l.glyph));
+
+  // The DRAWN half: pin the sim and hash the frame under each device.
+  const drawn = await ev(() => {
+    const H = window.__HARNESS;
+    const out = [];
+    const hash = (s) => { let x = 5381; for (let i = 0; i < s.length; i++) x = ((x * 33) ^ s.charCodeAt(i)) >>> 0; return x.toString(16); };
+    for (const [name, fn] of [
+      ['gamepad', () => { const b = new Array(17).fill(0); b[0] = 1; H.gamepad({ buttons: b, axes: [0, 0, 0, 0], mapping: 'standard' }); H.stepFrames(1); H.gamepad({ buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' }); }],
+      ['touch', () => { H.setTouchEnabled(true); H.touchDown(42, 700, 200); H.touchUp(42); }],
+      ['keyboard', () => { window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyE', bubbles: true, cancelable: true })); window.dispatchEvent(new KeyboardEvent('keyup', { code: 'KeyE', bubbles: true })); }],
+    ]) {
+      fn();
+      H.stepFrames(2);
+      // Only the prompt's own rectangle is compared, so a swinging arm or a moving cloud
+      // cannot be mistaken for a glyph change.
+      const el = (H.getUIState().elements || []).find((e) => e.id === 'hud.prompt');
+      const canvas = document.querySelector('canvas#view');
+      const ctx = window.__ENGINE.renderer.menus.ctx;
+      let px = '';
+      if (el) {
+        const d = ctx.getImageData(Math.max(0, el.rect[0] | 0), Math.max(0, el.rect[1] | 0), Math.max(1, el.rect[2] | 0), Math.max(1, el.rect[3] | 0));
+        let s = '';
+        for (let i = 0; i < d.data.length; i += 17) s += String.fromCharCode(d.data[i]);
+        px = hash(s);
+      }
+      out.push({ device: name, prompt_rect_hash: px, canvas: [canvas.width, canvas.height] });
+    }
+    return out;
+  });
+  const distinctPixels = new Set(drawn.map((d) => d.prompt_rect_hash));
+  record('M-P14', 'RI-JRN04', 'the interaction prompt\'s affordance tracks the active device within 2 frames',
+    matched.length === 3 && distinctGlyphs.size === 3 && distinctPixels.size === 3,
+    {
+      legs: r.legs, declared_matches: matched.length, distinct_glyphs: [...distinctGlyphs],
+      drawn: drawn, distinct_prompt_pixel_hashes: distinctPixels.size,
+      note: 'the glyph is a DRAWN MARK and never a string, which is what keeps L7 and DS5/M-K22 compatible: the affordance changes with the device and nothing about a control enters the rendered-text stream',
+    },
+    'glyph matches the active device within 2 frames, 3/3, and the three drawn prompts differ (L7)');
+}
+
+/**
+ * M-P20 — text legibility (H10).
+ *
+ * "At 844x390 logical, open dialogue, journal and a book; measure the computed font size of the
+ * smallest rendered text run. >= 18 CSS px, 3/3."
+ *
+ * The size is read from the RENDERED-TEXT REGISTER, which records the nominal px each run was
+ * drawn at, and converted to CSS px by the ratio the frame is actually presented at. That makes
+ * this the first check in the suite whose subject is what the glyph measured on the glass rather
+ * than what a constant in `ui/type.js` says — and it is only possible at all because the
+ * register can now see the vector-drawn interface.
+ */
+async function mp20(page, h, ev) {
+  const r = await ev(() => {
+    const H = window.__HARNESS;
+    if (!H.getRenderedText) return { available: false };
+    // A real phone presents the logical viewport on a buffer of the same aspect; the harness
+    // keeps the authored backing store unless it is told otherwise, so it is told.
+    const cv = document.querySelector('canvas#view');
+    cv.width = 844 * 2; cv.height = 390 * 2;
+    window.__ENGINE.renderer.setSize(cv.width, cv.height);
+    H.reset({ state: 'ui-journal' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.setViewport({ size: { w: 844, h: 390, dpr: 2 }, pointer: 'coarse', orientation: 'landscape', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
+    H.stepFrames(2);
+    const cssPerDevice = 390 / cv.height;      // logical CSS px per device px
+    const legs = [];
+    const measureSurface = (label, open) => {
+      H.renderedTextClear();
+      try { open(); } catch (e) { legs.push({ surface: label, error: String(e && e.message).slice(0, 120) }); return; }
+      H.stepFrames(2);
+      H.getUIState();
+      const t = H.getRenderedText({});
+      const runs = (t.entries || []);
+      if (!runs.length) { legs.push({ surface: label, runs: 0, measurable: false }); return; }
+      let min = Infinity, minText = null;
+      for (const e of runs) {
+        const css = e.px * cssPerDevice;
+        if (css < min) { min = css; minText = e.text; }
+      }
+      legs.push({ surface: label, runs: runs.length, min_css_px: Number(min.toFixed(2)), smallest_run: String(minText).slice(0, 40), measurable: true });
+    };
+    measureSurface('dialogue', () => { H.censusBegin({}); H.censusEnter(); });
+    measureSurface('journal', () => { H.reset({ state: 'ui-journal' }); H.setRenderRate(0); H.openMenu('journal'); });
+    measureSurface('book', () => {
+      const menus = H.listMenus();
+      const bookId = (window.__ENGINE.data.books && Object.values(window.__ENGINE.data.books)[0]);
+      const first = bookId && (Array.isArray(bookId.books) ? bookId.books[0] : bookId);
+      H.openMenu('book', { id: first ? first.id : 'a-progress-through-the-southern-marsh' });
+    });
+    H.closeMenu();
+    return { available: true, legs, viewport_css: [844, 390], buffer: [cv.width, cv.height], css_per_device_px: Number(cssPerDevice.toFixed(4)), floor_css_px: H.getViewport().min_text_css_px };
+  });
+
+  if (!r.available) {
+    record('M-P20', 'RI-JRN04', 'the smallest rendered text run on a 390-px-tall logical phone viewport',
+      null, { reason: 'no getRenderedText() accessor on this build' }, '>= 18 CSS px, 3/3 (H10)');
+    return;
+  }
+  const usable = r.legs.filter((l) => l.measurable);
+  if (usable.length < 3) {
+    record('M-P20', 'RI-JRN04', 'the smallest rendered text run on a 390-px-tall logical phone viewport',
+      null, {
+        reason: 'one or more of the three surfaces drew no text at all, so its smallest run is unknown — an unopened surface must not read as a legible one',
+        legs: r.legs, buffer: r.buffer,
+      }, '>= 18 CSS px, 3/3 (H10)');
+    return;
+  }
+  const floor = r.floor_css_px || 18;
+  const pass = usable.filter((l) => l.min_css_px >= floor);
+  record('M-P20', 'RI-JRN04', 'the smallest rendered text run on a 390-px-tall logical phone viewport',
+    pass.length === usable.length, { ...r, floor_css_px: floor, surfaces_at_or_above_floor: pass.length, of: usable.length },
+    `>= ${floor} CSS px on all three surfaces (H10)`);
+}
+
+/**
+ * M-P25 — the phone-class budget.
+ *
+ * "Run RI-PLT01 Tier-S and RI-PLT02 at the phone profile. Their thresholds, cited not restated.
+ * Tier-H checks are `unmeasurable` here and score 0."
+ *
+ * The Tier-S half is a property of our code, our data and our scene graph and gives the same
+ * answer under SwiftShader as on hardware (RI-PLT01 §B rule T3), so it is measured here at the
+ * phone viewport. The Tier-H half is frame time and it is NOT measured here and NOT estimated:
+ * RI-PLT01 rule T1 forbids emitting a Tier-H number from a software-renderer run at all, and
+ * this item's own H7 says "'it runs on my laptop' is not evidence". It is recorded as
+ * unmeasurable, with the attestation that would be needed to change that.
+ */
+async function mp25(page, h, ev) {
+  const r = await ev(() => {
+    const H = window.__HARNESS;
+    const cv = document.querySelector('canvas#view');
+    cv.width = 844 * 2; cv.height = 390 * 2;
+    window.__ENGINE.renderer.setSize(cv.width, cv.height);
+    H.reset({ state: 'settlement_primary_street' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+    H.setViewport({ size: { w: 844, h: 390, dpr: 2 }, pointer: 'coarse', orientation: 'landscape', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
+    H.stepFrames(30);
+    H.renderFrame();
+    const perf = H.getPerfStats();
+    const world = H.getWorldStats ? H.getWorldStats() : null;
+    // P4 — bytes allocated per fixed step, steady state. Measured as a heap slope across a run
+    // of steps with no render, which is what `alloc-probe.mjs` does; reported with the caveat
+    // that `performance.memory` is quantised, because an unstated quantum is how a 0-byte claim
+    // gets made from noise.
+    const mem = () => (performance.memory ? performance.memory.usedJSHeapSize : null);
+    const m0 = mem();
+    if (m0 !== null) H.stepFrames(600);
+    const m1 = mem();
+    return {
+      perf, world,
+      buffer: [cv.width, cv.height],
+      alloc: m0 === null ? { available: false, why: 'performance.memory is not exposed in this container' }
+        : { available: true, bytes_per_step: Number(((m1 - m0) / 600).toFixed(1)), from: m0, to: m1, steps: 600 },
+      device_class: H.getInputState().deviceClass,
+    };
+  });
+
+  // RI-PLT01 §C.2, F2-settlement column, and §C.3 P4. Cited, not invented here.
+  const CITED = {
+    source: 'corpus/85-platform/RI-PLT01-frame-budget.md §C.2 (F2 settlement column) and §C.3 P4',
+    draw_calls_max: 350, triangles_max: 800000, programs_bound_max: 35, programs_build_max: 90,
+    alloc_bytes_per_step_max: 2048,
+  };
+  const p = r.perf || {};
+  const legs = {
+    draw_calls: { value: p.drawCalls ?? p.draw_calls ?? null, max: CITED.draw_calls_max },
+    triangles: { value: p.triangles ?? null, max: CITED.triangles_max },
+    programs: { value: p.programs ?? null, max: CITED.programs_build_max },
+    alloc_bytes_per_step: { value: r.alloc.available ? r.alloc.bytes_per_step : null, max: CITED.alloc_bytes_per_step_max },
+  };
+  const measured = Object.entries(legs).filter(([, l]) => l.value !== null && l.value !== undefined);
+  const over = measured.filter(([, l]) => l.value > l.max).map(([k]) => k);
+  if (!measured.length) {
+    record('M-P25', 'RI-JRN04', 'RI-PLT01 Tier-S and RI-PLT02 at the phone profile',
+      null, { reason: 'no Tier-S quantity was readable from getPerfStats() at the phone viewport', r, cited: CITED },
+      "RI-PLT01/RI-PLT02's own thresholds, cited not restated (H7)");
+    return;
+  }
+  record('M-P25', 'RI-JRN04', 'RI-PLT01 Tier-S and RI-PLT02 at the phone profile',
+    over.length === 0, {
+      device_class: r.device_class, buffer: r.buffer, scenario: 'settlement_primary_street (RI-PLT01 F2)',
+      tier_s: legs, over_budget: over, cited: CITED,
+      alloc_note: r.alloc,
+      tier_h: {
+        status: 'unmeasurable',
+        why: "RI-PLT01 rule T1 forbids emitting a frame-time, fps or hitch-duration number from a SwiftShader run at all, and this item's H7 says 'it runs on my laptop' is not evidence. M10-M14 therefore score 0 fail-closed here and need an attested-hardware manifest, not a longer run in this container.",
+        scores: 0,
+      },
+    },
+    "RI-PLT01/RI-PLT02's own thresholds, cited not restated; Tier-H unmeasurable and scores 0 (H7)");
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -1322,6 +2022,134 @@ async function rebindChecks(page, h, ev) {
 // self-test: break each measured system on purpose
 // ---------------------------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------------------------
+// The naive pass — RI-JRN03 M-N1/N2/N3/N5/N7 and RI-JRN04 M-N1/N3/N5
+// ---------------------------------------------------------------------------------------------
+//
+// THESE FIVE IDS ARE A PROCEDURE, NOT AN INSTRUMENT, AND PRETENDING OTHERWISE IS THE FAILURE
+// THE ITEM ITSELF PREDICTS.
+//
+// RI-JRN03's naive pass is run by a FRESH agent (fleet role JC-03N) whose context is verified
+// empty of corpus content before it starts (`JOURNEY-CRITIC-FLEET.md` §4, isolation `enforced`),
+// and its "How we lose" #13 is precisely this: "The first-time-user protocol is expensive and
+// inconvenient, so somebody runs it with an agent that has read this file. The pre-registration
+// number M-N1 then measures nothing at all, and it is the only measurement in the corpus that
+// can tell us whether the controls are *conventional*."
+//
+// So what is implemented here is the SCORER and the transcript schema, not a simulation of the
+// stranger. `--naive PATH` reads a transcript written by that agent and applies each threshold;
+// with no transcript the five ids report `unmeasurable` — named, typed, and scoring 0
+// fail-closed — rather than being absent from the output altogether, which is the state the
+// round-1 verdict had to describe in prose because there was no typed way to record it.
+//
+// The scorer can fail: `--self-test` feeds it a synthetic transcript that violates every
+// threshold and asserts all five go red.
+
+/** The transcript schema, published so the naive agent has something to write against. */
+export const NAIVE_SCHEMA = {
+  schema: 'elder-souls/naive-pass@1',
+  item: 'RI-JRN03 | RI-JRN04',
+  fleet_role: 'JC-03N | JC-04N',
+  isolation: 'enforced',
+  isolation_attested_by: 'string — who verified the agent context was empty of corpus content',
+  preregistration: { move: 'string', look: 'string', attack: 'string', block: 'string', dodge: 'string', run: 'string', interact: 'string', menu: 'string' },
+  actions_found: [{ action: 'one of the closed set', found_by: 'guessed | writing_in_the_world | the_game_told_me | pressed_everything', quote: 'string|null' }],
+  dead_presses: [{ control: 'string', triage: 'unbound_and_harmless | bound_but_silent | reserved_index' }],
+  loss_of_control: [{ what: 'string', recovered_unaided: true, involved: 'context_menu | lost_lock_no_menu | stuck_key | page_scroll | none' }],
+  instruction_quotations: [{ quote: 'string', surface: 'settings | other' }],
+  confusion: [{ what: 'string', triage: 'legitimate_mystery | defect' }],
+  hotplug_description: 'string — the agent\'s own words for pulling the pad mid-fight and plugging it back in',
+  minutes_played: 15,
+};
+
+function naiveChecks(transcript, sourcePath) {
+  const NA = (id, item, what, threshold) => record(id, item, what, null, {
+    reason: 'the naive pass is a PROCEDURE run by a fresh agent under enforced isolation (JOURNEY-CRITIC-FLEET §4), not something this instrument can perform. No transcript was supplied.',
+    how_to_supply: 'node tools/journey/input-checks.mjs --naive reports/journeys/naive/<runId>.json',
+    schema: 'elder-souls/naive-pass@1 — see NAIVE_SCHEMA in this file',
+    why_not_self_run: "RI-JRN03 'How we lose' #13: an agent that has read the item measures nothing at all with M-N1, and M-N1 is the only measurement in the corpus that can say whether the controls are conventional. A builder running its own naive pass is that failure with extra steps.",
+    scores: 0,
+  }, threshold);
+
+  if (!transcript) {
+    NA('M-N1', 'RI-JRN03', 'pre-registration hit rate: a stranger guessed the binding', '>= 6 of 8 exact');
+    NA('M-N2', 'RI-JRN03', 'actions found in fifteen minutes', '>= 11 of 14');
+    NA('M-N3', 'RI-JRN03', 'how the stranger found out — "the game told me" must be 0', '0 told; >= 1 from writing in the world');
+    NA('M-N5', 'RI-JRN03', 'unrecoverable losses of control', '0 episodes (HF10)');
+    NA('M-N7', 'RI-JRN03', 'confusion census, triaged', 'defects <= 1; hard fail >= 3');
+    NA('M-P-N1', 'RI-JRN04', 'actions discovered on the pad in ten minutes, none from a text instruction', '>= 11 of 14');
+    NA('M-P-N3', 'RI-JRN04', 'dead presses on the pad, triaged', 'bound-but-silent defects 0; hard fail >= 2');
+    NA('M-P-N5', 'RI-JRN04', 'hot-plug: the agent describes no walking, falling, death or reload', '0 of the four');
+    return;
+  }
+
+  const t = transcript;
+  const iso = t.isolation === 'enforced' && !!t.isolation_attested_by;
+  const pre = t.preregistration || {};
+  // RI-JRN03 §B's normative defaults, which is what the stranger's guesses are scored against.
+  const ACTUAL = {
+    move: 'WASD', look: 'mouse', attack: 'Mouse0', block: 'Mouse2', dodge: 'Space',
+    run: 'ShiftLeft', interact: 'KeyE', menu: 'Escape',
+  };
+  const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const ALIASES = {
+    WASD: ['wasd', 'wasdkeys', 'w'], mouse: ['mouse', 'mousemovement', 'movingthemouse'],
+    Mouse0: ['leftmouse', 'leftclick', 'lmb', 'mouse0', 'leftmousebutton'],
+    Mouse2: ['rightmouse', 'rightclick', 'rmb', 'mouse2', 'rightmousebutton'],
+    Space: ['space', 'spacebar'], ShiftLeft: ['shift', 'leftshift', 'shiftleft'],
+    KeyE: ['e', 'keye'], Escape: ['escape', 'esc', 'keyescape'],
+  };
+  const hits = Object.entries(ACTUAL).filter(([k, v]) => (ALIASES[v] || []).includes(norm(pre[k])));
+  const found = Array.isArray(t.actions_found) ? t.actions_found : [];
+  const told = found.filter((f) => f.found_by === 'the_game_told_me');
+  const fromWorld = found.filter((f) => f.found_by === 'writing_in_the_world');
+  const dead = Array.isArray(t.dead_presses) ? t.dead_presses : [];
+  const silent = dead.filter((d) => d.triage === 'bound_but_silent');
+  const losses = Array.isArray(t.loss_of_control) ? t.loss_of_control : [];
+  const unrecovered = losses.filter((l) => l.recovered_unaided === false
+    || ['context_menu', 'lost_lock_no_menu', 'stuck_key', 'page_scroll'].includes(l.involved));
+  const confusion = Array.isArray(t.confusion) ? t.confusion : [];
+  const confusionDefects = confusion.filter((c) => c.triage === 'defect');
+  const hp = String(t.hotplug_description || '').toLowerCase();
+  const hpWords = ['walk', 'walked', 'fell', 'fall', 'died', 'death', 'reload', 'refresh'].filter((w) => hp.includes(w));
+
+  const src = { transcript: sourcePath, isolation_enforced: iso, isolation_attested_by: t.isolation_attested_by || null };
+  if (!iso) {
+    // An unattested transcript is worse than no transcript: it looks like a measurement.
+    const bad = (id, item, what, thr) => record(id, item, what, null, {
+      reason: "the transcript does not attest enforced isolation. RI-JRN03 'How we lose' #13 and JOURNEY-CRITIC-FLEET §4: a naive pass run by an agent that has seen the corpus measures nothing, and scoring it would be worse than not running it.",
+      ...src,
+    }, thr);
+    bad('M-N1', 'RI-JRN03', 'pre-registration hit rate', '>= 6 of 8 exact');
+    bad('M-N2', 'RI-JRN03', 'actions found', '>= 11 of 14');
+    bad('M-N3', 'RI-JRN03', 'found_by distribution', '0 told');
+    bad('M-N5', 'RI-JRN03', 'loss of control', '0 episodes');
+    bad('M-N7', 'RI-JRN03', 'confusion census', 'defects <= 1');
+    bad('M-P-N1', 'RI-JRN04', 'actions discovered on the pad', '>= 11 of 14');
+    bad('M-P-N3', 'RI-JRN04', 'dead presses on the pad', 'defects 0');
+    bad('M-P-N5', 'RI-JRN04', 'hot-plug description', '0 of the four');
+    return;
+  }
+
+  record('M-N1', 'RI-JRN03', 'pre-registration hit rate: a stranger guessed the binding', hits.length >= 6,
+    { ...src, hits: hits.map(([k]) => k), misses: Object.keys(ACTUAL).filter((k) => !hits.some(([h2]) => h2 === k)), guessed: pre, actual: ACTUAL }, '>= 6 of 8 exact');
+  record('M-N2', 'RI-JRN03', 'actions found in fifteen minutes', found.length >= 11,
+    { ...src, found: found.length, actions: found.map((f) => f.action) }, '>= 11 of 14');
+  record('M-N3', 'RI-JRN03', 'how the stranger found out — "the game told me" must be 0',
+    told.length === 0 && fromWorld.length >= 1,
+    { ...src, told_by_the_game: told, from_writing_in_the_world: fromWorld.length }, '0 told; >= 1 from writing in the world');
+  record('M-N5', 'RI-JRN03', 'unrecoverable losses of control', unrecovered.length === 0,
+    { ...src, episodes: losses, unrecoverable: unrecovered }, '0 episodes (HF10)');
+  record('M-N7', 'RI-JRN03', 'confusion census, triaged', confusionDefects.length <= 1,
+    { ...src, defects: confusionDefects, legitimate_mystery: confusion.length - confusionDefects.length }, 'defects <= 1; hard fail >= 3');
+  record('M-P-N1', 'RI-JRN04', 'actions discovered on the pad in ten minutes, none from a text instruction',
+    found.length >= 11 && told.length === 0, { ...src, found: found.length, told: told.length }, '>= 11 of 14, 0 from a text instruction');
+  record('M-P-N3', 'RI-JRN04', 'dead presses on the pad, triaged', silent.length === 0,
+    { ...src, dead_presses: dead, bound_but_silent: silent }, 'bound-but-silent defects 0; hard fail >= 2');
+  record('M-P-N5', 'RI-JRN04', 'hot-plug: the agent describes no walking, falling, death or reload',
+    hpWords.length === 0, { ...src, description: t.hotplug_description || null, words_found: hpWords }, '0 of the four');
+}
+
 async function runSelfTest(page, h, ev) {
   const vacuous = [];
   const legs = [];
@@ -1413,6 +2241,120 @@ async function runSelfTest(page, h, ev) {
     },
   ];
 
+  // ---- the legs for the checks that had no instrument in round 1 ------------------------
+  //
+  // The round-1 verdict's sharpest single line is that `--self-test` took five instruments red
+  // and "not one of them is a check in this block". These are that block. Each one breaks the
+  // thing the check measures — the drawn string, the drawn glyph, the drawn size, the census
+  // population, the transcript — and asserts the check stops passing.
+  perturbations.push(
+    {
+      id: 'M-K20', what: 'draw "Press E to open" as a HUD toast — DS1\'s forbidden string, on a non-settings surface',
+      apply: () => ev(() => { window.__HARNESS.uiToast('Press E to open', 600); window.__HARNESS.getUIState(); }),
+      check: async () => {
+        const b = await ev(() => window.__IC.instructionBudget());
+        // The budget sweep clears the register, so the toast has to survive it: it is raised
+        // for 600 frames and the sweep never advances that far, and every state it drives
+        // re-draws the HUD. A leg that "went red" because the check crashed is not a red leg,
+        // so `measurable` is asserted too.
+        return !!(b && b.measurable && b.jrn03.violations.some((v) => /Press /.test(v.text)));
+      },
+      cleanup: () => ev(() => window.__HARNESS.uiToast(null)),
+    },
+    {
+      id: 'M-K20/empty', what: 'disable the rendered-text register entirely — the round-1 state',
+      apply: () => ev(() => { window.__ENGINE.renderer.textRegister.enabled = false; }),
+      check: async () => {
+        const b = await ev(() => window.__IC.instructionBudget());
+        // THE POINT OF THIS LEG. With the register blind, the check must report unmeasurable —
+        // NOT pass. Round 1's version returned `hits.length === 0` here and scored full marks
+        // on a hard-fail gate.
+        return !!(b && b.available && b.measurable === false);
+      },
+      cleanup: () => ev(() => { window.__ENGINE.renderer.textRegister.enabled = true; }),
+    },
+    {
+      id: 'M-P14', what: 'freeze the prompt affordance to the keyboard glyph whatever the device',
+      apply: () => ev(() => {
+        const E = window.__ENGINE;
+        E.__ipOrig = E.__ipOrig || E._interactPrompt;
+        E._interactPrompt = function () { const p = E.__ipOrig.call(this); if (p) { p.device = 'keyboard'; p.glyph = 'keycap'; } return p; };
+      }),
+      check: async () => {
+        const d = await ev(() => {
+          const H = window.__HARNESS;
+          H.reset({ state: 'npc_showcase' }); H.setMode('play-instrumented'); H.setRenderRate(0);
+          H.stepFrames(2);
+          const t = H.listEntities().find((e) => e.kind === 'npc' || e.kind === 'object');
+          if (!t) return { glyphs: [] };
+          H.teleport(t.pos[0] + 0.6, t.pos[2] + 0.6); H.stepFrames(2);
+          const g = [];
+          const b = new Array(17).fill(0); b[0] = 1;
+          H.gamepad({ buttons: b, axes: [0, 0, 0, 0], mapping: 'standard' }); H.stepFrames(2);
+          g.push(((H.getUIState().elements || []).find((e) => e.id === 'hud.prompt') || {}).meta);
+          H.gamepad({ buttons: new Array(17).fill(0), axes: [0, 0, 0, 0], mapping: 'standard' });
+          window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyE', bubbles: true })); H.stepFrames(2);
+          g.push(((H.getUIState().elements || []).find((e) => e.id === 'hud.prompt') || {}).meta);
+          return { glyphs: g.map((m) => m && m.glyph) };
+        });
+        return d.glyphs.length === 2 && d.glyphs[0] === d.glyphs[1] && d.glyphs[0] === 'keycap';
+      },
+      cleanup: () => ev(() => { if (window.__ENGINE.__ipOrig) window.__ENGINE._interactPrompt = window.__ENGINE.__ipOrig; }),
+    },
+    {
+      id: 'M-P20', what: 'shrink the interface body size to 6 px at 1080p',
+      // Every size in every screen module is expressed in 1080p units and multiplied by
+      // `UISurface.s`, so overriding that one getter shrinks the whole interface's type by a
+      // known factor without touching the check's own setup. It is the smallest perturbation
+      // that changes the quantity M-P20 measures and nothing else.
+      apply: () => ev(() => {
+        const S = window.__ENGINE.renderer.menus;
+        if (!S.__sOrig) S.__sOrig = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(S), 's');
+        Object.defineProperty(S, 's', { configurable: true, get: () => 0.30 });
+      }),
+      check: async () => {
+        const d = await ev(() => {
+          const H = window.__HARNESS;
+          const cv = document.querySelector('canvas#view');
+          cv.width = 844 * 2; cv.height = 390 * 2;
+          window.__ENGINE.renderer.setSize(cv.width, cv.height);
+          H.reset({ state: 'ui-journal' }); H.setRenderRate(0);
+          H.setViewport({ size: { w: 844, h: 390, dpr: 2 }, pointer: 'coarse', orientation: 'landscape' });
+          H.renderedTextClear(); H.openMenu('journal'); H.stepFrames(2); H.getUIState();
+          const t = H.getRenderedText({});
+          const cssPer = 390 / cv.height;
+          const min = Math.min(...(t.entries || []).map((e) => e.px * cssPer));
+          H.closeMenu();
+          return { min_css_px: Number.isFinite(min) ? Number(min.toFixed(2)) : null, runs: (t.entries || []).length };
+        });
+        return d.min_css_px !== null && d.min_css_px < 18;
+      },
+      cleanup: () => ev(() => { const S = window.__ENGINE.renderer.menus; delete S.s; }),
+    },
+    {
+      id: 'M-P17/drawn', what: 'sever the touch overlay from the interface — round 1\'s exact state',
+      apply: () => ev(() => {
+        const E = window.__ENGINE;
+        E.__uiCtxOrig = E.__uiCtxOrig || E._uiCtx;
+        E._uiCtx = function () { const c = E.__uiCtxOrig.call(this); c.touch = null; c.rotate = null; return c; };
+      }),
+      check: async () => {
+        const d = await ev(() => {
+          const H = window.__HARNESS;
+          H.reset({ state: 'arena_flat' }); H.setRenderRate(0);
+          H.setViewport({ size: { w: 844, h: 390, dpr: 2 }, pointer: 'coarse', orientation: 'landscape', insets: { top: 0, right: 44, bottom: 21, left: 44 } });
+          H.stepFrames(4);
+          const u = H.getUIState();
+          return { controls_drawn: u.touch ? u.touch.controls_drawn : null, model_controls: (H.touchLayout() || []).length };
+        });
+        // The model still reports eleven controls and the interface draws none: the round-1
+        // discrepancy, reproduced on demand.
+        return d.controls_drawn === 0 && d.model_controls > 0;
+      },
+      cleanup: () => ev(() => { if (window.__ENGINE.__uiCtxOrig) window.__ENGINE._uiCtx = window.__ENGINE.__uiCtxOrig; }),
+    },
+  );
+
   for (const p of perturbations) {
     await ev(() => window.__HARNESS.perturbInputReset());
     await p.apply();
@@ -1420,6 +2362,7 @@ async function runSelfTest(page, h, ev) {
     try { flipped = await p.check(); } catch (e) { err = String(e && e.message); }
     legs.push({ id: p.id, perturbation: p.what, instrument_went_red: flipped, error: err });
     if (!flipped) vacuous.push(p.id);
+    if (p.cleanup) { try { await p.cleanup(); } catch { /* the next reset covers it */ } }
     await ev(() => window.__HARNESS.perturbInputReset());
   }
   log(`self-test: ${legs.filter((l) => l.instrument_went_red).length}/${legs.length} instruments went red under a perturbation of their own model`);

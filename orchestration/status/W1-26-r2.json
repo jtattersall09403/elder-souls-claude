@@ -2,17 +2,17 @@
   "task_id": "W1-26-r2",
   "brief": "corpus/90-verdicts/wave1/W1-26-r1.md (FAIL 1.3/10)",
   "started": "wave-1 round 2",
-  "state": "researching",
+  "state": "building",
   "outputs_expected": [
-    "game/src/render/text-register.js — sees EVERY drawing surface incl. the vector-stroked glyph path; blind surfaces declared, never an empty set masquerading as clean",
-    "game/src/ui/glyphs.js — drawText() reports to the register",
-    "game/src/render/renderer.js — declare + instrument all three 2D surfaces",
-    "game/src/harness/api.js — getRenderedText() derives surfaces from the contexts actually wrapped; reports blind[]",
-    "game/src/render/ui.js — overflow policy stops sacrificing the scribe's replies (no panel-budget widening)",
+    "game/src/render/text-register.js \u2014 sees EVERY drawing surface incl. the vector-stroked glyph path; blind surfaces declared, never an empty set masquerading as clean",
+    "game/src/ui/glyphs.js \u2014 drawText() reports to the register",
+    "game/src/render/renderer.js \u2014 declare + instrument all three 2D surfaces",
+    "game/src/harness/api.js \u2014 getRenderedText() derives surfaces from the contexts actually wrapped; reports blind[]",
+    "game/src/render/ui.js \u2014 overflow policy stops sacrificing the scribe's replies (no panel-budget widening)",
     "the naming line drawn (NAMED_line coupling > 0)",
     "hold opens census-paused; scribe asks on interact; >= 60 s of body before the first question",
     "locomotion actually moves the body",
-    "tools/harness/w1-26-opening.mjs — exits non-zero when M9 searches zero strings",
+    "tools/harness/w1-26-opening.mjs \u2014 exits non-zero when M9 searches zero strings",
     "delete-the-fix confirmation for each fix",
     "docs/shots/ image + reports/blog-feed.jsonl line"
   ],
@@ -20,9 +20,14 @@
   "findings": [
     "boot-check PASS at start. loadavg 16.9 (above the ~12 distortion threshold named in AGENT-PROTOCOL).",
     "Choke point confirmed: ALL menus/HUD text goes through ui/glyphs.js drawText() (re-exported by ui/type.js). It strokes vector paths; the register wraps fillText/strokeText only. Hence menus surface = 0 entries even when instrumented.",
-    "render/ui.js (dialogue) uses ctx.fillText directly — that is why 'dialogue' is the only surface with entries.",
-    "render/ui.js:199 — `while (contentH > maxH && spokenLines.length) spokenLines.shift()` is the line that eats the scribe's replies. PANEL_MAX_FRAC=0.48, measured area cost 0.498 of 0.55 — no budget headroom."
+    "render/ui.js (dialogue) uses ctx.fillText directly \u2014 that is why 'dialogue' is the only surface with entries.",
+    "render/ui.js:199 \u2014 `while (contentH > maxH && spokenLines.length) spokenLines.shift()` is the line that eats the scribe's replies. PANEL_MAX_FRAC=0.48, measured area cost 0.498 of 0.55 \u2014 no budget headroom.",
+    "MEASURED (before any change): the round-1 '60 frames of forward input move the body 0.0000 m' is an INSTRUMENT artefact as well as a real defect. InputPipeline.queueInputs() does `this.script = script.slice()` \u2014 it REPLACES the timeline and re-bases it on the calling frame. Both the round-1 builder's probe and the round-1 critic's probe called it 60 times in a loop, so exactly ONE event survived. Measured side by side: round-1 call shape 0.0533 m; one call with the full 60-event array, census closed, in the same hold: 3.2000 m. With the census surface open at hold.hatch-name: 0.0000 m. So the body CAN move and consumeUI() zeroing moveX/moveY is the real cause \u2014 the named fix is the right one.",
+    "MEASURED DTR (own denominator getCensusModel(), on-arrival draw policy, whitespace-stripped match, watermark taken BEFORE the repainting call): worst nodes hold.hatch-name 0.6667 and writ.stamp 0.6667; writ.given-name 0.9000; writ.birthsign 0.9091. Undrawn everywhere = `spoken` rows (hold.wake's opening line, the upbringing reply, the on_match_named_class NAMING LINE, the birthsign scribe_line) plus 4 of 14 hatch-name options outside the 9-option window.",
+    "The naming line is `on_match_named_class`/`on_nearest_named_class` on node writ.class-questions; census.js pushes it into `spoken`, and it is displayed at writ.birthsign where 9 birthsign options + the question exceed the 0.48-height cap and ui.js:199 shifts it off. It is never a node's own `line`, which is why it is always the first thing sacrificed.",
+    "HF3/AR-2 hit source: engine.js _interactPrompt() built 'Take ' + o.name / 'Speak to ' + n.name. Fixed to name the object only; the verb is carried as a field.",
+    "BLOCKED at 13:1x: boot-check FAILS on the shared tree \u2014 game/data/quests/hooks.json lost 10 Q-MAIN entries relative to HEAD~1 (Q-MAIN-17..23, 30, 31, 32) and the pre-existing RI-DLG05 A.3 guard in sim/quest/machine.js throws at Engine._boot. NOT my change; another agent's live working file. Boot-check PASSED at my start."
   ],
-  "next_step": "measure: DTR per node, why locomotion is 0.0000 m, and what the census-pause path looks like",
+  "next_step": "ui.js overflow policy (type scale -> option window -> record -> spoken last); census hold restructure (paused start, ask on interact); writ.class-verdict node for the naming line",
   "notes_for_successor": "Do NOT re-derive the ui.js wrap() space-dropping bug: a space-joined delivery test invents undrawn text. Strip all whitespace from both sides when matching register rows against authored strings."
 }

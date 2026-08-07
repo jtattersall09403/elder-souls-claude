@@ -42,6 +42,9 @@ export class Viewport {
     this.resizes = 0;
     this.lastSize = { w: 0, h: 0 };
     this.onResize = null;
+    /** L9/H2 — fired when the device class actually changes. `RealInput` wires the fallback. */
+    this.onDeviceClass = null;
+    this.deviceClassChanges = 0;
     this.capabilities = {
       orientationLock: !!(this.win && this.win.screen && this.win.screen.orientation && this.win.screen.orientation.lock),
       fullscreen: !!(this.canvas && (this.canvas.requestFullscreen || this.canvas.webkitRequestFullscreen)),
@@ -53,16 +56,31 @@ export class Viewport {
     this._handlers = [];
   }
 
-  /** H2 — the ONLY device-class source. */
+  /**
+   * H2 — the ONLY device-class source.
+   *
+   * L9 IS A CONSEQUENCE AND IT HAS TO FIRE HERE, NOT ONLY AT BOOT. "A coarse-pointer device
+   * gets the touch fallback from the FIRST FRAME." Round 1 applied that rule once, inside
+   * `RealInput.attach()`, so a device class that changed afterwards — a phone rotated into a
+   * different media-query state, or a harness `setViewport({pointer:'coarse'})` — moved the
+   * reported class and left the touch fallback exactly as it was. The round-1 critic's
+   * ablation went straight through the hole: it switched `deviceClass` to `handheld` and
+   * nothing downstream of it changed, which is a second, quieter way for the overlay to be
+   * absent from a handheld frame. `onDeviceClass` is the notification that closes it.
+   */
   detectDeviceClass() {
+    const before = this.deviceClass;
     if (this.override && this.override.pointer) {
       this.deviceClass = (this.override.pointer === 'coarse') ? 'handheld' : 'desktop';
-      return this.deviceClass;
+    } else if (!this.capabilities.matchMedia) {
+      this.deviceClass = 'desktop';
+    } else {
+      const coarse = this.win.matchMedia(this.cfg.device_class_queries ? this.cfg.device_class_queries.coarse : '(pointer: coarse)').matches;
+      const noHover = this.win.matchMedia(this.cfg.device_class_queries ? this.cfg.device_class_queries.no_hover : '(hover: none)').matches;
+      this.deviceClass = (coarse && noHover) ? 'handheld' : 'desktop';
     }
-    if (!this.capabilities.matchMedia) { this.deviceClass = 'desktop'; return this.deviceClass; }
-    const coarse = this.win.matchMedia(this.cfg.device_class_queries ? this.cfg.device_class_queries.coarse : '(pointer: coarse)').matches;
-    const noHover = this.win.matchMedia(this.cfg.device_class_queries ? this.cfg.device_class_queries.no_hover : '(hover: none)').matches;
-    this.deviceClass = (coarse && noHover) ? 'handheld' : 'desktop';
+    if (this.deviceClass !== before) this.deviceClassChanges++;
+    if (this.deviceClass !== before && this.onDeviceClass) this.onDeviceClass(this.deviceClass, before);
     return this.deviceClass;
   }
 
@@ -194,6 +212,7 @@ export class Viewport {
       fullscreen: this.fullscreen,
       wakeLock: !!this.wakeLock,
       resizes: this.resizes,
+      deviceClassChanges: this.deviceClassChanges,
       rotateState: this.rotateState(),
       capabilities: { ...this.capabilities },
       min_text_css_px: this.cfg.min_text_css_px || 18,

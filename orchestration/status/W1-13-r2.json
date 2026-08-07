@@ -2,20 +2,22 @@
   "task_id": "W1-13-r2",
   "brief": "death, recovery and the hearth loop (RI-JRN06, RI-PRG04) — round 2 after 4/10 FAIL",
   "started": "wave-1 round 2",
-  "state": "researching",
-  "outputs_expected": [
-    "fix: engine.js:2011 hearth gate for level-up screen",
-    "proof: end-to-end levelling loop from walked arrival",
-    "fix: souls survive a mid-death save (DeathSystem in-flight state durable)",
-    "fix: M-D5 named-NPC world-side consumer",
-    "fix: souls-conservation instrument filtering 6/20 deaths",
-    "fix: fall/lastGrounded rule never fires, 'drown' dead code",
-    "fix: fog-gate push-out at exact centre",
-    "fix: respawn body sliding 5-22m off basin",
-    "docs/shots/ image + reports/blog-feed.jsonl line"
+  "state": "building",
+  "outputs_written": [
+    "game/src/sim/hearth.js — HearthSystem.atHearth(sim) (the named gap)",
+    "game/src/engine.js — atHearthReal/atHearthOverridden/atHearthId in _uiCtx; getPlayerStats souls_to_next/souls_spent",
+    "game/src/ui/system.js — state() reports at_hearth / at_hearth_real / at_hearth_overridden",
+    "tools/harness/w1-13-r2-levelling-loop.mjs + reports/runs/W1-13-R2/levelling-loop.json",
+    "reports/runs/W1-13-R2/levelling-loop-delete-the-fix.json"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "read verdict corpus/90-verdicts/wave1/W1-13-r1.md",
-  "notes_for_successor": ""
+  "findings": [
+    "CONFIRMED on HEAD before touching anything: critic-w1-13-f reports levelup REFUSED at all three wells, OPENED under setAtHearth(true).",
+    "FIXED + PROVED: 3/3 wells, walked arrival (58.8 m jog), rest, openMenu('levelup') OPENS, spend through the REAL input path (interact arm + interact confirm), level 1->2, souls 4200->3782 = exactly soulsToNextLevel()=418, endurance 20->21, one level_up event, REFUSED 48.5 m off the basin, and the spend survives a save/load read off the live world. used_setAtHearth=false throughout.",
+    "DELETE-THE-FIX: deleting HearthSystem.prototype.atHearth in the page puts every one of those numbers back to the round-1 values (open=false, level 1->1, souls unchanged).",
+    "A level_up event could NOT reach a trace on any build: it is emitted from _applyUIPending() on a PAUSED frame (S14 stops the world outside a fight while a screen is open) and _afterStep() returned before writing a record; stepOnce() then clears the bus at the top of the next unpaused step. _afterStep() now writes one record for a paused frame that actually emitted something.",
+    "sim.frame does not advance while a menu is open, so a multi-frame queueInputs script never fires — each press has to be its own one-frame script.",
+    "getPlayerStats() had no soulsToNextLevel and no soulsSpent; added."
+  ],
+  "next_step": "mid-death save durability probe; then M-D5 consumption; then fall/drown, fog centre, respawn drift",
+  "notes_for_successor": "Code changes for the mid-death save (DeathSystem.restoreInFlight + save/state.js death.in_flight + engine post-load surface restore), the respawn placement hook (_afterRespawnPlacement), the nearest-well respawn floor, the fall/drown lethalCause, the fog-gate centre and the S5 world-side classifier (_classifyOnSpawn) are ALL WRITTEN but NOT YET MEASURED."
 }

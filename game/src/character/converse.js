@@ -314,6 +314,14 @@ export class Conversation {
    */
   setSupply(supply) { this.supply = supply || null; return this; }
 
+  /**
+   * The opacity register (`game/src/world/opacity.js`), installed by `Engine._installOpacity()`.
+   *
+   * Absent in a bare unit test, in which case `say()` behaves exactly as it did before this
+   * round — a topic nobody has an info for returns null and the engine reports `no_info`.
+   */
+  setOpacity(reg) { this.opacity = reg || null; return this; }
+
   say(topicId, player) {
     if (!this.open || !this.npc) return null;
     // The way there, and what the town is saying. Both return their text VERBATIM out of the
@@ -329,9 +337,29 @@ export class Conversation {
     // so a probe can still perturb race or upbringing mid-conversation and watch the list move.
     const view = player ? { ...this.player, ...player } : this.player;
     const info = infoFor(this.topics, topicId, this.npc, view);
-    if (!info) return null;
-    this.said = info;
-    return info;
+    if (info) { this.said = info; return info; }
+    // RI-WLD09 §B1, the consumer. Nothing to say is the world's answer to two completely
+    // different situations — nobody wrote anything, and nobody is going to tell you — and from
+    // inside the game they are the same silence. That equivalence is the failure the opacity
+    // budget exists to prevent, so when a REGISTERED topic reaches somebody with no info, they
+    // decline out loud instead. The refusal comes verbatim out of `world/opacity.json`; it is
+    // never composed, for the same reason the journal never composes (RI-DLG05 "How we lose").
+    //
+    // This fires for the twenty-four registered mysteries and for nothing else. Take a mystery
+    // out of the register and its topic goes straight back to silence, which is the perturbation
+    // that shows the register is being read.
+    if (this.opacity) {
+      const ref = this.opacity.refusalFor(topicId, this.npc);
+      if (ref) {
+        this.opacity.noteRefusal(ref.mystery);
+        this.said = {
+          topic: topicId, actor: ref.actor, text: ref.text, gated: false,
+          source: 'refusal', mystery: ref.mystery, to: [],
+        };
+        return this.said;
+      }
+    }
+    return null;
   }
 
   move(dir) {

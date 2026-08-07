@@ -64,12 +64,27 @@ try {
   // Three frames A(t), B(t+g), C(t+2g). d1 = |A-B|, d2 = |B-C|, excess = max(0, d1-d2).
   // d2 is the scene's OWN ambient-motion floor measured over the same gap, in the same place,
   // under the same conditions — so `excess` is d1 with the world's liveness subtracted out.
+  // d13 = |A-C| IS RECORDED, AND THIS IS THE POINT OF THE R2 PASS.
+  //
+  // The R1 calibration computed d1 and d2 only. G3c gates on gamma = |A-C| / max(d1, d2) — the
+  // sub-gate that catches a STEADY arrival, which decelerates by nothing and accelerates by nothing
+  // and is therefore invisible to both of the other two — and there was no observed gamma anywhere
+  // in the project's data to bound it with. A and C were already in hand on every row; only the
+  // comparison was missing. It costs one more metricFamily() per row and no extra frame.
   const record = (population, region, cond, A, B, C, resid) => {
-    const f1 = metricFamily(A.px, B.px), f2 = metricFamily(B.px, C.px);
-    const excess = {};
-    for (const k of Object.keys(f1)) if (!k.includes('_')) excess[k] = Math.max(0, f1[k] - f2[k]);
-    log(`${population.padEnd(9)} ${region.padEnd(18)} d1.b24=${f1.b24.toFixed(4)} d2.b24=${f2.b24.toFixed(4)} excess.b24=${excess.b24.toFixed(4)} queued=${resid.queued}`);
-    return { population, region, cond, d1: f1, d2: f2, excess, resid };
+    const f1 = metricFamily(A.px, B.px), f2 = metricFamily(B.px, C.px), f13 = metricFamily(A.px, C.px);
+    const excess = {}, rise = {}, gamma = {};
+    for (const k of Object.keys(f1)) {
+      if (k.includes('_')) continue;
+      excess[k] = Math.max(0, f1[k] - f2[k]);
+      rise[k] = Math.max(0, f2[k] - f1[k]);
+      const denom = Math.max(f1[k], f2[k]);
+      gamma[k] = denom > 0 ? f13[k] / denom : null;   // null, not 1: nothing moved, so the ratio says nothing
+    }
+    log(`${population.padEnd(9)} ${region.padEnd(18)} d1.b4=${f1.b4.toFixed(4)} d2.b4=${f2.b4.toFixed(4)} ` +
+      `d13.b4=${f13.b4.toFixed(4)} excess.b4=${excess.b4.toFixed(4)} rise.b4=${rise.b4.toFixed(4)} ` +
+      `gamma.b4=${gamma.b4 === null ? '   -  ' : gamma.b4.toFixed(3)} queued=${resid.queued}`);
+    return { population, region, cond, d1: f1, d2: f2, d13: f13, excess, rise, gamma, resid };
   };
 
   // ---------- population 1: SETTLED (and a weather/night spread, because rain moves) ----------

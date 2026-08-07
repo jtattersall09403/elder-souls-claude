@@ -5,8 +5,18 @@
   "source": "RI-JRN01 §C O6-O10 (creation is a scene); RI-CHR01 §1 (what is asked and by whom)",
   "kind": "creation-graph",
   "note": "This is the character creation UI. There is no other one. Every node has a speaker who is a record in npcs/writ-house.json, a line in that speaker's voice, and — where the node sets a field — the player's reply is the input. No node is a menu, a slider, a step counter or a confirmation screen.",
-  "start": "hold.wake",
+  "start": "hold.come-to",
   "nodes": [
+    {
+      "id": "hold.come-to",
+      "speaker": "jeeh-ei",
+      "place": "barge-hold",
+      "hands_control_back": true,
+      "resume": "hold.wake",
+      "resume_by": "talk",
+      "next": null,
+      "note": "RI-JRN01 O6, and the one thing the round-1 verdict said this opening loses to Morrowind outright: 'you spend two minutes being a body first'. The scene used to START at hold.hatch-name, so the first character-defining question was on the frame at frame 0 and first_control never arrived before it. This node hands control back the moment the hold loads: Jeeh-Ei is sitting there, the knife and the tithe-gourd are on the crates, and she says nothing until you walk over and talk to her. Nothing is explained and nothing is pressed. `resume_by: talk` is what the engine waits for; hold.out's `resume_by: walk` is the same mechanism at the other end of the hold."
+    },
     {
       "id": "hold.wake",
       "speaker": "jeeh-ei",
@@ -42,7 +52,9 @@
       "line": "Go up. The light is bad but it is light. When you are done at the desk, come back down here if I am still here.",
       "next": null,
       "hands_control_back": true,
-      "note": "RI-JRN01 O6: the player is controllable for >= 60 s of available play, in the hold and on the deck and down the gangplank, before the Writ House node opens."
+      "note": "`resume`/`resume_by` were implicit before: Census.enter() jumped to a hardcoded 'writ.enter' and the engine tested one hardcoded z. Two nodes now hand control back, in the same hold, resumed by different acts, so the target and the act both live in the graph where a reader can see them.",
+      "resume": "writ.enter",
+      "resume_by": "walk"
     },
     {
       "id": "writ.enter",
@@ -261,7 +273,7 @@
         "source": "progression/classes.json#classes",
         "option_line_field": "scribe_line"
       },
-      "next": "writ.birthsign"
+      "next": "writ.class-verdict"
     },
     {
       "id": "writ.class-custom-name",
@@ -333,7 +345,7 @@
         "source": "progression/skills.json#skills",
         "excludes": "primary_skills"
       },
-      "next": "writ.birthsign"
+      "next": "writ.class-verdict"
     },
     {
       "id": "writ.class-questions",
@@ -349,7 +361,29 @@
       "on_match_named_class": "That is a %ClassName. That is exactly a %ClassName. I have written eleven of them this year and not one of them said the word to me first.",
       "on_nearest_named_class": "%ClassName. Not to the letter — nobody is, and the ones who are worry me — but of the words I am allowed to write, that is the one nearest to what you just told me. %ClassName. You will hear it said back to you and you will not like it the first time.",
       "on_no_match": "I do not have a word for that. I am going to write what you told me and let the next person along argue with it.",
-      "next": "writ.birthsign"
+      "next": "writ.class-verdict"
+    },
+    {
+      "id": "writ.class-verdict",
+      "speaker": "warden-scribe-tuleeh-ma",
+      "place": "writ-house",
+      "beat": "B03",
+      "line": "%ClassVerdict",
+      "input": {
+        "kind": "choice",
+        "options": [
+          {
+            "id": "go-on",
+            "text": "Let her write it."
+          }
+        ]
+      },
+      "next": "writ.birthsign",
+      "route_lines": {
+        "named": "%ClassName, then, in your own mouth first. That is a word the Office already has, so it goes in the box exactly as you said it and nobody in Gideon will have to think about it. Not everybody gets that. Most of what walks in here has to be rounded.",
+        "custom": "%ClassName. There is no box for that, so I have cut one, and in a year a factor in Lilmoth will read it off your case and have no idea what it means and will have to ask you. That is the best outcome available from this desk."
+      },
+      "note": "RI-CHR01 §4 calls the naming 'the moment the route is for', and the round-1 verdict is that the game 'never tells you what you are': fourteen classes computed, all fourteen reachable, the right one 96.25% of the time, and NAMED_line drawn 0% of the time with a coupling of 0. The cause was structural. The naming lines — on_match_named_class and its two siblings — were pushed into `spoken`, which is the one thing on the panel the height cap was allowed to sacrifice, and it sacrificed them at every node they appeared at. A line that matters is a node's own `line`, which is never sacrificed, on a beat the player closes themselves. That is also exactly what Morrowind does with it: Socucius Ergalla says the word, you press on. All three routes pass through here, so the moment does not belong to the questionnaire alone."
     },
     {
       "id": "writ.birthsign",

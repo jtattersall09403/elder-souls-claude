@@ -301,7 +301,12 @@ export class Traversal {
         const dmg = p.hpMax * (W.drown_hp_pct_per_s / 100) / 60;
         this._damage(p, dmg);
         this.events.push({ kind: 'drowning', hp: +p.hp.toFixed(2) });
-        if (p.hp <= 0) { this._setState(p, 'DEATH'); this.events.push({ kind: 'drowned' }); }
+        // W1-13 r2: WHAT KILLED YOU has to outlive the state that proves it. `_setState(DEATH)`
+        // fires on this frame, and `DeathSystem._inferCause()` runs after the step — by then
+        // `p.state` is DEATH and the evidence is gone, which is why `placeStain()`'s 'drown'
+        // branch was dead code and its 'fall' branch never fired once. The killer writes the
+        // cause down; `die()` reads it and clears it.
+        if (p.hp <= 0) { p.lethalCause = 'drown'; this._setState(p, 'DEATH'); this.events.push({ kind: 'drowned' }); }
       }
     } else if (this.breath < W.breath_max_s) {
       this.breath = Math.min(W.breath_max_s, this.breath + W.breath_refill_mult / 60);
@@ -398,7 +403,12 @@ export class Traversal {
     if (dmg > 0) {
       this._damage(p, dmg);
       this.events.push({ kind: 'fall_damage', distance_m: +dist.toFixed(2), damage: +dmg.toFixed(2) });
-      if (p.hp <= 0) { this._setState(p, 'DEATH'); this.events.push({ kind: 'fall_death' }); }
+      // W1-13 r2, same rule as the drown above: the landing frame is the ONLY frame on which
+      // `p.state === 'FALL'` is still true, and the death loop runs after the step. Without
+      // this line `_inferCause()` returned 'combat' for a 90 m drop and RI-PRG04 §6's "the
+      // bloodstain is placed at the last grounded position before the fall, not at the bottom"
+      // was unimplemented in effect.
+      if (p.hp <= 0) { p.lethalCause = 'fall'; this._setState(p, 'DEATH'); this.events.push({ kind: 'fall_death' }); }
       else if (dist >= C.fall.stagger_from_m) {
         this._setState(p, 'STAGGER');
         const until = (p.frameNow || 0) + C.fall.stagger_frames;

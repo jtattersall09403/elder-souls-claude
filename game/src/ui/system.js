@@ -35,6 +35,7 @@ import { drawHUD } from './hud.js';
 import { drawInventory, drawContainer, sortRows, SORTS, CATEGORIES } from './screens/inventory.js';
 import { drawJournal, drawBook, chronicle, interleaveRatio, bookPagination } from './screens/text.js';
 import { drawLevelUp, drawSheet, drawSpells } from './screens/progress.js';
+import { drawTouchOverlay, drawRotateState } from './touch-overlay.js';
 import { RING, RING_COLS, screenRect, COMBAT_ALPHA, CALM_ALPHA } from './chrome.js';
 import { barContrasts, MATERIALS } from './theme.js';
 import { BODY } from './type.js';
@@ -348,7 +349,14 @@ export class UISystem {
    * would report the frame before last to every measurement ever taken of it.
    */
   build(ctx, force) {
-    if (!force && this.builtFrame === ctx.frame && this.lastMode === this.mode) return;
+    // THE CACHE KEY HAS TO INCLUDE THE TOUCH OVERLAY, and this is not a micro-optimisation
+    // detail — it is the difference between a drawn control and an undrawn one. `frame` and
+    // `mode` do not change when a thumb goes down on the block button or when the drawer
+    // opens, so a build keyed on those two alone would paint the overlay once and then never
+    // again show a control pressed. `getUIState()` calls this with `force = false` on the same
+    // frame a probe pressed something, which is exactly the read that would have gone stale.
+    const sig = touchSignature(ctx);
+    if (!force && this.builtFrame === ctx.frame && this.lastMode === this.mode && this.lastTouchSig === sig) return;
     const S = this.S;
     S.begin();
     // The HUD is drawn in the world and behind a menu, exactly as Souls does: opening the
@@ -370,8 +378,25 @@ export class UISystem {
       default: break;
     }
     if (this.isMenu()) S.endScreen();
+
+    // ---- RI-JRN04 §G/H1: the two models that had no renderer, drawn ----------------------
+    //
+    // Both are drawn AFTER the screens and outside `beginScreen()`'s rectangle, for the same
+    // reason the HUD is drawn before it: opening the inventory on a phone dims the inventory,
+    // not the controls you need to close it with. T8 is upheld by construction — the layout is
+    // measured from the safe area, so the controls cannot enter an inset — and the overlay is
+    // suppressed entirely while a full-screen in-world illustration is up.
+    this.touchDrawn = 0;
+    this.rotateDrawn = false;
+    if (ctx.rotate) {
+      this.rotateDrawn = drawRotateState(S, ctx.rotate);
+    } else if (ctx.touch) {
+      this.touchDrawn = drawTouchOverlay(S, ctx.touch);
+    }
+
     this.builtFrame = ctx.frame;
     this.lastMode = this.mode;
+    this.lastTouchSig = sig;
   }
 
   // ---- models ------------------------------------------------------------------------------
@@ -643,6 +668,17 @@ export class UISystem {
       materials: MATERIALS.filter((mm) => els.some((e) => e.material === mm)).concat(
         this.mode === 'world' ? [] : []),
       overdraw: +(S.overdrawPx / (S.W * S.H)).toFixed(3),
+      // RI-JRN04 §G/H1, and RI-MTH07's observable for both models. These count what this
+      // build's LAST LAYOUT actually painted, not what the input layer would like drawn —
+      // `touch_controls_drawn` is 0 whenever `drawTouchOverlay()` returned 0, so a critic
+      // ablating device class reads the difference here as well as in the framebuffer.
+      touch: {
+        controls_drawn: this.touchDrawn || 0,
+        rotate_drawn: !!this.rotateDrawn,
+        area_frac: +(S.unionArea((e) => e.kind === 'touch_button' || e.kind === 'touch_stick') / (S.W * S.H)).toFixed(4),
+        rotate_area_frac: +(S.unionArea((e) => e.kind === 'rotate_illustration') / (S.W * S.H)).toFixed(4),
+        labelled: els.filter((e) => (e.kind === 'touch_button' || e.kind === 'touch_stick') && e.text !== null).map((e) => e.id),
+      },
       // legacy fields the pre-existing getUIState() reported; kept so nothing that read them breaks
       surfaces: els.length ? 1 : 0,
       full_screen_panels: els.filter((e) => e.kind === 'panel' && e.rect[2] * e.rect[3] > 0.9 * S.W * S.H).length,
@@ -677,4 +713,23 @@ function contextOf(text, needle) {
   if (i < 0) return text.slice(0, 160);
   const a = Math.max(0, i - 70), b = Math.min(text.length, i + needle.length + 90);
   return (a > 0 ? '…' : '') + text.slice(a, b) + (b < text.length ? '…' : '');
+}
+
+/**
+ * A cheap, total description of everything the touch overlay and the rotate state would draw.
+ *
+ * `build()` compares it against the last one so that a control going down, the drawer opening,
+ * the stick moving, the device class changing or the phone being turned all invalidate the
+ * layout — none of which move `sim.frame` or `mode`. Written as a string rather than a hash so
+ * that a probe that wants to know WHY the layout rebuilt can read it.
+ */
+function touchSignature(ctx) {
+  if (ctx.rotate) return 'rotate:' + ctx.rotate.line;
+  const t = ctx.touch;
+  if (!t || !t.shown) return 'none';
+  const st = t.stick && t.stick.active
+    ? `|s:${Math.round(t.stick.ox)},${Math.round(t.stick.oy)},${t.stick.x.toFixed(3)},${t.stick.y.toFixed(3)}`
+    : '';
+  return `t:${t.viewport.w}x${t.viewport.h}|` +
+    (t.controls || []).map((c) => `${c.action}${c.down ? '!' : ''}@${Math.round(c.x)},${Math.round(c.y)},${c.r}`).join(';') + st;
 }

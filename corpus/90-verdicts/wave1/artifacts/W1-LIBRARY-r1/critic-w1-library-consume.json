@@ -1,0 +1,128 @@
+{
+  "cases": [
+    {
+      "quest": "Q-SOUL-02",
+      "res": "res_seal",
+      "book": "the-court-and-the-tide",
+      "key": "book_the_court_and_the_tide",
+      "control": {
+        "n": 4,
+        "found": true,
+        "available": false,
+        "why": [
+          "scribing 0/40",
+          "you have not learned book_the_court_and_the_tide",
+          "you do not know rev_lease"
+        ],
+        "raw": "{\"id\":\"res_seal\",\"method\":\"lore_knowledge\",\"violence_required\":false,\"available\":false,\"why\":[\"scribing 0/40\",\"you have not learned book_the_court_and_the_tide\",\"you do not know rev_lease\"],\"excludes\":[\"res_prefect\",\"res_burn_count\"]}"
+      },
+      "book_opened": true,
+      "book_pages": 6,
+      "after_reading": {
+        "n": 4,
+        "found": true,
+        "available": false,
+        "why": [
+          "scribing 0/40",
+          "you have not learned book_the_court_and_the_tide",
+          "you do not know rev_lease"
+        ],
+        "raw": "{\"id\":\"res_seal\",\"method\":\"lore_knowledge\",\"violence_required\":false,\"available\":false,\"why\":[\"scribing 0/40\",\"you have not learned book_the_court_and_the_tide\",\"you do not know rev_lease\"],\"excludes\":[\"res_prefect\",\"res_burn_count\"]}"
+      },
+      "reveal_by_key": {
+        "ok": false,
+        "threw": "Error: Q-SOUL-02: no reveal book_the_court_and_the_tide"
+      },
+      "forced_resolve": "{\"ok\":false,\"reason\":\"scribing 0/40; you have not learned book_the_court_and_the_tide; you do not know rev_lease\"}"
+    },
+    {
+      "quest": "Q-LILM-01",
+      "res": "res_rootkeepers",
+      "book": "the-rootless-egg",
+      "key": "book_the_rootless_egg",
+      "control": {
+        "n": 3,
+        "found": true,
+        "available": false,
+        "why": [
+          "root_speech 0/45",
+          "you have not learned book_the_rootless_egg",
+          "you do not know rev_four",
+          "you do not know rev_keeper"
+        ],
+        "raw": "{\"id\":\"res_rootkeepers\",\"method\":\"lore_knowledge\",\"violence_required\":false,\"available\":false,\"why\":[\"root_speech 0/45\",\"you have not learned book_the_rootless_egg\",\"you do not know rev_four\",\"you do not know rev_keeper\"],\"excludes\":[\"res_assize\",\"res_sell\"]}"
+      },
+      "book_opened": true,
+      "book_pages": 6,
+      "after_reading": {
+        "n": 3,
+        "found": true,
+        "available": false,
+        "why": [
+          "root_speech 0/45",
+          "you have not learned book_the_rootless_egg",
+          "you do not know rev_four",
+          "you do not know rev_keeper"
+        ],
+        "raw": "{\"id\":\"res_rootkeepers\",\"method\":\"lore_knowledge\",\"violence_required\":false,\"available\":false,\"why\":[\"root_speech 0/45\",\"you have not learned book_the_rootless_egg\",\"you do not know rev_four\",\"you do not know rev_keeper\"],\"excludes\":[\"res_assize\",\"res_sell\"]}"
+      },
+      "reveal_by_key": {
+        "ok": false,
+        "threw": "Error: Q-LILM-01: no reveal book_the_rootless_egg"
+      },
+      "forced_resolve": "{\"ok\":false,\"reason\":\"root_speech 0/45; you have not learned book_the_rootless_egg; you do not know rev_four; you do not know rev_keeper\"}"
+    },
+    {
+      "quest": "Q-DEEP-01",
+      "res": "res_broker",
+      "book": "the-sap-and-the-knife",
+      "key": "book_the_sap_and_the_knife",
+      "control": {
+        "n": 4,
+        "found": true,
+        "available": false,
+        "why": [
+          "speechcraft 5/45",
+          "root_speech 0/30",
+          "you have not learned book_the_sap_and_the_knife",
+          "you do not know rev_knife",
+          "you do not know rev_hulei"
+        ],
+        "raw": "{\"id\":\"res_broker\",\"method\":\"persuade\",\"violence_required\":false,\"available\":false,\"why\":[\"speechcraft 5/45\",\"root_speech 0/30\",\"you have not learned book_the_sap_and_the_knife\",\"you do not know rev_knife\",\"you do not know rev_hulei\"],\"excludes\":[\"res_name_hulei\",\"res_blame_sapcutters\"]}"
+      },
+      "book_opened": true,
+      "book_pages": 6,
+      "after_reading": {
+        "n": 4,
+        "found": true,
+        "available": false,
+        "why": [
+          "speechcraft 5/45",
+          "root_speech 0/30",
+          "you have not learned book_the_sap_and_the_knife",
+          "you do not know rev_knife",
+          "you do not know rev_hulei"
+        ],
+        "raw": "{\"id\":\"res_broker\",\"method\":\"persuade\",\"violence_required\":false,\"available\":false,\"why\":[\"speechcraft 5/45\",\"root_speech 0/30\",\"you have not learned book_the_sap_and_the_knife\",\"you do not know rev_knife\",\"you do not know rev_hulei\"],\"excludes\":[\"res_name_hulei\",\"res_blame_sapcutters\"]}"
+      },
+      "reveal_by_key": {
+        "ok": false,
+        "threw": "Error: Q-DEEP-01: no reveal book_the_sap_and_the_knife"
+      },
+      "forced_resolve": "{\"ok\":false,\"reason\":\"speechcraft 5/45; root_speech 0/30; you have not learned book_the_sap_and_the_knife; you do not know rev_knife; you do not know rev_hulei\"}"
+    }
+  ],
+  "api": {
+    "openMenu": true,
+    "getUIState": true,
+    "questOpen": true,
+    "questResolutions": true,
+    "questResolve": true,
+    "questSetFlag": true,
+    "questReveal": true
+  },
+  "all_books_open": null,
+  "pagination": null,
+  "book_ids_found": null,
+  "page_errors": []
+}

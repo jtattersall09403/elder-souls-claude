@@ -99,25 +99,74 @@ Every capture therefore carries, in its sidecar `.json` and in the client's retu
 
 ### The arrival gate
 
-`tools/capture/arrival.mjs` refuses, before doing any work:
+**Rebuilt after CAPTURE-SERVICE-R1 beat it 28 times out of 30.** The first version was a denylist of
+exact words, read out of four field names, with `evidence_of` defaulting to `appearance` when it was
+absent. Inflections walked past every stem (`traverse` past `travers`, `crossings` past `crossing`);
+the words a reachability claim actually uses were never on the list (`passable`, `accessible`, `you
+can get to`, `hike`, `trek`, `egress`); `String(raw)` turned `claim: {item: 'RI-JRN04'}` into
+`"[object Object]"`, which matches nothing; six fields a real report carries were never read; and
+omitting the declaration entirely was PERMITTED.
 
-- `evidence_of: "arrival"` or `"walked"` — said plainly;
-- `arrival: "walked"` — asking the service to lie about provenance;
-- `evidence_of` missing — there is no default that guesses for you;
-- a `claim` / `for` / `purpose` / `note` naming `RI-JRN*` or `RI-WLD03`, **whatever it is
-  labelled** — the label does not get to overrule the claim;
-- a claim containing *arrival, reach, reachability, traversal, walkable, route, crossing, journey,
-  duration, how long, elapsed, timed, en route* and the rest of the list in that file.
+A denylist of words cannot work, because the space of English ways to assert a journey is not
+enumerable and the gate loses to every phrasing it did not think of. **So the gate is inverted.**
+
+| layer | what it does | can it permit? |
+|---|---|---|
+| **A — the declaration** | `evidence_of` is **required**, must be a string, and must be an exact token of a **closed vocabulary** (`PURPOSES` in `arrival.mjs`). Appearance tokens pass; arrival tokens are refused with the S34(b) explanation; **anything else — absent, empty, misspelt, invented, an object, an array — is refused.** There is no default. | yes, and only this layer can |
+| **B — reference-item class** | every string anywhere in the spec, at any depth, keys included, scanned for `RI-JRN*` / `RI-WLD03` | no, refuse only |
+| **C — contradiction** | the same recursive scan for stems (prefix-matched, so inflections cannot escape), whole words, phrases and durations that assert a journey | no, refuse only |
+
+Because B and C can only ever refuse, **the gate's soundness does not rest on the completeness of a
+word list.** That is the whole point of the inversion. They exist to catch a caller whose free text
+contradicts its own declaration, which is what laundering looks like.
+
+Acceptance is **no longer silent**. `classify()` returns an `audit` block — the declared purpose,
+its class, and every string the scan read — and the daemon banks it in the manifest as
+`arrival_gate`. The R1 critic's finding (f) was that a laundered capture left no trace of what it
+was requested for; a later audit can now find one.
 
 For an arrival claim, walk it: `tools/world/reachability-walk.mjs`, or `__HARNESS.walkRoute()` /
 `walkPath()`.
 
-The word list is **deliberately over-inclusive** and its false positives are accepted. "The bridge
-at the crossing" is refused even though what it wants is a picture of a bridge, because the
-classifier cannot distinguish that from "the crossing is passable", and the two mistakes do not
-cost the same: a wrongly refused appearance capture costs one re-worded claim; a wrongly permitted
-arrival capture voids a verdict. The remedy — saying what the picture is actually evidence of,
-"the bridge's stonework and silhouette" — is a better claim than the one that tripped the gate.
+**What this does not claim.** It does not recognise every English sentence that asserts a journey;
+nothing can. It claims something narrower and checkable: no capture leaves this service without an
+explicit, recognised declaration of what it is evidence of, that declaration is recorded beside the
+picture, and the admissibility statement names it. A verdict citing a capture declared
+`region-appearance` for a reachability claim is VOID **by inspection of the sidecar**, which is
+S34's own final defence and does not depend on this file being clever.
+
+## The cache is a store of pixels, not a source of provenance
+
+The worst finding in R1: the daemon read the sidecar `.json` out of the cache bucket, checked two
+fields, and returned the whole manifest **verbatim** as its own answer. A manifest written by hand
+next to a 1×1 PNG was served through the ordinary client API in **24 ms**, stamped
+`arrival: "walked"`, `evidence_of: "arrival"`, `settled: true`, with a recorded `sha256` of
+`not-even-the-hash-of-this-file`. No browser booted and no gate ran.
+
+Three layers now stand between the bucket and the caller, ordered so the load-bearing one needs no
+secret:
+
+1. **The daemon re-derives provenance, always.** `provenanceBlock()` is the only thing that ever
+   builds a provenance block, on a render and on a hit alike, and it *asserts* `arrival: "placed"`
+   rather than taking it from anywhere — the daemon knows unconditionally that it has no walking
+   mode. Nothing read off disk contributes. Even a perfectly signed manifest claiming `walked`
+   cannot make the service say `walked`.
+2. **The bytes are checked.** `sha256(png)` must equal the manifest's own recorded hash. This is not
+   only an attack surface: the write path is not atomic across the pair, so a killed daemon can
+   leave a mismatched one.
+3. **The manifest is authenticated.** Every manifest carries an HMAC over the fields later relied
+   upon. One without a valid signature was not written by this daemon. *Honest limit:* every agent
+   here runs as the same user, so this authenticates "this daemon wrote this", not "no local process
+   could forge it" — layer 1 is what holds in that case.
+
+Any failure is a **cache miss** — re-render, re-prove, overwrite — never an error and never a
+refusal. And `provenance.served_from_cache` is now `true` on a hit, in the answer *and* rewritten
+into the sidecar, because S34 names that flag and `HARNESS.md` §6 tells readers to look for it.
+
+`no_cache` also means what it says now. It used to mean "do not read" while still writing, so a
+request that altered how the picture was produced (`__no_camera_stream` removes the camera
+stream-drain and photographs an emptier world) could bank the result under the legitimate key. It
+neither writes a manifest nor touches the banked filename.
 
 ## The settle proof, and why it has three gates
 
@@ -137,12 +186,46 @@ So:
 
 | gate | asks | measured by | must be |
 |---|---|---|---|
-| **G1 residency** | is the world the camera sees actually built? | `streamAround(camX, camZ, 0)` — budget 0 builds nothing, so `queued` is a pure read | `queued === 0` |
-| **G2 quiescence** | is the streamer finished? | `built === 0`, `getWorldStats().streaming.tilesQueued === 0` | both zero |
-| **G3 stability** | has it stopped moving? | three frames A(t), B(t+12), C(t+24); `excess = max(0, \|A−B\| − \|B−C\|)` | `≤ 0.005` |
+| **G1 residency** | is the world the camera sees actually built? | `__HARNESS.provinceResidency(x, z)` — computes the want-set from the streamer's own geometry and reads it. **Read-only** | `queued === 0` |
+| **G2 quiescence** | is the streamer finished? | `built === 0`, `tilesQueued === 0` | both zero |
+| **G3a deceleration** | did something arrive and then stop? | `excess = max(0, d1 − d2)` | `≤ 0.005` |
+| **G3b acceleration** | is it arriving *after* the frame that ships? | `rise = max(0, d2 − d1)`, failing only if `rise > 0.005` **and** `d2 > 1.5 × d1` | both, or pass |
+| **G3c accumulation** | is it arriving *steadily*? | `gamma = d13 / max(d1, d2)` | `≤ 1.35` |
+
+over three frames A(t), B(t+12), C(t+24), where **B is the frame that ships**, `d1 = |A−B|`,
+`d2 = |B−C|` and `d13 = |A−C|`.
 
 G1 and G2 answer *is the world there*. G3 answers *has it stopped moving*. Neither answers the
 other.
+
+**Why G3 is three gates.** R1's G3 was one number, `excess = max(0, d1 − d2)`, and the critic
+certified three shapes of unsettled world with it. `max(0, ·)` means `d2` is never looked at once it
+exceeds `d1` — so a world exploding into existence *after* the delivered frame passed with a `d2`
+fifty-six times the threshold. And subtracting `d2` removes any change that is **steady** across all
+three frames, so an arrival at a constant rate is subtracted out along with the ambient floor.
+
+**Why the third comparison earns its place.** The critic's slow loader (`d1 = 0.060, d2 = 0.055`) and
+the measured settled marauders-coast frame (`d1 = 0.0644, d2 = 0.0640`) are numerically the same
+pair. *No function of `(d1, d2)` can certify one and refuse the other.* `|A−C|` separates them:
+ambient motion is **stationary** — the cover that swayed in the first interval is the cover that sways
+in the second, over the same blocks, so `|A−C|` stays the size of one interval — while arrival
+**accumulates** into new blocks, so `|A−C|` approaches the sum. Measured gamma 1.02 against 1.83.
+And it costs no extra frame: A and C are frames the proof already holds.
+
+**Every gate fails closed.** A gate that could not run records `ran: false` and `pass: false` with
+the reason in `why`. R1 wrapped the residency read in `try/catch` and substituted
+`{queued: 0, …}`, after which the proof said `G1 pass: true` — so a manifest reading
+"settled, G1 pass" could mean "the gate ran and the world was there" *or* "the gate never ran", and
+no reader could tell them apart. There is now no combination of inputs for which a missing
+measurement produces `settled: true`.
+
+**And the probe no longer demolishes what it measures.** G1 used to call `streamAround(x, z, 0)`,
+documented as a pure read because a budget of 0 builds nothing. It is not one: `province.request()`
+re-focuses the streamer, rebuilds the ground skin, the near-prop disc and the cover disc, and
+releases every resident tile outside the new want-set, all before any budget is consulted — and it
+runs *between* the two frames the proof compares. The critic measured it taking `tilesResident`
+25 → 0 and meshes 247 → 5. `provinceResidency()` reads instead, and if the verb is missing G1
+**fails** rather than falling back.
 
 ### The metric, and why it is ambient-corrected
 
@@ -179,15 +262,43 @@ and the frames spent are recorded in the proof.
 ## Prove it yourself
 
 ```bash
+# the CRITIC's instrument. Not written by the service's builder; exits non-zero when an attack
+# SUCCEEDS. This is the bar the service is held to, and it must not be edited to pass.
+node tools/capture/critic-r1-probe.mjs --gates --key --metric --forge --sticky --isolate
+
+node tools/capture/settle-shapes.mjs     # does G3 discriminate, and by WHICH gate? (offline, ~40 ms)
 node tools/capture/falsify.mjs           # attacks the service; non-zero if any attack succeeds
 node tools/capture/concurrency-test.mjs  # N processes, counts browsers from /proc
 node tools/capture/cache-test.mjs        # hit timing + build invalidation (edits game/, restores it)
-node tools/capture/calibrate-settle.mjs  # re-derives the threshold from measurement
+node tools/capture/calibrate-settle.mjs  # re-derives the threshold from measurement (records d13/gamma)
 ```
 
 `falsify.mjs` includes the control that makes the refusals mean something: the same capture with
 the service's streaming remedy left in **must succeed**, otherwise "it refused" proves only that
 it refuses everything.
+
+**`settle-shapes.mjs` exists because the critic's `--metric` phase can no longer fail.** That is
+not a criticism of it — it is the attack that found R1's blind spot. But it calls `judge()` with a
+residency object that has no `ran` field, and the rebuilt gates fail closed on exactly that, so all
+five of its rows are refused by G1 before G3 is consulted; and its `wrong` predicate counts only
+false *passes*, so five blanket refusals score clean. **Deleting G3b and G3c entirely leaves it
+green** — confirmed by deleting them. `settle-shapes.mjs` hands `judge()` a complete residency
+reading and a complete triad so the verdict is decided by G3 and nothing else, and it asserts
+**which sub-gate refused**, because a case that fails for a reason other than the one it names is
+not evidence for the thing it names.
+
+A probe you have not tried to break is a probe you do not know the strength of. Every gate here was
+removed on a copy of the tree and the instrument confirmed to go red:
+
+| removed | what the instrument said |
+|---|---|
+| `readCache()` (trust the sidecar again) | `P3-cache-forgery` **BEATEN — SERVED in 25 ms: arrival=walked, sha256 recorded=not-even-the-hash-of-this-file** (R1 measured 24 ms) |
+| the declaration gate's fail-closed default + recursive scan | `P1-gate-laundering` 0/30 → **11/30 accepted** |
+| `__no_camera_stream` from the canonical spec | `P2-cache-key-honesty` **1 dishonest**, `P2b` red |
+| `ACC_RATIO` loosened to 3.0 | `settle-shapes` **2 misjudged** — steady arrival certified SETTLED |
+| `ACC_RATIO` tightened to 1.01 | `settle-shapes` **6 misjudged** — three *real* settled frames refused |
+
+The last two are a two-sided falsification: the bound sits in a band with a real edge on each side.
 
 ## Operating it
 

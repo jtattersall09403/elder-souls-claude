@@ -21,11 +21,16 @@ try {
   for (const race of ['saxhleel','dunmer','nord','khajiit']) {
     await h.h('loadState', 'barge-hold');
     let st = await h.h('censusBegin', { race });
-    let entered = false, guard = 0, nodes = [];
+    let guard = 0, nodes = [];
     while (st && !st.done && guard++ < 64) {
       const inp = st.input || {};
       nodes.push(st.node);
-      if (!inp.kind) { if (!entered) { entered = true; st = await h.h('censusEnter'); continue; } break; }
+      // W1-26 round 2: the scene hands control back TWICE now, not once — the hold opens paused
+      // with a body and no question (RI-JRN01 O6) and is resumed by talking to her, and leaving
+      // the hold is resumed by walking. `st.resume_by` says which, and the census refuses a
+      // resume that names the wrong act. This used to be a one-shot `entered` flag, which
+      // stopped the walk dead at the second pause.
+      if (!inp.kind) { if (st.paused) { st = await h.h('censusEnter', st.resume_by); continue; } break; }
       let v;
       if (inp.kind === 'text') v = 'Silence-Under-Salt';
       else if (inp.kind === 'pick') v = (inp.options||[]).slice(0, inp.count||2).map(o=>o.id);

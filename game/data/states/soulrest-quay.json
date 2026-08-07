@@ -1,0 +1,101 @@
+{
+  "schema": "elder-souls/state@1",
+  "id": "soulrest-quay",
+  "owner": "W1-19 round 2 — the main quest, end to end",
+  "title": "The quay side at Soulrest, an hour after noon, with the reading room behind the Court's mark and a cart standing on the coast road. The round-1 verdict on this piece said a player who boots the build and walks to Soulrest cannot start the main quest. There was no Soulrest to walk to: no named state in game/data/states/** put Undersexton Aveline Rell or any of the three people Q-MAIN-01 names in `opens_by.overheard_from` anywhere a player could stand. This is that place, and it is the state the findability probe loads.",
+  "note": "Four of these five are in `game/data/npcs/mainline.json` already; nothing here invents a person. Nerien Vass, Falus Grey and Eeja-Sul are the three `opens_by.overheard_from` NPCs of Q-MAIN-01 — greeting any one of them teaches `the drowned tally`, which is the only route into the chain that owes nothing to a prior quest. Ojal-Weeth is here because Q-MAIN-09 names her too, and because a mortuary hand outside the door is the picture.",
+  "env": {
+    "timeOfDay": 13.0,
+    "weather": "overcast",
+    "region": "coast",
+    "settlement": "soulrest",
+    "interior": null
+  },
+  "player": {
+    "pos": [0, 0, -4.0],
+    "yaw": 0.0
+  },
+  "camera": {
+    "yaw": 0.0,
+    "pitch": -7.0,
+    "mode": "free"
+  },
+  "npcs": [
+    {
+      "from_record": "undersexton-aveline-rell",
+      "pos": [1.8, 0, 7.6],
+      "yaw": 185,
+      "behaviour": "tend",
+      "notice_radius_m": 5
+    },
+    {
+      "from_record": "soulrest-customs-clerk",
+      "pos": [-7.4, 0, 1.2],
+      "yaw": 75,
+      "behaviour": "tend",
+      "notice_radius_m": 5
+    },
+    {
+      "from_record": "bone-ladder-carter",
+      "pos": [8.1, 0, -2.4],
+      "yaw": 250,
+      "behaviour": "tend",
+      "notice_radius_m": 5,
+      "settlement": "soulrest"
+    },
+    {
+      "from_record": "gideon-quay-porter",
+      "pos": [-3.2, 0, -8.6],
+      "yaw": 15,
+      "behaviour": "tend",
+      "notice_radius_m": 4
+    },
+    {
+      "from_record": "ojal-weeth",
+      "pos": [5.6, 0, 4.1],
+      "yaw": 215,
+      "behaviour": "tend",
+      "notice_radius_m": 4
+    }
+  ],
+  "props": [
+    {
+      "eid": "soulrest-reading-room-door",
+      "name": "The reading-room door, with the Court's mark cut into the lintel",
+      "pos": [1.8, 1.2, 9.4],
+      "yaw": 180,
+      "material": "plank",
+      "shape": "tall",
+      "takeable": false
+    },
+    {
+      "eid": "soulrest-quay-crate",
+      "name": "One of the eleven, stacked where it was signed for",
+      "pos": [4.4, 0.4, -1.0],
+      "yaw": 30,
+      "material": "plank",
+      "shape": "box",
+      "takeable": false
+    }
+  ],
+  "spawn": [],
+  "character": {
+    "race": "saxhleel",
+    "upbringing": "interior",
+    "class": "reed-walker",
+    "birthsign": "raj-xul",
+    "given_name": "Unwritten",
+    "sex": "unrecorded"
+  },
+  "loadout": {
+    "weapon": "straight-sword",
+    "shield": "marsh_oak_medium",
+    "endurance": 20,
+    "hpMax": 620,
+    "armourPoise": 28,
+    "equipLoadPct": 24.0,
+    "flaskLevel": 0,
+    "estus": 5,
+    "gold": 120
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "tool": "critic-prov-r1.mjs",
+  "mode": "raf",
+  "state": "default",
+  "break_fix": true,
+  "started_at": "2026-08-07T13:26:02.968Z",
+  "git": {
+    "commit": null,
+    "branch": null,
+    "dirty": false
+  },
+  "loadavg": "17.40 15.70 11.28 7/427 21556",
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 360
+  },
+  "broken": true,
+  "raf": {
+    "wall_ms": 25000,
+    "sim_frames": 1497,
+    "expected_sim_frames": 1500,
+    "sim_frames_lost": 3,
+    "real_time_ratio": 0.998,
+    "catchup_clamps": 1,
+    "catchup_dropped_ms": 25.9,
+    "raf_ticks": 1491,
+    "before": {
+      "province": true,
+      "frame": 0,
+      "at": [
+        2171.5,
+        761
+      ],
+      "underfoot_built": true,
+      "ring_want": 25,
+      "ring_built": 25,
+      "ring_unbuilt": 0,
+      "near9_want": 9,
+      "near9_unbuilt": 0,
+      "tiles_resident": 25,
+      "tiles_queued": 0,
+      "tiles_built_total": 50,
+      "focus_lag_m": 0,
+      "skin_lag_m": 0,
+      "near_lag_m": 0,
+      "cover_lag_m": 0,
+      "skin_vertices": 15625,
+      "cover_instances": 2476,
+      "near_instances": 99,
+      "province_meshes": 210,
+      "region": "salt-hills"
+    },
+    "after": {
+      "province": true,
+      "frame": 1497,
+      "at": [
+        2197.1,
+        803.1
+      ],
+      "underfoot_built": true,
+      "ring_want": 25,
+      "ring_built": 25,
+      "ring_unbuilt": 0,
+      "near9_want": 9,
+      "near9_unbuilt": 0,
+      "tiles_resident": 25,
+      "tiles_queued": 0,
+      "tiles_built_total": 50,
+      "focus_lag_m": 49.29,
+      "skin_lag_m": 49.29,
+      "near_lag_m": 49.29,
+      "cover_lag_m": 49.29,
+      "skin_vertices": 15625,
+      "cover_instances": 2476,
+      "near_instances": 99,
+      "province_meshes": 210,
+      "region": "salt-hills"
+    }
+  },
+  "page_errors": 0,
+  "errors": [],
+  "wall_ms": 39217,
+  "loadavg_end": "16.54 15.62 11.37 12/512 25226"
+}

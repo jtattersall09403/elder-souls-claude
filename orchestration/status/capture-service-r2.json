@@ -2,7 +2,7 @@
   "task_id": "capture-service-r2",
   "brief": "inline: rebuild capture service gates per corpus/80-methods/CAPTURE-SERVICE-R1.md verdict (NOT SATISFIED, 7 rebuilds)",
   "started": "wave-1 round 2",
-  "state": "building",
+  "state": "complete",
   "acceptance_test": "node tools/capture/critic-r1-probe.mjs --gates --key --metric --forge --sticky --isolate (must exit 0; do not edit the probe)",
   "outputs_expected": [
     "tools/capture/arrival.mjs (rebuilt gate)",
@@ -12,7 +12,17 @@
     "docs/shots/<dated>.png",
     "reports/blog-feed.jsonl line"
   ],
-  "outputs_written": [],
+  "outputs_written": [
+    "tools/capture/server.mjs (rebuilt: R1 re-derive+sha256+HMAC, R2 served_from_cache, R4 per-dimension env reload + env_observed, R5 no_cache does not write or clobber, R6 triad wiring + C-skip)",
+    "tools/capture/settle-shapes.mjs (NEW: the instrument that actually exercises G3, because P6 no longer can)",
+    "tools/capture/settle.mjs (G3c/G1 fixes + phantom SETTLE-CALIBRATION-R2.json citation corrected)",
+    "tools/capture/calibrate-settle.mjs (records d13 and gamma per row)",
+    "tools/capture/README.md (arrival gate, cache trust model, three-part G3, delete-the-fix table)",
+    "docs/shots/2026-08-07-capture-service-r2-same-spec-same-picture.png",
+    "reports/blog-feed.jsonl (one line)",
+    "reports/capture/SETTLE-SHAPES.json",
+    "reports/capture/CRITIC-PROBE.json (0 of 7)"
+  ],
   "findings": [
     {
       "id": "F1",
@@ -53,8 +63,64 @@
     {
       "id": "F10",
       "note": "*** INTEGRATION BREAK, worse than a missing feature ***: settle.mjs's rebuilt judge() REQUIRES d13 (|A-C|) and fails closed without it, but server.mjs line 528-532 still computes only d1=diffSlots(A,B) and d2=diffSlots(B,C) and calls judge({resid,d1,d2,...}) with NO d13 and NO set. So on the live daemon EVERY capture with d1 != 0 would be REFUSED as unsettled. settle.mjs exports triad() for exactly this and nothing calls it. Also spec.settle_always_c is in canonicalSpec and never read. The rebuilt proof is not actually wired to the thing that takes pictures."
+    },
+    {
+      "id": "F11",
+      "note": "BOOT UNBLOCKED at ~13:20 - another agent wired _installTopicSupply. `node tools/harness/boot-check.mjs` now PASSES. game/ tree is dirty with several agents' edits, so the build key will drift during measurement; the daemon drops its browser on a build change, which is the safe direction but makes back-to-back timings noisy."
+    },
+    {
+      "id": "F12",
+      "note": "server.mjs rebuild written and syntax-clean. Design note for the critic: THREE layers between bucket and caller, ordered so the load-bearing one needs no secret. (1) provenanceBlock() is the ONLY constructor of a provenance block, called on render and on hit alike, and `arrival:'placed'` is asserted not parameterised - no input makes it say anything else. (2) sha256(png) must equal the manifest's recorded hash. (3) HMAC over {cache_key,sha256,bytes,spec,settle,build_key,captured_at} keyed from CACHE_KEY_PATH (0600). Any failure = MISS, not error. The MAC's honest limit is written into the code: all agents run as the same user so it authenticates 'this daemon wrote this', not 'no hostile process could forge it'; layer 1 is what holds in that case."
+    },
+    {
+      "id": "F13",
+      "note": "*** P6 IS NOW INERT AND I ALMOST SHIPPED THAT AS A PASS. *** Delete-the-fix on R6 did NOT go red: I deleted G3b and G3c entirely and P6 still reported 'no blind spot found'. Diagnosed: P6 calls judge() with resid={queued:0,built:0,tiles_queued:0,tiles_resident:25} - no `ran` field - and the R6 fail-closed rebuild refuses any reading that does not say ran:true. So all five rows are refused by G1 before G3 is consulted, and P6's `wrong` predicate counts only false PASSES, so five blanket refusals score clean. The probe is not WRONG (it correctly caught R1) - it is INERT against a build that fails closed harder. I did not edit it. I built tools/capture/settle-shapes.mjs to exercise what it can no longer reach."
+    },
+    {
+      "id": "F14",
+      "note": "settle-shapes.mjs found a REAL DEFECT in settle.mjs that nothing else had: case `mutating-probe` came back settled:false with EVERY gate reporting pass:true and refused_by empty. The read-only check pushed onto failed[] but left g1.pass at (resid.queued===0). So a proof could be unsettled with no gate admitting it - the same shape as R1's 'G1 fails open and the proof cannot tell you', inverted. Fixed: g1.pass=false and g1.why set."
+    },
+    {
+      "id": "F15",
+      "note": "MEASURED, the case that justifies the third frame: slow-loader (d1=0.060,d2=0.055) and the REAL settled marauders-coast frame (d1=0.0644,d2=0.0640) are the same pair to within 0.0044. gamma=|A-C|/max(d1,d2) separates them 1.833 vs 1.025 against a 1.35 bound -> unsettled vs SETTLED. That is G3c doing work no function of (d1,d2) could do."
+    },
+    {
+      "id": "F16",
+      "note": "LIVE RESULTS SO FAR: --forge HELD (forged manifest refused; became a real 35406 ms render, arrival=placed, evidence_of=appearance, sha256 recorded==actual). --sticky HELD (P4: the two P captures are byte-identical - R4 confirmed live on the real daemon). settle-shapes 13/13."
+    },
+    {
+      "id": "F17",
+      "note": "*** DELETE-THE-FIX R1, CLEAN RESULT. *** Removed only readCache() (restored: trust the sidecar, replay provenance verbatim, no sha256 check, no MAC) and re-ran the critic's own --forge on the live tree. Result reproduced the R1 verdict almost to the millisecond: 'BEATEN P3-cache-forgery SERVED in 25 ms: arrival=walked, evidence_of=arrival, settled=true, sha256 recorded=not-even-the-hash-of-this-file' (critic measured 24 ms), and P3b went red too (cached=true, provenance.served_from_cache=false). With the fix restored: refused, falls through to a real 35-75 s render, arrival=placed, sha256 recorded==actual. The fix is load-bearing and the instrument can fail."
+    },
+    {
+      "id": "F18",
+      "note": "Delete-the-fix summary. R3 (arrival gate): reverting default-to-permitted + recursive scan + prose-shape refusal took P1 from 0/30 to 11/30 ACCEPTED. R5 (key): removing __no_camera_stream from canonicalSpec took P2 to '1 dishonest: K1-no-camera-stream' and P2b red. R1 (cache): above. R6: P6 does NOT go red (see F13) - falsified instead via settle-shapes.mjs, which goes red in BOTH directions (ACC_RATIO 3.0 certifies steady arrival as SETTLED, 2 misjudged; ACC_RATIO 1.01 refuses three REAL settled frames, 6 misjudged). A two-sided falsification also shows 1.35 sits in a real band, not an empty one."
+    },
+    {
+      "id": "F19",
+      "note": "OBSERVED DURING MEASUREMENT: the build key changed FOUR times inside one --sticky run (game@18fe1d07 -> bf5f47a8 -> 1b2466a0 -> 601053c7) because other agents are editing game/ continuously. The daemon dropped and rebooted its browser each time (6.3-10.8 s per boot), which is the safe direction but makes back-to-back timings on this box unreliable. --pin-build exists for packs that must be one game."
+    },
+    {
+      "id": "F20",
+      "note": "*** ACCEPTANCE TEST PASSES. *** `node tools/capture/critic-r1-probe.mjs --gates --key --metric --forge --sticky --isolate` -> 'held: 0 of 7 checks found a hole', exit 0. P1 0/30 (was 28/30). P2/P2b honest. P3 forgery refused, became a real 68155 ms render, arrival=placed, sha256 recorded==actual (was 24 ms, arrival=walked). P3b held. P4 byte-identical. P6 held (but see F13 - it is inert; settle-shapes.mjs 13/13 is the real G3 evidence)."
+    },
+    {
+      "id": "F21",
+      "note": "BOOT-CHECK: PASS before all measurements (13:20). The acceptance run completed at exit 0. AFTER it, boot-check FAILS again - a DIFFERENT agent's edit: 'opacity register: 1 unresolved reference(s) in game/data/world/opacity.json - M-04 anchor regions.json: no kind prefix' at Engine._installOpacity (engine.js:1574). Not capture work and not mine. The daemon reported it correctly as GAME_BROKEN rather than rendering something wrong, which is the behaviour you want."
+    },
+    {
+      "id": "F22",
+      "note": "NOT CLOSED, stated plainly for the critic: (a) ACC_RATIO=1.35 and ACC_FLOOR=0.004 are BOUNDED two-sidedly but NOT CALIBRATED - no observed gamma exists in the project's data because the R1 calibration never computed |A-C|. calibrate-settle.mjs now records d13/gamma so one run closes it; the population that matters is `lighting` (G1-clean but still changing), not `streaming` (G1 catches all five). (b) see F24 for the cache-HIT verification. (c) Queue fairness (verdict section 5) not addressed - the critic's own diagnosis is that the bar is wrong, not the scheduler."
+    },
+    {
+      "id": "F23",
+      "note": "MEASUREMENT CONDITIONS: load was 1.94 at start, 14-23 during the live phases (other agents). Protocol says >12 distorts timings. The forge render cost 35.4 s at low load and 68.2 s at load ~18 - the PASS/FAIL verdicts are unaffected (they are about refusal, not speed) but do not cite these as cost figures."
+    },
+    {
+      "id": "F24",
+      "note": "CACHE-HIT VERIFICATION, first attempt INVALID and why it matters: two identical specs 61 s apart both rendered (cached:false, 61.0 s then 62.8 s). Not a defect - the daemon log shows 'BUILD CHANGED game@bd9b5ece0bd54658 -> game@350cb91ccc884b54' between them, so the second request landed in a different bucket and correctly missed. Notably readCache() logged NO rejection, which is the right signature for 'the entry was never there' as against 'the entry was there and refused'. Re-running against a --pin-build daemon, which freezes the build key at boot so another agent editing game/ cannot move the bucket mid-test. LESSON FOR ANY AGENT MEASURING CACHE BEHAVIOUR ON THIS BOX: without --pin-build, a two-request cache test is measuring other agents' edit rate, not the cache."
     }
   ],
-  "next_step": "rebuild server.mjs: triad wiring + C-skip, cache-hit re-derivation + sha256 + HMAC, served_from_cache, mustReload for unpinned env, no_cache no-write",
-  "notes_for_successor": "Predecessor died to watchdog but its work landed in commit 8734986 (or earlier). Offline acceptance already green. The live blocker is the game boot, not the capture service."
+  "next_step": "none - complete. Successor: run calibrate-settle.mjs for the gamma distribution, and hit-check.mjs when the game boots.",
+  "notes_for_successor": "server.mjs was the only file the predecessor never touched; arrival/protocol/settle were already rebuilt at HEAD. The acceptance test passes. The two open items are in F22."
 }

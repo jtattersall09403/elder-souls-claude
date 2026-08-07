@@ -2,20 +2,27 @@
   "task_id": "W1-19-r2",
   "brief": "corpus/90-verdicts/wave1/W1-19-r1.md",
   "started": "wave-1 round 2",
-  "state": "researching",
-  "outputs_expected": [
-    "cold-boot offerability re-measurement",
-    "forward-pointing AddTopic graph for the mainline",
-    "rumour/findability content naming main-quest nouns",
-    "directions strings drawn in-world (journal + dialogue)",
-    "overheard_from consumer",
-    "gate margin re-clamp with consequence headroom",
-    "40/40 signature completion trace with consequences accumulating",
-    "tools/quests/mainline-consequence-trace.mjs (own instrument)",
-    "docs/shots + reports/blog-feed.jsonl line"
+  "state": "building",
+  "outputs_written": [
+    "game/src/sim/quest/topic-supply.js (new: reader for info.to, opens_by.overheard_from, q.directions, rumours.json)",
+    "game/src/character/converse.js (infoFor returns `to`; Conversation.setSupply; directions + rumour topics)",
+    "game/src/engine.js (_installTopicSupply; talkTo overheard grant; conversationSay AddTopic; env.settlement)",
+    "game/src/sim/quest/machine.js (noteTopicLearned)",
+    "game/src/sim/state.js (env.settlement)",
+    "game/data/quests/hooks.json (32 self-referential main entry_topics -> 23 forward-pointing rows)",
+    "game/data/dialogue/topics/50-mainline.json (new: 46 topic records, ~120 infos)",
+    "game/data/dialogue/rumours.json (main-quest rumours per settlement with adds_topics)",
+    "game/data/states/soulrest-quay.json (new: the place a player can walk to)",
+    "tools/dialogue/build-graph.mjs (unblocked: merges duplicate topic ids like the engine; reads rumours.json)"
   ],
-  "outputs_written": [],
-  "findings": [],
-  "next_step": "boot-check, then re-measure cold-boot offerability post topics.js fold",
-  "notes_for_successor": ""
+  "findings": [
+    "REPRO: cold-boot offerability was still 0/32 after the topics.js fold — the fold closed the SPELLING half only; 23/32 edges still pointed at themselves. Fold IS wired into gate.js (import present).",
+    "REPRO: 29/40 signatures finish (mainline-race-trace.mjs), gate margins all exactly 0 at 9 clamped gates, Q-MAIN-01/res_carry drives faction 0 -> -12.",
+    "NEW ZERO-COUPLING MODEL FOUND: `info.to` (Morrowind AddTopic) is authored on 456 of 638 infos in game/data/dialogue/topics/**, 181 distinct targets, and had ZERO code consumers. That is the fifth dead model in this area and the largest.",
+    "NEW: there was no Soulrest. No named state in game/data/states/** placed Aveline Rell or any overheard_from NPC anywhere a player could stand.",
+    "ROOT CAUSE of the faction cliff: factionTerm() treats ANY faction the player has a reputation ROW for as a MEMBERSHIP (it never reads `member`), then takes the argmin reaction over them. So the term is monotonically non-increasing in quests completed: reputation +4 with the Drowned Court costs 12 points with House Dres and nothing can repair it.",
+    "LIVE PROOF: soulrest-quay cold boot = 0 topics / 0 offers; greet bone-ladder-carter -> learns 'the drowned tally' -> Q-MAIN-01 offerable. Nothing hand-fed."
+  ],
+  "next_step": "gate margins: write mainline-chain-floor.mjs, decide the clamp, fix factionTerm membership semantics",
+  "notes_for_successor": "check-content.mjs passes. build-graph.mjs now runs (was throwing on duplicate topic id the-marsh-fever; 40 ids are duplicated across files and the LIVE reader merges them, so the tool was wrong, not the data)."
 }

@@ -299,18 +299,40 @@ export class RealInput {
     });
 
     this.viewport.attach();
+    // L9/H2 IS A STANDING RULE, NOT A BOOT-TIME ONE. Round 1 applied it once, here, so the
+    // fallback was decided by whatever the media queries said at `attach()` and never again —
+    // and the whole of §G then depended on the page having booted coarse. It is now a
+    // subscription: the Viewport fires whenever the class actually changes and this applies
+    // the same three consequences it applies at boot.
+    this.viewport.onDeviceClass = (cls) => this.applyDeviceClass(cls);
     this.viewport.detectDeviceClass();
     const s = this.viewport.size();
     this.touch.setViewport(s.w, s.h, s.dpr, this.viewport.readSafeAreaInsets());
-    // L9/H2: a coarse-pointer device gets the touch fallback from the FIRST FRAME and the
-    // handheld pad profile, both decided by media query. There is no "connect a controller"
-    // screen and the gamepad list is never consulted for device class (L1).
-    if (this.viewport.deviceClass === 'handheld') {
+    this.applyDeviceClass(this.viewport.deviceClass);
+    this.loadKeyboardLayout();
+  }
+
+  /**
+   * L9/H2/L1 — everything that follows from the device class, in one place.
+   *
+   * A coarse-pointer device gets the touch fallback from the first frame and the handheld pad
+   * profile, both decided by media query. There is no "connect a controller" screen and the
+   * gamepad list is never consulted for device class. Going the other way releases every held
+   * touch action rather than leaving one latched on a device that no longer has a screen to
+   * press — the L3 rule applied to a device class instead of a cable.
+   */
+  applyDeviceClass(cls) {
+    const handheld = cls === 'handheld';
+    if (handheld) {
       this.touch.enabled = true;
       this.touch.attach();
       if (this.pad) this.pad.selectProfileForDeviceClass('handheld');
+    } else if (this.touch.enabled) {
+      this.touch.enabled = false;
+      this.touch.detach();
+      if (this.pad) this.pad.selectProfileForDeviceClass('desktop');
     }
-    this.loadKeyboardLayout();
+    return this.touch.enabled;
   }
 
   detach() {

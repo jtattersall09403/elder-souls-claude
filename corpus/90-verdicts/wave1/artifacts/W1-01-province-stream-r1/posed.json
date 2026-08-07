@@ -1,0 +1,662 @@
+{
+  "tool": "critic-prov-r1.mjs",
+  "mode": "posed",
+  "state": "default",
+  "break_fix": false,
+  "started_at": "2026-08-07T13:08:12.474Z",
+  "git": {
+    "commit": null,
+    "branch": null,
+    "dirty": false
+  },
+  "loadavg": "0.98 2.37 4.99 10/201 1635",
+  "build": {
+    "name": "elder-souls",
+    "version": "0.2.0-w1-09",
+    "commit": null,
+    "builtAt": null,
+    "harnessVersion": 2,
+    "fixedStepHz": 60,
+    "dataRoot": "game/data",
+    "piece": "W1-09 — combat core (on W1-00’s harness)",
+    "threeVersion": "180",
+    "dataFiles": 360
+  },
+  "posed": {
+    "how": "posed camera (shoot.mjs --direct)",
+    "frames_per_pose": 600,
+    "before": [
+      {
+        "eye": [
+          2401.2,
+          1752.5
+        ],
+        "at_eye": {
+          "province": true,
+          "frame": 0,
+          "at": [
+            2401.2,
+            1752.5
+          ],
+          "underfoot_built": false,
+          "ring_want": 25,
+          "ring_built": 0,
+          "ring_unbuilt": 25,
+          "near9_want": 9,
+          "near9_unbuilt": 9,
+          "tiles_resident": 25,
+          "tiles_queued": 0,
+          "tiles_built_total": 25,
+          "focus_lag_m": 3278.96,
+          "skin_lag_m": 3278.96,
+          "near_lag_m": 3278.96,
+          "cover_lag_m": 3278.96,
+          "skin_vertices": 15625,
+          "cover_instances": 2601,
+          "near_instances": 478,
+          "province_meshes": 161,
+          "region": "stone-forest"
+        },
+        "at_target": {
+          "province": true,
+          "frame": 0,
+          "at": [
+            2384.8,
+            1971.8
+          ],
+          "underfoot_built": false,
+          "ring_want": 25,
+          "ring_built": 0,
+          "ring_unbuilt": 25,
+          "near9_want": 9,
+          "near9_unbuilt": 9,
+          "tiles_resident": 25,
+          "tiles_queued": 0,
+          "tiles_built_total": 25,
+          "focus_lag_m": 3063.04,
+          "skin_lag_m": 3063.04,
+          "near_lag_m": 3063.04,
+          "cover_lag_m": 3063.04,
+          "skin_vertices": 15625,
+          "cover_instances": 2601,
+          "near_instances": 478,
+          "province_meshes": 161,
+          "region": "stone-forest"
+        }
+      },
+      {
+        "eye": [
+          2344.5,
+          2420.2
+        ],
+        "at_eye": {
+          "province": true,
+          "frame": 600,
+          "at": [
+            2344.5,
+            2420.2
+          ],
+          "underfoot_built": false,
+          "ring_want": 25,
+          "ring_built": 8,
+          "ring_unbuilt": 17,
+          "near9_want": 9,
+          "near9_unbuilt": 6,
+          "tiles_resident": 25,
+          "tiles_queued": 0,
+          "tiles_built_total": 50,
+          "focus_lag_m": 670.16,
+          "skin_lag_m": 670.16,
+          "near_lag_m": 670.16,
+          "cover_lag_m": 670.16,
+          "skin_vertices": 15625,
+          "cover_instances": 864,
+          "near_instances": 19,
+          "province_meshes": 239,
+          "region": "stone-forest"
+        },
+        "at_target": {
+          "province": true,
+          "frame": 600,
+          "at": [
+            2297.3,
+            2635.1
+          ],
+          "underfoot_built": false,
+          "ring_want": 25,
+          "ring_built": 8,
+          "ring_unbuilt": 17,
+          "near9_want": 9,
+          "near9_unbuilt": 6,
+          "tiles_resident": 25,
+          "tiles_queued": 0,
+          "tiles_built_total": 50,
+          "focus_lag_m": 888.73,
+          "skin_lag_m": 888.73,
+          "near_lag_m": 888.73,
+          "cover_lag_m": 888.73,
+          "skin_vertices": 15625,
+          "cover_instances": 864,
+          "near_instances": 19,
+          "province_meshes": 239,
+          "region": "stone-forest"
+        }
+      },
+      {
+        "eye": [
+          2169.4,
+          3213
+        ],
+        "at_eye": {
+          "province": true,
+          "frame": 1200,
+          "at": [
+            2169.4,
+            3213
+          ],
+          "underfoot_built": true,
+          "ring_want": 25,
+          "ring_built": 15,
+          "ring_unbuilt": 10,
+          "near9_want": 9,
+          "near9_unbuilt": 3,
+          "tiles_resident": 32,
+          "tiles_queued": 0,
+          "tiles_built_total": 67,
+          "focus_lag_m": 811.92,
+          "skin_lag_m": 811.92,
+          "near_lag_m": 811.92,
+          "cover_lag_m": 811.92,
+          "skin_vertices": 15625,
+          "cover_instances": 1059,
+          "near_instances": 17,
+          "province_meshes": 301,
+          "region": "blackwood"
+        },
+        "at_target": {
+          "province": true,
+          "frame": 1200,
+          "at": [
+            2099.8,
+            3421.7
+          ],
+          "underfoot_built": false,
+          "ring_want": 25,
+          "ring_built": 8,
+          "ring_unbuilt": 17,
+          "near9_want": 9,
+          "near9_unbuilt": 6,
+          "tiles_resident": 32,
+          "tiles_queued": 0,
+          "tiles_built_total": 67,
+          "focus_lag_m": 1030.98,
+          "skin_lag_m": 1030.98,
+          "near_lag_m": 1030.98,
+          "cover_lag_m": 1030.98,
+          "skin_vertices": 15625,
+          "cover_instances": 1059,
+          "near_instances": 17,
+          "province_meshes": 301,
+          "region": "blackwood"
+        }
+      },
+      {
+        "eye": [
+          1870.3,
+          4023.9
+        ],
+        "at_eye": {
+          "province": true,
+          "frame": 1800,
+          "at": [
+            1870.3,
+            4023.9
+          ],
+          "underfoot_built": false,
+          "ring_want": 25,
+          "ring_built": 8,
+          "ring_unbuilt": 17,
+          "near9_want": 9,
+          "near9_unbuilt": 6,
+          "tiles_resident": 31,
+          "tiles_queued": 0,
+          "tiles_built_total": 77,
+          "focus_lag_m": 864.33,
+          "skin_lag_m": 864.33,
+          "near_lag_m": 864.33,
+          "cover_lag_m": 864.33,
+          "skin_vertices": 15625,
+          "cover_instances": 1535,
+          "near_instances": 1795,
+          "province_meshes": 349,
+          "region": "western-rootlands"
+        },
+        "at_target": {
+          "province": true,
+          "frame": 1800,
+          "at": [
+            1991.7,
+            4207.4
+          ],
+          "underfoot_built": false,
+          "ring_want": 25,
+          "ring_built": 4,
+          "ring_unbuilt": 21,
+          "near9_want": 9,
+          "near9_unbuilt": 9,
+          "tiles_resident": 31,
+          "tiles_queued": 0,
+          "tiles_built_total": 77,
+          "focus_lag_m": 1010.08,
+          "skin_lag_m": 1010.08,
+          "near_lag_m": 1010.08,
+          "cover_lag_m": 1010.08,
+          "skin_vertices": 15625,
+          "cover_instances": 1535,
+          "near_instances": 1795,
+          "province_meshes": 349,
+          "region": "western-rootlands"
+        }
+      },
+      {
+        "eye": [
+          2315.3,
+          4782.4
+        ],
+        "at_eye": {
+          "province": true,
+          "frame": 2400,
+          "at": [
+            2315.3,
+            4782.4
+          ],
+          "underfoot_built": true,
+          "ring_want": 25,
+          "ring_built": 12,
+          "ring_unbuilt": 13,
+          "near9_want": 9,
+          "near9_unbuilt": 3,
+          "tiles_resident": 32,
+          "tiles_queued": 0,
+          "tiles_built_total": 94,
+          "focus_lag_m": 879.42,
+          "skin_lag_m": 879.42,
+          "near_lag_m": 879.42,
+          "cover_lag_m": 879.42,
+          "skin_vertices": 15625,
+          "cover_instances": 2307,
+          "near_instances": 448,
+          "province_meshes": 374,
+          "region": "western-rootlands"
+        },
+        "at_target": {
+          "province": true,
+          "frame": 2400,
+          "at": [
+            2508.7,
+            4887.4
+          ],
+          "underfoot_built": false,
+          "ring_want": 25,
+          "ring_built": 6,
+          "ring_unbuilt": 19,
+          "near9_want": 9,
+          "near9_unbuilt": 7,
+          "tiles_resident": 32,
+          "tiles_queued": 0,
+          "tiles_built_total": 94,
+          "focus_lag_m": 1073.86,
+          "skin_lag_m": 1073.86,
+          "near_lag_m": 1073.86,
+          "cover_lag_m": 1073.86,
+          "skin_vertices": 15625,
+          "cover_instances": 2307,
+          "near_instances": 448,
+          "province_meshes": 374,
+          "region": "western-rootlands"
+        }
+      }
+    ],
+    "after": [
+      {
+        "eye": [
+          2401.2,
+          1752.5
+        ],
+        "look_target": [
+          2384.8,
+          1971.8
+        ],
+        "look_dist_m": 220,
+        "at_eye": {
+          "province": true,
+          "frame": 600,
+          "at": [
+            2401.2,
+            1752.5
+          ],
+          "underfoot_built": true,
+          "ring_want": 25,
+          "ring_built": 25,
+          "ring_unbuilt": 0,
+          "near9_want": 9,
+          "near9_unbuilt": 0,
+          "tiles_resident": 25,
+          "tiles_queued": 0,
+          "tiles_built_total": 50,
+          "focus_lag_m": 0,
+          "skin_lag_m": 0,
+          "near_lag_m": 0,
+          "cover_lag_m": 0,
+          "skin_vertices": 15625,
+          "cover_instances": 864,
+          "near_instances": 19,
+          "province_meshes": 239,
+          "region": "stone-forest"
+        },
+        "at_target": {
+          "province": true,
+          "frame": 600,
+          "at": [
+            2384.8,
+            1971.8
+          ],
+          "underfoot_built": true,
+          "ring_want": 25,
+          "ring_built": 16,
+          "ring_unbuilt": 9,
+          "near9_want": 9,
+          "near9_unbuilt": 0,
+          "tiles_resident": 25,
+          "tiles_queued": 0,
+          "tiles_built_total": 50,
+          "focus_lag_m": 220,
+          "skin_lag_m": 220,
+          "near_lag_m": 220,
+          "cover_lag_m": 220,
+          "skin_vertices": 15625,
+          "cover_instances": 864,
+          "near_instances": 19,
+          "province_meshes": 239,
+          "region": "stone-forest"
+        },
+        "focus": [
+          2401.2,
+          1752.5
+        ]
+      },
+      {
+        "eye": [
+          2344.5,
+          2420.2
+        ],
+        "look_target": [
+          2297.3,
+          2635.1
+        ],
+        "look_dist_m": 220,
+        "at_eye": {
+          "province": true,
+          "frame": 1200,
+          "at": [
+            2344.5,
+            2420.2
+          ],
+          "underfoot_built": true,
+          "ring_want": 25,
+          "ring_built": 25,
+          "ring_unbuilt": 0,
+          "near9_want": 9,
+          "near9_unbuilt": 0,
+          "tiles_resident": 32,
+          "tiles_queued": 0,
+          "tiles_built_total": 67,
+          "focus_lag_m": 0,
+          "skin_lag_m": 0,
+          "near_lag_m": 0,
+          "cover_lag_m": 0,
+          "skin_vertices": 15625,
+          "cover_instances": 1059,
+          "near_instances": 17,
+          "province_meshes": 301,
+          "region": "stone-forest"
+        },
+        "at_target": {
+          "province": true,
+          "frame": 1200,
+          "at": [
+            2297.3,
+            2635.1
+          ],
+          "underfoot_built": true,
+          "ring_want": 25,
+          "ring_built": 25,
+          "ring_unbuilt": 0,
+          "near9_want": 9,
+          "near9_unbuilt": 0,
+          "tiles_resident": 32,
+          "tiles_queued": 0,
+          "tiles_built_total": 67,
+          "focus_lag_m": 220,
+          "skin_lag_m": 220,
+          "near_lag_m": 220,
+          "cover_lag_m": 220,
+          "skin_vertices": 15625,
+          "cover_instances": 1059,
+          "near_instances": 17,
+          "province_meshes": 301,
+          "region": "stone-forest"
+        },
+        "focus": [
+          2344.5,
+          2420.2
+        ]
+      },
+      {
+        "eye": [
+          2169.4,
+          3213
+        ],
+        "look_target": [
+          2099.8,
+          3421.7
+        ],
+        "look_dist_m": 220,
+        "at_eye": {
+          "province": true,
+          "frame": 1800,
+          "at": [
+            2169.4,
+            3213
+          ],
+          "underfoot_built": true,
+          "ring_want": 25,
+          "ring_built": 25,
+          "ring_unbuilt": 0,
+          "near9_want": 9,
+          "near9_unbuilt": 0,
+          "tiles_resident": 31,
+          "tiles_queued": 0,
+          "tiles_built_total": 77,
+          "focus_lag_m": 0,
+          "skin_lag_m": 0,
+          "near_lag_m": 0,
+          "cover_lag_m": 0,
+          "skin_vertices": 15625,
+          "cover_instances": 1535,
+          "near_instances": 1795,
+          "province_meshes": 349,
+          "region": "blackwood"
+        },
+        "at_target": {
+          "province": true,
+          "frame": 1800,
+          "at": [
+            2099.8,
+            3421.7
+          ],
+          "underfoot_built": true,
+          "ring_want": 25,
+          "ring_built": 16,
+          "ring_unbuilt": 9,
+          "near9_want": 9,
+          "near9_unbuilt": 0,
+          "tiles_resident": 31,
+          "tiles_queued": 0,
+          "tiles_built_total": 77,
+          "focus_lag_m": 220,
+          "skin_lag_m": 220,
+          "near_lag_m": 220,
+          "cover_lag_m": 220,
+          "skin_vertices": 15625,
+          "cover_instances": 1535,
+          "near_instances": 1795,
+          "province_meshes": 349,
+          "region": "blackwood"
+        },
+        "focus": [
+          2169.4,
+          3213
+        ]
+      },
+      {
+        "eye": [
+          1870.3,
+          4023.9
+        ],
+        "look_target": [
+          1991.7,
+          4207.4
+        ],
+        "look_dist_m": 220,
+        "at_eye": {
+          "province": true,
+          "frame": 2400,
+          "at": [
+            1870.3,
+            4023.9
+          ],
+          "underfoot_built": true,
+          "ring_want": 25,
+          "ring_built": 25,
+          "ring_unbuilt": 0,
+          "near9_want": 9,
+          "near9_unbuilt": 0,
+          "tiles_resident": 32,
+          "tiles_queued": 0,
+          "tiles_built_total": 94,
+          "focus_lag_m": 0,
+          "skin_lag_m": 0,
+          "near_lag_m": 0,
+          "cover_lag_m": 0,
+          "skin_vertices": 15625,
+          "cover_instances": 2307,
+          "near_instances": 448,
+          "province_meshes": 374,
+          "region": "western-rootlands"
+        },
+        "at_target": {
+          "province": true,
+          "frame": 2400,
+          "at": [
+            1991.7,
+            4207.4
+          ],
+          "underfoot_built": true,
+          "ring_want": 25,
+          "ring_built": 20,
+          "ring_unbuilt": 5,
+          "near9_want": 9,
+          "near9_unbuilt": 0,
+          "tiles_resident": 32,
+          "tiles_queued": 0,
+          "tiles_built_total": 94,
+          "focus_lag_m": 220,
+          "skin_lag_m": 220,
+          "near_lag_m": 220,
+          "cover_lag_m": 220,
+          "skin_vertices": 15625,
+          "cover_instances": 2307,
+          "near_instances": 448,
+          "province_meshes": 374,
+          "region": "western-rootlands"
+        },
+        "focus": [
+          1870.3,
+          4023.9
+        ]
+      },
+      {
+        "eye": [
+          2315.3,
+          4782.4
+        ],
+        "look_target": [
+          2508.7,
+          4887.4
+        ],
+        "look_dist_m": 220,
+        "at_eye": {
+          "province": true,
+          "frame": 3000,
+          "at": [
+            2315.3,
+            4782.4
+          ],
+          "underfoot_built": true,
+          "ring_want": 25,
+          "ring_built": 25,
+          "ring_unbuilt": 0,
+          "near9_want": 9,
+          "near9_unbuilt": 0,
+          "tiles_resident": 34,
+          "tiles_queued": 0,
+          "tiles_built_total": 107,
+          "focus_lag_m": 0,
+          "skin_lag_m": 0,
+          "near_lag_m": 0,
+          "cover_lag_m": 0,
+          "skin_vertices": 15625,
+          "cover_instances": 399,
+          "near_instances": 67,
+          "province_meshes": 335,
+          "region": "western-rootlands"
+        },
+        "at_target": {
+          "province": true,
+          "frame": 3000,
+          "at": [
+            2508.7,
+            4887.4
+          ],
+          "underfoot_built": true,
+          "ring_want": 25,
+          "ring_built": 16,
+          "ring_unbuilt": 9,
+          "near9_want": 9,
+          "near9_unbuilt": 0,
+          "tiles_resident": 34,
+          "tiles_queued": 0,
+          "tiles_built_total": 107,
+          "focus_lag_m": 220,
+          "skin_lag_m": 220,
+          "near_lag_m": 220,
+          "cover_lag_m": 220,
+          "skin_vertices": 15625,
+          "cover_instances": 399,
+          "near_instances": 67,
+          "province_meshes": 335,
+          "region": "western-rootlands"
+        },
+        "focus": [
+          2315.3,
+          4782.4
+        ]
+      }
+    ]
+  },
+  "page_errors": 0,
+  "errors": [],
+  "wall_ms": 13302,
+  "loadavg_end": "2.35 2.63 5.06 7/250 2520"
+}
