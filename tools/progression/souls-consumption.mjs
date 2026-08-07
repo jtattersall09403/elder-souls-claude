@@ -603,21 +603,10 @@ try {
       const rel = (P.d.release_radius_m || 260) + 50;
       E.sim.player.pos[0] = POST.x + rel; E.sim.player.pos[2] = POST.z + rel;
       P.step(E);
-      // `step()` returns early outside the province cell, so the release branch is also invoked
-      // directly. Declared, not hidden: this is a MECHANISM test, not a walked route.
-      if (P.live.has(POST.id)) {
-        const eids = P.live.get(POST.id);
-        const down = P.down.get(POST.id) || new Set();
-        for (const eid of eids) {
-          const e = E.sim.findEntity(eid);
-          if (!e) continue;
-          if (e.hp <= 0) down.add(eid);
-          try { E.despawn(eid); } catch { /* gone */ }
-        }
-        if (down.size) P.down.set(POST.id, down); else P.down.delete(POST.id);
-        P.live.delete(POST.id);
-        P.state.set(POST.id, 'dormant');
-      }
+      // `step()` returns early outside the province cell, so step (3)'s body is invoked through
+      // `PopulationSystem.releasePost()` — the SHIPPED method, not a copy of it. Declared, not
+      // hidden: this is a MECHANISM test, not a walked route.
+      R.O.released = P.releasePost(E, POST.id);
       H.stepFrames(1);
       R.O.entities_after_release = (H.listEntities() || []).filter((e) => String(e.eid || e.id).startsWith(POST.id)).length;
       R.O.remembered_down = [...(P.down.get(POST.id) || [])];
@@ -639,8 +628,7 @@ try {
       E.death.respawnOrdinary(E.sim, E.combat, E.bus, 'probe_rest');
       P.step(E);
       P.down.clear();                                  // step (0) does this on the epoch bump
-      for (const eid of second) { try { E.despawn(eid); } catch { /* gone */ } }
-      P.live.delete(POST.id);
+      P.releasePost(E, POST.id);
       P._materialise(E, POST);
       H.stepFrames(2);
       const third = (P.live.get(POST.id) || []).slice();

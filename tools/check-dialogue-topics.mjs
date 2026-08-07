@@ -1,104 +1,169 @@
 #!/usr/bin/env node
 // A duplicate topic id across game/data/dialogue/topics/**/*.json is a defect that nothing
-// currently detects. Checked over the JSON with no engine and no browser.
+// currently detects. Checked over the JSON with no engine and no browser, by IMPORTING AND
+// RUNNING the shipped `game/src/character/converse.js infoAllowed()` — the exact function
+// `infoFor()` calls — rather than re-implementing its filter rules and risking a second, drifting
+// copy (RULES.md rule 10).
 //
 // WHY THIS EXISTS
 // ----------------
-// `game/src/character/converse.js buildTopicIndex()` merges every topic record sharing an id
-// across every file in the tree, BY DESIGN — its own header says a topic id may be declared more
-// than once and the reader is supposed to see every info written for it, wherever it lives. That
-// is the right behaviour for the common case (`the-tides` legitimately collects a fisher's line,
-// a saxhleel line and a warmblood line from three different files). It is the WRONG behaviour,
-// silently, the moment two files declare the SAME id meaning TWO DIFFERENT THINGS — an old stub
-// and a newly-authored scene, say — because `infoFor()` then picks between them by a specificity
-// score nobody who wrote either file was thinking about when they chose that id.
+// `buildTopicIndex()` merges every topic record sharing an id across every file in the tree, BY
+// DESIGN — its own header says so, and that is the right behaviour for the common case: several
+// files legitimately split one topic id into complementary infos (a warmblood merchant's line in
+// one file, a saxhleel one in another, disjoint `requires.race` sets, never both valid for the
+// same player). A raw "does more than one file declare this id" scan flags that pattern too, and
+// on the shipped tree that pattern accounts for the overwhelming majority of matches: a first,
+// naive version of this tool found 63 same-id pairs, of which a spot check showed most were
+// EXACTLY this — race-complementary infos that can never simultaneously be `infoAllowed()` for
+// any one player, so `infoFor()` never has to choose between them and no shadow can occur. A gate
+// that fires on that is noise, and noise is how a warning stops being read (`check-prose.mjs`'s
+// own header names the same danger for its ratchet).
 //
-// That is exactly the W1-17 round-1 hard fail: `main-quest-argument.json` and `50-mainline.json`
-// both declare a topic record with id `the-steward-of-the-count` — Q-MAIN-26's own entry topic —
-// and the eleven-year-old third-person stub in `50-mainline.json` (d:20, no race filter) outscores
-// the just-authored, race-specific greeting for any player outside {saxhleel,naga,dunmer} clearing
-// disposition 20. Nothing on the tree caught it: `check-quests.mjs` checks quest ids and
-// `hooks.json` cross-references, never the topic files' own id space; `check-content.mjs` checks
-// that a quest resolution has not disappeared; `tools/dialogue/build-graph.mjs`'s unreachable-INFO
-// lint only flags a strict filter superset, a different failure shape entirely, and in any case
-// currently cannot even run (a pre-existing duplicate id throws before it reaches any lint). This
-// tool asks one narrow, cheap question instead: does more than one FILE declare the same topic id?
-// It says nothing about whether the collision is harmless (two legitimately complementary infos)
-// or a shadow (a stub eating a scene) — that judgement needs a player-signature sweep like
-// `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/gen-converse-node-repro.mjs` ran by hand for
-// this one case — but every collision is now at least VISIBLE, which the round-1 one was not.
+// So this tool asks the question that actually matters: for a same-id pair across two files,
+// **can a single player context make BOTH infos `infoAllowed()` at once?** If no such context
+// exists, the two files can never compete for the same player and this is the intended additive
+// pattern — quiet. If one does exist, `infoFor()`'s specificity score is the only thing deciding
+// which text that player hears, and that is exactly the shape of the W1-17 round-1 hard fail:
+// `main-quest-argument.json` and `50-mainline.json` both declare `the-steward-of-the-count` —
+// Q-MAIN-26's own entry topic — and the eleven-year-old third-person stub in `50-mainline.json`
+// (d:20, no race filter — allowed for EVERY race above disposition 20) genuinely overlaps the
+// just-authored, race-specific greeting (`forbids` only 3 races, no `d`) for the 7 races neither
+// excludes, and specificity picks the stub. Nothing else on the tree catches this shape:
+// `check-quests.mjs` never reads the topic files' own id space; `tools/dialogue/build-graph.mjs`'s
+// unreachable-INFO lint only flags a strict filter superset (and currently cannot even run — a
+// pre-existing duplicate id throws before it reaches any lint); every existing browser probe that
+// asks "does this topic answer" only checks that *some* text came back, never *whose*.
 //
 // WARNING, NOT AN ERROR, AND DELIBERATELY SO — same precedent as `tools/check-prose.mjs`, whose
 // own header names `tools/check-quests.mjs`'s attribute-scale audit as the reason: `game/data/
-// dialogue/topics/**` is a shared tree that a dozen other pieces own, and cross-file id reuse is
-// not new or rare here. This tool's own first run found SIX pre-existing collisions on the tree
-// (the-witness, reading-the-count, the-cutters-terms, the-steward-of-the-count, the-sill, the-
-// opening-of-the-count) — three of them nothing to do with W1-17 at all. A fail-closed assertion
-// landed on top of six live collisions would turn a shared gate red for every agent on the box
-// over content none of them own, which RULES.md rule 13 names as a defect this project has
-// already paid for. It prints loudly and exits 0. `--strict` exits non-zero, for a piece that
-// wants to hold its own line or a future pre-commit hook once the backlog is cleared.
+// dialogue/topics/**` is a shared tree a dozen other pieces own, and this tool's first honest run
+// still finds live (context-overlapping) collisions that predate W1-17 entirely. A fail-closed
+// assertion landed on top of a live backlog would turn a shared gate red for every agent on the
+// box over content none of them wrote, which RULES.md rule 13 names as a defect this project has
+// already paid for twice. It prints loudly and exits 0. `--strict` exits non-zero, for a piece
+// that wants to hold its own line or a future pre-commit hook once the backlog is cleared.
 //
 // USAGE
 //   node tools/check-dialogue-topics.mjs             # the gate: loud warnings, exit 0
-//   node tools/check-dialogue-topics.mjs --strict     # exit 1 if any collision is found
+//   node tools/check-dialogue-topics.mjs --strict     # exit 1 if any LIVE collision is found
+//   node tools/check-dialogue-topics.mjs --all        # also list the partitioned (quiet) pairs
 //   node tools/check-dialogue-topics.mjs --self-test  # prove it goes red, and prove it stays quiet
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildTopicIndex, infoAllowed } from '../game/src/character/converse.js';
+import { topicKey } from '../game/src/core/topics.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const TOPICS_DIR = path.join(ROOT, 'game', 'data', 'dialogue', 'topics');
-
-// Local re-implementation of `game/src/core/topics.js topicKey()` — copied rather than imported
-// so this check has no dependency on the engine module tree, the same isolation `check-prose.mjs`
-// chose for its own text primitives. Kept in lockstep by the self-test below, which asserts the
-// two known-equal spellings the core module's own docstring gives as examples.
-function topicKey(id) {
-  return String(id == null ? '' : id)
-    .toLowerCase()
-    .replace(/[‘’'`]/g, '')
-    .replace(/[-_]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
 
 function readJSON(p) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; }
 }
 
-/** { key -> [{ id, file, group }] } across every *.json in `dir`. Exported for the self-test. */
-export function scanTopicFiles(dir) {
+function loadDocs(dir) {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir).filter((f) => f.endsWith('.json'))
+    .map((f) => ({ file: f, doc: readJSON(path.join(dir, f)) }))
+    .filter((d) => d.doc && Array.isArray(d.doc.topics));
+}
+
+// The context sweep. Not exhaustive — exhaustive is `corpus/90-verdicts/wave1/artifacts/
+// W1-17-act5-r1/gen-converse-node-repro.mjs`'s job for one file under active judgement — but wide
+// enough that a genuine race/disposition/knowledge partition (the common, intended pattern) reads
+// as partitioned and a genuine overlap (the round-1 defect's shape) reads as live. Races and
+// upbringings are read from the shipped rosters rather than hand-copied, so this sweep does not
+// silently go stale the day a new race ships.
+function loadRaces() {
+  const d = readJSON(path.join(ROOT, 'game', 'data', 'progression', 'races.json'));
+  return (d && Array.isArray(d.races) && d.races.length) ? d.races : ['saxhleel', 'naga', 'dunmer', 'imperial', 'nord', 'breton', 'redguard', 'khajiit', 'orsimer', 'bosmer'];
+}
+const RACES = loadRaces();
+const UPBRINGINGS = ['interior', 'lukiul', 'foreign-born', 'blackrose'];
+const DISPOSITIONS = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
+function contextsFor(infos) {
+  // Every knowledge key EITHER info's requires/forbids ever names, so the sweep can pass a
+  // maximally-permissive `knows` set (satisfies every requires.knows/knows_all at once) as well
+  // as the empty set — both directions, since infoAllowed()'s knowledge gate is fail-closed one
+  // way (RI-JRN07 M-Q14) and permissive the other.
+  const allKnows = new Set();
+  for (const info of infos) {
+    for (const k of (info.requires?.knows || [])) allKnows.add(k);
+    for (const k of (info.requires?.knows_all || [])) allKnows.add(k);
+  }
+  const knowsVariants = [new Set(), allKnows];
+  const ctxs = [];
+  for (const race of RACES) {
+    for (const upbringing of UPBRINGINGS) {
+      for (const disposition of DISPOSITIONS) {
+        for (const knows of knowsVariants) {
+          ctxs.push({ race, upbringing, disposition, knows });
+        }
+      }
+    }
+  }
+  return ctxs;
+}
+
+/**
+ * True if there exists a player context under which BOTH infos are `infoAllowed()` — meaning an
+ * NPC whose actor makes both candidates eligible would have `infoFor()` choose between them by
+ * specificity score alone, which is the shape that let round 1's shadow ship silent.
+ */
+function overlaps(infoA, infoB) {
+  for (const ctx of contextsFor([infoA, infoB])) {
+    if (infoAllowed(infoA, ctx) && infoAllowed(infoB, ctx)) return true;
+  }
+  return false;
+}
+
+/** Would a single NPC's own `topics[]`/`a` ever put both infos in `infoFor()`'s candidate loop?
+ *  An actor-less info (`a` unset) is a candidate for EVERY npc (`converse.js infoFor()`'s own
+ *  comment: "written for nobody in particular"); an actor-specific info is a candidate only for
+ *  an npc whose `actor` equals it. */
+function actorCoexists(infoA, infoB) {
+  if (!infoA.a || !infoB.a) return true;         // either side is universal
+  return infoA.a === infoB.a;                     // both specific: only the same actor sees both
+}
+
+export function scan(dir) {
+  const files = loadDocs(dir);
+  const idx = buildTopicIndex(files.map((f) => f.doc));
+  // key -> [{ file, group, info }] — every (file, info) pair under that folded key, so a
+  // collision can be judged info-by-info rather than file-by-file (one file may hold several
+  // infos for one id, some of which partition cleanly and some of which do not).
   const byKey = new Map();
-  if (!fs.existsSync(dir)) return byKey;
-  for (const f of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
-    const doc = readJSON(path.join(dir, f));
-    if (!doc || !Array.isArray(doc.topics)) continue;
+  for (const { file, doc } of files) {
     for (const t of doc.topics) {
       if (!t || typeof t.id !== 'string') continue;
       const key = topicKey(t.id);
-      if (!byKey.has(key)) byKey.set(key, []);
-      byKey.get(key).push({ id: t.id, file: f, group: doc.group || null });
+      if (!byKey.has(key)) byKey.set(key, { id: t.id, entries: [] });
+      for (const info of (t.infos || [])) byKey.get(key).entries.push({ file, group: doc.group || null, info });
     }
   }
-  return byKey;
-}
 
-/** Collisions only: every key declared by more than one distinct file. */
-export function findCollisions(byKey) {
-  const out = [];
-  for (const [key, rows] of byKey) {
-    const files = [...new Set(rows.map((r) => r.file))];
-    if (files.length > 1) out.push({ key, rows, files });
+  const live = [];
+  const partitioned = [];
+  for (const [key, { id, entries }] of byKey) {
+    const fileList = [...new Set(entries.map((e) => e.file))];
+    if (fileList.length < 2) continue;
+    let isLive = false;
+    const witnessPairs = [];
+    for (let i = 0; i < entries.length && !isLive; i++) {
+      for (let j = i + 1; j < entries.length; j++) {
+        const a = entries[i], b = entries[j];
+        if (a.file === b.file) continue;
+        if (!actorCoexists(a.info, b.info)) continue;
+        if (overlaps(a.info, b.info)) { isLive = true; witnessPairs.push([a, b]); break; }
+      }
+    }
+    (isLive ? live : partitioned).push({ key, id, files: fileList, entries, witnessPairs });
   }
-  return out.sort((a, b) => a.key.localeCompare(b.key));
-}
-
-function report(dir) {
-  const byKey = scanTopicFiles(dir);
-  const collisions = findCollisions(byKey);
-  return { byKey, collisions };
+  live.sort((a, b) => a.key.localeCompare(b.key));
+  partitioned.sort((a, b) => a.key.localeCompare(b.key));
+  return { totalKeys: byKey.size, totalFiles: files.length, live, partitioned };
 }
 
 // ------------------------------------------------------------------ self-test
@@ -106,44 +171,51 @@ function selfTest() {
   let bad = 0;
   const assertT = (cond, msg) => { if (!cond) { bad++; console.error('FAIL: ' + msg); } };
 
-  // topicKey parity with core/topics.js's own documented examples (rule 4: the fold this tool
-  // depends on must behave the same way the reader it is warning about does).
-  assertT(topicKey('the-steward-of-the-count') === 'the steward of the count', 'topicKey slug fold');
-  assertT(topicKey("the cutters' terms") === topicKey('the-cutters-terms'), 'topicKey apostrophe fold');
+  assertT(topicKey('the-steward-of-the-count') === 'the steward of the count', 'topicKey slug fold (imported from core/topics.js)');
 
-  // Rule 4 — break the instrument on purpose and confirm it goes red. A synthetic tree with two
-  // files declaring the same id must be caught; a clean tree must report zero.
+  // Rule 4 — break the instrument on purpose and confirm it goes red, and confirm it stays quiet
+  // on the pattern it is explicitly supposed to let through.
   const tmp = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), 'ck-dlg-'));
   try {
-    fs.writeFileSync(path.join(tmp, 'a.json'), JSON.stringify({ group: 'a', topics: [{ id: 'shared-id', infos: [{ x: 'from a' }] }] }));
-    fs.writeFileSync(path.join(tmp, 'b.json'), JSON.stringify({ group: 'b', topics: [{ id: 'shared-id', infos: [{ x: 'from b' }] }] }));
-    const dirty = report(tmp);
-    assertT(dirty.collisions.length === 1, 'a synthetic two-file collision is caught');
-    assertT(dirty.collisions[0]?.files?.length === 2, 'the collision names both files');
+    // (1) A genuine shadow: one file's info is unconditional (no requires/forbids/d at all,
+    // matches literally everyone), the other is actor-matched with a race whitelist that leaves
+    // most races able to hit BOTH — this must be reported LIVE.
+    fs.writeFileSync(path.join(tmp, 'stub.json'), JSON.stringify({ group: 'stub', topics: [{ id: 'the-shared-line', infos: [{ a: 'keeper', x: 'the old stub' }] }] }));
+    fs.writeFileSync(path.join(tmp, 'scene.json'), JSON.stringify({ group: 'scene', topics: [{ id: 'the-shared-line', infos: [{ a: 'keeper', x: 'the new scene', forbids: { race: ['dunmer'] } }] }] }));
+    const shadow = scan(tmp);
+    assertT(shadow.live.some((c) => c.key === 'the shared line'), 'a genuine overlapping shadow (unconditional stub vs a mostly-open scene) is reported LIVE');
 
-    fs.rmSync(path.join(tmp, 'b.json'));
-    fs.writeFileSync(path.join(tmp, 'b.json'), JSON.stringify({ group: 'b', topics: [{ id: 'not-shared', infos: [{ x: 'from b' }] }] }));
-    const clean = report(tmp);
-    assertT(clean.collisions.length === 0, 'a clean two-file tree with distinct ids reports zero');
+    fs.rmSync(path.join(tmp, 'stub.json'));
+    fs.rmSync(path.join(tmp, 'scene.json'));
 
-    // Same id, folded spellings — dashed vs spaced — must still collide, because that is exactly
-    // the slug-vs-prose fold `converse.js buildTopicIndex()` performs before it merges.
-    fs.rmSync(path.join(tmp, 'b.json'));
-    fs.writeFileSync(path.join(tmp, 'b.json'), JSON.stringify({ group: 'b', topics: [{ id: 'shared id', infos: [{ x: 'from b, spaced' }] }] }));
-    const folded = report(tmp);
-    assertT(folded.collisions.length === 1, 'a folded-spelling collision (dash vs space) is still caught');
+    // (2) The intended pattern: two files split ONE topic id by disjoint race lists (exactly
+    // "boots" in the shipped tree, 40-race-gated.json vs 45-speaker-coverage.json) — this must
+    // NOT be reported live, because no player can ever be offered both.
+    fs.writeFileSync(path.join(tmp, 'warm.json'), JSON.stringify({ group: 'warm', topics: [{ id: 'boots', infos: [{ a: 'merchant', x: 'warmblood line', requires: { race: ['dunmer', 'imperial', 'nord'] } }] }] }));
+    fs.writeFileSync(path.join(tmp, 'cold.json'), JSON.stringify({ group: 'cold', topics: [{ id: 'boots', infos: [{ a: 'merchant', x: 'saxhleel line', requires: { race: ['saxhleel', 'naga'] } }] }] }));
+    const partition = scan(tmp);
+    assertT(!partition.live.some((c) => c.key === 'boots'), 'a race-disjoint split (the shipped "boots" pattern) is NOT reported live');
+    assertT(partition.partitioned.some((c) => c.key === 'boots'), 'and is recorded in the quiet, partitioned bucket instead');
+
+    fs.rmSync(path.join(tmp, 'warm.json'));
+    fs.rmSync(path.join(tmp, 'cold.json'));
+
+    // (3) Different actors entirely, no requires at all — never candidates for the same NPC.
+    fs.writeFileSync(path.join(tmp, 'x.json'), JSON.stringify({ group: 'x', topics: [{ id: 'weather', infos: [{ a: 'fisher', x: 'a' }] }] }));
+    fs.writeFileSync(path.join(tmp, 'y.json'), JSON.stringify({ group: 'y', topics: [{ id: 'weather', infos: [{ a: 'guard', x: 'b' }] }] }));
+    const disjointActor = scan(tmp);
+    assertT(!disjointActor.live.some((c) => c.key === 'weather'), 'two different specific actors never coexist for one NPC — not reported live');
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
 
-  // Confirmed positive on the SHIPPED tree — this must currently be non-zero, because the round-1
-  // verdict this tool exists to make routine found the collision by hand and this is the check
-  // that should have. If this ever reads 0 it means either the tree's known collisions were
-  // resolved (good — update this assertion) or the scanner broke (bad — investigate).
-  const live = report(TOPICS_DIR);
-  assertT(live.collisions.length >= 1, 'the shipped tree has at least the one known collision (the-steward-of-the-count and siblings)');
+  // Confirmed positive on the SHIPPED tree. If this ever reads 0 live, either the known W1-17
+  // shadow was actually resolved (good — update this assertion) or the scanner broke (bad).
+  const shipped = scan(TOPICS_DIR);
+  assertT(shipped.live.some((c) => c.key === 'the steward of the count'), 'the shipped tree still reports the known W1-17 shadow ("the steward of the count") LIVE');
+  assertT(shipped.partitioned.length > 0, 'the shipped tree has at least one intended, partitioned same-id split (the check would be all-noise otherwise)');
 
-  console.log(bad ? `SELF-TEST FAILED (${bad})` : 'self-test passed (instrument goes red on a synthetic collision, quiet on a clean tree, and finds the known live one)');
+  console.log(bad ? `SELF-TEST FAILED (${bad})` : 'self-test passed: goes red on a genuine overlap, stays quiet on the intended race-partition pattern, and finds the known live shadow on the shipped tree.');
   return bad ? 1 : 0;
 }
 
@@ -151,22 +223,25 @@ async function main() {
   const argv = process.argv.slice(2);
   if (argv.includes('--self-test')) return selfTest();
   const strict = argv.includes('--strict');
+  const all = argv.includes('--all');
 
-  const { byKey, collisions } = report(TOPICS_DIR);
+  const { totalKeys, totalFiles, live, partitioned } = scan(TOPICS_DIR);
 
-  if (!collisions.length) {
-    console.log(`check-dialogue-topics: ${byKey.size} topic id(s) across ${fs.readdirSync(TOPICS_DIR).filter((f) => f.endsWith('.json')).length} files, 0 cross-file collisions.`);
+  if (!live.length) {
+    console.log(`check-dialogue-topics: ${totalKeys} topic id(s) across ${totalFiles} files; ${partitioned.length} same-id split(s) all cleanly partitioned; 0 live (overlapping) collisions.`);
     return 0;
   }
 
-  console.warn(`check-dialogue-topics: WARNING — ${collisions.length} topic id(s) declared in more than one file.`);
-  console.warn('  buildTopicIndex() merges these BY DESIGN and infoFor() picks between them by a');
-  console.warn('  specificity score; a collision is not automatically wrong, but every one of them is a');
-  console.warn('  place a same-id record can silently shadow the one an author meant a player to hear.');
-  console.warn('  See corpus/90-verdicts/wave1/W1-17-act5-r1.md for what that looked like once it shipped.');
-  for (const c of collisions) {
-    const spellings = [...new Set(c.rows.map((r) => r.id))];
-    console.warn(`  "${c.key}"  <-  ${c.rows.map((r) => `${r.id} (${r.file})`).join('  &  ')}` + (spellings.length > 1 ? '   [also a spelling fold, not just a repeat]' : ''));
+  console.warn(`check-dialogue-topics: WARNING — ${live.length} topic id(s) declared in more than one file WITH an overlapping player context — a real player could be offered either file's info and `);
+  console.warn('  `infoFor()`\'s specificity score, not authorial intent, decides which one they hear.');
+  console.warn(`  (${partitioned.length} more same-id split(s) exist but partition cleanly by race/disposition/knowledge — no player can reach both, so they are not listed here${all ? '' : '; pass --all to see them'}.)`);
+  console.warn('  See corpus/90-verdicts/wave1/W1-17-act5-r1.md for what an unnoticed one of these looked like once shipped.');
+  for (const c of live) {
+    console.warn(`  "${c.key}"  <-  ${c.files.join('  &  ')}  (${c.witnessPairs.length} overlapping info pair(s) of ${c.entries.length} total)`);
+  }
+  if (all && partitioned.length) {
+    console.warn(`\n  ${partitioned.length} partitioned (quiet) same-id split(s):`);
+    for (const c of partitioned) console.warn(`  "${c.key}"  <-  ${c.files.join('  &  ')}`);
   }
 
   if (strict) { console.error('check-dialogue-topics: --strict'); return 1; }

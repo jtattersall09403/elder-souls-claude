@@ -15,8 +15,21 @@
 //   3. every offered topic returns text (no dangling advertisement);
 //   4. `how-the-count-opens` is offered to EVERY signature, including the lowest-standing one,
 //      because the non-violent route through the climax must not be a privilege of standing;
-//   5. the Recension topic is refused below disposition 20 and answered above it.
+//   5. the Recension topic is refused below disposition 20 and answered above it;
+//   6. WHICH RECORD ANSWERED — every topic `ixtu-meer` says must carry `said_from ===
+//      'main-quest-argument'` (converse.js `infoFor()`'s provenance field, added W1-17 round 2),
+//      not merely that `said` is non-empty. This is the check the round-1 verdict found missing:
+//      `game/data/dialogue/topics/50-mainline.json` ALSO declares a stub for three of this file's
+//      twelve ids, `buildTopicIndex()` merges same-id records across files by design, and
+//      `infoFor()`'s specificity score picked the stub for 2 of THIS PROBE'S OWN SIX signatures
+//      (blackrose-khajiit, foreign-imperial) while checks 1-5 above all still reported ok:true,
+//      because none of them asked whose text it was. Reproduced without a browser (headless_shell
+//      contention, RULES.md rule 21) against the shipped `converse.js` directly in
+//      `corpus/90-verdicts/wave1/artifacts/W1-17-act5-r1/gen-converse-node-repro.mjs`; this check
+//      is the same assertion, wired into the probe itself so it needs no separate script the next
+//      time somebody runs the real build.
 
+import { readFileSync } from 'node:fs';
 import { launchGame } from '../lib/browser.mjs';
 import { parseArgs, wantsHelp, usage, writeJson } from '../lib/cli.mjs';
 
@@ -31,6 +44,11 @@ const args = parseArgs(process.argv.slice(2));
 if (wantsHelp(args)) { usage(USAGE); process.exit(0); }
 
 const NPC = 'ixtu-meer';
+// `game/data/dialogue/topics/main-quest-argument.json`'s own `group` field — the value
+// `converse.js infoFor()` stamps onto `from` when an info actually came from THIS file. Read off
+// the file rather than hardcoded a second time, so an author renaming the group cannot make this
+// check silently stop checking anything.
+const EXPECTED_GROUP = JSON.parse(readFileSync(new URL('../../game/data/dialogue/topics/main-quest-argument.json', import.meta.url), 'utf8')).group;
 const FLAGS = [
   'player_knows_the_curve_is_older',
   'player_proved_the_wells_drink_the_overflow',
@@ -65,12 +83,19 @@ const run = async (sig, withFlags) => page.evaluate(({ npc, sig, flags }) => {
   const d = H.npcDisposition(npc);
   const st = H.talkTo(npc);
   const said = {};
+  const saidFrom = {};
   for (const t of st.topics) {
     const r = H.conversationSay(t.id);
     said[t.id] = (r && r.said) ? r.said : null;
+    // W1-17 round 2 — WHICH RECORD. `said_from` is `converse.js infoFor()`'s provenance field
+    // (the topic file's own `group`), carried through `Conversation.state()`. `null` here means
+    // either nothing was said, or the answer came from the NPC's own `lines` block rather than
+    // the merged topic index (`from: 'npc-own-line'`) — recorded as-is rather than coerced, so a
+    // genuinely different kind of "not this file" is not confused with a shadow.
+    saidFrom[t.id] = (r && r.said_from) ? r.said_from : null;
   }
   H.conversationClose();
-  return { disposition: d.disposition, band: d.band, race_term: d.race_term, upbringing_term: d.upbringing_term, topics: st.topics.map((t) => t.id), said };
+  return { disposition: d.disposition, band: d.band, race_term: d.race_term, upbringing_term: d.upbringing_term, topics: st.topics.map((t) => t.id), said, saidFrom };
 }, { npc: NPC, sig, flags: withFlags ? FLAGS : [] });
 
 const rows = [];
@@ -104,6 +129,19 @@ for (const r of rows) {
   }
   const opens = r.cold.topics.find((t) => t.replace(/[- ]/g, '') === 'howtheCountopens'.toLowerCase().replace(/ /g, '') || /how.the.count.opens/i.test(t));
   if (!opens) fails.push(`${r.signature}: the non-violent method is not offered at disposition ${r.cold.disposition}`);
+  // WHICH RECORD ANSWERED (W1-17 round 2). Checks 1-3 above ask only whether text came back;
+  // this asks whose. A topic said and answered from a DIFFERENT file's group is exactly the
+  // round-1 hard fail's shape — a merged same-id record shadowing this file's own authored line —
+  // and it reports `said_from` truthfully rather than an empty string, so this check is silent
+  // on `npc-own-line`/rumour/directions answers, which are not part of this file at all.
+  for (const [phase, view] of [['warm', r.warm], ['cold', r.cold]]) {
+    for (const t of view.topics) {
+      const from = view.saidFrom[t];
+      if (from && from !== EXPECTED_GROUP) {
+        fails.push(`${r.signature} (${phase}): topic "${t}" was answered by "${from}", not this file's own "${EXPECTED_GROUP}" — a merged same-id record shadowed the authored line`);
+      }
+    }
+  }
 }
 
 // Clause banding: the answer above 20, the refusal below it. Both must be non-empty and different.
@@ -123,6 +161,7 @@ else {
 
 const report = {
   npc: NPC,
+  expected_group: EXPECTED_GROUP,
   topics_total: all.size,
   topics: [...all].sort(),
   knowledge_gated: gatedTopics.sort(),
@@ -133,6 +172,10 @@ const report = {
     topics_cold: r.cold.topics.length, topics_warm: r.warm.topics.length,
     words_warm: Object.values(r.warm.said).filter(Boolean).reduce((a, s) => a + s.split(/\s+/).length, 0),
     distinct_from_top_signature: null,
+    // W1-17 round 2 — which file's own record answered, per topic. Any value other than
+    // EXPECTED_GROUP or null is a shadow, already scored above; carried into the report verbatim
+    // so a reader does not have to re-derive it from the raw `said` text.
+    said_from_warm: r.warm.saidFrom,
   })),
   ok: fails.length === 0,
   failures: fails,

@@ -26,7 +26,7 @@
   "build": {
     "commit_sha": "3ba93e04f53e8827153134ebe255085b84682acf",
     "branch": "claude/morrowind-souls-threejs-game-mou39v",
-    "note": "Working tree dirty (5 files) throughout; 21 pieces in flight. Load 6.29-23.30 and 12-18 headless_shell for the whole run, above RULES.md rule 21's ~8 cap. I launched ONE browser per probe run and kept it, and publish NO timing figure anywhere in this verdict, so contention affects nothing in it. Captures were taken through tools/capture/ (rule 20). I did not commit (rule 28). The builder's status file records that two in-flight orchestrator commits swept its working tree; my own delete-the-fix on tools/check-data.mjs was restored and verified with `git diff` empty (rule 17).",
+    "note": "Working tree dirty (5 files) throughout; 21 pieces in flight. Load 6.29-23.30 and 12-18 headless_shell for the whole run, above RULES.md rule 21's ~8 cap. I launched ONE browser per probe run and kept it, and publish NO timing figure anywhere in this verdict, so contention affects nothing in it. Captures were taken through tools/capture/ (rule 20). I did not commit (rule 28). The builder's status file records that two in-flight orchestrator commits swept its working tree; my own delete-the-fix on tools/check-data.mjs was restored and verified with `git diff` empty (rule 17). POST-HOC: my verdict, its json, the three images and my three instruments were swept into another agent's commit 92378c9 (`git add -A`) while I was still writing. I ran `git commit` at no point. Every number here is stamped to 3ba93e0, which is an ancestor of HEAD, and I re-ran nothing after the sweep. This is the third time the pattern is on record — the W1-02 critic and the W1-04 builder both reported it.",
     "harness_commands": [
       {
         "command": "node tools/world/critic-w1-04-r1.mjs --out reports/critic-w1-04-r1.json",
@@ -35,6 +35,11 @@
       },
       {
         "command": "node tools/world/critic-w1-04-r1b.mjs",
+        "seed": null,
+        "exit_code": 0
+      },
+      {
+        "command": "node tools/world/critic-w1-04-r1c.mjs",
         "seed": null,
         "exit_code": 0
       },
@@ -87,6 +92,12 @@
       "source": "critic's own instrument: the drawn-cell trace across a door, with _applyCell() as the control arm"
     },
     {
+      "path": "reports/critic-w1-04-r1c.json",
+      "kind": "report",
+      "produced_by": "node tools/world/critic-w1-04-r1c.mjs",
+      "source": "critic's own instrument: AR-2 over W1-04's surface, plus the full 115-interior drawn-cell sweep"
+    },
+    {
       "path": "tools/world/critic-w1-04-r1.mjs",
       "kind": "log",
       "produced_by": "written by the critic (declared under method_deviations)",
@@ -127,6 +138,12 @@
       "kind": "report",
       "produced_by": "the W1-04 builder (read, not produced, by this critic)",
       "source": "the piece's own honest survey — Part I the before-picture, Part II the after-state"
+    },
+    {
+      "path": "tools/world/critic-w1-04-r1c.mjs",
+      "kind": "log",
+      "produced_by": "written by the critic (declared under method_deviations)",
+      "source": "critic instrument source"
     }
   ],
   "reference_items": [
@@ -197,7 +214,8 @@
         "reports/critic-w1-04-r1b.json",
         "reports/critic-w1-04-r1.json",
         "docs/shots/2026-08-07-w1-04-critic-thorn-hall-populated.png",
-        "docs/shots/2026-08-07-w1-04-critic-archon-apothecary-same-hall.png"
+        "docs/shots/2026-08-07-w1-04-critic-archon-apothecary-same-hall.png",
+        "reports/critic-w1-04-r1c.json"
       ],
       "hard_fails": [
         "DOOR-DRAWS-NOTHING"
@@ -207,9 +225,10 @@
           "id": "DOOR-DRAWS-NOTHING",
           "result": "fail",
           "hard_fail": true,
-          "observed": "enterInterior('thorn-hall') sets env.interior and cellFor() returns 'interior', but renderer.cells visible set stays ['province'] across 6 fixed steps and an explicit renderFrame(). Calling E._applyCell() by hand switches it to ['interior'] — the control arm, so the instrument is not blind. After exitInterior the visible cell is still ['interior'] while the body stands outdoors in Thorn. renderer.setCell() has exactly one caller, Engine._applyCell(), and _applyCell is never called from useDoor() or leaveInterior().",
+          "observed": "enterInterior('thorn-hall') sets env.interior and cellFor() returns 'interior', but renderer.cells visible set stays ['province'] across 6 fixed steps and an explicit renderFrame(). Calling E._applyCell() by hand switches it to ['interior'] — the control arm, so the instrument is not blind. After exitInterior the visible cell is still ['interior'] while the body stands outdoors in Thorn. renderer.setCell() has exactly one caller, Engine._applyCell(), and _applyCell is never called from useDoor() or leaveInterior(). SWEEP, ALL 115: every interior entered through enterInterior() from a province start, 3 steps and a renderFrame() each — 115 of 115 entered (0 refused, 0 errors) and 0 of 115 switched the drawn cell. The visible set reads ['province'] after the door on every one of them.",
           "evidence": [
-            "reports/critic-w1-04-r1b.json"
+            "reports/critic-w1-04-r1b.json",
+            "reports/critic-w1-04-r1c.json"
           ]
         },
         {
@@ -287,14 +306,18 @@
       "measured": "partial",
       "evidence": [
         "reports/critic-w1-04-r1b.json",
-        "docs/shots/2026-08-07-w1-04-critic-thorn-hall-populated.png"
+        "docs/shots/2026-08-07-w1-04-critic-thorn-hall-populated.png",
+        "reports/critic-w1-04-r1c.json"
       ],
       "hard_fails": [],
       "checks": [
         {
           "id": "interior-camera-sees-the-interior",
           "result": "fail",
-          "observed": "See RI-WLD13/DOOR-DRAWS-NOTHING. A camera placed at the interior spawn frames the province."
+          "observed": "See RI-WLD13/DOOR-DRAWS-NOTHING. Swept over the whole population: 115 of 115 interiors entered, 0 of 115 changed the drawn cell. A camera placed at any interior spawn frames the province.",
+          "evidence": [
+            "reports/critic-w1-04-r1c.json"
+          ]
         },
         {
           "id": "113-of-115-share-one-cell",
@@ -827,20 +850,39 @@
         {
           "id": "no-marker-surface-added",
           "result": "pass",
-          "observed": "W1-04 adds no marker, no compass pin, no quest arrow and no map surface. The door prompt is sim.door — a diegetic 'the door is under your hand' state read off DOOR_REACH_M, refusals are events with words in them ('closed', with open_h/close_h and the hour), and a shut shop is a locked door rather than an invisible wall. That is the Morrowind shape, not the Souls one."
+          "observed": "Measured, not asserted. Standing in Thorn: getUIState() reports map markers 0, routes_drawn 0, quest_bearing_elements [], travel_affordances [], places_drawn 0, and a 6-element HUD at 2.05% coverage with no minimap and no compass. getDrawnMarkers() returns one object in the whole town and it is `hearth-thorn`, the Hist-shrine RI-WLD03's service matrix requires. tryPlaceMapMarker exhausted 13 routes to put a pin on Thorn and landed none; openMenu('map',{place}) and openMenu('minimap') both throw with the S35 refusal text. W1-04 adds no marker surface of its own.",
+          "evidence": [
+            "reports/critic-w1-04-r1c.json"
+          ]
         },
         {
-          "id": "no-bonfire-convention-in-a-town",
+          "id": "door-prompt-is-diegetic-not-a-hud-affordance",
           "result": "pass",
-          "observed": "Settlement records declare a Hist-shrine per town as RI-WLD03's service matrix requires, and the hearth/bonfire model belongs to W1-13 and is not re-implemented here. No respawn-on-rest or enemy-reset behaviour is attached to a settlement by this piece."
+          "observed": "The door is sim.door — a 'your hand is on it' state derived from DOOR_REACH_M and recomputed every frame whether or not interact is down — and it contributes no element to the 6-element HUD census above. A shut shop refuses with words and numbers ('closed', with open_h/close_h and the hour) rather than an invisible wall. That is the Morrowind shape, not the Souls one.",
+          "evidence": [
+            "reports/critic-w1-04-r1c.json",
+            "reports/critic-w1-04-r1.json"
+          ]
+        },
+        {
+          "id": "no-bonfire-convention-attached-to-a-town",
+          "result": "pass",
+          "observed": "One hearth stands in Thorn, as the service matrix requires; the hearth/rest/respawn model is W1-13's and this piece re-implements none of it. No settlement in the eight attaches an enemy reset or a respawn-on-rest to itself.",
+          "evidence": [
+            "reports/critic-w1-04-r1c.json"
+          ]
         },
         {
           "id": "trespass-is-social-not-a-fail-state",
           "result": "pass",
-          "observed": "trespassCheck returns trespassing + an escalation term (CHALLENGE/null) that faction rank and the hour both move, rather than an instant hostility flip. Measured under B3 and under the builder's faction perturbation."
+          "observed": "trespassCheck returns trespassing plus an escalation term (CHALLENGE/null) that faction rank and the hour both move, rather than an instant hostility flip. Measured under B3 (4 of 6 shop zones flip between noon and 03:00).",
+          "evidence": [
+            "reports/critic-w1-04-r1.json"
+          ]
         }
       ],
       "evidence": [
+        "reports/critic-w1-04-r1c.json",
         "reports/critic-w1-04-r1.json"
       ]
     }
@@ -864,10 +906,11 @@
     "gap_id": "GAP-W1-interior-door-draws-nothing",
     "subsystem_path": "world.interior.named",
     "severity": "blocking",
-    "what": "Walking through a door sets sim.env.interior and moves the body to the declared interior spawn, and does not change what is drawn: renderer.setCell() has exactly one caller, Engine._applyCell(), and _applyCell() is called from loadState, the census staging, the barge reset and the save-load path but never from useDoor() or leaveInterior(). Measured: after enterInterior('thorn-hall'), across six fixed steps and an explicit renderFrame(), the visible cell set is still ['province'] while cellFor(env) reads 'interior'; calling _applyCell() by hand switches it to ['interior'] (the control arm). After exitInterior the visible cell is still ['interior'] while the body stands outdoors in Thorn. And there would be almost nothing to draw if it did switch: cellFor() maps five interiors to hand-built W1-07 rooms and returns the generic 'interior' cell — scene.js buildHall(), 249 triangles, one light — for the other 113 of 115, while interior.props (18 on a typical shop), .lights (10), .containers and .unique_item have zero consumers anywhere in game/src.",
+    "what": "Walking through a door sets sim.env.interior and moves the body to the declared interior spawn, and does not change what is drawn: renderer.setCell() has exactly one caller, Engine._applyCell(), and _applyCell() is called from loadState, the census staging, the barge reset and the save-load path but never from useDoor() or leaveInterior(). Measured over the WHOLE population: all 115 interiors entered through enterInterior() from a province start — 115 of 115 entered, 0 refused, 0 errors — and 0 of 115 changed the drawn cell; the visible set reads ['province'] after every door. In detail, after enterInterior('thorn-hall'), across six fixed steps and an explicit renderFrame(), the visible cell set is still ['province'] while cellFor(env) reads 'interior'; calling _applyCell() by hand switches it to ['interior'] (the control arm). After exitInterior the visible cell is still ['interior'] while the body stands outdoors in Thorn. And there would be almost nothing to draw if it did switch: cellFor() maps five interiors to hand-built W1-07 rooms and returns the generic 'interior' cell — scene.js buildHall(), 249 triangles, one light — for the other 113 of 115, while interior.props (18 on a typical shop), .lights (10), .containers and .unique_item have zero consumers anywhere in game/src.",
     "why_it_matters": "This is the same defect the piece itself found and fixed one layer down. sim.player.pos turned out to be a mirror that combat-bridge.mirror() overwrote, so a door taken on frame N was undone on frame N+1, and in the builder's own words nothing was red because 'sim.env.interior was set correctly the whole time — every census-shaped check passed while the player never actually went anywhere.' The body half was fixed and the render half was not, and tools/world/w1-04-consumption.mjs cannot see it because it never reads the renderer: all thirteen of its checks would still pass on a build where no door has ever shown anyone a room. ARBITRATION §3 settles what that is worth — 'a model with no demonstrated consumer is unmeasurable => 0, exactly as a missing model is; from the player's chair they are the same thing.' From the player's chair, 115 named interiors, 202 buildings, eight architecture kits and 260 people who live in rooms are one hall you cannot get into. RI-WLD13 §2 named this exact failure before the piece began: 'the difference between a settlement of buildings and a settlement of building-shaped doors.'",
     "evidence": [
       "reports/critic-w1-04-r1b.json",
+      "reports/critic-w1-04-r1c.json",
       "reports/critic-w1-04-r1.json",
       "docs/shots/2026-08-07-w1-04-critic-thorn-hall-populated.png",
       "docs/shots/2026-08-07-w1-04-critic-archon-apothecary-same-hall.png",
@@ -956,6 +999,6 @@
     "remedy_is_buildable": true,
     "no_banned_reasoning_used": true,
     "escalation_ladder_used_if_gap_seemed_small": true,
-    "self_audit_note": "Two false entries, both stated rather than worked around. (1) ran_every_assigned_method is false: RI-WLD03 M12 step 5, and RI-WLD13 N4/N5/N6/N7 and S1-S4, have no instrument in this build because the data and geometry they inspect do not exist; RI-CRM01's persistence-after-load measurement is recorded as the builder's, not re-run by me; and I did not re-run RI-DLG02's word-count method or RI-LOR04's exhaustive lexicon audit, both of which belong to the dialogue and naming pieces. (2) blind_done_where_required is false: four of the twenty items are blind_pair:yes (RI-WLD03, RI-AI07, RI-WLD08, RI-DLG03, plus RI-QST08) and all five are recorded not_possible with a reason. RI-WLD03's M13 is the one that matters and its reason is the verdict's own finding: there is no settlement geometry to render, so the pack's subject does not exist. Every finding in this verdict was measured by an instrument I wrote, in the running world, with a control arm; I did not re-run tools/world/w1-04-consumption.mjs, on the principle that a critic re-running the builder's probe has confirmed only that the builder's probe runs."
+    "self_audit_note": "Two false entries, both stated rather than worked around. (1) ran_every_assigned_method is false: RI-WLD03 M12 step 5, and RI-WLD13 N4/N5/N6/N7 and S1-S4, have no instrument in this build because the data and geometry they inspect do not exist; RI-CRM01's persistence-after-load measurement is recorded as the builder's, not re-run by me; and I did not re-run RI-DLG02's word-count method or RI-LOR04's exhaustive lexicon audit, both of which belong to the dialogue and naming pieces. (2) blind_done_where_required is false: four of the twenty items are blind_pair:yes (RI-WLD03, RI-AI07, RI-WLD08, RI-DLG03, plus RI-QST08) and all five are recorded not_possible with a reason. RI-WLD03's M13 is the one that matters and its reason is the verdict's own finding: there is no settlement geometry to render, so the pack's subject does not exist. Every finding in this verdict was measured by an instrument I wrote, in the running world, with a control arm; I did not re-run tools/world/w1-04-consumption.mjs, on the principle that a critic re-running the builder's probe has confirmed only that the builder's probe runs. The 115-interior sweep in tools/world/critic-w1-04-r1c.mjs took roughly 25 minutes under load 16-28 and I very nearly abandoned it as redundant; it completed, and it is the number the gap is now stated on."
   }
 }

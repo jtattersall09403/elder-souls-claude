@@ -404,7 +404,11 @@ const phantomTools = new Map(); // toolPath -> Set(item file)
   // "tools/harness/viewpoints.json", then backtracks so that ".js" matches and "on" is left over —
   // inventing a phantom "viewpoints.js" while the real .json file sits next to it. That inflated
   // every C8 figure this project has quoted, including the headline 67. Found by the tool critic.
-  const TOOL_RX = /tools\/[A-Za-z0-9_\-/.]*\.(?:mjs|cjs|js|py)(?![A-Za-z0-9_])/g;
+  // Both roots that hold instruments. The pattern used to match `tools/` only, so the six scripts
+  // RI-CAM01/03/04/05/06/07 name by path under `corpus/80-methods/` were absent from disk and C8
+  // could not see them — a phantom-tool check with a blind spot exactly where the method items
+  // keep their own methods. Found by the W1-06 builder, which then wrote all six.
+  const TOOL_RX = /(?:tools|corpus\/80-methods)\/[A-Za-z0-9_\-/.]*\.(?:mjs|cjs|js|py)(?![A-Za-z0-9_])/g;
   for (const it of items) {
     const text = readFileSync(it.path, 'utf8');
     const i = text.indexOf('## Comparison method');

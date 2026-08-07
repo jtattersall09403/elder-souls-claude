@@ -2,34 +2,50 @@
   "task_id": "critic-w1-04",
   "role": "critic",
   "judges": "W1-04",
-  "state": "running",
+  "state": "complete",
   "started_at": "2026-08-07T00:00:00Z",
-  "next_step": "write corpus/90-verdicts/wave1/W1-04-r1.{md,json}, copy shot to docs/shots, blog line, verdict-validate",
+  "next_step": "none — verdict delivered and validated (exit 0). Open for the orchestrator: (a) GAP-W1-interior-door-draws-nothing is blocking and belongs to W1-04 round 2; (b) witnessed theft reaches crime_ref 1 and bounty 0, unowned by any piece; (c) region ids are not a namespace (thorn.json region \"thornmarsh\" vs western-/eastern-rootlands) — same class as the settlement-field defect just closed, one level up, and no checker catches it.",
   "files_touched": [
-    "orchestration/status/critic-w1-04.json"
-  ],
-  "files_claimed": [
+    "orchestration/status/critic-w1-04.json",
     "corpus/90-verdicts/wave1/W1-04-r1.md",
     "corpus/90-verdicts/wave1/W1-04-r1.json",
-    "docs/shots/",
-    "reports/blog-feed.jsonl"
+    "tools/world/critic-w1-04-r1.mjs",
+    "tools/world/critic-w1-04-r1b.mjs",
+    "tools/world/critic-w1-04-r1c.mjs",
+    "reports/critic-w1-04-r1.json",
+    "reports/critic-w1-04-r1b.json",
+    "reports/blog-feed.jsonl",
+    "docs/shots/2026-08-07-w1-04-critic-thorn-hall-populated.png",
+    "docs/shots/2026-08-07-w1-04-critic-archon-apothecary-same-hall.png",
+    "docs/shots/2026-08-07-w1-04-critic-vp04-settlement-street.png",
+    "reports/critic-w1-04-r1c.json"
   ],
+  "files_claimed": [],
   "notes": [],
   "findings": [
-    "OFFLINE F1 (biggest): 113 of 115 named interiors have NO GEOMETRY. engine.js cellFor() maps env.interior to one of five hand-built W1-07 rooms (barge-hold, writ-house, helstrom-market, stormhold-street, rootlands-well) and otherwise returns the generic 'interior' cell, which scene.js builds ONCE via buildHall() \u2014 'a hall lit by one hearth (VP05)'. Every shop, temple, guild hall and house in all eight settlements is the same room.",
+    "OFFLINE F1 (biggest): 113 of 115 named interiors have NO GEOMETRY. engine.js cellFor() maps env.interior to one of five hand-built W1-07 rooms (barge-hold, writ-house, helstrom-market, stormhold-street, rootlands-well) and otherwise returns the generic 'interior' cell, which scene.js builds ONCE via buildHall() — 'a hall lit by one hearth (VP05)'. Every shop, temple, guild hall and house in all eight settlements is the same room.",
     "OFFLINE F2: interior.props / .lights / .containers / .unique_item are read by NOTHING in game/src. bounds_m is read only by populateSettlement to derive an NPC offset. 'hand-furnished' is a list of prop-name strings nobody instantiates.",
-    "OFFLINE F3: settlement.buildings is read at exactly two sites \u2014 SettlementSystem's door table and a .length count in listSettlements(). No building mesh exists. RI-WLD03 R5 (unique architecture kit, >=8 bespoke meshes, >=1 unique silhouette) has zero implementation. The doors have no buildings.",
+    "OFFLINE F3: settlement.buildings is read at exactly two sites — SettlementSystem's door table and a .length count in listSettlements(). No building mesh exists. RI-WLD03 R5 (unique architecture kit, >=8 bespoke meshes, >=1 unique silhouette) has zero implementation. The doors have no buildings.",
     "OFFLINE F4: stepSchedule's own docstring claims it changes 'pos (they walk to the slot's anchor)'. It never touches n.pos. Positions are assigned once in populateSettlement from the slot live AT SPAWN and never re-derived; a person whose 19:00 slot is the inn keeps the offset computed inside their house.",
     "OFFLINE F5: 0 of 347 NPC records carry pos. At 03:00 zero NPCs anywhere are outdoors; at noon 34 of 347 are (and all 34 are the W1-GIVER-PRESENCE posts, a NEIGHBOURING piece's work). The street of every town is empty at every hour of W1-04's own population.",
-    "*** HARD FAIL, MEASURED IN THE BROWSER: GOING THROUGH A DOOR DOES NOT CHANGE WHAT IS DRAWN. enterInterior('thorn-hall') sets env.interior and cellFor() returns 'interior', but renderer.cells.province stays the only visible group across 6 steps and a renderFrame. Only a manual E._applyCell() switches it \u2014 and _applyCell is called from loadState/census/barge-reset/save-load, NEVER from useDoor/leaveInterior. Worse in the other direction: after exitInterior the visible cell is still 'interior' while the player stands outdoors in Thorn. reports/critic-w1-04-r1b.json.",
+    "*** HARD FAIL, MEASURED IN THE BROWSER: GOING THROUGH A DOOR DOES NOT CHANGE WHAT IS DRAWN. enterInterior('thorn-hall') sets env.interior and cellFor() returns 'interior', but renderer.cells.province stays the only visible group across 6 steps and a renderFrame. Only a manual E._applyCell() switches it — and _applyCell is called from loadState/census/barge-reset/save-load, NEVER from useDoor/leaveInterior. Worse in the other direction: after exitInterior the visible cell is still 'interior' while the player stands outdoors in Thorn. reports/critic-w1-04-r1b.json.",
     "This is the SAME class of defect the builder found and fixed on the body (sim.player.pos was a mirror). The builder fixed the body half and did not fix the render half, and its own probe cannot see it because tools/world/w1-04-consumption.mjs never reads the renderer.",
-    "C1 MEASURED: 113 of 115 interiors resolve to the generic 'interior' cell \u2014 249 triangles, buildHall(), one firelit hall. Captured proof: the Crimson Apothecary (Archon, a shop) and Thorn Hall (a village great hall 4 km away) are the same room, pixel for pixel, differing only in who stands in it.",
-    "A2 MEASURED: 24 people in Thorn, 9 change cell between noon and 03:00, 0 change position. Nobody walks. 4 outdoors at noon, 0 at 03:00 \u2014 and all 4 belong to the neighbouring giver-presence piece, not to W1-04's 18 pop-thorn records.",
+    "C1 MEASURED: 113 of 115 interiors resolve to the generic 'interior' cell — 249 triangles, buildHall(), one firelit hall. Captured proof: the Crimson Apothecary (Archon, a shop) and Thorn Hall (a village great hall 4 km away) are the same room, pixel for pixel, differing only in who stands in it.",
+    "A2 MEASURED: 24 people in Thorn, 9 change cell between noon and 03:00, 0 change position. Nobody walks. 4 outdoors at noon, 0 at 03:00 — and all 4 belong to the neighbouring giver-presence piece, not to W1-04's 18 pop-thorn records.",
     "OWNERSHIP AND LOCKS PASS, independently perturbed: owned take -> theft:true crime:theft_petty stolen_from faction:drowned-court disposition -5.5; same object with owner stripped -> theft:false why:'unowned'. Lock tier 3->5 changes the refusal text from 'needs Security 40 / Agility 26' to 'Security 80 / Agility 50' and back. Shop hours change trespass on 4 of 6 zones between noon and 03:00.",
     "check-data's NPC-settlement check IS falsifiable: reintroducing settlement:'rootlands' on rootlands-keeper makes it exit 1 naming the record; restoring makes it exit 0. Working tree restored, git diff empty.",
-    "VP04-settlement-street: the world-origin camera WAS fixed, by W1-GIVER-PRESENCE, not by W1-04. The camera now stands in Thorn (env.settlement='thorn'). But the frame still contains no settlement \u2014 root arches and region signature slabs from the province layer and one posted figure. No building, no door, no street. Still not evidence of a town.",
+    "VP04-settlement-street: the world-origin camera WAS fixed, by W1-GIVER-PRESENCE, not by W1-04. The camera now stands in Thorn (env.settlement='thorn'). But the frame still contains no settlement — root arches and region signature slabs from the province layer and one posted figure. No building, no door, no street. Still not evidence of a town.",
     "RI-WLD03 R2 (the service rule): 11 of 30 shops have no NPC with a barter service; 0 of 347 NPC records carry a gold pool or a barter inventory; 0 of 115 interiors declare a back room or upper floor. 'A shop that is one room with a counter is half a shop.'",
-    "RI-WLD03 R5 (the architecture rule): zero implementation. settlement.buildings is read at exactly two sites \u2014 the door table and a .length. No building mesh exists for any of the 202 buildings.",
-    "GATES AT MY COMMIT: check-data 0, check-content 0, check-quests 0 (120 quests \u2014 the W1-FACTIONS red the builder reported has since cleared)."
-  ]
+    "RI-WLD03 R5 (the architecture rule): zero implementation. settlement.buildings is read at exactly two sites — the door table and a .length. No building mesh exists for any of the 202 buildings.",
+    "GATES AT MY COMMIT: check-data 0, check-content 0, check-quests 0 (120 quests — the W1-FACTIONS red the builder reported has since cleared).",
+    "SWEEP, THE DEFINITIVE NUMBER: all 115 interiors entered through enterInterior() from a province start — 115 of 115 entered, 0 refused, 0 errors — and 0 of 115 changed the drawn cell. reports/critic-w1-04-r1c.json.",
+    "AR-2 PASSES AND WAS MEASURED, not asserted: in Thorn, map markers 0, routes 0, quest-bearing elements none, travel affordances none, places drawn 0; 6-element HUD at 2.05% coverage, no minimap, no compass. getDrawnMarkers() returns one object in the whole town — hearth-thorn, the Hist-shrine the service matrix requires. tryPlaceMapMarker exhausted 13 routes and landed no pin."
+  ],
+  "verdict": {
+    "status": "FAIL",
+    "score": 3.2,
+    "threshold": 6,
+    "gap": "GAP-W1-interior-door-draws-nothing"
+  },
+  "notes_for_successor": "The verdict validates (node tools/verdict-validate.mjs corpus/90-verdicts/wave1/W1-04-r1.json exit 0, 4 warnings, all four answered in prose). The one measurement everything turns on is reports/critic-w1-04-r1b.json: enterInterior() leaves renderer.cells visible == ['province'] while cellFor(env) == 'interior', and a hand call to E._applyCell() switches it — that second row is the control, so the instrument is not blind. Do not re-derive this from source: renderer.setCell() has one caller and grep will tell you the rest, but the browser trace is what makes it a finding. I did NOT re-run tools/world/w1-04-consumption.mjs and a round-2 critic should not either; it is honest and it cannot see this, because it never reads the renderer."
 }

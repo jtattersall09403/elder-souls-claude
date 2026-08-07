@@ -163,10 +163,7 @@ export class PopulationSystem {
       // So a release remembers who was down. `_materialise()` leaves them down, and only
       // `DeathSystem.respawnOrdinary()` — the hearth rest and the player death, step (0) above —
       // clears the register. S5 is then true of a half-fought post as well as of a finished one.
-      for (const eid of eids) { if (sim.findEntity(eid)) { try { engine.despawn(eid); } catch { /* already gone */ } } }
-      this.live.delete(id);
-      this.stats.released++;
-      if (this.state.get(id) !== CLEARED) this.state.set(id, DORMANT);
+      this.releasePost(engine, id);
     }
 
     // (4) Bring on what is in front of you, one post per step at most. Four bodies is four
@@ -184,6 +181,39 @@ export class PopulationSystem {
       this._materialise(engine, c.p);
       budget--;
     }
+  }
+
+  /**
+   * Let go of ONE post, remembering who was down. Step (3)'s body, extracted.
+   *
+   * It is a method rather than eight lines inside `step()` because `step()` returns early outside
+   * the province cell, so every probe that wanted to exercise a release had to REIMPLEMENT it —
+   * and one did: `tools/progression/souls-ledger-oracle.mjs` carried its own copy, which is why
+   * its delete-the-fix leg for this exact register came back GREEN with the register deleted. Two
+   * parallel implementations of one system is how this build had a good detection model and a
+   * broken one at the same time; here it was how an ablation measured nothing. There is now one
+   * implementation and the probes call it.
+   *
+   * `this.down` is the register the S5 guarantee rests on: a body the player put down at a post
+   * they did not finish stays down when the post comes back, and only `respawnOrdinary()` — the
+   * hearth rest and the player death, step (0) — clears it.
+   */
+  releasePost(engine, id) {
+    const eids = this.live.get(id);
+    if (!eids) return false;
+    const sim = engine.sim;
+    const down = this.down.get(id) || new Set();
+    for (const eid of eids) {
+      const e = sim.findEntity(eid);
+      if (!e) continue;
+      if (e.hp <= 0) down.add(eid);
+      try { engine.despawn(eid); } catch { /* already gone */ }
+    }
+    if (down.size) this.down.set(id, down); else this.down.delete(id);
+    this.live.delete(id);
+    this.stats.released++;
+    if (this.state.get(id) !== CLEARED) this.state.set(id, DORMANT);
+    return true;
   }
 
   _materialise(engine, p) {

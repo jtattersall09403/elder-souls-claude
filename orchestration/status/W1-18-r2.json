@@ -1,0 +1,27 @@
+{
+  "task_id": "W1-18-r2",
+  "role": "builder",
+  "item": "W1-18",
+  "round": 2,
+  "state": "reading",
+  "started_at": "2026-08-07",
+  "brief": "Quest engine and journal. Spec is orchestration/status/W1-19-r3.json: the quest machine is barely driven by play. 6 verbs, no caller outside harness/api.js; note() covers 11/120 quests; takeBranch() zero callers; 113 of 121 (quest,reveal) pairs demanded by resolutions have no route in play; 8 channels have no reader in game/src at all.",
+  "headline": "WIP",
+  "next_step": "read machine.js verbs, hooks.json, reveal-route-audit.mjs; census the 8 channels against what a player actually does; pick channels; prove ONE end to end before authoring.",
+  "files_claimed": [
+    "orchestration/status/W1-18-r2.json",
+    "game/src/sim/quest/machine.js",
+    "game/data/quests/hooks.json",
+    "tools/quests/",
+    "reports/runs/W1-18-R2/",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "files_touched": [
+    "orchestration/status/W1-18-r2.json"
+  ],
+  "redundant_with": [],
+  "notes": [
+    "BOX LOAD AT START: pgrep -c headless_shell = 24, loadavg 17.59. Over RULES.md rule 21 cap (~8). Doing all analysis and authoring browserless; one browser only to prove the end-to-end route."
+  ]
+}

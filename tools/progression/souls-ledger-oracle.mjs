@@ -168,31 +168,21 @@ async function main() {
       const POST = { id: TAG, encounter: ENC, x: 0, z: 12, region: null, tier: 1 };
       if (P) P.byId.set(POST.id, POST);
       const releasePost = () => {
-        // THE FALLBACK IS NOT A SHORTCUT — IT IS THE DEFECT, MODELLED HONESTLY.
+        // CALLS THE SHIPPED CODE. This helper used to carry its own copy of step (3)'s body, and
+        // the delete-the-fix leg that removed `PopulationSystem`'s down register came back GREEN
+        // because of it: the ablation deleted the world's implementation while the oracle went on
+        // running the oracle's. `PopulationSystem.releasePost()` exists so there is one.
         //
-        // `PopulationSystem` step (3) only iterates `this.live`. After `applySave()` calls
-        // `population.reset()`, `live` and `down` are BOTH empty while the bodies themselves have
-        // been restored by the save — so the world is holding entities that its own post index
-        // knows nothing about, and letting go of them records nothing about who was dead. This
-        // branch is that state. It is `GAP-W1-population-save-reload-repays-every-corpse`
-        // (`W1-POPULATION-r1` §2), it is filed, it is open, and it belongs to that piece: the
-        // remedy is to persist the cleared-post set (and now the down register) into the save,
-        // which is a save-schema decision W1-SOULS is not entitled to make.
-        //
-        // The oracle leaves it RED on purpose. A tool that went green while an unbounded farm
-        // existed would be worse than no tool.
-        if (!P || !P.live.has(POST.id)) { for (const e of ents()) { try { H.despawn(e.eid); } catch { /* gone */ } } H.stepFrames(1); return; }
-        const eids = P.live.get(POST.id);
-        const down = P.down.get(POST.id) || new Set();
-        for (const eid of eids) {
-          const e = E.sim.findEntity(eid);
-          if (!e) continue;
-          if (e.hp <= 0) down.add(eid);
-          try { E.despawn(eid); } catch { /* gone */ }
-        }
-        if (down.size) P.down.set(POST.id, down); else P.down.delete(POST.id);
-        P.live.delete(POST.id);
-        P.state.set(POST.id, 'dormant');
+        // THE FALLBACK IS NOT A SHORTCUT — IT IS THE DEFECT, MODELLED HONESTLY. Step (3) only
+        // iterates `this.live`. After `applySave()` calls `population.reset()`, `live` and `down`
+        // are BOTH empty while the bodies have been restored by the save, so the world is holding
+        // entities its own post index knows nothing about and letting go of them records nothing.
+        // That is `GAP-W1-population-save-reload-repays-every-corpse` (`W1-POPULATION-r1` §2),
+        // filed and open; the remedy is to persist the cleared-post set into the save, which is a
+        // save-schema decision W1-SOULS is not entitled to make. The oracle leaves it RED on
+        // purpose: a tool that went green while an unbounded farm existed would be worse than none.
+        if (P && P.releasePost(E, POST.id)) { H.stepFrames(1); return; }
+        for (const e of ents()) { try { H.despawn(e.eid); } catch { /* gone */ } }
         H.stepFrames(1);
       };
 
