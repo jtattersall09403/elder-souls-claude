@@ -71,6 +71,10 @@ OPTIONS
                   (b) the ENGINE observes it through __HARNESS.gamepadPoll(), which is
                       RealInput.pollGamepad() — the same call the engine makes every frame for a
                       physical pad — and that moving the shim's stick moves getMoveVector().
+  --break-router  install a SECOND init script that zeroes the axes where the engine's router
+                  reads them, while gamepadPoll() keeps reporting a perfect observation. The
+                  entity-side check must go RED and every descriptor/poll check must stay green
+                  — TOOL-COVERAGE-R2 §7's "a pad that moves nothing passes 8/8".
   --hotplug       after --verify, disconnect and reconnect the pad and assert the page sees both
                   the gamepaddisconnected and gamepadconnected events and the engine drops it
   --self-test     the falsification battery. Includes a null control (an UNINSTALLED page must
@@ -218,15 +222,22 @@ export async function observe(page) {
 export const BREAK_ROUTER_SOURCE = `
 (() => {
   const realGet = navigator.getGamepads.bind(navigator);
-  navigator.getGamepads = function () {
-    return Array.from(realGet() || []).map((p) => {
-      if (!p) return p;
-      const clone = {};
-      for (const k in p) clone[k] = p[k];
-      clone.axes = (p.axes || []).map(() => 0);   // the router receives a dead stick
-      return clone;
-    });
-  };
+  // defineProperty, not assignment: the shim installs getGamepads with { value, configurable }
+  // and no writable flag, so a plain assignment silently does nothing. Found by running this
+  // falsification and watching it fail to falsify anything.
+  Object.defineProperty(navigator, 'getGamepads', {
+    configurable: true,
+    value: function getGamepads() {
+      return Array.from(realGet() || []).map((p) => {
+        if (!p) return p;
+        return {
+          id: p.id, index: p.index, connected: p.connected, mapping: p.mapping,
+          timestamp: p.timestamp, buttons: p.buttons,
+          axes: (p.axes || []).map(() => 0),   // the router receives a dead stick
+        };
+      });
+    },
+  });
   const patch = () => {
     const H = window.__HARNESS;
     if (!H || H.__routerBroken) return;
@@ -484,6 +495,24 @@ async function selfTest(opts) {
           `walking on its own`
         : std.world.why);
 
+    // RED. The exact build TOOL-COVERAGE-R2 §7 described: pollGamepad() returns a perfect
+    // observation and the router discards the axes. Every check above must stay GREEN and only
+    // the world-side one may go red — otherwise the entity-side check is just a second copy of
+    // the input-layer check and adds nothing.
+    const broken = await verifyOne('x2s-standard', false, { ...opts, breakRouter: true });
+    ok('RED: with the router discarding the axes, the input-layer checks STILL PASS',
+      broken.page_sees_pad && broken.mapping_preserved
+      && broken.engine.available && broken.engine.axes_changed_under_poll,
+      `page sees the pad, mapping preserved, gamepadPoll() axes ` +
+      `${JSON.stringify(broken.engine.axes_at_rest)} -> ${JSON.stringify(broken.engine.axes_with_stick)} — ` +
+      `all eight round-2 checks are satisfied by a pad that moves nothing`);
+    ok('RED: and the ENTITY-SIDE check catches it — the player does not move',
+      broken.world.available && broken.world.pad_moves_the_player === false
+      && broken.world.null_control_holds,
+      `player moved ${broken.world.moved_m} m with the stick fully forward (unbroken run: ` +
+      `${std.world.moved_m} m). RI-JRN04 M13 would have been reported green for a pad that ` +
+      `moves nothing.`);
+
     // The one that matters for the descriptor leg: a non-standard descriptor must NOT arrive
     // as 'standard'. If it does, the leg passes without the build's mapping code ever running.
     const hid = await verifyOne('x2s-hid-dualsense', true, opts);
@@ -524,7 +553,10 @@ const isMain = process.argv[1] && process.argv[1].endsWith('gamepad-shim.mjs');
 if (isMain) {
   const args = parseArgs();
   if (wantsHelp(args)) usage(USAGE);
-  const opts = { timeout: args.timeout };
+  // `--break-router` is the falsification handle for the entity-side check. It installs a second
+  // init script that zeroes the axes where the engine's router reads them while `gamepadPoll()`
+  // goes on reporting a perfect observation — the build TOOL-COVERAGE-R2 §7 said would pass 8/8.
+  const opts = { timeout: args.timeout, breakRouter: !!args['break-router'] };
 
   if (args.list) {
     for (const [k, v] of Object.entries(PADS)) {
