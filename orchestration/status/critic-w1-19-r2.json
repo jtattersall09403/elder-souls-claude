@@ -4,16 +4,24 @@
   "target": "W1-19 round 2 (quest + dialogue join)",
   "branch": "claude/morrowind-souls-threejs-game-mou39v",
   "started": "2026-08-07",
-  "state": "researching",
+  "state": "measuring",
   "outputs_expected": [
     "corpus/90-verdicts/wave1/W1-19-r2.md",
     "corpus/90-verdicts/wave1/W1-19-r2.json",
     "reports/blog-feed.jsonl (one line appended)"
   ],
   "outputs_written": [],
-  "contention_at_start": {"headless_shell": 6, "loadavg": "1.80 5.13 4.87"},
-  "findings": [],
+  "contention_at_start": {
+    "headless_shell": 6,
+    "loadavg": "1.80 5.13 4.87"
+  },
+  "findings": [
+    "BOOT-CHECK PASS before work (rendered_a_frame true).",
+    "STATIC (my own supply-graph script, scratchpad/supply.mjs, topicKey folded, multi-hop over info.to): of the 35 subject quests, only 18 have their opening keyword supplied in a settlement that HAS a bootable named state. 16 are supplied ONLY in gideon(9)/lilmoth(5)/blackrose(3) -- settlements with NO state file in game/data/states/. Q-MAG-18 'the voriplasm' has NO supplier anywhere, 1-hop or closure.",
+    "Bootable town states: helstrom-market, stormhold-street, soulrest-quay, thorn-hall. The builder's headline ran only THREE of the four; thorn-hall (6 quests keyed there) was NOT run.",
+    "Builder claim '32 rumour rows keyed to each giver's settlement' is not exactly true: Q-MAG-25 giver widow-ineel stands at THORN but its keyword is only rumoured at GIDEON; Q-MAG-27 giver scribe-hulen stands at STORMHOLD, keyword only rumoured at GIDEON. Giver warden-eshi (Q-MAG-06/18/28) has no matching NPC record; xul-aneekh-speaker and potter-mek have an EMPTY settlement string."
+  ],
   "method_deviations": [],
-  "next_step": "read ARBITRATION.md s3, RI-MTH04, W1-19-r1.md verdict, W1-19-r2 status",
+  "next_step": "check whether gideon/lilmoth/blackrose are reachable in the running world; then run utility-findability myself incl thorn-hall",
   "notes_for_successor": "Attack order given in brief: (1) cold-start findability 10/35 honesty, (2) 34 topic body prose quality + machine tics, (3) self-loop repair designedness, (4) 40/40 signature margins, (5) attribute rescale ceiling, (6) AR-3 perturbation, (7) CONSUMPTION world-side consumers."
 }

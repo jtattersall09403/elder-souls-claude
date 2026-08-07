@@ -6,12 +6,18 @@
   "outputs_expected": [
     "tools/quests/attr-scale-audit.mjs (validator with --self-test)",
     "tools/check-quests.mjs (warning wiring)",
-    "game/data/quests/** (rescaled demands)",
-    "orchestration/status/W1-ATTR-SCALE.json"
+    "game/data/quests/** (rescaled demands)"
   ],
   "outputs_written": [],
   "files_touched": [],
-  "findings": [],
-  "next_step": "read RI-PRG02, RI-PRG03, derive.js; then census quest demands",
-  "notes_for_successor": "Do NOT clamp to max — zero-margin is the defect that shut Act IV for 11/40 signatures one point lower. Set from ceiling WITH RESERVE."
+  "findings": [
+    "CENSUS: 43 attribute demands and 145 skill demands across resolutions in game/data/quests/**. Scratch census at scratchpad/census.mjs.",
+    "THE BAD-KEY CLASS IS 11, NOT 2. The brief named Q-SOUL-02 res_seal (scribing) and Q-LILM-01 res_rootkeepers (root_speech). Actual: `root_speech` (underscore; the skill is `root-speech`) appears in NINE resolutions - Q-LILM-01 res_rootkeepers 45, Q-MAG-13 mag_who_paid_him__magic 45, Q-DEEP-01 res_broker 30, Q-MAG-11 25, Q-MAG-22 25, Q-MAG-23 25, Q-MAG-24 25, Q-MAG-16 0, Q-MAG-17 0. `scribing` (no such skill) appears in TWO - Q-SOUL-02 res_seal 40 and Q-BLAK-01 res_fair_copy 35.",
+    "SEVEN skill demands are literally `: 0` (Q-MAG-04/09/10/16/17/18/21 __magic resolutions). A demand of 0 is met by every character including one that has never cast - decorative gate, the opposite failure to unreachable.",
+    "BOUGHT ATTRIBUTE STREAM IS DEAD IN THE SHIPPED BUILD. engine.js:_spendSouls() grants +1 to any attribute per level, which would make every ceiling in reports/faction-signature-sweep.json wrong. BUT nothing in game/src ever ADDS to soulsHeld except death.js:589 recovering a bloodstain. soulsHeld starts 0 (sim/state.js:212), is zeroed on death, and no kill/quest/loot path awards souls. So soulsToNextLevel() can never be paid and the earned stream (+1 per multiple of 15 in a governing skill) is the ONLY source of attribute points. The sweep ceiling is therefore correct today for a contingent reason, not a structural one. IF ANY BUILDER WIRES KILL-SOULS, EVERY NUMBER IN THIS TASK MOVES.",
+    "ATTRIBUTE DEFECTS beyond the three named: using cap = ceiling_median - 2 (the reserve convention the three landed fixes already used: Q-MAIN-08 personality 17 = p10 18 - 1; Q-MAIN-13 willpower 20 = p10 22 - 2; Q-MAIN-23 personality 20 = median 22 - 2), the following are also over the line: Q-ASSZ-08 res_open_all_four personality 24, Q-ASSZ-08 res_seal_the_men intellect 24, Q-LEDG-08 res_strike_the_eighth personality 24, Q-LEDG-08 res_seat_the_wharf personality 24, Q-XULA-08 res_keep_the_question willpower 24, Q-XULA-08 res_change_the_question willpower 24, Q-XULA-08 res_name_vashum personality 24, Q-ASSZ-07 res_file_for_him intellect 22, Q-ASSZ-07 res_resignation personality 22, Q-LEDG-07 res_name_sath personality 22, Q-XULA-07 res_put_it_to_the_hollow willpower 22, Q-XULA-07 res_make_them_ask personality 22, Q-XULA-04 res_lower_sluice hist-bond 18, Q-XULA-05 res_to_the_gallery hist-bond 18, Q-XULA-05 res_to_the_hollow willpower 18.",
+    "MEASURED CEILINGS (reports/faction-signature-sweep.json, 240 sheets, creation + 6 per governing skill): agility p10 45/med 49/max 55 (6 skills); endurance 15/18/25 (1); hist-bond 16/16/24 (1); intellect 18/23/30 (2); luck 11/12/15 (0 - NO skill raises luck at all); personality 18/22/31 (2); speed 16/18/23 (1); strength 23/28/37 (3); vigour 12/16/20 (1); willpower 22/23/30 (2)."
+  ],
+  "next_step": "read other agents' status files for file contention; extend census to faction-gates rank columns, giver.disposition_min and non-resolution gates; then write tools/quests/attr-scale-audit.mjs",
+  "notes_for_successor": "Do NOT clamp to max - zero-margin is the defect that shut Act IV for 11/40 signatures one point lower. Convention adopted: hard cap = ceiling_median - 2; warn band = above ceiling_p10 - 2. Vacuity floor = at_creation.min for attributes, base_value 5 for skills."
 }

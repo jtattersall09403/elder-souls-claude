@@ -172,7 +172,8 @@
       "class": "rootkeeper",
       "faction": "rootkeepers",
       "reaction_group": "RG-ROOT",
-      "settlement": "rootlands",
+      "settlement": null,
+      "settlement_note": "W1-04: was `rootlands`, which is not a settlement — game/data/world/settlements/ has eight and rootlands is not one of them; the world's regions are `western-rootlands` and `eastern-rootlands`, so it was not a region id either. RumourBook.pick() and RoadBook.forNpc() both key on this string, and a junk value is worse than none: both consumers read `npc.settlement || <where the player is standing>`, so a non-null string that matches nothing SHORT-CIRCUITS the fallback and this person answers nothing at all. These three are wilderness people — a Hist-grove rootkeeper, a Vakh speaker, a river-band elder on a bank — and null is the representation topic-supply.js documents for exactly them: `a hermit on the Clay Moor is not a signpost`. Now they speak for wherever the player meets them.",
       "interior": null,
       "disposition": 52,
       "topics": [
@@ -197,7 +198,8 @@
       "class": "vakh-speaker",
       "faction": "vakh",
       "reaction_group": "RG-VAKH",
-      "settlement": "rootlands",
+      "settlement": null,
+      "settlement_note": "W1-04: was `rootlands`, which is not a settlement — game/data/world/settlements/ has eight and rootlands is not one of them; the world's regions are `western-rootlands` and `eastern-rootlands`, so it was not a region id either. RumourBook.pick() and RoadBook.forNpc() both key on this string, and a junk value is worse than none: both consumers read `npc.settlement || <where the player is standing>`, so a non-null string that matches nothing SHORT-CIRCUITS the fallback and this person answers nothing at all. These three are wilderness people — a Hist-grove rootkeeper, a Vakh speaker, a river-band elder on a bank — and null is the representation topic-supply.js documents for exactly them: `a hermit on the Clay Moor is not a signpost`. Now they speak for wherever the player meets them.",
       "interior": null,
       "disposition": 30,
       "topics": [
@@ -219,7 +221,8 @@
       "class": "band-elder",
       "faction": "river-bands",
       "reaction_group": "RG-NAGA",
-      "settlement": "rootlands",
+      "settlement": null,
+      "settlement_note": "W1-04: was `rootlands`, which is not a settlement — game/data/world/settlements/ has eight and rootlands is not one of them; the world's regions are `western-rootlands` and `eastern-rootlands`, so it was not a region id either. RumourBook.pick() and RoadBook.forNpc() both key on this string, and a junk value is worse than none: both consumers read `npc.settlement || <where the player is standing>`, so a non-null string that matches nothing SHORT-CIRCUITS the fallback and this person answers nothing at all. These three are wilderness people — a Hist-grove rootkeeper, a Vakh speaker, a river-band elder on a bank — and null is the representation topic-supply.js documents for exactly them: `a hermit on the Clay Moor is not a signpost`. Now they speak for wherever the player meets them.",
       "interior": null,
       "disposition": 40,
       "topics": [

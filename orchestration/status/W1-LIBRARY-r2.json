@@ -2,7 +2,7 @@
   "task_id": "W1-LIBRARY-r2",
   "brief": "verdict corpus/90-verdicts/wave1/W1-LIBRARY-r1.md (3/10 FAIL, gate 7.0)",
   "started": "wave-1 round 2",
-  "state": "building",
+  "state": "complete",
   "outputs_expected": [
     "game/src/ consumer for topics_taught (world-side, perturbable)",
     "game/src/ consumer for knowledge_key (quest resolution)",
@@ -73,8 +73,8 @@
     "ELEVEN resolutions across FOUR files gate on a skill id that does not exist, not two: `scribing` (Q-SOUL-02 res_seal, Q-BLAK-01 res_fair_copy \u2014 no such skill at all) and `root_speech` (Q-LILM-01, Q-DEEP-01 and SEVEN magic-utility quests \u2014 the skill is `root-speech`). check-quests now warns on all of them and exits 0.",
     "ALL FIVE W1-LIBRARY PROBES GREEN on this build: w1-library-turns 3/3, w1-library-skillbooks PASS, w1-library-gates 3/3, w1-library-r2-reading 6/6, w1-library-r2-perturb 4/4. check-data / check-quests / check-content / boot-check all clean. book-stats.py --self-test 10/10 red, book-budget --self-test 14/14 red."
   ],
-  "next_step": "Blog line, then done. NOT DONE: RI-LOR03 \u00a72's 112-text target \u2014 the corpus is 70 and book-budget L8 reports it red rather than hiding it.",
-  "notes_for_successor": "Successor-2 starting. Predecessor-1 landed the consumer chain (verified by grep in engine.js/machine.js/ui/system.js) and book-stats.py S8/S9/S10 + linear pct(). book-budget.mjs is NOT yet fixed.",
+  "next_step": "DONE. Only outstanding expected output is RI-LOR03 \u00a72 texts count (70 of 112) \u2014 reported red by book-budget L8, not hidden.",
+  "notes_for_successor": "EVERYTHING IN outputs_expected IS DONE EXCEPT ONE: the corpus is 70 texts against RI-LOR03 \u00a72's 112. book-budget L8 reports it RED so it cannot be lost; every other row is green. If you pick that up, the shape of the gap is measured and written down in findings: the library is a CLERICAL corpus with no weapons in it \u2014 axes-maces, greatweapons and shieldcraft score ZERO across all 70 books and polearms/marksman/claw-fang are single-book noise. Write there. Also note \u00a71 is now MEASURED (241 Morrowind books) and the measurement says our short tail is nearly twice Morrowind's (15.7% vs 8.7%), so new books should be LONG, not scraps.\n\nTWO THINGS THAT ARE SOMEBODY ELSE'S AND SHOULD NOT BE LOST: (1) eleven quest resolutions across four files gate on a skill id that does not exist \u2014 check-quests now warns loudly and exits 0; promote it to an error once the data is fixed, the check is written so that is a one-line change. (2) InputPipeline keys scripted events to sim.frame, which FREEZES while a menu pauses the world, so `{f: n>=1}` events are unreachable on any paused screen. Workaround (do not re-derive it): re-queue at f:0 before every single step.\n\nDO NOT TRUST A reports/*.json YOU DID NOT JUST WRITE. critic-w1-library-seam.mjs only writes with --out; I read the round-1 critic's stale file and briefly believed the seam had regressed.",
   "files_touched_prose": [
     "NONE. No book prose byte was edited by me. The 13 game/data/books/*.json edits are 32 pure `skill_book` field INSERTIONS plus 1 changed line ('blade' -> 'blades'); git diff --numstat shows 32 insertions / 1 deletion across the 13 files and no `text` value differs. The prose-tics sweeper working the same files does not collide with this."
   ]

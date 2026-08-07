@@ -16,15 +16,23 @@
     "game/src/sim/quest/machine.js (GAP-FCT-01: resolve() gates on r.opened + canOffer; open() no longer blocked by a minted row; note/takeBranch/isOpen require opened; setFlag reveal branch guarded)",
     "game/src/save/state.js (opened round-trips both directions, old saves derive it from stage>0)",
     "game/src/engine.js (hist_sight mint marks opened)",
-    "game/data/save-manifest.json (Quests note)"
+    "game/data/save-manifest.json (Quests note)",
+    "game/src/harness/api.js (questResolutionConsequences + questEndings \u2014 path_to_ten #3)",
+    "tools/quests/faction-probe.mjs (chooser plays for the ladder flag; flag poke deleted; questOpen returns checked; P12-P16 added)",
+    "reports/faction-probe-the_wet_ledger.json",
+    "reports/faction-probe-the_imperial_assize.json",
+    "reports/faction-probe-the_xul_aneekh.json"
   ],
   "findings": [
     "contention at start: pgrep headless_shell=12, loadavg 12.36 - authoring/code phase first, browser later",
     "GAP-FCT-01 CLOSED AND FALSIFIED BOTH WAYS. tools/quests/critic-faction-gate-bypass.mjs: 6/6 pass with the fix; DELETE-THE-FIX (remove r.opened + canOffer from resolve) reproduces the verdict exactly - ok:true, 4 world flags incl ledger_first_chair_vacant, unlocks Q-LEDG-08, +40 to the rival Assize, derived rank 0->1. 4/6.",
     "The record was doing two jobs. rec(id,true) is minted by reveal(), fail() and _write(). open() refused whenever a row existed, so FOREKNOWLEDGE OF A QUEST MADE IT PERMANENTLY UNOPENABLE - a second latent bug the same conflation caused. open() now refuses only on r.opened.",
     "opened had to be added to the SAVE in both directions (save/state.js sortedQuestMap + loader) or every in-progress quest would become unresolvable across a save. Old saves derive opened from stage>0.",
-    "check-data 503 files PASS, check-quests 94 quests PASS, check-content 295 resolutions PASS after the engine change."
+    "check-data 503 files PASS, check-quests 94 quests PASS, check-content 295 resolutions PASS after the engine change.",
+    "THE SEAT IS NOW VACATED BY PLAY ON ALL THREE LINES, and the verdict's two jointly-untested claims hold together. 16/16 on each line. Ledger: rank 7 at rep 176 via res_show_the_returns; Assize: rank 7 at rep 230 via res_resignation; Xul-Aneekh: rank 7 at rep 238 via res_put_it_to_the_hollow. All non-violent, 0 world flags poked, and P16: the walk wrote NO reputation at all - 176/230/238 were paid entirely by the quests' own consequences.",
+    "WHY ROUND 1 ALWAYS REFUSED: the chooser's cost function ranked 'available' above everything, and a refusal requires nothing, so it was always cheapest. New order: never violence (100000), then an ending that raises a ladder world_state flag not yet up (20000), then availability, then cost. Reading which ending raises which flag needs questResolutionConsequences(), which did not exist.",
+    "P16 is the surprise: the reputation grant in the walk NEVER FIRES now. Round 1's setFactionStanding calls were only ever needed because the walk was refusing quests (and refusals pay little). Playing for the seat pays the ladder by itself."
   ],
-  "next_step": "fix faction-probe.mjs (reveals before resolving, discards questOpen); expose resolutions+consequences on questDef(); then the rank-7 non-violent walk",
+  "next_step": "volume: 9 -> 18+ per line (RI-QST01 two hard fails); Q-XULA-01 mouth; refusal must not cap the ladder; expulsion/readmission; RI-CRM02 second authority + factionLawFactor",
   "notes_for_successor": ""
 }
