@@ -2,10 +2,10 @@
 # The index
 
 **Read this before you go looking for anything.** It is regenerated from the tree on every commit,
-so it cannot drift. Generated at `fc5e13a`: 491 tools, 153 reference
-items, 29 pieces in flight.
+so it cannot drift. Generated at `a3af8c2`: 494 tools, 153 reference
+items, 31 pieces in flight.
 
-Its purpose is to stop 29+ concurrent agents each paying separately to discover the
+Its purpose is to stop 31+ concurrent agents each paying separately to discover the
 same things — and to stop a second copy of a tool being written by someone who could not find the
 first. **If what you need is not here, that is a finding: say so in your report.**
 
@@ -470,6 +470,12 @@ which is a **back door**: capability prohibitions installed on the harness do no
 - `tools/quests/viability-walk.mjs` — build viability measured by PLAYING.
 - `tools/quests/w1-giver-presence-consumption.mjs` — RI-MTH07 / ARBITRATION §3 for GAP-W1-quest-givers-not-in-the-world.
 
+### `tools/readables/` — 3
+
+- `tools/readables/mk-evidence.mjs` — Authoring tool for game/data/books/the-books-in-evidence.json — W1-READABLES.
+- `tools/readables/mk-tally.mjs` — W1-READABLES — three more volumes of the Drowned Tally, and the one field that makes the fourth volume readable by the quest that already names it.
+- `tools/readables/place-documents.mjs` — W1-READABLES — put each document in the room the quest sends you to.
+
 ### `tools/refs/` — 1
 
 - `tools/refs/merge-manifest.mjs` — **no header comment**
@@ -769,9 +775,11 @@ work is the difference between resuming and starting over.
 
 | piece | state | next step | files |
 |---|---|---|---|
+| `W1-15-r3` | in_progress | in progress: fixing shop-hours defect C in tools/world/build-settlements.mjs, then defect  | — |
+| `W1-12` | building | Survey written. Build game/data/combat/ai.json + game/src/combat/ai.js (RI-AI01 state mach | `orchestration/status/W1-12.json` |
+| `W1-21-r2` | starting | read RULES.md (done), INDEX.md, W1-21-r1.md verdict, W1-13-r4.json §5, NEXT-DISPATCH.md §P | — |
 | `W1-13-r4` | running | diagnose why m_prg04_m8_clock_consequence FAILS inside the aggregation while the same six  | `orchestration/status/W1-13-r4.json` `game/src/sim/environment.js` `game/src/sim/souls.js` `game/src/render/renderer.js` `tools/journey/jrn06-death.mjs` `tools/harness/w1-13-r4-clock-consequences.mjs` |
 | `W1-16` | surveying | read game/src/sim/state.js, engine.js (setGold/getGold/setAttributes/getDerivedStats/getSk | — |
-| `W1-12` | running | Read RULES/INDEX/PLAN/ARBITRATION; survey enemy AI honestly before building | `orchestration/status/W1-12.json` |
 | `critic-w1-22-r2` | running | read RULES, INDEX, r1 verdict, blind judge verdict, W1-22-r3 status | `orchestration/status/critic-w1-22-r2.json` |
 | `critic-w1-03` | running | bare-Node probes done (18 checks, 16 pass). Next: look at both shots, then ONE browser ses | `orchestration/status/critic-w1-03.json` |
 | `W1-READABLES` | building | write the mechanism, then the documents | `orchestration/status/W1-READABLES.json` |

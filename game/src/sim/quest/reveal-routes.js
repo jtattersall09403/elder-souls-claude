@@ -99,14 +99,16 @@ export const CHANNEL_READERS = {
  * somebody wrote"*, and names the thing. So they go through the same reader rather than a second
  * one, and this constant is the whole of the difference.
  *
- * A ledger and a letter are still not the same OBJECT, and the world keeps them apart in the
- * place where it matters — the verb. A letter is carried: it is an item with `readable: true`
- * and a `book_id`, and you read it out of your own inventory. A ledger is read where it stands:
- * it is a prop with `readable_book`, `takeable: false`, and reaching for it opens it in the room
- * rather than putting it in your pack. That is not decoration either. Q-MAIN-06 ships a failure
- * state called `fail_took_the_books` whose cause is *"the player removes a volume of the Tally
- * from the archive"*, and an archive whose only interaction was `take` would have made that
- * failure the single thing a player could do.
+ * WHAT THE NOUN CHANGES IS THE VERB, and the verb is where a ledger stops being a book. This
+ * build has two ways to read: an item with `readable: true` and a `book_id`, read out of your own
+ * inventory (`sealed-letter-stormhold` has always been one), and — new here — a prop carrying
+ * `readable_book`, `takeable: false`, which opens where it stands and cannot be pocketed. Every
+ * document this piece places takes the second, and Q-MAIN-06 is the reason: it ships a failure
+ * state, `fail_took_the_books`, whose cause is *"the player removes a volume of the Tally from
+ * the archive"*. An archive whose only interaction was `take` would have made that failure the
+ * one thing a player could do in it. The same holds for the one `letter` placed here — it is in
+ * a rootkeeper's gallery under her eye, and carrying it out of Helstrom is a RESOLUTION of
+ * Q-MAIN-10 with a consequence attached, not a thing you do to a prop.
  *
  * `environment` is deliberately NOT here. Its sources are places and marks — `loc_the_flooding_
  * road`, "the cut itself, on the shaded side" — and a place is not a document. Routing it here

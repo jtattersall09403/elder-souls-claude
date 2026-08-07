@@ -111,6 +111,8 @@
   "falsifications_done": [
     "build-street-life.mjs: set thorn radius_m to 1 -> exit 3, 15 records named as unplaceable. Restored; git diff and git diff --cached both empty (RULES.md rule 17).",
     "All 115 interiors built headless with no browser: 0 failures, 0 props with no table entry.",
+    "build-street-life.mjs --check: 8 files, 0 drifted - the shipped population files are byte-identical to what the model regenerates.",
+    "state:'interior_firelit' / VP05 re-captured after the change: renders Thorn Hall from its record, lit and populated, not black. The shared capture state is not broken by this round, only changed.",
     "tools/world/w1-04-consumption.mjs --self-test: 7/7 GOES-RED, 13 skipped as un-invertible scenario rows. Every row with a defined disconnect, including the three new render rows, goes red when its consumer is cut.",
     "The sweep's own control arm: sim.applyCell and _syncCell cut -> 0 of 115 drew the right cell. The instrument reproduces the round-1 build on demand.",
     "Two defects were found by these instruments going red rather than by reading code: (1) my sweep asserted renderer.interiorId on the five hand-built named cells that never set it - a probe defect; (2) the room was cached on the interior id, so a perturbed record returned the cached room and three checks reported DEAD - a build defect, now keyed on the record's content.",

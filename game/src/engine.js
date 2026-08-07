@@ -3679,8 +3679,8 @@ export class Engine {
    * `book`, `ledger` and `letter`. Those three channels are one question — *"you learn this by
    * reading a thing somebody wrote"* — and the quest files name the thing in the same field, so
    * they take the same reader. What changes with the noun is the VERB, and that lives in the
-   * world (`_furnishInterior` and `_takePropPending`): a letter is carried and read out of the
-   * pack, a ledger is read where it stands. See `sim/quest/reveal-routes.js`.
+   * world (`_furnishInterior` and `_takePropPending`): a document with a book behind it is read
+   * where it stands and cannot be pocketed. See `sim/quest/reveal-routes.js`.
    */
   _bookKnowledgeIndex() {
     // knowledge key -> reveal ids that a book is the declared source of

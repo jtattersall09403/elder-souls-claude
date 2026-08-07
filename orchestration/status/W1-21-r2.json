@@ -1,0 +1,21 @@
+{
+  "task_id": "W1-21-r2",
+  "role": "builder",
+  "wave": 1,
+  "item": "W1-21",
+  "round": 2,
+  "state": "starting",
+  "started_at": "2026-08-07",
+  "spec": "corpus/90-verdicts/wave1/W1-21-r1.md",
+  "summary": "UI / HUD / AR-2 enforcement. Round 2 after FAIL 2/10 (AR-2 fail).",
+  "objectives": [
+    "P.6 blocker: menu-to-menu navigation — 6 advertised destinations at a rest site, only 2 reachable; add peer-walk branch for the two nav actions while a menu is open. Check RI-JRN03 §A action-set closure before widening.",
+    "Verdict's biggest gap: map draws discovered places from the same model the compliance report reads (fixed-point). Need a probe that forges ONE side (place list) and leaves the raster honest, and detectors that actually open the map (S35 surface seam).",
+    "Discovery object has 4 state-writing methods, amendment lists 3, list is a hand-typed literal not read from the running object.",
+    "UI measurement region whitelist: 2 screens return 0 samples in every configuration, grader filters them out before reporting pass."
+  ],
+  "next_step": "read RULES.md (done), INDEX.md, W1-21-r1.md verdict, W1-13-r4.json §5, NEXT-DISPATCH.md §P.6",
+  "files_touched": [],
+  "files_claimed": [],
+  "notes": []
+}

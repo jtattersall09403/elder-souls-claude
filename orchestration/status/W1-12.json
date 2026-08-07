@@ -2,14 +2,34 @@
   "task_id": "W1-12",
   "title": "Enemy AI and encounter composition",
   "role": "builder",
-  "state": "running",
+  "state": "building",
   "started_at": "2026-08-07",
   "commit_at_start": "107c1b3",
-  "next_step": "Read RULES/INDEX/PLAN/ARBITRATION; survey enemy AI honestly before building",
+  "next_step": "Survey written. Build game/data/combat/ai.json + game/src/combat/ai.js (RI-AI01 state machine), wire additively, then tools/harness/ai-probe.mjs (M1-M9, must go red on the pre-change tree), then browser confirmation.",
   "files_touched": ["orchestration/status/W1-12.json"],
-  "files_claimed": [],
+  "files_claimed": [
+    "reports/w1-12/",
+    "game/data/combat/ai.json",
+    "game/src/combat/ai.js",
+    "game/src/combat/enemy.js",
+    "game/src/character/encounter.js",
+    "game/src/sim/record.js",
+    "tools/harness/ai-probe.mjs",
+    "tools/analysis/w1-12-chart.mjs",
+    "docs/shots/",
+    "reports/blog-feed.jsonl"
+  ],
+  "redundant_with": ["W1-03"],
+  "overlap_note": "W1-03 (water, state=fixed) claims game/data/combat/enemies/ and has touched game/src/combat/enemy.js. I do NOT write any statblock: the per-archetype AI parameters live in a NEW file game/data/combat/ai.json that this piece owns, precisely so the statblock directory is untouched. My enemy.js edits are additive (one new ai behaviour). W1-07 (encounter.js) and W1-POPULATION are both complete.",
+  "survey_findings": [
+    "IMPLEMENTED_AI in game/src/combat/enemy.js is {none, hold_ground, scripted}. No approach, no circling, no pursuit. The AGGRO branch of _idleBehaviour sets b.state='REPOSITION' and only turns yaw - nothing writes b.pos. Confirms the water builder.",
+    "There IS one pursuit locomotion and the water builder missed it: character/encounter.js::engageMember (W1-07). Every wilderness body spawns through spawnEncounter, so it is stamped encounterId, so engageMember IS the shipped enemy AI of this game.",
+    "engageMember trips three of RI-AI01's five named hard fails by construction: constant attack_cadence_f=78 (M4 inter-COMMIT CoV=0), beeline-and-stand (M3 statue), and instant proximity aggro with no cone/LOS/meter (M1 circle + M2 no SUSPICIOUS ladder).",
+    "ENGAGE.advance_mps=2.20 is the only pursuit speed in the game. Player walk 2.0 / jog 3.2 / sprint 5.0. Nothing in this world can catch a jogging player.",
+    "wl-slitherfang-* aggro_at_m=20 vs beast_slitherfang sight_radius_m=16; wl-drowned-straggler aggro_at_m=16 vs drowned_lesser sight_radius_m=14. The encounter circle is LARGER than the declared sight radius, so those two aggro from behind, through walls, in the dark.",
+    "Roster: 7 combat statblocks over 3 of RI-AI05's 10 archetypes (INFANTRY, BEAST, CASTER). No TURTLE, DUELIST, POISE_MONSTER, RANGED, AMBUSHER, SWARM, BOSS. tier: 5 trash, 2 elite, 0 boss."
+  ],
   "notes": [
-    "Load at start: 18 headless_shell, loadavg 15.22 - deferring browser work",
-    "Neighbour constraints: water builder reports NO enemy pursuit locomotion; population critic reports 5 statblocks and a 5310m dead road"
+    "Load at start: 18 headless_shell / loadavg 15.22; at survey end 24 / 19.19. All survey work above is offline source+data analysis, no browser."
   ]
 }

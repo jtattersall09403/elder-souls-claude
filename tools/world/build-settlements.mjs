@@ -528,8 +528,20 @@ for (const s of SETTLEMENTS) {
       // trespass and its door is locked.
       // A civic entry may state its own hours when the kind default is wrong for it — a manned
       // gatehouse keeps its warden's hours, not a shop's.
-      open_h: c.open_h !== undefined ? c.open_h : (c.kind === 'tavern' ? 6 : c.kind === 'dwelling' ? 0 : 8),
-      close_h: c.close_h !== undefined ? c.close_h : (c.kind === 'tavern' ? 26 : c.kind === 'dwelling' ? 24 : 19),
+      //
+      // W1-15 r3: a per-household `dwelling` interior is built straight off `d.head.zones`
+      // (line ~406) with `kind: 'dwelling'` hardcoded, REGARDLESS of the household's trade. When
+      // that household's trade is one build-property.mjs classes `shop_closed` (trader, smith,
+      // apothecary, boatwright), room 0 of the SAME interior carries that class — but the whole
+      // interior shared one open_h/close_h, and the dwelling default (0-24, always open) made
+      // `trespass({class:'shop_closed'}, {shopOpen})` unconditionally false: 12 of 66 shop_closed
+      // zones (6 households) could never be trespassed at any hour, discovered only once W1-04-r2
+      // wired isOpenNow() into trespassCheck() for real. Civic buildings never had this problem —
+      // their zones are a "spare" round-robin distribution across kinds that already default to
+      // 8-19 for anything that is not a dwelling or a tavern. The fix reads the SAME signal:
+      // does any zone actually inside this interior need shop hours to be trespassable at all.
+      open_h: c.open_h !== undefined ? c.open_h : (c.kind === 'tavern' ? 6 : (c.kind === 'dwelling' && !zr.some((z) => z.class === 'shop_closed')) ? 0 : 8),
+      close_h: c.close_h !== undefined ? c.close_h : (c.kind === 'tavern' ? 26 : (c.kind === 'dwelling' && !zr.some((z) => z.class === 'shop_closed')) ? 24 : 19),
     };
     fs.writeFileSync(path.join(INT_OUT, `${c.slug}.json`), JSON.stringify(doc, null, 1) + '\n');
     interiorIds.push(c.slug);

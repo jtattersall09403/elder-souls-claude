@@ -1,0 +1,34 @@
+{
+  "task_id": "W1-15-r3",
+  "brief": "round-3 builder for W1-15 stealth/theft/crime/justice — closing the round-2 FAIL (3/10) biggest_gap plus four live defects other pieces found this session and left to W1-15 by name",
+  "started": "2026-08-07",
+  "state": "in_progress",
+  "verdict_round2": "corpus/90-verdicts/wave1/W1-15-r2.json (FAIL 3/10, biggest_gap GAP-W1-crime-enforcement-is-a-free-win)",
+  "contention_at_start": { "headless_shell": 24, "loadavg": "18.79 16.17 13.08" },
+  "targets": [
+    "GAP-W1-crime-enforcement-is-a-free-win (round-2 biggest_gap): guard_legion ai='hold_ground' never attacks (combat/enemy.js only scripts ai==='scripted'); parley gold_price 0 + disposition 35 makes surrender free.",
+    "defect A (declared by W1-SOULS-r3, 'FIFTH, REPORTED NOT FIXED'): the save blob path never calls stealth.resetSubsystem() — applySave restores crime.ledger+zones only, civilians/searches/pending survive a load.",
+    "defect B (this session, matches r2 GAP-W1-four-gold-accumulators): fenceSell/bribeWitness pay into sim.stealth.p.gold; the save + ctx.world.gold (combat parley GOLD ground) read a DIFFERENT purse (sim.progression.gold / ctx.world.gold reads 0). Four accumulators total: sim.stealth.p.gold, sim.progression.gold, engine.magic.gold, ctx.world.gold.",
+    "defect C (this session): shop hours now wired live (W1-04-r2's isOpenNow -> trespassCheck), but 12 of 66 shop_closed property zones (6 households: smith/trader/apothecary across archon/blackrose/gideon/helstrom/stormhold x2) never trespass at any hour because build-settlements.mjs forces EVERY per-household dwelling interior to kind:'dwelling' (hours 0-24) even when the household's own trade room is class shop_closed. ROOT CAUSE FOUND in tools/world/build-settlements.mjs lines ~404-412 (dwelling push, kind hardcoded) and ~531-532 (hours default keyed only on c.kind).",
+    "defect D (this session): 'nobody outdoors at 3am, no NPC on a street' — INVESTIGATING. W1-04-r2's status file already claims 16-23 outdoors at 03:00 via tools/world/build-street-life.mjs (pop-*.json posts). Need to check whether those population/schedule NPCs are the SAME entities the stealth perception/witness kernel (st.civilians) reads, or a disjoint list — i.e. whether a street-life NPC is something the stealth system can actually derive a witness or a pickpocket target from."
+  ],
+  "files_claimed": [
+    "tools/world/build-settlements.mjs",
+    "game/data/world/interiors/",
+    "game/data/world/settlements/",
+    "game/src/sim/stealth/system.js",
+    "game/src/sim/crime/state.js",
+    "game/src/save/state.js",
+    "game/src/combat/parley.js",
+    "game/data/combat/enemies/guard_legion.json",
+    "game/src/harness/api.js",
+    "game/src/engine.js",
+    "tools/harness/w1-15-coupling.mjs",
+    "tools/analysis/crime-audit.mjs",
+    "reports/blog-feed.jsonl",
+    "docs/shots/"
+  ],
+  "redundant_with": [],
+  "next_step": "in progress: fixing shop-hours defect C in tools/world/build-settlements.mjs, then defect A (blob-path stealth reset), defect B (purse unification), then the round-2 biggest_gap (guard enforcement), then verify defect D. Regenerate property/settlements data, re-run check-data + crime-audit + stl-probe (static, no browser while contention is high), then stl-live once headless_shell contention drops below ~8.",
+  "notes_for_successor": "See W1-15-r2's notes_for_successor for the setRenderRate(0)/320x240 probe-speed trap and the setEntityPos-ignores-yaw / queueInputs-relative-frames probe traps — both still apply."
+}
